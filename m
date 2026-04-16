@@ -1,176 +1,220 @@
-Return-Path: <stable+bounces-238284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238285-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YFOTBI6s4GkCkwAAu9opvQ
-	(envelope-from <stable+bounces-238284-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 11:31:58 +0200
+	id uKJ3Izus4GkCkwAAu9opvQ
+	(envelope-from <stable+bounces-238285-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 11:30:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6067F40C665
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 11:31:57 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CA3940C617
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 11:30:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3A572309FEE0
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 09:26:56 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7FD28300EDA2
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 09:30:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B4AC3921D7;
-	Thu, 16 Apr 2026 09:26:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 244A839A80E;
+	Thu, 16 Apr 2026 09:30:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YTc5fIjb"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="vjBUYv/o"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yx1-f45.google.com (mail-yx1-f45.google.com [74.125.224.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE7E337C11C
-	for <stable@vger.kernel.org>; Thu, 16 Apr 2026 09:26:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776331615; cv=pass; b=GeOn9q5f/6p9QX05COgNeW9Ba4qZortWYOiLIyFHaNyDgMDTNFqavMbBixAOtP+itQgqZGvfcVoTozcdWxqhyHcaS8FCnr23qEEwWP3FepuqFvvX8aeCjb3wC2u+23pKEk8bZHGmRnSi5JyRvgpg0Orr6ao315/sVUVU04jbJ7c=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776331615; c=relaxed/simple;
-	bh=lepRdiQn9/eZXEMWuI5dqLJ/MiRv1qjPyxgCY3ndUqU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=O+ZC4VX1xRPX1lzXOP7PBo7JyBJPAXm8fNcrGBN/YNvMSvlgScM32flKP/9GL+exaFw6f8kVHIkxV7vnF2uuW1L9PxeCrxKLdJzmKhOtfdAsv9+UF01CGyH+yA7hGgr1e6WE89Hf9jGtM/+NkrbF09V50s4KBSCCJ/C0sff+dXY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YTc5fIjb; arc=pass smtp.client-ip=74.125.224.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-651bf695701so2525845d50.2
-        for <stable@vger.kernel.org>; Thu, 16 Apr 2026 02:26:53 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776331613; cv=none;
-        d=google.com; s=arc-20240605;
-        b=YlYZoGG2QgSt0HRNBPckjse3GCIxOOBWAoqAIgXoADSiKlAL0IrYPpe3gVtndjuNOA
-         +sMnWoaTkY8gYNoTh7UTYR6rrFO5UDc3SnWVOaKfhMmmYOo4wqOAhfaVqTCTRPVRGH0N
-         nZhClCnkpuDu5GkZPNWBKS6Lz2W04kdGH2YjfZe67wswBMRXVNxNNXhcjPAZ16egZtVb
-         eZmYJXikCYBRh2/kNXVsr9/DvzvY6fiUIadKGIAFGuna5x7VUY2h+keaT/7JMH6JkTmc
-         bqE6oCTT72p44EIh3hXCcheztaCM87Fo8YHJGMRYb8k3Yk9wTiDuf6ZFJ0s9Hr85cWPg
-         94oA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=lepRdiQn9/eZXEMWuI5dqLJ/MiRv1qjPyxgCY3ndUqU=;
-        fh=9R+oYgADT92c8B8kN05QpR1ldfDyXdsoZ1h7fA0rQiA=;
-        b=KE3Ww7KqTmm6KDLWaS24mG1faOL2+/zWlqdtmc+Kf4yUr9WHZZtQbQVB54iZenoxDH
-         2lKWskQYKzt2NlZAItiXx6Po9vU/W2WjamAqHoip0pJvLvk/XjPyN54n6GnuYi/UeOyX
-         XrqjTbvJmDDXvEnv7f74hh/QyrwsOvW5ldVLbqMxRQj2DcO8OZISqi+UTzl4i6tXjUwX
-         AOo8CRSEB1Qma/X2Nq6JbsRyX4xVGIq6P2wtrrTpeeCpVxOgfzy2SIHCCgcSyQjHwdaz
-         CH7sQaF/41PnbGFCxPvBHLrr2iYC7kucMQXdojm32MNAidjdghd3TTncerDwO9Uhrswx
-         5CVQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776331613; x=1776936413; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=lepRdiQn9/eZXEMWuI5dqLJ/MiRv1qjPyxgCY3ndUqU=;
-        b=YTc5fIjbffa2rBHnvzua/iyBe5XNce+bWa+5hpIA/EXPjt67rsn63qP5ThYg9IoL0I
-         xOIY1nnRzn6AJR+/O55oIlQwQe+N+WSsK2koY+FPXKeaetnVtQU6bmcNZMAtyrn+szp2
-         yfnqaz8qkpSnyRYpfd9DdgCjDUnDtQazY88H8uhlSsBZX0rjzXMTHxp8tTDt7om8sdCT
-         9YDU9GTdfht/5AysASL0ENcWPWFl8+Y6hnyxD22Bs2I0YpF5gAnFGyGxPadcz6YnWWiS
-         2aSid6iY/IwN3ahah5yGoKnwo+WMexoAr7ALAe3E3YitcnketbAYrKnfLd5oIG/OKZH9
-         C4zw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776331613; x=1776936413;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lepRdiQn9/eZXEMWuI5dqLJ/MiRv1qjPyxgCY3ndUqU=;
-        b=Yr33/38ASxx0D9ANclwCzzPINlRr0+4lX6vHcXaAkP4X5iAVt+LBrlvRm55y5IWugR
-         HSJqs0dZc9OS9Mi6/FjtZ9O5esMfkwom7pvEB0UEUXmL2yCWAH0+xDaziLqNdBwGW9IS
-         syHLmBrP8s5/L9BC90mW2WGOuOYmUaUvWWUIkqehkd45xCsgg4iqluH29vlKNjFSnb6L
-         PmaXSxR+U0n9isEr/BDLConYvZG/wuHPhIgEn2mATQxG3xvw+454vrmTKEk7BH3aE1CL
-         SChPugAXCkF5q0zPGnLzjLulTdNEz6nKQxYv/+wgCk+DOS1m8tW58YO8qLdw+5BaiaQI
-         VGSw==
-X-Forwarded-Encrypted: i=1; AFNElJ8Xc4/Kcs/DlwZmKSLAYhLZKcE01xPo7e9teZAzx3ioHYNstXQaXfh/EbecrDpbc5Dz+oZnk3s=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyygi17peGKVXrGNjpBRlET8oScbAJu+6gT26v1SCEHOJCVvGUx
-	h8c8DGpUha3L0wfLssdxkbedXC4igoHDiXXsQg1angQulb4HWDi8HCg6VrL1N1kE8dmpcWNQVbl
-	HJfDYZeifJLMGkDqcOrx0LQ+Tg0OrH+c=
-X-Gm-Gg: AeBDietCq77zbh27ggqWA6FBapIOGqtZynLQSYO0voP0R+Hn1ApRkfAyI9wsEgzGCzt
-	Oj1E8g75lZFxuvNqkLu/hbTHfwVqDRG++t8vqtNn++OFz3OKSps74+Ox287/TlbEZq67V3mOFko
-	yCJrhKwO9o3Jh4Egni8Fe3oubQjV9PB68XRrTnjbQjNTQrivRu8ID4uiegk6KvGIaRQiZTRmmKW
-	Q1FgFhAnDFspdeZH5cvgsRjMaN0toDX6eFza3CLwTiGcpoRQD8TAvGyqwk5H7XkrcQmlJ8jG9Cd
-	WJwowqIcB71h+iydJKRC
-X-Received: by 2002:a53:4c09:0:b0:650:323f:38ab with SMTP id
- 956f58d0204a3-65198b46eb5mr17648238d50.34.1776331612986; Thu, 16 Apr 2026
- 02:26:52 -0700 (PDT)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60FC333120C;
+	Thu, 16 Apr 2026 09:30:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776331832; cv=none; b=VaH5tGOFRGS/oJ1SD60PHHpOow1WmzIAywHJ9HFIpz8URSbvp6MDPG4DLTEK5POTkChkzUdL77anRIJgCXv6DelKTpt+Y9vOhf6wVxBiorrrMek0l/OO20yUB20hoYwpEcPdk9uvLuysjdatCmPXwH7yZT6ML8j41te/HG5eqo0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776331832; c=relaxed/simple;
+	bh=evCSgKpVBFb0A+dSG71xa2VfI3qVglLRmCaaMCz809w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=F1HfHeODLr9vUx/SwWUWTOFmnRB7gPMwel5ILq7AwmN9bnbEZtKrTglXMJ2dFp6wkX8Q5WgMqdCBKxCgkYpdsl9DqOC0+TKTT0/2B4moTglEADLKSGZ01jH0qB4GssdN3WfdbHv+hoPAUaiSUD3+kq1kvVTBtiW3pGFTMBaukU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=vjBUYv/o; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 38AC522EE;
+	Thu, 16 Apr 2026 02:30:25 -0700 (PDT)
+Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 071643F641;
+	Thu, 16 Apr 2026 02:30:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1776331830; bh=evCSgKpVBFb0A+dSG71xa2VfI3qVglLRmCaaMCz809w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=vjBUYv/oHhZt5IDME2rqdMYHH/Q5ecolMz+cBVoFUOp68y1j46RiTF+AbY3ziJLVs
+	 b86XJcZUqSEgu40OVqUwBUrUiP67W4ujeit6TW4OipcSMxTzYEXsBfz9IgAbmdo7eG
+	 1s/a95a2gbj+Rg2phlE2Ew4ielZIPWQPewgTf+to=
+Date: Thu, 16 Apr 2026 10:30:23 +0100
+From: Mark Rutland <mark.rutland@arm.com>
+To: Johan Hovold <johan@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Guangshuo Li <lgs201920130244@gmail.com>,
+	Will Deacon <will@kernel.org>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] arm_pmu: acpi: fix reference leak on failed device
+ registration
+Message-ID: <aeCsLy-45QyeCwGA@J2N7QTR9R3>
+References: <20260415174159.3625777-1-lgs201920130244@gmail.com>
+ <ad_WmuauLJ3xDKqh@J2N7QTR9R3>
+ <2026041603-guts-crested-ef76@gregkh>
+ <aeCOdWLaVpH-5w8s@hovoldconsulting.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260415175038.3633384-1-lgs201920130244@gmail.com> <CAOesGMghHi5bEcec9L6d1YUec0Cn5uEs8MrjdoT-zHSr-FJ8pQ@mail.gmail.com>
-In-Reply-To: <CAOesGMghHi5bEcec9L6d1YUec0Cn5uEs8MrjdoT-zHSr-FJ8pQ@mail.gmail.com>
-From: Guangshuo Li <lgs201920130244@gmail.com>
-Date: Thu, 16 Apr 2026 17:26:38 +0800
-X-Gm-Features: AQROBzCqgemqCFHMimaIzwZJyIjw_4UL4YAye85O0rVKaDneU7CcT1Ee7huckxM
-Message-ID: <CANUHTR-XcTO4jy_TNe7tHcPPpVh_o_+-hgJtLBxN5MWupcvQ3A@mail.gmail.com>
-Subject: Re: [PATCH] platform/chrome: fix reference leak on failed device registration
-To: Olof Johansson <olof@lixom.net>
-Cc: Benson Leung <bleung@chromium.org>, Tzung-Bi Shih <tzungbi@kernel.org>, 
-	chrome-platform@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aeCOdWLaVpH-5w8s@hovoldconsulting.com>
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[arm.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[arm.com:s=foss];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-238284-lists,stable=lfdr.de];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,gmail.com,kernel.org,arm.com,lists.infradead.org,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-238285-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	DKIM_TRACE(0.00)[arm.com:+];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[mark.rutland@arm.com,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,lixom.net:email]
-X-Rspamd-Queue-Id: 6067F40C665
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,arm.com:dkim]
+X-Rspamd-Queue-Id: 2CA3940C617
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Olof,
+On Thu, Apr 16, 2026 at 09:23:33AM +0200, Johan Hovold wrote:
+> On Thu, Apr 16, 2026 at 06:40:55AM +0200, Greg Kroah-Hartman wrote:
+> > On Wed, Apr 15, 2026 at 07:19:06PM +0100, Mark Rutland wrote:
+> 
+> > > AFAICT you're saying that the reference was taken *within*
+> > > platform_device_register(), and then platform_device_register() itself
+> > > has failed. I think it's surprising that platform_device_register()
+> > > doesn't clean that up itself in the case of an error.
+> > > 
+> > > There are *tonnes* of calls to platform_device_register() throughout the
+> > > kernel that don't even bother to check the return value, and many that
+> > > just pass the return onto a caller that can't possibly know to call
+> > > platform_device_put().
+> > > 
+> > > Code in the same file as platform_device_register() expects it to clean up
+> > > after itself, e.g.
+> > > 
+> > > | int platform_add_devices(struct platform_device **devs, int num) 
+> > > | {
+> > > |         int i, ret = 0; 
+> > > | 
+> > > |         for (i = 0; i < num; i++) {
+> > > |                 ret = platform_device_register(devs[i]);
+> > > |                 if (ret) {
+> > > |                         while (--i >= 0)
+> > > |                                 platform_device_unregister(devs[i]);
+> > > |                         break;
+> > > |                 }    
+> > > |         }    
+> > > | 
+> > > |         return ret; 
+> > > | }
+> > > 
+> > > That's been there since the initial git commit, and back then,
+> > > platform_device_register() didn't mention that callers needed to perform
+> > > any cleanup.
+> > > 
+> > > I see a comment was added to platform_device_register() in commit:
+> > > 
+> > >   67e532a42cf4 ("driver core: platform: document registration-failure requirement")
+> > > 
+> > > ... and that copied the commend added for device_register() in commit:
+> > > 
+> > >   5739411acbaa ("Driver core: Clarify device cleanup.")
+> > > 
+> > > ... but the potential brokenness is so widespread, and the behaviour is
+> > > so surprising, that I'd argue the real but is that device_register()
+> > > doesn't clean up in case of error. I don't think it's worth changing
+> > > this single instance given the prevalance and churn fixing all of that
+> > > would involve.
+> > > 
+> > > I think it would be far better to fix the core driver API such that when
+> > > those functions return an error, they've already cleaned up for
+> > > themselves.
+> > > 
+> > > Greg, am I missing some functional reason why we can't rework
+> > > device_register() and friends to handle cleanup themselves? I appreciate
+> > > that'll involve churn for some callers, but AFAICT the majority of
+> > > callers don't have the required cleanup.
+> > 
+> > Yes, we should fix the platform core code here, this should not be
+> > required to do everywhere as obviously we all got it wrong.
+> 
+> It's not just the platform code as this directly reflects the behaviour
+> of device_register() as Mark pointed out.
+> 
+> It is indeed an unfortunate quirk of the driver model, but one can argue
+> that having a registration function that frees its argument on errors
+> would be even worse. And even more so when many (or most) users get this
+> right.
 
-Thanks for the review.
+Ah, sorry; I had missed that the _put() step would actually free the
+object (and as you explain below, how that won't work for many callers).
 
-On Thu, 16 Apr 2026 at 05:47, Olof Johansson <olof@lixom.net> wrote:
->
->
-> This looks like slop to me. It doesn't even compile (there's no local
-> 'ret' variable in the function already).
+> So if we want to change this, I think we would need to deprecate
+> device_register() in favour of explicit device_initialize() and
+> device_add().
 
-You're right, I missed declaring the local ret variable in this
-version, so it does not compile. Sorry for that mistake.
+Is is possible to have {platfom_,}device_uninitialize() functions that
+does everything except the ->release() call? If we had that, then we'd
+be able to have a flow along the lines of:
 
-> This is also a no-value fix, the chromeos_ramoops structure is static
-> data and not dynamically allocated. Please don't burden maintainers
-> with these kinds of "fixes".
->
->
-> -Olof
+	int some_init_function(void)
+	{
+		int err;
+	
+		platform_device_init(&static_pdev);
+	
+		err = platform_device_add(&static_pdev))
+		if (err)
+			goto out_uninit;
+	
+		return 0;
+	
+	out_uninit:
+		platform_device_uninit(&static_pdev);
+		return err;
+	}
 
-My reasoning was based on the implementation of
-platform_device_register(): it calls device_initialize(), but if
-platform_device_add() fails, platform_device_register() returns the
-error directly without dropping the device reference initialized there.
-Based on that, I thought the caller might need to release that
-reference.
+... which I think would align with what people generally expect to have
+to do.
 
-That said, I understand your point that for this statically defined
-chromeos_ramoops device this is not a useful fix.
+Those would have to check that only a single reference was held (from
+the corresponding _initialize()), and could WARN/fail if more were held.
 
-Thanks,
-Guangshuo
+> That said, most users of platform_device_register() appear to operate
+> on static platform devices which don't even have a release function and
+> would trigger a WARN() if we ever drop the reference (which is arguably
+> worse than leaking a tiny bit of memory).
+> 
+> So leaving things as-is is also an option.
+
+I suspect that might be the best option for now.
+
+Mark.
 
