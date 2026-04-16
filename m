@@ -1,174 +1,130 @@
-Return-Path: <stable+bounces-238367-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238368-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WN9zGAlS4Wl5rwAAu9opvQ
-	(envelope-from <stable+bounces-238367-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 23:18:01 +0200
+	id WH7fITZT4Wl5rwAAu9opvQ
+	(envelope-from <stable+bounces-238368-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 23:23:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 179D1414DAA
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 23:18:00 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28738414E58
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 23:23:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 90473307C757
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 21:17:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 067AF3028343
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 21:21:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 926813750CC;
-	Thu, 16 Apr 2026 21:17:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66CE434B66F;
+	Thu, 16 Apr 2026 21:21:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="q70FK54Y"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ao1i69/e"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5347B372EE0
-	for <stable@vger.kernel.org>; Thu, 16 Apr 2026 21:17:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26A8E198A17;
+	Thu, 16 Apr 2026 21:21:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776374266; cv=none; b=Xcrqq2YnW3HTkx9WdyXvkYhbsVNlyD1pu2Kcot/XPh6nj3elrBz5oqurpgzTpbqExRaSp70OelBYMZSYOXu84w6GhuJ7FYNbSHqGHzTUPNcinMk3eP3kgmkV+XsO61xclWNCg9O5ECEeeRPofzBPyBZqoeNsAKgRwg2Az4SHTmQ=
+	t=1776374510; cv=none; b=taAn8CA+xDLpsndcYY4ocpnYHQcRK+NyvBZU3+beID2c6C3Qsw8JQ4636X2O9bhqRwjDVPfZ2pTgUYhR/i+J0bJQw+eBGlRkWjojpD7AjmFHqT7h6O1SvSMs2MW/mtwVq3eog2luw/GXTwizoU9uemhwkWwDOEHKpPcoth5Oqc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776374266; c=relaxed/simple;
-	bh=ygvlKmBj9cpYvhipO2GVwDfNG6msc7IzLgEFKCeFaeI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JgJzB6nJt4DkPO0jdKCngLZV2CberbfSgrkPpfor5PpoBEzkTEWI5z5unVZ+a6MrYkwaqX+mvsYFw3TdvhqO9hSvQ+kFDynhhVAAqCLK0u+9G/nc9c738tUeUvqsad/2QadJZzRIac5GAp6jkwobE3yHTh3Qw8qZR8gDlI+oIu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=q70FK54Y; arc=none smtp.client-ip=209.85.210.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-82f1f03754bso4490b3a.3
-        for <stable@vger.kernel.org>; Thu, 16 Apr 2026 14:17:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776374264; x=1776979064; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ird1RbhcLmo1n1pSfDlmYxFmBRF3j4BNyuXGOX68NCU=;
-        b=q70FK54YViXIXpJuaikoZYxg2xKb2W0PEU3gTf7E9f4UcF2I+nBTCHkJVIwmznLZvz
-         k9qKpgYN2rfZMb/eowl0luvVUNeFc3c2wv/YGpFx/IGPEH93MTo/gRgklJUZ4RWuiMEG
-         OT4I1BufWDpQEX/kT7CA9+i3sjHtoHtI61YOFgtdWuDkgni4JM+pOhY3ntAqCop2uoSA
-         Hp9FIie8sVxBWE6ACoXxeBIL5H/5CTypV4ULIfKdTWtbooKcRxidYxZuGE0B0O6+mcpG
-         I2ze6Pa4Ckpvx+b8FY9il9Z+Cd6xOdmLAd1oPguVwwaXJD0+PJM3kdV36ShlPxDkY7Jv
-         mHBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776374264; x=1776979064;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ird1RbhcLmo1n1pSfDlmYxFmBRF3j4BNyuXGOX68NCU=;
-        b=ptfchzI0moMFzqaDFBne6CGFvAPJtsLDJo4OjlG5k7d8H0h/GOc+hiha809ImiJmGm
-         84PFhYP0jVtsCHmRzdNRIFTN/FxMPRI1Vr1fZCVC+p/Cm61F1kcJz+ZxnVWevU7XZQ/q
-         tq4gsEJlJDoJW1nqOJnXH3+BV2N3koiJrY+MUqxRdSIbO2T9Y/cUb8mx/L5aOyuFEqme
-         +24ldbd+bepIRkWPcqCtIG+lSzg/NcRjwPvm3JY5mjCNuq0b10krxf8rZFwzTvtvovRS
-         MeW8DC3BSJ8TFMEN5lCRW6aICkQ0m/7QXzE9kHUoybmjU3xqmfxiSXJHV/TwmFL/cp3l
-         o2Nw==
-X-Forwarded-Encrypted: i=1; AFNElJ+3cicoQTKuuw49mgRhahw3ibzYDl9zgOIDjt5PSqIy7M10H9fqZQ3zfe6rErPcmytz+J0MAAU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwiFcIVB0ICR6F+k23OAL7HAYI3VO5X4/JqVQjKyUB/rQtr5dsH
-	+AuD8iOXqVs1f1mGRnlb23ayKKdCMi4Nt8YJOK9W4Hlaa0ukPwb9FpmP
-X-Gm-Gg: AeBDiestnBJpMbagTifmn86aTZUVuebYPfmU7Uvjkcn7Dgl6dr4uwodfGyLon3pCXes
-	chUvCmDTkyQKfwtYISCELpUNfrm+InhAb81lZryk7IR5JTf3kS4mGHX/e3KoNePjJK5VMjfn8aS
-	2ntSrDsCTamTTjCdZY+dV3K5T9xPnpSUKQ5WuP+efC6zPmd0hWwZFKCqqfYTeQPhyDCDFsQ6l1Y
-	mEz33QRKujSSl4P5ZXnHbobdIR/LZXLTb4T98Xc77cxPGTBv8p8hBwaUlTTPbLLecxR3rRz3XdD
-	g4+EHCpAFVwLtCbUgmtb1rDLXZiS9P6Leami/7BNdS4gIBSZRiia9nEmgS916+9dYr3u8b4HdZt
-	u0CnfDlzYwGG7moGMUIyBZ8U4reOYr3ouqfvHnXnlXcezwQywXhIoHbTij5U1pMv+qGowoDeotk
-	DUDlcFQGHqMA3aCLXlkjX1vB2Je7w=
-X-Received: by 2002:a05:6a00:1994:b0:82c:24a9:d5e5 with SMTP id d2e1a72fcca58-82f88563412mr472762b3a.2.1776374263639;
-        Thu, 16 Apr 2026 14:17:43 -0700 (PDT)
-Received: from ser8.. ([221.156.231.192])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f674140d3sm6134414b3a.44.2026.04.16.14.17.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Apr 2026 14:17:43 -0700 (PDT)
-From: DaeMyung Kang <charsyam@gmail.com>
-To: Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <smfrench@gmail.com>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Tom Talpey <tom@talpey.com>,
-	linux-cifs@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	DaeMyung Kang <charsyam@gmail.com>
-Subject: [PATCH] smb: server: fix max_connections off-by-one in tcp accept path
-Date: Fri, 17 Apr 2026 06:17:35 +0900
-Message-ID: <20260416211735.3558718-1-charsyam@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1776374510; c=relaxed/simple;
+	bh=0A66zo/Lfk4qleLToQJ1y9UBbagG08xg62HQhV2NSh0=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=sW2MnF94XX/IvE2RhTvOXT6t2EHHa34lhG7pXsQbI21obacVrelCe3zDQ57l+lHQgC0zqG+XgKnnh2E1s7NZHeWTCV9Urs2J5AyYGjK1pd4ir9YqWhqiSrtwE0yFpExHLE6J+dIO5PN4RMzUhgnrABEXGDwuNoZaqWNXxrHatHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ao1i69/e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B78EC2BCAF;
+	Thu, 16 Apr 2026 21:21:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776374510;
+	bh=0A66zo/Lfk4qleLToQJ1y9UBbagG08xg62HQhV2NSh0=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=ao1i69/eS+dMjRfpuMEDbs5RypkrgKgwNwXDU+bNO8B6w4O3pUs2lBVS3YosBcUBQ
+	 Z/aIUnWkG0mrLOFmvoX088hXa4k4Ja2PHxEAtAns5pLIH0MzuuZ18xYZWbT1XwuxEW
+	 kvTd28xoA2lNfMFy3kOFyVGMzFbsKFFVo6c6p9B9ngsSHsLk5vFrdPeJ8K9LVT7JbS
+	 7cW44/ssidio+fdYUOSzdvP508Fy0fDMdCU5VPEGndM4IQildNTEbW9HUPvbT+aWf+
+	 satzbKv2sBMCmOP4Jt4vEvV/uCocr++HMG7cIDNgn37ermIV2Se2R2IJTELLwiUbFl
+	 gS5yELI6Hcxzg==
+From: Nathan Chancellor <nathan@kernel.org>
+To: David Howells <dhowells@redhat.com>, 
+ David Woodhouse <dwmw2@infradead.org>, 
+ Nathan Chancellor <nathan@kernel.org>
+Cc: Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+ keyrings@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ llvm@lists.linux.dev, stable@vger.kernel.org
+In-Reply-To: <20260325-certs-extract-cert-key_pass-unused-but-set-global-v1-1-ecf94326d532@kernel.org>
+References: <20260325-certs-extract-cert-key_pass-unused-but-set-global-v1-1-ecf94326d532@kernel.org>
+Subject: Re: [PATCH] extract-cert: Wrap key_pass with '#ifdef
+ USE_PKCS11_ENGINE'
+Message-Id: <177637450781.4150069.540537972769992997.b4-ty@b4>
+Date: Thu, 16 Apr 2026 14:21:47 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.16-dev
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[chromium.org,talpey.com,vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-238367-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-238368-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,google.com,vger.kernel.org,lists.linux.dev];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[kernel.org,gmail.com];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[charsyam@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nathan@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 179D1414DAA
+	TAGGED_RCPT(0.00)[stable,lkml];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 28738414E58
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The global max_connections check in ksmbd's TCP accept path counts
-the newly accepted connection with atomic_inc_return(), but then
-rejects the connection when the result is greater than or equal to
-server_conf.max_connections.
+On Wed, 25 Mar 2026 18:19:15 -0700, Nathan Chancellor wrote:
+> A recent strengthening of -Wunused-but-set-variable (enabled with -Wall)
+> in clang under a new subwarning, -Wunused-but-set-global, points out an
+> unused static global variable in certs/extract-cert.c:
+> 
+>   certs/extract-cert.c:46:20: error: variable 'key_pass' set but not used [-Werror,-Wunused-but-set-global]
+>      46 | static const char *key_pass;
+>         |                    ^
+> 
+> [...]
 
-That makes the effective limit one smaller than configured. For
-example:
+Applied to
 
-- max_connections=1 rejects the first connection
-- max_connections=2 allows only one connection
+  https://git.kernel.org/pub/scm/linux/kernel/git/nathan/linux.git clang-fixes
 
-The per-IP limit in the same function uses <= correctly because it
-counts only pre-existing connections. The global limit instead checks
-the post-increment total, so it should reject only when that total
-exceeds the configured maximum.
+Thanks!
 
-Fix this by changing the comparison from >= to >, so exactly
-max_connections simultaneous connections are allowed and the next one
-is rejected. This matches the documented meaning of max_connections
-in fs/smb/server/ksmbd_netlink.h as the "Number of maximum simultaneous
-connections".
+[1/1] extract-cert: Wrap key_pass with '#ifdef USE_PKCS11_ENGINE'
+      https://git.kernel.org/nathan/c/4f96b7c68a990
 
-Fixes: 0d0d4680db22 ("ksmbd: add max connections parameter")
-Cc: stable@vger.kernel.org
-Signed-off-by: DaeMyung Kang <charsyam@gmail.com>
----
- fs/smb/server/transport_tcp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Please look out for regression or issue reports or other follow up
+comments, as they may result in the patch/series getting dropped or
+reverted.
 
-diff --git a/fs/smb/server/transport_tcp.c b/fs/smb/server/transport_tcp.c
-index 7e29b06820e2..5e85341698c7 100644
---- a/fs/smb/server/transport_tcp.c
-+++ b/fs/smb/server/transport_tcp.c
-@@ -279,7 +279,7 @@ static int ksmbd_kthread_fn(void *p)
- 
- skip_max_ip_conns_limit:
- 		if (server_conf.max_connections &&
--		    atomic_inc_return(&active_num_conn) >= server_conf.max_connections) {
-+		    atomic_inc_return(&active_num_conn) > server_conf.max_connections) {
- 			pr_info_ratelimited("Limit the maximum number of connections(%u)\n",
- 					    atomic_read(&active_num_conn));
- 			atomic_dec(&active_num_conn);
+Best regards,
 -- 
-2.43.0
+Nathan Chancellor <nathan@kernel.org>
+
 
