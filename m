@@ -1,190 +1,246 @@
-Return-Path: <stable+bounces-238362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238363-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wC4hImxA4WmaqgAAu9opvQ
-	(envelope-from <stable+bounces-238362-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 22:02:52 +0200
+	id 0JOlLQlB4WmaqgAAu9opvQ
+	(envelope-from <stable+bounces-238363-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 22:05:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF8494146CB
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 22:02:51 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A258841470B
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 22:05:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 956C9300BD92
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 19:59:14 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 484673016B04
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 20:05:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0573B3EDAD8;
-	Thu, 16 Apr 2026 19:59:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 861EA34B1B4;
+	Thu, 16 Apr 2026 20:05:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b="KuFUJdMp"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eLNWkov4"
 X-Original-To: stable@vger.kernel.org
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11022123.outbound.protection.outlook.com [52.101.53.123])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BABA3EDABA;
-	Thu, 16 Apr 2026 19:58:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.123
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776369545; cv=fail; b=cfaYnkWiV/dYk2DLao4/tWGRf+nx+ui3hLydOXBV9Ku0wyUbeFWkp2FZpgzYbcSoTHALHAPcdQg7dEeGX2axMvBuKzQ91yGmNwsISJInfIYNKD81/Vr3w+yRp/rfMOLpYcsHKG6P9fMjCf7uwGRCXcabyxUJXwfU4l2cksQX4vc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776369545; c=relaxed/simple;
-	bh=reI7pqNodcvnWIAPyhlC14rIjwhle/CVnpLouyeWtsw=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=rhOo7MCQZiocHH/YslyOVMocRZnPAIrb5B1XWD6RRS3Cr8TNNCONv195hqRRNSi7lCF05Mnw8Knq7PJ2nNe7Bhibhhu8hDMw2Y5N4JkJfsi+KuKqrWIk/xu57gYSIzgs6NzyNUI3cg949RXNCY+anmUq0PlqsLAMdoJVXSY6aHA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=microsoft.com; dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b=KuFUJdMp; arc=fail smtp.client-ip=52.101.53.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microsoft.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Z4yrvC9I2rOAV1PfgCjP/jjCgy5iwCW4w8UdvGBEP/djFLjSyWi2p1kixSlrqA9n0b+csJhhTtVxZ+Bq3zakFe91PDa+5sKMkT4t5/Cr8e4ETKO/3XK8qratCJWioz0/dfvOxZ+PMCR9MkwKHH4biIa/Bagf4mr+aSkH2NwtVQQEStduyFKCo82nWsQUM3Ihxdbwi5sTrPfuXqI1Eu1nJiYG1MYIiSS2sWD188RakjikFH5w59z2/qd6BSrUSWO3ltpC7kUrmflRSykJfyOkHqDS8O8JA8ulRYGIwEmbVxkwTwV+xCUjws25zrUHjepAM9mCqQmhgHNAxfyIJtwxxQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=reI7pqNodcvnWIAPyhlC14rIjwhle/CVnpLouyeWtsw=;
- b=JnIH+n1LJFAWf5HJoJx1GGANkiPz1jWdZYtjYo2MPT2EWilVEB1dSpi0CkMvZUUZjzaw7XBHjYxq+wDzqtHmgtbuta5WhevMxOhxtKDmjDYhM4GBAnokN5A83nUEoDgBd3hi1EMrwCF5xehXbT89O/V662/cz+8U7jyUkfENRKpGwL6B6L4668sj4WnTInMaLT7R9Rv+E6b9ODGbEEQp+t0BhRGb92q/RK8cjp/Pwcs0HcID23RI5Rd/paRhQ9ZAwQgmEBCyNmBHFgA7ogxUhnIqMvrKUi5wVxxJFXXY+s1U90nNwP4A0SwHMlVAiyvDCf8YIu0J2n38bFlx9raJZQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microsoft.com; dmarc=pass action=none
- header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=reI7pqNodcvnWIAPyhlC14rIjwhle/CVnpLouyeWtsw=;
- b=KuFUJdMppZjOoAhAKwu9I95G4r/95mqdYlrsGR0qUPijwlX1twlevaSVH3CnWHNqqr4+HVpSKxDiQ0VTO6EcTqlPiADTdFIjywhI5cASQS8V5Ywuf4kX6803Mh3tzOwMe3NKHmlLf3qAzOkcpVEX7s1RfCOSnRHnhfjkTbEFpe8=
-Received: from SA1PR21MB6921.namprd21.prod.outlook.com (2603:10b6:806:4a7::11)
- by SA1PR21MB6515.namprd21.prod.outlook.com (2603:10b6:806:4b0::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.20; Thu, 16 Apr
- 2026 19:58:52 +0000
-Received: from SA1PR21MB6921.namprd21.prod.outlook.com
- ([fe80::51cf:497c:e5df:f6d]) by SA1PR21MB6921.namprd21.prod.outlook.com
- ([fe80::51cf:497c:e5df:f6d%2]) with mapi id 15.20.9818.017; Thu, 16 Apr 2026
- 19:58:52 +0000
-From: Dexuan Cui <DECUI@microsoft.com>
-To: Dexuan Cui <DECUI@microsoft.com>, KY Srinivasan <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>, "wei.liu@kernel.org"
-	<wei.liu@kernel.org>, Long Li <longli@microsoft.com>,
-	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"mhklinux@outlook.com" <mhklinux@outlook.com>,
-	"matthew.ruffell@canonical.com" <matthew.ruffell@canonical.com>,
-	"johansen@templeofstupid.com" <johansen@templeofstupid.com>
-CC: "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: RE: [PATCH] Drivers: hv: vmbus: Improve the logc of reserving fb_mmio
- on Gen2 VMs
-Thread-Topic: [PATCH] Drivers: hv: vmbus: Improve the logc of reserving
- fb_mmio on Gen2 VMs
-Thread-Index: AQHczdtyn1PdG2gkFEeUWQdp0QjV5Q==
-Date: Thu, 16 Apr 2026 19:58:52 +0000
-Message-ID:
- <SA1PR21MB6921B40AF0D80E1CE08D528BBF232@SA1PR21MB6921.namprd21.prod.outlook.com>
-References: <20260416183529.838321-1-decui@microsoft.com>
-In-Reply-To: <20260416183529.838321-1-decui@microsoft.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=d55b939d-2596-4a52-8847-9fc711535274;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2026-04-16T19:56:44Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Tag=10,
- 3, 0, 1;
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=microsoft.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SA1PR21MB6921:EE_|SA1PR21MB6515:EE_
-x-ms-office365-filtering-correlation-id: e9a28acf-61cc-4793-86ab-08de9bf2954e
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|1800799024|376014|921020|18002099003|22082099003|56012099003|38070700021;
-x-microsoft-antispam-message-info:
- 3Q0f9mk3lHtjwzfPCw+sEX7o2l5OTEErggIwMg8LCZVJzwPW2195oPiSiFCa3M6U84sATNOtPOFH7SWSAU9X3HoVEl/ScBrhMijbeNjALC6Zc+UTFSSk3IDeSWrQHiNNkWQA/yeXQBfyoZt7LZjDdu0EAZDB8VeaT624/qxMOFCCDzB5jTYvF9uENPil2QWrxBuT1LzXVtg9AhaOcoE0mXmExJFCrd7jnIps7dXfiLGhnfHp7QsJwH08q3aIRelQn1DxpC3It1VTY9TfMInbRTgRjEP6ob8JlSrmTlb5TlHJ2yuqtIxLArhpLOUw5M5DOhFYUfhL7Eci7T7XiJa6Dpy2KiYn0QoAjHOrpkiuWkJM/OJWlXdcuUv4BSFRz24UgSu1GpNYIBxczupm++o0jhBYDrlIigFKOckq5QjWC+o8G80WMjF4dQNwO3qEPg4glqc2jh6xTkxEQ+Xdsa5OaxvYrsMMTugWeDQVOQL3x5UxNtIDNRqWp100hENXaXklIz4/vPp3y0Ng4fLoG84QjlTc11JfxaFqwI3fulxB+JiegiznGWdtXmQdmonxD89qAMKPPY2f3PELrSDPrWfz57h7OpD3YdsXkvC2SIrHa1sk8F/TTPO9LGJNMDb99vXaA0Ejek/04NAerPMCGXspTiiHeOJ2H6kR6PjUNYdPNuVOvfUdnDXedjA/RH4c3MQsZK5YwBHBzWDD0PEbfrNDuBJXhSeOsDiFyKCa68gYCw+I1qNppFqIuaD9p9ekVDPXOzrs4WH+gvwwLj/yXotmDwqsSZn6xT7Ev+lcujHSFJDzxbaJECMOXUjziYd02FSf
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR21MB6921.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(921020)(18002099003)(22082099003)(56012099003)(38070700021);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?DQuFDAYkRZyDBehqtFOv6kZkXPbGKp7OesdmuL4y4NWgEQocPRiddP18spc8?=
- =?us-ascii?Q?Lh35Klbfg/0eJ+emfkmi2x3btNBHuTCt+cn/vvJFIlyojIYln5gpS/8ppXlD?=
- =?us-ascii?Q?USYnUI46+ZwBa++QPOGGMkKkz18BfmraBEvV+zIp2jSlQWaUkfexbVbgKouo?=
- =?us-ascii?Q?BBG8UB2IHY4LLEWfBVQU1Jw0ZxXybko7RsInDinvQV/2OJavCXIaR3YrcAQA?=
- =?us-ascii?Q?AVhkwZY/SUEweyrz1DAW+RuquMah1+NPj42iLlxJfgAujsphoGvtiFOsdkuY?=
- =?us-ascii?Q?9ShvzeV8Z8TFkI+Mi7T5qwhh9+OJrNVvVOGk4dv1jACX4nvqj/7IEDsTuw0F?=
- =?us-ascii?Q?exbKWSKhjzVDmgx+36/ax1HgsUqL7hkpmKDgxOKzMXrPXaHGwQ8h8oSTWbGQ?=
- =?us-ascii?Q?HGc5o/laP8hOz7SIYZFhA+vhkb30y5HdExbG1qWZ8bmFUxf7lS0Qa01xX3Xv?=
- =?us-ascii?Q?P/7nGk6B1cF5+kMXrX8ngNykOaAGt9CeglC9+YmrregAzdSc+0xtpSFedii2?=
- =?us-ascii?Q?tuScKE0y67B3BR0Xr1oGtMCKBBj0nGQ4FHrgcaNPaMUsz4dJ6Ucaw5h3RxQz?=
- =?us-ascii?Q?oz3oHbB0935n6MrcwXW6F2cTUwd/FVV8xoQ7EVdNAw1uJoLnGtroSwGdgq6C?=
- =?us-ascii?Q?Itz2hMSG0bA+y+egMjfS+kUtFZuVQfBZyqq/x6QLdSSKt+FsANdmdfz8sH0r?=
- =?us-ascii?Q?O5tzOpO+93477o3Gg/l4eqSa/uA1nRAcdCjBJR48s2FWdu3PG7xY9OqSlytn?=
- =?us-ascii?Q?oFaU0qjVRbmbpIsW82XaVsz1su4o9nTKIDG1kxpI8Jyu05p9Jg+TeSV4Rv5z?=
- =?us-ascii?Q?JHYxW+0JsCZiyy5LB9ri/DyzVl6glJ13em6AK4xh9LZyHvXUmmycjrvqm9YC?=
- =?us-ascii?Q?bV68jl6NgdUX4HMIhck/7bkq2ZtSuI7GBCG4l85WH0XsjkkHguGCQKonygVw?=
- =?us-ascii?Q?RLzVYzLbyJFPIyKO3t9tbiy4OtSyGj/1+tSlquQcGZekJWA0i0EZJOLNuSJm?=
- =?us-ascii?Q?ISZRsoHK07gac23K8mmFmTJEChEZqT+gwlnYzs9hJ1wqPBOs3aujJSuUeQkT?=
- =?us-ascii?Q?MWWDP44sUcDsPr1w+iVQ0gX+soyugsdK18gPU3ORYiMy2MCklp5oXnXGxRSk?=
- =?us-ascii?Q?5rHD1rAFBKGIi9ubfmgPkL1nSSProxVhQk6CAv7rwhMw78l8odhqPTF9yT2m?=
- =?us-ascii?Q?LxA4gItkCsnDdlo/kwutm8DLyg+Ypyg51P5nToZC4w0W8yLxK5frp0/j/gjf?=
- =?us-ascii?Q?grVhGQENogYhuVSQtgQd3kiQVaR8mqXb9SSAP0x4j+vaB58ElXfsYGALGfk+?=
- =?us-ascii?Q?GZ3VKUBmhNHRqwfPDfD88tpJFRCzXnHokz7m9KNQh/m/cparh8MeHGq833xz?=
- =?us-ascii?Q?S31hucQp6NGYcy1MfyS9124a6qtMyxHcOp6k12MM1pJi1AqPTPWr3Ti6uykk?=
- =?us-ascii?Q?txKTC3hu39Wwk+u0tcNfp+X+xTHktUW4zQ+EyBNX1mn1/jQyXVA3Nw6hUl/D?=
- =?us-ascii?Q?7fA737RPW3P3C7I0f7cy5cxm70qAAlktLjJzt/yk2nvyeHZe0tXwBTymEYRV?=
- =?us-ascii?Q?jxKkFIctv4ivMHODiMQZiwLnOj608cidCFUqrUJ41RmnS+M5JESWkkZrVYk7?=
- =?us-ascii?Q?NOthnZULeIcAmFDUkNz4rz5LQ4mscCMe4DOVrHLvZHOqya/BRSKPZkaEg0mA?=
- =?us-ascii?Q?R65gg5xUrNt/Gy91KmEaOJXMa+fj7IbyvGQruXg73BD9GAPx?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AEEA3ECBF1
+	for <stable@vger.kernel.org>; Thu, 16 Apr 2026 20:05:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776369906; cv=none; b=rcwnlAMi3eGsFu809vZqwTWWZnoqIKPwaGbDx7+ypZ8XzK7TasEe/WxYC3CqvDnUqZrsHufgcZwIJ4L5gSuMvw9RVCwfVp2z1gP82N8gKLiXvO8QM1EkK8xBevwbJ2UmXAVlMmjKZk4oGVnucuOi1snjrIb5trnhrtW0WC/SAvc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776369906; c=relaxed/simple;
+	bh=A4WGfbNBFS+TdPdlv/yvtGkWO3BanuhGpctzicatogg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tpiywaECshO7Y7JjiQC3mnOfKG42ITBqT+yxwegvj0WMfH5k1er7yVhtxLi5n2yS3LHtdbi7rQBHumre1iB8nqm0WOPDCXo9sZ1HSbq1nLqr9jpIUQO3hQsLMjziVQwcuKUnnpsK8DV2DqLgZ9eokLj+K+4PfL8PKSfa9EDfyVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eLNWkov4; arc=none smtp.client-ip=209.85.128.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-79ea87af213so16342647b3.0
+        for <stable@vger.kernel.org>; Thu, 16 Apr 2026 13:05:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776369899; x=1776974699; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=AiiYXSwG5ruRWxUExLzY5qAI02mOLD9DcmFtQKqN3Hw=;
+        b=eLNWkov4H05Og4pWFrsxQ/DAKPjhjqj2CgcKZRmNGVUU5niWTO80IsxxqsYkj+Y5sx
+         0r6VpOl+pSbybxQDaBs3A+VplPsPGC+iBd8qfwgxMB/4697t51Q6EjQ46+957Vvezw3e
+         uPzYjQYpnOJ3/VOS6cPVNDz3+LHdsrdqBqBOsfJx5FvbdB1ccGsZIV+uWEVByebV3tAi
+         I8HXuclvegWdSHJR+3Mruhz45IJnaKGiu8glT0dtMVfrpq8Sj+VVFKQNS4RuXpajlYxD
+         6kMrWk9a3e1Wx3jhzI4UijZRHFlglc3j7TKEb//m2R+aaB87jqJIJIiLi/hNCKutikPx
+         xnSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776369899; x=1776974699;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AiiYXSwG5ruRWxUExLzY5qAI02mOLD9DcmFtQKqN3Hw=;
+        b=CA8M5wTnLd8+/UIFhvEmdjfpuQO1rfbuAZwBpgSC0iQHl0N71SjvI4tukeJ9gbip8v
+         ZAacuXjTy10Ikx3n1mHvfmD/obPuWmngFcnbf9tf8ek/nDYK5SBBUM8oeZTuLewADx1n
+         eh8vqhA3qtUqCOXW7wecbYXXoOwszrmuni/ZtLFm6oa8RXArasIsvUmMn54tojezcMo4
+         PozlcJUkU+AB3ty18p/jfugCfcYF9aHxFCFIcjIAXHGluEsZrAppueDi59LdAZnp6aYH
+         yxnMmf4JXEIxHw9BbdpUFhtqDV6Lz6MU8FMC6OoArgKOZH69049d+Gzyd8i0ji7fFKwG
+         PJmA==
+X-Forwarded-Encrypted: i=1; AFNElJ9bPUewkIH7DhrD8VaJQ/R+KCxjSfwAaz2kcMCsLAoXWNVXC4EhhRABNmtdgvT2QG/OjGcmJLk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwzCOVS0Mj/YHcN3soEiH/u6oFIEjsnsc8j6FyO2E6WgXUkKszA
+	6aS7fCQeV+V6u+0oxYetEWczEph7EanstMdkiAi0xfVrnWZDToIhXQnl
+X-Gm-Gg: AeBDiesa0rIGAwUqo+1P2SKnxy6ZxLbaN2DjO1/gcAIVthX3peDlIrmEQQzWn+Dr1UY
+	jtXKdgIIa/WXfBHc01zeDUNt1fl7rJpmtwahoic7ng0QwxPd3sgfrBrkU2f+dmYy80najGUlC3t
+	jb872df7m5ZxwuTfiZKXuA4EnsmbCNvHa3SR+sAGuRCUEbbTYhagm5ST2QW5ZNho3ockwZ+6yNX
+	a9AIp6oRA4Tq7IFqoivPPIWadtP3iO64P0LRI7zMBa1W2Je40kfdHvJQV0ZOANF0NFBlnEDTPoK
+	5kvtdfSHqnRDapJ/LSFyowhr5KznzYpZUuGkEqcJheL7/tsTfOawbkMqqpA/LZ5ZkNtF5q8moqD
+	6XYBPuRZJY6Hio+0ThlP0PlgyypL//yENMdgvbNyYhnxBHomKrPev8Kdv6v+dsnt0B8BKVtAvXt
+	OsrxioW8bkyenfWKz1iFK8sjBHl/enug+5PSIMcsouJ32zoFsvF2SO1qlO3xpzPuZ83ZmDPvU0d
+	YumZu375K4DbQlwFSBvFyyACnEDqIla/mBrSty3tb3qV1WVwcsgLRHX4GFPnpuZ
+X-Received: by 2002:a05:690c:86:b0:7b0:3180:e827 with SMTP id 00721157ae682-7b9d8195b11mr5990557b3.22.1776369899204;
+        Thu, 16 Apr 2026 13:04:59 -0700 (PDT)
+Received: from server0.tail6e7dd.ts.net (c-68-48-65-54.hsd1.mi.comcast.net. [68.48.65.54])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8e640504254sm208810585a.28.2026.04.16.13.04.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Apr 2026 13:04:58 -0700 (PDT)
+From: Michael Bommarito <michael.bommarito@gmail.com>
+To: Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <smfrench@gmail.com>,
+	linux-cifs@vger.kernel.org
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Tom Talpey <tom@talpey.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] ksmbd: validate num_aces and harden ACE walk in smb_inherit_dacl()
+Date: Thu, 16 Apr 2026 16:04:39 -0400
+Message-ID: <20260416200439.2987930-1-michael.bommarito@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: microsoft.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR21MB6921.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e9a28acf-61cc-4793-86ab-08de9bf2954e
-X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Apr 2026 19:58:52.2248
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: s2W5btOS/3YnZXXPE6kOrHihw+JmWYbCzel+Bql4TycGgSGSV2ZATZbAkCkBjUqOjxnABASEQJK0pi+zFeohvA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR21MB6515
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[microsoft.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[microsoft.com:s=selector2];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-238362-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[kernel.org,gmail.com,vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[microsoft.com,kernel.org,vger.kernel.org,outlook.com,canonical.com,templeofstupid.com];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[microsoft.com:+];
-	MISSING_XM_UA(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[DECUI@microsoft.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-238363-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[michaelbommarito@gmail.com,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,SA1PR21MB6921.namprd21.prod.outlook.com:mid]
-X-Rspamd-Queue-Id: DF8494146CB
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A258841470B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-> Subject: [PATCH] Drivers: hv: vmbus: Improve the logc of reserving fb_mmi=
-o on
-> Gen2 VMs
+Another one on the smbd side this time. smb_inherit_dacl() trusts
+the on-disk num_aces value from the parent directory's DACL xattr
+and uses it to size a heap allocation:
 
-Sorry for the typo in the subject -- the "logc" should be "logic". If this =
-is the only
-issue, I guess Wei can fix it for me :-)
+  aces_base = kmalloc(sizeof(struct smb_ace) * num_aces * 2, ...);
+
+num_aces is a u16 read from le16_to_cpu(parent_pdacl->num_aces)
+without checking that it is consistent with the declared pdacl_size.
+An authenticated client that can set a crafted DACL on a parent
+directory can declare num_aces = 65535 while providing minimal actual
+ACE data.  This causes a ~2.6 MB allocation (not kzalloc, so
+uninitialized) that the subsequent loop only partially populates, and
+may also overflow the three-way size_t multiply on 32-bit kernels.
+
+Additionally, the ACE walk loop uses the weaker
+offsetof(struct smb_ace, access_req) minimum size check rather than
+the minimum valid on-wire ACE size, and does not reject ACEs whose
+declared size is below the minimum.
+
+Reproduced the ACE walk OOB under UML + KASAN by constructing a
+12-byte DACL (smb_acl(8) + 4-byte undersized ACE with size=4,
+num_aces=1).  The old 4-byte guard passes, then reading
+ace->access_req at offset 4 within the ACE triggers:
+
+  BUG: KASAN: slab-out-of-bounds in kcifs3_test_inherit_dacl_old
+  Read of size 4 at addr ... by task mount.nfs4/220
+
+Confirmed clean exit without splat after patch applied: the new
+16-byte minimum (offsetof(smb_ace, sid) + CIFS_SID_BASE_SIZE)
+rejects the undersized ACE before any field read.
+
+Fix by:
+
+  1. Validating num_aces against pdacl_size using the same formula
+     applied in parse_dacl() by commit 1b8b67f3c5e5169535e2
+     ("ksmbd: fix incorrect validation for num_aces field of
+     smb_acl").
+
+  2. Replacing the raw kmalloc(sizeof * num_aces * 2) with
+     kmalloc_array(num_aces * 2, sizeof(...)) for overflow-safe
+     allocation.
+
+  3. Tightening the per-ACE loop guard to require the minimum valid
+     ACE size (offsetof(smb_ace, sid) + CIFS_SID_BASE_SIZE) and
+     rejecting under-sized ACEs, matching the hardening in
+     smb_check_perm_dacl() and parse_dacl().
+
+Let me know if you want 2/2 instead of this single patch.
+
+Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-6
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+---
+ fs/smb/server/smbacl.c | 29 ++++++++++++++++++++++++-----
+ 1 file changed, 24 insertions(+), 5 deletions(-)
+
+diff --git a/fs/smb/server/smbacl.c b/fs/smb/server/smbacl.c
+index d5943256c071..fc4fcd48d6c9 100644
+--- a/fs/smb/server/smbacl.c
++++ b/fs/smb/server/smbacl.c
+@@ -1105,8 +1105,25 @@ int smb_inherit_dacl(struct ksmbd_conn *conn,
+ 		goto free_parent_pntsd;
+ 	}
+ 
+-	aces_base = kmalloc(sizeof(struct smb_ace) * num_aces * 2,
+-			    KSMBD_DEFAULT_GFP);
++	aces_size = pdacl_size - sizeof(struct smb_acl);
++
++	/*
++	 * Validate num_aces against the DACL payload before allocating.
++	 * Each ACE must be at least as large as its fixed-size header
++	 * (up to the SID base), so num_aces cannot exceed the payload
++	 * divided by the minimum ACE size.  This mirrors the check in
++	 * parse_dacl() added by commit 1b8b67f3c5e5 ("ksmbd: fix
++	 * incorrect validation for num_aces field of smb_acl").
++	 */
++	if (num_aces > aces_size / (offsetof(struct smb_ace, sid) +
++				    offsetof(struct smb_sid, sub_auth) +
++				    sizeof(__le16))) {
++		rc = -EINVAL;
++		goto free_parent_pntsd;
++	}
++
++	aces_base = kmalloc_array(num_aces * 2, sizeof(struct smb_ace),
++				  KSMBD_DEFAULT_GFP);
+ 	if (!aces_base) {
+ 		rc = -ENOMEM;
+ 		goto free_parent_pntsd;
+@@ -1115,7 +1132,6 @@ int smb_inherit_dacl(struct ksmbd_conn *conn,
+ 	aces = (struct smb_ace *)aces_base;
+ 	parent_aces = (struct smb_ace *)((char *)parent_pdacl +
+ 			sizeof(struct smb_acl));
+-	aces_size = acl_len - sizeof(struct smb_acl);
+ 
+ 	if (pntsd_type & DACL_AUTO_INHERITED)
+ 		inherited_flags = INHERITED_ACE;
+@@ -1123,11 +1139,14 @@ int smb_inherit_dacl(struct ksmbd_conn *conn,
+ 	for (i = 0; i < num_aces; i++) {
+ 		int pace_size;
+ 
+-		if (offsetof(struct smb_ace, access_req) > aces_size)
++		if (aces_size < offsetof(struct smb_ace, sid) +
++		    CIFS_SID_BASE_SIZE)
+ 			break;
+ 
+ 		pace_size = le16_to_cpu(parent_aces->size);
+-		if (pace_size > aces_size)
++		if (pace_size > aces_size ||
++		    pace_size < offsetof(struct smb_ace, sid) +
++				CIFS_SID_BASE_SIZE)
+ 			break;
+ 
+ 		aces_size -= pace_size;
+-- 
+2.53.0
 
 
