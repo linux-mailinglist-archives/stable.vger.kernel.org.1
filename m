@@ -1,216 +1,217 @@
-Return-Path: <stable+bounces-238359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238360-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gHx+DCE84WmaqgAAu9opvQ
-	(envelope-from <stable+bounces-238359-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 21:44:33 +0200
+	id MAo8NB0+4WmaqgAAu9opvQ
+	(envelope-from <stable+bounces-238360-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 21:53:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F03C414440
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 21:44:32 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D8EC4145CC
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 21:53:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 45867322060A
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 19:36:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id ED66130EDC10
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 19:46:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FDA634028B;
-	Thu, 16 Apr 2026 19:34:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6716B3E5ECA;
+	Thu, 16 Apr 2026 19:46:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IluCM8BE"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="COpryZYB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B1C0279DC9
-	for <stable@vger.kernel.org>; Thu, 16 Apr 2026 19:34:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D88033E5EDB;
+	Thu, 16 Apr 2026 19:46:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776368067; cv=none; b=B2noMrFCsd7Hs4piNDEBYPFnPEZI/5ElZKS0tU+ZjGi4fLCOdUjL7kySBfuYK8jvi/0nMBkcnXxRJzH67M8BFRoqXYeYfR4jW7CSqULmX1Tgrpm8sXWdzRq0S1P3Bi1d0FRimzFp/j0N+/DSBxRSP8w8eYDEkcNKa4yb2tbRVLM=
+	t=1776368782; cv=none; b=s7sKZM3JelUGj7lDN+OTv0ItYsX++E51WEz0Wtd0+S4xXySN43xOIxOkxck3eHBpFk2UbOw74ByUHYwOiTE+Tr5uc5IeLeFXRYSParB2VjMDLVby8VZfuYi9Gmq7mhnMGmpGGv8B1pcopP8pi0LriUxdQwCerKZnobzeQTqb98w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776368067; c=relaxed/simple;
-	bh=RFC3QVim0arIk7Lv3+cfW3gLQfc41MwZTxdP0bP0ces=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IiaqgrqYt89huEnK0LcRZb0vtO/CLJ3yA6oEuKKcdyoWAUKFfvUAODmHGPqzYR1zo0YHA58AH80LSQE9jJl8zpsRQemGaJ+uvWMOY7esb7xn9/ajXlHOJoFZVi18u5RSUWHueYx2h5nZ3rKahjgOqNAAfdFr4I1VtVIcZ1N0h04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IluCM8BE; arc=none smtp.client-ip=209.85.128.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-79a60975dc5so98397897b3.0
-        for <stable@vger.kernel.org>; Thu, 16 Apr 2026 12:34:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776368062; x=1776972862; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=pDgrzdmqtoSKjkQ3Rpvi5tSh9COrIxr3KsgGxPSv/G4=;
-        b=IluCM8BE6qXvwb/XaHTy0ZndDb8hI3MN/AXSVSzL1aW1CWpSKx6nJQq2P2bzSwQLgg
-         xiLog1LrAMWDKcmo3SDbeUhd7nOVaREjRih8rYnWluVb1hXx6ADqpC9DLyPo8pBTDtxw
-         b/kG1oIHIUxgeum6GK9nR3fQl28ivhGWQHcT/SveKHt1VWvG9QNY/WkMzE/jcqqzD0IT
-         fbXen9ybJzTa5S54A2BuKQLp69R1eOBtOJ5VYC+iLtE1p0LE0uRrNLbWkxZJyrJYdDpm
-         FIIYEmTRffJHM9xrP6hw+CwymuFGIT8Mud2ml6gHpBKsFYtoWXRHMt+fLtZfjXlEJJAw
-         upTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776368062; x=1776972862;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pDgrzdmqtoSKjkQ3Rpvi5tSh9COrIxr3KsgGxPSv/G4=;
-        b=eGWDb5/j2YfZTWw6Eu0+03nzDy5Kpdv+mt/+N4E8qmXSmN2hwY4Lkzn83QgQiHvfzy
-         JYX9LZ9EJHc5UHS4fvVULT0hYObrQPDCYnadhYVyUDHlnGwHjmAVVstzft4l4X66MUSb
-         6tnDBZgNlBAKicPDLk+ERerNu3Vt9ZtveoyTbiSzsZ01L4/k8Eo7IVcMPTI2iJsuDKkk
-         2oiQINRkSLF02kPZ1jWHiNS93zjKBh6+nDDq2rfbzV+THkDXfifjJ71yRlrMRGN17pki
-         S24/16PgfoTe6wmKmF7LyFiX/TX3l5w0htLiE0dgynukNtvB7X5F0zFLT4a75TYXbSkk
-         kj2A==
-X-Forwarded-Encrypted: i=1; AFNElJ+rA3AN1ZHYcfrv9Iw8q2D/pCo5avYhuV1AIsovdkGVSwAMGM/fbZpYV5Bvh+7kh9rr2WR7f64=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxBEPJJU1vhcUDttWMXZeKcoEMvOI02zgSh42yCl4kj7BFBRNla
-	JTedZ6XA3NZtqQ+QnLXGCfg4AS+mQdDU3TWqVm+hwGyQJHZihnjwT9Gl
-X-Gm-Gg: AeBDiesuTiy5Q5ECEmCYn/9NV9Jt71rr/BrWAupBbRaN7SgHiKVdPGaLKe3vl8funv7
-	ZOdhmzbif+h+V0vkGc2mjGkYBdwFSOmWUQ82eiy50vnP26v1XMSAh/Wbhd3aF89TexaHEvQc5Is
-	6ub5KEwKbN+Ynlp+o/kR4sCXoYjDKMRn0Y54xz9kFRV+VURK74aWeesjgbmxgUBqE2K7V/qq0ub
-	aX35vCtZcgX3YwJB1hyNjsDCr9w7uImmdL/0Zm1LGP8Xit1Ymjvf55qtBskcNOyaqw+azX5Ucw6
-	xv6DB5W5RDcMtJIs2URGD0n4zrL6Njauyo2kv1G2RqVoUaYaBAtEzMdCamEGK3CNa3SJyPsGGms
-	Is6UeaJDEfknXMsDmV3yaS9qR0yyoqZy7UYospYP6P8i5gRBm3DABccDlO5bxNu0uYeMGMeiR15
-	ilT+76BPzJ81J9PPZaRQkIl5gZ48kB3r4fzMiWGKr72hooVNhZ7OQ5bc5tjf4UtYVWhCqztFLA0
-	6b7LfRmxgaQBn9nqKa4Vm3Xj7Cq0F5ovCCY3mdQdgYIhfOI7x25fw==
-X-Received: by 2002:a05:690c:86:b0:7b7:c69f:22fc with SMTP id 00721157ae682-7b9e19ec401mr4952117b3.10.1776368062426;
-        Thu, 16 Apr 2026 12:34:22 -0700 (PDT)
-Received: from server0.tail6e7dd.ts.net (c-68-48-65-54.hsd1.mi.comcast.net. [68.48.65.54])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8ae6cda9277sm42594576d6.41.2026.04.16.12.34.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Apr 2026 12:34:21 -0700 (PDT)
-From: Michael Bommarito <michael.bommarito@gmail.com>
-To: Steve French <sfrench@samba.org>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	linux-cifs@vger.kernel.org
-Cc: Paulo Alcantara <pc@manguebit.org>,
-	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Tom Talpey <tom@talpey.com>,
-	Bharath SM <bharathsm@microsoft.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] smb: client: fix OOB reads from server-supplied dacloffset in cifsacl
-Date: Thu, 16 Apr 2026 15:33:25 -0400
-Message-ID: <20260416193325.2950619-1-michael.bommarito@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	s=arc-20240116; t=1776368782; c=relaxed/simple;
+	bh=Qba1/DjP9j79qrIt9eT9VQDE+xeBg3Br581eaDk5yeM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=s9XLEe+T+dWVxigKkgxYjjOcVaw0TbdFFPkt5d54ulXYFtxfgRE8HAQtBOh/qnzZ60iyy4Nkog0Nc306v6wdi4XcPNDUt0NIGgWBoToOt1mclf/0oUSO8HLopNFyCBq280vwwMIIVSi042W+Ui9SAXm27SeU0sqfbtzw/ww6Nfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=COpryZYB; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63GGXk1c1804464;
+	Thu, 16 Apr 2026 19:46:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=jeeMek
+	tUbRg+1j/crALkKcX0WXFTyPcngLtgBgNp4cg=; b=COpryZYBMHi4GUmb2PpMwv
+	gphnmF5Vx74DeNSvXCDv6AGWPTUZaTzgfD62ZqmCXU45WjOdGmYowP2etozeMVPv
+	j4GCG8Pdi5A8SUqVkBXL5nP+C+4CRIT+x0Ov6CFh3KqQ7BtwuQUeuinpIbwRHcds
+	V7f1D6T/UI1aEFkwGg5tdU4d327/Q/bwRAAnOU/Kw6YGrSLlt/PI04fvdRxmIPyU
+	wiBrd8gNRwe7qCbRTh9FNdcTDwQ+FBATgwogl+PZ7lj5FAEE+Z1TOGASRcbJ7b3M
+	KtW6Fa+s9lxoyDPKzHfGvvKcEEgC/9ndIBN1HiMqysiixDNjeu8VaIZr+ReIK9Gg
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dh89kebxf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 16 Apr 2026 19:46:08 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 63GGhgQB003305;
+	Thu, 16 Apr 2026 19:46:08 GMT
+Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4djbh95ysr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 16 Apr 2026 19:46:08 +0000
+Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
+	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63GJk6t627591186
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 16 Apr 2026 19:46:06 GMT
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 88DDB58060;
+	Thu, 16 Apr 2026 19:46:06 +0000 (GMT)
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C724A5803F;
+	Thu, 16 Apr 2026 19:46:04 +0000 (GMT)
+Received: from [9.61.14.120] (unknown [9.61.14.120])
+	by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 16 Apr 2026 19:46:04 +0000 (GMT)
+Message-ID: <f029675e-7b96-4d51-bd79-595e322eb135@linux.ibm.com>
+Date: Thu, 16 Apr 2026 15:46:04 -0400
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] KVM: s390: pci: fix GAIT table indexing due to
+ double-scaling pointer arithmetic
+To: Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Junrui Luo <moonafterrain@outlook.com>,
+        Janosch Frank
+ <frankja@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        David Hildenbrand <david@kernel.org>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev
+ <agordeev@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>, Farhan Ali <alifm@linux.ibm.com>,
+        Eric Farman <farman@linux.ibm.com>,
+        Niklas Schnelle <schnelle@linux.ibm.com>,
+        Pierre Morel <pmorel@linux.ibm.com>
+Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Yuhao Jiang <danisjiang@gmail.com>,
+        stable@vger.kernel.org
+References: <SYBPR01MB7881AB7449FEB6B58E4BA6F2AF222@SYBPR01MB7881.ausprd01.prod.outlook.com>
+ <b1f22f3a-398e-4ce6-8092-aff9c9aaaf9f@linux.ibm.com>
+Content-Language: en-US
+From: Matthew Rosato <mjrosato@linux.ibm.com>
+In-Reply-To: <b1f22f3a-398e-4ce6-8092-aff9c9aaaf9f@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: FjDpwNH6TNcSLYtiUeAExF17pJszz9JJ
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE2MDE4MyBTYWx0ZWRfX9tPOARV757G+
+ VGxmXERci4B5Mq23Rfnut98UbO7gWe9u6bS04+ZjRp3Kk2M2erw48A/bj9ttAzQrVggMrBf8GwQ
+ Y/P2tTEXGoRvaTVjyeGFZVyW889AkkoNiomXp9HLFL2KpRpYMObxUdwvk6VTKOAqXtiJO/Fetfq
+ kVh/q25+FEmjC3q+mR2q2rMT7q+L4bb53cZVYrU6vJ9Q8i0MjFUGpFk+Xhq1XT1xg6pkQFw8Tia
+ 2mZa0YYmtwXPrArUgXuZsGBsBgzd/yJ/IuIuDG1e+ZpdcVZJ30tnkPXaTrFIKZD/QzjQMKMhSGd
+ brfTz7TGf72XT0f/ObV3TEpOwjA6goSqAOHPpKGC10jdCE8ycHVF/t48vQr8kcImT/7w7sT4843
+ aRfBeEGMuT15Y1GPZtuP4EkWeA44j9gdIagatWmUd6JkuhN5VEAVmDDRguL7ulNg5Bjn8byg64N
+ NK27QdxSN2FMEPcLL1A==
+X-Proofpoint-ORIG-GUID: PYdcw58jvlA0aP2oQbymL33tjU_nk0jF
+X-Authority-Analysis: v=2.4 cv=W60IkxWk c=1 sm=1 tr=0 ts=69e13c81 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=pGLkceISAAAA:8
+ a=VwQbUJbxAAAA:8 a=UqCG9HQmAAAA:8 a=VnNF1IyMAAAA:8 a=9igQkyFze_wNDWW7dj4A:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-16_03,2026-04-16_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 clxscore=1011 priorityscore=1501 spamscore=0 bulkscore=0
+ adultscore=0 phishscore=0 lowpriorityscore=0 suspectscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604070000 definitions=main-2604160183
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-238360-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[manguebit.org,gmail.com,microsoft.com,talpey.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-238359-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FREEMAIL_TO(0.00)[linux.ibm.com,outlook.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[18];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[michaelbommarito@gmail.com,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mjrosato@linux.ibm.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[ibm.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 8F03C414440
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_COUNT_SEVEN(0.00)[11]
+X-Rspamd-Queue-Id: 6D8EC4145CC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi again! Sorry for the piecemeal sends as I work through triaging
-all of my personal "clanker" pipeline results.
+On 4/16/26 9:06 AM, Christian Borntraeger wrote:
+> Am 15.04.26 um 11:26 schrieb Junrui Luo:
+>> kvm_s390_pci_aif_enable(), kvm_s390_pci_aif_disable(), and
+>> aen_host_forward() index the GAIT by manually multiplying the index
+>> with sizeof(struct zpci_gaite).
+>>
+>> Since aift->gait is already a struct zpci_gaite pointer, this
+>> double-scales the offset, accessing element aisb*16 instead of aisb.
+>>
+>> This causes out-of-bounds accesses when aisb >= 32 (with
+>> ZPCI_NR_DEVICES=512)
+>>
+>> Fix by removing the erroneous sizeof multiplication.
+>>
+>> Fixes: 3c5a1b6f0a18 ("KVM: s390: pci: provide routines for enabling/
+>> disabling interrupt forwarding")
+>> Fixes: 73f91b004321 ("KVM: s390: pci: enable host forwarding of
+>> Adapter Event Notifications")
+>> Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+> 
+> looks good to me.
+> Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+> 
+> Out of interest, was this found by static code checking or AI by any
+> chance?
+> 
+> 
+> 
+> @Matt, can you test/review this as well?
+> 
 
-Here is another malicious server issue, this time in two call sites
-in fs/smb/client/cifsacl.c.  We compute a DACL pointer from a
-server-supplied dacloffset and then read struct smb_acl fields 
-(dacl_ptr->size, dacl_ptr->num_aces) without first checking that the
-8-byte struct header fits within the security descriptor buffer.
+Thanks for the report and the fix.
 
-1. build_sec_desc() -- chmod path:
+I did some tracing to confirm the issue -- indeed, gaite is being
+indexed by 256B instead of 16B.
 
-    dacl_ptr = (struct smb_acl *)((char *)pntsd + dacloffset);
-    if (end_of_acl < (char *)dacl_ptr + le16_to_cpu(dacl_ptr->size))
+Because the incorrect offset calculation was used consistently in all 3
+spots, the expected gaite is always found; a problem only arises once we
+attempt to access beyond the allocated number of pages for the gaite array.
 
-2. id_mode_to_cifs_acl() -- chown path:
+When this can possibly happen is a factor of the configurable
+CONFIG_PCI_NR_FUNCTIONS -- but yes, as the commit message alludes to,
+the default for this is 512 which means once aisb reaches 32 * 256B we
+would cross beyond the 2 contiguous 4K pages that would have been
+allocated for 512 * 16B entries.
 
-    dacl_ptr = (struct smb_acl *)((char *)pntsd + dacloffset);
-    ...
-    le16_to_cpu(dacl_ptr->num_aces) * sizeof(struct smb_ace);
-    le16_to_cpu(dacl_ptr->size);
+I also did some general regression testing with a mixture of ISM, mlx
+and NVMe devices with this patch applied.
 
-In both cases, if dacloffset places dacl_ptr at or past end_of_acl,
-the le16_to_cpu() dereferences are OOB heap reads.
-
-Reproduced under UML + KASAN by constructing a 20-byte smb_ntsd
-(sizeof(struct smb_ntsd)) with dacloffset = 20, placing dacl_ptr at
-the exact end of the allocation.  The le16_to_cpu(dacl_ptr->size)
-read triggers:
-
-  BUG: KASAN: slab-out-of-bounds in kcifs2_test_build_sec_desc_old
-  Read of size 2 at addr ... by task mount.nfs4/220
-
-Confirmed -EINVAL without splat after patch applied.
-
-parse_dacl() already handles this correctly with a two-step check that
-validates the struct header fits before reading the size field:
-
-    if (end_of_acl < (char *)pdacl + sizeof(struct smb_acl) ||
-        end_of_acl < (char *)pdacl + le16_to_cpu(pdacl->size))
-
-Apply the same pattern to both sites.  This is the client-side
-counterpart of commit beff0bc9d69b ("ksmbd: fix overflow in dacloffset
-bounds check") which fixed the identical class of issue on the server
-side.
-
-Fixes: bc3e9dd9d104 ("cifs: Change SIDs in ACEs while transferring file ownership.")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-6
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
----
- fs/smb/client/cifsacl.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
-
-diff --git a/fs/smb/client/cifsacl.c b/fs/smb/client/cifsacl.c
-index c920039d733c..115990467dfa 100644
---- a/fs/smb/client/cifsacl.c
-+++ b/fs/smb/client/cifsacl.c
-@@ -1293,7 +1293,8 @@ static int build_sec_desc(struct smb_ntsd *pntsd, struct smb_ntsd *pnntsd,
- 	dacloffset = le32_to_cpu(pntsd->dacloffset);
- 	if (dacloffset) {
- 		dacl_ptr = (struct smb_acl *)((char *)pntsd + dacloffset);
--		if (end_of_acl < (char *)dacl_ptr + le16_to_cpu(dacl_ptr->size)) {
-+		if (end_of_acl < (char *)dacl_ptr + sizeof(struct smb_acl) ||
-+		    end_of_acl < (char *)dacl_ptr + le16_to_cpu(dacl_ptr->size)) {
- 			cifs_dbg(VFS, "Server returned illegal ACL size\n");
- 			return -EINVAL;
- 		}
-@@ -1662,6 +1663,14 @@ id_mode_to_cifs_acl(struct inode *inode, const char *path, __u64 *pnmode,
- 		dacloffset = le32_to_cpu(pntsd->dacloffset);
- 		if (dacloffset) {
- 			dacl_ptr = (struct smb_acl *)((char *)pntsd + dacloffset);
-+			if ((char *)pntsd + secdesclen <
-+			    (char *)dacl_ptr + sizeof(struct smb_acl)) {
-+				cifs_dbg(VFS, "Server returned illegal dacloffset\n");
-+				rc = -EINVAL;
-+				kfree(pntsd);
-+				cifs_put_tlink(tlink);
-+				return rc;
-+			}
- 			if (mode_from_sid)
- 				nsecdesclen +=
- 					le16_to_cpu(dacl_ptr->num_aces) * sizeof(struct smb_ace);
--- 
-2.53.0
-
+Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
+Tested-by: Matthew Rosato <mjrosato@linux.ibm.com>
 
