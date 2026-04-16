@@ -1,231 +1,230 @@
-Return-Path: <stable+bounces-238340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238341-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4JazAlIa4WmmpAAAu9opvQ
-	(envelope-from <stable+bounces-238340-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 19:20:18 +0200
+	id SNZLCa8b4WmmpAAAu9opvQ
+	(envelope-from <stable+bounces-238341-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 19:26:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F5244128C8
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 19:20:17 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96A84412A9B
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 19:26:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A186E3016509
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 17:20:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5D0153032DEA
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 17:26:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E8593264DF;
-	Thu, 16 Apr 2026 17:20:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BB2C3264DF;
+	Thu, 16 Apr 2026 17:26:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="EBrMU9w8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P+gvUDm2"
 X-Original-To: stable@vger.kernel.org
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012055.outbound.protection.outlook.com [52.101.53.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85D6C2264A9;
-	Thu, 16 Apr 2026 17:20:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.55
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776360013; cv=fail; b=ooQ8KJGMCfriVoCpAXv/0vUIVBLpuxdR23X3SIka8SJJHjw3gdXNEwEMMsn7AGVobWIJDSs0rJlY05kqfx/rtMEXbi7Zl2HUJIk0HtVANUpHAgWsiLRJngSlHODp0zpDhkZ0sjMUdGfIqidAUhI2eqUbbW4bCKewXxlFPFK71k8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776360013; c=relaxed/simple;
-	bh=qZcAjS6d3Ply+wFttR+Tvfnz7rfysfcxVpn0kVP1seo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=fPKuviGG86xBsDwoCRSh7t1+kU5F4jP15fOp++7P2NKniyCzsdSvuqPF0OQFUx4hgDGz90xBaGA3S3cvB2PXkW3m/DsIDSOPSKqJh5svtKu3KOyVWHYO0vQXUlOUhKVMSbRwKVuvKNqjzFFrrbjeDhyETMyjaRFubnTRqpoGDU4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=EBrMU9w8; arc=fail smtp.client-ip=52.101.53.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=QKzKsXt1xWybhi8Ex8xjJVqU1U+aA05qBrkUlCizure4bA96cIiS62NQ9rDNO4TNrdstTXR3PHrmCeYfErs5up44TuLQnMvDhkyVFOYSRpjcIet/lQBpE/PRjWvGoIRqJNILXJNhk9BDQdUZ8JYIbr1WRr2DhkVGaQVaC2wgEi4LhIpae0RRAdGh47SekCYaectl0CpGuHLqFhIzuzNo4Qpwh1tPHV7AOxlhgZRM5/ey17N31234fjaJOqZMPO7NmjXfk60NT+Ew96lwN4wjt/gXsKu0hfC4AKLKXZvPyFPC6pj3OpZ3QqD5KhWtHbHjj3t7Bza/odYEdKUB/exZbA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=EynX7LWe0jADze8xwwyGtRY20HODjvbHdumAOUoPCFI=;
- b=fDTpp+102OvlG9/RXk/nnYVPrhqji5x5RwgZI63AWVDcUS02SPV4+x26ZTml2M63ffGUQ6dQFXSQFMja/1KnVd2JBdRTgorlJoe175xmaYyit/j3e6OBTxTgPH9IuebbdV1dWWq/RH6Qjvk/u1Dym0K+/Yqa2nGVbPZ5pXhAQsUqB3LC4I1pqLy50CHeoNWjPYBKap1gF19TwAWGSxLDtbo7K6u2X3TV255j52c2GhpZNl+t/hSIbTtSNQ7HNBKwdBhKt18EtwAoHSAPcdyHiTXGTSVLckiz2iUlRtrjLLRHTRjjA1/zjcugiyog0H2cY9ZSn/YCUcwItydoKhxc+w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=EynX7LWe0jADze8xwwyGtRY20HODjvbHdumAOUoPCFI=;
- b=EBrMU9w8h/rMynGF1teTb9Fj3xfH7cAdjddAd5xqhJAYZ3Pl1nViQb3i1u5spqjfFTsTr38jJZI7YmAibe1FYKm192Qx5YJMXYI0mPm7QV74hdvBoHhZfsiFdf+1lvwXt6DOdxZvlv24trGn50VOrMDQQnCsVMcT8C2QPbMTbf4nJl/qAZzVRn6WTzgovZSpQco+UKaaJBXFS9rTISWYOEJkSNgCNs/eIgyp8PvfDmLuNuUt9/s+ctwTr/ke0ANQzbmutB/8uDr9FeELmsYC8Bh2qzro/Rqxe9tgYZ2XLbqvRmWEztORTq1DMYBStYW1ovuNlG8whbkbANtRYROhog==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
- by IA0PPF84D37DD5C.namprd12.prod.outlook.com (2603:10b6:20f:fc04::bd6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.20; Thu, 16 Apr
- 2026 17:20:07 +0000
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528%5]) with mapi id 15.20.9818.017; Thu, 16 Apr 2026
- 17:20:07 +0000
-Date: Thu, 16 Apr 2026 14:20:05 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Robin Murphy <robin.murphy@arm.com>
-Cc: Nicolin Chen <nicolinc@nvidia.com>, will@kernel.org,
-	kevin.tian@intel.com, joro@8bytes.org, praan@google.com,
-	baolu.lu@linux.intel.com, miko.lenczewski@arm.com,
-	smostafa@google.com, linux-arm-kernel@lists.infradead.org,
-	iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, jamien@nvidia.com
-Subject: Re: [PATCH rc v2 0/5] iommu/arm-smmu-v3: Fix device crash on kdump
- kernel
-Message-ID: <20260416172005.GB761338@nvidia.com>
-References: <cover.1776286352.git.nicolinc@nvidia.com>
- <3eaf217f-8e1e-4d64-983a-6b888886f157@arm.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3eaf217f-8e1e-4d64-983a-6b888886f157@arm.com>
-X-ClientProxiedBy: MN0PR05CA0018.namprd05.prod.outlook.com
- (2603:10b6:208:52c::30) To LV8PR12MB9620.namprd12.prod.outlook.com
- (2603:10b6:408:2a1::19)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2245D319851
+	for <stable@vger.kernel.org>; Thu, 16 Apr 2026 17:26:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.175
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776360363; cv=none; b=MAJBOVl7vnuaRy9b+jCq+GD18Efob4a5L2rZ/cp0s++nqdbyKblI7NKkhnvPF2JJL6E/D5PxuT9p2VLoHcl9EgfaTGDbMi7+1aGPYODf2nEAKW6ZFhGs+ZgZmshpKgxAKDePmAp4z8OzT5YHXzkn5oPpT/IXeS+dScmPpoL79tA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776360363; c=relaxed/simple;
+	bh=8TutVFT0hECdtwHYPD7KRgv2J2Fan8VcWdgBQxNgxhM=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=bgV1LzfjbjLaD9j55OeiGJ7X57uIqT20P5Z8DsbuKEqJGEAjSfAoU+scyDTP4XYAt9fY2grAaJCCsgYPZhxRJJ6iDShSfyy98dlM2rUjwBt3t63lKZZVbge8q0tmkr8JIw5xYBb0wRu/vNjzPIIx50SnKxwg0DFaNbwJbX16aAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P+gvUDm2; arc=none smtp.client-ip=74.125.82.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-2d9472c97dbso197155eec.3
+        for <stable@vger.kernel.org>; Thu, 16 Apr 2026 10:26:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776360361; x=1776965161; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:to:subject:cc
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=p+oSOpmEaL2AL0jPocX9orqw+4TcJ8hn5aq7jtSVezk=;
+        b=P+gvUDm2uOvDRPh9BglHdTSlMraj0q0MQr4v2JWmdqTLLauXtZSg7Ju7r/sZ6Ifwwo
+         mAN8YHornl8pYMYb3F2S8C5tnU9boO8Kx3oYAvdkxNvxNCvQQEDKU/Tt2eYTNIwbqITx
+         9lqsExKRnAo/IgeBLIrFdyfLT8AwerXEwaisEJnroC877YVLnk9ukH3EVAYcKgxwVmaW
+         0H4P++GlfGznoCrsPIiARpcvCiqLDnhqrnsQIHSnKQpKzUt1+IEj2Vbdpvg/pxBf7t2F
+         eIN+2lXnjgzpEniZdue7z27iM7UONAH1yf6+KrBf8UhrCIrJzXbkMpUnFf4WolpXa7RM
+         kGcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776360361; x=1776965161;
+        h=content-transfer-encoding:in-reply-to:from:references:to:subject:cc
+         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=p+oSOpmEaL2AL0jPocX9orqw+4TcJ8hn5aq7jtSVezk=;
+        b=rfROppEVODMkUWhYN8qLByKBLddni4EFk/KKzWCazCsHthRkCQYfoEP+O51ju0tQLw
+         jSfwKNV9iaw792hsbiCyT5g5iKupgj4PxbCcqhRo8a2CMCSveeO1qNcijt1kmEDWNWe6
+         4IXJ8cHZKEyuHkH4yh5tfrANKP4imZ0murf2hQsGFlts+jCiIeGbHRXaDU45A8gF1B1N
+         onc/QtsW0EbZxB719QvSL6s9nKBDtK1GVNA12U1DvOH7KnX/3/rLl4GGmf3a32U0gd0j
+         EmjbtzwdTfk4dHF0I8Js7XJVJ4b5VmMuDhpINAKJXczVnw5UvIyDNqmg7ka0Uwz3143n
+         CkIg==
+X-Forwarded-Encrypted: i=1; AFNElJ9Tw7plmq+ypAPCvyeklMNGBgSeqbKl6kxzjhue9OVJKJrJvQFiDKaeV/sJ/nuu/9q9yI3coO4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YytwwRTeFs4iyadONM/KCyxySAXTgKbvWpmAdstINWWXhLJMT8K
+	x9Vynl2sDvFmei6EThxx35WS//aJMGzFmveY6H+SHrr30oaSz6iqMIRt
+X-Gm-Gg: AeBDieseCA/FsSxEU5fI3d5GXGmuFdbfUqFSopaMnZgenSabjrJUxAO1KiOGSCUiX0Q
+	bYLsnrOKyQ7uzTezuqDxGQypTM1wVBDl+ISsex3UchAWlJx89XH6U77MwQYwBoEMcfnrgceIBaJ
+	vb+qSZ3gBDc0iwlaSmNxodLHHy47mrNyXk9oMRDaNExuiVVro5/i03d4G1cKqT+sqDLKAkzdAup
+	9TBHqKubBH+RohzG2ZV1fqvIR/FEYY9sadM16lnXoKa9pVgXB/YrKGwRgWPF0GL33xPBLrALii7
+	o805+xKqbOybVNzuTgv+8NZmxd8AtJFFSmOf01qbEzpV3F+Uub6QRME0mnosVgtYcjOPrWi0Nxr
+	kdhFdRk6FSdeNjKuh6HMAcL+fyfrWxRWu4FG6aCmTCmLK6GyPI/h5fR99mGfESFa4+602Beh6Pp
+	vQJ/Z/tdzdX7RNELF9+yZdjnG9ltX0HE+V8ntyFvuS8KD6stfi18HdBXINunabw6O2Gfs=
+X-Received: by 2002:a05:7301:168e:b0:2da:b53f:8c9f with SMTP id 5a478bee46e88-2e2e09350f6mr35840eec.0.1776360361060;
+        Thu, 16 Apr 2026 10:26:01 -0700 (PDT)
+Received: from [192.168.0.100] ([163.125.228.136])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2de8eb848b8sm8199551eec.16.2026.04.16.10.25.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 16 Apr 2026 10:26:00 -0700 (PDT)
+Message-ID: <166964d1-2d16-43e8-b4d7-27b4a5e6286d@gmail.com>
+Date: Fri, 17 Apr 2026 01:25:52 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|IA0PPF84D37DD5C:EE_
-X-MS-Office365-Filtering-Correlation-Id: 78f5cb78-4da9-41b3-41a4-08de9bdc67bb
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|56012099003|22082099003|18002099003|18096099003;
-X-Microsoft-Antispam-Message-Info:
-	G5OemyOQyGyzLvIRlr+edWqnSwlp8g1O5YyKmmnrTwKTdU9txF5s8oYWjQYkWCigA1oA6Vgn43pja29bZ1B2B02cpQZfg6/a8OX6Msa4iNEsGckp7uV/W3wBkKxT6u9ukYfOl5pC6lX4B6H7/PwlcrDRoR2uz+BIS4oxzLbCsCZgs3yfAeujKyghZJ3LN2kpgS+avV8AP2w6I4iyigdrpSGQKXpd5WXSpkZ3KWCCi1ReLdin5lhyL7PMBmdReSri78bpcC4zYDuewRZ3CjmXyWByjl6TLyXn+EIg7AUyQrazlUQsNFWwMn95TNSR7BpqJwMf+awg8p08SUzgyp6aWt4f3NGO8IYOT4B+prpDmS+oBER4wKeIf8/sMbuJB1wFVaJc8VarXxU7CjFHhVx+zeWefejGyvL6VTY39/D1BbRIYknK6/O1ZiaW3zdGwQqH63clRKFg475V/4/MxVoywBYsXYL8zI3SrSCdtViz8eJRTEmQB5rNbxWdpe6meZbwCrvGpzqpWtrtaUDdO+CNCiCLagpjB7yn29Fj82ZfudUEwXLdYoPs2YlJex1rdViOMfgepeaCKP2VbpeKlSO8qav9gEXsrkrALmzTj13dkq1J09GPCghsxVLAemzEgqxguT3+c/9zYGz447pb1SsH9uiMHQ5XM18AOSu/Y2Muxh3x+eNZoMywGNMhYC3A/UJqJ9wX9QXqfxpMxlfgoK50R6yyhbYwdIBVjdXiuknOhys=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(56012099003)(22082099003)(18002099003)(18096099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Sd77nMoFRN8mXODcPmQhY7umLB1xjyHzfWXHyi+AsszQgb5y/lUtzdRv+2Cg?=
- =?us-ascii?Q?bVLTyG6CutPdSgcEeShk8q0OuwCRsyEMiPXfQSehby/CErx6h3G7xgsd8o8U?=
- =?us-ascii?Q?MhqC/XKQl1L9KQxhhkfJA2kFwKkO9Od69UAQFa5dJKiQHMVsrG/eDrTtRxhw?=
- =?us-ascii?Q?MgJh9XUBD0Zr709UPTNva4IFtFM9G7B9UicaoyZrnKEK0VTevol6D76uWMEE?=
- =?us-ascii?Q?MUyPH9sezQMygMGbIGQxrAifdHzWbX5Mg4gtj9loTIOADZZuiOhkvZMVotLP?=
- =?us-ascii?Q?ZB1Ey6Gro9zJy2KKyphOluOEfb+/Hfo+4b5KcrNpi9UpwjV+XBCrPafbSOkg?=
- =?us-ascii?Q?1Xw8cXOAwjfoFoVi+6HCILwJS3vODBZo/73nodP1JNz5XZcC6bO5GsniCTvY?=
- =?us-ascii?Q?JERQZfb9Zalc+zzM9+SCuGMkfnGsBgJHlG8GCxvNAAj33U9zd3xfYJi80c1W?=
- =?us-ascii?Q?0C0YJGxkT7aOcPfn8M0BjQoxHtndScZ6wQM/wz0ri5CUmsT+nIiMkVbp0H5R?=
- =?us-ascii?Q?y9M9kvHFg3jm9p/es4NMwXCQg3Rtd4hEj7Zx00a4NeDc+gD4IIvFsUSkSsWL?=
- =?us-ascii?Q?x4I5Ar2o9vK/kTMGSHnKG4gl57DCuICEqhpLqYMIufFeTdbp/T0APho04fnU?=
- =?us-ascii?Q?HENUI98R5fdyEaKuIifAwkHq+6VV3fv2XWlCR62dlVtGw/f25hiy1LNpqHlV?=
- =?us-ascii?Q?2Uw/WoGep+cfhGlVAK87TLge4Il5hA84HM+FAQMg5c+8RKqH40pbB7+eRq+T?=
- =?us-ascii?Q?FGqoicvlHGYYpIjH4ydeLIY/075YoMWq2eJyCYe3nXngZDEcmbcaJOFsQo24?=
- =?us-ascii?Q?7z7U16kmEStQ/ZPFdiLVVyR1SECUmsyT8Kys03q1kYwndeot/YGrOwKOgrDN?=
- =?us-ascii?Q?5VamwaUEhjVR4e9PW4L7+oqqIb8rEXWR9cuVELFjyQtWnJp1VvaEd2bHBFPA?=
- =?us-ascii?Q?68ZJUO+zNJABs6LbAqsOLGg2xxK/avkUW6UcDbYnnaJdeaGe0RbCMsmb+4e5?=
- =?us-ascii?Q?qwT+VvU4yswpkISIka/+bYGhtq7imI6ukrHmKNao1/Lha47caE8H8IUq1ISI?=
- =?us-ascii?Q?3bbpAO4piwSAy3UAygJxS+qwBfBwaEoAxnigmqu0Xido/WQ6AgmWQlEqdU/P?=
- =?us-ascii?Q?IhrSmnAw5h1bWvZNsstvHyS+jd+d0GuNwTjO853XULf9TvEOPF2A0AF9hCKe?=
- =?us-ascii?Q?hxlLpQKOzkhYKTon2JhkOEMq5FvmpHygxu69+gLhanSqygfMmVR/VoL0WvlE?=
- =?us-ascii?Q?4HFJCOn4O2bRl6JnRTd8HDgM9KFODMsqZHe9TP16Q9/HT+IR4I82cVbzabho?=
- =?us-ascii?Q?OlyG6otoY9k4sgbpW9Hfgukro/3ClcTkGOtJzvwgvb0/DB07YwKqEtIed6QS?=
- =?us-ascii?Q?VTuutIdJl+u5kY/rDY8b6O2jI6zRb1so1lxPl/yAN3F/a74ZuFc+dNxzRNNK?=
- =?us-ascii?Q?l+R/u+vkx/trXo9u7znfU54QIqoueyDAuF9WmQSg3LznQtoHxs+hSNxr/grh?=
- =?us-ascii?Q?nYxKPkFxiV1tc3fFLby2mEoA1P3kBuV374VD35ZR00lIDLW9G4/QLOZs+sWn?=
- =?us-ascii?Q?RGpYNY7gvF4+El6X6AmTSOewgXYG5skcMuWCbW6pqqDeOrVawXwVG5vFn8CR?=
- =?us-ascii?Q?ELROtPTOMobRBOJ80NO831oui+Ik6sYsI6fiM3kXu9WEZbn5OwsdMNsBYFeB?=
- =?us-ascii?Q?uFM9s4ToCxptB0A7Mcdb7eznqgp2VbMBzEGvqPaohN8U1M6Y?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 78f5cb78-4da9-41b3-41a4-08de9bdc67bb
-X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Apr 2026 17:20:06.9795
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: e8t5EXH5rXXLcUdOecMx72Jh5RL4YDdMC63pI90Ff3tjWT4Z2mILOlzxXmqtayEg
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PPF84D37DD5C
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
-	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+User-Agent: Mozilla Thunderbird
+Cc: yangyccccc@gmail.com,
+ "alexander.shishkin@linux.intel.com" <alexander.shishkin@linux.intel.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ Sanman Pradhan <psanman@juniper.net>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Jie Zhan
+ <zhanjie9@hisilicon.com>, liusizhe5@huawei.com
+Subject: Re: [PATCH v2 1/2] hwtracing: hisi_ptt: Propagate DMA reset timeout
+ in trace_start()
+To: "Pradhan, Sanman" <sanman.pradhan@hpe.com>,
+ "jonathan.cameron@huawei.com" <jonathan.cameron@huawei.com>
+References: <20260414172451.14331-1-sanman.pradhan@hpe.com>
+ <20260414172451.14331-2-sanman.pradhan@hpe.com>
+From: Yicong Yang <yangyccccc@gmail.com>
+In-Reply-To: <20260414172451.14331-2-sanman.pradhan@hpe.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-238340-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-238341-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,linux.intel.com,vger.kernel.org,juniper.net,arm.com,hisilicon.com,huawei.com];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	DKIM_TRACE(0.00)[Nvidia.com:+];
-	MISSING_XM_UA(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jgg@nvidia.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[yangyccccc@gmail.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8F5244128C8
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 96A84412A9B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, Apr 16, 2026 at 05:49:24PM +0100, Robin Murphy wrote:
-> On 15/04/2026 10:17 pm, Nicolin Chen wrote:
-> > When transitioning to a kdump kernel, the primary kernel might have crashed
-> > while endpoint devices were actively bus-mastering DMA. Currently, the SMMU
-> > driver aggressively resets the hardware during probe by clearing CR0_SMMUEN
-> > and setting the Global Bypass Attribute (GBPA) to ABORT.
-> > 
-> > In a kdump scenario, this aggressive reset is highly destructive:
-> > a) If GBPA is set to ABORT, in-flight DMA will be aborted, generating fatal
-> >     PCIe AER or SErrors that may panic the kdump kernel
-> > b) If GBPA is set to BYPASS, in-flight DMA targeting some IOVAs will bypass
-> >     the SMMU and corrupt the physical memory at those 1:1 mapped IOVAs.
-> 
-> But wasn't that rather the point? Th kdump kernel doesn't know the scope of
-> how much could have gone wrong (including potentially the SMMU configuration
-> itself), so it just blocks everything, resets and reenables the devices it
-> cares about, and ignores whatever else might be on fire.
++cc Suzuki and Sizhe..
 
-The purpose of kdump is to have the maximum chance to capture a dump
-from the blown up kernel.
+On 2026/4/15 01:25, Pradhan, Sanman wrote:
+> From: Sanman Pradhan <psanman@juniper.net>
+>
+> hisi_ptt_wait_dma_reset_done() discards the return value of
+> readl_poll_timeout_atomic(). If the DMA engine does not complete its
+> reset within the timeout, hisi_ptt_trace_start() proceeds to start
+> tracing regardless.
+>
+> Return a bool from hisi_ptt_wait_dma_reset_done(), consistent with the
+> other wait helpers in this driver. On timeout, log an error, de-assert
+> the reset bit, and return -ETIMEDOUT. Move ctrl->started to the
+> successful path so a failed start does not leave the trace marked as
+> active.
+>
+> Fixes: ff0de066b463 ("hwtracing: hisi_ptt: Add trace function support for HiSilicon PCIe Tune and Trace device")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Sanman Pradhan <psanman@juniper.net>
 
-Yes, on a perfect platform aborting the entire SMMU should improve the
-chance of getting that dump.
+looks good to me.
 
-But sadly there are so many busted up platforms where if you start
-messing with the IOMMU they will explode and blow up the kdump. x86
-and "firmware first" error handling systems are particularly notorious
-for nasty behavior like this.
+Reviewed-by: Yicong Yang <yangyccccc@gmail.com>
 
-Seems like there are now ARM systems too. :(
+I see the Suzuki has sent out the PR for 7.1, so this may wait after the merge window...
 
-So, the iommu drivers have been preserving the IOMMU and not
-disrupting the DMAs on x86 for a long time. This is established kdump
-practice.
+thanks.
 
-> If AER can panic a kdump kernel, that seems like a failing of the kdump
-> kernel itself more than anything else (especially given the likelihood that
-> additional AER events could follow from whatever initial crash/failure
-> triggered kdump to begin with).
+> ---
+> v2:
+>   - Return bool for consistency with other wait helpers
+>   - Add pci_err() on timeout
+>   - De-assert RST before returning on timeout
+>   - Move ctrl->started to the successful path
+>
+>  drivers/hwtracing/ptt/hisi_ptt.c | 20 +++++++++++++-------
+>  1 file changed, 13 insertions(+), 7 deletions(-)
+>
+> diff --git a/drivers/hwtracing/ptt/hisi_ptt.c b/drivers/hwtracing/ptt/hisi_ptt.c
+> index 94c371c491357..b5d851281fbf0 100644
+> --- a/drivers/hwtracing/ptt/hisi_ptt.c
+> +++ b/drivers/hwtracing/ptt/hisi_ptt.c
+> @@ -171,13 +171,13 @@ static bool hisi_ptt_wait_trace_hw_idle(struct hisi_ptt *hisi_ptt)
+>  					  HISI_PTT_WAIT_TRACE_TIMEOUT_US);
+>  }
+>  
+> -static void hisi_ptt_wait_dma_reset_done(struct hisi_ptt *hisi_ptt)
+> +static bool hisi_ptt_wait_dma_reset_done(struct hisi_ptt *hisi_ptt)
+>  {
+>  	u32 val;
+>  
+> -	readl_poll_timeout_atomic(hisi_ptt->iobase + HISI_PTT_TRACE_WR_STS,
+> -				  val, !val, HISI_PTT_RESET_POLL_INTERVAL_US,
+> -				  HISI_PTT_RESET_TIMEOUT_US);
+> +	return !readl_poll_timeout_atomic(hisi_ptt->iobase + HISI_PTT_TRACE_WR_STS,
+> +					  val, !val, HISI_PTT_RESET_POLL_INTERVAL_US,
+> +					  HISI_PTT_RESET_TIMEOUT_US);
+>  }
+>  
+>  static void hisi_ptt_trace_end(struct hisi_ptt *hisi_ptt)
+> @@ -202,14 +202,18 @@ static int hisi_ptt_trace_start(struct hisi_ptt *hisi_ptt)
+>  		return -EBUSY;
+>  	}
+>  
+> -	ctrl->started = true;
+> -
+>  	/* Reset the DMA before start tracing */
+>  	val = readl(hisi_ptt->iobase + HISI_PTT_TRACE_CTRL);
+>  	val |= HISI_PTT_TRACE_CTRL_RST;
+>  	writel(val, hisi_ptt->iobase + HISI_PTT_TRACE_CTRL);
+>  
+> -	hisi_ptt_wait_dma_reset_done(hisi_ptt);
+> +	if (!hisi_ptt_wait_dma_reset_done(hisi_ptt)) {
+> +		pci_err(hisi_ptt->pdev, "timed out waiting for DMA reset\n");
+> +		val = readl(hisi_ptt->iobase + HISI_PTT_TRACE_CTRL);
+> +		val &= ~HISI_PTT_TRACE_CTRL_RST;
+> +		writel(val, hisi_ptt->iobase + HISI_PTT_TRACE_CTRL);
+> +		return -ETIMEDOUT;
+> +	}
+>  
+>  	val = readl(hisi_ptt->iobase + HISI_PTT_TRACE_CTRL);
+>  	val &= ~HISI_PTT_TRACE_CTRL_RST;
+> @@ -234,6 +238,8 @@ static int hisi_ptt_trace_start(struct hisi_ptt *hisi_ptt)
+>  	if (!hisi_ptt->trace_ctrl.is_port)
+>  		val |= HISI_PTT_TRACE_CTRL_FILTER_MODE;
+>  
+> +	ctrl->started = true;
+> +
+>  	/* Start the Trace */
+>  	val |= HISI_PTT_TRACE_CTRL_EN;
+>  	writel(val, hisi_ptt->iobase + HISI_PTT_TRACE_CTRL);
 
-Probably the kdump wasn't triggered by AER. You want kdump to not
-trigger more RAS events that might blow up the kdump while it is
-trying to run.. That increases the chance of success
-
-> And frankly if some device getting a
-> translation fault could directly SError the whole system, then I'd say that
-> system is pretty doomed in general, kdump or not.
-
-Aborting the SMMU while ATS is enabled also fails all ATS and
-translated requests which is a catastrophic event for a CXL type
-device that a correct OS should never trigger. The catastrophic
-explosion of the CXL device also unplugs all it's RAM from the system
-and the kdump kernel just cannot handle the resulting cascade of RAS
-failures. Plus you loose all that CXL RAM you may have wanted to dump..
-
-Regardless, the platform has this flaw and to make kdump work it has
-to avoid triggering these errors like x86 does.
-
-Jason
 
