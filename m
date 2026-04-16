@@ -1,189 +1,137 @@
-Return-Path: <stable+bounces-238280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238281-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GJ2SOs+n4GlZkgAAu9opvQ
-	(envelope-from <stable+bounces-238280-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 11:11:43 +0200
+	id aMY9B7Or4GkCkwAAu9opvQ
+	(envelope-from <stable+bounces-238281-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 11:28:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C57440C06E
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 11:11:42 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2D6A40C5A5
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 11:28:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 297483009382
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 09:11:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6D578303C519
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 09:20:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2B6C38F657;
-	Thu, 16 Apr 2026 09:11:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 663EE39A054;
+	Thu, 16 Apr 2026 09:20:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ds/1jm87"
+	dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b="g0bA2uG9"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yx1-f52.google.com (mail-yx1-f52.google.com [74.125.224.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47C3137CD49
-	for <stable@vger.kernel.org>; Thu, 16 Apr 2026 09:11:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776330697; cv=pass; b=XqiyUkDoEocNN70nrB8djlDBKPb2tzlVSOFsg6T9CLFnbd9Yz/5/htnG+r80PafEw/iK/tkC8+82W3ynQ0qeUhgVzc3kcmFbjpSBPvkiGxvonou2IgyEWBFY+IYAOqeyi3F/N+eXp17i7+w8tLzTaXO+gLqdRrv7gFq2nuggEVg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776330697; c=relaxed/simple;
-	bh=lPss4pXYIIOF8fADFf1z6o8wrqt6CC0/v8OIPeDBCN4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AaoNwQL8GSohEjXWrOM62Xx2S6HQH14Mp9GWAfIH0HH4QVKOPDrOe3F8mMBBnxA8hO4fdxQlrI10tykPI9t82YGcoU6DgWp1fxLfAdAcS4GzBNrKZRDnFF0EoNwSnSIqwhdTrf5yLyvuem3thc6vdUJbhG3hRrgltA0R43T0nbQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ds/1jm87; arc=pass smtp.client-ip=74.125.224.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yx1-f52.google.com with SMTP id 956f58d0204a3-6501547d7edso7308564d50.0
-        for <stable@vger.kernel.org>; Thu, 16 Apr 2026 02:11:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776330695; cv=none;
-        d=google.com; s=arc-20240605;
-        b=LXiwpo7dzbnMAkax+0TRNROWOdEbYAYWcvf3zQGcfHFnUbEM9vlRkgrjE2Q67V5TX2
-         uCTE90AeXgdbqfVFIcJ8zWzJmJ1+lfmYWG6Bd8XX4Z/QrQeDvvgFrEwPfSynbjph2B6D
-         Xu3ro0gulp8Ggsjq0MjupYghvZEO4A3sl7Ok6dLw9XWQMWMk2p7mK4t2Ygm9+xMHQU8Q
-         xPPpNPgEMZO5/ArtbjrnoDQpIsi689uuc/LjPItZ8IWNoBUsepjQ9bb53ku+PS6HoaGn
-         lZV/7vg/VGIFdGv+xjPz/F+UFDwuAWBabWsltvaBm8uhC2avSIxZZWc+/5CRLLitsskX
-         +wQg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=lPss4pXYIIOF8fADFf1z6o8wrqt6CC0/v8OIPeDBCN4=;
-        fh=dUhVcU1cQH38RcoUUhGUj18xREThjZQcePp296uxEMM=;
-        b=kgyHuATOGM+a5IrhgYPjcn/9Bf8y/4ZIVxAPcdHmrdtkNZCCWIvBU69SD4S741AcKk
-         zVyf5ZCfQQj+u77UqVAWO04gsz6h7UZZY/7nBR4h7ak+V5po3jO0HuBOEaKZ+LOsL9rc
-         n4rQLy7d8XIqDPOV+a7Q0X0FUzadjhCJCOT/Lrb1qpA/m4tCzXVh2ZDC9SFZawuEt/+S
-         BNElfD2AgbkKWohDSFAfeEjloUvnuKR8xr/JP7QrvfhcY8giGtojeN7PllDz+h1ocDhD
-         Khti6D2ULHkC+PXtxIVlJAXJMarwSYUOZaZ9KLhceITDJt1Erdbt9euPSaP3WEiygf7Y
-         p3XA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776330695; x=1776935495; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=lPss4pXYIIOF8fADFf1z6o8wrqt6CC0/v8OIPeDBCN4=;
-        b=Ds/1jm87aCAoVUXxiXQfY6v6ION4oPz/OWMSG3pGIMj7aQPmZg9jSuLpbp+CLdsOud
-         YqSH6HlGtnygSheNT3doTBVISbW1CEZNfdltKD1urNJo73CQsvs6Vqx22GS5AUrh61Sz
-         OG3yg/0c/pTuYDuqiP+vqxHFy7eVFugptZytoPLEBfQVSGuayPkupHf1dK7DBfK1sn16
-         BF0/lgfzZk5RNZti/yYqWGKIGONWjMdWmVy9ABIkHeGRDHU2IQ08jJPD6OCR12Gga+1Y
-         ym3j63lPJanmJLwJStxRW3Fofa/147Pl2dnYRI6ijF3f1FxjwGXYbxyfArYViSFEhLBc
-         JmVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776330695; x=1776935495;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lPss4pXYIIOF8fADFf1z6o8wrqt6CC0/v8OIPeDBCN4=;
-        b=sI1idIWQ4Pbp43SZg9xtRQ1W22SJba1ggchefY1+VrHbWvKqM+roREBFmPRjnCuFFP
-         uty9X1E6DEf6wEW1D3v0eIwWJw3/VjdF+Sh7NzFBc7XNtJOFufQ/DYii63ozf4t36erf
-         J251xhl14pTgARGcSWvEjspsXQ4W79YHu6drbMkhn2XxXWrMq3f25NCwao2YEZlQ1kni
-         zICKHxHMEen8sWX2dZ3uk4yvPm6bEbfpysNWrWsVkeKgoKAoGo3QKNjZ1hzMOWwwqkh9
-         V8kNzMg0X5vkR3c5Z+3J5eQPU5GLev/dA9sJtJuaWvtbxRTk7JwwaS5g9rFLSnblHOzb
-         u9Eg==
-X-Forwarded-Encrypted: i=1; AFNElJ/vOi1Ycw76f70gEmWww1DaYYquiP7MmTqY6UV2jJ4IwmFHWCNTetTJTKOmZXRI4m7XPkM0dMI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyu6+0e3XUIPMufx51Q2e2Bmj7sVTqdo26mBWNna/1i7axbOpk7
-	c6BziLLR/BPiQohYf+00AJnlsJOs1bg97TG75XDyYsHt6qDBdWrF9uSJqZMRJtJFivyqqFojSd8
-	4eIPhW/bFeZH3AVDuvUp7IHlBTdigpMc=
-X-Gm-Gg: AeBDietKZuvS7acPiItsfx8Sv48XlQRJAwfPAxGIpmr+F+XHTSJ6MD0NXMOTHsGnBbe
-	M6uGDF4JE5K05IgOmfBeg1pdTHltOcFXhrlUjkml3sw/csz9P97TyeJZc3l1ziSknXAouQ8sq39
-	hS/kD3QYmNCQKBhi/7o6saTTYmUYuoJRCdfXGt804gYIZndA0kE1xq2gwBOcHAoqGzKxAroaFuf
-	Xp+ATxehDt+b7+/awF3vlvn1IaW9ggolmDqRbL+bhDSehFUFtcFXDFDFW6MR3embX+z+SiTXPSp
-	nl6vR0xyYWcXblBUau+u
-X-Received: by 2002:a05:690e:4105:b0:651:c698:fc01 with SMTP id
- 956f58d0204a3-651c698fe41mr15283368d50.24.1776330695403; Thu, 16 Apr 2026
- 02:11:35 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3AA8399340;
+	Thu, 16 Apr 2026 09:20:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=180.181.231.80
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776331240; cv=none; b=rmIIPX6BidAS+NW4zkMN686GN5pfNFKUmIffC4CDTi24RZvEpuxTeyoaQmpwPP9TzPYzOB1re3d0TkZ9J3hPhfcCgOnloqpxAeFal80FPiIkCiFg1tiZZVd53RzvYKife4oDw+fmVxY9d5NDHzmOppoRrgmHV7JOgl/dHTI/AJ4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776331240; c=relaxed/simple;
+	bh=dD3UUD0Kr7I0glB/GGKzh7RGXYNoZdsYahQ8K3B82bs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SbgQ7XMoXOnBiOE6mTqh1dO/hjptmzhNTAO/T7VV2g/TR+8Oh/tg9QtTjWHXDIZrOtq84dsfnQUk2RYVQ8v/zE40574Cy+39yZ+wIZumwHxC+YMspKXqjTKBIhPOqIV13pbFlllAyCqObORR0NUl5bjJ/DRxD0t6i0YErFgF7kw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b=g0bA2uG9; arc=none smtp.client-ip=180.181.231.80
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
+	from:content-type:reply-to; bh=LeD79Ghy94CfpUoAQenbsLexQn/Pp4AFdktVeRQ/V6Y=; 
+	b=g0bA2uG9/AKjawQd7lLtACyn8Prgwof0ZFaLd47prRkh0pa2EX8+Kpdhxb6ABzAw6j1+S8GiTTv
+	n7l/ChOrBGgHHbswIhrz8viP953E1DpoK/pMGGoGCdpExpKedlr3ffbC4SE+2Z95JKl0p0gFeXP+i
+	ILEaYsXV+QnD/jnI1auohxAXm9rEpCNVZD979/rjhybP8/+vh/a6tbiyijI0k4UtRILZ5z+bLEmuk
+	eTnzzqRQ4PmOrNo8tC90FTgnukiod0veYJJEGhjG37qrf4WStGVO/wrszWxYAUH98wMf/mbBJ2Llr
+	mZrfuTkwCp5C3Qizia2lD+Ow01IcnGkbCT9g==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
+	id 1wDItV-006VMc-1h;
+	Thu, 16 Apr 2026 17:20:18 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Thu, 16 Apr 2026 17:20:17 +0800
+Date: Thu, 16 Apr 2026 17:20:17 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Guangshuo Li <lgs201920130244@gmail.com>
+Cc: Srujana Challa <schalla@marvell.com>,
+	Bharat Bhushan <bbhushan2@marvell.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Kees Cook <kees@kernel.org>,
+	Lukasz Bartosik <lbartosik@marvell.com>,
+	Suheil Chandran <schandran@marvell.com>,
+	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] crypto: octeontx2: fix IRQ vector leak in
+ otx2_cptpf_probe()
+Message-ID: <aeCp0Xe5G531vHBj@gondor.apana.org.au>
+References: <20260414123857.3162673-1-lgs201920130244@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260415154537.3451732-1-lgs201920130244@gmail.com>
- <75275f6e-8314-4dd6-a54e-95320c2224e2@linuxfoundation.org>
- <CANUHTR9j8-wHB8rE1zGLaUw4ZyNh2Mq3njFerBoUcVPWAh7w6A@mail.gmail.com> <a189c5e7-9119-43ad-8a90-b96cc40fed06@linuxfoundation.org>
-In-Reply-To: <a189c5e7-9119-43ad-8a90-b96cc40fed06@linuxfoundation.org>
-From: Guangshuo Li <lgs201920130244@gmail.com>
-Date: Thu, 16 Apr 2026 17:11:21 +0800
-X-Gm-Features: AQROBzBkyYJEDY-3EzYz4JpmEC6TfTKUR_6PKczImyFVHt3Y9gPZvyypY_TFnV0
-Message-ID: <CANUHTR8FYWid_W=Lcd_N0dZdaoTFdxVKJhE9G4QBrcp3rsCiyw@mail.gmail.com>
-Subject: Re: [PATCH] media: vimc: fix reference leak on failed device registration
-To: Shuah Khan <skhan@linuxfoundation.org>
-Cc: Kieran Bingham <kieran.bingham@ideasonboard.com>, 
-	Mauro Carvalho Chehab <mchehab@kernel.org>, Hans Verkuil <hverkuil@kernel.org>, 
-	Dafna Hirschfeld <dafna.hirschfeld@collabora.com>, linux-media@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260414123857.3162673-1-lgs201920130244@gmail.com>
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[apana.org.au,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[gondor.apana.org.au:s=h01];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gondor.apana.org.au:+];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-238280-lists,stable=lfdr.de];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	ASN_FAIL(0.00)[4.211.64.104.asn.rspamd.com:server fail];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-238281-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
-	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,mail.gmail.com:mid,patchew.org:url,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: 2C57440C06E
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[herbert@gondor.apana.org.au,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,gondor.apana.org.au:dkim,gondor.apana.org.au:mid,apana.org.au:url,apana.org.au:email]
+X-Rspamd-Queue-Id: C2D6A40C5A5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Shuah,
-
-Thanks for reviewing.
-
-On Thu, 16 Apr 2026 at 04:49, Shuah Khan <skhan@linuxfoundation.org> wrote:
+On Tue, Apr 14, 2026 at 08:38:57PM +0800, Guangshuo Li wrote:
 >
-> On 4/15/26 10:56, Guangshuo Li wrote:
-> > Hi Shuah,
-> >
-> > Thanks for reviewing.
-> >
-> > On Thu, 16 Apr 2026 at 00:01, Shuah Khan <skhan@linuxfoundation.org> wrote:
-> >>
-> >
-> >>
-> >> Can you share your manual review?
-> >>
-> >> Can other static analysis tools for example scripts/coccinelle support
-> >> your findings?
-> >>
->
-> Did you try other static analysis tools in the kernel?
->
-I have not used other static analysis tools for this case.
+> diff --git a/drivers/crypto/marvell/octeontx2/otx2_cptpf_main.c b/drivers/crypto/marvell/octeontx2/otx2_cptpf_main.c
+> index 346d1345f11c..059f702dbf5c 100644
+> --- a/drivers/crypto/marvell/octeontx2/otx2_cptpf_main.c
+> +++ b/drivers/crypto/marvell/octeontx2/otx2_cptpf_main.c
+> @@ -783,7 +783,7 @@ static int otx2_cptpf_probe(struct pci_dev *pdev,
+>  	/* Initialize AF-PF mailbox */
+>  	err = cptpf_afpf_mbox_init(cptpf);
+>  	if (err)
+> -		goto clear_drvdata;
+> +		goto free_irq_vectors;
+>  	/* Register mailbox interrupt */
+>  	err = cptpf_register_afpf_mbox_intr(cptpf);
+>  	if (err)
+> @@ -826,6 +826,8 @@ static int otx2_cptpf_probe(struct pci_dev *pdev,
+>  	cptpf_disable_afpf_mbox_intr(cptpf);
+>  destroy_afpf_mbox:
+>  	cptpf_afpf_mbox_destroy(cptpf);
+> +free_irq_vectors:
+> +	pci_free_irq_vectors(pdev);
 
-> There are several calls to platform_device_register() all over the kernel.
-> Did your tool find all other cases or just this one?
->
-> thanks,
-> -- Shuah
-
-My tool also identified other similar issues in the kernel, and I have
-posted corresponding patches for them, for example:
-
-[PATCH] eeprom: digsy_mtc: fix reference leak on failed device registration
-https://patchew.org/linux/20260415165203.3584869-1-lgs201920130244@gmail.com/
-
-[PATCH] arm_pmu: acpi: fix reference leak on failed device registration
-https://patchew.org/linux/20260415174159.3625777-1-lgs201920130244@gmail.com/
+Good catch.  But what about the remove path, shouldn't the vectors
+be freed there as well?
 
 Thanks,
-Guangshuo
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
