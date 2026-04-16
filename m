@@ -1,201 +1,258 @@
-Return-Path: <stable+bounces-238262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238263-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mClNBQyF4GmmiwAAu9opvQ
-	(envelope-from <stable+bounces-238262-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 08:43:24 +0200
+	id OPyfJgCI4Gm/jAAAu9opvQ
+	(envelope-from <stable+bounces-238263-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 08:56:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF6CC40ABCC
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 08:43:22 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DAD340AD17
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 08:55:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 892CE303B5F2
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 06:43:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A8EC43006B14
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 06:53:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0D3A37B022;
-	Thu, 16 Apr 2026 06:43:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2E543385BC;
+	Thu, 16 Apr 2026 06:53:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=barre.sh header.i=@barre.sh header.b="b1RzviSq";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="hKe9p2/3"
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="vYtJAln5"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-b6-smtp.messagingengine.com (fhigh-b6-smtp.messagingengine.com [202.12.124.157])
+Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 016BD1B4156;
-	Thu, 16 Apr 2026 06:43:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F1CF4C97
+	for <stable@vger.kernel.org>; Thu, 16 Apr 2026 06:53:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.221
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776321799; cv=none; b=hLJGMTZxAKd6DKrfXdO/0JcwpgHF0za4kKxduxcn2MW7b200t4OvGX7PlO4gVfM0HHJkzA7uf9tNineNwIvq9bureZ4pCBRPVSIBQNXuugRwsNqBAAZZcieOUAVdtkO2PeSFTa67fdLyKNAPbZ4wrTm2y2dyJXrjo52qSx44Baw=
+	t=1776322437; cv=none; b=hcBJUtdlp1bP+EokVVj2Hs9qAOKuk49hMkMje/VdwJnxzPQMIuYVxjQUgIEsHz276XnqgZyiB37IgkW49PkIfiutaAD0TItW+0nmtIjhnLsz6Os0vZJVtA9JK7PwrhTon53tk7nBDnP1CLawk7GpQ5Kb6LuRDHWNoMxO2a7bpPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776321799; c=relaxed/simple;
-	bh=EL43GC42YmxIDGnguK6h2F5qT/m6cfOybkmqCOGETKs=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=Rkbg0PhoSOqebVD2yK+o9B/N2rJp5tdiLF1jkIrrgKooMHMg5VHxWgIOpvltnctTNvCs6sQEgnOsp+DIl0K9TASB8y5c65Hkk464fFUx756z1KlAW3O+YEI6x0CnW+EzbmwH6jZTRY2tH31ecD9H7OcRha2YVVFj3K/8SPeaGHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=barre.sh; spf=pass smtp.mailfrom=barre.sh; dkim=pass (2048-bit key) header.d=barre.sh header.i=@barre.sh header.b=b1RzviSq; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=hKe9p2/3; arc=none smtp.client-ip=202.12.124.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=barre.sh
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=barre.sh
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 10EE57A00DE;
-	Thu, 16 Apr 2026 02:43:15 -0400 (EDT)
-Received: from phl-imap-04 ([10.202.2.82])
-  by phl-compute-06.internal (MEProxy); Thu, 16 Apr 2026 02:43:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=barre.sh; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1776321795;
-	 x=1776408195; bh=UQSNmbFciiajEDdF1z12iE2Vg6YGNrx/vVkrhizzi7M=; b=
-	b1RzviSqdJ07i176zIamh8AmCmNCm/jB7+REjW/PQ+iXF+UzJup2bPgTaGqshfoh
-	oHkySQ3j/7lNBsxSClrRyw9UHvPuIcfDVbp9EfJdalRQFwoh6UacxEwBjyaorx3E
-	ZFD3auDKOWUxaQLujVf+0QIEBhaoKpLZPsIHTsjkMdn4jSYSOlHFaA8+cyH6gy5/
-	KnOEssCcJQf86C64XvK5MG58YmQ0e9+GSoNpvSuHExCYr1NZZrJaOFfEyhNvz7rS
-	Me6C7pu64lPD4eDGKbO+F9E6Sgbsi1y56CB96t+1uc9vhpUb5GWy66EIULIOqbe6
-	vNl0++Io7QrZjJY8XM5+UQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1776321795; x=
-	1776408195; bh=UQSNmbFciiajEDdF1z12iE2Vg6YGNrx/vVkrhizzi7M=; b=h
-	Ke9p2/3QCK/07FK9Zd3cjjH+zZm/I/yU1iH7a5kC4+BppBStmYbMC/0XKnBMqIsk
-	/rIAn+E58rbI6Axyq7+L9QXRs3OIVhlxutEGxvsjyKb4AvkSHpfvB0NZcJ+LEsBH
-	Pi8mnUqOkUnOMu+CRYqGWyeTOWTKSVFrazGTQ1sCtlb/RQHgkTiILBZ2o7rxZyIU
-	dYHf+xTIysZvfB1DlOT9GjvXEnr7rxU4wDh2c3xnTa5gNxy+ui9AYEjB+II5JoIp
-	bqP6IMXKAnlS5s6S+YdoQOf+ru1hY0py3EhDAaKBkA8qZtQ//Dr9FnC84N4aBItH
-	9+4tuVWPRd3beuQrfJgCQ==
-X-ME-Sender: <xms:A4XgaXsJ13y1vbXRGoC6Rxx5ofPDvz7iLQJlhZp-uN4FB21cJ3_pAg>
-    <xme:A4XgaTRfBp1ScnygtUyh_DjnXICozw7TgpYz8M1luzPmAbW108gyF2fl1lQS4Loux
-    BSWCfGocKP3315Ao7H7Fx3z6tUlIf7IBlfZTBfYN0QOR0OiCJUvXZ7b>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdegieefudcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecunecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertd
-    ertddtnecuhfhrohhmpedfrfhivghrrhgvuceurghrrhgvfdcuoehpihgvrhhrvgessggr
-    rhhrvgdrshhhqeenucggtffrrghtthgvrhhnpeetgeeivdffhfeihedvkeefueekgeeivd
-    ekheekjeeuieejiedtffdtjeetvdffjeenucevlhhushhtvghrufhiiigvpedtnecurfgr
-    rhgrmhepmhgrihhlfhhrohhmpehpihgvrhhrvgessggrrhhrvgdrshhhpdhnsggprhgtph
-    htthhopeekpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegrshhmrgguvghushes
-    tghouggvfihrvggtkhdrohhrghdprhgtphhtthhopehlihhnuhigpghoshhssegtrhhuug
-    gvsgihthgvrdgtohhmpdhrtghpthhtoheplhhutghhohesihhonhhkohhvrdhnvghtpdhr
-    tghpthhtohepvghrihgtvhhhsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehvlehfsh
-    eslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopehsrghnuggvvghnsehrvggu
-    hhgrthdrtghomhdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvg
-    hrnhgvlhdrohhrghdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhkvghrnhgvlhdr
-    ohhrgh
-X-ME-Proxy: <xmx:A4XgacdMFvtmAtD977tuDhllkROdtZBEkBecpr6cQurEszRn3VYCoQ>
-    <xmx:A4XgaQxboX17cvL5vkET90e77067Kn2FEwKstx3aWOIia7NokjDq_A>
-    <xmx:A4XgaRJhrlPoPQmvaV4yPIUtm9hV6HlYEZF39KXbZs3J1HOyKHgW6g>
-    <xmx:A4XgaSE2mnIf_3j57-8VtRxwcmIwzd_OTMg7cczGIzNIYQkpgH59qw>
-    <xmx:A4XgaQpwFBfRmbQIDK1nK1oFjbT8m0qfg0bNuTtbAlPaH8x9n1KopFlb>
-Feedback-ID: i97614980:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id F21CDB6006E; Thu, 16 Apr 2026 02:43:14 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1776322437; c=relaxed/simple;
+	bh=TSdRAT++6Lr9sm6PeDGEaW/kIIa0T2yadT+7jhi21BM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=rjOydbDmO6emFj2kikGFh3ngKGLm9ZSXIxqVCXwn8p4lb0FTmAKE7EsSwC0/0Mc1JholgfxGCqX0G8yhlZzVLeFx5qRCvbuZQc+eXdqrqFOiGWeqWkRZfajIB8cEw159jfzOsLren57fAY45hnwKQYjO0bNXcPAdMCpns4Uiwpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=vYtJAln5; arc=none smtp.client-ip=113.46.200.221
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=V6ooxnaYpS3IiydCIisIXi5SzkIIL+iBCuoiXM/KiGY=;
+	b=vYtJAln5CXv+lKgXQ9cmYQu4cOsJc171iRk50A7szCv7Xx5Z/J7V69qpnMJ8RRb24LSgzYojf
+	1wnsULHCtjHv9Q+ocSaufinrl5dgUSukj7qwDYzUkO30KDs5dit9EQdkHrHNyODs2UeRKoatJl8
+	otVhB240MDb4AYfKhnmnH/o=
+Received: from mail.maildlp.com (unknown [172.19.162.223])
+	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4fx7qS4KHgzRhR4;
+	Thu, 16 Apr 2026 14:47:32 +0800 (CST)
+Received: from dggemv706-chm.china.huawei.com (unknown [10.3.19.33])
+	by mail.maildlp.com (Postfix) with ESMTPS id 7C6FD40572;
+	Thu, 16 Apr 2026 14:53:51 +0800 (CST)
+Received: from kwepemq100007.china.huawei.com (7.202.195.175) by
+ dggemv706-chm.china.huawei.com (10.3.19.33) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 16 Apr 2026 14:53:49 +0800
+Received: from [10.159.167.44] (10.159.167.44) by
+ kwepemq100007.china.huawei.com (7.202.195.175) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 16 Apr 2026 14:53:48 +0800
+Message-ID: <7fd5022a-9a5d-4976-9d4a-1e0fa2022eae@huawei.com>
+Date: Thu, 16 Apr 2026 14:53:47 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Thu, 16 Apr 2026 08:42:54 +0200
-From: "Pierre Barre" <pierre@barre.sh>
-To: asmadeus <asmadeus@codewreck.org>,
- "Christian Schoenebeck" <linux_oss@crudebyte.com>
-Cc: ericvh@kernel.org, lucho@ionkov.net, v9fs@lists.linux.dev,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, sandeen@redhat.com
-Message-Id: <799434da-ec7b-4e97-aeb1-e60927138233@app.fastmail.com>
-In-Reply-To: <aeBPEcmAaVv5Vt5d@codewreck.org>
-References: <0ddc72da-d196-4f01-8755-0086f670e779@app.fastmail.com>
- <2406037.ElGaqSPkdT@weasel> <aeBPEcmAaVv5Vt5d@codewreck.org>
-Subject: Re: [PATCH] 9p: fix access mode flags being ORed instead of replaced
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/4] drm/hibmc: Use drm_atomic_helper_check_plane_state()
+To: Thomas Zimmermann <tzimmermann@suse.de>, <tiantao6@hisilicon.com>,
+	<kong.kongxinwei@hisilicon.com>, <sumit.semwal@linaro.org>,
+	<yongqin.liu@linaro.org>, <jstultz@google.com>,
+	<maarten.lankhorst@linux.intel.com>, <mripard@kernel.org>,
+	<airlied@gmail.com>, <simona@ffwll.ch>
+CC: <dri-devel@lists.freedesktop.org>, Rongrong Zou <zourongrong@gmail.com>,
+	Sean Paul <seanpaul@chromium.org>, Dmitry Baryshkov <lumag@kernel.org>,
+	<stable@vger.kernel.org>, <shiyongbang@huawei.com>, "Liangjian(Jim,Kunpeng
+ Solution Development Dept)" <liangjian010@huawei.com>, Chenjianmin
+	<chenjianmin@huawei.com>, "fengsheng (A)" <fengsheng5@huawei.com>
+References: <20260413085037.17491-1-tzimmermann@suse.de>
+ <20260413085037.17491-2-tzimmermann@suse.de>
+From: Yongbang Shi <shiyongbang@huawei.com>
+In-Reply-To: <20260413085037.17491-2-tzimmermann@suse.de>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-1.65 / 15.00];
+X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
+ kwepemq100007.china.huawei.com (7.202.195.175)
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[barre.sh:s=fm1,messagingengine.com:s=fm2];
+	DMARC_POLICY_ALLOW(-0.50)[huawei.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[huawei.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	XM_UA_NO_VERSION(0.01)[];
-	ASN_FAIL(0.00)[114.105.105.172.asn.rspamd.com:server fail];
+	TAGGED_FROM(0.00)[bounces-238263-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DMARC_NA(0.00)[barre.sh];
+	RCVD_COUNT_SEVEN(0.00)[7];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-238262-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[barre.sh:+,messagingengine.com:+];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[suse.de,hisilicon.com,linaro.org,google.com,linux.intel.com,kernel.org,gmail.com,ffwll.ch];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	ASN_FAIL(0.00)[1.2.3.5.c.f.2.1.0.0.0.0.0.0.0.0.b.d.0.0.1.0.0.e.a.0.c.3.0.0.6.2.asn6.rspamd.com:server fail];
+	FREEMAIL_CC(0.00)[lists.freedesktop.org,gmail.com,chromium.org,kernel.org,vger.kernel.org,huawei.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pierre@barre.sh,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[huawei.com:+];
+	FROM_NEQ_ENVFROM(0.00)[shiyongbang@huawei.com,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,messagingengine.com:dkim,barre.sh:dkim]
-X-Rspamd-Queue-Id: BF6CC40ABCC
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,huawei.com:email,huawei.com:dkim,huawei.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,chromium.org:email]
+X-Rspamd-Queue-Id: 1DAD340AD17
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-> Note your patch converted tabs to space and couldn't be applied -- if
-> you have to send patches by web mail please attach them instead, that'll
-> be easier to apply than a corrupted patch, even if some tooling like
-> sashiko won't run (it doesn't run on corrupted patches anyway..)
 
-Argh, I'll just commit to using git-send-email from now on.
+> Call drm_atomic_helper_check_plane_state() from the primary plane's
+> atomic-check helper and replace the custom implementation.
+> 
+> All plane's implementations of atomic_check should call the shared
+> _check_plane_state() helper first. It adjusts the plane state for
+> correct positioning, rotation and scaling of the plane. If the plane
+> is not visible, it clears the corresponding flag in the plane state.
+> 
+> On errors or if the plane is not visible, the atomic-check helper can
+> return early. Implement all this in hibmc and drop the custom code
+> that does some of it.
+> 
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Fixes: da52605eea8f ("drm/hisilicon/hibmc: Add support for display engine")
+> Cc: Rongrong Zou <zourongrong@gmail.com>
+> Cc: Sean Paul <seanpaul@chromium.org>
+> Cc: Xinliang Liu <xinliang.liu@linaro.org>
+> Cc: Dmitry Baryshkov <lumag@kernel.org>
+> Cc: Baihan Li <libaihan@huawei.com>
+> Cc: Yongbang Shi <shiyongbang@huawei.com>
+> Cc: <stable@vger.kernel.org> # v4.10+
+> ---
+>  .../gpu/drm/hisilicon/hibmc/hibmc_drm_de.c    | 46 ++++++-------------
+>  1 file changed, 14 insertions(+), 32 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_de.c b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_de.c
+> index 89bed78f1466..8fa2a95bcdd1 100644
+> --- a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_de.c
+> +++ b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_de.c
+> @@ -55,46 +55,28 @@ static const struct hibmc_dislay_pll_config hibmc_pll_table[] = {
+>  static int hibmc_plane_atomic_check(struct drm_plane *plane,
+>  				    struct drm_atomic_state *state)
+>  {
+> -	struct drm_plane_state *new_plane_state = drm_atomic_get_new_plane_state(state,
+> -										 plane);
+> -	struct drm_framebuffer *fb = new_plane_state->fb;
+> -	struct drm_crtc *crtc = new_plane_state->crtc;
+> -	struct drm_crtc_state *crtc_state;
+> -	u32 src_w = new_plane_state->src_w >> 16;
+> -	u32 src_h = new_plane_state->src_h >> 16;
+> -
+> -	if (!crtc || !fb)
+> -		return 0;
+> +	struct drm_plane_state *new_plane_state =
+> +		drm_atomic_get_new_plane_state(state, plane);
+> +	struct drm_crtc_state *new_crtc_state = NULL;
+> +	int ret;
+>  
+> -	crtc_state = drm_atomic_get_crtc_state(state, crtc);
+> -	if (IS_ERR(crtc_state))
+> -		return PTR_ERR(crtc_state);
+> +	if (new_plane_state->crtc)
+> +		new_crtc_state = drm_atomic_get_new_crtc_state(state, new_plane_state->crtc);
+>  
+> -	if (src_w != new_plane_state->crtc_w || src_h != new_plane_state->crtc_h) {
+> -		drm_dbg_atomic(plane->dev, "scale not support\n");
+> -		return -EINVAL;
+> -	}
+> -
+> -	if (new_plane_state->crtc_x < 0 || new_plane_state->crtc_y < 0) {
+> -		drm_dbg_atomic(plane->dev, "crtc_x/y of drm_plane state is invalid\n");
+> -		return -EINVAL;
+> -	}
+> -
+> -	if (!crtc_state->enable)
+> +	ret = drm_atomic_helper_check_plane_state(new_plane_state, new_crtc_state,
+> +						  DRM_PLANE_NO_SCALING,
+> +						  DRM_PLANE_NO_SCALING,
+> +						  false, true);
 
-> If you're fine with my wording for the comment I'll modify it in place,
+The last parameter, "can_update_disabled", if set to true, causes the
+condition "if (!crtc_state->enable && !can_update_disabled)" in the
+function `drm_atomic_helper_check_plane_state` to always evaluate to
+false, meaning `crtc_state->enable` will not be checked. This differs
+from the behavior prior to the modification.
 
-Sounds great, thank you.
+before:
+	- crtc_state->enable(true)  --> continue check
+	- crtc_state->enable(false) --> return 0(atomic check success)
 
-Pierre.
+after:
+	- crtc_state->enable(true)   --> _helper_check_plane_ ->  continue check
+	- crtc_state->enable(false)  --> _helper_check_plane_ ->  continue check
 
-On Thu, Apr 16, 2026, at 04:53, Dominique Martinet wrote:
-> Christian Schoenebeck wrote on Thu, Apr 09, 2026 at 04:51:07PM +0200:
->> > diff --git a/fs/9p/v9fs.c b/fs/9p/v9fs.c
->> > index 057487efaaeb..05a5e1c4df35 100644
->> > --- a/fs/9p/v9fs.c
->> > +++ b/fs/9p/v9fs.c
->> > @@ -413,7 +413,11 @@ static void v9fs_apply_options(struct v9fs_session_info
->> > *v9ses, /*
->> >          * Note that we must |= flags here as session_init already
->> >          * set basic flags. This adds in flags from parsed options.
->> > +        * Access flags are mutually exclusive, so clear any access
->> > +        * bits set by session_init before applying the user's choice.
->> 
->> That phrase is a bit suboptimal, because V9FS_ACCESS_ANY is actually a bit
->> combination of single, user and client. But OK, I currently don't have a
->> better phrase for it since the access fields have to be replaced altogether.
->
-> Yeah, it's not so much that they're mutually exclusive that we need to
-> clear the default value before applying the settings.
-> The key distinction here is that it's not "any access bits set" -- if it
-> were arbitrary values then it wouldn't be acceptable to just or the
-> flags out, you could risk e.g. creating a client with 2000L but setting
-> another protocol in the flags and there'd be no end of things to check.
->
-> Something like this?
->            * Default access flags must be cleared if session options
-> 	   * change them to avoid mangling the setting.
->
->> As for the actual behaviour change; makes sense to me:
->
-> Yes, that works for me.
->
-> Note your patch converted tabs to space and couldn't be applied -- if
-> you have to send patches by web mail please attach them instead, that'll
-> be easier to apply than a corrupted patch, even if some tooling like
-> sashiko won't run (it doesn't run on corrupted patches anyway..)
->
->
-> If you're fine with my wording for the comment I'll modify it in place,
-> otherwise we have a few more days to discuss this before I sent to Linus
-> for 7.1-rc1
-> (and I'm really sorry for my lack of reactivity, I'm sure I'll miss some
-> patches anyway...)
->
-> -- 
-> Dominique Martinet | Asmadeus
+
+> +	if (ret)
+> +		return ret;
+> +	else if (!new_plane_state->visible)
+>  		return 0;
+>  
+> -	if (new_plane_state->crtc_x + new_plane_state->crtc_w >
+> -	    crtc_state->adjusted_mode.hdisplay ||
+> -	    new_plane_state->crtc_y + new_plane_state->crtc_h >
+> -	    crtc_state->adjusted_mode.vdisplay) {
+> -		drm_dbg_atomic(plane->dev, "visible portion of plane is invalid\n");
+> -		return -EINVAL;
+> -	}
+> -
+
+The purpose of this check is to ensure that the right and bottom
+boundaries of the plane do not extend beyond the crtc. In
+`drm_atomic_helper_check_plane_state`, `drm_mode_get_hv_timing` is
+called to retrieve the crtc boundaries, and `drm_rect_clip_scaled` is
+used to clip the plane, any portions extending beyond the right and
+bottom boundaries are discarded.
+
+I'd like to confirm that my understanding is correct? previously, the
+check failed if the plane exceeded the boundaries, but now, after
+`drm_atomic_helper_check_plane_state` is called, the plane is clipped to
+fit within the boundaries.
+
+in function drm_rect_clip_scaled:
+
+diff = dst->x2 - clip->x2;
+if (diff > 0) {
+	...
+	dst->x2 -= diff;
+}
+diff = dst->y2 - clip->y2;
+if (diff > 0) {
+	...
+	dst->y2 -= diff;
+}
+
+
+Thanks.
+
+Best regards
+Yongbang.
+
+
+>  	if (new_plane_state->fb->pitches[0] % 128 != 0) {
+>  		drm_dbg_atomic(plane->dev, "wrong stride with 128-byte aligned\n");
+>  		return -EINVAL;
+>  	}
+> +
+>  	return 0;
+>  }
+>  
+
 
