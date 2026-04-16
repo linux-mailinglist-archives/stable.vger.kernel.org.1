@@ -1,51 +1,46 @@
-Return-Path: <stable+bounces-238256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238257-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KMSkNy9+4GkWiAAAu9opvQ
-	(envelope-from <stable+bounces-238256-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 08:14:07 +0200
+	id IW3pE4x/4GkKiQAAu9opvQ
+	(envelope-from <stable+bounces-238257-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 08:19:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BC4040A94E
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 08:14:06 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0F1740A987
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 08:19:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1455B30364E3
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 06:14:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 833A03079F32
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 06:18:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFD91379EF6;
-	Thu, 16 Apr 2026 06:14:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O4Kjqurt"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9EB335F5E4;
+	Thu, 16 Apr 2026 06:18:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B01D92FF672;
-	Thu, 16 Apr 2026 06:14:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BE2E21A95D;
+	Thu, 16 Apr 2026 06:18:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776320043; cv=none; b=e6S/xgNvs/px6QNyPABoShXo9AvHV1w6j99ZUZYF7mkIGyqaec0RxxuqtMT+sI7gpT2yvRERINcUDGlCxnLJZgnG493oKcMZRndLd90KVb9L1191YmbC2BQr51Hmb6xkuAskP5lR0zeAFQlDUL+/jaqKLjPBvLCljrWWjt6zJyc=
+	t=1776320308; cv=none; b=n2ie6NXpYX4m/iOSMPOW6t9wZYNdKy/c2a0mBY19teZvQwG1KbIiUpEjuXiEK1i1VJNiXoULiknsDdQiVYkIni/PK8aJs6mIRe+LU7VeOmXFkyHCyJyhXxyqyXDmVf9C1rnzgdkeyUyubifc9mIeM0txeFhTE0rtMSnA9VHAfKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776320043; c=relaxed/simple;
-	bh=O0qZsKmrGfbZpaWF12Ph+8auZdfeqxCWG+kcnD4cptg=;
+	s=arc-20240116; t=1776320308; c=relaxed/simple;
+	bh=eCsKDa/p7lPGZvq1JXc4GFSpPGg9liwsR+o57QW8Tus=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rcmp7HN9YZA4UT9X89sCkhH0mCHw/uo0A/gw6oeI2gVGsPbwXr6lgyyR1V0fnKfVnNPm8wr2dPso8Ya2wRlAgZD1tJz/smS0SAe3YWOKYTDGuOcs353Q1YQb9CF2EK+ppQ+8v2CorLlHuZGmBK0yhWaAy0Y370Tm0LCQiNd8kdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O4Kjqurt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03DF2C2BCAF;
-	Thu, 16 Apr 2026 06:14:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776320043;
-	bh=O0qZsKmrGfbZpaWF12Ph+8auZdfeqxCWG+kcnD4cptg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=O4KjqurtHN+CmLcZgKvgbzwlRAzP/eup4XdcQlk+wi3kl+XMwYu72ptnYedXfnP/t
-	 xoBrDj1A+qEv0Zzpoeq2L6QBjTV6CSolRyVVa+UhOLDxN0LIkCx5PTERMB7cxj4GTL
-	 5ulSMnq5i15A4E5urGlSqy4vJzvJ1bTZ2CmIdijjzAEN9BOXrVQHyu8/d/imMquNZ1
-	 ORvYtfsUbGtQila4kVoKRySN5ZCzAU874dhhhqUpt76LlJ+ikmzoc8QxTkuCvrLS76
-	 k0gNtfnMXbZs2Lp+YowcM0EgP+1VJ851Pj3FMD0pzqw4zAV9tUjDv3a7sqSHDtr/xY
-	 z/965mQod5n+A==
-Message-ID: <463cec4f-a038-4bd0-90df-76e0ef48381c@kernel.org>
-Date: Thu, 16 Apr 2026 08:13:59 +0200
+	 In-Reply-To:Content-Type; b=LFUcl0A3wzWPRQfn1OXldHuqLExYDvXklADNRxadOdL6q1ZGEqtxdN7GJS7wIKJqAZ903guOyykjvydn5LkyOPg7MvsoVzXYqfQw5d6m1BWBDmijUc6jNJct77fpdzc5ue4/QpPrRj1/cfXX26U7zuHqjPwS/12Ekc5q0SJ/LfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
+Received: from [192.168.2.229] (p5b13a2d1.dip0.t-ipconnect.de [91.19.162.209])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: pmenzel)
+	by mx.molgen.mpg.de (Postfix) with ESMTPSA id 9C5CD4C2C37F01;
+	Thu, 16 Apr 2026 08:17:28 +0200 (CEST)
+Message-ID: <803b6b1c-6aef-43e0-89e2-3d0f1308e892@molgen.mpg.de>
+Date: Thu, 16 Apr 2026 08:17:26 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,146 +48,99 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] serial: 8250_accent: fix reference leak on failed device
- registration
-To: Guangshuo Li <lgs201920130244@gmail.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Russell King <rmk@dyn-67.arm.linux.org.uk>, linux-kernel@vger.kernel.org,
- linux-serial@vger.kernel.org
-Cc: stable@vger.kernel.org
-References: <20260415183436.3763871-1-lgs201920130244@gmail.com>
+Subject: Re: [PATCH] md/raid10: fix divide-by-zero in setup_geo() with zero
+ far_copies
+To: Junrui Luo <moonafterrain@outlook.com>
+Cc: Song Liu <song@kernel.org>, Yu Kuai <yukuai@fnnas.com>,
+ Li Nan <linan122@huawei.com>, NeilBrown <neil@brown.name>,
+ Jonathan Brassow <jbrassow@redhat.com>, linux-raid@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Yuhao Jiang <danisjiang@gmail.com>,
+ stable@vger.kernel.org
+References: <SYBPR01MB7881A5E2556806CC1D318582AF232@SYBPR01MB7881.ausprd01.prod.outlook.com>
 Content-Language: en-US
-From: Jiri Slaby <jirislaby@kernel.org>
-Autocrypt: addr=jirislaby@kernel.org; keydata=
- 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
-In-Reply-To: <20260415183436.3763871-1-lgs201920130244@gmail.com>
+From: Paul Menzel <pmenzel@molgen.mpg.de>
+In-Reply-To: <SYBPR01MB7881A5E2556806CC1D318582AF232@SYBPR01MB7881.ausprd01.prod.outlook.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-238257-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[mpg.de];
+	FREEMAIL_TO(0.00)[outlook.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN_FAIL(0.00)[1.2.3.5.c.f.2.1.0.0.0.0.0.0.0.0.b.d.0.0.1.0.0.e.a.0.c.3.0.0.6.2.asn6.rspamd.com:server fail];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[gmail.com,linuxfoundation.org,dyn-67.arm.linux.org.uk,vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	ASN_FAIL(0.00)[114.105.105.172.asn.rspamd.com:server fail];
-	TAGGED_FROM(0.00)[bounces-238256-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_NEQ_ENVFROM(0.00)[jirislaby@kernel.org,stable@vger.kernel.org];
-	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,fnnas.com,huawei.com,brown.name,redhat.com,vger.kernel.org,gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9BC4040A94E
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pmenzel@molgen.mpg.de,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	R_DKIM_NA(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,molgen.mpg.de:mid]
+X-Rspamd-Queue-Id: F0F1740A987
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi,
+Dear Junrui,
 
-On 15. 04. 26, 20:34, Guangshuo Li wrote:
-> When platform_device_register() fails in accent_init(), the embedded
-> struct device in accent_device has already been initialized by
-> device_initialize(), but the failure path returns the error without
-> dropping the device reference for the current platform device:
+
+Thank you for the patch.
+
+Am 16.04.26 um 05:39 schrieb Junrui Luo:
+> setup_geo() extracts near_copies (nc) and far_copies (fc) from the
+> user-provided layout parameter without checking for zero. When fc=0
+> with the "improved" far set layout selected, 'geo->far_set_size =
+> disks / fc' triggers a divide-by-zero.
 > 
->    accent_init()
->      -> platform_device_register(&accent_device)
->         -> device_initialize(&accent_device.dev)
->         -> setup_pdev_dma_masks(&accent_device)
->         -> platform_device_add(&accent_device)
-> 
-> This leads to a reference leak when platform_device_register() fails.
+> Validate nc and fc immediately after extraction, returning -1 if
+> either is zero.
 
-What reference exactly?
+Why also `nc` and not just `fc`?
 
-> Fix this by calling platform_device_put() before returning the error.
-> 
-> The issue was identified by a static analysis tool I developed and
-> confirmed by manual review.
+It’d be great, if you documented the command how to create such a layout.
 
-How did you verify you did the right change?
-
-> Fixes: ec9f47cd6a14c ("[PATCH] Serial: Split 8250 port table")
+> Fixes: 475901aff158 ("MD RAID10: Improve redundancy for 'far' and 'offset' algorithms (part 1)")
+> Reported-by: Yuhao Jiang <danisjiang@gmail.com>
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+> Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
 > ---
->   drivers/tty/serial/8250/8250_accent.c | 8 +++++++-
->   1 file changed, 7 insertions(+), 1 deletion(-)
+>   drivers/md/raid10.c | 2 ++
+>   1 file changed, 2 insertions(+)
 > 
-> diff --git a/drivers/tty/serial/8250/8250_accent.c b/drivers/tty/serial/8250/8250_accent.c
-> index 1691f1a57f89..e9cf40268c0e 100644
-> --- a/drivers/tty/serial/8250/8250_accent.c
-> +++ b/drivers/tty/serial/8250/8250_accent.c
-> @@ -25,7 +25,13 @@ static struct platform_device accent_device = {
->   
->   static int __init accent_init(void)
->   {
-> -	return platform_device_register(&accent_device);
-> +	int ret;
-> +
-> +	ret = platform_device_register(&accent_device);
-> +	if (ret)
-> +		platform_device_put(&accent_device);
+> diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
+> index 0653b5d8545a..811ea3d23b80 100644
+> --- a/drivers/md/raid10.c
+> +++ b/drivers/md/raid10.c
+> @@ -3791,6 +3791,8 @@ static int setup_geo(struct geom *geo, struct mddev *mddev, enum geo_type new)
+>   	nc = layout & 255;
+>   	fc = (layout >> 8) & 255;
+>   	fo = layout & (1<<16);
+> +	if (!nc || !fc)
+> +		return -1;
 
-In particular, what does put_device() do on a static device, even 
-initialized, ie. with no device::release? Try it...
+I’d also print a warning, so the user knows, what was wrong:
 
-IMO, all the patches are bogus.
+     pr_warn(md/raid10:%s: near and far copies need to be greater than 
+0, mdname(mddev));
 
-thanks,
--- 
-js
-suse labs
+>   	geo->raid_disks = disks;
+>   	geo->near_copies = nc;
+>   	geo->far_copies = fc;
+
+
+Kind regards,
+
+Paul
 
