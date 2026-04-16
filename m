@@ -1,121 +1,121 @@
-Return-Path: <stable+bounces-238299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238300-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qLq4DNm44GmIlAAAu9opvQ
-	(envelope-from <stable+bounces-238299-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 12:24:25 +0200
+	id ADwSJS254GmIlAAAu9opvQ
+	(envelope-from <stable+bounces-238300-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 12:25:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 836C340CDFB
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 12:24:24 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA31A40CE3D
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 12:25:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 246EE3053CCA
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 10:22:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DC23A301A518
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 10:23:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7332C39EF2C;
-	Thu, 16 Apr 2026 10:22:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6010739EF35;
+	Thu, 16 Apr 2026 10:23:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GoiQNNSf"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H9pFIaBS"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yx1-f45.google.com (mail-yx1-f45.google.com [74.125.224.45])
+Received: from mail-yx1-f42.google.com (mail-yx1-f42.google.com [74.125.224.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F26ED38F628
-	for <stable@vger.kernel.org>; Thu, 16 Apr 2026 10:22:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EBD039E178
+	for <stable@vger.kernel.org>; Thu, 16 Apr 2026 10:23:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.42
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776334927; cv=pass; b=oWJL6lmn0ZtfKbuFBdpgNFTRvfCBhLG9ZSDxI2SQ9NZhV+9XtfYfPeXGuwGB8YTkz2bV5/qw2Od2wxZMoPatWyjRUkkrJ5s/fvD0zmo1YDAvV0H0/s2F0VJmS2Xvrza1qriFhR5qbaMJydBHlvL2EV+rGGnRXLSKCliNZnEzmM0=
+	t=1776335013; cv=pass; b=iV2cIRs4SUFjDQfLIRWgIKHHoG/4PLMoZzeSxmQYGsYmbp8W7JGY87c20aIjZYQLQHVBn5roWJ5P+7To0/Dcuies5bel++9YseOb0nSkuq2aTNnVirHozPkAYyqsxufAQ+Bq5Eom9OF6ICTcZ+/K3jyWsaMDhjW492MAS3V3V38=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776334927; c=relaxed/simple;
-	bh=K5mvVCNzCDCJ9t+YBPnYGHqEKpm38PDyLCEyxp+JIzM=;
+	s=arc-20240116; t=1776335013; c=relaxed/simple;
+	bh=LbTzRS7v1RQTEFBbLZEgMN4JOcHAPPaG3nlUPacsRSM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RY7z5D1pdusedSSL9z81DUTF9+LMJ54C2jEW4OvH0ej6Kodf50ssycigyoGmr6rimWjKxCpvQSKE5KvXoTKvH6GCKWgQ4xIZN/c9PD8WBamxYUPOlYjkWNKHh59F0Ni4V3uDc1C+85X8lYuGDO7gcFoTWWst3KgNCJp3QimaoZ8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GoiQNNSf; arc=pass smtp.client-ip=74.125.224.45
+	 To:Cc:Content-Type; b=MHGUdl9vBazFrZoYvIIQTByuOJ8pdQxICiFTq/09S5oBxxtzQoMpgun4MclFiBU3U8uUxRXNoXxye0YwVGpDLDNh9+99dAhmKKN5rpx8VrdfuiRXwP8JpOBcVra/aHnwKIYx2uPppLva1IFmmLlN4696JeEgVCzSgTBeNOe12/A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H9pFIaBS; arc=pass smtp.client-ip=74.125.224.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-64eaf8aa893so6559952d50.3
-        for <stable@vger.kernel.org>; Thu, 16 Apr 2026 03:22:04 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776334924; cv=none;
+Received: by mail-yx1-f42.google.com with SMTP id 956f58d0204a3-651c7ddf514so4569585d50.1
+        for <stable@vger.kernel.org>; Thu, 16 Apr 2026 03:23:31 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776335011; cv=none;
         d=google.com; s=arc-20240605;
-        b=b0eTEwWxJGHBFnssRao7Kf/XoHQhA5tmpsEK5NRazzsZSzkIjyb8GqCIhwilTZcqnd
-         55v0ojxmEFYEPhndIYJsQxLJ1pfIRcFOgdpfOvJARBwCaruPWewzF0gSOFtGd2Qcu8Wz
-         cilomlL5mC0or8YXNlQEavueFvqYdCN2bOU4mg64NQZ8tD67gjQaKAKs858fNiOwmnbS
-         t5fVqPL5XUU5CVT5mE36GACoTEmCQxJikUrSImM0IeBM4sZ7pN6AuZG0SpSP2cT/ZkU0
-         tHAe51tjsRct6ehHGoV83KNSY5uey7PiaSQk8K8XG7GeowSPvDqeUHt4LuvEo12McayK
-         PY7w==
+        b=gFXPwBZRS3OiZkizZKKQsOPNrNWO4kP0/aIJOk4OkEhYkjgbOSDrDFbSbAZknDIWa5
+         xxkOpG/NreLS0uwYUDmWyPzv0Jme9dXKPxoy99g+mW33GWc6zG2qUoor3VWWItJiOLl0
+         sS+mPU3KyvzHjo7dBSWxUW0nouhtd53t68fE9ZxtlFDftZamrAx18DG4a1EoecUgCjJW
+         cnV8+urT1my8gmMDfoOSEGIYzJpqih/P/yi1APXpnNSK2HXtzGQyEmkLIO5uWiVy6hxV
+         BnQrL5ix1X6HVz0SPUg+TbyARsgkw6/gjdSFpvBgP0nKwukJWoS02WtK3O8R3tsVK7jS
+         e/mg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:dkim-signature;
-        bh=K5mvVCNzCDCJ9t+YBPnYGHqEKpm38PDyLCEyxp+JIzM=;
-        fh=Jj6v4eU+T9phR3rtRE/h0cen16S1MrMYVTJO+7lWeHk=;
-        b=ETLFdBrAzNITFm0duozsSO2rWPkQVsIoDnOFN7ME7cHUVD6VWiUMbfGBAzzLqUIqzY
-         95fNQ2CGVYdsvOJMLt/Wk3GgBaoF4FudVdxemE3FCl5LlshD/4MasrUmnCvBCjMbWLBn
-         LOeq2p/1ecE9tcOH9Of80onCXSO+pSp75LGoNxgxxdXdjpq17kkhHcU5N6MOZrU6cL2o
-         uAZ5PyF2EEK2AbdSoOd8PeU2hJhlUB3IgmG1ToyfaChUCThQszQSZ6PX86FNBVKSqb6k
-         aWR4Dm2ERRc5T2Yx6yq9qTZDZdEa30rswfKn/YMNkHOSC1MWMeW+HwnyabsVX7BTghvx
-         rE4w==;
+        bh=LbTzRS7v1RQTEFBbLZEgMN4JOcHAPPaG3nlUPacsRSM=;
+        fh=Ab6fYyToC0fMrbmJboTA2ZT6BIRQcYolFR1bH8qurTk=;
+        b=EfVDWSrDmZADyjrzR1qCiixgYE/G6JbPwCx2+AbEeakanB5RcGY9MNgvgFLxJw6Do8
+         arEkjcHFYjleKE+JzrDaMADSO13UlswFivnCwOVxoZbF4TGNEhiglgmJ2op99gKP5km5
+         41O055TRn89HzOqdEMjtuBwxinzJ0WKAuvPueTPr4/fNHfswkdXp0L8XdmZivQu0r1+/
+         YIOG97656R48n8JeNIrrlibq/CPXjfxS3gA7gRQsZycR/DyrzfY8kIyAA4mU8XW4Rpd2
+         jujdOCIoIhicG3CrVSFtl8x02fB5QvkHmg71TFTx0WGTugRQdf/10nlawkXJfUpYnw+w
+         xnhw==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776334924; x=1776939724; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1776335011; x=1776939811; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=K5mvVCNzCDCJ9t+YBPnYGHqEKpm38PDyLCEyxp+JIzM=;
-        b=GoiQNNSfPDu0r2C+mc/kqiePtCZMm20vJusQXbB0zgd6C3UreIfD1WpLqNgBzxxAgT
-         qoofQiNbdqLQ2LDaHaKNXhP0hyabHYA+VS9rRED+eSIR9lysO7FuhqiceN2Jo9Sg12C9
-         mxXFXEnu6djnoNrqu3SsEgj88Q6TrIrGOudBUljDUoTdks0eBsZpjFoMQN+umZv9X8gk
-         +OvfAMHNtYYfY0GWXp2OqqkyKgx246wdzyVyNP/4r5i5sriN+iffdLrLE9VNeJa2QrQA
-         4a4ZMzrW+BBwqZNVhHG8bnq8wk3AXIkGmcO1DTmXa2TB/67jKROegn7GBqq4tz8gb0E+
-         feIw==
+        bh=LbTzRS7v1RQTEFBbLZEgMN4JOcHAPPaG3nlUPacsRSM=;
+        b=H9pFIaBSWUfwB9RidOxbGZMjFRrZ/3N3NGzJFirU7eXnhdwofkOpDo0m/3CylWwzDn
+         H6lrjwGi+0F9QzKMAUzMMsXtUKVpYa8nJSKb3xdJh71gS47aLZwpW+LxR/kpxLqwc3Cp
+         7Pn+r0wBMUysPTz7duEDGI17GuEVcfEBEfthH2xZeAcrdnUFchKI8vBO0NrONHYyipq9
+         l2v5u2XUSc53A4JHkQ4HIvXk5GLxJeOTdJFESJddXzS9csCeeQoK2tvp4i3t8nH4Gu7S
+         yg4GhZuCRaJ548Vogbs6HzwdfGiKUJRZSYwESKncXr5BL2O48+ieaxINxhSUiW32uj0E
+         jAsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776334924; x=1776939724;
+        d=1e100.net; s=20251104; t=1776335011; x=1776939811;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=K5mvVCNzCDCJ9t+YBPnYGHqEKpm38PDyLCEyxp+JIzM=;
-        b=jV4TYlcMfCAaJuxIUoIqXc7tKDOZ3+xc7tB3/dEooUKY/IN6Eh/Y+g0EkaiE20TJF3
-         zJ9qrwZFsyZT3t+EhHbq7hsXmoPVA83ALbxfYM1sefvQY+QZX2Jy5g26iJRT/nrDkq32
-         5IYfPFJGrJ85nKKiWZItxfeegfWI8WQcRv8QVR4k6YeLp4JlI5+wJw1oR86tKP+17vPi
-         bkw+Nej4o8CDdJHz2MsDvbZT7g/UDZFdyAi58Ln9uRwtAQ85ttOOYCoASAfRQzTHdsgL
-         BK5318zhM0H+wAHuHi2EOP06e70KrD/ReKtr5JRvoU8DaiHd72Mo06IEkY2EU13/D69d
-         He9w==
-X-Forwarded-Encrypted: i=1; AFNElJ/XPAVtwSG4nJGZjO0DzrFoG92P8Z6MRKYp+xK9/fYoLBTxTlRvgtt8Le9YNKL7gvrB3yE8hKk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz5UGU9hTaS0Z4QifJOTpv3KAoKUk4aRO2o8oFIlJgJeTa+cnZV
-	2D4pl/jhK+KXrsi+Vobug+h+kZqiH4nFY3pl9CIPE+YF0qINt0UOM/8HyjfTyOoRkoa8gF7uAaB
-	G1jqM5tg17sfX5AEBuSC2Z78e5cUiFKShSfwOEKt2+XtE
-X-Gm-Gg: AeBDiesTuHFuUuulZPbrEM0omfImon/L5RJyoh0nw6exRhOy19tcRj+DWyJWMCjAETW
-	VuHK0uzjKeFb9xD/2fjxbzNOfKpCbPDF6ymfq5X1ZwT1iTjBntEzp6pYcKA37+oTZAC1wNgimYA
-	6Heh6v/wcq1GTCJE2WKFAh/MujEze3AcaG6Mbl5SihL5mIrrDjuIiy5ZuuJVd9g/6dLybjFuOy5
-	e+eLkDCzIdGB93Yr2wmcrSLuNxbr9P/mjIeqgNCmnHgLQ80/iIguQTTysEjqMaPOrVAzeTKElNr
-	eGpYtJYPvbGCavvLVbZR
-X-Received: by 2002:a05:690e:4801:b0:650:3bbf:6a60 with SMTP id
- 956f58d0204a3-65198b48573mr16551396d50.37.1776334923950; Thu, 16 Apr 2026
- 03:22:03 -0700 (PDT)
+        bh=LbTzRS7v1RQTEFBbLZEgMN4JOcHAPPaG3nlUPacsRSM=;
+        b=XVvzIoEQ1k1S8OZKHhTUGicsTlNTzasPOj58Hj6Aj+1H5UP/r0Fi3gbPGA4w+eu4Vd
+         uTqs0P6BUOjEXz2Z7tPDlPWJ1tbBi9l3BPINN5DJKlgBOa1EzhZQrk4TyINDArf4w4yz
+         P5HiiWOf1L1DfjxUGekcF3CICLvHFJCs19elDM3mWY0OZ9Jyn2bqhk+U9MBW/+E3SoUY
+         aS87x7i9Jut++/G//NfaGnUOQptbbaMB5dOFNKlR+gvywU7sVu/BNgKXUxCau7KHu3de
+         Gk9ljjugdBt/dOrEFPWS4n9sACwBQL3n2vb6tIo5qz9q9zv2pUPwVSR1ugp+SLa/TiZJ
+         Gsow==
+X-Forwarded-Encrypted: i=1; AFNElJ9zv8oKl0nYxV89F/NX5BUiuqK9KMSGORhocnSIeytNV5YOFJSr3ewmiyrrdLBdd9PtoANhC3w=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw1Hm6NAIJvGSMdzsYsBEkG5y0oBlANBLkdEaXUiWg7vts0f+Zz
+	+Z1t1VIeaoaFHQiv5JNGi32dvOQrn6rJ6cY8z3AXD1nG0YnT9YO+49BnXwLML53vAFpGv17wRw4
+	p3LTeXWNbaimxWb7vNYQdfj9w/9kkwKg=
+X-Gm-Gg: AeBDiethRbvouAcIDKkV+BEAChCnxy6aj9Vh3haAb2tVoxK1b78Tlc+cCIilfeIGOTI
+	nOPTVbuO5JJo2uoEThrpw79H7y0cJ7ZDqv4ee0LzKP/9y8GluulAZ9561fJCqumcRhSV9TsdRqw
+	n97lGglqQ3WhsgihMRjDH3uMAE/oHGxdUCL/Z7QHottlIvY7Qrt/6fS/zLj9geVCbRUteFw5m6j
+	bXo9zBBGFH4bErHyD/tL0ptcuSGBv24degIt+YdE3U+N8oqofYjPS6YoR2FW9gw04to2+9Zf91I
+	dN0UMD/ylKLHGAWKoVBH
+X-Received: by 2002:a05:690e:4011:b0:651:c71d:8a74 with SMTP id
+ 956f58d0204a3-651c71d9744mr14382278d50.46.1776335011072; Thu, 16 Apr 2026
+ 03:23:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260415175038.3633384-1-lgs201920130244@gmail.com>
- <CAOesGMghHi5bEcec9L6d1YUec0Cn5uEs8MrjdoT-zHSr-FJ8pQ@mail.gmail.com> <CANUHTR-XcTO4jy_TNe7tHcPPpVh_o_+-hgJtLBxN5MWupcvQ3A@mail.gmail.com>
-In-Reply-To: <CANUHTR-XcTO4jy_TNe7tHcPPpVh_o_+-hgJtLBxN5MWupcvQ3A@mail.gmail.com>
+References: <20260415183436.3763871-1-lgs201920130244@gmail.com>
+ <463cec4f-a038-4bd0-90df-76e0ef48381c@kernel.org> <CANUHTR9toK-PS8qrTd-=ATpSi8xbnXmF87sfRaMDp_jG_eiVMg@mail.gmail.com>
+In-Reply-To: <CANUHTR9toK-PS8qrTd-=ATpSi8xbnXmF87sfRaMDp_jG_eiVMg@mail.gmail.com>
 From: Guangshuo Li <lgs201920130244@gmail.com>
-Date: Thu, 16 Apr 2026 18:21:50 +0800
-X-Gm-Features: AQROBzAYeNSoPmZB5XF19vrfhLSjNH_Tgqu7gUhZJFmf8hV0D4dYm_BdoKYs0EA
-Message-ID: <CANUHTR-U+DDaWCKNUcNE2yScPkk6vVfnZ=GXpGtRt6SFYph_Ew@mail.gmail.com>
-Subject: Re: [PATCH] platform/chrome: fix reference leak on failed device registration
-To: Olof Johansson <olof@lixom.net>
-Cc: Benson Leung <bleung@chromium.org>, Tzung-Bi Shih <tzungbi@kernel.org>, 
-	chrome-platform@lists.linux.dev, linux-kernel@vger.kernel.org, 
+Date: Thu, 16 Apr 2026 18:23:17 +0800
+X-Gm-Features: AQROBzDJwF5nR-YRaxJ0GiQSty_8vbImmxuQxj_nDAtrvfhqoyQZXUThlhF2q1Q
+Message-ID: <CANUHTR8Hje-pP=7=2hLwkhPMb6cMWosDzdY4oLneFpH5-hfS-Q@mail.gmail.com>
+Subject: Re: [PATCH] serial: 8250_accent: fix reference leak on failed device registration
+To: Jiri Slaby <jirislaby@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Russell King <rmk@dyn-67.arm.linux.org.uk>, 
+	linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org, 
 	stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -123,7 +123,7 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-238299-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-238300-lists,stable=lfdr.de];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
@@ -134,49 +134,49 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[gmail.com:+];
 	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,patchew.org:url,mail.gmail.com:mid,lixom.net:email]
-X-Rspamd-Queue-Id: 836C340CDFB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,patchew.org:url,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: CA31A40CE3D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Olof,
+Hi Jiri,
 
 Thanks.
 
-On Thu, 16 Apr 2026 at 17:26, Guangshuo Li <lgs201920130244@gmail.com> wrote:
+On Thu, 16 Apr 2026 at 17:37, Guangshuo Li <lgs201920130244@gmail.com> wrote:
 >
-> Hi Olof,
+> Hi Jiri,
 >
 > Thanks for the review.
 >
-> On Thu, 16 Apr 2026 at 05:47, Olof Johansson <olof@lixom.net> wrote:
+> On Thu, 16 Apr 2026 at 14:14, Jiri Slaby <jirislaby@kernel.org> wrote:
+> >
+> > Hi,
 > >
 > >
-> > This looks like slop to me. It doesn't even compile (there's no local
-> > 'ret' variable in the function already).
->
-> You're right, I missed declaring the local ret variable in this
-> version, so it does not compile. Sorry for that mistake.
->
-> > This is also a no-value fix, the chromeos_ramoops structure is static
-> > data and not dynamically allocated. Please don't burden maintainers
-> > with these kinds of "fixes".
-> >
-> >
-> > -Olof
->
-> My reasoning was based on the implementation of
-> platform_device_register(): it calls device_initialize(), but if
+> > What reference exactly?
+> I was referring to the device reference initialized by
+> device_initialize() inside
+> platform_device_register(). My reasoning was that when
 > platform_device_add() fails, platform_device_register() returns the
-> error directly without dropping the device reference initialized there.
-> Based on that, I thought the caller might need to release that
-> reference.
+> error directly and does not drop that reference on the failure path.
 >
-> That said, I understand your point that for this statically defined
-> chromeos_ramoops device this is not a useful fix.
+> >
+> > How did you verify you did the right change?
+>
+> After my tool reported this case, I manually audited the relevant
+> source code and
+> checked the related core API definitions. However, I did miss the
+> special handling needed for a static device in this case.
+>
+> > In particular, what does put_device() do on a static device, even
+> > initialized, ie. with no device::release? Try it...
+>
+> Sorry, I should have considered and verified that
+> more carefully before sending the patch.
 >
 > Thanks,
 > Guangshuo
