@@ -1,203 +1,209 @@
-Return-Path: <stable+bounces-238357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238358-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kM+9I+w34WlFqgAAu9opvQ
-	(envelope-from <stable+bounces-238357-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 21:26:36 +0200
+	id yBpVMac64WmaqgAAu9opvQ
+	(envelope-from <stable+bounces-238358-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 21:38:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9DD5414145
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 21:26:35 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BB83414312
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 21:38:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3459A3061D43
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 19:26:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8C7B530BA5F6
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 19:32:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC779361DC3;
-	Thu, 16 Apr 2026 19:26:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F47B389E09;
+	Thu, 16 Apr 2026 19:30:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="QMy+wlff";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="56ktT4Mc"
+	dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b="TXLwNyTX"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11020100.outbound.protection.outlook.com [52.101.56.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4A2B33555B;
-	Thu, 16 Apr 2026 19:26:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776367591; cv=none; b=tVQtIXPv39PCPIEHJaFi3MbQZW52rKw79CdSATTZe6aoEwZ5peL+9Eu2PkHSVnS1J3TLYqf9pixddx2CKBzGBu4xFnHNZXq1we0oVWc2Z+w9JiG65IeV9TKkl6TFn0B1xqsOLPTRiLfxw8t9lqtG2wv02MmmBB1NjXvm6vv8s54=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776367591; c=relaxed/simple;
-	bh=MuQ51iGuZRvKAG0wnLwTSgekS0afYosmFXrtKRFkiac=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=JxA+Q9BxGmuhBimMImz6Y7gptGOayvzZapsd/hcE9OW84VSR27Ix+LpxXH7GSt7PXca7jYwJnFCc+jf9A5omZ3AYFAOI+TapzTK7i0kdMLanxkEjlVPMq+AgkJN4aId5KQxwsLcZpk7J0UyUHZD+s92sqcgjND/RlEm05nd+GDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=QMy+wlff; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=56ktT4Mc; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 16 Apr 2026 19:26:22 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1776367584;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XrxID4KIjy8dV3KsNfI0vInPh+pqQ/GI874DnBu6QKc=;
-	b=QMy+wlff+KG5QOwf0p+NEcV4sIujBxZJRJFS5m2sJODI+m2szy3IvrzxQjL26gZiF02SzK
-	5btGOiUKKJ3u4EID1HD9busVTeF+1Ktn1Vks+3P4Jy7t4i72L0qBMQxqHJnbi39ve1xzy3
-	SN2ygbQTHETwzsEB61e2NzU7VWkpMWldTB4R3Qehdo4gIreVniZ2/xJvNhyWzP/3KGmQ/L
-	RjUOnTfWg8xtCH1JnIRIc6SH86E6xIxCA5m2poOe4eBiok2/Myr8d4pqwCVlJuKcgh8q7i
-	8gEQP1TDb3Z4ClwfyCleq+svMvBboy8VxDslO74jT5a6ZduJ+agF3pR4nCHlPg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1776367584;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XrxID4KIjy8dV3KsNfI0vInPh+pqQ/GI874DnBu6QKc=;
-	b=56ktT4McBpID8NzX86ZEaDUhHny/CYad3CfM2hxJ5KpPomwd6XzNNDmP2WOPdv6zJkyt5h
-	G2xQIUQFPAj8SMDQ==
-From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/urgent] clockevents: Add missing resets of the
- next_event_forced flag
-Cc: Hanabishi <i.r.e.c.c.a.k.u.n+kernel.org@gmail.com>,
- Eric Naim <dnaim@cachyos.org>, Thomas Gleixner <tglx@kernel.org>,
- stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <87340xfeje.ffs@tglx>
-References: <87340xfeje.ffs@tglx>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91521393DE8;
+	Thu, 16 Apr 2026 19:30:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.100
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776367856; cv=fail; b=atlIF+ISNnbyGYX3CADq49Cga+RFRlQbSGdQjg/i8eaKWbOSgzOe+/1LjWIcfauiD2qQcYJLXSbxps4PvvV28AE/cwfeFtCL58Q79P20EzwbXwWNTGUGvelsbCsSPt5ZUe/fRQtEJv7VtwgwjhgPZKRRR6KwfueEc0cmzoCdbhY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776367856; c=relaxed/simple;
+	bh=DgnweWmWkG42ACSORvhaHn+vgYaEAN1R71KcZBqbGic=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=h60z2lufv3EYKkXWMgqEkm2SoG76rcQncP8O1k2F2vNcQZFC+HeS/PpGC2fCwvoGw1b6PpQ7GR+cis6NX7TqQl8noOfqX6wFFxGH1b4czgZp2ej2vfRTYIU/HD33CGiHbFdGJsZ3HfYJncfno6nNcespP2y/72xrftXfHpK75pU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=microsoft.com; dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b=TXLwNyTX; arc=fail smtp.client-ip=52.101.56.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microsoft.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=KkozeYpfba5zIGcG50wb9SL3gdfRDdujkZANzVciErE3nqS5Ecl0lxS7IwGItnAYLH37QxbtM4A93vhVFoyU5ubIIp7Smh5W2KJnq4bH7dXO2fslIeNy2ImWaEGkElryCbVhFUA2k5zCZapeyGjFmAGRbaYFiXIPjmTDAOIbcDPbfBdGZGLn3ochBkX8aAeShfGbr5TSJwzq58BZdD/0qXunLy5o/GIFSYvwg7235nlAxsvFxdHwhUbvoxmQmGbpvf/EkSddMF9nBEJGm+ySCKTjCgUWf149IGlLD+hs5Oht138T/PPWc2ECqt7rvS03JySWjyaLt5CXhF8jVH/SLA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=DgnweWmWkG42ACSORvhaHn+vgYaEAN1R71KcZBqbGic=;
+ b=Y7nTRnKT0JRg0aPjlvUvWVWs2fOR/6PXJ/Wpko7d6ul7XU9NmTb9ttl7rdH8sIftiMevTX759JdOPcV5zfuClbu+pLDUbKFsfVPOzFIJV9vSgeK1LMIwELM3T0KTPant7eBfZsfMXaQPLzNwhik7uqZ9p+xaOsYgUspHySUYlkJ/FtZ2jaeJGuRgBnCsyaDcjBEDdHWWhwa+EfVSjhvdKIiIureDJeac+rZoctfgNS9KqYKEbRzSPmbtujJa0dP2s/Zy9Ng3ylspgghOYb9y2ukvtg9GHep+4DYdKNLrvk/njt0x0G1HOqOdbP9X6mwpX/4W5/QpgLocgAV0e4XgJg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microsoft.com; dmarc=pass action=none
+ header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=DgnweWmWkG42ACSORvhaHn+vgYaEAN1R71KcZBqbGic=;
+ b=TXLwNyTXbQdxknOS8M//fUP8ZO5kFbJik9V5bIfxg9870CB7O3MGsefbLybMpk1xrPR1ncCyRH+34nOU7KCodA+07/08LQMCvREs+UBG1t4oEL7zjPWikwWszNzD7qhZ+qRBCRCxf9W6uyoOIwtkm/C3bPIapioi86FlAWahlQs=
+Received: from SA1PR21MB6921.namprd21.prod.outlook.com (2603:10b6:806:4a7::11)
+ by SA1PR21MB6682.namprd21.prod.outlook.com (2603:10b6:806:4a6::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.20; Thu, 16 Apr
+ 2026 19:30:50 +0000
+Received: from SA1PR21MB6921.namprd21.prod.outlook.com
+ ([fe80::51cf:497c:e5df:f6d]) by SA1PR21MB6921.namprd21.prod.outlook.com
+ ([fe80::51cf:497c:e5df:f6d%2]) with mapi id 15.20.9818.017; Thu, 16 Apr 2026
+ 19:30:50 +0000
+From: Dexuan Cui <DECUI@microsoft.com>
+To: Stefano Garzarella <sgarzare@redhat.com>
+CC: KY Srinivasan <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>,
+	"wei.liu@kernel.org" <wei.liu@kernel.org>, Long Li <longli@microsoft.com>,
+	"davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com"
+	<edumazet@google.com>, "kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>, "horms@kernel.org"
+	<horms@kernel.org>, "niuxuewei.nxw@antgroup.com"
+	<niuxuewei.nxw@antgroup.com>, "linux-hyperv@vger.kernel.org"
+	<linux-hyperv@vger.kernel.org>, "virtualization@lists.linux.dev"
+	<virtualization@lists.linux.dev>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>, Ben Hillis <Ben.Hillis@microsoft.com>, Mitchell
+ Levy <levymitchell0@gmail.com>
+Subject: RE: [EXTERNAL] Re: [PATCH net] hv_sock: Report EOF instead of -EIO
+ for FIN
+Thread-Topic: [EXTERNAL] Re: [PATCH net] hv_sock: Report EOF instead of -EIO
+ for FIN
+Thread-Index: AQHczMP62DSp8tUfXUqykY0mY+sLYLXgVi9QgAG/H6A=
+Date: Thu, 16 Apr 2026 19:30:50 +0000
+Message-ID:
+ <SA1PR21MB6921F3052FBE78A408F59697BF232@SA1PR21MB6921.namprd21.prod.outlook.com>
+References: <20260414234316.711578-1-decui@microsoft.com>
+ <ad9pPrji1uYSgNir@sgarzare-redhat>
+ <SA1PR21MB6921C57E27E17305E56BC0F9BF222@SA1PR21MB6921.namprd21.prod.outlook.com>
+In-Reply-To:
+ <SA1PR21MB6921C57E27E17305E56BC0F9BF222@SA1PR21MB6921.namprd21.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+ MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=1dca6e96-832a-40da-9150-e0ccdd9e8c43;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2026-04-15T16:49:42Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Tag=10,
+ 3, 0, 1;
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microsoft.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SA1PR21MB6921:EE_|SA1PR21MB6682:EE_
+x-ms-office365-filtering-correlation-id: dc64996a-231a-48c0-7ced-08de9beeaaaf
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|7416014|376014|366016|18002099003|38070700021|22082099003|56012099003;
+x-microsoft-antispam-message-info:
+ AIp+C7UL58Kf8p7tfz01A6XpbZH4sUQjz6qQ6RUKOZXc8PdH4LCuwXLdfXcZEtxP9/BtDbm7FwJmjrAnfuZLxzqUJ6ORnp1OTu+qOfKLHGVGQ6MqekK30GLJ/zQ+wnJVtJoAbt1r8pJRXXXgtoCY12YKAVYmdDYf7xGsl/n17uRa3l9rVG/kKrW4owiQr86hKwtcUb8ZXORmEf/EuUPbYVYso0+ES/iYok0Df5T5QW8z8l95HpkfvIWz0Zrc2CBrf0rp0kH2x/jMiS9xiox2RZKAgOjuGmjknosRjbLvomETEDGAwiKDBJlI8An+YktiUGg81SoTeQM0c/O7oCSipaGdsr/48diLMZxlPFhJKm0xIT3/B0nrXnRbmh/F9Sh3OeUIaRIdgap423wOz/S+ntvUuNtH9IKa79l9f5fOXVSowadQTZ3cSfErhB8tnUhg9zns7t7fRrO5aJl2WvEiII38E47BM0bCHZ7HPHBLtFg/d6p3EPguej98y3gadqeWH3Mdcjr3IvVRU5HPBkp4xqCr+B1I60j+NO6OzIV8bh99OM90NvfD5HCvXng9jAcJV6OpOqSyflt9H/6HZ9dGMz1vVnh3TkQGahGUk8U88Hggre7J+a7F5pHr1mR62/yMSup2aZpvnLRzFo0QEYm7o384Ia0/4C3RLdOep6SnXCwzRU+jpkmHp3vdgJZrmGimRtNPXTBrrEhinqZIpXr/43G8VFAwKggrVj6h9+qBNhqRlKZ2/no/GA8udddhM82h
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR21MB6921.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(18002099003)(38070700021)(22082099003)(56012099003);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?Fth+qfDnrmxN9wfgb+si3nEammDX63FgYzMff6dhFKl2KcGMqPSf4hKDyhPk?=
+ =?us-ascii?Q?9MpYaJW0/iA+/fGFZ/y2Kibpq5VurJ+bFID5faFoKzNt0sp0wr0G7JKOssw2?=
+ =?us-ascii?Q?2EJBD0jju+iY8qyto1a8gp2lGzmhcmqEBQFYsUxThoZxIwyMEXTDvSjEWGfB?=
+ =?us-ascii?Q?G2ebtRG7Wg9N1zugQN5DTYnTfDHS1VH408cQ3Z8PR1YjY/miqWhRTODmx024?=
+ =?us-ascii?Q?gX5mfNiN2yYMZR+WAmf4nzdXMidHtu87ai4gY60c6nqflCTR5ByIxbEZHPB1?=
+ =?us-ascii?Q?1y2dU0zjaDGx/XEhqxTpxXChZe/fh8naRwb+lu+Jd1kfXXM08jSGTaeFXKqB?=
+ =?us-ascii?Q?CXVqlT5QaY64JchdV3VAgV0svgSkI4ygwEJyOL0FdyqRQTfwhXvYVA5P7+/7?=
+ =?us-ascii?Q?9bYasAkQUZOGCmVLDoucTiXGgmO52SF+jVEiRW+7Cz3g5PD6+ea+H9KG7FcZ?=
+ =?us-ascii?Q?/OMZnRHzjDcTdArNqh2j7ZUNjmirHkoKm5zakxJyvG+IkaaP/YGNk2Lf+eBm?=
+ =?us-ascii?Q?Io6cLPJpMWOm3+eIYCsHAQ+fv34nUXgawrwH7zetr0+Xl7M0xlgQXF9nP8GA?=
+ =?us-ascii?Q?KyeuUANOrLCeVmkPWKkAhgf0sh4GYZJPbv3vg3/zCBCRe0lvLwCihsIorcP8?=
+ =?us-ascii?Q?FPHOsGKOYqmguJkmuoAPtS2Q72hzlen/ALN7TEL0NVJRK+YSkqjeNscSPEqc?=
+ =?us-ascii?Q?zVL5yh5dsZoHrNOg+FWTmrVp94wq1XOaq6NND+5J0ravkYlORINyrkI8QWzY?=
+ =?us-ascii?Q?IJI1x+G+2ryUt0br6ygbK0iWuNwC+PgQowEyAg0RqSZXfXNvZsrRvjcLfqfU?=
+ =?us-ascii?Q?ISyEXQrH7tcIdbQm1bOK3KeexQdqz7snMMeF2t2/2qiKiKYIjklHh3dtQQfS?=
+ =?us-ascii?Q?eVb8WDiUEbONip5dRMlojoirAFV+UedbEskLSUc30SZLl/fTalZb1++fxe0i?=
+ =?us-ascii?Q?Y8Ek7FaZ/oAFZtI4hoLQAEo5QV2Jk26jkrij0yRGkFdNShUWGukygZycyfDJ?=
+ =?us-ascii?Q?vhhS0aXKqvtEMuOu7ciFlXroJAw7apk4ZDCxTIu2FuEItjMwrfF1KxI/br8l?=
+ =?us-ascii?Q?yoKwHEuh4O+gtb20XGU04OudU+QuYpQCyhbGWtp35jUb7obhM6JDDzKw3USc?=
+ =?us-ascii?Q?v7v6Cns1D8ga1kswqSPaPUa/biSWkPqXMZfG1s+j6CyzfaMKUf1DJOuYY2Fd?=
+ =?us-ascii?Q?Fpai+JVXqgSB813gtfEALGbiQ7dttAqbZUHX3OrQJRcExB9OYAEMWHfFib6o?=
+ =?us-ascii?Q?q83LQNNix1WHDWDtgK9lfqrKcWmD383TDGhgEe9PNQzLGP0GYAcsMh3XL7Wn?=
+ =?us-ascii?Q?jFgeMrSmo1O93Zyxr8lKj+/M9ARYXDIbYsT3nXlgJugtRxYIoQ21QsAB883f?=
+ =?us-ascii?Q?94rLm7iRvbEy0Pq7opCOcnI0CMzxYzM/ZI3meacR0dexpW/ipgAGfx6m4jj7?=
+ =?us-ascii?Q?SfMeSGGXbj+q41ZTtSMTFNs2LzxET5g2D2kWUFWmWzKddfcAvWnZXGqeT0UY?=
+ =?us-ascii?Q?K/tUwIqJ0/xvLqdEXI4ojjfSuBNPACO0GW+px7gtoBxr+oCEaH6xnmw1QfBK?=
+ =?us-ascii?Q?8upFLy4AniQ5811j/3Ua5CWp4mdHm52MFnE8NRYMTxIkclCS+J7Ye5iSzhjl?=
+ =?us-ascii?Q?vPKkcAJSLJpFhEuKm84vSHmFGDzvASMqmW9/MZcAH5h8sLjuJG8Va1+/LF74?=
+ =?us-ascii?Q?TBuMm6d6H3vTwgzBIvyumhe/IdYeEyNcPt/9AZBOcuo9kw7p?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <177636758252.1323100.5283878386670888513.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@kernel.org> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+X-OriginatorOrg: microsoft.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SA1PR21MB6921.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: dc64996a-231a-48c0-7ced-08de9beeaaaf
+X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Apr 2026 19:30:50.0994
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: heAs/KXzOaMi5XJMuCqegpTGl7M6v/3aCs8Ve/9Z+hcVvaWRNW8QUaBfm20j4KI7TW73ExKTSW70yzYwX5BMCQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR21MB6682
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[microsoft.com,reject];
+	R_DKIM_ALLOW(-0.20)[microsoft.com:s=selector2];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-238357-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	REPLYTO_DOM_EQ_TO_DOM(0.00)[];
+	FREEMAIL_CC(0.00)[microsoft.com,kernel.org,davemloft.net,google.com,redhat.com,antgroup.com,vger.kernel.org,lists.linux.dev,gmail.com];
+	TAGGED_FROM(0.00)[bounces-238358-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	TO_DN_SOME(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[18];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmail.com,cachyos.org,kernel.org,vger.kernel.org];
-	DKIM_TRACE(0.00)[linutronix.de:+];
-	HAS_REPLYTO(0.00)[linux-kernel@vger.kernel.org];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tip-bot2@linutronix.de,stable@vger.kernel.org];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TAGGED_RCPT(0.00)[stable,kernelorg];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[microsoft.com:+];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linutronix.de:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: C9DD5414145
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[DECUI@microsoft.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,SA1PR21MB6921.namprd21.prod.outlook.com:mid]
+X-Rspamd-Queue-Id: 2BB83414312
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The following commit has been merged into the timers/urgent branch of tip:
+> From: Dexuan Cui
+> Sent: Wednesday, April 15, 2026 9:56 AM
+> To: 'Stefano Garzarella' <sgarzare@redhat.com>
+> > ...
+> > Can we drop `need_refill` entirly and just check `hvs->recv_desc` here?
+>=20
+> OK. Will post v2 later today.
+>=20
+> > Mainly because now the comment we are adding is confusing me about what
+> > `need_refill` means.
+> >
+> > The rest LGTM.
+> >
+> > Thanks,
+> > Stefano
 
-Commit-ID:     4096fd0e8eaea13ebe5206700b33f49635ae18e5
-Gitweb:        https://git.kernel.org/tip/4096fd0e8eaea13ebe5206700b33f49635a=
-e18e5
-Author:        Thomas Gleixner <tglx@kernel.org>
-AuthorDate:    Tue, 14 Apr 2026 22:55:01 +02:00
-Committer:     Thomas Gleixner <tglx@kernel.org>
-CommitterDate: Thu, 16 Apr 2026 21:22:04 +02:00
-
-clockevents: Add missing resets of the next_event_forced flag
-
-The prevention mechanism against timer interrupt starvation missed to reset
-the next_event_forced flag in a couple of places:
-
-    - When the clock event state changes. That can cause the flag to be
-      stale over a shutdown/startup sequence
-
-    - When a non-forced event is armed, which then prevents rearming before
-      that event. If that event is far out in the future this will cause
-      missed timer interrupts.
-
-    - In the suspend wakeup handler.
-
-That led to stalls which have been reported by several people.
-
-Add the missing resets, which fixes the problems for the reporters.
-
-Fixes: d6e152d905bd ("clockevents: Prevent timer interrupt starvation")
-Reported-by: Hanabishi <i.r.e.c.c.a.k.u.n+kernel.org@gmail.com>
-Reported-by: Eric Naim <dnaim@cachyos.org>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Tested-by: Hanabishi <i.r.e.c.c.a.k.u.n+kernel.org@gmail.com>
-Tested-by: Eric Naim <dnaim@cachyos.org>
-Cc: stable@vger.kernel.org
-Closes: https://lore.kernel.org/68d1e9ac-2780-4be3-8ee3-0788062dd3a4@gmail.com
-Link: https://patch.msgid.link/87340xfeje.ffs@tglx
----
- kernel/time/clockevents.c    | 7 ++++++-
- kernel/time/tick-broadcast.c | 1 +
- 2 files changed, 7 insertions(+), 1 deletion(-)
-
-diff --git a/kernel/time/clockevents.c b/kernel/time/clockevents.c
-index b4d7306..5e22697 100644
---- a/kernel/time/clockevents.c
-+++ b/kernel/time/clockevents.c
-@@ -94,6 +94,9 @@ static int __clockevents_switch_state(struct clock_event_de=
-vice *dev,
- 	if (dev->features & CLOCK_EVT_FEAT_DUMMY)
- 		return 0;
-=20
-+	/* On state transitions clear the forced flag unconditionally */
-+	dev->next_event_forced =3D 0;
-+
- 	/* Transition with new state-specific callbacks */
- 	switch (state) {
- 	case CLOCK_EVT_STATE_DETACHED:
-@@ -366,8 +369,10 @@ int clockevents_program_event(struct clock_event_device =
-*dev, ktime_t expires, b
- 	if (delta > (int64_t)dev->min_delta_ns) {
- 		delta =3D min(delta, (int64_t) dev->max_delta_ns);
- 		cycles =3D ((u64)delta * dev->mult) >> dev->shift;
--		if (!dev->set_next_event((unsigned long) cycles, dev))
-+		if (!dev->set_next_event((unsigned long) cycles, dev)) {
-+			dev->next_event_forced =3D 0;
- 			return 0;
-+		}
- 	}
-=20
- 	if (dev->next_event_forced)
-diff --git a/kernel/time/tick-broadcast.c b/kernel/time/tick-broadcast.c
-index 7e57fa3..115e0bf 100644
---- a/kernel/time/tick-broadcast.c
-+++ b/kernel/time/tick-broadcast.c
-@@ -108,6 +108,7 @@ static struct clock_event_device *tick_get_oneshot_wakeup=
-_device(int cpu)
-=20
- static void tick_oneshot_wakeup_handler(struct clock_event_device *wd)
- {
-+	wd->next_event_forced =3D 0;
- 	/*
- 	 * If we woke up early and the tick was reprogrammed in the
- 	 * meantime then this may be spurious but harmless.
+Hi Stefano, I just posted v2 here:
+https://lore.kernel.org/linux-hyperv/20260416191433.840637-1-decui@microsof=
+t.com/T/#u
 
