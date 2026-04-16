@@ -1,96 +1,100 @@
-Return-Path: <stable+bounces-238326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238327-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uNaxCnr44GnZnwAAu9opvQ
-	(envelope-from <stable+bounces-238326-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 16:55:54 +0200
+	id gCdNGrX64GlloAAAu9opvQ
+	(envelope-from <stable+bounces-238327-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 17:05:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34E0840FF1B
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 16:55:53 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D53B410294
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 17:05:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DCD4C3027156
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 14:54:43 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 000D430028EB
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 15:04:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DE5F3E0234;
-	Thu, 16 Apr 2026 14:54:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC7AD3806AA;
+	Thu, 16 Apr 2026 15:04:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bsbernd.com header.i=@bsbernd.com header.b="MlRcvah2";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="DwRArtad"
+	dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b="LX1OyRSl";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="qHY6qGLb"
 X-Original-To: stable@vger.kernel.org
 Received: from fhigh-a1-smtp.messagingengine.com (fhigh-a1-smtp.messagingengine.com [103.168.172.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECD1F3DEFE6;
-	Thu, 16 Apr 2026 14:54:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D0D730AAA6;
+	Thu, 16 Apr 2026 15:04:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776351280; cv=none; b=SCxGk1sxPp+Wcke1gVTyFI90D9xnYhWDFh+OPx4NDx1qcOSOFkXAsqcXCvBuLU1JVwD+kMG4vqMV1GQ2MWqdMGiPuxwKsVKV2yd2p0SCzFEMXIJ8l+ajh74UR36zXP0WqnGqWcJ/7qt8ocZncA8rW63UJm7HoSTgxstv1xobMqA=
+	t=1776351885; cv=none; b=V3pzzpPBnm4v0gqRFr8O18q4SX6E9e/kCr0pt8TlWfrTqcGll7of+nC7sPWdZUIGDoVooLSxR8Vt/MW8QS1mJfoW7dqcqEbUZrukNgwagT3OYk30I/DTO1bdvKPfhU+dLLB349wRR3gepmFRRARLvzWLvSGBPInpmPhv19gdeOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776351280; c=relaxed/simple;
-	bh=iiIocqjLJf96QslIbH5YDrRaQ7PWHRvAXb/g66Y29ks=;
+	s=arc-20240116; t=1776351885; c=relaxed/simple;
+	bh=RyrCjZvQNNX5UQTa0dpfSyeGHjjqEAUPQze1wpyOUlM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IqvA8Hi6q9XD0OrIjY1Zc0MM8HCsYsHXXuHsr4TaKsKONKqL1FFVjT8ltFlno7/Oay03hGvfFXoiyR8wQpjjrv8xpwoo8OqY/VwO9qVzqtEGny/igDBRzcS2To+HjHSRt5IqTlxUjUJOyIsDX7cLTYwC2SXbDzdp383Nu6Kyxws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bsbernd.com; spf=pass smtp.mailfrom=bsbernd.com; dkim=pass (2048-bit key) header.d=bsbernd.com header.i=@bsbernd.com header.b=MlRcvah2; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=DwRArtad; arc=none smtp.client-ip=103.168.172.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bsbernd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bsbernd.com
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 08E4E1400079;
-	Thu, 16 Apr 2026 10:54:38 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Thu, 16 Apr 2026 10:54:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bsbernd.com; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
+	 In-Reply-To:Content-Type; b=GjvrQaqFTuJ11DdP7eIsdQorQhVYchXrrMdQP1x3e6nUMggc6fEpefx4WyVqU69V0waj3m3taj/j4Kwq8wbbQ52+KmBF0lu+0waXk8MKh/2lfu4P6PIhX2bNA6O7gRk5/eLhJFRbJGv3nt5kE6r+UUxVLRPeO0y/hnwfJFhVpAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com; spf=pass smtp.mailfrom=pobox.com; dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b=LX1OyRSl; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=qHY6qGLb; arc=none smtp.client-ip=103.168.172.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pobox.com
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 9529C1400068;
+	Thu, 16 Apr 2026 11:04:43 -0400 (EDT)
+Received: from phl-frontend-01 ([10.202.2.160])
+  by phl-compute-03.internal (MEProxy); Thu, 16 Apr 2026 11:04:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pobox.com; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1776351278;
-	 x=1776437678; bh=h00I6gPnQkLMkP+06QB0pY1DDKiXZSecoTvAx5ju4Cg=; b=
-	MlRcvah29GsTUrj0Dn9rTTcKbwIwuwuTclusczfFTeJXPUJNUN59AVqiQNmMONTI
-	5kjwx2kHtPBcfLFkfJNl7bonMefQ4Cium0FS3osbfLRd49E7vjmHSlSLOyKqdBsC
-	RXYrkE2CQ66FQ2W5Fg0IjZ41Ksu9+L809zVIpbN+ZfzrcYD60XzELtOhw/55wzCZ
-	yZ7/NaBJvWGZ6Lc2+8p3xZ7KqyC+AAwWDo2zIiF9LP+RJWKiWsZIeA1BbcAkBety
-	0oSZ2Bv7U5mDa4K2DZidubxzZCOXA7IOZW9v5ZI7OtQzjD2cUQWBDSXBZbVWL08O
-	SjpCXiYzF4xmRAOqJLsdyw==
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1776351883;
+	 x=1776438283; bh=/JI+iAxqfXdV9TISei4jbboFsY6J8hmpEAfmJwnd2W0=; b=
+	LX1OyRSlY0Pf8MYlBNvZlGi4oWjIXdImVBOgczUVGF4V6ShVnegLnb6F9OrPoGRG
+	esBuvhdkhU/gy/zpEfndDiGI+J9CvUF2mJAbYK+SQh4SWh13VOhiS1/ThFru0Nr9
+	PJPBJzhdUWKb6q7DHj7mMitPPTPQcSl3rUfWz7aENCmESufxMWLX7gDkT1+qy0c/
+	bU0oSD3nAUAkeiEa0bAvPARRbYNKLSsi/Zv6B2fgtoHhBhEyfkSyjIuM/b/Mub6k
+	8loqSIoZXx6oIXqKkV9WE96iV9hmpR8KQjLwIR95nGTSGpiQOkWyqUcdjLE5gNwF
+	neaDPCQSB4cmMLYFfljRiQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1776351278; x=
-	1776437678; bh=h00I6gPnQkLMkP+06QB0pY1DDKiXZSecoTvAx5ju4Cg=; b=D
-	wRArtad7FfLLpyKntiGUKwLPQpV58UbSbDGeBT96OCkwt4eBh8fSqxYK3gSXMNh+
-	2FYDt74UH3H+n4Qy2VKXG9nb5MX4PhKCGv5CMgPqL/zQ/DO5ustcvFs1WqomV/lg
-	lc59x+UOkwvxChChEaqGO+54n/GqvaN0zP5M3ot4qjTYywiH6B18nTdJ19s86srt
-	a+LawyzvHo/h5wBgYrEecXiVRQvIsiBWUbH3SHfGLNLhzo7iWTx9rjkGcbSGF/9E
-	xwPxOv+oDApgDs6n1zuiAELq6Qahllk+AXBjVWiuyQxo4KxMZODqhklhQ7YbyFAY
-	d19hvIJQhz1APIIAhLspA==
-X-ME-Sender: <xms:LfjgaTRForaHx1BIkobSztMlQNOhdLMlWnIV8KrKiE4f8MESqFXSUQ>
-    <xme:LfjgaWRZ1faDQSQnd3iqEAdZdDbC-RWbnYeWuhM_Iz4b-vb0jqrWCRcv1_EESG--p
-    AVGZ71UuC__ZcV2bLk7NxtFdyf_a_lufu9yiHc61Po85Iv-Ad5g>
-X-ME-Received: <xmr:LfjgaY6kbBxmk2REeUXxoVbMKNAFLTfsT1DSyaCocPbfR6hgYuixszF4KZRGLSuDiA13UaTJE_yKqk03ZDHXSPTiSfS2RD1FQz9FsTNhbrbFhBHw2w>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdegjedvlecutefuodetggdotefrod
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1776351883; x=
+	1776438283; bh=/JI+iAxqfXdV9TISei4jbboFsY6J8hmpEAfmJwnd2W0=; b=q
+	HY6qGLbg34IMfrsG/G/kFQA9KYrEN0e+8TyUVl8nWfmpx+YmqfoxHtlCizqFEcXZ
+	U+Jk4TXgcV9hTX8JcXsrI0Lms3TKjTwnOFM0X0PIFy8rbIx8T6Ww9Js1vfcvtp8Z
+	3FOYdvehzIaRDGTLzywfc6emBigec98Mqv4q8RtmPgCBWzZxgvrBjXuE0G+ZTuRi
+	tRg+SyID4tU9fFp1wdYFvuWGS7PFM0Lf2z04YnwPJYI9Nc2WT4BYMT5iywvhGxzs
+	KdMzGHxCuDjOI7SYr/DsX6M11+EZ0FTIIO6axhhwI7vqg96iroWhV6hpcriIFSLi
+	PJtDfPsCXBKv4LKmrHoEg==
+X-ME-Sender: <xms:ivrgaR4xkB_BMU6uS2CPZwbwDwJcKGw9gLWlHYFiWLUUKrKZIzlq6A>
+    <xme:ivrgaawsMSRCzii69vJqGpWDUs3v9q9YnBB98YFWzqdctuyVH7nxLNwRgi4FGhWDv
+    tu7A5cfOv3BU-trkYYj0UhGb8Fme3G65JhM0318G3c7cGbGXjyhQpY>
+X-ME-Received: <xmr:ivrgaT90tvYEYjh6hgeaci7TuJ_bwtEZhapQ_N7z8o6b3RzBF6QYDKlAI2pIcR7OO1F4CEMOI2j0DzfXCsIaaUdBcpkv8uET>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdegjeefudcutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
     ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefkffggfgfuvfevfhfhjggtgfesthejredttddvjeenucfhrhhomhepuegvrhhnugcu
-    ufgthhhusggvrhhtuceosggvrhhnugessghssggvrhhnugdrtghomheqnecuggftrfgrth
-    htvghrnhephefhjeeujeelhedtheetfedvgfdtleffuedujefhheegudefvdfhheeuvedu
-    ueegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsg
-    gvrhhnugessghssggvrhhnugdrtghomhdpnhgspghrtghpthhtohephedpmhhouggvpehs
-    mhhtphhouhhtpdhrtghpthhtohepmhhikhhlohhssehsiigvrhgvughirdhhuhdprhgtph
-    htthhopehjohgrnhhnvghlkhhoohhnghesghhmrghilhdrtghomhdprhgtphhtthhopehh
-    sghirhhthhgvlhhmvghrseguughnrdgtohhmpdhrtghpthhtoheplhhinhhugidqfhhsug
-    gvvhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehsthgrsghlvges
-    vhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:LfjgaS3-_ZBXzw0USSNe4GIKexWNJyCk0qt7J6va9fJFAb95yVtgcw>
-    <xmx:LfjgaTDvNpyTzJdHiWvzB1c4NVaU2-LOK-YduqRF2bo-OWem5YvBMg>
-    <xmx:LfjgadM4-vWnY4Dgmhd05Quhk5zJrGueOIeDcOzvKqwA_xbQokO1nw>
-    <xmx:LfjgaYYe3y_Anrw-SWJidGYNhIpR07d2Rl43VwmPomCNmUPmiPxONw>
-    <xmx:LvjgaVy3E4TH3MLqCjDiM5YDAviLC7YDMe-QRWsmQNW_lsOE8YcvV1z4>
-Feedback-ID: i5c2e48a5:Fastmail
+    hrpefkffggfgfuvfevfhfhjggtgfesthejredttddvjeenucfhrhhomhepfdeurghrrhih
+    ucfmrdcupfgrthhhrghnfdcuoegsrghrrhihnhesphhosghogidrtghomheqnecuggftrf
+    grthhtvghrnhepfeelheekheelkeejlefffefhvdeljeetheeltdeiudffveetffelteeg
+    gfefhfejnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiii
+    gvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsrghrrhihnhesphhosghogidrtgho
+    mhdpnhgspghrtghpthhtohepvddtpdhmohguvgepshhmthhpohhuthdprhgtphhtthhope
+    hgrhgvghhkhheslhhinhhugihfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehs
+    thgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehprghttghhvg
+    hssehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtoheplhhinhhugidqkhgvrhhn
+    vghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthhorhhvrghlughsse
+    hlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopegrkhhpmheslhhi
+    nhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheplhhinhhugiesrhhovg
+    gtkhdquhhsrdhnvghtpdhrtghpthhtohepshhhuhgrhheskhgvrhhnvghlrdhorhhgpdhr
+    tghpthhtohepphgrthgthhgvsheskhgvrhhnvghltghirdhorhhg
+X-ME-Proxy: <xmx:ivrgaeECpxcWABkTWR5xxkHYA0p2O2d-ahwFkZVN5faDOgcBKrhUrw>
+    <xmx:ivrgadAYil9R4pUPuXACly2Zl1MOHqVwLdlmne0RZnd0jGuylqrPGg>
+    <xmx:ivrgaSkHM8BXvTNSOowdgnjq-4eGrZIxG5BJ8t1ektwOfcI06NhHgw>
+    <xmx:ivrgaQQEv9_OJYiVTMLQkrnqOXeY6BNhO-ovVcvBMwrKr1OO94SAcQ>
+    <xmx:i_rgaXOSB49QifM3wRz68NFWnq54LSuk4EunVZ5u-N8UZmmcKyBrGyNU>
+Feedback-ID: i6289494f:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 16 Apr 2026 10:54:37 -0400 (EDT)
-Message-ID: <755d8408-6b1c-4e0b-9528-4769e8cf7fe1@bsbernd.com>
-Date: Thu, 16 Apr 2026 16:54:35 +0200
+ 16 Apr 2026 11:04:40 -0400 (EDT)
+Message-ID: <f76d0473-fd72-4fca-81d9-3f97bd3deaa0@pobox.com>
+Date: Thu, 16 Apr 2026 08:04:39 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -98,102 +102,85 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] fuse: fix io-uring background queue dispatch on
- request completion
-To: Miklos Szeredi <miklos@szeredi.hu>, Joanne Koong <joannelkoong@gmail.com>
-Cc: hbirthelmer@ddn.com, linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
-References: <20260408172510.52950-1-joannelkoong@gmail.com>
- <CAJfpegungbDJ57MJnLACuzKEqCDOBgPH0WzZ+9Pt3FJHDaCBGQ@mail.gmail.com>
-From: Bernd Schubert <bernd@bsbernd.com>
-Content-Language: fr, en-US
-In-Reply-To: <CAJfpegungbDJ57MJnLACuzKEqCDOBgPH0WzZ+9Pt3FJHDaCBGQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH 5.15 000/570] 5.15.203-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20260413155830.386096114@linuxfoundation.org>
+Content-Language: en-US
+From: "Barry K. Nathan" <barryn@pobox.com>
+In-Reply-To: <20260413155830.386096114@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[bsbernd.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[bsbernd.com:s=fm1,messagingengine.com:s=fm2];
+	DMARC_POLICY_ALLOW(-0.50)[pobox.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[pobox.com:s=fm1,messagingengine.com:s=fm2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-238326-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[szeredi.hu,gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[bsbernd.com:+,messagingengine.com:+];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	TAGGED_FROM(0.00)[bounces-238327-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[pobox.com:+,messagingengine.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bernd@bsbernd.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[barryn@pobox.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[messagingengine.com:dkim,bsbernd.com:dkim,bsbernd.com:mid]
-X-Rspamd-Queue-Id: 34E0840FF1B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[pobox.com:email,pobox.com:dkim,pobox.com:mid,messagingengine.com:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 5D53B410294
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-
-
-On 4/16/26 16:43, Miklos Szeredi wrote:
-> On Wed, 8 Apr 2026 at 19:28, Joanne Koong <joannelkoong@gmail.com> wrote:
->>
->> When a background request completes via the io_uring path, the
->> background queue gets flushed to dispatch pending background requests,
->> but this is done before the connection-level background counters
->> (fc->num_background, fc->active_background) are properly accounted,
->> which may reduce effective queue depth to one.
->>
->> The connection-level counters are decremented in fuse_request_end(), but
->> flush_bg_queue() flushes the /dev/fuse path queue (fc->bg_queue), not
->> the io_uring per-queue bg one, which means pending uring background
->> requests on the queue are never dispatched in this path.
->>
->> Fix this by accounting the connection-level background counters first
->> before flushing the queue's background queue. Since
->> fuse_request_bg_finish() clears FR_BACKGROUND, fuse_request_end() will
->> skip the background cleanup branch entirely, which avoids any
->> double-decrements; it will call the wake_up(&req->waitq) branch but this
->> is effectively a no-op as background requests have no waiters on
->> req->waitq.
+On 4/13/26 08:52, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.15.203 release.
+> There are 570 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> Does this guarantee progress if there are still requests on
-> fc->bg_queue at the point when ring becomes ready?
-
-Request allocation is still blocked until the ring is set to ready -
-there should be no background requests at all.
-There were a couple of issues with dynamic switching from /dev/fuse to
-fuse-io-uring, a really hard one was a lock order change. I think once
-we have reduced queues merged, I'm to create an additional patch set
-which allow allow distribution of requests between queues. The initial
-series had that, but Joanne had concerns. Anyway, once we have
-distribution between queues, we can avoid the global bg lock and global
-bg limit and set that per queue. If I remember right, that would solve
-the lock order issue. Although I forgot the exact details. Wish I would
-have creates notes or a blog - too late now :(
-
+> Responses should be made by Wed, 15 Apr 2026 15:57:08 +0000.
+> Anything received after that time might be too late.
 > 
-> Seems so, because there must be at least one background request on the
-> regular request queues if bg_queue is non-empty, and when that is
-> finished, a new one will be put on the pending queue, and so on until
-> bg_queue becomes empty.
-
-Yeah, in order to avoid stalls, ring queues always allow one bg request,
-ignoring the global limit.
-
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.203-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> and the diffstat can be found below.
 > 
-> Maybe add a comment about this subtlety?
+> thanks,
+> 
+> greg k-h
 
-Where should that comment be?
+I took the 5.15 stable-queue as of commit
+8704fee09eadb945a49ce5cedc2cb2d506a50b9c
+("drop 1 patch from queue-5.15 and queue-5.10 based on RC review feedback")
+and applied it on top of 5.15.202. This is up to date with most of the
+patch drops after 5.15.203-rc1. I then tested the resulting kernel on my
+Lenovo ThinkPad T14 Gen 1. It works well and I have not observed any
+regressions.
 
+Tested-by: Barry K. Nathan <barryn@pobox.com>
 
-Thanks,
-Bernd
+(As of this writing, one more patch has been dropped from stable-queue,
+in gve, however the config I used for testing does not build the gve
+driver.)
+-- 
+-Barry K. Nathan  <barryn@pobox.com>
 
