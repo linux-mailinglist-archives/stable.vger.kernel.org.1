@@ -1,196 +1,236 @@
-Return-Path: <stable+bounces-238311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238312-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aP+JGC7l4GlhnAAAu9opvQ
-	(envelope-from <stable+bounces-238311-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 15:33:34 +0200
+	id uJn5GNDl4GnhnAAAu9opvQ
+	(envelope-from <stable+bounces-238312-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 15:36:16 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D164F40EDF0
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 15:33:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DEC1340EEBE
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 15:36:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 91BD43198318
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 13:25:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 63C4830086DD
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 13:29:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D73493BE65F;
-	Thu, 16 Apr 2026 13:25:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA5EE3B38AF;
+	Thu, 16 Apr 2026 13:29:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rzDgFWqb"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NFIA4L5P"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 606273BD22E
-	for <stable@vger.kernel.org>; Thu, 16 Apr 2026 13:25:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB6EF3B777F
+	for <stable@vger.kernel.org>; Thu, 16 Apr 2026 13:29:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776345914; cv=none; b=qpNues7E4NDwGbI5k1uWBvtUYSlYdmHvEdhuLkfqmIXULE4N10ZtauT3+C0i5YqY0BWNlYgmI0VgdhQ9vdgn1YnaiYm/Vu+7I4bUxVqruTY0NueZ4S5o+GroaLpqFvfhwzAePITMIQXVrsSw7dv+HZYhMPn4j0M3KE9WgDp7zg0=
+	t=1776346142; cv=none; b=eKyLwDZ2N0YVXnxMqcN6FvTzpW+MqxFE4t2VgM5wlUZZpg91hyfqrislCeOpKkqUJRQRg0b66MHajrhse9PNOwhD6dJXgv/0UsNFRAzGGJwvC07KqiwkAcCFionhbyd2LofBAU+zrIbPd9vHRwwLjDTKsGeAKecQGugo7Pu0/ug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776345914; c=relaxed/simple;
-	bh=IXGjDwTvh4h4KuOXx81DSKXrmdElgn4WOT2+I/2WUvQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=gDvwpA0m3Tv0VGAd83nSsBa+wxbXxiKAOiKQcbZtwjzJowHSoZR4h69Rm6p10rC477ID2c/JZsX2Pgx3hw93vyNcMPFi6b01LWfJvoB+xlXSx7PxFEVJK24PFmXuT1z+5P0t0KD5fCJsrDzr7UfVuU4ibSCfa2hNZt0JXtJQs9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rzDgFWqb; arc=none smtp.client-ip=74.125.82.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-12c565476d7so3109242c88.1
-        for <stable@vger.kernel.org>; Thu, 16 Apr 2026 06:25:13 -0700 (PDT)
+	s=arc-20240116; t=1776346142; c=relaxed/simple;
+	bh=eY9M3Hns1hCAkMA3Tyj6bH96Y0/DuuzhcW3QphbaBt4=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=gOr9AQv20GlKMNI7xbREwD/x7CAW82MXYGbCzQhE4M3a6ReOFtCfC3yyE2SuVvrepEebdW+8QxiQr9LUwCkbmOetj4+yC5KSxp/qE8lTuGDaOjXUr1feMbT7h0sqI9fghtEqSQvPg6z/yL1tccv+UswwtQscJ0urYx6XPXSPP1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--elver.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NFIA4L5P; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--elver.bounces.google.com
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4836abfc742so61893615e9.0
+        for <stable@vger.kernel.org>; Thu, 16 Apr 2026 06:29:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776345912; x=1776950712; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=jX6Ogp1BShOzt1WRlynqsHqsr7PXv7guMEAzRV9ZzCM=;
-        b=rzDgFWqb3YKNeToVr2U3tK2mRUnj9bqSR+DoCTmvTRUCeP6T8Rtbfp1Bm0gABu6sVi
-         NzxaOEj6X8BYN9ELPdVaIOP2MuhxE4ymUCSPX6hFNSSPtLvgWfjpL/34mZCgkkvUcyXa
-         sPn5rpvPVtS4/Cq6219cIy0xx1lMtti+xOyTcRuhlORzkb7r/qnoIZqkpBr44lcz+yKI
-         HvBvKRT4iLuzhjMvavw5//F1IJ7ztQXeELQkbFc7eyILuWVtR6nZ1jSpn3mVNbs0MMLs
-         BlwwCRY89LQEuXCQdSw875BiG6/TI3ckQDtnkC0Up8Yg8whJR2F6Kfc9R4lrg1yFb7/l
-         0JCQ==
+        d=google.com; s=20251104; t=1776346139; x=1776950939; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=sXyay+WHlh8f8CqBFyXL5GTNWYbapDVN1nCV3X7TprM=;
+        b=NFIA4L5Pbpct+hzBUMRER0QgPovMbFPXjO/ZpgGHwcYzCtumv432WT00czlOp6z3ub
+         JvHSHDjl4i7hbm01WVnxkn5TN6hDd4q5W5NvyJn69tgPsljgKnIrgz2qiDW35/WNsV+Y
+         zAhXRH+k1/8I7rlJEOAOEjbDfpwlFpmvHBZnGiP3mRCzokhYegJfvqau/1BkFLXKiUAv
+         NS+50cN05bJg5bQ62RL8ILPmGvuYP7b1DHaxUtz/W4CYCAq6hpzV0IvSFn3cWWD+ocoL
+         DE4DYz5W4J9R0SdnRFWj+7GitTClG2dI8w66FvBxsR8gPazTGS0NV584aYPlTZopD6hy
+         e9RQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776345912; x=1776950712;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jX6Ogp1BShOzt1WRlynqsHqsr7PXv7guMEAzRV9ZzCM=;
-        b=scYh9XZV0eb9OJCIFE0sjO+wHeQ/hHljVJWRIX9H/7ovhtD2WTDfAUj5yLkWg2JwkA
-         QyIU+CrKFjskX5vvaCq6AnZbI1LrCEf/H8f/8eVigMoIumljsEGG6AQguhNq/87HOFW1
-         K2XtLi+VIE3yeBs5OKTmhqrL3Pq+PgUY3/ADAr/WE6y1RYG3+Q8PhEx2dY7cgwP3ckn+
-         9jp3qZXMK9JsY79VHFLaJWToz8KjZ6WDM2rrocz4T8chpva9r/2IqwLl1ZNJOdSpxrfb
-         3w3o9AomK/LCFu/3syORLqs293zsbSsh9+dkb48XnXi8/aRnmE1NPDTpISjqNlhNa6AC
-         VuyA==
-X-Forwarded-Encrypted: i=1; AFNElJ/caJTL9oLXIWtKvPdRVIjMQ7ETYpqdC9ZRVq3oLgdpO4oYzj+Hczk2olvka9xAGN7xwIAESwE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzTvskIoXvxmEJHvkMsoRfN9SzwSpoQHorAs9HeqYYU3kpvPnS3
-	ryIPw6vnflYJwGsdJz82D34/4F0YbSMEoaf5fdKMPrzt3q6xq58bRynh
-X-Gm-Gg: AeBDieu/6m6iJGYTxRBZjt7DrfdrpCgdpFgtWDdY4trT2sAEvfESlrDSh8oqSbxX7TX
-	y/rH6u+THMcYLKg4qDAU3gBCcLSelyhmJXvFp32K5WG9vVmmmcjhsn1Kdmcj6+q/+pSccwaG6f5
-	+6ltEJhh5LzHH1AvMwLqGfxKjtZ7IKbD22OR/uk03+Qrvsv95F47YSTuCHqzVqD/f5nAweexaVA
-	K5J22Hf31IVHwZpltRgacBvpu27TDhu7IIAsYsqY41ekCfTBvLXepna5KGFboLFDXCvA0P4rtiv
-	4BAax97oJ2AMn1hin899q9WM3nsbRAjGJumrAZ4A1805IRmpcTY5h3/7qxBPz7ggPWYwqqI6NHB
-	siFZKt6aN61Y/EudF1Q6t7w4td1O/9/2yy5iJn92kHQnAAZ+U4JU8XPkJ2PKP5ymjeBAFLdAnQW
-	M9aeE5fvkaFsOIbg3Sq4zwCRzNw/6opINv9umF/UWSkUwWXBLbv2dKMVaguC5VGQMMQu1SiASnE
-	xmLArXCi9t4ehA=
-X-Received: by 2002:a05:7301:6788:b0:2c0:cc90:a71 with SMTP id 5a478bee46e88-2d5873b3c6amr16502650eec.8.1776345912315;
-        Thu, 16 Apr 2026 06:25:12 -0700 (PDT)
-Received: from [192.168.1.18] (177-4-160-195.user3p.v-tal.net.br. [177.4.160.195])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2de8c50cee8sm7689556eec.7.2026.04.16.06.25.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Apr 2026 06:25:11 -0700 (PDT)
-From: =?utf-8?q?C=C3=A1ssio_Gabriel?= <cassiogabrielcontato@gmail.com>
-Date: Thu, 16 Apr 2026 10:24:40 -0300
-Subject: [PATCH] ALSA: 6fire: Fix input volume change detection
+        d=1e100.net; s=20251104; t=1776346139; x=1776950939;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=sXyay+WHlh8f8CqBFyXL5GTNWYbapDVN1nCV3X7TprM=;
+        b=SqU1Ix6GSTjqiF7op8J+L4aag/K/ih9kNLdsJJoMZQxPe6mrq85XE1XQlfOK0OLP6l
+         G8P3O80OSZJyKIIWwsZXUvOTXhp5E5v6yyUmciuFYBtNoVANAV333Sot4HXWYixsrqyr
+         l41n1gZZwW/ZlwV7GUzwAYg+bcgoc70d/h+xE8funGm9/hJRLhsLd7hL7q7z/CJL74Bv
+         RJ9/6ajXtHPfWahTntVsUsAXRYoy0YqslIxEFuBTarQfj+w/3Rm9JsNiTJyufpWfA4ck
+         GVoQHfvTfeQCDLK7bqQQhVIxm5TTH4oLHCQTQI1V3QZocwn3qOlpnUvFOsGmQXVTumxD
+         /jkA==
+X-Forwarded-Encrypted: i=1; AFNElJ/7dZRQAVKiIi1BDCyXv/OP3gv3PJuAipMOiDgpbZskdCz3vqxilBLAaoT0WSmN+l/6vLv4GPA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy37uJtTE+CN5X2F8raKLdC1g/1fQ/RiZ4nh67S+Fx08zuO/6D9
+	6FaPUGFhcDJxhTmQqEeOQqFme4M99eu2rs4wl48JCky7ffnrLl/lcAgAZPDhQAj9jjJs5Zs7YFL
+	dLw==
+X-Received: from wmtm7.prod.google.com ([2002:a05:600c:c4b7:b0:488:a6d9:e91a])
+ (user=elver job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:45c6:b0:488:a797:f0ac
+ with SMTP id 5b1f17b1804b1-488d6ac2226mr319528795e9.28.1776346138934; Thu, 16
+ Apr 2026 06:28:58 -0700 (PDT)
+Date: Thu, 16 Apr 2026 15:25:07 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260416-alsa-6fire-input-volume-change-detection-v1-1-ec78299168df@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/y2NwQ6CMBBEf4Xs2U1Kg5X4K8ZDga2uwUK6LTEh/
- LsreJuXmbxZQSgxCVyrFRItLDxFhfpUQf/08UHIgzJYY51paod+FI8ucNImziXjMo3lTfhfD5S
- pzyrRdDZdG8he2gCqmxMF/uxXt/vBUrqXrn9+2LYvJfMkoIwAAAA=
-X-Change-ID: 20260416-alsa-6fire-input-volume-change-detection-de50b8fe278f
-To: Takashi Iwai <tiwai@suse.com>, Jaroslav Kysela <perex@perex.cz>, 
- Torsten Schenk <torsten.schenk@zoho.com>
-Cc: linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, 
- =?utf-8?q?C=C3=A1ssio_Gabriel?= <cassiogabrielcontato@gmail.com>
-X-Mailer: b4 0.15.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2021;
- i=cassiogabrielcontato@gmail.com; h=from:subject:message-id;
- bh=IXGjDwTvh4h4KuOXx81DSKXrmdElgn4WOT2+I/2WUvQ=;
- b=owGbwMvMwCV2IdZeKur/u2bG02pJDJkPHptwq97XNttRcaBmudR/ebY3/9R0Xn44s1mUSe0Ou
- 822ziPvOkpZGMS4GGTFFFlWJy2y3NP14Gp93AoPmDmsTCBDGLg4BWAiNjsZ/tn1Pjl7f9Yh2xhD
- s90Ge3NcFN3XTFE9tTgunWVvZ+uxhV8Y/nsbahhHWj2Zks2l4rfM+GXMtnCNycIey76oOSzZ8nZ
- dNhsA
-X-Developer-Key: i=cassiogabrielcontato@gmail.com; a=openpgp;
- fpr=AB62A239BC8AE0D57F5EA848D05D3F1A5AFFEE83
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.rc1.513.gad8abe7a5a-goog
+Message-ID: <20260416132837.3787694-1-elver@google.com>
+Subject: [PATCH] slub: fix data loss and overflow in krealloc()
+From: Marco Elver <elver@google.com>
+To: elver@google.com, Vlastimil Babka <vbabka@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Harry Yoo <harry@kernel.org>, Hao Li <hao.li@linux.dev>, 
+	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	kasan-dev@googlegroups.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	MV_CASE(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-238311-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-238312-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[suse.com,perex.cz,zoho.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[cassiogabrielcontato@gmail.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[elver@google.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[google.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D164F40EDF0
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: DEC1340EEBE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-usb6fire_control_input_vol_put() stores the analog capture volume
-as a signed offset in rt->input_vol[] (-15..+15), but it compares
-the cached value against the user-visible mixer value (0..30)
-before subtracting 15.
+Commit 2cd8231796b5 ("mm/slub: allow to set node and align in
+k[v]realloc") introduced the ability to force a reallocation if the
+original object does not satisfy new alignment or NUMA node, even when
+the object is being shrunk.
 
-This mixes two domains in the change detection path. Since the
-runtime is zero-initialized, the visible default is 15; writing 0
-right after probe is ignored, while writing 15 is reported as a
-change even though the cached value remains 0.
+This introduced two bugs in the reallocation fallback path:
 
-Normalize the user value before comparing it with the cached offset.
+1. Data loss during NUMA migration: The jump to 'alloc_new' happens
+   before 'ks' and 'orig_size' are initialized. As a result, the
+   memcpy() in the 'alloc_new' block would copy 0 bytes into the new
+   allocation.
 
-Fixes: 06bb4e743501 ("ALSA: snd-usb-6fire: add analog input volume control")
-Cc: stable@vger.kernel.org
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+2. Buffer overflow during shrinking: When shrinking an object while
+   forcing a new alignment, 'new_size' is smaller than the old size.
+   However, the memcpy() used the old size ('orig_size ?: ks'), leading
+   to an out-of-bounds write.
+
+The same overflow bug exists in the kvrealloc() fallback path, where the
+old bucket size ksize(p) is copied into the new buffer without being
+bounded by the new size.
+
+A simple reproducer:
+
+	// e.g. add to lkdtm as KREALLOC_SHRINK_OVERFLOW
+	while (1) {
+		void *p = kmalloc(128, GFP_KERNEL);
+		p = krealloc_node_align(p, 64, 256, GFP_KERNEL, NUMA_NO_NODE);
+		kfree(p);
+	}
+
+demonstrates the issue:
+
+  ==================================================================
+  BUG: KFENCE: out-of-bounds write in memcpy_orig+0x68/0x130
+
+  Out-of-bounds write at 0xffff8883ad757038 (120B right of kfence-#47):
+   memcpy_orig+0x68/0x130
+   krealloc_node_align_noprof+0x1c8/0x340
+   lkdtm_KREALLOC_SHRINK_OVERFLOW+0x8c/0xc0 [lkdtm]
+   lkdtm_do_action+0x3a/0x60 [lkdtm]
+   ...
+
+  kfence-#47: 0xffff8883ad756fc0-0xffff8883ad756fff, size=64, cache=kmalloc-64
+
+  allocated by task 316 on cpu 7 at 97.680481s (0.021813s ago):
+   krealloc_node_align_noprof+0x19c/0x340
+   lkdtm_KREALLOC_SHRINK_OVERFLOW+0x8c/0xc0 [lkdtm]
+   lkdtm_do_action+0x3a/0x60 [lkdtm]
+   ...
+  ==================================================================
+
+Fix it by moving the old size calculation to the top of __do_krealloc()
+and bounding all copy lengths by the new allocation size.
+
+Fixes: 2cd8231796b5 ("mm/slub: allow to set node and align in k[v]realloc")
+Cc: <stable@vger.kernel.org>
+Reported-by: https://sashiko.dev/#/patchset/20260415143735.2974230-1-elver%40google.com
+Signed-off-by: Marco Elver <elver@google.com>
 ---
- sound/usb/6fire/control.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ mm/slub.c | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/sound/usb/6fire/control.c b/sound/usb/6fire/control.c
-index dd25a6407b63..c77a21a9acd7 100644
---- a/sound/usb/6fire/control.c
-+++ b/sound/usb/6fire/control.c
-@@ -290,15 +290,17 @@ static int usb6fire_control_input_vol_put(struct snd_kcontrol *kcontrol,
- 		struct snd_ctl_elem_value *ucontrol)
- {
- 	struct control_runtime *rt = snd_kcontrol_chip(kcontrol);
-+	int vol0 = ucontrol->value.integer.value[0] - 15;
-+	int vol1 = ucontrol->value.integer.value[1] - 15;
- 	int changed = 0;
+diff --git a/mm/slub.c b/mm/slub.c
+index 92362eeb13e5..161079ac5ba1 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -6645,16 +6645,6 @@ __do_krealloc(const void *p, size_t new_size, unsigned long align, gfp_t flags,
+ 	if (!kasan_check_byte(p))
+ 		return NULL;
  
--	if (rt->input_vol[0] != ucontrol->value.integer.value[0]) {
--		rt->input_vol[0] = ucontrol->value.integer.value[0] - 15;
-+	if (rt->input_vol[0] != vol0) {
-+		rt->input_vol[0] = vol0;
- 		rt->ivol_updated &= ~(1 << 0);
- 		changed = 1;
+-	/*
+-	 * If reallocation is not necessary (e. g. the new size is less
+-	 * than the current allocated size), the current allocation will be
+-	 * preserved unless __GFP_THISNODE is set. In the latter case a new
+-	 * allocation on the requested node will be attempted.
+-	 */
+-	if (unlikely(flags & __GFP_THISNODE) && nid != NUMA_NO_NODE &&
+-		     nid != page_to_nid(virt_to_page(p)))
+-		goto alloc_new;
+-
+ 	if (is_kfence_address(p)) {
+ 		ks = orig_size = kfence_ksize(p);
+ 	} else {
+@@ -6673,6 +6663,16 @@ __do_krealloc(const void *p, size_t new_size, unsigned long align, gfp_t flags,
+ 		}
  	}
--	if (rt->input_vol[1] != ucontrol->value.integer.value[1]) {
--		rt->input_vol[1] = ucontrol->value.integer.value[1] - 15;
-+	if (rt->input_vol[1] != vol1) {
-+		rt->input_vol[1] = vol1;
- 		rt->ivol_updated &= ~(1 << 1);
- 		changed = 1;
+ 
++	/*
++	 * If reallocation is not necessary (e. g. the new size is less
++	 * than the current allocated size), the current allocation will be
++	 * preserved unless __GFP_THISNODE is set. In the latter case a new
++	 * allocation on the requested node will be attempted.
++	 */
++	if (unlikely(flags & __GFP_THISNODE) && nid != NUMA_NO_NODE &&
++		     nid != page_to_nid(virt_to_page(p)))
++		goto alloc_new;
++
+ 	/* If the old object doesn't fit, allocate a bigger one */
+ 	if (new_size > ks)
+ 		goto alloc_new;
+@@ -6707,7 +6707,7 @@ __do_krealloc(const void *p, size_t new_size, unsigned long align, gfp_t flags,
+ 	if (ret && p) {
+ 		/* Disable KASAN checks as the object's redzone is accessed. */
+ 		kasan_disable_current();
+-		memcpy(ret, kasan_reset_tag(p), orig_size ?: ks);
++		memcpy(ret, kasan_reset_tag(p), min(new_size, (size_t)(orig_size ?: ks)));
+ 		kasan_enable_current();
  	}
-
----
-base-commit: 10cdf5ba267d89b7fc5d9f693c65a6e4af3f8e13
-change-id: 20260416-alsa-6fire-input-volume-change-detection-de50b8fe278f
-
-Best regards,
---  
-Cássio Gabriel <cassiogabrielcontato@gmail.com>
-
+ 
+@@ -6941,7 +6941,7 @@ void *kvrealloc_node_align_noprof(const void *p, size_t size, unsigned long alig
+ 		if (p) {
+ 			/* We already know that `p` is not a vmalloc address. */
+ 			kasan_disable_current();
+-			memcpy(n, kasan_reset_tag(p), ksize(p));
++			memcpy(n, kasan_reset_tag(p), min(size, ksize(p)));
+ 			kasan_enable_current();
+ 
+ 			kfree(p);
+-- 
+2.54.0.rc1.513.gad8abe7a5a-goog
 
