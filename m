@@ -1,59 +1,91 @@
-Return-Path: <stable+bounces-238246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238247-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eAlbMoNo4GllgQAAu9opvQ
-	(envelope-from <stable+bounces-238246-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 06:41:39 +0200
+	id KLlGBVtt4GnDggAAu9opvQ
+	(envelope-from <stable+bounces-238247-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 07:02:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7501340A34E
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 06:41:38 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C491640A421
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 07:02:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D990F30A4A8C
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 04:41:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 525CB309862B
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 05:02:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA3CC331A7E;
-	Thu, 16 Apr 2026 04:41:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E2263FCC;
+	Thu, 16 Apr 2026 05:02:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KzcjidpC"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VVVJtGBu"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64A70248F64;
-	Thu, 16 Apr 2026 04:41:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6514418DB26
+	for <stable@vger.kernel.org>; Thu, 16 Apr 2026 05:02:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776314490; cv=none; b=XcG7vgcop9Vxvm0urBhVoivlYshj7oPAIbVC9FzvAyurA5LOWAcGjaDnj4lUtq3gPMhv0wca4CnJ6s1tUck5NrbssSZj1xchYkkTVLkJAikbv/Qw02/X5eCd9J7JK29Rx7j+xfxq4SWB4uiaZiwM7mJoJ0W3+yEqDuJXO8kAkNY=
+	t=1776315733; cv=none; b=IYVroMF8jlRhZte1dhEUOtTbYPoZ68BVZvYgnXlswskbg5gFhJukczaswaplIQfNayJ2Tv60Y9Ve18y5kMNPzZ6xRmtKegsHN+pShSg9gXi9wEoz9QYwp+s5HbwMYdh4PeQZRgJOtw5YPhuNPzd+HdmZ6s4RywioqJwVNMbncjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776314490; c=relaxed/simple;
-	bh=Nx3FPp307bRF+OmCf8vNAag4l0D0r7KGIDqlOm4AOTo=;
+	s=arc-20240116; t=1776315733; c=relaxed/simple;
+	bh=Qw8DxF0aKSi2cgqXR2ywTjiOu/drTOFeZ5oRUKpwNNU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jjxesWgLqvBEyP2z1TfGi+xmEfugE8CrtfsRUNs2GKVcSIkAZ2smY5Bz5ZnRudLMXYWeG61Eqx6cCTGttG4Jt5U7XU9G2ADVtXB1oRiVYywseeIM2i0XcdbcDgJ/mQ0pTVEFMflFpFQ/9eoQCyoSkR8D/w7+egzSCNWGuvU5wkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KzcjidpC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66387C2BCAF;
-	Thu, 16 Apr 2026 04:41:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776314490;
-	bh=Nx3FPp307bRF+OmCf8vNAag4l0D0r7KGIDqlOm4AOTo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KzcjidpCjKSDvmec513yuSootriZjtm3YAi7IRphMf4UD9s9ybxcIuebVzRmpN7CN
-	 zcdoRJMDXZn5TW8iAmlQS/054jjinA8ZE1kd59n1a2iJod+IIAx33jeYK27xonYGXw
-	 wZIMPl1V6o8bSof9jOvHOADwOCzrPJBG56yt8edY=
-Date: Thu, 16 Apr 2026 06:40:55 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Mark Rutland <mark.rutland@arm.com>
-Cc: Guangshuo Li <lgs201920130244@gmail.com>, Will Deacon <will@kernel.org>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] arm_pmu: acpi: fix reference leak on failed device
- registration
-Message-ID: <2026041603-guts-crested-ef76@gregkh>
-References: <20260415174159.3625777-1-lgs201920130244@gmail.com>
- <ad_WmuauLJ3xDKqh@J2N7QTR9R3>
+	 Content-Type:Content-Disposition:In-Reply-To; b=cppc0EkGHovasMYWoQJcJ8aohMZF2yR/koMzo72McNk7iADNkLGntnddEOQtwd76bCYGO0NP2Y0H59nAUptr/NMaHkIzWUPMvuCFp2KPRmp4ARNbdNAj+AutG+fuGuzubQ1BGQUyNdxmb686/FcilkM5yWVk6ce+ZM+b47h9scM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VVVJtGBu; arc=none smtp.client-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-35da1af3e10so7603858a91.3
+        for <stable@vger.kernel.org>; Wed, 15 Apr 2026 22:02:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776315732; x=1776920532; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=8w0UFz50pwCfEEFsCgc3fUK9YMukoigInppvLm4bqWA=;
+        b=VVVJtGBueEICVmb4JaStNIsW55v3ukBW7uMeL0I6M6DCJAzr4/gDrWZpu++VSUq0x8
+         HWtm7eF84pP3nstLiVQcfV5zkBzuNt2c9krcKbLry7RTpROm09g2EtSeXgszRMSTfkEn
+         Sz3S1/osfhmbfnJr/HrcP20PPNrKYZ7XzSTFy1qOraDTMf+nsyP4nw6L6eJ7C8MUQ3HU
+         3HPFpx7y/u/uGh2J6IE8DL56HgQ6Fj++UdGVnqoTqHWGXhWLJXg+CsuZYWaRicR0v1E8
+         uj9WZfoOZoGRFN3WaOvE9cRkB1MEJNHUES1g39B2rzb2cNwp/yq8ZM9YUGXYUXgLXV94
+         xKMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776315732; x=1776920532;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8w0UFz50pwCfEEFsCgc3fUK9YMukoigInppvLm4bqWA=;
+        b=ZBx3NJCCSITfLzl++7VdCcOTavlNQOOcJjiQiGBneKQWnn9bfmGPvkSVw2jU4j8iMh
+         +gSDW02kteqODx3+fhnoPfkXusK+1WQiPADTUeT7u+fJ2coj6I7AUTj+OTi5O8/oODeI
+         EV9v+ghb6GnqgyOphjcz9/AuwEHzWJlIOAe0rVuijHB0s66xLYJbBM5BtHy3RUiNpore
+         HF3s5LU4S42mS0ki2L6OI2NQK8XPmLVIaGG374R+44iBMQkhDO3bYQJbvWi2CtKVuNj0
+         oG1b6MT6nMFeY/4BZ4XVvbR1zzT/tPRGzlDpEKw/q+uQChDGvAs1BhoQw7c9HY/BCMPt
+         p4Jg==
+X-Forwarded-Encrypted: i=1; AFNElJ8JyCxYsqJegt1p3G29FNzGNXzvvPu9oI/lHPvqQE/yxcOjvrz8mvUrzf6OVnXHw5Dtmj+GjEk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwxhND6Xc1jnoW6DRAj1yTOvlW93v8ns2xb+2NJSrub6+Agk06s
+	gkfpIR0QFm3iFOZluZh+c+F9j/FbZO19tdF4sUdRiiOsrE2+18lEl6Rr
+X-Gm-Gg: AeBDietiijUUnbW4qg1EnoVyxaxej1vQeio6PdMXyajq2tzNUQRi4YP/HmBJPnB9aIT
+	YDLcaTwmixwpX71xYN/I5eo6leUvIhKQG2idMzqWiM60FI0bK2A8Kb+LFR05MZ+tA13aKo+z4it
+	6Mxqzw+o58Yz1yK1GbqkFNu5WYJ6XCdBs6zkyVi+5NJyIM5fmcDgtKjElN7KNyqygNN0eaRIMTY
+	r70VG66NXOO9hWEWBMgDYzaJz0lfBAB47ImTm4V35/7ph0NgjOC90x1e9X62EfFyIT08JKLaBeP
+	1trjXJsvNwfn9Ox3X3UZUeYFvWcqd5Kvqnj+P5k8Ib7/a+Sd1cMHlUT5TnURjFun66xh//1JVcW
+	US03cHHZlyBHugkB5zVH+OXBQzgK0IVQ2xOxzSPvsHyM+UmW3wKyK02QPAPfik/Ev/wPO/nL7bt
+	tnTVnzLIu2MJLmGg1AnlR0bnNKmpXoTOVfTA9N
+X-Received: by 2002:a17:90b:4b86:b0:35f:b86f:6ae6 with SMTP id 98e67ed59e1d1-35fb86f6d97mr15000316a91.22.1776315731495;
+        Wed, 15 Apr 2026 22:02:11 -0700 (PDT)
+Received: from eric-wcnlab ([2001:288:7001:1099:49:cbd5:ab58:206c])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35fd0aa006dsm1541309a91.14.2026.04.15.22.02.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Apr 2026 22:02:11 -0700 (PDT)
+Date: Thu, 16 Apr 2026 13:02:06 +0800
+From: Cheng-Yang Chou <yphbchou0911@gmail.com>
+To: Zhao Mengmeng <zhaomengmeng@kylinos.cn>
+Cc: arighi@nvidia.com, changwoo@igalia.com, chia7712@gmail.com, 
+	jserv@ccns.ncku.edu.tw, sched-ext@lists.linux.dev, stable@vger.kernel.org, tj@kernel.org, 
+	void@manifault.com
+Subject: Re: [PATCH] sched_ext: Prevent RB-tree corruption in
+ scx_bpf_task_set_dsq_vtime()
+Message-ID: <xm6y76b24y4tnru4tbpm6kgcmnruduzfeqihz7hla4uotab7ul@onc572gdkyyv>
+References: <20260415193459.933175-1-yphbchou0911@gmail.com>
+ <7ad57375-c651-4fb0-8279-bc3423157255@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,126 +94,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ad_WmuauLJ3xDKqh@J2N7QTR9R3>
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+In-Reply-To: <7ad57375-c651-4fb0-8279-bc3423157255@kylinos.cn>
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-238247-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-238246-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,arm.com,lists.infradead.org,vger.kernel.org];
-	ASN_FAIL(0.00)[10.253.234.172.asn.rspamd.com:server fail];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[nvidia.com,igalia.com,gmail.com,ccns.ncku.edu.tw,lists.linux.dev,vger.kernel.org,kernel.org,manifault.com];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	ASN_FAIL(0.00)[114.105.105.172.asn.rspamd.com:server fail];
 	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[yphbchou0911@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 7501340A34E
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C491640A421
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Apr 15, 2026 at 07:19:06PM +0100, Mark Rutland wrote:
-> Hi,
-> 
-> Thanks for the patch, but from a quick skim, I don't think this is the right
-> fix.
-> 
-> Greg, I think we might want to rework the core API here; question for
-> you at the end.
-> 
-> On Thu, Apr 16, 2026 at 01:41:59AM +0800, Guangshuo Li wrote:
-> > When platform_device_register() fails in arm_acpi_register_pmu_device(),
-> > the embedded struct device in pdev has already been initialized by
-> > device_initialize(), but the failure path only unregisters the GSI and
-> > does not drop the device reference for the current platform device:
-> > 
-> >   arm_acpi_register_pmu_device()
-> >     -> platform_device_register(pdev)
-> >        -> device_initialize(&pdev->dev)
-> >        -> setup_pdev_dma_masks(pdev)
-> >        -> platform_device_add(pdev)
-> > 
-> > This leads to a reference leak when platform_device_register() fails.
-> 
-> AFAICT you're saying that the reference was taken *within*
-> platform_device_register(), and then platform_device_register() itself
-> has failed. I think it's surprising that platform_device_register()
-> doesn't clean that up itself in the case of an error.
-> 
-> There are *tonnes* of calls to platform_device_register() throughout the
-> kernel that don't even bother to check the return value, and many that
-> just pass the return onto a caller that can't possibly know to call
-> platform_device_put().
-> 
-> Code in the same file as platform_device_register() expects it to clean up
-> after itself, e.g.
-> 
-> | int platform_add_devices(struct platform_device **devs, int num) 
-> | {
-> |         int i, ret = 0; 
-> | 
-> |         for (i = 0; i < num; i++) {
-> |                 ret = platform_device_register(devs[i]);
-> |                 if (ret) {
-> |                         while (--i >= 0)
-> |                                 platform_device_unregister(devs[i]);
-> |                         break;
-> |                 }    
-> |         }    
-> | 
-> |         return ret; 
-> | }
-> 
-> That's been there since the initial git commit, and back then,
-> platform_device_register() didn't mention that callers needed to perform
-> any cleanup.
-> 
-> I see a comment was added to platform_device_register() in commit:
-> 
->   67e532a42cf4 ("driver core: platform: document registration-failure requirement")
-> 
-> ... and that copied the commend added for device_register() in commit:
-> 
->   5739411acbaa ("Driver core: Clarify device cleanup.")
-> 
-> ... but the potential brokenness is so widespread, and the behaviour is
-> so surprising, that I'd argue the real but is that device_register()
-> doesn't clean up in case of error. I don't think it's worth changing
-> this single instance given the prevalance and churn fixing all of that
-> would involve.
-> 
-> I think it would be far better to fix the core driver API such that when
-> those functions return an error, they've already cleaned up for
-> themselves.
-> 
-> Greg, am I missing some functional reason why we can't rework
-> device_register() and friends to handle cleanup themselves? I appreciate
-> that'll involve churn for some callers, but AFAICT the majority of
-> callers don't have the required cleanup.
+Hi Zhao,
 
-Yes, we should fix the platform core code here, this should not be
-required to do everywhere as obviously we all got it wrong.
+On Thu, Apr 16, 2026 at 09:49:56AM +0800, Zhao Mengmeng wrote:
+> Just discuss, if is better to use WARN_ON_ONCE instead of failing the
+> scheduler, just like the check in the beginning of dispatch_enqueue().
 
-Guangshuo, can you submit a patch to do that instead and ask for all of
-your other patches to not be applied as well?
+I think this is more like a misused scheduler API.
+dispatch_enqueue() uses scx_error() for the same category of errors:
+- scx_error(sch, "attempting to dispatch to a destroyed dsq")
+- scx_error(sch, "cannot use vtime ordering for built-in DSQs")
 
-thanks,
+That said, I don't have a strong opinion on this. :-) 
 
-greg k-h
+-- 
+Thanks,
+Cheng-Yang
 
