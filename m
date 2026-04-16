@@ -1,236 +1,202 @@
-Return-Path: <stable+bounces-238308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238309-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eMYjAmjf4GkEnAAAu9opvQ
-	(envelope-from <stable+bounces-238308-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 15:08:56 +0200
+	id gIPBEu3i4GlhnAAAu9opvQ
+	(envelope-from <stable+bounces-238309-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 15:23:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9510740E858
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 15:08:55 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD07740EC18
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 15:23:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8893630C2BDF
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 13:07:10 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B8445302EDB0
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 13:21:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 323153B6342;
-	Thu, 16 Apr 2026 13:07:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 638443806AB;
+	Thu, 16 Apr 2026 13:21:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="J96npSvX"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="GuPD0ZuY";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="E2M8C4bm"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5F9E39FCB4;
-	Thu, 16 Apr 2026 13:07:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0C0C34B43F
+	for <stable@vger.kernel.org>; Thu, 16 Apr 2026 13:21:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776344829; cv=none; b=ESgQUElN9fMldvfG8cbKWi9vZD7g3Mzw0cVsBNvNJABci+js0YghgHP+IBI3E/hpEVYx6f3xgAlswb9EvwS/YcCCNHiJ5q3Gn6DlDQT0mGgQ7B6Hw6Me7zQcHh8LlufXHzGHwMoPRPPTdShAjUFZwz2kFh2FhkwYt9oEMUIz+IA=
+	t=1776345700; cv=none; b=PblGGX89EmV1yuGax9laFr+K29pYFEJJtZ1kLHq0p6u7HJc+c8gXBc00h+h/FPMoNrkbgC5OdZknhwY2SqaO1xUOicKH8JVcNuCEQHMTlphg8EJuDvgmSB1UjKoYlpRVBxA1yy8wbWp6lIPjIrEalWQOgJHzgapCVnwgJe5PUcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776344829; c=relaxed/simple;
-	bh=63dp7SlgmOxi197iG0g9Hq200vm4448xNqqy2iUmeo8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lT1wjy/0kvMKjPkmaMPmvMbc2luBWShijqOSwuk+wKp3t/rdxlcUvktxTbWt1oNwegQ5ySaNZC4HyakP6mdzJHxfvRv7AP9V+x2ucGqxA0RAubzvwj1dYxPjAR3YVl9oZvtqNjU+eI5WZLLz/KRC3fGT1NfeFs/LUqRkPEYnzaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=J96npSvX; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63G9aI781861213;
-	Thu, 16 Apr 2026 13:07:03 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=pqFG4Q
-	O8HfP+fFwkZO7Eo6wItK0zCl8WRPM9giOYJVw=; b=J96npSvXONglaE0LtmRSpJ
-	0KFr1vvT59kjWZ+3CJKE8vA0Hx4UWQsTRyeTdUBwd3a/KD9tTSkwgb2EFXGJSD+K
-	/NIWKOt96n4jRKb6oNa71Z7Lrme5F0DE4+IUU8j5n2DAnW5SVyeC9DuV+MHIje0+
-	i3OJRJMr2pQDrDlaZRmxSCk+5jU6usEC0xnnHKwo1RMJYOkpsqvZJNqGpnm2CTr4
-	N4YgI7CQgLNKyMcKjU7pzBhTkKw/ftWgwZ7QnT2UZJkNxu9OsuhtKw8r3jPYotsm
-	JitryRL8GDEsrYFtkIX/Y11R2ofx2vaoXOw2V5yl7n4vSLIvJq49GnQghYlMRA7w
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dh89pmmey-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 16 Apr 2026 13:07:03 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 63GCuCc6004188;
-	Thu, 16 Apr 2026 13:07:02 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dg24kjvh6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 16 Apr 2026 13:07:02 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63GD6v7U59965896
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 16 Apr 2026 13:06:57 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EAE0320043;
-	Thu, 16 Apr 2026 13:06:56 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 903402004B;
-	Thu, 16 Apr 2026 13:06:56 +0000 (GMT)
-Received: from [9.52.200.39] (unknown [9.52.200.39])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 16 Apr 2026 13:06:56 +0000 (GMT)
-Message-ID: <b1f22f3a-398e-4ce6-8092-aff9c9aaaf9f@linux.ibm.com>
-Date: Thu, 16 Apr 2026 15:06:56 +0200
+	s=arc-20240116; t=1776345700; c=relaxed/simple;
+	bh=6hLaVwNU5sfu64nZwy8wbMblTFiOkzb+gUEkEnXMe40=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WYGAJjREaJegDIAsxq4DJFDIx/5Sw5iBNfJKQ+RxdFl7LUIgKL1V0OJHa/4hYLKTyPSymLXwD861eY7tuGC5UNWvC/nW+c4GUI28LVUcNHjaMUsfc50xdJ+iBBOhAHD8lRxbG9N/BGFMuJ7F+fhDyVYb0w4F82pyAs8QURz+N7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=GuPD0ZuY; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=E2M8C4bm; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63G8CT662576005
+	for <stable@vger.kernel.org>; Thu, 16 Apr 2026 13:21:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=SNN6bJZb5T6JRttooEykeHPt
+	d9OBGWMgLZQx8AqrSk0=; b=GuPD0ZuYypeZH6EDx6nrFTGQXLg22sCXxHRatYwW
+	/qOb6RGLFfZgM0S7Lvp/tH4dy4aAk1nxaH9IGaruoY1tJdeyUsCSVoZGKDiBrXTa
+	r1MzoqopM841xwU2boGQZ6Tvo1UIIJjEpMMnNpm0wUzLgDsyyn2LAMLiNcyaja4g
+	VM1i81mkOtMEwg1OHGk43pjsyfla1CRMC8qIwMJPox9uH9dBpybhuqhC0jqVD6Tl
+	wb3oLazyxV1r4955hZzcuu6wDOlLDKGD+dA7A+fXHZNZap8SkBW9uVWVy1MpEihg
+	ej7aTT0I4tai3/9d3PF62kGbr1EC5GEwypZ1aCIBS6PUQw==
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4djv27h3c0-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Thu, 16 Apr 2026 13:21:37 +0000 (GMT)
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2b24cd2e2b3so78220365ad.0
+        for <stable@vger.kernel.org>; Thu, 16 Apr 2026 06:21:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1776345697; x=1776950497; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=SNN6bJZb5T6JRttooEykeHPtd9OBGWMgLZQx8AqrSk0=;
+        b=E2M8C4bmygYRvEi0RuG83sCVS8ZJ5Qe5tUYIOMLoE9Oca3NkLtz8iQAMNpC4wOa+4+
+         +K9nj0dGB/0jVKgEOdi4Qnng2Tj7bnS4qRA05e5AtKx+4K4lq1ff+a8VJi6bBrc6TPyT
+         z8rb3M55pSoVhRDgqEdMoE/9YPanWILfiyMEfrm9KJXlNRzYxXqxEIUcGBNvudIvOs46
+         pw00Yo5M+OMMKjtku22G501HNf1PLlcwuTmE/yTsl9MUkkJCygv1Q7Uvn3qtUac9eeL+
+         p19eXIYpnUp0Knli0JbcPzfNZFtfOpzy8TxXEBoYQvCwFgsDYEVuCfhjXpUgGH/xiy3/
+         wmkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776345697; x=1776950497;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SNN6bJZb5T6JRttooEykeHPtd9OBGWMgLZQx8AqrSk0=;
+        b=q/ji3f/+cOIcNSfB8pXLE6Vp/23Ln94zJMo0/hJsB/9jUuiaD3GXq5+d7w4E5kEmn9
+         I+X+/SUh/87kKpuEczxbr+NqxcOx4f87aFDTquV1xTw0x+NgStbO70xxMgrqPbC+SPoU
+         P4irPsjKXJEAug8ccxp/K8WmQtBp6qvn9qhI9fRIuUkMeaIkXeCwqmmYmP2hHvp9Ze+3
+         5y+k1gdyHANVl71/h9AkERmA1GFa66QpjbayWp5jyieNL0Rw+XKr8uLPzp9LXXhmRaHf
+         yERdxbPleer7UZkO2NXhQEf+7ilASJKS2T/QpMF9FQbhP/BPByaPOFwKQJN/yQRytT3b
+         2BFQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+iWrbkRP5rc9QqrwaYhwstN4QWW8ObfRHfwYACyVs3+61kDFOJJsrqyMXFdVtseJ/NKd8cCUs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzdC+G4bTTHiPugVj5umgIsBu+GRg8A71WcvqgcTJOjUoujoPQX
+	l8sTpcUdXjutYQ+32iLejWjBvqmdRPM0uE77NsR37S2vJTkL35Kx6fpbcB5pL5ZGJhBWLZnTczw
+	Ht2hKKl1oBuqbvGSVVRMQIcQXES8l7MD5JZo6RU92UAi17wKgs6DuCZwTPr0=
+X-Gm-Gg: AeBDievxKtT4cUiY3qZtYPOMJJeQGc0l/m5RnMVfyF57hCf0fjCBxGTntOnyUfnyrXd
+	abkrain97IYLKHykX0qeWbJdZoVfAuUoBgUhMu8m5oeXOr+df6tgEfQNoR8CIHDBGS3EaK4adRO
+	SL1sdV2F843/k+NzKtzg/aj4QIdfSYt9BKyaSaeIYyz2VBh0vXmzV7OYujPZsk9fxEmXvj02hI7
+	4y1gvPQvfga7BCEtW9U7vFXRv+W7PBQoSz2ClJV9qrE71EBbQYFvmOHgHPHJ3Iz9ezPuq36wpMQ
+	aPRXvSd7zX8Cq2fJD8+QF8g1doAXLKjqHMZN57x+DeR5fChm++nQs9r6BlVkevte3r8IBt3MKZu
+	sAAIm1nuVBV7zTR/F1RxqlB0NYzVAtXiLF3exoF3amv5ETNcaoT8VOnSi7pmo
+X-Received: by 2002:a17:903:2cd:b0:2b2:420a:b48a with SMTP id d9443c01a7336-2b2d5a5b40emr273960445ad.32.1776345696796;
+        Thu, 16 Apr 2026 06:21:36 -0700 (PDT)
+X-Received: by 2002:a17:903:2cd:b0:2b2:420a:b48a with SMTP id d9443c01a7336-2b2d5a5b40emr273960005ad.32.1776345696240;
+        Thu, 16 Apr 2026 06:21:36 -0700 (PDT)
+Received: from hu-wasimn-hyd.qualcomm.com ([202.46.22.19])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b4782b2d0asm88663755ad.72.2026.04.16.06.21.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Apr 2026 06:21:35 -0700 (PDT)
+Date: Thu, 16 Apr 2026 18:51:30 +0530
+From: Wasim Nazir <wasim.nazir@oss.qualcomm.com>
+To: Bjorn Andersson <andersson@kernel.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Rishabh Bhatnagar <rishabhb@codeaurora.org>,
+        Gurbir Arora <gurbaror@codeaurora.org>,
+        Siddharth Gupta <sidgup@codeaurora.org>
+Cc: kernel@oss.qualcomm.com, linux-arm-msm@vger.kernel.org,
+        linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+Subject: Re: [PATCH v2] remoteproc: qcom: Fix leak when custom dump_segments
+ addition fails
+Message-ID: <aeDiWu3EIZjb/ZUz@hu-wasimn-hyd.qualcomm.com>
+References: <20260318-rproc-memleak-v2-1-ade70ab858f2@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] KVM: s390: pci: fix GAIT table indexing due to
- double-scaling pointer arithmetic
-To: Junrui Luo <moonafterrain@outlook.com>,
-        Janosch Frank <frankja@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev
- <agordeev@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Matthew Rosato <mjrosato@linux.ibm.com>,
-        Farhan Ali <alifm@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>,
-        Niklas Schnelle
- <schnelle@linux.ibm.com>,
-        Pierre Morel <pmorel@linux.ibm.com>
-Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Yuhao Jiang <danisjiang@gmail.com>,
-        stable@vger.kernel.org
-References: <SYBPR01MB7881AB7449FEB6B58E4BA6F2AF222@SYBPR01MB7881.ausprd01.prod.outlook.com>
-Content-Language: en-US
-From: Christian Borntraeger <borntraeger@linux.ibm.com>
-In-Reply-To: <SYBPR01MB7881AB7449FEB6B58E4BA6F2AF222@SYBPR01MB7881.ausprd01.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: NW56HftzDTMgUDFZwgF8K7OabTsz_0QM
-X-Proofpoint-ORIG-GUID: 14o-LYMtCCHIV5jIu7CNS0KmfqmHsa7N
-X-Authority-Analysis: v=2.4 cv=WbE8rUhX c=1 sm=1 tr=0 ts=69e0def7 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=pGLkceISAAAA:8
- a=VwQbUJbxAAAA:8 a=UqCG9HQmAAAA:8 a=VnNF1IyMAAAA:8 a=8PThvJbLQf9hx8_nC84A:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE2MDEyMiBTYWx0ZWRfX7xBa5k7TOSbS
- jhume73xGAauRYkukiaJEAphxWVy6YBOd8MyWXza2beljEnn5My7b65568WaF7tRzSPXGuv/qiT
- 3yadZxx9kndJIIjGMj4rpmCeKpNILVtZjiahaJVE2uje7U1eYtGVgMDQifu1JL6rOP0ZJsGxwO7
- aQFWSGWHLh6OWLFsE4hunKVT4G+sXOhUvPAjlC4yfQ6KnL2l35/gLM6pUafN6Z+8iMzMRdeMBXw
- TlGO6PwRXgcFq4uXO9SAKCwXmJq8nyyvJDWTh2Hh0EsZLTJ/OKDf44QoqMdoMAmYKfaeCS9aXj1
- mh4ToZkEgYOhTZ/DN4mMVIRiXF2HKTh00wUlBZAEtlSGoN/Hnsr7wQ3bZz8oVQTo/g0XnKi1dWG
- rzQRhWAie7VJ4W4ln970ScWsfvzSJmDCjN7UATwBJibT5eafcFPr1p3BaD5aN2j9fR6IyluIP6v
- G/Bz5AsUA0Moga2EoaA==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260318-rproc-memleak-v2-1-ade70ab858f2@oss.qualcomm.com>
+X-Authority-Analysis: v=2.4 cv=PJQ/P/qC c=1 sm=1 tr=0 ts=69e0e261 cx=c_pps
+ a=IZJwPbhc+fLeJZngyXXI0A==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
+ a=kj9zAlcOel0A:10 a=A5OVakUREuEA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22
+ a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=Y2km3Jh7R0eAzGVYxbQA:9 a=CjuIK1q_8ugA:10
+ a=uG9DUKGECoFWVXl0Dc02:22
+X-Proofpoint-GUID: LMs3z4G5R8ISnV3GpBWMOc_UCUd6oh5Z
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE2MDEyOCBTYWx0ZWRfX4ykS/JRxlffI
+ yDUaGZy//yV8zNtAXOSBe1epbAxpiqcTp32UhXAqUCnEo/YdtyVpU6VKThNYw109m3P7dPxYe/e
+ 5RYeGRuQfMA76iuPbIhzzvwkUrmgT0ziaAJDjphNIhil2iaAg/gbTj3QLlm/v8zr1FxUy7FpGPz
+ 8+0LOWAjzRYilQS5BGg5qmGDT1gfgqsJ6Um86bdt9HKB0AjBqGOuD3ObN7Qs6oIH/ViuK6tnWQ2
+ 4H/kCjGSO7Pifn7C8wMiGIH4iGAamGb3s1q1c2ys6+U5lwpVKbvrVj7x+yUU6aeZv13MP+YRj30
+ tlSCkGFcYs1z6qZuFqJSC5aDTOk/Zg3/62kiVLSrI5zlaX+mmPNWWG7HPikgXvsKci7xP3WTGGX
+ 16WDVFo1fUlhHJ9IlNcSAoZOfaipQr6mfCUy2DjlxS5UI6DBcOl310uL1EPWBcTlKn6UpHr0lVd
+ a0QgpA2f5YA6qxq1xZg==
+X-Proofpoint-ORIG-GUID: LMs3z4G5R8ISnV3GpBWMOc_UCUd6oh5Z
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-04-16_03,2026-04-16_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 bulkscore=0 priorityscore=1501 spamscore=0 clxscore=1011
- phishscore=0 impostorscore=0 adultscore=0 malwarescore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604070000 definitions=main-2604160122
+ malwarescore=0 suspectscore=0 spamscore=0 adultscore=0 phishscore=0
+ impostorscore=0 bulkscore=0 priorityscore=1501 clxscore=1015
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604070000
+ definitions=main-2604160128
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-238308-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[outlook.com,linux.ibm.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.ibm.com:mid];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[borntraeger@linux.ibm.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[ibm.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oss.qualcomm.com:dkim,hu-wasimn-hyd.qualcomm.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,qualcomm.com:dkim,qualcomm.com:email];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-238309-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	MISSING_XM_UA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[11]
-X-Rspamd-Queue-Id: 9510740E858
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[wasim.nazir@oss.qualcomm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: DD07740EC18
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Am 15.04.26 um 11:26 schrieb Junrui Luo:
-> kvm_s390_pci_aif_enable(), kvm_s390_pci_aif_disable(), and
-> aen_host_forward() index the GAIT by manually multiplying the index
-> with sizeof(struct zpci_gaite).
+On Wed, Mar 18, 2026 at 05:19:16PM +0530, Wasim Nazir wrote:
+> Free allocated minidump_region 'name' in qcom_add_minidump_segments()
+> when failing before adding the region to 'dump_segments'. Otherwise,
+> the 'name' is not tracked and is never freed by qcom_minidump_cleanup().
 > 
-> Since aift->gait is already a struct zpci_gaite pointer, this
-> double-scales the offset, accessing element aisb*16 instead of aisb.
+> Return error when adding to 'dump_segments' fails.
 > 
-> This causes out-of-bounds accesses when aisb >= 32 (with
-> ZPCI_NR_DEVICES=512)
-> 
-> Fix by removing the erroneous sizeof multiplication.
-> 
-> Fixes: 3c5a1b6f0a18 ("KVM: s390: pci: provide routines for enabling/disabling interrupt forwarding")
-> Fixes: 73f91b004321 ("KVM: s390: pci: enable host forwarding of Adapter Event Notifications")
-> Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-
-looks good to me.
-Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-
-Out of interest, was this found by static code checking or AI by any chance?
-
-
-
-@Matt, can you test/review this as well?
-
+> Cc: stable@vger.kernel.org # v5.11
+> Fixes: 8ed8485c4f05 ("remoteproc: qcom: Add capability to collect minidumps")
+> Reviewed-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+> Signed-off-by: Wasim Nazir <wasim.nazir@oss.qualcomm.com>
 > ---
->   arch/s390/kvm/interrupt.c | 3 +--
->   arch/s390/kvm/pci.c       | 6 ++----
->   2 files changed, 3 insertions(+), 6 deletions(-)
+> Changes in v2:
+> - Add fixes tag in commit.
+> - Add stable mailing list in cc.
+> - Link to v1: https://lore.kernel.org/r/20260316-rproc-memleak-v1-1-96b1518a1a61@oss.qualcomm.com
+> ---
+>  drivers/remoteproc/qcom_common.c | 14 ++++++++++----
+>  1 file changed, 10 insertions(+), 4 deletions(-)
 > 
-> diff --git a/arch/s390/kvm/interrupt.c b/arch/s390/kvm/interrupt.c
-> index 7cb8ce833b62..f48f25c7dc8f 100644
-> --- a/arch/s390/kvm/interrupt.c
-> +++ b/arch/s390/kvm/interrupt.c
-> @@ -3307,8 +3307,7 @@ static void aen_host_forward(unsigned long si)
->   	struct zpci_gaite *gaite;
->   	struct kvm *kvm;
->   
-> -	gaite = (struct zpci_gaite *)aift->gait +
-> -		(si * sizeof(struct zpci_gaite));
-> +	gaite = aift->gait + si;
->   	if (gaite->count == 0)
->   		return;
->   	if (gaite->aisb != 0)
-> diff --git a/arch/s390/kvm/pci.c b/arch/s390/kvm/pci.c
-> index 86d93e8dddae..eed45af1a92d 100644
-> --- a/arch/s390/kvm/pci.c
-> +++ b/arch/s390/kvm/pci.c
-> @@ -290,8 +290,7 @@ static int kvm_s390_pci_aif_enable(struct zpci_dev *zdev, struct zpci_fib *fib,
->   				    phys_to_virt(fib->fmt0.aibv));
->   
->   	spin_lock_irq(&aift->gait_lock);
-> -	gaite = (struct zpci_gaite *)aift->gait + (zdev->aisb *
-> -						   sizeof(struct zpci_gaite));
-> +	gaite = aift->gait + zdev->aisb;
->   
->   	/* If assist not requested, host will get all alerts */
->   	if (assist)
-> @@ -357,8 +356,7 @@ static int kvm_s390_pci_aif_disable(struct zpci_dev *zdev, bool force)
->   	if (zdev->kzdev->fib.fmt0.aibv == 0)
->   		goto out;
->   	spin_lock_irq(&aift->gait_lock);
-> -	gaite = (struct zpci_gaite *)aift->gait + (zdev->aisb *
-> -						   sizeof(struct zpci_gaite));
-> +	gaite = aift->gait + zdev->aisb;
->   	isc = gaite->gisc;
->   	gaite->count--;
->   	if (gaite->count == 0) {
-> 
+
+Gentle reminder!
+
+-- 
+Regards,
+Wasim
 
