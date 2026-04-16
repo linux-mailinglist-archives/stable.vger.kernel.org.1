@@ -1,178 +1,195 @@
-Return-Path: <stable+bounces-238349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238350-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ON5KNWMo4Wl0pwAAu9opvQ
-	(envelope-from <stable+bounces-238349-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 20:20:19 +0200
+	id mIn6JG0s4WnbqAAAu9opvQ
+	(envelope-from <stable+bounces-238350-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 20:37:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D383413B0D
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 20:20:19 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90303413CD7
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 20:37:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1D3653011063
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 18:20:18 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id AAD0830106A3
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 18:36:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3790C322B7D;
-	Thu, 16 Apr 2026 18:20:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="aNpYPdS7"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8DFA324B33;
+	Thu, 16 Apr 2026 18:36:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BF5F30C62D
-	for <stable@vger.kernel.org>; Thu, 16 Apr 2026 18:20:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B95D1DC198;
+	Thu, 16 Apr 2026 18:36:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776363617; cv=none; b=uQGuMA9kHXeV+GB85/8lWXEq+zXOLSELH7oEfql2IlyBBju9s0e8QtF+5UyJKajn3XwQhsAJEgfveB12oCMMFbPF3nhCKPFG1oB6tXudk/5GzmcATLi0Q1JSpssr3E+OcUvtFmk4SJXHJ0weMU/gvnh0a6kuq7do9hrdCtlZ2wU=
+	t=1776364564; cv=none; b=oKGXJwRjjCGLdM+WUkqk+c8mseim7fgwqGj+QrPecOg2nYe7QuW7b9d3SzvL1gH7/QdAWfiHC7/x+1gtTho0UBYlf4OKH/ll0c6XtGTnmmUDPdPCY19mTPLfguG+51im6M460xMu/6/DB0B/vF861/HSvV/u5Vjat3M6a7S95XE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776363617; c=relaxed/simple;
-	bh=+turttpIQmHXTclCmSyNTE5++FudpvOpqobqEdEmwh4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BbjIWj1HZ2VkkculnzKxxuRsY97p4w7zDihXSl/tUs4oJ37bLZXrfz4YgLoYfPg5jBfXLjxVf57geulbhe5cG4Fd6np+6jr9rY10RaJHGpfDf6aNAVuFliyBc3Q738Ar0Ftaq5GqzrofnhQm3gBRdOsNp3jbJXmlO2lqd5LjLS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=aNpYPdS7; arc=none smtp.client-ip=178.251.229.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9BAA4103EDC;
-	Thu, 16 Apr 2026 20:20:11 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1776363612;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=8mu6+Lx8bask9UvrYUKO0JD2GAEyGj7uFT87yPCVajY=;
-	b=aNpYPdS73XDVS8i6Z4CzB2vyD4mCjrJbqgIY0qnP2GqBU4yLWZDz5naD+uN+3S9Pok6swY
-	r9B7DU/ektzwCG6DMLjR8+rCRNTkbiXuMTIODyFvtA4eMoxWLIKHCsuz+fqrlQ7jVmsfQX
-	u/py27vMxjNCniaTyAxMUiKcjkFNAIdV2V3ugKpVYcyOWOr4FAWjIJ0VPMa/2hvMO0G8Rb
-	ciO7uyfwHlu6udIBbshQfX/Twcers0pCm1eOdlO2/sqCvfOL11bpwzqZiaaZ4xZW4ufwoT
-	S2dQesRbJe3igDXxXjktBSQTBFzatGz01ciBQ3igFwPemTup5gtINe7XNlZYBg==
-Message-ID: <8c909ddd-c8ff-43a1-987f-1a348917d75a@nabladev.com>
-Date: Thu, 16 Apr 2026 20:20:10 +0200
+	s=arc-20240116; t=1776364564; c=relaxed/simple;
+	bh=jYDrpKmgdrQiS3s46ncnw+0OXCF7//qblpw07yVDEsM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pHMWAgN5QF9jpqSxHoYnR1Xq6HGwMjrFz5audc3QRlgBmdq8D/cltbHXbtCTjbYSuX+4JHar4X9fq1uLUsRsUsK3kJkVYbSb/y/1XuvKe8KA1zAlVlikSj9N2sF7fvFR6cGwR6AC5MT6zHxvXWJFm2uZVnNaYz7bbpo8ELKPQCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1009)
+	id CF89020B7128; Thu, 16 Apr 2026 11:35:57 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com CF89020B7128
+From: Dexuan Cui <decui@microsoft.com>
+To: kys@microsoft.com,
+	haiyangz@microsoft.com,
+	wei.liu@kernel.org,
+	decui@microsoft.com,
+	longli@microsoft.com,
+	linux-hyperv@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	mhklinux@outlook.com,
+	matthew.ruffell@canonical.com,
+	johansen@templeofstupid.com
+Cc: stable@vger.kernel.org
+Subject: [PATCH] Drivers: hv: vmbus: Improve the logc of reserving fb_mmio on Gen2 VMs
+Date: Thu, 16 Apr 2026 11:35:29 -0700
+Message-ID: <20260416183529.838321-1-decui@microsoft.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.10 311/491] dmaengine: xilinx: xilinx_dma: Fix unmasked
- residue subtraction
-To: Ben Hutchings <ben@decadent.org.uk>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, Vinod Koul <vkoul@kernel.org>,
- Sasha Levin <sashal@kernel.org>
-References: <20260413155819.042779211@linuxfoundation.org>
- <20260413155830.683657586@linuxfoundation.org>
- <e4bf9ba9ceba4f2e23483b4aa0ebcff8251c0b73.camel@decadent.org.uk>
-Content-Language: en-US
-From: Marek Vasut <marex@nabladev.com>
-In-Reply-To: <e4bf9ba9ceba4f2e23483b4aa0ebcff8251c0b73.camel@decadent.org.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [2.04 / 15.00];
+	DMARC_POLICY_REJECT(2.00)[microsoft.com : SPF not aligned (relaxed), No valid DKIM,reject];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[nabladev.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[nabladev.com:s=dkim];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-238349-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[marex@nabladev.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[nabladev.com:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[microsoft.com,kernel.org,vger.kernel.org,outlook.com,canonical.com,templeofstupid.com];
+	TAGGED_FROM(0.00)[bounces-238350-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nabladev.com:email,nabladev.com:dkim,nabladev.com:mid]
-X-Rspamd-Queue-Id: 4D383413B0D
+	RCPT_COUNT_SEVEN(0.00)[11];
+	FROM_NEQ_ENVFROM(0.00)[decui@microsoft.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	PRECEDENCE_BULK(0.00)[];
+	NEURAL_HAM(-0.00)[-0.980];
+	TO_DN_NONE(0.00)[];
+	R_DKIM_NA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 90303413CD7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 4/16/26 7:58 PM, Ben Hutchings wrote:
-> On Mon, 2026-04-13 at 17:59 +0200, Greg Kroah-Hartman wrote:
->> 5.10-stable review patch.  If anyone has any objections, please let me know.
->>
->> ------------------
->>
->> From: Marek Vasut <marex@nabladev.com>
->>
->> [ Upstream commit c7d812e33f3e8ca0fa9eeabf71d1c7bc3acedc09 ]
->>
->> The segment .control and .status fields both contain top bits which are
->> not part of the buffer size, the buffer size is located only in the bottom
->> max_buffer_len bits. To avoid interference from those top bits, mask out
->> the size using max_buffer_len first, and only then subtract the values.
-> 
-> This change is harmless, but the problem it claims to fix does not
-> exist.
+If vmbus_reserve_fb() in the kdump kernel fails to properly reserve the
+framebuffer MMIO range due to a Gen2 VM's screen.lfb_base being zero [1],
+there is an MMIO conflict between the drivers hyperv_drm and pci-hyperv.
+This is especially an issue if pci-hyperv is built-in and hyperv_drm is
+built as a module. Consequently, the kdump kernel fails to detect PCI
+devices via pci-hyperv, and may fail to mount the root file system,
+which may reside in a NVMe disk.
 
-The current code subtracts two independently read values which both 
-contain status/control MSbits and the actual value LSbits. Depending on 
-the MSbits being identical in both separately read values is unsafe, so 
-the change in this patch masks out the MSbits first and then does the 
-subtraction on the actual value LSbits only, which is safe.
+On Gen2 VMs, if the screen.lfb_base is 0 in the kdump kernel, fall
+back to the low MMIO base, which should be equal to the framebuffer
+MMIO base (Tested on x64 Windows Server 2016, and on x64 and ARM64 Windows
+Server 2025 and on Azure) [2]. In the first kernel, screen.lfb_base
+is not 0; if the user specifies a high resolution, it's not enough to
+only reserve 8MB: in this case, reserve half of the space below 4GB, but
+cap the reservation to 128MB, which is the required framebuffer size of
+the highest resolution 7680*4320 supported by Hyper-V.
 
-Why do you think the original unsafe behavior can not trigger a failure?
+Add the cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT) check, because a CoCo
+VM (i.e. Confidential VM) on Hyper-V doesn't have any framebuffer
+device, so there is no need to reserve any MMIO for it.
 
-> Ben.
-> 
->> Fixes: a575d0b4e663 ("dmaengine: xilinx_dma: Introduce xilinx_dma_get_residue")
->> Signed-off-by: Marek Vasut <marex@nabladev.com>
->> Link: https://patch.msgid.link/20260316222530.163815-1-marex@nabladev.com
->> Signed-off-by: Vinod Koul <vkoul@kernel.org>
->> Signed-off-by: Sasha Levin <sashal@kernel.org>
->> ---
->>   drivers/dma/xilinx/xilinx_dma.c | 12 ++++++------
->>   1 file changed, 6 insertions(+), 6 deletions(-)
->>
->> diff --git a/drivers/dma/xilinx/xilinx_dma.c b/drivers/dma/xilinx/xilinx_dma.c
->> index ca80a1dee8489..a89a150be3284 100644
->> --- a/drivers/dma/xilinx/xilinx_dma.c
->> +++ b/drivers/dma/xilinx/xilinx_dma.c
->> @@ -964,16 +964,16 @@ static u32 xilinx_dma_get_residue(struct xilinx_dma_chan *chan,
->>   					      struct xilinx_cdma_tx_segment,
->>   					      node);
->>   			cdma_hw = &cdma_seg->hw;
->> -			residue += (cdma_hw->control - cdma_hw->status) &
->> -				   chan->xdev->max_buffer_len;
->> +			residue += (cdma_hw->control & chan->xdev->max_buffer_len) -
->> +			           (cdma_hw->status & chan->xdev->max_buffer_len);
->>   		} else if (chan->xdev->dma_config->dmatype ==
->>   			   XDMA_TYPE_AXIDMA) {
->>   			axidma_seg = list_entry(entry,
->>   						struct xilinx_axidma_tx_segment,
->>   						node);
->>   			axidma_hw = &axidma_seg->hw;
->> -			residue += (axidma_hw->control - axidma_hw->status) &
->> -				   chan->xdev->max_buffer_len;
->> +			residue += (axidma_hw->control & chan->xdev->max_buffer_len) -
->> +			           (axidma_hw->status & chan->xdev->max_buffer_len);
->>   		} else {
->>   			aximcdma_seg =
->>   				list_entry(entry,
->> @@ -981,8 +981,8 @@ static u32 xilinx_dma_get_residue(struct xilinx_dma_chan *chan,
->>   					   node);
->>   			aximcdma_hw = &aximcdma_seg->hw;
->>   			residue +=
->> -				(aximcdma_hw->control - aximcdma_hw->status) &
->> -				chan->xdev->max_buffer_len;
->> +				(aximcdma_hw->control & chan->xdev->max_buffer_len) -
->> +				(aximcdma_hw->status & chan->xdev->max_buffer_len);
->>   		}
->>   	}
->>   
-[...]
+While at it, fix the comparison "end > VTPM_BASE_ADDRESS" by changing
+the > to >=. Here the 'end' is an inclusive end (typically, it's
+0xFFFF_FFFF).
+
+[1] https://lore.kernel.org/all/SA1PR21MB692176C1BC53BFC9EAE5CF8EBF51A@SA1PR21MB6921.namprd21.prod.outlook.com/
+[2] https://lore.kernel.org/all/SA1PR21MB69218F955B62DFF62E3E88D2BF222@SA1PR21MB6921.namprd21.prod.outlook.com/
+
+Fixes: 4daace0d8ce8 ("PCI: hv: Add paravirtual PCI front-end for Microsoft Hyper-V VMs")
+CC: stable@vger.kernel.org
+Signed-off-by: Dexuan Cui <decui@microsoft.com>
+---
+ drivers/hv/vmbus_drv.c | 30 ++++++++++++++++++++++++++++--
+ 1 file changed, 28 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/hv/vmbus_drv.c b/drivers/hv/vmbus_drv.c
+index f0d0803d1e16..a0b34f9e426a 100644
+--- a/drivers/hv/vmbus_drv.c
++++ b/drivers/hv/vmbus_drv.c
+@@ -37,6 +37,7 @@
+ #include <linux/dma-map-ops.h>
+ #include <linux/pci.h>
+ #include <linux/export.h>
++#include <linux/cc_platform.h>
+ #include <clocksource/hyperv_timer.h>
+ #include <asm/mshyperv.h>
+ #include "hyperv_vmbus.h"
+@@ -2327,8 +2328,8 @@ static acpi_status vmbus_walk_resources(struct acpi_resource *res, void *ctx)
+ 		return AE_NO_MEMORY;
+ 
+ 	/* If this range overlaps the virtual TPM, truncate it. */
+-	if (end > VTPM_BASE_ADDRESS && start < VTPM_BASE_ADDRESS)
+-		end = VTPM_BASE_ADDRESS;
++	if (end >= VTPM_BASE_ADDRESS && start < VTPM_BASE_ADDRESS)
++		end = VTPM_BASE_ADDRESS - 1;
+ 
+ 	new_res->name = "hyperv mmio";
+ 	new_res->flags = IORESOURCE_MEM;
+@@ -2395,13 +2396,36 @@ static void vmbus_mmio_remove(void)
+ static void __maybe_unused vmbus_reserve_fb(void)
+ {
+ 	resource_size_t start = 0, size;
++	resource_size_t low_mmio_base;
+ 	struct pci_dev *pdev;
+ 
++	/* Hyper-V CoCo guests do not have a framebuffer device. */
++	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
++		return;
++
+ 	if (efi_enabled(EFI_BOOT)) {
+ 		/* Gen2 VM: get FB base from EFI framebuffer */
+ 		if (IS_ENABLED(CONFIG_SYSFB)) {
+ 			start = sysfb_primary_display.screen.lfb_base;
+ 			size = max_t(__u32, sysfb_primary_display.screen.lfb_size, 0x800000);
++
++			low_mmio_base = hyperv_mmio->start;
++			if (!low_mmio_base || low_mmio_base >= SZ_4G ||
++			    (start && start < low_mmio_base)) {
++				pr_warn("Unexpected low mmio base 0x%pa\n", &low_mmio_base);
++			} else {
++				/*
++				 * If the kdump kernel's lfb_base is 0,
++				 * fall back to the low mmio base.
++				 */
++				if (!start)
++					start = low_mmio_base;
++				/*
++				 * Reserve half of the space below 4GB for high
++				 * resolutions, but cap the reservation to 128MB.
++				 */
++				size = min((SZ_4G - start) / 2, SZ_128M);
++			}
+ 		}
+ 	} else {
+ 		/* Gen1 VM: get FB base from PCI */
+@@ -2433,6 +2457,8 @@ static void __maybe_unused vmbus_reserve_fb(void)
+ 	 */
+ 	for (; !fb_mmio && (size >= 0x100000); size >>= 1)
+ 		fb_mmio = __request_region(hyperv_mmio, start, size, fb_mmio_name, 0);
++
++	pr_info("hv_mmio=%pR,%pR fb=%pR\n", hyperv_mmio, hyperv_mmio->sibling, fb_mmio);
+ }
+ 
+ /**
+-- 
+2.34.1
+
 
