@@ -1,64 +1,65 @@
-Return-Path: <stable+bounces-238266-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238264-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WKJoHyuP4Gl6jwAAu9opvQ
-	(envelope-from <stable+bounces-238266-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 09:26:35 +0200
+	id sI97KweP4Gl6jwAAu9opvQ
+	(envelope-from <stable+bounces-238264-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 09:25:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 281F540B038
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 09:26:33 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FA1940B022
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 09:25:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3897D318E1B5
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 07:22:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3EF96312A01C
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 07:22:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D706338A70C;
-	Thu, 16 Apr 2026 07:22:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFC203822A5;
+	Thu, 16 Apr 2026 07:22:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=altera.com header.i=@altera.com header.b="OzS9vham"
+	dkim=pass (2048-bit key) header.d=altera.com header.i=@altera.com header.b="WL4rRjrG"
 X-Original-To: stable@vger.kernel.org
 Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011071.outbound.protection.outlook.com [40.93.194.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5112137F012;
-	Thu, 16 Apr 2026 07:22:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD18F37E2E7;
+	Thu, 16 Apr 2026 07:22:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.71
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776324138; cv=fail; b=pYZOv4JIo8+cqbRGLGX3raTKBAb0rYb7a9Ixyah9b0gzNe4DyzEk7K4shltIvgYO2QlvUuLwkkBml3tJ1nwHy0hl+POQpetg4KEzU2aG1GDjSPR0yHY7QHPTLdkwXW/9ggbHcjtZebIZ3kZ0+5Aw4BA687IvrkMYqdDpre8flaQ=
+	t=1776324135; cv=fail; b=nE/QljwwaSxXfS1pjk9bpQ63f8E5V6bKFl+HgQk0nPhnImZxlX39tDte/jZ46obJlkhyyiSe8MvhX5Pd0H77dBFaP6XkEFa0cWFzZUcAK3FQ5BVby14Ihs0YZm3zHjziOMYYvcqayUCa+oXo3cUB3EL8jWGj61XJ83maItQJVhk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776324138; c=relaxed/simple;
-	bh=KINaAtfYnKhn6OvGnj/gOH5WjLZwi/Q2OG+PoEoiz8A=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=SrQlyYTIDs9AtGBTes0JXfjLWIzBgznGxpuQ688jkNoZaZ2L78T//uk/DnHI9gG6FAsJ0HEiJRGJ/LUiCk2RepiOtx19MtlyoCV22SnvV3heZGLl8caz2yrgbFR58E6yWVpN5k94ExDIY/E9rh1gKh+2s1FOyEUWGceH+aynfFs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=altera.com; spf=pass smtp.mailfrom=altera.com; dkim=pass (2048-bit key) header.d=altera.com header.i=@altera.com header.b=OzS9vham; arc=fail smtp.client-ip=40.93.194.71
+	s=arc-20240116; t=1776324135; c=relaxed/simple;
+	bh=pkNeg2elSOzrkiK7egsavmH3sCXesC1uliM896U4gKs=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=IsvjUfHbXBpa/HvAJmoQv9Hs7/lt2uTyU7EmeuHt3Fn9TkMQgychZZBgD9RMtboytf1WQ6zt1RBIU5vJdiA9J2gVZjYIdiPFvqhgx0xtCgmwc4DhZRcAp8bQTB4SGahDVZsYDWLg6gOj1O75SwxzcuTuI2acr9RXAgQNSkmj3GI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=altera.com; spf=pass smtp.mailfrom=altera.com; dkim=pass (2048-bit key) header.d=altera.com header.i=@altera.com header.b=WL4rRjrG; arc=fail smtp.client-ip=40.93.194.71
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=altera.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altera.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CQrMbnZqF4p6LdooW18xApaytnet+2L+bs7vgjWQNmAUsuP6JxewQmJeLzMWAYXkIS5vpvoUnWRkScZJoa8TMlieB6YGaVlB5gr6Xmoi5aW8HqtBBhQGdodrdkmqWAvOOqqufAkzpSuym1d/vx8wJKjUF48kU+V8fdbFAwMbWtECqTNWXGhbsT7E9jdZOahVin6Q3dKmogI7bRD+Zoh0jV1rdw1R1TKLovRymwSNqYDDpmai2fXc+TygBSv4CLDwUNYGpliux/oFU6aiw9dYhvvC50bT1BF3gU/xbxhrNG7WGLZ91O98oU4ZkPrte9dVBsn0KRgFSbOE9ywvxuPn6A==
+ b=YaKvEoXoj0lJYGp8iE1/vxlXr2eGba+oKcCR6MX+j9sBPqxvBteeTgWidGdd2bz2G6MX+2Vo0FtjC0ksXbbMtChdVtHNAdnmOUc6fMZCCw/nktQTJAqy6zIX4KSgRiBwTgZW5CA5ZcHQJF0HalFX2S4vAn4Kdn7hoAip0KwpMn/cJGa3GrX35JW6FuTlTLGDLDPkjm65yw1hd/jkfZ6//Lf1vUQlcG9ZsNnxlH6d8eGYzltHV2QKjxERQzwTxBiHscJQP+VogX2LpOT3m3vOmgPwFCIMtiOlDDH66prHvkp4Y/i6BsMwFLUKLw4rf/9TEd91s2WoCJyhJ6qagaw99Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5Mw/uUnQY/FEZ/XJPjjeullVp2XPsV5J/WoaZw5guVY=;
- b=Edh1d8QCC0/vwCBxZ83xyRlpcKLqP0JluNn1pj4tyBb7H7hCg1y0Z8VzLogXsr0IXKwnKVMd4exRYQbJsa2sgo62+fJD5pk+yI8EmJ/8P+i8O0kCJUjH35cjcgatKo9PINRy5/dfnpyy0jNOROxHGBsUxEcTYhpi2Jmz85AkdPprDimomQYC5xJK4Wu3rQsXnJva/Erpgfwfa3zVhYnB0YTtkwwo8pK5cjfSgGrO0joY/R4qHd9KkIjLRKQVlqKSrNOAcihqYMHPP60B0HW2zM1YgMWamochn3a3xqtHalrrq+RdJDQr8y5wp7449K6yDhyp1V/03aLnXBkAs4Zs8A==
+ bh=NF6agQjYaAKkWyO0ZWyQTvCgMSS5thyqle4j+DPYXbI=;
+ b=KUrKLgWrg4lmRb95jNSW+/QrVx5LrUCjRGpk6kpvD37CTLfkVnCUG+yiI1saFy1Df4g8TIk3t16p9mTB9U0N1MCs/vunyoXYMbbPKShoRwxzK+sgeDSsJKtJ85jQ9dDvA+pFNKmP6bmD3EJxDvxTO5afUlPNgBGX+Fv9VIBCVanv2EaZtAvuT01I16miUOEVH6tQyoPj2/z8K2PHFMEwFA2TEtBcMvq3SdItq4sNqPetwa4Sl2XLOoGqtV2Fmfz9wVoMbKA21X5VqBGMW3TSup+GJHa1E1fD9jAJbZidMwop7OemPGE2qDx4sStELadEtb02ibiip/J158KG/36xkg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=altera.com; dmarc=pass action=none header.from=altera.com;
  dkim=pass header.d=altera.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=altera.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5Mw/uUnQY/FEZ/XJPjjeullVp2XPsV5J/WoaZw5guVY=;
- b=OzS9vhamncXB8I4tVgqg3eV4p9Vgf/lS/v5Il6UKm84jZOgyLdbQuqZqZHNx2xfRMrxuW/aGi6BBXkta/4CUZXFbMgA0NnHwTfdZ86NKRWkOPMvIwlpEel4rGf1RvmF2tYB29hOXbAyoSl4T7qmi/4bibYjTHcA3yCLweEnEcMWtQj50yiteJyISJDnbGJ5+Pgw/BKtGWbbSK9jkHYk/ao7IMPn6wlKZ9TCn8WCG78mBEr/ZnmhhBhIoEvGRETSYJFwrbMvXYKynbPSgdmzzho3fZ1G/q+syC1DWu+hVHQxBCB89Hjqd3f0r48eiQ73cE+NAmQ+ABz76XKowV29bZw==
+ bh=NF6agQjYaAKkWyO0ZWyQTvCgMSS5thyqle4j+DPYXbI=;
+ b=WL4rRjrGE25b+pJ10K2yr3NiuZj661APYw53cmc6nMXnl+yA1Eo72k5m+f3fIOwcGyrMSS6PbeDz8Kbo8+ExcCwDt5Jt7erao+967MDQWAlsTDg2aX/crsTxAX9HDsRHqepoBY6RQR+bqAULwwsqYxzxUhfyqECKCmC59MsTOORXYStCZFEc6jSSFUN+Q9/D3NuNptJBTBizANUyxQqvGyBvY9lMWnZKvoKTzTpra2SpqkC6o9NRSOVgmDLVorhOSlm2d0P0se5JFUISMYf0ySADGnUlpxM5KwdDnMwbb6ferJnZndG3mBYhHqNGwScsPb0ssuah3caJwC8zwIvvTw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=altera.com;
 Received: from BLAPR03MB5458.namprd03.prod.outlook.com (2603:10b6:208:29d::17)
  by MW4PR03MB7011.namprd03.prod.outlook.com (2603:10b6:303:1a6::21) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.25; Thu, 16 Apr
- 2026 07:22:10 +0000
+ 2026 07:22:11 +0000
 Received: from BLAPR03MB5458.namprd03.prod.outlook.com
  ([fe80::7eda:fa34:15f9:e656]) by BLAPR03MB5458.namprd03.prod.outlook.com
  ([fe80::7eda:fa34:15f9:e656%6]) with mapi id 15.20.9769.046; Thu, 16 Apr 2026
- 07:22:10 +0000
+ 07:22:11 +0000
 From: Muhammad Amirul Asyraf Mohamad Jamian <muhammad.amirul.asyraf.mohamad.jamian@altera.com>
 To: Dinh Nguyen <dinguyen@kernel.org>
 Cc: Mahesh Rao <mahesh.rao@altera.com>,
@@ -66,10 +67,12 @@ Cc: Mahesh Rao <mahesh.rao@altera.com>,
 	Anders Hedlund <anders.hedlund@windriver.com>,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH 0/2] firmware: stratix10-svc: Fix probe failure with old ATF
-Date: Thu, 16 Apr 2026 00:22:05 -0700
-Message-Id: <20260416072207.27074-1-muhammad.amirul.asyraf.mohamad.jamian@altera.com>
+Subject: [PATCH 1/2] firmware: stratix10-svc: Return -EOPNOTSUPP when ATF async unsupported
+Date: Thu, 16 Apr 2026 00:22:06 -0700
+Message-Id: <20260416072207.27074-2-muhammad.amirul.asyraf.mohamad.jamian@altera.com>
 X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20260416072207.27074-1-muhammad.amirul.asyraf.mohamad.jamian@altera.com>
+References: <20260416072207.27074-1-muhammad.amirul.asyraf.mohamad.jamian@altera.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-ClientProxiedBy: SJ0PR03CA0181.namprd03.prod.outlook.com
@@ -83,74 +86,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: BLAPR03MB5458:EE_|MW4PR03MB7011:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4aff7809-1fdc-48c3-9cc9-08de9b88df7e
+X-MS-Office365-Filtering-Correlation-Id: cbcef418-2afe-4c5a-25a8-08de9b88e03d
 X-MS-Exchange-AtpMessageProperties: SA
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|366016|18002099003|56012099003|55112099003;
+	BCL:0;ARA:13230040|376014|1800799024|366016|22082099003|18002099003|56012099003|55112099003;
 X-Microsoft-Antispam-Message-Info:
-	pT2p5KD+RUPInOs4Dcp3ck0nCiXLTyYTJfvOgmQOm8Dok1j6S7ZGXIpv8RYbBCrOQQ8aQ2SmvG38uj9WxGSTGh2k8uabDBQ+gk4i5gZ9bWqe3zRcIzew0kaE0Mbx9rw/R/Ur2K0xvy91DiUgXAgEBGfFOWO84r25VXffa+fEJgTXDHr5QrcrHjrxmNYD8m3zPQmXpYKeP3axmNyL2A18X/KNzBCmU34xRBOQ+FxtzXhx1kN+ZRdRDZ2x4yS200Cx4muXqfk08iCNnsnPFS3r8EOPku3FILe6Njc9ZceZioAI4mPupZqO1ByRTyHdgFE6IxlYaq3EqBjZOFy+gxV75FlzSAvhmw9qXvZpZS+tgrniJb+/ldjHZC+ihZnr9aoOK+dO5/cZHU8S9WeVw8Uqv5IsqAsi3WaANz+4gt3INWsNWidhdnCvmDh7OHqhGcn4VrmJNpMUH+c5UG5xl7aizFqLCnQW/2JncStPLBacvP7zAdyi0vwhk+b4+/+rnK6awU47gjHpz9/Ir7o56F/Oq1dvIOsQNWvQUAkb9a92bniNMAUnP9sXrraZKWegi6kYJc78IQrfIgXxb7fglIoKNXQ0IAwylP4zrQFvy5Ee/3mS0l+ZzRNDuAOBZ2cHEFPLA435bptDKuCLYl7gUi8KiriNesRllrsPnt9eINS4jHvqxNH6oI4nN5qWM1fB0w4IHV3ir3hn/CF+hP0ZlqCrcNtJ10VAES2o5PATsDQfQ6Q=
+	HjPUleMGEBRpaPFkQlNhxCkmuSfxk6EBAtF2F6cWkbePKBjwcFTFIsTrls4oR2Rai/4hAqpSEZ6B6+9xA9CqKBb/IOiwPkFNmqiq611yKm4Wggyc/lkcKjbtWdYNLUuQ96uUounegovHGiKdJgjnEF4idpW35hOFj/gUaqQOeL7Jon8MFi4vgrueBdlIUzZ17hooJR6aomwKf5wUCQjNq6kQ5BGzP7tYJuroPOmiuSdVpeifLPQyfl8xl2JaQvcCdVNYJ/e+S6A/NkqRKbAvlamqAH68w5xPa1tJKWoQgT3LfOo/urmQBANjKJu6qMfgknCuKde83oK2n8D3wVrN9zWsC2xsyJlhKqDFWPTr9QGsqm+iLq1QMbSTvoWfAAqCEEf3HFzDpbDOvnNjJD4wBiWuK5HN268tTP8OwUddthsI9vqKrNUJ/Tfkmys/kItQnZiiRtPKSB7wtl4Nx3Z6LgMDxBJvz7FaEAonSXSKXDz1y8tK2kQ0StgfksZFZm6/ZhOwQ9EkOVThAXX8sREXsOlgaiKOPH98mZEbI7+25C81LiytAVpz4d8ryXgVTmdHdRkAYUWZl6JB7YlDgfUW0+CGbRtZp86EHJvfWGzBQnmJudIIatFqdZoU/uj0RF5qzvbrnrPpsDcZKeRaJD8BCt/T2CtEEPHEQ6s2nzumPDkAMz/mXR7HkIlg2wkXovJei81Zn1mMkpP9JWyFqvvSyfEIxUMzg/t9jsVMzdtdsFE=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BLAPR03MB5458.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(18002099003)(56012099003)(55112099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BLAPR03MB5458.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(22082099003)(18002099003)(56012099003)(55112099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?8xPxRrpmt7InyY1MwOu5mcIsdEoMT0T127HVv1qjMKDQvby8yJrDIGkB23zs?=
- =?us-ascii?Q?bIqSx1vQUzR6BpS/zj/ifoWkfvVm849izIflW3Hzy2DBJuD4ksVBq6nkwrko?=
- =?us-ascii?Q?vTILF3IlpvCH64KTcvUYwIbMNBwg34tDYW7Cao03Kf8bEomq3t/QhnlvJWVH?=
- =?us-ascii?Q?1Hqb5nUzqwLv37ia360pHp0Q6t8BJLVB/23wHEpvC7W2TIcQ3jtFQXKXh+Q4?=
- =?us-ascii?Q?7zUnbm100wihAqVURJh6t1fQZASKdds/bplAJatHNzNWUmk/2o8X8E6u5nkV?=
- =?us-ascii?Q?5gOE2ny17u7kjqWV7s796bBddwaJJhZ3DCeTxN2DL8bpCU0OJwNUZvop6Y4D?=
- =?us-ascii?Q?BnxkF+ogpwZ1sNCbZr1MBcrXQtDgSOX0teoO9QcnoXup9UEcsnzecvCuGdak?=
- =?us-ascii?Q?VDpC3bx70BJmaailZCIr8DBEj77uqdoERZ+DImGe7ttjplIMas/8K74vhdIR?=
- =?us-ascii?Q?0o9ozc4CIx2p9NEdCPAidx9k9p80Ryts/vUf+TTdJ5hRSfjUdKJsfLRJ1Tm4?=
- =?us-ascii?Q?qXBdtxZCjYtxOOvCgg0LWdDXJMRflcI1qWuObnYcs/HJM2eDISUxI7GDajLP?=
- =?us-ascii?Q?d6Jo92e6YwInD108KcXLa7pQlJnX8WIiuD6d17+C0+6WbPiRU3znuQiueFjO?=
- =?us-ascii?Q?BoONN+8WuGMgAqbHdwgb5XeUHNX7/BdAeuqkvMqCc0gE4QoGxrLIRvQ0SF47?=
- =?us-ascii?Q?bOmwqEmYdrkV1PjdZy+B75qx5qe/B/WMNpKKzDsC6XIrj20BGyrlRZRYwYoN?=
- =?us-ascii?Q?FnlsV4uwQCk/wW059Qi7gWuNGjDMmJyk4Wopt0d8mAHfb3SBfHhjRtdqXS7a?=
- =?us-ascii?Q?dJM65Xhlwinfdw4JL3t8Qumgr2040kSQs4+Cn/Q3Vgt1BhidGoXI9g21ZfoL?=
- =?us-ascii?Q?aIqp8f6p8mftO4VoGJLI5VOVxDBQPtvOiWm+c/rE6tNBZLznIFFjbDxk8Gci?=
- =?us-ascii?Q?s6hsF4uCAyyE1OyjmmFDrlGjIl9n8q2r1V7xmlH5NaAy7CixT8HmA719now4?=
- =?us-ascii?Q?r+crdESPjYT0n+OJ7FmOYP5MmhZHnhb4xytCkF7Zbm3yH8q/aIJtEFO0blSd?=
- =?us-ascii?Q?Q0uYyK0BYyM5YKoosXOBiF1HFsvxNBDmNOb844JWkRjTUCYxbsyocwS4DsAT?=
- =?us-ascii?Q?LA0VNCu8lSRg5qNBwS7MPEmfgFryVlOUrutZ83Ex6q5ZvwjoDr90awHUZmLZ?=
- =?us-ascii?Q?05X6IRkGEXkG4VWl/MCrAu4CBwfxpoQ/TTDafcZgOENNI6hgezos9ycC3Bfj?=
- =?us-ascii?Q?RmOyJMlBIjz3jF3WRmSKRWtHvo0XwSEy6kIr8U5IdFv+JeeYv1EMeZLkka0W?=
- =?us-ascii?Q?Pxwgz3Dit4WjIU+WVluPVnM3bwSL3/n1uvNqtpP9ZIe25O+42HgaIcFtI+Pw?=
- =?us-ascii?Q?UJBzhgfA0WFptfQSDylY56l8GodHlB9OnuMeAwGhDbNnneZdxgeHWoAsx4/o?=
- =?us-ascii?Q?VHRUz6zABli9t2dPmkbI67zZvnG+mrah326FEwR5RKPsfScuey+oXSeZCbS5?=
- =?us-ascii?Q?C12lmL0V6MiBP6y02LqAsI2KooA358G1FsWTay25YpGC4yvjs5xqYcK+YBgf?=
- =?us-ascii?Q?v2kd6r71TCzPO4FG2dMIJhyjPWjJ4Hd+Wsv2yfMFiBR+UBw/+1okIMiUcR/q?=
- =?us-ascii?Q?B/7ixVavnnSnH6bWGcwr20ZmCBnoCN93TpU+esz2On+0YxOUAtwaxd3BFdCg?=
- =?us-ascii?Q?N0rQmLqobb1d6TZLrp9WnOWR/zEpxoXyupXLAqCnk4X+MgK7qz4GZPlWuu15?=
- =?us-ascii?Q?z+KdwV3DQ3+iZHzF1So6Up8Cju1S8HKYlqEHIZLwHSq+RyuLJRxKpubGsA4q?=
-X-MS-Exchange-AntiSpam-MessageData-1: 7jJvfn+yFc2B8yi2j+oApT4W5vRNdRiY27o=
+	=?us-ascii?Q?wKYiosGDwjk3O0/+tdFOeatqOZe9zhSVAQzXTQcuF1B861innU/8g/hv2z0z?=
+ =?us-ascii?Q?jz95HcvRtiNyAUeMmxiMUZ7wPfK1EsBuch8l0Y6iMGZ2J6boMtRsWLaW63RM?=
+ =?us-ascii?Q?6iCL/dotFifM3MDpavgtpjHgfdw7ZgOcrFefZOgngnV7aTQOENKzTDZqcV4Q?=
+ =?us-ascii?Q?Y/zBMIpjhknSTpfCLBgGesTQ7JUCWvS2Rh2Ii3Z+DOLmlf6M9e3D6Es5c503?=
+ =?us-ascii?Q?ln+Iodv4Vez9sIFIemnIJhMCC4NgzjHQL4S+EVgxumAWXuOOYSJIzFDWHsCF?=
+ =?us-ascii?Q?gP7WJMYFoEaeImRqhNviY0e44E12hH24rV96dq+O/Ten5DZ92M8a+VkAmi2x?=
+ =?us-ascii?Q?USF5lOquv1OMQ3Df4MkhqcRNllZk9RpU5kTQJDZXZVv8L2Pz4VKhpxodNFhi?=
+ =?us-ascii?Q?r9vUJGpfw28N7IUunEKH48p7h7lKlk8zKTjUDnHkkvA+6ZeMxD8NanqYFCae?=
+ =?us-ascii?Q?MwFyn82XD321vbpHj1x7Ma828wPKtLLUdUfXwNWIX+yJzZgZk1TiagCQVKPR?=
+ =?us-ascii?Q?+2JE9m/pAD0CtWr2zwRemEFKoeDnJ7ewKAyYqW7U/ER+KwAYeqXbqLizrlyG?=
+ =?us-ascii?Q?8lk+4feN5hLviXsakkYAMwssiCKmDhNGVFG/W82ypaq6IZ3cmIpjiJ5SEykp?=
+ =?us-ascii?Q?iZHGHlxsZ+ImnHcnbj4fay1Yx+W7kElZV/W8B6SekkMW/Yw968euF+qquFSE?=
+ =?us-ascii?Q?CsOKIDXZEiCp2ChcnUA8DeotghosuCE9vH5OZI0Mxib5NFUKHe7Es3UqxRbo?=
+ =?us-ascii?Q?nAlJ3OlhtSNDddtLwEpg4bBpliWRVITCTDMrz/A+U6Einf6ndTmsRcoy99I7?=
+ =?us-ascii?Q?8MbsK9poqZjX7/Zl27z2/whXwBychwERAWt74rTKHrBXaG9E0U9H/zXhFHDq?=
+ =?us-ascii?Q?Znyz1FHLrs341soW2yoUA+LJRHVsLC+w+8v8Grim7QLwcUporMrCcAWrNua0?=
+ =?us-ascii?Q?nn1QvIJFO0C4ON7NzlM6tLBPxzeOw3Ox8Su6uhZuzFBZ4kSiZJIcfTVw4/ya?=
+ =?us-ascii?Q?rstIqQS/Zs6SwFJUyVi90qPxi/wPRyjK/D/yylSWGD4r5KlvP2IOQ1Q9mBT3?=
+ =?us-ascii?Q?sa0E0X1kMdtR0lg6Lx78BOH3GAe5W1eJ1QtCwCK5fYuaOmgeG6DcKvaXS7Pp?=
+ =?us-ascii?Q?iXIdzYICeglKoAEA6QoC7maloJJ5Dx63Veo+kJwbRgyTGv8jIJWeihFgnZl/?=
+ =?us-ascii?Q?dLFjok6a8SbbKpyTtgwe+C8Adn+g6MSNklTCqW5U12gPYQHKJaNrbGbBPVue?=
+ =?us-ascii?Q?hkGnbc3ocUklKeNT/0AG5f3oKZzo6T42ZHlh2+gZcFxw2XS0roAY5YnUlUw/?=
+ =?us-ascii?Q?L9sWKmHShVUTz8K97I08gzDhYZQR5PGu+1w+YTypwm6qrn3XJmrjGjkGN1BR?=
+ =?us-ascii?Q?aKWubhtyhy2KyV6mEIFJSP3Bx347NK5dlR3M5Q1UmS45IsWDLSPiE1l3NAjL?=
+ =?us-ascii?Q?yEDjK+3VGSDHw6nMcTOxB/uIPPdy9Kn9z2+g8mqUCs3EtHnvqKLEQAmlnrO1?=
+ =?us-ascii?Q?D7JB7whUuCz7L7SFWOmvDa/+8kfPYrO0pb315542wWw4a2T7PMooGAg4jWz5?=
+ =?us-ascii?Q?lEG7b+b2pJtas/g6FK1WO6t4li+ZG6G1nz26kF3EixRsMkIALCIYg2KF1y4D?=
+ =?us-ascii?Q?39iITe81BsdupFEIT6nUENlEhIQ84vmSCczxmhKbdVlnxIrU+k/xoLfIWGcH?=
+ =?us-ascii?Q?2adbDOIX/rgo1D2Ek/d2ne9KiaWjkP6Q4jCktMOWNjiIfHkuwfgcIrrPgktW?=
+ =?us-ascii?Q?46s7UWwXEIt+D0qKritAN7EgSn7U9Z0TwDqlt9u0IiV4xvZQWkIZ+nZX8wOT?=
+X-MS-Exchange-AntiSpam-MessageData-1: B5PhEnUuV2sM4VC85qSbcFyjHoHhEAtqrnA=
 X-OriginatorOrg: altera.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4aff7809-1fdc-48c3-9cc9-08de9b88df7e
+X-MS-Exchange-CrossTenant-Network-Message-Id: cbcef418-2afe-4c5a-25a8-08de9b88e03d
 X-MS-Exchange-CrossTenant-AuthSource: BLAPR03MB5458.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Apr 2026 07:22:10.3486
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Apr 2026 07:22:11.4543
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: fbd72e03-d4a5-4110-adce-614d51f2077a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: IfruNYzOLRq/r/oZ6TtfI0IG0JHUIJXlnxOO1XJZ1XSJ/aDNmvnSPuatw5UmmnhJleG5fWbYRSGA5XJfgT+YH1SLWVcrjXk03bXJgCqJpeIy4AaTsC7fsl79sw8mB0UIwlS2M/hUxFN5LkvEKJuFQ1LbQsOZQitiwNhcaC3gLNA=
+X-MS-Exchange-CrossTenant-UserPrincipalName: oNohv0h2+sQdkRc8AB5rBO9OnQBJ+FXpBM9k+KdryObX5Nqo6u2WQRh7Mc1mbA/5mk7n75H9VS7rt6Q60SsHVi4qe0MP+hUWmBL5Uz3YhzUcI8MzJ/D26NhJ4BTn18mg5MY3v/0kbalndG27gjMgWDYqj6IAD+CT0TUrPa92vFE=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR03MB7011
 X-Spamd-Result: default: False [1.34 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_REJECT(1.00)[cv is fail on i=2];
 	DMARC_POLICY_ALLOW(-0.50)[altera.com,reject];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[altera.com:s=selector2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-238266-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-238264-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	ASN_FAIL(0.00)[10.253.234.172.asn.rspamd.com:server fail];
+	ASN_FAIL(0.00)[1.2.3.5.c.f.2.1.0.0.0.0.0.0.0.0.b.d.0.0.1.0.0.e.a.0.c.3.0.0.6.2.asn6.rspamd.com:server fail];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[altera.com:+];
@@ -159,45 +162,104 @@ X-Spamd-Result: default: False [1.34 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_NEQ_ENVFROM(0.00)[muhammad.amirul.asyraf.mohamad.jamian@altera.com,stable@vger.kernel.org];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 281F540B038
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,altera.com:email,altera.com:dkim,altera.com:mid,windriver.com:email]
+X-Rspamd-Queue-Id: 4FA1940B022
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Since commit bcb9f4f07061 ("firmware: stratix10-svc: Add support for
-async communication"), the SVC driver fails to probe entirely when
-running with ATF versions older than 3.0 (e.g. ATF 2.5) that do not
-support SIP SVC v3 asynchronous operations.
+Add a 'supported' flag to struct stratix10_async_ctrl to indicate
+whether the secure firmware supports SIP SVC v3 asynchronous
+communication. When the ATF version check in stratix10_svc_async_init()
+fails, set supported=false and return -EOPNOTSUPP instead of -EINVAL.
 
-stratix10_svc_async_init() returns -EINVAL for old ATF, and the probe
-function treats any non-zero return as fatal, causing:
+This allows callers to distinguish between "async not supported by this
+ATF version" (-EOPNOTSUPP) and "programming error / bad argument"
+(-EINVAL), and take appropriate action (e.g. fall back to synchronous
+V1 SMC path) rather than treating both as fatal.
 
-  stratix10-svc firmware:svc: probe with driver stratix10-svc failed \
-    with error -22
+Also update stratix10_svc_add_async_client() to return -EOPNOTSUPP
+immediately when async is not supported, rather than -EINVAL from the
+!actrl->initialized check, so client drivers receive a consistent and
+meaningful error code.
 
-This prevents all dependent client drivers (hwmon, RSU, FCS) from
-probing even though they can operate correctly via the synchronous V1
-SMC path.
+This patch is a prerequisite for the following fix and must be applied
+together with it to correctly restore functionality on old ATF versions.
 
-This series fixes the issue in two steps:
-  1. Return -EOPNOTSUPP (instead of -EINVAL) when ATF async is
-     unsupported, so callers can distinguish "not supported" from
-     "bad argument / programming error".
-  2. Treat -EOPNOTSUPP as non-fatal in probe, allowing the SVC driver
-     to load in sync-only mode so all client drivers can probe normally.
+Fixes: bcb9f4f07061 ("firmware: stratix10-svc: Add support for async communication")
+Cc: stable@vger.kernel.org
+Suggested-by: Anders Hedlund <anders.hedlund@windriver.com>
+Signed-off-by: Mahesh Rao <mahesh.rao@altera.com>
+Signed-off-by: Muhammad Amirul Asyraf Mohamad Jamian <muhammad.amirul.asyraf.mohamad.jamian@altera.com>
+---
+ drivers/firmware/stratix10-svc.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-Both patches fix bcb9f4f07061 and are tagged for stable.
-
-Muhammad Amirul Asyraf Mohamad Jamian (2):
-  firmware: stratix10-svc: Return -EOPNOTSUPP when ATF async unsupported
-  firmware: stratix10-svc: Don't fail probe when async ops unsupported
-
- drivers/firmware/stratix10-svc.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
-
+diff --git a/drivers/firmware/stratix10-svc.c b/drivers/firmware/stratix10-svc.c
+index 5a76cf3fc83a..739642923ac6 100644
+--- a/drivers/firmware/stratix10-svc.c
++++ b/drivers/firmware/stratix10-svc.c
+@@ -212,6 +212,7 @@ struct stratix10_async_chan {
+ /**
+  * struct stratix10_async_ctrl - Control structure for Stratix10
+  *                               asynchronous operations
++ * @supported: Flag indicating whether the system supports async operations
+  * @initialized: Flag indicating whether the control structure has
+  *               been initialized
+  * @invoke_fn: Function pointer for invoking Stratix10 service calls
+@@ -228,6 +229,7 @@ struct stratix10_async_chan {
+  */
+ 
+ struct stratix10_async_ctrl {
++	bool supported;
+ 	bool initialized;
+ 	void (*invoke_fn)(struct stratix10_async_ctrl *actrl,
+ 			  const struct arm_smccc_1_2_regs *args,
+@@ -1103,6 +1105,7 @@ EXPORT_SYMBOL_GPL(stratix10_svc_request_channel_byname);
+  * Return: 0 on success, or a negative error code on failure:
+  *         -EINVAL if the channel is NULL or the async controller is
+  *         not initialized.
++ *         -EOPNOTSUPP if async operations are not supported.
+  *         -EALREADY if the async channel is already allocated.
+  *         -ENOMEM if memory allocation fails.
+  *         Other negative values if ID allocation fails.
+@@ -1121,6 +1124,9 @@ int stratix10_svc_add_async_client(struct stratix10_svc_chan *chan,
+ 	ctrl = chan->ctrl;
+ 	actrl = &ctrl->actrl;
+ 
++	if (!actrl->supported)
++		return -EOPNOTSUPP;
++
+ 	if (!actrl->initialized) {
+ 		dev_err(ctrl->dev, "Async controller not initialized\n");
+ 		return -EINVAL;
+@@ -1562,6 +1568,7 @@ static inline void stratix10_smc_1_2(struct stratix10_async_ctrl *actrl,
+  *         initialized, -ENOMEM if memory allocation fails,
+  *         -EADDRINUSE if the client ID is already reserved, or other
+  *         negative error codes on failure.
++ *         -EOPNOTSUPP if system doesn't support async operations.
+  */
+ static int stratix10_svc_async_init(struct stratix10_svc_controller *controller)
+ {
+@@ -1585,10 +1592,12 @@ static int stratix10_svc_async_init(struct stratix10_svc_controller *controller)
+ 	    !(res.a1 > ASYNC_ATF_MINIMUM_MAJOR_VERSION ||
+ 	      (res.a1 == ASYNC_ATF_MINIMUM_MAJOR_VERSION &&
+ 	       res.a2 >= ASYNC_ATF_MINIMUM_MINOR_VERSION))) {
+-		dev_err(dev,
+-			"Intel Service Layer Driver: ATF version is not compatible for async operation\n");
+-		return -EINVAL;
++		dev_info(dev,
++			 "Intel Service Layer Driver: ATF version is not compatible for async operation\n");
++		actrl->supported = false;
++		return -EOPNOTSUPP;
+ 	}
++	actrl->supported = true;
+ 
+ 	actrl->invoke_fn = stratix10_smc_1_2;
+ 
 -- 
 2.43.7
+
 
