@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-238374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238375-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aNEaEOVl4Wm/swAAu9opvQ
-	(envelope-from <stable+bounces-238374-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 00:42:45 +0200
+	id cFkvIHFp4WkWtAAAu9opvQ
+	(envelope-from <stable+bounces-238375-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 00:57:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE19C415500
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 00:42:44 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41227415689
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 00:57:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 36307305C495
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 22:42:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C3E4E301BEC5
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 22:57:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54738382396;
-	Thu, 16 Apr 2026 22:42:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4388A38F632;
+	Thu, 16 Apr 2026 22:57:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uLds86Cg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Enb/HGvB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 148E833262F;
-	Thu, 16 Apr 2026 22:42:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0413536AB47;
+	Thu, 16 Apr 2026 22:57:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776379360; cv=none; b=VXHv2R3EHZvufCdOX+g2xcYU42q5f1a9kYyw5EjzGgPRuwpZpAheT3BqZLlmjjWYOXRAmQgdwM09ETlTewpxkgNMZCOOKTncBMx7AZepnAgDN3IGKgWROWUHOeOboaFziaXejIwXudm2i8L/csFxbk0nzhs6ekqVzHv1upR9Xu8=
+	t=1776380267; cv=none; b=KFppTgYjo7pDaQ4js90Ot+hYHo+zuHudxDLmnyVtA45crbgiQzVktkmXQFhSuG4/d4hC8p99GG1ruwjpIrfLG/XLX9nk4wXdqMGs+4yRIESjTl/lpDURsZ8Vr2f4GzXL3v9P+k9c5WkSrbejaIebL4HjqxWEFlePyFmlocFUs/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776379360; c=relaxed/simple;
-	bh=7Nj+vNpy/vkj8eg2shMUBd4fYul1POhc0Kx6+tca4dg=;
+	s=arc-20240116; t=1776380267; c=relaxed/simple;
+	bh=INsj20KDfG23/jzsGs2wubVcaAApLPgZTwJiiSFc1Zc=;
 	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=MlO1YGNCgJ4rIhfRPG4tvUvLrbbRBsxuULCZljfGKT7S8OwP8p+2wnlxuxdTexum2UxdeJFUJqhwhxsWBM7U8SYOY23piMXBQizGiTVKbaPENZ+kznEx6DR6Xg/5Fqls8DbXXIrAJDUBuxgCA5SDAIP5j3BPTLbCEdj1UwJoREI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uLds86Cg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88605C2BCAF;
-	Thu, 16 Apr 2026 22:42:39 +0000 (UTC)
+	 Content-Disposition:In-Reply-To; b=BObSpackZN2Y2w7OaCs9UTssIJuqrB/MR4vi0QbJqhK1Q+K83xNCe95pefg9/zmxs5pjEk3k/sjX1+ab66WTcbrzDpow6h8aNYsvRce+/ljDAQu6AKoAYcTQ24e84N1lc3dmBBZJQgsGuTcDwV/KOn01BM2+hFbAhSfSs2bHtEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Enb/HGvB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 862DEC2BCAF;
+	Thu, 16 Apr 2026 22:57:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776379359;
-	bh=7Nj+vNpy/vkj8eg2shMUBd4fYul1POhc0Kx6+tca4dg=;
+	s=k20201202; t=1776380266;
+	bh=INsj20KDfG23/jzsGs2wubVcaAApLPgZTwJiiSFc1Zc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=uLds86CgS5Y5rcAjyJNrkpZ9/9XG622QV0XIX2b8aIY7YVPowsFIfwdQGbXq+ThGZ
-	 sp/CRJCZRvDYYWl1kYgoNil0IHeHnsnOBoc5h1dCAdjxE+iRl+RVpvcrFkIpeak++8
-	 GdtlvbcTs8tn7seSmFMOwWmTtLVdPk5Dv3hU2aKXqhbnE8+6jBZCCml/0TQRnGesxj
-	 DuJIwQegIGD5RXjoWcYrtrRzRREwrA2xAmcT8rpGkBJR32rE/FjRErLhoq9cVGaDL3
-	 Lt4nRSvCOPFYk/och0L5YRP3yOmcYWLSpAKJWPeJwdpBG8haGPviMpkfB80Rlbft/6
-	 dbSBzOsSqKsiQ==
-Date: Thu, 16 Apr 2026 17:42:38 -0500
+	b=Enb/HGvBZ/uCmFzDSjEWKnkalJ1LFOsoHS2bHok65YiPFV11EkSIC0kRZGhttxo9+
+	 01SQlzHWUWAfTRZgHBG+jIyR8EA95XKirshquCRTKM7buv8taphES0h4S7mCSu7HF5
+	 lPtKL6uA3tIn6KuOyCvmf8N1Q97vWQA+nkr1Bcaqs/QDcowbPlHgm8KwBsXwDPDupJ
+	 Ok0dF/2W5CRAA1VJK5a4YTs2tvuEQTWLVZjKzkBaEO0ZZN9RSEiUvv2h0INO6LyThs
+	 FhqaiZt884HV7VxzyWHww2lbpqCUivbsHJ/X/jDFYX/FjlWpNgsudGdCA9GHUU7gbF
+	 ByfMJitlc4fIQ==
+Date: Thu, 16 Apr 2026 17:57:45 -0500
 From: Bjorn Helgaas <helgaas@kernel.org>
 To: Marco Nenciarini <mnencia@kcore.it>
 Cc: Bjorn Helgaas <bhelgaas@google.com>,
 	=?utf-8?Q?Micha=C5=82?= Winiarski <michal.winiarski@intel.com>,
 	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Eric Chanudet <echanude@redhat.com>,
+	Alex Williamson <alex@shazbot.org>, Lukas Wunner <lukas@wunner.de>,
 	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Subject: Re: [PATCH] PCI/IOV: Fix out-of-bounds access in
  sriov_restore_vf_rebar_state()
-Message-ID: <20260416224238.GA35669@bhelgaas>
+Message-ID: <20260416225745.GA41850@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,31 +73,33 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-238374-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-238375-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[helgaas@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kcore.it:email]
-X-Rspamd-Queue-Id: DE19C415500
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,kcore.it:email]
+X-Rspamd-Queue-Id: 41227415689
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
+
+[+cc Rafael, Eric, Alex, Lukas, generic pci_restore_state() question]
 
 On Wed, Apr 08, 2026 at 06:39:22PM +0200, Marco Nenciarini wrote:
 > sriov_restore_vf_rebar_state() extracts bar_idx from the VF Resizable
@@ -115,16 +120,31 @@ On Wed, Apr 08, 2026 at 06:39:22PM +0200, Marco Nenciarini wrote:
 > pci_restore_state() call triggered the UBSAN splat in
 > sriov_restore_vf_rebar_state() since all config space reads returned
 > 0xffffffff.
-> 
+
+I think all of pci_restore_state() is problematic for all devices, not
+just this GPU.  If these config reads fail, all the previous config
+writes probably failed (silently) as well.
+
+And we have this weird retry loop in pci_restore_config_dword():
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/pci/pci.c?id=v7.0#n1766,
+which was originally added by
+https://git.kernel.org/linus/26f41062f28d ("PCI: check for pci bar
+restore completion and retry") to fix an actual problem:
+
+  On some OEM systems, pci_restore_state() is called while FLR has not
+  yet completed.  As a result, PCI BAR register restore is not
+  successful.  This fix reads back the restored value and compares it
+  with saved value and re-tries 10 times before giving up.
+
+This just gives me the heebie-jeebies.  If we still need this retry
+loop, it means all the previous state restoration (PCIe, LTR, ASPM,
+IOV, PRI, ATS, DPC, etc.) probably failed, and we end up with a device
+where the BARs got restored but none of the previous stuff.  That
+sounds like a mess.
+
 > Add a bounds check on bar_idx before using it as an array index to
 > prevent the out-of-bounds access.
-
-I think pci_restore_rebar_state() has a similar problem: if the device
-doesn't respond, "nbars" will be 7 (legal values are 1-6), and
-"bar_idx" will also be 7 (legal values 0-5).  We use "bar_idx" for
-pci_resource_n(), and dev->resource[7] does exist but is not a valid
-BAR.
-
+> 
 > Fixes: 5a8f77e24a30 ("PCI/IOV: Restore VF resizable BAR state after reset")
 > Cc: stable@vger.kernel.org
 > Signed-off-by: Marco Nenciarini <mnencia@kcore.it>
@@ -145,29 +165,6 @@ BAR.
 >  		bar_idx = FIELD_GET(PCI_VF_REBAR_CTRL_BAR_IDX, ctrl);
 > +		if (bar_idx >= PCI_SRIOV_NUM_BARS)
 > +			continue;
-
-Both here and in pci_restore_rebar_state(), we blindly use "nbars"
-derived from a value that might be ~0 because the config read failed.
-If we fix these, I think we should do something like this so it's
-obvious why we're checking:
-
-  pci_read_config_dword(pdev, pos + PCI_REBAR_CTRL, &ctrl);
-  if (PCI_POSSIBLE_ERROR(ctrl))
-    return;
-
-  nbars = FIELD_GET(PCI_REBAR_CTRL_NBAR_MASK, ctrl);
-  for (i = 0; i < nbars; ...) {
-    ...
-    pci_read_config_dword(pdev, pos + PCI_REBAR_CTRL, &ctrl);
-    if (PCI_POSSIBLE_ERROR(ctrl))
-      return;
-
-    bar_idx = ctrl & PCI_REBAR_CTRL_BAR_IDX;
-    res = pci_resource_n(pdev, bar_idx);
-
-It's true that "nbars" and "bar_idx" *could* still be invalid even if
-the config read succeeded, but that would be a device defect.
-
 >  		size = pci_rebar_bytes_to_size(dev->sriov->barsz[bar_idx]);
 >  		ctrl &= ~PCI_VF_REBAR_CTRL_BAR_SIZE;
 >  		ctrl |= FIELD_PREP(PCI_VF_REBAR_CTRL_BAR_SIZE, size);
