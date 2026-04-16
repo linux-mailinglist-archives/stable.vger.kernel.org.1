@@ -1,186 +1,275 @@
-Return-Path: <stable+bounces-238335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238336-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +IDCAGwS4WnoogAAu9opvQ
-	(envelope-from <stable+bounces-238335-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 18:46:36 +0200
+	id oC49MGgT4WnoogAAu9opvQ
+	(envelope-from <stable+bounces-238336-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 18:50:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69411411F2B
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 18:46:35 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2B0741207D
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 18:50:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5636F3063C50
-	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 16:46:32 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A69E8301ECEC
+	for <lists+stable@lfdr.de>; Thu, 16 Apr 2026 16:50:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93B5F317163;
-	Thu, 16 Apr 2026 16:46:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79FC22BDC32;
+	Thu, 16 Apr 2026 16:50:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hxPv6n5w"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="mEruZxD8";
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="mEruZxD8"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013035.outbound.protection.outlook.com [40.107.162.35])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D18026159E
-	for <stable@vger.kernel.org>; Thu, 16 Apr 2026 16:46:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776357991; cv=none; b=FQvE7pb37pCEbnQ6aYhzGlyxyauJjTZwXPJUfau5/wfSvLyrXdlYGvLseUnkw0raqSo8Ihe86SJSyfF3s4QZ3NvktnFJfoUsaQTeodBqiRb0t0kK/DEQdOArU3u5jzksS/Hcc4gmHh3oiCFwmUuPHU5nRTi+f0bSTP6YaJCck1I=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776357991; c=relaxed/simple;
-	bh=rem8kgb3AqU5fIvtvZXdN3Z05fPs8+9yW+ACN+9nAGw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=n0TnFpUMDspXHjs/xVyoH7z0WimWEbWcKWgvHPOxkI0FKgdzCyaJCgZMp/2jjt1ZwP7V9Zkq6lRvy3v9FI2PfFm1GgHKSMKfxpxlsOVQHuw1bkmyvSNdGUuLPpbSioxnTD6ourDk5Th6Z05MjtHQzUDJdCi7e8Z7KEikMo72W9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hxPv6n5w; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-488af96f6b2so108673535e9.0
-        for <stable@vger.kernel.org>; Thu, 16 Apr 2026 09:46:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776357987; x=1776962787; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=yx+tk5XR/nKhfzFOweyHScYa0wnstAD5I5LHNHccNpo=;
-        b=hxPv6n5wqWuXLcfu4tXLaoESOCF2mcOdesU87WFYkK4oKOL1NCDfAjLibtz5cu/Ai4
-         yGMEkLIlfEVm+HnHPumKzl419F4udciMlHZiC6S/DV4Az1tZaNth3CyVqc5HjfkwX3WB
-         OEwVgE9OxEOkti/IrMc9mrqhXejJsYxTpvap06WkNsBOQi845778bR69UnCOaNK1J5MR
-         kxGKa51tAhohvKBPhWDqi7NRW8FoxI+4/X7O5AB+0nByvj8MZm1lDJLGK2mgtrvWoW4d
-         8z3g9r14Nlx/RG6TuN/WJR5KYXpSm4k6+powEPchkSAGK2AZz/kT0sVGVKv7labPo6+m
-         K7DQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776357987; x=1776962787;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yx+tk5XR/nKhfzFOweyHScYa0wnstAD5I5LHNHccNpo=;
-        b=lWB9Vh8PHaCFDInGBw8hahIhQnnLTrcgTEEeQjTO50pur/oWY9EhRWqT2OhRiWQ1vm
-         cU/bZl9jxjzO1NmPoqh8EmQlhWXousTeWL9M6mnkRIi1xBHloodB9LEbe9TNL/J6tmpM
-         8z1OawCOQSz6d7DMO+a6EqxJ6Yvr3iOd5CkeBxsQeufxxxe1D5qz1r+eRn6QAdUF7Wng
-         cDa0w3Sok6Zu1niXsmYPxZ4AuWHWhIA2Q/r0wIwQu7deTYGlYj1Nbl7OmLxF8dlvDPnq
-         4yTjRYEtWzQEYEUV92a2ShQoC9Qui4NHhD7aXpyAYw5tLdGPtCSGT5PE1FZ4yM6QARL4
-         shCQ==
-X-Forwarded-Encrypted: i=1; AFNElJ//dnjHEi0ysi1PwsTt0/ZcJzg/9cDwjXvtpjnh3D967RUvZHjHyvPV4Tp59CYGb/EcvC86hMc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzKTbzwMpf37Ep1EnJIorzT24bxCVluwvh06/Hkv2oLOubYygsU
-	CJBpYQsbqNScN86+AvrHZEmV6WrDBkDW+8jIizNZq1Il9CL3ba7wfVY7
-X-Gm-Gg: AeBDietBJE8Ptw603AaKWRxH4PTFzalaS/MmjpCLOSN5G/drIacJFuE32yuTfPiA4r+
-	J81NvBraCjuXcPGOXI8rT+YP3w4PurRDeeAk5/oEv9GMFaJbEqNkn8p4SsOgjFYj73xf5QquM1K
-	/xYffnqDQn55jL7tHSl9yEVcjqhP6jzhOibbsUmz8SNs2kJVfSlnRyh8LuI19pBWUmqFp1HMKid
-	fh7KiIZ9HG+M9/Rv87989IvGcC7p6G43QN1sMXLTKx/qVShech56nu7mTo3EA0m8tfUIJVYHh89
-	WSf4ca1/h8zK7ZTM63V5DPz4X9EekZBVzmccn+blscVNlLRLfRJAAQUnuFSsuffyJlPWhnXp7rb
-	zuTTJtUv/hgtoI3kHQH5VhBRANrVArt7hEDalVaBOe+B3EzhFAL98wsRP1+0xlDnrpgVg9kqoOh
-	58QPhiONnXcHp+xVzgrNI=
-X-Received: by 2002:a05:600c:4504:b0:483:8062:b43 with SMTP id 5b1f17b1804b1-488d68684fdmr378438015e9.19.1776357987380;
-        Thu, 16 Apr 2026 09:46:27 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488f581b9fbsm63217285e9.5.2026.04.16.09.46.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Apr 2026 09:46:26 -0700 (PDT)
-Date: Thu, 16 Apr 2026 19:46:23 +0300
-From: Dan Carpenter <error27@gmail.com>
-To: Delene Tchio Romuald <delenetchior1@gmail.com>
-Cc: gregkh@linuxfoundation.org, dan.carpenter@linaro.org,
-	luka.gejak@linux.dev, hansg@kernel.org,
-	linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v4 5/5] staging: rtl8723bs: fix negative length in WEP
- decryption
-Message-ID: <aeESXxJwPm95vcWk@stanley.mountain>
-References: <20260415185501.440492-1-delenetchior1@gmail.com>
- <20260415185501.440492-6-delenetchior1@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FB7A13AA2D;
+	Thu, 16 Apr 2026 16:50:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.35
+ARC-Seal:i=3; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776358242; cv=fail; b=SlWqmcn4XHeYf1WoMrOuix7Kjp8AQSqRO7Kp+TjRFetM33T5EFu1mz/qL2gMs3AZKLR2bqeU68kxvs2v+rRWBKob373muuBAMr8UELLHgbX4uPlawK+bCqVbl2ZcX9pJoM//Ob6N0YpCIU6it4EfkgNyO6cFMt0z3t+mLwHiNBM=
+ARC-Message-Signature:i=3; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776358242; c=relaxed/simple;
+	bh=j2sLIhMPN1vsOCXyBE4UDxgQeOmIgFJQUOuNsPuLS3A=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=qcY/zMKV1jutceqD389c6gtLh3WrAaNhVTklmyZVLZcOkAXEW6jew04BMqyDZEoRdEMN0bO2D8a5JrDPsg8zAd5mrt9RHjdHfCr5kBrHN4cUWxM9r8t5JUSofWKbEMiSTTT7M0LVbaN+pcD4lqw5Akk4yMfZY0dAX/woYB0WKIU=
+ARC-Authentication-Results:i=3; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=mEruZxD8; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=mEruZxD8; arc=fail smtp.client-ip=40.107.162.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
+ b=Ox5dq1W88yhLTE1FLj5+lKaGOvHiRDvbJBC3G2PBfqvcgTmP9ggdCJU97IDNv7oo2w9dooRHr/6t9j0LRQiIHMYnRnmK1061px4ziLJqoFgmo1VwmM5AnCKXq58DBw0cB/UdyEfV/o3/ubeljzgnF+ay4fthKY1fitdQxxQiq2fPbvxq3UXKc3SaUdmHGa+iZ9QYDuYIbKuRssiGCqBVLh1N2RRCGX9zUUVE1Y2P5FGwJHy03y/bIzVMlRkC7v8cP9MuBIdeh1pNJptVmDFlfsvXkVUhoOL7x7FXcnuZyeYt6GDG7aQqOQL6/UwJMyxb0tNSbEwFO1sxdjovu3V9qQ==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zHc+lSM+avvTfjnF92yUxie4jq3JL7nq0ITM4D+8vKs=;
+ b=tF8lZ1zURsyFj5vLcKJuhwsAn/apmV/8m6+3NaaJB5gHUGpfgX34iVbjL5p+webK9R5LbWw16kWG6G4igaxkBaDGizh8X3NV+brcqJZsOxKWfZDYMSRmKfB+0/Q8laxprGwmXZW4/jiL8ZfA3FLo1OhbhnSm3esTl+aBc2FVNRf+EwMgNjM7rPbhuCm13GKQOuMzu4Dp8tMEo/lg4cE/0F73C6f7/2+eiu9EzSkJeTVUZuteBh4YoUY5v+WULk0ZpPB88BuLgjit2BoavihEZtPElb4/e+tj9c/WyCxWmzb+OnjNJNfcTeIh4f6iXVDOISmti7qHmzm1zYvpDjdi7Q==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
+ 4.158.2.129) smtp.rcpttodomain=nvidia.com smtp.mailfrom=arm.com; dmarc=pass
+ (p=none sp=none pct=100) action=none header.from=arm.com; dkim=pass
+ (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
+ spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
+ dmarc=[1,1,header.from=arm.com])
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zHc+lSM+avvTfjnF92yUxie4jq3JL7nq0ITM4D+8vKs=;
+ b=mEruZxD8R3N03f6Aykt+AI+xrMSREw+aM/kA3yioYm6KDSJEtQFrD0lLGwLL+GYTJ2ravg+ta+5sg7phj9RyX649LYRQFkI2ysJ54QVv2KJKSRWKM1dqZLQMYJL9h1jGkXbeIgG0O8vQD+DaQa1V2ZKLei55SxC5c6YMuQMIfXE=
+Received: from DUZPR01CA0081.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:46a::6) by VI0PR08MB11353.eurprd08.prod.outlook.com
+ (2603:10a6:800:2fd::13) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.25; Thu, 16 Apr
+ 2026 16:50:33 +0000
+Received: from DB1PEPF000509E9.eurprd03.prod.outlook.com
+ (2603:10a6:10:46a:cafe::bb) by DUZPR01CA0081.outlook.office365.com
+ (2603:10a6:10:46a::6) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9769.51 via Frontend Transport; Thu,
+ 16 Apr 2026 16:50:33 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
+ smtp.mailfrom=arm.com; dkim=pass (signature was verified)
+ header.d=arm.com;dmarc=pass action=none header.from=arm.com;
+Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
+ 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
+ client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
+Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
+ DB1PEPF000509E9.mail.protection.outlook.com (10.167.242.59) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.9769.17
+ via Frontend Transport; Thu, 16 Apr 2026 16:50:32 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=qLq+cIc+pJ8gwjkiWD+JY7G5COvOnIb1hJ7kulzILXVLMF23XLcHgNXqzelhOrBNHf02BhQPOW1RXU5/y2QHiX3sm5nabh4ywCaUs1K/CJRdaQ1x82ql5UFddoI+fgN7fc2da0kpn+T5Lo2zcO2kCtFo03mA/nwsVjp7aBPrUTcSCCi7K5il/HlgdbMb8dw6zAONuLeUGfV2BqMQWo9MnRTjMRWQKC3arP4mRmiEkOH8YtgBHVf9mbaPvvec+NCf7nxaGi1U822rQRkIE75UNK/GTe+kxHt4m/P+XD601fREbuHiDRpR6IGIgHIYfqLxy5z8grGuLWbJSXan1RlAtg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=zHc+lSM+avvTfjnF92yUxie4jq3JL7nq0ITM4D+8vKs=;
+ b=JqmhsmMtVZtEy/W3M4ju9cm/CbtmOFb09kpsJWWLjB6+R6zrlX/gvHJ6Za47UER/udhQAHj9ptZIK4gHOeIw+kA1ciGTdQziKpGvZFjaRhXfAEuhVDyS1Rhey/t/hGZjs20BlMeiBch4nGnP4PQEpTN8I8mX0xObTgSptHiiaOZLA12c0COLg+aUB3v01PlqFm+iw1sJ/y0ktMdF9xQ36P0PJKP3fCCcbM8KUU6IORP/OjpT/MfCs7kMXfYcjhIPTJKzvelrpDv9SRigiWrFwWSOtdc1Lqjj97bTIXb6Sn+zKgqUI66r/Ly5nRfZnNipPITAzZ48z97CzibL46NKDg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
+ header.d=arm.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zHc+lSM+avvTfjnF92yUxie4jq3JL7nq0ITM4D+8vKs=;
+ b=mEruZxD8R3N03f6Aykt+AI+xrMSREw+aM/kA3yioYm6KDSJEtQFrD0lLGwLL+GYTJ2ravg+ta+5sg7phj9RyX649LYRQFkI2ysJ54QVv2KJKSRWKM1dqZLQMYJL9h1jGkXbeIgG0O8vQD+DaQa1V2ZKLei55SxC5c6YMuQMIfXE=
+Authentication-Results-Original: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=arm.com;
+Received: from GV1PR08MB8451.eurprd08.prod.outlook.com (2603:10a6:150:83::17)
+ by DB5PR08MB9969.eurprd08.prod.outlook.com (2603:10a6:10:48d::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.25; Thu, 16 Apr
+ 2026 16:49:29 +0000
+Received: from GV1PR08MB8451.eurprd08.prod.outlook.com
+ ([fe80::bfc2:bb63:61bc:7be6]) by GV1PR08MB8451.eurprd08.prod.outlook.com
+ ([fe80::bfc2:bb63:61bc:7be6%5]) with mapi id 15.20.9769.046; Thu, 16 Apr 2026
+ 16:49:29 +0000
+Message-ID: <3eaf217f-8e1e-4d64-983a-6b888886f157@arm.com>
+Date: Thu, 16 Apr 2026 17:49:24 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH rc v2 0/5] iommu/arm-smmu-v3: Fix device crash on kdump
+ kernel
+To: Nicolin Chen <nicolinc@nvidia.com>, will@kernel.org, jgg@nvidia.com,
+ kevin.tian@intel.com
+Cc: joro@8bytes.org, praan@google.com, baolu.lu@linux.intel.com,
+ miko.lenczewski@arm.com, smostafa@google.com,
+ linux-arm-kernel@lists.infradead.org, iommu@lists.linux.dev,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, jamien@nvidia.com
+References: <cover.1776286352.git.nicolinc@nvidia.com>
+From: Robin Murphy <robin.murphy@arm.com>
+Content-Language: en-GB
+In-Reply-To: <cover.1776286352.git.nicolinc@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PR1P264CA0024.FRAP264.PROD.OUTLOOK.COM
+ (2603:10a6:102:19f::11) To GV1PR08MB8451.eurprd08.prod.outlook.com
+ (2603:10a6:150:83::17)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260415185501.440492-6-delenetchior1@gmail.com>
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+X-MS-TrafficTypeDiagnostic:
+	GV1PR08MB8451:EE_|DB5PR08MB9969:EE_|DB1PEPF000509E9:EE_|VI0PR08MB11353:EE_
+X-MS-Office365-Filtering-Correlation-Id: 483cadce-0b4b-4cea-1fd4-08de9bd84668
+x-checkrecipientrouted: true
+NoDisclaimer: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted:
+ BCL:0;ARA:13230040|1800799024|7416014|376014|366016|56012099003|18002099003|22082099003|18096099003;
+X-Microsoft-Antispam-Message-Info-Original:
+ 7opSwe+yBT9dIU+5nTYAwZNRTiGckQv9mt9uJnTTBLUOztwG9qX4g7unGR9LShImiOEsZGAuaG9yjK5Qrc679rmJn8QwcbEDhgC+r6vXLI4GdIvJ2vDS7G2/OSiCI6ridasClBDyG0XKUV4G3H+cD8FhIa2F7e3i9ZfRpfaLzV79lyK592EkWmYPkgVNA8Mckz+lQ8JGX+9vceoE5xSpq0PDdz/KyionMJ6AdcKUfoNBdeH8NBmsuZmZH6modxrggMYp7m3UdcFtKx6/PGo6069ZU9AwVfvqds13tN35PfJYbygodCXCMuEMICVbkPIGb4cMBw7m7NR07MpyPBAuUCXzOoUvLsiZyh4z9btKW7k7Z82+a8nwL4NY4IfLmpGdO7RG7RWQD/lxZR+dvbcHKhGv+m/AxQ4dLL4J8VsutCpn2PcK1WB4fz/3wkcvX6oPXH9l8g7tAMs+O+/3uiVnjI+LB9Drv25DJ554AnZdWjGrtXfxuFe+Js1NW+8VNUP47aiE6bmavlqXxs5z7kSRuwUYqcerwoITylHOx9f5+41NxSF9cFqx/4ttzMKljcd3xhDvkJReopCUnayxxXYToKKL4qGmNDOd4B6MawZUqHj/Udp508R3WNG/w7aoqK/jSKvMOsh2AQ8X8LCn7FSvwkVhLk+7B7wMPUKAg7+hNYK6V+mxhgwUlJRQjO86lb4upikNqPAcNN1ufljDV62SY9xsHKlBIx6CZf8l2X5kRN/G99fickWN8PyDOwj0inud
+X-Forefront-Antispam-Report-Untrusted:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV1PR08MB8451.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(56012099003)(18002099003)(22082099003)(18096099003);DIR:OUT;SFP:1101;
+X-Exchange-RoutingPolicyChecked:
+ mYvT/yM8SZ7Eb41nAhkURus8cXfG76vTJ8jnfvLHsG0bxpE6jYRSF0+H/CtnBeOPPnOIAZT1scref8fcmCAA2l9OhQ6lAZ9M5qlHRz6mpElERywJNQ/ZT7GurzO6M4S+e3uX0tufsRPEIHar/z5VBeSQX19YCcruTP5dtF0MTwl3R4qiADBXI7LHy+rqSmbPY38PMGM3Z9be02ydRfwx4odDB91KphoHZH8+YlEqWBrHX3STGB4uvqtLPWMGmEWlZfeZzQhvlrPivSM71qS4dHLYt3bFCyX4KQeu3EdB7xtuTKtQl5jSaEadGftq9k4kDq3QHVBTj9j4P79EjWGnBQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB5PR08MB9969
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped:
+ DB1PEPF000509E9.eurprd03.prod.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id-Prvs:
+	6b1c40ca-cd73-4a29-3eca-08de9bd8201e
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|82310400026|14060799003|7416014|35042699022|376014|36860700016|13003099007|56012099003|18096099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	26I0Ra/pxuqRiP0kb6UEGC5Kvv9q/paDqpHU4YB6SS3r8zgQzHcX8NCfBqtHVWOz7TxD9wFJBStqHbGNIDkNW5p6vmTxEoD8etJnHVHkQeks/Xb8o2iXf/yBYa3WnOkQ47whW3IOp5c5hGBBCbUMu/oSCOkfF2V3ZNnNGgjUYxL2Ck+eiO9B5aLVFzKl82el0LDx1mC/fZtkEunFIkk5R/L84TMaIm9pZ9/57llrA9XZTRWt4nwSUJDIaGhF8ygfS7Odhgu3zJ0Tw40uIbkvN2nzioIsj/t4Ut2yDcWlKjGjQaYmMGxQ3bVtg9XkCZ/qfK+wu/sWlla+sx70O5RwYgZIvK/c56nrmUyiCvuKVsH1GrNJaPuJs/d8rK375F2t6UC08nUoMzrAHgPIqYjmiRqT6aWLOsmelUjRy+89gjbwB83lxMHx3gV3sM5pL9xOKcVlG/dOy7dohTUvz2dQNM8Uak+Szh2KIizFJTu4+iE5YLk9E7u86FkYEgRlGcreKKz/IiiXkCVaLBha+qyFSEOMZ7jMyGLD55yMgkDDo3gS3xe+rQCRpV3eyS8qC9tAFkdFgsYk3aLpfWvngg0pRX8k+GmD97Axds2+cN/55PEUN04Lo3XnDHYIse3ZNEG79TD4yLERVWBZ9/2gdyYZVL1mJ/QXSWWO5YXAL7HocHWCOEDJ5zjBWV7/klAXZ02qmcPcgYU44vWHW0TkA+hub0v4aydA4/AGyXlsHHYMk2vV/Rhp8LK8yeEyixF+L1j3GrW0AMQVuGnDlJRrmt2QfNdvMecfR0VOInyKaksVyc8=
+X-Forefront-Antispam-Report:
+	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(14060799003)(7416014)(35042699022)(376014)(36860700016)(13003099007)(56012099003)(18096099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	xTAr1uD75z2giqyyY0/toAPi50gOy6WRUwecv/0GCod44SuGoE7anqu1E8Q/MLRHKXdmTcf9i2RvlRbKLA80MqHNfUdAtbP1vMoZk8qZOM7/UJaPL8Q8QFzccXu9BZfu7Ghy965HygakoQVEoqOU4TJVFoDQin3vf9t/TcxQOjsGsUVkM3J7w4Nc62ZVpcnyaqqEl3t2evbuSYZZkqmU4VHWutoyHHMq2QbDM3UvUjDMjjGhcTAzsEaIj4RYv1P7CaVrKSCWtS7bS6lSl5wePktTSpqB0wLdu+8EXWJlm+X6I5q6QUJqDKeb6ymcHENAgb0CfDExfMhPf+YE7nOl+EjOwi04onY2gfimPOcTaxZ+2uvXRbGAljcIS/vD7VSWUjHsz+o0eS8lsiFmHlvHJYPhrqTPuD/8lO74E/zMNW5Ue4y1iX95jmqBgzby6fEh
+X-OriginatorOrg: arm.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Apr 2026 16:50:32.8671
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 483cadce-0b4b-4cea-1fd4-08de9bd84668
+X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DB1PEPF000509E9.eurprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR08MB11353
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=3];
+	DMARC_POLICY_ALLOW(-0.50)[arm.com,none];
+	R_DKIM_ALLOW(-0.20)[arm.com:s=selector1];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-238335-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-238336-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,arm.com:dkim,arm.com:mid];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[error27@gmail.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	DKIM_TRACE(0.00)[arm.com:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[robin.murphy@arm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,stanley.mountain:mid,get_maintainer.pl:url]
-X-Rspamd-Queue-Id: 69411411F2B
+	RCVD_COUNT_SEVEN(0.00)[8]
+X-Rspamd-Queue-Id: C2B0741207D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Apr 15, 2026 at 07:55:01PM +0100, Delene Tchio Romuald wrote:
-> In rtw_wep_decrypt(), the payload length is computed as:
+On 15/04/2026 10:17 pm, Nicolin Chen wrote:
+> When transitioning to a kdump kernel, the primary kernel might have crashed
+> while endpoint devices were actively bus-mastering DMA. Currently, the SMMU
+> driver aggressively resets the hardware during probe by clearing CR0_SMMUEN
+> and setting the Global Bypass Attribute (GBPA) to ABORT.
 > 
->     length = frame->len - prxattrib->hdrlen - prxattrib->iv_len;
-> 
-> All operands are unsigned. If the frame is shorter than the sum of
-> the header length and the IV length, this subtraction wraps around
-> and length becomes a huge unsigned value. That value is then used
-> to drive an arc4_crypt() call that reads and writes past the end
-> of the receive buffer.
-> 
-> An attacker within WiFi radio range can exploit this by sending a
-> crafted short WEP-encrypted frame. No authentication is required.
-> 
-> Validate that the frame is large enough to contain a WEP payload
-> before computing length.
-> 
-> Found by reviewing length arithmetic in the WEP decrypt path.
-> Not tested on hardware.
-> 
-> Fixes: 554c0a3abf216 ("staging: Add rtl8723bs sdio wifi driver")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Luka Gejak <luka.gejak@linux.dev>
-> Signed-off-by: Delene Tchio Romuald <delenetchior1@gmail.com>
-> ---
-> v4: add Fixes: tag and Cc: stable (Dan Carpenter); carry Luka Gejak's
->     Reviewed-by.
-> v3: rebased on staging-next; sent as numbered series with proper
->     Cc from get_maintainer.pl.
-> v2: rebased on staging-next (v1 was based on v7.0-rc6 and did not
->     apply).
-> 
->  drivers/staging/rtl8723bs/core/rtw_security.c | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
-> diff --git a/drivers/staging/rtl8723bs/core/rtw_security.c b/drivers/staging/rtl8723bs/core/rtw_security.c
-> index a00504ff29109..f3bc2240749a4 100644
-> --- a/drivers/staging/rtl8723bs/core/rtw_security.c
-> +++ b/drivers/staging/rtl8723bs/core/rtw_security.c
-> @@ -113,6 +113,12 @@ void rtw_wep_decrypt(struct adapter  *padapter, u8 *precvframe)
->  		memcpy(&wepkey[0], iv, 3);
->  		/* memcpy(&wepkey[3], &psecuritypriv->dot11DefKey[psecuritypriv->dot11PrivacyKeyIndex].skey[0], keylength); */
->  		memcpy(&wepkey[3], &psecuritypriv->dot11DefKey[keyindex].skey[0], keylength);
-> +
-> +		/* Ensure the frame is long enough for WEP decryption */
-> +		if (((union recv_frame *)precvframe)->u.hdr.len <=
-> +		    prxattrib->hdrlen + prxattrib->iv_len)
-> +			return;
+> In a kdump scenario, this aggressive reset is highly destructive:
+> a) If GBPA is set to ABORT, in-flight DMA will be aborted, generating fatal
+>     PCIe AER or SErrors that may panic the kdump kernel
+> b) If GBPA is set to BYPASS, in-flight DMA targeting some IOVAs will bypass
+>     the SMMU and corrupt the physical memory at those 1:1 mapped IOVAs.
 
-LGTM.  Thanks!
+But wasn't that rather the point? Th kdump kernel doesn't know the scope 
+of how much could have gone wrong (including potentially the SMMU 
+configuration itself), so it just blocks everything, resets and 
+reenables the devices it cares about, and ignores whatever else might be 
+on fire.
 
-regards,
-dan carpenter
+If AER can panic a kdump kernel, that seems like a failing of the kdump 
+kernel itself more than anything else (especially given the likelihood 
+that additional AER events could follow from whatever initial 
+crash/failure triggered kdump to begin with). And frankly if some device 
+getting a translation fault could directly SError the whole system, then 
+I'd say that system is pretty doomed in general, kdump or not.
+
+Thanks,
+Robin.
+
+> To safely absorb in-flight DMA, the kdump kernel must leave SMMUEN=1 intact
+> and avoid modifying STRTAB_BASE. This allows HW to continue translating in-
+> flight DMA using the crashed kernel's page tables until the endpoint device
+> drivers probe and quiesce their respective hardware.
+> 
+> However, the ARM SMMUv3 architecture specification states that updating the
+> SMMU_STRTAB_BASE register while SMMUEN == 1 is UNPREDICTABLE or ignored.
+> 
+> This leaves a kdump kernel no choice but to adopt the stream table from the
+> crashed kernel.
+> 
+> In this series:
+>   - Introduce an ARM_SMMU_OPT_KDUMP
+>   - Skip SMMUEN and STRTAB_BASE resets in arm_smmu_device_reset()
+>   - Map the crashed kernel's stream tables into the kdump kernel [*]
+>   - Defer any default domain attachment to retain STEs until device drivers
+>     explicitly request it.
+> 
+> [*] This is implemented via memremap, which only works on a coherent SMMU.
+> 
+> Note that the entire series requires Jason's work that was merged in v6.12:
+> 85196f54743d ("iommu/arm-smmu-v3: Reorganize struct arm_smmu_strtab_cfg").
+> I have a backported version that is verified with a v6.8 kernel. I can send
+> if we see a strong need after this version is accepted.
+> 
+> This is on Github:
+> https://github.com/nicolinc/iommufd/commits/smmuv3_kdump-v2
+> 
+> Changelog
+> v2
+>   * Add warning in non-coherent SMMU cases
+>   * Keep eventq/priq disabled v.s. enabling-and-disabling-later
+>   * Check KDUMP option in the beginning of arm_smmu_device_reset()
+>   * Validate STRTAB format matches HW capability instead of forcing flags
+> v1:
+>   https://lore.kernel.org/all/cover.1775763475.git.nicolinc@nvidia.com/
+> 
+> Nicolin Chen (5):
+>    iommu/arm-smmu-v3: Add arm_smmu_adopt_strtab() for kdump
+>    iommu/arm-smmu-v3: Implement is_attach_deferred() for kdump
+>    iommu/arm-smmu-v3: Retain CR0_SMMUEN during kdump device reset
+>    iommu/arm-smmu-v3: Skip EVTQ/PRIQ setup in kdump kernel
+>    iommu/arm-smmu-v3: Detect ARM_SMMU_OPT_KDUMP in
+>      arm_smmu_device_hw_probe()
+> 
+>   drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h |   1 +
+>   drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 225 ++++++++++++++++++--
+>   2 files changed, 207 insertions(+), 19 deletions(-)
+> 
 
 
