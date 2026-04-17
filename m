@@ -1,136 +1,181 @@
-Return-Path: <stable+bounces-238484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238485-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QJ88Kq4s4ml22gAAu9opvQ
-	(envelope-from <stable+bounces-238484-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 14:50:54 +0200
+	id KIgzDSgu4ml22gAAu9opvQ
+	(envelope-from <stable+bounces-238485-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 14:57:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F221B41B534
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 14:50:53 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3FD541B633
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 14:57:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 858C630AB32B
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 12:46:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CB146308CD87
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 12:56:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A572B39C00E;
-	Fri, 17 Apr 2026 12:46:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1412E3A1D02;
+	Fri, 17 Apr 2026 12:56:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com [209.85.167.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA4613603DB;
-	Fri, 17 Apr 2026 12:46:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE12738A72D
+	for <stable@vger.kernel.org>; Fri, 17 Apr 2026 12:56:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776429964; cv=none; b=UGvbGXdin9AXkGaI/GFzZTZsjvdW8zq7RxQ0yBT8PpeLYtbyjV+E1YXWf6cG3kib4oRmPR/wEAhRjONLP/XZlXA5XXc1dwyi4MwPYmqg/BcPYPQFZuLB9O4Ny5ZltbEGDVE9XPL/MjiXZVrYyMOHQXnJY1hVU6DSu+kFRv0WSvE=
+	t=1776430594; cv=none; b=lZDS0o1HO0gQ2mDSpxa0OSFqvkCJom+prp+KGzUAaww/QUo3aEiNk0Cm6cfyRntSHdgSXJ4+a4kaHBVCP62+ptRY2vInrgfjJf8Nnit/wAbG0Xkn8G4ANvADf2fc8jAe6KekYoLsBsxa2RoKsQF23AitpABsA8xhlATTGnY+UTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776429964; c=relaxed/simple;
-	bh=oBQ6wgddlC5wjnSYNdFLni+25iwY2tcuuIozOYsNtjc=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=k733sxR4Yg/i7IUnAlh4wjmXH2ewq8gNIruYe8C707PP0IeO/aRK/QoetS92PS3Nbz/WKR7B8dD5Lm87cidpy+jzga+r2IqLd+fHlLnkhvV+i1aVdA75jVywuFipyggVsG+D+X9mdsUXVd96/VhXf12X6rCKf+XUspwsZi/pjjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.224.83])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fxvjY3p38zJ46Cf;
-	Fri, 17 Apr 2026 20:45:05 +0800 (CST)
-Received: from dubpeml500005.china.huawei.com (unknown [7.214.145.207])
-	by mail.maildlp.com (Postfix) with ESMTPS id EC77240577;
-	Fri, 17 Apr 2026 20:45:51 +0800 (CST)
-Received: from localhost (10.203.86.132) by dubpeml500005.china.huawei.com
- (7.214.145.207) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 17 Apr
- 2026 13:45:51 +0100
-Date: Fri, 17 Apr 2026 13:45:50 +0100
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: "Pradhan, Sanman" <sanman.pradhan@hpe.com>
-CC: "yangyicong@hisilicon.com" <yangyicong@hisilicon.com>,
-	"alexander.shishkin@linux.intel.com" <alexander.shishkin@linux.intel.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>, "yangyccccc@gmail.com"
-	<yangyccccc@gmail.com>, Sanman Pradhan <psanman@juniper.net>, Sizhe Liu
-	<liusizhe5@huawei.com>
-Subject: Re: [PATCH v2 0/2] hwtracing: hisi_ptt: Fix reset timeout handling
- and clean up trace start
-Message-ID: <20260417134550.0000027c@huawei.com>
-In-Reply-To: <20260414172451.14331-1-sanman.pradhan@hpe.com>
-References: <20260414172451.14331-1-sanman.pradhan@hpe.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	s=arc-20240116; t=1776430594; c=relaxed/simple;
+	bh=Q8NsFEG9ZbxpVev0FTO8qLeWdg9a7p4e0wi67qPhdss=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uBvnoug54oylCwVpK2P6arwdeuhhTtR6g6YoOFIOqdKU8YjdBE2naOgEeU5qtdrM9MJ56DOdLC/SpFXltJ+bv4pQ+KuHCSMwOqdzS3sidCJByyXXo3f9qn4JovtQ5myF+KXERQM21QrLGV2SU5Dj1KX/8TM+YzPjK26iZStw/mg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gompa.dev; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gompa.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-47018d341f8so406438b6e.3
+        for <stable@vger.kernel.org>; Fri, 17 Apr 2026 05:56:33 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776430592; x=1777035392;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=cQ7E0BVCzrZ39XOhVCVYNxv43US7LndGBNHCx5jFIzc=;
+        b=YY64ONizfk75//9U4xwSxhFebupv1J5ysFQz2DNkCUUOJt1RpU25F1p7xd/nyKRlyo
+         pKTF6nbtuUUTlL6Cu76OPc5s2QWgCK2uz5/3nbuebGfixUkuGUlgv5ZdaRC3C8XZk7gu
+         3lhc6+5N6lT0BsqJByJoF4X/QDFaxqvhLE+HKuEBphS/eEi2ks1KZX++xuKqdXU2pNPD
+         HlnM2XrjOGmcq9coYlpP8io+vX1jipUnrLvTarYk5AWEVnijsgBe/cX0XvAlGjFqnfyA
+         7iOSh+9b7rM9fFO2dhYXo2fkaDShBpjRpDFPqtGamCMQuRVhVa60nEdGuN9zbYH3XhF9
+         Waqg==
+X-Forwarded-Encrypted: i=1; AFNElJ8cGI22AZQ7j5QsqcA7/9kyuGfZtzGNZ3UMwSMAFzIsOVyfzkJPr6RFqfeUTMUeFZwUuA9RoOE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx+hPtfGKdzQ0NGTdkDIzxdbyfY+ZGtXnK0wSQc+c6/iuoshthM
+	kAH/xqjkD1eNhV8ZB5H58qYlk8eIxJpy1CDJykX/DygpfJnM6XI2cRN2C7pVig==
+X-Gm-Gg: AeBDiesqTkWe4JjcgmxAm7Huh1UL+tuzwDViAzwyZ11C9idDDfUrqj2xz2/F6WodCyX
+	qMpA0KrsDDxYLs4WRZYM+FPNIBqCIz8hN+S6pKCfgXR/1eRi8OTMU39bbJT2q7cCJzJK/gQEpjU
+	Kn0BkQqVX6SWBpBM7/E0KjvUuOb4Xq1K9dKoKaA/Ca+TOkYBgP3lbU65V7WrFlHpEsOeNUpa7US
+	2HjLQ178Tg92rqUcg8ZsooHczaTxOhbvQWorLBBH2hsWN0n3iiN0+LWsfhOcrTUMqmsTDWd59NF
+	5KG27hfQzL4EYGBsBVvbeYJi7xR2XqAhg5nuBGihmPCpvPV6Vn+fFAfJfNGrIGb6U5E8CY9TPhF
+	wwRIiRStAZJBsRpg+WJj4ixirq4HRwhBGUoiF3jVpHpxPjSo/co7NGoidX8jiUJK9fOLJehG2Kj
+	S1KWXokrI+5FGZE3xDSp7zxE+IogrXqzXJL0ct7Lj6KixhqbfuAvV2Ni/f8YBI/LGvL7aJ/WSxs
+	63Gt9VXt+18hNbYOJm6Dt+A9z9DMjX1bXBa/CM1Qwo/lRwdayK8KeLsfVB7pdF9dXi7AOsbepO0
+	Pc+b7L1Ac9yFStAmIEk=
+X-Received: by 2002:a05:6808:4f0c:b0:467:1f38:bc19 with SMTP id 5614622812f47-4799c7ef008mr1030503b6e.9.1776430591907;
+        Fri, 17 Apr 2026 05:56:31 -0700 (PDT)
+Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com. [209.85.210.53])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-4799ff07f5dsm848499b6e.6.2026.04.17.05.56.30
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 17 Apr 2026 05:56:31 -0700 (PDT)
+Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-7dbce74e537so583940a34.1
+        for <stable@vger.kernel.org>; Fri, 17 Apr 2026 05:56:30 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ82LE6xhD+cXDRja9WybN0ndBJrTQ3nOtKu2aztsJxk/NulO/Jy/6om5sU8DbgmHbkxzjmS0vs=@vger.kernel.org
+X-Received: by 2002:a05:6830:368b:b0:7d7:d2e4:630a with SMTP id
+ 46e09a7af769-7dc951c7534mr1574853a34.14.1776430590793; Fri, 17 Apr 2026
+ 05:56:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500011.china.huawei.com (7.191.174.215) To
- dubpeml500005.china.huawei.com (7.214.145.207)
+References: <20260417104639.2608008-1-tristmd@gmail.com>
+In-Reply-To: <20260417104639.2608008-1-tristmd@gmail.com>
+From: Neal Gompa <neal@gompa.dev>
+Date: Fri, 17 Apr 2026 08:55:53 -0400
+X-Gmail-Original-Message-ID: <CAEg-Je_X1bfKwE44PJdgbHHZtHVy8bt1gotWsqkAWsS5s=_irQ@mail.gmail.com>
+X-Gm-Features: AQROBzCi0gDy3D7m8PPBy3zcjwXiwPzD0sMHzUSSerDbzRMjjnlKfNBi1eGHZ2M
+Message-ID: <CAEg-Je_X1bfKwE44PJdgbHHZtHVy8bt1gotWsqkAWsS5s=_irQ@mail.gmail.com>
+Subject: Re: [PATCH v3] Bluetooth: hci_bcm4377: validate firmware event length
+ in completion ring
+To: Tristan Madani <tristmd@gmail.com>
+Cc: linux-bluetooth@vger.kernel.org, luiz.dentz@gmail.com, marcel@holtmann.org, 
+	sven@svenpeter.dev, marcan@marcan.st, asahi@lists.linux.dev, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spamd-Result: default: False [0.04 / 15.00];
-	DMARC_POLICY_QUARANTINE(1.50)[huawei.com : SPF not aligned (relaxed), No valid DKIM,quarantine];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[hisilicon.com,linux.intel.com,vger.kernel.org,gmail.com,juniper.net,huawei.com];
-	TAGGED_FROM(0.00)[bounces-238484-lists,stable=lfdr.de];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,holtmann.org,svenpeter.dev,marcan.st,lists.linux.dev];
+	TAGGED_FROM(0.00)[bounces-238485-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	DMARC_NA(0.00)[gompa.dev];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jonathan.cameron@huawei.com,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[neal@gompa.dev,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	R_DKIM_NA(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[hpe.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:mid,juniper.net:email]
-X-Rspamd-Queue-Id: F221B41B534
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C3FD541B633
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, 14 Apr 2026 17:25:03 +0000
-"Pradhan, Sanman" <sanman.pradhan@hpe.com> wrote:
+On Fri, Apr 17, 2026 at 6:49=E2=80=AFAM Tristan Madani <tristmd@gmail.com> =
+wrote:
+>
+> From: Tristan Madani <tristan@talencesecurity.com>
+>
+> The firmware-controlled entry->len is used as the memcpy size for inline
+> payload data without bounds checking when the PAYLOAD_MAPPED flag is not
+> set. This causes out-of-bounds reads from the completion ring DMA memory
+> for the HCI_D2H and SCO_D2H transfer rings.
+>
+> Add a length validation against the completion ring payload_size.
+>
+> Fixes: 8a06127602de ("Bluetooth: hci_bcm4377: Add new driver for BCM4377 =
+PCIe boards")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
+> ---
+>  drivers/bluetooth/hci_bcm4377.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+>
+> diff --git a/drivers/bluetooth/hci_bcm4377.c b/drivers/bluetooth/hci_bcm4=
+377.c
+> index 925d0a635..5d2f594c2 100644
+> --- a/drivers/bluetooth/hci_bcm4377.c
+> +++ b/drivers/bluetooth/hci_bcm4377.c
+> @@ -755,6 +755,13 @@ static void bcm4377_handle_completion(struct bcm4377=
+_data *bcm4377,
+>         msg_id =3D le16_to_cpu(entry->msg_id);
+>         transfer_ring =3D le16_to_cpu(entry->ring_id);
+>
+> +       if (data_len > ring->payload_size) {
+> +               dev_warn(&bcm4377->pdev->dev,
+> +                        "event data len %zu exceeds payload size %zu for=
+ ring %d\n",
+> +                        data_len, ring->payload_size, ring->ring_id);
+> +               return;
+> +       }
+> +
+>         if ((ring->transfer_rings & BIT(transfer_ring)) =3D=3D 0) {
+>                 dev_warn(
+>                         &bcm4377->pdev->dev,
+> --
+> 2.47.3
+>
+>
 
-> From: Sanman Pradhan <psanman@juniper.net>
-+CC Sizhe Liu
+Seems sensible enough.
 
-> 
-> Patch 1: Propagate the DMA reset timeout error from
->   hisi_ptt_wait_dma_reset_done() instead of discarding it. De-assert
->   the reset bit and log an error on timeout. Move ctrl->started to the
->   successful path so a failed start does not leave the trace marked as
->   active.
-> 
-> Patch 2: Remove the unnecessary 16 MiB memset of trace buffers in
->   hisi_ptt_trace_start(). The driver only copies data that hardware has
->   written, so the zeroing is not needed.
-> 
-> Changes since v1:
->   - Patch 1: Return bool from hisi_ptt_wait_dma_reset_done() for
->     consistency with the other wait helpers
->   - Patch 1: Add pci_err() on timeout
->   - Patch 1: De-assert RST before returning on timeout
->   - Patch 1: Move ctrl->started to the successful path
->   - Dropped "Use the passed buffer index in hisi_ptt_update_aux()" patch
->   - Patch 2 is unchanged
-> 
-> Sanman Pradhan (2):
->   hwtracing: hisi_ptt: Propagate DMA reset timeout in trace_start()
->   hwtracing: hisi_ptt: Remove unnecessary trace buffer zeroing in
->     trace_start()
-> 
->  drivers/hwtracing/ptt/hisi_ptt.c | 25 +++++++++++++------------
->  1 file changed, 13 insertions(+), 12 deletions(-)
-> 
+Reviewed-by: Neal Gompa <neal@gompa.dev>
 
+
+--=20
+=E7=9C=9F=E5=AE=9F=E3=81=AF=E3=81=84=E3=81=A4=E3=82=82=E4=B8=80=E3=81=A4=EF=
+=BC=81/ Always, there's only one truth!
 
