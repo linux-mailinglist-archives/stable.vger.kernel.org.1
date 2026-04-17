@@ -1,93 +1,93 @@
-Return-Path: <stable+bounces-238461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238462-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sKLCME7y4WmKzgAAu9opvQ
-	(envelope-from <stable+bounces-238461-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 10:41:50 +0200
+	id eKPpHdXz4Wmv0AAAu9opvQ
+	(envelope-from <stable+bounces-238462-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 10:48:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85020418D10
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 10:41:46 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7808418E97
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 10:48:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E8C1A3006B47
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 08:41:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 84359308D25D
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 08:43:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96CEC19CD03;
-	Fri, 17 Apr 2026 08:41:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B6D93AEF47;
+	Fri, 17 Apr 2026 08:43:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="e/GHo6Px"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="P2xJ8+9J"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 482E336A027
-	for <stable@vger.kernel.org>; Fri, 17 Apr 2026 08:41:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02A953750AC
+	for <stable@vger.kernel.org>; Fri, 17 Apr 2026 08:43:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776415299; cv=none; b=QTGkKzLZIm8TxorRxziDCWmJCSo8pB/RbT9VTMUU9uoO8v13I0kG4DDoFMuV1C/FymICXzcSl9ObNnWekqLM4leVOu51lao1KBZ7oYUzkg9DXooqENjIJAh3WX9Xmx++JT6wWXyOQO4qzwZTo9D55R4t9EKKK0Jz2XZ0TpWmh5E=
+	t=1776415419; cv=none; b=UEk9iKxMzt43nQb8OuhDGLUgrv0JcpHJE5qMNacxD/1/iBVUlZRJb2Fb+dblMh71dP004fiI/oHgktKvCewOS9GV0vlFkILV6C9XGdI4gbML7FnX1o5P8pAE/+TplA1tNdNzJUvrRLoNo33b9RiIZG80nwbgIO1zbleYTDd0KXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776415299; c=relaxed/simple;
-	bh=E4ApuJ8oAQ/4OyUGknCmHnGsjWagqHfRqgj6PgH/Fjw=;
+	s=arc-20240116; t=1776415419; c=relaxed/simple;
+	bh=JMis1PWBmQ2nY0YUn8Z/PvKMUmrRKtNhJv6gZchAt+s=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=VJ6k/AlyLPUb+tVmqG0MSy9eIi0rnzYoyoIPs+14nu2+YSJ0X9vpymweUu73tG2eWFyRnq4FyicXcuU+D5rpOzUGAsLgKNLA+YNK3/8oCEolwOsqAW0w85o1bfzG18r0XqYpKKsQk+B2KG7UPCy54wKVv25vnySlR4fBVA5ReG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--joonwonkang.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=e/GHo6Px; arc=none smtp.client-ip=209.85.210.201
+	 To:Cc:Content-Type; b=RN0bfosDj9BN/CnSk1cpNodrawFAoA2ngK3B/mAsqwu4JqlCNjb8ubdccZKFmbiWcHEmPl+ldi0LoXG7ZV4iJ3r1iitR0iaiC3+pThGG0yPHvx19hzY8xE9cWJMCPXwiBHIZcJKQuWBesj972KPv5XFgV427z4/ozYso7Tbx8o8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--joonwonkang.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=P2xJ8+9J; arc=none smtp.client-ip=209.85.210.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--joonwonkang.bounces.google.com
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-82a77f807e4so633970b3a.3
-        for <stable@vger.kernel.org>; Fri, 17 Apr 2026 01:41:38 -0700 (PDT)
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82f07078ff0so368605b3a.1
+        for <stable@vger.kernel.org>; Fri, 17 Apr 2026 01:43:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776415297; x=1777020097; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1776415417; x=1777020217; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:from:subject:message-id:references
          :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=6+m189FrlHvlQluxfIKHyqtB0jWSsQDaVuzIa8Tqb+g=;
-        b=e/GHo6PxWVN3/Ai3QfURQKCP1xfsnHg7vDzfsNK08fM0WmOyAjI7qQOK3I0GdPBlpK
-         kI/Pij1nWgqBCfiEwk8qlIevLJ2JisqlOyFCtM9/cfnlC4ZWFEt5DR/1cx4zIIiKM7id
-         DtlHZEhr5qQtIqb7QqF3OCIbt/rRGvmP13OEOVemLq57XcH059t7GPUXFPmVWvhBPye2
-         xszg+mc5jTkj7vMck2So1xQkT4ceR9mWWB990DZMwqB8tIbModDyouXkj0kHPGPwPUza
-         FXqvnJPcXRvkusXNADwByyeJuqXuU9+1yekEPVrnS8dt8sAvXPFBOhl9db+iMzTlVkLL
-         Wc9g==
+        bh=JMis1PWBmQ2nY0YUn8Z/PvKMUmrRKtNhJv6gZchAt+s=;
+        b=P2xJ8+9JXzms47E7PWeEjYeToPBvwMRXGyKfHzmfYyGc6TwOQd2VayFrCaTBTPj29s
+         eWAU3Po7LtrjsUKyGb+y/sS/xxPXyWdkiHeTo52eUARxn9VipLo9fflZ+aVuzzL5ZrEl
+         8gcNZXITxXe/dhET0V9VrmV0m0pJCwVbi51T9SeWsdYqw/HKIOeEeVU1a7o2AS/+/FEX
+         GTVjg7s/xFVvvQltrwqdROTZyQFQCjIMmAlqqOUGvE1sUNDndlt9jrS/a47Aorxnjs82
+         fzuQAJLqFv4iZEZ4Ouod0rrjPOcPKJxcCLHXBYK4sZrrL2peB4mmFD3xnCS705KQQKuH
+         ALpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776415298; x=1777020098;
+        d=1e100.net; s=20251104; t=1776415417; x=1777020217;
         h=content-transfer-encoding:cc:to:from:subject:message-id:references
          :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=6+m189FrlHvlQluxfIKHyqtB0jWSsQDaVuzIa8Tqb+g=;
-        b=XhS086ShDrU4SQoVhRwUCjfCGEwmgf36gKJFSSsbIS/sdhPeNNn5km7D3eqKQfdsZb
-         EdamwNZaibv0on1uiIXjY/hMMY3Y2dnXNk7ieJMUvwVP9MOb5BR/g2WsGdw5JohXNdO7
-         qVcenk2Ha1CciO27pP2Om8SIApGVJNTNwrqN3qJuvSmg9zrrf3Skp9hxRnmCTnaqLIG0
-         1KarGs4YkYbtWREp82scHqttOMFnj+LHw4cd42C80KSzmGeRYz+5hiLbySiaB0fNKE0B
-         8ENvPw9nCcqGC6PnhpTgrngE1SwpijwgFk6it62zBNradrqC2x3DOAZXtUAYnmO1oA+R
-         BJxQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/wm8FbtUV69deI452SRyAI5Mvee3dXsjT4ZummdqIDx3Rix/XUFKMS5gZaerCAbHN6iQjKNIw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy+s6MtucOOgnUIa3GtC0JHZfdRTGgxfE/poUBocBnA8krbfhwz
-	j3DCZvGYn5CAIPEpPg2VnCEJJycJRasB7CBHJbdP33qyTcYl9WPicxPTon3D49CgwYYNu2B1Mn+
-	YSDQGpnZol1MBZ2DwVoMH2sDGWQ==
-X-Received: from pfblu1.prod.google.com ([2002:a05:6a00:7481:b0:82f:24a1:2b5a])
+        bh=JMis1PWBmQ2nY0YUn8Z/PvKMUmrRKtNhJv6gZchAt+s=;
+        b=WeUS0rBFZ1cOtjB9VtQKLhGR2VIKUrkdmHS5eUF7aOiytW5MgfPn5Q5tk3bgEOZ5jt
+         6ltOi4fzs1W+xPB5bgZGxfYWwe8aW38Cimmj+G6BvAIpRQ+bvI7Bfc2e3EiqMHxqrj+y
+         tDwne+4GYrA53wzaH8XZI3oD9YoAj/BMjFs4vzm+XXcqFdaWFR7dSElTjrEphqNhjGyC
+         +qEPpZe4zvf6+d38KIjIliFnH3ebcd7m/iPseyvOogNz/lc7gZzG4J5tyUPN2eH5s3yJ
+         rWPnlQp15ewk/LkIq4ZbRrD4z4KGyDD68bZEw6EZ+yVvZHm0ejC6K9X9INGmhN1M+lV3
+         EzWg==
+X-Forwarded-Encrypted: i=1; AFNElJ8kdFRqca0lR7oAUO8TsCCX75cQKpVMMG43sYYdg4Vqm84GdckgZoLwZgWvDbz9gLyStXzRQ/U=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy02+8axB0Uz4UuBKYd2sUcvaOEEtNRlGvMn9o0z2rXiSSjvjjJ
+	pY6p1VjnKM6F1j/stmwgeLYkJwtLvXpJDYEgQFyz5fFpYwT0Dkihylyxih3uc5TzI8QI/vEiteL
+	8j3sazcIsNsrcnrsiDIg8Uja8iA==
+X-Received: from pfhx21.prod.google.com ([2002:a05:6a00:1895:b0:82f:7163:35c4])
  (user=joonwonkang job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a00:3cc6:b0:82f:111:61d3 with SMTP id d2e1a72fcca58-82f8c970802mr2065492b3a.44.1776415297277;
- Fri, 17 Apr 2026 01:41:37 -0700 (PDT)
-Date: Fri, 17 Apr 2026 08:41:34 +0000
-In-Reply-To: <CABb+yY0uDQh-3cadPQONV=NJKjMtc4mJekgjmHYVaHnfHXvGZQ@mail.gmail.com>
+ 2002:a05:6a00:a248:b0:82f:316:3208 with SMTP id d2e1a72fcca58-82f8c8fb879mr1813947b3a.29.1776415417107;
+ Fri, 17 Apr 2026 01:43:37 -0700 (PDT)
+Date: Fri, 17 Apr 2026 08:43:34 +0000
+In-Reply-To: <CABb+yY23aTXeXu6G-8sHjw32DCqmhsJLu2Mt-txenOgTBiyv+A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <CABb+yY0uDQh-3cadPQONV=NJKjMtc4mJekgjmHYVaHnfHXvGZQ@mail.gmail.com>
+References: <CABb+yY23aTXeXu6G-8sHjw32DCqmhsJLu2Mt-txenOgTBiyv+A@mail.gmail.com>
 X-Mailer: git-send-email 2.54.0.rc1.555.g9c883467ad-goog
-Message-ID: <20260417084135.2091007-1-joonwonkang@google.com>
-Subject: Re: [PATCH v3 1/2] mailbox: Use per-thread completion to fix wrong
- completion order
+Message-ID: <20260417084335.2092188-1-joonwonkang@google.com>
+Subject: Re: [PATCH v3 2/2] mailbox: Make mbox_send_message() return error
+ code when tx fails
 From: Joonwon Kang <joonwonkang@google.com>
 To: jassisinghbrar@gmail.com
-Cc: angelogioacchino.delregno@collabora.com, jonathanh@nvidia.com, 
-	joonwonkang@google.com, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org, 
-	linux-tegra@vger.kernel.org, matthias.bgg@gmail.com, stable@vger.kernel.org, 
-	thierry.reding@gmail.com
+Cc: akpm@linux-foundation.org, angelogioacchino.delregno@collabora.com, 
+	jonathanh@nvidia.com, joonwonkang@google.com, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-mediatek@lists.infradead.org, linux-tegra@vger.kernel.org, 
+	matthias.bgg@gmail.com, stable@vger.kernel.org, thierry.reding@gmail.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spamd-Result: default: False [0.84 / 15.00];
@@ -96,94 +96,94 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
 	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[collabora.com,nvidia.com,google.com,lists.infradead.org,vger.kernel.org,gmail.com];
-	FREEMAIL_TO(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-238461-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-238462-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linux-foundation.org,collabora.com,nvidia.com,google.com,lists.infradead.org,vger.kernel.org,gmail.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_NONE(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[joonwonkang@google.com,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[google.com:+];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 85020418D10
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E7808418E97
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-> On Fri, Apr 3, 2026 at 9:51=E2=80=AFAM Joonwon Kang <joonwonkang@google.c=
-om> wrote:
+> On Fri, Apr 3, 2026 at 10:19=E2=80=AFAM Joonwon Kang <joonwonkang@google.=
+com> wrote:
 > >
 > > > On Thu, Apr 2, 2026 at 12:07=E2=80=AFPM Joonwon Kang <joonwonkang@goo=
 gle.com> wrote:
 > > > >
-> > > > Previously, a sender thread in mbox_send_message() could be woken u=
-p at
-> > > > a wrong time in blocking mode. It is because there was only a singl=
-e
-> > > > completion for a channel whereas messages from multiple threads cou=
-ld be
-> > > > sent in any order; since the shared completion could be signalled i=
-n any
-> > > > order, it could wake up a wrong sender thread.
+> > > > When the mailbox controller failed transmitting message, the error =
+code
+> > > > was only passed to the client's tx done handler and not to
+> > > > mbox_send_message(). For this reason, the function could return a f=
+alse
+> > > > success. This commit resolves the issue by introducing the tx statu=
+s and
+> > > > checking it before mbox_send_message() returns.
 > > > >
-> > > > This commit resolves the false wake-up issue with the following cha=
-nges:
-> > > > - Completions are created just as many as the number of concurrent =
-sender
-> > > >   threads
-> > > > - A completion is created on a sender thread's stack
-> > > > - Each slot of the message queue, i.e. `msg_data`, contains a point=
-er to
-> > > >   its target completion
-> > > > - tx_tick() signals the completion of the currently active slot of =
-the
-> > > >   message queue
-> > > >
-> > > I think I reviewed it already or is this happening on
-> > > one-channel-one-client usage? Because mailbox api does not support
-> > > channels shared among multiple clients.
+> > > Can you please share the scenario when this becomes necessary? This
+> > > can potentially change the ground underneath some clients, so we have
+> > > to be sure this is really useful.
 > >
-> > Yes, this patch is handling the one-channel-one-client usage but when t=
-hat
-> > single channel is shared between multiple threads.
->=20
-> hmm.... how is this not single-channel-multiple-clients ?
-> A channel is returned as an opaque token to the clients, if that
-> client shares that with other threads - they will race.
-> It is the job of the original client to serialize its threads' access
-> to the channel.
->=20
-> > From my understanding, the
-> > discussion back then ended with how to circumvent the issue rather than=
- whether
-> > we will eventually solve this in the mailbox framework or not, and if y=
-es, how
-> > we will, and if not, why.
->=20
-> It will be interesting to see how many current clients actually need
-> to share channels. If there are enough, it makes sense to implement
-> some helper api
-> on top of existing code, instead of changing its nature totally.
+> > I would say the problem here is generic enough to apply to all the case=
+s where
+> > the send result needs to be checked. Since the return value of the send=
+ API is
+> > not the real send result, any users who believe that this blocking send=
+ API
+> > will return the real send result could fall for that. For example, user=
+s may
+> > think the send was successful even though it was not actually. I believ=
+e it is
+> > uncommon that users have to register a callback solely to get the send =
+result
+> > even though they are using the blocking send API already. Also, I guess=
+ there
+> > is no special reason why only the mailbox send API should work this way=
+ among
+> > other typical blocking send APIs. For these reasons, this patch makes t=
+he send
+> > API return the real send result. This way, users will not need to regis=
+ter the
+> > redundant callback and I think the return value will align with their c=
+ommon
+> > expectation.
+> >
+> Clients submit a message into the Mailbox subsystem to be sent out to
+> the remote side which can happen immediately or later.
+> If submission fails, clients get immediately notified. If transmission
+> fails (which is now internal to the subsystem) it is reported to the
+> client by a callback.
+> If the API was called mbox_submit_message (which it actually is)
+> instead of mbox_send_message, there would be no confusion.
+> We can argue how good/bad the current implementation is, but the fact
+> is that it is here. And I am reluctant to cause churn without good
+> reason.
+> Again, as I said, any, _legal_, setup scenario will help me come over
+> my reluctance.
 >=20
 > Thanks
 > Jassi
 
-Hi Jassi, can we continue discussing this matter? We can start from the rec=
-ent
-comments from me.
+Hi Jassi, can we continue discussing this issue from where we left off last
+time?
 
 Thanks,
 Joonwon Kang
