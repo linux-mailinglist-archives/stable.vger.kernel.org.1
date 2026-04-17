@@ -1,73 +1,90 @@
-Return-Path: <stable+bounces-238473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238474-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ABY8JvwJ4mmE0wAAu9opvQ
-	(envelope-from <stable+bounces-238473-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 12:22:52 +0200
+	id 2LWDNEcN4mkg1AAAu9opvQ
+	(envelope-from <stable+bounces-238474-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 12:36:55 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14A5E41A116
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 12:22:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B1BB41A2C9
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 12:36:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2ECA4314CB15
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 10:17:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9DD803001BE6
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 10:29:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B4B33B5318;
-	Fri, 17 Apr 2026 10:17:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AFC636D9FE;
+	Fri, 17 Apr 2026 10:29:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="aam1SYji"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FT0cwr5W"
 X-Original-To: stable@vger.kernel.org
-Received: from out203-205-221-192.mail.qq.com (out203-205-221-192.mail.qq.com [203.205.221.192])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23DE23B5825
-	for <stable@vger.kernel.org>; Fri, 17 Apr 2026 10:17:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.192
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DC07370D56
+	for <stable@vger.kernel.org>; Fri, 17 Apr 2026 10:29:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776421028; cv=none; b=EJ2RdGziunrmwg3T9N2NIftVGIZB4+MwNI3AjsuTGFVGCZcFXh0xAC/w9+wL+ZYSllOBSusnsezX1d4+ViPS6y8hF/znTFLEcIExOomdq5BBCru07ZvxqYjwhSlpFwlPqFwucBrUVeZlbTTzJz7lk/cWsmSMt+553IQpLgdP73A=
+	t=1776421763; cv=none; b=Cp8RHNjCfCA/NozAGrK1bt2W2VxVrfUml5o3b4bOQNZ9HoZlgOnptjM+1lKCPKq5FlxnQVXxSTuckbfzir2Vl3bTf6oz7FqdDwXyS11ZbcBG+w3UvobKXlx9gr3Ou+gJ2Cejwq19+M2oAIjAEYMRkuTZWzNjyg9TAMH6u3HhMXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776421028; c=relaxed/simple;
-	bh=kGZTUbmhy4eiP4AtkmuUW5syAYqt5qNBlLYRQJxQV9E=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=Iucha3/xlGEnciwCl/4STtnAJ4RFQ7yfxydOPjjuq3ASEprRtisLR26XNWGeznLCwbZAVHbPND/1Wyzws2XyBXPBGBMptLdDzSflL/DTR5iTMKXtWMZCPLJU3iQbNTFmtwW80391itbNZc1G0KI7K3ezxd40Y5AFs3G9qQkQwPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=aam1SYji; arc=none smtp.client-ip=203.205.221.192
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1776421015;
-	bh=g0Efm9iDp3R7/iYHI4l7Hyn3MNRts+Fud7okjcZrse8=;
-	h=From:To:Cc:Subject:Date;
-	b=aam1SYjioD/yJTr8Etq9T3pHj/Wcnb9gvTeK7MMN8tp17dfJDLqFR0EEvArzbMCnf
-	 tBLXSpFnEX5LJbaXqlbcpcpx92ogO/iyHx93LmCYrlhpArXVApx8/sAL4J2N+oxO8a
-	 79SgBsxrwqEGvyRJ8SZ3BfquFjR6m/SsGt8MWA5A=
-Received: from xiao.localdomain ([183.6.47.73])
-	by newxmesmtplogicsvrszb51-1.qq.com (NewEsmtp) with SMTP
-	id 43596042; Fri, 17 Apr 2026 18:16:53 +0800
-X-QQ-mid: xmsmtpt1776421013tsdrehsrg
-Message-ID: <tencent_58B9FA4504BD09A6D0FB1DD1708162E26A09@qq.com>
-X-QQ-XMAILINFO: OVFdYp27KdlJ25uzRAd8elQBdKwgGotjW0KwiE+crGko3Txc9T3mlP0OBouNPb
-	 fqchIrqY6oQqPxm4qKjlW2XrLaBNylByC2mfE8s0jKsIPwx7ye/NdHeyVziGV8I/QN+BlYVwfivu
-	 E1qyT8CnYImeqwiazw+RLJSokEvlsA1KXOsa85f8/DO3R75P5te9bgQA9BXfr2Vg8vaUq6t+3SMo
-	 i6eDQt1nAiAOXZe/lLK5lJ0rTpFxs2gvaXxFl/VE8pEZ9SU6xkRG4DH5+KssDSEU1o4EX5x/c8g0
-	 ij9b0wFm1WxdCbwrFmL6AjQ+qbxAoojI0a1OWGZiqluNVA525UlM0yihV6VinYYO0rDsqfd8kSha
-	 9LIOs/4W1oPBXVRcGCOEv1C8Bblx8TQyKyNyWTWPVsAwUpNXbxy4/LkuNUy4ChOHy1KkOrzm/adw
-	 ySlZB/0oel5JIBvY5j9uAmyZy57Oju/pKn6atgBLjmqvYAENWkBHKczkjm568eDzx7H7EHBN5zKJ
-	 zblw3l5baE/SixzePX9ztcOr6K0w7s7NeVKHtAsoHCJ/ffH4HCXwVBkCgifg4rAkiQtgXHxPNBpE
-	 7Zsdxgs8ONuVezz+wjbX0HK/KpM+llAFC+/VYF9k7DESCiw0pOQnV7xUX8J//IsEhRXTExvv6wci
-	 85QDNm2th1hAhnuCnCQYOKpqwANI9CfATJugk6cirXQfBPfPcrSf2/xumG8T7Ls2IW7EdmDec5US
-	 W2/Strw4yKtEGTCKWZ+aFaUwTbS65lGLoWXKlnabPvMsQWULt9XncecnjX8mWhWmRIibkEuEbv0g
-	 IOq4Be3tNapWRh5QZAlbXQgHbnFooYUUnDs2FSAMIlAouN/siQU5D1ZJG9fw61UK7RjwcHYDW3hX
-	 wnco7fqOxCsbyUaPOcEZ0meShHloh9RqGCQCyhsDDhmrnlaSD5i6HTe9TGpF4Rl3IYQxtEJo2b4e
-	 n19XXvcQtDXJD74s5XChpAiGZ8XFx6VuFouuACFyaMHQ8ZjJ89tJiYQZWiz5iY0ohHKapVFI1lZH
-	 7fxTHKYIjl6K+U7ft7LoFtn1uOGCcI5c0P3hS25Ike9F53lwAdaVbtjRyM0+rjqWRX3d7/88aK8T
-	 XV3+Q6rq9IFK1A1G8=
-X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
-From: Li Jian <lazycat-xiao@foxmail.com>
-To: lazycat-xiao@foxmail.com
-Cc: stable@vger.kernel.org
-Subject: [PATCH] ASoC: ES8389: convert to devm_clk_get_optional() to get clock
-Date: Fri, 17 Apr 2026 18:16:01 +0800
-X-OQ-MSGID: <20260417101601.49048-1-lazycat-xiao@foxmail.com>
+	s=arc-20240116; t=1776421763; c=relaxed/simple;
+	bh=yy99X5ZV6EUa6VM0MQM1D/ya75MnDqHlC2agDPMvgQ4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FKCLKxfkUaEl94uibjX33V00A1Gd1G1eme6KMobjdCJ+gZNoneylyBYJkhiNUvkt3xEUwOkFj2rGR13ICiLiW3waewxODTNYswPt38rd8PI15zApv5Llai97DM3s1vxvEfPy64qAqFvHc9jIa9MmN797fP41oxynGB/TJeoBp/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FT0cwr5W; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-488a8ca4aadso6397745e9.3
+        for <stable@vger.kernel.org>; Fri, 17 Apr 2026 03:29:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776421760; x=1777026560; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=fE+qnOdm3zs6vETg/xjRcNv6wjpPT+qb+RS/sbJQMYo=;
+        b=FT0cwr5W+nVQVd7Mqs9ZMC1zMV35dp30Y/faZNSdwHYBrS2Kr09Xk9vGS2Zlg6npVb
+         XFzGegkJ6IikFwPJ31IzZfghEuJS/+6oj1PtzubWJynJHLdh5O8dAF92lgvcotCYwwYT
+         tqelDA3+aFIrTVp/yb0jzkWagc3AIwbkf89Q+Dlh/KaRdxEn6cTYH8HbAjST4Ph/jDqd
+         ggecJ9AG3wtInJTt1jXIAZrr5S7kk9jAQfGZ4x0bWq8a6dXbB1TQcmraPbiI7WBuw6va
+         fsxzLfq51j+UPOoDWsArGn/C6ytisqISUngvSz6QFHEWOoyARolJrvXpE70t9G8fJE7R
+         e3fw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776421760; x=1777026560;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fE+qnOdm3zs6vETg/xjRcNv6wjpPT+qb+RS/sbJQMYo=;
+        b=UD7fpYVmRo29yCry4wh4y2m4lNYkM4bPJVk+Du/aKK770QCR9V2ulCJIqjhkY7GwwB
+         ZV7oj2/Vxbkel0rnxGh+PUsnudqidn+MsigjYkvcNfBY2cISxhc9A4BSHrcB7krccqe0
+         xXP9T74AsHDxZuXrYU3dz6Ra9eHv7aINgYNXiDaiwAY7+0xvwc4kHRA8o17jKBHzOKKg
+         xuoNwiRetjCi7MQWZw8nXo1VOB/w2umptUBQmYIG7jteRIWdiHah6EcCzHQNeQmCVMge
+         TNKT96Uvus5RsMcHJHpTghKGdRJW9sYmEU0/VRkuZGLa1CtkkjSEB4rqza64K5oiVvRQ
+         VUdg==
+X-Forwarded-Encrypted: i=1; AFNElJ+9eoc0G3pS0HzHvE8jn1oSIYXBn6EZNr9oMT6Kc/iSeEFAH03dM6ikCDf9IBQ+mUzezjyYEVI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YylRyYXa0A+UTAEpRQ8cSW4/aaE/Gf4lo0PGfRlfaE44OoxfERA
+	e9Dlh2GboJJ+jcE0UmT8i6CviHxUxjdCvQapvFeUvSKPX1z0qhEu18s=
+X-Gm-Gg: AeBDieuGmRgOZ5gczg8p+2KN6iDDC88iE4irVX1d5YZelEUj3bReOfoSL4V39nEAtBj
+	5aLCiJzJ7Xfe9WMwH5uQQfpmFw2GYWBFJNkZB2XnsqtKCpBigWuPbooHibee4vONGvQtRRCeIyC
+	pFjOoBMDYwE633uJxa+3gXxna5EUILs4ekvgV4C62hIlHFxw3qcLUGjCzPQL/IPCeORUkrkMJVU
+	WKO3TAkjKN0jBlP9L+7zCythnSYp9/2b0xS9STaxG7HHv+D9SCg1fhX1mIdT1tRLV6aq/p+Oc7d
+	lK2hWeYNufB0+s5uxwDp1Iu3hOBiLhl1C85Van1lr/znZfkx/ozOHp4vVZnLJoFh/aecRoOvqnH
+	6v3kDHJuYOeYyBXECwf36XAFUmFTInP3JZdoREjnuACOmjtXSh3aXUwoFkN/TfTrNsErmeYE4Xh
+	ajQeM=
+X-Received: by 2002:a05:600c:c4a1:b0:488:c014:34da with SMTP id 5b1f17b1804b1-488fb77ed1bmr27199815e9.26.1776421760356;
+        Fri, 17 Apr 2026 03:29:20 -0700 (PDT)
+Received: from debian.. ([2001:41d0:303:db6b::])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488fb7c0eacsm13854955e9.35.2026.04.17.03.29.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 17 Apr 2026 03:29:19 -0700 (PDT)
+From: Tristan Madani <tristmd@gmail.com>
+To: linux-bluetooth@vger.kernel.org
+Cc: luiz.dentz@gmail.com,
+	marcel@holtmann.org,
+	sean.wang@mediatek.com,
+	mark-yw.chen@mediatek.com,
+	linux-mediatek@lists.infradead.org,
+	stable@vger.kernel.org
+Subject: [PATCH v3] Bluetooth: btmtk: validate WMT event SKB length before struct access
+Date: Fri, 17 Apr 2026 10:29:19 +0000
+Message-ID: <20260417102919.2549352-1-tristmd@gmail.com>
 X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -76,68 +93,85 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[foxmail.com,none];
-	R_DKIM_ALLOW(-0.20)[foxmail.com:s=s201512];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-238473-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	FREEMAIL_TO(0.00)[foxmail.com];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lazycat-xiao@foxmail.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-238474-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,holtmann.org,mediatek.com,lists.infradead.org,vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[foxmail.com:+];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tristmd@gmail.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
-	FREEMAIL_FROM(0.00)[foxmail.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qq.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,foxmail.com:dkim,foxmail.com:email]
-X-Rspamd-Queue-Id: 14A5E41A116
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_RCPT(0.00)[stable];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[talencesecurity.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 4B1BB41A2C9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-When enabling ES8390 via ACPI description, es8389 would fail to
-obtain a clock source, causing the driver to fail to initialize.
-This was not an issue with older kernels, but since commit
-abae8e57e49a ("clk: generalize devm_clk_get() a bit"),
-devm_clk_get() would return an error pointer when a clock source
-was not detected (instead of falling back to a static clock),
-causing the driver to fail early.
+From: Tristan Madani <tristan@talencesecurity.com>
 
-Use devm_clk_get_optional() instead to return to the previous
-behaviour, allowing the use of a static clock source.
+btmtk_usb_hci_wmt_sync() casts the WMT event response SKB data to
+struct btmtk_hci_wmt_evt (7 bytes) and struct btmtk_hci_wmt_evt_funcc
+(9 bytes) without first checking that the SKB contains enough data.
+A short firmware response causes out-of-bounds reads from SKB tailroom.
 
+Add length validation before each struct access to prevent OOB reads
+from malformed WMT event responses.
+
+Fixes: d019930b0049 ("Bluetooth: btmtk: move btusb_mtk_hci_wmt_sync to btmtk.c")
 Cc: stable@vger.kernel.org
-Fixes: abae8e57e49a ("clk: generalize devm_clk_get() a bit")
-Signed-off-by: Li Jian <lazycat-xiao@foxmail.com>
+Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
 ---
- sound/soc/codecs/es8389.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/bluetooth/btmtk.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/sound/soc/codecs/es8389.c b/sound/soc/codecs/es8389.c
-index 8d418cae3..449d9574b 100644
---- a/sound/soc/codecs/es8389.c
-+++ b/sound/soc/codecs/es8389.c
-@@ -892,7 +892,7 @@ static int es8389_probe(struct snd_soc_component *component)
- 		return ret;
- 	}
+diff --git a/drivers/bluetooth/btmtk.c b/drivers/bluetooth/btmtk.c
+index 6fb6ca274..b1a96ebae 100644
+--- a/drivers/bluetooth/btmtk.c
++++ b/drivers/bluetooth/btmtk.c
+@@ -695,6 +695,12 @@ static int btmtk_usb_hci_wmt_sync(struct hci_dev *hdev,
+ 	if (data->evt_skb == NULL)
+ 		goto err_free_wc;
  
--	es8389->mclk = devm_clk_get(component->dev, "mclk");
-+	es8389->mclk = devm_clk_get_optional(component->dev, "mclk");
- 	if (IS_ERR(es8389->mclk))
- 		return dev_err_probe(component->dev, PTR_ERR(es8389->mclk),
- 			"ES8389 is unable to get mclk\n");
++	/* Validate SKB length before accessing WMT event structs */
++	if (data->evt_skb->len < sizeof(*wmt_evt)) {
++		err = -EINVAL;
++		goto err_free_skb;
++	}
++
+ 	/* Parse and handle the return WMT event */
+ 	wmt_evt = (struct btmtk_hci_wmt_evt *)data->evt_skb->data;
+ 	if (wmt_evt->whdr.op != hdr->op) {
+@@ -712,6 +718,10 @@ static int btmtk_usb_hci_wmt_sync(struct hci_dev *hdev,
+ 			status = BTMTK_WMT_PATCH_DONE;
+ 		break;
+ 	case BTMTK_WMT_FUNC_CTRL:
++		if (data->evt_skb->len < sizeof(*wmt_evt_funcc)) {
++			err = -EINVAL;
++			goto err_free_skb;
++		}
+ 		wmt_evt_funcc = (struct btmtk_hci_wmt_evt_funcc *)wmt_evt;
+ 		if (be16_to_cpu(wmt_evt_funcc->status) == 0x404)
+ 			status = BTMTK_WMT_ON_DONE;
 -- 
 2.47.3
 
