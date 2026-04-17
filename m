@@ -1,141 +1,163 @@
-Return-Path: <stable+bounces-238443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238444-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yJCRAaPk4WmKzgAAu9opvQ
-	(envelope-from <stable+bounces-238443-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 09:43:31 +0200
+	id OHwHNSnl4WmKzgAAu9opvQ
+	(envelope-from <stable+bounces-238444-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 09:45:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7599C418174
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 09:43:26 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id A42574181FA
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 09:45:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3017D305AD54
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 07:40:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7DC2B300DCF6
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 07:45:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FB133793C8;
-	Fri, 17 Apr 2026 07:40:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="qemNqOvZ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12E153290A6;
+	Fri, 17 Apr 2026 07:45:32 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36B6A316189;
-	Fri, 17 Apr 2026 07:40:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE852FF17A;
+	Fri, 17 Apr 2026 07:45:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776411651; cv=none; b=SyTWbzYtf0IqheCGF9g2O833+7ZTkc7mWmfd2JZpI+ElmvCw1np7uzLzVtgiNgrZG6Th7k+G2U7GJ465q/Sfi4D4QHB/X26JU1gn4qjPd630YBWsrQOjbzDoGaR8X0rEAu0imMApJ6lkpzZyGt2uLoD3cPt7WbHxU08f7Uu7Jho=
+	t=1776411928; cv=none; b=SuouxydhTi3j9W5eawH6/AAINe40wCZ98Bo/LBgxxGtA7kKCmhGeG3/gZKYDpfFzc0CXClZP1aoXV0J5eG+t1CaGCbWmUk7IJr3L7ue/txKzVIbe5qpW0+iUGTC8d4jy6AiQPXqtHv8B1VH/zfVMTbvx3qS8k0aOGcsUf26FSsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776411651; c=relaxed/simple;
-	bh=F/yR7j6WJjB6ZZPwjfbH5F7sRfTka8hqO+JIeTsVRKI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=VI8Oc8zHns88mG6zc7eHLxKLI+oImKsCRF4kJ4gA5xBi2T64TnywNz3l3hwDmpnnftrAXwKd/DcX7pBEtMFPZgkATxK5LCRBf8EGh/jJWgnsddLKXi042uYtc2OPL64junn9ikjwnCiblr8PkEQlkzYa2qt62uJjmffVRQUAADM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=qemNqOvZ; arc=none smtp.client-ip=220.197.31.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version:
-	Content-Type; bh=ec9J7I0MAhcvubfbKVPQh0qJjmz98punS+lUBUOQvEk=;
-	b=qemNqOvZLZ2bEWie0GNABtQH6q+lsvgF5hecAyAY7etKfqtoWV6ddman19xiCB
-	b7e+uE53ucGEl30ZieUCbsHn2NtQ0bBa9HeeDrNOU28wQCcmwcuiOxq3+5Rc2w97
-	AeLifdiT/OjfuE3T09W/du8MhdR8bFqCGXhFef6tKWEEw=
-Received: from pek-lpg-core5.wrs.com (unknown [])
-	by gzga-smtp-mtada-g1-0 (Coremail) with SMTP id _____wDHpCra4+FpGWiTAA--.26143S2;
-	Fri, 17 Apr 2026 15:40:10 +0800 (CST)
-From: Robert Garcia <rob_garcia@163.com>
-To: stable@vger.kernel.org,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Pan Xinhui <Xinhui.Pan@amd.com>,
-	Robert Garcia <rob_garcia@163.com>,
-	David Airlie <airlied@gmail.com>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Yifan Zha <Yifan.Zha@amd.com>,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 6.1.y] drm/amdgpu: remove two invalid BUG_ON()s
-Date: Fri, 17 Apr 2026 15:40:10 +0800
-Message-Id: <20260417074010.1607496-1-rob_garcia@163.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1776411928; c=relaxed/simple;
+	bh=1gczJKb9r8WxSOAQm1hVYc+mTHiGAJvYEzgcY1SntM0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ILXKNO9fRy2wKNsGTkAub3DB21sV5OseQkb2pVoZ29hLAWvF9QzQnFsbHkaRkRhOBTGjzeKoPPiONju0m9dIOMykRlmRRdWMkhCy5VwcmC3uQfLfMz89vs0SeSjIjZCnYdPG+s09e6UsE+0gcFAkEgnttPMrMgLTkjoFSbgZ3VA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [111.196.245.116])
+	by APP-05 (Coremail) with SMTP id zQCowABn9gkD5eFpnx3YDQ--.24269S2;
+	Fri, 17 Apr 2026 15:45:07 +0800 (CST)
+From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	Pengpeng Hou <pengpeng@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] powerpc/powernv: allocate sensor group names to fit the OF node name
+Date: Fri, 17 Apr 2026 15:45:05 +0800
+Message-ID: <20260417074505.16178-1-pengpeng@iscas.ac.cn>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDHpCra4+FpGWiTAA--.26143S2
-X-Coremail-Antispam: 1Uf129KBjvdXoWrurWDuF4fXr1fCF4ftFW5ZFb_yoWkZrc_GF
-	Z5JrZ8Zw42yFnYvw1xua1avry0v3yrArs5Gw42qa9YgFykZryrJ34kGwn8Xr4fursxCF9r
-	J3W3WF18JF98CjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sR_BT5DUUUUU==
-X-CM-SenderInfo: 5uresw5dufxti6rwjhhfrp/xtbDAhsCbWnh49vqnwAA3z
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-CM-TRANSID:zQCowABn9gkD5eFpnx3YDQ--.24269S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Kry5Ar1rZrW3WF1rWFWfKrg_yoW8CF45pF
+	sYkFnI9a18ury8Ja98K34j9a1fKan5AFW2gr1UJ3sayFsxZr9FvF40yF1YyrZrJr4rGw1j
+	gF43Xw13CFnxGFUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUkE14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
+	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
+	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+	2Ix0cI8IcVAFwI0_Jw0_WrylYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJV
+	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_
+	Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67
+	AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIY
+	rxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_JFI_Gr1lIxAIcVC0I7IYx2IY6xkF7I0E14
+	v26F4j6r4UJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr0_
+	Cr1lIxAIcVC2z280aVCY1x0267AKxVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUDOz
+	3UUUUU=
+X-CM-SenderInfo: pshqw1xhqjqxpvfd2hldfou0/
+X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
-	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-238443-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_FROM(0.00)[163.com];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rob_garcia@163.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[amd.com,gmail.com,163.com,ffwll.ch,linuxfoundation.org,lists.freedesktop.org,vger.kernel.org];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_FROM(0.00)[bounces-238444-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[iscas.ac.cn];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org,lists.ozlabs.org,vger.kernel.org,iscas.ac.cn];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[pengpeng@iscas.ac.cn,stable@vger.kernel.org];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DKIM_TRACE(0.00)[163.com:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 7599C418174
+	RCPT_COUNT_SEVEN(0.00)[9];
+	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:mid,iscas.ac.cn:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A42574181FA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Christian König <christian.koenig@amd.com>
+opal_sensor_groups_init() stores each sensor-group name in a fixed
+char[20] field and formats it with "%pOFn" or "%pOFn%d".
 
-[ Upstream commit 5d55ed19d4190d2c210ac05ac7a53f800a8c6fe5 ]
+The node name comes from firmware and is not bounded to fit in 20 bytes,
+so formatting the fully qualified group name can write past the end of
+the embedded buffer.
 
-Those can be triggered trivially by userspace.
+Allocate the group name string to fit the formatted result instead of
+storing it in a fixed-size array.
 
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Acked-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-[ Modified to gfx_v11_0.c only. ]
-Signed-off-by: Robert Garcia <rob_garcia@163.com>
+Fixes: bf9571550f52 ("powerpc/powernv: Add support to clear sensor groups data")
+Cc: stable@vger.kernel.org
+
+Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c | 2 --
- 1 file changed, 2 deletions(-)
+ arch/powerpc/platforms/powernv/opal-sensor-groups.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-index 37f793f7d4d2..6e3a32779168 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-@@ -5380,8 +5380,6 @@ static void gfx_v11_0_ring_emit_ib_gfx(struct amdgpu_ring *ring,
- 	unsigned vmid = AMDGPU_JOB_GET_VMID(job);
- 	u32 header, control = 0;
+diff --git a/arch/powerpc/platforms/powernv/opal-sensor-groups.c b/arch/powerpc/platforms/powernv/opal-sensor-groups.c
+index 87fd6d7769e9..f940c223f1b5 100644
+--- a/arch/powerpc/platforms/powernv/opal-sensor-groups.c
++++ b/arch/powerpc/platforms/powernv/opal-sensor-groups.c
+@@ -23,7 +23,7 @@ struct sg_attr {
+ };
  
--	BUG_ON(ib->flags & AMDGPU_IB_FLAG_CE);
--
- 	header = PACKET3(PACKET3_INDIRECT_BUFFER, 2);
+ static struct sensor_group {
+-	char name[20];
++	char *name;
+ 	struct attribute_group sg;
+ 	struct sg_attr *sgattrs;
+ } *sgs;
+@@ -207,9 +207,12 @@ void __init opal_sensor_groups_init(void)
+ 		}
  
- 	control |= ib->length_dw | (vmid << 24);
+ 		if (!of_property_read_u32(node, "ibm,chip-id", &chipid))
+-			sprintf(sgs[i].name, "%pOFn%d", node, chipid);
++			sgs[i].name = kasprintf(GFP_KERNEL, "%pOFn%d",
++						node, chipid);
+ 		else
+-			sprintf(sgs[i].name, "%pOFn", node);
++			sgs[i].name = kasprintf(GFP_KERNEL, "%pOFn", node);
++		if (!sgs[i].name)
++			goto out_sgs_sgattrs;
+ 
+ 		sgs[i].sg.name = sgs[i].name;
+ 		if (add_attr_group(ops, len, &sgs[i], sgid)) {
+@@ -225,6 +228,7 @@ void __init opal_sensor_groups_init(void)
+ 
+ out_sgs_sgattrs:
+ 	while (--i >= 0) {
++		kfree(sgs[i].name);
+ 		kfree(sgs[i].sgattrs);
+ 		kfree(sgs[i].sg.attrs);
+ 	}
 -- 
-2.34.1
+2.50.1 (Apple Git-155)
 
 
