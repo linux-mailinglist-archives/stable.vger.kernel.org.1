@@ -1,39 +1,39 @@
-Return-Path: <stable+bounces-238444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238445-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OHwHNSnl4WmKzgAAu9opvQ
-	(envelope-from <stable+bounces-238444-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 09:45:45 +0200
+	id GE82DRnn4WmKzgAAu9opvQ
+	(envelope-from <stable+bounces-238445-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 09:54:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A42574181FA
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 09:45:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE26E418375
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 09:53:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7DC2B300DCF6
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 07:45:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 21FD83014677
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 07:48:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12E153290A6;
-	Fri, 17 Apr 2026 07:45:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE08A36828B;
+	Fri, 17 Apr 2026 07:48:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE852FF17A;
-	Fri, 17 Apr 2026 07:45:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17F10340A59;
+	Fri, 17 Apr 2026 07:48:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776411928; cv=none; b=SuouxydhTi3j9W5eawH6/AAINe40wCZ98Bo/LBgxxGtA7kKCmhGeG3/gZKYDpfFzc0CXClZP1aoXV0J5eG+t1CaGCbWmUk7IJr3L7ue/txKzVIbe5qpW0+iUGTC8d4jy6AiQPXqtHv8B1VH/zfVMTbvx3qS8k0aOGcsUf26FSsQ=
+	t=1776412122; cv=none; b=uiCVjN2Udl6FvnakAlo62bti2TbmHPmNIe6uQBnpPcwUt3FGC3p2ruJxTbZqOtqPY6hhZDkrcpwj8JnGAJVtLYXiZ/NwutEzhN/CU2KCaFJDof9Go6QjL5vrXUoZgPLHuxl7pr0g2s6KRFZFxcMAS+zG7tfPd+I14VeGlAc8jyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776411928; c=relaxed/simple;
-	bh=1gczJKb9r8WxSOAQm1hVYc+mTHiGAJvYEzgcY1SntM0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ILXKNO9fRy2wKNsGTkAub3DB21sV5OseQkb2pVoZ29hLAWvF9QzQnFsbHkaRkRhOBTGjzeKoPPiONju0m9dIOMykRlmRRdWMkhCy5VwcmC3uQfLfMz89vs0SeSjIjZCnYdPG+s09e6UsE+0gcFAkEgnttPMrMgLTkjoFSbgZ3VA=
+	s=arc-20240116; t=1776412122; c=relaxed/simple;
+	bh=n2xeCTsD93o1Oz1aprLb+7cI35z3JmMxyvQIRfnDuIg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BYJdv7hSSuDspS0z3IRku6KjTFa2107uyX75G0uLqTV5G6UPWmncka4+8dYYd1rL1p6yqneqaQ3CNQXh3fnk/mNISv93sQOWIF3FkAfyH/vXeAc9R0sRpJtMUOkMuWwpZ9f4GPaLy843wCwgxUuTTL2O8Sq1L9Zkn20eAAnoST4=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
 Received: from localhost.localdomain (unknown [111.196.245.116])
-	by APP-05 (Coremail) with SMTP id zQCowABn9gkD5eFpnx3YDQ--.24269S2;
-	Fri, 17 Apr 2026 15:45:07 +0800 (CST)
+	by APP-05 (Coremail) with SMTP id zQCowAC3RgrL5eFpAzHYDQ--.61365S2;
+	Fri, 17 Apr 2026 15:48:28 +0800 (CST)
 From: Pengpeng Hou <pengpeng@iscas.ac.cn>
 To: Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Michael Ellerman <mpe@ellerman.id.au>
@@ -44,9 +44,9 @@ Cc: Nicholas Piggin <npiggin@gmail.com>,
 	linux-kernel@vger.kernel.org,
 	Pengpeng Hou <pengpeng@iscas.ac.cn>,
 	stable@vger.kernel.org
-Subject: [PATCH] powerpc/powernv: allocate sensor group names to fit the OF node name
-Date: Fri, 17 Apr 2026 15:45:05 +0800
-Message-ID: <20260417074505.16178-1-pengpeng@iscas.ac.cn>
+Subject: [PATCH] powerpc/perf/hv-gpci: bound sysfs formatting with sysfs_emit_at()
+Date: Fri, 17 Apr 2026 15:48:25 +0800
+Message-ID: <20260417074825.22967-1-pengpeng@iscas.ac.cn>
 X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -55,10 +55,10 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowABn9gkD5eFpnx3YDQ--.24269S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Kry5Ar1rZrW3WF1rWFWfKrg_yoW8CF45pF
-	sYkFnI9a18ury8Ja98K34j9a1fKan5AFW2gr1UJ3sayFsxZr9FvF40yF1YyrZrJr4rGw1j
-	gF43Xw13CFnxGFUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+X-CM-TRANSID:zQCowAC3RgrL5eFpAzHYDQ--.61365S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxAr13Wr15ury7Zry7ur17Jrb_yoWrJw43p3
+	WfKr4q9rs5Xw17CrWIkF1xZw15W397A347WrW2g393ArsxX3909FyUKFyY9ry8GFWrCa48
+	urZxKrs0krnrJFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
 	9KBjDU0xBIdaVrnRJUUUkE14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
 	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
 	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
@@ -77,85 +77,153 @@ X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_FROM(0.00)[bounces-238444-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-238445-lists,stable=lfdr.de];
 	DMARC_NA(0.00)[iscas.ac.cn];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FREEMAIL_CC(0.00)[gmail.com,kernel.org,lists.ozlabs.org,vger.kernel.org,iscas.ac.cn];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[pengpeng@iscas.ac.cn,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	R_DKIM_NA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[9];
 	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:mid,iscas.ac.cn:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A42574181FA
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: AE26E418375
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-opal_sensor_groups_init() stores each sensor-group name in a fixed
-char[20] field and formats it with "%pOFn" or "%pOFn%d".
+systeminfo_gpci_request() and
+affinity_domain_via_partition_result_parse() hex-encode hypervisor data
+into the single-page sysfs read buffer with sprintf(buf + *n, ...).
+Both helpers only check PAGE_SIZE after the formatting loops have already
+advanced past the end of the buffer.
 
-The node name comes from firmware and is not bounded to fit in 20 bytes,
-so formatting the fully qualified group name can write past the end of
-the embedded buffer.
+Switch these appends to sysfs_emit_at() and stop once the sysfs buffer is
+full.
 
-Allocate the group name string to fit the formatted result instead of
-storing it in a fixed-size array.
-
-Fixes: bf9571550f52 ("powerpc/powernv: Add support to clear sensor groups data")
+Fixes: 71f1c39647d8 ("powerpc/hv_gpci: Add sysfs file inside hv_gpci device to show processor bus topology information")
+Fixes: a15e0d6a6929 ("powerpc/hv_gpci: Add sysfs file inside hv_gpci device to show affinity domain via partition information")
 Cc: stable@vger.kernel.org
 
 Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
 ---
- arch/powerpc/platforms/powernv/opal-sensor-groups.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ arch/powerpc/perf/hv-gpci.c | 56 +++++++++++++++++++++++++++++++------
+ 1 file changed, 47 insertions(+), 9 deletions(-)
 
-diff --git a/arch/powerpc/platforms/powernv/opal-sensor-groups.c b/arch/powerpc/platforms/powernv/opal-sensor-groups.c
-index 87fd6d7769e9..f940c223f1b5 100644
---- a/arch/powerpc/platforms/powernv/opal-sensor-groups.c
-+++ b/arch/powerpc/platforms/powernv/opal-sensor-groups.c
-@@ -23,7 +23,7 @@ struct sg_attr {
- };
+diff --git a/arch/powerpc/perf/hv-gpci.c b/arch/powerpc/perf/hv-gpci.c
+index 5cac2cf3bd1e..325b80f01629 100644
+--- a/arch/powerpc/perf/hv-gpci.c
++++ b/arch/powerpc/perf/hv-gpci.c
+@@ -11,6 +11,7 @@
  
- static struct sensor_group {
--	char name[20];
-+	char *name;
- 	struct attribute_group sg;
- 	struct sg_attr *sgattrs;
- } *sgs;
-@@ -207,9 +207,12 @@ void __init opal_sensor_groups_init(void)
+ #include <linux/init.h>
+ #include <linux/perf_event.h>
++#include <linux/sysfs.h>
+ #include <asm/firmware.h>
+ #include <asm/hvcall.h>
+ #include <asm/io.h>
+@@ -134,6 +135,7 @@ static unsigned long systeminfo_gpci_request(u32 req, u32 starting_index,
+ 			size_t *n, struct hv_gpci_request_buffer *arg)
+ {
+ 	unsigned long ret;
++	int len;
+ 	size_t i, j;
+ 
+ 	arg->params.counter_request = cpu_to_be32(req);
+@@ -176,9 +178,17 @@ static unsigned long systeminfo_gpci_request(u32 req, u32 starting_index,
+ 	for (i = 0; i < be16_to_cpu(arg->params.returned_values); i++) {
+ 		j = i * be16_to_cpu(arg->params.cv_element_size);
+ 
+-		for (; j < (i + 1) * be16_to_cpu(arg->params.cv_element_size); j++)
+-			*n += sprintf(buf + *n,  "%02x", (u8)arg->bytes[j]);
+-		*n += sprintf(buf + *n,  "\n");
++		for (; j < (i + 1) * be16_to_cpu(arg->params.cv_element_size);
++		     j++) {
++			len = sysfs_emit_at(buf, *n, "%02x", (u8)arg->bytes[j]);
++			if (!len)
++				return -EFBIG;
++			*n += len;
++		}
++		len = sysfs_emit_at(buf, *n, "\n");
++		if (!len)
++			return -EFBIG;
++		*n += len;
+ 	}
+ 
+ 	if (*n >= PAGE_SIZE) {
+@@ -465,6 +475,7 @@ static void affinity_domain_via_partition_result_parse(int returned_values,
+ 			int element_size, char *buf, size_t *last_element,
+ 			size_t *n, struct hv_gpci_request_buffer *arg)
+ {
++	int len;
+ 	size_t i = 0, j = 0;
+ 	size_t k, l, m;
+ 	uint16_t total_affinity_domain_ele, size_of_each_affinity_domain_ele;
+@@ -483,22 +494,49 @@ static void affinity_domain_via_partition_result_parse(int returned_values,
+ 	 */
+ 	while (i < returned_values) {
+ 		k = j;
+-		for (; k < j + element_size; k++)
+-			*n += sprintf(buf + *n,  "%02x", (u8)arg->bytes[k]);
+-		*n += sprintf(buf + *n,  "\n");
++		for (; k < j + element_size; k++) {
++			len = sysfs_emit_at(buf, *n, "%02x", (u8)arg->bytes[k]);
++			if (!len) {
++				*n = PAGE_SIZE;
++				return;
++			}
++			*n += len;
++		}
++		len = sysfs_emit_at(buf, *n, "\n");
++		if (!len) {
++			*n = PAGE_SIZE;
++			return;
++		}
++		*n += len;
+ 
+ 		total_affinity_domain_ele = (u8)arg->bytes[k - 2] << 8 | (u8)arg->bytes[k - 3];
+ 		size_of_each_affinity_domain_ele = (u8)arg->bytes[k] << 8 | (u8)arg->bytes[k - 1];
+ 
+ 		for (l = 0; l < total_affinity_domain_ele; l++) {
+ 			for (m = 0; m < size_of_each_affinity_domain_ele; m++) {
+-				*n += sprintf(buf + *n,  "%02x", (u8)arg->bytes[k]);
++				len = sysfs_emit_at(buf, *n, "%02x",
++						    (u8)arg->bytes[k]);
++				if (!len) {
++					*n = PAGE_SIZE;
++					return;
++				}
++				*n += len;
+ 				k++;
+ 			}
+-			*n += sprintf(buf + *n,  "\n");
++			len = sysfs_emit_at(buf, *n, "\n");
++			if (!len) {
++				*n = PAGE_SIZE;
++				return;
++			}
++			*n += len;
  		}
  
- 		if (!of_property_read_u32(node, "ibm,chip-id", &chipid))
--			sprintf(sgs[i].name, "%pOFn%d", node, chipid);
-+			sgs[i].name = kasprintf(GFP_KERNEL, "%pOFn%d",
-+						node, chipid);
- 		else
--			sprintf(sgs[i].name, "%pOFn", node);
-+			sgs[i].name = kasprintf(GFP_KERNEL, "%pOFn", node);
-+		if (!sgs[i].name)
-+			goto out_sgs_sgattrs;
- 
- 		sgs[i].sg.name = sgs[i].name;
- 		if (add_attr_group(ops, len, &sgs[i], sgid)) {
-@@ -225,6 +228,7 @@ void __init opal_sensor_groups_init(void)
- 
- out_sgs_sgattrs:
- 	while (--i >= 0) {
-+		kfree(sgs[i].name);
- 		kfree(sgs[i].sgattrs);
- 		kfree(sgs[i].sg.attrs);
+-		*n += sprintf(buf + *n,  "\n");
++		len = sysfs_emit_at(buf, *n, "\n");
++		if (!len) {
++			*n = PAGE_SIZE;
++			return;
++		}
++		*n += len;
+ 		i++;
+ 		j = k;
  	}
 -- 
 2.50.1 (Apple Git-155)
