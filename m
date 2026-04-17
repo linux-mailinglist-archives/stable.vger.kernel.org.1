@@ -1,211 +1,158 @@
-Return-Path: <stable+bounces-238412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238413-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cFZzNPLL4WkhyQAAu9opvQ
-	(envelope-from <stable+bounces-238412-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 07:58:10 +0200
+	id IBAiA9vM4WkhyQAAu9opvQ
+	(envelope-from <stable+bounces-238413-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 08:02:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62F8241735C
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 07:58:06 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E37B4173AB
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 08:01:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 46D2730844CA
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 05:58:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0478A307D21D
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 05:59:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25D4E364E92;
-	Fri, 17 Apr 2026 05:58:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7153431F9A2;
+	Fri, 17 Apr 2026 05:59:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="irVKG6xj"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UBV6wUj2"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB7341FECCD;
-	Fri, 17 Apr 2026 05:58:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D5E7327C0D
+	for <stable@vger.kernel.org>; Fri, 17 Apr 2026 05:59:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776405481; cv=none; b=UH4GRaRV9X4e5QbGQhKHzy3sfQrIVcTTDiN8UrqkRaeInNmxvzJoJt5ZF8gRgmZTdcHnZTCnXObAIjPuasnW9tabdYbCSYeyZgCk2IQ/xy7LJ5o+/2j2VXIAlJJxgJAfCSLYyfcwIH146TYnf2h5bNdHW7qKGNdQdMUbQdSQPPw=
+	t=1776405566; cv=none; b=aEARcy9PML1K/uZpEI305iSmNkbviSPfV1sRVmiwb9mbdAwTv/hF5omIkS1/ljtmHgHpUX+YXr4vkMzQtSm3afd2Yd6nZwxLBCXvuAa+xgxHnKMmcxfohvoTwfqG+WxYizUni1jypBNs/Nufex1j/t5dIBMkL7hHsVqtLBF+Juo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776405481; c=relaxed/simple;
-	bh=hGK+vneCLSiqI4CWEuSyFgSgVR0Ih6ayPzIGa/T9Qrs=;
-	h=Date:To:From:Subject:Message-Id; b=q+TF20UeelS6VMMdJfJ97OW1IaHV8EbpxsLYA5DVErTNxoC24gBtKrchi9xBrPNOarbumh3kPlOCoqQfqmTCJpSgjk8t/DxNCzDr6w2R7ynrCE86CoRyhwUqFZ2ftKaZuu9hBoiApf6F9CtyVoZ3y3zidDBh297AEyYF4WyN17I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=irVKG6xj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9315C19425;
-	Fri, 17 Apr 2026 05:58:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1776405481;
-	bh=hGK+vneCLSiqI4CWEuSyFgSgVR0Ih6ayPzIGa/T9Qrs=;
-	h=Date:To:From:Subject:From;
-	b=irVKG6xj4X6wdgD/g2XoQtraNXEVUGP5L7Mj9KUv8Jtonr++6znxL1rNvFFvOLEG+
-	 A249Tpz/DXSjHabqqVVitescKuiMQcYrRKkg3HDEIeHHHmZAHREbv9xe3rkUGWmIMJ
-	 aBYDMJgfmngyo7npBr7wwSqWcOKFGyPM09CYmI6c=
-Date: Thu, 16 Apr 2026 22:57:57 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,rppt@kernel.org,pratyush@kernel.org,pasha.tatashin@soleen.com,graf@amazon.com,leitao@debian.org,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + kho-fix-error-handling-in-kho_add_subtree.patch added to mm-unstable branch
-Message-Id: <20260417055800.B9315C19425@smtp.kernel.org>
+	s=arc-20240116; t=1776405566; c=relaxed/simple;
+	bh=y+pbNHaGI/qun7rM19bS2zigwvEUEuecNLoSu0RRjPg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=u12AERlbp2iPc8tdjjQq+GcKEU7pCuAr173v5OwZ8LKcWL2bUEhsxtVTaTBIV/teM4UmrqrSy06WVMbJRl2K8pu5IQ6Ktoxx4ExJvjTvj6tugYRBoh3nql8ENHK4U3C49aYSMCugICTQOzlhTtsk2wJED41M0NmMD41LZdTloyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UBV6wUj2; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1776405564; x=1807941564;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=y+pbNHaGI/qun7rM19bS2zigwvEUEuecNLoSu0RRjPg=;
+  b=UBV6wUj2Dhz22aQ4g0pOIExaSjkuZKAyxongBoWq3kxo2Hc/ORQoDJhs
+   Xxw72h7lgrsbBGh6xCCzCbnKsWskJLM0ai3lG4bptxqtKG6w0ldGMrAyo
+   x+qiQzG4UqigKqOwF94/xqzQxh966v0YnXWSagnWX2QAlAXwktphU1Yx5
+   f3HJ+yaYgNxtv2Wr9CrCdzLK9XltsYhKeMfEHrVMTUa0wP4jZKofmepMg
+   025BzZIRnBNqb619uionarG8P6zV1x9/9vRM6wONxscqQFTET7btNB/yc
+   RTcwTwvWxxrBEruXCSoU+/8sfyWv558v4Qgyz1gQ43t6s2z4UFK9rNMIx
+   w==;
+X-CSE-ConnectionGUID: IAl1pt60SvGNqNnPFv0yTA==
+X-CSE-MsgGUID: nOy+jeYWSkuSdFpwo6gRFA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11761"; a="102878726"
+X-IronPort-AV: E=Sophos;i="6.23,183,1770624000"; 
+   d="scan'208";a="102878726"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2026 22:59:23 -0700
+X-CSE-ConnectionGUID: 8rWlx4HhTCCSInfucycFzw==
+X-CSE-MsgGUID: wvs2048STTGDtgU0tW9d0Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,183,1770624000"; 
+   d="scan'208";a="230871795"
+Received: from dut6094bmgfrd.fm.intel.com ([10.80.55.31])
+  by orviesa008.jf.intel.com with ESMTP; 16 Apr 2026 22:59:23 -0700
+From: Jia Yao <jia.yao@intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: Jia Yao <jia.yao@intel.com>,
+	stable@vger.kernel.org,
+	Shuicheng Lin <shuicheng.lin@intel.com>,
+	Mathew Alwin <alwin.mathew@intel.com>,
+	Michal Mrozek <michal.mrozek@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Matthew Auld <matthew.auld@intel.com>
+Subject: [PATCH v8 0/2] drm/xe: Reject unsafe PAT indices for CPU cached memory
+Date: Fri, 17 Apr 2026 05:59:15 +0000
+Message-ID: <20260417055917.2027459-1-jia.yao@intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [3.84 / 15.00];
-	R_BAD_CTE_7BIT(3.50)[unknown];
-	BROKEN_CONTENT_TYPE(1.50)[];
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-238412-lists,stable=lfdr.de];
-	URIBL_MULTI_FAIL(0.00)[smtp.kernel.org:server fail,linux-foundation.org:server fail,soleen.com:server fail,tor.lore.kernel.org:server fail];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[intel.com:+];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	DMARC_NA(0.00)[linux-foundation.org];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-238413-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jia.yao@intel.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	NEURAL_HAM(-0.00)[-1.000];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 62F8241735C
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,intel.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8E37B4173AB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+This series strengthens PAT index validation to reject unsafe
+configurations for CPU cached memory, preventing cases where the GPU
+may bypass CPU caches and observe stale or sensitive data.
 
-The patch titled
-     Subject: kho: fix error handling in kho_add_subtree()
-has been added to the -mm mm-unstable branch.  Its filename is
-     kho-fix-error-handling-in-kho_add_subtree.patch
+Patch 1 enforces PAT validation for the madvise ioctl path, ensuring
+XE_COH_NONE cannot be used on CPU cached buffers, including CPU address
+mirror and userptr-backed memory.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/kho-fix-error-handling-in-kho_add_subtree.patch
+Patch 2 applies the same validation to vm_bind, treating
+DRM_XE_VM_BIND_FLAG_CPU_ADDR_MIRROR the same as MAP_USERPTR with respect
+to permissible PAT indices.
 
-This patch will later appear in the mm-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Together, these patches close a security gap affecting CPU cached
+memory access when incoherent PAT values are used.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+Changes since v10:
+- Just add the iGPU logic but keep dGPU logic
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+Changes since v7:
+- Rebased onto latest drm/xe tree, no functional changes.
 
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
+Changes since v6:
+- Corrected Fixes tags.
 
-------------------------------------------------------
-From: Breno Leitao <leitao@debian.org>
-Subject: kho: fix error handling in kho_add_subtree()
-Date: Fri, 10 Apr 2026 02:03:03 -0700
+Fixes: ada7486c5668 ("drm/xe: Implement madvise ioctl for xe")
+Fixes: b43e864af0d4 ("drm/xe/uapi: Add DRM_XE_VM_BIND_FLAG_CPU_ADDR_MIRROR")
+Cc: stable@vger.kernel.org # v6.18
+Cc: Shuicheng Lin <shuicheng.lin@intel.com>
+Cc: Mathew Alwin <alwin.mathew@intel.com>
+Cc: Michal Mrozek <michal.mrozek@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Matthew Auld <matthew.auld@intel.com>
 
-Fix two error handling issues in kho_add_subtree(), where it doesn't
-handle the error path correctly.
+Jia Yao (2):
+  drm/xe/uapi: Reject coh_none PAT index for CPU cached memory in
+    madvise
+  drm/xe: Reject coh_none PAT index for CPU_ADDR_MIRROR
 
-1. If fdt_setprop() fails after the subnode has been created, the
-   subnode is not removed. This leaves an incomplete node in the FDT
-   (missing "preserved-data" or "blob-size" properties).
+ drivers/gpu/drm/xe/xe_vm.c         |  2 +-
+ drivers/gpu/drm/xe/xe_vm_madvise.c | 45 ++++++++++++++++++++++++++++++
+ 2 files changed, 46 insertions(+), 1 deletion(-)
 
-2. The fdt_setprop() return value (an FDT error code) is stored
-   directly in err and returned to the caller, which expects -errno.
-
-Fix both by storing fdt_setprop() results in fdt_err, jumping to a new
-out_del_node label that removes the subnode on failure, and only setting
-err = 0 on the success path, otherwise returning -ENOMEM (instead of
-FDT_ERR_ errors that would come from fdt_setprop).
-
-No user-visible changes.  This patch fixes error handling in the KHO
-(Kexec HandOver) subsystem, which is used to preserve data across kexec
-reboots.  The fix only affects a rare failure path during kexec
-preparation — specifically when the kernel runs out of space in the
-Flattened Device Tree buffer while registering preserved memory regions.
-
-In the unlikely event that this error path was triggered, the old code
-would leave a malformed node in the device tree and return an incorrect
-error code to the calling subsystem, which could lead to confusing log
-messages or incorrect recovery decisions.  With this fix, the incomplete
-node is properly cleaned up and the appropriate errno value is propagated,
-this error code is not returned to the user.
-
-Link: https://lore.kernel.org/20260410-kho_fix_send-v2-1-1b4debf7ee08@debian.org
-Fixes: 3dc92c311498 ("kexec: add Kexec HandOver (KHO) generation helpers")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Suggested-by: Pratyush Yadav <pratyush@kernel.org>
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
-Cc: Alexander Graf <graf@amazon.com>
-Cc: Breno Leitao <leitao@debian.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- kernel/liveupdate/kexec_handover.c |   21 +++++++++++++--------
- 1 file changed, 13 insertions(+), 8 deletions(-)
-
---- a/kernel/liveupdate/kexec_handover.c~kho-fix-error-handling-in-kho_add_subtree
-+++ a/kernel/liveupdate/kexec_handover.c
-@@ -762,19 +762,24 @@ int kho_add_subtree(const char *name, vo
- 		goto out_pack;
- 	}
- 
--	err = fdt_setprop(root_fdt, off, KHO_SUB_TREE_PROP_NAME,
--			  &phys, sizeof(phys));
--	if (err < 0)
--		goto out_pack;
-+	fdt_err = fdt_setprop(root_fdt, off, KHO_SUB_TREE_PROP_NAME,
-+			      &phys, sizeof(phys));
-+	if (fdt_err < 0)
-+		goto out_del_node;
- 
--	err = fdt_setprop(root_fdt, off, KHO_SUB_TREE_SIZE_PROP_NAME,
--			  &size_u64, sizeof(size_u64));
--	if (err < 0)
--		goto out_pack;
-+	fdt_err = fdt_setprop(root_fdt, off, KHO_SUB_TREE_SIZE_PROP_NAME,
-+			      &size_u64, sizeof(size_u64));
-+	if (fdt_err < 0)
-+		goto out_del_node;
- 
- 	WARN_ON_ONCE(kho_debugfs_blob_add(&kho_out.dbg, name, blob,
- 					  size, false));
- 
-+	err = 0;
-+	goto out_pack;
-+
-+out_del_node:
-+	fdt_del_node(root_fdt, off);
- out_pack:
- 	fdt_pack(root_fdt);
- 
-_
-
-Patches currently in -mm which might be from leitao@debian.org are
-
-mm-blk-cgroup-fix-use-after-free-in-cgwb_release_workfn.patch
-mm-kmemleak-add-config_debug_kmemleak_verbose-build-option.patch
-kho-add-size-parameter-to-kho_add_subtree.patch
-kho-rename-fdt-parameter-to-blob-in-kho_add-remove_subtree.patch
-kho-persist-blob-size-in-kho-fdt.patch
-kho-fix-kho_in_debugfs_init-to-handle-non-fdt-blobs.patch
-kho-kexec-metadata-track-previous-kernel-chain.patch
-kho-document-kexec-metadata-tracking-feature.patch
-mm-vmstat-fix-vmstat_shepherd-double-scheduling-vmstat_update.patch
-kho-fix-error-handling-in-kho_add_subtree.patch
-mm-vmstat-spread-vmstat_update-requeue-across-the-stat-interval.patch
+-- 
+2.43.0
 
 
