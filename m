@@ -1,96 +1,91 @@
-Return-Path: <stable+bounces-238514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238515-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uGThGg+L4mlq7AAAu9opvQ
-	(envelope-from <stable+bounces-238514-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 21:33:35 +0200
+	id zeQMF2uM4mkC7QAAu9opvQ
+	(envelope-from <stable+bounces-238515-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 21:39:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 996FE41E4CD
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 21:33:30 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49E5F41E538
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 21:39:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 904FD300516C
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 19:33:27 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3127C300863C
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 19:39:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BB0431715C;
-	Fri, 17 Apr 2026 19:33:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A96ED302140;
+	Fri, 17 Apr 2026 19:39:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zfwpzdvd"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VDvWN9va"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD7AE2E2EEE
-	for <stable@vger.kernel.org>; Fri, 17 Apr 2026 19:33:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D0B018BC3B
+	for <stable@vger.kernel.org>; Fri, 17 Apr 2026 19:39:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776454405; cv=none; b=LGaTXEyQCSWyXpkHCA/KDzswARVkfrQCzAQNlV3rzCKk2VmO9MaAiYeObBVdE3QYKwVMW0qipgXUQb9Af9LYl8w1141CAn3Wr+H73oo2MjaBJHvTyE+t2NTheEsKx8xXoo+URtBI8iby3KC+3LhiOFPfC7O37Ub++BgVwd2euBM=
+	t=1776454757; cv=none; b=Qo71Y7NjC3/xe0YaDYxHwDjYknGQ8rAB3ySMhuheX/KcnXi0epDkS8rdfVYpk/J3MUfE7gntW8iGdWIPADlL0kVlcGsvPQqOPfpHw9/zDlRnxYDYSJNqFxSX9ghfRcnkdOfJxV0tITu+3ku3ycfNX3m3OLqjwKGQ0AtsQpf/sUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776454405; c=relaxed/simple;
-	bh=wSouMAxbC4qBTG56Li1QJbGu7+b7Rn1l0WqH5ApVDw4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rHQDE8fm5qgpW7SSLYeUvH4WD3c3VEQRKM0Vx7sd/IN1UCe8atVDTNOuf7ijOM0r9CQBJ15HT6qrwDSeashBkgrtfkbf9M/Vn40vkAZXih/Wqv62gmc9sW3/SDTegGYOk2qK1LlyRk3FXSoJ7Kj7W2S3oeTinwThX2pQsGATlQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zfwpzdvd; arc=none smtp.client-ip=209.85.221.42
+	s=arc-20240116; t=1776454757; c=relaxed/simple;
+	bh=NJ6/CANuGl3odwtb7ysxZy/MRZxYmQz1gQeHADHI/i4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tHHKvkkX+pPuycwZikfaabT5hSPiooUsnb5je92SBTD1vWoF4w6XyAD4k0SZXY15X1qRp5itOSGkNAofDT1oLDd/Xni9AxjIvUPiniaOy1xAUyfK4vMvoexExN9bpn0qDzBzXWpWBXPTGOZvcWCPQiUzCm56cmT8TVcvQa48doA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VDvWN9va; arc=none smtp.client-ip=209.85.128.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-43d77f6092eso716611f8f.2
-        for <stable@vger.kernel.org>; Fri, 17 Apr 2026 12:33:20 -0700 (PDT)
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-488ba6366a7so13706665e9.0
+        for <stable@vger.kernel.org>; Fri, 17 Apr 2026 12:39:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776454399; x=1777059199; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kQ0cthg0w4P6S7KugYGvtLaxhgxAoG60Ed2oJXFQlJE=;
-        b=Zfwpzdvdgew6YVKkzjQU10DXoYj8onpvnXmHUf9zsPbNCD59dL0gSkbUO1EZA6PnKo
-         WiZe864Tz9ApWMdKvIIXx1UniqinnJPZWN/rNWm9jm4CpQB7Tpx+KQvfTNoykE2Bm00H
-         1icNTvekACYfOrozraQSvZ6RcBRjQHNFqcbpN1GoklQr05pfG2WE0nmjpRjOJwr/4JJz
-         v9Jgr1JK/BlH6jeBxPcpCgy2VOWGlJ31e9vxKxnQbXzG32i8GwJdojA/LOEfQGQZwgTh
-         uh8BvvFU4IpFvfP6Dl8f2skhZMF8bess0QIfAu4CVF5PJfoth/zZ9WTBqZ0F8nPS6mkl
-         NLfQ==
+        d=gmail.com; s=20251104; t=1776454754; x=1777059554; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=T+guEPCIISTmp6PybkOSuXnNzgmVvlfkjaLWc09D5zw=;
+        b=VDvWN9vaZTGPFxrTfm7EVkvoF4Y3X/GVXZZuXNsfEbnR6r8ymhgUpDi6hwYjAZE6Kc
+         9lQhEhY+CgkHuGejfYTKfDOtsEEbrLVWuWB9yYQhFbh5tT3aezUcqAhiknhmYrGHvjGm
+         QQzHJrK457Rf1HANYgZ061i6mwpAxRYVPE2Ermk5k6DEhCMnNEZqOXZhAKxfreY4jTMc
+         ryi8HV+LTMFICIo4oNVieIDS0cTlZDd+ToHNOXtYBe8bw2XM/rJibQhV1GOyi5pPoVDI
+         nTwAApzwMwAtVhLk+Fhab88Jiimb5HLCkzxdALRXdx8ocDx0kRTcWq7w0RdBgvYyuOkT
+         OYdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776454399; x=1777059199;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=kQ0cthg0w4P6S7KugYGvtLaxhgxAoG60Ed2oJXFQlJE=;
-        b=UKXHrnWdGslXIr+5UOBWpgde6/WMEoAiNym4h/+AaCphvztQl46VUXtXJM0dQKCNFC
-         tsASKcwTezonxirnRjyZQVMYpYA3mcd/m43FXSUrP5DIZJpSGYwww3Ga9o61VxnfSJw8
-         vlpkLO+dpb+9hPjQhqxkb9dVppk6hp7cUcM9UcnYL1cI5wVvStNWsVdsIMOgfaMZBVAE
-         jcd9ZTN/7nn+99hh1E0okw+BsoNAyWvpo/uPk4GuFvIqiJMRrZBc9/E62jZhz5iCO80C
-         /46kzdJlXNyqZOpZg7r9sW1pqoyn9ROc8iWcOQtl54wBq8QRwDeyNW5GRNL3UqPZQnXB
-         tnxg==
-X-Forwarded-Encrypted: i=1; AFNElJ9VPYPglnE8+qkiKpmypkJsWZ+rJw1fi8vUKlcyuozKddKVQ42ZSdMUEV70OU33IOYtj2a1x4w=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz3oiSJbrK4jrzfzrWZDSWuRz1bX9PIsFzR3/mWem0RnXLAPPOd
-	VRFpA0ZFpWNdbBkb7LVlitZgorIfNtBmt6n+A++bJg4AeTqEK4ue/PA=
-X-Gm-Gg: AeBDieuoSxb+l7rWz2yasJeL/TcOd2mL4AYWzEaM2WcuUMon0yMqkPzcmsQZz2OlV/u
-	F5c1jvICr1xHQ2o7b3Po6Hj+IsmjmWzSYGQ6KZUw3J8QMvdTey7mHYRpFQWRPJqTMCDaFM04hP4
-	nnsaQ5dIF6o6BffwFCkrW8vfOmDDswI1ArTqTZXAqUFMvWButfkE1PxxOh4xMBPlkXVlEBy9c6P
-	p0QSGRMqh5oknhbn470+bXiI+Oj7NZA7J+noI16rbPRYyaQtAaN/VII7XSdHT2SsjXYnkJaYmgX
-	jlF8p77ZzYyExOIw7YIuo98f7sgFbrO1EdYZusCZ11gwowyRoE4UEFlm1Cs/VDWbjjrXwUAMgl/
-	Z4uP99BmiQ2o1uZrN02QGTw4s9pu2q1YffyiWszdq0B3G0VWWZy5BYqi7aIKSEjNRHgnRVMBvFZ
-	aK+/XFJvYfUms70904
-X-Received: by 2002:a05:6000:1446:b0:43d:73d4:b2f with SMTP id ffacd0b85a97d-43fe3e11634mr6425771f8f.39.1776454399246;
-        Fri, 17 Apr 2026 12:33:19 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1776454754; x=1777059554;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=T+guEPCIISTmp6PybkOSuXnNzgmVvlfkjaLWc09D5zw=;
+        b=Fu9ra29hDRkssl1oygbZonR+5YPoEvFf4Lk4THtpurcJICrSTa5bCPVpR7rbHc/H9z
+         KfbCrb5NbZX6NI+ZmglmOTzq3pFeEHypT4zWPlEvAGzjArkR5Ap3tK+s/P5t0C3bzYrt
+         td44BXvX4hrotVESkSuzAe4WGxrzShnh0fsV+/+dMisbq/U+Bl73FfDHTIg5+i1HwhDj
+         2hvY0uGvm6WuMz4c+3hBhPXX4XbaAv/eMMByROVGD5bgQiDAzFbRzxA+v3Jzz1uWH0P9
+         NnIBJYSPF3yF9n5UF3nseJc1gNTo4OGoSzg7nzu83ZvPp0N3relMSdPgjOV0CqtzMy6l
+         m7bQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9qF5vOHuBUdXtWZWisOo2pB7AOpGKZIZr1unwELPCSTm9lcRvmC6QYFzTdHlq0aQ15fHf2EC0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwuBidZIdFCLVP3r4GNOMjiIspplmngNZDX8wPevEsnrZB+0z51
+	UI8iD5Pjl8wQm3nMwsXuXqxlnlnpzGvARUZffonHevcmNJN2bwp4ahI=
+X-Gm-Gg: AeBDiesCW0jkrisxOMcrYmnrv49g79wRJnad8HRkVVVMvgdM+wu6It1v80nunoKSEUn
+	+lYHMBXdwJwa5/dre4nbUJ1Sunc4kMxxkzSrD2rWdwdYwuShmy1vNM5Lhe4TpghX2aIHSX/bKC7
+	sciVIReMQzz6rQBVkT1SbTxG3qybxDhwaVaOTuQqogqpU0ocnNOK2k6pX976f+G7vLwhAuaPabu
+	Ldu0ndCHoj3IkRwSX+N65cVw/S+tF6ScLOfkItUKOL2vk2vij/BfWMYEFrmDaGnJa0zigfGHmNB
+	QoMKV09n/Z5JjJDuILQYJPstjHV2up55yd0/ltBM57bKEn5mPEkGnW0ZiZBOgSfJuDpxcX/acao
+	I2GVjeBuHqPEUDEQ05N4RdvE478d3ejIH8dYJYu8cAkNkWn4cGX0SuRLPlyI4yKhP1/9D/tA4JL
+	zZOW4krdgquMDuVAvh
+X-Received: by 2002:a05:600c:1da1:b0:488:f453:b976 with SMTP id 5b1f17b1804b1-488fb7844c5mr70072535e9.27.1776454754460;
+        Fri, 17 Apr 2026 12:39:14 -0700 (PDT)
 Received: from debian.. ([2001:41d0:303:db6b::])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43fe4e4daf2sm6341754f8f.33.2026.04.17.12.33.18
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488fc140c82sm62834555e9.12.2026.04.17.12.39.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Apr 2026 12:33:18 -0700 (PDT)
+        Fri, 17 Apr 2026 12:39:13 -0700 (PDT)
 From: Tristan Madani <tristmd@gmail.com>
 X-Google-Original-From: Tristan Madani <tristan@talencesecurity.com>
-To: Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <smfrench@gmail.com>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Tom Talpey <tom@talpey.com>,
-	linux-cifs@vger.kernel.org,
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	syzbot+217eb327242d08197efb@syzkaller.appspotmail.com,
 	stable@vger.kernel.org,
 	Tristan Madani <tristan@talencesecurity.com>
-Subject: [PATCH v2] ksmbd: fix out-of-bounds write in smb2_get_ea() EA alignment
-Date: Fri, 17 Apr 2026 19:33:17 +0000
-Message-ID: <20260417193317.315698-1-tristan@talencesecurity.com>
+Subject: [PATCH] hfsplus: zero-initialize data buffer in hfs_bnode_read_u16 and hfs_bnode_read_u8
+Date: Fri, 17 Apr 2026 19:39:13 +0000
+Message-ID: <20260417193913.338982-1-tristan@talencesecurity.com>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260417192036.268452-1-tristan@talencesecurity.com>
-References: <20260417192036.268452-1-tristan@talencesecurity.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -98,80 +93,81 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-238514-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[kernel.org,gmail.com];
 	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[tristmd@gmail.com,stable@vger.kernel.org];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[talencesecurity.com:mid,talencesecurity.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 996FE41E4CD
+	TAGGED_FROM(0.00)[bounces-238515-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tristmd@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable,217eb327242d08197efb];
+	NEURAL_HAM(-0.00)[-0.938];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,syzkaller.appspot.com:url]
+X-Rspamd-Queue-Id: 49E5F41E538
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-smb2_get_ea() applies 4-byte alignment padding via memset() after
-writing each EA entry. The bounds check on buf_free_len is performed
-before the value memcpy, but the alignment memset fires unconditionally
-afterward with no check on remaining space.
+hfs_bnode_read_u16() and hfs_bnode_read_u8() declare local data
+variables without initialization, then pass them to hfs_bnode_read().
 
-When the EA value exactly fills the remaining buffer (buf_free_len == 0
-after value subtraction), the alignment memset writes 1-3 NUL bytes
-past the buf_free_len boundary. In compound requests where the response
-buffer is shared across commands, the first command (e.g., READ) can
-consume most of the buffer, leaving a tight remainder for the QUERY_INFO
-EA response. The alignment memset then overwrites past the physical
-kvmalloc allocation into adjacent kernel heap memory.
+When hfs_bnode_read() returns early due to an invalid offset on a
+corrupted HFS+ image (the is_bnode_offset_valid() check), the data
+buffer is never written and the functions return uninitialized stack
+data.  KMSAN flags this as a use of uninitialized memory.
 
-Add a bounds check before the alignment memset to ensure buf_free_len
-can accommodate the padding bytes.
+Zero-initialize both data variables so that an early return from
+hfs_bnode_read() produces a deterministic zero value instead of
+stack garbage.
 
-This is the same bug pattern fixed by commit beef2634f81f ("ksmbd: fix
-potencial OOB in get_file_all_info() for compound requests") and
-commit fda9522ed6af ("ksmbd: fix OOB write in QUERY_INFO for compound
-requests"), both of which added bounds checks before unconditional
-writes in QUERY_INFO response handlers.
-
+Reported-by: syzbot+217eb327242d08197efb@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=217eb327242d08197efb
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
-Fixes: e2b76ab8b5c9 ("ksmbd: add support for read compound")
 Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
 ---
- fs/smb/server/smb2pdu.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/hfsplus/bnode.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index ee32e61b6d3c7..407173d2175af 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -4821,6 +4821,8 @@ static int smb2_get_ea(struct ksmbd_work *work, struct ksmbd_file *fp,
- 		/* align next xattr entry at 4 byte bundary */
- 		alignment_bytes = ((next_offset + 3) & ~3) - next_offset;
- 		if (alignment_bytes) {
-+			if (buf_free_len < alignment_bytes)
-+				break;
- 			memset(ptr, '\0', alignment_bytes);
- 			ptr += alignment_bytes;
- 			next_offset += alignment_bytes;
+diff --git a/fs/hfsplus/bnode.c b/fs/hfsplus/bnode.c
+index 14f4995588ff..4404cd35c192 100644
+--- a/fs/hfsplus/bnode.c
++++ b/fs/hfsplus/bnode.c
+@@ -96,7 +96,7 @@ void hfs_bnode_read(struct hfs_bnode *node, void *buf, int off, int len)
+ 
+ u16 hfs_bnode_read_u16(struct hfs_bnode *node, int off)
+ {
+-	__be16 data;
++	__be16 data = 0;
+ 	/* TODO: optimize later... */
+ 	hfs_bnode_read(node, &data, off, 2);
+ 	return be16_to_cpu(data);
+@@ -104,7 +104,7 @@ u16 hfs_bnode_read_u16(struct hfs_bnode *node, int off)
+ 
+ u8 hfs_bnode_read_u8(struct hfs_bnode *node, int off)
+ {
+-	u8 data;
++	u8 data = 0;
+ 	/* TODO: optimize later... */
+ 	hfs_bnode_read(node, &data, off, 1);
+ 	return data;
 -- 
 2.47.3
 
