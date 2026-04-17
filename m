@@ -1,160 +1,175 @@
-Return-Path: <stable+bounces-238503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238504-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AATHOaFX4mm25AAAu9opvQ
-	(envelope-from <stable+bounces-238503-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 17:54:09 +0200
+	id OFfJLmJX4mm25AAAu9opvQ
+	(envelope-from <stable+bounces-238504-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 17:53:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B46141CD57
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 17:54:05 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F318041CD2F
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 17:53:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6DED2306B129
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 15:47:12 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id CA41930157D9
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 15:52:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 691E733CEB5;
-	Fri, 17 Apr 2026 15:47:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 941A4341660;
+	Fri, 17 Apr 2026 15:52:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dZhzPPzE"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Modl/xGZ";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="YXlFlsfA";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Ffs5QNuk";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="ORaJ3PFK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 251D233120C
-	for <stable@vger.kernel.org>; Fri, 17 Apr 2026 15:47:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32C6933D4EE
+	for <stable@vger.kernel.org>; Fri, 17 Apr 2026 15:52:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776440829; cv=none; b=tuaFA6xEH5DLYcSzll7kPWQFch2+O2ESchbK7LxrEcGnGdmQ1O624hA4aXAKJgttPZNPrc0c/LScE7RRcrYHJtWFAbq71tpNXTecrVuuYIeRBpOmEEonsrG6xwitAj9zZOGf+jQy6SI7smBbWkIAE9KgZNA1goeoM3qeIwDItz4=
+	t=1776441176; cv=none; b=hVfPsP7RfJMXlzOBJwsHNO/zZN7MvL3d9jbQGdYaU+Uy45AWXLw/DgxQqBOSvU6wHgvx2sKAA+ItZWc+12DYQ+SxCRQlmXsEnq6rSNxUlXKZLN7TW4hIYr8a0z/frcySyI/PADeMzlB944QDIoSr6UNrGdfjn8NtMfmEBpE8lAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776440829; c=relaxed/simple;
-	bh=OOBXkL6e5lGReKsh2G2rUacRN5BRmdQ6UJPWCdKo7rQ=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=OJRbyUcHXyrLRKhyOGLfWcpHJRjEu9cXqC7WneBS9HtZrJpRzDyCu+X+T9fHXIRhx7UZ0Ry9n8MPRXoTT6RNuYuV5Ii1IBHlhd9hKZlfC/XdbFJtdACBHPBwspdpE4egjoUP5wKI1JufRRM0dqwf+s0xA8xRbX9UGdPbofEsbGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tjmercier.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dZhzPPzE; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tjmercier.bounces.google.com
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-35fbaada0caso842154a91.3
-        for <stable@vger.kernel.org>; Fri, 17 Apr 2026 08:47:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776440827; x=1777045627; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Sn0iymoZMFrhHdIio6IfCKaXrnb3ooLaXVVViF/0l44=;
-        b=dZhzPPzEJ9NnvIqmSfPnPeqZ1ROxSUJ0azZID43OjFWVMqsWrTQwil1iH+rkmttPYD
-         SMhJX0CXjrMAQvnlfXjD8rfjnPJJdytHGQIfFj7BmABJe4SLYJpAOEDS+9mrFN2L9XLA
-         yDEEF45lKyb/GgY/hIrNl+BR+SowzPK8RmcDW4JgkabiFzcY9h4laxjbojrqLSU70GDo
-         5KfjxCmlodMd7B15rMZrEDQ08NZDxxd46scO5BmJeLPC8krMLydV/rqXZ1lJwvMAk5t9
-         G3mD0EEjCKmz8OcG9o1dTFMffhtpC9U80ejM0QuVGK7NZShlrANgl2ln4hQjq6z+5MN/
-         4U+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776440827; x=1777045627;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Sn0iymoZMFrhHdIio6IfCKaXrnb3ooLaXVVViF/0l44=;
-        b=fW3lhvEWydNN4CMWaWnYMi/pydmARvxUm+k8C+4P0E9vr9hUxJ4WiQsmTGyZfzD0oo
-         wOEZEpktIe8nUmCtzt7FMSgvt8Sgl6D2xQ96Rdv8ZkmMI6uBODgpoPaocPV76T4Xi7zG
-         hvvLndNAi+h1Jh9cv2kFgXG2BUd7CIzSC64o0t9+LhD9sY3EFsnnMf/u9hTD/mOsxSR9
-         tmiECVqYitbRzjlUN70FqfqGZv9jItCW05uX1uLd0jGa2BBEMTBYttCgf111p/Znm3gR
-         7hnP3Q3u8jKUWig68K2NOsath4eDKMYgDjd4ZuOpxDWgAvgYZOCdMUpNN4yC+teicmHO
-         +9gw==
-X-Forwarded-Encrypted: i=1; AFNElJ/i8ZIpTqriZ/Y9+yFuxvLSeDyvjS2lLFhUUPauvTaIFtP0zosdPpwb65//hHV3hs985QWUIKA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxV0KQWfI7mFvs6cqG0YphUgZVKpv7o+Q5NUPX5TWrqVvfAEuU+
-	fLhvp/QVEv+UGvulJytAFYsT30j8LFTsasWUZk/HYfYHY8XJ9YKIG3eLE9MduQwgZhyrDDV78FN
-	aXopfdjddkeJh7569hA==
-X-Received: from pjzi1.prod.google.com ([2002:a17:90a:ee81:b0:35e:5853:1ca2])
- (user=tjmercier job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:5543:b0:35f:bddd:3860 with SMTP id 98e67ed59e1d1-361403b18f5mr3679233a91.6.1776440827092;
- Fri, 17 Apr 2026 08:47:07 -0700 (PDT)
-Date: Fri, 17 Apr 2026 08:47:02 -0700
+	s=arc-20240116; t=1776441176; c=relaxed/simple;
+	bh=zQeSgiIdbW4m0KVnphG7HpGoh6s1gW1rUDwDkNXvR+g=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=XvlmIbgS5FwWJ18IbDk3bp9RRMHckZGmJ7QlAlhsBZsIG4dCvlGsvWkIhlk8PlFgLq/wZQReDT3uMCuMem7fEM+1/A64xeSoWsOPpUB2MgYnz6LgbyStKSsq3tXMz7phgG2oIva5vXiCcG63VU+UPW2+uF5QGkWww3eouSdckdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Modl/xGZ; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=YXlFlsfA; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Ffs5QNuk; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=ORaJ3PFK; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 4ECBA6A862;
+	Fri, 17 Apr 2026 15:52:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1776441173; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=R7ozrQLMSBHe+aF6adsk58qDbKLhtOFv7Jy5N+7BmHc=;
+	b=Modl/xGZtZmrYMarsnuTPW1fAIR899d9CA+bedGEBXGnRC7wiQy3fft+B5sLY+7lf6/vLm
+	BdVYGtI97XcMhsas0KWBTWpdLn3bpvYAex6eTjNr6yD60hMbPI1DSBt1SqfFuP2keSdqYn
+	UhKaDX+P9D+a7w7NxxwSslImBwHO0kQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1776441173;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=R7ozrQLMSBHe+aF6adsk58qDbKLhtOFv7Jy5N+7BmHc=;
+	b=YXlFlsfAhtSOFYnVzMWc2cpDgTuPcpM5v0b9J05ULhkDVcPpnnrQb5Y2ORxYFzhmQz9Ktp
+	4dLWDjqJ5fKp9sAg==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Ffs5QNuk;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ORaJ3PFK
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1776441169; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=R7ozrQLMSBHe+aF6adsk58qDbKLhtOFv7Jy5N+7BmHc=;
+	b=Ffs5QNukHMKrYhB1i3mYVgIwNkDoyhDLQ6NPqvDtBiUIC20W5YfqLe4ZjL3dCry241coa9
+	Q4yJXxOlaTZo8K3wBAsP42blfaoLurKzqb10SBbTKvtyLtAxuF2t9yvelo4FnbVF5ESizx
+	Q8Z0c8IfFieE83dyHBw3Sfk1HKjlfuw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1776441169;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=R7ozrQLMSBHe+aF6adsk58qDbKLhtOFv7Jy5N+7BmHc=;
+	b=ORaJ3PFKkaUoAV84X1ituqq/YILgb5NcshQKDIKiEtjaAhOJydQoeWC8akhPs9f3NYevyL
+	BP653vjAEmSBqJDw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 11F6D593AE;
+	Fri, 17 Apr 2026 15:52:49 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id y/UnA1FX4mlzeAAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Fri, 17 Apr 2026 15:52:49 +0000
+Date: Fri, 17 Apr 2026 17:52:48 +0200
+Message-ID: <87pl3xd1nz.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: =?ISO-8859-1?Q?C=E1ssio?= Gabriel <cassiogabrielcontato@gmail.com>
+Cc: Takashi Iwai <tiwai@suse.com>,
+	Daniel Mack <zonque@gmail.com>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Daniel Mack <daniel@caiaq.de>,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] ALSA: caiaq: Fix control_put() result and cache rollback
+In-Reply-To: <20260417-caiaq-control-put-v1-1-c37826e92447@gmail.com>
+References: <20260417-caiaq-control-put-v1-1-c37826e92447@gmail.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/30.2 Mule/6.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.54.0.rc1.513.gad8abe7a5a-goog
-Message-ID: <20260417154704.1186803-1-tjmercier@google.com>
-Subject: [PATCH] HID: playstation: Clamp num_touch_reports
-From: "T.J. Mercier" <tjmercier@google.com>
-To: roderick.colenbrander@sony.com, linux-input@vger.kernel.org, 
-	Jiri Kosina <jikos@kernel.org>, Benjamin Tissoires <bentiss@kernel.org>
-Cc: "T.J. Mercier" <tjmercier@google.com>, stable@vger.kernel.org, 
-	Xingyu Jin <xingyuj@google.com>, Roderick Colenbrander <roderick@gaikai.com>, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+X-Spam-Flag: NO
+X-Spam-Score: -3.51
+X-Spam-Level: 
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	MV_CASE(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-238503-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[suse.com,gmail.com,perex.cz,caiaq.de,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-238504-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tjmercier@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FROM_NEQ_ENVFROM(0.00)[tiwai@suse.de,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 7B46141CD57
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,suse.de:dkim,suse.de:mid]
+X-Rspamd-Queue-Id: F318041CD2F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-A device would never lie about the number of touch reports would it?
+On Fri, 17 Apr 2026 15:41:33 +0200,
+Cássio Gabriel wrote:
+> 
+> control_put() always returns 1 and updates cdev->control_state[]
+> before sending the USB command. It also ignores transport errors
+> from usb_bulk_msg(), snd_usb_caiaq_send_command(), and
+> snd_usb_caiaq_send_command_bank().
+> 
+> That breaks the ALSA .put() contract and can leave control_get()
+> reporting a cached value the device never accepted.
+> 
+> Return 0 for unchanged values, propagate transport failures,
+> and restore the cached byte when the write fails.
+> 
+> Fixes: 8e3cd08ed8e59 ("[ALSA] caiaq - add control API and more input features")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
-If it does the loop in dualshock4_parse_report will read off the end of
-the touch_reports array, up to about 2 KiB for the maximum number of 256
-loop iteraions. The data that is read is emitted via evdev if the
-DS4_TOUCH_POINT_INACTIVE bit happens to be set. Protect against this by
-clamping the num_touch_reports value provided by the device to the
-maximum size of the touch_reports array.
+Applied now.  Thanks.
 
-Fixes: 752038248808 ("HID: playstation: add DualShock4 touchpad support.")
-Cc: stable@vger.kernel.org
-Reported-by: Xingyu Jin <xingyuj@google.com>
-Signed-off-by: T.J. Mercier <tjmercier@google.com>
----
- drivers/hid/hid-playstation.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hid/hid-playstation.c b/drivers/hid/hid-playstation.c
-index 3c0db8f93c82..8d06ddff356a 100644
---- a/drivers/hid/hid-playstation.c
-+++ b/drivers/hid/hid-playstation.c
-@@ -2378,7 +2378,8 @@ static int dualshock4_parse_report(struct ps_device *ps_dev, struct hid_report *
- 			(struct dualshock4_input_report_usb *)data;
- 
- 		ds4_report = &usb->common;
--		num_touch_reports = usb->num_touch_reports;
-+		num_touch_reports = min_t(u8, usb->num_touch_reports,
-+					  ARRAY_SIZE(usb->touch_reports));
- 		touch_reports = usb->touch_reports;
- 	} else if (hdev->bus == BUS_BLUETOOTH && report->id == DS4_INPUT_REPORT_BT &&
- 		   size == DS4_INPUT_REPORT_BT_SIZE) {
-@@ -2392,7 +2393,8 @@ static int dualshock4_parse_report(struct ps_device *ps_dev, struct hid_report *
- 		}
- 
- 		ds4_report = &bt->common;
--		num_touch_reports = bt->num_touch_reports;
-+		num_touch_reports = min_t(u8, bt->num_touch_reports,
-+					  ARRAY_SIZE(bt->touch_reports));
- 		touch_reports = bt->touch_reports;
- 	} else if (hdev->bus == BUS_BLUETOOTH &&
- 		   report->id == DS4_INPUT_REPORT_BT_MINIMAL &&
-
-base-commit: 3cd8b194bf3428dfa53120fee47e827a7c495815
--- 
-2.54.0.rc1.513.gad8abe7a5a-goog
-
+Takashi
 
