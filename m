@@ -1,182 +1,208 @@
-Return-Path: <stable+bounces-238456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238457-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8KZ8Mozs4WmKzgAAu9opvQ
-	(envelope-from <stable+bounces-238456-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 10:17:16 +0200
+	id gEmOKizt4WmKzgAAu9opvQ
+	(envelope-from <stable+bounces-238457-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 10:19:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A3014187B2
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 10:17:15 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 892A64188B9
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 10:19:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C29D53002F52
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 08:11:15 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 97927305EB27
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 08:19:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F29339B974;
-	Fri, 17 Apr 2026 08:11:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DFEE3A9636;
+	Fri, 17 Apr 2026 08:19:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JcRClTFE";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="YSbI1Sox"
+	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="a9wdqAzv"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from n169-110.mail.139.com (n169-110.mail.139.com [120.232.169.110])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67E70396D10
-	for <stable@vger.kernel.org>; Fri, 17 Apr 2026 08:11:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4F4631F9A2;
+	Fri, 17 Apr 2026 08:19:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.110
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776413474; cv=none; b=dyznZDv25a3Vo2z6Z6yC01yQBzJpRbYj7xfdgAGMsA9iHw7MKFj12WKPCapQAr1y7hOxbX1M4p5WQl9xjC/7ty4hjk+iB+m8hlYxhE4Cxcv/xRbKwHkm9EZOJYYVYPwepUXLeqaXfxD0FMf0Pr62Cc6GGgks5Y2XrCpf+BTbkQ0=
+	t=1776413954; cv=none; b=c64xTTGEIczTUaEaSku7EOSA9ZRNqr42O87z5ZLZ2ME+pj+DWh1ZR5rZLG2agd7TvFAoV5blxtcM8Q88VZcsrBhLxm8PszK3Te77/OJQSo+7jAyujBQTOvFGzTb+mvwduaxmBl+ayZ365zf1m08oAS14Cd5Aua7I6tXHv+QCnGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776413474; c=relaxed/simple;
-	bh=KaCpviZPSmkiF4jmKYcWq3DzQZ2+p6j12ROyja2bfaA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MxnxowRwJZ/foH6p2mtMu/1jEzSaqNAypulsYjvo0P4c0TFFocVvOV435Dnkdf1Jk9nChtWXP8iActT6sGT9Zleh07rFWr8PvhgYwhfRYHa7M8v0NffGcFryMMurz/CKh4ol93mMbrtomjPGKqEgTY1o/phsjRTVp+rtY1IVRSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JcRClTFE; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=YSbI1Sox; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1776413471;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KQAofqZYzRAetGSFBCfd2UZ3jU4AYAQOO1zS3D2btb4=;
-	b=JcRClTFEVfGmISpUkkZQLKl2p7UTvg81kSJsLWKWszcVUvPTtdbJLuPbeCJbfw/04DD1Wy
-	RO/tubgzPxZO2nSVHMWxO2HDaMq+HfIBhVpWRpazewnKrcOqwm2b+n1zwWHdM4fmLzDE51
-	Gh8420KxQXxlAdC0paDueglNCCNCtGo=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-152-0OZC8QbOMruNQcNlU-SFLQ-1; Fri, 17 Apr 2026 04:11:10 -0400
-X-MC-Unique: 0OZC8QbOMruNQcNlU-SFLQ-1
-X-Mimecast-MFC-AGG-ID: 0OZC8QbOMruNQcNlU-SFLQ_1776413469
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-43d121c4271so275027f8f.3
-        for <stable@vger.kernel.org>; Fri, 17 Apr 2026 01:11:10 -0700 (PDT)
+	s=arc-20240116; t=1776413954; c=relaxed/simple;
+	bh=QbLpK6Wf1dh+6c+9JcRpmGxBpKpzCVk9xfGNjuzc8Lo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=OufEsmBcCThG/qyijiUuYtVdYW2JGkpsoCqaaBwzR/21M6MrIYSTvfDrcFMf4gQ0f29lHgg9irNcmePfk7t+HsmD18sC9aEv9fQMSkjpllIl/Told7n/5Vdkpfg4VKgtBjBO7bbHehtMpP0V4N7AG38lRIXH0i6WMQv7xBtMyBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=a9wdqAzv; arc=none smtp.client-ip=120.232.169.110
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1776413469; x=1777018269; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=KQAofqZYzRAetGSFBCfd2UZ3jU4AYAQOO1zS3D2btb4=;
-        b=YSbI1SoxcM/EUyQYLWXfLfXB8dM2Yv0jrh9h3pUDwxDwagq1HIEBpXuMbkj74tb92o
-         5sNDmFiXD4ZBX3bT8qfpOLNuvqeOBLHJvjZseAP8FCA/8FH3VEpCthzeF9H6brtFQNAS
-         1xP80HXE09j36/vLkerK4Wi5p6tbOKs+dB09U8pgZUyjoLBDx+BJD35zPKOpG9g8yAt5
-         dH11r+Xq+reLAwXd60IKsXafHDR8z/5xCpxftxL+kFDctO0/EwULR5QLOrmy1FQDQBQ3
-         l9xRuVTXOffRm6+hOPCr58TmVX0X0pfmKrbV0p2LNG50mop6lQeZrTZrC1oAsEmaKp6C
-         BzNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776413469; x=1777018269;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KQAofqZYzRAetGSFBCfd2UZ3jU4AYAQOO1zS3D2btb4=;
-        b=INEFXOMLU617d/ITvLNRSns+uaTO4tkZmrdL8VPRGX+lqs2s4ZCP+Fu61NOyMYwyem
-         9jhIBj5reeZGrNWy8SFH6nZMNud7fuzjaDSm1Yk6bhGV1RHi54iUVfKwfK34hdvopN80
-         8DU+ozCBx7/8M7UGgk1rzXbUjzfxcgZi4fID6GxD8rKBWNUDogUFKWkg3jAF9xE6qXMe
-         mWWYqBgtzfacaBRtbgobzgRrzXbTw3kmoSXAc+Km9zDvke5rwpJi50/X3Olq7RIfkKSh
-         L5q+qiVuL8iE+uhWS5hJ0athXZbWwn+XdyF+uQYoG17MpJG0YmOLY9g94bNCcQS5Mhaj
-         BnoQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/9T82CbL1BZnvIiCWmpx9+TvIgIWOpxwQXT/VIscrqU16SesdtVO1fxQGRPJGY+Z6SpsgZGS4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyl/yJshJcU1kKymu3pWbA4pvtQ5fvm2G+uqRmBbKq/bHa/I9rn
-	pRkppJtX2rVKmmFYiJV3r35yrdBkPWbFRKMeelA8N3wu9PSVTqo0YcgxbhLQhAgNFRdCMztA6iO
-	be+2hNpNIkFaThY23ACDIkhOjL18tFc/iU1D0lNSuwhEhWstlXlS1DWBsYw==
-X-Gm-Gg: AeBDiestzDwBFo86Z8Fsl+1EKdukVIQo2AHDvS95J1PdU5TJLR/sA7EaKVZX7hGDprY
-	xz37dvm2p7zhJAesgSM3hHsK6fR8gyIN1fSVzcAY2tjgewD8QJzpUbkQZtF4kljnYV2Hi/UQFRW
-	IKxz81+zBwn2yAmaBPcHL0cJm8NCg9PzT0Xgl52h7fOczIXqws+qbEsKaTnSD40r2Fr2UaWFHZU
-	AILyI+tYMDX0fcD50z6ndl8o/m6UoXtR8AzOsC/NWpqvIdDOlW9qzicFuEzpkBSoRqgF1om2rAZ
-	AzMiJaOV5bhGbLPHdUN7cUrAnpv5GKX8S0jtJnO23Wkn+tPvpgb8BJOSZ55K+GpBQEQpz+tNit1
-	gc9PdhZJgruohFGd6kP3KXmcyTcqK6yYq0ZFuBF+Ud6FqwKSNmRzRW8FYEjCiicDsFuuELK/kbs
-	EyzsScLg==
-X-Received: by 2002:a05:6000:25c4:b0:43c:f52b:8003 with SMTP id ffacd0b85a97d-43fe3dfd332mr2356261f8f.36.1776413468907;
-        Fri, 17 Apr 2026 01:11:08 -0700 (PDT)
-X-Received: by 2002:a05:6000:25c4:b0:43c:f52b:8003 with SMTP id ffacd0b85a97d-43fe3dfd332mr2356185f8f.36.1776413468277;
-        Fri, 17 Apr 2026 01:11:08 -0700 (PDT)
-Received: from sgarzare-redhat (host-87-16-204-83.retail.telecomitalia.it. [87.16.204.83])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43fe4e3a381sm2920727f8f.21.2026.04.17.01.11.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Apr 2026 01:11:07 -0700 (PDT)
-Date: Fri, 17 Apr 2026 10:11:00 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Dexuan Cui <decui@microsoft.com>
-Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org, 
-	longli@microsoft.com, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, horms@kernel.org, niuxuewei.nxw@antgroup.com, 
-	linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, Ben Hillis <Ben.Hillis@microsoft.com>, 
-	Mitchell Levy <levymitchell0@gmail.com>
-Subject: Re: [PATCH net v2] hv_sock: Report EOF instead of -EIO for FIN
-Message-ID: <aeHor6IpXUDyMtnW@sgarzare-redhat>
-References: <20260416191433.840637-1-decui@microsoft.com>
+	d=139.com; s=dkim; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=a9wdqAzvmfD+h1ADj0/cwLbu9NXym1xRap+5BYwGq47X3KrxfNPZiwLmYyeEJdm6UFlTZEfC29MX8
+	 EeyBE2jBfn0GQM8a1bIGIo0FQzYKi/Ro8QJYBiKIKUwoiHLA9ord3s8Jl1lVuKeV0UHLBRirsjYYwx
+	 WNRTlGa0aeJx+EZY=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM:                                                                                        
+X-RM-SPAM-FLAG:00000000
+Received:from NTT-kernel-dev (unknown[60.247.85.88])
+	by rmsmtp-lg-appmail-06-12084 (RichMail) with SMTP id 2f3469e1ecee885-018a3;
+	Fri, 17 Apr 2026 16:18:56 +0800 (CST)
+X-RM-TRANSID:2f3469e1ecee885-018a3
+From: Li hongliang <1468888505@139.com>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org,
+	pablo@netfilter.org
+Cc: patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	kadlec@netfilter.org,
+	fw@strlen.de,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org,
+	giki.shergill@proton.me
+Subject: [PATCH 6.6.y] nf_tables: nft_dynset: fix possible stateful expression memleak in error path
+Date: Fri, 17 Apr 2026 16:18:55 +0800
+Message-Id: <20260417081855.3253507-1-1468888505@139.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20260416191433.840637-1-decui@microsoft.com>
-X-Spamd-Result: default: False [-1.66 / 15.00];
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [0.54 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	R_DKIM_REJECT(1.00)[139.com:s=dkim];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-238456-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[microsoft.com,kernel.org,davemloft.net,google.com,redhat.com,antgroup.com,vger.kernel.org,lists.linux.dev,gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-238457-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	DKIM_TRACE(0.00)[redhat.com:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sgarzare@redhat.com,stable@vger.kernel.org];
+	DMARC_NA(0.00)[139.com];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_FROM(0.00)[139.com];
+	FROM_NEQ_ENVFROM(0.00)[1468888505@139.com,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[139.com:-];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9A3014187B2
+	NEURAL_HAM(-0.00)[-0.019];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,proton.me:email,139.com:mid,139.com:email,strlen.de:email]
+X-Rspamd-Queue-Id: 892A64188B9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, Apr 16, 2026 at 12:14:33PM -0700, Dexuan Cui wrote:
->Commit f0c5827d07cb unluckily causes a regression for the FIN packet,
->and the final read syscall gets an error rather than 0.
->
->Ideally, we would want to fix hvs_channel_readable_payload() so that it
->could return 0 in the FIN scenario, but it's not good for the hv_sock
->driver to use the VMBus ringbuffer's cached priv_read_index, which is
->internal data in the VMBus driver.
->
->Fix the regression in hv_sock by returning 0 rather than -EIO.
->
->Fixes: f0c5827d07cb ("hv_sock: Return the readable bytes in hvs_stream_has_data()")
->Cc: stable@vger.kernel.org
->Reported-by: Ben Hillis <Ben.Hillis@microsoft.com>
->Reported-by: Mitchell Levy <levymitchell0@gmail.com>
->Signed-off-by: Dexuan Cui <decui@microsoft.com>
->---
->
->Changes since v1:
->    Removed the local variable 'need_refill' to make the code more
->    readable. Stefano, thanks!
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-Thanks for the fix!
+[ Upstream commit 0548a13b5a145b16e4da0628b5936baf35f51b43 ]
 
->
->    No other change.
->
-> net/vmw_vsock/hyperv_transport.c | 20 ++++++++++++++++----
-> 1 file changed, 16 insertions(+), 4 deletions(-)
+If cloning the second stateful expression in the element via GFP_ATOMIC
+fails, then the first stateful expression remains in place without being
+released.
 
-Acked-by: Stefano Garzarella <sgarzare@redhat.com>
+   unreferenced object (percpu) 0x607b97e9cab8 (size 16):
+     comm "softirq", pid 0, jiffies 4294931867
+     hex dump (first 16 bytes on cpu 3):
+       00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+     backtrace (crc 0):
+       pcpu_alloc_noprof+0x453/0xd80
+       nft_counter_clone+0x9c/0x190 [nf_tables]
+       nft_expr_clone+0x8f/0x1b0 [nf_tables]
+       nft_dynset_new+0x2cb/0x5f0 [nf_tables]
+       nft_rhash_update+0x236/0x11c0 [nf_tables]
+       nft_dynset_eval+0x11f/0x670 [nf_tables]
+       nft_do_chain+0x253/0x1700 [nf_tables]
+       nft_do_chain_ipv4+0x18d/0x270 [nf_tables]
+       nf_hook_slow+0xaa/0x1e0
+       ip_local_deliver+0x209/0x330
+
+Fixes: 563125a73ac3 ("netfilter: nftables: generalize set extension to support for several expressions")
+Reported-by: Gurpreet Shergill <giki.shergill@proton.me>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+[ Minor conflict resolved. ]
+Signed-off-by: Li hongliang <1468888505@139.com>
+---
+ include/net/netfilter/nf_tables.h |  2 ++
+ net/netfilter/nf_tables_api.c     |  4 ++--
+ net/netfilter/nft_dynset.c        | 10 +++++++++-
+ 3 files changed, 13 insertions(+), 3 deletions(-)
+
+diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
+index 000ae2900f8c..ab0567951e31 100644
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -861,6 +861,8 @@ void *nft_set_elem_init(const struct nft_set *set,
+ 			u64 timeout, u64 expiration, gfp_t gfp);
+ int nft_set_elem_expr_clone(const struct nft_ctx *ctx, struct nft_set *set,
+ 			    struct nft_expr *expr_array[]);
++void nft_set_elem_expr_destroy(const struct nft_ctx *ctx,
++			       struct nft_set_elem_expr *elem_expr);
+ void nft_set_elem_destroy(const struct nft_set *set, void *elem,
+ 			  bool destroy_expr);
+ void nf_tables_set_elem_destroy(const struct nft_ctx *ctx,
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 0aaddc1131c6..a0914a92e07d 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -6464,8 +6464,8 @@ static void __nft_set_elem_expr_destroy(const struct nft_ctx *ctx,
+ 	}
+ }
+ 
+-static void nft_set_elem_expr_destroy(const struct nft_ctx *ctx,
+-				      struct nft_set_elem_expr *elem_expr)
++void nft_set_elem_expr_destroy(const struct nft_ctx *ctx,
++			       struct nft_set_elem_expr *elem_expr)
+ {
+ 	struct nft_expr *expr;
+ 	u32 size;
+diff --git a/net/netfilter/nft_dynset.c b/net/netfilter/nft_dynset.c
+index 9a0aaeed2360..87c6a02675ba 100644
+--- a/net/netfilter/nft_dynset.c
++++ b/net/netfilter/nft_dynset.c
+@@ -30,18 +30,26 @@ static int nft_dynset_expr_setup(const struct nft_dynset *priv,
+ 				 const struct nft_set_ext *ext)
+ {
+ 	struct nft_set_elem_expr *elem_expr = nft_set_ext_expr(ext);
++	struct nft_ctx ctx = {
++		.net	= read_pnet(&priv->set->net),
++		.family	= priv->set->table->family,
++	};
+ 	struct nft_expr *expr;
+ 	int i;
+ 
+ 	for (i = 0; i < priv->num_exprs; i++) {
+ 		expr = nft_setelem_expr_at(elem_expr, elem_expr->size);
+ 		if (nft_expr_clone(expr, priv->expr_array[i], GFP_ATOMIC) < 0)
+-			return -1;
++			goto err_out;
+ 
+ 		elem_expr->size += priv->expr_array[i]->ops->size;
+ 	}
+ 
+ 	return 0;
++err_out:
++	nft_set_elem_expr_destroy(&ctx, elem_expr);
++
++	return -1;
+ }
+ 
+ static void *nft_dynset_new(struct nft_set *set, const struct nft_expr *expr,
+-- 
+2.34.1
+
 
 
