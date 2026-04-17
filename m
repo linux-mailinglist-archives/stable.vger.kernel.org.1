@@ -1,150 +1,174 @@
-Return-Path: <stable+bounces-238424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238425-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +BAaLZPS4WnQyQAAu9opvQ
-	(envelope-from <stable+bounces-238424-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 08:26:27 +0200
+	id oM95JYzT4WnQyQAAu9opvQ
+	(envelope-from <stable+bounces-238425-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 08:30:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id B99D3417631
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 08:26:26 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F41084176F6
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 08:30:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BF676300F7A7
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 06:26:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0A3E73015C80
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 06:29:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36EA22DCF55;
-	Fri, 17 Apr 2026 06:26:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C459C329365;
+	Fri, 17 Apr 2026 06:29:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c0Fi6Ia7"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dRL0InEE"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f51.google.com (mail-yx1-f51.google.com [74.125.224.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED175153BE9;
-	Fri, 17 Apr 2026 06:26:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776407180; cv=none; b=AjGO5Q1kjXgOgDRzykHaJxP1VbLbf9s5HmIamV51g8eddYwzIScskEpFBAhyaO47Qpabm1w8wRt9AsJQqfVV416HlKT9dgfoYapBQEZY3ZRO4wSkKWJmGlwOjjT9TFGsKblEUj4iZ+vNjNsnKfXUSUQOZl7L7zJAbAyGY2IsKzQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776407180; c=relaxed/simple;
-	bh=QLfYJdeUXJOQCpAnvwLBp6nzw8k9f9d/fgS91mKsx1w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=n0XQoggC73BRe/5Sf0rxKkfwRcmb1j0D7kuCBYPfKHmnTRucKR6oNjBpgPhSjQoYyXTp3TioNLqe25vp9rCsxUMHK03QojJ97pyyzRqpdmtu/ib6qkQM0BwJJFpF0H6SDoBxqer+PzqumFYf3Tjqfh0unM4cxNtj04QK2ufkxDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c0Fi6Ia7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13505C19425;
-	Fri, 17 Apr 2026 06:26:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776407179;
-	bh=QLfYJdeUXJOQCpAnvwLBp6nzw8k9f9d/fgS91mKsx1w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=c0Fi6Ia7TFZbgjIOF+urms8w478fdHYFHFLUVUuHp+JJL3OUGpPpm1IOaa8raX/Fu
-	 zwo8qll5dAjGGRpNQwErN0A+VJSNRfYASeuAUqlJZ1aPm7SNZ82ZN/8t/K89oPiT5x
-	 70qEWli69g6vSCpAHzo70SgTeDFvzKpPSuxco3bk=
-Date: Fri, 17 Apr 2026 08:25:48 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Eddie Chapman <eddie@ehuk.net>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org,
-	pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
-	sr@sladewatkins.com
-Subject: Re: [PATCH 6.12 00/70] 6.12.82-rc1 review
-Message-ID: <2026041742-armrest-clicker-84fd@gregkh>
-References: <20260413155728.181580293@linuxfoundation.org>
- <172f1405-0094-4957-9758-e700ec76516f@ehuk.net>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 666831A6817
+	for <stable@vger.kernel.org>; Fri, 17 Apr 2026 06:29:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776407372; cv=pass; b=pBWnfkWVhCSs+Y9hAxmr2siMwF8/n+PZqhRS+0AtOARJJGM1gg89TZf6NhFD9g+2HgobMP2fhqqtCDXhNtYUkH1AxydfEgVUJVv4gv7F57KeJtogNdPGr2zcrF+u/sGmcfl9mRyhgWN2bdlmXuI94ea9DGwRZBkzeYkek6GJEFU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776407372; c=relaxed/simple;
+	bh=14+xQ1a1G1nEReDxZ/dXNTCYJEzLvvv8MSN6K/ZJ5yE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NeU5vpYVu+oLFgsDDcMaBBQdWcYjHcxnzds62MIkqOZQJaViCq36hhFtPuoBgv5dtMtMuT+hUuXclXTqlZ+q7kKq7D+2AC//ZBi+hn763T8s2HARvGr/qGPkLBWhTmv/GHq9F1JZGNA/TMY5vLHkxnsMsYUSAESy2XP2RIfw4Eo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dRL0InEE; arc=pass smtp.client-ip=74.125.224.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yx1-f51.google.com with SMTP id 956f58d0204a3-651c366f7efso366132d50.1
+        for <stable@vger.kernel.org>; Thu, 16 Apr 2026 23:29:31 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776407370; cv=none;
+        d=google.com; s=arc-20240605;
+        b=SS9dku1ASyuJzBJdZ495r8Motgf+TK12IHr2M8GVR3rltmqZvHQtwW8yNkxWfIjyiw
+         jV207a5XtWgjunQelRXW/h3IQfRw/RdERifG/hqry1hC1Oe8YKdX5aKTCH0aNc4xLgpp
+         qGqN4q6iC+iO4QjsH3MYWV5eVtw1Lt68+jwuCeX6WSII/kQMhupjtCFx+n+/HVTo4KlT
+         b5+yvP5kK3yIOwyH3ePUKzx37FLCo2SSEPzxcw/0SCmxZ7C8WKtK/Vb7sXahL9n2h/Nq
+         pGigBt93AJ0touBu7zE8K9+oymkJhwMsbx1erL45Lu8R2cApfxeY0fg+3KcfWuxAo9Fi
+         jdqw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=14+xQ1a1G1nEReDxZ/dXNTCYJEzLvvv8MSN6K/ZJ5yE=;
+        fh=fAGi6Z9OP4SOOYjKBqMGaZOvLDKrnga/b1kUmirv8jc=;
+        b=RvevORw8jnMNdboGpF7YVXPgjoLZ0B1rHWF/jAA36+75So+oWeEEpMuCZZ/vUXyLzJ
+         oFmLyQvXe+x5jujAHODVsQNzVSc1jMx2VlwTEiXARZYrChVkhLgZ7EwdySYFJ4TXOC76
+         9pagKSIrT8wN5L3NAVVmsob6dhjVszuvclkLVn97p0ei6NtnKudERN15IRVe9uAm794I
+         SH1PJXvd2lEZqqtHRImo9bRtvDiC92PN/RnOTQ65BbZjYtSWqebhb8hqn7kqFa6U9Xn/
+         Ai4rM6byOZxQxQV0rp4/lWPEBpggmC7MNsp/UArZKNlih/VzerrFt/tSZDoBBoymnJSC
+         ftOw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776407370; x=1777012170; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=14+xQ1a1G1nEReDxZ/dXNTCYJEzLvvv8MSN6K/ZJ5yE=;
+        b=dRL0InEEgFE8OsBi+RX1369T8RPHDBJVDlVRMP3N7XDecGfKlhFPWYzrUrQQ455O9V
+         8MSFZnTzDAZ4SnJUlXRt1++ncGvRdcRB3jjBCQpiNl+doR3m4Q9i1fmdvPVA4lnRIHML
+         5+uWpKDWSj+Y83qMk577S+U/qdzEwgV9zzaN2oXdxIKtXCI0FflPpC5mI9CHDQ4Y2cbk
+         oapOtW8GQZikO0xISXJ9YHhl/Tk2hPWLByVMvxwgCR6r5OF5ysMYvHyqd24hMOLs6md/
+         kabRS5Tre7qVZp/7+TyP2rg5OR4nP656muzT3CrfWqpnQ5WyddYMpT0Wfz9Z/IdnLMUg
+         VEDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776407370; x=1777012170;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=14+xQ1a1G1nEReDxZ/dXNTCYJEzLvvv8MSN6K/ZJ5yE=;
+        b=JN51crxu+V/K5KEnsWR3n9By+jpSL9FeThbrPt8NSqFOTTBIDShdfoZGEXcm+AsGBS
+         HcvvXp5dt3U1Uci8YcAdDq9nKOEEJzne/6h6v6ifFhx/5SkEwfeLHiAZ45vZI1iLhZj6
+         WsreH4qMSQaejqarZGjIcm3DmZ2SkXvFzzMIZaJanFg9nALdA0EUHvQSzSd9jFyYL0qx
+         TMK3w+XUu98SBW774XLyO9zlSlLUZr+SZ5gXsPzNfk9xGLv8NSN+Q9UD/HDo5/fAh0/9
+         vqUaIo8Hgc4HEBeoZep79UbOael0O6QUIL9puqbOv7PiN7buCsMpsnBEHBYtPf8VDVIg
+         R8+A==
+X-Forwarded-Encrypted: i=1; AFNElJ+bQ4HEoC+jhpiWaSWfUoFxEeNlWCio6TaCMJwEgRaa+srg0Am103VKCMw1Qz9wygC9J6jH2Yc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy30UsCIpgRZ5TxEWF0UH9QZsaDr0T5rZs5ZgiqoBrzjgfbHlzU
+	zcG3q7bewRcQm9iXMBnoqGjnNzXQ5xqooP+EQko1m/xQsN4wHvueGHCX+RJ1G8qMtwJffztXEz4
+	aFMzl2CgHlU38hH6ZLawNXVSxSUTuC+E=
+X-Gm-Gg: AeBDietapXuK+zKBbLXZ9J+VeoNTTrVrNB0LRWxQ5/XsF1gA4Xu3Mz8TAzTKwC9EMJ2
+	ikSFnOhBBS7l6sBuu0mNkyX6itj2jfTmPJhDyEgbTSDuMITiZRLttPDLSuEqMS4hS2jfMs4wJn9
+	ESpTd06lYsC/FvM3WafRgEoJe0d7LWjN8AST0Ivp0VMCvwLbZHKZxdHexKwf8XvE1/S0Vqhg6IZ
+	ysF5iv827IePZMylYGxuGlAYtVuD+APKRbfSD8VqBLBi6km2IFzHA1taBdlbpof3ORd/vrw1DCd
+	KFn0xZPbZlMEScha1aiA
+X-Received: by 2002:a05:690e:4319:b0:651:cf23:6612 with SMTP id
+ 956f58d0204a3-65310a12bb9mr1045818d50.34.1776407370491; Thu, 16 Apr 2026
+ 23:29:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <172f1405-0094-4957-9758-e700ec76516f@ehuk.net>
-X-Spamd-Result: default: False [3.84 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+References: <20260416165935.3958686-1-lgs201920130244@gmail.com> <b1a6b96d-07d2-4a19-b9db-2cd8d878895c@suse.com>
+In-Reply-To: <b1a6b96d-07d2-4a19-b9db-2cd8d878895c@suse.com>
+From: Guangshuo Li <lgs201920130244@gmail.com>
+Date: Fri, 17 Apr 2026 14:29:20 +0800
+X-Gm-Features: AQROBzBxiJ9VZU2-aWBk9HO70GvYytY3hQ-cUOKrLjdfj36nQ9VfZ_4L5Zu0VDA
+Message-ID: <CANUHTR_qm94JQn-FKa9BfRgxadXKbXJmJEof6ZdE070=Xi4mGw@mail.gmail.com>
+Subject: Re: [PATCH] [SCSI] advansys: fix host resource leak in EISA probe
+ error path
+To: Hannes Reinecke <hare@suse.com>
+Cc: Matthew Wilcox <willy@infradead.org>, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
+	"Martin K. Petersen" <martin.petersen@oracle.com>, James Bottomley <James.Bottomley@steeleye.com>, 
+	linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-238424-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-238425-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: B99D3417631
+	RCPT_COUNT_SEVEN(0.00)[8];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email]
+X-Rspamd-Queue-Id: F41084176F6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, Apr 16, 2026 at 07:55:19PM +0100, Eddie Chapman wrote:
-> On 13/04/2026 16:59, Greg Kroah-Hartman wrote:
-> > This is the start of the stable review cycle for the 6.12.82 release.
-> > There are 70 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> > 
-> > Responses should be made by Wed, 15 Apr 2026 15:57:08 +0000.
-> > Anything received after that time might be too late.
-> > 
-> > The whole patch series can be found in one patch at:
-> > 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.82-rc1.gz
-> > or in the git tree and branch at:
-> > 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
-> > and the diffstat can be found below.
-> > 
-> > thanks,
-> > 
-> > greg k-h
-> I just wanted to point out that the revert of "PCI: Enable ACS after
-> configuring IOMMU for OF platforms" is missing here despite being queued in
-> the 6.1 & 6.6 rcs (it is meant to be reverted from 6.12 as well). I noticed
-> when updating to 6.12.82-rc1 today as I was bit by the regression (all my
-> IOMMU groups messed up).
-> 
-> The revert for 6.12 is in fact here:
-> https://lore.kernel.org/stable/20260320172335.29778-1-john@kernel.doghat.io/
-> 
-> but unfortunately easily missed as shown by the confusion here (same
-> thread):
-> https://lore.kernel.org/stable/99426bd8-32e5-4246-9d3b-772e136bc078@leemhuis.info/
-> 
-> subsequently clarified by the patch author here (also same thread):
-> https://lore.kernel.org/stable/5hng5r6q525scbclramuv2h2hphljbcsscwohvrs7teuedgfvl@ncr7tqhr4l4z/
-> 
-> Other than that 6.12.82-rc1 boots and runs fine for me on the one AMD Ryzen
-> system I've tried it on.
+Hi Hannes,
 
-That was not obvious at all, please don't make us dig through email
-threads to know what to and not to apply, it doesn't scale when dealing
-with the email volume we get.
+Thanks for the feedback.
 
-Can someone resend that patch, properly marked fro 6.12, so we know to
-apply it there?
+On Fri, 17 Apr 2026 at 13:56, Hannes Reinecke <hare@suse.com> wrote:
+>
+>
+> You must be kidding ... EISA is died over a decade ago.
+>
+> If you _really_ are concerned about this please remove EISA support
+> completely from the driver.
+>
 
-thanks,
+I agree that EISA is obsolete, and I understand that this path is
+unlikely to matter on modern systems. My intent was simply to clean up
+an inconsistency I noticed while reviewing the existing error handling
+code.
 
-greg k-h
+If maintaining the EISA path is not worthwhile, I=E2=80=99m fine with dropp=
+ing
+this patch. I can also take a look at what removing the EISA support
+would involve.
+
+Thanks,
+Guangshuo
 
