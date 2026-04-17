@@ -1,141 +1,208 @@
-Return-Path: <stable+bounces-238497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238498-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2FHJOY1B4mn93wAAu9opvQ
-	(envelope-from <stable+bounces-238497-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 16:19:57 +0200
+	id mBbmLppG4mlh4AAAu9opvQ
+	(envelope-from <stable+bounces-238498-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 16:41:30 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 617B641BFBD
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 16:19:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 348DD41C2BE
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 16:41:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EDBFD308C383
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 14:18:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B2ED630A7D6A
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 14:35:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5CE23A3830;
-	Fri, 17 Apr 2026 14:18:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD2573B6374;
+	Fri, 17 Apr 2026 14:35:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QvB4pCi5"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="h20xq2ZF";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="B3Q8Pvje"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9430124679C;
-	Fri, 17 Apr 2026 14:18:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81FE43B5851
+	for <stable@vger.kernel.org>; Fri, 17 Apr 2026 14:35:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776435514; cv=none; b=gzqUMbEgJtlYsPi2h+0xFYWQsmUtJdaJv3jeRqRcuvw8A0SC5Hgex67JMw8RZQPOFcoHgHxiRBsCaK04EziHnNaWo+D3UBoXYYn1JPE5+54taUYca6oGdc5zPty4GRA+FWk9FS65Lf9dC6gVXUpBvkzl0N/6u2hR1MzT6VQRkwo=
+	t=1776436543; cv=none; b=Nk0orcqCl22ReWslMV5Ky4uKNwuOUl6+7jXR82kph9hGDynimHSJW6t08IVgjxhQ+e5RwIbnLTXpHWmJw9+uq9orFYLjG73lszM8AQwDa6bc2hBR5JpGewVWSiQ7drR1rQziKDKoaMSmqePUtGLY3838uvioTmxSrRD5WVzi+mU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776435514; c=relaxed/simple;
-	bh=QRBDwehrIlUDhPTJwM4xFkKcy2A0zqfKM8V+RshiEK8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OcIBfYRxwNd+nIdftZSIZR51uXrN1Mji0WVMdoC4vndXlb+IK9N5WV3M3u0pSmxRr+tDLT5Ib7r/rjkfzcPxI5PXnW6G5tMy8m6o1PYyr4QkkQ4pk3WUZ5WH9zw0h04gW7geAzn40quo5HaAw8ydwuVEuLD2VCEuBI6p/xHSvKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QvB4pCi5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D298C2BCB0;
-	Fri, 17 Apr 2026 14:18:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776435514;
-	bh=QRBDwehrIlUDhPTJwM4xFkKcy2A0zqfKM8V+RshiEK8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QvB4pCi5ETz16/ykKBepbphVG4IlJoziQ8G3RjPWqYBHcjcNyyZ2xHztwzoRflrLQ
-	 oAtJaGB6Jzm7QVbyhPEY3ZR/8rnKX7OH3tqnegex9PTrsXbD1d6pByNmmVmhGsgnfO
-	 ir5sXFtiDj7/ZLA6y2CGfbd0s7KTn//umoUx30xqc3F8BFp/Ctgrt2mr3imk/9ppRm
-	 4dCCYtgdUPdJyuI19DbkVAS2wOsfyMfYluM0IywxwbehTqdOFSCRBd+dirD9JVrG2A
-	 cptPvmqqyq6WxvsSR6q6mYCiuooz9QC6lABOn9G6EnEIU03+fPZAymkeIiy0itIdOz
-	 JhzDoJB7dIkAg==
-Date: Fri, 17 Apr 2026 07:18:33 -0700
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: Wilfred Mallawa <wilfred.opensource@gmail.com>
-Cc: linux-xfs@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Carlos Maiolino <cem@kernel.org>,
-	Hans Holmberg <hans.holmberg@wdc.com>,
-	Wilfred Mallawa <wilfred.mallawa@wdc.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] xfs: fix memory leak for data allocated by
- xfs_zone_gc_data_alloc()
-Message-ID: <20260417141833.GA7751@frogsfrogsfrogs>
-References: <20260417021628.2608734-3-wilfred.opensource@gmail.com>
+	s=arc-20240116; t=1776436543; c=relaxed/simple;
+	bh=SF113oFF1sMZms+X7nrIwBSd1ktumh6AlyZkr3mVNC0=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=YOnxeQHNdVUISyoprOy2m4/vkqBfwiZcq5uUJCmW6iXKZvstXamYNH4Xs3mQJgvFDpgi+46hOc8k15ZWIseM1PFyvaknIeG8yZCIa5cnpdhH7x1EP0xOo14D202/jCIIPhbrFXD/3L+OOivouYV3My/taDF8M6Oy2PYUu+H2RIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=h20xq2ZF; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=B3Q8Pvje; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63HEVJaa1872519
+	for <stable@vger.kernel.org>; Fri, 17 Apr 2026 14:35:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	7akWR2KTYpymsLXO6H6kGzO/anuY1eZUeK21VlmDe+c=; b=h20xq2ZFJH7N7PSw
+	QLzUhL7N+mcQaqrb2YuOHWZZRdCbAo/e3PkZHs2ijcVhfHFzhO/swObIVQMuIVR6
+	gTZI9NkP6twpH4WAxrQLw+0w/jeXKDJL5ZCTQMPmO+ky/PHWpBXAYcvMAUyvocSK
+	vgoA4glWUyJLS6jIdP4ZarszTZfCL+MrKl+z5uyv6onRxyiMxHhfhZ4QxNRBbda/
+	b2xbnsPiURXxSlkvgK/CaBJwSSLCSugjOfvwdrAG9h0yprlvcNQHiNMglhBC5pEL
+	aFR/oZOi3IuI2YrB2gbkFvGb0MS3aitBes9mHywxzs2wUNVQXRn+NcN7/4zeo57y
+	FI1n+A==
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4dk2kncdbd-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Fri, 17 Apr 2026 14:35:41 +0000 (GMT)
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-3595485abbbso889401a91.2
+        for <stable@vger.kernel.org>; Fri, 17 Apr 2026 07:35:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1776436540; x=1777041340; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=7akWR2KTYpymsLXO6H6kGzO/anuY1eZUeK21VlmDe+c=;
+        b=B3Q8PvjeSFUw33mR0+w193jMk7YP2p6VYbHclgMArO354s6g7kDu9NSPfmFeDhXfoE
+         glSdEGlNGP0vlvQlTLhRsnNYfavw7ifiHpbAi4HuYpfvoWvPCFBPJXCyoDOuoupWLJ41
+         yr+dqfTU19bIqsm7yqTbfUlFKi6GowAUtq7Hnb5etZ7P9AKG+eNSdgGN/q/hl64RtJVD
+         ftV+XpsyFKGkx9uW5Y0mI5ccXx/Ijo1ZODV0FG0DatRhP8RSgS1NB1INKDwD+rXVrTMA
+         3fZHKNeJkYvU/dPVa9Sr/bwqOXg/2tOfn2wsl+62UDSpQZKgKowogkNirHyzA40Ykdm1
+         xJ4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776436540; x=1777041340;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=7akWR2KTYpymsLXO6H6kGzO/anuY1eZUeK21VlmDe+c=;
+        b=pRRNucdfhIb+uEQlHbkbeikL2vtVhQA5jXT+Gf4FoUwHaTUQitjKQ1ddV1+UErAlXb
+         2t2GiaG0Umjx6F+0YwR87uS9WIpx2DEG+B/lY+hDA6+QIqcQVVo8s/Kne5rtAi8VXqkJ
+         bX4hjkG28dsO8HA3mn0SV+MHqKAARZMMWQxbvK/Kp0c7MJRoT4Z2/y6EfhhE4y5xNJNf
+         DsY299CUI6tVYqYT8/qRFQG7n4yiI7UMWzBZTYi8jiOpCBdVjpo0v6rThmRm/HF2lBB6
+         /eCbvTLmWFxzWH0s36rEyJj8X/aNha+Zp54vtp5CkeiWQw6m6Nq9GAp/iu2K+VKqhV5E
+         Tdgg==
+X-Forwarded-Encrypted: i=1; AFNElJ9Dx56HWy8CiTf79evCBSK3G/UmtZg4TVFyVGLCUYiBqI4d4McD+JQKggPUhcmu3xGTxLyE+5E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyNFYMNI0wsQPAdGIi6HpjQlIXDwDs4FcIATdMfagrR2jtf41Yf
+	GFvo/FLu3FYNTMFfJc/oZsAWdD6WSsOyAYo5TMGOMkcbXOex0jOFXZFMUaa3Kz/+TYrF+nmvil+
+	yMmO17/3oLyUUDSeGj7g9ofZwUjQ7I3vbAOdNPRWzaSQq5fRUEksm2ICobVg=
+X-Gm-Gg: AeBDieuv9Kn+7uKEtqvCdm1atwv4WwW5MOl31GqABaITjehh3KpfwyxDMr2wAePkmPF
+	hK4PnqImYgr/c3vWxjqe7WjoWFDZJ0ge85DYUtFPekAH01ff8YNqmliDTNB3LCCbn7/iyhOjB7u
+	w/JnfkOe1E+RNrvNakLyqdnNJAdqliC27Hr4nNtynd30bEYShw9+z64UZ6oqiI+9X2qrNSXkDqu
+	HusC1xxWDVo/8RvFqjUbR4H31o4HjdhzlDfm89tvwERMFklZnJjYzAxDioGnKO1HgCBv3Y6RtyT
+	vTBxgjgq0+3/FB9Dj0jPoa3DsOeXc4Cgdb+5sbsZEZXVLstR5evoOU96RU/zVeobU0ZAQyxoJfp
+	wzUmfkihEqO2SOjn9ZusUJbg6LeogrlaZswpwJw0ALUKJ9rn2ZVjEnVfopKsr2Eo/
+X-Received: by 2002:a17:90b:5543:b0:35f:bddd:3860 with SMTP id 98e67ed59e1d1-361403b18f5mr3379906a91.6.1776436540221;
+        Fri, 17 Apr 2026 07:35:40 -0700 (PDT)
+X-Received: by 2002:a17:90b:5543:b0:35f:bddd:3860 with SMTP id 98e67ed59e1d1-361403b18f5mr3379859a91.6.1776436539609;
+        Fri, 17 Apr 2026 07:35:39 -0700 (PDT)
+Received: from [10.206.105.200] ([202.46.23.25])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-361419739dfsm2325369a91.13.2026.04.17.07.35.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 17 Apr 2026 07:35:38 -0700 (PDT)
+Message-ID: <5c04e57a-efc0-f5f9-f53c-04b9bcaa1c8d@oss.qualcomm.com>
+Date: Fri, 17 Apr 2026 20:05:30 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260417021628.2608734-3-wilfred.opensource@gmail.com>
-X-Spamd-Result: default: False [-1.66 / 15.00];
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+From: Vishnu Reddy <busanna.reddy@oss.qualcomm.com>
+Subject: Re: [PATCH 06/11] media: iris: Fix VM count passed to firmware
+To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+        Bryan O'Donoghue <bod@kernel.org>,
+        Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
+        Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>,
+        Abhinav Kumar <abhinav.kumar@linux.dev>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+ <conor+dt@kernel.org>, Joerg Roedel <joro@8bytes.org>,
+        Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>,
+        Stefan Schmidt <stefan.schmidt@linaro.org>,
+        Hans Verkuil <hverkuil@kernel.org>
+Cc: linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        iommu@lists.linux.dev, stable@vger.kernel.org
+References: <20260414-glymur-v1-0-7d3d1cf57b16@oss.qualcomm.com>
+ <20260414-glymur-v1-6-7d3d1cf57b16@oss.qualcomm.com>
+ <fe1e2ef2-dece-4864-a89b-a311b3ddbfcc@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <fe1e2ef2-dece-4864-a89b-a311b3ddbfcc@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: dnNS1wkLoXcG38XwVuR6SCfvfHp2qARH
+X-Authority-Analysis: v=2.4 cv=XNoAjwhE c=1 sm=1 tr=0 ts=69e2453d cx=c_pps
+ a=0uOsjrqzRL749jD1oC5vDA==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
+ a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22
+ a=y21pM0OG2rRs8fqayMkA:9 a=QEXdDO2ut3YA:10 a=mQ_c8vxmzFEMiUWkPHU9:22
+X-Proofpoint-ORIG-GUID: dnNS1wkLoXcG38XwVuR6SCfvfHp2qARH
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE3MDE0NiBTYWx0ZWRfX6CX9OBjtKAr+
+ XISl3uqeOfirj74554eknP64yNQMf7rT68v63wtDn4XQX4aOkceUihFz/b3F+Oh94++tDtp6STe
+ 1YXvWHPogcFTCiMkybKQgDRVYaWQQn6c4uOVmIMKj00t7PzGRh8HGNOEljq3eVLzxI+XuIc0rNR
+ D4gyhq4df+TH+Muz77S0q8yWGgD2Kf5/dSFRSe5LZ3VPvsmqkjw47opMSFreTxX+C5TTRgbFD5J
+ VfLwY6f/tK5BBf5e2NmnbaLX2UJo4nsku9vBS12BskoEWeHWT+IXSArmr+U15O2YaAPvHeK6SrM
+ EdgYWRktHETrzlahVZpYtUc32HiRvJQEBgvuLjmTABPcWN0+CJC3CLbe+WncJ/lWIq8Lam9d0UA
+ 2prvBzj5SdVDMndj5eHGzDhGz1IbG8ztC4sKzJwX2h5Ir329a/fzyVED4/VQeGq5ynrg55Pagu/
+ 9aoKJ4/2BpgBQc7iqxA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-17_01,2026-04-17_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 impostorscore=0 priorityscore=1501 suspectscore=0 spamscore=0
+ phishscore=0 clxscore=1015 lowpriorityscore=0 adultscore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604070000 definitions=main-2604170146
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-238497-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[djwong@kernel.org,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[22];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-238498-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,oss.qualcomm.com:dkim,oss.qualcomm.com:mid,qualcomm.com:dkim];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[busanna.reddy@oss.qualcomm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[wdc.com:email]
-X-Rspamd-Queue-Id: 617B641BFBD
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable,dt];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 348DD41C2BE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, Apr 17, 2026 at 12:16:30PM +1000, Wilfred Mallawa wrote:
-> From: Wilfred Mallawa <wilfred.mallawa@wdc.com>
-> 
-> In xfs_zone_gc_mount(), on error, a struct xfs_zone_gc_data allocated
-> with xfs_zone_gc_data_alloc() is freed with kfree(), however, this
-> doesn't free the underlying folios or the rmap_irecs.
-> 
-> Use xfs_zone_gc_data_free() to correctly free this memory.
-> 
-> Fixes: 080d01c41d44 ("xfs: implement zoned garbage collection")
-> Cc: stable@vger.kernel.org
 
-Cc: <stable@vger.kernel.org> # v6.15
+On 4/14/2026 2:59 PM, Konrad Dybcio wrote:
+> On 4/14/26 7:00 AM, Vishnu Reddy wrote:
+>> On Glymur, firmware interprets the value written to CPU_CS_SCIACMDARG3 as
+>> the number of virtual machines (VMs) and internally adds 1 to it. Writing
+>> 1 causes firmware to treat it as 2 VMs. Since only one VM is required,
+>> remove this write to leave the register at its reset value of 0. This does
+>> not affect other platforms as only Glymur firmware uses this register,
+>> earlier platform firmwares ignore it.
+> Should we write a zero there, then?
 
-[autobackport plz, I need all the help I can get]
+zero being the reset value for that register, I would prefer avoiding to 
+write unless needed.
 
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
+Thanks,
+Vishnu Reddy.
 
---D
-
-> Signed-off-by: Wilfred Mallawa <wilfred.mallawa@wdc.com>
-> ---
->  fs/xfs/xfs_zone_gc.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/fs/xfs/xfs_zone_gc.c b/fs/xfs/xfs_zone_gc.c
-> index e7b33d5a8b3d..2520e57e24a8 100644
-> --- a/fs/xfs/xfs_zone_gc.c
-> +++ b/fs/xfs/xfs_zone_gc.c
-> @@ -1230,7 +1230,7 @@ xfs_zone_gc_mount(
->  	if (data->oz)
->  		xfs_open_zone_put(data->oz);
->  out_free_gc_data:
-> -	kfree(data);
-> +	xfs_zone_gc_data_free(data);
->  	return error;
->  }
->  
-> -- 
-> 2.53.0
-> 
-> 
+> Konrad
 
