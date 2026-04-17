@@ -1,142 +1,141 @@
-Return-Path: <stable+bounces-238442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238443-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UIf3F2/l4WmKzgAAu9opvQ
-	(envelope-from <stable+bounces-238442-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 09:46:55 +0200
+	id yJCRAaPk4WmKzgAAu9opvQ
+	(envelope-from <stable+bounces-238443-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 09:43:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC35A418223
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 09:46:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7599C418174
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 09:43:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7299230358A1
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 07:39:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3017D305AD54
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 07:40:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA5E3377014;
-	Fri, 17 Apr 2026 07:39:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FB133793C8;
+	Fri, 17 Apr 2026 07:40:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="qemNqOvZ"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F5C93783D3;
-	Fri, 17 Apr 2026 07:39:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36B6A316189;
+	Fri, 17 Apr 2026 07:40:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776411562; cv=none; b=pXMtnfoL/8EApNDq8yvzMMzBlrIrGnnCfTRfGKtG5LEu8P6IXJpdhMMOiMH490VWCqGLEsZfnRSzX2P4znPy75OuI64jz5ZARyaq7uxt+BZkniPECFbJKcLuWVzQQSAtesNnUTX/HNYBEn7zAo/8BKdVbLmhokqmU3aVJNHUeMQ=
+	t=1776411651; cv=none; b=SyTWbzYtf0IqheCGF9g2O833+7ZTkc7mWmfd2JZpI+ElmvCw1np7uzLzVtgiNgrZG6Th7k+G2U7GJ465q/Sfi4D4QHB/X26JU1gn4qjPd630YBWsrQOjbzDoGaR8X0rEAu0imMApJ6lkpzZyGt2uLoD3cPt7WbHxU08f7Uu7Jho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776411562; c=relaxed/simple;
-	bh=vciXotTW3GGwZTglo95jrUGCmW+n4VHvVEPji9d7VN0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MlD1Bj0sdfJzDqvOk1nqBTvKCS4ms3kbiqAES7a4oSt+GFnD2p/fHpfHNsxvXV6HUm984zQpdGYcQBY1MbDBFqkgWVIhJtdm7YG6athnNTigtekNmyt0VuuT8ZRAas/BVv8DF9kdmrQ5G9dLIJRxJW3Dm3fvwKxQTdTW+mwHAU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [111.196.245.116])
-	by APP-05 (Coremail) with SMTP id zQCowADHVQmd4+Fptf7XDQ--.39774S2;
-	Fri, 17 Apr 2026 15:39:09 +0800 (CST)
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Sourabh Jain <sourabhjain@linux.ibm.com>,
-	Hari Bathini <hbathini@linux.ibm.com>,
-	Jiri Bohac <jbohac@suse.cz>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] powerpc/fadump: reject empty bootargs_append writes
-Date: Fri, 17 Apr 2026 15:39:07 +0800
-Message-ID: <20260417073907.4985-1-pengpeng@iscas.ac.cn>
-X-Mailer: git-send-email 2.50.1
+	s=arc-20240116; t=1776411651; c=relaxed/simple;
+	bh=F/yR7j6WJjB6ZZPwjfbH5F7sRfTka8hqO+JIeTsVRKI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=VI8Oc8zHns88mG6zc7eHLxKLI+oImKsCRF4kJ4gA5xBi2T64TnywNz3l3hwDmpnnftrAXwKd/DcX7pBEtMFPZgkATxK5LCRBf8EGh/jJWgnsddLKXi042uYtc2OPL64junn9ikjwnCiblr8PkEQlkzYa2qt62uJjmffVRQUAADM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=qemNqOvZ; arc=none smtp.client-ip=220.197.31.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version:
+	Content-Type; bh=ec9J7I0MAhcvubfbKVPQh0qJjmz98punS+lUBUOQvEk=;
+	b=qemNqOvZLZ2bEWie0GNABtQH6q+lsvgF5hecAyAY7etKfqtoWV6ddman19xiCB
+	b7e+uE53ucGEl30ZieUCbsHn2NtQ0bBa9HeeDrNOU28wQCcmwcuiOxq3+5Rc2w97
+	AeLifdiT/OjfuE3T09W/du8MhdR8bFqCGXhFef6tKWEEw=
+Received: from pek-lpg-core5.wrs.com (unknown [])
+	by gzga-smtp-mtada-g1-0 (Coremail) with SMTP id _____wDHpCra4+FpGWiTAA--.26143S2;
+	Fri, 17 Apr 2026 15:40:10 +0800 (CST)
+From: Robert Garcia <rob_garcia@163.com>
+To: stable@vger.kernel.org,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
+	Pan Xinhui <Xinhui.Pan@amd.com>,
+	Robert Garcia <rob_garcia@163.com>,
+	David Airlie <airlied@gmail.com>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Yifan Zha <Yifan.Zha@amd.com>,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 6.1.y] drm/amdgpu: remove two invalid BUG_ON()s
+Date: Fri, 17 Apr 2026 15:40:10 +0800
+Message-Id: <20260417074010.1607496-1-rob_garcia@163.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowADHVQmd4+Fptf7XDQ--.39774S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7Gry7GF4kCF15tFWrAFy7Wrg_yoWDuFX_Jw
-	nrXFZ3Grs0qa12vFn0yFWYvr1xKanrWFy0kw12v3y3AF4DZa17Zw4fAFn5ArnrJFWkArZ8
-	CFyIv3s7Z3W0gjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUba8FF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j
-	6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUAVWUtwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r
-	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
-	n2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7x
-	kEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E
-	67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUCVW8Jw
-	CI42IY6xIIjxv20xvEc7CjxVAFwI0_Cr0_Gr1UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWU
-	CwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E14v26r4UJVWxJrUvcS
-	sGvfC2KfnxnUUI43ZEXa7VUbo5l5UUUUU==
-X-CM-SenderInfo: pshqw1xhqjqxpvfd2hldfou0/
-X-Spamd-Result: default: False [0.04 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-CM-TRANSID:_____wDHpCra4+FpGWiTAA--.26143S2
+X-Coremail-Antispam: 1Uf129KBjvdXoWrurWDuF4fXr1fCF4ftFW5ZFb_yoWkZrc_GF
+	Z5JrZ8Zw42yFnYvw1xua1avry0v3yrArs5Gw42qa9YgFykZryrJ34kGwn8Xr4fursxCF9r
+	J3W3WF18JF98CjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sR_BT5DUUUUU==
+X-CM-SenderInfo: 5uresw5dufxti6rwjhhfrp/xtbDAhsCbWnh49vqnwAA3z
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
+	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-238442-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-238443-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,linux.ibm.com,suse.cz,lists.ozlabs.org,vger.kernel.org,iscas.ac.cn];
+	FREEMAIL_FROM(0.00)[163.com];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pengpeng@iscas.ac.cn,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	R_DKIM_NA(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rob_garcia@163.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[amd.com,gmail.com,163.com,ffwll.ch,linuxfoundation.org,lists.freedesktop.org,vger.kernel.org];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,iscas.ac.cn:mid,iscas.ac.cn:email]
-X-Rspamd-Queue-Id: CC35A418223
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DKIM_TRACE(0.00)[163.com:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 7599C418174
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-bootargs_append_store() indexes params[count - 1] when stripping a
-trailing newline from the sysfs write buffer.
+From: Christian König <christian.koenig@amd.com>
 
-kernfs passes zero-length writes through to the store callback, so an
-empty write makes that newline check read before the start of params.
+[ Upstream commit 5d55ed19d4190d2c210ac05ac7a53f800a8c6fe5 ]
 
-Reject empty writes before looking at the last input byte.
+Those can be triggered trivially by userspace.
 
-Fixes: 683eab94da75 ("powerpc/fadump: setup additional parameters for dump capture kernel")
-Cc: stable@vger.kernel.org
-
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Acked-by: Timur Kristóf <timur.kristof@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+[ Modified to gfx_v11_0.c only. ]
+Signed-off-by: Robert Garcia <rob_garcia@163.com>
 ---
- arch/powerpc/kernel/fadump.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
-index 4ebc333dd786..03ab5565e420 100644
---- a/arch/powerpc/kernel/fadump.c
-+++ b/arch/powerpc/kernel/fadump.c
-@@ -1479,6 +1479,9 @@ static ssize_t bootargs_append_store(struct kobject *kobj,
- 	if (!fw_dump.fadump_enabled || fw_dump.dump_active)
- 		return -EPERM;
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
+index 37f793f7d4d2..6e3a32779168 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
+@@ -5380,8 +5380,6 @@ static void gfx_v11_0_ring_emit_ib_gfx(struct amdgpu_ring *ring,
+ 	unsigned vmid = AMDGPU_JOB_GET_VMID(job);
+ 	u32 header, control = 0;
  
-+	if (!count)
-+		return -EINVAL;
-+
- 	if (count >= COMMAND_LINE_SIZE)
- 		return -EINVAL;
+-	BUG_ON(ib->flags & AMDGPU_IB_FLAG_CE);
+-
+ 	header = PACKET3(PACKET3_INDIRECT_BUFFER, 2);
  
+ 	control |= ib->length_dw | (vmid << 24);
 -- 
-2.50.1 (Apple Git-155)
+2.34.1
 
 
