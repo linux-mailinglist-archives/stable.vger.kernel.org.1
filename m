@@ -1,210 +1,230 @@
-Return-Path: <stable+bounces-238507-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238508-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gE7ZDJJn4mmT5gAAu9opvQ
-	(envelope-from <stable+bounces-238507-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 19:02:10 +0200
+	id iIDdKAtu4mmp5wAAu9opvQ
+	(envelope-from <stable+bounces-238508-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 19:29:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDFCF41D67E
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 19:02:05 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43F5E41D7DD
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 19:29:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 44E123015D26
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 17:02:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CB7B13011040
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 17:29:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3C5A2D6E72;
-	Fri, 17 Apr 2026 17:02:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD46B30CDB6;
+	Fri, 17 Apr 2026 17:29:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hRy2AMGv"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Jtian54t"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f51.google.com (mail-dl1-f51.google.com [74.125.82.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 395193A4F3D
-	for <stable@vger.kernel.org>; Fri, 17 Apr 2026 17:01:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.51
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776445320; cv=pass; b=mF6tgLD5zwQOipcJv5SepgbA7inwGKpAz9ogAdTeDsp7VYzUBv7P/CRwPNddoMBkFl0K4Pur8CnqiHpbwXRqC7Mq2FEOWH3QOtKzaCDT0lWUn1uZ5xfKpa1rLHYQgTMqReWdHUVdmjFMyblvPXbI9tI4/2i1ftxfHvOYua8n3KE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776445320; c=relaxed/simple;
-	bh=b78DnSlkUaTdHWKliqPNEL5HD6ix7is74cppKWHsCy8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=g48K+F0wngA2jvaOhu9r+4QypDfaF4R70c9k15sOG9D9deuLcnlAFTDXyjDXG9ANiP1tO1uLbYkovLnp1cgzkVFiIAQhVodSlIjwOWiX0XQg9ukICkoZq4hoqOoSass9VXDc6+wp34xLB/kzxbxBqPIOGvAFvVWlgi0XMTIGNw0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hRy2AMGv; arc=pass smtp.client-ip=74.125.82.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dl1-f51.google.com with SMTP id a92af1059eb24-12c565dd3a7so1398747c88.1
-        for <stable@vger.kernel.org>; Fri, 17 Apr 2026 10:01:52 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776445312; cv=none;
-        d=google.com; s=arc-20240605;
-        b=J05dovovYIXGPiAjNb5C7Ycux4qNW0fjgMgqne1g1uC8iz21IxWAQzpN3ztjsE8mMR
-         SHIfqmKTDQ+HTXIYZFEc2cvkMFLzdl2RChmDlkQoA3Stp/atZoJfX80SnmC92IxKXWn6
-         HCqFjc13KPbQLlTT4n6frFL8T1GkqLAYijn4z5gSakJxAor720d/muSQkbo0yWcKNY5f
-         1VHBUSqVudgLpMV909TD0lrjuwAJa1smh+pGGX424/MtukqUHnhM71q9M5Cc9M5eGQPh
-         s/5I7JkncCeJy5Fx5td+iB72SnP4bSvWj5ZQJeWZjeiJz6i6RDhqDE1FrBY1L6f6gUQK
-         8Ubw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=EdXbw8ruQnDuxyXud9pqLO7P6ne13TbWgACZPF9q6l4=;
-        fh=EpZriUa/vdo7tOg56hTEXH1hosu8SmL5LmpdRWcfdpo=;
-        b=NdgPpPHXy9FFRslbo7qbj8SxQqoAZgsGGBszA8Enp0G+v27Olw79YmLvhV+Uxfn36b
-         gF0XioBeGN4IoeeIiLC2d+tbrzERDf9mryWTin/nYSFyw4Zz1SMbgc8GRZX41r1ZApOX
-         6CEFKzFeDF/W1wVySuVZdg0Exr1zAu0+vmRziKVROwc7uv5VIED97LtD1RblQo0VJCYJ
-         10Kb5JSMhj0d0Sx+fUT8QGrV98iIOUoVwqf9fvd0Akpp0EQeymNuBiZpY4574xy4qcnj
-         IDbws3BuuIS4hkWuxZdeSsYBM4JgKyKN7Kbo0moE1YUVrBkCIPOT6L4EsLTQIS08Sajh
-         zR/Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776445312; x=1777050112; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EdXbw8ruQnDuxyXud9pqLO7P6ne13TbWgACZPF9q6l4=;
-        b=hRy2AMGvo06jECQ4yw6+LjuIIHSgv00gDIrpDR1E9l8G6s19xBHKki2XAsjcX8fno1
-         IvFW0Wfty3DtpByq99DWnGacf3oOFWoYukKKryrN3vWh/iLp8SdA4Jcfhu6SyIlKEpnI
-         XJGJJVwxbHcEMKhV6zF5j5P3bADiud26P2vxZueF9X7Qv5FXXFjzZ6sEavJME4BwU+Gp
-         2Hkw/VhKcbzSVVYyyugURK96rGPq9LDrtV6ngyejJDCxW66M8ijCuGuRn7FZAaatLAl9
-         mw6ghNUOLRic5E6psnh1+CHY76b3X0DBXiGazoTtSAsGYvkSYcj57DYLZu58ZeG+0NIn
-         0lUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776445312; x=1777050112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=EdXbw8ruQnDuxyXud9pqLO7P6ne13TbWgACZPF9q6l4=;
-        b=jcK5W9y0Zo5d6BpjTV739az6qbfWeLPRmPojGCfFY7v7Y4OsFecyD3FTEIDtFvmWsG
-         BWaN57zy1DEOt9so5BclbI8pWGgPvlftlRASpAMlguHyINHkPJ1hvZOERS8CT+cAyQzk
-         s7QPi2PK04+FGCV38lE75/S1vRviuotYVAgTLUl53TfVDP5UXyxWF8amcfjgbzBXYoq6
-         K4W6TrdaLErQw26DhXdSPdoLZLVE1ugxi2yZhDeFxCY2G7tFSqFP/JJWWSB/7C9WHmBl
-         TOrNvlHzcj46XplftZHY729K9lO6HrDIEmFku8m1h5+3lKlQQ00My+390jfUnfKRHsMa
-         Bgdg==
-X-Forwarded-Encrypted: i=1; AFNElJ+aPmbwIXXViDaX+vqbOId+cmnBatH/5EKGb/EzgNj+B+CYTic3PpRajlljrYIFM6THLLrjhBI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxMXmAYI/grDKmHerq1/7HXMgnYADQ5Wp9UXTUJDjCb0e13ATdy
-	VZPH3t6++4YvhsXE0ENoP9cmBpST80P5Eri+NcXIHUhXOtEiy2BG4QqJLIg31vezQ+clb4zQWHs
-	LFtLhpjIpa8xJ4ztTZRpa1t2k56+7ksM=
-X-Gm-Gg: AeBDieuy5t1nDZmY5aIDqc/mdrRfnhDCIOooiV/0xqFbkAD8GGrpemvABkxQ6BTaPXE
-	y53HZKP7F2T7Qnq5PTLYUBnnCys1XAnW0UtjwA8qIrTfsBDu8KVj9Cc/R6PUqEVt1Cl5v72qWDo
-	SVifzA62mHNn8yaZMvyNVuF3I0tNgm+2oH7DF5dIyGo9bQqlpRnDUFYKOxJsj/dGkFMl8eW+VeL
-	59Whwqm1zChC3F0pC4mpCI1mLICzTPqgswMXdTbMN8jcYIJraVWqyxLmT7KnCaKPXJpHwevM+ju
-	QJwin7GLnELasHOdEVFFIjw7cQShAekQ+FlgmOM+y5cgnCdQKVGL9tsBnbcWxC1AhL51EvgsrEo
-	+J+UGkKOQjF+99Wbn6/JsqURs6iLU0It1GPDC3nWfx9JOtPXV
-X-Received: by 2002:a05:7022:985:b0:128:d7a7:526b with SMTP id
- a92af1059eb24-12c73f957c5mr1805488c88.22.1776445311456; Fri, 17 Apr 2026
- 10:01:51 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3666D27E049;
+	Fri, 17 Apr 2026 17:29:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776446979; cv=none; b=cDdnsNt7hXhpOgJsvNK0oRqQfSqhIGisf3GYUUZ8zgSbE8dJVAdUvQMX5qKIX6bVIrTELr4eop0SPV6zSGExMYM82o0qtJuK22xYeSVEM6aNLqfETtK3mJaik2B4w5y9NhUAWEL7qUGd/rI4Doiu94HrcS8lTtUFOAFgQ1dAQ+8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776446979; c=relaxed/simple;
+	bh=TRBcaNfkHHAR+2jWAULG7pJOWRZmEcJutS3QqXdMTRY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=H450vJYJzNlYlmSPV62Z6NiigQzYWDLMSdbLfRJrISCbGPh3C16kEDBPHf69f22zn20g5gU2lMNPtyYAlU2xf1E3CAGom11P8bECl+Nus5XnW05iPn9EEkLEGuKJSuoQyg8eDz4UsSDNr4G1NK0v1ns5ZOoerZhO8X0Z4dqnsug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Jtian54t; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63H6kPlM087621;
+	Fri, 17 Apr 2026 17:29:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=2dbA6caidxJZX0dCD8ua5pXOUPnLEIhqNDVBBkrNV
+	SQ=; b=Jtian54t588ILvtuz4ILgwp08/gYivJfxOTl6mHRugtEBW1h6zUE1bIFV
+	YkocqqNl85byZrOeY/ytvklJEUOY7DmZI9W9xTViFXbFL4AQnFsxrY1zpa6WIvQe
+	UWlN4I6nOvxO6AE9/VA1lnlYBKf7HmMP5usepl/fZxOrxeYYfUwirf6OtL6FlZJG
+	Y4hCIFE/RX7IVpLK1j1eWPFzZC9mQsy9S2LhBeELvRooBkCm5McUS78v86+O35K8
+	lvW6K6RaqyPrQ7oJlyPZjeCdUO/gBg/qU3Zm5Z78VGakC//dMVDL4U6Aza75Jzfd
+	+Evb3IoDe5QgLPPyY/sNmEJavH5TA==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dh89rurnp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 17 Apr 2026 17:29:21 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63HHRcHv005103;
+	Fri, 17 Apr 2026 17:29:20 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dkrucr43h-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 17 Apr 2026 17:29:20 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
+	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63HHTFGq23069438
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 17 Apr 2026 17:29:15 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7466758057;
+	Fri, 17 Apr 2026 17:29:15 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 11F8258061;
+	Fri, 17 Apr 2026 17:29:14 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.61.173.165])
+	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 17 Apr 2026 17:29:13 +0000 (GMT)
+From: Mingming Cao <mmc@linux.ibm.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net, kuba@kernel.org, edumazet@google.com,
+        pabeni@redhat.com, horms@kernel.org, bjking1@linux.ibm.com,
+        haren@linux.ibm.com, ricklind@linux.ibm.com, maddy@linux.ibm.com,
+        mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org,
+        stable@vger.kernel.org, Mingming Cao <mmc@linux.ibm.com>,
+        Shaik Abdulla <shaik.abdulla1@ibm.com>,
+        Naveed Ahmed <naveedaus@in.ibm.com>
+Subject: [PATCH net v2] ibmveth: Disable GSO for packets with small MSS
+Date: Fri, 17 Apr 2026 10:29:10 -0700
+Message-Id: <20260417172910.81433-1-mmc@linux.ibm.com>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260330-job-submission-fixes-cleanup-v1-0-7de8c09cef8c@imgtec.com>
-In-Reply-To: <20260330-job-submission-fixes-cleanup-v1-0-7de8c09cef8c@imgtec.com>
-From: Robert Nelson <robertcnelson@gmail.com>
-Date: Fri, 17 Apr 2026 12:01:24 -0500
-X-Gm-Features: AQROBzAmoDifysD6gsakq-ejyyvsk094ITMTDrSQ37RcrzyThndYubnsOWLSElk
-Message-ID: <CAOCHtYg6_Gob1uQ3RBp_vrjunJ5F2qi_Yvd6Z0OpKktVXuSuXg@mail.gmail.com>
-Subject: Re: [PATCH 0/8] drm/imagination: Job submission fixes and cleanup
-To: Alessio Belle <alessio.belle@imgtec.com>
-Cc: Frank Binns <frank.binns@imgtec.com>, Matt Coster <matt.coster@imgtec.com>, 
-	Brajesh Gupta <brajesh.gupta@imgtec.com>, Alexandru Dadu <alexandru.dadu@imgtec.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Sumit Semwal <sumit.semwal@linaro.org>, =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
-	Boris Brezillon <boris.brezillon@collabora.com>, dri-devel@lists.freedesktop.org, 
-	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, 
-	linaro-mm-sig@lists.linaro.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE3MDE3NCBTYWx0ZWRfX9zSfBUfj1NHh
+ Sjwzop2iUZkCfxFWX0z4p+JIj9pk1JJ3YY4Q63AENqPWpkjukTpBdfGWLPqQt5baquLGOi9+Tm5
+ 2B+MAWE/fYt1id/EQ/k0D6pAhDbZ7qbd/xp57WHGPk8UwzRnWzUr3cS3BKj6CJ01s2V9RFTZ21P
+ 3AHhKdKf6Bolp7nBCrYapfviQjuVjah+vwC98YDtdW5oWBKdrvyADOBD0s5hIFNncI8kf8L+xTU
+ 9ZQSb3QfyO1CsBAn1k9zMnbj5o+UceXeMrMvFPAoGeSRqIpKum+RSrTOMO3N0N0kQYwTMlEwHb+
+ OQUXBluWHoXOGapiDZqggHFl5B89H7vPsRvPZXnG/qQcUTVTSqLRh7THcXYEwGbu0+gDlxLUpCI
+ BI2G0v9GfmT+cer6dor3n9bs1NoevTwIppmQsUC6NV/KkFDWx3i6pDEkvzxPwxvwJqDvnOtKjgJ
+ RTtFk9FeEpnzH60G79Q==
+X-Proofpoint-ORIG-GUID: aBHJLVuFWYbfzP9VVzdQ9gDuZEjV3tIB
+X-Proofpoint-GUID: 9FTDNG4RccCHvMAhTrywhBTS6D84Jnnt
+X-Authority-Analysis: v=2.4 cv=fYidDUQF c=1 sm=1 tr=0 ts=69e26df1 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=U7nrCbtTmkRpXpFmAIza:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=0DtoxFBozvEr3AFqBbAA:9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-17_01,2026-04-17_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 impostorscore=0 clxscore=1015 malwarescore=0 phishscore=0
+ bulkscore=0 priorityscore=1501 spamscore=0 suspectscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604070000 definitions=main-2604170174
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-238507-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[imgtec.com,linux.intel.com,kernel.org,suse.de,gmail.com,ffwll.ch,linaro.org,amd.com,collabora.com,lists.freedesktop.org,vger.kernel.org,lists.linaro.org];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[18];
 	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-238508-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[ibm.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mmc@linux.ibm.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[robertcnelson@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.ibm.com:mid];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[rcn-ee.com:url,mail.gmail.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: DDFCF41D67E
+	RCVD_COUNT_SEVEN(0.00)[11]
+X-Rspamd-Queue-Id: 43F5E41D7DD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, Mar 30, 2026 at 3:21=E2=80=AFAM Alessio Belle <alessio.belle@imgtec=
-.com> wrote:
->
-> The first two commits fix rare bugs and should be backported to stable
-> branches.
+Some physical adapters on Power systems do not support segmentation
+offload when the MSS is less than 224 bytes. Attempting to send such
+packets causes the adapter to freeze, stopping all traffic until
+manually reset.
 
-Yeap, that triggered on BeaglePlay v7.0.0, Mesa 26.1.0-rc1 and xserver
-21.1.20-1 overnight..  testing now (and updating xserver to 21.1.22 as
-more glamor changes)..
+Implement ndo_features_check to disable GSO for packets with small MSS
+values. The network stack will perform software segmentation instead.
 
-https://gist.github.com/RobertCNelson/5e1dcf4c648a5bffaaf970c5a50e5c96
+The 224-byte minimum matches ibmvnic
+commit <f10b09ef687f> ("ibmvnic: Enforce stronger sanity checks
+on GSO packets")
+which uses the same physical adapters in SEA configurations.
 
-Regards,
+Validated using iptables to force small MSS values. Without the fix,
+the adapter freezes. With the fix, packets are segmented in software
+and transmission succeeds.
 
->
-> The rest is an attempt to cleanup and document the code to make it
-> a bit easier to understand.
->
-> Signed-off-by: Alessio Belle <alessio.belle@imgtec.com>
-> ---
-> Alessio Belle (8):
->       drm/imagination: Count paired job fence as dependency in prepare_jo=
-b()
->       drm/imagination: Fit paired fragment job in the correct CCCB
->       drm/imagination: Skip check on paired job fence during job submissi=
-on
->       drm/imagination: Rename pvr_queue_fence_is_ufo_backed() to reflect =
-usage
->       drm/imagination: Rename fence returned by pvr_queue_job_arm()
->       drm/imagination: Move repeated job fence check to its own function
->       drm/imagination: Update check to skip prepare_job() for fragment jo=
-bs
->       drm/imagination: Minor improvements to job submission code document=
-ation
->
->  drivers/gpu/drm/imagination/pvr_job.c              |   8 +-
->  drivers/gpu/drm/imagination/pvr_queue.c            | 154 +++++++++++++--=
-------
->  drivers/gpu/drm/imagination/pvr_queue.h            |   2 +-
->  .../gpu/drm/imagination/pvr_rogue_fwif_shared.h    |  10 +-
->  drivers/gpu/drm/imagination/pvr_sync.c             |   8 +-
->  drivers/gpu/drm/imagination/pvr_sync.h             |   2 +-
->  6 files changed, 110 insertions(+), 74 deletions(-)
-> ---
-> base-commit: 3bce3fdd1ff2ba242f76ab66659fff27207299f1
-> change-id: 20260330-job-submission-fixes-cleanup-83e01196c3e9
->
-> Best regards,
-> --
-> Alessio Belle <alessio.belle@imgtec.com>
->
->
+Fixes: 8641dd85799f ("ibmveth: Add support for TSO")
+Cc: stable@vger.kernel.org
+Reviewed-by: Brian King <bjking1@linux.ibm.com>
+Tested-by: Shaik Abdulla <shaik.abdulla1@ibm.com>
+Tested-by: Naveed Ahmed <naveedaus@in.ibm.com>
+Signed-off-by: Mingming Cao <mmc@linux.ibm.com>
+---
+v2: Add Fixes tag as requested by automated checks 
 
+ drivers/net/ethernet/ibm/ibmveth.c | 20 ++++++++++++++++++++
+ drivers/net/ethernet/ibm/ibmveth.h |  1 +
+ 2 files changed, 21 insertions(+)
 
---=20
-Robert Nelson
-https://rcn-ee.com/
+diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
+index 58cc3147afe2..7935c9384ef4 100644
+--- a/drivers/net/ethernet/ibm/ibmveth.c
++++ b/drivers/net/ethernet/ibm/ibmveth.c
+@@ -1756,6 +1756,25 @@ static int ibmveth_set_mac_addr(struct net_device *dev, void *p)
+ 	return 0;
+ }
+ 
++static netdev_features_t ibmveth_features_check(struct sk_buff *skb,
++						struct net_device *dev,
++						netdev_features_t features)
++{
++	/* Some physical adapters do not support segmentation offload with
++	 * MSS < 224. Disable GSO for such packets to avoid adapter freeze.
++	 */
++	if (skb_is_gso(skb)) {
++		if (skb_shinfo(skb)->gso_size < IBMVETH_MIN_LSO_MSS) {
++			netdev_warn_once(dev,
++					 "MSS %u too small for LSO, disabling GSO\n",
++					 skb_shinfo(skb)->gso_size);
++			features &= ~NETIF_F_GSO_MASK;
++		}
++	}
++
++	return features;
++}
++
+ static const struct net_device_ops ibmveth_netdev_ops = {
+ 	.ndo_open		= ibmveth_open,
+ 	.ndo_stop		= ibmveth_close,
+@@ -1767,6 +1786,7 @@ static const struct net_device_ops ibmveth_netdev_ops = {
+ 	.ndo_set_features	= ibmveth_set_features,
+ 	.ndo_validate_addr	= eth_validate_addr,
+ 	.ndo_set_mac_address    = ibmveth_set_mac_addr,
++	.ndo_features_check	= ibmveth_features_check,
+ #ifdef CONFIG_NET_POLL_CONTROLLER
+ 	.ndo_poll_controller	= ibmveth_poll_controller,
+ #endif
+diff --git a/drivers/net/ethernet/ibm/ibmveth.h b/drivers/net/ethernet/ibm/ibmveth.h
+index 068f99df133e..d87713668ed3 100644
+--- a/drivers/net/ethernet/ibm/ibmveth.h
++++ b/drivers/net/ethernet/ibm/ibmveth.h
+@@ -37,6 +37,7 @@
+ #define IBMVETH_ILLAN_IPV4_TCP_CSUM		0x0000000000000002UL
+ #define IBMVETH_ILLAN_ACTIVE_TRUNK		0x0000000000000001UL
+ 
++#define IBMVETH_MIN_LSO_MSS		224	/* Minimum MSS for LSO */
+ /* hcall macros */
+ #define h_register_logical_lan(ua, buflst, rxq, fltlst, mac) \
+   plpar_hcall_norets(H_REGISTER_LOGICAL_LAN, ua, buflst, rxq, fltlst, mac)
+-- 
+2.39.3 (Apple Git-146)
+
 
