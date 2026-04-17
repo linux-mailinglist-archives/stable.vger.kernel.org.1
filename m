@@ -1,176 +1,232 @@
-Return-Path: <stable+bounces-238454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238455-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KKGvCefn4WmKzgAAu9opvQ
-	(envelope-from <stable+bounces-238454-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 09:57:27 +0200
+	id gAsRCS/o4WmKzgAAu9opvQ
+	(envelope-from <stable+bounces-238455-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 09:58:39 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0FB9418450
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 09:57:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3B5A418495
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 09:58:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1A898300DEEC
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 07:57:26 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 128563012214
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 07:58:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20F30358372;
-	Fri, 17 Apr 2026 07:57:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD5D63603FE;
+	Fri, 17 Apr 2026 07:58:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="uOtKqEKg";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="ElttCxlc";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="uOtKqEKg";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="ElttCxlc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IBOpVpJg"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81F9E35AC0E
-	for <stable@vger.kernel.org>; Fri, 17 Apr 2026 07:57:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 765E735FF6E;
+	Fri, 17 Apr 2026 07:58:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776412643; cv=none; b=duLmWbuh9OZgZVEncKXPpSCH9wSWqS7r9gjIm0O2Gj+1CzVNuj0LQlLoLdfT0eYGFFsH/6GmC8JtNGg75jds0I+f1z1mwvpDMxsai96xPdmCZuGU1x44c+Z1djlqXjO3AkXhKqEFNiPs3b0m8Kknr4XhGFB2eN4viJcAMterd2E=
+	t=1776412707; cv=none; b=BybN89ynPaFlxvhghFEpowFmGB22769CTL3cLLkbfkyoVI/noSMigINeyeRRb12Qdg7kveUgjkFCGEvdHFAL9hWnClmjSRQBwoD5JUyhuHRhKQ9YUw34N3XkkzGhZvs/hJy90AjVPaIhunFKHDg0FGRHcX0VzP5KHHU7Nn9Yvh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776412643; c=relaxed/simple;
-	bh=h7V5gRHeUyFMvCWkEJCqp9jf9FaT/CFPhsUjrAEDjFg=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EhmgBd4GxVJ9i7d2bCgveSoyn9euljX3a6p8I8VSfewCONNWWKH6roU/sywzscAhGPcJ47Kzc2J7/jDMCFJ67FSaH2zzaiWnxMku//kZiNFFra9dmdZ3rQrQzQDnM3EuvPDpHq6Jm9UbS1LoxF/CUFOuoo4ZoeNxdu4OSSDTZt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=uOtKqEKg; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=ElttCxlc; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=uOtKqEKg; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=ElttCxlc; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id E5E336A98D;
-	Fri, 17 Apr 2026 07:57:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1776412640; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dONKJJqrYHVWrPyzvTCLEzVqE1Rbhu06dwqhlHYiL74=;
-	b=uOtKqEKgmKfdm/E42q706GhWNJy5Eemhi6eg5BlCNzasST7j7Vq85NxVx+OA2bI3ZbCrPX
-	t/azF/GBqvGCaIIMefWCGMWWxm3BYX56x4f8HdU0ie96XlyhRiw4lKqpcXuqKFs5GEhXg1
-	lSaVvay+MIaBS5xSw0hCVYOiQe07bh8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1776412640;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dONKJJqrYHVWrPyzvTCLEzVqE1Rbhu06dwqhlHYiL74=;
-	b=ElttCxlc88ZyxCbjdtiuIbeUGOMD609JQ6QNA3aHae1fd69ZBrCFvWM6dPMqOfqmgO/0Dz
-	ZISwa/xBaIZtRQDQ==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=uOtKqEKg;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ElttCxlc
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1776412640; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dONKJJqrYHVWrPyzvTCLEzVqE1Rbhu06dwqhlHYiL74=;
-	b=uOtKqEKgmKfdm/E42q706GhWNJy5Eemhi6eg5BlCNzasST7j7Vq85NxVx+OA2bI3ZbCrPX
-	t/azF/GBqvGCaIIMefWCGMWWxm3BYX56x4f8HdU0ie96XlyhRiw4lKqpcXuqKFs5GEhXg1
-	lSaVvay+MIaBS5xSw0hCVYOiQe07bh8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1776412640;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dONKJJqrYHVWrPyzvTCLEzVqE1Rbhu06dwqhlHYiL74=;
-	b=ElttCxlc88ZyxCbjdtiuIbeUGOMD609JQ6QNA3aHae1fd69ZBrCFvWM6dPMqOfqmgO/0Dz
-	ZISwa/xBaIZtRQDQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B00DE593AE;
-	Fri, 17 Apr 2026 07:57:20 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id W8qbKeDn4WkeHgAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Fri, 17 Apr 2026 07:57:20 +0000
-Date: Fri, 17 Apr 2026 09:57:20 +0200
-Message-ID: <87h5padnof.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: Guangshuo Li <lgs201920130244@gmail.com>
-Cc: Ivan Orlov <ivan.orlov0322@gmail.com>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] ALSA: pcmtest: fix reference leak on failed device registration
-In-Reply-To: <20260415193138.3861297-1-lgs201920130244@gmail.com>
-References: <20260415193138.3861297-1-lgs201920130244@gmail.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/30.2 Mule/6.0
+	s=arc-20240116; t=1776412707; c=relaxed/simple;
+	bh=VQUKrR9nWoPJsROPvUoUyOlHujMLWC88AwwtyCd0cKA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=glEthbgsDyGQMjjbLrObwhsxWObojXE1telacqKOUmK9zufNkMgJzx4f6mXOn4jFBVhpmftch3uaE2rTigRzDUQQTYOVcFMUhBA545jlLQhuqMmiVN5oBDIQlNy9MM6EInT0NRjDEQk+ZMPH33ogmuwMuIVQeP5HmfSS4ZrJ3Vw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IBOpVpJg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2086C19425;
+	Fri, 17 Apr 2026 07:58:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776412707;
+	bh=VQUKrR9nWoPJsROPvUoUyOlHujMLWC88AwwtyCd0cKA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=IBOpVpJgooMO5weqdtaWKIw5U1JbNTBM54JOf/4zV/Kr+ECkCLA9/Ho9PE3A+sei6
+	 U/ynTePxGr4L9Gukk9q6spzWkSKR8CYi3uL6C7qylZgTDhMyE7p/X8Bgao+7TFvNnh
+	 4ftsmv4HSqn9O9H1+yjQrKha24xFb3c2aMQAA+DXpmeFmzeRUZZM29X4EnErkFDMbg
+	 KeP/iQ+3GI6mQlwTyfghpWZvCU4g2P6HF/iM2S2Df3kmYhy6jh5feLydOEb2rRxVHk
+	 3h12d5X+jXELk5ev+/szz0RWCYnw3jvQVxar2pXcC0tT4dDBPk5sPTjwVvTlvhedyg
+	 BJuDrbnFncZQA==
+Message-ID: <b0c30cf3-751e-4f65-81ea-393c568dde56@kernel.org>
+Date: Fri, 17 Apr 2026 09:58:21 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Flag: NO
-X-Spam-Score: -2.01
-X-Spam-Level: 
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] powerpc/perf/hv-gpci: bound sysfs formatting with
+ sysfs_emit_at()
+To: Pengpeng Hou <pengpeng@iscas.ac.cn>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>, Kees Cook <kees@kernel.org>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20260417074825.22967-1-pengpeng@iscas.ac.cn>
+Content-Language: fr-FR
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+In-Reply-To: <20260417074825.22967-1-pengpeng@iscas.ac.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmail.com,perex.cz,suse.com,vger.kernel.org];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org,lists.ozlabs.org,vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-238455-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-238454-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tiwai@suse.de,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[suse.de:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[chleroy@kernel.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C0FB9418450
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,iscas.ac.cn:email]
+X-Rspamd-Queue-Id: E3B5A418495
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, 15 Apr 2026 21:31:38 +0200,
-Guangshuo Li wrote:
+
+
+Le 17/04/2026 à 09:48, Pengpeng Hou a écrit :
+> systeminfo_gpci_request() and
+> affinity_domain_via_partition_result_parse() hex-encode hypervisor data
+> into the single-page sysfs read buffer with sprintf(buf + *n, ...).
+> Both helpers only check PAGE_SIZE after the formatting loops have already
+> advanced past the end of the buffer.
 > 
-> When platform_device_register() fails in mod_init(), the embedded struct
-> device in pcmtst_pdev has already been initialized by
-> device_initialize(), but the failure path returns the error without
-> dropping the device reference for the current platform device:
+> Switch these appends to sysfs_emit_at() and stop once the sysfs buffer is
+> full.
+
+You are changing several time a single lines by multiples lines that 
+look pretty similar. Can you refactor in a helper function ?
+
 > 
->   mod_init()
->     -> platform_device_register(&pcmtst_pdev)
->        -> device_initialize(&pcmtst_pdev.dev)
->        -> setup_pdev_dma_masks(&pcmtst_pdev)
->        -> platform_device_add(&pcmtst_pdev)
-> 
-> This leads to a reference leak when platform_device_register() fails.
-> Fix this by calling platform_device_put() before returning the error.
-> 
-> The issue was identified by a static analysis tool I developed and
-> confirmed by manual review.
-> 
-> Fixes: 315a3d57c64c5 ("ALSA: Implement the new Virtual PCM Test Driver")
+> Fixes: 71f1c39647d8 ("powerpc/hv_gpci: Add sysfs file inside hv_gpci device to show processor bus topology information")
+> Fixes: a15e0d6a6929 ("powerpc/hv_gpci: Add sysfs file inside hv_gpci device to show affinity domain via partition information")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+> 
+> Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+> ---
+>   arch/powerpc/perf/hv-gpci.c | 56 +++++++++++++++++++++++++++++++------
+>   1 file changed, 47 insertions(+), 9 deletions(-)
+> 
+> diff --git a/arch/powerpc/perf/hv-gpci.c b/arch/powerpc/perf/hv-gpci.c
+> index 5cac2cf3bd1e..325b80f01629 100644
+> --- a/arch/powerpc/perf/hv-gpci.c
+> +++ b/arch/powerpc/perf/hv-gpci.c
+> @@ -11,6 +11,7 @@
+>   
+>   #include <linux/init.h>
+>   #include <linux/perf_event.h>
+> +#include <linux/sysfs.h>
+>   #include <asm/firmware.h>
+>   #include <asm/hvcall.h>
+>   #include <asm/io.h>
+> @@ -134,6 +135,7 @@ static unsigned long systeminfo_gpci_request(u32 req, u32 starting_index,
+>   			size_t *n, struct hv_gpci_request_buffer *arg)
+>   {
+>   	unsigned long ret;
+> +	int len;
+>   	size_t i, j;
+>   
+>   	arg->params.counter_request = cpu_to_be32(req);
+> @@ -176,9 +178,17 @@ static unsigned long systeminfo_gpci_request(u32 req, u32 starting_index,
+>   	for (i = 0; i < be16_to_cpu(arg->params.returned_values); i++) {
+>   		j = i * be16_to_cpu(arg->params.cv_element_size);
+>   
+> -		for (; j < (i + 1) * be16_to_cpu(arg->params.cv_element_size); j++)
+> -			*n += sprintf(buf + *n,  "%02x", (u8)arg->bytes[j]);
+> -		*n += sprintf(buf + *n,  "\n");
+> +		for (; j < (i + 1) * be16_to_cpu(arg->params.cv_element_size);
+> +		     j++) {
+> +			len = sysfs_emit_at(buf, *n, "%02x", (u8)arg->bytes[j]);
+> +			if (!len)
+> +				return -EFBIG;
+> +			*n += len;
+> +		}
+> +		len = sysfs_emit_at(buf, *n, "\n");
+> +		if (!len)
+> +			return -EFBIG;
+> +		*n += len;
+>   	}
+>   
+>   	if (*n >= PAGE_SIZE) {
+> @@ -465,6 +475,7 @@ static void affinity_domain_via_partition_result_parse(int returned_values,
+>   			int element_size, char *buf, size_t *last_element,
+>   			size_t *n, struct hv_gpci_request_buffer *arg)
+>   {
+> +	int len;
+>   	size_t i = 0, j = 0;
+>   	size_t k, l, m;
+>   	uint16_t total_affinity_domain_ele, size_of_each_affinity_domain_ele;
+> @@ -483,22 +494,49 @@ static void affinity_domain_via_partition_result_parse(int returned_values,
+>   	 */
+>   	while (i < returned_values) {
+>   		k = j;
+> -		for (; k < j + element_size; k++)
+> -			*n += sprintf(buf + *n,  "%02x", (u8)arg->bytes[k]);
+> -		*n += sprintf(buf + *n,  "\n");
+> +		for (; k < j + element_size; k++) {
+> +			len = sysfs_emit_at(buf, *n, "%02x", (u8)arg->bytes[k]);
+> +			if (!len) {
+> +				*n = PAGE_SIZE;
+> +				return;
+> +			}
+> +			*n += len;
+> +		}
+> +		len = sysfs_emit_at(buf, *n, "\n");
+> +		if (!len) {
+> +			*n = PAGE_SIZE;
+> +			return;
+> +		}
+> +		*n += len;
+>   
+>   		total_affinity_domain_ele = (u8)arg->bytes[k - 2] << 8 | (u8)arg->bytes[k - 3];
+>   		size_of_each_affinity_domain_ele = (u8)arg->bytes[k] << 8 | (u8)arg->bytes[k - 1];
+>   
+>   		for (l = 0; l < total_affinity_domain_ele; l++) {
+>   			for (m = 0; m < size_of_each_affinity_domain_ele; m++) {
+> -				*n += sprintf(buf + *n,  "%02x", (u8)arg->bytes[k]);
+> +				len = sysfs_emit_at(buf, *n, "%02x",
+> +						    (u8)arg->bytes[k]);
+> +				if (!len) {
+> +					*n = PAGE_SIZE;
+> +					return;
+> +				}
+> +				*n += len;
+>   				k++;
+>   			}
+> -			*n += sprintf(buf + *n,  "\n");
+> +			len = sysfs_emit_at(buf, *n, "\n");
+> +			if (!len) {
+> +				*n = PAGE_SIZE;
+> +				return;
+> +			}
+> +			*n += len;
+>   		}
+>   
+> -		*n += sprintf(buf + *n,  "\n");
+> +		len = sysfs_emit_at(buf, *n, "\n");
+> +		if (!len) {
+> +			*n = PAGE_SIZE;
+> +			return;
+> +		}
+> +		*n += len;
+>   		i++;
+>   		j = k;
+>   	}
 
-Thanks, applied now.
-
-
-Takashi
 
