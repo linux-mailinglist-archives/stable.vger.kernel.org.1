@@ -1,201 +1,230 @@
-Return-Path: <stable+bounces-238499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238500-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qPUFAsVQ4mlt4wAAu9opvQ
-	(envelope-from <stable+bounces-238499-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 17:24:53 +0200
+	id wMNfF9JR4mnx4QAAu9opvQ
+	(envelope-from <stable+bounces-238500-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 17:29:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75D9F41C947
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 17:24:52 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0526941C9C3
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 17:29:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 76524302C1FC
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 15:24:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CBFC93053897
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 15:28:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E044530E84B;
-	Fri, 17 Apr 2026 15:24:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92E5A32E128;
+	Fri, 17 Apr 2026 15:28:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="SaLAiSti"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Oi6Te+Y4";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="HydNxlpw"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38AE930AAA9
-	for <stable@vger.kernel.org>; Fri, 17 Apr 2026 15:24:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A5293242DF
+	for <stable@vger.kernel.org>; Fri, 17 Apr 2026 15:28:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776439485; cv=none; b=ZcQcjP1dC5/2aQVMyNxxNFlqc4GjD0jpo9Fo1PAZvvGtCW8yOrkwubYSS6aPN6ryR+s47zKds81f4ZrDaKEi3bvktowZ+Zga6cD51QC+5rnx8Hcv0BzUUVpEQa3Cm26cBzrtPgE/0coQ/vUHGDN0pLGYmwIXJgcWhN6nvo4gc+E=
+	t=1776439733; cv=none; b=iuOyvCdwBS85xX057evLFg8/o6M0E9LkB7GdjOu4IEdRHgSIw/LMN9S75F1iRLxfax6RsQpqvDaB15oO+h6k8HVdb9Cps1EJ9n2eQ+QxoDeH/oKW+UpRF+dd9+b62ZWgMYe58PMz/GedAWWNS+gpF/umJ2fMQDSFMA/zMNydgfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776439485; c=relaxed/simple;
-	bh=tPwzxOzm9uakxuwTOcaC6u3ngixwWgQyrsHL71YIYTU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=GaZkgB1PFG7vC1Ix1C56v5QtHk9QZVGty/o6D+PmSkgab0j2Uk6Ji4Fyn0QIcAh6wROLDORnUA0+q01SWbioy88IDDtMmUazrrwvp9neDB6o7yJaAuBCAteZm9Cj4v++uOBMF8S54DGLS67viGreQ4XRBPLZzmioxNyaU9FYJYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=SaLAiSti; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-488b8efed61so8900645e9.1
-        for <stable@vger.kernel.org>; Fri, 17 Apr 2026 08:24:44 -0700 (PDT)
+	s=arc-20240116; t=1776439733; c=relaxed/simple;
+	bh=i77yRE8WUhFEs7+CBpzlx+r5MC6ikp723zTT7FvNvsY=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=k9R/dt0ie4xXr//C48dax7RI3TNVooUQESQD0V3L5tP4QPo5lYbdDr90wbqv2fJY1SLh/4sd7kiuNtx9Hi9R5EwpgLI2/rn4+hQIMhHs7XwEmA+hQtuWUb2KmV3B3GzNOhgphVm3Eu+xhQlITTNmOs7Dv/3E55nXtKZHN5jCFSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Oi6Te+Y4; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=HydNxlpw; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63H9kYw31042150
+	for <stable@vger.kernel.org>; Fri, 17 Apr 2026 15:28:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	YaQtfdZufww/K73QQEA/A0d3XIh2ynwFA8tiiBqAF4Y=; b=Oi6Te+Y4gE+h0ub7
+	y6aiT0wkH1YE3pSd7X7Ii27zAY28xopCKQ2iKgZRr2E6SRo8QkUVJ/+Ni5SRfIDX
+	yU031UGE+uu+vU0DOnu/Q/N19ULH3dh7Opl0eGDK3cPr5Sn3vIIF8mla8L/BXsw/
+	CPfJScm8mdfCWW4woWqKudKGRSeH66BjgSb2hEtGZvcEtMECVaTATqhnKtEgP1U9
+	Qk/SjyAFQKKRNoXCb7zvwC8cT+aaQOV6Ly4SbRFObHEhfjIrw57aR+zqaF90BkAH
+	AGqwmKriE3TxwqSy1Dh07XRxg1br9hsrYGqP0MTssygjLus7onGHP5mjHSOxPhxX
+	0AEFaA==
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4dkjhds61s-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Fri, 17 Apr 2026 15:28:51 +0000 (GMT)
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-35da8eb0553so943975a91.1
+        for <stable@vger.kernel.org>; Fri, 17 Apr 2026 08:28:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1776439482; x=1777044282; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=q2bC6Hz2MAErwrJ8lu8pBzVTd3KLTohmvccUkPb3vXE=;
-        b=SaLAiStiECNPVv7hzFxEBOqpcT1fiu+DRIIMCNwSpG3Z5wFFMg57jhEbP9poaD8K8i
-         B7/GaVuSVDqdFrRbOj7EVgZ3aWEPB7T4g3L0A3mPc16QkXd1YfPxny8/rsUWDswmQRgP
-         /vyldmqxhu8XMKjqwdboBN01kHSXBiiPUtk8cqucxXOZccCZja0Sw3dblmNNqgQ+xFT3
-         3pRkihQNOsuIiWskdXbEH+Jwi7wt9zToo+uJkKnqSKm+mnLN7FM6x7G5AtcaWOvnQgPO
-         PSuZZsbcJAQt3t16NDalu6tXmGjlJ+jnZ0gm1pe0axNM48814mhEYFvnJ56WtVEQQyC/
-         bsFA==
+        d=oss.qualcomm.com; s=google; t=1776439731; x=1777044531; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=YaQtfdZufww/K73QQEA/A0d3XIh2ynwFA8tiiBqAF4Y=;
+        b=HydNxlpwja+/pvZkZEbdMf/EwdroItGwZocSFOT74slwHFAznCuDZkwUUTFz2xvLii
+         M4+3wLeTQ+yjPZZbP4/gba6wAsg1B2uGVC169a42TaRWAmJxt0ZPjPMMO13efbkSE6Mr
+         Nq1UrCh1jSUEzmNTeNXaMd6gDOu2BqVmiBmlSmFFponlssszsNIez0fxAsmiq3wNU98M
+         AJxPsyvElSQJ4p0Iouaf1scNMt1GjCY0FHl7SO2yGbzraeERBY/3q22AW9NPdt2FWGbf
+         2kO+9WonmdkNlHVks+u6roGOvKAiv65kbyo8r3Z/NHL68cMoLXZox0fYX/H6kSyfeLav
+         3jPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776439482; x=1777044282;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=q2bC6Hz2MAErwrJ8lu8pBzVTd3KLTohmvccUkPb3vXE=;
-        b=V2VWw6DVOyWwLUuTG5DiP4+HjzOZRGJun0aoHWFyBUkKQjAEnbwb7Ck4nw/yUtgqHu
-         hANVFSzZsRrj1iJzSFeT3o4vi35Qu/u7l4NESD2VYTbiyfGynTdXpN0lLDUqvzfCL40t
-         xdGj11+AHZE2XNU8LM3EAjTep6xqOTIDuylACHTJsnzvagVkQ2Tjog2ruo+LU9zy8Vhj
-         kD0eF4eKRk2g3W3FIpUJ9J2fAbyRLZ9+H3dEEgubxVKTi5mDU4ybWzm3CGb+adcNHBRZ
-         x90frCgOTIfj2rtO25mFnepP1IxzrMGNa4cU9L7y/Egd/cOb+oTERVKpPPf5i7kktEHt
-         2ipQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9UoOssyuj/ppNa8ZmV918KL0v+p9kHgkZn8CmIXMYAZDNKvydg0PozG5S7Ql6V1DhEdzO886E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwhwH99w8MsaiF/piapc8/D42oxWLNgzWhMvjb1X+53MSjOoRdt
-	IL0UxXHLIb97zwbZ0D1tNSbQ/M1PpSz2LvAA5dC46Qsz1TyZYtT93khSPfCu/4nl/K0=
-X-Gm-Gg: AeBDievzB74YmIGl41AC7We4pdAVnNlyPVvhBv00SFVVt8ifv1a9uS54BG29cRuuxfz
-	wOtiYZRGykYxLjPc97+IZmow/AGQXuZ6qYWqH11ChgQGyHIbpMNglQprLN8sgiUGafR05ihR/VX
-	lVoALytrm1qoJVvHKlMe3rqMhWnnCome0fy1vlCN4YAxckqEc0l6z/PUsZbjhZgIOwt0lrtU0Qm
-	sDP/mEd9gIPibJRifeSkdRm7rz/OcyKKdqiLUJCd/TokuqyGj2IvvufK/BbDI335yXFOSlWmn9R
-	hqfWlI5HGWETgEhWULs151DBjuwduNXREHjWWXwRvHg3I3HRirL+8VoMzCoQfmfBdM/JV7ANRzY
-	LXF5zNOOYWz9mOCoBEZM10KA/7dqs7dj0+XAKiWcm57fpHRiuWKrzZxnkNBtEVc9iuPZVS1Nez8
-	3GmQf3FFhKfpN8GoxG3IDaS0iPqbFhl/sl3rNQVDrxnURQKPXFJNAqn20SD7waAsU4G4NE9ngt7
-	HKpaUov1U72G7PlUw==
-X-Received: by 2002:a05:600c:c0d8:b0:485:fbd2:f72 with SMTP id 5b1f17b1804b1-488fb8838abmr31594955e9.1.1776439482480;
-        Fri, 17 Apr 2026 08:24:42 -0700 (PDT)
-Received: from ta2.c.googlers.com (17.83.155.104.bc.googleusercontent.com. [104.155.83.17])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488fb7aa593sm19318855e9.24.2026.04.17.08.24.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Apr 2026 08:24:42 -0700 (PDT)
-From: Tudor Ambarus <tudor.ambarus@linaro.org>
-Date: Fri, 17 Apr 2026 15:24:39 +0000
-Subject: [PATCH] mtd: spi-nor: debugfs: fix out-of-bounds read in
- spi_nor_params_show()
+        d=1e100.net; s=20251104; t=1776439731; x=1777044531;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=YaQtfdZufww/K73QQEA/A0d3XIh2ynwFA8tiiBqAF4Y=;
+        b=eog0d8aA/dexUBIA40DPDuyeUpW+ObZRNA0kFB6AthNRmDDAqmU8vQySA6z88qjHPP
+         aRNHxAgYpkAney2cs3l+n4idx4Unm5/OFCaBauj9hC13cJebBYNMq6BvjFccFoGdOG2r
+         iFdoA21J2ZrDE6da/ivx20sgP+lZ6edxrqoROmumfZHymajAv1OlfDdS9F/N6SP4vGEd
+         4/sD/2/rLHUj5Hxc6SMWBSM6SR0va3ncgJmpbH80ruKf/nPRYANgGhFyK5Gxwi2EeCVk
+         6e6xqbiJ41IexeqjTJA9j2SihNhvOFU6ydIwgai265YrQMFyXOmgORzboX6Um7iZAcZj
+         wkIw==
+X-Forwarded-Encrypted: i=1; AFNElJ/bcdkxRB/zTxJY5Lx04fldIav+61L/arF52nkvRjPHvaX02Tw7DxCZoJYyKdHfuYcpYnStq/s=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzzOTGXxZg3bRWKjwiupdogHudXJXhIUF07DwmJwwT0SxTQ01c5
+	gv/7fmEtAv4kiMu3lsXjvv/Pi4l38P0bQ/LbhFlUXhX/JNAZlMRrqXfeh7wQ/ZICgYStqGO4fVL
+	+/QIwPfnCtd1ZZGTxLl8bX6hNDaICdwEKnH1UKDgPUfJ9drvXXPDsyBOdrYg=
+X-Gm-Gg: AeBDietdm2t5QOXN493m8W1897qH4fsLuoQkEb16//vI/zKNVLP5vvoAX13S6s85UtP
+	Fee1jXmPtz9BlH5i9V23sy+K9tNvwdzc2uUnkudksvZeRRxXDYDAApLNYlx2zfX0tdF4N2k3VjF
+	y1t6d0rgXZKe88RbRe9vO4CyGBI+IlM/fyWifZghuFXvcnBXLJ6pCX83LDTW9oEKA8ryvTuKy3P
+	XUs9los+jlaTHyDyt1d8zsfNzdoMkRl8u4V9cTVIRV1sQcPLttY4LmINILzQbi+F+rNYeq4AYd+
+	6XYMNKx0FB591/PTqeoFLxIL0xhoT+l3LE8ixLdI1QEJ4OAraGmgMoPgXEqN5kU9bcS51xwzK8Z
+	MU2MPttyKgF4KpjCoIK/IvvLalHE0Wi2j4+9MKdRFdnLWYuCCqsVSFvmFsOKAyiRV
+X-Received: by 2002:a17:90b:3d02:b0:35b:d795:cf5d with SMTP id 98e67ed59e1d1-361401ec4b4mr2683461a91.5.1776439730734;
+        Fri, 17 Apr 2026 08:28:50 -0700 (PDT)
+X-Received: by 2002:a17:90b:3d02:b0:35b:d795:cf5d with SMTP id 98e67ed59e1d1-361401ec4b4mr2683418a91.5.1776439730131;
+        Fri, 17 Apr 2026 08:28:50 -0700 (PDT)
+Received: from [10.206.105.200] ([202.46.23.25])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3614195a9fbsm3284378a91.11.2026.04.17.08.28.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 17 Apr 2026 08:28:49 -0700 (PDT)
+Message-ID: <7cd1a0ff-53be-7eb7-7de7-420dd1ae7cf4@oss.qualcomm.com>
+Date: Fri, 17 Apr 2026 20:58:40 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+From: Vishnu Reddy <busanna.reddy@oss.qualcomm.com>
+Subject: Re: [PATCH 06/11] media: iris: Fix VM count passed to firmware
+To: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+Cc: Bryan O'Donoghue <bod@kernel.org>,
+        Vikash Garodia <vikash.garodia@oss.qualcomm.com>,
+        Dikshita Agarwal <dikshita.agarwal@oss.qualcomm.com>,
+        Abhinav Kumar <abhinav.kumar@linux.dev>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+ <conor+dt@kernel.org>, Joerg Roedel <joro@8bytes.org>,
+        Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>,
+        Stefan Schmidt <stefan.schmidt@linaro.org>,
+        Hans Verkuil <hverkuil@kernel.org>, linux-media@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, iommu@lists.linux.dev,
+        stable@vger.kernel.org
+References: <20260414-glymur-v1-0-7d3d1cf57b16@oss.qualcomm.com>
+ <20260414-glymur-v1-6-7d3d1cf57b16@oss.qualcomm.com>
+ <20260414063325.f3yag6gnmaysddkp@hu-mojha-hyd.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <20260414063325.f3yag6gnmaysddkp@hu-mojha-hyd.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260417-fix-oob-read-spi-nor-v1-1-2132e61a684a@linaro.org>
-X-B4-Tracking: v=1; b=H4sIALZQ4mkC/x2MQQqAIBAAvxJ7bkHNivpKdNDcai8aK0QQ/j3pO
- DAzL2QSpgxz84LQzZlTrKDbBrbTxYOQQ2UwygzK6hF3fjAlj0IuYL4YYxI0vVWT73RQ2kFNL6H
- q/dtlLeUD/N0NFmYAAAA=
-X-Change-ID: 20260417-fix-oob-read-spi-nor-25409b31d01a
-To: Pratyush Yadav <pratyush@kernel.org>, Michael Walle <mwalle@kernel.org>, 
- Takahiro Kuwano <takahiro.kuwano@infineon.com>, 
- Miquel Raynal <miquel.raynal@bootlin.com>, 
- Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>
-Cc: Pratyush Yadav <p.yadav@ti.com>, Michael Walle <michael@walle.cc>, 
- linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, Tudor Ambarus <tudor.ambarus@linaro.org>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1776439482; l=2246;
- i=tudor.ambarus@linaro.org; s=20241212; h=from:subject:message-id;
- bh=tPwzxOzm9uakxuwTOcaC6u3ngixwWgQyrsHL71YIYTU=;
- b=YEZm7VO5nMzhEC2ZjHHkxyVPrh8RqY7QfAve2g2czKQlHG7IhQzXTiAzdiWNjmv/aHtJCgjXz
- J7wTQsy5Gv4BqCCXi8QEBKX9Rwd5fEhlGUpMBPbQHGmhGJ31U8ZID0B
-X-Developer-Key: i=tudor.ambarus@linaro.org; a=ed25519;
- pk=uQzE0NXo3dIjeowMTOPCpIiPHEz12IA/MbyzrZVh9WI=
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Proofpoint-GUID: 0wFVGyUtWh38-_vDmjXqAFYlH023CTYX
+X-Authority-Analysis: v=2.4 cv=YpQ/gYYX c=1 sm=1 tr=0 ts=69e251b3 cx=c_pps
+ a=0uOsjrqzRL749jD1oC5vDA==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
+ a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=eoimf2acIAo5FJnRuUoq:22
+ a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=5Xy_6AgtP5T3jK3p2aAA:9 a=QEXdDO2ut3YA:10
+ a=mQ_c8vxmzFEMiUWkPHU9:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE3MDE1NSBTYWx0ZWRfX9NtI6J4fA4YL
+ LHHnc/7W3cKAEGKW6oKatPU2FEW1+GG1NfuuLRGbkH8wZ4leZpcD1K6HG9M8F9xmm0HSzxcPXHk
+ eyCNscZ5MgCq4RiMZMSueIoGzgb49UL6mX24j/q1KKQU5DDF0gz3aCW1ZyVpbYj5ylUaL1z150m
+ mr2MFobBbV2NB6R75gBjH3FQdRxOAs+d68nRtqVgi56JpJvyGulAhhTRUm61hscDElbgsUdRv7Y
+ dWlkTjb78hsIzXBs764uIFGd5VJP5pKUlkBgxGFCVSYScTxICIAAXSOHuD3kykPMOyWbsCOOm0I
+ uRfmoGAet3KYCvEiBMhAyYR5bHCX7V3TE5L/WnATL2Z0jpeUBN9TvnbYvFVWW44ZNf1BtEGJEIf
+ AS/jWboCGT1BVnl5rptLPEIZkBlyqVAzLKvBN80o56FMPyf2D7xdLooK5UXu/aAFwlIN0hGwiAv
+ 5o9R+WgnQCj44JronTg==
+X-Proofpoint-ORIG-GUID: 0wFVGyUtWh38-_vDmjXqAFYlH023CTYX
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-17_01,2026-04-17_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 adultscore=0 malwarescore=0 lowpriorityscore=0
+ phishscore=0 spamscore=0 suspectscore=0 clxscore=1015 impostorscore=0
+ bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2604070000
+ definitions=main-2604170155
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_FROM(0.00)[bounces-238499-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[22];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-238500-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[linaro.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:dkim,qualcomm.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,oss.qualcomm.com:dkim,oss.qualcomm.com:mid];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tudor.ambarus@linaro.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[busanna.reddy@oss.qualcomm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_RCPT(0.00)[stable,dt];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linaro.org:email,linaro.org:dkim,linaro.org:mid,sashiko.dev:url]
-X-Rspamd-Queue-Id: 75D9F41C947
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 0526941C9C3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Sashiko noticed an out-of-bounds read [1].
 
-In spi_nor_params_show(), the snor_f_names array is passed to
-spi_nor_print_flags() using sizeof(snor_f_names).
+On 4/14/2026 12:03 PM, Mukesh Ojha wrote:
+> On Tue, Apr 14, 2026 at 10:30:02AM +0530, Vishnu Reddy wrote:
+>> On Glymur, firmware interprets the value written to CPU_CS_SCIACMDARG3 as
+>> the number of virtual machines (VMs) and internally adds 1 to it. Writing
+>> 1 causes firmware to treat it as 2 VMs. Since only one VM is required,
+>> remove this write to leave the register at its reset value of 0. This does
+>> not affect other platforms as only Glymur firmware uses this register,
+>> earlier platform firmwares ignore it.
+>>
+>> Fixes: abf5bac63f68a ("media: iris: implement the boot sequence of the firmware")
+>> Cc:stable@vger.kernel.org
+>> Signed-off-by: Vishnu Reddy<busanna.reddy@oss.qualcomm.com>
+> If this is a fix, should be the first patch in the series., so that it
+> can be applied independently.
 
-Since snor_f_names is an array of pointers, sizeof() returns the total
-number of bytes occupied by the pointers
-	(element_count * sizeof(void *))
-rather than the element count itself. On 64-bit systems, this makes the
-passed length 8x larger than intended.
+Ack, I'll move it accordingly.
 
-Inside spi_nor_print_flags(), the 'names_len' argument is used to
-bounds-check the 'names' array access. An out-of-bounds read occurs
-if a flag bit is set that exceeds the array's actual element count
-but is within the inflated byte-size count.
-
-Correct this by using ARRAY_SIZE() to pass the actual number of
-string pointers in the array.
-
-Cc: stable@vger.kernel.org
-Fixes: 0257be79fc4a ("mtd: spi-nor: expose internal parameters via debugfs")
-Closes: https://sashiko.dev/#/patchset/20260417-die-erase-fix-v2-1-73bb7004ebad%40infineon.com [1]
-Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
----
-We shall assign a CVE to this. I'll look into how next week.
-
-Link: https://lore.kernel.org/linux-mtd/20260417-die-erase-fix-v2-1-73bb7004ebad@infineon.com/
----
- drivers/mtd/spi-nor/debugfs.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/mtd/spi-nor/debugfs.c b/drivers/mtd/spi-nor/debugfs.c
-index fa6956144d2e..14ba1680c315 100644
---- a/drivers/mtd/spi-nor/debugfs.c
-+++ b/drivers/mtd/spi-nor/debugfs.c
-@@ -1,5 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- 
-+#include <linux/array_size.h>
- #include <linux/debugfs.h>
- #include <linux/mtd/spi-nor.h>
- #include <linux/spi/spi.h>
-@@ -92,7 +93,8 @@ static int spi_nor_params_show(struct seq_file *s, void *data)
- 	seq_printf(s, "address nbytes\t%u\n", nor->addr_nbytes);
- 
- 	seq_puts(s, "flags\t\t");
--	spi_nor_print_flags(s, nor->flags, snor_f_names, sizeof(snor_f_names));
-+	spi_nor_print_flags(s, nor->flags, snor_f_names,
-+			    ARRAY_SIZE(snor_f_names));
- 	seq_puts(s, "\n");
- 
- 	seq_puts(s, "\nopcodes\n");
-
----
-base-commit: 43cfbdda5af60ffc6272a7b8c5c37d1d0a181ca9
-change-id: 20260417-fix-oob-read-spi-nor-25409b31d01a
-
-Best regards,
--- 
-Tudor Ambarus <tudor.ambarus@linaro.org>
-
+>> ---
+>>   drivers/media/platform/qcom/iris/iris_vpu_common.c | 1 -
+>>   1 file changed, 1 deletion(-)
+>>
+>> diff --git a/drivers/media/platform/qcom/iris/iris_vpu_common.c b/drivers/media/platform/qcom/iris/iris_vpu_common.c
+>> index 548e5f1727fd..bfd1e762c38e 100644
+>> --- a/drivers/media/platform/qcom/iris/iris_vpu_common.c
+>> +++ b/drivers/media/platform/qcom/iris/iris_vpu_common.c
+>> @@ -78,7 +78,6 @@ int iris_vpu_boot_firmware(struct iris_core *core)
+>>   	iris_vpu_setup_ucregion_memory_map(core);
+>>   
+>>   	writel(ctrl_init, core->reg_base + CTRL_INIT);
+>> -	writel(0x1, core->reg_base + CPU_CS_SCIACMDARG3);
+>>   
+>>   	while (!ctrl_status && count < max_tries) {
+>>   		ctrl_status = readl(core->reg_base + CTRL_STATUS);
+>>
+>> -- 
+>> 2.34.1
+>>
 
