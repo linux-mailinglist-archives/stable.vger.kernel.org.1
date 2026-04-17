@@ -1,165 +1,215 @@
-Return-Path: <stable+bounces-238528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238529-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2jH2FDPD4mlN+AAAu9opvQ
-	(envelope-from <stable+bounces-238528-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 18 Apr 2026 01:33:07 +0200
+	id ELPKEm3D4mlN+AAAu9opvQ
+	(envelope-from <stable+bounces-238529-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 18 Apr 2026 01:34:05 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EA0941F2C3
-	for <lists+stable@lfdr.de>; Sat, 18 Apr 2026 01:33:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD71941F2EF
+	for <lists+stable@lfdr.de>; Sat, 18 Apr 2026 01:34:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E81963015E3A
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 23:33:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 05AC5309B000
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 23:33:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26BDD34DB74;
-	Fri, 17 Apr 2026 23:33:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6634134DB7B;
+	Fri, 17 Apr 2026 23:33:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gzu1dg8b"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MY5tAm08"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD866199D8
-	for <stable@vger.kernel.org>; Fri, 17 Apr 2026 23:33:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.172
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776468782; cv=pass; b=lhy8D+mO/SjrsPRdosQHDzujyNPm8RoxxMEfX4nx+WmkTTqc9Kl07u4Mw2gZWOesmUrNhnuFEkymX4o3/fECTx0m3DdLyulIm+7HE/dypuFB4F1l3hGR10SJNVChj+RECM1V64Fdq5cPj39YKUBmdawK7ZGVU8wqQjX1g7J/gig=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776468782; c=relaxed/simple;
-	bh=qUzJ2BMhk2qoIHxwUszMJ2chiqeRX6VobF8MF0524HA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=F7FzOY1nyEV6i3FNdXfDLuUdZXEx9uPXvcnGsmod00fk+dliN/PhskzCcJFZvKDMqD2+0ZWxvFJvr2o2y1/TjyxgRxb2vIlxuu2RgANPD1EeoiVrAJRH1CFXe2k6GGuuamMoEXpso7cnmLslanBNLmY6531nSB200Aw4V5DG//4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gzu1dg8b; arc=pass smtp.client-ip=209.85.160.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-50d836552daso230101cf.0
-        for <stable@vger.kernel.org>; Fri, 17 Apr 2026 16:33:01 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776468780; cv=none;
-        d=google.com; s=arc-20240605;
-        b=kDyuzoRzvm31GFGc39TCHzsSeBL5QJJH0ESqixD7EOVu5IXJw7hgHzrUNEjEImn/1Z
-         D5TyoIVE3l7YlsfJNssv4USmO3oFGM01qmhz5o/5ohHCG/BEwrU7qY2x1LbMZHzRqcVV
-         5azhHqpuGSYT5/UZn3bnHSu1fk+yhzgj+5106QPUpO0SkvPkBQ4ki6tnTDerZNWVpsbv
-         iKE5atnI2+IEhohIL4rA74TjPE/gcku4QjndGbJy/SidzyoAgRQjUfXPIzPLzph7wnAk
-         uakuSpa0LTDlRFUO6UkvsIQM9AeRIf0qgoPqo3PD5QHDvA+h88UpQx7CveL9FhEk57Os
-         915g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=qUzJ2BMhk2qoIHxwUszMJ2chiqeRX6VobF8MF0524HA=;
-        fh=M1cIVfiI6R53U7tqLYIw04E9otkunkl+qm4+fcp3wyg=;
-        b=S8g2JHil8QkcQspYgxSOAIfv4BT5TvcWEpIj4lBrtnAQAUZCLL4yjZPKN3Vm+sI7f6
-         XgTSIMa1KIGtutGbFa9xwHxIhpWcaMe0Pdbbq6dDpyyaSh3yAPxKkEl/UcfPhHIZery7
-         u5tphyb1VhaCl/0XE/ps7WrneMUyNEvIzNpWZV+Dz9atmb8qel7fKzQz71nqyQn2J9Wm
-         t0xBTA6myYyjr7nA71xr70zoK6by8MmglhSWCyxcWhaMxVjwpxOxWph/H7JiocRFDoau
-         HBvAagrhQZrnXjxhRMVo4ut+NMANGbVGPFBNynhOgjs0/0c9CKOEwqLMQikE2H8BB+Y3
-         F59A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB352282F2C
+	for <stable@vger.kernel.org>; Fri, 17 Apr 2026 23:33:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.46
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776468790; cv=none; b=Nsvnacnp1jJN5zfvkdgT6LqT0jMdRgkBA/SZVBoYiV/FQGhT9tqiWwc9gyg0IFF8qO7DgQRojiGuORBaU2BtLhhCpzgqu8UmcqcpU0BgVozPIruQiegWJZHQgtud2ixjPyz2vnll2tFwuecb53wdYsP+sQPapKBvKqh7vaJItyg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776468790; c=relaxed/simple;
+	bh=ZEi/cXh1iFeFEuzHRRsXi1pBdEeLdy+9xs/YHLYCT44=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RCv4Jc3S36Neezm870oiTZ9k64Zy3ubBEvudvrhWFHdPpeJ58C/eO7Qg8cBapgWgqnvt1gbxTbccEkyhk2NXPB7ypJYjzsemPeLLxjdLn4N23UV0YMWtrz8OSN1/LohLlMG5ddh7pjFVa+etojhz+dMNrGliidFUJICgUAs6Ob4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MY5tAm08; arc=none smtp.client-ip=209.85.219.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-8a1e1817db6so9555816d6.2
+        for <stable@vger.kernel.org>; Fri, 17 Apr 2026 16:33:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776468780; x=1777073580; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qUzJ2BMhk2qoIHxwUszMJ2chiqeRX6VobF8MF0524HA=;
-        b=gzu1dg8bNTz5teQSYFViHxRAbLanteNSjeiG/nTFmD4XSXa4Es2EgxpILRcRyCDDFL
-         3JnrsXbohoyX1I4haFbSvHBAIo22fE4RwpTUX1JMRmfKi4IJoxANIZfaWKLK3B1er28d
-         p9GB//Yy8oa2q0ruuQPZvbEsJhhWJBWESU5qtEk79bUKOeIpJ2OXF1ALrNB/naf/P4G9
-         6Mej+LvKLFoc/QUHhZRrDYGhUA6s+NMdAoovB4H56primPudJy+0hIdFhfeigMO6XuHB
-         hNNXAxMrf7SCg89rGE/UBHuIaqtUaFSOm1F5pqZhsrMxP4Jpm/n3cIEJ+2CxpWwZwBrD
-         BkwA==
+        d=gmail.com; s=20251104; t=1776468788; x=1777073588; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=kWzyw9UpnNiqz+F9Ms8EKKcgZP/weNGJV02JLocqn4U=;
+        b=MY5tAm08ngFSWDjHG8LvsI7Q6wIdyJmV/q8DcV/OrEkObP6pemxhDaWMU0k0GkJATt
+         uPGVY83zP+44LN1haqKnZX2ySZlR5kQdPdJ/D7GCZ6CMbiaG10dJ71ILTDAVuGJK0Og3
+         iI7Gd4EFYqfSurMBI9JGn/pS8kyBs0UaTn0vBGd6rNemwdxl1Vy3vxRvGGwpL8X0tY5n
+         d33Ky/A9wXYNZtmvZF0S6V7nSWvxzXEMMXUR1Wc+VrmC+GTbx4kcYZKyobJLELKn1sIY
+         572Oelsgkcry/DXP+FJYJizZThP1A7VpAgrneRce7l/assX2mXIoFpwOp5tIst2JJX4u
+         VBNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776468780; x=1777073580;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=qUzJ2BMhk2qoIHxwUszMJ2chiqeRX6VobF8MF0524HA=;
-        b=ISN6mbJNNAF/lk+UyjfiTWXKWJ/p/3i/Ta+MhNhH/aelQ6tTcDsrlvL+GAYa3TrNDs
-         Wi6wgze1SvjhuLC/IOczEILnSjF0vWPhwmbYP9jU8ATHrAhp3kgosjAuU2J2Wb1qsSpj
-         MULZmPoQ/minMnXBeISQomBxPSiaAnEF3GJyaeAaqGOc88WksxVHbhedzcxsdV5nniYN
-         AGvj8MVsfqZwSIvjjypCp7nmS/PwSQgLTuyTYbbuBQPUO6lKftotqlJi1PECRB80t6hP
-         pM7KdhI6o0P8gT/vByTzQSPIZQ5MQ8ROIAHgPCho170FqtV4RetAdkc0P1Ui3kjROHhU
-         IzHg==
-X-Gm-Message-State: AOJu0Yx1tmJK1XFw00ZyVnisBYTJaOj0GZjO+r7WPNpEa0W0cE47nJGa
-	wDVAoVFN1ip4gL8KAMOyVSWMz49kyk6oLGPtPOXCYk+uC+OfuFndlPqZ2JBhe0rR8JVp/RfJWne
-	SJagyAOP7koQya76XMvWctru9y0kSw3WoDtp9Nsm+
-X-Gm-Gg: AeBDies6GPsIjKy+oV1MYF4dq8FE9MNfUhcn3dYzJMYuRvXl4IbopMEQesFvVLf7rjL
-	fYKszgoOU9P0GVwAGH0kasqsZBfsUuhu//+HFGErZ1X9hJ/rQlm5zm2Pi3BoZs4N3Suj8wRQgj5
-	f7i2mjNEoA+q6ytwAbmYr0KXPz7/e8TD17nEeHr8fpnW3eb9ANXX7GGD2TMKgKrOQiBQe8VW4qL
-	WdAgEpFi/MtfuEvnvtcLAJpzlgTNSErn8V81036Rq5tAaPzdaAjasVbSPNHbmdDoUjU9snz55Wb
-	UcAuwKaOlXrFcyjiZ4NR5Mg/uHuSB/Q+IhSJe6w=
-X-Received: by 2002:a05:622a:989:b0:50d:637c:cb64 with SMTP id
- d75a77b69052e-50e42a0876bmr5956351cf.6.1776468780182; Fri, 17 Apr 2026
- 16:33:00 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1776468788; x=1777073588;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kWzyw9UpnNiqz+F9Ms8EKKcgZP/weNGJV02JLocqn4U=;
+        b=MKP0DO/g+01c3sh8B3konlylHVNy4PH2CDC2ZXgt1yocGjErgOubBqGgtEP9JUg9VI
+         T47uKV9ujUwEiG5sOi7zOzCs8+NPJIKOmd9HjrTGx+qCX7iCyqT3OklhWyyBn3gsUtbX
+         YQmndkqiRt6XzsxpjD2yDdBcTilh6Evj930KuFx8KNmhNn3NAIv2cgQthYNLk35oCYYy
+         hOE0qRpljXT7XK9rQrMulbCm+C31CNGUnELglKEBcJ23BQCG975J6/b11cxjD8Gi9Qub
+         l7n7x7EUfy5o3/yOJkg2fANEGUv3Ooa7OpTXmn4S9jJEIYlY7IVXyoxZFGufqHZ6X8qr
+         4Qmg==
+X-Forwarded-Encrypted: i=1; AFNElJ8sHRx65g3Zx8isxbQs5ICUgxX6KN/Mbbz702V93CrldS9GYwKjStmEjGqoacdTMos4bnBUy0o=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwXD/TIZ6pNSPimmaAq7sHPwdMCB6mkqiyt5a9ru/rnDeujE+wk
+	azSQskK4+5aJaw9HG0uL2qAe/2X1wyXR/isgCZ2+8qjBQSXPzoYUF7GY
+X-Gm-Gg: AeBDiesV5J4HiCpwcGzJjsXmGz/zjHQNg9RZS4WoFqmxh3WNfoAm36SxwaopVP6NPwP
+	BuoJZfIMGl65zvWF4KNZuDF5xA4IzKfLeK5AG9TT0xVbjP8fZDj0t3kOOp+YfUasYgtsAWUVeYt
+	3Jo0f9sb8rJyGYiHHOAn9YrccQ0kr0uCTm3SHPfFujlE5M5JTJrwHftAjhRAVeHebUQmphCVooF
+	M8yBQQtoirDigvwdeEmREaKmLMxhdOsrHllaDbG26+to8hFgT8C3hf6mbsT3ZG32wiJBIyKj5JX
+	1iSH1zg86iuCMNt4n0C7J4rvdkMXjoOf8KvlsxrzhTGIPe/AaXwLE6td+M08Lrj1ExxJxfz4RGp
+	3px+d0CjRxsdTOV8XvqQDVHiNIgiRal2wFnAtfZLvBpX0UHKTLigXSNr0+x4xSdpjA6XLf+j771
+	8xAb2zuLqzooMWiNK7bFaSnuYoSdNWKazWLaUupgWg8IPUlj7uDfub/twSNz1RDsMpbBTkQXRG+
+	P7SFWEF32oAv6aLkq5wj1XAaTU8LfgRl2UrUipSj+1L2Vst49bZFQ==
+X-Received: by 2002:a05:6214:8085:b0:8ac:a2f6:fbf7 with SMTP id 6a1803df08f44-8b02812ba4amr64724626d6.40.1776468787802;
+        Fri, 17 Apr 2026 16:33:07 -0700 (PDT)
+Received: from server0.tail6e7dd.ts.net (c-68-48-65-54.hsd1.mi.comcast.net. [68.48.65.54])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b02ac429e9sm21701246d6.3.2026.04.17.16.33.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 17 Apr 2026 16:33:07 -0700 (PDT)
+From: Michael Bommarito <michael.bommarito@gmail.com>
+To: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Cc: ntfs3@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] ntfs3: bound to_move in indx_insert_into_root before hdr_insert_head
+Date: Fri, 17 Apr 2026 19:33:05 -0400
+Message-ID: <20260417233305.1787096-1-michael.bommarito@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAHWLEDHfXZScF5jNDzgOxGXf-MBDcVNtqW0DbNz8Ra8rtcuL+w@mail.gmail.com>
-In-Reply-To: <CAHWLEDHfXZScF5jNDzgOxGXf-MBDcVNtqW0DbNz8Ra8rtcuL+w@mail.gmail.com>
-From: Chenglong Tang <chenglongtang@google.com>
-Date: Fri, 17 Apr 2026 16:32:49 -0700
-X-Gm-Features: AQROBzCRDoRoqlmFhgpm5PRxW9yTaV4weYU3Obvq1Py8PtiWbd_glLtwlJLTctM
-Message-ID: <CAOdxtTbwipkyAfDakLAB6aVp6YkPWtKpDdVDUTz88WDB-18HXQ@mail.gmail.com>
-Subject: Re: [REGRESSION] Return change in 6.12.80+ with volatile mounting
-To: Derek Taylor <ddtaylor@google.com>
-Cc: stable@vger.kernel.org, regressions@lists.linux.dev, 
-	Kevin Berry <kpberry@google.com>, Amir Goldstein <amir73il@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-238528-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-238529-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,google.com,gmail.com];
-	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[chenglongtang@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[michaelbommarito@gmail.com,stable@vger.kernel.org];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: 9EA0941F2C3
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: AD71941F2EF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-CC Amir,
+indx_insert_into_root() promotes a full resident $INDEX_ROOT into
+$INDEX_ALLOCATION and copies all non-last resident root entries into
+a newly allocated INDEX_BUFFER via hdr_insert_head(). The source
+byte count 'to_move' is summed from the on-disk resident entry sizes
+and is independent of the destination buffer size, which comes from
+root->index_block_size (via indx->index_bits).
 
-For example, containerd 2.2.0 uses `volatile` instead of `fsync=3Dvolatile`=
-:
-https://github.com/containerd/containerd/blob/main/core/mount/temp.go#L91C1=
--L92C1
+A crafted NTFS image that keeps a valid, full resident root but
+shrinks root->index_block_size down to 512 after the root has been
+populated makes hdr_insert_head() memcpy attacker-controlled resident
+entry bytes past the end of the kmalloc(1u << indx->index_bits)
+allocation returned by indx_new(). For a 512-byte destination and a
+resident root whose non-last entries total 560 bytes, the memcpy
+overruns by 120 bytes and a following memmove extends the highest
+written offset to 136 bytes past the allocation. The overflow bytes
+are a direct copy of on-disk entries (via kmemdup), so they are
+fully attacker-controlled.
 
-On Fri, Apr 17, 2026 at 3:41=E2=80=AFPM Derek Taylor <ddtaylor@google.com> =
-wrote:
->
-> This change seems to have so far affected at least containerd in an
-> issue reported here
-> https://github.com/containerd/containerd/issues/13250.
->
-> In stable versions 6.12.80+, commit
-> 6c0cfbe020c0fcd2a544fcd2931fbc366ee3cd12 with the specific change
-> being:
-> [*] The mount option "volatile" is an alias to "fsync=3Dvolatile".
-> In this scenario, code relying on checking "volatile" will now fail
-> due to the return being "fsync=3Dvolatile".
->
-> #regzbot introduced:v6.12.80
+The write is reachable from unprivileged open(O_CREAT) on a mounted
+crafted NTFS image: a single sufficiently long create in a directory
+whose resident root is already full forces root promotion and
+triggers the copy.
+
+This is a controlled out-of-bounds write of 120-136 bytes past a
+kmalloc(index_block_size) allocation, with attacker-controlled
+content. It is a bounded adjacent-heap corruption primitive; it is
+not an arbitrary-address write. Successful exploitation into a named
+victim object depends on the surrounding slab layout.
+
+Reject the copy at the sink. The destination's INDEX_HDR already
+reports hdr_total (the payload capacity of the new buffer) and
+hdr_used (the bytes already consumed by the terminal END entry
+installed by indx_new()); require that to_move fits in the remaining
+payload before calling hdr_insert_head(). On mismatch, fail with
+-EINVAL and mark the filesystem as having a detected on-disk
+inconsistency, which is the same behaviour as the surrounding
+validation in this function.
+
+Fixes: 82cae269cfa9 ("fs/ntfs3: Add initialization of super block")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+---
+
+ - FYI, like the sp_size patch, I have a larger refactor that might
+   make this easier to avoid long term.  It's a mount-time variant
+   that adds the cross-check between root->index_block_size and
+   the resident root attribute size to indx_init() instead of the
+   sink, closing the whole "root entries do not fit declared
+   index_block_size" class for any future caller that reaches
+   hdr_insert_head from elsewhere.  Happy to send it as v2 if
+   you prefer the wider change;  otherwise, this minimal guard is
+   scoped to the minimal memcpy overrun site and is easier to
+   backport.
+
+ fs/ntfs3/index.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+diff --git a/fs/ntfs3/index.c b/fs/ntfs3/index.c
+index 2c43e7c27861..b7633b721d19 100644
+--- a/fs/ntfs3/index.c
++++ b/fs/ntfs3/index.c
+@@ -1740,6 +1740,22 @@ static int indx_insert_into_root(struct ntfs_index *indx, struct ntfs_inode *ni,
+ 	hdr_used = le32_to_cpu(hdr->used);
+ 	hdr_total = le32_to_cpu(hdr->total);
+ 
++	/*
++	 * The destination INDEX_BUFFER has 'hdr_total' bytes of payload
++	 * available after the header, of which 'hdr_used' are already
++	 * consumed by the single terminal END entry installed by
++	 * indx_new(). A crafted image can present a resident root whose
++	 * non-last entries (summing to 'to_move') exceed what fits in
++	 * this buffer; copying them unchecked would overrun the
++	 * kmalloc(1u << indx->index_bits) allocation backing the new
++	 * buffer. Reject the copy in that case.
++	 */
++	if (to_move > hdr_total - hdr_used) {
++		err = -EINVAL;
++		ntfs_set_state(sbi, NTFS_DIRTY_ERROR);
++		goto out_put_n;
++	}
++
+ 	/* Copy root entries into new buffer. */
+ 	hdr_insert_head(hdr, re, to_move);
+ 
+-- 
+2.53.0
+
 
