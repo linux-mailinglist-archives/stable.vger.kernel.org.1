@@ -1,152 +1,171 @@
-Return-Path: <stable+bounces-238426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238427-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kJNQIofT4WnQyQAAu9opvQ
-	(envelope-from <stable+bounces-238426-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 08:30:31 +0200
+	id mJgZFaXU4WnQyQAAu9opvQ
+	(envelope-from <stable+bounces-238427-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 08:35:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62F404176E6
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 08:30:27 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A07E417753
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 08:35:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 625D93036C1C
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 06:30:25 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id ABFDE300B509
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 06:35:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E39D03368B6;
-	Fri, 17 Apr 2026 06:30:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4DA732AAA8;
+	Fri, 17 Apr 2026 06:35:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="tqApBjn9"
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="ESNzGXNj"
 X-Original-To: stable@vger.kernel.org
-Received: from n169-111.mail.139.com (n169-111.mail.139.com [120.232.169.111])
+Received: from mailout1.samsung.com (mailout1.samsung.com [203.254.224.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAF173321BF
-	for <stable@vger.kernel.org>; Fri, 17 Apr 2026 06:30:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 394443321C1
+	for <stable@vger.kernel.org>; Fri, 17 Apr 2026 06:35:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.24
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776407421; cv=none; b=jIZ+JhR/WlgVFYcbR4efsBhuqxVps9FAnHk6k5BZ1eJc9fWn3Ub5Wt2EZK5ZvPDF2UbvmyFW+G8Yu8WWIlRjKDK3ElW4vRJqE2IuVBh0OV4/IkBVCQ1Zyln8uqp856pDMqguALWJ/LIPoW01TQn8UfGmflShGAcfiO6HNOKsrHA=
+	t=1776407710; cv=none; b=STPmf/D9t4sjzcAZzr3gNDUBJ4rH32GbmnPHHQEMhnPDaTKmxKLt+FRhzV8JsSe9GTRr54jgMFuFWfdWG0J0enb8PISiACZa4Yvt7DWfTEQcxgnux8YDHhbQ6s65a2549n1e8o9cBX6zxkssg0lgULpufngrjNzgOQX76dLjH5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776407421; c=relaxed/simple;
-	bh=klvzAtotyxmyxgNmdw2hRsdLNFqkDpFiWuALZgLSsxk=;
-	h=From:To:Subject:Date:Message-Id; b=mPFDlNtPczUE4/kVI6LIT3E1YEL+DJVNNXfiE1BQGeIrMsgBCvFD9IVaOhMKADqHT42hOesK6RCnUmc1mPCWW8WfsrRecXGfrhlj3Fr0qT3Oy0S/cUSYwFZLTzIk+oSBy++BWI0G54plvvIw3mQ7hbWRTudkChjhnh8D9cxOSeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=tqApBjn9; arc=none smtp.client-ip=120.232.169.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=139.com; s=dkim; l=0;
-	h=from:subject:message-id:to;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=tqApBjn9laq0nULh1gOrCm7ReDHSeakMfTctQ84nUzRfelnjk+arKFwVJCdqWQkyFeaHBA/jeqFCv
-	 VrkJncTpn9Izve46Xo2WV0fl27P0L9iUPJOh5/PhX1gUXXCV+/hshHrnx1a2rPB1q75i3UlhIr0M5z
-	 g3bXjE830yo3PJ9U=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM:                                                                                        
-X-RM-SPAM-FLAG:00000000
-Received:from NTT-kernel-dev (unknown[183.241.248.246])
-	by rmsmtp-lg-appmail-10-12088 (RichMail) with SMTP id 2f3869e1d371ae6-26d5b;
-	Fri, 17 Apr 2026 14:30:10 +0800 (CST)
-X-RM-TRANSID:2f3869e1d371ae6-26d5b
-From: Rajani Kantha <681739313@139.com>
-To: d.dulov@aladdin.ru,
-	johannes.berg@intel.com,
-	stable@vger.kernel.org
-Subject: [PATCH 5.15.y] wifi: cfg80211: cancel rfkill_block work in wiphy_unregister()
-Date: Fri, 17 Apr 2026 14:30:04 +0800
-Message-Id: <20260417063004.3267-1-681739313@139.com>
-X-Mailer: git-send-email 2.17.1
+	s=arc-20240116; t=1776407710; c=relaxed/simple;
+	bh=W3f3QPjWzyHt+IqnFm5wz1nKD/zeDiylTNwZCBWCqQI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
+	 References; b=JX8SjEsn/Op4pfgyBD1rhDk2uJW6zvFRObev36GRFhmvy1vye+YoNKoYrc6h26yRLm6uTOX6K2JypSoicPlx8O0vDt6/uyJ689JVi2fg/Ds/9h6vSsB4QruJf0cemL8Nj9iMxk/W0NCHNSVqHDUH/eE6BE4737spF76pvg6qzgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=ESNzGXNj; arc=none smtp.client-ip=203.254.224.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+Received: from epcas5p1.samsung.com (unknown [182.195.41.39])
+	by mailout1.samsung.com (KnoxPortal) with ESMTP id 20260417063504epoutp011547feff84b61b719119f8a66fcccf21~nEWVG3Hk01925119251epoutp01N
+	for <stable@vger.kernel.org>; Fri, 17 Apr 2026 06:35:04 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20260417063504epoutp011547feff84b61b719119f8a66fcccf21~nEWVG3Hk01925119251epoutp01N
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1776407704;
+	bh=Lpbhl2216kBv9raG5ut84Dg7CXhWy06hp8E7nL8IRwA=;
+	h=From:To:Cc:Subject:Date:References:From;
+	b=ESNzGXNjmCkk6x/jGml3+04vzkhFaUWsfcTcnMEM8/wlUbA2idZq0xM6yOekFnm5P
+	 bYqdk+/08oY/7P5YXYW28cELTjS+m4hUSkndVmnZXjCkqeN9TySsSPsi8eg3PmyrFJ
+	 PcW6UMDAjWdo7MI0w1x02Ao3T1tlYTj/DtpDcdSQ=
+Received: from epsnrtp01.localdomain (unknown [182.195.42.153]) by
+	epcas5p1.samsung.com (KnoxPortal) with ESMTPS id
+	20260417063504epcas5p18a1807b16f633b8c3085b2b030ffc2d5~nEWUrS6aT2717727177epcas5p1t;
+	Fri, 17 Apr 2026 06:35:04 +0000 (GMT)
+Received: from epcas5p4.samsung.com (unknown [182.195.38.94]) by
+	epsnrtp01.localdomain (Postfix) with ESMTP id 4fxlVb1dQDz6B9mG; Fri, 17 Apr
+	2026 06:35:03 +0000 (GMT)
+Received: from epsmtip1.samsung.com (unknown [182.195.34.30]) by
+	epcas5p4.samsung.com (KnoxPortal) with ESMTPA id
+	20260417063502epcas5p4f8f7fefb697e6d130ef7e9a78581ed84~nEWTRLC_w1182311823epcas5p45;
+	Fri, 17 Apr 2026 06:35:02 +0000 (GMT)
+Received: from INBRO002811.samsungds.net (unknown [107.122.5.126]) by
+	epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20260417063456epsmtip1d808da0beed8e4e1ede0b1e3ca08f119~nEWNgGJT90046800468epsmtip1U;
+	Fri, 17 Apr 2026 06:34:56 +0000 (GMT)
+From: Selvarasu Ganesan <selvarasu.g@samsung.com>
+To: Thinh.Nguyen@synopsys.com, gregkh@linuxfoundation.org,
+	paulz@synopsys.com, balbi@ti.com, linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: jh0801.jung@samsung.com, akash.m5@samsung.com, h10.kim@samsung.com,
+	alim.akhtar@samsung.com, thiagu.r@samsung.com, muhammed.ali@samsung.com,
+	Selvarasu Ganesan <selvarasu.g@samsung.com>, stable@vger.kernel.org, Pritam
+	Manohar Sutar <pritam.sutar@samsung.com>
+Subject: [PATCH v2] usb: dwc3: Move GUID programming after PHY
+ initialization
+Date: Fri, 17 Apr 2026 12:03:11 +0530
+Message-ID: <20260417063314.2359-1-selvarasu.g@samsung.com>
+X-Mailer: git-send-email 2.46.0.windows.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [1.04 / 15.00];
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20260417063502epcas5p4f8f7fefb697e6d130ef7e9a78581ed84
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+CMS-TYPE: 105P
+cpgsPolicy: CPGSC10-542,Y
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20260417063502epcas5p4f8f7fefb697e6d130ef7e9a78581ed84
+References: <CGME20260417063502epcas5p4f8f7fefb697e6d130ef7e9a78581ed84@epcas5p4.samsung.com>
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_REJECT(1.00)[139.com:s=dkim];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[samsung.com,none];
+	R_DKIM_ALLOW(-0.20)[samsung.com:s=mail20170921];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-238426-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-238427-lists,stable=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,samsung.com:email,samsung.com:dkim,samsung.com:mid];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[139.com];
-	NEURAL_SPAM(0.00)[0.934];
-	RCPT_COUNT_THREE(0.00)[3];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[681739313@139.com,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[samsung.com:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[selvarasu.g@samsung.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[139.com:-];
-	TO_DN_NONE(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[139.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,139.com:mid,139.com:email,linuxtesting.org:url,intel.com:email]
-X-Rspamd-Queue-Id: 62F404176E6
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[8]
+X-Rspamd-Queue-Id: 5A07E417753
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Daniil Dulov <d.dulov@aladdin.ru>
+The Linux Version Code is currently written to the GUID register before
+PHY initialization. Certain PHY implementations (such as Synopsys eUSB
+PHY performing link_sw_reset) clear the GUID register to its default
+value during initialization, causing the kernel version information to
+be lost.
 
-commit 767d23ade706d5fa51c36168e92a9c5533c351a1 upstream.
+Move the GUID register programming to occur after PHY initialization
+completes to ensure the Linux version information persists.
 
-There is a use-after-free error in cfg80211_shutdown_all_interfaces found
-by syzkaller:
-
-BUG: KASAN: use-after-free in cfg80211_shutdown_all_interfaces+0x213/0x220
-Read of size 8 at addr ffff888112a78d98 by task kworker/0:5/5326
-CPU: 0 UID: 0 PID: 5326 Comm: kworker/0:5 Not tainted 6.19.0-rc2 #2 PREEMPT(voluntary)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-Workqueue: events cfg80211_rfkill_block_work
-Call Trace:
- <TASK>
- dump_stack_lvl+0x116/0x1f0
- print_report+0xcd/0x630
- kasan_report+0xe0/0x110
- cfg80211_shutdown_all_interfaces+0x213/0x220
- cfg80211_rfkill_block_work+0x1e/0x30
- process_one_work+0x9cf/0x1b70
- worker_thread+0x6c8/0xf10
- kthread+0x3c5/0x780
- ret_from_fork+0x56d/0x700
- ret_from_fork_asm+0x1a/0x30
- </TASK>
-
-The problem arises due to the rfkill_block work is not cancelled when wiphy
-is being unregistered. In order to fix the issue cancel the corresponding
-work in wiphy_unregister().
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Fixes: 1f87f7d3a3b4 ("cfg80211: add rfkill support")
+Fixes: fa0ea13e9f1c ("usb: dwc3: core: write LINUX_VERSION_CODE to our GUID register")
 Cc: stable@vger.kernel.org
-Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
-Link: https://patch.msgid.link/20260211082024.1967588-1-d.dulov@aladdin.ru
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Rajani Kantha <681739313@139.com>
+Reported-by: Pritam Manohar Sutar <pritam.sutar@samsung.com>
+Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
 ---
- net/wireless/core.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/dwc3/core.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/net/wireless/core.c b/net/wireless/core.c
-index 22e6fd12f201..7612b2725286 100644
---- a/net/wireless/core.c
-+++ b/net/wireless/core.c
-@@ -1105,6 +1105,7 @@ void wiphy_unregister(struct wiphy *wiphy)
- 	cancel_work_sync(&rdev->wiphy_work);
+diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
+index 161a4d58b2cec..0d3c7e7b2262f 100644
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -1341,12 +1341,6 @@ int dwc3_core_init(struct dwc3 *dwc)
  
- 	flush_work(&rdev->scan_done_wk);
-+	cancel_work_sync(&rdev->rfkill_block);
- 	cancel_work_sync(&rdev->conn_work);
- 	flush_work(&rdev->event_work);
- 	cancel_delayed_work_sync(&rdev->dfs_update_channels_wk);
+ 	hw_mode = DWC3_GHWPARAMS0_MODE(dwc->hwparams.hwparams0);
+ 
+-	/*
+-	 * Write Linux Version Code to our GUID register so it's easy to figure
+-	 * out which kernel version a bug was found.
+-	 */
+-	dwc3_writel(dwc, DWC3_GUID, LINUX_VERSION_CODE);
+-
+ 	ret = dwc3_phy_setup(dwc);
+ 	if (ret)
+ 		return ret;
+@@ -1378,6 +1372,12 @@ int dwc3_core_init(struct dwc3 *dwc)
+ 	if (ret)
+ 		goto err_exit_phy;
+ 
++	/*
++	 * Write Linux Version Code to our GUID register so it's easy to figure
++	 * out which kernel version a bug was found.
++	 */
++	dwc3_writel(dwc, DWC3_GUID, LINUX_VERSION_CODE);
++
+ 	dwc3_core_setup_global_control(dwc);
+ 	dwc3_core_num_eps(dwc);
+ 
 -- 
-2.17.1
-
+2.34.1
 
 
