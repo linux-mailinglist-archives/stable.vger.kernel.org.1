@@ -1,190 +1,319 @@
-Return-Path: <stable+bounces-238421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238422-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GGSNMkLQ4WnQyQAAu9opvQ
-	(envelope-from <stable+bounces-238421-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 08:16:34 +0200
+	id IHG5N8TR4WnQyQAAu9opvQ
+	(envelope-from <stable+bounces-238422-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 08:23:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFB03417546
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 08:16:29 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 599104175D9
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 08:22:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A2C5E305F1BE
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 06:12:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 634A531AF7B1
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 06:18:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B650D36F43E;
-	Fri, 17 Apr 2026 06:12:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A351736CDE8;
+	Fri, 17 Apr 2026 06:18:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sPoEolU6"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="s570TsgY";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="rhgN9YaQ";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="s570TsgY";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="rhgN9YaQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vs1-f53.google.com (mail-vs1-f53.google.com [209.85.217.53])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4266436DA1B
-	for <stable@vger.kernel.org>; Fri, 17 Apr 2026 06:12:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B837E36E468
+	for <stable@vger.kernel.org>; Fri, 17 Apr 2026 06:18:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776406360; cv=none; b=gAC+t1vsN5n5ORAfzWQk1yOuNZgC7ZnS/lIN/cbgfQowydWrFR0yYv8fkZzKEZRZAyP+PTx4Xov50UKwo+kk4sR1PN1/I2EcjnrQhHEJJ7Rg9Mi/ziRIEJ0s0dgxFLNyIdXzEEnzHRxZ6Dghk5JpJtp/MZmOOko7wF+cZzVV7xY=
+	t=1776406683; cv=none; b=U1xpIW/hYGvATV3ePJf4WYq5pp8Vwk45X1LcEHrykdJS+FJoFD3p1SIl7SPcvDESP6qP2mWrHuq0QmPBgcAJuYrFs6xEa6784e9qMR3pt+uOSXoOCJLp0eqEt/asparPC4ZCmlzFioFn4cFCUWrbPsb4nLOIg0MgpGl6N8E6VQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776406360; c=relaxed/simple;
-	bh=Mkn9VdUMU/TvZ8JqVerjm7KuO8HxezoafwaUYXwJEtE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FmmBlzGtCK0xf9a/cmBxLOEOA86wdQed9TJ2VaCWZD4oSMMtDB6qcJ5p3qv8RupZpJZJJ4H6VRtQK4CwiWog3hGCtHTE0+hiOevhIhLdwNol5c9Mm0BjgEqJ9f9OkZQbTb1MEZn2qjlFfSjufcQES+lAyS+JXla2UAfcYBf22II=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sPoEolU6; arc=none smtp.client-ip=209.85.217.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vs1-f53.google.com with SMTP id ada2fe7eead31-60580b17793so79108137.1
-        for <stable@vger.kernel.org>; Thu, 16 Apr 2026 23:12:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776406358; x=1777011158; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=chi0rjV8j6xNxAz/qcwmHJNYbKqeX24uRogPLx+nbHQ=;
-        b=sPoEolU6BuGWGmhU+V04B2Ir8TG6k1/TqAYP4ENAflbuDjym/NM8KspYD2ZkrPBXeJ
-         kGujltRbmj/gSaFaTN3wh63FwLr0ZfvCKRujLR5X71O1nmVWfc+nV7cRPtAp395xNdFp
-         YSVcYokYyFlzDH7izxvO+4S2twu0lIglTrOZcKkN3g2KwCR7vANRK4Dqqm6cJxzjTSzD
-         ne78wSKFK9SHNPOaneTU/VYevEVtGPWPqp3a7PbCnmeSPxMQMWx8ItxpVjE5X+E1LWOh
-         yw74YEEPK9eY2qq3GW4N10Yez6vl9zwe4z8rW/9vj2UXdIFhzDsegp9WZF44qM9fO/iL
-         frRg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776406358; x=1777011158;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=chi0rjV8j6xNxAz/qcwmHJNYbKqeX24uRogPLx+nbHQ=;
-        b=oUna/e7OgDPrHucHoNQYcsxFUmwcj4279gxu02zy/q2osnjRcv8lP9NPK6kaHyLqSY
-         Tz1VjuboXDxrloLQyxJjTbekUYpZqHRMuW4NE6S1Y/rF/Gk++28y81QH5l0tCUQ6Bt4t
-         6fL46p4Hm8JER9epKasm614CO9sYnF34WHs9AcOnMbjh31sZ0hb6JhvLGaYEcaSIYJzq
-         KnXoMrjoJ5U1dNSicRKQpzojefLBdPkE5Hvre90XEZcXm9XlyxZuhWMnxyMaUHG2sRZZ
-         ELMCs0QkzBBr+hRZNRs+YfJC03l7RGJTat9Aklv/M1d7EtZbfQ70+36GsDaJWLgTNp0P
-         AZtg==
-X-Forwarded-Encrypted: i=1; AFNElJ9YgovjL1lJrgsikGz0uWes0T3kQv3al1qydKjxIEYlCEnS8fGbvc4gzyyVttDIs+e5D2rw5eE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxekX5kCo838a7ORz70WLx858hD5Gk7jyJ0HluBzqxwDygnVed2
-	g/gCVEphxAurWI1H0MHHJf96pI4h+8k4KJoUHJmeHGtzO624yiWf8QKE
-X-Gm-Gg: AeBDiev4FBi0P/ybK/tpSSA0ADo25/xKfZgdnKUVAMOHj2Pszr6ZO6XWhhQi1ZeJ9xP
-	CBMVviTkEm2kfL/7485I/ElcDpdB9JKDvMoqTRngekvb0JqwkxsKiFuQCWhxqQcNazB1QRMgOLO
-	U/fgx2Ye81uvqQVu16ryRBPP9QCYQnur3HNpCthAuReLosFom0P/1nU/jmyPqUArtEab1+fQ1PV
-	Xp1zSb66nhLLavGbksVG1ixWBJMf/CHiaowPTL+qZ8Fv801uyH/ZyueMusZpDOIBpIS6RiSBK+t
-	oohrAu7Ip+cVfSiZw/b0CIDP+A7ucMIsYwBmltUvVS2KP6GDx3rz2rRtxAW4Iqqi7YXr/yLpJcG
-	e3VqmlANMPPUFYvD/ZGzYpyvut5uqmjuurbIrsaOZQ3KcGuZVf3uFnRQoyFPXINouv7cN3Ug9mL
-	m3dN5cyst0yi8okzm9YQDddTutRzq8+vnBYXQhTkS6qyFGlE9+zvvcsqAlNQwJZIk=
-X-Received: by 2002:a05:6102:5122:b0:608:759a:53bc with SMTP id ada2fe7eead31-616f1c595b4mr526551137.0.1776406358162;
-        Thu, 16 Apr 2026 23:12:38 -0700 (PDT)
-Received: from localhost.localdomain ([102.244.98.124])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-9589093a8bbsm297947241.3.2026.04.16.23.12.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Apr 2026 23:12:37 -0700 (PDT)
-From: Delene Tchio Romuald <delenetchior1@gmail.com>
-To: gregkh@linuxfoundation.org
-Cc: error27@gmail.com,
-	luka.gejak@linux.dev,
-	hansg@kernel.org,
-	linux-staging@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Delene Tchio Romuald <delenetchior1@gmail.com>
-Subject: [PATCH v6 5/5] staging: rtl8723bs: fix negative length in WEP decryption
-Date: Fri, 17 Apr 2026 07:10:48 +0100
-Message-ID: <20260417061048.62484-6-delenetchior1@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260417061048.62484-1-delenetchior1@gmail.com>
-References: <20260417061048.62484-1-delenetchior1@gmail.com>
+	s=arc-20240116; t=1776406683; c=relaxed/simple;
+	bh=uadvgaf6TR8bTc5nIUrJAfDh9B/jO14oeDy2OK40uJY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=iy74EslS//WwKeuMlHoMgJRnMFjpYKpb52KwvRQ3rPDO3H/5Z+aKpAF2Lt312fQGNcf3zYnvs8oAuE/ava5gH7cOSuYReXH66QcZRa3wd+Pl/ZDydjDUSVLrfOy7760WoZOK57beoycWb1e0QM7Bc2hBx3c/BZfDgSUI5BKW9FI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=s570TsgY; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=rhgN9YaQ; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=s570TsgY; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=rhgN9YaQ; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id B20725BD5A;
+	Fri, 17 Apr 2026 06:17:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1776406675; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=vF/g1RxnoC67U6Gdw0O+q+70x7Y8fx1UBEis0Zy5ZfM=;
+	b=s570TsgYPLdFJ1rIchXJQipPVHqBDzH+qnSGrOQanSSEBNNrgVP13BvKfDDmZ5CcKUfqE2
+	PdYuB5JBrNck4kHvsbSi2s2xcG7Pw0e4fjN2jixsi22wxP7RZ8SN8EN7vvnpl9+/CKCUE0
+	rwzOuMPyJGp/XO3NYBUMgJnVFMiASyU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1776406675;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=vF/g1RxnoC67U6Gdw0O+q+70x7Y8fx1UBEis0Zy5ZfM=;
+	b=rhgN9YaQWct27+QgwS1TQCk5jN9zSj6vmNkdOZIf7ZaFO7T+/DJvTVZZwkMk/oo+/gXJmb
+	6ixjQ0LzM+SNJvAg==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1776406675; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=vF/g1RxnoC67U6Gdw0O+q+70x7Y8fx1UBEis0Zy5ZfM=;
+	b=s570TsgYPLdFJ1rIchXJQipPVHqBDzH+qnSGrOQanSSEBNNrgVP13BvKfDDmZ5CcKUfqE2
+	PdYuB5JBrNck4kHvsbSi2s2xcG7Pw0e4fjN2jixsi22wxP7RZ8SN8EN7vvnpl9+/CKCUE0
+	rwzOuMPyJGp/XO3NYBUMgJnVFMiASyU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1776406675;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=vF/g1RxnoC67U6Gdw0O+q+70x7Y8fx1UBEis0Zy5ZfM=;
+	b=rhgN9YaQWct27+QgwS1TQCk5jN9zSj6vmNkdOZIf7ZaFO7T+/DJvTVZZwkMk/oo+/gXJmb
+	6ixjQ0LzM+SNJvAg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 313E0593AE;
+	Fri, 17 Apr 2026 06:17:55 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id JDSZCpPQ4WmdPAAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Fri, 17 Apr 2026 06:17:55 +0000
+Message-ID: <34ecfa0c-a6f5-48b0-b706-27e1f9868dd7@suse.de>
+Date: Fri, 17 Apr 2026 08:17:54 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/4] drm/hibmc: Use drm_atomic_helper_check_plane_state()
+To: Yongbang Shi <shiyongbang@huawei.com>, tiantao6@hisilicon.com,
+ kong.kongxinwei@hisilicon.com, sumit.semwal@linaro.org,
+ yongqin.liu@linaro.org, jstultz@google.com,
+ maarten.lankhorst@linux.intel.com, mripard@kernel.org, airlied@gmail.com,
+ simona@ffwll.ch
+Cc: dri-devel@lists.freedesktop.org, Rongrong Zou <zourongrong@gmail.com>,
+ Sean Paul <seanpaul@chromium.org>, Dmitry Baryshkov <lumag@kernel.org>,
+ stable@vger.kernel.org,
+ "Liangjian(Jim,Kunpeng Solution Development Dept)"
+ <liangjian010@huawei.com>, Chenjianmin <chenjianmin@huawei.com>,
+ "fengsheng (A)" <fengsheng5@huawei.com>, "helin (T)" <helin52@h-partners.com>
+References: <20260413085037.17491-1-tzimmermann@suse.de>
+ <20260413085037.17491-2-tzimmermann@suse.de>
+ <7fd5022a-9a5d-4976-9d4a-1e0fa2022eae@huawei.com>
+ <1805a7d4-a4a0-48ee-ac6e-33e5d9d5fdc9@suse.de>
+ <fffc172f-6bfe-4947-8f3b-52a1534b1d3b@huawei.com>
+Content-Language: en-US
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <fffc172f-6bfe-4947-8f3b-52a1534b1d3b@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spam-Flag: NO
+X-Spam-Score: -4.30
+X-Spam-Level: 
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,linux.dev,kernel.org,lists.linux.dev,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-238421-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[lists.freedesktop.org,gmail.com,chromium.org,kernel.org,vger.kernel.org,huawei.com,h-partners.com];
+	TAGGED_FROM(0.00)[bounces-238422-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[huawei.com,hisilicon.com,linaro.org,google.com,linux.intel.com,kernel.org,gmail.com,ffwll.ch];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[suse.de:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[delenetchior1@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FROM_NEQ_ENVFROM(0.00)[tzimmermann@suse.de,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[gmail.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[get_maintainer.pl:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: EFB03417546
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bootlin.com:url,suse.com:url,huawei.com:email,suse.de:dkim,suse.de:mid]
+X-Rspamd-Queue-Id: 599104175D9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-In rtw_wep_decrypt(), the payload length is computed as:
+Hi
 
-    length = frame->len - prxattrib->hdrlen - prxattrib->iv_len;
+Am 16.04.26 um 15:22 schrieb Yongbang Shi:
+[...]
+> However, I believe the modified version is the better implementation,
+> the plane check should be complete even if the CRTC is not enabled.
 
-All operands are unsigned. If the frame is shorter than the sum of
-the header length, IV length and the 4-byte ICV, this subtraction
-wraps around or produces a value smaller than 4; the subsequent
-crc32_le(~0, payload, length - 4) call then wraps length - 4 to a
-huge value and reads past the end of the receive buffer.
+Great.
 
-An attacker within WiFi radio range can exploit this by sending a
-crafted short WEP-encrypted frame. No authentication is required.
+I agree that the logic in the helper is non-intuitive. I'll send you an 
+updated series with an improved commit message next week.
 
-Validate that the frame is large enough to contain at least the
-4-byte ICV on top of the header and IV before computing length.
+Best regards
+Thomas
 
-Found by reviewing length arithmetic in the WEP decrypt path.
-Not tested on hardware.
+>
+> [1]
+> https://elixir.bootlin.com/linux/v7.0/source/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_de.c#L84
+> [2]
+> https://elixir.bootlin.com/linux/v7.0/source/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_de.c#L94
+>
+>
+>>
+>>>
+>>>> +    if (ret)
+>>>> +        return ret;
+>>>> +    else if (!new_plane_state->visible)
+>>>>            return 0;
+>>>>    -    if (new_plane_state->crtc_x + new_plane_state->crtc_w >
+>>>> -        crtc_state->adjusted_mode.hdisplay ||
+>>>> -        new_plane_state->crtc_y + new_plane_state->crtc_h >
+>>>> -        crtc_state->adjusted_mode.vdisplay) {
+>>>> -        drm_dbg_atomic(plane->dev, "visible portion of plane is
+>>>> invalid\n");
+>>>> -        return -EINVAL;
+>>>> -    }
+>>>> -
+>>> The purpose of this check is to ensure that the right and bottom
+>>> boundaries of the plane do not extend beyond the crtc. In
+>>> `drm_atomic_helper_check_plane_state`, `drm_mode_get_hv_timing` is
+>>> called to retrieve the crtc boundaries, and `drm_rect_clip_scaled` is
+>>> used to clip the plane, any portions extending beyond the right and
+>>> bottom boundaries are discarded.
+>>>
+>>> I'd like to confirm that my understanding is correct? previously, the
+>>> check failed if the plane exceeded the boundaries, but now, after
+>>> `drm_atomic_helper_check_plane_state` is called, the plane is clipped to
+>>> fit within the boundaries.
+>> Yes. This sets plane_state->dst, which is clipped to the size of the
+>> display mode. But it also tests that the primary plane covers the whole
+>> display.
+>>
+>>> in function drm_rect_clip_scaled:
+>>>
+>>> diff = dst->x2 - clip->x2;
+>>> if (diff > 0) {
+>>>      ...
+>>>      dst->x2 -= diff;
+>>> }
+>>> diff = dst->y2 - clip->y2;
+>>> if (diff > 0) {
+>>>      ...
+>>>      dst->y2 -= diff;
+>>> }
+>> I agree, the logic in drm_atomic_helper_check_plane_state() is hard to
+>> understand. It sets the clip rectangle to the size of the display mode
+>> (or zero if the CRTC is off) at [1].  Then is clips the source and
+>> destination coordinates against the clipping rectangle at [2].
+>>
+>> Because we set can_position to false, it tests if the destination and
+>> clipping rectangles are equal at [3]. This is similar to the that is
+>> being replaced, but with plane state correctly adjusted. If both
+>> rectangles are equal, it returns success. If the destination is too
+>> small, it fails with an errno code and a warning.
+>>
+>> If the plane is not visible, the helper already returned at [4].
+>>
+>> [1] https://elixir.bootlin.com/linux/v7.0/source/drivers/gpu/drm/
+>> drm_atomic_helper.c#L943
+>> [2] https://elixir.bootlin.com/linux/v7.0/source/drivers/gpu/drm/
+>> drm_atomic_helper.c#L945
+>> [3] https://elixir.bootlin.com/linux/v7.0/source/drivers/gpu/drm/
+>> drm_atomic_helper.c#L959
+>> [4] https://elixir.bootlin.com/linux/v7.0/source/drivers/gpu/drm/
+>> drm_atomic_helper.c#L949
+>>
+>> It is now possible to have a primary plane that is larger than the
+>> display mode. This is a feature of the DRM API.
+>>
+> Thank you so much for the explanation. It's much clearer to understand
+> drm_atomic_helper_check_plane_state.
+>
+> By the way, we ran some basic tests on this set of patches using the
+> latest BMC chip, and everything worked fine.
+>
+>
+> Thanks.
+>
+> Best regards
+> Yongbang.
+>
+>
+>> Best regards
+>> Thomas
+>>
+>>
+>>>
+>>> Thanks.
+>>>
+>>> Best regards
+>>> Yongbang.
+>>>
+>>>
+>>>>        if (new_plane_state->fb->pitches[0] % 128 != 0) {
+>>>>            drm_dbg_atomic(plane->dev, "wrong stride with 128-byte
+>>>> aligned\n");
+>>>>            return -EINVAL;
+>>>>        }
+>>>> +
+>>>>        return 0;
+>>>>    }
+>>>>    
+> Reviewed-by: Yongbang Shi <shiyongbang@huawei.com>
+>
+>
 
-Fixes: 554c0a3abf216 ("staging: Add rtl8723bs sdio wifi driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Delene Tchio Romuald <delenetchior1@gmail.com>
----
-v6: unchanged.
-v5: tighten the length check to also cover the 4-byte ICV
-    so that the subsequent crc32_le(payload, length - 4)
-    call cannot underflow length - 4.
-v4: add Fixes: tag and Cc: stable (Dan Carpenter).
-v3: rebased on staging-next; sent as numbered series with
-    proper Cc from get_maintainer.pl.
-v2: rebased on staging-next (v1 was based on v7.0-rc6 and
-    did not apply).
-
- drivers/staging/rtl8723bs/core/rtw_security.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/drivers/staging/rtl8723bs/core/rtw_security.c b/drivers/staging/rtl8723bs/core/rtw_security.c
-index a00504ff29109..ddd6ed2245035 100644
---- a/drivers/staging/rtl8723bs/core/rtw_security.c
-+++ b/drivers/staging/rtl8723bs/core/rtw_security.c
-@@ -113,6 +113,12 @@ void rtw_wep_decrypt(struct adapter  *padapter, u8 *precvframe)
- 		memcpy(&wepkey[0], iv, 3);
- 		/* memcpy(&wepkey[3], &psecuritypriv->dot11DefKey[psecuritypriv->dot11PrivacyKeyIndex].skey[0], keylength); */
- 		memcpy(&wepkey[3], &psecuritypriv->dot11DefKey[keyindex].skey[0], keylength);
-+
-+		/* Ensure the frame is long enough for WEP payload and ICV */
-+		if (((union recv_frame *)precvframe)->u.hdr.len <
-+		    prxattrib->hdrlen + prxattrib->iv_len + 4)
-+			return;
-+
- 		length = ((union recv_frame *)precvframe)->u.hdr.len - prxattrib->hdrlen - prxattrib->iv_len;
- 
- 		payload = pframe + prxattrib->iv_len + prxattrib->hdrlen;
 -- 
-2.43.0
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
+GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
+
 
 
