@@ -1,60 +1,52 @@
-Return-Path: <stable+bounces-238439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238440-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iERSLOnh4WkKzgAAu9opvQ
-	(envelope-from <stable+bounces-238439-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 09:31:53 +0200
+	id 2F9KMkXi4WlUzgAAu9opvQ
+	(envelope-from <stable+bounces-238440-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 09:33:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DA71417EA8
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 09:31:53 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67367417F20
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 09:33:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D944F30561FB
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 07:31:51 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id F110730240A7
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 07:33:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56207375F62;
-	Fri, 17 Apr 2026 07:31:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 317043783D3;
+	Fri, 17 Apr 2026 07:33:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C028A374731;
-	Fri, 17 Apr 2026 07:31:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9430231ED68;
+	Fri, 17 Apr 2026 07:33:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776411109; cv=none; b=VwlVZgD6nZinBCBKzondjcbDmksPeWagzb0Rbdof/g5r9IgCZ0x3q5Zbo4rBAbyd0ntEnedI52E3FZt3qZXpZmZ0o+/FvKeGaTDOp5QafOwzS7isQ1LvKUcAGo2HxO07FFAeYYMHkWNddZeNvCv5GQo/wJzfu4hbu9/PVtPvDC8=
+	t=1776411184; cv=none; b=JNo+d3WWVVA1QIHwpMTeVNIVHYzn5KtQ3awC0/ycr6/gkqPOs3/V5JeZv47YTg14cOA3eNTJsPhrqEWwg0vy88Lo810GqE5Wj79LwKgomyi4mLH9FkzOslvvK/zXhnFx4zEI+DY5oBct46gm1AJ2eOWpaN0InIZfV2g7zjNuwNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776411109; c=relaxed/simple;
-	bh=Vy6i0ztIiBL4BIBnnzcQh/WXpG0AV/ZxLj6vFAIJrEI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ah9Eysl1PnCsue2UbATsY5NKQfNVTRNrb8pXbeT0l3gc9jv7nnnNNdK/xkWYsxDA2WlmJ4AGRSH0x+G8MONLEQ5hDiMgKLyZ34VmLi24C315kpjVCcFZTt0G+GE9feVyTmnyf42BsX+56KAutBXjhlvAuBH7wQ/MNzR48tqlMgw=
+	s=arc-20240116; t=1776411184; c=relaxed/simple;
+	bh=slhT4iyxtRhdMnv0PzjaVTEaKAozy1qiIHZ5NKnGwtg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=amovWeKLewoqP7U8xMg4sZm7d7ZWsuURt4ABjsXqwajmis3dk48mgON3k1J/arH9v8wPjvUdgfFbDw9CUNRRfEGMSLTBn0A6DSlE1FbUgJR/8PxRq4AMJiYZLYLDhQ8nV1fJIcCJQxBmFqw+1AUoj6Vhq0x+v2sB9YcHy90ARLI=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
 Received: from localhost.localdomain (unknown [111.196.245.116])
-	by APP-05 (Coremail) with SMTP id zQCowADXZQnS4eFp983XDQ--.39919S2;
-	Fri, 17 Apr 2026 15:31:30 +0800 (CST)
+	by APP-05 (Coremail) with SMTP id zQCowACXKQ0i4uFpvNXXDQ--.61497S2;
+	Fri, 17 Apr 2026 15:32:50 +0800 (CST)
 From: Pengpeng Hou <pengpeng@iscas.ac.cn>
-To: Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>
-Cc: Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
-	KP Singh <kpsingh@kernel.org>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Hao Luo <haoluo@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	bpf@vger.kernel.org,
+To: Kentaro Takeda <takedakn@nttdata.co.jp>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Cc: Paul Moore <paul@paul-moore.com>,
+	James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	linux-security-module@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Pengpeng Hou <pengpeng@iscas.ac.cn>,
 	stable@vger.kernel.org
-Subject: [PATCH] bpf: crypto: reject unterminated type and algorithm names
-Date: Fri, 17 Apr 2026 15:31:28 +0800
-Message-ID: <20260417073128.91029-1-pengpeng@iscas.ac.cn>
+Subject: [PATCH] tomoyo: reject short exec.envp[] names before suffix checks
+Date: Fri, 17 Apr 2026 15:32:49 +0800
+Message-ID: <20260417073249.93906-1-pengpeng@iscas.ac.cn>
 X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,91 +55,89 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowADXZQnS4eFp983XDQ--.39919S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7WFyDCw4UAr4xurWrCw1rWFg_yoW8GryUpF
-	yFg34Dtw4DJrs7CFyxWr48ZryrA34SvFy3GFZ5W34Fkrn0qr97WF1Ikryavr1Yqa1Ykr1F
-	vrWkArWY9347ZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9Y14x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+X-CM-TRANSID:zQCowACXKQ0i4uFpvNXXDQ--.61497S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxJr45Kr4DAF4rGrW8Zry7KFg_yoW8JFW8pr
+	4akFy2grn5JFWSyw4xtw18CFyrCan5Cr43Ga9xAFySy3W3XF1Iq3WjgF4rur1rCr4xtrW2
+	vw4jvry3KFWDJFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUkK14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
 	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
-	6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r
-	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
-	n2kIc2xKxwCY1x0262kKe7AKxVW8ZVWrXwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7x
-	kEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E
-	67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCw
-	CI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1x
-	MIIF0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr1j6F4UJbIYCT
-	nIWIevJa73UjIFyTuYvjTRKE_MDUUUU
+	1l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
+	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
+	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+	2Ix0cI8IcVAFwI0_Jrv_JF1lYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJV
+	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_
+	Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67
+	AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIY
+	rxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14
+	v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWx
+	JwCI42IY6I8E87Iv6xkF7I0E14v26r4UJVWxJrUvcSsGvfC2KfnxnUUI43ZEXa7VUbzpBD
+	UUUUU==
 X-CM-SenderInfo: pshqw1xhqjqxpvfd2hldfou0/
-X-Spamd-Result: default: False [1.54 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [0.04 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-238439-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pengpeng@iscas.ac.cn,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[iogearbox.net,kernel.org,linux.dev,gmail.com,fomichev.me,google.com,vger.kernel.org,iscas.ac.cn];
-	NEURAL_HAM(-0.00)[-0.939];
+	NEURAL_HAM(-0.00)[-0.987];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pengpeng@iscas.ac.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DMARC_NA(0.00)[iscas.ac.cn];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-238440-lists,stable=lfdr.de];
 	R_DKIM_NA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 2DA71417EA8
+	FORGED_SENDER_MAILLIST(0.00)[]
+X-Rspamd-Queue-Id: 67367417F20
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-bpf_crypto_ctx_create() validates the overall size of
-struct bpf_crypto_params, but it does not verify that the fixed-width
-type[14] and algo[128] fields are NUL-terminated before passing them to
-string consumers.
+tomoyo_parse_envp() assumes that the left-hand side still ends with the
+closing '"' and ']' from an exec.envp["..."] condition and immediately
+backs up from strlen(left) - 1 to verify that suffix.
 
-A caller can therefore fill either field without a terminator and cause
-bpf_crypto_get_type(), has_algo(), or alloc_tfm() to read past the end
-of the fixed buffer.
+If policy input leaves an empty or one-byte string here, the parser
+reads before the start of the token while checking for the suffix.
 
-Reject parameter blocks whose type or algorithm name does not contain a
-terminating NUL within the advertised field width.
+Reject left-hand strings that are too short to contain the required '"]'
+terminator before dereferencing the trailing characters.
 
-Fixes: 3e1c6f35409f ("bpf: make common crypto API for TC/XDP programs")
+Fixes: 5b636857fee6 ("TOMOYO: Allow using argv[]/envp[] of execve() as conditions.")
 Cc: stable@vger.kernel.org
 
 Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
 ---
- kernel/bpf/crypto.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ security/tomoyo/condition.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/crypto.c b/kernel/bpf/crypto.c
-index 51f89cecefb4..8732689803a6 100644
---- a/kernel/bpf/crypto.c
-+++ b/kernel/bpf/crypto.c
-@@ -155,6 +155,12 @@ bpf_crypto_ctx_create(const struct bpf_crypto_params *params, u32 params__sz,
- 		return NULL;
- 	}
- 
-+	if (strnlen(params->type, sizeof(params->type)) == sizeof(params->type) ||
-+	    strnlen(params->algo, sizeof(params->algo)) == sizeof(params->algo)) {
-+		*err = -EINVAL;
-+		return NULL;
-+	}
+diff --git a/security/tomoyo/condition.c b/security/tomoyo/condition.c
+index f8bcc083bb0d..1fa8343df4b3 100644
+--- a/security/tomoyo/condition.c
++++ b/security/tomoyo/condition.c
+@@ -320,7 +320,13 @@ static bool tomoyo_parse_envp(char *left, char *right,
+ {
+ 	const struct tomoyo_path_info *name;
+ 	const struct tomoyo_path_info *value;
+-	char *cp = left + strlen(left) - 1;
++	size_t len = strlen(left);
++	char *cp;
 +
- 	type = bpf_crypto_get_type(params->type);
- 	if (IS_ERR(type)) {
- 		*err = PTR_ERR(type);
++	if (len < 2)
++		goto out;
++
++	cp = left + len - 1;
+ 
+ 	if (*cp-- != ']' || *cp != '"')
+ 		goto out;
 -- 
 2.50.1 (Apple Git-155)
 
