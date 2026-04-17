@@ -1,192 +1,211 @@
-Return-Path: <stable+bounces-238411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238412-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +COGF6PL4WkhyQAAu9opvQ
-	(envelope-from <stable+bounces-238411-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 07:56:51 +0200
+	id cFZzNPLL4WkhyQAAu9opvQ
+	(envelope-from <stable+bounces-238412-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 07:58:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED395417331
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 07:56:46 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62F8241735C
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 07:58:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E4CAD3086F5D
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 05:56:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 46D2730844CA
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 05:58:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2673F366072;
-	Fri, 17 Apr 2026 05:56:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25D4E364E92;
+	Fri, 17 Apr 2026 05:58:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="gf7gl+Yn"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="irVKG6xj"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 613ED2F5A29
-	for <stable@vger.kernel.org>; Fri, 17 Apr 2026 05:56:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB7341FECCD;
+	Fri, 17 Apr 2026 05:58:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776405392; cv=none; b=j95QUCit7CskdJZ/B3x83vlm2qwLVM7B3I1eKD5ICuUNGeHeneF8BQT5np5OFeDzcENUTzreeo5lVVHeJyZQYtmG1m/7ccne7ypAhZW1jSbT3PhKWeTsVL+a3cv3GfRhuS+6VEj0d4Cs9n6z31X3bT6dpZOL7PfXMSgAe0SqDxk=
+	t=1776405481; cv=none; b=UH4GRaRV9X4e5QbGQhKHzy3sfQrIVcTTDiN8UrqkRaeInNmxvzJoJt5ZF8gRgmZTdcHnZTCnXObAIjPuasnW9tabdYbCSYeyZgCk2IQ/xy7LJ5o+/2j2VXIAlJJxgJAfCSLYyfcwIH146TYnf2h5bNdHW7qKGNdQdMUbQdSQPPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776405392; c=relaxed/simple;
-	bh=n1WhHEo42t+lWUW/csAqxQ/xX1NCS+1cWRNXzxDUJfQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=On5LkowEJm70ZpXv6IuwLPuog7Q5Fg4IGKGxVWfUJHxMIc+2lSgA640hZkXe4Jv+RxqwEbX8aee6oUIglUncO/7F8nDouEYDb40qHN2XYUr+MA4i1zGe06My/XhXi54wdskEJW+XExKDTcHx9K50FtXYVGX27r4HgAjlHK3NziM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=gf7gl+Yn; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-43cfde3c3f3so293789f8f.3
-        for <stable@vger.kernel.org>; Thu, 16 Apr 2026 22:56:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1776405390; x=1777010190; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=rCNwB0p4fo3KBgBAhuhSg3ltFf7brNQ1Ddfg4S9ESs8=;
-        b=gf7gl+YncMi6XM38kAb4wEw2EKb2riIU3pVoRbSgPoTePm1hWHqVyn6OAPI+7eMmt/
-         Ia/mte40JfPzDeLlBuavH3UbBqzhQs5euSCJsu0tyT43cnE0Q8Z9lkdaKIm1zLPDGUi4
-         F3XZ3jioebSj+138mTbU2fCc4zogIC3QwJ5mCSfYNZo21Tk69320xQzaGsTTFw9L26dw
-         VabFajaRCUqXorhDYMopTW+4r3OyucIpr9hCqoMBwkb8GZ4vrrpJYr5CSn28cFbyL4r+
-         ts7yagBOxPNwqgOWfM+UByHVYZn/0JY/EyDuJIFjdiwHhQQGAHoIIyWeVTY7c5rL7r0R
-         COog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776405390; x=1777010190;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=rCNwB0p4fo3KBgBAhuhSg3ltFf7brNQ1Ddfg4S9ESs8=;
-        b=lW+BZfIoRmIBa3Uan/hBaGT4+4a0J419tJvVw5h0CpUdG7ZeoeQ1XEh9T6DMusSaoZ
-         OsfTMODXuxRkVYSirs3XFjAKqs/V3lms7bSShhhxeyw8hs4UqAN5a8Ce/KPUEkYwpn1V
-         qS+0zYDFfDFeDiLlsSb5C95H9XBO1hQ764jjcX8IrlhAp6xYXyNoQSDGgdFM2MD4V+2n
-         w1qaD7i81t1aErtTD1sRexjD8O7CTjUiwNE1VBPIcj2tNgxvLmEouBpoWaDkaehW1Vt0
-         QwDKCW95qQVSiU7vRd2eTjmqzuO5CooBQAFfxgqRzMA2vRV0jpgBA+hbaEdoWy1NrL9j
-         mtGA==
-X-Gm-Message-State: AOJu0YzW27lYCLhsgzH1k0TdMr6w3XaxsZ1S1Ce5nrKie0JFlUSxpDO/
-	CM055vY0qEQdLEFtmgP/965CFL6x8tdmC/4eKQSl+e84z2sOFoKkjvUBxIfniw9tqAk=
-X-Gm-Gg: AeBDieutgTbqszfi3Sg8YZ+OC+Z7WaYOnN8hGjwEnxcv1yYpzGAYDigCkdQiE15+tr2
-	QCjxUKmCzfRsmiVxcDcSr+mhFTbLu4/BBzz2CLXHYw6S1Ejq75gXALMRViia68OCMP4UCnZSQlB
-	PmBKpPl4uay5vm8BrdMLqZcDEphidw53Xf/3NQw114caJiFIiKa97wher4Pdd/GavTXc2gL013V
-	iX6zvHGCk1iDsgS/c7yHjx/zmYNiC8hrYCmuT+BfvLZhVYIH4CW2N2oqlYo3f3jgGg2Hr4DBxUp
-	E80ShD94if4F+jfJK3hyQ3jcehOeIXx2+e1TSwE+SYTtOz/vp9u7p3DNWlmjIFihKdUQZb0RlPx
-	AApZ27UIODkr3MoUjXVmITb0BG+H9jhY4TwB7oozGY+SfXsW9Gs6UL1csb/2w4ZM/Tf923WZhOJ
-	YFw9GuEqExKZWXVgetL3MxdDAiJqtH+I76ipPElRH3g+7aBMR+QUA+RElBwljacmwJspj7
-X-Received: by 2002:a05:6000:1889:b0:43d:7b7b:ab76 with SMTP id ffacd0b85a97d-43fe3dc54ddmr1953516f8f.10.1776405389723;
-        Thu, 16 Apr 2026 22:56:29 -0700 (PDT)
-Received: from ?IPV6:2001:a61:2ae4:301:12fa:de76:8d51:fc21? ([2001:a61:2ae4:301:12fa:de76:8d51:fc21])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43fe4e3a174sm1936117f8f.18.2026.04.16.22.56.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 16 Apr 2026 22:56:29 -0700 (PDT)
-Message-ID: <b1a6b96d-07d2-4a19-b9db-2cd8d878895c@suse.com>
-Date: Fri, 17 Apr 2026 07:56:28 +0200
+	s=arc-20240116; t=1776405481; c=relaxed/simple;
+	bh=hGK+vneCLSiqI4CWEuSyFgSgVR0Ih6ayPzIGa/T9Qrs=;
+	h=Date:To:From:Subject:Message-Id; b=q+TF20UeelS6VMMdJfJ97OW1IaHV8EbpxsLYA5DVErTNxoC24gBtKrchi9xBrPNOarbumh3kPlOCoqQfqmTCJpSgjk8t/DxNCzDr6w2R7ynrCE86CoRyhwUqFZ2ftKaZuu9hBoiApf6F9CtyVoZ3y3zidDBh297AEyYF4WyN17I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=irVKG6xj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9315C19425;
+	Fri, 17 Apr 2026 05:58:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1776405481;
+	bh=hGK+vneCLSiqI4CWEuSyFgSgVR0Ih6ayPzIGa/T9Qrs=;
+	h=Date:To:From:Subject:From;
+	b=irVKG6xj4X6wdgD/g2XoQtraNXEVUGP5L7Mj9KUv8Jtonr++6znxL1rNvFFvOLEG+
+	 A249Tpz/DXSjHabqqVVitescKuiMQcYrRKkg3HDEIeHHHmZAHREbv9xe3rkUGWmIMJ
+	 aBYDMJgfmngyo7npBr7wwSqWcOKFGyPM09CYmI6c=
+Date: Thu, 16 Apr 2026 22:57:57 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,rppt@kernel.org,pratyush@kernel.org,pasha.tatashin@soleen.com,graf@amazon.com,leitao@debian.org,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + kho-fix-error-handling-in-kho_add_subtree.patch added to mm-unstable branch
+Message-Id: <20260417055800.B9315C19425@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] [SCSI] advansys: fix host resource leak in EISA probe
- error path
-To: Guangshuo Li <lgs201920130244@gmail.com>,
- Matthew Wilcox <willy@infradead.org>,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- James Bottomley <James.Bottomley@SteelEye.com>, linux-scsi@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-References: <20260416165935.3958686-1-lgs201920130244@gmail.com>
-Content-Language: en-US
-From: Hannes Reinecke <hare@suse.com>
-In-Reply-To: <20260416165935.3958686-1-lgs201920130244@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [3.84 / 15.00];
+	R_BAD_CTE_7BIT(3.50)[unknown];
+	BROKEN_CONTENT_TYPE(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[suse.com:+];
-	TAGGED_FROM(0.00)[bounces-238411-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,infradead.org,HansenPartnership.com,oracle.com,SteelEye.com,vger.kernel.org];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-238412-lists,stable=lfdr.de];
+	URIBL_MULTI_FAIL(0.00)[smtp.kernel.org:server fail,linux-foundation.org:server fail,soleen.com:server fail,tor.lore.kernel.org:server fail];
+	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	DMARC_NA(0.00)[linux-foundation.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hare@suse.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.com:email,suse.com:dkim,suse.com:mid]
-X-Rspamd-Queue-Id: ED395417331
+	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-1.000];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 62F8241735C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 4/16/26 18:59, Guangshuo Li wrote:
-> A manual code audit found that advansys_eisa_probe() frees saved
-> Scsi_Host objects directly in its error path.
-> 
-> Those hosts have already been successfully initialized by
-> advansys_board_found(), so freeing them directly bypasses the normal
-> teardown path and leaks host resources such as IRQs, DMA or MMIO
-> resources, and the Scsi_Host release path.
-> 
-> Fix this by releasing the saved hosts with advansys_release() and
-> dropping their corresponding I/O regions before freeing the probe data.
-> 
-> Fixes: d361db483241 ("[SCSI] advansys: Sort out irq number mess")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-> ---
->   drivers/scsi/advansys.c | 14 +++++++++++---
->   1 file changed, 11 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/scsi/advansys.c b/drivers/scsi/advansys.c
-> index fcf059bf41e8..022a8190ae31 100644
-> --- a/drivers/scsi/advansys.c
-> +++ b/drivers/scsi/advansys.c
-> @@ -11373,9 +11373,17 @@ static int advansys_eisa_probe(struct device *dev)
->   	return 0;
->   
->    free_data:
-> -	kfree(data->host[0]);
-> -	kfree(data->host[1]);
-> -	kfree(data);
-> +	for (i = 0; i < 2; i++) {
-> +		struct Scsi_Host *shost = data->host[i];
-> +		int ioport;
-> +
-> +		if (!shost)
-> +			continue;
-> +
-> +		ioport = shost->io_port;
-> +		advansys_release(shost);
-> +		release_region(ioport, ASC_IOADR_GAP);
-> +	}
->    fail:
->   	return err;
->   }
 
-You must be kidding ... EISA is died over a decade ago.
+The patch titled
+     Subject: kho: fix error handling in kho_add_subtree()
+has been added to the -mm mm-unstable branch.  Its filename is
+     kho-fix-error-handling-in-kho_add_subtree.patch
 
-If you _really_ are concerned about this please remove EISA support 
-completely from the driver.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/kho-fix-error-handling-in-kho_add_subtree.patch
 
-Cheers,
+This patch will later appear in the mm-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Hannes
--- 
-Dr. Hannes Reinecke                  Kernel Storage Architect
-hare@suse.com                               +49 911 74053 688
-SUSE Software Solutions GmbH, Frankenstr. 146, 90461 Nürnberg
-HRB 36809 (AG Nürnberg), GF: I. Totev, A. McDonald, W. Knoblich
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: Breno Leitao <leitao@debian.org>
+Subject: kho: fix error handling in kho_add_subtree()
+Date: Fri, 10 Apr 2026 02:03:03 -0700
+
+Fix two error handling issues in kho_add_subtree(), where it doesn't
+handle the error path correctly.
+
+1. If fdt_setprop() fails after the subnode has been created, the
+   subnode is not removed. This leaves an incomplete node in the FDT
+   (missing "preserved-data" or "blob-size" properties).
+
+2. The fdt_setprop() return value (an FDT error code) is stored
+   directly in err and returned to the caller, which expects -errno.
+
+Fix both by storing fdt_setprop() results in fdt_err, jumping to a new
+out_del_node label that removes the subnode on failure, and only setting
+err = 0 on the success path, otherwise returning -ENOMEM (instead of
+FDT_ERR_ errors that would come from fdt_setprop).
+
+No user-visible changes.  This patch fixes error handling in the KHO
+(Kexec HandOver) subsystem, which is used to preserve data across kexec
+reboots.  The fix only affects a rare failure path during kexec
+preparation — specifically when the kernel runs out of space in the
+Flattened Device Tree buffer while registering preserved memory regions.
+
+In the unlikely event that this error path was triggered, the old code
+would leave a malformed node in the device tree and return an incorrect
+error code to the calling subsystem, which could lead to confusing log
+messages or incorrect recovery decisions.  With this fix, the incomplete
+node is properly cleaned up and the appropriate errno value is propagated,
+this error code is not returned to the user.
+
+Link: https://lore.kernel.org/20260410-kho_fix_send-v2-1-1b4debf7ee08@debian.org
+Fixes: 3dc92c311498 ("kexec: add Kexec HandOver (KHO) generation helpers")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Suggested-by: Pratyush Yadav <pratyush@kernel.org>
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+Cc: Alexander Graf <graf@amazon.com>
+Cc: Breno Leitao <leitao@debian.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ kernel/liveupdate/kexec_handover.c |   21 +++++++++++++--------
+ 1 file changed, 13 insertions(+), 8 deletions(-)
+
+--- a/kernel/liveupdate/kexec_handover.c~kho-fix-error-handling-in-kho_add_subtree
++++ a/kernel/liveupdate/kexec_handover.c
+@@ -762,19 +762,24 @@ int kho_add_subtree(const char *name, vo
+ 		goto out_pack;
+ 	}
+ 
+-	err = fdt_setprop(root_fdt, off, KHO_SUB_TREE_PROP_NAME,
+-			  &phys, sizeof(phys));
+-	if (err < 0)
+-		goto out_pack;
++	fdt_err = fdt_setprop(root_fdt, off, KHO_SUB_TREE_PROP_NAME,
++			      &phys, sizeof(phys));
++	if (fdt_err < 0)
++		goto out_del_node;
+ 
+-	err = fdt_setprop(root_fdt, off, KHO_SUB_TREE_SIZE_PROP_NAME,
+-			  &size_u64, sizeof(size_u64));
+-	if (err < 0)
+-		goto out_pack;
++	fdt_err = fdt_setprop(root_fdt, off, KHO_SUB_TREE_SIZE_PROP_NAME,
++			      &size_u64, sizeof(size_u64));
++	if (fdt_err < 0)
++		goto out_del_node;
+ 
+ 	WARN_ON_ONCE(kho_debugfs_blob_add(&kho_out.dbg, name, blob,
+ 					  size, false));
+ 
++	err = 0;
++	goto out_pack;
++
++out_del_node:
++	fdt_del_node(root_fdt, off);
+ out_pack:
+ 	fdt_pack(root_fdt);
+ 
+_
+
+Patches currently in -mm which might be from leitao@debian.org are
+
+mm-blk-cgroup-fix-use-after-free-in-cgwb_release_workfn.patch
+mm-kmemleak-add-config_debug_kmemleak_verbose-build-option.patch
+kho-add-size-parameter-to-kho_add_subtree.patch
+kho-rename-fdt-parameter-to-blob-in-kho_add-remove_subtree.patch
+kho-persist-blob-size-in-kho-fdt.patch
+kho-fix-kho_in_debugfs_init-to-handle-non-fdt-blobs.patch
+kho-kexec-metadata-track-previous-kernel-chain.patch
+kho-document-kexec-metadata-tracking-feature.patch
+mm-vmstat-fix-vmstat_shepherd-double-scheduling-vmstat_update.patch
+kho-fix-error-handling-in-kho_add_subtree.patch
+mm-vmstat-spread-vmstat_update-requeue-across-the-stat-interval.patch
+
 
