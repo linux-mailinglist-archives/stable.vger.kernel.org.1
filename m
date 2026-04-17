@@ -1,94 +1,97 @@
-Return-Path: <stable+bounces-238478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238479-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QGulE5gV4mnZ1QAAu9opvQ
-	(envelope-from <stable+bounces-238478-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 13:12:24 +0200
+	id qCZHHP0V4mln1gAAu9opvQ
+	(envelope-from <stable+bounces-238479-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 13:14:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E17A41ABD5
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 13:12:24 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECB5B41ABED
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 13:14:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id ED2E5303B5EA
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 11:11:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A25873056165
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 11:13:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94A99322B88;
-	Fri, 17 Apr 2026 11:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E08473B7B75;
+	Fri, 17 Apr 2026 11:13:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="le3gwoOF"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Z/l9SPQ8"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E3FC37F735
-	for <stable@vger.kernel.org>; Fri, 17 Apr 2026 11:11:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47BB838AC8A
+	for <stable@vger.kernel.org>; Fri, 17 Apr 2026 11:13:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776424310; cv=none; b=j1JO/wMjZFnoem/S9V7U5g9jWguVuvneAN7/iLTNRE4d7M63CFVUycu4x56Ob+cowl2dH25QjZhAm8e8+WtDPcMl5I95zVEXNKiU2wD3KysBz38BCqIwmMts7X39NystxL98I4C1tQErW+o1eP9RDnVqk9upE/vMpDyUI2IlutU=
+	t=1776424435; cv=none; b=YlfZ8TjuDvGkuvrcICoG2zeXuOCO7dSGqRCEKrYU04FBdTfmSU45spdn3bWfq4TbFm/AQAM0nd2fvIJCkv6dI00w8f+lTgGRzlfJH6NoLYJzsSxVp4KAM3mxdt3WSzd4eyk+djeekIX3q6FX/bnR5k8zIAAvQq+wyLOb4Jcjs9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776424310; c=relaxed/simple;
-	bh=oXxvYp7mSxvDjDiF1oqhXSRgzy+AMfLNV5vfZJKXa88=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N4MhFGAOVSVqRhdlJXg58lo0XLNMz2hG5Mtdss/++UCfUbxrPlHlllEYFDPk7FBMEANCVPdR2S0VQqS0AhtyJOTpNDBZY9pBpspW8NKt68yHUQ80xutYdAEKFvjd7NPz4Y59oXrJZBlKkZedjqj9ECPAq/jgACh0SzqkCAGXM6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=le3gwoOF; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-488b0e1b870so8791955e9.2
-        for <stable@vger.kernel.org>; Fri, 17 Apr 2026 04:11:48 -0700 (PDT)
+	s=arc-20240116; t=1776424435; c=relaxed/simple;
+	bh=ZFA0J21UavqemBdX61tkeeGyEAB0nt+X9PKTYKjXLbM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SQd5BtzXh5DrGICBFYiAlJFs1Rq3ZOXkkAr8aou1TIhbhdzYDJB8JktLYH+JFyFqlE1JI/F9VAauJ++aZAtIX11MVkBnOdTcmt5HwE30akWbEY9rkEUDpy0SXBMjnyeUrsAcXldpVPUyxR3Fp726Y/lFpCu8UiRPr/e42O/5Oz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Z/l9SPQ8; arc=none smtp.client-ip=209.85.208.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-386b553c70eso4626911fa.0
+        for <stable@vger.kernel.org>; Fri, 17 Apr 2026 04:13:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776424307; x=1777029107; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OZN3gfZee7R57N4dlGIBXrBPV0sAI+/BLIAVKZCa0Ck=;
-        b=le3gwoOFGrVmtZNbTdJ1VkbmPjsqOfNHvO+n8KQkE2K8eAz7EgILbr5F861XgYhqNq
-         ZlMu94WLVvTldkth3TAqrmFNwMBn+Feh/DVeRLlPopFQ7BU2QlyhBYopgj5ZLwxt8Tbv
-         F/hGX3u5qCs/At765ADqStaBXk6xEiBrJaIp7rgXWpW+MBbE7f8QJOLep6eUJWMCJ60l
-         nBVPryZdKy3XUuK5eD7Puvlhwil3zwdiyVeUenqj4BunNHIIrIlU5T9gs5ZHN/IWd7N9
-         QwY/SBpZnbQRjoxvCfTmJjalbmjr3UXMyKnCtPgKXWT8nUTh9VvbYgfMFyHenYJOgV/+
-         2ucA==
+        d=linaro.org; s=google; t=1776424432; x=1777029232; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=bH6jMbcTJb5ej+R0a9MCxG7qrcx/3nMs2OEMFRxEA/Y=;
+        b=Z/l9SPQ8kJdhqWcAzMFMcxoerc3yTGtrOIoqCNeEW9iQnZYnGHk7RpipjltxaNApst
+         a+HACIh9BidMH0Smrn/TedVd36B2Agkh449OOeeeTIeXa3ka1f1jGB2gb1haJLJjXuWt
+         fu7uxOxm3WU6iizqX9LNCBS2iEyDC1IzVgO98yW96o0pulSe7fxJCPV3iegVEJwBW2Mx
+         TSo2hBR2qpi4OlpQGehkdYMwX7bzCopWuTp5NQ2OaOGyqklYMUYJHwVgtcNghyAsBMjr
+         iinFGDD4Z6PjT4yn2xef3q95X4waMB7f8GsvG+y2yIsbh0BegkQe5hk3DbQDo/QbIt4Z
+         x2wg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776424307; x=1777029107;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=OZN3gfZee7R57N4dlGIBXrBPV0sAI+/BLIAVKZCa0Ck=;
-        b=WVZfjarzb97qv87+uyrnEiAUIELnKTNGzFxBGWrx9fmsgG2qoyoY45Cw2gPLiUojG5
-         6CqyGOsrLJj2qOf3DPtGqax18glb2gBBNQlMGzuWM06Tu6jaVqDPWl5ZF6wAOGfSNSKz
-         P8iBb17W7jqj9m9sk6JOkP3Ho1DOsL5Tv1MUqGA5JgtbVrNQrGsC9J6aVt41nDce1fPZ
-         TgPFb++vtZix0ktUjm3WKMejfjrlMvWndg2VUrHcG0/PsBSywnypnLx3GFVS7Q6hcoMt
-         zTawhkZxFtIOsi8U8JlvBDZZ/blHpaE0aMohRst4+v2mYRh97w7aa4WMGKy+Sz5wgVsj
-         ovOA==
-X-Forwarded-Encrypted: i=1; AFNElJ/xvpdg+XuN5rxLs42LTc3hWVLZIEW4bn7TK6uOijkvuNve0qlYQdSS7c4K0bBw4nIsv35T8CI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzDnHcfGHPkR8STEqA4B+o/8n5bxXsbwvvVYe9JqeyXdYJsJpvW
-	q4Koh1SPuOpsnGU332APUAklxUJF1m2/33vZJcCwZDsdkDeoREeIdHM=
-X-Gm-Gg: AeBDietxIYp9DZfFZlFovSDgr1ct+RUJWVX0xx4CcxXcIOTFAb56qdIMdI//oqoEI0G
-	9aLVdTZGkHHTCjap7kw7//LoI0XwIO/gsDQ8P6Ze38CGMYwbrFHAN2SHT4Ys2xjyyqzND8CyE46
-	lKfQCvUch/1Yju6/OsT1V3mANhJ25t437+WQO6l4Xfw6h+Qtorp6G5+CTDS9dQpqzxI6EhkC3Zu
-	Jcx+X5wCCBoKaILmLI7ac5j1zlNXeDhujbPpxQfCaM+fuMlkRC2jKo8LbdP99z6sCeDieWcrz6r
-	MhIf53SuhC3T4TTFFDcLozOQJwpJwR2mRdrh4G+Nt08jVGCAsO1E94/KlirtVIMWUGhf8CDF+wM
-	uLhk20aQdDJ1Lpz5Ip6vxJn75yggYSDOzz9k7do48XWBRUZYuGyH8t3X7mTp+qVq4yG42pqElQC
-	xEP5c=
-X-Received: by 2002:a05:600d:8408:b0:488:be58:bb5b with SMTP id 5b1f17b1804b1-488fb773f0cmr25674465e9.24.1776424307402;
-        Fri, 17 Apr 2026 04:11:47 -0700 (PDT)
-Received: from debian.. ([2001:41d0:303:db6b::])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488fc0f82bbsm62121235e9.3.2026.04.17.04.11.46
+        d=1e100.net; s=20251104; t=1776424432; x=1777029232;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bH6jMbcTJb5ej+R0a9MCxG7qrcx/3nMs2OEMFRxEA/Y=;
+        b=ROaXmDDBw25S93Gc5V9fRFXr0siEiBPaMULfvS7zq52tUOBp/fxYyRwqaOhs7f3rlK
+         PeLUMElp9XhMAG2uiOLaxiUYqeVx7I/dXtP0rZ+HiDUUHfSCWyVw9K571jj0YtAKzyL1
+         rzqwMKT1o9ba+s1yWCnapc2ZZR+Gs/knRwJRdH6KGHUfANLhbiVPENAIJDGO9RZh8THc
+         v+TvNutFTpSGdIZHS7JI1nvC1xM9mXgYTsE7vBmQqLH4ME/xhFZmnFP7ScLC8hLJclL+
+         C3b41+UfPAChwiDEZTzZ4DbMXroCdMu/v+gVjTtPWr2BjZq50ZYw3hM5llm7Nk6tbw2Y
+         KRXg==
+X-Forwarded-Encrypted: i=1; AFNElJ9XeNpb/gl50HHvgdGxnmN+mAgm+qCR3WIbqQoVxNaXMpRc0jk0EhU4I2E9OXc+BnW+v1dZVfo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxy8L3nPuLYpzEX58BXvsAMuiytwX0I2TPOg4rhKd/J2XrQKt4G
+	IoIYhBUncd2hITpMu+G3YIJl3pdNR61VOVSjvCm0W3iq3Val7+kc/7A3D7gBHV74ESg=
+X-Gm-Gg: AeBDiet/jZTWXknodAU06DVg+nsqubRIB76s7R1N9YShU1pRpEI52W9qRVqrUZT0nfX
+	wG23LxshwXQdDCL/dYMlH8UuJOvr4eyNri3ksHTj2c7K0TovKeOJFTMIYCVcUxlP9dxXZkN15At
+	LEC7g/3J8vK8L35/6ztNNgmeIdf4QaTZPWTm1unB2M6nAyFGFjaSDvrNl1nRTCaBSWHQO1r+mZu
+	pBkxOnAWEzefSzi2Zlwi8RxhG9VhbG6xSJBmuu0/J13gCORmHnbEiwhZAVMRshe6XWj5uDUNNoB
+	2hNPBip4ZTDbBhPcoe3oAvDmW+d+CaZwn7laly3KH7n8L7LAoEYYtVb2w1d/ntpfqi7gKZl4PfT
+	zCX+HHdK9Fpivswy5jc/3zS4s4k+Pi8YNCX9waX09CfFoSDafEFlL3qa9qkc+dm4weh2fmaeCy4
+	OiXqvm0oQI6iDsUdIlCK1vBpYi6dZ9XpZUGQvPII126j77XblIliiuzRUQ1zI09JM4c+xpdiRby
+	WrLXZfGbY0=
+X-Received: by 2002:a2e:bc26:0:b0:38e:58f1:99f7 with SMTP id 38308e7fff4ca-38ec7b61afcmr6554131fa.33.1776424432285;
+        Fri, 17 Apr 2026 04:13:52 -0700 (PDT)
+Received: from uffe-tuxpro14.. (h-178-174-189-39.A498.priv.bahnhof.se. [178.174.189.39])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-38ecb733847sm3086691fa.34.2026.04.17.04.13.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Apr 2026 04:11:46 -0700 (PDT)
-From: Tristan Madani <tristmd@gmail.com>
-To: linux-wireless@vger.kernel.org
-Cc: johannes@sipsolutions.net,
-	jonas.gorski@gmail.com,
-	m@bues.ch,
-	b43-dev@lists.infradead.org,
+        Fri, 17 Apr 2026 04:13:51 -0700 (PDT)
+From: Ulf Hansson <ulf.hansson@linaro.org>
+To: Geert Uytterhoeven <geert+renesas@glider.be>,
+	Ulf Hansson <ulfh@kernel.org>,
+	linux-pm@vger.kernel.org
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>,
+	Frank Binns <frank.binns@imgtec.com>,
+	Matt Coster <matt.coster@imgtec.com>,
+	Marek Vasut <marek.vasut@mailbox.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	stable@vger.kernel.org
-Subject: [PATCH v3 2/2] wifi: b43legacy: enforce bounds check on firmware key index in RX path
-Date: Fri, 17 Apr 2026 11:11:45 +0000
-Message-ID: <20260417111145.2694196-2-tristmd@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260417111145.2694196-1-tristmd@gmail.com>
-References: <20260417111145.2694196-1-tristmd@gmail.com>
+Subject: [PATCH] pmdomain: core: Fix detach procedure for virtual devices in genpd
+Date: Fri, 17 Apr 2026 13:13:31 +0200
+Message-ID: <20260417111331.158190-1-ulf.hansson@linaro.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -98,69 +101,96 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[sipsolutions.net,gmail.com,bues.ch,lists.infradead.org,vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-238478-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-238479-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linaro.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tristmd@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[ulf.hansson@linaro.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
+	TAGGED_RCPT(0.00)[stable,renesas];
+	NEURAL_HAM(-0.00)[-0.992];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[talencesecurity.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 0E17A41ABD5
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-m68k.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linaro.org:email,linaro.org:dkim,linaro.org:mid]
+X-Rspamd-Queue-Id: ECB5B41ABED
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Tristan Madani <tristan@talencesecurity.com>
+If a device is attached to a PM domain through genpd_dev_pm_attach_by_id(),
+genpd calls pm_runtime_enable() for the corresponding virtual device that
+it registers. While this avoids boilerplate code in drivers, there is no
+corresponding call to pm_runtime_disable() in genpd_dev_pm_detach().
 
-Same fix as b43: the firmware-controlled key index in b43legacy_rx()
-can exceed dev->max_nr_keys. The existing B43legacy_WARN_ON is
-non-enforcing in production builds, allowing an out-of-bounds read of
-dev->key[].
+This means these virtual devices are typically detached from its genpd,
+while runtime PM remains enabled for them, which is not how things are
+designed to work. In worst cases it may lead to critical errors, like a
+NULL pointer dereference bug in genpd_runtime_suspend(), which was recently
+reported. For another case, we may end up keeping an unnecessary vote for a
+performance state for the device.
 
-Make the check enforcing by dropping the frame for invalid indices.
+To fix these problems, let's add this missing call to pm_runtime_disable()
+in genpd_dev_pm_detach().
 
-Fixes: 75388acd0cd8 ("[B43LEGACY]: add mac80211-based driver for legacy BCM43xx devices")
+Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Fixes: 3c095f32a92b ("PM / Domains: Add support for multi PM domains per device to genpd")
 Cc: stable@vger.kernel.org
-Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
+Closes: https://lore.kernel.org/all/CAMuHMdWapT40hV3c+CSBqFOW05aWcV1a6v_NiJYgoYi0i9_PDQ@mail.gmail.com/
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 ---
- drivers/net/wireless/broadcom/b43legacy/xmit.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/pmdomain/core.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/broadcom/b43legacy/xmit.c b/drivers/net/wireless/broadcom/b43legacy/xmit.c
-index efd63f4ce..ee199d4ea 100644
---- a/drivers/net/wireless/broadcom/b43legacy/xmit.c
-+++ b/drivers/net/wireless/broadcom/b43legacy/xmit.c
-@@ -476,7 +476,8 @@ void b43legacy_rx(struct b43legacy_wldev *dev,
- 		 * key index, but the ucode passed it slightly different.
- 		 */
- 		keyidx = b43legacy_kidx_to_raw(dev, keyidx);
--		B43legacy_WARN_ON(keyidx >= dev->max_nr_keys);
-+		if (B43legacy_WARN_ON(keyidx >= dev->max_nr_keys))
-+			goto drop;
+diff --git a/drivers/pmdomain/core.c b/drivers/pmdomain/core.c
+index 4d32fc676aaf..71e930e80178 100644
+--- a/drivers/pmdomain/core.c
++++ b/drivers/pmdomain/core.c
+@@ -3089,6 +3089,7 @@ static const struct bus_type genpd_bus_type = {
+ static void genpd_dev_pm_detach(struct device *dev, bool power_off)
+ {
+ 	struct generic_pm_domain *pd;
++	bool is_virt_dev;
+ 	unsigned int i;
+ 	int ret = 0;
  
- 		if (dev->key[keyidx].algorithm != B43legacy_SEC_ALGO_NONE) {
- 			/* Remove PROTECTED flag to mark it as decrypted. */
+@@ -3098,6 +3099,13 @@ static void genpd_dev_pm_detach(struct device *dev, bool power_off)
+ 
+ 	dev_dbg(dev, "removing from PM domain %s\n", pd->name);
+ 
++	/* Check if the device was created by genpd at attach. */
++	is_virt_dev = dev->bus == &genpd_bus_type;
++
++	/* Disable runtime PM if we enabled it at attach. */
++	if (is_virt_dev)
++		pm_runtime_disable(dev);
++
+ 	/* Drop the default performance state */
+ 	if (dev_gpd_data(dev)->default_pstate) {
+ 		dev_pm_genpd_set_performance_state(dev, 0);
+@@ -3123,7 +3131,7 @@ static void genpd_dev_pm_detach(struct device *dev, bool power_off)
+ 	genpd_queue_power_off_work(pd);
+ 
+ 	/* Unregister the device if it was created by genpd. */
+-	if (dev->bus == &genpd_bus_type)
++	if (is_virt_dev)
+ 		device_unregister(dev);
+ }
+ 
 -- 
-2.47.3
+2.43.0
 
 
