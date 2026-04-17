@@ -1,211 +1,190 @@
-Return-Path: <stable+bounces-238471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238472-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yKmVEer74Wn50AAAu9opvQ
-	(envelope-from <stable+bounces-238471-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 11:22:50 +0200
+	id EGGtJ/kB4mna0QAAu9opvQ
+	(envelope-from <stable+bounces-238472-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 11:48:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C565041930B
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 11:22:49 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF0584198B2
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 11:48:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CF63A305C63E
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 09:21:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 35392318AE2D
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 09:33:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF336372EED;
-	Fri, 17 Apr 2026 09:21:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ECAC3B19AA;
+	Fri, 17 Apr 2026 09:31:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DcSVc3kb"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="e73eTsvI"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80A423264D0;
-	Fri, 17 Apr 2026 09:21:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ED46219EB;
+	Fri, 17 Apr 2026 09:31:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776417699; cv=none; b=pudupyYOGRDqGvPmflZC8QQtYjDft/Sd6N/nlE9BFOyJO6tTVhi/9L2Xw4MjVfc4YWgSQjdg8DUq31FfGHYBiFSNoMGZmIfQ/LhYlHqooVp/xiSSzl4OOW9ZcBjoe/8adHqeCkLvMNW8m8H0b55HTdMqcjhd4G3XbvrynF7FVF0=
+	t=1776418267; cv=none; b=HpEBcLDPl4KaMMPcGOFJULOOCEe6m5/yCzsVN1CKxjc2OSayH2CIXYRptJJph8uxqsw7rM3BnulhBtjehdxA5NpfZnx6B6hagDdleuKa/aQa7alEe+5D6ngtIv1WfeZV8wOWvl6UBsi6deXJpq9nF2wUIpPXkrloa73WPLsQBAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776417699; c=relaxed/simple;
-	bh=rmJzUQzsPyc0NxUkUuOpkygTTYh+y/QYrvawDFLMzk4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nAosF4FiSa0rK+fZI5v3xKoAQzw5noJ1el3h9DB7XV1gU0vFVra/4WqjkpRryIHAQhAvTG2hBAwIIBCCQcOnzPQq9ANb1gKDNUZNSoqY0RiqlA1f/tzNouhFzejgBV3ztEv+i1MS6hOSSyLNZPuEwO3hB/5FPQD8rm0ZVUhn5nQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DcSVc3kb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2801C2BCB4;
-	Fri, 17 Apr 2026 09:21:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776417699;
-	bh=rmJzUQzsPyc0NxUkUuOpkygTTYh+y/QYrvawDFLMzk4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DcSVc3kb/oCeCw9ntdtcrirK0ELCcQFOeJPS636iSbphduy27yvLI3SemoCwJJAEY
-	 fQ0ULGCuaxbo9tvtulLMgOL0/hQQ+8JK33EC95sJ9rirmctvpwlOCg67QzjQXG6Khi
-	 k6854fsWrob0iFmVYD3CcuO6sVR8TajtaTQdYNHkL2UJZaRvYdAjLiYmeevUFqyl3b
-	 IGlqslqZAxoerQ5BwxZ/xX47XTbRVNqHRSEhMVuctx/EC4C2exQny6YgGNcPSY+Lb1
-	 gz8pkA5CVYHsKXsbadKIswwozRrtSjMPHeB5owoz8ToQ2Z3Gq/MORu2u1NGxudWphV
-	 vP31kmhtFY3JA==
-Date: Fri, 17 Apr 2026 18:21:37 +0900
-From: "Harry Yoo (Oracle)" <harry@kernel.org>
-To: Marco Elver <elver@google.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
-	stable@vger.kernel.org, Vitaly Wool <vitaly.wool@konsulko.se>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH] slub: fix data loss and overflow in krealloc()
-Message-ID: <aeH7oeZtDdDUza0W@hyeyoo>
-References: <20260416132837.3787694-1-elver@google.com>
- <aeG6RG41sgZuerYa@hyeyoo>
- <CANpmjNPMxDkzvVnD9pXy1YBTO4n-abQZ+if6XdDj-u4dnfks5A@mail.gmail.com>
+	s=arc-20240116; t=1776418267; c=relaxed/simple;
+	bh=Qqsjzyx7JIN/FNMsD6hyTWWLReS2YakaWfwbzyzjf0Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QOctFfHz32xfgGC2DyW1z0beB8u2DSN+VxM0TyIwGRzz8CKrWIEww6sew4hIlu400QQNZlw4L17wVJkTfe2WjPXoqwEV+RVXEz5NYtN7+l/cFsO10LoyECuY8eK4yHZbweAIJJb966FTxDY3tLj90CzdK0RxM5rucGyuRbaQUkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=e73eTsvI; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63GJHOuX1860002;
+	Fri, 17 Apr 2026 09:30:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=ylhcWA
+	MoRMz5RLxhUd4Za9Ti0jJBJoVhrjk5Uufr7vA=; b=e73eTsvIhJ0awn0Or42Bp+
+	aREr77SE06xCFCSpmxMqkpXR8AmtBAKls6MaSXZHYbDlmKgwJcwl0vXi0Gr9g9Sm
+	5aKG6ONY2HQ/swDE5JTMjjKynGU9UZ9f/53skHHeWvW3g/AGIQF2EMoSIciHG/Im
+	SvX4o09OE/z8sKS6MR5hiZ1EcWHCA51pF4rDTkMBaA/VAEMZpbpXmuGJLcCWXIb+
+	h8QRIuS1QHWEs/UjZWh+clGw2HLUjWYDt1Y9vk3qC5Huyte1ghzAUAp5GHxK8UU4
+	b3u3vuAt1UhgN77qcGRy6nMwZk9OhmXc0liKcdn1ei6hewUnRecna7/xRCJorvqA
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dh89prncm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 17 Apr 2026 09:30:44 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 63H8MfE6025621;
+	Fri, 17 Apr 2026 09:30:43 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dg2ujxe9a-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 17 Apr 2026 09:30:43 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63H9UeYr48169468
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 17 Apr 2026 09:30:40 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 224D62004E;
+	Fri, 17 Apr 2026 09:30:40 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id ADA5720043;
+	Fri, 17 Apr 2026 09:30:37 +0000 (GMT)
+Received: from [9.39.28.188] (unknown [9.39.28.188])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 17 Apr 2026 09:30:37 +0000 (GMT)
+Message-ID: <dc17d2a4-058a-4ca7-b701-32a53c71f07f@linux.ibm.com>
+Date: Fri, 17 Apr 2026 15:00:36 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANpmjNPMxDkzvVnD9pXy1YBTO4n-abQZ+if6XdDj-u4dnfks5A@mail.gmail.com>
-X-Spamd-Result: default: False [-1.66 / 15.00];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] powerpc/fadump: reject empty bootargs_append writes
+To: Pengpeng Hou <pengpeng@iscas.ac.cn>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>,
+        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+        Hari Bathini <hbathini@linux.ibm.com>, Jiri Bohac <jbohac@suse.cz>,
+        Shrikanth Hegde <sshegde@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260417073907.4985-1-pengpeng@iscas.ac.cn>
+Content-Language: en-US
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+In-Reply-To: <20260417073907.4985-1-pengpeng@iscas.ac.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: ZpuidKosRXgK6xFjk55b3s7C5Ioqw6nb
+X-Proofpoint-ORIG-GUID: FgBNQs713CIGiH4qqfKSSI_ZCZl0tnqc
+X-Authority-Analysis: v=2.4 cv=WbE8rUhX c=1 sm=1 tr=0 ts=69e1fdc4 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8
+ a=ISPHxN_rHVCBf9gf85UA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE3MDA5MiBTYWx0ZWRfXzZJRh73LJd6m
+ sOfnU4KimGoboDbpWbqRA/IniEZ+4+85ZNQUGiMgaOJ2+979mCXqtEPV9t9p5/4ZuQWN+ncoyk0
+ 8WV5n6fNTy7hNu9Rev7m+W7v3E2WsOlQ0CusdTZ1vQKI/UDk1D0nIpBhZSypUl8ZSaao8jH0G2r
+ WQPplU4UO9xefl2qZUTQLC8Q/VkAWIUNFThYG8R7VHwxA2EpU3tQCIYSn2pO9h48InZss56XDCD
+ n8gCqgT2awh8rZo5tKOwkYMppXtNqf6haXR37Z6VVC4nlyivCHtWSngvWgh+hb4UL7S7xFY0Lt4
+ u6KlBY6jllNGw9q0VgFAXuM3rpt0B3S53PUVCge22WWlKC2kfxpp76ubqGk1tPZLON1cwh5aNl3
+ XVPZ+rsJ4nNlB2/ihlWZf/XeYReFVmxGEvfI1ke7AJnZLuyuRgIHFEjtMijB9eRTzcFnBZD1HdA
+ qrJ842Y3bjravnwF1Hg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-16_04,2026-04-16_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 bulkscore=0 priorityscore=1501 spamscore=0 clxscore=1011
+ phishscore=0 impostorscore=0 adultscore=0 malwarescore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604070000 definitions=main-2604170092
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-238471-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,linux-foundation.org,linux.dev,gentwo.org,google.com,kvack.org,vger.kernel.org,googlegroups.com,konsulko.se,gmail.com,oracle.com];
-	RCPT_COUNT_TWELVE(0.00)[18];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org,linux.ibm.com,suse.cz,lists.ozlabs.org,vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-238472-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[ibm.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,linux.ibm.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[harry@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_NEQ_ENVFROM(0.00)[sourabhjain@linux.ibm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,sashiko.dev:url]
-X-Rspamd-Queue-Id: C565041930B
+	RCVD_COUNT_SEVEN(0.00)[11]
+X-Rspamd-Queue-Id: EF0584198B2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, Apr 17, 2026 at 11:05:09AM +0200, Marco Elver wrote:
-> On Fri, 17 Apr 2026 at 06:42, Harry Yoo (Oracle) <harry@kernel.org> wrote:
-> > [+Cc relevant folks]
-> >
-> > On Thu, Apr 16, 2026 at 03:25:07PM +0200, Marco Elver wrote:
-> > > Commit 2cd8231796b5 ("mm/slub: allow to set node and align in
-> > > k[v]realloc") introduced the ability to force a reallocation if the
-> > > original object does not satisfy new alignment or NUMA node, even when
-> > > the object is being shrunk.
-> > >
-> > > This introduced two bugs in the reallocation fallback path:
-> > >
-> > > 1. Data loss during NUMA migration: The jump to 'alloc_new' happens
-> > >    before 'ks' and 'orig_size' are initialized. As a result, the
-> > >    memcpy() in the 'alloc_new' block would copy 0 bytes into the new
-> > >    allocation.
-> >
-> > Ouch.
-> >
-> > > 2. Buffer overflow during shrinking: When shrinking an object while
-> > >    forcing a new alignment, 'new_size' is smaller than the old size.
-> > >    However, the memcpy() used the old size ('orig_size ?: ks'), leading
-> > >    to an out-of-bounds write.
-> >
-> > Right. before the commit we didn't reallocate when the size is smaller.
-> >
-> > > The same overflow bug exists in the kvrealloc() fallback path, where the
-> > > old bucket size ksize(p) is copied into the new buffer without being
-> > > bounded by the new size.
-> > >
-> > > A simple reproducer:
-> > >
-> > >       // e.g. add to lkdtm as KREALLOC_SHRINK_OVERFLOW
-> > >       while (1) {
-> > >               void *p = kmalloc(128, GFP_KERNEL);
-> > >               p = krealloc_node_align(p, 64, 256, GFP_KERNEL, NUMA_NO_NODE);
-> > >               kfree(p);
-> > >       }
-> > >
-> > > demonstrates the issue:
-> > >
-> > >   ==================================================================
-> > >   BUG: KFENCE: out-of-bounds write in memcpy_orig+0x68/0x130
-> > >
-> > >   Out-of-bounds write at 0xffff8883ad757038 (120B right of kfence-#47):
-> > >    memcpy_orig+0x68/0x130
-> > >    krealloc_node_align_noprof+0x1c8/0x340
-> > >    lkdtm_KREALLOC_SHRINK_OVERFLOW+0x8c/0xc0 [lkdtm]
-> > >    lkdtm_do_action+0x3a/0x60 [lkdtm]
-> > >    ...
-> > >
-> > >   kfence-#47: 0xffff8883ad756fc0-0xffff8883ad756fff, size=64, cache=kmalloc-64
-> > >
-> > >   allocated by task 316 on cpu 7 at 97.680481s (0.021813s ago):
-> > >    krealloc_node_align_noprof+0x19c/0x340
-> > >    lkdtm_KREALLOC_SHRINK_OVERFLOW+0x8c/0xc0 [lkdtm]
-> > >    lkdtm_do_action+0x3a/0x60 [lkdtm]
-> > >    ...
-> > >   ==================================================================
-> > >
-> > > Fix it by moving the old size calculation to the top of __do_krealloc()
-> > > and bounding all copy lengths by the new allocation size.
-> > >
-> > > Fixes: 2cd8231796b5 ("mm/slub: allow to set node and align in k[v]realloc")
-> > > Cc: <stable@vger.kernel.org>
-> > > Reported-by: https://sashiko.dev/#/patchset/20260415143735.2974230-1-elver%40google.com
-> > > Signed-off-by: Marco Elver <elver@google.com>
-> > > ---
-> >
-> > Looks good to me, but I think we still have a similar issue in
-> > vrealloc_node_align_noprof()? (goto need_realloc; due to NUMA mismatch
-> > but the new size is smaller)
-> 
-> Good find.
+
+
+On 17/04/26 13:09, Pengpeng Hou wrote:
+> bootargs_append_store() indexes params[count - 1] when stripping a
+> trailing newline from the sysfs write buffer.
 >
-> That's a separate patch, though, since it's in the vmalloc subsystem
+> kernfs passes zero-length writes through to the store callback, so an
+> empty write makes that newline check read before the start of params.
+>
+> Reject empty writes before looking at the last input byte.
+>
+> Fixes: 683eab94da75 ("powerpc/fadump: setup additional parameters for dump capture kernel")
+> Cc: stable@vger.kernel.org
+>
+> Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+> ---
+>   arch/powerpc/kernel/fadump.c | 3 +++
+>   1 file changed, 3 insertions(+)
+>
+> diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
+> index 4ebc333dd786..03ab5565e420 100644
+> --- a/arch/powerpc/kernel/fadump.c
+> +++ b/arch/powerpc/kernel/fadump.c
+> @@ -1479,6 +1479,9 @@ static ssize_t bootargs_append_store(struct kobject *kobj,
+>   	if (!fw_dump.fadump_enabled || fw_dump.dump_active)
+>   		return -EPERM;
+>   
+> +	if (!count)
+> +		return -EINVAL;
 
-You're right. for this patch:
+How you manage to call this function with count as 0?
 
-Looks good to me,
-Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
+> +
+>   	if (count >= COMMAND_LINE_SIZE)
+>   		return -EINVAL;
+>   
 
-> (it's also not confidence-inspiring that vrealloc_node_align_noprof
-> has a bunch of TODOs sprinkled all over...).
-
-;)
-
-looks like one of the TODOs is going to be tacked though. (shrinking)
-https://lore.kernel.org/linux-mm/20260404-vmalloc-shrink-v10-0-335759165dfa@zohomail.in
-
-> Since you found that, do you want to claim it?
-
-I have many stuffs going on my plate now (including re-reviewing the
-typed kmalloc caches patch) so it'd be nice if somebody could claim :)
-
-> Also by the looks of it slub and vmalloc patches go through different
-> trees these days per MAINTAINERS.
-
-Right. slab patches go through the slab tree.
-
--- 
-Cheers,
-Harry / Hyeonggon
 
