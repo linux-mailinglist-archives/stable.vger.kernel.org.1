@@ -1,160 +1,165 @@
-Return-Path: <stable+bounces-238527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238528-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gPXiM6nA4mml9wAAu9opvQ
-	(envelope-from <stable+bounces-238527-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 18 Apr 2026 01:22:17 +0200
+	id 2jH2FDPD4mlN+AAAu9opvQ
+	(envelope-from <stable+bounces-238528-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 18 Apr 2026 01:33:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id D449C41F24A
-	for <lists+stable@lfdr.de>; Sat, 18 Apr 2026 01:22:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EA0941F2C3
+	for <lists+stable@lfdr.de>; Sat, 18 Apr 2026 01:33:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DF0D93013190
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 23:22:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E81963015E3A
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 23:33:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4E1636BCED;
-	Fri, 17 Apr 2026 23:22:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26BDD34DB74;
+	Fri, 17 Apr 2026 23:33:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="nANWeg8a"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gzu1dg8b"
 X-Original-To: stable@vger.kernel.org
-Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE0352749ED
-	for <stable@vger.kernel.org>; Fri, 17 Apr 2026 23:22:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.186
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776468131; cv=none; b=a48DvEXCCvagOCc1py34hd/e4cLHJ0RWMPKT4mJEuvvc1NWDg5XzxBuYUH2wXF0MjWnFJhvWlHu0d4z5kxkUS81znHAfKBshHOiGk0JfloBZD73pQbqck8a5fJhtwDp3SwRsmFmrYNDLgKdT/QajOqGQ4/QXNKBkCCBGvLQU4co=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776468131; c=relaxed/simple;
-	bh=Hsc7iuHeJPybBTZwDnnuXYIlD+9wmrLJ9iyjFMp0zcA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YS4Mx/+8xhxVbeUZL6PCZ5TRPhJf7vcBH1oNiDDhbT20Wc+B5aPV+LwAChfCJZruS4UopEL8nSBGcABWykbf3dH5zxHhD6YtL8nEDQF1Urhr17KlAW5zxzAx8+PU0hwv66qUx0Of2hJcy5ph9Wy3F3QoY4tLm6Y6Zf6A4Jo6E9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=nANWeg8a; arc=none smtp.client-ip=91.218.175.186
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Fri, 17 Apr 2026 17:22:02 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1776468127;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GouYhYP+Vg/V5xduMEG9471OG89qh2jPe2ZlHrxDMlk=;
-	b=nANWeg8aKPXdPm1qfRXMyp0DgIGtKY3GYnbFImYzHIrt57kxcPMDuYiqL/SzWA9EFsncST
-	65HAwa0y9QjrZvoUk8rjJG6JJxQomuyNeQTym1A8OG6+bAz8mPbpcwvTBZYlwuTINPxhP7
-	fawTbn45umMzEbQW5cdERESWqyaxc2c=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Russ Weight <russ.weight@linux.dev>
-To: Guangshuo Li <lgs201920130244@gmail.com>
-Cc: Luis Chamberlain <mcgrof@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, Tianfei zhang <tianfei.zhang@intel.com>, 
-	driver-core@lists.linux.dev, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] firmware_loader: fix device reference leak in
- firmware_upload_register()
-Message-ID: <mmcqvvqqq2yj65adm2prscpnxtbp5tljaxtbiqrwlfwpwd3slg@xniqactlghfc>
-References: <20260415085109.3267323-1-lgs201920130244@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD866199D8
+	for <stable@vger.kernel.org>; Fri, 17 Apr 2026 23:33:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.172
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776468782; cv=pass; b=lhy8D+mO/SjrsPRdosQHDzujyNPm8RoxxMEfX4nx+WmkTTqc9Kl07u4Mw2gZWOesmUrNhnuFEkymX4o3/fECTx0m3DdLyulIm+7HE/dypuFB4F1l3hGR10SJNVChj+RECM1V64Fdq5cPj39YKUBmdawK7ZGVU8wqQjX1g7J/gig=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776468782; c=relaxed/simple;
+	bh=qUzJ2BMhk2qoIHxwUszMJ2chiqeRX6VobF8MF0524HA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=F7FzOY1nyEV6i3FNdXfDLuUdZXEx9uPXvcnGsmod00fk+dliN/PhskzCcJFZvKDMqD2+0ZWxvFJvr2o2y1/TjyxgRxb2vIlxuu2RgANPD1EeoiVrAJRH1CFXe2k6GGuuamMoEXpso7cnmLslanBNLmY6531nSB200Aw4V5DG//4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gzu1dg8b; arc=pass smtp.client-ip=209.85.160.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-50d836552daso230101cf.0
+        for <stable@vger.kernel.org>; Fri, 17 Apr 2026 16:33:01 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776468780; cv=none;
+        d=google.com; s=arc-20240605;
+        b=kDyuzoRzvm31GFGc39TCHzsSeBL5QJJH0ESqixD7EOVu5IXJw7hgHzrUNEjEImn/1Z
+         D5TyoIVE3l7YlsfJNssv4USmO3oFGM01qmhz5o/5ohHCG/BEwrU7qY2x1LbMZHzRqcVV
+         5azhHqpuGSYT5/UZn3bnHSu1fk+yhzgj+5106QPUpO0SkvPkBQ4ki6tnTDerZNWVpsbv
+         iKE5atnI2+IEhohIL4rA74TjPE/gcku4QjndGbJy/SidzyoAgRQjUfXPIzPLzph7wnAk
+         uakuSpa0LTDlRFUO6UkvsIQM9AeRIf0qgoPqo3PD5QHDvA+h88UpQx7CveL9FhEk57Os
+         915g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=qUzJ2BMhk2qoIHxwUszMJ2chiqeRX6VobF8MF0524HA=;
+        fh=M1cIVfiI6R53U7tqLYIw04E9otkunkl+qm4+fcp3wyg=;
+        b=S8g2JHil8QkcQspYgxSOAIfv4BT5TvcWEpIj4lBrtnAQAUZCLL4yjZPKN3Vm+sI7f6
+         XgTSIMa1KIGtutGbFa9xwHxIhpWcaMe0Pdbbq6dDpyyaSh3yAPxKkEl/UcfPhHIZery7
+         u5tphyb1VhaCl/0XE/ps7WrneMUyNEvIzNpWZV+Dz9atmb8qel7fKzQz71nqyQn2J9Wm
+         t0xBTA6myYyjr7nA71xr70zoK6by8MmglhSWCyxcWhaMxVjwpxOxWph/H7JiocRFDoau
+         HBvAagrhQZrnXjxhRMVo4ut+NMANGbVGPFBNynhOgjs0/0c9CKOEwqLMQikE2H8BB+Y3
+         F59A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1776468780; x=1777073580; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qUzJ2BMhk2qoIHxwUszMJ2chiqeRX6VobF8MF0524HA=;
+        b=gzu1dg8bNTz5teQSYFViHxRAbLanteNSjeiG/nTFmD4XSXa4Es2EgxpILRcRyCDDFL
+         3JnrsXbohoyX1I4haFbSvHBAIo22fE4RwpTUX1JMRmfKi4IJoxANIZfaWKLK3B1er28d
+         p9GB//Yy8oa2q0ruuQPZvbEsJhhWJBWESU5qtEk79bUKOeIpJ2OXF1ALrNB/naf/P4G9
+         6Mej+LvKLFoc/QUHhZRrDYGhUA6s+NMdAoovB4H56primPudJy+0hIdFhfeigMO6XuHB
+         hNNXAxMrf7SCg89rGE/UBHuIaqtUaFSOm1F5pqZhsrMxP4Jpm/n3cIEJ+2CxpWwZwBrD
+         BkwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776468780; x=1777073580;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=qUzJ2BMhk2qoIHxwUszMJ2chiqeRX6VobF8MF0524HA=;
+        b=ISN6mbJNNAF/lk+UyjfiTWXKWJ/p/3i/Ta+MhNhH/aelQ6tTcDsrlvL+GAYa3TrNDs
+         Wi6wgze1SvjhuLC/IOczEILnSjF0vWPhwmbYP9jU8ATHrAhp3kgosjAuU2J2Wb1qsSpj
+         MULZmPoQ/minMnXBeISQomBxPSiaAnEF3GJyaeAaqGOc88WksxVHbhedzcxsdV5nniYN
+         AGvj8MVsfqZwSIvjjypCp7nmS/PwSQgLTuyTYbbuBQPUO6lKftotqlJi1PECRB80t6hP
+         pM7KdhI6o0P8gT/vByTzQSPIZQ5MQ8ROIAHgPCho170FqtV4RetAdkc0P1Ui3kjROHhU
+         IzHg==
+X-Gm-Message-State: AOJu0Yx1tmJK1XFw00ZyVnisBYTJaOj0GZjO+r7WPNpEa0W0cE47nJGa
+	wDVAoVFN1ip4gL8KAMOyVSWMz49kyk6oLGPtPOXCYk+uC+OfuFndlPqZ2JBhe0rR8JVp/RfJWne
+	SJagyAOP7koQya76XMvWctru9y0kSw3WoDtp9Nsm+
+X-Gm-Gg: AeBDies6GPsIjKy+oV1MYF4dq8FE9MNfUhcn3dYzJMYuRvXl4IbopMEQesFvVLf7rjL
+	fYKszgoOU9P0GVwAGH0kasqsZBfsUuhu//+HFGErZ1X9hJ/rQlm5zm2Pi3BoZs4N3Suj8wRQgj5
+	f7i2mjNEoA+q6ytwAbmYr0KXPz7/e8TD17nEeHr8fpnW3eb9ANXX7GGD2TMKgKrOQiBQe8VW4qL
+	WdAgEpFi/MtfuEvnvtcLAJpzlgTNSErn8V81036Rq5tAaPzdaAjasVbSPNHbmdDoUjU9snz55Wb
+	UcAuwKaOlXrFcyjiZ4NR5Mg/uHuSB/Q+IhSJe6w=
+X-Received: by 2002:a05:622a:989:b0:50d:637c:cb64 with SMTP id
+ d75a77b69052e-50e42a0876bmr5956351cf.6.1776468780182; Fri, 17 Apr 2026
+ 16:33:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260415085109.3267323-1-lgs201920130244@gmail.com>
-X-Migadu-Flow: FLOW_OUT
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+References: <CAHWLEDHfXZScF5jNDzgOxGXf-MBDcVNtqW0DbNz8Ra8rtcuL+w@mail.gmail.com>
+In-Reply-To: <CAHWLEDHfXZScF5jNDzgOxGXf-MBDcVNtqW0DbNz8Ra8rtcuL+w@mail.gmail.com>
+From: Chenglong Tang <chenglongtang@google.com>
+Date: Fri, 17 Apr 2026 16:32:49 -0700
+X-Gm-Features: AQROBzCRDoRoqlmFhgpm5PRxW9yTaV4weYU3Obvq1Py8PtiWbd_glLtwlJLTctM
+Message-ID: <CAOdxtTbwipkyAfDakLAB6aVp6YkPWtKpDdVDUTz88WDB-18HXQ@mail.gmail.com>
+Subject: Re: [REGRESSION] Return change in 6.12.80+ with volatile mounting
+To: Derek Taylor <ddtaylor@google.com>
+Cc: stable@vger.kernel.org, regressions@lists.linux.dev, 
+	Kevin Berry <kpberry@google.com>, Amir Goldstein <amir73il@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-238528-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	FREEMAIL_TO(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-238527-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[russ.weight@linux.dev,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linux.dev:+];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,google.com,gmail.com];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D449C41F24A
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[chenglongtang@google.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[google.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: 9EA0941F2C3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Apr 15, 2026 at 04:51:09PM +0800, Guangshuo Li wrote:
-> firmware_upload_register()
->   -> fw_create_instance()
->      -> device_initialize()
-> 
-> After fw_create_instance() succeeds, the lifetime of the embedded struct
-> device is expected to be managed through the device core reference
-> counting, since fw_create_instance() has already called
-> device_initialize().
-> 
-> In firmware_upload_register(), if alloc_lookup_fw_priv() fails after
-> fw_create_instance() succeeds, the code reaches free_fw_sysfs and frees
-> fw_sysfs directly instead of releasing the device reference with
-> put_device(). This may leave the reference count of the embedded struct
-> device unbalanced, resulting in a refcount leak.
-> 
-> The issue was identified by a static analysis tool I developed and
-> confirmed by manual review. Fix this by using put_device(fw_dev) in the
-> failure path and letting fw_dev_release() handle the final cleanup,
-> instead of freeing the instance directly from the error path.
-> 
-> Fixes: 97730bbb242c ("firmware_loader: Add firmware-upload support")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-> ---
->  drivers/base/firmware_loader/sysfs_upload.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/base/firmware_loader/sysfs_upload.c b/drivers/base/firmware_loader/sysfs_upload.c
-> index f59a7856934c..6b701185dcb6 100644
-> --- a/drivers/base/firmware_loader/sysfs_upload.c
-> +++ b/drivers/base/firmware_loader/sysfs_upload.c
-> @@ -366,7 +366,8 @@ firmware_upload_register(struct module *module, struct device *parent,
->  	return fw_upload;
->  
->  free_fw_sysfs:
-> -	kfree(fw_sysfs);
-> +	put_device(fw_dev);
-> +	goto exit_module_put;
+CC Amir,
 
-Thanks for the patch!
+For example, containerd 2.2.0 uses `volatile` instead of `fsync=3Dvolatile`=
+:
+https://github.com/containerd/containerd/blob/main/core/mount/temp.go#L91C1=
+-L92C1
 
-Given that the free_fw_sysfs target is used only once and no longer
-falls through, I suggest we remove the free_fw_sysfs target
-altogether.
-
-Instead of:
-        goto free_fw_sysfs;
-
-Do:
-        put_device(fw_dev);
-        goto exit_module_put;
-
-- Russ
-
->  
->  free_fw_upload_priv:
->  	kfree(fw_upload_priv);
-> -- 
-> 2.43.0
-> 
+On Fri, Apr 17, 2026 at 3:41=E2=80=AFPM Derek Taylor <ddtaylor@google.com> =
+wrote:
+>
+> This change seems to have so far affected at least containerd in an
+> issue reported here
+> https://github.com/containerd/containerd/issues/13250.
+>
+> In stable versions 6.12.80+, commit
+> 6c0cfbe020c0fcd2a544fcd2931fbc366ee3cd12 with the specific change
+> being:
+> [*] The mount option "volatile" is an alias to "fsync=3Dvolatile".
+> In this scenario, code relying on checking "volatile" will now fail
+> due to the return being "fsync=3Dvolatile".
+>
+> #regzbot introduced:v6.12.80
 
