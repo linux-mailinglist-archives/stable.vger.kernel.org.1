@@ -1,90 +1,90 @@
-Return-Path: <stable+bounces-238474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238475-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2LWDNEcN4mkg1AAAu9opvQ
-	(envelope-from <stable+bounces-238474-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 12:36:55 +0200
+	id uCjICzAQ4mkg1AAAu9opvQ
+	(envelope-from <stable+bounces-238475-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 12:49:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B1BB41A2C9
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 12:36:55 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A35C141A6AF
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 12:49:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9DD803001BE6
-	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 10:29:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0885130F8230
+	for <lists+stable@lfdr.de>; Fri, 17 Apr 2026 10:46:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AFC636D9FE;
-	Fri, 17 Apr 2026 10:29:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBEEB3346A8;
+	Fri, 17 Apr 2026 10:46:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FT0cwr5W"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D98juoyW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DC07370D56
-	for <stable@vger.kernel.org>; Fri, 17 Apr 2026 10:29:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C953F2DF6E9
+	for <stable@vger.kernel.org>; Fri, 17 Apr 2026 10:46:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776421763; cv=none; b=Cp8RHNjCfCA/NozAGrK1bt2W2VxVrfUml5o3b4bOQNZ9HoZlgOnptjM+1lKCPKq5FlxnQVXxSTuckbfzir2Vl3bTf6oz7FqdDwXyS11ZbcBG+w3UvobKXlx9gr3Ou+gJ2Cejwq19+M2oAIjAEYMRkuTZWzNjyg9TAMH6u3HhMXM=
+	t=1776422805; cv=none; b=KLnYxd9sPfQ8WSuiFI9K30TwqWkdFkAHxgFnvDL5ng3ZRoxqoX+COKz8Br83FbJXhadbpjVMzlZ3xLiYa4kUk87ha6HY2sZB3/K2FQRYVYB5QPKoDcUS78eqRHkJ3xs1HFvI3F8cEkrkbuFY9N1ThjTfZR+TH3W7PAPG5UuA9yY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776421763; c=relaxed/simple;
-	bh=yy99X5ZV6EUa6VM0MQM1D/ya75MnDqHlC2agDPMvgQ4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FKCLKxfkUaEl94uibjX33V00A1Gd1G1eme6KMobjdCJ+gZNoneylyBYJkhiNUvkt3xEUwOkFj2rGR13ICiLiW3waewxODTNYswPt38rd8PI15zApv5Llai97DM3s1vxvEfPy64qAqFvHc9jIa9MmN797fP41oxynGB/TJeoBp/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FT0cwr5W; arc=none smtp.client-ip=209.85.128.42
+	s=arc-20240116; t=1776422805; c=relaxed/simple;
+	bh=xxPE7p8J+Km72Fu9cE2Qxt25fuNU7Me/NosNShaHNjA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VRnYVlXJhKx4YgwgItQCuokwYv9a9bjznemsbgNLY164e8d+aVsOGZeEgFgfff0Ont6PWbr7jNGrdQH6v/F2FpSMfpRdImvPuq+JnUZoX3T4JDNacgsN09acbAnw7dLjmLdbpdKEIuwGWZGAGJ3wYkyJpHFON5gY6DF3f6LH3Mc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D98juoyW; arc=none smtp.client-ip=209.85.221.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-488a8ca4aadso6397745e9.3
-        for <stable@vger.kernel.org>; Fri, 17 Apr 2026 03:29:21 -0700 (PDT)
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-43d74086e5bso480257f8f.0
+        for <stable@vger.kernel.org>; Fri, 17 Apr 2026 03:46:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776421760; x=1777026560; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1776422801; x=1777027601; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=fE+qnOdm3zs6vETg/xjRcNv6wjpPT+qb+RS/sbJQMYo=;
-        b=FT0cwr5W+nVQVd7Mqs9ZMC1zMV35dp30Y/faZNSdwHYBrS2Kr09Xk9vGS2Zlg6npVb
-         XFzGegkJ6IikFwPJ31IzZfghEuJS/+6oj1PtzubWJynJHLdh5O8dAF92lgvcotCYwwYT
-         tqelDA3+aFIrTVp/yb0jzkWagc3AIwbkf89Q+Dlh/KaRdxEn6cTYH8HbAjST4Ph/jDqd
-         ggecJ9AG3wtInJTt1jXIAZrr5S7kk9jAQfGZ4x0bWq8a6dXbB1TQcmraPbiI7WBuw6va
-         fsxzLfq51j+UPOoDWsArGn/C6ytisqISUngvSz6QFHEWOoyARolJrvXpE70t9G8fJE7R
-         e3fw==
+        bh=QNXTybxJ7WUCuHtax9bzQlVrZGGr1HrE+ejN+oTzKns=;
+        b=D98juoyWwpuagggfgPldpCLQTma6O2DSeNa0amhIguhyD4ZAon7rSMtBELy2OEPrJ5
+         WUmg1o3t6nnm9+0IotJoLynClIGT3CAWVNaJEMwAIcG84cG1s7qExFqR3aBMPyMlx97s
+         ptVceuYlyMBagQN6WuSD3t+RPyBj3Jg/fw/zGdouRpBD02kdSjJlorTWHmqXYAVPJmc/
+         GnxtfkCcNyewVwgEtIGIBjdYeeA/KgvqYjUPLfPkKRL7oy9t9nn7Zm8cJjrWUJJG1e45
+         nPsCLH8UX9I5sgu5/ftK93rIvyn8s82vphtkq1+usJuNn4uAE9W7o/ftKnarLdmnDz/q
+         OjOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776421760; x=1777026560;
+        d=1e100.net; s=20251104; t=1776422801; x=1777027601;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=fE+qnOdm3zs6vETg/xjRcNv6wjpPT+qb+RS/sbJQMYo=;
-        b=UD7fpYVmRo29yCry4wh4y2m4lNYkM4bPJVk+Du/aKK770QCR9V2ulCJIqjhkY7GwwB
-         ZV7oj2/Vxbkel0rnxGh+PUsnudqidn+MsigjYkvcNfBY2cISxhc9A4BSHrcB7krccqe0
-         xXP9T74AsHDxZuXrYU3dz6Ra9eHv7aINgYNXiDaiwAY7+0xvwc4kHRA8o17jKBHzOKKg
-         xuoNwiRetjCi7MQWZw8nXo1VOB/w2umptUBQmYIG7jteRIWdiHah6EcCzHQNeQmCVMge
-         TNKT96Uvus5RsMcHJHpTghKGdRJW9sYmEU0/VRkuZGLa1CtkkjSEB4rqza64K5oiVvRQ
-         VUdg==
-X-Forwarded-Encrypted: i=1; AFNElJ+9eoc0G3pS0HzHvE8jn1oSIYXBn6EZNr9oMT6Kc/iSeEFAH03dM6ikCDf9IBQ+mUzezjyYEVI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YylRyYXa0A+UTAEpRQ8cSW4/aaE/Gf4lo0PGfRlfaE44OoxfERA
-	e9Dlh2GboJJ+jcE0UmT8i6CviHxUxjdCvQapvFeUvSKPX1z0qhEu18s=
-X-Gm-Gg: AeBDieuGmRgOZ5gczg8p+2KN6iDDC88iE4irVX1d5YZelEUj3bReOfoSL4V39nEAtBj
-	5aLCiJzJ7Xfe9WMwH5uQQfpmFw2GYWBFJNkZB2XnsqtKCpBigWuPbooHibee4vONGvQtRRCeIyC
-	pFjOoBMDYwE633uJxa+3gXxna5EUILs4ekvgV4C62hIlHFxw3qcLUGjCzPQL/IPCeORUkrkMJVU
-	WKO3TAkjKN0jBlP9L+7zCythnSYp9/2b0xS9STaxG7HHv+D9SCg1fhX1mIdT1tRLV6aq/p+Oc7d
-	lK2hWeYNufB0+s5uxwDp1Iu3hOBiLhl1C85Van1lr/znZfkx/ozOHp4vVZnLJoFh/aecRoOvqnH
-	6v3kDHJuYOeYyBXECwf36XAFUmFTInP3JZdoREjnuACOmjtXSh3aXUwoFkN/TfTrNsErmeYE4Xh
-	ajQeM=
-X-Received: by 2002:a05:600c:c4a1:b0:488:c014:34da with SMTP id 5b1f17b1804b1-488fb77ed1bmr27199815e9.26.1776421760356;
-        Fri, 17 Apr 2026 03:29:20 -0700 (PDT)
+        bh=QNXTybxJ7WUCuHtax9bzQlVrZGGr1HrE+ejN+oTzKns=;
+        b=o41bIG0osp8umkZ6WRG1kSgf3B/nPgV6wQiWvxkfLYsdykiUeGJXC9q9Frw13idFSF
+         F7jLSeTHO9WaNHepbR16/0uWbcLzxj6BVHnu4U6F+4zyctodJOuaeomeF9SMyruqR8aH
+         Em6TNX1TMwyldS2tLxUoarLZ18fwhQDe5RxS/0Vl77RjV+upLGBHAgc/yvTXHNFnWt47
+         5+0nwnAQHRYxxe6oFswAjn5z2nQ5mmmnYofJimo6yslTBDPU+qoYyNsiphOj+cdvHtjx
+         Bj3fdWLvgV14FrjEOK6N38qnXoKfY9tckB5HT0DO56RDXOKE0d114ky1a+cPlzInnq7T
+         0+gw==
+X-Forwarded-Encrypted: i=1; AFNElJ/Td7VeHtiNU09A1MxfIlAPdMc+2z/1Y/fCAkO8mT5D6WVFqaodMIbyNISlzxK8UEnF1lRiXzs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzqY4GHNX1KCIzLR+Hr29u1LaQGx8TIblcNcGhFtHs/vveZENuq
+	qC8XcrK/jfO8qsITf4+sXRX7inyUwwzFNMrMCPEcJNN1f+JmgFpF/dk=
+X-Gm-Gg: AeBDiesornrFvQR4Yy/rjE/JclxoxkGD1Hmzyg3KdTA318LKh/mgHTzL9V9Qln9qcnP
+	wSGcSy4GPkNCaQITaXvnZ1Ejg5e8/977jpcEGenTCn+t+3H4vCCT99NupfGj30bqaSETpvcwe0U
+	PoDa84XMJqc1XXpBTzfDPUeuKvaoTPwMExttNxWivb8cwpIituHPl13WdR02a7vDe3TaHc72QmQ
+	pY/vP/nIuwu5XAITBmKHM4nZv80CjMJcSKUdkiubkX7eJyxZ+1pNQasxQB6CSe5LJS2VsahP9+n
+	48xeS5wMP7eWSbOk2NgBlFmRwK1mKFS/nVvcRt5+vcvMRkzQ+auI55ZenJsuqtkg5ayUGpkNlMw
+	J0OgS5Y57nI3ZcjRX+y5xZK42i/12x0t3qw+/+vOFARK2ny17jyUAxd/j7I38yk1+V7wJQ2//dk
+	Uat3U=
+X-Received: by 2002:a05:6000:2387:b0:43d:7c91:49c with SMTP id ffacd0b85a97d-43fe3e255ccmr3448516f8f.44.1776422800911;
+        Fri, 17 Apr 2026 03:46:40 -0700 (PDT)
 Received: from debian.. ([2001:41d0:303:db6b::])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488fb7c0eacsm13854955e9.35.2026.04.17.03.29.19
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43fe4cb13a0sm3699809f8f.8.2026.04.17.03.46.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Apr 2026 03:29:19 -0700 (PDT)
+        Fri, 17 Apr 2026 03:46:40 -0700 (PDT)
 From: Tristan Madani <tristmd@gmail.com>
 To: linux-bluetooth@vger.kernel.org
 Cc: luiz.dentz@gmail.com,
 	marcel@holtmann.org,
-	sean.wang@mediatek.com,
-	mark-yw.chen@mediatek.com,
-	linux-mediatek@lists.infradead.org,
+	sven@svenpeter.dev,
+	marcan@marcan.st,
+	asahi@lists.linux.dev,
 	stable@vger.kernel.org
-Subject: [PATCH v3] Bluetooth: btmtk: validate WMT event SKB length before struct access
-Date: Fri, 17 Apr 2026 10:29:19 +0000
-Message-ID: <20260417102919.2549352-1-tristmd@gmail.com>
+Subject: [PATCH v3] Bluetooth: hci_bcm4377: validate firmware event length in completion ring
+Date: Fri, 17 Apr 2026 10:46:39 +0000
+Message-ID: <20260417104639.2608008-1-tristmd@gmail.com>
 X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -100,12 +100,12 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-238474-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[gmail.com,holtmann.org,mediatek.com,lists.infradead.org,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-238475-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,holtmann.org,svenpeter.dev,marcan.st,lists.linux.dev,vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_NONE(0.00)[];
@@ -121,57 +121,46 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[talencesecurity.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4B1BB41A2C9
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A35C141A6AF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Tristan Madani <tristan@talencesecurity.com>
 
-btmtk_usb_hci_wmt_sync() casts the WMT event response SKB data to
-struct btmtk_hci_wmt_evt (7 bytes) and struct btmtk_hci_wmt_evt_funcc
-(9 bytes) without first checking that the SKB contains enough data.
-A short firmware response causes out-of-bounds reads from SKB tailroom.
+The firmware-controlled entry->len is used as the memcpy size for inline
+payload data without bounds checking when the PAYLOAD_MAPPED flag is not
+set. This causes out-of-bounds reads from the completion ring DMA memory
+for the HCI_D2H and SCO_D2H transfer rings.
 
-Add length validation before each struct access to prevent OOB reads
-from malformed WMT event responses.
+Add a length validation against the completion ring payload_size.
 
-Fixes: d019930b0049 ("Bluetooth: btmtk: move btusb_mtk_hci_wmt_sync to btmtk.c")
+Fixes: 8a06127602de ("Bluetooth: hci_bcm4377: Add new driver for BCM4377 PCIe boards")
 Cc: stable@vger.kernel.org
 Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
 ---
- drivers/bluetooth/btmtk.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/bluetooth/hci_bcm4377.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/bluetooth/btmtk.c b/drivers/bluetooth/btmtk.c
-index 6fb6ca274..b1a96ebae 100644
---- a/drivers/bluetooth/btmtk.c
-+++ b/drivers/bluetooth/btmtk.c
-@@ -695,6 +695,12 @@ static int btmtk_usb_hci_wmt_sync(struct hci_dev *hdev,
- 	if (data->evt_skb == NULL)
- 		goto err_free_wc;
+diff --git a/drivers/bluetooth/hci_bcm4377.c b/drivers/bluetooth/hci_bcm4377.c
+index 925d0a635..5d2f594c2 100644
+--- a/drivers/bluetooth/hci_bcm4377.c
++++ b/drivers/bluetooth/hci_bcm4377.c
+@@ -755,6 +755,13 @@ static void bcm4377_handle_completion(struct bcm4377_data *bcm4377,
+ 	msg_id = le16_to_cpu(entry->msg_id);
+ 	transfer_ring = le16_to_cpu(entry->ring_id);
  
-+	/* Validate SKB length before accessing WMT event structs */
-+	if (data->evt_skb->len < sizeof(*wmt_evt)) {
-+		err = -EINVAL;
-+		goto err_free_skb;
++	if (data_len > ring->payload_size) {
++		dev_warn(&bcm4377->pdev->dev,
++			 "event data len %zu exceeds payload size %zu for ring %d\n",
++			 data_len, ring->payload_size, ring->ring_id);
++		return;
 +	}
 +
- 	/* Parse and handle the return WMT event */
- 	wmt_evt = (struct btmtk_hci_wmt_evt *)data->evt_skb->data;
- 	if (wmt_evt->whdr.op != hdr->op) {
-@@ -712,6 +718,10 @@ static int btmtk_usb_hci_wmt_sync(struct hci_dev *hdev,
- 			status = BTMTK_WMT_PATCH_DONE;
- 		break;
- 	case BTMTK_WMT_FUNC_CTRL:
-+		if (data->evt_skb->len < sizeof(*wmt_evt_funcc)) {
-+			err = -EINVAL;
-+			goto err_free_skb;
-+		}
- 		wmt_evt_funcc = (struct btmtk_hci_wmt_evt_funcc *)wmt_evt;
- 		if (be16_to_cpu(wmt_evt_funcc->status) == 0x404)
- 			status = BTMTK_WMT_ON_DONE;
+ 	if ((ring->transfer_rings & BIT(transfer_ring)) == 0) {
+ 		dev_warn(
+ 			&bcm4377->pdev->dev,
 -- 
 2.47.3
 
