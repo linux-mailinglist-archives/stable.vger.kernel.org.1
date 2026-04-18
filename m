@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-238561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238562-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6O5AFS4542lIDgEAu9opvQ
-	(envelope-from <stable+bounces-238561-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 18 Apr 2026 09:56:30 +0200
+	id WJS/A+o542lzDgEAu9opvQ
+	(envelope-from <stable+bounces-238562-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 18 Apr 2026 09:59:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0A02420587
-	for <lists+stable@lfdr.de>; Sat, 18 Apr 2026 09:56:29 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F3694205D0
+	for <lists+stable@lfdr.de>; Sat, 18 Apr 2026 09:59:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3F2FD300B454
-	for <lists+stable@lfdr.de>; Sat, 18 Apr 2026 07:56:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 954DD305A4C6
+	for <lists+stable@lfdr.de>; Sat, 18 Apr 2026 07:59:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40D0E37104C;
-	Sat, 18 Apr 2026 07:56:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A6BF374736;
+	Sat, 18 Apr 2026 07:59:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="mZIqXeP5"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="yDYdvI5S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04872370D77;
-	Sat, 18 Apr 2026 07:56:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF8E5372EF0;
+	Sat, 18 Apr 2026 07:59:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776498986; cv=none; b=e2DizZLY1PfwptIS5cDD9RpMil5KqixXZDMGQzMl8SawqvgCP2gtPs/7Cz7Phh3VTEbKwzcm84DnLE2Rz4Y40vMBc1jy757UDWr0nVbo3QrgVORYAqDKf9U8e2HQOOkqX13jvZJ4ml0smlV4tsp9q12N7T0OR3SyuOeYDaW+/QU=
+	t=1776499145; cv=none; b=WN6f7OqylHgsaPmmNGxQLh05ZXUEOC915XLTCP4e6b1ygvnjbGLuCluydhyTBaap7r6Ud3KaciFvALDV5JQisiPSFZb9M3jzsWh5x39lDqzpp1wgTOgovexoVjafkRHjsngHEiDa86gFxCnU328HKknSdNQB2A/HAj1kHtDS6fE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776498986; c=relaxed/simple;
-	bh=EyxAAX+4BPF5JfO+C2t2JaR1JEpsM7Z4Ko+ym7kjsd0=;
-	h=Date:To:From:Subject:Message-Id; b=L338YuSUd0idh1nNs77VTKfes3+oVD7L+0I4M0WeoC5Xo5D1Pa1tzG3bWOjSGOgP4OWrSHeJ7E7oYAHeE7ZnoJ2jDOYVHlFBA9yhyTg3dCb0ZuNdRljrydYX52EOmkEd4+0s/A2e3cMfubJJGqKxVKWSLsYfguAqiizsNn9QgRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=mZIqXeP5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8848C19424;
-	Sat, 18 Apr 2026 07:56:23 +0000 (UTC)
+	s=arc-20240116; t=1776499145; c=relaxed/simple;
+	bh=5Ulg4ZRJR7KeEkFCnKYLGQqMRIE9tybhqc0WFbsZFlM=;
+	h=Date:To:From:Subject:Message-Id; b=ejdHa4iBlfaPOezZEe+8RqNrXvpL3guGisCnQvEFiwclpwc8uP6TCnYeUei+wmfnwclcFOHjQHHLKJOVLCBrRWt0a1GJ0GToPeS3JX66Gnxb+abeJL9Yg9Vzm0torAccwKx4bzntSupfLlqe1dVX+CnXSPP4KkVr4Esi/aznH+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=yDYdvI5S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C26F7C19424;
+	Sat, 18 Apr 2026 07:59:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1776498985;
-	bh=EyxAAX+4BPF5JfO+C2t2JaR1JEpsM7Z4Ko+ym7kjsd0=;
+	s=korg; t=1776499145;
+	bh=5Ulg4ZRJR7KeEkFCnKYLGQqMRIE9tybhqc0WFbsZFlM=;
 	h=Date:To:From:Subject:From;
-	b=mZIqXeP5lk5UqIUk32T6wqOo44t9Wpp6Nbh8BD2PQNMT6Hc8gBncjuIg5KcNg/RzW
-	 HB+31WvWBaDsreFHd+G0t56TAbwgh+0EEIA+vfVHU/4K79SA3D3LSFS4HdJtX2wfrH
-	 Nm4ucBFkWp5nDaf02ruWEOHSxNt1kYuVF/B9ynCg=
-Date: Sat, 18 Apr 2026 00:56:20 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,rppt@kernel.org,pratyush@kernel.org,pasha.tatashin@soleen.com,jianghaoran@kylinos.cn,duanchenghao@kylinos.cn,akpm@linux-foundation.org
+	b=yDYdvI5StVG+CMaJE/flVtJ3ga6uALftBF+3825aCVqVa31JzgOC54V5GGtea7GZ0
+	 vLEIDU4Vu3Xh52cMOccOLF9LqLD15YEVoiQgjJLz6+R58fVSb+TO7OAZNA/deF+FT0
+	 qKtHDUoW7s838+LSZQRmn/Dc5rYCCqnBwMrY91vw=
+Date: Sat, 18 Apr 2026 00:59:00 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,osalvador@suse.de,muchun.song@linux.dev,fvdl@google.com,david@kernel.org,thorsten.blum@linux.dev,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-stable] mm-memfd_luo-fix-physical-address-conversion-in-put_folios-cleanup.patch removed from -mm tree
-Message-Id: <20260418075624.D8848C19424@smtp.kernel.org>
+Subject: [merged mm-stable] mm-hugetlb-fix-early-boot-crash-on-parameters-without-=-separator.patch removed from -mm tree
+Message-Id: <20260418075904.C26F7C19424@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,7 +53,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -61,7 +61,7 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	TAGGED_FROM(0.00)[bounces-238561-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-238562-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	DMARC_NA(0.00)[linux-foundation.org];
@@ -71,81 +71,66 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_NONE(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,linux-foundation.org:dkim,linux-foundation.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,sashiko.dev:url,smtp.kernel.org:mid]
-X-Rspamd-Queue-Id: E0A02420587
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,smtp.kernel.org:mid,linux-foundation.org:dkim,linux-foundation.org:email,linux.dev:email]
+X-Rspamd-Queue-Id: 6F3694205D0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
 The quilt patch titled
-     Subject: mm/memfd_luo: fix physical address conversion in put_folios cleanup
+     Subject: mm/hugetlb: fix early boot crash on parameters without '=' separator
 has been removed from the -mm tree.  Its filename was
-     mm-memfd_luo-fix-physical-address-conversion-in-put_folios-cleanup.patch
+     mm-hugetlb-fix-early-boot-crash-on-parameters-without-=-separator.patch
 
 This patch was dropped because it was merged into the mm-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Chenghao Duan <duanchenghao@kylinos.cn>
-Subject: mm/memfd_luo: fix physical address conversion in put_folios cleanup
-Date: Thu, 26 Mar 2026 16:47:25 +0800
+From: Thorsten Blum <thorsten.blum@linux.dev>
+Subject: mm/hugetlb: fix early boot crash on parameters without '=' separator
+Date: Thu, 9 Apr 2026 12:54:40 +0200
 
-In memfd_luo_retrieve_folios()'s put_folios cleanup path:
+If hugepages, hugepagesz, or default_hugepagesz are specified on the
+kernel command line without the '=' separator, early parameter parsing
+passes NULL to hugetlb_add_param(), which dereferences it in strlen() and
+can crash the system during early boot.
 
-1. kho_restore_folio() expects a phys_addr_t (physical address) but
-   receives a raw PFN (pfolio->pfn). This causes kho_restore_page() to
-   check the wrong physical address (pfn << PAGE_SHIFT instead of the
-   actual physical address).
+Reject NULL values in hugetlb_add_param() and return -EINVAL instead.
 
-2. This loop lacks the !pfolio->pfn check that exists in the main
-   retrieval loop and memfd_luo_discard_folios(), which could
-   incorrectly process sparse file holes where pfn=0.
-
-Fix by converting PFN to physical address with PFN_PHYS() and adding
-the !pfolio->pfn check, matching the pattern used elsewhere in this file.
-
-This issue was identified by the AI review.
-https://sashiko.dev/#/patchset/20260323110747.193569-1-duanchenghao@kylinos.cn
-
-Link: https://lore.kernel.org/20260326084727.118437-6-duanchenghao@kylinos.cn
-Fixes: b3749f174d68 ("mm: memfd_luo: allow preserving memfd")
-Signed-off-by: Chenghao Duan <duanchenghao@kylinos.cn>
-Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
-Cc: Haoran Jiang <jianghaoran@kylinos.cn>
-Cc: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Link: https://lore.kernel.org/20260409105437.108686-4-thorsten.blum@linux.dev
+Fixes: 5b47c02967ab ("mm/hugetlb: convert cmdline parameters from setup to early")
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Reviewed-by: Muchun Song <muchun.song@linux.dev>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Frank van der Linden <fvdl@google.com>
+Cc: Oscar Salvador <osalvador@suse.de>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/memfd_luo.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ mm/hugetlb.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/mm/memfd_luo.c~mm-memfd_luo-fix-physical-address-conversion-in-put_folios-cleanup
-+++ a/mm/memfd_luo.c
-@@ -484,8 +484,13 @@ put_folios:
- 	 */
- 	for (long j = i + 1; j < nr_folios; j++) {
- 		const struct memfd_luo_folio_ser *pfolio = &folios_ser[j];
-+		phys_addr_t phys;
+--- a/mm/hugetlb.c~mm-hugetlb-fix-early-boot-crash-on-parameters-without-=-separator
++++ a/mm/hugetlb.c
+@@ -4226,6 +4226,9 @@ static __init int hugetlb_add_param(char
+ 	size_t len;
+ 	char *p;
  
--		folio = kho_restore_folio(pfolio->pfn);
-+		if (!pfolio->pfn)
-+			continue;
++	if (!s)
++		return -EINVAL;
 +
-+		phys = PFN_PHYS(pfolio->pfn);
-+		folio = kho_restore_folio(phys);
- 		if (folio)
- 			folio_put(folio);
- 	}
+ 	if (hugetlb_param_index >= HUGE_MAX_CMDLINE_ARGS)
+ 		return -EINVAL;
+ 
 _
 
-Patches currently in -mm which might be from duanchenghao@kylinos.cn are
+Patches currently in -mm which might be from thorsten.blum@linux.dev are
 
 
 
