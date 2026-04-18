@@ -1,81 +1,81 @@
-Return-Path: <stable+bounces-238601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238602-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wPW2FcO/42nJKQEAu9opvQ
-	(envelope-from <stable+bounces-238601-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 18 Apr 2026 19:30:43 +0200
+	id +LKUKdu/42nJKQEAu9opvQ
+	(envelope-from <stable+bounces-238602-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 18 Apr 2026 19:31:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA586421D07
-	for <lists+stable@lfdr.de>; Sat, 18 Apr 2026 19:30:42 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 684DC421D24
+	for <lists+stable@lfdr.de>; Sat, 18 Apr 2026 19:31:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3C9533034ED1
-	for <lists+stable@lfdr.de>; Sat, 18 Apr 2026 17:30:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E73133046240
+	for <lists+stable@lfdr.de>; Sat, 18 Apr 2026 17:30:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78F53296BBC;
-	Sat, 18 Apr 2026 17:30:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C6CA31ED68;
+	Sat, 18 Apr 2026 17:30:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S4a7aoy3"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QurXQ/H5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2140C2D7BF
-	for <stable@vger.kernel.org>; Sat, 18 Apr 2026 17:30:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB2063112BD
+	for <stable@vger.kernel.org>; Sat, 18 Apr 2026 17:30:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776533438; cv=none; b=Kmzo4qj3C3iHLHbWikMS7YRibUIhQkB7pe0XI4bCeIp+dD9Nno+KPrzUvtUtJMvzCRLThJYttm8mPvE4nDRCf12HP4baE01RDSiM6JBCJdFzDEs/uIAvBU6JzOwdaDymK4Rix6C3Pa3S82xRr38jZ0zV6dS8EzHy7Ut9dsAiGP4=
+	t=1776533441; cv=none; b=Y8LCaWRK4xB4+RPsq+1YM+dOyLFMJxMIYTi+DpQRdKes/CzWS0qMyFpUoi0dFBhg9Qx7HJSNJkddWREoRguJMmAyPZ/Dm7IiwZZdTkHPEZZWeEV0skq2wDyHsNoMicaCXTMfS8c2sQAU0lSAyGKPZ0gNMCAUmHet0cbnVt2y1W4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776533438; c=relaxed/simple;
-	bh=vv+uXWXTBOrZTKIXNUPiy6z/3X6izwegkuK8RtLwUfA=;
+	s=arc-20240116; t=1776533441; c=relaxed/simple;
+	bh=ezf//pPazx1mLelB2gmRNccf8HxZrkHgU//I5FWrCyw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e/IC98SknvAtt7e4t1Xwdns391kUjr2xjCKNAcKPRDoqdLfmcFlsjxhp6LjDMwJjpHG4pF2Ol02ic9qcj0QFKRHdAmTBee68c++7K4fC3eafV3OqjN5UAgwthuRXa8fyDG6kcsHlsyloMK9V0wTknKYOoQRbU4/4vvbR7nUuIOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S4a7aoy3; arc=none smtp.client-ip=209.85.216.46
+	 MIME-Version; b=Uldn3xxYsZ7ukEu4jl5UAa/7RTy4Y6z3LuGSbojzjmJnNTyPNu7KnIJMAIfVrqsSpZYc4GhiXwPji4PLoiGbgZ665mqFBTxHlw4XL4kd+76Ocl41ulUn4Pl6qrWbA2MKUivzT/hch//I/E98j9r3DB4+BZ9rRAPzWti36VDmykc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QurXQ/H5; arc=none smtp.client-ip=209.85.216.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-35448ca4689so331587a91.0
-        for <stable@vger.kernel.org>; Sat, 18 Apr 2026 10:30:36 -0700 (PDT)
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-3597822d6d8so314567a91.3
+        for <stable@vger.kernel.org>; Sat, 18 Apr 2026 10:30:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776533436; x=1777138236; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1776533440; x=1777138240; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=3lo0L+uxbWuB7MGwK8DGzVQOOZjXqL0ZQUgEg2W2lmI=;
-        b=S4a7aoy3tUvTUTXw+BOjDg7X0HRrz6kWXCg9C2Yv65Nm5h5NuBjeZTpQDaly1AHg5K
-         Qoiv1j2J1X6LgZs09hW/VRPoyqTM3mQFxAG5f03Au6iBd/LXz7jXsuujJYpc21DWUjKP
-         j+eJ7imew6hzPXzC9jHoBfXL1GE4tHznPb+TTM/A5TiQW64X1qmu9oWsuOCabYOjKtrU
-         04ijDFJpdOeOY0sFhxLG7es7YDROQGMMlUgR8Qw6MUsCTKcsJ8RxDV3hgxUBesppvVI/
-         yCXYeySgBFHVmqHFeUbO/7+yFr8JU7ktyVwUTcJwb+roC7SEHPJ4bNWm1rWa3SHcjbqL
-         TVRA==
+        bh=n1YbAZG9CJiEeAf7NGLPiDB355/n4BunXq6TPbpCs08=;
+        b=QurXQ/H5ToZI50kQGmZb+B3u4q4k9XFMiYZ+KArrL6tEn5Xjfy4DfzaDDuXnYlAC+i
+         1V5oC06DP6uwk9ZBRC3jZjEhKg1k2ZhT+3Q/9uGW7uqAkPAEBMF9QjxvF9Efxies3L0H
+         pbqtYt59yj5MgxOcvSWl4iUxHEIo2M+O/CAdnFqhd/7CCEH6957MWtIe6xstZ5OzjxVk
+         /Mw9UMLCSxg/g/iHeC8BvZxO4cghs70Xs4c1G8lz4RQjgGsS1rQ8+VnC6FYnXyIsfz48
+         mPyZBZLFAO6SEbtAzVtWJdKUfrrX/RtD+FM0quWR0I8qjoNxdBMWwvtQWLJ2D2c8Wq4R
+         YqmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776533436; x=1777138236;
+        d=1e100.net; s=20251104; t=1776533440; x=1777138240;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=3lo0L+uxbWuB7MGwK8DGzVQOOZjXqL0ZQUgEg2W2lmI=;
-        b=adqwaM7IY8xsko/LjbDprxedwJ8poliNj1dP6DmLVEN82VEdJ/1JzIh3AURHP5HVT1
-         0ze/5KxjGfKk3KTlMTIUjkXC2xWWNQBQV5jM8TNgPJ+moVsP/FL8ESIa0xrQ+Gc3j46f
-         DKvxE07pdK7awm6lds/TDxN1xkC1AK/28ykHHgoW3q9IdnXYKXrtyjcwLgSeE4HmMtj/
-         qgWv6iJRIGR5Jh+v3JXPbp330qN/DWfAA7CK3QsuHTsMmH7XCvN7YdsbfCm/hCqkkvAM
-         PxnBENG9A6KaPVE+u083yrR8MlHV5iVxAYxrOG2aqM974eKjggLbzkM/0f5afb2T8JEb
-         f0vA==
-X-Forwarded-Encrypted: i=1; AFNElJ/Cxmu2/bSS0QtHntk0PPQ1I0As2Zw6x+EM5xK7VOvcZeMHdDfHF+8QyiuWz2gDuB21/U2xZsM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx8MiZfz8F/mJz+cWH7iZrvgFy9MNpH9ncbeIj1P4BEpIOon6Uk
-	iZ+uY6fnm4uh0ajggSrBqmRCU9qsVWj8jTp3c2TsPxTrIhrCtrbocRHh
-X-Gm-Gg: AeBDiesSt/jtSO5yg9JK7BVDi4fcNZWHPRZvZJUeE5rdnW6w7aOxyzn1IGNnTFAhjQY
-	Bm1hZZamAoXfiQABPPgUpx59MHOvYWpwa2fdm/XqRQUEzAL0KRa0AXilOZULPNFEYWmO73k6P8U
-	JgBaXz5/+ytxXqxWTpYps9feFsbmwn/KkgszMaZafGy4io8msIxFc9jxPs4TSeFAFn+9eRdu25D
-	gUrdehO+vw8VkcE1sAykMj5RoDXcYWrIIF5AbZgbdHcnVwhqrkbym21/2CTUEqRMHiBazYgr9l1
-	yQxCODHhFr/ERlkH15x0mSofjh5xKJTHbubrJtk/HFpJ36sceA+McVuPsWGta7ClYuxbMq3dXbC
-	PAAQze7Y/j08KQq3NuORhXv+SBy/5ue2cYnry7UoTXDrsdXJW6HE+OGcbNI+hGEDiFYUkuuM88G
-	LG7ryRv0gXgaKd3OBxHdl1wMjdmvk=
-X-Received: by 2002:a17:902:d505:b0:2ae:3f3f:67c4 with SMTP id d9443c01a7336-2b5f9d67131mr40408135ad.0.1776533436099;
-        Sat, 18 Apr 2026 10:30:36 -0700 (PDT)
+        bh=n1YbAZG9CJiEeAf7NGLPiDB355/n4BunXq6TPbpCs08=;
+        b=SXAGqR6vTvn+NgzzRpA+L1kLM+2EhINPVNPJB6bKGmk4JaNU1cY+CKweRGCEChVCIq
+         idVx58uO7FWJvW3i4mR52ACSCbWqyFT9dK5OHrv8I/TR521p1yFSYFESImI3Y/OU4c1G
+         If7130cqSf8xI/z8p3LP6fzqntfzt0hC0u5ZWZaf5av6jaJZ4l6E6ta40xhYuuAflKg9
+         5q44hTLIYtpoAvllkDdj6BsKwckgRNT2Pcu9KQz28BAH3DCrNNbun/TX6xpn7xilMK8F
+         cHitS9XaNklShi251LUMWPmnad9FOUoI6kKoC7aeQauWbvR0wI0Z1eRS9rU8pG7nSYvY
+         P9aA==
+X-Forwarded-Encrypted: i=1; AFNElJ8BzycSdHmBnTMsJLJByX1RXdU2OqNcEYhm3mmD/1DAgo2m+NHwHHQK+koo54ufW99xr+HAMZ0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwIEhVfss/BMHopcWrDz42uWjjuIrm8u+10PNyFnDwhdEqJunR1
+	HCJknosM1QKoTu0Mb+ypdv5ryY0HEMjbxkXpbTk3FYXP/KxisBqL1oOJ
+X-Gm-Gg: AeBDiet157Mq5L/nqHVY4kpqKsmLQyBICG2BpOCVONUj5fsQAFsJo3yWtlY29hAL/9H
+	gqeqrZc85tV9//n3WqfRVkBPVQarZ/JYgXSz4fdBPDsKgKe8NbHtBpyoJMGygd7dXtwo+mcHplp
+	AABJdBA6rOEFQjlwtCPtJLfDfEHs7Udj9WmU7pKLEifl0A/Rf6GcpovzUjMWCJlWw8pfbQ4Fm9C
+	gXbk7v2ApVX/tFVsQAOBa6G8XwA+/LS7EdR6t5a6mZzeLXJRT/gPtNId49TRv5Rrh6H+vxSn9pT
+	QhJeEMvNrl9XUn7rnj4BnUauTz735J4JJcoaZa3m2j38LyOXWkLzofWKF1pDY/eXSBEL70Ko30E
+	XbTQ6K70sAGE/sGYuWFCS94NtVGMljG9I2WNGLyQYnAtC9TR6brvXPmFiLkEFgSW0coL5grDnfR
+	FU7TMUHUx2GklUbI21qiqiiTbWn/Q=
+X-Received: by 2002:a17:902:c40a:b0:2b2:ac6f:f6a with SMTP id d9443c01a7336-2b5f9d679e8mr42742655ad.0.1776533440022;
+        Sat, 18 Apr 2026 10:30:40 -0700 (PDT)
 Received: from ser8.. ([221.156.231.192])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b5fa9ff3bfsm69694965ad.7.2026.04.18.10.30.33
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b5fa9ff3bfsm69694965ad.7.2026.04.18.10.30.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 18 Apr 2026 10:30:35 -0700 (PDT)
+        Sat, 18 Apr 2026 10:30:39 -0700 (PDT)
 From: DaeMyung Kang <charsyam@gmail.com>
 To: linkinjeon@kernel.org,
 	smfrench@gmail.com
@@ -86,9 +86,9 @@ Cc: senozhatsky@chromium.org,
 	stable@vger.kernel.org,
 	Henrique Carvalho <henrique.carvalho@suse.com>,
 	DaeMyung Kang <charsyam@gmail.com>
-Subject: [PATCH 1/2] ksmbd: fix active_num_conn leak when alloc_transport() fails
-Date: Sun, 19 Apr 2026 02:28:43 +0900
-Message-ID: <20260418172844.1333378-2-charsyam@gmail.com>
+Subject: [PATCH 2/2] ksmbd: reset rcount per connection in ksmbd_conn_wait_idle_sess_id()
+Date: Sun, 19 Apr 2026 02:28:44 +0900
+Message-ID: <20260418172844.1333378-3-charsyam@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260418172844.1333378-1-charsyam@gmail.com>
 References: <20260418172844.1333378-1-charsyam@gmail.com>
@@ -104,7 +104,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -114,10 +114,10 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-238601-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-238602-lists,stable=lfdr.de];
 	FREEMAIL_TO(0.00)[kernel.org,gmail.com];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[charsyam@gmail.com,stable@vger.kernel.org];
@@ -129,66 +129,66 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: CA586421D07
+X-Rspamd-Queue-Id: 684DC421D24
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-ksmbd_kthread_fn() increments active_num_conn right after accept(),
-before calling ksmbd_tcp_new_connection().  The decrement normally
-happens in ksmbd_tcp_disconnect() at the end of the connection's
-lifetime.
+rcount is intended to be connection-specific: 2 for curr_conn, 1 for
+every other connection sharing the same session.  However, it is
+initialised only once before the hash iteration and is never reset.
+After the loop visits curr_conn, later sibling connections are also
+checked against rcount == 2, so a sibling with req_running == 1 is
+incorrectly treated as idle.  This makes the outcome depend on the
+hash iteration order: whether a given sibling is checked against the
+loose (< 2) or the strict (< 1) threshold is decided by whether it
+happens to be visited before or after curr_conn.
 
-If alloc_transport() fails in ksmbd_tcp_new_connection(), the function
-releases the socket and returns -ENOMEM without going through
-ksmbd_tcp_disconnect(), so active_num_conn never gets decremented.
-Under memory pressure, repeated failures monotonically inflate the
-counter until max_connections is reached and new clients are refused
-indefinitely.
+The function's contract is "wait until every connection sharing this
+session is idle" so that destroy_previous_session() can safely tear
+the session down.  The latched rcount violates that contract and
+reopens the teardown race window the wait logic was meant to close:
+destroy_previous_session() may proceed before sibling channels have
+actually quiesced, overlapping session teardown with in-flight work
+on those connections.
 
-Decrement active_num_conn on this error path, matching the accounting
-rule used by ksmbd_kthread_fn() and ksmbd_tcp_disconnect().
+Recompute rcount inside the loop so each connection is compared
+against its own threshold regardless of iteration order.
 
-Commit 77ffbcac4e56 ("smb: server: fix leak of active_num_conn in
-ksmbd_tcp_new_connection()") fixed the sibling leak on the kthread_run()
-failure path; this patch closes the remaining one.
+This is a code-inspection fix for an iteration-order-dependent logic
+error; a targeted reproducer would require SMB3 multichannel with
+in-flight work on a sibling channel landing after curr_conn in hash
+order, which is not something that can be triggered reliably.
 
-Reproduced with a debug build that adds a temporary module parameter
-guarding an early return at the top of alloc_transport(), forcing
-the first N accept-time transport allocations to fail:
-
-  * Configure ksmbd with "max connections = 3".
-  * Force 5 successive alloc_transport() failures at the accept path.
-  * Without the fix: active_num_conn drifts up to max_connections and
-    subsequent legitimate mount.cifs attempts are refused with
-    "ksmbd: Limit the maximum number of connections(3)" in dmesg.
-  * With the fix: the counter is correctly decremented on each
-    failure and legitimate mounts continue to succeed.
-
-Tested by injecting 5 alloc_transport() failures with
-max_connections=3 and verifying that subsequent mount.cifs attempts
-still succeed on the patched kernel while the unpatched kernel
-refuses them.
-
-Fixes: 0d0d4680db22 ("ksmbd: add max connections parameter")
+Fixes: 76e98a158b20 ("ksmbd: fix race condition between destroy_previous_session() and smb2 operations()")
 Cc: stable@vger.kernel.org
 Signed-off-by: DaeMyung Kang <charsyam@gmail.com>
 ---
- fs/smb/server/transport_tcp.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/smb/server/connection.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/fs/smb/server/transport_tcp.c b/fs/smb/server/transport_tcp.c
-index 7e29b06820e2..400412444838 100644
---- a/fs/smb/server/transport_tcp.c
-+++ b/fs/smb/server/transport_tcp.c
-@@ -182,6 +182,8 @@ static int ksmbd_tcp_new_connection(struct socket *client_sk)
+diff --git a/fs/smb/server/connection.c b/fs/smb/server/connection.c
+index a26899d12df1..b5e077f272cf 100644
+--- a/fs/smb/server/connection.c
++++ b/fs/smb/server/connection.c
+@@ -237,7 +237,7 @@ int ksmbd_conn_wait_idle_sess_id(struct ksmbd_conn *curr_conn, u64 sess_id)
+ {
+ 	struct ksmbd_conn *conn;
+ 	int rc, retry_count = 0, max_timeout = 120;
+-	int rcount = 1, bkt;
++	int rcount, bkt;
  
- 	t = alloc_transport(client_sk);
- 	if (!t) {
-+		if (server_conf.max_connections)
-+			atomic_dec(&active_num_conn);
- 		sock_release(client_sk);
- 		return -ENOMEM;
- 	}
+ retry_idle:
+ 	if (retry_count >= max_timeout)
+@@ -246,8 +246,7 @@ int ksmbd_conn_wait_idle_sess_id(struct ksmbd_conn *curr_conn, u64 sess_id)
+ 	down_read(&conn_list_lock);
+ 	hash_for_each(conn_list, bkt, conn, hlist) {
+ 		if (conn->binding || xa_load(&conn->sessions, sess_id)) {
+-			if (conn == curr_conn)
+-				rcount = 2;
++			rcount = (conn == curr_conn) ? 2 : 1;
+ 			if (atomic_read(&conn->req_running) >= rcount) {
+ 				rc = wait_event_timeout(conn->req_running_q,
+ 					atomic_read(&conn->req_running) < rcount,
 -- 
 2.43.0
 
