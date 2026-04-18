@@ -1,300 +1,276 @@
-Return-Path: <stable+bounces-238531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238532-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aPtyFRLU4mm++wAAu9opvQ
-	(envelope-from <stable+bounces-238531-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 18 Apr 2026 02:45:06 +0200
+	id GBgFEYrV4mkT/AAAu9opvQ
+	(envelope-from <stable+bounces-238532-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 18 Apr 2026 02:51:22 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B037741F7D8
-	for <lists+stable@lfdr.de>; Sat, 18 Apr 2026 02:45:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B807A41F821
+	for <lists+stable@lfdr.de>; Sat, 18 Apr 2026 02:51:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A12BF3057773
-	for <lists+stable@lfdr.de>; Sat, 18 Apr 2026 00:44:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 76C893050A01
+	for <lists+stable@lfdr.de>; Sat, 18 Apr 2026 00:51:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C8FA255F2D;
-	Sat, 18 Apr 2026 00:44:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14D31175A91;
+	Sat, 18 Apr 2026 00:51:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZsVBjDgM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SKo3YNy2"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f53.google.com (mail-dl1-f53.google.com [74.125.82.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84515245005
-	for <stable@vger.kernel.org>; Sat, 18 Apr 2026 00:44:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776473091; cv=pass; b=tckAFL/esaDoufwJ4Kij3kUUgpiA6hxnHCz0vtIM5xmWoX2Agz63UKnOrauL2XQ68BqPgB77el9UpZsx4QMXAr+crVpBOPILkhOargHvQ+qUZHrJVmoI5+OeNn2R9oZvhdkoEcrQuEVEb5uP+rz+hf533cShqlXF+XbRm5jvoyc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776473091; c=relaxed/simple;
-	bh=QtkZKVzlWbC0y57YLALEats22IogWAhXWdiSPYN8m1I=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oaWaNEZtey9aZaQNh2t7w2iglO4sP0BREwyOgFzIUg/srI2GnuZYvNpC33BIBqRXYw87QfS4zrxU9oEwUvmEyTv5qMRrVS5IvGmRzEXQgfcjwjwz5LrmXDQ6t57ed0fOMB6Qyh9O17oFNhACEuIn2nX3U35V4cUK5jcQ7PgncPU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZsVBjDgM; arc=pass smtp.client-ip=74.125.82.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-12c565476d7so980871c88.1
-        for <stable@vger.kernel.org>; Fri, 17 Apr 2026 17:44:50 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776473090; cv=none;
-        d=google.com; s=arc-20240605;
-        b=TVeR2NcyhWdPqjwCzoNJjZbehRuzwy7/GlBgu3/nGf8pWTNE/nrsJidMLZpsnBlL7Y
-         NBzhNd1tSQg6OSoJsjbmdfil4qGirmSLvUdWDvjbKisxQz78LGloQNq3ypLfw3vY4fdT
-         GMvNTPFgtYK5lH7S5cPBNYYbt2jlPqWofla+tbxjxoNyKN8tvlXKpyTObG6v8TP9Orcq
-         G10fE5dNSQe0qRNxgUifw5Z0GAdI5LY18P4/ZOVELB3QLIQ0fREP9E4kF+k5h961gGQl
-         re43B7yKLpd/nqNlrBfRiuEvhyC77EMCstx/eaImcqt4EUMqewwZmFworcdTWFmKdBB5
-         mPsQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=a0ywBDu1FJbk3C613F7iWgUPaLx2nZ37sXJ0DuoHjXk=;
-        fh=6yCBCm6VJwx5jg87/6AvHf1BvuRaNc7VC/9WpKTpMR0=;
-        b=eLKIx4mHwahvq9Wuvi6+qGUcBhvrFd1C1PQ214nbg7GZlTvVicxroMBDGGd4HQeU6T
-         H6+xFqu9JhM/AQ3M/1KVS1PaqGnypSeyHzB4D3VAuy+FQTr8D71tjhkPPiZQxMPv2B+o
-         CUNCMCfHW0t70AT7k+KhpJDaEZosnUrp9uWLx1VGnzSCyFA3oi7AUzld21KfczY0eFa9
-         K3jRUl0T3GB49Fj+mL3guzi8idE1RBFwavfTECMlIXx4Yi9+Wv7POBmF7/65m5sl8HC2
-         GIxVNhjvoqBysc0jcZCEC41tG2/yhFwt8W7WmW/WspmYqayLAOGSgkbLeGCmYG+Wp+zF
-         wiIA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776473090; x=1777077890; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=a0ywBDu1FJbk3C613F7iWgUPaLx2nZ37sXJ0DuoHjXk=;
-        b=ZsVBjDgMJCim2fcT/ZFyFFHoAktdahXayPcmASCRkx9KieLmxVORaWnhxn1ojLSor3
-         3A+JWYRbQrhnCFLr0lMACoxG3mcMfJYsGotUvNtdYNpgTSdMRJPfavDkrni4FnuKVq1I
-         qZIZMlWV1HdYHULFz8G9923ez3pH1xPba8tnO9Z/uA2YlbjoDE6APHynhJftGqdoh8g7
-         6LijC5nzvw4chaoDqSR+U27GgIBZnNaK6ot7tzjc8HERz4G0eB/u1MU9hf9SjPRjrfxx
-         T+gY4h/f0W1ASlYLVtT1tqVbnmONqEYEqo/lzZdX4RJ7jILedplC3fTJ2UTIBljkdWEa
-         5cBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776473090; x=1777077890;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=a0ywBDu1FJbk3C613F7iWgUPaLx2nZ37sXJ0DuoHjXk=;
-        b=lSzh4mHB6TcQWQIK632H3bYV81k4Rz41HTpsvLQqLKlavSWEGTyeaNoCaV4BUbu4tE
-         qd5r/FHJ3VXeONOJZAqACJv/5/6jzaMx828bssq2e6QoLM87KuSFkNKyBMVPACi8tpRN
-         UAn6S9fRG6Zfs9BnQ2lTWJRT+iBYEKpn6YLRsIj/52oPvw8J9sZ7jpb0rkwZ7ewxPsIj
-         g4+r5z31ImeWcXlbVFwghDY8dn3LgonRpiFibJeU/fLenurcGXg3dBtkZfFd3Ix0b3SK
-         QnlavT4UgZoXzv0C1VuRsJ6HufQ7RVwmsHVIlHD80j9YodRZnBMNkAu1ev5Qh1hrWjd+
-         c8HQ==
-X-Gm-Message-State: AOJu0YzyBzbGLmtKaKG9jZP+MVI+c0RGvKDi2S7KAQdFp/GJoNFMF3oA
-	wf/3QGcqI+AxAFFgU4hXVcoKDbvpQ1yeqvwZQFDiI1krd2+yP3ABOeau0gUef0GGwPDqPvxpRuc
-	RsxYJUTXJbUZNaZuM4Oc/HLu2o50ODqSyXCgg39VQ
-X-Gm-Gg: AeBDietwPPREXNk83eunJ4xh5RtqiQmduzYO8CLNzXBXdk7e69aIHDhBAV/DpzTVFUN
-	pOMK1hwvydlW4xWgjnuA9vXIdUtodL9ebs48yDWVmjYtxvgnEMexFJuTjBnmDeuHLkYg8NOVNTq
-	NNxIKs5Qva/KR1qZ5AGBAkRJr8BvwcSYbkRoaSSDcLKqRCRsQFuGe59krU6jxkkL3bAFu1NENkY
-	0LTRfrU3nh4ywnYWjazQNDKDU5Um5eewj/LtqXyLB7hVqvACSDdqtr2zPhd/jSxu96jrsRgXbrK
-	Ma4vYWmeKa5DgOdVqe938jpB41bSpueNkS8pQqVRkZBFiaZuu3VcBt0d1ucX4wIcvaZu6w5/DoQ
-	d60j9x727bmT18l6yu6KleRmcKi2naNluDUKDnosTEORebuuWfJ9GQ4WCVIuRZQgq2EUpbL5Izg
-	==
-X-Received: by 2002:a05:7022:eac8:b0:128:d386:4bbb with SMTP id
- a92af1059eb24-12c73f759d9mr2765683c88.13.1776473088895; Fri, 17 Apr 2026
- 17:44:48 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCE5F175A67
+	for <stable@vger.kernel.org>; Sat, 18 Apr 2026 00:51:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776473478; cv=none; b=mTe1iLpIxSCAVJmCnLZ32WSVEEdkFyIJMHErIOGFe6cYSvi1ZVW+ErsvyyfZIuEBcVVCv+aeQ4IEThQ1FdWcWozR36ovx5UmqFvov1CUlck1BCoCxy9/lTC9EDI2s3fSX+++eKIjJsIRHTEb9DDYBGYa3oPf93aTznuosYeimfA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776473478; c=relaxed/simple;
+	bh=DBDZWUEMLzf8IOAj2T6bVQUu+oEnsiGaIL67dCYyAAw=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=QSPvKyoKiP07807upuraZGoQaMhgCGTEBUXPavU8sn4EujPsYHEPmD7DF22nUsFojJED7nleiWCyL9XVXJSufiFC6VCixWC5kihre63avyzfxV3xywdHMKmQ59tyX5VzKIXbNA3GkMNteSn3HaxBBYOXAFOnTmFZuljuI7Mn/H8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SKo3YNy2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3573C19425;
+	Sat, 18 Apr 2026 00:51:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776473478;
+	bh=DBDZWUEMLzf8IOAj2T6bVQUu+oEnsiGaIL67dCYyAAw=;
+	h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
+	b=SKo3YNy2omrp1P/by9xrVCGfnWN8b9cr4Aen1K0Ze8JVDbIn5HKntgvkK3jv5dFC/
+	 ZB+OXka4cbwO3T1H6wrMY8YRQd1UyGmuFglspNzNJtnk/zZjjGgyk8kvwheIlCqH2J
+	 onCuxR3UExSAf9YyOCbl3W4IzxKsQ9vx4/9sSEJnGf8TIaZCVwc7RyFPgVM0HdEk1W
+	 uDi+UVgxx3bIUGC9qybOq19L1R1AxjmKddwijsPCa0S3zF4YjFKh6uY2lwDCeHq95N
+	 yUSd5P0fybrglXNf5UpVpxf8GWyT69SgglAsUOJy+7tpmkLom8cENNVrADllGgaReD
+	 WSdZDE4xhLIkg==
+Message-ID: <ac9d0f35-52dc-4371-a692-39c1d4ae5555@kernel.org>
+Date: Sat, 18 Apr 2026 08:51:14 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <48BADABE-4DFB-4DAD-8248-E94D8F5238D2@amazon.com>
-In-Reply-To: <48BADABE-4DFB-4DAD-8248-E94D8F5238D2@amazon.com>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Fri, 17 Apr 2026 17:44:37 -0700
-X-Gm-Features: AQROBzBTrpaT_3MkHnlTRUTVuaFD829JUv0CkBtSfX3vhctL64YmC-K6VQWJpNA
-Message-ID: <CAAVpQUCfMsWBpPpywbwBLRCdHUqWqFBoDK=17dwDkG6T0dQxzw@mail.gmail.com>
-Subject: Re: [BUG] net: tcp: SO_LINGER with l_linger=0 leaks memory when
- closing sockets with pending send data
-To: "Ahmed, Aaron" <aarnahmd@amazon.com>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>, 
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, "ncardwell@google.com" <ncardwell@google.com>, 
-	"edumazet@google.com" <edumazet@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Cc: chao@kernel.org, Yongpeng Yang <yangyongpeng@xiaomi.com>,
+ stable@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net
+Subject: Re: [f2fs-dev] [PATCH] f2fs: fix node_cnt race between extent node
+ destroy and writeback
+To: Yongpeng Yang <monty_pavel@sina.com>, Jaegeuk Kim <jaegeuk@kernel.org>
+References: <20260403144015.221811-3-monty_pavel@sina.com>
+ <f997ceb6-85d1-4872-be06-2a50469b3b18@kernel.org>
+ <5c222edf-6888-4007-9240-9e7988b2dc71@sina.com>
+Content-Language: en-US
+From: Chao Yu <chao@kernel.org>
+In-Reply-To: <5c222edf-6888-4007-9240-9e7988b2dc71@sina.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-238531-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[sina.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-238532-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kuniyu@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[chao@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: B037741F7D8
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,xiaomi.com:email]
+X-Rspamd-Queue-Id: B807A41F821
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Aaron :)
+On 4/17/26 21:26, Yongpeng Yang wrote:
+> 
+> On 4/17/26 17:00, Chao Yu via Linux-f2fs-devel wrote:
+>> On 4/3/26 22:40, Yongpeng Yang wrote:
+>>> From: Yongpeng Yang <yangyongpeng@xiaomi.com>
+>>>
+>>> f2fs_destroy_extent_node() does not set FI_NO_EXTENT before clearing
+>>> extent nodes. When called from f2fs_drop_inode() with I_SYNC set,
+>>> concurrent kworker writeback can insert new extent nodes into the same
+>>> extent tree, racing with the destroy and triggering f2fs_bug_on() in
+>>> __destroy_extent_node(). The scenario is as follows:
+>>>
+>>> drop inode                            writeback
+>>>    - iput
+>>>     - f2fs_drop_inode  // I_SYNC set
+>>>      - f2fs_destroy_extent_node
+>>>       - __destroy_extent_node
+>>>        - while (node_cnt) {
+>>>           write_lock(&et->lock)
+>>>           __free_extent_tree
+>>>           write_unlock(&et->lock)
+>>>                                          - __writeback_single_inode
+>>>                                           - f2fs_outplace_write_data
+>>>                                            - f2fs_update_read_extent_cache
+>>>                                             - __update_extent_tree_range
+>>>                                              // FI_NO_EXTENT not set,
+>>>                                              // insert new extent node
+>>>          } // node_cnt == 0, exit while
+>>>        - f2fs_bug_on(node_cnt)  // node_cnt > 0
+>>>
+>>> Additionally, __update_extent_tree_range() only checks FI_NO_EXTENT for
+>>> EX_READ type, leaving EX_BLOCK_AGE updates completely unprotected.
+>>>
+>>> This patch set FI_NO_EXTENT under et->lock in __destroy_extent_node(),
+>>> consistent with other callers (__update_extent_tree_range and
+>>> __drop_extent_tree) and check FI_NO_EXTENT for both EX_READ and
+>>> EX_BLOCK_AGE tree.
+>>
+>> I suffered below test failure, then I bisect to this change.
+>>
+>>      generic/475  84s ... [failed, exit status 1]- output mismatch (see /
+>> share/git/fstests/results//generic/475.out.bad)
+>>      --- tests/generic/475.out   2025-01-12 21:57:40.279440664 +0800
+>>      +++ /share/git/fstests/results//generic/475.out.bad 2026-04-17
+>> 12:08:28.000000000 +0800
+>>      @@ -1,2 +1,6 @@
+>>       QA output created by 475
+>>       Silence is golden.
+>>      +mount: /mnt/scratch_f2fs: mount system call failed: Structure needs
+>> cleaning.
+>>      +       dmesg(1) may have more information after failed mount system
+>> call.
+>>      +mount failed
+>>      +(see /share/git/fstests/results//generic/475.full for details)
+>>      ...
+>>      (Run 'diff -u /share/git/fstests/tests/generic/475.out /share/git/
+>> fstests/results//generic/475.out.bad'  to see the entire diff)
+>>
+>>
+>>      generic/388  73s ... [failed, exit status 1]- output mismatch (see /
+>> share/git/fstests/results//generic/388.out.bad)
+>>      --- tests/generic/388.out   2025-01-12 21:57:40.275440602 +0800
+>>      +++ /share/git/fstests/results//generic/388.out.bad 2026-04-17
+>> 11:58:05.000000000 +0800
+>>      @@ -1,2 +1,6 @@
+>>       QA output created by 388
+>>       Silence is golden.
+>>      +mount: /mnt/scratch_f2fs: mount system call failed: Structure needs
+>> cleaning.
+>>      +       dmesg(1) may have more information after failed mount system
+>> call.
+>>      +cycle mount failed
+>>      +(see /share/git/fstests/results//generic/388.full for details)
+>>      ...
+>>      (Run 'diff -u /share/git/fstests/tests/generic/388.out /share/git/
+>> fstests/results//generic/388.out.bad'  to see the entire diff)
+>>
+>>
+>>      F2FS-fs (dm-0): sanity_check_extent_cache: inode (ino=1761) extent
+>> info [220057, 57, 6] is incorrect, run fsck to fix
+>>
+>> I suspect we may miss any extent updates after we set FI_NO_EXTENT in
+>> __destroy_extent_node(), result in failing in sanity_check_extent_cache().
+>>
+>> Can we just relocate f2fs_bug_on(node_cnt) rather than complicated change?
+>> Thoughts?
+> 
+> Oh, I overlooked largest extent. How about relocate
+> f2fs_bug_on(node_cnt) to __destroy_extent_tree?
+> 
+> static void __destroy_extent_tree(struct inode *inode, enum extent_type
+> type)
+> 
+>          /* free all extent info belong to this extent tree */
+>          node_cnt = __destroy_extent_node(inode, type);
+> +       f2fs_bug_on(sbi, atomic_read(&et->node_cnt));
 
-Thanks for the report.
+	/* free all extent info belong to this extent tree */
+	node_cnt = __destroy_extent_node(inode, type);
 
-On Fri, Apr 17, 2026 at 5:20=E2=80=AFPM Ahmed, Aaron <aarnahmd@amazon.com> =
-wrote:
->
-> Hi,
->
-> We have identified a TCP memory leak issue on Amazon Linux with kernel ve=
-rsions 5.15.168 through 6.18.20 that occurs when closing sockets with SO_LI=
-NGER set to l_onoff=3D1, l_linger=3D0, on servers handling many persistent =
-connections with full write buffers.
->
-> Overview:
->
-> The issue was discovered on a public-facing non-blocking TCP server that =
-maintains many persistent connections and streams data to clients. When a c=
-lient cannot read fast enough, the TCP write socket buffer on the server si=
-de fills up and send() returns EAGAIN. At that point, the server applicatio=
-n disconnects the slow client by setting SO_LINGER to l_onoff=3D1, l_linger=
-=3D0 and calling close(). This is intended to immediately reset the connect=
-ion and release all associated kernel resources. However, while the socket =
-disappears from netstat and sockstat (TCP inuse drops), the write buffer me=
-mory is not properly reclaimed. /proc/net/sockstat shows TCP mem pages accu=
-mulating with no owning sockets, causing the leaked memory to grow past the=
- tcp_mem limits. Setting SO_LINGER to l_onoff=3D1, l_linger=3D1 instead doe=
-s not leak. With l_linger=3D1, the connection goes through FIN_WAIT1 =E2=86=
-=92 FIN_WAIT2 =E2=86=92 CLOSE (confirmed with BPF tcpstates), and all memor=
-y is freed properly. With l_linger=3D0, the connection transitions directly=
- from ESTABLISHED =E2=86=92 CLOSE via RST, bypassing the FIN states entirel=
-y.
->
-> Reproducer:
-> ```
-> /* tcp_linger_memleak.c - SO_LINGER(0) TCP memory leak reproducer
->  *
->  * Build:  gcc -O2 -o tcp_linger_memleak tcp_linger_memleak.c
->  * Run:    sudo sysctl -w net.core.wmem_max=3D4194304
->  *         sudo sysctl -w net.ipv4.tcp_rmem=3D"4096 8192 16384"
->  *         ./tcp_linger_memleak
->  */
-> #include <stdio.h>
-> #include <stdlib.h>
-> #include <string.h>
-> #include <unistd.h>
-> #include <errno.h>
-> #include <fcntl.h>
-> #include <signal.h>
-> #include <sys/socket.h>
-> #include <sys/wait.h>
-> #include <netinet/in.h>
->
-> #define NUM_CONNS 5000
-> #define PORT      6666
->
-> static void print_mem(const char *label) {
->     FILE *f;
->     char line[256];
->     f =3D fopen("/proc/meminfo", "r");
->     while (fgets(line, sizeof(line), f))
->         if (strncmp(line, "MemAvailable:", 13) =3D=3D 0)
->             printf("%s: %s", label, line);
->     fclose(f);
->     f =3D fopen("/proc/net/sockstat", "r");
->     while (fgets(line, sizeof(line), f))
->         if (strncmp(line, "TCP:", 4) =3D=3D 0)
->             printf("%s: %s", label, line);
->     fclose(f);
-> }
->
-> int main(void) {
->     struct sockaddr_in addr =3D {
->         .sin_family =3D AF_INET,
->         .sin_port =3D htons(PORT),
->         .sin_addr.s_addr =3D htonl(INADDR_LOOPBACK)
->     };
->     int opt =3D 1;
->     signal(SIGPIPE, SIG_IGN);
->
->     int lsn =3D socket(AF_INET, SOCK_STREAM, 0);
->     setsockopt(lsn, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
->     bind(lsn, (struct sockaddr *)&addr, sizeof(addr));
->     listen(lsn, NUM_CONNS);
->
->     /* Fork client: connect N times, never read */
->     pid_t child =3D fork();
->     if (child =3D=3D 0) {
->         int fds[NUM_CONNS];
->         for (int i =3D 0; i < NUM_CONNS; i++) {
->             fds[i] =3D socket(AF_INET, SOCK_STREAM, 0);
->             connect(fds[i], (struct sockaddr *)&addr, sizeof(addr));
->         }
->         pause(); /* sit forever, never read */
->         _exit(0);
->     }
->
->     /* Accept all connections */
->     int clients[NUM_CONNS];
->     for (int i =3D 0; i < NUM_CONNS; i++)
->         clients[i] =3D accept(lsn, NULL, NULL);
->
->     /* Freeze client so it stops reading */
->     kill(child, SIGSTOP);
->     printf("=3D=3D=3D %d connections established, client frozen =3D=3D=3D=
-\n", NUM_CONNS);
->     print_mem("BEFORE");
->
->     /* Fill buffers and close with SO_LINGER(1,0) */
->     char buf[2048];
->     memset(buf, 'A', sizeof(buf));
->     for (int i =3D 0; i < NUM_CONNS; i++) {
->         int flags =3D fcntl(clients[i], F_GETFL, 0);
->         fcntl(clients[i], F_SETFL, flags | O_NONBLOCK);
->         while (send(clients[i], buf, sizeof(buf), MSG_NOSIGNAL) > 0);
->         struct linger lg =3D { .l_onoff =3D 1, .l_linger =3D 0 };
->         setsockopt(clients[i], SOL_SOCKET, SO_LINGER, &lg, sizeof(lg));
->         close(clients[i]);
->     }
->
->     sleep(2);
->     printf("\n=3D=3D=3D All sockets closed with SO_LINGER(1,0) =3D=3D=3D\=
-n");
->     print_mem("AFTER");
->     kill(child, SIGKILL);
->     waitpid(child, NULL, 0);
->     close(lsn);
->     return 0;
-> }
-> ```
-> Output (Tested on 6.18.20):
-> ```
-> =3D=3D=3D 5000 connections established, client frozen =3D=3D=3D
-> BEFORE: MemAvailable:   95491288 kB
-> BEFORE: TCP: inuse 10005 orphan 0 tw 5 alloc 10006 mem 0
->
-> =3D=3D=3D All sockets closed with SO_LINGER(1,0) =3D=3D=3D
-> AFTER: MemAvailable:   95321800 kB
-> AFTER: TCP: inuse 5 orphan 0 tw 5 alloc 5006 mem 8300
-> ```
+	/* delete extent tree entry in radix tree */
+	mutex_lock(&eti->extent_tree_lock);
+	f2fs_bug_on(sbi, atomic_read(&et->node_cnt));  <---
 
-Unfortunately, it dies immediately on my end.
+Oh, it has already checked node_cnt, so, maybe we can just remove the check in
+__destroy_extent_node()?
 
-=3D=3D=3D 5000 connections established, client frozen =3D=3D=3D
-Segmentation fault         (core dumped) ./linux/tcp_linger
+Thanks,
 
 
-Did you see actual memory leak with kmemleak or is it
-just the tcp_mem counter that is really leaked ?
+> 
+> Thanks
+> Yongpeng,
+> 
+>>
+>> Thanks,
+>>
+>>>
+>>> Fixes: 3fc5d5a182f6 ("f2fs: fix to shrink read extent node in batches")
+>>> Cc: stable@vger.kernel.org
+>>> Signed-off-by: Yongpeng Yang <yangyongpeng@xiaomi.com>
+>>> ---
+>>>    fs/f2fs/extent_cache.c | 17 ++++++++++-------
+>>>    1 file changed, 10 insertions(+), 7 deletions(-)
+>>>
+>>> diff --git a/fs/f2fs/extent_cache.c b/fs/f2fs/extent_cache.c
+>>> index 0ed84cc065a7..87169fd29d89 100644
+>>> --- a/fs/f2fs/extent_cache.c
+>>> +++ b/fs/f2fs/extent_cache.c
+>>> @@ -119,9 +119,10 @@ static bool __may_extent_tree(struct inode
+>>> *inode, enum extent_type type)
+>>>        if (!__init_may_extent_tree(inode, type))
+>>>            return false;
+>>>    +    if (is_inode_flag_set(inode, FI_NO_EXTENT))
+>>> +        return false;
+>>> +
+>>>        if (type == EX_READ) {
+>>> -        if (is_inode_flag_set(inode, FI_NO_EXTENT))
+>>> -            return false;
+>>>            if (is_inode_flag_set(inode, FI_COMPRESSED_FILE) &&
+>>>                     !f2fs_sb_has_readonly(F2FS_I_SB(inode)))
+>>>                return false;
+>>> @@ -644,6 +645,8 @@ static unsigned int __destroy_extent_node(struct
+>>> inode *inode,
+>>>          while (atomic_read(&et->node_cnt)) {
+>>>            write_lock(&et->lock);
+>>> +        if (!is_inode_flag_set(inode, FI_NO_EXTENT))
+>>> +            set_inode_flag(inode, FI_NO_EXTENT);
+>>>            node_cnt += __free_extent_tree(sbi, et, nr_shrink);
+>>>            write_unlock(&et->lock);
+>>>        }
+>>> @@ -688,12 +691,12 @@ static void __update_extent_tree_range(struct
+>>> inode *inode,
+>>>          write_lock(&et->lock);
+>>>    -    if (type == EX_READ) {
+>>> -        if (is_inode_flag_set(inode, FI_NO_EXTENT)) {
+>>> -            write_unlock(&et->lock);
+>>> -            return;
+>>> -        }
+>>> +    if (is_inode_flag_set(inode, FI_NO_EXTENT)) {
+>>> +        write_unlock(&et->lock);
+>>> +        return;
+>>> +    }
+>>>    +    if (type == EX_READ) {
+>>>            prev = et->largest;
+>>>            dei.len = 0;
+>>>    
+>>
+>>
+>>
+>> _______________________________________________
+>> Linux-f2fs-devel mailing list
+>> Linux-f2fs-devel@lists.sourceforge.net
+>> https://lists.sourceforge.net/lists/listinfo/linux-f2fs-devel
+> 
 
-# echo clear > /sys/kernel/debug/kmemleak
-~ run repro ~
-# echo scan > /sys/kernel/debug/kmemleak
 
