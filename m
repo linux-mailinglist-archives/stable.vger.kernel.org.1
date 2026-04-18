@@ -1,143 +1,168 @@
-Return-Path: <stable+bounces-238599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238600-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KFoFD4K242mVKAEAu9opvQ
-	(envelope-from <stable+bounces-238599-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 18 Apr 2026 18:51:14 +0200
+	id aDkPHV+/42m+KQEAu9opvQ
+	(envelope-from <stable+bounces-238600-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 18 Apr 2026 19:29:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C20C421B1A
-	for <lists+stable@lfdr.de>; Sat, 18 Apr 2026 18:51:13 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8C2F421CEE
+	for <lists+stable@lfdr.de>; Sat, 18 Apr 2026 19:29:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 628833024194
-	for <lists+stable@lfdr.de>; Sat, 18 Apr 2026 16:51:12 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 069DC30055CC
+	for <lists+stable@lfdr.de>; Sat, 18 Apr 2026 17:28:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 994BF282F30;
-	Sat, 18 Apr 2026 16:51:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 856C9331A66;
+	Sat, 18 Apr 2026 17:28:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="QLfcj8Pn"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VEfXjr5D"
 X-Original-To: stable@vger.kernel.org
-Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FE342C159A
-	for <stable@vger.kernel.org>; Sat, 18 Apr 2026 16:51:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B36363203B6
+	for <stable@vger.kernel.org>; Sat, 18 Apr 2026 17:28:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776531071; cv=none; b=RoT4psl0lQ4c2nq3lqH0G0tY3Yvvatx8iKQe2MXE5qUy12zBANC+YifwVDXEyTrUi/1hswoc9rrQl9JiG8zOqOBbEK6bJ7JKgwH3nxa1gn1Z6s/3OZ2loUvOOaWbnoP5b8M5aad6dryMjqPlHOIJoeoLZLMb/SAXqSzybqw9tyk=
+	t=1776533333; cv=none; b=BAiReZ2So6fNfK4KTv0kmwMw1F131orN0gaXHoiTAMqwu6gz6kYs1tS6squHd4fze7i9fstMdl4GcwjOkITZIAyZ2Qmiz82Va+7JDFclu7SO8HhdTn1SKYISFAebgyI6EyeBTJ2S4XH2fF1VDDBWmMQ67ZoGWGIaids3v97p6QY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776531071; c=relaxed/simple;
-	bh=Ht/D7E3a40rysU0EGbxhXZptGJc/YvINGjzqbgLU6ho=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MWtnlYlmwKFV00qK/lvnHyPPF6eM+n8Qq84JXXK+CEDGJIdC7DySY0GJXxh7xbegD/5ki0Q8UtaCF9cAPVjV6wLhAe5zvoZPDENybOzNs0/uoVwuWCjDdMNZNvnLToxqIQOhaS6JjChgaAZTpDhZE3SXZA51qoC04f/EMHNUzpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=QLfcj8Pn; arc=none smtp.client-ip=178.251.229.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8344A1143B6;
-	Sat, 18 Apr 2026 18:51:04 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1776531067;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=TYiYkD9LzUceCOAC/ZE7LE8Rqv3G9vhEboKcik9QaKE=;
-	b=QLfcj8PnITmsT2yPdx6rCPCsvHbK75/InNRyLdZBszYCZSedLgbv/0C16V3AtHVpZZPMGW
-	Yoci1r5+2OSBl/TVrlDRO+Yz8eRfNzrplGzOjonBburB1yi5UswEX3BOzSLttZwn379zeZ
-	nT862dOrVn75JMkW+MJSN2iP0vJTvv5PE5HB095PrNJm/72ZpHTDkx5wGm/mOCxh7DqlSk
-	h0KUWNgU2tt0n6hrmoLFOHyCFYp6DYXDM6dXVLDPDJw3E3dQVQgiLz0U2M3hLEe5a/05IL
-	uN6dgG8fM+8qN6uyexSL9PL6WeVXTSAwD+plwYDM3fQVNqXLbsybrR9rQt71Uw==
-Message-ID: <ba47c207-bbdb-43c7-bcae-a09bddf0806d@nabladev.com>
-Date: Sat, 18 Apr 2026 18:51:03 +0200
+	s=arc-20240116; t=1776533333; c=relaxed/simple;
+	bh=oodzrY0vvZIZe8xiTS/m05LLTN+vBoFyUaBlwdynK+g=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cRPqS6W2bZmvQT1SvLkoPJ8gUPHOq2t/QLwlrBCYhB67/zZB5rkC6ObaqI9n/r81UY8jTFKsB1Qnd0Z8BUyI9Ti78QkUlkgUkh9DgwFQKPopGW46RrJ4ff88WmCeNYh5zKfyPOTfaEfUdrSnTcYk+tvgp4Vv8rS1qgvHUkUpsOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VEfXjr5D; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2ad2b375e58so1348135ad.3
+        for <stable@vger.kernel.org>; Sat, 18 Apr 2026 10:28:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776533330; x=1777138130; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=UKnYTxLMq3it/33zgMBz+MbkLOEWdzF/N2ceulBhKMs=;
+        b=VEfXjr5DAq8PV7JdtFABrctkWQfBW7dDQJQv5sKcht44MjxFJoJOfw1CZPtePDYTvn
+         msJ8yAkoNBpdnyvAKnJz86PbmhrNzLsLLQzi17x6lWVUWMPWYpSMaleA/1ucO2OKMw87
+         2dtvA13sOv2IrCm5OXx0hM2JBU5JXT05fi7r4LQLWmtmozLSLQrXVuCRU3YCvo8FXjuN
+         ao1cbQnjCEgTFX46jzvZEYRUS8d2ITLEwPX6sw2E7iJFcfFwDm3Rcwllw6bzcGs+ydAz
+         NVZ0SAB62I9kfyjoDSqwHAgBcQvs1nfEmMrB61qecAFu9sUqs8gwMPWVOwpAxofK7vCD
+         CssA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776533330; x=1777138130;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UKnYTxLMq3it/33zgMBz+MbkLOEWdzF/N2ceulBhKMs=;
+        b=VjXzJoKbfdN80nYOOxwhw8WC5gnuEXOjfJ+hRVtBZ/FKpHGVphm0qc7xFMXIrPY686
+         Hiiq0iRVboF0CA44+m1E1OZA0IJJ8vMfbWVaOB+/hMeUcScOeVC23MSCPdsmOZ4DSkmd
+         PqECAu5CAGkjrwBbFsPFpo+yxnwELIPGygbw6iMUXm0vKDL2AjRdEedzfEIorcSk7Uqk
+         oYXXKa4vdzdIQayzvczndfTJihJOj/q9q0hszWEhW4Hq8CvJ4s2YoPsA3rgmbyCelg5K
+         E2EQV40EIKJTQPtPFBJe4nOhvsHZ6OUW4B6p2N4D6cMRYuq92UR+13JrIvey3EkLrilE
+         1bvg==
+X-Forwarded-Encrypted: i=1; AFNElJ/jgVBMGeu7ofd6xKxIuxhGQU6RO+jCpw2lbXdd/SQ71tFmMl5aMmo62uU2P1A00HGyiCVeJpQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzdkqreIHcB/Dk6L8FB6WysMOv3Rdx0f7RMPQleS0UBpknAXJQC
+	ZyzlQt2S1kPX9pZ+yNvNFkQEHCT/Z2kSXnk6xtSdRqcGHaoSgJRpL6yj
+X-Gm-Gg: AeBDietNxuQkxmP5qGPwoNrfk+JD05cRlZrQE+i8c7QarHeBpkzGPW/TCpdLwGJ45rY
+	uTXPmRcIcI+hq+GbRGBBSMvrL5NEG23cyxxA2TZRMjuhiDTI143ICi0Gp1tmnF6zWt4P/CxCNr7
+	4kdYh4JdIvMAy5q8nqiJmHD764aZx2nFFrt1IuUbyQZjCsecPTUeZxK0h/AfpKBwCwZIKPwmM8H
+	yduLtlnuCBzoI/5j1lyPOTp/LPJRR3BSW1eQWy/oSc16e2E0W5GEs/T/kIeA/AwDhvcxgozHxk1
+	8hazS2XXuddEEU986GO3r2NWItXiAXV+QoZHnfEcvIouiAe44wRexuDGMK9DkZMuAdAEIcHvVPA
+	aRMCGKFLqwTLhdnA3COlWjzyl6XpRlVhPlRoF+Ym7OyZPtak46ZZYoM9Vf9C7/tmutR9jxrHjwu
+	AntvYZgsb4ECWVuhoBinZtWwTgW9c=
+X-Received: by 2002:a17:903:110c:b0:2b2:4194:952a with SMTP id d9443c01a7336-2b5f9f816femr39399565ad.6.1776533329786;
+        Sat, 18 Apr 2026 10:28:49 -0700 (PDT)
+Received: from ser8.. ([221.156.231.192])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b5fa9ff3bfsm69694965ad.7.2026.04.18.10.28.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 18 Apr 2026 10:28:49 -0700 (PDT)
+From: DaeMyung Kang <charsyam@gmail.com>
+To: linkinjeon@kernel.org,
+	smfrench@gmail.com
+Cc: senozhatsky@chromium.org,
+	tom@talpey.com,
+	linux-cifs@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Henrique Carvalho <henrique.carvalho@suse.com>,
+	DaeMyung Kang <charsyam@gmail.com>
+Subject: [PATCH 0/2] ksmbd: connection accounting and session teardown fixes
+Date: Sun, 19 Apr 2026 02:28:42 +0900
+Message-ID: <20260418172844.1333378-1-charsyam@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.10 311/491] dmaengine: xilinx: xilinx_dma: Fix unmasked
- residue subtraction
-To: Ben Hutchings <ben@decadent.org.uk>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, Vinod Koul <vkoul@kernel.org>,
- Sasha Levin <sashal@kernel.org>
-References: <20260413155819.042779211@linuxfoundation.org>
- <20260413155830.683657586@linuxfoundation.org>
- <e4bf9ba9ceba4f2e23483b4aa0ebcff8251c0b73.camel@decadent.org.uk>
- <8c909ddd-c8ff-43a1-987f-1a348917d75a@nabladev.com>
- <6def01a404f3b10ac374c011000637c86598453b.camel@decadent.org.uk>
-Content-Language: en-US
-From: Marek Vasut <marex@nabladev.com>
-In-Reply-To: <6def01a404f3b10ac374c011000637c86598453b.camel@decadent.org.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[nabladev.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[nabladev.com:s=dkim];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-238599-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_CC(0.00)[chromium.org,talpey.com,vger.kernel.org,suse.com,gmail.com];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-238600-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[kernel.org,gmail.com];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[marex@nabladev.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[nabladev.com:+];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[charsyam@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nabladev.com:email,nabladev.com:dkim,nabladev.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8C20C421B1A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A8C2F421CEE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 4/16/26 8:43 PM, Ben Hutchings wrote:
-> On Thu, 2026-04-16 at 20:20 +0200, Marek Vasut wrote:
->> On 4/16/26 7:58 PM, Ben Hutchings wrote:
->>> On Mon, 2026-04-13 at 17:59 +0200, Greg Kroah-Hartman wrote:
->>>> 5.10-stable review patch.  If anyone has any objections, please let me know.
->>>>
->>>> ------------------
->>>>
->>>> From: Marek Vasut <marex@nabladev.com>
->>>>
->>>> [ Upstream commit c7d812e33f3e8ca0fa9eeabf71d1c7bc3acedc09 ]
->>>>
->>>> The segment .control and .status fields both contain top bits which are
->>>> not part of the buffer size, the buffer size is located only in the bottom
->>>> max_buffer_len bits. To avoid interference from those top bits, mask out
->>>> the size using max_buffer_len first, and only then subtract the values.
->>>
->>> This change is harmless, but the problem it claims to fix does not
->>> exist.
->>
->> The current code subtracts two independently read values which both
->> contain status/control MSbits and the actual value LSbits. Depending on
->> the MSbits being identical in both separately read values is unsafe, so
->> the change in this patch masks out the MSbits first and then does the
->> subtraction on the actual value LSbits only, which is safe.
->>
->> Why do you think the original unsafe behavior can not trigger a failure?
-> 
-> The old code masked out the MSbits after subtraction.  So, there was no
-> dependency on their being equal before substraction.  Since borrows
-> propagate to the left, not the right, the MSbits could not "interfere"
-> with the LSbits.
-> 
-> If you still aren't convinced, please try to find some example values
-> for which the result would actually change.
-Ah sigh, you're right. I will add this into the list of lessons learnt 
-the hard way. Thank you for the clarification.
+Two independent correctness fixes in the ksmbd server.
+
+ 1/2 ksmbd_tcp_new_connection() does not decrement active_num_conn on
+     the alloc_transport() failure path, so repeated allocation
+     failures monotonically inflate the counter until max_connections
+     is reached and new clients are refused indefinitely.  This is
+     the remaining half of the same family of accounting bugs
+     addressed by 77ffbcac4e56 ("smb: server: fix leak of
+     active_num_conn in ksmbd_tcp_new_connection()"), which only
+     closed the kthread_run() failure path.  Reproduced under a debug
+     build that forces alloc_transport() to return NULL for a bounded
+     number of calls; details in the commit log.
+
+ 2/2 ksmbd_conn_wait_idle_sess_id() stores its per-connection
+     threshold (rcount) in cross-iteration state, so whether a given
+     sibling connection is compared against the loose (< 2) or the
+     strict (< 1) threshold is decided by hash iteration order
+     relative to curr_conn.  Connections visited after curr_conn can
+     slip through the idle check while still processing requests
+     against the same session, reopening the teardown race
+     destroy_previous_session() was meant to close.  This is a
+     code-inspection fix; the iteration-order dependency makes a
+     targeted reproducer impractical.
+
+The two patches are independent; the series order is not significant.
+
+DaeMyung Kang (2):
+  ksmbd: fix active_num_conn leak when alloc_transport() fails
+  ksmbd: reset rcount per connection in ksmbd_conn_wait_idle_sess_id()
+
+ fs/smb/server/connection.c    | 5 ++---
+ fs/smb/server/transport_tcp.c | 2 ++
+ 2 files changed, 4 insertions(+), 3 deletions(-)
+
+--
+2.43.0
 
