@@ -1,172 +1,285 @@
-Return-Path: <stable+bounces-238558-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238559-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CGZPFUI542lIDgEAu9opvQ
-	(envelope-from <stable+bounces-238558-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 18 Apr 2026 09:56:50 +0200
+	id aFIUGPo442lIDgEAu9opvQ
+	(envelope-from <stable+bounces-238559-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 18 Apr 2026 09:55:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABFEF42059E
-	for <lists+stable@lfdr.de>; Sat, 18 Apr 2026 09:56:49 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3AC342055C
+	for <lists+stable@lfdr.de>; Sat, 18 Apr 2026 09:55:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2EFA53069671
-	for <lists+stable@lfdr.de>; Sat, 18 Apr 2026 07:55:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D67F0301B17C
+	for <lists+stable@lfdr.de>; Sat, 18 Apr 2026 07:55:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD119370D4F;
-	Sat, 18 Apr 2026 07:55:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2A9A37104C;
+	Sat, 18 Apr 2026 07:55:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="PA8v+gPR"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="nxUfbXdG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FCA336F42D;
-	Sat, 18 Apr 2026 07:55:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F7C5370D54;
+	Sat, 18 Apr 2026 07:55:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776498914; cv=none; b=DGaB/znQ31wSaZAQ3OE36RKIxVUT7vUX1cfbJrlqN8MLG15guctVfqraZkPZK5AQx9bLhcf67xeDerT4lEUFokxzug3+2zCT9ThYH6nDT+3wYCpL7KwlZb8Ap2lg5mg0Oz4KpZHPyxlrHam53NYezApDf7nIIkWzNO82Ef1FZoM=
+	t=1776498932; cv=none; b=S47wfkbcZ64ri+492SH2cKnzxYe3w8gujuIMjWBqMD2eceEKGuXY257tAT/9WFNdYZmdQT0iUN3nE0SDRvS253a+F+CDbAstMlx4gTk8GA00XK3zIULrCCfxODNT3ezxV5IzfvkCiOEY4Pc3PCwoAswxAog78rMO8YFBCtwiB9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776498914; c=relaxed/simple;
-	bh=INN9fD0UBYNZqSrShfsbeP1YLFD+RPP1jRzWQNz2n2M=;
-	h=Date:To:From:Subject:Message-Id; b=fsCb5gT9NiPiyKDkTVcqRay9OuhHPYImF8tsQiCKicXgrIAEoH/cdieg7MjIqEEZhhxNN/jsnbz/onV0FmXSBluU72+35ntTMbYwT+vL/HONT6NH4ZDdTJn6t5EjsYrYPX+0tTzEY0OSKVBCxQH72QRq3C2T3R1lUvJbGkD8Cg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=PA8v+gPR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED776C19424;
-	Sat, 18 Apr 2026 07:55:13 +0000 (UTC)
+	s=arc-20240116; t=1776498932; c=relaxed/simple;
+	bh=Lo5zoY1KS7MmFAIz57LmHATamMoxS5JaSlpVGMb0ZEM=;
+	h=Date:To:From:Subject:Message-Id; b=ZOiZGNxgWomy4S0GUfinaF6R5dOzuK3kESbPxTfFgdXGTEhy80QCySrd1xCuoOVJwSezOVoXS3ga1eSLogqSYTaomMPHueNbyZWKdpgygCo968j30EKp44uA8ip2Fss4CzxJcdc9EEJcmIqJFXC2TPi9zraIVu8DUjUTWCdcTyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=nxUfbXdG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CA08C19424;
+	Sat, 18 Apr 2026 07:55:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1776498914;
-	bh=INN9fD0UBYNZqSrShfsbeP1YLFD+RPP1jRzWQNz2n2M=;
+	s=korg; t=1776498932;
+	bh=Lo5zoY1KS7MmFAIz57LmHATamMoxS5JaSlpVGMb0ZEM=;
 	h=Date:To:From:Subject:From;
-	b=PA8v+gPRAwLEQoCXwb264Ct4ca835QFgCJGfiZIpxgRkY4AbGH351CdQw8srbLRux
-	 clXXy6SERU409GPKXR1TqYjjznZKv2SvYHpvAS46xAI6Y/T4BnmjNEoV9OEMcZ5Z1m
-	 W31A93OJOWi1aIKEm9RJhHY9BVq9Ek5287VS0Gko=
-Date: Sat, 18 Apr 2026 00:55:09 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,joshua.hahnjy@gmail.com,gourry@gourry.net,david@kernel.org,byungchul@sk.com,apopple@nvidia.com,liuyun01@kylinos.cn,akpm@linux-foundation.org
+	b=nxUfbXdGpKVujgxS3Ei+5rJCVEesyQR0uL2OSrXQqjqCwwZgX3yOCma85G6aBF1Kh
+	 DxGRTSeb8gpUicwCgQGIe18+i0YNgRd+1vSP2tc697C0awu4D2Z9U+9FG4MXxbj2W0
+	 mXISNupvRHMKNO6MIyb+/2y3CmjToCrTJzZS42aM=
+Date: Sat, 18 Apr 2026 00:55:26 -0700
+To: mm-commits@vger.kernel.org,zenghui.yu@linux.dev,surenb@google.com,stable@vger.kernel.org,rppt@kernel.org,mhocko@suse.com,matthew.brost@intel.com,ljs@kernel.org,liam.howlett@oracle.com,leon@kernel.org,jgg@ziepe.ca,david@kernel.org,balbirs@nvidia.com,apopple@nvidia.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-stable] mm-mempolicy-fix-memory-leaks-in-weighted_interleave_auto_store.patch removed from -mm tree
-Message-Id: <20260418075513.ED776C19424@smtp.kernel.org>
+Subject: [merged mm-stable] lib-test_hmm-evict-device-pages-on-file-close-to-avoid-use-after-free.patch removed from -mm tree
+Message-Id: <20260418075531.7CA08C19424@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-238558-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	DMARC_NA(0.00)[linux-foundation.org];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-238559-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com,gourry.net,kernel.org,sk.com,nvidia.com,kylinos.cn,linux-foundation.org];
+	DMARC_NA(0.00)[linux-foundation.org];
 	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	MISSING_XM_UA(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_NONE(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[smtp.kernel.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sashiko.dev:url,kylinos.cn:email,linux-foundation.org:dkim,linux-foundation.org:email,gourry.net:email,sk.com:email]
-X-Rspamd-Queue-Id: ABFEF42059E
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: D3AC342055C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
 The quilt patch titled
-     Subject: mm/mempolicy: fix memory leaks in weighted_interleave_auto_store()
+     Subject: lib: test_hmm: evict device pages on file close to avoid use-after-free
 has been removed from the -mm tree.  Its filename was
-     mm-mempolicy-fix-memory-leaks-in-weighted_interleave_auto_store.patch
+     lib-test_hmm-evict-device-pages-on-file-close-to-avoid-use-after-free.patch
 
 This patch was dropped because it was merged into the mm-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Jackie Liu <liuyun01@kylinos.cn>
-Subject: mm/mempolicy: fix memory leaks in weighted_interleave_auto_store()
-Date: Wed, 1 Apr 2026 08:57:02 +0800
+From: Alistair Popple <apopple@nvidia.com>
+Subject: lib: test_hmm: evict device pages on file close to avoid use-after-free
+Date: Tue, 31 Mar 2026 17:34:43 +1100
 
-weighted_interleave_auto_store() fetches old_wi_state inside the if
-(!input) block only.  This causes two memory leaks:
+Patch series "Minor hmm_test fixes and cleanups".
 
-1. When a user writes "false" and the current mode is already manual,
-   the function returns early without freeing the freshly allocated
-   new_wi_state.
+Two bugfixes a cleanup for the HMM kernel selftests.  These were mostly
+reported by Zenghui Yu with special thanks to Lorenzo for analysing and
+pointing out the problems.
 
-2. When a user writes "true", old_wi_state stays NULL because the
-   fetch is skipped entirely. The old state is then overwritten by
-   rcu_assign_pointer() but never freed, since the cleanup path is
-   gated on old_wi_state being non-NULL. A user can trigger this
-   repeatedly by writing "1" in a loop.
 
-Fix both leaks by moving the old_wi_state fetch before the input check,
-making it unconditional.  This also allows a unified early return for both
-"true" and "false" when the requested mode matches the current mode.
+This patch (of 3):
 
-Link: https://lore.kernel.org/20260401005702.7096-1-liu.yun@linux.dev
-Link: https://sashiko.dev/#/patchset/20260331100740.84906-1-liu.yun@linux.dev
-Fixes: e341f9c3c841 ("mm/mempolicy: Weighted Interleave Auto-tuning")
-Signed-off-by: Jackie Liu <liuyun01@kylinos.cn>
-Reviewed-by: Joshua Hahn <joshua.hahnjy@gmail.com>
-Reviewed by: Donet Tom <donettom@linux.ibm.com>
-Cc: Gregory Price <gourry@gourry.net>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: Byungchul Park <byungchul@sk.com>
+When dmirror_fops_release() is called it frees the dmirror struct but
+doesn't migrate device private pages back to system memory first.  This
+leaves those pages with a dangling zone_device_data pointer to the freed
+dmirror.
+
+If a subsequent fault occurs on those pages (eg.  during coredump) the
+dmirror_devmem_fault() callback dereferences the stale pointer causing a
+kernel panic.  This was reported [1] when running mm/ksft_hmm.sh on arm64,
+where a test failure triggered SIGABRT and the resulting coredump walked
+the VMAs faulting in the stale device private pages.
+
+Fix this by calling dmirror_device_evict_chunk() for each devmem chunk in
+dmirror_fops_release() to migrate all device private pages back to system
+memory before freeing the dmirror struct.  The function is moved earlier
+in the file to avoid a forward declaration.
+
+Link: https://lore.kernel.org/20260331063445.3551404-1-apopple@nvidia.com
+Link: https://lore.kernel.org/20260331063445.3551404-2-apopple@nvidia.com
+Fixes: b2ef9f5a5cb3 ("mm/hmm/test: add selftest driver for HMM")
+Signed-off-by: Alistair Popple <apopple@nvidia.com>
+Reported-by: Zenghui Yu <zenghui.yu@linux.dev>
+Closes: https://lore.kernel.org/linux-mm/8bd0396a-8997-4d2e-a13f-5aac033083d7@linux.dev/
+Reviewed-by: Balbir Singh <balbirs@nvidia.com>
+Tested-by: Zenghui Yu <zenghui.yu@linux.dev>
 Cc: David Hildenbrand <david@kernel.org>
-Cc: <stable@vger.kernel.org> # v6.16+
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Leon Romanovsky <leon@kernel.org>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Zenghui Yu <zenghui.yu@linux.dev>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/mempolicy.c |   23 ++++++++++++-----------
- 1 file changed, 12 insertions(+), 11 deletions(-)
+ lib/test_hmm.c |  112 ++++++++++++++++++++++++++---------------------
+ 1 file changed, 62 insertions(+), 50 deletions(-)
 
---- a/mm/mempolicy.c~mm-mempolicy-fix-memory-leaks-in-weighted_interleave_auto_store
-+++ a/mm/mempolicy.c
-@@ -3700,18 +3700,19 @@ static ssize_t weighted_interleave_auto_
- 		new_wi_state->iw_table[i] = 1;
+--- a/lib/test_hmm.c~lib-test_hmm-evict-device-pages-on-file-close-to-avoid-use-after-free
++++ a/lib/test_hmm.c
+@@ -185,11 +185,73 @@ static int dmirror_fops_open(struct inod
+ 	return 0;
+ }
  
- 	mutex_lock(&wi_state_lock);
--	if (!input) {
--		old_wi_state = rcu_dereference_protected(wi_state,
--					lockdep_is_held(&wi_state_lock));
--		if (!old_wi_state)
--			goto update_wi_state;
--		if (input == old_wi_state->mode_auto) {
--			mutex_unlock(&wi_state_lock);
--			return count;
--		}
-+	old_wi_state = rcu_dereference_protected(wi_state,
-+				lockdep_is_held(&wi_state_lock));
++static void dmirror_device_evict_chunk(struct dmirror_chunk *chunk)
++{
++	unsigned long start_pfn = chunk->pagemap.range.start >> PAGE_SHIFT;
++	unsigned long end_pfn = chunk->pagemap.range.end >> PAGE_SHIFT;
++	unsigned long npages = end_pfn - start_pfn + 1;
++	unsigned long i;
++	unsigned long *src_pfns;
++	unsigned long *dst_pfns;
++	unsigned int order = 0;
 +
-+	if (old_wi_state && input == old_wi_state->mode_auto) {
-+		mutex_unlock(&wi_state_lock);
-+		kfree(new_wi_state);
-+		return count;
++	src_pfns = kvcalloc(npages, sizeof(*src_pfns), GFP_KERNEL | __GFP_NOFAIL);
++	dst_pfns = kvcalloc(npages, sizeof(*dst_pfns), GFP_KERNEL | __GFP_NOFAIL);
++
++	migrate_device_range(src_pfns, start_pfn, npages);
++	for (i = 0; i < npages; i++) {
++		struct page *dpage, *spage;
++
++		spage = migrate_pfn_to_page(src_pfns[i]);
++		if (!spage || !(src_pfns[i] & MIGRATE_PFN_MIGRATE))
++			continue;
++
++		if (WARN_ON(!is_device_private_page(spage) &&
++			    !is_device_coherent_page(spage)))
++			continue;
++
++		order = folio_order(page_folio(spage));
++		spage = BACKING_PAGE(spage);
++		if (src_pfns[i] & MIGRATE_PFN_COMPOUND) {
++			dpage = folio_page(folio_alloc(GFP_HIGHUSER_MOVABLE,
++					      order), 0);
++		} else {
++			dpage = alloc_page(GFP_HIGHUSER_MOVABLE | __GFP_NOFAIL);
++			order = 0;
++		}
++
++		/* TODO Support splitting here */
++		lock_page(dpage);
++		dst_pfns[i] = migrate_pfn(page_to_pfn(dpage));
++		if (src_pfns[i] & MIGRATE_PFN_WRITE)
++			dst_pfns[i] |= MIGRATE_PFN_WRITE;
++		if (order)
++			dst_pfns[i] |= MIGRATE_PFN_COMPOUND;
++		folio_copy(page_folio(dpage), page_folio(spage));
 +	}
++	migrate_device_pages(src_pfns, dst_pfns, npages);
++	migrate_device_finalize(src_pfns, dst_pfns, npages);
++	kvfree(src_pfns);
++	kvfree(dst_pfns);
++}
++
+ static int dmirror_fops_release(struct inode *inode, struct file *filp)
+ {
+ 	struct dmirror *dmirror = filp->private_data;
++	struct dmirror_device *mdevice = dmirror->mdevice;
++	int i;
  
--		memcpy(new_wi_state->iw_table, old_wi_state->iw_table,
--					       nr_node_ids * sizeof(u8));
-+	if (!input) {
-+		if (old_wi_state)
-+			memcpy(new_wi_state->iw_table, old_wi_state->iw_table,
-+						       nr_node_ids * sizeof(u8));
- 		goto update_wi_state;
- 	}
+ 	mmu_interval_notifier_remove(&dmirror->notifier);
++
++	if (mdevice->devmem_chunks) {
++		for (i = 0; i < mdevice->devmem_count; i++) {
++			struct dmirror_chunk *devmem =
++				mdevice->devmem_chunks[i];
++
++			dmirror_device_evict_chunk(devmem);
++		}
++	}
++
+ 	xa_destroy(&dmirror->pt);
+ 	kfree(dmirror);
+ 	return 0;
+@@ -1377,56 +1439,6 @@ static int dmirror_snapshot(struct dmirr
+ 	return ret;
+ }
  
+-static void dmirror_device_evict_chunk(struct dmirror_chunk *chunk)
+-{
+-	unsigned long start_pfn = chunk->pagemap.range.start >> PAGE_SHIFT;
+-	unsigned long end_pfn = chunk->pagemap.range.end >> PAGE_SHIFT;
+-	unsigned long npages = end_pfn - start_pfn + 1;
+-	unsigned long i;
+-	unsigned long *src_pfns;
+-	unsigned long *dst_pfns;
+-	unsigned int order = 0;
+-
+-	src_pfns = kvcalloc(npages, sizeof(*src_pfns), GFP_KERNEL | __GFP_NOFAIL);
+-	dst_pfns = kvcalloc(npages, sizeof(*dst_pfns), GFP_KERNEL | __GFP_NOFAIL);
+-
+-	migrate_device_range(src_pfns, start_pfn, npages);
+-	for (i = 0; i < npages; i++) {
+-		struct page *dpage, *spage;
+-
+-		spage = migrate_pfn_to_page(src_pfns[i]);
+-		if (!spage || !(src_pfns[i] & MIGRATE_PFN_MIGRATE))
+-			continue;
+-
+-		if (WARN_ON(!is_device_private_page(spage) &&
+-			    !is_device_coherent_page(spage)))
+-			continue;
+-
+-		order = folio_order(page_folio(spage));
+-		spage = BACKING_PAGE(spage);
+-		if (src_pfns[i] & MIGRATE_PFN_COMPOUND) {
+-			dpage = folio_page(folio_alloc(GFP_HIGHUSER_MOVABLE,
+-					      order), 0);
+-		} else {
+-			dpage = alloc_page(GFP_HIGHUSER_MOVABLE | __GFP_NOFAIL);
+-			order = 0;
+-		}
+-
+-		/* TODO Support splitting here */
+-		lock_page(dpage);
+-		dst_pfns[i] = migrate_pfn(page_to_pfn(dpage));
+-		if (src_pfns[i] & MIGRATE_PFN_WRITE)
+-			dst_pfns[i] |= MIGRATE_PFN_WRITE;
+-		if (order)
+-			dst_pfns[i] |= MIGRATE_PFN_COMPOUND;
+-		folio_copy(page_folio(dpage), page_folio(spage));
+-	}
+-	migrate_device_pages(src_pfns, dst_pfns, npages);
+-	migrate_device_finalize(src_pfns, dst_pfns, npages);
+-	kvfree(src_pfns);
+-	kvfree(dst_pfns);
+-}
+-
+ /* Removes free pages from the free list so they can't be re-allocated */
+ static void dmirror_remove_free_pages(struct dmirror_chunk *devmem)
+ {
 _
 
-Patches currently in -mm which might be from liuyun01@kylinos.cn are
+Patches currently in -mm which might be from apopple@nvidia.com are
 
 
 
