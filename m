@@ -1,246 +1,163 @@
-Return-Path: <stable+bounces-238649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238650-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gL59NML45GnscgEAu9opvQ
-	(envelope-from <stable+bounces-238649-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 17:46:10 +0200
+	id +HCxJvX75GmEcwEAu9opvQ
+	(envelope-from <stable+bounces-238650-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 17:59:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B91C424864
-	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 17:46:10 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32963424909
+	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 17:59:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0AAF0300D16C
-	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 15:46:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 277D630379AB
+	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 15:56:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7B19175A64;
-	Sun, 19 Apr 2026 15:46:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17D92283C83;
+	Sun, 19 Apr 2026 15:56:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [65.21.191.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E442928469F;
-	Sun, 19 Apr 2026 15:46:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.21.191.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5C7D40DFC6;
+	Sun, 19 Apr 2026 15:56:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776613565; cv=none; b=hYH1d9PIdlKXoTD/rJAThCIG9pe0Pv/LJhI/aTHGL0vhIuCPNLBNf0ylGpWPUa1tNw57O18UirdzB1xUXQdEdE43OHYpNRfac2WgQOkv2VBW1ELvWR/rZbHfNgaRL1CK/Yzh9SdKuurb7k06peoBEYPItiO5FE7Y/8cAV9fFP2k=
+	t=1776614210; cv=none; b=FgKIP1J1BwG1yFNMoO3o22SCoNbSZD+G3xSTl27jwr56FMctXD1RWUlCYGSofyo+uwLd3WsF5UKtZnSdN78v28P3Qx3uVDBY8nrJhNKCxp5OpOPI8zYlAFAc7r04d4cwxOcSeOSX1Xl8EyTUSIlF6F4t88YQGPoI6O3cDyqf8mc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776613565; c=relaxed/simple;
-	bh=RkaoqqRXVDD/vZ3nFXaEIpRzSA+WaJCvs7g7BQc65GY=;
+	s=arc-20240116; t=1776614210; c=relaxed/simple;
+	bh=09kDJrz2vpE9bRPe2WwTkrvGrZ6nnWkGxmRdgG8zroM=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=LmJZKUXWVcgrkq+FTFgDgq3SpAEyPcErCzXERZoyCi6zQ8NjCVCRuir4WqXvMl1y6/yl2iqq4mRtJxTdSQ8Dob5IhCduYBh0ByOfsyaoSNWcuz92USapxvZjpKbRJlpbQjeFmFqxh6foOqNGNbbMUBvY/rXgAnDDVHXWBASupJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk; spf=pass smtp.mailfrom=decadent.org.uk; arc=none smtp.client-ip=65.21.191.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=decadent.org.uk
-Received: from [2a02:578:851f:1502:391e:c5f5:10e2:b9a3] (helo=deadeye)
-	by maynard with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ben@decadent.org.uk>)
-	id 1wEULM-005WxP-05;
-	Sun, 19 Apr 2026 15:45:55 +0000
-Received: from ben by deadeye with local (Exim 4.99.1)
-	(envelope-from <ben@decadent.org.uk>)
-	id 1wEULK-00000004sR3-1cJ6;
-	Sun, 19 Apr 2026 17:45:54 +0200
-Message-ID: <d4b85e905345dc69e9c660c7f51775703fa83320.camel@decadent.org.uk>
-Subject: Re: [PATCH 5.10 491/491] io_uring/poll: correctly handle
- io_poll_add() return value on update
-From: Ben Hutchings <ben@decadent.org.uk>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
-  Jens Axboe <axboe@kernel.dk>
-Cc: patches@lists.linux.dev, 
-	syzbot+641eec6b7af1f62f2b99@syzkaller.appspotmail.com
-Date: Sun, 19 Apr 2026 17:45:49 +0200
-In-Reply-To: <20260413155837.438151458@linuxfoundation.org>
-References: <20260413155819.042779211@linuxfoundation.org>
-	 <20260413155837.438151458@linuxfoundation.org>
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-kEJna/SwI3grbcgqB86B"
-User-Agent: Evolution 3.56.2-9 
+	 Content-Type:MIME-Version; b=C3UDi49Z5jureUAVHSAtpxcu7mPUiQ3ot2863wpuBZyHgekaaI07qBLw4/4PUPwdJXtZ5sDDd4n/dHDHkflEYioUCFbBWT+JrIik8QvX9hqRz0zsxvgoMNo/Qnrr7K3Xq5mt7WaRSWmJXvyiEgKyAoPLviK4cFZQAhgZvsRTNOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from edelgard.fodlan.icenowy.me (unknown [112.94.103.130])
+	by APP-03 (Coremail) with SMTP id rQCowAAXGcAi++Rp0LKZDg--.3220S2;
+	Sun, 19 Apr 2026 23:56:18 +0800 (CST)
+Message-ID: <c1c2d445cf5181897229a6eba198646d5b412128.camel@iscas.ac.cn>
+Subject: Re: [PATCH] perf unwind-libdw: Fix stale object reference in
+ arch/loongarch
+From: Icenowy Zheng <zhengxingda@iscas.ac.cn>
+To: Ian Rogers <irogers@google.com>
+Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+ Arnaldo Carvalho de Melo	 <acme@kernel.org>, Namhyung Kim
+ <namhyung@kernel.org>, Mark Rutland	 <mark.rutland@arm.com>, Alexander
+ Shishkin <alexander.shishkin@linux.intel.com>,  Jiri Olsa
+ <jolsa@kernel.org>, Adrian Hunter <adrian.hunter@intel.com>, James Clark	
+ <james.clark@linaro.org>, Shimin Guo <shimin.guo@skydio.com>, 
+	linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Date: Sun, 19 Apr 2026 23:56:17 +0800
+In-Reply-To: <CAP-5=fX=+2oNYHDqsNnFrOZya=RxpnPFF_ojZTQP8v8Umt951w@mail.gmail.com>
+References: <20260419090756.2190201-1-zhengxingda@iscas.ac.cn>
+	 <CAP-5=fX=+2oNYHDqsNnFrOZya=RxpnPFF_ojZTQP8v8Umt951w@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a02:578:851f:1502:391e:c5f5:10e2:b9a3
-X-SA-Exim-Mail-From: ben@decadent.org.uk
-X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
-X-Spamd-Result: default: False [-2.06 / 15.00];
-	SIGNED_PGP(-2.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-CM-TRANSID:rQCowAAXGcAi++Rp0LKZDg--.3220S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7tF1Dtw1kZr1fKr17Jr4fKrg_yoW8XF1Up3
+	W7CFnrtF1UW34a9wnF9an5ZFZxXFZa9r95u3Z8trW8ur4fZrnrJF97tr9xWFZFq348WrW0
+	vF9xCr90gas5JaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvqb7Iv0xC_tr1lb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I2
+	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
+	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xII
+	jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4
+	A2jsIEc7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IE
+	w4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMc
+	vjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwACI402YVCY1x02628vn2kIc2xKxwCY
+	1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8Jw
+	C20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAF
+	wI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjx
+	v20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2
+	jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0x
+	ZFpf9x07j8KsUUUUUU=
+X-CM-SenderInfo: x2kh0wp0lqwv3d6l2u1dvotugofq/
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-238649-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[decadent.org.uk];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
 	FROM_HAS_DN(0.00)[];
-	TAGGED_RCPT(0.00)[stable,641eec6b7af1f62f2b99];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ben@decadent.org.uk,stable@vger.kernel.org];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_COUNT_FIVE(0.00)[5];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.825];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,kernel.dk:email,appspotmail.com:email,decadent.org.uk:mid]
-X-Rspamd-Queue-Id: 2B91C424864
+	R_DKIM_NA(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[zhengxingda@iscas.ac.cn,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:mid,iscas.ac.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-238650-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[iscas.ac.cn];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[]
+X-Rspamd-Queue-Id: 32963424909
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-
---=-kEJna/SwI3grbcgqB86B
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Mon, 2026-04-13 at 18:02 +0200, Greg Kroah-Hartman wrote:
-> 5.10-stable review patch.  If anyone has any objections, please let me kn=
-ow.
+=E5=9C=A8 2026-04-19=E6=97=A5=E7=9A=84 08:01 -0700=EF=BC=8CIan Rogers=E5=86=
+=99=E9=81=93=EF=BC=9A
+> On Sun, Apr 19, 2026 at 2:08=E2=80=AFAM Icenowy Zheng
+> <zhengxingda@iscas.ac.cn> wrote:
+> >=20
+> > The arch/loongarch/util/unwind-libdw.c file is already moved to
+> > util/,
+> > but the Build statement for it is forgot to be removed.
+> >=20
+> > Remove the stale Build statement.
+> >=20
+> > This fixes the build failure of perf tool in kernel v7.0 on
+> > LoongArch.
+> >=20
+> > Fixes: e62fae9d9e85 ("perf unwind-libdw: Fix a cross-arch unwinding
+> > bug")
+> > Signed-off-by: Icenowy Zheng <zhengxingda@iscas.ac.cn>
+> > Cc: stable@vger.kernel.org
 >=20
-> ------------------
+> I think this is already fixed:
+> https://web.git.kernel.org/pub/scm/linux/kernel/git/perf/perf-tools-next.=
+git/commit/?h=3Dperf-tools-next
+
+Thanks for pointing out!
+
+Thanks,
+Icenowy
+
+> I also sent out a fix, fwiw:
+> https://lore.kernel.org/linux-perf-users/20260305221927.3237145-3-irogers=
+@google.com/
 >=20
-> From: Jens Axboe <axboe@kernel.dk>
+> Thanks,
+> Ian
 >=20
-> Commit 84230ad2d2afbf0c44c32967e525c0ad92e26b4e upstream.
->=20
-> When the core of io_uring was updated to handle completions
-> consistently and with fixed return codes, the POLL_REMOVE opcode
-> with updates got slightly broken. If a POLL_ADD is pending and
-> then POLL_REMOVE is used to update the events of that request, if that
-> update causes the POLL_ADD to now trigger, then that completion is lost
-> and a CQE is never posted.
->=20
-> Additionally, ensure that if an update does cause an existing POLL_ADD
-> to complete, that the completion value isn't always overwritten with
-> -ECANCELED. For that case, whatever io_poll_add() set the value to
-> should just be retained.
+> > ---
+> > =C2=A0tools/perf/arch/loongarch/util/Build | 1 -
+> > =C2=A01 file changed, 1 deletion(-)
+> >=20
+> > diff --git a/tools/perf/arch/loongarch/util/Build
+> > b/tools/perf/arch/loongarch/util/Build
+> > index 3ad73d0289f3e..8d91e78d31c94 100644
+> > --- a/tools/perf/arch/loongarch/util/Build
+> > +++ b/tools/perf/arch/loongarch/util/Build
+> > @@ -1,4 +1,3 @@
+> > =C2=A0perf-util-y +=3D header.o
+> >=20
+> > =C2=A0perf-util-$(CONFIG_LOCAL_LIBUNWIND) +=3D unwind-libunwind.o
+> > -perf-util-$(CONFIG_LIBDW_DWARF_UNWIND) +=3D unwind-libdw.o
+> > --
+> > 2.52.0
+> >=20
 
-This backport is very different from the upstream version, and I have
-some questions about that (inline below).
-
-> Cc: stable@vger.kernel.org
-> Fixes: 97b388d70b53 ("io_uring: handle completions in the core")
-> Reported-by: syzbot+641eec6b7af1f62f2b99@syzkaller.appspotmail.com
-> Tested-by: syzbot+641eec6b7af1f62f2b99@syzkaller.appspotmail.com
-> Signed-off-by: Jens Axboe <axboe@kernel.dk>
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> ---
->  io_uring/io_uring.c |   26 +++++++++++++++++++-------
->  1 file changed, 19 insertions(+), 7 deletions(-)
->=20
-> --- a/io_uring/io_uring.c
-> +++ b/io_uring/io_uring.c
-> @@ -5980,7 +5980,7 @@ static int io_poll_add_prep(struct io_ki
->  	return 0;
->  }
-> =20
-> -static int io_poll_add(struct io_kiocb *req, unsigned int issue_flags)
-> +static int __io_poll_add(struct io_kiocb *req, unsigned int issue_flags)
->  {
->  	struct io_poll_iocb *poll =3D &req->poll;
->  	struct io_poll_table ipt;
-> @@ -5992,11 +5992,21 @@ static int io_poll_add(struct io_kiocb *
->  	if (!ret && ipt.error)
->  		req_set_fail(req);
->  	ret =3D ret ?: ipt.error;
-> -	if (ret)
-> +	if (ret > 0) {
->  		__io_req_complete(req, issue_flags, ret, 0);
-> +		return ret;
-> +	}
->  	return 0;
->  }
-> =20
-> +static int io_poll_add(struct io_kiocb *req, unsigned int issue_flags)
-> +{
-> +	int ret;
-> +
-> +	ret =3D __io_poll_add(req, issue_flags);
-> +	return ret < 0 ? ret : 0;
-
-__io_poll_add() still never returns a negative result, so why is there a
-check for that here?
-
-> +}
-> +
->  static int io_poll_update(struct io_kiocb *req, unsigned int issue_flags=
-)
->  {
->  	struct io_ring_ctx *ctx =3D req->ctx;
-> @@ -6012,6 +6022,7 @@ static int io_poll_update(struct io_kioc
->  		ret =3D preq ? -EALREADY : -ENOENT;
->  		goto out;
->  	}
-> +	preq->result =3D -ECANCELED;
->  	spin_unlock(&ctx->completion_lock);
-> =20
->  	if (req->poll_update.update_events || req->poll_update.update_user_data=
-) {
-> @@ -6024,16 +6035,17 @@ static int io_poll_update(struct io_kioc
->  		if (req->poll_update.update_user_data)
->  			preq->user_data =3D req->poll_update.new_user_data;
-> =20
-> -		ret2 =3D io_poll_add(preq, issue_flags);
-> +		ret2 =3D __io_poll_add(preq, issue_flags);
->  		/* successfully updated, don't complete poll request */
->  		if (!ret2)
->  			goto out;
-> +		preq->result =3D ret2;
-> +
->  	}
-> -	req_set_fail(preq);
-> -	io_req_complete(preq, -ECANCELED);
-> +	if (preq->result < 0)
-> +		req_set_fail(preq);
-> +	io_req_complete(preq, preq->result);
-
-If __io_poll_add() returned an events mask then it completed preq, but
-then we also complete preq here.  Is that really correct?
-
-Ben.
-
->  out:
-> -	if (ret < 0)
-> -		req_set_fail(req);
->  	/* complete update request, we're done with it */
->  	io_req_complete(req, ret);
->  	io_ring_submit_unlock(ctx, !(issue_flags & IO_URING_F_NONBLOCK));
->=20
->=20
-
---=20
-Ben Hutchings
-Any smoothly functioning technology is indistinguishable
-from a rigged demo.
-
---=-kEJna/SwI3grbcgqB86B
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmnk+K0ACgkQ57/I7JWG
-EQlcTBAAx2XEzGqHBT9ChlTEtCa6B0rpSy5AGkRqkMvM3/YSWnxV3d703E4Lgq9U
-dakkOwWeohsv283TOMOV9L5ZqwhEnq+77Yqnse/OoAcO/nAim/OLVAzPd+/RVc6O
-jq7tkWQVPZ5XeaDRZ6VmhCyObM/3e1vBwwcUjSQRpBVDgWP7U9A+PtTXp2be7Jib
-dtQN78xd6rfW7kjsF2qmJNFWQ2GCpN4EbtmlKvy0DdGANzhqSMRaa7mwOFXgjixS
-vIipJW65ZSELU3yQO7XBTE9ppl0MXdfHgxBqvOENYF9CKcHDJqSazP45iKuekGth
-V5CTN29W6VOlwLyrZcXaCkPkMiRGDkAq9BwZ/TXMDGRyU054St3Ky8BScX3zkyva
-aAzdPT07C8W/7vzmqQ8KqJIfzGIfZ9iE++FEhvzZjSRhq6Vw8sU+CNxlPK6T/zI6
-8KwxnYX99kO3Ju4AQpboebY5MaMyQhc1I6PGAB3amChTWP7WIUqA82wHkqi0l9GS
-iAVpicLEtrXY8jxNRilBcOvOmTMcvuphWd24fWBHifINHbCJyQYC/ViINTUsDZdZ
-UTFNeMkCgasmB0pWEoXnImUAQwGIiEnGFaOXpp7QZS3Gzd+2W/9FMPaEOHMmZMP+
-hjnNeauuJuZzrs7u666i+kUEFV2/oTrjDBzN2Yj+FrcJejx2XiY=
-=HRgj
------END PGP SIGNATURE-----
-
---=-kEJna/SwI3grbcgqB86B--
 
