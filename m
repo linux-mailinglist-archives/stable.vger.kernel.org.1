@@ -1,163 +1,155 @@
-Return-Path: <stable+bounces-238650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238651-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +HCxJvX75GmEcwEAu9opvQ
-	(envelope-from <stable+bounces-238650-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 17:59:49 +0200
+	id kLGCBHb+5GnvcwEAu9opvQ
+	(envelope-from <stable+bounces-238651-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 18:10:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32963424909
-	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 17:59:48 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64B2642498C
+	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 18:10:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 277D630379AB
-	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 15:56:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3941B3026C14
+	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 16:10:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17D92283C83;
-	Sun, 19 Apr 2026 15:56:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FE842BFC7B;
+	Sun, 19 Apr 2026 16:10:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RcSfOb3c"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5C7D40DFC6;
-	Sun, 19 Apr 2026 15:56:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1FAD29B764;
+	Sun, 19 Apr 2026 16:10:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776614210; cv=none; b=FgKIP1J1BwG1yFNMoO3o22SCoNbSZD+G3xSTl27jwr56FMctXD1RWUlCYGSofyo+uwLd3WsF5UKtZnSdN78v28P3Qx3uVDBY8nrJhNKCxp5OpOPI8zYlAFAc7r04d4cwxOcSeOSX1Xl8EyTUSIlF6F4t88YQGPoI6O3cDyqf8mc=
+	t=1776615012; cv=none; b=UDkXL1TAtslXRx5PtQVwgvz36xGT1SLjsAmC19VdZbkTihx2E9tM8aZhoxIssW8Qrk3Dva5cKQ3wZ3UY/Xyk8U7KIlTxo4thgXz5C118N+lnBBkLZ74gjLKi+IqPpPeATDJVqFhECLrApzGtqyKkWcijf8zRdiZs8Sp9aYvehdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776614210; c=relaxed/simple;
-	bh=09kDJrz2vpE9bRPe2WwTkrvGrZ6nnWkGxmRdgG8zroM=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=C3UDi49Z5jureUAVHSAtpxcu7mPUiQ3ot2863wpuBZyHgekaaI07qBLw4/4PUPwdJXtZ5sDDd4n/dHDHkflEYioUCFbBWT+JrIik8QvX9hqRz0zsxvgoMNo/Qnrr7K3Xq5mt7WaRSWmJXvyiEgKyAoPLviK4cFZQAhgZvsRTNOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from edelgard.fodlan.icenowy.me (unknown [112.94.103.130])
-	by APP-03 (Coremail) with SMTP id rQCowAAXGcAi++Rp0LKZDg--.3220S2;
-	Sun, 19 Apr 2026 23:56:18 +0800 (CST)
-Message-ID: <c1c2d445cf5181897229a6eba198646d5b412128.camel@iscas.ac.cn>
-Subject: Re: [PATCH] perf unwind-libdw: Fix stale object reference in
- arch/loongarch
-From: Icenowy Zheng <zhengxingda@iscas.ac.cn>
-To: Ian Rogers <irogers@google.com>
-Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
- Arnaldo Carvalho de Melo	 <acme@kernel.org>, Namhyung Kim
- <namhyung@kernel.org>, Mark Rutland	 <mark.rutland@arm.com>, Alexander
- Shishkin <alexander.shishkin@linux.intel.com>,  Jiri Olsa
- <jolsa@kernel.org>, Adrian Hunter <adrian.hunter@intel.com>, James Clark	
- <james.clark@linaro.org>, Shimin Guo <shimin.guo@skydio.com>, 
-	linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Date: Sun, 19 Apr 2026 23:56:17 +0800
-In-Reply-To: <CAP-5=fX=+2oNYHDqsNnFrOZya=RxpnPFF_ojZTQP8v8Umt951w@mail.gmail.com>
-References: <20260419090756.2190201-1-zhengxingda@iscas.ac.cn>
-	 <CAP-5=fX=+2oNYHDqsNnFrOZya=RxpnPFF_ojZTQP8v8Umt951w@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 
+	s=arc-20240116; t=1776615012; c=relaxed/simple;
+	bh=ICP4ejP14X/+oD3w9wU26G/JpfDfG6uEmFxcpnMElSw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qgaYD68WFJW0unbakH5sDHZH2yJU8y2jAum34i7khoD30ejaQJNLGsqsfbP7wA9uXm2Q045uAhxHcWW93TXz83T+m2lMxoqqGZ6aRw9ScmU1NaP1+mxFE+hFKVsQ1WR4xfvKGJO6OcMIY/O6DEuJYYJuklO4v7tvNkTfbpX0Vs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RcSfOb3c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45554C2BCAF;
+	Sun, 19 Apr 2026 16:10:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776615011;
+	bh=ICP4ejP14X/+oD3w9wU26G/JpfDfG6uEmFxcpnMElSw=;
+	h=From:To:Cc:Subject:Date:From;
+	b=RcSfOb3cljkpqeIwkHFSmEkODaVwl7Ey6An63tiBa4ncCL5Kcv0z2WQZzreEzxaW/
+	 NBn3ybcy6q5HtCdC77f6fg9Y9RxvotACAgS1GnsekMOW4eM4JpsN3H8iS9LyHbTBcW
+	 w2kqqrOfVQhwJkf5TMB6QWv/gVVMT1H20+cSyZPw1Gys1dBAkqaKtVV5vtvN0uTKao
+	 Mf6NB371qUvXYB3nKfgyex7tJHZgQdS2UimQAFkIZfwOZ9E0fxEaXotPq0GmuHXZF3
+	 dwbU+vpb/0PYKfHYtnwd3PkmteR4W5YfPX8DsH4xcvkwlGyo2bESJFzEugk3OO+XRs
+	 034ZmFWcoQHNw==
+From: SeongJae Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	"# 5 . 19 . x" <stable@vger.kernel.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH v3 0/3] mm/damon/modules: detect and use fresh status
+Date: Sun, 19 Apr 2026 09:09:59 -0700
+Message-ID: <20260419161003.79176-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-CM-TRANSID:rQCowAAXGcAi++Rp0LKZDg--.3220S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7tF1Dtw1kZr1fKr17Jr4fKrg_yoW8XF1Up3
-	W7CFnrtF1UW34a9wnF9an5ZFZxXFZa9r95u3Z8trW8ur4fZrnrJF97tr9xWFZFq348WrW0
-	vF9xCr90gas5JaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvqb7Iv0xC_tr1lb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I2
-	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
-	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xII
-	jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4
-	A2jsIEc7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IE
-	w4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMc
-	vjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwACI402YVCY1x02628vn2kIc2xKxwCY
-	1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8Jw
-	C20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAF
-	wI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjx
-	v20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2
-	jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0x
-	ZFpf9x07j8KsUUUUUU=
-X-CM-SenderInfo: x2kh0wp0lqwv3d6l2u1dvotugofq/
-X-Spamd-Result: default: False [-1.46 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_TWELVE(0.00)[14];
+	TAGGED_FROM(0.00)[bounces-238651-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	MID_RHS_MATCH_FROM(0.00)[];
-	R_DKIM_NA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[zhengxingda@iscas.ac.cn,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:mid,iscas.ac.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-238650-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[]
-X-Rspamd-Queue-Id: 32963424909
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 64B2642498C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-=E5=9C=A8 2026-04-19=E6=97=A5=E7=9A=84 08:01 -0700=EF=BC=8CIan Rogers=E5=86=
-=99=E9=81=93=EF=BC=9A
-> On Sun, Apr 19, 2026 at 2:08=E2=80=AFAM Icenowy Zheng
-> <zhengxingda@iscas.ac.cn> wrote:
-> >=20
-> > The arch/loongarch/util/unwind-libdw.c file is already moved to
-> > util/,
-> > but the Build statement for it is forgot to be removed.
-> >=20
-> > Remove the stale Build statement.
-> >=20
-> > This fixes the build failure of perf tool in kernel v7.0 on
-> > LoongArch.
-> >=20
-> > Fixes: e62fae9d9e85 ("perf unwind-libdw: Fix a cross-arch unwinding
-> > bug")
-> > Signed-off-by: Icenowy Zheng <zhengxingda@iscas.ac.cn>
-> > Cc: stable@vger.kernel.org
->=20
-> I think this is already fixed:
-> https://web.git.kernel.org/pub/scm/linux/kernel/git/perf/perf-tools-next.=
-git/commit/?h=3Dperf-tools-next
+DAMON modules including DAMON_RECLAIM, DAMON_LRU_SORT and DAMON_STAT
+commonly expose the kdamond running status via their parameters.  Under
+certain scenarios including wrong user inputs and memory allocation
+failures, those parameter values can be stale.  It can confuse users.
+For DAMON_RECLAIM and DAMON_LRU_SORT, it even makes the kdamond unable
+to be restarted before the system reboot.
 
-Thanks for pointing out!
+The problem comes from the fact that there are multiple events for the
+status changes and it is difficult to follow up all the scenarios.  Fix
+the issue by detecting and using the status on demand, instead of using
+a cached status that is difficult to be updated.
 
-Thanks,
-Icenowy
+Patches 1-3 fix the bugs in DAMON_RECLAIM, DAMON_LRU_SORT and DAMON_STAT
+in the order.
 
-> I also sent out a fix, fwiw:
-> https://lore.kernel.org/linux-perf-users/20260305221927.3237145-3-irogers=
-@google.com/
->=20
-> Thanks,
-> Ian
->=20
-> > ---
-> > =C2=A0tools/perf/arch/loongarch/util/Build | 1 -
-> > =C2=A01 file changed, 1 deletion(-)
-> >=20
-> > diff --git a/tools/perf/arch/loongarch/util/Build
-> > b/tools/perf/arch/loongarch/util/Build
-> > index 3ad73d0289f3e..8d91e78d31c94 100644
-> > --- a/tools/perf/arch/loongarch/util/Build
-> > +++ b/tools/perf/arch/loongarch/util/Build
-> > @@ -1,4 +1,3 @@
-> > =C2=A0perf-util-y +=3D header.o
-> >=20
-> > =C2=A0perf-util-$(CONFIG_LOCAL_LIBUNWIND) +=3D unwind-libunwind.o
-> > -perf-util-$(CONFIG_LIBDW_DWARF_UNWIND) +=3D unwind-libdw.o
-> > --
-> > 2.52.0
-> >=20
+Changes from RFC v2.1
+- rfc v2.1: https://lore.kernel.org/20260418222758.39795-1-sj@kernel.org
+- Rebase to latest mm-new.
+Changes from RFC v2
+- rfc v2: https://lore.kernel.org/20260418014439.6353-1-sj@kernel.org
+- Set kdamond_pid set callbacks.
+- Support multiple enabled parameters setup on boot commandline.
+- Acknowledge the third patch was discovered by Sashiko.
+Changes from v2
+- v2: https://lore.kernel.org/20260413185249.5921-1-aethernet65535@gmail.com
+- Add RFC tag back, for sashiko review.
+- Detect and use fresh status instead of trying to catch up all scenarios.
+- Change Liew from the responsible author to a credit-deserved co-developer.
+- Move authorship responsibility to SJ.
+- Add DAMON_STAT fix.
+  - RFC of the fix was posted separately
+    (https://lore.kernel.org/20260416143857.76146-1-sj@kernel.org), and
+    only commit message wordsmithing is added in this version.
+Changes from RFC
+- rfc: https://lore.kernel.org/20260330164347.12772-1-aethernet65535@gmail.com
+- Remove RFC tag.
+- Remove 'damon_thread_status' structure and damon_update_thread_status()
+  (SJ pointed out this was too much extension of core API for a problem
+  that can be fixed more simply).
+- Add a fallback in damon_{lru_sort, reclaim}_turn() 'N' path. If
+  damon_stop() fails but kdamond is not running, forcefully reset the
+  parameters.
+- Reset 'enabled' and 'kdamond_pid' when damon_commit_ctx() fails in
+  damon_{lru_sort, reclaim}_apply_parameters() (kdamond will terminate
+  eventually in this case).
 
+SeongJae Park (3):
+  mm/damon/reclaim: detect and use fresh enabled and kdamond_pid values
+  mm/damon/lru_sort: detect and use fresh enabled and kdamond_pid values
+  mm/damon/stat: detect and use fresh enabled value
+
+ mm/damon/lru_sort.c | 85 +++++++++++++++++++++++++++++----------------
+ mm/damon/reclaim.c  | 85 +++++++++++++++++++++++++++++----------------
+ mm/damon/stat.c     | 30 ++++++++++------
+ 3 files changed, 130 insertions(+), 70 deletions(-)
+
+
+base-commit: a51b50e60d2dae1f66329f147bde8723e6b1031e
+-- 
+2.47.3
 
