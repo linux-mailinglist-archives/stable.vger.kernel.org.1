@@ -1,86 +1,86 @@
-Return-Path: <stable+bounces-238659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238660-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oNZkENg75WmTfwEAu9opvQ
-	(envelope-from <stable+bounces-238659-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 22:32:24 +0200
+	id mGNIIL875WmTfwEAu9opvQ
+	(envelope-from <stable+bounces-238660-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 22:31:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3AAF42576E
-	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 22:32:23 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C188425759
+	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 22:31:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8CBB73038AF8
-	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 20:31:34 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3522D30055DD
+	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 20:31:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2926E30C343;
-	Sun, 19 Apr 2026 20:31:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7766C2DCF61;
+	Sun, 19 Apr 2026 20:31:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NeYA0Uzv"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MRyj7fpF"
 X-Original-To: stable@vger.kernel.org
 Received: from mail-dy1-f176.google.com (mail-dy1-f176.google.com [74.125.82.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B814F28850C
-	for <stable@vger.kernel.org>; Sun, 19 Apr 2026 20:31:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33CB830B53A
+	for <stable@vger.kernel.org>; Sun, 19 Apr 2026 20:31:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776630694; cv=none; b=aH2/Tx2l4LfeGMdqiN48LHL3vwv/L84QDnqIGOJbvl9qkLTD1GA09ktDhZpmtCgtb/3fbF3HD7Tcnc+RwkQIeyFixh8uciUEKexrz6lrBhZ8dxddFiy6SaxdnX2RZZKJLO/ovUMXD1VbT6sxYBEE8cb6S4q94+8L6PMbidsFe3s=
+	t=1776630698; cv=none; b=LjrLPuHKyPg8tJCoIAmX6zmSsdMarGVVwWA6J0dJk0JyLe15cN1yLACbVg442f9pgxFfCSSDxRjysaB8Wm1ZgkAZbnjceqa5H/PyXrBNQY54ht09yYMyIfEKk4MqkMY50/++TZ0jbmaIoDKRGsszwi4AG4ZVMbeRoXSCeS1lD1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776630694; c=relaxed/simple;
-	bh=FWL9iHDXSYoluckJLB911JktohnLlx+Aco9CRYvp9OA=;
+	s=arc-20240116; t=1776630698; c=relaxed/simple;
+	bh=Sd3lBuRPc4TVt8+YNxlMtKK90gkr9B3jK01uoIEBfEc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=B4rQN5vIuEClO9rBzy0ipFuXdc0e2+A8e8u8Iz5gd69xQfTMQ7M6g1d7CI+zqo///13rTmLMCQza4l+JHzam49yiWlD9+CrQVQsTmLl++CK2ROw6SP84kKVGkFQvj/86XSbWmUXRmuyHZ0XlJ/p4zP3L93UcAa0RstdY0hYjwdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NeYA0Uzv; arc=none smtp.client-ip=74.125.82.176
+	 In-Reply-To:To:Cc; b=ObL17csaSOVoXWlmWz9WbUkr4WNNDzcdjfPSe8wNApiLio27wmeaL5UjsKo+HC4XtENjhxi/zM1gERzJaetAHFfHg/m3zsk85arAyHoe/Iji+S2REFQbWkC2Yo1R4vCeYu2SnJ4KJ1QM1Zmm0SwiHTgyiXn7r1GZo2zunSAlVmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MRyj7fpF; arc=none smtp.client-ip=74.125.82.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f176.google.com with SMTP id 5a478bee46e88-2d8fa0fadfeso1187891eec.1
-        for <stable@vger.kernel.org>; Sun, 19 Apr 2026 13:31:32 -0700 (PDT)
+Received: by mail-dy1-f176.google.com with SMTP id 5a478bee46e88-2ba895adfeaso2508016eec.0
+        for <stable@vger.kernel.org>; Sun, 19 Apr 2026 13:31:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776630692; x=1777235492; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1776630695; x=1777235495; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=adKZuyxQZ1V1TuZoH3DUI0I4OUtCX6ISr2mcieCFENA=;
-        b=NeYA0UzvCEP/CZ/zLr1rpcWe/E+FTlnyr0wmDkQAyEAlTOxqsngZKziEtZ0YMcGg3p
-         a0R1gRs8kSokBOeABiUFIaCJtjuUfncgdIy4J1I7kKP1HAd3ZevGKnVu3gwNP+9nUa6i
-         E/oCcsJR4BpFvG4odaZQLrWb+paEeGBdXn1k+hla5kr4UeOx9W88xytWfkY/Zeaqpt6L
-         6BxIMie81iqyMxI0Ri85J51yC9CnporLktnIkmwGam02XgkvPsxotKhxOVwOlXSbTCxi
-         yVwtPPWuqIztaooWlippGGTyOa7qh0CP/anhpJSdf4qMERYVUeW9KtOLF8Hv9JrcKjcX
-         ESQA==
+        bh=JwHh11ZJDmP6iTnoktuVwH7YOEWIPLJREiHNq2gv16w=;
+        b=MRyj7fpFe2GtubX72KWC23vnyiG1FfwbHlGd3NFYthnnftpM/yFyo2ymb6M9N4a9/a
+         PEiVYfbMHBSp0BHi9EufOMtef2AIyikXr4S2kDnjVGOogPNyB1VHZ5cTrwr8RHZFW7hb
+         rl2VSg9cNs6SgII2klI6mWazOE8h+RPCEdSUIvB1cqardsV5INv1NKoTUQcTai0xA4xN
+         fWFspxcdskGNG9xybJBMq7omWMqLx0sKJaC146vblJUabHX2XI/lJIF82u6NEcX++lDK
+         NAlkDXOo4RtOQf7XmLv08o0hspzQ+GZlzqPSQBOv8PNoN28uURtbvcyYyw6IzZzLRG2M
+         mVdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776630692; x=1777235492;
+        d=1e100.net; s=20251104; t=1776630695; x=1777235495;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=adKZuyxQZ1V1TuZoH3DUI0I4OUtCX6ISr2mcieCFENA=;
-        b=Xr5VOXShu3MUsYw+30IxlcYAAOdZqH2FALYnrF7TGXZ7bJOi1C5r1ulTI7P86DAdKG
-         9HI3ktAFY2qJCMXCy34pWb97J00g/k9lmlZ04Nz1Dka3Lb1qpxCPV6I5C3x51KLCVwVD
-         XlQ2P2l+EvmwLO+fuF2nsh6ex4weypzzBwgTn8oXTOjS4W5E2MUeqpqRc4qCcEcHFv4M
-         PpZEWTuv7PX0CDI5AaY1reNyEgqbiH3DSsv7v2lCnd4JUeo7y98pAtJKLsczDlOS/o3o
-         wmrF3Ag58oNcZu8WTIf6rvffRZ5V65To4bHWjRSa1Pyup6PmkdnDvgVV/rbnALzdfI6E
-         bKCw==
-X-Forwarded-Encrypted: i=1; AFNElJ/WTlW0gIToR3liwPO599s9Ox/PS7y9cZceKJvO9062GtxX66cMwHybmDp1jjQJgrGnslxEG7s=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx8Qg5psKjw4bzg4+xY3pzeaeFP9B8fuwgOJ5kjwnupIyrWi2hd
-	jUDIBDHglKSfAnMOBdRutDCeoohV1GNpaUBINAGx66JVjdGv1igkPazp
-X-Gm-Gg: AeBDievZzaqcgERH3B07gO88WOCDeB1BftGmbh8O0uHiq9HRbm+IRllBljSkrvPtznT
-	pwhoHEpf5LNH/L1ABRZahYR7X1uyvlMv8p6sBOzVOi3GZrxqmXnZ7IcxrefDJq0aHmeCfg1Z684
-	82qY/P5jpsuHkChs4ov9FnO86cUJWsMoIKWoKlfcRSy6Ea0AJvmnQDXo4z7mTWlNq356UK2Ys+F
-	vtB/p1omiIqUpB8Z8H8tYmRlGZInFj9V6wXcuLiAA7NuXEF5VwZLKjdDrQFEwM9vjkGlzEA0Iku
-	k8G30OF8dmPqUo4uNdjnzq0Amuv5F9Wuu1CLUPp9IHTG+WsyN1I5P8WrzIuNw0VlpCMpRemFWlW
-	ChOzd+Wp7AzxWelDWlgYPM8epyB329CKIUobYGaTCwwZbpZ4Rde9KOnrEfh0lLVuqX+69q1ZVhc
-	w5Ex/szh0IBoHOUwjzrN70Pw1AWKFYgENLv5DZWp9PtWiXmhZJtx1R2t0jzgMw1vt3dVXBSIszj
-	sBngUD/dzOxBA4=
-X-Received: by 2002:a05:7301:1909:b0:2dc:e6fa:317 with SMTP id 5a478bee46e88-2e42dbffd65mr3036275eec.11.1776630691763;
-        Sun, 19 Apr 2026 13:31:31 -0700 (PDT)
+        bh=JwHh11ZJDmP6iTnoktuVwH7YOEWIPLJREiHNq2gv16w=;
+        b=EblOGLfLfAbR8pQi7RDbqQAliMhQo0uRwYKgIt/SsOYsXIqrnXTsUOxBygV+RSnIwH
+         DVhpZs8oAvc+glt/24+JAgZlVWhxcdtzHJaxd8PaBLx0GQZgXIJUaRiGWPiIKqYz7YCj
+         qRYgCqZm+5SdK4U4tO0yQYAz0/aO9zU/mSitXuDbkKMjtoPM0P/FO7OjmCPR9wtHyIoj
+         9M2IyHAnwncQIunR/+lXyfxERScroSR/SzfeDZnpYJB84ODF+Gccf+DUTU1DduXo//zx
+         sRSSEGmERzTZrSgsHlBYsLWGAj2vbdWjyDEGThjelz+ysuKJhmCKxdfNOm9VqYHJUPxl
+         IeXQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8rGo7EwkN4X5mUbwBOXuoTk0bToRt8H9EB+3ZTp0Sdwj8nVZtL1FuZE2eELITAQMFQOw6+sQI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxhcx9viu4ADPqmLJI6XyL7PVa/ebhoOgAElAG1aXhtxfd66SyA
+	tsyOaHUEVTW81ZjRTOAE6aEvFfZLHJ+CmIv4K7IgipKeXSqhpjwLBgKC
+X-Gm-Gg: AeBDiev+Q2IaTLwe2SWBmtlKmyTvEnV6/8xFcHRacUlVpng5zBDd+bdBOONLwCDjBdb
+	R0SYpUoF1aCDksle75T/4APgRmEGEfT9jN7d/f6CIfJM+gftBO327dho1cYQ+cwsBZu1q0FDaCB
+	bcyHmBMCY+clnuIpjXl/YAohsvh7xlo1kjJZLabTnxyOjK7767j17rGFI8ksF28yiWAX0GQ6Ijo
+	kIxC37GIY16baeyJiSBZZliUJyp3VrBFR4Fzyod7NXKQOEU1xK8MxSoTFhACi5w6RC6UClNqI9V
+	D9NUp38DZQOlLbdho2xbI33n9qunQoHYbIyIWUbn5ws+lWWJxJk/qx1SJDgRT0B5V12zqb9wnzq
+	LYaj7G/tetmfmIniTz43fm1BTiJVOuRLaaZJ/OpdcKT1JZifz7KG2f8PK6lXTkut0cBj7yoy/nw
+	Y10ABYZjP4mhkkNXt0bilvB/El1hgwxFAJiI+6XQXEbz0iQgmU8insg7SBPmGMB5bu3E4lm8GsK
+	FIcrQ8JrCariGQ=
+X-Received: by 2002:a05:7300:e684:b0:2e2:5bc5:f8eb with SMTP id 5a478bee46e88-2e46538c8b5mr4826430eec.9.1776630695261;
+        Sun, 19 Apr 2026 13:31:35 -0700 (PDT)
 Received: from [192.168.1.18] (177-4-160-195.user3p.v-tal.net.br. [177.4.160.195])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2e53ac84c38sm11419096eec.13.2026.04.19.13.31.28
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2e53ac84c38sm11419096eec.13.2026.04.19.13.31.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 19 Apr 2026 13:31:31 -0700 (PDT)
+        Sun, 19 Apr 2026 13:31:34 -0700 (PDT)
 From: =?utf-8?q?C=C3=A1ssio_Gabriel?= <cassiogabrielcontato@gmail.com>
-Date: Sun, 19 Apr 2026 17:30:30 -0300
-Subject: [PATCH 2/4] ALSA: usb-audio: Propagate errors in
- scarlett_ctl_enum_put()
+Date: Sun, 19 Apr 2026 17:30:31 -0300
+Subject: [PATCH 3/4] ALSA: usb-audio: Propagate US-16x08 write errors in
+ route/mix EQ-switch put callbacks
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -89,7 +89,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260419-usb-write-error-propagation-v1-2-5a3bd4a673ae@gmail.com>
+Message-Id: <20260419-usb-write-error-propagation-v1-3-5a3bd4a673ae@gmail.com>
 References: <20260419-usb-write-error-propagation-v1-0-5a3bd4a673ae@gmail.com>
 In-Reply-To: <20260419-usb-write-error-propagation-v1-0-5a3bd4a673ae@gmail.com>
 To: Takashi Iwai <tiwai@suse.com>, 
@@ -99,19 +99,19 @@ Cc: linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
  =?utf-8?q?C=C3=A1ssio_Gabriel?= <cassiogabrielcontato@gmail.com>, 
  stable@vger.kernel.org
 X-Mailer: b4 0.15.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1134;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3397;
  i=cassiogabrielcontato@gmail.com; h=from:subject:message-id;
- bh=FWL9iHDXSYoluckJLB911JktohnLlx+Aco9CRYvp9OA=;
- b=owGbwMvMwCV2IdZeKur/u2bG02pJDJlPrWd2H2+4PG8yo8H0aN5O7S9WC6UTizm+r5Lj4W34+
- EFj2ZGwjhIWBjEuBlkxRZbVSYss93Q9uFoft8IDZg4rE8gQBi5OAZiIXxsjw9UVi8Pv6xom/DCe
- k6HXo7TXRsYlQbxykXTHoUohjRmWGxm+KRh8sHjdPmcvO9uzXVp9u179EQ+q8Di/6LlM9ibbsDP
- cAA==
+ bh=Sd3lBuRPc4TVt8+YNxlMtKK90gkr9B3jK01uoIEBfEc=;
+ b=owGbwMvMwCV2IdZeKur/u2bG02pJDJlPrWddWlIdqfDPU5r7iW932Ckmj33VXIwpwdeEm1O1+
+ vYtCvvUUcrCIMbFICumyLI6aZHlnq4HV+vjVnjAzGFlAhnCwMUpABOZfZCRYWGqqb21JJ/s6r9L
+ boaFFNz0VAnmFm1ymuJoydckdvtmKsM/Zav/7QVpvbHrFGew/pywm1lJjGnttQU7MzzfB+73N+x
+ jBQA=
 X-Developer-Key: i=cassiogabrielcontato@gmail.com; a=openpgp;
  fpr=AB62A239BC8AE0D57F5EA848D05D3F1A5AFFEE83
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -119,7 +119,7 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-238659-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-238660-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
@@ -129,46 +129,138 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[cassiogabrielcontato@gmail.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A3AAF42576E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 6C188425759
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-scarlett_ctl_enum_put() ignores the return value from
-snd_usb_set_cur_mix_value() and reports success whenever the
-requested enum value differs from the current one.
+Several US-16x08 mixer put callbacks log failed control URBs but
+still return success to userspace. That hides device write failures
+even though the requested value was not applied.
 
-If the SET_CUR request fails, the callback still returns success even
-though neither the hardware state nor the cached mixer value changed.
+Return the negative write error instead in the route, master, bus,
+channel, and EQ switch put callbacks.
 
-Fixes: 76b188c4b370 ("ALSA: usb-audio: Scarlett mixer interface for 6i6, 18i6, 18i8 and 18i20")
+Fixes: d2bb390a2081 ("ALSA: usb-audio: Tascam US-16x08 DSP mixer quirk")
 Cc: stable@vger.kernel.org
 Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 ---
- sound/usb/mixer_scarlett.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ sound/usb/mixer_us16x08.c | 49 +++++++++++++++++++++++------------------------
+ 1 file changed, 24 insertions(+), 25 deletions(-)
 
-diff --git a/sound/usb/mixer_scarlett.c b/sound/usb/mixer_scarlett.c
-index 1bb01e827654..673eb8d8724d 100644
---- a/sound/usb/mixer_scarlett.c
-+++ b/sound/usb/mixer_scarlett.c
-@@ -680,7 +680,9 @@ static int scarlett_ctl_enum_put(struct snd_kcontrol *kctl,
- 	val = ucontrol->value.integer.value[0];
- 	val = val + opt->start;
- 	if (val != oval) {
--		snd_usb_set_cur_mix_value(elem, 0, 0, val);
-+		err = snd_usb_set_cur_mix_value(elem, 0, 0, val);
-+		if (err < 0)
-+			return err;
- 		return 1;
+diff --git a/sound/usb/mixer_us16x08.c b/sound/usb/mixer_us16x08.c
+index 8a02964e5d7b..fcf7dfa4aa84 100644
+--- a/sound/usb/mixer_us16x08.c
++++ b/sound/usb/mixer_us16x08.c
+@@ -224,14 +224,14 @@ static int snd_us16x08_route_put(struct snd_kcontrol *kcontrol,
+ 
+ 	err = snd_us16x08_send_urb(chip, buf, sizeof(route_msg));
+ 
+-	if (err > 0) {
+-		elem->cached |= 1 << index;
+-		elem->cache_val[index] = val;
+-	} else {
++	if (err < 0) {
+ 		usb_audio_dbg(chip, "Failed to set routing, err:%d\n", err);
++		return err;
  	}
+ 
+-	return err > 0 ? 1 : 0;
++	elem->cached |= 1 << index;
++	elem->cache_val[index] = val;
++	return 1;
+ }
+ 
+ static int snd_us16x08_master_info(struct snd_kcontrol *kcontrol,
+@@ -283,14 +283,14 @@ static int snd_us16x08_master_put(struct snd_kcontrol *kcontrol,
+ 	buf[5] = index + 1;
+ 	err = snd_us16x08_send_urb(chip, buf, sizeof(mix_msg_out));
+ 
+-	if (err > 0) {
+-		elem->cached |= 1 << index;
+-		elem->cache_val[index] = val;
+-	} else {
++	if (err < 0) {
+ 		usb_audio_dbg(chip, "Failed to set master, err:%d\n", err);
++		return err;
+ 	}
+ 
+-	return err > 0 ? 1 : 0;
++	elem->cached |= 1 << index;
++	elem->cache_val[index] = val;
++	return 1;
+ }
+ 
+ static int snd_us16x08_bus_put(struct snd_kcontrol *kcontrol,
+@@ -324,14 +324,14 @@ static int snd_us16x08_bus_put(struct snd_kcontrol *kcontrol,
+ 		break;
+ 	}
+ 
+-	if (err > 0) {
+-		elem->cached |= 1;
+-		elem->cache_val[0] = val;
+-	} else {
++	if (err < 0) {
+ 		usb_audio_dbg(chip, "Failed to set bus parameter, err:%d\n", err);
++		return err;
+ 	}
+ 
+-	return err > 0 ? 1 : 0;
++	elem->cached |= 1;
++	elem->cache_val[0] = val;
++	return 1;
+ }
+ 
+ static int snd_us16x08_bus_get(struct snd_kcontrol *kcontrol,
+@@ -392,14 +392,14 @@ static int snd_us16x08_channel_put(struct snd_kcontrol *kcontrol,
+ 
+ 	err = snd_us16x08_send_urb(chip, buf, sizeof(mix_msg_in));
+ 
+-	if (err > 0) {
+-		elem->cached |= 1 << index;
+-		elem->cache_val[index] = val;
+-	} else {
++	if (err < 0) {
+ 		usb_audio_dbg(chip, "Failed to set channel, err:%d\n", err);
++		return err;
+ 	}
+ 
+-	return err > 0 ? 1 : 0;
++	elem->cached |= 1 << index;
++	elem->cache_val[index] = val;
++	return 1;
+ }
+ 
+ static int snd_us16x08_mix_info(struct snd_kcontrol *kcontrol,
+@@ -529,13 +529,13 @@ static int snd_us16x08_eqswitch_put(struct snd_kcontrol *kcontrol,
+ 		msleep(15);
+ 	}
+ 
+-	if (err > 0) {
+-		elem->cached |= 1 << index;
+-		elem->cache_val[index] = val;
+-	} else {
++	if (err < 0) {
+ 		usb_audio_dbg(chip, "Failed to set eq switch, err:%d\n", err);
++		return err;
+ 	}
+ 
++	elem->cached |= 1 << index;
++	elem->cache_val[index] = val;
+ 	return 1;
+ }
+ 
+@@ -1418,4 +1418,3 @@ int snd_us16x08_controls_create(struct usb_mixer_interface *mixer)
+ 
  	return 0;
+ }
+-
 
 -- 
 2.53.0
