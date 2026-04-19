@@ -1,223 +1,179 @@
-Return-Path: <stable+bounces-238663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238664-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oJoCGThE5WlHgQEAu9opvQ
-	(envelope-from <stable+bounces-238663-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 23:08:08 +0200
+	id EIx6FpJH5WnPgQEAu9opvQ
+	(envelope-from <stable+bounces-238664-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 23:22:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A65B7425849
-	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 23:08:07 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDB094258A7
+	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 23:22:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D24CE301AA40
-	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 21:08:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A67DA3019501
+	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 21:22:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA21B2F260F;
-	Sun, 19 Apr 2026 21:08:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20DF82FD69E;
+	Sun, 19 Apr 2026 21:22:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OkB72OY8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BiRyQgcj"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f49.google.com (mail-dl1-f49.google.com [74.125.82.49])
+Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 407562638BC
-	for <stable@vger.kernel.org>; Sun, 19 Apr 2026 21:08:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9645726E706
+	for <stable@vger.kernel.org>; Sun, 19 Apr 2026 21:22:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776632882; cv=none; b=gDDTnJVwsC1LzbalIq4uxKtxP8G0h17hJ0TcI2qiOwpl2mFWuoI8s7LrpGjFWGxOg9yjmrsYgOWwKEI7/yS1GQ2LJic700nbpGoK6ycM72+N4x5WTryoF3kk9JBjybluV9OfrFO7rUl2QJxiyZ3GXkFcYnbMiGGeX8zxRDO0VaE=
+	t=1776633736; cv=none; b=hDgkDTu+z4RhbfVHD7KbVdhLYMQvVgkczp/lSi4MEjsfIlZwbz6+F+zjRf5Jr35iEZlZOQZDUUXZGOMzO1+18vgHWxQtKJFun/oaP2hhFOtwWndxE8UOEzitszBCJTEowVdwZgQLO7kAqp1Rg1BDbIBPuRHH4vJZkJlQuiHJjMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776632882; c=relaxed/simple;
-	bh=eG1K3OPJpxXLDQlKQ8rcmnhJ+HA4zvnmrY3kBdh0UFg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QP2xV2U2urNJ3jkRQ9jfWZNjslBOYRMEy0ijkabBDvdCmEzzzV0USl60Fd7IrLHp6LIUQxOfyK4lTKeOZJJFPGOzBBmCZc7+UWf5X6+R69m96CfZKVE8WSiFIfLQ7fPaG1NqU2/lu6UXcVamRN9rq/zopji88ncnskPlv3hr4KA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OkB72OY8; arc=none smtp.client-ip=74.125.82.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+	s=arc-20240116; t=1776633736; c=relaxed/simple;
+	bh=4mgFnDuqjDazkpWQSACMpuF+9o6jWUlghenOuJwyDNM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pVf4XhxXtYTnCuU9GnVFN3mlVAxsYzZXu74VQHh9ifABLNr48QKjIl3+r24LVOpyVy8F29UZx9+q5Bj8UhLavrYmmtiontp0xDgG+9DfoMncZxpw5RcJua8KhthlM+aB+S3PzW6fOB02Yekk+3DnKKVVxaE/HK6y7jrzjc77Gjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BiRyQgcj; arc=none smtp.client-ip=209.85.222.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dl1-f49.google.com with SMTP id a92af1059eb24-12c726c30efso2044237c88.1
-        for <stable@vger.kernel.org>; Sun, 19 Apr 2026 14:08:01 -0700 (PDT)
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-8d428da4300so267916785a.3
+        for <stable@vger.kernel.org>; Sun, 19 Apr 2026 14:22:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776632880; x=1777237680; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=3M1MaUHGzn+cfnIYT0AwYFeLYCGE/VmNLUEv5pP3SyY=;
-        b=OkB72OY8OoEbwkFniKz7kg3ygmNvUekNJTPiSrznhMP4JeA/wk3NVLT9p+A0A3OKkc
-         bpSDqMinrKbQ2iZWuqBH0oexK6o+SomvsJxmhmzo/5znaZSG1sUvm1NikE26WKbonWD0
-         6l0/bQHf7cIKLr/CP8j/LffvViuNXKJfJ0FXmiMbfwbmKkyNNmpolJyQVsNInH78QAs9
-         +uolQ/yn4xMr+In77wb9ALLFkkZDRt/9/AGovLZlOXWjCX57SM0V5hl742Kjiv/b5Tgr
-         DLChLJlrq2fGf99+4aCOuyiLXFWcRoiiPxcVj2V7vJLpIp7XOT8wUbzELoGZKo4UFgTK
-         zUiw==
+        d=gmail.com; s=20251104; t=1776633734; x=1777238534; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=qliX1CpRzcqySHVjBmsdzyegBGfy3s8Af3FF3IEJPas=;
+        b=BiRyQgcjrt6Ok4yqnPJexgS4v0aK7KbO+dTi757V1yJOXJA90KPzeOZXMSlBnoW5TR
+         /a4+iJNmDxH2lXVjM1abh408IMR/HywLKYJMDfcoIZYe87kGyT4IOOsRt9W5QLrgmGcN
+         4YcOLN77KgNLHVSzbEHe1wrM9L/hqn9Edi1ex1IG7/G7EGKSP3yxQKfnTUCLPh29ZDaI
+         uctsBFnIliKDbEfRLa1XtuRlViEUT83pEGGvD0O1ia04+xOqjKL84XP5XhW4pwKO2HD/
+         Ml7jzqNk0qPCDJ21srpMVzF1kUMrjdShB+sdOcZL1IS0dHp4sCCoDxIJhliIgBUX93ve
+         7mwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776632880; x=1777237680;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3M1MaUHGzn+cfnIYT0AwYFeLYCGE/VmNLUEv5pP3SyY=;
-        b=W47FMqphekNAfRzO4sLKjaonFRd3B22arE2Oo+SweVh6DevLRpr0K3xCvtAjxaEYU/
-         Mnw7zIqVMFQJ8YBNo2fNDGmUiTXZec7qW1cLyuvD9tYT6q2uBO3DYxe0/giKw8kUE787
-         Gu8+tibZ8OzSM3qKVp64YbI6nU1tB8zZi4ml7OQpUJdVP2o/Zm8Ts6tkYuAEIhsKHeMj
-         24lPCIE375Im2xI9nmTwxgCH1bPV4q3kdvyDp9En40TfedRR3PVH2pwtMRYbQa3h0c0Q
-         PS6KbFzuddKiXZLgY2qL7+7OMZtDNhGDAHYULr3lR7Hahhh/kGNfEix5y6p5ZnmIs3Xg
-         O4gQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9H0rTh8h27v/0KGOEqut+pD4HZWD0u4fOeoX2d8xGfcM3sxSCZmU8FRz2o3mN77ErteOkGww8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzLNMdHrJu6qrrWiUMnXlKHYdWaUz12OpeTB0bznSQIoPfgg6Z9
-	uZjVlJ4Da0tznP62ATSxS+/44qHaTYB2YGN+ElCTn43TD0hagQpFGXRc
-X-Gm-Gg: AeBDievHRgNSPm3Be1sWPJJoQRS0Kjz1iNikphcYbHlym8LKUdQnvWkXYG+Q1YTL1PT
-	QRDpDrufgTQZ6z2J3PfInGFKcv1UY3muTMCsp/649OStHIOHjcYfIEY+Zj7e5QBfX+ZXSOlfkOE
-	rg8Lxy4g2KdJ7O8Vq1FfGKC3P3JY8Woa14UMMuXEODfQxGMJX47lExpJCF+owWgAJdDvhLYQnDy
-	wGoVR9G5RC75cLnNdVUfP/0y2XLyw7UH5WduhJsL7EHcl8lkUC3icvObJJ43CuqLMZGhHAGFfiZ
-	vJbigz2n2nbvwMispkq3M/7/MdioqnTBn+RhSA9LD6nsx8LU2vtBAOB5zpjseOWD2wlPAaTH6Q5
-	Jpg3bnn4KQcUBisKhhgG6jELpLOC5UeM5DdJJoQkVUrF/g00QRIimmwtY39URtF2ZtQMAkM0AjJ
-	Pcfmkltr6PB6rs7IA0Ma8DEOdNCJuApFR/QuJxGcT9kCt9VymeFFb1hFQA5dkY+SwnEuqoGE0f8
-	UfJysnl5xs=
-X-Received: by 2002:a05:7022:4393:b0:12c:4928:e57e with SMTP id a92af1059eb24-12c73f920bdmr4395154c88.21.1776632880241;
-        Sun, 19 Apr 2026 14:08:00 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2e79c2954f6sm5288391eec.30.2026.04.19.14.07.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 19 Apr 2026 14:07:59 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <aa801626-2e33-489a-931f-600540fe4ae3@roeck-us.net>
-Date: Sun, 19 Apr 2026 14:07:57 -0700
+        d=1e100.net; s=20251104; t=1776633734; x=1777238534;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qliX1CpRzcqySHVjBmsdzyegBGfy3s8Af3FF3IEJPas=;
+        b=hslqfSz/3r3m9wjHfXzUSubkPsXdkcHAes+sZWPImiI+RRtR3dqAcvcP+S6mir7NwW
+         3awCGVPQBGd8MEZ2fbPRaLuLO/ob+/DF4LiDYGvHjtuluWx1QgIuK1LuGnQC+CQY3jJU
+         PcZmZm9VM2JAvExolObQdtGXCKMPt2Mloyz4JJ2EZBPESNpUJe0X6pPVlE//QcW1aiJA
+         2htiBhFI8CMeUJT+SJHLWlyY0aOvT00X8B3ykPDmzvXwlikLTOH2XuHC2XQ0yBQQlK9+
+         BHamDKaRqZTAKN1FPf8TV6+nhvvAK7ub58sUofrT+sVqX0MadOwLfU2jU5KPIIGOIweT
+         e0Hw==
+X-Forwarded-Encrypted: i=1; AFNElJ9qwEsLIXxWlm9Lg7GtF46FDFRcIucHalIjlz9WR69ylmUm3w3F6sIPs7Cnn8hdNI0ODGOV9a4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyVceBpMIyJNyBDRkjHiMv/WHglrZ+R0oiuIHy2ktq1Q194zmUu
+	6fka9Ej8P/4sEloqs6RLWDfzxvtDVJCiyINivWSyh4wnoUM7BRryvugzCL1vUqaO
+X-Gm-Gg: AeBDieuq0DVjUy3GhlyWEZ/o4HRxkSb8Pc3fXaq1ShwN+E7C0wtCKSztEKeL6Z1rMha
+	q7Brfiyv9Z66tcki9nzdCpry1RRk4W7hpQhBDS0OUR/hnNhO8Ed3gHMkWmGnFgJk4fF+EIoYkIK
+	Mo6i2YDmhtyObjTFE5hZ6lwR06BFiLYXQNaq7kjjMPEkKO6NqSmBloeRtEHXvZ5YvL/Fh2R8Eok
+	/h1KjS5Qb5H08Ge0mfZGDbhghnYtk/RZZKQoackqystpMXfyo5Opobm/tbFV7a9c6Lu88wRNSPt
+	HqBOIkRZsVQiqLjeBjY3FfHhJPkTTvasJXFIflDqOhslYcNc9mRwsgruK63icg0ET5tgcmeB0EJ
+	Epe9I6hNsLXMVaHQnS/iz/7EMrcfPBOdD7G1FTwWn4EUUhmvGPIZXKyYHSlNG8gJvVPqI4dhnbK
+	eAkSsIA8TvpTfHr3OK340y39hxxxHd4MWC/WQhiBGXE+nC2F8m1GTVC3RnhjCJtngBVfZWC/Pa8
+	9Y6UEkC3ah+vBv1etfwHy59vHHfzQ0=
+X-Received: by 2002:a05:620a:241c:10b0:8ea:b828:350d with SMTP id af79cd13be357-8eab828370fmr236380585a.11.1776633734532;
+        Sun, 19 Apr 2026 14:22:14 -0700 (PDT)
+Received: from server0 (c-68-48-65-54.hsd1.mi.comcast.net. [68.48.65.54])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8e7d65c1321sm654849185a.15.2026.04.19.14.22.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 19 Apr 2026 14:22:13 -0700 (PDT)
+From: Michael Bommarito <michael.bommarito@gmail.com>
+To: Jan Kara <jack@suse.cz>
+Cc: Edward Adam Davis <eadavis@qq.com>,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH 0/2] isofs: hardening for crafted CE and NFS-handle paths
+Date: Sun, 19 Apr 2026 17:21:53 -0400
+Message-ID: <20260419212155.2169382-1-michael.bommarito@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] watchdog: ixp4xx: fix reference leak on
- platform_device_register() failure
-To: Linus Walleij <linusw@kernel.org>,
- Guangshuo Li <lgs201920130244@gmail.com>
-Cc: Imre Kaloz <kaloz@openwrt.org>, Daniel Lezcano
- <daniel.lezcano@linaro.org>, Thomas Gleixner <tglx@kernel.org>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260413154727.3051321-1-lgs201920130244@gmail.com>
- <CAD++jLnC5MGg1e_Suv6BD_=XKbsn1aLxHxRfCdD3Nos+2XRzfw@mail.gmail.com>
-Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
-In-Reply-To: <CAD++jLnC5MGg1e_Suv6BD_=XKbsn1aLxHxRfCdD3Nos+2XRzfw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_FROM(0.00)[bounces-238663-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-238664-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[roeck-us.net];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[kernel.org,gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[linux@roeck-us.net,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[qq.com,vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[michaelbommarito@gmail.com,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A65B7425849
+X-Rspamd-Queue-Id: BDB094258A7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 4/19/26 13:22, Linus Walleij wrote:
-> Hi Guangshuo,
-> 
-> thanks for your patch!
-> 
-> On Mon, Apr 13, 2026 at 5:47 PM Guangshuo Li <lgs201920130244@gmail.com> wrote:
-> 
->> ixp4xx_timer_probe() directly returns the result of
->> platform_device_register(&ixp4xx_watchdog_device). When registration
->> fails, the embedded struct device in ixp4xx_watchdog_device has already
->> been initialized by device_initialize(), but the failure path does not
->> drop the device reference, leading to a reference leak.
-> (...)
-> 
->> -       return platform_device_register(&ixp4xx_watchdog_device);
->> +       ret = platform_device_register(&ixp4xx_watchdog_device);
->> +       if (ret)
->> +               platform_device_put(&ixp4xx_watchdog_device);
-> 
-> If the problem in the description is indeed there, it seems the bug
-> is inside platform_device_register(), surely a function returning an
-> error code is supposed to clean up any resources it takes before
-> returning an error. It seems wrong to try to fix this in all the
-> consumers.
-> 
+Two small defensive bounds checks for the ISO 9660 filesystem, one
+in Rock Ridge CE continuation handling and one in the NFS export
+path.  Both surfaced while looking for missing bounds checks
+adjacent to recently-landed isofs fixes (0405d4b63d08,
+f54e18f1b831).  Neither is a memory-safety bug on its own; the
+existing sb_bread() / isofs_iget() paths handle out-of-range
+blocks cleanly.  These patches reject the malformed input at the
+earliest point it is known to be out of range.
 
- From platform_device_register():
+1/2: rock_continue() reads rs->cont_extent from the Rock Ridge CE
+record and calls sb_bread() on it without validating the block number
+against ISOFS_SB(sb)->s_nzones.  commit e595447e177b (2005) added the
+cont_offset and cont_size rejection but left the extent number
+unchecked; commit f54e18f1b831 ("isofs: Fix infinite looping over CE
+entries") later capped the CE chain at RR_MAX_CE_ENTRIES = 32 but
+again did not address the block number.  The reachable attacker model
+is a crafted ISO auto-mounted via udisks2 / polkit on a desktop
+session; sb_bread() on an out-of-range block returns NULL cleanly, so
+there is no memory-safety issue, and the CE buffer is parsed as Rock
+Ridge records rather than returned verbatim via readlink().
 
-/**
-  * platform_device_register - add a platform-level device
-  * @pdev: platform device we're adding
-  *
-  * NOTE: _Never_ directly free @pdev after calling this function, even if it
-  * returned an error! Always use platform_device_put() to give up the
-  * reference initialised in this function instead.
-  */
+2/2: isofs_fh_to_dentry() and isofs_fh_to_parent() pass
+attacker-controlled block numbers from the NFS file handle to
+isofs_export_iget(), which rejects block == 0 but not out-of-range
+block numbers.  commit 0405d4b63d08 ("isofs: Prevent the use of too
+small fid", CVE-2025-37780) added fh_len checks but left the block
+number itself unchecked.  An authenticated NFS peer with a crafted
+fid can drive reads of adjacent-partition data on the same block
+device into iso_inode_info fields reaching the client as dentry
+metadata.  Deployment surface is narrow (isofs-over-NFS); impact is
+primarily EIO / ESTALE with a weak info-leak channel.
 
-Not that any code actually does that as far as I can see, but isn't
-the above doing exactly what the comment suggests ?
+Both patches are one-line (or close to it) additions; the existing
+out-of-range-block check in isofs_iget() / sb_bread() handles the
+read-side cleanly, so these are strictly belt-and-suspenders
+rejection at the earliest point we know the input is out of range.
 
-Thanks,
-Guenter
+Build-tested W=1 against 7.0-rc7 with CONFIG_ISO9660_FS=y,
+CONFIG_JOLIET=y, CONFIG_ZISOFS=y.
+
+Michael Bommarito (2):
+  isofs: validate Rock Ridge CE continuation extent against volume size
+  isofs: validate block number from NFS file handle in isofs_export_iget
+
+ fs/isofs/export.c | 2 +-
+ fs/isofs/rock.c   | 9 +++++++++
+ 2 files changed, 10 insertions(+), 1 deletion(-)
+
+-- 
+2.53.0
 
 
