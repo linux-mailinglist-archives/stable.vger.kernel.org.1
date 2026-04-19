@@ -1,107 +1,106 @@
-Return-Path: <stable+bounces-238637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238638-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ZaNoAu3I5GkNZgEAu9opvQ
-	(envelope-from <stable+bounces-238637-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 14:22:05 +0200
+	id oLMBHlDh5Gn7bQEAu9opvQ
+	(envelope-from <stable+bounces-238638-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 16:06:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85628423EF5
-	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 14:22:04 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E08E2424471
+	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 16:06:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1FCC730058F4
-	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 12:22:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E012D300FB67
+	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 14:06:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8759E355F5C;
-	Sun, 19 Apr 2026 12:21:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4BFD37C0EB;
+	Sun, 19 Apr 2026 14:06:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X5+I2G8o"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CIk/qiH+"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44C84281525
-	for <stable@vger.kernel.org>; Sun, 19 Apr 2026 12:21:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 933D437BE98
+	for <stable@vger.kernel.org>; Sun, 19 Apr 2026 14:06:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776601318; cv=none; b=Jtq7xEX9ufS+qOnPQq7zOa5nNpr9AM4J1ODVdNYAF7dr+EcS43X3qg6kReYQ9ricTSv4HP6y1DOTBOVvrr5k6NJXu9OZneMgTf+YsWevyx6W9NS9vqVQZ24ne5XbxMEjA7i0r2oW1zWXmfAg9/PQHjaUcaOQ2i5ZCeb5VrRlY0o=
+	t=1776607561; cv=none; b=YA3fdqhloNtybRhq72FHNFsMiF5UxU7lF4oxj4LvO3EvJIXWOHKeOolAzy5j73BWTlseZNZpj8nsX/bTFtIz2GjOBOSNenvzvN5ui0IHFlRPpF4sfYme0Y4m4/h02FKav5re5ker6VPu9UldwW82cPVBVft4BigtC64Cj2aY1B4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776601318; c=relaxed/simple;
-	bh=nmgKREmCWZiDkKASZtmRc2MVHkFKpfUbB1epmq3XSBo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jas3SLD3Hd9lSTRML3UgTbmD2I3XnytwJrJxlT3S0QUy5r6vWOKxfMlBOZDQdzZh5rWZsrTCfkPO5UiHdwNk8YKLBdZV8gxnvN9fGQra82xOGot2uYFbVPyGic1Ej1ExslvnI8wDhVMrf0OoIhuyGfyebosqwoL9RwG/bIze4NA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X5+I2G8o; arc=none smtp.client-ip=209.85.210.174
+	s=arc-20240116; t=1776607561; c=relaxed/simple;
+	bh=6GSGT8vDPiYQI4YGHLluie648X2Cni+IOPr/N/E3cXA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=lmkcc4n10zDJFct7Uq11qlFuRpCdTCmZnk29G5y6utfljtG8MiNGJJa+ywCdDEmwARwxb2zkh8olx+J+/kpSn5wVr8kXMyV7CeqqIHAo1g4tjPUbSCz+xKmO9rAfW/uaRnCa+BG3SxOZdgxW1ZY0ZCrSuRqs8ZZBhXose4eOeAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CIk/qiH+; arc=none smtp.client-ip=209.85.210.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-82f8892d4d6so897798b3a.0
-        for <stable@vger.kernel.org>; Sun, 19 Apr 2026 05:21:56 -0700 (PDT)
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-82f8893bff3so974139b3a.2
+        for <stable@vger.kernel.org>; Sun, 19 Apr 2026 07:06:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776601316; x=1777206116; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=pmWG7OM2EB7RxxwskQ0/zeTI1Kmre4JByGl1ksiUCqU=;
-        b=X5+I2G8oz/+yG4hTU2ZhYBfWqwlcvhdhVmhH6aYXUZ2hR2A5XWKz5yZ3xi5EUv3aTH
-         Kash6Y2MHbNjZQ68b9tRHYtyujsDMq1i8jAzBctzdi01dbBrDeWcJIXH1SBu4w/MMlRV
-         bP08/jkfoKrTNacumiWVEl7Ie3Zbf+ILGe8VTfdIXXaWU6Mr5oI1Xzc9tsYbeqzOnEkM
-         kITO58pPTbHh/pcwEdsjxT7wGFmBQL2yM+phGXdwdbJEGCHTgmZ1vJ4OP5oqQTXd01QF
-         QDV7qKEo8JWu6GZYwe1+fnB88j+oQAtrDNNz7P6TfKVrzD2ZMkq8+V5W1LsDwLEk3xR8
-         2iZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776601316; x=1777206116;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1776607560; x=1777212360; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=pmWG7OM2EB7RxxwskQ0/zeTI1Kmre4JByGl1ksiUCqU=;
-        b=YH6VX3rcZRUOAEBTl1yknzCD1zz4y5pPzgk6Vptcs/5DeCEc9WdO4rjSr6HECcTmoU
-         m40UUrmMOCM3RephAiZrmyuIUT08t6HLaD4AnKP5UghRUQts6htlmsOAq7hNuIjYzWS8
-         lqY0SQ9V/2gcMpN4mCrNUQL59FjF354BIHOTcGPHledNn8e6X6EKTvAnCaI7HoqjKBUb
-         fI9pWx+IEQk0BJXUkO0O5QuBJN9ormKE7iUejLlw3v9gAUc7ITlFn8DfV/VniuraJjkp
-         oHOE6rlrox1oHUSLBTrh1fKFXjtmy5rSjATnJdE0zKS+8LjLKu12i+ka9qDmglRDEiXi
-         6hGg==
-X-Forwarded-Encrypted: i=1; AFNElJ+v9b10NRf9pX//q7SDuPXtCOgTuCBGDV9HNXGLkWdg2sfCRDoWrNq2D663XjWjIDAt5rV0+SM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxYdNRF3MIVZh5J5cn7adYF5B2tH6O2sTNuaM6foCSm7CzmhOO6
-	9iyZ+fG+yvbQ1H0sNs/5HmrtuSP8aGGfx9TnkNed3mc4xqO+EPUFuCVy
-X-Gm-Gg: AeBDiesmYInyuN1HAz7Nz6/SK3yNLqOsnKS7LlT5X2+Iuvz5mgrWbN2w6hr32zaAnI4
-	11PaN45+xv+gHaD9OmMKyOAxRcmSrBi831GHpajAbzAsMBx4cBIYk1+iLhrKDom5Yv+JZy0oAUq
-	HJuGCKRpqvpGgXPCDYtHtAEQVrSIORXfBAzvARFBCvRkCMP/MXyH88xwDNa/zIzLuv1btvQo7A3
-	bg1E6/XSxi7p8FxG17KQmzdRa3b9dqqm/QVVy8jOIUH815G4fyGPWnZ6ks8wUmo7TPJYSiW9M0G
-	OuvFKfIkaFOICWXLs9lkxZqfqjZiKiKIjKu8DuAdH2VM5C59r1hrVbECURrrFgn9f5fyts8Tycp
-	zLBEodDb7u9jkt8flhah8eSeR8SXxF1/deJkrLXAXcRr6JRuVAm7eNeawTMDyD3qmTXT+Uu48eb
-	labQN7dKP4TyeVramNS/Xx+1YNP9qr9aPc
-X-Received: by 2002:a05:6a00:2d8d:b0:82f:1d38:f68f with SMTP id d2e1a72fcca58-82f8c8bee86mr10893475b3a.31.1776601315542;
-        Sun, 19 Apr 2026 05:21:55 -0700 (PDT)
-Received: from lgs.. ([2408:8417:d50:4775:fc0:88de:ed15:556b])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f8e9d2fa9sm7700034b3a.16.2026.04.19.05.21.47
+        bh=0MAzEojvrGMWtL4vp0RLBqclc7WFfe3ybUbm3n1AbJ0=;
+        b=CIk/qiH+TtF0CDrdlL6GN5tZFW+JfcNKbAMOrgExu4gssLHfpm7rGJ2VwZ+X+PHCeB
+         o+jI+q8/0UXQDbsVLK76hgydBOHvPBv4GyJSUzwTLBM6SPbLEXr1GH3nsMBHcRxgBZSz
+         mtVjmqrUtYE2IPCDZw8bn50a7o0tZHI2DIG/ZF99xTU/nyizP2E99EzgeKAGp+LCcqGi
+         TibV+NbWOjGeunHYdErng2shKrbwh86K0IuFv1axiErhSMuCY9OAMBMf9c5OCyGE0IiJ
+         v9K9BNx7IVx+369r71PiVOmrIzs1dT46Z+j6K0msJVksbD2zmqnoJpypeyIdbZyN0BXI
+         LTkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776607560; x=1777212360;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=0MAzEojvrGMWtL4vp0RLBqclc7WFfe3ybUbm3n1AbJ0=;
+        b=imz3WhBL8pYA+ytbhLI+PiKgYHji9YT/K4jbxcrq0Whj9NaOSn73NlYoHDCDPqQG4F
+         pSOfquyTyMyi75TKZcqU3LXfHq2sbAY+OcRxl/zv2VIzBW7fidUeZajTJW3ZueTjYP/i
+         BgVQ4TM2TmTGCDOFqU6+J1kNce7OOR8bfHq0Zr3RhqpBIQGGSj2M2W+NutY6RZUvWxlD
+         ajPFmqdaVauer5rnCeRBI285Ez69P+gf44divYd7KdD1DVArRCK3KHNf/1ZaZbGw/8H6
+         aruApD/DJiPyye6NIOR5sLRqZwxlUES+CGBWntw1Zl20M5t3hC8s7Ybt/Sm2ZPJ+5ypa
+         3PDQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9FbZ7WlPT8Mw7WnwwfT1EF8d5GAEGYJr7rcLF66mabL0Fli01bBu8Zi7GRsDNpXO9Jaw6gwlM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyrUJBIEj7XHOgboKHxRzedvtJbivt5rCDkEshUdWMBpXqGj8fy
+	o3vzeRXe5elxYukS0ePW/zvBCwwGwIk4XUQvCs4qhwzHnIb6ZPXIY5Ph
+X-Gm-Gg: AeBDiesUn30TizC44hMTXL3Zx0d3WlThbftGs0kFmgTd8OtGZlQ8iksoxoLqLPzFycJ
+	NTM2zQJ3UWDcqmZ8ltESSxBKW9+Udxkl9KWGY2U8WOx0DdXoIBuXqcBGtU1aspf5+7g8acVumR3
+	+hpiLQYFoQcl+SQko5xxOkEcf/8e0/cJCouKVPdOJ+81LckPeDklnuSAEhrExGrbSITWJa0BUYS
+	/RDpNhRNgRJeS//cT8X6YujBDdDKvWCUx9E3UcbIjsko+eI5Gz5F+NgqpQsXaQYGV06tcOriwmg
+	uF/52eBrFx7xJsX8HYyL3QBNlj6MXUZmOD+TGsqKT9taGsr4FpGGWTzRKrOA2jtUGSO33hNLyCR
+	KFFNMQ4wxxOZpizcP/At9qJDgAi6DhwytE1+OlVVcZ6SBxD5sehZV35nF9uJMn5DHc5+Eq6SBGY
+	AnJA7woqUATBzSPe6niVjE4QbLkQ==
+X-Received: by 2002:a05:6a00:91d6:b0:82f:9985:d4a1 with SMTP id d2e1a72fcca58-82f9985d570mr6233840b3a.24.1776607559756;
+        Sun, 19 Apr 2026 07:05:59 -0700 (PDT)
+Received: from misys ([58.120.241.145])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f8ebe6642sm9667974b3a.45.2026.04.19.07.05.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 19 Apr 2026 05:21:55 -0700 (PDT)
-From: Guangshuo Li <lgs201920130244@gmail.com>
-To: Liu Ying <victor.liu@nxp.com>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	dri-devel@lists.freedesktop.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: Guangshuo Li <lgs201920130244@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] drm/bridge: imx8qxp-pxl2dpi: avoid of_node_put() on ERR_PTR()
-Date: Sun, 19 Apr 2026 20:21:34 +0800
-Message-ID: <20260419122134.97529-1-lgs201920130244@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        Sun, 19 Apr 2026 07:05:59 -0700 (PDT)
+From: HeeSu Kim <mlksvender@gmail.com>
+To: miguel.ojeda.sandonis@gmail.com
+Cc: a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	bjorn3_gh@protonmail.com,
+	boqun@google.com,
+	charmitro@posteo.net,
+	dakr@kernel.org,
+	gary@garyguo.net,
+	linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lossin@kernel.org,
+	mlksvender@gmail.com,
+	nathan@kernel.org,
+	nsc@kernel.org,
+	ojeda@kernel.org,
+	rust-for-linux@vger.kernel.org,
+	stable@vger.kernel.org,
+	tmgross@umich.edu
+Subject: [PATCH v6 0/2] rust: Makefile: bound rustdoc workaround to affected versions
+Date: Sun, 19 Apr 2026 23:05:52 +0900
+Message-ID: <cover.1776607331.git.mlksvender@gmail.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <CANiq72nnuKJaKrxrut6+noR13PUiSoWWyyp-pGx-fe_2O6ayFA@mail.gmail.com>
+References: <CANiq72nnuKJaKrxrut6+noR13PUiSoWWyyp-pGx-fe_2O6ayFA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -111,85 +110,85 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-238637-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	FREEMAIL_CC(0.00)[kernel.org,google.com,protonmail.com,posteo.net,garyguo.net,vger.kernel.org,gmail.com,umich.edu];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[23];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[nxp.com,intel.com,linaro.org,kernel.org,ideasonboard.com,kwiboo.se,gmail.com,linux.intel.com,suse.de,ffwll.ch,pengutronix.de,bootlin.com,lists.freedesktop.org,lists.linux.dev,lists.infradead.org,vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-238638-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[mlksvender@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 85628423EF5
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E08E2424471
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-imx8qxp_pxl2dpi_get_available_ep_from_port() may return ERR_PTR(-ENODEV)
-or ERR_PTR(-EINVAL). imx8qxp_pxl2dpi_find_next_bridge() stores that
-value in a __free(device_node) variable and then immediately checks
-IS_ERR(ep).
+This series bounds the `-Cunsafe-allow-abi-mismatch=fixed-x18` workaround
+in `rust/Makefile` to the compiler versions that are actually affected by
+the rustdoc (#144521, fixed in 1.90.0) and doctests (#146465, fixed in
+1.92.0) target-modifier bugs, so that ABI compatibility checks run again
+on newer toolchains.
 
-On the error path, returning from the function triggers the cleanup
-handler for __free(device_node). Since the device_node cleanup helper
-only checks for NULL before calling of_node_put(), this results in
-of_node_put(ERR_PTR(...)), which may lead to an invalid kobject_put()
-dereference and crash the kernel.
+Changes since v5 [1] [2]:
+ - Patch 1/2 is v5 1/2 renamed from `rustc-max-version` to
+   `rustc-lt-version` per Miguel's plan to rename on apply [3] and to
+   avoid the `99` form. Nathan's [4] and Nicolas' [5] Acked-bys from
+   v5 1/2 are carried over as Miguel indicated they would be preserved
+   through the rename.
+ - Patch 2/2 reworks v5 2/2 to fix the doctests case that Miguel
+   pointed out [6]: the v5 form reused `$(rustdoc_modifiers_workaround)`
+   as a prefix, so on rustc >= 1.91 the doctests variable expanded to
+   a stray `,sanitizer`. Use Miguel's suggested explicit
+   `ifeq`/`else ifeq` layout with `rustc-min-version` +
+   `rustc-lt-version` combined inline, so each affected range is
+   visible on its own line.
 
-Fix it by avoiding __free(device_node) for the endpoint pointer and
-releasing it explicitly after obtaining the remote port parent.
+The `rustc-version-range` macro Miguel mentioned as an "improvement on
+top" [3] is intentionally left out of this series; I will send it as a
+separate follow-up patch once this lands, as Miguel suggested.
 
-This issue was found by a custom static analysis tool.
+Tested by building `make rustdoc` and `make rusttest` on rustc 1.93.0:
+both succeed with the workaround disabled (empty expansion), confirming
+the bugs really are fixed in 1.92+ and no regressions are introduced.
+Macro expansion was also spot-checked across simulated rustc versions
+1.87 through 1.93 to verify each range matches the expected flag value.
 
-Fixes: ceea3f7806a10 ("drm/bridge: imx8qxp-pxl2dpi: simplify put of device_node pointers")
-Cc: stable@vger.kernel.org
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
----
- drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+[1] https://lore.kernel.org/rust-for-linux/20260205131522.2942928-1-mlksvender@gmail.com/
+[2] https://lore.kernel.org/rust-for-linux/20260205131815.2943152-2-mlksvender@gmail.com/
+[3] https://lore.kernel.org/rust-for-linux/CANiq72n-z0v_deUVPWeg1h0c6KQ+r6xfNDf72o29_0yy6KbqGA@mail.gmail.com/
+[4] https://lore.kernel.org/rust-for-linux/20260203221224.GA2703490@ax162/
+[5] https://lore.kernel.org/rust-for-linux/aYS9bRugxr1rUvA3@levanger/
+[6] https://lore.kernel.org/rust-for-linux/CANiq72nnuKJaKrxrut6+noR13PUiSoWWyyp-pGx-fe_2O6ayFA@mail.gmail.com/
 
-diff --git a/drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c b/drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c
-index 441fd32dc91c..3610ca94a8e6 100644
---- a/drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c
-+++ b/drivers/gpu/drm/bridge/imx/imx8qxp-pxl2dpi.c
-@@ -264,12 +264,15 @@ imx8qxp_pxl2dpi_get_available_ep_from_port(struct imx8qxp_pxl2dpi *p2d,
- 
- static int imx8qxp_pxl2dpi_find_next_bridge(struct imx8qxp_pxl2dpi *p2d)
- {
--	struct device_node *ep __free(device_node) =
--		imx8qxp_pxl2dpi_get_available_ep_from_port(p2d, 1);
-+	struct device_node *ep;
-+
-+	ep = imx8qxp_pxl2dpi_get_available_ep_from_port(p2d, 1);
- 	if (IS_ERR(ep))
- 		return PTR_ERR(ep);
- 
- 	struct device_node *remote __free(device_node) = of_graph_get_remote_port_parent(ep);
-+	of_node_put(ep);
-+
- 	if (!remote || !of_device_is_available(remote)) {
- 		DRM_DEV_ERROR(p2d->dev, "no available remote\n");
- 		return -ENODEV;
+HeeSu Kim (2):
+  kbuild: add rustc-lt-version macro
+  rust: Makefile: bound rustdoc workaround to affected versions
+
+ rust/Makefile             | 18 ++++++++++++------
+ scripts/Makefile.compiler |  4 ++++
+ 2 files changed, 16 insertions(+), 6 deletions(-)
+
 -- 
-2.43.0
+2.52.0
 
 
