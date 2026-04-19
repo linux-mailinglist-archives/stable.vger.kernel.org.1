@@ -1,157 +1,209 @@
-Return-Path: <stable+bounces-238632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238634-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kP7nM6iE5GkAWQEAu9opvQ
-	(envelope-from <stable+bounces-238632-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 09:30:48 +0200
+	id QFa4Bkaj5GmsXgEAu9opvQ
+	(envelope-from <stable+bounces-238634-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 11:41:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FC8642354E
-	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 09:30:48 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B58BD4238F2
+	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 11:41:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 85BF7301C144
-	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 07:30:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 952823011BF5
+	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 09:41:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A04C378807;
-	Sun, 19 Apr 2026 07:30:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74A1434DB77;
+	Sun, 19 Apr 2026 09:41:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q9QCQs0W"
+	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="WvHNclLZ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-m155101.qiye.163.com (mail-m155101.qiye.163.com [101.71.155.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEC0A33CEA8
-	for <stable@vger.kernel.org>; Sun, 19 Apr 2026 07:30:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF0E82AF1D;
+	Sun, 19 Apr 2026 09:41:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776583834; cv=none; b=MRZFBdsxSjdm/RzFVQ3HX29iMO0bqs6+yS3qDIKunDnQAHcGNWphTpFkFYTDkiPB6H77WnOHA18IF5GcBFyD0GD/JaQBI4yD0Dak1Knh2AhRWm9mpI+6IHFHgP5wqVMy972liN/LdSfpmZUqL91d/c3xxdRpJgNkUlwqvMt53x8=
+	t=1776591677; cv=none; b=cl12gzwM9X2tCNoN54wBxZHewEeoXBHD2vP6o4nJPgkCS2jBfvE1UCKAYRasiBYP2y2qnHh87FA8KWYOqSd6JxvHuE8t4qPDIvP5DCf0MDepsqoyzEiwI3unJyXnu4XmzmOJ2sVmcysTSc8vaWn7m19KNPqABvVHaU+FANVx65Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776583834; c=relaxed/simple;
-	bh=wfUrrQBCkecgTuBu9NhgoRwwZHhreWaGejevzpekHV0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MMq4iw44pXHX1ps3IWgYrCvQc6My78CWi+Xtx0KSz/jjJEXtE9c0AN7qMUO1/gdyGPKL2/zT8KvlxEuBiPP4P4IpAN03mTZ+F4AmbeVyFPvioYdXUkjxV5+IT/79eBa73z8EATPpRzFfog9+PfCKi07VZL2MCqfH5g4VR91M2hk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q9QCQs0W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1342C2BCB7
-	for <stable@vger.kernel.org>; Sun, 19 Apr 2026 07:30:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776583834;
-	bh=wfUrrQBCkecgTuBu9NhgoRwwZHhreWaGejevzpekHV0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=q9QCQs0W1wQHHNT29hVD1QBiQLjImjS7lbViJ+v3WRJXVw8ZpSccCoTT4h6E0CIEi
-	 0DFoLPc9ggeTjZJR0z8bProuDBdEK9773UHaMC2OKC4s48h8w9lqLdhi1caTfZCGtx
-	 sGB46WgbZrNo84ThqPpNqhrcPMgsVFFtWi9iUlaeiWQDUt49nJCNvwqfTO8I46rlDZ
-	 72m4DoJGy8697JlxQZb6qJfPBcB2HDxSQQbioaSTw03MCHU0Ciy4br1gwfWsmAxqg2
-	 /2qde9C8p6znyZGF2kx3rruEho2gZkUt6jUI6P1HVdbaPQc0YcY5YHvnz8cBXFQqAi
-	 C5oBcA1/7O4Jw==
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-65c4152313fso2761484a12.1
-        for <stable@vger.kernel.org>; Sun, 19 Apr 2026 00:30:34 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ/hAHvOXk9vyAMPrkuyAxS9/FPDgawW96ObN84H/3k0HdaLuxS2WNQA9fmP7JKmgt5CvmJ+jmY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YydX53YE6+aDKBJwCO0+dIcVxtXY3yncuG7RH/L3NfmmmkRoYPs
-	KQqEF+Ww3Smk2hUC2+dGHVVSGGo17pqXNoFNYAEepOKPoDyfvVlKZ7epz8b4Fpv8gWYUPxbsP/o
-	zSvLJUetT9ilaTcRUPXqEPt87K633++s=
-X-Received: by 2002:a05:6402:26d2:b0:66e:8ce7:5461 with SMTP id
- 4fb4d7f45d1cf-672bfdc947cmr4231892a12.16.1776583833220; Sun, 19 Apr 2026
- 00:30:33 -0700 (PDT)
+	s=arc-20240116; t=1776591677; c=relaxed/simple;
+	bh=Jr5oUQiELIiQeLQa/7/t58UO5nbL6CQqy7gQ771b/lM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=KRuZmuV3V4YncJcPsmV5iyEOn7tNdI9YoQsGSRmdW4LHGjWU/opydOV48gXrZzNEAxoCLK7nO8/XMqFZk+PQhQRqgWeywm0E1cICvqcjZ7JUsr/e0MQezAz9P48ZlAAZyYWl6BvHAFqHI/nc5VqMrcgeCN5jlyBgkp+9EcYMcl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=WvHNclLZ; arc=none smtp.client-ip=101.71.155.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
+Received: from DESKTOP-SUEFNF9.taila7e912.ts.net (unknown [223.112.146.162])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 3b457dc87;
+	Sun, 19 Apr 2026 17:05:31 +0800 (GMT+08:00)
+From: Dawei Feng <dawei.feng@seu.edu.cn>
+To: idryomov@gmail.com
+Cc: axboe@kernel.dk,
+	dongsheng.yang@linux.dev,
+	mcgrof@kernel.org,
+	ceph-devel@vger.kernel.org,
+	linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	jianhao.xu@seu.edu.cn,
+	Dawei Feng <dawei.feng@seu.edu.cn>,
+	stable@vger.kernel.org,
+	Zilin Guan <zilin@seu.edu.cn>
+Subject: [PATCH] rbd: fix null-ptr-deref when device_add_disk() fails
+Date: Sun, 19 Apr 2026 17:03:48 +0800
+Message-Id: <20260419090348.1817082-1-dawei.feng@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260418172844.1333378-1-charsyam@gmail.com> <20260418172844.1333378-2-charsyam@gmail.com>
-In-Reply-To: <20260418172844.1333378-2-charsyam@gmail.com>
-From: Namjae Jeon <linkinjeon@kernel.org>
-Date: Sun, 19 Apr 2026 16:30:20 +0900
-X-Gmail-Original-Message-ID: <CAKYAXd8=ckDwaYgKFZQG80umwKBO1S2UuTWq34qq8hRQ0Nz2tA@mail.gmail.com>
-X-Gm-Features: AQROBzBZ6N8P1_138HmLsN8SXaSKKLbOnBVKn-zYmzcS-gbAK7Pzb7AQE19FL6U
-Message-ID: <CAKYAXd8=ckDwaYgKFZQG80umwKBO1S2UuTWq34qq8hRQ0Nz2tA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] ksmbd: fix active_num_conn leak when
- alloc_transport() fails
-To: DaeMyung Kang <charsyam@gmail.com>
-Cc: smfrench@gmail.com, senozhatsky@chromium.org, tom@talpey.com, 
-	linux-cifs@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, Henrique Carvalho <henrique.carvalho@suse.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9da4fce98c03a2kunm56c851691d06de
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVlCSB9DVh5CGkxNTUtITx8dSFYeHw5VEwETFhoSFy
+	QUDg9ZV1kYEgtZQVlJSUhVSkpJVUpPTVVKTUlZV1kWGg8SFR0UWUFZT0tIVUpLSUhOQ0NVSktLVU
+	tZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=WvHNclLZKsOl2IPn9Y892RwspSmoi+WoagtbI1A35WAvFzkqdz6k3IGOiaF6EVJIWTMM+LFCFt0BIxQh4pjZm2aDmIBltUr4vii8eQNgv7UqcNIR5VwOpCxt9fKWvaxuFHqPAUzmTw5/hC2nINeADoqKF6XIigjQoUgoEZLiwTU=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
+	bh=CdmJzqe0YXQQdfal4sK7CioKUZTavqi01VlJKBezrNs=;
+	h=date:mime-version:subject:message-id:from;
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FREEMAIL_CC(0.00)[gmail.com,chromium.org,talpey.com,vger.kernel.org,suse.com];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-238632-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-238634-lists,stable=lfdr.de];
 	FREEMAIL_TO(0.00)[gmail.com];
-	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[linkinjeon@kernel.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[dawei.feng@seu.edu.cn,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[seu.edu.cn:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 5FC8642354E
+	RCPT_COUNT_SEVEN(0.00)[11];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: B58BD4238F2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Sun, Apr 19, 2026 at 2:30=E2=80=AFAM DaeMyung Kang <charsyam@gmail.com> =
-wrote:
->
-> ksmbd_kthread_fn() increments active_num_conn right after accept(),
-> before calling ksmbd_tcp_new_connection().  The decrement normally
-> happens in ksmbd_tcp_disconnect() at the end of the connection's
-> lifetime.
->
-> If alloc_transport() fails in ksmbd_tcp_new_connection(), the function
-> releases the socket and returns -ENOMEM without going through
-> ksmbd_tcp_disconnect(), so active_num_conn never gets decremented.
-> Under memory pressure, repeated failures monotonically inflate the
-> counter until max_connections is reached and new clients are refused
-> indefinitely.
->
-> Decrement active_num_conn on this error path, matching the accounting
-> rule used by ksmbd_kthread_fn() and ksmbd_tcp_disconnect().
->
-> Commit 77ffbcac4e56 ("smb: server: fix leak of active_num_conn in
-> ksmbd_tcp_new_connection()") fixed the sibling leak on the kthread_run()
-> failure path; this patch closes the remaining one.
->
-> Reproduced with a debug build that adds a temporary module parameter
-> guarding an early return at the top of alloc_transport(), forcing
-> the first N accept-time transport allocations to fail:
->
->   * Configure ksmbd with "max connections =3D 3".
->   * Force 5 successive alloc_transport() failures at the accept path.
->   * Without the fix: active_num_conn drifts up to max_connections and
->     subsequent legitimate mount.cifs attempts are refused with
->     "ksmbd: Limit the maximum number of connections(3)" in dmesg.
->   * With the fix: the counter is correctly decremented on each
->     failure and legitimate mounts continue to succeed.
->
-> Tested by injecting 5 alloc_transport() failures with
-> max_connections=3D3 and verifying that subsequent mount.cifs attempts
-> still succeed on the patched kernel while the unpatched kernel
-> refuses them.
->
-> Fixes: 0d0d4680db22 ("ksmbd: add max connections parameter")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: DaeMyung Kang <charsyam@gmail.com>
-Looks good, but Michael Bommarito has already submitted the same patch
-to the list, and it has been merged into the ksmbd-for-next branch as
-shown below.
-https://github.com/smfrench/smb3-kernel/commit/6551300dc452ac16a855a83dbd1e=
-74899542d3b3
+do_rbd_add() publishes the device with device_add() before calling
+device_add_disk(). If device_add_disk() fails after device_add()
+succeeds, the error path calls rbd_free_disk() directly and then later
+falls through to rbd_dev_device_release(), which calls rbd_free_disk()
+again. This double teardown can leave blk-mq cleanup operating on
+invalid state and trigger a null-ptr-deref in
+__blk_mq_free_map_and_rqs(), reached from blk_mq_free_tag_set().
 
-Thanks!
+Fix this by following the normal remove ordering: call device_del()
+before rbd_dev_device_release() when device_add_disk() fails after
+device_add(). That keeps the teardown sequence consistent and avoids
+re-entering disk cleanup through the wrong path.
+
+The bug was first flagged by an experimental analysis tool we are
+developing for kernel memory-management bugs while analyzing
+v6.13-rc1. The tool is still under development and is not yet publicly
+available.
+
+We reproduced the bug on v7.0 with a real Ceph backend and a QEMU x86_64
+guest booted with KASAN and CONFIG_FAILSLAB enabled. The reproducer
+confines failslab injections to the __add_disk() range and injects
+fail-nth while mapping an RBD image through
+/sys/bus/rbd/add_single_major.
+
+On the unpatched kernel, fail-nth=4 reliably triggered the fault:
+
+	Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] SMP KASAN NOPTI
+	KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+	CPU: 0 UID: 0 PID: 273 Comm: bash Not tainted 7.0.0-01247-gd60bc1401583 #6 PREEMPT(lazy)
+	Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.15.0-1 04/01/2014
+	RIP: 0010:__blk_mq_free_map_and_rqs+0x8c/0x240
+	Code: 00 00 48 8b 6b 60 41 89 f4 49 c1 e4 03 4c 01 e5 45 85 ed 0f 85 0a 01 00 00 48 b8 00 00 00 00 00 fc ff df 48 89 e9 48 c1 e9 03 <80> 3c 01 00 0f 85 31 01 00 00 4c 8b 6d 00 4d 85 ed 0f 84 e2 00 00
+	RSP: 0018:ff1100000ab0fac8 EFLAGS: 00000246
+	RAX: dffffc0000000000 RBX: ff1100000c4806a0 RCX: 0000000000000000
+	RDX: 0000000000000002 RSI: 0000000000000000 RDI: ff1100000c4806f4
+	RBP: 0000000000000000 R08: 0000000000000001 R09: ffe21c000189001b
+	R10: ff1100000c4800df R11: ff1100006cf37be0 R12: 0000000000000000
+	R13: 0000000000000000 R14: ff1100000c480700 R15: ff1100000c480004
+	FS:  00007f0fbe8fe740(0000) GS:ff110000e5851000(0000) knlGS:0000000000000000
+	CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+	CR2: 00007fe53473b2e0 CR3: 0000000012eef000 CR4: 00000000007516f0
+	PKRU: 55555554
+	Call Trace:
+	 <TASK>
+	 blk_mq_free_tag_set+0x77/0x460
+	 do_rbd_add+0x1446/0x2b80
+	 ? __pfx_do_rbd_add+0x10/0x10
+	 ? lock_acquire+0x18c/0x300
+	 ? find_held_lock+0x2b/0x80
+	 ? sysfs_file_kobj+0xb6/0x1b0
+	 ? __pfx_sysfs_kf_write+0x10/0x10
+	 kernfs_fop_write_iter+0x2f4/0x4a0
+	 vfs_write+0x98e/0x1000
+	 ? expand_files+0x51f/0x850
+	 ? __pfx_vfs_write+0x10/0x10
+	 ksys_write+0xf2/0x1d0
+	 ? __pfx_ksys_write+0x10/0x10
+	 do_syscall_64+0x115/0x690
+	 entry_SYSCALL_64_after_hwframe+0x77/0x7f
+	RIP: 0033:0x7f0fbea15907
+	Code: 10 00 f7 d8 64 89 02 48 c7 c0 ff ff ff ff eb b7 0f 1f 00 f3 0f 1e fa 64 8b 04 25 18 00 00 00 85 c0 75 10 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 51 c3 48 83 ec 28 48 89 54 24 18 48 89 74 24
+	RSP: 002b:00007ffe22346ea8 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+	RAX: ffffffffffffffda RBX: 0000000000000058 RCX: 00007f0fbea15907
+	RDX: 0000000000000058 RSI: 0000563ace6c0ef0 RDI: 0000000000000001
+	RBP: 0000563ace6c0ef0 R08: 0000563ace6c0ef0 R09: 6b6435726d694141
+	R10: 5250337279762f78 R11: 0000000000000246 R12: 0000000000000058
+	R13: 00007f0fbeb1c780 R14: ff1100000c480700 R15: ff1100000c480004
+	 </TASK>
+
+With this fix applied, rerunning the reproducer over fail-nth=1..256
+yields no KASAN reports.
+
+Fixes: 27c97abc30e2 ("rbd: add add_disk() error handling")
+Cc: stable@vger.kernel.org # 5.16+
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Signed-off-by: Dawei Feng <dawei.feng@seu.edu.cn>
+---
+ drivers/block/rbd.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/block/rbd.c b/drivers/block/rbd.c
+index e7da06200c1e..d92730d8c342 100644
+--- a/drivers/block/rbd.c
++++ b/drivers/block/rbd.c
+@@ -7165,7 +7165,7 @@ static ssize_t do_rbd_add(const char *buf, size_t count)
+ 
+ 	rc = device_add_disk(&rbd_dev->dev, rbd_dev->disk, NULL);
+ 	if (rc)
+-		goto err_out_cleanup_disk;
++		goto err_out_device_del;
+ 
+ 	spin_lock(&rbd_dev_list_lock);
+ 	list_add_tail(&rbd_dev->node, &rbd_dev_list);
+@@ -7179,8 +7179,8 @@ static ssize_t do_rbd_add(const char *buf, size_t count)
+ 	module_put(THIS_MODULE);
+ 	return rc;
+ 
+-err_out_cleanup_disk:
+-	rbd_free_disk(rbd_dev);
++err_out_device_del:
++	device_del(&rbd_dev->dev);
+ err_out_image_lock:
+ 	rbd_dev_image_unlock(rbd_dev);
+ 	rbd_dev_device_release(rbd_dev);
+-- 
+2.34.1
+
 
