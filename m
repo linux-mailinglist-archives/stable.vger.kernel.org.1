@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-238652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238653-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mER7B33+5GnDcwEAu9opvQ
-	(envelope-from <stable+bounces-238652-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 18:10:37 +0200
+	id EKdOJ27+5GnDcwEAu9opvQ
+	(envelope-from <stable+bounces-238653-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 18:10:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 781AE42499B
-	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 18:10:36 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 162C842497C
+	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 18:10:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8CDE0302B75D
-	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 16:10:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 375FC3013A4F
+	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 16:10:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C04A2C11C6;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5BF62C326C;
 	Sun, 19 Apr 2026 16:10:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cEQHdz9y"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Axj5Ib36"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B71229BDBF;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A23282C21EE;
 	Sun, 19 Apr 2026 16:10:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776615012; cv=none; b=Eun6KEj1x23npME3qQvwdRF+ztUFw34r4IiSeOYnQB//4sDZti0SUj3XbSTa2n2tmWQhTs/DE4pXYVc2RDmHTwMGL7Q5Fo/K9ER9gPHvhZhUCqMpgl4+yeVTE6EFsBj/tt6jaHZUmfxQ7+EKx/0Fc+eHzAAtosiQBS/2dZo3/T8=
+	t=1776615012; cv=none; b=Z11ZPcvfINWkPOX+pgjj0FthiPmB+8thvOeetskDLy4EaJA8i8n7N5VMf4Za1+RT7l1Xg1xEDXQtDkAlJH9942L7tGwpWebS6JwCpDR1lNUhzoEZsSiJmeyw+qeP0/wMZDMXuCIiNkNWkXAiynnOJK8v6YeFRc8dbBAyzJEa8nI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1776615012; c=relaxed/simple;
-	bh=xmi8JFCfIfNv/dt7D/wNwu1xStprbRBK6+QIpOf/ZP0=;
+	bh=XJiKgBwZzik0HajbjdzAq1QjDE73mSEjEwzICB3I8pM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IVHaZ/ToEiGjT4O+WHX3O055f64SPIa3+UOyeaJmxNEf04SDiAk8qvivHK77LKVQ1O9+fQ8KpBGaZrRHmyaih8PmUu0gYTiTiyTdI0kxQNs53xZVGlRpzEp5WlCkbMhpW3nZcFHfgAAugFHz9gekRdIRcs1JAr55h9i7e61+01w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cEQHdz9y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A68AEC2BCB5;
-	Sun, 19 Apr 2026 16:10:11 +0000 (UTC)
+	 MIME-Version; b=hwVRqeoPqCNYwPvlDSkn9FGRO/rTl9HzCmm8zwvXz3b5bTjFPLrWOsY9jng9oQPnE5NCk0qS420ffGPRp8h9DcTp0xpiGnLdQ/e8clVkqhZmM9SETzdMZLpLtc9Cn6dvOWXDj6QcmXxOABsTwBeCkrL5Uex+NxdLP+hF0QT/oog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Axj5Ib36; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13FEFC2BCB7;
+	Sun, 19 Apr 2026 16:10:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776615011;
-	bh=xmi8JFCfIfNv/dt7D/wNwu1xStprbRBK6+QIpOf/ZP0=;
+	s=k20201202; t=1776615012;
+	bh=XJiKgBwZzik0HajbjdzAq1QjDE73mSEjEwzICB3I8pM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cEQHdz9yFHUkvlr7/KsFf6M+pbGECZ/iKEqFDDOAaHfqSaQNq+4Hyt+Cq7WoMAJwL
-	 ecdqFZNh0PdBBYKo3Pov0FYSlnbMxTR1ZERGczd0aqvCwmv0t7X4muw/EZ+BG22KUe
-	 2BPlXbDXteX7zaW+ekYM65OsYvYQEiFDc734oMoQwuf6Y7VCqZEjkBCqU3/YCcylEj
-	 Fw+uihOxv5cTkx1/hVZVLcPiId0cKr0C8+Cpd3SUOZ2XMt30I3UwPlpNgNHCWABeGX
-	 dE9jjeCg+5YjzPxVFWOcf3Gw6r11VMd31oAF6XsbrrRDk8S+NDcmSAhsi/2J+p9L+a
-	 2Nohd9dDD9LZg==
+	b=Axj5Ib36+otLm1b42ppZ/32J8NdpVd354VMQUq95cy4xqqUQuX6TTeQhSC4St9xDs
+	 MgLOu3zBOTtxyHSWuwdYSuY25/L1agelBfrTQpjeeIyuhvPphf6G7kourOshwx7ZQp
+	 Gjm4xr+4KUjmWa7RMRS//2K4WgfIn2plDHbucmIJmjI8TdsYAQzx18GBxSL92uP+0L
+	 tQX6RDAGD6odVSj19JanvVzfGw24K/QzsNSgdd5cbxeW8k/7JxCXJARCuQ2X2/9cQx
+	 xqY3YwLFGvEav335Pegm0vwlx4LYF8UHuLcL6lUXUiwlj7KycmcqiwXQ3LtTJlGiQe
+	 RPDXmUDZc9DWA==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SeongJae Park <sj@kernel.org>,
-	"# 5 . 19 . x" <stable@vger.kernel.org>,
+	"# 6 . 0 . x" <stable@vger.kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	Liew Rui Yan <aethernet65535@gmail.com>
-Subject: [PATCH v3 1/3] mm/damon/reclaim: detect and use fresh enabled and kdamond_pid values
-Date: Sun, 19 Apr 2026 09:10:00 -0700
-Message-ID: <20260419161003.79176-2-sj@kernel.org>
+Subject: [PATCH v3 2/3] mm/damon/lru_sort: detect and use fresh enabled and kdamond_pid values
+Date: Sun, 19 Apr 2026 09:10:01 -0700
+Message-ID: <20260419161003.79176-3-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260419161003.79176-1-sj@kernel.org>
 References: <20260419161003.79176-1-sj@kernel.org>
@@ -70,7 +70,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,9 +80,9 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,lists.linux.dev,kvack.org,gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-238652-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-238653-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
@@ -92,12 +92,12 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 781AE42499B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 162C842497C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-DAMON_RECLAIM updates 'enabled' and 'kdamond_pid' parameter values,
+DAMON_LRU_SORT updates 'enabled' and 'kdamond_pid' parameter values,
 which represents the running status of its kdamond, when the user
 explicitly requests start/stop of the kdamond.  The kdamond can,
 however, be stopped in events other than the explicit user request in
@@ -111,7 +111,7 @@ the following three events.
 Hence, if the kdamond is stopped by the above three events, the values
 of the status parameters can be stale.  Users could show the stale
 values and be confused.  This is already bad, but the real consequence
-is worse.  DAMON_RECLAIM avoids unnecessary damon_start() and
+is worse.  DAMON_LRU_SORT avoids unnecessary damon_start() and
 damon_stop() calls based on the 'enabled' parameter value.  And the
 update of 'enabled' parameter value depends on the damon_start() and
 damon_stop() call results.  Hence, once the kdamond has stopped by the
@@ -119,9 +119,9 @@ unintentional events, the user cannot restart the kdamond before the
 system reboot.  For example, the issue can be reproduced via below
 steps.
 
-    # cd /sys/module/damon_reclaim/parameters
+    # cd /sys/module/damon_lru_sort/parameters
     #
-    # # start DAMON_RECLAIM
+    # # start DAMON_LRU_SORT
     # echo Y > enabled
     # ps -ef | grep kdamond
     root         806       2  0 17:53 ?        00:00:00 [kdamond.0]
@@ -161,36 +161,36 @@ change the status, and following all the events is challenging.
 Dynamically detect and use the fresh status for the parameters when
 those are requested.
 
-Fixes: e035c280f6df ("mm/damon/reclaim: support online inputs update")
-Cc: <stable@vger.kernel.org> # 5.19.x
+Fixes: 40e983cca927 ("mm/damon: introduce DAMON-based LRU-lists Sorting")
+Cc: <stable@vger.kernel.org> # 6.0.x
 Co-developed-by: Liew Rui Yan <aethernet65535@gmail.com>
 Signed-off-by: Liew Rui Yan <aethernet65535@gmail.com>
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- mm/damon/reclaim.c | 85 ++++++++++++++++++++++++++++++----------------
+ mm/damon/lru_sort.c | 85 +++++++++++++++++++++++++++++----------------
  1 file changed, 55 insertions(+), 30 deletions(-)
 
-diff --git a/mm/damon/reclaim.c b/mm/damon/reclaim.c
-index 86da147786583..fe7fce26cf6ce 100644
---- a/mm/damon/reclaim.c
-+++ b/mm/damon/reclaim.c
-@@ -144,15 +144,6 @@ static unsigned long addr_unit __read_mostly = 1;
- static bool skip_anon __read_mostly;
- module_param(skip_anon, bool, 0600);
+diff --git a/mm/damon/lru_sort.c b/mm/damon/lru_sort.c
+index 554559d729760..8494040b1ee48 100644
+--- a/mm/damon/lru_sort.c
++++ b/mm/damon/lru_sort.c
+@@ -161,15 +161,6 @@ module_param(monitor_region_end, ulong, 0600);
+  */
+ static unsigned long addr_unit __read_mostly = 1;
  
 -/*
 - * PID of the DAMON thread
 - *
-- * If DAMON_RECLAIM is enabled, this becomes the PID of the worker thread.
+- * If DAMON_LRU_SORT is enabled, this becomes the PID of the worker thread.
 - * Else, -1.
 - */
 -static int kdamond_pid __read_mostly = -1;
 -module_param(kdamond_pid, int, 0400);
 -
- static struct damos_stat damon_reclaim_stat;
- DEFINE_DAMON_MODULES_DAMOS_STATS_PARAMS(damon_reclaim_stat,
- 		reclaim_tried_regions, reclaimed_regions, quota_exceeds);
-@@ -288,12 +279,8 @@ static int damon_reclaim_turn(bool on)
+ static struct damos_stat damon_lru_sort_hot_stat;
+ DEFINE_DAMON_MODULES_DAMOS_STATS_PARAMS(damon_lru_sort_hot_stat,
+ 		lru_sort_tried_hot_regions, lru_sorted_hot_regions,
+@@ -386,12 +377,8 @@ static int damon_lru_sort_turn(bool on)
  {
  	int err;
  
@@ -203,9 +203,9 @@ index 86da147786583..fe7fce26cf6ce 100644
 +	if (!on)
 +		return damon_stop(&ctx, 1);
  
- 	err = damon_reclaim_apply_parameters();
+ 	err = damon_lru_sort_apply_parameters();
  	if (err)
-@@ -302,9 +289,6 @@ static int damon_reclaim_turn(bool on)
+@@ -400,9 +387,6 @@ static int damon_lru_sort_turn(bool on)
  	err = damon_start(&ctx, 1, true);
  	if (err)
  		return err;
@@ -215,18 +215,18 @@ index 86da147786583..fe7fce26cf6ce 100644
  	return damon_call(ctx, &call_control);
  }
  
-@@ -332,42 +316,83 @@ module_param_cb(addr_unit, &addr_unit_param_ops, &addr_unit, 0600);
+@@ -430,42 +414,83 @@ module_param_cb(addr_unit, &addr_unit_param_ops, &addr_unit, 0600);
  MODULE_PARM_DESC(addr_unit,
- 	"Scale factor for DAMON_RECLAIM to ops address conversion (default: 1)");
+ 	"Scale factor for DAMON_LRU_SORT to ops address conversion (default: 1)");
  
-+static bool damon_reclaim_enabled(void)
++static bool damon_lru_sort_enabled(void)
 +{
 +	if (!ctx)
 +		return false;
 +	return damon_is_running(ctx);
 +}
 +
- static int damon_reclaim_enabled_store(const char *val,
+ static int damon_lru_sort_enabled_store(const char *val,
  		const struct kernel_param *kp)
  {
 -	bool is_enabled = enabled;
@@ -239,7 +239,7 @@ index 86da147786583..fe7fce26cf6ce 100644
  		return err;
  
 -	if (is_enabled == enable)
-+	if (damon_reclaim_enabled() == enabled)
++	if (damon_lru_sort_enabled() == enabled)
  		return 0;
  
  	/* Called before init function.  The function will handle this. */
@@ -247,32 +247,32 @@ index 86da147786583..fe7fce26cf6ce 100644
 -		goto set_param_out;
 +		return 0;
  
--	err = damon_reclaim_turn(enable);
+-	err = damon_lru_sort_turn(enable);
 -	if (err)
 -		return err;
-+	return damon_reclaim_turn(enabled);
++	return damon_lru_sort_turn(enabled);
 +}
  
 -set_param_out:
 -	enabled = enable;
 -	return err;
-+static int damon_reclaim_enabled_load(char *buffer,
++static int damon_lru_sort_enabled_load(char *buffer,
 +		const struct kernel_param *kp)
 +{
-+	return sprintf(buffer, "%c\n", damon_reclaim_enabled() ? 'Y' : 'N');
++	return sprintf(buffer, "%c\n", damon_lru_sort_enabled() ? 'Y' : 'N');
  }
  
  static const struct kernel_param_ops enabled_param_ops = {
- 	.set = damon_reclaim_enabled_store,
+ 	.set = damon_lru_sort_enabled_store,
 -	.get = param_get_bool,
-+	.get = damon_reclaim_enabled_load,
++	.get = damon_lru_sort_enabled_load,
  };
  
  module_param_cb(enabled, &enabled_param_ops, &enabled, 0600);
  MODULE_PARM_DESC(enabled,
- 	"Enable or disable DAMON_RECLAIM (default: disabled)");
+ 	"Enable or disable DAMON_LRU_SORT (default: disabled)");
  
-+static int damon_reclaim_kdamond_pid_store(const char *val,
++static int damon_lru_sort_kdamond_pid_store(const char *val,
 +		const struct kernel_param *kp)
 +{
 +	/*
@@ -282,7 +282,7 @@ index 86da147786583..fe7fce26cf6ce 100644
 +	return 0;
 +}
 +
-+static int damon_reclaim_kdamond_pid_load(char *buffer,
++static int damon_lru_sort_kdamond_pid_load(char *buffer,
 +		const struct kernel_param *kp)
 +{
 +	int kdamond_pid = -1;
@@ -296,19 +296,19 @@ index 86da147786583..fe7fce26cf6ce 100644
 +}
 +
 +static const struct kernel_param_ops kdamond_pid_param_ops = {
-+	.set = damon_reclaim_kdamond_pid_store,
-+	.get = damon_reclaim_kdamond_pid_load,
++	.set = damon_lru_sort_kdamond_pid_store,
++	.get = damon_lru_sort_kdamond_pid_load,
 +};
 +
 +/*
 + * PID of the DAMON thread
 + *
-+ * If DAMON_RECLAIM is enabled, this becomes the PID of the worker thread.
++ * If DAMON_LRU_SORT is enabled, this becomes the PID of the worker thread.
 + * Else, -1.
 + */
 +module_param_cb(kdamond_pid, &kdamond_pid_param_ops, NULL, 0400);
 +
- static int __init damon_reclaim_init(void)
+ static int __init damon_lru_sort_init(void)
  {
  	int err;
 -- 
