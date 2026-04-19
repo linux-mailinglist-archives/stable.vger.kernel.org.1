@@ -1,137 +1,210 @@
-Return-Path: <stable+bounces-238633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238635-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GE1CEqKb5Gl1XQEAu9opvQ
-	(envelope-from <stable+bounces-238633-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 11:08:50 +0200
+	id SED/BNWt5GnLYAEAu9opvQ
+	(envelope-from <stable+bounces-238635-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 12:26:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AC6F423797
-	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 11:08:49 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6883423A8C
+	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 12:26:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5892E300FC46
-	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 09:08:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A4255300DF6B
+	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 10:26:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5716C33E346;
-	Sun, 19 Apr 2026 09:08:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24634331A6D;
+	Sun, 19 Apr 2026 10:26:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [65.21.191.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6582A325727;
-	Sun, 19 Apr 2026 09:08:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13A80175A6D;
+	Sun, 19 Apr 2026 10:26:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.21.191.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776589716; cv=none; b=TITJLxv8tG6x5U57+S0M3lBrigkirPRgBddFAKS5H7YQtTCOXFhNfAUeUBWuUI3wvfBUe6cV3PjSa8mO4nW4+h3GB+fdJRvL6lwMG6OAwCBY43bF6d0CWHKdb3A9wAP4kW5WIWzw25hEb/GJt7TdgxYDsapWnDMpn937ylN9gbg=
+	t=1776594386; cv=none; b=MFD808ts0cvs66px28Lc+iMuz2NliITq+coxd/1oiYTl3NHJ1lGubSdPP/cBBzqfKBCHUG6rRRlSOBFt8bxG5KScmq2zCQwQu+8u9osi20K5kaoiNJ/h4m30aK9ycV9ehoA8divQu5HDQuUvrcBn3m0NaROxp6R7Xet4hAchyuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776589716; c=relaxed/simple;
-	bh=5Y5DS2nl85zvTXTqUCwFxDMrhrnczhK1YDP15QDXo7I=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gB/B16MXBNe5YN4G72NeJF9yiQYwHtpuX/LabTo2REK7ASU0jjMaHluP2G2sCQx1svGs5nCvG/GyxHd3OAySJL2ne7E9DpLrAJXkctc9pWccXwhzxUa9BOesQvX39hXPx5V2/+3WWE9EVKFDIHLmFROmPYpO+lBNZCPZQji8Ff0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from edelgard.fodlan.icenowy.me (unknown [112.94.103.130])
-	by APP-05 (Coremail) with SMTP id zQCowADXZQlum+RpMjgKDg--.63224S2;
-	Sun, 19 Apr 2026 17:08:00 +0800 (CST)
-From: Icenowy Zheng <zhengxingda@iscas.ac.cn>
-To: Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	James Clark <james.clark@linaro.org>,
-	Shimin Guo <shimin.guo@skydio.com>
-Cc: linux-perf-users@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Icenowy Zheng <zhengxingda@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] perf unwind-libdw: Fix stale object reference in arch/loongarch
-Date: Sun, 19 Apr 2026 17:07:56 +0800
-Message-ID: <20260419090756.2190201-1-zhengxingda@iscas.ac.cn>
-X-Mailer: git-send-email 2.52.0
+	s=arc-20240116; t=1776594386; c=relaxed/simple;
+	bh=S4ghgkBMPdy1X4QqEQ0xyv4IdtjF8SLm/c0CarDqJKg=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=KDjXcrbKIEb8GX1ZG1W4GTOIc1FwLXqE6llFeNK0wzO60Y+G1FppxH4g7xWki0w8HmUTrt6vgJ6GsqDsgjhabc5bB2m5WZcE5WHLDrKzlxsqtouJy2rp+m670Zunpfzu5NZ1dUGF98ovuHSlhUwKciIIy948j78UAhAnk7L7Agg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk; spf=pass smtp.mailfrom=decadent.org.uk; arc=none smtp.client-ip=65.21.191.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=decadent.org.uk
+Received: from [2a02:578:851f:1502:391e:c5f5:10e2:b9a3] (helo=deadeye)
+	by maynard with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1wEPM5-005UxS-2E;
+	Sun, 19 Apr 2026 10:26:20 +0000
+Received: from ben by deadeye with local (Exim 4.99.1)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1wEPM3-00000004f2v-0DY0;
+	Sun, 19 Apr 2026 12:26:19 +0200
+Message-ID: <0d3747dc57d7bfa3c53efcf4d133021ead5bef9d.camel@decadent.org.uk>
+Subject: Re: [PATCH 5.10 430/491] apparmor: validate DFA start states are in
+ bounds in unpack_pdb
+From: Ben Hutchings <ben@decadent.org.uk>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+  John Johansen <john.johansen@canonical.com>
+Cc: patches@lists.linux.dev, Qualys Security Advisory <qsa@qualys.com>, 
+ Salvatore Bonaccorso	 <carnil@debian.org>, Georgia Garcia
+ <georgia.garcia@canonical.com>, Cengiz Can	 <cengiz.can@canonical.com>,
+ Massimiliano Pellizzer	 <massimiliano.pellizzer@canonical.com>
+Date: Sun, 19 Apr 2026 12:26:13 +0200
+In-Reply-To: <20260413155835.127014179@linuxfoundation.org>
+References: <20260413155819.042779211@linuxfoundation.org>
+	 <20260413155835.127014179@linuxfoundation.org>
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-uv2HiuW6W4Flc1loWdaE"
+User-Agent: Evolution 3.56.2-9 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowADXZQlum+RpMjgKDg--.63224S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7Wr18KryfCr13GF4xur4fGrg_yoWfZrbEyF
-	1xJ3Wjyr1rXr93tw1293y5C34rAan3Z3ySya4DWrs3GFW5JF1UZayDXa45ur1qqr4UWFs3
-	Za48Xr9a9r4jkjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUb3kFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
-	Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26F4UJV
-	W0owAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
-	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
-	n2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7x
-	kEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E
-	67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCw
-	CI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1x
-	MIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIda
-	VFxhVjvjDU0xZFpf9x0JUd-B_UUUUU=
-X-CM-SenderInfo: x2kh0wp0lqwv3d6l2u1dvotugofq/
-X-Spamd-Result: default: False [0.04 / 15.00];
+X-SA-Exim-Connect-IP: 2a02:578:851f:1502:391e:c5f5:10e2:b9a3
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
+X-Spamd-Result: default: False [-3.56 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	RCVD_COUNT_THREE(0.00)[4];
-	PRECEDENCE_BULK(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	TAGGED_FROM(0.00)[bounces-238633-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[zhengxingda@iscas.ac.cn,stable@vger.kernel.org];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.992];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-238635-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	DMARC_NA(0.00)[decadent.org.uk];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9AC6F423797
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ben@decadent.org.uk,stable@vger.kernel.org];
+	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_FIVE(0.00)[5];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualys.com:email]
+X-Rspamd-Queue-Id: E6883423A8C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The arch/loongarch/util/unwind-libdw.c file is already moved to util/,
-but the Build statement for it is forgot to be removed.
 
-Remove the stale Build statement.
+--=-uv2HiuW6W4Flc1loWdaE
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This fixes the build failure of perf tool in kernel v7.0 on LoongArch.
+On Mon, 2026-04-13 at 18:01 +0200, Greg Kroah-Hartman wrote:
+> 5.10-stable review patch.  If anyone has any objections, please let me kn=
+ow.
+>=20
+> ------------------
+>=20
+> From: Massimiliano Pellizzer <massimiliano.pellizzer@canonical.com>
+>=20
+> commit 9063d7e2615f4a7ab321de6b520e23d370e58816 upstream.
+>=20
+> Backport for conflicts caused by
+>   ad596ea74e74 ("apparmor: group dfa policydb unpacking")
+>   - rearrange and consolidated the unpack.
+>=20
+>   b11e51dd7094 ("apparmor: test: make static symbols visible during kunit=
+ testing")
+>   - rename function and make it visible to kunit tests
+>=20
+> Start states are read from untrusted data and used as indexes into the
+> DFA state tables. The aa_dfa_next() function call in unpack_pdb() will
+> access dfa->tables[YYTD_ID_BASE][start], and if the start state exceeds
+> the number of states in the DFA, this results in an out-of-bound read.
+>=20
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>  BUG: KASAN: slab-out-of-bounds in aa_dfa_next+0x2a1/0x360
+>  Read of size 4 at addr ffff88811956fb90 by task su/1097
+>  ...
+>=20
+> Reject policies with out-of-bounds start states during unpacking
+> to prevent the issue.
+>=20
+> Fixes: ad5ff3db53c6 ("AppArmor: Add ability to load extended policy")
+> Reported-by: Qualys Security Advisory <qsa@qualys.com>
+> Tested-by: Salvatore Bonaccorso <carnil@debian.org>
+> Reviewed-by: Georgia Garcia <georgia.garcia@canonical.com>
+> Reviewed-by: Cengiz Can <cengiz.can@canonical.com>
+> Signed-off-by: Massimiliano Pellizzer <massimiliano.pellizzer@canonical.c=
+om>
+> Signed-off-by: John Johansen <john.johansen@canonical.com>
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> ---
+>  security/apparmor/policy_unpack.c |   21 +++++++++++++++++++--
+>  1 file changed, 19 insertions(+), 2 deletions(-)
+>=20
+> --- a/security/apparmor/policy_unpack.c
+> +++ b/security/apparmor/policy_unpack.c
+> @@ -841,9 +841,18 @@ static struct aa_profile *unpack_profile
+>  			error =3D -EPROTO;
+>  			goto fail;
+>  		}
+> -		if (!unpack_u32(e, &profile->policy.start[0], "start"))
+> +		if (!unpack_u32(e, &profile->policy.start[0], "start")) {
+>  			/* default start state */
+>  			profile->policy.start[0] =3D DFA_START;
+> +		} else {
+> +			size_t state_count =3D profile->policy.dfa->tables[YYTD_ID_BASE]->td_=
+lolen;
+> +
+> +			if (profile->policy.start[0] >=3D state_count) {
+> +				info =3D "invalid dfa start state";
+> +				goto fail;
+> +			}
+> +		}
+[...]
 
-Fixes: e62fae9d9e85 ("perf unwind-libdw: Fix a cross-arch unwinding bug")
-Signed-off-by: Icenowy Zheng <zhengxingda@iscas.ac.cn>
-Cc: stable@vger.kernel.org
----
- tools/perf/arch/loongarch/util/Build | 1 -
- 1 file changed, 1 deletion(-)
+Isn't this range check needed even if we use the default start state?=20
+unpack_table() only checks that td_tolen > 0, so we could end up with
+profile->policy.start[0] =3D DFA_START =3D=3D 1 and
+profile->policy.dfa->tables[YYTD_ID_BASE]->td_lolen =3D=3D 1.
 
-diff --git a/tools/perf/arch/loongarch/util/Build b/tools/perf/arch/loongarch/util/Build
-index 3ad73d0289f3e..8d91e78d31c94 100644
---- a/tools/perf/arch/loongarch/util/Build
-+++ b/tools/perf/arch/loongarch/util/Build
-@@ -1,4 +1,3 @@
- perf-util-y += header.o
- 
- perf-util-$(CONFIG_LOCAL_LIBUNWIND) += unwind-libunwind.o
--perf-util-$(CONFIG_LIBDW_DWARF_UNWIND) += unwind-libdw.o
--- 
-2.52.0
+(This is specific to the backport as the upstream version didn't put
+this check in an else-block.)
 
+Ben.
+
+
+--=20
+Ben Hutchings
+Any smoothly functioning technology is indistinguishable
+from a rigged demo.
+
+--=-uv2HiuW6W4Flc1loWdaE
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmnkrcYACgkQ57/I7JWG
+EQkg1A/9FKkNxbCGI3uONMr4AQeXYeKJcdWjOju4zAyrL6XNGsGJTKxIfT31Isls
+SRn9nkqLdWdlZL7jJYjjjrz+HGo2pbJpwtLqhdTkey5+70EL5w+Gkhqj17iGskUj
+VaH5zWVlaPFBIbtWKgJyHBXZqwu2a8Q5ATQ9kzo+Az5KE4AKjBHdL+XNw1ZXGVVz
+HSNwEqjtf4cyqofRXk7ZnZW3FWW3cJOfcWvf/yjGzIMDXmv0Fd5PPMTPXmN109L1
+MVFSBkVvDuqWKDCMRGHV9sBSHV/pP0UMvfL7ZFb+2qeXkoux95UgT1JpfYx2cTCh
+gPvG4ip+Uyb/zvQXhA8W9WJWNFezU1afmhKHmVGEhFApal6GtpKTI+11FHTOITNK
+lXV6T9qgNJw70M2stPMPJpVuBXaWusS06XKsiRgHvgzHyncGNixAiPOjbA75b3OW
+y72bnac0meDxSHbqyTkUNd8rc6DyZL3iNIBlTB8+SZvqeQjX78uTtHnd3Up+rpqI
+jhtXlXi7MktBkFSI4ERRSHTlTJMp9UVe9Hieo3hwhjjiDSACzc15X7jtpKCmkAMr
+Y4cwebdRadHxNCeND9SHJIvp8L4lYrxrc7gBT27+Qqfcwd7d+2c02arbMr/Ijppd
+Ae/oo7eOa4Qr3l20eb815xek0Dl9mBsJ79RlpxshRTQHFPQw0J8=
+=dcXf
+-----END PGP SIGNATURE-----
+
+--=-uv2HiuW6W4Flc1loWdaE--
 
