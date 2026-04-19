@@ -1,170 +1,143 @@
-Return-Path: <stable+bounces-238630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238631-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ODYrKkCC5GmPWAEAu9opvQ
-	(envelope-from <stable+bounces-238630-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 09:20:32 +0200
+	id GtR5DXOE5GkAWQEAu9opvQ
+	(envelope-from <stable+bounces-238631-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 09:29:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C36064234C3
-	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 09:20:31 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id A91B042352E
+	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 09:29:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3BBC0300BC73
-	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 07:20:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A135630055BE
+	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 07:29:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0222B33E379;
-	Sun, 19 Apr 2026 07:20:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 293F3378815;
+	Sun, 19 Apr 2026 07:29:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fTY2bI2F"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nlkF91Sc"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98405378D8E
-	for <stable@vger.kernel.org>; Sun, 19 Apr 2026 07:20:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF01A375F97
+	for <stable@vger.kernel.org>; Sun, 19 Apr 2026 07:29:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776583202; cv=none; b=iONxYHBy19A64VhB31ElchDbKw6coCu8+ZKGziCkBV3IR1b1KoamAkYvE4tC8Pde8HW7LQ0Q9ehlok3QOISVdrCpIw73C8zH8ywnvZuWuvoIP26IreSt6HDey07cs7KdBshNQSCvOXKMaZNdMVO40R64lh6AMlvkmJFv5/G5/pE=
+	t=1776583791; cv=none; b=I119upQDmeSrSvzaOA/FxmG2MbSWEfiWFIGrGzxbMyROkTB2LJAsXy2DGV9jKz1zJ3JeGBX4R7gewAeMllEQDaw5dwhhgxIvjOootr5ZHOTjRipdakmYQa9Hh94Jw1WoJK1rjSAjaytspBgG3UsH+GjIjKcM3eU3j1dnbXL8wN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776583202; c=relaxed/simple;
-	bh=/6WqY7FVaM7RrmmrXcARtBbEz0lWyS0aYGllGtWbYaE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PGMwxkbjCz8kw6Up4KwDOsM8IIomwL25T0BfDlrdANARhtwVyOlr67qIqm28Cq2Yvhm8xJfwk+Np1XaNriP4Ap5t19pIJBwOKR3HsbSf7Ac6pBACAQzLIV3+23uSxT/0HyjXdQyW63SgvWfBXXMKlI1r9daAC0uQvSvUJsQGUgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fTY2bI2F; arc=none smtp.client-ip=209.85.216.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-35d99bae2ebso1945904a91.3
-        for <stable@vger.kernel.org>; Sun, 19 Apr 2026 00:20:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776583201; x=1777188001; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=W0uptcA/nPT9b5VoNX/H/wV7A62sl2YDH38WqrqI4Qc=;
-        b=fTY2bI2FFSWSQDqw6FI1Yy8SjIZU9qv5aBH4fQjlbDJ0SG5jfPqTFEjBCpQymm+ZK3
-         5xMLnzpBTwb0M2Nm7SW75DjTTeFhrIGWapvH/xfqOpYLEsbIyhsb542S3dUcxSfYB4qq
-         Px3jE86EoApD3Adt22itKJpD8brVOZ+/U+zLxm1dVUisF/gHQ4m+V30LUMf5WuWECWBm
-         KpefGV+NYxeVrdzm4flneab6opnA1kRvQnr/fBA2X82flmTw/ebdYVLed1Y2Fczgsmdk
-         pWqX2IQHJ/4NF+30yG6Yc6ZO+qsEPyMKvKtT66exZePtTFsd4cIanF/rNZgDVPOVUCoh
-         MWuA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776583201; x=1777188001;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=W0uptcA/nPT9b5VoNX/H/wV7A62sl2YDH38WqrqI4Qc=;
-        b=b8StuJP45eMNijRS9HaKxpWgYFLUk1wWUZTWhONiX0jE36NXV5yGERuAbO11HQxsqN
-         PyGye1D43oYLHpQ3W1EvlYcFM5ny7BOlUePpEmzEPdaK21vFSpk4Gvmaca6aRkxKtc70
-         AuXaQHN8hQDpCJT4RrRt68q8JDFDJFa4gmMxJgWobGjlBnnCg2lPybVT5JZ2AbckSbhh
-         mSnJi29kXwDwDaC/k4X96tBea7aFmfcaMO9pIyb+jV/+DZ11fRJWoWji3d4prh6Y3Fmq
-         RVq8oIf/hW3KysCJr4rNLtZeT/M9yXtzR2dkFTPI6mWMqz/ykPoWBntSGgER1KBZ7zqr
-         lKvg==
-X-Forwarded-Encrypted: i=1; AFNElJ+s+UF9T8YnojS9g0L6cswhcqhY/Swdo87AAMAgmLZuym4t7st+SFKk1cEuNCpcEM0Kiaj5KVc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyRtyo7WjrIvhjVzuYa6tladzRbTWkCnQeOYqoSpVIBY9JkaubX
-	65cpSXmAsJPMwzQ3+OrPE+P2Ou4pBD5oWgqHqMrAmik7mRjEmORY+0AH
-X-Gm-Gg: AeBDiesY4qlBid91SU3zGaG8GEUFTKQEFcIKlwN5g6Xic3S++x6FfI5rABOD9YTDMBK
-	Z9uEJQDesoJ/5+XQdX4yYlFErY7LWbg/GSXc7Q0SJq5VErU1htwnrBmTHk/0ub3y4e6jk11gtee
-	xXyUq18rNIn+NJjTMIM1z2JYhATs0dIK+4vsXyLYMPO1Oxc5L8yjni1dTr057LjaDOjZLGH/6/p
-	acYTfRRwTXm4TnsPj5tj6B98AsKHR0HiX8Kg6ugO6JN6ovoliQVUNBFJ5ICgGH1xmIAqQQLTT5L
-	w6eWhhU/zAlyqkFbH2kWlwBPdKoLqkwlEiXS2stJvHd9IQiXBnTm4eQxRYA61VOex7ndQPKgkwZ
-	O5dj7/xKA98fWF1+MNYD+VQxjZ/JT0DCrKMqKmHNV53Oj4YHZi4PfX6HOXG627t2+9o3jlwHRLT
-	OkbLb24oYGUwqPSY94plEfY4bW4baJqj8cIr3e
-X-Received: by 2002:a17:90b:5185:b0:35f:b7f5:9b3 with SMTP id 98e67ed59e1d1-361403b18c9mr9692965a91.3.1776583200994;
-        Sun, 19 Apr 2026 00:20:00 -0700 (PDT)
-Received: from gye-SER8.. ([1.243.227.27])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3614198f775sm7730486a91.16.2026.04.19.00.19.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 19 Apr 2026 00:20:00 -0700 (PDT)
-From: Gyeyoung Baek <gye976@gmail.com>
-To: Tomeu Vizoso <tomeu@tomeuvizoso.net>,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Rob Herring <robh@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	=?UTF-8?q?Adri=C3=A1n=20Larumbe?= <adrian.larumbe@collabora.com>
-Cc: Oded Gabbay <ogabbay@kernel.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	Gyeyoung Baek <gye976@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v1 2/2] drm/panfrost: Fix wait_bo ioctl leaking positive return from dma_resv_wait_timeout()
-Date: Sun, 19 Apr 2026 16:17:16 +0900
-Message-ID: <fe33f82fded7be1c18e2e0eb2db451d5a738cf39.1776581974.git.gye976@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1776581974.git.gye976@gmail.com>
-References: <cover.1776581974.git.gye976@gmail.com>
+	s=arc-20240116; t=1776583791; c=relaxed/simple;
+	bh=QJqUE+KIWv01jPr0qaOhAYIMdk3vkM2VjM9uMykgIa8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=f9gfzYl/lGPehh5L0fp0Fjz+wIhebBgoBqsNLp9NEs+xoW/wVnPUfSDEil87Zq90jzt7EKq1fvU5g+uRRd7cdP+e7Sk9cBkmJzyisDQ3wXt+CZxYeHsLwPwBD40r2zv/o1Uti47timzLS11BppzO170leTabIKr3tXCxYym63n4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nlkF91Sc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6DFAC2BCB7
+	for <stable@vger.kernel.org>; Sun, 19 Apr 2026 07:29:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776583791;
+	bh=QJqUE+KIWv01jPr0qaOhAYIMdk3vkM2VjM9uMykgIa8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=nlkF91ScFrhpJeWmo1aO+q9hRzmgOcNKxtcqnRMBVcf9SjhY9uEGOy0rXV/+addoR
+	 39Zn9iZBa0yim4uCArlyeqAtJIoKPYE0b5MWFHpVrf68eDBztMYO7Jf7/ZMjFQSTF1
+	 FUfB1Zr+NGRCkq54I/unG5GC2ACKao4OFLTVSOgzLtmrIlbo6OLhjPRPd14N7HNdnf
+	 Eag/SWD1qUrqi7ck1AzlIhiwxMv75FB/zbo/gCucQBggWMxQ7njYlD2nCsUo4K9Mfy
+	 7AXCir9HquZyqrmaUaXwSQtC17FO3Q6qAZkkLG64i4klgiPyIEkM/ibh3YSztGNyEB
+	 9mt7dEfYqFcCg==
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-672bd8d2400so3997512a12.1
+        for <stable@vger.kernel.org>; Sun, 19 Apr 2026 00:29:51 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ+e9tUuC+GCfmK010sUBQB2UyJuhgdhkT18uaeuaEXDuy3OfasKNVK1DBVWHELaIhtT+Eznvt4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz5MJwCgHIY82MYNkFaRT/Xh842K1bXheDvrWEFPgEUfDzsOha0
+	ioyqpSJ6clRAOUSP0kNlm7dBsqUoObWZdg8ZnTcJra+YSna/i5lnxnrrdd9InHZOdwoy3+6dmSA
+	1xnOUTZoYCYbBESNht72HTIrnnHI95sQ=
+X-Received: by 2002:a05:6402:a54e:10b0:669:cc03:334a with SMTP id
+ 4fb4d7f45d1cf-672bfd9db0dmr3075102a12.11.1776583790183; Sun, 19 Apr 2026
+ 00:29:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+References: <20260418172844.1333378-1-charsyam@gmail.com> <20260418172844.1333378-3-charsyam@gmail.com>
+In-Reply-To: <20260418172844.1333378-3-charsyam@gmail.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
+Date: Sun, 19 Apr 2026 16:29:37 +0900
+X-Gmail-Original-Message-ID: <CAKYAXd_0-qXXktu0EBmLWATqthSXetVvQ2EzpgBnsOkq1bU=wQ@mail.gmail.com>
+X-Gm-Features: AQROBzAOKLjcpFyO0NiqvNftv3mmS9SxvjLG3WX0f-Iq4zWubKruu_tv2He3XbY
+Message-ID: <CAKYAXd_0-qXXktu0EBmLWATqthSXetVvQ2EzpgBnsOkq1bU=wQ@mail.gmail.com>
+Subject: Re: [PATCH 2/2] ksmbd: reset rcount per connection in ksmbd_conn_wait_idle_sess_id()
+To: DaeMyung Kang <charsyam@gmail.com>
+Cc: smfrench@gmail.com, senozhatsky@chromium.org, tom@talpey.com, 
+	linux-cifs@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, Henrique Carvalho <henrique.carvalho@suse.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[kernel.org,linux.intel.com,suse.de,gmail.com,ffwll.ch,lists.freedesktop.org,vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	TAGGED_FROM(0.00)[bounces-238630-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FREEMAIL_CC(0.00)[gmail.com,chromium.org,talpey.com,vger.kernel.org,suse.com];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-238631-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gye976@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FROM_NEQ_ENVFROM(0.00)[linkinjeon@kernel.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: C36064234C3
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: A91B042352E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-dma_resv_wait_timeout() returns a positive 'remaining jiffies' value
-on success, 0 on timeout, and -errno on failure.
-
-panfrost_ioctl_wait_bo() returns this 'long' result from an int-typed
-ioctl handler, so positive values reach userspace as bogus errors.
-Explicitly set ret to 0 on the success path.
-
-Fixes: f3ba91228e8e ("drm/panfrost: Add initial panfrost driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gyeyoung Baek <gye976@gmail.com>
----
- drivers/gpu/drm/panfrost/panfrost_drv.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/gpu/drm/panfrost/panfrost_drv.c b/drivers/gpu/drm/panfrost/panfrost_drv.c
-index 3d0bdba2a..784e36d72 100644
---- a/drivers/gpu/drm/panfrost/panfrost_drv.c
-+++ b/drivers/gpu/drm/panfrost/panfrost_drv.c
-@@ -390,6 +390,8 @@ panfrost_ioctl_wait_bo(struct drm_device *dev, void *data,
- 				    true, timeout);
- 	if (!ret)
- 		ret = timeout ? -ETIMEDOUT : -EBUSY;
-+	else if (ret > 0)
-+		ret = 0;
- 
- 	drm_gem_object_put(gem_obj);
- 
--- 
-2.43.0
-
+On Sun, Apr 19, 2026 at 2:30=E2=80=AFAM DaeMyung Kang <charsyam@gmail.com> =
+wrote:
+>
+> rcount is intended to be connection-specific: 2 for curr_conn, 1 for
+> every other connection sharing the same session.  However, it is
+> initialised only once before the hash iteration and is never reset.
+> After the loop visits curr_conn, later sibling connections are also
+> checked against rcount =3D=3D 2, so a sibling with req_running =3D=3D 1 i=
+s
+> incorrectly treated as idle.  This makes the outcome depend on the
+> hash iteration order: whether a given sibling is checked against the
+> loose (< 2) or the strict (< 1) threshold is decided by whether it
+> happens to be visited before or after curr_conn.
+>
+> The function's contract is "wait until every connection sharing this
+> session is idle" so that destroy_previous_session() can safely tear
+> the session down.  The latched rcount violates that contract and
+> reopens the teardown race window the wait logic was meant to close:
+> destroy_previous_session() may proceed before sibling channels have
+> actually quiesced, overlapping session teardown with in-flight work
+> on those connections.
+>
+> Recompute rcount inside the loop so each connection is compared
+> against its own threshold regardless of iteration order.
+>
+> This is a code-inspection fix for an iteration-order-dependent logic
+> error; a targeted reproducer would require SMB3 multichannel with
+> in-flight work on a sibling channel landing after curr_conn in hash
+> order, which is not something that can be triggered reliably.
+>
+> Fixes: 76e98a158b20 ("ksmbd: fix race condition between destroy_previous_=
+session() and smb2 operations()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: DaeMyung Kang <charsyam@gmail.com>
+Applied it to #ksmbd-for-next-next.
+Thanks!
 
