@@ -1,175 +1,145 @@
-Return-Path: <stable+bounces-238644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238645-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wB7uI/7h5Gn7bQEAu9opvQ
-	(envelope-from <stable+bounces-238644-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 16:09:02 +0200
+	id AF9KM+Hl5GnObgEAu9opvQ
+	(envelope-from <stable+bounces-238645-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 16:25:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EB974244FE
-	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 16:09:02 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C82942456A
+	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 16:25:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C12AD3010269
-	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 14:09:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D1FAD300E163
+	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 14:25:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A1A737C937;
-	Sun, 19 Apr 2026 14:08:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECADB37C0EB;
+	Sun, 19 Apr 2026 14:25:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KBEf8YYD"
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="Yp5OlKHb"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A853737CD5D
-	for <stable@vger.kernel.org>; Sun, 19 Apr 2026 14:08:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B90D13B7A3;
+	Sun, 19 Apr 2026 14:25:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.37.111.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776607736; cv=none; b=DF3r0bfoRkEzaXZZQMze5Q5DpPODpudsKEyxTDeNqdv3v+epqP2azDzKaJXdDJGlT+A62AlivufT6c1AMTsF90N7+biqLPelqGK8wYp3fCaFNaE8eN++BTfxfBX5xxdrFcGDvC+uMBSEmTRDQ3Ct3D+NcTCkQIXEd9aAavbKx/4=
+	t=1776608730; cv=none; b=GU8ay43MVvvnXj7AJC404zwOcAY3mqYEqL2jYPQGpK/xGZN+NrBymdqZv3g2Bm24yjZgx8lP5OHWaD3vXsPvtDdDLlUpjCAG9mCCgTNY4H0Ixmz+npe7EwOY2xjnJ2ZPv4R2BFZ0bbnQSc5AsLpp5hPFqWdR1B/XorpSqySeMfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776607736; c=relaxed/simple;
-	bh=5NZkfsTPzvAFcy5UFeBzMenTqECDDXUswA9pAZDzBhY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=M1KV06ocJFzH7ZPPpQI0prhaRt5KpgXUizcIIsd58S3B1UwHVAp3emnSPOH1qCxQv2DZeJVQnhzklJvKHpE9DkDrZbW9aHH7+RHNoT4Um6JFVKEAtHV9K93eXPP73qeT44AMHj9/ci1NPNRCijW5H0555Y6lMy+MKS0b5yNtuGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KBEf8YYD; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2a7a9b8ed69so18924065ad.2
-        for <stable@vger.kernel.org>; Sun, 19 Apr 2026 07:08:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776607734; x=1777212534; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=bb6WKor5gs4NUo2Ed/ILzdJqmo1MvLE8Py2tsx0kHJ8=;
-        b=KBEf8YYDYNe1fLZeMMnp95+U1rdQnFMMS+YtxaESge8zo2xsiP0J+vwjckpGsNtaHF
-         xCQR2iGqTr3NuOQZJnSq4pZBHrBzr3f6fGyANk5OgTxvsY7FYt5jbCg4J5sq8hJTQeax
-         kn9WZDK3M4KpWXKIqfX9UDmWrD8pPTJCOv6NSnMdFJf4rUWxUkbzI/+DiiV6f3IX3OJn
-         nfyUVg8no5d5Se5uW6GdKjIE1WqcLyImElh9Vl/wwMno9ei1uOWyh2yqLWckNR8MHzXr
-         YT6snJNmT460uoGmG5izPL0k0lw9uWVrV5/vibLgq/WGvCaRN3HNyhvzxgFu1jgTnekf
-         vPlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776607734; x=1777212534;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bb6WKor5gs4NUo2Ed/ILzdJqmo1MvLE8Py2tsx0kHJ8=;
-        b=iSVK4X9LzNttN9Xum0STk9YCRThrTCUwJn7xeyBj+dEgIHdVBoSCenOUBuVc7g80LK
-         mpwxAU3I3OVDkO2hqaS2esf6t3CfJKgVSBUgmvg55zX5suy7n/r2KUxbQ1u3xF5CzKMs
-         GlcfVVQeFLa6bbQDKHBqpKlB8BBvTDA8N1a4lZWqW6Dxo+Vr9wOU43z7PRnBFn5DpozQ
-         TetsqMcSv/Vkj+b0LOy0DyT/LV3UWfn3Xv9zK2Ewykn8XE7hceCepxcmSXQR5aSXgSUb
-         ubQGuAQpYCeBEAO27rrt4ZQ59kq7Mqg73u6BRz1IICaIuo0rmILtQgf7zCN2mCtXbxxm
-         uueg==
-X-Forwarded-Encrypted: i=1; AFNElJ8fbj3Zx/7R1dJi7wxzZ7+fNVxeC9a/+LxB1Z0sLE9DzbBLrPzXVmkY2KdqUbcIc4oqXpv/aIw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzCB5h/OvbgUIxwtVh9oqSCb1AE47ErfizzLgMYWvSz1U/dzp1S
-	m4LK8URWyz6cK+3NtuaA9RRDcmjwHfbnrTSzBR7UnIsZuVumELC4QUJ9
-X-Gm-Gg: AeBDieuFfnIFoLruqPStqBCbqAjsg1w1kNIODxF1JfMuVTV7twKWanVmO5JozpFWzB4
-	WbhAr6/DF6ZJDx5mrhaXGPZMB3QQoxQPAO4X23e2Mr4FoQbgVzhvtnp2bztvOA/VSVtSQtKTyYo
-	gfUyMdoNk1Iptz/zzpO2oF8IKR8ZkN06zc8/bjB1/sFMAX6ljFEBIA/xc9vZEYY/Q6CmK86mq0G
-	u3PM5W/tqFba4kiMoiUhcrGd/qlZVOWXX5PZpVa4BZ+kUmrpSLrQs0eO90S7khB+sqmhhLKtPU7
-	NZeUwJHtsSsKpspMG71fZ4KbaHAC+puPR8EBgdW0hh47QiVJBMdWk5vXDtl2iyg7qLe9JPNfMfJ
-	tGhlINT1ogYKK0QZMv1OGIkb02VBODwjTfME1X6Dqu3RPrdBylTd35q3zllnK2FncNok7oWt7T8
-	7jBSUawDrsyuuO82UzbZ9/bUcz3jz16NM8Ube7cEuwN4I=
-X-Received: by 2002:a17:902:a717:b0:2b2:501c:bc0 with SMTP id d9443c01a7336-2b5f9eaf69bmr75431475ad.7.1776607733800;
-        Sun, 19 Apr 2026 07:08:53 -0700 (PDT)
-Received: from lgs.. ([2408:8417:d50:4775:fc0:88de:ed15:556b])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b5fa9ff98csm74800725ad.3.2026.04.19.07.08.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 19 Apr 2026 07:08:53 -0700 (PDT)
-From: Guangshuo Li <lgs201920130244@gmail.com>
-To: Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Frank Li <Frank.Li@kernel.org>,
-	Fenghua Yu <fenghua.yu@intel.com>,
-	dmaengine@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Guangshuo Li <lgs201920130244@gmail.com>,
+	s=arc-20240116; t=1776608730; c=relaxed/simple;
+	bh=G57+LXSkw6YEHU7n2DYeKZYbM6Xzieze1MyX0YjMQ3A=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=fit7zM3rjbEDsH6ywftQuRLfbi1qaA7d5MNb4bkdMqIMmbtRhL/en+kxF9ZOJ5shxDKG1O2M6CmGzc0+kJ31717j58eQxzj7nyJ9S+E0g0A9Pz1Rwrl57ra45snnMc0GOcvYPJJhg5wJ1xZsKzEYLxrMoajNqNzQ0Cupc9SWU6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=Yp5OlKHb; arc=none smtp.client-ip=198.37.111.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1776608726;
+	bh=G57+LXSkw6YEHU7n2DYeKZYbM6Xzieze1MyX0YjMQ3A=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=Yp5OlKHbRa9lrJdC5vUt8bCRQeJLDQnEveGGX7ERqGxdwID7TC7yxsTbLpfjqF/QD
+	 ABq93Y4CyaZAbt+SGObviSLpRj++f4TKsVhTZBY/p6U2grxrunkbsQW8eWONIRNba5
+	 ktE/VQdWSF8kqW71Eb8ft2U3BTnJomntgWDjQMVo=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4300:d341::a774])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 4C40B1C02E0;
+	Sun, 19 Apr 2026 10:25:26 -0400 (EDT)
+Message-ID: <3b89ea4a9a664afac39744d6f58c68d6adea9f95.camel@HansenPartnership.com>
+Subject: Re: [PATCH] scsi: mpi3mr: bounds-check phy_number in
+ mpi3mr_update_links()
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Junrui Luo <moonafterrain@outlook.com>, Sathya Prakash Veerichetty
+ <sathya.prakash@broadcom.com>, Kashyap Desai <kashyap.desai@broadcom.com>, 
+ Sumit Saxena <sumit.saxena@broadcom.com>, Sreekanth Reddy
+ <sreekanth.reddy@broadcom.com>, "Martin K. Petersen"
+ <martin.petersen@oracle.com>, Himanshu Madhani <himanshu.madani@oracle.com>
+Cc: mpi3mr-linuxdrv.pdl@broadcom.com, linux-scsi@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Yuhao Jiang <danisjiang@gmail.com>, 
 	stable@vger.kernel.org
-Subject: [PATCH] dmaengine: idxd: Fix saved engines array leak in config save
-Date: Sun, 19 Apr 2026 22:08:39 +0800
-Message-ID: <20260419140839.99672-1-lgs201920130244@gmail.com>
-X-Mailer: git-send-email 2.43.0
+Date: Sun, 19 Apr 2026 10:25:25 -0400
+In-Reply-To: <SYBPR01MB788162EDBF416DC5E714DFEEAF2E2@SYBPR01MB7881.ausprd01.prod.outlook.com>
+References: 
+	<SYBPR01MB788162EDBF416DC5E714DFEEAF2E2@SYBPR01MB7881.ausprd01.prod.outlook.com>
+Autocrypt: addr=James.Bottomley@HansenPartnership.com;
+ prefer-encrypt=mutual;
+ keydata=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
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[hansenpartnership.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[hansenpartnership.com:s=20151216];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-238645-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-238644-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[outlook.com,broadcom.com,oracle.com];
+	FREEMAIL_CC(0.00)[broadcom.com,vger.kernel.org,gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[James.Bottomley@HansenPartnership.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[hansenpartnership.com:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1EB974244FE
+X-Rspamd-Queue-Id: 3C82942456A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-idxd_device_config_save() uses cleanup.h helpers for temporary
-allocations while saving device configuration. The saved_groups and
-saved_wqs pointer arrays are declared with __free(kfree), and ownership
-is transferred to idxd_saved with no_free_ptr() on the success path.
+On Sun, 2026-04-19 at 20:08 +0800, Junrui Luo wrote:
+> mpi3mr_update_links() dereferences mr_sas_node->phy[phy_number] and
+> writes attached_handle without verifying that phy_number is within
+> the parent node's allocated phy array.
 
-The saved_engines pointer array follows the same ownership pattern on the
-success path, but it is not declared with __free(kfree). As a result, if
-an error happens after saved_engines is allocated, idxd_free_saved()
-frees the saved engine objects but not the saved_engines array itself.
+That's right: the phy number is supplied by the expander (or device).
 
-This leaks saved_engines on error paths such as:
-  - failure to allocate an individual saved engine
-  - failure to allocate saved_wq_enable_map
-  - failure to allocate saved_wqs
-  - failure to allocate an individual saved WQ
+>  Two callers feed phy_number from firmware-supplied fields:
+> mpi3mr_sastopochg_evt_bh() passes (event_data->start_phy_num + i)
+> from the SAS topology change event, and
+> mpi3mr_report_tgtdev_to_sas_transport() passes
+> tgtdev->dev_spec.sas_sata_inf.phy_id from firmware device
+> information.
+>=20
+> Since num_phys is a u8, a stray phy_number can reach 255 and index
+> past the kzalloc_objs()-sized phy[] array, leading to an out-of-
+> bounds.
+>=20
+> The sibling mpt3sas driver guards at the topology-change caller by
+> discarding entries whose phy_number exceeds max_phys. Apply the
+> equivalent check inside mpi3mr_update_links().
 
-Declare saved_engines with __free(kfree) so the array is released
-automatically on failure, matching saved_groups and saved_wqs. The success
-path is unchanged because ownership is already transferred with
-no_free_ptr().
+Our threat model for hardware is that we assume it behaves correctly
+unless someone finds a buggy instance in the field ... have you found
+such a buggy device?
 
-Fixes: 6078a315aec1 ("dmaengine: idxd: Add idxd_device_config_save() and idxd_device_config_restore() helpers")
-Cc: stable@vger.kernel.org
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
----
- drivers/dma/idxd/init.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Regards,
 
-diff --git a/drivers/dma/idxd/init.c b/drivers/dma/idxd/init.c
-index f1cfc7790d95..02210f16d391 100644
---- a/drivers/dma/idxd/init.c
-+++ b/drivers/dma/idxd/init.c
-@@ -880,7 +880,7 @@ static int idxd_device_config_save(struct idxd_device *idxd,
- 		saved_groups[i] = no_free_ptr(saved_group);
- 	}
- 
--	struct idxd_engine **saved_engines =
-+	struct idxd_engine **saved_engines __free(kfree) =
- 			kcalloc_node(idxd->max_engines,
- 				     sizeof(struct idxd_engine *),
- 				     GFP_KERNEL, dev_to_node(dev));
--- 
-2.43.0
+James
 
 
