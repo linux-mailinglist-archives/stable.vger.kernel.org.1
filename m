@@ -1,205 +1,186 @@
-Return-Path: <stable+bounces-238654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238655-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EMxFJKT+5GnDcwEAu9opvQ
-	(envelope-from <stable+bounces-238654-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 18:11:16 +0200
+	id oCe/HlgC5WlCdQEAu9opvQ
+	(envelope-from <stable+bounces-238655-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 18:27:04 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 045424249AA
-	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 18:11:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DAF4A424B13
+	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 18:27:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D0F42303A8DA
-	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 16:10:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 59DC9301F9DA
+	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 16:26:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 249832BE7A7;
-	Sun, 19 Apr 2026 16:10:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1804B2BE7DC;
+	Sun, 19 Apr 2026 16:26:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V/F6L+rD"
+	dkim=pass (2048-bit key) header.d=icenowy.me header.i=uwu@icenowy.me header.b="nsdRXPDA"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D779327B4F7;
-	Sun, 19 Apr 2026 16:10:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776615012; cv=none; b=F6ySKGFv7hXpoTVs+ORS2FEaxqsBvV1IJfKJC1QbMRUEOaahfoX1dCAwd0smhwaGBKGuNgD3sTkEpScSJnoeAZwsUGQ2NCCq26Ph0AhTtYJXiqPtZs46MeKypFRvKK9GQHn8Hl9RnvlF0EBDOqmpcFWPuihq0RiFYbCAxR2f/Fo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776615012; c=relaxed/simple;
-	bh=rIOaDq/KHXQ6SzD1AFFL4LR91YKZhChannZeLdJ236k=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mWQoDR12VEDacLUivlLQ5wZj0dPCXU28tnGf2ZZqct8OegENC7QwSS1L2IN0Pse9ZOj8XrjzGQADWIB+zBwiN/7J3XD+/nBMjrEoxaW04ajLVYYmjCiiRYuAVYkYcYgrqK+1MnRjyH9s1UoER8l2Xr3Z3N4ZqzOMHLaanAUXta8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V/F6L+rD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77892C2BCAF;
-	Sun, 19 Apr 2026 16:10:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776615012;
-	bh=rIOaDq/KHXQ6SzD1AFFL4LR91YKZhChannZeLdJ236k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V/F6L+rDzvl2gUnTte2b1pXCBREgpl8MSm54iG5JOxUR3qhDYp4bkHkWohjIP26Bj
-	 gSXNwAalq2hNRlHvoczkAPcqlnAag25yct3Iw6HNGwmO+DCvugOlhNHBJXNyG7mznt
-	 EkOEYKjikzKIa8pruVhZ83xlrwezSNFEX6QBMqA58EwheInlFegTK67SZ4hlu1EV6e
-	 XlAu5Wy8FR/PfGfp/1FCgtlcuqWuB8UegsnP/htRYLRNg6qu2iurV9pjqyzHBxQ13u
-	 gicTsL+a6Eda6RLU2Xe770O28vHYBEj+nDDTt9GiLHXvjfNrM9AX6E1JRy8HXqzYZ1
-	 ZfLPTuCFXFPlQ==
-From: SeongJae Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	"# 6 . 17 . x" <stable@vger.kernel.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH v3 3/3] mm/damon/stat: detect and use fresh enabled value
-Date: Sun, 19 Apr 2026 09:10:02 -0700
-Message-ID: <20260419161003.79176-4-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260419161003.79176-1-sj@kernel.org>
-References: <20260419161003.79176-1-sj@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A68727FB0E;
+	Sun, 19 Apr 2026 16:26:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776616015; cv=pass; b=oUT6hLm/fxhoa8NT7T+NoCAk0LX3sAyLp7sZaxy4WPxwCnEGGCR6RlAhzbqtJmXimhFbE3EF0JDlSJMg0N+6xW8wHB7bdyl0zBWWXg0GCYVye+UoRcAtjyoQWW2Byg5XV+3LisNTMqxrvJP+Y2Cf4EjQH77DdNNXRozzbPbPMfY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776616015; c=relaxed/simple;
+	bh=yxjEoMXGzc/WdkfSdsocpIic0FHGlTrW9jCQZ5b8YNk=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Xmd9ieqHhzPFJQTEaFrON9XhR66J5gYyCBjmqfET3ClDk805LXdaxaqNZYKsbttI8MadJy1yDfS4x+q2/DOciRX1XcyiHOJYj/ZsOPaQwqYiecHgbgq5lYLz6/ED/S0WcwY+nIgwOaYrxFMxzWNNOtBlAnrmMBaT20nZSwrQgC4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=icenowy.me; spf=pass smtp.mailfrom=icenowy.me; dkim=pass (2048-bit key) header.d=icenowy.me header.i=uwu@icenowy.me header.b=nsdRXPDA; arc=pass smtp.client-ip=136.143.188.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=icenowy.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icenowy.me
+ARC-Seal: i=1; a=rsa-sha256; t=1776615992; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=kQSnz1iBfr3zPc9JyMtd71bSN55fRDtkz8V+izPOrszcIFWW8eiE2GQ805NYkzw77JS5KVENc6lXWNqZOe+/sKNLz69fHuCgfAF9oCtd1e5aU6VeHPwPIef8/XgyMuaMjGAkUPZoJNTH9pAZNy3PCt9oSc0vBJAAF2REgRnjEu4=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1776615992; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=XDxRzUYghQyLSOtVSFJCCp821NYg75PtJOz/TeevvgQ=; 
+	b=F+vTlr3zGS9R9vpQsoUo6w/jtWCGwtwsWifitwBJRmWj5Oc0ZJqTvR+Qoq63JAbiZzaKyzNxjDWmicFYMzfQHkC/DurWfG2e41wz5IDi9JM0qfH7bNq2MXicFJ5hGdhAwEKiTYXPVCcLFzOZxN2YXPJqlTA/9X+LVqyuTqv5uT4=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=icenowy.me;
+	spf=pass  smtp.mailfrom=uwu@icenowy.me;
+	dmarc=pass header.from=<uwu@icenowy.me>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1776615992;
+	s=zmail2; d=icenowy.me; i=uwu@icenowy.me;
+	h=Message-ID:Subject:Subject:From:From:To:To:Cc:Cc:Date:Date:In-Reply-To:References:Content-Type:Content-Transfer-Encoding:MIME-Version:Message-Id:Reply-To;
+	bh=XDxRzUYghQyLSOtVSFJCCp821NYg75PtJOz/TeevvgQ=;
+	b=nsdRXPDAm9LAwbVoZpAUCLGasQ0RZhdslKj90S5qOE/YGg6tTQNGWI++ab7vFRhm
+	tPo+C6x4ZEwqbQgprBNDC0VpMnZPpBVq519MrRKAXD6UrRI9aeEjP6c8p4sHI0me7oj
+	+vk8EP4DaZcvoR9xvAB77dl7f+W2Q8fdGtIrAED43YQ8fZWfGYPKZ9CSX/3D4+L/m8I
+	FSskX4UJkqr4+vW0c++dI1oahwaQ7tafT9MGLcOpXrj1JlRj7GDhF5w9z0qdiuGmiPP
+	iI5D7oJdTY/7n1AwonQDyHr22e2tyhDVq198BodPjidz+iYfWris+qlVcGt+fn+Zg5O
+	imvgwHnlNg==
+Received: by mx.zohomail.com with SMTPS id 1776615989353789.8106081725186;
+	Sun, 19 Apr 2026 09:26:29 -0700 (PDT)
+Message-ID: <938e8afadcbf2d7b9f0397e24926224985d9c385.camel@icenowy.me>
+Subject: Re: [PATCH v2 1/4] HID: pass the buffer size to hid_report_raw_event
+From: Icenowy Zheng <uwu@icenowy.me>
+To: Benjamin Tissoires <bentiss@kernel.org>, Jiri Kosina <jikos@kernel.org>,
+  Filipe =?ISO-8859-1?Q?La=EDns?=	 <lains@riseup.net>, Bastien Nocera
+ <hadess@hadess.net>, Ping Cheng	 <ping.cheng@wacom.com>, Jason Gerecke
+ <jason.gerecke@wacom.com>, Viresh Kumar	 <vireshk@kernel.org>, Johan Hovold
+ <johan@kernel.org>, Alex Elder	 <elder@kernel.org>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Lee Jones	 <lee@kernel.org>
+Cc: linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	greybus-dev@lists.linaro.org, linux-staging@lists.linux.dev, 
+	linux-usb@vger.kernel.org, stable@vger.kernel.org
+Date: Mon, 20 Apr 2026 00:26:21 +0800
+In-Reply-To: <20260416-wip-fix-core-v2-1-be92570e5627@kernel.org>
+References: <20260416-wip-fix-core-v2-0-be92570e5627@kernel.org>
+	 <20260416-wip-fix-core-v2-1-be92570e5627@kernel.org>
+Organization: Anthon Open-Source Community
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+X-ZohoMailClient: External
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[icenowy.me,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_DKIM_ALLOW(-0.20)[icenowy.me:s=zmail2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-238654-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-238655-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	HAS_ORG_HEADER(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	DKIM_TRACE(0.00)[icenowy.me:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[uwu@icenowy.me,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 045424249AA
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,icenowy.me:dkim,icenowy.me:mid]
+X-Rspamd-Queue-Id: DAF4A424B13
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-DAMON_STAT updates 'enabled' parameter value, which represents the
-running status of its kdamond, when the user explicitly requests
-start/stop of the kdamond.  The kdamond can, however, be stopped even if
-the user explicitly requested the stop, if ctx->regions_score_histogram
-allocation failure at beginning of the execution of the kdamond.  Hence,
-if the kdamond is stopped by the allocation failure, the value of the
-parameter can be stale.
+=E5=9C=A8 2026-04-16=E5=9B=9B=E7=9A=84 16:48 +0200=EF=BC=8CBenjamin Tissoir=
+es=E5=86=99=E9=81=93=EF=BC=9A
+> commit 0a3fe972a7cb ("HID: core: Mitigate potential OOB by removing
+> bogus memset()") enforced the provided data to be at least the size
+> of
+> the declared buffer in the report descriptor to prevent a buffer
+> overflow. However, we can try to be smarter by providing both the
+> buffer
+> size and the data size, meaning that hid_report_raw_event() can make
+> better decision whether we should plaining reject the buffer (buffer
+> overflow attempt) or if we can safely memset it to 0 and pass it to
+> the
+> rest of the stack.
+>=20
+> Fixes: 0a3fe972a7cb ("HID: core: Mitigate potential OOB by removing
+> bogus memset()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+> ---
+> =C2=A0drivers/hid/bpf/hid_bpf_dispatch.c |=C2=A0 6 ++++--
+> =C2=A0drivers/hid/hid-core.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 42 +++++++++++++++++++++++++---
+> ----------
+> =C2=A0drivers/hid/hid-gfrm.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 4 ++--
+> =C2=A0drivers/hid/hid-logitech-hidpp.c=C2=A0=C2=A0 |=C2=A0 2 +-
+> =C2=A0drivers/hid/hid-multitouch.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=
+=C2=A0 2 +-
+> =C2=A0drivers/hid/hid-primax.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 |=C2=A0 2 +-
+> =C2=A0drivers/hid/hid-vivaldi-common.c=C2=A0=C2=A0 |=C2=A0 2 +-
+> =C2=A0drivers/hid/wacom_sys.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 6 +++---
+> =C2=A0drivers/staging/greybus/hid.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=
+ 2 +-
+> =C2=A0include/linux/hid.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 4 ++--
+> =C2=A0include/linux/hid_bpf.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 | 14 ++++++++-----
+> =C2=A011 files changed, 53 insertions(+), 33 deletions(-)
 
-Users could show the stale value and be confused.  The problem will only
-rarely happen in real and common setups because the allocation is
-arguably too small to fail.  Also, unlike the similar bugs that are now
-fixed in DAMON_RECLAIM and DAMON_LRU_SORT, kdamond can be restarted in
-this case, because DAMON_STAT force-updates the enabled parameter value
-for user inputs.  The bug is a bug, though.
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D 8< =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D
 
-The issue stems from the fact that there are multiple events that can
-change the status, and following all the events is challenging.
-Dynamically detect and use the fresh status for the parameters when
-those are requested.
+> diff --git a/drivers/staging/greybus/hid.c
+> b/drivers/staging/greybus/hid.c
+> index 1f58c907c036..37e8605c6767 100644
+> --- a/drivers/staging/greybus/hid.c
+> +++ b/drivers/staging/greybus/hid.c
+> @@ -201,7 +201,7 @@ static void gb_hid_init_report(struct gb_hid
+> *ghid, struct hid_report *report)
+> =C2=A0	 * we just need to setup the input fields, so using
+> =C2=A0	 * hid_report_raw_event is safe.
+> =C2=A0	 */
+> -	hid_report_raw_event(ghid->hid, report->type, ghid->inbuf,
+> size, 1);
+> +	hid_report_raw_event(ghid->hid, report->type, ghid->inbuf,
+> ghib->bufsize, size, 1);
 
-The issue was dicovered [1] by Sashiko.
+Oops, "ghid" is misspelled here...
 
-[1] https://lore.kernel.org/20260416040602.88665-1-sj@kernel.org
+Found this when building some gaint kernel with this patchset.
 
-Fixes: 369c415e6073 ("mm/damon: introduce DAMON_STAT module")
-Cc: <stable@vger.kernel.org> # 6.17.x
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- mm/damon/stat.c | 30 ++++++++++++++++++++----------
- 1 file changed, 20 insertions(+), 10 deletions(-)
+Thanks,
+Icenowy
 
-diff --git a/mm/damon/stat.c b/mm/damon/stat.c
-index 99ba346f9e325..3951b762cbddf 100644
---- a/mm/damon/stat.c
-+++ b/mm/damon/stat.c
-@@ -19,14 +19,17 @@
- static int damon_stat_enabled_store(
- 		const char *val, const struct kernel_param *kp);
- 
-+static int damon_stat_enabled_load(char *buffer,
-+		const struct kernel_param *kp);
-+
- static const struct kernel_param_ops enabled_param_ops = {
- 	.set = damon_stat_enabled_store,
--	.get = param_get_bool,
-+	.get = damon_stat_enabled_load,
- };
- 
- static bool enabled __read_mostly = IS_ENABLED(
- 	CONFIG_DAMON_STAT_ENABLED_DEFAULT);
--module_param_cb(enabled, &enabled_param_ops, &enabled, 0600);
-+module_param_cb(enabled, &enabled_param_ops, NULL, 0600);
- MODULE_PARM_DESC(enabled, "Enable of disable DAMON_STAT");
- 
- static unsigned long estimated_memory_bandwidth __read_mostly;
-@@ -273,17 +276,23 @@ static void damon_stat_stop(void)
- 	damon_stat_context = NULL;
- }
- 
-+static bool damon_stat_enabled(void)
-+{
-+	if (!damon_stat_context)
-+		return false;
-+	return damon_is_running(damon_stat_context);
-+}
-+
- static int damon_stat_enabled_store(
- 		const char *val, const struct kernel_param *kp)
- {
--	bool is_enabled = enabled;
- 	int err;
- 
- 	err = kstrtobool(val, &enabled);
- 	if (err)
- 		return err;
- 
--	if (is_enabled == enabled)
-+	if (damon_stat_enabled() == enabled)
- 		return 0;
- 
- 	if (!damon_initialized())
-@@ -293,16 +302,17 @@ static int damon_stat_enabled_store(
- 		 */
- 		return 0;
- 
--	if (enabled) {
--		err = damon_stat_start();
--		if (err)
--			enabled = false;
--		return err;
--	}
-+	if (enabled)
-+		return damon_stat_start();
- 	damon_stat_stop();
- 	return 0;
- }
- 
-+static int damon_stat_enabled_load(char *buffer, const struct kernel_param *kp)
-+{
-+	return sprintf(buffer, "%c\n", damon_stat_enabled() ? 'Y' : 'N');
-+}
-+
- static int __init damon_stat_init(void)
- {
- 	int err = 0;
--- 
-2.47.3
+> =C2=A0}
+> =C2=A0
+> =C2=A0static void gb_hid_init_reports(struct gb_hid *ghid)
 
