@@ -1,228 +1,189 @@
-Return-Path: <stable+bounces-238646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238647-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EI2VDj3n5GkNbwEAu9opvQ
-	(envelope-from <stable+bounces-238646-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 16:31:25 +0200
+	id EFFoLGzu5GmVcAEAu9opvQ
+	(envelope-from <stable+bounces-238647-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 17:02:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B30F44245DF
-	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 16:31:24 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A12CB4246CB
+	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 17:02:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0467E3005AAF
-	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 14:31:24 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4003F300407B
+	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 15:02:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84E0D40DFC4;
-	Sun, 19 Apr 2026 14:31:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AF8037BE8F;
+	Sun, 19 Apr 2026 15:01:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rJdt2jia"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jP5d7BXv"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from mail-dl1-f43.google.com (mail-dl1-f43.google.com [74.125.82.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED03D2DCF46
-	for <stable@vger.kernel.org>; Sun, 19 Apr 2026 14:31:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776609080; cv=none; b=j1hJB5/ZYqyvB0x3vT47YWNqUY7P73qmHQT6ig5VxXok1tyW1KiUPac1bqdQJOaaL8uMjeU6ombTbjQm5PmuLDQDQjvw/6HJYsVKQXeNaDWKuOV/kRnDyXFnuzbiC4iVW0XTuIz8NSVlmZFD2XblvXlmkHHApjT+z+88uF4jtMs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776609080; c=relaxed/simple;
-	bh=Y8GyqGgQ6kl1F5r5RC/hnhSUBsUKP/zHaLDSWr6/bYk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bK0XfSxdWdSSM++rFxFj2dlbhR+bR6W7dBfb5wCdIinuMVTupFOrf/wC/q6s/vCYAAm0M1XltNCEBJ+Tp81cCNgTxD0875tLcaDcxAcRQFwWg+rN5norBpHI1s7hxji40roHU+Yxn5F0OEFUAiqprWx8tBhCjeSgW1qx9lo5WR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rJdt2jia; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2ad9f316d68so8943795ad.2
-        for <stable@vger.kernel.org>; Sun, 19 Apr 2026 07:31:18 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 377E526F29C
+	for <stable@vger.kernel.org>; Sun, 19 Apr 2026 15:01:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776610918; cv=pass; b=twIhwrtDimGn9Tzn6KG9iXbI18Ogfm0/lFIHgH9uzUA05bFe6N8ldxxWkrR9lnD4w4MwvnvXVWeXcjhioBBeqncrzmEJalpkm+Q5JwZqAahaSWwJ5bcaRj/JQyvKThzZw6Ca3C3dsWskTAkVL4wNWN50TrAa4zCmujoLv0zHrVM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776610918; c=relaxed/simple;
+	bh=oajmnfUT0ewEISMxls8cp07i4k5MNYH63Qg3BrPwfTw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Cz62tfCsecj1vK4wPmBDq7bK6xjKYwFz1LzRN9vw1P8Dzxecu3Rnhlrr2NHVS+QQBP9/wWh898QE9MtYFlypvL/ajyQxElh3HfjaZebZyahYJGCkx+qYUAH5T4zHt7IHx8PqixUipkHqvwL3KJmXKDSlrxu3Nj+i0mCQQO1qMnU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jP5d7BXv; arc=pass smtp.client-ip=74.125.82.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-dl1-f43.google.com with SMTP id a92af1059eb24-126ea4e9697so6586c88.1
+        for <stable@vger.kernel.org>; Sun, 19 Apr 2026 08:01:57 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776610916; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Fu4K96cePnrTFb6Wa7lL8NOOpJ7bdOGeeap+RAJbJOK30PKT73rqv2NGAgJoqtcPW6
+         vOvYkfcSgYoq3kPxdacShBOeJNClmcHr0xsk4XShbporZlPCODx+FIiZibbv4hgy83qi
+         +mLIPWzI9ZbK91SEiLUrxX3sooLkqJNvjUtRr6tckGF6r8iJfLXWHGjLT7JRSCdyumds
+         kEjOaj6Vyw6JBiBoKX/VHVKtj0BWWv60kaSxhyXpzSChDdLH8QOhW26ARC+Y5sURRWO2
+         +UXiEIfUTVEgQyNgVFPG/kVcq6olAj0Zk5ZzU2nwEhl78NfauCxUqTCeiWwiPAlzOFrU
+         r62A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=EO7gB0nQmhkZHYAXrduT64kOSIDUwU/IpbCgv7t2Vks=;
+        fh=Oo34rkSpaFF8bVQK2yS3+7ZaBAVaPAmnsbf3F7hMYrQ=;
+        b=eWqeIqHRvU3X7hjnB0v+Me/iduY3i75G6HX3C5Dj0nPnyx7GR7OYUaEaE8MuacJVM4
+         6nXaLp9Z0EWycAMvocvVAhsXIiIDqI4kujRPqiVaM+NBCC3NJveLpd+mmtdlrhQ09dDH
+         jIqFhWP+4xa9nVrdoCGE+e1aQzr00OYtHMEkMwfkdsTC9eNRxsqLa+PEmWRn92ugAZav
+         bBIO3mGMfwyuzveKVDNpfbLKpc+WTFA1/ygEuEyRoHcXvRH8VhYoBDNDscCLz6YSGli2
+         gufFQOvhKnKgOShSWp/WrOBgXuHMW2uClWJ2mDPtzJWc+ps6WJRrLHHSyYelNcj2XYcK
+         ky8w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776609078; x=1777213878; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=r/McSDssSNdwq5LcpMkr7nlq1QDVqsyyBhUjejRX74A=;
-        b=rJdt2jiaIQ6jP8RonjorpR1yj7wD07ptZ+yZPbS2+eKaZ7RgH798gYBPoKMTDe739/
-         HwDf+Aqo2x8x0NbuYrPtDoULn33Dz4nWEgfu3MGbaRwbPQXrR/k8qmdwUeyNSpmx+wZw
-         cAGDK+s/WmnDjAbToFmGL++wUp+5WhG8kCIgdP7S6bOqQqWelgLh5k0/ogrChqOfcGfI
-         MLVAVaFI/gEWiIi1RmSA056bbRWqIwKG/BxMKMhxYL+la2skHJC2NyAv5lkcCv5IenHp
-         qCLRV245Rdl61xSw9wTv1SK3QklCOplsyIGnIdPJK09B9GZBVpJ2rcK1Ri8yygNiTdOc
-         IX0w==
+        d=google.com; s=20251104; t=1776610916; x=1777215716; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EO7gB0nQmhkZHYAXrduT64kOSIDUwU/IpbCgv7t2Vks=;
+        b=jP5d7BXvcwNVjM20UEiD9ex4aGzM0e+Sha8gOXVAHC+8tcqYxza9qQp9hUREbeL2oZ
+         Wl4w6dj8DSfE+wL0cwbGZEpvYGO7bibb9Lssr53/RiQ8aqtVPvzrx5VMkEdNnPBcfHI7
+         KYOVbQ8G/bbhTXCu4Wful/BJhF70XSdRLSlQBzOLDtWFLEtcF0jDgw7jjN2B9CC4ZInS
+         c+Pw0xhQ4LsHnKMW/6yJe25DYfdlORXAmshJ9fV9Y1JuqK16QV9mmpTOZEe8+6AF611H
+         r2YdiYtcgrE91TRL9FiljfCM6znomgv7xCNHGqLXNTf/ryooIofQwK47xApSxNRcoX+h
+         qmsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776609078; x=1777213878;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=r/McSDssSNdwq5LcpMkr7nlq1QDVqsyyBhUjejRX74A=;
-        b=DU1Po5X2VWGkz7PgEk6vHOJR6WndQ1T1qt84VtDZ4Yea8wNg+R6KzJf1v13UGeaESL
-         lKouIO4YlkWQpbfHeX6vngRiuRtv4RTQ1dNYRV1CmzV1t9D+DIhZRn1sYNeudg8lYlB0
-         t9K7Yr8pFfGcQtv9EhC3EX9nm60OxAZg26g9nwz/HCd0bqk1nu89wj48OnMDJvkp4k4A
-         6HiVp5QCenthSWSTR1vppYttq3dXI/EKPtEhiCJ/I97vXTbPSMlRlurqU6/D21qmQrGV
-         X852jjfXlUXWGnuh9E3a7097/tUOMsC3j6riLefrn2y7Hs/vC1j73HY4lPEG/2sKRZKJ
-         jJdw==
-X-Forwarded-Encrypted: i=1; AFNElJ9a1txWLbYOwlVDajvv6B2J2bA1ZGIEDQs5EoqY3XUtBA4C3CPsLBVDlBvDpjEMB81aAP4QlnU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzWw7qaS/GcJzrhX1BkkIqOv9gYkWriAlwUo7fLkBQ0sEMqzLVN
-	aMjs4m6IcaSVN926zk3sv4XPvP1bQLmXNipiOfC1xnBDzu3Ixs2OIy10
-X-Gm-Gg: AeBDietBQVgndq14L9OKX7CUk/hp9uIKEfljwxBjYPfkxga58D3o09lB9PbDeWIGBwH
-	LaFtBwCIG7ueX+H5Zt+z5L8vImVVYJa9osamMqyYmwNt6joLBk5oK4wIpHYktkG8vw0c4VIqeu1
-	SyISAsMF7HR0/TKbYSKxzsaF8FCPYDAEC1vUsL5QMoC87Q3QCJjmC2RP2McBWmC7/O/Y/D3DQYv
-	YPrzHZk7kyVzhuWlWYNpb1ybQW5Oo610zR4byt8hhHSGrg93eijg5bAJQE3bGVgT+jr14Ekz4Qg
-	4ecrmVpKXk4Zug0XKrYf0nwLClhynCDdRFeoHmfQEbOnqWiFo22b/5UjlqEBJkdt2gbR86ZTlrZ
-	zQbYoWH/K5XWX418sIDms9WVKS4gTx2EveSKNksKAO1iYdZrsziyApEBUREfLyGVoks0/uu31jT
-	Ydz8f+qfWZyK1bAk4VDunGz6FVVtp1/aB2dAo5qLpbDQw9uoP9qI/d9WjBDSxRKTFvP6W6szIEC
-	ANc2fFEsUI=
-X-Received: by 2002:a17:903:bd2:b0:2ae:826f:2c50 with SMTP id d9443c01a7336-2b5f9e8996bmr84030485ad.12.1776609078236;
-        Sun, 19 Apr 2026 07:31:18 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b5faa3073asm71740385ad.27.2026.04.19.07.31.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 19 Apr 2026 07:31:17 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <8bb67921-d8e7-4535-bbec-249e9702ce62@roeck-us.net>
-Date: Sun, 19 Apr 2026 07:31:14 -0700
+        d=1e100.net; s=20251104; t=1776610916; x=1777215716;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=EO7gB0nQmhkZHYAXrduT64kOSIDUwU/IpbCgv7t2Vks=;
+        b=k5fZD46o4tQszRb6DSVlfT5Fn81xhskL/vW3z/L8hk/rOQd/KEfH+E12bCvaSmYJHT
+         gXCrT+OgYPvx9PPfD9g9yVX1tkA+9f5Q9xobnQdQtkclNuBSWDBdWa6Z4G+ecPxACLFY
+         vsuO5mU7bM00ssWgwr5CDK/smquYhEKLin7pX3BOupFtmhC45eC4+CAzY335A042CeGE
+         QEYFH4ax4nKvk32+m/oulEX9TbpShW8e96vyMGF5OjL5uX4ks1q+qiPmuIjLUlO2Ku5b
+         KKclujmE/93CfqqNBADWfkUQ0QEqL59NEXcldWLwXSdr3u0etUWOrSeHc/XCoo69zatX
+         m0bA==
+X-Forwarded-Encrypted: i=1; AFNElJ8HUNc/FR1jrQhrulmhec0cCgXq8SvNPznMgVy6rF17v2sl0ZVP3UyC5Ra58+CnNYuiIa1YsCg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyz0OyWF4eP5pY3OFmfYuA5ooAyGeiJkLKK964/39gdRzbIKrPo
+	EInRD3jN8BQjXdAYN4fALJ7fVg/QXv+0/Cy/GJHmycceu40n8ctmWHumiYfzz4qwsPZSt6GXXP6
+	Y8fWCg6oZgXzAaw1U7sbA1gnHvKEjNWmsc6DbcV+N
+X-Gm-Gg: AeBDietI0BsropWrBsYItUCH1qTYtg0XawqKMw8jDX9A/8PBvXyiYh58DW3BqMQtmWy
+	yT1qk1yqcUhaaPxNA+Ib9dkG0LQwMzeRJWU7uH00M7hyNk45qW/ruxLS3Yj/n266PEyq9fjyy4f
+	erdA7EIS9ddMi3e/DE5GGtAI74PFAqiH3jRNFZ9Vmu6aR/I7SWrrZ9ugrpbsEXtInADcDtX75AQ
+	oUN2ARPtsD2mb4meBKHu+pXbdJoRwGWtoZmzpk54OFhCq+bCeDbglaacwB2avxrCuvJojA6ZBGW
+	1mthzXXpjYf9hu93x45iSTo2WE/oQw==
+X-Received: by 2002:a05:7023:b04:b0:12b:fa7f:e24b with SMTP id
+ a92af1059eb24-12c7b2570b1mr107867c88.13.1776610915457; Sun, 19 Apr 2026
+ 08:01:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.1 00/55] 6.1.169-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org, shuah@kernel.org,
- patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@nabladev.com,
- jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com, Linus Walleij <linusw@kernel.org>,
- Vladimir Oltean <vladimir.oltean@nxp.com>
-References: <20260413155724.820472494@linuxfoundation.org>
-Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- xsFNBE6H1WcBEACu6jIcw5kZ5dGeJ7E7B2uweQR/4FGxH10/H1O1+ApmcQ9i87XdZQiB9cpN
- RYHA7RCEK2dh6dDccykQk3bC90xXMPg+O3R+C/SkwcnUak1UZaeK/SwQbq/t0tkMzYDRxfJ7
- nyFiKxUehbNF3r9qlJgPqONwX5vJy4/GvDHdddSCxV41P/ejsZ8PykxyJs98UWhF54tGRWFl
- 7i1xvaDB9lN5WTLRKSO7wICuLiSz5WZHXMkyF4d+/O5ll7yz/o/JxK5vO/sduYDIlFTvBZDh
- gzaEtNf5tQjsjG4io8E0Yq0ViobLkS2RTNZT8ICq/Jmvl0SpbHRvYwa2DhNsK0YjHFQBB0FX
- IdhdUEzNefcNcYvqigJpdICoP2e4yJSyflHFO4dr0OrdnGLe1Zi/8Xo/2+M1dSSEt196rXaC
- kwu2KgIgmkRBb3cp2vIBBIIowU8W3qC1+w+RdMUrZxKGWJ3juwcgveJlzMpMZNyM1jobSXZ0
- VHGMNJ3MwXlrEFPXaYJgibcg6brM6wGfX/LBvc/haWw4yO24lT5eitm4UBdIy9pKkKmHHh7s
- jfZJkB5fWKVdoCv/omy6UyH6ykLOPFugl+hVL2Prf8xrXuZe1CMS7ID9Lc8FaL1ROIN/W8Vk
- BIsJMaWOhks//7d92Uf3EArDlDShwR2+D+AMon8NULuLBHiEUQARAQABzTJHdWVudGVyIFJv
- ZWNrIChMaW51eCBhY2NvdW50KSA8bGludXhAcm9lY2stdXMubmV0PsLBgQQTAQIAKwIbAwYL
- CQgHAwIGFQgCCQoLBBYCAwECHgECF4ACGQEFAmgrMyQFCSbODQkACgkQyx8mb86fmYGcWRAA
- oRwrk7V8fULqnGGpBIjp7pvR187Yzx+lhMGUHuM5H56TFEqeVwCMLWB2x1YRolYbY4MEFlQg
- VUFcfeW0OknSr1s6wtrtQm0gdkolM8OcCL9ptTHOg1mmXa4YpW8QJiL0AVtbpE9BroeWGl9v
- 2TGILPm9mVp+GmMQgkNeCS7Jonq5f5pDUGumAMguWzMFEg+Imt9wr2YA7aGen7KPSqJeQPpj
- onPKhu7O/KJKkuC50ylxizHzmGx+IUSmOZxN950pZUFvVZH9CwhAAl+NYUtcF5ry/uSYG2U7
- DCvpzqOryJRemKN63qt1bjF6cltsXwxjKOw6CvdjJYA3n6xCWLuJ6yk6CAy1Ukh545NhgBAs
- rGGVkl6TUBi0ixL3EF3RWLa9IMDcHN32r7OBhw6vbul8HqyTFZWY2ksTvlTl+qG3zV6AJuzT
- WdXmbcKN+TdhO5XlxVlbZoCm7ViBj1+PvIFQZCnLAhqSd/DJlhaq8fFXx1dCUPgQDcD+wo65
- qulV/NijfU8bzFfEPgYP/3LP+BSAyFs33y/mdP8kbMxSCjnLEhimQMrSSo/To1Gxp5C97fw5
- 3m1CaMILGKCmfI1B8iA8zd8ib7t1Rg0qCwcAnvsM36SkrID32GfFbv873bNskJCHAISK3Xkz
- qo7IYZmjk/IJGbsiGzxUhvicwkgKE9r7a1rOwU0ETofVZwEQALlLbQeBDTDbwQYrj0gbx3bq
- 7kpKABxN2MqeuqGr02DpS9883d/t7ontxasXoEz2GTioevvRmllJlPQERVxM8gQoNg22twF7
- pB/zsrIjxkE9heE4wYfN1AyzT+AxgYN6f8hVQ7Nrc9XgZZe+8IkuW/Nf64KzNJXnSH4u6nJM
- J2+Dt274YoFcXR1nG76Q259mKwzbCukKbd6piL+VsT/qBrLhZe9Ivbjq5WMdkQKnP7gYKCAi
- pNVJC4enWfivZsYupMd9qn7Uv/oCZDYoBTdMSBUblaLMwlcjnPpOYK5rfHvC4opxl+P/Vzyz
- 6WC2TLkPtKvYvXmdsI6rnEI4Uucg0Au/Ulg7aqqKhzGPIbVaL+U0Wk82nz6hz+WP2ggTrY1w
- ZlPlRt8WM9w6WfLf2j+PuGklj37m+KvaOEfLsF1v464dSpy1tQVHhhp8LFTxh/6RWkRIR2uF
- I4v3Xu/k5D0LhaZHpQ4C+xKsQxpTGuYh2tnRaRL14YMW1dlI3HfeB2gj7Yc8XdHh9vkpPyuT
- nY/ZsFbnvBtiw7GchKKri2gDhRb2QNNDyBnQn5mRFw7CyuFclAksOdV/sdpQnYlYcRQWOUGY
- HhQ5eqTRZjm9z+qQe/T0HQpmiPTqQcIaG/edgKVTUjITfA7AJMKLQHgp04Vylb+G6jocnQQX
- JqvvP09whbqrABEBAAHCwWUEGAECAA8CGwwFAmgrMyQFCSbODQkACgkQyx8mb86fmYHlgg/9
- H5JeDmB4jsreE9Bn621wZk7NMzxy9STxiVKSh8Mq4pb+IDu1RU2iLyetCY1TiJlcxnE362kj
- njrfAdqyPteHM+LU59NtEbGwrfcXdQoh4XdMuPA5ADetPLma3YiRa3VsVkLwpnR7ilgwQw6u
- dycEaOxQ7LUXCs0JaGVVP25Z2hMkHBwx6BlW6EZLNgzGI2rswSZ7SKcsBd1IRHVf0miwIFYy
- j/UEfAFNW+tbtKPNn3xZTLs3quQN7GdYLh+J0XxITpBZaFOpwEKV+VS36pSLnNl0T5wm0E/y
- scPJ0OVY7ly5Vm1nnoH4licaU5Y1nSkFR/j2douI5P7Cj687WuNMC6CcFd6j72kRfxklOqXw
- zvy+2NEcXyziiLXp84130yxAKXfluax9sZhhrhKT6VrD45S6N3HxJpXQ/RY/EX35neH2/F7B
- RgSloce2+zWfpELyS1qRkCUTt1tlGV2p+y2BPfXzrHn2vxvbhEn1QpQ6t+85FKN8YEhJEygJ
- F0WaMvQMNrk9UAUziVcUkLU52NS9SXqpVg8vgrO0JKx97IXFPcNh0DWsSj/0Y8HO/RDkGXYn
- FDMj7fZSPKyPQPmEHg+W/KzxSSfdgWIHF2QaQ0b2q1wOSec4Rti52ohmNSY+KNIW/zODhugJ
- np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
-In-Reply-To: <20260413155724.820472494@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+References: <20260419090756.2190201-1-zhengxingda@iscas.ac.cn>
+In-Reply-To: <20260419090756.2190201-1-zhengxingda@iscas.ac.cn>
+From: Ian Rogers <irogers@google.com>
+Date: Sun, 19 Apr 2026 08:01:43 -0700
+X-Gm-Features: AQROBzBStw1beLm8GiHCmsv5MOwelYHHtOzwIKqt0bbRh8Hc1as4FPv9pELhQFw
+Message-ID: <CAP-5=fX=+2oNYHDqsNnFrOZya=RxpnPFF_ojZTQP8v8Umt951w@mail.gmail.com>
+Subject: Re: [PATCH] perf unwind-libdw: Fix stale object reference in arch/loongarch
+To: Icenowy Zheng <zhengxingda@iscas.ac.cn>
+Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, 
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
+	Adrian Hunter <adrian.hunter@intel.com>, James Clark <james.clark@linaro.org>, 
+	Shimin Guo <shimin.guo@skydio.com>, linux-perf-users@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-238646-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[roeck-us.net];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com,nxp.com];
-	RCPT_COUNT_TWELVE(0.00)[21];
+	TAGGED_FROM(0.00)[bounces-238647-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[linux@roeck-us.net,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[irogers@google.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[google.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B30F44245DF
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,iscas.ac.cn:email]
+X-Rspamd-Queue-Id: A12CB4246CB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi,
+On Sun, Apr 19, 2026 at 2:08=E2=80=AFAM Icenowy Zheng <zhengxingda@iscas.ac=
+.cn> wrote:
+>
+> The arch/loongarch/util/unwind-libdw.c file is already moved to util/,
+> but the Build statement for it is forgot to be removed.
+>
+> Remove the stale Build statement.
+>
+> This fixes the build failure of perf tool in kernel v7.0 on LoongArch.
+>
+> Fixes: e62fae9d9e85 ("perf unwind-libdw: Fix a cross-arch unwinding bug")
+> Signed-off-by: Icenowy Zheng <zhengxingda@iscas.ac.cn>
+> Cc: stable@vger.kernel.org
 
-On 4/13/26 09:00, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.169 release.
-> There are 55 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed, 15 Apr 2026 15:57:08 +0000.
-> Anything received after that time might be too late.
-> 
+I think this is already fixed:
+https://web.git.kernel.org/pub/scm/linux/kernel/git/perf/perf-tools-next.gi=
+t/commit/?h=3Dperf-tools-next
+I also sent out a fix, fwiw:
+https://lore.kernel.org/linux-perf-users/20260305221927.3237145-3-irogers@g=
+oogle.com/
 
-Looking through my test logs, I find that the following build error has been
-reported since  v6.1.166.
+Thanks,
+Ian
 
-Building arm:ixp4xx_defconfig ... failed
---------------
-Error log:
-drivers/net/ethernet/xscale/ixp4xx_eth.c:390:39: warning: 'struct kernel_hwtstamp_config' declared inside parameter list will not be visible outside of this definition or declaration
-   390 |                                struct kernel_hwtstamp_config *cfg,
-       |                                       ^~~~~~~~~~~~~~~~~~~~~~
-drivers/net/ethernet/xscale/ixp4xx_eth.c: In function 'ixp4xx_hwtstamp_set':
-drivers/net/ethernet/xscale/ixp4xx_eth.c:408:16: error: invalid use of undefined type 'struct kernel_hwtstamp_config'
-
-Backported patches in that driver are
-
-5195b10c34b8 net: ethernet: xscale: Check for PTP support properly
-a94d5447f6bf net: ixp4xx_eth: convert to ndo_hwtstamp_get() and ndo_hwtstamp_set()
-
-where a94d5447f6bf introduces the problem and presumably was applied
-to be able to apply 5195b10c34b8 without having to resolve conflicts.
-
-Unfortunately, 'struct kernel_hwtstamp_config' is indeed not available in v6.1,
-causing the build failure.
-
-a94d5447f6bf can not be reverted on its own, so both patches would have to
-be reverted to fix the problem.
-
-The same problem is seen in v5.15.y since v5.15.202. The commits there are
-
-144dde314698 net: ethernet: xscale: Check for PTP support properly
-612c622ab8ef net: ixp4xx_eth: convert to ndo_hwtstamp_get() and ndo_hwtstamp_set()
-
-I have copied the patch authors for advice.
-
-Guenter
-
+> ---
+>  tools/perf/arch/loongarch/util/Build | 1 -
+>  1 file changed, 1 deletion(-)
+>
+> diff --git a/tools/perf/arch/loongarch/util/Build b/tools/perf/arch/loong=
+arch/util/Build
+> index 3ad73d0289f3e..8d91e78d31c94 100644
+> --- a/tools/perf/arch/loongarch/util/Build
+> +++ b/tools/perf/arch/loongarch/util/Build
+> @@ -1,4 +1,3 @@
+>  perf-util-y +=3D header.o
+>
+>  perf-util-$(CONFIG_LOCAL_LIBUNWIND) +=3D unwind-libunwind.o
+> -perf-util-$(CONFIG_LIBDW_DWARF_UNWIND) +=3D unwind-libdw.o
+> --
+> 2.52.0
+>
 
