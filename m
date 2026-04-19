@@ -1,82 +1,114 @@
-Return-Path: <stable+bounces-238617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238618-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AodBNiwc5Gn2RAEAu9opvQ
-	(envelope-from <stable+bounces-238617-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 02:05:00 +0200
+	id AAkBCook5GnvRgEAu9opvQ
+	(envelope-from <stable+bounces-238618-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 02:40:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7BD0422A51
-	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 02:04:59 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D732422C4B
+	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 02:40:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E3448300B46F
-	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 00:04:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4E0F0302E792
+	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 00:40:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63F2C322A;
-	Sun, 19 Apr 2026 00:04:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15674233D9E;
+	Sun, 19 Apr 2026 00:40:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YMdBMVrC"
-X-Original-To: Stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="V/xuSyYQ";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="RiUO4lb/"
+X-Original-To: stable@vger.kernel.org
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 797EC40DFBF;
-	Sun, 19 Apr 2026 00:04:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 982BA10F1
+	for <stable@vger.kernel.org>; Sun, 19 Apr 2026 00:40:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776557097; cv=none; b=sQdXZ/VG3hOekX9n0Y4lMhltK8tVbAimn5xmCHAhyhS4jsIh8mJg99QKNcwf139xP2Gr/oczP1dKMMSCzJx7Dkj2VOI1e0llsSeoi2LXkAsU00rqP/DvkLOcjmTGsNCGcX3NMxtuFqcTHn+JHtQlOgkrHQc+5mCo3FNSSWHNTu4=
+	t=1776559232; cv=none; b=pgtVkY/5JjdIVxxXROjqUAnwBZMl4CL9A5wXDL+lS2AWCDqBqRnM/hwoKR1z7EmKCZZgLR9VaeYgNmEApcYQb1JkIQvT8mw4dqr8XbxKgIzmknOrrWF80YWsYF6TNClq+6WVZMoRNB+fR/qQLO+HV2uTJjnpHl0l/SGAX4+wuJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776557097; c=relaxed/simple;
-	bh=Ik3ETTC1pbIgH3NWbPKUjPc922OA85hWdY5HwghyVo0=;
+	s=arc-20240116; t=1776559232; c=relaxed/simple;
+	bh=bI9Yl9ViGeQph4xa6qGHRhQ9gxpOgYbrJG7aFlKhGKo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r4NbRMWl6JtsAPPffqoQGVjsJNiZOvLoYOIiWMc1NS19Q8uIyxE8j60X4dr2SueoFJquxIqnpKHGUs6xIkq1GC6iiPLYmHjot/Hwavt+mGikvnsiFgVJ9lqvoksl4f7ePCf5s8lVgf+hOyGUd9Zcorb0rhyZpWDyHD2jRjQ/pbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YMdBMVrC; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776557094; x=1808093094;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Ik3ETTC1pbIgH3NWbPKUjPc922OA85hWdY5HwghyVo0=;
-  b=YMdBMVrC/rKFIfiO9q47VTT/RxY3wTxUcFZeFjDwArsFlysPopgDh5GY
-   6vtig0HW7tyxLRAOGWoumP/xKMF7WXAaloO0As2mE/8utz4PuUBuxOAN5
-   hY8B/KSj8c2yMcYrgT9+Vzh/apmHm2Zs3anLXfreN3RetGOO/ovHbglag
-   yikKUIcJc2OCKPTm1bHEqI2JGdy9wF/mnP7Uy756NndTy4cE822/CQTCE
-   xBpK5otl9fdGbfu2ZoKUCMbnYN6TyvUI8tKt01b8QRd19112StwA9UGu2
-   A5rQSSnjoOIA0MoQ87M3Z6L2GBOnPupEeZ2alFZJ1Sg27IiRTD5BiSpDo
-   Q==;
-X-CSE-ConnectionGUID: bxAqyKGrRgqTf0y3ZlHEyw==
-X-CSE-MsgGUID: m9Ka8FG0Qh2X/fMwU+U1zA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11762"; a="77499112"
-X-IronPort-AV: E=Sophos;i="6.23,187,1770624000"; 
-   d="scan'208";a="77499112"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Apr 2026 17:04:53 -0700
-X-CSE-ConnectionGUID: 6nrqakXRTzGvZeBS1QJZlQ==
-X-CSE-MsgGUID: h5o6eGr+QnCbGiAnHlo1tA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,187,1770624000"; 
-   d="scan'208";a="231248494"
-Received: from lkp-server01.sh.intel.com (HELO 7e48d0ff8e22) ([10.239.97.150])
-  by orviesa009.jf.intel.com with ESMTP; 18 Apr 2026 17:04:51 -0700
-Received: from kbuild by 7e48d0ff8e22 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wEFea-000000001ae-2ROc;
-	Sun, 19 Apr 2026 00:04:48 +0000
-Date: Sun, 19 Apr 2026 08:04:39 +0800
-From: kernel test robot <lkp@intel.com>
-To: Shawn Lin <shawn.lin@rock-chips.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Cc: oe-kbuild-all@lists.linux.dev, linux-mmc@vger.kernel.org,
-	linux-rockchip@lists.infradead.org,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Shawn Lin <shawn.lin@rock-chips.com>, Stable@vger.kernel.org
-Subject: Re: [PATCH v2] mmc: sdhci-of-dwcmshc: Disable clock before DLL
- configuration
-Message-ID: <202604190759.51VAkEgC-lkp@intel.com>
-References: <1775629564-11267-1-git-send-email-shawn.lin@rock-chips.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=BK9t6dxvUT6Jymzq7Gud858xzErYAkM0U+sDutZyCgiCVDQf8gsKxUN2cHLqR9y9IHn1aXntMZmSvbyq0dUa0tBDatJ2MjRha/LPwxYpDi9QshyQkJ4QLhbuvZBoWYmOp6KZzi1gi5qZhaKrfHI4XdZE37jL5yKm1SNCe+R9pe4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=V/xuSyYQ; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=RiUO4lb/; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63INKOgu090102
+	for <stable@vger.kernel.org>; Sun, 19 Apr 2026 00:40:30 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=u8hqGnhqQvo+1kHYK672RCa0
+	BshwCk42qeeZrE4YnGQ=; b=V/xuSyYQQlEI/KH8VjbFgrGwfs31rsc3Ufw62pfJ
+	khNd/atHgJIZjp0zxRf6DpHrLqtD9pXplmXlhWeW6QSiZyFDFbl2HKBJ+F83xVb8
+	LZkqjO5Zwl3lkzSyZk8T6OBS48NZvRscFmOdthwA73aGBt1d8+/AqvY2UBuKZWXC
+	aV/GA4su4NNEy3LpTAm1g0tPG+mZX8NIn4p6IEVsuZjgRmvt3JOmRtH6PcFT3nGr
+	+IAVDbeeymEFvVn/jVxR6Yatz+1F6c8sS1JwkBf50LbmHJAIqhD8M+gDctbRKIL/
+	u6DobnH+egteD+0ZY9GyFTD9/6ml5ub9RDpnmlp65JpOCQ==
+Received: from mail-ua1-f70.google.com (mail-ua1-f70.google.com [209.85.222.70])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4dm0y61ts0-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Sun, 19 Apr 2026 00:40:30 +0000 (GMT)
+Received: by mail-ua1-f70.google.com with SMTP id a1e0cc1a2514c-953cccadb32so2149819241.2
+        for <stable@vger.kernel.org>; Sat, 18 Apr 2026 17:40:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1776559230; x=1777164030; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=u8hqGnhqQvo+1kHYK672RCa0BshwCk42qeeZrE4YnGQ=;
+        b=RiUO4lb/HZRY9TlIyMN/obNeSjPWwewYh65piMBCgbkxJwT16/xBrQrjQJmFSvTaNb
+         cGimijRDjA6btP8dxgiSj7ANgSkjEFNaiCFEAjaz41HNf6B1juZzjBbQI3mbl85Rm4Nu
+         FAYI94J0a9rxg3kQARSPmCfiMv+IF0NiUe4A9NPKKKW193fi0wC67RYjm36BLEJ6o6c6
+         M2C8SmzMhKVtlrRJ28pxgZZyFT59iTL0eTSr4NhcmD3c5R0W/LYUma7w4zOlnfg5eXhz
+         9n+JwavJOEwfm64BQvtnuZ36exPXhebTUIK4MAgWLzn2jjke/WOcZIgu/HuLfR4jV4G2
+         D33A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776559230; x=1777164030;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=u8hqGnhqQvo+1kHYK672RCa0BshwCk42qeeZrE4YnGQ=;
+        b=aB0LCCXlZHK6NJAiYkw0ZfRvB9dkjAcA1Fog+RMHUUtSVb8VI98VXd96C/+BoQH5m5
+         x1Z6jclldqQe+QCnVntmldZTQWuRTu/b+NBlDfjGtn/by3rW4v4cCHkcgs7NNAyXJyYz
+         455cCCOG7KnHqIypmF/YDuaiK2hyOsr4lm/B4dwNll5nj0G7jD+txUX80MFI5HUksd3G
+         N8/IeJsbABIjOq0f1bHfyC+gsXoBRCJtoQJDUQV2j/8PRaVfA7ozmHK23M6oIICE6w3L
+         2nLBmTCsZx3Eg/XBwvmM8V/j09Bu5+UKzT29hn9Lgm6YhcxvjGln6BFGeskAy4O791QC
+         luEQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/tP++4C0pj02t7zW1Y9K2cnVWcLSTzgku5YzGZa3HrjkW4wTmX7cxL2e8WY4hGqv+i246Qdcc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyT975RVnjxaRRRaDknRVmPofgc6kxA6OYa6C2DMT07hAARiMCS
+	va4W6OmK1PB0Fbb/Lqp1T9V/qCWEFvD98Tg9bU/wa7yJRRA44Pq7VVETnGeT/dy90uYANw7r6IO
+	ZThx1xc+3LvhucsHGcQVbKUa5NeFD0PTnBBmRC6fmdhsEmaVJrjGINzktNP0=
+X-Gm-Gg: AeBDiev/GB+TqyIubUfaubGA1F7kThtU76G6JMJ5o2Hw1YfLo1Uvn73Pv6B4MQd2L0k
+	p8AFWAZvkHobr0uFkwYq9SP/rnO9WmhPNDpooQtM0yyCc08KOUMYTkF5TtCbz6xDb6T/WJP/30s
+	N+oU2wZVjP+zOJrp3aBcShWwZTr0HCokMHF8ID1hGj/QQhERRN2YksXpYG8lw/uT0QEKW2TVCUD
+	YTkJt0fqS8GZ94Upeo5basmihWThUTGffFimFqfF+kOO2Uplm2HfLb9kRBkchY+liZ9Omw+JF7R
+	H8CYGlaUIN+y4apQsaGD+vQ+PkOJGZ8YqSRBtNq6tAP9xezaZsIk82+3ob0Lsp75XSkCEp338C0
+	hukbTk57n2AW4a+oyjf02j0LxNq56tU4LMaUxA8IJN7L+jR/CgxRejQFXj1S+/VYuBDGz6MCsg3
+	VaYr86uxdPs9xUPHz42AG7ZxrGWCsaZ8VW0Fthwn8iyOwHdQ==
+X-Received: by 2002:a05:6102:ccc:b0:602:7589:6545 with SMTP id ada2fe7eead31-616f7947776mr4090297137.28.1776559229837;
+        Sat, 18 Apr 2026 17:40:29 -0700 (PDT)
+X-Received: by 2002:a05:6102:ccc:b0:602:7589:6545 with SMTP id ada2fe7eead31-616f7947776mr4090280137.28.1776559229330;
+        Sat, 18 Apr 2026 17:40:29 -0700 (PDT)
+Received: from umbar.lan (2001-14ba-a073-af00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a073:af00:264b:feff:fe8b:be8a])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-38ecb5f669dsm14484791fa.14.2026.04.18.17.40.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 18 Apr 2026 17:40:27 -0700 (PDT)
+Date: Sun, 19 Apr 2026 03:40:24 +0300
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+To: Frank Zhang <rmxpzlb@gmail.com>
+Cc: andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org,
+        maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+        tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
+        detlev.casanova@collabora.com, cristian.ciocaltea@collabora.com,
+        Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
+        jernej.skrabec@gmail.com, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] drm/bridge: dw-hdmi-qp: Guard clear_audio_infoframe
+ when PHY is down
+Message-ID: <hdl63shkqubkvczlg7ryjah5psiqzrhu5llelzaetw7skbpujv@nyxgriryjxd5>
+References: <20260418101936.7731-1-rmxpzlb@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -85,214 +117,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1775629564-11267-1-git-send-email-shawn.lin@rock-chips.com>
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+In-Reply-To: <20260418101936.7731-1-rmxpzlb@gmail.com>
+X-Proofpoint-ORIG-GUID: QW7uN6w4SrWnil2yKj7jGQ5rt9VPWc-F
+X-Authority-Analysis: v=2.4 cv=Fpo1OWrq c=1 sm=1 tr=0 ts=69e4247e cx=c_pps
+ a=R6oCqFB+Yf/t2GF8e0/dFg==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=A5OVakUREuEA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=_glEPmIy2e8OvE2BGh3C:22 a=VwQbUJbxAAAA:8
+ a=pGLkceISAAAA:8 a=7Tts1Zsv5J0H2K1XiSQA:9 a=CjuIK1q_8ugA:10
+ a=TD8TdBvy0hsOASGTdmB-:22
+X-Proofpoint-GUID: QW7uN6w4SrWnil2yKj7jGQ5rt9VPWc-F
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE5MDAwNCBTYWx0ZWRfX4oLm/9aOo3rI
+ DO82EYuui4H8HhbNZrH3FB0Ya2ItDc/8dPoo/MHXFmvxz0912c24w3MUHRJr4XPmnDuA4byeqM/
+ g9bhW9syNCyjFVLnlAQLYiZyiJpqPJRngeKdFPl8BMCVf4rnNNq7pMrr7cWXGWkREbyyDbaVTNM
+ F3esq4Wij6Rg4yHNHrg8C8ovMGDhra39RIJS49wNqTQgHo270Ufiow3b7RwuHyi2YgnWu1Ia5UI
+ /tnf2ASw6b6J92y08vgjXakc6518pjHf/hyXvpnwPZdK/Bee6BkEgMgU4p/6NUsXvgOdMxlLn7A
+ BSgldqI0sXCmn3MGVHaOZLynvsKLbYIvtzAhwUD8R9aoNhILTJ5FyF4Wjy5s1/oM8rdLHiHWreS
+ vlZrJl5ETA4umCjy3PzFwp9RcrTazoBKTmzPlRuZI5ps933ndFwiorMtVzm+R06KEywUXcGSYJr
+ Y2MFnDMJ1Noz5ne7Ojw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-18_07,2026-04-17_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 phishscore=0 suspectscore=0 lowpriorityscore=0 bulkscore=0
+ priorityscore=1501 clxscore=1015 adultscore=0 spamscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604070000 definitions=main-2604190004
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[17];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	TAGGED_FROM(0.00)[bounces-238617-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-238618-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[intel.com,linaro.org,kernel.org,linux.intel.com,suse.de,gmail.com,ffwll.ch,collabora.com,ideasonboard.com,kwiboo.se,lists.freedesktop.org,vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:dkim,oss.qualcomm.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FROM_NEQ_ENVFROM(0.00)[dmitry.baryshkov@oss.qualcomm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,intel.com:dkim,intel.com:mid,git-scm.com:url,01.org:url]
-X-Rspamd-Queue-Id: D7BD0422A51
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 8D732422C4B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Shawn,
+On Sat, Apr 18, 2026 at 06:19:36PM +0800, Frank Zhang wrote:
+> The following panic was observed during system reboot:
+> 
+> Kernel panic - not syncing: Asynchronous SError Interrupt
+> CPU: 7 UID: 1000 PID: 2637 Comm: pipewire ... 6.19.10-300.fc44.aarch64
+> Call trace:
+>  ...
+>  regmap_update_bits_base+0x5c/0x90
+>  dw_hdmi_qp_bridge_clear_infoframe+0xb0/0x120 [dw_hdmi_qp]
+>  drm_bridge_connector_clear_infoframe+0x28/0x48 [drm_display_helper]
+>  ...
+>  dw_hdmi_qp_audio_disable+0x24/0xb8 [dw_hdmi_qp]
+>  drm_bridge_connector_audio_shutdown+0x30/0x60 [drm_display_helper]
+>  drm_connector_hdmi_audio_shutdown+0x24/0x38 [drm_display_helper]
+>  hdmi_codec_shutdown+0x60/0x90 [snd_soc_hdmi_codec]
+>  ...
+>  snd_pcm_release_substream.part.0+0x44/0xd8 [snd_pcm]
+>  snd_pcm_release+0x60/0xe8 [snd_pcm]
+>  ...
+> 
+> The root cause is pipewire tries to close the HDMI audio device after
+> atomic_disable(), which sets tmds_char_rate to 0 and disable the PHY.
+> 
+> In this case, dw_hdmi_qp_audio_disable() will call
+> drm_atomic_helper_connector_hdmi_clear_audio_infoframe() directly,
+> accessing registers without checking tmds_char_rate.
+> 
+> Move drm_atomic_helper_connector_hdmi_clear_audio_infoframe() inside the
+> if (hdmi->tmds_char_rate) of dw_hdmi_qp_audio_disable().
+> 
+> Fixes: fd0141d1a8a2 ("drm/bridge: synopsys: Add audio support for dw-hdmi-qp")
+> Signed-off-by: Frank Zhang <rmxpzlb@gmail.com>
+> 
+> ---
+> Changes in v2:
+> - Move drm_atomic_helper_connector_hdmi_clear_audio_infoframe() inside
+>   the if (hdmi->tmds_char_rate) of dw_hdmi_qp_audio_disable().
+> - Link to v1: https://lore.kernel.org/all/20260416093150.13853-1-rmxpzlb@gmail.com/
+> 
+> diff --git a/drivers/gpu/drm/bridge/synopsys/dw-hdmi-qp.c b/drivers/gpu/drm/bridge/synopsys/dw-hdmi-qp.c
+> index d649a1cf07f5..7760527484c8 100644
+> --- a/drivers/gpu/drm/bridge/synopsys/dw-hdmi-qp.c
+> +++ b/drivers/gpu/drm/bridge/synopsys/dw-hdmi-qp.c
+> @@ -526,10 +526,10 @@ static void dw_hdmi_qp_audio_disable(struct drm_bridge *bridge,
+>  {
+>  	struct dw_hdmi_qp *hdmi = dw_hdmi_qp_from_bridge(bridge);
+>  
+> -	drm_atomic_helper_connector_hdmi_clear_audio_infoframe(connector);
+> -
+> -	if (hdmi->tmds_char_rate)
+> +	if (hdmi->tmds_char_rate) {
+> +		drm_atomic_helper_connector_hdmi_clear_audio_infoframe(connector);
+>  		dw_hdmi_qp_audio_disable_regs(hdmi);
+> +	}
 
-kernel test robot noticed the following build errors:
+Will audio and audio infoframe remain disabled after consequetive
+atomic_enable() call?
 
-[auto build test ERROR on v7.0]
-[cannot apply to linus/master ulf-hansson-mmc-mirror/next next-20260417]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Shawn-Lin/mmc-sdhci-of-dwcmshc-Disable-clock-before-DLL-configuration/20260417-234134
-base:   v7.0
-patch link:    https://lore.kernel.org/r/1775629564-11267-1-git-send-email-shawn.lin%40rock-chips.com
-patch subject: [PATCH v2] mmc: sdhci-of-dwcmshc: Disable clock before DLL configuration
-config: i386-allmodconfig (https://download.01.org/0day-ci/archive/20260419/202604190759.51VAkEgC-lkp@intel.com/config)
-compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260419/202604190759.51VAkEgC-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202604190759.51VAkEgC-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   drivers/mmc/host/sdhci-of-dwcmshc.c: In function 'dwcmshc_rk3568_set_clock':
->> drivers/mmc/host/sdhci-of-dwcmshc.c:830:1: error: unknown type name 'enable_clk'
-     830 | enable_clk
-         | ^~~~~~~~~~
->> drivers/mmc/host/sdhci-of-dwcmshc.c:838:31: error: expected ')' before numeric constant
-     838 |         sdhci_enable_clk(host, 0);
-         |                               ^~
-         |                               )
->> drivers/mmc/host/sdhci-of-dwcmshc.c:796:17: error: label 'enable_clk' used but not defined
-     796 |                 goto enable_clk;
-         |                 ^~~~
-
-
-vim +/enable_clk +830 drivers/mmc/host/sdhci-of-dwcmshc.c
-
-   706	
-   707	static void dwcmshc_rk3568_set_clock(struct sdhci_host *host, unsigned int clock)
-   708	{
-   709		struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
-   710		struct dwcmshc_priv *dwc_priv = sdhci_pltfm_priv(pltfm_host);
-   711		struct rk35xx_priv *priv = dwc_priv->priv;
-   712		u8 txclk_tapnum = DLL_TXCLK_TAPNUM_DEFAULT;
-   713		u32 extra, reg;
-   714		int err;
-   715	
-   716		host->mmc->actual_clock = 0;
-   717	
-   718		if (clock == 0) {
-   719			/* Disable interface clock at initial state. */
-   720			sdhci_set_clock(host, clock);
-   721			return;
-   722		}
-   723	
-   724		/* Rockchip platform only support 375KHz for identify mode */
-   725		if (clock <= 400000)
-   726			clock = 375000;
-   727	
-   728		err = clk_set_rate(pltfm_host->clk, clock);
-   729		if (err)
-   730			dev_err(mmc_dev(host->mmc), "fail to set clock %d", clock);
-   731	
-   732		sdhci_set_clock(host, clock);
-   733	
-   734		/* Disable cmd conflict check and internal clock gate */
-   735		reg = dwc_priv->vendor_specific_area1 + DWCMSHC_HOST_CTRL3;
-   736		extra = sdhci_readl(host, reg);
-   737		extra &= ~BIT(0);
-   738		extra |= BIT(4);
-   739		sdhci_writel(host, extra, reg);
-   740	
-   741		/* Disable clock while config DLL */
-   742		sdhci_writew(host, 0, SDHCI_CLOCK_CONTROL);
-   743	
-   744		if (clock <= 52000000) {
-   745			if (host->mmc->ios.timing == MMC_TIMING_MMC_HS200 ||
-   746			    host->mmc->ios.timing == MMC_TIMING_MMC_HS400) {
-   747				dev_err(mmc_dev(host->mmc),
-   748					"Can't reduce the clock below 52MHz in HS200/HS400 mode");
-   749				goto enable_clk;
-   750			}
-   751	
-   752			/*
-   753			 * Disable DLL and reset both of sample and drive clock.
-   754			 * The bypass bit and start bit need to be set if DLL is not locked.
-   755			 */
-   756			sdhci_writel(host, DWCMSHC_EMMC_DLL_BYPASS | DWCMSHC_EMMC_DLL_START, DWCMSHC_EMMC_DLL_CTRL);
-   757			sdhci_writel(host, DLL_RXCLK_ORI_GATE, DWCMSHC_EMMC_DLL_RXCLK);
-   758			sdhci_writel(host, 0, DWCMSHC_EMMC_DLL_TXCLK);
-   759			sdhci_writel(host, 0, DECMSHC_EMMC_DLL_CMDOUT);
-   760			/*
-   761			 * Before switching to hs400es mode, the driver will enable
-   762			 * enhanced strobe first. PHY needs to configure the parameters
-   763			 * of enhanced strobe first.
-   764			 */
-   765			extra = DWCMSHC_EMMC_DLL_DLYENA |
-   766				DLL_STRBIN_DELAY_NUM_SEL |
-   767				DLL_STRBIN_DELAY_NUM_DEFAULT << DLL_STRBIN_DELAY_NUM_OFFSET;
-   768			sdhci_writel(host, extra, DWCMSHC_EMMC_DLL_STRBIN);
-   769			goto enable_clk;
-   770		}
-   771	
-   772		/* Reset DLL */
-   773		sdhci_writel(host, BIT(1), DWCMSHC_EMMC_DLL_CTRL);
-   774		udelay(1);
-   775		sdhci_writel(host, 0x0, DWCMSHC_EMMC_DLL_CTRL);
-   776	
-   777		/*
-   778		 * We shouldn't set DLL_RXCLK_NO_INVERTER for identify mode but
-   779		 * we must set it in higher speed mode.
-   780		 */
-   781		extra = DWCMSHC_EMMC_DLL_DLYENA;
-   782		if (priv->devtype == DWCMSHC_RK3568)
-   783			extra |= DLL_RXCLK_NO_INVERTER << DWCMSHC_EMMC_DLL_RXCLK_SRCSEL;
-   784		sdhci_writel(host, extra, DWCMSHC_EMMC_DLL_RXCLK);
-   785	
-   786		/* Init DLL settings */
-   787		extra = 0x5 << DWCMSHC_EMMC_DLL_START_POINT |
-   788			0x2 << DWCMSHC_EMMC_DLL_INC |
-   789			DWCMSHC_EMMC_DLL_START;
-   790		sdhci_writel(host, extra, DWCMSHC_EMMC_DLL_CTRL);
-   791		err = readl_poll_timeout(host->ioaddr + DWCMSHC_EMMC_DLL_STATUS0,
-   792					 extra, DLL_LOCK_WO_TMOUT(extra), 1,
-   793					 500 * USEC_PER_MSEC);
-   794		if (err) {
-   795			dev_err(mmc_dev(host->mmc), "DLL lock timeout!\n");
- > 796			goto enable_clk;
-   797		}
-   798	
-   799		extra = 0x1 << 16 | /* tune clock stop en */
-   800			0x3 << 17 | /* pre-change delay */
-   801			0x3 << 19;  /* post-change delay */
-   802		sdhci_writel(host, extra, dwc_priv->vendor_specific_area1 + DWCMSHC_EMMC_ATCTRL);
-   803	
-   804		if (host->mmc->ios.timing == MMC_TIMING_MMC_HS200 ||
-   805		    host->mmc->ios.timing == MMC_TIMING_MMC_HS400)
-   806			txclk_tapnum = priv->txclk_tapnum;
-   807	
-   808		if ((priv->devtype == DWCMSHC_RK3588) && host->mmc->ios.timing == MMC_TIMING_MMC_HS400) {
-   809			txclk_tapnum = DLL_TXCLK_TAPNUM_90_DEGREES;
-   810	
-   811			extra = DLL_CMDOUT_SRC_CLK_NEG |
-   812				DLL_CMDOUT_EN_SRC_CLK_NEG |
-   813				DWCMSHC_EMMC_DLL_DLYENA |
-   814				DLL_CMDOUT_TAPNUM_90_DEGREES |
-   815				DLL_CMDOUT_TAPNUM_FROM_SW;
-   816			sdhci_writel(host, extra, DECMSHC_EMMC_DLL_CMDOUT);
-   817		}
-   818	
-   819		extra = DWCMSHC_EMMC_DLL_DLYENA |
-   820			DLL_TXCLK_TAPNUM_FROM_SW |
-   821			DLL_RXCLK_NO_INVERTER << DWCMSHC_EMMC_DLL_RXCLK_SRCSEL |
-   822			txclk_tapnum;
-   823		sdhci_writel(host, extra, DWCMSHC_EMMC_DLL_TXCLK);
-   824	
-   825		extra = DWCMSHC_EMMC_DLL_DLYENA |
-   826			DLL_STRBIN_TAPNUM_DEFAULT |
-   827			DLL_STRBIN_TAPNUM_FROM_SW;
-   828		sdhci_writel(host, extra, DWCMSHC_EMMC_DLL_STRBIN);
-   829	
- > 830	enable_clk
-   831		/*
-   832		 * The sdclk frequency select bits in SDHCI_CLOCK_CONTROL are not functional
-   833		 * on Rockchip's SDHCI implementation. Instead, the clock frequency is fully
-   834		 * controlled via external clk provider by calling clk_set_rate(). Consequently,
-   835		 * passing 0 to sdhci_enable_clk() only re-enables the already-configured clock,
-   836		 * which matches the hardware's actual behavior.
-   837		 */
- > 838		sdhci_enable_clk(host, 0);
-   839	}
-   840	
+>  }
+>  
+>  static int dw_hdmi_qp_i2c_read(struct dw_hdmi_qp *hdmi,
+> -- 
+> 2.53.0
+> 
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+With best wishes
+Dmitry
 
