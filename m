@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-238634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238633-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QFa4Bkaj5GmsXgEAu9opvQ
-	(envelope-from <stable+bounces-238634-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 11:41:26 +0200
+	id GE1CEqKb5Gl1XQEAu9opvQ
+	(envelope-from <stable+bounces-238633-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 11:08:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B58BD4238F2
-	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 11:41:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AC6F423797
+	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 11:08:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 952823011BF5
-	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 09:41:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5892E300FC46
+	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 09:08:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74A1434DB77;
-	Sun, 19 Apr 2026 09:41:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="WvHNclLZ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5716C33E346;
+	Sun, 19 Apr 2026 09:08:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-m155101.qiye.163.com (mail-m155101.qiye.163.com [101.71.155.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF0E82AF1D;
-	Sun, 19 Apr 2026 09:41:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6582A325727;
+	Sun, 19 Apr 2026 09:08:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776591677; cv=none; b=cl12gzwM9X2tCNoN54wBxZHewEeoXBHD2vP6o4nJPgkCS2jBfvE1UCKAYRasiBYP2y2qnHh87FA8KWYOqSd6JxvHuE8t4qPDIvP5DCf0MDepsqoyzEiwI3unJyXnu4XmzmOJ2sVmcysTSc8vaWn7m19KNPqABvVHaU+FANVx65Y=
+	t=1776589716; cv=none; b=TITJLxv8tG6x5U57+S0M3lBrigkirPRgBddFAKS5H7YQtTCOXFhNfAUeUBWuUI3wvfBUe6cV3PjSa8mO4nW4+h3GB+fdJRvL6lwMG6OAwCBY43bF6d0CWHKdb3A9wAP4kW5WIWzw25hEb/GJt7TdgxYDsapWnDMpn937ylN9gbg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776591677; c=relaxed/simple;
-	bh=Jr5oUQiELIiQeLQa/7/t58UO5nbL6CQqy7gQ771b/lM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=KRuZmuV3V4YncJcPsmV5iyEOn7tNdI9YoQsGSRmdW4LHGjWU/opydOV48gXrZzNEAxoCLK7nO8/XMqFZk+PQhQRqgWeywm0E1cICvqcjZ7JUsr/e0MQezAz9P48ZlAAZyYWl6BvHAFqHI/nc5VqMrcgeCN5jlyBgkp+9EcYMcl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=WvHNclLZ; arc=none smtp.client-ip=101.71.155.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
-Received: from DESKTOP-SUEFNF9.taila7e912.ts.net (unknown [223.112.146.162])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 3b457dc87;
-	Sun, 19 Apr 2026 17:05:31 +0800 (GMT+08:00)
-From: Dawei Feng <dawei.feng@seu.edu.cn>
-To: idryomov@gmail.com
-Cc: axboe@kernel.dk,
-	dongsheng.yang@linux.dev,
-	mcgrof@kernel.org,
-	ceph-devel@vger.kernel.org,
-	linux-block@vger.kernel.org,
+	s=arc-20240116; t=1776589716; c=relaxed/simple;
+	bh=5Y5DS2nl85zvTXTqUCwFxDMrhrnczhK1YDP15QDXo7I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gB/B16MXBNe5YN4G72NeJF9yiQYwHtpuX/LabTo2REK7ASU0jjMaHluP2G2sCQx1svGs5nCvG/GyxHd3OAySJL2ne7E9DpLrAJXkctc9pWccXwhzxUa9BOesQvX39hXPx5V2/+3WWE9EVKFDIHLmFROmPYpO+lBNZCPZQji8Ff0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from edelgard.fodlan.icenowy.me (unknown [112.94.103.130])
+	by APP-05 (Coremail) with SMTP id zQCowADXZQlum+RpMjgKDg--.63224S2;
+	Sun, 19 Apr 2026 17:08:00 +0800 (CST)
+From: Icenowy Zheng <zhengxingda@iscas.ac.cn>
+To: Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	James Clark <james.clark@linaro.org>,
+	Shimin Guo <shimin.guo@skydio.com>
+Cc: linux-perf-users@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	jianhao.xu@seu.edu.cn,
-	Dawei Feng <dawei.feng@seu.edu.cn>,
-	stable@vger.kernel.org,
-	Zilin Guan <zilin@seu.edu.cn>
-Subject: [PATCH] rbd: fix null-ptr-deref when device_add_disk() fails
-Date: Sun, 19 Apr 2026 17:03:48 +0800
-Message-Id: <20260419090348.1817082-1-dawei.feng@seu.edu.cn>
-X-Mailer: git-send-email 2.34.1
+	Icenowy Zheng <zhengxingda@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] perf unwind-libdw: Fix stale object reference in arch/loongarch
+Date: Sun, 19 Apr 2026 17:07:56 +0800
+Message-ID: <20260419090756.2190201-1-zhengxingda@iscas.ac.cn>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,151 +61,77 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9da4fce98c03a2kunm56c851691d06de
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVlCSB9DVh5CGkxNTUtITx8dSFYeHw5VEwETFhoSFy
-	QUDg9ZV1kYEgtZQVlJSUhVSkpJVUpPTVVKTUlZV1kWGg8SFR0UWUFZT0tIVUpLSUhOQ0NVSktLVU
-	tZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=WvHNclLZKsOl2IPn9Y892RwspSmoi+WoagtbI1A35WAvFzkqdz6k3IGOiaF6EVJIWTMM+LFCFt0BIxQh4pjZm2aDmIBltUr4vii8eQNgv7UqcNIR5VwOpCxt9fKWvaxuFHqPAUzmTw5/hC2nINeADoqKF6XIigjQoUgoEZLiwTU=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
-	bh=CdmJzqe0YXQQdfal4sK7CioKUZTavqi01VlJKBezrNs=;
-	h=date:mime-version:subject:message-id:from;
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-CM-TRANSID:zQCowADXZQlum+RpMjgKDg--.63224S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7Wr18KryfCr13GF4xur4fGrg_yoWfZrbEyF
+	1xJ3Wjyr1rXr93tw1293y5C34rAan3Z3ySya4DWrs3GFW5JF1UZayDXa45ur1qqr4UWFs3
+	Za48Xr9a9r4jkjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUb3kFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+	Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26F4UJV
+	W0owAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
+	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
+	n2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7x
+	kEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E
+	67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCw
+	CI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1x
+	MIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIda
+	VFxhVjvjDU0xZFpf9x0JUd-B_UUUUU=
+X-CM-SenderInfo: x2kh0wp0lqwv3d6l2u1dvotugofq/
+X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-238634-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	DMARC_NA(0.00)[iscas.ac.cn];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dawei.feng@seu.edu.cn,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[seu.edu.cn:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	TAGGED_FROM(0.00)[bounces-238633-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[zhengxingda@iscas.ac.cn,stable@vger.kernel.org];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.992];
+	FROM_HAS_DN(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: B58BD4238F2
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9AC6F423797
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-do_rbd_add() publishes the device with device_add() before calling
-device_add_disk(). If device_add_disk() fails after device_add()
-succeeds, the error path calls rbd_free_disk() directly and then later
-falls through to rbd_dev_device_release(), which calls rbd_free_disk()
-again. This double teardown can leave blk-mq cleanup operating on
-invalid state and trigger a null-ptr-deref in
-__blk_mq_free_map_and_rqs(), reached from blk_mq_free_tag_set().
+The arch/loongarch/util/unwind-libdw.c file is already moved to util/,
+but the Build statement for it is forgot to be removed.
 
-Fix this by following the normal remove ordering: call device_del()
-before rbd_dev_device_release() when device_add_disk() fails after
-device_add(). That keeps the teardown sequence consistent and avoids
-re-entering disk cleanup through the wrong path.
+Remove the stale Build statement.
 
-The bug was first flagged by an experimental analysis tool we are
-developing for kernel memory-management bugs while analyzing
-v6.13-rc1. The tool is still under development and is not yet publicly
-available.
+This fixes the build failure of perf tool in kernel v7.0 on LoongArch.
 
-We reproduced the bug on v7.0 with a real Ceph backend and a QEMU x86_64
-guest booted with KASAN and CONFIG_FAILSLAB enabled. The reproducer
-confines failslab injections to the __add_disk() range and injects
-fail-nth while mapping an RBD image through
-/sys/bus/rbd/add_single_major.
-
-On the unpatched kernel, fail-nth=4 reliably triggered the fault:
-
-	Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] SMP KASAN NOPTI
-	KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
-	CPU: 0 UID: 0 PID: 273 Comm: bash Not tainted 7.0.0-01247-gd60bc1401583 #6 PREEMPT(lazy)
-	Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.15.0-1 04/01/2014
-	RIP: 0010:__blk_mq_free_map_and_rqs+0x8c/0x240
-	Code: 00 00 48 8b 6b 60 41 89 f4 49 c1 e4 03 4c 01 e5 45 85 ed 0f 85 0a 01 00 00 48 b8 00 00 00 00 00 fc ff df 48 89 e9 48 c1 e9 03 <80> 3c 01 00 0f 85 31 01 00 00 4c 8b 6d 00 4d 85 ed 0f 84 e2 00 00
-	RSP: 0018:ff1100000ab0fac8 EFLAGS: 00000246
-	RAX: dffffc0000000000 RBX: ff1100000c4806a0 RCX: 0000000000000000
-	RDX: 0000000000000002 RSI: 0000000000000000 RDI: ff1100000c4806f4
-	RBP: 0000000000000000 R08: 0000000000000001 R09: ffe21c000189001b
-	R10: ff1100000c4800df R11: ff1100006cf37be0 R12: 0000000000000000
-	R13: 0000000000000000 R14: ff1100000c480700 R15: ff1100000c480004
-	FS:  00007f0fbe8fe740(0000) GS:ff110000e5851000(0000) knlGS:0000000000000000
-	CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-	CR2: 00007fe53473b2e0 CR3: 0000000012eef000 CR4: 00000000007516f0
-	PKRU: 55555554
-	Call Trace:
-	 <TASK>
-	 blk_mq_free_tag_set+0x77/0x460
-	 do_rbd_add+0x1446/0x2b80
-	 ? __pfx_do_rbd_add+0x10/0x10
-	 ? lock_acquire+0x18c/0x300
-	 ? find_held_lock+0x2b/0x80
-	 ? sysfs_file_kobj+0xb6/0x1b0
-	 ? __pfx_sysfs_kf_write+0x10/0x10
-	 kernfs_fop_write_iter+0x2f4/0x4a0
-	 vfs_write+0x98e/0x1000
-	 ? expand_files+0x51f/0x850
-	 ? __pfx_vfs_write+0x10/0x10
-	 ksys_write+0xf2/0x1d0
-	 ? __pfx_ksys_write+0x10/0x10
-	 do_syscall_64+0x115/0x690
-	 entry_SYSCALL_64_after_hwframe+0x77/0x7f
-	RIP: 0033:0x7f0fbea15907
-	Code: 10 00 f7 d8 64 89 02 48 c7 c0 ff ff ff ff eb b7 0f 1f 00 f3 0f 1e fa 64 8b 04 25 18 00 00 00 85 c0 75 10 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 51 c3 48 83 ec 28 48 89 54 24 18 48 89 74 24
-	RSP: 002b:00007ffe22346ea8 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-	RAX: ffffffffffffffda RBX: 0000000000000058 RCX: 00007f0fbea15907
-	RDX: 0000000000000058 RSI: 0000563ace6c0ef0 RDI: 0000000000000001
-	RBP: 0000563ace6c0ef0 R08: 0000563ace6c0ef0 R09: 6b6435726d694141
-	R10: 5250337279762f78 R11: 0000000000000246 R12: 0000000000000058
-	R13: 00007f0fbeb1c780 R14: ff1100000c480700 R15: ff1100000c480004
-	 </TASK>
-
-With this fix applied, rerunning the reproducer over fail-nth=1..256
-yields no KASAN reports.
-
-Fixes: 27c97abc30e2 ("rbd: add add_disk() error handling")
-Cc: stable@vger.kernel.org # 5.16+
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Signed-off-by: Dawei Feng <dawei.feng@seu.edu.cn>
+Fixes: e62fae9d9e85 ("perf unwind-libdw: Fix a cross-arch unwinding bug")
+Signed-off-by: Icenowy Zheng <zhengxingda@iscas.ac.cn>
+Cc: stable@vger.kernel.org
 ---
- drivers/block/rbd.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ tools/perf/arch/loongarch/util/Build | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/block/rbd.c b/drivers/block/rbd.c
-index e7da06200c1e..d92730d8c342 100644
---- a/drivers/block/rbd.c
-+++ b/drivers/block/rbd.c
-@@ -7165,7 +7165,7 @@ static ssize_t do_rbd_add(const char *buf, size_t count)
+diff --git a/tools/perf/arch/loongarch/util/Build b/tools/perf/arch/loongarch/util/Build
+index 3ad73d0289f3e..8d91e78d31c94 100644
+--- a/tools/perf/arch/loongarch/util/Build
++++ b/tools/perf/arch/loongarch/util/Build
+@@ -1,4 +1,3 @@
+ perf-util-y += header.o
  
- 	rc = device_add_disk(&rbd_dev->dev, rbd_dev->disk, NULL);
- 	if (rc)
--		goto err_out_cleanup_disk;
-+		goto err_out_device_del;
- 
- 	spin_lock(&rbd_dev_list_lock);
- 	list_add_tail(&rbd_dev->node, &rbd_dev_list);
-@@ -7179,8 +7179,8 @@ static ssize_t do_rbd_add(const char *buf, size_t count)
- 	module_put(THIS_MODULE);
- 	return rc;
- 
--err_out_cleanup_disk:
--	rbd_free_disk(rbd_dev);
-+err_out_device_del:
-+	device_del(&rbd_dev->dev);
- err_out_image_lock:
- 	rbd_dev_image_unlock(rbd_dev);
- 	rbd_dev_device_release(rbd_dev);
+ perf-util-$(CONFIG_LOCAL_LIBUNWIND) += unwind-libunwind.o
+-perf-util-$(CONFIG_LIBDW_DWARF_UNWIND) += unwind-libdw.o
 -- 
-2.34.1
+2.52.0
 
 
