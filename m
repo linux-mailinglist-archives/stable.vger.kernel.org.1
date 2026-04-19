@@ -1,91 +1,91 @@
-Return-Path: <stable+bounces-238665-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238666-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cJZ0OY5H5WnPgQEAu9opvQ
-	(envelope-from <stable+bounces-238665-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 23:22:22 +0200
+	id cGVjF75H5WnPgQEAu9opvQ
+	(envelope-from <stable+bounces-238666-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 23:23:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F2EE425898
-	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 23:22:21 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E67754258C5
+	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 23:23:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D6257300B546
-	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 21:22:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 555B53036608
+	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 21:22:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69D4730EF84;
-	Sun, 19 Apr 2026 21:22:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C27C30DEBA;
+	Sun, 19 Apr 2026 21:22:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kvKoPMlO"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HzHHOgUh"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C14D32F39C2
-	for <stable@vger.kernel.org>; Sun, 19 Apr 2026 21:22:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D475B30BB94
+	for <stable@vger.kernel.org>; Sun, 19 Apr 2026 21:22:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776633738; cv=none; b=Pez8ZYqS4NYl+o563kYvo3Nkf9nwjZYUexSTXMYnPZAVnnzyt6QQxxCoFwPgfdSVxcCCHFRX2IDgoelZo0tXDYQqH5F0m/sDGTCAw/k7Gd75HXxkq4jQzdAdKVR/7Msu08jUZYguk5KwoiuhHEp/5i1eQn5fefV8yrBLMOe5oKM=
+	t=1776633739; cv=none; b=sAiR9Nm/VssSfC/L5E4RiAQWyWBsQ8kh2BniJrZvCM2yDvjlm5W39YzsaI8P2SHkPo7tq+01bfiCF2NV9VKwA8+GB549LbFlxlvr3JEkpd4TPqjoPyi/Pj7PkqPs1p+XZjkffiCHkk/TEWwu22EsOGQf7qouiJcgVVK0QfXxL1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776633738; c=relaxed/simple;
-	bh=8bXWAUwuXeHpNnD3ARKgWX+5UoBQj6FtEd1TUTI+88U=;
+	s=arc-20240116; t=1776633739; c=relaxed/simple;
+	bh=iyYciPGfOWS+PP4eS+FUuE/6DmHsutqvGRb809Gt3a4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nhy+29XBWE5hyKFrloiuncZcs8fNkC6lG3vBBjvazY91xMgZsTMGcJW4nSZziELxqiFVg45wBY72XJXUabfUDSoeL2uu7haPgCJysGDg6ibW6krONz7iPhe0zr63gOguPJtPwL5Ozpny8Xlo4F5YjsQ3CIV4SHOgJl7DoPR2/Ak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kvKoPMlO; arc=none smtp.client-ip=209.85.222.173
+	 MIME-Version; b=T/O2y3voWoBqbN6YIDOTo2yS0gu2ybNNzOLidRJa4Ybx5fKoSYGUPDzM9P8szxwXTwDWBRnZII2gX949TL42zcKby6NgwfPGBwjQTFIFTBURVMiq4wb7dhSo1IRhbyecKyGfZ2TCs+0jr7RDlnXUCwYDVfjgR2I9SX36NyHMx3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HzHHOgUh; arc=none smtp.client-ip=209.85.222.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-8d424af6282so257475185a.0
-        for <stable@vger.kernel.org>; Sun, 19 Apr 2026 14:22:16 -0700 (PDT)
+Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-8d67a483d3eso270823285a.1
+        for <stable@vger.kernel.org>; Sun, 19 Apr 2026 14:22:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776633736; x=1777238536; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1776633737; x=1777238537; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=lgjr9000CxEsC1rRZgD66eWlAXXvm6i1E9C0yOGBCjc=;
-        b=kvKoPMlOq0FxaF4Qz+PxUC41kJKOfrGEYO+vtH9oVeyo3fRqfJbEVjmnwGYZQ92WyW
-         GHF8XHkC3LOGCx0vdeuYwWj9WTkIDnEg4SEPeWX1JCtXtICEAxJ9Qslnvmz949PdmrVl
-         lVu179JZyZtWLnM/RMQFZbHMSaMJBhxmXnK01+KSxLaeEA9nogOwc6EsDcmSCbzyxvH8
-         SwlajIGxieouBbmC3Oocj/n/u+3zcdIwHUBDLjC1RMy/GzK8dFXrGYOx6+Mwl28nsJ51
-         UZ4AdNsbWaUoMfnpiDJzI9CJHMmrztXHYwDq5oT9LnEQILBkiMEZTyEeU8AgL9It9bWJ
-         Q5YQ==
+        bh=xR/LK1vY5jMYZYpJbaDoVbD4RzkYk8NMN3z+ldfPAwI=;
+        b=HzHHOgUhWj+nC27pznyTLokTvYsk54RJ+D0dyQE3u549ihFLTnAUp/1JALCrY80q9s
+         eL8Bj4UrOuRWz2ZOYWDTeezP4z8JUMEvOeZdi0s1yEXs78QqtnumGZT9+oSzuUWbqjZE
+         ElDUot6NCb6lPGwG9+0vcaJhxQsZyD5nJoMQsc7TzbpF8c3aaFOms0jhVUuxZhRrMERT
+         4n6mQZIJHLVOSeyX0opgINAFGacKdg+qHG7nsDOWY6LE3rVj6w/RDEumflNRj/sRXd1m
+         RCBURDP+iQVP4hsJLIGdKg8kOuDXwCavgD+b2Qk/SwD7Cy1mnMknjV9rr+sNc1Lbzoyq
+         xsNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776633736; x=1777238536;
+        d=1e100.net; s=20251104; t=1776633737; x=1777238537;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=lgjr9000CxEsC1rRZgD66eWlAXXvm6i1E9C0yOGBCjc=;
-        b=WX1VuTirKsiS5F0D9SFWJ1pmXGaLG/6N7YfA/eK2OAyv/t2UhPaoUgpxCXVdOI7Xt3
-         JDvFbFcIZdupOjNjxjBSGb/VrII9RK+Dpn/FfIqc91xLeLborFqiao6QZ5QxkmCIcN9q
-         +IYYfFc7Opi9cCGkeNdnHduMADKHZ/ckHZ4fOB21ppxkkFYNyYOTKC6Ely/bkehWWED3
-         RvpFRh8HoeCfWv/ufzBk7So5st1QwM+EbSNebjgJhNietHUcA1H1742HtcvogYBoqCbi
-         33u3OmWghuobFwNNQObMr29GkTbSP7AKepBaS736gFXoqz7LkaBtdKlGIX3p7ECIIqur
-         6uEg==
-X-Forwarded-Encrypted: i=1; AFNElJ8BoaOwCKn1oQ6l0JLy+F7spZeJvnY2bQWKVSrnXdBHPMyZ7T2Io7AGkiJZMicWiQRfvKNPtMM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzZGZDAdwkzBDO/lZM+oteSGYHhTuV6Djv1jfkKycyvjSoB/AOC
-	IEXvlIj4qsandAgvwtpOXoZ9bFJZz3XYn7C6hcw4EHeUp00brK1XHN4R
-X-Gm-Gg: AeBDietMsA41KUZQ93h6NE/BiTtLVpjnA2VTS6yMGnoDvvI6XwxofWyMiGPCfSFJGqB
-	6e/sQpt0LaOvAOeACgpnzqRGyDIQT924IxplXwR1wcKfwbiBNyn7UMAwjkZqHvgxqh1vPQc/2Il
-	WRSTIBcPzq/v26UdCrwC4w+wg0Rj5MWjDidGZKBobdd5Uq6VwxrRPgFVAvRFGMKdMY69obMu/IA
-	pX7XlJyaWSNWCkHVwJTUrI/NINT/jeiA+z4+2qqhCPOJ3t7blyBfUpQy53jDxTQst9gqLsBpiPx
-	1zZ99qPYMF2eIYHPqBVUjzCtZrUPtKNaMZokQmHHOYHij8YO6RwGiQVOmXPkPqYKI88eBufzaaK
-	hZqy14YQlkNgM3cxLk7z2IUce7h7jVucB1FqdCyUgaSX/ttKNJBbNxTMdKt7UO+rg+nk5empk5P
-	7hTY52Zq+fwEJEomi3BoFHOL2RsZbz4lIVxDrcVhMgmsFpPLwTmNUmHLJhwlzHZPlZiJzJUGh7m
-	H7aT8nqbszfn+jlx6G+MeP0fu6Zjhwt0M6D7AdVrg==
-X-Received: by 2002:a05:620a:4489:b0:8dc:5094:ea79 with SMTP id af79cd13be357-8e79189e3c1mr1524677385a.39.1776633735681;
-        Sun, 19 Apr 2026 14:22:15 -0700 (PDT)
+        bh=xR/LK1vY5jMYZYpJbaDoVbD4RzkYk8NMN3z+ldfPAwI=;
+        b=kcTRCyjFR7hL32V/KpgVRgw60vMoIZN28Ritb6XwCj4yHlDvxL0zp0UBz8LQBYmJB8
+         C+vrzNnaBiO+krZwT+FnP9Y1WVfe7iawEW6/fdu1NT4VvuYFITN0RsAFX1wOZotxVaPr
+         A9vFb7HVrschC11k0CDSKiTLQE7jhxQBMxvBYogyrwI5VD1BI4eU03NRb8UtFrMTbBuN
+         HLqZpwZgfHMARkzELhV4QQ+O+ICEjq+T+Zvugeg3izQeVrhtMxTxquRyKEUFOIvUjWKu
+         8PAZWNXNu26HJLwGe5mV2Re7nEbPsrJ/z4fK7FzOK29cL1MhAdCQLhckKvyp3zk8wKBI
+         FSaw==
+X-Forwarded-Encrypted: i=1; AFNElJ/0dIBByBOg73sbTNCPl69wjDxqc7Offaetv69GUkGSSjMvTSbrN3vWpp9iOHT0WS4yCU4E8bs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxqCAfuLmoSrQb0OqsNSluMyn0zPshOu09zsrFjDXKRoI92kx7B
+	XALkruPmsmRca+hD3W9UBmCldn4MfpMzfGmBe3XZAnDm9Fur5yKCzdYG
+X-Gm-Gg: AeBDiet6LkOfCGZ0XoQ0AvNSyEuzuFr3hI5rCEp9owvaMCblRRdcx5sP2G4OXlx+9Gu
+	OoiA7v/ItpllU8p/zP1qngEgAe7Bw6PdIwXnip5EfdY1TZdzYRlyj5kt4ht1zEqw2aLiBe36jja
+	yltsR3XMBFvBebaidjnWzlBxRHql3Mmkdnss90DrSGhCygfsqSJfOJnmKksu4OKF9i4t1c4u67H
+	BmLFiOSz2PV59Lxq+2SiCF7+UTkLe2ucdkinX+A5QlymD1s3D0GY0V6fvXR/uChwJ9nCa3fYjJF
+	FgXoSBr/lr0cbKmWJIC1DHT9uq2OdG1xJkyrJeqLYa+hWCQyn2R4LmjmMbm3ZyEjUPcj8Uhc0k5
+	wAGK2Ov5J9wAU8YpcAEmQcZRLZRloJNbl0YWHL/RmZLckzPMLcrO6cWWxHEw/h85cDp3sdvRU9T
+	GesjYqPHhgqp8jMnWCSf0kf2SQmixXfSRXutIsb7+xvH4lmi8AJyyEFPahgZM7KML+hEAKzNeOx
+	12TTNlnjpdJhJRqcq9GCBknKvl3qO4=
+X-Received: by 2002:a05:620a:44c3:b0:8d6:39c0:e6b2 with SMTP id af79cd13be357-8e793047868mr1577053385a.62.1776633736831;
+        Sun, 19 Apr 2026 14:22:16 -0700 (PDT)
 Received: from server0 (c-68-48-65-54.hsd1.mi.comcast.net. [68.48.65.54])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8e7d65c1321sm654849185a.15.2026.04.19.14.22.14
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8e7d65c1321sm654849185a.15.2026.04.19.14.22.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 19 Apr 2026 14:22:14 -0700 (PDT)
+        Sun, 19 Apr 2026 14:22:16 -0700 (PDT)
 From: Michael Bommarito <michael.bommarito@gmail.com>
 To: Jan Kara <jack@suse.cz>
 Cc: Edward Adam Davis <eadavis@qq.com>,
 	linux-fsdevel@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH 1/2] isofs: validate Rock Ridge CE continuation extent against volume size
-Date: Sun, 19 Apr 2026 17:21:54 -0400
-Message-ID: <20260419212155.2169382-2-michael.bommarito@gmail.com>
+Subject: [PATCH 2/2] isofs: validate block number from NFS file handle in isofs_export_iget
+Date: Sun, 19 Apr 2026 17:21:55 -0400
+Message-ID: <20260419212155.2169382-3-michael.bommarito@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260419212155.2169382-1-michael.bommarito@gmail.com>
 References: <20260419212155.2169382-1-michael.bommarito@gmail.com>
@@ -100,12 +100,12 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-238665-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-238666-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	MIME_TRACE(0.00)[0:+];
@@ -123,66 +123,56 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3F2EE425898
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E67754258C5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-rock_continue() reads rs->cont_extent verbatim from the Rock Ridge CE
-record and passes it to sb_bread() without checking that the block
-number is within the mounted ISO 9660 volume.  commit e595447e177b
-("[PATCH] rock.c: handle corrupted directories") added cont_offset
-and cont_size rejection for the CE continuation but did not validate
-the extent block number itself.  commit f54e18f1b831 ("isofs: Fix
-infinite looping over CE entries") later capped the CE chain length
-at RR_MAX_CE_ENTRIES = 32 but again left the block number unchecked.
+isofs_fh_to_dentry() and isofs_fh_to_parent() pass an attacker-
+controlled block number (ifid->block or ifid->parent_block) from
+the NFS file handle to isofs_export_iget(), which only rejects
+block == 0 before calling isofs_iget() and ultimately sb_bread().
+A crafted file handle with fh_len sufficient to pass the check
+added by commit 0405d4b63d08 ("isofs: Prevent the use of too small
+fid") can still drive the server to read any in-range block on the
+backing device as if it were an iso_directory_record.  That earlier
+fix was assigned CVE-2025-37780.
 
-With a crafted ISO mounted via udisks2 (desktop optical auto-mount)
-or via CAP_SYS_ADMIN mount, rs->cont_extent can therefore point at
-an out-of-range block or at blocks belonging to an adjacent
-filesystem on the same block device.  sb_bread() on an out-of-range
-block returns NULL cleanly via the block layer EIO path, so there
-is no memory-safety violation.  For in-range reads of adjacent-
-filesystem data, the CE buffer is parsed as Rock Ridge records and
-only the text of SL sub-records reaches userspace through
-readlink(), which makes the info-leak channel narrow and difficult
-to exploit; still, rejecting the malformed CE outright matches the
-rejection shape already present in the same function for
-cont_offset and cont_size.
+sb_bread() on an out-of-range block returns NULL cleanly via the
+EIO path, so there is no memory-safety violation.  For in-range
+reads of adjacent-partition data on the same block device, the
+unrelated bytes end up in iso_inode_info fields that reach the NFS
+client as dentry metadata.  The deployment surface (isofs exported
+over NFS from loop-mounted images) is narrow and requires an
+authenticated NFS peer, but the malformed-file-handle class is
+reportable as hardening next to the existing CVE-2025-37780 fix.
 
-Add an ISOFS_SB(sb)->s_nzones bounds check to rock_continue() next
-to the existing offset/size rejection, printing the same
-corrupted-directory-entry notice.
+Reject block >= ISOFS_SB(sb)->s_nzones in isofs_export_iget() so
+the check covers both isofs_fh_to_dentry() and isofs_fh_to_parent()
+call sites with a single line.
 
-Fixes: f54e18f1b831 ("isofs: Fix infinite looping over CE entries")
+Fixes: 0405d4b63d08 ("isofs: Prevent the use of too small fid")
 Cc: stable@vger.kernel.org
 Assisted-by: Claude:claude-opus-4-7
 Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
 ---
- fs/isofs/rock.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ fs/isofs/export.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/isofs/rock.c b/fs/isofs/rock.c
-index 6fe6dbd0c740..1232fab59a4e 100644
---- a/fs/isofs/rock.c
-+++ b/fs/isofs/rock.c
-@@ -101,6 +101,15 @@ static int rock_continue(struct rock_state *rs)
- 		goto out;
- 	}
+diff --git a/fs/isofs/export.c b/fs/isofs/export.c
+index 421d247fae52..78f80c1a5c54 100644
+--- a/fs/isofs/export.c
++++ b/fs/isofs/export.c
+@@ -24,7 +24,7 @@ isofs_export_iget(struct super_block *sb,
+ {
+ 	struct inode *inode;
  
-+	if ((unsigned)rs->cont_extent >= ISOFS_SB(rs->inode->i_sb)->s_nzones) {
-+		printk(KERN_NOTICE "rock: corrupted directory entry. "
-+			"extent=%u out of volume (nzones=%lu)\n",
-+			(unsigned)rs->cont_extent,
-+			ISOFS_SB(rs->inode->i_sb)->s_nzones);
-+		ret = -EIO;
-+		goto out;
-+	}
-+
- 	if (rs->cont_extent) {
- 		struct buffer_head *bh;
- 
+-	if (block == 0)
++	if (block == 0 || block >= ISOFS_SB(sb)->s_nzones)
+ 		return ERR_PTR(-ESTALE);
+ 	inode = isofs_iget(sb, block, offset);
+ 	if (IS_ERR(inode))
 -- 
 2.53.0
 
