@@ -1,106 +1,93 @@
-Return-Path: <stable+bounces-238643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238644-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QMZMB9/h5Gn7bQEAu9opvQ
-	(envelope-from <stable+bounces-238643-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 16:08:31 +0200
+	id wB7uI/7h5Gn7bQEAu9opvQ
+	(envelope-from <stable+bounces-238644-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 16:09:02 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 891974244E7
-	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 16:08:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EB974244FE
+	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 16:09:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4BC83302F698
-	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 14:06:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C12AD3010269
+	for <lists+stable@lfdr.de>; Sun, 19 Apr 2026 14:09:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 742E337B40E;
-	Sun, 19 Apr 2026 14:06:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A1A737C937;
+	Sun, 19 Apr 2026 14:08:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UCVgnu3j"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KBEf8YYD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F017037F006
-	for <stable@vger.kernel.org>; Sun, 19 Apr 2026 14:06:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A853737CD5D
+	for <stable@vger.kernel.org>; Sun, 19 Apr 2026 14:08:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776607586; cv=none; b=dBp6rQSwMtyBbpo0q3kSUCVqavsRrryaepEMSSavVR3pa3uruNZXWHW9OltulHAo5UdAGhma5ikMZQNlMdkNkNuhJP/3E5vjTmdSAskU0+7Cf5tJGzxTC5P6M7P2o7JM+kyNHaJrSy4NkyIs9p2A+CY37YclitdrZG3RpcXxAwE=
+	t=1776607736; cv=none; b=DF3r0bfoRkEzaXZZQMze5Q5DpPODpudsKEyxTDeNqdv3v+epqP2azDzKaJXdDJGlT+A62AlivufT6c1AMTsF90N7+biqLPelqGK8wYp3fCaFNaE8eN++BTfxfBX5xxdrFcGDvC+uMBSEmTRDQ3Ct3D+NcTCkQIXEd9aAavbKx/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776607586; c=relaxed/simple;
-	bh=RkV2A4r75HXuxD8QxkqtPSd3I5Hi+PWFKHt1H+BH2rw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mq/PBB3oco57OGihtYKwOB87W9iJiAAi3LlyWbr4nwraYm/tnT7KK7HEerVuG9b/s2sXaVncn++5RF9TjbljU8t4bHSzEgbi1DRxVjCrrAwC0HqWjLXyAWKSoLciQ3FyMO5hwca4WYEvKc8t8xubu8Mi6Vc2gzkNhEJVXsJB24M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UCVgnu3j; arc=none smtp.client-ip=209.85.216.45
+	s=arc-20240116; t=1776607736; c=relaxed/simple;
+	bh=5NZkfsTPzvAFcy5UFeBzMenTqECDDXUswA9pAZDzBhY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=M1KV06ocJFzH7ZPPpQI0prhaRt5KpgXUizcIIsd58S3B1UwHVAp3emnSPOH1qCxQv2DZeJVQnhzklJvKHpE9DkDrZbW9aHH7+RHNoT4Um6JFVKEAtHV9K93eXPP73qeT44AMHj9/ci1NPNRCijW5H0555Y6lMy+MKS0b5yNtuGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KBEf8YYD; arc=none smtp.client-ip=209.85.214.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-3614826eca4so1546303a91.1
-        for <stable@vger.kernel.org>; Sun, 19 Apr 2026 07:06:24 -0700 (PDT)
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2a7a9b8ed69so18924065ad.2
+        for <stable@vger.kernel.org>; Sun, 19 Apr 2026 07:08:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776607584; x=1777212384; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eaRy4aad6uNSW8d1fddO1COP7MLdRx4c3DXic/8Oog0=;
-        b=UCVgnu3jrZxAzO8r5CgxU+MCpVETYbYsTfl8lqLhkZEy+/g0TECLv5hd/qy3Feh356
-         0VrALkSjdxhK/HK+xy4T9zy10OQC6BP+VpI/t+vifXdPTREznk/Bh5EKmdhN/POyIQXU
-         3r40Xs04Xs8/q6Y5bnT3eCiwRtsDbGiSBztcJ0ZhtxuRFpRmc//MT4NMPRKxAx/9Q2xg
-         1RPJTMRR15hjtI44KvV6W8ngbODj9sfCxYs4PTLb+JDyiO1woxEExYyFB4pde657SSo7
-         tMNAjb6477vHQeqgN4RDZoAf9YpgfR0adN6N0jG6uvP1SrFghvuNpnQCCt6P96z9/4jx
-         fy+w==
+        d=gmail.com; s=20251104; t=1776607734; x=1777212534; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=bb6WKor5gs4NUo2Ed/ILzdJqmo1MvLE8Py2tsx0kHJ8=;
+        b=KBEf8YYDYNe1fLZeMMnp95+U1rdQnFMMS+YtxaESge8zo2xsiP0J+vwjckpGsNtaHF
+         xCQR2iGqTr3NuOQZJnSq4pZBHrBzr3f6fGyANk5OgTxvsY7FYt5jbCg4J5sq8hJTQeax
+         kn9WZDK3M4KpWXKIqfX9UDmWrD8pPTJCOv6NSnMdFJf4rUWxUkbzI/+DiiV6f3IX3OJn
+         nfyUVg8no5d5Se5uW6GdKjIE1WqcLyImElh9Vl/wwMno9ei1uOWyh2yqLWckNR8MHzXr
+         YT6snJNmT460uoGmG5izPL0k0lw9uWVrV5/vibLgq/WGvCaRN3HNyhvzxgFu1jgTnekf
+         vPlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776607584; x=1777212384;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=eaRy4aad6uNSW8d1fddO1COP7MLdRx4c3DXic/8Oog0=;
-        b=rM19cQcqbUUgT+t0D05aou0hT7Q7TUb/wQPJUizV91rcniiVVp4p8a3g4685jBbXZh
-         HiDev96JKjqf1pFOz57QVfJIPPe0RfCpdG42B/8cUzgYoApSfaQ4g0VaerW2dNLSyiNj
-         OgSkq5ubjI/oNWQasBDCg262LnIxjvE4NJ5W/D//AjH9B4rcUJH+4pxAjmtJKiFhXUI3
-         L3UH7/Z4BWtIh8GlfmpYIoR3YtPjb88SylqfR7f7xnRJ6t9jYNiycjjionxnMYfX21Be
-         +GU+XDGCqFx+pj/K+bCByuot8FSsqDFTuJJM+aZflH3ZcpjB14xZnW3lrBPZ8CmUZFAU
-         ga4g==
-X-Forwarded-Encrypted: i=1; AFNElJ/c67gkUAWAqgt9l9/aOqxmTplIQFJF4HTUwsERxCMtZ9awnkqVkEulSfa9+7Gd2qTR9iPeHYQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzTN9IBgE/ZwCHvZYNIy6QU94pDNaSCLrtbwmfjons9BUkYhilN
-	lJ6jeIfQWk9WC3dv0QxoedwoO+1CZRig+epa5QLfce3o2cc7iiUyiuvr
-X-Gm-Gg: AeBDieuqAR8/MWSBrROa6oMRoc6kavBQ6FM4vSTWqub85mlpPqt/O12o03HsNQeyXDb
-	6T67ooHmvyuYW9hwEFOU3wNgWllACs1EoVP7FMsrt+GmzD216KAH3AGBnuewkzQzwqrcn0ODC8M
-	CzfwjICrMJ5C9SeIPodPjlMv2GW48hdp7sWOfp3E6vi1D84hQlkbiPAv7ojW30Q3xzfdm8JnzhW
-	N0MLm/FKkslOusd5LlK90GjMMFvUTC1h73HiV+7lkE2vgkGksrpWZpT1R1NmErEE0SKpcW+f7V0
-	VkvX1EQfHmuOkG7YL7YhqgfHTLLhmyXfMYgCVcS7/+q+ikOWJBoR4WHdd+bYCy4jGT7fJrS8V4T
-	/w5K0+9kFutvNvLpo2ftToplL840omxF7/d2ir80XqAmSEeBgQm6wFNILNW8weUUwFQbNcCld41
-	zJ/BSb4d5Z87SoEl/8vicIg4G53w==
-X-Received: by 2002:a17:90b:4c52:b0:35c:30a8:31f with SMTP id 98e67ed59e1d1-361403bdd28mr11318429a91.2.1776607584360;
-        Sun, 19 Apr 2026 07:06:24 -0700 (PDT)
-Received: from misys ([58.120.241.145])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36141898ebasm7718121a91.7.2026.04.19.07.06.21
+        d=1e100.net; s=20251104; t=1776607734; x=1777212534;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bb6WKor5gs4NUo2Ed/ILzdJqmo1MvLE8Py2tsx0kHJ8=;
+        b=iSVK4X9LzNttN9Xum0STk9YCRThrTCUwJn7xeyBj+dEgIHdVBoSCenOUBuVc7g80LK
+         mpwxAU3I3OVDkO2hqaS2esf6t3CfJKgVSBUgmvg55zX5suy7n/r2KUxbQ1u3xF5CzKMs
+         GlcfVVQeFLa6bbQDKHBqpKlB8BBvTDA8N1a4lZWqW6Dxo+Vr9wOU43z7PRnBFn5DpozQ
+         TetsqMcSv/Vkj+b0LOy0DyT/LV3UWfn3Xv9zK2Ewykn8XE7hceCepxcmSXQR5aSXgSUb
+         ubQGuAQpYCeBEAO27rrt4ZQ59kq7Mqg73u6BRz1IICaIuo0rmILtQgf7zCN2mCtXbxxm
+         uueg==
+X-Forwarded-Encrypted: i=1; AFNElJ8fbj3Zx/7R1dJi7wxzZ7+fNVxeC9a/+LxB1Z0sLE9DzbBLrPzXVmkY2KdqUbcIc4oqXpv/aIw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzCB5h/OvbgUIxwtVh9oqSCb1AE47ErfizzLgMYWvSz1U/dzp1S
+	m4LK8URWyz6cK+3NtuaA9RRDcmjwHfbnrTSzBR7UnIsZuVumELC4QUJ9
+X-Gm-Gg: AeBDieuFfnIFoLruqPStqBCbqAjsg1w1kNIODxF1JfMuVTV7twKWanVmO5JozpFWzB4
+	WbhAr6/DF6ZJDx5mrhaXGPZMB3QQoxQPAO4X23e2Mr4FoQbgVzhvtnp2bztvOA/VSVtSQtKTyYo
+	gfUyMdoNk1Iptz/zzpO2oF8IKR8ZkN06zc8/bjB1/sFMAX6ljFEBIA/xc9vZEYY/Q6CmK86mq0G
+	u3PM5W/tqFba4kiMoiUhcrGd/qlZVOWXX5PZpVa4BZ+kUmrpSLrQs0eO90S7khB+sqmhhLKtPU7
+	NZeUwJHtsSsKpspMG71fZ4KbaHAC+puPR8EBgdW0hh47QiVJBMdWk5vXDtl2iyg7qLe9JPNfMfJ
+	tGhlINT1ogYKK0QZMv1OGIkb02VBODwjTfME1X6Dqu3RPrdBylTd35q3zllnK2FncNok7oWt7T8
+	7jBSUawDrsyuuO82UzbZ9/bUcz3jz16NM8Ube7cEuwN4I=
+X-Received: by 2002:a17:902:a717:b0:2b2:501c:bc0 with SMTP id d9443c01a7336-2b5f9eaf69bmr75431475ad.7.1776607733800;
+        Sun, 19 Apr 2026 07:08:53 -0700 (PDT)
+Received: from lgs.. ([2408:8417:d50:4775:fc0:88de:ed15:556b])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b5fa9ff98csm74800725ad.3.2026.04.19.07.08.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 19 Apr 2026 07:06:24 -0700 (PDT)
-From: HeeSu Kim <mlksvender@gmail.com>
-To: miguel.ojeda.sandonis@gmail.com
-Cc: a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	bjorn3_gh@protonmail.com,
-	boqun@google.com,
-	charmitro@posteo.net,
-	dakr@kernel.org,
-	gary@garyguo.net,
-	linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lossin@kernel.org,
-	mlksvender@gmail.com,
-	nathan@kernel.org,
-	nsc@kernel.org,
-	ojeda@kernel.org,
-	rust-for-linux@vger.kernel.org,
-	stable@vger.kernel.org,
-	tmgross@umich.edu
-Subject: [PATCH v6 2/2] rust: Makefile: bound rustdoc workaround to affected versions
-Date: Sun, 19 Apr 2026 23:06:13 +0900
-Message-ID: <e43a36ea08eba20b9b6c675cfcb5856201994c94.1776607331.git.mlksvender@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <cover.1776607331.git.mlksvender@gmail.com>
-References: <cover.1776607331.git.mlksvender@gmail.com>
+        Sun, 19 Apr 2026 07:08:53 -0700 (PDT)
+From: Guangshuo Li <lgs201920130244@gmail.com>
+To: Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Frank Li <Frank.Li@kernel.org>,
+	Fenghua Yu <fenghua.yu@intel.com>,
+	dmaengine@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Guangshuo Li <lgs201920130244@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] dmaengine: idxd: Fix saved engines array leak in config save
+Date: Sun, 19 Apr 2026 22:08:39 +0800
+Message-ID: <20260419140839.99672-1-lgs201920130244@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -108,103 +95,81 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	FREEMAIL_CC(0.00)[kernel.org,google.com,protonmail.com,posteo.net,garyguo.net,vger.kernel.org,gmail.com,umich.edu];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-238644-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-238643-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[mlksvender@gmail.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_RCPT(0.00)[stable];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,garyguo.net:email]
-X-Rspamd-Queue-Id: 891974244E7
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1EB974244FE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The `-Cunsafe-allow-abi-mismatch=fixed-x18` workaround was added to
-handle a rustdoc bug where target modifiers were not properly saved [1].
-An analogous workaround for doctests was added later [2]; since Rust
-1.91.0 the `sanitizer` modifier is also appended.
+idxd_device_config_save() uses cleanup.h helpers for temporary
+allocations while saving device configuration. The saved_groups and
+saved_wqs pointer arrays are declared with __free(kfree), and ownership
+is transferred to idxd_saved with no_free_ptr() on the success path.
 
-The rustdoc bug is fixed in Rust 1.90.0 [3] and the doctests one is
-fixed in Rust 1.92.0, so restrict each workaround to the compiler
-versions that are actually affected, letting ABI compatibility checks
-run again on newer compilers.
+The saved_engines pointer array follows the same ownership pattern on the
+success path, but it is not declared with __free(kfree). As a result, if
+an error happens after saved_engines is allocated, idxd_free_saved()
+frees the saved engine objects but not the saved_engines array itself.
 
-Split the cases into explicit version ranges using
-`rustc-min-version` + `rustc-lt-version` combined inline: the rustdoc
-workaround applies to 1.88.x and 1.89.x, the doctests workaround to
-1.88.x through 1.91.x, and the `sanitizer` modifier is only added
-from 1.91.x onwards (when rustc started recognizing it). This layout
-makes it easy to drop each entry as the minimum toolchain version is
-bumped past the affected range.
+This leaks saved_engines on error paths such as:
+  - failure to allocate an individual saved engine
+  - failure to allocate saved_wq_enable_map
+  - failure to allocate saved_wqs
+  - failure to allocate an individual saved WQ
 
-[1] https://github.com/rust-lang/rust/issues/144521
-[2] https://github.com/rust-lang/rust/issues/146465
-[3] https://github.com/rust-lang/rust/pull/144523
+Declare saved_engines with __free(kfree) so the array is released
+automatically on failure, matching saved_groups and saved_wqs. The success
+path is unchanged because ownership is already transferred with
+no_free_ptr().
 
-Suggested-by: Gary Guo <gary@garyguo.net>
-Link: https://lore.kernel.org/rust-for-linux/DG4JM9PU51M0.1YRGM9HVTY24U@garyguo.net/
-Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-Link: https://lore.kernel.org/rust-for-linux/CANiq72nnuKJaKrxrut6+noR13PUiSoWWyyp-pGx-fe_2O6ayFA@mail.gmail.com/
-Cc: stable@vger.kernel.org # Useful in 6.18.y and later.
-Signed-off-by: HeeSu Kim <mlksvender@gmail.com>
+Fixes: 6078a315aec1 ("dmaengine: idxd: Add idxd_device_config_save() and idxd_device_config_restore() helpers")
+Cc: stable@vger.kernel.org
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
 ---
- rust/Makefile | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ drivers/dma/idxd/init.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/rust/Makefile b/rust/Makefile
-index 5c0155b83454..14acc9c57c60 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -134,12 +134,18 @@ pin_init-flags := \
-     --extern macros \
-     $(call cfgs-to-flags,$(pin_init-cfgs))
+diff --git a/drivers/dma/idxd/init.c b/drivers/dma/idxd/init.c
+index f1cfc7790d95..02210f16d391 100644
+--- a/drivers/dma/idxd/init.c
++++ b/drivers/dma/idxd/init.c
+@@ -880,7 +880,7 @@ static int idxd_device_config_save(struct idxd_device *idxd,
+ 		saved_groups[i] = no_free_ptr(saved_group);
+ 	}
  
--# `rustdoc` did not save the target modifiers, thus workaround for
--# the time being (https://github.com/rust-lang/rust/issues/144521).
--rustdoc_modifiers_workaround := $(if $(call rustc-min-version,108800),-Cunsafe-allow-abi-mismatch=fixed-x18)
--
--# Similarly, for doctests (https://github.com/rust-lang/rust/issues/146465).
--doctests_modifiers_workaround := $(rustdoc_modifiers_workaround)$(if $(call rustc-min-version,109100),$(comma)sanitizer)
-+# `rustdoc` did not save the target modifiers
-+# (https://github.com/rust-lang/rust/issues/144521, fixed in Rust 1.90.0).
-+# Similarly, for doctests
-+# (https://github.com/rust-lang/rust/issues/146465, fixed in Rust 1.92.0).
-+ifeq ($(and $(call rustc-min-version,108800),$(call rustc-lt-version,109000)),y)
-+rustdoc_modifiers_workaround := -Cunsafe-allow-abi-mismatch=fixed-x18
-+doctests_modifiers_workaround := -Cunsafe-allow-abi-mismatch=fixed-x18
-+else ifeq ($(and $(call rustc-min-version,109000),$(call rustc-lt-version,109100)),y)
-+doctests_modifiers_workaround := -Cunsafe-allow-abi-mismatch=fixed-x18
-+else ifeq ($(and $(call rustc-min-version,109100),$(call rustc-lt-version,109200)),y)
-+doctests_modifiers_workaround := -Cunsafe-allow-abi-mismatch=fixed-x18,sanitizer
-+endif
- 
- # `rustc` recognizes `--remap-path-prefix` since 1.26.0, but `rustdoc` only
- # since Rust 1.81.0. Moreover, `rustdoc` ICEs on out-of-tree builds since Rust
+-	struct idxd_engine **saved_engines =
++	struct idxd_engine **saved_engines __free(kfree) =
+ 			kcalloc_node(idxd->max_engines,
+ 				     sizeof(struct idxd_engine *),
+ 				     GFP_KERNEL, dev_to_node(dev));
 -- 
-2.52.0
+2.43.0
 
 
