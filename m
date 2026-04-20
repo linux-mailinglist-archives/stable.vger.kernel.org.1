@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-239446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239630-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ELAbECZe5mm3vQEAu9opvQ
-	(envelope-from <stable+bounces-239446-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:11:02 +0200
+	id kKZzLX5m5mmJvwEAu9opvQ
+	(envelope-from <stable+bounces-239630-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:46:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD35E430A98
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:11:01 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28403432111
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:46:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 42E123938D6E
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:51:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ED394331FCBB
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:59:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6EBE33AD99;
-	Mon, 20 Apr 2026 15:51:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CB823321AA;
+	Mon, 20 Apr 2026 15:59:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fhexiCQ8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UnMVvIC+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9930C3382DE;
-	Mon, 20 Apr 2026 15:51:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4080F329E44;
+	Mon, 20 Apr 2026 15:59:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700274; cv=none; b=teXaAJZ0pHb0rs848NmZ6izYkgvBY+KXHPY0j2+MmwCWvi+m+A7WVw6ZyG4NWn7Ai3RYS8H6L5KGPMfz3Bi5G/kdBAunuGqtyofvTUb7XVQypbfgyBafSBOK0zPnVyVcwlWG5/Sbipf+kib8HLGnv+e+8w401WLER/i0T2TBJFE=
+	t=1776700749; cv=none; b=A7yJCo7K4+70FVKlf7pSjKwZNedtKjzgjFcfeFEh2dekcmRicSu5N/vnfKMBAd2QYFh5ANaGsCwrHYBHP3UEsFWIQtgWwUlJ0pr3jZ4ptjZkyDCIX1NptuC2UZLXyJXaCA40Ko0dM2elGlyiGmjPxAsCO5vQjZrbjyZD2iLHdBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700274; c=relaxed/simple;
-	bh=Z1oHvWK4r+zzSfkprcw8wVE7P7ge9UFx82SYRTKj4UU=;
+	s=arc-20240116; t=1776700749; c=relaxed/simple;
+	bh=vupX0sITVuvpKDClANtyrJmaujiU+kNjXWVrtiBdlqE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WKty604MYE3yE79UiIP0VI7X6hiWAhWqy/ASv+vs+SFT5KFeLXELZxZLZ8zELKGCZmKqtH8hFU719ocfK8VBAJkULOk6+biFOY8vLXTBB+PGZd5zkkldbSfB93NYqAK2QfpStxZoPmMZpVn91J8Qz0dXR48Jpdl4voMJk9wlAgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fhexiCQ8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCE67C19425;
-	Mon, 20 Apr 2026 15:51:13 +0000 (UTC)
+	 MIME-Version; b=FUcEFrUTiTGmcYkfS8iBYd7MyFEonmMmyxZZ50+cQfn6W8j7LZ171Kjrwreol7t5txhzZ0SZcSjrfDyoXs5k71OcvJvjg87365HvMqDLruB1MXO6LhJ+VEtEHURRyitSsiV+QgNuU7SK+fQW+z/FeC+SvyO63K48BMtZzaTKDUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UnMVvIC+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBEC6C19425;
+	Mon, 20 Apr 2026 15:59:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700274;
-	bh=Z1oHvWK4r+zzSfkprcw8wVE7P7ge9UFx82SYRTKj4UU=;
+	s=korg; t=1776700749;
+	bh=vupX0sITVuvpKDClANtyrJmaujiU+kNjXWVrtiBdlqE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fhexiCQ8EmtpjOIHoklc2KkNZAltqTV9rvd7EzxW+XZLJ8JZkbfLnGMEfsKbpBm7Q
-	 Kdq/buuzBDUL2+q/rkUum2XaX9Ndwclx0LbzC8964nyukKMivQwWXxDn9cHcC0PWem
-	 QtGS2o0ihkctc3JtGuOWa9YJiOf94b3ANYLvRY1k=
+	b=UnMVvIC+1OH6nEeg7ulGTOew01KI1bB1GbxHiAEuONnSy9/9LQFE4vNQVyy2XyG2a
+	 O86PxGebLO/iNzjIBmbjPRpSZZbVhTozZIhwHuPrMfn0qesJ9L64O92veQerCBk32/
+	 lAZlqiNbI5MNN2WKOiEPntX9Wf69WhUqA2Pv4IwM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicholas Carlini <nicholas@carlini.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Fernando Garcia Corona <fgarcor@gmail.com>,
+	songxiebing <songxiebing@kylinos.cn>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 076/220] eventpoll: defer struct eventpoll free to RCU grace period
-Date: Mon, 20 Apr 2026 17:40:17 +0200
-Message-ID: <20260420153936.774715282@linuxfoundation.org>
+Subject: [PATCH 6.18 039/198] ALSA: hda/realtek: Add quirk for Lenovo Yoga Pro 7 14IAH10
+Date: Mon, 20 Apr 2026 17:40:18 +0200
+Message-ID: <20260420153937.025894068@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
-References: <20260420153934.013228280@linuxfoundation.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,77 +69,71 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kylinos.cn,suse.de,kernel.org];
+	TAGGED_FROM(0.00)[bounces-239630-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-239446-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[carlini.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: AD35E430A98
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.de:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 28403432111
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicholas Carlini <nicholas@carlini.com>
+From: songxiebing <songxiebing@kylinos.cn>
 
-[ Upstream commit 07712db80857d5d09ae08f3df85a708ecfc3b61f ]
+[ Upstream commit f0541edb2e7333f320642c7b491a67912c1f65db ]
 
-In certain situations, ep_free() in eventpoll.c will kfree the epi->ep
-eventpoll struct while it still being used by another concurrent thread.
-Defer the kfree() to an RCU callback to prevent UAF.
+The bass speakers are not working, and add the following entry
+in /etc/modprobe.d/snd.conf:
+options snd-sof-intel-hda-generic hda_model=alc287-yoga9-bass-spk-pin
+Fixes the bass speakers.
 
-Fixes: f2e467a48287 ("eventpoll: Fix semi-unbounded recursion")
-Signed-off-by: Nicholas Carlini <nicholas@carlini.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+So add the quick ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN here.
+
+Reported-by: Fernando Garcia Corona <fgarcor@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221317
+Signed-off-by: songxiebing <songxiebing@kylinos.cn>
+Link: https://patch.msgid.link/20260405012651.133838-1-songxiebing@kylinos.cn
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/eventpoll.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ sound/hda/codecs/realtek/alc269.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/eventpoll.c b/fs/eventpoll.c
-index d20917b03161b..3bdbaf202d4db 100644
---- a/fs/eventpoll.c
-+++ b/fs/eventpoll.c
-@@ -226,6 +226,9 @@ struct eventpoll {
- 	 */
- 	refcount_t refcount;
- 
-+	/* used to defer freeing past ep_get_upwards_depth_proc() RCU walk */
-+	struct rcu_head rcu;
-+
- #ifdef CONFIG_NET_RX_BUSY_POLL
- 	/* used to track busy poll napi_id */
- 	unsigned int napi_id;
-@@ -819,7 +822,8 @@ static void ep_free(struct eventpoll *ep)
- 	mutex_destroy(&ep->mtx);
- 	free_uid(ep->user);
- 	wakeup_source_unregister(ep->ws);
--	kfree(ep);
-+	/* ep_get_upwards_depth_proc() may still hold epi->ep under RCU */
-+	kfree_rcu(ep, rcu);
- }
- 
- /*
+diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/realtek/alc269.c
+index 2e89528e5cec1..6b53a7d90932d 100644
+--- a/sound/hda/codecs/realtek/alc269.c
++++ b/sound/hda/codecs/realtek/alc269.c
+@@ -7467,6 +7467,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x17aa, 0x38fd, "ThinkBook plus Gen5 Hybrid", ALC287_FIXUP_TAS2781_I2C),
+ 	SND_PCI_QUIRK(0x17aa, 0x3902, "Lenovo E50-80", ALC269_FIXUP_DMIC_THINKPAD_ACPI),
+ 	SND_PCI_QUIRK(0x17aa, 0x390d, "Lenovo Yoga Pro 7 14ASP10", ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN),
++	SND_PCI_QUIRK(0x17aa, 0x3911, "Lenovo Yoga Pro 7 14IAH10", ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN),
+ 	SND_PCI_QUIRK(0x17aa, 0x3913, "Lenovo 145", ALC236_FIXUP_LENOVO_INV_DMIC),
+ 	SND_PCI_QUIRK(0x17aa, 0x391a, "Lenovo Yoga Slim 7 14AKP10", ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN),
+ 	SND_PCI_QUIRK(0x17aa, 0x391f, "Yoga S990-16 pro Quad YC Quad", ALC287_FIXUP_TXNW2781_I2C),
 -- 
 2.53.0
 
