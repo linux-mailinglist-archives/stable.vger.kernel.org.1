@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-239857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239525-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aMdLFqFQ5mkDuwEAu9opvQ
-	(envelope-from <stable+bounces-239857-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:13:21 +0200
+	id mFztHUxl5mkKvwEAu9opvQ
+	(envelope-from <stable+bounces-239525-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:41:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C741642F26C
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:13:20 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04899431D37
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:41:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2B16C3035351
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:09:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5AADC35D9114
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:54:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31FBF344D95;
-	Mon, 20 Apr 2026 16:09:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1AAF2E093A;
+	Mon, 20 Apr 2026 15:54:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TRMckKhw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lylIyd7f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E83DE344057;
-	Mon, 20 Apr 2026 16:09:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3241330675;
+	Mon, 20 Apr 2026 15:54:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701394; cv=none; b=G0PeJIYlUrA/eMk46p/4hBVLMKCdrga08cMHZe6NLvf6FPos8kr1gSAt2r8j4R4bkbI2Nkm5P8PB7dEEFvSGuHESb8ic75eUmLcn0A23EFWlEYvgPG4WKCEbL0EQKEpYu084SuTlnKr6XdsFgLHfVCr1ZYuaMaVg1fo+vXEQ10Y=
+	t=1776700476; cv=none; b=TPthWraKj0IouNg/lIc9LC+eho2TnlA67jEs6vD7H+4B0zybtPdNGf76Kshlnesv3JkHQUIELOpZTbt/f9wlfcL7qQpXawoYiFvLBFHP9GMqEvdGDfzNXVtOlCw0ROiPdjPYbLiPGwCqK0jjhd/zxZqp7lRA5EvxcutzbPNBYGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701394; c=relaxed/simple;
-	bh=8RzUqbCLCEQKB8B0wRrY26xUVEZbC+qBAUHRhPNIOX0=;
+	s=arc-20240116; t=1776700476; c=relaxed/simple;
+	bh=hbofeAXGNk9UmIjurpdsIBxFKbYfCelLABpQvKVh5z0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R/QDaqNNeZMSyllhxX3hSuGbLsxT3K7zOecYBRXTQwTvkWHFDswi4SQk63+x94mJ13H0uFysPLLgcxmfvVIOLt6RW7J92jZQ6qcKoG1RZy+WmBneMV4xj3yfW2whK1af7izon30dROf9J8C4j0dsbWiy8TADJVzfG2/caXsBBWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TRMckKhw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E1E0C2BCB4;
-	Mon, 20 Apr 2026 16:09:53 +0000 (UTC)
+	 MIME-Version; b=LhHomMQqb3vNi3ko6PGlPq4Ob9S/YG5BipEMQ4zR5IsmI3SOH2nYTL0aBVUda9ozZ81uuSiQxteGHl6Uy3D20WHDFWWvwa1c34fx8ZWzVshVo5Qo2wZ1DSYGcunRppQsk5xV1xWdVF29YPL6P+AI3qz5Czc3e1u46uAKK8TdgBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lylIyd7f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECFEFC19425;
+	Mon, 20 Apr 2026 15:54:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701393;
-	bh=8RzUqbCLCEQKB8B0wRrY26xUVEZbC+qBAUHRhPNIOX0=;
+	s=korg; t=1776700476;
+	bh=hbofeAXGNk9UmIjurpdsIBxFKbYfCelLABpQvKVh5z0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TRMckKhwCBNIfA+s0+1LWOYf7Gint6F9QlsE0y25/YLV8dLoQNJfOKn3qyjc26xs1
-	 /Dlpfs9BHDUC5M0Q+1zepjGwAJiVE7DmDOBoOsIWk2UI5xYuN3zql0B1t4gDQE/BHZ
-	 JK7IUqSwi2L3EHPTwch7BmwZiqhizakZ4Zo4zgRI=
+	b=lylIyd7fToJw2jbX+/QHSbkGWwp8Io37w7oehxLKCJlhR25hqogRQnPVkjJ0yJ4SL
+	 vHokJM/aeD+QuARx8pbXVb+1SOxA4I2INlkSPd5p3nCIOEofgmAMb7qN812oABhdqH
+	 9Hl/yq6AIW9sj+WuWQbw1YNfJ7RwViA4nKISGG6U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Jiri Kosina <jikos@kernel.org>,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Masaki Ota <masaki.ota@jp.alps.com>,
-	linux-input@vger.kernel.org,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 6.12 097/162] HID: alps: fix NULL pointer dereference in alps_raw_event()
+	Jethro Beekman <jethro@fortanix.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.19 188/220] KVM: SEV: Reject attempts to sync VMSA of an already-launched/encrypted vCPU
 Date: Mon, 20 Apr 2026 17:42:09 +0200
-Message-ID: <20260420153930.553805210@linuxfoundation.org>
+Message-ID: <20260420153940.795646549@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
-References: <20260420153927.006696811@linuxfoundation.org>
+In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
+References: <20260420153934.013228280@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,76 +67,100 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239857-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-239525-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,suse.com:email]
-X-Rspamd-Queue-Id: C741642F26C
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,fortanix.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 04899431D37
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 1badfc4319224820d5d890f8eab6aa52e4e83339 upstream.
+commit 9b9f7962e3e879d12da2bf47e02a24ec51690e3d upstream.
 
-Commit ecfa6f34492c ("HID: Add HID_CLAIMED_INPUT guards in raw_event
-callbacks missing them") attempted to fix up the HID drivers that had
-missed the previous fix that was done in 2ff5baa9b527 ("HID: appleir:
-Fix potential NULL dereference at raw event handle"), but the alps
-driver was missed.
+Reject synchronizing vCPU state to its associated VMSA if the vCPU has
+already been launched, i.e. if the VMSA has already been encrypted.  On a
+host with SNP enabled, accessing guest-private memory generates an RMP #PF
+and panics the host.
 
-Fix this up by properly checking in the hid-alps driver that it had been
-claimed correctly before attempting to process the raw event.
+  BUG: unable to handle page fault for address: ff1276cbfdf36000
+  #PF: supervisor write access in kernel mode
+  #PF: error_code(0x80000003) - RMP violation
+  PGD 5a31801067 P4D 5a31802067 PUD 40ccfb5063 PMD 40e5954063 PTE 80000040fdf36163
+  SEV-SNP: PFN 0x40fdf36, RMP entry: [0x6010fffffffff001 - 0x000000000000001f]
+  Oops: Oops: 0003 [#1] SMP NOPTI
+  CPU: 33 UID: 0 PID: 996180 Comm: qemu-system-x86 Tainted: G           OE
+  Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
+  Hardware name: Dell Inc. PowerEdge R7625/0H1TJT, BIOS 1.5.8 07/21/2023
+  RIP: 0010:sev_es_sync_vmsa+0x54/0x4c0 [kvm_amd]
+  Call Trace:
+   <TASK>
+   snp_launch_update_vmsa+0x19d/0x290 [kvm_amd]
+   snp_launch_finish+0xb6/0x380 [kvm_amd]
+   sev_mem_enc_ioctl+0x14e/0x720 [kvm_amd]
+   kvm_arch_vm_ioctl+0x837/0xcf0 [kvm]
+   kvm_vm_ioctl+0x3fd/0xcc0 [kvm]
+   __x64_sys_ioctl+0xa3/0x100
+   x64_sys_call+0xfe0/0x2350
+   do_syscall_64+0x81/0x10f0
+   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+  RIP: 0033:0x7ffff673287d
+   </TASK>
 
-Fixes: 73196ebe134d ("HID: alps: add support for Alps T4 Touchpad device")
-Cc: stable <stable@kernel.org>
-Cc: Jiri Kosina <jikos@kernel.org>
-Cc: Benjamin Tissoires <bentiss@kernel.org>
-Cc: Masaki Ota <masaki.ota@jp.alps.com>
-Cc: linux-input@vger.kernel.org
-Assisted-by: gregkh_clanker_t1000
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Note, the KVM flaw has been present since commit ad73109ae7ec ("KVM: SVM:
+Provide support to launch and run an SEV-ES guest"), but has only been
+actively dangerous for the host since SNP support was added.  With SEV-ES,
+KVM would "just" clobber guest state, which is totally fine from a host
+kernel perspective since userspace can clobber guest state any time before
+sev_launch_update_vmsa().
+
+Fixes: ad27ce155566 ("KVM: SEV: Add KVM_SEV_SNP_LAUNCH_FINISH command")
+Reported-by: Jethro Beekman <jethro@fortanix.com>
+Closes: https://lore.kernel.org/all/d98692e2-d96b-4c36-8089-4bc1e5cc3d57@fortanix.com
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260310234829.2608037-3-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-alps.c |    3 +++
+ arch/x86/kvm/svm/sev.c |    3 +++
  1 file changed, 3 insertions(+)
 
---- a/drivers/hid/hid-alps.c
-+++ b/drivers/hid/hid-alps.c
-@@ -437,6 +437,9 @@ static int alps_raw_event(struct hid_dev
- 	int ret = 0;
- 	struct alps_dev *hdata = hid_get_drvdata(hdev);
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -875,6 +875,9 @@ static int sev_es_sync_vmsa(struct vcpu_
+ 	u8 *d;
+ 	int i;
  
-+	if (!(hdev->claimed & HID_CLAIMED_INPUT) || !hdata->input)
-+		return 0;
++	if (vcpu->arch.guest_state_protected)
++		return -EINVAL;
 +
- 	switch (hdev->product) {
- 	case HID_PRODUCT_ID_T4_BTNLESS:
- 		ret = t4_raw_event(hdata, data, size);
+ 	/* Check some debug related fields before encrypting the VMSA */
+ 	if (svm->vcpu.guest_debug || (svm->vmcb->save.dr7 & ~DR7_FIXED_1))
+ 		return -EINVAL;
 
 
 
