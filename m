@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-239616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239773-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UOgfIEtm5mlmvwEAu9opvQ
-	(envelope-from <stable+bounces-239616-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:45:47 +0200
+	id 6BALJM9Z5mmtvAEAu9opvQ
+	(envelope-from <stable+bounces-239773-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:52:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D83443208F
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:45:46 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1001B430277
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:52:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AAD8A32E16CB
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:58:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AFF7B325527E
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:06:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C09F433B6EF;
-	Mon, 20 Apr 2026 15:58:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F83A33F586;
+	Mon, 20 Apr 2026 16:06:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ekh0hMsy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tC/KGuyi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82DC822259F;
-	Mon, 20 Apr 2026 15:58:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7BC633F8DC;
+	Mon, 20 Apr 2026 16:06:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700713; cv=none; b=YVR/1xQRHThNs0HSeb5wiRJCMZ/71EY3bbO8CJGjtjBX9WVW07SkCSagMTa1k4iC8w/ttki1ohDcpLP2ppqmmbY90miTfY49jNM7IMfW4H10KeSM5dD2dLH/q9tghETse+xugEFVVy/XJxjcPKhU/NXZaIoj7E0RLGZbuo9VQCs=
+	t=1776701177; cv=none; b=BiSmVL0zyG9ZCZKG+z0RzkmqXmjZ0WNWoi0IOjsZ4UHW+j3IW9ma8yxbYOJD5GCa0llDsFLEDQcoQ5wnEdV+0bj44zrlNMjqgvgL9L5AeRFCERh/fqklZW/TUzJfDPdQee7apTXSpumPfKclAJFO7t1mp1kOp9IqJ6eBdQQYZlE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700713; c=relaxed/simple;
-	bh=HpMwI8gwy+731i7fxPUA/dnFniqIsYQYgYhOLHGmLMI=;
+	s=arc-20240116; t=1776701177; c=relaxed/simple;
+	bh=lkXXK9tv7DEUSToGqftvPN2iS65Ft2XT8ErBVC2GFEg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SBmTYCaidD4zIz4pFWBAFaAobF44xsfB14sDGmiCnyXcBpzHtVpaomeRssmGd14n40N06jWK0xxEapHP4N8pAvaxMdAN6hnbTyOnsQp8CREwpdnEKCLxj5eeimTUps9yyt4gPxA4UDP5Smc0Z8w/d2gNotq+8K0G/0QUKBG0vFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ekh0hMsy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 106E8C19425;
-	Mon, 20 Apr 2026 15:58:32 +0000 (UTC)
+	 MIME-Version; b=ccmU8NVd1o4T6mnxH6nEMPeeav9dVQnY9hLTSQzp5fzz698biaut3iuGk7/dE35Ac23ejqVKr2PxgGNH+otDwS2BXeONRp5RlMJx72eqRsL8isMDY+t+FnyTrCvg1XeEN5K9Pg1S8EdPumo7o+xAQSdEojO0g4NNfEWhQxPoQt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tC/KGuyi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23231C2BCB6;
+	Mon, 20 Apr 2026 16:06:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700713;
-	bh=HpMwI8gwy+731i7fxPUA/dnFniqIsYQYgYhOLHGmLMI=;
+	s=korg; t=1776701177;
+	bh=lkXXK9tv7DEUSToGqftvPN2iS65Ft2XT8ErBVC2GFEg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ekh0hMsyXn1UBy5kqsWv8b0LtuRAptXN5dL7HV46jLbKNDVfBXsNHAT7Dnm3lN/+b
-	 ZHLKIXct2g/jB0Ah1pMfFurE0WLJZdlV0CjLp8LKjBi7/uYMnIoEfYVuEnWZ0XimQX
-	 3QR+6681+CgXiipjuISCRXexjOIBU6Iwd+YERmfs=
+	b=tC/KGuyiTbBfrhN32kxOWi8Gfa2HXtQ5zmuvaiLffSELYQg/Xs24sqQO0UqhspStz
+	 fR/N26GHoBH+MOc2QZZ8vXqttQ6BUaLtFXq4BOHqJ7Cq796pO+Wh5HgAz2O9isTWj9
+	 wGtwq6yjaM4/sCSnlcyMECY3mrWgPtjXb/km14KQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mihai Sain <mihai.sain@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 058/198] ARM: dts: microchip: sam9x7: fix gpio-lines count for pioB
+Subject: [PATCH 6.12 005/162] media: rkvdec: reduce stack usage in rkvdec_init_v4l2_vp9_count_tbl()
 Date: Mon, 20 Apr 2026 17:40:37 +0200
-Message-ID: <20260420153937.703663238@linuxfoundation.org>
+Message-ID: <20260420153927.208313969@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
+References: <20260420153927.006696811@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +65,83 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-239616-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239773-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,microchip.com:email,fffff600:email]
-X-Rspamd-Queue-Id: 7D83443208F
+	TAGGED_RCPT(0.00)[stable,huawei];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[collabora.com:email,arndb.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1001B430277
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mihai Sain <mihai.sain@microchip.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 907150bbe566e23714a25d7bcb910f236c3c44c0 ]
+[ Upstream commit c03b7dec3c4ddc97872fa12bfca75bae9cb46510 ]
 
-The pioB controller on the SAM9X7 SoC actually supports 27 GPIO lines.
-The previous value of 26 was incorrect, leading to the last pin being
-unavailable for use by the GPIO subsystem.
-Update the #gpio-lines property to reflect
-the correct hardware specification.
+The deeply nested loop in rkvdec_init_v4l2_vp9_count_tbl() needs a lot
+of registers, so when the clang register allocator runs out, it ends up
+spilling countless temporaries to the stack:
 
-Fixes: 41af45af8bc3 ("ARM: dts: at91: sam9x7: add device tree for SoC")
-Signed-off-by: Mihai Sain <mihai.sain@microchip.com>
-Link: https://lore.kernel.org/r/20260209090735.2016-1-mihai.sain@microchip.com
-Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+drivers/media/platform/rockchip/rkvdec/rkvdec-vp9.c:966:12: error: stack frame size (1472) exceeds limit (1280) in 'rkvdec_vp9_start' [-Werror,-Wframe-larger-than]
+
+Marking this function as noinline_for_stack keeps it out of
+rkvdec_vp9_start(), giving the compiler more room for optimization.
+
+The resulting code is good enough that both the total stack usage
+and the loop get enough better to stay under the warning limit,
+though it's still slow, and would need a larger rework if this
+function ends up being called in a fast path.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/microchip/sam9x7.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/staging/media/rkvdec/rkvdec-vp9.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/microchip/sam9x7.dtsi b/arch/arm/boot/dts/microchip/sam9x7.dtsi
-index 46dacbbd201dd..d242d7a934d0f 100644
---- a/arch/arm/boot/dts/microchip/sam9x7.dtsi
-+++ b/arch/arm/boot/dts/microchip/sam9x7.dtsi
-@@ -1226,7 +1226,7 @@ pioB: gpio@fffff600 {
- 				interrupt-controller;
- 				#gpio-cells = <2>;
- 				gpio-controller;
--				#gpio-lines = <26>;
-+				#gpio-lines = <27>;
- 				clocks = <&pmc PMC_TYPE_PERIPHERAL 3>;
- 			};
+diff --git a/drivers/staging/media/rkvdec/rkvdec-vp9.c b/drivers/staging/media/rkvdec/rkvdec-vp9.c
+index 0e7e16f20eeb0..bc74d2d824ef2 100644
+--- a/drivers/staging/media/rkvdec/rkvdec-vp9.c
++++ b/drivers/staging/media/rkvdec/rkvdec-vp9.c
+@@ -923,7 +923,8 @@ static void rkvdec_vp9_done(struct rkvdec_ctx *ctx,
+ 	update_ctx_last_info(vp9_ctx);
+ }
  
+-static void rkvdec_init_v4l2_vp9_count_tbl(struct rkvdec_ctx *ctx)
++static noinline_for_stack void
++rkvdec_init_v4l2_vp9_count_tbl(struct rkvdec_ctx *ctx)
+ {
+ 	struct rkvdec_vp9_ctx *vp9_ctx = ctx->priv;
+ 	struct rkvdec_vp9_intra_frame_symbol_counts *intra_cnts = vp9_ctx->count_tbl.cpu;
 -- 
 2.53.0
 
