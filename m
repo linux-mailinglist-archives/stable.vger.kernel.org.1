@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-239947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239948-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YKwuAVxs5mkJwQEAu9opvQ
-	(envelope-from <stable+bounces-239947-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 20:11:40 +0200
+	id 2MQsDmJs5mkJwQEAu9opvQ
+	(envelope-from <stable+bounces-239948-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 20:11:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E3B84328C2
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 20:11:38 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9287C4328D0
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 20:11:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C636431BE096
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:38:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0421631C10BC
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:38:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4703B351C2B;
-	Mon, 20 Apr 2026 16:38:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16ACE351C07;
+	Mon, 20 Apr 2026 16:38:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wua/p60m"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="buBjgVRy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AC742FB084
-	for <stable@vger.kernel.org>; Mon, 20 Apr 2026 16:38:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF773351C2B
+	for <stable@vger.kernel.org>; Mon, 20 Apr 2026 16:38:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776703134; cv=none; b=fc+iivhXr312xE3GJOT72a99SVG8f7w0fw6E2hqdVj2oLZCDgktKbZCEaG2RaiErJPl8KlOe2PO4wzve/v2ogH/ZgK5/N3qhVCaTaw+QDUrpIVtHIdPf2dGRW1PXqyvVrN27eHeChPgTO4Dp4Ppal2fI4H3QODWml4agXKroCTo=
+	t=1776703136; cv=none; b=hQQzR0GLdEWu4yKBJTA2Bbx+0E6cUxmQ+QXtMb28mzrRk5zRqAm4seHa0R1LApO4cVx2WtBDvWxx8zkjVemOPfEDPrv33UBSByPxVUk8oIZj+2Q1cHxasKEwg1LlG0jHBM2mO5+MFpV1t/ch121KCjippQnSBh9xLxxJv78dlT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776703134; c=relaxed/simple;
-	bh=yO0nvuGE5MYg0HT8s9Hc/jITDIK1SaSt+RH6v8lJk0A=;
+	s=arc-20240116; t=1776703136; c=relaxed/simple;
+	bh=iWi5dJ2irCazVhqGNNw6dxp02gxwHLNHW1qUw0AyiWo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aLwk/DniHA7fPNe9/vEf+qea42cmIdLhI5t4wI4YD+4uVCyFZxEgwaUIfMeoc3yz7Xg5/W+hJgidwN6tqZubG6o0Rj/F1KOgHRXTBCBYS5df0WiLWF8caFFmiSW+vhOCvruNvb7M4X+g7cPVoglUJBop9O4g5d3besAfOh4biUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wua/p60m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D5BAC2BCB3;
-	Mon, 20 Apr 2026 16:38:52 +0000 (UTC)
+	 MIME-Version; b=ArCA8bqJTummitzEt3UU41aCtdlJrbTHIPoy9Wdpp3Wq+pnllYOo85RlFp3afwHXtp5hHkVCt+moRJV9yAss6Uvt+CzJUqkaCuMMKCtHgp2slf6Q1aU8EZH/F0xQdqkpV8Dux079v32Eop9D9eZt6fUpgs9/Y/PgrY1e7bOKY9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=buBjgVRy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C49DFC2BCB4;
+	Mon, 20 Apr 2026 16:38:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776703133;
-	bh=yO0nvuGE5MYg0HT8s9Hc/jITDIK1SaSt+RH6v8lJk0A=;
+	s=k20201202; t=1776703136;
+	bh=iWi5dJ2irCazVhqGNNw6dxp02gxwHLNHW1qUw0AyiWo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wua/p60mA7oyk5HhA0xrxRlO4AuMKa2cZZHuSEA4qpOMcpKVB+eIkRR2ZKLcFHhuZ
-	 yGCj7hEPmCUotnePBoNxD81a/ME8+gpIa4u3BGJKgrJncms7B4HYXngtRzKS4n7d0x
-	 QIDFMc/viHi4ins80x9n2RxGNZDe+MHh3IN+O+/axtPpIdBrZDfW+F2TMX0XWQLCNJ
-	 JSkbK/j0raiVC49QloFAvIdZfyVHtsYo+RAGb8rlrGSIf3LGDd52C+0tCnnPL6Pyhv
-	 CKidKaXZi7xFgzWPvgHt9MpK5it/AH2z4x82tM/1eCejOqHEAEdfAiavmui2+ST1KD
-	 KFKgDzyZmjpPQ==
+	b=buBjgVRySnpbJWIV84O24He9OIXpaYpbkeBW9kyzOXImT7lYk/xNXzb1LuFVG+vN1
+	 L/bZXLgdV+3rt4ePZ3w1XGSiXC11kq+GaG38d1mgPFZZpeZB132ro3GWfnINxyx+Em
+	 Pote9e1Zy8ZVYR9hUov5DTyPGZ30wgtRAPAyxSOJXnI4c1Oofg35fTtLf+e30Z+7Vz
+	 KDz8uElygOh+rKA2nfYbVK+S3hEETGXb7W0ryb+E6z3aspxqS4gjCWdD9nwIf6s2A7
+	 IMSiZl5JxEbl+s187csKLdDCITRHYMTQzv5wQY3Zhk5xQziNecWO7/bJ8X3KS4BDoV
+	 YBdwx/mwx2MsA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Tamir Duberstein <tamird@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Fiona Behrens <me@kloenk.dev>,
-	Trevor Gross <tmgross@umich.edu>,
+Cc: Namjae Jeon <linkinjeon@kernel.org>,
+	munan Huang <munanevil@gmail.com>,
+	ChenXiaoSong <chenxiaosong@kylinos.cn>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] scripts: generate_rust_analyzer.py: define scripts
-Date: Mon, 20 Apr 2026 12:38:51 -0400
-Message-ID: <20260420163851.1302521-1-sashal@kernel.org>
+Subject: [PATCH 6.18.y 1/2] ksmbd: fix use-after-free in __ksmbd_close_fd() via durable scavenger
+Date: Mon, 20 Apr 2026 12:38:53 -0400
+Message-ID: <20260420163854.1302592-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026042047-kissable-reboot-f1bc@gregkh>
-References: <2026042047-kissable-reboot-f1bc@gregkh>
+In-Reply-To: <2026042009-snarl-stagnant-e64b@gregkh>
+References: <2026042009-snarl-stagnant-e64b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,88 +69,163 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239947-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[kernel.org,gmail.com,kylinos.cn,microsoft.com];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239948-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,umich.edu:email,collabora.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kloenk.dev:email]
-X-Rspamd-Queue-Id: 4E3B84328C2
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9287C4328D0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Tamir Duberstein <tamird@kernel.org>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 36c619f6bd793493294becb10a02fea370b67a91 ]
+[ Upstream commit 235e32320a470fcd3998fb3774f2290a0eb302a1 ]
 
-Add IDE support for host-side scripts written in Rust. This support has
-been missing since these scripts were initially added in commit
-9a8ff24ce584 ("scripts: add `generate_rust_target.rs`"), thus add it.
+When a durable file handle survives session disconnect (TCP close without
+SMB2_LOGOFF), session_fd_check() sets fp->conn = NULL to preserve the
+handle for later reconnection. However, it did not clean up the byte-range
+locks on fp->lock_list.
 
-Change the existing instance of extension stripping to
-`pathlib.Path.stem` to maintain code consistency.
+Later, when the durable scavenger thread times out and calls
+__ksmbd_close_fd(NULL, fp), the lock cleanup loop did:
 
-Fixes: 9a8ff24ce584 ("scripts: add `generate_rust_target.rs`")
-Cc: stable@vger.kernel.org
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-Reviewed-by: Fiona Behrens <me@kloenk.dev>
-Reviewed-by: Trevor Gross <tmgross@umich.edu>
-Link: https://patch.msgid.link/20260122-rust-analyzer-scripts-v1-1-ff6ba278170e@kernel.org
-Signed-off-by: Tamir Duberstein <tamird@kernel.org>
-[ changed `[std]` dep to `["std"]` and kept untyped `is_root_crate()` ]
+    spin_lock(&fp->conn->llist_lock);
+
+This caused a slab use-after-free because fp->conn was NULL and the
+original connection object had already been freed by
+ksmbd_tcp_disconnect().
+
+The root cause is asymmetric cleanup: lock entries (smb_lock->clist) were
+left dangling on the freed conn->lock_list while fp->conn was nulled out.
+
+To fix this issue properly, we need to handle the lifetime of
+smb_lock->clist across three paths:
+ - Safely skip clist deletion when list is empty and fp->conn is NULL.
+ - Remove the lock from the old connection's lock_list in
+   session_fd_check()
+ - Re-add the lock to the new connection's lock_list in
+   ksmbd_reopen_durable_fd().
+
+Fixes: c8efcc786146 ("ksmbd: add support for durable handles v1/v2")
+Co-developed-by: munan Huang <munanevil@gmail.com>
+Signed-off-by: munan Huang <munanevil@gmail.com>
+Reviewed-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Stable-dep-of: 49110a8ce654 ("ksmbd: validate owner of durable handle on reconnect")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/generate_rust_analyzer.py | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ fs/smb/server/vfs_cache.c | 41 ++++++++++++++++++++++++++++-----------
+ 1 file changed, 30 insertions(+), 11 deletions(-)
 
-diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
-index dadb1edf87e76..a789fb3b17e49 100755
---- a/scripts/generate_rust_analyzer.py
-+++ b/scripts/generate_rust_analyzer.py
-@@ -113,6 +113,18 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs):
-         "exclude_dirs": [],
-     }
+diff --git a/fs/smb/server/vfs_cache.c b/fs/smb/server/vfs_cache.c
+index 6ef116585af64..08f25a2d75416 100644
+--- a/fs/smb/server/vfs_cache.c
++++ b/fs/smb/server/vfs_cache.c
+@@ -370,9 +370,11 @@ static void __ksmbd_close_fd(struct ksmbd_file_table *ft, struct ksmbd_file *fp)
+ 	 * there are not accesses to fp->lock_list.
+ 	 */
+ 	list_for_each_entry_safe(smb_lock, tmp_lock, &fp->lock_list, flist) {
+-		spin_lock(&fp->conn->llist_lock);
+-		list_del(&smb_lock->clist);
+-		spin_unlock(&fp->conn->llist_lock);
++		if (!list_empty(&smb_lock->clist) && fp->conn) {
++			spin_lock(&fp->conn->llist_lock);
++			list_del(&smb_lock->clist);
++			spin_unlock(&fp->conn->llist_lock);
++		}
  
-+    scripts = srctree / "scripts"
-+    makefile = (scripts / "Makefile").read_text()
-+    for path in scripts.glob("*.rs"):
-+        name = path.stem
-+        if f"{name}-rust" not in makefile:
-+            continue
-+        append_crate(
-+            name,
-+            path,
-+            ["std"],
-+        )
+ 		list_del(&smb_lock->flist);
+ 		locks_free_lock(smb_lock->fl);
+@@ -902,6 +904,7 @@ static bool session_fd_check(struct ksmbd_tree_connect *tcon,
+ 	struct ksmbd_inode *ci;
+ 	struct oplock_info *op;
+ 	struct ksmbd_conn *conn;
++	struct ksmbd_lock *smb_lock, *tmp_lock;
+ 
+ 	if (!is_reconnectable(fp))
+ 		return false;
+@@ -918,6 +921,12 @@ static bool session_fd_check(struct ksmbd_tree_connect *tcon,
+ 	}
+ 	up_write(&ci->m_lock);
+ 
++	list_for_each_entry_safe(smb_lock, tmp_lock, &fp->lock_list, flist) {
++		spin_lock(&fp->conn->llist_lock);
++		list_del_init(&smb_lock->clist);
++		spin_unlock(&fp->conn->llist_lock);
++	}
 +
-     def is_root_crate(build_file, target):
-         try:
-             return f"{target}.o" in open(build_file).read()
-@@ -128,7 +140,7 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs):
-     for folder in extra_dirs:
-         for path in folder.rglob("*.rs"):
-             logging.info("Checking %s", path)
--            name = path.name.replace(".rs", "")
-+            name = path.stem
+ 	fp->conn = NULL;
+ 	fp->tcon = NULL;
+ 	fp->volatile_id = KSMBD_NO_FID;
+@@ -996,6 +1005,9 @@ int ksmbd_reopen_durable_fd(struct ksmbd_work *work, struct ksmbd_file *fp)
+ {
+ 	struct ksmbd_inode *ci;
+ 	struct oplock_info *op;
++	struct ksmbd_conn *conn = work->conn;
++	struct ksmbd_lock *smb_lock;
++	unsigned int old_f_state;
  
-             # Skip those that are not crate roots.
-             if not is_root_crate(path.parent / "Makefile", name) and \
+ 	if (!fp->is_durable || fp->conn || fp->tcon) {
+ 		pr_err("Invalid durable fd [%p:%p]\n", fp->conn, fp->tcon);
+@@ -1007,9 +1019,23 @@ int ksmbd_reopen_durable_fd(struct ksmbd_work *work, struct ksmbd_file *fp)
+ 		return -EBADF;
+ 	}
+ 
+-	fp->conn = work->conn;
++	old_f_state = fp->f_state;
++	fp->f_state = FP_NEW;
++	__open_id(&work->sess->file_table, fp, OPEN_ID_TYPE_VOLATILE_ID);
++	if (!has_file_id(fp->volatile_id)) {
++		fp->f_state = old_f_state;
++		return -EBADF;
++	}
++
++	fp->conn = conn;
+ 	fp->tcon = work->tcon;
+ 
++	list_for_each_entry(smb_lock, &fp->lock_list, flist) {
++		spin_lock(&conn->llist_lock);
++		list_add_tail(&smb_lock->clist, &conn->lock_list);
++		spin_unlock(&conn->llist_lock);
++	}
++
+ 	ci = fp->f_ci;
+ 	down_write(&ci->m_lock);
+ 	list_for_each_entry_rcu(op, &ci->m_op_list, op_entry) {
+@@ -1020,13 +1046,6 @@ int ksmbd_reopen_durable_fd(struct ksmbd_work *work, struct ksmbd_file *fp)
+ 	}
+ 	up_write(&ci->m_lock);
+ 
+-	fp->f_state = FP_NEW;
+-	__open_id(&work->sess->file_table, fp, OPEN_ID_TYPE_VOLATILE_ID);
+-	if (!has_file_id(fp->volatile_id)) {
+-		fp->conn = NULL;
+-		fp->tcon = NULL;
+-		return -EBADF;
+-	}
+ 	return 0;
+ }
+ 
 -- 
 2.53.0
 
