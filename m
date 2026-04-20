@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-239383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239596-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aHngKQ5f5mkWvgEAu9opvQ
-	(envelope-from <stable+bounces-239383-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:14:54 +0200
+	id 0EDJERdm5mlmvwEAu9opvQ
+	(envelope-from <stable+bounces-239596-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:44:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C367B430CD5
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:14:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D0E7431FAD
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:44:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C2B4730DE11B
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:49:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 03FA43007358
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:57:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17234344021;
-	Mon, 20 Apr 2026 15:48:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73CE5336896;
+	Mon, 20 Apr 2026 15:57:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nbng3+KQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D/0gcifq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAF0633C192;
-	Mon, 20 Apr 2026 15:48:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 379D4331A78;
+	Mon, 20 Apr 2026 15:57:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700106; cv=none; b=EVlz93lifqNLtWbhLA4lheTHrVbcQufVIkgMvjnGEkTLBup+USrrDO/Dsk3kBv0p8Pi5G2Ta9Cq26EEyr6ZUjqHIFBfk4+aTwaI2HDsYXaVCIdeHVAHBaN8JHPvUsWMaOtEgCcxZ9qYpOEYtZQRLLwu7QoKSvaGTAwvxHC3GJng=
+	t=1776700662; cv=none; b=r1IJ/VGFzMC9XbEfsHbSmwXvum4B46OLQ45dnO6NflqyfIdfCPWWlRMQ44X75RnDRlOG/ZYH1MbCfushOnZnIasbEz37N/d1fn8GIKnooRtxnOI/1FovxWqad2MY29/6/8Gg3A80PH+AszO2z1V46cinruCh7jZfNq4yfwWklQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700106; c=relaxed/simple;
-	bh=ogMpkuXAyPgNbZ0sdwfto16QIIEqsd7bY+vHiPLnSoA=;
+	s=arc-20240116; t=1776700662; c=relaxed/simple;
+	bh=AyVUf8naOfk2+7xWFmJNcB5wKhtAhffAdCYLyK6f9gM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KIj31YC4tCTeEYZsoNUdUFerAyKmdR4VLpFdkuYBhlCkLTWCWgDtRrpyV6r0VRSeCqKXcevtOthnG5ixHXMpc8AMa2OHU1Krc7oD4iF+YS2lAGt7f1bHTFpIhXIoKhZMIQr60hdDJrddA20yJWp2pBbpAXXit+rfmU6IervJQd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nbng3+KQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DB56C19425;
-	Mon, 20 Apr 2026 15:48:25 +0000 (UTC)
+	 MIME-Version; b=dIAl2GLddOTq2cROtDIFrV9r1UeF+F1o/EIp6FddZ7nScH26tuojMRUnFg2vm8oKdrZMuCfgoRpzAvVq86kHtRcPRmUNAHPHlD9fSf+9RdJlmkKxnDlXLQ0xl97g6JKFjw7mGUFYW4Ub+iFOyDqJlxezESq7PaGEjzLmdTATudQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D/0gcifq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C28EDC19425;
+	Mon, 20 Apr 2026 15:57:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700106;
-	bh=ogMpkuXAyPgNbZ0sdwfto16QIIEqsd7bY+vHiPLnSoA=;
+	s=korg; t=1776700662;
+	bh=AyVUf8naOfk2+7xWFmJNcB5wKhtAhffAdCYLyK6f9gM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nbng3+KQTLuTm/KlaD7wW3GKtHjIDNO8WiuGWiOw/7KKqiiZve4U416JOnxobKXpP
-	 uPhttff5FCL5GBJX66eo3rTXNAjBoui5c0ut2F3D1kGW32H1LJw61wekpNVB0/BloX
-	 1gqKQgNP688IS7/p/mUNUBbf4dUoE13NCOj3av84=
+	b=D/0gcifqCdanUdp0Z+l5ID1wsGWlX5Es2FXfkn34jemcMY2zU/MKKC5tmnx311HE6
+	 IDnt6ewkaeT1FIVoc3z7stBfIDylXm6qH+T9noVPhLExJBgLFlXwOC70Nw57lBnqM2
+	 CRkjUgu1RI0DL4C+FvGLUu5jqBOeGPEAxR2ZcjLk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?=EA=B9=80=EC=98=81=EB=AF=BC?= <osori@hspace.io>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Dave Hansen <dave.hansen@intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 045/220] x86: shadow stacks: proper error handling for mmap lock
+Subject: [PATCH 6.18 007/198] media: rkvdec: reduce stack usage in rkvdec_init_v4l2_vp9_count_tbl()
 Date: Mon, 20 Apr 2026 17:39:46 +0200
-Message-ID: <20260420153935.660146474@linuxfoundation.org>
+Message-ID: <20260420153935.878273725@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
-References: <20260420153934.013228280@linuxfoundation.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,109 +64,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-239383-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239596-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,linux-foundation.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,hspace.io:email]
-X-Rspamd-Queue-Id: C367B430CD5
+	TAGGED_RCPT(0.00)[stable,huawei];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,collabora.com:email,arndb.de:email]
+X-Rspamd-Queue-Id: 9D0E7431FAD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 52f657e34d7b21b47434d9d8b26fa7f6778b63a0 ]
+[ Upstream commit c03b7dec3c4ddc97872fa12bfca75bae9cb46510 ]
 
-김영민 reports that shstk_pop_sigframe() doesn't check for errors from
-mmap_read_lock_killable(), which is a silly oversight, and also shows
-that we haven't marked those functions with "__must_check", which would
-have immediately caught it.
+The deeply nested loop in rkvdec_init_v4l2_vp9_count_tbl() needs a lot
+of registers, so when the clang register allocator runs out, it ends up
+spilling countless temporaries to the stack:
 
-So let's fix both issues.
+drivers/media/platform/rockchip/rkvdec/rkvdec-vp9.c:966:12: error: stack frame size (1472) exceeds limit (1280) in 'rkvdec_vp9_start' [-Werror,-Wframe-larger-than]
 
-Reported-by: 김영민 <osori@hspace.io>
-Acked-by: Oleg Nesterov <oleg@redhat.com>
-Acked-by: Dave Hansen <dave.hansen@intel.com>
-Acked-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Marking this function as noinline_for_stack keeps it out of
+rkvdec_vp9_start(), giving the compiler more room for optimization.
+
+The resulting code is good enough that both the total stack usage
+and the loop get enough better to stay under the warning limit,
+though it's still slow, and would need a larger rework if this
+function ends up being called in a fast path.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/shstk.c   | 3 ++-
- include/linux/mmap_lock.h | 6 +++---
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ drivers/media/platform/rockchip/rkvdec/rkvdec-vp9.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/shstk.c b/arch/x86/kernel/shstk.c
-index 978232b6d48d7..ff8edea8511b4 100644
---- a/arch/x86/kernel/shstk.c
-+++ b/arch/x86/kernel/shstk.c
-@@ -351,7 +351,8 @@ static int shstk_pop_sigframe(unsigned long *ssp)
- 	need_to_check_vma = PAGE_ALIGN(*ssp) == *ssp;
- 
- 	if (need_to_check_vma)
--		mmap_read_lock_killable(current->mm);
-+		if (mmap_read_lock_killable(current->mm))
-+			return -EINTR;
- 
- 	err = get_shstk_data(&token_addr, (unsigned long __user *)*ssp);
- 	if (unlikely(err))
-diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
-index d53f72dba7fee..81fcfde3563dd 100644
---- a/include/linux/mmap_lock.h
-+++ b/include/linux/mmap_lock.h
-@@ -345,7 +345,7 @@ static inline void mmap_write_lock_nested(struct mm_struct *mm, int subclass)
- 	__mmap_lock_trace_acquire_returned(mm, true, true);
+diff --git a/drivers/media/platform/rockchip/rkvdec/rkvdec-vp9.c b/drivers/media/platform/rockchip/rkvdec/rkvdec-vp9.c
+index 0e7e16f20eeb0..bc74d2d824ef2 100644
+--- a/drivers/media/platform/rockchip/rkvdec/rkvdec-vp9.c
++++ b/drivers/media/platform/rockchip/rkvdec/rkvdec-vp9.c
+@@ -923,7 +923,8 @@ static void rkvdec_vp9_done(struct rkvdec_ctx *ctx,
+ 	update_ctx_last_info(vp9_ctx);
  }
  
--static inline int mmap_write_lock_killable(struct mm_struct *mm)
-+static inline int __must_check mmap_write_lock_killable(struct mm_struct *mm)
+-static void rkvdec_init_v4l2_vp9_count_tbl(struct rkvdec_ctx *ctx)
++static noinline_for_stack void
++rkvdec_init_v4l2_vp9_count_tbl(struct rkvdec_ctx *ctx)
  {
- 	int ret;
- 
-@@ -392,7 +392,7 @@ static inline void mmap_read_lock(struct mm_struct *mm)
- 	__mmap_lock_trace_acquire_returned(mm, false, true);
- }
- 
--static inline int mmap_read_lock_killable(struct mm_struct *mm)
-+static inline int __must_check mmap_read_lock_killable(struct mm_struct *mm)
- {
- 	int ret;
- 
-@@ -402,7 +402,7 @@ static inline int mmap_read_lock_killable(struct mm_struct *mm)
- 	return ret;
- }
- 
--static inline bool mmap_read_trylock(struct mm_struct *mm)
-+static inline bool __must_check mmap_read_trylock(struct mm_struct *mm)
- {
- 	bool ret;
- 
+ 	struct rkvdec_vp9_ctx *vp9_ctx = ctx->priv;
+ 	struct rkvdec_vp9_intra_frame_symbol_counts *intra_cnts = vp9_ctx->count_tbl.cpu;
 -- 
 2.53.0
 
