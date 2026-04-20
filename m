@@ -1,59 +1,64 @@
-Return-Path: <stable+bounces-239825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239660-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wDzRJ9Fn5mnBvwEAu9opvQ
-	(envelope-from <stable+bounces-239825-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:52:17 +0200
+	id KL42C69g5mkxvgEAu9opvQ
+	(envelope-from <stable+bounces-239660-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:21:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 141F2432336
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:52:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 621CE4310BE
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:21:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EC03F37177E9
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:08:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4986932066B5
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:01:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 873DF336EE1;
-	Mon, 20 Apr 2026 16:08:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E798F33E377;
+	Mon, 20 Apr 2026 16:01:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HCthERnl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rb6EvSM8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A4053375C5;
-	Mon, 20 Apr 2026 16:08:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA2D633B975;
+	Mon, 20 Apr 2026 16:01:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701312; cv=none; b=pLyI/7wdjDcP+b/HYHm/4mr1KMMISghsfA3CrYMWgI2axVIUFn8YkZmWJ2hnLEyo0AoS1vG/gpotYN7eaRkeDBBNJz32TJqY7/evuCuaFlUpns5694FZa7kSzi8LWq6ORizYvPxPc3EUaepsGMzNxhM17DppdFalXqEOD7nkVZs=
+	t=1776700895; cv=none; b=F64saVDlGjJtU6OPCiGsYDRTXERglO0KfwHp8q4HcweC/UlPEnYAnzl9FZfOnVRG5BqWWfyehJZFrZSrGzuEhDBKo6TTG5KVqI7Xa+10DsqjBIV6ComXC+Vg9XEwiSzIPXNhqOF8MlvawLxgknEjqv/LMO+AVK/wcQMNbddJZgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701312; c=relaxed/simple;
-	bh=qsoWE3we/b03OvBjcAIzUWwupf4SF/xg6Ny6AT1hu2c=;
+	s=arc-20240116; t=1776700895; c=relaxed/simple;
+	bh=WVe1iC+2pH0TUnBNnHtyZgljkzB6aZ15MbU65AWXvNU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZD4B85DC7ti+igMCbvBggjKKvd1thqI6lRkw4WqakUKX8dORpON6PPYChxhS2wLH2YbqOBsR9NKdoEV5WuBFgg5WHv/KKHvzi87R4xdiGOzogqeb23HXX5Lfzq94lMojuriJWjNTODG26v1aG3dqRdg72Fj+XrRsd0lnh3KdDqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HCthERnl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2D18C19425;
-	Mon, 20 Apr 2026 16:08:31 +0000 (UTC)
+	 MIME-Version; b=bj5c4w4A36bzSJR1wp1aLypt83thNfv+QUIw/JkXLiGfgBqXOGyKL/RG+NCJrOLV4Srf8uwPK2K/I/jbG4ASuRp8eOtQkxc0YxszDtgZPTJ6NHZJh0cvFHD8I6L4jocjXzJGLvdL9dIs+45CxAwP6dUeptU2aNsHeZzblB88ilc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rb6EvSM8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FE23C19425;
+	Mon, 20 Apr 2026 16:01:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701312;
-	bh=qsoWE3we/b03OvBjcAIzUWwupf4SF/xg6Ny6AT1hu2c=;
+	s=korg; t=1776700895;
+	bh=WVe1iC+2pH0TUnBNnHtyZgljkzB6aZ15MbU65AWXvNU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HCthERnlsABVazTKtrnkZ6tON0RpE3ctZgXuygJ5uQbY9JZ9DPrmwbENjMZ11Oln8
-	 NToavnF48qCJ4Jxp1T/cdC4nF+jF6QzXynUVCTWsmwtr9Jw0QqE4aQuY3xKkNHcZlQ
-	 BZCBDUfGFlLrybifyXzNr+3Zud0/X3MX8hlq21xs=
+	b=rb6EvSM8m+i0/6EaEVH7gCYiPaDwmBtNyjbbHEnaACrwVNyXaTh7SHvliY7O3ykxr
+	 +hZtD3zpdstqIvMnv6y2ZQoMAT8jfABp59AkzrCeM0kiXg7u8g+AyAnXaB2xUzDJyK
+	 qXBDz75c1AJDm+9qdbg89HIzn4LTVGDwzS+4ugS8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Melissa Wen <mwen@igalia.com>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Yuhang Zheng <z1652074432@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 047/162] drm/vc4: Protect madv read in vc4_gem_object_mmap() with madv_lock
+Subject: [PATCH 6.18 100/198] netfilter: xt_multiport: validate range encoding in checkentry
 Date: Mon, 20 Apr 2026 17:41:19 +0200
-Message-ID: <20260420153928.730801483@linuxfoundation.org>
+Message-ID: <20260420153939.203293120@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
-References: <20260420153927.006696811@linuxfoundation.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +68,134 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239825-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,strlen.de,kernel.org];
+	TAGGED_FROM(0.00)[bounces-239660-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,igalia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 141F2432336
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,strlen.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,lzu.edu.cn:email]
+X-Rspamd-Queue-Id: 621CE4310BE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maíra Canal <mcanal@igalia.com>
+From: Ren Wei <n05ec@lzu.edu.cn>
 
-[ Upstream commit 338c56050d8e892604da97f67bfa8cc4015a955f ]
+[ Upstream commit ff64c5bfef12461df8450e0f50bb693b5269c720 ]
 
-The mmap callback reads bo->madv without holding madv_lock, racing with
-concurrent DRM_IOCTL_VC4_GEM_MADVISE calls that modify the field under
-the same lock. Add the missing locking to prevent the data race.
+ports_match_v1() treats any non-zero pflags entry as the start of a
+port range and unconditionally consumes the next ports[] element as
+the range end.
 
-Fixes: b9f19259b84d ("drm/vc4: Add the DRM_IOCTL_VC4_GEM_MADVISE ioctl")
-Reviewed-by: Melissa Wen <mwen@igalia.com>
-Link: https://patch.msgid.link/20260330-vc4-misc-fixes-v1-4-92defc940a29@igalia.com
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
+The checkentry path currently validates protocol, flags and count, but
+it does not validate the range encoding itself. As a result, malformed
+rules can mark the last slot as a range start or place two range starts
+back to back, leaving ports_match_v1() to step past the last valid
+ports[] element while interpreting the rule.
+
+Reject malformed multiport v1 rules in checkentry by validating that
+each range start has a following element and that the following element
+is not itself marked as another range start.
+
+Fixes: a89ecb6a2ef7 ("[NETFILTER]: x_tables: unify IPv4/IPv6 multiport match")
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Co-developed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Yuan Tan <yuantan098@gmail.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Tested-by: Yuhang Zheng <z1652074432@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vc4/vc4_bo.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/netfilter/xt_multiport.c | 34 ++++++++++++++++++++++++++++++----
+ 1 file changed, 30 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/vc4/vc4_bo.c b/drivers/gpu/drm/vc4/vc4_bo.c
-index 2a85d08b19852..3740e0552960d 100644
---- a/drivers/gpu/drm/vc4/vc4_bo.c
-+++ b/drivers/gpu/drm/vc4/vc4_bo.c
-@@ -738,12 +738,15 @@ static int vc4_gem_object_mmap(struct drm_gem_object *obj, struct vm_area_struct
- 		return -EINVAL;
- 	}
- 
-+	mutex_lock(&bo->madv_lock);
- 	if (bo->madv != VC4_MADV_WILLNEED) {
- 		DRM_DEBUG("mmapping of %s BO not allowed\n",
- 			  bo->madv == VC4_MADV_DONTNEED ?
- 			  "purgeable" : "purged");
-+		mutex_unlock(&bo->madv_lock);
- 		return -EINVAL;
- 	}
-+	mutex_unlock(&bo->madv_lock);
- 
- 	return drm_gem_dma_mmap(&bo->base, vma);
+diff --git a/net/netfilter/xt_multiport.c b/net/netfilter/xt_multiport.c
+index 44a00f5acde8a..a1691ff405d3c 100644
+--- a/net/netfilter/xt_multiport.c
++++ b/net/netfilter/xt_multiport.c
+@@ -105,6 +105,28 @@ multiport_mt(const struct sk_buff *skb, struct xt_action_param *par)
+ 	return ports_match_v1(multiinfo, ntohs(pptr[0]), ntohs(pptr[1]));
  }
+ 
++static bool
++multiport_valid_ranges(const struct xt_multiport_v1 *multiinfo)
++{
++	unsigned int i;
++
++	for (i = 0; i < multiinfo->count; i++) {
++		if (!multiinfo->pflags[i])
++			continue;
++
++		if (++i >= multiinfo->count)
++			return false;
++
++		if (multiinfo->pflags[i])
++			return false;
++
++		if (multiinfo->ports[i - 1] > multiinfo->ports[i])
++			return false;
++	}
++
++	return true;
++}
++
+ static inline bool
+ check(u_int16_t proto,
+       u_int8_t ip_invflags,
+@@ -127,8 +149,10 @@ static int multiport_mt_check(const struct xt_mtchk_param *par)
+ 	const struct ipt_ip *ip = par->entryinfo;
+ 	const struct xt_multiport_v1 *multiinfo = par->matchinfo;
+ 
+-	return check(ip->proto, ip->invflags, multiinfo->flags,
+-		     multiinfo->count) ? 0 : -EINVAL;
++	if (!check(ip->proto, ip->invflags, multiinfo->flags, multiinfo->count))
++		return -EINVAL;
++
++	return multiport_valid_ranges(multiinfo) ? 0 : -EINVAL;
+ }
+ 
+ static int multiport_mt6_check(const struct xt_mtchk_param *par)
+@@ -136,8 +160,10 @@ static int multiport_mt6_check(const struct xt_mtchk_param *par)
+ 	const struct ip6t_ip6 *ip = par->entryinfo;
+ 	const struct xt_multiport_v1 *multiinfo = par->matchinfo;
+ 
+-	return check(ip->proto, ip->invflags, multiinfo->flags,
+-		     multiinfo->count) ? 0 : -EINVAL;
++	if (!check(ip->proto, ip->invflags, multiinfo->flags, multiinfo->count))
++		return -EINVAL;
++
++	return multiport_valid_ranges(multiinfo) ? 0 : -EINVAL;
+ }
+ 
+ static struct xt_match multiport_mt_reg[] __read_mostly = {
 -- 
 2.53.0
 
