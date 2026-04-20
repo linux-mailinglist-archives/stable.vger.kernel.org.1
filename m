@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-239755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239904-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qA1mG11P5mkgugEAu9opvQ
-	(envelope-from <stable+bounces-239755-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:07:57 +0200
+	id IMZFBu5Y5mlQvAEAu9opvQ
+	(envelope-from <stable+bounces-239904-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:48:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39EF142F082
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:07:57 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9868F4300F3
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:48:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7ED153010B6B
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:05:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C2A04316864E
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:11:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F78233A70A;
-	Mon, 20 Apr 2026 16:05:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A29743451C8;
+	Mon, 20 Apr 2026 16:11:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mtQUasZJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="szqNs6QJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12FD9280CD2;
-	Mon, 20 Apr 2026 16:05:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5788F344D99;
+	Mon, 20 Apr 2026 16:11:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701134; cv=none; b=FM1O+gVJ9yPK9Km4TR+A3/97BWfqo3Iao6dY64ZJAhFwqq+T4tj1lzlq1kHNZUWEYznetF8rZ98jds9XDey90DpEViwIj+IFL2uzcygxNpoRiyNuICIgnEysFQGl0gQ6LlNmmNoGSS/TtCP6Df0UsK1Ah+HBqP5sjjXxeNbQk2c=
+	t=1776701511; cv=none; b=aKRtQ3jRMzQTgZfxD2PNIQy2v1wXo1jVhWqRudcBZYMitdRqusJM4NvC8HkRxpAgvVB7gva3/RsdV5afgSuqCvCvmEsMxvzasFqxwJCv4HgedNAStc6e/UzyXAik0aE21VF3TuF137upydOIK7ehhxSupoi3JhU8MoHNOat7DnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701134; c=relaxed/simple;
-	bh=lSzmAM+EIS48JrsafSFoUqDMJkAHMs/xX9DNpUbAezM=;
+	s=arc-20240116; t=1776701511; c=relaxed/simple;
+	bh=tC88ZbFxlOKyMXqH2bsQuGhapoyDf1hgmzmjbKmP35E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MbYVDYoY1lBzaaPZI1rxgUZ99dfFM8W39Sn41qilYj5Fd7+WMjf/TNrfY6RAq0LUTLpjTBQg2Pwz8LDusjIpM2ZNaprysQ7O+0P38xVDTyryJaM+aOxRO8tFOHQMa1oR1g/Pn1o9xmaEare2heYrkc2oj6bO/J7vCBEy/kk2Fzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mtQUasZJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 945ECC19425;
-	Mon, 20 Apr 2026 16:05:33 +0000 (UTC)
+	 MIME-Version; b=F7EeBJgCV2jl5akra7Ggp01gqe+CTeDIqlOeEqDwc1rdQpsOgNrrCUNJqM34o/rWQP6gbckJq1zeFIGXkUQWQN1ccDc2qz3hsIe2YMCYhdxBOQWLahMopiKedpd2O4T3zMNeGhI9tyqgY4MEKjy6dH7A6GTIW24wTpu8dykbYCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=szqNs6QJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0AA7C19425;
+	Mon, 20 Apr 2026 16:11:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701133;
-	bh=lSzmAM+EIS48JrsafSFoUqDMJkAHMs/xX9DNpUbAezM=;
+	s=korg; t=1776701511;
+	bh=tC88ZbFxlOKyMXqH2bsQuGhapoyDf1hgmzmjbKmP35E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mtQUasZJkkitT0AcvDAutCXIcjp9N00nbkroiQwBlnAGQElQtnUrc+gKQmkX8yOwY
-	 usCHAQ6mm3yYXNbWamHWy7EmnhyS5icd8xpzco+djSvmPmUkevVxc1xshElzAnHwft
-	 RWfkEUA5zf4/JvlKwTtBOROHR0Wy+fR+Z9kKsSHQ=
+	b=szqNs6QJasEraR/z3TrlvnSWvGBbbbHE/i/kss8bHtiHUJyh+o6wet57pROtUeLsj
+	 mf+Rsn9ofIkpVpIEBZMHxKie4VdHqhMvzzV1eCoFE7nIXlneplAOGifNYTlWGOyfeD
+	 exjJzfdGwkkAc+FhBa6Mqdf4z7EHFfm+aDRlwhJc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+6ffd76b5405c006a46b7@syzkaller.appspotmail.com,
-	syzbot+f1b20958f93d2d250727@syzkaller.appspotmail.com,
-	Jeongjun Park <aha310510@gmail.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.18 195/198] media: hackrf: fix to not free memory after the device is registered in hackrf_probe()
+	Yashu Zhang <zhangjiaji1@huawei.com>,
+	Tom Lendacky <thomas.lendacky@gmail.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.12 142/162] KVM: x86: Use scratch field in MMIO fragment to hold small write values
 Date: Mon, 20 Apr 2026 17:42:54 +0200
-Message-ID: <20260420153942.638531468@linuxfoundation.org>
+Message-ID: <20260420153932.189795756@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
+References: <20260420153927.006696811@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,16 +71,16 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-239755-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-239904-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,huawei.com,gmail.com,intel.com,google.com];
 	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,101 +89,171 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,6ffd76b5405c006a46b7,f1b20958f93d2d250727,cisco];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,appspotmail.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 39EF142F082
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,huawei.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 9868F4300F3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 3b7da2b4d0fe014eff181ed37e3bf832eb8ed258 upstream.
+commit 0b16e69d17d8c35c5c9d5918bf596c75a44655d3 upstream.
 
-In hackrf driver, the following race condition occurs:
-```
-		CPU0						CPU1
-hackrf_probe()
-  kzalloc(); // alloc hackrf_dev
-  ....
-  v4l2_device_register();
-  ....
-						fd = sys_open("/path/to/dev"); // open hackrf fd
-						....
-  v4l2_device_unregister();
-  ....
-  kfree(); // free hackrf_dev
-  ....
-						sys_ioctl(fd, ...);
-						  v4l2_ioctl();
-						    video_is_registered() // UAF!!
-						....
-						sys_close(fd);
-						  v4l2_release() // UAF!!
-						    hackrf_video_release()
-						      kfree(); // DFB!!
-```
+When exiting to userspace to service an emulated MMIO write, copy the
+to-be-written value to a scratch field in the MMIO fragment if the size
+of the data payload is 8 bytes or less, i.e. can fit in a single chunk,
+instead of pointing the fragment directly at the source value.
 
-When a V4L2 or video device is unregistered, the device node is removed so
-new open() calls are blocked.
+This fixes a class of use-after-free bugs that occur when the emulator
+initiates a write using an on-stack, local variable as the source, the
+write splits a page boundary, *and* both pages are MMIO pages.  Because
+KVM's ABI only allows for physically contiguous MMIO requests, accesses
+that split MMIO pages are separated into two fragments, and are sent to
+userspace one at a time.  When KVM attempts to complete userspace MMIO in
+response to KVM_RUN after the first fragment, KVM will detect the second
+fragment and generate a second userspace exit, and reference the on-stack
+variable.
 
-However, file descriptors that are already open-and any in-flight I/O-do
-not terminate immediately; they remain valid until the last reference is
-dropped and the driver's release() is invoked.
+The issue is most visible if the second KVM_RUN is performed by a separate
+task, in which case the stack of the initiating task can show up as truly
+freed data.
 
-Therefore, freeing device memory on the error path after hackrf_probe()
-has registered dev it will lead to a race to use-after-free vuln, since
-those already-open handles haven't been released yet.
+  ==================================================================
+  BUG: KASAN: use-after-free in complete_emulated_mmio+0x305/0x420
+  Read of size 1 at addr ffff888009c378d1 by task syz-executor417/984
 
-And since release() free memory too, race to use-after-free and
-double-free vuln occur.
+  CPU: 1 PID: 984 Comm: syz-executor417 Not tainted 5.10.0-182.0.0.95.h2627.eulerosv2r13.x86_64 #3
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.15.0-0-g2dd4b9b3f840-prebuilt.qemu.org 04/01/2014 Call Trace:
+  dump_stack+0xbe/0xfd
+  print_address_description.constprop.0+0x19/0x170
+  __kasan_report.cold+0x6c/0x84
+  kasan_report+0x3a/0x50
+  check_memory_region+0xfd/0x1f0
+  memcpy+0x20/0x60
+  complete_emulated_mmio+0x305/0x420
+  kvm_arch_vcpu_ioctl_run+0x63f/0x6d0
+  kvm_vcpu_ioctl+0x413/0xb20
+  __se_sys_ioctl+0x111/0x160
+  do_syscall_64+0x30/0x40
+  entry_SYSCALL_64_after_hwframe+0x67/0xd1
+  RIP: 0033:0x42477d
+  Code: <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
+  RSP: 002b:00007faa8e6890e8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+  RAX: ffffffffffffffda RBX: 00000000004d7338 RCX: 000000000042477d
+  RDX: 0000000000000000 RSI: 000000000000ae80 RDI: 0000000000000005
+  RBP: 00000000004d7330 R08: 00007fff28d546df R09: 0000000000000000
+  R10: 0000000000000000 R11: 0000000000000246 R12: 00000000004d733c
+  R13: 0000000000000000 R14: 000000000040a200 R15: 00007fff28d54720
 
-To prevent this, if device is registered from probe(), it should be
-modified to free memory only through release() rather than calling
-kfree() directly.
+  The buggy address belongs to the page:
+  page:0000000029f6a428 refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x9c37
+  flags: 0xfffffc0000000(node=0|zone=1|lastcpupid=0x1fffff)
+  raw: 000fffffc0000000 0000000000000000 ffffea0000270dc8 0000000000000000
+  raw: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000 page dumped because: kasan: bad access detected
 
-Cc: <stable@vger.kernel.org>
-Reported-by: syzbot+6ffd76b5405c006a46b7@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=6ffd76b5405c006a46b7
-Reported-by: syzbot+f1b20958f93d2d250727@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=f1b20958f93d2d250727
-Fixes: 8bc4a9ed8504 ("[media] hackrf: add support for transmitter")
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+  Memory state around the buggy address:
+  ffff888009c37780: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+  ffff888009c37800: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+  >ffff888009c37880: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+                                                   ^
+  ffff888009c37900: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+  ffff888009c37980: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+  ==================================================================
+
+The bug can also be reproduced with a targeted KVM-Unit-Test by hacking
+KVM to fill a large on-stack variable in complete_emulated_mmio(), i.e. by
+overwrite the data value with garbage.
+
+Limit the use of the scratch fields to 8-byte or smaller accesses, and to
+just writes, as larger accesses and reads are not affected thanks to
+implementation details in the emulator, but add a sanity check to ensure
+those details don't change in the future.  Specifically, KVM never uses
+on-stack variables for accesses larger that 8 bytes, e.g. uses an operand
+in the emulator context, and *all* reads are buffered through the mem_read
+cache.
+
+Note!  Using the scratch field for reads is not only unnecessary, it's
+also extremely difficult to handle correctly.  As above, KVM buffers all
+reads through the mem_read cache, and heavily relies on that behavior when
+re-emulating the instruction after a userspace MMIO read exit.  If a read
+splits a page, the first page is NOT an MMIO page, and the second page IS
+an MMIO page, then the MMIO fragment needs to point at _just_ the second
+chunk of the destination, i.e. its position in the mem_read cache.  Taking
+the "obvious" approach of copying the fragment value into the destination
+when re-emulating the instruction would clobber the first chunk of the
+destination, i.e. would clobber the data that was read from guest memory.
+
+Fixes: f78146b0f923 ("KVM: Fix page-crossing MMIO")
+Suggested-by: Yashu Zhang <zhangjiaji1@huawei.com>
+Reported-by: Yashu Zhang <zhangjiaji1@huawei.com>
+Closes: https://lore.kernel.org/all/369eaaa2b3c1425c85e8477066391bc7@huawei.com
+Cc: stable@vger.kernel.org
+Tested-by: Tom Lendacky <thomas.lendacky@gmail.com>
+Tested-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Link: https://patch.msgid.link/20260225012049.920665-2-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/hackrf/hackrf.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/x86/kvm/x86.c       |   14 +++++++++++++-
+ include/linux/kvm_host.h |    3 ++-
+ 2 files changed, 15 insertions(+), 2 deletions(-)
 
---- a/drivers/media/usb/hackrf/hackrf.c
-+++ b/drivers/media/usb/hackrf/hackrf.c
-@@ -1485,7 +1485,7 @@ static int hackrf_probe(struct usb_inter
- 	if (ret) {
- 		dev_err(dev->dev,
- 			"Failed to register as video device (%d)\n", ret);
--		goto err_v4l2_device_unregister;
-+		goto err_v4l2_device_put;
- 	}
- 	dev_info(dev->dev, "Registered as %s\n",
- 		 video_device_node_name(&dev->rx_vdev));
-@@ -1513,8 +1513,9 @@ static int hackrf_probe(struct usb_inter
- 	return 0;
- err_video_unregister_device_rx:
- 	video_unregister_device(&dev->rx_vdev);
--err_v4l2_device_unregister:
--	v4l2_device_unregister(&dev->v4l2_dev);
-+err_v4l2_device_put:
-+	v4l2_device_put(&dev->v4l2_dev);
-+	return ret;
- err_v4l2_ctrl_handler_free_tx:
- 	v4l2_ctrl_handler_free(&dev->tx_ctrl_handler);
- err_v4l2_ctrl_handler_free_rx:
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -7976,7 +7976,13 @@ static int emulator_read_write_onepage(u
+ 	WARN_ON(vcpu->mmio_nr_fragments >= KVM_MAX_MMIO_FRAGMENTS);
+ 	frag = &vcpu->mmio_fragments[vcpu->mmio_nr_fragments++];
+ 	frag->gpa = gpa;
+-	frag->data = val;
++	if (write && bytes <= 8u) {
++		frag->val = 0;
++		frag->data = &frag->val;
++		memcpy(&frag->val, val, bytes);
++	} else {
++		frag->data = val;
++	}
+ 	frag->len = bytes;
+ 	return X86EMUL_CONTINUE;
+ }
+@@ -7991,6 +7997,9 @@ static int emulator_read_write(struct x8
+ 	gpa_t gpa;
+ 	int rc;
+ 
++	if (WARN_ON_ONCE((bytes > 8u || !ops->write) && object_is_on_stack(val)))
++		return X86EMUL_UNHANDLEABLE;
++
+ 	if (ops->read_write_prepare &&
+ 		  ops->read_write_prepare(vcpu, val, bytes))
+ 		return X86EMUL_CONTINUE;
+@@ -11508,6 +11517,9 @@ static int complete_emulated_mmio(struct
+ 		frag++;
+ 		vcpu->mmio_cur_fragment++;
+ 	} else {
++		if (WARN_ON_ONCE(frag->data == &frag->val))
++			return -EIO;
++
+ 		/* Go forward to the next mmio piece. */
+ 		frag->data += len;
+ 		frag->gpa += len;
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -323,7 +323,8 @@ static inline bool kvm_vcpu_can_poll(kti
+ struct kvm_mmio_fragment {
+ 	gpa_t gpa;
+ 	void *data;
+-	unsigned len;
++	u64 val;
++	unsigned int len;
+ };
+ 
+ struct kvm_vcpu {
 
 
 
