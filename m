@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-239731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239733-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0J1pFC9P5mkgugEAu9opvQ
-	(envelope-from <stable+bounces-239731-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:07:11 +0200
+	id OJdbBzlP5mkgugEAu9opvQ
+	(envelope-from <stable+bounces-239733-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:07:21 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1396342F017
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:07:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D874042F02D
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:07:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 55A7730306DB
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:04:37 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 93F3D3031BD7
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:04:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79C3733F8DC;
-	Mon, 20 Apr 2026 16:04:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1E5A34107F;
+	Mon, 20 Apr 2026 16:04:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XM06AZ/z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gj9pLhHS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D62933F586;
-	Mon, 20 Apr 2026 16:04:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B351D33F5BC;
+	Mon, 20 Apr 2026 16:04:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701072; cv=none; b=IatcmhJz04hXafPcJUpkm6Ke6WxzH96+sheDjDshE2WFiLnH5N12O5JmsJ9opo8SOHHgKAtYnTwJiopCQK7rEAK+E+4LaWxojvf0b8ta4lZZMYFkEmpabUhwbPanba22CsUhy9wDJ4/Y++E3knKDLTUkWHJGISdQFqQG43Gu/FA=
+	t=1776701077; cv=none; b=ds0zhxE8bjLvh3qeOmkxWsZYfM9O7KN0XkhYmRlhnnoPmQjnZoNsF5nELuKkU8KrBTSepZTDVVIWRNygIgRRPfs+CqghlDZasFseUJFgtjJ9OK6lv2HllCdA9n1TAcLKByDlZbbkJCbmHDbgrrylM2UzIVOsKsEWdKzKDiBixl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701072; c=relaxed/simple;
-	bh=mR3PhMMVDi/Z8slmmcUbR6dzFnTXLtjbGTj/xgyITSI=;
+	s=arc-20240116; t=1776701077; c=relaxed/simple;
+	bh=+++Jn+DS2ZhmvhSQR6WO7HEJ30mqYRxtXKSo8+yNWJQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ss1gNDDP+3SZYwuUWzIWz2IEp+SA4kbtf2bcG6SuSdNnxW3xVrwHl/k9NfXCYbCt9xFyg3xUAMUAh2t6pChQtqyccpk8NvOfx7Fhqn571Uiym1HPi1kUDb/3+ptr5FlHOcthwjcSHqIwJX2Kptt2kPuI5Sr1nnZdVfqF0EPO934=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XM06AZ/z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA7E8C19425;
-	Mon, 20 Apr 2026 16:04:31 +0000 (UTC)
+	 MIME-Version; b=ADoqaVpCOiaMBHO8vvh+fYi9m3JzpBaBGcjM8wFv5ZaJWS6vLyHILsmFcL6Uuh05CHdoF8x1yy78o68fp8qWNIA0sBKehkpdgqrdX6B7G8gq77CJmWGQCRjQbgHjbrazlW8OBX7jheVq6O4QxZmayIU0IctlVmUskd9psfZO/WA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gj9pLhHS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DB9DC19425;
+	Mon, 20 Apr 2026 16:04:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701072;
-	bh=mR3PhMMVDi/Z8slmmcUbR6dzFnTXLtjbGTj/xgyITSI=;
+	s=korg; t=1776701077;
+	bh=+++Jn+DS2ZhmvhSQR6WO7HEJ30mqYRxtXKSo8+yNWJQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XM06AZ/zxpJnQXnG26VWqkrI1ixcFHP1v2ENt32QEypSF41MDJMjZuUNKTJrhGkgw
-	 ntE6IPdU9qrOhFndHjhWW0XKyZKIzW5lwg2yXl35E4cPU5VBqlUmQWWbGxvUjIoWCz
-	 vnjkICp4cSfZZ1vi8WHsLcJshpAQpREl3FZUH+sM=
+	b=gj9pLhHSc3NGeUOEU2Hgkd6Q36J81NsgWcZn7QCDHXREY76w4fJcd8OOoaRiuYV0T
+	 D7yoldXkHjOhK6yMoy0B52jz+j8Zje3hGTwsjNCp1KT04f/XCBWCHbTAAm3hoLBN40
+	 fZRXkxSs+rXaLwjjEoNFNbWpuOfxY2cx2S8HQ45g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liam Merwick <liam.merwick@oracle.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.18 170/198] KVM: SEV: Drop WARN on large size for KVM_MEMORY_ENCRYPT_REG_REGION
-Date: Mon, 20 Apr 2026 17:42:29 +0200
-Message-ID: <20260420153941.731387160@linuxfoundation.org>
+	Paul Chaignon <paul.chaignon@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Subject: [PATCH 6.18 171/198] selftests/bpf: Test refinement of single-value tnum
+Date: Mon, 20 Apr 2026 17:42:30 +0200
+Message-ID: <20260420153941.767053199@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
 References: <20260420153935.605963767@linuxfoundation.org>
@@ -63,34 +64,36 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-239731-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239733-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,suse.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,oracle.com:email]
-X-Rspamd-Queue-Id: 1396342F017
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.994];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D874042F02D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -98,72 +101,176 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Paul Chaignon <paul.chaignon@gmail.com>
 
-commit 8acffeef5ef720c35e513e322ab08e32683f32f2 upstream.
+commit e6ad477d1bf8829973cddd9accbafa9d1a6cd15a upstream.
 
-Drop the WARN in sev_pin_memory() on npages overflowing an int, as the
-WARN is comically trivially to trigger from userspace, e.g. by doing:
+This patch introduces selftests to cover the new bounds refinement
+logic introduced in the previous patch. Without the previous patch,
+the first two tests fail because of the invariant violation they
+trigger. The last test fails because the R10 access is not detected as
+dead code. In addition, all three tests fail because of R0 having a
+non-constant value in the verifier logs.
 
-  struct kvm_enc_region range = {
-          .addr = 0,
-          .size = -1ul,
-  };
+In addition, the last two cases are covering the negative cases: when we
+shouldn't refine the bounds because the u64 and tnum overlap in at least
+two values.
 
-  __vm_ioctl(vm, KVM_MEMORY_ENCRYPT_REG_REGION, &range);
-
-Note, the checks in sev_mem_enc_register_region() that presumably exist to
-verify the incoming address+size are completely worthless, as both "addr"
-and "size" are u64s and SEV is 64-bit only, i.e. they _can't_ be greater
-than ULONG_MAX.  That wart will be cleaned up in the near future.
-
-	if (range->addr > ULONG_MAX || range->size > ULONG_MAX)
-		return -EINVAL;
-
-Opportunistically add a comment to explain why the code calculates the
-number of pages the "hard" way, e.g. instead of just shifting @ulen.
-
-Fixes: 78824fabc72e ("KVM: SVM: fix svn_pin_memory()'s use of get_user_pages_fast()")
-Cc: stable@vger.kernel.org
-Reviewed-by: Liam Merwick <liam.merwick@oracle.com>
-Tested-by: Liam Merwick <liam.merwick@oracle.com>
-Link: https://patch.msgid.link/20260313003302.3136111-2-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
+Link: https://lore.kernel.org/r/90d880c8cf587b9f7dc715d8961cd1b8111d01a8.1772225741.git.paul.chaignon@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+[shung-hsi.yu: test for backported upstream commit efc11a667878 ("bpf: Improve
+bounds when tnum has a single possible value")]
+Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/sev.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ tools/testing/selftests/bpf/progs/verifier_bounds.c |  137 ++++++++++++++++++++
+ 1 file changed, 137 insertions(+)
 
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -679,10 +679,16 @@ static struct page **sev_pin_memory(stru
- 	if (ulen == 0 || uaddr + ulen < uaddr)
- 		return ERR_PTR(-EINVAL);
+--- a/tools/testing/selftests/bpf/progs/verifier_bounds.c
++++ b/tools/testing/selftests/bpf/progs/verifier_bounds.c
+@@ -1709,4 +1709,141 @@ __naked void jeq_disagreeing_tnums(void
+ 	: __clobber_all);
+ }
  
--	/* Calculate number of pages. */
-+	/*
-+	 * Calculate the number of pages that need to be pinned to cover the
-+	 * entire range.  Note!  This isn't simply ulen >> PAGE_SHIFT, as KVM
-+	 * doesn't require the incoming address+size to be page aligned!
-+	 */
- 	first = (uaddr & PAGE_MASK) >> PAGE_SHIFT;
- 	last = ((uaddr + ulen - 1) & PAGE_MASK) >> PAGE_SHIFT;
- 	npages = (last - first + 1);
-+	if (npages > INT_MAX)
-+		return ERR_PTR(-EINVAL);
- 
- 	locked = sev->pages_locked + npages;
- 	lock_limit = rlimit(RLIMIT_MEMLOCK) >> PAGE_SHIFT;
-@@ -691,9 +697,6 @@ static struct page **sev_pin_memory(stru
- 		return ERR_PTR(-ENOMEM);
- 	}
- 
--	if (WARN_ON_ONCE(npages > INT_MAX))
--		return ERR_PTR(-EINVAL);
--
- 	/* Avoid using vmalloc for smaller buffers. */
- 	size = npages * sizeof(struct page *);
- 	if (size > PAGE_SIZE)
++/* This test covers the bounds deduction when the u64 range and the tnum
++ * overlap only at umax. After instruction 3, the ranges look as follows:
++ *
++ * 0    umin=0xe01     umax=0xf00                              U64_MAX
++ * |    [xxxxxxxxxxxxxx]                                       |
++ * |----------------------------|------------------------------|
++ * |   x               x                                       | tnum values
++ *
++ * The verifier can therefore deduce that the R0=0xf0=240.
++ */
++SEC("socket")
++__description("bounds refinement with single-value tnum on umax")
++__msg("3: (15) if r0 == 0xe0 {{.*}} R0=240")
++__success __log_level(2)
++__flag(BPF_F_TEST_REG_INVARIANTS)
++__naked void bounds_refinement_tnum_umax(void *ctx)
++{
++	asm volatile("			\
++	call %[bpf_get_prandom_u32];	\
++	r0 |= 0xe0;			\
++	r0 &= 0xf0;			\
++	if r0 == 0xe0 goto +2;		\
++	if r0 == 0xf0 goto +1;		\
++	r10 = 0;			\
++	exit;				\
++"	:
++	: __imm(bpf_get_prandom_u32)
++	: __clobber_all);
++}
++
++/* This test covers the bounds deduction when the u64 range and the tnum
++ * overlap only at umin. After instruction 3, the ranges look as follows:
++ *
++ * 0    umin=0xe00     umax=0xeff                              U64_MAX
++ * |    [xxxxxxxxxxxxxx]                                       |
++ * |----------------------------|------------------------------|
++ * |    x               x                                      | tnum values
++ *
++ * The verifier can therefore deduce that the R0=0xe0=224.
++ */
++SEC("socket")
++__description("bounds refinement with single-value tnum on umin")
++__msg("3: (15) if r0 == 0xf0 {{.*}} R0=224")
++__success __log_level(2)
++__flag(BPF_F_TEST_REG_INVARIANTS)
++__naked void bounds_refinement_tnum_umin(void *ctx)
++{
++	asm volatile("			\
++	call %[bpf_get_prandom_u32];	\
++	r0 |= 0xe0;			\
++	r0 &= 0xf0;			\
++	if r0 == 0xf0 goto +2;		\
++	if r0 == 0xe0 goto +1;		\
++	r10 = 0;			\
++	exit;				\
++"	:
++	: __imm(bpf_get_prandom_u32)
++	: __clobber_all);
++}
++
++/* This test covers the bounds deduction when the only possible tnum value is
++ * in the middle of the u64 range. After instruction 3, the ranges look as
++ * follows:
++ *
++ * 0    umin=0x7cf   umax=0x7df                                U64_MAX
++ * |    [xxxxxxxxxxxx]                                         |
++ * |----------------------------|------------------------------|
++ * |     x            x            x            x            x | tnum values
++ *       |            +--- 0x7e0
++ *       +--- 0x7d0
++ *
++ * Since the lower four bits are zero, the tnum and the u64 range only overlap
++ * in R0=0x7d0=2000. Instruction 5 is therefore dead code.
++ */
++SEC("socket")
++__description("bounds refinement with single-value tnum in middle of range")
++__msg("3: (a5) if r0 < 0x7cf {{.*}} R0=2000")
++__success __log_level(2)
++__naked void bounds_refinement_tnum_middle(void *ctx)
++{
++	asm volatile("			\
++	call %[bpf_get_prandom_u32];	\
++	if r0 & 0x0f goto +4;		\
++	if r0 > 0x7df goto +3;		\
++	if r0 < 0x7cf goto +2;		\
++	if r0 == 0x7d0 goto +1;		\
++	r10 = 0;			\
++	exit;				\
++"	:
++	: __imm(bpf_get_prandom_u32)
++	: __clobber_all);
++}
++
++/* This test cover the negative case for the tnum/u64 overlap. Since
++ * they contain the same two values (i.e., {0, 1}), we can't deduce
++ * anything more.
++ */
++SEC("socket")
++__description("bounds refinement: several overlaps between tnum and u64")
++__msg("2: (25) if r0 > 0x1 {{.*}} R0=scalar(smin=smin32=0,smax=umax=smax32=umax32=1,var_off=(0x0; 0x1))")
++__failure __log_level(2)
++__naked void bounds_refinement_several_overlaps(void *ctx)
++{
++	asm volatile("			\
++	call %[bpf_get_prandom_u32];	\
++	if r0 < 0 goto +3;		\
++	if r0 > 1 goto +2;		\
++	if r0 == 1 goto +1;		\
++	r10 = 0;			\
++	exit;				\
++"	:
++	: __imm(bpf_get_prandom_u32)
++	: __clobber_all);
++}
++
++/* This test cover the negative case for the tnum/u64 overlap. Since
++ * they overlap in the two values contained by the u64 range (i.e.,
++ * {0xf, 0x10}), we can't deduce anything more.
++ */
++SEC("socket")
++__description("bounds refinement: multiple overlaps between tnum and u64")
++__msg("2: (25) if r0 > 0x10 {{.*}} R0=scalar(smin=umin=smin32=umin32=15,smax=umax=smax32=umax32=16,var_off=(0x0; 0x1f))")
++__failure __log_level(2)
++__naked void bounds_refinement_multiple_overlaps(void *ctx)
++{
++	asm volatile("			\
++	call %[bpf_get_prandom_u32];	\
++	if r0 < 0xf goto +3;		\
++	if r0 > 0x10 goto +2;		\
++	if r0 == 0x10 goto +1;		\
++	r10 = 0;			\
++	exit;				\
++"	:
++	: __imm(bpf_get_prandom_u32)
++	: __clobber_all);
++}
++
+ char _license[] SEC("license") = "GPL";
 
 
 
