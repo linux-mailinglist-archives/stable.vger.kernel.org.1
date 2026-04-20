@@ -1,66 +1,60 @@
-Return-Path: <stable+bounces-239919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239562-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2NTOONtk5mkKvwEAu9opvQ
-	(envelope-from <stable+bounces-239919-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:39:39 +0200
+	id KNyhIrRl5mlmvwEAu9opvQ
+	(envelope-from <stable+bounces-239562-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:43:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF77D431B4C
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:39:38 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5D2E431E5D
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:43:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C908031FE733
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:12:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C2003328E0CB
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:56:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FDDF342CB0;
-	Mon, 20 Apr 2026 16:12:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9312133AD99;
+	Mon, 20 Apr 2026 15:56:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g5ro1eDx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ayQ8FjV4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6E21333445;
-	Mon, 20 Apr 2026 16:12:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 556EE22259F;
+	Mon, 20 Apr 2026 15:56:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701549; cv=none; b=D/Goit/SYpK0buWYKu+EcR56A5UZ4xY4E3iCuS6w+8WxmiypcSOLDvjpIBhNcf6Pwe/uNkAQKIAmsh8RtOJTyZmJU9G2/qIx39Nt2sfM76iQgWNszsMCxhNYwTdwnD01spb9knN4E7oHSD0vnsKWQ7XnQ6U06+4NcMg6BQpcV6A=
+	t=1776700571; cv=none; b=f5gCFWIdIDRPiLADMYci6NAH8NG671VeG8mPPCXTXCVIDFXxOU0IDv6S65FCkI5iMyZ6s8r4ZBIH5uPZZB7WndGcDKNyCfXR9j04gl9cNxv4LLBnHm66DV55kL+Pvpa8xll/k//iSMMvRlmikjdzzr+9wdtJ5Rvsw/LEvsGgAMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701549; c=relaxed/simple;
-	bh=umL5Lj7892/jaVfQl5NnwD8Nc1Xd2IItkhgfHCbEpDk=;
+	s=arc-20240116; t=1776700571; c=relaxed/simple;
+	bh=aC39Cb3/D3K4Pm1GEwwFiADtbncAGz8nHHrqc9QJ1BY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hTWkw3NDTTYgryWbPJ06IlzWQ+Le2DGYPkhJge2SvuUkyShcFVvO+9fnWPSR5Bp+t/m5gWntzdsuSy+wJscFbuBhntBfG9rNkFpbn8DUrqF6yM6bBNncuGofjUKieQKYn44VhBt2uk1+dhwFvNaHcYC5Ph63ePX0tiwegKQeOiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g5ro1eDx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45EA4C19425;
-	Mon, 20 Apr 2026 16:12:29 +0000 (UTC)
+	 MIME-Version; b=rGBZWByUPX+X2Um1bwYi6gvPm0tdYdY0n4r9uJXbT7LW/eqanhsBAlRNS4vuueoSDVS+rLL2HPCBp6dCGU85YKztgwgpjD1gGK9PBA7oAnmU2omxPDtyUh856q47EDB61HpL3mF311SzzZddYDnQT/kegbz6VkOCNVgFOtRFaHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ayQ8FjV4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E11FAC19425;
+	Mon, 20 Apr 2026 15:56:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701549;
-	bh=umL5Lj7892/jaVfQl5NnwD8Nc1Xd2IItkhgfHCbEpDk=;
+	s=korg; t=1776700571;
+	bh=aC39Cb3/D3K4Pm1GEwwFiADtbncAGz8nHHrqc9QJ1BY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g5ro1eDx5Bnvc2aF1KGOWZJK94z5kRy/iwM6Kc+M5qh1PyNJnC6+KXOEB873V9lcJ
-	 H7NLf7P8i/dB2SdtOcjmteiOaas/b/MbpwNKbaRwiHe0OR+JBNc9AeRn56JkSitVUh
-	 LuSjvUNoBGPg+PDbRG4/ZzQv0SfqdQZbABi8XIOk=
+	b=ayQ8FjV4lWga0N6xD04yrE//1OYsXjt99GpmDu6pR2UGCODDWeS2vcxkggwNgwDH2
+	 8NLCYrAVBe3tdSv7jo35F3BvfQ48fV09N2S3S8PGWdWjI263YaZyvNjIdAbwz715lu
+	 bNaPeNu0oQKIGX6dHx13mbZybD47advZmeQewvWU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+67b90111784a3eac8c04@syzkaller.appspotmail.com,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Heming Zhao <heming.zhao@suse.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Joseph Qi <jiangqi903@gmail.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 125/162] ocfs2: fix possible deadlock between unlink and dio_end_io_write
+	syzbot+96f901260a0b2d29cd1a@syzkaller.appspotmail.com,
+	Yihan Ding <dingyihan@uniontech.com>,
+	Abd-Alrhman Masalkhi <abd.masalkhi@gmail.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.19 216/220] media: vidtv: fix pass-by-value structs causing MSAN warnings
 Date: Mon, 20 Apr 2026 17:42:37 +0200
-Message-ID: <20260420153931.568940704@linuxfoundation.org>
+Message-ID: <20260420153941.803180033@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
-References: <20260420153927.006696811@linuxfoundation.org>
+In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
+References: <20260420153934.013228280@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,117 +68,211 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	TAGGED_FROM(0.00)[bounces-239919-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,linux.alibaba.com,suse.com,fasheh.com,evilplan.org,oracle.com,gmail.com,live.cn,huawei.com,linux-foundation.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-239562-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,uniontech.com,gmail.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable,67b90111784a3eac8c04];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable,96f901260a0b2d29cd1a,cisco];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,appspotmail.com:email,linux-foundation.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,alibaba.com:email,fasheh.com:email,live.cn:email]
-X-Rspamd-Queue-Id: DF77D431B4C
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,syzkaller.appspot.com:url,uniontech.com:email,appspotmail.com:email]
+X-Rspamd-Queue-Id: B5D2E431E5D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joseph Qi <joseph.qi@linux.alibaba.com>
+From: Abd-Alrhman Masalkhi <abd.masalkhi@gmail.com>
 
-commit b02da26a992db0c0e2559acbda0fc48d4a2fd337 upstream.
+commit 5f8e73bde67e931468bc2a1860d78d72f0c6ba41 upstream.
 
-ocfs2_unlink takes orphan dir inode_lock first and then ip_alloc_sem,
-while in ocfs2_dio_end_io_write, it acquires these locks in reverse order.
-This creates an ABBA lock ordering violation on lock classes
-ocfs2_sysfile_lock_key[ORPHAN_DIR_SYSTEM_INODE] and
-ocfs2_file_ip_alloc_sem_key.
+vidtv_ts_null_write_into() and vidtv_ts_pcr_write_into() take their
+argument structs by value, causing MSAN to report uninit-value warnings.
+While only vidtv_ts_null_write_into() has triggered a report so far,
+both functions share the same issue.
 
-Lock Chain #0 (orphan dir inode_lock -> ip_alloc_sem):
-ocfs2_unlink
-  ocfs2_prepare_orphan_dir
-    ocfs2_lookup_lock_orphan_dir
-      inode_lock(orphan_dir_inode) <- lock A
-    __ocfs2_prepare_orphan_dir
-      ocfs2_prepare_dir_for_insert
-        ocfs2_extend_dir
-	  ocfs2_expand_inline_dir
-	    down_write(&oi->ip_alloc_sem) <- Lock B
+Fix by passing both structs by const pointer instead, avoiding the
+stack copy of the struct along with its MSAN shadow and origin metadata.
+The functions do not modify the structs, which is enforced by the const
+qualifier.
 
-Lock Chain #1 (ip_alloc_sem -> orphan dir inode_lock):
-ocfs2_dio_end_io_write
-  down_write(&oi->ip_alloc_sem) <- Lock B
-  ocfs2_del_inode_from_orphan()
-    inode_lock(orphan_dir_inode) <- Lock A
-
-Deadlock Scenario:
-  CPU0 (unlink)                     CPU1 (dio_end_io_write)
-  ------                            ------
-  inode_lock(orphan_dir_inode)
-                                    down_write(ip_alloc_sem)
-  down_write(ip_alloc_sem)
-                                    inode_lock(orphan_dir_inode)
-
-Since ip_alloc_sem is to protect allocation changes, which is unrelated
-with operations in ocfs2_del_inode_from_orphan.  So move
-ocfs2_del_inode_from_orphan out of ip_alloc_sem to fix the deadlock.
-
-Link: https://lkml.kernel.org/r/20260306032211.1016452-1-joseph.qi@linux.alibaba.com
-Reported-by: syzbot+67b90111784a3eac8c04@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=67b90111784a3eac8c04
-Fixes: a86a72a4a4e0 ("ocfs2: take ip_alloc_sem in ocfs2_dio_get_block & ocfs2_dio_end_io_write")
-Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Reviewed-by: Heming Zhao <heming.zhao@suse.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Joseph Qi <jiangqi903@gmail.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: f90cf6079bf67 ("media: vidtv: add a bridge driver")
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+96f901260a0b2d29cd1a@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=96f901260a0b2d29cd1a
+Tested-by: syzbot+96f901260a0b2d29cd1a@syzkaller.appspotmail.com
+Suggested-by: Yihan Ding <dingyihan@uniontech.com>
+Signed-off-by: Abd-Alrhman Masalkhi <abd.masalkhi@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ocfs2/aops.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/media/test-drivers/vidtv/vidtv_mux.c |    4 +-
+ drivers/media/test-drivers/vidtv/vidtv_ts.c  |   50 +++++++++++++--------------
+ drivers/media/test-drivers/vidtv/vidtv_ts.h  |    4 +-
+ 3 files changed, 29 insertions(+), 29 deletions(-)
 
---- a/fs/ocfs2/aops.c
-+++ b/fs/ocfs2/aops.c
-@@ -2318,8 +2318,6 @@ static int ocfs2_dio_end_io_write(struct
- 		goto out;
+--- a/drivers/media/test-drivers/vidtv/vidtv_mux.c
++++ b/drivers/media/test-drivers/vidtv/vidtv_mux.c
+@@ -233,7 +233,7 @@ static u32 vidtv_mux_push_pcr(struct vid
+ 	/* the 27Mhz clock will feed both parts of the PCR bitfield */
+ 	args.pcr = m->timing.clk;
+ 
+-	nbytes += vidtv_ts_pcr_write_into(args);
++	nbytes += vidtv_ts_pcr_write_into(&args);
+ 	m->mux_buf_offset += nbytes;
+ 
+ 	m->num_streamed_pcr++;
+@@ -363,7 +363,7 @@ static u32 vidtv_mux_pad_with_nulls(stru
+ 	args.continuity_counter = &ctx->cc;
+ 
+ 	for (i = 0; i < npkts; ++i) {
+-		m->mux_buf_offset += vidtv_ts_null_write_into(args);
++		m->mux_buf_offset += vidtv_ts_null_write_into(&args);
+ 		args.dest_offset  = m->mux_buf_offset;
  	}
  
--	down_write(&oi->ip_alloc_sem);
+--- a/drivers/media/test-drivers/vidtv/vidtv_ts.c
++++ b/drivers/media/test-drivers/vidtv/vidtv_ts.c
+@@ -48,7 +48,7 @@ void vidtv_ts_inc_cc(u8 *continuity_coun
+ 		*continuity_counter = 0;
+ }
+ 
+-u32 vidtv_ts_null_write_into(struct null_packet_write_args args)
++u32 vidtv_ts_null_write_into(const struct null_packet_write_args *args)
+ {
+ 	u32 nbytes = 0;
+ 	struct vidtv_mpeg_ts ts_header = {};
+@@ -56,21 +56,21 @@ u32 vidtv_ts_null_write_into(struct null
+ 	ts_header.sync_byte          = TS_SYNC_BYTE;
+ 	ts_header.bitfield           = cpu_to_be16(TS_NULL_PACKET_PID);
+ 	ts_header.payload            = 1;
+-	ts_header.continuity_counter = *args.continuity_counter;
++	ts_header.continuity_counter = *args->continuity_counter;
+ 
+ 	/* copy TS header */
+-	nbytes += vidtv_memcpy(args.dest_buf,
+-			       args.dest_offset + nbytes,
+-			       args.buf_sz,
++	nbytes += vidtv_memcpy(args->dest_buf,
++			       args->dest_offset + nbytes,
++			       args->buf_sz,
+ 			       &ts_header,
+ 			       sizeof(ts_header));
+ 
+-	vidtv_ts_inc_cc(args.continuity_counter);
++	vidtv_ts_inc_cc(args->continuity_counter);
+ 
+ 	/* fill the rest with empty data */
+-	nbytes += vidtv_memset(args.dest_buf,
+-			       args.dest_offset + nbytes,
+-			       args.buf_sz,
++	nbytes += vidtv_memset(args->dest_buf,
++			       args->dest_offset + nbytes,
++			       args->buf_sz,
+ 			       TS_FILL_BYTE,
+ 			       TS_PACKET_LEN - nbytes);
+ 
+@@ -83,17 +83,17 @@ u32 vidtv_ts_null_write_into(struct null
+ 	return nbytes;
+ }
+ 
+-u32 vidtv_ts_pcr_write_into(struct pcr_write_args args)
++u32 vidtv_ts_pcr_write_into(const struct pcr_write_args *args)
+ {
+ 	u32 nbytes = 0;
+ 	struct vidtv_mpeg_ts ts_header = {};
+ 	struct vidtv_mpeg_ts_adaption ts_adap = {};
+ 
+ 	ts_header.sync_byte     = TS_SYNC_BYTE;
+-	ts_header.bitfield      = cpu_to_be16(args.pid);
++	ts_header.bitfield      = cpu_to_be16(args->pid);
+ 	ts_header.scrambling    = 0;
+ 	/* cc is not incremented, but it is needed. see 13818-1 clause 2.4.3.3 */
+-	ts_header.continuity_counter = *args.continuity_counter;
++	ts_header.continuity_counter = *args->continuity_counter;
+ 	ts_header.payload            = 0;
+ 	ts_header.adaptation_field   = 1;
+ 
+@@ -102,27 +102,27 @@ u32 vidtv_ts_pcr_write_into(struct pcr_w
+ 	ts_adap.PCR    = 1;
+ 
+ 	/* copy TS header */
+-	nbytes += vidtv_memcpy(args.dest_buf,
+-			       args.dest_offset + nbytes,
+-			       args.buf_sz,
++	nbytes += vidtv_memcpy(args->dest_buf,
++			       args->dest_offset + nbytes,
++			       args->buf_sz,
+ 			       &ts_header,
+ 			       sizeof(ts_header));
+ 
+ 	/* write the adap after the TS header */
+-	nbytes += vidtv_memcpy(args.dest_buf,
+-			       args.dest_offset + nbytes,
+-			       args.buf_sz,
++	nbytes += vidtv_memcpy(args->dest_buf,
++			       args->dest_offset + nbytes,
++			       args->buf_sz,
+ 			       &ts_adap,
+ 			       sizeof(ts_adap));
+ 
+ 	/* write the PCR optional */
+-	nbytes += vidtv_ts_write_pcr_bits(args.dest_buf,
+-					  args.dest_offset + nbytes,
+-					  args.pcr);
 -
- 	/* Delete orphan before acquire i_rwsem. */
- 	if (dwc->dw_orphaned) {
- 		BUG_ON(dwc->dw_writer_pid != task_pid_nr(current));
-@@ -2332,6 +2330,7 @@ static int ocfs2_dio_end_io_write(struct
- 			mlog_errno(ret);
- 	}
+-	nbytes += vidtv_memset(args.dest_buf,
+-			       args.dest_offset + nbytes,
+-			       args.buf_sz,
++	nbytes += vidtv_ts_write_pcr_bits(args->dest_buf,
++					  args->dest_offset + nbytes,
++					  args->pcr);
++
++	nbytes += vidtv_memset(args->dest_buf,
++			       args->dest_offset + nbytes,
++			       args->buf_sz,
+ 			       TS_FILL_BYTE,
+ 			       TS_PACKET_LEN - nbytes);
  
-+	down_write(&oi->ip_alloc_sem);
- 	di = (struct ocfs2_dinode *)di_bh->b_data;
+--- a/drivers/media/test-drivers/vidtv/vidtv_ts.h
++++ b/drivers/media/test-drivers/vidtv/vidtv_ts.h
+@@ -90,7 +90,7 @@ void vidtv_ts_inc_cc(u8 *continuity_coun
+  *
+  * Return: The number of bytes written into the buffer.
+  */
+-u32 vidtv_ts_null_write_into(struct null_packet_write_args args);
++u32 vidtv_ts_null_write_into(const struct null_packet_write_args *args);
  
- 	ocfs2_init_dinode_extent_tree(&et, INODE_CACHE(inode), di_bh);
+ /**
+  * vidtv_ts_pcr_write_into - Write a PCR  packet into a buffer.
+@@ -101,6 +101,6 @@ u32 vidtv_ts_null_write_into(struct null
+  *
+  * Return: The number of bytes written into the buffer.
+  */
+-u32 vidtv_ts_pcr_write_into(struct pcr_write_args args);
++u32 vidtv_ts_pcr_write_into(const struct pcr_write_args *args);
+ 
+ #endif //VIDTV_TS_H
 
 
 
