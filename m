@@ -1,369 +1,222 @@
-Return-Path: <stable+bounces-238700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238701-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YJvMN3XC5WmnnwEAu9opvQ
-	(envelope-from <stable+bounces-238700-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 08:06:45 +0200
+	id eRFYJbLD5WkEoAEAu9opvQ
+	(envelope-from <stable+bounces-238701-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 08:12:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E59642702C
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 08:06:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5946427082
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 08:12:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 87677300C5B7
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 06:06:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8DC12300CBEA
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 06:12:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B846037EFEE;
-	Mon, 20 Apr 2026 06:06:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C08C93815E2;
+	Mon, 20 Apr 2026 06:11:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=snu.ac.kr header.i=@snu.ac.kr header.b="k2SKip8x"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CUoahSW/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2895F25D53B
-	for <stable@vger.kernel.org>; Mon, 20 Apr 2026 06:06:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37F6C2A1B2
+	for <stable@vger.kernel.org>; Mon, 20 Apr 2026 06:11:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776665202; cv=none; b=uSTGIUJtpkSByGlIQ3vpNHNSI8ssHNmKf+m36ZNBJ/gEMp5GIgzMljI/snwuW+GTEpTvc5fKXfF59tJrrtYVw+NWUtyF6SptS0AekT2bFHprJR1r7xyep+itujHWvl3KHAdXD45I3GKpSP23kOkUuc31yt7umfSyIwq4h/G3050=
+	t=1776665519; cv=none; b=eoZFLoLbycxJX3Hd2hIfFzTx5aW7jv1xOGwy5EnbNVuyK/J+ae+gVoCuXqop/Pl49JFC31Nd7oVcVoixSnX7L1fFFmS3zkUZlvg3AWvhMyEr+PJ3g3hNG23+bot3GMvgUWeasoVb/ps44bMpKG4u8W1UucnMi6HAwKplBcEMTZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776665202; c=relaxed/simple;
-	bh=o9VyHHljdlNryQxgGpX/rIFtgqHL6AXLc8VCdQZtJUw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=eRsRh478xI1cXTw5VoskKFsPkI4lhZlkhPCs1qLgsrt6E9FQzVUdQObnxuhtHq0bwJYAet0+cuJ3HPufVbwSMwhG9tf3wU1o55fHY/E9RsJetWzawc224KCLoQfnXOYl+xCy4MTerUbPB9beSGpDooU7vT39e3Yj8iaFepj/Ds8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=snu.ac.kr; spf=pass smtp.mailfrom=snu.ac.kr; dkim=pass (1024-bit key) header.d=snu.ac.kr header.i=@snu.ac.kr header.b=k2SKip8x; arc=none smtp.client-ip=209.85.216.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=snu.ac.kr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=snu.ac.kr
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-35e563b0ee7so1196029a91.1
-        for <stable@vger.kernel.org>; Sun, 19 Apr 2026 23:06:40 -0700 (PDT)
+	s=arc-20240116; t=1776665519; c=relaxed/simple;
+	bh=/TCPWbhYgy1QrzBrAce/kNZ6xNY12c29If1AEOzWWT8=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=a8l94pgfsjkR4m/Aqc08boaSB411HjCAnlQ8DHG+zQf0OAaK5mbkEPbivbZzTsnEwyQYM7xtxaseNjgQVYAn2Y31nWcARJ93NUOVpjALfS1xUOL9Ts0lerOnC/FxX3s29R0UArI8J2EK3KqO78iv/sm27TzV0ehA+Bo3SV/wjxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CUoahSW/; arc=none smtp.client-ip=209.85.128.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-7b1dcb58b8dso889937b3.3
+        for <stable@vger.kernel.org>; Sun, 19 Apr 2026 23:11:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=snu.ac.kr; s=google; t=1776665199; x=1777269999; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=sbHCUNdavsi9m4FkYItkV2uwfkFJaRWF7u5PuSyGeu8=;
-        b=k2SKip8xU1lDGEOVv9gHsepsT/agF+sar6U9mGEnC7datNI8gbFlifYZK3c5+DEpLL
-         Yq3lgPs6uCO5FUbYM2CF3AwmDD4LrDKmO+PQh1V0BmzAdYb9c848zoSVPOnjDFDR+UEp
-         BvbTiu4D7xnNPIH9+TYPy6S6cIevgCYkgEtzI=
+        d=gmail.com; s=20251104; t=1776665517; x=1777270317; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=f8Nyf4cpJRKorO7rgUUCbDBAbZjdSUwn4aYVqe/Bdmk=;
+        b=CUoahSW/3lYZDBBaXolbjxsH25OyL0bUv8OdS8nSyYONCFT5deTn6U4HkGok404PCz
+         3BJ0KNq0bQKzDZ770o2gkE3ahVabQbFZr/yMuAn/cEY+pI/QYNqEhv0VSn+T6cWwajCX
+         Uz8p4oMKea6OLt+bo5dYH8TKDTwdFISEKGPcfOnM0Z7O1f8f1SbqWmFzeS0Qwik3Wvgq
+         cJ+6UOBAQq1lUIewIT9U9+Lhx3+YAtuwZL1pmRU0pRdqX5WvMS/EFAR9uviQyORgeLTX
+         7uBEU/YwjmQsRVpRMyeukR9WkFAPo9joA9vB2eJAMZk9JavdKR61abtNcFUtudBDMU8E
+         qj0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776665199; x=1777269999;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sbHCUNdavsi9m4FkYItkV2uwfkFJaRWF7u5PuSyGeu8=;
-        b=mtzn8vKm81YT2OPFcvExfdSA8JgDinUChoz+pHqAQJDXK5Pel9f/Uc2gMZzhEJPLPG
-         YvococtVN5j3nDIkhqmqxClUuiiSj6Iq3SbxVK6ynF6qa7lVB9o1UT/H8saMI7kr7uH4
-         gASYK2mjyQXl9h6SlnXT8iMCaGpZpToYx3fQ+qBCzLoKGBvG8aJaCODbdRtpoRy3e8jG
-         GhM79FGrJ8QyK55tByM69G4RTvwRmH+yDuZMfb8Jdg3G58pbw4ZJLOZPjUX5n7Anhl5e
-         /7MGHBfOMrwBzfIWWIFx375UvkpjhOJo0OyJWb27rI2//Bh3ebRC93jLOPQ4r5dIM7uV
-         KhAg==
-X-Forwarded-Encrypted: i=1; AFNElJ+kag3NL9EhDg/7LgmjQ23a52c6KH34MEuIZa88pkgHVcNlRrB3xJY2+FdBniheKUQ06ehLExs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz/UBPKTexFOwZlh7+SF9+DiwV7wed2raYqbSyX/h2SzBfrNUO5
-	vAq+tGnbH9qgjdG+/noGhSnNUhWPV9OTPB3shIHY06+gfWEsDRTnu1S0j3eMY64XDCRzHOPfS58
-	3zDFv3aw=
-X-Gm-Gg: AeBDiev7x96Kf7tsC6VhgE4CIfT+pUJqMg8VKCXEr3oP3n8J04TxQab6OuGpbYUD2Yw
-	wzO7PAom5Jg85QO9Oi6KO+iYnF+Ql883LU5PC+yqvnNqgC4Ur9YrGa0GQP352b/dx6cIgKU4dlJ
-	BtEM9YbW5NbshYeb77rwEqgO5VFJWNqZ1CUSkznkHPwJJhiFJW4S9b4hnmMcHpsahLcka2dSa2H
-	T0G8zM00sG4cknt8qqlBcQXUoLi7clYYI6PgirDPNCHHxk1dICDc/Q7vTNSkkkpHbpYVyhPlqW/
-	5/OpTHlQToWLDk7I/Z377RFakd7AwCgdyVegCB3H7vYLZDxfFFdMwM523BOCMYLvCcs/Ca8k8eZ
-	E+CiEujwRuBN/pr3mBC9MJo0N7myQ4EFoQZ9YYE4XX5GRvYjNln8wWeqjaD2xgYQUo0nWmO8TlP
-	bWJb10zPb0uxGJE/SyDgWIf3DCMI8eUI1orJIeKAatB1VLCx3g39rgaPf+rYCFT4FOCpnNsA==
-X-Received: by 2002:a17:90b:1e10:b0:35f:c6bf:2bba with SMTP id 98e67ed59e1d1-36140299a0dmr12086964a91.11.1776665199511;
-        Sun, 19 Apr 2026 23:06:39 -0700 (PDT)
-Received: from nunu.. (nunu.snu.ac.kr. [147.46.112.82])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3614195a8f0sm9082277a91.12.2026.04.19.23.06.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 19 Apr 2026 23:06:39 -0700 (PDT)
-From: Sangyun Kim <sangyun.kim@snu.ac.kr>
-To: Mike Isely <isely@pobox.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Hans Verkuil <hverkuil@kernel.org>,
-	Edward Adam Davis <eadavis@qq.com>
-Cc: linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] media: pvrusb2: fix disconnect and teardown races
-Date: Mon, 20 Apr 2026 15:06:21 +0900
-Message-Id: <20260420060621.1627352-1-sangyun.kim@snu.ac.kr>
-X-Mailer: git-send-email 2.34.1
+        d=1e100.net; s=20251104; t=1776665517; x=1777270317;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=f8Nyf4cpJRKorO7rgUUCbDBAbZjdSUwn4aYVqe/Bdmk=;
+        b=AfluZwK5V0qT9eLRoPw+GpQW0iYY264I3F3s/ROc9NLf01HUBQ6BeFdjmwMqEftzs2
+         RG8EtvmdX6Ngnd0NI0GizB9rLZxlpH3W7pQSL18toS57erxvoyDooLM4d2ROyoRAsN+l
+         VqNOPb9TUgLuGGFfZhXqNKNzOnJH0xSS+CbAv5utnUBSvUEB0GeXK81f4o55E2bwd33d
+         W8DiArTvnMMh6xVR+RCqgCdaG0fhLBUtwkGSVImei3Yign2hStu6pCORFtE3p768K499
+         k32ngJAxK/wAs6ArcONFXAUeeYiYxa11Gnkq8QDUrEjLmIcyZU1uNBFeeV6kSjkN/Dun
+         I6bg==
+X-Forwarded-Encrypted: i=1; AFNElJ9VE1YnkHEuNc+GfziFuEQMXTJohLluGeHplFSwuezQk2r4A86dD4CAFcuoGvvQw53gDr8vw6k=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx0sWwTIJ+2SA2BK/iSESjTbappBYCQzmosU3ftxE1i4O75ML3y
+	D4+hgc1ggBOeUON9fPRi8GA2wzycsHPcpnKQJ6hc7C69X/KMiViWZG+z
+X-Gm-Gg: AeBDiesXFngpGHkccSuydJ7Nq2hR3kKwGROj9Gk8duUXoRtixKPySL1geU3BxJrcMPG
+	fFT6YCUFtU1eaNcGAil72Nd6W8mJYknehEgLc9V6dmy78oMf0kAdELBHUbEvb+Bwy567AvdKd9W
+	LZ1ZKaU9UpJG7XkBzTHKd1ZEyKsjbrFSzpUSX9qGW/PowdCi4XcmPNzd4t+Dv8zDCndbP4VW8Xn
+	bIw3yEuAaGwipVljH+J/8zrEsV3QX9nbq2RwTu+DciqNPsVXlt1bL/2M/7d8AinEaRBwLbiaoIL
+	IUnEtiiFc9455ZW0ocLzZzznFzTdYoStxg3s/fs+QdmkRrlNeNVPiBhU/0n5gQQq8E7wNWE14cy
+	cjxyYZnoG/OJ2Xb6FCVmpZVBQXr6JGr+P4wIWt7O/+e75WHP91W1WricdvwhVRhOAp7/NbjX37f
+	WNWPvszPTBlWg/Cc0MBEOP1l906hBs0iBpp1sWB5ESuBb4DAws8RsBhLDjwnp4dg/ixr2dZWyT4
+	4iv
+X-Received: by 2002:a05:690c:4485:b0:7b6:db48:2f1d with SMTP id 00721157ae682-7b9eccea04amr83767167b3.0.1776665517197;
+        Sun, 19 Apr 2026 23:11:57 -0700 (PDT)
+Received: from [192.168.11.79] (2607-8700-5500-a805-0000-0000-0000-0002.16clouds.com. [2607:8700:5500:a805::2])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-65314e3510esm4693954d50.10.2026.04.19.23.11.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 19 Apr 2026 23:11:56 -0700 (PDT)
+Message-ID: <9c198d0e-a675-4d7e-a485-5a8ee4d97f88@gmail.com>
+Date: Mon, 20 Apr 2026 14:11:28 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+From: Frank Zhang <rmxpzlb@gmail.com>
+Subject: Re: [PATCH v2] drm/bridge: dw-hdmi-qp: Guard clear_audio_infoframe
+ when PHY is down
+To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Cc: andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org,
+ maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
+ airlied@gmail.com, simona@ffwll.ch, detlev.casanova@collabora.com,
+ cristian.ciocaltea@collabora.com, Laurent.pinchart@ideasonboard.com,
+ jonas@kwiboo.se, jernej.skrabec@gmail.com, dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260418101936.7731-1-rmxpzlb@gmail.com>
+ <hdl63shkqubkvczlg7ryjah5psiqzrhu5llelzaetw7skbpujv@nyxgriryjxd5>
+Content-Language: en-US
+In-Reply-To: <hdl63shkqubkvczlg7ryjah5psiqzrhu5llelzaetw7skbpujv@nyxgriryjxd5>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[snu.ac.kr,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[snu.ac.kr:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-238700-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[pobox.com,kernel.org,qq.com];
+	FREEMAIL_CC(0.00)[intel.com,linaro.org,kernel.org,linux.intel.com,suse.de,gmail.com,ffwll.ch,collabora.com,ideasonboard.com,kwiboo.se,lists.freedesktop.org,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-238701-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sangyun.kim@snu.ac.kr,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[17];
 	MIME_TRACE(0.00)[0:+];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rmxpzlb@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[snu.ac.kr:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 3E59642702C
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: E5946427082
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-pvr2_context_disconnect() queues a notification to the pvrusb2-context
-kthread before it stores mp->disconnect_flag:
+On 4/19/26 08:40, Dmitry Baryshkov wrote:
+> On Sat, Apr 18, 2026 at 06:19:36PM +0800, Frank Zhang wrote:
+>> The following panic was observed during system reboot:
+>>
+>> Kernel panic - not syncing: Asynchronous SError Interrupt
+>> CPU: 7 UID: 1000 PID: 2637 Comm: pipewire ... 6.19.10-300.fc44.aarch64
+>> Call trace:
+>>   ...
+>>   regmap_update_bits_base+0x5c/0x90
+>>   dw_hdmi_qp_bridge_clear_infoframe+0xb0/0x120 [dw_hdmi_qp]
+>>   drm_bridge_connector_clear_infoframe+0x28/0x48 [drm_display_helper]
+>>   ...
+>>   dw_hdmi_qp_audio_disable+0x24/0xb8 [dw_hdmi_qp]
+>>   drm_bridge_connector_audio_shutdown+0x30/0x60 [drm_display_helper]
+>>   drm_connector_hdmi_audio_shutdown+0x24/0x38 [drm_display_helper]
+>>   hdmi_codec_shutdown+0x60/0x90 [snd_soc_hdmi_codec]
+>>   ...
+>>   snd_pcm_release_substream.part.0+0x44/0xd8 [snd_pcm]
+>>   snd_pcm_release+0x60/0xe8 [snd_pcm]
+>>   ...
+>>
+>> The root cause is pipewire tries to close the HDMI audio device after
+>> atomic_disable(), which sets tmds_char_rate to 0 and disable the PHY.
+>>
+>> In this case, dw_hdmi_qp_audio_disable() will call
+>> drm_atomic_helper_connector_hdmi_clear_audio_infoframe() directly,
+>> accessing registers without checking tmds_char_rate.
+>>
+>> Move drm_atomic_helper_connector_hdmi_clear_audio_infoframe() inside the
+>> if (hdmi->tmds_char_rate) of dw_hdmi_qp_audio_disable().
+>>
+>> Fixes: fd0141d1a8a2 ("drm/bridge: synopsys: Add audio support for dw-hdmi-qp")
+>> Signed-off-by: Frank Zhang <rmxpzlb@gmail.com>
+>>
+>> ---
+>> Changes in v2:
+>> - Move drm_atomic_helper_connector_hdmi_clear_audio_infoframe() inside
+>>    the if (hdmi->tmds_char_rate) of dw_hdmi_qp_audio_disable().
+>> - Link to v1: https://lore.kernel.org/all/20260416093150.13853-1-rmxpzlb@gmail.com/
+>>
+>> diff --git a/drivers/gpu/drm/bridge/synopsys/dw-hdmi-qp.c b/drivers/gpu/drm/bridge/synopsys/dw-hdmi-qp.c
+>> index d649a1cf07f5..7760527484c8 100644
+>> --- a/drivers/gpu/drm/bridge/synopsys/dw-hdmi-qp.c
+>> +++ b/drivers/gpu/drm/bridge/synopsys/dw-hdmi-qp.c
+>> @@ -526,10 +526,10 @@ static void dw_hdmi_qp_audio_disable(struct drm_bridge *bridge,
+>>   {
+>>   	struct dw_hdmi_qp *hdmi = dw_hdmi_qp_from_bridge(bridge);
+>>   
+>> -	drm_atomic_helper_connector_hdmi_clear_audio_infoframe(connector);
+>> -
+>> -	if (hdmi->tmds_char_rate)
+>> +	if (hdmi->tmds_char_rate) {
+>> +		drm_atomic_helper_connector_hdmi_clear_audio_infoframe(connector);
+>>   		dw_hdmi_qp_audio_disable_regs(hdmi);
+>> +	}
+> 
+> Will audio and audio infoframe remain disabled after consequetive
+> atomic_enable() call?
+> 
+>>   }
+>>   
+>>   static int dw_hdmi_qp_i2c_read(struct dw_hdmi_qp *hdmi,
+>> -- 
+>> 2.53.0
+>>
+> 
 
-    pvr2_hdw_disconnect(mp->hdw);
-    if (!pvr2_context_shutok())
-        pvr2_context_notify(mp);
-    mp->disconnect_flag = !0;
+Sorry, I missed clearing the audio infoframe when the PHY is down. The 
+next atomic_enable() will write the stale audio infoframe. My mistake.
 
-The context thread only destroys a context when disconnect_flag is set
-and mc_first is NULL. If the notification wakes the thread before the
-flag store becomes visible, the thread dequeues the context, runs
-pvr2_context_check() with disconnect_flag still observed as 0, decides
-that the destroy condition is not met yet, and goes back to sleep.
-Nothing wakes the thread again once the flag is finally stored, so the
-context stays on the global exist list forever and
-pvr2_context_global_done() blocks module unload. commit 0a0b79ea55de
-("media: pvrusb2: fix uaf in pvr2_context_set_notify") made this
-liveness failure easier to hit by moving the notify earlier in the
-disconnect path.
+To clear the stale audio infoframe, dw_hdmi_qp_audio_disable() can 
+handle it in the else branch directly, but this seems like a layering 
+violation for a bridge driver
 
-The same teardown sequence still contains a use-after-free.
-pvr2_context_exit() inspects disconnect_flag after releasing mp->mutex
-and may then call pvr2_context_notify(mp) after the context thread has
-already freed the object via pvr2_context_destroy()/kfree(). The hdw
-completion callback registered through pvr2_hdw_initialize() can race
-the same way. Reordering the disconnect path alone closes the unload
-hang, but it still leaves late notifiers able to touch freed memory.
+I think the better approach is to add a 'reset_audio_infoframe' 
+interface in drm_hdmi_state_helper.c that does basically the same as 
+drm_atomic_helper_connector_hdmi_clear_audio_infoframe(), but only 
+clearing the software state without calling clear_infoframe(). It's also 
+a bit odd since it would only be used by dw-hdmi-qp.
 
-Fix both problems together:
+I'd like to get the maintainers' opinion about adding such an interface.
 
-- Split pvr2_context_set_notify() into a locked helper
-  (pvr2_context_set_notify_locked()) and a wrapper that acquires
-  pvr2_context_mutex. This lets callers update several pieces of
-  related state inside a single critical section without relocking.
-
-- In pvr2_context_disconnect(), set disconnect_flag and enqueue the
-  thread notification under pvr2_context_mutex. The context thread
-  manipulates the notify list under the same mutex, so when it observes
-  the queued entry it is guaranteed to observe disconnect_flag = 1 as
-  well and the destroy condition evaluates correctly. This eliminates
-  the original notify-before-flag liveness hole.
-
-- Add a per-context refcount_t. pvr2_context_create() initialises it to
-  1 (creator reference). pvr2_channel_init() and pvr2_channel_done()
-  take and drop a reference around each channel's lifetime.
-  pvr2_context_disconnect() takes a temporary reference across its body
-  so the context cannot be freed while disconnect is still touching it.
-  pvr2_context_destroy() no longer calls kfree() directly; it drops its
-  reference via pvr2_context_put(), and whichever caller drops the last
-  reference performs the actual kfree. This keeps the object alive
-  until disconnect and the final channel teardown finish, regardless of
-  how the context thread, channel close, and USB disconnect paths
-  interleave.
-
-- Add a destroying_flag that pvr2_context_destroy() sets under
-  pvr2_context_mutex before unlinking the context from the notify and
-  exist lists. pvr2_context_set_notify_locked() refuses to re-enqueue a
-  context whose destroying_flag is set, so a late notifier arriving
-  after destroy has started cannot resurrect the context on the notify
-  list. The dequeue path (fl == 0) still proceeds unconditionally
-  because destroy itself must be able to remove any still-queued entry.
-
-- Update pvr2_context_exit() to enqueue through
-  pvr2_context_set_notify_locked() after releasing mp->mutex. The
-  caller (channel close or disconnect) always holds a reference, so the
-  object is stable across the mp->mutex / pvr2_context_mutex hand-off
-  and a concurrent destroy cannot free it under us. If destroy has
-  already won the race, destroying_flag short-circuits the enqueue into
-  a no-op.
-
-Lock ordering: pvr2_context_mutex is only acquired after mp->mutex is
-released; no path holds pvr2_context_mutex while acquiring mp->mutex,
-so no AB/BA deadlock is introduced. wake_up() on
-pvr2_context_sync_data is moved outside pvr2_context_mutex in every
-path that grew a new locked section, matching the existing style.
-
-Fixes: 0a0b79ea55de ("media: pvrusb2: fix uaf in pvr2_context_set_notify")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sangyun Kim <sangyun.kim@snu.ac.kr>
----
- drivers/media/usb/pvrusb2/pvrusb2-context.c | 56 ++++++++++++++++++---
- drivers/media/usb/pvrusb2/pvrusb2-context.h |  3 ++
- 2 files changed, 51 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/media/usb/pvrusb2/pvrusb2-context.c b/drivers/media/usb/pvrusb2/pvrusb2-context.c
-index 93f5da65ead9..fb9bdbf5c886 100644
---- a/drivers/media/usb/pvrusb2/pvrusb2-context.c
-+++ b/drivers/media/usb/pvrusb2/pvrusb2-context.c
-@@ -27,11 +27,19 @@ static int pvr2_context_cleaned_flag;
- static struct task_struct *pvr2_context_thread_ptr;
- 
- 
--static void pvr2_context_set_notify(struct pvr2_context *mp, int fl)
-+static void pvr2_context_put(struct pvr2_context *mp)
-+{
-+	if (refcount_dec_and_test(&mp->refcount))
-+		kfree(mp);
-+}
-+
-+static int pvr2_context_set_notify_locked(struct pvr2_context *mp, int fl)
- {
- 	int signal_flag = 0;
--	mutex_lock(&pvr2_context_mutex);
-+
- 	if (fl) {
-+		if (mp->destroying_flag)
-+			return 0;
- 		if (!mp->notify_flag) {
- 			signal_flag = (pvr2_context_notify_first == NULL);
- 			mp->notify_prev = pvr2_context_notify_last;
-@@ -59,6 +67,15 @@ static void pvr2_context_set_notify(struct pvr2_context *mp, int fl)
- 			}
- 		}
- 	}
-+	return signal_flag;
-+}
-+
-+static void pvr2_context_set_notify(struct pvr2_context *mp, int fl)
-+{
-+	int signal_flag = 0;
-+
-+	mutex_lock(&pvr2_context_mutex);
-+	signal_flag = pvr2_context_set_notify_locked(mp, fl);
- 	mutex_unlock(&pvr2_context_mutex);
- 	if (signal_flag) wake_up(&pvr2_context_sync_data);
- }
-@@ -66,10 +83,13 @@ static void pvr2_context_set_notify(struct pvr2_context *mp, int fl)
- 
- static void pvr2_context_destroy(struct pvr2_context *mp)
- {
-+	int signal_flag = 0;
-+
- 	pvr2_trace(PVR2_TRACE_CTXT,"pvr2_context %p (destroy)",mp);
- 	pvr2_hdw_destroy(mp->hdw);
--	pvr2_context_set_notify(mp, 0);
- 	mutex_lock(&pvr2_context_mutex);
-+	mp->destroying_flag = !0;
-+	pvr2_context_set_notify_locked(mp, 0);
- 	if (mp->exist_next) {
- 		mp->exist_next->exist_prev = mp->exist_prev;
- 	} else {
-@@ -83,10 +103,12 @@ static void pvr2_context_destroy(struct pvr2_context *mp)
- 	if (!pvr2_context_exist_first) {
- 		/* Trigger wakeup on control thread in case it is waiting
- 		   for an exit condition. */
--		wake_up(&pvr2_context_sync_data);
-+		signal_flag = !0;
- 	}
- 	mutex_unlock(&pvr2_context_mutex);
--	kfree(mp);
-+	if (signal_flag)
-+		wake_up(&pvr2_context_sync_data);
-+	pvr2_context_put(mp);
- }
- 
- 
-@@ -209,6 +231,7 @@ struct pvr2_context *pvr2_context_create(
- 	pvr2_trace(PVR2_TRACE_CTXT,"pvr2_context %p (create)",mp);
- 	mp->setup_func = setup_func;
- 	mutex_init(&mp->mutex);
-+	refcount_set(&mp->refcount, 1);
- 	mutex_lock(&pvr2_context_mutex);
- 	mp->exist_prev = pvr2_context_exist_last;
- 	mp->exist_next = NULL;
-@@ -256,25 +279,41 @@ static void pvr2_context_enter(struct pvr2_context *mp)
- static void pvr2_context_exit(struct pvr2_context *mp)
- {
- 	int destroy_flag = 0;
-+	int signal_flag = 0;
- 	if (!(mp->mc_first || !mp->disconnect_flag)) {
- 		destroy_flag = !0;
- 	}
- 	mutex_unlock(&mp->mutex);
--	if (destroy_flag) pvr2_context_notify(mp);
-+	if (destroy_flag) {
-+		mutex_lock(&pvr2_context_mutex);
-+		signal_flag = pvr2_context_set_notify_locked(mp, !0);
-+		mutex_unlock(&pvr2_context_mutex);
-+		if (signal_flag)
-+			wake_up(&pvr2_context_sync_data);
-+	}
- }
- 
- 
- void pvr2_context_disconnect(struct pvr2_context *mp)
- {
-+	int signal_flag = 0;
-+
-+	refcount_inc(&mp->refcount);
- 	pvr2_hdw_disconnect(mp->hdw);
--	if (!pvr2_context_shutok())
--		pvr2_context_notify(mp);
-+	mutex_lock(&pvr2_context_mutex);
- 	mp->disconnect_flag = !0;
-+	if (!pvr2_context_shutok())
-+		signal_flag = pvr2_context_set_notify_locked(mp, !0);
-+	mutex_unlock(&pvr2_context_mutex);
-+	if (signal_flag)
-+		wake_up(&pvr2_context_sync_data);
-+	pvr2_context_put(mp);
- }
- 
- 
- void pvr2_channel_init(struct pvr2_channel *cp,struct pvr2_context *mp)
- {
-+	refcount_inc(&mp->refcount);
- 	pvr2_context_enter(mp);
- 	cp->hdw = mp->hdw;
- 	cp->mc_head = mp;
-@@ -318,6 +357,7 @@ void pvr2_channel_done(struct pvr2_channel *cp)
- 	}
- 	cp->hdw = NULL;
- 	pvr2_context_exit(mp);
-+	pvr2_context_put(mp);
- }
- 
- 
-diff --git a/drivers/media/usb/pvrusb2/pvrusb2-context.h b/drivers/media/usb/pvrusb2/pvrusb2-context.h
-index 5840b2ce8f1e..4e06530eccb8 100644
---- a/drivers/media/usb/pvrusb2/pvrusb2-context.h
-+++ b/drivers/media/usb/pvrusb2/pvrusb2-context.h
-@@ -7,6 +7,7 @@
- #define __PVRUSB2_CONTEXT_H
- 
- #include <linux/mutex.h>
-+#include <linux/refcount.h>
- #include <linux/usb.h>
- #include <linux/workqueue.h>
- 
-@@ -33,9 +34,11 @@ struct pvr2_context {
- 	struct pvr2_hdw *hdw;
- 	struct pvr2_context_stream video_stream;
- 	struct mutex mutex;
-+	refcount_t refcount;
- 	int notify_flag;
- 	int initialized_flag;
- 	int disconnect_flag;
-+	int destroying_flag;
- 
- 	/* Called after pvr2_context initialization is complete */
- 	void (*setup_func)(struct pvr2_context *);
--- 
-2.34.1
+Thanks,
+Frank Zhang
 
 
