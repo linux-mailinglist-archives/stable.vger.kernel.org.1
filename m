@@ -1,97 +1,83 @@
-Return-Path: <stable+bounces-239231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239232-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id im2OH1tW5mlQvAEAu9opvQ
-	(envelope-from <stable+bounces-239231-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:37:47 +0200
+	id OInIEXBA5mlutgEAu9opvQ
+	(envelope-from <stable+bounces-239232-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 17:04:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B42942FBB4
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:37:44 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBD8C42DC1D
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 17:04:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A9E0D31F0D6E
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 14:50:57 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 68B2A30074B5
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 14:56:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E16DA342CB0;
-	Mon, 20 Apr 2026 14:00:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E8DC372B50;
+	Mon, 20 Apr 2026 14:10:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Dz0otMsN"
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="icBZdToN"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from xmbghk7.mail.qq.com (xmbghk7.mail.qq.com [43.163.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62131342524
-	for <stable@vger.kernel.org>; Mon, 20 Apr 2026 13:59:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50A8A37266E;
+	Mon, 20 Apr 2026 14:10:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=43.163.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776693600; cv=none; b=YboKXwOGej978QjMecQ+4UUSdyZPYmUlLOZ5JTJUcIs3rNRR94qcLnVQ0IEkBfebdH+St7J+LFOv8Q3blMgBlPYMdA3kSHTJfwHEL7TfKdk4FGslnOmGpzDW250Lk85JnqMP70lgne/Eh1tpGd40D8iH/hetYRPGg7c0mFNLuJo=
+	t=1776694230; cv=none; b=YbWWnfxyNclPN8lo1D9yk5T0hQLnwI/TPUDw8Q6gu9BR0Pa93boz9auMcS/fG2//dEaToelB48Yz0ZAOM1NJ6bEpQZq6VCUPQoaRa/1AyJvB5Hm0lNO4YdxBhQBYyQppDNLFt1b8W6i3tsDzs+uml+JKIhvZKzm0O8987ShgGMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776693600; c=relaxed/simple;
-	bh=SrgFMyROmHNBLrFbCgp+FteKbeTypwiuhwV7d4eZYLc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=G4N9NP9zaJTe9BY6q1Jkzyh3NOxejk4zquWl449mSi5fPm8ohnj0S55pi8+tF6r6eWqiViFIkaJcPpGkbYXEy707U3rNET8vN4YcozOyXAfb5fda9JmXKS1hE9d3Gm8TRKaDn2kePenzPnb5xbweLBJcIVQcwk0UAl5+wh3dJc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Dz0otMsN; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2a7a9b8ed69so27271555ad.2
-        for <stable@vger.kernel.org>; Mon, 20 Apr 2026 06:59:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776693599; x=1777298399; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=PtA7XaAsBped8tzDKGVHSMvp1WbWNwbAvXQ8vkybz/I=;
-        b=Dz0otMsNBrkSCoftCpN6lgdJzZGySk2ML3Gi0iXbv4MCNDcOPEhpj+lzWWGNAlbTAI
-         hL2n4lmaRlU3GmtU8jNskPwEi6F2ovaH+6OAqlm9wCNLSS9HWwbkGzzUOHvE2j9iNhsQ
-         BR2EL2o/NDPHLoAax39Y6aqKBbvz7rymXPprPa4Y4gAFtnyI+VamwVwrYGzO4/Yi0O9v
-         uAczbASKykuQQhrzoG024NKStsrgEOkJEUNcrMANQ7x/2PVMxLAOHKrnY/uYGW1tEnba
-         B+7JrHXdFh2e6++zQpz9V54zoYVPhS1zuk73L4iSslChBoWx9nG07AJUvtONCg1LoVs3
-         FfLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776693599; x=1777298399;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PtA7XaAsBped8tzDKGVHSMvp1WbWNwbAvXQ8vkybz/I=;
-        b=klO0erRHl71eI4L/vEA4vY5ZDMbt9yDQFAnBHHIAxMidA5BAR2O31Y6AirqAavWROp
-         ZiZd14UJFvtB9cP06qzhRnl1wDG6e5tR4By/nGFD2szruc5w/nFzA6FLFbjEGQu9O7JP
-         S0mw02bAFmrqBWp5tlqEZwOV4yRY3yYp0d/J1hRxOHsH7Ay4afpnHH9BoFm01A0wl2Qt
-         g8UzyUPAEkk7aQvc6sI6sSimIRV646iC22FhLAtnYMF1Dgrd5j4rSL4Vg/Y+mJkvGW6C
-         XWR4ste3uFKktNIcTI6XmkqddEz/bTkdFZyfKzP/31iStmNqKos6wRf/pFCo2AdOXJam
-         OOHQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+bw3ix9XhhUhscFxoGYfJP9Dc17NTnohUfdK1gt+I1uvW1s0nXSGYs4i4bAtXOsgHc1drndBY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyvX4q/nLPwowhRvp49wcMuMFw4tK/hlwDCnouVPbNZ0ux6QJaF
-	punMqq2N7DVam/cMEXzpENBqv8wRf5vmKpG/X4I154+PSrusfeCnc7GEyVl/uXTd
-X-Gm-Gg: AeBDieu1Fza1ZDTvFCnEVOmqzLwzV6nn6powhLlhfV30nt3zhVXMYMuCSrLGLoFgmLm
-	J0d/Zbi0abqFhk1U8tTY5933RQK+lDTu/yGnp6BgmUs5kygwL6i1XtWBDqr7ImDxslpSzVb8PqH
-	hsaeCyPC+8lL9FFPHo0QRlxPgYeKzbHunqFUT9+z9OoOBHG7aCvg16Y/65AAEQABgZoqvbyxsCI
-	HNI+P75vwkJ0ZCOTiB4ptH172xD+MAvNUC5uVVSxP8nUqFuGPRIsUSijvVOF3lIdnTVJ5AiuAh/
-	/fjBnJZhlwl6it9Fdkfom8q7qdtXqUBOZfdy88oczJzDd+pJdBry2Xn5nCb+jo92KhQgbmgBX4i
-	9CjFKLLT8+/bnDdfiB94J7kOpvAlNBa9As2ZbRqmIsbVuHJ1hPv0234gP1fInB9pYmTG7CkIAVL
-	0qKgRYE5oaQYxQdVslzPl3b+dNuoqssvcIKrHEsZPGH/PJEiJnZBDfkQTeG6uQoggPZQBMLatc
-X-Received: by 2002:a17:902:ee84:b0:2b2:4697:78f4 with SMTP id d9443c01a7336-2b5f9fe094fmr113361365ad.31.1776693598648;
-        Mon, 20 Apr 2026 06:59:58 -0700 (PDT)
-Received: from localhost.localdomain ([115.110.225.242])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b5fab0cd18sm112575965ad.45.2026.04.20.06.59.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Apr 2026 06:59:58 -0700 (PDT)
-From: Shitalkumar Gandhi <shital.gandhi45@gmail.com>
-X-Google-Original-From: Shitalkumar Gandhi <shitalkumar.gandhi@cambiumnetworks.com>
-To: gregkh@linuxfoundation.org,
-	jirislaby@kernel.org
-Cc: bhuvanchandra.dv@toradex.com,
-	Frank.Li@nxp.com,
-	peng.fan@nxp.com,
-	sherry.sun@nxp.com,
-	linux-serial@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
+	s=arc-20240116; t=1776694230; c=relaxed/simple;
+	bh=An/GgEMwmpzOX3/9Jxg7hce25ihyD8UutVaIHjkkgwc=;
+	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
+	 MIME-Version; b=KGGPy37P5chB54a67nthDGND0EJ3CvY4Jfn9fzbMetzJPeKlM87rNkJr3hAWuzcK5ekFDr5wTn0JxpG68DgmHkZ/ypp5EckPfyClTp5kcMhrtAMVWpCeBt9AuhUju21hsLTUZScJEKuP3wHNVGst0O/QAE07rW8YZHyWjwvjnT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=icBZdToN; arc=none smtp.client-ip=43.163.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1776694218; bh=u10R6mI2SU/IKUVDIJuemPsD9YiQMZEcpoI8vLbj0gQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=icBZdToNugQLAZ3kCzB9wcE7UMfPCSoUGMIdkUQhqfrBL6hvaXhNrnfUlVA3Xvn3f
+	 x8nzdtQ07CAlqB6seY5/Tbop9Q7FxfYkFkSSd5wo8+dK6Icz+Zxt2gYtpMbx+CHPIL
+	 keJIRbHGZYh30nTzfmHPaKIWn9EzZfmMc0Bm/bn4=
+Received: from lxu-ped-host.. ([111.198.231.89])
+	by newxmesmtplogicsvrszb43-0.qq.com (NewEsmtp) with SMTP
+	id 28F85082; Mon, 20 Apr 2026 22:10:15 +0800
+X-QQ-mid: xmsmtpt1776694215t37sgs1n8
+Message-ID: <tencent_4B576466DB1372836C296F83B20445177505@qq.com>
+X-QQ-XMAILINFO: M8Cd2byC8kc43sH8l1EM+1mM/tvr9lk83ddpyrYQ1bH2W0DkoK5DBTJYyr5Fd7
+	 JHJ/c82Ny+P3kyeACVoRxUZwuANU8q+QaEUcvJslHr5YuW9G045InMzhq0K1zs2/D4a7bT0Ic7bb
+	 zDWq2DSWvN+Ax32IC6sSyPjAEN3vLLHeXl3fl5cnsWhzgnmEf4uEvEIzkOFaiuyFpZjKylOJVpxD
+	 89aloxRzxM5eW7sDwjb3xno67jmkiS0jOl5joprEe5d3s05j4VndxCzvtRuLlJWajdybOIkDbjo3
+	 wYZcMh5a53dElPiNKnAuY9R4udlbsojRiEM7h7aCV69kWpWaK2oqgZag74A2rhsVH+m9G6f1MIOi
+	 0CWjLAzqS/MzfgwMBkLFKEgAYXj05lKOkFvmB8+Iqq3ymXZUG5Q+DNRxrE4tWkQp8QiJOLbdRja/
+	 OJ3BXlnL0Yvm5gJUGXf0poMWCXGtxoVU0x6rBhXYlSuPBIkQra+/aXUnP/iFS2IeHzgyyG63+fCU
+	 QGXhwRaZO41R0eAT+qgNv6h26Z0VkUfmxkY/pAmLYYfM3QhpJtxxMM5Nj3yN6ALbut+iqmI2gebz
+	 VRrS7X9TAqE4WlzUV7JmKeS/BnkvtTmNEw/Ptl3Dqi+89/wsXX90/rpMOZ//Bm/BmgPK3+2+lYwL
+	 bAwyyGNepUjWqqdxyDSa/CjYhS0BFvIDAsJVJhPs/+X+sA66eM8a5cpyvzaTQ/PNtceiUE59O4iY
+	 nSYclHdXZzetVp5qyekHBnFyIRITVrawVfyz5tEJYQf89Q5Ol0Tl6R56IXuFiRjcs54dTtupbBKJ
+	 ws+lrtUEtQvbJGu6/0CGFUB9ca+FVV7x5agrp9Aeb5U1rLVP52+OpmVbnc8hfw2IASpDJIdMSxr8
+	 xK1My2E6i150+8jLQk4IB0BgVfphqGpQh0SPvFLSUTZZJD+g6bLImWiJIG4heAmwA1zV+lUFdSGH
+	 tpAodJOI7H8kYt+8dgsUdxpD0dHld555gejrN55eKBsWJ/DhnxLpEwfQAtv1HECxztrsPYhpCYPV
+	 gPjkxOA0Ph3/XYids9SJDAmnsffiVEJXgSAo1J+mPqNIX2nEaZXcsAuDSUDTGWO2gh7a4e6E9aKK
+	 uEepeQ
+X-QQ-XMRINFO: Nq+8W0+stu50tPAe92KXseR0ZZmBTk3gLg==
+From: Edward Adam Davis <eadavis@qq.com>
+To: sashal@kernel.org
+Cc: dave.kleikamp@oracle.com,
+	eadavis@qq.com,
+	jfs-discussion@lists.sourceforge.net,
 	linux-kernel@vger.kernel.org,
+	patches@lists.linux.dev,
+	shaggy@kernel.org,
 	stable@vger.kernel.org,
-	Shitalkumar Gandhi <shitalkumar.gandhi@cambiumnetworks.com>
-Subject: [PATCH] serial: fsl_lpuart: fix rx buffer and DMA map leaks in start_rx_dma
-Date: Mon, 20 Apr 2026 19:29:03 +0530
-Message-Id: <20260420135903.2062024-1-shitalkumar.gandhi@cambiumnetworks.com>
-X-Mailer: git-send-email 2.25.1
+	syzbot+1d38eedcb25a3b5686a7@syzkaller.appspotmail.com
+Subject: Re: [PATCH AUTOSEL 7.0-5.10] jfs: Set the lbmDone flag at the end of lbmIODone
+Date: Mon, 20 Apr 2026 22:10:15 +0800
+X-OQ-MSGID: <20260420141014.543625-2-eadavis@qq.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260420131539.986432-26-sashal@kernel.org>
+References: <20260420131539.986432-26-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -99,119 +85,93 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[qq.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[qq.com:s=s201512];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_FROM(0.00)[bounces-239231-lists,stable=lfdr.de];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[oracle.com,qq.com,lists.sourceforge.net,vger.kernel.org,lists.linux.dev,kernel.org,syzkaller.appspotmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239232-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[qq.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FREEMAIL_FROM(0.00)[qq.com];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[eadavis@qq.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[shitalgandhi45@gmail.com,stable@vger.kernel.org];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_FIVE(0.00)[5];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4B42942FBB4
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,1d38eedcb25a3b5686a7];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: DBD8C42DC1D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-lpuart_start_rx_dma() allocates sport->rx_ring.buf with kzalloc() and
-then maps a scatterlist via dma_map_sg().  On three subsequent error
-paths the function returns directly without releasing those resources:
+On Mon, 20 Apr 2026 09:08:12 -0400, Sasha Levin wrote:
+> From: Edward Adam Davis <eadavis@qq.com>
+> 
+> [ Upstream commit b15e4310633f90072d66cc9b6692acbf6b4d7d00 ]
+> 
+> In lbmRead(), the I/O event waited for by wait_event() finishes before
+> it goes to sleep, and the lbmIODone() prematurely sets the flag to
+> lbmDONE, thus ending the wait. This causes wait_event() to return before
+> lbmREAD is cleared (because lbmDONE was set first), the premature return
+> of wait_event() leads to the release of lbuf before lbmIODone() returns,
+> thus triggering the use-after-free vulnerability reported in [1].
+> 
+> Moving the operation of setting the lbmDONE flag to after clearing lbmREAD
+> in lbmIODone() avoids the use-after-free vulnerability reported in [1].
+> 
+> [1]
+> BUG: KASAN: slab-use-after-free in rt_spin_lock+0x88/0x3e0 kernel/locking/spinlock_rt.c:56
+> Call Trace:
+>  blk_update_request+0x57e/0xe60 block/blk-mq.c:1007
+>  blk_mq_end_request+0x3e/0x70 block/blk-mq.c:1169
+>  blk_complete_reqs block/blk-mq.c:1244 [inline]
+>  blk_done_softirq+0x10a/0x160 block/blk-mq.c:1249
+> 
+> Allocated by task 6101:
+>  lbmLogInit fs/jfs/jfs_logmgr.c:1821 [inline]
+>  lmLogInit+0x3d0/0x19e0 fs/jfs/jfs_logmgr.c:1269
+>  open_inline_log fs/jfs/jfs_logmgr.c:1175 [inline]
+>  lmLogOpen+0x4e1/0xfa0 fs/jfs/jfs_logmgr.c:1069
+>  jfs_mount_rw+0xe9/0x670 fs/jfs/jfs_mount.c:257
+>  jfs_fill_super+0x754/0xd80 fs/jfs/super.c:532
+> 
+> Freed by task 6101:
+>  kfree+0x1bd/0x900 mm/slub.c:6876
+>  lbmLogShutdown fs/jfs/jfs_logmgr.c:1864 [inline]
+>  lmLogInit+0x1137/0x19e0 fs/jfs/jfs_logmgr.c:1415
+>  open_inline_log fs/jfs/jfs_logmgr.c:1175 [inline]
+>  lmLogOpen+0x4e1/0xfa0 fs/jfs/jfs_logmgr.c:1069
+>  jfs_mount_rw+0xe9/0x670 fs/jfs/jfs_mount.c:257
+>  jfs_fill_super+0x754/0xd80 fs/jfs/super.c:532
+> 
+> Reported-by: syzbot+1d38eedcb25a3b5686a7@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=1d38eedcb25a3b5686a7
+> Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+> Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+> 
+> LLM Generated explanations, may be completely bogus:
+> 
+> Now I have all the information needed to complete the full analysis. Let
+> me compile the results.
+I fixed this issue a couple of days ago. Please see:
+https://lore.kernel.org/all/tencent_3AEEC18CAA27D286CE92DAC674C9B02EEC06@qq.com
 
-  - when dma_map_sg() returns 0 (-EINVAL):
-      ring->buf is leaked.
-  - when dmaengine_slave_config() fails:
-      ring->buf and the DMA mapping are leaked.
-  - when dmaengine_prep_dma_cyclic() returns NULL:
-      ring->buf and the DMA mapping are leaked.
-
-The sole cleanup path, lpuart_dma_rx_free(), is only reached when
-lpuart_dma_rx_use is set, and the caller lpuart_rx_dma_startup() clears
-that flag on failure of lpuart_start_rx_dma().  So these resources are
-permanently leaked on every failure in this function.  Repeated port
-open/close or termios changes under error conditions will slowly consume
-memory and leave stale streaming DMA mappings behind.
-
-Fix it by introducing two error labels that unmap the scatterlist and
-free the ring buffer as appropriate.  While here, replace the misleading
--EFAULT (bad userspace pointer) returned when dmaengine_prep_dma_cyclic()
-fails with the more accurate -ENOMEM, matching how other dmaengine users
-in the tree treat this failure.
-
-No functional change on the success path.
-
-Fixes: 5887ad43ee02 ("tty: serial: fsl_lpuart: Use cyclic DMA for Rx")
-Cc: stable@vger.kernel.org
-
-Signed-off-by: Shitalkumar Gandhi <shitalkumar.gandhi@cambiumnetworks.com>
----
- drivers/tty/serial/fsl_lpuart.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/tty/serial/fsl_lpuart.c b/drivers/tty/serial/fsl_lpuart.c
-index f36d50fe056f..296a096be351 100644
---- a/drivers/tty/serial/fsl_lpuart.c
-+++ b/drivers/tty/serial/fsl_lpuart.c
-@@ -1376,7 +1376,8 @@ static inline int lpuart_start_rx_dma(struct lpuart_port *sport)
- 
- 	if (!nent) {
- 		dev_err(sport->port.dev, "DMA Rx mapping error\n");
--		return -EINVAL;
-+		ret = -EINVAL;
-+		goto err_free_buf;
- 	}
- 
- 	dma_rx_sconfig.src_addr = lpuart_dma_datareg_addr(sport);
-@@ -1388,7 +1389,7 @@ static inline int lpuart_start_rx_dma(struct lpuart_port *sport)
- 	if (ret < 0) {
- 		dev_err(sport->port.dev,
- 				"DMA Rx slave config failed, err = %d\n", ret);
--		return ret;
-+		goto err_unmap_sg;
- 	}
- 
- 	sport->dma_rx_desc = dmaengine_prep_dma_cyclic(chan,
-@@ -1399,7 +1400,8 @@ static inline int lpuart_start_rx_dma(struct lpuart_port *sport)
- 				 DMA_PREP_INTERRUPT);
- 	if (!sport->dma_rx_desc) {
- 		dev_err(sport->port.dev, "Cannot prepare cyclic DMA\n");
--		return -EFAULT;
-+		ret = -ENOMEM;
-+		goto err_unmap_sg;
- 	}
- 
- 	sport->dma_rx_desc->callback = lpuart_dma_rx_complete;
-@@ -1423,6 +1425,13 @@ static inline int lpuart_start_rx_dma(struct lpuart_port *sport)
- 	}
- 
- 	return 0;
-+
-+err_unmap_sg:
-+	dma_unmap_sg(chan->device->dev, &sport->rx_sgl, 1, DMA_FROM_DEVICE);
-+err_free_buf:
-+	kfree(ring->buf);
-+	ring->buf = NULL;
-+	return ret;
- }
- 
- static void lpuart_dma_rx_free(struct uart_port *port)
--- 
-2.25.1
+Edward
+BR
 
 
