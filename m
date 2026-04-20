@@ -1,70 +1,72 @@
-Return-Path: <stable+bounces-239337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239545-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MDpHHAli5mmavgEAu9opvQ
-	(envelope-from <stable+bounces-239337-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:27:37 +0200
+	id yLM/Joll5mkKvwEAu9opvQ
+	(envelope-from <stable+bounces-239545-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:42:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6A0A4313DE
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:27:36 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29D99431DE0
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:42:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 97EC9377E6ED
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:46:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 43C833152C1E
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:55:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED3C8334C39;
-	Mon, 20 Apr 2026 15:46:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D666C3385B6;
+	Mon, 20 Apr 2026 15:55:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kn1Ih9e+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I5zH4Jip"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B08272D978C;
-	Mon, 20 Apr 2026 15:46:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86FBF3368AF;
+	Mon, 20 Apr 2026 15:55:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776699988; cv=none; b=YEg0bJKEgDETSgIr2wg2hwo+FSDxPlF+im80HpiLXrM0+M2eA1vaRA+GOvY4Org3VQsh9zeOqgFzCCjukeGqU/BGs9MiFCPh7EqOBavMCXY2gvf2a/E0Vj24+BNgBP2x0LFuwqImGv2h0rC0MkjZXhBkeid8BkBdMnntO/IJJjY=
+	t=1776700527; cv=none; b=VP+tEbNemkB2fnOJ4euF9iOT6xmKJ9EINGiqlXnoJOIuBkmacx9YLA+iy+uX60ZLHV2EIWKv4CJW4N8HsPS03j+zU4zZSFI4L+6Y/OX/4x6KFIjMqSXEFKM2OHA1om+4jUvTyGdAJfoVlPILs1RWlaQfYBYzj7ELKvRi/0P0/zM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776699988; c=relaxed/simple;
-	bh=A89L311zH7DnX1WSmLelxE1qDt69zWhKLfj/47iC81E=;
+	s=arc-20240116; t=1776700527; c=relaxed/simple;
+	bh=i3Y5L8cLOr8AogPWRIhzyIxtkAkK+Hpsm07x3aS/5xs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L9xBbBSAs9p7W/iHd7WlZGybDmvdNSBcfrfhYd9JIT9n2V736jK6rYax+kUF4YSAFL6AJEqMtvpeBkMoAKcHhLhqgJsPSJfx0LjVYFIYOid76KUy2dHOzhesE4jStj6WkB+FvSgO2mU9SmU+HmBHrlttfn8gYKH1zo6ST+6ASeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kn1Ih9e+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9FC6C19425;
-	Mon, 20 Apr 2026 15:46:27 +0000 (UTC)
+	 MIME-Version; b=RzgPkEW2ZufgU1l3DOqfq8E98IcDHmCW3hHQWqXmg0eYLTgyMVavZDNzvKjPNQAeToiL+BK7qFVW6y8IUvFqlQzOMHu5vkI5gPlXtS5PltVrimzvyJYtzt9UVCpY7jI3c/xv66nidgCPvCELlMtpOKyOpfeXEd6fRJtqtGayjS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I5zH4Jip; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1F7BC19425;
+	Mon, 20 Apr 2026 15:55:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776699988;
-	bh=A89L311zH7DnX1WSmLelxE1qDt69zWhKLfj/47iC81E=;
+	s=korg; t=1776700527;
+	bh=i3Y5L8cLOr8AogPWRIhzyIxtkAkK+Hpsm07x3aS/5xs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kn1Ih9e+ySOM4q5eysj+tzBC89y5BntSTNjNB3WXeBF9nC28gw+Bxbswu0k9I0ak5
-	 XNaJvYiSeNtLyB1QRLb8pKqc5mJ9z+8AwI2YwUSOrgChh0rJK4yK0WStLgI1c+mQd6
-	 tmqWXwUTjN4qBC0eK3OA1lFZFYgyllORqgJ3fK1E=
+	b=I5zH4JipVcnmTKpe4okvvhrXIjNPUtmJdWVAeA3CbY1pxYq96I84cx1/Wsi19tN4S
+	 e1d+Ux3+5g39pwHHsix0LgdJ3+DFvEOCmzKLm7lBAMGNYidxdEmUYjihS3JW5qWrLr
+	 g9yyZDE+A0168A6aVDGQFurP3RE2KQQrcP8g8SjU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jianhui Zhou <jianhuizzzzz@gmail.com>,
-	syzbot+f525fd79634858f478e7@syzkaller.appspotmail.com,
-	SeongJae Park <sj@kernel.org>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	Jane Chu <jane.chu@oracle.com>,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	Hugh Dickins <hughd@google.com>,
-	JonasZhou <JonasZhou@zhaoxin.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Peter Xu <peterx@redhat.com>,
-	Sidhartha Kumar <sidhartha.kumar@oracle.com>,
+	Breno Leitao <leitao@debian.org>,
+	Dennis Zhou <dennis@kernel.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Josef Bacik <josef@toxicpanda.com>,
+	JP Kobryn <inwardvessel@gmail.com>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Tejun Heo <tj@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 7.0 76/76] mm/userfaultfd: fix hugetlb fault mutex hash calculation
+Subject: [PATCH 6.19 206/220] mm: blk-cgroup: fix use-after-free in cgwb_release_workfn()
 Date: Mon, 20 Apr 2026 17:42:27 +0200
-Message-ID: <20260420153913.582050056@linuxfoundation.org>
+Message-ID: <20260420153941.445086853@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153910.810034134@linuxfoundation.org>
-References: <20260420153910.810034134@linuxfoundation.org>
+In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
+References: <20260420153934.013228280@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,122 +77,124 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	TAGGED_FROM(0.00)[bounces-239337-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,syzkaller.appspotmail.com,kernel.org,oracle.com,redhat.com,google.com,zhaoxin.com,linux.dev,suse.de,linux-foundation.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239545-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,debian.org,kernel.org,linux.dev,kernel.dk,cmpxchg.org,toxicpanda.com,gmail.com,oracle.com,suse.com,google.com,linux-foundation.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable,f525fd79634858f478e7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,appspotmail.com:email,linux.dev:email,linux-foundation.org:email,oracle.com:email,syzkaller.appspot.com:url,suse.de:email,zhaoxin.com:email]
-X-Rspamd-Queue-Id: D6A0A4313DE
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel.dk:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,oracle.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:email,suse.com:email,toxicpanda.com:email,cmpxchg.org:email]
+X-Rspamd-Queue-Id: 29D99431DE0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jianhui Zhou <jianhuizzzzz@gmail.com>
+From: Breno Leitao <leitao@debian.org>
 
-commit 0217c7fb4de4a40cee667eb21901f3204effe5ac upstream.
+commit 8f5857be99f1ed1fa80991c72449541f634626ee upstream.
 
-In mfill_atomic_hugetlb(), linear_page_index() is used to calculate the
-page index for hugetlb_fault_mutex_hash().  However, linear_page_index()
-returns the index in PAGE_SIZE units, while hugetlb_fault_mutex_hash()
-expects the index in huge page units.  This mismatch means that different
-addresses within the same huge page can produce different hash values,
-leading to the use of different mutexes for the same huge page.  This can
-cause races between faulting threads, which can corrupt the reservation
-map and trigger the BUG_ON in resv_map_release().
+cgwb_release_workfn() calls css_put(wb->blkcg_css) and then later accesses
+wb->blkcg_css again via blkcg_unpin_online().  If css_put() drops the last
+reference, the blkcg can be freed asynchronously (css_free_rwork_fn ->
+blkcg_css_free -> kfree) before blkcg_unpin_online() dereferences the
+pointer to access blkcg->online_pin, resulting in a use-after-free:
 
-Fix this by introducing hugetlb_linear_page_index(), which returns the
-page index in huge page granularity, and using it in place of
-linear_page_index().
+  BUG: KASAN: slab-use-after-free in blkcg_unpin_online (./include/linux/instrumented.h:112 ./include/linux/atomic/atomic-instrumented.h:400 ./include/linux/refcount.h:389 ./include/linux/refcount.h:432 ./include/linux/refcount.h:450 block/blk-cgroup.c:1367)
+  Write of size 4 at addr ff11000117aa6160 by task kworker/71:1/531
+   Workqueue: cgwb_release cgwb_release_workfn
+   Call Trace:
+    <TASK>
+     blkcg_unpin_online (./include/linux/instrumented.h:112 ./include/linux/atomic/atomic-instrumented.h:400 ./include/linux/refcount.h:389 ./include/linux/refcount.h:432 ./include/linux/refcount.h:450 block/blk-cgroup.c:1367)
+     cgwb_release_workfn (mm/backing-dev.c:629)
+     process_scheduled_works (kernel/workqueue.c:3278 kernel/workqueue.c:3385)
 
-Link: https://lkml.kernel.org/r/20260310110526.335749-1-jianhuizzzzz@gmail.com
-Fixes: a08c7193e4f1 ("mm/filemap: remove hugetlb special casing in filemap.c")
-Signed-off-by: Jianhui Zhou <jianhuizzzzz@gmail.com>
-Reported-by: syzbot+f525fd79634858f478e7@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=f525fd79634858f478e7
-Acked-by: SeongJae Park <sj@kernel.org>
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Cc: Jane Chu <jane.chu@oracle.com>
-Cc: Andrea Arcangeli <aarcange@redhat.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: JonasZhou <JonasZhou@zhaoxin.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: SeongJae Park <sj@kernel.org>
-Cc: Sidhartha Kumar <sidhartha.kumar@oracle.com>
+   Freed by task 1016:
+    kfree (./include/linux/kasan.h:235 mm/slub.c:2689 mm/slub.c:6246 mm/slub.c:6561)
+    css_free_rwork_fn (kernel/cgroup/cgroup.c:5542)
+    process_scheduled_works (kernel/workqueue.c:3302 kernel/workqueue.c:3385)
+
+** Stack based on commit 66672af7a095 ("Add linux-next specific files
+for 20260410")
+
+I am seeing this crash sporadically in Meta fleet across multiple kernel
+versions.  A full reproducer is available at:
+https://github.com/leitao/debug/blob/main/reproducers/repro_blkcg_uaf.sh
+
+(The race window is narrow.  To make it easily reproducible, inject a
+msleep(100) between css_put() and blkcg_unpin_online() in
+cgwb_release_workfn().  With that delay and a KASAN-enabled kernel, the
+reproducer triggers the splat reliably in less than a second.)
+
+Fix this by moving blkcg_unpin_online() before css_put(), so the
+cgwb's CSS reference keeps the blkcg alive while blkcg_unpin_online()
+accesses it.
+
+Link: https://lore.kernel.org/20260413-blkcg-v1-1-35b72622d16c@debian.org
+Fixes: 59b57717fff8 ("blkcg: delay blkg destruction until after writeback has finished")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Dennis Zhou <dennis@kernel.org>
+Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Josef Bacik <josef@toxicpanda.com>
+Cc: JP Kobryn <inwardvessel@gmail.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Cc: Martin KaFai Lau <martin.lau@linux.dev>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Tejun Heo <tj@kernel.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/hugetlb.h |   17 +++++++++++++++++
- mm/userfaultfd.c        |    2 +-
- 2 files changed, 18 insertions(+), 1 deletion(-)
+ mm/backing-dev.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -796,6 +796,23 @@ static inline unsigned huge_page_shift(s
- 	return h->order + PAGE_SHIFT;
- }
+--- a/mm/backing-dev.c
++++ b/mm/backing-dev.c
+@@ -618,12 +618,13 @@ static void cgwb_release_workfn(struct w
+ 	wb_shutdown(wb);
  
-+/**
-+ * hugetlb_linear_page_index() - linear_page_index() but in hugetlb
-+ *				 page size granularity.
-+ * @vma: the hugetlb VMA
-+ * @address: the virtual address within the VMA
-+ *
-+ * Return: the page offset within the mapping in huge page units.
-+ */
-+static inline pgoff_t hugetlb_linear_page_index(struct vm_area_struct *vma,
-+		unsigned long address)
-+{
-+	struct hstate *h = hstate_vma(vma);
+ 	css_put(wb->memcg_css);
+-	css_put(wb->blkcg_css);
+-	mutex_unlock(&wb->bdi->cgwb_release_mutex);
+ 
+ 	/* triggers blkg destruction if no online users left */
+ 	blkcg_unpin_online(wb->blkcg_css);
+ 
++	css_put(wb->blkcg_css);
++	mutex_unlock(&wb->bdi->cgwb_release_mutex);
 +
-+	return ((address - vma->vm_start) >> huge_page_shift(h)) +
-+		(vma->vm_pgoff >> huge_page_order(h));
-+}
-+
- static inline bool order_is_gigantic(unsigned int order)
- {
- 	return order > MAX_PAGE_ORDER;
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -573,7 +573,7 @@ retry:
- 		 * in the case of shared pmds.  fault mutex prevents
- 		 * races with other faulting threads.
- 		 */
--		idx = linear_page_index(dst_vma, dst_addr);
-+		idx = hugetlb_linear_page_index(dst_vma, dst_addr);
- 		mapping = dst_vma->vm_file->f_mapping;
- 		hash = hugetlb_fault_mutex_hash(mapping, idx);
- 		mutex_lock(&hugetlb_fault_mutex_table[hash]);
+ 	fprop_local_destroy_percpu(&wb->memcg_completions);
+ 
+ 	spin_lock_irq(&cgwb_lock);
 
 
 
