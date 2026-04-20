@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-239506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239839-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MBUgJ21h5mmavgEAu9opvQ
-	(envelope-from <stable+bounces-239506-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:25:01 +0200
+	id EO/AErVb5mkwvQEAu9opvQ
+	(envelope-from <stable+bounces-239839-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:00:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F44C431230
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:25:00 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D3634305D2
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:00:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D6D66323039C
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:53:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8061530DC56A
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:09:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 436CF33858B;
-	Mon, 20 Apr 2026 15:53:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54DD734107F;
+	Mon, 20 Apr 2026 16:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tPdAlXxz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q+TokAfd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED0C02D77E5;
-	Mon, 20 Apr 2026 15:53:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 181802DE6E3;
+	Mon, 20 Apr 2026 16:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700428; cv=none; b=G3r7ompZt2YIl5HA/CzjZRLVOYvkNzRztx1GwfwdriIj+8kVcWQ2BeRBrpmWfhJDdvjX14ARD0GBnqC7bD3pPYd25s3N0Wti4CsyoHqgr7zsCfuRq1LdKwrJOCquENkBW6R/pq1uFW3nrcGTKBq+avWhl844wmOM1/+OWWERvjk=
+	t=1776701348; cv=none; b=ifaqtGHOFwhSBUhXG5RvbSoL9mBOAENiZgjx3wE7QjW8nVxjhKmmfHnNUZOS75fOiOIziHwvVuLepDyWj3fMXTUVN+cCBbFujBHFrwieE3gUllBpEu56ef9BGKvY6B+XFdE5Cp5xMSen9/1eeg9xwdcAFN7EsRrPNQ3dWxS00m8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700428; c=relaxed/simple;
-	bh=OiRWUVvI/t7S2UerChIavVeeua2pfb3BgMKwMdFz+ZU=;
+	s=arc-20240116; t=1776701348; c=relaxed/simple;
+	bh=0PkRXxQZyLIUVTnpt2JpI2w7oDPdEfyK03O3vrb59EA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=byzpheLJsOlSPCSPdlY07XJC3j4XGlUjWI5yhZbILjQOLl/Knu9/BGs6ETpG9t3a+zDUNGUHYs2OD/fUSjPDfswzbwRvIxzFzzofCN8+BE8RioegnpF2FaOLWut63w8UoSh8I23Ji5SQ0ilRrNm9/b06VE/5cE+t3BOARf62SMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tPdAlXxz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85853C19425;
-	Mon, 20 Apr 2026 15:53:47 +0000 (UTC)
+	 MIME-Version; b=ua4RwAnR/FzhfALqrjYck10en2lnUaeHmglTOR96+72MvZKQIqaPqwNx/pm/9dO1f0DPsuJPOuJ4Mbu35gAxx2s4HtMkAKPH9BN74aJFxe0M/LL25/Qo0ziSKIlhLn65cJhlU2dn1RSzFUm7bM4/wTmJ83anDC1olYVUSWjyVto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q+TokAfd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2A25C19425;
+	Mon, 20 Apr 2026 16:09:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700427;
-	bh=OiRWUVvI/t7S2UerChIavVeeua2pfb3BgMKwMdFz+ZU=;
+	s=korg; t=1776701348;
+	bh=0PkRXxQZyLIUVTnpt2JpI2w7oDPdEfyK03O3vrb59EA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tPdAlXxzAildlUiR04gf4qH3K826uj9Frvf0+o7ZSn1zgQu4KQkob8UMuhgWeqt3D
-	 lr4PjzIRwDYX6l64Kuyrd7jEKc7goL55N/W/ZyavoSCGy948Zgl5t4qEkin27d8zf+
-	 LzcdjfEsaSHGJ9Y70FOXksCBlYNq9AbIGKsc3Ah8=
+	b=q+TokAfdyH5uNU55HvKVSAR5GHLHvZWjalsFyIuU18PXuft76GY3+zZz97OviRfWc
+	 MXSrp1NV76cvTJrk2O8Bv3gSaa4/gwfPSk7qgsxTvmhOglMYORlF9Y3jleI6dNFn2n
+	 qc2jhOND3f+RueX1OxKLY0t4yJ/AAOQw1l3VW7Yw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Xu Yang <xu.yang_2@nxp.com>
-Subject: [PATCH 6.19 168/220] usb: port: add delay after usb_hub_set_port_power()
+	Alexander Koskovich <akoskovich@pm.me>,
+	Luca Weiss <luca.weiss@fairphone.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 077/162] net: ipa: fix GENERIC_CMD register field masks for IPA v5.0+
 Date: Mon, 20 Apr 2026 17:41:49 +0200
-Message-ID: <20260420153940.076873836@linuxfoundation.org>
+Message-ID: <20260420153929.826085736@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
-References: <20260420153934.013228280@linuxfoundation.org>
+In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
+References: <20260420153927.006696811@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,95 +70,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239839-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-239506-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,nxp.com:email]
-X-Rspamd-Queue-Id: 9F44C431230
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,pm.me:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9D3634305D2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Alexander Koskovich <akoskovich@pm.me>
 
-commit b84cc80610a8ce036deb987f056ce3196ead7f1e upstream.
+[ Upstream commit 9709b56d908acc120fe8b4ae250b3c9d749ea832 ]
 
-When a port is disabled, an attached device will be disconnected.  This
-causes a port-status-change event, which will race with hub autosuspend
-(if the disabled port was the only connected port on its hub), causing
-an immediate resume and a second autosuspend.  Both of these can be
-avoided by adding a short delay after the call to
-usb_hub_set_port_power().
+Fix the field masks to match the hardware layout documented in
+downstream GSI (GSI_V3_0_EE_n_GSI_EE_GENERIC_CMD_*).
 
-Below log shows what is happening:
+Notably this fixes a WARN I was seeing when I tried to send "stop"
+to the MPSS remoteproc while IPA was up.
 
-$ echo 1 > usb1-port1/disable
-[   37.958239] usb 1-1: USB disconnect, device number 2
-[   37.964101] usb 1-1: unregistering device
-[   37.970070] hub 1-0:1.0: hub_suspend
-[   37.971305] hub 1-0:1.0: state 7 ports 1 chg 0000 evt 0002
-[   37.974412] usb usb1: bus auto-suspend, wakeup 1
-[   37.988175] usb usb1: suspend raced with wakeup event         <---
-[   37.993947] usb usb1: usb auto-resume
-[   37.998401] hub 1-0:1.0: hub_resume
-[   38.105688] usb usb1-port1: status 0000, change 0000, 12 Mb/s
-[   38.112399] hub 1-0:1.0: state 7 ports 1 chg 0000 evt 0000
-[   38.118645] hub 1-0:1.0: hub_suspend
-[   38.122963] usb usb1: bus auto-suspend, wakeup 1
-[   38.200368] usb usb1: usb wakeup-resume
-[   38.204982] usb usb1: usb auto-resume
-[   38.209376] hub 1-0:1.0: hub_resume
-[   38.213676] usb usb1-port1: status 0101 change 0001
-[   38.321552] hub 1-0:1.0: state 7 ports 1 chg 0002 evt 0000
-[   38.327978] usb usb1-port1: status 0101, change 0000, 12 Mb/s
-[   38.457429] usb 1-1: new high-speed USB device number 3 using ci_hdrc
-
-Then, port change bit will be fixed to the final state and
-usb_clear_port_feature() can correctly clear it after this period. This
-will also avoid usb runtime suspend routine to run because
-usb_autopm_put_interface() not run yet.
-
-Fixes: f061f43d7418 ("usb: hub: port: add sysfs entry to switch port power")
-Cc: stable@kernel.org
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Link: https://patch.msgid.link/20260316095042.1559882-1-xu.yang_2@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: faf0678ec8a0 ("net: ipa: add IPA v5.0 GSI register definitions")
+Signed-off-by: Alexander Koskovich <akoskovich@pm.me>
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260403-milos-ipa-v1-1-01e9e4e03d3e@fairphone.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/port.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ipa/reg/gsi_reg-v5.0.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/core/port.c
-+++ b/drivers/usb/core/port.c
-@@ -141,6 +141,7 @@ static ssize_t disable_store(struct devi
- 		usb_disconnect(&port_dev->child);
+diff --git a/drivers/net/ipa/reg/gsi_reg-v5.0.c b/drivers/net/ipa/reg/gsi_reg-v5.0.c
+index 36d1e65df71bb..3334d8e20ad28 100644
+--- a/drivers/net/ipa/reg/gsi_reg-v5.0.c
++++ b/drivers/net/ipa/reg/gsi_reg-v5.0.c
+@@ -156,9 +156,10 @@ REG_FIELDS(EV_CH_CMD, ev_ch_cmd, 0x00025010 + 0x12000 * GSI_EE_AP);
  
- 	rc = usb_hub_set_port_power(hdev, hub, port1, !disabled);
-+	msleep(2 * hub_power_on_good_delay(hub));
+ static const u32 reg_generic_cmd_fmask[] = {
+ 	[GENERIC_OPCODE]				= GENMASK(4, 0),
+-	[GENERIC_CHID]					= GENMASK(9, 5),
+-	[GENERIC_EE]					= GENMASK(13, 10),
+-						/* Bits 14-31 reserved */
++	[GENERIC_CHID]					= GENMASK(12, 5),
++	[GENERIC_EE]					= GENMASK(16, 13),
++						/* Bits 17-23 reserved */
++	[GENERIC_PARAMS]				= GENMASK(31, 24),
+ };
  
- 	if (disabled) {
- 		usb_clear_port_feature(hdev, port1, USB_PORT_FEAT_C_CONNECTION);
+ REG_FIELDS(GENERIC_CMD, generic_cmd, 0x00025018 + 0x12000 * GSI_EE_AP);
+-- 
+2.53.0
+
 
 
 
