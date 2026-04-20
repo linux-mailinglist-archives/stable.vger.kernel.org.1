@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-239547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239731-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wHZQLcpN5mkgugEAu9opvQ
-	(envelope-from <stable+bounces-239547-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:01:14 +0200
+	id 0J1pFC9P5mkgugEAu9opvQ
+	(envelope-from <stable+bounces-239731-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:07:11 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4470A42ED64
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:01:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1396342F017
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:07:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2416F30066B0
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:55:34 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 55A7730306DB
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:04:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF7BE32E696;
-	Mon, 20 Apr 2026 15:55:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79C3733F8DC;
+	Mon, 20 Apr 2026 16:04:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MHwdK3CZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XM06AZ/z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 938333264F1;
-	Mon, 20 Apr 2026 15:55:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D62933F586;
+	Mon, 20 Apr 2026 16:04:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700532; cv=none; b=NZVtFxQ8o2dGzJYwoo8A0OC/qYY2fiX9BECirefF0IiV1Z3D+NDSIoIaXNH7ujWZ+1Tk49PlSUx6MwIhfd14QBxbemteawvxwu/fKynDADY2QiPDsdPQ3eMEorxrDcsu2miTNhFoALPbAPJX/FUAMHPZKkjosHFXTn/s6PZ0CmU=
+	t=1776701072; cv=none; b=IatcmhJz04hXafPcJUpkm6Ke6WxzH96+sheDjDshE2WFiLnH5N12O5JmsJ9opo8SOHHgKAtYnTwJiopCQK7rEAK+E+4LaWxojvf0b8ta4lZZMYFkEmpabUhwbPanba22CsUhy9wDJ4/Y++E3knKDLTUkWHJGISdQFqQG43Gu/FA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700532; c=relaxed/simple;
-	bh=dOX7H5Di7ECwRG591rJ0KMnynrN62GioZmaRXXBL7s4=;
+	s=arc-20240116; t=1776701072; c=relaxed/simple;
+	bh=mR3PhMMVDi/Z8slmmcUbR6dzFnTXLtjbGTj/xgyITSI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=liXqPH9c7YfcnuafWvP51i9yk3o50iuRF50opQW0v2gXt/mwiYMr7pPIjEukGl/+1IP6Dc5L1mvFCWiGvKpUy5hhAozBig6kWfNTKbl0NQMyTeLgK//XTn0PpKU+ALtDkWkWEo4BRp/SqFQ3KnDJJfB3+0DTArh3jWDWTsHftv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MHwdK3CZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A280C19425;
-	Mon, 20 Apr 2026 15:55:32 +0000 (UTC)
+	 MIME-Version; b=ss1gNDDP+3SZYwuUWzIWz2IEp+SA4kbtf2bcG6SuSdNnxW3xVrwHl/k9NfXCYbCt9xFyg3xUAMUAh2t6pChQtqyccpk8NvOfx7Fhqn571Uiym1HPi1kUDb/3+ptr5FlHOcthwjcSHqIwJX2Kptt2kPuI5Sr1nnZdVfqF0EPO934=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XM06AZ/z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA7E8C19425;
+	Mon, 20 Apr 2026 16:04:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700532;
-	bh=dOX7H5Di7ECwRG591rJ0KMnynrN62GioZmaRXXBL7s4=;
+	s=korg; t=1776701072;
+	bh=mR3PhMMVDi/Z8slmmcUbR6dzFnTXLtjbGTj/xgyITSI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MHwdK3CZ9CH+LkLalO8ewjdp4xWeLOuT+Kte2r2oRFL//Bpmaj9eA8vKIu55cJfFR
-	 A+xJmUTKkit28FstOvI9joIISK80U8GrM58A8c3IQsuckXaDTKCiAHVcCz+G/W6guM
-	 CaXHj279feRISjAJbumGm0auSD1xwrkwegxTc1wA=
+	b=XM06AZ/zxpJnQXnG26VWqkrI1ixcFHP1v2ENt32QEypSF41MDJMjZuUNKTJrhGkgw
+	 ntE6IPdU9qrOhFndHjhWW0XKyZKIzW5lwg2yXl35E4cPU5VBqlUmQWWbGxvUjIoWCz
+	 vnjkICp4cSfZZ1vi8WHsLcJshpAQpREl3FZUH+sM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fan Wu <fanwu01@zju.edu.cn>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.19 208/220] media: mediatek: vcodec: fix use-after-free in encoder release path
+	Liam Merwick <liam.merwick@oracle.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.18 170/198] KVM: SEV: Drop WARN on large size for KVM_MEMORY_ENCRYPT_REG_REGION
 Date: Mon, 20 Apr 2026 17:42:29 +0200
-Message-ID: <20260420153941.517573922@linuxfoundation.org>
+Message-ID: <20260420153941.731387160@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
-References: <20260420153934.013228280@linuxfoundation.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,144 +63,107 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [5.34 / 15.00];
-	SEM_URIBL(3.50)[zju.edu.cn:email];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
-	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-239547-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
 	RCVD_COUNT_THREE(0.00)[4];
-	GREYLIST(0.00)[pass,body];
-	TO_DN_SOME(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_SPAM(0.00)[0.948];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-239731-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable,cisco];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	R_SPF_ALLOW(0.00)[+ip6:2600:3c09:e001:a7::/64:c];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[collabora.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,zju.edu.cn:email]
-X-Rspamd-Queue-Id: 4470A42ED64
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,oracle.com:email]
+X-Rspamd-Queue-Id: 1396342F017
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fan Wu <fanwu01@zju.edu.cn>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 76e35091ffc722ba39b303e48bc5d08abb59dd56 upstream.
+commit 8acffeef5ef720c35e513e322ab08e32683f32f2 upstream.
 
-The fops_vcodec_release() function frees the context structure (ctx)
-without first cancelling any pending or running work in ctx->encode_work.
-This creates a race window where the workqueue handler (mtk_venc_worker)
-may still be accessing the context memory after it has been freed.
+Drop the WARN in sev_pin_memory() on npages overflowing an int, as the
+WARN is comically trivially to trigger from userspace, e.g. by doing:
 
-Race condition:
+  struct kvm_enc_region range = {
+          .addr = 0,
+          .size = -1ul,
+  };
 
-    CPU 0 (release path)               CPU 1 (workqueue)
-    ---------------------               ------------------
-    fops_vcodec_release()
-      v4l2_m2m_ctx_release()
-        v4l2_m2m_cancel_job()
-        // waits for m2m job "done"
-                                        mtk_venc_worker()
-                                          v4l2_m2m_job_finish()
-                                          // m2m job "done"
-                                          // BUT worker still running!
-                                          // post-job_finish access:
-                                        other ctx dereferences
-                                          // UAF if ctx already freed
-        // returns (job "done")
-      kfree(ctx)  // ctx freed
+  __vm_ioctl(vm, KVM_MEMORY_ENCRYPT_REG_REGION, &range);
 
-Root cause: The v4l2_m2m_ctx_release() only waits for the m2m job
-lifecycle (via TRANS_RUNNING flag), not the workqueue lifecycle.
-After v4l2_m2m_job_finish() is called, the m2m framework considers
-the job complete and v4l2_m2m_ctx_release() returns, but the worker
-function continues executing and may still access ctx.
+Note, the checks in sev_mem_enc_register_region() that presumably exist to
+verify the incoming address+size are completely worthless, as both "addr"
+and "size" are u64s and SEV is 64-bit only, i.e. they _can't_ be greater
+than ULONG_MAX.  That wart will be cleaned up in the near future.
 
-The work is queued during encode operations via:
-  queue_work(ctx->dev->encode_workqueue, &ctx->encode_work)
-The worker function accesses ctx->m2m_ctx, ctx->dev, and other ctx
-fields even after calling v4l2_m2m_job_finish().
+	if (range->addr > ULONG_MAX || range->size > ULONG_MAX)
+		return -EINVAL;
 
-This vulnerability was confirmed with KASAN by running an instrumented
-test module that widens the post-job_finish race window. KASAN detected:
+Opportunistically add a comment to explain why the code calculates the
+number of pages the "hard" way, e.g. instead of just shifting @ulen.
 
-  BUG: KASAN: slab-use-after-free in mtk_venc_worker+0x159/0x180
-  Read of size 4 at addr ffff88800326e000 by task kworker/u8:0/12
-
-  Workqueue: mtk_vcodec_enc_wq mtk_venc_worker
-
-  Allocated by task 47:
-    __kasan_kmalloc+0x7f/0x90
-    fops_vcodec_open+0x85/0x1a0
-
-  Freed by task 47:
-    __kasan_slab_free+0x43/0x70
-    kfree+0xee/0x3a0
-    fops_vcodec_release+0xb7/0x190
-
-Fix this by calling cancel_work_sync(&ctx->encode_work) before kfree(ctx).
-This ensures the workqueue handler is both cancelled (if pending) and
-synchronized (waits for any running handler to complete) before the
-context is freed.
-
-Placement rationale: The fix is placed after v4l2_ctrl_handler_free()
-and before list_del_init(&ctx->list). At this point, all m2m operations
-are done (v4l2_m2m_ctx_release() has returned), and we need to ensure
-the workqueue is synchronized before removing ctx from the list and
-freeing it.
-
-Note: The open error path does NOT need cancel_work_sync() because
-INIT_WORK() only initializes the work structure - it does not schedule
-it. Work is only scheduled later during device_run() operations.
-
-Fixes: 0934d3759615 ("media: mediatek: vcodec: separate decoder and encoder")
+Fixes: 78824fabc72e ("KVM: SVM: fix svn_pin_memory()'s use of get_user_pages_fast()")
 Cc: stable@vger.kernel.org
-Signed-off-by: Fan Wu <fanwu01@zju.edu.cn>
-Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Reviewed-by: Liam Merwick <liam.merwick@oracle.com>
+Tested-by: Liam Merwick <liam.merwick@oracle.com>
+Link: https://patch.msgid.link/20260313003302.3136111-2-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_drv.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ arch/x86/kvm/svm/sev.c |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
---- a/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_drv.c
-+++ b/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_drv.c
-@@ -215,6 +215,15 @@ static int fops_vcodec_release(struct fi
- 	v4l2_fh_exit(&ctx->fh);
- 	v4l2_ctrl_handler_free(&ctx->ctrl_hdl);
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -679,10 +679,16 @@ static struct page **sev_pin_memory(stru
+ 	if (ulen == 0 || uaddr + ulen < uaddr)
+ 		return ERR_PTR(-EINVAL);
  
+-	/* Calculate number of pages. */
 +	/*
-+	 * Cancel any pending encode work before freeing the context.
-+	 * Although v4l2_m2m_ctx_release() waits for m2m job completion,
-+	 * the workqueue handler (mtk_venc_worker) may still be accessing
-+	 * the context after v4l2_m2m_job_finish() returns. Without this,
-+	 * a use-after-free occurs when the worker accesses ctx after kfree.
++	 * Calculate the number of pages that need to be pinned to cover the
++	 * entire range.  Note!  This isn't simply ulen >> PAGE_SHIFT, as KVM
++	 * doesn't require the incoming address+size to be page aligned!
 +	 */
-+	cancel_work_sync(&ctx->encode_work);
-+
- 	spin_lock_irqsave(&dev->dev_ctx_lock, flags);
- 	list_del_init(&ctx->list);
- 	spin_unlock_irqrestore(&dev->dev_ctx_lock, flags);
+ 	first = (uaddr & PAGE_MASK) >> PAGE_SHIFT;
+ 	last = ((uaddr + ulen - 1) & PAGE_MASK) >> PAGE_SHIFT;
+ 	npages = (last - first + 1);
++	if (npages > INT_MAX)
++		return ERR_PTR(-EINVAL);
+ 
+ 	locked = sev->pages_locked + npages;
+ 	lock_limit = rlimit(RLIMIT_MEMLOCK) >> PAGE_SHIFT;
+@@ -691,9 +697,6 @@ static struct page **sev_pin_memory(stru
+ 		return ERR_PTR(-ENOMEM);
+ 	}
+ 
+-	if (WARN_ON_ONCE(npages > INT_MAX))
+-		return ERR_PTR(-EINVAL);
+-
+ 	/* Avoid using vmalloc for smaller buffers. */
+ 	size = npages * sizeof(struct page *);
+ 	if (size > PAGE_SIZE)
 
 
 
