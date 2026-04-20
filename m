@@ -1,158 +1,109 @@
-Return-Path: <stable+bounces-239166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238878-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ICnAI7pB5mlutgEAu9opvQ
-	(envelope-from <stable+bounces-239166-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 17:09:46 +0200
+	id YKVxOOIs5mliswEAu9opvQ
+	(envelope-from <stable+bounces-238878-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:40:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5231F42DDD0
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 17:09:46 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DC8142C221
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:40:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4D47F33D7C40
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 14:28:41 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E71CE30AFC44
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 13:32:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38EA249219E;
-	Mon, 20 Apr 2026 13:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73F173ACA5E;
+	Mon, 20 Apr 2026 13:21:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M40yHFyQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aXsOwA3N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E31D049218D;
-	Mon, 20 Apr 2026 13:32:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 376233ACA59;
+	Mon, 20 Apr 2026 13:21:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776691935; cv=none; b=LGc8dJJWAYbTZte5Cmm4cL5OClhQx5edGMkeKfcoBoVHZmvYcZX4U9S0HRyVKrnTzFsOmHr1f7BjEdZH6sHDeRnHA+Oaup8v4xCYoS7b2oza4eLrv4Mdn/L4eloRlw9e/gGl7wWHC8VVw153+jwnORcHDc6xm74iS6Iyxn/sbms=
+	t=1776691291; cv=none; b=Qnk44twFBoiJELdZoxo/5TvCzvd1iLNlGTC8WLYOWTi6Ygdfi+wlqNGa2wcvob77joZtXaPwh+UpJNYOnjFA13nOm+zxVNr4Q3cvGndVeeC2kRw4sL4gvdcvMOh/dXRsiVzOdg5vHzexqIXroTlL6b/HVcgIdwjHUwUUOnB8RY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776691935; c=relaxed/simple;
-	bh=zH+XapoQ+nsRLPDH7ug+1YBImNv/ttzA7g3bA3wdVXg=;
+	s=arc-20240116; t=1776691291; c=relaxed/simple;
+	bh=8LZ5bl+knt2OcJdfZuerLEqSkIkxSxyCfsrCyXvC3pA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cix9YX+WgpfgynHNFH6G+tUE0rooVtiX42JGfnPELqs9lxU1gSCe1Hwz5c5YXUD4aRoYBJ+Ubq4X6BOcfqiWBKlagYmcd0afEjVdIsrA1852cRTHfvbOAJm4uCFQocH/VicD5CBlmNG/HHjtqwhF3gvZ63LnzSlJNf3/8+TCSC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M40yHFyQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C6AFC2BCB4;
-	Mon, 20 Apr 2026 13:32:12 +0000 (UTC)
+	 MIME-Version; b=D762nLzCGXtcgEX5U/cXScp1NhrcTInItfpgzlK2aPjOmkrqgb481AZHGgXU9ugMpwgZ2cvm8GKk1Wo7kdiSWtmwnKiwA3kRbmccRoPNdcFo7tdR6mWJqYf1E2CRVKU/uLchJ8WxoCifFHGX7y64IIZjd2xeDIZM6G6Xt9EETy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aXsOwA3N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DB0AC2BCB4;
+	Mon, 20 Apr 2026 13:21:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776691934;
-	bh=zH+XapoQ+nsRLPDH7ug+1YBImNv/ttzA7g3bA3wdVXg=;
+	s=k20201202; t=1776691291;
+	bh=8LZ5bl+knt2OcJdfZuerLEqSkIkxSxyCfsrCyXvC3pA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M40yHFyQI87rxlDZKUpoU8845PCaKcK2q/DH1XQHMbUeF6s924G5mzAsvuJfA5JlK
-	 lllmCmWVHdMwn1T/P8oPqZQo73gcMdOQNpBCjlGAsTCBIU6WJRYwGzYfxtj1Aby71K
-	 8OslIPH4fA0qBHv5h3jhtbC/0z0vveJgBleb/5hqwUSTYRrhRQSccfXFKTJJFMuZK4
-	 TkhF7D2mv750ZSxVROcRtE+8RHRMNiURasKWXQjtCkHftUgUlmiKWhMNG3n6jDgBkk
-	 7+hdSjBoiEfAlafEoIfM4aTALq60BdTnHBhcqG7DwPtO6EUdfwyKmFX1ksN1lucxrD
-	 m2aXUY/tgpgTA==
+	b=aXsOwA3NsQoFLxp3cwR66vcfiwp3mEf434XF1fa+C0zBVTX6nwVfD0qDcrAU/mjxU
+	 wJl+V8qlgG4EfIeacSWZ4AQcyvQunffTp9rgBw1tomm2NHEYEOk7sXRz+Z1RPA4za6
+	 mMlvy+i1ljSw5vXZnEBaAorgSblRxXJzlRmE8/tMTSJfmRMntwjcHba2PW2o87dOWO
+	 GwOJaugc98LmUb8ZZN4JE2wtPS7SEQ6fkeOiuZT/OxWQZUuAKtQpG7PhUiSEC/EiAg
+	 fcQw6I19y2z4GqZ4BZ8LGbPMrsn/0h7hOPhK3LXqd+/27QW1Rgnlw/w2RGSdOr+IHd
+	 IsrWwc1IvDQtg==
 From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	konradybcio@kernel.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	quic_msavaliy@quicinc.com,
-	quic_vdadhani@quicinc.com,
-	linux-arm-msm@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18] arm64: dts: qcom: monaco: Fix UART10 pinconf
+To: Robert Garcia <rob_garcia@163.com>
+Cc: Sasha Levin <sashal@kernel.org>,
+	stable@vger.kernel.org,
+	linux-cifs@vger.kernel.org,
+	Steve French <smfrench@gmail.com>,
+	Paulo Alcantara <pc@manguebit.org>
+Subject: Re: [PATCH 5.15.y] smb: client: fix potential UAF in smb2_is_valid_oplock_break()
 Date: Mon, 20 Apr 2026 09:21:12 -0400
-Message-ID: <20260420132314.1023554-278-sashal@kernel.org>
+Message-ID: <20260420-stable-reply-smb-oplock-5-15@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420132314.1023554-1-sashal@kernel.org>
-References: <20260420132314.1023554-1-sashal@kernel.org>
+In-Reply-To: <20260417063426.1101332-1-rob_garcia@163.com>
+References: <20260417063426.1101332-1-rob_garcia@163.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.18.23
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	TAGGED_FROM(0.00)[bounces-239166-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-238878-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,gmail.com,manguebit.org];
+	FREEMAIL_TO(0.00)[163.com];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.987];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,dt];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qualcomm.com:email]
-X-Rspamd-Queue-Id: 5231F42DDD0
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8DC8142C221
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Loic Poulain <loic.poulain@oss.qualcomm.com>
+On Fri, Apr 17, 2026, Robert Garcia wrote:
+> Backport of 22863485a462 ("smb: client: fix potential UAF in
+> smb2_is_valid_oplock_break()") to 5.15.y.
 
-[ Upstream commit 5b2a16ab0dbd090dc545c05ee79a077cc7a9c1e0 ]
+Queued for 5.15, thanks.
 
-UART10 RTS and TX pins were incorrectly mapped to gpio84 and gpio85.
-Correct them to gpio85 (RTS) and gpio86 (TX) to match the hardware
-I/O mapping.
-
-Fixes: 467284a3097f ("arm64: dts: qcom: qcs8300: Add QUPv3 configuration")
-Signed-off-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20260202155611.1568-1-loic.poulain@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
-
-LLM Generated explanations, may be completely bogus:
-
-Error: Failed to generate final synthesis
-
- arch/arm64/boot/dts/qcom/qcs8300.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/arm64/boot/dts/qcom/qcs8300.dtsi b/arch/arm64/boot/dts/qcom/qcs8300.dtsi
-index 8d78ccac411e4..b8d4a75baee22 100644
---- a/arch/arm64/boot/dts/qcom/qcs8300.dtsi
-+++ b/arch/arm64/boot/dts/qcom/qcs8300.dtsi
-@@ -5430,12 +5430,12 @@ qup_uart10_cts: qup-uart10-cts-state {
- 			};
- 
- 			qup_uart10_rts: qup-uart10-rts-state {
--				pins = "gpio84";
-+				pins = "gpio85";
- 				function = "qup1_se2";
- 			};
- 
- 			qup_uart10_tx: qup-uart10-tx-state {
--				pins = "gpio85";
-+				pins = "gpio86";
- 				function = "qup1_se2";
- 			};
- 
--- 
-2.53.0
-
+--
+Thanks,
+Sasha
 
