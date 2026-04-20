@@ -1,78 +1,96 @@
-Return-Path: <stable+bounces-238729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238730-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 48AvIQPz5WkvpgEAu9opvQ
-	(envelope-from <stable+bounces-238729-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 11:33:55 +0200
+	id ucghCEP05Wl+pgEAu9opvQ
+	(envelope-from <stable+bounces-238730-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 11:39:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 223F4428E80
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 11:33:55 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85302428ECB
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 11:39:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B6CAB302C936
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 09:32:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 166F9302B516
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 09:39:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85F3738AC65;
-	Mon, 20 Apr 2026 09:32:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7E43389119;
+	Mon, 20 Apr 2026 09:39:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="iwfRYolB";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="iwfRYolB"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KEbM1UgX"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AE4637F746
-	for <stable@vger.kernel.org>; Mon, 20 Apr 2026 09:31:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D5FB3815E1
+	for <stable@vger.kernel.org>; Mon, 20 Apr 2026 09:39:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776677522; cv=none; b=su2IrJNjNJN7OBPjgp8WMPj8ZWLIGYn9UN7A2NMkWmEnrzj9DVi3dUUHT9d5/HrweMAeHQMRpC8aMiUWVPXOE9YojE/Ax2x3JlGN3mH6B8xXQWM/PG1zcFzo2xxrl4+rCnOYOINxEbx3FxkP2UT7Jr1efk1NJ2sO7U8oTGNk0QM=
+	t=1776677949; cv=none; b=TEEtOYo1Z7bTh4qc6H4Hwo+ZeygpkTjFk0wqloZoaDjPuP1Du1JH1f0+gAlXRJjlgJcw2GB6qJEtcr0EkL6AIO0FrCBivfOSFDHpCc1P/AgreFii9jcC3dElMe/VLWFWcsxcbvYXgYatF0j/Meq8z4BiNick+uXNc1XrXpoNwbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776677522; c=relaxed/simple;
-	bh=2AkVNhAlYnUnK0t8BwWQ9pXKkQWwX62sXumQ4xR6Gsc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lWhp8ffJe3HWCjXRIFFVxLFQfy//w8ELKl7i51sXF1SGD+7Kqbrmw4X24KDAN8KQoBGUVdDTBYqUIb4Ts8/7rilGTaEO2YnhVMBaR0ztoG068eoMCA4b9wW97OPFdXSMnJSMD40eENFkvEGiKgoA1l26ikOxVI5ptwoIGd95k5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=iwfRYolB; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=iwfRYolB; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 41D375BCCF;
-	Mon, 20 Apr 2026 09:31:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1776677518; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=WL9Xl9qWVq0UkQb6b0598cxdO+ebC0xlUrLKis6pAHc=;
-	b=iwfRYolBUuioLadP1qNxXeBOkxq3eTi5U77LaspAaRXj+IHOYy1MxNWtGd5wS+/BhLeRDk
-	nLsBzRtl4xOTOFAh3guLQUiRvIdb1mqfaflUdQb7uecU7xwoxQFH4Umqs8hY7XmzfpzeQY
-	h2KeVOAE69J/hQivDteQHFaqDU20L20=
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1776677518; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=WL9Xl9qWVq0UkQb6b0598cxdO+ebC0xlUrLKis6pAHc=;
-	b=iwfRYolBUuioLadP1qNxXeBOkxq3eTi5U77LaspAaRXj+IHOYy1MxNWtGd5wS+/BhLeRDk
-	nLsBzRtl4xOTOFAh3guLQUiRvIdb1mqfaflUdQb7uecU7xwoxQFH4Umqs8hY7XmzfpzeQY
-	h2KeVOAE69J/hQivDteQHFaqDU20L20=
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 443AE593AE;
-	Mon, 20 Apr 2026 09:31:57 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id EQFDAo3y5WnMSwAAD6G6ig
-	(envelope-from <wqu@suse.com>); Mon, 20 Apr 2026 09:31:57 +0000
-From: Qu Wenruo <wqu@suse.com>
-To: linux-btrfs@vger.kernel.org
+	s=arc-20240116; t=1776677949; c=relaxed/simple;
+	bh=aYiHX5rAJalMyGgqasItiAaZl0PwJqW8xhexmlXewP0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YPLSrWw9AwGX6q0+14jaSM8JPS4hs7VI5qIxcGU4NRIVdVmX/272Jb0ueiAQxR2zEf1RXTROeIa4lJe2r1lv9t//gzAOcuJB2nxxZKlUaytWotQxhSyNMc1Omsx+usLQ+WACbxyt91H3zd77TgM/kM6fqCiRb+RhprYNuvwtcbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KEbM1UgX; arc=none smtp.client-ip=209.85.215.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-c6dd5b01e14so888982a12.0
+        for <stable@vger.kernel.org>; Mon, 20 Apr 2026 02:39:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776677948; x=1777282748; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=KCVZolkJ/jGGZ3sp1HB4+a9dT+5CyB5mH+bc98lNAj8=;
+        b=KEbM1UgXhBnW1CZSaphRRlxJNa5AxuHXrRcR4TfaEHKw3bvKG8jX1q8OB9WRXTQ9Vb
+         khHlEI+doLtgKlzkeVR3QDTGyvn8jzZ2LB7rVBOIcQO2gMx7WaAAKnKqG9f/1sFK70fJ
+         LXeSMLlPpsDaJJWXdagUbLM8S+7b6ZH95y8R4NcvHbhs7WIVI6eAQSs7pvvl6RtqKHOi
+         oDDDS1oW3MAkulQndWn0fNOvq0NIbKLG7vgGlX8/3CEZ3zocY9ZzYTHcdwtpMCGIh+XT
+         5hMANqFMu/6ezoPl49ILkFIs39sb1CUThReBbxhWy0VO4SRl/Q4MZVLx+GY+R+oWHvLr
+         J4nA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776677948; x=1777282748;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KCVZolkJ/jGGZ3sp1HB4+a9dT+5CyB5mH+bc98lNAj8=;
+        b=UDHdNCTgx6jCWJDq7EYxHcU3q2gZemBpgLm5DFhGd6/kw/WKLkFR2R/YZ5p3gGJix5
+         zlOAb+PHdeZ4HBBblVEs6S8HPg0WoygFZyI8AkSBbsK0hfoDjIknhGdiZEA1RIbEBVSL
+         nrXsaCpDHKSJDik4hc13JAa8ciT81Wvvc5k1VlkOQ1A/pcA/zVCHRmVLZ+qZhYoO39Su
+         nyO1PK4uN74XI4Lo9JYRO84H8oSeL0ltU6ChmHHXUv35HHMwiJssJnaRihQ6BM/qx5MY
+         hmZedXsCm936Eo+4HZotfNbYBABw7nRlzm/8YFfWs/TUQUuypHlawduhwSGOhHPgHvvB
+         zOUA==
+X-Gm-Message-State: AOJu0Yzs6C+NzGqClQBihBtfeLBdUMOC/o2u1slrCkmKJBqHYySmN7/Q
+	TWL5ktDOrGXV5cGS/ksI09K+weBzsP7C9joqnG4JJNQ+iZ//F/kr0KpP
+X-Gm-Gg: AeBDieteon5yV+AyGd6fdRCej45pqf/axem/qHr8GmWU5vKfQ2m2Ru+5MtkhnxS2HmH
+	GfYplezDWkTmGhnIyJUBK+jC+CIi2YK2iowz7DiGm5b/ZCAZpUCz7ACVTHuN6EdAcORzwsVVvbe
+	LB9Vjce77mPMxEqX+ASMdo6TNZmpQ2SEU90knZaFzkc5dAZoMm5leaUotf9pa29SN4FQk8Yi9gL
+	ZW3H6vg51MYwwhZ6k4ypkfPHAfKC5Hs2KCH1H7JqQbB5sP7/TR8LktM78C9icXNfiRBOSviuM2s
+	6U8PMZxEI8Z+NX0z6iZJkXMqFL2zz76KK2te3nPcLBtNwA0RYJeAKXgz20toldzKMDHG8vqwb6Y
+	PguPcDO9nZ9mUUQfT7632TCLAas/O5KiiRQ0aYbpUVVAU/cF9VhhERJ0dEjmgh4Unp9DPVN0gxX
+	X3/NeBXzRwBTMWPBSSDt/pT99R4lCy6Soh
+X-Received: by 2002:a05:6a00:340e:b0:82a:fc5:fb81 with SMTP id d2e1a72fcca58-82f8c7d109emr13729867b3a.5.1776677947512;
+        Mon, 20 Apr 2026 02:39:07 -0700 (PDT)
+Received: from lgs.. ([2408:8417:d50:4775:2038:6723:d0d:eba3])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f8ebb33fcsm9681407b3a.33.2026.04.20.02.39.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Apr 2026 02:39:07 -0700 (PDT)
+From: Guangshuo Li <lgs201920130244@gmail.com>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Mahesh Salgaonkar <mahesh@linux.ibm.com>,
+	Tyrel Datwyler <tyreld@linux.ibm.com>,
+	Haren Myneni <haren@linux.ibm.com>,
+	Guangshuo Li <lgs201920130244@gmail.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org
 Cc: stable@vger.kernel.org
-Subject: [PATCH] btrfs: check and set EXTENT_DELALLOC_NEW before clearing EXTENT_DELALLOC
-Date: Mon, 20 Apr 2026 19:01:39 +0930
-Message-ID: <b1da8f8c929409e9dc80ab0424fb1554c30a5e7f.1776677493.git.wqu@suse.com>
-X-Mailer: git-send-email 2.53.0
+Subject: [PATCH] powerpc/pseries/papr-hvpipe: fix NULL dereference in handle creation
+Date: Mon, 20 Apr 2026 17:38:56 +0800
+Message-ID: <20260420093856.123681-1-lgs201920130244@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -80,301 +98,87 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -2.80
-X-Spam-Level: 
-X-Spam-Flag: NO
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[suse.com:s=susede1];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[suse.com:+];
-	TAGGED_FROM(0.00)[bounces-238729-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-238730-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_TO(0.00)[linux.ibm.com,ellerman.id.au,gmail.com,kernel.org,lists.ozlabs.org,vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[wqu@suse.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,suse.com:dkim,suse.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 223F4428E80
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 85302428ECB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-[WARNING]
-When running test cases with injected errors or shutdown, e.g.
-generic/388 or generic/475, there is a chance that the following kernel
-warning is triggered:
+papr_hvpipe_dev_create_handle() transfers ownership of src_info with
+retain_and_null_ptr(src_info) after anon_inode_getfile() succeeds.
+However, retain_and_null_ptr() clears src_info immediately, and the
+function then still dereferences src_info in the subsequent list_add().
 
- BTRFS info (device dm-2): first mount of filesystem d8a19a28-3232-4809-b0df-38df83e71bff
- BTRFS info (device dm-2): using crc32c checksum algorithm
- BTRFS info (device dm-2): checking UUID tree
- BTRFS info (device dm-2): turning on async discard
- BTRFS info (device dm-2): enabling free space tree
- BTRFS critical (device dm-2 state E): emergency shutdown
- ------------[ cut here ]------------
- WARNING: extent_io.c:1742 at extent_writepage_io+0x437/0x520 [btrfs], CPU#2: kworker/u43:2/651591
- CPU: 2 UID: 0 PID: 651591 Comm: kworker/u43:2 Tainted: G        W  OE       7.0.0-rc6-custom+ #365 PREEMPT(full)  5804053f02137e627472d94b5128cc9fcb110e88
- RIP: 0010:extent_writepage_io+0x437/0x520 [btrfs]
- Call Trace:
-  <TASK>
-  extent_write_cache_pages+0x2a5/0x820 [btrfs 70299925d0856939e93b17d480651713b3cbba58]
-  btrfs_writepages+0x74/0x130 [btrfs 70299925d0856939e93b17d480651713b3cbba58]
-  do_writepages+0xd0/0x160
-  __writeback_single_inode+0x42/0x340
-  writeback_sb_inodes+0x22d/0x580
-  wb_writeback+0xc6/0x360
-  wb_workfn+0xbd/0x470
-  process_one_work+0x198/0x3b0
-  worker_thread+0x1c8/0x330
-  kthread+0xee/0x120
-  ret_from_fork+0x2a6/0x330
-  ret_from_fork_asm+0x11/0x20
-  </TASK>
- ---[ end trace 0000000000000000 ]---
- BTRFS error (device dm-2 state E): root 5 ino 259 folio 1323008 is marked dirty without notifying the fs
- BTRFS error (device dm-2 state E): failed to submit blocks, root=5 inode=259 folio=1323008 submit_bitmap=0: -117
- BTRFS info (device dm-2 state E): last unmount of filesystem d8a19a28-3232-4809-b0df-38df83e71bff
+Store the transferred pointer in a separate variable and use that for
+the list insertion.
 
-[CAUSE]
-Inside btrfs we have the following pattern in several locations, for
-example inside btrfs_dirty_folio():
+Manually identified during code review.
 
-	btrfs_clear_extent_bit(&inode->io_tree, start_pos, end_of_last_block,
-			       EXTENT_DELALLOC | EXTENT_DO_ACCOUNTING | EXTENT_DEFRAG,
-			       cached);
-
-	ret = btrfs_set_extent_delalloc(inode, start_pos, end_of_last_block,
-					extra_bits, cached);
-	if (ret)
-		return ret;
-
-However btrfs_set_extent_delalloc() can return IO errors other than -ENOMEM
-through the following callchain:
-
- btrfs_set_extent_delalloc()
- \- btrfs_find_new_delalloc_bytes()
-    \- btrfs_get_extent()
-       \- btrfs_lookup_file_extent()
-          \- btrfs_search_slot()
-
-When such IO error happened, the previous btrfs_clear_extent_bit() has
-cleared the EXTENT_DELALLOC for the range, and we're expecting
-btrfs_set_extent_delalloc() to re-set EXTENT_DELALLOC.
-
-But since btrfs_set_extent_delalloc() failed before
-btrfs_set_extent_bit(), EXTENT_DELALLOC flag is no longere present.
-
-And if the folio range is dirty before entering
-btrfs_set_extent_delalloc(), we got a dirty folio but no EXTENT_DELALLOC
-flag now.
-
-Then we hit the folio writeback:
-
- extent_writepage()
- |- writepage_delalloc()
- |  No ordered extent is created, as there is no EXTENT_DELALLOC set
- |  for the folio range.
- |  This also means the folio has no ordered flag set.
- |
- |- extent_writepage_io()
-    \- if (unlikely(!folio_test_ordered(folio))
-       Now we hit the warning.
-
-[FIX]
-Introduce a new helper, btrfs_reset_extent_delalloc() to replace the
-currently open-coded btrfs_clear_extent_bit() +
-btrfs_set_extent_delalloc() combination.
-
-Instead of calling btrfs_clear_extent_bit() first, update
-EXTENT_DELALLOC_NEW first, as that part can fail due to metadata IO,
-meanwhile btrfs_clear_extent_bit() and btrfs_set_extent_bit() can really
-only fail with -ENOMEM.
-
-This allows us to fail early without clearing EXTENT_DELALLOC bit, so
-even if that new btrfs_reset_extent_delalloc() failed before touching
-EXTENT_DELALLOC, the existing dirty range will still have their old
-EXTENT_DELALLOC flag present, thus avoid the warning.
-
-Cc: stable@vger.kernel.org # 6.1+
-Signed-off-by: Qu Wenruo <wqu@suse.com>
+Fixes: 6d3789d347a7af5c4b0b2da3af47b8d9da607ab2 ("papr-hvpipe: convert papr_hvpipe_dev_create_handle() to FD_PREPARE()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
 ---
- fs/btrfs/btrfs_inode.h |  3 +++
- fs/btrfs/file.c        | 25 +++---------------
- fs/btrfs/inode.c       | 59 +++++++++++++++++++++++++++++++++++++-----
- fs/btrfs/reflink.c     |  4 +--
- 4 files changed, 59 insertions(+), 32 deletions(-)
+ arch/powerpc/platforms/pseries/papr-hvpipe.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/fs/btrfs/btrfs_inode.h b/fs/btrfs/btrfs_inode.h
-index 6e696b350dc5..ad523549d8b4 100644
---- a/fs/btrfs/btrfs_inode.h
-+++ b/fs/btrfs/btrfs_inode.h
-@@ -569,6 +569,9 @@ int btrfs_start_delalloc_roots(struct btrfs_fs_info *fs_info, long nr,
- int btrfs_set_extent_delalloc(struct btrfs_inode *inode, u64 start, u64 end,
- 			      unsigned int extra_bits,
- 			      struct extent_state **cached_state);
-+int btrfs_reset_extent_delalloc(struct btrfs_inode *inode, u64 start, u64 end,
-+				unsigned int extra_bits,
-+				struct extent_state **cached_state);
- 
- struct btrfs_new_inode_args {
- 	/* Input */
-diff --git a/fs/btrfs/file.c b/fs/btrfs/file.c
-index a6f641a41d99..ab536a304500 100644
---- a/fs/btrfs/file.c
-+++ b/fs/btrfs/file.c
-@@ -85,16 +85,8 @@ int btrfs_dirty_folio(struct btrfs_inode *inode, struct folio *folio, loff_t pos
- 
- 	end_of_last_block = start_pos + num_bytes - 1;
- 
--	/*
--	 * The pages may have already been dirty, clear out old accounting so
--	 * we can set things up properly
--	 */
--	btrfs_clear_extent_bit(&inode->io_tree, start_pos, end_of_last_block,
--			       EXTENT_DELALLOC | EXTENT_DO_ACCOUNTING | EXTENT_DEFRAG,
--			       cached);
--
--	ret = btrfs_set_extent_delalloc(inode, start_pos, end_of_last_block,
--					extra_bits, cached);
-+	ret = btrfs_reset_extent_delalloc(inode, start_pos, end_of_last_block,
-+					  extra_bits, cached);
- 	if (ret)
- 		return ret;
- 
-@@ -1952,18 +1944,7 @@ static vm_fault_t btrfs_page_mkwrite(struct vm_fault *vmf)
- 		}
- 	}
- 
--	/*
--	 * page_mkwrite gets called when the page is firstly dirtied after it's
--	 * faulted in, but write(2) could also dirty a page and set delalloc
--	 * bits, thus in this case for space account reason, we still need to
--	 * clear any delalloc bits within this page range since we have to
--	 * reserve data&meta space before lock_page() (see above comments).
--	 */
--	btrfs_clear_extent_bit(io_tree, page_start, end,
--			       EXTENT_DELALLOC | EXTENT_DO_ACCOUNTING |
--			       EXTENT_DEFRAG, &cached_state);
--
--	ret = btrfs_set_extent_delalloc(inode, page_start, end, 0, &cached_state);
-+	ret = btrfs_reset_extent_delalloc(inode, page_start, end, 0, &cached_state);
- 	if (ret < 0) {
- 		btrfs_unlock_extent(io_tree, page_start, page_end, &cached_state);
- 		goto out_unlock;
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index 71129502333a..0dc5fe7f7705 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -2810,7 +2810,10 @@ int btrfs_set_extent_delalloc(struct btrfs_inode *inode, u64 start, u64 end,
- 			      unsigned int extra_bits,
- 			      struct extent_state **cached_state)
+diff --git a/arch/powerpc/platforms/pseries/papr-hvpipe.c b/arch/powerpc/platforms/pseries/papr-hvpipe.c
+index 14ae480d060a..497eb967611b 100644
+--- a/arch/powerpc/platforms/pseries/papr-hvpipe.c
++++ b/arch/powerpc/platforms/pseries/papr-hvpipe.c
+@@ -480,6 +480,7 @@ static const struct file_operations papr_hvpipe_handle_ops = {
+ static int papr_hvpipe_dev_create_handle(u32 srcID)
  {
--	WARN_ON(PAGE_ALIGNED(end));
-+	const u32 blocksize = inode->root->fs_info->sectorsize;
-+
-+	ASSERT(IS_ALIGNED(start, blocksize), "start=%llu", start);
-+	ASSERT(IS_ALIGNED(end + 1, blocksize), "end=%llu", end);
+ 	struct hvpipe_source_info *src_info __free(kfree) = NULL;
++	struct hvpipe_source_info *owned_src_info;
  
- 	if (start >= i_size_read(&inode->vfs_inode) &&
- 	    !(inode->flags & BTRFS_INODE_PREALLOC)) {
-@@ -2833,6 +2836,53 @@ int btrfs_set_extent_delalloc(struct btrfs_inode *inode, u64 start, u64 end,
- 				    EXTENT_DELALLOC | extra_bits, cached_state);
- }
+ 	spin_lock(&hvpipe_src_list_lock);
+ 	/*
+@@ -509,7 +510,7 @@ static int papr_hvpipe_dev_create_handle(u32 srcID)
+ 	if (fdf.err)
+ 		return fdf.err;
  
-+/*
-+ * Clear the old accounting flags and set EXTENT_DELALLOC for the range.
-+ *
-+ * Return <0 for error, in that case no range has EXTENT_DELALLOC bit cleared or set.
-+ */
-+int btrfs_reset_extent_delalloc(struct btrfs_inode *inode, u64 start, u64 end,
-+				unsigned int extra_bits,
-+				struct extent_state **cached_state)
-+{
-+	const u32 blocksize = inode->root->fs_info->sectorsize;
-+
-+	/* The @extra_bits can only be EXTENT_NORESERVE for now. */
-+	ASSERT(!(extra_bits & ~EXTENT_NORESERVE));
-+
-+	/* Basic alignment check. */
-+	ASSERT(IS_ALIGNED(start, blocksize), "start=%llu", start);
-+	ASSERT(IS_ALIGNED(end + 1, blocksize), "end=%llu", end);
-+
-+	/*
-+	 * Check and set DELALLOC_NEW flags, this needs to search tree thus
-+	 * can fail early.
-+	 * Thus we want to do this before clearing DELALLOC_EXTENT.
-+	 */
-+	if (start >= i_size_read(&inode->vfs_inode) &&
-+	    !(inode->flags & BTRFS_INODE_PREALLOC)) {
-+		/*
-+		 * There can't be any extents following eof in this case so just
-+		 * set the delalloc new bit for the range directly.
-+		 */
-+		extra_bits |= EXTENT_DELALLOC_NEW;
-+	} else {
-+		int ret;
-+
-+		ret = btrfs_find_new_delalloc_bytes(inode, start,
-+						    end + 1 - start,
-+						    cached_state);
-+		if (unlikely(ret))
-+			return ret;
-+	}
-+	/* Clear the old accounting as the range may already be dirty. */
-+	btrfs_clear_extent_bit(&inode->io_tree, start, end,
-+			       EXTENT_DELALLOC | EXTENT_DO_ACCOUNTING |
-+			       EXTENT_DEFRAG, cached_state);
-+	return btrfs_set_extent_bit(&inode->io_tree, start, end,
-+				    EXTENT_DELALLOC | extra_bits, cached_state);
-+}
-+
- static int insert_reserved_file_extent(struct btrfs_trans_handle *trans,
- 				       struct btrfs_inode *inode, u64 file_pos,
- 				       struct btrfs_file_extent_item *stack_fi,
-@@ -4973,12 +5023,7 @@ int btrfs_truncate_block(struct btrfs_inode *inode, u64 offset, u64 start, u64 e
- 		goto again;
+-	retain_and_null_ptr(src_info);
++	owned_src_info = retain_and_null_ptr(src_info);
+ 	spin_lock(&hvpipe_src_list_lock);
+ 	/*
+ 	 * If two processes are executing ioctl() for the same
+@@ -520,7 +521,7 @@ static int papr_hvpipe_dev_create_handle(u32 srcID)
+ 		spin_unlock(&hvpipe_src_list_lock);
+ 		return -EALREADY;
  	}
- 
--	btrfs_clear_extent_bit(&inode->io_tree, block_start, block_end,
--			       EXTENT_DELALLOC | EXTENT_DO_ACCOUNTING | EXTENT_DEFRAG,
--			       &cached_state);
--
--	ret = btrfs_set_extent_delalloc(inode, block_start, block_end, 0,
--					&cached_state);
-+	ret = btrfs_reset_extent_delalloc(inode, block_start, block_end, 0, &cached_state);
- 	if (ret) {
- 		btrfs_unlock_extent(io_tree, block_start, block_end, &cached_state);
- 		goto out_unlock;
-diff --git a/fs/btrfs/reflink.c b/fs/btrfs/reflink.c
-index 14742abe0f92..fb34598a77ff 100644
---- a/fs/btrfs/reflink.c
-+++ b/fs/btrfs/reflink.c
-@@ -94,9 +94,7 @@ static int copy_inline_to_page(struct btrfs_inode *inode,
- 	if (ret < 0)
- 		goto out_unlock;
- 
--	btrfs_clear_extent_bit(&inode->io_tree, file_offset, range_end,
--			       EXTENT_DELALLOC | EXTENT_DO_ACCOUNTING | EXTENT_DEFRAG, NULL);
--	ret = btrfs_set_extent_delalloc(inode, file_offset, range_end, 0, NULL);
-+	ret = btrfs_reset_extent_delalloc(inode, file_offset, range_end, 0, NULL);
- 	if (ret)
- 		goto out_unlock;
- 
+-	list_add(&src_info->list, &hvpipe_src_list);
++	list_add(&owned_src_info->list, &hvpipe_src_list);
+ 	spin_unlock(&hvpipe_src_list_lock);
+ 	return fd_publish(fdf);
+ }
 -- 
-2.53.0
+2.43.0
 
 
