@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-239621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239440-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2EdUMZZg5mkqvgEAu9opvQ
-	(envelope-from <stable+bounces-239621-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:21:26 +0200
+	id OPeLJqBV5mkDuwEAu9opvQ
+	(envelope-from <stable+bounces-239440-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:34:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29CBA43107B
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:21:26 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A0A742FA77
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:34:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7377732F0B67
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:58:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1692C34418C1
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:51:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83F3A1EB5CE;
-	Mon, 20 Apr 2026 15:58:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B8A333F8AA;
+	Mon, 20 Apr 2026 15:50:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KZYB4PkL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oiFcx8Nv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 462572E2665;
-	Mon, 20 Apr 2026 15:58:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BD4E33F586;
+	Mon, 20 Apr 2026 15:50:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700726; cv=none; b=QC3DCQtjPrC/puTvAZ2NuejXIqepu7Mg06wWK3fdQrc9nUEOUr4CTDIK6zw1hVzHSA3orA+kzeRL5hnLVrvRgd4Ff6YvNCt5A+E6g7OsMwDusZ2ow5KG++Z8eTJa3Un7edzzbm+lvC2V7L+5Jh4w5NCeKgl2Ft+bKCYILvL4ltI=
+	t=1776700259; cv=none; b=fz1TAvGxzgpuYAWiEw5G9P0h3ZyEcltduO6vnWN/8at76QoCkMyuTCX47ygT1otDWi5grrJ+pIt4qxk/dE3/p7pckJ1VBcKv7K8O0kDZoEbXrl/8zAG/gG5w4ZsnmKt9RFjlOB5E5lsKMhBx3WiGO9DwD43xFH1E55L/44WOng4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700726; c=relaxed/simple;
-	bh=6tGUYMmwBRUSUv/4WZPE1zODq0DZnHKL5rG2q9uWqpM=;
+	s=arc-20240116; t=1776700259; c=relaxed/simple;
+	bh=RP9wwhHEyM83k2VsQ23rKCrndKsTiGKa/nfgIZjQ5Lk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l3bpAkFv0UGYO+t/4G7IqBI3ydW/Gl6esRiNv0SBZRNLRG7JlDXl2ovjqjOJBswM52F3HopnED351kd/Udx2woQo94mXmaHahp8wqqpFwh7QjI8E5Z+gCr8OddFrg8ToXm8LFDdwYYVzQOGi12aJEEnDYRZ2mgwwpt7VLJ8hK9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KZYB4PkL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1C60C19425;
-	Mon, 20 Apr 2026 15:58:45 +0000 (UTC)
+	 MIME-Version; b=ALMJU0JiVrkEd8Sac3UYuEZ3z8nSzRvnnVQM70pizkRD8Pf2gRghIFZ34CVQCqBAJ4I1eaiz49BpzSEhDlDyTUnAR352GyXPoOwa6O21rs7a2A3rBhCZ6F3WG049SbqjFhmm/3uSdtnJ1nwgDxo556fyHpMhRv6A46PBWujyXvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oiFcx8Nv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EBC2C19425;
+	Mon, 20 Apr 2026 15:50:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700726;
-	bh=6tGUYMmwBRUSUv/4WZPE1zODq0DZnHKL5rG2q9uWqpM=;
+	s=korg; t=1776700258;
+	bh=RP9wwhHEyM83k2VsQ23rKCrndKsTiGKa/nfgIZjQ5Lk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KZYB4PkLY3EjlzRzPur4kBSignU+ricqWG+suS6XJHCqSJdQxzxve+J99JyxX7T+r
-	 T8XaCsaHckmV7MPnuRlmXN+HevgscsuucrvO4KhQi+1fx6lapL+gnhRymJa5Q8cd97
-	 vRdJdSUxJY3px6WNzKoYgKrFK1IXHEHc5xeEU1S4=
+	b=oiFcx8NvyYMJqkzfrjEllfRAvHaYzNexCDrBX8wCiAbRaAn9gu6Z+abCcK7yLKU3K
+	 LymzGKRiYSwxVRcW2jVTcUklIkCCxDVqFKa8fZcHKfegOsXwevtHT30Ayon5jgO9Wr
+	 51a78X9kXLOIv0bLMeXGsKui+BTGZpiIonevD7t4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Tesarik <ptesarik@suse.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
+	Iskhakov Daniil <dish@amicon.ru>,
+	Agalakov Daniil <ade@amicon.ru>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 063/198] dma-debug: track cache clean flag in entries
+Subject: [PATCH 6.19 101/220] e1000: check return value of e1000_read_eeprom
 Date: Mon, 20 Apr 2026 17:40:42 +0200
-Message-ID: <20260420153937.882393355@linuxfoundation.org>
+Message-ID: <20260420153937.672435960@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
+References: <20260420153934.013228280@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,140 +70,99 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239440-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-239621-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 29CBA43107B
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,amicon.ru:email,linuxtesting.org:url]
+X-Rspamd-Queue-Id: 0A0A742FA77
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael S. Tsirkin <mst@redhat.com>
+From: Agalakov Daniil <ade@amicon.ru>
 
-[ Upstream commit d5d846513128c1a3bc2f2d371f6e903177dea443 ]
+[ Upstream commit d3baa34a470771399c1495bc04b1e26ac15d598e ]
 
-If a driver is buggy and has 2 overlapping mappings but only
-sets cache clean flag on the 1st one of them, we warn.
-But if it only does it for the 2nd one, we don't.
+[Why]
+e1000_set_eeprom() performs a read-modify-write operation when the write
+range is not word-aligned. This requires reading the first and last words
+of the range from the EEPROM to preserve the unmodified bytes.
 
-Fix by tracking cache clean flag in the entry.
+However, the code does not check the return value of e1000_read_eeprom().
+If the read fails, the operation continues using uninitialized data from
+eeprom_buff. This results in corrupted data being written back to the
+EEPROM for the boundary words.
 
-Message-ID: <0ffb3513d18614539c108b4548cdfbc64274a7d1.1767601130.git.mst@redhat.com>
-Reviewed-by: Petr Tesarik <ptesarik@suse.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Stable-dep-of: 3d48c9fd78dd ("dma-debug: suppress cacheline overlap warning when arch has no DMA alignment requirement")
+Add the missing error checks and abort the operation if reading fails.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Co-developed-by: Iskhakov Daniil <dish@amicon.ru>
+Signed-off-by: Iskhakov Daniil <dish@amicon.ru>
+Signed-off-by: Agalakov Daniil <ade@amicon.ru>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/dma/debug.c | 27 ++++++++++++++++++++++-----
- 1 file changed, 22 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/intel/e1000/e1000_ethtool.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/dma/debug.c b/kernel/dma/debug.c
-index 7e66d863d573f..43d6a996d7a78 100644
---- a/kernel/dma/debug.c
-+++ b/kernel/dma/debug.c
-@@ -63,6 +63,7 @@ enum map_err_types {
-  * @sg_mapped_ents: 'mapped_ents' from dma_map_sg
-  * @paddr: physical start address of the mapping
-  * @map_err_type: track whether dma_mapping_error() was checked
-+ * @is_cache_clean: driver promises not to write to buffer while mapped
-  * @stack_len: number of backtrace entries in @stack_entries
-  * @stack_entries: stack of backtrace history
-  */
-@@ -76,7 +77,8 @@ struct dma_debug_entry {
- 	int		 sg_call_ents;
- 	int		 sg_mapped_ents;
- 	phys_addr_t	 paddr;
--	enum map_err_types  map_err_type;
-+	enum map_err_types map_err_type;
-+	bool		 is_cache_clean;
- #ifdef CONFIG_STACKTRACE
- 	unsigned int	stack_len;
- 	unsigned long	stack_entries[DMA_DEBUG_STACKTRACE_ENTRIES];
-@@ -472,12 +474,15 @@ static int active_cacheline_dec_overlap(phys_addr_t cln)
- 	return active_cacheline_set_overlap(cln, --overlap);
+diff --git a/drivers/net/ethernet/intel/e1000/e1000_ethtool.c b/drivers/net/ethernet/intel/e1000/e1000_ethtool.c
+index 726365c567ef3..75d0bfa7530b4 100644
+--- a/drivers/net/ethernet/intel/e1000/e1000_ethtool.c
++++ b/drivers/net/ethernet/intel/e1000/e1000_ethtool.c
+@@ -496,14 +496,19 @@ static int e1000_set_eeprom(struct net_device *netdev,
+ 		 */
+ 		ret_val = e1000_read_eeprom(hw, first_word, 1,
+ 					    &eeprom_buff[0]);
++		if (ret_val)
++			goto out;
++
+ 		ptr++;
+ 	}
+-	if (((eeprom->offset + eeprom->len) & 1) && (ret_val == 0)) {
++	if ((eeprom->offset + eeprom->len) & 1) {
+ 		/* need read/modify/write of last changed EEPROM word
+ 		 * only the first byte of the word is being modified
+ 		 */
+ 		ret_val = e1000_read_eeprom(hw, last_word, 1,
+ 					    &eeprom_buff[last_word - first_word]);
++		if (ret_val)
++			goto out;
+ 	}
+ 
+ 	/* Device's eeprom is always little-endian, word addressable */
+@@ -522,6 +527,7 @@ static int e1000_set_eeprom(struct net_device *netdev,
+ 	if ((ret_val == 0) && (first_word <= EEPROM_CHECKSUM_REG))
+ 		e1000_update_eeprom_checksum(hw);
+ 
++out:
+ 	kfree(eeprom_buff);
+ 	return ret_val;
  }
- 
--static int active_cacheline_insert(struct dma_debug_entry *entry)
-+static int active_cacheline_insert(struct dma_debug_entry *entry,
-+				   bool *overlap_cache_clean)
- {
- 	phys_addr_t cln = to_cacheline_number(entry);
- 	unsigned long flags;
- 	int rc;
- 
-+	*overlap_cache_clean = false;
-+
- 	/* If the device is not writing memory then we don't have any
- 	 * concerns about the cpu consuming stale data.  This mitigates
- 	 * legitimate usages of overlapping mappings.
-@@ -487,8 +492,16 @@ static int active_cacheline_insert(struct dma_debug_entry *entry)
- 
- 	spin_lock_irqsave(&radix_lock, flags);
- 	rc = radix_tree_insert(&dma_active_cacheline, cln, entry);
--	if (rc == -EEXIST)
-+	if (rc == -EEXIST) {
-+		struct dma_debug_entry *existing;
-+
- 		active_cacheline_inc_overlap(cln);
-+		existing = radix_tree_lookup(&dma_active_cacheline, cln);
-+		/* A lookup failure here after we got -EEXIST is unexpected. */
-+		WARN_ON(!existing);
-+		if (existing)
-+			*overlap_cache_clean = existing->is_cache_clean;
-+	}
- 	spin_unlock_irqrestore(&radix_lock, flags);
- 
- 	return rc;
-@@ -583,20 +596,24 @@ DEFINE_SHOW_ATTRIBUTE(dump);
-  */
- static void add_dma_entry(struct dma_debug_entry *entry, unsigned long attrs)
- {
-+	bool overlap_cache_clean;
- 	struct hash_bucket *bucket;
- 	unsigned long flags;
- 	int rc;
- 
-+	entry->is_cache_clean = !!(attrs & DMA_ATTR_CPU_CACHE_CLEAN);
-+
- 	bucket = get_hash_bucket(entry, &flags);
- 	hash_bucket_add(bucket, entry);
- 	put_hash_bucket(bucket, flags);
- 
--	rc = active_cacheline_insert(entry);
-+	rc = active_cacheline_insert(entry, &overlap_cache_clean);
- 	if (rc == -ENOMEM) {
- 		pr_err_once("cacheline tracking ENOMEM, dma-debug disabled\n");
- 		global_disable = true;
- 	} else if (rc == -EEXIST &&
--		   !(attrs & (DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_CPU_CACHE_CLEAN)) &&
-+		   !(attrs & DMA_ATTR_SKIP_CPU_SYNC) &&
-+		   !(entry->is_cache_clean && overlap_cache_clean) &&
- 		   !(IS_ENABLED(CONFIG_DMA_BOUNCE_UNALIGNED_KMALLOC) &&
- 		     is_swiotlb_active(entry->dev))) {
- 		err_printk(entry->dev, entry,
 -- 
 2.53.0
 
