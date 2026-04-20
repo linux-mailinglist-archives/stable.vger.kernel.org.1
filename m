@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-239811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239636-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4GlENepj5mkKvwEAu9opvQ
-	(envelope-from <stable+bounces-239811-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:35:38 +0200
+	id gMfUBo9m5mmlvwEAu9opvQ
+	(envelope-from <stable+bounces-239636-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:46:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADB08431898
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:35:37 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98D5043214F
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:46:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 098283154F9D
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:07:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 355EC32AD819
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:59:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0CF833AD9A;
-	Mon, 20 Apr 2026 16:07:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D77012FE56A;
+	Mon, 20 Apr 2026 15:59:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WyhLodWI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M25LJIj8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6451F3264F1;
-	Mon, 20 Apr 2026 16:07:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99C7717A31C;
+	Mon, 20 Apr 2026 15:59:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701276; cv=none; b=DouDziHL79A8JLt+e4df6K2C6IVKFKqwJl3r+IDm7P2h/9yD3LJ0rgeHxmkxkE2Tp+2k6Nh2uu7tAD3ui1HHojMUbmNZeycTuxL7lfDk/bhWlJwKbM7sUsyjgnxtmEdoFFHJgmc2aFou7qXFY1Tajd7LYbAHTB2zu+CzeT5aq68=
+	t=1776700764; cv=none; b=dWphIuZkVnSHg2gG/MWas0wqd0qN24oJVE1I9/c62CPJV95qZvu3dmIycHI1m3DVGFYa4aa6KK0Mw0RSuZmZIrPwRfYcGDPplOwcnJl0izMcQuvC85ITfscVadOAFD/6w2HylAtLnW1OzFY7cLDabHN+OlAtW8MlNhIgWNDkckA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701276; c=relaxed/simple;
-	bh=ByHHOYL/jmtr8ZmHiE8ClWUKFXzHsWHI4zPtmZZ3uwQ=;
+	s=arc-20240116; t=1776700764; c=relaxed/simple;
+	bh=MD6JnO4tNTiC8t62FNVGk9PLMImIXtPzGDxwtH0aP70=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qJrF01eIqNXUKYk4+vwChqfJdzby/8wqeFPDghMncxuekomgj/l4xYH8wxbq0kaK+X5sGrOdavXQ+p1xbmdFySPbbtoUktXPsAaONDKyoWeWwle+CHN4hKZmDpkfAYQcXztPbHx+PEFGQPmUD4XJH4ShoIzNCDEk67P+BmnqdiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WyhLodWI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEA0AC19425;
-	Mon, 20 Apr 2026 16:07:55 +0000 (UTC)
+	 MIME-Version; b=qT5r1Yf9mFJPtb8i3JVcOdplSr9Y1EkOeYK+OdbBi3QopgwWlTl20Fq4KKOSJw9uzf4TkJPCiNUYl4HkfX8Z/CNzT7uEKysYcEc2MHPKK5RI4qHMOKRksXY1HDB+ZzprYR2IkmY5nQYPXGHaDDIEdNHoRIB8nB8ZU6stUR/uUWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M25LJIj8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 203B9C19425;
+	Mon, 20 Apr 2026 15:59:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701276;
-	bh=ByHHOYL/jmtr8ZmHiE8ClWUKFXzHsWHI4zPtmZZ3uwQ=;
+	s=korg; t=1776700764;
+	bh=MD6JnO4tNTiC8t62FNVGk9PLMImIXtPzGDxwtH0aP70=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WyhLodWIdgtN7kS92fozGTJ/xGrnmm1DE6aP1GLKaqvGJC7SXAqj4B9Wc1jaRlLuH
-	 zDcRTMIlWHF5vl2Qi9Lp3OF+LHbpgMC54S70TQACtKwAKS0OvRkzmjG158s2vdXaeI
-	 HUmcwBUjF1ET9fhfkUYa16loeuHbx4bCB9hTg1R4=
+	b=M25LJIj8thAWaIzIdh+tTbYnWpwl//Hon9ZvMJpMzPLYswy/NN6RFf9kZBOu8Rdd9
+	 tmts9emykQfPS5/fJ3S+5uYZCDzyyi8FJwtCsNdccYxmDQzZ8qS8cKl+doOXQJ3aIJ
+	 zvTjffdSDzqrbB/8QmMIz34rjfz7vKXj7RomwaNI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	Johannes Berg <johannes.berg@intel.com>,
+	syzbot+d8c285748fa7292580a9@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Martin Schiller <ms@dev.tdt.de>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 018/162] wifi: wl1251: validate packet IDs before indexing tx_frames
+Subject: [PATCH 6.18 071/198] net: lapbether: handle NETDEV_PRE_TYPE_CHANGE
 Date: Mon, 20 Apr 2026 17:40:50 +0200
-Message-ID: <20260420153927.680412577@linuxfoundation.org>
+Message-ID: <20260420153938.167500779@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
-References: <20260420153927.006696811@linuxfoundation.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,84 +67,111 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-239811-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239636-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,intel.com:email,iscas.ac.cn:email]
-X-Rspamd-Queue-Id: ADB08431898
+	TAGGED_RCPT(0.00)[stable,d8c285748fa7292580a9];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,appspotmail.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,tdt.de:email]
+X-Rspamd-Queue-Id: 98D5043214F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 0fd56fad9c56356e7fa7a7c52e7ecbf807a44eb0 ]
+[ Upstream commit b120e4432f9f56c7103133d6a11245e617695adb ]
 
-wl1251_tx_packet_cb() uses the firmware completion ID directly to index
-the fixed 16-entry wl->tx_frames[] array. The ID is a raw u8 from the
-completion block, and the callback does not currently verify that it
-fits the array before dereferencing it.
+lapbeth_data_transmit() expects the underlying device type
+to be ARPHRD_ETHER.
 
-Reject completion IDs that fall outside wl->tx_frames[] and keep the
-existing NULL check in the same guard. This keeps the fix local to the
-trust boundary and avoids touching the rest of the completion flow.
+Returning NOTIFY_BAD from lapbeth_device_event() makes sure
+bonding driver can not break this expectation.
 
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
-Link: https://patch.msgid.link/20260323080845.40033-1-pengpeng@iscas.ac.cn
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 872254dd6b1f ("net/bonding: Enable bonding to enslave non ARPHRD_ETHER")
+Reported-by: syzbot+d8c285748fa7292580a9@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/69cd22a1.050a0220.70c3a.0002.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Martin Schiller <ms@dev.tdt.de>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260402103519.1201565-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ti/wl1251/tx.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/net/wan/lapbether.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/ti/wl1251/tx.c b/drivers/net/wireless/ti/wl1251/tx.c
-index adb4840b04893..c264d83e71d9c 100644
---- a/drivers/net/wireless/ti/wl1251/tx.c
-+++ b/drivers/net/wireless/ti/wl1251/tx.c
-@@ -402,12 +402,14 @@ static void wl1251_tx_packet_cb(struct wl1251 *wl,
- 	int hdrlen;
- 	u8 *frame;
+diff --git a/drivers/net/wan/lapbether.c b/drivers/net/wan/lapbether.c
+index f357a7ac70ac4..9861c99ea56c4 100644
+--- a/drivers/net/wan/lapbether.c
++++ b/drivers/net/wan/lapbether.c
+@@ -446,33 +446,36 @@ static void lapbeth_free_device(struct lapbethdev *lapbeth)
+ static int lapbeth_device_event(struct notifier_block *this,
+ 				unsigned long event, void *ptr)
+ {
+-	struct lapbethdev *lapbeth;
+ 	struct net_device *dev = netdev_notifier_info_to_dev(ptr);
++	struct lapbethdev *lapbeth;
  
--	skb = wl->tx_frames[result->id];
--	if (skb == NULL) {
--		wl1251_error("SKB for packet %d is NULL", result->id);
-+	if (unlikely(result->id >= ARRAY_SIZE(wl->tx_frames) ||
-+		     wl->tx_frames[result->id] == NULL)) {
-+		wl1251_error("invalid packet id %u", result->id);
- 		return;
+ 	if (dev_net(dev) != &init_net)
+ 		return NOTIFY_DONE;
+ 
+-	if (!dev_is_ethdev(dev) && !lapbeth_get_x25_dev(dev))
++	lapbeth = lapbeth_get_x25_dev(dev);
++	if (!dev_is_ethdev(dev) && !lapbeth)
+ 		return NOTIFY_DONE;
+ 
+ 	switch (event) {
+ 	case NETDEV_UP:
+ 		/* New ethernet device -> new LAPB interface	 */
+-		if (!lapbeth_get_x25_dev(dev))
++		if (!lapbeth)
+ 			lapbeth_new_device(dev);
+ 		break;
+ 	case NETDEV_GOING_DOWN:
+ 		/* ethernet device closes -> close LAPB interface */
+-		lapbeth = lapbeth_get_x25_dev(dev);
+ 		if (lapbeth)
+ 			dev_close(lapbeth->axdev);
+ 		break;
+ 	case NETDEV_UNREGISTER:
+ 		/* ethernet device disappears -> remove LAPB interface */
+-		lapbeth = lapbeth_get_x25_dev(dev);
+ 		if (lapbeth)
+ 			lapbeth_free_device(lapbeth);
+ 		break;
++	case NETDEV_PRE_TYPE_CHANGE:
++		/* Our underlying device type must not change. */
++		if (lapbeth)
++			return NOTIFY_BAD;
  	}
  
-+	skb = wl->tx_frames[result->id];
-+
- 	info = IEEE80211_SKB_CB(skb);
- 
- 	if (!(info->flags & IEEE80211_TX_CTL_NO_ACK) &&
+ 	return NOTIFY_DONE;
 -- 
 2.53.0
 
