@@ -1,66 +1,59 @@
-Return-Path: <stable+bounces-239722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239340-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +OL4F5ta5mnGvAEAu9opvQ
-	(envelope-from <stable+bounces-239722-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:55:55 +0200
+	id CFsLMm1j5mkKvwEAu9opvQ
+	(envelope-from <stable+bounces-239340-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:33:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 018614303BA
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:55:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE76C4316D7
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:33:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4797531B2283
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:04:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 05DA63475324
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:46:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 966F52C11C6;
-	Mon, 20 Apr 2026 16:04:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F20C334C39;
+	Mon, 20 Apr 2026 15:46:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oDTk5OTn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gkDmIHrE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D1D533DEFE;
-	Mon, 20 Apr 2026 16:04:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62E9B2D9EE4;
+	Mon, 20 Apr 2026 15:46:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701049; cv=none; b=sKiq6L9I3w15Idvs5dIJFbNgkPwNw6iaO2gqqbVy6+cjDVCo8piEYhQOsQb5OIi61nM9kHs5YEip+uFBSt+uaOXRoSVXltv/yOREAuxK47Ex8YDnsks9ICcFoupWmzp5iDYx3GexrAaSWvTlC4rh6KLehkMMp6w2wwIU0CYK/WU=
+	t=1776699996; cv=none; b=UkIjc6sOMNbt3wZqO4ffTnZJuogPpTSJUAYHxHOcffMEJPmW/TOevTjs+fzHqgPrQMslt6Vg+0aaQwvuvVJ5C6kJVNMsEVgAkPip3OAscrSUb7NVm7+G2/kgw2fim/2eCsDZ5ks+WNGRg7es/ZzHDzgRxk+BxwBdovJdmqNg7sw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701049; c=relaxed/simple;
-	bh=vDvzrfkfxozNVLifbDNP7JFnR07FOJsN0KoW5tK+6TQ=;
+	s=arc-20240116; t=1776699996; c=relaxed/simple;
+	bh=bPPfGwOPjJ93kB0w1jY39VmUjRv+zADb8UkjIhukdcU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MGFMYDByj+r/gF84NG73wbIpGE5P/RR1t6IWn5vmTzo2f4zP+SJRnf2C8ZWKPzfWofBabUiECgCxULAiWtGJQitKQ4V6S1wmbLBtsAFIEPiRQOkMtXUCBvqWTSA/w8e5as6Ltk3BTVF/+O+RCB99j6ymIV0hHBrwtg9YWOU37GU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oDTk5OTn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A188DC19425;
-	Mon, 20 Apr 2026 16:04:08 +0000 (UTC)
+	 MIME-Version; b=UsjqguGJ/qCSO1j2v6g5eVku+Jlkou9J78J5fykskKyAQwdz8N/xG5ySCPOTKYtPdKbKQsLqHY9XQH0hjnUVlzdE4bm1Dudbg3J1WviA9cdhMdWkNvX0BWo5dr0If/MZTnv+U+gxNclue68GsIpiieY3tKWLoTXfGoyFuE/baQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gkDmIHrE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2407C19425;
+	Mon, 20 Apr 2026 15:46:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701049;
-	bh=vDvzrfkfxozNVLifbDNP7JFnR07FOJsN0KoW5tK+6TQ=;
+	s=korg; t=1776699996;
+	bh=bPPfGwOPjJ93kB0w1jY39VmUjRv+zADb8UkjIhukdcU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oDTk5OTnGRqoLu34D0o9Xfa8Hmq9Wq1poDPomY5cAa6v3gpHj35c570oR10rN8uoV
-	 i9eEI9DBe9tDCS1zb0mChFWKGZ6KP593ua5lsrVXiH4qgWeA3qu7KlxAPeopWtZVbE
-	 MmtI4TG5SE5ghlI/tcTT4FGOE0SugOtxz4VMhdCg=
+	b=gkDmIHrEsyYdcAb+R3XQfVh2/TpqiPI76Alk4sfZV4AszCTgRmZ7sRLOkMuwhNo+N
+	 lDquJqReJOV4w/gGMZcjj7dpNOjWETHsuLjNoCkDq6fmbx8ORI9i+pCXt/FQsO54Jn
+	 t32gfNnLEKEx805MKu4Iy1cxB2bqHIKAZyXyoYl0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tejas Bharambe <tejas.bharambe@outlook.com>,
-	syzbot+a49010a0e8fcdeea075f@syzkaller.appspotmail.com,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Heming Zhao <heming.zhao@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.18 161/198] ocfs2: fix use-after-free in ocfs2_fault() when VM_FAULT_RETRY
-Date: Mon, 20 Apr 2026 17:42:20 +0200
-Message-ID: <20260420153941.409428745@linuxfoundation.org>
+	Mingzhe Zou <mingzhe.zou@easystack.cn>,
+	Coly Li <colyli@fnnas.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 7.0 70/76] bcache: fix cached_dev.sb_bio use-after-free and crash
+Date: Mon, 20 Apr 2026 17:42:21 +0200
+Message-ID: <20260420153913.365443735@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+In-Reply-To: <20260420153910.810034134@linuxfoundation.org>
+References: <20260420153910.810034134@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,139 +64,103 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	TAGGED_FROM(0.00)[bounces-239722-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,syzkaller.appspotmail.com,linux.alibaba.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,suse.com,linux-foundation.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable,a49010a0e8fcdeea075f];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-239340-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:email,alibaba.com:email,suse.com:email,huawei.com:email,linux-foundation.org:email,syzkaller.appspot.com:url,appspotmail.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,live.cn:email,oracle.com:email,evilplan.org:email]
-X-Rspamd-Queue-Id: 018614303BA
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel.dk:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: EE76C4316D7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tejas Bharambe <tejas.bharambe@outlook.com>
+From: Mingzhe Zou <mingzhe.zou@easystack.cn>
 
-commit 7de554cabf160e331e4442e2a9ad874ca9875921 upstream.
+commit fec114a98b8735ee89c75216c45a78e28be0f128 upstream.
 
-filemap_fault() may drop the mmap_lock before returning VM_FAULT_RETRY,
-as documented in mm/filemap.c:
+In our production environment, we have received multiple crash reports
+regarding libceph, which have caught our attention:
 
-  "If our return value has VM_FAULT_RETRY set, it's because the mmap_lock
-  may be dropped before doing I/O or by lock_folio_maybe_drop_mmap()."
+```
+[6888366.280350] Call Trace:
+[6888366.280452]  blk_update_request+0x14e/0x370
+[6888366.280561]  blk_mq_end_request+0x1a/0x130
+[6888366.280671]  rbd_img_handle_request+0x1a0/0x1b0 [rbd]
+[6888366.280792]  rbd_obj_handle_request+0x32/0x40 [rbd]
+[6888366.280903]  __complete_request+0x22/0x70 [libceph]
+[6888366.281032]  osd_dispatch+0x15e/0xb40 [libceph]
+[6888366.281164]  ? inet_recvmsg+0x5b/0xd0
+[6888366.281272]  ? ceph_tcp_recvmsg+0x6f/0xa0 [libceph]
+[6888366.281405]  ceph_con_process_message+0x79/0x140 [libceph]
+[6888366.281534]  ceph_con_v1_try_read+0x5d7/0xf30 [libceph]
+[6888366.281661]  ceph_con_workfn+0x329/0x680 [libceph]
+```
 
-When this happens, a concurrent munmap() can call remove_vma() and free
-the vm_area_struct via RCU. The saved 'vma' pointer in ocfs2_fault() then
-becomes a dangling pointer, and the subsequent trace_ocfs2_fault() call
-dereferences it -- a use-after-free.
+After analyzing the coredump file, we found that the address of
+dc->sb_bio has been freed. We know that cached_dev is only freed when it
+is stopped.
 
-Fix this by saving ip_blkno as a plain integer before calling
-filemap_fault(), and removing vma from the trace event. Since
-ip_blkno is copied by value before the lock can be dropped, it
-remains valid regardless of what happens to the vma or inode
-afterward.
+Since sb_bio is a part of struct cached_dev, rather than an alloc every
+time.  If the device is stopped while writing to the superblock, the
+released address will be accessed at endio.
 
-Link: https://lkml.kernel.org/r/20260410083816.34951-1-tejas.bharambe@outlook.com
-Fixes: 614a9e849ca6 ("ocfs2: Remove FILE_IO from masklog.")
-Signed-off-by: Tejas Bharambe <tejas.bharambe@outlook.com>
-Reported-by: syzbot+a49010a0e8fcdeea075f@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=a49010a0e8fcdeea075f
-Suggested-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: Heming Zhao <heming.zhao@suse.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+This patch hopes to wait for sb_write to complete in cached_dev_free.
+
+It should be noted that we analyzed the cause of the problem, then tell
+all details to the QWEN and adopted the modifications it made.
+
+Signed-off-by: Mingzhe Zou <mingzhe.zou@easystack.cn>
+Fixes: cafe563591446 ("bcache: A block layer cache")
+Cc: stable@vger.kernel.org # 3.10+
+Signed-off-by: Coly Li <colyli@fnnas.com>
+Link: https://patch.msgid.link/20260322134102.480107-1-colyli@fnnas.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ocfs2/mmap.c        |    7 +++----
- fs/ocfs2/ocfs2_trace.h |   10 ++++------
- 2 files changed, 7 insertions(+), 10 deletions(-)
+ drivers/md/bcache/super.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/fs/ocfs2/mmap.c
-+++ b/fs/ocfs2/mmap.c
-@@ -30,7 +30,8 @@
+--- a/drivers/md/bcache/super.c
++++ b/drivers/md/bcache/super.c
+@@ -1373,6 +1373,13 @@ static CLOSURE_CALLBACK(cached_dev_free)
  
- static vm_fault_t ocfs2_fault(struct vm_fault *vmf)
- {
--	struct vm_area_struct *vma = vmf->vma;
-+	unsigned long long ip_blkno =
-+		OCFS2_I(file_inode(vmf->vma->vm_file))->ip_blkno;
- 	sigset_t oldset;
- 	vm_fault_t ret;
+ 	mutex_unlock(&bch_register_lock);
  
-@@ -38,11 +39,9 @@ static vm_fault_t ocfs2_fault(struct vm_
- 	ret = filemap_fault(vmf);
- 	ocfs2_unblock_signals(&oldset);
++	/*
++	 * Wait for any pending sb_write to complete before free.
++	 * The sb_bio is embedded in struct cached_dev, so we must
++	 * ensure no I/O is in progress.
++	 */
++	closure_sync(&dc->sb_write);
++
+ 	if (dc->sb_disk)
+ 		folio_put(virt_to_folio(dc->sb_disk));
  
--	trace_ocfs2_fault(OCFS2_I(vma->vm_file->f_mapping->host)->ip_blkno,
--			  vma, vmf->page, vmf->pgoff);
-+	trace_ocfs2_fault(ip_blkno, vmf->page, vmf->pgoff);
- 	return ret;
- }
--
- static vm_fault_t __ocfs2_page_mkwrite(struct file *file,
- 			struct buffer_head *di_bh, struct folio *folio)
- {
---- a/fs/ocfs2/ocfs2_trace.h
-+++ b/fs/ocfs2/ocfs2_trace.h
-@@ -1246,22 +1246,20 @@ TRACE_EVENT(ocfs2_write_end_inline,
- 
- TRACE_EVENT(ocfs2_fault,
- 	TP_PROTO(unsigned long long ino,
--		 void *area, void *page, unsigned long pgoff),
--	TP_ARGS(ino, area, page, pgoff),
-+		 void *page, unsigned long pgoff),
-+	TP_ARGS(ino, page, pgoff),
- 	TP_STRUCT__entry(
- 		__field(unsigned long long, ino)
--		__field(void *, area)
- 		__field(void *, page)
- 		__field(unsigned long, pgoff)
- 	),
- 	TP_fast_assign(
- 		__entry->ino = ino;
--		__entry->area = area;
- 		__entry->page = page;
- 		__entry->pgoff = pgoff;
- 	),
--	TP_printk("%llu %p %p %lu",
--		  __entry->ino, __entry->area, __entry->page, __entry->pgoff)
-+	TP_printk("%llu %p %lu",
-+		  __entry->ino, __entry->page, __entry->pgoff)
- );
- 
- /* End of trace events for fs/ocfs2/mmap.c. */
 
 
 
