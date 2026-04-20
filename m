@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-239556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239735-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mNSGFq5l5mkKvwEAu9opvQ
-	(envelope-from <stable+bounces-239556-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:43:10 +0200
+	id gLTyBUpj5mkKvwEAu9opvQ
+	(envelope-from <stable+bounces-239735-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:32:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EA47431E45
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:43:09 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1519A431677
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:32:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 72A8535F7490
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:56:02 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C2B1D301BEF0
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:04:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E84BD33A9FF;
-	Mon, 20 Apr 2026 15:55:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD39E33F5A9;
+	Mon, 20 Apr 2026 16:04:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t3NBTpFW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IcegWVHW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABBE3336896;
-	Mon, 20 Apr 2026 15:55:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FAB232F751;
+	Mon, 20 Apr 2026 16:04:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700555; cv=none; b=XPfQOYUm2OXyScurhIe6wbJogLKmrKSp9dYDMgi7QvMpN5FJmPwJrskkXT3dGLLDZ8kLS6WNPx2a9PSGbOyc4qEoL4kLLGCSfyvudiRbaIFknLYJ7P6auMsJhkrTNapHKdhJkqZ10Fn3GfvrfGlzdYp5O7O22mxY+KRH5xAX++4=
+	t=1776701082; cv=none; b=tvn+Ob3LSfTWkaE5SRmcu1zYkwGAOM5XZSmV5mWlQ5L42sFyYPjmv0vBDf4KgQw8dC4hP3breCjbnHAXF+kphCafvn8HAs4KYM954ZjDUdWKg1lc+oP3cbkDXtq0PQae+DDKen+N1b0d5LC61EW4FE3DyFzIBwhpw0YpiKOYjXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700555; c=relaxed/simple;
-	bh=vWMrgbicuGrFQN2Aj1y3J23atsjIBaDRsqhKbsCEZsQ=;
+	s=arc-20240116; t=1776701082; c=relaxed/simple;
+	bh=pNXaFBoS1WHdgKevIxizHMbawccIeXNg9xhtrAggye8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mA7ljWTe6MFbDXfhPwI6vZI/gmdwUCmk8CO3zo53+FQcHalGo9zUrDrAwDtRSx6ka/hn/zwzF8C04qOsW5bC8dK7sgfZ8hcGMrxH4vES1+iyX7Nxnlxhkv88RSxnTmnmweJWhroIOwnC9HBqHhyM/j+SO5f3QfXxD89fO4PTM58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t3NBTpFW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42783C19425;
-	Mon, 20 Apr 2026 15:55:55 +0000 (UTC)
+	 MIME-Version; b=O7OXreMmsVErfsdGTwL3fcMrAGmsmQfoZ62z0wg1ovhBDHeVqnrfUFATX15NoTt+IBC2xFdw6ssO25dTN4gmsb0jjbxI/M5T+scvuzvBqJbtP+yQ65Ssidh49efpqNvtshpOuIOTNQKbyhk6cvyhsaT/+dZHVYmM84XjJEPgwvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IcegWVHW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2624BC19425;
+	Mon, 20 Apr 2026 16:04:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700555;
-	bh=vWMrgbicuGrFQN2Aj1y3J23atsjIBaDRsqhKbsCEZsQ=;
+	s=korg; t=1776701082;
+	bh=pNXaFBoS1WHdgKevIxizHMbawccIeXNg9xhtrAggye8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t3NBTpFWZs4/cXIZur6QoAkmQ3KZGXuAYqeK4w+bNOO0VZgfUqtDhGo7IkuwnvMvQ
-	 Km0zhV12wVJl6HP9yiAF/D5nI4ICVAf6o7/H9RhOYWoZSNR8QKCgTFrHyojdU///c7
-	 xSP5hBItES6M0K/4YgvPfEUOhTvWepfitqD1W1nQ=
+	b=IcegWVHW9pu8wzmCk9RPp9RLstl95ShaDPXqEAo/Oz860CeJuzuIZODSq7S3gt7Ff
+	 RKin0PHmEgWKrBq/7l4G19CSwl1zyxQN5K32YIrpesma5LsMN9N2nr76fJa57Jj8lX
+	 +LujSu1tTkC36O/5FT8aAvq2J+fx4fcJ3mCRd42A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Berk Cem Goksel <berkcgoksel@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.19 211/220] ALSA: 6fire: fix use-after-free on disconnect
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Sean Christopherson <seanjc@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 173/198] KVM: x86: Use __DECLARE_FLEX_ARRAY() for UAPI structures with VLAs
 Date: Mon, 20 Apr 2026 17:42:32 +0200
-Message-ID: <20260420153941.624417766@linuxfoundation.org>
+Message-ID: <20260420153941.842545257@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
-References: <20260420153934.013228280@linuxfoundation.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,117 +66,184 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-239556-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-239735-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.de:email]
-X-Rspamd-Queue-Id: 6EA47431E45
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,amazon.co.uk:email]
+X-Rspamd-Queue-Id: 1519A431677
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Berk Cem Goksel <berkcgoksel@gmail.com>
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-commit b9c826916fdce6419b94eb0cd8810fdac18c2386 upstream.
+[ Upstream commit 2619da73bb2f10d88f7e1087125c40144fdf0987 ]
 
-In usb6fire_chip_abort(), the chip struct is allocated as the card's
-private data (via snd_card_new with sizeof(struct sfire_chip)).  When
-snd_card_free_when_closed() is called and no file handles are open, the
-card and embedded chip are freed synchronously.  The subsequent
-chip->card = NULL write then hits freed slab memory.
+Commit 94dfc73e7cf4 ("treewide: uapi: Replace zero-length arrays with
+flexible-array members") broke the userspace API for C++.
 
-Call trace:
-  usb6fire_chip_abort sound/usb/6fire/chip.c:59 [inline]
-  usb6fire_chip_disconnect+0x348/0x358 sound/usb/6fire/chip.c:182
-  usb_unbind_interface+0x1a8/0x88c drivers/usb/core/driver.c:458
-  ...
-  hub_event+0x1a04/0x4518 drivers/usb/core/hub.c:5953
+These structures ending in VLAs are typically a *header*, which can be
+followed by an arbitrary number of entries. Userspace typically creates
+a larger structure with some non-zero number of entries, for example in
+QEMU's kvm_arch_get_supported_msr_feature():
 
-Fix by moving the card lifecycle out of usb6fire_chip_abort() and into
-usb6fire_chip_disconnect().  The card pointer is saved in a local
-before any teardown, snd_card_disconnect() is called first to prevent
-new opens, URBs are aborted while chip is still valid, and
-snd_card_free_when_closed() is called last so chip is never accessed
-after the card may be freed.
+    struct {
+        struct kvm_msrs info;
+        struct kvm_msr_entry entries[1];
+    } msr_data = {};
 
-Fixes: a0810c3d6dd2 ("ALSA: 6fire: Release resources at card release")
+While that works in C, it fails in C++ with an error like:
+ flexible array member 'kvm_msrs::entries' not at end of 'struct msr_data'
+
+Fix this by using __DECLARE_FLEX_ARRAY() for the VLA, which uses [0]
+for C++ compilation.
+
+Fixes: 94dfc73e7cf4 ("treewide: uapi: Replace zero-length arrays with flexible-array members")
 Cc: stable@vger.kernel.org
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Signed-off-by: Berk Cem Goksel <berkcgoksel@gmail.com>
-Link: https://patch.msgid.link/20260410051341.1069716-1-berkcgoksel@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Link: https://patch.msgid.link/3abaf6aefd6e5efeff3b860ac38421d9dec908db.camel@infradead.org
+[sean: tag for stable@]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/6fire/chip.c |   17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ arch/x86/include/uapi/asm/kvm.h |   12 ++++++------
+ include/uapi/linux/kvm.h        |   11 ++++++-----
+ 2 files changed, 12 insertions(+), 11 deletions(-)
 
---- a/sound/usb/6fire/chip.c
-+++ b/sound/usb/6fire/chip.c
-@@ -53,11 +53,6 @@ static void usb6fire_chip_abort(struct s
- 			usb6fire_comm_abort(chip);
- 		if (chip->control)
- 			usb6fire_control_abort(chip);
--		if (chip->card) {
--			snd_card_disconnect(chip->card);
--			snd_card_free_when_closed(chip->card);
--			chip->card = NULL;
--		}
- 	}
- }
+--- a/arch/x86/include/uapi/asm/kvm.h
++++ b/arch/x86/include/uapi/asm/kvm.h
+@@ -197,13 +197,13 @@ struct kvm_msrs {
+ 	__u32 nmsrs; /* number of msrs in entries */
+ 	__u32 pad;
  
-@@ -168,6 +163,7 @@ destroy_chip:
- static void usb6fire_chip_disconnect(struct usb_interface *intf)
- {
- 	struct sfire_chip *chip;
-+	struct snd_card *card;
+-	struct kvm_msr_entry entries[];
++	__DECLARE_FLEX_ARRAY(struct kvm_msr_entry, entries);
+ };
  
- 	chip = usb_get_intfdata(intf);
- 	if (chip) { /* if !chip, fw upload has been performed */
-@@ -178,8 +174,19 @@ static void usb6fire_chip_disconnect(str
- 				chips[chip->regidx] = NULL;
- 			}
+ /* for KVM_GET_MSR_INDEX_LIST */
+ struct kvm_msr_list {
+ 	__u32 nmsrs; /* number of msrs in entries */
+-	__u32 indices[];
++	__DECLARE_FLEX_ARRAY(__u32, indices);
+ };
  
-+			/*
-+			 * Save card pointer before teardown.
-+			 * snd_card_free_when_closed() may free card (and
-+			 * the embedded chip) immediately, so it must be
-+			 * called last and chip must not be accessed after.
-+			 */
-+			card = chip->card;
- 			chip->shutdown = true;
-+			if (card)
-+				snd_card_disconnect(card);
- 			usb6fire_chip_abort(chip);
-+			if (card)
-+				snd_card_free_when_closed(card);
- 		}
- 	}
- }
+ /* Maximum size of any access bitmap in bytes */
+@@ -245,7 +245,7 @@ struct kvm_cpuid_entry {
+ struct kvm_cpuid {
+ 	__u32 nent;
+ 	__u32 padding;
+-	struct kvm_cpuid_entry entries[];
++	__DECLARE_FLEX_ARRAY(struct kvm_cpuid_entry, entries);
+ };
+ 
+ struct kvm_cpuid_entry2 {
+@@ -267,7 +267,7 @@ struct kvm_cpuid_entry2 {
+ struct kvm_cpuid2 {
+ 	__u32 nent;
+ 	__u32 padding;
+-	struct kvm_cpuid_entry2 entries[];
++	__DECLARE_FLEX_ARRAY(struct kvm_cpuid_entry2, entries);
+ };
+ 
+ /* for KVM_GET_PIT and KVM_SET_PIT */
+@@ -398,7 +398,7 @@ struct kvm_xsave {
+ 	 * the contents of CPUID leaf 0xD on the host.
+ 	 */
+ 	__u32 region[1024];
+-	__u32 extra[];
++	__DECLARE_FLEX_ARRAY(__u32, extra);
+ };
+ 
+ #define KVM_MAX_XCRS	16
+@@ -564,7 +564,7 @@ struct kvm_pmu_event_filter {
+ 	__u32 fixed_counter_bitmap;
+ 	__u32 flags;
+ 	__u32 pad[4];
+-	__u64 events[];
++	__DECLARE_FLEX_ARRAY(__u64, events);
+ };
+ 
+ #define KVM_PMU_EVENT_ALLOW 0
+--- a/include/uapi/linux/kvm.h
++++ b/include/uapi/linux/kvm.h
+@@ -11,6 +11,7 @@
+ #include <linux/const.h>
+ #include <linux/types.h>
+ #include <linux/compiler.h>
++#include <linux/stddef.h>
+ #include <linux/ioctl.h>
+ #include <asm/kvm.h>
+ 
+@@ -523,7 +524,7 @@ struct kvm_coalesced_mmio {
+ 
+ struct kvm_coalesced_mmio_ring {
+ 	__u32 first, last;
+-	struct kvm_coalesced_mmio coalesced_mmio[];
++	__DECLARE_FLEX_ARRAY(struct kvm_coalesced_mmio, coalesced_mmio);
+ };
+ 
+ #define KVM_COALESCED_MMIO_MAX \
+@@ -573,7 +574,7 @@ struct kvm_clear_dirty_log {
+ /* for KVM_SET_SIGNAL_MASK */
+ struct kvm_signal_mask {
+ 	__u32 len;
+-	__u8  sigset[];
++	__DECLARE_FLEX_ARRAY(__u8, sigset);
+ };
+ 
+ /* for KVM_TPR_ACCESS_REPORTING */
+@@ -1029,7 +1030,7 @@ struct kvm_irq_routing_entry {
+ struct kvm_irq_routing {
+ 	__u32 nr;
+ 	__u32 flags;
+-	struct kvm_irq_routing_entry entries[];
++	__DECLARE_FLEX_ARRAY(struct kvm_irq_routing_entry, entries);
+ };
+ 
+ #define KVM_IRQFD_FLAG_DEASSIGN (1 << 0)
+@@ -1120,7 +1121,7 @@ struct kvm_dirty_tlb {
+ 
+ struct kvm_reg_list {
+ 	__u64 n; /* number of regs */
+-	__u64 reg[];
++	__DECLARE_FLEX_ARRAY(__u64, reg);
+ };
+ 
+ struct kvm_one_reg {
+@@ -1575,7 +1576,7 @@ struct kvm_stats_desc {
+ #ifdef __KERNEL__
+ 	char name[KVM_STATS_NAME_SIZE];
+ #else
+-	char name[];
++	__DECLARE_FLEX_ARRAY(char, name);
+ #endif
+ };
+ 
 
 
 
