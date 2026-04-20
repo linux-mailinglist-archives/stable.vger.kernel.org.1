@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-239452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239669-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GG30K/ZX5mlQvAEAu9opvQ
-	(envelope-from <stable+bounces-239452-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:44:38 +0200
+	id +OTPAs5g5mkxvgEAu9opvQ
+	(envelope-from <stable+bounces-239669-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:22:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44D0042FEFE
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:44:37 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B72B431102
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:22:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A015C307940D
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:51:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ED81F3205C5D
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:02:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E075033B6EF;
-	Mon, 20 Apr 2026 15:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AE9033F58E;
+	Mon, 20 Apr 2026 16:01:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fMR7H7+/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="trj6fWVQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A48D73368B2;
-	Mon, 20 Apr 2026 15:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C31A33F5A9;
+	Mon, 20 Apr 2026 16:01:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700289; cv=none; b=pSW0TIQeRr7TzFTcZFluo6DrFkIE57dby4GIegmp0buklnXdWrTI6/TozjgaK/u/V0yeT9OqDWgai1rMUS7dieKbRA3rpERYj18G8dShMMR0yJhiVHd6JJu37QNB5xjan1YimzFqvItIXX7eLpK4/TXKd+rcqYW9M7DQ2FgApTA=
+	t=1776700916; cv=none; b=d+a3BS2temGALbvp8+dIfMugrwHZuO7c7CTz+JsVhv56DhJkZvDfp3xkH41RB1334jdCbkNMVQ+oaS+7V6qGzIgfa/yCQx5aShosS849gFp0hkCpkU8nAo+uPaM6c/qCFivTkIa2hAR33H/KQEg2Yhojw7JzLizAYCplrwi5bfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700289; c=relaxed/simple;
-	bh=6TYByFnt1gBwA6Tpg5bsAcWwSZ3xz4W2fJB+XSAANCQ=;
+	s=arc-20240116; t=1776700916; c=relaxed/simple;
+	bh=oHGS9KGkgA0qFvxXmyd1JhVEl5jJivj1fc3zgfx/asE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RuAC/8VgeLUyeiPxY08RG2yq4RxX1PzIVs5eIVuLxtloMUmMgW70kwMD2bE4/1jiFVaF0bCFGYrd867ign53aswPj+jWFRCcCNrEYxTPQloVz8iW4sPhBkbsywcLOxT4yyCerqrBWIsdWnui0+AVnokEBsfiVa8EuRJ7/kbXEm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fMR7H7+/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B1F5C19425;
-	Mon, 20 Apr 2026 15:51:29 +0000 (UTC)
+	 MIME-Version; b=DbWj1z5TczziKob7PpxmmoBmxbpLPgH4zVC9uqRnuMxLQ2eYI9DWNVrauzgzujlSI5CdMCt276tua6NH9on+GIOdVF5qReBtMXZBTryYdgyzRj2nItbx9L6b4JV/BX3Fdd6FqIUoiRm3Z7jXpFlG9D3tHdhvOdtyV/kc/hzaAj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=trj6fWVQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A768DC19425;
+	Mon, 20 Apr 2026 16:01:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700289;
-	bh=6TYByFnt1gBwA6Tpg5bsAcWwSZ3xz4W2fJB+XSAANCQ=;
+	s=korg; t=1776700916;
+	bh=oHGS9KGkgA0qFvxXmyd1JhVEl5jJivj1fc3zgfx/asE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fMR7H7+/SExEF4fl05RO7c765FsP2z2fMwJ5fhTsS2VUl2ghmQI/Mo39Pyeh6rffr
-	 LWMo+fRxUlkT28EHn3B6hFRxDAJTusDlA26kTXyzuD3fxqI0Vao4ifpwo3NF+SF+6X
-	 q928mq5zTMcDUB0rRUeORgcDWJgSHP0czNTlN6Vs=
+	b=trj6fWVQr6QeJnwH5RWBR84QZWllAHI3g1QfOvXEpfzIW8MPB7oAmflzYG3qo4jQh
+	 TyTdq+JnN+AJ3Jr3hBNPdeqzuT4VGJrQBDZM6ULx80lOoGralA2CqYKRinohKdpCXA
+	 KYy2/e7Jlmy9o7DVhOVwMv0NA3pp8FL5veY6TihA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Julian Anastasov <ja@ssi.bg>,
-	Florian Westphal <fw@strlen.de>,
+	Yiming Qian <yimingqian591@gmail.com>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Eric Dumazet <edumazet@google.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 115/220] ipvs: fix NULL deref in ip_vs_add_service error path
+Subject: [PATCH 6.18 077/198] ipv4: nexthop: allocate skb dynamically in rtm_get_nexthop()
 Date: Mon, 20 Apr 2026 17:40:56 +0200
-Message-ID: <20260420153938.170282752@linuxfoundation.org>
+Message-ID: <20260420153938.382265122@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
-References: <20260420153934.013228280@linuxfoundation.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,98 +67,181 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [3.84 / 15.00];
-	SEM_URIBL(3.50)[asu.edu:email];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
-	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,kernel.org,ssi.bg,strlen.de];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-239452-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de,google.com,nvidia.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-239669-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	NEURAL_HAM(-0.00)[-0.310];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	R_SPF_ALLOW(0.00)[+ip6:2600:3c04:e001:36c::/64:c];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ssi.bg:email,asu.edu:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 44D0042FEFE
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,suse.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 5B72B431102
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Fernando Fernandez Mancera <fmancera@suse.de>
 
-[ Upstream commit 9a91797e61d286805ae10a92cc48959c30800556 ]
+[ Upstream commit 14cf0cd35361f4e94824bf8a42f72713d7702a73 ]
 
-When ip_vs_bind_scheduler() succeeds in ip_vs_add_service(), the local
-variable sched is set to NULL.  If ip_vs_start_estimator() subsequently
-fails, the out_err cleanup calls ip_vs_unbind_scheduler(svc, sched)
-with sched == NULL.  ip_vs_unbind_scheduler() passes the cur_sched NULL
-check (because svc->scheduler was set by the successful bind) but then
-dereferences the NULL sched parameter at sched->done_service, causing a
-kernel panic at offset 0x30 from NULL.
+When querying a nexthop object via RTM_GETNEXTHOP, the kernel currently
+allocates a fixed-size skb using NLMSG_GOODSIZE. While sufficient for
+single nexthops and small Equal-Cost Multi-Path groups, this fixed
+allocation fails for large nexthop groups like 512 nexthops.
 
- Oops: general protection fault, [..] [#1] PREEMPT SMP KASAN NOPTI
- KASAN: null-ptr-deref in range [0x0000000000000030-0x0000000000000037]
- RIP: 0010:ip_vs_unbind_scheduler (net/netfilter/ipvs/ip_vs_sched.c:69)
+This results in the following warning splat:
+
+ WARNING: net/ipv4/nexthop.c:3395 at rtm_get_nexthop+0x176/0x1c0, CPU#20: rep/4608
+ [...]
+ RIP: 0010:rtm_get_nexthop (net/ipv4/nexthop.c:3395)
+ [...]
  Call Trace:
   <TASK>
-  ip_vs_add_service.isra.0 (net/netfilter/ipvs/ip_vs_ctl.c:1500)
-  do_ip_vs_set_ctl (net/netfilter/ipvs/ip_vs_ctl.c:2809)
-  nf_setsockopt (net/netfilter/nf_sockopt.c:102)
-  [..]
+  rtnetlink_rcv_msg (net/core/rtnetlink.c:6989)
+  netlink_rcv_skb (net/netlink/af_netlink.c:2550)
+  netlink_unicast (net/netlink/af_netlink.c:1319 net/netlink/af_netlink.c:1344)
+  netlink_sendmsg (net/netlink/af_netlink.c:1894)
+  ____sys_sendmsg (net/socket.c:721 net/socket.c:736 net/socket.c:2585)
+  ___sys_sendmsg (net/socket.c:2641)
+  __sys_sendmsg (net/socket.c:2671)
+  do_syscall_64 (arch/x86/entry/syscall_64.c:63 arch/x86/entry/syscall_64.c:94)
+  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+  </TASK>
 
-Fix by simply not clearing the local sched variable after a successful
-bind.  ip_vs_unbind_scheduler() already detects whether a scheduler is
-installed via svc->scheduler, and keeping sched non-NULL ensures the
-error path passes the correct pointer to both ip_vs_unbind_scheduler()
-and ip_vs_scheduler_put().
+Fix this by allocating the size dynamically using nh_nlmsg_size() and
+using nlmsg_new(), this is consistent with nexthop_notify() behavior. In
+addition, adjust nh_nlmsg_size_grp() so it calculates the size needed
+based on flags passed. While at it, also add the size of NHA_FDB for
+nexthop group size calculation as it was missing too.
 
-While the bug is older, the problem popups in more recent kernels (6.2),
-when the new error path is taken after the ip_vs_start_estimator() call.
+This cannot be reproduced via iproute2 as the group size is currently
+limited and the command fails as follows:
 
-Fixes: 705dd3444081 ("ipvs: use kthreads for stats estimation")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Acked-by: Simon Horman <horms@kernel.org>
-Acked-by: Julian Anastasov <ja@ssi.bg>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+addattr_l ERROR: message exceeded bound of 1048
+
+Fixes: 430a049190de ("nexthop: Add support for nexthop groups")
+Reported-by: Yiming Qian <yimingqian591@gmail.com>
+Closes: https://lore.kernel.org/netdev/CAL_bE8Li2h4KO+AQFXW4S6Yb_u5X4oSKnkywW+LPFjuErhqELA@mail.gmail.com/
+Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20260402072613.25262-2-fmancera@suse.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/ipvs/ip_vs_ctl.c | 1 -
- 1 file changed, 1 deletion(-)
+ net/ipv4/nexthop.c | 38 +++++++++++++++++++++++++++-----------
+ 1 file changed, 27 insertions(+), 11 deletions(-)
 
-diff --git a/net/netfilter/ipvs/ip_vs_ctl.c b/net/netfilter/ipvs/ip_vs_ctl.c
-index 0687028943774..ce217a25a6af7 100644
---- a/net/netfilter/ipvs/ip_vs_ctl.c
-+++ b/net/netfilter/ipvs/ip_vs_ctl.c
-@@ -1452,7 +1452,6 @@ ip_vs_add_service(struct netns_ipvs *ipvs, struct ip_vs_service_user_kern *u,
- 		ret = ip_vs_bind_scheduler(svc, sched);
- 		if (ret)
- 			goto out_err;
--		sched = NULL;
- 	}
+diff --git a/net/ipv4/nexthop.c b/net/ipv4/nexthop.c
+index aa53a74ac2389..c958b8edfe540 100644
+--- a/net/ipv4/nexthop.c
++++ b/net/ipv4/nexthop.c
+@@ -1006,16 +1006,32 @@ static size_t nh_nlmsg_size_grp_res(struct nh_group *nhg)
+ 		nla_total_size_64bit(8);/* NHA_RES_GROUP_UNBALANCED_TIME */
+ }
  
- 	ret = ip_vs_start_estimator(ipvs, &svc->stats);
+-static size_t nh_nlmsg_size_grp(struct nexthop *nh)
++static size_t nh_nlmsg_size_grp(struct nexthop *nh, u32 op_flags)
+ {
+ 	struct nh_group *nhg = rtnl_dereference(nh->nh_grp);
+ 	size_t sz = sizeof(struct nexthop_grp) * nhg->num_nh;
+ 	size_t tot = nla_total_size(sz) +
+-		nla_total_size(2); /* NHA_GROUP_TYPE */
++		nla_total_size(2) +	/* NHA_GROUP_TYPE */
++		nla_total_size(0);	/* NHA_FDB */
+ 
+ 	if (nhg->resilient)
+ 		tot += nh_nlmsg_size_grp_res(nhg);
+ 
++	if (op_flags & NHA_OP_FLAG_DUMP_STATS) {
++		tot += nla_total_size(0) +	  /* NHA_GROUP_STATS */
++		       nla_total_size(4);	  /* NHA_HW_STATS_ENABLE */
++		tot += nhg->num_nh *
++		       (nla_total_size(0) +	  /* NHA_GROUP_STATS_ENTRY */
++			nla_total_size(4) +	  /* NHA_GROUP_STATS_ENTRY_ID */
++			nla_total_size_64bit(8)); /* NHA_GROUP_STATS_ENTRY_PACKETS */
++
++		if (op_flags & NHA_OP_FLAG_DUMP_HW_STATS) {
++			tot += nhg->num_nh *
++			       nla_total_size_64bit(8); /* NHA_GROUP_STATS_ENTRY_PACKETS_HW */
++			tot += nla_total_size(4);	/* NHA_HW_STATS_USED */
++		}
++	}
++
+ 	return tot;
+ }
+ 
+@@ -1050,14 +1066,14 @@ static size_t nh_nlmsg_size_single(struct nexthop *nh)
+ 	return sz;
+ }
+ 
+-static size_t nh_nlmsg_size(struct nexthop *nh)
++static size_t nh_nlmsg_size(struct nexthop *nh, u32 op_flags)
+ {
+ 	size_t sz = NLMSG_ALIGN(sizeof(struct nhmsg));
+ 
+ 	sz += nla_total_size(4); /* NHA_ID */
+ 
+ 	if (nh->is_group)
+-		sz += nh_nlmsg_size_grp(nh) +
++		sz += nh_nlmsg_size_grp(nh, op_flags) +
+ 		      nla_total_size(4) +	/* NHA_OP_FLAGS */
+ 		      0;
+ 	else
+@@ -1073,7 +1089,7 @@ static void nexthop_notify(int event, struct nexthop *nh, struct nl_info *info)
+ 	struct sk_buff *skb;
+ 	int err = -ENOBUFS;
+ 
+-	skb = nlmsg_new(nh_nlmsg_size(nh), gfp_any());
++	skb = nlmsg_new(nh_nlmsg_size(nh, 0), gfp_any());
+ 	if (!skb)
+ 		goto errout;
+ 
+@@ -3379,15 +3395,15 @@ static int rtm_get_nexthop(struct sk_buff *in_skb, struct nlmsghdr *nlh,
+ 	if (err)
+ 		return err;
+ 
+-	err = -ENOBUFS;
+-	skb = alloc_skb(NLMSG_GOODSIZE, GFP_KERNEL);
+-	if (!skb)
+-		goto out;
+-
+ 	err = -ENOENT;
+ 	nh = nexthop_find_by_id(net, id);
+ 	if (!nh)
+-		goto errout_free;
++		goto out;
++
++	err = -ENOBUFS;
++	skb = nlmsg_new(nh_nlmsg_size(nh, op_flags), GFP_KERNEL);
++	if (!skb)
++		goto out;
+ 
+ 	err = nh_fill_node(skb, nh, RTM_NEWNEXTHOP, NETLINK_CB(in_skb).portid,
+ 			   nlh->nlmsg_seq, 0, op_flags);
 -- 
 2.53.0
 
