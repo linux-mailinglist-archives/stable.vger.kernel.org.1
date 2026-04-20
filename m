@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-239848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239515-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eFXvM9Vb5mmtvAEAu9opvQ
-	(envelope-from <stable+bounces-239848-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:01:09 +0200
+	id UPotMjll5mlmvwEAu9opvQ
+	(envelope-from <stable+bounces-239515-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:41:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D60F43060D
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:01:09 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23A85431D10
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:41:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 27BD2329CD7A
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:09:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8DF7D35CA85D
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:54:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FC092DF719;
-	Mon, 20 Apr 2026 16:09:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2311D2E11C7;
+	Mon, 20 Apr 2026 15:54:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z3CiVx9l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hm79zrlw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02A1934252C;
-	Mon, 20 Apr 2026 16:09:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA4692FD1B3;
+	Mon, 20 Apr 2026 15:54:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701371; cv=none; b=AT99gM9py0AqYe+xO86YGA3tGHmnuu98uL99Dno9h2+KsudENbggdG5FOAO/ykv/IAukc5UG18OSda9B8o9tB0a2qC8W6ZcaLD5Pp46aL707DxDfT9hEDRbuIIs6GJxbQa6CZcfN2ByYiSNW2Jqsw0emcW1TmWYaCQ4muiC+k9E=
+	t=1776700450; cv=none; b=rf3KtiIFRgwcVM306dV0444G98xgzd9PHZCLZopZteZ5vILBmPE0ww+OanfrqeWgq7F8e0bHVaJaqc3hT8umZKW8EczICYl5e2I4EITecrkaoQTc/2UjsKTvT4SRBeSTuPgRApYHKByfiH2mVMZ4Qc2n1D3deVK55WGHbN9lNTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701371; c=relaxed/simple;
-	bh=GN6SI/3JCVjEIAiipZzFCaewLs5EwQJSVgcj5yQltfw=;
+	s=arc-20240116; t=1776700450; c=relaxed/simple;
+	bh=/C3fNacgZ/yJPlVrrfuR5VRDinWvz7TtpZPDJKyVli4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HVAMAKjaVVuFWXMJPn7BVHFnEcQH/O3mmdRu/mThK+YTblKA5xG5dr/CLjpVZIu/B1dFRVQCV93P/BqwBbmp3OqHA8/sULq6pJjcIHYqUHYdlOR7pQFb61K8KgX2hqVt6UoLnNodXzKUihm2VA/8mWxt2Qk9Cd1xM4FltkCIHCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z3CiVx9l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D6F5C19425;
-	Mon, 20 Apr 2026 16:09:30 +0000 (UTC)
+	 MIME-Version; b=SwWm/akY4iLg8IdmwOqNk4k4eWpVfevfcHmLJ0NtT7jKlvZsLgVN1AxmGF6TrO8E8yCPN5DMT5j0Qck2ixCD2TwavqwfehTjhopBuAtmw3C+jI+ub6e/IOBGwGOJ25ZtKG286p4pT0ms4bPD8YIytQD9tGLYxybPOMlbSzEqqGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hm79zrlw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68428C19425;
+	Mon, 20 Apr 2026 15:54:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701370;
-	bh=GN6SI/3JCVjEIAiipZzFCaewLs5EwQJSVgcj5yQltfw=;
+	s=korg; t=1776700450;
+	bh=/C3fNacgZ/yJPlVrrfuR5VRDinWvz7TtpZPDJKyVli4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z3CiVx9ltsUWlhDLdX0HNKtFHKaPesqae2FQSvh/1GHErx3UwikmiqUeVypxEGD2i
-	 Biu4llaZgd/lleWpeku9+LGWdHlEVu64zEYEskCiiNskagrPbNQJQZdTT6JGBMv1Jz
-	 VrQvsqIs6TYOHXaGVhPd8qRIzF7ozQTQummyBM2c=
+	b=Hm79zrlwXXBzjBDv33xkU0xgEXqwOo16rInr7pQcLQ0flQmbO+u2PuDre9q0qQP/8
+	 kptssNp79BeUCMJDi8GDuImokaVsjJS1LsAobKDjegWxU0cr16yCYJlYfTlsRZ+vmm
+	 wYIZKsftWVoJpI0yWkNz3b77z737e4j3sGO5VcRE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris J Arges <carges@cloudflare.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 054/162] net: increase IP_TUNNEL_RECURSION_LIMIT to 5
-Date: Mon, 20 Apr 2026 17:41:26 +0200
-Message-ID: <20260420153928.992818317@linuxfoundation.org>
+	Paolo Abeni <pabeni@redhat.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.19 146/220] net: usb: cdc-phonet: fix skb frags[] overflow in rx_complete()
+Date: Mon, 20 Apr 2026 17:41:27 +0200
+Message-ID: <20260420153939.283398839@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
-References: <20260420153927.006696811@linuxfoundation.org>
+In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
+References: <20260420153934.013228280@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,78 +67,91 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-239848-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239515-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.993];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,cloudflare.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: 5D60F43060D
+	TAGGED_RCPT(0.00)[stable,netdev];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,lunn.ch:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,davemloft.net:email]
+X-Rspamd-Queue-Id: 23A85431D10
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris J Arges <carges@cloudflare.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit 77facb35227c421467cdb49268de433168c2dcef ]
+commit 600dc40554dc5ad1e6f3af51f700228033f43ea7 upstream.
 
-In configurations with multiple tunnel layers and MPLS lwtunnel routing, a
-single tunnel hop can increment the counter beyond this limit. This causes
-packets to be dropped with the "Dead loop on virtual device" message even
-when a routing loop doesn't exist.
+A malicious USB device claiming to be a CDC Phonet modem can overflow
+the skb_shared_info->frags[] array by sending an unbounded sequence of
+full-page bulk transfers.
 
-Increase IP_TUNNEL_RECURSION_LIMIT from 4 to 5 to handle this use-case.
+Drop the skb and increment the length error when the frag limit is
+reached.  This matches the same fix that commit f0813bcd2d9d ("net:
+wwan: t7xx: fix potential skb->frags overflow in RX path") did for the
+t7xx driver.
 
-Fixes: 6f1a9140ecda ("net: add xmit recursion limit to tunnel xmit functions")
-Link: https://lore.kernel.org/netdev/88deb91b-ef1b-403c-8eeb-0f971f27e34f@redhat.com/
-Signed-off-by: Chris J Arges <carges@cloudflare.com>
-Link: https://patch.msgid.link/20260402222401.3408368-1-carges@cloudflare.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: stable <stable@kernel.org>
+Assisted-by: gregkh_clanker_t1000
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/2026041134-dreamboat-buddhism-d1ec@gregkh
+Fixes: 87cf65601e17 ("USB host CDC Phonet network interface driver")
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/ip_tunnels.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/usb/cdc-phonet.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/ip_tunnels.h b/include/net/ip_tunnels.h
-index 0a5556ef16729..583fd1afd2387 100644
---- a/include/net/ip_tunnels.h
-+++ b/include/net/ip_tunnels.h
-@@ -29,7 +29,7 @@
-  * recursion involves route lookups and full IP output, consuming much
-  * more stack per level, so a lower limit is needed.
-  */
--#define IP_TUNNEL_RECURSION_LIMIT	4
-+#define IP_TUNNEL_RECURSION_LIMIT	5
- 
- /* Keep error state on tunnel for 30 sec */
- #define IPTUNNEL_ERR_TIMEO	(30*HZ)
--- 
-2.53.0
-
+--- a/drivers/net/usb/cdc-phonet.c
++++ b/drivers/net/usb/cdc-phonet.c
+@@ -157,11 +157,16 @@ static void rx_complete(struct urb *req)
+ 						PAGE_SIZE);
+ 				page = NULL;
+ 			}
+-		} else {
++		} else if (skb_shinfo(skb)->nr_frags < MAX_SKB_FRAGS) {
+ 			skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags,
+ 					page, 0, req->actual_length,
+ 					PAGE_SIZE);
+ 			page = NULL;
++		} else {
++			dev_kfree_skb_any(skb);
++			pnd->rx_skb = NULL;
++			skb = NULL;
++			dev->stats.rx_length_errors++;
+ 		}
+ 		if (req->actual_length < PAGE_SIZE)
+ 			pnd->rx_skb = NULL; /* Last fragment */
 
 
 
