@@ -1,68 +1,59 @@
-Return-Path: <stable+bounces-239896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239749-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kNYfEB5Z5mmtvAEAu9opvQ
-	(envelope-from <stable+bounces-239896-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:49:34 +0200
+	id yIMNBsda5mnGvAEAu9opvQ
+	(envelope-from <stable+bounces-239749-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:56:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C33FC43012D
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:49:33 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2D064303FB
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:56:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A83E732F7602
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:11:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 14CA031F8878
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:05:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3934633858B;
-	Mon, 20 Apr 2026 16:11:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05EF73396EE;
+	Mon, 20 Apr 2026 16:05:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kB9e99In"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NShbpbyz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7390345729;
-	Mon, 20 Apr 2026 16:11:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE06E2E093A;
+	Mon, 20 Apr 2026 16:05:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701491; cv=none; b=GEpqL4Ewluz871Eng485OEigJF+EPR/QG7+KaKjOVCQiWf3btm6Yf0L00DRRXqT7DUX/UvW52h9CzBoAAu2K+7UB3c3cgrO3udCKqGnCDtbwnfSJZ8dXjK496kyZE7i1WhPSZ8oKdtz3dV4uT0sPHClXF0GOMwaJb8Zc046houo=
+	t=1776701118; cv=none; b=nMUKv/0B2+IiTJstWTfLaaleF9k1jO+ujFaoHS/P2NjHkn3YvokJFYtTnJ97jWDgTvYb3WLtIO6btg68+ji9qFFs93UF95Bzp8yeb/suP+NCV3b3CdEb/tG73dzQDy/+Tgy/g+r/1STjrBAhU+4EsO+SDU16F9qzLZFAqgLzrtA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701491; c=relaxed/simple;
-	bh=zU1XPulFSABQIcRZF124PN/q/b0pBnrBLbFFqveonz8=;
+	s=arc-20240116; t=1776701118; c=relaxed/simple;
+	bh=KC+OzE4/TP1BQnW0iSJTCPrWBUmBXio3UgF+m2NB1cI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AcBifhFZw/SoLlKsBp6JuAHcRmCLNhZMipFuOuUMK3r/NBKLKyR1lYWkHXZsHPkRLvl45gjAeAagm+c3uXI05x6MPpd6AsNRr0Np1ZJOvumioulozVmTrrCMMIMZPGZ0Xl8jBH9OPRv/xUt9UUo6Rl9k2ILUKeDAFXIP42Hun0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kB9e99In; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56D51C19425;
-	Mon, 20 Apr 2026 16:11:30 +0000 (UTC)
+	 MIME-Version; b=fdWT3OT34rjsQG4n/MgeFavSk4+u49i6HITfr6hHlP3owCM8EDD65l7XPtomX6GBC1O1UwvHCh72PAjd0ulPWiaQt+yJLFUz2tPpTnqtEz3BRmligptl2YmqIOSx9F3+Wf4Fg87e3c+N6kJ0SmZOw63EHYPqPEZFzhCLWBoQ/v4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NShbpbyz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47347C19425;
+	Mon, 20 Apr 2026 16:05:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701490;
-	bh=zU1XPulFSABQIcRZF124PN/q/b0pBnrBLbFFqveonz8=;
+	s=korg; t=1776701118;
+	bh=KC+OzE4/TP1BQnW0iSJTCPrWBUmBXio3UgF+m2NB1cI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kB9e99InmF89guz1EcOCq8OaEUm8nlnM5oYiYcq6dImPYXy5Iv/MoiZ7fd6RJZys1
-	 Ts+31FT88i9cHsF/hdTdg53q0twlMo658t/tJ8y4MYHQJcyHybDwdcQdYmWOinppX3
-	 x1b6lJnW3f51V6DsLq6qVDotYd0MH47nUcpKp9TQ=
+	b=NShbpbyzm9sEBr/pS1/OBowMIG52ybewmaCQ6tG6HXqDMwHvORF03LkGLKBgO4/Mo
+	 xyYiPtR1Q77NhyZaeLIzTlpWnnvBcQNuy81Ctovap0ivISiy+GWOVAViHz25/5tf4U
+	 6GxyEVfdAwDuSHZZH0BFfr7OrTUGTmHp5J5WbOoU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Liam R. Howlett" <Liam.Howlett@Oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Jann Horn <jannh@google.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Peng Zhang <zhangpeng.00@bytedance.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Heiko Stuebner <heiko.stuebner@cherry.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 135/162] kernel: be more careful about dup_mmap() failures and uprobe registering
-Date: Mon, 20 Apr 2026 17:42:47 +0200
-Message-ID: <20260420153931.936189095@linuxfoundation.org>
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Berk Cem Goksel <berkcgoksel@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.18 189/198] ALSA: 6fire: fix use-after-free on disconnect
+Date: Mon, 20 Apr 2026 17:42:48 +0200
+Message-ID: <20260420153942.424071884@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
-References: <20260420153927.006696811@linuxfoundation.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,153 +66,117 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-239749-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-239896-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[15];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,bytedance.com:email,linux-foundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,infradead.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,oracle.com:email,cherry.de:email]
-X-Rspamd-Queue-Id: C33FC43012D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A2D064303FB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liam R. Howlett <Liam.Howlett@Oracle.com>
+From: Berk Cem Goksel <berkcgoksel@gmail.com>
 
-[ Upstream commit 64c37e134b120fb462fb4a80694bfb8e7be77b14 ]
+commit b9c826916fdce6419b94eb0cd8810fdac18c2386 upstream.
 
-If a memory allocation fails during dup_mmap(), the maple tree can be left
-in an unsafe state for other iterators besides the exit path.  All the
-locks are dropped before the exit_mmap() call (in mm/mmap.c), but the
-incomplete mm_struct can be reached through (at least) the rmap finding
-the vmas which have a pointer back to the mm_struct.
+In usb6fire_chip_abort(), the chip struct is allocated as the card's
+private data (via snd_card_new with sizeof(struct sfire_chip)).  When
+snd_card_free_when_closed() is called and no file handles are open, the
+card and embedded chip are freed synchronously.  The subsequent
+chip->card = NULL write then hits freed slab memory.
 
-Up to this point, there have been no issues with being able to find an
-mm_struct that was only partially initialised.  Syzbot was able to make
-the incomplete mm_struct fail with recent forking changes, so it has been
-proven unsafe to use the mm_struct that hasn't been initialised, as
-referenced in the link below.
+Call trace:
+  usb6fire_chip_abort sound/usb/6fire/chip.c:59 [inline]
+  usb6fire_chip_disconnect+0x348/0x358 sound/usb/6fire/chip.c:182
+  usb_unbind_interface+0x1a8/0x88c drivers/usb/core/driver.c:458
+  ...
+  hub_event+0x1a04/0x4518 drivers/usb/core/hub.c:5953
 
-Although 8ac662f5da19f ("fork: avoid inappropriate uprobe access to
-invalid mm") fixed the uprobe access, it does not completely remove the
-race.
+Fix by moving the card lifecycle out of usb6fire_chip_abort() and into
+usb6fire_chip_disconnect().  The card pointer is saved in a local
+before any teardown, snd_card_disconnect() is called first to prevent
+new opens, URBs are aborted while chip is still valid, and
+snd_card_free_when_closed() is called last so chip is never accessed
+after the card may be freed.
 
-This patch sets the MMF_OOM_SKIP to avoid the iteration of the vmas on the
-oom side (even though this is extremely unlikely to be selected as an oom
-victim in the race window), and sets MMF_UNSTABLE to avoid other potential
-users from using a partially initialised mm_struct.
-
-When registering vmas for uprobe, skip the vmas in an mm that is marked
-unstable.  Modifying a vma in an unstable mm may cause issues if the mm
-isn't fully initialised.
-
-Link: https://lore.kernel.org/all/6756d273.050a0220.2477f.003d.GAE@google.com/
-Link: https://lkml.kernel.org/r/20250127170221.1761366-1-Liam.Howlett@oracle.com
-Fixes: d24062914837 ("fork: use __mt_dup() to duplicate maple tree in dup_mmap()")
-Signed-off-by: Liam R. Howlett <Liam.Howlett@Oracle.com>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Oleg Nesterov <oleg@redhat.com>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Jann Horn <jannh@google.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Peng Zhang <zhangpeng.00@bytedance.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[resolved conflict from missing header includes:
- - linux/workqueue.h missing, introduced by commit 2bf8e5aceff8 ("uprobes:
-   allow put_uprobe() from non-sleepable softirq context")
- - linux/srcu.h missing, introduced by commit dd1a7567784e ("uprobes:
-   SRCU-protect uretprobe lifetime (with timeout)") ]
-Signed-off-by: Heiko Stuebner <heiko.stuebner@cherry.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a0810c3d6dd2 ("ALSA: 6fire: Release resources at card release")
+Cc: stable@vger.kernel.org
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Signed-off-by: Berk Cem Goksel <berkcgoksel@gmail.com>
+Link: https://patch.msgid.link/20260410051341.1069716-1-berkcgoksel@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/events/uprobes.c |  4 ++++
- kernel/fork.c           | 17 ++++++++++++++---
- 2 files changed, 18 insertions(+), 3 deletions(-)
+ sound/usb/6fire/chip.c |   17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
-index 1ff26dc3bdb01..5059de5fcc230 100644
---- a/kernel/events/uprobes.c
-+++ b/kernel/events/uprobes.c
-@@ -27,6 +27,7 @@
- #include <linux/shmem_fs.h>
- #include <linux/khugepaged.h>
- #include <linux/rcupdate_trace.h>
-+#include <linux/oom.h>          /* check_stable_address_space */
- 
- #include <linux/uprobes.h>
- 
-@@ -1106,6 +1107,9 @@ register_for_each_vma(struct uprobe *uprobe, struct uprobe_consumer *new)
- 		 * returns NULL in find_active_uprobe_rcu().
- 		 */
- 		mmap_write_lock(mm);
-+		if (check_stable_address_space(mm))
-+			goto unlock;
-+
- 		vma = find_vma(mm, info->vaddr);
- 		if (!vma || !valid_vma(vma, is_register) ||
- 		    file_inode(vma->vm_file) != uprobe->inode)
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 55086df4d24cb..a01cf3a904bfd 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -766,7 +766,8 @@ static __latent_entropy int dup_mmap(struct mm_struct *mm,
- 		mt_set_in_rcu(vmi.mas.tree);
- 		ksm_fork(mm, oldmm);
- 		khugepaged_fork(mm, oldmm);
--	} else if (mpnt) {
-+	} else {
-+
- 		/*
- 		 * The entire maple tree has already been duplicated. If the
- 		 * mmap duplication fails, mark the failure point with
-@@ -774,8 +775,18 @@ static __latent_entropy int dup_mmap(struct mm_struct *mm,
- 		 * stop releasing VMAs that have not been duplicated after this
- 		 * point.
- 		 */
--		mas_set_range(&vmi.mas, mpnt->vm_start, mpnt->vm_end - 1);
--		mas_store(&vmi.mas, XA_ZERO_ENTRY);
-+		if (mpnt) {
-+			mas_set_range(&vmi.mas, mpnt->vm_start, mpnt->vm_end - 1);
-+			mas_store(&vmi.mas, XA_ZERO_ENTRY);
-+			/* Avoid OOM iterating a broken tree */
-+			set_bit(MMF_OOM_SKIP, &mm->flags);
-+		}
-+		/*
-+		 * The mm_struct is going to exit, but the locks will be dropped
-+		 * first.  Set the mm_struct as unstable is advisable as it is
-+		 * not fully initialised.
-+		 */
-+		set_bit(MMF_UNSTABLE, &mm->flags);
+--- a/sound/usb/6fire/chip.c
++++ b/sound/usb/6fire/chip.c
+@@ -53,11 +53,6 @@ static void usb6fire_chip_abort(struct s
+ 			usb6fire_comm_abort(chip);
+ 		if (chip->control)
+ 			usb6fire_control_abort(chip);
+-		if (chip->card) {
+-			snd_card_disconnect(chip->card);
+-			snd_card_free_when_closed(chip->card);
+-			chip->card = NULL;
+-		}
  	}
- out:
- 	mmap_write_unlock(mm);
--- 
-2.53.0
-
+ }
+ 
+@@ -168,6 +163,7 @@ destroy_chip:
+ static void usb6fire_chip_disconnect(struct usb_interface *intf)
+ {
+ 	struct sfire_chip *chip;
++	struct snd_card *card;
+ 
+ 	chip = usb_get_intfdata(intf);
+ 	if (chip) { /* if !chip, fw upload has been performed */
+@@ -178,8 +174,19 @@ static void usb6fire_chip_disconnect(str
+ 				chips[chip->regidx] = NULL;
+ 			}
+ 
++			/*
++			 * Save card pointer before teardown.
++			 * snd_card_free_when_closed() may free card (and
++			 * the embedded chip) immediately, so it must be
++			 * called last and chip must not be accessed after.
++			 */
++			card = chip->card;
+ 			chip->shutdown = true;
++			if (card)
++				snd_card_disconnect(card);
+ 			usb6fire_chip_abort(chip);
++			if (card)
++				snd_card_free_when_closed(card);
+ 		}
+ 	}
+ }
 
 
 
