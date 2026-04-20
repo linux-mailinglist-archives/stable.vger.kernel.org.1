@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-239274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239847-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gDgpI9xc5mmtvAEAu9opvQ
-	(envelope-from <stable+bounces-239274-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:05:32 +0200
+	id EAhNNqNb5mkwvQEAu9opvQ
+	(envelope-from <stable+bounces-239847-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:00:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D65CE430859
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:05:31 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AC3B4305C2
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:00:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 665363604593
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:43:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0320D329C970
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:09:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0B22336EC9;
-	Mon, 20 Apr 2026 15:43:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4985343D9E;
+	Mon, 20 Apr 2026 16:09:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AG4RoGkM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bmIy9Lt2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4993336885;
-	Mon, 20 Apr 2026 15:43:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 704E82DF719;
+	Mon, 20 Apr 2026 16:09:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776699829; cv=none; b=Guk7xCbQBTBVjtJB/ZsmjCLa2svYiqWWdAZ3b3L++ovobx/D60JXwoZyeSWEsGUtsLyOhUw4AkxOjb24cMhkcQIWFQyRoXPUikw704NvQmRjbFMDx4cCjA8s4QxRXhxy9Z2bRhFKY7KUO2ZbsJOZ3Zkhr2L4nksDkS/azH35ElQ=
+	t=1776701368; cv=none; b=jMy1AcBqqi6E4/VwDkGdtMPplRzNypkFe4Doj0A6x/A9TrePZghb0qTUin1BFC6EzwnyLvYx8pvRwbuoC90IbQEmQCqi0NZF3P+IOO2aL6EOpvPpDs3x2N8MBgPwarWLQJRTGQKkHrGVRXsxQ6a4oRZZIEU0L+KX7ifF6x2KDac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776699829; c=relaxed/simple;
-	bh=amsu/p3IJNRLTkaHKPz+xqXsUJ1P9CdAeriYjEFJ0iY=;
+	s=arc-20240116; t=1776701368; c=relaxed/simple;
+	bh=AibONKTOmVV/QBezUEFFNstfaxlzYvz5fagDlj19kmQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G+W5fnQ15TLrIS5M3YRasmgBjlfQ/tMA+aFF94xs5wPLy8TEHEXXTSWKfqglSiTogMbwkWWA4vdEB+D27Anc/+J9Nj8j86lgzUbQcfAxsgPolzGb+tZB4AKrhFM13LU/B7Q0/I+8z2hT8T34Pf7/zqSfhEi91dsbR7EefXA2YkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AG4RoGkM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFCCAC2BCB8;
-	Mon, 20 Apr 2026 15:43:48 +0000 (UTC)
+	 MIME-Version; b=lh4NzKKZnxkIBMA0sHCiPaC/v0+lHwN2lLmQ8YRqkPhtiYdFy15t47Me/EIw1PD4ZOC9uT8FXo1NW5aca+dXB0NE6ymBUxLCr1C4C4JXZZz8S74zFZFSIoZY2Bgurv668uUCb4f9/bs+MKvES9zpMg8oCo3TZFKqJc7qOBYBLs4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bmIy9Lt2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0746EC2BCB4;
+	Mon, 20 Apr 2026 16:09:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776699829;
-	bh=amsu/p3IJNRLTkaHKPz+xqXsUJ1P9CdAeriYjEFJ0iY=;
+	s=korg; t=1776701368;
+	bh=AibONKTOmVV/QBezUEFFNstfaxlzYvz5fagDlj19kmQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AG4RoGkMmaqgjk7FyxLjXiOt8/Cim+wEWtk0mbB7WuhKf/moXMEcI32T+9E5+bpmz
-	 URA9DmM0WVI5svt1ADqO5wTFtV4S4hghlwvVEYrg/hKNGuBcpwFhTHgGFAmeqHXo3p
-	 NKTzyW1UbRGxQ+PZBMta1VVdLTnb2JU57YzcP6MU=
+	b=bmIy9Lt2NuYjAY9SHhSnrREmIsLLYXBYRhb7W1sq/FOOhGwN75UX1dGWfHwYEQ1AA
+	 +mwAcQDUV97Xqrk7vsNllICCybKRM8zjL0gyTxwljO3E5X4PVpGH7oWw9dd/xQnMN+
+	 k/klMH7cQ28+re/oJv2+Ff+FocKwHpyETzLQDCjU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>,
-	stable <stable@kernel.org>
-Subject: [PATCH 7.0 14/76] fbdev: tdfxfb: avoid divide-by-zero on FBIOPUT_VSCREENINFO
+	Yiqi Sun <sunyiqixm@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 053/162] ipv4: icmp: fix null-ptr-deref in icmp_build_probe()
 Date: Mon, 20 Apr 2026 17:41:25 +0200
-Message-ID: <20260420153911.340968729@linuxfoundation.org>
+Message-ID: <20260420153928.957415237@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153910.810034134@linuxfoundation.org>
-References: <20260420153910.810034134@linuxfoundation.org>
+In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
+References: <20260420153927.006696811@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,20 +69,20 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-239274-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmx.de,kernel.org];
+	TAGGED_FROM(0.00)[bounces-239847-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -90,46 +91,60 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gmx.de:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D65CE430859
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 7AC3B4305C2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Yiqi Sun <sunyiqixm@gmail.com>
 
-commit 8f98b81fe011e1879e6a7b1247e69e06a5e17af2 upstream.
+[ Upstream commit fde29fd9349327acc50d19a0b5f3d5a6c964dfd8 ]
 
-Much like commit 19f953e74356 ("fbdev: fb_pm2fb: Avoid potential divide
-by zero error"), we also need to prevent that same crash from happening
-in the udlfb driver as it uses pixclock directly when dividing, which
-will crash.
+ipv6_stub->ipv6_dev_find() may return ERR_PTR(-EAFNOSUPPORT) when the
+IPv6 stack is not active (CONFIG_IPV6=m and not loaded), and passing
+this error pointer to dev_hold() will cause a kernel crash with
+null-ptr-deref.
 
-Cc: Helge Deller <deller@gmx.de>
-Assisted-by: gregkh_clanker_t1000
-Cc: stable <stable@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Instead, silently discard the request. RFC 8335 does not appear to
+define a specific response for the case where an IPv6 interface
+identifier is syntactically valid but the implementation cannot perform
+the lookup at runtime, and silently dropping the request may safer than
+misreporting "No Such Interface".
+
+Fixes: d329ea5bd884 ("icmp: add response to RFC 8335 PROBE messages")
+Signed-off-by: Yiqi Sun <sunyiqixm@gmail.com>
+Link: https://patch.msgid.link/20260402070419.2291578-1-sunyiqixm@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/tdfxfb.c |    3 +++
- 1 file changed, 3 insertions(+)
+ net/ipv4/icmp.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/video/fbdev/tdfxfb.c
-+++ b/drivers/video/fbdev/tdfxfb.c
-@@ -496,6 +496,9 @@ static int tdfxfb_check_var(struct fb_va
- 		}
- 	}
- 
-+	if (!var->pixclock)
-+		return -EINVAL;
+diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
+index 58feb21ff967d..8e53b595a4194 100644
+--- a/net/ipv4/icmp.c
++++ b/net/ipv4/icmp.c
+@@ -1143,6 +1143,13 @@ bool icmp_build_probe(struct sk_buff *skb, struct icmphdr *icmphdr)
+ 			if (iio->ident.addr.ctype3_hdr.addrlen != sizeof(struct in6_addr))
+ 				goto send_mal_query;
+ 			dev = ipv6_stub->ipv6_dev_find(net, &iio->ident.addr.ip_addr.ipv6_addr, dev);
++			/*
++			 * If IPv6 identifier lookup is unavailable, silently
++			 * discard the request instead of misreporting NO_IF.
++			 */
++			if (IS_ERR(dev))
++				return false;
 +
- 	if (PICOS2KHZ(var->pixclock) > par->max_pixclock) {
- 		DPRINTK("pixclock too high (%ldKHz)\n",
- 			PICOS2KHZ(var->pixclock));
+ 			dev_hold(dev);
+ 			break;
+ #endif
+-- 
+2.53.0
+
 
 
 
