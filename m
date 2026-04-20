@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-239601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239419-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EEXdBCZm5mlmvwEAu9opvQ
-	(envelope-from <stable+bounces-239601-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:45:10 +0200
+	id yAYeGKFX5ml5vAEAu9opvQ
+	(envelope-from <stable+bounces-239419-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:43:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ADA0431FF1
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:45:09 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B88E42FE49
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:43:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7EDF6363FA94
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:57:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 77A863385F69
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:50:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 581D4322749;
-	Mon, 20 Apr 2026 15:57:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1F4D32E696;
+	Mon, 20 Apr 2026 15:50:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JCiHvB5L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UCNWLhqn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19DC933C19E;
-	Mon, 20 Apr 2026 15:57:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5EEE2C236B;
+	Mon, 20 Apr 2026 15:50:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700675; cv=none; b=mTnQJJWeEOMJuEUuJadE+sBY+kA+ANZg//I4/dXp5sR/ka4fkDgQUI/GZ5PKZnsMnIqYZZIddCxrZweIbQPRWoSoI9NoFehQoo5ZZvFOE5g1AJta0pKNrlPZkJ3eUZALcyidOp6pQ6aQmhYBWWSex7J6ufn+Rdn7hQZMN/zILz0=
+	t=1776700202; cv=none; b=lqfuSYEIcnoFfv0Xewia/uppgsduMstETYjVJ5zMDxvI6kN4f2L/wHLCC35nKzldSx0d2cc4KChFTfnABnby3D3Ze8NUm6eDIjFiis/5Y6N2JXA0zQMUNEvzNvb6J1QuxImmeUQwIvKPbef7yJAQ0G9lWer/nQfp39fBNJotbXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700675; c=relaxed/simple;
-	bh=b228TxizukoDc/+1BN0H4KGYA/xUy+TwKchIISLNjww=;
+	s=arc-20240116; t=1776700202; c=relaxed/simple;
+	bh=xig00gPz+tStHx4gxE43Q4+uw5QD3rt3YA14Yp+xoZk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WqTXYjj6oAN8oUV9GdPvCYtc75Iyy6l3LA23zhxXklezaogQcaBitMzYzwQfghsVr0tzqVptC793XBLNZFRv6Rubhc/PbkucoeqPdx+XlODVuv3mzZdvo7yhtfmM+kI30Yvqc+H7olUTAKDn1rdxXWh6BG8rOEepCjbjxX9JSYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JCiHvB5L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3F4DC19425;
-	Mon, 20 Apr 2026 15:57:54 +0000 (UTC)
+	 MIME-Version; b=c4YfsGDbhVWSI6/XCL1fKRihUHGMR1GVYqvDLE3qUO+O4GKV6DvpDIxEX+HUMRcVTw0PfZj7avLP2dpIJ8b2kZOs6AL8qsmenvIjikgjOJ/K5bTeHOEfkiFLdM8gcl1vHYqPAlagjPNKyJlnEfdeiCtKFotIwkyerBqBtBm+7Fs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UCNWLhqn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49710C19425;
+	Mon, 20 Apr 2026 15:50:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700675;
-	bh=b228TxizukoDc/+1BN0H4KGYA/xUy+TwKchIISLNjww=;
+	s=korg; t=1776700202;
+	bh=xig00gPz+tStHx4gxE43Q4+uw5QD3rt3YA14Yp+xoZk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JCiHvB5L+r8iZg/hAVBFWPVQo7MH5UVh9jrg5HpOjuCNOardIQFrrtvR0q2Xj5qgq
-	 uTKOnfSl6Ogrn+plc6hwcGtnPzMiYBteKqOxoEmfTpgChpmi0ar0K39azaAb4+tOz9
-	 /Ov+sRr8xLIXhc1d6WEnlV5Qh/Bv3Kiv/gW/8omU=
+	b=UCNWLhqnF09Mj1AQfm4mz4q1pDk+fvvhlqauaszbJ6ugw363cldSy9i3N07iu5N3A
+	 Sy4GZJJAw/GLj1S8i8Mj9aNOb0Iv7UVJ2FB1UT8VPTmGc7rbSAGClX6JlhOH0R1m5g
+	 WHRs++1sqQBMxIHX8FahblhANTAQ2g3QvRHy8//s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?=EA=B9=80=EC=98=81=EB=AF=BC?= <osori@hspace.io>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Dave Hansen <dave.hansen@intel.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Zijing Yin <yzjaurora@gmail.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 044/198] x86: shadow stacks: proper error handling for mmap lock
+Subject: [PATCH 6.19 082/220] bridge: guard local VLAN-0 FDB helpers against NULL vlan group
 Date: Mon, 20 Apr 2026 17:40:23 +0200
-Message-ID: <20260420153937.204016469@linuxfoundation.org>
+Message-ID: <20260420153936.989741643@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
+References: <20260420153934.013228280@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,109 +65,109 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-239601-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nvidia.com,blackwall.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-239419-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,linux-foundation.org:email,hspace.io:email]
-X-Rspamd-Queue-Id: 6ADA0431FF1
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 1B88E42FE49
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Zijing Yin <yzjaurora@gmail.com>
 
-[ Upstream commit 52f657e34d7b21b47434d9d8b26fa7f6778b63a0 ]
+[ Upstream commit 1979645e1842cb7017525a61a0e0e0beb924d02a ]
 
-김영민 reports that shstk_pop_sigframe() doesn't check for errors from
-mmap_read_lock_killable(), which is a silly oversight, and also shows
-that we haven't marked those functions with "__must_check", which would
-have immediately caught it.
+When CONFIG_BRIDGE_VLAN_FILTERING is not set, br_vlan_group() and
+nbp_vlan_group() return NULL (br_private.h stub definitions). The
+BR_BOOLOPT_FDB_LOCAL_VLAN_0 toggle code is compiled unconditionally and
+reaches br_fdb_delete_locals_per_vlan_port() and
+br_fdb_insert_locals_per_vlan_port(), where the NULL vlan group pointer
+is dereferenced via list_for_each_entry(v, &vg->vlan_list, vlist).
 
-So let's fix both issues.
+The observed crash is in the delete path, triggered when creating a
+bridge with IFLA_BR_MULTI_BOOLOPT containing BR_BOOLOPT_FDB_LOCAL_VLAN_0
+via RTM_NEWLINK. The insert helper has the same bug pattern.
 
-Reported-by: 김영민 <osori@hspace.io>
-Acked-by: Oleg Nesterov <oleg@redhat.com>
-Acked-by: Dave Hansen <dave.hansen@intel.com>
-Acked-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+  Oops: general protection fault, probably for non-canonical address 0xdffffc0000000056: 0000 [#1] KASAN NOPTI
+  KASAN: null-ptr-deref in range [0x00000000000002b0-0x00000000000002b7]
+  RIP: 0010:br_fdb_delete_locals_per_vlan+0x2b9/0x310
+  Call Trace:
+   br_fdb_toggle_local_vlan_0+0x452/0x4c0
+   br_toggle_fdb_local_vlan_0+0x31/0x80 net/bridge/br.c:276
+   br_boolopt_toggle net/bridge/br.c:313
+   br_boolopt_multi_toggle net/bridge/br.c:364
+   br_changelink net/bridge/br_netlink.c:1542
+   br_dev_newlink net/bridge/br_netlink.c:1575
+
+Add NULL checks for the vlan group pointer in both helpers, returning
+early when there are no VLANs to iterate. This matches the existing
+pattern used by other bridge FDB functions such as br_fdb_add() and
+br_fdb_delete().
+
+Fixes: 21446c06b441 ("net: bridge: Introduce UAPI for BR_BOOLOPT_FDB_LOCAL_VLAN_0")
+Signed-off-by: Zijing Yin <yzjaurora@gmail.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20260402140153.3925663-1-yzjaurora@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/shstk.c   | 3 ++-
- include/linux/mmap_lock.h | 6 +++---
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ net/bridge/br_fdb.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/x86/kernel/shstk.c b/arch/x86/kernel/shstk.c
-index 978232b6d48d7..ff8edea8511b4 100644
---- a/arch/x86/kernel/shstk.c
-+++ b/arch/x86/kernel/shstk.c
-@@ -351,7 +351,8 @@ static int shstk_pop_sigframe(unsigned long *ssp)
- 	need_to_check_vma = PAGE_ALIGN(*ssp) == *ssp;
+diff --git a/net/bridge/br_fdb.c b/net/bridge/br_fdb.c
+index 0501ffcb8a3dd..e2c17f620f009 100644
+--- a/net/bridge/br_fdb.c
++++ b/net/bridge/br_fdb.c
+@@ -597,6 +597,9 @@ static void br_fdb_delete_locals_per_vlan_port(struct net_bridge *br,
+ 		dev = br->dev;
+ 	}
  
- 	if (need_to_check_vma)
--		mmap_read_lock_killable(current->mm);
-+		if (mmap_read_lock_killable(current->mm))
-+			return -EINTR;
- 
- 	err = get_shstk_data(&token_addr, (unsigned long __user *)*ssp);
- 	if (unlikely(err))
-diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
-index 2c9fffa58714f..95ee1f224c492 100644
---- a/include/linux/mmap_lock.h
-+++ b/include/linux/mmap_lock.h
-@@ -322,7 +322,7 @@ static inline void mmap_write_lock_nested(struct mm_struct *mm, int subclass)
- 	__mmap_lock_trace_acquire_returned(mm, true, true);
++	if (!vg)
++		return;
++
+ 	list_for_each_entry(v, &vg->vlan_list, vlist)
+ 		br_fdb_find_delete_local(br, p, dev->dev_addr, v->vid);
  }
+@@ -630,6 +633,9 @@ static int br_fdb_insert_locals_per_vlan_port(struct net_bridge *br,
+ 		dev = br->dev;
+ 	}
  
--static inline int mmap_write_lock_killable(struct mm_struct *mm)
-+static inline int __must_check mmap_write_lock_killable(struct mm_struct *mm)
- {
- 	int ret;
- 
-@@ -369,7 +369,7 @@ static inline void mmap_read_lock(struct mm_struct *mm)
- 	__mmap_lock_trace_acquire_returned(mm, false, true);
- }
- 
--static inline int mmap_read_lock_killable(struct mm_struct *mm)
-+static inline int __must_check mmap_read_lock_killable(struct mm_struct *mm)
- {
- 	int ret;
- 
-@@ -379,7 +379,7 @@ static inline int mmap_read_lock_killable(struct mm_struct *mm)
- 	return ret;
- }
- 
--static inline bool mmap_read_trylock(struct mm_struct *mm)
-+static inline bool __must_check mmap_read_trylock(struct mm_struct *mm)
- {
- 	bool ret;
- 
++	if (!vg)
++		return 0;
++
+ 	list_for_each_entry(v, &vg->vlan_list, vlist) {
+ 		if (!br_vlan_should_use(v))
+ 			continue;
 -- 
 2.53.0
 
