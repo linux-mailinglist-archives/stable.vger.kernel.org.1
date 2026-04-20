@@ -1,60 +1,65 @@
-Return-Path: <stable+bounces-239311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239833-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kJmXFuhh5mmavgEAu9opvQ
-	(envelope-from <stable+bounces-239311-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:27:04 +0200
+	id kB+8L7xo5mkNwAEAu9opvQ
+	(envelope-from <stable+bounces-239833-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:56:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 974CD431384
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:27:03 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FD854324AF
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:56:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 580F83756302
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:45:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 25CD132D1046
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:08:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F0F822541C;
-	Mon, 20 Apr 2026 15:45:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3549341077;
+	Mon, 20 Apr 2026 16:08:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CnsrccYe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TF2LJ0jA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61AF832E696;
-	Mon, 20 Apr 2026 15:45:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6D4D2DF719;
+	Mon, 20 Apr 2026 16:08:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776699924; cv=none; b=pQbx5CP8Tk4U+g8fGmOmCID+LRh8E9qcPEYRsW/ul6NraNj/v7HEkXvx4AXCp28FObjPDNVS9Lt/nEuBr+QMbwtUTPrqTPjH7CCXfVfEKeWMeChkKoFeoy4UEpm4SJTVbnam8JxG8TeYSNlDAj0XoXMmnDN3WfMt2kbkoxiojKA=
+	t=1776701332; cv=none; b=h8jq3qspTw1EtNnXy0CX+z4Niaq23Q1ieoalnUblpXAwjQNGtYojrpI3KI/OCNI740qK8zIQEqP7Qlju7tfX3hGEDSvRzZsTktctT5Tqk7EiSRZGSWFE0oBjXcG+YGTOFwIL0Hzpjo2LV08AKUU48ZD5Ph/XGNE3vNWqAdeWoaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776699924; c=relaxed/simple;
-	bh=TaEuWs9kG3ZqgUVNnD5WDfyZVC+dtG0BAasQmf4ErNQ=;
+	s=arc-20240116; t=1776701332; c=relaxed/simple;
+	bh=5yYuPu9Ee4UT/01O2r5CcjYHybQ7gcWUNyzB4ASknqw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=reVJY0iQFJftvz/mlw4C7pM1VWC4WO0XUqKjYHFLijwYI0//5rIN62ujBCCklpvUhilvU3jMnSgv3YZJNn4me7J1AhHMTpL2QIiOKjAhHCJkpj/0rhWr4cMBRhDwzuHo981lqvejJlgGY+SDypg2FDCcWq54HfguE/oriOsZTBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CnsrccYe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC6FAC19425;
-	Mon, 20 Apr 2026 15:45:23 +0000 (UTC)
+	 MIME-Version; b=fFn7F5lBzPm/+VBl7rlaCe3FSgiVJB7cGKIgryMSUd64vTSCZ+MROSqJOq4zqCkKFicNbmT5I8nBDJokpQAGLt3YgIiRh4MCSDp8rExqpkd13oodTC3tZVQTjoy+qHyacNycNIEkncJBk2CrwC5HR+VsvnV0vCTaZfQRBOGfiJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TF2LJ0jA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EC96C19425;
+	Mon, 20 Apr 2026 16:08:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776699924;
-	bh=TaEuWs9kG3ZqgUVNnD5WDfyZVC+dtG0BAasQmf4ErNQ=;
+	s=korg; t=1776701332;
+	bh=5yYuPu9Ee4UT/01O2r5CcjYHybQ7gcWUNyzB4ASknqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CnsrccYejkbogkTfk0+023Of5aREN4+4thg+2pgfSC2m9SuiayGwT6eeVguiF5VN1
-	 hAlUcN2+U0v6RtnNdzsTAi7osm3Zh3A9TkbmRuqmUWJNsvZfoRnX9UjAP+2Zjdi5v9
-	 AdwXgphsSDFxkeYknWmAVJc1LGk3RzlVsfp29B/o=
+	b=TF2LJ0jAm/R1LEUZghWrnUeO87xk7i5dbJk3/WwmxfGkxp/xaESFWSIF8LOGuC30l
+	 zz6cuYLexFAxTJ4H725Fa6lN9E3tkc0Xzf9KOoOsibPdU9CAUu2uYxv1Ve+G2UDPro
+	 diqEhFI/wHpRMwFIZCKO+KVnsY0F6aPRfTFftohI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Fiona Behrens <me@kloenk.dev>,
-	Trevor Gross <tmgross@umich.edu>,
-	Tamir Duberstein <tamird@kernel.org>
-Subject: [PATCH 7.0 33/76] scripts: generate_rust_analyzer.py: avoid FD leak
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Ren Wei <enjou1224z@gmail.com>,
+	Zhengchuan Liang <zcliangcn@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Florian Westphal <fw@strlen.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 072/162] netfilter: ip6t_eui64: reject invalid MAC header for all packets
 Date: Mon, 20 Apr 2026 17:41:44 +0200
-Message-ID: <20260420153912.026695766@linuxfoundation.org>
+Message-ID: <20260420153929.644644406@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153910.810034134@linuxfoundation.org>
-References: <20260420153910.810034134@linuxfoundation.org>
+In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
+References: <20260420153927.006696811@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,71 +72,86 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-239833-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,strlen.de,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239311-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[umich.edu:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,kloenk.dev:email,collabora.com:email]
-X-Rspamd-Queue-Id: 974CD431384
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,strlen.de:email]
+X-Rspamd-Queue-Id: 0FD854324AF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tamir Duberstein <tamird@kernel.org>
+From: Zhengchuan Liang <zcliangcn@gmail.com>
 
-commit 9b4744d8eda2824041064a5639ccbb079850914d upstream.
+[ Upstream commit fdce0b3590f724540795b874b4c8850c90e6b0a8 ]
 
-Use `pathlib.Path.read_text()` to avoid leaking file descriptors.
+`eui64_mt6()` derives a modified EUI-64 from the Ethernet source address
+and compares it with the low 64 bits of the IPv6 source address.
 
-Fixes: 8c4555ccc55c ("scripts: add `generate_rust_analyzer.py`")
-Cc: stable@vger.kernel.org
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-Reviewed-by: Fiona Behrens <me@kloenk.dev>
-Reviewed-by: Trevor Gross <tmgross@umich.edu>
-Link: https://patch.msgid.link/20260127-rust-analyzer-fd-leak-v2-1-1bb55b9b6822@kernel.org
-Signed-off-by: Tamir Duberstein <tamird@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The existing guard only rejects an invalid MAC header when
+`par->fragoff != 0`. For packets with `par->fragoff == 0`, `eui64_mt6()`
+can still reach `eth_hdr(skb)` even when the MAC header is not valid.
+
+Fix this by removing the `par->fragoff != 0` condition so that packets
+with an invalid MAC header are rejected before accessing `eth_hdr(skb)`.
+
+Fixes: 1da177e4c3f41 ("Linux-2.6.12-rc2")
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Co-developed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Yuan Tan <yuantan098@gmail.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Tested-by: Ren Wei <enjou1224z@gmail.com>
+Signed-off-by: Zhengchuan Liang <zcliangcn@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/generate_rust_analyzer.py |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/ipv6/netfilter/ip6t_eui64.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/scripts/generate_rust_analyzer.py
-+++ b/scripts/generate_rust_analyzer.py
-@@ -190,9 +190,10 @@ def generate_crates(srctree, objtree, sy
+diff --git a/net/ipv6/netfilter/ip6t_eui64.c b/net/ipv6/netfilter/ip6t_eui64.c
+index d704f7ed300c2..da69a27e8332c 100644
+--- a/net/ipv6/netfilter/ip6t_eui64.c
++++ b/net/ipv6/netfilter/ip6t_eui64.c
+@@ -22,8 +22,7 @@ eui64_mt6(const struct sk_buff *skb, struct xt_action_param *par)
+ 	unsigned char eui64[8];
  
-     def is_root_crate(build_file, target):
-         try:
--            return f"{target}.o" in open(build_file).read()
-+            contents = build_file.read_text()
-         except FileNotFoundError:
-             return False
-+        return f"{target}.o" in contents
- 
-     # Then, the rest outside of `rust/`.
-     #
+ 	if (!(skb_mac_header(skb) >= skb->head &&
+-	      skb_mac_header(skb) + ETH_HLEN <= skb->data) &&
+-	    par->fragoff != 0) {
++	      skb_mac_header(skb) + ETH_HLEN <= skb->data)) {
+ 		par->hotdrop = true;
+ 		return false;
+ 	}
+-- 
+2.53.0
+
 
 
 
