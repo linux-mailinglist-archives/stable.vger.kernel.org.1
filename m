@@ -1,171 +1,187 @@
-Return-Path: <stable+bounces-238919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238954-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WEQSKQIw5mliswEAu9opvQ
-	(envelope-from <stable+bounces-238919-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:54:10 +0200
+	id kMraBl8y5mkGtQEAu9opvQ
+	(envelope-from <stable+bounces-238954-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:04:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE75642C672
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:54:09 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A69342C93D
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:04:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4A16F30552F1
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 13:40:36 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0D2CE301A693
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 13:47:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 887133DC4CA;
-	Mon, 20 Apr 2026 13:24:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35B023E9F93;
+	Mon, 20 Apr 2026 13:25:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ursulin.net header.i=@ursulin.net header.b="PjP0vfLU"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ah5RLloF"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CA3C3DBD5C
-	for <stable@vger.kernel.org>; Mon, 20 Apr 2026 13:24:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C51CD3E959D
+	for <stable@vger.kernel.org>; Mon, 20 Apr 2026 13:25:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776691450; cv=none; b=GC4nehk9aCtfhjOsSh1MgbOa+Zfc1GQl6XfKdGui0tRehOt8L4i1sbdhD0cHJjZDK2fwhMNh7Ztiwu01dc3iypnAr4pcU/P+zZsIZD0CwGWvyCb5Tr5PF9LWczaUSzpvgK65Rfi4TpjFcErh2HIru075+b/ggGlMAavYe3R3f9M=
+	t=1776691504; cv=none; b=HJ5bAqzP+P9N51QuVgQxVu8Mdemwr1DQOxWUtk5MhERhB20MjDCIbDSmuvFGs95jhgKXb4qj9rCFTcw8Fmqo+6OQZyLbJj2zPODQlp7ZEVXqS7VumZoK8R5pf017JgyHBo5V4igA8jNjOkDPpb9NTLVjYW6ztC039wI/BrwlmMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776691450; c=relaxed/simple;
-	bh=/FPvrro+0Yn8nbeo9fnCoGNzx5aAMZeIRKRWnVSWBNM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UrNOUtGSMOxnFtTDXW16VEW9ot9RuDvCSyTltVOfOWpxmQDznvnQatjpprCAXLPRaaVGJR+lJ+Y/BjlpnA1FvxPEty3k/dE7nVCCMg3tJxL73AsTNrmu3IgU6kmJ+pa0LfQYviZAWBohhKqMPIV/S7ZZYbIsuGABWcpXWEB8dXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ursulin.net; spf=pass smtp.mailfrom=ursulin.net; dkim=pass (2048-bit key) header.d=ursulin.net header.i=@ursulin.net header.b=PjP0vfLU; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ursulin.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ursulin.net
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-488a88aeec9so44706505e9.2
-        for <stable@vger.kernel.org>; Mon, 20 Apr 2026 06:24:08 -0700 (PDT)
+	s=arc-20240116; t=1776691504; c=relaxed/simple;
+	bh=ZOSRbokGZapfu8PcFVycPRLR0QXSPkkl/mLiRDTmFNk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=egxisaTA1v6b7NWYck8hEbXFvJ1O9J+e38aac6+NjLbYx5n4x3jG9bwHa8LpVUaL6k0KvkgVhbuoQ+J8HPt3R8AKWINtNjjdkENTverf838ESsoahsd4iIlAMXADG/DIKWFEn3WeKtdHbBUcMTk8AN9QgDwp5rj1KGoChUiSxww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ah5RLloF; arc=none smtp.client-ip=209.85.215.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-c795a47186bso1117020a12.0
+        for <stable@vger.kernel.org>; Mon, 20 Apr 2026 06:25:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ursulin.net; s=google; t=1776691446; x=1777296246; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=tWgOpHK1V0mcahhXRBLeTBDr92JJ8SRycnjCV/1/+JU=;
-        b=PjP0vfLUPJO79WFbk/e9N6lk0jLsL4G4XK3QbneVNvZfsyZcfO75qj0utuPXVmDFP3
-         0aED85AWAAsPWUdZ9FLQaWMJcs2LrrNLqyBU0i5NfW1tQy3qX4FSb8Pe94EpZnzKrCHQ
-         2jMsVg4U2TFuByxope83SJ3tEfufo91EPV9VsRYEY1zEq+402IwH+QCnboM1GwxlHLT5
-         nO+HrJ5LwcyYIXNq5C3cD6u39sZOjHbk0ohTKHiEPztIOuXINf2FT81QPkQQPA7Urw2+
-         3FZ5KrkCyLaF9oHmjYuj77TUSSZ6AU+C6oDCCykTg5XWBk1VHmBB1LoJWtWF40Um9Cqt
-         Tbgw==
+        d=gmail.com; s=20251104; t=1776691502; x=1777296302; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=gr0oztocKaKLkdTKEsH8odatBVVrOkD1g/pdHlqb6Es=;
+        b=ah5RLloFm6yD4ohlcWE3LfGOJidnkDgYhywVG6EL7UrV98U4X5laPQovCUQll+ScZ/
+         tIpoiCggfHF3RiMclo/9Ey9powapy2xdCiYAxqVKxnxDaPfVaUTjZ8CJeRGQXjNoscs6
+         zDJwPoq2iqGWf7YUNpRHbdP5Yh12/jy9H2FByRZ3WJvtOS1UzgS8DQQxIcyeTOT+13Gc
+         RR8RidPain9/gwja36CktI1kWINBC+7d0eyc2BsI3XTrtXi0IZlvsJxuENnrGHM+FfXx
+         lq3MWemcwm4P1rimcVZnCQ1FUrzh/dTQDZCCJDEFieFqopXCKU38EsZCPL+/eCu7B1mZ
+         IfZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776691446; x=1777296246;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=tWgOpHK1V0mcahhXRBLeTBDr92JJ8SRycnjCV/1/+JU=;
-        b=N8jVr6xM9JfSG72NCSiZp9byZJDmBu6WYiVaLWNJB7USa9XkM3U69ZT75Llcw7rQwx
-         BYghbgy7WAwSuXHy29EINpLWGP+J71xiTtWNIGEjTNd/bvH/6Yuht7wbzf1IKQrMOVE5
-         4mJVAKXaZ0egaujdXhXpvlJNGib8BQr9dlwdEJQxi0451MR4VAu2/AlGpvLkMt5nxM1/
-         aynBuTEBEhPyj5GFwHRlwKdM/6MJBcwIwSdFsg11jM7lex3EUaZZBZQA/cf9zmEh/RlS
-         iqx0MXsvC4QDQe6iOPOaQqw9t1+umRd7bbimc8aspYOwBtP7W9k4aZxP/25iAlLPX7u3
-         BaoQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/yLn85O8WJYUgkdddFMA8OOf7f9iEMHTPYRQcb5BZj7adPW7+dNLi3NbMhYsd1zBdwZNbTRcE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwSpNRkmEFmz/ZjXGLfkua3n9gZDqWJiH4H9JobjLLjVS+i9OWz
-	qZGHiL4yboCER0XNFL8KWqrkZpchmo68twxpNheuyDyTSxWqWXrmAcTBBrRAOKzFo6w=
-X-Gm-Gg: AeBDietd+/O112asnBTWWOB+kEqN1Td+NZ9zdrQ16WLyG4G5Qr4sOLyZEYzMBlAZwQ8
-	tZ2LBxBN+jjwfnTr7Aco1cD4JrbXhw4r+1MRKkXAFR8LPyNZWJHjJvcTts0IawfCnG/Tia73hNJ
-	bFOaLEwhNfRHdZAUWkCFPMDGC1wt81qMIsGc9ILsNp43Z+Xkv3wvRBJeaUai6WWPf7s3o1hSMav
-	ZLFlJuu+6zUhxu622PmMdcHh/AaozL7s7+X9lM3sOG4yHWBG7IlXpImjtuQNuh7ylw9rQ6tcztv
-	Co9UmdzWlIDj3YslArZOn1BWFXoWXVZ65wvkBFtZm16f0BRXfRdTeZR7xIKh/ukOuDhY+ObFXJD
-	ydiMO/Be4r4wdIrWhrrLfJ8rmrdFP4eFVDqJMxx41cAzPvEYogZ/EmDG2jbyBiW6enUHGLjUWkk
-	lqRhePgS8Uz+rzmEgZKX+r/e4wQZx89Gku1fFA23fCdS6TGt8zx6PCgq8=
-X-Received: by 2002:a05:600c:1549:b0:48a:761:5808 with SMTP id 5b1f17b1804b1-48a07615c09mr25066825e9.0.1776691446240;
-        Mon, 20 Apr 2026 06:24:06 -0700 (PDT)
-Received: from [192.168.0.101] ([90.240.106.137])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488fc0f8188sm305785195e9.2.2026.04.20.06.24.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 20 Apr 2026 06:24:05 -0700 (PDT)
-Message-ID: <384adac7-2aa4-4568-b7a5-987e914fbaf2@ursulin.net>
-Date: Mon, 20 Apr 2026 14:24:05 +0100
+        d=1e100.net; s=20251104; t=1776691502; x=1777296302;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gr0oztocKaKLkdTKEsH8odatBVVrOkD1g/pdHlqb6Es=;
+        b=Ml/iD7AS6pUKYwzadmPMxewA6w4oVt27XIQ7vzVIo2skdz5IdEM5tnFSkqXF5UWLVn
+         dBJNGq5UiVxCFJp3adPzu4tYydckrE0j2tkyuoKCInF5X6ue1SmdH+tJT+QIsDT1Yshb
+         5jzG8Gt12PEwo/LcKvpOyZrhAxMNEc8vF87n299tcHdRl/6pxBpcR2syjW8n40zNy1CH
+         5EGzNBqYeFwBnyeW9+DB4+wlrjZmKWqETAa3Gr6VZ9o3NngOFa0vdH/lU7XrUDHyAnWf
+         PmxijeptUn2ealoCo5z2TJIqNDStw0pNamSXRPK7feuYW+xUSj3FoBzQsaFrbSNQquWZ
+         wGiw==
+X-Gm-Message-State: AOJu0YwkL3pqQVyIwKMBC1bdJG+hUR85aFgKjAInMlJCgvxGhcHWv7Po
+	26nFfRNPi1vQCpyp4BBXH14zEmdWa6rOgLzB26fuUc+kFVnsWfXGUCPQ
+X-Gm-Gg: AeBDietA8TfNXQ8eeypt2Q0EdfS6FLPW548ffaMtzHhDHujqTtZQ/j4BydOpXpY58L9
+	S4sD56mQ/hNGD+JreFpHWdW2+Tyg1MB4E/OjSMW4ZXUAdD0lSY8bGvQ+MeNY6w3+0zEhFf7iriU
+	3yclIU/uykAjp8WAaOzOE53D8PPF+2ZU2lvdVrLx76vQ/ET3txkjKWQ+hYcP1N9G39293J0j7Ks
+	Y8AoiHsY0Ks2UozjriPKRVd6DwZ9SvAlPHW6qprqNo/BwdiukzYi2FPiFICEcCAAYS47QQPYX1C
+	eQ2yhkidaGFRZ5dC4Cj9kAsr/YeNbOa4YZKm40lNocGhUh9dJEM9ToF4hK7ulvwrdbDdHQr5ELQ
+	XkgLo7ZJ2228YysFk1QTABjik5Z+ZPZlrbg+uarij0DF7sCz17QWyfyAKsplaaRLcULYtJ3B5vQ
+	u0UJdUY23Tej2o7Ns+Y/JZy6yeVYYREwvoysQ=
+X-Received: by 2002:a05:6a20:3d06:b0:3a2:d5b8:bfa7 with SMTP id adf61e73a8af0-3a2d5b8c92fmr2099312637.1.1776691502065;
+        Mon, 20 Apr 2026 06:25:02 -0700 (PDT)
+Received: from lgs.. ([2408:8417:d50:4775:1153:f731:14e3:b103])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c7976f8fcbdsm7907037a12.6.2026.04.20.06.24.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Apr 2026 06:25:01 -0700 (PDT)
+From: Guangshuo Li <lgs201920130244@gmail.com>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Mahesh Salgaonkar <mahesh@linux.ibm.com>,
+	Haren Myneni <haren@linux.ibm.com>,
+	Tyrel Datwyler <tyreld@linux.ibm.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	Guangshuo Li <lgs201920130244@gmail.com>,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH v2] powerpc/pseries/papr-hvpipe: fix NULL dereference in handle creation
+Date: Mon, 20 Apr 2026 21:24:29 +0800
+Message-ID: <20260420132429.128075-1-lgs201920130244@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/xe/xelp: Fix Wa_18022495364
-To: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>, intel-xe@lists.freedesktop.org
-Cc: kernel-dev@igalia.com, Matt Roper <matthew.d.roper@intel.com>,
- Matthew Brost <matthew.brost@intel.com>,
- =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, stable@vger.kernel.org
-References: <20260420131603.70357-1-tvrtko.ursulin@igalia.com>
-Content-Language: en-GB
-From: Tvrtko Ursulin <tursulin@ursulin.net>
-In-Reply-To: <20260420131603.70357-1-tvrtko.ursulin@igalia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[ursulin.net:s=google];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[ursulin.net:+];
-	TAGGED_FROM(0.00)[bounces-238919-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	DMARC_NA(0.00)[ursulin.net];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-238954-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[linux.ibm.com,ellerman.id.au,gmail.com,kernel.org,lists.ozlabs.org,vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tursulin@ursulin.net,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,igalia.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: DE75642C672
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1A69342C93D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+papr_hvpipe_dev_create_handle() transfers ownership of src_info with
+retain_and_null_ptr(src_info) after anon_inode_getfile() succeeds.
+However, retain_and_null_ptr() clears src_info immediately, and the
+function then still dereferences src_info in the subsequent list_add().
 
-On 20/04/2026 14:16, Tvrtko Ursulin wrote:
-> Command parser relative MMIO addressing needs to be enabled when writing
-> to the register.
-> 
-> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-> Fixes: ca33cd271ef9 ("drm/xe/xelp: Add Wa_18022495364")
-> Cc: Matt Roper <matthew.d.roper@intel.com>
-> Cc: Matthew Brost <matthew.brost@intel.com>
-> Cc: "Thomas Hellström" <thomas.hellstrom@linux.intel.com>
-> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> Cc: <stable@vger.kernel.org> # v6.18+
-> ---
->   drivers/gpu/drm/xe/xe_lrc.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/gpu/drm/xe/xe_lrc.c b/drivers/gpu/drm/xe/xe_lrc.c
-> index 9d12a0d2f0b5..c725cde4508d 100644
-> --- a/drivers/gpu/drm/xe/xe_lrc.c
-> +++ b/drivers/gpu/drm/xe/xe_lrc.c
-> @@ -1214,7 +1214,7 @@ static ssize_t setup_invalidate_state_cache_wa(struct xe_lrc *lrc,
->   	if (xe_gt_WARN_ON(lrc->gt, max_len < 3))
->   		return -ENOSPC;
->   
-> -	*cmd++ = MI_LOAD_REGISTER_IMM | MI_LRI_NUM_REGS(1);
-> +	*cmd++ = MI_LOAD_REGISTER_IMM | MI_LRI_LRM_CS_MMIO | MI_LRI_NUM_REGS(1);
+Store the transferred pointer in a separate variable and use that for
+the list insertion.
 
-Or if this register exists only for RCS would it be better to define 
-CS_DEBUG_MODE2 as the absolute 0x20d8 (as in i915)? Unfortunately the 
-public TGL PRM does not list neither the register or the workaround so I 
-am not sure.
+Manually identified during code review.
 
-Regards,
+Fixes: 6d3789d347a7 ("papr-hvpipe: convert papr_hvpipe_dev_create_handle() to FD_PREPARE()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+---
+v2:
+  - Fix the Fixes tag to use the documented 12-character SHA-1 format
 
-Tvrtko
+ arch/powerpc/platforms/pseries/papr-hvpipe.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
->   	*cmd++ = CS_DEBUG_MODE2(0).addr;
->   	*cmd++ = REG_MASKED_FIELD_ENABLE(INSTRUCTION_STATE_CACHE_INVALIDATE);
->   
+diff --git a/arch/powerpc/platforms/pseries/papr-hvpipe.c b/arch/powerpc/platforms/pseries/papr-hvpipe.c
+index 14ae480d060a..497eb967611b 100644
+--- a/arch/powerpc/platforms/pseries/papr-hvpipe.c
++++ b/arch/powerpc/platforms/pseries/papr-hvpipe.c
+@@ -480,6 +480,7 @@ static const struct file_operations papr_hvpipe_handle_ops = {
+ static int papr_hvpipe_dev_create_handle(u32 srcID)
+ {
+ 	struct hvpipe_source_info *src_info __free(kfree) = NULL;
++	struct hvpipe_source_info *owned_src_info;
+ 
+ 	spin_lock(&hvpipe_src_list_lock);
+ 	/*
+@@ -509,7 +510,7 @@ static int papr_hvpipe_dev_create_handle(u32 srcID)
+ 	if (fdf.err)
+ 		return fdf.err;
+ 
+-	retain_and_null_ptr(src_info);
++	owned_src_info = retain_and_null_ptr(src_info);
+ 	spin_lock(&hvpipe_src_list_lock);
+ 	/*
+ 	 * If two processes are executing ioctl() for the same
+@@ -520,7 +521,7 @@ static int papr_hvpipe_dev_create_handle(u32 srcID)
+ 		spin_unlock(&hvpipe_src_list_lock);
+ 		return -EALREADY;
+ 	}
+-	list_add(&src_info->list, &hvpipe_src_list);
++	list_add(&owned_src_info->list, &hvpipe_src_list);
+ 	spin_unlock(&hvpipe_src_list_lock);
+ 	return fd_publish(fdf);
+ }
+-- 
+2.43.0
 
 
