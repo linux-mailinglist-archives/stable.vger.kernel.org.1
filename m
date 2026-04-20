@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-239626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239807-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EDf7MJpg5mkxvgEAu9opvQ
-	(envelope-from <stable+bounces-239626-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:21:30 +0200
+	id sD1sFHpo5mnBvwEAu9opvQ
+	(envelope-from <stable+bounces-239807-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:55:06 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 528FE431083
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:21:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF7E543241A
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:55:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 976633195F15
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:58:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AC98D305047C
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:07:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CE03331A78;
-	Mon, 20 Apr 2026 15:58:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F714341AD6;
+	Mon, 20 Apr 2026 16:07:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oAQC5BAD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="udsDVVi7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0128522541C;
-	Mon, 20 Apr 2026 15:58:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 405FF33B6EF;
+	Mon, 20 Apr 2026 16:07:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700739; cv=none; b=ilnyCbb/PjZw67sfnRy6UwnGITlXhmz+LOpDNluL3hjtKyadpbuBJNCvSn1ls0Jc762wlWApF93nC3doTiH/2gSLe9cT3xx54PAZtYNObYE6fc23VAGj8qJNC4w+8pyEL0fatfzOXNUqpkK7qhszwgbFzQ9cAMcx91w9iNQQr1I=
+	t=1776701266; cv=none; b=AwFjP9gqCXUwCx/AyaZF+PPiROJ4QrdKC9uBvcWQ1xQlFUGDYkqHUCAMlUcwN2wKa623A5pU9RypS4yIFocQ2pJp6PS6IKCPKc37+9cKtgtyUwi6e2qI7yXglLseRMKcR0PvKlzbfQ70KxL+B2LymlecaNbCmCSXVnpRGqNU/eU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700739; c=relaxed/simple;
-	bh=r6cQgWd/4gYePcdE1yXGZFi+OQCbo9XXk9u92UVCKlM=;
+	s=arc-20240116; t=1776701266; c=relaxed/simple;
+	bh=uXB4yOuhDxA5Ct4XQUcIE25z199aGQ9XQPr+PC2UDjE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DnssBi4CD3vrHCYT7s248NbfZiRjOwCSVEx83xZUNqRTq9n22qy03/1Je7hmt7B+IDgnSamb41uEFnjEkSj+qZMpAdPvPnFnhJp5OIrdV/aa+Vjs6aA3LY8GCutpu4LhzYqAJ6QlHs+7NA0n0X7qRC76M/5XZDPw0pyZsvkPuqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oAQC5BAD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DD78C19425;
-	Mon, 20 Apr 2026 15:58:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=j5TtRc/MD5zsIG+Jx1zB/SEp1kCowkdw7MyeirMms84xuKvUqzpnrl4iYziNX4Rt5lvVemW430T2gWQZ5Lzl9/5u9PLCvn1C8OZD3Xwq3OwlyreWF/Qq0fERNP/Kt7oZAlMn8Ldeb1TKwOMRB/jqcX6Whx7eWbrUQJKFjcuyeqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=udsDVVi7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8443C19425;
+	Mon, 20 Apr 2026 16:07:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700738;
-	bh=r6cQgWd/4gYePcdE1yXGZFi+OQCbo9XXk9u92UVCKlM=;
+	s=korg; t=1776701266;
+	bh=uXB4yOuhDxA5Ct4XQUcIE25z199aGQ9XQPr+PC2UDjE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oAQC5BADskx6V6iYiYBJvvaao+/DkSYmF9tsoZhC8IYYjrf+AMHdMjutI24KzD6cz
-	 33cDOkxgFbCAUhxAiLRJ1/VrywV1Q7zIHKBexpX/0Ubfi3kXbnZIGEUMIZZ5dUd/kU
-	 5St3dANOBtLlykoVvc1Fl+2yBmz/popGdF5YALSU=
+	b=udsDVVi7Y4PPgPKU7u78p6MvCoOKwJWQANWAu+t0qTaW/d6Kydj6dpb2DjsYAxuTy
+	 k1ionRBCXtLZ3RlXBDkMdXeGIhA2Afm04ZsUSy42zzTyZ5tmMEn5qhdsL7Igc7VMhi
+	 /ZUvgQaVq6EV/XYxcoalIQ9x/FnT/oksDzF/+wgg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Melissa Wen <mwen@igalia.com>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Donet Tom <donettom@linux.ibm.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 067/198] drm/vc4: Fix a memory leak in hang state error path
+Subject: [PATCH 6.12 014/162] drm/amdgpu: Handle GPU page faults correctly on non-4K page systems
 Date: Mon, 20 Apr 2026 17:40:46 +0200
-Message-ID: <20260420153938.024310711@linuxfoundation.org>
+Message-ID: <20260420153927.533705162@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
+References: <20260420153927.006696811@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,95 +74,90 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-239807-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239626-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,igalia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: 528FE431083
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: BF7E543241A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maíra Canal <mcanal@igalia.com>
+From: Donet Tom <donettom@linux.ibm.com>
 
-[ Upstream commit 9525d169e5fd481538cf8c663cc5839e54f2e481 ]
+[ Upstream commit 4e9597f22a3cb8600c72fc266eaac57981d834c8 ]
 
-When vc4_save_hang_state() encounters an early return condition, it
-returns without freeing the previously allocated `kernel_state`,
-leaking memory.
+During a GPU page fault, the driver restores the SVM range and then maps it
+into the GPU page tables. The current implementation passes a GPU-page-size
+(4K-based) PFN to svm_range_restore_pages() to restore the range.
 
-Add the missing kfree() calls by consolidating the early return paths
-into a single place.
+SVM ranges are tracked using system-page-size PFNs. On systems where the
+system page size is larger than 4K, using GPU-page-size PFNs to restore the
+range causes two problems:
 
-Fixes: 214613656b51 ("drm/vc4: Add an interface for capturing the GPU state after a hang.")
-Reviewed-by: Melissa Wen <mwen@igalia.com>
-Link: https://patch.msgid.link/20260330-vc4-misc-fixes-v1-3-92defc940a29@igalia.com
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Range lookup fails:
+Because the restore function receives PFNs in GPU (4K) units, the SVM
+range lookup does not find the existing range. This will result in a
+duplicate SVM range being created.
+
+VMA lookup failure:
+The restore function also tries to locate the VMA for the faulting address.
+It converts the GPU-page-size PFN into an address using the system page
+size, which results in an incorrect address on non-4K page-size systems.
+As a result, the VMA lookup fails with the message: "address 0xxxx VMA is
+removed".
+
+This patch passes the system-page-size PFN to svm_range_restore_pages() so
+that the SVM range is restored correctly on non-4K page systems.
+
+Acked-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Donet Tom <donettom@linux.ibm.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 074fe395fb13247b057f60004c7ebcca9f38ef46)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vc4/vc4_gem.c | 18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/vc4/vc4_gem.c b/drivers/gpu/drm/vc4/vc4_gem.c
-index 6238630e46793..6887631f2d8be 100644
---- a/drivers/gpu/drm/vc4/vc4_gem.c
-+++ b/drivers/gpu/drm/vc4/vc4_gem.c
-@@ -170,10 +170,8 @@ vc4_save_hang_state(struct drm_device *dev)
- 	spin_lock_irqsave(&vc4->job_lock, irqflags);
- 	exec[0] = vc4_first_bin_job(vc4);
- 	exec[1] = vc4_first_render_job(vc4);
--	if (!exec[0] && !exec[1]) {
--		spin_unlock_irqrestore(&vc4->job_lock, irqflags);
--		return;
--	}
-+	if (!exec[0] && !exec[1])
-+		goto err_free_state;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+index 13252c27cf55e..a29d01202b5b3 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+@@ -2806,14 +2806,14 @@ bool amdgpu_vm_handle_fault(struct amdgpu_device *adev, u32 pasid,
+ 	if (!root)
+ 		return false;
  
- 	/* Get the bos from both binner and renderer into hang state. */
- 	state->bo_count = 0;
-@@ -190,10 +188,8 @@ vc4_save_hang_state(struct drm_device *dev)
- 	kernel_state->bo = kcalloc(state->bo_count,
- 				   sizeof(*kernel_state->bo), GFP_ATOMIC);
- 
--	if (!kernel_state->bo) {
--		spin_unlock_irqrestore(&vc4->job_lock, irqflags);
--		return;
--	}
-+	if (!kernel_state->bo)
-+		goto err_free_state;
- 
- 	k = 0;
- 	for (i = 0; i < 2; i++) {
-@@ -285,6 +281,12 @@ vc4_save_hang_state(struct drm_device *dev)
- 		vc4->hang_state = kernel_state;
- 		spin_unlock_irqrestore(&vc4->job_lock, irqflags);
+-	addr /= AMDGPU_GPU_PAGE_SIZE;
+-
+ 	if (is_compute_context && !svm_range_restore_pages(adev, pasid, vmid,
+-	    node_id, addr, ts, write_fault)) {
++	    node_id, addr >> PAGE_SHIFT, ts, write_fault)) {
+ 		amdgpu_bo_unref(&root);
+ 		return true;
  	}
-+
-+	return;
-+
-+err_free_state:
-+	spin_unlock_irqrestore(&vc4->job_lock, irqflags);
-+	kfree(kernel_state);
- }
  
- static void
++	addr /= AMDGPU_GPU_PAGE_SIZE;
++
+ 	r = amdgpu_bo_reserve(root, true);
+ 	if (r)
+ 		goto error_unref;
 -- 
 2.53.0
 
