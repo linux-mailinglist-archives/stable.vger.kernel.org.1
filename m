@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-239780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239482-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QDVyHc5P5mkDuwEAu9opvQ
-	(envelope-from <stable+bounces-239780-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:09:50 +0200
+	id +M0/LOZk5mkKvwEAu9opvQ
+	(envelope-from <stable+bounces-239482-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:39:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F412F42F170
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:09:49 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D717431B89
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:39:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5AB8430270A5
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:06:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2CCD5396D5AB
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:52:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A71E7341AD6;
-	Mon, 20 Apr 2026 16:06:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C16A93368AF;
+	Mon, 20 Apr 2026 15:52:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RTFY4nmP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sfp/zROo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B1B033F8AA;
-	Mon, 20 Apr 2026 16:06:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83D152741A0;
+	Mon, 20 Apr 2026 15:52:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701195; cv=none; b=ZaB5J50tjCs3gs1hcHFNATpCEUr1L6gnM+IvkADPMw3Rs6j546DzY9XE31erforYXhIiFqZ/LtV+yiMW3kyHw7W7B1lmaWp0yGwne9xUw2c51cs+yh5cPeQhyrOWxDopAqIJ/VHlNd1pYcJsXy6i5cmTVCSESdyrce6LSKWzOgQ=
+	t=1776700366; cv=none; b=rHn5OUOjsyJ1vlbcJSql4nDc8Z8iY7HlVKr8sWyLwOyog5Ygc+3TeSvdr8v1fCiWY36zVZZBAchkVL1hGK00YmDpYkGkyNFWYHP2N3sQEYjeuH7CqTbmUogImLwRycm+K+kFE3Apx1QrtUGmb7LmmhGpcIM7MNCiFAMSZ+ceHaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701195; c=relaxed/simple;
-	bh=Q1iSAtKYqSl3xEuiS+I1QY4w4FurT36i1vb6W6v0glg=;
+	s=arc-20240116; t=1776700366; c=relaxed/simple;
+	bh=uiswTQHbvj42FjcWpaFoCKkkpi+h4Rme+dkqZqTSbyM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZfMAsy1DxpjQYEGN4LhZhCiTnc2GdYbW+tgAjlQTFloTRwBXtANy2SXYgQlYFDwae0q0Y1T0o0pFvlZQu+00fDcAZRPeibOtPp+41hVu0XO/lH2fiacqp5HRAOiW9iCLXevyqIryUvzJ2/6V8jmuwNCpTK5BIuVw7WLjJ6lZkBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RTFY4nmP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3E78C19425;
-	Mon, 20 Apr 2026 16:06:34 +0000 (UTC)
+	 MIME-Version; b=FUCRL7ivjhGCJrIZMz9M1RQm0VrV8S2fTSekXYvck0Zt59JhuNYRN+exUslVdWkpQa9jPD7VcMQbgnfxc7Ew/UiJ8gST8mqt3s3pMt2J7+khgWQXdKTHsIZlrsRPYoVRqcbYgbN/ptLlGKUZMx1w8RKv4zuas/57mGOInyzQW8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sfp/zROo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 121BEC19425;
+	Mon, 20 Apr 2026 15:52:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701195;
-	bh=Q1iSAtKYqSl3xEuiS+I1QY4w4FurT36i1vb6W6v0glg=;
+	s=korg; t=1776700366;
+	bh=uiswTQHbvj42FjcWpaFoCKkkpi+h4Rme+dkqZqTSbyM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RTFY4nmPW0vBaAFdDlYUvwOcfuNVHsRzAyNGk/dcIBOs7PAa8cv42n245i44fbnyi
-	 9vN1fJOTLRoLkFKcvD12OR78xHw3fBoZfs49SCSoKUWWprb5knf7Ox1K3wT41hnVh4
-	 lFIvWflhUHcZzYZCCEEZqLOblIhn3ISDoM5safRE=
+	b=sfp/zROoKXtAChWZLLF7ou6iH1SXPix0KPVBfEVdNUocH+GTKjk0yotDRcRpBT9wN
+	 217MJDu1VbtH0GHmvb9g5WewvTN57aAAWTPQShynHKEx9YoActJt4Qew6+vSRBd7HR
+	 WcO7BarDN54+WS7qtcswGMGqA9qa4ob0cxXzOu5Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Throw <zakkabj@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Francesco Lavra <flavra@baylibre.com>,
+	Linus Walleij <linusw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 020/162] ALSA: hda/realtek: Add quirk for Samsung Book2 Pro 360 (NP950QED)
+Subject: [PATCH 6.19 111/220] pinctrl: mcp23s08: Disable all pin interrupts during probe
 Date: Mon, 20 Apr 2026 17:40:52 +0200
-Message-ID: <20260420153927.752320229@linuxfoundation.org>
+Message-ID: <20260420153938.028526484@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
-References: <20260420153927.006696811@linuxfoundation.org>
+In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
+References: <20260420153934.013228280@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,68 +66,127 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-239780-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-239482-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,suse.de:email]
-X-Rspamd-Queue-Id: F412F42F170
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,baylibre.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 0D717431B89
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Francesco Lavra <flavra@baylibre.com>
 
-[ Upstream commit ea31be8a2c8c99eac198f3b7f2dc770111f2b182 ]
+[ Upstream commit db5b8cecbdf479ad13156af750377e5b43853fab ]
 
-There is another Book2 Pro model (NP950QED) that seems equipped with
-the same speaker module as the non-360 model, which requires
-ALC298_FIXUP_SAMSUNG_AMP_V2_2_AMPS quirk.
+A chip being probed may have the interrupt-on-change feature enabled on
+some of its pins, for example after a reboot. This can cause the chip to
+generate interrupts for pins that don't have a registered nested handler,
+which leads to a kernel crash such as below:
 
-Reported-by: Throw <zakkabj@gmail.com>
-Link: https://patch.msgid.link/20260330162249.147665-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+[    7.928897] Unable to handle kernel read from unreadable memory at virtual address 00000000000000ac
+[    7.932314] Mem abort info:
+[    7.935081]   ESR = 0x0000000096000004
+[    7.938808]   EC = 0x25: DABT (current EL), IL = 32 bits
+[    7.944094]   SET = 0, FnV = 0
+[    7.947127]   EA = 0, S1PTW = 0
+[    7.950247]   FSC = 0x04: level 0 translation fault
+[    7.955101] Data abort info:
+[    7.957961]   ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
+[    7.963421]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+[    7.968447]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+[    7.973734] user pgtable: 4k pages, 48-bit VAs, pgdp=00000000089b7000
+[    7.980148] [00000000000000ac] pgd=0000000000000000, p4d=0000000000000000
+[    7.986913] Internal error: Oops: 0000000096000004 [#1]  SMP
+[    7.992545] Modules linked in:
+[    8.073678] CPU: 0 UID: 0 PID: 81 Comm: irq/18-4-0025 Not tainted 7.0.0-rc6-gd2b5a1f931c8-dirty #199
+[    8.073689] Hardware name: Khadas VIM3 (DT)
+[    8.073692] pstate: 604000c5 (nZCv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[    8.094639] pc : _raw_spin_lock_irq+0x40/0x80
+[    8.098970] lr : handle_nested_irq+0x2c/0x168
+[    8.098979] sp : ffff800082b2bd20
+[    8.106599] x29: ffff800082b2bd20 x28: ffff800080107920 x27: ffff800080104d88
+[    8.106611] x26: ffff000003298080 x25: 0000000000000001 x24: 000000000000ff00
+[    8.113707] x23: 0000000000000001 x22: 0000000000000000 x21: 000000000000000e
+[    8.120850] x20: 0000000000000000 x19: 00000000000000ac x18: 0000000000000000
+[    8.135046] x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
+[    8.135062] x14: ffff800081567ea8 x13: ffffffffffffffff x12: 0000000000000000
+[    8.135070] x11: 00000000000000c0 x10: 0000000000000b60 x9 : ffff800080109e0c
+[    8.135078] x8 : 1fffe0000069dbc1 x7 : 0000000000000001 x6 : ffff0000034ede00
+[    8.135086] x5 : 0000000000000000 x4 : ffff0000034ede08 x3 : 0000000000000001
+[    8.163460] x2 : 0000000000000000 x1 : 0000000000000001 x0 : 00000000000000ac
+[    8.170560] Call trace:
+[    8.180094]  _raw_spin_lock_irq+0x40/0x80 (P)
+[    8.184443]  mcp23s08_irq+0x248/0x358
+[    8.184462]  irq_thread_fn+0x34/0xb8
+[    8.184470]  irq_thread+0x1a4/0x310
+[    8.195093]  kthread+0x13c/0x150
+[    8.198309]  ret_from_fork+0x10/0x20
+[    8.201850] Code: d65f03c0 d2800002 52800023 f9800011 (885ffc01)
+[    8.207931] ---[ end trace 0000000000000000 ]---
+
+This issue has always been present, but has been latent until commit
+"f9f4fda15e72" ("pinctrl: mcp23s08: init reg_defaults from HW at probe and
+switch cache type"), which correctly removed reg_defaults from the regmap
+and as a side effect changed the behavior of the interrupt handler so that
+the real value of the MCP_GPINTEN register is now being read from the chip
+instead of using a bogus 0 default value; a non-zero value for this
+register can trigger the invocation of a nested handler which may not exist
+(yet).
+Fix this issue by disabling all pin interrupts during initialization.
+
+Fixes: f9f4fda15e72 ("pinctrl: mcp23s08: init reg_defaults from HW at probe and switch cache type")
+Signed-off-by: Francesco Lavra <flavra@baylibre.com>
+Signed-off-by: Linus Walleij <linusw@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/pinctrl/pinctrl-mcp23s08.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 2a32e1ead5e86..04e10da997b53 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -11335,6 +11335,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x144d, 0xc176, "Samsung Notebook 9 Pro (NP930MBE-K04US)", ALC298_FIXUP_SAMSUNG_AMP),
- 	SND_PCI_QUIRK(0x144d, 0xc189, "Samsung Galaxy Flex Book (NT950QCG-X716)", ALC298_FIXUP_SAMSUNG_AMP),
- 	SND_PCI_QUIRK(0x144d, 0xc18a, "Samsung Galaxy Book Ion (NP930XCJ-K01US)", ALC298_FIXUP_SAMSUNG_AMP),
-+	SND_PCI_QUIRK(0x144d, 0xc1ac, "Samsung Galaxy Book2 Pro 360 (NP950QED)", ALC298_FIXUP_SAMSUNG_AMP_V2_2_AMPS),
- 	SND_PCI_QUIRK(0x144d, 0xc1a3, "Samsung Galaxy Book Pro (NP935XDB-KC1SE)", ALC298_FIXUP_SAMSUNG_AMP),
- 	SND_PCI_QUIRK(0x144d, 0xc1a4, "Samsung Galaxy Book Pro 360 (NT935QBD)", ALC298_FIXUP_SAMSUNG_AMP),
- 	SND_PCI_QUIRK(0x144d, 0xc1a6, "Samsung Galaxy Book Pro 360 (NP930QBD)", ALC298_FIXUP_SAMSUNG_AMP),
+diff --git a/drivers/pinctrl/pinctrl-mcp23s08.c b/drivers/pinctrl/pinctrl-mcp23s08.c
+index 586f2f67c6177..b89b3169e8be5 100644
+--- a/drivers/pinctrl/pinctrl-mcp23s08.c
++++ b/drivers/pinctrl/pinctrl-mcp23s08.c
+@@ -664,6 +664,15 @@ int mcp23s08_probe_one(struct mcp23s08 *mcp, struct device *dev,
+ 	if (mcp->irq && mcp->irq_controller) {
+ 		struct gpio_irq_chip *girq = &mcp->chip.irq;
+ 
++		/*
++		 * Disable all pin interrupts, to prevent the interrupt handler from
++		 * calling nested handlers for any currently-enabled interrupts that
++		 * do not (yet) have an actual handler.
++		 */
++		ret = mcp_write(mcp, MCP_GPINTEN, 0);
++		if (ret < 0)
++			return dev_err_probe(dev, ret, "can't disable interrupts\n");
++
+ 		gpio_irq_chip_set_chip(girq, &mcp23s08_irq_chip);
+ 		/* This will let us handle the parent IRQ in the driver */
+ 		girq->parent_handler = NULL;
 -- 
 2.53.0
 
