@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-239467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239799-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QGuALqlL5mkgugEAu9opvQ
-	(envelope-from <stable+bounces-239467-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 17:52:09 +0200
+	id yMi7MBdQ5mkDuwEAu9opvQ
+	(envelope-from <stable+bounces-239799-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:11:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8878C42EAA4
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 17:52:09 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D6A942F1E2
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:11:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E43483006457
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:52:08 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5D1A63031B65
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:07:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46612336896;
-	Mon, 20 Apr 2026 15:52:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02EC43375C5;
+	Mon, 20 Apr 2026 16:07:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ytQm1vDE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gLdX78er"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A605330675;
-	Mon, 20 Apr 2026 15:52:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B96002DE6E3;
+	Mon, 20 Apr 2026 16:07:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700328; cv=none; b=L/rSfib1ogmlzhOzVxqb0sySqBidSM7oc7QOOOyhZl1SihoZYLxQE7RmGCnnNuMvqtQcARk3zluj8SDIVOX1oSTvyE9SAn8kJI82WKjQgVED7N5ktmKhCosfZ1hIFtAih/LX/LPkYdXCvezh6GUTbBwae9rBd0vvewykG/6DFaU=
+	t=1776701245; cv=none; b=NSLjYjZworicCXIuq7B2eOP+VhgT7y7TA8D0vLCzoP2njdanhxwujE+kAg2+zsYJ5UBL6BCFYkK1yRnls5OqLKGQrC5HcNQ8mHOgdGb/31tRT6wJvqngCsW/ogHvcrJkcLKKZiBvWuvojLGYTCKCg8f7F1yv37QCEKaXeYtGVD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700328; c=relaxed/simple;
-	bh=8u52wi81zfj88u+TCFy+6QwMeha68tfuWx59sOFtsX8=;
+	s=arc-20240116; t=1776701245; c=relaxed/simple;
+	bh=M/19IIrLC8V91ZLtWpZ1j4+xY74w7yXeHwMFuWR1Mwg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R5ZVugooJFJstgMpYegqDRjmWNQhZeiGzJu9KB3GzI0s4rUftMrFoxOXgHxSyUeri80EoFRuvm/WQfPeMEsQdnqqKOCMhm7CiXJkQP1ce5mMKwwXZb0i66E+N2LgHApln//Hs8sQBfn3menIZNP8wz/P2Vhi8F8SnYM/XzvEY2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ytQm1vDE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93AE1C19425;
-	Mon, 20 Apr 2026 15:52:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Ulpo9ubgUObdm+ZLyVjnzrlhtpNmJVagO0mkNaoY+gVvNkIJU2VDhq5PBhpmPHNFUSGuilJSEr8BdSdCjbof4IexDRV5re4eFqsPNAXb5wGvQWFdeBVFMMHEvaPZuT9h1VBP5Bsrxpn3YCYYxLHPl9JYIWymIdrpQaSI18MNJtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gLdX78er; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FB06C19425;
+	Mon, 20 Apr 2026 16:07:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700327;
-	bh=8u52wi81zfj88u+TCFy+6QwMeha68tfuWx59sOFtsX8=;
+	s=korg; t=1776701245;
+	bh=M/19IIrLC8V91ZLtWpZ1j4+xY74w7yXeHwMFuWR1Mwg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ytQm1vDEtEpdUyZuefbqIh9b+lmXMN0Ckbyiztxt/OKnLmkl4NHG3usZef2D0uhPN
-	 p5ZmRKsRXFrUHzgre4Su2ekmKBQRlrtcIA/xbQC3zKC1HW+jUvgRtpuyR/cqdxM4po
-	 W4CYUvaWUCKokH4UKm+NZetSR9YjXpb+L5E9pnvY=
+	b=gLdX78erP+eenzqY/QVNoN5nt6OHFSsuzKIbrwWh2YnU2bIJrxf2DfI9W6/4/owAB
+	 BmlKyhWPebz160RPeVH77MCS3/PKe1doHlN9JurPzSGARKBCr7t+DOutLJeasIH8dM
+	 OJHpVZzMwVz8rEoUfkHa4BSAhMef8slZnlfPED0Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Koskovich <akoskovich@pm.me>,
-	Luca Weiss <luca.weiss@fairphone.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Markus Niebel <Markus.Niebel@ew.tq-group.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 129/220] net: ipa: fix GENERIC_CMD register field masks for IPA v5.0+
+Subject: [PATCH 6.12 038/162] arm64: dts: imx93-tqma9352: improve eMMC pad configuration
 Date: Mon, 20 Apr 2026 17:41:10 +0200
-Message-ID: <20260420153938.672679952@linuxfoundation.org>
+Message-ID: <20260420153928.407199167@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
-References: <20260420153934.013228280@linuxfoundation.org>
+In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
+References: <20260420153927.006696811@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,81 +64,98 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239467-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-239799-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,pm.me:email]
-X-Rspamd-Queue-Id: 8878C42EAA4
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tq-group.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,nxp.com:email]
+X-Rspamd-Queue-Id: 7D6A942F1E2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Koskovich <akoskovich@pm.me>
+From: Markus Niebel <Markus.Niebel@ew.tq-group.com>
 
-[ Upstream commit 9709b56d908acc120fe8b4ae250b3c9d749ea832 ]
+[ Upstream commit b6c94c71f349479b76fcc0ef0dc7147f3f326dff ]
 
-Fix the field masks to match the hardware layout documented in
-downstream GSI (GSI_V3_0_EE_n_GSI_EE_GENERIC_CMD_*).
+Use DSE x4 an PullUp for CMD an DAT, DSE x4 and PullDown for CLK to improve
+stability and detection at low temperatures under -25°C.
 
-Notably this fixes a WARN I was seeing when I tried to send "stop"
-to the MPSS remoteproc while IPA was up.
-
-Fixes: faf0678ec8a0 ("net: ipa: add IPA v5.0 GSI register definitions")
-Signed-off-by: Alexander Koskovich <akoskovich@pm.me>
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260403-milos-ipa-v1-1-01e9e4e03d3e@fairphone.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 0b5fdfaa8e45 ("arm64: dts: freescale: imx93-tqma9352: set SION for cmd and data pad of USDHC")
+Signed-off-by: Markus Niebel <Markus.Niebel@ew.tq-group.com>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ipa/reg/gsi_reg-v5.0.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ .../boot/dts/freescale/imx93-tqma9352.dtsi    | 26 +++++++++----------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/ipa/reg/gsi_reg-v5.0.c b/drivers/net/ipa/reg/gsi_reg-v5.0.c
-index 36d1e65df71bb..3334d8e20ad28 100644
---- a/drivers/net/ipa/reg/gsi_reg-v5.0.c
-+++ b/drivers/net/ipa/reg/gsi_reg-v5.0.c
-@@ -156,9 +156,10 @@ REG_FIELDS(EV_CH_CMD, ev_ch_cmd, 0x00025010 + 0x12000 * GSI_EE_AP);
+diff --git a/arch/arm64/boot/dts/freescale/imx93-tqma9352.dtsi b/arch/arm64/boot/dts/freescale/imx93-tqma9352.dtsi
+index 09385b058664c..f189685370cc8 100644
+--- a/arch/arm64/boot/dts/freescale/imx93-tqma9352.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx93-tqma9352.dtsi
+@@ -273,21 +273,21 @@ MX93_PAD_SD2_RESET_B__GPIO3_IO07	0x106
+ 	/* enable SION for data and cmd pad due to ERR052021 */
+ 	pinctrl_usdhc1: usdhc1grp {
+ 		fsl,pins = <
+-			/* PD | FSEL 3 | DSE X5 */
+-			MX93_PAD_SD1_CLK__USDHC1_CLK		0x5be
++			/* PD | FSEL 3 | DSE X4 */
++			MX93_PAD_SD1_CLK__USDHC1_CLK		0x59e
+ 			/* HYS | FSEL 0 | no drive */
+ 			MX93_PAD_SD1_STROBE__USDHC1_STROBE	0x1000
+-			/* HYS | FSEL 3 | X5 */
+-			MX93_PAD_SD1_CMD__USDHC1_CMD		0x400011be
+-			/* HYS | FSEL 3 | X4 */
+-			MX93_PAD_SD1_DATA0__USDHC1_DATA0	0x4000119e
+-			MX93_PAD_SD1_DATA1__USDHC1_DATA1	0x4000119e
+-			MX93_PAD_SD1_DATA2__USDHC1_DATA2	0x4000119e
+-			MX93_PAD_SD1_DATA3__USDHC1_DATA3	0x4000119e
+-			MX93_PAD_SD1_DATA4__USDHC1_DATA4	0x4000119e
+-			MX93_PAD_SD1_DATA5__USDHC1_DATA5	0x4000119e
+-			MX93_PAD_SD1_DATA6__USDHC1_DATA6	0x4000119e
+-			MX93_PAD_SD1_DATA7__USDHC1_DATA7	0x4000119e
++			/* HYS | PU | FSEL 3 | DSE X4 */
++			MX93_PAD_SD1_CMD__USDHC1_CMD		0x4000139e
++			/* HYS | PU | FSEL 3 | DSE X4 */
++			MX93_PAD_SD1_DATA0__USDHC1_DATA0	0x4000139e
++			MX93_PAD_SD1_DATA1__USDHC1_DATA1	0x4000139e
++			MX93_PAD_SD1_DATA2__USDHC1_DATA2	0x4000139e
++			MX93_PAD_SD1_DATA3__USDHC1_DATA3	0x4000139e
++			MX93_PAD_SD1_DATA4__USDHC1_DATA4	0x4000139e
++			MX93_PAD_SD1_DATA5__USDHC1_DATA5	0x4000139e
++			MX93_PAD_SD1_DATA6__USDHC1_DATA6	0x4000139e
++			MX93_PAD_SD1_DATA7__USDHC1_DATA7	0x4000139e
+ 		>;
+ 	};
  
- static const u32 reg_generic_cmd_fmask[] = {
- 	[GENERIC_OPCODE]				= GENMASK(4, 0),
--	[GENERIC_CHID]					= GENMASK(9, 5),
--	[GENERIC_EE]					= GENMASK(13, 10),
--						/* Bits 14-31 reserved */
-+	[GENERIC_CHID]					= GENMASK(12, 5),
-+	[GENERIC_EE]					= GENMASK(16, 13),
-+						/* Bits 17-23 reserved */
-+	[GENERIC_PARAMS]				= GENMASK(31, 24),
- };
- 
- REG_FIELDS(GENERIC_CMD, generic_cmd, 0x00025018 + 0x12000 * GSI_EE_AP);
 -- 
 2.53.0
 
