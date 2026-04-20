@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-239725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239873-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qIqWE6xa5mnGvAEAu9opvQ
-	(envelope-from <stable+bounces-239725-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:56:12 +0200
+	id IEn8JgVR5mkDuwEAu9opvQ
+	(envelope-from <stable+bounces-239873-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:15:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0166B4303C8
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:56:11 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E70E42F351
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:15:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 05AF531BE7F1
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:04:21 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AA252303E7F2
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:10:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28DBB3358B0;
-	Mon, 20 Apr 2026 16:04:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F690344057;
+	Mon, 20 Apr 2026 16:10:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P9pMHIVg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YVmKjxSd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC25A34216C;
-	Mon, 20 Apr 2026 16:04:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6F3B34107F;
+	Mon, 20 Apr 2026 16:10:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701056; cv=none; b=E5WbwNwd1BBdbJHNgrDJ0WthbmJFlfmMwK1MgC4w7rkgeegkHccDeRkC6TDxmdbwvm8/h1XqW7waqt/Fou9OvG1uS3Mv+Ntkp+76wntr8TK3gal/FVyjZqWw/Y4WHd//9as4ITxdFGxM4ONXAtyFzyCnDTPNDvLy9vZFuGnbUik=
+	t=1776701434; cv=none; b=ZHBWkeY+DwzxvtC/MgZjDepV95QrTEpCNyF73j2pd5y9Rf/jKCm83kqdW+AtO7wpfYBaDdP38uPHwD+bAArO4/iUyJ/EQmKUcROvoMHNjUpVfgv5HOgCqxz8L/p0b2LgSNIRf4KUWDXZyOcbPasVz2SgZ0t4RSLNGTo5Cj16zKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701056; c=relaxed/simple;
-	bh=m2LImEHqTt4YYJ33n9KAURnRg2bxpVhsyE3sTKh7BvA=;
+	s=arc-20240116; t=1776701434; c=relaxed/simple;
+	bh=mY0zRgWxrrcOHY56hQGDLJmS1Nqdw1C5UrFGhaN8teo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qb6U2BObBfn3s6qR9rfvJDJECPEWi3fTyAq/UfVRb+m2y4g5UCCPgFxMOCijReNIp3yUKBmKINmSZvJdm555k4wv5WhXLKJHZJr51pyo+zCVFnnbEu2H2X1Q7j0ZaX5NO3FzV0erV98sbXNGvc1CadYGgsTL3ezkJ2GQ+INIaXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P9pMHIVg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7150BC2BCB4;
-	Mon, 20 Apr 2026 16:04:16 +0000 (UTC)
+	 MIME-Version; b=N6Y2aiU+2opYLTL/TdQ/vDrs4AFT9bL8MI2dxnvUt+RRbSjF5AZwdDtHmo0h4zCezoFLMgCNkFe6vo/M2BjYLSWYtiyDIjhDOQ8OI6hNapVt3XcmqkoJZMz/8E5LNmgYni3iLhyo750/Mv1882S2WaYnaI1H5Vc+wclXtZfRxa0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YVmKjxSd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D8FCC19425;
+	Mon, 20 Apr 2026 16:10:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701056;
-	bh=m2LImEHqTt4YYJ33n9KAURnRg2bxpVhsyE3sTKh7BvA=;
+	s=korg; t=1776701434;
+	bh=mY0zRgWxrrcOHY56hQGDLJmS1Nqdw1C5UrFGhaN8teo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P9pMHIVgiFazP0+yzY4T4W7V3ea6TNtxgH1+oKfGY3jH0LQwjl/GH08NzkWlH7Swg
-	 rzurNhxBWxdqeWWIBlkp4WnEiNcGv5stPNxshupwDHPbUO3aAfNnJSnVcoIxwQfvx9
-	 mhkmhMUUnXb+EwwYSXahhU2TmrQN2OXCAwybMlsE=
+	b=YVmKjxSdJZwq2qwImD4KI85c2V0jHYmmaZYuzz/dUr+fltkMuPVgowBS1jyn/9mmp
+	 78e+4Wcn1HcoLCbgnSas4gCdznusQswBV2RLhE7l6Vcs3K9Bc/nZ9XfGBqWBc4ugZL
+	 ADaIQqPrKuukDCkbQOp68PVWAKsNKL8Q3uL9ItRA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Koichiro Den <den@valinux.co.jp>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>
-Subject: [PATCH 6.18 164/198] PCI: endpoint: pci-epf-vntb: Remove duplicate resource teardown
+	stable <stable@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Nathan Rebello <nathan.c.rebello@gmail.com>
+Subject: [PATCH 6.12 111/162] usbip: validate number_of_packets in usbip_pack_ret_submit()
 Date: Mon, 20 Apr 2026 17:42:23 +0200
-Message-ID: <20260420153941.516976166@linuxfoundation.org>
+Message-ID: <20260420153931.061251818@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
+References: <20260420153927.006696811@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,128 +64,124 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-239725-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239873-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.996];
 	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,valinux.co.jp:email,nxp.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 0166B4303C8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 5E70E42F351
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Koichiro Den <den@valinux.co.jp>
+From: Nathan Rebello <nathan.c.rebello@gmail.com>
 
-commit 0da63230d3ec1ec5fcc443a2314233e95bfece54 upstream.
+commit 2ab833a16a825373aad2ba7d54b572b277e95b71 upstream.
 
-epf_ntb_epc_destroy() duplicates the teardown that the caller is
-supposed to perform later. This leads to an oops when .allow_link fails
-or when .drop_link is performed. The following is an example oops of the
-former case:
+When a USB/IP client receives a RET_SUBMIT response,
+usbip_pack_ret_submit() unconditionally overwrites
+urb->number_of_packets from the network PDU. This value is
+subsequently used as the loop bound in usbip_recv_iso() and
+usbip_pad_iso() to iterate over urb->iso_frame_desc[], a flexible
+array whose size was fixed at URB allocation time based on the
+*original* number_of_packets from the CMD_SUBMIT.
 
-  Unable to handle kernel paging request at virtual address dead000000000108
-  [...]
-  [dead000000000108] address between user and kernel address ranges
-  Internal error: Oops: 0000000096000044 [#1]  SMP
-  [...]
-  Call trace:
-   pci_epc_remove_epf+0x78/0xe0 (P)
-   pci_primary_epc_epf_link+0x88/0xa8
-   configfs_symlink+0x1f4/0x5a0
-   vfs_symlink+0x134/0x1d8
-   do_symlinkat+0x88/0x138
-   __arm64_sys_symlinkat+0x74/0xe0
-  [...]
+A malicious USB/IP server can set number_of_packets in the response
+to a value larger than what was originally submitted, causing a heap
+out-of-bounds write when usbip_recv_iso() writes to
+urb->iso_frame_desc[i] beyond the allocated region.
 
-Remove the helper, and drop pci_epc_put(). EPC device refcounting is
-tied to the configfs EPC group lifetime, and pci_epc_put() in the
-.drop_link path is sufficient.
+KASAN confirmed this with kernel 7.0.0-rc5:
 
-Fixes: e35f56bb0330 ("PCI: endpoint: Support NTB transfer between RC and EP")
-Signed-off-by: Koichiro Den <den@valinux.co.jp>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260226084142.2226875-2-den@valinux.co.jp
+  BUG: KASAN: slab-out-of-bounds in usbip_recv_iso+0x46a/0x640
+  Write of size 4 at addr ffff888106351d40 by task vhci_rx/69
+
+  The buggy address is located 0 bytes to the right of
+   allocated 320-byte region [ffff888106351c00, ffff888106351d40)
+
+The server side (stub_rx.c) and gadget side (vudc_rx.c) already
+validate number_of_packets in the CMD_SUBMIT path since commits
+c6688ef9f297 ("usbip: fix stub_rx: harden CMD_SUBMIT path to handle
+malicious input") and b78d830f0049 ("usbip: fix vudc_rx: harden
+CMD_SUBMIT path to handle malicious input"). The server side validates
+against USBIP_MAX_ISO_PACKETS because no URB exists yet at that point.
+On the client side we have the original URB, so we can use the tighter
+bound: the response must not exceed the original number_of_packets.
+
+This mirrors the existing validation of actual_length against
+transfer_buffer_length in usbip_recv_xbuff(), which checks the
+response value against the original allocation size.
+
+Kelvin Mbogo's series ("usb: usbip: fix integer overflow in
+usbip_recv_iso()", v2) hardens the receive-side functions themselves;
+this patch complements that work by catching the bad value at its
+source -- in usbip_pack_ret_submit() before the overwrite -- and
+using the tighter per-URB allocation bound rather than the global
+USBIP_MAX_ISO_PACKETS limit.
+
+Fix this by checking rpdu->number_of_packets against
+urb->number_of_packets in usbip_pack_ret_submit() before the
+overwrite. On violation, clamp to zero so that usbip_recv_iso() and
+usbip_pad_iso() safely return early.
+
+Fixes: 1325f85fa49f ("staging: usbip: bugfix add number of packets for isochronous frames")
+Cc: stable <stable@kernel.org>
+Acked-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Nathan Rebello <nathan.c.rebello@gmail.com>
+Link: https://patch.msgid.link/20260402085259.234-1-nathan.c.rebello@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/endpoint/functions/pci-epf-vntb.c |   19 +------------------
- 1 file changed, 1 insertion(+), 18 deletions(-)
+ drivers/usb/usbip/usbip_common.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/drivers/pci/endpoint/functions/pci-epf-vntb.c
-+++ b/drivers/pci/endpoint/functions/pci-epf-vntb.c
-@@ -645,19 +645,6 @@ static void epf_ntb_mw_bar_clear(struct
- }
- 
- /**
-- * epf_ntb_epc_destroy() - Cleanup NTB EPC interface
-- * @ntb: NTB device that facilitates communication between HOST and VHOST
-- *
-- * Wrapper for epf_ntb_epc_destroy_interface() to cleanup all the NTB interfaces
-- */
--static void epf_ntb_epc_destroy(struct epf_ntb *ntb)
--{
--	pci_epc_remove_epf(ntb->epf->epc, ntb->epf, 0);
--	pci_epc_put(ntb->epf->epc);
--}
--
--
--/**
-  * epf_ntb_is_bar_used() - Check if a bar is used in the ntb configuration
-  * @ntb: NTB device that facilitates communication between HOST and VHOST
-  * @barno: Checked bar number
-@@ -1407,7 +1394,7 @@ static int epf_ntb_bind(struct pci_epf *
- 	ret = epf_ntb_init_epc_bar(ntb);
- 	if (ret) {
- 		dev_err(dev, "Failed to create NTB EPC\n");
--		goto err_bar_init;
-+		return ret;
+--- a/drivers/usb/usbip/usbip_common.c
++++ b/drivers/usb/usbip/usbip_common.c
+@@ -470,6 +470,18 @@ static void usbip_pack_ret_submit(struct
+ 		urb->status		= rpdu->status;
+ 		urb->actual_length	= rpdu->actual_length;
+ 		urb->start_frame	= rpdu->start_frame;
++		/*
++		 * The number_of_packets field determines the length of
++		 * iso_frame_desc[], which is a flexible array allocated
++		 * at URB creation time. A response must never claim more
++		 * packets than originally submitted; doing so would cause
++		 * an out-of-bounds write in usbip_recv_iso() and
++		 * usbip_pad_iso(). Clamp to zero on violation so both
++		 * functions safely return early.
++		 */
++		if (rpdu->number_of_packets < 0 ||
++		    rpdu->number_of_packets > urb->number_of_packets)
++			rpdu->number_of_packets = 0;
+ 		urb->number_of_packets = rpdu->number_of_packets;
+ 		urb->error_count	= rpdu->error_count;
  	}
- 
- 	ret = epf_ntb_config_spad_bar_alloc(ntb);
-@@ -1447,9 +1434,6 @@ err_epc_cleanup:
- err_bar_alloc:
- 	epf_ntb_config_spad_bar_free(ntb);
- 
--err_bar_init:
--	epf_ntb_epc_destroy(ntb);
--
- 	return ret;
- }
- 
-@@ -1465,7 +1449,6 @@ static void epf_ntb_unbind(struct pci_ep
- 
- 	epf_ntb_epc_cleanup(ntb);
- 	epf_ntb_config_spad_bar_free(ntb);
--	epf_ntb_epc_destroy(ntb);
- 
- 	pci_unregister_driver(&vntb_pci_driver);
- }
 
 
 
