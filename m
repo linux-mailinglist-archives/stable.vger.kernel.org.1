@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-239498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239292-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UEoDMBFl5mlmvwEAu9opvQ
-	(envelope-from <stable+bounces-239498-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:40:33 +0200
+	id AGCWDuZV5mktvAEAu9opvQ
+	(envelope-from <stable+bounces-239292-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:35:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27FE7431C5F
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:40:33 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B523842FAF8
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:35:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A1A6830BA3B8
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:53:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D4B5A32166B3
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:45:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2DEC2D77E5;
-	Mon, 20 Apr 2026 15:53:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6CDC33AD8B;
+	Mon, 20 Apr 2026 15:44:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d5rn/vMx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VmOQPDuv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B21573385B6;
-	Mon, 20 Apr 2026 15:53:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 797783396EE;
+	Mon, 20 Apr 2026 15:44:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700407; cv=none; b=Uft5lNL+LMB/6VheH+enNTrWKQysFpjPX28xVfpbskFSLs882ij1uMQRMWbVlXUgrQnZSTgHwyd9cEIngbmV381/kUH4Eam+hy6dGcgRHeaCDfFzUrMvRcQStg+4DvNuz67dT8c6+wg2OFxVHruovzUob2O42cb9yx62jH1zePQ=
+	t=1776699875; cv=none; b=bNHpLF/GtlFAnsJ/HOdvY8LSqx3thTxOzRWF7jNkoJRsAIotZ/YrgTgnAMjvcei9tZh/pB/usTUFvyZdbekoh3eJsy2GejzvGG7XnYDSY5o346bSc2h/Dq8oYG2ybZBKc0HBNtNwtnKmWJquKjGeYyQbJgbSlBdprpGVtWzuV8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700407; c=relaxed/simple;
-	bh=oxGvc/032NV3va8tOtDxi+FiI1aHE+6ro/RTn/Q367M=;
+	s=arc-20240116; t=1776699875; c=relaxed/simple;
+	bh=na7il5onoAowDj4HOQcsdvMTBKtKn9IhbcEMXkhav/Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E1dSbvOuk1xIMR3f4TXCucnLPeJmHtkAqSqIlom9j3Bu3o9AxlJCFhF0GBJdJdEA5cYmRptvl4PNswMi7JYRPYUT5K4DmQbePYch/CY4YV6FFwJVwHHw8tP/t4z3fsOXmyLfs+7Ve7pi9xfhIcBVd8xxieo4aPcrpOMetUmlrXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d5rn/vMx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D175C19425;
-	Mon, 20 Apr 2026 15:53:26 +0000 (UTC)
+	 MIME-Version; b=lsKHE5R54FOlvBUBldgWIrUSA4CFHnCR8/9e9JjSjgBe+RMRTVcGAH7V68Pyc7s9guNiHtIh97h04d6kboTmODn5vn8hX2tTwYFNcQ5uz91lITlPDW1vrbDBo5pY17vb/V9txtwytNi9uBJxRkWoqkJpX5l0QPqeTPxzyfR10wA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VmOQPDuv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1145BC19425;
+	Mon, 20 Apr 2026 15:44:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700407;
-	bh=oxGvc/032NV3va8tOtDxi+FiI1aHE+6ro/RTn/Q367M=;
+	s=korg; t=1776699875;
+	bh=na7il5onoAowDj4HOQcsdvMTBKtKn9IhbcEMXkhav/Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d5rn/vMxPPUPNqoZRGeFsZrq3rXG/A2VMw95+MMPRwgZ1oAJdMgFX2O9KltrkdOnW
-	 cVtxjajjhi/KXcLbdUmq5dgM6HTmkyCLaT4Gft/t/HI48i7S67/Zjg/2iAmMv9rtLy
-	 dqAAJ0VMZeBh+y3NLZhk2iFqtrg2iEvqS+4KRNIE=
+	b=VmOQPDuvIla1TipcKDNgI+hbK7Q/JClt3bSL7Loy7lL/hwO4pqK3DfwY27rDBBfv8
+	 xNLNQ62Wyk17tnzqYPdnwhgkdYP/YgrbYhWvjdjJWbuyJ7vveFoXsZKFyWymnJhCzX
+	 jVMm3/7ckaXkYXq/1csJvYlaG2Grzfx0R5lLRcro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <smfrench@gmail.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Tom Talpey <tom@talpey.com>,
-	linux-cifs@vger.kernel.org,
 	stable@kernel.org,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.19 160/220] ksmbd: fix mechToken leak when SPNEGO decode fails after token alloc
+	Xu Yang <xu.yang_2@nxp.com>
+Subject: [PATCH 7.0 30/76] usb: port: add delay after usb_hub_set_port_power()
 Date: Mon, 20 Apr 2026 17:41:41 +0200
-Message-ID: <20260420153939.789412836@linuxfoundation.org>
+Message-ID: <20260420153911.919724843@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
-References: <20260420153934.013228280@linuxfoundation.org>
+In-Reply-To: <20260420153910.810034134@linuxfoundation.org>
+References: <20260420153910.810034134@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,107 +67,95 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,chromium.org,talpey.com,vger.kernel.org,microsoft.com];
-	TAGGED_FROM(0.00)[bounces-239498-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-239292-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[talpey.com:email,chromium.org:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 27FE7431C5F
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: B523842FAF8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-commit ad0057fb91218914d6c98268718ceb9d59b388e1 upstream.
+commit b84cc80610a8ce036deb987f056ce3196ead7f1e upstream.
 
-The kernel ASN.1 BER decoder calls action callbacks incrementally as it
-walks the input.  When ksmbd_decode_negTokenInit() reaches the mechToken
-[2] OCTET STRING element, ksmbd_neg_token_alloc() allocates
-conn->mechToken immediately via kmemdup_nul().  If a later element in
-the same blob is malformed, then the decoder will return nonzero after
-the allocation is already live.  This could happen if mechListMIC [3]
-overrunse the enclosing SEQUENCE.
+When a port is disabled, an attached device will be disconnected.  This
+causes a port-status-change event, which will race with hub autosuspend
+(if the disabled port was the only connected port on its hub), causing
+an immediate resume and a second autosuspend.  Both of these can be
+avoided by adding a short delay after the call to
+usb_hub_set_port_power().
 
-decode_negotiation_token() then sets conn->use_spnego = false because
-both the negTokenInit and negTokenTarg grammars failed.  The cleanup at
-the bottom of smb2_sess_setup() is gated on use_spnego:
+Below log shows what is happening:
 
-	if (conn->use_spnego && conn->mechToken) {
-		kfree(conn->mechToken);
-		conn->mechToken = NULL;
-	}
+$ echo 1 > usb1-port1/disable
+[   37.958239] usb 1-1: USB disconnect, device number 2
+[   37.964101] usb 1-1: unregistering device
+[   37.970070] hub 1-0:1.0: hub_suspend
+[   37.971305] hub 1-0:1.0: state 7 ports 1 chg 0000 evt 0002
+[   37.974412] usb usb1: bus auto-suspend, wakeup 1
+[   37.988175] usb usb1: suspend raced with wakeup event         <---
+[   37.993947] usb usb1: usb auto-resume
+[   37.998401] hub 1-0:1.0: hub_resume
+[   38.105688] usb usb1-port1: status 0000, change 0000, 12 Mb/s
+[   38.112399] hub 1-0:1.0: state 7 ports 1 chg 0000 evt 0000
+[   38.118645] hub 1-0:1.0: hub_suspend
+[   38.122963] usb usb1: bus auto-suspend, wakeup 1
+[   38.200368] usb usb1: usb wakeup-resume
+[   38.204982] usb usb1: usb auto-resume
+[   38.209376] hub 1-0:1.0: hub_resume
+[   38.213676] usb usb1-port1: status 0101 change 0001
+[   38.321552] hub 1-0:1.0: state 7 ports 1 chg 0002 evt 0000
+[   38.327978] usb usb1-port1: status 0101, change 0000, 12 Mb/s
+[   38.457429] usb 1-1: new high-speed USB device number 3 using ci_hdrc
 
-so the kfree is skipped, causing the mechToken to never be freed.
+Then, port change bit will be fixed to the final state and
+usb_clear_port_feature() can correctly clear it after this period. This
+will also avoid usb runtime suspend routine to run because
+usb_autopm_put_interface() not run yet.
 
-This codepath is reachable pre-authentication, so untrusted clients can
-cause slow memory leaks on a server without even being properly
-authenticated.
-
-Fix this up by not checking check for use_spnego, as it's not required,
-so the memory will always be properly freed.  At the same time, always
-free the memory in ksmbd_conn_free() incase some other failure path
-forgot to free it.
-
-Cc: Namjae Jeon <linkinjeon@kernel.org>
-Cc: Steve French <smfrench@gmail.com>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: <stable@kernel.org>
-Assisted-by: gregkh_clanker_t1000
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: f061f43d7418 ("usb: hub: port: add sysfs entry to switch port power")
+Cc: stable@kernel.org
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Link: https://patch.msgid.link/20260316095042.1559882-1-xu.yang_2@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/connection.c |    1 +
- fs/smb/server/smb2pdu.c    |    2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/core/port.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/smb/server/connection.c
-+++ b/fs/smb/server/connection.c
-@@ -39,6 +39,7 @@ void ksmbd_conn_free(struct ksmbd_conn *
- 	xa_destroy(&conn->sessions);
- 	kvfree(conn->request_buf);
- 	kfree(conn->preauth_info);
-+	kfree(conn->mechToken);
- 	if (atomic_dec_and_test(&conn->refcnt)) {
- 		conn->transport->ops->free_transport(conn->transport);
- 		kfree(conn);
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -1914,7 +1914,7 @@ out_err:
- 	else if (rc)
- 		rsp->hdr.Status = STATUS_LOGON_FAILURE;
+--- a/drivers/usb/core/port.c
++++ b/drivers/usb/core/port.c
+@@ -141,6 +141,7 @@ static ssize_t disable_store(struct devi
+ 		usb_disconnect(&port_dev->child);
  
--	if (conn->use_spnego && conn->mechToken) {
-+	if (conn->mechToken) {
- 		kfree(conn->mechToken);
- 		conn->mechToken = NULL;
- 	}
+ 	rc = usb_hub_set_port_power(hdev, hub, port1, !disabled);
++	msleep(2 * hub_power_on_good_delay(hub));
+ 
+ 	if (disabled) {
+ 		usb_clear_port_feature(hdev, port1, USB_PORT_FEAT_C_CONNECTION);
 
 
 
