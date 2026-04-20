@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-239727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239345-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ONtsJX9a5mnGvAEAu9opvQ
-	(envelope-from <stable+bounces-239727-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:55:27 +0200
+	id mJ8rOHlj5mkKvwEAu9opvQ
+	(envelope-from <stable+bounces-239345-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:33:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F335430385
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:55:27 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74E9943171E
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:33:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3965731D3AD0
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:04:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DB652347E2F8
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:46:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D0373431F8;
-	Mon, 20 Apr 2026 16:04:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80BAD22541C;
+	Mon, 20 Apr 2026 15:46:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J3VHAEKj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2uytmE+d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00E1B34404B;
-	Mon, 20 Apr 2026 16:04:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4420729BDBF;
+	Mon, 20 Apr 2026 15:46:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701062; cv=none; b=dF0N1vTahKhyhBtJdkALda0dfOpdRs/ZhUuQcmTNVbrjpktGg2kssNuhncN9pCE55v9UQB5LS4XzjhNXadaFCy5Tv2y9X1wdpG8EnAUNYbI0mT1DidxlIyTIc/wy89QLGIUHpOBNtQIw6TW/Me+W7Rqy95NXqWViwMpl2HVuxe4=
+	t=1776700009; cv=none; b=sWfkLbR8xQHRXhRccTAGSPwNlfzWaptFX7NxPVwlPYyMAhxmeOxjM7NybyFfSZdG0Kack8VCKaA4fd3UlEjf9BKuFZrI4vJpapZnwu8noECcjWbqZt1X9tRLIxEB3IRcVDDsozpgJ0c5af4B3iET0XyVs07zAW66NZBsKCGluJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701062; c=relaxed/simple;
-	bh=acyu2+MNpRmpeUXMPPRyDTHj7AOHA8HaaZnRIr6WojY=;
+	s=arc-20240116; t=1776700009; c=relaxed/simple;
+	bh=4gBCQJmyDCfTQksRkAFBjwD6iuQLkvQXbndT8w7cNmU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eB49cuAxXAjdzB/t0JaChsN/kwhrczUaqA2ogzzN7aHLWA95PZ7vETpJvzFBPh8EF+qIIoJFqRBlBpRIb+6TCP2SV/7B7wx+hzLcSoecBOoj2zC4Kn8EV8Q5euSCBOVU9pj3WhXeKLp6zsBW05r9/pGoUuODa334mBr4o7U8dfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J3VHAEKj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88D4BC19425;
-	Mon, 20 Apr 2026 16:04:21 +0000 (UTC)
+	 MIME-Version; b=k6WI2O1so6Hc06FLWOLkXuSedYSrZ3Dh1LbvLkRYX91Zz7bnjFcBCT6SijXgo6bFUrGAGdfhO/usB7hoWpYPFZqOFJDxEWvZOObO4xU8fEsPzUdV0oJvoOWXEYK1OQ8Dn09qrikR8UNjkROdf4NiBeJMrQe0+5+XOO0YCeuUmLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2uytmE+d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABE30C19425;
+	Mon, 20 Apr 2026 15:46:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701061;
-	bh=acyu2+MNpRmpeUXMPPRyDTHj7AOHA8HaaZnRIr6WojY=;
+	s=korg; t=1776700009;
+	bh=4gBCQJmyDCfTQksRkAFBjwD6iuQLkvQXbndT8w7cNmU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J3VHAEKj4gwMI/TxFkeU8OE/wbTawXl3qZHIb+zZUHGlAWqqZgS4aClCQu4p8x8fo
-	 3eiS27wFrLvPiHCAZlbLMym9Q/x+iBT9tz93g+mDiHg5PTnSVh22gkr2gXTNeFx2IX
-	 0M8fJrSL4degIcqqVVzpbs6MI91ej3VKXRGBCrNQ=
+	b=2uytmE+drnOqfY1Nt3vYBV/dLlCGg5kyC/y7oQ82iU2Q8pY5iSnSejxTw3SECWDvi
+	 /Xmh4hsqhOOeIsnVTMehpgzBzX/YAR+KQLSuPufqnzouvxSSfn5Pg15CbiTdoW/T2N
+	 j70lbHRqtfa7rSmxHWorp9iSObRa6PzAMZ/9SHvs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jethro Beekman <jethro@fortanix.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.18 166/198] KVM: SEV: Reject attempts to sync VMSA of an already-launched/encrypted vCPU
-Date: Mon, 20 Apr 2026 17:42:25 +0200
-Message-ID: <20260420153941.588626569@linuxfoundation.org>
+	syzbot+6ffd76b5405c006a46b7@syzkaller.appspotmail.com,
+	syzbot+f1b20958f93d2d250727@syzkaller.appspotmail.com,
+	Jeongjun Park <aha310510@gmail.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 7.0 75/76] media: hackrf: fix to not free memory after the device is registered in hackrf_probe()
+Date: Mon, 20 Apr 2026 17:42:26 +0200
+Message-ID: <20260420153913.545945841@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+In-Reply-To: <20260420153910.810034134@linuxfoundation.org>
+References: <20260420153910.810034134@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,104 +65,125 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-239727-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239345-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable,6ffd76b5405c006a46b7,f1b20958f93d2d250727,cisco];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 0F335430385
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,syzkaller.appspot.com:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 74E9943171E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Jeongjun Park <aha310510@gmail.com>
 
-commit 9b9f7962e3e879d12da2bf47e02a24ec51690e3d upstream.
+commit 3b7da2b4d0fe014eff181ed37e3bf832eb8ed258 upstream.
 
-Reject synchronizing vCPU state to its associated VMSA if the vCPU has
-already been launched, i.e. if the VMSA has already been encrypted.  On a
-host with SNP enabled, accessing guest-private memory generates an RMP #PF
-and panics the host.
+In hackrf driver, the following race condition occurs:
+```
+		CPU0						CPU1
+hackrf_probe()
+  kzalloc(); // alloc hackrf_dev
+  ....
+  v4l2_device_register();
+  ....
+						fd = sys_open("/path/to/dev"); // open hackrf fd
+						....
+  v4l2_device_unregister();
+  ....
+  kfree(); // free hackrf_dev
+  ....
+						sys_ioctl(fd, ...);
+						  v4l2_ioctl();
+						    video_is_registered() // UAF!!
+						....
+						sys_close(fd);
+						  v4l2_release() // UAF!!
+						    hackrf_video_release()
+						      kfree(); // DFB!!
+```
 
-  BUG: unable to handle page fault for address: ff1276cbfdf36000
-  #PF: supervisor write access in kernel mode
-  #PF: error_code(0x80000003) - RMP violation
-  PGD 5a31801067 P4D 5a31802067 PUD 40ccfb5063 PMD 40e5954063 PTE 80000040fdf36163
-  SEV-SNP: PFN 0x40fdf36, RMP entry: [0x6010fffffffff001 - 0x000000000000001f]
-  Oops: Oops: 0003 [#1] SMP NOPTI
-  CPU: 33 UID: 0 PID: 996180 Comm: qemu-system-x86 Tainted: G           OE
-  Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
-  Hardware name: Dell Inc. PowerEdge R7625/0H1TJT, BIOS 1.5.8 07/21/2023
-  RIP: 0010:sev_es_sync_vmsa+0x54/0x4c0 [kvm_amd]
-  Call Trace:
-   <TASK>
-   snp_launch_update_vmsa+0x19d/0x290 [kvm_amd]
-   snp_launch_finish+0xb6/0x380 [kvm_amd]
-   sev_mem_enc_ioctl+0x14e/0x720 [kvm_amd]
-   kvm_arch_vm_ioctl+0x837/0xcf0 [kvm]
-   kvm_vm_ioctl+0x3fd/0xcc0 [kvm]
-   __x64_sys_ioctl+0xa3/0x100
-   x64_sys_call+0xfe0/0x2350
-   do_syscall_64+0x81/0x10f0
-   entry_SYSCALL_64_after_hwframe+0x76/0x7e
-  RIP: 0033:0x7ffff673287d
-   </TASK>
+When a V4L2 or video device is unregistered, the device node is removed so
+new open() calls are blocked.
 
-Note, the KVM flaw has been present since commit ad73109ae7ec ("KVM: SVM:
-Provide support to launch and run an SEV-ES guest"), but has only been
-actively dangerous for the host since SNP support was added.  With SEV-ES,
-KVM would "just" clobber guest state, which is totally fine from a host
-kernel perspective since userspace can clobber guest state any time before
-sev_launch_update_vmsa().
+However, file descriptors that are already open-and any in-flight I/O-do
+not terminate immediately; they remain valid until the last reference is
+dropped and the driver's release() is invoked.
 
-Fixes: ad27ce155566 ("KVM: SEV: Add KVM_SEV_SNP_LAUNCH_FINISH command")
-Reported-by: Jethro Beekman <jethro@fortanix.com>
-Closes: https://lore.kernel.org/all/d98692e2-d96b-4c36-8089-4bc1e5cc3d57@fortanix.com
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260310234829.2608037-3-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Therefore, freeing device memory on the error path after hackrf_probe()
+has registered dev it will lead to a race to use-after-free vuln, since
+those already-open handles haven't been released yet.
+
+And since release() free memory too, race to use-after-free and
+double-free vuln occur.
+
+To prevent this, if device is registered from probe(), it should be
+modified to free memory only through release() rather than calling
+kfree() directly.
+
+Cc: <stable@vger.kernel.org>
+Reported-by: syzbot+6ffd76b5405c006a46b7@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=6ffd76b5405c006a46b7
+Reported-by: syzbot+f1b20958f93d2d250727@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=f1b20958f93d2d250727
+Fixes: 8bc4a9ed8504 ("[media] hackrf: add support for transmitter")
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/sev.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/media/usb/hackrf/hackrf.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -871,6 +871,9 @@ static int sev_es_sync_vmsa(struct vcpu_
- 	u8 *d;
- 	int i;
- 
-+	if (vcpu->arch.guest_state_protected)
-+		return -EINVAL;
-+
- 	/* Check some debug related fields before encrypting the VMSA */
- 	if (svm->vcpu.guest_debug || (svm->vmcb->save.dr7 & ~DR7_FIXED_1))
- 		return -EINVAL;
+--- a/drivers/media/usb/hackrf/hackrf.c
++++ b/drivers/media/usb/hackrf/hackrf.c
+@@ -1485,7 +1485,7 @@ static int hackrf_probe(struct usb_inter
+ 	if (ret) {
+ 		dev_err(dev->dev,
+ 			"Failed to register as video device (%d)\n", ret);
+-		goto err_v4l2_device_unregister;
++		goto err_v4l2_device_put;
+ 	}
+ 	dev_info(dev->dev, "Registered as %s\n",
+ 		 video_device_node_name(&dev->rx_vdev));
+@@ -1513,8 +1513,9 @@ static int hackrf_probe(struct usb_inter
+ 	return 0;
+ err_video_unregister_device_rx:
+ 	video_unregister_device(&dev->rx_vdev);
+-err_v4l2_device_unregister:
+-	v4l2_device_unregister(&dev->v4l2_dev);
++err_v4l2_device_put:
++	v4l2_device_put(&dev->v4l2_dev);
++	return ret;
+ err_v4l2_ctrl_handler_free_tx:
+ 	v4l2_ctrl_handler_free(&dev->tx_ctrl_handler);
+ err_v4l2_ctrl_handler_free_rx:
 
 
 
