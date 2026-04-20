@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-239859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239324-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +CwhMulj5mkuvwEAu9opvQ
-	(envelope-from <stable+bounces-239859-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:35:37 +0200
+	id uBMiCHZe5mndvQEAu9opvQ
+	(envelope-from <stable+bounces-239324-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:12:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADF70431891
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:35:36 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30EDA430BB4
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:12:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5C009317E819
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:10:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E1D8B3443E1F
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:45:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CFD334402B;
-	Mon, 20 Apr 2026 16:09:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79A66334C39;
+	Mon, 20 Apr 2026 15:45:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dv3Tf231"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bBEGpzlB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 102D0343D66;
-	Mon, 20 Apr 2026 16:09:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C1E2329C6D;
+	Mon, 20 Apr 2026 15:45:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701399; cv=none; b=Wk1DwbE97jgEPmeLRmHIcpb03NioZ3JwsDVeIu/Gy/fzRIKfhqaJ0HDXAsH78ZqcWL3j5FnW4KPOFd87zDI+1Yi3tgJZGUauLttHxCnjPEx5JG9c+73gPnLiXVyDNPE3ev8L8W7ghS3FHC5T5nmAW3u9v9/0ciT3oWGjgpDipZ8=
+	t=1776699955; cv=none; b=lsOFAUVEK5MeGY5B6un+XISXsgThp3tkTLzOqYZPPdGUk6zqbUriXuGIenmEfWTcJA+L6GSn/gLR5g1txsFK+py0CwNYmC9jUcYlahkhz+aP7hYkB75AufdK/Joejlv32TMnlamMsvmWt4Jk/XBLZ2M61XjuywZ71dnwCYVy5ps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701399; c=relaxed/simple;
-	bh=JN6ih24G9fI9KtSU+MGtygPCv21y051mZhjv5arIoQE=;
+	s=arc-20240116; t=1776699955; c=relaxed/simple;
+	bh=EPofQjVpB3mlIoPnoEguL6c/RfYTK5NasUq73nxJBJ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OCVjKEtRkrrR2sWztYFnUwU8D73L1XxMIXXcaF9daHqHQhTUynSE/pdOZoKeaNVqrkBBSeluFfRg9EcwcmjiTVgp6DJDDsBtAgqI0KSBMYM5nyEN5DXAr7KaMrbgbuj0U3p6LEzX6Hcc8//Kq8mTLaOy/IqfejGWQwOPv+JHiyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dv3Tf231; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93D0DC19425;
-	Mon, 20 Apr 2026 16:09:58 +0000 (UTC)
+	 MIME-Version; b=A/gYtp42uOFw3Lpq48NgRG6wH4PBbtqEzzpDD5WqfdBt1N9RoA9f+aZ7EsPNvmYE5JejIaVUlJwLyzw4YPL2/PtlnggfKMlCpXuTuBgRr8BGo2eoEoe5SRJyzJSjj7hoteap8GGUXfBGzUgLyKHmiaMgce4QoAaIjhIhyHg2Ayc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bBEGpzlB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF3EFC19425;
+	Mon, 20 Apr 2026 15:45:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701398;
-	bh=JN6ih24G9fI9KtSU+MGtygPCv21y051mZhjv5arIoQE=;
+	s=korg; t=1776699955;
+	bh=EPofQjVpB3mlIoPnoEguL6c/RfYTK5NasUq73nxJBJ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dv3Tf231HkiPuBoU0LsPeZRxvSNrzahoikigNfrfO935iNGAILsPjTnpSPJjQ1KHW
-	 K/o/lWE7QK2u1td7P6JTKHFGM88q37jn5U/p805Uc8FlW9VkLFs/wDoohioMAtHi4g
-	 NhlFbUjm8GOpZJjowc206jJ4Fx8argyLSLgJEtN0=
+	b=bBEGpzlB44saAb3KlfxPOZjWVWSwS/SQzx2VVGaDGzKhekJFM/7ZZoriMBEyJZq/R
+	 LLRbA6oqKYOFNMTGrISbFRCJJq4jKz3K7uuRBHv/zajiAjR852DTF9iIBKdd0S/kb7
+	 IUYumkP3WFE6caHOgGYr48GybUXMygNwn2JnCYkE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.12 099/162] net: usb: cdc-phonet: fix skb frags[] overflow in rx_complete()
-Date: Mon, 20 Apr 2026 17:42:11 +0200
-Message-ID: <20260420153930.624902557@linuxfoundation.org>
+	Yashu Zhang <zhangjiaji1@huawei.com>,
+	Tom Lendacky <thomas.lendacky@gmail.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 7.0 61/76] KVM: x86: Use scratch field in MMIO fragment to hold small write values
+Date: Mon, 20 Apr 2026 17:42:12 +0200
+Message-ID: <20260420153913.040793477@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
-References: <20260420153927.006696811@linuxfoundation.org>
+In-Reply-To: <20260420153910.810034134@linuxfoundation.org>
+References: <20260420153910.810034134@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,85 +71,189 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-239859-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-239324-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,huawei.com,gmail.com,intel.com,google.com];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.986];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,lunn.ch:email,davemloft.net:email]
-X-Rspamd-Queue-Id: ADF70431891
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,huawei.com:email,intel.com:email,qemu.org:url]
+X-Rspamd-Queue-Id: 30EDA430BB4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 600dc40554dc5ad1e6f3af51f700228033f43ea7 upstream.
+commit 0b16e69d17d8c35c5c9d5918bf596c75a44655d3 upstream.
 
-A malicious USB device claiming to be a CDC Phonet modem can overflow
-the skb_shared_info->frags[] array by sending an unbounded sequence of
-full-page bulk transfers.
+When exiting to userspace to service an emulated MMIO write, copy the
+to-be-written value to a scratch field in the MMIO fragment if the size
+of the data payload is 8 bytes or less, i.e. can fit in a single chunk,
+instead of pointing the fragment directly at the source value.
 
-Drop the skb and increment the length error when the frag limit is
-reached.  This matches the same fix that commit f0813bcd2d9d ("net:
-wwan: t7xx: fix potential skb->frags overflow in RX path") did for the
-t7xx driver.
+This fixes a class of use-after-free bugs that occur when the emulator
+initiates a write using an on-stack, local variable as the source, the
+write splits a page boundary, *and* both pages are MMIO pages.  Because
+KVM's ABI only allows for physically contiguous MMIO requests, accesses
+that split MMIO pages are separated into two fragments, and are sent to
+userspace one at a time.  When KVM attempts to complete userspace MMIO in
+response to KVM_RUN after the first fragment, KVM will detect the second
+fragment and generate a second userspace exit, and reference the on-stack
+variable.
 
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: stable <stable@kernel.org>
-Assisted-by: gregkh_clanker_t1000
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://patch.msgid.link/2026041134-dreamboat-buddhism-d1ec@gregkh
-Fixes: 87cf65601e17 ("USB host CDC Phonet network interface driver")
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+The issue is most visible if the second KVM_RUN is performed by a separate
+task, in which case the stack of the initiating task can show up as truly
+freed data.
+
+  ==================================================================
+  BUG: KASAN: use-after-free in complete_emulated_mmio+0x305/0x420
+  Read of size 1 at addr ffff888009c378d1 by task syz-executor417/984
+
+  CPU: 1 PID: 984 Comm: syz-executor417 Not tainted 5.10.0-182.0.0.95.h2627.eulerosv2r13.x86_64 #3
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.15.0-0-g2dd4b9b3f840-prebuilt.qemu.org 04/01/2014 Call Trace:
+  dump_stack+0xbe/0xfd
+  print_address_description.constprop.0+0x19/0x170
+  __kasan_report.cold+0x6c/0x84
+  kasan_report+0x3a/0x50
+  check_memory_region+0xfd/0x1f0
+  memcpy+0x20/0x60
+  complete_emulated_mmio+0x305/0x420
+  kvm_arch_vcpu_ioctl_run+0x63f/0x6d0
+  kvm_vcpu_ioctl+0x413/0xb20
+  __se_sys_ioctl+0x111/0x160
+  do_syscall_64+0x30/0x40
+  entry_SYSCALL_64_after_hwframe+0x67/0xd1
+  RIP: 0033:0x42477d
+  Code: <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
+  RSP: 002b:00007faa8e6890e8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+  RAX: ffffffffffffffda RBX: 00000000004d7338 RCX: 000000000042477d
+  RDX: 0000000000000000 RSI: 000000000000ae80 RDI: 0000000000000005
+  RBP: 00000000004d7330 R08: 00007fff28d546df R09: 0000000000000000
+  R10: 0000000000000000 R11: 0000000000000246 R12: 00000000004d733c
+  R13: 0000000000000000 R14: 000000000040a200 R15: 00007fff28d54720
+
+  The buggy address belongs to the page:
+  page:0000000029f6a428 refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x9c37
+  flags: 0xfffffc0000000(node=0|zone=1|lastcpupid=0x1fffff)
+  raw: 000fffffc0000000 0000000000000000 ffffea0000270dc8 0000000000000000
+  raw: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000 page dumped because: kasan: bad access detected
+
+  Memory state around the buggy address:
+  ffff888009c37780: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+  ffff888009c37800: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+  >ffff888009c37880: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+                                                   ^
+  ffff888009c37900: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+  ffff888009c37980: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+  ==================================================================
+
+The bug can also be reproduced with a targeted KVM-Unit-Test by hacking
+KVM to fill a large on-stack variable in complete_emulated_mmio(), i.e. by
+overwrite the data value with garbage.
+
+Limit the use of the scratch fields to 8-byte or smaller accesses, and to
+just writes, as larger accesses and reads are not affected thanks to
+implementation details in the emulator, but add a sanity check to ensure
+those details don't change in the future.  Specifically, KVM never uses
+on-stack variables for accesses larger that 8 bytes, e.g. uses an operand
+in the emulator context, and *all* reads are buffered through the mem_read
+cache.
+
+Note!  Using the scratch field for reads is not only unnecessary, it's
+also extremely difficult to handle correctly.  As above, KVM buffers all
+reads through the mem_read cache, and heavily relies on that behavior when
+re-emulating the instruction after a userspace MMIO read exit.  If a read
+splits a page, the first page is NOT an MMIO page, and the second page IS
+an MMIO page, then the MMIO fragment needs to point at _just_ the second
+chunk of the destination, i.e. its position in the mem_read cache.  Taking
+the "obvious" approach of copying the fragment value into the destination
+when re-emulating the instruction would clobber the first chunk of the
+destination, i.e. would clobber the data that was read from guest memory.
+
+Fixes: f78146b0f923 ("KVM: Fix page-crossing MMIO")
+Suggested-by: Yashu Zhang <zhangjiaji1@huawei.com>
+Reported-by: Yashu Zhang <zhangjiaji1@huawei.com>
+Closes: https://lore.kernel.org/all/369eaaa2b3c1425c85e8477066391bc7@huawei.com
+Cc: stable@vger.kernel.org
+Tested-by: Tom Lendacky <thomas.lendacky@gmail.com>
+Tested-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Link: https://patch.msgid.link/20260225012049.920665-2-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/cdc-phonet.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/x86/kvm/x86.c       |   14 +++++++++++++-
+ include/linux/kvm_host.h |    3 ++-
+ 2 files changed, 15 insertions(+), 2 deletions(-)
 
---- a/drivers/net/usb/cdc-phonet.c
-+++ b/drivers/net/usb/cdc-phonet.c
-@@ -157,11 +157,16 @@ static void rx_complete(struct urb *req)
- 						PAGE_SIZE);
- 				page = NULL;
- 			}
--		} else {
-+		} else if (skb_shinfo(skb)->nr_frags < MAX_SKB_FRAGS) {
- 			skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags,
- 					page, 0, req->actual_length,
- 					PAGE_SIZE);
- 			page = NULL;
-+		} else {
-+			dev_kfree_skb_any(skb);
-+			pnd->rx_skb = NULL;
-+			skb = NULL;
-+			dev->stats.rx_length_errors++;
- 		}
- 		if (req->actual_length < PAGE_SIZE)
- 			pnd->rx_skb = NULL; /* Last fragment */
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -8225,7 +8225,13 @@ static int emulator_read_write_onepage(u
+ 	WARN_ON(vcpu->mmio_nr_fragments >= KVM_MAX_MMIO_FRAGMENTS);
+ 	frag = &vcpu->mmio_fragments[vcpu->mmio_nr_fragments++];
+ 	frag->gpa = gpa;
+-	frag->data = val;
++	if (write && bytes <= 8u) {
++		frag->val = 0;
++		frag->data = &frag->val;
++		memcpy(&frag->val, val, bytes);
++	} else {
++		frag->data = val;
++	}
+ 	frag->len = bytes;
+ 	return X86EMUL_CONTINUE;
+ }
+@@ -8240,6 +8246,9 @@ static int emulator_read_write(struct x8
+ 	gpa_t gpa;
+ 	int rc;
+ 
++	if (WARN_ON_ONCE((bytes > 8u || !ops->write) && object_is_on_stack(val)))
++		return X86EMUL_UNHANDLEABLE;
++
+ 	if (ops->read_write_prepare &&
+ 		  ops->read_write_prepare(vcpu, val, bytes))
+ 		return X86EMUL_CONTINUE;
+@@ -11846,6 +11855,9 @@ static int complete_emulated_mmio(struct
+ 		frag++;
+ 		vcpu->mmio_cur_fragment++;
+ 	} else {
++		if (WARN_ON_ONCE(frag->data == &frag->val))
++			return -EIO;
++
+ 		/* Go forward to the next mmio piece. */
+ 		frag->data += len;
+ 		frag->gpa += len;
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -318,7 +318,8 @@ static inline bool kvm_vcpu_can_poll(kti
+ struct kvm_mmio_fragment {
+ 	gpa_t gpa;
+ 	void *data;
+-	unsigned len;
++	u64 val;
++	unsigned int len;
+ };
+ 
+ struct kvm_vcpu {
 
 
 
