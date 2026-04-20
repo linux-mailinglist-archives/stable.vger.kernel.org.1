@@ -1,65 +1,58 @@
-Return-Path: <stable+bounces-239691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239506-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mNGQCk9n5mnBvwEAu9opvQ
-	(envelope-from <stable+bounces-239691-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:50:07 +0200
+	id MBUgJ21h5mmavgEAu9opvQ
+	(envelope-from <stable+bounces-239506-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:25:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9349C432272
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:50:06 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F44C431230
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:25:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CE74930EBC84
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:02:55 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D6D66323039C
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:53:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3952434252C;
-	Mon, 20 Apr 2026 16:02:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 436CF33858B;
+	Mon, 20 Apr 2026 15:53:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O02e3vi0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tPdAlXxz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F014333F5A9;
-	Mon, 20 Apr 2026 16:02:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED0C02D77E5;
+	Mon, 20 Apr 2026 15:53:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700970; cv=none; b=I1g/R2A2lQvqDSqtzNpaHhd9vF8kidRREyM5n3Ig/vJs5pNwt5r2ttZ471PjuRcNNOZ9Ql/fHFn+kclrTErkvTVo7VLP+u8F0L7AY9saVH0l3XHOdqakgxAkMQaJo4G95swNQgMOJFhzxdNIvzIRvswUsJCu1Nu9eqPPX8vF2VY=
+	t=1776700428; cv=none; b=G3r7ompZt2YIl5HA/CzjZRLVOYvkNzRztx1GwfwdriIj+8kVcWQ2BeRBrpmWfhJDdvjX14ARD0GBnqC7bD3pPYd25s3N0Wti4CsyoHqgr7zsCfuRq1LdKwrJOCquENkBW6R/pq1uFW3nrcGTKBq+avWhl844wmOM1/+OWWERvjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700970; c=relaxed/simple;
-	bh=G9JWN02bVzKbzC2GPIBBuOg/DODh+hh3n8+hUFm1kU4=;
+	s=arc-20240116; t=1776700428; c=relaxed/simple;
+	bh=OiRWUVvI/t7S2UerChIavVeeua2pfb3BgMKwMdFz+ZU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GuPMuJ3NLpjgN0GVZN9+rlAzUpFqKSJvFlC31eM2y18002bg3OFvWD3GbNO9lnhulBFKbR2RNXVEjaDxAcZ/0qB3a/GT1YgZgPmwBHOkFGwWZaiJTzK7VWe5OTNRW+y4A8xLa8vLsw63KifkTS6i1SrMfQPlmJNNAaHpcs9cJgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O02e3vi0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 805CDC2BCB4;
-	Mon, 20 Apr 2026 16:02:49 +0000 (UTC)
+	 MIME-Version; b=byzpheLJsOlSPCSPdlY07XJC3j4XGlUjWI5yhZbILjQOLl/Knu9/BGs6ETpG9t3a+zDUNGUHYs2OD/fUSjPDfswzbwRvIxzFzzofCN8+BE8RioegnpF2FaOLWut63w8UoSh8I23Ji5SQ0ilRrNm9/b06VE/5cE+t3BOARf62SMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tPdAlXxz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85853C19425;
+	Mon, 20 Apr 2026 15:53:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700969;
-	bh=G9JWN02bVzKbzC2GPIBBuOg/DODh+hh3n8+hUFm1kU4=;
+	s=korg; t=1776700427;
+	bh=OiRWUVvI/t7S2UerChIavVeeua2pfb3BgMKwMdFz+ZU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O02e3vi0690Uzb+qtIEx9aPBIpVaySdq3xZGraJwFNSDLbxkMN3h1WYKeLAOVDca7
-	 6eHqfp/4+IYE+/kuCfrUZD7Zmkr34ClKctrJTbZIvkxqiTrGaZ8+kQUWqCIwEb8KT6
-	 xdyUvYkpHEdGFaWiUkBd/zaTcj3R6Y+/gvICCZCw=
+	b=tPdAlXxzAildlUiR04gf4qH3K826uj9Frvf0+o7ZSn1zgQu4KQkob8UMuhgWeqt3D
+	 lr4PjzIRwDYX6l64Kuyrd7jEKc7goL55N/W/ZyavoSCGy948Zgl5t4qEkin27d8zf+
+	 LzcdjfEsaSHGJ9Y70FOXksCBlYNq9AbIGKsc3Ah8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Ripard <mripard@kernel.org>,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
-	Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.18 130/198] drm/vc4: platform_get_irq_byname() returns an int
+	stable@kernel.org,
+	Xu Yang <xu.yang_2@nxp.com>
+Subject: [PATCH 6.19 168/220] usb: port: add delay after usb_hub_set_port_power()
 Date: Mon, 20 Apr 2026 17:41:49 +0200
-Message-ID: <20260420153940.289000895@linuxfoundation.org>
+Message-ID: <20260420153940.076873836@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
+References: <20260420153934.013228280@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,99 +62,100 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239691-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,raspberrypi.com,igalia.com,linux.intel.com,suse.de,gmail.com,ffwll.ch];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-239506-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,igalia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,raspberrypi.com:email,suse.de:email,ffwll.ch:email]
-X-Rspamd-Queue-Id: 9349C432272
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,nxp.com:email]
+X-Rspamd-Queue-Id: 9F44C431230
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-commit e597a809a2b97e927060ba182f58eb3e6101bc70 upstream.
+commit b84cc80610a8ce036deb987f056ce3196ead7f1e upstream.
 
-platform_get_irq_byname() will return a negative value if an error
-happens, so it should be checked and not just passed directly into
-devm_request_threaded_irq() hoping all will be ok.
+When a port is disabled, an attached device will be disconnected.  This
+causes a port-status-change event, which will race with hub autosuspend
+(if the disabled port was the only connected port on its hub), causing
+an immediate resume and a second autosuspend.  Both of these can be
+avoided by adding a short delay after the call to
+usb_hub_set_port_power().
 
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Cc: Maíra Canal <mcanal@igalia.com>
-Cc: Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: David Airlie <airlied@gmail.com>
-Cc: Simona Vetter <simona@ffwll.ch>
-Cc: stable <stable@kernel.org>
-Assisted-by: gkh_clanker_2000
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://patch.msgid.link/2026022339-cornflake-t-shirt-2471@gregkh
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Below log shows what is happening:
+
+$ echo 1 > usb1-port1/disable
+[   37.958239] usb 1-1: USB disconnect, device number 2
+[   37.964101] usb 1-1: unregistering device
+[   37.970070] hub 1-0:1.0: hub_suspend
+[   37.971305] hub 1-0:1.0: state 7 ports 1 chg 0000 evt 0002
+[   37.974412] usb usb1: bus auto-suspend, wakeup 1
+[   37.988175] usb usb1: suspend raced with wakeup event         <---
+[   37.993947] usb usb1: usb auto-resume
+[   37.998401] hub 1-0:1.0: hub_resume
+[   38.105688] usb usb1-port1: status 0000, change 0000, 12 Mb/s
+[   38.112399] hub 1-0:1.0: state 7 ports 1 chg 0000 evt 0000
+[   38.118645] hub 1-0:1.0: hub_suspend
+[   38.122963] usb usb1: bus auto-suspend, wakeup 1
+[   38.200368] usb usb1: usb wakeup-resume
+[   38.204982] usb usb1: usb auto-resume
+[   38.209376] hub 1-0:1.0: hub_resume
+[   38.213676] usb usb1-port1: status 0101 change 0001
+[   38.321552] hub 1-0:1.0: state 7 ports 1 chg 0002 evt 0000
+[   38.327978] usb usb1-port1: status 0101, change 0000, 12 Mb/s
+[   38.457429] usb 1-1: new high-speed USB device number 3 using ci_hdrc
+
+Then, port change bit will be fixed to the final state and
+usb_clear_port_feature() can correctly clear it after this period. This
+will also avoid usb runtime suspend routine to run because
+usb_autopm_put_interface() not run yet.
+
+Fixes: f061f43d7418 ("usb: hub: port: add sysfs entry to switch port power")
+Cc: stable@kernel.org
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Link: https://patch.msgid.link/20260316095042.1559882-1-xu.yang_2@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/vc4/vc4_hdmi.c |   14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ drivers/usb/core/port.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/vc4/vc4_hdmi.c
-+++ b/drivers/gpu/drm/vc4/vc4_hdmi.c
-@@ -2355,17 +2355,23 @@ static int vc4_hdmi_hotplug_init(struct
- 	int ret;
+--- a/drivers/usb/core/port.c
++++ b/drivers/usb/core/port.c
+@@ -141,6 +141,7 @@ static ssize_t disable_store(struct devi
+ 		usb_disconnect(&port_dev->child);
  
- 	if (vc4_hdmi->variant->external_irq_controller) {
--		unsigned int hpd_con = platform_get_irq_byname(pdev, "hpd-connected");
--		unsigned int hpd_rm = platform_get_irq_byname(pdev, "hpd-removed");
-+		int hpd = platform_get_irq_byname(pdev, "hpd-connected");
+ 	rc = usb_hub_set_port_power(hdev, hub, port1, !disabled);
++	msleep(2 * hub_power_on_good_delay(hub));
  
--		ret = devm_request_threaded_irq(&pdev->dev, hpd_con,
-+		if (hpd < 0)
-+			return hpd;
-+
-+		ret = devm_request_threaded_irq(&pdev->dev, hpd,
- 						NULL,
- 						vc4_hdmi_hpd_irq_thread, IRQF_ONESHOT,
- 						"vc4 hdmi hpd connected", vc4_hdmi);
- 		if (ret)
- 			return ret;
- 
--		ret = devm_request_threaded_irq(&pdev->dev, hpd_rm,
-+		hpd = platform_get_irq_byname(pdev, "hpd-removed");
-+		if (hpd < 0)
-+			return hpd;
-+
-+		ret = devm_request_threaded_irq(&pdev->dev, hpd,
- 						NULL,
- 						vc4_hdmi_hpd_irq_thread, IRQF_ONESHOT,
- 						"vc4 hdmi hpd disconnected", vc4_hdmi);
+ 	if (disabled) {
+ 		usb_clear_port_feature(hdev, port1, USB_PORT_FEAT_C_CONNECTION);
 
 
 
