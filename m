@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-239644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239794-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IO1fC7lN5mmgugEAu9opvQ
-	(envelope-from <stable+bounces-239644-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:00:57 +0200
+	id AMOlKFRb5mmtvAEAu9opvQ
+	(envelope-from <stable+bounces-239794-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:59:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD9BC42ED42
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:00:56 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 211BE4304EC
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:59:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C2D713001463
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:00:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E28D2328D59F
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:07:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C82BF33DEFE;
-	Mon, 20 Apr 2026 16:00:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F9A5342CA2;
+	Mon, 20 Apr 2026 16:07:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kObvwMhE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NW8SJ7Yj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87FC23368AE;
-	Mon, 20 Apr 2026 16:00:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E31373375C5;
+	Mon, 20 Apr 2026 16:07:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700854; cv=none; b=OoOM9Vw83x2ixM5iQcVW4sa7PpYK39VVufUKdiAYe4YWq6PfYR6kguAlkIWggXi5gwYzml7fO7ugYB1SNSvqYVFmXby35iICtK+87AtuBie1nZ15Cj6JzrAsizWMNg42iECMUpjQwCQe/MROPkplfzAz7hUbi+cTCk5DuWGgTa4=
+	t=1776701233; cv=none; b=AzFp8p7YFHwl9KSH3fXGMSVKCgxrBIxjcXGctCRRjepUlbp+gqOQVx7F2UjMdcawo8RLv0baiAe/O6m4DgGBi13s73/lhYfngIAbF3XzZbfKiZGDo46djZ/O59QXV2ngb52KQbRrl8vQpCbwHt4VY77IKoUTJqpGycDe8zlz0Hg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700854; c=relaxed/simple;
-	bh=Z5K64PGuPMrTpq81pdYSFFEjZ6jV465in7umJSboYOY=;
+	s=arc-20240116; t=1776701233; c=relaxed/simple;
+	bh=szEsPljA5ttEtBFiaT4HaCyFPD1q4G3cnlWPvxDbyKU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qcSJzRB/Ro8fNogMuubkpOru/A3R/EeS3AusJ7Wpi+9S5bLDUj9VJt4uPC09IPnug1mUeYuOQIg9RXeEr2xwmm1PCVFNr9zVRgzxLXSRp9/aooqUvNEWEJc1pDS9K+pDAtvw4H43BafvkxXrYJaYhzbzTO25B4/VUZFRj36IImY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kObvwMhE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15CB9C19425;
-	Mon, 20 Apr 2026 16:00:53 +0000 (UTC)
+	 MIME-Version; b=cSPR8bK1ef9DiTn/vNR25+phF2LvQfiOh10wiUYiZPcT3VrHcrQyPflM3TmBorCFTw+JOMyabSn6VAMQyqaymvavuDC9TMk1CbOsbugTvwGqeYbNeTRHsfuFef9E+4tMZQuf005BA7GxpIsKQhtjddwLegMLdAaoKrxYpF5JhnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NW8SJ7Yj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76ECFC19425;
+	Mon, 20 Apr 2026 16:07:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700854;
-	bh=Z5K64PGuPMrTpq81pdYSFFEjZ6jV465in7umJSboYOY=;
+	s=korg; t=1776701232;
+	bh=szEsPljA5ttEtBFiaT4HaCyFPD1q4G3cnlWPvxDbyKU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kObvwMhEt7hCuVQoMgf74fP/6mR+b9WRC4oPnCh+h2WG8Jl/0wA+V8/rUmeGCEe+2
-	 crQhn9M69dsW5FV4QDlNjivbBNJYw+jY+dYKgu1FQbhnvV9SMjafrtXQCo5RUIfzBi
-	 M/j46ucdfL5t97AgidQac7Ilr2JJ/7C1ogkwFTTY=
+	b=NW8SJ7YjZ+dr8+Vh5Q1nhnoo5Ty8z56vJ6b2OJYc7lZ6HaA+52DxxyuCDXAThIqmz
+	 xTt5c9Er2JH0OB3GMoslsN1GMiIVBhIFHOA+UuxQmFP/Gti0W05ObiMEospyY0Aqsn
+	 rtVwsy0/rHOeuxnx1bZ1kX6ZDmwTOEH5KMVk+ebg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaoqiang Xiong <xxiong@redhat.com>,
-	Michal Schmidt <mschmidt@redhat.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Tomasz Merta <tommerta@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 086/198] ixgbevf: add missing negotiate_features op to Hyper-V ops table
+Subject: [PATCH 6.12 033/162] ASoC: stm32_sai: fix incorrect BCLK polarity for DSP_A/B, LEFT_J
 Date: Mon, 20 Apr 2026 17:41:05 +0200
-Message-ID: <20260420153938.704157918@linuxfoundation.org>
+Message-ID: <20260420153928.224739616@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
+References: <20260420153927.006696811@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,109 +66,96 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-239794-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239644-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: BD9BC42ED42
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arrow.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 211BE4304EC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Schmidt <mschmidt@redhat.com>
+From: Tomasz Merta <tomasz.merta@arrow.com>
 
-[ Upstream commit 4821d563cd7f251ae728be1a6d04af82a294a5b9 ]
+[ Upstream commit 0669631dbccd41cf3ca7aa70213fcd8bb41c4b38 ]
 
-Commit a7075f501bd3 ("ixgbevf: fix mailbox API compatibility by
-negotiating supported features") added the .negotiate_features callback
-to ixgbe_mac_operations and populated it in ixgbevf_mac_ops, but forgot
-to add it to ixgbevf_hv_mac_ops. This leaves the function pointer NULL
-on Hyper-V VMs.
+The STM32 SAI driver do not set the clock strobing bit (CKSTR) for DSP_A,
+DSP_B and LEFT_J formats, causing data to be sampled on the wrong BCLK
+edge when SND_SOC_DAIFMT_NB_NF is used.
 
-During probe, ixgbevf_negotiate_api() calls ixgbevf_set_features(),
-which unconditionally dereferences hw->mac.ops.negotiate_features().
-On Hyper-V this results in a NULL pointer dereference:
+Per ALSA convention, NB_NF requires sampling on the rising BCLK edge.
+The STM32MP25 SAI reference manual states that CKSTR=1 is required for
+signals received by the SAI to be sampled on the SCK rising edge.
+Without setting CKSTR=1, the SAI samples on the falling edge, violating
+the NB_NF convention. For comparison, the NXP FSL SAI driver correctly
+sets FSL_SAI_CR2_BCP for DSP_A, DSP_B and LEFT_J, consistent with its
+I2S handling.
 
-  BUG: kernel NULL pointer dereference, address: 0000000000000000
-  [...]
-  Hardware name: Microsoft Corporation Virtual Machine/Virtual Machine [...]
-  Workqueue: events work_for_cpu_fn
-  RIP: 0010:0x0
-  [...]
-  Call Trace:
-   ixgbevf_negotiate_api+0x66/0x160 [ixgbevf]
-   ixgbevf_sw_init+0xe4/0x1f0 [ixgbevf]
-   ixgbevf_probe+0x20f/0x4a0 [ixgbevf]
-   local_pci_probe+0x50/0xa0
-   work_for_cpu_fn+0x1a/0x30
-   [...]
+This patch adds SAI_XCR1_CKSTR for DSP_A, DSP_B and LEFT_J in
+stm32_sai_set_dai_fmt which was verified empirically with a cs47l35 codec.
+RIGHT_J (LSB) is not investigated and addressed by this patch.
 
-Add ixgbevf_hv_negotiate_features_vf() that returns -EOPNOTSUPP and
-wire it into ixgbevf_hv_mac_ops. The caller already handles -EOPNOTSUPP
-gracefully.
+Note: the STM32 I2S driver (stm32_i2s_set_dai_fmt) may have the same issue
+for DSP_A mode, as I2S_CGFR_CKPOL is not set. This has not been verified
+and is left for a separate investigation.
 
-Fixes: a7075f501bd3 ("ixgbevf: fix mailbox API compatibility by negotiating supported features")
-Reported-by: Xiaoqiang Xiong <xxiong@redhat.com>
-Closes: https://issues.redhat.com/browse/RHEL-155455
-Assisted-by: Claude:claude-4.6-opus-high Cursor
-Tested-by: Xiaoqiang Xiong <xxiong@redhat.com>
-Signed-off-by: Michal Schmidt <mschmidt@redhat.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Tomasz Merta <tommerta@gmail.com>
+Link: https://patch.msgid.link/20260408084056.20588-1-tommerta@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ixgbevf/vf.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ sound/soc/stm/stm32_sai_sub.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/ixgbevf/vf.c b/drivers/net/ethernet/intel/ixgbevf/vf.c
-index b67b580f7f1c9..f6df86d124b9e 100644
---- a/drivers/net/ethernet/intel/ixgbevf/vf.c
-+++ b/drivers/net/ethernet/intel/ixgbevf/vf.c
-@@ -709,6 +709,12 @@ static int ixgbevf_negotiate_features_vf(struct ixgbe_hw *hw, u32 *pf_features)
- 	return err;
- }
- 
-+static int ixgbevf_hv_negotiate_features_vf(struct ixgbe_hw *hw,
-+					    u32 *pf_features)
-+{
-+	return -EOPNOTSUPP;
-+}
-+
- /**
-  *  ixgbevf_set_vfta_vf - Set/Unset VLAN filter table address
-  *  @hw: pointer to the HW structure
-@@ -1142,6 +1148,7 @@ static const struct ixgbe_mac_operations ixgbevf_hv_mac_ops = {
- 	.setup_link		= ixgbevf_setup_mac_link_vf,
- 	.check_link		= ixgbevf_hv_check_mac_link_vf,
- 	.negotiate_api_version	= ixgbevf_hv_negotiate_api_version_vf,
-+	.negotiate_features	= ixgbevf_hv_negotiate_features_vf,
- 	.set_rar		= ixgbevf_hv_set_rar_vf,
- 	.update_mc_addr_list	= ixgbevf_hv_update_mc_addr_list_vf,
- 	.update_xcast_mode	= ixgbevf_hv_update_xcast_mode,
+diff --git a/sound/soc/stm/stm32_sai_sub.c b/sound/soc/stm/stm32_sai_sub.c
+index fb1bd9844b550..f4f751b19429a 100644
+--- a/sound/soc/stm/stm32_sai_sub.c
++++ b/sound/soc/stm/stm32_sai_sub.c
+@@ -677,6 +677,7 @@ static int stm32_sai_set_dai_fmt(struct snd_soc_dai *cpu_dai, unsigned int fmt)
+ 		break;
+ 	/* Left justified */
+ 	case SND_SOC_DAIFMT_MSB:
++		cr1 |= SAI_XCR1_CKSTR;
+ 		frcr |= SAI_XFRCR_FSPOL | SAI_XFRCR_FSDEF;
+ 		break;
+ 	/* Right justified */
+@@ -684,9 +685,11 @@ static int stm32_sai_set_dai_fmt(struct snd_soc_dai *cpu_dai, unsigned int fmt)
+ 		frcr |= SAI_XFRCR_FSPOL | SAI_XFRCR_FSDEF;
+ 		break;
+ 	case SND_SOC_DAIFMT_DSP_A:
++		cr1 |= SAI_XCR1_CKSTR;
+ 		frcr |= SAI_XFRCR_FSPOL | SAI_XFRCR_FSOFF;
+ 		break;
+ 	case SND_SOC_DAIFMT_DSP_B:
++		cr1 |= SAI_XCR1_CKSTR;
+ 		frcr |= SAI_XFRCR_FSPOL;
+ 		break;
+ 	default:
 -- 
 2.53.0
 
