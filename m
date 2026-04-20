@@ -1,235 +1,365 @@
-Return-Path: <stable+bounces-239963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239964-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id INigIKNg5mkxvgEAu9opvQ
-	(envelope-from <stable+bounces-239963-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:21:39 +0200
+	id GPf8ETls5mkJwQEAu9opvQ
+	(envelope-from <stable+bounces-239964-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 20:11:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5577A431099
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:21:39 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51F2B43289C
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 20:11:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 863533022CB3
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 17:20:02 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5F9253074595
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 17:23:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 261223A4F4F;
-	Mon, 20 Apr 2026 17:18:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB4B139F18A;
+	Mon, 20 Apr 2026 17:23:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LRuWm8v1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mmzgYtfM"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CABAD3A1CEC
-	for <stable@vger.kernel.org>; Mon, 20 Apr 2026 17:18:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB837374E64;
+	Mon, 20 Apr 2026 17:23:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776705530; cv=none; b=fv6JmuYDWY8ygwkcSEV/JHmZlgf9wAwRqfund3QWufFv5PqKCA9OI31XhAsVD0BWm27h3D8VM/UvYWeO4AwbncVbQ3o772WdRz9dIkYOAFVldEN5UtifRebuO/c/3atrQ47q/s9i07awnliHIxni2OL++CKT5MZVqCd7aWd/lwo=
+	t=1776705795; cv=none; b=u7+8n4H5+rWT7SBaSc/2pMpIdD7R2CU/GFTM9SSt8sCfzR3FRWH552c+rYQ/Ou7ODUwiN1rsAPwe/k57ydzQVVWoNvJB2AUKtXh7qGO8Pr4679hDnoZMjP3vA4OoX3YfFQcOj0UKQBgc9ighsgM23CGFNL0qn6MF9epNWtGjJio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776705530; c=relaxed/simple;
-	bh=7HuwCMtFhgkI3i3Cm8hedgvjuhF+HqVN4oV9qkEM0Sw=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=jqF3vv4ZjNwI781VElL0I1oHrDSGSG3s0y6ln8JS2n5Ul+Xlh0oRe9pCXTrNzKgb45rotjSZGh4U6sVDn+TyXhxfIXYfni7EjNUL9Ua9lwO3Ly/XUTw7vciS4Qb0v+1coATlcQpwGx95qKPMDu5FVatObTlzgnjMeSuadue9KFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--hramamurthy.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LRuWm8v1; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--hramamurthy.bounces.google.com
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-35fbc53b64bso3792781a91.1
-        for <stable@vger.kernel.org>; Mon, 20 Apr 2026 10:18:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776705527; x=1777310327; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=HKhjtZffpudnSoigZVFDRJbxGYPsECcpyVW6J8Asv1A=;
-        b=LRuWm8v1jk//MkqP3MDX0GqHo6YebJUMYDm8egJFq6FIz7dm8lOSSwSQ4s+EBOuNRt
-         1tzaX58w3Lz+FYAxF50gJ14irrhlheWq6ez+sI5SCOB4dHkqGRjLwxLMbYjlvgWAQcS+
-         Vj3eWgif11QzlNTWGIz82At2iO1v/ulKwmBUllQ1st+HIj/XbvU+9Z4sQD8FkhuuzTsV
-         RqyAdlYJiWNHmUSwbuvWiQVUUtLYk0Nb6yVhscyUBsbr4FEiS9QeIprfeT+mu0se4AzZ
-         SE/AdoczyBwAoFgNS7UE+oz2LsP0EUbooFmrh+4AgbyYwC6oQt1xUWWNc+icgE46Yvrl
-         LuxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776705527; x=1777310327;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HKhjtZffpudnSoigZVFDRJbxGYPsECcpyVW6J8Asv1A=;
-        b=gINmFRppU7BfqS78rVUfMTHKa1duttVJY4GdHvoW31rQ3M6OenxBnlT1DsULtLGIIG
-         czxotIK3yLsCVyC/RH9garbhS6fBY2X4E8qA5lP6w6z9V6jYHLMZkpB9AlOroGfD13wG
-         V3dPqoTaLpjJc90REQzpcZ3gUimu469mT5TUH7NwfAXjxubsp6RWspr81EkwfSW+cs9A
-         JAatXY4sPnL1w46Z1j7RoAhTROYMilEhUieTDcjqqDXf2eaFiMruMuhH/ZMTsC4kIGo/
-         TE2PNwny9NVJP4GhmwL0KfK/06isyfXd4bT6ReZNvx7t7wH4qsJY09N2fMeeN6456HYY
-         fQUw==
-X-Forwarded-Encrypted: i=1; AFNElJ8oA08uLMsmQYfzfmxC8FNcBKRlWvZbD5VGvP5f2rIppsLjbDdeffjKNCpTVSav6lXPtQxoJPA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxmL49BNc9wh0KF9xSVoFrU8eOQYzSXDlevhXaVxc8WbhV8/vVq
-	hDOsjDDVWE1okYt/ykhMM4e9437L0FejQx29WotydwuO78Ys/9947bCSvJ8mj4PU2DtkJx6VfQV
-	mr2IFdVnVb+MQrXZYTJgc/3iSDg==
-X-Received: from pjbev4.prod.google.com ([2002:a17:90a:eac4:b0:35f:b87d:dbd])
- (user=hramamurthy job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90a:e7d0:b0:35c:1695:24a3 with SMTP id 98e67ed59e1d1-361404945e0mr15500805a91.23.1776705526822;
- Mon, 20 Apr 2026 10:18:46 -0700 (PDT)
-Date: Mon, 20 Apr 2026 17:18:37 +0000
-In-Reply-To: <20260420171837.455487-1-hramamurthy@google.com>
+	s=arc-20240116; t=1776705795; c=relaxed/simple;
+	bh=RDw+2/yrSekeZqbdwCFumgPFmQPYUffjovp3DYsv3LA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RBVLNOkHT+00++viQV6LJHxPR4kYisREccIHMGhV2CLxPfCD1XhoRiI+GxdIord3dDfYjEQXZHa0cSk39SRf+9CGqd9kfyZ++0gAckWT19g+bnnCZkrjrQpFYjyd47M72cTYPpW9f/bNRUrzpTC9zMQWRba3OS5sO80FObD5XlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mmzgYtfM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DAE3C19425;
+	Mon, 20 Apr 2026 17:23:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776705795;
+	bh=RDw+2/yrSekeZqbdwCFumgPFmQPYUffjovp3DYsv3LA=;
+	h=From:To:Cc:Subject:Date:Reply-To:From;
+	b=mmzgYtfMfQWefte3Gx+pNWc6RTWzzxAbVPRmRXNPwGd8Sx+K4S67fwftWeAcWYAQR
+	 9PERlPaKyLne2YYld69YVjagqD4jUJKXVNXJUgrGvsfkAjCkyKFAi99OJAzwAIc0tz
+	 O2yY1p6y1EuSaRQPXGZE4U+NAsGT2Fh9vpBWSVnCAMQnk7zn4L9zhoA+10D4hobne5
+	 V81eaIBKB33xnPldWVisID2++egQ1VLWQn3ka130345uWaxSd7hbNtYDhwboKFZqCk
+	 6vPApVO33r8WZbkTl5kyvj6rN+LcD2zsqgghbclfzQBD9zeTJCKOawHvIF4FvDrLWz
+	 LxC7bPQ4t+tTQ==
+From: Gary Guo <gary@kernel.org>
+To: Benno Lossin <lossin@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>
+Cc: stable@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] rust: pin-init: fix incorrect accessor reference lifetime
+Date: Mon, 20 Apr 2026 18:23:01 +0100
+Message-ID: <20260420172302.1843752-1-gary@kernel.org>
+X-Mailer: git-send-email 2.51.2
+Reply-To: Gary Guo <gary@garyguo.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260420171837.455487-1-hramamurthy@google.com>
-X-Mailer: git-send-email 2.54.0.rc1.555.g9c883467ad-goog
-Message-ID: <20260420171837.455487-5-hramamurthy@google.com>
-Subject: [PATCH net 4/4] gve: Make ethtool config changes synchronous
-From: Harshitha Ramamurthy <hramamurthy@google.com>
-To: netdev@vger.kernel.org
-Cc: joshwash@google.com, hramamurthy@google.com, andrew+netdev@lunn.ch, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	willemb@google.com, maolson@google.com, nktgrg@google.com, jfraker@google.com, 
-	ziweixiao@google.com, jacob.e.keller@intel.com, pkaligineedi@google.com, 
-	shailend@google.com, jordanrhee@google.com, stable@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Pin-yen Lin <treapking@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-239963-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239964-lists,stable=lfdr.de];
+	REPLYTO_DN_EQ_FROM_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	FREEMAIL_TO(0.00)[kernel.org,garyguo.net,protonmail.com,google.com,umich.edu];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	HAS_REPLYTO(0.00)[gary@garyguo.net];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hramamurthy@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 5577A431099
+	NEURAL_HAM(-0.00)[-0.999];
+	FROM_NEQ_ENVFROM(0.00)[gary@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,garyguo.net:replyto,garyguo.net:email]
+X-Rspamd-Queue-Id: 51F2B43289C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Pin-yen Lin <treapking@google.com>
+From: Gary Guo <gary@garyguo.net>
 
-When modifying device features via ethtool, the driver queues the
-carrier status update to its workqueue (gve_wq). This leads to a
-short link-down state after running the ethtool command.
+When a field has been initialized, `init!`/`pin_init!` create a reference
+or pinned reference to the field so it can be accessed later during the
+initialization of other fields. However, the reference it created is
+incorrectly `&'static` rather than just the scope of the initializer.
 
-Use `gve_turnup_and_check_status()` instead of `gve_turnup()` in
-`gve_queues_start()` to update the carrier status before returning to
-the userspace.
+This means that you can do
 
-This was discovered by drivers/net/ping.py selftest. The test calls
-ping command right after an ethtool configuration, but the interface
-could be down without this fix.
+    init!(Foo {
+        a: 1,
+        _: {
+            let b: &'static u32 = a;
+        }
+    })
 
+which is unsound.
+
+This is caused by `&mut (*#slot).#ident`, which actually allows arbitrary
+lifetime, so this is effectively `'static`. Somewhat ironically, the safety
+justification of creating the accessor is.. "SAFETY: TODO".
+
+Fix it by adding `Deref`/`DerefMut` implementation to `DropGuard` and
+derive the reference from dereferencing `DropGuard` instead. The lifetime
+of `DropGuard` is exactly what we want for these accessors.
+
+The old accessor creation code also has a purpose of preventing unaligned
+fields. So a `let _ = &(*#slot).#ident` still needs to be present, but this
+no longer has to care about pinning, so it is moved to just before the
+guard generation.
+
+Fixes: 42415d163e5d ("rust: pin-init: add references to previously initialized fields")
 Cc: stable@vger.kernel.org
-Fixes: 5f08cd3d6423 ("gve: Alloc before freeing when adjusting queues")
-Reviewed-by: Joshua Washington <joshwash@google.com>
-Signed-off-by: Pin-yen Lin <treapking@google.com>
-Signed-off-by: Harshitha Ramamurthy <hramamurthy@google.com>
+Signed-off-by: Gary Guo <gary@garyguo.net>
 ---
- drivers/net/ethernet/google/gve/gve_main.c | 56 +++++++++++-----------
- 1 file changed, 28 insertions(+), 28 deletions(-)
+The patch is also available at https://github.com/Rust-for-Linux/pin-init/pull/132
+which has regression tests added and runs through pin-init's test suite.
+---
+ rust/pin-init/internal/src/init.rs | 107 +++++++++++++----------------
+ rust/pin-init/src/__internal.rs    |  27 +++++++-
+ 2 files changed, 73 insertions(+), 61 deletions(-)
 
-diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
-index 8617782791e0..d3b4bec38de5 100644
---- a/drivers/net/ethernet/google/gve/gve_main.c
-+++ b/drivers/net/ethernet/google/gve/gve_main.c
-@@ -1374,6 +1374,33 @@ static void gve_queues_mem_remove(struct gve_priv *priv)
- 	priv->rx = NULL;
+diff --git a/rust/pin-init/internal/src/init.rs b/rust/pin-init/internal/src/init.rs
+index daa3f1c6466e..c5f848103c92 100644
+--- a/rust/pin-init/internal/src/init.rs
++++ b/rust/pin-init/internal/src/init.rs
+@@ -249,22 +249,6 @@ fn init_fields(
+                 });
+                 // Again span for better diagnostics
+                 let write = quote_spanned!(ident.span()=> ::core::ptr::write);
+-                // NOTE: the field accessor ensures that the initialized field is properly aligned.
+-                // Unaligned fields will cause the compiler to emit E0793. We do not support
+-                // unaligned fields since `Init::__init` requires an aligned pointer; the call to
+-                // `ptr::write` below has the same requirement.
+-                let accessor = if pinned {
+-                    let project_ident = format_ident!("__project_{ident}");
+-                    quote! {
+-                        // SAFETY: TODO
+-                        unsafe { #data.#project_ident(&mut (*#slot).#ident) }
+-                    }
+-                } else {
+-                    quote! {
+-                        // SAFETY: TODO
+-                        unsafe { &mut (*#slot).#ident }
+-                    }
+-                };
+                 quote! {
+                     #(#attrs)*
+                     {
+@@ -272,51 +256,31 @@ fn init_fields(
+                         // SAFETY: TODO
+                         unsafe { #write(&raw mut (*#slot).#ident, #value_ident) };
+                     }
+-                    #(#cfgs)*
+-                    #[allow(unused_variables)]
+-                    let #ident = #accessor;
+                 }
+             }
+             InitializerKind::Init { ident, value, .. } => {
+                 // Again span for better diagnostics
+                 let init = format_ident!("init", span = value.span());
+-                // NOTE: the field accessor ensures that the initialized field is properly aligned.
+-                // Unaligned fields will cause the compiler to emit E0793. We do not support
+-                // unaligned fields since `Init::__init` requires an aligned pointer; the call to
+-                // `ptr::write` below has the same requirement.
+-                let (value_init, accessor) = if pinned {
+-                    let project_ident = format_ident!("__project_{ident}");
+-                    (
+-                        quote! {
+-                            // SAFETY:
+-                            // - `slot` is valid, because we are inside of an initializer closure, we
+-                            //   return when an error/panic occurs.
+-                            // - We also use `#data` to require the correct trait (`Init` or `PinInit`)
+-                            //   for `#ident`.
+-                            unsafe { #data.#ident(&raw mut (*#slot).#ident, #init)? };
+-                        },
+-                        quote! {
+-                            // SAFETY: TODO
+-                            unsafe { #data.#project_ident(&mut (*#slot).#ident) }
+-                        },
+-                    )
++                let value_init = if pinned {
++                    quote! {
++                        // SAFETY:
++                        // - `slot` is valid, because we are inside of an initializer closure, we
++                        //   return when an error/panic occurs.
++                        // - We also use `#data` to require the correct trait (`Init` or `PinInit`)
++                        //   for `#ident`.
++                        unsafe { #data.#ident(&raw mut (*#slot).#ident, #init)? };
++                    }
+                 } else {
+-                    (
+-                        quote! {
+-                            // SAFETY: `slot` is valid, because we are inside of an initializer
+-                            // closure, we return when an error/panic occurs.
+-                            unsafe {
+-                                ::pin_init::Init::__init(
+-                                    #init,
+-                                    &raw mut (*#slot).#ident,
+-                                )?
+-                            };
+-                        },
+-                        quote! {
+-                            // SAFETY: TODO
+-                            unsafe { &mut (*#slot).#ident }
+-                        },
+-                    )
++                    quote! {
++                        // SAFETY: `slot` is valid, because we are inside of an initializer
++                        // closure, we return when an error/panic occurs.
++                        unsafe {
++                            ::pin_init::Init::__init(
++                                #init,
++                                &raw mut (*#slot).#ident,
++                            )?
++                        };
++                    }
+                 };
+                 quote! {
+                     #(#attrs)*
+@@ -324,9 +288,6 @@ fn init_fields(
+                         let #init = #value;
+                         #value_init
+                     }
+-                    #(#cfgs)*
+-                    #[allow(unused_variables)]
+-                    let #ident = #accessor;
+                 }
+             }
+             InitializerKind::Code { block: value, .. } => quote! {
+@@ -339,18 +300,46 @@ fn init_fields(
+         if let Some(ident) = kind.ident() {
+             // `mixed_site` ensures that the guard is not accessible to the user-controlled code.
+             let guard = format_ident!("__{ident}_guard", span = Span::mixed_site());
++
++            // NOTE: The reference is derived from the guard so that it only lives as long as the
++            // guard does and cannot escape the scope. If it's created via `&mut (*#slot).#ident`
++            // like the unaligned field guard, it will become effectively `'static`.
++            let accessor = if pinned {
++                let project_ident = format_ident!("__project_{ident}");
++                quote! {
++                    // SAFETY: the initialization is pinned.
++                    unsafe { #data.#project_ident(&mut *#guard) }
++                }
++            } else {
++                quote! {
++                    &mut *#guard
++                }
++            };
++
+             res.extend(quote! {
++                // Take a reference of the field to ensure that the initialized field is
++                // properly aligned. Unaligned fields will cause the compiler to emit E0793. We
++                // do not support unaligned fields since `Init::__init` requires an aligned
++                // pointer; the call to `ptr::write` above has the same requirement.
++                // SAFETY: `slot` is valid.
++                #(#cfgs)*
++                let _ = unsafe { &(*#slot).#ident };
++
+                 #(#cfgs)*
+                 // Create the drop guard:
+                 //
+                 // We rely on macro hygiene to make it impossible for users to access this local
+                 // variable.
+                 // SAFETY: We forget the guard later when initialization has succeeded.
+-                let #guard = unsafe {
++                let mut #guard = unsafe {
+                     ::pin_init::__internal::DropGuard::new(
+                         &raw mut (*slot).#ident
+                     )
+                 };
++
++                #(#cfgs)*
++                #[allow(unused_variables)]
++                let #ident = #accessor;
+             });
+             guards.push(guard);
+             guard_attrs.push(cfgs);
+diff --git a/rust/pin-init/src/__internal.rs b/rust/pin-init/src/__internal.rs
+index 90adbdc1893b..d122ab840c44 100644
+--- a/rust/pin-init/src/__internal.rs
++++ b/rust/pin-init/src/__internal.rs
+@@ -5,6 +5,8 @@
+ //! These items must not be used outside of this crate and the pin-init-internal crate located at
+ //! `../internal`.
+ 
++use core::ops::{Deref, DerefMut};
++
+ use super::*;
+ 
+ /// See the [nomicon] for what subtyping is. See also [this table].
+@@ -238,6 +240,10 @@ struct Foo {
+ /// When a value of this type is dropped, it drops a `T`.
+ ///
+ /// Can be forgotten to prevent the drop.
++///
++/// # Invariants
++///
++/// `ptr` is convertible to a mutable reference and `*ptr` is owned by `DropGuard`.
+ pub struct DropGuard<T: ?Sized> {
+     ptr: *mut T,
+ }
+@@ -259,11 +265,28 @@ pub unsafe fn new(ptr: *mut T) -> Self {
+     }
  }
  
-+static void gve_handle_link_status(struct gve_priv *priv, bool link_status)
-+{
-+	if (!gve_get_napi_enabled(priv))
-+		return;
++impl<T: ?Sized> Deref for DropGuard<T> {
++    type Target = T;
 +
-+	if (link_status == netif_carrier_ok(priv->dev))
-+		return;
-+
-+	if (link_status) {
-+		netdev_info(priv->dev, "Device link is up.\n");
-+		netif_carrier_on(priv->dev);
-+	} else {
-+		netdev_info(priv->dev, "Device link is down.\n");
-+		netif_carrier_off(priv->dev);
-+	}
++    #[inline]
++    fn deref(&self) -> &T {
++        // SAFETY: `ptr` is convertible to reference
++        unsafe { &*self.ptr }
++    }
 +}
 +
-+static void gve_turnup_and_check_status(struct gve_priv *priv)
-+{
-+	u32 status;
-+
-+	gve_turnup(priv);
-+	status = ioread32be(&priv->reg_bar0->device_status);
-+	gve_handle_link_status(priv,
-+			       GVE_DEVICE_STATUS_LINK_STATUS_MASK & status);
++impl<T: ?Sized> DerefMut for DropGuard<T> {
++    #[inline]
++    fn deref_mut(&mut self) -> &mut T {
++        // SAFETY: `ptr` is convertible to a mutable reference
++        unsafe { &mut *self.ptr }
++    }
 +}
 +
- /* The passed-in queue memory is stored into priv and the queues are made live.
-  * No memory is allocated. Passed-in memory is freed on errors.
-  */
-@@ -1434,8 +1461,7 @@ static int gve_queues_start(struct gve_priv *priv,
- 			  round_jiffies(jiffies +
- 				msecs_to_jiffies(priv->stats_report_timer_period)));
- 
--	gve_turnup(priv);
--	queue_work(priv->gve_wq, &priv->service_task);
-+	gve_turnup_and_check_status(priv);
- 	priv->interface_up_cnt++;
- 	return 0;
- 
-@@ -1548,23 +1574,6 @@ static int gve_close(struct net_device *dev)
- 	return 0;
+ impl<T: ?Sized> Drop for DropGuard<T> {
+     #[inline]
+     fn drop(&mut self) {
+-        // SAFETY: A `DropGuard` can only be constructed using the unsafe `new` function
+-        // ensuring that this operation is safe.
++        // SAFETY: `DropGuard` owns the `*ptr`.
+         unsafe { ptr::drop_in_place(self.ptr) }
+     }
  }
- 
--static void gve_handle_link_status(struct gve_priv *priv, bool link_status)
--{
--	if (!gve_get_napi_enabled(priv))
--		return;
--
--	if (link_status == netif_carrier_ok(priv->dev))
--		return;
--
--	if (link_status) {
--		netdev_info(priv->dev, "Device link is up.\n");
--		netif_carrier_on(priv->dev);
--	} else {
--		netdev_info(priv->dev, "Device link is down.\n");
--		netif_carrier_off(priv->dev);
--	}
--}
--
- static int gve_configure_rings_xdp(struct gve_priv *priv,
- 				   u16 num_xdp_rings)
- {
-@@ -2039,15 +2048,6 @@ static void gve_turnup(struct gve_priv *priv)
- 	gve_set_napi_enabled(priv);
- }
- 
--static void gve_turnup_and_check_status(struct gve_priv *priv)
--{
--	u32 status;
--
--	gve_turnup(priv);
--	status = ioread32be(&priv->reg_bar0->device_status);
--	gve_handle_link_status(priv, GVE_DEVICE_STATUS_LINK_STATUS_MASK & status);
--}
--
- static struct gve_notify_block *gve_get_tx_notify_block(struct gve_priv *priv,
- 							unsigned int txqueue)
- {
+
+base-commit: 1c7cc4904160c6fc6377564140062d68a3dc93a0
 -- 
-2.54.0.rc0.605.g598a273b03-goog
+2.51.2
 
 
