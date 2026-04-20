@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-239443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239444-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oMHuBJBk5mkKvwEAu9opvQ
-	(envelope-from <stable+bounces-239443-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:38:24 +0200
+	id GHPQHO1X5mlQvAEAu9opvQ
+	(envelope-from <stable+bounces-239444-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:44:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41CEE431A45
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:38:23 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF33742FEE8
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:44:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E84EE393511A
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:51:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3CA78310A69B
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:51:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E547134107F;
-	Mon, 20 Apr 2026 15:51:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B55AA342CA2;
+	Mon, 20 Apr 2026 15:51:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BueaQSXz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QkyOv6NG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1F0333BBA7;
-	Mon, 20 Apr 2026 15:51:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7835A33F8B7;
+	Mon, 20 Apr 2026 15:51:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700266; cv=none; b=W84X1hN/sqfDgDyztY+J+2rS0AzhYWQwQ0cS9gjYodOpk/SQWRtQfxEb++7q7Cvib4LdHmp9qFHfVHy03L1LfhWPp1/zwQfsTKuLUjes7vqgLoDgABzERRRe6q6OFOXchg6w+0Upjmst0yMNik+1frsJvbK7HMvB6GRcJk0PEHY=
+	t=1776700269; cv=none; b=upwn2kKRK8w/XvSj6c8b8rIJYHQAKWAoReWgDSI3bVnD3Udv+I2yAwcuz2xH10zD4QuLlQU5RcoK6OIITRsKMO6MdxL0JJocEqvz7aOutKvsFSTMoEf+zqXpRCeSvshz/VxvNKd3lQkzUrDuwFiKg/BAKt1FxR9el8oaiK0qtSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700266; c=relaxed/simple;
-	bh=ERC0qNIvvo1KgYZkIWsRJd3/1KC/0N4t0/ry/UaIfrA=;
+	s=arc-20240116; t=1776700269; c=relaxed/simple;
+	bh=lPkOBzyr/IU0SR5ZLbQKlkt5ouTvku3ENSaxg6dgeAU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Zz1rDzL4BwZDovbmteriiph2kBzaL3tKVuGZr0LSp4m1bWN4Z37KLozNC2y72mXFJopv+8DTdejdNbYLaNSsF8U/MOvIkcYu56FB5YLL9s7wuU5DokpKdSaKIwxSGQaw6HOAw0YOgonpxAc0F8cSlzvKhITkUXh3GCgo4j0jQI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BueaQSXz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 380BEC19425;
-	Mon, 20 Apr 2026 15:51:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MMQrYlLB50qouPGt2oqjiqty6NQnE7Ufp7KGcYeKg2P+glz2mXHif70b6v71HRT2VdBwml+h0GihTkRQQ1dzGeQk/KteHZDW5oQJ5/10IkmVWyEAh3N+gw7sKYM+Gf2/2oipeWIZEkvVKetRpnXGK+x+PYXUg/eeE0XT5bR58Y8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QkyOv6NG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD09CC19425;
+	Mon, 20 Apr 2026 15:51:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700266;
-	bh=ERC0qNIvvo1KgYZkIWsRJd3/1KC/0N4t0/ry/UaIfrA=;
+	s=korg; t=1776700269;
+	bh=lPkOBzyr/IU0SR5ZLbQKlkt5ouTvku3ENSaxg6dgeAU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BueaQSXzyrslh0xdgLd8CFqi1z6x36AxqVx92VbNe02DKiKAuguN/4TzHQZgpUTSV
-	 ExTv3cJY/xKVd23+rCJkp+156pZyMiwaH17EdEW4fFakHIuTtSrGqByNxvJrqboHZa
-	 nAKBbwry0e+Koe+2wQEbWnOG5M1gZ1tMtbS9rRPM=
+	b=QkyOv6NGyku/TcXbXdA2jP+voeDzkizGZXr79lbtIs2G6F1L4M+ndQRpiO5Mz4pZm
+	 nQ0e6oa4zZfkH4p5KzIDDJqUM7UUjZeNzllLAYQsj4YFffKVxayZjqAqbrtVRSFCZM
+	 iMgdltI3jJQPHC1+zlzmrnggzErkMW8GoBqbmkwU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,9 +48,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Melissa Wen <mwen@igalia.com>,
 	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 073/220] drm/vc4: Fix memory leak of BO array in hang state
-Date: Mon, 20 Apr 2026 17:40:14 +0200
-Message-ID: <20260420153936.666780594@linuxfoundation.org>
+Subject: [PATCH 6.19 074/220] drm/vc4: Fix a memory leak in hang state error path
+Date: Mon, 20 Apr 2026 17:40:15 +0200
+Message-ID: <20260420153936.702432632@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
 References: <20260420153934.013228280@linuxfoundation.org>
@@ -68,20 +68,20 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239443-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-239444-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -90,8 +90,8 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,igalia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 41CEE431A45
+	DBL_BLOCKED_OPENRESOLVER(0.00)[igalia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: DF33742FEE8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,33 +101,67 @@ X-Rspamd-Server: lfdr
 
 From: Maíra Canal <mcanal@igalia.com>
 
-[ Upstream commit f4dfd6847b3e5d24e336bca6057485116d17aea4 ]
+[ Upstream commit 9525d169e5fd481538cf8c663cc5839e54f2e481 ]
 
-The hang state's BO array is allocated separately with kzalloc() in
-vc4_save_hang_state() but never freed in vc4_free_hang_state(). Add the
-missing kfree() for the BO array before freeing the hang state struct.
+When vc4_save_hang_state() encounters an early return condition, it
+returns without freeing the previously allocated `kernel_state`,
+leaking memory.
+
+Add the missing kfree() calls by consolidating the early return paths
+into a single place.
 
 Fixes: 214613656b51 ("drm/vc4: Add an interface for capturing the GPU state after a hang.")
 Reviewed-by: Melissa Wen <mwen@igalia.com>
-Link: https://patch.msgid.link/20260330-vc4-misc-fixes-v1-2-92defc940a29@igalia.com
+Link: https://patch.msgid.link/20260330-vc4-misc-fixes-v1-3-92defc940a29@igalia.com
 Signed-off-by: Maíra Canal <mcanal@igalia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vc4/vc4_gem.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/vc4/vc4_gem.c | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/gpu/drm/vc4/vc4_gem.c b/drivers/gpu/drm/vc4/vc4_gem.c
-index ab16164b5edaf..0562f78e28357 100644
+index 0562f78e28357..840aadb14b518 100644
 --- a/drivers/gpu/drm/vc4/vc4_gem.c
 +++ b/drivers/gpu/drm/vc4/vc4_gem.c
-@@ -62,6 +62,7 @@ vc4_free_hang_state(struct drm_device *dev, struct vc4_hang_state *state)
- 	for (i = 0; i < state->user_state.bo_count; i++)
- 		drm_gem_object_put(state->bo[i]);
+@@ -171,10 +171,8 @@ vc4_save_hang_state(struct drm_device *dev)
+ 	spin_lock_irqsave(&vc4->job_lock, irqflags);
+ 	exec[0] = vc4_first_bin_job(vc4);
+ 	exec[1] = vc4_first_render_job(vc4);
+-	if (!exec[0] && !exec[1]) {
+-		spin_unlock_irqrestore(&vc4->job_lock, irqflags);
+-		return;
+-	}
++	if (!exec[0] && !exec[1])
++		goto err_free_state;
  
-+	kfree(state->bo);
- 	kfree(state);
+ 	/* Get the bos from both binner and renderer into hang state. */
+ 	state->bo_count = 0;
+@@ -191,10 +189,8 @@ vc4_save_hang_state(struct drm_device *dev)
+ 	kernel_state->bo = kcalloc(state->bo_count,
+ 				   sizeof(*kernel_state->bo), GFP_ATOMIC);
+ 
+-	if (!kernel_state->bo) {
+-		spin_unlock_irqrestore(&vc4->job_lock, irqflags);
+-		return;
+-	}
++	if (!kernel_state->bo)
++		goto err_free_state;
+ 
+ 	k = 0;
+ 	for (i = 0; i < 2; i++) {
+@@ -286,6 +282,12 @@ vc4_save_hang_state(struct drm_device *dev)
+ 		vc4->hang_state = kernel_state;
+ 		spin_unlock_irqrestore(&vc4->job_lock, irqflags);
+ 	}
++
++	return;
++
++err_free_state:
++	spin_unlock_irqrestore(&vc4->job_lock, irqflags);
++	kfree(kernel_state);
  }
  
+ static void
 -- 
 2.53.0
 
