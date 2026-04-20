@@ -1,58 +1,64 @@
-Return-Path: <stable+bounces-239280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239653-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iDZcCKJh5mmavgEAu9opvQ
-	(envelope-from <stable+bounces-239280-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:25:54 +0200
+	id 8AOoCQRO5mkgugEAu9opvQ
+	(envelope-from <stable+bounces-239653-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:02:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 993464312E5
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:25:53 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1235F42EDDC
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:02:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A43FA367B556
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:44:30 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C0BA23008326
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:01:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EAEE33D4F5;
-	Mon, 20 Apr 2026 15:44:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1816E32E696;
+	Mon, 20 Apr 2026 16:01:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VgOHq1Y+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oWADlweq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1DF833B6FC;
-	Mon, 20 Apr 2026 15:44:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6E092236E3;
+	Mon, 20 Apr 2026 16:01:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776699844; cv=none; b=Q4ST6puM2FUTNsqSnDolX9eI4HgN6L0Wm9Uc0rJVMrNf1xMjim1oDih63HpzkCv9fSl/kIZpr0d20tOJdZeU9LIvwU3eVqDLMX5NXDjcvpuqpN/szYoTk6MWALB45ZBHFsXjCGM+LMx6F6abXZUnngNEFc3GdGX0jL4SBNgClMk=
+	t=1776700877; cv=none; b=txxDdTT//aRnekyvHTzdYIAQnXP5Eqztc8Yjnke/AD0zethjSI0s5JMBKDnqtflcII3FdpXsCAESnSv3o+ULcMllaBjpPX1ccZE3041rO0vc8EBnOFVs9n0OcmZB6bh0+pLInwUm0g4gIJ6woYdjqUZg9FCnPmZtk6bNVQVZVtQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776699844; c=relaxed/simple;
-	bh=jLCs7Jkv1A1epTMqBUAGPEXP+2MJwIlcZGehOXBYUo0=;
+	s=arc-20240116; t=1776700877; c=relaxed/simple;
+	bh=ErwAew/0u+qTX1s1ptKKPdSIRvd3+dhL9e6I2uBZ5vM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IxU8zQ9fOYvxb9/sVRarApJYaLDyt29nnkrHVaDxkTOVo+E7irtFUt3DHxMR1t+n2Mb8nf5pCeJOkO41TAXFfqYEapvRVuKTqdpO5F7n8bY1aAqePCil0tr3El9BMRN7U3cQ9d8TvGSf/XhY98S5xybMMOC9MKItP1L6+LWLGJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VgOHq1Y+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FD72C19425;
-	Mon, 20 Apr 2026 15:44:04 +0000 (UTC)
+	 MIME-Version; b=jToHFltzCrqizNygaJfGRPbDyrteOSZwlrTAq0oIkERKyHU+0VVBjjig1Fn6mhd0f8EdPeY5W9p/4WuWlpO7IlByFXbNU/LtQnQFcv4X2FyERptQBtMYCU5g0G30GYmj8RWIzU8Xk9xSMHHi1Ugrso0TonF1oMGz6UsFpj4XmrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oWADlweq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DB60C19425;
+	Mon, 20 Apr 2026 16:01:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776699844;
-	bh=jLCs7Jkv1A1epTMqBUAGPEXP+2MJwIlcZGehOXBYUo0=;
+	s=korg; t=1776700877;
+	bh=ErwAew/0u+qTX1s1ptKKPdSIRvd3+dhL9e6I2uBZ5vM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VgOHq1Y+w51y3LqgYeuZTRPttA857ESHu2VadFGUL6klFLXKZKQz1wHTTcu49fwgX
-	 1ULgQ0iEKBD5T4N1skPOqsvZ7o75E5ffqLOepGJssma7EGqkIC+KXbVT04GqqIm1I5
-	 8u46VbVVc3nHRHseD7CGfR3Ko5bKD+eT5nJpX3TQ=
+	b=oWADlweqf5343tMGN6liirjktYZcXdRy6vrwy7p8Z1GQ2Ocxhk54ctWSzfcrKSzWa
+	 ktpGsVx6yzB9W4phXolUgFJ8w5Vg4ZCjS3uMw3MuVbZpjhDNeL30HMX6J2VePnwp20
+	 r+l/IWORjvLg4kNnSy0PSety9LIr433I4bLtKoGc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 7.0 02/76] x86/CPU: Fix FPDSS on Zen1
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 094/198] xfrm_user: fix info leak in build_mapping()
 Date: Mon, 20 Apr 2026 17:41:13 +0200
-Message-ID: <20260420153910.903780184@linuxfoundation.org>
+Message-ID: <20260420153938.989895778@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153910.810034134@linuxfoundation.org>
-References: <20260420153910.810034134@linuxfoundation.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,79 +73,78 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239653-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-239280-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	RSPAMD_URIBL_FAIL(0.00)[davemloft.net:query timed out];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,alien8.de:email]
-X-Rspamd-Queue-Id: 993464312E5
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[secunet.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,apana.org.au:email]
+X-Rspamd-Queue-Id: 1235F42EDDC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Borislav Petkov (AMD) <bp@alien8.de>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit e55d98e7756135f32150b9b8f75d580d0d4b2dd3 upstream.
+[ Upstream commit 1beb76b2053b68c491b78370794b8ff63c8f8c02 ]
 
-Zen1's hardware divider can leave, under certain circumstances, partial
-results from previous operations.  Those results can be leaked by
-another, attacker thread.
+struct xfrm_usersa_id has a one-byte padding hole after the proto
+field, which ends up never getting set to zero before copying out to
+userspace.  Fix that up by zeroing out the whole structure before
+setting individual variables.
 
-Fix that with a chicken bit.
-
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Fixes: 3a2dfbe8acb1 ("xfrm: Notify changes in UDP encapsulation via netlink")
+Cc: Steffen Klassert <steffen.klassert@secunet.com>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>
+Assisted-by: gregkh_clanker_t1000
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/msr-index.h |    3 +++
- arch/x86/kernel/cpu/amd.c        |    3 +++
- 2 files changed, 6 insertions(+)
+ net/xfrm/xfrm_user.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/x86/include/asm/msr-index.h
-+++ b/arch/x86/include/asm/msr-index.h
-@@ -674,6 +674,9 @@
- #define MSR_AMD64_DC_CFG		0xc0011022
- #define MSR_AMD64_TW_CFG		0xc0011023
+diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
+index 1ddcf2a1eff7a..b3f69c0760d4c 100644
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -4164,6 +4164,7 @@ static int build_mapping(struct sk_buff *skb, struct xfrm_state *x,
  
-+#define MSR_AMD64_FP_CFG		0xc0011028
-+#define MSR_AMD64_FP_CFG_ZEN1_DENORM_FIX_BIT	9
-+
- #define MSR_AMD64_DE_CFG		0xc0011029
- #define MSR_AMD64_DE_CFG_LFENCE_SERIALIZE_BIT	 1
- #define MSR_AMD64_DE_CFG_LFENCE_SERIALIZE	BIT_ULL(MSR_AMD64_DE_CFG_LFENCE_SERIALIZE_BIT)
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -943,6 +943,9 @@ static void init_amd_zen1(struct cpuinfo
- 		msr_clear_bit(MSR_K7_HWCR, MSR_K7_HWCR_IRPERF_EN_BIT);
- 		clear_cpu_cap(c, X86_FEATURE_IRPERF);
- 	}
-+
-+	pr_notice_once("AMD Zen1 FPDSS bug detected, enabling mitigation.\n");
-+	msr_set_bit(MSR_AMD64_FP_CFG, MSR_AMD64_FP_CFG_ZEN1_DENORM_FIX_BIT);
- }
+ 	um = nlmsg_data(nlh);
  
- static const struct x86_cpu_id amd_zenbleed_microcode[] = {
++	memset(&um->id, 0, sizeof(um->id));
+ 	memcpy(&um->id.daddr, &x->id.daddr, sizeof(um->id.daddr));
+ 	um->id.spi = x->id.spi;
+ 	um->id.family = x->props.family;
+-- 
+2.53.0
+
 
 
 
