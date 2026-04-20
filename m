@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-239620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239439-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uA2OC2Bm5mlmvwEAu9opvQ
-	(envelope-from <stable+bounces-239620-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:46:08 +0200
+	id +BWUHOZX5ml5vAEAu9opvQ
+	(envelope-from <stable+bounces-239439-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:44:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A25744320C4
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:46:07 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FC4242FED8
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:44:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8D0EE32F15AF
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:58:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 144DF3109C9F
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:51:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED19117A31C;
-	Mon, 20 Apr 2026 15:58:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88BD833F5AE;
+	Mon, 20 Apr 2026 15:50:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="INPGiFFP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PJy20/yl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B01D71EB5CE;
-	Mon, 20 Apr 2026 15:58:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4748F33A9C4;
+	Mon, 20 Apr 2026 15:50:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700723; cv=none; b=m0V6mO0g83VlSicoVSCJM+UDiHJEqh6Kn0ds4jzv12p5dM2wZBtH4Hs0H1aYCH10b9ykI8XIrdUMe6jt5jLUxGEpgORyvrAh0g5UTJ1E3XVxPHoJRX9S+Qj4eJD5JMnYNUWe3bxYFgrDiw2c82MoRG0J60X0Xx3dFtyH5AEwsRE=
+	t=1776700256; cv=none; b=nruJMWnkrDrb8Z+LXN6gbDVMgh2iPL6MZfblet1Zdrq+bo8PNyqaiVSUdvqRPJElS8X9soFi5wf69tMT2nGuBkF0MSifq3d1twYHnheNDfEZbpg1R1TdKyOn+QFPnGLAaI4vEFCJvkf+4dVDpNd5b5JtOoQh7kBEsvhNwwkkCyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700723; c=relaxed/simple;
-	bh=p4KSzn6QUlTMCRFiwz5LWWdJmcBpGGW2yv+UTorWbh0=;
+	s=arc-20240116; t=1776700256; c=relaxed/simple;
+	bh=FFJna9kXbl+8LIK7ceqUH1Mu3WTVtKFQyhRgzPSwfFA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NdCYxvE6MBKTXEk6LerUEj1hRkaqfzcp3owBIP2ne7597F5kmh2Q7rCjvnRm1R8x0UfZnUmmmd7RP+AyR/+EQn/z7iqt7dAni/ZfAOt1icgEOtjIQoY7pPxkEK7j9Y8Nuown+caE7A+qL9OlU7wOeWw0vzZXYTEn73SMYbrtVNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=INPGiFFP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 476B1C19425;
-	Mon, 20 Apr 2026 15:58:43 +0000 (UTC)
+	 MIME-Version; b=uCeDrtWuB7aCN5dgjIXJRn4m6MPwJ7FJQszQXjG4Vrj6BTMWLXfT0NYoIYdIHisl7Q0o+8uGg28KopMGmFJCVq3zePvWQcvIrWH9m6dfQBcRj+N5CqRU30/yPBJuiIS7L2kcYabcAOtifj8mg+Ywz4YRcdDaxIF+s3+DQ4pjauM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PJy20/yl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1BC6C19425;
+	Mon, 20 Apr 2026 15:50:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700723;
-	bh=p4KSzn6QUlTMCRFiwz5LWWdJmcBpGGW2yv+UTorWbh0=;
+	s=korg; t=1776700256;
+	bh=FFJna9kXbl+8LIK7ceqUH1Mu3WTVtKFQyhRgzPSwfFA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=INPGiFFPLBp1jkv6DgxJJqan+ufN6RVbof2Yz89QCujOIFC2kPNVoxnnC0ybaO1fL
-	 3SVorbchbR+dsZ3XbhMvYZHrgy27ZJoJBsBnjV2saX8G2fqPtiKYjEUDf57uMd4BKo
-	 LgM3hZklUVQDmzAiyWg9ix01MLpNB8iZ0kv61Ncg=
+	b=PJy20/ylvF9Z8ZaeAAMXekB3bjjsgyIu2S+sg4NdceeUWBSaRvoPRF04ZooZO6Cjt
+	 b8FUO46TKmMHqQIUwXaaZTj70tJQoiCeV5UAy7IbZMAt6bTZhKVh7+uDZsuaRg1rHT
+	 Kvb5+t0xNPaJixhbmKInGb6vS4ihDUHM0DejKpfo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Tesarik <ptesarik@suse.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
+	Xiaoqiang Xiong <xxiong@redhat.com>,
+	Michal Schmidt <mschmidt@redhat.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 062/198] dma-mapping: add DMA_ATTR_CPU_CACHE_CLEAN
+Subject: [PATCH 6.19 100/220] ixgbevf: add missing negotiate_features op to Hyper-V ops table
 Date: Mon, 20 Apr 2026 17:40:41 +0200
-Message-ID: <20260420153937.846481869@linuxfoundation.org>
+Message-ID: <20260420153937.636371495@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
+References: <20260420153934.013228280@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239620-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-239439-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,77 +87,90 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[samsung.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email]
-X-Rspamd-Queue-Id: A25744320C4
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email]
+X-Rspamd-Queue-Id: 1FC4242FED8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael S. Tsirkin <mst@redhat.com>
+From: Michal Schmidt <mschmidt@redhat.com>
 
-[ Upstream commit 61868dc55a119a5e4b912d458fc2c48ba80a35fe ]
+[ Upstream commit 4821d563cd7f251ae728be1a6d04af82a294a5b9 ]
 
-When multiple small DMA_FROM_DEVICE or DMA_BIDIRECTIONAL buffers share a
-cacheline, and DMA_API_DEBUG is enabled, we get this warning:
-	cacheline tracking EEXIST, overlapping mappings aren't supported.
+Commit a7075f501bd3 ("ixgbevf: fix mailbox API compatibility by
+negotiating supported features") added the .negotiate_features callback
+to ixgbe_mac_operations and populated it in ixgbevf_mac_ops, but forgot
+to add it to ixgbevf_hv_mac_ops. This leaves the function pointer NULL
+on Hyper-V VMs.
 
-This is because when one of the mappings is removed, while another one
-is active, CPU might write into the buffer.
+During probe, ixgbevf_negotiate_api() calls ixgbevf_set_features(),
+which unconditionally dereferences hw->mac.ops.negotiate_features().
+On Hyper-V this results in a NULL pointer dereference:
 
-Add an attribute for the driver to promise not to do this, making the
-overlapping safe, and suppressing the warning.
+  BUG: kernel NULL pointer dereference, address: 0000000000000000
+  [...]
+  Hardware name: Microsoft Corporation Virtual Machine/Virtual Machine [...]
+  Workqueue: events work_for_cpu_fn
+  RIP: 0010:0x0
+  [...]
+  Call Trace:
+   ixgbevf_negotiate_api+0x66/0x160 [ixgbevf]
+   ixgbevf_sw_init+0xe4/0x1f0 [ixgbevf]
+   ixgbevf_probe+0x20f/0x4a0 [ixgbevf]
+   local_pci_probe+0x50/0xa0
+   work_for_cpu_fn+0x1a/0x30
+   [...]
 
-Message-ID: <2d5d091f9d84b68ea96abd545b365dd1d00bbf48.1767601130.git.mst@redhat.com>
-Reviewed-by: Petr Tesarik <ptesarik@suse.com>
-Acked-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Stable-dep-of: 3d48c9fd78dd ("dma-debug: suppress cacheline overlap warning when arch has no DMA alignment requirement")
+Add ixgbevf_hv_negotiate_features_vf() that returns -EOPNOTSUPP and
+wire it into ixgbevf_hv_mac_ops. The caller already handles -EOPNOTSUPP
+gracefully.
+
+Fixes: a7075f501bd3 ("ixgbevf: fix mailbox API compatibility by negotiating supported features")
+Reported-by: Xiaoqiang Xiong <xxiong@redhat.com>
+Closes: https://issues.redhat.com/browse/RHEL-155455
+Assisted-by: Claude:claude-4.6-opus-high Cursor
+Tested-by: Xiaoqiang Xiong <xxiong@redhat.com>
+Signed-off-by: Michal Schmidt <mschmidt@redhat.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/dma-mapping.h | 7 +++++++
- kernel/dma/debug.c          | 3 ++-
- 2 files changed, 9 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ixgbevf/vf.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
-index 190eab9f5e8c2..3e63046b899bc 100644
---- a/include/linux/dma-mapping.h
-+++ b/include/linux/dma-mapping.h
-@@ -78,6 +78,13 @@
-  */
- #define DMA_ATTR_MMIO		(1UL << 10)
+diff --git a/drivers/net/ethernet/intel/ixgbevf/vf.c b/drivers/net/ethernet/intel/ixgbevf/vf.c
+index b67b580f7f1c9..f6df86d124b9e 100644
+--- a/drivers/net/ethernet/intel/ixgbevf/vf.c
++++ b/drivers/net/ethernet/intel/ixgbevf/vf.c
+@@ -709,6 +709,12 @@ static int ixgbevf_negotiate_features_vf(struct ixgbe_hw *hw, u32 *pf_features)
+ 	return err;
+ }
  
-+/*
-+ * DMA_ATTR_CPU_CACHE_CLEAN: Indicates the CPU will not dirty any cacheline
-+ * overlapping this buffer while it is mapped for DMA. All mappings sharing
-+ * a cacheline must have this attribute for this to be considered safe.
-+ */
-+#define DMA_ATTR_CPU_CACHE_CLEAN	(1UL << 11)
++static int ixgbevf_hv_negotiate_features_vf(struct ixgbe_hw *hw,
++					    u32 *pf_features)
++{
++	return -EOPNOTSUPP;
++}
 +
- /*
-  * A dma_addr_t can hold any valid DMA or bus address for the platform.  It can
-  * be given to a device to use as a DMA source or target.  It is specific to a
-diff --git a/kernel/dma/debug.c b/kernel/dma/debug.c
-index 138ede653de40..7e66d863d573f 100644
---- a/kernel/dma/debug.c
-+++ b/kernel/dma/debug.c
-@@ -595,7 +595,8 @@ static void add_dma_entry(struct dma_debug_entry *entry, unsigned long attrs)
- 	if (rc == -ENOMEM) {
- 		pr_err_once("cacheline tracking ENOMEM, dma-debug disabled\n");
- 		global_disable = true;
--	} else if (rc == -EEXIST && !(attrs & DMA_ATTR_SKIP_CPU_SYNC) &&
-+	} else if (rc == -EEXIST &&
-+		   !(attrs & (DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_CPU_CACHE_CLEAN)) &&
- 		   !(IS_ENABLED(CONFIG_DMA_BOUNCE_UNALIGNED_KMALLOC) &&
- 		     is_swiotlb_active(entry->dev))) {
- 		err_printk(entry->dev, entry,
+ /**
+  *  ixgbevf_set_vfta_vf - Set/Unset VLAN filter table address
+  *  @hw: pointer to the HW structure
+@@ -1142,6 +1148,7 @@ static const struct ixgbe_mac_operations ixgbevf_hv_mac_ops = {
+ 	.setup_link		= ixgbevf_setup_mac_link_vf,
+ 	.check_link		= ixgbevf_hv_check_mac_link_vf,
+ 	.negotiate_api_version	= ixgbevf_hv_negotiate_api_version_vf,
++	.negotiate_features	= ixgbevf_hv_negotiate_features_vf,
+ 	.set_rar		= ixgbevf_hv_set_rar_vf,
+ 	.update_mc_addr_list	= ixgbevf_hv_update_mc_addr_list_vf,
+ 	.update_xcast_mode	= ixgbevf_hv_update_xcast_mode,
 -- 
 2.53.0
 
