@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-239560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239917-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eKw3MLNl5mlmvwEAu9opvQ
-	(envelope-from <stable+bounces-239560-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:43:15 +0200
+	id 6OZqKtlk5mkKvwEAu9opvQ
+	(envelope-from <stable+bounces-239917-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:39:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 313CF431E5C
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:43:15 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D092431B3A
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:39:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9B3C4328A070
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:56:06 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 719FA31F98FD
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:12:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75ACF3314C4;
-	Mon, 20 Apr 2026 15:56:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0749C343D9E;
+	Mon, 20 Apr 2026 16:12:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NCQS7InN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BTGdVSxR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3843222259F;
-	Mon, 20 Apr 2026 15:56:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEB74335BA7;
+	Mon, 20 Apr 2026 16:12:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700566; cv=none; b=FHcaeVKZ3mAzV4BYS0wQn5Uqsq4FbcJo+GradKEDIj9M2lwK6SQ4YbnyP6WCcDA8A3N+C+QU54X13XpvcQ8ZeQPeAeOciXiXHm5TiN/OEk/aR/H8iAH0h5cFTWLU8GQLvIJlqJuI3Tm1SHlewUn4DxyNTcAjCGh3WM6h4+c/lqs=
+	t=1776701544; cv=none; b=mZ46QL8lDLVNVDLa5b4IxsouQWFFSiSsDVwdolQTr8zAy9FmjLoS9iwGhrNJoOVeG1M5MFfthz6hzicx7GiY6GpsRdaXRZI1rMWwdrltp9b8v6jHUh3QZmRBoIGRnLc+6TeX1N4x3ljXGNg91u8CfEW7IObID6QaeYcMEEhmmrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700566; c=relaxed/simple;
-	bh=jWeBgu6Il0RwgxJt3SnjG5DkiWdpc6D5fXK398/u1KY=;
+	s=arc-20240116; t=1776701544; c=relaxed/simple;
+	bh=LIGHbh45xoKeLgBIY23DxuhSmXmjO6BYVDoU+1KnJl4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AZNFsdCgh8g9hQa4n5RpB/YR0zUw3pRHz246DYTNpQZZlzc8LGOD5MMXF5dS3K3dgRVdKcko5LbjgHSxJHikNFOmYKIpmXBnFm4Z4IjDqHvqeA19yY5Y/kmvp1z6N6XOKJ7Wk69+/sP6teq6AX54qPBWwQ7aV5ZVdpgb5G64PkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NCQS7InN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C533DC19425;
-	Mon, 20 Apr 2026 15:56:05 +0000 (UTC)
+	 MIME-Version; b=I3bKd9nmCS9to8HuyzHg5/oAVciPudNHelTIHyCMCplkebHLnksCL7mpyBnhLOe0hITVVo+y6mR1vLoRoif6SZm19FqDVhIlKjaysZp7UoMxdNOcnUpUpgRdpTjE9yMSCJgZb9fVG6d74c5nBZkjrgGHTVaFp/zQkcD/5zkID3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BTGdVSxR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 549D6C19425;
+	Mon, 20 Apr 2026 16:12:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700566;
-	bh=jWeBgu6Il0RwgxJt3SnjG5DkiWdpc6D5fXK398/u1KY=;
+	s=korg; t=1776701544;
+	bh=LIGHbh45xoKeLgBIY23DxuhSmXmjO6BYVDoU+1KnJl4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NCQS7InNdUtdFUbdFMq6IZ033Zkt3IsuZyr+/K+ael+XpQsT2dWIxWCYgKFvyrNB7
-	 f2H5iVna8a/gYda3nzmX2hcz41NzyT6Vgr+IPRPHVojl5ALTujSquVezmkkYau69FU
-	 HeXkNw65C7kYER2ZeImJxTym6MvkZS77IbKlXi6Y=
+	b=BTGdVSxRNyRHyT7p5iE0ZdpTH6Lq+Vy+isfklzw4tlAcnzWjeBsTqcMp8VOH8mBcm
+	 z6u8fCyl4cEfva8dLlzIMiJb590q9+O81PPHH9ndu5CPsUzJILVI+dV7vllfv1Nc01
+	 EWkTEbUM+Xj8amdBxlDBj1yl6eMHJ4BxcmydphhE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+47321e8fd5a4c84088db@syzkaller.appspotmail.com,
-	Jeongjun Park <aha310510@gmail.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.19 214/220] media: as102: fix to not free memory after the device is registered in as102_usb_probe()
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Yang Erkun <yangerkun@huawei.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.12 123/162] dcache: Limit the minimal number of bucket to two
 Date: Mon, 20 Apr 2026 17:42:35 +0200
-Message-ID: <20260420153941.732240065@linuxfoundation.org>
+Message-ID: <20260420153931.497160702@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
-References: <20260420153934.013228280@linuxfoundation.org>
+In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
+References: <20260420153927.006696811@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,108 +64,113 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239560-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-239917-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable,47321e8fd5a4c84088db,cisco];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,appspotmail.com:email]
-X-Rspamd-Queue-Id: 313CF431E5C
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 7D092431B3A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
 
-commit 8bd29dbe03fc5b0f039ab2395ff37b64236d2f0c upstream.
+commit f08fe8891c3eeb63b73f9f1f6d97aa629c821579 upstream.
 
-In as102_usb driver, the following race condition occurs:
-```
-		CPU0						CPU1
-as102_usb_probe()
-  kzalloc(); // alloc as102_dev_t
-  ....
-  usb_register_dev();
-						fd = sys_open("/path/to/dev"); // open as102 fd
-						....
-  usb_deregister_dev();
-  ....
-  kfree(); // free as102_dev_t
-  ....
-						sys_close(fd);
-						  as102_release() // UAF!!
-						    as102_usb_release()
-						      kfree(); // DFB!!
-```
+There is an OOB read problem on dentry_hashtable when user sets
+'dhash_entries=1':
+  BUG: unable to handle page fault for address: ffff888b30b774b0
+  #PF: supervisor read access in kernel mode
+  #PF: error_code(0x0000) - not-present page
+  Oops: Oops: 0000 [#1] SMP PTI
+  RIP: 0010:__d_lookup+0x56/0x120
+   Call Trace:
+    d_lookup.cold+0x16/0x5d
+    lookup_dcache+0x27/0xf0
+    lookup_one_qstr_excl+0x2a/0x180
+    start_dirop+0x55/0xa0
+    simple_start_creating+0x8d/0xa0
+    debugfs_start_creating+0x8c/0x180
+    debugfs_create_dir+0x1d/0x1c0
+    pinctrl_init+0x6d/0x140
+    do_one_initcall+0x6d/0x3d0
+    kernel_init_freeable+0x39f/0x460
+    kernel_init+0x2a/0x260
 
-When a USB character device registered with usb_register_dev() is later
-unregistered (via usb_deregister_dev() or disconnect), the device node is
-removed so new open() calls fail. However, file descriptors that are
-already open do not go away immediately: they remain valid until the last
-reference is dropped and the driver's .release() is invoked.
+There will be only one bucket in dentry_hashtable when dhash_entries is
+set as one, and d_hash_shift is calculated as 32 by dcache_init(). Then,
+following process will access more than one buckets(which memory region
+is not allocated) in dentry_hashtable:
+ d_lookup
+  b = d_hash(hash)
+    dentry_hashtable + ((u32)hashlen >> d_hash_shift)
+    // The C standard defines the behavior of right shift amounts
+    // exceeding the bit width of the operand as undefined. The
+    // result of '(u32)hashlen >> d_hash_shift' becomes 'hashlen',
+    // so 'b' will point to an unallocated memory region.
+  hlist_bl_for_each_entry_rcu(b)
+   hlist_bl_first_rcu(head)
+    h->first  // read OOB!
 
-In as102, as102_usb_probe() calls usb_register_dev() and then, on an
-error path, does usb_deregister_dev() and frees as102_dev_t right away.
-If userspace raced a successful open() before the deregistration, that
-open FD will later hit as102_release() --> as102_usb_release() and access
-or free as102_dev_t again, occur a race to use-after-free and
-double-free vuln.
+Fix it by limiting the minimal number of dentry_hashtable bucket to two,
+so that 'd_hash_shift' won't exceeds the bit width of type u32.
 
-The fix is to never kfree(as102_dev_t) directly once usb_register_dev()
-has succeeded. After deregistration, defer freeing memory to .release().
-
-In other words, let release() perform the last kfree when the final open
-FD is closed.
-
-Cc: <stable@vger.kernel.org>
-Reported-by: syzbot+47321e8fd5a4c84088db@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=47321e8fd5a4c84088db
-Fixes: cd19f7d3e39b ("[media] as102: fix leaks at failure paths in as102_usb_probe()")
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Link: https://patch.msgid.link/20260130034853.215819-1-chengzhihao1@huawei.com
+Reviewed-by: Yang Erkun <yangerkun@huawei.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/as102/as102_usb_drv.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/dcache.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/media/usb/as102/as102_usb_drv.c
-+++ b/drivers/media/usb/as102/as102_usb_drv.c
-@@ -403,7 +403,9 @@ static int as102_usb_probe(struct usb_in
- failed_dvb:
- 	as102_free_usb_stream_buffer(as102_dev);
- failed_stream:
-+	usb_set_intfdata(intf, NULL);
- 	usb_deregister_dev(intf, &as102_usb_class_driver);
-+	return ret;
- failed:
- 	usb_put_dev(as102_dev->bus_adap.usb_dev);
- 	usb_set_intfdata(intf, NULL);
+--- a/fs/dcache.c
++++ b/fs/dcache.c
+@@ -3127,7 +3127,7 @@ static void __init dcache_init_early(voi
+ 					HASH_EARLY | HASH_ZERO,
+ 					&d_hash_shift,
+ 					NULL,
+-					0,
++					2,
+ 					0);
+ 	d_hash_shift = 32 - d_hash_shift;
+ 
+@@ -3158,7 +3158,7 @@ static void __init dcache_init(void)
+ 					HASH_ZERO,
+ 					&d_hash_shift,
+ 					NULL,
+-					0,
++					2,
+ 					0);
+ 	d_hash_shift = 32 - d_hash_shift;
+ 
 
 
 
