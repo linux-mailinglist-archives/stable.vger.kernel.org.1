@@ -1,64 +1,58 @@
-Return-Path: <stable+bounces-239544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239728-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kOlTLYVf5mndvQEAu9opvQ
-	(envelope-from <stable+bounces-239544-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:16:53 +0200
+	id uI+hIChP5mkgugEAu9opvQ
+	(envelope-from <stable+bounces-239728-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:07:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B1FD430E4C
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:16:53 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4423B42EFFB
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:07:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D790E313E062
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:55:25 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5332D302E9A6
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:04:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 823CC2E11C7;
-	Mon, 20 Apr 2026 15:55:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C449133F5B0;
+	Mon, 20 Apr 2026 16:04:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ImqDeDZE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="USiRNnpf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25A6E329C6D;
-	Mon, 20 Apr 2026 15:55:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8696A280CD2;
+	Mon, 20 Apr 2026 16:04:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700525; cv=none; b=MOC7xtTx6jOTPnKsfD5hv/ELDd9HWjgnOg8amw+3seBrqx+z+8kgYwE9vYbI4V3mt1n/Zs/S6r1slgvnzI/s481N0wRFwsez/75ABMAwyv2pF0NDs02AqYoKGnWvn/KJthbv9iWK8+TZ07T5ThsV61wYB7vlDVaDin3EUq/Gc/8=
+	t=1776701064; cv=none; b=Aq4ZaVnFh8jldcoa+ZNXeAsguwrR+WRQfaKqkd8VHTpv2dMFsZyI/eHya/NHbJUaO4SCLqUTiLTWYoKcn2U+bP1r5vLDiRG20G2NhmxYg0fJc90O5ng/bN94OEBq3oyXM9ySIHhdPSbFdBxve279Wk079c4Ld8GvlUcAoZkxcl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700525; c=relaxed/simple;
-	bh=YOLRhTx8+MRQ68dcy0UG1ZQLRDUYRw8+RQtRUYq3UeE=;
+	s=arc-20240116; t=1776701064; c=relaxed/simple;
+	bh=uexCJUs9d1V/H16jzq3knHDGwbaXUrrou0/IpntPl9Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M5ttQsYJsRsK+x/seTHH5mraDGRSF+1KrRmdjuMIBip2yDffzG++NKRRZ2a9muExtWc8BPrFRIFhjG6jpU8zqszVthOY9OAWAOSHSH1VSJJVReO4k9Y/KX2olBNt1Yhy/Jb5vd8H4lUKcv8BDQI4VMTEtQFOq9tusL4/Qf8FmMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ImqDeDZE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81DD2C19425;
-	Mon, 20 Apr 2026 15:55:24 +0000 (UTC)
+	 MIME-Version; b=MBs4nVGrYWKft3qgu+XYR12mKhem/WJRq0ycVUI4jHv06fSbRzutPrM/chQmYHhkxUUVCw62RiOZuN7p46W9cyY5AWcXmaeRBXwVpEtSg5p5tgEwLXB6IVTvRLeMSN0XnruT3Y8cZTMiL2gvOoew9N4hWlfOW8nKPplUAzNDJkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=USiRNnpf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DC97C2BCB4;
+	Mon, 20 Apr 2026 16:04:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700524;
-	bh=YOLRhTx8+MRQ68dcy0UG1ZQLRDUYRw8+RQtRUYq3UeE=;
+	s=korg; t=1776701064;
+	bh=uexCJUs9d1V/H16jzq3knHDGwbaXUrrou0/IpntPl9Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ImqDeDZEiRp2esIrge5kzYoxK4n2nE38Ge4DHmPa6s38k5Xc/foW+oYXHnbc+1vAc
-	 6iNrAo/dCFhyomYABsW8nmnrlKnbQj7xvBX1HhXZKbecRh6GELs9akRM9XWF7Kyx5J
-	 di6iwCETRJK1OG6g4ol3tNEnFWXEwKIikVNcpItU=
+	b=USiRNnpfKKZ18KO10lqT7eZPJlGR/957q77RAbpUVMRHOzUTuzKUr++O5NPs6JVNT
+	 9hlcnITIh0mvzuQXPiIb/DcvkyFOr+D8506kXkwuUF4meQV31zpaVsG+QpXkA3j5IN
+	 YrQC/LkF25WWIv1JTzC11Rng761kk7UhzF/hTIiI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
 	Alexander Potapenko <glider@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.19 205/220] mm/kasan: fix double free for kasan pXds
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.18 167/198] KVM: SEV: Protect *all* of sev_mem_enc_register_region() with kvm->lock
 Date: Mon, 20 Apr 2026 17:42:26 +0200
-Message-ID: <20260420153941.409199166@linuxfoundation.org>
+Message-ID: <20260420153941.624523636@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
-References: <20260420153934.013228280@linuxfoundation.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,177 +63,152 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-239544-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.ibm.com,google.com,arm.com,linux-foundation.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-239728-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,arm.com:email]
-X-Rspamd-Queue-Id: 1B1FD430E4C
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 4423B42EFFB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 51d8c78be0c27ddb91bc2c0263941d8b30a47d3b upstream.
+commit b6408b6cec5df76a165575777800ef2aba12b109 upstream.
 
-kasan_free_pxd() assumes the page table is always struct page aligned.
-But that's not always the case for all architectures.  E.g.  In case of
-powerpc with 64K pagesize, PUD table (of size 4096) comes from slab cache
-named pgtable-2^9.  Hence instead of page_to_virt(pxd_page()) let's just
-directly pass the start of the pxd table which is passed as the 1st
-argument.
+Take and hold kvm->lock for before checking sev_guest() in
+sev_mem_enc_register_region(), as sev_guest() isn't stable unless kvm->lock
+is held (or KVM can guarantee KVM_SEV_INIT{2} has completed and can't
+rollack state).  If KVM_SEV_INIT{2} fails, KVM can end up trying to add to
+a not-yet-initialized sev->regions_list, e.g. triggering a #GP
 
-This fixes the below double free kasan issue seen with PMEM:
+  Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] SMP KASAN NOPTI
+  KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+  CPU: 110 UID: 0 PID: 72717 Comm: syz.15.11462 Tainted: G     U  W  O        6.16.0-smp-DEV #1 NONE
+  Tainted: [U]=USER, [W]=WARN, [O]=OOT_MODULE
+  Hardware name: Google, Inc. Arcadia_IT_80/Arcadia_IT_80, BIOS 12.52.0-0 10/28/2024
+  RIP: 0010:sev_mem_enc_register_region+0x3f0/0x4f0 ../include/linux/list.h:83
+  Code: <41> 80 3c 04 00 74 08 4c 89 ff e8 f1 c7 a2 00 49 39 ed 0f 84 c6 00
+  RSP: 0018:ffff88838647fbb8 EFLAGS: 00010256
+  RAX: dffffc0000000000 RBX: 1ffff92015cf1e0b RCX: dffffc0000000000
+  RDX: 0000000000000000 RSI: 0000000000001000 RDI: ffff888367870000
+  RBP: ffffc900ae78f050 R08: ffffea000d9e0007 R09: 1ffffd4001b3c000
+  R10: dffffc0000000000 R11: fffff94001b3c001 R12: 0000000000000000
+  R13: ffff8982ab0bde00 R14: ffffc900ae78f058 R15: 0000000000000000
+  FS:  00007f34e9dc66c0(0000) GS:ffff89ee64d33000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 00007fe180adef98 CR3: 000000047210e000 CR4: 0000000000350ef0
+  Call Trace:
+   <TASK>
+   kvm_arch_vm_ioctl+0xa72/0x1240 ../arch/x86/kvm/x86.c:7371
+   kvm_vm_ioctl+0x649/0x990 ../virt/kvm/kvm_main.c:5363
+   __se_sys_ioctl+0x101/0x170 ../fs/ioctl.c:51
+   do_syscall_x64 ../arch/x86/entry/syscall_64.c:63 [inline]
+   do_syscall_64+0x6f/0x1f0 ../arch/x86/entry/syscall_64.c:94
+   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+  RIP: 0033:0x7f34e9f7e9a9
+  Code: <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+  RSP: 002b:00007f34e9dc6038 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+  RAX: ffffffffffffffda RBX: 00007f34ea1a6080 RCX: 00007f34e9f7e9a9
+  RDX: 0000200000000280 RSI: 000000008010aebb RDI: 0000000000000007
+  RBP: 00007f34ea000d69 R08: 0000000000000000 R09: 0000000000000000
+  R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+  R13: 0000000000000000 R14: 00007f34ea1a6080 R15: 00007ffce77197a8
+   </TASK>
 
-radix-mmu: Mapped 0x0000047d10000000-0x0000047f90000000 with 2.00 MiB pages
-==================================================================
-BUG: KASAN: double-free in kasan_remove_zero_shadow+0x9c4/0xa20
-Free of addr c0000003c38e0000 by task ndctl/2164
+with a syzlang reproducer that looks like:
 
-CPU: 34 UID: 0 PID: 2164 Comm: ndctl Not tainted 6.19.0-rc1-00048-gea1013c15392 #157 VOLUNTARY
-Hardware name: IBM,9080-HEX POWER10 (architected) 0x800200 0xf000006 of:IBM,FW1060.00 (NH1060_012) hv:phyp pSeries
-Call Trace:
- dump_stack_lvl+0x88/0xc4 (unreliable)
- print_report+0x214/0x63c
- kasan_report_invalid_free+0xe4/0x110
- check_slab_allocation+0x100/0x150
- kmem_cache_free+0x128/0x6e0
- kasan_remove_zero_shadow+0x9c4/0xa20
- memunmap_pages+0x2b8/0x5c0
- devm_action_release+0x54/0x70
- release_nodes+0xc8/0x1a0
- devres_release_all+0xe0/0x140
- device_unbind_cleanup+0x30/0x120
- device_release_driver_internal+0x3e4/0x450
- unbind_store+0xfc/0x110
- drv_attr_store+0x78/0xb0
- sysfs_kf_write+0x114/0x140
- kernfs_fop_write_iter+0x264/0x3f0
- vfs_write+0x3bc/0x7d0
- ksys_write+0xa4/0x190
- system_call_exception+0x190/0x480
- system_call_vectored_common+0x15c/0x2ec
----- interrupt: 3000 at 0x7fff93b3d3f4
-NIP:  00007fff93b3d3f4 LR: 00007fff93b3d3f4 CTR: 0000000000000000
-REGS: c0000003f1b07e80 TRAP: 3000   Not tainted  (6.19.0-rc1-00048-gea1013c15392)
-MSR:  800000000280f033 <SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 48888208  XER: 00000000
-<...>
-NIP [00007fff93b3d3f4] 0x7fff93b3d3f4
-LR [00007fff93b3d3f4] 0x7fff93b3d3f4
----- interrupt: 3000
+  syz_kvm_add_vcpu$x86(0x0, &(0x7f0000000040)={0x0, &(0x7f0000000180)=ANY=[], 0x70}) (async)
+  syz_kvm_add_vcpu$x86(0x0, &(0x7f0000000080)={0x0, &(0x7f0000000180)=ANY=[@ANYBLOB="..."], 0x4f}) (async)
+  r0 = openat$kvm(0xffffffffffffff9c, &(0x7f0000000200), 0x0, 0x0)
+  r1 = ioctl$KVM_CREATE_VM(r0, 0xae01, 0x0)
+  r2 = openat$kvm(0xffffffffffffff9c, &(0x7f0000000240), 0x0, 0x0)
+  r3 = ioctl$KVM_CREATE_VM(r2, 0xae01, 0x0)
+  ioctl$KVM_SET_CLOCK(r3, 0xc008aeba, &(0x7f0000000040)={0x1, 0x8, 0x0, 0x5625e9b0}) (async)
+  ioctl$KVM_SET_PIT2(r3, 0x8010aebb, &(0x7f0000000280)={[...], 0x5}) (async)
+  ioctl$KVM_SET_PIT2(r1, 0x4070aea0, 0x0) (async)
+  r4 = ioctl$KVM_CREATE_VM(0xffffffffffffffff, 0xae01, 0x0)
+  openat$kvm(0xffffffffffffff9c, 0x0, 0x0, 0x0) (async)
+  ioctl$KVM_SET_USER_MEMORY_REGION(r4, 0x4020ae46, &(0x7f0000000400)={0x0, 0x0, 0x0, 0x2000, &(0x7f0000001000/0x2000)=nil}) (async)
+  r5 = ioctl$KVM_CREATE_VCPU(r4, 0xae41, 0x2)
+  close(r0) (async)
+  openat$kvm(0xffffffffffffff9c, &(0x7f0000000000), 0x8000, 0x0) (async)
+  ioctl$KVM_SET_GUEST_DEBUG(r5, 0x4048ae9b, &(0x7f0000000300)={0x4376ea830d46549b, 0x0, [0x46, 0x0, 0x0, 0x0, 0x0, 0x1000]}) (async)
+  ioctl$KVM_RUN(r5, 0xae80, 0x0)
 
- The buggy address belongs to the object at c0000003c38e0000
-  which belongs to the cache pgtable-2^9 of size 4096
- The buggy address is located 0 bytes inside of
-  4096-byte region [c0000003c38e0000, c0000003c38e1000)
+Opportunistically use guard() to avoid having to define a new error label
+and goto usage.
 
- The buggy address belongs to the physical page:
- page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x3c38c
- head: order:2 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
- memcg:c0000003bfd63e01
- flags: 0x63ffff800000040(head|node=6|zone=0|lastcpupid=0x7ffff)
- page_type: f5(slab)
- raw: 063ffff800000040 c000000140058980 5deadbeef0000122 0000000000000000
- raw: 0000000000000000 0000000080200020 00000000f5000000 c0000003bfd63e01
- head: 063ffff800000040 c000000140058980 5deadbeef0000122 0000000000000000
- head: 0000000000000000 0000000080200020 00000000f5000000 c0000003bfd63e01
- head: 063ffff800000002 c00c000000f0e301 00000000ffffffff 00000000ffffffff
- head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000004
- page dumped because: kasan: bad access detected
-
-[  138.953636] [   T2164] Memory state around the buggy address:
-[  138.953643] [   T2164]  c0000003c38dff00: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[  138.953652] [   T2164]  c0000003c38dff80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[  138.953661] [   T2164] >c0000003c38e0000: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[  138.953669] [   T2164]                    ^
-[  138.953675] [   T2164]  c0000003c38e0080: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[  138.953684] [   T2164]  c0000003c38e0100: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[  138.953692] [   T2164] ==================================================================
-[  138.953701] [   T2164] Disabling lock debugging due to kernel taint
-
-Link: https://lkml.kernel.org/r/2f9135c7866c6e0d06e960993b8a5674a9ebc7ec.1771938394.git.ritesh.list@gmail.com
-Fixes: 0207df4fa1a8 ("kernel/memremap, kasan: make ZONE_DEVICE with work with KASAN")
-Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Reviewed-by: Alexander Potapenko <glider@google.com>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Dmitry Vyukov <dvyukov@google.com>
-Cc: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 1e80fdc09d12 ("KVM: SVM: Pin guest memory when SEV is active")
+Cc: stable@vger.kernel.org
+Reported-by: Alexander Potapenko <glider@google.com>
+Tested-by: Alexander Potapenko <glider@google.com>
+Link: https://patch.msgid.link/20260310234829.2608037-4-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/kasan/init.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/x86/kvm/svm/sev.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/mm/kasan/init.c
-+++ b/mm/kasan/init.c
-@@ -292,7 +292,7 @@ static void kasan_free_pte(pte_t *pte_st
- 			return;
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -2687,6 +2687,8 @@ int sev_mem_enc_register_region(struct k
+ 	struct enc_region *region;
+ 	int ret = 0;
+ 
++	guard(mutex)(&kvm->lock);
++
+ 	if (!sev_guest(kvm))
+ 		return -ENOTTY;
+ 
+@@ -2701,12 +2703,10 @@ int sev_mem_enc_register_region(struct k
+ 	if (!region)
+ 		return -ENOMEM;
+ 
+-	mutex_lock(&kvm->lock);
+ 	region->pages = sev_pin_memory(kvm, range->addr, range->size, &region->npages,
+ 				       FOLL_WRITE | FOLL_LONGTERM);
+ 	if (IS_ERR(region->pages)) {
+ 		ret = PTR_ERR(region->pages);
+-		mutex_unlock(&kvm->lock);
+ 		goto e_free;
  	}
  
--	pte_free_kernel(&init_mm, (pte_t *)page_to_virt(pmd_page(*pmd)));
-+	pte_free_kernel(&init_mm, pte_start);
- 	pmd_clear(pmd);
- }
+@@ -2724,8 +2724,6 @@ int sev_mem_enc_register_region(struct k
+ 	region->size = range->size;
  
-@@ -307,7 +307,7 @@ static void kasan_free_pmd(pmd_t *pmd_st
- 			return;
- 	}
+ 	list_add_tail(&region->list, &sev->regions_list);
+-	mutex_unlock(&kvm->lock);
+-
+ 	return ret;
  
--	pmd_free(&init_mm, (pmd_t *)page_to_virt(pud_page(*pud)));
-+	pmd_free(&init_mm, pmd_start);
- 	pud_clear(pud);
- }
- 
-@@ -322,7 +322,7 @@ static void kasan_free_pud(pud_t *pud_st
- 			return;
- 	}
- 
--	pud_free(&init_mm, (pud_t *)page_to_virt(p4d_page(*p4d)));
-+	pud_free(&init_mm, pud_start);
- 	p4d_clear(p4d);
- }
- 
-@@ -337,7 +337,7 @@ static void kasan_free_p4d(p4d_t *p4d_st
- 			return;
- 	}
- 
--	p4d_free(&init_mm, (p4d_t *)page_to_virt(pgd_page(*pgd)));
-+	p4d_free(&init_mm, p4d_start);
- 	pgd_clear(pgd);
- }
- 
+ e_free:
 
 
 
