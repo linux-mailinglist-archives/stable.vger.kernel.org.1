@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-239902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239754-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iNhjLPRY5mmtvAEAu9opvQ
-	(envelope-from <stable+bounces-239902-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:48:52 +0200
+	id kOzsCQda5mmtvAEAu9opvQ
+	(envelope-from <stable+bounces-239754-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:53:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41DAE430101
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:48:52 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 664894302D2
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:53:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7E54F32FF73D
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:11:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B133E3205AE3
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:05:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF0F634252C;
-	Mon, 20 Apr 2026 16:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B88853396EE;
+	Mon, 20 Apr 2026 16:05:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VH9E5gyr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0HwDZHpX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 720AB2853F3;
-	Mon, 20 Apr 2026 16:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 799AF2E093A;
+	Mon, 20 Apr 2026 16:05:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701506; cv=none; b=HolNLs9viDUZCHWM6geQhGNfnvlDa2JdsC2mjIvYVExga+FwBnRPefGqW2GLma0av1gpvhKIKYorUZDhEPr3xN/CQgf1MbRB9Dn+6CXybZUVJTpjEVc6gP6EtjgQV20c8aJjCt07wRVcb0O1WcbE7Ee/dW+TXi/rVOVNJpW9MDI=
+	t=1776701131; cv=none; b=BG054AlJNPLj0pHU2lKNhhWd7amN62slMBjeBpe+64pcTEhkTe4+Twu8UVrR64Ds5h348tBzAryqISO6I9OXSfaMFWI+c+bisOS4lqEUldrtl8HyRzb3ZPFOurg36qT3DSSYi+5OsPjAJRIb/D492vUzIIbSJbJo5vZ9MT9tzqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701506; c=relaxed/simple;
-	bh=GXLHl44sfjyfbiiV3ic/scVPPNH4NAe7AgA6yE+g8kQ=;
+	s=arc-20240116; t=1776701131; c=relaxed/simple;
+	bh=4zUatCiICNsAktXMamusMCM2F4fsUkl2iQZUYXZaY/g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ApVkXJVr3dfCxUHZTTKFnzbFrpgUyuRQSWr0tln2rvvWLpl3kh7EbxHE8KTBDYM5ta3rGMp8sxCuWNqxGY64zUYIBZ6ImtXMR/Astkq6FyN5jrNZT4SaGnJTMFQLbCXtW3XDRuMMkj4CzXHdH16JRlujm8dqT//OmMLFm4TIoTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VH9E5gyr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3B21C2BCB4;
-	Mon, 20 Apr 2026 16:11:45 +0000 (UTC)
+	 MIME-Version; b=NryEORVZBYKqDrx/DmENs9gjqIb+leXVCatSbHSEu5T6u04VVaWYvM3BqiVRx1iMc77dy+TTKMIswsxukxEb00ArYaS8mUODAByy1Q29KQrbUOnVxspW+akz6JtdPuCvPmrbLTWRbUr2xA8OR6CxEVw46YvSKZzt16MfUVx5Niw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0HwDZHpX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E9DDC19425;
+	Mon, 20 Apr 2026 16:05:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701506;
-	bh=GXLHl44sfjyfbiiV3ic/scVPPNH4NAe7AgA6yE+g8kQ=;
+	s=korg; t=1776701131;
+	bh=4zUatCiICNsAktXMamusMCM2F4fsUkl2iQZUYXZaY/g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VH9E5gyr5UmoQTmNAWDygMHIjKVWxp4mliCEGWmbTywgfYfJzYlSaDRtOamn1Pc/7
-	 p+ebFdwUs6cyRIZMRyfc7Tbx4pe44u+0pHX3DzyiJp3gtmHOQJ/2+CFPTrCUrWBgVL
-	 0zlKH9NYxWreRebvW7O1oGPWZeOkbhLduQZddORw=
+	b=0HwDZHpXjk0RkCClsMlxsFIfYXZGJUiQu1Fvw5nSrDtW1Oc7dJfx3sMwRP1854C8G
+	 f+NRvKElluVmrvOYqWfvS2PzNkxSZAIGOATeTJQNtoG1sviSbE3rSDGds6zGx6aurs
+	 CvHH8lASwGrw/TAEgPAtQQ6+/5MvCT5yrMJaKR3Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.12 140/162] x86: rename and clean up __copy_from_user_inatomic_nocache()
-Date: Mon, 20 Apr 2026 17:42:52 +0200
-Message-ID: <20260420153932.117331806@linuxfoundation.org>
+	syzbot+96f901260a0b2d29cd1a@syzkaller.appspotmail.com,
+	Yihan Ding <dingyihan@uniontech.com>,
+	Abd-Alrhman Masalkhi <abd.masalkhi@gmail.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.18 194/198] media: vidtv: fix pass-by-value structs causing MSAN warnings
+Date: Mon, 20 Apr 2026 17:42:53 +0200
+Message-ID: <20260420153942.602571222@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
-References: <20260420153927.006696811@linuxfoundation.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,210 +65,214 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239902-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-239754-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,uniontech.com,gmail.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_RCPT(0.00)[stable,96f901260a0b2d29cd1a,cisco];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 41DAE430101
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,appspotmail.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,args.pid:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 664894302D2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Abd-Alrhman Masalkhi <abd.masalkhi@gmail.com>
 
-commit 5de7bcaadf160c1716b20a263cf8f5b06f658959 upstream.
+commit 5f8e73bde67e931468bc2a1860d78d72f0c6ba41 upstream.
 
-Similarly to the previous commit, this renames the somewhat confusingly
-named function.  But in this case, it was at least less confusing: the
-__copy_from_user_inatomic_nocache is indeed copying from user memory,
-and it is indeed ok to be used in an atomic context, so it will not warn
-about it.
+vidtv_ts_null_write_into() and vidtv_ts_pcr_write_into() take their
+argument structs by value, causing MSAN to report uninit-value warnings.
+While only vidtv_ts_null_write_into() has triggered a report so far,
+both functions share the same issue.
 
-But the previous commit also removed the NTB mis-use of the
-__copy_from_user_inatomic_nocache() function, and as a result every
-call-site is now _actually_ doing a real user copy.  That means that we
-can now do the proper user pointer verification too.
+Fix by passing both structs by const pointer instead, avoiding the
+stack copy of the struct along with its MSAN shadow and origin metadata.
+The functions do not modify the structs, which is enforced by the const
+qualifier.
 
-End result: add proper address checking, remove the double underscores,
-and change the "nocache" to "nontemporal" to more accurately describe
-what this x86-only function actually does.  It might be worth noting
-that only the target is non-temporal: the actual user accesses are
-normal memory accesses.
-
-Also worth noting is that non-x86 targets (and on older 32-bit x86 CPU's
-before XMM2 in the Pentium III) we end up just falling back on a regular
-user copy, so nothing can actually depend on the non-temporal semantics,
-but that has always been true.
-
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Fixes: f90cf6079bf67 ("media: vidtv: add a bridge driver")
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+96f901260a0b2d29cd1a@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=96f901260a0b2d29cd1a
+Tested-by: syzbot+96f901260a0b2d29cd1a@syzkaller.appspotmail.com
+Suggested-by: Yihan Ding <dingyihan@uniontech.com>
+Signed-off-by: Abd-Alrhman Masalkhi <abd.masalkhi@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/uaccess.h    |    2 +-
- arch/x86/include/asm/uaccess_32.h |    8 +-------
- arch/x86/include/asm/uaccess_64.h |    3 ++-
- arch/x86/lib/usercopy_32.c        |    9 +++++----
- drivers/gpu/drm/i915/i915_gem.c   |    2 +-
- drivers/gpu/drm/qxl/qxl_ioctl.c   |    2 +-
- include/linux/uaccess.h           |   11 ++++++++---
- lib/iov_iter.c                    |    2 +-
- 8 files changed, 20 insertions(+), 19 deletions(-)
+ drivers/media/test-drivers/vidtv/vidtv_mux.c |    4 +-
+ drivers/media/test-drivers/vidtv/vidtv_ts.c  |   50 +++++++++++++--------------
+ drivers/media/test-drivers/vidtv/vidtv_ts.h  |    4 +-
+ 3 files changed, 29 insertions(+), 29 deletions(-)
 
---- a/arch/x86/include/asm/uaccess.h
-+++ b/arch/x86/include/asm/uaccess.h
-@@ -508,7 +508,7 @@ extern struct movsl_mask {
- } ____cacheline_aligned_in_smp movsl_mask;
- #endif
+--- a/drivers/media/test-drivers/vidtv/vidtv_mux.c
++++ b/drivers/media/test-drivers/vidtv/vidtv_mux.c
+@@ -233,7 +233,7 @@ static u32 vidtv_mux_push_pcr(struct vid
+ 	/* the 27Mhz clock will feed both parts of the PCR bitfield */
+ 	args.pcr = m->timing.clk;
  
--#define ARCH_HAS_NOCACHE_UACCESS 1
-+#define ARCH_HAS_NONTEMPORAL_UACCESS 1
+-	nbytes += vidtv_ts_pcr_write_into(args);
++	nbytes += vidtv_ts_pcr_write_into(&args);
+ 	m->mux_buf_offset += nbytes;
  
- /*
-  * The "unsafe" user accesses aren't really "unsafe", but the naming
---- a/arch/x86/include/asm/uaccess_32.h
-+++ b/arch/x86/include/asm/uaccess_32.h
-@@ -26,13 +26,7 @@ raw_copy_from_user(void *to, const void
- 	return __copy_user_ll(to, (__force const void *)from, n);
+ 	m->num_streamed_pcr++;
+@@ -363,7 +363,7 @@ static u32 vidtv_mux_pad_with_nulls(stru
+ 	args.continuity_counter = &ctx->cc;
+ 
+ 	for (i = 0; i < npkts; ++i) {
+-		m->mux_buf_offset += vidtv_ts_null_write_into(args);
++		m->mux_buf_offset += vidtv_ts_null_write_into(&args);
+ 		args.dest_offset  = m->mux_buf_offset;
+ 	}
+ 
+--- a/drivers/media/test-drivers/vidtv/vidtv_ts.c
++++ b/drivers/media/test-drivers/vidtv/vidtv_ts.c
+@@ -48,7 +48,7 @@ void vidtv_ts_inc_cc(u8 *continuity_coun
+ 		*continuity_counter = 0;
  }
  
--static __always_inline unsigned long
--__copy_from_user_inatomic_nocache(void *to, const void __user *from,
--				  unsigned long n)
--{
--       return __copy_from_user_ll_nocache_nozero(to, from, n);
--}
+-u32 vidtv_ts_null_write_into(struct null_packet_write_args args)
++u32 vidtv_ts_null_write_into(const struct null_packet_write_args *args)
+ {
+ 	u32 nbytes = 0;
+ 	struct vidtv_mpeg_ts ts_header = {};
+@@ -56,21 +56,21 @@ u32 vidtv_ts_null_write_into(struct null
+ 	ts_header.sync_byte          = TS_SYNC_BYTE;
+ 	ts_header.bitfield           = cpu_to_be16(TS_NULL_PACKET_PID);
+ 	ts_header.payload            = 1;
+-	ts_header.continuity_counter = *args.continuity_counter;
++	ts_header.continuity_counter = *args->continuity_counter;
+ 
+ 	/* copy TS header */
+-	nbytes += vidtv_memcpy(args.dest_buf,
+-			       args.dest_offset + nbytes,
+-			       args.buf_sz,
++	nbytes += vidtv_memcpy(args->dest_buf,
++			       args->dest_offset + nbytes,
++			       args->buf_sz,
+ 			       &ts_header,
+ 			       sizeof(ts_header));
+ 
+-	vidtv_ts_inc_cc(args.continuity_counter);
++	vidtv_ts_inc_cc(args->continuity_counter);
+ 
+ 	/* fill the rest with empty data */
+-	nbytes += vidtv_memset(args.dest_buf,
+-			       args.dest_offset + nbytes,
+-			       args.buf_sz,
++	nbytes += vidtv_memset(args->dest_buf,
++			       args->dest_offset + nbytes,
++			       args->buf_sz,
+ 			       TS_FILL_BYTE,
+ 			       TS_PACKET_LEN - nbytes);
+ 
+@@ -83,17 +83,17 @@ u32 vidtv_ts_null_write_into(struct null
+ 	return nbytes;
+ }
+ 
+-u32 vidtv_ts_pcr_write_into(struct pcr_write_args args)
++u32 vidtv_ts_pcr_write_into(const struct pcr_write_args *args)
+ {
+ 	u32 nbytes = 0;
+ 	struct vidtv_mpeg_ts ts_header = {};
+ 	struct vidtv_mpeg_ts_adaption ts_adap = {};
+ 
+ 	ts_header.sync_byte     = TS_SYNC_BYTE;
+-	ts_header.bitfield      = cpu_to_be16(args.pid);
++	ts_header.bitfield      = cpu_to_be16(args->pid);
+ 	ts_header.scrambling    = 0;
+ 	/* cc is not incremented, but it is needed. see 13818-1 clause 2.4.3.3 */
+-	ts_header.continuity_counter = *args.continuity_counter;
++	ts_header.continuity_counter = *args->continuity_counter;
+ 	ts_header.payload            = 0;
+ 	ts_header.adaptation_field   = 1;
+ 
+@@ -102,27 +102,27 @@ u32 vidtv_ts_pcr_write_into(struct pcr_w
+ 	ts_adap.PCR    = 1;
+ 
+ 	/* copy TS header */
+-	nbytes += vidtv_memcpy(args.dest_buf,
+-			       args.dest_offset + nbytes,
+-			       args.buf_sz,
++	nbytes += vidtv_memcpy(args->dest_buf,
++			       args->dest_offset + nbytes,
++			       args->buf_sz,
+ 			       &ts_header,
+ 			       sizeof(ts_header));
+ 
+ 	/* write the adap after the TS header */
+-	nbytes += vidtv_memcpy(args.dest_buf,
+-			       args.dest_offset + nbytes,
+-			       args.buf_sz,
++	nbytes += vidtv_memcpy(args->dest_buf,
++			       args->dest_offset + nbytes,
++			       args->buf_sz,
+ 			       &ts_adap,
+ 			       sizeof(ts_adap));
+ 
+ 	/* write the PCR optional */
+-	nbytes += vidtv_ts_write_pcr_bits(args.dest_buf,
+-					  args.dest_offset + nbytes,
+-					  args.pcr);
 -
-+unsigned long __must_check copy_from_user_inatomic_nontemporal(void *, const void __user *, unsigned long n);
- unsigned long __must_check clear_user(void __user *mem, unsigned long len);
- unsigned long __must_check __clear_user(void __user *mem, unsigned long len);
+-	nbytes += vidtv_memset(args.dest_buf,
+-			       args.dest_offset + nbytes,
+-			       args.buf_sz,
++	nbytes += vidtv_ts_write_pcr_bits(args->dest_buf,
++					  args->dest_offset + nbytes,
++					  args->pcr);
++
++	nbytes += vidtv_memset(args->dest_buf,
++			       args->dest_offset + nbytes,
++			       args->buf_sz,
+ 			       TS_FILL_BYTE,
+ 			       TS_PACKET_LEN - nbytes);
  
---- a/arch/x86/include/asm/uaccess_64.h
-+++ b/arch/x86/include/asm/uaccess_64.h
-@@ -152,11 +152,12 @@ extern size_t copy_to_nontemporal(void *
- extern long __copy_user_flushcache(void *dst, const void __user *src, unsigned size);
+--- a/drivers/media/test-drivers/vidtv/vidtv_ts.h
++++ b/drivers/media/test-drivers/vidtv/vidtv_ts.h
+@@ -90,7 +90,7 @@ void vidtv_ts_inc_cc(u8 *continuity_coun
+  *
+  * Return: The number of bytes written into the buffer.
+  */
+-u32 vidtv_ts_null_write_into(struct null_packet_write_args args);
++u32 vidtv_ts_null_write_into(const struct null_packet_write_args *args);
  
- static inline int
--__copy_from_user_inatomic_nocache(void *dst, const void __user *src,
-+copy_from_user_inatomic_nontemporal(void *dst, const void __user *src,
- 				  unsigned size)
- {
- 	long ret;
- 	kasan_check_write(dst, size);
-+	src = mask_user_address(src);
- 	stac();
- 	ret = copy_to_nontemporal(dst, (__force const void *)src, size);
- 	clac();
---- a/arch/x86/lib/usercopy_32.c
-+++ b/arch/x86/lib/usercopy_32.c
-@@ -322,10 +322,11 @@ unsigned long __copy_user_ll(void *to, c
- }
- EXPORT_SYMBOL(__copy_user_ll);
+ /**
+  * vidtv_ts_pcr_write_into - Write a PCR  packet into a buffer.
+@@ -101,6 +101,6 @@ u32 vidtv_ts_null_write_into(struct null
+  *
+  * Return: The number of bytes written into the buffer.
+  */
+-u32 vidtv_ts_pcr_write_into(struct pcr_write_args args);
++u32 vidtv_ts_pcr_write_into(const struct pcr_write_args *args);
  
--unsigned long __copy_from_user_ll_nocache_nozero(void *to, const void __user *from,
-+unsigned long copy_from_user_inatomic_nontemporal(void *to, const void __user *from,
- 					unsigned long n)
- {
--	__uaccess_begin_nospec();
-+	if (!user_access_begin(from, n))
-+		return n;
- #ifdef CONFIG_X86_INTEL_USERCOPY
- 	if (n > 64 && static_cpu_has(X86_FEATURE_XMM2))
- 		n = __copy_user_intel_nocache(to, from, n);
-@@ -334,7 +335,7 @@ unsigned long __copy_from_user_ll_nocach
- #else
- 	__copy_user(to, from, n);
- #endif
--	__uaccess_end();
-+	user_access_end();
- 	return n;
- }
--EXPORT_SYMBOL(__copy_from_user_ll_nocache_nozero);
-+EXPORT_SYMBOL(copy_from_user_inatomic_nontemporal);
---- a/drivers/gpu/drm/i915/i915_gem.c
-+++ b/drivers/gpu/drm/i915/i915_gem.c
-@@ -519,7 +519,7 @@ ggtt_write(struct io_mapping *mapping,
- 
- 	/* We can use the cpu mem copy function because this is X86. */
- 	vaddr = io_mapping_map_atomic_wc(mapping, base);
--	unwritten = __copy_from_user_inatomic_nocache((void __force *)vaddr + offset,
-+	unwritten = copy_from_user_inatomic_nontemporal((void __force *)vaddr + offset,
- 						      user_data, length);
- 	io_mapping_unmap_atomic(vaddr);
- 	if (unwritten) {
---- a/drivers/gpu/drm/qxl/qxl_ioctl.c
-+++ b/drivers/gpu/drm/qxl/qxl_ioctl.c
-@@ -182,7 +182,7 @@ static int qxl_process_single_command(st
- 
- 	/* TODO copy slow path code from i915 */
- 	fb_cmd = qxl_bo_kmap_atomic_page(qdev, cmd_bo, (release->release_offset & PAGE_MASK));
--	unwritten = __copy_from_user_inatomic_nocache
-+	unwritten = copy_from_user_inatomic_nontemporal
- 		(fb_cmd + sizeof(union qxl_release_info) + (release->release_offset & ~PAGE_MASK),
- 		 u64_to_user_ptr(cmd->command), cmd->command_size);
- 
---- a/include/linux/uaccess.h
-+++ b/include/linux/uaccess.h
-@@ -318,16 +318,21 @@ static inline size_t probe_subpage_write
- 
- #endif /* CONFIG_ARCH_HAS_SUBPAGE_FAULTS */
- 
--#ifndef ARCH_HAS_NOCACHE_UACCESS
-+#ifndef ARCH_HAS_NONTEMPORAL_UACCESS
- 
- static inline __must_check unsigned long
--__copy_from_user_inatomic_nocache(void *to, const void __user *from,
-+copy_from_user_inatomic_nontemporal(void *to, const void __user *from,
- 				  unsigned long n)
- {
-+	if (can_do_masked_user_access())
-+		from = mask_user_address(from);
-+	else
-+		if (!access_ok(from, n))
-+			return n;
- 	return __copy_from_user_inatomic(to, from, n);
- }
- 
--#endif		/* ARCH_HAS_NOCACHE_UACCESS */
-+#endif		/* ARCH_HAS_NONTEMPORAL_UACCESS */
- 
- extern __must_check int check_zeroed_user(const void __user *from, size_t size);
- 
---- a/lib/iov_iter.c
-+++ b/lib/iov_iter.c
-@@ -265,7 +265,7 @@ static __always_inline
- size_t copy_from_user_iter_nocache(void __user *iter_from, size_t progress,
- 				   size_t len, void *to, void *priv2)
- {
--	return __copy_from_user_inatomic_nocache(to + progress, iter_from, len);
-+	return copy_from_user_inatomic_nontemporal(to + progress, iter_from, len);
- }
- 
- size_t _copy_from_iter_nocache(void *addr, size_t bytes, struct iov_iter *i)
+ #endif //VIDTV_TS_H
 
 
 
