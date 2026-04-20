@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-239346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239534-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kC8fJgpg5mkqvgEAu9opvQ
-	(envelope-from <stable+bounces-239346-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:19:06 +0200
+	id IJEhClVM5mkgugEAu9opvQ
+	(envelope-from <stable+bounces-239534-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 17:55:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8510430FB7
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:19:05 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4F9142EB77
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 17:55:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D3E723277CEA
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:46:52 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4975530058C1
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:55:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1D5129BDBF;
-	Mon, 20 Apr 2026 15:46:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F482336EE1;
+	Mon, 20 Apr 2026 15:54:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OhYvO0gg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uy+pav7g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A523C22541C;
-	Mon, 20 Apr 2026 15:46:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 620E8330675;
+	Mon, 20 Apr 2026 15:54:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700011; cv=none; b=mWU/g1nMbUp4HKJwQUnbvWJoJc3u6613NWLCii2evH+Gv0Z92opzQDvgZ8hp/XliDohuk1u4ghfwUMnKCwgTzGkCZfK7Ffl1h4F6alHZb93/rKEBV90p4l9CO4MJ+18Nnu9s/CrwUzKelP6jsY1R62a7j5miI6bsNa0qODVf2Xw=
+	t=1776700499; cv=none; b=Naby9aWde+dd9OI6++Ne5IA2yYYrty6TOQ4EwSvLwuYWsb7NeB9Gyx2UCL9f6XlvcVwzCYWRcqRD1uMxj2KfKiUSxL/WUtXGUVByfXqCGGwRAmXjX+dUY1MstCr8XJbNXfF/MAKJtROcWcXMc2KAS0NGzLRNhLq8wbrUkT94VL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700011; c=relaxed/simple;
-	bh=RdAV3FY1bcuF76HDhwcHMtj//RoVv2lpCYFkTDR28+Y=;
+	s=arc-20240116; t=1776700499; c=relaxed/simple;
+	bh=MoABbkaa2DliGR2Jzyu8dvSFKrnfSVYwIRu0PkU9C5A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MwB6ymICuS9hNqHfx2mvch9ZrFt1rsMUAj0K7huTU17VRf2QvWbSggM1eou0pGKrfAb8oiEk3O58wGf16RL9VuUwCb3owrubr4r3aojrSd4sF2GV79wm/Kq05YTQmit3AeEwtm+YeIB6o2ilO3+EhjQRgm+xtEAlgbmoTT0ynYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OhYvO0gg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B5BCC19425;
-	Mon, 20 Apr 2026 15:46:51 +0000 (UTC)
+	 MIME-Version; b=n/U70rm7rsnEp6ijgopi60zz8bLNntOH4pnQq8t9MKNiu6uDSglqUiWX0WLySpQzruaUoIx4iCkgVjwuWU+Ob872V0WAEXslMiIWuE+Tt5HFxdWWucNDNgLIc1DCRLUiNnzmtZyUUG+fhPlfcaWM9lN9G6JR09r9tRQ8VrOAqd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uy+pav7g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBF87C19425;
+	Mon, 20 Apr 2026 15:54:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700011;
-	bh=RdAV3FY1bcuF76HDhwcHMtj//RoVv2lpCYFkTDR28+Y=;
+	s=korg; t=1776700499;
+	bh=MoABbkaa2DliGR2Jzyu8dvSFKrnfSVYwIRu0PkU9C5A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OhYvO0ggSWFshJR7+SDxDePF2seyxBG9jZxNMi2uhzJFFmGlrQnuB4oc3FePIsB0U
-	 0+AMMaNKQHt/Wj0L8yhPvgDwXL+UlHy/yrAq86hcYSK0CvUI5phOxoHVHRPqkp3tx6
-	 7qHEvGcRkVlGwFgakqjvkGYMuPSP7+8sYwMHMrk4=
+	b=uy+pav7giJ1o7i2GHzUCcfqTNy4VOVHq9qMFcpOju90+nTqbsSKhnNU1tBPDGCzsN
+	 Hzxv1xVaLWRS8g1ye9aHvaKziaP2M3Q/G6Dh8HLO2Jm3bgWRbXJWDvJnfYBsXn8doS
+	 Y+IMV+oCldj8AAGx2wxXFwwl3MdFGNiLa5u9deFI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fan Wu <fanwu01@zju.edu.cn>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 7.0 66/76] media: mediatek: vcodec: fix use-after-free in encoder release path
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Sean Christopherson <seanjc@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19 196/220] KVM: x86: Use __DECLARE_FLEX_ARRAY() for UAPI structures with VLAs
 Date: Mon, 20 Apr 2026 17:42:17 +0200
-Message-ID: <20260420153913.223077452@linuxfoundation.org>
+Message-ID: <20260420153941.083393487@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153910.810034134@linuxfoundation.org>
-References: <20260420153910.810034134@linuxfoundation.org>
+In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
+References: <20260420153934.013228280@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,144 +64,186 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [5.34 / 15.00];
-	SEM_URIBL(3.50)[zju.edu.cn:email];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
-	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-239346-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
 	RCVD_COUNT_THREE(0.00)[4];
-	GREYLIST(0.00)[pass,meta];
-	TO_DN_SOME(0.00)[];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_SPAM(0.00)[0.926];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-239534-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable,cisco];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	R_SPF_ALLOW(0.00)[+ip6:2600:3c15:e001:75::/64:c];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,collabora.com:email,zju.edu.cn:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A8510430FB7
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amazon.co.uk:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: E4F9142EB77
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fan Wu <fanwu01@zju.edu.cn>
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-commit 76e35091ffc722ba39b303e48bc5d08abb59dd56 upstream.
+[ Upstream commit 2619da73bb2f10d88f7e1087125c40144fdf0987 ]
 
-The fops_vcodec_release() function frees the context structure (ctx)
-without first cancelling any pending or running work in ctx->encode_work.
-This creates a race window where the workqueue handler (mtk_venc_worker)
-may still be accessing the context memory after it has been freed.
+Commit 94dfc73e7cf4 ("treewide: uapi: Replace zero-length arrays with
+flexible-array members") broke the userspace API for C++.
 
-Race condition:
+These structures ending in VLAs are typically a *header*, which can be
+followed by an arbitrary number of entries. Userspace typically creates
+a larger structure with some non-zero number of entries, for example in
+QEMU's kvm_arch_get_supported_msr_feature():
 
-    CPU 0 (release path)               CPU 1 (workqueue)
-    ---------------------               ------------------
-    fops_vcodec_release()
-      v4l2_m2m_ctx_release()
-        v4l2_m2m_cancel_job()
-        // waits for m2m job "done"
-                                        mtk_venc_worker()
-                                          v4l2_m2m_job_finish()
-                                          // m2m job "done"
-                                          // BUT worker still running!
-                                          // post-job_finish access:
-                                        other ctx dereferences
-                                          // UAF if ctx already freed
-        // returns (job "done")
-      kfree(ctx)  // ctx freed
+    struct {
+        struct kvm_msrs info;
+        struct kvm_msr_entry entries[1];
+    } msr_data = {};
 
-Root cause: The v4l2_m2m_ctx_release() only waits for the m2m job
-lifecycle (via TRANS_RUNNING flag), not the workqueue lifecycle.
-After v4l2_m2m_job_finish() is called, the m2m framework considers
-the job complete and v4l2_m2m_ctx_release() returns, but the worker
-function continues executing and may still access ctx.
+While that works in C, it fails in C++ with an error like:
+ flexible array member 'kvm_msrs::entries' not at end of 'struct msr_data'
 
-The work is queued during encode operations via:
-  queue_work(ctx->dev->encode_workqueue, &ctx->encode_work)
-The worker function accesses ctx->m2m_ctx, ctx->dev, and other ctx
-fields even after calling v4l2_m2m_job_finish().
+Fix this by using __DECLARE_FLEX_ARRAY() for the VLA, which uses [0]
+for C++ compilation.
 
-This vulnerability was confirmed with KASAN by running an instrumented
-test module that widens the post-job_finish race window. KASAN detected:
-
-  BUG: KASAN: slab-use-after-free in mtk_venc_worker+0x159/0x180
-  Read of size 4 at addr ffff88800326e000 by task kworker/u8:0/12
-
-  Workqueue: mtk_vcodec_enc_wq mtk_venc_worker
-
-  Allocated by task 47:
-    __kasan_kmalloc+0x7f/0x90
-    fops_vcodec_open+0x85/0x1a0
-
-  Freed by task 47:
-    __kasan_slab_free+0x43/0x70
-    kfree+0xee/0x3a0
-    fops_vcodec_release+0xb7/0x190
-
-Fix this by calling cancel_work_sync(&ctx->encode_work) before kfree(ctx).
-This ensures the workqueue handler is both cancelled (if pending) and
-synchronized (waits for any running handler to complete) before the
-context is freed.
-
-Placement rationale: The fix is placed after v4l2_ctrl_handler_free()
-and before list_del_init(&ctx->list). At this point, all m2m operations
-are done (v4l2_m2m_ctx_release() has returned), and we need to ensure
-the workqueue is synchronized before removing ctx from the list and
-freeing it.
-
-Note: The open error path does NOT need cancel_work_sync() because
-INIT_WORK() only initializes the work structure - it does not schedule
-it. Work is only scheduled later during device_run() operations.
-
-Fixes: 0934d3759615 ("media: mediatek: vcodec: separate decoder and encoder")
+Fixes: 94dfc73e7cf4 ("treewide: uapi: Replace zero-length arrays with flexible-array members")
 Cc: stable@vger.kernel.org
-Signed-off-by: Fan Wu <fanwu01@zju.edu.cn>
-Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Link: https://patch.msgid.link/3abaf6aefd6e5efeff3b860ac38421d9dec908db.camel@infradead.org
+[sean: tag for stable@]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_drv.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ arch/x86/include/uapi/asm/kvm.h |   12 ++++++------
+ include/uapi/linux/kvm.h        |   11 ++++++-----
+ 2 files changed, 12 insertions(+), 11 deletions(-)
 
---- a/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_drv.c
-+++ b/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_drv.c
-@@ -215,6 +215,15 @@ static int fops_vcodec_release(struct fi
- 	v4l2_fh_exit(&ctx->fh);
- 	v4l2_ctrl_handler_free(&ctx->ctrl_hdl);
+--- a/arch/x86/include/uapi/asm/kvm.h
++++ b/arch/x86/include/uapi/asm/kvm.h
+@@ -197,13 +197,13 @@ struct kvm_msrs {
+ 	__u32 nmsrs; /* number of msrs in entries */
+ 	__u32 pad;
  
-+	/*
-+	 * Cancel any pending encode work before freeing the context.
-+	 * Although v4l2_m2m_ctx_release() waits for m2m job completion,
-+	 * the workqueue handler (mtk_venc_worker) may still be accessing
-+	 * the context after v4l2_m2m_job_finish() returns. Without this,
-+	 * a use-after-free occurs when the worker accesses ctx after kfree.
-+	 */
-+	cancel_work_sync(&ctx->encode_work);
-+
- 	spin_lock_irqsave(&dev->dev_ctx_lock, flags);
- 	list_del_init(&ctx->list);
- 	spin_unlock_irqrestore(&dev->dev_ctx_lock, flags);
+-	struct kvm_msr_entry entries[];
++	__DECLARE_FLEX_ARRAY(struct kvm_msr_entry, entries);
+ };
+ 
+ /* for KVM_GET_MSR_INDEX_LIST */
+ struct kvm_msr_list {
+ 	__u32 nmsrs; /* number of msrs in entries */
+-	__u32 indices[];
++	__DECLARE_FLEX_ARRAY(__u32, indices);
+ };
+ 
+ /* Maximum size of any access bitmap in bytes */
+@@ -245,7 +245,7 @@ struct kvm_cpuid_entry {
+ struct kvm_cpuid {
+ 	__u32 nent;
+ 	__u32 padding;
+-	struct kvm_cpuid_entry entries[];
++	__DECLARE_FLEX_ARRAY(struct kvm_cpuid_entry, entries);
+ };
+ 
+ struct kvm_cpuid_entry2 {
+@@ -267,7 +267,7 @@ struct kvm_cpuid_entry2 {
+ struct kvm_cpuid2 {
+ 	__u32 nent;
+ 	__u32 padding;
+-	struct kvm_cpuid_entry2 entries[];
++	__DECLARE_FLEX_ARRAY(struct kvm_cpuid_entry2, entries);
+ };
+ 
+ /* for KVM_GET_PIT and KVM_SET_PIT */
+@@ -398,7 +398,7 @@ struct kvm_xsave {
+ 	 * the contents of CPUID leaf 0xD on the host.
+ 	 */
+ 	__u32 region[1024];
+-	__u32 extra[];
++	__DECLARE_FLEX_ARRAY(__u32, extra);
+ };
+ 
+ #define KVM_MAX_XCRS	16
+@@ -565,7 +565,7 @@ struct kvm_pmu_event_filter {
+ 	__u32 fixed_counter_bitmap;
+ 	__u32 flags;
+ 	__u32 pad[4];
+-	__u64 events[];
++	__DECLARE_FLEX_ARRAY(__u64, events);
+ };
+ 
+ #define KVM_PMU_EVENT_ALLOW 0
+--- a/include/uapi/linux/kvm.h
++++ b/include/uapi/linux/kvm.h
+@@ -11,6 +11,7 @@
+ #include <linux/const.h>
+ #include <linux/types.h>
+ #include <linux/compiler.h>
++#include <linux/stddef.h>
+ #include <linux/ioctl.h>
+ #include <asm/kvm.h>
+ 
+@@ -532,7 +533,7 @@ struct kvm_coalesced_mmio {
+ 
+ struct kvm_coalesced_mmio_ring {
+ 	__u32 first, last;
+-	struct kvm_coalesced_mmio coalesced_mmio[];
++	__DECLARE_FLEX_ARRAY(struct kvm_coalesced_mmio, coalesced_mmio);
+ };
+ 
+ #define KVM_COALESCED_MMIO_MAX \
+@@ -582,7 +583,7 @@ struct kvm_clear_dirty_log {
+ /* for KVM_SET_SIGNAL_MASK */
+ struct kvm_signal_mask {
+ 	__u32 len;
+-	__u8  sigset[];
++	__DECLARE_FLEX_ARRAY(__u8, sigset);
+ };
+ 
+ /* for KVM_TPR_ACCESS_REPORTING */
+@@ -1040,7 +1041,7 @@ struct kvm_irq_routing_entry {
+ struct kvm_irq_routing {
+ 	__u32 nr;
+ 	__u32 flags;
+-	struct kvm_irq_routing_entry entries[];
++	__DECLARE_FLEX_ARRAY(struct kvm_irq_routing_entry, entries);
+ };
+ 
+ #define KVM_IRQFD_FLAG_DEASSIGN (1 << 0)
+@@ -1131,7 +1132,7 @@ struct kvm_dirty_tlb {
+ 
+ struct kvm_reg_list {
+ 	__u64 n; /* number of regs */
+-	__u64 reg[];
++	__DECLARE_FLEX_ARRAY(__u64, reg);
+ };
+ 
+ struct kvm_one_reg {
+@@ -1586,7 +1587,7 @@ struct kvm_stats_desc {
+ #ifdef __KERNEL__
+ 	char name[KVM_STATS_NAME_SIZE];
+ #else
+-	char name[];
++	__DECLARE_FLEX_ARRAY(char, name);
+ #endif
+ };
+ 
 
 
 
