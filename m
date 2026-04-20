@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-239408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239591-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oAz9Chtk5mkKvwEAu9opvQ
-	(envelope-from <stable+bounces-239408-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:36:27 +0200
+	id WP2oOAVm5mkKvwEAu9opvQ
+	(envelope-from <stable+bounces-239591-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:44:37 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FD5E43193C
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:36:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DB39431F78
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:44:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E494E34E74A8
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:49:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ED107362B286
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:57:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9F2D329E46;
-	Mon, 20 Apr 2026 15:49:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A909A17A31C;
+	Mon, 20 Apr 2026 15:57:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ckPQ6/d4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i9o3o4Ta"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DC122D77E5;
-	Mon, 20 Apr 2026 15:49:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C33D336896;
+	Mon, 20 Apr 2026 15:57:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700170; cv=none; b=XUNxX3NHXQIk1Q8xCORtcoWcHlU/ScANiv2VSeS8YZufSN4zPhESRiu0uCsvuqydWWR2ipmC28HuiADy6tbjselTY8sLtTViX+hQLhefNLX/CmTF/RHPSJXfM9jLYvd+gRTVetb6OtFdKBa0hMgg39qYQbH1jV0aaVsnbLtyL5A=
+	t=1776700645; cv=none; b=SZzrRgQlzFVfzCPEcgJxVKcQ2Nwz17XrQzPQJeeXNs1rkUNHUoc2jlqAej8bcTJcf9PIoP1ShiYdiI+gr636DaE47ikzb59pQx5FjKtBSWHjqLa28W7YQ3cYk4dk7fc6lD7Fg1ZYdmdcozCrCbe+jH+KbY+qrbSW6uoDHVDDKwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700170; c=relaxed/simple;
-	bh=u323AYusz6wyzb2Hh6CTxXcnIafXvOWViU0hOjzTIis=;
+	s=arc-20240116; t=1776700645; c=relaxed/simple;
+	bh=ykvXLLdloTHhSeq6WHYsMobYSbyCpgRiYsXhpLJsePw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iFNhm/P+LFy77Cz51YTu0FGNO3yLsKkVqc4ucwsU0TUOasY9BnHX+iALTHiKzJH01T5DVrnV97aZBhF9Uzmm6yFDVgz6CIgh+1hlS3bB2//F90Hb0QxFwQnz0ohJ8+/BH7TMimdxLNcytP2c65hks4K8bB7iAX63g93/p0wGuc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ckPQ6/d4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05339C2BCB7;
-	Mon, 20 Apr 2026 15:49:29 +0000 (UTC)
+	 MIME-Version; b=dnzT9ao9Z4zvViSUYLhCViVSat10V8WYoYyZcUyloddhU/EEv3xVslOdKEXTALYA94wisj4xmuPSOzoeyotMjGpbBIO/dk5b8BzG6GU9EzHXYJYwi+qL0PIO/j6oz3I0r9+XnWW+hP4Wq9m8eCY1weJdaheiHj/paNjzLjRKiUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i9o3o4Ta; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01DAEC19425;
+	Mon, 20 Apr 2026 15:57:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700170;
-	bh=u323AYusz6wyzb2Hh6CTxXcnIafXvOWViU0hOjzTIis=;
+	s=korg; t=1776700645;
+	bh=ykvXLLdloTHhSeq6WHYsMobYSbyCpgRiYsXhpLJsePw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ckPQ6/d4PX5agtT59bqQKsOIBqyKvVrCN9aAPSihD0arU4bayJa5lGOB035XQueW+
-	 2202KPJraOfdUI3eVBk+ilVc9gIpQbZXF9SjT5y7xPPiH1W7JScFaDimjfA5pQhtK5
-	 +OCy7jSom+EdmkN4Fn43p1epx651yC8O0XotU6dg=
+	b=i9o3o4TaUNaQxCoDpmdlVt3dtkE0zxE3SWnfarj24e28UGZ4iQFudguD8e70AtOgZ
+	 awPQTXiIL8cKeh9K1EI7C/04Mmj1M9JSXfVYBBO+6OvkqTFEfRWgCVs5mr2UYNvE+b
+	 AJXWcPPImhixbzgS5AdB1hJoBPsRTFrNaDqBaPXI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Tesarik <ptesarik@suse.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Donet Tom <donettom@linux.ibm.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 068/220] dma-mapping: add DMA_ATTR_CPU_CACHE_CLEAN
-Date: Mon, 20 Apr 2026 17:40:09 +0200
-Message-ID: <20260420153936.489182200@linuxfoundation.org>
+Subject: [PATCH 6.18 031/198] drm/amdkfd: Fix queue preemption/eviction failures by aligning control stack size to GPU page size
+Date: Mon, 20 Apr 2026 17:40:10 +0200
+Message-ID: <20260420153936.738741366@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
-References: <20260420153934.013228280@linuxfoundation.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239408-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-239591-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -91,72 +91,83 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.com:email,samsung.com:email]
-X-Rspamd-Queue-Id: 4FD5E43193C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email]
+X-Rspamd-Queue-Id: 6DB39431F78
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael S. Tsirkin <mst@redhat.com>
+From: Donet Tom <donettom@linux.ibm.com>
 
-[ Upstream commit 61868dc55a119a5e4b912d458fc2c48ba80a35fe ]
+[ Upstream commit 78746a474e92fc7aaed12219bec7c78ae1bd6156 ]
 
-When multiple small DMA_FROM_DEVICE or DMA_BIDIRECTIONAL buffers share a
-cacheline, and DMA_API_DEBUG is enabled, we get this warning:
-	cacheline tracking EEXIST, overlapping mappings aren't supported.
+The control stack size is calculated based on the number of CUs and
+waves, and is then aligned to PAGE_SIZE. When the resulting control
+stack size is aligned to 64 KB, GPU hangs and queue preemption
+failures are observed while running RCCL unit tests on systems with
+more than two GPUs.
 
-This is because when one of the mappings is removed, while another one
-is active, CPU might write into the buffer.
+amdgpu 0048:0f:00.0: amdgpu: Queue preemption failed for queue with
+doorbell_id: 80030008
+amdgpu 0048:0f:00.0: amdgpu: Failed to evict process queues
+amdgpu 0048:0f:00.0: amdgpu: GPU reset begin!. Source: 4
+amdgpu 0048:0f:00.0: amdgpu: Queue preemption failed for queue with
+doorbell_id: 80030008
+amdgpu 0048:0f:00.0: amdgpu: Failed to evict process queues
+amdgpu 0048:0f:00.0: amdgpu: Failed to restore process queues
 
-Add an attribute for the driver to promise not to do this, making the
-overlapping safe, and suppressing the warning.
+This issue is observed on both 4 KB and 64 KB system page-size
+configurations.
 
-Message-ID: <2d5d091f9d84b68ea96abd545b365dd1d00bbf48.1767601130.git.mst@redhat.com>
-Reviewed-by: Petr Tesarik <ptesarik@suse.com>
-Acked-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Stable-dep-of: 3d48c9fd78dd ("dma-debug: suppress cacheline overlap warning when arch has no DMA alignment requirement")
+This patch fixes the issue by aligning the control stack size to
+AMDGPU_GPU_PAGE_SIZE instead of PAGE_SIZE, so the control stack size
+will not be 64 KB on systems with a 64 KB page size and queue
+preemption works correctly.
+
+Additionally, In the current code, wg_data_size is aligned to PAGE_SIZE,
+which can waste memory if the system page size is large. In this patch,
+wg_data_size is aligned to AMDGPU_GPU_PAGE_SIZE. The cwsr_size, calculated
+from wg_data_size and the control stack size, is aligned to PAGE_SIZE.
+
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Donet Tom <donettom@linux.ibm.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit a3e14436304392fbada359edd0f1d1659850c9b7)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/dma-mapping.h | 7 +++++++
- kernel/dma/debug.c          | 3 ++-
- 2 files changed, 9 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_queue.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
-index 190eab9f5e8c2..3e63046b899bc 100644
---- a/include/linux/dma-mapping.h
-+++ b/include/linux/dma-mapping.h
-@@ -78,6 +78,13 @@
-  */
- #define DMA_ATTR_MMIO		(1UL << 10)
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_queue.c b/drivers/gpu/drm/amd/amdkfd/kfd_queue.c
+index 2822c90bd7be4..b97f4a51db6e3 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_queue.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_queue.c
+@@ -444,10 +444,11 @@ void kfd_queue_ctx_save_restore_size(struct kfd_topology_device *dev)
+ 		    min(cu_num * 40, props->array_count / props->simd_arrays_per_engine * 512)
+ 		    : cu_num * 32;
  
-+/*
-+ * DMA_ATTR_CPU_CACHE_CLEAN: Indicates the CPU will not dirty any cacheline
-+ * overlapping this buffer while it is mapped for DMA. All mappings sharing
-+ * a cacheline must have this attribute for this to be considered safe.
-+ */
-+#define DMA_ATTR_CPU_CACHE_CLEAN	(1UL << 11)
-+
- /*
-  * A dma_addr_t can hold any valid DMA or bus address for the platform.  It can
-  * be given to a device to use as a DMA source or target.  It is specific to a
-diff --git a/kernel/dma/debug.c b/kernel/dma/debug.c
-index 138ede653de40..7e66d863d573f 100644
---- a/kernel/dma/debug.c
-+++ b/kernel/dma/debug.c
-@@ -595,7 +595,8 @@ static void add_dma_entry(struct dma_debug_entry *entry, unsigned long attrs)
- 	if (rc == -ENOMEM) {
- 		pr_err_once("cacheline tracking ENOMEM, dma-debug disabled\n");
- 		global_disable = true;
--	} else if (rc == -EEXIST && !(attrs & DMA_ATTR_SKIP_CPU_SYNC) &&
-+	} else if (rc == -EEXIST &&
-+		   !(attrs & (DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_CPU_CACHE_CLEAN)) &&
- 		   !(IS_ENABLED(CONFIG_DMA_BOUNCE_UNALIGNED_KMALLOC) &&
- 		     is_swiotlb_active(entry->dev))) {
- 		err_printk(entry->dev, entry,
+-	wg_data_size = ALIGN(cu_num * WG_CONTEXT_DATA_SIZE_PER_CU(gfxv, props), PAGE_SIZE);
++	wg_data_size = ALIGN(cu_num * WG_CONTEXT_DATA_SIZE_PER_CU(gfxv, props),
++				AMDGPU_GPU_PAGE_SIZE);
+ 	ctl_stack_size = wave_num * CNTL_STACK_BYTES_PER_WAVE(gfxv) + 8;
+ 	ctl_stack_size = ALIGN(SIZEOF_HSA_USER_CONTEXT_SAVE_AREA_HEADER + ctl_stack_size,
+-			       PAGE_SIZE);
++			       AMDGPU_GPU_PAGE_SIZE);
+ 
+ 	if ((gfxv / 10000 * 10000) == 100000) {
+ 		/* HW design limits control stack size to 0x7000.
+@@ -459,7 +460,7 @@ void kfd_queue_ctx_save_restore_size(struct kfd_topology_device *dev)
+ 
+ 	props->ctl_stack_size = ctl_stack_size;
+ 	props->debug_memory_size = ALIGN(wave_num * DEBUGGER_BYTES_PER_WAVE, DEBUGGER_BYTES_ALIGN);
+-	props->cwsr_size = ctl_stack_size + wg_data_size;
++	props->cwsr_size = ALIGN(ctl_stack_size + wg_data_size, PAGE_SIZE);
+ 
+ 	if (gfxv == 80002)	/* GFX_VERSION_TONGA */
+ 		props->eop_buffer_size = 0x8000;
 -- 
 2.53.0
 
