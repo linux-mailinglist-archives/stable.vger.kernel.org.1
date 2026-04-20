@@ -1,146 +1,174 @@
-Return-Path: <stable+bounces-238732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238733-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kOhLHa/25WnjpgEAu9opvQ
-	(envelope-from <stable+bounces-238732-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 11:49:35 +0200
+	id WKH1C0EB5mkvqQEAu9opvQ
+	(envelope-from <stable+bounces-238733-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 12:34:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 208C942909F
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 11:49:35 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89AA74295FA
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 12:34:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 85AA6306999A
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 09:44:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BCBA1302DB5D
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 10:34:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 742B338F95B;
-	Mon, 20 Apr 2026 09:44:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E51F3398915;
+	Mon, 20 Apr 2026 10:34:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d7fHaQNz"
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="qaDmmnMp"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35F8638F92D;
-	Mon, 20 Apr 2026 09:44:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4787F2F260F;
+	Mon, 20 Apr 2026 10:34:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776678292; cv=none; b=OTuc+M/OJcwNeMTG+bx5o9Vez2/iSvzsK28H8FDHTp+FbNbi/pl4NBaG5qCyh6f7xEYntf5uR07+us2rvztbcjN9w1Xf6YXFT2ocvD7psHYCNW0HvvuZmQWqt8LwPAhzvH3HvD7i6QUHcCQvRYqXDeuKcahTwXynV5bfolrSl3s=
+	t=1776681275; cv=none; b=hxEqvo/JTHFVF7IsZK8LAvJb9bsd9EtEaFQX06OhvC5Da88SV6+KhihX6w9rxDlJc/K4gDoBxFGebyeFvYGxMDIqz/We8pH9nWzOOpNug9DujuG6qjhzdg/vtm+vhjmRqEPU+oFUth4WQQuYIQC3JonGFc22d877UihMflp2yLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776678292; c=relaxed/simple;
-	bh=IyI9kebn34G9+AgwTyzdjdZ0H95XQokI3077RD0pU3U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=W2nk9VtJy0qSS3Dq2WgnqaBCjDaoVT4gC2xajSsCgkiNHB2/9zIpaCwwGtTJBCfbHHYgXnMUiRI+0GtWsSgbfuEfiCcZe2P/j0+dl4bofVgxGxHPa+fZbB9WAoKoS/kxOOwGM+t93Gata+q6glKflu7g2t/K+AFvSatt1remdis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d7fHaQNz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B362DC19425;
-	Mon, 20 Apr 2026 09:44:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776678291;
-	bh=IyI9kebn34G9+AgwTyzdjdZ0H95XQokI3077RD0pU3U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=d7fHaQNzxjwI2FqS/gWT8bYin/RJPLQlm+qzZ5GDGluy6Ep02pT/GWEg+tLpPEpSN
-	 CRsiiVI9UFZU044/tUu/T9EwT6ZG212CQI7hdzTYASGV7vZxHAqzd+OUSBJtioR8yR
-	 ui9N+bXo7VUkf5bbULMstniuWqJB9uxbdIs6pcAh04XLDNB1Zo8e4JJ9BKedOAchIy
-	 9EYk5x7H7u4tYKVnubOdPzdbVMCDsMjpsvEyRg0ibru3N2CLmH7ruxpGy/4Iv2aKY4
-	 L2G01P/iloIkkFaoZ4XT1d+BENNUl1w7moMCZCT81ZPb6o0a2o6ykP+FelSFCmr3Aa
-	 TMHaC0J6DgoFg==
-Date: Mon, 20 Apr 2026 15:14:40 +0530
-From: Manivannan Sadhasivam <mani@kernel.org>
-To: Nitin Rawat <nitin.rawat@oss.qualcomm.com>
-Cc: vkoul@kernel.org, neil.armstrong@linaro.org, 
-	konrad.dybcio@oss.qualcomm.com, dmitry.baryshkov@oss.qualcomm.com, abel.vesa@oss.qualcomm.com, 
-	linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] phy: qcom-qmp-ufs: Fix kaanapali PHY PLL lock failure
- after SM8650 G4 fix
-Message-ID: <lmgcr2iw56ictqkylos75rvdf453votmsieziqr6pgeyc374pb@242cfxs7ihsr>
-References: <20260415104851.2763238-1-nitin.rawat@oss.qualcomm.com>
+	s=arc-20240116; t=1776681275; c=relaxed/simple;
+	bh=Ix8P7RnF0Rfhthxt4kOBqZyLHhMN56JNwg+Whyvbb2M=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=bqaDs7mqxqRxMyu70iXaGHNOAxnCngow1c0rJfQvQyUBmsZ+rkdZFJGe8BczA6vSDpXYLWfrcvwOpqYN91dg6fNXxODfFRTVHq++xmSjZ9Q7bj0lzTGsEFqU0FBGJa6ljCwccDKHD16mb6QM1j5xhLi4jMjqA5ooFntqbrTrws8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=qaDmmnMp; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
+	Reply-To:Content-ID:Content-Description:In-Reply-To:References;
+	bh=sSyq707cDYongcfhhlIcwCv7VZwPwVTCVWAelVSlF2g=; b=qaDmmnMpCBiLtph6bMABgKqdZt
+	XeeIgYSGHihFmxiSZrpm5tvC+CcL7n66dY98iVzr0KcLWY/3qo3a0vv75iNTOZVejoyanRR6HTHze
+	hn3vGQw83gtsnbT8f7VRXGa0Yb0JO5t5aOdS6aS/gI0VZ30JalR8QPQqdfxeVcD1x9uV3B81aeNe1
+	LK/SdN3Rx1J8LTa7SGG9E/+R+v9C7Hbx+HTxm8IvFHTcdvWXX1KtPshidl74mNy97lWdgD3w4TVzw
+	Fyx1uQjV+tuB1Tnuve4mQIqNhPl/rzVpJSIDmD25lfQ0KYtzWVrNZvgSUWldv0F2bOYARuLBIXLtN
+	Rm4ySZwg==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1wElxS-0001Sp-1A;
+	Mon, 20 Apr 2026 10:34:26 +0000
+From: Breno Leitao <leitao@debian.org>
+Date: Mon, 20 Apr 2026 03:18:36 -0700
+Subject: [PATCH net] netconsole: avoid out-of-bounds access on empty string
+ in trim_newline()
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260415104851.2763238-1-nitin.rawat@oss.qualcomm.com>
-X-Spamd-Result: default: False [-1.66 / 15.00];
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260420-netcons_trim_newline-v1-1-dc35889aeedf@debian.org>
+X-B4-Tracking: v=1; b=H4sIAHv95WkC/yXMQQrCMBAF0KuEv24gpiVoriJSbPzVEZ1KErVQe
+ ndRt2/xFhRmYUE0CzJfUmRSRLNpDNLlqGdaOSEaeOeD67yzypomLX3Ncu+V75sobRvGwNQOu61
+ 3aAwemaPMv3YPZcXhj+U5XJnqN8S6fgDn09WxfQAAAA==
+X-Change-ID: 20260420-netcons_trim_newline-36f6ec3b9820
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Matthew Wood <thepacketgeek@gmail.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ kernel-team@meta.com, stable@vger.kernel.org, 
+ Breno Leitao <leitao@debian.org>
+X-Mailer: b4 0.16-dev-453a6
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1792; i=leitao@debian.org;
+ h=from:subject:message-id; bh=Ix8P7RnF0Rfhthxt4kOBqZyLHhMN56JNwg+Whyvbb2M=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBp5gEtYvbwBxczeM8ah4vitJErTLdkEfq5YVYQI
+ nSI9NF9ZvuJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaeYBLQAKCRA1o5Of/Hh3
+ bSL5D/0WjjJt67VmSp16xhSyQgB0xJRmAu3KIvJPFilkspfyRsL1uDD6JopHm2QZE0NDX5FO5LW
+ YO5i9djcvpAKsyEk5Ml26u9pK3c5ibEqe8yN4U57cW/TnbzxvvVCc5pMb+pUDgHhqhsmfnMlncW
+ b9OMCMpkLF6b84GufiVgU9ILODIbC8u5MFTN+NQdamBtbV3OHJM3boCQY6NBkBKteyqOj09Nuc4
+ VuofA+tLqvEsZ7ZSGSJAipEFBjxuYJWA/KhEFXJb0xyoGfT9eqjQjXpA3hlXz3xzLcVTKZuL1YE
+ RvoQ8k3AJd7fidPLHXX9qXswdIP6rw8Oi6TaPQk/vj7QMy2ajVTtyU0eEe8nm0hDZ7J6fEoC008
+ LMT8z2viLRCtluRkSeD6RCxaK4PyNH03RfEDY9HxRBlw9Re6H48gDG0GOmJQ1knX1TJAHMoByqc
+ AauTNDvZwPsaXeKb7rKB6PaFYyey6qC1xKA6ZmWXQg7o0xKugbWJ4ijaula/c371j0heo0lK/J0
+ ZVyhbHdFJE3l5IeN/T+ULag2mJ98BixKlVf+7V24/Z3d5btDmCeK78dpIgshlj+xxZ7RNrMoE9y
+ GhYymvNjeDx4aKNxraMqD8fIezfUcw5qtkbw/lw58b+dnkZfxjVScpdVvyoX2ksePWLgjcuUjE/
+ oXZ5sKXb3mQdZYw==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+X-Debian-User: leitao
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[debian.org:s=smtpauto.stravinsky];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-238732-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	DMARC_NA(0.00)[debian.org];
+	FREEMAIL_TO(0.00)[lunn.ch,davemloft.net,google.com,kernel.org,redhat.com,gmail.com];
+	TAGGED_FROM(0.00)[bounces-238733-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mani@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[leitao@debian.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[debian.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 208C942909F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 89AA74295FA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Apr 15, 2026 at 04:18:51PM +0530, Nitin Rawat wrote:
-> Commit 81af9e40e2e4 ("phy: qcom: qmp-ufs: Fix SM8650 PCS table for Gear 4")
-> moved QPHY_V6_PCS_UFS_PLL_CNTL register configuration from the shared
-> sm8650_ufsphy_g5_pcs table to the SM8650-specific sm8650_ufsphy_pcs base
-> table to fix Gear 4 operation on SM8650.
-> 
-> However, this change inadvertently broke kaanapali and SM8750 SoCs
-> which also rely on the shared sm8650_ufsphy_g5_pcs table for Gear 5
-> configuration but use their own sm8750_ufsphy_pcs base table. After the
-> change, kaanapali PHYs are left without the required PLL_CNTL = 0x33
-> setting, causing the PHY PLL to remain at its hardware reset default
-> value, preventing PLL lock and resulting in DME_LINKSTARTUP timeouts.
-> 
-> Fix this by adding the missing QPHY_V6_PCS_UFS_PLL_CNTL = 0x33 entry
-> to the sm8750_ufsphy_pcs table, mirroring what the original commit
-> already did for sm8650_ufsphy_pcs.
-> 
-> Cc: stable@vger.kernel.org # v6.19.12
-> Fixes: 81af9e40e2e4 ("phy: qcom: qmp-ufs: Fix SM8650 PCS table for Gear 4")
-> Signed-off-by: Nitin Rawat <nitin.rawat@oss.qualcomm.com>
+trim_newline() unconditionally dereferences s[len - 1] after computing
+len = strnlen(s, maxlen). When the string is empty, len is 0 and the
+expression underflows to s[(size_t)-1], reading (and potentially
+writing) one byte before the buffer.
 
-Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
+The two callers feed trim_newline() with the result of strscpy() from
+configfs store callbacks (dev_name_store, userdatum_value_store).
+configfs guarantees count >= 1 reaches the callback, but the byte
+itself can be NUL: a userspace write(fd, "\0", 1) leaves the
+destination empty after strscpy() and triggers the underflow. The OOB
+write only fires if the adjacent byte happens to be '\n', so this is
+not a security issue, but the access is undefined behaviour either way.
 
-- Mani
+This pattern is commonly flagged by LLM-based code reviewers. While it
+is not a security fix, the underlying access is undefined behaviour and
+the change is small and self-contained, so it is a reasonable candidate
+for the stable trees.
 
-> ---
->  drivers/phy/qualcomm/phy-qcom-qmp-ufs.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/phy/qualcomm/phy-qcom-qmp-ufs.c b/drivers/phy/qualcomm/phy-qcom-qmp-ufs.c
-> index 771bc7c2ab50..b87314c8379d 100644
-> --- a/drivers/phy/qualcomm/phy-qcom-qmp-ufs.c
-> +++ b/drivers/phy/qualcomm/phy-qcom-qmp-ufs.c
-> @@ -1112,6 +1112,7 @@ static const struct qmp_phy_init_tbl sm8750_ufsphy_pcs[] = {
->  	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_MULTI_LANE_CTRL1, 0x02),
->  	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_TX_MID_TERM_CTRL1, 0x43),
->  	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_PCS_CTRL1, 0x40),
-> +	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_PLL_CNTL, 0x33),
->  	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_TX_LARGE_AMP_DRV_LVL, 0x0f),
->  	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_RX_SIGDET_CTRL2, 0x68),
->  	QMP_PHY_INIT_CFG(QPHY_V6_PCS_UFS_TX_POST_EMP_LVL_S4, 0x0e),
-> --
-> 2.34.1
-> 
+Guard the dereference on a non-zero length.
 
--- 
-மணிவண்ணன் சதாசிவம்
+Fixes: ae001dc67907 ("net: netconsole: move newline trimming to function")
+Cc: stable@vger.kernel.org
+Signed-off-by: Breno Leitao <leitao@debian.org>
+---
+ drivers/net/netconsole.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
+index 3c9acd6e49e86..205384dab89a6 100644
+--- a/drivers/net/netconsole.c
++++ b/drivers/net/netconsole.c
+@@ -497,6 +497,8 @@ static void trim_newline(char *s, size_t maxlen)
+ 	size_t len;
+ 
+ 	len = strnlen(s, maxlen);
++	if (!len)
++		return;
+ 	if (s[len - 1] == '\n')
+ 		s[len - 1] = '\0';
+ }
+
+---
+base-commit: c7275b05bc428c7373d97aa2da02d3a7fa6b9f66
+change-id: 20260420-netcons_trim_newline-36f6ec3b9820
+
+Best regards,
+--  
+Breno Leitao <leitao@debian.org>
+
 
