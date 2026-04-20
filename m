@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-239376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239377-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6LsQFOVe5mkWvgEAu9opvQ
-	(envelope-from <stable+bounces-239376-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:14:13 +0200
+	id AGo6JHRg5mkxvgEAu9opvQ
+	(envelope-from <stable+bounces-239377-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:20:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BA31430C93
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:14:11 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9472A431056
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:20:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 42353348C118
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:48:43 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 521643297CC5
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:48:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 371C033AD99;
-	Mon, 20 Apr 2026 15:48:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F1C7332919;
+	Mon, 20 Apr 2026 15:48:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EPVw/DbD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E274712p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEB22329C6D;
-	Mon, 20 Apr 2026 15:48:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 428D1329C6D;
+	Mon, 20 Apr 2026 15:48:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700089; cv=none; b=AdXdHzscwJQvDuaVc/t3llx670stELiubi0cAv6iLDMz4MdcjyCf741okYml4obh08HU6Xd/FHjMmKW8c9cRI6dl8oafSfr2mff3uNP4JDv4H68AqazSRpaHO3PDCA3xo2/wSZWA2EU4rJT2YE3R/KLPqQjmLcU5xPhfyNhCnTw=
+	t=1776700091; cv=none; b=SW5lnQ5QpiDrE+vELM47ihs2XCvIrNgQH/Pp2hzgR812OD3qyLm25idZnAKLgeQD8CP/z9KhZzW0flwR2a5qDLsKw3yVtDtrEYRquVwVL00a/SO+U7XLvdjKa5E+yuMsRqVFSE6rPedLMxuX240bYvOjU+hYxm4LZkNM1B4rO5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700089; c=relaxed/simple;
-	bh=hFlPrrQ7ft1BhofwX4j7r/EmE5Ey4lI3n5whfGYfpWA=;
+	s=arc-20240116; t=1776700091; c=relaxed/simple;
+	bh=LKsc/gtEjnUy3CsbLbhU9HLyagrOLIbs6p5O0WU6c4w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sN/lfZJzAI7FH7cP1uWxTo8y3V5Zi6TKaY2LIH8P7wqPBh+/gZiN7qjxIeQDc7abdBNvqq5JqoFhkVtBGqCCf1SlIFR06XTmWbCUfoRMUzKotYh3DZMptmarCKDZubI870R71yFp76jtZ3GO8tZnmc5p6dy9XJ7PMf7g+qHZ+yE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EPVw/DbD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4670EC19425;
-	Mon, 20 Apr 2026 15:48:08 +0000 (UTC)
+	 MIME-Version; b=FWRVDQpYIF+tJVYL+xxYpuUJkcxm6mxPphdSwEmP7NIOc8YA9C8OOoOMkAKZzqdHXgNtKbhHPWL2pkZ1NriDP8VZWfQLEjr+8nkYH59/Bpfll4Y0sCxgdLdddtFQT/eIyScNgT9IOp9eCxiRN9eISVWaceiyq+AtuB8b04Pnn/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E274712p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC823C19425;
+	Mon, 20 Apr 2026 15:48:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700088;
-	bh=hFlPrrQ7ft1BhofwX4j7r/EmE5Ey4lI3n5whfGYfpWA=;
+	s=korg; t=1776700091;
+	bh=LKsc/gtEjnUy3CsbLbhU9HLyagrOLIbs6p5O0WU6c4w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EPVw/DbDYTD3LI+Hofg1FCzqKu8DDzFDA3rMZXX7FKhobt9CeFw6yzESkFcnyXI0t
-	 J0Ey7ZdsgeTHbL2awH02zq+mDOqepEd1Pg4MeFRSZJX3bsHqybAvmNCpPfZd1SvngT
-	 6OH7L+BOZD2d6JLrVeo8k3SK2aduvpaACf0vViFs=
+	b=E274712pJ8bmIR1XHtVgBhmN7iALPJ2UVpEzIVugfJLzsMfdU3+EyEaVjuDQ4gyw7
+	 jYGkvLieDQBSabOoun5YlxcbwQZ7rgFrG9zudUJdpzf92g7BoNjHAMCVO/01Y0q0yP
+	 KpCSc3hLEPpM3fGn665GG8ztnLCS0+oF5SVW0yFQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Takashi Iwai <tiwai@suse.de>,
+	Cen Zhang <zzzccc427@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 008/220] ALSA: asihpi: avoid write overflow check warning
-Date: Mon, 20 Apr 2026 17:39:09 +0200
-Message-ID: <20260420153934.322319089@linuxfoundation.org>
+Subject: [PATCH 6.19 009/220] Bluetooth: hci_sync: annotate data-races around hdev->req_status
+Date: Mon, 20 Apr 2026 17:39:10 +0200
+Message-ID: <20260420153934.358803102@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
 References: <20260420153934.013228280@linuxfoundation.org>
@@ -66,32 +66,33 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-239377-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-239376-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arndb.de:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.de:email,msgid.link:url]
-X-Rspamd-Queue-Id: 4BA31430C93
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 9472A431056
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,53 +100,145 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Cen Zhang <zzzccc427@gmail.com>
 
-[ Upstream commit 591721223be9e28f83489a59289579493b8e3d83 ]
+[ Upstream commit b6807cfc195ef99e1ac37b2e1e60df40295daa8c ]
 
-clang-22 rightfully warns that the memcpy() in adapter_prepare() copies
-between different structures, crossing the boundary of nested
-structures inside it:
+__hci_cmd_sync_sk() sets hdev->req_status under hdev->req_lock:
 
-In file included from sound/pci/asihpi/hpimsgx.c:13:
-In file included from include/linux/string.h:386:
-include/linux/fortify-string.h:569:4: error: call to '__write_overflow_field' declared with 'warning' attribute: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror,-Wattribute-warning]
-  569 |                         __write_overflow_field(p_size_field, size);
+    hdev->req_status = HCI_REQ_PEND;
 
-The two structures seem to refer to the same layout, despite the
-separate definitions, so the code is in fact correct.
+However, several other functions read or write hdev->req_status without
+holding any lock:
 
-Avoid the warning by copying the two inner structures separately.
-I see the same pattern happens in other functions in the same file,
-so there is a chance that this may come back in the future, but
-this instance is the only one that I saw in practice, hitting it
-multiple times per day in randconfig build.
+  - hci_send_cmd_sync() reads req_status in hci_cmd_work (workqueue)
+  - hci_cmd_sync_complete() reads/writes from HCI event completion
+  - hci_cmd_sync_cancel() / hci_cmd_sync_cancel_sync() read/write
+  - hci_abort_conn() reads in connection abort path
 
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://patch.msgid.link/20260318124016.3488566-1-arnd@kernel.org
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Since __hci_cmd_sync_sk() runs on hdev->req_workqueue while
+hci_send_cmd_sync() runs on hdev->workqueue, these are different
+workqueues that can execute concurrently on different CPUs. The plain
+C accesses constitute a data race.
+
+Add READ_ONCE()/WRITE_ONCE() annotations on all concurrent accesses
+to hdev->req_status to prevent potential compiler optimizations that
+could affect correctness (e.g., load fusing in the wait_event
+condition or store reordering).
+
+Signed-off-by: Cen Zhang <zzzccc427@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/asihpi/hpimsgx.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/bluetooth/hci_conn.c |  2 +-
+ net/bluetooth/hci_core.c |  2 +-
+ net/bluetooth/hci_sync.c | 20 ++++++++++----------
+ 3 files changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/sound/pci/asihpi/hpimsgx.c b/sound/pci/asihpi/hpimsgx.c
-index b68e6bfbbfbab..ed1c7b7744361 100644
---- a/sound/pci/asihpi/hpimsgx.c
-+++ b/sound/pci/asihpi/hpimsgx.c
-@@ -581,8 +581,10 @@ static u16 adapter_prepare(u16 adapter)
- 		HPI_ADAPTER_OPEN);
- 	hm.adapter_index = adapter;
- 	hw_entry_point(&hm, &hr);
--	memcpy(&rESP_HPI_ADAPTER_OPEN[adapter], &hr,
--		sizeof(rESP_HPI_ADAPTER_OPEN[0]));
-+	memcpy(&rESP_HPI_ADAPTER_OPEN[adapter].h, &hr,
-+		sizeof(rESP_HPI_ADAPTER_OPEN[adapter].h));
-+	memcpy(&rESP_HPI_ADAPTER_OPEN[adapter].a, &hr.u.ax.info,
-+		sizeof(rESP_HPI_ADAPTER_OPEN[adapter].a));
- 	if (hr.error)
- 		return hr.error;
+diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
+index a966d36d0e798..92dcd9d21b7c9 100644
+--- a/net/bluetooth/hci_conn.c
++++ b/net/bluetooth/hci_conn.c
+@@ -3100,7 +3100,7 @@ int hci_abort_conn(struct hci_conn *conn, u8 reason)
+ 	 * hci_connect_le serializes the connection attempts so only one
+ 	 * connection can be in BT_CONNECT at time.
+ 	 */
+-	if (conn->state == BT_CONNECT && hdev->req_status == HCI_REQ_PEND) {
++	if (conn->state == BT_CONNECT && READ_ONCE(hdev->req_status) == HCI_REQ_PEND) {
+ 		switch (hci_skb_event(hdev->sent_cmd)) {
+ 		case HCI_EV_CONN_COMPLETE:
+ 		case HCI_EV_LE_CONN_COMPLETE:
+diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
+index 8ccec73dce45c..0f86b81b39730 100644
+--- a/net/bluetooth/hci_core.c
++++ b/net/bluetooth/hci_core.c
+@@ -4125,7 +4125,7 @@ static int hci_send_cmd_sync(struct hci_dev *hdev, struct sk_buff *skb)
+ 		kfree_skb(skb);
+ 	}
  
+-	if (hdev->req_status == HCI_REQ_PEND &&
++	if (READ_ONCE(hdev->req_status) == HCI_REQ_PEND &&
+ 	    !hci_dev_test_and_set_flag(hdev, HCI_CMD_PENDING)) {
+ 		kfree_skb(hdev->req_skb);
+ 		hdev->req_skb = skb_clone(hdev->sent_cmd, GFP_KERNEL);
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index d638e62f30021..74339358d5994 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -25,11 +25,11 @@ static void hci_cmd_sync_complete(struct hci_dev *hdev, u8 result, u16 opcode,
+ {
+ 	bt_dev_dbg(hdev, "result 0x%2.2x", result);
+ 
+-	if (hdev->req_status != HCI_REQ_PEND)
++	if (READ_ONCE(hdev->req_status) != HCI_REQ_PEND)
+ 		return;
+ 
+ 	hdev->req_result = result;
+-	hdev->req_status = HCI_REQ_DONE;
++	WRITE_ONCE(hdev->req_status, HCI_REQ_DONE);
+ 
+ 	/* Free the request command so it is not used as response */
+ 	kfree_skb(hdev->req_skb);
+@@ -167,20 +167,20 @@ struct sk_buff *__hci_cmd_sync_sk(struct hci_dev *hdev, u16 opcode, u32 plen,
+ 
+ 	hci_cmd_sync_add(&req, opcode, plen, param, event, sk);
+ 
+-	hdev->req_status = HCI_REQ_PEND;
++	WRITE_ONCE(hdev->req_status, HCI_REQ_PEND);
+ 
+ 	err = hci_req_sync_run(&req);
+ 	if (err < 0)
+ 		return ERR_PTR(err);
+ 
+ 	err = wait_event_interruptible_timeout(hdev->req_wait_q,
+-					       hdev->req_status != HCI_REQ_PEND,
++					       READ_ONCE(hdev->req_status) != HCI_REQ_PEND,
+ 					       timeout);
+ 
+ 	if (err == -ERESTARTSYS)
+ 		return ERR_PTR(-EINTR);
+ 
+-	switch (hdev->req_status) {
++	switch (READ_ONCE(hdev->req_status)) {
+ 	case HCI_REQ_DONE:
+ 		err = -bt_to_errno(hdev->req_result);
+ 		break;
+@@ -194,7 +194,7 @@ struct sk_buff *__hci_cmd_sync_sk(struct hci_dev *hdev, u16 opcode, u32 plen,
+ 		break;
+ 	}
+ 
+-	hdev->req_status = 0;
++	WRITE_ONCE(hdev->req_status, 0);
+ 	hdev->req_result = 0;
+ 	skb = hdev->req_rsp;
+ 	hdev->req_rsp = NULL;
+@@ -665,9 +665,9 @@ void hci_cmd_sync_cancel(struct hci_dev *hdev, int err)
+ {
+ 	bt_dev_dbg(hdev, "err 0x%2.2x", err);
+ 
+-	if (hdev->req_status == HCI_REQ_PEND) {
++	if (READ_ONCE(hdev->req_status) == HCI_REQ_PEND) {
+ 		hdev->req_result = err;
+-		hdev->req_status = HCI_REQ_CANCELED;
++		WRITE_ONCE(hdev->req_status, HCI_REQ_CANCELED);
+ 
+ 		queue_work(hdev->workqueue, &hdev->cmd_sync_cancel_work);
+ 	}
+@@ -683,12 +683,12 @@ void hci_cmd_sync_cancel_sync(struct hci_dev *hdev, int err)
+ {
+ 	bt_dev_dbg(hdev, "err 0x%2.2x", err);
+ 
+-	if (hdev->req_status == HCI_REQ_PEND) {
++	if (READ_ONCE(hdev->req_status) == HCI_REQ_PEND) {
+ 		/* req_result is __u32 so error must be positive to be properly
+ 		 * propagated.
+ 		 */
+ 		hdev->req_result = err < 0 ? -err : err;
+-		hdev->req_status = HCI_REQ_CANCELED;
++		WRITE_ONCE(hdev->req_status, HCI_REQ_CANCELED);
+ 
+ 		wake_up_interruptible(&hdev->req_wait_q);
+ 	}
 -- 
 2.53.0
 
