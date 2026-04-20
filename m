@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-239328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239718-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KDUHKDpj5mkKvwEAu9opvQ
-	(envelope-from <stable+bounces-239328-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:32:42 +0200
+	id OBoAK3Nh5mmavgEAu9opvQ
+	(envelope-from <stable+bounces-239718-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:25:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1302D431649
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:32:42 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BC12431255
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:25:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2724A3459996
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:46:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8604A335D832
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:04:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B30863368AE;
-	Mon, 20 Apr 2026 15:46:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53BC43396EE;
+	Mon, 20 Apr 2026 16:03:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l/t49b17"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HDexNqw0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74FB9334C39;
-	Mon, 20 Apr 2026 15:46:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 127482C11C6;
+	Mon, 20 Apr 2026 16:03:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776699965; cv=none; b=s+pjhox3uVPcw1H815b5kNR72GRIBh7qHrat/qu3oXXIyVXxTudU8/55KxU84IHd5IIfOz9siG/qk+Zx+o0w9YcWMWVfjhp2x374ts4UsD2ppgvg80KZsapkht18wvFFBsUzOvQfJZ5Ej50X00thWSjfD07vSt3uWfALVnjhmK8=
+	t=1776701039; cv=none; b=KTk1plzbX3dzhqM3wA9f4MaqPUuC4SADOJhrOtfYr8hPbBcWUtAfqjyPBcYo4ixFDbgvd2mBhLmvLXdF/q/ezNrepp2Qrm6jqtoqDuf9/mlRq02TfckM5VtU7qD8yekw0ZHnsrgjcwKZKQDwgupdSYrpwF1b1wcz7iTCn4ele64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776699965; c=relaxed/simple;
-	bh=hBkLX/9KTCxV9w2BNhYhU2LlD0L8/5gfpIyQ4hF7If8=;
+	s=arc-20240116; t=1776701039; c=relaxed/simple;
+	bh=NydOS1PlFfPJIskB2RH6WNbmeU3HOS85/YkNMLC2q6E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MotpfepkJ+3IOwv6xyh3/vhESwOLXs1bFDIx3HL8A0Cxy22UWi/mYDyZyTwbl1Oyx8zEojP0GU9xoDfO4bIUDKiIwucQCZy+jv8qvFY1+3EerxEpk3HOZs2zr0CnlnioJ8f9ep8kxltCtWebOgz8NYqTWUtvTqBMXzvcF38Zdw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l/t49b17; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B849C19425;
-	Mon, 20 Apr 2026 15:46:04 +0000 (UTC)
+	 MIME-Version; b=bHjoYKf+EmuEEVKtd+6pfgrvaLcpNOe2NG2Ml37rrA7i1udclREnN8TUgZMsNH0mIhy4akhpecn4PzT9RhzH5GE/Gu6rhdG4y0hK03Mp/7VbEArM1reabM4Xr8dU/jiwOMSTK3jgnq+AuvdNsXg0CIP/qbVY9X7Q1iDr9NKRBMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HDexNqw0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BFF0C2BCB7;
+	Mon, 20 Apr 2026 16:03:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776699965;
-	bh=hBkLX/9KTCxV9w2BNhYhU2LlD0L8/5gfpIyQ4hF7If8=;
+	s=korg; t=1776701039;
+	bh=NydOS1PlFfPJIskB2RH6WNbmeU3HOS85/YkNMLC2q6E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l/t49b17T5l+3zGH7NoFP/8rmK9OIDErdzhMCVQGfunXfRP3Bj2SMP8LY4/Idcx4m
-	 pYyY3IQ6bFoy+Wxv7X4NgOQBgioVIffWwP3aWh2rrLS61pSSDixUsRd0M2qlN3E+u7
-	 /p+0+aGs64b9TVPnsD9jHlPaQEbrCuE3JgjAhTT8=
+	b=HDexNqw0C/Of20SOLp99kwtURyUM7ofn9K0PLKPwD7NoyK6o68/3U33ok9qfrx6JN
+	 IItAsRr9adYPrF+lG9e2jM/SCrWHLlI4/3D5TnfphbStpaqpcaiDWziWRRhVUaHsNn
+	 RrSw/MckE8ZI4dpchPAjhhE6O1mL7clp2cefbWuw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+639ebc6ec75e96674741@syzkaller.appspotmail.com,
-	Ruslan Valiyev <linuxoid@gmail.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 7.0 65/76] media: vidtv: fix nfeeds state corruption on start_streaming failure
-Date: Mon, 20 Apr 2026 17:42:16 +0200
-Message-ID: <20260420153913.186873278@linuxfoundation.org>
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 6.18 158/198] arm64: mm: Handle invalid large leaf mappings correctly
+Date: Mon, 20 Apr 2026 17:42:17 +0200
+Message-ID: <20260420153941.296473600@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153910.810034134@linuxfoundation.org>
-References: <20260420153910.810034134@linuxfoundation.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,100 +63,436 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239328-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-239718-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.997];
-	TAGGED_RCPT(0.00)[stable,639ebc6ec75e96674741,cisco];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,appspotmail.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 1302D431649
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 2BC12431255
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ruslan Valiyev <linuxoid@gmail.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
 
-commit a0e5a598fe9a4612b852406b51153b881592aede upstream.
+commit 15bfba1ad77fad8e45a37aae54b3c813b33fe27c upstream.
 
-syzbot reported a memory leak in vidtv_psi_service_desc_init [1].
+It has been possible for a long time to mark ptes in the linear map as
+invalid. This is done for secretmem, kfence, realm dma memory un/share,
+and others, by simply clearing the PTE_VALID bit. But until commit
+a166563e7ec37 ("arm64: mm: support large block mapping when
+rodata=full") large leaf mappings were never made invalid in this way.
 
-When vidtv_start_streaming() fails inside vidtv_start_feed(), the
-nfeeds counter is left incremented even though no feed was actually
-started. This corrupts the driver state: subsequent start_feed calls
-see nfeeds > 1 and skip starting the mux, while stop_feed calls
-eventually try to stop a non-existent stream.
+It turns out various parts of the code base are not equipped to handle
+invalid large leaf mappings (in the way they are currently encoded) and
+I've observed a kernel panic while booting a realm guest on a
+BBML2_NOABORT system as a result:
 
-This state corruption can also lead to memory leaks, since the mux
-and channel resources may be partially allocated during a failed
-start_streaming but never cleaned up, as the stop path finds
-dvb->streaming == false and returns early.
+[   15.432706] software IO TLB: Memory encryption is active and system is using DMA bounce buffers
+[   15.476896] Unable to handle kernel paging request at virtual address ffff000019600000
+[   15.513762] Mem abort info:
+[   15.527245]   ESR = 0x0000000096000046
+[   15.548553]   EC = 0x25: DABT (current EL), IL = 32 bits
+[   15.572146]   SET = 0, FnV = 0
+[   15.592141]   EA = 0, S1PTW = 0
+[   15.612694]   FSC = 0x06: level 2 translation fault
+[   15.640644] Data abort info:
+[   15.661983]   ISV = 0, ISS = 0x00000046, ISS2 = 0x00000000
+[   15.694875]   CM = 0, WnR = 1, TnD = 0, TagAccess = 0
+[   15.723740]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+[   15.755776] swapper pgtable: 4k pages, 48-bit VAs, pgdp=0000000081f3f000
+[   15.800410] [ffff000019600000] pgd=0000000000000000, p4d=180000009ffff403, pud=180000009fffe403, pmd=00e8000199600704
+[   15.855046] Internal error: Oops: 0000000096000046 [#1]  SMP
+[   15.886394] Modules linked in:
+[   15.900029] CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 7.0.0-rc4-dirty #4 PREEMPT
+[   15.935258] Hardware name: linux,dummy-virt (DT)
+[   15.955612] pstate: 21400005 (nzCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
+[   15.986009] pc : __pi_memcpy_generic+0x128/0x22c
+[   16.006163] lr : swiotlb_bounce+0xf4/0x158
+[   16.024145] sp : ffff80008000b8f0
+[   16.038896] x29: ffff80008000b8f0 x28: 0000000000000000 x27: 0000000000000000
+[   16.069953] x26: ffffb3976d261ba8 x25: 0000000000000000 x24: ffff000019600000
+[   16.100876] x23: 0000000000000001 x22: ffff0000043430d0 x21: 0000000000007ff0
+[   16.131946] x20: 0000000084570010 x19: 0000000000000000 x18: ffff00001ffe3fcc
+[   16.163073] x17: 0000000000000000 x16: 00000000003fffff x15: 646e612065766974
+[   16.194131] x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000000
+[   16.225059] x11: 0000000000000000 x10: 0000000000000010 x9 : 0000000000000018
+[   16.256113] x8 : 0000000000000018 x7 : 0000000000000000 x6 : 0000000000000000
+[   16.287203] x5 : ffff000019607ff0 x4 : ffff000004578000 x3 : ffff000019600000
+[   16.318145] x2 : 0000000000007ff0 x1 : ffff000004570010 x0 : ffff000019600000
+[   16.349071] Call trace:
+[   16.360143]  __pi_memcpy_generic+0x128/0x22c (P)
+[   16.380310]  swiotlb_tbl_map_single+0x154/0x2b4
+[   16.400282]  swiotlb_map+0x5c/0x228
+[   16.415984]  dma_map_phys+0x244/0x2b8
+[   16.432199]  dma_map_page_attrs+0x44/0x58
+[   16.449782]  virtqueue_map_page_attrs+0x38/0x44
+[   16.469596]  virtqueue_map_single_attrs+0xc0/0x130
+[   16.490509]  virtnet_rq_alloc.isra.0+0xa4/0x1fc
+[   16.510355]  try_fill_recv+0x2a4/0x584
+[   16.526989]  virtnet_open+0xd4/0x238
+[   16.542775]  __dev_open+0x110/0x24c
+[   16.558280]  __dev_change_flags+0x194/0x20c
+[   16.576879]  netif_change_flags+0x24/0x6c
+[   16.594489]  dev_change_flags+0x48/0x7c
+[   16.611462]  ip_auto_config+0x258/0x1114
+[   16.628727]  do_one_initcall+0x80/0x1c8
+[   16.645590]  kernel_init_freeable+0x208/0x2f0
+[   16.664917]  kernel_init+0x24/0x1e0
+[   16.680295]  ret_from_fork+0x10/0x20
+[   16.696369] Code: 927cec03 cb0e0021 8b0e0042 a9411c26 (a900340c)
+[   16.723106] ---[ end trace 0000000000000000 ]---
+[   16.752866] Kernel panic - not syncing: Attempted to kill init! exitcode=0x0000000b
+[   16.792556] Kernel Offset: 0x3396ea200000 from 0xffff800080000000
+[   16.818966] PHYS_OFFSET: 0xfff1000080000000
+[   16.837237] CPU features: 0x0000000,00060005,13e38581,957e772f
+[   16.862904] Memory Limit: none
+[   16.876526] ---[ end Kernel panic - not syncing: Attempted to kill init! exitcode=0x0000000b ]---
 
-Fix by decrementing nfeeds back when start_streaming fails, keeping
-the counter in sync with the actual number of active feeds.
+This panic occurs because the swiotlb memory was previously shared to
+the host (__set_memory_enc_dec()), which involves transitioning the
+(large) leaf mappings to invalid, sharing to the host, then marking the
+mappings valid again. But pageattr_p[mu]d_entry() would only update the
+entry if it is a section mapping, since otherwise it concluded it must
+be a table entry so shouldn't be modified. But p[mu]d_sect() only
+returns true if the entry is valid. So the result was that the large
+leaf entry was made invalid in the first pass then ignored in the second
+pass. It remains invalid until the above code tries to access it and
+blows up.
 
-[1]
-BUG: memory leak
-unreferenced object 0xffff888145b50820 (size 32):
- comm "syz.0.17", pid 6068, jiffies 4294944486
- backtrace (crc 90a0c7d4):
-  vidtv_psi_service_desc_init+0x74/0x1b0 drivers/media/test-drivers/vidtv/vidtv_psi.c:288
-  vidtv_channel_s302m_init+0xb1/0x2a0 drivers/media/test-drivers/vidtv/vidtv_channel.c:83
-  vidtv_channels_init+0x1b/0x40 drivers/media/test-drivers/vidtv/vidtv_channel.c:524
-  vidtv_mux_init+0x516/0xbe0 drivers/media/test-drivers/vidtv/vidtv_mux.c:518
-  vidtv_start_streaming drivers/media/test-drivers/vidtv/vidtv_bridge.c:194 [inline]
-  vidtv_start_feed+0x33e/0x4d0 drivers/media/test-drivers/vidtv/vidtv_bridge.c:239
+The simple fix would be to update pageattr_pmd_entry() to use
+!pmd_table() instead of pmd_sect(). That would solve this problem.
 
-Fixes: f90cf6079bf67 ("media: vidtv: add a bridge driver")
+But the ptdump code also suffers from a similar issue. It checks
+pmd_leaf() and doesn't call into the arch-specific note_page() machinery
+if it returns false. As a result of this, ptdump wasn't even able to
+show the invalid large leaf mappings; it looked like they were valid
+which made this super fun to debug. the ptdump code is core-mm and
+pmd_table() is arm64-specific so we can't use the same trick to solve
+that.
+
+But we already support the concept of "present-invalid" for user space
+entries. And even better, pmd_leaf() will return true for a leaf mapping
+that is marked present-invalid. So let's just use that encoding for
+present-invalid kernel mappings too. Then we can use pmd_leaf() where we
+previously used pmd_sect() and everything is magically fixed.
+
+Additionally, from inspection kernel_page_present() was broken in a
+similar way, so I'm also updating that to use pmd_leaf().
+
+The transitional page tables component was also similarly broken; it
+creates a copy of the kernel page tables, making RO leaf mappings RW in
+the process. It also makes invalid (but-not-none) pte mappings valid.
+But it was not doing this for large leaf mappings. This could have
+resulted in crashes at kexec- or hibernate-time. This code is fixed to
+flip "present-invalid" mappings back to "present-valid" at all levels.
+
+Finally, I have hardened split_pmd()/split_pud() so that if it is passed
+a "present-invalid" leaf, it will maintain that property in the split
+leaves, since I wasn't able to convince myself that it would only ever
+be called for "present-valid" leaves.
+
+Fixes: a166563e7ec3 ("arm64: mm: support large block mapping when rodata=full")
 Cc: stable@vger.kernel.org
-Reported-by: syzbot+639ebc6ec75e96674741@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=639ebc6ec75e96674741
-Signed-off-by: Ruslan Valiyev <linuxoid@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/test-drivers/vidtv/vidtv_bridge.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm64/include/asm/pgtable-prot.h |    2 +
+ arch/arm64/include/asm/pgtable.h      |    9 ++++--
+ arch/arm64/mm/mmu.c                   |    4 ++
+ arch/arm64/mm/pageattr.c              |   50 +++++++++++++++++++---------------
+ arch/arm64/mm/trans_pgd.c             |   42 ++++------------------------
+ 5 files changed, 48 insertions(+), 59 deletions(-)
 
---- a/drivers/media/test-drivers/vidtv/vidtv_bridge.c
-+++ b/drivers/media/test-drivers/vidtv/vidtv_bridge.c
-@@ -237,8 +237,10 @@ static int vidtv_start_feed(struct dvb_d
+--- a/arch/arm64/include/asm/pgtable-prot.h
++++ b/arch/arm64/include/asm/pgtable-prot.h
+@@ -25,6 +25,8 @@
+  */
+ #define PTE_PRESENT_INVALID	(PTE_NG)		 /* only when !PTE_VALID */
  
- 	if (dvb->nfeeds == 1) {
- 		ret = vidtv_start_streaming(dvb);
--		if (ret < 0)
-+		if (ret < 0) {
-+			dvb->nfeeds--;
- 			rc = ret;
-+		}
- 	}
++#define PTE_PRESENT_VALID_KERNEL (PTE_VALID | PTE_MAYBE_NG)
++
+ #ifdef CONFIG_HAVE_ARCH_USERFAULTFD_WP
+ #define PTE_UFFD_WP		(_AT(pteval_t, 1) << 58) /* uffd-wp tracking */
+ #define PTE_SWP_UFFD_WP		(_AT(pteval_t, 1) << 3)	 /* only for swp ptes */
+--- a/arch/arm64/include/asm/pgtable.h
++++ b/arch/arm64/include/asm/pgtable.h
+@@ -353,9 +353,11 @@ static inline pte_t pte_mknoncont(pte_t
+ 	return clear_pte_bit(pte, __pgprot(PTE_CONT));
+ }
  
- 	mutex_unlock(&dvb->feed_lock);
+-static inline pte_t pte_mkvalid(pte_t pte)
++static inline pte_t pte_mkvalid_k(pte_t pte)
+ {
+-	return set_pte_bit(pte, __pgprot(PTE_VALID));
++	pte = clear_pte_bit(pte, __pgprot(PTE_PRESENT_INVALID));
++	pte = set_pte_bit(pte, __pgprot(PTE_PRESENT_VALID_KERNEL));
++	return pte;
+ }
+ 
+ static inline pte_t pte_mkinvalid(pte_t pte)
+@@ -625,6 +627,7 @@ static inline int pmd_protnone(pmd_t pmd
+ #define pmd_mkclean(pmd)	pte_pmd(pte_mkclean(pmd_pte(pmd)))
+ #define pmd_mkdirty(pmd)	pte_pmd(pte_mkdirty(pmd_pte(pmd)))
+ #define pmd_mkyoung(pmd)	pte_pmd(pte_mkyoung(pmd_pte(pmd)))
++#define pmd_mkvalid_k(pmd)	pte_pmd(pte_mkvalid_k(pmd_pte(pmd)))
+ #define pmd_mkinvalid(pmd)	pte_pmd(pte_mkinvalid(pmd_pte(pmd)))
+ #ifdef CONFIG_HAVE_ARCH_USERFAULTFD_WP
+ #define pmd_uffd_wp(pmd)	pte_uffd_wp(pmd_pte(pmd))
+@@ -666,6 +669,8 @@ static inline pmd_t pmd_mkspecial(pmd_t
+ 
+ #define pud_young(pud)		pte_young(pud_pte(pud))
+ #define pud_mkyoung(pud)	pte_pud(pte_mkyoung(pud_pte(pud)))
++#define pud_mkwrite_novma(pud)	pte_pud(pte_mkwrite_novma(pud_pte(pud)))
++#define pud_mkvalid_k(pud)	pte_pud(pte_mkvalid_k(pud_pte(pud)))
+ #define pud_write(pud)		pte_write(pud_pte(pud))
+ 
+ static inline pud_t pud_mkhuge(pud_t pud)
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -604,6 +604,8 @@ static int split_pmd(pmd_t *pmdp, pmd_t
+ 		tableprot |= PMD_TABLE_PXN;
+ 
+ 	prot = __pgprot((pgprot_val(prot) & ~PTE_TYPE_MASK) | PTE_TYPE_PAGE);
++	if (!pmd_valid(pmd))
++		prot = pte_pgprot(pte_mkinvalid(pfn_pte(0, prot)));
+ 	prot = __pgprot(pgprot_val(prot) & ~PTE_CONT);
+ 	if (to_cont)
+ 		prot = __pgprot(pgprot_val(prot) | PTE_CONT);
+@@ -649,6 +651,8 @@ static int split_pud(pud_t *pudp, pud_t
+ 		tableprot |= PUD_TABLE_PXN;
+ 
+ 	prot = __pgprot((pgprot_val(prot) & ~PMD_TYPE_MASK) | PMD_TYPE_SECT);
++	if (!pud_valid(pud))
++		prot = pmd_pgprot(pmd_mkinvalid(pfn_pmd(0, prot)));
+ 	prot = __pgprot(pgprot_val(prot) & ~PTE_CONT);
+ 	if (to_cont)
+ 		prot = __pgprot(pgprot_val(prot) | PTE_CONT);
+--- a/arch/arm64/mm/pageattr.c
++++ b/arch/arm64/mm/pageattr.c
+@@ -25,6 +25,11 @@ static ptdesc_t set_pageattr_masks(ptdes
+ {
+ 	struct page_change_data *masks = walk->private;
+ 
++	/*
++	 * Some users clear and set bits which alias each other (e.g. PTE_NG and
++	 * PTE_PRESENT_INVALID). It is therefore important that we always clear
++	 * first then set.
++	 */
+ 	val &= ~(pgprot_val(masks->clear_mask));
+ 	val |= (pgprot_val(masks->set_mask));
+ 
+@@ -36,7 +41,7 @@ static int pageattr_pud_entry(pud_t *pud
+ {
+ 	pud_t val = pudp_get(pud);
+ 
+-	if (pud_sect(val)) {
++	if (pud_leaf(val)) {
+ 		if (WARN_ON_ONCE((next - addr) != PUD_SIZE))
+ 			return -EINVAL;
+ 		val = __pud(set_pageattr_masks(pud_val(val), walk));
+@@ -52,7 +57,7 @@ static int pageattr_pmd_entry(pmd_t *pmd
+ {
+ 	pmd_t val = pmdp_get(pmd);
+ 
+-	if (pmd_sect(val)) {
++	if (pmd_leaf(val)) {
+ 		if (WARN_ON_ONCE((next - addr) != PMD_SIZE))
+ 			return -EINVAL;
+ 		val = __pmd(set_pageattr_masks(pmd_val(val), walk));
+@@ -132,11 +137,12 @@ static int __change_memory_common(unsign
+ 	ret = update_range_prot(start, size, set_mask, clear_mask);
+ 
+ 	/*
+-	 * If the memory is being made valid without changing any other bits
+-	 * then a TLBI isn't required as a non-valid entry cannot be cached in
+-	 * the TLB.
++	 * If the memory is being switched from present-invalid to valid without
++	 * changing any other bits then a TLBI isn't required as a non-valid
++	 * entry cannot be cached in the TLB.
+ 	 */
+-	if (pgprot_val(set_mask) != PTE_VALID || pgprot_val(clear_mask))
++	if (pgprot_val(set_mask) != PTE_PRESENT_VALID_KERNEL ||
++	    pgprot_val(clear_mask) != PTE_PRESENT_INVALID)
+ 		flush_tlb_kernel_range(start, start + size);
+ 	return ret;
+ }
+@@ -234,18 +240,18 @@ int set_memory_valid(unsigned long addr,
+ {
+ 	if (enable)
+ 		return __change_memory_common(addr, PAGE_SIZE * numpages,
+-					__pgprot(PTE_VALID),
+-					__pgprot(0));
++					__pgprot(PTE_PRESENT_VALID_KERNEL),
++					__pgprot(PTE_PRESENT_INVALID));
+ 	else
+ 		return __change_memory_common(addr, PAGE_SIZE * numpages,
+-					__pgprot(0),
+-					__pgprot(PTE_VALID));
++					__pgprot(PTE_PRESENT_INVALID),
++					__pgprot(PTE_PRESENT_VALID_KERNEL));
+ }
+ 
+ int set_direct_map_invalid_noflush(struct page *page)
+ {
+-	pgprot_t clear_mask = __pgprot(PTE_VALID);
+-	pgprot_t set_mask = __pgprot(0);
++	pgprot_t clear_mask = __pgprot(PTE_PRESENT_VALID_KERNEL);
++	pgprot_t set_mask = __pgprot(PTE_PRESENT_INVALID);
+ 
+ 	if (!can_set_direct_map())
+ 		return 0;
+@@ -256,8 +262,8 @@ int set_direct_map_invalid_noflush(struc
+ 
+ int set_direct_map_default_noflush(struct page *page)
+ {
+-	pgprot_t set_mask = __pgprot(PTE_VALID | PTE_WRITE);
+-	pgprot_t clear_mask = __pgprot(PTE_RDONLY);
++	pgprot_t set_mask = __pgprot(PTE_PRESENT_VALID_KERNEL | PTE_WRITE);
++	pgprot_t clear_mask = __pgprot(PTE_PRESENT_INVALID | PTE_RDONLY);
+ 
+ 	if (!can_set_direct_map())
+ 		return 0;
+@@ -293,8 +299,8 @@ static int __set_memory_enc_dec(unsigned
+ 	 * entries or Synchronous External Aborts caused by RIPAS_EMPTY
+ 	 */
+ 	ret = __change_memory_common(addr, PAGE_SIZE * numpages,
+-				     __pgprot(set_prot),
+-				     __pgprot(clear_prot | PTE_VALID));
++				     __pgprot(set_prot | PTE_PRESENT_INVALID),
++				     __pgprot(clear_prot | PTE_PRESENT_VALID_KERNEL));
+ 
+ 	if (ret)
+ 		return ret;
+@@ -308,8 +314,8 @@ static int __set_memory_enc_dec(unsigned
+ 		return ret;
+ 
+ 	return __change_memory_common(addr, PAGE_SIZE * numpages,
+-				      __pgprot(PTE_VALID),
+-				      __pgprot(0));
++				      __pgprot(PTE_PRESENT_VALID_KERNEL),
++				      __pgprot(PTE_PRESENT_INVALID));
+ }
+ 
+ static int realm_set_memory_encrypted(unsigned long addr, int numpages)
+@@ -401,15 +407,15 @@ bool kernel_page_present(struct page *pa
+ 	pud = READ_ONCE(*pudp);
+ 	if (pud_none(pud))
+ 		return false;
+-	if (pud_sect(pud))
+-		return true;
++	if (pud_leaf(pud))
++		return pud_valid(pud);
+ 
+ 	pmdp = pmd_offset(pudp, addr);
+ 	pmd = READ_ONCE(*pmdp);
+ 	if (pmd_none(pmd))
+ 		return false;
+-	if (pmd_sect(pmd))
+-		return true;
++	if (pmd_leaf(pmd))
++		return pmd_valid(pmd);
+ 
+ 	ptep = pte_offset_kernel(pmdp, addr);
+ 	return pte_valid(__ptep_get(ptep));
+--- a/arch/arm64/mm/trans_pgd.c
++++ b/arch/arm64/mm/trans_pgd.c
+@@ -31,36 +31,6 @@ static void *trans_alloc(struct trans_pg
+ 	return info->trans_alloc_page(info->trans_alloc_arg);
+ }
+ 
+-static void _copy_pte(pte_t *dst_ptep, pte_t *src_ptep, unsigned long addr)
+-{
+-	pte_t pte = __ptep_get(src_ptep);
+-
+-	if (pte_valid(pte)) {
+-		/*
+-		 * Resume will overwrite areas that may be marked
+-		 * read only (code, rodata). Clear the RDONLY bit from
+-		 * the temporary mappings we use during restore.
+-		 */
+-		__set_pte(dst_ptep, pte_mkwrite_novma(pte));
+-	} else if (!pte_none(pte)) {
+-		/*
+-		 * debug_pagealloc will removed the PTE_VALID bit if
+-		 * the page isn't in use by the resume kernel. It may have
+-		 * been in use by the original kernel, in which case we need
+-		 * to put it back in our copy to do the restore.
+-		 *
+-		 * Other cases include kfence / vmalloc / memfd_secret which
+-		 * may call `set_direct_map_invalid_noflush()`.
+-		 *
+-		 * Before marking this entry valid, check the pfn should
+-		 * be mapped.
+-		 */
+-		BUG_ON(!pfn_valid(pte_pfn(pte)));
+-
+-		__set_pte(dst_ptep, pte_mkvalid(pte_mkwrite_novma(pte)));
+-	}
+-}
+-
+ static int copy_pte(struct trans_pgd_info *info, pmd_t *dst_pmdp,
+ 		    pmd_t *src_pmdp, unsigned long start, unsigned long end)
+ {
+@@ -76,7 +46,11 @@ static int copy_pte(struct trans_pgd_inf
+ 
+ 	src_ptep = pte_offset_kernel(src_pmdp, start);
+ 	do {
+-		_copy_pte(dst_ptep, src_ptep, addr);
++		pte_t pte = __ptep_get(src_ptep);
++
++		if (pte_none(pte))
++			continue;
++		__set_pte(dst_ptep, pte_mkvalid_k(pte_mkwrite_novma(pte)));
+ 	} while (dst_ptep++, src_ptep++, addr += PAGE_SIZE, addr != end);
+ 
+ 	return 0;
+@@ -109,8 +83,7 @@ static int copy_pmd(struct trans_pgd_inf
+ 			if (copy_pte(info, dst_pmdp, src_pmdp, addr, next))
+ 				return -ENOMEM;
+ 		} else {
+-			set_pmd(dst_pmdp,
+-				__pmd(pmd_val(pmd) & ~PMD_SECT_RDONLY));
++			set_pmd(dst_pmdp, pmd_mkvalid_k(pmd_mkwrite_novma(pmd)));
+ 		}
+ 	} while (dst_pmdp++, src_pmdp++, addr = next, addr != end);
+ 
+@@ -145,8 +118,7 @@ static int copy_pud(struct trans_pgd_inf
+ 			if (copy_pmd(info, dst_pudp, src_pudp, addr, next))
+ 				return -ENOMEM;
+ 		} else {
+-			set_pud(dst_pudp,
+-				__pud(pud_val(pud) & ~PUD_SECT_RDONLY));
++			set_pud(dst_pudp, pud_mkvalid_k(pud_mkwrite_novma(pud)));
+ 		}
+ 	} while (dst_pudp++, src_pudp++, addr = next, addr != end);
+ 
 
 
 
