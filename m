@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-239687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239502-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sEfONPtg5mkxvgEAu9opvQ
-	(envelope-from <stable+bounces-239687-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:23:07 +0200
+	id cKAzDNBe5mndvQEAu9opvQ
+	(envelope-from <stable+bounces-239502-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:13:52 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AE0943116D
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:23:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1BDB430C3E
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:13:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ED9F63645420
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:02:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5487D311945B
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:53:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAA8733E377;
-	Mon, 20 Apr 2026 16:02:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B6A333BBA7;
+	Mon, 20 Apr 2026 15:53:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rQeMzHQe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FCJsvdkw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CF1F2AE78;
-	Mon, 20 Apr 2026 16:02:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EB482E093A;
+	Mon, 20 Apr 2026 15:53:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700959; cv=none; b=Imp2Ei4zuDm9R/gX2X8s+Xzm6nnj2jvG2aXHt8xlUEagB0rTeQIY1LtUbsOtO51bYjWc4V4zo2uW+4kZP5d7gdaz7PLRfdO0YSekazHTnQvIpwM8pjvigbVieYkxy6g+fJw1L55gdMYNHDwVjAptD09uBxU5GmY1hBZIUQTVdUo=
+	t=1776700418; cv=none; b=tM0saNicwPB4Ntokty2a6EcOHr9xdmJjD80+OWICBHEMknmwBM5YLbCFFAgN9zBS8TErGL2ZaPiqXpn5J54Wk/hqSO4m6bxyx/FVzLgHyqqrFOZ+eIjl5c6WZgR9l+iw40ZCw4wipDPp51kft6sO19s7wPltOOO0jWUOqYtol+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700959; c=relaxed/simple;
-	bh=fH8CWSnXMhTd16aSccW7aGJGNAqocwQQNVjcSzRkpLU=;
+	s=arc-20240116; t=1776700418; c=relaxed/simple;
+	bh=QpTxemgvNK9zKeZHQPbYXeunzOgVQVX2j5RKs9WdJHU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Oxm5PsbroQpimTAzBZJ4w4gh1GaTs+Xcdu888vtJ5sQUPXxmRPTW1HpaIRm2EXWCc18ygd3z8oJASK+YijSFQ/qWTMn+wDdbhRoZhLaR0viQUvCvrqLPcgOIxf6EcXNIwHdAjCLdNz8PLDo1RjDCRHsQ71BipsfX0gVOqCV0vYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rQeMzHQe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3331EC19425;
-	Mon, 20 Apr 2026 16:02:39 +0000 (UTC)
+	 MIME-Version; b=N2Sd7jfgbrhzvteVKW2YXOZuTJp8bXBlp6Hae97seATMe3sxd6YAEMY3Y20DOQf2W8aZ9+MzfjqicrSaDUHRQaN8LRUs68Lo6zR2zjsFDUWCF4l+4HAKdKwdmslL80GGAKPd2Rhxgd+krITjo3SCFkZ+q8Dol2Qe2KrTgxt4AIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FCJsvdkw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60782C2BCB6;
+	Mon, 20 Apr 2026 15:53:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700959;
-	bh=fH8CWSnXMhTd16aSccW7aGJGNAqocwQQNVjcSzRkpLU=;
+	s=korg; t=1776700417;
+	bh=QpTxemgvNK9zKeZHQPbYXeunzOgVQVX2j5RKs9WdJHU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rQeMzHQeNtTloJu2bd5/21sDAYzK9qyvoNeFTQCDOhHfoS7s+PWnb3w1XUfmMxb3S
-	 FFhpyXHJfyzgum0WmgaQ5iuVto0csPujPJ59JK3Ods0ea2B/qybFMQDNs7sgnsGodv
-	 jIIonBzGxdeWVLujTik7tcL2zJiBAd6dPYNGNXks=
+	b=FCJsvdkwjfgw8NnowI/FaMJLHeTCaQtVI/4toiF2/Q1VLFUasMRUE5RuCjyQKn/B+
+	 3YFeuqRMp+3Okrr5xLdMH4MSdWdcYgnyOoDyPtnPtWlWUMA3n0Ktzl64h0uVSVN5ed
+	 Us0E943XgHtW04f4ef+CPxFFamwxy2NnJRRgE6Ek=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable <stable@kernel.org>,
-	Jiri Kosina <jikos@kernel.org>,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Masaki Ota <masaki.ota@jp.alps.com>,
-	linux-input@vger.kernel.org,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 6.18 126/198] HID: alps: fix NULL pointer dereference in alps_raw_event()
+	Alexey Charkov <alchark@flipper.net>,
+	Hans de Goede <johannes.goede@oss.qualcomm.com>,
+	Heikki Krogerus <heikki.krogrerus@linux.intel.com>
+Subject: [PATCH 6.19 164/220] usb: typec: fusb302: Switch to threaded IRQ handler
 Date: Mon, 20 Apr 2026 17:41:45 +0200
-Message-ID: <20260420153940.144481826@linuxfoundation.org>
+Message-ID: <20260420153939.933508589@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
+References: <20260420153934.013228280@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -79,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239687-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-239502-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,58 +87,54 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,alps.com:email]
-X-Rspamd-Queue-Id: 6AE0943116D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,flipper.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: A1BDB430C3E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Alexey Charkov <alchark@flipper.net>
 
-commit 1badfc4319224820d5d890f8eab6aa52e4e83339 upstream.
+commit 6b9db53197094f38a18797495df2e3c758ec51dc upstream.
 
-Commit ecfa6f34492c ("HID: Add HID_CLAIMED_INPUT guards in raw_event
-callbacks missing them") attempted to fix up the HID drivers that had
-missed the previous fix that was done in 2ff5baa9b527 ("HID: appleir:
-Fix potential NULL dereference at raw event handle"), but the alps
-driver was missed.
+FUSB302 fails to probe with -EINVAL if its interrupt line is connected via
+an I2C GPIO expander, such as TI TCA6416.
 
-Fix this up by properly checking in the hid-alps driver that it had been
-claimed correctly before attempting to process the raw event.
+Switch the interrupt handler to a threaded one, which also works behind
+such GPIO expanders.
 
-Fixes: 73196ebe134d ("HID: alps: add support for Alps T4 Touchpad device")
 Cc: stable <stable@kernel.org>
-Cc: Jiri Kosina <jikos@kernel.org>
-Cc: Benjamin Tissoires <bentiss@kernel.org>
-Cc: Masaki Ota <masaki.ota@jp.alps.com>
-Cc: linux-input@vger.kernel.org
-Assisted-by: gregkh_clanker_t1000
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Fixes: 309b6341d557 ("usb: typec: fusb302: Revert incorrect threaded irq fix")
+Signed-off-by: Alexey Charkov <alchark@flipper.net>
+Reviewed-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
+Reviewed-by: Heikki Krogerus <heikki.krogrerus@linux.intel.com>
+Link: https://patch.msgid.link/20260317-fusb302-irq-v2-1-dbabd5c5c961@flipper.net
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-alps.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/usb/typec/tcpm/fusb302.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/hid/hid-alps.c
-+++ b/drivers/hid/hid-alps.c
-@@ -437,6 +437,9 @@ static int alps_raw_event(struct hid_dev
- 	int ret = 0;
- 	struct alps_dev *hdata = hid_get_drvdata(hdev);
+--- a/drivers/usb/typec/tcpm/fusb302.c
++++ b/drivers/usb/typec/tcpm/fusb302.c
+@@ -1755,8 +1755,9 @@ static int fusb302_probe(struct i2c_clie
+ 		goto destroy_workqueue;
+ 	}
  
-+	if (!(hdev->claimed & HID_CLAIMED_INPUT) || !hdata->input)
-+		return 0;
-+
- 	switch (hdev->product) {
- 	case HID_PRODUCT_ID_T4_BTNLESS:
- 		ret = t4_raw_event(hdata, data, size);
+-	ret = request_irq(chip->gpio_int_n_irq, fusb302_irq_intn,
+-			  IRQF_TRIGGER_LOW, "fsc_interrupt_int_n", chip);
++	ret = request_threaded_irq(chip->gpio_int_n_irq, NULL, fusb302_irq_intn,
++				   IRQF_ONESHOT | IRQF_TRIGGER_LOW,
++				   "fsc_interrupt_int_n", chip);
+ 	if (ret < 0) {
+ 		dev_err(dev, "cannot request IRQ for GPIO Int_N, ret=%d", ret);
+ 		goto tcpm_unregister_port;
 
 
 
