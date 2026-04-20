@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-239398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239580-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id XQ8wB3lX5ml5vAEAu9opvQ
-	(envelope-from <stable+bounces-239398-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:42:33 +0200
+	id qCi5AjRg5mkxvgEAu9opvQ
+	(envelope-from <stable+bounces-239580-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:19:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3AF042FDF5
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:42:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 638EC431019
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:19:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7E13D339C7E6
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:49:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D436C32AE4EA
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:56:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25C5533DEDF;
-	Mon, 20 Apr 2026 15:49:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E10E3396EE;
+	Mon, 20 Apr 2026 15:56:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AMKgRcNy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W8w3ZWLn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD6662E11C7;
-	Mon, 20 Apr 2026 15:49:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A5AE3264F1;
+	Mon, 20 Apr 2026 15:56:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700144; cv=none; b=X+496hqhKyroDQBoyQ05qmJ2aq1UHawnjnQxmDp1fankSuP8Q6OQElErLY6ru/RVm5jG1DGUiwUir8ZS+ecLNkzFt/f7XB/FW30AtIJlzPPnVq1T62eZff+8X+ystPC+jSvArVxaFNjfrrVRhsvw8pvFRqsz741uz6uIY4buxug=
+	t=1776700617; cv=none; b=MEHRuk/unlWRdwK1dqRyB8yyryuwO8Raq8TvfYr4JqJa5Ho6B6QhCQKirL57MYbE77j3XLHPUkNh4Gfau9vKI3ZgK8QFx7DWIR5Rrv/o4BCdiGGNjBFUCbORpF/u2w1ixzRp6JOvdCxi/bR+pcU9LiUqYQUt/tGFJPOkFsG+ptg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700144; c=relaxed/simple;
-	bh=AEJgazPvLUyMsw9N+k2HHbEvN72OevGmW4N5JZruWxQ=;
+	s=arc-20240116; t=1776700617; c=relaxed/simple;
+	bh=bzsbvrgGQgsRrKYnBgrMXtWTzE7kNJeZt96cTz6ZlcM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CCnCMasbNRlfUIPWO41j+2ZPUOutLa2M4Xe5b8yT7PlPl+h2+wjWCoGkyhMBI9Njfm5X1JARtpntCKWETCwgWS2ZLkz08nDoQtKmZw3lmHFQs4oEQgKzgiHPWJWD9J6sx+AO0l/r9Kzuo0hHbrZdOvMVBRc/DOIDqHn1LDPuMbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AMKgRcNy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72C44C19425;
-	Mon, 20 Apr 2026 15:49:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=m+oVscGL7YreFs9veUUvyv+JtbjRuMLElf+ZbH8G5DfHqTCD2ae+lqo//ryhOUEnoWUDn5cNBNp33CdD2r5MH5ClCCPNJs/+7VYxSnS+uffQgTw/RPweYlKXQWlxStUaeXKH5dIT/NEh7ZADj7Dq8Ay/wQfyRpDwX0JGZlQss1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W8w3ZWLn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5E54C19425;
+	Mon, 20 Apr 2026 15:56:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700144;
-	bh=AEJgazPvLUyMsw9N+k2HHbEvN72OevGmW4N5JZruWxQ=;
+	s=korg; t=1776700617;
+	bh=bzsbvrgGQgsRrKYnBgrMXtWTzE7kNJeZt96cTz6ZlcM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AMKgRcNyV9KDrEo80+yRdzqQGqnrKQAzUIlqq/rOCAfPVJcPGN9LX5WCLPPsOv5vX
-	 G7uSfNtM1yLWgwo/93FSCN2X4gJ1l+pYTDdylG5YuyGjQWRXJl8cOs4l+9FL8nE+Mn
-	 2EkpdA4HGuiR25v2hA6NY5poil3l4EQMsQkFiDgo=
+	b=W8w3ZWLnMvVMxXpzRd0fSo9aeV1taWvMJa262DUAO7k2BoDVz9IBWFNtf/v34TS1n
+	 HzbLyCfSDjBO0XSovEO0gPFIMc1OzXPVqwR6TP7yPfqJbQWYqEAji1AQ6r6vez/AYX
+	 u7KXXqvR8m7v5w3eKP20ywo0RBQA471TCSeNKXGg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Artem Bityutskiy <artem.bityutskiy@linux.intel.com>,
-	Len Brown <len.brown@intel.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Donet Tom <donettom@linux.ibm.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 059/220] tools/power turbostat: Fix --show/--hide for individual cpuidle counters
+Subject: [PATCH 6.18 021/198] drm/amdgpu: Handle GPU page faults correctly on non-4K page systems
 Date: Mon, 20 Apr 2026 17:40:00 +0200
-Message-ID: <20260420153936.167113385@linuxfoundation.org>
+Message-ID: <20260420153936.380202709@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
-References: <20260420153934.013228280@linuxfoundation.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,151 +64,100 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-239580-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-239398-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: B3AF042FDF5
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,amd.com:email]
+X-Rspamd-Queue-Id: 638EC431019
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
+From: Donet Tom <donettom@linux.ibm.com>
 
-[ Upstream commit b6398bc2ef3a78f1be37ba01ae0a5eedaee47803 ]
+[ Upstream commit 4e9597f22a3cb8600c72fc266eaac57981d834c8 ]
 
-Problem: individual swidle counter names (C1, C1+, C1-, etc.) cannot be
-selected via --show/--hide due to two bugs in probe_cpuidle_counts():
-1. The function returns immediately when BIC_cpuidle is not enabled,
-   without checking deferred_add_index.
-2. The deferred name check runs against name_buf before the trailing
-   newline is stripped, so is_deferred_add("C1\n") never matches "C1".
+During a GPU page fault, the driver restores the SVM range and then maps it
+into the GPU page tables. The current implementation passes a GPU-page-size
+(4K-based) PFN to svm_range_restore_pages() to restore the range.
 
-Fix:
-1. Relax the early return to pass through when deferred names are
-   queued.
-2. Strip the trailing newline from name_buf before performing deferred
-   name checks.
-3. Check each suffixed variant (C1+, C1, C1-) individually so that
-   e.g. "--show C1+" enables only the requested metric.
+SVM ranges are tracked using system-page-size PFNs. On systems where the
+system page size is larger than 4K, using GPU-page-size PFNs to restore the
+range causes two problems:
 
-In addition, introduce a helper function to avoid repeating the
-condition (readability cleanup).
+Range lookup fails:
+Because the restore function receives PFNs in GPU (4K) units, the SVM
+range lookup does not find the existing range. This will result in a
+duplicate SVM range being created.
 
-Fixes: ec4acd3166d8 ("tools/power turbostat: disable "cpuidle" invocation counters, by default")
-Signed-off-by: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
-Signed-off-by: Len Brown <len.brown@intel.com>
+VMA lookup failure:
+The restore function also tries to locate the VMA for the faulting address.
+It converts the GPU-page-size PFN into an address using the system page
+size, which results in an incorrect address on non-4K page-size systems.
+As a result, the VMA lookup fails with the message: "address 0xxxx VMA is
+removed".
+
+This patch passes the system-page-size PFN to svm_range_restore_pages() so
+that the SVM range is restored correctly on non-4K page systems.
+
+Acked-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Donet Tom <donettom@linux.ibm.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 074fe395fb13247b057f60004c7ebcca9f38ef46)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/power/x86/turbostat/turbostat.c | 35 ++++++++++++++++-----------
- 1 file changed, 21 insertions(+), 14 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
-index 603651e74dacf..b01a905bd24a7 100644
---- a/tools/power/x86/turbostat/turbostat.c
-+++ b/tools/power/x86/turbostat/turbostat.c
-@@ -10908,6 +10908,14 @@ void probe_cpuidle_residency(void)
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+index f2e00f408156c..69080e3734891 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+@@ -2960,14 +2960,14 @@ bool amdgpu_vm_handle_fault(struct amdgpu_device *adev, u32 pasid,
+ 	if (!root)
+ 		return false;
+ 
+-	addr /= AMDGPU_GPU_PAGE_SIZE;
+-
+ 	if (is_compute_context && !svm_range_restore_pages(adev, pasid, vmid,
+-	    node_id, addr, ts, write_fault)) {
++	    node_id, addr >> PAGE_SHIFT, ts, write_fault)) {
+ 		amdgpu_bo_unref(&root);
+ 		return true;
  	}
- }
  
-+static bool cpuidle_counter_wanted(char *name)
-+{
-+	if (is_deferred_skip(name))
-+		return false;
++	addr /= AMDGPU_GPU_PAGE_SIZE;
 +
-+	return DO_BIC(BIC_cpuidle) || is_deferred_add(name);
-+}
-+
- void probe_cpuidle_counts(void)
- {
- 	char path[64];
-@@ -10917,7 +10925,7 @@ void probe_cpuidle_counts(void)
- 	int min_state = 1024, max_state = 0;
- 	char *sp;
- 
--	if (!DO_BIC(BIC_cpuidle))
-+	if (!DO_BIC(BIC_cpuidle) && !deferred_add_index)
- 		return;
- 
- 	for (state = 10; state >= 0; --state) {
-@@ -10932,12 +10940,6 @@ void probe_cpuidle_counts(void)
- 
- 		remove_underbar(name_buf);
- 
--		if (!DO_BIC(BIC_cpuidle) && !is_deferred_add(name_buf))
--			continue;
--
--		if (is_deferred_skip(name_buf))
--			continue;
--
- 		/* truncate "C1-HSW\n" to "C1", or truncate "C1\n" to "C1" */
- 		sp = strchr(name_buf, '-');
- 		if (!sp)
-@@ -10952,16 +10954,19 @@ void probe_cpuidle_counts(void)
- 			 * Add 'C1+' for C1, and so on. The 'below' sysfs file always contains 0 for
- 			 * the last state, so do not add it.
- 			 */
--
- 			*sp = '+';
- 			*(sp + 1) = '\0';
--			sprintf(path, "cpuidle/state%d/below", state);
--			add_counter(0, path, name_buf, 64, SCOPE_CPU, COUNTER_ITEMS, FORMAT_DELTA, SYSFS_PERCPU, 0);
-+			if (cpuidle_counter_wanted(name_buf)) {
-+				sprintf(path, "cpuidle/state%d/below", state);
-+				add_counter(0, path, name_buf, 64, SCOPE_CPU, COUNTER_ITEMS, FORMAT_DELTA, SYSFS_PERCPU, 0);
-+			}
- 		}
- 
- 		*sp = '\0';
--		sprintf(path, "cpuidle/state%d/usage", state);
--		add_counter(0, path, name_buf, 64, SCOPE_CPU, COUNTER_ITEMS, FORMAT_DELTA, SYSFS_PERCPU, 0);
-+		if (cpuidle_counter_wanted(name_buf)) {
-+			sprintf(path, "cpuidle/state%d/usage", state);
-+			add_counter(0, path, name_buf, 64, SCOPE_CPU, COUNTER_ITEMS, FORMAT_DELTA, SYSFS_PERCPU, 0);
-+		}
- 
- 		/*
- 		 * The 'above' sysfs file always contains 0 for the shallowest state (smallest
-@@ -10970,8 +10975,10 @@ void probe_cpuidle_counts(void)
- 		if (state != min_state) {
- 			*sp = '-';
- 			*(sp + 1) = '\0';
--			sprintf(path, "cpuidle/state%d/above", state);
--			add_counter(0, path, name_buf, 64, SCOPE_CPU, COUNTER_ITEMS, FORMAT_DELTA, SYSFS_PERCPU, 0);
-+			if (cpuidle_counter_wanted(name_buf)) {
-+				sprintf(path, "cpuidle/state%d/above", state);
-+				add_counter(0, path, name_buf, 64, SCOPE_CPU, COUNTER_ITEMS, FORMAT_DELTA, SYSFS_PERCPU, 0);
-+			}
- 		}
- 	}
- }
+ 	r = amdgpu_bo_reserve(root, true);
+ 	if (r)
+ 		goto error_unref;
 -- 
 2.53.0
 
