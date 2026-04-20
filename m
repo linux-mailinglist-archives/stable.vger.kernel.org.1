@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-239457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239639-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2KIHI6Bk5mkKvwEAu9opvQ
-	(envelope-from <stable+bounces-239457-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:38:40 +0200
+	id 0A2fD5Zm5mmlvwEAu9opvQ
+	(envelope-from <stable+bounces-239639-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:47:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3887F431A80
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:38:40 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8865743215E
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:47:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4A1CA316AD4C
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:51:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E4E99332A2E1
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:59:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B04AB17A31C;
-	Mon, 20 Apr 2026 15:51:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A101033AD9A;
+	Mon, 20 Apr 2026 15:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="crY31XXv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TjpcMn34"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 710F92E093A;
-	Mon, 20 Apr 2026 15:51:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 532542FE56A;
+	Mon, 20 Apr 2026 15:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700302; cv=none; b=VRqNEmOAFzvaOggbyC960474Rd8J25WmFh64cbxOMefUpCzgSCRCl8LZWwBKMxmJLBNQlVjkyAdOzuKiTA8T4uqRR80N6KVMznA++9fnFsbdlRCU1QU9TQ5uKujBpDOg8pOZQkB65AgdXnKqcJMvxWQMSsARhZe3T4phWThTRxQ=
+	t=1776700772; cv=none; b=Oo8Vt+M3v0oPNHV8vKWaLiMlgpYR2ngMIe7tqFyjQV8mvi9iKcczx3EPyz6n+fU4+sCy3+5Kd304Jsa+Yloa8sCG7W5uhFOyWIMKN4nsSqcsc6TAsmn3RHrhL8WS7udg81LkXSVEXfSJ9vH9N2f/ZBAx8JtyiwscQxmDwwp/BPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700302; c=relaxed/simple;
-	bh=gsDm+mnxhHQerrlHu6D7whaHI5XsZQIQrD/eVC/ympM=;
+	s=arc-20240116; t=1776700772; c=relaxed/simple;
+	bh=tr8488eDFkKr0VbL+wtxcewjUlAQe5Ih2sWV03PJuv8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LaT7eLynLkatQDBqXVoSR+ubRMw2+5lBFp+05T9PflKlB8VRgcyWY/pQJoE2cGPHdsJxEjeAdMqr8i6KDQsygK9FP7Na77E/E/mNC3d3Wu/Tu/KJsSC7MYs+KcT2ML6LxojtLzirX0+oNtjKeqEjgYtzen38aIISb53pgRcNKH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=crY31XXv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06DF7C19425;
-	Mon, 20 Apr 2026 15:51:41 +0000 (UTC)
+	 MIME-Version; b=KbvNUGr7Y9DB2CJLY8wOWhGWBCPUKnt8YgRjvr/YwDud7g/xNAoZNuDArMpPMc60aRNT77YupfU582P2Hq13LKHe53vCFGnYcXgyKdpbyHUFngOUX2acCKfRx/TxaMOmzcZNhet+SgSqFP39P0XGliaT8BWthwHpYtWx5AZEFtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TjpcMn34; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDE53C19425;
+	Mon, 20 Apr 2026 15:59:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700302;
-	bh=gsDm+mnxhHQerrlHu6D7whaHI5XsZQIQrD/eVC/ympM=;
+	s=korg; t=1776700772;
+	bh=tr8488eDFkKr0VbL+wtxcewjUlAQe5Ih2sWV03PJuv8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=crY31XXvhL+6K7h4SVkTSvage2CbffjynV2Wwrc4QVb1UKGcUS0PGiPgeKJrTBmLt
-	 t6aLF1u16ogESzmVJ8+dM7qxDvuC01hwNK6dlNaDb6BhonEKR6yMX6us1uhzvzEW+K
-	 ymEtyX9iMkg/5C+7W5bvNgBm2jXMWH4cGfkDa1HM=
+	b=TjpcMn34meegb3mKqKZ1MkYLI0JFod9SkpHtdFpUtGuEunGgFjOaPAe4oXeic6y5a
+	 OiSdLVPcXQxcKCBa7Vfng/6ori8DEvNI3ErvvR1ldoORhfFvYcEjUMQAXVDtO1gGU9
+	 9+DS3KkaU6QbWf/XfSl0eLLvn0bdv1VvgKuIAO+w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Scott Mitchell <scott.k.mitch1@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 120/220] netfilter: nfnetlink_queue: make hash table per queue
+Subject: [PATCH 6.18 082/198] dt-bindings: net: Fix Tegra234 MGBE PTP clock
 Date: Mon, 20 Apr 2026 17:41:01 +0200
-Message-ID: <20260420153938.350397049@linuxfoundation.org>
+Message-ID: <20260420153938.560541052@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
-References: <20260420153934.013228280@linuxfoundation.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,349 +65,92 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239457-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239639-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,strlen.de:email]
-X-Rspamd-Queue-Id: 3887F431A80
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,nvidia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 8865743215E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Jon Hunter <jonathanh@nvidia.com>
 
-[ Upstream commit 936206e3f6ff411581e615e930263d6f8b78df9d ]
+[ Upstream commit fb22b1fc5bca3c0aad95388933497ceb30f1fb26 ]
 
-Sharing a global hash table among all queues is tempting, but
-it can cause crash:
+The PTP clock for the Tegra234 MGBE device is incorrectly named
+'ptp-ref' and should be 'ptp_ref'. This is causing the following
+warning to be observed on Tegra234 platforms that use this device:
 
-BUG: KASAN: slab-use-after-free in nfqnl_recv_verdict+0x11ac/0x15e0 [nfnetlink_queue]
-[..]
- nfqnl_recv_verdict+0x11ac/0x15e0 [nfnetlink_queue]
- nfnetlink_rcv_msg+0x46a/0x930
- kmem_cache_alloc_node_noprof+0x11e/0x450
+ ERR KERN tegra-mgbe 6800000.ethernet eth0: Invalid PTP clock rate
+ WARNING KERN tegra-mgbe 6800000.ethernet eth0: PTP init failed
 
-struct nf_queue_entry is freed via kfree, but parallel cpu can still
-encounter such an nf_queue_entry when walking the list.
+Although this constitutes an ABI breakage in the binding for this
+device, PTP support has clearly never worked and so fix this now
+so we can correct the device-tree for this device. Note that the
+MGBE driver still supports the legacy 'ptp-ref' clock name and so
+older/existing device-trees will still work, but given that this
+is not the correct name, there is no point to advertise this in the
+binding.
 
-Alternative fix is to free the nf_queue_entry via kfree_rcu() instead,
-but as we have to alloc/free for each skb this will cause more mem
-pressure.
-
-Cc: Scott Mitchell <scott.k.mitch1@gmail.com>
-Fixes: e19079adcd26 ("netfilter: nfnetlink_queue: optimize verdict lookup with hash table")
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: 189c2e5c7669 ("dt-bindings: net: Add Tegra234 MGBE")
+Signed-off-by: Jon Hunter <jonathanh@nvidia.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260401102941.17466-3-jonathanh@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/netfilter/nf_queue.h |   1 -
- net/netfilter/nfnetlink_queue.c  | 139 +++++++++++--------------------
- 2 files changed, 49 insertions(+), 91 deletions(-)
+ .../devicetree/bindings/net/nvidia,tegra234-mgbe.yaml         | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/netfilter/nf_queue.h b/include/net/netfilter/nf_queue.h
-index 45eb26b2e95b3..d17035d14d96c 100644
---- a/include/net/netfilter/nf_queue.h
-+++ b/include/net/netfilter/nf_queue.h
-@@ -23,7 +23,6 @@ struct nf_queue_entry {
- 	struct nf_hook_state	state;
- 	bool			nf_ct_is_unconfirmed;
- 	u16			size; /* sizeof(entry) + saved route keys */
--	u16			queue_num;
- 
- 	/* extra space to store route keys */
- };
-diff --git a/net/netfilter/nfnetlink_queue.c b/net/netfilter/nfnetlink_queue.c
-index a39d3b989063c..fe5942535245d 100644
---- a/net/netfilter/nfnetlink_queue.c
-+++ b/net/netfilter/nfnetlink_queue.c
-@@ -49,8 +49,8 @@
- #endif
- 
- #define NFQNL_QMAX_DEFAULT 1024
--#define NFQNL_HASH_MIN     1024
--#define NFQNL_HASH_MAX     1048576
-+#define NFQNL_HASH_MIN     8
-+#define NFQNL_HASH_MAX     32768
- 
- /* We're using struct nlattr which has 16bit nla_len. Note that nla_len
-  * includes the header length. Thus, the maximum packet length that we
-@@ -60,29 +60,10 @@
-  */
- #define NFQNL_MAX_COPY_RANGE (0xffff - NLA_HDRLEN)
- 
--/* Composite key for packet lookup: (net, queue_num, packet_id) */
--struct nfqnl_packet_key {
--	possible_net_t net;
--	u32 packet_id;
--	u16 queue_num;
--} __aligned(sizeof(u32));  /* jhash2 requires 32-bit alignment */
--
--/* Global rhashtable - one for entire system, all netns */
--static struct rhashtable nfqnl_packet_map __read_mostly;
--
--/* Helper to initialize composite key */
--static inline void nfqnl_init_key(struct nfqnl_packet_key *key,
--				  struct net *net, u32 packet_id, u16 queue_num)
--{
--	memset(key, 0, sizeof(*key));
--	write_pnet(&key->net, net);
--	key->packet_id = packet_id;
--	key->queue_num = queue_num;
--}
--
- struct nfqnl_instance {
- 	struct hlist_node hlist;		/* global list of queues */
--	struct rcu_head rcu;
-+	struct rhashtable nfqnl_packet_map;
-+	struct rcu_work	rwork;
- 
- 	u32 peer_portid;
- 	unsigned int queue_maxlen;
-@@ -106,6 +87,7 @@ struct nfqnl_instance {
- 
- typedef int (*nfqnl_cmpfn)(struct nf_queue_entry *, unsigned long);
- 
-+static struct workqueue_struct *nfq_cleanup_wq __read_mostly;
- static unsigned int nfnl_queue_net_id __read_mostly;
- 
- #define INSTANCE_BUCKETS	16
-@@ -124,34 +106,10 @@ static inline u_int8_t instance_hashfn(u_int16_t queue_num)
- 	return ((queue_num >> 8) ^ queue_num) % INSTANCE_BUCKETS;
- }
- 
--/* Extract composite key from nf_queue_entry for hashing */
--static u32 nfqnl_packet_obj_hashfn(const void *data, u32 len, u32 seed)
--{
--	const struct nf_queue_entry *entry = data;
--	struct nfqnl_packet_key key;
--
--	nfqnl_init_key(&key, entry->state.net, entry->id, entry->queue_num);
--
--	return jhash2((u32 *)&key, sizeof(key) / sizeof(u32), seed);
--}
--
--/* Compare stack-allocated key against entry */
--static int nfqnl_packet_obj_cmpfn(struct rhashtable_compare_arg *arg,
--				  const void *obj)
--{
--	const struct nfqnl_packet_key *key = arg->key;
--	const struct nf_queue_entry *entry = obj;
--
--	return !net_eq(entry->state.net, read_pnet(&key->net)) ||
--	       entry->queue_num != key->queue_num ||
--	       entry->id != key->packet_id;
--}
--
- static const struct rhashtable_params nfqnl_rhashtable_params = {
- 	.head_offset = offsetof(struct nf_queue_entry, hash_node),
--	.key_len = sizeof(struct nfqnl_packet_key),
--	.obj_hashfn = nfqnl_packet_obj_hashfn,
--	.obj_cmpfn = nfqnl_packet_obj_cmpfn,
-+	.key_offset = offsetof(struct nf_queue_entry, id),
-+	.key_len = sizeof(u32),
- 	.automatic_shrinking = true,
- 	.min_size = NFQNL_HASH_MIN,
- 	.max_size = NFQNL_HASH_MAX,
-@@ -190,6 +148,10 @@ instance_create(struct nfnl_queue_net *q, u_int16_t queue_num, u32 portid)
- 	spin_lock_init(&inst->lock);
- 	INIT_LIST_HEAD(&inst->queue_list);
- 
-+	err = rhashtable_init(&inst->nfqnl_packet_map, &nfqnl_rhashtable_params);
-+	if (err < 0)
-+		goto out_free;
-+
- 	spin_lock(&q->instances_lock);
- 	if (instance_lookup(q, queue_num)) {
- 		err = -EEXIST;
-@@ -210,6 +172,8 @@ instance_create(struct nfnl_queue_net *q, u_int16_t queue_num, u32 portid)
- 
- out_unlock:
- 	spin_unlock(&q->instances_lock);
-+	rhashtable_destroy(&inst->nfqnl_packet_map);
-+out_free:
- 	kfree(inst);
- 	return ERR_PTR(err);
- }
-@@ -217,15 +181,18 @@ instance_create(struct nfnl_queue_net *q, u_int16_t queue_num, u32 portid)
- static void nfqnl_flush(struct nfqnl_instance *queue, nfqnl_cmpfn cmpfn,
- 			unsigned long data);
- 
--static void
--instance_destroy_rcu(struct rcu_head *head)
-+static void instance_destroy_work(struct work_struct *work)
- {
--	struct nfqnl_instance *inst = container_of(head, struct nfqnl_instance,
--						   rcu);
-+	struct nfqnl_instance *inst;
- 
-+	inst = container_of(to_rcu_work(work), struct nfqnl_instance,
-+			    rwork);
- 	rcu_read_lock();
- 	nfqnl_flush(inst, NULL, 0);
- 	rcu_read_unlock();
-+
-+	rhashtable_destroy(&inst->nfqnl_packet_map);
-+
- 	kfree(inst);
- 	module_put(THIS_MODULE);
- }
-@@ -234,7 +201,9 @@ static void
- __instance_destroy(struct nfqnl_instance *inst)
- {
- 	hlist_del_rcu(&inst->hlist);
--	call_rcu(&inst->rcu, instance_destroy_rcu);
-+
-+	INIT_RCU_WORK(&inst->rwork, instance_destroy_work);
-+	queue_rcu_work(nfq_cleanup_wq, &inst->rwork);
- }
- 
- static void
-@@ -250,9 +219,7 @@ __enqueue_entry(struct nfqnl_instance *queue, struct nf_queue_entry *entry)
- {
- 	int err;
- 
--	entry->queue_num = queue->queue_num;
--
--	err = rhashtable_insert_fast(&nfqnl_packet_map, &entry->hash_node,
-+	err = rhashtable_insert_fast(&queue->nfqnl_packet_map, &entry->hash_node,
- 				     nfqnl_rhashtable_params);
- 	if (unlikely(err))
- 		return err;
-@@ -266,23 +233,19 @@ __enqueue_entry(struct nfqnl_instance *queue, struct nf_queue_entry *entry)
- static void
- __dequeue_entry(struct nfqnl_instance *queue, struct nf_queue_entry *entry)
- {
--	rhashtable_remove_fast(&nfqnl_packet_map, &entry->hash_node,
-+	rhashtable_remove_fast(&queue->nfqnl_packet_map, &entry->hash_node,
- 			       nfqnl_rhashtable_params);
- 	list_del(&entry->list);
- 	queue->queue_total--;
- }
- 
- static struct nf_queue_entry *
--find_dequeue_entry(struct nfqnl_instance *queue, unsigned int id,
--		   struct net *net)
-+find_dequeue_entry(struct nfqnl_instance *queue, unsigned int id)
- {
--	struct nfqnl_packet_key key;
- 	struct nf_queue_entry *entry;
- 
--	nfqnl_init_key(&key, net, id, queue->queue_num);
--
- 	spin_lock_bh(&queue->lock);
--	entry = rhashtable_lookup_fast(&nfqnl_packet_map, &key,
-+	entry = rhashtable_lookup_fast(&queue->nfqnl_packet_map, &id,
- 				       nfqnl_rhashtable_params);
- 
- 	if (entry)
-@@ -1531,7 +1494,7 @@ static int nfqnl_recv_verdict(struct sk_buff *skb, const struct nfnl_info *info,
- 
- 	verdict = ntohl(vhdr->verdict);
- 
--	entry = find_dequeue_entry(queue, ntohl(vhdr->id), info->net);
-+	entry = find_dequeue_entry(queue, ntohl(vhdr->id));
- 	if (entry == NULL)
- 		return -ENOENT;
- 
-@@ -1880,40 +1843,38 @@ static int __init nfnetlink_queue_init(void)
- {
- 	int status;
- 
--	status = rhashtable_init(&nfqnl_packet_map, &nfqnl_rhashtable_params);
--	if (status < 0)
--		return status;
-+	nfq_cleanup_wq = alloc_ordered_workqueue("nfq_workqueue", 0);
-+	if (!nfq_cleanup_wq)
-+		return -ENOMEM;
- 
- 	status = register_pernet_subsys(&nfnl_queue_net_ops);
--	if (status < 0) {
--		pr_err("failed to register pernet ops\n");
--		goto cleanup_rhashtable;
--	}
-+	if (status < 0)
-+		goto cleanup_pernet_subsys;
- 
--	netlink_register_notifier(&nfqnl_rtnl_notifier);
--	status = nfnetlink_subsys_register(&nfqnl_subsys);
--	if (status < 0) {
--		pr_err("failed to create netlink socket\n");
--		goto cleanup_netlink_notifier;
--	}
-+	status = netlink_register_notifier(&nfqnl_rtnl_notifier);
-+	if (status < 0)
-+	       goto cleanup_rtnl_notifier;
- 
- 	status = register_netdevice_notifier(&nfqnl_dev_notifier);
--	if (status < 0) {
--		pr_err("failed to register netdevice notifier\n");
--		goto cleanup_netlink_subsys;
--	}
-+	if (status < 0)
-+		goto cleanup_dev_notifier;
-+
-+	status = nfnetlink_subsys_register(&nfqnl_subsys);
-+	if (status < 0)
-+		goto cleanup_nfqnl_subsys;
- 
- 	nf_register_queue_handler(&nfqh);
- 
- 	return status;
- 
--cleanup_netlink_subsys:
--	nfnetlink_subsys_unregister(&nfqnl_subsys);
--cleanup_netlink_notifier:
-+cleanup_nfqnl_subsys:
-+	unregister_netdevice_notifier(&nfqnl_dev_notifier);
-+cleanup_dev_notifier:
- 	netlink_unregister_notifier(&nfqnl_rtnl_notifier);
-+cleanup_rtnl_notifier:
- 	unregister_pernet_subsys(&nfnl_queue_net_ops);
--cleanup_rhashtable:
--	rhashtable_destroy(&nfqnl_packet_map);
-+cleanup_pernet_subsys:
-+	destroy_workqueue(nfq_cleanup_wq);
- 	return status;
- }
- 
-@@ -1924,9 +1885,7 @@ static void __exit nfnetlink_queue_fini(void)
- 	nfnetlink_subsys_unregister(&nfqnl_subsys);
- 	netlink_unregister_notifier(&nfqnl_rtnl_notifier);
- 	unregister_pernet_subsys(&nfnl_queue_net_ops);
--
--	rhashtable_destroy(&nfqnl_packet_map);
--
-+	destroy_workqueue(nfq_cleanup_wq);
- 	rcu_barrier(); /* Wait for completion of call_rcu()'s */
- }
- 
+diff --git a/Documentation/devicetree/bindings/net/nvidia,tegra234-mgbe.yaml b/Documentation/devicetree/bindings/net/nvidia,tegra234-mgbe.yaml
+index 2bd3efff2485e..215f14d1897d2 100644
+--- a/Documentation/devicetree/bindings/net/nvidia,tegra234-mgbe.yaml
++++ b/Documentation/devicetree/bindings/net/nvidia,tegra234-mgbe.yaml
+@@ -42,7 +42,7 @@ properties:
+       - const: mgbe
+       - const: mac
+       - const: mac-divider
+-      - const: ptp-ref
++      - const: ptp_ref
+       - const: rx-input-m
+       - const: rx-input
+       - const: tx
+@@ -133,7 +133,7 @@ examples:
+                  <&bpmp TEGRA234_CLK_MGBE0_RX_PCS_M>,
+                  <&bpmp TEGRA234_CLK_MGBE0_RX_PCS>,
+                  <&bpmp TEGRA234_CLK_MGBE0_TX_PCS>;
+-        clock-names = "mgbe", "mac", "mac-divider", "ptp-ref", "rx-input-m",
++        clock-names = "mgbe", "mac", "mac-divider", "ptp_ref", "rx-input-m",
+                       "rx-input", "tx", "eee-pcs", "rx-pcs-input", "rx-pcs-m",
+                       "rx-pcs", "tx-pcs";
+         resets = <&bpmp TEGRA234_RESET_MGBE0_MAC>,
 -- 
 2.53.0
 
