@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-239528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239325-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WL1ULGBl5mkKvwEAu9opvQ
-	(envelope-from <stable+bounces-239528-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:41:52 +0200
+	id WK9jHDpj5mkKvwEAu9opvQ
+	(envelope-from <stable+bounces-239325-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:32:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 200FA431D7C
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:41:52 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFC12431648
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:32:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4EE803127021
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:54:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2A65333365E7
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:45:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D77B3385B6;
-	Mon, 20 Apr 2026 15:54:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09914332916;
+	Mon, 20 Apr 2026 15:45:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nZuXGO3L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XIySJvJO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D8C8331A78;
-	Mon, 20 Apr 2026 15:54:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B947E2D9EE4;
+	Mon, 20 Apr 2026 15:45:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700484; cv=none; b=eaI97WnJ/qeTw7Hengn/jH1Mzyq0hM2sxvUHD8bP+HmgkOREzDgZry0DTHujZvFcgz2c3aF/0QnJoZ/wADwtxJA2eF0Lr7cCQFhenqwXx20dRI4soRTqWwwKFxVUhAzIs5txSmz69NF9QV0LiUb2TLQYJAZ/fWFSpuEEpP0f8fM=
+	t=1776699957; cv=none; b=VaFblzPHeIPCmbX8Pij/a+6R+KKPAstu4aa7pRhUNGVuZKBp3YM0xziaknZaDDp3rGLMFSXEaZKQN1oxnD84uxK72hFGKqgbHCW37FRnuRTrkzJyPg37RoRp+0ofgkz9KFQWPGu+/iQbjLaXzJkhWSk0cr0XUTpYMlEEKYqjI8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700484; c=relaxed/simple;
-	bh=JvazAjmQvVPUwnyMynuNyoZlTeVAR6duhqZolr8EC1I=;
+	s=arc-20240116; t=1776699957; c=relaxed/simple;
+	bh=DEvOrk+Xq29oPf4SHeUIqxKlviYzEfGXfGNJGsB/0T0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C51oCK7L+fNjdImrGN2cIj/RPQE/yuCMUKXcoFYyDbgXq67yD8USTizDFz9mgDkzMAwLRb6528mqGEHom0uzqK0WVhM30bhm6NAdKaIauLc+isUartiymBG+ltmn1ZL059qIAiyPbK2PcxhcDBSvnLHWCbPumJP4jpfpj4Slf8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nZuXGO3L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98B86C19425;
-	Mon, 20 Apr 2026 15:54:43 +0000 (UTC)
+	 MIME-Version; b=P0SB4bfkw/YuNz1pNYJx4GYp+Ot/ujD11IRVNsObrweE+WskbKHC89f6HrGP22VYHfIcJNMf9Oq13oixNI7FffoVS8FjalyeyGoA+1ZBwwK7m5bm2FkZXZ43azGgU6Er87uHOBY68Nd+YMr8WcgNLCFiR3ubQzD+Vss1HdraH8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XIySJvJO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51E79C19425;
+	Mon, 20 Apr 2026 15:45:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700483;
-	bh=JvazAjmQvVPUwnyMynuNyoZlTeVAR6duhqZolr8EC1I=;
+	s=korg; t=1776699957;
+	bh=DEvOrk+Xq29oPf4SHeUIqxKlviYzEfGXfGNJGsB/0T0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nZuXGO3LiR5hqH5PnBLCdODZC4XK9kfspxk+5AsN3jtdarpnoUfjdbbW6ooswGALI
-	 Xd7NVNKYKYpwCUHESWVvXtF9hW5ejd6YuyDrBBmTUVQpWhXadHvekHV5QHI7nOcnnm
-	 t5u+RJGi9VX+3Gm3dYj6IcZijI5LAmO+0SwbK94E=
+	b=XIySJvJO5ChEqIltpljWa7JL/X0tU8pRJ/colQT70v3V+mdfQKrT2NX6ts6yoXFFI
+	 ykiKYAWL2YIEtmYTZJAmtS8TTwP5NepVKBDsFb581esrtdy/9ruodC8xA0zfDUlzOu
+	 XJRPTJtuwqyA3K2pu0jOqIEwELD+6H7bNweb+yl0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.19 191/220] KVM: SEV: Lock all vCPUs when synchronzing VMSAs for SNP launch finish
-Date: Mon, 20 Apr 2026 17:42:12 +0200
-Message-ID: <20260420153940.902462774@linuxfoundation.org>
+	Stable@vger.kernel.org,
+	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 7.0 62/76] ASoC: qcom: q6apm: move component registration to unmanaged version
+Date: Mon, 20 Apr 2026 17:42:13 +0200
+Message-ID: <20260420153913.078580912@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
-References: <20260420153934.013228280@linuxfoundation.org>
+In-Reply-To: <20260420153910.810034134@linuxfoundation.org>
+References: <20260420153910.810034134@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,115 +68,181 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239528-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-239325-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: 200FA431D7C
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,qualcomm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: DFC12431648
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
 
-commit cb923ee6a80f4e604e6242a4702b59251e61a380 upstream.
+commit 6ec1235fc941dac6c011b30ee01d9220ff87e0cd upstream.
 
-Lock all vCPUs when synchronizing and encrypting VMSAs for SNP guests, as
-allowing userspace to manipulate and/or run a vCPU while its state is being
-synchronized would at best corrupt vCPU state, and at worst crash the host
-kernel.
+q6apm component registers dais dynamically from ASoC toplology, which
+are allocated using device managed version apis. Allocating both
+component and dynamic dais using managed version could lead to incorrect
+free ordering, dai will be freed while component still holding references
+to it.
 
-Opportunistically assert that vcpu->mutex is held when synchronizing its
-VMSA (the SEV-ES path already locks vCPUs).
+Fix this issue by moving component to unmanged version so
+that the dai pointers are only freeded after the component is removed.
 
-Fixes: ad27ce155566 ("KVM: SEV: Add KVM_SEV_SNP_LAUNCH_FINISH command")
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260310234829.2608037-6-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+==================================================================
+BUG: KASAN: slab-use-after-free in snd_soc_del_component_unlocked+0x3d4/0x400 [snd_soc_core]
+Read of size 8 at addr ffff00084493a6e8 by task kworker/u48:0/3426
+Tainted: [W]=WARN
+Hardware name: LENOVO 21N2ZC5PUS/21N2ZC5PUS, BIOS N42ET57W (1.31 ) 08/08/2024
+Workqueue: pdr_notifier_wq pdr_notifier_work [pdr_interface]
+Call trace:
+ show_stack+0x28/0x7c (C)
+ dump_stack_lvl+0x60/0x80
+ print_report+0x160/0x4b4
+ kasan_report+0xac/0xfc
+ __asan_report_load8_noabort+0x20/0x34
+ snd_soc_del_component_unlocked+0x3d4/0x400 [snd_soc_core]
+ snd_soc_unregister_component_by_driver+0x50/0x88 [snd_soc_core]
+ devm_component_release+0x30/0x5c [snd_soc_core]
+ devres_release_all+0x13c/0x210
+ device_unbind_cleanup+0x20/0x190
+ device_release_driver_internal+0x350/0x468
+ device_release_driver+0x18/0x30
+ bus_remove_device+0x1a0/0x35c
+ device_del+0x314/0x7f0
+ device_unregister+0x20/0xbc
+ apr_remove_device+0x5c/0x7c [apr]
+ device_for_each_child+0xd8/0x160
+ apr_pd_status+0x7c/0xa8 [apr]
+ pdr_notifier_work+0x114/0x240 [pdr_interface]
+ process_one_work+0x500/0xb70
+ worker_thread+0x630/0xfb0
+ kthread+0x370/0x6c0
+ ret_from_fork+0x10/0x20
+
+Allocated by task 77:
+ kasan_save_stack+0x40/0x68
+ kasan_save_track+0x20/0x40
+ kasan_save_alloc_info+0x44/0x58
+ __kasan_kmalloc+0xbc/0xdc
+ __kmalloc_node_track_caller_noprof+0x1f4/0x620
+ devm_kmalloc+0x7c/0x1c8
+ snd_soc_register_dai+0x50/0x4f0 [snd_soc_core]
+ soc_tplg_pcm_elems_load+0x55c/0x1eb8 [snd_soc_core]
+ snd_soc_tplg_component_load+0x4f8/0xb60 [snd_soc_core]
+ audioreach_tplg_init+0x124/0x1fc [snd_q6apm]
+ q6apm_audio_probe+0x10/0x1c [snd_q6apm]
+ snd_soc_component_probe+0x5c/0x118 [snd_soc_core]
+ soc_probe_component+0x44c/0xaf0 [snd_soc_core]
+ snd_soc_bind_card+0xad0/0x2370 [snd_soc_core]
+ snd_soc_register_card+0x3b0/0x4c0 [snd_soc_core]
+ devm_snd_soc_register_card+0x50/0xc8 [snd_soc_core]
+ x1e80100_platform_probe+0x208/0x368 [snd_soc_x1e80100]
+ platform_probe+0xc0/0x188
+ really_probe+0x188/0x804
+ __driver_probe_device+0x158/0x358
+ driver_probe_device+0x60/0x190
+ __device_attach_driver+0x16c/0x2a8
+ bus_for_each_drv+0x100/0x194
+ __device_attach+0x174/0x380
+ device_initial_probe+0x14/0x20
+ bus_probe_device+0x124/0x154
+ deferred_probe_work_func+0x140/0x220
+ process_one_work+0x500/0xb70
+ worker_thread+0x630/0xfb0
+ kthread+0x370/0x6c0
+ ret_from_fork+0x10/0x20
+
+Freed by task 3426:
+ kasan_save_stack+0x40/0x68
+ kasan_save_track+0x20/0x40
+ __kasan_save_free_info+0x4c/0x80
+ __kasan_slab_free+0x78/0xa0
+ kfree+0x100/0x4a4
+ devres_release_all+0x144/0x210
+ device_unbind_cleanup+0x20/0x190
+ device_release_driver_internal+0x350/0x468
+ device_release_driver+0x18/0x30
+ bus_remove_device+0x1a0/0x35c
+ device_del+0x314/0x7f0
+ device_unregister+0x20/0xbc
+ apr_remove_device+0x5c/0x7c [apr]
+ device_for_each_child+0xd8/0x160
+ apr_pd_status+0x7c/0xa8 [apr]
+ pdr_notifier_work+0x114/0x240 [pdr_interface]
+ process_one_work+0x500/0xb70
+ worker_thread+0x630/0xfb0
+ kthread+0x370/0x6c0
+ ret_from_fork+0x10/0x20
+
+Fixes: 5477518b8a0e ("ASoC: qdsp6: audioreach: add q6apm support")
+Cc: Stable@vger.kernel.org
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260402081118.348071-2-srinivas.kandagatla@oss.qualcomm.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/sev.c |   16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ sound/soc/qcom/qdsp6/q6apm.c |   14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -875,6 +875,8 @@ static int sev_es_sync_vmsa(struct vcpu_
- 	u8 *d;
- 	int i;
+--- a/sound/soc/qcom/qdsp6/q6apm.c
++++ b/sound/soc/qcom/qdsp6/q6apm.c
+@@ -747,13 +747,22 @@ static int apm_probe(gpr_device_t *gdev)
  
-+	lockdep_assert_held(&vcpu->mutex);
-+
- 	if (vcpu->arch.guest_state_protected)
- 		return -EINVAL;
+ 	q6apm_get_apm_state(apm);
  
-@@ -2460,6 +2462,10 @@ static int snp_launch_update_vmsa(struct
- 	if (kvm_is_vcpu_creation_in_progress(kvm))
- 		return -EBUSY;
- 
-+	ret = kvm_lock_all_vcpus(kvm);
-+	if (ret)
-+		return ret;
-+
- 	data.gctx_paddr = __psp_pa(sev->snp_context);
- 	data.page_type = SNP_PAGE_TYPE_VMSA;
- 
-@@ -2469,12 +2475,12 @@ static int snp_launch_update_vmsa(struct
- 
- 		ret = sev_es_sync_vmsa(svm);
- 		if (ret)
--			return ret;
-+			goto out;
- 
- 		/* Transition the VMSA page to a firmware state. */
- 		ret = rmp_make_private(pfn, INITIAL_VMSA_GPA, PG_LEVEL_4K, sev->asid, true);
- 		if (ret)
--			return ret;
-+			goto out;
- 
- 		/* Issue the SNP command to encrypt the VMSA */
- 		data.address = __sme_pa(svm->sev_es.vmsa);
-@@ -2483,7 +2489,7 @@ static int snp_launch_update_vmsa(struct
- 		if (ret) {
- 			snp_page_reclaim(kvm, pfn);
- 
--			return ret;
-+			goto out;
- 		}
- 
- 		svm->vcpu.arch.guest_state_protected = true;
-@@ -2497,7 +2503,9 @@ static int snp_launch_update_vmsa(struct
- 		svm_enable_lbrv(vcpu);
+-	ret = devm_snd_soc_register_component(dev, &q6apm_audio_component, NULL, 0);
++	ret = snd_soc_register_component(dev, &q6apm_audio_component, NULL, 0);
+ 	if (ret < 0) {
+ 		dev_err(dev, "failed to register q6apm: %d\n", ret);
+ 		return ret;
  	}
  
--	return 0;
-+out:
-+	kvm_unlock_all_vcpus(kvm);
+-	return of_platform_populate(dev->of_node, NULL, NULL, dev);
++	ret = of_platform_populate(dev->of_node, NULL, NULL, dev);
++	if (ret)
++		snd_soc_unregister_component(dev);
++
 +	return ret;
++}
++
++static void apm_remove(gpr_device_t *gdev)
++{
++	snd_soc_unregister_component(&gdev->dev);
  }
  
- static int snp_launch_finish(struct kvm *kvm, struct kvm_sev_cmd *argp)
+ struct audioreach_module *q6apm_find_module_by_mid(struct q6apm_graph *graph, uint32_t mid)
+@@ -820,6 +829,7 @@ MODULE_DEVICE_TABLE(of, apm_device_id);
+ 
+ static gpr_driver_t apm_driver = {
+ 	.probe = apm_probe,
++	.remove = apm_remove,
+ 	.gpr_callback = apm_callback,
+ 	.driver = {
+ 		.name = "qcom-apm",
 
 
 
