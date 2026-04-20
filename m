@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-239639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239789-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0A2fD5Zm5mmlvwEAu9opvQ
-	(envelope-from <stable+bounces-239639-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:47:02 +0200
+	id WIWgE99P5mkDuwEAu9opvQ
+	(envelope-from <stable+bounces-239789-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:10:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8865743215E
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:47:01 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E969A42F18E
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:10:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E4E99332A2E1
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:59:33 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3F4EA301EACF
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:07:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A101033AD9A;
-	Mon, 20 Apr 2026 15:59:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ACCB336EE1;
+	Mon, 20 Apr 2026 16:07:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TjpcMn34"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qsviFPUs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 532542FE56A;
-	Mon, 20 Apr 2026 15:59:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E78C336EC9;
+	Mon, 20 Apr 2026 16:07:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700772; cv=none; b=Oo8Vt+M3v0oPNHV8vKWaLiMlgpYR2ngMIe7tqFyjQV8mvi9iKcczx3EPyz6n+fU4+sCy3+5Kd304Jsa+Yloa8sCG7W5uhFOyWIMKN4nsSqcsc6TAsmn3RHrhL8WS7udg81LkXSVEXfSJ9vH9N2f/ZBAx8JtyiwscQxmDwwp/BPo=
+	t=1776701220; cv=none; b=NAu6Xlb0RJIiyRzSTtBZMliEnjkDH5Aoy+ht/8b8B3dOGVxlAqRbocPwtkB6Xt64FGQnZbhnSOm5YUjnxXlG1iV/knSRzjvRaISRZijND9zftUI9KOL60jJshyMpTHFmyRW1E+KzmJ7bjmgrUKHa8oo40hUcnY8dIgBIaFRdJPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700772; c=relaxed/simple;
-	bh=tr8488eDFkKr0VbL+wtxcewjUlAQe5Ih2sWV03PJuv8=;
+	s=arc-20240116; t=1776701220; c=relaxed/simple;
+	bh=q1v77C63SOQYAD08in4vlPHUFfEIIlzBD554e7HRhYY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KbvNUGr7Y9DB2CJLY8wOWhGWBCPUKnt8YgRjvr/YwDud7g/xNAoZNuDArMpPMc60aRNT77YupfU582P2Hq13LKHe53vCFGnYcXgyKdpbyHUFngOUX2acCKfRx/TxaMOmzcZNhet+SgSqFP39P0XGliaT8BWthwHpYtWx5AZEFtU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TjpcMn34; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDE53C19425;
-	Mon, 20 Apr 2026 15:59:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JblAolsuSb5a7Lxwk0Qapqfh5NtFJpgr4tXZZ3/6zvssXxK/sAUe3zn67ThURkV+/Wmz5jssTj/LqaYxTO8CqJ2O5zWtKPTvCqPAjCgoYfCDfM942ZnxBYefEeVKbCI2UN09KihAwKZgEd4o6KUXO4F1otM9I9w24s9tAthxBcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qsviFPUs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7610C19425;
+	Mon, 20 Apr 2026 16:06:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700772;
-	bh=tr8488eDFkKr0VbL+wtxcewjUlAQe5Ih2sWV03PJuv8=;
+	s=korg; t=1776701220;
+	bh=q1v77C63SOQYAD08in4vlPHUFfEIIlzBD554e7HRhYY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TjpcMn34meegb3mKqKZ1MkYLI0JFod9SkpHtdFpUtGuEunGgFjOaPAe4oXeic6y5a
-	 OiSdLVPcXQxcKCBa7Vfng/6ori8DEvNI3ErvvR1ldoORhfFvYcEjUMQAXVDtO1gGU9
-	 9+DS3KkaU6QbWf/XfSl0eLLvn0bdv1VvgKuIAO+w=
+	b=qsviFPUsoFyyM8edhE6LZiSKfMLsJDZfE/0ohPzQ8AIcMku6sGOddcW7LhjWhta6N
+	 ZNqsXCBLPt0o/uxNXG9kFEA1gK25vfUQY/Ki6L2rN7xjsTkxXPCSp2g8YV9F1/GtKt
+	 kcdLJbjSiZROWxVdrOlEUyTBXuHv6RJ4h74Gd1BI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Beno=C3=AEt=20Sevens?= <bsevens@google.com>,
+	Silvan Jegen <s.jegen@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 082/198] dt-bindings: net: Fix Tegra234 MGBE PTP clock
+Subject: [PATCH 6.12 029/162] HID: roccat: fix use-after-free in roccat_report_event
 Date: Mon, 20 Apr 2026 17:41:01 +0200
-Message-ID: <20260420153938.560541052@linuxfoundation.org>
+Message-ID: <20260420153928.075327858@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
+References: <20260420153927.006696811@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,93 +64,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239639-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,suse.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-239789-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,nvidia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 8865743215E
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E969A42F18E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jon Hunter <jonathanh@nvidia.com>
+From: Benoît Sevens <bsevens@google.com>
 
-[ Upstream commit fb22b1fc5bca3c0aad95388933497ceb30f1fb26 ]
+[ Upstream commit d802d848308b35220f21a8025352f0c0aba15c12 ]
 
-The PTP clock for the Tegra234 MGBE device is incorrectly named
-'ptp-ref' and should be 'ptp_ref'. This is causing the following
-warning to be observed on Tegra234 platforms that use this device:
+roccat_report_event() iterates over the device->readers list without
+holding the readers_lock. This allows a concurrent roccat_release() to
+remove and free a reader while it's still being accessed, leading to a
+use-after-free.
 
- ERR KERN tegra-mgbe 6800000.ethernet eth0: Invalid PTP clock rate
- WARNING KERN tegra-mgbe 6800000.ethernet eth0: PTP init failed
+Protect the readers list traversal with the readers_lock mutex.
 
-Although this constitutes an ABI breakage in the binding for this
-device, PTP support has clearly never worked and so fix this now
-so we can correct the device-tree for this device. Note that the
-MGBE driver still supports the legacy 'ptp-ref' clock name and so
-older/existing device-trees will still work, but given that this
-is not the correct name, there is no point to advertise this in the
-binding.
-
-Fixes: 189c2e5c7669 ("dt-bindings: net: Add Tegra234 MGBE")
-Signed-off-by: Jon Hunter <jonathanh@nvidia.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260401102941.17466-3-jonathanh@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Benoît Sevens <bsevens@google.com>
+Reviewed-by: Silvan Jegen <s.jegen@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../devicetree/bindings/net/nvidia,tegra234-mgbe.yaml         | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/hid/hid-roccat.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/net/nvidia,tegra234-mgbe.yaml b/Documentation/devicetree/bindings/net/nvidia,tegra234-mgbe.yaml
-index 2bd3efff2485e..215f14d1897d2 100644
---- a/Documentation/devicetree/bindings/net/nvidia,tegra234-mgbe.yaml
-+++ b/Documentation/devicetree/bindings/net/nvidia,tegra234-mgbe.yaml
-@@ -42,7 +42,7 @@ properties:
-       - const: mgbe
-       - const: mac
-       - const: mac-divider
--      - const: ptp-ref
-+      - const: ptp_ref
-       - const: rx-input-m
-       - const: rx-input
-       - const: tx
-@@ -133,7 +133,7 @@ examples:
-                  <&bpmp TEGRA234_CLK_MGBE0_RX_PCS_M>,
-                  <&bpmp TEGRA234_CLK_MGBE0_RX_PCS>,
-                  <&bpmp TEGRA234_CLK_MGBE0_TX_PCS>;
--        clock-names = "mgbe", "mac", "mac-divider", "ptp-ref", "rx-input-m",
-+        clock-names = "mgbe", "mac", "mac-divider", "ptp_ref", "rx-input-m",
-                       "rx-input", "tx", "eee-pcs", "rx-pcs-input", "rx-pcs-m",
-                       "rx-pcs", "tx-pcs";
-         resets = <&bpmp TEGRA234_RESET_MGBE0_MAC>,
+diff --git a/drivers/hid/hid-roccat.c b/drivers/hid/hid-roccat.c
+index c7f7562e22e56..e413662f75082 100644
+--- a/drivers/hid/hid-roccat.c
++++ b/drivers/hid/hid-roccat.c
+@@ -257,6 +257,7 @@ int roccat_report_event(int minor, u8 const *data)
+ 	if (!new_value)
+ 		return -ENOMEM;
+ 
++	mutex_lock(&device->readers_lock);
+ 	mutex_lock(&device->cbuf_lock);
+ 
+ 	report = &device->cbuf[device->cbuf_end];
+@@ -279,6 +280,7 @@ int roccat_report_event(int minor, u8 const *data)
+ 	}
+ 
+ 	mutex_unlock(&device->cbuf_lock);
++	mutex_unlock(&device->readers_lock);
+ 
+ 	wake_up_interruptible(&device->wait);
+ 	return 0;
 -- 
 2.53.0
 
