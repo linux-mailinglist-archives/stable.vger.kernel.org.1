@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-239844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239486-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KN4AIcNb5mkwvQEAu9opvQ
-	(envelope-from <stable+bounces-239844-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:00:51 +0200
+	id kJu6HjZh5mmavgEAu9opvQ
+	(envelope-from <stable+bounces-239486-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:24:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C59C44305F1
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:00:50 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 823B44311EF
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:24:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 206C33069725
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:09:22 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BFC8D31A73AD
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:52:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12BB033AD9A;
-	Mon, 20 Apr 2026 16:09:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EA5F2E11C7;
+	Mon, 20 Apr 2026 15:52:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jfPyTSHG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CpW4aRep"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9F283321AA;
-	Mon, 20 Apr 2026 16:09:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB10B333445;
+	Mon, 20 Apr 2026 15:52:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701360; cv=none; b=WJ+P9uqr3ajCrSrXCb0MbyDacH6vbDFdKtoCCRzjJy4Fw/ob5E3qm7gejyaBl8bBHyPMyhGggdNfvqLLCScNKXDbslfHBAXSn52jDIO4kJfB/Pr5LpjiIHP5HN8RkYKQ7qN95PJ+lIFgMFqHJlIRZ+tmu7lxmQwNQE/nxuoMM70=
+	t=1776700376; cv=none; b=FywH+8fnB5Ot54I01zLXFQphSNNlbqh7WmZZ6ZyCAn6wVU5mh5Utw0NVf4xNP6+tBBgijONXmAuL+E1p+Ysfa0OE7HXWG26R/801r3/mABTqQGNVVUDrRfWnJEg+Khy8TF6iCbh8drmHICMllj9D7gPDVeYGwqLoaxftiOplMFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701360; c=relaxed/simple;
-	bh=UTP4GCovvMB/ogJQ6hgjEp43JxYIYlsrX1RwFPhKCBs=;
+	s=arc-20240116; t=1776700376; c=relaxed/simple;
+	bh=WdvYPPHSoGBzyAofJjsD1MB80xVVNaLCHWA/lvOdvtI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=huYOggyY1KbLv8qNPuiz3zHC2Hzje/5doAnBk9kB2AsDWoPqzsAPeCcGpfx0mqYPZhhX7e5dpvSS70TZmRqmiwmpA1mdAam/KkeNQvE1G4BBTcAbo+xLZz5XyFR6yOlSih9Wz+CAzAami+u43tuNDCOYkDldgF53riw7hzPw3mY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jfPyTSHG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60127C19425;
-	Mon, 20 Apr 2026 16:09:20 +0000 (UTC)
+	 MIME-Version; b=rPNXVc/Pv9UVssRZ2wvmKYoYfL3GG57U4pgmmq1T7WSN716hWPTv7IqMWeAHy8UlzzDVHENG/3FrJvxbugJTyyzWS5z0D3SRiIARAXWH1ms1zvCK0WuL5ysmaWC1Xwtt9W+IFgQKqqU5shAiimxqdhbbet1NNiNs8f0SI1ylnWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CpW4aRep; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50295C19425;
+	Mon, 20 Apr 2026 15:52:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701360;
-	bh=UTP4GCovvMB/ogJQ6hgjEp43JxYIYlsrX1RwFPhKCBs=;
+	s=korg; t=1776700376;
+	bh=WdvYPPHSoGBzyAofJjsD1MB80xVVNaLCHWA/lvOdvtI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jfPyTSHGAUl7ZIn+GLr5uDOmwO/o4Qx1qHdOwbNYT4P+Yl1bnqhrXgF5+sH2n3Afl
-	 MgA9hrAOhF3D7Tve4HiRXc4qgBOgrbprVq7NOV6Q+AsZAP1djmLbzOkjFg9QABXHCZ
-	 OO5kAS6dVrFh4jsGtc2sEQ8BQ0fzoiZvQ4AuDkzQ=
+	b=CpW4aRepoAIB1NwAuSTkMZpcunI3ozQvLdY9JcQL08OG/SRegj1xOEDEdIfFKU4Zm
+	 9QX3GzE4ODlLzsCh12zD9uTgmgGEA5LreyaU5nWLkNwmnN0GwEQKjwfdHPLC2BfWjs
+	 vKQs8QIPzuUe65yQSAVI2g6iTntK4VPq5ecokK2o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d8c285748fa7292580a9@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Martin Schiller <ms@dev.tdt.de>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 050/162] net: lapbether: handle NETDEV_PRE_TYPE_CHANGE
+	Samuel Page <sam@bynar.io>,
+	Oliver Hartkopp <socketcan@hartkopp.net>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.19 141/220] can: raw: fix ro->uniq use-after-free in raw_rcv()
 Date: Mon, 20 Apr 2026 17:41:22 +0200
-Message-ID: <20260420153928.850053226@linuxfoundation.org>
+Message-ID: <20260420153939.104938900@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
-References: <20260420153927.006696811@linuxfoundation.org>
+In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
+References: <20260420153934.013228280@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,114 +64,104 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-239844-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,d8c285748fa7292580a9];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-239486-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,tdt.de:email]
-X-Rspamd-Queue-Id: C59C44305F1
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,hartkopp.net:email,bynar.io:email]
+X-Rspamd-Queue-Id: 823B44311EF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Samuel Page <sam@bynar.io>
 
-[ Upstream commit b120e4432f9f56c7103133d6a11245e617695adb ]
+commit a535a9217ca3f2fccedaafb2fddb4c48f27d36dc upstream.
 
-lapbeth_data_transmit() expects the underlying device type
-to be ARPHRD_ETHER.
+raw_release() unregisters raw CAN receive filters via can_rx_unregister(),
+but receiver deletion is deferred with call_rcu(). This leaves a window
+where raw_rcv() may still be running in an RCU read-side critical section
+after raw_release() frees ro->uniq, leading to a use-after-free of the
+percpu uniq storage.
 
-Returning NOTIFY_BAD from lapbeth_device_event() makes sure
-bonding driver can not break this expectation.
+Move free_percpu(ro->uniq) out of raw_release() and into a raw-specific
+socket destructor. can_rx_unregister() takes an extra reference to the
+socket and only drops it from the RCU callback, so freeing uniq from
+sk_destruct ensures the percpu area is not released until the relevant
+callbacks have drained.
 
-Fixes: 872254dd6b1f ("net/bonding: Enable bonding to enslave non ARPHRD_ETHER")
-Reported-by: syzbot+d8c285748fa7292580a9@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/69cd22a1.050a0220.70c3a.0002.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Martin Schiller <ms@dev.tdt.de>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260402103519.1201565-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 514ac99c64b2 ("can: fix multiple delivery of a single CAN frame for overlapping CAN filters")
+Cc: stable@vger.kernel.org # v4.1+
+Assisted-by: Bynario AI
+Signed-off-by: Samuel Page <sam@bynar.io>
+Link: https://patch.msgid.link/26ec626d-cae7-4418-9782-7198864d070c@bynar.io
+Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
+[mkl: applied manually]
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wan/lapbether.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ net/can/raw.c |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wan/lapbether.c b/drivers/net/wan/lapbether.c
-index 56326f38fe8a3..da61716a66c46 100644
---- a/drivers/net/wan/lapbether.c
-+++ b/drivers/net/wan/lapbether.c
-@@ -444,33 +444,36 @@ static void lapbeth_free_device(struct lapbethdev *lapbeth)
- static int lapbeth_device_event(struct notifier_block *this,
- 				unsigned long event, void *ptr)
- {
--	struct lapbethdev *lapbeth;
- 	struct net_device *dev = netdev_notifier_info_to_dev(ptr);
-+	struct lapbethdev *lapbeth;
- 
- 	if (dev_net(dev) != &init_net)
- 		return NOTIFY_DONE;
- 
--	if (!dev_is_ethdev(dev) && !lapbeth_get_x25_dev(dev))
-+	lapbeth = lapbeth_get_x25_dev(dev);
-+	if (!dev_is_ethdev(dev) && !lapbeth)
- 		return NOTIFY_DONE;
- 
- 	switch (event) {
- 	case NETDEV_UP:
- 		/* New ethernet device -> new LAPB interface	 */
--		if (!lapbeth_get_x25_dev(dev))
-+		if (!lapbeth)
- 			lapbeth_new_device(dev);
- 		break;
- 	case NETDEV_GOING_DOWN:
- 		/* ethernet device closes -> close LAPB interface */
--		lapbeth = lapbeth_get_x25_dev(dev);
- 		if (lapbeth)
- 			dev_close(lapbeth->axdev);
- 		break;
- 	case NETDEV_UNREGISTER:
- 		/* ethernet device disappears -> remove LAPB interface */
--		lapbeth = lapbeth_get_x25_dev(dev);
- 		if (lapbeth)
- 			lapbeth_free_device(lapbeth);
- 		break;
-+	case NETDEV_PRE_TYPE_CHANGE:
-+		/* Our underlying device type must not change. */
-+		if (lapbeth)
-+			return NOTIFY_BAD;
- 	}
- 
+--- a/net/can/raw.c
++++ b/net/can/raw.c
+@@ -360,6 +360,14 @@ static int raw_notifier(struct notifier_
  	return NOTIFY_DONE;
--- 
-2.53.0
-
+ }
+ 
++static void raw_sock_destruct(struct sock *sk)
++{
++	struct raw_sock *ro = raw_sk(sk);
++
++	free_percpu(ro->uniq);
++	can_sock_destruct(sk);
++}
++
+ static int raw_init(struct sock *sk)
+ {
+ 	struct raw_sock *ro = raw_sk(sk);
+@@ -386,6 +394,8 @@ static int raw_init(struct sock *sk)
+ 	if (unlikely(!ro->uniq))
+ 		return -ENOMEM;
+ 
++	sk->sk_destruct = raw_sock_destruct;
++
+ 	/* set notifier */
+ 	spin_lock(&raw_notifier_lock);
+ 	list_add_tail(&ro->notifier, &raw_notifier_list);
+@@ -435,7 +445,6 @@ static int raw_release(struct socket *so
+ 	ro->bound = 0;
+ 	ro->dev = NULL;
+ 	ro->count = 0;
+-	free_percpu(ro->uniq);
+ 
+ 	sock_orphan(sk);
+ 	sock->sk = NULL;
 
 
 
