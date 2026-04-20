@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-239382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239383-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +ANbJvdj5mkKvwEAu9opvQ
-	(envelope-from <stable+bounces-239382-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:35:51 +0200
+	id aHngKQ5f5mkWvgEAu9opvQ
+	(envelope-from <stable+bounces-239383-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:14:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 037FD4318D5
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:35:50 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id C367B430CD5
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:14:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 54621354782B
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:49:01 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C2B4730DE11B
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:49:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 876EB3382DE;
-	Mon, 20 Apr 2026 15:48:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17234344021;
+	Mon, 20 Apr 2026 15:48:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ps5QDzam"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nbng3+KQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44291345CAA;
-	Mon, 20 Apr 2026 15:48:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAF0633C192;
+	Mon, 20 Apr 2026 15:48:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700104; cv=none; b=SMDGy4u+1jItgc3As743oEK0PzrMssFqN2p/s3uXQgJq5naQMJ8+BFcEN0q9ESdmXX0qizd3rFhcs/k2j0XIsxzekIT6kncdFuqeL3C+Wn9btDm44szaUPJYIuNw+fQS613+tEtbUJ5o73F7BwdAE8U+FZzkT3+q6/t3STy1onQ=
+	t=1776700106; cv=none; b=EVlz93lifqNLtWbhLA4lheTHrVbcQufVIkgMvjnGEkTLBup+USrrDO/Dsk3kBv0p8Pi5G2Ta9Cq26EEyr6ZUjqHIFBfk4+aTwaI2HDsYXaVCIdeHVAHBaN8JHPvUsWMaOtEgCcxZ9qYpOEYtZQRLLwu7QoKSvaGTAwvxHC3GJng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700104; c=relaxed/simple;
-	bh=AJfA4BhQEurmyFt6kJnvNyFUZFkyGHJbpfxaPd5oKss=;
+	s=arc-20240116; t=1776700106; c=relaxed/simple;
+	bh=ogMpkuXAyPgNbZ0sdwfto16QIIEqsd7bY+vHiPLnSoA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AbmgnjjKs/48NJxCBUbBNdNjx2AjJNW1cxR7N4owc9gFzdvqaqtH26jba47tYT3K+m+0pBWmK7dOE4KQhFP+PwUuECGIgyWgKFWerYoh9lk54kiZC7zmpT8CTd3kpYY4G8boC0wJW0ZZAEzDJPFUfHBm/eoiON7YW7WztWP2Iag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ps5QDzam; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 902F9C19425;
-	Mon, 20 Apr 2026 15:48:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KIj31YC4tCTeEYZsoNUdUFerAyKmdR4VLpFdkuYBhlCkLTWCWgDtRrpyV6r0VRSeCqKXcevtOthnG5ixHXMpc8AMa2OHU1Krc7oD4iF+YS2lAGt7f1bHTFpIhXIoKhZMIQr60hdDJrddA20yJWp2pBbpAXXit+rfmU6IervJQd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nbng3+KQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DB56C19425;
+	Mon, 20 Apr 2026 15:48:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700103;
-	bh=AJfA4BhQEurmyFt6kJnvNyFUZFkyGHJbpfxaPd5oKss=;
+	s=korg; t=1776700106;
+	bh=ogMpkuXAyPgNbZ0sdwfto16QIIEqsd7bY+vHiPLnSoA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ps5QDzamSNjONSRja7PWHa5/6hjumYxNDm7Np1pKUfiUhpjHWzjQwo97IpqD0jNZ5
-	 TPQkmvPvqYRKk+Gvr4mA7qIRVyHUtD2oKxE4PtZae4HAUjJBmr2hgz8cTzJeKkw01b
-	 y7mUAJ89UHn+Bdgw/8nofyZl5TPEz418T3ANNVnU=
+	b=nbng3+KQTLuTm/KlaD7wW3GKtHjIDNO8WiuGWiOw/7KKqiiZve4U416JOnxobKXpP
+	 uPhttff5FCL5GBJX66eo3rTXNAjBoui5c0ut2F3D1kGW32H1LJw61wekpNVB0/BloX
+	 1gqKQgNP688IS7/p/mUNUBbf4dUoE13NCOj3av84=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Marcin Nita <marcin.nita@leolabs.pl>,
-	John Pavlick <jspavlick@posteo.net>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?=EA=B9=80=EC=98=81=EB=AF=BC?= <osori@hspace.io>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Dave Hansen <dave.hansen@intel.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 044/220] net: sfp: add quirks for Hisense and HSGQ GPON ONT SFP modules
-Date: Mon, 20 Apr 2026 17:39:45 +0200
-Message-ID: <20260420153935.624305818@linuxfoundation.org>
+Subject: [PATCH 6.19 045/220] x86: shadow stacks: proper error handling for mmap lock
+Date: Mon, 20 Apr 2026 17:39:46 +0200
+Message-ID: <20260420153935.660146474@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
 References: <20260420153934.013228280@linuxfoundation.org>
@@ -65,36 +66,35 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-239382-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239383-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.986];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,kernel];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,posteo.net:email,leolabs.pl:email]
-X-Rspamd-Queue-Id: 037FD4318D5
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,linux-foundation.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,hspace.io:email]
+X-Rspamd-Queue-Id: C367B430CD5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -102,63 +102,73 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: John Pavlick <jspavlick@posteo.net>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit 95aca8602ef70ffd3d971675751c81826e124f90 ]
+[ Upstream commit 52f657e34d7b21b47434d9d8b26fa7f6778b63a0 ]
 
-Several GPON ONT SFP sticks based on Realtek RTL960x report
-1000BASE-LX at 1300MBd in their EEPROM but can operate at 2500base-X.
-On hosts capable of 2500base-X (e.g. Banana Pi R3 / MT7986), the
-kernel negotiates only 1G because it trusts the incorrect EEPROM data.
+김영민 reports that shstk_pop_sigframe() doesn't check for errors from
+mmap_read_lock_killable(), which is a silly oversight, and also shows
+that we haven't marked those functions with "__must_check", which would
+have immediately caught it.
 
-Add quirks for:
-- Hisense-Leox LXT-010S-H
-- Hisense ZNID-GPON-2311NA
-- HSGQ HSGQ-XPON-Stick
+So let's fix both issues.
 
-Each quirk advertises 2500base-X and ignores TX_FAULT during the
-module's ~40s Linux boot time.
-
-Tested on Banana Pi R3 (MT7986) with OpenWrt 25.12.1, confirmed
-2.5Gbps link and full throughput with flow offloading.
-
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Suggested-by: Marcin Nita <marcin.nita@leolabs.pl>
-Signed-off-by: John Pavlick <jspavlick@posteo.net>
-Link: https://patch.msgid.link/20260406132321.72563-1-jspavlick@posteo.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: 김영민 <osori@hspace.io>
+Acked-by: Oleg Nesterov <oleg@redhat.com>
+Acked-by: Dave Hansen <dave.hansen@intel.com>
+Acked-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/sfp.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ arch/x86/kernel/shstk.c   | 3 ++-
+ include/linux/mmap_lock.h | 6 +++---
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
-index 7a85b758fb1e6..c62e3f364ea73 100644
---- a/drivers/net/phy/sfp.c
-+++ b/drivers/net/phy/sfp.c
-@@ -543,6 +543,22 @@ static const struct sfp_quirk sfp_quirks[] = {
- 	SFP_QUIRK("HUAWEI", "MA5671A", sfp_quirk_2500basex,
- 		  sfp_fixup_ignore_tx_fault_and_los),
+diff --git a/arch/x86/kernel/shstk.c b/arch/x86/kernel/shstk.c
+index 978232b6d48d7..ff8edea8511b4 100644
+--- a/arch/x86/kernel/shstk.c
++++ b/arch/x86/kernel/shstk.c
+@@ -351,7 +351,8 @@ static int shstk_pop_sigframe(unsigned long *ssp)
+ 	need_to_check_vma = PAGE_ALIGN(*ssp) == *ssp;
  
-+	// Hisense LXT-010S-H is a GPON ONT SFP (sold as LEOX LXT-010S-H) that
-+	// can operate at 2500base-X, but reports 1000BASE-LX / 1300MBd in its
-+	// EEPROM
-+	SFP_QUIRK("Hisense-Leox", "LXT-010S-H", sfp_quirk_2500basex,
-+		  sfp_fixup_ignore_tx_fault),
-+
-+	// Hisense ZNID-GPON-2311NA can operate at 2500base-X, but reports
-+	// 1000BASE-LX / 1300MBd in its EEPROM
-+	SFP_QUIRK("Hisense", "ZNID-GPON-2311NA", sfp_quirk_2500basex,
-+		  sfp_fixup_ignore_tx_fault),
-+
-+	// HSGQ HSGQ-XPON-Stick can operate at 2500base-X, but reports
-+	// 1000BASE-LX / 1300MBd in its EEPROM
-+	SFP_QUIRK("HSGQ", "HSGQ-XPON-Stick", sfp_quirk_2500basex,
-+		  sfp_fixup_ignore_tx_fault),
-+
- 	// Lantech 8330-262D-E and 8330-265D can operate at 2500base-X, but
- 	// incorrectly report 2500MBd NRZ in their EEPROM.
- 	// Some 8330-265D modules have inverted LOS, while all of them report
+ 	if (need_to_check_vma)
+-		mmap_read_lock_killable(current->mm);
++		if (mmap_read_lock_killable(current->mm))
++			return -EINTR;
+ 
+ 	err = get_shstk_data(&token_addr, (unsigned long __user *)*ssp);
+ 	if (unlikely(err))
+diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
+index d53f72dba7fee..81fcfde3563dd 100644
+--- a/include/linux/mmap_lock.h
++++ b/include/linux/mmap_lock.h
+@@ -345,7 +345,7 @@ static inline void mmap_write_lock_nested(struct mm_struct *mm, int subclass)
+ 	__mmap_lock_trace_acquire_returned(mm, true, true);
+ }
+ 
+-static inline int mmap_write_lock_killable(struct mm_struct *mm)
++static inline int __must_check mmap_write_lock_killable(struct mm_struct *mm)
+ {
+ 	int ret;
+ 
+@@ -392,7 +392,7 @@ static inline void mmap_read_lock(struct mm_struct *mm)
+ 	__mmap_lock_trace_acquire_returned(mm, false, true);
+ }
+ 
+-static inline int mmap_read_lock_killable(struct mm_struct *mm)
++static inline int __must_check mmap_read_lock_killable(struct mm_struct *mm)
+ {
+ 	int ret;
+ 
+@@ -402,7 +402,7 @@ static inline int mmap_read_lock_killable(struct mm_struct *mm)
+ 	return ret;
+ }
+ 
+-static inline bool mmap_read_trylock(struct mm_struct *mm)
++static inline bool __must_check mmap_read_trylock(struct mm_struct *mm)
+ {
+ 	bool ret;
+ 
 -- 
 2.53.0
 
