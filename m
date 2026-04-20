@@ -1,362 +1,241 @@
-Return-Path: <stable+bounces-238672-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238673-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YJUnKVFv5WmGjwEAu9opvQ
-	(envelope-from <stable+bounces-238672-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 02:12:01 +0200
+	id WJhgEZ1v5Wm3jwEAu9opvQ
+	(envelope-from <stable+bounces-238673-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 02:13:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B540425E14
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 02:12:01 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0F45425E41
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 02:13:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 530CC3016925
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 00:11:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B140330128DB
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 00:13:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 472C740DFC1;
-	Mon, 20 Apr 2026 00:11:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC81040855;
+	Mon, 20 Apr 2026 00:13:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a+kuI2uw"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="YMCfY0nv"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B5C127442
-	for <stable@vger.kernel.org>; Mon, 20 Apr 2026 00:11:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76D5F27442;
+	Mon, 20 Apr 2026 00:13:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776643916; cv=none; b=K25UjUGNPOjKQLM0in8wQAHUwYWpJAN+j+w/RCiZtXxLXzVUGWkX1uMwiFJ5gG194pdvE30D/QL0BY3s3+jAXd778oVPQbOFkV7r2aKmPNxHUTeWTXmbmcv5mdTz+hXDcNvrEOOXCFewnZN9QGylxsqdzW6ubga/SCHBEFDJb3A=
+	t=1776643990; cv=none; b=PQvESL1NEltHbTE9+VkEu1g+3k+9UGS76fbZFPjrjrLmXgqH1i4zt+dj2Ws0S7Y6r4IqEs2wXESTJo8BpPPcj+3E8LyOgGkXwrez4QmNtd1kk3kRgQezQCJfMpTCgVlT4DKizDFbM9+Ntu+dzkC1XT3hIGyAUGEacfn08s3AnMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776643916; c=relaxed/simple;
-	bh=J0TaXRSUoiYBKYMpUV1WlkKcXmHlIrtK82jnx1iaS8c=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KhvoMhtfU2gKwkyLCsIDMNHSEAqPpsd8p9h/5lrt2x8oCsQpGL4LmQiU+sT27BRcWzuu7MiqXmH4QB4F8mb7cp2QHwNTS8Ow+mFg+BeUU0EaaE808FdWD8+8Hh9ARnb4YbRlAKR2Nz+TxgR5NIpuCtoYWgSz/zYMhsB/AY0Dyeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a+kuI2uw; arc=none smtp.client-ip=209.85.222.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-8d68bcf50fdso301522485a.2
-        for <stable@vger.kernel.org>; Sun, 19 Apr 2026 17:11:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776643913; x=1777248713; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7xQF2kYy2mawb58IYNylnXRWgmSB/uAYm2CtIu/gV9E=;
-        b=a+kuI2uwbQXvOGkzTWXIcL9ln2Y+lrEuhnYVur2heeY5ZBwqj+De3+VXEPSNgWarvc
-         NGmJpIFL06FiJXo/+6DTYsWrRq+wUX2ZY5CAv8fiDvy2n1+DRaDbPjDZd7AMQJfDStqR
-         rZC7+WS8FOYY6UWIvIu7VZV1DsGDi/x96rhT6zc8PcUO0HU7TUAXis1z0wL5MwFkZWy1
-         vUDS82Pw6IB9ykhygoQuRpwWQyaKf6fN4SWGtfovW/ayfz5r2W+Ty3O/OFjCO4dsJA6s
-         RdZ6xRtz1ZiXuoH0zpmxX0So8HAXBAlUJsZ8zf4dDPQVZsoHa0obuQRy5+qIJk4I0A+n
-         OkNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776643913; x=1777248713;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=7xQF2kYy2mawb58IYNylnXRWgmSB/uAYm2CtIu/gV9E=;
-        b=HeLZCbEA4U0H6MMdr5+DjvGTRxCNxW5tYKTXnCPGa4ccR6yqg/yccjpr6nBUiWZvPg
-         DFdO/fvTnnykZhdcBVDIHiW8H/4QlGYJf2gKRm6FhWbPvbxobpE8y0hnlamlxzSmgmuA
-         5ajzQbmYxOPtJwVeFFzL9o/Er8z8HiVKX64Zb4v5NaqT76QPXCRyhzN83nyx1EjxwFb2
-         JI+MPs45xo2TD8Rnkr0xl+IjDHyqPpUyOGVcn0MJSkggZDp46N1AX9KEvN3hSP5VoFL8
-         hvlP/7BMlMDgRABy8CmjLJlEZswGwYTSecoO2GUEDcAUo+v5ZWu4NS/CqWq9Q5uxnn25
-         erGQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/vXgK3rL4Dw2b6jK9JOHG8LXpuKqvwjvz0OJfYJeL7fErIP9ojITMb9tgIo6e0dpRkPFSIu2E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwpsDPxHYhMXmjB2jin2LrBN7kl6eOijomOzdd0sunGc5bvTkjZ
-	VnXZC62n3yP+AeR2DvJeGauvll/tGFooprcGCe9wJqwq+Ij5gpBu7+Ll
-X-Gm-Gg: AeBDieva/VdDzvKby82EOmjKYPc53hKM0fe6GQ3bOLBD5HciqIj3OOAgNcVFLLD3975
-	gqAuzfyHZe4lUg6fG2fWE/E4yx6pkiqaC3AvbTsaVR5EQHPj8J/tl69QTTxTzNyVYIw2f/0m5fJ
-	Eyvc00MSnlds8hDiWqBcXoL1cQuV1tkgXhHfDUst00CzbHurHGInwBfIFVWzBODZv969jGdyqH4
-	azUzuhrLXTeTs7wu/fUjq5sQDoE3kbTUIHph01OzrOXZCPe0aPTy/9Y+x2Lkz3mEM6qA1sdM+OG
-	2yRqtBN73MTa4jcPfKfjc8TQSL14aMIycMpH9Ov4pcgtzhZ3W8VAsu0tViBHPW+NDKmAhkUvmY9
-	EmeeERCbErUFeFlUUyVMEwon+I9c6HwKyJf/lAv+zWBnOhZXI5KPaShgd/0rItZZs0ueElccMEx
-	6rBjfFbzD9NIylZTaSa5xBTsHDQX2N4xGd5d3l0i++jhIdnfDHbG80TqED0oOZmbp8klv1IL+2h
-	EfDJuSf+fQER/+ThYvdJQUePa7fn18=
-X-Received: by 2002:a05:620a:2914:b0:8da:cfe6:c67c with SMTP id af79cd13be357-8e7918a348amr1630968185a.28.1776643913509;
-        Sun, 19 Apr 2026 17:11:53 -0700 (PDT)
-Received: from server0 (c-68-48-65-54.hsd1.mi.comcast.net. [68.48.65.54])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8e7d5fe98dcsm697020185a.7.2026.04.19.17.11.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 19 Apr 2026 17:11:52 -0700 (PDT)
-From: Michael Bommarito <michael.bommarito@gmail.com>
-To: Steve French <sfrench@samba.org>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	linux-cifs@vger.kernel.org
-Cc: Paulo Alcantara <pc@manguebit.org>,
-	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Tom Talpey <tom@talpey.com>,
-	Bharath SM <bharathsm@microsoft.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] smb: client: validate the whole DACL before rewriting it in cifsacl
-Date: Sun, 19 Apr 2026 20:11:31 -0400
-Message-ID: <20260420001131.2865776-1-michael.bommarito@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260416193325.2950619-1-michael.bommarito@gmail.com>
-References: <20260416193325.2950619-1-michael.bommarito@gmail.com>
+	s=arc-20240116; t=1776643990; c=relaxed/simple;
+	bh=miPJmafxGYa/0nBAUppkC8i1uJWsAyk0QLELmzPA81s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GVlj8gbZpeFROJ5G5w9kGnMpwMrnxsKQfQhrDs1oW2mEmb2g6NpX0LFiyQleEhjPO81TfBGmEHbQSOV4Qok2VEun6gqaINazwmA0wfys3gNdbAJ2ct4znCUTpZRgC1yUf3ozRUfCUIFNBD6soglDDJIjFV9HaIbijz+hT50muC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=YMCfY0nv; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63JJjOLY2986195;
+	Mon, 20 Apr 2026 00:12:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=aZBdIt
+	kfAsnP3W4OIPRwFKg8WBJUd9YO47VwRzMsse4=; b=YMCfY0nvUOHNNv1jrxoaGT
+	HCdM/0wahsGi1rWOXRjIBLkUl6sfW84NefA+Q6ax5sIY9GgaxO2g3zF6yTBh6Lvz
+	/8m10na03tz6nLUl4rXq/FBOOJbWEbGhd8Rv7iRckYfBXf1csEREf1mUGgzILOTq
+	zT0BoAJqyJ4L6TZEQFjNVKJbfL2lOYQUzwFvrtsvaZI+NQwY+O13gSqDe3/BvdiC
+	KM5oZtUQGS5dB6AuQPWm9HeWoAzXURJFPrvSeu9NfPapm/TYmdtqeNCrlKvJUVI8
+	rxIFCoXFgaH1bvh2xYU8UHqlDZNg0v5a3V4h9EJLMqGPUs9826k3zryY8erlcV8g
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dm2j6dj2m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 20 Apr 2026 00:12:45 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63K05Ktf031623;
+	Mon, 20 Apr 2026 00:12:44 GMT
+Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dmpgg2mms-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 20 Apr 2026 00:12:44 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
+	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63K0CgYo27918956
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 20 Apr 2026 00:12:42 GMT
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3BE1B58058;
+	Mon, 20 Apr 2026 00:12:42 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7AB205805B;
+	Mon, 20 Apr 2026 00:12:40 +0000 (GMT)
+Received: from [9.61.89.198] (unknown [9.61.89.198])
+	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 20 Apr 2026 00:12:40 +0000 (GMT)
+Message-ID: <dcc2b7b2-47ac-475d-af6b-d5c2f2b812b6@linux.ibm.com>
+Date: Sun, 19 Apr 2026 17:12:39 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2] ibmveth: Disable GSO for packets with small MSS
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+        pabeni@redhat.com, horms@kernel.org, bjking1@linux.ibm.com,
+        haren@linux.ibm.com, ricklind@linux.ibm.com, maddy@linux.ibm.com,
+        mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org,
+        stable@vger.kernel.org, shaik.abdulla1@ibm.com, naveedaus@in.ibm.com
+References: <20260417172910.81433-1-mmc@linux.ibm.com>
+ <20260418175451.122193-1-kuba@kernel.org>
+Content-Language: en-US
+From: mingming cao <mmc@linux.ibm.com>
+In-Reply-To: <20260418175451.122193-1-kuba@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDE5MDI1NSBTYWx0ZWRfXywkL4mbph7pn
+ y9NDpS8ktWEK/Wt4Fwq5/CuAM97+q0nNiMhqGZaFuUiQw9x1UCKTP/kkMPoF7J1fRI9KDZWut9T
+ P6MiRMGKehdZtNTgQLsvcMnwuWQDrOpTYJd8baM/IM5HZc7QQd4ojtHZTXuVNVHVYe0Y4LHkUy8
+ NLXDUIQyljIQdV/2gUNYnMZnRxeV9F4/XSM3cTdU4uyborwffjqa3yZNNJ+REwSF8X0BXgHHV9D
+ XURHdprmg7h/F8Lyp/aDfZN4bs547Ay8rRr/LF4UFwawjc0/8UfBU0kWrbasJrnjrLUhifaP5fo
+ yZ3oB8TRpMysbe1KB3sdrIgAgH7raUfWm3i2SmhibM2HlOo2RxuwTzeE2HVK86A1TgDWoBud/Ck
+ 2+Gnh8NnRboVZPUgCc6J5xTbI1lpjtjH+rGkQbUGfehvw0910gk2l0UApS1sayntunEe6ZKUeP5
+ GxSKH4WS5DraFJaozAQ==
+X-Proofpoint-GUID: t6hNByzCcWjgl0WInHRfkkYPE8JpykPZ
+X-Authority-Analysis: v=2.4 cv=SOJykuvH c=1 sm=1 tr=0 ts=69e56f7d cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=sDADSKU7Kdt2IJdVO5YA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: e1yCFhD-mX4ZlgjEllJFepkfqH0W5lmS
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-19_07,2026-04-17_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 spamscore=0 priorityscore=1501 lowpriorityscore=0
+ clxscore=1015 phishscore=0 suspectscore=0 adultscore=0 impostorscore=0
+ bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2604070000
+ definitions=main-2604190255
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[manguebit.org,gmail.com,microsoft.com,talpey.com,vger.kernel.org];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-238672-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	TAGGED_FROM(0.00)[bounces-238673-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[ibm.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[michaelbommarito@gmail.com,stable@vger.kernel.org];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.ibm.com:mid];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mmc@linux.ibm.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 0B540425E14
+	RCVD_COUNT_SEVEN(0.00)[11]
+X-Rspamd-Queue-Id: B0F45425E41
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-build_sec_desc() and id_mode_to_cifs_acl() derive a DACL pointer from a
-server-supplied dacloffset and then use the incoming ACL to rebuild the
-chmod/chown security descriptor.
 
-The original fix only checked that the struct smb_acl header fits before
-reading dacl_ptr->size or dacl_ptr->num_aces.  That avoids the immediate
-header-field OOB read, but the rewrite helpers still walk ACEs based on
-pdacl->num_aces with no structural validation of the incoming DACL body.
+On 4/18/26 10:54 AM, Jakub Kicinski wrote:
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
 
-A malicious server can return a truncated DACL that still contains a
-header, claims one or more ACEs, and then drive
-replace_sids_and_copy_aces() or set_chmod_dacl() past the validated
-extent while they compare or copy attacker-controlled ACEs.
+Thanks for the review and the questions!
 
-Factor the DACL structural checks into validate_dacl(), extend them to
-validate each ACE against the DACL bounds, and use the shared validator
-before the chmod/chown rebuild paths.  parse_dacl() reuses the same
-validator so the read-side parser and write-side rewrite paths agree on
-what constitutes a well-formed incoming DACL.
+> ---
+> ibmveth: Disable GSO for packets with small MSS
+>
+> This commit adds an ndo_features_check callback to the ibmveth driver to
+> disable segmentation offload when the MSS is less than 224 bytes. This
+> prevents physical adapters in SEA configurations from freezing when given
+> small MSS packets.
+>
+>> diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
+>> --- a/drivers/net/ethernet/ibm/ibmveth.c
+>> +++ b/drivers/net/ethernet/ibm/ibmveth.c
+> [ ... ]
+>
+>> @@ -1756,6 +1756,25 @@ static int ibmveth_set_mac_addr(struct net_device *dev, void *p)
+>>   	return 0;
+>>   }
+>>   
+>> +static netdev_features_t ibmveth_features_check(struct sk_buff *skb,
+>> +						struct net_device *dev,
+>> +						netdev_features_t features)
+>> +{
+>> +	/* Some physical adapters do not support segmentation offload with
+>> +	 * MSS < 224. Disable GSO for such packets to avoid adapter freeze.
+>> +	 */
+>> +	if (skb_is_gso(skb)) {
+> The commit message mentions this matches the ibmvnic hardware errata from
+> commit f10b09ef687f. That commit disabled GSO for both gso_size < 224 and
+> gso_segs == 1.
+>
+> By omitting the check for skb_shinfo(skb)->gso_segs == 1, could a
+> single-segment GSO packet still cause the adapter to freeze?
+Good question. Unlike ibmvnic, ibmveth does not need to check for 
+single-segment GSO packets (gso_segs == 1).
 
-Fixes: bc3e9dd9d104 ("cifs: Change SIDs in ACEs while transferring file ownership.")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-6
-Assisted-by: Codex:gpt-5-4
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
----
-Changes in v2:
-Validate the whole incoming DACL before the chmod/chown rewrite helpers
-use num_aces or ACE contents, not just the smb_acl header fields.
-Factor the structural checks into validate_dacl() and reuse the same
-validator in parse_dacl() so the read-side parser and rewrite paths stay
-in sync.
-Reran UML synthetic build_sec_desc() tests and confirmed that both the
-exact-end dacloffset case and the header-only num_aces case now fail
-with -EINVAL, while an empty valid DACL still succeeds.
+In ibmvnic, the firmware processes all GSO packets, including 
+single-segment ones, through the same LSO code path. This means even 
+gso_segs == 1 packets can trigger the hardware errata.
 
- fs/smb/client/cifsacl.c | 116 +++++++++++++++++++++++++++++-----------
- 1 file changed, 85 insertions(+), 31 deletions(-)
+In ibmveth, the PowerVM hypervisor intelligently bypasses the LSO path 
+for single-segment packets. When gso_segs == 1, the hypervisor treats 
+the packet as a regular (non-GSO) packet and transmits it directly 
+without invoking the problematic hardware segmentation logic. Therefore, 
+single-segment GSO packets never reach the code path that causes the freeze.
 
-diff --git a/fs/smb/client/cifsacl.c b/fs/smb/client/cifsacl.c
-index c920039d733c..cb4060ba5e31 100644
---- a/fs/smb/client/cifsacl.c
-+++ b/fs/smb/client/cifsacl.c
-@@ -758,6 +758,77 @@ static void dump_ace(struct smb_ace *pace, char *end_of_acl)
- }
- #endif
- 
-+static int validate_dacl(struct smb_acl *pdacl, char *end_of_acl)
-+{
-+	int i, ace_hdr_size, ace_size, min_ace_size;
-+	u16 dacl_size, num_aces;
-+	char *acl_base, *end_of_dacl;
-+	struct smb_ace *pace;
-+
-+	if (!pdacl)
-+		return 0;
-+
-+	if (end_of_acl < (char *)pdacl + sizeof(struct smb_acl)) {
-+		cifs_dbg(VFS, "ACL too small to parse DACL\n");
-+		return -EINVAL;
-+	}
-+
-+	dacl_size = le16_to_cpu(pdacl->size);
-+	if (dacl_size < sizeof(struct smb_acl) ||
-+	    end_of_acl < (char *)pdacl + dacl_size) {
-+		cifs_dbg(VFS, "ACL too small to parse DACL\n");
-+		return -EINVAL;
-+	}
-+
-+	num_aces = le16_to_cpu(pdacl->num_aces);
-+	if (!num_aces)
-+		return 0;
-+
-+	ace_hdr_size = offsetof(struct smb_ace, sid) +
-+		offsetof(struct smb_sid, sub_auth);
-+	min_ace_size = ace_hdr_size + sizeof(__le32);
-+	if (num_aces > (dacl_size - sizeof(struct smb_acl)) / min_ace_size) {
-+		cifs_dbg(VFS, "ACL too small to parse DACL\n");
-+		return -EINVAL;
-+	}
-+
-+	end_of_dacl = (char *)pdacl + dacl_size;
-+	acl_base = (char *)pdacl;
-+	ace_size = sizeof(struct smb_acl);
-+
-+	for (i = 0; i < num_aces; ++i) {
-+		if (end_of_dacl - acl_base < ace_size) {
-+			cifs_dbg(VFS, "ACL too small to parse ACE\n");
-+			return -EINVAL;
-+		}
-+
-+		pace = (struct smb_ace *)(acl_base + ace_size);
-+		acl_base = (char *)pace;
-+
-+		if (end_of_dacl - acl_base < ace_hdr_size ||
-+		    pace->sid.num_subauth == 0 ||
-+		    pace->sid.num_subauth > SID_MAX_SUB_AUTHORITIES) {
-+			cifs_dbg(VFS, "ACL too small to parse ACE\n");
-+			return -EINVAL;
-+		}
-+
-+		ace_size = ace_hdr_size + sizeof(__le32) * pace->sid.num_subauth;
-+		if (end_of_dacl - acl_base < ace_size ||
-+		    le16_to_cpu(pace->size) < ace_size) {
-+			cifs_dbg(VFS, "ACL too small to parse ACE\n");
-+			return -EINVAL;
-+		}
-+
-+		ace_size = le16_to_cpu(pace->size);
-+		if (end_of_dacl - acl_base < ace_size) {
-+			cifs_dbg(VFS, "ACL too small to parse ACE\n");
-+			return -EINVAL;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
- static void parse_dacl(struct smb_acl *pdacl, char *end_of_acl,
- 		       struct smb_sid *pownersid, struct smb_sid *pgrpsid,
- 		       struct cifs_fattr *fattr, bool mode_from_special_sid)
-@@ -765,7 +836,7 @@ static void parse_dacl(struct smb_acl *pdacl, char *end_of_acl,
- 	int i;
- 	u16 num_aces = 0;
- 	int acl_size;
--	char *acl_base;
-+	char *acl_base, *end_of_dacl;
- 	struct smb_ace **ppace;
- 
- 	/* BB need to add parm so we can store the SID BB */
-@@ -777,12 +848,8 @@ static void parse_dacl(struct smb_acl *pdacl, char *end_of_acl,
- 		return;
- 	}
- 
--	/* validate that we do not go past end of acl */
--	if (end_of_acl < (char *)pdacl + sizeof(struct smb_acl) ||
--	    end_of_acl < (char *)pdacl + le16_to_cpu(pdacl->size)) {
--		cifs_dbg(VFS, "ACL too small to parse DACL\n");
-+	if (validate_dacl(pdacl, end_of_acl))
- 		return;
--	}
- 
- 	cifs_dbg(NOISY, "DACL revision %d size %d num aces %d\n",
- 		 le16_to_cpu(pdacl->revision), le16_to_cpu(pdacl->size),
-@@ -793,6 +860,7 @@ static void parse_dacl(struct smb_acl *pdacl, char *end_of_acl,
- 	   user/group/other have no permissions */
- 	fattr->cf_mode &= ~(0777);
- 
-+	end_of_dacl = (char *)pdacl + le16_to_cpu(pdacl->size);
- 	acl_base = (char *)pdacl;
- 	acl_size = sizeof(struct smb_acl);
- 
-@@ -800,35 +868,15 @@ static void parse_dacl(struct smb_acl *pdacl, char *end_of_acl,
- 	if (num_aces > 0) {
- 		umode_t denied_mode = 0;
- 
--		if (num_aces > (le16_to_cpu(pdacl->size) - sizeof(struct smb_acl)) /
--				(offsetof(struct smb_ace, sid) +
--				 offsetof(struct smb_sid, sub_auth) + sizeof(__le16)))
--			return;
--
- 		ppace = kmalloc_objs(struct smb_ace *, num_aces);
- 		if (!ppace)
- 			return;
- 
- 		for (i = 0; i < num_aces; ++i) {
--			if (end_of_acl - acl_base < acl_size)
--				break;
--
- 			ppace[i] = (struct smb_ace *) (acl_base + acl_size);
--			acl_base = (char *)ppace[i];
--			acl_size = offsetof(struct smb_ace, sid) +
--				offsetof(struct smb_sid, sub_auth);
--
--			if (end_of_acl - acl_base < acl_size ||
--			    ppace[i]->sid.num_subauth == 0 ||
--			    ppace[i]->sid.num_subauth > SID_MAX_SUB_AUTHORITIES ||
--			    (end_of_acl - acl_base <
--			     acl_size + sizeof(__le32) * ppace[i]->sid.num_subauth) ||
--			    (le16_to_cpu(ppace[i]->size) <
--			     acl_size + sizeof(__le32) * ppace[i]->sid.num_subauth))
--				break;
- 
- #ifdef CONFIG_CIFS_DEBUG2
--			dump_ace(ppace[i], end_of_acl);
-+			dump_ace(ppace[i], end_of_dacl);
- #endif
- 			if (mode_from_special_sid &&
- 			    (compare_sids(&(ppace[i]->sid),
-@@ -870,6 +918,7 @@ static void parse_dacl(struct smb_acl *pdacl, char *end_of_acl,
- 				(void *)ppace[i],
- 				sizeof(struct smb_ace)); */
- 
-+			acl_base = (char *)ppace[i];
- 			acl_size = le16_to_cpu(ppace[i]->size);
- 		}
- 
-@@ -1293,10 +1342,9 @@ static int build_sec_desc(struct smb_ntsd *pntsd, struct smb_ntsd *pnntsd,
- 	dacloffset = le32_to_cpu(pntsd->dacloffset);
- 	if (dacloffset) {
- 		dacl_ptr = (struct smb_acl *)((char *)pntsd + dacloffset);
--		if (end_of_acl < (char *)dacl_ptr + le16_to_cpu(dacl_ptr->size)) {
--			cifs_dbg(VFS, "Server returned illegal ACL size\n");
--			return -EINVAL;
--		}
-+		rc = validate_dacl(dacl_ptr, end_of_acl);
-+		if (rc)
-+			return rc;
- 	}
- 
- 	owner_sid_ptr = (struct smb_sid *)((char *)pntsd +
-@@ -1662,6 +1710,12 @@ id_mode_to_cifs_acl(struct inode *inode, const char *path, __u64 *pnmode,
- 		dacloffset = le32_to_cpu(pntsd->dacloffset);
- 		if (dacloffset) {
- 			dacl_ptr = (struct smb_acl *)((char *)pntsd + dacloffset);
-+			rc = validate_dacl(dacl_ptr, (char *)pntsd + secdesclen);
-+			if (rc) {
-+				kfree(pntsd);
-+				cifs_put_tlink(tlink);
-+				return rc;
-+			}
- 			if (mode_from_sid)
- 				nsecdesclen +=
- 					le16_to_cpu(dacl_ptr->num_aces) * sizeof(struct smb_ace);
--- 
-2.53.0
+This architectural difference is why ibmvnic needs the gso_segs check 
+but ibmveth does not.
+>
+>> +		if (skb_shinfo(skb)->gso_size < IBMVETH_MIN_LSO_MSS) {
+>> +			netdev_warn_once(dev,
+>> +					 "MSS %u too small for LSO, disabling GSO\n",
+>> +					 skb_shinfo(skb)->gso_size);
+>> +			features &= ~NETIF_F_GSO_MASK;
+>> +		}
+>> +	}
+>> +
+>> +	return features;
+> When implementing a custom ndo_features_check callback, netif_skb_features()
+> will bypass the standard dflt_features_check() function. Does this mean
+> vlan_features_check() is no longer called for this driver?
+>
+> If vlan_features_check() is skipped, multi-tagged (QinQ) VLAN packets
+> might retain GSO and protocol-specific checksum offloads that the hardware
+> parser cannot handle.
+>
+> Should this return vlan_features_check(skb, features) instead?
+
+You’re correct about the interaction with the default feature filtering. 
+With a custom ndo_features_check(), the standard dflt_features_check() 
+path is bypassed, so vlan_features_check() must be called explicitly to 
+preserve existing VLAN/QinQ and checksum handling.
+
+Thank you for catching this! I'll send v3 shortly with:
+1. The vlan_features_check() call added
+2. Updated commit message explaining why gso_segs check is not needed 
+for ibmveth
+
+Best regards,
+
+Mingming
+
+
+>> +}
 
