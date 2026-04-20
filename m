@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-239819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239281-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CP7iG55o5mnBvwEAu9opvQ
-	(envelope-from <stable+bounces-239819-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:55:42 +0200
+	id AFx4IW1W5mkDuwEAu9opvQ
+	(envelope-from <stable+bounces-239281-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:38:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBA1B43248A
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:55:41 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E32F42FBDE
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:38:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8DEED33FAFF0
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:08:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4127B31FB8E0
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:44:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 829D533B6EF;
-	Mon, 20 Apr 2026 16:08:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE1B133DEFE;
+	Mon, 20 Apr 2026 15:44:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MLSXDH4+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O3TLhwyu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43ED92BD11;
-	Mon, 20 Apr 2026 16:08:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEB6A33D6F9;
+	Mon, 20 Apr 2026 15:44:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701297; cv=none; b=YydeG53ZeE9fgq89y3JjTal4neUuLCUr79dqXqXqhugq8CtwkNaYI5Uy8bMbG6O/UmxXjU/28wEE7mJQdVuMKoFdBedBHQvWkACqADuXSunn3++wM4dC2XKI/WJJTbQ19/dKO2ZwlOeyYal2xfaISYxkeXZJ9zeNM6AmJwCK40Q=
+	t=1776699847; cv=none; b=HWXMbPL9mdzJGf54FFPmKkVcfNy72UKYcKj55fYNZCiTw0HmKzgo5vg/AwMzbmoXbRS7K2x9sgWZImvshcuDVYZkhz22MLf2uuR21DQ6JS/Vjg2WtNyckPP5n+62WKnEB1HbrnEyxp3XSG3B5Wi4vOps8NBi7PEqxNx2Es/dLww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701297; c=relaxed/simple;
-	bh=FyfQukFLVaBnByb5doIgFxOUSWiISTJM6hgwnuqPQG8=;
+	s=arc-20240116; t=1776699847; c=relaxed/simple;
+	bh=NsF4Las+Qylg6pE5DafJw9uyqEYAuiWve74xlp8ldKU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ccxrPOcKtAtw2wbH1CCZ6noiGszLxo17peD70PfC9Zxl0Xp1uKPw9ckRmntfbJeIQEVzFZrxspxnDk+PQgE79rfHC7En2pop0Vg/EOTeDRv5e/T2qqhgiXbgFZI4932IOE9jU2keddzilpo1Ly7gvZxrhJ0dnn5yzuuqKgVraDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MLSXDH4+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9287BC19425;
-	Mon, 20 Apr 2026 16:08:16 +0000 (UTC)
+	 MIME-Version; b=uXvleuw7UhWBtj0auE04seY+e10eh6QdlHwLYTSZKohPqTvOe/ic2JzMtDDbfzVxlnNvIsszNQGAnn/CstVS89527WR62GiniIr8qLY6UwAX1BrFlWReK/MKOWkqZoBmMvUqQuP+4Yh9DUq+3+WRWwfQ7zRVIaPRfIMbRROxj6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O3TLhwyu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA87DC2BCB6;
+	Mon, 20 Apr 2026 15:44:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701296;
-	bh=FyfQukFLVaBnByb5doIgFxOUSWiISTJM6hgwnuqPQG8=;
+	s=korg; t=1776699847;
+	bh=NsF4Las+Qylg6pE5DafJw9uyqEYAuiWve74xlp8ldKU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MLSXDH4+T7+e/lzzZ5HvaoDVZLnP8vXPpwASRvhiDopj4vFTBlv/SZc7ELNing5zL
-	 ZnxGWePfzWq6A3C8tC15HzOFGJpXaE2xyukmxsxZi/rzKIKGRGBwXp2C0QAV0PR176
-	 EICN60l4omWqf8wHBEY36qXPokcm7Mogc3MeGgFQ=
+	b=O3TLhwyuXuxRGVoXuw51G79/zbddgC4XBRA45cofYDu8EC6rlaeTOuTba4fDwcGg4
+	 lDmzFmpXGgBJB3EKmwjLSkWtPL3dYPF7WUC/t+A62OE/nAOGmxEdXadua/aY7fOxD4
+	 MgKmVP7KS6FxJuR8kJDC8C1wwUSFjIaLfT9cn+Zw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaoqiang Xiong <xxiong@redhat.com>,
-	Michal Schmidt <mschmidt@redhat.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 059/162] ixgbevf: add missing negotiate_features op to Hyper-V ops table
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <smfrench@gmail.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Tom Talpey <tom@talpey.com>,
+	linux-cifs@vger.kernel.org,
+	stable@kernel.org,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 7.0 20/76] ksmbd: validate EaNameLength in smb2_get_ea()
 Date: Mon, 20 Apr 2026 17:41:31 +0200
-Message-ID: <20260420153929.175492189@linuxfoundation.org>
+Message-ID: <20260420153911.560094913@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
-References: <20260420153927.006696811@linuxfoundation.org>
+In-Reply-To: <20260420153910.810034134@linuxfoundation.org>
+References: <20260420153910.810034134@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,110 +72,82 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,chromium.org,talpey.com,vger.kernel.org,microsoft.com];
+	TAGGED_FROM(0.00)[bounces-239281-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239819-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email]
-X-Rspamd-Queue-Id: BBA1B43248A
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[chromium.org:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,talpey.com:email]
+X-Rspamd-Queue-Id: 3E32F42FBDE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Schmidt <mschmidt@redhat.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit 4821d563cd7f251ae728be1a6d04af82a294a5b9 ]
+commit 66751841212c2cc196577453c37f7774ff363f02 upstream.
 
-Commit a7075f501bd3 ("ixgbevf: fix mailbox API compatibility by
-negotiating supported features") added the .negotiate_features callback
-to ixgbe_mac_operations and populated it in ixgbevf_mac_ops, but forgot
-to add it to ixgbevf_hv_mac_ops. This leaves the function pointer NULL
-on Hyper-V VMs.
+smb2_get_ea() reads ea_req->EaNameLength from the client request and
+passes it directly to strncmp() as the comparison length without
+verifying that the length of the name really is the size of the input
+buffer received.
 
-During probe, ixgbevf_negotiate_api() calls ixgbevf_set_features(),
-which unconditionally dereferences hw->mac.ops.negotiate_features().
-On Hyper-V this results in a NULL pointer dereference:
+Fix this up by properly checking the size of the name based on the value
+received and the overall size of the request, to prevent a later
+strncmp() call to use the length as a "trusted" size of the buffer.
+Without this check, uninitialized heap values might be slowly leaked to
+the client.
 
-  BUG: kernel NULL pointer dereference, address: 0000000000000000
-  [...]
-  Hardware name: Microsoft Corporation Virtual Machine/Virtual Machine [...]
-  Workqueue: events work_for_cpu_fn
-  RIP: 0010:0x0
-  [...]
-  Call Trace:
-   ixgbevf_negotiate_api+0x66/0x160 [ixgbevf]
-   ixgbevf_sw_init+0xe4/0x1f0 [ixgbevf]
-   ixgbevf_probe+0x20f/0x4a0 [ixgbevf]
-   local_pci_probe+0x50/0xa0
-   work_for_cpu_fn+0x1a/0x30
-   [...]
-
-Add ixgbevf_hv_negotiate_features_vf() that returns -EOPNOTSUPP and
-wire it into ixgbevf_hv_mac_ops. The caller already handles -EOPNOTSUPP
-gracefully.
-
-Fixes: a7075f501bd3 ("ixgbevf: fix mailbox API compatibility by negotiating supported features")
-Reported-by: Xiaoqiang Xiong <xxiong@redhat.com>
-Closes: https://issues.redhat.com/browse/RHEL-155455
-Assisted-by: Claude:claude-4.6-opus-high Cursor
-Tested-by: Xiaoqiang Xiong <xxiong@redhat.com>
-Signed-off-by: Michal Schmidt <mschmidt@redhat.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Namjae Jeon <linkinjeon@kernel.org>
+Cc: Steve French <smfrench@gmail.com>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: linux-cifs@vger.kernel.org
+Cc: <stable@kernel.org>
+Assisted-by: gregkh_clanker_t1000
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ixgbevf/vf.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ fs/smb/server/smb2pdu.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/ixgbevf/vf.c b/drivers/net/ethernet/intel/ixgbevf/vf.c
-index 708d5dd921acc..70dfda13b7885 100644
---- a/drivers/net/ethernet/intel/ixgbevf/vf.c
-+++ b/drivers/net/ethernet/intel/ixgbevf/vf.c
-@@ -709,6 +709,12 @@ static int ixgbevf_negotiate_features_vf(struct ixgbe_hw *hw, u32 *pf_features)
- 	return err;
- }
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -4716,6 +4716,11 @@ static int smb2_get_ea(struct ksmbd_work
  
-+static int ixgbevf_hv_negotiate_features_vf(struct ixgbe_hw *hw,
-+					    u32 *pf_features)
-+{
-+	return -EOPNOTSUPP;
-+}
+ 		ea_req = (struct smb2_ea_info_req *)((char *)req +
+ 						     le16_to_cpu(req->InputBufferOffset));
 +
- /**
-  *  ixgbevf_set_vfta_vf - Set/Unset VLAN filter table address
-  *  @hw: pointer to the HW structure
-@@ -1142,6 +1148,7 @@ static const struct ixgbe_mac_operations ixgbevf_hv_mac_ops = {
- 	.setup_link		= ixgbevf_setup_mac_link_vf,
- 	.check_link		= ixgbevf_hv_check_mac_link_vf,
- 	.negotiate_api_version	= ixgbevf_hv_negotiate_api_version_vf,
-+	.negotiate_features	= ixgbevf_hv_negotiate_features_vf,
- 	.set_rar		= ixgbevf_hv_set_rar_vf,
- 	.update_mc_addr_list	= ixgbevf_hv_update_mc_addr_list_vf,
- 	.update_xcast_mode	= ixgbevf_hv_update_xcast_mode,
--- 
-2.53.0
-
++		if (le32_to_cpu(req->InputBufferLength) <
++		    offsetof(struct smb2_ea_info_req, name) +
++		    ea_req->EaNameLength)
++			return -EINVAL;
+ 	} else {
+ 		/* need to send all EAs, if no specific EA is requested*/
+ 		if (le32_to_cpu(req->Flags) & SL_RETURN_SINGLE_ENTRY)
 
 
 
