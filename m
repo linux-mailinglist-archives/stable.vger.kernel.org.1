@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-239508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239273-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gD3SH+he5mndvQEAu9opvQ
-	(envelope-from <stable+bounces-239508-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:14:16 +0200
+	id eHqBLN1c5mmtvAEAu9opvQ
+	(envelope-from <stable+bounces-239273-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:05:33 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10848430C9B
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:14:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22170430862
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:05:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8582331C072D
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:53:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 912913603615
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:43:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AB682E11C7;
-	Mon, 20 Apr 2026 15:53:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40D03336896;
+	Mon, 20 Apr 2026 15:43:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VwEPd3ED"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="USF/dAPJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1205A2FE56A;
-	Mon, 20 Apr 2026 15:53:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0272832ED54;
+	Mon, 20 Apr 2026 15:43:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700433; cv=none; b=ukbL9sCO2G+NA4HDDXTRFPlXJ31CoeVl8SS/jv7i/HLamw8p3Z7+stLLeCHOGf0wxSvFYv7j6eUOJfFO/3Gg2QeuiY0SBIrDH9dt7G5kJxeY3PvluOrU/J/8e3p0i/lIXxCrxrqmWbNxM3e/LrdBhDYlZg/CwzNDYwWnfLR+gjc=
+	t=1776699827; cv=none; b=mrLrJT27qfDtrdVj+FM9nR74ao3BUcQNpRRvKuR5FhCFhy0S1boNpjUvhQVx6/7wkh3ulAj2uYhT7hB+kTFci86kvLI/hn7oceZUFxU7MKhnQtbfNezC2QVv3M76gQASKl7TzKifiyMK1uztPr7p/zfXhleccyqE2hwmfgud7n4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700433; c=relaxed/simple;
-	bh=WorR7y9zKs1+jOH/LoixRz6BGuvaURLWFGmM4LP64Qk=;
+	s=arc-20240116; t=1776699827; c=relaxed/simple;
+	bh=Hkn/1ibxDqRanRKXzlPtRd6CJ5ZxZKXTqpoxfm+FIeM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mb+VTHDft16iBlcbqvbwvMAgdIPJ20ruDHJnfaW/tkwTZ3h2GpbMNRMmb/80k99w5eZA4SdNvGCfCXjh1YiD0IPUyrtVxPT+GKwRiyZuT7GPYRbXaftksNkU4JanrOKz6ZODAafaa55vCKbyP9LIkrmjbu3DWSJGvIKB32ZZsvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VwEPd3ED; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DA30C19425;
-	Mon, 20 Apr 2026 15:53:52 +0000 (UTC)
+	 MIME-Version; b=g+DwfVWLVn0WKetJcijEtpR8PoKu64weCJmLUuJFtGJuhwGdm5M+iW/gAh+LnQOaGdHhgdo4J933osP0EPQOc1DzzTAqxXN5xSgMa/boK0BMAx8owgekBlaSZ4ii3WTcXCuO9RMiPkfVwHvfAem6PKVliYr/W+2cqIzbJKdShFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=USF/dAPJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59F67C19425;
+	Mon, 20 Apr 2026 15:43:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700433;
-	bh=WorR7y9zKs1+jOH/LoixRz6BGuvaURLWFGmM4LP64Qk=;
+	s=korg; t=1776699826;
+	bh=Hkn/1ibxDqRanRKXzlPtRd6CJ5ZxZKXTqpoxfm+FIeM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VwEPd3EDjxk1YuJcQ2QdMDNLYRCZympaSn2KYB1cW85vToSZGW4i6BVOGg6uExHPa
-	 J+bUPUpNZDFeZmIZUsPnsfqfm/LtI5G0cn0U8clL0oA+fNKWOFF3IGBq2kO/dRQ+z3
-	 48c/tpp5aLn64/h4JMjpCjgVEWvv/e52BgnZB5Ec=
+	b=USF/dAPJb5e05no8IVu+MmQzMGGkGvHwzSWpQIlRL2Efp4+VbIP9MLrsvA8zVZmTi
+	 uE7vt86VkQ2MCqW3qu4YKXshAbOtPxojQKztujVZWLVoTGVKXfw3NbP9OdwRg4+LYY
+	 SbJ0vEv/kfdvUrqIEFref0I4yo4mEUgekLtD3nSw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Clemens Ladisch <clemens@ladisch.de>,
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
 	stable <stable@kernel.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Lin YuChen <starpt.official@gmail.com>
-Subject: [PATCH 6.19 143/220] staging: rtl8723bs: initialize le_tmp64 in rtw_BIP_verify()
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 7.0 13/76] ALSA: fireworks: bound device-supplied status before string array lookup
 Date: Mon, 20 Apr 2026 17:41:24 +0200
-Message-ID: <20260420153939.177014551@linuxfoundation.org>
+Message-ID: <20260420153911.305275121@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
-References: <20260420153934.013228280@linuxfoundation.org>
+In-Reply-To: <20260420153910.810034134@linuxfoundation.org>
+References: <20260420153910.810034134@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,82 +67,88 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239508-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,linaro.org,gmail.com];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239273-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 10848430C9B
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,ladisch.de:email]
+X-Rspamd-Queue-Id: 22170430862
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lin YuChen <starpt.official@gmail.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit 8c964b82a4e97ec7f25e17b803ee196009b38a57 upstream.
+commit 07704bbf36f57e4379e4cadf96410dab14621e3b upstream.
 
-Initialize le_tmp64 to zero in rtw_BIP_verify() to prevent using
-uninitialized data.
+The status field in an EFW response is a 32-bit value supplied by the
+firewire device.  efr_status_names[] has 17 entries so a status value
+outside that range goes off into the weeds when looking at the %s value.
 
-Smatch warns that only 6 bytes are copied to this 8-byte (u64)
-variable, leaving the last two bytes uninitialized:
+Even worse, the status could return EFR_STATUS_INCOMPLETE which is
+0x80000000, and is obviously not in that array of potential strings.
 
-drivers/staging/rtl8723bs/core/rtw_security.c:1308 rtw_BIP_verify()
-warn: not copying enough bytes for '&le_tmp64' (8 vs 6 bytes)
+Fix this up by properly bounding the index against the array size and
+printing "unknown" if it's not recognized.
 
-Initializing the variable at the start of the function fixes this
-warning and ensures predictable behavior.
-
-Fixes: 554c0a3abf21 ("staging: Add rtl8723bs sdio wifi driver")
+Cc: Clemens Ladisch <clemens@ladisch.de>
+Cc: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Cc: Jaroslav Kysela <perex@perex.cz>
+Cc: Takashi Iwai <tiwai@suse.com>
+Fixes: bde8a8f23bbe ("ALSA: fireworks: Add transaction and some commands")
 Cc: stable <stable@kernel.org>
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/linux-staging/abvwIQh0CHTp4wNJ@stanley.mountain/
-Signed-off-by: Lin YuChen <starpt.official@gmail.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/20260320172502.167332-1-starpt.official@gmail.com
+Assisted-by: gregkh_clanker_t1000
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Link: https://patch.msgid.link/2026040953-astute-camera-1aa1@gregkh
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/staging/rtl8723bs/core/rtw_security.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/firewire/fireworks/fireworks_command.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/staging/rtl8723bs/core/rtw_security.c
-+++ b/drivers/staging/rtl8723bs/core/rtw_security.c
-@@ -1313,7 +1313,7 @@ u32 rtw_BIP_verify(struct adapter *padap
- 	u8 mic[16];
- 	struct mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
- 	__le16 le_tmp;
--	__le64 le_tmp64;
-+	__le64 le_tmp64 = 0;
- 
- 	ori_len = pattrib->pkt_len - WLAN_HDR_A3_LEN + BIP_AAD_SIZE;
- 	BIP_AAD = rtw_zmalloc(ori_len);
+--- a/sound/firewire/fireworks/fireworks_command.c
++++ b/sound/firewire/fireworks/fireworks_command.c
+@@ -151,10 +151,13 @@ efw_transaction(struct snd_efw *efw, uns
+ 	    (be32_to_cpu(header->category) != category) ||
+ 	    (be32_to_cpu(header->command) != command) ||
+ 	    (be32_to_cpu(header->status) != EFR_STATUS_OK)) {
++		u32 st = be32_to_cpu(header->status);
++
+ 		dev_err(&efw->unit->device, "EFW command failed [%u/%u]: %s\n",
+ 			be32_to_cpu(header->category),
+ 			be32_to_cpu(header->command),
+-			efr_status_names[be32_to_cpu(header->status)]);
++			st < ARRAY_SIZE(efr_status_names) ?
++				efr_status_names[st] : "unknown");
+ 		err = -EIO;
+ 		goto end;
+ 	}
 
 
 
