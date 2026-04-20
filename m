@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-239926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239927-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qF54Nehk5mkKvwEAu9opvQ
-	(envelope-from <stable+bounces-239926-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:39:52 +0200
+	id +DB2ATFp5mnBvwEAu9opvQ
+	(envelope-from <stable+bounces-239927-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:58:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BC4F431B92
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:39:51 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DBE4432563
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:58:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 641E732125AA
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:12:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D7C1530D9AC6
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:12:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06EAF33F586;
-	Mon, 20 Apr 2026 16:12:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92F553446AF;
+	Mon, 20 Apr 2026 16:12:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AK3p7Q5M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sIhChmsG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEDCC333445;
-	Mon, 20 Apr 2026 16:12:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E32133F586;
+	Mon, 20 Apr 2026 16:12:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701567; cv=none; b=AVUOb2TFm+wYA4l1bUiEnA9wnATpE2OOYZvlprE3K88ob/6RC7D5wpZAumNhlGBlozvlenJjDbOyTDFlArgFj6T/HG/nPPoSi6Fu/iuId1cUzZpOOxxOLz5NqnN2/6EVQJNawkJ+8c0XKYhxTAfUe/5LEaKMQAtfh/SRPLBB5Eg=
+	t=1776701570; cv=none; b=PnJBVvsTMrAW4LFsE5vXZsu9rGmz558stny2x9+xW7jefcrKsqfTcNMjL4I4fK+QVkMDPL42BHdBAhz5O+PQbZ2LutcBbuiDwtcTeRstyF4CXavUNrq6auQZ1ZQF8iCalK4YQ1UnlgN0hpdlEsLsj4ws283w7DPrccEIneFq7V8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701567; c=relaxed/simple;
-	bh=Qk3mS6h4VVL//FG8zMMUyIv+v1oib4pJ5DqThtdTPp8=;
+	s=arc-20240116; t=1776701570; c=relaxed/simple;
+	bh=Ag3+1C6tRfWrEA4QQ5lF0EIPdrjxtStf2M8rXrdThqc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kSirUUJv3vE9h11+AwcJMpp63IyBrh+eW+beuW9iV34f5TBvvdGVD/vrl48k6E5xl+36lrnaL46q977HQgYmBUEGlRkmEWUAzfIAnwhdqrVGtN9zVd9FU5A1VXefC5FvZ+potRXhN3FR/oi7BGyVKKX+c1DhmQRwOgk3hTTaqJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AK3p7Q5M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F7CCC19425;
-	Mon, 20 Apr 2026 16:12:47 +0000 (UTC)
+	 MIME-Version; b=VYzonXFF8MiedoWgwEnCPq/Xm4f7VTnw2eOLng9jr1uP1ZBYuZWD9STcRC56zFDk1aOByQSwCWAEoAQVHYjo4KaaDy08AoSALUBLaNHr6s6Mzf5CA6P98AH2DDrQcWB3/xgixwG6MaMM4av7MgEvEG55qC1j6uY9hwUFMKHrW0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sIhChmsG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B25F1C19425;
+	Mon, 20 Apr 2026 16:12:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701567;
-	bh=Qk3mS6h4VVL//FG8zMMUyIv+v1oib4pJ5DqThtdTPp8=;
+	s=korg; t=1776701570;
+	bh=Ag3+1C6tRfWrEA4QQ5lF0EIPdrjxtStf2M8rXrdThqc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AK3p7Q5M8l7qYEX9tDfBcLbntaCun2htHdZw8HHHK3jitPAyxNzzUJQv2a3WybHV1
-	 EauzOhK9aDVaDA/y7RHul3pQggeKRaraS616ygEZMw4cFNhwdLe2WotHstIOG4XXbq
-	 nqzC/T3KqNFuPStF2VKTAkwyEkiJcKGA4c7Mqxzw=
+	b=sIhChmsGzpzpQxDl/16wwMjsKPKwVZ7fsDvrx5KiD5rXjK25tTUT6gh6a0dTDfVot
+	 JXJxamSt6rLFAZCdI5fzpW/+HdwbE7VxOsAGsEoPiMaCyfRzUa0wCRogaiLnc88MQQ
+	 VZO9R9R0t8FGnar8Xxr2uvqFRwFMct7gctm2d9iw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	syzbot+c16daba279a1161acfb0@syzkaller.appspotmail.com,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	syzbot+c897823f699449cc3eb4@syzkaller.appspotmail.com,
 	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Joseph Qi <jiangqi903@gmail.com>,
 	Mark Fasheh <mark@fasheh.com>,
 	Joel Becker <jlbec@evilplan.org>,
 	Junxiao Bi <junxiao.bi@oracle.com>,
@@ -57,9 +56,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Heming Zhao <heming.zhao@suse.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 156/162] ocfs2: add inline inode consistency check to ocfs2_validate_inode_block()
-Date: Mon, 20 Apr 2026 17:43:08 +0200
-Message-ID: <20260420153932.701091288@linuxfoundation.org>
+Subject: [PATCH 6.12 157/162] ocfs2: validate inline data i_size during inode read
+Date: Mon, 20 Apr 2026 17:43:09 +0200
+Message-ID: <20260420153932.739385709@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
 References: <20260420153927.006696811@linuxfoundation.org>
@@ -78,31 +77,31 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	TAGGED_FROM(0.00)[bounces-239926-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	TAGGED_FROM(0.00)[bounces-239927-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,yandex.ru,syzkaller.appspotmail.com,linux.alibaba.com,gmail.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,suse.com,linux-foundation.org,kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,syzkaller.appspotmail.com,linux.alibaba.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,suse.com,linux-foundation.org,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,c16daba279a1161acfb0];
+	TAGGED_RCPT(0.00)[stable,c897823f699449cc3eb4];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,appspotmail.com:email,live.cn:email,alibaba.com:email,syzkaller.appspot.com:url,fasheh.com:email,linux-foundation.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,suse.com:email,evilplan.org:email]
-X-Rspamd-Queue-Id: 0BC4F431B92
+	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,live.cn:email,fasheh.com:email,suse.com:email,evilplan.org:email,huawei.com:email,alibaba.com:email,syzkaller.appspot.com:url,linux-foundation.org:email,oracle.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 5DBE4432563
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -110,20 +109,38 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-[ Upstream commit a2b1c419ff72ec62ff5831684e30cd1d4f0b09ee ]
+[ Upstream commit 1524af3685b35feac76662cc551cbc37bd14775f ]
 
-In 'ocfs2_validate_inode_block()', add an extra check whether an inode
-with inline data (i.e.  self-contained) has no clusters, thus preventing
-an invalid inode from being passed to 'ocfs2_evict_inode()' and below.
+When reading an inode from disk, ocfs2_validate_inode_block() performs
+various sanity checks but does not validate the size of inline data.  If
+the filesystem is corrupted, an inode's i_size can exceed the actual
+inline data capacity (id_count).
 
-Link: https://lkml.kernel.org/r/20251023141650.417129-1-dmantipov@yandex.ru
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Reported-by: syzbot+c16daba279a1161acfb0@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=c16daba279a1161acfb0
+This causes ocfs2_dir_foreach_blk_id() to iterate beyond the inline data
+buffer, triggering a use-after-free when accessing directory entries from
+freed memory.
+
+In the syzbot report:
+  - i_size was 1099511627576 bytes (~1TB)
+  - Actual inline data capacity (id_count) is typically <256 bytes
+  - A garbage rec_len (54648) caused ctx->pos to jump out of bounds
+  - This triggered a UAF in ocfs2_check_dir_entry()
+
+Fix by adding a validation check in ocfs2_validate_inode_block() to ensure
+inodes with inline data have i_size <= id_count.  This catches the
+corruption early during inode read and prevents all downstream code from
+operating on invalid data.
+
+Link: https://lkml.kernel.org/r/20251212052132.16750-1-kartikey406@gmail.com
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Reported-by: syzbot+c897823f699449cc3eb4@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=c897823f699449cc3eb4
+Tested-by: syzbot+c897823f699449cc3eb4@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/all/20251211115231.3560028-1-kartikey406@gmail.com/T/ [v1]
+Link: https://lore.kernel.org/all/20251212040400.6377-1-kartikey406@gmail.com/T/ [v2]
 Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Joseph Qi <jiangqi903@gmail.com>
 Cc: Mark Fasheh <mark@fasheh.com>
 Cc: Joel Becker <jlbec@evilplan.org>
 Cc: Junxiao Bi <junxiao.bi@oracle.com>
@@ -135,26 +152,43 @@ Stable-dep-of: 7bc5da4842be ("ocfs2: fix out-of-bounds write in ocfs2_write_end_
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ocfs2/inode.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ fs/ocfs2/inode.c |   25 +++++++++++++++++++------
+ 1 file changed, 19 insertions(+), 6 deletions(-)
 
 --- a/fs/ocfs2/inode.c
 +++ b/fs/ocfs2/inode.c
-@@ -1419,6 +1419,14 @@ int ocfs2_validate_inode_block(struct su
+@@ -1419,12 +1419,25 @@ int ocfs2_validate_inode_block(struct su
  		goto bail;
  	}
  
-+	if ((le16_to_cpu(di->i_dyn_features) & OCFS2_INLINE_DATA_FL) &&
-+	    le32_to_cpu(di->i_clusters)) {
-+		rc = ocfs2_error(sb, "Invalid dinode %llu: %u clusters\n",
-+				 (unsigned long long)bh->b_blocknr,
-+				 le32_to_cpu(di->i_clusters));
-+		goto bail;
-+	}
+-	if ((le16_to_cpu(di->i_dyn_features) & OCFS2_INLINE_DATA_FL) &&
+-	    le32_to_cpu(di->i_clusters)) {
+-		rc = ocfs2_error(sb, "Invalid dinode %llu: %u clusters\n",
+-				 (unsigned long long)bh->b_blocknr,
+-				 le32_to_cpu(di->i_clusters));
+-		goto bail;
++	if (le16_to_cpu(di->i_dyn_features) & OCFS2_INLINE_DATA_FL) {
++		struct ocfs2_inline_data *data = &di->id2.i_data;
 +
- 	rc = 0;
++		if (le32_to_cpu(di->i_clusters)) {
++			rc = ocfs2_error(sb,
++					 "Invalid dinode %llu: %u clusters\n",
++					 (unsigned long long)bh->b_blocknr,
++					 le32_to_cpu(di->i_clusters));
++			goto bail;
++		}
++
++		if (le64_to_cpu(di->i_size) > le16_to_cpu(data->id_count)) {
++			rc = ocfs2_error(sb,
++					 "Invalid dinode #%llu: inline data i_size %llu exceeds id_count %u\n",
++					 (unsigned long long)bh->b_blocknr,
++					 (unsigned long long)le64_to_cpu(di->i_size),
++					 le16_to_cpu(data->id_count));
++			goto bail;
++		}
+ 	}
  
- bail:
+ 	rc = 0;
 
 
 
