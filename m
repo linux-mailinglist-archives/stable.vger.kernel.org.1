@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-239570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239571-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8MWTFQNg5mkqvgEAu9opvQ
-	(envelope-from <stable+bounces-239570-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:18:59 +0200
+	id IJt5AtBl5mkKvwEAu9opvQ
+	(envelope-from <stable+bounces-239571-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:43:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2B61430FA0
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:18:58 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CE00431EDF
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:43:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3F40435FF4BF
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:56:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0ED60312E992
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:56:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19972331A78;
-	Mon, 20 Apr 2026 15:56:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F0F8322749;
+	Mon, 20 Apr 2026 15:56:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oEsBm4sP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vw5NMPPH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCEE63264F1;
-	Mon, 20 Apr 2026 15:56:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6243B3396EE;
+	Mon, 20 Apr 2026 15:56:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700591; cv=none; b=nXiapF6b+I2XsEmyKS9sBAIiCMd+2Nyy1XNzKtuPK+uPLJFA4UeW+D4tpcy4b5aZ5WaVMf8Cn0q0NY62El3qanfnugQxhjKg6c3dJ2phbPkru3wnCEq46xI9a1mt76PdafnESyJFDdZb496kkbmabxcMp0VF6vDCCET73fmHO34=
+	t=1776700594; cv=none; b=UjY329EcKFxlE6/aDq+f51EWeGJuvNMh1A2dF68p1xWtg+UhOHQKVHBBFZYPnWcdGkVaysVWrsdVE2kQq1i4RW89j1bXs+oKf8b1pZMDPPvqj/cMF5ovd1yYRnV2DRJQ4cfruBkj3oNVt/opLT1eGUSethjRi6VCf6F7y3ADWm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700591; c=relaxed/simple;
-	bh=j5cfYxQ0ur2tZQZ2Ufdd5qerysqk0TCzttAV3EjAn7w=;
+	s=arc-20240116; t=1776700594; c=relaxed/simple;
+	bh=iQsuTkK60CRa+Vk50M7/QuOxA5yTwa835O+2IdrnAao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pSscqVIqbCq41OLyHIqUVDeIjV7r844cFy08MLEROlQvGiX/bQLs2Ty/dp7dnzbs2U41CmSunY6kvrSLQRLBEdGI/jW0TvfjUACoOh12Aza++Oa4N0Equ8sBKEuLh1njlPMRPTYHe0kc57EtQoLXlHpENrgyGiGy5wLGsRZRXZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oEsBm4sP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62C99C19425;
-	Mon, 20 Apr 2026 15:56:31 +0000 (UTC)
+	 MIME-Version; b=lp5z7AzDzWr1ftjGkBvIO8p7SwQvXlGwtv6UYR0KUS2hgWzmi4ZT5mqbcGfHppjFOzy9mIanXu5R6bwMbLtJB6s/179x+zjpEf2KO5qxNnMaaOnkqeuyrB3tgjKcg7S5wpM4Us7djhtBCa0VtnvvPzjfdkOmJ2mIQXt/QvkbhTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vw5NMPPH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED355C19425;
+	Mon, 20 Apr 2026 15:56:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700591;
-	bh=j5cfYxQ0ur2tZQZ2Ufdd5qerysqk0TCzttAV3EjAn7w=;
+	s=korg; t=1776700594;
+	bh=iQsuTkK60CRa+Vk50M7/QuOxA5yTwa835O+2IdrnAao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oEsBm4sPTa0q74ZR5qRiLoFmFNXWdZV6K7vTmnA+BtyVWOoY++gYByUymDqimrQMX
-	 g945WEp8YCZsc4WioRkzqyA/1elJ+YiRcq2K3Z6hD6/OWARd/I53EyGHOpqJOw7QNh
-	 D/lJbvJnR0pTepAOP8QHxsJHVJqnpPK9g1Ub659c=
+	b=Vw5NMPPHiRiJSbJCpgDsp7NwTe6pWKsdLEPJ0suL4HD8BPwRclJ9vK7mOr0hSfqSA
+	 9Z8XZxJMe1aklZawwKmjmbb7iKaKlJkjxJAZ/jfzpPBV5egyuUZwAJcfAUMAwj6ak6
+	 aAJ/sIpgZbIIWPZ3JJ6Vhkma4rT+hUuAsIiCMUuE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wenyuan Li <2063309626@qq.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Hasun Park <hasunpark@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 012/198] can: mcp251x: add error handling for power enable in open and resume
-Date: Mon, 20 Apr 2026 17:39:51 +0200
-Message-ID: <20260420153936.056770284@linuxfoundation.org>
+Subject: [PATCH 6.18 013/198] ASoC: amd: acp: add ASUS HN7306EA quirk for legacy SDW machine
+Date: Mon, 20 Apr 2026 17:39:52 +0200
+Message-ID: <20260420153936.092646160@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
 References: <20260420153935.605963767@linuxfoundation.org>
@@ -69,19 +69,19 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-239570-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,qq.com,pengutronix.de,kernel.org];
+	TAGGED_FROM(0.00)[bounces-239571-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -91,8 +91,8 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D2B61430FA0
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 4CE00431EDF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,88 +100,43 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Wenyuan Li <2063309626@qq.com>
+From: Hasun Park <hasunpark@gmail.com>
 
-[ Upstream commit 7a57354756c7df223abe2c33774235ad70cb4231 ]
+[ Upstream commit 2594196f4e3bd70782e7cf1e22e3e398cdb74f78 ]
 
-Add missing error handling for mcp251x_power_enable() calls in both
-mcp251x_open() and mcp251x_can_resume() functions.
+Add a DMI quirk entry for ASUS HN7306EA in the ACP SoundWire legacy
+machine driver.
 
-In mcp251x_open(), if power enable fails, jump to error path to close
-candev without attempting to disable power again.
+Set driver_data to ASOC_SDW_ACP_DMIC for this board so the
+platform-specific DMIC quirk path is selected.
 
-In mcp251x_can_resume(), properly check return values of power enable calls
-for both power and transceiver regulators. If any fails, return the error
-code to the PM framework and log the failure.
-
-This ensures the driver properly handles power control failures and
-maintains correct device state.
-
-Signed-off-by: Wenyuan Li <2063309626@qq.com>
-Link: https://patch.msgid.link/tencent_F3EFC5D7738AC548857B91657715E2D3AA06@qq.com
-[mkl: fix patch description]
-[mkl: mcp251x_can_resume(): replace goto by return]
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Hasun Park <hasunpark@gmail.com>
+Link: https://patch.msgid.link/20260319163321.30326-1-hasunpark@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/spi/mcp251x.c | 29 ++++++++++++++++++++++++-----
- 1 file changed, 24 insertions(+), 5 deletions(-)
+ sound/soc/amd/acp/acp-sdw-legacy-mach.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/net/can/spi/mcp251x.c b/drivers/net/can/spi/mcp251x.c
-index b46262e791301..5a7aa02092c7e 100644
---- a/drivers/net/can/spi/mcp251x.c
-+++ b/drivers/net/can/spi/mcp251x.c
-@@ -1225,7 +1225,11 @@ static int mcp251x_open(struct net_device *net)
- 	}
+diff --git a/sound/soc/amd/acp/acp-sdw-legacy-mach.c b/sound/soc/amd/acp/acp-sdw-legacy-mach.c
+index 86c534d827448..504b700200660 100644
+--- a/sound/soc/amd/acp/acp-sdw-legacy-mach.c
++++ b/sound/soc/amd/acp/acp-sdw-legacy-mach.c
+@@ -111,6 +111,14 @@ static const struct dmi_system_id soc_sdw_quirk_table[] = {
+ 		},
+ 		.driver_data = (void *)(ASOC_SDW_CODEC_SPKR),
+ 	},
++	{
++		.callback = soc_sdw_quirk_cb,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "HN7306EA"),
++		},
++		.driver_data = (void *)(ASOC_SDW_ACP_DMIC),
++	},
+ 	{}
+ };
  
- 	mutex_lock(&priv->mcp_lock);
--	mcp251x_power_enable(priv->transceiver, 1);
-+	ret = mcp251x_power_enable(priv->transceiver, 1);
-+	if (ret) {
-+		dev_err(&spi->dev, "failed to enable transceiver power: %pe\n", ERR_PTR(ret));
-+		goto out_close_candev;
-+	}
- 
- 	priv->force_quit = 0;
- 	priv->tx_skb = NULL;
-@@ -1272,6 +1276,7 @@ static int mcp251x_open(struct net_device *net)
- 	mcp251x_hw_sleep(spi);
- out_close:
- 	mcp251x_power_enable(priv->transceiver, 0);
-+out_close_candev:
- 	close_candev(net);
- 	mutex_unlock(&priv->mcp_lock);
- 	if (release_irq)
-@@ -1508,11 +1513,25 @@ static int __maybe_unused mcp251x_can_resume(struct device *dev)
- {
- 	struct spi_device *spi = to_spi_device(dev);
- 	struct mcp251x_priv *priv = spi_get_drvdata(spi);
-+	int ret = 0;
- 
--	if (priv->after_suspend & AFTER_SUSPEND_POWER)
--		mcp251x_power_enable(priv->power, 1);
--	if (priv->after_suspend & AFTER_SUSPEND_UP)
--		mcp251x_power_enable(priv->transceiver, 1);
-+	if (priv->after_suspend & AFTER_SUSPEND_POWER) {
-+		ret = mcp251x_power_enable(priv->power, 1);
-+		if (ret) {
-+			dev_err(dev, "failed to restore power: %pe\n", ERR_PTR(ret));
-+			return ret;
-+		}
-+	}
-+
-+	if (priv->after_suspend & AFTER_SUSPEND_UP) {
-+		ret = mcp251x_power_enable(priv->transceiver, 1);
-+		if (ret) {
-+			dev_err(dev, "failed to restore transceiver power: %pe\n", ERR_PTR(ret));
-+			if (priv->after_suspend & AFTER_SUSPEND_POWER)
-+				mcp251x_power_enable(priv->power, 0);
-+			return ret;
-+		}
-+	}
- 
- 	if (priv->after_suspend & (AFTER_SUSPEND_POWER | AFTER_SUSPEND_UP))
- 		queue_work(priv->wq, &priv->restart_work);
 -- 
 2.53.0
 
