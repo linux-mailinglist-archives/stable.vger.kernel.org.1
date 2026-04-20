@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-239612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239430-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CO4yHUVm5mlmvwEAu9opvQ
-	(envelope-from <stable+bounces-239612-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:45:41 +0200
+	id SDvNCWhk5mkKvwEAu9opvQ
+	(envelope-from <stable+bounces-239430-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:37:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCBCE432080
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:45:40 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75E724319FB
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:37:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B622A35F2BD0
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:58:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5056C38E2E93
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:50:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 752F633C192;
-	Mon, 20 Apr 2026 15:58:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54B0333262B;
+	Mon, 20 Apr 2026 15:50:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lq+VNH6U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0FNSnR8n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36ABF3321AA;
-	Mon, 20 Apr 2026 15:58:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 167302E093A;
+	Mon, 20 Apr 2026 15:50:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700703; cv=none; b=uFUYZFcLhM8eEHjczX0ZqEIq3XOhNSzrpoiJ65M/wQETea3KHlRo5cpEm4tsp2BIvLkrVV6RWBlbFmHTI39HImrTsV0tYJtG8VBtyDxm3qEKlARflDQ8mAQ0Aopvz6boJJZKLnkzE5N+estGmNgnBh4QMOOTugDB0+8L+HLdD20=
+	t=1776700233; cv=none; b=MLNO4yACJdh5otCoKS9Re407WX+5w9P2tMu8PMDZyAjEDIYtXhzx5J0oprJFNBn4m42Z13Ox8rDa4d2uglFgxEpTHLR6cIPeGSKLcENc1weD1pXjvGqbENOhpi/ks1TCZ7mhwXlSqc6Jbi6MprPdSdx8cbsjonB3ASeihJlC25s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700703; c=relaxed/simple;
-	bh=j8rVcvnRCvOlfSqs8eo6JIIkKrnwJCNQK/lNj6gQye0=;
+	s=arc-20240116; t=1776700233; c=relaxed/simple;
+	bh=SulAoS3p2GV4JUrHVditBDoQwVQmS67YH9AwOnVIP68=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oaNOV1D3tWKhvayQCO2ie/1fkcWdKwdvi650p8uo7ZyTl2BhPIPC49GRj9b1HfXNhD2wsqqcN0c1+Y8KvXYFl+qANqsDiQF3MkGoZJx6pLYGv6Z5+SsqTCqd4ujGHs/1BfAaFGyi4sZCm06O5W0CP46XiT5p+S6C3hrhzZsAXsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lq+VNH6U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0D8EC19425;
-	Mon, 20 Apr 2026 15:58:22 +0000 (UTC)
+	 MIME-Version; b=m+i21ktQdGvD5R//dkAyouvjxW3txrDmE0GoyP6yTI9CW+BKdHWWSHQu/UZYx6RDsLPL1xR3YFPxE0UiIKLYDgh2nxCrHXYiL3IUTsqOkomalL2VzdVSsyfAZHJLpezG3RJPdCTS9TH8tcLDClH4n+u1UrVfJDqrHWTy6QZf0VE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0FNSnR8n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F882C19425;
+	Mon, 20 Apr 2026 15:50:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700703;
-	bh=j8rVcvnRCvOlfSqs8eo6JIIkKrnwJCNQK/lNj6gQye0=;
+	s=korg; t=1776700233;
+	bh=SulAoS3p2GV4JUrHVditBDoQwVQmS67YH9AwOnVIP68=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lq+VNH6UV8iEpmZGcbHrPNtjxPUCrTiyudY767HukI6PoXjDhKPgXKVGj20CAEExA
-	 fPL6K+BA8rKwfjZqgv9OIW0U9h0z0r5wdj2kq6uTqVEV3EMFa36OlyLejTGQ4DYu2t
-	 qixLUgyiDsU7HqoQ5pQxlEAWD6tvqBIOpLP2J8Ik=
+	b=0FNSnR8nv2IT0bLwU9FhBr/6g28bT4p6don67/IDuDKYx42DOptS/5T36c1jwpwbC
+	 x1rYjEuadocXK4zlSfE/sJL/MCFKbQPrwfKvGN2d+IEztUOQX82zGZmGUR6HhT3Yip
+	 wTMqBQ4Nvn47o9a1kRXCmugeQFz9Iw9U5KHnCvPQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Nikita Travkin <nikita@trvn.ru>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Stanislav Kinsburskii <skinsburskii@linux.microsoft.com>,
+	"Anirudh Rayabharam (Microsoft)" <anirudh@anirudhrb.com>,
+	Wei Liu <wei.liu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 054/198] soc: qcom: pd-mapper: Fix element length in servreg_loc_pfr_req_ei
+Subject: [PATCH 6.19 092/220] mshv: Fix infinite fault loop on permission-denied GPA intercepts
 Date: Mon, 20 Apr 2026 17:40:33 +0200
-Message-ID: <20260420153937.561025506@linuxfoundation.org>
+Message-ID: <20260420153937.347380356@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
+References: <20260420153934.013228280@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239612-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-239430-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,83 +86,131 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,trvn.ru:email]
-X-Rspamd-Queue-Id: BCBCE432080
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,anirudhrb.com:email]
+X-Rspamd-Queue-Id: 75E724319FB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+From: Stanislav Kinsburskii <skinsburskii@linux.microsoft.com>
 
-[ Upstream commit 641f6fda143b879da1515f821ee475073678cf2a ]
+[ Upstream commit 16cbec24897624051b324aa3a85859c38ca65fde ]
 
-It looks element length declared in servreg_loc_pfr_req_ei for reason
-not matching servreg_loc_pfr_req's reason field due which we could
-observe decoding error on PD crash.
+Prevent infinite fault loops when guests access memory regions without
+proper permissions. Currently, mshv_handle_gpa_intercept() attempts to
+remap pages for all faults on movable memory regions, regardless of
+whether the access type is permitted. When a guest writes to a read-only
+region, the remap succeeds but the region remains read-only, causing
+immediate re-fault and spinning the vCPU indefinitely.
 
-  qmi_decode_string_elem: String len 81 >= Max Len 65
+Validate intercept access type against region permissions before
+attempting remaps. Reject writes to non-writable regions and executes to
+non-executable regions early, returning false to let the VMM handle the
+intercept appropriately.
 
-Fix this by matching with servreg_loc_pfr_req's reason field.
+This also closes a potential DoS vector where malicious guests could
+intentionally trigger these fault loops to consume host resources.
 
-Fixes: 1ebcde047c54 ("soc: qcom: add pd-mapper implementation")
-Signed-off-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Tested-by: Nikita Travkin <nikita@trvn.ru>
-Link: https://lore.kernel.org/r/20260129152320.3658053-2-mukesh.ojha@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: b9a66cd5ccbb ("mshv: Add support for movable memory regions")
+Signed-off-by: Stanislav Kinsburskii <skinsburskii@linux.microsoft.com>
+Reviewed-by: Anirudh Rayabharam (Microsoft) <anirudh@anirudhrb.com>
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/pdr_internal.h | 2 +-
- drivers/soc/qcom/qcom_pdr_msg.c | 2 +-
- include/linux/soc/qcom/pdr.h    | 1 +
- 3 files changed, 3 insertions(+), 2 deletions(-)
+ drivers/hv/mshv_root_main.c | 15 ++++++++++++---
+ include/hyperv/hvgdk_mini.h |  6 ++++++
+ include/hyperv/hvhdk.h      |  4 ++--
+ 3 files changed, 20 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/soc/qcom/pdr_internal.h b/drivers/soc/qcom/pdr_internal.h
-index 039508c1bbf7d..047c0160b6178 100644
---- a/drivers/soc/qcom/pdr_internal.h
-+++ b/drivers/soc/qcom/pdr_internal.h
-@@ -84,7 +84,7 @@ struct servreg_set_ack_resp {
+diff --git a/drivers/hv/mshv_root_main.c b/drivers/hv/mshv_root_main.c
+index 45cf086ad430d..5611be36f6a8e 100644
+--- a/drivers/hv/mshv_root_main.c
++++ b/drivers/hv/mshv_root_main.c
+@@ -642,7 +642,7 @@ static bool mshv_handle_gpa_intercept(struct mshv_vp *vp)
+ {
+ 	struct mshv_partition *p = vp->vp_partition;
+ 	struct mshv_mem_region *region;
+-	bool ret;
++	bool ret = false;
+ 	u64 gfn;
+ #if defined(CONFIG_X86_64)
+ 	struct hv_x64_memory_intercept_message *msg =
+@@ -653,6 +653,8 @@ static bool mshv_handle_gpa_intercept(struct mshv_vp *vp)
+ 		(struct hv_arm64_memory_intercept_message *)
+ 		vp->vp_intercept_msg_page->u.payload;
+ #endif
++	enum hv_intercept_access_type access_type =
++		msg->header.intercept_access_type;
  
- struct servreg_loc_pfr_req {
- 	char service[SERVREG_NAME_LENGTH + 1];
--	char reason[257];
-+	char reason[SERVREG_PFR_LENGTH + 1];
- };
+ 	gfn = HVPFN_DOWN(msg->guest_physical_address);
  
- struct servreg_loc_pfr_resp {
-diff --git a/drivers/soc/qcom/qcom_pdr_msg.c b/drivers/soc/qcom/qcom_pdr_msg.c
-index ca98932140d87..02022b11ecf05 100644
---- a/drivers/soc/qcom/qcom_pdr_msg.c
-+++ b/drivers/soc/qcom/qcom_pdr_msg.c
-@@ -325,7 +325,7 @@ const struct qmi_elem_info servreg_loc_pfr_req_ei[] = {
- 	},
- 	{
- 		.data_type = QMI_STRING,
--		.elem_len = SERVREG_NAME_LENGTH + 1,
-+		.elem_len = SERVREG_PFR_LENGTH + 1,
- 		.elem_size = sizeof(char),
- 		.array_type = VAR_LEN_ARRAY,
- 		.tlv_type = 0x02,
-diff --git a/include/linux/soc/qcom/pdr.h b/include/linux/soc/qcom/pdr.h
-index 83a8ea612e69a..2b7691e47c2a9 100644
---- a/include/linux/soc/qcom/pdr.h
-+++ b/include/linux/soc/qcom/pdr.h
-@@ -5,6 +5,7 @@
- #include <linux/soc/qcom/qmi.h>
+@@ -660,12 +662,19 @@ static bool mshv_handle_gpa_intercept(struct mshv_vp *vp)
+ 	if (!region)
+ 		return false;
  
- #define SERVREG_NAME_LENGTH	64
-+#define SERVREG_PFR_LENGTH	256
++	if (access_type == HV_INTERCEPT_ACCESS_WRITE &&
++	    !(region->hv_map_flags & HV_MAP_GPA_WRITABLE))
++		goto put_region;
++
++	if (access_type == HV_INTERCEPT_ACCESS_EXECUTE &&
++	    !(region->hv_map_flags & HV_MAP_GPA_EXECUTABLE))
++		goto put_region;
++
+ 	/* Only movable memory ranges are supported for GPA intercepts */
+ 	if (region->type == MSHV_REGION_TYPE_MEM_MOVABLE)
+ 		ret = mshv_region_handle_gfn_fault(region, gfn);
+-	else
+-		ret = false;
  
- struct pdr_service;
- struct pdr_handle;
++put_region:
+ 	mshv_region_put(region);
+ 
+ 	return ret;
+diff --git a/include/hyperv/hvgdk_mini.h b/include/hyperv/hvgdk_mini.h
+index 30fbbde81c5c4..9c523ee57a358 100644
+--- a/include/hyperv/hvgdk_mini.h
++++ b/include/hyperv/hvgdk_mini.h
+@@ -1528,4 +1528,10 @@ struct hv_mmio_write_input {
+ 	u8 data[HV_HYPERCALL_MMIO_MAX_DATA_LENGTH];
+ } __packed;
+ 
++enum hv_intercept_access_type {
++	HV_INTERCEPT_ACCESS_READ	= 0,
++	HV_INTERCEPT_ACCESS_WRITE	= 1,
++	HV_INTERCEPT_ACCESS_EXECUTE	= 2
++};
++
+ #endif /* _HV_HVGDK_MINI_H */
+diff --git a/include/hyperv/hvhdk.h b/include/hyperv/hvhdk.h
+index 08965970c17df..84ebe56f1f8db 100644
+--- a/include/hyperv/hvhdk.h
++++ b/include/hyperv/hvhdk.h
+@@ -770,7 +770,7 @@ struct hv_x64_intercept_message_header {
+ 	u32 vp_index;
+ 	u8 instruction_length:4;
+ 	u8 cr8:4; /* Only set for exo partitions */
+-	u8 intercept_access_type;
++	u8 intercept_access_type; /* enum hv_intercept_access_type */
+ 	union hv_x64_vp_execution_state execution_state;
+ 	struct hv_x64_segment_register cs_segment;
+ 	u64 rip;
+@@ -816,7 +816,7 @@ union hv_arm64_vp_execution_state {
+ struct hv_arm64_intercept_message_header {
+ 	u32 vp_index;
+ 	u8 instruction_length;
+-	u8 intercept_access_type;
++	u8 intercept_access_type; /* enum hv_intercept_access_type */
+ 	union hv_arm64_vp_execution_state execution_state;
+ 	u64 pc;
+ 	u64 cpsr;
 -- 
 2.53.0
 
