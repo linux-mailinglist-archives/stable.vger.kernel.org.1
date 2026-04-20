@@ -1,59 +1,65 @@
-Return-Path: <stable+bounces-239678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239494-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EPdOCXtO5mkgugEAu9opvQ
-	(envelope-from <stable+bounces-239678-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:04:11 +0200
+	id ENkuJENh5mmavgEAu9opvQ
+	(envelope-from <stable+bounces-239494-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:24:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D384042EE9F
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:04:10 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 953E74311F6
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:24:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 999A0300AC8D
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:02:22 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6926031F3B6A
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:53:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74CA333DEDF;
-	Mon, 20 Apr 2026 16:02:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 808F53396EE;
+	Mon, 20 Apr 2026 15:53:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="esWCPtCo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KIFGuAef"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 370852E36F8;
-	Mon, 20 Apr 2026 16:02:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41FA32FD1B3;
+	Mon, 20 Apr 2026 15:53:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700939; cv=none; b=FUJ4SbDK2r/8h7hyxfFhUeL4J4VLtPIRmK3o/gNk9KsRM8zQBIwLiLaZPJZAfNgj7CuBM9RofN0Tmv8WcBR+vFc2RDBphCxQnOYSdiFjRSzlozeeXu/qvPiUCKVTuJlj9OtrS7LzgWTegv56tWdcIFUuZ7yRLPDBWw41L/bCzXQ=
+	t=1776700397; cv=none; b=hdYxnHSCOxvWsvriH6QEVw981WhNUt2FuU2TuQewrzq4iOiG2bNEMz4pRANzV8XFIHOgGDcG6UiodT+FMVM31dAtXFE6Iwab3lQAo7tvbJWTUeSEh+PjIlAhi+2qcRvcPVQo7vMjo6Zsd57vSQXUgQmQWnIbn2Gw0F69PTZaBZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700939; c=relaxed/simple;
-	bh=uAHAjz1zyYgkosBvHstyMktqA2rKimeGuFKa3Dzw3OQ=;
+	s=arc-20240116; t=1776700397; c=relaxed/simple;
+	bh=0PnLtfcrXRIacLLkvzUgE9f5JWRnUiwevPJCdePcPUA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nvXrZnSA0wcayTRG6y1slCbjw4sksUVnkoR1WxH5WTZ0BtlW4TLOJbAgR+P2EWqIdEU0/2FAOyiIFcUa7gos7O8Z1eabWYkTRJcCGz0cDWsvPDKpEG44E93QmmgVVCo+WCjKsxWWtcxOoxPpsTaoPq3v37GSxWpBW2+lF4SiYe8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=esWCPtCo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2510C19425;
-	Mon, 20 Apr 2026 16:02:18 +0000 (UTC)
+	 MIME-Version; b=jdhTDXx7UjXtxIvKoMJWy+dOUT/c7rHV7tSFQV105oi/TaZFoA/PB77SOoBBh9LS6t6tdkBG7T9nRmV9c3vL+62tbGj6d7xezwJNAZ6j0CC4EyfGWk+Mhdrvqacyj9TyrdGI/hC/xe5aOp7i3LyHHvH6YnwTnnrxbAKAU5OsYhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KIFGuAef; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC771C19425;
+	Mon, 20 Apr 2026 15:53:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700939;
-	bh=uAHAjz1zyYgkosBvHstyMktqA2rKimeGuFKa3Dzw3OQ=;
+	s=korg; t=1776700397;
+	bh=0PnLtfcrXRIacLLkvzUgE9f5JWRnUiwevPJCdePcPUA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=esWCPtCot4+rvPq1J6a6xb6l5UhrKhFK9scKgHSQQpcOJowP9ixAb52Pxc4HtCySZ
-	 p4rIwi7fDQDYHAj6Yh/Ber4il6+2eRXgF6lZRrJp8tcIHROqU3qZN46KXsRca7ttzi
-	 Gm+GiR6rUnDLNIjORgGpBLrgMgNTKQhpL46+AzTw=
+	b=KIFGuAef1Wn9Hl4iVcEO/GSwzOgULQ5PIisnxr83/6ynAhv8wScumMdGeybuv/X1m
+	 pZRMmtKAToDLHullZsQQVTUUuj2x/Rgdg9EDPy/NRmfegWskAHP5hK8nysYU9lnITe
+	 faS9mgOjV1rujJ1/w3Ua/qE/iAqfMzbF8hZLcccU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d23888375c2737c17ba5@syzkaller.appspotmail.com,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 119/198] crypto: af_alg - Fix page reassignment overflow in af_alg_pull_tsgl
+	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Tom Talpey <tom@talpey.com>,
+	Bharath SM <bharathsm@microsoft.com>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	stable <stable@kernel.org>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.19 157/220] smb: client: fix OOB reads parsing symlink error response
 Date: Mon, 20 Apr 2026 17:41:38 +0200
-Message-ID: <20260420153939.890702567@linuxfoundation.org>
+Message-ID: <20260420153939.680614294@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
+References: <20260420153934.013228280@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +70,152 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-239678-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-239494-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,microsoft.com,talpey.com,vger.kernel.org,lists.samba.org,kernel.org,manguebit.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable,d23888375c2737c17ba5];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,apana.org.au:email,appspotmail.com:email]
-X-Rspamd-Queue-Id: D384042EE9F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,talpey.com:email,samba.org:email,manguebit.org:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 953E74311F6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit 31d00156e50ecad37f2cb6cbf04aaa9a260505ef ]
+commit 3df690bba28edec865cf7190be10708ad0ddd67e upstream.
 
-When page reassignment was added to af_alg_pull_tsgl the original
-loop wasn't updated so it may try to reassign one more page than
-necessary.
+When a CREATE returns STATUS_STOPPED_ON_SYMLINK, smb2_check_message()
+returns success without any length validation, leaving the symlink
+parsers as the only defense against an untrusted server.
 
-Add the check to the reassignment so that this does not happen.
+symlink_data() walks SMB 3.1.1 error contexts with the loop test "p <
+end", but reads p->ErrorId at offset 4 and p->ErrorDataLength at offset
+0.  When the server-controlled ErrorDataLength advances p to within 1-7
+bytes of end, the next iteration will read past it.  When the matching
+context is found, sym->SymLinkErrorTag is read at offset 4 from
+p->ErrorContextData with no check that the symlink header itself fits.
 
-Also update the comment which still refers to the obsolete offset
-argument.
+smb2_parse_symlink_response() then bounds-checks the substitute name
+using SMB2_SYMLINK_STRUCT_SIZE as the offset of PathBuffer from
+iov_base.  That value is computed as sizeof(smb2_err_rsp) +
+sizeof(smb2_symlink_err_rsp), which is correct only when
+ErrorContextCount == 0.
 
-Reported-by: syzbot+d23888375c2737c17ba5@syzkaller.appspotmail.com
-Fixes: e870456d8e7c ("crypto: algif_skcipher - overhaul memory management")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+With at least one error context the symlink data sits 8 bytes deeper,
+and each skipped non-matching context shifts it further by 8 +
+ALIGN(ErrorDataLength, 8).  The check is too short, allowing the
+substitute name read to run past iov_len.  The out-of-bound heap bytes
+are UTF-16-decoded into the symlink target and returned to userspace via
+readlink(2).
+
+Fix this all up by making the loops test require the full context header
+to fit, rejecting sym if its header runs past end, and bound the
+substitute name against the actual position of sym->PathBuffer rather
+than a fixed offset.
+
+Because sub_offs and sub_len are 16bits, the pointer math will not
+overflow here with the new greater-than.
+
+Cc: Ronnie Sahlberg <ronniesahlberg@gmail.com>
+Cc: Shyam Prasad N <sprasad@microsoft.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: Bharath SM <bharathsm@microsoft.com>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Cc: stable <stable@kernel.org>
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Assisted-by: gregkh_clanker_t1000
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- crypto/af_alg.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/smb/client/smb2file.c |   20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
-diff --git a/crypto/af_alg.c b/crypto/af_alg.c
-index 6867d177f2a2d..b61c3ba126ed1 100644
---- a/crypto/af_alg.c
-+++ b/crypto/af_alg.c
-@@ -705,8 +705,8 @@ void af_alg_pull_tsgl(struct sock *sk, size_t used, struct scatterlist *dst)
- 			 * Assumption: caller created af_alg_count_tsgl(len)
- 			 * SG entries in dst.
- 			 */
--			if (dst) {
--				/* reassign page to dst after offset */
-+			if (dst && plen) {
-+				/* reassign page to dst */
- 				get_page(page);
- 				sg_set_page(dst + j, page, plen, sg[i].offset);
- 				j++;
--- 
-2.53.0
-
+--- a/fs/smb/client/smb2file.c
++++ b/fs/smb/client/smb2file.c
+@@ -27,10 +27,11 @@ static struct smb2_symlink_err_rsp *syml
+ {
+ 	struct smb2_err_rsp *err = iov->iov_base;
+ 	struct smb2_symlink_err_rsp *sym = ERR_PTR(-EINVAL);
++	u8 *end = (u8 *)err + iov->iov_len;
+ 	u32 len;
+ 
+ 	if (err->ErrorContextCount) {
+-		struct smb2_error_context_rsp *p, *end;
++		struct smb2_error_context_rsp *p;
+ 
+ 		len = (u32)err->ErrorContextCount * (offsetof(struct smb2_error_context_rsp,
+ 							      ErrorContextData) +
+@@ -39,8 +40,7 @@ static struct smb2_symlink_err_rsp *syml
+ 			return ERR_PTR(-EINVAL);
+ 
+ 		p = (struct smb2_error_context_rsp *)err->ErrorData;
+-		end = (struct smb2_error_context_rsp *)((u8 *)err + iov->iov_len);
+-		do {
++		while ((u8 *)p + sizeof(*p) <= end) {
+ 			if (le32_to_cpu(p->ErrorId) == SMB2_ERROR_ID_DEFAULT) {
+ 				sym = (struct smb2_symlink_err_rsp *)p->ErrorContextData;
+ 				break;
+@@ -50,14 +50,16 @@ static struct smb2_symlink_err_rsp *syml
+ 
+ 			len = ALIGN(le32_to_cpu(p->ErrorDataLength), 8);
+ 			p = (struct smb2_error_context_rsp *)(p->ErrorContextData + len);
+-		} while (p < end);
++		}
+ 	} else if (le32_to_cpu(err->ByteCount) >= sizeof(*sym) &&
+ 		   iov->iov_len >= SMB2_SYMLINK_STRUCT_SIZE) {
+ 		sym = (struct smb2_symlink_err_rsp *)err->ErrorData;
+ 	}
+ 
+-	if (!IS_ERR(sym) && (le32_to_cpu(sym->SymLinkErrorTag) != SYMLINK_ERROR_TAG ||
+-			     le32_to_cpu(sym->ReparseTag) != IO_REPARSE_TAG_SYMLINK))
++	if (!IS_ERR(sym) &&
++	    ((u8 *)sym + sizeof(*sym) > end ||
++	     le32_to_cpu(sym->SymLinkErrorTag) != SYMLINK_ERROR_TAG ||
++	     le32_to_cpu(sym->ReparseTag) != IO_REPARSE_TAG_SYMLINK))
+ 		sym = ERR_PTR(-EINVAL);
+ 
+ 	return sym;
+@@ -128,8 +130,10 @@ int smb2_parse_symlink_response(struct c
+ 	print_len = le16_to_cpu(sym->PrintNameLength);
+ 	print_offs = le16_to_cpu(sym->PrintNameOffset);
+ 
+-	if (iov->iov_len < SMB2_SYMLINK_STRUCT_SIZE + sub_offs + sub_len ||
+-	    iov->iov_len < SMB2_SYMLINK_STRUCT_SIZE + print_offs + print_len)
++	if ((char *)sym->PathBuffer + sub_offs + sub_len >
++		(char *)iov->iov_base + iov->iov_len ||
++	    (char *)sym->PathBuffer + print_offs + print_len >
++		(char *)iov->iov_base + iov->iov_len)
+ 		return -EINVAL;
+ 
+ 	return smb2_parse_native_symlink(path,
 
 
 
