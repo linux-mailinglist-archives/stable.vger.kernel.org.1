@@ -1,68 +1,61 @@
-Return-Path: <stable+bounces-239245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239236-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0K1NNEFL5mnSuQEAu9opvQ
-	(envelope-from <stable+bounces-239245-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 17:50:25 +0200
+	id yEfzCxJO5mkgugEAu9opvQ
+	(envelope-from <stable+bounces-239236-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:02:26 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E14042EA22
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 17:50:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9637942EE03
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:02:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8B61C334199F
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:11:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C61A4321A937
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:06:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94FF12D5937;
-	Mon, 20 Apr 2026 14:48:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 972853A380B;
+	Mon, 20 Apr 2026 14:31:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kM3jkTWP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BUHgQclV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 331762C11D9;
-	Mon, 20 Apr 2026 14:48:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5875C3AB289
+	for <stable@vger.kernel.org>; Mon, 20 Apr 2026 14:31:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776696523; cv=none; b=H2cB9WhVF8ctkC5fmBDwApX0/GZ7M0X7boJmcCelpPvTBowC+IT6fbYiqMbTPQTIzQ76ZTEvQYdD+686pGMp2dCZcAfFwmkLWy14cUBtQvVSrXT4znyqNVrrkVIxJOUFiDnnaF6RuxQftdwxdlWvLtDseJ7cozaHW0qFzBp6O3I=
+	t=1776695468; cv=none; b=o2QiPjZV+f+0FbvubXq/+B6DAkUnj8zrWZIzJ0AixV8an2OiS2x4SxwTBu/8bYq9i2TvSKhleva7gIsiG7PW5AgLxR8XlP6zA1iu7k3SpyaNq3sKzQCojgm8D3pW/52xSjGzP4aJliTALvRgWzPPR1RZV4KxSe2wj99pWeHXhlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776696523; c=relaxed/simple;
-	bh=00lttEm2yNSCLaaJ8HV0cNziy+CMymLYRCkfifHVXt4=;
+	s=arc-20240116; t=1776695468; c=relaxed/simple;
+	bh=1RNMTRwKd23YM1F1fHSkfLNEjywfPC28BOGuWZZYEMI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N+/KSZ8wsi2KtYge4K53g/l4yiFz2Plo4GpWnQPGOIUWzj4n+6xaSYSmkHytbNi5sLgmUqVkZj7/6YXkLez33pVOYUVPY4QP/MuyoMlAEzNgPWe3RMgMhmXwGLggLLXKPezhvfzeoIST5RmGRzk3c6IvbcGKITF21bFDAmbjFGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kM3jkTWP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5322BC19425;
-	Mon, 20 Apr 2026 14:48:40 +0000 (UTC)
+	 MIME-Version; b=dI9YfNsg/tW9XFZ3DJXyeZ/Ac36LlU0JshSHGc8x1gtJos75IJwLvBdLdc3aO9YoRa7eWn8mtQnNVHHXh9xNaqzkU1EnZ2jSZe42oVBBJ3DRc6AoVu3MTEh5sk/5n8XpHhRUzFprwmhQT7UZY4wYV88v5Wl3CSjumi+yjCpPsQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BUHgQclV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65F32C19425;
+	Mon, 20 Apr 2026 14:31:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776696522;
-	bh=00lttEm2yNSCLaaJ8HV0cNziy+CMymLYRCkfifHVXt4=;
+	s=k20201202; t=1776695468;
+	bh=1RNMTRwKd23YM1F1fHSkfLNEjywfPC28BOGuWZZYEMI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kM3jkTWPV3Q8HCVBAxHNmFZK9cH3tU0uIg5DKX+c+gMrfA2OU1BvZiBa69sy0M/bj
-	 Cq9J7X+AIQYVPeSUCYbgS+azA/f8fURibttQRs0c8d2hBlczjnSKhy4Tmpvc7RRZS+
-	 E8OCaydFmFGIWC+P8/1TKO794wXt43L/meWdcpoP1adw0+oJZbVCUYO1a7eNuX9pAL
-	 M67J/00G/YzAKktbTDQOxRtSmzO8yXSoMWxkWC+VT2OVTJ7fA0ZHYxnfV+ltdIoNYz
-	 b0fxGRRm3bb+H+GA+hSv2ApeaOZ0DWVxPvm7ODM7zJ6s1MST3M6ApG2RNtkmTcC4Cd
-	 nmlfYOHhk2Cdg==
-From: Simon Horman <horms@kernel.org>
-To: ashutoshdesai993@gmail.com
-Cc: 'Simon Horman' <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-hams@vger.kernel.org,
-	jreuter@yaina.de,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	david.laight.linux@gmail.com
-Subject: Re: [PATCH v4 net] ax25: fix OOB read after address header strip in ax25_rcv()
-Date: Mon, 20 Apr 2026 15:30:02 +0100
-Message-ID: <20260420143001.537302-2-horms@kernel.org>
+	b=BUHgQclVEe7xRgIuhZRRORpsY/UwKPwDwmmkY4vD+/qwkbTYRDle5eVQQIgb7KPyZ
+	 dOvfvhxv8uD53jtPJMY4B8PoWWZ7t9zGEsfKe2IHVKQmiWzeYc8CFgUrHkC58k9mm0
+	 0TbA7xZ7UUwtnFEb+zRABo4BZLZGBJtFlMB7qIN73Wc6DAJZ3EJI/lK8JyFHTEZ+0p
+	 pNLmwJOCZyRLOw9TIe1PtOp7m2sJVAnmPPRBP4bBD3YpzMkcyTOp4B+30ls42emgvq
+	 40Sc4lE+1D4wkdDvsNKvt+PAwdfK6AgSbi5S8k8wcHseSA/6nYV6gSGH0Je8QMVm1t
+	 GwNgFcIklyP6A==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Koichiro Den <den@valinux.co.jp>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12.y] PCI: endpoint: pci-epf-vntb: Remove duplicate resource teardown
+Date: Mon, 20 Apr 2026 10:31:05 -0400
+Message-ID: <20260420143105.1095263-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260417065407.206499-1-ashutoshdesai993@gmail.com>
-References: <20260417065407.206499-1-ashutoshdesai993@gmail.com>
+In-Reply-To: <2026042022-dormitory-uncrushed-c526@gregkh>
+References: <2026042022-dormitory-uncrushed-c526@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,121 +63,127 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-239245-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239236-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,yaina.de,davemloft.net,google.com,redhat.com,gmail.com];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[horms@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 5E14042EA22
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 9637942EE03
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: 'Simon Horman' <horms@kernel.org>
+From: Koichiro Den <den@valinux.co.jp>
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://sashiko.dev
+[ Upstream commit 0da63230d3ec1ec5fcc443a2314233e95bfece54 ]
+
+epf_ntb_epc_destroy() duplicates the teardown that the caller is
+supposed to perform later. This leads to an oops when .allow_link fails
+or when .drop_link is performed. The following is an example oops of the
+former case:
+
+  Unable to handle kernel paging request at virtual address dead000000000108
+  [...]
+  [dead000000000108] address between user and kernel address ranges
+  Internal error: Oops: 0000000096000044 [#1]  SMP
+  [...]
+  Call trace:
+   pci_epc_remove_epf+0x78/0xe0 (P)
+   pci_primary_epc_epf_link+0x88/0xa8
+   configfs_symlink+0x1f4/0x5a0
+   vfs_symlink+0x134/0x1d8
+   do_symlinkat+0x88/0x138
+   __arm64_sys_symlinkat+0x74/0xe0
+  [...]
+
+Remove the helper, and drop pci_epc_put(). EPC device refcounting is
+tied to the configfs EPC group lifetime, and pci_epc_put() in the
+.drop_link path is sufficient.
+
+Fixes: e35f56bb0330 ("PCI: endpoint: Support NTB transfer between RC and EP")
+Signed-off-by: Koichiro Den <den@valinux.co.jp>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260226084142.2226875-2-den@valinux.co.jp
+[ adjusted context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-ax25: fix OOB read after address header strip in ax25_rcv()
-    
-A crafted AX.25 frame with a valid address header but no control or PID
-bytes causes skb->len to drop to zero after skb_pull() strips the
-address header. The subsequent reads of skb->data[0] and skb->data[1]
-are then out of bounds.
+ drivers/pci/endpoint/functions/pci-epf-vntb.c | 18 +-----------------
+ 1 file changed, 1 insertion(+), 17 deletions(-)
 
-> diff --git a/net/ax25/ax25_in.c b/net/ax25/ax25_in.c
-> index d75b3e9ed93de..d14ccebf9cdd5 100644
-> --- a/net/ax25/ax25_in.c
-> +++ b/net/ax25/ax25_in.c
-> @@ -190,6 +190,9 @@ static int ax25_rcv(struct sk_buff *skb, struct net_device *dev,
->  	ax25_cb *ax25;
->  	ax25_dev *ax25_dev;
->  
-> +	if (skb_linearize(skb))
-> +		goto free;
+diff --git a/drivers/pci/endpoint/functions/pci-epf-vntb.c b/drivers/pci/endpoint/functions/pci-epf-vntb.c
+index 62d09a528e688..a70c58cb611b7 100644
+--- a/drivers/pci/endpoint/functions/pci-epf-vntb.c
++++ b/drivers/pci/endpoint/functions/pci-epf-vntb.c
+@@ -662,18 +662,6 @@ static void epf_ntb_mw_bar_clear(struct epf_ntb *ntb, int num_mws)
+ 	}
+ }
+ 
+-/**
+- * epf_ntb_epc_destroy() - Cleanup NTB EPC interface
+- * @ntb: NTB device that facilitates communication between HOST and VHOST
+- *
+- * Wrapper for epf_ntb_epc_destroy_interface() to cleanup all the NTB interfaces
+- */
+-static void epf_ntb_epc_destroy(struct epf_ntb *ntb)
+-{
+-	pci_epc_remove_epf(ntb->epf->epc, ntb->epf, 0);
+-	pci_epc_put(ntb->epf->epc);
+-}
+-
+ /**
+  * epf_ntb_init_epc_bar() - Identify BARs to be used for each of the NTB
+  * constructs (scratchpad region, doorbell, memorywindow)
+@@ -1314,7 +1302,7 @@ static int epf_ntb_bind(struct pci_epf *epf)
+ 	ret = epf_ntb_init_epc_bar(ntb);
+ 	if (ret) {
+ 		dev_err(dev, "Failed to create NTB EPC\n");
+-		goto err_bar_init;
++		return ret;
+ 	}
+ 
+ 	ret = epf_ntb_config_spad_bar_alloc(ntb);
+@@ -1354,9 +1342,6 @@ static int epf_ntb_bind(struct pci_epf *epf)
+ err_bar_alloc:
+ 	epf_ntb_config_spad_bar_free(ntb);
+ 
+-err_bar_init:
+-	epf_ntb_epc_destroy(ntb);
+-
+ 	return ret;
+ }
+ 
+@@ -1372,7 +1357,6 @@ static void epf_ntb_unbind(struct pci_epf *epf)
+ 
+ 	epf_ntb_epc_cleanup(ntb);
+ 	epf_ntb_config_spad_bar_free(ntb);
+-	epf_ntb_epc_destroy(ntb);
+ 
+ 	pci_unregister_driver(&vntb_pci_driver);
+ }
+-- 
+2.53.0
 
-Could calling skb_linearize() before verifying if the device is configured for
-AX.25 introduce a regression?
-
-Since ax25_packet_type is registered globally, ax25_rcv() receives all
-ETH_P_AX25 packets from any network interface. skb_linearize() performs
-memory allocations to coalesce fragmented packets. By performing this before
-checking if ax25_dev is NULL, could an attacker send fragmented ETH_P_AX25
-packets to an unconfigured interface to force unnecessary memory allocation
-and CPU cycles?
-
-Should the skb_linearize() call be moved after the device configuration check?
-
-> +
->  	/*
->  	 *	Process the AX.25/LAPB frame.
->  	 */
-[ ... ]
-> @@ -217,6 +220,9 @@ static int ax25_rcv(struct sk_buff *skb, struct net_device *dev,
->  	 */
->  	skb_pull(skb, ax25_addr_size(&dp));
->  
-> +	if (skb->len < 2)
-> +		goto free;
-
-Does this unconditionally drop all AX.25 LAPB control frames?
-
-Standard AX.25 LAPB control frames (such as SABM, DISC, UA, DM, and RR)
-consist solely of a 1-byte Control field and no PID byte. For these connection
-management frames, skb->len is exactly 1 after the address header is pulled.
-By discarding all frames shorter than 2 bytes, could this break the ability
-to establish, acknowledge, or disconnect AX.25 connections?
-
-Should the initial check only verify skb->len >= 1, and any requirement for
-skb->len >= 2 be strictly scoped to the code paths that actually parse a PID
-byte?
-
-Also, if this skb->len < 2 check is relaxed, there is a pre-existing
-out-of-bounds read in ax25_decode() for extended modulus frames.
-
-If a malformed 1-byte frame is received on an extended modulus (AX25_EMODULUS)
-connection, ax25_decode() unconditionally reads skb->data[1] for I-frames and
-S-frames. It then calls skb_pull(skb, 2) but ignores the return value. Should
-ax25_decode() validate that skb->len >= 2 before parsing the second control
-byte for extended modulus frames?
-
-Finally, there appears to be a pre-existing use-after-free and list corruption
-in the ax25_rcv() error path when allocating memory for ax25->digipeat.
-
-When handling an incoming connection request for a listener socket, the code
-physically links the skb into the listener socket's receive queue via
-skb_queue_head(&sk->sk_receive_queue, skb). Shortly after, it attempts to
-allocate memory. If this allocation fails, the error path explicitly calls
-kfree_skb(skb).
-
-However, it fails to unlink the skb from sk->sk_receive_queue. (The subsequent
-call to ax25_destroy_socket() flushes the newly created socket's queue, not
-the listener socket's queue). This leaves a freed skb in the listener socket's
-queue. When a user process later calls accept(), will it dequeue and
-dereference the freed skb, resulting in a use-after-free?
 
