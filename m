@@ -1,65 +1,62 @@
-Return-Path: <stable+bounces-239661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239298-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EGBWORRO5mkgugEAu9opvQ
-	(envelope-from <stable+bounces-239661-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:02:28 +0200
+	id QG+2F+VV5mkDuwEAu9opvQ
+	(envelope-from <stable+bounces-239298-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:35:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83F8242EE11
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:02:28 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8E5E42FAF6
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:35:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A166A300B581
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:01:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B91F3321EA31
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:45:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 760B933B975;
-	Mon, 20 Apr 2026 16:01:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A6573382CD;
+	Mon, 20 Apr 2026 15:44:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cD9QF2QF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lpaoeCU6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 398C42E2665;
-	Mon, 20 Apr 2026 16:01:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED7C733B6EF;
+	Mon, 20 Apr 2026 15:44:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700898; cv=none; b=SkZr9Ec8dcUpciSieFejBZPGbbxenDljZ/ttSI+BB9sfukSpXRx2usL3Bn+pRt1AsvN+520YTac04CG0pGDJ8fD5mhXtwPwwkEXq836RrYhTSZK3AcroaynSAtATHydYuwgH/M7xzCQwgnn9I7oILBzxexcSpQ2U2DeFgWsgSsk=
+	t=1776699891; cv=none; b=s7iC5dMV88cwX61U3wML/lEetUMi5qurupQ3Mfytz+t4SfZoBj8qtXoUVGzuUSM8y4jkbGJwn8bLPdLT85t/w7QLuPkG7k+uqX0Wcxmrgf8/fe0JAYqVJYb0reZ6MZXqUaDS4fGgum0HenijqnCCyFNJgwYxRn6IABL4he3xEXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700898; c=relaxed/simple;
-	bh=8c19x629VirKLS5kfJZ+M3LepCR3jmlApGAFH0vxaGU=;
+	s=arc-20240116; t=1776699891; c=relaxed/simple;
+	bh=j+yahGM9QGF9seJBxsBp8UajpU/BgUfRZRNJfxkygc4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L59ovLGV0Y/crlfBsmMe16T09WQZ6F+NHLk3+yzFPNKpRHriZbOWixz3/APMQWYoL5SHwo/yAqsJwxCg81VJr4n6e5eApM169B03HbXatvABAFpPbauKo6VMpDC0Q3potMiRGgHzzK9bIYVo2E3vsq8E418lNxqstx4UWE/htkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cD9QF2QF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4BC1C19425;
-	Mon, 20 Apr 2026 16:01:37 +0000 (UTC)
+	 MIME-Version; b=D5MHjDqM3Qo3QfUfQt+Oyj/+BRwio0GNtls56rwBlpBnMfSEhRtdP+4gHRzh7sihM5nLgKrewYCixT6Y7/R3UbnC3rpJBlG8emdlLwt2Lg8ej4SsVz5od1pVM/njKF6BVZwoyWVSL3klmNX4j6D6lpkcbu6nyoOoBhy9lrrf7Fo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lpaoeCU6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82973C19425;
+	Mon, 20 Apr 2026 15:44:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700898;
-	bh=8c19x629VirKLS5kfJZ+M3LepCR3jmlApGAFH0vxaGU=;
+	s=korg; t=1776699890;
+	bh=j+yahGM9QGF9seJBxsBp8UajpU/BgUfRZRNJfxkygc4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cD9QF2QF0wR3gIgDEkhWpcDC9GHLX04UYV8VIbuR9JR9tU0IkJ+5I7iwNILVlOLly
-	 0PO1FJJmqew+ReH4PmNTd5Z/WtjJg6AaKfGOKqtvbAe+pZA4l7tLFtVv4XGZzEXZnE
-	 xP2Ua9kFPAjDdAM+ZwH+5jiQtHONno5RzgP0wD/A=
+	b=lpaoeCU6uxjlxlOxc+Gii009AaD9JOLdruHsRxo8kY7iUx4IzhsLja06zOHsHj96Y
+	 RqCmgF3zjeDaC/XgUZe8M5anMdayVSqi2vqRizBpiYVp4GIZ0L0RauDScf/Np0eN5M
+	 Fi1EuJyyFIUE1HeluELDcXO08FdZRHWzWWj5eTQs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ren Wei <enjou1224z@gmail.com>,
-	Zhengchuan Liang <zcliangcn@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Florian Westphal <fw@strlen.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 101/198] netfilter: ip6t_eui64: reject invalid MAC header for all packets
+	Simon Horman <horms@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	Thierry Escande <thierry.escande@linux.intel.com>,
+	Samuel Ortiz <sameo@linux.intel.com>,
+	stable <stable@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 7.0 09/76] NFC: digital: Bounds check NFC-A cascade depth in SDD response handler
 Date: Mon, 20 Apr 2026 17:41:20 +0200
-Message-ID: <20260420153939.239110717@linuxfoundation.org>
+Message-ID: <20260420153911.158385477@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+In-Reply-To: <20260420153910.810034134@linuxfoundation.org>
+References: <20260420153910.810034134@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,86 +69,92 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-239661-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,strlen.de,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239298-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,lzu.edu.cn:email]
-X-Rspamd-Queue-Id: 83F8242EE11
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: B8E5E42FAF6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhengchuan Liang <zcliangcn@gmail.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit fdce0b3590f724540795b874b4c8850c90e6b0a8 ]
+commit 46ce8be2ced389bccd84bcc04a12cf2f4d0c22d1 upstream.
 
-`eui64_mt6()` derives a modified EUI-64 from the Ethernet source address
-and compares it with the low 64 bits of the IPv6 source address.
+The NFC-A anti-collision cascade in digital_in_recv_sdd_res() appends 3
+or 4 bytes to target->nfcid1 on each round, but the number of cascade
+rounds is controlled entirely by the peer device.  The peer sets the
+cascade tag in the SDD_RES (deciding 3 vs 4 bytes) and the
+cascade-incomplete bit in the SEL_RES (deciding whether another round
+follows).
 
-The existing guard only rejects an invalid MAC header when
-`par->fragoff != 0`. For packets with `par->fragoff == 0`, `eui64_mt6()`
-can still reach `eth_hdr(skb)` even when the MAC header is not valid.
+ISO 14443-3 limits NFC-A to three cascade levels and target->nfcid1 is
+sized accordingly (NFC_NFCID1_MAXSIZE = 10), but nothing in the driver
+actually enforces this.  This means a malicious peer can keep the
+cascade running, writing past the heap-allocated nfc_target with each
+round.
 
-Fix this by removing the `par->fragoff != 0` condition so that packets
-with an invalid MAC header are rejected before accessing `eth_hdr(skb)`.
+Fix this by rejecting the response when the accumulated UID would exceed
+the buffer.
 
-Fixes: 1da177e4c3f41 ("Linux-2.6.12-rc2")
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Co-developed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Yuan Tan <yuantan098@gmail.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Tested-by: Ren Wei <enjou1224z@gmail.com>
-Signed-off-by: Zhengchuan Liang <zcliangcn@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Commit e329e71013c9 ("NFC: nci: Bounds check struct nfc_target arrays")
+fixed similar missing checks against the same field on the NCI path.
+
+Cc: Simon Horman <horms@kernel.org>
+Cc: Kees Cook <kees@kernel.org>
+Cc: Thierry Escande <thierry.escande@linux.intel.com>
+Cc: Samuel Ortiz <sameo@linux.intel.com>
+Fixes: 2c66daecc409 ("NFC Digital: Add NFC-A technology support")
+Cc: stable <stable@kernel.org>
+Assisted-by: gregkh_clanker_t1000
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/2026040913-figure-seducing-bd3f@gregkh
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/netfilter/ip6t_eui64.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/nfc/digital_technology.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/ipv6/netfilter/ip6t_eui64.c b/net/ipv6/netfilter/ip6t_eui64.c
-index d704f7ed300c2..da69a27e8332c 100644
---- a/net/ipv6/netfilter/ip6t_eui64.c
-+++ b/net/ipv6/netfilter/ip6t_eui64.c
-@@ -22,8 +22,7 @@ eui64_mt6(const struct sk_buff *skb, struct xt_action_param *par)
- 	unsigned char eui64[8];
- 
- 	if (!(skb_mac_header(skb) >= skb->head &&
--	      skb_mac_header(skb) + ETH_HLEN <= skb->data) &&
--	    par->fragoff != 0) {
-+	      skb_mac_header(skb) + ETH_HLEN <= skb->data)) {
- 		par->hotdrop = true;
- 		return false;
+--- a/net/nfc/digital_technology.c
++++ b/net/nfc/digital_technology.c
+@@ -424,6 +424,12 @@ static void digital_in_recv_sdd_res(stru
+ 		size = 4;
  	}
--- 
-2.53.0
-
+ 
++	if (target->nfcid1_len + size > NFC_NFCID1_MAXSIZE) {
++		PROTOCOL_ERR("4.7.2.1");
++		rc = -EPROTO;
++		goto exit;
++	}
++
+ 	memcpy(target->nfcid1 + target->nfcid1_len, sdd_res->nfcid1 + offset,
+ 	       size);
+ 	target->nfcid1_len += size;
 
 
 
