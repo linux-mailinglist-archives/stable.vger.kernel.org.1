@@ -1,65 +1,59 @@
-Return-Path: <stable+bounces-239278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239704-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ONWeCPpe5mkWvgEAu9opvQ
-	(envelope-from <stable+bounces-239278-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:14:34 +0200
+	id WEcINeBO5mkgugEAu9opvQ
+	(envelope-from <stable+bounces-239704-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:05:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44B74430CB1
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:14:33 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75DFC42EF68
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:05:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 46222332A125
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:44:12 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 905FA3017255
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:03:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FABC3382C7;
-	Mon, 20 Apr 2026 15:44:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D350342510;
+	Mon, 20 Apr 2026 16:03:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="scxF4pfB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U90GIFWy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF08C336896;
-	Mon, 20 Apr 2026 15:43:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48B8E33B975;
+	Mon, 20 Apr 2026 16:03:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776699839; cv=none; b=TnQxPMF6t1xWR/i/9Elvt4GEPbG5KwNbOpHKOACiiXNB66zsNLVRfdFNB1ci+Bme1m8y0Fs8X5O+nZctxAa0WR5tFGVPXQqrxZlR4VrLoLbH2qpIcG2SGMXhnvkOZ1gATqT08zhUWzbXEq27P4JUimxaH2a3ydyyejxC8B1UrnQ=
+	t=1776701003; cv=none; b=tEjCjPiaUwzYdA/7Bz2w+Ll68lRCakiMpGLcquCyss+pyg3dnRBfF2ZYe6OxV640Rmf18ruHKAycS4KzNQBIp9+bh+diXPnRXM93aJrYZBo6eyuaCsN26O9OX7gXHiHbfwreC1x2BkQpSSQOZagKOSAlA5iKXXuUYKTMd2Z+eMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776699839; c=relaxed/simple;
-	bh=f8fVRrrYpvo0HnSywK8N4l4B+K/PGf2IQBs5i6352dk=;
+	s=arc-20240116; t=1776701003; c=relaxed/simple;
+	bh=0zhVQJlm3lbGiqsF1mQWlK2QksWXOi4x6C2exIrMB24=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f6r/ts4HdInJUpx0GNf5hcIAVxQnbM0Nmcox4I0IEkjsYHj+UpCsy3zy91+J2CmuyjmFFT4q0YHhnJdhKDjKMYcIom0UvVNSVx8/5YmVrWu1X9bwDUXXAQ460COKEzuO0OszMQHuNXRXnUT/yN/1oGHFrKHncIy0ajZOLnQJJ5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=scxF4pfB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44D43C2BCB6;
-	Mon, 20 Apr 2026 15:43:59 +0000 (UTC)
+	 MIME-Version; b=pPWoF9EHVhPwHv1bETJxklZFOycWopM1GABRHj7lvY2lsl8dgI6ybegN4fbrb3M+PYap0rGXbTSnzu/Eo3h8LLec6giB0p6S+oDXZgA9hMUfMJVo5OzOBJgemVofSnhuUXHc3lCWJb1BlBEGSC4s+eS//jFnLA4yCXV2Nlfp0pk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U90GIFWy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0871C2BCB7;
+	Mon, 20 Apr 2026 16:03:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776699839;
-	bh=f8fVRrrYpvo0HnSywK8N4l4B+K/PGf2IQBs5i6352dk=;
+	s=korg; t=1776701003;
+	bh=0zhVQJlm3lbGiqsF1mQWlK2QksWXOi4x6C2exIrMB24=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=scxF4pfB54WRQfu877aiY/sSDGG/mfan9V6GJKrm3hnWG/Ln7UNSsJwKxqrKixlyl
-	 42qRyHTwBUOD1z2xrkXPHgwsL1621Kf658dHj7E+oSVuVouMUoeo4sIZd3U/ksdi5W
-	 PAQVEHBQx0LUzwlsGLLqYoEAYY7qbj6gCypCddFk=
+	b=U90GIFWyvthqx3VzTocFImO+6Up+cCHhH7lf8NOgNtPaCmVT4dF8wSSR2jzSdefj3
+	 gg4q3eMae4QNYgDtuX1l6yBQeQ+yqI0Spwtyw/+WiBhAyBuWHcZy/gvnc0YLA7vfrS
+	 FG7t40qj4G9TSSjbhh27uW3/hG1Jfs9LR5CsN7Vs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Tom Talpey <tom@talpey.com>,
-	Bharath SM <bharathsm@microsoft.com>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	stable <stable@kernel.org>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 7.0 18/76] smb: client: fix off-by-8 bounds check in check_wsl_eas()
+	Li RongQing <lirongqing@baidu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 110/198] devlink: Fix incorrect skb socket family dumping
 Date: Mon, 20 Apr 2026 17:41:29 +0200
-Message-ID: <20260420153911.485780146@linuxfoundation.org>
+Message-ID: <20260420153939.565441283@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153910.810034134@linuxfoundation.org>
-References: <20260420153910.810034134@linuxfoundation.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,90 +66,74 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-239278-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,microsoft.com,talpey.com,vger.kernel.org,lists.samba.org,kernel.org,manguebit.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-239704-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[samba.org:email,manguebit.org:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,talpey.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 44B74430CB1
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: 75DFC42EF68
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Li RongQing <lirongqing@baidu.com>
 
-commit 3d8b9d06bd3ac4c6846f5498800b0f5f8062e53b upstream.
+[ Upstream commit 0006c6f1091bbeea88b8a88a6548b9fb2f803c74 ]
 
-The bounds check uses (u8 *)ea + nlen + 1 + vlen as the end of the EA
-name and value, but ea_data sits at offset sizeof(struct
-smb2_file_full_ea_info) = 8 from ea, not at offset 0.  The strncmp()
-later reads ea->ea_data[0..nlen-1] and the value bytes follow at
-ea_data[nlen+1..nlen+vlen], so the actual end is ea->ea_data + nlen + 1
-+ vlen.  Isn't pointer math fun?
+The devlink_fmsg_dump_skb function was incorrectly using the socket
+type (sk->sk_type) instead of the socket family (sk->sk_family)
+when filling the "family" field in the fast message dump.
 
-The earlier check (u8 *)ea > end - sizeof(*ea) only guarantees the
-8-byte header is in bounds, but since the last EA is placed within 8
-bytes of the end of the response, the name and value bytes are read past
-the end of iov.
+This patch fixes this to properly display the socket family.
 
-Fix this mess all up by using ea->ea_data as the base for the bounds
-check.
-
-An "untrusted" server can use this to leak up to 8 bytes of kernel heap
-into the EA name comparison and influence which WSL xattr the data is
-interpreted as.
-
-Cc: Ronnie Sahlberg <ronniesahlberg@gmail.com>
-Cc: Shyam Prasad N <sprasad@microsoft.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: Bharath SM <bharathsm@microsoft.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Cc: stable <stable@kernel.org>
-Assisted-by: gregkh_clanker_t1000
-Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3dbfde7f6bc7b8 ("devlink: add devlink_fmsg_dump_skb() function")
+Signed-off-by: Li RongQing <lirongqing@baidu.com>
+Link: https://patch.msgid.link/20260407022730.2393-1-lirongqing@baidu.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smb2inode.c |    2 +-
+ net/devlink/health.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/smb/client/smb2inode.c
-+++ b/fs/smb/client/smb2inode.c
-@@ -128,7 +128,7 @@ static int check_wsl_eas(struct kvec *rs
- 		nlen = ea->ea_name_length;
- 		vlen = le16_to_cpu(ea->ea_value_length);
- 		if (nlen != SMB2_WSL_XATTR_NAME_LEN ||
--		    (u8 *)ea + nlen + 1 + vlen > end)
-+		    (u8 *)ea->ea_data + nlen + 1 + vlen > end)
- 			return -EINVAL;
- 
- 		switch (vlen) {
+diff --git a/net/devlink/health.c b/net/devlink/health.c
+index 136a67c36a20d..0798c82096bdc 100644
+--- a/net/devlink/health.c
++++ b/net/devlink/health.c
+@@ -1327,7 +1327,7 @@ void devlink_fmsg_dump_skb(struct devlink_fmsg *fmsg, const struct sk_buff *skb)
+ 	if (sk) {
+ 		devlink_fmsg_pair_nest_start(fmsg, "sk");
+ 		devlink_fmsg_obj_nest_start(fmsg);
+-		devlink_fmsg_put(fmsg, "family", sk->sk_type);
++		devlink_fmsg_put(fmsg, "family", sk->sk_family);
+ 		devlink_fmsg_put(fmsg, "type", sk->sk_type);
+ 		devlink_fmsg_put(fmsg, "proto", sk->sk_protocol);
+ 		devlink_fmsg_obj_nest_end(fmsg);
+-- 
+2.53.0
+
 
 
 
