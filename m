@@ -1,66 +1,58 @@
-Return-Path: <stable+bounces-239553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239313-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gDqNNZ5l5mkKvwEAu9opvQ
-	(envelope-from <stable+bounces-239553-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:42:54 +0200
+	id 4EOOByJj5mkKvwEAu9opvQ
+	(envelope-from <stable+bounces-239313-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:32:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5696A431E25
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:42:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC85C43160F
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:32:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AA21D30B997E
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:55:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 890A33757467
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:45:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BADC3264F1;
-	Mon, 20 Apr 2026 15:55:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E29FB32E696;
+	Mon, 20 Apr 2026 15:45:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jCVvtf3a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="woH7W0yx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A8BD32B9B5;
-	Mon, 20 Apr 2026 15:55:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A128D2D978C;
+	Mon, 20 Apr 2026 15:45:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700548; cv=none; b=jpfhQcpquQtkDg964VXI5OZmu8ZfXQ71MLF1wfxlf7NBRzWO61gRX5ZUoRP69nWzkt/jKBry2KflSEez07jmdJt3iKj+M40cZwiME4kFAd7UHjReVFINV+xjpFDLFRDqZew3QWUkp8C/+2AXCKXWw1VtlNuRef+/AfPJjvzLdvc=
+	t=1776699929; cv=none; b=OJKjNl90crxD+5reh9mZthEXTfPdI9Krvy5+QqngomWVclXo5sZ237Hc5QhU7CyiuafsBucKfAOnpZhJb9dikPl6/EMQamL00fJluUc/8aucyi1SB+rDWK5NTj587IvTs88yMDnze298aPgkosUp5xZQGoYiAGjKNBe/b/Uw4BU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700548; c=relaxed/simple;
-	bh=N7OuTgGk9lw+NDBseOgcJvle/aPbCR6/ULbck8Y59ts=;
+	s=arc-20240116; t=1776699929; c=relaxed/simple;
+	bh=vkkKrVmFPNVl1q2993Rsz3BXLiRS65g35Pa5bg5AHZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JZXFs/qX04560ki/IQTvrKRhhBn9/DWB14vVfINvgry8RmvxZd9NDuJfb4bOL2Y0m8Agt5tcbQDQRC5UvpkTs+gNCSTm/TRPlBchXEfeUMthomOHtODt3BtXV2/t/+dFvx+yGsIqpQHtImEAdvVc38nkqL9OQ6lRIt7VKNBelto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jCVvtf3a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59C24C2BCC6;
-	Mon, 20 Apr 2026 15:55:47 +0000 (UTC)
+	 MIME-Version; b=nb9zSFJchJDAqYFrHPLcsp07J0i6kJ5suJ1kLwQ0t9OLOQArwfWlnKj8nM8/BkfkVlkCtJg0YpXeb72erKWLMkt8/egorwgDPyu48K3088unFpldtq96e132ysl/ZV59r8lLo31xpe4dutvg3z858/RgKPs2mhw2r8h8Q25CgvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=woH7W0yx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 391DCC19425;
+	Mon, 20 Apr 2026 15:45:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700547;
-	bh=N7OuTgGk9lw+NDBseOgcJvle/aPbCR6/ULbck8Y59ts=;
+	s=korg; t=1776699929;
+	bh=vkkKrVmFPNVl1q2993Rsz3BXLiRS65g35Pa5bg5AHZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jCVvtf3aD7yCToU/pCTiSZE/1Rc4Nh6Gl519/eby9yUDoVnQXopHPS/eThFsTChmX
-	 83QXCPxJ/yUhoxvrqw3d1sXnZQ03OS9m6+J+v0Te4hVrBu/kCQ3ovTlrdsWMSGAfUV
-	 Uomu7C5ihx+qXSN2buIiy3oPivJxjk7k2Q/sxFvc=
+	b=woH7W0yxLrBgQ63+Ei65L4O4RtkmMZAfu5n52umckHZL0cAmIXaLxFmxjAyYgJUI0
+	 K5PjW9f8b4tnX9icUH456c/D3gNme8Tx1kdqeEQ16Mt9QvjDZqH9J3Y+BTaOSRidHe
+	 JdH1A9fplWD9D6DvyW0QevqvH5cbJcQweM9qGtAQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+67b90111784a3eac8c04@syzkaller.appspotmail.com,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Heming Zhao <heming.zhao@suse.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Joseph Qi <jiangqi903@gmail.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.19 182/220] ocfs2: fix possible deadlock between unlink and dio_end_io_write
+	Alexander Potapenko <glider@google.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 7.0 52/76] KVM: SEV: Protect *all* of sev_mem_enc_register_region() with kvm->lock
 Date: Mon, 20 Apr 2026 17:42:03 +0200
-Message-ID: <20260420153940.580200871@linuxfoundation.org>
+Message-ID: <20260420153912.717406232@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
-References: <20260420153934.013228280@linuxfoundation.org>
+In-Reply-To: <20260420153910.810034134@linuxfoundation.org>
+References: <20260420153910.810034134@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,120 +63,152 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	TAGGED_FROM(0.00)[bounces-239553-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,linux.alibaba.com,suse.com,fasheh.com,evilplan.org,oracle.com,gmail.com,live.cn,huawei.com,linux-foundation.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable,67b90111784a3eac8c04];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-239313-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[alibaba.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,syzkaller.appspot.com:url,linux-foundation.org:email,suse.com:email,oracle.com:email,fasheh.com:email,evilplan.org:email,appspotmail.com:email,live.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 5696A431E25
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: BC85C43160F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joseph Qi <joseph.qi@linux.alibaba.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit b02da26a992db0c0e2559acbda0fc48d4a2fd337 upstream.
+commit b6408b6cec5df76a165575777800ef2aba12b109 upstream.
 
-ocfs2_unlink takes orphan dir inode_lock first and then ip_alloc_sem,
-while in ocfs2_dio_end_io_write, it acquires these locks in reverse order.
-This creates an ABBA lock ordering violation on lock classes
-ocfs2_sysfile_lock_key[ORPHAN_DIR_SYSTEM_INODE] and
-ocfs2_file_ip_alloc_sem_key.
+Take and hold kvm->lock for before checking sev_guest() in
+sev_mem_enc_register_region(), as sev_guest() isn't stable unless kvm->lock
+is held (or KVM can guarantee KVM_SEV_INIT{2} has completed and can't
+rollack state).  If KVM_SEV_INIT{2} fails, KVM can end up trying to add to
+a not-yet-initialized sev->regions_list, e.g. triggering a #GP
 
-Lock Chain #0 (orphan dir inode_lock -> ip_alloc_sem):
-ocfs2_unlink
-  ocfs2_prepare_orphan_dir
-    ocfs2_lookup_lock_orphan_dir
-      inode_lock(orphan_dir_inode) <- lock A
-    __ocfs2_prepare_orphan_dir
-      ocfs2_prepare_dir_for_insert
-        ocfs2_extend_dir
-	  ocfs2_expand_inline_dir
-	    down_write(&oi->ip_alloc_sem) <- Lock B
+  Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] SMP KASAN NOPTI
+  KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+  CPU: 110 UID: 0 PID: 72717 Comm: syz.15.11462 Tainted: G     U  W  O        6.16.0-smp-DEV #1 NONE
+  Tainted: [U]=USER, [W]=WARN, [O]=OOT_MODULE
+  Hardware name: Google, Inc. Arcadia_IT_80/Arcadia_IT_80, BIOS 12.52.0-0 10/28/2024
+  RIP: 0010:sev_mem_enc_register_region+0x3f0/0x4f0 ../include/linux/list.h:83
+  Code: <41> 80 3c 04 00 74 08 4c 89 ff e8 f1 c7 a2 00 49 39 ed 0f 84 c6 00
+  RSP: 0018:ffff88838647fbb8 EFLAGS: 00010256
+  RAX: dffffc0000000000 RBX: 1ffff92015cf1e0b RCX: dffffc0000000000
+  RDX: 0000000000000000 RSI: 0000000000001000 RDI: ffff888367870000
+  RBP: ffffc900ae78f050 R08: ffffea000d9e0007 R09: 1ffffd4001b3c000
+  R10: dffffc0000000000 R11: fffff94001b3c001 R12: 0000000000000000
+  R13: ffff8982ab0bde00 R14: ffffc900ae78f058 R15: 0000000000000000
+  FS:  00007f34e9dc66c0(0000) GS:ffff89ee64d33000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 00007fe180adef98 CR3: 000000047210e000 CR4: 0000000000350ef0
+  Call Trace:
+   <TASK>
+   kvm_arch_vm_ioctl+0xa72/0x1240 ../arch/x86/kvm/x86.c:7371
+   kvm_vm_ioctl+0x649/0x990 ../virt/kvm/kvm_main.c:5363
+   __se_sys_ioctl+0x101/0x170 ../fs/ioctl.c:51
+   do_syscall_x64 ../arch/x86/entry/syscall_64.c:63 [inline]
+   do_syscall_64+0x6f/0x1f0 ../arch/x86/entry/syscall_64.c:94
+   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+  RIP: 0033:0x7f34e9f7e9a9
+  Code: <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+  RSP: 002b:00007f34e9dc6038 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+  RAX: ffffffffffffffda RBX: 00007f34ea1a6080 RCX: 00007f34e9f7e9a9
+  RDX: 0000200000000280 RSI: 000000008010aebb RDI: 0000000000000007
+  RBP: 00007f34ea000d69 R08: 0000000000000000 R09: 0000000000000000
+  R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+  R13: 0000000000000000 R14: 00007f34ea1a6080 R15: 00007ffce77197a8
+   </TASK>
 
-Lock Chain #1 (ip_alloc_sem -> orphan dir inode_lock):
-ocfs2_dio_end_io_write
-  down_write(&oi->ip_alloc_sem) <- Lock B
-  ocfs2_del_inode_from_orphan()
-    inode_lock(orphan_dir_inode) <- Lock A
+with a syzlang reproducer that looks like:
 
-Deadlock Scenario:
-  CPU0 (unlink)                     CPU1 (dio_end_io_write)
-  ------                            ------
-  inode_lock(orphan_dir_inode)
-                                    down_write(ip_alloc_sem)
-  down_write(ip_alloc_sem)
-                                    inode_lock(orphan_dir_inode)
+  syz_kvm_add_vcpu$x86(0x0, &(0x7f0000000040)={0x0, &(0x7f0000000180)=ANY=[], 0x70}) (async)
+  syz_kvm_add_vcpu$x86(0x0, &(0x7f0000000080)={0x0, &(0x7f0000000180)=ANY=[@ANYBLOB="..."], 0x4f}) (async)
+  r0 = openat$kvm(0xffffffffffffff9c, &(0x7f0000000200), 0x0, 0x0)
+  r1 = ioctl$KVM_CREATE_VM(r0, 0xae01, 0x0)
+  r2 = openat$kvm(0xffffffffffffff9c, &(0x7f0000000240), 0x0, 0x0)
+  r3 = ioctl$KVM_CREATE_VM(r2, 0xae01, 0x0)
+  ioctl$KVM_SET_CLOCK(r3, 0xc008aeba, &(0x7f0000000040)={0x1, 0x8, 0x0, 0x5625e9b0}) (async)
+  ioctl$KVM_SET_PIT2(r3, 0x8010aebb, &(0x7f0000000280)={[...], 0x5}) (async)
+  ioctl$KVM_SET_PIT2(r1, 0x4070aea0, 0x0) (async)
+  r4 = ioctl$KVM_CREATE_VM(0xffffffffffffffff, 0xae01, 0x0)
+  openat$kvm(0xffffffffffffff9c, 0x0, 0x0, 0x0) (async)
+  ioctl$KVM_SET_USER_MEMORY_REGION(r4, 0x4020ae46, &(0x7f0000000400)={0x0, 0x0, 0x0, 0x2000, &(0x7f0000001000/0x2000)=nil}) (async)
+  r5 = ioctl$KVM_CREATE_VCPU(r4, 0xae41, 0x2)
+  close(r0) (async)
+  openat$kvm(0xffffffffffffff9c, &(0x7f0000000000), 0x8000, 0x0) (async)
+  ioctl$KVM_SET_GUEST_DEBUG(r5, 0x4048ae9b, &(0x7f0000000300)={0x4376ea830d46549b, 0x0, [0x46, 0x0, 0x0, 0x0, 0x0, 0x1000]}) (async)
+  ioctl$KVM_RUN(r5, 0xae80, 0x0)
 
-Since ip_alloc_sem is to protect allocation changes, which is unrelated
-with operations in ocfs2_del_inode_from_orphan.  So move
-ocfs2_del_inode_from_orphan out of ip_alloc_sem to fix the deadlock.
+Opportunistically use guard() to avoid having to define a new error label
+and goto usage.
 
-Link: https://lkml.kernel.org/r/20260306032211.1016452-1-joseph.qi@linux.alibaba.com
-Reported-by: syzbot+67b90111784a3eac8c04@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=67b90111784a3eac8c04
-Fixes: a86a72a4a4e0 ("ocfs2: take ip_alloc_sem in ocfs2_dio_get_block & ocfs2_dio_end_io_write")
-Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Reviewed-by: Heming Zhao <heming.zhao@suse.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Joseph Qi <jiangqi903@gmail.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 1e80fdc09d12 ("KVM: SVM: Pin guest memory when SEV is active")
+Cc: stable@vger.kernel.org
+Reported-by: Alexander Potapenko <glider@google.com>
+Tested-by: Alexander Potapenko <glider@google.com>
+Link: https://patch.msgid.link/20260310234829.2608037-4-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ocfs2/aops.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/x86/kvm/svm/sev.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/fs/ocfs2/aops.c
-+++ b/fs/ocfs2/aops.c
-@@ -2295,8 +2295,6 @@ static int ocfs2_dio_end_io_write(struct
- 		goto out;
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -2704,6 +2704,8 @@ int sev_mem_enc_register_region(struct k
+ 	struct enc_region *region;
+ 	int ret = 0;
+ 
++	guard(mutex)(&kvm->lock);
++
+ 	if (!sev_guest(kvm))
+ 		return -ENOTTY;
+ 
+@@ -2718,12 +2720,10 @@ int sev_mem_enc_register_region(struct k
+ 	if (!region)
+ 		return -ENOMEM;
+ 
+-	mutex_lock(&kvm->lock);
+ 	region->pages = sev_pin_memory(kvm, range->addr, range->size, &region->npages,
+ 				       FOLL_WRITE | FOLL_LONGTERM);
+ 	if (IS_ERR(region->pages)) {
+ 		ret = PTR_ERR(region->pages);
+-		mutex_unlock(&kvm->lock);
+ 		goto e_free;
  	}
  
--	down_write(&oi->ip_alloc_sem);
+@@ -2741,8 +2741,6 @@ int sev_mem_enc_register_region(struct k
+ 	region->size = range->size;
+ 
+ 	list_add_tail(&region->list, &sev->regions_list);
+-	mutex_unlock(&kvm->lock);
 -
- 	/* Delete orphan before acquire i_rwsem. */
- 	if (dwc->dw_orphaned) {
- 		BUG_ON(dwc->dw_writer_pid != task_pid_nr(current));
-@@ -2309,6 +2307,7 @@ static int ocfs2_dio_end_io_write(struct
- 			mlog_errno(ret);
- 	}
+ 	return ret;
  
-+	down_write(&oi->ip_alloc_sem);
- 	di = (struct ocfs2_dinode *)di_bh->b_data;
- 
- 	ocfs2_init_dinode_extent_tree(&et, INODE_CACHE(inode), di_bh);
+ e_free:
 
 
 
