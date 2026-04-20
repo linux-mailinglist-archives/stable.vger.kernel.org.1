@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-239507-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239841-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wDkpDyZl5mlmvwEAu9opvQ
-	(envelope-from <stable+bounces-239507-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:40:54 +0200
+	id qFl+B7lb5mkwvQEAu9opvQ
+	(envelope-from <stable+bounces-239841-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:00:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1D73431CC0
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:40:53 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9012E4305EA
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:00:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E7C5335A86AF
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:53:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 079983163CB6
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:09:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2EFA332916;
-	Mon, 20 Apr 2026 15:53:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B3893375C5;
+	Mon, 20 Apr 2026 16:09:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cSLQqqh0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b0QjjoCp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84EAA2D77E5;
-	Mon, 20 Apr 2026 15:53:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E7C12DE6E3;
+	Mon, 20 Apr 2026 16:09:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700430; cv=none; b=YfCXICOcdIFJhXNi8wC3FLD4bdUE0IPnndJtiR+EM1WxCZUayep/vylcHtQfkmtD0QrgYYKX/4UeNB02PwZxO/4iPamMoOHYdqBN1IouM2IOD3pIPIHX7Z57G80BUnRxJ6zMnJWLzM+jmecaldI8FkVJNOQW/WsviVB0pZlqVso=
+	t=1776701353; cv=none; b=qzR/skd9VrnaCcBojjHrbnwsJCA6IbhmYUxEW6nkV+v2qgXSVCwc2b2c/ODKbwt+ChCwspTpEWB1L4FRfhNdJkJ+uc2dDon010vkWLr7JF1PMi7YZU3IWZqzAhd1wnMAZtUDCYS06i8kf+lWd+JY5EOjORO7uASVI4FlJPqfeN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700430; c=relaxed/simple;
-	bh=yoJqo52KZjh3bhnidofb7s7oSzNqOyTAeB1s8qTa/Lw=;
+	s=arc-20240116; t=1776701353; c=relaxed/simple;
+	bh=1oV+HByB3CCoDTYBfo1vEoxBYB3yMrd0ZaP3IDxVjmA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iDNPQHj8mhuiP8zU/C6/NJrJrqR0QEx8ObIAVds7ua8norxHH0B0nV7DnR8ehK+Ubhcwjl2SHZp5lVocOPg9C/K7a/C97GRN5tTNR7r9MVZBM0aJcO79Tn/KSkBjjFyxfeQhFq79W4BX6pebqL6+PHgPRovN+am77sREOom/RMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cSLQqqh0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A946C19425;
-	Mon, 20 Apr 2026 15:53:49 +0000 (UTC)
+	 MIME-Version; b=i2DMV22VRr5mSVqy+8TRs2quTkR6Rfl9Fkuh+NIzYFiIWVNkTu4kI+Yyv/9mDKL2yyn4by87iFCQIYsYu6xxxLizHQjxwbu4qJELgMRIWKkroVSM9zHNLETuE3wkFiTpxRARccow2fmcvRvEhRzw1tKUg+8VIhCdK2k8QadSK+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b0QjjoCp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B925AC19425;
+	Mon, 20 Apr 2026 16:09:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700430;
-	bh=yoJqo52KZjh3bhnidofb7s7oSzNqOyTAeB1s8qTa/Lw=;
+	s=korg; t=1776701353;
+	bh=1oV+HByB3CCoDTYBfo1vEoxBYB3yMrd0ZaP3IDxVjmA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cSLQqqh0xwUMoQLqsxS0Po4gPHOc9k2gMv9EAhOd61ssidP30L9ZX1YFBAbLzUY3D
-	 X0yNCQf+a/yrPB2+ckD9k1mVyk6LTlRmm9su0vWgX8yUpJY1Tq1Si85y8iihBthtw/
-	 wVo//II+a+QPuTd9RzcHLD7QcNoAMYbT/rjxKpvk=
+	b=b0QjjoCpn0XCM0htpr/dPQU8FWLHrI+BBS3iHBCJwjcNcgcggWJt4gYjm8SRFsRXl
+	 1QgQJ2evJUoOUDK04NoB50wdlnZuO14w4D4H6yYQ9raOpDgFDsvki3uyf322Qgn2+S
+	 HVCGykD6h9VQlx1nmUz/uBmyOrQ7RxIrGhxcPY90=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bernie Thompson <bernie@plugable.com>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.19 169/220] fbdev: udlfb: avoid divide-by-zero on FBIOPUT_VSCREENINFO
-Date: Mon, 20 Apr 2026 17:41:50 +0200
-Message-ID: <20260420153940.111792709@linuxfoundation.org>
+	syzbot+ci3edea60a44225dec@syzkaller.appspotmail.com,
+	Alice Mikityanska <alice@isovalent.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 079/162] l2tp: Drop large packets with UDP encap
+Date: Mon, 20 Apr 2026 17:41:51 +0200
+Message-ID: <20260420153929.898219546@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
-References: <20260420153934.013228280@linuxfoundation.org>
+In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
+References: <20260420153927.006696811@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +65,143 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-239507-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,plugable.com,gmx.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-239841-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gmx.de:email,plugable.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A1D73431CC0
+	TAGGED_RCPT(0.00)[stable,ci3edea60a44225dec];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,appspotmail.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,isovalent.com:email]
+X-Rspamd-Queue-Id: 9012E4305EA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Alice Mikityanska <alice@isovalent.com>
 
-commit a31e4518bec70333a0a98f2946a12b53b45fe5b9 upstream.
+[ Upstream commit ebe560ea5f54134279356703e73b7f867c89db13 ]
 
-Much like commit 19f953e74356 ("fbdev: fb_pm2fb: Avoid potential divide
-by zero error"), we also need to prevent that same crash from happening
-in the udlfb driver as it uses pixclock directly when dividing, which
-will crash.
+syzbot reported a WARN on my patch series [1]. The actual issue is an
+overflow of 16-bit UDP length field, and it exists in the upstream code.
+My series added a debug WARN with an overflow check that exposed the
+issue, that's why syzbot tripped on my patches, rather than on upstream
+code.
 
-Cc: Bernie Thompson <bernie@plugable.com>
-Cc: Helge Deller <deller@gmx.de>
-Fixes: 59277b679f8b ("Staging: udlfb: add dynamic modeset support")
-Assisted-by: gregkh_clanker_t1000
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+syzbot's repro:
+
+r0 = socket$pppl2tp(0x18, 0x1, 0x1)
+r1 = socket$inet6_udp(0xa, 0x2, 0x0)
+connect$inet6(r1, &(0x7f00000000c0)={0xa, 0x0, 0x0, @loopback, 0xfffffffc}, 0x1c)
+connect$pppl2tp(r0, &(0x7f0000000240)=@pppol2tpin6={0x18, 0x1, {0x0, r1, 0x4, 0x0, 0x0, 0x0, {0xa, 0x4e22, 0xffff, @ipv4={'\x00', '\xff\xff', @empty}}}}, 0x32)
+writev(r0, &(0x7f0000000080)=[{&(0x7f0000000000)="ee", 0x34000}], 0x1)
+
+It basically sends an oversized (0x34000 bytes) PPPoL2TP packet with UDP
+encapsulation, and l2tp_xmit_core doesn't check for overflows when it
+assigns the UDP length field. The value gets trimmed to 16 bites.
+
+Add an overflow check that drops oversized packets and avoids sending
+packets with trimmed UDP length to the wire.
+
+syzbot's stack trace (with my patch applied):
+
+len >= 65536u
+WARNING: ./include/linux/udp.h:38 at udp_set_len_short include/linux/udp.h:38 [inline], CPU#1: syz.0.17/5957
+WARNING: ./include/linux/udp.h:38 at l2tp_xmit_core net/l2tp/l2tp_core.c:1293 [inline], CPU#1: syz.0.17/5957
+WARNING: ./include/linux/udp.h:38 at l2tp_xmit_skb+0x1204/0x18d0 net/l2tp/l2tp_core.c:1327, CPU#1: syz.0.17/5957
+Modules linked in:
+CPU: 1 UID: 0 PID: 5957 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full)
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+RIP: 0010:udp_set_len_short include/linux/udp.h:38 [inline]
+RIP: 0010:l2tp_xmit_core net/l2tp/l2tp_core.c:1293 [inline]
+RIP: 0010:l2tp_xmit_skb+0x1204/0x18d0 net/l2tp/l2tp_core.c:1327
+Code: 0f 0b 90 e9 21 f9 ff ff e8 e9 05 ec f6 90 0f 0b 90 e9 8d f9 ff ff e8 db 05 ec f6 90 0f 0b 90 e9 cc f9 ff ff e8 cd 05 ec f6 90 <0f> 0b 90 e9 de fa ff ff 44 89 f1 80 e1 07 80 c1 03 38 c1 0f 8c 4f
+RSP: 0018:ffffc90003d67878 EFLAGS: 00010293
+RAX: ffffffff8ad985e3 RBX: ffff8881a6400090 RCX: ffff8881697f0000
+RDX: 0000000000000000 RSI: 0000000000034010 RDI: 000000000000ffff
+RBP: dffffc0000000000 R08: 0000000000000003 R09: 0000000000000004
+R10: dffffc0000000000 R11: fffff520007acf00 R12: ffff8881baf20900
+R13: 0000000000034010 R14: ffff8881a640008e R15: ffff8881760f7000
+FS:  000055557e81f500(0000) GS:ffff8882a9467000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000200000033000 CR3: 00000001612f4000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ pppol2tp_sendmsg+0x40a/0x5f0 net/l2tp/l2tp_ppp.c:302
+ sock_sendmsg_nosec net/socket.c:727 [inline]
+ __sock_sendmsg net/socket.c:742 [inline]
+ sock_write_iter+0x503/0x550 net/socket.c:1195
+ do_iter_readv_writev+0x619/0x8c0 fs/read_write.c:-1
+ vfs_writev+0x33c/0x990 fs/read_write.c:1059
+ do_writev+0x154/0x2e0 fs/read_write.c:1105
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f636479c629
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffffd4241c8 EFLAGS: 00000246 ORIG_RAX: 0000000000000014
+RAX: ffffffffffffffda RBX: 00007f6364a15fa0 RCX: 00007f636479c629
+RDX: 0000000000000001 RSI: 0000200000000080 RDI: 0000000000000003
+RBP: 00007f6364832b39 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f6364a15fac R14: 00007f6364a15fa0 R15: 00007f6364a15fa0
+ </TASK>
+
+[1]: https://lore.kernel.org/all/20260226201600.222044-1-alice.kernel@fastmail.im/
+
+Fixes: 3557baabf280 ("[L2TP]: PPP over L2TP driver core")
+Reported-by: syzbot+ci3edea60a44225dec@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/69a1dfba.050a0220.3a55be.0026.GAE@google.com/
+Signed-off-by: Alice Mikityanska <alice@isovalent.com>
+Link: https://patch.msgid.link/20260403174949.843941-1-alice.kernel@fastmail.im
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/udlfb.c |    3 +++
- 1 file changed, 3 insertions(+)
+ net/l2tp/l2tp_core.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/video/fbdev/udlfb.c
-+++ b/drivers/video/fbdev/udlfb.c
-@@ -1018,6 +1018,9 @@ static int dlfb_ops_check_var(struct fb_
- 	struct fb_videomode mode;
- 	struct dlfb_data *dlfb = info->par;
+diff --git a/net/l2tp/l2tp_core.c b/net/l2tp/l2tp_core.c
+index 95060ff7adc5f..87f29ebed5887 100644
+--- a/net/l2tp/l2tp_core.c
++++ b/net/l2tp/l2tp_core.c
+@@ -1290,6 +1290,11 @@ static int l2tp_xmit_core(struct l2tp_session *session, struct sk_buff *skb, uns
+ 		uh->source = inet->inet_sport;
+ 		uh->dest = inet->inet_dport;
+ 		udp_len = uhlen + session->hdr_len + data_len;
++		if (udp_len > U16_MAX) {
++			kfree_skb(skb);
++			ret = NET_XMIT_DROP;
++			goto out_unlock;
++		}
+ 		uh->len = htons(udp_len);
  
-+	if (!var->pixclock)
-+		return -EINVAL;
-+
- 	/* set device-specific elements of var unrelated to mode */
- 	dlfb_var_color_format(var);
- 
+ 		/* Calculate UDP checksum if configured to do so */
+-- 
+2.53.0
+
 
 
 
