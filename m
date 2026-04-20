@@ -1,222 +1,208 @@
-Return-Path: <stable+bounces-238701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238702-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eRFYJbLD5WkEoAEAu9opvQ
-	(envelope-from <stable+bounces-238701-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 08:12:02 +0200
+	id oLVyGXPG5WlIoAEAu9opvQ
+	(envelope-from <stable+bounces-238702-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 08:23:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5946427082
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 08:12:01 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2821B4272F7
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 08:23:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8DC12300CBEA
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 06:12:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7F19D301300C
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 06:23:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C08C93815E2;
-	Mon, 20 Apr 2026 06:11:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06542381B0D;
+	Mon, 20 Apr 2026 06:23:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CUoahSW/"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="ilxP+CbC"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011019.outbound.protection.outlook.com [52.101.70.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37F6C2A1B2
-	for <stable@vger.kernel.org>; Mon, 20 Apr 2026 06:11:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.182
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776665519; cv=none; b=eoZFLoLbycxJX3Hd2hIfFzTx5aW7jv1xOGwy5EnbNVuyK/J+ae+gVoCuXqop/Pl49JFC31Nd7oVcVoixSnX7L1fFFmS3zkUZlvg3AWvhMyEr+PJ3g3hNG23+bot3GMvgUWeasoVb/ps44bMpKG4u8W1UucnMi6HAwKplBcEMTZY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776665519; c=relaxed/simple;
-	bh=/TCPWbhYgy1QrzBrAce/kNZ6xNY12c29If1AEOzWWT8=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=a8l94pgfsjkR4m/Aqc08boaSB411HjCAnlQ8DHG+zQf0OAaK5mbkEPbivbZzTsnEwyQYM7xtxaseNjgQVYAn2Y31nWcARJ93NUOVpjALfS1xUOL9Ts0lerOnC/FxX3s29R0UArI8J2EK3KqO78iv/sm27TzV0ehA+Bo3SV/wjxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CUoahSW/; arc=none smtp.client-ip=209.85.128.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-7b1dcb58b8dso889937b3.3
-        for <stable@vger.kernel.org>; Sun, 19 Apr 2026 23:11:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776665517; x=1777270317; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=f8Nyf4cpJRKorO7rgUUCbDBAbZjdSUwn4aYVqe/Bdmk=;
-        b=CUoahSW/3lYZDBBaXolbjxsH25OyL0bUv8OdS8nSyYONCFT5deTn6U4HkGok404PCz
-         3BJ0KNq0bQKzDZ770o2gkE3ahVabQbFZr/yMuAn/cEY+pI/QYNqEhv0VSn+T6cWwajCX
-         Uz8p4oMKea6OLt+bo5dYH8TKDTwdFISEKGPcfOnM0Z7O1f8f1SbqWmFzeS0Qwik3Wvgq
-         cJ+6UOBAQq1lUIewIT9U9+Lhx3+YAtuwZL1pmRU0pRdqX5WvMS/EFAR9uviQyORgeLTX
-         7uBEU/YwjmQsRVpRMyeukR9WkFAPo9joA9vB2eJAMZk9JavdKR61abtNcFUtudBDMU8E
-         qj0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776665517; x=1777270317;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=f8Nyf4cpJRKorO7rgUUCbDBAbZjdSUwn4aYVqe/Bdmk=;
-        b=AfluZwK5V0qT9eLRoPw+GpQW0iYY264I3F3s/ROc9NLf01HUBQ6BeFdjmwMqEftzs2
-         RG8EtvmdX6Ngnd0NI0GizB9rLZxlpH3W7pQSL18toS57erxvoyDooLM4d2ROyoRAsN+l
-         VqNOPb9TUgLuGGFfZhXqNKNzOnJH0xSS+CbAv5utnUBSvUEB0GeXK81f4o55E2bwd33d
-         W8DiArTvnMMh6xVR+RCqgCdaG0fhLBUtwkGSVImei3Yign2hStu6pCORFtE3p768K499
-         k32ngJAxK/wAs6ArcONFXAUeeYiYxa11Gnkq8QDUrEjLmIcyZU1uNBFeeV6kSjkN/Dun
-         I6bg==
-X-Forwarded-Encrypted: i=1; AFNElJ9VE1YnkHEuNc+GfziFuEQMXTJohLluGeHplFSwuezQk2r4A86dD4CAFcuoGvvQw53gDr8vw6k=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx0sWwTIJ+2SA2BK/iSESjTbappBYCQzmosU3ftxE1i4O75ML3y
-	D4+hgc1ggBOeUON9fPRi8GA2wzycsHPcpnKQJ6hc7C69X/KMiViWZG+z
-X-Gm-Gg: AeBDiesXFngpGHkccSuydJ7Nq2hR3kKwGROj9Gk8duUXoRtixKPySL1geU3BxJrcMPG
-	fFT6YCUFtU1eaNcGAil72Nd6W8mJYknehEgLc9V6dmy78oMf0kAdELBHUbEvb+Bwy567AvdKd9W
-	LZ1ZKaU9UpJG7XkBzTHKd1ZEyKsjbrFSzpUSX9qGW/PowdCi4XcmPNzd4t+Dv8zDCndbP4VW8Xn
-	bIw3yEuAaGwipVljH+J/8zrEsV3QX9nbq2RwTu+DciqNPsVXlt1bL/2M/7d8AinEaRBwLbiaoIL
-	IUnEtiiFc9455ZW0ocLzZzznFzTdYoStxg3s/fs+QdmkRrlNeNVPiBhU/0n5gQQq8E7wNWE14cy
-	cjxyYZnoG/OJ2Xb6FCVmpZVBQXr6JGr+P4wIWt7O/+e75WHP91W1WricdvwhVRhOAp7/NbjX37f
-	WNWPvszPTBlWg/Cc0MBEOP1l906hBs0iBpp1sWB5ESuBb4DAws8RsBhLDjwnp4dg/ixr2dZWyT4
-	4iv
-X-Received: by 2002:a05:690c:4485:b0:7b6:db48:2f1d with SMTP id 00721157ae682-7b9eccea04amr83767167b3.0.1776665517197;
-        Sun, 19 Apr 2026 23:11:57 -0700 (PDT)
-Received: from [192.168.11.79] (2607-8700-5500-a805-0000-0000-0000-0002.16clouds.com. [2607:8700:5500:a805::2])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-65314e3510esm4693954d50.10.2026.04.19.23.11.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 19 Apr 2026 23:11:56 -0700 (PDT)
-Message-ID: <9c198d0e-a675-4d7e-a485-5a8ee4d97f88@gmail.com>
-Date: Mon, 20 Apr 2026 14:11:28 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A3962EC54C;
+	Mon, 20 Apr 2026 06:23:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.19
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776666221; cv=fail; b=thuoDVjrKfTtMI4iRgpCV40e61VVhCNcDoeCoq5NhjIF+naS7YAQAddAGxrmsIS6NUsBCmTcdRArlfmSZfuGjOmeaSmPaNeUAkQ/Utf21ERkQWheUKC+oZneFt4pjKyvnFvaylpM8d+5ljrXsNNW1yA3JF6fn0WaTznuy2q6hGc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776666221; c=relaxed/simple;
+	bh=mWQ5S3V7diViVgKtBG6xBKaGWYaVl1yGgAj94dcLRv0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Riq20oEQlmoZl2BUpTV5js+zw56zzK+1TKF4XJkskTpnM9kY71FiTkUgfRv2GOeENu9j1xNoljvO36/uQk9rrSq7qlo2j+MV5eSK2qvAQjQLqbnLQ87Ohhwu6KMbHwTPHL8J5/CJBHqA8619f+mOIuwLV04QfnJPYmTlaWTXe14=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=ilxP+CbC; arc=fail smtp.client-ip=52.101.70.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=BOY1giGP55wkFlPwZZ0CLlkVhfmZ8j0fXo/qS8K9tUmIDVxFJoFyqEJa8LtdPg+vgomwZrmpnI2fQrLjLThBRR0YM0+lhsaZiiIYaVY+u3wBEk22KwdFMq+9Sf+WLdy5d0XNdaY5ptktaA9q4Nk2QtDfTq3SKU9aFL+4O8FSAp8gOE/pWD2efDBfeN+sTNIXUA1yzJDateC3U+XMfwIOEVwaohi3JW1egKwdX9nf+P74+eQpGzsd0gKf2rFkquK1YlZOVJhSs3TaTVhfDk+K1MIlr4fw6ZWYJgyfweMOsXxiKN7t4iDNNwih1PW4XpRZR8uhMrbDideZDTHo/aDjNg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1iwKeuPctQmsPgJeHSm55z+ttlDmNgASg3R0Rt4rR+Y=;
+ b=cMkyY8z4V0h47xnjEzr+MhL+eOA9Mua7BjVpMy/HqqSObsUA/G6XoZeOyv7cDxQq7Jp/r/bDc/wGy+F4TZnyxf60iGJiM2De1FXbIWcHz6LOFyDjXTDyWWgQnEMGJybCgZL9J+RAAlu12ewHUw2dQy3KAClT8OlJd0h6clHir/xPGbyLi4idD2Srs2ohXrlz1zPEyarLXDu8gz2sOuUezMqqH1IjGZ9ZyQUXDAS0IubegrgmDuWKVQQLsVjaktzeRxF2Asd/qli457IxpZemrO8+McxTluu+bouxDy4cNIqrHjp28ryjqKnLPpIsesE+M8uNjvAqO1A9PBsYC6Ua3w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=1iwKeuPctQmsPgJeHSm55z+ttlDmNgASg3R0Rt4rR+Y=;
+ b=ilxP+CbCd0uiWtUb4DkdgQF8E0U7US1S2eF/FXEWlyRR5LOIrxxuYO8RlMcs3xwfZmrazqdea0hJPyR9DPH5drRyfj2GSQs/7myDQPJk8zpbpOk4yZ0yTFpJa6+h6aksQaU9yRE1czdz5b+0riwItCqmsr+sR5wfsHmXXqJ8kLG9t7dQayPzpiPjCPyBSctZMiccq18+0ln2SJ5CEAADn4O2OYEdt1AmDG7G+nIJGVHB3t36wVlkPjGBkReNlNthxF35kQsU527VKezIGBSV10OO3EYdOgZz0hlEw46wvf3ezvmVzX78yJiuy8zPLKL6BNO2ENdOUL8tvemcMLcX2A==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com (2603:10a6:102:2a9::8)
+ by PR3PR04MB7371.eurprd04.prod.outlook.com (2603:10a6:102:87::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.48; Mon, 20 Apr
+ 2026 06:23:36 +0000
+Received: from PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588]) by PA4PR04MB9366.eurprd04.prod.outlook.com
+ ([fe80::75e4:8143:ddbc:6588%6]) with mapi id 15.20.9818.032; Mon, 20 Apr 2026
+ 06:23:36 +0000
+Date: Mon, 20 Apr 2026 02:23:32 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Guangshuo Li <lgs201920130244@gmail.com>
+Cc: Vinod Koul <vkoul@kernel.org>, Dave Jiang <dave.jiang@intel.com>,
+	dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] dmaengine: Fix refcount leak in channel register
+ error path
+Message-ID: <aeXGZIrLhqj5hWG8@lizhi-Precision-Tower-5810>
+References: <20260413135857.2898676-1-lgs201920130244@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260413135857.2898676-1-lgs201920130244@gmail.com>
+X-ClientProxiedBy: PA7P264CA0045.FRAP264.PROD.OUTLOOK.COM
+ (2603:10a6:102:34b::7) To PA4PR04MB9366.eurprd04.prod.outlook.com
+ (2603:10a6:102:2a9::8)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Frank Zhang <rmxpzlb@gmail.com>
-Subject: Re: [PATCH v2] drm/bridge: dw-hdmi-qp: Guard clear_audio_infoframe
- when PHY is down
-To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Cc: andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org,
- maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
- airlied@gmail.com, simona@ffwll.ch, detlev.casanova@collabora.com,
- cristian.ciocaltea@collabora.com, Laurent.pinchart@ideasonboard.com,
- jonas@kwiboo.se, jernej.skrabec@gmail.com, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260418101936.7731-1-rmxpzlb@gmail.com>
- <hdl63shkqubkvczlg7ryjah5psiqzrhu5llelzaetw7skbpujv@nyxgriryjxd5>
-Content-Language: en-US
-In-Reply-To: <hdl63shkqubkvczlg7ryjah5psiqzrhu5llelzaetw7skbpujv@nyxgriryjxd5>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9366:EE_|PR3PR04MB7371:EE_
+X-MS-Office365-Filtering-Correlation-Id: 780f0daf-33a2-408f-2b05-08de9ea55a8e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|376014|1800799024|366016|19092799006|38350700014|22082099003|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	Ue3KOleWXZSCe1nehiSYOsk0KJ3333u0dIaZP/suYR6to7sKpmFdAP6rBmZb1lP55Zhb4NTi9sdC7gezaJnYedM52vsWKWoGd3odu0m9znjHNSmHXsGPg76gDdhwrkPFxmTfNZxH1XaNs5RE5Q304/UejGzxuboEdnbp7pvjrjzXoGtWBUkQPUTnyWhOxZGB0K34ymZ6H3BfiCZfBRKcJ3uq02W9BgnnSWG3Q7kEVinfqS69/JAddsSX64PaFHm1ha5AxqgHoeO9r1InKvbStjA6FOxFkUMNHQ1zc6OOIi+ebmmmDLOWFX2dQEWj54TL4Ajc7Tru+I77SgvwMbWHV7MtTd4i041V88LmjSnX6j3FSVrh9o1qzYX4idnwHgv2EJSNJcB45R8H8hzzKg29BwvLmZICIiPUPVVZq+a8mRY3l6Xd6UbUec8OBBok/Lp6fY8gqwIf+Otmk+LowOrwvtncMVWxNeXkGQA2CFtzlPNx5T31TJRnTaMexWBYy2fqvE4/2CKGhavyul5Ag+VfS2xDZcjYuiXrj8IWhTsUxpqgnTbXBBW/xIL+RHWPCqJLLDizHg4FZF7BBoglE+HQi+2RBF6WVWvfRidIpxqn2aSpNI3geN9KXeAT55EshYYcfjA4TxULnGLGPouMPs+nkSa5APoSh8hGDuwsss3r3Xer3K+ouYLGEgVS5TP1vNYw3mVWBNqWEPW5HH6b+8Nu6nL6+zMtdIRneCNqcP6J+A3mR0gfS/1yJeZue5Z1D/XKPbviiBQwYC0Yl3kBCf+XuYoBdaAJNR1zRWT937cOjZY=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9366.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(1800799024)(366016)(19092799006)(38350700014)(22082099003)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?d5j3xYfW/bjTXZSaFrwNsApIHiKP/KVeQ1KsL137Zy323eNkCvohM2mMBatp?=
+ =?us-ascii?Q?2Ggv1hCScASHjCj39Ra/sCfWtprGN+oegT8WuX1hpt2+kgBYu2Evgb00WqqN?=
+ =?us-ascii?Q?r3FwjHix3/7yDGErvmc+3uoXkV5u5/CKdLgHAddbZNuS1eLgEpre76pC2m8V?=
+ =?us-ascii?Q?6S16tNvd+4L+NjuZ+Mz3s04IhVgJUqt5dHcJ0X1SKguuVDyWwzh9yxI4MX6c?=
+ =?us-ascii?Q?HJUxne8KRTVUo4Tx8VMsHTwi5hxYkNyf2DCfsG9XZk9sQwOuP0qJIzTCBG8r?=
+ =?us-ascii?Q?MCerjGPRO8XZrIl7LGzge2NgIZIv4zXwpTPKB/QQuU5hUpTOwRUzsFh3REdB?=
+ =?us-ascii?Q?ZDonxSJ2+SDkX/JAdDEoG7WQ7H9INC/q7EtcGBeUt1I0szQ3TE7tEX23BmMa?=
+ =?us-ascii?Q?En9r0LG+x8fAYdXImct41VXFKjaxUkBH85RoOGn5kHp9wvKcSHc0qtRDWDKi?=
+ =?us-ascii?Q?ncdto6N0nC5BOgUpfwecD18rlMjR2Cjo82cmdnLuyRN7a+38tkCN7MblA3nt?=
+ =?us-ascii?Q?tOaP47vvOP0jrgEPSHD5En4IJas2LUJcfbOPTrKZEWIK/r6Nf7iT6suGmvkA?=
+ =?us-ascii?Q?ZO70B/Q/JPQnbrAbnylsTomSukygyaS9ZeR7YLmukBhj9W64BWmTyYbSuYLT?=
+ =?us-ascii?Q?WjRuhE3VUd4cTf2UlkQ0N6mGi8t9/YhSWUuitm2k1GQuoSJd596/NR76K0Ba?=
+ =?us-ascii?Q?DCwY1NOK8ZLrt/QAorPd4d2mxqzN+1P4srQwATFcexUbFAn4NxR9fcI1EJav?=
+ =?us-ascii?Q?WpMycCSSXnB9EQqIEjWqD+aThvRRWSOZq0fH8bZ3/d4EMB+vg7/fh/Wzql4m?=
+ =?us-ascii?Q?XPeKAqywY72KsfyQrYlEtwoN73o8QIMX8N7Mcx4MpIZSTNe16bFCQ2uueg0P?=
+ =?us-ascii?Q?RrWWhsEa01PVjDmUxSlGaqT6pW9ZLWLG9KuW8xpyGQw3HorNOnZ+sMhV+Rm+?=
+ =?us-ascii?Q?PvDxKFG0qaMxQ9GA4Jzr+weH1y9BHpGhP18EFp5pBY4JPHbcH8gAvB+Mrm0J?=
+ =?us-ascii?Q?wfbb0UE3fjAWgV0qr8iFxdqcmtqPLrkU0l1OffdizHo0re8VhtcLjpFtep/m?=
+ =?us-ascii?Q?ag9LW7OaQfrnpwuNuaSQBOSlRT/GRXC/YJcDjgG4ZXDSbHcqYQ+6NGHPCaMz?=
+ =?us-ascii?Q?sinrFqBy226arrOYizrJo/GQfgfpXHyx71pLyoh1s7btZ399rcWhGbJSQ0Dt?=
+ =?us-ascii?Q?176pDjrxYHo2dt84S7wQIxKuJS7j2UpVh5EhhKGIRYI3vppqqu1SIqBiYBIR?=
+ =?us-ascii?Q?3x29ossLlt1vE5MMTQXC3YNZlvCFAUyYlGE9buY9RY5AUa8gKhrPH+TaPwfg?=
+ =?us-ascii?Q?eyxuJvuWI9XbFW+KGkCnwg+CJdhApFWPvooqbm3deVV5pyvKUhUOuipsr/Jw?=
+ =?us-ascii?Q?vmZKWtxlHbcC0G+ZGMfxnYQou99AzkFP2ieXBdBgvPqubCkNBe/CROvmloeP?=
+ =?us-ascii?Q?QcyZlrMJEhfp7UHtDnjjafDDlb+cSO0MrRpX5JGYpRlD9syDUs301VBm454A?=
+ =?us-ascii?Q?K+aroN3pLRascLmO7hBAoDQWqP5Ij/wVSmJoJDrnHGaq5b71+Yv2QEKAn33R?=
+ =?us-ascii?Q?4Ig6E6UoisA6lDWQzpQh6FBbM2VHgQJR3jUmAdAl+OVbxSyH4piwHYb6Xmrt?=
+ =?us-ascii?Q?9LnwpKuvXBqNSHmLyGywDAy5jtZhLxqgQ9Ol2pFwRQnKIMD11ki+bnNym2IZ?=
+ =?us-ascii?Q?l6u02wcnSYjhCWc+aCKL/UV4TK8srbHgIz7y/0gEqJ54cOzb?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 780f0daf-33a2-408f-2b05-08de9ea55a8e
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9366.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Apr 2026 06:23:36.2283
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: z0grpKjX+uly14IL6Lnyw2Q32FJlqEW/MnanHgP851zDqxoI2rZJKHRqP4kDggFm2D5GYvPbDD08rn26N8LwDw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3PR04MB7371
+X-Spamd-Result: default: False [0.34 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[nxp.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[nxp.com:s=selector1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[intel.com,linaro.org,kernel.org,linux.intel.com,suse.de,gmail.com,ffwll.ch,collabora.com,ideasonboard.com,kwiboo.se,lists.freedesktop.org,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-238701-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[17];
+	TAGGED_FROM(0.00)[bounces-238702-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rmxpzlb@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[Frank.li@nxp.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[nxp.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: E5946427082
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6]
+X-Rspamd-Queue-Id: 2821B4272F7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 4/19/26 08:40, Dmitry Baryshkov wrote:
-> On Sat, Apr 18, 2026 at 06:19:36PM +0800, Frank Zhang wrote:
->> The following panic was observed during system reboot:
->>
->> Kernel panic - not syncing: Asynchronous SError Interrupt
->> CPU: 7 UID: 1000 PID: 2637 Comm: pipewire ... 6.19.10-300.fc44.aarch64
->> Call trace:
->>   ...
->>   regmap_update_bits_base+0x5c/0x90
->>   dw_hdmi_qp_bridge_clear_infoframe+0xb0/0x120 [dw_hdmi_qp]
->>   drm_bridge_connector_clear_infoframe+0x28/0x48 [drm_display_helper]
->>   ...
->>   dw_hdmi_qp_audio_disable+0x24/0xb8 [dw_hdmi_qp]
->>   drm_bridge_connector_audio_shutdown+0x30/0x60 [drm_display_helper]
->>   drm_connector_hdmi_audio_shutdown+0x24/0x38 [drm_display_helper]
->>   hdmi_codec_shutdown+0x60/0x90 [snd_soc_hdmi_codec]
->>   ...
->>   snd_pcm_release_substream.part.0+0x44/0xd8 [snd_pcm]
->>   snd_pcm_release+0x60/0xe8 [snd_pcm]
->>   ...
->>
->> The root cause is pipewire tries to close the HDMI audio device after
->> atomic_disable(), which sets tmds_char_rate to 0 and disable the PHY.
->>
->> In this case, dw_hdmi_qp_audio_disable() will call
->> drm_atomic_helper_connector_hdmi_clear_audio_infoframe() directly,
->> accessing registers without checking tmds_char_rate.
->>
->> Move drm_atomic_helper_connector_hdmi_clear_audio_infoframe() inside the
->> if (hdmi->tmds_char_rate) of dw_hdmi_qp_audio_disable().
->>
->> Fixes: fd0141d1a8a2 ("drm/bridge: synopsys: Add audio support for dw-hdmi-qp")
->> Signed-off-by: Frank Zhang <rmxpzlb@gmail.com>
->>
->> ---
->> Changes in v2:
->> - Move drm_atomic_helper_connector_hdmi_clear_audio_infoframe() inside
->>    the if (hdmi->tmds_char_rate) of dw_hdmi_qp_audio_disable().
->> - Link to v1: https://lore.kernel.org/all/20260416093150.13853-1-rmxpzlb@gmail.com/
->>
->> diff --git a/drivers/gpu/drm/bridge/synopsys/dw-hdmi-qp.c b/drivers/gpu/drm/bridge/synopsys/dw-hdmi-qp.c
->> index d649a1cf07f5..7760527484c8 100644
->> --- a/drivers/gpu/drm/bridge/synopsys/dw-hdmi-qp.c
->> +++ b/drivers/gpu/drm/bridge/synopsys/dw-hdmi-qp.c
->> @@ -526,10 +526,10 @@ static void dw_hdmi_qp_audio_disable(struct drm_bridge *bridge,
->>   {
->>   	struct dw_hdmi_qp *hdmi = dw_hdmi_qp_from_bridge(bridge);
->>   
->> -	drm_atomic_helper_connector_hdmi_clear_audio_infoframe(connector);
->> -
->> -	if (hdmi->tmds_char_rate)
->> +	if (hdmi->tmds_char_rate) {
->> +		drm_atomic_helper_connector_hdmi_clear_audio_infoframe(connector);
->>   		dw_hdmi_qp_audio_disable_regs(hdmi);
->> +	}
-> 
-> Will audio and audio infoframe remain disabled after consequetive
-> atomic_enable() call?
-> 
->>   }
->>   
->>   static int dw_hdmi_qp_i2c_read(struct dw_hdmi_qp *hdmi,
->> -- 
->> 2.53.0
->>
-> 
+On Mon, Apr 13, 2026 at 09:58:57PM +0800, Guangshuo Li wrote:
+> After device_register(), the lifetime of the embedded struct device is
+> expected to be managed through the device core reference counting.
+>
+> In __dma_async_device_channel_register(), if device_register() fails,
+> the error path frees chan->dev directly instead of releasing the device
+> reference with put_device(). This bypasses the normal device lifetime
+> rules and may leave the reference count of the embedded struct device
+> unbalanced, resulting in a refcount leak.
+>
+> The issue was identified by a static analysis tool I developed and
+> confirmed by manual review.
 
-Sorry, I missed clearing the audio infoframe when the PHY is down. The 
-next atomic_enable() will write the stale audio infoframe. My mistake.
+I think it is meanless, no one reproduce this. Provide tools link if open
+source. Or you descript how problem happen.
 
-To clear the stale audio infoframe, dw_hdmi_qp_audio_disable() can 
-handle it in the else branch directly, but this seems like a layering 
-violation for a bridge driver
+> diff --git a/drivers/dma/dmaengine.c b/drivers/dma/dmaengine.c
+> index ca13cd39330b..6bb1212ae0e1 100644
+> --- a/drivers/dma/dmaengine.c
+> +++ b/drivers/dma/dmaengine.c
+> @@ -1111,8 +1111,12 @@ static int __dma_async_device_channel_register(struct dma_device *device,
+>
+>   err_out_ida:
+>  	ida_free(&device->chan_ida, chan->chan_id);
+> +	put_device(&chan->dev->device);
+> +	chan->dev = NULL;
+> +	goto err_free_local;
 
-I think the better approach is to add a 'reset_audio_infoframe' 
-interface in drm_hdmi_state_helper.c that does basically the same as 
-drm_atomic_helper_connector_hdmi_clear_audio_infoframe(), but only 
-clearing the software state without calling clear_infoframe(). It's also 
-a bit odd since it would only be used by dw-hdmi-qp.
+avoid err path goto again
 
-I'd like to get the maintainers' opinion about adding such an interface.
+Frank
 
-Thanks,
-Frank Zhang
-
+>   err_free_dev:
+>  	kfree(chan->dev);
+> +	chan->dev = NULL;
+>   err_free_local:
+>  	free_percpu(chan->local);
+>  	chan->local = NULL;
+> --
+> 2.43.0
+>
 
