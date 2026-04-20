@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-239895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239747-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mBYoJCtZ5mmtvAEAu9opvQ
-	(envelope-from <stable+bounces-239895-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:49:47 +0200
+	id ONzIJ+Ja5mmtvAEAu9opvQ
+	(envelope-from <stable+bounces-239747-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:57:06 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07FA443013B
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:49:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40B7E430436
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:57:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8BB6330CB0F2
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:11:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A713D31F52FD
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:05:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C71EB33F5A9;
-	Mon, 20 Apr 2026 16:11:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF9193396EE;
+	Mon, 20 Apr 2026 16:05:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GW1P4XG6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fdd0Ih3b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A351344D99;
-	Mon, 20 Apr 2026 16:11:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 927782E093A;
+	Mon, 20 Apr 2026 16:05:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701488; cv=none; b=ik2YWYhKqly63KWSxwsx/w1Yv5Qtk69H0HEwbzMHYItjsa7gUH0uITkRodcImhArKdAeuT/WMUNbNliQEKANTD1nlrL5om3juZ3ZnRLp3JZIeizUOGqlJfgYn/bLQOc+nm79GBIHTI4vrYf8MsEZSx5kwzU067oLsDx577EzUEU=
+	t=1776701113; cv=none; b=Zdiqkum662g0FHi6HI+Suw28YN6ue8XlW022CS0UI1aNzAQ96h609kI7lAe/WvikoYpfJSSj5jGVyPr45s0hf1B5Ih83A3yYCdgmCUKkit96lS0G5SRTysM0E/wCNFaeC7OS8Dp183SKwTD7Ep7cOZbjCNdNe4SIcwRcpPVdmJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701488; c=relaxed/simple;
-	bh=c051yRc6US0Wg2ZMh33U0U3DkPicb+1J4oaX6wcrHDA=;
+	s=arc-20240116; t=1776701113; c=relaxed/simple;
+	bh=dMIeDf4UTbjBx9P4BhnI/cc7eG2PMapWz4S5mQZ1aY8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uuC8UulfGpFYwsy/xfjekU5zJgyYghEVQEqtsFCuiKjnfwxzNMJpK77tV3880hC7XVUZco5Wi7O0Qj49lEQkmCBSVVHIp4FFuu+fOY9KVGOiWtPGG30xYebacnnr/zcvLgbnHYO5ywmzEIoarF8wyeOsTuX/HFLIbavLKpUC3sI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GW1P4XG6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E23DAC2BCB6;
-	Mon, 20 Apr 2026 16:11:27 +0000 (UTC)
+	 MIME-Version; b=Mpr44MQ3pG/xTzLwz+cLVl/SVmREEo04uVclGbykiMKHl/D7+5W+TggyuMVWG7APAjVxj0PmUeAUE/6gGNuJdv7ZWYmIb7Wc2qFUDt5wRKD2F8HwFFhfwUvaZM9dj650ORoNN6BfApEoXD9uIsqSqe02A35+PUZuxgwYK+a7Gaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fdd0Ih3b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ABAFC19425;
+	Mon, 20 Apr 2026 16:05:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701488;
-	bh=c051yRc6US0Wg2ZMh33U0U3DkPicb+1J4oaX6wcrHDA=;
+	s=korg; t=1776701113;
+	bh=dMIeDf4UTbjBx9P4BhnI/cc7eG2PMapWz4S5mQZ1aY8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GW1P4XG6yLC304wUOMV6AlYJjzy+wzA7ElJ38vJ/1PBhrVK42MvJ3REETD3KMMBW/
-	 QfuAtfJSnXWIYY0Hj+QH6CxixlCH11Cpms+mnByP5MxEsOMhFzB/9ZnMDWo6hfjqcE
-	 OjRWPTwR0rTYNStIEzGdikiLys9EUwKusRyfq4LU=
+	b=fdd0Ih3bRr2lKF0pCMENEvkeZVaPlea4F3jGIhmhmGpEe8u3NYOjDPQ94wEmn+IAd
+	 +A2qn5r/34GQfarcMdOLweZqyv0WaMcT7sImCcZxr8nxIyn80cZoKlztUqrJOrJv7t
+	 1BgcFaShxUurzMS0Uak/lztXHFLvtHgTQH55Wgjw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+f3a497f02c389d86ef16@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Chelsy Ratnawat <chelsyratnawat2001@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 134/162] net: sched: fix TCF_LAYER_TRANSPORT handling in tcf_get_base_ptr()
+	syzbot+c025d34b8eaa54c571b8@syzkaller.appspotmail.com,
+	Abhishek Kumar <abhishek_sts8@yahoo.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.18 187/198] media: em28xx: fix use-after-free in em28xx_v4l2_open()
 Date: Mon, 20 Apr 2026 17:42:46 +0200
-Message-ID: <20260420153931.899955161@linuxfoundation.org>
+Message-ID: <20260420153942.351603845@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
-References: <20260420153927.006696811@linuxfoundation.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,166 +67,103 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-239895-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,google.com,mojatatu.com,kernel.org,gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239747-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,yahoo.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,f3a497f02c389d86ef16];
-	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	TAGGED_RCPT(0.00)[stable,c025d34b8eaa54c571b8,cisco];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,appspotmail.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,mojatatu.com:email]
-X-Rspamd-Queue-Id: 07FA443013B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,syzkaller.appspot.com:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,appspotmail.com:email]
+X-Rspamd-Queue-Id: 40B7E430436
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Abhishek Kumar <abhishek_sts8@yahoo.com>
 
-[Upstream commit 4fe5a00ec70717a7f1002d8913ec6143582b3c8e]
+commit a66485a934c7187ae8e36517d40615fa2e961cff upstream.
 
-syzbot reported that tcf_get_base_ptr() can be called while transport
-header is not set [1].
+em28xx_v4l2_open() reads dev->v4l2 without holding dev->lock,
+creating a race with em28xx_v4l2_init()'s error path and
+em28xx_v4l2_fini(), both of which free the em28xx_v4l2 struct
+and set dev->v4l2 to NULL under dev->lock.
 
-Instead of returning a dangling pointer, return NULL.
+This race leads to two issues:
+ - use-after-free in v4l2_fh_init() when accessing vdev->ctrl_handler,
+   since the video_device is embedded in the freed em28xx_v4l2 struct.
+ - NULL pointer dereference in em28xx_resolution_set() when accessing
+   v4l2->norm, since dev->v4l2 has been set to NULL.
 
-Fix tcf_get_base_ptr() callers to handle this NULL value.
+Fix this by moving the mutex_lock() before the dev->v4l2 read and
+adding a NULL check for dev->v4l2 under the lock.
 
-[1]
- WARNING: CPU: 1 PID: 6019 at ./include/linux/skbuff.h:3071 skb_transport_header include/linux/skbuff.h:3071 [inline]
- WARNING: CPU: 1 PID: 6019 at ./include/linux/skbuff.h:3071 tcf_get_base_ptr include/net/pkt_cls.h:539 [inline]
- WARNING: CPU: 1 PID: 6019 at ./include/linux/skbuff.h:3071 em_nbyte_match+0x2d8/0x3f0 net/sched/em_nbyte.c:43
-Modules linked in:
-CPU: 1 UID: 0 PID: 6019 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full)
-Call Trace:
- <TASK>
-  tcf_em_match net/sched/ematch.c:494 [inline]
-  __tcf_em_tree_match+0x1ac/0x770 net/sched/ematch.c:520
-  tcf_em_tree_match include/net/pkt_cls.h:512 [inline]
-  basic_classify+0x115/0x2d0 net/sched/cls_basic.c:50
-  tc_classify include/net/tc_wrapper.h:197 [inline]
-  __tcf_classify net/sched/cls_api.c:1764 [inline]
-  tcf_classify+0x4cf/0x1140 net/sched/cls_api.c:1860
-  multiq_classify net/sched/sch_multiq.c:39 [inline]
-  multiq_enqueue+0xfd/0x4c0 net/sched/sch_multiq.c:66
-  dev_qdisc_enqueue+0x4e/0x260 net/core/dev.c:4118
-  __dev_xmit_skb net/core/dev.c:4214 [inline]
-  __dev_queue_xmit+0xe83/0x3b50 net/core/dev.c:4729
-  packet_snd net/packet/af_packet.c:3076 [inline]
-  packet_sendmsg+0x3e33/0x5080 net/packet/af_packet.c:3108
-  sock_sendmsg_nosec net/socket.c:727 [inline]
-  __sock_sendmsg+0x21c/0x270 net/socket.c:742
-  ____sys_sendmsg+0x505/0x830 net/socket.c:2630
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot+f3a497f02c389d86ef16@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/6920855a.a70a0220.2ea503.0058.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20251121154100.1616228-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Chelsy Ratnawat <chelsyratnawat2001@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot+c025d34b8eaa54c571b8@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=c025d34b8eaa54c571b8
+Fixes: 8139a4d583ab ("[media] em28xx: move v4l2 user counting fields from struct em28xx to struct v4l2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Abhishek Kumar <abhishek_sts8@yahoo.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/pkt_cls.h |  2 ++
- net/sched/em_cmp.c    |  5 ++++-
- net/sched/em_nbyte.c  |  2 ++
- net/sched/em_text.c   | 11 +++++++++--
- 4 files changed, 17 insertions(+), 3 deletions(-)
+ drivers/media/usb/em28xx/em28xx-video.c |   14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/include/net/pkt_cls.h b/include/net/pkt_cls.h
-index 4229e4fcd2a9e..ea2c69fdc8396 100644
---- a/include/net/pkt_cls.h
-+++ b/include/net/pkt_cls.h
-@@ -536,6 +536,8 @@ static inline unsigned char * tcf_get_base_ptr(struct sk_buff *skb, int layer)
- 		case TCF_LAYER_NETWORK:
- 			return skb_network_header(skb);
- 		case TCF_LAYER_TRANSPORT:
-+			if (!skb_transport_header_was_set(skb))
-+				break;
- 			return skb_transport_header(skb);
+--- a/drivers/media/usb/em28xx/em28xx-video.c
++++ b/drivers/media/usb/em28xx/em28xx-video.c
+@@ -2126,7 +2126,7 @@ static int em28xx_v4l2_open(struct file
+ {
+ 	struct video_device *vdev = video_devdata(filp);
+ 	struct em28xx *dev = video_drvdata(filp);
+-	struct em28xx_v4l2 *v4l2 = dev->v4l2;
++	struct em28xx_v4l2 *v4l2;
+ 	enum v4l2_buf_type fh_type = 0;
+ 	int ret;
+ 
+@@ -2143,13 +2143,19 @@ static int em28xx_v4l2_open(struct file
+ 		return -EINVAL;
  	}
  
-diff --git a/net/sched/em_cmp.c b/net/sched/em_cmp.c
-index 64b637f18bc7d..48c1bce74f498 100644
---- a/net/sched/em_cmp.c
-+++ b/net/sched/em_cmp.c
-@@ -22,9 +22,12 @@ static int em_cmp_match(struct sk_buff *skb, struct tcf_ematch *em,
- 			struct tcf_pkt_info *info)
- {
- 	struct tcf_em_cmp *cmp = (struct tcf_em_cmp *) em->data;
--	unsigned char *ptr = tcf_get_base_ptr(skb, cmp->layer) + cmp->off;
-+	unsigned char *ptr = tcf_get_base_ptr(skb, cmp->layer);
- 	u32 val = 0;
++	if (mutex_lock_interruptible(&dev->lock))
++		return -ERESTARTSYS;
++
++	v4l2 = dev->v4l2;
++	if (!v4l2) {
++		mutex_unlock(&dev->lock);
++		return -ENODEV;
++	}
++
+ 	em28xx_videodbg("open dev=%s type=%s users=%d\n",
+ 			video_device_node_name(vdev), v4l2_type_names[fh_type],
+ 			v4l2->users);
  
-+	if (!ptr)
-+		return 0;
-+	ptr += cmp->off;
- 	if (!tcf_valid_offset(skb, ptr, cmp->align))
- 		return 0;
- 
-diff --git a/net/sched/em_nbyte.c b/net/sched/em_nbyte.c
-index 4f9f21a05d5e4..c65ffa5fff946 100644
---- a/net/sched/em_nbyte.c
-+++ b/net/sched/em_nbyte.c
-@@ -42,6 +42,8 @@ static int em_nbyte_match(struct sk_buff *skb, struct tcf_ematch *em,
- 	struct nbyte_data *nbyte = (struct nbyte_data *) em->data;
- 	unsigned char *ptr = tcf_get_base_ptr(skb, nbyte->hdr.layer);
- 
-+	if (!ptr)
-+		return 0;
- 	ptr += nbyte->hdr.off;
- 
- 	if (!tcf_valid_offset(skb, ptr, nbyte->hdr.len))
-diff --git a/net/sched/em_text.c b/net/sched/em_text.c
-index 420c66203b177..8331f38eadc60 100644
---- a/net/sched/em_text.c
-+++ b/net/sched/em_text.c
-@@ -29,12 +29,19 @@ static int em_text_match(struct sk_buff *skb, struct tcf_ematch *m,
- 			 struct tcf_pkt_info *info)
- {
- 	struct text_match *tm = EM_TEXT_PRIV(m);
-+	unsigned char *ptr;
- 	int from, to;
- 
--	from = tcf_get_base_ptr(skb, tm->from_layer) - skb->data;
-+	ptr = tcf_get_base_ptr(skb, tm->from_layer);
-+	if (!ptr)
-+		return 0;
-+	from = ptr - skb->data;
- 	from += tm->from_offset;
- 
--	to = tcf_get_base_ptr(skb, tm->to_layer) - skb->data;
-+	ptr = tcf_get_base_ptr(skb, tm->to_layer);
-+	if (!ptr)
-+		return 0;
-+	to = ptr - skb->data;
- 	to += tm->to_offset;
- 
- 	return skb_find_text(skb, from, to, tm->config) != UINT_MAX;
--- 
-2.53.0
-
+-	if (mutex_lock_interruptible(&dev->lock))
+-		return -ERESTARTSYS;
+-
+ 	ret = v4l2_fh_open(filp);
+ 	if (ret) {
+ 		dev_err(&dev->intf->dev,
 
 
 
