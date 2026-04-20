@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-239829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239682-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kLSQDLJo5mkNwAEAu9opvQ
-	(envelope-from <stable+bounces-239829-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:56:02 +0200
+	id kLE3NfVg5mmavgEAu9opvQ
+	(envelope-from <stable+bounces-239682-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:23:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B29C24324A0
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:56:01 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C097431148
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:23:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2A6073723DF4
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:08:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 64D893621B0A
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:02:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 049B933F5BC;
-	Mon, 20 Apr 2026 16:08:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19CB433F59D;
+	Mon, 20 Apr 2026 16:02:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dSMSpd3r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wRAAFHDZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC791329C6D;
-	Mon, 20 Apr 2026 16:08:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D184733EAF9;
+	Mon, 20 Apr 2026 16:02:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701322; cv=none; b=LKG9tcUCq4aRjGs5yJnqPkCxZ/pnLWGuz9FUNMhi8ldKSTavB4SyJNjByJrcMEXJy60JAbhxwYo3XGY5SB48xmbFMco5JempK7JsJiZY7h6Rao2pQ0ntJew6LtXsZ451cDTNR0evzMuEIou54F5G2YqDDJ+w4BnvEvYz/9tsSio=
+	t=1776700946; cv=none; b=UufzPCHCRhZJ9equZy0VIXsm7e2HhitxzbtPxzIrcxh+Q/n95/B3QyH6EwOECIdw5w3ciJfG/XBmX8kqZnyahNfthWcDR2cGv7vDkLYVweghUO2+uBAdxQktE/ytWw8of4v+Qof2tbUykIK00JytPIBr+FqJyRZtoaCn4DXiWqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701322; c=relaxed/simple;
-	bh=JzgQAlvsFGNkHVKkYAiAlhh7tzb5wLn0FTZus8TNF5o=;
+	s=arc-20240116; t=1776700946; c=relaxed/simple;
+	bh=nwt22t0nK3r42Ot6R2b+7kc6v2OuPUDYv6sZ/r8Kc88=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RjkLCp6qMNhnTUiKQP8LeRQvvQVgk+ROI6j1eNoO87Lu92sk5kCHcfc+lvcuFGh1R8T71WQu+nFyCZ2fjJWZWsfrdlA2jGk8RdNztpCug0QTOCi2Zux2FEQzpyp2391vjt0iHiWLcmSoupk2oDV+ZuqyEyceitDv+bJor8KL+GA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dSMSpd3r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1212EC2BCB4;
-	Mon, 20 Apr 2026 16:08:41 +0000 (UTC)
+	 MIME-Version; b=ehZaOFLdg9EThIt9y54JaoNTW7XSosDTFv2ZhmdUnyh4jYsbP1MiQf1WgaMKG8mDXexn76OVM5dWiU7Pm4MZYT0YJLoEozL2PxehFjRmev9grFdK2AMWypmposYC268OuGmEJwVFO5sxo8Jf/UyeTLGJUV0oZORPU3gltog60us=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wRAAFHDZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A6B2C19425;
+	Mon, 20 Apr 2026 16:02:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701322;
-	bh=JzgQAlvsFGNkHVKkYAiAlhh7tzb5wLn0FTZus8TNF5o=;
+	s=korg; t=1776700946;
+	bh=nwt22t0nK3r42Ot6R2b+7kc6v2OuPUDYv6sZ/r8Kc88=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dSMSpd3r1SORWU3feSmx7t4l7vARVj4+Ovo7ceS9whu49ChUSeQ3YOdMUz2IbiGmu
-	 3HdTH60Q+/n15MruFmZf3fzjPKbNPeqC5JFyyzvChNZyOF8Msm9IrbFn2VTP4uQHNd
-	 CN14yOWcK2Um+F7c7G/WONuHFmW1SLkaled90SNc=
+	b=wRAAFHDZDmlyovdv/715uM+tf0b/FZ3810jwMTOHjiY4YmwixBsQxznGAjDOD2bV7
+	 yNValR2Qzzrs7u3rwVqWEEmeg3QS8wcOIOnG4oT1DLqgiVXd3PM+MpHdn3Z3t1eJQp
+	 Iyg9xNmzB+T1LmS39dr384O9XtPLay3FRHBEM4Io=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Golle <daniel@makrotopia.org>,
-	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 068/162] selftests: net: bridge_vlan_mcast: wait for h1 before querier check
-Date: Mon, 20 Apr 2026 17:41:40 +0200
-Message-ID: <20260420153929.499136773@linuxfoundation.org>
+	Junxi Qian <qjx1298677004@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.18 122/198] nfc: llcp: add missing return after LLCP_CLOSED checks
+Date: Mon, 20 Apr 2026 17:41:41 +0200
+Message-ID: <20260420153939.998212567@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
-References: <20260420153927.006696811@linuxfoundation.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,79 +66,83 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-239682-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239829-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[siemens.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,makrotopia.org:email]
-X-Rspamd-Queue-Id: B29C24324A0
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 5C097431148
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Golle <daniel@makrotopia.org>
+From: Junxi Qian <qjx1298677004@gmail.com>
 
-[ Upstream commit efaa71faf212324ecbf6d5339e9717fe53254f58 ]
+commit 2b5dd4632966c39da6ba74dbc8689b309065e82c upstream.
 
-The querier-interval test adds h1 (currently a slave of the VRF created
-by simple_if_init) to a temporary bridge br1 acting as an outside IGMP
-querier. The kernel VRF driver (drivers/net/vrf.c) calls cycle_netdev()
-on every slave add and remove, toggling the interface admin-down then up.
-Phylink takes the PHY down during the admin-down half of that cycle.
-Since h1 and swp1 are cable-connected, swp1 also loses its link may need
-several seconds to re-negotiate.
+In nfc_llcp_recv_hdlc() and nfc_llcp_recv_disc(), when the socket
+state is LLCP_CLOSED, the code correctly calls release_sock() and
+nfc_llcp_sock_put() but fails to return. Execution falls through to
+the remainder of the function, which calls release_sock() and
+nfc_llcp_sock_put() again. This results in a double release_sock()
+and a refcount underflow via double nfc_llcp_sock_put(), leading to
+a use-after-free.
 
-Use setup_wait_dev $h1 0 which waits for h1 to return to UP state, so the
-test can rely on the link being back up at this point.
+Add the missing return statements after the LLCP_CLOSED branches
+in both functions to prevent the fall-through.
 
-Fixes: 4d8610ee8bd77 ("selftests: net: bridge: add vlan mcast_querier_interval tests")
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Reviewed-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Link: https://patch.msgid.link/c830f130860fd2efae08bfb9e5b25fd028e58ce5.1775424423.git.daniel@makrotopia.org
+Fixes: d646960f7986 ("NFC: Initial LLCP support")
+Signed-off-by: Junxi Qian <qjx1298677004@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260408081006.3723-1-qjx1298677004@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/forwarding/bridge_vlan_mcast.sh | 1 +
- 1 file changed, 1 insertion(+)
+ net/nfc/llcp_core.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tools/testing/selftests/net/forwarding/bridge_vlan_mcast.sh b/tools/testing/selftests/net/forwarding/bridge_vlan_mcast.sh
-index 72dfbeaf56b92..e8031f68200ad 100755
---- a/tools/testing/selftests/net/forwarding/bridge_vlan_mcast.sh
-+++ b/tools/testing/selftests/net/forwarding/bridge_vlan_mcast.sh
-@@ -414,6 +414,7 @@ vlmc_querier_intvl_test()
- 	bridge vlan add vid 10 dev br1 self pvid untagged
- 	ip link set dev $h1 master br1
- 	ip link set dev br1 up
-+	setup_wait_dev $h1 0
- 	bridge vlan add vid 10 dev $h1 master
- 	bridge vlan global set vid 10 dev br1 mcast_snooping 1 mcast_querier 1
- 	sleep 2
--- 
-2.53.0
-
+--- a/net/nfc/llcp_core.c
++++ b/net/nfc/llcp_core.c
+@@ -1091,6 +1091,7 @@ static void nfc_llcp_recv_hdlc(struct nf
+ 	if (sk->sk_state == LLCP_CLOSED) {
+ 		release_sock(sk);
+ 		nfc_llcp_sock_put(llcp_sock);
++		return;
+ 	}
+ 
+ 	/* Pass the payload upstream */
+@@ -1182,6 +1183,7 @@ static void nfc_llcp_recv_disc(struct nf
+ 	if (sk->sk_state == LLCP_CLOSED) {
+ 		release_sock(sk);
+ 		nfc_llcp_sock_put(llcp_sock);
++		return;
+ 	}
+ 
+ 	if (sk->sk_state == LLCP_CONNECTED) {
 
 
 
