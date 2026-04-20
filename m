@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-238879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238880-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EOzPGqgt5mliswEAu9opvQ
-	(envelope-from <stable+bounces-238879-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:44:08 +0200
+	id 0CXDMqAu5mliswEAu9opvQ
+	(envelope-from <stable+bounces-238880-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:48:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53DC042C318
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:44:08 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A995942C49F
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:48:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CF9F13044EEF
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 13:32:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DDE3B304BBAF
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 13:32:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FED63ACA6B;
-	Mon, 20 Apr 2026 13:21:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 331403ACA6C;
+	Mon, 20 Apr 2026 13:21:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o7FzuWs/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="memUiOfi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 147A73ACA59
-	for <stable@vger.kernel.org>; Mon, 20 Apr 2026 13:21:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA41A3AC0FF;
+	Mon, 20 Apr 2026 13:21:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776691292; cv=none; b=em8B5N3Axe+ohUp47ha8EJbpdwbCCHNsHKr7ykpTj2l6E/UoQLvWND/I/Qa7E7DJo1YiphhQVaApfCJk+/0Ar/5TitqHeLoxTz3RBlzCfvzvoJI/ZgzGHVnxxX8l8RIFzi1UKKSVva8Ju11tYTjG4GDBPE9oR28Lo/+AkDmlacY=
+	t=1776691293; cv=none; b=obO4kK9vDvx1lOO4dmOJkKIliFs5thWqaWMXarIJo/6gantMS5Kd7jQA8XOEuyD/DPn/YtGmYNeADt4iCN+Yo2xk9xHQlAJ0JFkhuoJSgXUbSVmhZvfq+qMWOoUg6WpMlMSOgimL9vl42DRHySesNXihvRro/l+jZ9Owk2IwI2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776691292; c=relaxed/simple;
-	bh=oVwuzYzukeQDmwGlU0rmhQA/bH1QRrZVQNaXWeEeZYs=;
+	s=arc-20240116; t=1776691293; c=relaxed/simple;
+	bh=jLYlSZHc3tlHuGyXMp2efSSVNqZ5cMRMFMF8BfYRzSY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lda5+hus5TNhM0NABU/JRChRg0kOb8AnelvoNLSEtGJ3trzNgU4EnbLdWBrdPaYP5C/Zd7+V1KK5stV9HwHVyIDyBMemrZ7Y1qyo6NDFSwZIdOKQAKVh8xkBIh52E2AeV6dX6SRWnBGZdUxdThok5Adzv3epVMdcQC5R8p0kXZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o7FzuWs/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BD47C2BCB4;
-	Mon, 20 Apr 2026 13:21:31 +0000 (UTC)
+	 MIME-Version; b=H2JqATEvOU8lk70+MSMFqK6Z1ZjVWGf5QzpCaY+4KTWvsXvLj5q6LCU8qXioyPxjZQiRgHeLh5W+GUk7s3giSu7V1w4/qrPxX56DJc+oaUGrRTEwtjNKqos7/xzcb/xhcwM04tsYQ2qgFOVmcuLmYvAdgrYEkSD0UYti9/vxaYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=memUiOfi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 398EDC2BCB6;
+	Mon, 20 Apr 2026 13:21:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1776691292;
-	bh=oVwuzYzukeQDmwGlU0rmhQA/bH1QRrZVQNaXWeEeZYs=;
+	bh=jLYlSZHc3tlHuGyXMp2efSSVNqZ5cMRMFMF8BfYRzSY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o7FzuWs/TBsI6ZrOSDzQUW8wupTIcWjXaK5agJS0yfBYICaXvMU11peoWA3GAmktX
-	 kO8L+T3/pH58m5DquD0IQf72id3H2Uf1VytoCqHBs93TLL36KGR6RVYjBexYkEivPq
-	 qJ5GX6wVwYR5ILshNBrEw0OryxgIayg+l5rDBBKcsD8nwPQjYfJbrE/LcWZAhWSDxK
-	 BScpLoqXD4hf8K8IoD94LauehfmDZ6QYDc4oKq1mDHPvtfQ5DM7+zvSO7DcXuYMPvr
-	 voS51NB+84ar+ahVgpNQydYSj1pYNb3262//QLLfmbMMXRU9m5oqKJe2R2vJ1cgoQu
-	 1G/GKtjvoxLaA==
+	b=memUiOfibntsaLPP/c4V4yIw3bl+pEuSVzZOxEYZrWWjxlXOpx8x2j/CUN9QXEvUa
+	 mBlpnUZ67ULradwCf+iWNGetpy4COTPXI343laKX4K74F2FJ61+oeATJcGUe5z6e4P
+	 EHAKnyrEKodblMsTQFyOZ1orfGy4WcPUSj9XApw4ZNO24c7YBjS6nAXulaeyqqyJ1P
+	 Io+8MlEHZjQ3UJFY26SRds5USWiGg/7Q48X0SzwuDSOy+iJNfqFEjVuTXhUW5qsIuO
+	 Ytz1ZXpfaRKdx+h6+iW9fx/z3CkRM8R17FK1V4NZO5PR7nBaZLNVPf7MeSFNmoW28r
+	 2o1sYAIl4BYsg==
 From: Sasha Levin <sashal@kernel.org>
-To: Robert Garcia <rob_garcia@163.com>
+To: Li hongliang <1468888505@139.com>
 Cc: Sasha Levin <sashal@kernel.org>,
 	stable@vger.kernel.org,
-	amd-gfx@lists.freedesktop.org,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: Re: [PATCH 6.1.y] drm/amdgpu: remove two invalid BUG_ON()s
-Date: Mon, 20 Apr 2026 09:21:13 -0400
-Message-ID: <20260420-stable-reply-amdgpu-bug-on-6-1@kernel.org>
+	netfilter-devel@vger.kernel.org,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: Re: [PATCH] nf_tables: nft_dynset: fix possible stateful expression memleak in error path
+Date: Mon, 20 Apr 2026 09:21:14 -0400
+Message-ID: <20260420-stable-reply-nft-dynset@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260417074010.1607496-1-rob_garcia@163.com>
-References: <20260417074010.1607496-1-rob_garcia@163.com>
+In-Reply-To: <20260417081855.3253507-1-1468888505@139.com>
+References: <20260417081855.3253507-1-1468888505@139.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,20 +67,20 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-238879-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[163.com];
+	TAGGED_FROM(0.00)[bounces-238880-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[139.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -90,16 +90,16 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 53DC042C318
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A995942C49F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, Apr 17, 2026, Robert Garcia wrote:
-> Backport of 5d55ed19d419 ("drm/amdgpu: remove two invalid BUG_ON()s")
-> to 6.1.y.
+On Fri, Apr 17, 2026, Li hongliang wrote:
+> Backport of 0548a13b5a14 ("nf_tables: nft_dynset: fix possible
+> stateful expression memleak in error path").
 
-Queued for 6.1, thanks.
+Queued for 6.6, 6.1, and 5.15, thanks.
 
 --
 Thanks,
