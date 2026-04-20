@@ -1,200 +1,198 @@
-Return-Path: <stable+bounces-239969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239970-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MCM8GxVv5mmBwAEAu9opvQ
-	(envelope-from <stable+bounces-239969-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 20:23:17 +0200
+	id 8LkMF/Vu5mmBwAEAu9opvQ
+	(envelope-from <stable+bounces-239970-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 20:22:45 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BA61432C2A
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 20:23:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C91D1432BFD
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 20:22:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2F54530BEABB
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 17:33:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C8E92308D4E3
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 17:37:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A835C3A6B86;
-	Mon, 20 Apr 2026 17:32:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F01E83859EF;
+	Mon, 20 Apr 2026 17:37:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="MxtJEFu+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HSY87uUI"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72D5038423E;
-	Mon, 20 Apr 2026 17:32:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4B8D2E2DFB
+	for <stable@vger.kernel.org>; Mon, 20 Apr 2026 17:37:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776706379; cv=none; b=rJeKzEWJsWAAwV6lQp45n153kR/PV8WIIy7uQKRMs/By7sl/Q5d7zqYiyNt7ShLEaO3mrHqGs2tcrY6WSk9f1hsg6CdBltwsnj9RXbFULvk2r1O2sD8BBYPY8ys2ipVh6mz3q9u4aNA5ojqyAdXDQ55fVtHKlwNmkPXG07Q7lBo=
+	t=1776706625; cv=none; b=G4dkWj0w7OyAyf4ogiNHRv1v/FA6uUf8MroOVDgXfRjbbada8z11v0CH0YPOZBLYidHhUIqau2jZYzHmBoU5Q4ba0tZtS305mVd0SAwJc7BnvUNmQ7/QXv4DxD0YBrRTU0CzNHBK0VdggACd5cWt42CertFUzUwdmu584cEYamg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776706379; c=relaxed/simple;
-	bh=1R+q0brxT5FCSRMOO/LqKS2K1GLvRDjYnI692aiflvw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FThi2zgc6cD46rx/HPdUrvglr+Gore42PzNMJErhaaBiMj6n7JmqrZ0SkmtYqYwqvN76YpPExYvM6z7MUV1j9P/jCG9DLHUqhyrTzcLt+ZXfrr4afIn/wsOymEQQwt6OWtWP3KaFIjaC7hkt2xpyGCO4Z6441MhP1F9n3AJ8jTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=MxtJEFu+; arc=none smtp.client-ip=212.227.15.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1776706357; x=1777311157; i=rwarsow@gmx.de;
-	bh=1R+q0brxT5FCSRMOO/LqKS2K1GLvRDjYnI692aiflvw=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=MxtJEFu+hbeIWOb9ioSV30r/uNpy+w2eSy3gyCOQFvgyzr4Q0cAVJH7O24VvjJBW
-	 erRyxojZ1THXA+ra7DG9DqGl1PoEw6ik2JhNi/9KypV6g0dfqkLXRnYFYIyF9aI76
-	 AVSiTWUAL5ljXH68D0wNh60ValdujQH1iSOeZNOsDVmo1QdQatrddhrMWGGEZNNvo
-	 5for8uI6QruAqFZouWGrxVsQxxSKw2MmCOrPf9uRiNxVyoUcYc0F9/Cf5nXxSaGoe
-	 QA8VOZMkVF3Yq/0zWiDT+YldukpvvsD7P8EkwG80V2kKszfl3H7wMq5Yh7ljzm15/
-	 GHhE7x9IGquRHvQlJA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from client.hidden.invalid by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MysVs-1vS11L2ggE-015Hyi; Mon, 20
- Apr 2026 19:32:37 +0200
-Message-ID: <dc055f46-d1fd-4a9a-b0f7-ee995fa8085c@gmx.de>
-Date: Mon, 20 Apr 2026 19:32:35 +0200
+	s=arc-20240116; t=1776706625; c=relaxed/simple;
+	bh=rCY2wuQsUjDHpUT3M+WEFayWuk7v+/K90QSg7y5I95w=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=CQBZibaDyqLIIWUHZWVsNmZT00toCYNw0L+wE/kP9txJbv3CH4VUV4JmbA1oorlp/TTsOYOHHMfX2vTN8fPe70al6f7aUjRmnEbtnjO3ucsFoKmOjwD8TmVTBKjaNioUYUAlEFDwtWPpi2Qu7717pgIG2LaXn/QTncDrpgHDUo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HSY87uUI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A91FEC19425;
+	Mon, 20 Apr 2026 17:37:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776706625;
+	bh=rCY2wuQsUjDHpUT3M+WEFayWuk7v+/K90QSg7y5I95w=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=HSY87uUIcNCbhtmUofMgV51Lqt68DzWAGw3sf6Q0oVoWqm1M6oO4fU8SrK+gXfYUu
+	 2xqzsGjhFQdQhyROFBfNN7nGTby6JZCZI6NJ6f9QM2IXeJmYioKdXr+vrQH/KgbWuI
+	 7rZurPdwRjhioX+cfXWhxmvdU2Icd4sJS8ER10mV1HMKTBlVdMcQpGd2n2MflcN1M1
+	 RdXBBPUjgHhscJTNixGoA/TaNMYMmZbZho+p8AMvso8dgosnHpDy1xkhwAKRY59Xnx
+	 rSGJqjY7bhSUtyDUYiUKt5CKVtHli3LkvD+lTXTx75BvgXWVKgJiLAC3y7/LIjqrJr
+	 bHgqw4s7ddnnQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Breno Leitao <leitao@debian.org>,
+	Dennis Zhou <dennis@kernel.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Josef Bacik <josef@toxicpanda.com>,
+	JP Kobryn <inwardvessel@gmail.com>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Tejun Heo <tj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10.y] mm: blk-cgroup: fix use-after-free in cgwb_release_workfn()
+Date: Mon, 20 Apr 2026 13:37:02 -0400
+Message-ID: <20260420173702.1427727-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026042028-playback-unplanned-6ffc@gregkh>
+References: <2026042028-playback-unplanned-6ffc@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7.0 00/76] 7.0.1-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, conor@kernel.org,
- hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
- sr@sladewatkins.com
-References: <20260420153910.810034134@linuxfoundation.org>
-From: Ronald Warsow <rwarsow@gmx.de>
-Content-Language: de-DE, en-US
-In-Reply-To: <20260420153910.810034134@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:+kh/FHzK7aZUcOC5OR5CtaJTnJBTUKwykgLyhvY4naRerj8DZAp
- ChSDTzL6cTMFr9eWaUcpAK9U2uOLNrIRg5y8BIxU5g0/b9WwN1pNrhgt5X/GU2+D283r7dp
- H+DwUnyfURaNDOE8137dey9AY3uzS4eZWj1AW1S//8g62FjpJBZ14FvAjz174GIFJFgONTT
- 3eRHLv7MqPE7//0xfKMWQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:ueX0Kmull/I=;kChrGnISRXguW7AHW3Q1OUusxSP
- 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
+Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmx.de,quarantine];
-	R_DKIM_ALLOW(-0.20)[gmx.de:s=s31663417];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239969-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmx.de];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,microsoft.com,achill.org,sladewatkins.com];
+	FREEMAIL_CC(0.00)[debian.org,kernel.org,linux.dev,kernel.dk,cmpxchg.org,toxicpanda.com,gmail.com,oracle.com,suse.com,google.com,linux-foundation.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-239970-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rwarsow@gmx.de,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmx.de:+];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gmx.de:email,gmx.de:dkim,gmx.de:mid]
-X-Rspamd-Queue-Id: 0BA61432C2A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:email,suse.com:email,oracle.com:email,linux.dev:email,kernel.dk:email]
+X-Rspamd-Queue-Id: C91D1432BFD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi
+From: Breno Leitao <leitao@debian.org>
 
-no regressions here on x86_64 (Intel 11th Gen. CPU)
+[ Upstream commit 8f5857be99f1ed1fa80991c72449541f634626ee ]
 
-Thanks
+cgwb_release_workfn() calls css_put(wb->blkcg_css) and then later accesses
+wb->blkcg_css again via blkcg_unpin_online().  If css_put() drops the last
+reference, the blkcg can be freed asynchronously (css_free_rwork_fn ->
+blkcg_css_free -> kfree) before blkcg_unpin_online() dereferences the
+pointer to access blkcg->online_pin, resulting in a use-after-free:
 
-Tested-by: Ronald Warsow <rwarsow@gmx.de>
+  BUG: KASAN: slab-use-after-free in blkcg_unpin_online (./include/linux/instrumented.h:112 ./include/linux/atomic/atomic-instrumented.h:400 ./include/linux/refcount.h:389 ./include/linux/refcount.h:432 ./include/linux/refcount.h:450 block/blk-cgroup.c:1367)
+  Write of size 4 at addr ff11000117aa6160 by task kworker/71:1/531
+   Workqueue: cgwb_release cgwb_release_workfn
+   Call Trace:
+    <TASK>
+     blkcg_unpin_online (./include/linux/instrumented.h:112 ./include/linux/atomic/atomic-instrumented.h:400 ./include/linux/refcount.h:389 ./include/linux/refcount.h:432 ./include/linux/refcount.h:450 block/blk-cgroup.c:1367)
+     cgwb_release_workfn (mm/backing-dev.c:629)
+     process_scheduled_works (kernel/workqueue.c:3278 kernel/workqueue.c:3385)
+
+   Freed by task 1016:
+    kfree (./include/linux/kasan.h:235 mm/slub.c:2689 mm/slub.c:6246 mm/slub.c:6561)
+    css_free_rwork_fn (kernel/cgroup/cgroup.c:5542)
+    process_scheduled_works (kernel/workqueue.c:3302 kernel/workqueue.c:3385)
+
+** Stack based on commit 66672af7a095 ("Add linux-next specific files
+for 20260410")
+
+I am seeing this crash sporadically in Meta fleet across multiple kernel
+versions.  A full reproducer is available at:
+https://github.com/leitao/debug/blob/main/reproducers/repro_blkcg_uaf.sh
+
+(The race window is narrow.  To make it easily reproducible, inject a
+msleep(100) between css_put() and blkcg_unpin_online() in
+cgwb_release_workfn().  With that delay and a KASAN-enabled kernel, the
+reproducer triggers the splat reliably in less than a second.)
+
+Fix this by moving blkcg_unpin_online() before css_put(), so the
+cgwb's CSS reference keeps the blkcg alive while blkcg_unpin_online()
+accesses it.
+
+Link: https://lore.kernel.org/20260413-blkcg-v1-1-35b72622d16c@debian.org
+Fixes: 59b57717fff8 ("blkcg: delay blkg destruction until after writeback has finished")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Dennis Zhou <dennis@kernel.org>
+Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Josef Bacik <josef@toxicpanda.com>
+Cc: JP Kobryn <inwardvessel@gmail.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Cc: Martin KaFai Lau <martin.lau@linux.dev>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ mm/backing-dev.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/mm/backing-dev.c b/mm/backing-dev.c
+index dd08ab928e071..1670262844ead 100644
+--- a/mm/backing-dev.c
++++ b/mm/backing-dev.c
+@@ -397,12 +397,13 @@ static void cgwb_release_workfn(struct work_struct *work)
+ 	wb_shutdown(wb);
+ 
+ 	css_put(wb->memcg_css);
+-	css_put(wb->blkcg_css);
+-	mutex_unlock(&wb->bdi->cgwb_release_mutex);
+ 
+ 	/* triggers blkg destruction if no online users left */
+ 	blkcg_unpin_online(blkcg);
+ 
++	css_put(wb->blkcg_css);
++	mutex_unlock(&wb->bdi->cgwb_release_mutex);
++
+ 	fprop_local_destroy_percpu(&wb->memcg_completions);
+ 	wb_exit(wb);
+ 	call_rcu(&wb->rcu, cgwb_free_rcu);
+-- 
+2.53.0
+
 
