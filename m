@@ -1,215 +1,178 @@
-Return-Path: <stable+bounces-238741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238742-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wJ0jKY0Y5mkprgEAu9opvQ
-	(envelope-from <stable+bounces-238741-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 14:14:05 +0200
+	id yFMsF4UZ5mkprgEAu9opvQ
+	(envelope-from <stable+bounces-238742-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 14:18:13 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 446D442A89C
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 14:14:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BEDC642A92B
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 14:18:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4DD8E30086E3
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 12:11:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 27DAF303E49C
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 12:17:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 999B9392820;
-	Mon, 20 Apr 2026 12:11:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05FD0387363;
+	Mon, 20 Apr 2026 12:17:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Wqlp6MRW";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="QGbqfYuj";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Wqlp6MRW";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="QGbqfYuj"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D8I5zClr"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BBD438737E
-	for <stable@vger.kernel.org>; Mon, 20 Apr 2026 12:11:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F9FD288C08
+	for <stable@vger.kernel.org>; Mon, 20 Apr 2026 12:17:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776687099; cv=none; b=blJHgFFWUF12cFvpwDIVyRy0UYJ4i4pXfBxtuYQMGBVwdtDpf0f829Kj3xa4peaRpGt5sTvFK40MXNSADEkHInoi3cKgCFeGG7XJHAKuL5EQQTT5oE3isDercECavfI3ZYA7Affzq6IC7kVCsNpVULRwCpSrU4FKfFClCjPQe4A=
+	t=1776687433; cv=none; b=MKO1Xa2xuPinsMU8h43lboIb5Z2IOGCtBODmEppiV7T86tHnMikY+Six5fglqgilE0DzmPc8y/Hbl1wkyUTLC8HCJ06JYClEhWXBCtg/3kUfup2rKhhwGuB4uwkS4YEMlaNWKIGiulSCv6GVak12Tx/FsTCFnS2NaPDvZZ2lXY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776687099; c=relaxed/simple;
-	bh=VZN9nFJrl+O6+gBSCMEM1J6Uj/H5Ns+SAratsUCmn+s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LjAYn5+ukjKG+4104B6tN6rbiph2sLXlmMOa8yJ6fhMlhN4J7bck8eYKzw7Zd1wocZYiMf5k6ppCp/yxpc6PtaISYgjMN4hoh9v+/I/jjQCcEePfd4yY/J21mAUBL4i5NmVl7kFvFH9jJa7tNbsLuVj0hQosm7gDxmmZoVsg11Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Wqlp6MRW; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=QGbqfYuj; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Wqlp6MRW; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=QGbqfYuj; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 4F7765BD20;
-	Mon, 20 Apr 2026 12:11:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1776687095; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Y/RNRyr6+E9mhuUezviH3zVsIEDbgYw5Ek2t8dnnrgI=;
-	b=Wqlp6MRWl0zrmUvtjQohADEnnXLfoTRbdiZhhAzPoIUeQogKqL7iMTOIT0k3u5KukhampI
-	PP1Xw0wSfXHPk4YWrleSqN/dOvXgBYJ9WHvDnrAFSRzpJ1xtVUHlqWcLYqlCm7Rvk2zvol
-	lq6uGEYfy7Kv/oONPSwp8ncDLD7rx9Q=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1776687095;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Y/RNRyr6+E9mhuUezviH3zVsIEDbgYw5Ek2t8dnnrgI=;
-	b=QGbqfYujYTi+5VDhSSAvmnlG+LG3zVseinG5cEBBMjwKyGiAIRYR2raZfrDmzgj+N3kQ3f
-	wURaCTPKvqt3wcAA==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Wqlp6MRW;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=QGbqfYuj
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1776687095; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Y/RNRyr6+E9mhuUezviH3zVsIEDbgYw5Ek2t8dnnrgI=;
-	b=Wqlp6MRWl0zrmUvtjQohADEnnXLfoTRbdiZhhAzPoIUeQogKqL7iMTOIT0k3u5KukhampI
-	PP1Xw0wSfXHPk4YWrleSqN/dOvXgBYJ9WHvDnrAFSRzpJ1xtVUHlqWcLYqlCm7Rvk2zvol
-	lq6uGEYfy7Kv/oONPSwp8ncDLD7rx9Q=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1776687095;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Y/RNRyr6+E9mhuUezviH3zVsIEDbgYw5Ek2t8dnnrgI=;
-	b=QGbqfYujYTi+5VDhSSAvmnlG+LG3zVseinG5cEBBMjwKyGiAIRYR2raZfrDmzgj+N3kQ3f
-	wURaCTPKvqt3wcAA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CA1C4593AE;
-	Mon, 20 Apr 2026 12:11:34 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id aA8hMPYX5mkGZQAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Mon, 20 Apr 2026 12:11:34 +0000
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: xinliang.liu@linaro.org,
-	tiantao6@hisilicon.com,
-	kong.kongxinwei@hisilicon.com,
-	sumit.semwal@linaro.org,
-	yongqin.liu@linaro.org,
-	jstultz@google.com,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	airlied@gmail.com,
-	simona@ffwll.ch
-Cc: dri-devel@lists.freedesktop.org,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Yongbang Shi <shiyongbang@huawei.com>,
-	Rongrong Zou <zourongrong@gmail.com>,
-	Sean Paul <seanpaul@chromium.org>,
-	Dmitry Baryshkov <lumag@kernel.org>,
-	Baihan Li <libaihan@huawei.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2 2/4] drm/hibmc: Fix list of formats on the primary plane
-Date: Mon, 20 Apr 2026 14:09:58 +0200
-Message-ID: <20260420121130.200133-3-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420121130.200133-1-tzimmermann@suse.de>
-References: <20260420121130.200133-1-tzimmermann@suse.de>
+	s=arc-20240116; t=1776687433; c=relaxed/simple;
+	bh=4VuMnrHpW+Ys9pSu9mAz1veXiKY9spgI1R+SpeNWJA0=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VwjDKtdNhgCJ/1teLGMxhLfp6JAWFpIQa55+nIaykxM8wF3JZ0tNvkEluxJuA33fahjq+WDmeQ+6A6dQtNfSrXrUYR9zw3a+wd/Z2FX2DP2aiF8v7yiEnIDfk2SNlg6xFHE1pqgFsDwaiQ+KtMx3DCYRCpGw4Hm0kh1VYxo/KKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D8I5zClr; arc=none smtp.client-ip=209.85.167.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-59dcdf60427so2624949e87.3
+        for <stable@vger.kernel.org>; Mon, 20 Apr 2026 05:17:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776687430; x=1777292230; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=drkslkYKwh8bl2BohU7oUu2nJDGY7lLZqg96VgbKXeA=;
+        b=D8I5zClrpfFMhcy4xFrJ6qq3L4Dcha9lvOuhYN5RjvqAxR7VFScLsoyF0YfL2NsfAR
+         ORtHF5jjv/sOQMCIQhuguf/amEQPC7MgEbZOXTDwX8+yYraJong0LK5M+wfflQmiTAVG
+         chJI/Sd6aTGhOIUZXQygD4nLaOqNNhjmn8rnOUHZ9SHfuCfrd37EkpiLXwHJ3G0PsiEY
+         5b7zN1YckwydtbiD3OusAzmfXrrZh8FuVUwSVScqvug5IPkc5ACkZsT2T5oiiCtjS92S
+         ti07BOIy2qM5d/Y+hD+chlgHTh0OGiSkZEEFaI8obwtiTBHJLIsDqkGVLoONPDtGfd75
+         dwyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776687430; x=1777292230;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=drkslkYKwh8bl2BohU7oUu2nJDGY7lLZqg96VgbKXeA=;
+        b=P0VEI+BD0tigpG1/7Fy+eBJVMYnsf5zGeiIwXWmJmsRM8qopNnx67p6odJhSmnmJ6H
+         Wmza1gmYqsgTn0aYNkB+C/dNyOuWPNKErr1VsnqGH1GwvQFWgAh4i0ZEyLltiiIoZfbY
+         S52oG0Lv/vlMsNTxH782FU9paYcuHOrMdHHx0IHb/Gt8M8IpxZ4a8Xw3Yc8NLMwYNe1Q
+         z84/GLMS8eI5JiS7mAoadAWieRxIyzo7e3UdqmQVWu3vO1xdqfI5F1RQCGwaORV+UzsD
+         pKaAtTLJ2PdtAAwHes0sG4LbTj6AlFu02daLHlgLl47Onu4ZjSWZqD6VvgNw6TFDf0ND
+         bAZA==
+X-Forwarded-Encrypted: i=1; AFNElJ/rnAjeJzbBus9aUX+dEc8pN1jbdjfAN6aQnvD3+8GXNPCrHjEqdPyAGTeENcvsZHHVZ/ymHyA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxOVW4Nvcadg984J8uCa08okcA+i2onqrMUl10Nst9y1Fxudi0E
+	tXt20gf8sbeEoHDjbzeKOY/PtEf2ZiZ32QRO8QHNX76upxH+vnGmB5Rj
+X-Gm-Gg: AeBDievpqTqUcEk3AC0Jtzk/VSfqMlcIo8Ec+g1Kg4GVAj7yai4muAYsaXAB4wuMea2
+	sDCUeXTISo7LVbPkbl2bunO2qEjjVpTSOc0vJB43h8NM/P0NHtCk3GbPkxOvNyHWNybKlGXtdI5
+	02Kl8r+N2HJ/cVQI/IaHZ/0gka9OUh+5ucS4FHUUSjjibIWUcpGdnt95oqMre782090xBo9xV4N
+	KJ7DptbSjVtABQ5gdC/J4v+Jgp5HBiJ7tcgZpaII2gnBsQvuSr9cTl5D+E/u05Cn7eFyhyXD8m0
+	us/S57w9yAtqxQ7f+5rmvuXKyh3LkvEUlObgZ1Qrw8Q8FmvdV6r8R0vteST+vkEyF4nfEjbcU/b
+	+q1Yhz1dtDgVVGrTL8A7Lv9JqeEX9MHxn1AU2rfUY29zR1lSm+88JVVm9vRP3qHf0De44Z1hv8g
+	Y=
+X-Received: by 2002:a05:6512:a8b:b0:5a2:c289:3337 with SMTP id 2adb3069b0e04-5a4172fabccmr4256296e87.42.1776687429463;
+        Mon, 20 Apr 2026 05:17:09 -0700 (PDT)
+Received: from milan ([2001:9b1:d5a0:a500::24b])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a4185ad2f4sm2965771e87.17.2026.04.20.05.17.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Apr 2026 05:17:09 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@milan>
+Date: Mon, 20 Apr 2026 14:17:07 +0200
+To: Marco Elver <elver@google.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
+	Vitaly Wool <vitaly.wool@konsulko.se>, stable@vger.kernel.org,
+	"Harry Yoo (Oracle)" <harry@kernel.org>
+Subject: Re: [PATCH] vmalloc: fix buffer overflow in vrealloc_node_align()
+Message-ID: <aeYZQ501gs_OLR8H@milan>
+References: <20260420114805.3572606-2-elver@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Flag: NO
-X-Spam-Score: -3.01
-X-Spam-Level: 
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260420114805.3572606-2-elver@google.com>
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	FREEMAIL_CC(0.00)[lists.freedesktop.org,suse.de,huawei.com,gmail.com,chromium.org,kernel.org,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-238741-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[linaro.org,hisilicon.com,google.com,linux.intel.com,kernel.org,gmail.com,ffwll.ch];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tzimmermann@suse.de,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-238742-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[kernel.org,linux-foundation.org,gmail.com,kvack.org,vger.kernel.org,googlegroups.com,konsulko.se];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	RCVD_COUNT_FIVE(0.00)[6];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[urezki@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linaro.org:email,huawei.com:email,chromium.org:email,suse.de:email,suse.de:dkim,suse.de:mid]
-X-Rspamd-Queue-Id: 446D442A89C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: BEDC642A92B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Remove all formats from the primary plane that are unsupported for
-various reasons.
+On Mon, Apr 20, 2026 at 01:47:26PM +0200, Marco Elver wrote:
+> Commit 4c5d3365882d ("mm/vmalloc: allow to set node and align in
+> vrealloc") added the ability to force a new allocation if the current
+> pointer is on the wrong NUMA node, or if an alignment constraint is not
+> met, even if the user is shrinking the allocation.
+> 
+> On this path (need_realloc), the code allocates a new object of 'size'
+> bytes and then memcpy()s 'old_size' bytes into it. If the request is to
+> shrink the object (size < old_size), this results in an out-of-bounds
+> write on the new buffer.
+> 
+> Fix this by bounding the copy length by the new allocation size.
+> 
+> Fixes: 4c5d3365882d ("mm/vmalloc: allow to set node and align in vrealloc")
+> Cc: <stable@vger.kernel.org>
+> Reported-by: Harry Yoo (Oracle) <harry@kernel.org>
+> Signed-off-by: Marco Elver <elver@google.com>
+> ---
+>  mm/vmalloc.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index 61caa55a4402..8b1124158f54 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -4361,7 +4361,7 @@ void *vrealloc_node_align_noprof(const void *p, size_t size, unsigned long align
+>  		return NULL;
+>  
+>  	if (p) {
+> -		memcpy(n, p, old_size);
+> +		memcpy(n, p, min(size, old_size));
+>  		vfree(p);
+>  	}
+>  
+> -- 
+> 2.54.0.rc1.513.gad8abe7a5a-goog
+>
+Agree with a problem described in commit message:
 
-* Formats with alpha channel: planes should not announce alpha channels
-unless they support transparency. There's no transparency support in
-the primary plane's implementation.
+Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
 
-* Formats with BGR order. The common format is in RGB channel order.
-There's no BGR support in the primary plane's implementation.
+Thank you for fixing it!
 
-* RGB888: atomic_update programs the format from cpp[0] * 8 / 16. For
-RGB888's cpp value of 3 this returns 1.5; rounded to 1. Programming
-the value of 1 to HIBMC_CRT_DISP_CTL_FORMAT sets up RGB565. Hence, the
-output is distorted. This can be tested by booting with video=1024x768-24.
-
-Removing all unsupported formats leaves XRGB8888 and RGB565. Both of
-which are supported and work correctly.
-
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: da52605eea8f ("drm/hisilicon/hibmc: Add support for display engine")
-Reviewed-by: Yongbang Shi <shiyongbang@huawei.com>
-Cc: Rongrong Zou <zourongrong@gmail.com>
-Cc: Sean Paul <seanpaul@chromium.org>
-Cc: Xinliang Liu <xinliang.liu@linaro.org>
-Cc: Dmitry Baryshkov <lumag@kernel.org>
-Cc: Yongbang Shi <shiyongbang@huawei.com>
-Cc: Baihan Li <libaihan@huawei.com>
-Cc: <stable@vger.kernel.org> # v4.10+
----
- drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_de.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_de.c b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_de.c
-index 8fa2a95bcdd1..c4f9ebd9250d 100644
---- a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_de.c
-+++ b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_de.c
-@@ -118,10 +118,8 @@ static void hibmc_plane_atomic_update(struct drm_plane *plane,
- }
- 
- static const u32 channel_formats1[] = {
--	DRM_FORMAT_RGB565, DRM_FORMAT_BGR565, DRM_FORMAT_RGB888,
--	DRM_FORMAT_BGR888, DRM_FORMAT_XRGB8888, DRM_FORMAT_XBGR8888,
--	DRM_FORMAT_RGBA8888, DRM_FORMAT_BGRA8888, DRM_FORMAT_ARGB8888,
--	DRM_FORMAT_ABGR8888
-+	DRM_FORMAT_XRGB8888,
-+	DRM_FORMAT_RGB565,
- };
- 
- static const struct drm_plane_funcs hibmc_plane_funcs = {
--- 
-2.53.0
-
+--
+Uladzislau Rezki
 
