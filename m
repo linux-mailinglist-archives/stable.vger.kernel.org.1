@@ -1,225 +1,139 @@
-Return-Path: <stable+bounces-238770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238779-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aBiIKdcm5mmgsgEAu9opvQ
-	(envelope-from <stable+bounces-238770-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:15:03 +0200
+	id 8HdFOQ4o5mnesgEAu9opvQ
+	(envelope-from <stable+bounces-238779-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:20:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0662F42B6AD
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:15:02 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3300042B8FB
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:20:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E3F5A30CBD37
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 13:07:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 49F6F308A265
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 13:15:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EE983101CD;
-	Mon, 20 Apr 2026 13:07:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 791E638757F;
+	Mon, 20 Apr 2026 13:15:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eu+RgVn+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A66MNC5u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 219EA35898
-	for <stable@vger.kernel.org>; Mon, 20 Apr 2026 13:07:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BEF933C532;
+	Mon, 20 Apr 2026 13:15:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776690471; cv=none; b=lZmnMc+ODn9DkCRgdSw/jtZYYFD9J1o5dlgTATs0SvznTriN9Mik2/HC2/9wXaf+nQD5u1o34cs+x6QjNl/QRF4fOuBwb+AQnryMS09O7CdHIYG/AcHY7rYXUlFpqJy0KqcCFvm5jVljccucXJGQCrtv85ummFbZjYjJMBPgUyk=
+	t=1776690942; cv=none; b=sXspeals/LXifgDS006JiCu0iPas7Vr4XoVWx0sMwN5chleJHMOJFOXmTdn1/j2XFl3UM0wSCLMAI13EwFomMhkyzCiDnpOem4b2zV8C0AhwrNLMQWUv1we98x6OcKr5I63wCWXpt8RrgtJZVqCpcDt8cVm4Zuz6HYwT09nU1Ak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776690471; c=relaxed/simple;
-	bh=UCbGAc0+U369n4iugea4+vfb3hhu4boyGA2350uF7WM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=U3O8s325wJfjl3vB+X5q05oQCvztc1kPJvTenGg5PfQKcj9EpwSDugWxLJb/ygIoxNGwLAecNuE7S1dZqkPX7/UjNqyLt/8W83/9XZ24upHKAPLRkVLpyrbVuAznBnVjQo+1J+rQOH81yc+SQRczUr4EXZhHOPCg7g2iXtdqevA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eu+RgVn+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 822E5C19425;
-	Mon, 20 Apr 2026 13:07:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776690470;
-	bh=UCbGAc0+U369n4iugea4+vfb3hhu4boyGA2350uF7WM=;
-	h=Subject:To:Cc:From:Date:From;
-	b=Eu+RgVn+WJbol4mtmoAgL83BTVgBg2ZBE1sBmj6D+GzmXseGDkuPdJwBGh3Ppno72
-	 w76IhrpOqgZ1koUCCl+VpKcTnzBkmMDEiLLgm5WghTY+J7gZCXL1ef3yBvHZbJLgGn
-	 vDkmAP6UJCMP98Dw1biH1R965JsvPwNjaMZB3jE8=
-Subject: FAILED: patch "[PATCH] KVM: SEV: Protect *all* of sev_mem_enc_register_region() with" failed to apply to 5.10-stable tree
-To: seanjc@google.com,glider@google.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 20 Apr 2026 15:07:40 +0200
-Message-ID: <2026042040-strum-curse-8dcd@gregkh>
+	s=arc-20240116; t=1776690942; c=relaxed/simple;
+	bh=IJRaeUrOT4uxjtqct0t5ecqTdc2mzEjDLrfsy60+b04=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fEcu8G7ASU6FWqgdZJEDu7Rk7SD1Nw9Aa6heQ2gEpVufRecbVvMY0vjUVUrd2SnoYbRTwP4z6IW+c2VRK3ZRdmnxLusXKohY5m3wSz3eW7CGfvR8tsAfuujrU8kziDIkOkbdN3bcD7BQ/4ixtjw18KBm+e1xtFInKujFvChLilA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A66MNC5u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00F1EC19425;
+	Mon, 20 Apr 2026 13:15:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776690941;
+	bh=IJRaeUrOT4uxjtqct0t5ecqTdc2mzEjDLrfsy60+b04=;
+	h=From:To:Cc:Subject:Date:From;
+	b=A66MNC5uAmJo3ESN/UeRL5KYSrrJpUPBO/M+Op3676M/ng2lvo8t2qFXCla795G2D
+	 8HgKXSnWg3CGDnvkb70/8J4XloUsFNTNyFeTuFuTTp8wYKtT7tW2c20O/rngGiqaj+
+	 JC91iMAwm9PDGSkytJkyke6ZcEmK74VeUKcY1/PMFWWgH9vvk/5ztztz1WmBMUl3/Z
+	 E16Tx3c7epPg1edgsp2CbYrdVSj2+MeUUgYf2oNCuIo+J0NzmjmHxEahGAO/57z8PR
+	 ftgmv52tjYom+x2DuiWV2IGQuZbK7vHk8R4Iz/RKYG3JaMyPKs5W8BNWd+OqyYcDEd
+	 HUVoDdBgyrUmw==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Zhang Heng <zhangheng@kylinos.cn>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>,
+	perex@perex.cz,
+	tiwai@suse.com,
+	alsa-devel@alsa-project.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.18] ALSA: hda/realtek: add quirk for Lenovo Yoga 7 2-in-1 16AKP10
+Date: Mon, 20 Apr 2026 09:07:47 -0400
+Message-ID: <20260420131539.986432-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.18.23
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-238770-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-238779-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_THREE(0.00)[3];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NO_DN(0.00)[];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+]
-X-Rspamd-Queue-Id: 0662F42B6AD
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 3300042B8FB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+From: Zhang Heng <zhangheng@kylinos.cn>
 
-The patch below does not apply to the 5.10-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+[ Upstream commit 7bae956cac0433c4d41aac9f1d04e42694e0b706 ]
 
-To reproduce the conflict and resubmit, you may use the following commands:
+This machine is equipped with ALC287 and requires the quirk
+ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN to fix the issue
+where the bass speakers are not configured and the speaker
+volume cannot be controlled.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
-git checkout FETCH_HEAD
-git cherry-pick -x b6408b6cec5df76a165575777800ef2aba12b109
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026042040-strum-curse-8dcd@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=221210
+Signed-off-by: Zhang Heng <zhangheng@kylinos.cn>
+Link: https://patch.msgid.link/20260313080624.1395362-1-zhangheng@kylinos.cn
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
 
-Possible dependencies:
+LLM Generated explanations, may be completely bogus:
 
+Error: Failed to generate final synthesis
 
+ sound/hda/codecs/realtek/alc269.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From b6408b6cec5df76a165575777800ef2aba12b109 Mon Sep 17 00:00:00 2001
-From: Sean Christopherson <seanjc@google.com>
-Date: Tue, 10 Mar 2026 16:48:11 -0700
-Subject: [PATCH] KVM: SEV: Protect *all* of sev_mem_enc_register_region() with
- kvm->lock
-
-Take and hold kvm->lock for before checking sev_guest() in
-sev_mem_enc_register_region(), as sev_guest() isn't stable unless kvm->lock
-is held (or KVM can guarantee KVM_SEV_INIT{2} has completed and can't
-rollack state).  If KVM_SEV_INIT{2} fails, KVM can end up trying to add to
-a not-yet-initialized sev->regions_list, e.g. triggering a #GP
-
-  Oops: general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] SMP KASAN NOPTI
-  KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
-  CPU: 110 UID: 0 PID: 72717 Comm: syz.15.11462 Tainted: G     U  W  O        6.16.0-smp-DEV #1 NONE
-  Tainted: [U]=USER, [W]=WARN, [O]=OOT_MODULE
-  Hardware name: Google, Inc. Arcadia_IT_80/Arcadia_IT_80, BIOS 12.52.0-0 10/28/2024
-  RIP: 0010:sev_mem_enc_register_region+0x3f0/0x4f0 ../include/linux/list.h:83
-  Code: <41> 80 3c 04 00 74 08 4c 89 ff e8 f1 c7 a2 00 49 39 ed 0f 84 c6 00
-  RSP: 0018:ffff88838647fbb8 EFLAGS: 00010256
-  RAX: dffffc0000000000 RBX: 1ffff92015cf1e0b RCX: dffffc0000000000
-  RDX: 0000000000000000 RSI: 0000000000001000 RDI: ffff888367870000
-  RBP: ffffc900ae78f050 R08: ffffea000d9e0007 R09: 1ffffd4001b3c000
-  R10: dffffc0000000000 R11: fffff94001b3c001 R12: 0000000000000000
-  R13: ffff8982ab0bde00 R14: ffffc900ae78f058 R15: 0000000000000000
-  FS:  00007f34e9dc66c0(0000) GS:ffff89ee64d33000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 00007fe180adef98 CR3: 000000047210e000 CR4: 0000000000350ef0
-  Call Trace:
-   <TASK>
-   kvm_arch_vm_ioctl+0xa72/0x1240 ../arch/x86/kvm/x86.c:7371
-   kvm_vm_ioctl+0x649/0x990 ../virt/kvm/kvm_main.c:5363
-   __se_sys_ioctl+0x101/0x170 ../fs/ioctl.c:51
-   do_syscall_x64 ../arch/x86/entry/syscall_64.c:63 [inline]
-   do_syscall_64+0x6f/0x1f0 ../arch/x86/entry/syscall_64.c:94
-   entry_SYSCALL_64_after_hwframe+0x76/0x7e
-  RIP: 0033:0x7f34e9f7e9a9
-  Code: <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-  RSP: 002b:00007f34e9dc6038 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-  RAX: ffffffffffffffda RBX: 00007f34ea1a6080 RCX: 00007f34e9f7e9a9
-  RDX: 0000200000000280 RSI: 000000008010aebb RDI: 0000000000000007
-  RBP: 00007f34ea000d69 R08: 0000000000000000 R09: 0000000000000000
-  R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-  R13: 0000000000000000 R14: 00007f34ea1a6080 R15: 00007ffce77197a8
-   </TASK>
-
-with a syzlang reproducer that looks like:
-
-  syz_kvm_add_vcpu$x86(0x0, &(0x7f0000000040)={0x0, &(0x7f0000000180)=ANY=[], 0x70}) (async)
-  syz_kvm_add_vcpu$x86(0x0, &(0x7f0000000080)={0x0, &(0x7f0000000180)=ANY=[@ANYBLOB="..."], 0x4f}) (async)
-  r0 = openat$kvm(0xffffffffffffff9c, &(0x7f0000000200), 0x0, 0x0)
-  r1 = ioctl$KVM_CREATE_VM(r0, 0xae01, 0x0)
-  r2 = openat$kvm(0xffffffffffffff9c, &(0x7f0000000240), 0x0, 0x0)
-  r3 = ioctl$KVM_CREATE_VM(r2, 0xae01, 0x0)
-  ioctl$KVM_SET_CLOCK(r3, 0xc008aeba, &(0x7f0000000040)={0x1, 0x8, 0x0, 0x5625e9b0}) (async)
-  ioctl$KVM_SET_PIT2(r3, 0x8010aebb, &(0x7f0000000280)={[...], 0x5}) (async)
-  ioctl$KVM_SET_PIT2(r1, 0x4070aea0, 0x0) (async)
-  r4 = ioctl$KVM_CREATE_VM(0xffffffffffffffff, 0xae01, 0x0)
-  openat$kvm(0xffffffffffffff9c, 0x0, 0x0, 0x0) (async)
-  ioctl$KVM_SET_USER_MEMORY_REGION(r4, 0x4020ae46, &(0x7f0000000400)={0x0, 0x0, 0x0, 0x2000, &(0x7f0000001000/0x2000)=nil}) (async)
-  r5 = ioctl$KVM_CREATE_VCPU(r4, 0xae41, 0x2)
-  close(r0) (async)
-  openat$kvm(0xffffffffffffff9c, &(0x7f0000000000), 0x8000, 0x0) (async)
-  ioctl$KVM_SET_GUEST_DEBUG(r5, 0x4048ae9b, &(0x7f0000000300)={0x4376ea830d46549b, 0x0, [0x46, 0x0, 0x0, 0x0, 0x0, 0x1000]}) (async)
-  ioctl$KVM_RUN(r5, 0xae80, 0x0)
-
-Opportunistically use guard() to avoid having to define a new error label
-and goto usage.
-
-Fixes: 1e80fdc09d12 ("KVM: SVM: Pin guest memory when SEV is active")
-Cc: stable@vger.kernel.org
-Reported-by: Alexander Potapenko <glider@google.com>
-Tested-by: Alexander Potapenko <glider@google.com>
-Link: https://patch.msgid.link/20260310234829.2608037-4-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index d29783c3075a..9265ebd9aa18 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -2706,6 +2706,8 @@ int sev_mem_enc_register_region(struct kvm *kvm,
- 	struct enc_region *region;
- 	int ret = 0;
- 
-+	guard(mutex)(&kvm->lock);
-+
- 	if (!sev_guest(kvm))
- 		return -ENOTTY;
- 
-@@ -2717,12 +2719,10 @@ int sev_mem_enc_register_region(struct kvm *kvm,
- 	if (!region)
- 		return -ENOMEM;
- 
--	mutex_lock(&kvm->lock);
- 	region->pages = sev_pin_memory(kvm, range->addr, range->size, &region->npages,
- 				       FOLL_WRITE | FOLL_LONGTERM);
- 	if (IS_ERR(region->pages)) {
- 		ret = PTR_ERR(region->pages);
--		mutex_unlock(&kvm->lock);
- 		goto e_free;
- 	}
- 
-@@ -2740,8 +2740,6 @@ int sev_mem_enc_register_region(struct kvm *kvm,
- 	region->size = range->size;
- 
- 	list_add_tail(&region->list, &sev->regions_list);
--	mutex_unlock(&kvm->lock);
--
- 	return ret;
- 
- e_free:
+diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/realtek/alc269.c
+index 1b64292220ac8..4b06cb48252e2 100644
+--- a/sound/hda/codecs/realtek/alc269.c
++++ b/sound/hda/codecs/realtek/alc269.c
+@@ -7429,6 +7429,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x17aa, 0x38ab, "Thinkbook 16P", ALC287_FIXUP_MG_RTKC_CSAMP_CS35L41_I2C_THINKPAD),
+ 	SND_PCI_QUIRK(0x17aa, 0x38b4, "Legion Slim 7 16IRH8", ALC287_FIXUP_CS35L41_I2C_2),
+ 	HDA_CODEC_QUIRK(0x17aa, 0x391c, "Lenovo Yoga 7 2-in-1 14AKP10", ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN),
++	HDA_CODEC_QUIRK(0x17aa, 0x391d, "Lenovo Yoga 7 2-in-1 16AKP10", ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN),
+ 	SND_PCI_QUIRK(0x17aa, 0x38b5, "Legion Slim 7 16IRH8", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x17aa, 0x38b6, "Legion Slim 7 16APH8", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x17aa, 0x38b7, "Legion Slim 7 16APH8", ALC287_FIXUP_CS35L41_I2C_2),
+-- 
+2.53.0
 
 
