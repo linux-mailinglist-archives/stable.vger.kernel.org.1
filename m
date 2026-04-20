@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-239659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239780-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GBSVJQVn5mmlvwEAu9opvQ
-	(envelope-from <stable+bounces-239659-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:48:53 +0200
+	id QDVyHc5P5mkDuwEAu9opvQ
+	(envelope-from <stable+bounces-239780-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:09:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA8EC432202
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:48:52 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F412F42F170
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:09:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3753631A0122
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:01:34 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5AB8430270A5
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:06:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 577A133B975;
-	Mon, 20 Apr 2026 16:01:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A71E7341AD6;
+	Mon, 20 Apr 2026 16:06:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vQjwu/u4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RTFY4nmP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A6D62E2665;
-	Mon, 20 Apr 2026 16:01:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B1B033F8AA;
+	Mon, 20 Apr 2026 16:06:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700893; cv=none; b=WcN4oPJ4Nx9yAoc70d7YNffE6opj8ZYybaalVpNskLDLp1NPOTKQOowxNMpGOI70xOEhLcf6hGpAU2WrfcGz0ImlFcett20P98T+CDZyGyt433YmLcFbSA6xC5fhC+9C3bAxm5clYaQjK8xg+JPiW7Qk+vVYFoApESCJUUIDcHs=
+	t=1776701195; cv=none; b=ZaB5J50tjCs3gs1hcHFNATpCEUr1L6gnM+IvkADPMw3Rs6j546DzY9XE31erforYXhIiFqZ/LtV+yiMW3kyHw7W7B1lmaWp0yGwne9xUw2c51cs+yh5cPeQhyrOWxDopAqIJ/VHlNd1pYcJsXy6i5cmTVCSESdyrce6LSKWzOgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700893; c=relaxed/simple;
-	bh=NziIoVr6CJT6SiabbZdsyWZCZ2Y6Y/3+505Vf4IJ0D8=;
+	s=arc-20240116; t=1776701195; c=relaxed/simple;
+	bh=Q1iSAtKYqSl3xEuiS+I1QY4w4FurT36i1vb6W6v0glg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JCPSZ2+w3ii119xRwdJLjPAfy3ZZu7edzTQs+jq7e8ux9MQ6qgNHZP/43HH5soPMWzR7gCYjaILsP/VGDXrYANAYLDFDj+YZihup1dfHwydNR3d42f6DYNUe073RLvG+TMhg8/P+F6C8xLfkpFQESpLhziK2aQo+YEk045Cal7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vQjwu/u4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6542C19425;
-	Mon, 20 Apr 2026 16:01:32 +0000 (UTC)
+	 MIME-Version; b=ZfMAsy1DxpjQYEGN4LhZhCiTnc2GdYbW+tgAjlQTFloTRwBXtANy2SXYgQlYFDwae0q0Y1T0o0pFvlZQu+00fDcAZRPeibOtPp+41hVu0XO/lH2fiacqp5HRAOiW9iCLXevyqIryUvzJ2/6V8jmuwNCpTK5BIuVw7WLjJ6lZkBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RTFY4nmP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3E78C19425;
+	Mon, 20 Apr 2026 16:06:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700893;
-	bh=NziIoVr6CJT6SiabbZdsyWZCZ2Y6Y/3+505Vf4IJ0D8=;
+	s=korg; t=1776701195;
+	bh=Q1iSAtKYqSl3xEuiS+I1QY4w4FurT36i1vb6W6v0glg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vQjwu/u4hSP7D8iVDoLmQQlHUCPXPlNqiURLpsOdTjRkch8UQEb/5n1DJ32pQGYOa
-	 euhZ8YrqgFTJmqTSpTrD/3n1ikwCFfSpo1rHkqKSwqIXMFQrDRnKMOyC2sPtsCozIN
-	 +OJOz4tsTTwKVg4ErGF/uxLkJhCrQdHuqLVWTr68=
+	b=RTFY4nmPW0vBaAFdDlYUvwOcfuNVHsRzAyNGk/dcIBOs7PAa8cv42n245i44fbnyi
+	 9vN1fJOTLRoLkFKcvD12OR78xHw3fBoZfs49SCSoKUWWprb5knf7Ox1K3wT41hnVh4
+	 lFIvWflhUHcZzYZCCEEZqLOblIhn3ISDoM5safRE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yiming Qian <yimingqian591@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Justin Iurman <justin.iurman@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Throw <zakkabj@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 073/198] ipv6: ioam: fix potential NULL dereferences in __ioam6_fill_trace_data()
+Subject: [PATCH 6.12 020/162] ALSA: hda/realtek: Add quirk for Samsung Book2 Pro 360 (NP950QED)
 Date: Mon, 20 Apr 2026 17:40:52 +0200
-Message-ID: <20260420153938.238420878@linuxfoundation.org>
+Message-ID: <20260420153927.752320229@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
+References: <20260420153927.006696811@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,155 +64,70 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org];
-	URIBL_MULTI_FAIL(0.00)[sea.lore.kernel.org:server fail,msgid.link:server fail,linuxfoundation.org:server fail];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239780-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-239659-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: EA8EC432202
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,suse.de:email]
+X-Rspamd-Queue-Id: F412F42F170
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 4e65a8b8daa18d63255ec58964dd192c7fdd9f8b ]
+[ Upstream commit ea31be8a2c8c99eac198f3b7f2dc770111f2b182 ]
 
-We need to check __in6_dev_get() for possible NULL value, as
-suggested by Yiming Qian.
+There is another Book2 Pro model (NP950QED) that seems equipped with
+the same speaker module as the non-360 model, which requires
+ALC298_FIXUP_SAMSUNG_AMP_V2_2_AMPS quirk.
 
-Also add skb_dst_dev_rcu() instead of skb_dst_dev(),
-and two missing READ_ONCE().
-
-Note that @dev can't be NULL.
-
-Fixes: 9ee11f0fff20 ("ipv6: ioam: Data plane support for Pre-allocated Trace")
-Reported-by: Yiming Qian <yimingqian591@gmail.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Justin Iurman <justin.iurman@gmail.com>
-Link: https://patch.msgid.link/20260402101732.1188059-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Throw <zakkabj@gmail.com>
+Link: https://patch.msgid.link/20260330162249.147665-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ioam6.c | 27 ++++++++++++++++-----------
- 1 file changed, 16 insertions(+), 11 deletions(-)
+ sound/pci/hda/patch_realtek.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/ipv6/ioam6.c b/net/ipv6/ioam6.c
-index 8db7f965696aa..12350e1e18bde 100644
---- a/net/ipv6/ioam6.c
-+++ b/net/ipv6/ioam6.c
-@@ -710,7 +710,9 @@ static void __ioam6_fill_trace_data(struct sk_buff *skb,
- 				    struct ioam6_schema *sc,
- 				    unsigned int sclen, bool is_input)
- {
--	struct net_device *dev = skb_dst_dev(skb);
-+	/* Note: skb_dst_dev_rcu() can't be NULL at this point. */
-+	struct net_device *dev = skb_dst_dev_rcu(skb);
-+	struct inet6_dev *i_skb_dev, *idev;
- 	struct timespec64 ts;
- 	ktime_t tstamp;
- 	u64 raw64;
-@@ -721,13 +723,16 @@ static void __ioam6_fill_trace_data(struct sk_buff *skb,
- 
- 	data = trace->data + trace->remlen * 4 - trace->nodelen * 4 - sclen * 4;
- 
-+	i_skb_dev = skb->dev ? __in6_dev_get(skb->dev) : NULL;
-+	idev = __in6_dev_get(dev);
-+
- 	/* hop_lim and node_id */
- 	if (trace->type.bit0) {
- 		byte = ipv6_hdr(skb)->hop_limit;
- 		if (is_input)
- 			byte--;
- 
--		raw32 = dev_net(dev)->ipv6.sysctl.ioam6_id;
-+		raw32 = READ_ONCE(dev_net(dev)->ipv6.sysctl.ioam6_id);
- 
- 		*(__be32 *)data = cpu_to_be32((byte << 24) | raw32);
- 		data += sizeof(__be32);
-@@ -735,18 +740,18 @@ static void __ioam6_fill_trace_data(struct sk_buff *skb,
- 
- 	/* ingress_if_id and egress_if_id */
- 	if (trace->type.bit1) {
--		if (!skb->dev)
-+		if (!i_skb_dev)
- 			raw16 = IOAM6_U16_UNAVAILABLE;
- 		else
--			raw16 = (__force u16)READ_ONCE(__in6_dev_get(skb->dev)->cnf.ioam6_id);
-+			raw16 = (__force u16)READ_ONCE(i_skb_dev->cnf.ioam6_id);
- 
- 		*(__be16 *)data = cpu_to_be16(raw16);
- 		data += sizeof(__be16);
- 
--		if (dev->flags & IFF_LOOPBACK)
-+		if ((dev->flags & IFF_LOOPBACK) || !idev)
- 			raw16 = IOAM6_U16_UNAVAILABLE;
- 		else
--			raw16 = (__force u16)READ_ONCE(__in6_dev_get(dev)->cnf.ioam6_id);
-+			raw16 = (__force u16)READ_ONCE(idev->cnf.ioam6_id);
- 
- 		*(__be16 *)data = cpu_to_be16(raw16);
- 		data += sizeof(__be16);
-@@ -822,7 +827,7 @@ static void __ioam6_fill_trace_data(struct sk_buff *skb,
- 		if (is_input)
- 			byte--;
- 
--		raw64 = dev_net(dev)->ipv6.sysctl.ioam6_id_wide;
-+		raw64 = READ_ONCE(dev_net(dev)->ipv6.sysctl.ioam6_id_wide);
- 
- 		*(__be64 *)data = cpu_to_be64(((u64)byte << 56) | raw64);
- 		data += sizeof(__be64);
-@@ -830,18 +835,18 @@ static void __ioam6_fill_trace_data(struct sk_buff *skb,
- 
- 	/* ingress_if_id and egress_if_id (wide) */
- 	if (trace->type.bit9) {
--		if (!skb->dev)
-+		if (!i_skb_dev)
- 			raw32 = IOAM6_U32_UNAVAILABLE;
- 		else
--			raw32 = READ_ONCE(__in6_dev_get(skb->dev)->cnf.ioam6_id_wide);
-+			raw32 = READ_ONCE(i_skb_dev->cnf.ioam6_id_wide);
- 
- 		*(__be32 *)data = cpu_to_be32(raw32);
- 		data += sizeof(__be32);
- 
--		if (dev->flags & IFF_LOOPBACK)
-+		if ((dev->flags & IFF_LOOPBACK) || !idev)
- 			raw32 = IOAM6_U32_UNAVAILABLE;
- 		else
--			raw32 = READ_ONCE(__in6_dev_get(dev)->cnf.ioam6_id_wide);
-+			raw32 = READ_ONCE(idev->cnf.ioam6_id_wide);
- 
- 		*(__be32 *)data = cpu_to_be32(raw32);
- 		data += sizeof(__be32);
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 2a32e1ead5e86..04e10da997b53 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -11335,6 +11335,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x144d, 0xc176, "Samsung Notebook 9 Pro (NP930MBE-K04US)", ALC298_FIXUP_SAMSUNG_AMP),
+ 	SND_PCI_QUIRK(0x144d, 0xc189, "Samsung Galaxy Flex Book (NT950QCG-X716)", ALC298_FIXUP_SAMSUNG_AMP),
+ 	SND_PCI_QUIRK(0x144d, 0xc18a, "Samsung Galaxy Book Ion (NP930XCJ-K01US)", ALC298_FIXUP_SAMSUNG_AMP),
++	SND_PCI_QUIRK(0x144d, 0xc1ac, "Samsung Galaxy Book2 Pro 360 (NP950QED)", ALC298_FIXUP_SAMSUNG_AMP_V2_2_AMPS),
+ 	SND_PCI_QUIRK(0x144d, 0xc1a3, "Samsung Galaxy Book Pro (NP935XDB-KC1SE)", ALC298_FIXUP_SAMSUNG_AMP),
+ 	SND_PCI_QUIRK(0x144d, 0xc1a4, "Samsung Galaxy Book Pro 360 (NT935QBD)", ALC298_FIXUP_SAMSUNG_AMP),
+ 	SND_PCI_QUIRK(0x144d, 0xc1a6, "Samsung Galaxy Book Pro 360 (NP930QBD)", ALC298_FIXUP_SAMSUNG_AMP),
 -- 
 2.53.0
 
