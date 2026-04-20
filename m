@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-239650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239467-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uBTKJ/Bm5mmlvwEAu9opvQ
-	(envelope-from <stable+bounces-239650-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:48:32 +0200
+	id QGuALqlL5mkgugEAu9opvQ
+	(envelope-from <stable+bounces-239467-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 17:52:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF5AA4321DA
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:48:31 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8878C42EAA4
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 17:52:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5216036893AA
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:01:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E43483006457
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:52:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CAA332E696;
-	Mon, 20 Apr 2026 16:01:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46612336896;
+	Mon, 20 Apr 2026 15:52:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EMHX0C50"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ytQm1vDE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 209B42DE6E3;
-	Mon, 20 Apr 2026 16:01:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A605330675;
+	Mon, 20 Apr 2026 15:52:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700870; cv=none; b=K1yr+TImh0UlYg0jNnx6xVH7bh/+FcjLRHJ6zmXu1rawupWocwKH14eriI7O7diClBBLuHKKikGict62sRymYgt3Javg3SP/l3safhZgGOOUNyp4Ve7f/lzaNOhXolc++thullLOx5zt8e+nnvpp3WFwx+bXQlBK2psDO2C/uTY=
+	t=1776700328; cv=none; b=L/rSfib1ogmlzhOzVxqb0sySqBidSM7oc7QOOOyhZl1SihoZYLxQE7RmGCnnNuMvqtQcARk3zluj8SDIVOX1oSTvyE9SAn8kJI82WKjQgVED7N5ktmKhCosfZ1hIFtAih/LX/LPkYdXCvezh6GUTbBwae9rBd0vvewykG/6DFaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700870; c=relaxed/simple;
-	bh=Q590OYleU/QcdzB8s15VkuTsvPeLbD+Fs0RxU5djNOg=;
+	s=arc-20240116; t=1776700328; c=relaxed/simple;
+	bh=8u52wi81zfj88u+TCFy+6QwMeha68tfuWx59sOFtsX8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ipCzEeTKfh/E4jgMhIC5LOwS5iydPGgsfP4uHO+GFrS8mmRZDz148lCokQ88hASR4MTT0jkBwus4Tbtzxffk4yCfF0XmTCJ2/SA+ahey5nfPRzsbz/2GFwwTzijs0BsypHmWhyck9jvdkx1y2z6Sp0RGYcu8ecb4WXmCsxbNt38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EMHX0C50; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD6ABC19425;
-	Mon, 20 Apr 2026 16:01:09 +0000 (UTC)
+	 MIME-Version; b=R5ZVugooJFJstgMpYegqDRjmWNQhZeiGzJu9KB3GzI0s4rUftMrFoxOXgHxSyUeri80EoFRuvm/WQfPeMEsQdnqqKOCMhm7CiXJkQP1ce5mMKwwXZb0i66E+N2LgHApln//Hs8sQBfn3menIZNP8wz/P2Vhi8F8SnYM/XzvEY2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ytQm1vDE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93AE1C19425;
+	Mon, 20 Apr 2026 15:52:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700870;
-	bh=Q590OYleU/QcdzB8s15VkuTsvPeLbD+Fs0RxU5djNOg=;
+	s=korg; t=1776700327;
+	bh=8u52wi81zfj88u+TCFy+6QwMeha68tfuWx59sOFtsX8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EMHX0C50KSAy9fb2vVj778ccQKXXDSTZjbgoPN+w0UOb+ouvS5aQLgXI+9gMjVG+J
-	 TpjcR94/qZ07zWpb+AD/FFZ6j3PmiPhKw9vwbrD2w6TVQnT7DR2F6rJZcGANEyWUzt
-	 /1PJgJB4c49Xyk9oMu05X1RVX/LvtIjg9rsd5iNc=
+	b=ytQm1vDEtEpdUyZuefbqIh9b+lmXMN0Ckbyiztxt/OKnLmkl4NHG3usZef2D0uhPN
+	 p5ZmRKsRXFrUHzgre4Su2ekmKBQRlrtcIA/xbQC3zKC1HW+jUvgRtpuyR/cqdxM4po
+	 W4CYUvaWUCKokH4UKm+NZetSR9YjXpb+L5E9pnvY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Alexander Koskovich <akoskovich@pm.me>,
+	Luca Weiss <luca.weiss@fairphone.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 091/198] xsk: validate MTU against usable frame size on bind
+Subject: [PATCH 6.19 129/220] net: ipa: fix GENERIC_CMD register field masks for IPA v5.0+
 Date: Mon, 20 Apr 2026 17:41:10 +0200
-Message-ID: <20260420153938.883198072@linuxfoundation.org>
+Message-ID: <20260420153938.672679952@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
+References: <20260420153934.013228280@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,131 +65,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	URIBL_MULTI_FAIL(0.00)[msgid.link:server fail,linuxfoundation.org:server fail,intel.com:server fail,sea.lore.kernel.org:server fail];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-239650-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239467-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: EF5AA4321DA
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,pm.me:email]
+X-Rspamd-Queue-Id: 8878C42EAA4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+From: Alexander Koskovich <akoskovich@pm.me>
 
-[ Upstream commit 36ee60b569ba0dfb6f961333b90d19ab5b323fa9 ]
+[ Upstream commit 9709b56d908acc120fe8b4ae250b3c9d749ea832 ]
 
-AF_XDP bind currently accepts zero-copy pool configurations without
-verifying that the device MTU fits into the usable frame space provided
-by the UMEM chunk.
+Fix the field masks to match the hardware layout documented in
+downstream GSI (GSI_V3_0_EE_n_GSI_EE_GENERIC_CMD_*).
 
-This becomes a problem since we started to respect tailroom which is
-subtracted from chunk_size (among with headroom). 2k chunk size might
-not provide enough space for standard 1500 MTU, so let us catch such
-settings at bind time. Furthermore, validate whether underlying HW will
-be able to satisfy configured MTU wrt XSK's frame size multiplied by
-supported Rx buffer chain length (that is exposed via
-net_device::xdp_zc_max_segs).
+Notably this fixes a WARN I was seeing when I tried to send "stop"
+to the MPSS remoteproc while IPA was up.
 
-Fixes: 24ea50127ecf ("xsk: support mbuf on ZC RX")
-Reviewed-by: Björn Töpel <bjorn@kernel.org>
-Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Link: https://patch.msgid.link/20260402154958.562179-5-maciej.fijalkowski@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: faf0678ec8a0 ("net: ipa: add IPA v5.0 GSI register definitions")
+Signed-off-by: Alexander Koskovich <akoskovich@pm.me>
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260403-milos-ipa-v1-1-01e9e4e03d3e@fairphone.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/xdp/xsk_buff_pool.c | 28 +++++++++++++++++++++++++---
- 1 file changed, 25 insertions(+), 3 deletions(-)
+ drivers/net/ipa/reg/gsi_reg-v5.0.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/net/xdp/xsk_buff_pool.c b/net/xdp/xsk_buff_pool.c
-index 677c7d00f8c32..a129ce6f1c25f 100644
---- a/net/xdp/xsk_buff_pool.c
-+++ b/net/xdp/xsk_buff_pool.c
-@@ -10,6 +10,8 @@
- #include "xdp_umem.h"
- #include "xsk.h"
+diff --git a/drivers/net/ipa/reg/gsi_reg-v5.0.c b/drivers/net/ipa/reg/gsi_reg-v5.0.c
+index 36d1e65df71bb..3334d8e20ad28 100644
+--- a/drivers/net/ipa/reg/gsi_reg-v5.0.c
++++ b/drivers/net/ipa/reg/gsi_reg-v5.0.c
+@@ -156,9 +156,10 @@ REG_FIELDS(EV_CH_CMD, ev_ch_cmd, 0x00025010 + 0x12000 * GSI_EE_AP);
  
-+#define ETH_PAD_LEN (ETH_HLEN + 2 * VLAN_HLEN  + ETH_FCS_LEN)
-+
- void xp_add_xsk(struct xsk_buff_pool *pool, struct xdp_sock *xs)
- {
- 	unsigned long flags;
-@@ -165,8 +167,12 @@ static void xp_disable_drv_zc(struct xsk_buff_pool *pool)
- int xp_assign_dev(struct xsk_buff_pool *pool,
- 		  struct net_device *netdev, u16 queue_id, u16 flags)
- {
-+	u32 needed = netdev->mtu + ETH_PAD_LEN;
-+	u32 segs = netdev->xdp_zc_max_segs;
-+	bool mbuf = flags & XDP_USE_SG;
- 	bool force_zc, force_copy;
- 	struct netdev_bpf bpf;
-+	u32 frame_size;
- 	int err = 0;
+ static const u32 reg_generic_cmd_fmask[] = {
+ 	[GENERIC_OPCODE]				= GENMASK(4, 0),
+-	[GENERIC_CHID]					= GENMASK(9, 5),
+-	[GENERIC_EE]					= GENMASK(13, 10),
+-						/* Bits 14-31 reserved */
++	[GENERIC_CHID]					= GENMASK(12, 5),
++	[GENERIC_EE]					= GENMASK(16, 13),
++						/* Bits 17-23 reserved */
++	[GENERIC_PARAMS]				= GENMASK(31, 24),
+ };
  
- 	ASSERT_RTNL();
-@@ -186,7 +192,7 @@ int xp_assign_dev(struct xsk_buff_pool *pool,
- 	if (err)
- 		return err;
- 
--	if (flags & XDP_USE_SG)
-+	if (mbuf)
- 		pool->umem->flags |= XDP_UMEM_SG_FLAG;
- 
- 	if (flags & XDP_USE_NEED_WAKEUP)
-@@ -208,8 +214,24 @@ int xp_assign_dev(struct xsk_buff_pool *pool,
- 		goto err_unreg_pool;
- 	}
- 
--	if (netdev->xdp_zc_max_segs == 1 && (flags & XDP_USE_SG)) {
--		err = -EOPNOTSUPP;
-+	if (mbuf) {
-+		if (segs == 1) {
-+			err = -EOPNOTSUPP;
-+			goto err_unreg_pool;
-+		}
-+	} else {
-+		segs = 1;
-+	}
-+
-+	/* open-code xsk_pool_get_rx_frame_size() as pool->dev is not
-+	 * set yet at this point; we are before getting down to driver
-+	 */
-+	frame_size = __xsk_pool_get_rx_frame_size(pool) -
-+		     xsk_pool_get_tailroom(mbuf);
-+	frame_size = ALIGN_DOWN(frame_size, 128);
-+
-+	if (needed > frame_size * segs) {
-+		err = -EINVAL;
- 		goto err_unreg_pool;
- 	}
- 
+ REG_FIELDS(GENERIC_CMD, generic_cmd, 0x00025018 + 0x12000 * GSI_EE_AP);
 -- 
 2.53.0
 
