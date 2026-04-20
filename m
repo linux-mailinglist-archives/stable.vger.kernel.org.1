@@ -1,59 +1,64 @@
-Return-Path: <stable+bounces-239750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239900-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kAyCE2Na5mnGvAEAu9opvQ
-	(envelope-from <stable+bounces-239750-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:54:59 +0200
+	id wM+7McNR5mkDuwEAu9opvQ
+	(envelope-from <stable+bounces-239900-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:18:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D84C6430359
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:54:58 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61F1042F47E
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:18:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5069131FAF9F
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:05:22 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8D20E3015797
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:11:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB4B83358B0;
-	Mon, 20 Apr 2026 16:05:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59F67344D8C;
+	Mon, 20 Apr 2026 16:11:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vYrAghKV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ahcaBMI2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ED612DE6E3;
-	Mon, 20 Apr 2026 16:05:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D9EA344057;
+	Mon, 20 Apr 2026 16:11:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701121; cv=none; b=TBY1tq/nL5XOnxTVhSLHtz5JA0LBrtcdH+hBQquqQKGUtJhv3Bt3BTEMv32n8l/4SyfPE4NFIcSZ+QWqQLiU6kA6v/x9F1XzXjiysc6squXR/nZ0kiqWe21ewvwZ/VCzzs7UKeNxKIXZhCw6bVYVmFb7Ub0nX6H8KHp5dnEhdY8=
+	t=1776701501; cv=none; b=u3OLumB1fKN4YbjJM8gklHQwyj+gfPUQOmA11uy903o4DcPCyOk11W5XyXU/eFfKXO5Uc5xjaYYnGVokdh/sZ2TFJHEbFpz+0mX8Y6sVruWEsiCkT76m8TPF/+FahmBlLwGM3XdpbZ2p5+esNDYYy5qkesj0W3WQtMwsSiTiUO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701121; c=relaxed/simple;
-	bh=GN95tyEDF7vkS8zarjjr0ohPaaWSPspqYugi1F+oTHw=;
+	s=arc-20240116; t=1776701501; c=relaxed/simple;
+	bh=VWGiMmcmL5+tiLXsq6ZqN9D+3zPvhNP5ZJ3yMvbASqA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fh0ysa9Pt7wBavmuxbu5tXXtYLS8ueI1QjpJRBivr7ChMDtRBnE0QaYYAFU+T41KZLAL/0FRZT75OhX5kquDIjHfNYkcs/uSsdcJFAg6ht1MmLlvLOhtsTYjt3dT8m0u8E8q3btuvmuXah1itHc315Fg7IJiFQ2rJOdnJBDwL0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vYrAghKV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB9DEC19425;
-	Mon, 20 Apr 2026 16:05:20 +0000 (UTC)
+	 MIME-Version; b=nTjbvR53+x3R1+5snwhuG6taZTyYieao7BBH0dmcA/5td+pxvxVHuE04UHhly6TKlUrrDIqXxXFElQDJ5Y32HgTG7ObsXuTxAgepBukRBalD9THLtQyLXLBQ3OaFt109dFJgaRy0dgcJmd4nxN29BwyLInbzwse+CQG3d/nsiSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ahcaBMI2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A83B8C19425;
+	Mon, 20 Apr 2026 16:11:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701121;
-	bh=GN95tyEDF7vkS8zarjjr0ohPaaWSPspqYugi1F+oTHw=;
+	s=korg; t=1776701501;
+	bh=VWGiMmcmL5+tiLXsq6ZqN9D+3zPvhNP5ZJ3yMvbASqA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vYrAghKVraGeGr+KGg5q99O7ZwhhUZ+m716Ck+Aia5Cp/esJRfu4ZJuMxArJmfoXI
-	 NLZK8gS8Hws2FAope02NFANTqfKpMJ0MdkbTlzH1LsKd/uChzZu6fbjLLC2hofXdWx
-	 5y+JK0um2VPCTKt1hWaI9a+3hY7ZqIuYNU5P3PUk=
+	b=ahcaBMI2xKLnUpy5MW1+L2LvI2aG4NZ1FgIRIz4u0O7GcBlveusn485CK1vgXssLB
+	 N1lhoqOJ6JzaTbUGZ+QPzghWlyV3THyxwVQL8FYdDEfGt8dgaoVIg696WZbM94Xy1A
+	 FJZQQso99mO4ZehLQ7CMIlD8e0pB3xyJjWWX2FS0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mingzhe Zou <mingzhe.zou@easystack.cn>,
-	Coly Li <colyli@fnnas.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.18 190/198] bcache: fix cached_dev.sb_bio use-after-free and crash
-Date: Mon, 20 Apr 2026 17:42:49 +0200
-Message-ID: <20260420153942.459705931@linuxfoundation.org>
+	Sasha Levin <sashal@kernel.org>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Joe Perches <joe@perches.com>,
+	Andy Whitcroft <apw@canonical.com>,
+	Dwaipayan Ray <dwaipayanray1@gmail.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 138/162] checkpatch: add support for Assisted-by tag
+Date: Mon, 20 Apr 2026 17:42:50 +0200
+Message-ID: <20260420153932.045455554@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
+References: <20260420153927.006696811@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,103 +69,105 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+X-Spamd-Result: default: False [9.34 / 15.00];
+	URIBL_BLACK(7.50)[perches.com:email];
+	SUSPICIOUS_RECIPS(1.50)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,acm.org,perches.com,canonical.com,gmail.com,lwn.net,linux-foundation.org];
+	TAGGED_FROM(0.00)[bounces-239900-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-239750-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	GREYLIST(0.00)[pass,meta];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_SPAM(0.00)[0.961];
+	PRECEDENCE_BULK(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	R_SPF_ALLOW(0.00)[+ip4:172.232.135.74:c];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel.dk:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: D84C6430359
-X-Rspamd-Action: no action
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,lwn.net:email,checkpatch.pl:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,perches.com:email,canonical.com:email]
+X-Rspamd-Queue-Id: 61F1042F47E
+X-Rspamd-Action: add header
 X-Rspamd-Server: lfdr
+X-Spam: Yes
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mingzhe Zou <mingzhe.zou@easystack.cn>
+From: Sasha Levin <sashal@kernel.org>
 
-commit fec114a98b8735ee89c75216c45a78e28be0f128 upstream.
+commit d1db4118489fffd2b2f612140b7acbb477880839 upstream.
 
-In our production environment, we have received multiple crash reports
-regarding libceph, which have caught our attention:
+The Assisted-by tag was introduced in
+Documentation/process/coding-assistants.rst for attributing AI tool
+contributions to kernel patches.  However, checkpatch.pl did not recognize
+this tag, causing two issues:
 
-```
-[6888366.280350] Call Trace:
-[6888366.280452]  blk_update_request+0x14e/0x370
-[6888366.280561]  blk_mq_end_request+0x1a/0x130
-[6888366.280671]  rbd_img_handle_request+0x1a0/0x1b0 [rbd]
-[6888366.280792]  rbd_obj_handle_request+0x32/0x40 [rbd]
-[6888366.280903]  __complete_request+0x22/0x70 [libceph]
-[6888366.281032]  osd_dispatch+0x15e/0xb40 [libceph]
-[6888366.281164]  ? inet_recvmsg+0x5b/0xd0
-[6888366.281272]  ? ceph_tcp_recvmsg+0x6f/0xa0 [libceph]
-[6888366.281405]  ceph_con_process_message+0x79/0x140 [libceph]
-[6888366.281534]  ceph_con_v1_try_read+0x5d7/0xf30 [libceph]
-[6888366.281661]  ceph_con_workfn+0x329/0x680 [libceph]
-```
+  WARNING: Non-standard signature: Assisted-by:
+  ERROR: Unrecognized email address: 'AGENT_NAME:MODEL_VERSION'
 
-After analyzing the coredump file, we found that the address of
-dc->sb_bio has been freed. We know that cached_dev is only freed when it
-is stopped.
+Fix this by:
+1. Adding Assisted-by to the recognized $signature_tags list
+2. Skipping email validation for Assisted-by lines since they use the
+   AGENT_NAME:MODEL_VERSION format instead of an email address
+3. Warning when the Assisted-by value doesn't match the expected format
 
-Since sb_bio is a part of struct cached_dev, rather than an alloc every
-time.  If the device is stopped while writing to the superblock, the
-released address will be accessed at endio.
-
-This patch hopes to wait for sb_write to complete in cached_dev_free.
-
-It should be noted that we analyzed the cause of the problem, then tell
-all details to the QWEN and adopted the modifications it made.
-
-Signed-off-by: Mingzhe Zou <mingzhe.zou@easystack.cn>
-Fixes: cafe563591446 ("bcache: A block layer cache")
-Cc: stable@vger.kernel.org # 3.10+
-Signed-off-by: Coly Li <colyli@fnnas.com>
-Link: https://patch.msgid.link/20260322134102.480107-1-colyli@fnnas.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Link: https://lkml.kernel.org/r/20260311215818.518930-1-sashal@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Bart Van Assche <bvanassche@acm.org>
+Acked-by: Joe Perches <joe@perches.com>
+Cc: Andy Whitcroft <apw@canonical.com>
+Cc: Dwaipayan Ray <dwaipayanray1@gmail.com>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/bcache/super.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ scripts/checkpatch.pl |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/drivers/md/bcache/super.c
-+++ b/drivers/md/bcache/super.c
-@@ -1373,6 +1373,13 @@ static CLOSURE_CALLBACK(cached_dev_free)
+--- a/scripts/checkpatch.pl
++++ b/scripts/checkpatch.pl
+@@ -622,6 +622,7 @@ our $signature_tags = qr{(?xi:
+ 	Reviewed-by:|
+ 	Reported-by:|
+ 	Suggested-by:|
++	Assisted-by:|
+ 	To:|
+ 	Cc:
+ )};
+@@ -3070,6 +3071,15 @@ sub process {
+ 				}
+ 			}
  
- 	mutex_unlock(&bch_register_lock);
- 
-+	/*
-+	 * Wait for any pending sb_write to complete before free.
-+	 * The sb_bio is embedded in struct cached_dev, so we must
-+	 * ensure no I/O is in progress.
-+	 */
-+	closure_sync(&dc->sb_write);
++			# Assisted-by uses AGENT_NAME:MODEL_VERSION format, not email
++			if ($sign_off =~ /^Assisted-by:/i) {
++				if ($email !~ /^\S+:\S+/) {
++					WARN("BAD_SIGN_OFF",
++					     "Assisted-by expects 'AGENT_NAME:MODEL_VERSION [TOOL1] [TOOL2]' format\n" . $herecurr);
++				}
++				next;
++			}
 +
- 	if (dc->sb_disk)
- 		folio_put(virt_to_folio(dc->sb_disk));
- 
+ 			my ($email_name, $name_comment, $email_address, $comment) = parse_email($email);
+ 			my $suggested_email = format_email(($email_name, $name_comment, $email_address, $comment));
+ 			if ($suggested_email eq "") {
 
 
 
