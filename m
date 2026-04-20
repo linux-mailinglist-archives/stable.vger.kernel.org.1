@@ -1,65 +1,61 @@
-Return-Path: <stable+bounces-239279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239819-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WAV+OJ5h5mmavgEAu9opvQ
-	(envelope-from <stable+bounces-239279-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:25:50 +0200
+	id CP7iG55o5mnBvwEAu9opvQ
+	(envelope-from <stable+bounces-239819-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:55:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B36D4312CC
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:25:50 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBA1B43248A
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:55:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 08DB0366E1D7
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:44:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8DEED33FAFF0
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:08:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02BBC33CE86;
-	Mon, 20 Apr 2026 15:44:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 829D533B6EF;
+	Mon, 20 Apr 2026 16:08:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1yv9yCeh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MLSXDH4+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E21733B975;
-	Mon, 20 Apr 2026 15:44:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43ED92BD11;
+	Mon, 20 Apr 2026 16:08:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776699842; cv=none; b=SML2fiu8JpEfApDXqYDZohmK2yu8n5ABJQcSys+T42RwcFf2IqWYrFbyTP0kjHNKapOCfkZ99kJPDUIOIE2hFQMP2Dp1wqlgVG5IF/PmxIo3FzP3hP3QL3zhhnFA0utrT4eat/SGvPYgWEiRNK/fFnQy9RhisnD2E5+tGRFgsmo=
+	t=1776701297; cv=none; b=YydeG53ZeE9fgq89y3JjTal4neUuLCUr79dqXqXqhugq8CtwkNaYI5Uy8bMbG6O/UmxXjU/28wEE7mJQdVuMKoFdBedBHQvWkACqADuXSunn3++wM4dC2XKI/WJJTbQ19/dKO2ZwlOeyYal2xfaISYxkeXZJ9zeNM6AmJwCK40Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776699842; c=relaxed/simple;
-	bh=gV6SKNdvkTxLsozW1+BP4hqvbrO4/YpO6EMURB7yenk=;
+	s=arc-20240116; t=1776701297; c=relaxed/simple;
+	bh=FyfQukFLVaBnByb5doIgFxOUSWiISTJM6hgwnuqPQG8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kqnTnsiNeYV9pSgO0xpzYGioJlXKH1jjHXmhWo/znQ/q3eWBb6SX9ZhUNucBBJHHgA5uAaWfnINL020haFQGYl/tGF858/bLC4FgZOeArK8HrLQOuuMh8F5sEjp0I89/ETKq0qIGFpqNIMoBgJVHnHCTQNeOvCkoux9TW1WgZzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1yv9yCeh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE4D7C2BCB4;
-	Mon, 20 Apr 2026 15:44:01 +0000 (UTC)
+	 MIME-Version; b=ccxrPOcKtAtw2wbH1CCZ6noiGszLxo17peD70PfC9Zxl0Xp1uKPw9ckRmntfbJeIQEVzFZrxspxnDk+PQgE79rfHC7En2pop0Vg/EOTeDRv5e/T2qqhgiXbgFZI4932IOE9jU2keddzilpo1Ly7gvZxrhJ0dnn5yzuuqKgVraDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MLSXDH4+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9287BC19425;
+	Mon, 20 Apr 2026 16:08:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776699842;
-	bh=gV6SKNdvkTxLsozW1+BP4hqvbrO4/YpO6EMURB7yenk=;
+	s=korg; t=1776701296;
+	bh=FyfQukFLVaBnByb5doIgFxOUSWiISTJM6hgwnuqPQG8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1yv9yCehp2eqvc8S/MvHGc2tNA4MUfco5H8xqwc8qxohKLutxWQZZvgOb6q8NOpws
-	 Nmkv/MvloP7KW5mphgHJb7R65SEKRwm0NJxKr1Ga0LxnF6mIC1Ivo0qaydFxGZVrXB
-	 BBgdyVFdg/OoGk3tBEfRCwNJa/D6Nc9DBw/xVrLY=
+	b=MLSXDH4+T7+e/lzzZ5HvaoDVZLnP8vXPpwASRvhiDopj4vFTBlv/SZc7ELNing5zL
+	 ZnxGWePfzWq6A3C8tC15HzOFGJpXaE2xyukmxsxZi/rzKIKGRGBwXp2C0QAV0PR176
+	 EICN60l4omWqf8wHBEY36qXPokcm7Mogc3MeGgFQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Tom Talpey <tom@talpey.com>,
-	Bharath SM <bharathsm@microsoft.com>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	stable <stable@kernel.org>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 7.0 19/76] smb: client: fix OOB reads parsing symlink error response
-Date: Mon, 20 Apr 2026 17:41:30 +0200
-Message-ID: <20260420153911.522854085@linuxfoundation.org>
+	Xiaoqiang Xiong <xxiong@redhat.com>,
+	Michal Schmidt <mschmidt@redhat.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 059/162] ixgbevf: add missing negotiate_features op to Hyper-V ops table
+Date: Mon, 20 Apr 2026 17:41:31 +0200
+Message-ID: <20260420153929.175492189@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153910.810034134@linuxfoundation.org>
-References: <20260420153910.810034134@linuxfoundation.org>
+In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
+References: <20260420153927.006696811@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,150 +68,112 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-239279-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,microsoft.com,talpey.com,vger.kernel.org,lists.samba.org,kernel.org,manguebit.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239819-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[manguebit.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,samba.org:email,talpey.com:email]
-X-Rspamd-Queue-Id: 2B36D4312CC
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email]
+X-Rspamd-Queue-Id: BBA1B43248A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Michal Schmidt <mschmidt@redhat.com>
 
-commit 3df690bba28edec865cf7190be10708ad0ddd67e upstream.
+[ Upstream commit 4821d563cd7f251ae728be1a6d04af82a294a5b9 ]
 
-When a CREATE returns STATUS_STOPPED_ON_SYMLINK, smb2_check_message()
-returns success without any length validation, leaving the symlink
-parsers as the only defense against an untrusted server.
+Commit a7075f501bd3 ("ixgbevf: fix mailbox API compatibility by
+negotiating supported features") added the .negotiate_features callback
+to ixgbe_mac_operations and populated it in ixgbevf_mac_ops, but forgot
+to add it to ixgbevf_hv_mac_ops. This leaves the function pointer NULL
+on Hyper-V VMs.
 
-symlink_data() walks SMB 3.1.1 error contexts with the loop test "p <
-end", but reads p->ErrorId at offset 4 and p->ErrorDataLength at offset
-0.  When the server-controlled ErrorDataLength advances p to within 1-7
-bytes of end, the next iteration will read past it.  When the matching
-context is found, sym->SymLinkErrorTag is read at offset 4 from
-p->ErrorContextData with no check that the symlink header itself fits.
+During probe, ixgbevf_negotiate_api() calls ixgbevf_set_features(),
+which unconditionally dereferences hw->mac.ops.negotiate_features().
+On Hyper-V this results in a NULL pointer dereference:
 
-smb2_parse_symlink_response() then bounds-checks the substitute name
-using SMB2_SYMLINK_STRUCT_SIZE as the offset of PathBuffer from
-iov_base.  That value is computed as sizeof(smb2_err_rsp) +
-sizeof(smb2_symlink_err_rsp), which is correct only when
-ErrorContextCount == 0.
+  BUG: kernel NULL pointer dereference, address: 0000000000000000
+  [...]
+  Hardware name: Microsoft Corporation Virtual Machine/Virtual Machine [...]
+  Workqueue: events work_for_cpu_fn
+  RIP: 0010:0x0
+  [...]
+  Call Trace:
+   ixgbevf_negotiate_api+0x66/0x160 [ixgbevf]
+   ixgbevf_sw_init+0xe4/0x1f0 [ixgbevf]
+   ixgbevf_probe+0x20f/0x4a0 [ixgbevf]
+   local_pci_probe+0x50/0xa0
+   work_for_cpu_fn+0x1a/0x30
+   [...]
 
-With at least one error context the symlink data sits 8 bytes deeper,
-and each skipped non-matching context shifts it further by 8 +
-ALIGN(ErrorDataLength, 8).  The check is too short, allowing the
-substitute name read to run past iov_len.  The out-of-bound heap bytes
-are UTF-16-decoded into the symlink target and returned to userspace via
-readlink(2).
+Add ixgbevf_hv_negotiate_features_vf() that returns -EOPNOTSUPP and
+wire it into ixgbevf_hv_mac_ops. The caller already handles -EOPNOTSUPP
+gracefully.
 
-Fix this all up by making the loops test require the full context header
-to fit, rejecting sym if its header runs past end, and bound the
-substitute name against the actual position of sym->PathBuffer rather
-than a fixed offset.
-
-Because sub_offs and sub_len are 16bits, the pointer math will not
-overflow here with the new greater-than.
-
-Cc: Ronnie Sahlberg <ronniesahlberg@gmail.com>
-Cc: Shyam Prasad N <sprasad@microsoft.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: Bharath SM <bharathsm@microsoft.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Cc: stable <stable@kernel.org>
-Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Assisted-by: gregkh_clanker_t1000
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a7075f501bd3 ("ixgbevf: fix mailbox API compatibility by negotiating supported features")
+Reported-by: Xiaoqiang Xiong <xxiong@redhat.com>
+Closes: https://issues.redhat.com/browse/RHEL-155455
+Assisted-by: Claude:claude-4.6-opus-high Cursor
+Tested-by: Xiaoqiang Xiong <xxiong@redhat.com>
+Signed-off-by: Michal Schmidt <mschmidt@redhat.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smb2file.c |   20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/intel/ixgbevf/vf.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/fs/smb/client/smb2file.c
-+++ b/fs/smb/client/smb2file.c
-@@ -27,10 +27,11 @@ static struct smb2_symlink_err_rsp *syml
- {
- 	struct smb2_err_rsp *err = iov->iov_base;
- 	struct smb2_symlink_err_rsp *sym = ERR_PTR(-EINVAL);
-+	u8 *end = (u8 *)err + iov->iov_len;
- 	u32 len;
+diff --git a/drivers/net/ethernet/intel/ixgbevf/vf.c b/drivers/net/ethernet/intel/ixgbevf/vf.c
+index 708d5dd921acc..70dfda13b7885 100644
+--- a/drivers/net/ethernet/intel/ixgbevf/vf.c
++++ b/drivers/net/ethernet/intel/ixgbevf/vf.c
+@@ -709,6 +709,12 @@ static int ixgbevf_negotiate_features_vf(struct ixgbe_hw *hw, u32 *pf_features)
+ 	return err;
+ }
  
- 	if (err->ErrorContextCount) {
--		struct smb2_error_context_rsp *p, *end;
-+		struct smb2_error_context_rsp *p;
- 
- 		len = (u32)err->ErrorContextCount * (offsetof(struct smb2_error_context_rsp,
- 							      ErrorContextData) +
-@@ -39,8 +40,7 @@ static struct smb2_symlink_err_rsp *syml
- 			return ERR_PTR(-EINVAL);
- 
- 		p = (struct smb2_error_context_rsp *)err->ErrorData;
--		end = (struct smb2_error_context_rsp *)((u8 *)err + iov->iov_len);
--		do {
-+		while ((u8 *)p + sizeof(*p) <= end) {
- 			if (le32_to_cpu(p->ErrorId) == SMB2_ERROR_ID_DEFAULT) {
- 				sym = (struct smb2_symlink_err_rsp *)p->ErrorContextData;
- 				break;
-@@ -50,14 +50,16 @@ static struct smb2_symlink_err_rsp *syml
- 
- 			len = ALIGN(le32_to_cpu(p->ErrorDataLength), 8);
- 			p = (struct smb2_error_context_rsp *)(p->ErrorContextData + len);
--		} while (p < end);
-+		}
- 	} else if (le32_to_cpu(err->ByteCount) >= sizeof(*sym) &&
- 		   iov->iov_len >= SMB2_SYMLINK_STRUCT_SIZE) {
- 		sym = (struct smb2_symlink_err_rsp *)err->ErrorData;
- 	}
- 
--	if (!IS_ERR(sym) && (le32_to_cpu(sym->SymLinkErrorTag) != SYMLINK_ERROR_TAG ||
--			     le32_to_cpu(sym->ReparseTag) != IO_REPARSE_TAG_SYMLINK))
-+	if (!IS_ERR(sym) &&
-+	    ((u8 *)sym + sizeof(*sym) > end ||
-+	     le32_to_cpu(sym->SymLinkErrorTag) != SYMLINK_ERROR_TAG ||
-+	     le32_to_cpu(sym->ReparseTag) != IO_REPARSE_TAG_SYMLINK))
- 		sym = ERR_PTR(-EINVAL);
- 
- 	return sym;
-@@ -128,8 +130,10 @@ int smb2_parse_symlink_response(struct c
- 	print_len = le16_to_cpu(sym->PrintNameLength);
- 	print_offs = le16_to_cpu(sym->PrintNameOffset);
- 
--	if (iov->iov_len < SMB2_SYMLINK_STRUCT_SIZE + sub_offs + sub_len ||
--	    iov->iov_len < SMB2_SYMLINK_STRUCT_SIZE + print_offs + print_len)
-+	if ((char *)sym->PathBuffer + sub_offs + sub_len >
-+		(char *)iov->iov_base + iov->iov_len ||
-+	    (char *)sym->PathBuffer + print_offs + print_len >
-+		(char *)iov->iov_base + iov->iov_len)
- 		return -EINVAL;
- 
- 	return smb2_parse_native_symlink(path,
++static int ixgbevf_hv_negotiate_features_vf(struct ixgbe_hw *hw,
++					    u32 *pf_features)
++{
++	return -EOPNOTSUPP;
++}
++
+ /**
+  *  ixgbevf_set_vfta_vf - Set/Unset VLAN filter table address
+  *  @hw: pointer to the HW structure
+@@ -1142,6 +1148,7 @@ static const struct ixgbe_mac_operations ixgbevf_hv_mac_ops = {
+ 	.setup_link		= ixgbevf_setup_mac_link_vf,
+ 	.check_link		= ixgbevf_hv_check_mac_link_vf,
+ 	.negotiate_api_version	= ixgbevf_hv_negotiate_api_version_vf,
++	.negotiate_features	= ixgbevf_hv_negotiate_features_vf,
+ 	.set_rar		= ixgbevf_hv_set_rar_vf,
+ 	.update_mc_addr_list	= ixgbevf_hv_update_mc_addr_list_vf,
+ 	.update_xcast_mode	= ixgbevf_hv_update_xcast_mode,
+-- 
+2.53.0
+
 
 
 
