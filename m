@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-239567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239411-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uL7RL+Jf5mkxvgEAu9opvQ
-	(envelope-from <stable+bounces-239567-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:18:26 +0200
+	id EFnMKShk5mkuvwEAu9opvQ
+	(envelope-from <stable+bounces-239411-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:36:40 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42EB7430F65
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:18:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32E8643196D
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:36:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4825E310BAF1
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:56:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B8406315D3BF
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:49:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E4A833DEDF;
-	Mon, 20 Apr 2026 15:56:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 581A0332919;
+	Mon, 20 Apr 2026 15:49:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="chHOFxgS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oF3hVwvX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C13333C192;
-	Mon, 20 Apr 2026 15:56:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C62C2D77E5;
+	Mon, 20 Apr 2026 15:49:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700584; cv=none; b=I3g/88hniKKMGBYrPb7M0HJxKNX+Z+CuvF10dOC3gcXL2NkEHztKfiNPnJ/zwL7bPxogSGH4D9HynWw1UG/VbLHKCsgoCyB1FfnbuSo7El5IseU9wfs0acC+n6F7O4jWYKG9lne+4NbVZj5JKhjJWrqwRb1M/aayLxSi+izmPCs=
+	t=1776700178; cv=none; b=ncSng2SGVV8D8Ib3+/Wg1VUKK9MAiBCKyDZh/rizqIUHdPY6CpHb7lQqqxXdlqs6PTuK3gubSaPeeNyAxEYeSZ+iZ7sV9+sLc4iTd6vH8DZBMH4VYAhIY/T01B7sJ12ssBgY7rwg496X9c9yXUTd90r6v/gH8Syvh52oavXi1To=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700584; c=relaxed/simple;
-	bh=jf3tv/9wh+GoOdwv3Lm8MFqBGHIFlWR4aWU1pG4PEao=;
+	s=arc-20240116; t=1776700178; c=relaxed/simple;
+	bh=5s7p3QCpY5IVC29zOKCiaFOnxXuVKwAtteZ1mGaT7gU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LMPtyMs2s4hqPNJdOmpnDGsGGbp14qmD9XtRm4lIk+RIPQKlNFpq2+6/ZXtM/LOnm0GTx4bahOiCI74B/TWaAvKaeAkBEEAdNHYeJaxMb9N7Xtj79WtCTEIL09KaxStqPRNnE87oRtUkF5tgrbLGg/Qp5WCxQKDCihpncNuZQ5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=chHOFxgS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6254C2BCB6;
-	Mon, 20 Apr 2026 15:56:23 +0000 (UTC)
+	 MIME-Version; b=Y2Hrk3T50bxSs/5yt61xWazKU487H2GhDO6rkamL4/2HvxJF4oJ7kvvM32e9BXH/+0BFxAHTfnnjnQgfwoVpOMMn9Pnj4h3/Uik6EQq+0s6YuBth9ySCfgPvkeLuBZlx/rRiTd6CfUUxCZ6DmOciNhrrcTfwAUMkjQ3DjCjG5TE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oF3hVwvX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7D49C2BCB6;
+	Mon, 20 Apr 2026 15:49:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700584;
-	bh=jf3tv/9wh+GoOdwv3Lm8MFqBGHIFlWR4aWU1pG4PEao=;
+	s=korg; t=1776700178;
+	bh=5s7p3QCpY5IVC29zOKCiaFOnxXuVKwAtteZ1mGaT7gU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=chHOFxgS0UlYkwTEE1OjX6G/3wGrU85ZHZOpwBwi/5nC8EtAUA9IuE7PPzsLvFAvH
-	 MadzXo7KdYggATaE91es9lUWhDIgNPvXY8o4/WNLf3Y6+wA5sZVr408RJZeKrK7bMD
-	 WNC8L7FSonvcy0wVkFQ6FpgGtt3RlHDbEXLsUBi0=
+	b=oF3hVwvXjvYJ+HYa0g8L5ZjX0UOMlYV3iMUGLeC45TwRl5KFNZ1Wp3wQ3d4h7y80Q
+	 ZTfBy4XNJRHSU/X/KBnCj+09Zwxi4IeYYo7EIsO5bWUqE7JpOvxi502gP1JEz7Mpwn
+	 hc6JJYBzJ3HdtYzhC51NDVoiXUj9zy+OFVdALITM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Jiang <dave.jiang@intel.com>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	leo vriska <leo@60228.dev>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 001/198] dmaengine: idxd: Fix lockdep warnings when calling idxd_device_config()
+Subject: [PATCH 6.19 039/220] HID: quirks: add HID_QUIRK_ALWAYS_POLL for 8BitDo Pro 3
 Date: Mon, 20 Apr 2026 17:39:40 +0200
-Message-ID: <20260420153935.663364533@linuxfoundation.org>
+Message-ID: <20260420153935.442962247@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
+References: <20260420153934.013228280@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,115 +73,76 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239567-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-239411-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 42EB7430F65
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[60228.dev:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 32E8643196D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+From: leo vriska <leo@60228.dev>
 
-[ Upstream commit caf91cdf2de8b7134749d32cd4ae5520b108abb7 ]
+[ Upstream commit 532743944324a873bbaf8620fcabcd0e69e30c36 ]
 
-Move the check for IDXD_FLAG_CONFIGURABLE and the locking to "inside"
-idxd_device_config(), as this is common to all callers, and the one
-that wasn't holding the lock was an error (that was causing the
-lockdep warning).
+According to a mailing list report [1], this controller's predecessor
+has the same issue. However, it uses the xpad driver instead of HID, so
+this quirk wouldn't apply.
 
-Suggested-by: Dave Jiang <dave.jiang@intel.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Link: https://patch.msgid.link/20260121-idxd-fix-flr-on-kernel-queues-v3-v3-1-7ed70658a9d1@intel.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+[1]: https://lore.kernel.org/linux-input/unufo3$det$1@ciao.gmane.io/
+
+Signed-off-by: leo vriska <leo@60228.dev>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/idxd/device.c | 17 +++++++----------
- drivers/dma/idxd/init.c   | 10 ++++------
- 2 files changed, 11 insertions(+), 16 deletions(-)
+ drivers/hid/hid-ids.h    | 3 +++
+ drivers/hid/hid-quirks.c | 1 +
+ 2 files changed, 4 insertions(+)
 
-diff --git a/drivers/dma/idxd/device.c b/drivers/dma/idxd/device.c
-index 646d7f767afa3..746d9edbba164 100644
---- a/drivers/dma/idxd/device.c
-+++ b/drivers/dma/idxd/device.c
-@@ -1106,7 +1106,11 @@ int idxd_device_config(struct idxd_device *idxd)
- {
- 	int rc;
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index 7fd67745ee010..666ce30c83b42 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -22,6 +22,9 @@
+ #define USB_DEVICE_ID_3M2256		0x0502
+ #define USB_DEVICE_ID_3M3266		0x0506
  
--	lockdep_assert_held(&idxd->dev_lock);
-+	guard(spinlock)(&idxd->dev_lock);
++#define USB_VENDOR_ID_8BITDO		0x2dc8
++#define USB_DEVICE_ID_8BITDO_PRO_3	0x6009
 +
-+	if (!test_bit(IDXD_FLAG_CONFIGURABLE, &idxd->flags))
-+		return 0;
-+
- 	rc = idxd_wqs_setup(idxd);
- 	if (rc < 0)
- 		return rc;
-@@ -1433,11 +1437,7 @@ int idxd_drv_enable_wq(struct idxd_wq *wq)
- 		}
- 	}
+ #define USB_VENDOR_ID_A4TECH		0x09da
+ #define USB_DEVICE_ID_A4TECH_WCP32PU	0x0006
+ #define USB_DEVICE_ID_A4TECH_X5_005D	0x000a
+diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
+index 3217e436c052c..f6be3ffee0232 100644
+--- a/drivers/hid/hid-quirks.c
++++ b/drivers/hid/hid-quirks.c
+@@ -25,6 +25,7 @@
+  */
  
--	rc = 0;
--	spin_lock(&idxd->dev_lock);
--	if (test_bit(IDXD_FLAG_CONFIGURABLE, &idxd->flags))
--		rc = idxd_device_config(idxd);
--	spin_unlock(&idxd->dev_lock);
-+	rc = idxd_device_config(idxd);
- 	if (rc < 0) {
- 		dev_dbg(dev, "Writing wq %d config failed: %d\n", wq->id, rc);
- 		goto err;
-@@ -1532,10 +1532,7 @@ int idxd_device_drv_probe(struct idxd_dev *idxd_dev)
- 	}
- 
- 	/* Device configuration */
--	spin_lock(&idxd->dev_lock);
--	if (test_bit(IDXD_FLAG_CONFIGURABLE, &idxd->flags))
--		rc = idxd_device_config(idxd);
--	spin_unlock(&idxd->dev_lock);
-+	rc = idxd_device_config(idxd);
- 	if (rc < 0)
- 		return -ENXIO;
- 
-diff --git a/drivers/dma/idxd/init.c b/drivers/dma/idxd/init.c
-index f2b37c63a964c..afba88f9c3e43 100644
---- a/drivers/dma/idxd/init.c
-+++ b/drivers/dma/idxd/init.c
-@@ -1094,12 +1094,10 @@ static void idxd_reset_done(struct pci_dev *pdev)
- 	idxd_device_config_restore(idxd, idxd->idxd_saved);
- 
- 	/* Re-configure IDXD device if allowed. */
--	if (test_bit(IDXD_FLAG_CONFIGURABLE, &idxd->flags)) {
--		rc = idxd_device_config(idxd);
--		if (rc < 0) {
--			dev_err(dev, "HALT: %s config fails\n", idxd_name);
--			goto out;
--		}
-+	rc = idxd_device_config(idxd);
-+	if (rc < 0) {
-+		dev_err(dev, "HALT: %s config fails\n", idxd_name);
-+		goto out;
- 	}
- 
- 	/* Bind IDXD device to driver. */
+ static const struct hid_device_id hid_quirks[] = {
++	{ HID_USB_DEVICE(USB_VENDOR_ID_8BITDO, USB_DEVICE_ID_8BITDO_PRO_3), HID_QUIRK_ALWAYS_POLL },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_AASHIMA, USB_DEVICE_ID_AASHIMA_GAMEPAD), HID_QUIRK_BADPAD },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_AASHIMA, USB_DEVICE_ID_AASHIMA_PREDATOR), HID_QUIRK_BADPAD },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ADATA_XPG, USB_VENDOR_ID_ADATA_XPG_WL_GAMING_MOUSE), HID_QUIRK_ALWAYS_POLL },
 -- 
 2.53.0
 
