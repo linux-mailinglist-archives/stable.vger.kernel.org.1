@@ -1,65 +1,65 @@
-Return-Path: <stable+bounces-239187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239188-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2BqKCixQ5mkDuwEAu9opvQ
-	(envelope-from <stable+bounces-239187-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:11:24 +0200
+	id +KoZG6FC5ml/twEAu9opvQ
+	(envelope-from <stable+bounces-239188-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 17:13:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A9B842F1F7
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:11:23 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6E1642DED4
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 17:13:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7E472304C38D
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 14:33:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F24DC33AE967
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 14:33:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 763C54BC02C;
-	Mon, 20 Apr 2026 13:32:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 525DC4BCAAF;
+	Mon, 20 Apr 2026 13:32:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jhCQE5DU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SH9Qmr9g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3111B4BC009;
-	Mon, 20 Apr 2026 13:32:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12E3C4BC023;
+	Mon, 20 Apr 2026 13:32:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776691973; cv=none; b=nZPYUsys5NpD6Ybdcm6Fe6R6fEKCmvLuwRGyEg8FdyfxsYNFSSp242tHEqb2gJAFY948aMJvLYXcMXyFDWwd5FYbcTkUcwHQjFnE+46OaAUX4YurV2OQ/UNvbRIbnW7IaJ7IpRIox/nd/2l7XmnYxkVPD+hzpJpYKmmqctewvoE=
+	t=1776691975; cv=none; b=HDdOmSfZ1oqSaO2gInL+bnglqdgCbK4/eTgO/tGPKt2xgXOFDk1tvtP0gX6w3y09xmYnLajGbcwA65nIHvNMwq8hvwQ7yr/iwfOsgdO5yQfWfOtlh3xOB3ROAP/nSOsNgksN2Ty2zLPeCCQQVKXmKlh813US2jjbj9e8kAKTHV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776691973; c=relaxed/simple;
-	bh=ygLoYx8ZSLC+bb1Qij8yqEMz1QBgFeofoq+0ubva8y8=;
+	s=arc-20240116; t=1776691975; c=relaxed/simple;
+	bh=QZGRzo0jnTbhPPd+/ZY0zfEDwZtH05XVa3owuElNTLo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A4NLoBfMPcKA3Oh4TIBPFSswBdEFb64W0EBHtxrosUorHx5TSFnOkD8PPhofTVNHWNuW4gBWwH5MJbiGuEcOj0ikj2XHO2k7b/hi+zMAQpHbFIgkYP1fH5XDkNVf7RskXS5aLZojVoBp6Lq8SIwMcDl6avEkJXARN6zYk8bxXSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jhCQE5DU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2347C2BCB6;
-	Mon, 20 Apr 2026 13:32:51 +0000 (UTC)
+	 MIME-Version; b=IgJRYYlvCwqnxZ0RFjL4rURouQvIT3dGpdEoUGtvTnsV/5MRig1Ga2s47yjrEvVe/IRc3MnMYg+E1CswnNemgBDXTTXpGd8bsXffHPjkKNGxgbT42CHR5jr6zoyePJY0tH3lmzxOnvVoLB43ys8F72/W8Q6NyO23+frUai2ue2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SH9Qmr9g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78A9EC19425;
+	Mon, 20 Apr 2026 13:32:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776691973;
-	bh=ygLoYx8ZSLC+bb1Qij8yqEMz1QBgFeofoq+0ubva8y8=;
+	s=k20201202; t=1776691974;
+	bh=QZGRzo0jnTbhPPd+/ZY0zfEDwZtH05XVa3owuElNTLo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jhCQE5DUUdj1SeqHGNC472t5KiFU6bxNwWFdFOcCyG6QmmU5U6H4KG2FNLYcECodP
-	 EVfdgws/A7p2Qb2W96dhh0ldiXqgXjaAHvR7H9tSQkm56Jtz6ud/pXGqnmZ7IWLwEZ
-	 S7gmaAO1TSuuDcDHOV3WZnAihk2tBBqA8LOHXN/Zh8W1+v7P/GQmAu+HRPSHoTrvru
-	 ijREK+UGcf6cNiXsO140x7sGJnkERhVFGLwsOy9PO1CdPBpZYQPBKTmJN3Yfe6ndo6
-	 LJehrCq1GaE+02QZrL5HKR70Ynityrlq52ZWDYt0tRgkElnic7LlFKPYXk176jyf8X
-	 g7YZ8EtNqzP1g==
+	b=SH9Qmr9gX7S3WQF2WHHdOvBPiYiBg+ZJ9dEM+SMKCeGxleKCM2rbMsSPv0/VBnDbh
+	 k4YnBNd0ON8wxDjxbZJBWLmpuUQnSpRJV6iAgG/R/AsPXNkMZ5IJ8iGo5i7OWroVkA
+	 kj1aATZumJtZnbX4ncAFa2blyAy5+686O8pRl7Qe2Q3822DSgEuG1OlPr3hU1I02wp
+	 nnsTJxCxw3IFVA8n7jnZqhgLBTrRl/VNZWA+P2xaJtsT8EpC+6JHHOVro+BMQQwWeV
+	 WjZJ7EJ0Vu2iLs2jrFDqlhOzQnsnx/UVjQ5zgqwLGwqPhLNvOTPiXeWRwjPpqwA3CT
+	 wRwbknLTAJNig==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+Cc: Justin Iurman <justin.iurman@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	linusw@kernel.org,
-	brgl@kernel.org,
-	thierry.reding@kernel.org,
-	jonathanh@nvidia.com,
-	linux-gpio@vger.kernel.org,
-	linux-tegra@vger.kernel.org,
+	davem@davemloft.net,
+	dsahern@kernel.org,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	idosch@nvidia.com,
+	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18] gpio: tegra: fix irq_release_resources calling enable instead of disable
-Date: Mon, 20 Apr 2026 09:21:33 -0400
-Message-ID: <20260420132314.1023554-299-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.18] net: ioam6: fix OOB and missing lock
+Date: Mon, 20 Apr 2026 09:21:34 -0400
+Message-ID: <20260420132314.1023554-300-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260420132314.1023554-1-sashal@kernel.org>
 References: <20260420132314.1023554-1-sashal@kernel.org>
@@ -73,24 +73,26 @@ X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.18.23
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239187-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org,davemloft.net,google.com,redhat.com,nvidia.com,vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-239188-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -98,26 +100,42 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,oracle.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: 2A9B842F1F7
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: D6E1642DED4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+From: Justin Iurman <justin.iurman@gmail.com>
 
-[ Upstream commit 1561d96f5f55c1bca9ff047ace5813f4f244eea6 ]
+[ Upstream commit b30b1675aa2bcf0491fd3830b051df4e08a7c8ca ]
 
-tegra_gpio_irq_release_resources() erroneously calls tegra_gpio_enable()
-instead of tegra_gpio_disable(). When IRQ resources are released, the
-GPIO configuration bit (CNF) should be cleared to deconfigure the pin as
-a GPIO. Leaving it enabled wastes power and can cause unexpected behavior
-if the pin is later reused for an alternate function via pinctrl.
+When trace->type.bit6 is set:
 
-Fixes: 66fecef5bde0 ("gpio: tegra: Convert to gpio_irq_chip")
-Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
-Link: https://patch.msgid.link/20260407210247.1737938-1-samasth.norway.ananda@oracle.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+    if (trace->type.bit6) {
+        ...
+        queue = skb_get_tx_queue(dev, skb);
+        qdisc = rcu_dereference(queue->qdisc);
+
+This code can lead to an out-of-bounds access of the dev->_tx[] array
+when is_input is true. In such a case, the packet is on the RX path and
+skb->queue_mapping contains the RX queue index of the ingress device. If
+the ingress device has more RX queues than the egress device (dev) has
+TX queues, skb_get_queue_mapping(skb) will exceed dev->num_tx_queues.
+Add a check to avoid this situation since skb_get_tx_queue() does not
+clamp the index. This issue has also revealed that per queue visibility
+cannot be accurate and will be replaced later as a new feature.
+
+While at it, add missing lock around qdisc_qstats_qlen_backlog(). The
+function __ioam6_fill_trace_data() is called from both softirq and
+process contexts, hence the use of spin_lock_bh() here.
+
+Fixes: b63c5478e9cb ("ipv6: ioam: Support for Queue depth data field")
+Reported-by: Jakub Kicinski <kuba@kernel.org>
+Closes: https://lore.kernel.org/netdev/20260403214418.2233266-2-kuba@kernel.org/
+Signed-off-by: Justin Iurman <justin.iurman@gmail.com>
+Link: https://patch.msgid.link/20260404134137.24553-1-justin.iurman@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
@@ -125,22 +143,31 @@ LLM Generated explanations, may be completely bogus:
 
 Error: Failed to generate final synthesis
 
- drivers/gpio/gpio-tegra.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv6/ioam6.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpio-tegra.c b/drivers/gpio/gpio-tegra.c
-index 15a5762a82c25..b14052fe64ac6 100644
---- a/drivers/gpio/gpio-tegra.c
-+++ b/drivers/gpio/gpio-tegra.c
-@@ -595,7 +595,7 @@ static void tegra_gpio_irq_release_resources(struct irq_data *d)
- 	struct tegra_gpio_info *tgi = gpiochip_get_data(chip);
+diff --git a/net/ipv6/ioam6.c b/net/ipv6/ioam6.c
+index 12350e1e18bde..b91de51ffa9ea 100644
+--- a/net/ipv6/ioam6.c
++++ b/net/ipv6/ioam6.c
+@@ -803,12 +803,16 @@ static void __ioam6_fill_trace_data(struct sk_buff *skb,
+ 		struct Qdisc *qdisc;
+ 		__u32 qlen, backlog;
  
- 	gpiochip_relres_irq(chip, d->hwirq);
--	tegra_gpio_enable(tgi, d->hwirq);
-+	tegra_gpio_disable(tgi, d->hwirq);
- }
+-		if (dev->flags & IFF_LOOPBACK) {
++		if (dev->flags & IFF_LOOPBACK ||
++		    skb_get_queue_mapping(skb) >= dev->num_tx_queues) {
+ 			*(__be32 *)data = cpu_to_be32(IOAM6_U32_UNAVAILABLE);
+ 		} else {
+ 			queue = skb_get_tx_queue(dev, skb);
+ 			qdisc = rcu_dereference(queue->qdisc);
++
++			spin_lock_bh(qdisc_lock(qdisc));
+ 			qdisc_qstats_qlen_backlog(qdisc, &qlen, &backlog);
++			spin_unlock_bh(qdisc_lock(qdisc));
  
- static void tegra_gpio_irq_print_chip(struct irq_data *d, struct seq_file *s)
+ 			*(__be32 *)data = cpu_to_be32(backlog);
+ 		}
 -- 
 2.53.0
 
