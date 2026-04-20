@@ -1,67 +1,63 @@
-Return-Path: <stable+bounces-238787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238788-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MIHBHoAn5mm6sgEAu9opvQ
-	(envelope-from <stable+bounces-238787-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:17:52 +0200
+	id gim4BWEp5mkDswEAu9opvQ
+	(envelope-from <stable+bounces-238788-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:25:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 170F542B823
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:17:51 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5720D42BB05
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:25:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5AECC3028825
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 13:16:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3F5C33065A79
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 13:16:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24F893A4534;
-	Mon, 20 Apr 2026 13:15:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 188113A4F44;
+	Mon, 20 Apr 2026 13:15:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="byzi2PZd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BPNVlaTW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D822347DD;
-	Mon, 20 Apr 2026 13:15:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EDE53A451F;
+	Mon, 20 Apr 2026 13:15:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776690954; cv=none; b=iw1NfqGnpAVuRykFCPsjZlyVR6FyTkx302g3gFE8yWr/L0Oc8titeNjd3iESd0uIZqrZvO9BtscGtS3tYhL3S49S2szHvdhjnTIsdCbsUgk9QbRIVKrfQRnfDSzcqA2Y0HDtXEMQi3FgkFeq9T58d3jvnNwqtuuNVqIAE9GmJwE=
+	t=1776690955; cv=none; b=YvXb7vehq+Z5eG3sVJupP+nnCXpU5vccHPPgdIh9joUQLhQ0MaNH/h8Pt8AWzOMF6Iu66f8CReyXiafxQ9ZHclkD1o9FlN1BeWAddWZtzm4fn9VICharr7WmKkjf8VTm61qNbDIlds+6EBHs+gUnzqSuTLuaQG1qvrVRhUPS+po=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776690954; c=relaxed/simple;
-	bh=7xLuy8m1QdjQN7MYewGZFhOB6f0WEI4pV+mMqwEDrgs=;
+	s=arc-20240116; t=1776690955; c=relaxed/simple;
+	bh=rin35+9vT4DY1bInuQye8vN8xXn//w1ChbUG8r247Uo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rOatwZRc3OzjhElQZsSiBo0o1A7XzcO1v1b+uop6U9wNo02sqilSCXlvOneOoi7cjs5P7kvPVgFqlbTh8c1emYm3gkieQVHMa5iPm0mNFCq+tAItmNOqlpmNnfTOoVK0kdZgJfEY/Kiscs+d8xZ3IPqTGcDwu7C9dW3POCjsLLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=byzi2PZd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E6D0C2BCB4;
-	Mon, 20 Apr 2026 13:15:52 +0000 (UTC)
+	 MIME-Version; b=bWU2PagT7Gg8yDyWRHo6H2eAS+meHZTQ8QNPmC0rdzF4pBH9DVTOVxxr/17SFQmGszlD90GHs0g0IEiV4zlzH4959GJbNA6cbgwHq0LOkn8T2rKPqIsalmtnwKroIbAPqvBGHkl/d9CJRmtg+kvrJKwEbnt5i/Jq2L4lvgtbIVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BPNVlaTW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52DFBC2BCB8;
+	Mon, 20 Apr 2026 13:15:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776690954;
-	bh=7xLuy8m1QdjQN7MYewGZFhOB6f0WEI4pV+mMqwEDrgs=;
+	s=k20201202; t=1776690955;
+	bh=rin35+9vT4DY1bInuQye8vN8xXn//w1ChbUG8r247Uo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=byzi2PZdcB2pTmxTZy8/PcVrzGhAmEbPlWpNQQGZRf3MazXGLheHg5P6xHPXS1Pjr
-	 Mb9eX14grwOPBfg5/IxfWpW++AqqBqzyOim5AKQtNKxQ9MYYWixqPxCi9m2hHZZxFT
-	 WTasKbbtvqvpHHWhXWQ53YIB83FM5qaZcxccRl2XMFAeADbUaM/hTVHj2UzG7Zl0mt
-	 2iqSQURTwGlsjoLU/Th8Jpbez/GCFxxvy3OvxeST4uhjIWWcQRYmQFiufp3gMiduL1
-	 CucR0wyugMIgvjg971Y3WuNJddB5EID0w3kh8yLjPvivhGhQgKatd5mWDkPF1Z7O2v
-	 U8qILom6OExlQ==
+	b=BPNVlaTWsFZ/jwjEvM67TuhUTqIEzAJDLUsUkyRoQmk2Uv2hT1ZYdimLlGSp3Wj2n
+	 /vShBNrXjn/neUcR0poTg3m4D64ISD+MkekpmKVYS1EV6oy2hbuTUci9ZRfqE6Mwtz
+	 8HDa2dRGUHicloTIleKMDh/9+vMNWbpsmQrcKWN0F7tadj02xITau0rAlqAUWUpDsn
+	 qYTWrcMLwlqifM8cbuA2oqrd7HtdKN+uRq5BM87N/CxTgNo9+SEvtCXFY6JszeVp3x
+	 8i86mQ3sxCyCwrxn3WCMvJn31YXiU/8pLmn1myx38ON4tMPKFLHvqegOA9jiu9MOe3
+	 cNOb8YojF9nJg==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Markus Niebel <Markus.Niebel@ew.tq-group.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Frank Li <Frank.Li@nxp.com>,
+Cc: Hasun Park <hasunpark@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	robh+dt@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org,
-	conor+dt@kernel.org,
-	shawnguo@kernel.org,
-	linux@ew.tq-group.com,
-	devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
+	lgirdwood@gmail.com,
+	perex@perex.cz,
+	tiwai@suse.com,
+	alsa-devel@alsa-project.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18] arm64: dts: imx91-tqma9131: improve eMMC pad configuration
-Date: Mon, 20 Apr 2026 09:07:55 -0400
-Message-ID: <20260420131539.986432-9-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.18] ASoC: amd: acp: add ASUS HN7306EA quirk for legacy SDW machine
+Date: Mon, 20 Apr 2026 09:07:56 -0400
+Message-ID: <20260420131539.986432-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260420131539.986432-1-sashal@kernel.org>
 References: <20260420131539.986432-1-sashal@kernel.org>
@@ -71,54 +67,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.18.23
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-238787-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org,perex.cz,suse.com,alsa-project.org,vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-238788-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,dt];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,tq-group.com:email]
-X-Rspamd-Queue-Id: 170F542B823
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 5720D42BB05
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Markus Niebel <Markus.Niebel@ew.tq-group.com>
+From: Hasun Park <hasunpark@gmail.com>
 
-[ Upstream commit 44db7bc66eb38e85bb32777c5fd3a4e7baa84147 ]
+[ Upstream commit 2594196f4e3bd70782e7cf1e22e3e398cdb74f78 ]
 
-Use DSE x4 an PullUp for CMD an DAT, DSE x4 and PullDown for CLK to improve
-stability and detection at low temperatures under -25°C.
+Add a DMI quirk entry for ASUS HN7306EA in the ACP SoundWire legacy
+machine driver.
 
-Fixes: e71db39f0c7c ("arm64: dts: freescale: add initial device tree for TQMa91xx/MBa91xxCA")
-Signed-off-by: Markus Niebel <Markus.Niebel@ew.tq-group.com>
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Set driver_data to ASOC_SDW_ACP_DMIC for this board so the
+platform-specific DMIC quirk path is selected.
+
+Signed-off-by: Hasun Park <hasunpark@gmail.com>
+Link: https://patch.msgid.link/20260319163321.30326-1-hasunpark@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
@@ -126,44 +122,28 @@ LLM Generated explanations, may be completely bogus:
 
 Error: Failed to generate final synthesis
 
- .../boot/dts/freescale/imx91-tqma9131.dtsi    | 20 +++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ sound/soc/amd/acp/acp-sdw-legacy-mach.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx91-tqma9131.dtsi b/arch/arm64/boot/dts/freescale/imx91-tqma9131.dtsi
-index 5792952b7a8e1..c99d7bc168483 100644
---- a/arch/arm64/boot/dts/freescale/imx91-tqma9131.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx91-tqma9131.dtsi
-@@ -272,20 +272,20 @@ pinctrl_reg_usdhc2_vmmc: regusdhc2vmmcgrp {
- 	/* enable SION for data and cmd pad due to ERR052021 */
- 	pinctrl_usdhc1: usdhc1grp {
- 		fsl,pins = /* PD | FSEL 3 | DSE X5 */
--			   <MX91_PAD_SD1_CLK__USDHC1_CLK		0x5be>,
-+			   <MX91_PAD_SD1_CLK__USDHC1_CLK		0x59e>,
- 			   /* HYS | FSEL 0 | no drive */
- 			   <MX91_PAD_SD1_STROBE__USDHC1_STROBE		0x1000>,
- 			   /* HYS | FSEL 3 | X5 */
--			   <MX91_PAD_SD1_CMD__USDHC1_CMD		0x400011be>,
-+			   <MX91_PAD_SD1_CMD__USDHC1_CMD		0x4000139e>,
- 			   /* HYS | FSEL 3 | X4 */
--			   <MX91_PAD_SD1_DATA0__USDHC1_DATA0		0x4000119e>,
--			   <MX91_PAD_SD1_DATA1__USDHC1_DATA1		0x4000119e>,
--			   <MX91_PAD_SD1_DATA2__USDHC1_DATA2		0x4000119e>,
--			   <MX91_PAD_SD1_DATA3__USDHC1_DATA3		0x4000119e>,
--			   <MX91_PAD_SD1_DATA4__USDHC1_DATA4		0x4000119e>,
--			   <MX91_PAD_SD1_DATA5__USDHC1_DATA5		0x4000119e>,
--			   <MX91_PAD_SD1_DATA6__USDHC1_DATA6		0x4000119e>,
--			   <MX91_PAD_SD1_DATA7__USDHC1_DATA7		0x4000119e>;
-+			   <MX91_PAD_SD1_DATA0__USDHC1_DATA0		0x4000139e>,
-+			   <MX91_PAD_SD1_DATA1__USDHC1_DATA1		0x4000139e>,
-+			   <MX91_PAD_SD1_DATA2__USDHC1_DATA2		0x4000139e>,
-+			   <MX91_PAD_SD1_DATA3__USDHC1_DATA3		0x4000139e>,
-+			   <MX91_PAD_SD1_DATA4__USDHC1_DATA4		0x4000139e>,
-+			   <MX91_PAD_SD1_DATA5__USDHC1_DATA5		0x4000139e>,
-+			   <MX91_PAD_SD1_DATA6__USDHC1_DATA6		0x4000139e>,
-+			   <MX91_PAD_SD1_DATA7__USDHC1_DATA7		0x4000139e>;
- 	};
+diff --git a/sound/soc/amd/acp/acp-sdw-legacy-mach.c b/sound/soc/amd/acp/acp-sdw-legacy-mach.c
+index 86c534d827448..504b700200660 100644
+--- a/sound/soc/amd/acp/acp-sdw-legacy-mach.c
++++ b/sound/soc/amd/acp/acp-sdw-legacy-mach.c
+@@ -111,6 +111,14 @@ static const struct dmi_system_id soc_sdw_quirk_table[] = {
+ 		},
+ 		.driver_data = (void *)(ASOC_SDW_CODEC_SPKR),
+ 	},
++	{
++		.callback = soc_sdw_quirk_cb,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "HN7306EA"),
++		},
++		.driver_data = (void *)(ASOC_SDW_ACP_DMIC),
++	},
+ 	{}
+ };
  
- 	pinctrl_wdog: wdoggrp {
 -- 
 2.53.0
 
