@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-239393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239574-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +BWbBghk5mkKvwEAu9opvQ
-	(envelope-from <stable+bounces-239393-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:36:08 +0200
+	id SPWuCQ9g5mkqvgEAu9opvQ
+	(envelope-from <stable+bounces-239574-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:19:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9600A43190B
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:36:07 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4D7F430FD3
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:19:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8D878354BD30
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:49:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D550732A3CE2
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:56:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DFDE33B970;
-	Mon, 20 Apr 2026 15:48:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C16922259F;
+	Mon, 20 Apr 2026 15:56:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RdT+1mgI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cMWIerqC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F4002D77E5;
-	Mon, 20 Apr 2026 15:48:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB5533A9FF;
+	Mon, 20 Apr 2026 15:56:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700132; cv=none; b=ujWWwn4OuitzVLnqOrPZFwh98xUt/B4VOqowYYGq8azD6R02FRZI+YzpWRBb+52/D4sR6OUiKRG0kF/lWKr3oh/W2BR+7VGLoZDukmilXXE0eBlxEN2K2Yw1P0OMGxqR8RS7AIh9vaKekkRdh+JCEe8qAl3oXVUP9+qWjsyZFLc=
+	t=1776700602; cv=none; b=iSs+uIOa0+eh3MktTbn+YXouvZLbzVkwmNeqUcr48uAZCfdYFO1IbAAh5rtpi3XqUgfXWVyq59N0wPcHczn8Ky/yZUEBq9uhjd+qUkrzhm20CvEB1BIzvUBdx5FrCq/xz9vO83tSJRqD0k02J+hwt5750SZA202aVOKdf7UR7bM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700132; c=relaxed/simple;
-	bh=7rxUVTAstHeZTfX5oJ+Na2iwZPNJ/NxfWY+cvbMkcG4=;
+	s=arc-20240116; t=1776700602; c=relaxed/simple;
+	bh=DRpSQ9G7Hobrof2/r+Buetx4Dq1w9f6KYO3K7nKTfPg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=clIRM0ujTQxAwzBYJNEshLFv0bvOlFCGUfkdvKWGMCgvUJ+VQ+9vC31ERE+kcuQY7OaQELD0fJwLnPtvgEsYgrb6JJLUS7v/N2QbwV2W86FKvIwhZulSElu5Ea7DXRaOed+PfKtpPqgpL58bjaLnYmuUxuaPQ7T1BvhhfS0wke0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RdT+1mgI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABEC5C19425;
-	Mon, 20 Apr 2026 15:48:51 +0000 (UTC)
+	 MIME-Version; b=r2CNsbsafR1seazlTBwzM1fxFr4MZBb2DcLYowMFrGFDzj2SEOsTkXHg/lEaol+R4JSQVKxCbLL5CBZHHwR7OnRj+ddfh1TIfRRV/e1jz2lwVozQfEFpc/HUtCWMBGOdzRLCPtdkGtO9CLmALYtsv6paBFRDinQiPbNxmC3j8dw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cMWIerqC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C908C19425;
+	Mon, 20 Apr 2026 15:56:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700132;
-	bh=7rxUVTAstHeZTfX5oJ+Na2iwZPNJ/NxfWY+cvbMkcG4=;
+	s=korg; t=1776700601;
+	bh=DRpSQ9G7Hobrof2/r+Buetx4Dq1w9f6KYO3K7nKTfPg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RdT+1mgIubrQfUgqLJCcOu6DHUwBcVjZRnmTVKL8m/nVVStaGL3QfYGw8ggIwzMfm
-	 1vNHI7Y2kHhj/5mQzy2OrdiJZEOp2T9DylSj4LvknTe65FCAOCyo8y+4rUmZtnchTZ
-	 ZqH239zswgo9/tfiWXci3Np6auYfr9+LArqTID6g=
+	b=cMWIerqC4cEJdpnkiJLVoZnGfQ2dE4ZiNaFnF+P7IoS7m/dJxJ2h91NSZRTWeKfRJ
+	 VgG5RwZt0rM0YFHSytpTLROojFkOFWP/UV0HVGsmO8gswS1QUJw9SdLuxkQ0ReLv1k
+	 yFj2UEZRIydA8xHHCXOhLmQLLOwKJP+vVir0IOsw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Vyacheslav Kovalevsky <slava.kovalevskiy.2014@gmail.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 054/220] arm64: dts: qcom: monaco: Fix UART10 pinconf
+Subject: [PATCH 6.18 016/198] btrfs: fix zero size inode with non-zero size after log replay
 Date: Mon, 20 Apr 2026 17:39:55 +0200
-Message-ID: <20260420153935.985381247@linuxfoundation.org>
+Message-ID: <20260420153936.201262093@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
-References: <20260420153934.013228280@linuxfoundation.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,79 +65,253 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239393-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-239574-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 9600A43190B
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A4D7F430FD3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Loic Poulain <loic.poulain@oss.qualcomm.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 5b2a16ab0dbd090dc545c05ee79a077cc7a9c1e0 ]
+[ Upstream commit 5254d4181add9dfaa5e3519edd71cc8f752b2f85 ]
 
-UART10 RTS and TX pins were incorrectly mapped to gpio84 and gpio85.
-Correct them to gpio85 (RTS) and gpio86 (TX) to match the hardware
-I/O mapping.
+When logging that an inode exists, as part of logging a new name or
+logging new dir entries for a directory, we always set the generation of
+the logged inode item to 0. This is to signal during log replay (in
+overwrite_item()), that we should not set the i_size since we only logged
+that an inode exists, so the i_size of the inode in the subvolume tree
+must be preserved (as when we log new names or that an inode exists, we
+don't log extents).
 
-Fixes: 467284a3097f ("arm64: dts: qcom: qcs8300: Add QUPv3 configuration")
-Signed-off-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20260202155611.1568-1-loic.poulain@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+This works fine except when we have already logged an inode in full mode
+or it's the first time we are logging an inode created in a past
+transaction, that inode has a new i_size of 0 and then we log a new name
+for the inode (due to a new hardlink or a rename), in which case we log
+an i_size of 0 for the inode and a generation of 0, which causes the log
+replay code to not update the inode's i_size to 0 (in overwrite_item()).
+
+An example scenario:
+
+  mkdir /mnt/dir
+  xfs_io -f -c "pwrite 0 64K" /mnt/dir/foo
+
+  sync
+
+  xfs_io -c "truncate 0" -c "fsync" /mnt/dir/foo
+
+  ln /mnt/dir/foo /mnt/dir/bar
+
+  xfs_io -c "fsync" /mnt/dir
+
+  <power fail>
+
+After log replay the file remains with a size of 64K. This is because when
+we first log the inode, when we fsync file foo, we log its current i_size
+of 0, and then when we create a hard link we log again the inode in exists
+mode (LOG_INODE_EXISTS) but we set a generation of 0 for the inode item we
+add to the log tree, so during log replay overwrite_item() sees that the
+generation is 0 and i_size is 0 so we skip updating the inode's i_size
+from 64K to 0.
+
+Fix this by making sure at fill_inode_item() we always log the real
+generation of the inode if it was logged in the current transaction with
+the i_size we logged before. Also if an inode created in a previous
+transaction is logged in exists mode only, make sure we log the i_size
+stored in the inode item located from the commit root, so that if we log
+multiple times that the inode exists we get the correct i_size.
+
+A test case for fstests will follow soon.
+
+Reported-by: Vyacheslav Kovalevsky <slava.kovalevskiy.2014@gmail.com>
+Link: https://lore.kernel.org/linux-btrfs/af8c15fa-4e41-4bb2-885c-0bc4e97532a6@gmail.com/
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/monaco.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/btrfs/tree-log.c | 98 ++++++++++++++++++++++++++++++---------------
+ 1 file changed, 65 insertions(+), 33 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/monaco.dtsi b/arch/arm64/boot/dts/qcom/monaco.dtsi
-index 816fa2af8a9a6..f74045be62420 100644
---- a/arch/arm64/boot/dts/qcom/monaco.dtsi
-+++ b/arch/arm64/boot/dts/qcom/monaco.dtsi
-@@ -5437,12 +5437,12 @@ qup_uart10_cts: qup-uart10-cts-state {
- 			};
+diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
+index 7505a87522fd7..c45c5112c0350 100644
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -4608,21 +4608,32 @@ static void fill_inode_item(struct btrfs_trans_handle *trans,
+ 			    struct inode *inode, bool log_inode_only,
+ 			    u64 logged_isize)
+ {
++	u64 gen = BTRFS_I(inode)->generation;
+ 	u64 flags;
  
- 			qup_uart10_rts: qup-uart10-rts-state {
--				pins = "gpio84";
-+				pins = "gpio85";
- 				function = "qup1_se2";
- 			};
+ 	if (log_inode_only) {
+-		/* set the generation to zero so the recover code
+-		 * can tell the difference between an logging
+-		 * just to say 'this inode exists' and a logging
+-		 * to say 'update this inode with these values'
++		/*
++		 * Set the generation to zero so the recover code can tell the
++		 * difference between a logging just to say 'this inode exists'
++		 * and a logging to say 'update this inode with these values'.
++		 * But only if the inode was not already logged before.
++		 * We access ->logged_trans directly since it was already set
++		 * up in the call chain by btrfs_log_inode(), and data_race()
++		 * to avoid false alerts from KCSAN and since it was set already
++		 * and one can set it to 0 since that only happens on eviction
++		 * and we are holding a ref on the inode.
+ 		 */
+-		btrfs_set_inode_generation(leaf, item, 0);
++		ASSERT(data_race(BTRFS_I(inode)->logged_trans) > 0);
++		if (data_race(BTRFS_I(inode)->logged_trans) < trans->transid)
++			gen = 0;
++
+ 		btrfs_set_inode_size(leaf, item, logged_isize);
+ 	} else {
+-		btrfs_set_inode_generation(leaf, item, BTRFS_I(inode)->generation);
+ 		btrfs_set_inode_size(leaf, item, inode->i_size);
+ 	}
  
- 			qup_uart10_tx: qup-uart10-tx-state {
--				pins = "gpio85";
-+				pins = "gpio86";
- 				function = "qup1_se2";
- 			};
++	btrfs_set_inode_generation(leaf, item, gen);
++
+ 	btrfs_set_inode_uid(leaf, item, i_uid_read(inode));
+ 	btrfs_set_inode_gid(leaf, item, i_gid_read(inode));
+ 	btrfs_set_inode_mode(leaf, item, inode->i_mode);
+@@ -5428,42 +5439,63 @@ static int btrfs_log_changed_extents(struct btrfs_trans_handle *trans,
+ 	return 0;
+ }
  
+-static int logged_inode_size(struct btrfs_root *log, struct btrfs_inode *inode,
+-			     struct btrfs_path *path, u64 *size_ret)
++static int get_inode_size_to_log(struct btrfs_trans_handle *trans,
++				 struct btrfs_inode *inode,
++				 struct btrfs_path *path, u64 *size_ret)
+ {
+ 	struct btrfs_key key;
++	struct btrfs_inode_item *item;
+ 	int ret;
+ 
+ 	key.objectid = btrfs_ino(inode);
+ 	key.type = BTRFS_INODE_ITEM_KEY;
+ 	key.offset = 0;
+ 
+-	ret = btrfs_search_slot(NULL, log, &key, path, 0, 0);
+-	if (ret < 0) {
+-		return ret;
+-	} else if (ret > 0) {
+-		*size_ret = 0;
+-	} else {
+-		struct btrfs_inode_item *item;
++	/*
++	 * Our caller called inode_logged(), so logged_trans is up to date.
++	 * Use data_race() to silence any warning from KCSAN. Once logged_trans
++	 * is set, it can only be reset to 0 after inode eviction.
++	 */
++	if (data_race(inode->logged_trans) == trans->transid) {
++		ret = btrfs_search_slot(NULL, inode->root->log_root, &key, path, 0, 0);
++	} else if (inode->generation < trans->transid) {
++		path->search_commit_root = true;
++		path->skip_locking = true;
++		ret = btrfs_search_slot(NULL, inode->root, &key, path, 0, 0);
++		path->search_commit_root = false;
++		path->skip_locking = false;
+ 
+-		item = btrfs_item_ptr(path->nodes[0], path->slots[0],
+-				      struct btrfs_inode_item);
+-		*size_ret = btrfs_inode_size(path->nodes[0], item);
+-		/*
+-		 * If the in-memory inode's i_size is smaller then the inode
+-		 * size stored in the btree, return the inode's i_size, so
+-		 * that we get a correct inode size after replaying the log
+-		 * when before a power failure we had a shrinking truncate
+-		 * followed by addition of a new name (rename / new hard link).
+-		 * Otherwise return the inode size from the btree, to avoid
+-		 * data loss when replaying a log due to previously doing a
+-		 * write that expands the inode's size and logging a new name
+-		 * immediately after.
+-		 */
+-		if (*size_ret > inode->vfs_inode.i_size)
+-			*size_ret = inode->vfs_inode.i_size;
++	} else {
++		*size_ret = 0;
++		return 0;
+ 	}
+ 
++	/*
++	 * If the inode was logged before or is from a past transaction, then
++	 * its inode item must exist in the log root or in the commit root.
++	 */
++	ASSERT(ret <= 0);
++	if (WARN_ON_ONCE(ret > 0))
++		ret = -ENOENT;
++
++	if (ret < 0)
++		return ret;
++
++	item = btrfs_item_ptr(path->nodes[0], path->slots[0],
++			      struct btrfs_inode_item);
++	*size_ret = btrfs_inode_size(path->nodes[0], item);
++	/*
++	 * If the in-memory inode's i_size is smaller then the inode size stored
++	 * in the btree, return the inode's i_size, so that we get a correct
++	 * inode size after replaying the log when before a power failure we had
++	 * a shrinking truncate followed by addition of a new name (rename / new
++	 * hard link). Otherwise return the inode size from the btree, to avoid
++	 * data loss when replaying a log due to previously doing a write that
++	 * expands the inode's size and logging a new name immediately after.
++	 */
++	if (*size_ret > inode->vfs_inode.i_size)
++		*size_ret = inode->vfs_inode.i_size;
++
+ 	btrfs_release_path(path);
+ 	return 0;
+ }
+@@ -6978,7 +7010,7 @@ static int btrfs_log_inode(struct btrfs_trans_handle *trans,
+ 			ret = drop_inode_items(trans, log, path, inode,
+ 					       BTRFS_XATTR_ITEM_KEY);
+ 	} else {
+-		if (inode_only == LOG_INODE_EXISTS && ctx->logged_before) {
++		if (inode_only == LOG_INODE_EXISTS) {
+ 			/*
+ 			 * Make sure the new inode item we write to the log has
+ 			 * the same isize as the current one (if it exists).
+@@ -6992,7 +7024,7 @@ static int btrfs_log_inode(struct btrfs_trans_handle *trans,
+ 			 * (zeroes), as if an expanding truncate happened,
+ 			 * instead of getting a file of 4Kb only.
+ 			 */
+-			ret = logged_inode_size(log, inode, path, &logged_isize);
++			ret = get_inode_size_to_log(trans, inode, path, &logged_isize);
+ 			if (ret)
+ 				goto out_unlock;
+ 		}
 -- 
 2.53.0
 
