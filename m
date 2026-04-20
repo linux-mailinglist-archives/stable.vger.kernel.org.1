@@ -1,148 +1,112 @@
-Return-Path: <stable+bounces-239172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238884-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0EtBFmRP5mkDuwEAu9opvQ
-	(envelope-from <stable+bounces-239172-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:08:04 +0200
+	id eH7UJQIu5mliswEAu9opvQ
+	(envelope-from <stable+bounces-238884-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:45:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57E2642F092
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:08:03 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E3F942C3AC
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:45:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id EFE1531A9A28
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 14:29:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1C8B23207444
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 13:33:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18FF549550C;
-	Mon, 20 Apr 2026 13:32:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4CF63AD526;
+	Mon, 20 Apr 2026 13:21:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fg5v0wUD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BNyiBOya"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3E6B495503;
-	Mon, 20 Apr 2026 13:32:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A89213AD51B;
+	Mon, 20 Apr 2026 13:21:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776691945; cv=none; b=hR6mX2Z0vgjN7P8IfLAvWq9DGYSAFfrTCPXhKbFXrqmEfq1RsFPlx0Do5Up3OFTDSXFi2/IodyJ+gdI4uiAvv6EV8QpM14ojGE7ufoZ6+Q1bwsa/kM2erhDqOkGLaY0lYKgbBoPk1em4+rOqWqJpOc841mS/J2/7yu2lJaB5twM=
+	t=1776691296; cv=none; b=AxXdyijKDlGiuSSO9sMBH70YOxmXGPKdPDICPKgh1RQ6MApIgiPSU0qSebs8Og4XZR9nWVHvZ/LPAPmBNkf+xn4+IEeHzD1QocehZEol0xG2JQTdmNEWpZUpLeYyS0wW9cB6VhWtHNcXOLjBE56pFM9rx2HPg+GArUPj9RyFzpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776691945; c=relaxed/simple;
-	bh=+xu2m1TGmJvOHkE95UvLqER6g9u70PZ6XgszAzjUeRU=;
+	s=arc-20240116; t=1776691296; c=relaxed/simple;
+	bh=9j1J9ggO3DFAu1UEIccrDMBifYbnJC3uZbxVld7zfx8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tL/R+TrHIVOJI+Un1JFfa/IMd2pAjmTnsflc/PHbDZUruAkfcInkpcdK24HK6gXdLMr2GqJMWSES38bTwBifr0Mp4RpA+pHjOf0rycDfyFIlqcRnHMo3HHFp8RsuF1DTgYMsny708LxKancL7H4OZTSEVtTOnb6UljrJnQ32aw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fg5v0wUD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8305CC2BCB8;
-	Mon, 20 Apr 2026 13:32:24 +0000 (UTC)
+	 MIME-Version; b=nHj7twNhk1O1Y6dTR/CKx/QetF9q2Ik25UDuLnRvhxUBQ5T2BvOPZzVwBl+BED6Knty/9lQKI3/yL9WjFdGVnnVeBjuI3WC+o1S+/Hi34p3WQgeVo/DbzfHCtGqmz7GjXapDSl3bTA1Ev2S7VnHewwUpqltMFTW8FXix7TdUZMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BNyiBOya; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C32E0C19425;
+	Mon, 20 Apr 2026 13:21:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776691945;
-	bh=+xu2m1TGmJvOHkE95UvLqER6g9u70PZ6XgszAzjUeRU=;
+	s=k20201202; t=1776691296;
+	bh=9j1J9ggO3DFAu1UEIccrDMBifYbnJC3uZbxVld7zfx8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fg5v0wUD9MmrwiDdtkP8HCxsXJOL9l6544+bhakuUTMytUk+Pn0AmWOXkFMYiddK+
-	 HD/OcKmnHROecx4ZxBcCX6aw7jB7nedIVBRLIbSrL2o25GFOZ31dq4ee/leQERqu4z
-	 2/XkfkJUjZQX9PTFKiOYoLwA7jrq4uKpeDJI/43koNdzFBYu7QeaB7kdSYM+9OwPhp
-	 jMjoXYvYeJlx/V6/3PNlbWuSK6DdBAl3IzIOVoHYKRpkXA3NmQ65rBzN3+mQfK4hZ2
-	 S4Ya5TTgfbT/sZCTZ0opSyhlyYDrz3CF1SDX8siHnVY5Yhhot7bjLLOyh2T30b2vKM
-	 HXzQa9M5h/e+g==
+	b=BNyiBOyaoiSAVFpQidFUWzksqJBT908SZ2i3kzZ4h3aW5nv4pZmYgy9oeu094ohLr
+	 aliJZbg3cUuEnUGWKU0BfCxRLNLXKDuaEVir73IJntBuxR0igBB3tLU39lkQxAP8gL
+	 kt9i8IPSxAyYNzogYjZ4juq1MAJQZ1eOCFhW4tBCRIXZZvsR73B6rRS0EH9FeKfa2k
+	 /UlEzrxteVsZ7Q8aFizuSig+jHy5dFW6laxpcrjL0LAADkNSOfsicVYFuwuFWCMbxp
+	 exBOu0tmqyg6Y+vN1EkYJqZ//d+YFW2+dUt/rMeuwKi4PKughxiK76aj5r69xq3oPr
+	 owFpFx7XAYpyw==
 From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Jacob Moroni <jmoroni@google.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	krzysztof.czurylo@intel.com,
-	tatyana.e.nikolova@intel.com,
-	linux-rdma@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18] RDMA/irdma: Fix double free related to rereg_user_mr
+To: Ricardo Ribalda <ribalda@chromium.org>
+Cc: Sasha Levin <sashal@kernel.org>,
+	stable@vger.kernel.org,
+	linux-media@vger.kernel.org,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans de Goede <hansg@kernel.org>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: Re: [PATCH 5.10.y 0/3] media: uvcvideo: Allow extra entities / Mark invalid entities / heuristic
 Date: Mon, 20 Apr 2026 09:21:18 -0400
-Message-ID: <20260420132314.1023554-284-sashal@kernel.org>
+Message-ID: <20260420-stable-reply-uvcvideo-5-10@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420132314.1023554-1-sashal@kernel.org>
-References: <20260420132314.1023554-1-sashal@kernel.org>
+In-Reply-To: <20260414110113.319219-1-ribalda@chromium.org>
+References: <20260414110113.319219-1-ribalda@chromium.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.18.23
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239172-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-238884-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	NEURAL_HAM(-0.00)[-0.999];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 57E2642F092
+	TAGGED_RCPT(0.00)[stable,cisco];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1E3F942C3AC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Jacob Moroni <jmoroni@google.com>
+On Mon, Apr 14, 2026, Ricardo Ribalda wrote:
+> Backport to 5.10.y:
+>   cae79e50d122 media: uvcvideo: Allow extra entities
+>   0e2ee70291e6 media: uvcvideo: Mark invalid entities with id
+>                UVC_INVALID_ENTITY_ID
+>   758dbc756aad media: uvcvideo: Use heuristic to find stream entity
 
-[ Upstream commit 29a3edd7004bb635d299fb9bc6f0ea4ef13ed5a2 ]
+Queued for 5.10, thanks.
 
-If IB_MR_REREG_TRANS is set during rereg_user_mr, the
-umem will be released and a new one will be allocated
-in irdma_rereg_mr_trans. If any step of irdma_rereg_mr_trans
-fails after the new umem is allocated, it releases the umem,
-but does not set iwmr->region to NULL. The problem is that
-this failure is propagated to the user, who will then call
-ibv_dereg_mr (as they should). Then, the dereg_mr path will
-see a non-NULL umem and attempt to call ib_umem_release again.
-
-Fix this by setting iwmr->region to NULL after ib_umem_release.
-
-Fixed: 5ac388db27c4 ("RDMA/irdma: Add support to re-register a memory region")
-Signed-off-by: Jacob Moroni <jmoroni@google.com>
-Link: https://patch.msgid.link/20260227152743.1183388-1-jmoroni@google.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
-
-LLM Generated explanations, may be completely bogus:
-
-Error: Failed to generate final synthesis
-
- drivers/infiniband/hw/irdma/verbs.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/infiniband/hw/irdma/verbs.c b/drivers/infiniband/hw/irdma/verbs.c
-index c77d6d0eafdec..c399aa07bcae8 100644
---- a/drivers/infiniband/hw/irdma/verbs.c
-+++ b/drivers/infiniband/hw/irdma/verbs.c
-@@ -3714,6 +3714,7 @@ static int irdma_rereg_mr_trans(struct irdma_mr *iwmr, u64 start, u64 len,
- 
- err:
- 	ib_umem_release(region);
-+	iwmr->region = NULL;
- 	return err;
- }
- 
--- 
-2.53.0
-
+--
+Thanks,
+Sasha
 
