@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-239683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239300-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gA3BOPVg5mkxvgEAu9opvQ
-	(envelope-from <stable+bounces-239683-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:23:01 +0200
+	id gMDwBd1V5mkDuwEAu9opvQ
+	(envelope-from <stable+bounces-239300-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:35:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F8D3431149
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:23:01 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A16D642FAE3
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:35:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7294D3621B30
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:02:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9BFE832263B2
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:45:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3E6A2E36F8;
-	Mon, 20 Apr 2026 16:02:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51CF133C192;
+	Mon, 20 Apr 2026 15:44:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wP0040SJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ApUQCyko"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 666E533E377;
-	Mon, 20 Apr 2026 16:02:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1505133BBCC;
+	Mon, 20 Apr 2026 15:44:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700949; cv=none; b=Sc43CEzXpLGsZi48DreInBKUxfjEDXLFxMsWfbluB3Ct8mFEIX8W2S0iOOQNOznpYeXfAV2lgvL+LaKKDPtI29+0q1G8ks+PonSLXDOzkc4zKV4Y0cUbLqexP6a+qvoMFy+68azQPNQrCOU5snCm1NfUaUQQ6Ywo8pt7aBNLefI=
+	t=1776699896; cv=none; b=r2JJIkwVd/6y90g+XSYLwz6QBigBrMlBpXhfNIT4bsg8LRDsICiJxP2eJTpkXeJxS74HwVISrI/04qScacaTGXekig7Qap0sIw69Cjt2Xia+Z09mBrS5rNhYTMp6SdrvCosmqgoRuoav9OwxliBmilkdG27LQKtsXg5MP+JY534=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700949; c=relaxed/simple;
-	bh=zK3Tz81udVBlxWtppuBf2LgK7VWROEKFfG6vdjBN2oo=;
+	s=arc-20240116; t=1776699896; c=relaxed/simple;
+	bh=d1AJ7EqISkmFq1MFrmBGUTKBMGnuHKSD01qzFlDTVE0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=evRnbhIDYY0HOk2D24MbUpAfH3nfdTnJEp2k3dfcKb+tth45fYlajSX/8/ewT15xjZFb3sWyoSWM2LNpC0Gbl4LvkdvLeDV/R2H8FvPfBFiLYxV1AWMEIfP+wl8NX8BC2lvDDITfX40YXf/rKGa3+hRQiF+DECFhomRuYwwzsoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wP0040SJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EED2AC19425;
-	Mon, 20 Apr 2026 16:02:28 +0000 (UTC)
+	 MIME-Version; b=TgntEF20IsbIctx4np+gmK97hbPHrFk8TzfaWZxdeSF60LF3Uk1kO1mewc1u7wWM17NP6V4BnzVcAL5m03T/nLvcIlFLWbjkg1XopqJGDQp4QXkNonAS0NfHR5PJkiJufuRMpw7KfgeBg6+YGPqZkEVyNiqMguNqEc87BC0dVzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ApUQCyko; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E802C19425;
+	Mon, 20 Apr 2026 15:44:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700949;
-	bh=zK3Tz81udVBlxWtppuBf2LgK7VWROEKFfG6vdjBN2oo=;
+	s=korg; t=1776699896;
+	bh=d1AJ7EqISkmFq1MFrmBGUTKBMGnuHKSD01qzFlDTVE0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wP0040SJ9MhbZFDFzjywJv8VmcnKCf8Rd7q0kaeLtXSC4s2wmSRVNX2uD/PljC2ed
-	 hoMh66TWrIb2WU4WH+KQ0Un+dn+LjW0SwIbVkeJdOw6bDMU5BJvpTXwVRSbTSi5ZAY
-	 sra9qSyP4EDdVtUuCsgW0PZeeL1Gg4PH8fMWotrI=
+	b=ApUQCykonC0ydv6D2XlYgbPNA+lIP2DM+QaDqDdobV6QB09aGmJO7C9WsCRpSyDny
+	 73pfRLssQNs+dgjzy57mdrmWG9CrOp9+kRAGWgEmXbt6HPdpN+iLHdKsvHPN7PZBpc
+	 veE8DsUxaYyJnTz/7PTpYyHmQk/7LrDjqd4qMO54=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samuel Page <sam@bynar.io>,
-	Oliver Hartkopp <socketcan@hartkopp.net>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.18 123/198] can: raw: fix ro->uniq use-after-free in raw_rcv()
-Date: Mon, 20 Apr 2026 17:41:42 +0200
-Message-ID: <20260420153940.033979995@linuxfoundation.org>
+	Benjamin Berg <benjamin.berg@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Ilya Leoshkevich <iii@linux.ibm.com>,
+	Jan Kiszka <jan.kiszka@siemens.com>,
+	Kieran Bingham <kbingham@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 7.0 32/76] scripts/gdb/symbols: handle module path parameters
+Date: Mon, 20 Apr 2026 17:41:43 +0200
+Message-ID: <20260420153911.991319967@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+In-Reply-To: <20260420153910.810034134@linuxfoundation.org>
+References: <20260420153910.810034134@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,100 +71,72 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239300-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-239683-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 2F8D3431149
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux-foundation.org:email,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: A16D642FAE3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Samuel Page <sam@bynar.io>
+From: Benjamin Berg <benjamin.berg@intel.com>
 
-commit a535a9217ca3f2fccedaafb2fddb4c48f27d36dc upstream.
+commit 8e4513303b8726e4434f718ab39749cbb4c142b1 upstream.
 
-raw_release() unregisters raw CAN receive filters via can_rx_unregister(),
-but receiver deletion is deferred with call_rcu(). This leaves a window
-where raw_rcv() may still be running in an RCU read-side critical section
-after raw_release() frees ro->uniq, leading to a use-after-free of the
-percpu uniq storage.
+commit 581ee79a2547 ("scripts/gdb/symbols: make BPF debug info available
+to GDB") added support to make BPF debug information available to GDB.
+However, the argument handling loop was slightly broken, causing it to
+fail if further modules were passed.  Fix it to append these passed
+modules to the instance variable after expansion.
 
-Move free_percpu(ro->uniq) out of raw_release() and into a raw-specific
-socket destructor. can_rx_unregister() takes an extra reference to the
-socket and only drops it from the RCU callback, so freeing uniq from
-sk_destruct ensures the percpu area is not released until the relevant
-callbacks have drained.
-
-Fixes: 514ac99c64b2 ("can: fix multiple delivery of a single CAN frame for overlapping CAN filters")
-Cc: stable@vger.kernel.org # v4.1+
-Assisted-by: Bynario AI
-Signed-off-by: Samuel Page <sam@bynar.io>
-Link: https://patch.msgid.link/26ec626d-cae7-4418-9782-7198864d070c@bynar.io
-Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
-[mkl: applied manually]
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Link: https://lkml.kernel.org/r/20260304110642.2020614-2-benjamin@sipsolutions.net
+Fixes: 581ee79a2547 ("scripts/gdb/symbols: make BPF debug info available to GDB")
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Cc: Ilya Leoshkevich <iii@linux.ibm.com>
+Cc: Jan Kiszka <jan.kiszka@siemens.com>
+Cc: Kieran Bingham <kbingham@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/can/raw.c |   11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ scripts/gdb/linux/symbols.py |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/can/raw.c
-+++ b/net/can/raw.c
-@@ -360,6 +360,14 @@ static int raw_notifier(struct notifier_
- 	return NOTIFY_DONE;
- }
+--- a/scripts/gdb/linux/symbols.py
++++ b/scripts/gdb/linux/symbols.py
+@@ -298,7 +298,7 @@ are loaded as well."""
+             if p == "-bpf":
+                 monitor_bpf = True
+             else:
+-                p.append(os.path.abspath(os.path.expanduser(p)))
++                self.module_paths.append(os.path.abspath(os.path.expanduser(p)))
+         self.module_paths.append(os.getcwd())
  
-+static void raw_sock_destruct(struct sock *sk)
-+{
-+	struct raw_sock *ro = raw_sk(sk);
-+
-+	free_percpu(ro->uniq);
-+	can_sock_destruct(sk);
-+}
-+
- static int raw_init(struct sock *sk)
- {
- 	struct raw_sock *ro = raw_sk(sk);
-@@ -386,6 +394,8 @@ static int raw_init(struct sock *sk)
- 	if (unlikely(!ro->uniq))
- 		return -ENOMEM;
- 
-+	sk->sk_destruct = raw_sock_destruct;
-+
- 	/* set notifier */
- 	spin_lock(&raw_notifier_lock);
- 	list_add_tail(&ro->notifier, &raw_notifier_list);
-@@ -435,7 +445,6 @@ static int raw_release(struct socket *so
- 	ro->bound = 0;
- 	ro->dev = NULL;
- 	ro->count = 0;
--	free_percpu(ro->uniq);
- 
- 	sock_orphan(sk);
- 	sock->sk = NULL;
+         if self.breakpoint is not None:
 
 
 
