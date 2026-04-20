@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-239435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239774-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mIJBCIJk5mkKvwEAu9opvQ
-	(envelope-from <stable+bounces-239435-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:38:10 +0200
+	id CHKgHCpo5mnBvwEAu9opvQ
+	(envelope-from <stable+bounces-239774-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:53:46 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87C72431A34
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:38:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C60FF4323A5
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:53:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 824CB3589EEF
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:51:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 87D7D30CD559
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:06:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 341E7344057;
-	Mon, 20 Apr 2026 15:50:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A87A3264F1;
+	Mon, 20 Apr 2026 16:06:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VcNIrHc9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z3LZxLS/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC5B833DEFE;
-	Mon, 20 Apr 2026 15:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C37F33F5BC;
+	Mon, 20 Apr 2026 16:06:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700246; cv=none; b=qo0Lc9PN+Ww+1UFbslWurTrZa6VDxtcgzPOCW38mDDz4PZP+5gtr41Lz1POLcXrSlO+2W+y2O87Ly+O5Id3fqy6Tx3l2CgIFLVaRhPSA4p5LPjo3Ksd1VBUmyIRARMlqLRkMASdt605gqZ6cSC/czIwT2peuyjTNCcA9irXf7Yc=
+	t=1776701180; cv=none; b=YqBL/RZ6SJ6xHkFfre1z3z30r9WZwtSDcj3NdZSOlEGpZmMXKm1GnRvXNsG1O6PGy3/rnjXhq9Iz2g66+MCM8YdzgsUUZmvcA4rG86p/9Girf2byHADxbbq54mMCz/HyhJpasjNb/d1xQh6tyTO/4dhgLZlYHdulrGRPSS6tr1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700246; c=relaxed/simple;
-	bh=ZvJoJsZG3B2KG+3qgKG310VxldYIH+sKzGOgaCvN3o4=;
+	s=arc-20240116; t=1776701180; c=relaxed/simple;
+	bh=vuvDqBcPwyH1Ts9GyrKsBFdpG5c0Bx3HsRyKp76xONE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LFRII/BlywFNovAetqN+x0taUwdnJ4vuOC2iguwOds4WaEPAkelDpycrUV8m9wtY3XqqwtBrkr8/i2Kb2FHn0KMeSpsqVy8TmVOgdqi8pPq2y0+CQrhwwwApbGIBrsn0QfAkBW5jtlEMvvpQEK4pcSWFZkHyihyXDAXdmuwA4Xo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VcNIrHc9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8184EC2BCB4;
-	Mon, 20 Apr 2026 15:50:45 +0000 (UTC)
+	 MIME-Version; b=elAxpflKC8l8rEJ1RIdSY8pbvhlj3L+x6HIzwluGBTMnTAqnJJvKrW16+hjYMATtj56y6vAslQ7UoHsT6I2F2ppTen7/QbJmQ0vzDQhttATVSjXvexzmnR7EkPWNG2QUjkwqm8Xm1F3L1wUSwlhEbbA/5ZPG2+Wm8+LLDZx4qB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z3LZxLS/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB99FC19425;
+	Mon, 20 Apr 2026 16:06:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700245;
-	bh=ZvJoJsZG3B2KG+3qgKG310VxldYIH+sKzGOgaCvN3o4=;
+	s=korg; t=1776701180;
+	bh=vuvDqBcPwyH1Ts9GyrKsBFdpG5c0Bx3HsRyKp76xONE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VcNIrHc9++/iZkaK7r6o5anFNNEtshCQ2JMdAzME8O6LsVS9IP66PYs0nVrVE2u1E
-	 SrUONRNqU+AJ6xTujn220JyNRsYDp26yMPO9kby4sFQx05qk1TeeKrCqcrikbhqgoI
-	 QkPZjar+qXwGod/Dph7PMOi5Q3g/O8i5kfa8wOMI=
+	b=z3LZxLS/gb+nEiTIf/nqs7+O7jx2P96Fyr38q+Nk8d/b3r1nLX229+b27UO2Rr17b
+	 ObQ8HpPAsp5JdtrI+pFz1t2zldzELzYB2iJ8vxNrVeTzQrMowhvw6W52Tn02TN/PC3
+	 fCe+qU++k2datOg/+LfLEFazJmJa6qr1lbXESKmI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maciej Strozek <mstrozek@opensource.cirrus.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 097/220] ASoC: SOF: Intel: fix iteration in is_endpoint_present()
+Subject: [PATCH 6.12 006/162] ALSA: asihpi: avoid write overflow check warning
 Date: Mon, 20 Apr 2026 17:40:38 +0200
-Message-ID: <20260420153937.526101543@linuxfoundation.org>
+Message-ID: <20260420153927.244733061@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
-References: <20260420153934.013228280@linuxfoundation.org>
+In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
+References: <20260420153927.006696811@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,81 +73,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239435-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-239774-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,cirrus.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,intel.com:email]
-X-Rspamd-Queue-Id: 87C72431A34
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,suse.de:email,arndb.de:email]
+X-Rspamd-Queue-Id: C60FF4323A5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej Strozek <mstrozek@opensource.cirrus.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 1de6ddcddc954a69f96b1c23205e03ddd603e3c8 ]
+[ Upstream commit 591721223be9e28f83489a59289579493b8e3d83 ]
 
-is_endpoint_present() iterates over sdca_data.num_functions, but checks
-the dai_type according to codec info list, which will cause problems if
-not all endpoints from the codec info list are present. Make sure the
-type of actually present functions is compared against target dai_type.
+clang-22 rightfully warns that the memcpy() in adapter_prepare() copies
+between different structures, crossing the boundary of nested
+structures inside it:
 
-Fixes: 5226d19d4cae ("ASoC: SOF: Intel: use sof_sdw as default SDW machine driver")
-Signed-off-by: Maciej Strozek <mstrozek@opensource.cirrus.com>
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Link: https://patch.msgid.link/20260402064531.2287261-3-yung-chuan.liao@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+In file included from sound/pci/asihpi/hpimsgx.c:13:
+In file included from include/linux/string.h:386:
+include/linux/fortify-string.h:569:4: error: call to '__write_overflow_field' declared with 'warning' attribute: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror,-Wattribute-warning]
+  569 |                         __write_overflow_field(p_size_field, size);
+
+The two structures seem to refer to the same layout, despite the
+separate definitions, so the code is in fact correct.
+
+Avoid the warning by copying the two inner structures separately.
+I see the same pattern happens in other functions in the same file,
+so there is a chance that this may come back in the future, but
+this instance is the only one that I saw in practice, hitting it
+multiple times per day in randconfig build.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://patch.msgid.link/20260318124016.3488566-1-arnd@kernel.org
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/intel/hda.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ sound/pci/asihpi/hpimsgx.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/sof/intel/hda.c b/sound/soc/sof/intel/hda.c
-index 882198308319e..b039306454da2 100644
---- a/sound/soc/sof/intel/hda.c
-+++ b/sound/soc/sof/intel/hda.c
-@@ -1133,13 +1133,12 @@ static void hda_generic_machine_select(struct snd_sof_dev *sdev,
+diff --git a/sound/pci/asihpi/hpimsgx.c b/sound/pci/asihpi/hpimsgx.c
+index b68e6bfbbfbab..ed1c7b7744361 100644
+--- a/sound/pci/asihpi/hpimsgx.c
++++ b/sound/pci/asihpi/hpimsgx.c
+@@ -581,8 +581,10 @@ static u16 adapter_prepare(u16 adapter)
+ 		HPI_ADAPTER_OPEN);
+ 	hm.adapter_index = adapter;
+ 	hw_entry_point(&hm, &hr);
+-	memcpy(&rESP_HPI_ADAPTER_OPEN[adapter], &hr,
+-		sizeof(rESP_HPI_ADAPTER_OPEN[0]));
++	memcpy(&rESP_HPI_ADAPTER_OPEN[adapter].h, &hr,
++		sizeof(rESP_HPI_ADAPTER_OPEN[adapter].h));
++	memcpy(&rESP_HPI_ADAPTER_OPEN[adapter].a, &hr.u.ax.info,
++		sizeof(rESP_HPI_ADAPTER_OPEN[adapter].a));
+ 	if (hr.error)
+ 		return hr.error;
  
- #if IS_ENABLED(CONFIG_SND_SOC_SOF_INTEL_SOUNDWIRE)
- 
--static bool is_endpoint_present(struct sdw_slave *sdw_device,
--				struct asoc_sdw_codec_info *dai_info, int dai_type)
-+static bool is_endpoint_present(struct sdw_slave *sdw_device, int dai_type)
- {
- 	int i;
- 
- 	for (i = 0; i < sdw_device->sdca_data.num_functions; i++) {
--		if (dai_type == dai_info->dais[i].dai_type)
-+		if (dai_type == asoc_sdw_get_dai_type(sdw_device->sdca_data.function[i].type))
- 			return true;
- 	}
- 	dev_dbg(&sdw_device->dev, "Endpoint DAI type %d not found\n", dai_type);
-@@ -1193,8 +1192,7 @@ static struct snd_soc_acpi_adr_device *find_acpi_adr_device(struct device *dev,
- 		}
- 		for (j = 0; j < codec_info_list[i].dai_num; j++) {
- 			/* Check if the endpoint is present by the SDCA DisCo table */
--			if (!is_endpoint_present(sdw_device, &codec_info_list[i],
--						 codec_info_list[i].dais[j].dai_type))
-+			if (!is_endpoint_present(sdw_device, codec_info_list[i].dais[j].dai_type))
- 				continue;
- 
- 			endpoints[ep_index].num = j;
 -- 
 2.53.0
 
