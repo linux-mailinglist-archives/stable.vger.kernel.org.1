@@ -1,66 +1,58 @@
-Return-Path: <stable+bounces-239838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239505-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UB3UBLNb5mkwvQEAu9opvQ
-	(envelope-from <stable+bounces-239838-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:00:35 +0200
+	id MCwBL99e5mkWvgEAu9opvQ
+	(envelope-from <stable+bounces-239505-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:14:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A9844305CA
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:00:34 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FD56430C85
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:14:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id ABCE5308A07B
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:09:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 965F7320E7CE
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:53:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9F0733C187;
-	Mon, 20 Apr 2026 16:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFABA336EE1;
+	Mon, 20 Apr 2026 15:53:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wF+yNIQx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hFqaSQKb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D8972236E3;
-	Mon, 20 Apr 2026 16:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2E6C2E11C7;
+	Mon, 20 Apr 2026 15:53:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701345; cv=none; b=SQVXrUv2yiRzrQL3yaPafWb2+vq6xkNyaJbEk/PKc4i9DrclIQIPYvCaxEwpWNCSSShmotD3ZPlU7Zi/WtEZzJIGZzvAcS4gBj3FI3aO7lYsmFjlyiFznOEqudzo0wQNnQEe4xmYZXTgiVU4uXpJRNd0ipQGAVK2Xbtl80mCLvI=
+	t=1776700425; cv=none; b=ZiUIzSP7yeP4wiDETUe6kcU/ikGJIaxchXRvaBUemrgp0RsmoE9UWEGRY/4BccD0rM3OdZM3rjFsW3v69R2GyIxOYSfXCEWGDwk8LxoHakSZJJih4OHdaQsqWm3Xsz2pNdc1OWkbIlPKn+NccJdx+8z+V++SJDsgEq/AO3QvNy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701345; c=relaxed/simple;
-	bh=iCg8PQu8HQLafhH8dWcSV/YLeN0RlKydDNloJOO330M=;
+	s=arc-20240116; t=1776700425; c=relaxed/simple;
+	bh=9hvSbGue85kWPwdCayGuj7VVVgwbJYATviwHX2aS9yo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ojmuP9dr4ldlXOc+8X+Ay+KqpHsE49iTV9jmG5IgoafedNiMY1qQaBCxVPMlneg9krFmeXlY30imG25HmwdLAKBfzNi92yn89KmABk8ltMxSkAgHpQvqveREN0gthXQjWTYkRD2XaZw9N2QyqIZnIwW/l0BuWHp/HGpUzxUIyTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wF+yNIQx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A20CC19425;
-	Mon, 20 Apr 2026 16:09:04 +0000 (UTC)
+	 MIME-Version; b=IKQettclqjo93XV9KKjSeMLA2MJPUKIBmUK/dpOjwiVLgD9+RgQHqf2MEWjCYkHcSViKa5PY+fwTuPBK/ZjW/zoz+Ebd8FXFAjJZ1RBXrXLoG1a8+RtX7Vuvgv3E9OWQHwkZOqI6VTwpr7oc/jJadoDonnMHv7Lu8T2PLCnpEls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hFqaSQKb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0568BC19425;
+	Mon, 20 Apr 2026 15:53:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701345;
-	bh=iCg8PQu8HQLafhH8dWcSV/YLeN0RlKydDNloJOO330M=;
+	s=korg; t=1776700425;
+	bh=9hvSbGue85kWPwdCayGuj7VVVgwbJYATviwHX2aS9yo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wF+yNIQx0IIAq23y5duvfIQr0Xd9b8G0jSF7JD9/+uSFAkUw5vSGWJ/0O16oMvlNO
-	 PdxG2Odk3TtguWV6hj0ChfkHYnKevczYY5Y0gYia7jSSnOQeiWRyZuwnYSpvo6Zfns
-	 U6XS4ALbrKwQb0jiHJ2RqBDAAffysn9HmO38lOUI=
+	b=hFqaSQKbqZNMxTSnsZZMoMJv1AJBv07+TFbgCayFBYoWVCpJwyjYlal5aITGRXkTJ
+	 vd355q/bESe9UyTNSGc+L75IW+xXndtvqShWEKbDAvBAmiqm99MAYfB45ACvG/lZzm
+	 +M1+6rJGYO4VG4jo5pEzWkoYKvPpl786nGehnK2s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ren Wei <enjou1224z@gmail.com>,
-	Jiexun Wang <wangjiexun2025@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 076/162] af_unix: read UNIX_DIAG_VFS data under unix_state_lock
+	stable <stable@kernel.org>,
+	Michael Zimmermann <sigmaepsilon92@gmail.com>
+Subject: [PATCH 6.19 167/220] usb: gadget: f_hid: dont call cdev_init while cdev in use
 Date: Mon, 20 Apr 2026 17:41:48 +0200
-Message-ID: <20260420153929.789952270@linuxfoundation.org>
+Message-ID: <20260420153940.040532112@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
-References: <20260420153927.006696811@linuxfoundation.org>
+In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
+References: <20260420153934.013228280@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,20 +68,20 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-239838-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,google.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-239505-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -98,85 +90,82 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,lzu.edu.cn:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 7A9844305CA
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 3FD56430C85
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiexun Wang <wangjiexun2025@gmail.com>
+From: Michael Zimmermann <sigmaepsilon92@gmail.com>
 
-[ Upstream commit 39897df386376912d561d4946499379effa1e7ef ]
+commit 81ebd43cc0d6d106ce7b6ccbf7b5e40ca7f5503d upstream.
 
-Exact UNIX diag lookups hold a reference to the socket, but not to
-u->path. Meanwhile, unix_release_sock() clears u->path under
-unix_state_lock() and drops the path reference after unlocking.
+When calling unbind, then bind again, cdev_init reinitialized the cdev,
+even though there may still be references to it. That's the case when
+the /dev/hidg* device is still opened. This obviously unsafe behavior
+like oopes.
 
-Read the inode and device numbers for UNIX_DIAG_VFS while holding
-unix_state_lock(), then emit the netlink attribute after dropping the
-lock.
+This fixes this by using cdev_alloc to put the cdev on the heap. That
+way, we can simply allocate a new one in hidg_bind.
 
-This keeps the VFS data stable while the reply is being built.
-
-Fixes: 5f7b0569460b ("unix_diag: Unix inode info NLA")
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Co-developed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Yuan Tan <yuantan098@gmail.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Tested-by: Ren Wei <enjou1224z@gmail.com>
-Signed-off-by: Jiexun Wang <wangjiexun2025@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20260407080015.1744197-1-n05ec@lzu.edu.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Closes: https://lore.kernel.org/linux-usb/CAN9vWDKZn0Ts5JyV2_xcAmbnBEi0znMLg_USMFrShRryXrgWGQ@mail.gmail.com/T/#m2cb0dba3633b67b2a679c98499508267d1508881
+Cc: stable <stable@kernel.org>
+Signed-off-by: Michael Zimmermann <sigmaepsilon92@gmail.com>
+Link: https://patch.msgid.link/20260327192209.59945-1-sigmaepsilon92@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/unix/diag.c | 21 +++++++++++++--------
- 1 file changed, 13 insertions(+), 8 deletions(-)
+ drivers/usb/gadget/function/f_hid.c |   15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/net/unix/diag.c b/net/unix/diag.c
-index 9138af8b465e0..6a06a251a2348 100644
---- a/net/unix/diag.c
-+++ b/net/unix/diag.c
-@@ -26,18 +26,23 @@ static int sk_diag_dump_name(struct sock *sk, struct sk_buff *nlskb)
+--- a/drivers/usb/gadget/function/f_hid.c
++++ b/drivers/usb/gadget/function/f_hid.c
+@@ -106,7 +106,7 @@ struct f_hidg {
+ 	struct list_head		report_list;
  
- static int sk_diag_dump_vfs(struct sock *sk, struct sk_buff *nlskb)
+ 	struct device			dev;
+-	struct cdev			cdev;
++	struct cdev			*cdev;
+ 	struct usb_function		func;
+ 
+ 	struct usb_ep			*in_ep;
+@@ -749,8 +749,9 @@ static int f_hidg_release(struct inode *
+ 
+ static int f_hidg_open(struct inode *inode, struct file *fd)
  {
--	struct dentry *dentry = unix_sk(sk)->path.dentry;
-+	struct unix_diag_vfs uv;
-+	struct dentry *dentry;
-+	bool have_vfs = false;
++	struct kobject *parent = inode->i_cdev->kobj.parent;
+ 	struct f_hidg *hidg =
+-		container_of(inode->i_cdev, struct f_hidg, cdev);
++		container_of(parent, struct f_hidg, dev.kobj);
  
-+	unix_state_lock(sk);
-+	dentry = unix_sk(sk)->path.dentry;
- 	if (dentry) {
--		struct unix_diag_vfs uv = {
--			.udiag_vfs_ino = d_backing_inode(dentry)->i_ino,
--			.udiag_vfs_dev = dentry->d_sb->s_dev,
--		};
--
--		return nla_put(nlskb, UNIX_DIAG_VFS, sizeof(uv), &uv);
-+		uv.udiag_vfs_ino = d_backing_inode(dentry)->i_ino;
-+		uv.udiag_vfs_dev = dentry->d_sb->s_dev;
-+		have_vfs = true;
+ 	fd->private_data = hidg;
+ 
+@@ -1276,8 +1277,12 @@ static int hidg_bind(struct usb_configur
  	}
-+	unix_state_unlock(sk);
  
--	return 0;
-+	if (!have_vfs)
-+		return 0;
+ 	/* create char device */
+-	cdev_init(&hidg->cdev, &f_hidg_fops);
+-	status = cdev_device_add(&hidg->cdev, &hidg->dev);
++	hidg->cdev = cdev_alloc();
++	if (!hidg->cdev)
++		goto fail_free_all;
++	hidg->cdev->ops = &f_hidg_fops;
 +
-+	return nla_put(nlskb, UNIX_DIAG_VFS, sizeof(uv), &uv);
- }
++	status = cdev_device_add(hidg->cdev, &hidg->dev);
+ 	if (status)
+ 		goto fail_free_all;
  
- static int sk_diag_dump_peer(struct sock *sk, struct sk_buff *nlskb)
--- 
-2.53.0
-
+@@ -1579,7 +1584,7 @@ static void hidg_unbind(struct usb_confi
+ {
+ 	struct f_hidg *hidg = func_to_hidg(f);
+ 
+-	cdev_device_del(&hidg->cdev, &hidg->dev);
++	cdev_device_del(hidg->cdev, &hidg->dev);
+ 	destroy_workqueue(hidg->workqueue);
+ 	usb_free_all_descriptors(f);
+ }
 
 
 
