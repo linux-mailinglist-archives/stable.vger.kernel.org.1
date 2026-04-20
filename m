@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-239627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239461-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gL70NXJi5mmavgEAu9opvQ
-	(envelope-from <stable+bounces-239627-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:29:22 +0200
+	id 2D9LEKlk5mkKvwEAu9opvQ
+	(envelope-from <stable+bounces-239461-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:38:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5A3D431452
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:29:21 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3A12431A9C
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:38:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3F8E531135A7
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:59:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F1DB33178850
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:51:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCC90329E44;
-	Mon, 20 Apr 2026 15:59:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0374334C39;
+	Mon, 20 Apr 2026 15:51:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="duSLrFqp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hZmkm9xW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90A721EB5CE;
-	Mon, 20 Apr 2026 15:59:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B440332E696;
+	Mon, 20 Apr 2026 15:51:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700741; cv=none; b=G2MY2MqgNYcX8VtORUa6z+hmcsjpZiitQHLs1t6duiqghwSU+QDf1ErpZRK216GvUUxGAczgNdJxgUJTS4wwFCVZfYJfFwvm0V/XGl7feFgcTR06vZ8gXlRUB0NgSuei6EUe/Lqzhl2F95v9ZUCf/K+WtpxWoTrI9U3aHM2U6As=
+	t=1776700312; cv=none; b=BoeCR7x9o7YJcbvqDQyES1OcrTAGxP5uaiixR5NOZ4tfa+bvKHwewN2RtdAzZlo2he4xX5ncl2VZ72kkwzJXmYcAYNSEv4SwnoyxebodMFcubGaUbZsOTVe7bSInWhVCmddlX4IPxtyrv79Q/k8l96O+Z+TbcAAMdiisxETOf48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700741; c=relaxed/simple;
-	bh=nzHr05GC+ZV/e6yXtgU+TsNohVCpcUZd0a/Ka68/tR8=;
+	s=arc-20240116; t=1776700312; c=relaxed/simple;
+	bh=8rgzU5yaCIMrqgV646aWUqUJmSfh/MM72M2gRh456iM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bUw2kNfgzQ/fB5ljRJElKK0VOe1id8V3gVyKJ53QXaVt40eaXO52y8tkjF3fkZJA3lPlKNa/e7AeunWPQ8hAOkShcC94g1g9lgjQozzxCtwhpyv1bdrTCEO5QF3rsKmi29PPDNmo5uu5VTwef+RXxLSwzKIJbOizsdp7t0WjMR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=duSLrFqp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27FE1C19425;
-	Mon, 20 Apr 2026 15:59:01 +0000 (UTC)
+	 MIME-Version; b=AxY65vmudFirv1zjCINN2/d1q8bXOkYP6xUQ53W5nFXnrugANOofh9Obxzot8Lb0QBTN/wOOJHuxoQwT23ooFZKx5YHu/sGGh9zIei7OJGKxBDDAXVV7RjtWjkFR4u/ikvMM5+lLATdj90Zc/QaJRYJYqXM/tFeeEAH8ApVN7JI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hZmkm9xW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B4AFC19425;
+	Mon, 20 Apr 2026 15:51:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700741;
-	bh=nzHr05GC+ZV/e6yXtgU+TsNohVCpcUZd0a/Ka68/tR8=;
+	s=korg; t=1776700312;
+	bh=8rgzU5yaCIMrqgV646aWUqUJmSfh/MM72M2gRh456iM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=duSLrFqpahlmVdjzAqiYHqpCBMj+9N++cScsX146o9eSqbiATIcviFUUUjeUQ+6kK
-	 oZnjvgt1R5UMQHvdmZ/brIx9UK6hKlJbAgOnuRGTFp4mV7nO4yMHmSJL1+0oZC4gQf
-	 1Qr9W3PwHdllbGjvSVoMqmid32PfgaGbRiaFpEBI=
+	b=hZmkm9xWR1zBB8NjOMox7ltHvhdtGmnDSd1qr9JqFFvibMDiGzhNqwaeCWob4SO0z
+	 ZizboZXJD1y/KVAd5c8gmiAtjUVkaFlFLotUH3YEB10qLwhXUhrjPz0aRES491XPce
+	 m2w+Slam0gZgP43u8c20vPzfHBSSEez87GuhawnE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Melissa Wen <mwen@igalia.com>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Luigi Leonardi <leonardi@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 068/198] drm/vc4: Protect madv read in vc4_gem_object_mmap() with madv_lock
+Subject: [PATCH 6.19 106/220] vsock/test: fix send_buf()/recv_buf() EINTR handling
 Date: Mon, 20 Apr 2026 17:40:47 +0200
-Message-ID: <20260420153938.060315447@linuxfoundation.org>
+Message-ID: <20260420153937.850458592@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
+References: <20260420153934.013228280@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +64,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239627-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239461-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[igalia.com:email,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: E5A3D431452
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C3A12431A9C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maíra Canal <mcanal@igalia.com>
+From: Stefano Garzarella <sgarzare@redhat.com>
 
-[ Upstream commit 338c56050d8e892604da97f67bfa8cc4015a955f ]
+[ Upstream commit 24ad7ff668896325591fa0b570f2cca6c55f136f ]
 
-The mmap callback reads bo->madv without holding madv_lock, racing with
-concurrent DRM_IOCTL_VC4_GEM_MADVISE calls that modify the field under
-the same lock. Add the missing locking to prevent the data race.
+When send() or recv() returns -1 with errno == EINTR, the code skips
+the break but still adds the return value to nwritten/nread, making it
+decrease by 1. This leads to wrong buffer offsets and wrong bytes count.
 
-Fixes: b9f19259b84d ("drm/vc4: Add the DRM_IOCTL_VC4_GEM_MADVISE ioctl")
-Reviewed-by: Melissa Wen <mwen@igalia.com>
-Link: https://patch.msgid.link/20260330-vc4-misc-fixes-v1-4-92defc940a29@igalia.com
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Fix it by explicitly continuing the loop on EINTR, so the return value
+is only added when it is positive.
+
+Fixes: a8ed71a27ef5 ("vsock/test: add recv_buf() utility function")
+Fixes: 12329bd51fdc ("vsock/test: add send_buf() utility function")
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+Reviewed-by: Luigi Leonardi <leonardi@redhat.com>
+Link: https://patch.msgid.link/20260403093251.30662-1-sgarzare@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vc4/vc4_bo.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tools/testing/vsock/util.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/vc4/vc4_bo.c b/drivers/gpu/drm/vc4/vc4_bo.c
-index 4aaa587be3a5e..a1efda9c39f92 100644
---- a/drivers/gpu/drm/vc4/vc4_bo.c
-+++ b/drivers/gpu/drm/vc4/vc4_bo.c
-@@ -738,12 +738,15 @@ static int vc4_gem_object_mmap(struct drm_gem_object *obj, struct vm_area_struct
- 		return -EINVAL;
- 	}
+diff --git a/tools/testing/vsock/util.c b/tools/testing/vsock/util.c
+index 9430ef5b8bc3e..1fe1338c79cd1 100644
+--- a/tools/testing/vsock/util.c
++++ b/tools/testing/vsock/util.c
+@@ -344,7 +344,9 @@ void send_buf(int fd, const void *buf, size_t len, int flags,
+ 		ret = send(fd, buf + nwritten, len - nwritten, flags);
+ 		timeout_check("send");
  
-+	mutex_lock(&bo->madv_lock);
- 	if (bo->madv != VC4_MADV_WILLNEED) {
- 		DRM_DEBUG("mmapping of %s BO not allowed\n",
- 			  bo->madv == VC4_MADV_DONTNEED ?
- 			  "purgeable" : "purged");
-+		mutex_unlock(&bo->madv_lock);
- 		return -EINVAL;
- 	}
-+	mutex_unlock(&bo->madv_lock);
+-		if (ret == 0 || (ret < 0 && errno != EINTR))
++		if (ret < 0 && errno == EINTR)
++			continue;
++		if (ret <= 0)
+ 			break;
  
- 	return drm_gem_dma_mmap(&bo->base, vma);
- }
+ 		nwritten += ret;
+@@ -396,7 +398,9 @@ void recv_buf(int fd, void *buf, size_t len, int flags, ssize_t expected_ret)
+ 		ret = recv(fd, buf + nread, len - nread, flags);
+ 		timeout_check("recv");
+ 
+-		if (ret == 0 || (ret < 0 && errno != EINTR))
++		if (ret < 0 && errno == EINTR)
++			continue;
++		if (ret <= 0)
+ 			break;
+ 
+ 		nread += ret;
 -- 
 2.53.0
 
