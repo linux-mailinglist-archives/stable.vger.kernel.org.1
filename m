@@ -1,145 +1,192 @@
-Return-Path: <stable+bounces-238758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238759-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EGMAKEYk5ml1sgEAu9opvQ
-	(envelope-from <stable+bounces-238758-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:04:06 +0200
+	id 2HQiBPwl5mmOsgEAu9opvQ
+	(envelope-from <stable+bounces-238759-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:11:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34AF642B31B
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:04:06 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 709AA42B4D2
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:11:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 976B7300B465
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 13:04:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 621043124936
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 13:05:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A400D39FCDB;
-	Mon, 20 Apr 2026 13:04:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 049223A16A7;
+	Mon, 20 Apr 2026 13:05:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TENHAvJl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dXxMAJnb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53B4B399019;
-	Mon, 20 Apr 2026 13:04:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 250F53A16A3
+	for <stable@vger.kernel.org>; Mon, 20 Apr 2026 13:05:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776690243; cv=none; b=d0ChDkqQL6WSyRRSebFzlQDPsL8Ia54XoNAltW2NeQMWRDxRa9nTd4bLY4j04PRqjHD3Q/4v3zkCI7dHCaXv7Bu1fyNr9CX5ein2dQJHSpD5fCAAIho9sHlA65yTG+efhhWqYXd7k3dyZ+1PtwGP1AL9GSATP55MUZev/2+uFUA=
+	t=1776690306; cv=none; b=avtJ5bDZHhEBQxqale7rIVhAR6sGKz0w5eEXzD08ALd1mjTKvnxU0rmUKQvfV2Spz3Jd0Xr9nI+tUMIczvDiRjQVa1+NE4GjUlupeXhBU1KlvDdVCoNYHjRtt1j1Gs0e8mP3nmSQc0vk2EiPMe4syM8vb7xjjHoStDcBj1m5/fA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776690243; c=relaxed/simple;
-	bh=6l/uKiHJ2TRLu8+eUqPvROgTVTLN+Kie5LYERHfBn3Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rTcHcbR5MDlZXJVjsRNZXi3RrbXFgLf49QdRjcCMDZkangk04FeLYBDJRSOsQOTlr51IQc9tmY4t684pHBRirMuhYw6zCwGzRtf7obRpC1Htx3iFfpjA1QTVzWB/y9t1KLzboeqqQeiNf2X9RgXW42OHggce747muulUqJvvydg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TENHAvJl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B68B2C19425;
-	Mon, 20 Apr 2026 13:04:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776690243;
-	bh=6l/uKiHJ2TRLu8+eUqPvROgTVTLN+Kie5LYERHfBn3Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TENHAvJlSR5HWZdXlH+qS8mibevUTztLgJ316ztE2xRMjxHu53WL+v7VEYffTzC2F
-	 7jVF51Gb+oxB2RKPT+juxNZ7OXlqp1psb8A9VE1XB+NmSUf1B7ZWRymG2B29NXkEtd
-	 jBt94Z4aRfDUu3pGSbNrZ3ei6HYUxqHv/U4H2Xx7LKuXKfxbogdOAjX11YaYGKikhg
-	 QmE5bRgUgkqsYONQ/aqy6nt8kKHCYeptNSopGUZkrAl96+WPQgp77Qq8SBUdETKhBS
-	 91pZ9YlSpIblGFnw+sorFkeZsffdpqTI+vD9Kvhfjbppm50N1JIxaxJEgcKAtDf0LZ
-	 Boj/1q6sqtuRw==
-Date: Mon, 20 Apr 2026 22:04:01 +0900
-From: "Harry Yoo (Oracle)" <harry@kernel.org>
-To: Marco Elver <elver@google.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Uladzislau Rezki <urezki@gmail.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
-	Vitaly Wool <vitaly.wool@konsulko.se>, stable@vger.kernel.org
-Subject: Re: [PATCH] vmalloc: fix buffer overflow in vrealloc_node_align()
-Message-ID: <aeYkQZHY7Vln0M5L@hyeyoo>
-References: <20260420114805.3572606-2-elver@google.com>
+	s=arc-20240116; t=1776690306; c=relaxed/simple;
+	bh=kDOk7GzNNbWhqHnDIBW0/4FWAbyZAGck179tTfoWsfY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=YxUDPrIFxRRoPoIYgD83OgkrqjuHOohKHYAlFJ5xeySW3OneNCcSyfzmv8KBGgZkZGhSRHFm1TAUKOEUbgRdrGNoZaAFczOAeY0nCrrbKC+4yiP0uIKOmJw6dAXZ925WkFppH8Lcr1KbGNN4uJJRSN2W1Ei+kFqZkQvqMwaJdfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dXxMAJnb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC552C19425;
+	Mon, 20 Apr 2026 13:05:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1776690305;
+	bh=kDOk7GzNNbWhqHnDIBW0/4FWAbyZAGck179tTfoWsfY=;
+	h=Subject:To:Cc:From:Date:From;
+	b=dXxMAJnb4dmyvpZFB4nQdoNaoPBjYCyfhKD0ulTa9y5uBMkEaAwJpZ7rg6g+0sBdZ
+	 k+ZdgRGGDFqK24qvVnirQ6JVLfTK2vdEQzFsjf5p/Jr1uqmpRzLn2BFezeuuL+ukuj
+	 mDg+nU7WnbE1YpJvatcqZywR+F5UsDKyPI8iNexQ=
+Subject: FAILED: patch "[PATCH] ocfs2: fix possible deadlock between unlink and" failed to apply to 5.15-stable tree
+To: joseph.qi@linux.alibaba.com,akpm@linux-foundation.org,gechangwei@live.cn,heming.zhao@suse.com,jiangqi903@gmail.com,jlbec@evilplan.org,junxiao.bi@oracle.com,mark@fasheh.com,piaojun@huawei.com,stable@vger.kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 20 Apr 2026 15:05:02 +0200
+Message-ID: <2026042002-rumbling-plunder-40f1@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260420114805.3572606-2-elver@google.com>
-X-Spamd-Result: default: False [-1.66 / 15.00];
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[kernel.org,linux-foundation.org,gmail.com,kvack.org,vger.kernel.org,googlegroups.com,konsulko.se];
-	TAGGED_FROM(0.00)[bounces-238758-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-238759-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[linux.alibaba.com,linux-foundation.org,live.cn,suse.com,gmail.com,evilplan.org,oracle.com,fasheh.com,huawei.com,vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[harry@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NO_DN(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 34AF642B31B
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+]
+X-Rspamd-Queue-Id: 709AA42B4D2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, Apr 20, 2026 at 01:47:26PM +0200, Marco Elver wrote:
-> Commit 4c5d3365882d ("mm/vmalloc: allow to set node and align in
-> vrealloc") added the ability to force a new allocation if the current
-> pointer is on the wrong NUMA node, or if an alignment constraint is not
-> met, even if the user is shrinking the allocation.
-> 
-> On this path (need_realloc), the code allocates a new object of 'size'
-> bytes and then memcpy()s 'old_size' bytes into it. If the request is to
-> shrink the object (size < old_size), this results in an out-of-bounds
-> write on the new buffer.
-> 
-> Fix this by bounding the copy length by the new allocation size.
-> 
-> Fixes: 4c5d3365882d ("mm/vmalloc: allow to set node and align in vrealloc")
-> Cc: <stable@vger.kernel.org>
-> Reported-by: Harry Yoo (Oracle) <harry@kernel.org>
-> Signed-off-by: Marco Elver <elver@google.com>
-> ---
 
-Looks good to me,
-Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Thanks a lot for fixing it!
+To reproduce the conflict and resubmit, you may use the following commands:
 
->  mm/vmalloc.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index 61caa55a4402..8b1124158f54 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -4361,7 +4361,7 @@ void *vrealloc_node_align_noprof(const void *p, size_t size, unsigned long align
->  		return NULL;
->  
->  	if (p) {
-> -		memcpy(n, p, old_size);
-> +		memcpy(n, p, min(size, old_size));
->  		vfree(p);
->  	}
->  
-> -- 
-> 2.54.0.rc1.513.gad8abe7a5a-goog
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x b02da26a992db0c0e2559acbda0fc48d4a2fd337
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026042002-rumbling-plunder-40f1@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
--- 
-Cheers,
-Harry / Hyeonggon
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From b02da26a992db0c0e2559acbda0fc48d4a2fd337 Mon Sep 17 00:00:00 2001
+From: Joseph Qi <joseph.qi@linux.alibaba.com>
+Date: Fri, 6 Mar 2026 11:22:11 +0800
+Subject: [PATCH] ocfs2: fix possible deadlock between unlink and
+ dio_end_io_write
+
+ocfs2_unlink takes orphan dir inode_lock first and then ip_alloc_sem,
+while in ocfs2_dio_end_io_write, it acquires these locks in reverse order.
+This creates an ABBA lock ordering violation on lock classes
+ocfs2_sysfile_lock_key[ORPHAN_DIR_SYSTEM_INODE] and
+ocfs2_file_ip_alloc_sem_key.
+
+Lock Chain #0 (orphan dir inode_lock -> ip_alloc_sem):
+ocfs2_unlink
+  ocfs2_prepare_orphan_dir
+    ocfs2_lookup_lock_orphan_dir
+      inode_lock(orphan_dir_inode) <- lock A
+    __ocfs2_prepare_orphan_dir
+      ocfs2_prepare_dir_for_insert
+        ocfs2_extend_dir
+	  ocfs2_expand_inline_dir
+	    down_write(&oi->ip_alloc_sem) <- Lock B
+
+Lock Chain #1 (ip_alloc_sem -> orphan dir inode_lock):
+ocfs2_dio_end_io_write
+  down_write(&oi->ip_alloc_sem) <- Lock B
+  ocfs2_del_inode_from_orphan()
+    inode_lock(orphan_dir_inode) <- Lock A
+
+Deadlock Scenario:
+  CPU0 (unlink)                     CPU1 (dio_end_io_write)
+  ------                            ------
+  inode_lock(orphan_dir_inode)
+                                    down_write(ip_alloc_sem)
+  down_write(ip_alloc_sem)
+                                    inode_lock(orphan_dir_inode)
+
+Since ip_alloc_sem is to protect allocation changes, which is unrelated
+with operations in ocfs2_del_inode_from_orphan.  So move
+ocfs2_del_inode_from_orphan out of ip_alloc_sem to fix the deadlock.
+
+Link: https://lkml.kernel.org/r/20260306032211.1016452-1-joseph.qi@linux.alibaba.com
+Reported-by: syzbot+67b90111784a3eac8c04@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=67b90111784a3eac8c04
+Fixes: a86a72a4a4e0 ("ocfs2: take ip_alloc_sem in ocfs2_dio_get_block & ocfs2_dio_end_io_write")
+Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Reviewed-by: Heming Zhao <heming.zhao@suse.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Joseph Qi <jiangqi903@gmail.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+
+diff --git a/fs/ocfs2/aops.c b/fs/ocfs2/aops.c
+index 17ba79f443ee..09146b43d1f0 100644
+--- a/fs/ocfs2/aops.c
++++ b/fs/ocfs2/aops.c
+@@ -2294,8 +2294,6 @@ static int ocfs2_dio_end_io_write(struct inode *inode,
+ 		goto out;
+ 	}
+ 
+-	down_write(&oi->ip_alloc_sem);
+-
+ 	/* Delete orphan before acquire i_rwsem. */
+ 	if (dwc->dw_orphaned) {
+ 		BUG_ON(dwc->dw_writer_pid != task_pid_nr(current));
+@@ -2308,6 +2306,7 @@ static int ocfs2_dio_end_io_write(struct inode *inode,
+ 			mlog_errno(ret);
+ 	}
+ 
++	down_write(&oi->ip_alloc_sem);
+ 	di = (struct ocfs2_dinode *)di_bh->b_data;
+ 
+ 	ocfs2_init_dinode_extent_tree(&et, INODE_CACHE(inode), di_bh);
+
 
