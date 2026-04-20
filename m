@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-239442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239790-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UDBQFt5b5mkwvQEAu9opvQ
-	(envelope-from <stable+bounces-239442-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:01:18 +0200
+	id SPEANE1o5mnBvwEAu9opvQ
+	(envelope-from <stable+bounces-239790-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:54:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24B0D430623
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:01:17 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 491074323E7
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:54:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 53BCD3017A23
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:51:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4455C3131767
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:07:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DE1E2D77E5;
-	Mon, 20 Apr 2026 15:51:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0A82336EC9;
+	Mon, 20 Apr 2026 16:07:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bn0foGH7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qGKDk7b/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E52E83358B0;
-	Mon, 20 Apr 2026 15:51:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B42C52DE6E3;
+	Mon, 20 Apr 2026 16:07:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700264; cv=none; b=Gh1MwFKMPsLlfgypCHAjkDN5xtcV9c/Fmzc09oSs37ElduM1fk87IvCYWfGwEkXO8sQ8xTrCGZ2Cg1R7Uog1mc+kwCa5YdlWkeu2I9Y58WK1IG6vjXNJPDZnf5zOvPaN9oGCK8PqlL3iCnycb44G5Cy/6bawG7TKAgp2TYdz+eM=
+	t=1776701222; cv=none; b=eiMyd/2GmvJA56TsfZ4tmbQW5m/zYAV6hnKnIJmsErP14DH+7ISNZWIBsfTvUc73Lsh9HvIBi3Bp0oy08vk7mNSaXSGeLjO2zqCWcX0v/puaHMIWmOui4CtAKh3unpC9FyqwzlbBLRc9g7woBEh/HOKYvaRBVGLFmIg2aeMetzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700264; c=relaxed/simple;
-	bh=G4jfACR5TN8FevEQP/JDpuAIsupxGqUBq0CPXbo0FC0=;
+	s=arc-20240116; t=1776701222; c=relaxed/simple;
+	bh=/81kCo76GsD9R1hzWbcg02TtS/aOKlNMV9oVN80VPH0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Tf2i8y874ENu5KMfBBqngVd0g++Q3TZASdSy5aiRAxvutluhZ1pnA9tX4I0frNwWrOlMbqzKMTmj7ibqWosDtWu7myYYuc6tSL5UZSMbtIdysoLFsDG/CVC4qrKf4hu0PLsIZdGm790s9O059TFi5+OESeelka3eytAZ9B3Hz3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bn0foGH7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E9CBC19425;
-	Mon, 20 Apr 2026 15:51:03 +0000 (UTC)
+	 MIME-Version; b=CVFzxh7IJ29LXRDPYZmge+voudeDyRiiQfHQh1I50PjNfMOI63rM04I+BDlwbpxqtiVlNlk6CEllmkgDK3e6Mq6mtQCfNATWHmvSfQx359lrgHU5TONLP/prF97jupQFf59pKQpqOgpfNGWdLFWAagbUzm0KXHdeDTs+xG6dtSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qGKDk7b/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41C35C19425;
+	Mon, 20 Apr 2026 16:07:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700263;
-	bh=G4jfACR5TN8FevEQP/JDpuAIsupxGqUBq0CPXbo0FC0=;
+	s=korg; t=1776701222;
+	bh=/81kCo76GsD9R1hzWbcg02TtS/aOKlNMV9oVN80VPH0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bn0foGH7VrtxXT5MNnc1TTO6XarkBwCbed+B/xv1J3QEZjlY01uq9gvwFyr3qPN7G
-	 VWMSBrpQhgloBdIVqE+wfQKbB7GEqi2DxFozyv2Xs05m2Lak1Z+DgAYxEurKz9LeSc
-	 /xf85mYeIhrKSkaP2xxKtpJM3EMIErgMX5bXW93I=
+	b=qGKDk7b/34Kcx1ThNzvHeda+6z4Yqem/7q324VHzNXAvsRS0YIPxHRvQkLrNKFRKz
+	 kgImDflU8U5xJnlOQuGJ6EYCYZBBRV+QXVZ+Pe4KYP8SufH5PMeTahSKZddBEW8m5S
+	 PT6jITrR0TpBcigbpbokzYLrfXzoP+g9zpt/DWSs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Boris Burkov <boris@bur.io>,
+	Goldwyn Rodrigues <rgoldwyn@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 103/220] xsk: respect tailroom for ZC setups
+Subject: [PATCH 6.12 012/162] btrfs: tracepoints: get correct superblock from dentry in event btrfs_sync_file()
 Date: Mon, 20 Apr 2026 17:40:44 +0200
-Message-ID: <20260420153937.743798496@linuxfoundation.org>
+Message-ID: <20260420153927.461342632@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
-References: <20260420153934.013228280@linuxfoundation.org>
+In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
+References: <20260420153927.006696811@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,154 +64,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-239442-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239790-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,fomichev.me:email,msgid.link:url]
-X-Rspamd-Queue-Id: 24B0D430623
+	DBL_BLOCKED_OPENRESOLVER(0.00)[bur.io:email,suse.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.com:email]
+X-Rspamd-Queue-Id: 491074323E7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+From: Goldwyn Rodrigues <rgoldwyn@suse.de>
 
-[ Upstream commit 1ee1605138fc94cc8f8f273321dd2471c64977f9 ]
+[ Upstream commit a85b46db143fda5869e7d8df8f258ccef5fa1719 ]
 
-Multi-buffer XDP stores information about frags in skb_shared_info that
-sits at the tailroom of a packet. The storage space is reserved via
-xdp_data_hard_end():
+If overlay is used on top of btrfs, dentry->d_sb translates to overlay's
+super block and fsid assignment will lead to a crash.
 
-	((xdp)->data_hard_start + (xdp)->frame_sz -	\
-	 SKB_DATA_ALIGN(sizeof(struct skb_shared_info)))
+Use file_inode(file)->i_sb to always get btrfs_sb.
 
-and then we refer to it via macro below:
-
-static inline struct skb_shared_info *
-xdp_get_shared_info_from_buff(const struct xdp_buff *xdp)
-{
-        return (struct skb_shared_info *)xdp_data_hard_end(xdp);
-}
-
-Currently we do not respect this tailroom space in multi-buffer AF_XDP
-ZC scenario. To address this, introduce xsk_pool_get_tailroom() and use
-it within xsk_pool_get_rx_frame_size() which is used in ZC drivers to
-configure length of HW Rx buffer.
-
-Typically drivers on Rx Hw buffers side work on 128 byte alignment so
-let us align the value returned by xsk_pool_get_rx_frame_size() in order
-to avoid addressing this on driver's side. This addresses the fact that
-idpf uses mentioned function *before* pool->dev being set so we were at
-risk that after subtracting tailroom we would not provide 128-byte
-aligned value to HW.
-
-Since xsk_pool_get_rx_frame_size() is actively used in xsk_rcv_check()
-and __xsk_rcv(), add a variant of this routine that will not include 128
-byte alignment and therefore old behavior is preserved.
-
-Reviewed-by: Björn Töpel <bjorn@kernel.org>
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
-Fixes: 24ea50127ecf ("xsk: support mbuf on ZC RX")
-Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Link: https://patch.msgid.link/20260402154958.562179-3-maciej.fijalkowski@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Boris Burkov <boris@bur.io>
+Signed-off-by: Goldwyn Rodrigues <rgoldwyn@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/xdp_sock_drv.h | 23 ++++++++++++++++++++++-
- net/xdp/xsk.c              |  4 ++--
- 2 files changed, 24 insertions(+), 3 deletions(-)
+ include/trace/events/btrfs.h | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/include/net/xdp_sock_drv.h b/include/net/xdp_sock_drv.h
-index 6b9ebae2dc952..46797645a0c24 100644
---- a/include/net/xdp_sock_drv.h
-+++ b/include/net/xdp_sock_drv.h
-@@ -41,16 +41,37 @@ static inline u32 xsk_pool_get_headroom(struct xsk_buff_pool *pool)
- 	return XDP_PACKET_HEADROOM + pool->headroom;
- }
+diff --git a/include/trace/events/btrfs.h b/include/trace/events/btrfs.h
+index 0ca86909ce5bd..b964cba4169c2 100644
+--- a/include/trace/events/btrfs.h
++++ b/include/trace/events/btrfs.h
+@@ -771,12 +771,15 @@ TRACE_EVENT(btrfs_sync_file,
+ 	),
  
-+static inline u32 xsk_pool_get_tailroom(bool mbuf)
-+{
-+	return mbuf ? SKB_DATA_ALIGN(sizeof(struct skb_shared_info)) : 0;
-+}
-+
- static inline u32 xsk_pool_get_chunk_size(struct xsk_buff_pool *pool)
- {
- 	return pool->chunk_size;
- }
+ 	TP_fast_assign(
+-		const struct dentry *dentry = file->f_path.dentry;
+-		const struct inode *inode = d_inode(dentry);
++		struct dentry *dentry = file_dentry(file);
++		struct inode *inode = file_inode(file);
++		struct dentry *parent = dget_parent(dentry);
++		struct inode *parent_inode = d_inode(parent);
  
--static inline u32 xsk_pool_get_rx_frame_size(struct xsk_buff_pool *pool)
-+static inline u32 __xsk_pool_get_rx_frame_size(struct xsk_buff_pool *pool)
- {
- 	return xsk_pool_get_chunk_size(pool) - xsk_pool_get_headroom(pool);
- }
- 
-+static inline u32 xsk_pool_get_rx_frame_size(struct xsk_buff_pool *pool)
-+{
-+	u32 frame_size =  __xsk_pool_get_rx_frame_size(pool);
-+	struct xdp_umem *umem = pool->umem;
-+	bool mbuf;
-+
-+	/* Reserve tailroom only for zero-copy pools that opted into
-+	 * multi-buffer. The reserved area is used for skb_shared_info,
-+	 * matching the XDP core's xdp_data_hard_end() layout.
-+	 */
-+	mbuf = pool->dev && (umem->flags & XDP_UMEM_SG_FLAG);
-+	frame_size -= xsk_pool_get_tailroom(mbuf);
-+
-+	return ALIGN_DOWN(frame_size, 128);
-+}
-+
- static inline u32 xsk_pool_get_rx_frag_step(struct xsk_buff_pool *pool)
- {
- 	return pool->unaligned ? 0 : xsk_pool_get_chunk_size(pool);
-diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
-index a6d3938154f21..4a1cc44ab305a 100644
---- a/net/xdp/xsk.c
-+++ b/net/xdp/xsk.c
-@@ -239,7 +239,7 @@ static u32 xsk_copy_xdp(void *to, void **from, u32 to_len,
- 
- static int __xsk_rcv(struct xdp_sock *xs, struct xdp_buff *xdp, u32 len)
- {
--	u32 frame_size = xsk_pool_get_rx_frame_size(xs->pool);
-+	u32 frame_size = __xsk_pool_get_rx_frame_size(xs->pool);
- 	void *copy_from = xsk_copy_xdp_start(xdp), *copy_to;
- 	u32 from_len, meta_len, rem, num_desc;
- 	struct xdp_buff_xsk *xskb;
-@@ -338,7 +338,7 @@ static int xsk_rcv_check(struct xdp_sock *xs, struct xdp_buff *xdp, u32 len)
- 	if (xs->dev != xdp->rxq->dev || xs->queue_id != xdp->rxq->queue_index)
- 		return -EINVAL;
- 
--	if (len > xsk_pool_get_rx_frame_size(xs->pool) && !xs->sg) {
-+	if (len > __xsk_pool_get_rx_frame_size(xs->pool) && !xs->sg) {
- 		xs->rx_dropped++;
- 		return -ENOSPC;
- 	}
+-		TP_fast_assign_fsid(btrfs_sb(file->f_path.dentry->d_sb));
++		dput(parent);
++		TP_fast_assign_fsid(btrfs_sb(inode->i_sb));
+ 		__entry->ino		= btrfs_ino(BTRFS_I(inode));
+-		__entry->parent		= btrfs_ino(BTRFS_I(d_inode(dentry->d_parent)));
++		__entry->parent		= btrfs_ino(BTRFS_I(parent_inode));
+ 		__entry->datasync	= datasync;
+ 		__entry->root_objectid	= btrfs_root_id(BTRFS_I(inode)->root);
+ 	),
 -- 
 2.53.0
 
