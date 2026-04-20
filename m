@@ -1,72 +1,58 @@
-Return-Path: <stable+bounces-239907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239759-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eMIQKNJR5mlduwEAu9opvQ
-	(envelope-from <stable+bounces-239907-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:18:26 +0200
+	id uA6jBARb5mmtvAEAu9opvQ
+	(envelope-from <stable+bounces-239759-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:57:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DC6F42F4A3
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:18:26 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88C8E430482
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:57:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E84DA3032612
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:11:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 42CD6320E802
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:05:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DF8E342CB0;
-	Mon, 20 Apr 2026 16:11:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 761383396EE;
+	Mon, 20 Apr 2026 16:05:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DihoOOVn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i4e/NnFn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DCEF2853F3;
-	Mon, 20 Apr 2026 16:11:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39695330B14;
+	Mon, 20 Apr 2026 16:05:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701519; cv=none; b=oifWEb4VkR6UL89F1m/1HadGlWI6++aTk2OH0hA9JFmvfaf79ISBdADTRu9ir9Ky5vQljwrW4QpTuPhZOSnZtfKfYgL3W4E04WeRYUisHXtfs/dBp5a5M7hLDZORBR6TjkDXcQTz+fjKVAc6/VKIj15h1w0JCCdZeu5gZiX1UKk=
+	t=1776701144; cv=none; b=dvwMsEo8oVa4fE2prpH2Cew/U0ug2/AiB3Tw0kPgmbFyEJM4NvH2a9qMTzumEEVw5tf2CIRoEDpqpQ61Fy8tAUSWqw2nMLOxrO6/5HkkJVtYdNWP/x7a9ktNY3WXEkpeqnbHctVzL8GHSes6Dr5og0YT9+2SinhcuuOD0LuKGx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701519; c=relaxed/simple;
-	bh=2c8TZF79DyUb+nz6SPnBX3akLouMrjWWZ3FksFSuhho=;
+	s=arc-20240116; t=1776701144; c=relaxed/simple;
+	bh=FXOJPDU0g5+tMs52Y8u+OgU7PoL92FliyQlBwXwH0XM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pjyd8w0571j04/2XVOoZJzHt2A8AnSytthXYo/ZCTO2I31S1PRWmNHfVT88OYm//hoddZ3lc1CWvqlf1VjEc9HvsJA61B1qNK1g2oyf6PkJdREzkwH9Y6omX9Sgf5doIJg4yvS/rkXhFnOp739x2SQNI70wtX/Ow+LuL0kigSGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DihoOOVn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D4C6C19425;
-	Mon, 20 Apr 2026 16:11:58 +0000 (UTC)
+	 MIME-Version; b=cY/1+h2uUeBGsatKbgl8SuSebc+j3mG+gDoJrnQRXHF1tBxNf7ReHHzACbmtpL2Y7pAIEF2dF1k9cs53YHFR1wNUhBlBvonWw3SACr2Wk1XvhZhgdeyEM+I4FafG1UrZqfkQ9SYfMxw66zDOeIBCNCGxHD7tyUC8Tnr2HEnjkYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i4e/NnFn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C58F1C19425;
+	Mon, 20 Apr 2026 16:05:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701519;
-	bh=2c8TZF79DyUb+nz6SPnBX3akLouMrjWWZ3FksFSuhho=;
+	s=korg; t=1776701144;
+	bh=FXOJPDU0g5+tMs52Y8u+OgU7PoL92FliyQlBwXwH0XM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DihoOOVn0sZsk6X14GqeEo/6ekgIrRTkVSy+QPGGY2pI+PJw9xLeJJucaWiLPc2im
-	 Lk9uTecxPf3AirINmaCXmuHRzb/fHjcpM+Z1edHZFNWkCuoa35QcAl1xmNUw9q/VuF
-	 Jc9ViHItOEHWU8oUM12uBk4sYYPkErK97CFyTXi8=
+	b=i4e/NnFnWmLsR5wxjRvC4pJEA/hdgdWE7uioOoR0eOWKkbMkoTdYkinWDuZSYj+w4
+	 abLQvvxHZY0uc2BoG4RV9hT8HiuT68pQdlckaLaLFpEmz1/sFlfBZOuB1eIhM7YESt
+	 ukH5oWWQZsqN+21fRxLW2FpyTy5aNcHxLRNdv/iw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Dennis Zhou <dennis@kernel.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	David Hildenbrand <david@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Josef Bacik <josef@toxicpanda.com>,
-	JP Kobryn <inwardvessel@gmail.com>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Tejun Heo <tj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 145/162] mm: blk-cgroup: fix use-after-free in cgwb_release_workfn()
+	Leon Romanovsky <leonro@nvidia.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>
+Subject: [PATCH 6.18 198/198] dma-mapping: handle DMA_ATTR_CPU_CACHE_CLEAN in trace output
 Date: Mon, 20 Apr 2026 17:42:57 +0200
-Message-ID: <20260420153932.301763226@linuxfoundation.org>
+Message-ID: <20260420153942.744563698@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
-References: <20260420153927.006696811@linuxfoundation.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -79,122 +65,68 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-239907-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,debian.org,kernel.org,linux.dev,kernel.dk,cmpxchg.org,toxicpanda.com,gmail.com,oracle.com,suse.com,google.com,linux-foundation.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-239759-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,kernel.dk:email,suse.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linux-foundation.org:email,oracle.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,toxicpanda.com:email,cmpxchg.org:email]
-X-Rspamd-Queue-Id: 6DC6F42F4A3
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[samsung.com:email,nvidia.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 88C8E430482
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Leon Romanovsky <leonro@nvidia.com>
 
-commit 8f5857be99f1ed1fa80991c72449541f634626ee upstream.
+commit 6f45b1604cf43945ef472ae4ef30354025307c19 upstream.
 
-cgwb_release_workfn() calls css_put(wb->blkcg_css) and then later accesses
-wb->blkcg_css again via blkcg_unpin_online().  If css_put() drops the last
-reference, the blkcg can be freed asynchronously (css_free_rwork_fn ->
-blkcg_css_free -> kfree) before blkcg_unpin_online() dereferences the
-pointer to access blkcg->online_pin, resulting in a use-after-free:
+Tracing prints decoded DMA attribute flags, but it does not yet
+include the recently added DMA_ATTR_CPU_CACHE_CLEAN. Add support
+for decoding and displaying this attribute in the trace output.
 
-  BUG: KASAN: slab-use-after-free in blkcg_unpin_online (./include/linux/instrumented.h:112 ./include/linux/atomic/atomic-instrumented.h:400 ./include/linux/refcount.h:389 ./include/linux/refcount.h:432 ./include/linux/refcount.h:450 block/blk-cgroup.c:1367)
-  Write of size 4 at addr ff11000117aa6160 by task kworker/71:1/531
-   Workqueue: cgwb_release cgwb_release_workfn
-   Call Trace:
-    <TASK>
-     blkcg_unpin_online (./include/linux/instrumented.h:112 ./include/linux/atomic/atomic-instrumented.h:400 ./include/linux/refcount.h:389 ./include/linux/refcount.h:432 ./include/linux/refcount.h:450 block/blk-cgroup.c:1367)
-     cgwb_release_workfn (mm/backing-dev.c:629)
-     process_scheduled_works (kernel/workqueue.c:3278 kernel/workqueue.c:3385)
-
-   Freed by task 1016:
-    kfree (./include/linux/kasan.h:235 mm/slub.c:2689 mm/slub.c:6246 mm/slub.c:6561)
-    css_free_rwork_fn (kernel/cgroup/cgroup.c:5542)
-    process_scheduled_works (kernel/workqueue.c:3302 kernel/workqueue.c:3385)
-
-** Stack based on commit 66672af7a095 ("Add linux-next specific files
-for 20260410")
-
-I am seeing this crash sporadically in Meta fleet across multiple kernel
-versions.  A full reproducer is available at:
-https://github.com/leitao/debug/blob/main/reproducers/repro_blkcg_uaf.sh
-
-(The race window is narrow.  To make it easily reproducible, inject a
-msleep(100) between css_put() and blkcg_unpin_online() in
-cgwb_release_workfn().  With that delay and a KASAN-enabled kernel, the
-reproducer triggers the splat reliably in less than a second.)
-
-Fix this by moving blkcg_unpin_online() before css_put(), so the
-cgwb's CSS reference keeps the blkcg alive while blkcg_unpin_online()
-accesses it.
-
-Link: https://lore.kernel.org/20260413-blkcg-v1-1-35b72622d16c@debian.org
-Fixes: 59b57717fff8 ("blkcg: delay blkg destruction until after writeback has finished")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Dennis Zhou <dennis@kernel.org>
-Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Josef Bacik <josef@toxicpanda.com>
-Cc: JP Kobryn <inwardvessel@gmail.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-Cc: Martin KaFai Lau <martin.lau@linux.dev>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Tejun Heo <tj@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 61868dc55a11 ("dma-mapping: add DMA_ATTR_CPU_CACHE_CLEAN")
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Link: https://lore.kernel.org/r/20260316-dma-debug-overlap-v3-2-1dde90a7f08b@nvidia.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/backing-dev.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ include/trace/events/dma.h |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/mm/backing-dev.c
-+++ b/mm/backing-dev.c
-@@ -618,12 +618,13 @@ static void cgwb_release_workfn(struct w
- 	wb_shutdown(wb);
+--- a/include/trace/events/dma.h
++++ b/include/trace/events/dma.h
+@@ -32,7 +32,8 @@ TRACE_DEFINE_ENUM(DMA_NONE);
+ 		{ DMA_ATTR_ALLOC_SINGLE_PAGES, "ALLOC_SINGLE_PAGES" }, \
+ 		{ DMA_ATTR_NO_WARN, "NO_WARN" }, \
+ 		{ DMA_ATTR_PRIVILEGED, "PRIVILEGED" }, \
+-		{ DMA_ATTR_MMIO, "MMIO" })
++		{ DMA_ATTR_MMIO, "MMIO" }, \
++		{ DMA_ATTR_CPU_CACHE_CLEAN, "CACHE_CLEAN" })
  
- 	css_put(wb->memcg_css);
--	css_put(wb->blkcg_css);
--	mutex_unlock(&wb->bdi->cgwb_release_mutex);
- 
- 	/* triggers blkg destruction if no online users left */
- 	blkcg_unpin_online(wb->blkcg_css);
- 
-+	css_put(wb->blkcg_css);
-+	mutex_unlock(&wb->bdi->cgwb_release_mutex);
-+
- 	fprop_local_destroy_percpu(&wb->memcg_completions);
- 
- 	spin_lock_irq(&cgwb_lock);
+ DECLARE_EVENT_CLASS(dma_map,
+ 	TP_PROTO(struct device *dev, phys_addr_t phys_addr, dma_addr_t dma_addr,
 
 
 
