@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-239539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239725-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IHH8F8dY5mlQvAEAu9opvQ
-	(envelope-from <stable+bounces-239539-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:48:07 +0200
+	id qIqWE6xa5mnGvAEAu9opvQ
+	(envelope-from <stable+bounces-239725-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:56:12 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D6C6430090
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:48:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0166B4303C8
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:56:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8AE8630FDE65
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:55:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 05AF531BE7F1
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:04:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B856C33AD9A;
-	Mon, 20 Apr 2026 15:55:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28DBB3358B0;
+	Mon, 20 Apr 2026 16:04:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RPUTW7B8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P9pMHIVg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AE3D331A78;
-	Mon, 20 Apr 2026 15:55:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC25A34216C;
+	Mon, 20 Apr 2026 16:04:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700512; cv=none; b=ks9GCifYMW59ixlGhFc6N5jCbDSw6zoBHuK3OUulHeM2Hg9gn9FXRGyVF+eQ/rGQuHuNPjbSVguHnuY0C4lQpsm4s15LeEq+MNzar+lAoj5FH/6/xRo1e1Z4cGAZ8bv+TBlXdGcA3eqmkBoVzUg3TC2YnEXGmN+4v+d6uuXqYyU=
+	t=1776701056; cv=none; b=E5WbwNwd1BBdbJHNgrDJ0WthbmJFlfmMwK1MgC4w7rkgeegkHccDeRkC6TDxmdbwvm8/h1XqW7waqt/Fou9OvG1uS3Mv+Ntkp+76wntr8TK3gal/FVyjZqWw/Y4WHd//9as4ITxdFGxM4ONXAtyFzyCnDTPNDvLy9vZFuGnbUik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700512; c=relaxed/simple;
-	bh=RcqZ3AGsHU2uw3vel6ycSOYpB8LzWtjk8oGzkTO/sZg=;
+	s=arc-20240116; t=1776701056; c=relaxed/simple;
+	bh=m2LImEHqTt4YYJ33n9KAURnRg2bxpVhsyE3sTKh7BvA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sIVQ892eUHNn08DOJfptJAkVzV4FY9WagM1BEsV/e3pq7KSuNFIoZySckh6/za2j83CJwgb1UDCjILsUsuPjhztFpxL4i/YidnAm6dlclM9TlRVF72uYocroCN4zSOMsHVaEouETi+IsmT30Ir7DXtz781Tj4tHNvHQilbF45dg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RPUTW7B8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C81A3C19425;
-	Mon, 20 Apr 2026 15:55:11 +0000 (UTC)
+	 MIME-Version; b=qb6U2BObBfn3s6qR9rfvJDJECPEWi3fTyAq/UfVRb+m2y4g5UCCPgFxMOCijReNIp3yUKBmKINmSZvJdm555k4wv5WhXLKJHZJr51pyo+zCVFnnbEu2H2X1Q7j0ZaX5NO3FzV0erV98sbXNGvc1CadYGgsTL3ezkJ2GQ+INIaXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P9pMHIVg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7150BC2BCB4;
+	Mon, 20 Apr 2026 16:04:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700512;
-	bh=RcqZ3AGsHU2uw3vel6ycSOYpB8LzWtjk8oGzkTO/sZg=;
+	s=korg; t=1776701056;
+	bh=m2LImEHqTt4YYJ33n9KAURnRg2bxpVhsyE3sTKh7BvA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RPUTW7B8Zni9jasVp4P6II3TxKEoMXy3bfFPY0e3eodMMdk1D1M+N1oGoKWTDgF5O
-	 iNSN+G0SIW909vCt4dGMy3sCyO4PlEBSybjTOZXED7jz6VNtozDJoTwcsja1q1diab
-	 tFK5GGox+NIBfvHmdJR6lAlWOHHIAF8PPvK12qg4=
+	b=P9pMHIVgiFazP0+yzY4T4W7V3ea6TNtxgH1+oKfGY3jH0LQwjl/GH08NzkWlH7Swg
+	 rzurNhxBWxdqeWWIBlkp4WnEiNcGv5stPNxshupwDHPbUO3aAfNnJSnVcoIxwQfvx9
+	 mhkmhMUUnXb+EwwYSXahhU2TmrQN2OXCAwybMlsE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.19 201/220] x86: rename and clean up __copy_from_user_inatomic_nocache()
-Date: Mon, 20 Apr 2026 17:42:22 +0200
-Message-ID: <20260420153941.265547632@linuxfoundation.org>
+	Koichiro Den <den@valinux.co.jp>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH 6.18 164/198] PCI: endpoint: pci-epf-vntb: Remove duplicate resource teardown
+Date: Mon, 20 Apr 2026 17:42:23 +0200
+Message-ID: <20260420153941.516976166@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
-References: <20260420153934.013228280@linuxfoundation.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,201 +73,119 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239539-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-239725-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 1D6C6430090
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,valinux.co.jp:email,nxp.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 0166B4303C8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Koichiro Den <den@valinux.co.jp>
 
-commit 5de7bcaadf160c1716b20a263cf8f5b06f658959 upstream.
+commit 0da63230d3ec1ec5fcc443a2314233e95bfece54 upstream.
 
-Similarly to the previous commit, this renames the somewhat confusingly
-named function.  But in this case, it was at least less confusing: the
-__copy_from_user_inatomic_nocache is indeed copying from user memory,
-and it is indeed ok to be used in an atomic context, so it will not warn
-about it.
+epf_ntb_epc_destroy() duplicates the teardown that the caller is
+supposed to perform later. This leads to an oops when .allow_link fails
+or when .drop_link is performed. The following is an example oops of the
+former case:
 
-But the previous commit also removed the NTB mis-use of the
-__copy_from_user_inatomic_nocache() function, and as a result every
-call-site is now _actually_ doing a real user copy.  That means that we
-can now do the proper user pointer verification too.
+  Unable to handle kernel paging request at virtual address dead000000000108
+  [...]
+  [dead000000000108] address between user and kernel address ranges
+  Internal error: Oops: 0000000096000044 [#1]  SMP
+  [...]
+  Call trace:
+   pci_epc_remove_epf+0x78/0xe0 (P)
+   pci_primary_epc_epf_link+0x88/0xa8
+   configfs_symlink+0x1f4/0x5a0
+   vfs_symlink+0x134/0x1d8
+   do_symlinkat+0x88/0x138
+   __arm64_sys_symlinkat+0x74/0xe0
+  [...]
 
-End result: add proper address checking, remove the double underscores,
-and change the "nocache" to "nontemporal" to more accurately describe
-what this x86-only function actually does.  It might be worth noting
-that only the target is non-temporal: the actual user accesses are
-normal memory accesses.
+Remove the helper, and drop pci_epc_put(). EPC device refcounting is
+tied to the configfs EPC group lifetime, and pci_epc_put() in the
+.drop_link path is sufficient.
 
-Also worth noting is that non-x86 targets (and on older 32-bit x86 CPU's
-before XMM2 in the Pentium III) we end up just falling back on a regular
-user copy, so nothing can actually depend on the non-temporal semantics,
-but that has always been true.
-
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Fixes: e35f56bb0330 ("PCI: endpoint: Support NTB transfer between RC and EP")
+Signed-off-by: Koichiro Den <den@valinux.co.jp>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260226084142.2226875-2-den@valinux.co.jp
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/uaccess.h    |    2 +-
- arch/x86/include/asm/uaccess_32.h |    8 +-------
- arch/x86/include/asm/uaccess_64.h |    3 ++-
- arch/x86/lib/usercopy_32.c        |    9 +++++----
- drivers/gpu/drm/i915/i915_gem.c   |    2 +-
- drivers/gpu/drm/qxl/qxl_ioctl.c   |    2 +-
- include/linux/uaccess.h           |   11 ++++++++---
- lib/iov_iter.c                    |    2 +-
- 8 files changed, 20 insertions(+), 19 deletions(-)
+ drivers/pci/endpoint/functions/pci-epf-vntb.c |   19 +------------------
+ 1 file changed, 1 insertion(+), 18 deletions(-)
 
---- a/arch/x86/include/asm/uaccess.h
-+++ b/arch/x86/include/asm/uaccess.h
-@@ -507,7 +507,7 @@ extern struct movsl_mask {
- } ____cacheline_aligned_in_smp movsl_mask;
- #endif
- 
--#define ARCH_HAS_NOCACHE_UACCESS 1
-+#define ARCH_HAS_NONTEMPORAL_UACCESS 1
- 
- /*
-  * The "unsafe" user accesses aren't really "unsafe", but the naming
---- a/arch/x86/include/asm/uaccess_32.h
-+++ b/arch/x86/include/asm/uaccess_32.h
-@@ -26,13 +26,7 @@ raw_copy_from_user(void *to, const void
- 	return __copy_user_ll(to, (__force const void *)from, n);
+--- a/drivers/pci/endpoint/functions/pci-epf-vntb.c
++++ b/drivers/pci/endpoint/functions/pci-epf-vntb.c
+@@ -645,19 +645,6 @@ static void epf_ntb_mw_bar_clear(struct
  }
  
--static __always_inline unsigned long
--__copy_from_user_inatomic_nocache(void *to, const void __user *from,
--				  unsigned long n)
+ /**
+- * epf_ntb_epc_destroy() - Cleanup NTB EPC interface
+- * @ntb: NTB device that facilitates communication between HOST and VHOST
+- *
+- * Wrapper for epf_ntb_epc_destroy_interface() to cleanup all the NTB interfaces
+- */
+-static void epf_ntb_epc_destroy(struct epf_ntb *ntb)
 -{
--       return __copy_from_user_ll_nocache_nozero(to, from, n);
+-	pci_epc_remove_epf(ntb->epf->epc, ntb->epf, 0);
+-	pci_epc_put(ntb->epf->epc);
 -}
 -
-+unsigned long __must_check copy_from_user_inatomic_nontemporal(void *, const void __user *, unsigned long n);
- unsigned long __must_check clear_user(void __user *mem, unsigned long len);
- unsigned long __must_check __clear_user(void __user *mem, unsigned long len);
+-
+-/**
+  * epf_ntb_is_bar_used() - Check if a bar is used in the ntb configuration
+  * @ntb: NTB device that facilitates communication between HOST and VHOST
+  * @barno: Checked bar number
+@@ -1407,7 +1394,7 @@ static int epf_ntb_bind(struct pci_epf *
+ 	ret = epf_ntb_init_epc_bar(ntb);
+ 	if (ret) {
+ 		dev_err(dev, "Failed to create NTB EPC\n");
+-		goto err_bar_init;
++		return ret;
+ 	}
  
---- a/arch/x86/include/asm/uaccess_64.h
-+++ b/arch/x86/include/asm/uaccess_64.h
-@@ -152,11 +152,12 @@ extern size_t copy_to_nontemporal(void *
- extern long __copy_user_flushcache(void *dst, const void __user *src, unsigned size);
+ 	ret = epf_ntb_config_spad_bar_alloc(ntb);
+@@ -1447,9 +1434,6 @@ err_epc_cleanup:
+ err_bar_alloc:
+ 	epf_ntb_config_spad_bar_free(ntb);
  
- static inline int
--__copy_from_user_inatomic_nocache(void *dst, const void __user *src,
-+copy_from_user_inatomic_nontemporal(void *dst, const void __user *src,
- 				  unsigned size)
- {
- 	long ret;
- 	kasan_check_write(dst, size);
-+	src = mask_user_address(src);
- 	stac();
- 	ret = copy_to_nontemporal(dst, (__force const void *)src, size);
- 	clac();
---- a/arch/x86/lib/usercopy_32.c
-+++ b/arch/x86/lib/usercopy_32.c
-@@ -322,10 +322,11 @@ unsigned long __copy_user_ll(void *to, c
- }
- EXPORT_SYMBOL(__copy_user_ll);
- 
--unsigned long __copy_from_user_ll_nocache_nozero(void *to, const void __user *from,
-+unsigned long copy_from_user_inatomic_nontemporal(void *to, const void __user *from,
- 					unsigned long n)
- {
--	__uaccess_begin_nospec();
-+	if (!user_access_begin(from, n))
-+		return n;
- #ifdef CONFIG_X86_INTEL_USERCOPY
- 	if (n > 64 && static_cpu_has(X86_FEATURE_XMM2))
- 		n = __copy_user_intel_nocache(to, from, n);
-@@ -334,7 +335,7 @@ unsigned long __copy_from_user_ll_nocach
- #else
- 	__copy_user(to, from, n);
- #endif
--	__uaccess_end();
-+	user_access_end();
- 	return n;
- }
--EXPORT_SYMBOL(__copy_from_user_ll_nocache_nozero);
-+EXPORT_SYMBOL(copy_from_user_inatomic_nontemporal);
---- a/drivers/gpu/drm/i915/i915_gem.c
-+++ b/drivers/gpu/drm/i915/i915_gem.c
-@@ -520,7 +520,7 @@ ggtt_write(struct io_mapping *mapping,
- 
- 	/* We can use the cpu mem copy function because this is X86. */
- 	vaddr = io_mapping_map_atomic_wc(mapping, base);
--	unwritten = __copy_from_user_inatomic_nocache((void __force *)vaddr + offset,
-+	unwritten = copy_from_user_inatomic_nontemporal((void __force *)vaddr + offset,
- 						      user_data, length);
- 	io_mapping_unmap_atomic(vaddr);
- 	if (unwritten) {
---- a/drivers/gpu/drm/qxl/qxl_ioctl.c
-+++ b/drivers/gpu/drm/qxl/qxl_ioctl.c
-@@ -184,7 +184,7 @@ static int qxl_process_single_command(st
- 
- 	/* TODO copy slow path code from i915 */
- 	fb_cmd = qxl_bo_kmap_atomic_page(qdev, cmd_bo, (release->release_offset & PAGE_MASK));
--	unwritten = __copy_from_user_inatomic_nocache
-+	unwritten = copy_from_user_inatomic_nontemporal
- 		(fb_cmd + sizeof(union qxl_release_info) + (release->release_offset & ~PAGE_MASK),
- 		 u64_to_user_ptr(cmd->command), cmd->command_size);
- 
---- a/include/linux/uaccess.h
-+++ b/include/linux/uaccess.h
-@@ -331,16 +331,21 @@ static inline size_t probe_subpage_write
- 
- #endif /* CONFIG_ARCH_HAS_SUBPAGE_FAULTS */
- 
--#ifndef ARCH_HAS_NOCACHE_UACCESS
-+#ifndef ARCH_HAS_NONTEMPORAL_UACCESS
- 
- static inline __must_check unsigned long
--__copy_from_user_inatomic_nocache(void *to, const void __user *from,
-+copy_from_user_inatomic_nontemporal(void *to, const void __user *from,
- 				  unsigned long n)
- {
-+	if (can_do_masked_user_access())
-+		from = mask_user_address(from);
-+	else
-+		if (!access_ok(from, n))
-+			return n;
- 	return __copy_from_user_inatomic(to, from, n);
+-err_bar_init:
+-	epf_ntb_epc_destroy(ntb);
+-
+ 	return ret;
  }
  
--#endif		/* ARCH_HAS_NOCACHE_UACCESS */
-+#endif		/* ARCH_HAS_NONTEMPORAL_UACCESS */
+@@ -1465,7 +1449,6 @@ static void epf_ntb_unbind(struct pci_ep
  
- extern __must_check int check_zeroed_user(const void __user *from, size_t size);
+ 	epf_ntb_epc_cleanup(ntb);
+ 	epf_ntb_config_spad_bar_free(ntb);
+-	epf_ntb_epc_destroy(ntb);
  
---- a/lib/iov_iter.c
-+++ b/lib/iov_iter.c
-@@ -277,7 +277,7 @@ static __always_inline
- size_t copy_from_user_iter_nocache(void __user *iter_from, size_t progress,
- 				   size_t len, void *to, void *priv2)
- {
--	return __copy_from_user_inatomic_nocache(to + progress, iter_from, len);
-+	return copy_from_user_inatomic_nontemporal(to + progress, iter_from, len);
+ 	pci_unregister_driver(&vntb_pci_driver);
  }
- 
- size_t _copy_from_iter_nocache(void *addr, size_t bytes, struct iov_iter *i)
 
 
 
