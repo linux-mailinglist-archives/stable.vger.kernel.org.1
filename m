@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-239497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239709-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ME//HIVe5mnmvQEAu9opvQ
-	(envelope-from <stable+bounces-239497-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:12:37 +0200
+	id gKByDYxa5mmtvAEAu9opvQ
+	(envelope-from <stable+bounces-239709-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:55:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC278430BDD
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:12:36 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8957243039D
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:55:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 606A3317F152
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:53:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 72E0C31A7A27
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:03:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 314C13385B6;
-	Mon, 20 Apr 2026 15:53:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46CBA341077;
+	Mon, 20 Apr 2026 16:03:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gngtrglu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DXbtFAVj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E68E2336EE1;
-	Mon, 20 Apr 2026 15:53:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0944A33B975;
+	Mon, 20 Apr 2026 16:03:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700405; cv=none; b=Il+HVF5w3cDZTe+dDWTteBndZOEqZVEQLcKGsf4FYjXFlmQ38DLPg2zIxBnpVTvnwsFmT2q1QzDxwqS+zhGqSYePFSgVhKd4UdeSnHmAS1W+3lULU4/wSpcOe4BaS4nePIPa4RaRWGcPyIUNXcfrsXZQu7UjNGU2EADgVib+z2A=
+	t=1776701016; cv=none; b=XPPER+8sGsDGosmN29vFlD5pv2m9yuPUkosOSxwIcLDMrasN7VMBkf43h0mgh84kO9IRvMT/RWl31CTQJCooJNLYeFgE77MQCu7ueNPB5JMd0C64m+vOc2BL6wX4citS+/F4n0rxv61GHfoo7ka7fxgcQ62QLo6Wpr2Vj+Co6s4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700405; c=relaxed/simple;
-	bh=BvCuMIUe2R/Jg5QjIKWCscr+B3pbfQceDjopoAz0Geg=;
+	s=arc-20240116; t=1776701016; c=relaxed/simple;
+	bh=AG9zNViAmOpDyv004dEJ5VGG6Mmuf8JgUZgClR50YK8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AhqS3mTiBwxGR64mHeEj+nVun5f5XY9fVV9gs8abF0TIEPRxQupMDakynmB2yv2Tul6vGMi95NFn1PnkaBOmS7dZEjazTh3Wmx6OvvvJKNGBI2KGs0B6XhEuujN16sI8s/chvNmXunp5HCKgbp6S+SEHZvYLfFOvUSoxzeZKF6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gngtrglu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C81AC19425;
-	Mon, 20 Apr 2026 15:53:24 +0000 (UTC)
+	 MIME-Version; b=VLBNnAQBN4j5mdiGTyTrgHtTKs08c/KTNH7YSH0nRr6R75/ZYY7vUkiJrVaO/MDQL/QOwz6enuHsGT/ki8CQKchqCpfP6NJ16ROch7nwmaXVmvTaH89KvgJUFt6b98xMZRhD6m1u+11myjM+KRQRUL+6h2dBmBsGAY9LDEtyVVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DXbtFAVj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96177C19425;
+	Mon, 20 Apr 2026 16:03:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700404;
-	bh=BvCuMIUe2R/Jg5QjIKWCscr+B3pbfQceDjopoAz0Geg=;
+	s=korg; t=1776701015;
+	bh=AG9zNViAmOpDyv004dEJ5VGG6Mmuf8JgUZgClR50YK8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GngtrgluMlR7zuC6lWdZW7iETRHwdS8he7Ons9TlJb9B1FSfudIcogq6kBQWtUlik
-	 Y9R2QqPBq8z9jNOFrwC7X35KkhMLUIaJYXRAMmEpeYZkYZ0lxzInQ7LkRh0Q4pm/9d
-	 GGh4a5A/5UJwBtG0iZPZognqhs+Uovo7VBDIz91Y=
+	b=DXbtFAVj7naziYJrMnRgIRmzfdASglsvIHjkQxT9oCztl0zdkKReTqz4hxsa9ky7R
+	 SXCt3iSVLyRuSdu8FQha+IBgjwI4qccSFMLZ183La2qoj7w8s4C7/guM6MtP446YG0
+	 u9g8MzFOdzmV2u0kdSJPecj0u89ngeRYp3OdDzsQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.19 142/220] i2c: s3c24xx: check the size of the SMBUS message before using it
-Date: Mon, 20 Apr 2026 17:41:23 +0200
-Message-ID: <20260420153939.141215064@linuxfoundation.org>
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	Syed Saba Kareem <Syed.SabaKareem@amd.com>,
+	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 105/198] ASoC: amd: acp: update DMI quirk and add ACP DMIC for Lenovo platforms
+Date: Mon, 20 Apr 2026 17:41:24 +0200
+Message-ID: <20260420153939.382607353@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
-References: <20260420153934.013228280@linuxfoundation.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239497-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-239709-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,61 +87,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,samsung.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: DC278430BDD
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,amd.com:email]
+X-Rspamd-Queue-Id: 8957243039D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Syed Saba Kareem <Syed.SabaKareem@amd.com>
 
-commit c0128c7157d639a931353ea344fb44aad6d6e17a upstream.
+[ Upstream commit 6b6f7263d626886a96fce6352f94dfab7a24c339 ]
 
-The first byte of an i2c SMBUS message is the size, and it should be
-verified to ensure that it is in the range of 0..I2C_SMBUS_BLOCK_MAX
-before processing it.
+Replace DMI_EXACT_MATCH with DMI_MATCH for Lenovo SKU entries (21YW,
+21YX) so the quirk applies to all variants of these models, not just
+exact SKU matches.
 
-This is the same logic that was added in commit a6e04f05ce0b ("i2c:
-tegra: check msg length in SMBUS block read") to the i2c tegra driver.
+Add ASOC_SDW_ACP_DMIC flag alongside ASOC_SDW_CODEC_SPKR in driver_data
+for these Lenovo platform entries, as these platforms use ACP PDM DMIC
+instead of SoundWire DMIC for digital microphone support.
 
-Cc: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Alim Akhtar <alim.akhtar@samsung.com>
-Cc: Andi Shyti <andi.shyti@kernel.org>
-Cc: stable <stable@kernel.org>
-Assisted-by: gkh_clanker_2000
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/2026022314-rely-scrubbed-4839@gregkh
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3acf517e1ae0 ("ASoC: amd: amd_sdw: add machine driver quirk for Lenovo models")
+Tested-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Signed-off-by: Syed Saba Kareem <Syed.SabaKareem@amd.com>
+Reviewed-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+Link: https://patch.msgid.link/20260408133029.1368317-1-syed.sabakareem@amd.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-s3c2410.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ sound/soc/amd/acp/acp-sdw-legacy-mach.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/i2c/busses/i2c-s3c2410.c
-+++ b/drivers/i2c/busses/i2c-s3c2410.c
-@@ -503,8 +503,13 @@ static void i2c_s3c_irq_nextbyte(struct
- 		i2c->msg->buf[i2c->msg_ptr++] = byte;
- 
- 		/* Add actual length to read for smbus block read */
--		if (i2c->msg->flags & I2C_M_RECV_LEN && i2c->msg->len == 1)
-+		if (i2c->msg->flags & I2C_M_RECV_LEN && i2c->msg->len == 1) {
-+			if (byte == 0 || byte > I2C_SMBUS_BLOCK_MAX) {
-+				s3c24xx_i2c_stop(i2c, -EPROTO);
-+				break;
-+			}
- 			i2c->msg->len += byte;
-+		}
-  prepare_read:
- 		if (is_msglast(i2c)) {
- 			/* last byte of buffer */
+diff --git a/sound/soc/amd/acp/acp-sdw-legacy-mach.c b/sound/soc/amd/acp/acp-sdw-legacy-mach.c
+index 504b700200660..2b2910b1856d5 100644
+--- a/sound/soc/amd/acp/acp-sdw-legacy-mach.c
++++ b/sound/soc/amd/acp/acp-sdw-legacy-mach.c
+@@ -99,17 +99,17 @@ static const struct dmi_system_id soc_sdw_quirk_table[] = {
+ 		.callback = soc_sdw_quirk_cb,
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
+-			DMI_EXACT_MATCH(DMI_PRODUCT_SKU, "21YW"),
++			DMI_MATCH(DMI_PRODUCT_SKU, "21YW"),
+ 		},
+-		.driver_data = (void *)(ASOC_SDW_CODEC_SPKR),
++		.driver_data = (void *)((ASOC_SDW_CODEC_SPKR) | (ASOC_SDW_ACP_DMIC)),
+ 	},
+ 	{
+ 		.callback = soc_sdw_quirk_cb,
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
+-			DMI_EXACT_MATCH(DMI_PRODUCT_SKU, "21YX"),
++			DMI_MATCH(DMI_PRODUCT_SKU, "21YX"),
+ 		},
+-		.driver_data = (void *)(ASOC_SDW_CODEC_SPKR),
++		.driver_data = (void *)((ASOC_SDW_CODEC_SPKR) | (ASOC_SDW_ACP_DMIC)),
+ 	},
+ 	{
+ 		.callback = soc_sdw_quirk_cb,
+-- 
+2.53.0
+
 
 
 
