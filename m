@@ -1,65 +1,59 @@
-Return-Path: <stable+bounces-239455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239787-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gADZIzZe5mnpvQEAu9opvQ
-	(envelope-from <stable+bounces-239455-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:11:18 +0200
+	id +N15FLlj5mkuvwEAu9opvQ
+	(envelope-from <stable+bounces-239787-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:34:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AC3D430B22
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:11:18 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C5DF4317F9
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:34:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2B063319B5D3
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:51:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id AD3E3313BB1F
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:06:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96BBC244661;
-	Mon, 20 Apr 2026 15:51:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 498B423BD17;
+	Mon, 20 Apr 2026 16:06:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aPknwzyb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wXMwmoe2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 598A233262B;
-	Mon, 20 Apr 2026 15:51:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B27933F5BC;
+	Mon, 20 Apr 2026 16:06:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700297; cv=none; b=o59GWL67OD6RlyMoLLGO2JLr5VW87yyquFM8c+Q4vAfivlY6KrXDxDQsh9IVvIe9dAPUusgTXPxujVHBb6gdXQuyr6kXeAH7INhhrmg95tOcTlVvYAwok3qOokZAXPrl6eSFmsmBZbYgTLYUCJm8lunVf/cJx+hPdDkF0hnflPs=
+	t=1776701215; cv=none; b=iR9fZGjRjBqpw8QeIyNdTd/7xMFVUfupcf0kqoVeuYc44z+sJdv7dUfQ8UCfTPjF7colc8J5+Lt2xsAcL/VbYZqJSmojwFLgVHQopKQZNXcFS0+IdIVxph92cp3GvYoi3Qt8wQPcsTiqRFSYqfgTWq8XOuIUUXvacGL/48VU0+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700297; c=relaxed/simple;
-	bh=OCyrYU11j39nQ7EzJygEEmM9C+8Pv8dLPSyB98YvHIs=;
+	s=arc-20240116; t=1776701215; c=relaxed/simple;
+	bh=vod8egGUn6RK7YPNCjB9SbkUHWnAQYGLFg+Vlvf5Lm8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bue0f4Hzvulm1FwcN5+q1b0EZ4W9BtgmGBAH9EVXG6xnnfXxi0eTvVBI2YCji1q5PVDxQg3N5AQnLhTRx0T4Eq0r9FalLLvlZ9eTxlmNaD+Oi32Mwui4ZLJ2NY71qcH5JpmlBTzCdA0DKuuLhi8prS7J1lEVGZAk3lOZCCLwtH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aPknwzyb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2668C19425;
-	Mon, 20 Apr 2026 15:51:36 +0000 (UTC)
+	 MIME-Version; b=f04uIUnRG2ZkcXiOGEWh3bHsdNMkc3AzqhN8jLoQ2kAfHUkJQPT/ma6+Y9c/gInqiwCWlCLh59Br82UkuH0J1QG2M/JS0I48SoYQb3guS/vbREpD9LCtNf6/aC/sZbVeFTn8/xGkBP18dZF8YsBlDyFKap/V6n11iVkj4l2Ox0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wXMwmoe2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92B89C19425;
+	Mon, 20 Apr 2026 16:06:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700297;
-	bh=OCyrYU11j39nQ7EzJygEEmM9C+8Pv8dLPSyB98YvHIs=;
+	s=korg; t=1776701214;
+	bh=vod8egGUn6RK7YPNCjB9SbkUHWnAQYGLFg+Vlvf5Lm8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aPknwzybuLpZYcVsohPittYXb88Qc8liFKX+SaUOTsdS0drNFVyUfapxEDCtyAGk9
-	 M+IT0N8TmyW+wK7w5wRS6tyb6fuL51OFplstG/uayVtz81FTjHxRZEX4E0qU0+fCDx
-	 Eh9Lag4CiuQmTf48oh4LESIVV9BFgNzPS+L/KS88=
+	b=wXMwmoe2DoZLqevmsCBhPlxG6QTtx4Sf5EUQCVWFLwf0Oo8AtX3G9Hvv3u1ur1qrC
+	 Yegjs+WGlmJTD+5u3xXSW1imMw+Pdf5hW3itedIvI+zJBs/S76xlvVYe5Bdo/u75af
+	 eRBYALPljmbc/pNa/vECZ8VFpxE91otc9kZg6hMI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ren Wei <enjou1224z@gmail.com>,
-	Zhengchuan Liang <zcliangcn@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Florian Westphal <fw@strlen.de>,
+	leo vriska <leo@60228.dev>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 118/220] netfilter: ip6t_eui64: reject invalid MAC header for all packets
+Subject: [PATCH 6.12 027/162] HID: quirks: add HID_QUIRK_ALWAYS_POLL for 8BitDo Pro 3
 Date: Mon, 20 Apr 2026 17:40:59 +0200
-Message-ID: <20260420153938.277572443@linuxfoundation.org>
+Message-ID: <20260420153928.004001991@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
-References: <20260420153934.013228280@linuxfoundation.org>
+In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
+References: <20260420153927.006696811@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,83 +66,83 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-239455-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,strlen.de,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-239787-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,strlen.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 3AC3D430B22
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,suse.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,60228.dev:email]
+X-Rspamd-Queue-Id: 4C5DF4317F9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhengchuan Liang <zcliangcn@gmail.com>
+From: leo vriska <leo@60228.dev>
 
-[ Upstream commit fdce0b3590f724540795b874b4c8850c90e6b0a8 ]
+[ Upstream commit 532743944324a873bbaf8620fcabcd0e69e30c36 ]
 
-`eui64_mt6()` derives a modified EUI-64 from the Ethernet source address
-and compares it with the low 64 bits of the IPv6 source address.
+According to a mailing list report [1], this controller's predecessor
+has the same issue. However, it uses the xpad driver instead of HID, so
+this quirk wouldn't apply.
 
-The existing guard only rejects an invalid MAC header when
-`par->fragoff != 0`. For packets with `par->fragoff == 0`, `eui64_mt6()`
-can still reach `eth_hdr(skb)` even when the MAC header is not valid.
+[1]: https://lore.kernel.org/linux-input/unufo3$det$1@ciao.gmane.io/
 
-Fix this by removing the `par->fragoff != 0` condition so that packets
-with an invalid MAC header are rejected before accessing `eth_hdr(skb)`.
-
-Fixes: 1da177e4c3f41 ("Linux-2.6.12-rc2")
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Co-developed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Yuan Tan <yuantan098@gmail.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Tested-by: Ren Wei <enjou1224z@gmail.com>
-Signed-off-by: Zhengchuan Liang <zcliangcn@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: leo vriska <leo@60228.dev>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/netfilter/ip6t_eui64.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/hid/hid-ids.h    | 3 +++
+ drivers/hid/hid-quirks.c | 1 +
+ 2 files changed, 4 insertions(+)
 
-diff --git a/net/ipv6/netfilter/ip6t_eui64.c b/net/ipv6/netfilter/ip6t_eui64.c
-index d704f7ed300c2..da69a27e8332c 100644
---- a/net/ipv6/netfilter/ip6t_eui64.c
-+++ b/net/ipv6/netfilter/ip6t_eui64.c
-@@ -22,8 +22,7 @@ eui64_mt6(const struct sk_buff *skb, struct xt_action_param *par)
- 	unsigned char eui64[8];
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index 25eb5cc7de70e..475e6eb4702af 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -22,6 +22,9 @@
+ #define USB_DEVICE_ID_3M2256		0x0502
+ #define USB_DEVICE_ID_3M3266		0x0506
  
- 	if (!(skb_mac_header(skb) >= skb->head &&
--	      skb_mac_header(skb) + ETH_HLEN <= skb->data) &&
--	    par->fragoff != 0) {
-+	      skb_mac_header(skb) + ETH_HLEN <= skb->data)) {
- 		par->hotdrop = true;
- 		return false;
- 	}
++#define USB_VENDOR_ID_8BITDO		0x2dc8
++#define USB_DEVICE_ID_8BITDO_PRO_3	0x6009
++
+ #define USB_VENDOR_ID_A4TECH		0x09da
+ #define USB_DEVICE_ID_A4TECH_WCP32PU	0x0006
+ #define USB_DEVICE_ID_A4TECH_X5_005D	0x000a
+diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
+index 7a3e0675d9ba2..d9e33dde89899 100644
+--- a/drivers/hid/hid-quirks.c
++++ b/drivers/hid/hid-quirks.c
+@@ -25,6 +25,7 @@
+  */
+ 
+ static const struct hid_device_id hid_quirks[] = {
++	{ HID_USB_DEVICE(USB_VENDOR_ID_8BITDO, USB_DEVICE_ID_8BITDO_PRO_3), HID_QUIRK_ALWAYS_POLL },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_AASHIMA, USB_DEVICE_ID_AASHIMA_GAMEPAD), HID_QUIRK_BADPAD },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_AASHIMA, USB_DEVICE_ID_AASHIMA_PREDATOR), HID_QUIRK_BADPAD },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ADATA_XPG, USB_VENDOR_ID_ADATA_XPG_WL_GAMING_MOUSE), HID_QUIRK_ALWAYS_POLL },
 -- 
 2.53.0
 
