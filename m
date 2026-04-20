@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-238760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238761-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kMx6D/4l5mmgsgEAu9opvQ
-	(envelope-from <stable+bounces-238760-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:11:26 +0200
+	id eA9sL54m5mmgsgEAu9opvQ
+	(envelope-from <stable+bounces-238761-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:14:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A4B942B4D9
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:11:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DC5342B5DB
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:14:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 001293126710
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 13:05:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0FC4430AAF9B
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 13:06:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA23739E6FF;
-	Mon, 20 Apr 2026 13:05:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 924C6399019;
+	Mon, 20 Apr 2026 13:06:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UjKQcyWE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zs/it+61"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8524034405B
-	for <stable@vger.kernel.org>; Mon, 20 Apr 2026 13:05:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 557963A0B26
+	for <stable@vger.kernel.org>; Mon, 20 Apr 2026 13:06:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776690314; cv=none; b=rfO9lVrzuGbjbDE5LcbrW8OrqJnQTcm7qA0/xT/DED8MRmeXgCnyJQvx6jQ6iUjpYEHFRoGQBZqcGkSATQsnOTwkyz2v2Y4fyVq9cJH1QtJJyXLn0D6XZvfcCQQmZpWy99+P9cjGcyiYL5p02dcohwmIJozvsRJdoiqoi/TeUJo=
+	t=1776690385; cv=none; b=U9ZVIb20gKjdY116UM+IiPXtG+zsOBlBO0Y6rYVFmEL0xdXHmuft90At26FmA8c/ncHbIOe5SEKmr3O/ZmJYZDbiOGKBsjximtr6Vdy2bhfN4W5uJPiIklyw4mmNaqp6QY9QvbuORuknSP4U9WMCvmUDcl8Xt/R4x01mGrG5jiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776690314; c=relaxed/simple;
-	bh=5Cem+yaowv39X0j0UAZ8xNhjCHVKG5Shnq93QiV9SuE=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=eh/QAnDwZHYQX1DxGPmrm79Xph5ye03iV6DVmAhMO65winLaDafGrdCeBoenrmfxnUoBt7nDW/u7gz7XSnmiYeUy7q3B8eAOWEbN5W2teTAtE8JZzXDNqqkorJifb9YCUXLO0Ejggbiz/MdF9vUfT9makQUD2nP3qekgtCylvbw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UjKQcyWE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0562C19425;
-	Mon, 20 Apr 2026 13:05:13 +0000 (UTC)
+	s=arc-20240116; t=1776690385; c=relaxed/simple;
+	bh=PM/EtRe2QCMAwANTummjJS4dPS9PII3ZL8hAmNbfN14=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=hx8aSBkJwzN2RsPkdaIBR20crkaGcH19K1r9UbTQuVHycDsEELdVIP9iXtNJJjK1RZo8fFEW1/MSh+KaW9h4VT89dd+JQp3ic55GG/7lGh+j36l96ANLPzSRjkh1T1s8726WttXWtPjWlTKLLQE2/mfT13lU0gza8XfpFlE7hao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zs/it+61; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2359C19425;
+	Mon, 20 Apr 2026 13:06:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776690314;
-	bh=5Cem+yaowv39X0j0UAZ8xNhjCHVKG5Shnq93QiV9SuE=;
+	s=korg; t=1776690385;
+	bh=PM/EtRe2QCMAwANTummjJS4dPS9PII3ZL8hAmNbfN14=;
 	h=Subject:To:Cc:From:Date:From;
-	b=UjKQcyWEShJa/9+FKRYmv+cZQiNwRAhpgK9I02A5ikLxU3G46BHEf5Q20jexihZCD
-	 nWb0BHVNrR0HPjbWfaF63OoHLnNwnKwFlo5muhYsjdoDwKB20HlwPe9RjCEYNRhDwh
-	 BEXvxlMxGuDR+cce93EkDNXH2p8iAWktq8zMZEaw=
-Subject: FAILED: patch "[PATCH] ocfs2: fix possible deadlock between unlink and" failed to apply to 5.10-stable tree
-To: joseph.qi@linux.alibaba.com,akpm@linux-foundation.org,gechangwei@live.cn,heming.zhao@suse.com,jiangqi903@gmail.com,jlbec@evilplan.org,junxiao.bi@oracle.com,mark@fasheh.com,piaojun@huawei.com,stable@vger.kernel.org
+	b=zs/it+61ecZ6zE4e3t+imlRxcS0mSAF9JVUYFiraSdNOCGCPpLmdoLkQmFECFzDrC
+	 ISkYU5rRYj9VemSvckt5LY5bzfhm6u2bCUH+dPzmpajGBH6L7E6Y0fE7JGCvTw55dG
+	 r71PXhsfxT+afOnMQuV87IvsFiCAVNeaxZH9g8gs=
+Subject: FAILED: patch "[PATCH] PCI: endpoint: pci-epf-vntb: Remove duplicate resource" failed to apply to 6.12-stable tree
+To: den@valinux.co.jp,Frank.Li@nxp.com,mani@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 20 Apr 2026 15:05:03 +0200
-Message-ID: <2026042003-rocking-engine-1cb6@gregkh>
+Date: Mon, 20 Apr 2026 15:06:22 +0200
+Message-ID: <2026042022-dormitory-uncrushed-c526@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,46 +60,45 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-238760-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-238761-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[linux.alibaba.com,linux-foundation.org,live.cn,suse.com,gmail.com,evilplan.org,oracle.com,fasheh.com,huawei.com,vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NO_DN(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+]
-X-Rspamd-Queue-Id: 9A4B942B4D9
+X-Rspamd-Queue-Id: 1DC5342B5DB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x b02da26a992db0c0e2559acbda0fc48d4a2fd337
+git cherry-pick -x 0da63230d3ec1ec5fcc443a2314233e95bfece54
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026042003-rocking-engine-1cb6@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026042022-dormitory-uncrushed-c526@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,82 +110,92 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From b02da26a992db0c0e2559acbda0fc48d4a2fd337 Mon Sep 17 00:00:00 2001
-From: Joseph Qi <joseph.qi@linux.alibaba.com>
-Date: Fri, 6 Mar 2026 11:22:11 +0800
-Subject: [PATCH] ocfs2: fix possible deadlock between unlink and
- dio_end_io_write
+From 0da63230d3ec1ec5fcc443a2314233e95bfece54 Mon Sep 17 00:00:00 2001
+From: Koichiro Den <den@valinux.co.jp>
+Date: Thu, 26 Feb 2026 17:41:38 +0900
+Subject: [PATCH] PCI: endpoint: pci-epf-vntb: Remove duplicate resource
+ teardown
 
-ocfs2_unlink takes orphan dir inode_lock first and then ip_alloc_sem,
-while in ocfs2_dio_end_io_write, it acquires these locks in reverse order.
-This creates an ABBA lock ordering violation on lock classes
-ocfs2_sysfile_lock_key[ORPHAN_DIR_SYSTEM_INODE] and
-ocfs2_file_ip_alloc_sem_key.
+epf_ntb_epc_destroy() duplicates the teardown that the caller is
+supposed to perform later. This leads to an oops when .allow_link fails
+or when .drop_link is performed. The following is an example oops of the
+former case:
 
-Lock Chain #0 (orphan dir inode_lock -> ip_alloc_sem):
-ocfs2_unlink
-  ocfs2_prepare_orphan_dir
-    ocfs2_lookup_lock_orphan_dir
-      inode_lock(orphan_dir_inode) <- lock A
-    __ocfs2_prepare_orphan_dir
-      ocfs2_prepare_dir_for_insert
-        ocfs2_extend_dir
-	  ocfs2_expand_inline_dir
-	    down_write(&oi->ip_alloc_sem) <- Lock B
+  Unable to handle kernel paging request at virtual address dead000000000108
+  [...]
+  [dead000000000108] address between user and kernel address ranges
+  Internal error: Oops: 0000000096000044 [#1]  SMP
+  [...]
+  Call trace:
+   pci_epc_remove_epf+0x78/0xe0 (P)
+   pci_primary_epc_epf_link+0x88/0xa8
+   configfs_symlink+0x1f4/0x5a0
+   vfs_symlink+0x134/0x1d8
+   do_symlinkat+0x88/0x138
+   __arm64_sys_symlinkat+0x74/0xe0
+  [...]
 
-Lock Chain #1 (ip_alloc_sem -> orphan dir inode_lock):
-ocfs2_dio_end_io_write
-  down_write(&oi->ip_alloc_sem) <- Lock B
-  ocfs2_del_inode_from_orphan()
-    inode_lock(orphan_dir_inode) <- Lock A
+Remove the helper, and drop pci_epc_put(). EPC device refcounting is
+tied to the configfs EPC group lifetime, and pci_epc_put() in the
+.drop_link path is sufficient.
 
-Deadlock Scenario:
-  CPU0 (unlink)                     CPU1 (dio_end_io_write)
-  ------                            ------
-  inode_lock(orphan_dir_inode)
-                                    down_write(ip_alloc_sem)
-  down_write(ip_alloc_sem)
-                                    inode_lock(orphan_dir_inode)
+Fixes: e35f56bb0330 ("PCI: endpoint: Support NTB transfer between RC and EP")
+Signed-off-by: Koichiro Den <den@valinux.co.jp>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260226084142.2226875-2-den@valinux.co.jp
 
-Since ip_alloc_sem is to protect allocation changes, which is unrelated
-with operations in ocfs2_del_inode_from_orphan.  So move
-ocfs2_del_inode_from_orphan out of ip_alloc_sem to fix the deadlock.
-
-Link: https://lkml.kernel.org/r/20260306032211.1016452-1-joseph.qi@linux.alibaba.com
-Reported-by: syzbot+67b90111784a3eac8c04@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=67b90111784a3eac8c04
-Fixes: a86a72a4a4e0 ("ocfs2: take ip_alloc_sem in ocfs2_dio_get_block & ocfs2_dio_end_io_write")
-Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Reviewed-by: Heming Zhao <heming.zhao@suse.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Joseph Qi <jiangqi903@gmail.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-diff --git a/fs/ocfs2/aops.c b/fs/ocfs2/aops.c
-index 17ba79f443ee..09146b43d1f0 100644
---- a/fs/ocfs2/aops.c
-+++ b/fs/ocfs2/aops.c
-@@ -2294,8 +2294,6 @@ static int ocfs2_dio_end_io_write(struct inode *inode,
- 		goto out;
+diff --git a/drivers/pci/endpoint/functions/pci-epf-vntb.c b/drivers/pci/endpoint/functions/pci-epf-vntb.c
+index 148a3b160812..42c870ee3956 100644
+--- a/drivers/pci/endpoint/functions/pci-epf-vntb.c
++++ b/drivers/pci/endpoint/functions/pci-epf-vntb.c
+@@ -763,19 +763,6 @@ static void epf_ntb_mw_bar_clear(struct epf_ntb *ntb, int num_mws)
  	}
+ }
  
--	down_write(&oi->ip_alloc_sem);
+-/**
+- * epf_ntb_epc_destroy() - Cleanup NTB EPC interface
+- * @ntb: NTB device that facilitates communication between HOST and VHOST
+- *
+- * Wrapper for epf_ntb_epc_destroy_interface() to cleanup all the NTB interfaces
+- */
+-static void epf_ntb_epc_destroy(struct epf_ntb *ntb)
+-{
+-	pci_epc_remove_epf(ntb->epf->epc, ntb->epf, 0);
+-	pci_epc_put(ntb->epf->epc);
+-}
 -
- 	/* Delete orphan before acquire i_rwsem. */
- 	if (dwc->dw_orphaned) {
- 		BUG_ON(dwc->dw_writer_pid != task_pid_nr(current));
-@@ -2308,6 +2306,7 @@ static int ocfs2_dio_end_io_write(struct inode *inode,
- 			mlog_errno(ret);
+-
+ /**
+  * epf_ntb_is_bar_used() - Check if a bar is used in the ntb configuration
+  * @ntb: NTB device that facilitates communication between HOST and VHOST
+@@ -1529,7 +1516,7 @@ static int epf_ntb_bind(struct pci_epf *epf)
+ 	ret = epf_ntb_init_epc_bar(ntb);
+ 	if (ret) {
+ 		dev_err(dev, "Failed to create NTB EPC\n");
+-		goto err_bar_init;
++		return ret;
  	}
  
-+	down_write(&oi->ip_alloc_sem);
- 	di = (struct ocfs2_dinode *)di_bh->b_data;
+ 	ret = epf_ntb_config_spad_bar_alloc(ntb);
+@@ -1569,9 +1556,6 @@ static int epf_ntb_bind(struct pci_epf *epf)
+ err_bar_alloc:
+ 	epf_ntb_config_spad_bar_free(ntb);
  
- 	ocfs2_init_dinode_extent_tree(&et, INODE_CACHE(inode), di_bh);
+-err_bar_init:
+-	epf_ntb_epc_destroy(ntb);
+-
+ 	return ret;
+ }
+ 
+@@ -1587,7 +1571,6 @@ static void epf_ntb_unbind(struct pci_epf *epf)
+ 
+ 	epf_ntb_epc_cleanup(ntb);
+ 	epf_ntb_config_spad_bar_free(ntb);
+-	epf_ntb_epc_destroy(ntb);
+ 
+ 	pci_unregister_driver(&vntb_pci_driver);
+ }
 
 
