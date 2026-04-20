@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-239740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239854-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OGmQN8xa5mmtvAEAu9opvQ
-	(envelope-from <stable+bounces-239740-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:56:44 +0200
+	id MG0vKeBb5mmtvAEAu9opvQ
+	(envelope-from <stable+bounces-239854-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:01:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FB5843041A
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:56:44 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1791743062C
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:01:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0510331EA3CD
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:04:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 692F8308C407
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:09:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E0C0280CD2;
-	Mon, 20 Apr 2026 16:04:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84BFE34107F;
+	Mon, 20 Apr 2026 16:09:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uQnYboFY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ClAFPqq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F49D33F5A9;
-	Mon, 20 Apr 2026 16:04:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46B2C33AD9A;
+	Mon, 20 Apr 2026 16:09:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701095; cv=none; b=BYUlSmnuaAXw0Rm1yMGgZKXsQCAhDZHLeMnUIhaIT9GRLTMxg1pBI/4H8k/ZP8162cqxjV71dvGt0k4aYbOLcc3B1qx/UsMCn6bn279LshTO9AQfaGBUYtqdI6+CJmwnAY7h/JSXzQ1cjZk+sHGCyJYaXlwU3FqmKtOh0v0wBO0=
+	t=1776701386; cv=none; b=dqVQuF3HPzoqbW4pNPft+GMJOdEgfFOoDTOLi4Bllk5BQ1vhzvkcgznzeCznoHoAyT7tMp7rGx1J3oUoCC+skpbAARfy+p9d2qstSxmDi4ajFVRotOYtxoxpPQa9SEYglvOG683z8fX8POrgUbtno3HN8iQESoH5Ost6T5NASqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701095; c=relaxed/simple;
-	bh=r0J9IAXVE09hnWTNY+ClGbcf4OA9gJcgmaDwztOuYZw=;
+	s=arc-20240116; t=1776701386; c=relaxed/simple;
+	bh=jLPjjWAj++/xwxzSa3UP020v1MnW/Exi5W1XR43XJFc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=acnksHI+uB30AQ7/aaCM4ku4v1stNN4/zkYJovz0yyoqrb5JqMQtNi2PznMxUF+6SUsrYn9CSDqzggp8oWk46/vxrf5LrHAhMo0tCNQDz+7WcSUnUqQC2Bu0ZBZHkoGs5GJampJjFknf6+n10S47a4k93SrNoemF+cfI99tJblQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uQnYboFY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E28C6C19425;
-	Mon, 20 Apr 2026 16:04:54 +0000 (UTC)
+	 MIME-Version; b=FSPjgvHsM/8Ts3DXua6/Knb8AIjRVYnHz8EcQzurq7XMzxk+WPJOfT8LEDPZy6Adh3BK7BfPVSGsFgan4gDANURbvJXEwpkyzYl1r985PoMjW0Jq1s3SNrKe6NfYsYrnFKMLg13dMor+plsRNGyVCIrEHx/1OYsqspfB6JMGYqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ClAFPqq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D319CC2BCB4;
+	Mon, 20 Apr 2026 16:09:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701095;
-	bh=r0J9IAXVE09hnWTNY+ClGbcf4OA9gJcgmaDwztOuYZw=;
+	s=korg; t=1776701386;
+	bh=jLPjjWAj++/xwxzSa3UP020v1MnW/Exi5W1XR43XJFc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uQnYboFYpRxhp9sFS2RvsGqposMbKZQraRD3EwP2mc9x5MDuCuUkBSlWyQ59VmwaE
-	 Havp/Tv+BVr5s0tbTOl9/Rwob+TbZ7dGhiE77orUN1N+GUKc5rv9B0a0Uu1dz58rad
-	 3uO3c7HEl46J9sEuf9b2CRKIlqeoW0I2CtJ4LJUo=
+	b=2ClAFPqqQcxU2Zwm/ZhNKOpnqJa90V29LdkvE8nWMmuWw9vfQ3gR8L1AW0Mq/AGOo
+	 pSP15RUDF5kfEpd7WPY47O9YahdK0Qj9GYNZ6FLne6LFHovnpqFABbANRm7+7u0zFv
+	 CmlHFQXvVPW2FSdwXxBKjMZoWDbuSev9guWGWy+U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Carey <carvsdriver@gmail.com>,
-	stable <stable@kernel.org>,
-	Oliver Neukum <oneukum@suse.com>
-Subject: [PATCH 6.18 147/198] USB: cdc-acm: Add quirks for Yoga Book 9 14IAH10 INGENIC touchscreen
+	Samuel Page <sam@bynar.io>,
+	Oliver Hartkopp <socketcan@hartkopp.net>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.12 094/162] can: raw: fix ro->uniq use-after-free in raw_rcv()
 Date: Mon, 20 Apr 2026 17:42:06 +0200
-Message-ID: <20260420153940.902634153@linuxfoundation.org>
+Message-ID: <20260420153930.440439168@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
+References: <20260420153927.006696811@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,196 +63,105 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239740-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,suse.com];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-239854-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.com:email]
-X-Rspamd-Queue-Id: 9FB5843041A
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,pengutronix.de:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 1791743062C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Carey <carvsdriver@gmail.com>
+From: Samuel Page <sam@bynar.io>
 
-commit f58752ebcb35e156c85cd1a82d6579c7af3b9023 upstream.
+commit a535a9217ca3f2fccedaafb2fddb4c48f27d36dc upstream.
 
-The Lenovo Yoga Book 9 14IAH10 (83KJ) has a composite USB device
-(17EF:6161) that controls both touchscreens via a CDC ACM interface.
-Interface 0 is a standard CDC ACM control interface, but interface 1
-(the data interface) incorrectly declares vendor-specific class (0xFF)
-instead of USB_CLASS_CDC_DATA. cdc-acm rejects the device at probe with
--EINVAL, leaving interface 0 unbound and EP 0x82 never polled.
+raw_release() unregisters raw CAN receive filters via can_rx_unregister(),
+but receiver deletion is deferred with call_rcu(). This leaves a window
+where raw_rcv() may still be running in an RCU read-side critical section
+after raw_release() frees ro->uniq, leading to a use-after-free of the
+percpu uniq storage.
 
-With no consumer polling EP 0x82, the firmware's watchdog fires every
-~20 seconds and resets the USB bus, producing a continuous disconnect/
-reconnect loop that prevents the touchscreens from ever initialising.
+Move free_percpu(ro->uniq) out of raw_release() and into a raw-specific
+socket destructor. can_rx_unregister() takes an extra reference to the
+socket and only drops it from the RCU callback, so freeing uniq from
+sk_destruct ensures the percpu area is not released until the relevant
+callbacks have drained.
 
-Add two new quirk flags:
-
-VENDOR_CLASS_DATA_IFACE: Bypasses the bInterfaceClass check in
-acm_probe() that would otherwise reject the vendor-class data
-interface with -EINVAL.
-
-ALWAYS_POLL_CTRL: Submits the notification URB at probe() rather than
-waiting for a TTY open. This keeps EP 0x82 polled at all times,
-permanently suppressing the firmware watchdog. The URB is resubmitted
-after port_shutdown() and on system resume. SET_CONTROL_LINE_STATE
-(DTR|RTS) is sent at probe and after port_shutdown() to complete
-firmware handshake.
-
-Note: the firmware performs exactly 4 USB connect/disconnect cycles
-(~19 s each) on every cold boot before stabilising. This is a fixed
-firmware property; touch is available ~75-80 s after power-on.
-
-Signed-off-by: Dave Carey <carvsdriver@gmail.com>
-Cc: stable <stable@kernel.org>
-Tested-by: Dave Carey <carvsdriver@gmail.com>
-Acked-by: Oliver Neukum <oneukum@suse.com>
-Link: https://patch.msgid.link/20260402182950.389016-1-carvsdriver@gmail.com
+Fixes: 514ac99c64b2 ("can: fix multiple delivery of a single CAN frame for overlapping CAN filters")
+Cc: stable@vger.kernel.org # v4.1+
+Assisted-by: Bynario AI
+Signed-off-by: Samuel Page <sam@bynar.io>
+Link: https://patch.msgid.link/26ec626d-cae7-4418-9782-7198864d070c@bynar.io
+Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
+[mkl: applied manually]
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/class/cdc-acm.c |   53 ++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 46 insertions(+), 7 deletions(-)
+ net/can/raw.c |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/class/cdc-acm.c
-+++ b/drivers/usb/class/cdc-acm.c
-@@ -114,6 +114,8 @@ static int acm_ctrl_msg(struct acm *acm,
- 	int retval;
- 
- 	retval = usb_autopm_get_interface(acm->control);
-+#define VENDOR_CLASS_DATA_IFACE		BIT(9)  /* data interface uses vendor-specific class */
-+#define ALWAYS_POLL_CTRL		BIT(10) /* keep ctrl URB active even without an open TTY */
- 	if (retval)
- 		return retval;
- 
-@@ -710,12 +712,14 @@ static int acm_port_activate(struct tty_
- 	set_bit(TTY_NO_WRITE_SPLIT, &tty->flags);
- 	acm->control->needs_remote_wakeup = 1;
- 
--	acm->ctrlurb->dev = acm->dev;
--	retval = usb_submit_urb(acm->ctrlurb, GFP_KERNEL);
--	if (retval) {
--		dev_err(&acm->control->dev,
--			"%s - usb_submit_urb(ctrl irq) failed\n", __func__);
--		goto error_submit_urb;
-+	if (!(acm->quirks & ALWAYS_POLL_CTRL)) {
-+		acm->ctrlurb->dev = acm->dev;
-+		retval = usb_submit_urb(acm->ctrlurb, GFP_KERNEL);
-+		if (retval) {
-+			dev_err(&acm->control->dev,
-+				"%s - usb_submit_urb(ctrl irq) failed\n", __func__);
-+			goto error_submit_urb;
-+		}
- 	}
- 
- 	acm_tty_set_termios(tty, NULL);
-@@ -788,6 +792,14 @@ static void acm_port_shutdown(struct tty
- 
- 	acm_unpoison_urbs(acm);
- 
-+	if (acm->quirks & ALWAYS_POLL_CTRL) {
-+		acm->ctrlurb->dev = acm->dev;
-+		if (usb_submit_urb(acm->ctrlurb, GFP_KERNEL))
-+			dev_dbg(&acm->control->dev,
-+				"ctrl polling restart failed after port close\n");
-+		/* port_shutdown() cleared DTR/RTS; restore them */
-+		acm_set_control(acm, USB_CDC_CTRL_DTR | USB_CDC_CTRL_RTS);
-+	}
+--- a/net/can/raw.c
++++ b/net/can/raw.c
+@@ -359,6 +359,14 @@ static int raw_notifier(struct notifier_
+ 	return NOTIFY_DONE;
  }
  
- static void acm_tty_cleanup(struct tty_struct *tty)
-@@ -1328,6 +1340,9 @@ skip_normal_probe:
- 			dev_dbg(&intf->dev,
- 				"Your device has switched interfaces.\n");
- 			swap(control_interface, data_interface);
-+		} else if (quirks & VENDOR_CLASS_DATA_IFACE) {
-+			dev_dbg(&intf->dev,
-+				"Vendor-specific data interface class, continuing.\n");
- 		} else {
- 			return -EINVAL;
- 		}
-@@ -1522,6 +1537,9 @@ skip_countries:
- 	acm->line.bDataBits = 8;
- 	acm_set_line(acm, &acm->line);
- 
-+	if (quirks & ALWAYS_POLL_CTRL)
-+		acm_set_control(acm, USB_CDC_CTRL_DTR | USB_CDC_CTRL_RTS);
++static void raw_sock_destruct(struct sock *sk)
++{
++	struct raw_sock *ro = raw_sk(sk);
 +
- 	if (!acm->combined_interfaces) {
- 		rv = usb_driver_claim_interface(&acm_driver, data_interface, acm);
- 		if (rv)
-@@ -1543,6 +1561,13 @@ skip_countries:
- 
- 	dev_info(&intf->dev, "ttyACM%d: USB ACM device\n", minor);
- 
-+	if (acm->quirks & ALWAYS_POLL_CTRL) {
-+		acm->ctrlurb->dev = acm->dev;
-+		if (usb_submit_urb(acm->ctrlurb, GFP_KERNEL))
-+			dev_warn(&intf->dev,
-+				 "failed to start persistent ctrl polling\n");
-+	}
++	free_percpu(ro->uniq);
++	can_sock_destruct(sk);
++}
 +
- 	return 0;
+ static int raw_init(struct sock *sk)
+ {
+ 	struct raw_sock *ro = raw_sk(sk);
+@@ -385,6 +393,8 @@ static int raw_init(struct sock *sk)
+ 	if (unlikely(!ro->uniq))
+ 		return -ENOMEM;
  
- err_release_data_interface:
-@@ -1669,7 +1694,7 @@ static int acm_resume(struct usb_interfa
- 
- 	acm_unpoison_urbs(acm);
- 
--	if (tty_port_initialized(&acm->port)) {
-+	if (tty_port_initialized(&acm->port) || (acm->quirks & ALWAYS_POLL_CTRL)) {
- 		rv = usb_submit_urb(acm->ctrlurb, GFP_ATOMIC);
- 
- 		for (;;) {
-@@ -2016,6 +2041,20 @@ static const struct usb_device_id acm_id
- 	/* CH343 supports CAP_BRK, but doesn't advertise it */
- 	{ USB_DEVICE(0x1a86, 0x55d3), .driver_info = MISSING_CAP_BRK, },
- 
-+	/*
-+	 * Lenovo Yoga Book 9 14IAH10 (83KJ) — INGENIC 17EF:6161 touchscreen
-+	 * composite device.  The CDC ACM control interface (0) uses a standard
-+	 * Union descriptor, but the data interface (1) is declared as vendor-
-+	 * specific class (0xff) with no CDC data descriptors, so cdc-acm would
-+	 * normally reject it.  The firmware also requires continuous polling of
-+	 * the notification endpoint (EP 0x82) to suppress a 20-second watchdog
-+	 * reset; ALWAYS_POLL_CTRL keeps the ctrlurb active even when no TTY is
-+	 * open.  Match only the control interface by class to avoid probing the
-+	 * vendor-specific data interface.
-+	 */
-+	{ USB_DEVICE_INTERFACE_CLASS(0x17ef, 0x6161, USB_CLASS_COMM),
-+	  .driver_info = VENDOR_CLASS_DATA_IFACE | ALWAYS_POLL_CTRL },
++	sk->sk_destruct = raw_sock_destruct;
 +
- 	/* control interfaces without any protocol set */
- 	{ USB_INTERFACE_INFO(USB_CLASS_COMM, USB_CDC_SUBCLASS_ACM,
- 		USB_CDC_PROTO_NONE) },
+ 	/* set notifier */
+ 	spin_lock(&raw_notifier_lock);
+ 	list_add_tail(&ro->notifier, &raw_notifier_list);
+@@ -432,7 +442,6 @@ static int raw_release(struct socket *so
+ 	ro->bound = 0;
+ 	ro->dev = NULL;
+ 	ro->count = 0;
+-	free_percpu(ro->uniq);
+ 
+ 	sock_orphan(sk);
+ 	sock->sk = NULL;
 
 
 
