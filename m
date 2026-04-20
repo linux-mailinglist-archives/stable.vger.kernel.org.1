@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-239681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239829-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uK1ULBda5mmtvAEAu9opvQ
-	(envelope-from <stable+bounces-239681-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:53:43 +0200
+	id kLSQDLJo5mkNwAEAu9opvQ
+	(envelope-from <stable+bounces-239829-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:56:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 465ED4302FE
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:53:43 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B29C24324A0
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:56:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4EAF0317ABFA
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:02:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2A6073723DF4
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:08:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C46E434216C;
-	Mon, 20 Apr 2026 16:02:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 049B933F5BC;
+	Mon, 20 Apr 2026 16:08:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WeRzxjY8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dSMSpd3r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88C142E2665;
-	Mon, 20 Apr 2026 16:02:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC791329C6D;
+	Mon, 20 Apr 2026 16:08:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700944; cv=none; b=V83D77hOyHJY3EaWMZsK0OhP9r9b1W+C0LqcX5kWT5KOpLMfPat4NGQTbRWLYCNg0LbkeC6LDj+VYdWsjvS1WIQanMEO/CkzGqIbuH3LFP8nuw2V/aD8Yf4bD+fNa9dj2IyCFYfNAZGeMZwMo74i8dR7xFb+O+cZRi2adOIRY2c=
+	t=1776701322; cv=none; b=LKG9tcUCq4aRjGs5yJnqPkCxZ/pnLWGuz9FUNMhi8ldKSTavB4SyJNjByJrcMEXJy60JAbhxwYo3XGY5SB48xmbFMco5JempK7JsJiZY7h6Rao2pQ0ntJew6LtXsZ451cDTNR0evzMuEIou54F5G2YqDDJ+w4BnvEvYz/9tsSio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700944; c=relaxed/simple;
-	bh=Lmbr6p2HslNUC6aYSfxbuYOC88JQtR3+E7SjPM1RUAE=;
+	s=arc-20240116; t=1776701322; c=relaxed/simple;
+	bh=JzgQAlvsFGNkHVKkYAiAlhh7tzb5wLn0FTZus8TNF5o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=apNIW23BXh2QX6EfP+LQQM42Dsfl5nZG/t0HxZQZ/jHIh6DGoD2FlZmOqHwh6EMfTvFsr3vb+sCTZyi1lzPgAetRzKRVVPT9s54OYOfL36WIjLLcgKc2nGNdgJXAB1RYJFriRpDtw20O2kOUAtwOdVGTqIKeAHNKHVTuzVcFXtA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WeRzxjY8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D75FFC19425;
-	Mon, 20 Apr 2026 16:02:23 +0000 (UTC)
+	 MIME-Version; b=RjkLCp6qMNhnTUiKQP8LeRQvvQVgk+ROI6j1eNoO87Lu92sk5kCHcfc+lvcuFGh1R8T71WQu+nFyCZ2fjJWZWsfrdlA2jGk8RdNztpCug0QTOCi2Zux2FEQzpyp2391vjt0iHiWLcmSoupk2oDV+ZuqyEyceitDv+bJor8KL+GA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dSMSpd3r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1212EC2BCB4;
+	Mon, 20 Apr 2026 16:08:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700944;
-	bh=Lmbr6p2HslNUC6aYSfxbuYOC88JQtR3+E7SjPM1RUAE=;
+	s=korg; t=1776701322;
+	bh=JzgQAlvsFGNkHVKkYAiAlhh7tzb5wLn0FTZus8TNF5o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WeRzxjY8WSmo/UAVd0UsNbj2j9NtfVbYrjFDhOt/x5IQQkyj3smAi9xXA/StIeed3
-	 mIFPKV2eQsGOyyVBGk4ScISKLpmlerHVIqxlLdfe4IqO2sIreA9iLbDC68lB445m7L
-	 DqwC3MBhg8cw3AzR0KOjN9pvP+3tAuX92Vj5XUX8=
+	b=dSMSpd3r1SORWU3feSmx7t4l7vARVj4+Ovo7ceS9whu49ChUSeQ3YOdMUz2IbiGmu
+	 3HdTH60Q+/n15MruFmZf3fzjPKbNPeqC5JFyyzvChNZyOF8Msm9IrbFn2VTP4uQHNd
+	 CN14yOWcK2Um+F7c7G/WONuHFmW1SLkaled90SNc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <imv4bel@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 121/198] netfilter: conntrack: add missing netlink policy validations
+Subject: [PATCH 6.12 068/162] selftests: net: bridge_vlan_mcast: wait for h1 before querier check
 Date: Mon, 20 Apr 2026 17:41:40 +0200
-Message-ID: <20260420153939.962712088@linuxfoundation.org>
+Message-ID: <20260420153929.499136773@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
+References: <20260420153927.006696811@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,96 +67,76 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-239681-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239829-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,strlen.de:email]
-X-Rspamd-Queue-Id: 465ED4302FE
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[siemens.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,makrotopia.org:email]
+X-Rspamd-Queue-Id: B29C24324A0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Daniel Golle <daniel@makrotopia.org>
 
-[ Upstream commit f900e1d77ee0ef87bfb5ab3fe60f0b3d8ad5ba05 ]
+[ Upstream commit efaa71faf212324ecbf6d5339e9717fe53254f58 ]
 
-Hyunwoo Kim reports out-of-bounds access in sctp and ctnetlink.
+The querier-interval test adds h1 (currently a slave of the VRF created
+by simple_if_init) to a temporary bridge br1 acting as an outside IGMP
+querier. The kernel VRF driver (drivers/net/vrf.c) calls cycle_netdev()
+on every slave add and remove, toggling the interface admin-down then up.
+Phylink takes the PHY down during the admin-down half of that cycle.
+Since h1 and swp1 are cable-connected, swp1 also loses its link may need
+several seconds to re-negotiate.
 
-These attributes are used by the kernel without any validation.
-Extend the netlink policies accordingly.
+Use setup_wait_dev $h1 0 which waits for h1 to return to UP state, so the
+test can rely on the link being back up at this point.
 
-Quoting the reporter:
-  nlattr_to_sctp() assigns the user-supplied CTA_PROTOINFO_SCTP_STATE
-  value directly to ct->proto.sctp.state without checking that it is
-  within the valid range. [..]
-
-  and: ... with exp->dir = 100, the access at
-  ct->master->tuplehash[100] reads 5600 bytes past the start of a
-  320-byte nf_conn object, causing a slab-out-of-bounds read confirmed by
-  UBSAN.
-
-Fixes: 076a0ca02644 ("netfilter: ctnetlink: add NAT support for expectations")
-Fixes: a258860e01b8 ("netfilter: ctnetlink: add full support for SCTP to ctnetlink")
-Reported-by: Hyunwoo Kim <imv4bel@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: 4d8610ee8bd77 ("selftests: net: bridge: add vlan mcast_querier_interval tests")
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+Reviewed-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Link: https://patch.msgid.link/c830f130860fd2efae08bfb9e5b25fd028e58ce5.1775424423.git.daniel@makrotopia.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_conntrack_netlink.c    | 2 +-
- net/netfilter/nf_conntrack_proto_sctp.c | 3 ++-
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ tools/testing/selftests/net/forwarding/bridge_vlan_mcast.sh | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
-index becffc15e7579..fbe9e3f1036f8 100644
---- a/net/netfilter/nf_conntrack_netlink.c
-+++ b/net/netfilter/nf_conntrack_netlink.c
-@@ -3475,7 +3475,7 @@ ctnetlink_change_expect(struct nf_conntrack_expect *x,
- 
- #if IS_ENABLED(CONFIG_NF_NAT)
- static const struct nla_policy exp_nat_nla_policy[CTA_EXPECT_NAT_MAX+1] = {
--	[CTA_EXPECT_NAT_DIR]	= { .type = NLA_U32 },
-+	[CTA_EXPECT_NAT_DIR]	= NLA_POLICY_MAX(NLA_BE32, IP_CT_DIR_REPLY),
- 	[CTA_EXPECT_NAT_TUPLE]	= { .type = NLA_NESTED },
- };
- #endif
-diff --git a/net/netfilter/nf_conntrack_proto_sctp.c b/net/netfilter/nf_conntrack_proto_sctp.c
-index 7c6f7c9f73320..645d2c43ebf7a 100644
---- a/net/netfilter/nf_conntrack_proto_sctp.c
-+++ b/net/netfilter/nf_conntrack_proto_sctp.c
-@@ -582,7 +582,8 @@ static int sctp_to_nlattr(struct sk_buff *skb, struct nlattr *nla,
- }
- 
- static const struct nla_policy sctp_nla_policy[CTA_PROTOINFO_SCTP_MAX+1] = {
--	[CTA_PROTOINFO_SCTP_STATE]	    = { .type = NLA_U8 },
-+	[CTA_PROTOINFO_SCTP_STATE]	    = NLA_POLICY_MAX(NLA_U8,
-+							 SCTP_CONNTRACK_HEARTBEAT_SENT),
- 	[CTA_PROTOINFO_SCTP_VTAG_ORIGINAL]  = { .type = NLA_U32 },
- 	[CTA_PROTOINFO_SCTP_VTAG_REPLY]     = { .type = NLA_U32 },
- };
+diff --git a/tools/testing/selftests/net/forwarding/bridge_vlan_mcast.sh b/tools/testing/selftests/net/forwarding/bridge_vlan_mcast.sh
+index 72dfbeaf56b92..e8031f68200ad 100755
+--- a/tools/testing/selftests/net/forwarding/bridge_vlan_mcast.sh
++++ b/tools/testing/selftests/net/forwarding/bridge_vlan_mcast.sh
+@@ -414,6 +414,7 @@ vlmc_querier_intvl_test()
+ 	bridge vlan add vid 10 dev br1 self pvid untagged
+ 	ip link set dev $h1 master br1
+ 	ip link set dev br1 up
++	setup_wait_dev $h1 0
+ 	bridge vlan add vid 10 dev $h1 master
+ 	bridge vlan global set vid 10 dev br1 mcast_snooping 1 mcast_querier 1
+ 	sleep 2
 -- 
 2.53.0
 
