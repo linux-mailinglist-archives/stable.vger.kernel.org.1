@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-239820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239488-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0Nz1LwBk5mkKvwEAu9opvQ
-	(envelope-from <stable+bounces-239820-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:36:00 +0200
+	id uE3RBfdk5mkKvwEAu9opvQ
+	(envelope-from <stable+bounces-239488-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:40:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E461C4318FC
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:35:59 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D4DD431BE0
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:40:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 832A83027409
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:08:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4871D35B71D7
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:53:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFCF033B6EF;
-	Mon, 20 Apr 2026 16:08:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D7412741A0;
+	Mon, 20 Apr 2026 15:53:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W4DqG6ok"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2SA1cd6B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9361E2BD11;
-	Mon, 20 Apr 2026 16:08:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D44B02E093A;
+	Mon, 20 Apr 2026 15:53:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701299; cv=none; b=hUB1XVMQqA81zzkZd6QByaZmfntjYO1rHXBEshGcBrOmdtIkrKguMeXarTxMOXWy6QXUa/rMs5yAaKCPTnfdT/QjtDAtjCxdRAUiMQi5GQe49KCRopozaOE1sXxQqTftZzqko3g/rCNWIxmRq/klIFK4lZw/WO8/xKVKnC0+Ib8=
+	t=1776700381; cv=none; b=u+jUX7aPFmtXDKY0WkwhzqSseoLvT2qLHqHTESkHw9axob4sLil8sHjMD3HkLIy3aAAKM4XZofuG9C5wrkv/cssrysQ9uvBpWkmU2k199hceJrZJG56H9KyZcGSY3d6Q5YQTB6AqI8x0GJhlxBU603uVG4+VkiOSO5cDhh5QEAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701299; c=relaxed/simple;
-	bh=DcqYQy8J2r6UWoo3wMn7crd9PR1Q3I8lL3Quertmjx8=;
+	s=arc-20240116; t=1776700381; c=relaxed/simple;
+	bh=TE0AhqHLzOI64paO4CuNg5bmyI3SSEZBXC2UGl3ZDHw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WL4uqqk2uZcugk1ykaIuYH2fWs8Egqi+UPEPQJM3Xx5yKt1MwcMM3xxCtqrMw8ThYn0N4XuKzVkHa6YiGcjXApQAwRcytO+dB0o9C57pcfuxui7Eul9qeeHQilWA5sl2RviihIYywn5+Q88YUzuCtmMZ0riRphOA2zU6/HsN/m8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W4DqG6ok; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 295A4C19425;
-	Mon, 20 Apr 2026 16:08:19 +0000 (UTC)
+	 MIME-Version; b=bHSTkNgs42OkTDt9CULoRVYnpMcBFEiHpXB3kneTQUPcejspufjhRwZtqlLLLceiFg9JOxjys4jsrtG0Mfrn4XTeXttBgbz0Fx5EocmdjVue0Y74+8gVaBUyVtqI8B/UGzxkKM+KdGnw+1kkrQzuavvmhrfDGaSiEC9c0WmJXSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2SA1cd6B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AE11C19425;
+	Mon, 20 Apr 2026 15:53:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701299;
-	bh=DcqYQy8J2r6UWoo3wMn7crd9PR1Q3I8lL3Quertmjx8=;
+	s=korg; t=1776700381;
+	bh=TE0AhqHLzOI64paO4CuNg5bmyI3SSEZBXC2UGl3ZDHw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W4DqG6okS45G0J+VpLxAdQox/PbNPD9V+7PAnujnXce+K4iSHRnOWM/lu5N9Z9Sq+
-	 RSV6I97HlGEZaDUmqL8Ku0M/22HeTQhIs8Hj080sDLj0c+xyvCjnJpzCMwumiyXCpE
-	 RncWUBpYML4Lfy3x+ijMEv0Fy3dfC+cwLFvhNMNU=
+	b=2SA1cd6BnmgRPBc+dzwZsrW6Y316ICu9i8IZxddG4wVhNxqhc7fg7p2g2jFOfm17a
+	 rdFMUTKJeP/xFPuHPbWJmA759JsYQ1WBzknRImHzD11b6gTGjYsp1+LyYrVVlyPCGF
+	 MJA0XQvK+CM420nUoUvwiUadQXCF8Ia30cpLyT9Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Iskhakov Daniil <dish@amicon.ru>,
-	Agalakov Daniil <ade@amicon.ru>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 060/162] e1000: check return value of e1000_read_eeprom
+	Clemens Ladisch <clemens@ladisch.de>,
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	stable <stable@kernel.org>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.19 151/220] ALSA: fireworks: bound device-supplied status before string array lookup
 Date: Mon, 20 Apr 2026 17:41:32 +0200
-Message-ID: <20260420153929.210639260@linuxfoundation.org>
+Message-ID: <20260420153939.465859491@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
-References: <20260420153927.006696811@linuxfoundation.org>
+In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
+References: <20260420153934.013228280@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +71,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239820-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-239488-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,85 +88,67 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,amicon.ru:email,linuxtesting.org:url]
-X-Rspamd-Queue-Id: E461C4318FC
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,perex.cz:email,suse.de:email,suse.com:email,sakamocchi.jp:email,ladisch.de:email]
+X-Rspamd-Queue-Id: 7D4DD431BE0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Agalakov Daniil <ade@amicon.ru>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit d3baa34a470771399c1495bc04b1e26ac15d598e ]
+commit 07704bbf36f57e4379e4cadf96410dab14621e3b upstream.
 
-[Why]
-e1000_set_eeprom() performs a read-modify-write operation when the write
-range is not word-aligned. This requires reading the first and last words
-of the range from the EEPROM to preserve the unmodified bytes.
+The status field in an EFW response is a 32-bit value supplied by the
+firewire device.  efr_status_names[] has 17 entries so a status value
+outside that range goes off into the weeds when looking at the %s value.
 
-However, the code does not check the return value of e1000_read_eeprom().
-If the read fails, the operation continues using uninitialized data from
-eeprom_buff. This results in corrupted data being written back to the
-EEPROM for the boundary words.
+Even worse, the status could return EFR_STATUS_INCOMPLETE which is
+0x80000000, and is obviously not in that array of potential strings.
 
-Add the missing error checks and abort the operation if reading fails.
+Fix this up by properly bounding the index against the array size and
+printing "unknown" if it's not recognized.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Co-developed-by: Iskhakov Daniil <dish@amicon.ru>
-Signed-off-by: Iskhakov Daniil <dish@amicon.ru>
-Signed-off-by: Agalakov Daniil <ade@amicon.ru>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Clemens Ladisch <clemens@ladisch.de>
+Cc: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Cc: Jaroslav Kysela <perex@perex.cz>
+Cc: Takashi Iwai <tiwai@suse.com>
+Fixes: bde8a8f23bbe ("ALSA: fireworks: Add transaction and some commands")
+Cc: stable <stable@kernel.org>
+Assisted-by: gregkh_clanker_t1000
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Link: https://patch.msgid.link/2026040953-astute-camera-1aa1@gregkh
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/e1000/e1000_ethtool.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ sound/firewire/fireworks/fireworks_command.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/e1000/e1000_ethtool.c b/drivers/net/ethernet/intel/e1000/e1000_ethtool.c
-index d06d29c6c0370..c7b50059663d9 100644
---- a/drivers/net/ethernet/intel/e1000/e1000_ethtool.c
-+++ b/drivers/net/ethernet/intel/e1000/e1000_ethtool.c
-@@ -496,14 +496,19 @@ static int e1000_set_eeprom(struct net_device *netdev,
- 		 */
- 		ret_val = e1000_read_eeprom(hw, first_word, 1,
- 					    &eeprom_buff[0]);
-+		if (ret_val)
-+			goto out;
+--- a/sound/firewire/fireworks/fireworks_command.c
++++ b/sound/firewire/fireworks/fireworks_command.c
+@@ -151,10 +151,13 @@ efw_transaction(struct snd_efw *efw, uns
+ 	    (be32_to_cpu(header->category) != category) ||
+ 	    (be32_to_cpu(header->command) != command) ||
+ 	    (be32_to_cpu(header->status) != EFR_STATUS_OK)) {
++		u32 st = be32_to_cpu(header->status);
 +
- 		ptr++;
+ 		dev_err(&efw->unit->device, "EFW command failed [%u/%u]: %s\n",
+ 			be32_to_cpu(header->category),
+ 			be32_to_cpu(header->command),
+-			efr_status_names[be32_to_cpu(header->status)]);
++			st < ARRAY_SIZE(efr_status_names) ?
++				efr_status_names[st] : "unknown");
+ 		err = -EIO;
+ 		goto end;
  	}
--	if (((eeprom->offset + eeprom->len) & 1) && (ret_val == 0)) {
-+	if ((eeprom->offset + eeprom->len) & 1) {
- 		/* need read/modify/write of last changed EEPROM word
- 		 * only the first byte of the word is being modified
- 		 */
- 		ret_val = e1000_read_eeprom(hw, last_word, 1,
- 					    &eeprom_buff[last_word - first_word]);
-+		if (ret_val)
-+			goto out;
- 	}
- 
- 	/* Device's eeprom is always little-endian, word addressable */
-@@ -522,6 +527,7 @@ static int e1000_set_eeprom(struct net_device *netdev,
- 	if ((ret_val == 0) && (first_word <= EEPROM_CHECKSUM_REG))
- 		e1000_update_eeprom_checksum(hw);
- 
-+out:
- 	kfree(eeprom_buff);
- 	return ret_val;
- }
--- 
-2.53.0
-
 
 
 
