@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-239921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239547-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oA6GAuFk5mkKvwEAu9opvQ
-	(envelope-from <stable+bounces-239921-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:39:45 +0200
+	id wHZQLcpN5mkgugEAu9opvQ
+	(envelope-from <stable+bounces-239547-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:01:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00EBB431B63
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:39:43 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4470A42ED64
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:01:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D457C31EE78D
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:12:36 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2416F30066B0
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:55:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CE0334107F;
-	Mon, 20 Apr 2026 16:12:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF7BE32E696;
+	Mon, 20 Apr 2026 15:55:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="prAcIplW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MHwdK3CZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00C8A333445;
-	Mon, 20 Apr 2026 16:12:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 938333264F1;
+	Mon, 20 Apr 2026 15:55:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701555; cv=none; b=XdsZd1UQ5U13IEKR8U91jCIm13tdOH+CKNC2XurX7rrKgFVED0I/wiwpCPy1E8EizxKFOwvXEI253+5gjfPvN4g4CJMDG3lh9Q+TwxMPpXa1xgfYPwzjtd3LNv0B4ASBgD1XC5w+/r9z08sgKoVvtc5faFo9l94pffi7+Xg0Xdc=
+	t=1776700532; cv=none; b=NZVtFxQ8o2dGzJYwoo8A0OC/qYY2fiX9BECirefF0IiV1Z3D+NDSIoIaXNH7ujWZ+1Tk49PlSUx6MwIhfd14QBxbemteawvxwu/fKynDADY2QiPDsdPQ3eMEorxrDcsu2miTNhFoALPbAPJX/FUAMHPZKkjosHFXTn/s6PZ0CmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701555; c=relaxed/simple;
-	bh=Ja92mSMTBxpy6V8E6IVy0OVL8TfBsRg7QIforuh423k=;
+	s=arc-20240116; t=1776700532; c=relaxed/simple;
+	bh=dOX7H5Di7ECwRG591rJ0KMnynrN62GioZmaRXXBL7s4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ASAkmMFNsQAIeiRlUoPc7zGFPgEp3hOWTroWjx2hT8QPmiWMv48jlQhLbh+mNIpY7H+0lZsPr3D8vpFF4zRV+lS3ZB12I9tJZEFe/cNFEoivgcIDaqWMyVLg/MN6uBuBo4RmQGFA+RD3+yUfWDhsu3/N0t9p8l6Pn5hVhoK+QkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=prAcIplW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B0BFC19425;
-	Mon, 20 Apr 2026 16:12:34 +0000 (UTC)
+	 MIME-Version; b=liXqPH9c7YfcnuafWvP51i9yk3o50iuRF50opQW0v2gXt/mwiYMr7pPIjEukGl/+1IP6Dc5L1mvFCWiGvKpUy5hhAozBig6kWfNTKbl0NQMyTeLgK//XTn0PpKU+ALtDkWkWEo4BRp/SqFQ3KnDJJfB3+0DTArh3jWDWTsHftv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MHwdK3CZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A280C19425;
+	Mon, 20 Apr 2026 15:55:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701554;
-	bh=Ja92mSMTBxpy6V8E6IVy0OVL8TfBsRg7QIforuh423k=;
+	s=korg; t=1776700532;
+	bh=dOX7H5Di7ECwRG591rJ0KMnynrN62GioZmaRXXBL7s4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=prAcIplWz3qdxGXquO8MZEcCAjAvdKOcT3GpagX/n3JxXHaCtTrjnIkb4/LHpA8Z0
-	 SOgFDQxIgyhQjLDqramkNTJGr/KZACO8kVT0y28NROYzgGnb4JR/c+hXVQ/gcQlGWK
-	 ZEsKmrPDMvQIWRReLdYAE0Yc1uQMcbyDBeTO8gB8=
+	b=MHwdK3CZ9CH+LkLalO8ewjdp4xWeLOuT+Kte2r2oRFL//Bpmaj9eA8vKIu55cJfFR
+	 A+xJmUTKkit28FstOvI9joIISK80U8GrM58A8c3IQsuckXaDTKCiAHVcCz+G/W6guM
+	 CaXHj279feRISjAJbumGm0auSD1xwrkwegxTc1wA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Fiona Behrens <me@kloenk.dev>,
-	Trevor Gross <tmgross@umich.edu>,
-	Tamir Duberstein <tamird@kernel.org>
-Subject: [PATCH 6.12 117/162] scripts: generate_rust_analyzer.py: avoid FD leak
+	Fan Wu <fanwu01@zju.edu.cn>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.19 208/220] media: mediatek: vcodec: fix use-after-free in encoder release path
 Date: Mon, 20 Apr 2026 17:42:29 +0200
-Message-ID: <20260420153931.280074704@linuxfoundation.org>
+Message-ID: <20260420153941.517573922@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
-References: <20260420153927.006696811@linuxfoundation.org>
+In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
+References: <20260420153934.013228280@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,73 +64,144 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+X-Spamd-Result: default: False [5.34 / 15.00];
+	SEM_URIBL(3.50)[zju.edu.cn:email];
+	SUSPICIOUS_RECIPS(1.50)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
+	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239921-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-239547-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
+	RCVD_COUNT_THREE(0.00)[4];
+	GREYLIST(0.00)[pass,body];
 	TO_DN_SOME(0.00)[];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_SPAM(0.00)[0.948];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[collabora.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 00EBB431B63
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[stable,cisco];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	R_SPF_ALLOW(0.00)[+ip6:2600:3c09:e001:a7::/64:c];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[collabora.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,zju.edu.cn:email]
+X-Rspamd-Queue-Id: 4470A42ED64
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tamir Duberstein <tamird@kernel.org>
+From: Fan Wu <fanwu01@zju.edu.cn>
 
-commit 9b4744d8eda2824041064a5639ccbb079850914d upstream.
+commit 76e35091ffc722ba39b303e48bc5d08abb59dd56 upstream.
 
-Use `pathlib.Path.read_text()` to avoid leaking file descriptors.
+The fops_vcodec_release() function frees the context structure (ctx)
+without first cancelling any pending or running work in ctx->encode_work.
+This creates a race window where the workqueue handler (mtk_venc_worker)
+may still be accessing the context memory after it has been freed.
 
-Fixes: 8c4555ccc55c ("scripts: add `generate_rust_analyzer.py`")
+Race condition:
+
+    CPU 0 (release path)               CPU 1 (workqueue)
+    ---------------------               ------------------
+    fops_vcodec_release()
+      v4l2_m2m_ctx_release()
+        v4l2_m2m_cancel_job()
+        // waits for m2m job "done"
+                                        mtk_venc_worker()
+                                          v4l2_m2m_job_finish()
+                                          // m2m job "done"
+                                          // BUT worker still running!
+                                          // post-job_finish access:
+                                        other ctx dereferences
+                                          // UAF if ctx already freed
+        // returns (job "done")
+      kfree(ctx)  // ctx freed
+
+Root cause: The v4l2_m2m_ctx_release() only waits for the m2m job
+lifecycle (via TRANS_RUNNING flag), not the workqueue lifecycle.
+After v4l2_m2m_job_finish() is called, the m2m framework considers
+the job complete and v4l2_m2m_ctx_release() returns, but the worker
+function continues executing and may still access ctx.
+
+The work is queued during encode operations via:
+  queue_work(ctx->dev->encode_workqueue, &ctx->encode_work)
+The worker function accesses ctx->m2m_ctx, ctx->dev, and other ctx
+fields even after calling v4l2_m2m_job_finish().
+
+This vulnerability was confirmed with KASAN by running an instrumented
+test module that widens the post-job_finish race window. KASAN detected:
+
+  BUG: KASAN: slab-use-after-free in mtk_venc_worker+0x159/0x180
+  Read of size 4 at addr ffff88800326e000 by task kworker/u8:0/12
+
+  Workqueue: mtk_vcodec_enc_wq mtk_venc_worker
+
+  Allocated by task 47:
+    __kasan_kmalloc+0x7f/0x90
+    fops_vcodec_open+0x85/0x1a0
+
+  Freed by task 47:
+    __kasan_slab_free+0x43/0x70
+    kfree+0xee/0x3a0
+    fops_vcodec_release+0xb7/0x190
+
+Fix this by calling cancel_work_sync(&ctx->encode_work) before kfree(ctx).
+This ensures the workqueue handler is both cancelled (if pending) and
+synchronized (waits for any running handler to complete) before the
+context is freed.
+
+Placement rationale: The fix is placed after v4l2_ctrl_handler_free()
+and before list_del_init(&ctx->list). At this point, all m2m operations
+are done (v4l2_m2m_ctx_release() has returned), and we need to ensure
+the workqueue is synchronized before removing ctx from the list and
+freeing it.
+
+Note: The open error path does NOT need cancel_work_sync() because
+INIT_WORK() only initializes the work structure - it does not schedule
+it. Work is only scheduled later during device_run() operations.
+
+Fixes: 0934d3759615 ("media: mediatek: vcodec: separate decoder and encoder")
 Cc: stable@vger.kernel.org
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-Reviewed-by: Fiona Behrens <me@kloenk.dev>
-Reviewed-by: Trevor Gross <tmgross@umich.edu>
-Link: https://patch.msgid.link/20260127-rust-analyzer-fd-leak-v2-1-1bb55b9b6822@kernel.org
-Signed-off-by: Tamir Duberstein <tamird@kernel.org>
+Signed-off-by: Fan Wu <fanwu01@zju.edu.cn>
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/generate_rust_analyzer.py |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_drv.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/scripts/generate_rust_analyzer.py
-+++ b/scripts/generate_rust_analyzer.py
-@@ -146,9 +146,10 @@ def generate_crates(srctree, objtree, sy
+--- a/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_drv.c
++++ b/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_drv.c
+@@ -215,6 +215,15 @@ static int fops_vcodec_release(struct fi
+ 	v4l2_fh_exit(&ctx->fh);
+ 	v4l2_ctrl_handler_free(&ctx->ctrl_hdl);
  
-     def is_root_crate(build_file, target):
-         try:
--            return f"{target}.o" in open(build_file).read()
-+            contents = build_file.read_text()
-         except FileNotFoundError:
-             return False
-+        return f"{target}.o" in contents
- 
-     # Then, the rest outside of `rust/`.
-     #
++	/*
++	 * Cancel any pending encode work before freeing the context.
++	 * Although v4l2_m2m_ctx_release() waits for m2m job completion,
++	 * the workqueue handler (mtk_venc_worker) may still be accessing
++	 * the context after v4l2_m2m_job_finish() returns. Without this,
++	 * a use-after-free occurs when the worker accesses ctx after kfree.
++	 */
++	cancel_work_sync(&ctx->encode_work);
++
+ 	spin_lock_irqsave(&dev->dev_ctx_lock, flags);
+ 	list_del_init(&ctx->list);
+ 	spin_unlock_irqrestore(&dev->dev_ctx_lock, flags);
 
 
 
