@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-239381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239595-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cNZYLvNj5mkKvwEAu9opvQ
-	(envelope-from <stable+bounces-239381-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:35:47 +0200
+	id 4NYYIRJm5mmJvwEAu9opvQ
+	(envelope-from <stable+bounces-239595-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:44:50 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AC414318BD
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:35:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE090431F9F
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:44:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C86BC31106D9
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:48:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6A5B1316133F
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:57:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5FA73368AE;
-	Mon, 20 Apr 2026 15:48:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E428633C192;
+	Mon, 20 Apr 2026 15:57:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oAhfklsa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C4I1v0zD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 682F234216C;
-	Mon, 20 Apr 2026 15:48:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A60E933AD9A;
+	Mon, 20 Apr 2026 15:57:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700101; cv=none; b=np//DMcJaG9TDdNRSgAAZsOPyTIJZXJBKaOxbTMWsckTYaK/JSMb1pjxwxpypawFiOVweVdED341bnIZNuKzfvbDiQw2hwM8QcQUhiAgUZMXkQgkPUFNrGmYkTQH5Nt96Yo1dLr2Mqwd8lGeSi4IDVucxqtp/qDDuJQl53TxCUs=
+	t=1776700659; cv=none; b=k2aWy7pL3i9J59BllrVXNAMYN+8g37aLbazxD2zYuT4cSRcEkQ0nTBimAokaInJoOLDddVB4cDMd4pCreblGwBi8TitccPSwz4XJ2w3SRixWXoHH9uKN+nNbm+6gO/UkysdrqMe6OT4jlA8MS/mYerrBi80n/KOHs8DJlfed80M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700101; c=relaxed/simple;
-	bh=UADPtQG6Y+HCyAWbfU7EcFHoF5r4mN3xse/DznQKZiQ=;
+	s=arc-20240116; t=1776700659; c=relaxed/simple;
+	bh=tBCppNsrOW4RJrNE8Q/IGw4wPN7yJ+F7rerW7Wf7mgA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nafilkkdl4PJsPBoULsWPYhBzz5RwR8a9kB+zgPokkcIGg877SNP2do/BCNjGifU6IOHGToBSA8N0f7H9uSfuAAYRa3qrYBjv/xSm1LfBkdF9cgnftNSnXEWZiGGUYmm9QFFYl7CA7agDihDwrq0HDXU8viOd2ykUQ+BbadXxLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oAhfklsa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2EF7C19425;
-	Mon, 20 Apr 2026 15:48:20 +0000 (UTC)
+	 MIME-Version; b=WuC95BP8FX6fHCH8//vOEbbxU/+eysXX+eW4FynvX1rLGzV+Yh0PNL4GbT3HrxX6ckMz0xUTptdxO9XiKYongAIqZyPTvIXYkGwOdhhciDdQjhrisdHKig9w+H/0rBa8VI3LHe3M3k+mvtf+cTy7fnCZCAnUA/c1CqAW8puD4RA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C4I1v0zD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D052C19425;
+	Mon, 20 Apr 2026 15:57:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700101;
-	bh=UADPtQG6Y+HCyAWbfU7EcFHoF5r4mN3xse/DznQKZiQ=;
+	s=korg; t=1776700659;
+	bh=tBCppNsrOW4RJrNE8Q/IGw4wPN7yJ+F7rerW7Wf7mgA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oAhfklsaWdPJ8JOkqlv4vkYabMT/JFNGrLsgrBZtz/7IbCVgVTk7pFwbOYmORydkI
-	 d/EAmVYBjYhPaBrO/V+O31x0DciZ66EMVg7U57Nxyv/KIfoFiZcC0unVZV3huVbbOj
-	 XJc9jh2eKzCi+AOhpmKpW2Sw9pSe4003fAALtZPs=
+	b=C4I1v0zDL5ykAbCgtzaSQsvKxM4lHdtMmARDHxEE2jY1rFNJHgOrluxcOIbIWe4yA
+	 DquhgLmHlE3uG+bVl8878NLufREbO8cyPrZKdp9xdByW+HoOvBhuMdDmY7+OsXl4JV
+	 5pHyo/rDtmdt7XPjmBKC8J2njpex3fQ73NUHfuBM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Matthew Schwartz <matthew.schwartz@linux.dev>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 043/220] wifi: brcmfmac: validate bsscfg indices in IF events
-Date: Mon, 20 Apr 2026 17:39:44 +0200
-Message-ID: <20260420153935.588216852@linuxfoundation.org>
+Subject: [PATCH 6.18 006/198] ALSA: hda/realtek: Add quirk for ASUS ROG Flow Z13-KJP GZ302EAC
+Date: Mon, 20 Apr 2026 17:39:45 +0200
+Message-ID: <20260420153935.841852522@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
-References: <20260420153934.013228280@linuxfoundation.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,69 +73,59 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239381-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-239595-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,broadcom.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: 0AC414318BD
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: DE090431F9F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+From: Matthew Schwartz <matthew.schwartz@linux.dev>
 
-[ Upstream commit 304950a467d83678bd0b0f46331882e2ac23b12d ]
+[ Upstream commit 59f68dc1d8df3142cb58fd2568966a9bb7b0ed8a ]
 
-brcmf_fweh_handle_if_event() validates the firmware-provided interface
-index before it touches drvr->iflist[], but it still uses the raw
-bsscfgidx field as an array index without a matching range check.
+Fixes lack of audio output on the ASUS ROG Flow Z13-KJP GZ302EAC model,
+similar to the ASUS ROG Flow Z13 GZ302EA.
 
-Reject IF events whose bsscfg index does not fit in drvr->iflist[]
-before indexing the interface array.
-
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-Link: https://patch.msgid.link/20260323074551.93530-1-pengpeng@iscas.ac.cn
-[add missing wifi prefix]
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Matthew Schwartz <matthew.schwartz@linux.dev>
+Link: https://patch.msgid.link/20260313172503.285846-1-matthew.schwartz@linux.dev
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ sound/hda/codecs/realtek/alc269.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c
-index c2d98ee6652f3..1d25dc9ebca8b 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c
-@@ -153,6 +153,11 @@ static void brcmf_fweh_handle_if_event(struct brcmf_pub *drvr,
- 		bphy_err(drvr, "invalid interface index: %u\n", ifevent->ifidx);
- 		return;
- 	}
-+	if (ifevent->bsscfgidx >= BRCMF_MAX_IFS) {
-+		bphy_err(drvr, "invalid bsscfg index: %u\n",
-+			 ifevent->bsscfgidx);
-+		return;
-+	}
- 
- 	ifp = drvr->iflist[ifevent->bsscfgidx];
- 
+diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/realtek/alc269.c
+index 4b06cb48252e2..1959adb6c5189 100644
+--- a/sound/hda/codecs/realtek/alc269.c
++++ b/sound/hda/codecs/realtek/alc269.c
+@@ -7065,6 +7065,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1043, 0x14e3, "ASUS G513PI/PU/PV", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x1043, 0x14f2, "ASUS VivoBook X515JA", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1043, 0x1503, "ASUS G733PY/PZ/PZV/PYV", ALC287_FIXUP_CS35L41_I2C_2),
++	SND_PCI_QUIRK(0x1043, 0x1514, "ASUS ROG Flow Z13 GZ302EAC", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x1043, 0x1517, "Asus Zenbook UX31A", ALC269VB_FIXUP_ASUS_ZENBOOK_UX31A),
+ 	SND_PCI_QUIRK(0x1043, 0x1533, "ASUS GV302XA/XJ/XQ/XU/XV/XI", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x1043, 0x1573, "ASUS GZ301VV/VQ/VU/VJ/VA/VC/VE/VVC/VQC/VUC/VJC/VEC/VCC", ALC285_FIXUP_ASUS_HEADSET_MIC),
 -- 
 2.53.0
 
