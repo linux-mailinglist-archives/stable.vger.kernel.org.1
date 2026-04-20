@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-239322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239527-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eAdbOdRf5mkxvgEAu9opvQ
-	(envelope-from <stable+bounces-239322-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:18:12 +0200
+	id 2JgaLkxl5mlmvwEAu9opvQ
+	(envelope-from <stable+bounces-239527-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:41:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B1DF430F2E
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:18:12 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61D37431D3B
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:41:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4A61C323530F
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:45:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2734735DBD95
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:54:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E1E933A9F8;
-	Mon, 20 Apr 2026 15:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDA0D33A9C4;
+	Mon, 20 Apr 2026 15:54:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CxGMNfoR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FoQo8v1S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F4CC2C236B;
-	Mon, 20 Apr 2026 15:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC4D93314C4;
+	Mon, 20 Apr 2026 15:54:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776699950; cv=none; b=EKuAfcuD9QeT7H3PcKL8nAL64UXUjoyUfJUXbEBzKKD8TGeGwlyXY5lUBNahW2Txpq5kvMKMppraChLlAV69VE4vsr69GjY9dofZ/aUhLuW8nkRQ8OrLTm0Icn2FXD6mvjO087ajbUHthYbjkOtb9XERedljN9qlRPfM+Mqphts=
+	t=1776700481; cv=none; b=RpGz2fI9EKoKooPwLLh1vG+PpR3pMZMw8sNBN1snwjEN0wzMT7zSKmgJLT82yZN0eT+Pi4KlnykmNbEkvc3p7NxgIqsl6e1w/ZFyTPieaBkRtaPCY3e6Q/SZ3QLXaZ8od4zwYJ1R1jui58LVrboCOs8NYcN9NcPPcNpsuEHOr/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776699950; c=relaxed/simple;
-	bh=l/AxNCS7Vw3wcuzHD65ONPgRnbsJOCxFDGPzbBajCgM=;
+	s=arc-20240116; t=1776700481; c=relaxed/simple;
+	bh=YvatBB+poIG+GJ1pbkyBxRBjA0thngF6pWhphiChDF0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sTb/AO6y4EjxOlv9ErGqPZ59ymY7WEpKF1/5aoibcCFDZCt+GrlxXMRKmMt7HJTbtfGYFQdcCFHYJ4S3X4yVen4tHXz7Q7RxwuB4BZzPFZnmu3IJOO7GeMnjLF/2m0EQ85hPOnOELvauSxMmu/U1vyE42phv7tg78ooPta0lGrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CxGMNfoR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A482BC19425;
-	Mon, 20 Apr 2026 15:45:49 +0000 (UTC)
+	 MIME-Version; b=aqMTPb5sjz56aTyDJ7Gy7/NwFk86B0TArKQhJomGU5puAtGrkyPgBKpakHh0XWaRY5TZ9sHOIpN3Q/3rgI+dw8IstiFGeCRQdjmo0NJuxjXiJ3iud7oNBrp1v7hlA07yw1/Q1yBXCIRZ9G1iVNYcYmouQ4tJoMXdioUiDA6TQe4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FoQo8v1S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13457C19425;
+	Mon, 20 Apr 2026 15:54:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776699950;
-	bh=l/AxNCS7Vw3wcuzHD65ONPgRnbsJOCxFDGPzbBajCgM=;
+	s=korg; t=1776700481;
+	bh=YvatBB+poIG+GJ1pbkyBxRBjA0thngF6pWhphiChDF0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CxGMNfoRQgE/SaixoFZA3Pv9veHFMKFaX2boLHa6l+dUJsRVsJDJzS8Sp4+U49DMj
-	 OJOK87jUMhRzoM5t3b46J1XJeTP86evcJc2VTVnjiCxYxrDlRWuOiTVcU0mbtt8kmY
-	 RABuItwYNLtxsDuW9q75SFsjJSyDZ1sZm/en41c0=
+	b=FoQo8v1SMgKG7lfUi9aO0QE3hflmdWnf7OArVhks17FjvfJeDr5cd9i+3Mc0v1qJF
+	 nUmR7Ux7TCq4VZ3CpUG6t7ZtMSfWAeYGRaBvKKkeQKBj7Zr0N2EY14Af3cZAg2UJUZ
+	 1fp+L8VWLajS8Yn6k7O8DiY6UcStb8yuMwgLkp10=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 7.0 60/76] x86-64/arm64/powerpc: clean up and rename __copy_from_user_flushcache
+	Jethro Beekman <jethro@fortanix.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.19 190/220] KVM: SEV: Disallow LAUNCH_FINISH if vCPUs are actively being created
 Date: Mon, 20 Apr 2026 17:42:11 +0200
-Message-ID: <20260420153913.004519604@linuxfoundation.org>
+Message-ID: <20260420153940.866825876@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153910.810034134@linuxfoundation.org>
-References: <20260420153910.810034134@linuxfoundation.org>
+In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
+References: <20260420153934.013228280@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,173 +67,117 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239322-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-239527-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1B1DF430F2E
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,fortanix.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 61D37431D3B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 809b997a5ce945ab470f70c187048fe4f5df20bf upstream.
+commit 624bf3440d7214b62c22d698a0a294323f331d5d upstream.
 
-This finishes the work on these odd functions that were only implemented
-by a handful of architectures.
+Reject LAUNCH_FINISH for SEV-ES and SNP VMs if KVM is actively creating
+one or more vCPUs, as KVM needs to process and encrypt each vCPU's VMSA.
+Letting userspace create vCPUs while LAUNCH_FINISH is in-progress is
+"fine", at least in the current code base, as kvm_for_each_vcpu() operates
+on online_vcpus, LAUNCH_FINISH (all SEV+ sub-ioctls) holds kvm->mutex, and
+fully onlining a vCPU in kvm_vm_ioctl_create_vcpu() is done under
+kvm->mutex.  I.e. there's no difference between an in-progress vCPU and a
+vCPU that is created entirely after LAUNCH_FINISH.
 
-The 'flushcache' function was only used from the iterator code, and
-let's make it do the same thing that the nontemporal version does:
-remove the two underscores and add the user address checking.
+However, given that concurrent LAUNCH_FINISH and vCPU creation can't
+possibly work (for any reasonable definition of "work"), since userspace
+can't guarantee whether a particular vCPU will be encrypted or not,
+disallow the combination as a hardening measure, to reduce the probability
+of introducing bugs in the future, and to avoid having to reason about the
+safety of future changes related to LAUNCH_FINISH.
 
-Yes, yes, the user address checking is also done at iovec import time,
-but we have long since walked away from the old double-underscore thing
-where we try to avoid address checking overhead at access time, and
-these functions shouldn't be so special and old-fashioned.
-
-The arm64 version already did the address check, in fact, so there it's
-just a matter of renaming it.  For powerpc and x86-64 we now do the
-proper user access boilerplate.
-
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Jethro Beekman <jethro@fortanix.com>
+Closes: https://lore.kernel.org/all/b31f7c6e-2807-4662-bcdd-eea2c1e132fa@fortanix.com
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260310234829.2608037-5-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/uaccess.h   |    2 +-
- arch/powerpc/include/asm/uaccess.h |    3 +--
- arch/powerpc/lib/pmem.c            |   11 ++++++-----
- arch/x86/include/asm/uaccess_64.h  |    8 ++++----
- arch/x86/lib/usercopy_64.c         |    8 ++++----
- lib/iov_iter.c                     |    2 +-
- 6 files changed, 17 insertions(+), 17 deletions(-)
+ arch/x86/kvm/svm/sev.c   |   10 ++++++++--
+ include/linux/kvm_host.h |    7 +++++++
+ 2 files changed, 15 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/include/asm/uaccess.h
-+++ b/arch/arm64/include/asm/uaccess.h
-@@ -478,7 +478,7 @@ extern __must_check long strnlen_user(co
- #ifdef CONFIG_ARCH_HAS_UACCESS_FLUSHCACHE
- extern unsigned long __must_check __copy_user_flushcache(void *to, const void __user *from, unsigned long n);
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -1023,6 +1023,9 @@ static int sev_launch_update_vmsa(struct
+ 	if (!sev_es_guest(kvm))
+ 		return -ENOTTY;
  
--static inline int __copy_from_user_flushcache(void *dst, const void __user *src, unsigned size)
-+static inline size_t copy_from_user_flushcache(void *dst, const void __user *src, size_t size)
- {
- 	kasan_check_write(dst, size);
- 	return __copy_user_flushcache(dst, __uaccess_mask_ptr(src), size);
---- a/arch/powerpc/include/asm/uaccess.h
-+++ b/arch/powerpc/include/asm/uaccess.h
-@@ -434,8 +434,7 @@ copy_mc_to_user(void __user *to, const v
- }
- #endif
++	if (kvm_is_vcpu_creation_in_progress(kvm))
++		return -EBUSY;
++
+ 	kvm_for_each_vcpu(i, vcpu, kvm) {
+ 		ret = mutex_lock_killable(&vcpu->mutex);
+ 		if (ret)
+@@ -2043,8 +2046,8 @@ static int sev_check_source_vcpus(struct
+ 	struct kvm_vcpu *src_vcpu;
+ 	unsigned long i;
  
--extern long __copy_from_user_flushcache(void *dst, const void __user *src,
--		unsigned size);
-+extern size_t copy_from_user_flushcache(void *dst, const void __user *src, size_t size);
+-	if (src->created_vcpus != atomic_read(&src->online_vcpus) ||
+-	    dst->created_vcpus != atomic_read(&dst->online_vcpus))
++	if (kvm_is_vcpu_creation_in_progress(src) ||
++	    kvm_is_vcpu_creation_in_progress(dst))
+ 		return -EBUSY;
  
- static __must_check __always_inline bool __user_access_begin(const void __user *ptr, size_t len,
- 							     unsigned long dir)
---- a/arch/powerpc/lib/pmem.c
-+++ b/arch/powerpc/lib/pmem.c
-@@ -66,15 +66,16 @@ EXPORT_SYMBOL_GPL(arch_invalidate_pmem);
- /*
-  * CONFIG_ARCH_HAS_UACCESS_FLUSHCACHE symbols
-  */
--long __copy_from_user_flushcache(void *dest, const void __user *src,
--		unsigned size)
-+size_t copy_from_user_flushcache(void *dest, const void __user *src,
-+				 size_t size)
- {
--	unsigned long copied, start = (unsigned long) dest;
-+	unsigned long not_copied, start = (unsigned long) dest;
+ 	if (!sev_es_guest(src))
+@@ -2454,6 +2457,9 @@ static int snp_launch_update_vmsa(struct
+ 	unsigned long i;
+ 	int ret;
  
--	copied = __copy_from_user(dest, src, size);
-+	src = mask_user_address(src);
-+	not_copied = __copy_from_user(dest, src, size);
- 	clean_pmem_range(start, start + size);
++	if (kvm_is_vcpu_creation_in_progress(kvm))
++		return -EBUSY;
++
+ 	data.gctx_paddr = __psp_pa(sev->snp_context);
+ 	data.page_type = SNP_PAGE_TYPE_VMSA;
  
--	return copied;
-+	return not_copied;
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -1030,6 +1030,13 @@ static inline struct kvm_vcpu *kvm_get_v
+ 	return NULL;
  }
  
- void memcpy_flushcache(void *dest, const void *src, size_t size)
---- a/arch/x86/include/asm/uaccess_64.h
-+++ b/arch/x86/include/asm/uaccess_64.h
-@@ -149,7 +149,7 @@ raw_copy_to_user(void __user *dst, const
++static inline bool kvm_is_vcpu_creation_in_progress(struct kvm *kvm)
++{
++	lockdep_assert_held(&kvm->lock);
++
++	return kvm->created_vcpus != atomic_read(&kvm->online_vcpus);
++}
++
+ void kvm_destroy_vcpus(struct kvm *kvm);
  
- #define copy_to_nontemporal copy_to_nontemporal
- extern size_t copy_to_nontemporal(void *dst, const void *src, size_t size);
--extern long __copy_user_flushcache(void *dst, const void __user *src, unsigned size);
-+extern size_t copy_user_flushcache(void *dst, const void __user *src, size_t size);
- 
- static inline int
- copy_from_user_inatomic_nontemporal(void *dst, const void __user *src,
-@@ -164,11 +164,11 @@ copy_from_user_inatomic_nontemporal(void
- 	return ret;
- }
- 
--static inline int
--__copy_from_user_flushcache(void *dst, const void __user *src, unsigned size)
-+static inline size_t
-+copy_from_user_flushcache(void *dst, const void __user *src, size_t size)
- {
- 	kasan_check_write(dst, size);
--	return __copy_user_flushcache(dst, src, size);
-+	return copy_user_flushcache(dst, src, size);
- }
- 
- /*
---- a/arch/x86/lib/usercopy_64.c
-+++ b/arch/x86/lib/usercopy_64.c
-@@ -43,14 +43,14 @@ void arch_wb_cache_pmem(void *addr, size
- }
- EXPORT_SYMBOL_GPL(arch_wb_cache_pmem);
- 
--long __copy_user_flushcache(void *dst, const void __user *src, unsigned size)
-+size_t copy_user_flushcache(void *dst, const void __user *src, size_t size)
- {
- 	unsigned long flushed, dest = (unsigned long) dst;
--	long rc;
-+	unsigned long rc;
- 
--	stac();
-+	src = masked_user_access_begin(src);
- 	rc = copy_to_nontemporal(dst, (__force const void *)src, size);
--	clac();
-+	user_access_end();
- 
- 	/*
- 	 * copy_to_nontemporal() uses non-temporal stores for the bulk
---- a/lib/iov_iter.c
-+++ b/lib/iov_iter.c
-@@ -296,7 +296,7 @@ static __always_inline
- size_t copy_from_user_iter_flushcache(void __user *iter_from, size_t progress,
- 				      size_t len, void *to, void *priv2)
- {
--	return __copy_from_user_flushcache(to + progress, iter_from, len);
-+	return copy_from_user_flushcache(to + progress, iter_from, len);
- }
- 
- static __always_inline
+ int kvm_trylock_all_vcpus(struct kvm *kvm);
 
 
 
