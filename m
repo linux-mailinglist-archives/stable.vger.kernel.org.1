@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-239795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239646-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QPZ5ExBQ5mkDuwEAu9opvQ
-	(envelope-from <stable+bounces-239795-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:10:56 +0200
+	id CMREMO5N5mkgugEAu9opvQ
+	(envelope-from <stable+bounces-239646-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:01:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB07142F1DB
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:10:55 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id A88DD42ED9F
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:01:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D5D4B3030B18
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:07:19 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 334F53003987
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:01:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B87E6343D91;
-	Mon, 20 Apr 2026 16:07:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DEDC329C6D;
+	Mon, 20 Apr 2026 16:01:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bSRi6DHq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y0izfqBz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75B0E342CB0;
-	Mon, 20 Apr 2026 16:07:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5BB232E696;
+	Mon, 20 Apr 2026 16:00:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701235; cv=none; b=ejLSG9LxcrJpn9+b1ieiQadvoYbD6fpgO29hUtXwTsvOng6u6/yX7tmCL2Oh+OWjdJZTkMG0l7OdAkQm6DYAeFk0SkkqfJUxmlu65dEegBQwe/UllUx6dMSDSTQuqPcICY2nES764QBYsb0Z0Ou4Nf2SQ0MSzZ/G0ySXQADP84Q=
+	t=1776700859; cv=none; b=ct43MQ9RoWRHq3aHBoeVzA7JDDgHLsU8iQ5aFHP0lHvaAeWAfmxZC6ihzcYvURfcmRB78KpVAw8uulnzPopLhpf9dmmeJguYpkE7ACr1l+NrYD2Ba4nUiLcPlw9icmAoK8ESYg0np8HcRa1bm9hNgbxHGwGNLFgwb/3sHjQjrJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701235; c=relaxed/simple;
-	bh=olJGkidIplbU+CMNSAW1e6vxyLTr5gY0ZylqniDFn9s=;
+	s=arc-20240116; t=1776700859; c=relaxed/simple;
+	bh=snOFseOE/OfJ0J7/DD5CZKyzg1yhvgj9RV9ZMdE5VOY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QKGjO3ncVqbnzEcal+s3boSPm+HyaIxFjILdAPs9xVTzYp/2VL27J9QggIAujW4BA3M/d+D97MasSTr2LHL23poPBduv+4IFvTlBhl4Xffh2ykBV9K9jmKuT6x+2ukJHkAe/iygv4x4ZqYpjYH8vYGlIx5MChfvEYF4qqtGK9RE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bSRi6DHq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BF8FC2BCB4;
-	Mon, 20 Apr 2026 16:07:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aLMnmnVTYSDr0qp1ElLam0WNijB0jOIWH8jcPbANDLtfnTVN7IyjTuy4BBBqqc4PDAXwyamhxQjiIuXu1Ozn4JjpKaq04xZk9WbMEbDmZNBQELp6ZZNJNcSAGr//WFSDFnv4kG5f2xfwrv04Qf5FppcWdbkcaa7FOzqUYVT9oEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y0izfqBz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FF22C19425;
+	Mon, 20 Apr 2026 16:00:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701235;
-	bh=olJGkidIplbU+CMNSAW1e6vxyLTr5gY0ZylqniDFn9s=;
+	s=korg; t=1776700859;
+	bh=snOFseOE/OfJ0J7/DD5CZKyzg1yhvgj9RV9ZMdE5VOY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bSRi6DHqtISfnZ9jtR4IRSFOZhTSNJ0Ippqk0968stynMQXkeS2CdTSZprQMY74gg
-	 H0aRcGKTdof7W2WBtu6AiI0ryKlKi4LSCQqiXk2hxzYQFD7lFAqiS4L21lLZW4n0uA
-	 29XT7JfvQ/L0d3bac8L/iDb5mDPuguRHKV1/jjL0=
+	b=Y0izfqBzzOmCdYcnoDIf+eKLvyteom57oxFd+6+6ZzL9TQWVqgx5CkeQCfjYjA1cg
+	 24fLMSxZFgWSA9kHdmA+LscDuofuHY7Cmz3oD1u8cKHA86+ojMciTUbsY3JSwLUg6y
+	 v14aqfNAzk8H5wLHJM2apSl9VB2e/8s6ySYDblEI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Potin Lai <potin.lai.pt@gmail.com>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 034/162] soc: aspeed: socinfo: Mask table entries for accurate SoC ID matching
-Date: Mon, 20 Apr 2026 17:41:06 +0200
-Message-ID: <20260420153928.261674785@linuxfoundation.org>
+Subject: [PATCH 6.18 088/198] xsk: tighten UMEM headroom validation to account for tailroom and min frame
+Date: Mon, 20 Apr 2026 17:41:07 +0200
+Message-ID: <20260420153938.776212279@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
-References: <20260420153927.006696811@linuxfoundation.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +65,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239795-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-239646-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,codeconstruct.com.au,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.996];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,codeconstruct.com.au:email]
-X-Rspamd-Queue-Id: EB07142F1DB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[fomichev.me:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email]
+X-Rspamd-Queue-Id: A88DD42ED9F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Potin Lai <potin.lai.pt@gmail.com>
+From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 
-[ Upstream commit 7ec1bd3d9be671d04325b9e06149b8813f6a4836 ]
+[ Upstream commit a315e022a72d95ef5f1d4e58e903cb492b0ad931 ]
 
-The siliconid_to_name() function currently masks the input silicon ID
-with 0xff00ffff, but compares it against unmasked table entries. This
-causes matching to fail if the table entries contain non-zero values in
-the bits covered by the mask (bits 16-23).
+The current headroom validation in xdp_umem_reg() could leave us with
+insufficient space dedicated to even receive minimum-sized ethernet
+frame. Furthermore if multi-buffer would come to play then
+skb_shared_info stored at the end of XSK frame would be corrupted.
 
-Update the logic to apply the 0xff00ffff mask to the table entries
-during comparison. This ensures that only the relevant model and
-revision bits are considered, providing a consistent match across
-different manufacturing batches.
+HW typically works with 128-aligned sizes so let us provide this value
+as bare minimum.
 
-[arj: Add Fixes: tag, fix 'soninfo' typo, clarify function reference]
+Multi-buffer setting is known later in the configuration process so
+besides accounting for 128 bytes, let us also take care of tailroom space
+upfront.
 
-Fixes: e0218dca5787 ("soc: aspeed: Add soc info driver")
-Signed-off-by: Potin Lai <potin.lai.pt@gmail.com>
-Link: https://patch.msgid.link/20260122-soc_aspeed_name_fix-v1-1-33a847f2581c@gmail.com
-Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+Reviewed-by: Björn Töpel <bjorn@kernel.org>
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+Fixes: 99e3a236dd43 ("xsk: Add missing check on user supplied headroom size")
+Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Link: https://patch.msgid.link/20260402154958.562179-2-maciej.fijalkowski@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/aspeed/aspeed-socinfo.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/xdp/xdp_umem.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/soc/aspeed/aspeed-socinfo.c b/drivers/soc/aspeed/aspeed-socinfo.c
-index 67e9ac3d08ecc..a90b100f4d101 100644
---- a/drivers/soc/aspeed/aspeed-socinfo.c
-+++ b/drivers/soc/aspeed/aspeed-socinfo.c
-@@ -39,7 +39,7 @@ static const char *siliconid_to_name(u32 siliconid)
- 	unsigned int i;
+diff --git a/net/xdp/xdp_umem.c b/net/xdp/xdp_umem.c
+index 9f76ca591d54f..9ec7bd948acc7 100644
+--- a/net/xdp/xdp_umem.c
++++ b/net/xdp/xdp_umem.c
+@@ -202,7 +202,8 @@ static int xdp_umem_reg(struct xdp_umem *umem, struct xdp_umem_reg *mr)
+ 	if (!unaligned_chunks && chunks_rem)
+ 		return -EINVAL;
  
- 	for (i = 0 ; i < ARRAY_SIZE(rev_table) ; ++i) {
--		if (rev_table[i].id == id)
-+		if ((rev_table[i].id & 0xff00ffff) == id)
- 			return rev_table[i].name;
- 	}
+-	if (headroom >= chunk_size - XDP_PACKET_HEADROOM)
++	if (headroom > chunk_size - XDP_PACKET_HEADROOM -
++		       SKB_DATA_ALIGN(sizeof(struct skb_shared_info)) - 128)
+ 		return -EINVAL;
  
+ 	if (mr->flags & XDP_UMEM_TX_METADATA_LEN) {
 -- 
 2.53.0
 
