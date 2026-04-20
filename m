@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-239524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239856-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GCQ4O1dl5mkKvwEAu9opvQ
-	(envelope-from <stable+bounces-239524-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:41:43 +0200
+	id IKVBEuNb5mmtvAEAu9opvQ
+	(envelope-from <stable+bounces-239856-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:01:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68869431D66
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:41:43 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC4AA43063A
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:01:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 83C0835D4DF0
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:54:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A6467317458E
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:09:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A333331A78;
-	Mon, 20 Apr 2026 15:54:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DFAB2DF719;
+	Mon, 20 Apr 2026 16:09:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ogmh4s3V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jSf2ym+X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D09A82E11C7;
-	Mon, 20 Apr 2026 15:54:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E774341077;
+	Mon, 20 Apr 2026 16:09:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700473; cv=none; b=o3EFMPOxi91hvUW7aOc3q66vzNi3Yd3EXVvjbu0l0dKlFPAk2cBpWREZ4MSb5yllXma26ox7vS3URjv3hwt3zGspE3kCv4GoVqAZMWBllhzRZ7wkrC/Q8uKnCpEXSmX1shEVZS8gmeQyTNE2F1K934zEcWzV51KKqn1lyPsaU/k=
+	t=1776701391; cv=none; b=MyL9h496VsV+/k8o8PCePEmhru00sVgx2E/QPHjG1RV61dHQ0SrVSL3FHkeQmKjYQcCmRtRxWtq0RiNrlW/le2SGWkdlWp2Dou7UI1tQUFfIyVvYBbq2Pfl24CQ6v4bSckZR2QK7VMX/Eaa1coCSq7G/cbu3jdqdbJdeasWp6zQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700473; c=relaxed/simple;
-	bh=gnikGA4+gfHsCFw7wjE4ZJ9GGhgR1Lj1bpE0Tk0L19Y=;
+	s=arc-20240116; t=1776701391; c=relaxed/simple;
+	bh=tdX18oNsu7R/ms1zn/W3xNX6utJ4t6dtaiLqTubuBIo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ei5mpZkFbR92Ntgp5lUNZPqng19vW7tGWqSJ3Ibvmx3c+97eR1j2X5uDNeFA8zs2QKB4nDeiqJ6yXM03l6nW1hSg5YeK8ERpt1v5h4eh0ranRpidIHFWba3lGTuMinCV5mGW9D/ggqHymLzibP2gSOOCE6RpJm++DhMGPG+3egk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ogmh4s3V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 683B7C19425;
-	Mon, 20 Apr 2026 15:54:33 +0000 (UTC)
+	 MIME-Version; b=hF8CQR7yF54nF7a4crgjU7ggXjGrcfKAwzIrtYmvuLAZkWxZOHuAYQY5zrbk3lkEZ8iFEo76ZAG5xq1w4vzeoI9HdU5aren1E+9zrOoggrsdqp/cOSwrFEWrWaRd3RVeOBMR6RXV/QknAP14DDd/+Usq4w5MLFVbeMHK+EgnSas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jSf2ym+X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8A0EC19425;
+	Mon, 20 Apr 2026 16:09:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700473;
-	bh=gnikGA4+gfHsCFw7wjE4ZJ9GGhgR1Lj1bpE0Tk0L19Y=;
+	s=korg; t=1776701391;
+	bh=tdX18oNsu7R/ms1zn/W3xNX6utJ4t6dtaiLqTubuBIo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ogmh4s3VGqgpOx8gzLUX+fjN46A/KdMff1EJYY1XLyBNBXYNAvdU49Glj55Z+O9iN
-	 kUCO1ppnVyhP2SgT8jPVFXDFAw4+a/mGczfGxd/DylFzCFuHr8914OPla1zj4vFEmC
-	 3vKHg2sE1yVUjnxEf9tF7uTZsDaWiiocwvSxMTRU=
+	b=jSf2ym+Xpd++mOB6vlp7IxYolvPRwRw3T+4R1tNnfzcIq4qriXkM+Nt+FXGaNZRix
+	 Y3j8ow0/FBiApWC9lFXseRL8DNOwtjYedOwfB0sGJ7/pXFnuQ4N8jeRscCuypqDo6W
+	 OuFlk2SCNCnUsRRw4WHZ6O4h3vz06Zp89PFzr8Ts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.19 187/220] KVM: selftests: Remove duplicate LAUNCH_UPDATE_VMSA call in SEV-ES migrate test
+	stable <stable@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Lin YuChen <starpt.official@gmail.com>
+Subject: [PATCH 6.12 096/162] staging: rtl8723bs: initialize le_tmp64 in rtw_BIP_verify()
 Date: Mon, 20 Apr 2026 17:42:08 +0200
-Message-ID: <20260420153940.759252706@linuxfoundation.org>
+Message-ID: <20260420153930.512784997@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
-References: <20260420153934.013228280@linuxfoundation.org>
+In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
+References: <20260420153927.006696811@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +64,82 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239524-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239856-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,linaro.org,gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 68869431D66
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linaro.org:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: DC4AA43063A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Lin YuChen <starpt.official@gmail.com>
 
-commit 25a642b6abc98bbbabbf2baef9fc498bbea6aee6 upstream.
+commit 8c964b82a4e97ec7f25e17b803ee196009b38a57 upstream.
 
-Drop the explicit KVM_SEV_LAUNCH_UPDATE_VMSA call when creating an SEV-ES
-VM in the SEV migration test, as sev_vm_create() automatically updates the
-VMSA pages for SEV-ES guests.  The only reason the duplicate call doesn't
-cause visible problems is because the test doesn't actually try to run the
-vCPUs.  That will change when KVM adds a check to prevent userspace from
-re-launching a VMSA (which corrupts the VMSA page due to KVM writing
-encrypted private memory).
+Initialize le_tmp64 to zero in rtw_BIP_verify() to prevent using
+uninitialized data.
 
-Fixes: 69f8e15ab61f ("KVM: selftests: Use the SEV library APIs in the intra-host migration test")
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260310234829.2608037-2-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Smatch warns that only 6 bytes are copied to this 8-byte (u64)
+variable, leaving the last two bytes uninitialized:
+
+drivers/staging/rtl8723bs/core/rtw_security.c:1308 rtw_BIP_verify()
+warn: not copying enough bytes for '&le_tmp64' (8 vs 6 bytes)
+
+Initializing the variable at the start of the function fixes this
+warning and ensures predictable behavior.
+
+Fixes: 554c0a3abf21 ("staging: Add rtl8723bs sdio wifi driver")
+Cc: stable <stable@kernel.org>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/linux-staging/abvwIQh0CHTp4wNJ@stanley.mountain/
+Signed-off-by: Lin YuChen <starpt.official@gmail.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/20260320172502.167332-1-starpt.official@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/kvm/x86/sev_migrate_tests.c |    2 --
- 1 file changed, 2 deletions(-)
+ drivers/staging/rtl8723bs/core/rtw_security.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/tools/testing/selftests/kvm/x86/sev_migrate_tests.c
-+++ b/tools/testing/selftests/kvm/x86/sev_migrate_tests.c
-@@ -36,8 +36,6 @@ static struct kvm_vm *sev_vm_create(bool
+--- a/drivers/staging/rtl8723bs/core/rtw_security.c
++++ b/drivers/staging/rtl8723bs/core/rtw_security.c
+@@ -1363,7 +1363,7 @@ u32 rtw_BIP_verify(struct adapter *padap
+ 	u8 mic[16];
+ 	struct mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
+ 	__le16 le_tmp;
+-	__le64 le_tmp64;
++	__le64 le_tmp64 = 0;
  
- 	sev_vm_launch(vm, es ? SEV_POLICY_ES : 0);
- 
--	if (es)
--		vm_sev_ioctl(vm, KVM_SEV_LAUNCH_UPDATE_VMSA, NULL);
- 	return vm;
- }
- 
+ 	ori_len = pattrib->pkt_len-WLAN_HDR_A3_LEN+BIP_AAD_SIZE;
+ 	BIP_AAD = rtw_zmalloc(ori_len);
 
 
 
