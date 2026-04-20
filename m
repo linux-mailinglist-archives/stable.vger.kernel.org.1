@@ -1,129 +1,162 @@
-Return-Path: <stable+bounces-238697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238692-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EPgDEtu+5Wl3ngEAu9opvQ
-	(envelope-from <stable+bounces-238697-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 07:51:23 +0200
+	id uKi/Avm85Wk8ngEAu9opvQ
+	(envelope-from <stable+bounces-238692-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 07:43:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FEDA426F4F
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 07:51:22 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EF79426E81
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 07:43:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8852B300A607
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 05:51:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E1825301F5FC
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 05:43:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F0D63148C9;
-	Mon, 20 Apr 2026 05:51:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CBCC3803E3;
+	Mon, 20 Apr 2026 05:43:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="RUr0v7VJ"
+	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="wcE323tj"
 X-Original-To: stable@vger.kernel.org
-Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
+Received: from n169-111.mail.139.com (n169-111.mail.139.com [120.232.169.111])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8557113C9C4;
-	Mon, 20 Apr 2026 05:51:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6906F2C21EE;
+	Mon, 20 Apr 2026 05:42:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776664276; cv=none; b=qAHfarpKSPW4mewekYYrPry1dQOnBxLqWOdZU3c5YBfnX8HgJBaQb54uCOwhiwXdtPNXPEsQF8Z0/gBpmMz2eAke9SssbeKOR5h8sNtSFwya32u99Bi/rNq5grROuPqY+YvrzVe1G8Z0zoB6uqcw16f6SYtc/2InJi3cFck4188=
+	t=1776663784; cv=none; b=LMiQ9ZERv9cLNNPA0LPdFJSnW0SxTwxEqoDZVcT5Nsk2WGXcVyTon9Rw3AH2rTNSZRAl2EPrzKBHKYuo+hOu8ClPXywQUdh0l+MKv3kJr1qJgaEI+0w5p8m+3P/cQG0D5+VayAbXxSC7a0jfi7nOP9UY1WXAVVl2imxYzY0rslw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776664276; c=relaxed/simple;
-	bh=mM7nrILypJTY/P85KRkTSJEidfXBiMKGe3fl6hBpgDo=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Z2bhApxKqfO7r69nLC6Ir3iG6jBCA1vC8F+Z1bET8B9AEqqjzy4gU3D251w25i8r/RKRC1Hula/wZTjkl1+FIsMk0DP8yzqD2/2uGtqujhl2jA8j8u/bLx79HEEmMbUflRbHsSgn3I2i24blpISncYXnWYTIocYr1kFJoVo2vT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=RUr0v7VJ; arc=none smtp.client-ip=203.29.241.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
+	s=arc-20240116; t=1776663784; c=relaxed/simple;
+	bh=S+E4YfUt/nhC2VFntQ2C78zHJ8wfTR9NhfWnmKNpeAg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=tgmVgg5VCs9JC2M0eUuR1xxwG8xlhZRIVdubHYuxkUJAl0yHr5Gp/zZ5UPSlRvxp34/E85UB65yloWWZngPsgZge0Lii0+9SiP9EEwg3vvuDO1+KnMSHwie3KQwR6xzN3LKt2m05HMe81hJ6rQDvISiCLJxiBuzzmv5FcRTAhAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=wcE323tj; arc=none smtp.client-ip=120.232.169.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=codeconstruct.com.au; s=2022a; t=1776663668;
-	bh=mM7nrILypJTY/P85KRkTSJEidfXBiMKGe3fl6hBpgDo=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=RUr0v7VJXDXoYgkx7NeicB35aKbqQvj9LNIyZvRG9rXeOvSsxd69YogVaEt5ZhDuU
-	 xs0WftUvmsDUMFDDtfHiR0FSbgtzRXHUM5LtAOXvKyouqdSU4o92GMnVbALnOq29Pa
-	 e3DsTrQKpYipTlsoiS/8fkLqk4RurZ0/8Tl220/o6Oj9DMJcwsnAXufnGhuHnjbGNY
-	 RCgA5TSbuULu/Kq++em+gb+xu80thZcR440tb0zQZCtGdMD1iRl0Q6If/t67VHdMbd
-	 +oSLU/ntWeg629g9DXlFc4Y8P/x5kiaUTK7YTw05SorAVHCH1+QAdpAOh6rbbMCQ+x
-	 kb0M+R25trwIQ==
-Received: from [192.168.72.167] (210-10-213-150.per.static-ipl.aapt.com.au [210.10.213.150])
-	by mail.codeconstruct.com.au (Postfix) with ESMTPSA id 9FC4260C8D;
-	Mon, 20 Apr 2026 13:41:07 +0800 (AWST)
-Message-ID: <28119a94e183d695389f51282d48580adc7703b4.camel@codeconstruct.com.au>
-Subject: Re: [PATCH net] net: mctp: fix don't require received header
- reserved bits to be zero
-From: Jeremy Kerr <jk@codeconstruct.com.au>
-To: wit_yuan <yuanzhaoming901030@126.com>
-Cc: yuanzm2@lenovo.com, matt@codeconstruct.com.au, davem@davemloft.net, 
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org,  linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Date: Mon, 20 Apr 2026 13:41:07 +0800
-In-Reply-To: <20260417141340.5306-1-yuanzhaoming901030@126.com>
-References: <20260417141340.5306-1-yuanzhaoming901030@126.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4-2+deb12u1 
+	d=139.com; s=dkim; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=wcE323tjCg0o+l2pUqmE5+17J8YYZ4NMghjwfioX91O25udDh5X+ELqaauaZIv32qU2L0rn6Lm9aZ
+	 DrTIu8MTgIJaOnRjOll5FpAPGLkc+/JkiP5qc2VwH3sTKNxWxwxuOqXHiz4Ta0RaTrYcLhQJQBoMJa
+	 0D7k8m/j7cbCw4a4=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM:                                                                                        
+X-RM-SPAM-FLAG:00000000
+Received:from NTT-kernel-dev (unknown[60.247.85.88])
+	by rmsmtp-lg-appmail-16-12015 (RichMail) with SMTP id 2eef69e5bccfaa0-01ac1;
+	Mon, 20 Apr 2026 13:42:43 +0800 (CST)
+X-RM-TRANSID:2eef69e5bccfaa0-01ac1
+From: Li hongliang <1468888505@139.com>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org,
+	heminhong@kylinos.cn
+Cc: patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	davem@davemloft.net,
+	dsahern@kernel.org,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	david.lebrun@uclouvain.be,
+	netdev@vger.kernel.org,
+	andrea.mayer@uniroma2.it
+Subject: [PATCH 6.12.y] ipv6: add NULL checks for idev in SRv6 paths
+Date: Mon, 20 Apr 2026 13:42:41 +0800
+Message-Id: <20260420054241.3043646-1-1468888505@139.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [1.04 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[codeconstruct.com.au,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[codeconstruct.com.au:s=2022a];
+	R_DKIM_REJECT(1.00)[139.com:s=dkim];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-238697-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[126.com];
-	DKIM_TRACE(0.00)[codeconstruct.com.au:+];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-238692-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	DMARC_NA(0.00)[139.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	NEURAL_SPAM(0.00)[0.958];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[1468888505@139.com,stable@vger.kernel.org];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jk@codeconstruct.com.au,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[139.com:-];
+	TO_DN_NONE(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lenovo.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8FEDA426F4F
+	FREEMAIL_FROM(0.00)[139.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 9EF79426E81
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi,
+From: Minhong He <heminhong@kylinos.cn>
 
-> From the MCTP Base specification (DSP0236 v1.2.1), the first byte of
-> the MCTP header contains a 4 bit reserved field, and 4 bit version.
->=20
-> On our current receive path, we require those 4 reserved bits to be
-> zero, but the 9500-8i card is non-conformant, and may set these
-> reserved bits.
->=20
-> DSP0236 states that the reserved bits must be written as zero, and
-> ignored when read. While the device might not conform to the former,
-> we should accept these message to conform to the latter.
->=20
-> Relax our check on the MCTP version byte to allow non-zero bits in the
-> reserved field.
->=20
-> Fixes: 889b7da23abf ("mctp: Add initial routing framework")
-> Signed-off-by: Yuan Zhaoming <yuanzm2@lenovo.com>
+[ Upstream commit 06413793526251870e20402c39930804f14d59c0 ]
 
-Looks good, thanks for the contribution!
+__in6_dev_get() can return NULL when the device has no IPv6 configuration
+(e.g. MTU < IPV6_MIN_MTU or after NETDEV_UNREGISTER).
 
-Acked-by: Jeremy Kerr <jk@codeconstruct.com.au>
+Add NULL checks for idev returned by __in6_dev_get() in both
+seg6_hmac_validate_skb() and ipv6_srh_rcv() to prevent potential NULL
+pointer dereferences.
 
-Cheers,
+Fixes: 1ababeba4a21 ("ipv6: implement dataplane support for rthdr type 4 (Segment Routing Header)")
+Fixes: bf355b8d2c30 ("ipv6: sr: add core files for SR HMAC support")
+Signed-off-by: Minhong He <heminhong@kylinos.cn>
+Reviewed-by: Andrea Mayer <andrea.mayer@uniroma2.it>
+Link: https://patch.msgid.link/20260316073301.106643-1-heminhong@kylinos.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Li hongliang <1468888505@139.com>
+---
+ net/ipv6/exthdrs.c   | 4 ++++
+ net/ipv6/seg6_hmac.c | 2 ++
+ 2 files changed, 6 insertions(+)
+
+diff --git a/net/ipv6/exthdrs.c b/net/ipv6/exthdrs.c
+index 1a627c24e4c3..8a30dd83cf0b 100644
+--- a/net/ipv6/exthdrs.c
++++ b/net/ipv6/exthdrs.c
+@@ -379,6 +379,10 @@ static int ipv6_srh_rcv(struct sk_buff *skb)
+ 	hdr = (struct ipv6_sr_hdr *)skb_transport_header(skb);
+ 
+ 	idev = __in6_dev_get(skb->dev);
++	if (!idev) {
++		kfree_skb(skb);
++		return -1;
++	}
+ 
+ 	accept_seg6 = min(READ_ONCE(net->ipv6.devconf_all->seg6_enabled),
+ 			  READ_ONCE(idev->cnf.seg6_enabled));
+diff --git a/net/ipv6/seg6_hmac.c b/net/ipv6/seg6_hmac.c
+index 5d21a74c1165..214d137d545e 100644
+--- a/net/ipv6/seg6_hmac.c
++++ b/net/ipv6/seg6_hmac.c
+@@ -245,6 +245,8 @@ bool seg6_hmac_validate_skb(struct sk_buff *skb)
+ 	int require_hmac;
+ 
+ 	idev = __in6_dev_get(skb->dev);
++	if (!idev)
++		return false;
+ 
+ 	srh = (struct ipv6_sr_hdr *)skb_transport_header(skb);
+ 
+-- 
+2.34.1
 
 
-Jeremy
 
