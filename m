@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-239714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239530-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +LilJoJn5mmlvwEAu9opvQ
-	(envelope-from <stable+bounces-239714-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:50:58 +0200
+	id CEKiHUtM5mkgugEAu9opvQ
+	(envelope-from <stable+bounces-239530-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 17:54:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 455EC4322DC
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:50:58 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17EF042EB62
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 17:54:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 175D9323BBD9
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:03:56 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7F77D30055B1
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:54:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D9F134252C;
-	Mon, 20 Apr 2026 16:03:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67E2F331A78;
+	Mon, 20 Apr 2026 15:54:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xYYwqpHR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gcaFd6uO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01B5133F8D6;
-	Mon, 20 Apr 2026 16:03:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B5212E093A;
+	Mon, 20 Apr 2026 15:54:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701029; cv=none; b=p2IHZWPzt0s+60u1yCs+KAOMW76fAI8o17TD72pdkAQqPHvF2jOrmzK1j7lUyQn773tNyG6rcue8cHYG2OLyPj1/fURwcMpLDByZpboCmtXXnmnf5JTQgyLRjYkj2fle/kWS8khR91XS4lUMrIQjgmT1UJLYB6cehhhP6LvdcoM=
+	t=1776700489; cv=none; b=EmOUOrT2RVeom4otTKnZzI5CK5L0uynX19g5v5YK28+LsfSXGS8HAVJ8isLggpBoUQaI1pNMPssdKLmqQ/BkqgD0DDMY00KvMAR3zw9mKpQ5TEPoxx1zWEqKgAk4VmGehe3iFyEnoU6T3kqYn0Wfi/ZPuLiz4c6iKtBsOh9Mh0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701029; c=relaxed/simple;
-	bh=tIJEWR5IJQqJTJmMMYJRCpdWCSNlCGfgMwFpzsYD+dI=;
+	s=arc-20240116; t=1776700489; c=relaxed/simple;
+	bh=4eiApwrGy2kebTZLivE8/XCMGj36g/ItG8DXkJIiqvQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GctrFLdya2kDbvfZuyOLzK4/sk1eYRnAEBYFIlSdYZo5ea8Ht/PWOYDL8tkaHjO0P7VRggAvO2yy4j8wV2rBxj2ae9CK6jZDcOHJ75IM/7kIKsZpSzo343Bg6WUKF8yFVo6145uYwtpo7pU2Hz319IZFy1BT6vLWPiXQZzIqZfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xYYwqpHR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64DB7C19425;
-	Mon, 20 Apr 2026 16:03:48 +0000 (UTC)
+	 MIME-Version; b=qbu3JgKo1jNoe2A2JVPRoO6T+H8koTkaW/rxzt2HTHEAi1bOGdDuR79GbF6Ko/kDK3jEnCVq5d+aLdXjR7JFo5jvKEqyA5u0W+NavavsAU6CH9cknNyCWrVDdEr9W9SunuPGI+vBWpUEo5JpwT3Vb7BL1jesCb92iygQ7WcLFLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gcaFd6uO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B616CC19425;
+	Mon, 20 Apr 2026 15:54:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701028;
-	bh=tIJEWR5IJQqJTJmMMYJRCpdWCSNlCGfgMwFpzsYD+dI=;
+	s=korg; t=1776700489;
+	bh=4eiApwrGy2kebTZLivE8/XCMGj36g/ItG8DXkJIiqvQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xYYwqpHRd0Q6DakiReFgTxUpBpkRIuu0/QjXT9MYENVu1CpIrikWaeGIuigCCOwbM
-	 8hfTyLcQMrS9/pRm9+2pNEQG8rK1e6O35mRanl3XXjwlDftvACJ9AJYORDTWrZgaQv
-	 6H0z3MPxJ+u5HgWuln47xzNQ8L4jve7dpYRqFn3c=
+	b=gcaFd6uOfJd6gNTvLYqmmyS0Ywpkck6+BtIvcLjrY/R9/4XOe4hbD6NHZAHJ/Vx+N
+	 oBMbILIBthBLoYWypa73PDRAvmgYDJH2no6jXC8WVWm/2wCUu1MmcaqPrzNpADMFqO
+	 VjwprrVvAO0R4hNoN5dgKvHV9m01J/wDLXsE8pgQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Porcedda <fabio.porcedda@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.18 154/198] USB: serial: option: add Telit Cinterion FN990A MBIM composition
-Date: Mon, 20 Apr 2026 17:42:13 +0200
-Message-ID: <20260420153941.152280758@linuxfoundation.org>
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Google Big Sleep <big-sleep-vuln-reports+bigsleep-501448199@google.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Jan Kara <jack@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.19 193/220] mm: call ->free_folio() directly in folio_unmap_invalidate()
+Date: Mon, 20 Apr 2026 17:42:14 +0200
+Message-ID: <20260420153940.974540985@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
+References: <20260420153934.013228280@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,101 +69,114 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239714-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-239530-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-0.989];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 455EC4322DC
+	TAGGED_RCPT(0.00)[stable,bigsleep-501448199];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,linux-foundation.org:email,suse.cz:email,kernel.dk:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 17EF042EB62
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Porcedda <fabio.porcedda@gmail.com>
+From: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-commit f8cc59ecc22841be5deb07b549c0c6a2657cd5f9 upstream.
+commit 615d9bb2ccad42f9e21d837431e401db2e471195 upstream.
 
-Add the following Telit Cinterion FN990A MBIM composition:
+We can only call filemap_free_folio() if we have a reference to (or hold a
+lock on) the mapping.  Otherwise, we've already removed the folio from the
+mapping so it no longer pins the mapping and the mapping can be removed,
+causing a use-after-free when accessing mapping->a_ops.
 
-0x1074: MBIM + tty (AT/NMEA) + tty (AT) + tty (AT) + tty (diag) +
-        DPL (Data Packet Logging) + adb
+Follow the same pattern as __remove_mapping() and load the free_folio
+function pointer before dropping the lock on the mapping.  That lets us
+make filemap_free_folio() static as this was the only caller outside
+filemap.c.
 
-T:  Bus=01 Lev=01 Prnt=04 Port=06 Cnt=01 Dev#=  7 Spd=480  MxCh= 0
-D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=1074 Rev=05.04
-S:  Manufacturer=Telit Wireless Solutions
-S:  Product=FN990
-S:  SerialNumber=70628d0c
-C:  #Ifs= 8 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 6 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=80 Driver=(none)
-E:  Ad=8f(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 7 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://lore.kernel.org/20260413184314.3419945-1-willy@infradead.org
+Fixes: fb7d3bc41493 ("mm/filemap: drop streaming/uncached pages when writeback completes")
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Reported-by: Google Big Sleep <big-sleep-vuln-reports+bigsleep-501448199@google.com>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Jan Kara <jack@suse.cz>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    2 ++
- 1 file changed, 2 insertions(+)
+ mm/filemap.c  |    3 ++-
+ mm/internal.h |    1 -
+ mm/truncate.c |    6 +++++-
+ 3 files changed, 7 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -1383,6 +1383,8 @@ static const struct usb_device_id option
- 	  .driver_info = NCTRL(2) | RSVD(3) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1073, 0xff),	/* Telit FN990A (ECM) */
- 	  .driver_info = NCTRL(0) | RSVD(1) },
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1074, 0xff),	/* Telit FN990A (MBIM) */
-+	  .driver_info = NCTRL(5) | RSVD(6) | RSVD(7) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1075, 0xff),	/* Telit FN990A (PCIe) */
- 	  .driver_info = RSVD(0) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1077, 0xff),	/* Telit FN990A (rmnet + audio) */
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -228,7 +228,8 @@ void __filemap_remove_folio(struct folio
+ 	page_cache_delete(mapping, folio, shadow);
+ }
+ 
+-void filemap_free_folio(struct address_space *mapping, struct folio *folio)
++static void filemap_free_folio(const struct address_space *mapping,
++		struct folio *folio)
+ {
+ 	void (*free_folio)(struct folio *);
+ 
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -471,7 +471,6 @@ unsigned find_lock_entries(struct addres
+ 		pgoff_t end, struct folio_batch *fbatch, pgoff_t *indices);
+ unsigned find_get_entries(struct address_space *mapping, pgoff_t *start,
+ 		pgoff_t end, struct folio_batch *fbatch, pgoff_t *indices);
+-void filemap_free_folio(struct address_space *mapping, struct folio *folio);
+ int truncate_inode_folio(struct address_space *mapping, struct folio *folio);
+ bool truncate_inode_partial_folio(struct folio *folio, loff_t start,
+ 		loff_t end);
+--- a/mm/truncate.c
++++ b/mm/truncate.c
+@@ -622,6 +622,7 @@ static int folio_launder(struct address_
+ int folio_unmap_invalidate(struct address_space *mapping, struct folio *folio,
+ 			   gfp_t gfp)
+ {
++	void (*free_folio)(struct folio *);
+ 	int ret;
+ 
+ 	VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
+@@ -648,9 +649,12 @@ int folio_unmap_invalidate(struct addres
+ 	xa_unlock_irq(&mapping->i_pages);
+ 	if (mapping_shrinkable(mapping))
+ 		inode_lru_list_add(mapping->host);
++	free_folio = mapping->a_ops->free_folio;
+ 	spin_unlock(&mapping->host->i_lock);
+ 
+-	filemap_free_folio(mapping, folio);
++	if (free_folio)
++		free_folio(folio);
++	folio_put_refs(folio, folio_nr_pages(folio));
+ 	return 1;
+ failed:
+ 	xa_unlock_irq(&mapping->i_pages);
 
 
 
