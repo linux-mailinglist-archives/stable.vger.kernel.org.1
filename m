@@ -1,69 +1,80 @@
-Return-Path: <stable+bounces-238877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239165-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OBWOEK0t5mliswEAu9opvQ
-	(envelope-from <stable+bounces-238877-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:44:13 +0200
+	id oJMYIqdB5mlutgEAu9opvQ
+	(envelope-from <stable+bounces-239165-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 17:09:27 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20D1042C32E
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:44:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2026542DD8A
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 17:09:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B8C02312FCF9
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 13:32:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9EE81307BA59
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 14:28:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86BD33ACA4C;
-	Mon, 20 Apr 2026 13:21:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D2FA48C8BD;
+	Mon, 20 Apr 2026 13:32:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="joaJRXqv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sR1996mQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 479EB3AC0FF;
-	Mon, 20 Apr 2026 13:21:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C1F448C8B3;
+	Mon, 20 Apr 2026 13:32:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776691290; cv=none; b=H0VtYmAEou4hWuDkKYoBZxBnfUYAUB40haOEmax9RPLBVIHiHWC4L4tUoRcN+kdNhuXMAPBjvyp6U1Udq4S8QzNbCSJbv+vvpNtEh9rc6+Udgs/2YoetJhIApMK59XLWZIJY4RpbDMFH6vi7i/z0ovjI/h6hbsH1mWDBloIbuZo=
+	t=1776691933; cv=none; b=I+VQGnty7e6ddyzZwjhQ5nmcToi04zkW3h4HUb8OqC68fnu/MhILmD4RzbM51FUJR7eKlvvViOvPaLvk0EoUYEYvKM8o96UxXbqV9IjfbZvlIUiHPQnRmNSq/JL+5tVoBHqs2pR0rKykkeTy1unto3KQWR0erPQnz9jUY1EEhH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776691290; c=relaxed/simple;
-	bh=5s0WCW5ncurEKPR3DliQJ/wktBb9wJvN/Ob3yPyMsOc=;
+	s=arc-20240116; t=1776691933; c=relaxed/simple;
+	bh=hl+3sKaVvUQLfIWyIJ+fL1QTLwfKTv+jZdwjsBhBzFE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pmLOfa5NoFc2sxYGQAaWqqibppJK1fsUMmMnVuAo4b7jwwsgPjw7P2sZqRIgQkb92iG4ptdruh7+xjHGxwc64RBnoPhobog9BySDEG8y1rPGzBBFpv2HqQkB2++c9Ju+mEcF36G5Zd58Bph/eq9iLYdwvej3Ft+fPzgMf8KmnDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=joaJRXqv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F550C2BCB4;
-	Mon, 20 Apr 2026 13:21:29 +0000 (UTC)
+	 MIME-Version; b=mWf9YeQqQ/cT4eDsQaFlOK/vNejOguahJP5KEqHrWSshae6PWqSNiBBUk00RXd1C/ZPkb5Wg+vuXPiGFd0mDRl6U4eRd/4IulO7CtTgkaAbLk+j6nUFYVuSjRpmcfHqd3KCAdqMUFGry/TlW+n0DVlH5IMuAotR5o0cGbWIYOu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sR1996mQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71101C19425;
+	Mon, 20 Apr 2026 13:32:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776691290;
-	bh=5s0WCW5ncurEKPR3DliQJ/wktBb9wJvN/Ob3yPyMsOc=;
+	s=k20201202; t=1776691932;
+	bh=hl+3sKaVvUQLfIWyIJ+fL1QTLwfKTv+jZdwjsBhBzFE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=joaJRXqvlwXjVLJjA69d/Zz39I4UEVUN0LTfxQWleL9jKahMAaIQ2MO2rYqi1BjWG
-	 bEwPda650UXLOr8AJ3osMw3l6KPfuO8RzcQRf1dWXgx9SlTfHFg1AEro9vB0YMteu5
-	 PXFL9BLrk+RFwfGLkLbByybiGyBtDcP/m4tF4Hm5XFWkyuNm+1TGI8iUoT7p+JYMXl
-	 3rxkHjftQNia2zfqR9x+TsTI19dwo++NY/z7D87I+QRaHFzywv4/Tu+4d4GtDBhG7M
-	 VWtojjQfRuzi1FJAaCTQJw1nPEyzOaa9Oz7qwvfg+vvLyxpFsVwlXmabmnN4yVWuUQ
-	 WChP061I1yPcA==
+	b=sR1996mQhuwL0PRr6fsQ0Vwn3UW0l2QBPbSuuiC2J1Bq4WMaZQa0kemAa2hnQ2RO3
+	 kA7IY7p3cg24EMa+P4KGgMBNtu7HEWLxiDi7mpVJ+IPFYlOkgy4IumnaKsmwroDHSN
+	 KbvrIcMl8h3eGvv4h55roS/mROPk1E6RTsEK6f2zViW1Hw1MQBd6uiso/Zi2klvCNZ
+	 8gyjxHPPEjNEL+YVUYDpXf+3QntDOndmvI0FDwusTl8VzkdaAcsrgPrhAs9/7nM1C9
+	 aBnjnvTRAOtwDZmXNCFhqF8vzFpdjL3IgghOt94ZtCpvoBu46hu833VkD8T3T6PWsn
+	 2wSfrhvRj7QgQ==
 From: Sasha Levin <sashal@kernel.org>
-To: Rajani Kantha <681739313@139.com>
-Cc: Sasha Levin <sashal@kernel.org>,
-	stable@vger.kernel.org,
-	linux-block@vger.kernel.org,
-	Jens Axboe <axboe@kernel.dk>
-Subject: Re: [PATCH 6.6.y] blktrace: fix __this_cpu_read/write in preemptible context
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Nikita Travkin <nikita@trvn.ru>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	konradybcio@kernel.org,
+	quic_clew@quicinc.com,
+	lumag@kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.18] soc: qcom: pd-mapper: Fix element length in servreg_loc_pfr_req_ei
 Date: Mon, 20 Apr 2026 09:21:11 -0400
-Message-ID: <20260420-stable-reply-blktrace-6-6@kernel.org>
+Message-ID: <20260420132314.1023554-277-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260416100859.2492-1-681739313@139.com>
-References: <20260416100859.2492-1-681739313@139.com>
+In-Reply-To: <20260420132314.1023554-1-sashal@kernel.org>
+References: <20260420132314.1023554-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.18.23
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
@@ -72,36 +83,96 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-238877-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[139.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239165-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 20D1042C32E
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,trvn.ru:email]
+X-Rspamd-Queue-Id: 2026542DD8A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, Apr 16, 2026, Rajani Kantha wrote:
-> Backport of da46b5dfef48 ("blktrace: fix __this_cpu_read/write in
-> preemptible context") to 6.6.y.
+From: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
 
-Queued for 6.6, thanks.
+[ Upstream commit 641f6fda143b879da1515f821ee475073678cf2a ]
 
---
-Thanks,
-Sasha
+It looks element length declared in servreg_loc_pfr_req_ei for reason
+not matching servreg_loc_pfr_req's reason field due which we could
+observe decoding error on PD crash.
+
+  qmi_decode_string_elem: String len 81 >= Max Len 65
+
+Fix this by matching with servreg_loc_pfr_req's reason field.
+
+Fixes: 1ebcde047c54 ("soc: qcom: add pd-mapper implementation")
+Signed-off-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Tested-by: Nikita Travkin <nikita@trvn.ru>
+Link: https://lore.kernel.org/r/20260129152320.3658053-2-mukesh.ojha@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+
+LLM Generated explanations, may be completely bogus:
+
+Error: Failed to generate final synthesis
+
+ drivers/soc/qcom/pdr_internal.h | 2 +-
+ drivers/soc/qcom/qcom_pdr_msg.c | 2 +-
+ include/linux/soc/qcom/pdr.h    | 1 +
+ 3 files changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/soc/qcom/pdr_internal.h b/drivers/soc/qcom/pdr_internal.h
+index 039508c1bbf7d..047c0160b6178 100644
+--- a/drivers/soc/qcom/pdr_internal.h
++++ b/drivers/soc/qcom/pdr_internal.h
+@@ -84,7 +84,7 @@ struct servreg_set_ack_resp {
+ 
+ struct servreg_loc_pfr_req {
+ 	char service[SERVREG_NAME_LENGTH + 1];
+-	char reason[257];
++	char reason[SERVREG_PFR_LENGTH + 1];
+ };
+ 
+ struct servreg_loc_pfr_resp {
+diff --git a/drivers/soc/qcom/qcom_pdr_msg.c b/drivers/soc/qcom/qcom_pdr_msg.c
+index ca98932140d87..02022b11ecf05 100644
+--- a/drivers/soc/qcom/qcom_pdr_msg.c
++++ b/drivers/soc/qcom/qcom_pdr_msg.c
+@@ -325,7 +325,7 @@ const struct qmi_elem_info servreg_loc_pfr_req_ei[] = {
+ 	},
+ 	{
+ 		.data_type = QMI_STRING,
+-		.elem_len = SERVREG_NAME_LENGTH + 1,
++		.elem_len = SERVREG_PFR_LENGTH + 1,
+ 		.elem_size = sizeof(char),
+ 		.array_type = VAR_LEN_ARRAY,
+ 		.tlv_type = 0x02,
+diff --git a/include/linux/soc/qcom/pdr.h b/include/linux/soc/qcom/pdr.h
+index 83a8ea612e69a..2b7691e47c2a9 100644
+--- a/include/linux/soc/qcom/pdr.h
++++ b/include/linux/soc/qcom/pdr.h
+@@ -5,6 +5,7 @@
+ #include <linux/soc/qcom/qmi.h>
+ 
+ #define SERVREG_NAME_LENGTH	64
++#define SERVREG_PFR_LENGTH	256
+ 
+ struct pdr_service;
+ struct pdr_handle;
+-- 
+2.53.0
+
 
