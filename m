@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-239344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239543-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yKWWCndj5mkKvwEAu9opvQ
-	(envelope-from <stable+bounces-239344-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:33:43 +0200
+	id mJloLoNl5mkKvwEAu9opvQ
+	(envelope-from <stable+bounces-239543-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:42:27 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DDFD431713
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:33:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50405431DC9
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:42:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2314E347EC6F
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:46:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7E5A830BE1C0
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:55:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C58D6336896;
-	Mon, 20 Apr 2026 15:46:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B01EF3264F1;
+	Mon, 20 Apr 2026 15:55:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rUSWw3ms"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sQzWgamS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 884CF22541C;
-	Mon, 20 Apr 2026 15:46:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 734EF331A78;
+	Mon, 20 Apr 2026 15:55:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700006; cv=none; b=EDzdBFiikEsqDslYkq0AvqfVpCGeYw39zpsyhbILnuQhKK2ciTh3/vApa0lkrDIO/O9C6voc0mbkaJCdBWTq6JA8niPsPDI6fb+3rWc4gEGfBf4kngkCz8cBwUfwPw6ULw6UuHxqF99zriAsZ3+sHpSI/ncifz8+mczPvkHsO7Q=
+	t=1776700522; cv=none; b=D45FmunOkz5vg/9g/ftS100g5sG30x+MymO7x+4cCrQkxyxzfFIWkR9DnM6iAaVYw7yumJFUC8ZayNNigWbBeJM1XgvD3GdKu0ufjt5+H+EpXYDtHaAgfLAtL+v65GBSz4PL8ccT9Gs82G5EQ4BQApoIZFlaUIoBwjhF7dvlJtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700006; c=relaxed/simple;
-	bh=GferdNAb5xO8rUP2/tthfF2YxNaSQkQWyYE4KCTnZOA=;
+	s=arc-20240116; t=1776700522; c=relaxed/simple;
+	bh=y5K61jE5XtJBksA0ZSdvisVqQPkwLgMz2iBsfBuT0ds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZFcmYEtpZGONO4xWem2PT3cC9MBUaJEwdNb7yXwoUBoKASGdRhVtamovJh98lJ3iVBdrjNC5Pi3b1i7Keu9sBfrwG+A3IUP4ranw4HhfmBMBZHVmJ+Y/EpregVUSXg72MdbTCTFvcrq1iHlM8k5Tywow/6/RlsMU0+FoGPeg0YA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rUSWw3ms; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ED29C19425;
-	Mon, 20 Apr 2026 15:46:45 +0000 (UTC)
+	 MIME-Version; b=KQ3qSgirPQwq6ym62ZpoZj+FE7f8zJh6D5qXeGTvv1W2ZT4+x82E6Ai/xb53SJZBN+Gk0Gvm8hjXy857z2++WngsgoNglTr4an3e+u9NWraP2UxCqy1ryumt4/U7xasa6ZGqh0HhPyfzH8P0sAiNkKFJ31k4l6KoUJocRNoUYJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sQzWgamS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 001FDC19425;
+	Mon, 20 Apr 2026 15:55:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700006;
-	bh=GferdNAb5xO8rUP2/tthfF2YxNaSQkQWyYE4KCTnZOA=;
+	s=korg; t=1776700522;
+	bh=y5K61jE5XtJBksA0ZSdvisVqQPkwLgMz2iBsfBuT0ds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rUSWw3msnOIoWznM9d0HchuWi25bLNOXabTJbGwB1ufCtW8sdPrhN3Ye+gbjNcihc
-	 XAbEDasPxvrhB6OhAqTv95DlY3R5SbJ4S/nD8FU5O20R+IWy3muzRoKEE/K1OMRCrm
-	 gBapPtYD+sNnAw2pvikYr1ajdBo5V3ebn+p32X2s=
+	b=sQzWgamSKHN4rru6f8E1ua88ZobK72HpmWpsj/kpLiuwpdccFoWsS2pxkGuqOaYOp
+	 oXQYwFWuP6+SrpaUA0Qa3Q0jj6aIdv/OTSKwz8UEbsu1GN1J3xaEIgJn2tR99c+tkL
+	 VNHBH1gj52LgDim6v86ej2yH3degmpglMQLRtPo0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+96f901260a0b2d29cd1a@syzkaller.appspotmail.com,
-	Yihan Ding <dingyihan@uniontech.com>,
-	Abd-Alrhman Masalkhi <abd.masalkhi@gmail.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 7.0 74/76] media: vidtv: fix pass-by-value structs causing MSAN warnings
+	Stable@vger.kernel.org,
+	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.19 204/220] ASoC: qcom: q6apm: move component registration to unmanaged version
 Date: Mon, 20 Apr 2026 17:42:25 +0200
-Message-ID: <20260420153913.510320173@linuxfoundation.org>
+Message-ID: <20260420153941.373231901@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153910.810034134@linuxfoundation.org>
-References: <20260420153910.810034134@linuxfoundation.org>
+In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
+References: <20260420153934.013228280@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,214 +64,185 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-239344-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,uniontech.com,gmail.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,96f901260a0b2d29cd1a,cisco];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-239543-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,uniontech.com:email]
-X-Rspamd-Queue-Id: 7DDFD431713
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email]
+X-Rspamd-Queue-Id: 50405431DC9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abd-Alrhman Masalkhi <abd.masalkhi@gmail.com>
+From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
 
-commit 5f8e73bde67e931468bc2a1860d78d72f0c6ba41 upstream.
+commit 6ec1235fc941dac6c011b30ee01d9220ff87e0cd upstream.
 
-vidtv_ts_null_write_into() and vidtv_ts_pcr_write_into() take their
-argument structs by value, causing MSAN to report uninit-value warnings.
-While only vidtv_ts_null_write_into() has triggered a report so far,
-both functions share the same issue.
+q6apm component registers dais dynamically from ASoC toplology, which
+are allocated using device managed version apis. Allocating both
+component and dynamic dais using managed version could lead to incorrect
+free ordering, dai will be freed while component still holding references
+to it.
 
-Fix by passing both structs by const pointer instead, avoiding the
-stack copy of the struct along with its MSAN shadow and origin metadata.
-The functions do not modify the structs, which is enforced by the const
-qualifier.
+Fix this issue by moving component to unmanged version so
+that the dai pointers are only freeded after the component is removed.
 
-Fixes: f90cf6079bf67 ("media: vidtv: add a bridge driver")
-Cc: stable@vger.kernel.org
-Reported-by: syzbot+96f901260a0b2d29cd1a@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=96f901260a0b2d29cd1a
-Tested-by: syzbot+96f901260a0b2d29cd1a@syzkaller.appspotmail.com
-Suggested-by: Yihan Ding <dingyihan@uniontech.com>
-Signed-off-by: Abd-Alrhman Masalkhi <abd.masalkhi@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+==================================================================
+BUG: KASAN: slab-use-after-free in snd_soc_del_component_unlocked+0x3d4/0x400 [snd_soc_core]
+Read of size 8 at addr ffff00084493a6e8 by task kworker/u48:0/3426
+Tainted: [W]=WARN
+Hardware name: LENOVO 21N2ZC5PUS/21N2ZC5PUS, BIOS N42ET57W (1.31 ) 08/08/2024
+Workqueue: pdr_notifier_wq pdr_notifier_work [pdr_interface]
+Call trace:
+ show_stack+0x28/0x7c (C)
+ dump_stack_lvl+0x60/0x80
+ print_report+0x160/0x4b4
+ kasan_report+0xac/0xfc
+ __asan_report_load8_noabort+0x20/0x34
+ snd_soc_del_component_unlocked+0x3d4/0x400 [snd_soc_core]
+ snd_soc_unregister_component_by_driver+0x50/0x88 [snd_soc_core]
+ devm_component_release+0x30/0x5c [snd_soc_core]
+ devres_release_all+0x13c/0x210
+ device_unbind_cleanup+0x20/0x190
+ device_release_driver_internal+0x350/0x468
+ device_release_driver+0x18/0x30
+ bus_remove_device+0x1a0/0x35c
+ device_del+0x314/0x7f0
+ device_unregister+0x20/0xbc
+ apr_remove_device+0x5c/0x7c [apr]
+ device_for_each_child+0xd8/0x160
+ apr_pd_status+0x7c/0xa8 [apr]
+ pdr_notifier_work+0x114/0x240 [pdr_interface]
+ process_one_work+0x500/0xb70
+ worker_thread+0x630/0xfb0
+ kthread+0x370/0x6c0
+ ret_from_fork+0x10/0x20
+
+Allocated by task 77:
+ kasan_save_stack+0x40/0x68
+ kasan_save_track+0x20/0x40
+ kasan_save_alloc_info+0x44/0x58
+ __kasan_kmalloc+0xbc/0xdc
+ __kmalloc_node_track_caller_noprof+0x1f4/0x620
+ devm_kmalloc+0x7c/0x1c8
+ snd_soc_register_dai+0x50/0x4f0 [snd_soc_core]
+ soc_tplg_pcm_elems_load+0x55c/0x1eb8 [snd_soc_core]
+ snd_soc_tplg_component_load+0x4f8/0xb60 [snd_soc_core]
+ audioreach_tplg_init+0x124/0x1fc [snd_q6apm]
+ q6apm_audio_probe+0x10/0x1c [snd_q6apm]
+ snd_soc_component_probe+0x5c/0x118 [snd_soc_core]
+ soc_probe_component+0x44c/0xaf0 [snd_soc_core]
+ snd_soc_bind_card+0xad0/0x2370 [snd_soc_core]
+ snd_soc_register_card+0x3b0/0x4c0 [snd_soc_core]
+ devm_snd_soc_register_card+0x50/0xc8 [snd_soc_core]
+ x1e80100_platform_probe+0x208/0x368 [snd_soc_x1e80100]
+ platform_probe+0xc0/0x188
+ really_probe+0x188/0x804
+ __driver_probe_device+0x158/0x358
+ driver_probe_device+0x60/0x190
+ __device_attach_driver+0x16c/0x2a8
+ bus_for_each_drv+0x100/0x194
+ __device_attach+0x174/0x380
+ device_initial_probe+0x14/0x20
+ bus_probe_device+0x124/0x154
+ deferred_probe_work_func+0x140/0x220
+ process_one_work+0x500/0xb70
+ worker_thread+0x630/0xfb0
+ kthread+0x370/0x6c0
+ ret_from_fork+0x10/0x20
+
+Freed by task 3426:
+ kasan_save_stack+0x40/0x68
+ kasan_save_track+0x20/0x40
+ __kasan_save_free_info+0x4c/0x80
+ __kasan_slab_free+0x78/0xa0
+ kfree+0x100/0x4a4
+ devres_release_all+0x144/0x210
+ device_unbind_cleanup+0x20/0x190
+ device_release_driver_internal+0x350/0x468
+ device_release_driver+0x18/0x30
+ bus_remove_device+0x1a0/0x35c
+ device_del+0x314/0x7f0
+ device_unregister+0x20/0xbc
+ apr_remove_device+0x5c/0x7c [apr]
+ device_for_each_child+0xd8/0x160
+ apr_pd_status+0x7c/0xa8 [apr]
+ pdr_notifier_work+0x114/0x240 [pdr_interface]
+ process_one_work+0x500/0xb70
+ worker_thread+0x630/0xfb0
+ kthread+0x370/0x6c0
+ ret_from_fork+0x10/0x20
+
+Fixes: 5477518b8a0e ("ASoC: qdsp6: audioreach: add q6apm support")
+Cc: Stable@vger.kernel.org
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260402081118.348071-2-srinivas.kandagatla@oss.qualcomm.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/test-drivers/vidtv/vidtv_mux.c |    4 +-
- drivers/media/test-drivers/vidtv/vidtv_ts.c  |   50 +++++++++++++--------------
- drivers/media/test-drivers/vidtv/vidtv_ts.h  |    4 +-
- 3 files changed, 29 insertions(+), 29 deletions(-)
+ sound/soc/qcom/qdsp6/q6apm.c |   14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
---- a/drivers/media/test-drivers/vidtv/vidtv_mux.c
-+++ b/drivers/media/test-drivers/vidtv/vidtv_mux.c
-@@ -233,7 +233,7 @@ static u32 vidtv_mux_push_pcr(struct vid
- 	/* the 27Mhz clock will feed both parts of the PCR bitfield */
- 	args.pcr = m->timing.clk;
+--- a/sound/soc/qcom/qdsp6/q6apm.c
++++ b/sound/soc/qcom/qdsp6/q6apm.c
+@@ -744,13 +744,22 @@ static int apm_probe(gpr_device_t *gdev)
  
--	nbytes += vidtv_ts_pcr_write_into(args);
-+	nbytes += vidtv_ts_pcr_write_into(&args);
- 	m->mux_buf_offset += nbytes;
+ 	q6apm_get_apm_state(apm);
  
- 	m->num_streamed_pcr++;
-@@ -363,7 +363,7 @@ static u32 vidtv_mux_pad_with_nulls(stru
- 	args.continuity_counter = &ctx->cc;
- 
- 	for (i = 0; i < npkts; ++i) {
--		m->mux_buf_offset += vidtv_ts_null_write_into(args);
-+		m->mux_buf_offset += vidtv_ts_null_write_into(&args);
- 		args.dest_offset  = m->mux_buf_offset;
+-	ret = devm_snd_soc_register_component(dev, &q6apm_audio_component, NULL, 0);
++	ret = snd_soc_register_component(dev, &q6apm_audio_component, NULL, 0);
+ 	if (ret < 0) {
+ 		dev_err(dev, "failed to register q6apm: %d\n", ret);
+ 		return ret;
  	}
  
---- a/drivers/media/test-drivers/vidtv/vidtv_ts.c
-+++ b/drivers/media/test-drivers/vidtv/vidtv_ts.c
-@@ -48,7 +48,7 @@ void vidtv_ts_inc_cc(u8 *continuity_coun
- 		*continuity_counter = 0;
- }
- 
--u32 vidtv_ts_null_write_into(struct null_packet_write_args args)
-+u32 vidtv_ts_null_write_into(const struct null_packet_write_args *args)
- {
- 	u32 nbytes = 0;
- 	struct vidtv_mpeg_ts ts_header = {};
-@@ -56,21 +56,21 @@ u32 vidtv_ts_null_write_into(struct null
- 	ts_header.sync_byte          = TS_SYNC_BYTE;
- 	ts_header.bitfield           = cpu_to_be16(TS_NULL_PACKET_PID);
- 	ts_header.payload            = 1;
--	ts_header.continuity_counter = *args.continuity_counter;
-+	ts_header.continuity_counter = *args->continuity_counter;
- 
- 	/* copy TS header */
--	nbytes += vidtv_memcpy(args.dest_buf,
--			       args.dest_offset + nbytes,
--			       args.buf_sz,
-+	nbytes += vidtv_memcpy(args->dest_buf,
-+			       args->dest_offset + nbytes,
-+			       args->buf_sz,
- 			       &ts_header,
- 			       sizeof(ts_header));
- 
--	vidtv_ts_inc_cc(args.continuity_counter);
-+	vidtv_ts_inc_cc(args->continuity_counter);
- 
- 	/* fill the rest with empty data */
--	nbytes += vidtv_memset(args.dest_buf,
--			       args.dest_offset + nbytes,
--			       args.buf_sz,
-+	nbytes += vidtv_memset(args->dest_buf,
-+			       args->dest_offset + nbytes,
-+			       args->buf_sz,
- 			       TS_FILL_BYTE,
- 			       TS_PACKET_LEN - nbytes);
- 
-@@ -83,17 +83,17 @@ u32 vidtv_ts_null_write_into(struct null
- 	return nbytes;
- }
- 
--u32 vidtv_ts_pcr_write_into(struct pcr_write_args args)
-+u32 vidtv_ts_pcr_write_into(const struct pcr_write_args *args)
- {
- 	u32 nbytes = 0;
- 	struct vidtv_mpeg_ts ts_header = {};
- 	struct vidtv_mpeg_ts_adaption ts_adap = {};
- 
- 	ts_header.sync_byte     = TS_SYNC_BYTE;
--	ts_header.bitfield      = cpu_to_be16(args.pid);
-+	ts_header.bitfield      = cpu_to_be16(args->pid);
- 	ts_header.scrambling    = 0;
- 	/* cc is not incremented, but it is needed. see 13818-1 clause 2.4.3.3 */
--	ts_header.continuity_counter = *args.continuity_counter;
-+	ts_header.continuity_counter = *args->continuity_counter;
- 	ts_header.payload            = 0;
- 	ts_header.adaptation_field   = 1;
- 
-@@ -102,27 +102,27 @@ u32 vidtv_ts_pcr_write_into(struct pcr_w
- 	ts_adap.PCR    = 1;
- 
- 	/* copy TS header */
--	nbytes += vidtv_memcpy(args.dest_buf,
--			       args.dest_offset + nbytes,
--			       args.buf_sz,
-+	nbytes += vidtv_memcpy(args->dest_buf,
-+			       args->dest_offset + nbytes,
-+			       args->buf_sz,
- 			       &ts_header,
- 			       sizeof(ts_header));
- 
- 	/* write the adap after the TS header */
--	nbytes += vidtv_memcpy(args.dest_buf,
--			       args.dest_offset + nbytes,
--			       args.buf_sz,
-+	nbytes += vidtv_memcpy(args->dest_buf,
-+			       args->dest_offset + nbytes,
-+			       args->buf_sz,
- 			       &ts_adap,
- 			       sizeof(ts_adap));
- 
- 	/* write the PCR optional */
--	nbytes += vidtv_ts_write_pcr_bits(args.dest_buf,
--					  args.dest_offset + nbytes,
--					  args.pcr);
--
--	nbytes += vidtv_memset(args.dest_buf,
--			       args.dest_offset + nbytes,
--			       args.buf_sz,
-+	nbytes += vidtv_ts_write_pcr_bits(args->dest_buf,
-+					  args->dest_offset + nbytes,
-+					  args->pcr);
+-	return of_platform_populate(dev->of_node, NULL, NULL, dev);
++	ret = of_platform_populate(dev->of_node, NULL, NULL, dev);
++	if (ret)
++		snd_soc_unregister_component(dev);
 +
-+	nbytes += vidtv_memset(args->dest_buf,
-+			       args->dest_offset + nbytes,
-+			       args->buf_sz,
- 			       TS_FILL_BYTE,
- 			       TS_PACKET_LEN - nbytes);
++	return ret;
++}
++
++static void apm_remove(gpr_device_t *gdev)
++{
++	snd_soc_unregister_component(&gdev->dev);
+ }
  
---- a/drivers/media/test-drivers/vidtv/vidtv_ts.h
-+++ b/drivers/media/test-drivers/vidtv/vidtv_ts.h
-@@ -90,7 +90,7 @@ void vidtv_ts_inc_cc(u8 *continuity_coun
-  *
-  * Return: The number of bytes written into the buffer.
-  */
--u32 vidtv_ts_null_write_into(struct null_packet_write_args args);
-+u32 vidtv_ts_null_write_into(const struct null_packet_write_args *args);
+ struct audioreach_module *q6apm_find_module_by_mid(struct q6apm_graph *graph, uint32_t mid)
+@@ -817,6 +826,7 @@ MODULE_DEVICE_TABLE(of, apm_device_id);
  
- /**
-  * vidtv_ts_pcr_write_into - Write a PCR  packet into a buffer.
-@@ -101,6 +101,6 @@ u32 vidtv_ts_null_write_into(struct null
-  *
-  * Return: The number of bytes written into the buffer.
-  */
--u32 vidtv_ts_pcr_write_into(struct pcr_write_args args);
-+u32 vidtv_ts_pcr_write_into(const struct pcr_write_args *args);
- 
- #endif //VIDTV_TS_H
+ static gpr_driver_t apm_driver = {
+ 	.probe = apm_probe,
++	.remove = apm_remove,
+ 	.gpr_callback = apm_callback,
+ 	.driver = {
+ 		.name = "qcom-apm",
 
 
 
