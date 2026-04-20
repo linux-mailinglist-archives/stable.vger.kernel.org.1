@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-239694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239510-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WANFChlh5mmavgEAu9opvQ
-	(envelope-from <stable+bounces-239694-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:23:37 +0200
+	id YEYhBnBh5mmavgEAu9opvQ
+	(envelope-from <stable+bounces-239510-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:25:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A0264311B2
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:23:36 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D52B643123F
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:25:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 10C41330D363
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:02:59 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1C266323DE72
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:53:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBC2033F37F;
-	Mon, 20 Apr 2026 16:02:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 657922D77E5;
+	Mon, 20 Apr 2026 15:53:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="soLFUwwi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ogtYHi79"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E4783358B0;
-	Mon, 20 Apr 2026 16:02:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20AFE3382DE;
+	Mon, 20 Apr 2026 15:53:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700977; cv=none; b=WL8oK1YCWc4PG+xOZt+jpGQ45n7SyFMlKYwBtAjhclJJ0f779YAyre80jfK3CSUM5VzPTADD8g80uVWdhYoCKxZmuDnBmBXKAFrXab3G2oz96lKHRsQ0uwJR//TMvi04ATpp/2jGXHesuMBywgs3ZUXGA8V7Rf2Qnjju+7FpDTI=
+	t=1776700438; cv=none; b=m/jxniS6FWm4yJCPHXTcz5Bm+UCetK0S/gU+0uRU6GRCI7lObP2+blQ3TmyhgdWM3gm5rH0kcmj6jwHI4CtZmLNDCRLVWlXV4TkvcaA6BtiA5T6R3E4ZrE1WDeJR1pVLbWJhig2IeX/t3/kblm/D5F+J6AbyBv/3QsuUYkAsbJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700977; c=relaxed/simple;
-	bh=94kTuwxmGV06nCbCgfc7UD2uKGtkkwQxCq0CJYidcJU=;
+	s=arc-20240116; t=1776700438; c=relaxed/simple;
+	bh=b2zRrafx/CkRmYV95ZstBDnmjm4RETp5kPlNheqodQc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OLdYDZKUY9ff9kUY9XRlzHpPO+uAKqBhXUqhruHRe7fgVRwfzJyALLOoTqQqBuVh4A9iQSkqvb4x399E4T94qybka1QytYkkCrRxMjqk492PjqWeaOWvLCqocuDn3etXhlnI7xL4ztq9u1Hk2XS650P9IikV4jmlQkm6NiNsGPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=soLFUwwi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26CA6C19425;
-	Mon, 20 Apr 2026 16:02:56 +0000 (UTC)
+	 MIME-Version; b=aFtx+5e5/cDNl5HXmCbNxDHr2PKKvpEizk2Mlbn+2c8/Kn31x+S8wYBtXbfSvZUsej71Q56rEt6a1o0qkogXeJb9ot4xq9b6U0bShM7mh39GJ/XGBCEIMsVrUEQMOT6KHwzLbuIP+PjKVJOqSoP7PBLEvbEtMzEachG8oGT1w48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ogtYHi79; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE903C2BCB4;
+	Mon, 20 Apr 2026 15:53:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700977;
-	bh=94kTuwxmGV06nCbCgfc7UD2uKGtkkwQxCq0CJYidcJU=;
+	s=korg; t=1776700438;
+	bh=b2zRrafx/CkRmYV95ZstBDnmjm4RETp5kPlNheqodQc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=soLFUwwiD14iq9ZVBaxE1b7jBAVlE6KBBywIM5Ayx7z28Tz0zyd+nJdUj6ysJylMT
-	 S/vTG0zDexwrj8zUEAVZCt9KVTYQrKWCiCdq+YeKeh59VE9ZPQqbYoMt+0PylZVCtj
-	 /Qp72LTHCXSKsWvIxIvHrmG/DPOV7CPW+KYXv508=
+	b=ogtYHi79vfLrOCTK8KbXa1Lp2qVNUD9LcwN5uO+EJE4ormUaLrXv6Ez7Z7DmqkSj9
+	 2trD01cmeiTLJLgaQ9tItux0HUZBea+8ILr1mUDPo4BudPZ9gI0IHTejmeN8+gn/3F
+	 3mEwlqOz9DcQTHlBc1DspMV2O3E+tn7pgffid10A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.18 133/198] fbdev: tdfxfb: avoid divide-by-zero on FBIOPUT_VSCREENINFO
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Fiona Behrens <me@kloenk.dev>,
+	Trevor Gross <tmgross@umich.edu>,
+	Tamir Duberstein <tamird@kernel.org>
+Subject: [PATCH 6.19 171/220] scripts: generate_rust_analyzer.py: avoid FD leak
 Date: Mon, 20 Apr 2026 17:41:52 +0200
-Message-ID: <20260420153940.396937383@linuxfoundation.org>
+Message-ID: <20260420153940.183276434@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
+References: <20260420153934.013228280@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,71 +67,71 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-239694-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmx.de,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239510-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,gmx.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9A0264311B2
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[umich.edu:email,collabora.com:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,kloenk.dev:email]
+X-Rspamd-Queue-Id: D52B643123F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Tamir Duberstein <tamird@kernel.org>
 
-commit 8f98b81fe011e1879e6a7b1247e69e06a5e17af2 upstream.
+commit 9b4744d8eda2824041064a5639ccbb079850914d upstream.
 
-Much like commit 19f953e74356 ("fbdev: fb_pm2fb: Avoid potential divide
-by zero error"), we also need to prevent that same crash from happening
-in the udlfb driver as it uses pixclock directly when dividing, which
-will crash.
+Use `pathlib.Path.read_text()` to avoid leaking file descriptors.
 
-Cc: Helge Deller <deller@gmx.de>
-Assisted-by: gregkh_clanker_t1000
-Cc: stable <stable@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: 8c4555ccc55c ("scripts: add `generate_rust_analyzer.py`")
+Cc: stable@vger.kernel.org
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Reviewed-by: Fiona Behrens <me@kloenk.dev>
+Reviewed-by: Trevor Gross <tmgross@umich.edu>
+Link: https://patch.msgid.link/20260127-rust-analyzer-fd-leak-v2-1-1bb55b9b6822@kernel.org
+Signed-off-by: Tamir Duberstein <tamird@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/tdfxfb.c |    3 +++
- 1 file changed, 3 insertions(+)
+ scripts/generate_rust_analyzer.py |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/video/fbdev/tdfxfb.c
-+++ b/drivers/video/fbdev/tdfxfb.c
-@@ -496,6 +496,9 @@ static int tdfxfb_check_var(struct fb_va
- 		}
- 	}
+--- a/scripts/generate_rust_analyzer.py
++++ b/scripts/generate_rust_analyzer.py
+@@ -190,9 +190,10 @@ def generate_crates(srctree, objtree, sy
  
-+	if (!var->pixclock)
-+		return -EINVAL;
-+
- 	if (PICOS2KHZ(var->pixclock) > par->max_pixclock) {
- 		DPRINTK("pixclock too high (%ldKHz)\n",
- 			PICOS2KHZ(var->pixclock));
+     def is_root_crate(build_file, target):
+         try:
+-            return f"{target}.o" in open(build_file).read()
++            contents = build_file.read_text()
+         except FileNotFoundError:
+             return False
++        return f"{target}.o" in contents
+ 
+     # Then, the rest outside of `rust/`.
+     #
 
 
 
