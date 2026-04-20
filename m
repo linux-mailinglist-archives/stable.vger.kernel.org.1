@@ -1,68 +1,58 @@
-Return-Path: <stable+bounces-239736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239915-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GJGnIsNa5mmtvAEAu9opvQ
-	(envelope-from <stable+bounces-239736-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:56:35 +0200
+	id iPylINZk5mkKvwEAu9opvQ
+	(envelope-from <stable+bounces-239915-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:39:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id F372B4303ED
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:56:34 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80FA1431B21
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:39:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B976231E22DC
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:04:47 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3205031E8031
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:12:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B4A033EAF9;
-	Mon, 20 Apr 2026 16:04:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCF0A3446BC;
+	Mon, 20 Apr 2026 16:12:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YgN5sFib"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x7QpkuU4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AC5B280CD2;
-	Mon, 20 Apr 2026 16:04:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E25634107F;
+	Mon, 20 Apr 2026 16:12:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701085; cv=none; b=KxkSgvph37RzFaiu47bkrDsVHkcmCdAhYey3IAocOefBbl7W6sxTVW7RixjtqXvaOBfwMLosE/AK/2n0pXVD2uffpB0v5SknVbbfz8iecSyeAx5Zjp0stQdti3ciZ1cmWTgjhPUJSO1l7DEiF0H6WodZjojZzUasDFeXt4ZJK3c=
+	t=1776701539; cv=none; b=u4jYVOYn9X3cH5jUFjOc+umgOzw18CR9sPPpFMZtRTOyS9kaViZp3xspI8W7ciVoi6IfHCc7s5NyrgrWuIXbBRwN2m4S0Pux9fr5OLT8xtwVn6Nlyu7qZATBymmdAElUzt9Ol+Lok+XXoFO+Z5p7IC8WLWW1RS3TJbTouQpktkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701085; c=relaxed/simple;
-	bh=H0k+KnFlQy5tgYlBFg/eLlTGq1ZsukSiboRgPLcwH0Y=;
+	s=arc-20240116; t=1776701539; c=relaxed/simple;
+	bh=K0SfNqdC417fOCvOAFHP7WBtqcbZ3BkbcV+cgD7pyIc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T9hN33OF1VDHMaI7fg/A6wpPAPkE5pu509+Ls2eKb9cBRJ2zN8XRuRZMXE3/btUSLYEprAfmXKm4BrgBQ0gV9UopZmwNBI/op6xFmFVgOtSR9/I1lEzU6ny5Rt9yVRODWNNCXFfWYs9cj5qwpYb1POIJqjYHLhgq12HFPj2jU/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YgN5sFib; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86EBBC19425;
-	Mon, 20 Apr 2026 16:04:44 +0000 (UTC)
+	 MIME-Version; b=p6Do7FmKWxtanZWndkNkwswUsiVViUsr0RyB1m4rLve5m+7d81pg1rCzJCGROcWt+xuw6bNtxHYkUbmdUIxlQMk9DsJZQqx4+NM5jZdSBig93grxp7o/Tt6NuIAkZ4z2An7rjkbhenmn6HRHMzUr/QbWAT2lsIUiBxZV+UQ+9DQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x7QpkuU4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34FE2C19425;
+	Mon, 20 Apr 2026 16:12:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701085;
-	bh=H0k+KnFlQy5tgYlBFg/eLlTGq1ZsukSiboRgPLcwH0Y=;
+	s=korg; t=1776701539;
+	bh=K0SfNqdC417fOCvOAFHP7WBtqcbZ3BkbcV+cgD7pyIc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YgN5sFibf1vxcwXXQJGlWe8oV/TSFxmUS+3jsr+EhQtfnPXHjzRZa5OWnB2h3F13d
-	 kKLvEreP7D27liNaVMWjanxy5+EPUA5q2YWpmxhxwpV3w4HPxsvZIidfKukkVcTt37
-	 oLtZLiZX96HJvhXPEjvGUMuw5sptw1lJotx2uesc=
+	b=x7QpkuU4oOajAx6Lvwa4UhNf6IK7klwTJ0APDPx78IQ8iOQcs+TfazEwiUMmoFZ5G
+	 nLEfSwtfaY1KX3I/W/s86hUc+gPkpIjviRJAj4HJGIXKFJMOS150pgxMorJpAw+X9l
+	 aDxmKHoPCHNdqQRmRZatgN0yScVFmVRCyv+6u4pY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	syzbot+c16daba279a1161acfb0@syzkaller.appspotmail.com,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Joseph Qi <jiangqi903@gmail.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Heming Zhao <heming.zhao@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 174/198] ocfs2: add inline inode consistency check to ocfs2_validate_inode_block()
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 121/162] Docs/admin-guide/mm/damon/reclaim: warn commit_inputs vs param updates race
 Date: Mon, 20 Apr 2026 17:42:33 +0200
-Message-ID: <20260420153941.879142829@linuxfoundation.org>
+Message-ID: <20260420153931.424556955@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
+References: <20260420153927.006696811@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,88 +63,94 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	TAGGED_FROM(0.00)[bounces-239736-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,yandex.ru,syzkaller.appspotmail.com,linux.alibaba.com,gmail.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,suse.com,linux-foundation.org,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable,c16daba279a1161acfb0];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-239915-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,huawei.com:email,syzkaller.appspot.com:url,evilplan.org:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.com:email,alibaba.com:email,appspotmail.com:email,oracle.com:email,linux-foundation.org:email,live.cn:email,fasheh.com:email]
-X-Rspamd-Queue-Id: F372B4303ED
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 80FA1431B21
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: SeongJae Park <sj@kernel.org>
 
-[ Upstream commit a2b1c419ff72ec62ff5831684e30cd1d4f0b09ee ]
+commit 0beba407d4585a15b0dc09f2064b5b3ddcb0e857 upstream.
 
-In 'ocfs2_validate_inode_block()', add an extra check whether an inode
-with inline data (i.e.  self-contained) has no clusters, thus preventing
-an invalid inode from being passed to 'ocfs2_evict_inode()' and below.
+Patch series "Docs/admin-guide/mm/damon: warn commit_inputs vs other
+params race".
 
-Link: https://lkml.kernel.org/r/20251023141650.417129-1-dmantipov@yandex.ru
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Reported-by: syzbot+c16daba279a1161acfb0@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=c16daba279a1161acfb0
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Joseph Qi <jiangqi903@gmail.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: Heming Zhao <heming.zhao@suse.com>
+Writing 'Y' to the commit_inputs parameter of DAMON_RECLAIM and
+DAMON_LRU_SORT, and writing other parameters before the commit_inputs
+request is completely processed can cause race conditions.  While the
+consequence can be bad, the documentation is not clearly describing that.
+Add clear warnings.
+
+The issue was discovered [1,2] by sashiko.
+
+
+This patch (of 2):
+
+DAMON_RECLAIM handles commit_inputs request inside kdamond thread,
+reading the module parameters.  If the user updates the module
+parameters while the kdamond thread is reading those, races can happen.
+To avoid this, the commit_inputs parameter shows whether it is still in
+the progress, assuming users wouldn't update parameters in the middle of
+the work.  Some users might ignore that.  Add a warning about the
+behavior.
+
+The issue was discovered in [1] by sashiko.
+
+Link: https://lore.kernel.org/20260329153052.46657-2-sj@kernel.org
+Link: https://lore.kernel.org/20260319161620.189392-3-objecting@objecting.org [1]
+Link: https://lore.kernel.org/20260319161620.189392-2-objecting@objecting.org [3]
+Fixes: 81a84182c343 ("Docs/admin-guide/mm/damon/reclaim: document 'commit_inputs' parameter")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org> # 5.19.x
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: 7bc5da4842be ("ocfs2: fix out-of-bounds write in ocfs2_write_end_inline")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ocfs2/inode.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ Documentation/admin-guide/mm/damon/reclaim.rst |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/fs/ocfs2/inode.c
-+++ b/fs/ocfs2/inode.c
-@@ -1505,6 +1505,14 @@ int ocfs2_validate_inode_block(struct su
- 		goto bail;
- 	}
+--- a/Documentation/admin-guide/mm/damon/reclaim.rst
++++ b/Documentation/admin-guide/mm/damon/reclaim.rst
+@@ -71,6 +71,10 @@ of parametrs except ``enabled`` again.
+ parameter is set as ``N``.  If invalid parameters are found while the
+ re-reading, DAMON_RECLAIM will be disabled.
  
-+	if ((le16_to_cpu(di->i_dyn_features) & OCFS2_INLINE_DATA_FL) &&
-+	    le32_to_cpu(di->i_clusters)) {
-+		rc = ocfs2_error(sb, "Invalid dinode %llu: %u clusters\n",
-+				 (unsigned long long)bh->b_blocknr,
-+				 le32_to_cpu(di->i_clusters));
-+		goto bail;
-+	}
++Once ``Y`` is written to this parameter, the user must not write to any
++parameters until reading ``commit_inputs`` again returns ``N``.  If users
++violate this rule, the kernel may exhibit undefined behavior.
 +
- 	rc = 0;
+ min_age
+ -------
  
- bail:
 
 
 
