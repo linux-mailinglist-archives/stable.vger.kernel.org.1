@@ -1,62 +1,64 @@
-Return-Path: <stable+bounces-239863-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239326-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cD/BOcJQ5mkDuwEAu9opvQ
-	(envelope-from <stable+bounces-239863-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:13:54 +0200
+	id eFgjDD1j5mmavgEAu9opvQ
+	(envelope-from <stable+bounces-239326-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:32:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91FFC42F2C6
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:13:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EC8B431657
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:32:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B63D9303A295
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:10:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5F12E343D08E
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:46:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD9DF3446AF;
-	Mon, 20 Apr 2026 16:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E095334C39;
+	Mon, 20 Apr 2026 15:46:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AYGvYCqO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xJcilXRY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 821A634216C;
-	Mon, 20 Apr 2026 16:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56D3E329C6D;
+	Mon, 20 Apr 2026 15:46:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701409; cv=none; b=nD5gKFFlbEJLhmHRY8qDy45ESNXqhKFX7wPrqxLcbW7LN9nGMxDH+rNEIODVF51fx4ZKjAQECeyqGXKJ24eqlzBQNz0D7Pi1lRSZi3TUobBHBdjYE2+vYrnTbY4KyA7nUV4stje2mWvZ3U4z0QMVuIzSnDN5B9yifw+nYxndayA=
+	t=1776699960; cv=none; b=K3z9eTtUTqq97AQ8HqapMegzzmoi0zBCvGyFTjznbG6gtdlwZq4ZbprYSPVreyfFZvP8m9sBcGx3DMrYUHTq/S3zcz+zENmoIVgOJ9wJQnmAwT6mXziEBPWMkKbXhf1PouJlgMN+eNDPc3htThC29KLIEGKwkUoIUknMVwlOQVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701409; c=relaxed/simple;
-	bh=O3RUAERcUEueS9+lrNdJe8jZ/BNn7a0+RunE0dZf3s4=;
+	s=arc-20240116; t=1776699960; c=relaxed/simple;
+	bh=ZVwcDtUSlj7WncfVpkfeC3L09kSXLo1kRTZ/2E6+zYY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bp46zFu15UFIECbtxJYVtxRbFp3xlVbVnZuNYYvqnrO2KVCiG4nifUqAgURpdut5FZnR4an632hj3PQji2JVD+6qyLt53zSFbKEeR0MVLsuKIQR3WXnwykZ7uHXDoO2Cim8sJAcF6F9fI9qPB9sr0HYjxnbjBeb7tGZkYYGXSs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AYGvYCqO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCE6BC19425;
-	Mon, 20 Apr 2026 16:10:08 +0000 (UTC)
+	 MIME-Version; b=pLPwEt9jU82ByEdagUAL85OAuDPfhFuJUkP7XRxy8/F1py3Zt2t8UNBeAqZjmopc7Airj+jHIWo4TgBUyugAJcQYAsygO8O50FAM3wzDwDzwtfFJaJt/iA3yXI9yHkPGy+mdCPp7yr9qLoXeQuAoUjy1OyfXrqHm6EMQBEkcBv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xJcilXRY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA3F5C19425;
+	Mon, 20 Apr 2026 15:45:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701409;
-	bh=O3RUAERcUEueS9+lrNdJe8jZ/BNn7a0+RunE0dZf3s4=;
+	s=korg; t=1776699960;
+	bh=ZVwcDtUSlj7WncfVpkfeC3L09kSXLo1kRTZ/2E6+zYY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AYGvYCqOyyk/qe7K10T4g6k0iRwIihxq7UPT9zT3FMtb1S+lcxwtHTA9YYgZVXc91
-	 yLVaAY6NsIcAACk5wYhKnKEMWYblrJp2FxjTvjUg6Tjmn9b+lgAOZl+VZ5dTVxF+il
-	 D0ajVz9l/flA5dC/SB7pNMMlzIXYkSe7y1VRjPPc=
+	b=xJcilXRY4cq5vtdAZt5FsKThZ7NyMut6Rw0712fmVWZh3pSdaYSCbAlepgGCucPex
+	 rPS+3Mg6sH4tmiWArmCiRoVTVhHTIbvA4vczsKpXipQjbTs5E3EOrajK2x0v82+AOF
+	 dkPuml1eWwdwF0axqsCaEXseNXYohnlK7b9nmeeA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Clemens Ladisch <clemens@ladisch.de>,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	stable <stable@kernel.org>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.12 102/162] ALSA: fireworks: bound device-supplied status before string array lookup
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+	Alexander Potapenko <glider@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 7.0 63/76] mm/kasan: fix double free for kasan pXds
 Date: Mon, 20 Apr 2026 17:42:14 +0200
-Message-ID: <20260420153930.734643074@linuxfoundation.org>
+Message-ID: <20260420153913.114899715@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
-References: <20260420153927.006696811@linuxfoundation.org>
+In-Reply-To: <20260420153910.810034134@linuxfoundation.org>
+References: <20260420153910.810034134@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,88 +69,177 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239863-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-239326-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.ibm.com,google.com,arm.com,linux-foundation.org];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,perex.cz:email,suse.de:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.com:email,msgid.link:url,ladisch.de:email]
-X-Rspamd-Queue-Id: 91FFC42F2C6
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,arm.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 6EC8B431657
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 
-commit 07704bbf36f57e4379e4cadf96410dab14621e3b upstream.
+commit 51d8c78be0c27ddb91bc2c0263941d8b30a47d3b upstream.
 
-The status field in an EFW response is a 32-bit value supplied by the
-firewire device.  efr_status_names[] has 17 entries so a status value
-outside that range goes off into the weeds when looking at the %s value.
+kasan_free_pxd() assumes the page table is always struct page aligned.
+But that's not always the case for all architectures.  E.g.  In case of
+powerpc with 64K pagesize, PUD table (of size 4096) comes from slab cache
+named pgtable-2^9.  Hence instead of page_to_virt(pxd_page()) let's just
+directly pass the start of the pxd table which is passed as the 1st
+argument.
 
-Even worse, the status could return EFR_STATUS_INCOMPLETE which is
-0x80000000, and is obviously not in that array of potential strings.
+This fixes the below double free kasan issue seen with PMEM:
 
-Fix this up by properly bounding the index against the array size and
-printing "unknown" if it's not recognized.
+radix-mmu: Mapped 0x0000047d10000000-0x0000047f90000000 with 2.00 MiB pages
+==================================================================
+BUG: KASAN: double-free in kasan_remove_zero_shadow+0x9c4/0xa20
+Free of addr c0000003c38e0000 by task ndctl/2164
 
-Cc: Clemens Ladisch <clemens@ladisch.de>
-Cc: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Cc: Jaroslav Kysela <perex@perex.cz>
-Cc: Takashi Iwai <tiwai@suse.com>
-Fixes: bde8a8f23bbe ("ALSA: fireworks: Add transaction and some commands")
-Cc: stable <stable@kernel.org>
-Assisted-by: gregkh_clanker_t1000
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Link: https://patch.msgid.link/2026040953-astute-camera-1aa1@gregkh
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+CPU: 34 UID: 0 PID: 2164 Comm: ndctl Not tainted 6.19.0-rc1-00048-gea1013c15392 #157 VOLUNTARY
+Hardware name: IBM,9080-HEX POWER10 (architected) 0x800200 0xf000006 of:IBM,FW1060.00 (NH1060_012) hv:phyp pSeries
+Call Trace:
+ dump_stack_lvl+0x88/0xc4 (unreliable)
+ print_report+0x214/0x63c
+ kasan_report_invalid_free+0xe4/0x110
+ check_slab_allocation+0x100/0x150
+ kmem_cache_free+0x128/0x6e0
+ kasan_remove_zero_shadow+0x9c4/0xa20
+ memunmap_pages+0x2b8/0x5c0
+ devm_action_release+0x54/0x70
+ release_nodes+0xc8/0x1a0
+ devres_release_all+0xe0/0x140
+ device_unbind_cleanup+0x30/0x120
+ device_release_driver_internal+0x3e4/0x450
+ unbind_store+0xfc/0x110
+ drv_attr_store+0x78/0xb0
+ sysfs_kf_write+0x114/0x140
+ kernfs_fop_write_iter+0x264/0x3f0
+ vfs_write+0x3bc/0x7d0
+ ksys_write+0xa4/0x190
+ system_call_exception+0x190/0x480
+ system_call_vectored_common+0x15c/0x2ec
+---- interrupt: 3000 at 0x7fff93b3d3f4
+NIP:  00007fff93b3d3f4 LR: 00007fff93b3d3f4 CTR: 0000000000000000
+REGS: c0000003f1b07e80 TRAP: 3000   Not tainted  (6.19.0-rc1-00048-gea1013c15392)
+MSR:  800000000280f033 <SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 48888208  XER: 00000000
+<...>
+NIP [00007fff93b3d3f4] 0x7fff93b3d3f4
+LR [00007fff93b3d3f4] 0x7fff93b3d3f4
+---- interrupt: 3000
+
+ The buggy address belongs to the object at c0000003c38e0000
+  which belongs to the cache pgtable-2^9 of size 4096
+ The buggy address is located 0 bytes inside of
+  4096-byte region [c0000003c38e0000, c0000003c38e1000)
+
+ The buggy address belongs to the physical page:
+ page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x3c38c
+ head: order:2 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+ memcg:c0000003bfd63e01
+ flags: 0x63ffff800000040(head|node=6|zone=0|lastcpupid=0x7ffff)
+ page_type: f5(slab)
+ raw: 063ffff800000040 c000000140058980 5deadbeef0000122 0000000000000000
+ raw: 0000000000000000 0000000080200020 00000000f5000000 c0000003bfd63e01
+ head: 063ffff800000040 c000000140058980 5deadbeef0000122 0000000000000000
+ head: 0000000000000000 0000000080200020 00000000f5000000 c0000003bfd63e01
+ head: 063ffff800000002 c00c000000f0e301 00000000ffffffff 00000000ffffffff
+ head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000004
+ page dumped because: kasan: bad access detected
+
+[  138.953636] [   T2164] Memory state around the buggy address:
+[  138.953643] [   T2164]  c0000003c38dff00: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+[  138.953652] [   T2164]  c0000003c38dff80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+[  138.953661] [   T2164] >c0000003c38e0000: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+[  138.953669] [   T2164]                    ^
+[  138.953675] [   T2164]  c0000003c38e0080: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+[  138.953684] [   T2164]  c0000003c38e0100: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+[  138.953692] [   T2164] ==================================================================
+[  138.953701] [   T2164] Disabling lock debugging due to kernel taint
+
+Link: https://lkml.kernel.org/r/2f9135c7866c6e0d06e960993b8a5674a9ebc7ec.1771938394.git.ritesh.list@gmail.com
+Fixes: 0207df4fa1a8 ("kernel/memremap, kasan: make ZONE_DEVICE with work with KASAN")
+Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Reviewed-by: Alexander Potapenko <glider@google.com>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/firewire/fireworks/fireworks_command.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ mm/kasan/init.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/sound/firewire/fireworks/fireworks_command.c
-+++ b/sound/firewire/fireworks/fireworks_command.c
-@@ -151,10 +151,13 @@ efw_transaction(struct snd_efw *efw, uns
- 	    (be32_to_cpu(header->category) != category) ||
- 	    (be32_to_cpu(header->command) != command) ||
- 	    (be32_to_cpu(header->status) != EFR_STATUS_OK)) {
-+		u32 st = be32_to_cpu(header->status);
-+
- 		dev_err(&efw->unit->device, "EFW command failed [%u/%u]: %s\n",
- 			be32_to_cpu(header->category),
- 			be32_to_cpu(header->command),
--			efr_status_names[be32_to_cpu(header->status)]);
-+			st < ARRAY_SIZE(efr_status_names) ?
-+				efr_status_names[st] : "unknown");
- 		err = -EIO;
- 		goto end;
+--- a/mm/kasan/init.c
++++ b/mm/kasan/init.c
+@@ -292,7 +292,7 @@ static void kasan_free_pte(pte_t *pte_st
+ 			return;
  	}
+ 
+-	pte_free_kernel(&init_mm, (pte_t *)page_to_virt(pmd_page(*pmd)));
++	pte_free_kernel(&init_mm, pte_start);
+ 	pmd_clear(pmd);
+ }
+ 
+@@ -307,7 +307,7 @@ static void kasan_free_pmd(pmd_t *pmd_st
+ 			return;
+ 	}
+ 
+-	pmd_free(&init_mm, (pmd_t *)page_to_virt(pud_page(*pud)));
++	pmd_free(&init_mm, pmd_start);
+ 	pud_clear(pud);
+ }
+ 
+@@ -322,7 +322,7 @@ static void kasan_free_pud(pud_t *pud_st
+ 			return;
+ 	}
+ 
+-	pud_free(&init_mm, (pud_t *)page_to_virt(p4d_page(*p4d)));
++	pud_free(&init_mm, pud_start);
+ 	p4d_clear(p4d);
+ }
+ 
+@@ -337,7 +337,7 @@ static void kasan_free_p4d(p4d_t *p4d_st
+ 			return;
+ 	}
+ 
+-	p4d_free(&init_mm, (p4d_t *)page_to_virt(pgd_page(*pgd)));
++	p4d_free(&init_mm, p4d_start);
+ 	pgd_clear(pgd);
+ }
+ 
 
 
 
