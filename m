@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-239394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239576-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2Gs8NL1W5mkDuwEAu9opvQ
-	(envelope-from <stable+bounces-239394-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:39:25 +0200
+	id OGnZFttl5mmJvwEAu9opvQ
+	(envelope-from <stable+bounces-239576-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:43:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5409542FC7A
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:39:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A934D431F04
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:43:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B0D7C3428D13
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:49:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B0F84361339A
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:56:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E56A9336EC9;
-	Mon, 20 Apr 2026 15:48:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57A9A336896;
+	Mon, 20 Apr 2026 15:56:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dBJwhDVS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UQIWwkhD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A91072D77E5;
-	Mon, 20 Apr 2026 15:48:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BCDB17A31C;
+	Mon, 20 Apr 2026 15:56:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700134; cv=none; b=OHqRbQOi8Kz3GzgVovTCG9z1KtixXMJUML2TiBqZlGv0gjmXWXl5vtKJPCoF2qrbCXnK2+cnM+3dMNGGZk1J5fVz8RM3N9pB4sZJBRUhXhRzUCgjyP4f/ZG0jHnfoTur5F/10b98hoTFs2Y5ihuEbND9FY7lCVcK8MAKnYNm/R0=
+	t=1776700607; cv=none; b=uJqmgDeHBLMl6SnKnHrg5lJxSyYvXzOnvyxRc8Gglg3OENvGo1IsBmj1dKvdqjHYID7YIfc1TRMlnFF08CsfrvpNueYQkwm9u/cKL7mS8SPGpJXvFbtJovT630xNyVmn/2iVDdAN436GUb6LiprXY6W4wlvrkNPocXQrt0s8AS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700134; c=relaxed/simple;
-	bh=tKiG1BzLg3TgnFnbpBQNPULSfig1/ggFyzVeB6PE2qE=;
+	s=arc-20240116; t=1776700607; c=relaxed/simple;
+	bh=DkQaVGV6/3o1WjjdI1c7RO2U752NPzdO4g5KB7UeIhE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aOjlrcibsYVBr1J9BAwX8bHOUpvAokYCnDRVOY7jMzrhDSUdzntVk4I1yd1ZeKevhBct2VP/IhUXlMFVzUqshHHWhBBsStFIFdd378Hi0MD5YkRu24Z20/fiVD3TVtpGoNElH48Z7DTTYV1bjIKoZXkmYZ1tEcWBzkmeIf0hdDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dBJwhDVS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42195C19425;
-	Mon, 20 Apr 2026 15:48:54 +0000 (UTC)
+	 MIME-Version; b=tf9AJJydE+eIKCf4UfE7axXB2LuPixRn9isViRi14qdx+ncTAg4IcpGnDyWmepWv8Fe7n/Myh1cp765nAhm/7uCeeJ1CvaAM0UcP1+y4z9/9ylkRRPRo8ZXzhteByB55p6y4LbkvJRQladg8hl07qAJBqNJZiEFG5AGFm2osGak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UQIWwkhD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4ECCC19425;
+	Mon, 20 Apr 2026 15:56:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700134;
-	bh=tKiG1BzLg3TgnFnbpBQNPULSfig1/ggFyzVeB6PE2qE=;
+	s=korg; t=1776700607;
+	bh=DkQaVGV6/3o1WjjdI1c7RO2U752NPzdO4g5KB7UeIhE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dBJwhDVS3IXH+g6m4eeye7HY5F+GgyWkxghdCeVb/73FKMvMm1WwbDZALwxqZkBU5
-	 Se801gqRSCSPXWH0pmovKcTRdpbZx2U+NqBCEP2Bz5Pc4l+tmjaMERZn1MyXwiFz+j
-	 zyCEDvgAwJlOsQPXP30pM/EYFYgqaDEbGUGpcV60=
+	b=UQIWwkhDVfWA2+SX3F2CSkOTG4e1hbmhOvoGH73xi1YfFwPBaBhuxMHkDHbx9Ixn+
+	 VEGRok0xWdZgdel8r4wXvShhcYc7ofKQvpPD/B5/9Zt56C3l5V95p95UitjwxtjxX6
+	 Lx6agSgjDFfLCJd+zSUOZRAMDWcaNJiDSZSuAmlw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Nikita Travkin <nikita@trvn.ru>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Boris Burkov <boris@bur.io>,
+	Goldwyn Rodrigues <rgoldwyn@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 055/220] soc: qcom: pd-mapper: Fix element length in servreg_loc_pfr_req_ei
-Date: Mon, 20 Apr 2026 17:39:56 +0200
-Message-ID: <20260420153936.021591872@linuxfoundation.org>
+Subject: [PATCH 6.18 018/198] btrfs: tracepoints: get correct superblock from dentry in event btrfs_sync_file()
+Date: Mon, 20 Apr 2026 17:39:57 +0200
+Message-ID: <20260420153936.272688019@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
-References: <20260420153934.013228280@linuxfoundation.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239394-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-239576-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,83 +86,61 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,trvn.ru:email]
-X-Rspamd-Queue-Id: 5409542FC7A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,suse.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,bur.io:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A934D431F04
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+From: Goldwyn Rodrigues <rgoldwyn@suse.de>
 
-[ Upstream commit 641f6fda143b879da1515f821ee475073678cf2a ]
+[ Upstream commit a85b46db143fda5869e7d8df8f258ccef5fa1719 ]
 
-It looks element length declared in servreg_loc_pfr_req_ei for reason
-not matching servreg_loc_pfr_req's reason field due which we could
-observe decoding error on PD crash.
+If overlay is used on top of btrfs, dentry->d_sb translates to overlay's
+super block and fsid assignment will lead to a crash.
 
-  qmi_decode_string_elem: String len 81 >= Max Len 65
+Use file_inode(file)->i_sb to always get btrfs_sb.
 
-Fix this by matching with servreg_loc_pfr_req's reason field.
-
-Fixes: 1ebcde047c54 ("soc: qcom: add pd-mapper implementation")
-Signed-off-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Tested-by: Nikita Travkin <nikita@trvn.ru>
-Link: https://lore.kernel.org/r/20260129152320.3658053-2-mukesh.ojha@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Reviewed-by: Boris Burkov <boris@bur.io>
+Signed-off-by: Goldwyn Rodrigues <rgoldwyn@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/pdr_internal.h | 2 +-
- drivers/soc/qcom/qcom_pdr_msg.c | 2 +-
- include/linux/soc/qcom/pdr.h    | 1 +
- 3 files changed, 3 insertions(+), 2 deletions(-)
+ include/trace/events/btrfs.h | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/soc/qcom/pdr_internal.h b/drivers/soc/qcom/pdr_internal.h
-index 039508c1bbf7d..047c0160b6178 100644
---- a/drivers/soc/qcom/pdr_internal.h
-+++ b/drivers/soc/qcom/pdr_internal.h
-@@ -84,7 +84,7 @@ struct servreg_set_ack_resp {
+diff --git a/include/trace/events/btrfs.h b/include/trace/events/btrfs.h
+index 125bdc166bfed..0864700f76e0a 100644
+--- a/include/trace/events/btrfs.h
++++ b/include/trace/events/btrfs.h
+@@ -769,12 +769,15 @@ TRACE_EVENT(btrfs_sync_file,
+ 	),
  
- struct servreg_loc_pfr_req {
- 	char service[SERVREG_NAME_LENGTH + 1];
--	char reason[257];
-+	char reason[SERVREG_PFR_LENGTH + 1];
- };
+ 	TP_fast_assign(
+-		const struct dentry *dentry = file->f_path.dentry;
+-		const struct inode *inode = d_inode(dentry);
++		struct dentry *dentry = file_dentry(file);
++		struct inode *inode = file_inode(file);
++		struct dentry *parent = dget_parent(dentry);
++		struct inode *parent_inode = d_inode(parent);
  
- struct servreg_loc_pfr_resp {
-diff --git a/drivers/soc/qcom/qcom_pdr_msg.c b/drivers/soc/qcom/qcom_pdr_msg.c
-index ca98932140d87..02022b11ecf05 100644
---- a/drivers/soc/qcom/qcom_pdr_msg.c
-+++ b/drivers/soc/qcom/qcom_pdr_msg.c
-@@ -325,7 +325,7 @@ const struct qmi_elem_info servreg_loc_pfr_req_ei[] = {
- 	},
- 	{
- 		.data_type = QMI_STRING,
--		.elem_len = SERVREG_NAME_LENGTH + 1,
-+		.elem_len = SERVREG_PFR_LENGTH + 1,
- 		.elem_size = sizeof(char),
- 		.array_type = VAR_LEN_ARRAY,
- 		.tlv_type = 0x02,
-diff --git a/include/linux/soc/qcom/pdr.h b/include/linux/soc/qcom/pdr.h
-index 83a8ea612e69a..2b7691e47c2a9 100644
---- a/include/linux/soc/qcom/pdr.h
-+++ b/include/linux/soc/qcom/pdr.h
-@@ -5,6 +5,7 @@
- #include <linux/soc/qcom/qmi.h>
- 
- #define SERVREG_NAME_LENGTH	64
-+#define SERVREG_PFR_LENGTH	256
- 
- struct pdr_service;
- struct pdr_handle;
+-		TP_fast_assign_fsid(btrfs_sb(file->f_path.dentry->d_sb));
++		dput(parent);
++		TP_fast_assign_fsid(btrfs_sb(inode->i_sb));
+ 		__entry->ino		= btrfs_ino(BTRFS_I(inode));
+-		__entry->parent		= btrfs_ino(BTRFS_I(d_inode(dentry->d_parent)));
++		__entry->parent		= btrfs_ino(BTRFS_I(parent_inode));
+ 		__entry->datasync	= datasync;
+ 		__entry->root_objectid	= btrfs_root_id(BTRFS_I(inode)->root);
+ 	),
 -- 
 2.53.0
 
