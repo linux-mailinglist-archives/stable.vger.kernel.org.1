@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-239329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239503-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +A6LNkhj5mmavgEAu9opvQ
-	(envelope-from <stable+bounces-239329-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:32:56 +0200
+	id cKzeBNNe5mndvQEAu9opvQ
+	(envelope-from <stable+bounces-239503-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:13:55 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48D0A43166F
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:32:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9021F430C4C
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:13:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C9A943337742
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:46:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6814B312497E
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:53:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 426143368B2;
-	Mon, 20 Apr 2026 15:46:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 985DF33A9FF;
+	Mon, 20 Apr 2026 15:53:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I5J3fi1m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2NydVnag"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02D80329C6D;
-	Mon, 20 Apr 2026 15:46:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C31E2E11C7;
+	Mon, 20 Apr 2026 15:53:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776699968; cv=none; b=u9dLB4Eqy0G18ztXGBeXbHB3WD5e9qKYyP8AXXIuVULSe4nP/Z63P6DJRqvyn6kc1unVfLSWuQuOK4ckmCgA7XVIU5tZ9nGAckAYy9KrRnIOeCTZydLHjRqAC1m/8+NPRitkGBhPACRt7jYkRCxzMEPvGfixUY+huL3F/TPDWZc=
+	t=1776700420; cv=none; b=mUKTXUhYM57a5Ram5LchVIRk1WUcvFi9hEgmyIbUuLc5f886/weLJIvdYfTUq3cdx9MUZPxoU3ocY/qjaDB9GJFtORzXtsWjI+7UEsk+6jjK3xsc8aMxzKfBHo8W3uXk/g26QAN1RN/h9dG6yner4If8K+zgc5mhoK7yaLKWdSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776699968; c=relaxed/simple;
-	bh=QCvdH3wWj8SdYExyNYjueMUxThcx2mT9dUL/96ufOXI=;
+	s=arc-20240116; t=1776700420; c=relaxed/simple;
+	bh=lkCHqU0NcXhf6IAhxzV/stvrvCIEm1KLq5c6DA390KI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dMTvjZEjq1tnC1fjxB6qtbnfX6dB90rUORIrvAu2a68BREcT+j7A96+GfXqekwkpQhyb9sLytO2jS20Q0ykBCjdvSjf1x47+uX4nx9zkTxIDua9HgwXJExQEEy/xijtz09rqiROHDMNOYAELjJwVf1ytOyX8pxb6+l5PG79IO64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I5J3fi1m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D15FC19425;
-	Mon, 20 Apr 2026 15:46:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Zn0q3Vnl+gYAfbj8fLca+FSuZ/CYLKaU4ej4updRy3O9xkgffDzJbyiAiBuHkZ+IOAZcTMdlgMEG159yc2IxYoKlUwFsSlnugnzMu+tcM5PEY6wy5w8pH9zbnhOggjGX2FALWEXhf7Y+DqTTviU4Zha56yPzU6TsRpJP0NCMirQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2NydVnag; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6AF2C19425;
+	Mon, 20 Apr 2026 15:53:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776699967;
-	bh=QCvdH3wWj8SdYExyNYjueMUxThcx2mT9dUL/96ufOXI=;
+	s=korg; t=1776700420;
+	bh=lkCHqU0NcXhf6IAhxzV/stvrvCIEm1KLq5c6DA390KI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I5J3fi1m2QqmrXtZI0lORqDDxUb0WX/vEaf0+dBqkHER4Uf2wrZFF3ucl7GFdpU0e
-	 VSqn5Eti+kz1rKmtIx9z1byu7SkwCxhU8ZuOVlIWqsSBVfkKnDS3Jeiump6jIJLq3u
-	 R/86NyUeBgV9rbPrP0PDgHxP2wz6My/NwfQVNwJs=
+	b=2NydVnaghjffkWvQJXK26/YJrcZhuW540N3Qch5f4RXH5AWSzSzT83lMy9a0Xeahg
+	 PfxBTubVWPZ+3/1HYB38jgJYHwnq2ND4fBImXedJfK5Ll8t7nszEhF7dtm1zySW3bc
+	 SsPRhbiJv0mScb2kajtEmSa9P4H04QHLY9qyppWI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuhao Jiang <danisjiang@gmail.com>,
-	Junrui Luo <moonafterrain@outlook.com>
-Subject: [PATCH 7.0 35/76] staging: sm750fb: fix division by zero in ps_to_hz()
+	=?UTF-8?q?Daniel=20Br=C3=A1t?= <danek.brat@gmail.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.19 165/220] usb: storage: Expand range of matched versions for VL817 quirks entry
 Date: Mon, 20 Apr 2026 17:41:46 +0200
-Message-ID: <20260420153912.100403486@linuxfoundation.org>
+Message-ID: <20260420153939.968914618@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153910.810034134@linuxfoundation.org>
-References: <20260420153910.810034134@linuxfoundation.org>
+In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
+References: <20260420153934.013228280@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +62,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-239329-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com];
+	TAGGED_FROM(0.00)[bounces-239503-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 48D0A43166F
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[weissschuh.net:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,vacharakis.de:email]
+X-Rspamd-Queue-Id: 9021F430C4C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junrui Luo <moonafterrain@outlook.com>
+From: Daniel Brát <danek.brat@gmail.com>
 
-commit 75a1621e4f91310673c9acbcbb25c2a7ff821cd3 upstream.
+commit 609865ab3d5d803556f628e221ecd3d06aed9f30 upstream.
 
-ps_to_hz() is called from hw_sm750_crtc_set_mode() without validating
-that pixclock is non-zero. A zero pixclock passed via FBIOPUT_VSCREENINFO
-causes a division by zero.
+Expands range of matched bcdDevice values for the VL817 quirk entry.
+This is based on experience with Axagon EE35-GTR rev1 3.5" HDD
+enclosure, which reports its bcdDevice as 0x0843, but presumably other
+vendors using this IC in their products may set it to any other value.
 
-Fix by rejecting zero pixclock in lynxfb_ops_check_var(), consistent
-with other framebuffer drivers.
-
-Fixes: 81dee67e215b ("staging: sm750fb: add sm750 to staging")
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-Link: https://patch.msgid.link/SYBPR01MB7881AFBFCE28CCF528B35D0CAF4BA@SYBPR01MB7881.ausprd01.prod.outlook.com
+Signed-off-by: Daniel Brát <danek.brat@gmail.com>
+Cc: stable <stable@kernel.org>
+Link: https://patch.msgid.link/20260402172433.5227-1-danek.brat@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/staging/sm750fb/sm750.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/usb/storage/unusual_devs.h |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/staging/sm750fb/sm750.c
-+++ b/drivers/staging/sm750fb/sm750.c
-@@ -481,6 +481,9 @@ static int lynxfb_ops_check_var(struct f
- 	struct lynxfb_crtc *crtc;
- 	resource_size_t request;
+--- a/drivers/usb/storage/unusual_devs.h
++++ b/drivers/usb/storage/unusual_devs.h
+@@ -2350,10 +2350,11 @@ UNUSUAL_DEV(  0x2027, 0xa001, 0x0000, 0x
+ 		US_FL_SCM_MULT_TARG ),
  
-+	if (!var->pixclock)
-+		return -EINVAL;
-+
- 	ret = 0;
- 	par = info->par;
- 	crtc = &par->crtc;
+ /*
+- * Reported by DocMAX <mail@vacharakis.de>
+- * and Thomas Weißschuh <linux@weissschuh.net>
++ * Reported by DocMAX <mail@vacharakis.de>,
++ * Thomas Weißschuh <linux@weissschuh.net>
++ * and Daniel Brát <danek.brat@gmail.com>
+  */
+-UNUSUAL_DEV( 0x2109, 0x0715, 0x9999, 0x9999,
++UNUSUAL_DEV( 0x2109, 0x0715, 0x0000, 0x9999,
+ 		"VIA Labs, Inc.",
+ 		"VL817 SATA Bridge",
+ 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
 
 
 
