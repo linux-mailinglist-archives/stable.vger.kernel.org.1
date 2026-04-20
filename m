@@ -1,213 +1,183 @@
-Return-Path: <stable+bounces-238713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238714-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iDZ4LVPX5WnWoQEAu9opvQ
-	(envelope-from <stable+bounces-238713-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 09:35:47 +0200
+	id MGPGHhzY5WnWoQEAu9opvQ
+	(envelope-from <stable+bounces-238714-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 09:39:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20D3D427CA9
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 09:35:47 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE2B1427CFC
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 09:39:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 88A01301E6D0
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 07:32:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 775FF3015A64
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 07:39:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27002347506;
-	Mon, 20 Apr 2026 07:32:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AAF1383C95;
+	Mon, 20 Apr 2026 07:39:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="owj+J+BY"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="L4vrZps9"
 X-Original-To: stable@vger.kernel.org
-Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B89328641E;
-	Mon, 20 Apr 2026 07:32:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.221
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776670370; cv=none; b=AL8O8+wi0m7m5kkOxpkpUdzHHdKqeNvMOg6SpUwIabRpHIQQAeflCLky9WEXBtDwbwO5brirXYw72wMmD94cS5LxQgfE7/m4XDEtp/uXnSRrRiisonZ5Cb/mpIlCpPq3E1ph4gNe2DtiKjns7CGLhHzgNma4S+7ecR8VbgCCiJg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776670370; c=relaxed/simple;
-	bh=0ifAytL3E1AacPdhjW+KMvjty6JQP4iGtfxLc9eoUi8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=iRqCwMtXfJ+Sm5BbCa5pI/VEl7TMwyQx+kPQwteFL/uYcDymkfmEc4773sp5U/IVpgrJ9/0n1PpSV1HpJyS28lCxWekhbYMrPIVsve9MG2lbjoeKgBpiIC9PUlJdQo30PzMc8VEslY1zZe2pKyL/z/ihi8VEyTalm+yT+xYTjKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=owj+J+BY; arc=none smtp.client-ip=113.46.200.221
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=BLv7nGBN27wPj3DbBK0dK/iUuPa+FDzIyHo8Ywtp3BE=;
-	b=owj+J+BYp7cw8eq0UIp84LYOwAS2ReIdaKf/rX+kjqkBG0+p2qbMn9su3Xhana5cIkjJdWOsK
-	1o4/LGEXSohpn1rGnHReSdP8+WWmeC2GHLARykzE2Ev3M63k3/+utAouh0+8UVzz28JwQWu6k/v
-	H4mY1QPm6cAoATcspNtd+Ss=
-Received: from mail.maildlp.com (unknown [172.19.162.144])
-	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4fzcVS2NL5zRhTx;
-	Mon, 20 Apr 2026 15:26:24 +0800 (CST)
-Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id A6B5240538;
-	Mon, 20 Apr 2026 15:32:45 +0800 (CST)
-Received: from kwepemn200012.china.huawei.com (7.202.194.135) by
- dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 20 Apr 2026 15:32:45 +0800
-Received: from [10.67.120.233] (10.67.120.233) by
- kwepemn200012.china.huawei.com (7.202.194.135) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 20 Apr 2026 15:32:44 +0800
-Message-ID: <d558a593-ca12-4237-a9b0-5f20441c9d52@huawei.com>
-Date: Mon, 20 Apr 2026 15:32:44 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C00F821A92F
+	for <stable@vger.kernel.org>; Mon, 20 Apr 2026 07:39:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.175
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776670745; cv=pass; b=rl8eIG1nyjfZZHO/1e0lpKsmTeBQzEfiF87ENdgsVQ6pEqgGOWvP55dGHuMIj1/qKpcUBvmUiRpo9c9elKMcqYwEtwlEwjDLWrMq9HNRArIrHLP+45RvblM1vF2GYQOLT5uvfT8mzV7lvFEXpoQvEMlmOSZjzDcl6lZtMfwtT4k=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776670745; c=relaxed/simple;
+	bh=Y6SaI5/j4+Ufg5rzhBx6PvjnNi5tIO6L4mbRl8+/keE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=aNg6gD/mWwQJbrGwfkCNWsBNYOaX1bAY6D2QKRKAKZ2zyR5zN46jYLK1+oKcqeTeWpxxVg8fxEcPiQZnyewnjbMo6YTVaac2bfXXdQRHFSBoXn3GY/m5Zq74KfHNxVg8rfuph1Vw6BUQg3eXTecXx/dIHgjUbl38bITX2fZ9COg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=L4vrZps9; arc=pass smtp.client-ip=209.85.208.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-38e7b0903cdso24816231fa.3
+        for <stable@vger.kernel.org>; Mon, 20 Apr 2026 00:39:03 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776670742; cv=none;
+        d=google.com; s=arc-20240605;
+        b=AE92Ss8mnd/Og7O6G5FRXkS5qi/Sm5GwYpJhD+9cIg8xyk4EGz2dx+4r0cpaUZg3f5
+         iJkCcPRlWhMy9NC0e09Mn7Q96kcPgWytpu0P/7ZageL9bKOD5xD3xwcSttRAUO72sejk
+         JA1KqwXub9LtrC2Vcq/VkEV9mNSi41J+Kt/K1YLBNvUYHZr+p/a+DRztlnFD902un5IH
+         LgKLT0i81GbiB7TgoduUhIfaDwW5kCfrkf5NChlPy9rP7m4wCbC/RUodfoI14nzm8amF
+         +NDdqyP1gZo4aZvz0TGmmxsvSzPue3nQDUk+KnZ9tC+3fMIixCdfqog8Xm/ndrcanXJY
+         t14A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=zKEgJOPy9NW9AOWN8wHVDlaVtMzqG521cwuziW4vs0A=;
+        fh=YllXARdiMQsH8Nyy3aLpOP3SXdvfRTL+23KH2qihcdQ=;
+        b=io6me/AAbczEYck7PnxWPtOz+Ce8j7t7RHqKkaX6yVIAOAot4Vg2sWfrQZRsjHt0y/
+         3yhBd0jTo4gjvCOBvew22dPC1IwZ6d2kjk4YNf1BBGwWYQRvxwInakB29xhMYqdBbGTX
+         jwvuGitlu6eSgOBbUhyYVqbmyElnI6keMbjxRcPbBBFrfGAYHfyCW+vs2VpG41upO9EP
+         jxwUr8Rk1AzE+EAExiHAmeIggnrCfWqBM19NkAgTMFI7fStMyvFzo0tQdBP3vWIxMA7d
+         zRYjYs/Kdv0ewvMpOZLSnHbxjvmchIFkNWmos017hBVtwCmxEzBvgDt0BldnsZGM7eTx
+         HsyA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1776670742; x=1777275542; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zKEgJOPy9NW9AOWN8wHVDlaVtMzqG521cwuziW4vs0A=;
+        b=L4vrZps9l9ipyeIGq8JLCpA/uPakwLFCf5V3dCuserf09J1uJfv49SXaI5QoR7HHeY
+         QFULWznQGqWva/m+w8cXvBzzgherdh3zmoTQGucWpVhkgWVQtZkRf57h/Zw+gN3AObUv
+         DnjWm3zKAtDwBjD9n3PcItJfFIEjnFfHWCHh6ooMnJ2MRfkOxi03xzQ1Pw60nOIsra3B
+         ZHZehfpXUaQnLU+R35qltrYZAxmAy4Hm8dwRZQKnMoQ0LdK08fy14LC8/tjqu1rSOLPN
+         o1jf9K2q9afkY68yx/Qj36M+JmcqFboqNTNsvo0e4F2Zci/NswCVpSoibmNMk6BeJVPn
+         uXWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776670742; x=1777275542;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=zKEgJOPy9NW9AOWN8wHVDlaVtMzqG521cwuziW4vs0A=;
+        b=JAbwpKdEOaQQUsUz8HdEdntNS7415IuzMVu7AXuIWH1lnU7xnxL323+egpIjZSotLy
+         tcplUHsoQckx2D1WorICuzQL7eaDgKzjbh0u1njukV2z7SGSuiVmoN8siBAucW4nRBps
+         olvUAmvUOsG/f6HefH4fnNdRlkuxr+pAxO4b9IOXZfNriUAVA0XQWTBHFjpZkz8dQJjx
+         3Yty109cYVF+L57+kxntY8BQek/VBar4P3ITIYfcb+TWXRjDXsQ3ln/2c1wqvz+b/oXP
+         UVeEr9fGhYrJN7ES4RJcgtTmpwByFieA+EE74YuSbwJV/nf4hH44tfq2DhAJXWAqQBN1
+         ItTg==
+X-Forwarded-Encrypted: i=1; AFNElJ+hq3dBGMif/sw8Q//6h4HYq2TPaXcKflpHx0vkpSGKSLuni8LKO+DJ6z9/FK1A1WMz+bBtdhw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyDmniyG8RMRLbiNKYsS4tZjY12ANmc8JsQdF+ThNqErecG7MiS
+	BaqGbi40Ws23IaLnSVNOe4zLPC6Be9ItLZcfPkO1LirsroCacsxNsfU0FMNHtbDvRBVBmRreOLa
+	l4ghR95LoVORd9biYNBpu1+DddRIpf9/znLlXbOMs
+X-Gm-Gg: AeBDiet0S4/eRR3xiRYC7R9RYahw1w/uhDqeAo+dFWWza41p3+k8E+3CS/8d/WBAB/N
+	HeBGih5gjeudqgnLSkb5uOCD5HSCvd3W/MHPlGF1NvDqJRc2JC5nPi5VUTiXluQMHo4bE+NhVl+
+	W61GI5uiWZoD/sDUscOSFcTcmke3RUDNgxIcP5ZG+Rud86vHjpOulfMEnTs9jkOVAU7ItAunWGS
+	UatHPbaYURR/uBaLUOLBlzoybayqwY/U2aXEZ6U9IMbK0fSS2oa94uVGsNVCkmOkgTYxCKlJmnn
+	yBA3Uuu93H/nuFn7BREJXSKDj98n0zEIakQNcld/yWtMUu+iixIpfLpz5WxkqFb0hP2Phw==
+X-Received: by 2002:a2e:ae08:0:b0:389:fbe6:3321 with SMTP id
+ 38308e7fff4ca-38ec7b99984mr29889291fa.33.1776670741419; Mon, 20 Apr 2026
+ 00:39:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] hwtracing: hisi_ptt: Propagate DMA reset timeout
- in trace_start()
-To: Yicong Yang <yangyccccc@gmail.com>, "Pradhan, Sanman"
-	<sanman.pradhan@hpe.com>, "jonathan.cameron@huawei.com"
-	<jonathan.cameron@huawei.com>
-CC: "alexander.shishkin@linux.intel.com" <alexander.shishkin@linux.intel.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>, Sanman Pradhan
-	<psanman@juniper.net>, Suzuki K Poulose <suzuki.poulose@arm.com>, Jie Zhan
-	<zhanjie9@hisilicon.com>
-References: <20260414172451.14331-1-sanman.pradhan@hpe.com>
- <20260414172451.14331-2-sanman.pradhan@hpe.com>
- <166964d1-2d16-43e8-b4d7-27b4a5e6286d@gmail.com>
-From: Sizhe Liu <liusizhe5@huawei.com>
-In-Reply-To: <166964d1-2d16-43e8-b4d7-27b4a5e6286d@gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemn200012.china.huawei.com (7.202.194.135)
+References: <20260323-uvc-hwtimestamp-v1-0-aa42e3865204@chromium.org>
+In-Reply-To: <20260323-uvc-hwtimestamp-v1-0-aa42e3865204@chromium.org>
+From: Yunke Cao <yunkec@google.com>
+Date: Mon, 20 Apr 2026 15:38:49 +0800
+X-Gm-Features: AQROBzAlapTXffBH_3Vrs0aqJdVPiVmm2hr8avyAcZulKyL5RhYlAQonTJX8rRE
+Message-ID: <CANqU6FckNvLSDj9S9Oc_NGmP80YCe5P46f5oQ9mahWvxqikxNw@mail.gmail.com>
+Subject: Re: [PATCH 0/4] media: uvcvideo: Fixes for hw timestamping
+To: Ricardo Ribalda <ribalda@chromium.org>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Hans de Goede <hansg@kernel.org>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, Tomasz Figa <tfiga@chromium.org>, 
+	Sergey Senozhatsky <senozhatsky@chromium.org>, linux-media@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[huawei.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[huawei.com:s=dkim];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-238713-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,hpe.com,huawei.com];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	DKIM_TRACE(0.00)[huawei.com:+];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,huawei.com:dkim,huawei.com:mid,juniper.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[liusizhe5@huawei.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-238714-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[google.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[yunkec@google.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 20D3D427CA9
+	RCPT_COUNT_SEVEN(0.00)[9];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,chromium.org:email]
+X-Rspamd-Queue-Id: EE2B1427CFC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+Hi Ricardo,
 
-On 2026/4/17 1:25, Yicong Yang wrote:
-> +cc Suzuki and Sizhe..
->
-> On 2026/4/15 01:25, Pradhan, Sanman wrote:
->> From: Sanman Pradhan <psanman@juniper.net>
->>
->> hisi_ptt_wait_dma_reset_done() discards the return value of
->> readl_poll_timeout_atomic(). If the DMA engine does not complete its
->> reset within the timeout, hisi_ptt_trace_start() proceeds to start
->> tracing regardless.
->>
->> Return a bool from hisi_ptt_wait_dma_reset_done(), consistent with the
->> other wait helpers in this driver. On timeout, log an error, de-assert
->> the reset bit, and return -ETIMEDOUT. Move ctrl->started to the
->> successful path so a failed start does not leave the trace marked as
->> active.
->>
->> Fixes: ff0de066b463 ("hwtracing: hisi_ptt: Add trace function support for HiSilicon PCIe Tune and Trace device")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Sanman Pradhan <psanman@juniper.net>
-> looks good to me.
->
-> Reviewed-by: Yicong Yang <yangyccccc@gmail.com>
->
-> I see the Suzuki has sent out the PR for 7.1, so this may wait after the merge window...
->
-> thanks.
+I tested the series on a SunplusIT Inc 1080p FHD Camera (2b7e:c877).
+Without this series, hardware timestamping was broken (due to the
+issue fixed by [PATCH 2/4] of this series).
+With this series, hardware timestamping works as intended.
 
-Looks good to me, thanks.
+Tested-by: Yunke Cao <yunkec@google.com>
 
-Reviewed-by: Sizhe Liu <liusizhe5@huawei.com>
+Best,
+Yunke
 
->> ---
->> v2:
->>    - Return bool for consistency with other wait helpers
->>    - Add pci_err() on timeout
->>    - De-assert RST before returning on timeout
->>    - Move ctrl->started to the successful path
->>
->>   drivers/hwtracing/ptt/hisi_ptt.c | 20 +++++++++++++-------
->>   1 file changed, 13 insertions(+), 7 deletions(-)
->>
->> diff --git a/drivers/hwtracing/ptt/hisi_ptt.c b/drivers/hwtracing/ptt/hisi_ptt.c
->> index 94c371c491357..b5d851281fbf0 100644
->> --- a/drivers/hwtracing/ptt/hisi_ptt.c
->> +++ b/drivers/hwtracing/ptt/hisi_ptt.c
->> @@ -171,13 +171,13 @@ static bool hisi_ptt_wait_trace_hw_idle(struct hisi_ptt *hisi_ptt)
->>   					  HISI_PTT_WAIT_TRACE_TIMEOUT_US);
->>   }
->>   
->> -static void hisi_ptt_wait_dma_reset_done(struct hisi_ptt *hisi_ptt)
->> +static bool hisi_ptt_wait_dma_reset_done(struct hisi_ptt *hisi_ptt)
->>   {
->>   	u32 val;
->>   
->> -	readl_poll_timeout_atomic(hisi_ptt->iobase + HISI_PTT_TRACE_WR_STS,
->> -				  val, !val, HISI_PTT_RESET_POLL_INTERVAL_US,
->> -				  HISI_PTT_RESET_TIMEOUT_US);
->> +	return !readl_poll_timeout_atomic(hisi_ptt->iobase + HISI_PTT_TRACE_WR_STS,
->> +					  val, !val, HISI_PTT_RESET_POLL_INTERVAL_US,
->> +					  HISI_PTT_RESET_TIMEOUT_US);
->>   }
->>   
->>   static void hisi_ptt_trace_end(struct hisi_ptt *hisi_ptt)
->> @@ -202,14 +202,18 @@ static int hisi_ptt_trace_start(struct hisi_ptt *hisi_ptt)
->>   		return -EBUSY;
->>   	}
->>   
->> -	ctrl->started = true;
->> -
->>   	/* Reset the DMA before start tracing */
->>   	val = readl(hisi_ptt->iobase + HISI_PTT_TRACE_CTRL);
->>   	val |= HISI_PTT_TRACE_CTRL_RST;
->>   	writel(val, hisi_ptt->iobase + HISI_PTT_TRACE_CTRL);
->>   
->> -	hisi_ptt_wait_dma_reset_done(hisi_ptt);
->> +	if (!hisi_ptt_wait_dma_reset_done(hisi_ptt)) {
->> +		pci_err(hisi_ptt->pdev, "timed out waiting for DMA reset\n");
->> +		val = readl(hisi_ptt->iobase + HISI_PTT_TRACE_CTRL);
->> +		val &= ~HISI_PTT_TRACE_CTRL_RST;
->> +		writel(val, hisi_ptt->iobase + HISI_PTT_TRACE_CTRL);
->> +		return -ETIMEDOUT;
->> +	}
->>   
->>   	val = readl(hisi_ptt->iobase + HISI_PTT_TRACE_CTRL);
->>   	val &= ~HISI_PTT_TRACE_CTRL_RST;
->> @@ -234,6 +238,8 @@ static int hisi_ptt_trace_start(struct hisi_ptt *hisi_ptt)
->>   	if (!hisi_ptt->trace_ctrl.is_port)
->>   		val |= HISI_PTT_TRACE_CTRL_FILTER_MODE;
->>   
->> +	ctrl->started = true;
->> +
->>   	/* Start the Trace */
->>   	val |= HISI_PTT_TRACE_CTRL_EN;
->>   	writel(val, hisi_ptt->iobase + HISI_PTT_TRACE_CTRL);
+
+On Mon, Mar 23, 2026 at 9:10=E2=80=AFPM Ricardo Ribalda <ribalda@chromium.o=
+rg> wrote:
+>
+> This series introduces fixes for the hardware timestamp calculations.
+>
+> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+> ---
+> Ricardo Ribalda (4):
+>       media: uvcvideo: Fix dev_sof filtering in hw timestamp
+>       media: uvcvideo: Use hw timestaming if the clock buffer is full
+>       media: uvcvideo: Relax the constrains for interpolating the hw cloc=
+k
+>       media: uvcvideo: Do not add clock samples with small sof delta
+>
+>  drivers/media/usb/uvc/uvc_video.c | 51 +++++++++++++++++++++++++++------=
+------
+>  1 file changed, 35 insertions(+), 16 deletions(-)
+> ---
+> base-commit: a7da7fb57f2a787412da1a62292a17fa00fbfbdf
+> change-id: 20260309-uvc-hwtimestamp-f25dc27f5711
+>
+> Best regards,
+> --
+> Ricardo Ribalda <ribalda@chromium.org>
+>
 
