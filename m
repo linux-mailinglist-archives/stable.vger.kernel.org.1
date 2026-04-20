@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-239815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239277-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sKZ7GZJo5mnBvwEAu9opvQ
-	(envelope-from <stable+bounces-239815-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:55:30 +0200
+	id uAjZEIlh5mmavgEAu9opvQ
+	(envelope-from <stable+bounces-239277-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:25:29 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C13E643246B
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:55:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9639543129F
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:25:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 14D9033E6D4E
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:08:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ACCE83635910
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:44:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D444133AD9A;
-	Mon, 20 Apr 2026 16:08:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 748F03396EE;
+	Mon, 20 Apr 2026 15:43:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qio5/IGI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kSlwXjvd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 952FB3264F1;
-	Mon, 20 Apr 2026 16:08:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3652F3368B2;
+	Mon, 20 Apr 2026 15:43:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701286; cv=none; b=QlsRmqcbiNGmKGUmFbI1IlDnrZiGy+XjEZgk5IuZl0nkIkmKfsGZygDLHmVw7TAtSY2oh8MNWjhYQX4tEl8v7IvIdo6rjWrboHFtfm3SA22VfGSTWYIEGTqEBuLhBrNQf/j7JFsRvbZgfB+zM/MmhNRsA0MIwVK1asvFV1txRG0=
+	t=1776699837; cv=none; b=fizMvSJR2kLQ8o6nZvsavp974NNm4s685HmRF+VfoNerwHdEoNGpJWTmgC3Dh7H1O3uBAuXSg+LDDRZsN4t09BKIeqpmeoxFvjimiuMc+Bzcj5f+YONeu0DQtwDisiC9b8pdPValA5b31e9H0d3akfTuaGwdQqT4/Vnl82zXjSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701286; c=relaxed/simple;
-	bh=+zhpmhlkNpZzKX7+o6qoYP7DOQw3L74YBTt+RWyWmmA=;
+	s=arc-20240116; t=1776699837; c=relaxed/simple;
+	bh=Ft7LUKvXDJdRUx8ePc2A8FM3yBczQJ7P0vZv6p0ifrk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XhdNAkmFi8yUsPdqSACbaa0uSwzvJYa8LB+RLHOjN/hmHnhgN4wbgFj2UpvYyvcWfmFari69raxCPEdhYoWB3fOMJl0zgAtayow9o0l3iZYaMODRae5bSHEvcO+lDh4d1ekhUj0p86C8EKpZkwSvKLvbbLP1H9C4QnvVoqmtY1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qio5/IGI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BF55C19425;
-	Mon, 20 Apr 2026 16:08:06 +0000 (UTC)
+	 MIME-Version; b=nJPaSo/e0afz52U+qZmnfTlNjttO/04qYAtgAHAzl+Jb5YWiUQ7kzja0wNc+TX9/4QFzkVVGeLXrCqZBfzlBD7zGepRu7toKbBcIFb43MbmsNjFfkw6T3ElJrFph/Tz6tqgb+LFyC+ZuE5G/6kD6yhikh/6EMt/PAXJniLksJ3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kSlwXjvd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F1CBC2BCB8;
+	Mon, 20 Apr 2026 15:43:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701286;
-	bh=+zhpmhlkNpZzKX7+o6qoYP7DOQw3L74YBTt+RWyWmmA=;
+	s=korg; t=1776699836;
+	bh=Ft7LUKvXDJdRUx8ePc2A8FM3yBczQJ7P0vZv6p0ifrk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qio5/IGIaGcxLggj0T0k9CTRSS79qqM6d3Ovy1Rl5ULvRBL2ACC3QtimFFfNQ7Bwe
-	 C+Tv2h7GWW+u/KM+mi2hF0tDGst0aFhfwW5NN1KC49He4sFHc8GXBWGY2ZsZaBSsSV
-	 QUY2L5L0lOurFrEPLLfglXR+uD22CdGG+euTIhrQ=
+	b=kSlwXjvdJ5k0lQT1uoZCCWlV6FyYyhmYaKHvQP756QKQKMFVwNEY+s/uLEUnN1U4y
+	 Y7/neB4dA9Lwq7viIAy9wRAagLk6rGmMjbJ9E3ZqLyhvHVwf1QWkvHPArVKjMwOHdf
+	 eScqOev4M3FMKxzyLl0COkjohuQEuAzWrABwc29c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pengpeng Hou <pengpeng@iscas.ac.cn>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 055/162] nfc: s3fwrn5: allocate rx skb before consuming bytes
-Date: Mon, 20 Apr 2026 17:41:27 +0200
-Message-ID: <20260420153929.028875853@linuxfoundation.org>
+	stable <stable@kernel.org>
+Subject: [PATCH 7.0 17/76] usb: gadget: renesas_usb3: validate endpoint index in standard request handlers
+Date: Mon, 20 Apr 2026 17:41:28 +0200
+Message-ID: <20260420153911.449839710@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
-References: <20260420153927.006696811@linuxfoundation.org>
+In-Reply-To: <20260420153910.810034134@linuxfoundation.org>
+References: <20260420153910.810034134@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,88 +71,77 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239277-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-239815-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: C13E643246B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: 9639543129F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit 5c14a19d5b1645cce1cb1252833d70b23635b632 ]
+commit f880aac8a57ebd92abfa685d45424b2998ac1059 upstream.
 
-s3fwrn82_uart_read() reports the number of accepted bytes to the serdev
-core. The current code consumes bytes into recv_skb and may already
-deliver a complete frame before allocating a fresh receive buffer.
+The GET_STATUS and SET/CLEAR_FEATURE handlers extract the endpoint
+number from the host-supplied wIndex without any sort of validation.
+Fix this up by validating the number of endpoints actually match up with
+the number the device has before attempting to dereference a pointer
+based on this math.
 
-If that alloc_skb() fails, the callback returns 0 even though it has
-already consumed bytes, and it leaves recv_skb as NULL for the next
-receive callback. That breaks the receive_buf() accounting contract and
-can also lead to a NULL dereference on the next skb_put_u8().
+This is just like what was done in commit ee0d382feb44 ("usb: gadget:
+aspeed_udc: validate endpoint index for ast udc") for the aspeed driver.
 
-Allocate the receive skb lazily before consuming the next byte instead.
-If allocation fails, return the number of bytes already accepted.
-
-Fixes: 3f52c2cb7e3a ("nfc: s3fwrn5: Support a UART interface")
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
-Link: https://patch.msgid.link/20260402042148.65236-1-pengpeng@iscas.ac.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 746bfe63bba3 ("usb: gadget: renesas_usb3: add support for Renesas USB3.0 peripheral controller")
+Cc: stable <stable@kernel.org>
+Assisted-by: gregkh_clanker_t1000
+Link: https://patch.msgid.link/2026040647-sincerity-untidy-b104@gregkh
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nfc/s3fwrn5/uart.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/usb/gadget/udc/renesas_usb3.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/nfc/s3fwrn5/uart.c b/drivers/nfc/s3fwrn5/uart.c
-index 9c09c10c2a464..4ee481bd7e965 100644
---- a/drivers/nfc/s3fwrn5/uart.c
-+++ b/drivers/nfc/s3fwrn5/uart.c
-@@ -58,6 +58,12 @@ static size_t s3fwrn82_uart_read(struct serdev_device *serdev,
- 	size_t i;
- 
- 	for (i = 0; i < count; i++) {
-+		if (!phy->recv_skb) {
-+			phy->recv_skb = alloc_skb(NCI_SKB_BUFF_LEN, GFP_KERNEL);
-+			if (!phy->recv_skb)
-+				return i;
+--- a/drivers/usb/gadget/udc/renesas_usb3.c
++++ b/drivers/usb/gadget/udc/renesas_usb3.c
+@@ -1669,6 +1669,10 @@ static bool usb3_std_req_get_status(stru
+ 		break;
+ 	case USB_RECIP_ENDPOINT:
+ 		num = le16_to_cpu(ctrl->wIndex) & USB_ENDPOINT_NUMBER_MASK;
++		if (num >= usb3->num_usb3_eps) {
++			stall = true;
++			break;
 +		}
-+
- 		skb_put_u8(phy->recv_skb, *data++);
+ 		usb3_ep = usb3_get_ep(usb3, num);
+ 		if (usb3_ep->halt)
+ 			status |= 1 << USB_ENDPOINT_HALT;
+@@ -1781,7 +1785,8 @@ static bool usb3_std_req_feature_endpoin
+ 	struct renesas_usb3_ep *usb3_ep;
+ 	struct renesas_usb3_request *usb3_req;
  
- 		if (phy->recv_skb->len < S3FWRN82_NCI_HEADER)
-@@ -69,9 +75,7 @@ static size_t s3fwrn82_uart_read(struct serdev_device *serdev,
+-	if (le16_to_cpu(ctrl->wValue) != USB_ENDPOINT_HALT)
++	if ((le16_to_cpu(ctrl->wValue) != USB_ENDPOINT_HALT) ||
++	    (num >= usb3->num_usb3_eps))
+ 		return true;	/* stall */
  
- 		s3fwrn5_recv_frame(phy->common.ndev, phy->recv_skb,
- 				   phy->common.mode);
--		phy->recv_skb = alloc_skb(NCI_SKB_BUFF_LEN, GFP_KERNEL);
--		if (!phy->recv_skb)
--			return 0;
-+		phy->recv_skb = NULL;
- 	}
- 
- 	return i;
--- 
-2.53.0
-
+ 	usb3_ep = usb3_get_ep(usb3, num);
 
 
 
