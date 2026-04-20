@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-239309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239882-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qFUNE8Jf5mkxvgEAu9opvQ
-	(envelope-from <stable+bounces-239309-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:17:54 +0200
+	id yNm2H51Z5mnGvAEAu9opvQ
+	(envelope-from <stable+bounces-239882-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:51:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48019430EF3
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:17:53 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3A8C430203
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:51:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 777163167B6F
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:45:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 08A4F32D914A
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:11:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A284341077;
-	Mon, 20 Apr 2026 15:45:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27B0133B945;
+	Mon, 20 Apr 2026 16:10:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rc2NtcOd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FYCV7aA+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49ACE334C39;
-	Mon, 20 Apr 2026 15:45:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFF0E34107F;
+	Mon, 20 Apr 2026 16:10:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776699919; cv=none; b=uzkWXs/cJBt/NaawnUrxsyELVZ5q4YqOx/1lvTliSomlm2CFSn7hccYfdnQ+xhd6WZPBW8mHKxzIb/PgzWMB4yRsLZUj4lwYUYd3hNAu9yiTTDUoidjqig5F1OiF6JB52Wmyuq5tO3ndyPm9DNWGV6A7wp91PxbRzz1gU+0G7Ok=
+	t=1776701457; cv=none; b=Y/7US03PKtb+7OkseKAVK6HAC+ETWz0zrZMWMiYii2gNQwk3C7HkZ2bQ3KyqnD2IbGuvujoyKbTsierzLYu2yxsXCbtqQWApEJkaPJxAYAujTgjNJF/sVdReaqgDYmbo+5pfxw30Dm1XN1m9qdmrczL5g6EL8baYyXNsz1rbmuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776699919; c=relaxed/simple;
-	bh=Z7w8ojfsWOGtYjm0yfsyVnd30W/xabzURNvPHV1ZTqY=;
+	s=arc-20240116; t=1776701457; c=relaxed/simple;
+	bh=D6Zs9/e919AO8JwdNVf5Bm3mhHfKjhpYh0dNWr6ZcOk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AjQXWksSo6EGnSviuScRTNRtspqxr1o433CSh2kxVMmCHsA/av9B2kgBB0vESxK5Ml/9X2MLv43SI1RB7VfgAgZhduFJV0qJSphFDTZWYhssgD+bKrVwOy3nX41PcKZACqsjxXkhV6TNvSazVazRiQ/zfAwXBI8e4BhLYy/X7r8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rc2NtcOd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4EDFC19425;
-	Mon, 20 Apr 2026 15:45:18 +0000 (UTC)
+	 MIME-Version; b=eMTin9axsdJCmk1VCm2TB4ymdPXrogoS8OHCc5QkEP1dFUyLQ/1RzQ7I4UJyxjHlN+50QXnLaE35nI9E3TFPW61/QPvMlwDbPUR8SDS8TjEHujmoaklu7B8Zioy51xigBdBbFCy61kzSmoWt4bLvTipuddQ8mUtoi9lT+tn86sI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FYCV7aA+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BD61C19425;
+	Mon, 20 Apr 2026 16:10:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776699919;
-	bh=Z7w8ojfsWOGtYjm0yfsyVnd30W/xabzURNvPHV1ZTqY=;
+	s=korg; t=1776701457;
+	bh=D6Zs9/e919AO8JwdNVf5Bm3mhHfKjhpYh0dNWr6ZcOk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rc2NtcOdJ+ZQPDXlhab6dFVD+whXnmb94AHvac/JHhPuWHzrqAT0egCKvdv8TezHZ
-	 TEQhUObKn5cniwwWPbQ0MLHw3/B5snunlTSRg35yo14L0lTihLzU4QPzIKkSmq5g3v
-	 1GKLVOvsDbXH5iH2A/9gZTsPR7V6WLMvi7R1kXdI=
+	b=FYCV7aA+hscL3TXPIJNL80kT1r3QjaZAb6KHzznTBsdG87JzdUBt2aq8jIivIShXV
+	 CGidj2I8JmHH9YbqrFurW2q81i6VxLyDpmetTtMYZOJcsFCFurebmOlPYg+k67LfGi
+	 rjA7MEvMelVj3FtaDUIB4GvG9SXgh+hgIss+N0+Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Koichiro Den <den@valinux.co.jp>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>
-Subject: [PATCH 7.0 49/76] PCI: endpoint: pci-epf-vntb: Remove duplicate resource teardown
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 088/162] Revert "drm/xe: Switch MMIO interface to take xe_mmio instead of xe_gt"
 Date: Mon, 20 Apr 2026 17:42:00 +0200
-Message-ID: <20260420153912.609666663@linuxfoundation.org>
+Message-ID: <20260420153930.222000279@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153910.810034134@linuxfoundation.org>
-References: <20260420153910.810034134@linuxfoundation.org>
+In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
+References: <20260420153927.006696811@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,124 +66,453 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239882-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-239309-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,nxp.com:email,valinux.co.jp:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 48019430EF3
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: F3A8C430203
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Koichiro Den <den@valinux.co.jp>
+This reverts commit 26a40327c25c005c1653d66e7b1d8de0fbee15a4.
 
-commit 0da63230d3ec1ec5fcc443a2314233e95bfece54 upstream.
-
-epf_ntb_epc_destroy() duplicates the teardown that the caller is
-supposed to perform later. This leads to an oops when .allow_link fails
-or when .drop_link is performed. The following is an example oops of the
-former case:
-
-  Unable to handle kernel paging request at virtual address dead000000000108
-  [...]
-  [dead000000000108] address between user and kernel address ranges
-  Internal error: Oops: 0000000096000044 [#1]  SMP
-  [...]
-  Call trace:
-   pci_epc_remove_epf+0x78/0xe0 (P)
-   pci_primary_epc_epf_link+0x88/0xa8
-   configfs_symlink+0x1f4/0x5a0
-   vfs_symlink+0x134/0x1d8
-   do_symlinkat+0x88/0x138
-   __arm64_sys_symlinkat+0x74/0xe0
-  [...]
-
-Remove the helper, and drop pci_epc_put(). EPC device refcounting is
-tied to the configfs EPC group lifetime, and pci_epc_put() in the
-.drop_link path is sufficient.
-
-Fixes: e35f56bb0330 ("PCI: endpoint: Support NTB transfer between RC and EP")
-Signed-off-by: Koichiro Den <den@valinux.co.jp>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260226084142.2226875-2-den@valinux.co.jp
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/endpoint/functions/pci-epf-vntb.c |   19 +------------------
- 1 file changed, 1 insertion(+), 18 deletions(-)
+ drivers/gpu/drm/xe/xe_mmio.c  | 131 ++++++++++++++++++----------------
+ drivers/gpu/drm/xe/xe_mmio.h  |  76 +++++---------------
+ drivers/gpu/drm/xe/xe_trace.h |   7 +-
+ 3 files changed, 88 insertions(+), 126 deletions(-)
 
---- a/drivers/pci/endpoint/functions/pci-epf-vntb.c
-+++ b/drivers/pci/endpoint/functions/pci-epf-vntb.c
-@@ -764,19 +764,6 @@ static void epf_ntb_mw_bar_clear(struct
+diff --git a/drivers/gpu/drm/xe/xe_mmio.c b/drivers/gpu/drm/xe/xe_mmio.c
+index 9ea0973337eda..46924f4042418 100644
+--- a/drivers/gpu/drm/xe/xe_mmio.c
++++ b/drivers/gpu/drm/xe/xe_mmio.c
+@@ -67,16 +67,16 @@ static void mmio_multi_tile_setup(struct xe_device *xe, size_t tile_mmio_size)
+ 
+ 	/* Possibly override number of tile based on configuration register */
+ 	if (!xe->info.skip_mtcfg) {
+-		struct xe_mmio *mmio = xe_root_tile_mmio(xe);
++		struct xe_gt *gt = xe_root_mmio_gt(xe);
+ 		u8 tile_count;
+ 		u32 mtcfg;
+ 
+ 		/*
+ 		 * Although the per-tile mmio regs are not yet initialized, this
+-		 * is fine as it's going to the root tile's mmio, that's
+-		 * guaranteed to be initialized earlier in xe_mmio_init()
++		 * is fine as it's going to the root gt, that's guaranteed to be
++		 * initialized earlier in xe_mmio_init()
+ 		 */
+-		mtcfg = xe_mmio_read64_2x32(mmio, XEHP_MTCFG_ADDR);
++		mtcfg = xe_mmio_read64_2x32(gt, XEHP_MTCFG_ADDR);
+ 		tile_count = REG_FIELD_GET(TILE_COUNT, mtcfg) + 1;
+ 
+ 		if (tile_count < xe->info.tile_count) {
+@@ -187,111 +187,116 @@ int xe_mmio_init(struct xe_device *xe)
+ 	return devm_add_action_or_reset(xe->drm.dev, mmio_fini, xe);
+ }
+ 
+-static void mmio_flush_pending_writes(struct xe_mmio *mmio)
++static void mmio_flush_pending_writes(struct xe_gt *gt)
+ {
+ #define DUMMY_REG_OFFSET	0x130030
++	struct xe_tile *tile = gt_to_tile(gt);
+ 	int i;
+ 
+-	if (mmio->tile->xe->info.platform != XE_LUNARLAKE)
++	if (tile->xe->info.platform != XE_LUNARLAKE)
+ 		return;
+ 
+ 	/* 4 dummy writes */
+ 	for (i = 0; i < 4; i++)
+-		writel(0, mmio->regs + DUMMY_REG_OFFSET);
++		writel(0, tile->mmio.regs + DUMMY_REG_OFFSET);
+ }
+ 
+-u8 __xe_mmio_read8(struct xe_mmio *mmio, struct xe_reg reg)
++u8 xe_mmio_read8(struct xe_gt *gt, struct xe_reg reg)
+ {
+-	u32 addr = xe_mmio_adjusted_addr(mmio, reg.addr);
++	struct xe_tile *tile = gt_to_tile(gt);
++	u32 addr = xe_mmio_adjusted_addr(gt, reg.addr);
+ 	u8 val;
+ 
+ 	/* Wa_15015404425 */
+-	mmio_flush_pending_writes(mmio);
++	mmio_flush_pending_writes(gt);
+ 
+-	val = readb(mmio->regs + addr);
+-	trace_xe_reg_rw(mmio, false, addr, val, sizeof(val));
++	val = readb((reg.ext ? tile->mmio_ext.regs : tile->mmio.regs) + addr);
++	trace_xe_reg_rw(gt, false, addr, val, sizeof(val));
+ 
+ 	return val;
+ }
+ 
+-u16 __xe_mmio_read16(struct xe_mmio *mmio, struct xe_reg reg)
++u16 xe_mmio_read16(struct xe_gt *gt, struct xe_reg reg)
+ {
+-	u32 addr = xe_mmio_adjusted_addr(mmio, reg.addr);
++	struct xe_tile *tile = gt_to_tile(gt);
++	u32 addr = xe_mmio_adjusted_addr(gt, reg.addr);
+ 	u16 val;
+ 
+ 	/* Wa_15015404425 */
+-	mmio_flush_pending_writes(mmio);
++	mmio_flush_pending_writes(gt);
+ 
+-	val = readw(mmio->regs + addr);
+-	trace_xe_reg_rw(mmio, false, addr, val, sizeof(val));
++	val = readw((reg.ext ? tile->mmio_ext.regs : tile->mmio.regs) + addr);
++	trace_xe_reg_rw(gt, false, addr, val, sizeof(val));
+ 
+ 	return val;
+ }
+ 
+-void __xe_mmio_write32(struct xe_mmio *mmio, struct xe_reg reg, u32 val)
++void xe_mmio_write32(struct xe_gt *gt, struct xe_reg reg, u32 val)
+ {
+-	u32 addr = xe_mmio_adjusted_addr(mmio, reg.addr);
++	struct xe_tile *tile = gt_to_tile(gt);
++	u32 addr = xe_mmio_adjusted_addr(gt, reg.addr);
+ 
+-	trace_xe_reg_rw(mmio, true, addr, val, sizeof(val));
++	trace_xe_reg_rw(gt, true, addr, val, sizeof(val));
+ 
+-	if (!reg.vf && mmio->sriov_vf_gt)
+-		xe_gt_sriov_vf_write32(mmio->sriov_vf_gt, reg, val);
++	if (!reg.vf && IS_SRIOV_VF(gt_to_xe(gt)))
++		xe_gt_sriov_vf_write32(gt, reg, val);
+ 	else
+-		writel(val, mmio->regs + addr);
++		writel(val, (reg.ext ? tile->mmio_ext.regs : tile->mmio.regs) + addr);
+ }
+ 
+-u32 __xe_mmio_read32(struct xe_mmio *mmio, struct xe_reg reg)
++u32 xe_mmio_read32(struct xe_gt *gt, struct xe_reg reg)
+ {
+-	u32 addr = xe_mmio_adjusted_addr(mmio, reg.addr);
++	struct xe_tile *tile = gt_to_tile(gt);
++	u32 addr = xe_mmio_adjusted_addr(gt, reg.addr);
+ 	u32 val;
+ 
+ 	/* Wa_15015404425 */
+-	mmio_flush_pending_writes(mmio);
++	mmio_flush_pending_writes(gt);
+ 
+-	if (!reg.vf && mmio->sriov_vf_gt)
+-		val = xe_gt_sriov_vf_read32(mmio->sriov_vf_gt, reg);
++	if (!reg.vf && IS_SRIOV_VF(gt_to_xe(gt)))
++		val = xe_gt_sriov_vf_read32(gt, reg);
+ 	else
+-		val = readl(mmio->regs + addr);
++		val = readl((reg.ext ? tile->mmio_ext.regs : tile->mmio.regs) + addr);
+ 
+-	trace_xe_reg_rw(mmio, false, addr, val, sizeof(val));
++	trace_xe_reg_rw(gt, false, addr, val, sizeof(val));
+ 
+ 	return val;
+ }
+ 
+-u32 __xe_mmio_rmw32(struct xe_mmio *mmio, struct xe_reg reg, u32 clr, u32 set)
++u32 xe_mmio_rmw32(struct xe_gt *gt, struct xe_reg reg, u32 clr, u32 set)
+ {
+ 	u32 old, reg_val;
+ 
+-	old = xe_mmio_read32(mmio, reg);
++	old = xe_mmio_read32(gt, reg);
+ 	reg_val = (old & ~clr) | set;
+-	xe_mmio_write32(mmio, reg, reg_val);
++	xe_mmio_write32(gt, reg, reg_val);
+ 
+ 	return old;
+ }
+ 
+-int __xe_mmio_write32_and_verify(struct xe_mmio *mmio,
+-				 struct xe_reg reg, u32 val, u32 mask, u32 eval)
++int xe_mmio_write32_and_verify(struct xe_gt *gt,
++			       struct xe_reg reg, u32 val, u32 mask, u32 eval)
+ {
+ 	u32 reg_val;
+ 
+-	xe_mmio_write32(mmio, reg, val);
+-	reg_val = xe_mmio_read32(mmio, reg);
++	xe_mmio_write32(gt, reg, val);
++	reg_val = xe_mmio_read32(gt, reg);
+ 
+ 	return (reg_val & mask) != eval ? -EINVAL : 0;
+ }
+ 
+-bool __xe_mmio_in_range(const struct xe_mmio *mmio,
+-			const struct xe_mmio_range *range,
+-			struct xe_reg reg)
++bool xe_mmio_in_range(const struct xe_gt *gt,
++		      const struct xe_mmio_range *range,
++		      struct xe_reg reg)
+ {
+-	u32 addr = xe_mmio_adjusted_addr(mmio, reg.addr);
++	u32 addr = xe_mmio_adjusted_addr(gt, reg.addr);
+ 
+ 	return range && addr >= range->start && addr <= range->end;
  }
  
  /**
-- * epf_ntb_epc_destroy() - Cleanup NTB EPC interface
-- * @ntb: NTB device that facilitates communication between HOST and VHOST
-- *
-- * Wrapper for epf_ntb_epc_destroy_interface() to cleanup all the NTB interfaces
-- */
--static void epf_ntb_epc_destroy(struct epf_ntb *ntb)
--{
--	pci_epc_remove_epf(ntb->epf->epc, ntb->epf, 0);
--	pci_epc_put(ntb->epf->epc);
--}
--
--
--/**
-  * epf_ntb_is_bar_used() - Check if a bar is used in the ntb configuration
-  * @ntb: NTB device that facilitates communication between HOST and VHOST
-  * @barno: Checked bar number
-@@ -1526,7 +1513,7 @@ static int epf_ntb_bind(struct pci_epf *
- 	ret = epf_ntb_init_epc_bar(ntb);
- 	if (ret) {
- 		dev_err(dev, "Failed to create NTB EPC\n");
--		goto err_bar_init;
-+		return ret;
+  * xe_mmio_read64_2x32() - Read a 64-bit register as two 32-bit reads
+- * @mmio: MMIO target
++ * @gt: MMIO target GT
+  * @reg: register to read value from
+  *
+  * Although Intel GPUs have some 64-bit registers, the hardware officially
+@@ -311,21 +316,21 @@ bool __xe_mmio_in_range(const struct xe_mmio *mmio,
+  *
+  * Returns the value of the 64-bit register.
+  */
+-u64 __xe_mmio_read64_2x32(struct xe_mmio *mmio, struct xe_reg reg)
++u64 xe_mmio_read64_2x32(struct xe_gt *gt, struct xe_reg reg)
+ {
+ 	struct xe_reg reg_udw = { .addr = reg.addr + 0x4 };
+ 	u32 ldw, udw, oldudw, retries;
+ 
+-	reg.addr = xe_mmio_adjusted_addr(mmio, reg.addr);
+-	reg_udw.addr = xe_mmio_adjusted_addr(mmio, reg_udw.addr);
++	reg.addr = xe_mmio_adjusted_addr(gt, reg.addr);
++	reg_udw.addr = xe_mmio_adjusted_addr(gt, reg_udw.addr);
+ 
+ 	/* we shouldn't adjust just one register address */
+-	xe_tile_assert(mmio->tile, reg_udw.addr == reg.addr + 0x4);
++	xe_gt_assert(gt, reg_udw.addr == reg.addr + 0x4);
+ 
+-	oldudw = xe_mmio_read32(mmio, reg_udw);
++	oldudw = xe_mmio_read32(gt, reg_udw);
+ 	for (retries = 5; retries; --retries) {
+-		ldw = xe_mmio_read32(mmio, reg);
+-		udw = xe_mmio_read32(mmio, reg_udw);
++		ldw = xe_mmio_read32(gt, reg);
++		udw = xe_mmio_read32(gt, reg_udw);
+ 
+ 		if (udw == oldudw)
+ 			break;
+@@ -333,14 +338,14 @@ u64 __xe_mmio_read64_2x32(struct xe_mmio *mmio, struct xe_reg reg)
+ 		oldudw = udw;
  	}
  
- 	ret = epf_ntb_config_spad_bar_alloc(ntb);
-@@ -1566,9 +1553,6 @@ err_epc_cleanup:
- err_bar_alloc:
- 	epf_ntb_config_spad_bar_free(ntb);
+-	drm_WARN(&mmio->tile->xe->drm, retries == 0,
+-		 "64-bit read of %#x did not stabilize\n", reg.addr);
++	xe_gt_WARN(gt, retries == 0,
++		   "64-bit read of %#x did not stabilize\n", reg.addr);
  
--err_bar_init:
--	epf_ntb_epc_destroy(ntb);
+ 	return (u64)udw << 32 | ldw;
+ }
+ 
+-static int ____xe_mmio_wait32(struct xe_mmio *mmio, struct xe_reg reg, u32 mask, u32 val, u32 timeout_us,
+-			      u32 *out_val, bool atomic, bool expect_match)
++static int __xe_mmio_wait32(struct xe_gt *gt, struct xe_reg reg, u32 mask, u32 val, u32 timeout_us,
++			    u32 *out_val, bool atomic, bool expect_match)
+ {
+ 	ktime_t cur = ktime_get_raw();
+ 	const ktime_t end = ktime_add_us(cur, timeout_us);
+@@ -350,7 +355,7 @@ static int ____xe_mmio_wait32(struct xe_mmio *mmio, struct xe_reg reg, u32 mask,
+ 	bool check;
+ 
+ 	for (;;) {
+-		read = xe_mmio_read32(mmio, reg);
++		read = xe_mmio_read32(gt, reg);
+ 
+ 		check = (read & mask) == val;
+ 		if (!expect_match)
+@@ -376,7 +381,7 @@ static int ____xe_mmio_wait32(struct xe_mmio *mmio, struct xe_reg reg, u32 mask,
+ 	}
+ 
+ 	if (ret != 0) {
+-		read = xe_mmio_read32(mmio, reg);
++		read = xe_mmio_read32(gt, reg);
+ 
+ 		check = (read & mask) == val;
+ 		if (!expect_match)
+@@ -394,7 +399,7 @@ static int ____xe_mmio_wait32(struct xe_mmio *mmio, struct xe_reg reg, u32 mask,
+ 
+ /**
+  * xe_mmio_wait32() - Wait for a register to match the desired masked value
+- * @mmio: MMIO target
++ * @gt: MMIO target GT
+  * @reg: register to read value from
+  * @mask: mask to be applied to the value read from the register
+  * @val: desired value after applying the mask
+@@ -411,15 +416,15 @@ static int ____xe_mmio_wait32(struct xe_mmio *mmio, struct xe_reg reg, u32 mask,
+  * @timeout_us for different reasons, specially in non-atomic contexts. Thus,
+  * it is possible that this function succeeds even after @timeout_us has passed.
+  */
+-int __xe_mmio_wait32(struct xe_mmio *mmio, struct xe_reg reg, u32 mask, u32 val, u32 timeout_us,
+-		     u32 *out_val, bool atomic)
++int xe_mmio_wait32(struct xe_gt *gt, struct xe_reg reg, u32 mask, u32 val, u32 timeout_us,
++		   u32 *out_val, bool atomic)
+ {
+-	return ____xe_mmio_wait32(mmio, reg, mask, val, timeout_us, out_val, atomic, true);
++	return __xe_mmio_wait32(gt, reg, mask, val, timeout_us, out_val, atomic, true);
+ }
+ 
+ /**
+  * xe_mmio_wait32_not() - Wait for a register to return anything other than the given masked value
+- * @mmio: MMIO target
++ * @gt: MMIO target GT
+  * @reg: register to read value from
+  * @mask: mask to be applied to the value read from the register
+  * @val: value not to be matched after applying the mask
+@@ -430,8 +435,8 @@ int __xe_mmio_wait32(struct xe_mmio *mmio, struct xe_reg reg, u32 mask, u32 val,
+  * This function works exactly like xe_mmio_wait32() with the exception that
+  * @val is expected not to be matched.
+  */
+-int __xe_mmio_wait32_not(struct xe_mmio *mmio, struct xe_reg reg, u32 mask, u32 val, u32 timeout_us,
+-			 u32 *out_val, bool atomic)
++int xe_mmio_wait32_not(struct xe_gt *gt, struct xe_reg reg, u32 mask, u32 val, u32 timeout_us,
++		       u32 *out_val, bool atomic)
+ {
+-	return ____xe_mmio_wait32(mmio, reg, mask, val, timeout_us, out_val, atomic, false);
++	return __xe_mmio_wait32(gt, reg, mask, val, timeout_us, out_val, atomic, false);
+ }
+diff --git a/drivers/gpu/drm/xe/xe_mmio.h b/drivers/gpu/drm/xe/xe_mmio.h
+index ac6846447c52a..26551410ecc87 100644
+--- a/drivers/gpu/drm/xe/xe_mmio.h
++++ b/drivers/gpu/drm/xe/xe_mmio.h
+@@ -14,67 +14,25 @@ struct xe_reg;
+ int xe_mmio_init(struct xe_device *xe);
+ int xe_mmio_probe_tiles(struct xe_device *xe);
+ 
+-/*
+- * Temporary transition helper for xe_gt -> xe_mmio conversion.  Allows
+- * continued usage of xe_gt as a parameter to MMIO operations which now
+- * take an xe_mmio structure instead.  Will be removed once the driver-wide
+- * conversion is complete.
+- */
+-#define __to_xe_mmio(ptr) \
+-	_Generic(ptr, \
+-		 const struct xe_gt *: (&((const struct xe_gt *)(ptr))->mmio), \
+-		 struct xe_gt *: (&((struct xe_gt *)(ptr))->mmio), \
+-		 const struct xe_mmio *: (ptr), \
+-		 struct xe_mmio *: (ptr))
 -
- 	return ret;
+-u8 __xe_mmio_read8(struct xe_mmio *mmio, struct xe_reg reg);
+-#define xe_mmio_read8(p, reg) __xe_mmio_read8(__to_xe_mmio(p), reg)
+-
+-u16 __xe_mmio_read16(struct xe_mmio *mmio, struct xe_reg reg);
+-#define xe_mmio_read16(p, reg) __xe_mmio_read16(__to_xe_mmio(p), reg)
+-
+-void __xe_mmio_write32(struct xe_mmio *mmio, struct xe_reg reg, u32 val);
+-#define xe_mmio_write32(p, reg, val) __xe_mmio_write32(__to_xe_mmio(p), reg, val)
+-
+-u32 __xe_mmio_read32(struct xe_mmio *mmio, struct xe_reg reg);
+-#define xe_mmio_read32(p, reg) __xe_mmio_read32(__to_xe_mmio(p), reg)
+-
+-u32 __xe_mmio_rmw32(struct xe_mmio *mmio, struct xe_reg reg, u32 clr, u32 set);
+-#define xe_mmio_rmw32(p, reg, clr, set) __xe_mmio_rmw32(__to_xe_mmio(p), reg, clr, set)
+-
+-int __xe_mmio_write32_and_verify(struct xe_mmio *mmio, struct xe_reg reg,
+-				 u32 val, u32 mask, u32 eval);
+-#define xe_mmio_write32_and_verify(p, reg, val, mask, eval) \
+-	__xe_mmio_write32_and_verify(__to_xe_mmio(p), reg, val, mask, eval)
+-
+-bool __xe_mmio_in_range(const struct xe_mmio *mmio,
+-			const struct xe_mmio_range *range, struct xe_reg reg);
+-#define xe_mmio_in_range(p, range, reg) __xe_mmio_in_range(__to_xe_mmio(p), range, reg)
+-
+-u64 __xe_mmio_read64_2x32(struct xe_mmio *mmio, struct xe_reg reg);
+-#define xe_mmio_read64_2x32(p, reg) __xe_mmio_read64_2x32(__to_xe_mmio(p), reg)
+-
+-int __xe_mmio_wait32(struct xe_mmio *mmio, struct xe_reg reg, u32 mask, u32 val,
+-		     u32 timeout_us, u32 *out_val, bool atomic);
+-#define xe_mmio_wait32(p, reg, mask, val, timeout_us, out_val, atomic) \
+-	__xe_mmio_wait32(__to_xe_mmio(p), reg, mask, val, timeout_us, out_val, atomic)
+-
+-int __xe_mmio_wait32_not(struct xe_mmio *mmio, struct xe_reg reg, u32 mask,
+-			 u32 val, u32 timeout_us, u32 *out_val, bool atomic);
+-#define xe_mmio_wait32_not(p, reg, mask, val, timeout_us, out_val, atomic) \
+-	__xe_mmio_wait32_not(__to_xe_mmio(p), reg, mask, val, timeout_us, out_val, atomic)
+-
+-static inline u32 __xe_mmio_adjusted_addr(const struct xe_mmio *mmio, u32 addr)
++u8 xe_mmio_read8(struct xe_gt *gt, struct xe_reg reg);
++u16 xe_mmio_read16(struct xe_gt *gt, struct xe_reg reg);
++void xe_mmio_write32(struct xe_gt *gt, struct xe_reg reg, u32 val);
++u32 xe_mmio_read32(struct xe_gt *gt, struct xe_reg reg);
++u32 xe_mmio_rmw32(struct xe_gt *gt, struct xe_reg reg, u32 clr, u32 set);
++int xe_mmio_write32_and_verify(struct xe_gt *gt, struct xe_reg reg, u32 val, u32 mask, u32 eval);
++bool xe_mmio_in_range(const struct xe_gt *gt, const struct xe_mmio_range *range, struct xe_reg reg);
++
++u64 xe_mmio_read64_2x32(struct xe_gt *gt, struct xe_reg reg);
++int xe_mmio_wait32(struct xe_gt *gt, struct xe_reg reg, u32 mask, u32 val, u32 timeout_us,
++		   u32 *out_val, bool atomic);
++int xe_mmio_wait32_not(struct xe_gt *gt, struct xe_reg reg, u32 mask, u32 val, u32 timeout_us,
++		       u32 *out_val, bool atomic);
++
++static inline u32 xe_mmio_adjusted_addr(const struct xe_gt *gt, u32 addr)
+ {
+-	if (addr < mmio->adj_limit)
+-		addr += mmio->adj_offset;
++	if (addr < gt->mmio.adj_limit)
++		addr += gt->mmio.adj_offset;
+ 	return addr;
  }
+-#define xe_mmio_adjusted_addr(p, addr) __xe_mmio_adjusted_addr(__to_xe_mmio(p), addr)
+-
+-static inline struct xe_mmio *xe_root_tile_mmio(struct xe_device *xe)
+-{
+-	return &xe->tiles[0].mmio;
+-}
  
-@@ -1584,7 +1568,6 @@ static void epf_ntb_unbind(struct pci_ep
+ #endif
+diff --git a/drivers/gpu/drm/xe/xe_trace.h b/drivers/gpu/drm/xe/xe_trace.h
+index 91130ad8999cd..8573d7a87d840 100644
+--- a/drivers/gpu/drm/xe/xe_trace.h
++++ b/drivers/gpu/drm/xe/xe_trace.h
+@@ -21,7 +21,6 @@
+ #include "xe_vm.h"
  
- 	epf_ntb_epc_cleanup(ntb);
- 	epf_ntb_config_spad_bar_free(ntb);
--	epf_ntb_epc_destroy(ntb);
+ #define __dev_name_xe(xe)	dev_name((xe)->drm.dev)
+-#define __dev_name_tile(tile)	__dev_name_xe(tile_to_xe((tile)))
+ #define __dev_name_gt(gt)	__dev_name_xe(gt_to_xe((gt)))
+ #define __dev_name_eq(q)	__dev_name_gt((q)->gt)
  
- 	pci_unregister_driver(&vntb_pci_driver);
- }
+@@ -343,12 +342,12 @@ DEFINE_EVENT(xe_hw_fence, xe_hw_fence_try_signal,
+ );
+ 
+ TRACE_EVENT(xe_reg_rw,
+-	TP_PROTO(struct xe_mmio *mmio, bool write, u32 reg, u64 val, int len),
++	TP_PROTO(struct xe_gt *gt, bool write, u32 reg, u64 val, int len),
+ 
+-	TP_ARGS(mmio, write, reg, val, len),
++	TP_ARGS(gt, write, reg, val, len),
+ 
+ 	TP_STRUCT__entry(
+-		__string(dev, __dev_name_tile(mmio->tile))
++		__string(dev, __dev_name_gt(gt))
+ 		__field(u64, val)
+ 		__field(u32, reg)
+ 		__field(u16, write)
+-- 
+2.53.0
+
 
 
 
