@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-239763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239784-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EH0xLf9Z5mmtvAEAu9opvQ
-	(envelope-from <stable+bounces-239763-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:53:19 +0200
+	id cIUzLD5o5mnBvwEAu9opvQ
+	(envelope-from <stable+bounces-239784-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:54:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5539D4302BB
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:53:19 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25EBC4323C9
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:54:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 044A3321B0A4
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:05:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AD1DD3370D3E
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:06:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E076C33A70A;
-	Mon, 20 Apr 2026 16:05:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8EF0342510;
+	Mon, 20 Apr 2026 16:06:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Da0EpII3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n0jxFd/K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A44B92C11C6
-	for <stable@vger.kernel.org>; Mon, 20 Apr 2026 16:05:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A869233F8D6
+	for <stable@vger.kernel.org>; Mon, 20 Apr 2026 16:06:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701152; cv=none; b=COU5oAZF0UgFxQRnfJWrdhaXWMQ30qBlOvNCL6WWnyME0TnNZw28nq0ohqzHcxr9iCUpqfOyCwhm9cRvOWivbuAKd9wjOWiW4MXhpiJrFdOM/ggpg0hUw7tUyr0dahEPV7rlUAz8BXQjRiUAQ9GcREkx4HZpGSBtSUm2oXQ5Leg=
+	t=1776701209; cv=none; b=YGZnXWcAtoIZVC/drCJz2Q4kPwoDTfHVY6cAK7RteeIqWerJuP/7GSYGM8b5dKCXpOfObLKCx3onGhmPQJyODYxJrUCSXXnzZ2XEppyJvJVwqZAtpBZXa6n4J9JhVA7fPvupIhen5q8G5KAqqlfN84FTFz0frTraJvFBGuuHcRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701152; c=relaxed/simple;
-	bh=1nWqsysMeAMaMFwnMMoWilObOiKO9FEV91o6ulwwoMw=;
+	s=arc-20240116; t=1776701209; c=relaxed/simple;
+	bh=JVngcd7QawVIlZs+b1nAkQB29bnh4c+uG8Q06HXPMP8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JscpvcGgXKKb6NXI7/w3VpErwAZXPnx9Dk3QRR48PohaY8xrJfbn7V4ssKai82GIik8XlPsVcLW706VML9PHv5pGC53H9GCdgGVUqx+JGuTl0T/RSQp5VjQpKM+yZvHkrX8/NBpqqeOr46akjVg5HKykoqYfYdkpI7YOGuSe7U8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Da0EpII3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D32C2C2BCB4;
-	Mon, 20 Apr 2026 16:05:51 +0000 (UTC)
+	 MIME-Version; b=mM9hE9iDNk4rYMjETz8mL86MuBxDcwnO14gPtwpDHucYXrPtzwAmDs2i0kVHe0txGtiFowYv1kpzrtCLsrKKLnIeY4rrdmsddLDBeYkN73uE3sg9XQhNPbyAyydxDREHMO6Ow9HGZ9Ci3Y6rA3dx8rDEroz+u5NoVnh8Z35s6bU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n0jxFd/K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC57BC19425;
+	Mon, 20 Apr 2026 16:06:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776701152;
-	bh=1nWqsysMeAMaMFwnMMoWilObOiKO9FEV91o6ulwwoMw=;
+	s=k20201202; t=1776701209;
+	bh=JVngcd7QawVIlZs+b1nAkQB29bnh4c+uG8Q06HXPMP8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Da0EpII35XQsRxhEqfPusVK24HB5sga7H4/9lTT9kqHjeUFGhgYOxoX3XW3BCEhda
-	 ZtoaO0KQxBIs8HnvcV99eR4Q1s+8A/4YztcHi2gRJFYbBUhlk2ELeMSE6FRgVne9PZ
-	 aou35yuDut7tPvJWZWRHNoZcl9sexGBje3ZBoRTBIp9FfgJbK4V9WHn2ms2GhZlX9t
-	 7vrSc4KOKCxFUyDteV09AOx3a2W45/uShOdc5WVEx1WvZKB/2Fnj0Y7mD0sTALnwu4
-	 85tBrWGCrMIb9vwiMDtll+xqmvpBUU9OkBk87l65O4TQFDvUrSaZUEIsMeErEu43gh
-	 mAPUqvMbiwTiQ==
+	b=n0jxFd/K2x6BHMXqtxmqylZkp9bh8EaNw7BM7i2ZkepGXI81Qthzi8N20foOjNRav
+	 FipAqcffcoQIlrUyfitqMiqEgi046JKXPeD2gJO7DUwHkws2Hn7pKMA09L9w5uULUA
+	 BWIPQmhXSfDrOnpJHVo+I+25XgFufWeGfCX7SdojVOXSL8TlfbcM7WT1hH5o4J/rQD
+	 uyFdFQ/Qc5c6v9q1cpNmX7QeQTRNk3vPBTjvcVAK3NpLCC9kCi9OANnEVTXGI2kkOe
+	 lqM79gSpXMKiHwLONlFVuZnOhjkOs1vULNfy5c5owf5GwvGCodotwU8Aq/KtFftb9E
+	 ej+QnddhR2q5Q==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Tamir Duberstein <tamird@kernel.org>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Fiona Behrens <me@kloenk.dev>,
-	Trevor Gross <tmgross@umich.edu>,
+Cc: Koichiro Den <den@valinux.co.jp>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18.y] scripts: generate_rust_analyzer.py: define scripts
-Date: Mon, 20 Apr 2026 12:05:50 -0400
-Message-ID: <20260420160550.1184938-1-sashal@kernel.org>
+Subject: [PATCH 5.15.y] PCI: endpoint: pci-epf-vntb: Remove duplicate resource teardown
+Date: Mon, 20 Apr 2026 12:06:45 -0400
+Message-ID: <20260420160646.1199304-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026042046-underfeed-riding-d661@gregkh>
-References: <2026042046-underfeed-riding-d661@gregkh>
+In-Reply-To: <2026042024-seldom-accuracy-953f@gregkh>
+References: <2026042024-seldom-accuracy-953f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,18 +68,18 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239763-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-239784-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -89,68 +88,101 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,collabora.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,umich.edu:email,kloenk.dev:email]
-X-Rspamd-Queue-Id: 5539D4302BB
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,valinux.co.jp:email,nxp.com:email]
+X-Rspamd-Queue-Id: 25EBC4323C9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Tamir Duberstein <tamird@kernel.org>
+From: Koichiro Den <den@valinux.co.jp>
 
-[ Upstream commit 36c619f6bd793493294becb10a02fea370b67a91 ]
+[ Upstream commit 0da63230d3ec1ec5fcc443a2314233e95bfece54 ]
 
-Add IDE support for host-side scripts written in Rust. This support has
-been missing since these scripts were initially added in commit
-9a8ff24ce584 ("scripts: add `generate_rust_target.rs`"), thus add it.
+epf_ntb_epc_destroy() duplicates the teardown that the caller is
+supposed to perform later. This leads to an oops when .allow_link fails
+or when .drop_link is performed. The following is an example oops of the
+former case:
 
-Change the existing instance of extension stripping to
-`pathlib.Path.stem` to maintain code consistency.
+  Unable to handle kernel paging request at virtual address dead000000000108
+  [...]
+  [dead000000000108] address between user and kernel address ranges
+  Internal error: Oops: 0000000096000044 [#1]  SMP
+  [...]
+  Call trace:
+   pci_epc_remove_epf+0x78/0xe0 (P)
+   pci_primary_epc_epf_link+0x88/0xa8
+   configfs_symlink+0x1f4/0x5a0
+   vfs_symlink+0x134/0x1d8
+   do_symlinkat+0x88/0x138
+   __arm64_sys_symlinkat+0x74/0xe0
+  [...]
 
-Fixes: 9a8ff24ce584 ("scripts: add `generate_rust_target.rs`")
+Remove the helper, and drop pci_epc_put(). EPC device refcounting is
+tied to the configfs EPC group lifetime, and pci_epc_put() in the
+.drop_link path is sufficient.
+
+Fixes: e35f56bb0330 ("PCI: endpoint: Support NTB transfer between RC and EP")
+Signed-off-by: Koichiro Den <den@valinux.co.jp>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-Reviewed-by: Fiona Behrens <me@kloenk.dev>
-Reviewed-by: Trevor Gross <tmgross@umich.edu>
-Link: https://patch.msgid.link/20260122-rust-analyzer-scripts-v1-1-ff6ba278170e@kernel.org
-Signed-off-by: Tamir Duberstein <tamird@kernel.org>
-[ changed `[std]` dep to `["std"]` and kept untyped `is_root_crate()` ]
+Link: https://patch.msgid.link/20260226084142.2226875-2-den@valinux.co.jp
+[ context mismatch in deletion hunk ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/generate_rust_analyzer.py | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ drivers/pci/endpoint/functions/pci-epf-vntb.c | 18 +-----------------
+ 1 file changed, 1 insertion(+), 17 deletions(-)
 
-diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
-index 852444352657e..1016f857f7be2 100755
---- a/scripts/generate_rust_analyzer.py
-+++ b/scripts/generate_rust_analyzer.py
-@@ -166,6 +166,18 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs, core_edit
-     append_crate_with_generated("uapi", ["core", "ffi", "pin_init"])
-     append_crate_with_generated("kernel", ["core", "macros", "build_error", "pin_init", "ffi", "bindings", "uapi"])
+diff --git a/drivers/pci/endpoint/functions/pci-epf-vntb.c b/drivers/pci/endpoint/functions/pci-epf-vntb.c
+index 45530bca50fb8..e9402b5dc8359 100644
+--- a/drivers/pci/endpoint/functions/pci-epf-vntb.c
++++ b/drivers/pci/endpoint/functions/pci-epf-vntb.c
+@@ -650,18 +650,6 @@ static void epf_ntb_mw_bar_clear(struct epf_ntb *ntb)
+ 	}
+ }
  
-+    scripts = srctree / "scripts"
-+    makefile = (scripts / "Makefile").read_text()
-+    for path in scripts.glob("*.rs"):
-+        name = path.stem
-+        if f"{name}-rust" not in makefile:
-+            continue
-+        append_crate(
-+            name,
-+            path,
-+            ["std"],
-+        )
-+
-     def is_root_crate(build_file, target):
-         try:
-             return f"{target}.o" in open(build_file).read()
-@@ -181,7 +193,7 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs, core_edit
-     for folder in extra_dirs:
-         for path in folder.rglob("*.rs"):
-             logging.info("Checking %s", path)
--            name = path.name.replace(".rs", "")
-+            name = path.stem
+-/**
+- * epf_ntb_epc_destroy() - Cleanup NTB EPC interface
+- * @ntb: NTB device that facilitates communication between HOST and vHOST
+- *
+- * Wrapper for epf_ntb_epc_destroy_interface() to cleanup all the NTB interfaces
+- */
+-static void epf_ntb_epc_destroy(struct epf_ntb *ntb)
+-{
+-	pci_epc_remove_epf(ntb->epf->epc, ntb->epf, 0);
+-	pci_epc_put(ntb->epf->epc);
+-}
+-
+ /**
+  * epf_ntb_init_epc_bar() - Identify BARs to be used for each of the NTB
+  * constructs (scratchpad region, doorbell, memorywindow)
+@@ -1289,7 +1277,7 @@ static int epf_ntb_bind(struct pci_epf *epf)
+ 	ret = epf_ntb_init_epc_bar(ntb);
+ 	if (ret) {
+ 		dev_err(dev, "Failed to create NTB EPC\n");
+-		goto err_bar_init;
++		return ret;
+ 	}
  
-             # Skip those that are not crate roots.
-             if not is_root_crate(path.parent / "Makefile", name) and \
+ 	ret = epf_ntb_config_spad_bar_alloc(ntb);
+@@ -1326,9 +1314,6 @@ static int epf_ntb_bind(struct pci_epf *epf)
+ err_bar_alloc:
+ 	epf_ntb_config_spad_bar_free(ntb);
+ 
+-err_bar_init:
+-	epf_ntb_epc_destroy(ntb);
+-
+ 	return ret;
+ }
+ 
+@@ -1344,7 +1329,6 @@ static void epf_ntb_unbind(struct pci_epf *epf)
+ 
+ 	epf_ntb_epc_cleanup(ntb);
+ 	epf_ntb_config_spad_bar_free(ntb);
+-	epf_ntb_epc_destroy(ntb);
+ 
+ 	pci_unregister_driver(&vntb_pci_driver);
+ }
 -- 
 2.53.0
 
