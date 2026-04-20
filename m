@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-239732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239852-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eMFbH7ta5mnGvAEAu9opvQ
-	(envelope-from <stable+bounces-239732-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:56:27 +0200
+	id yN95KUlk5mkKvwEAu9opvQ
+	(envelope-from <stable+bounces-239852-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:37:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21BFC4303D7
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:56:27 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2C564319CB
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:37:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5496231D93F7
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:04:39 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6325E316FA19
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:09:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09557342CA2;
-	Mon, 20 Apr 2026 16:04:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 984D9341077;
+	Mon, 20 Apr 2026 16:09:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yxjWpcfS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JzJRtTay"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFF0D2D978C;
-	Mon, 20 Apr 2026 16:04:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A68F2DF719;
+	Mon, 20 Apr 2026 16:09:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701074; cv=none; b=lN2IGluy+99ROHyHBY2apqZDtFo+huPFlXSVl3M2G9fGzGj961z3TU62WEYYGTy15IfEyavFbaeGuW9xVra+d/AkmAey3es39FyvOAdIOlQt+YLrweJ2DGuszqOc30Y7F2AGJgvLPa9bRq+iPy+Bs14MYJbkfMLRh5jz+p0/OtM=
+	t=1776701381; cv=none; b=UoTkhykDiERDKWKcwe9KMqNLcgq2bKy5WSCCZCYYeyvqVdhfRxlAn1iloEUELRvNhc7u7YKdJmZWl8WkhSlgirtLqAs/UxMFvscV8Apnjj8ER8KDJCnc5FAB0nGsCM689zKt7piH/xpfX/hA6SzYI3oHNP5aFrovKy0i522ZsU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701074; c=relaxed/simple;
-	bh=04AgJ4UYTcFnRjAVSx/tJSpOF1xQjbkwZYnyeBDLj5U=;
+	s=arc-20240116; t=1776701381; c=relaxed/simple;
+	bh=LCQ9IMsO3/Yv0wzBPriPecjLbMa2U8GTHDq2hEWH7qQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VjKNBxjpduCZwTPfJb8jmfuecQTR5EXaABT9C39Lll4ki2Y7bNC5KgHrP316LEPeAc1iDsADH0qPEnze/E8zsIMjQ+q1a5HW3V9TDJDcSKVMMVg4pwjwH7BBgPRY5R2j1awueHtLonVP2ubhzY3jHzufTTB0YVVV6ZSRieX/dVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yxjWpcfS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5655BC19425;
-	Mon, 20 Apr 2026 16:04:34 +0000 (UTC)
+	 MIME-Version; b=TcXgK0REVCKWU/KJrVxGgCH1PflSL5wZtW4CmOT/y5Dq8ISyvwRHDYr3Etl4ee3bVw/6zW4vPAjVKsu0R+6r+loA9K+sAhHYvGpAIbPBgrfPYXg0BpphA0gSgq/2xSGHPr5Gt96x8vuR26CmC2AwXj1QFVrpM2CpwkzhoH/fuAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JzJRtTay; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA897C19425;
+	Mon, 20 Apr 2026 16:09:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701074;
-	bh=04AgJ4UYTcFnRjAVSx/tJSpOF1xQjbkwZYnyeBDLj5U=;
+	s=korg; t=1776701381;
+	bh=LCQ9IMsO3/Yv0wzBPriPecjLbMa2U8GTHDq2hEWH7qQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yxjWpcfS8FlrNNokxbKPiuOy04QjvFH3jq9cBUcoFZx3Ixzib8RKXTottJaXryQ3m
-	 m+xtraiBqmS9gNPUJTRLPWKtWEmYJWo172HAXwvLBqpevwYjrbsmL9pDpGsW+aweQ4
-	 YkJiHIhSSO43TVbSjOO9HyKzV+hnrqea0ag78whc=
+	b=JzJRtTayzfaKFXevS1PYK9jEIakATYj+NhixIrUILDNiGW/Zf7Hqs4RPRh9+ouD/2
+	 XqOIhUw59Yf+uo5OdgpLUEsFvhCF9RjUJfek7AGrEl1MOej4H4Tr6N86RtpT4IWrp7
+	 I1K9z34w32erav+7JmqtXtZYbPwtA3ppanTEJR8I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Nathan Rebello <nathan.c.rebello@gmail.com>
-Subject: [PATCH 6.18 144/198] usbip: validate number_of_packets in usbip_pack_ret_submit()
-Date: Mon, 20 Apr 2026 17:42:03 +0200
-Message-ID: <20260420153940.794249679@linuxfoundation.org>
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Ray Zhang <sgzhang@google.com>,
+	Emil Tantilov <emil.s.tantilov@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Samuel Salin <Samuel.salin@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 092/162] idpf: fix PREEMPT_RT raw/bh spinlock nesting for async VC handling
+Date: Mon, 20 Apr 2026 17:42:04 +0200
+Message-ID: <20260420153930.367855420@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
+References: <20260420153927.006696811@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,124 +68,156 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239732-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239852-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.996];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 21BFC4303D7
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email]
+X-Rspamd-Queue-Id: C2C564319CB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Rebello <nathan.c.rebello@gmail.com>
+From: Emil Tantilov <emil.s.tantilov@intel.com>
 
-commit 2ab833a16a825373aad2ba7d54b572b277e95b71 upstream.
+[ Upstream commit 591478118293c1bd628de330a99eb1eb2ef8d76b ]
 
-When a USB/IP client receives a RET_SUBMIT response,
-usbip_pack_ret_submit() unconditionally overwrites
-urb->number_of_packets from the network PDU. This value is
-subsequently used as the loop bound in usbip_recv_iso() and
-usbip_pad_iso() to iterate over urb->iso_frame_desc[], a flexible
-array whose size was fixed at URB allocation time based on the
-*original* number_of_packets from the CMD_SUBMIT.
+Switch from using the completion's raw spinlock to a local lock in the
+idpf_vc_xn struct. The conversion is safe because complete/_all() are
+called outside the lock and there is no reason to share the completion
+lock in the current logic. This avoids invalid wait context reported by
+the kernel due to the async handler taking BH spinlock:
 
-A malicious USB/IP server can set number_of_packets in the response
-to a value larger than what was originally submitted, causing a heap
-out-of-bounds write when usbip_recv_iso() writes to
-urb->iso_frame_desc[i] beyond the allocated region.
+[  805.726977] =============================
+[  805.726991] [ BUG: Invalid wait context ]
+[  805.727006] 7.0.0-rc2-net-devq-031026+ #28 Tainted: G S         OE
+[  805.727026] -----------------------------
+[  805.727038] kworker/u261:0/572 is trying to lock:
+[  805.727051] ff190da6a8dbb6a0 (&vport_config->mac_filter_list_lock){+...}-{3:3}, at: idpf_mac_filter_async_handler+0xe9/0x260 [idpf]
+[  805.727099] other info that might help us debug this:
+[  805.727111] context-{5:5}
+[  805.727119] 3 locks held by kworker/u261:0/572:
+[  805.727132]  #0: ff190da6db3e6148 ((wq_completion)idpf-0000:83:00.0-mbx){+.+.}-{0:0}, at: process_one_work+0x4b5/0x730
+[  805.727163]  #1: ff3c6f0a6131fe50 ((work_completion)(&(&adapter->mbx_task)->work)){+.+.}-{0:0}, at: process_one_work+0x1e5/0x730
+[  805.727191]  #2: ff190da765190020 (&x->wait#34){+.+.}-{2:2}, at: idpf_recv_mb_msg+0xc8/0x710 [idpf]
+[  805.727218] stack backtrace:
+...
+[  805.727238] Workqueue: idpf-0000:83:00.0-mbx idpf_mbx_task [idpf]
+[  805.727247] Call Trace:
+[  805.727249]  <TASK>
+[  805.727251]  dump_stack_lvl+0x77/0xb0
+[  805.727259]  __lock_acquire+0xb3b/0x2290
+[  805.727268]  ? __irq_work_queue_local+0x59/0x130
+[  805.727275]  lock_acquire+0xc6/0x2f0
+[  805.727277]  ? idpf_mac_filter_async_handler+0xe9/0x260 [idpf]
+[  805.727284]  ? _printk+0x5b/0x80
+[  805.727290]  _raw_spin_lock_bh+0x38/0x50
+[  805.727298]  ? idpf_mac_filter_async_handler+0xe9/0x260 [idpf]
+[  805.727303]  idpf_mac_filter_async_handler+0xe9/0x260 [idpf]
+[  805.727310]  idpf_recv_mb_msg+0x1c8/0x710 [idpf]
+[  805.727317]  process_one_work+0x226/0x730
+[  805.727322]  worker_thread+0x19e/0x340
+[  805.727325]  ? __pfx_worker_thread+0x10/0x10
+[  805.727328]  kthread+0xf4/0x130
+[  805.727333]  ? __pfx_kthread+0x10/0x10
+[  805.727336]  ret_from_fork+0x32c/0x410
+[  805.727345]  ? __pfx_kthread+0x10/0x10
+[  805.727347]  ret_from_fork_asm+0x1a/0x30
+[  805.727354]  </TASK>
 
-KASAN confirmed this with kernel 7.0.0-rc5:
-
-  BUG: KASAN: slab-out-of-bounds in usbip_recv_iso+0x46a/0x640
-  Write of size 4 at addr ffff888106351d40 by task vhci_rx/69
-
-  The buggy address is located 0 bytes to the right of
-   allocated 320-byte region [ffff888106351c00, ffff888106351d40)
-
-The server side (stub_rx.c) and gadget side (vudc_rx.c) already
-validate number_of_packets in the CMD_SUBMIT path since commits
-c6688ef9f297 ("usbip: fix stub_rx: harden CMD_SUBMIT path to handle
-malicious input") and b78d830f0049 ("usbip: fix vudc_rx: harden
-CMD_SUBMIT path to handle malicious input"). The server side validates
-against USBIP_MAX_ISO_PACKETS because no URB exists yet at that point.
-On the client side we have the original URB, so we can use the tighter
-bound: the response must not exceed the original number_of_packets.
-
-This mirrors the existing validation of actual_length against
-transfer_buffer_length in usbip_recv_xbuff(), which checks the
-response value against the original allocation size.
-
-Kelvin Mbogo's series ("usb: usbip: fix integer overflow in
-usbip_recv_iso()", v2) hardens the receive-side functions themselves;
-this patch complements that work by catching the bad value at its
-source -- in usbip_pack_ret_submit() before the overwrite -- and
-using the tighter per-URB allocation bound rather than the global
-USBIP_MAX_ISO_PACKETS limit.
-
-Fix this by checking rpdu->number_of_packets against
-urb->number_of_packets in usbip_pack_ret_submit() before the
-overwrite. On violation, clamp to zero so that usbip_recv_iso() and
-usbip_pad_iso() safely return early.
-
-Fixes: 1325f85fa49f ("staging: usbip: bugfix add number of packets for isochronous frames")
-Cc: stable <stable@kernel.org>
-Acked-by: Shuah Khan <skhan@linuxfoundation.org>
-Signed-off-by: Nathan Rebello <nathan.c.rebello@gmail.com>
-Link: https://patch.msgid.link/20260402085259.234-1-nathan.c.rebello@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 34c21fa894a1 ("idpf: implement virtchnl transaction manager")
+Cc: stable@vger.kernel.org
+Suggested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Reported-by: Ray Zhang <sgzhang@google.com>
+Signed-off-by: Emil Tantilov <emil.s.tantilov@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Acked-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Tested-by: Samuel Salin <Samuel.salin@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/usbip/usbip_common.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/net/ethernet/intel/idpf/idpf_virtchnl.c | 15 ++++++---------
+ 1 file changed, 6 insertions(+), 9 deletions(-)
 
---- a/drivers/usb/usbip/usbip_common.c
-+++ b/drivers/usb/usbip/usbip_common.c
-@@ -470,6 +470,18 @@ static void usbip_pack_ret_submit(struct
- 		urb->status		= rpdu->status;
- 		urb->actual_length	= rpdu->actual_length;
- 		urb->start_frame	= rpdu->start_frame;
-+		/*
-+		 * The number_of_packets field determines the length of
-+		 * iso_frame_desc[], which is a flexible array allocated
-+		 * at URB creation time. A response must never claim more
-+		 * packets than originally submitted; doing so would cause
-+		 * an out-of-bounds write in usbip_recv_iso() and
-+		 * usbip_pad_iso(). Clamp to zero on violation so both
-+		 * functions safely return early.
-+		 */
-+		if (rpdu->number_of_packets < 0 ||
-+		    rpdu->number_of_packets > urb->number_of_packets)
-+			rpdu->number_of_packets = 0;
- 		urb->number_of_packets = rpdu->number_of_packets;
- 		urb->error_count	= rpdu->error_count;
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+index a3d4a0185c542..c4ae7d62aaf8d 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+@@ -59,6 +59,7 @@ typedef int (*async_vc_cb) (struct idpf_adapter *, struct idpf_vc_xn *,
+  */
+ struct idpf_vc_xn {
+ 	struct completion completed;
++	spinlock_t lock;
+ 	enum idpf_vc_xn_state state;
+ 	size_t reply_sz;
+ 	struct kvec reply;
+@@ -312,26 +313,21 @@ int idpf_send_mb_msg(struct idpf_adapter *adapter, u32 op,
+ 	return err;
+ }
+ 
+-/* API for virtchnl "transaction" support ("xn" for short).
+- *
+- * We are reusing the completion lock to serialize the accesses to the
+- * transaction state for simplicity, but it could be its own separate synchro
+- * as well. For now, this API is only used from within a workqueue context;
+- * raw_spin_lock() is enough.
+- */
++/* API for virtchnl "transaction" support ("xn" for short). */
++
+ /**
+  * idpf_vc_xn_lock - Request exclusive access to vc transaction
+  * @xn: struct idpf_vc_xn* to access
+  */
+ #define idpf_vc_xn_lock(xn)			\
+-	raw_spin_lock(&(xn)->completed.wait.lock)
++	spin_lock(&(xn)->lock)
+ 
+ /**
+  * idpf_vc_xn_unlock - Release exclusive access to vc transaction
+  * @xn: struct idpf_vc_xn* to access
+  */
+ #define idpf_vc_xn_unlock(xn)		\
+-	raw_spin_unlock(&(xn)->completed.wait.lock)
++	spin_unlock(&(xn)->lock)
+ 
+ /**
+  * idpf_vc_xn_release_bufs - Release reference to reply buffer(s) and
+@@ -363,6 +359,7 @@ static void idpf_vc_xn_init(struct idpf_vc_xn_manager *vcxn_mngr)
+ 		xn->state = IDPF_VC_XN_IDLE;
+ 		xn->idx = i;
+ 		idpf_vc_xn_release_bufs(xn);
++		spin_lock_init(&xn->lock);
+ 		init_completion(&xn->completed);
  	}
+ 
+-- 
+2.53.0
+
 
 
 
