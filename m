@@ -1,192 +1,380 @@
-Return-Path: <stable+bounces-238728-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238729-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0K/MA0Ly5WkMpgEAu9opvQ
-	(envelope-from <stable+bounces-238728-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 11:30:42 +0200
+	id 48AvIQPz5WkvpgEAu9opvQ
+	(envelope-from <stable+bounces-238729-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 11:33:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EFB4428E09
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 11:30:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 223F4428E80
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 11:33:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2392E3039D92
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 09:29:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B6CAB302C936
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 09:32:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 161F438F25F;
-	Mon, 20 Apr 2026 09:29:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85F3738AC65;
+	Mon, 20 Apr 2026 09:32:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="CRQl3FSW"
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="iwfRYolB";
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="iwfRYolB"
 X-Original-To: stable@vger.kernel.org
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 708B438CFFA;
-	Mon, 20 Apr 2026 09:29:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AE4637F746
+	for <stable@vger.kernel.org>; Mon, 20 Apr 2026 09:31:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776677393; cv=none; b=W0JV5lqPumBwFLRTfGK6miABlOIVm4Q7OJA5HHp6nVVvFF2ZiQxrZmBNWReAXMSSq4ZNg+s/igIjd1mSwjLLZYj6ev0A19QPjrDcxMcccgkdBscdRjGGR20DPwAbnsSzSUxnTQ+klXxXDmNcSN+T6IejLdCrj7yHlHByMScSotI=
+	t=1776677522; cv=none; b=su2IrJNjNJN7OBPjgp8WMPj8ZWLIGYn9UN7A2NMkWmEnrzj9DVi3dUUHT9d5/HrweMAeHQMRpC8aMiUWVPXOE9YojE/Ax2x3JlGN3mH6B8xXQWM/PG1zcFzo2xxrl4+rCnOYOINxEbx3FxkP2UT7Jr1efk1NJ2sO7U8oTGNk0QM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776677393; c=relaxed/simple;
-	bh=dCyASQv/4XztmsIYk1Flo/oDFHV7wnr3lzX8kb24qtU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=FvXuScQ7OO8H9/f/RMc30W5E0zJZTRZv2v+CzWtdrw2KMG4rE36VURNDQMMnNAMErI/dHR7PCHaWl5z9oMG17raTV1hl116ayno1eIY1hGRietPDoxBippIhm0vNdhFe6DJPQOBTN6wxcWWLJYrip6rEXHePrIITAkq01VXgiWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=CRQl3FSW; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
-	Reply-To:Content-ID:Content-Description:In-Reply-To:References;
-	bh=l3E7Js9iCtlEfFoCuvz8eXLkCYO1Y8/jvTZT5sU/BaI=; b=CRQl3FSWYhYcm8pcTXKhNrpvUZ
-	EP7rGrDLzUEYtU8AqPC5MpNqCzsSMZKCw+BedlBQ1WWpPDEUz3eo4uWisHtnQAwtnkiEfDpfdzHhe
-	C1qJ2LCI4IK4pCzyS4mIQJuQ8QtDpi5lYKRZd0EHpUKA8Qmq13AEg7Stuv2ltVrkFpRlerFVaTLOD
-	mNN37pGoJ2O4+50iizUla1Q/wyRqz+DUVHC57tSQveQcomKbfVqtCPeaUxixqlIGWXLt1TLcwo3nb
-	QW6fo3gfyYohX7E9rnEo1E28mxAN+CQe+iuxkCXPvCe1kght5RxOTxaIQLwfZRolfHA3eXosTfvtM
-	+kX6N+rA==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wEkwa-00HaDw-1t;
-	Mon, 20 Apr 2026 09:29:28 +0000
-From: Breno Leitao <leitao@debian.org>
-Date: Mon, 20 Apr 2026 02:27:13 -0700
-Subject: [PATCH] ACPI: arm64: cpuidle: Tolerate platforms with no deep PSCI
- idle states
+	s=arc-20240116; t=1776677522; c=relaxed/simple;
+	bh=2AkVNhAlYnUnK0t8BwWQ9pXKkQWwX62sXumQ4xR6Gsc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lWhp8ffJe3HWCjXRIFFVxLFQfy//w8ELKl7i51sXF1SGD+7Kqbrmw4X24KDAN8KQoBGUVdDTBYqUIb4Ts8/7rilGTaEO2YnhVMBaR0ztoG068eoMCA4b9wW97OPFdXSMnJSMD40eENFkvEGiKgoA1l26ikOxVI5ptwoIGd95k5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=iwfRYolB; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=iwfRYolB; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 41D375BCCF;
+	Mon, 20 Apr 2026 09:31:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1776677518; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=WL9Xl9qWVq0UkQb6b0598cxdO+ebC0xlUrLKis6pAHc=;
+	b=iwfRYolBUuioLadP1qNxXeBOkxq3eTi5U77LaspAaRXj+IHOYy1MxNWtGd5wS+/BhLeRDk
+	nLsBzRtl4xOTOFAh3guLQUiRvIdb1mqfaflUdQb7uecU7xwoxQFH4Umqs8hY7XmzfpzeQY
+	h2KeVOAE69J/hQivDteQHFaqDU20L20=
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1776677518; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=WL9Xl9qWVq0UkQb6b0598cxdO+ebC0xlUrLKis6pAHc=;
+	b=iwfRYolBUuioLadP1qNxXeBOkxq3eTi5U77LaspAaRXj+IHOYy1MxNWtGd5wS+/BhLeRDk
+	nLsBzRtl4xOTOFAh3guLQUiRvIdb1mqfaflUdQb7uecU7xwoxQFH4Umqs8hY7XmzfpzeQY
+	h2KeVOAE69J/hQivDteQHFaqDU20L20=
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 443AE593AE;
+	Mon, 20 Apr 2026 09:31:57 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id EQFDAo3y5WnMSwAAD6G6ig
+	(envelope-from <wqu@suse.com>); Mon, 20 Apr 2026 09:31:57 +0000
+From: Qu Wenruo <wqu@suse.com>
+To: linux-btrfs@vger.kernel.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH] btrfs: check and set EXTENT_DELALLOC_NEW before clearing EXTENT_DELALLOC
+Date: Mon, 20 Apr 2026 19:01:39 +0930
+Message-ID: <b1da8f8c929409e9dc80ab0424fb1554c30a5e7f.1776677493.git.wqu@suse.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260420-ffh-v1-1-6b4c10fec442@debian.org>
-X-B4-Tracking: v=1; b=H4sIAHDx5WkC/yXMMQqEMBBG4asMf21AEwmaqywW6s7oWOiSqAji3
- cW1fMX3TiSOygmBTkTeNekyI1CREfqxnQc2+kUg2Nz6vCycERlN7cRXnZXStw4Z4RdZ9PhfPs3
- baesm7teH4rpuKopwrmcAAAA=
-X-Change-ID: 20260413-ffh-93f68b2f46a3
-To: Lorenzo Pieralisi <lpieralisi@kernel.org>, 
- Hanjun Guo <guohanjun@huawei.com>, Sudeep Holla <sudeep.holla@kernel.org>, 
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>, 
- Huisong Li <lihuisong@huawei.com>
-Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, 
- linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-kernel@vger.kernel.org, pjaroszynski@nvidia.com, rmikey@meta.com, 
- kernel-team@meta.com, stable@vger.kernel.org, 
- Breno Leitao <leitao@debian.org>
-X-Mailer: b4 0.16-dev-453a6
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2471; i=leitao@debian.org;
- h=from:subject:message-id; bh=dCyASQv/4XztmsIYk1Flo/oDFHV7wnr3lzX8kb24qtU=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBp5fHzqn+00bv5uiKjyfb0L3oxZFEemEvZoPtx7
- SfZPToQOv2JAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaeXx8wAKCRA1o5Of/Hh3
- bSCeD/97foqkwPA2sEHhr9/FhCvzbuTMfq2L5IYng7YjGvEuYfpcRqx4O1FLN9tEr9/tUo7ONtJ
- C09130QdJvpFLNJfi2KYl4rLyEiGyT7DIzsfUmLFCN0zpTg0ilVHiNm28VutMdU04zMpRNn7v1m
- 9VR2bGjBqr3hwSrA3Nqwx6Wv7envXp6cAWoqAWzOJb27+/zGR2fIHTHAEr95NDVEy+UI3eI/3v5
- s5q7jk06CVpyp3AAby8D60kpwQadz0TISp0kTw0O05uFrdCw0kd2/lHKh6FC9QeS0oppiy+/yrm
- o0DyFgJKyjytOJ78V2Nn7hnBacrT6WC0yVNowb10UlveuefuTmZfRNCBammkrTIGJrLrAlkRcGE
- BYKKD1keoP/tqfapcaLSyuhS3AYWuIUUG58ezNInLcs18HMa5Fyd1OFRwOIfjWajzxfA7b2mP7Z
- kwrL4MHM18KA0KYjgq/yLw+fqRjGi0/YQETM+KbnwIVTFLIHMNjSbALee/J+mM0DM6qOrm7TrZ4
- wmrcxSFME+g3Pa5yicC2aTtQJPEGByK90k+aYgM1vBDytiyfaNsHT44jvT0kWVh0em32tPanwWL
- 5pHHY3aUlf3fV0WoQ+IlYrjxYKmRM+diZ/95gtNDyrfwE2Zh/rgnBnVl34tGq1uxi17NzwwiqIj
- b0Mhx3IjlF2IVkQ==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
-X-Debian-User: leitao
-X-Spamd-Result: default: False [-1.66 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spam-Score: -2.80
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[debian.org:s=smtpauto.stravinsky];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=susede1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[suse.com:+];
+	TAGGED_FROM(0.00)[bounces-238729-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[debian.org];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-238728-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_TWO(0.00)[2];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[leitao@debian.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[debian.org:+];
+	FROM_NEQ_ENVFROM(0.00)[wqu@suse.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_COUNT_FIVE(0.00)[6];
 	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 7EFB4428E09
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,suse.com:dkim,suse.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 223F4428E80
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Commit cac173bea57d ("ACPI: processor: idle: Rework the handling of
-acpi_processor_ffh_lpi_probe()") moved the acpi_processor_ffh_lpi_probe()
-call from acpi_processor_setup_cpuidle_dev(), where its return value was
-ignored, to acpi_processor_get_power_info(), where it is now treated as
-a hard failure. As a result, platforms where psci_acpi_cpu_init_idle()
-returned -ENODEV stopped registering any cpuidle states, forcing CPUs to
-busy-poll when idle.
+[WARNING]
+When running test cases with injected errors or shutdown, e.g.
+generic/388 or generic/475, there is a chance that the following kernel
+warning is triggered:
 
-On NVIDIA Grace (aarch64) systems with PSCIv1.1, pr->power.count is 1
-(only WFI, no deep PSCI states beyond it), so the previous
-"count = pr->power.count - 1; if (count <= 0) return -ENODEV;" check
-returned -ENODEV for all 72 CPUs and disabled cpuidle entirely.
+ BTRFS info (device dm-2): first mount of filesystem d8a19a28-3232-4809-b0df-38df83e71bff
+ BTRFS info (device dm-2): using crc32c checksum algorithm
+ BTRFS info (device dm-2): checking UUID tree
+ BTRFS info (device dm-2): turning on async discard
+ BTRFS info (device dm-2): enabling free space tree
+ BTRFS critical (device dm-2 state E): emergency shutdown
+ ------------[ cut here ]------------
+ WARNING: extent_io.c:1742 at extent_writepage_io+0x437/0x520 [btrfs], CPU#2: kworker/u43:2/651591
+ CPU: 2 UID: 0 PID: 651591 Comm: kworker/u43:2 Tainted: G        W  OE       7.0.0-rc6-custom+ #365 PREEMPT(full)  5804053f02137e627472d94b5128cc9fcb110e88
+ RIP: 0010:extent_writepage_io+0x437/0x520 [btrfs]
+ Call Trace:
+  <TASK>
+  extent_write_cache_pages+0x2a5/0x820 [btrfs 70299925d0856939e93b17d480651713b3cbba58]
+  btrfs_writepages+0x74/0x130 [btrfs 70299925d0856939e93b17d480651713b3cbba58]
+  do_writepages+0xd0/0x160
+  __writeback_single_inode+0x42/0x340
+  writeback_sb_inodes+0x22d/0x580
+  wb_writeback+0xc6/0x360
+  wb_workfn+0xbd/0x470
+  process_one_work+0x198/0x3b0
+  worker_thread+0x1c8/0x330
+  kthread+0xee/0x120
+  ret_from_fork+0x2a6/0x330
+  ret_from_fork_asm+0x11/0x20
+  </TASK>
+ ---[ end trace 0000000000000000 ]---
+ BTRFS error (device dm-2 state E): root 5 ino 259 folio 1323008 is marked dirty without notifying the fs
+ BTRFS error (device dm-2 state E): failed to submit blocks, root=5 inode=259 folio=1323008 submit_bitmap=0: -117
+ BTRFS info (device dm-2 state E): last unmount of filesystem d8a19a28-3232-4809-b0df-38df83e71bff
 
-The lpi_states count is already validated in acpi_processor_get_lpi_info(),
-so the check here is redundant. Simplify the loop to iterate over
-lpi_states[1..power.count). When only WFI is present, the loop body
-simply does not execute and the function returns 0, which is the correct
-outcome: there is nothing to validate for FFH and no error to report.
+[CAUSE]
+Inside btrfs we have the following pattern in several locations, for
+example inside btrfs_dirty_folio():
 
-Suggested-by: Huisong Li <lihuisong@huawei.com>
-Cc: stable@vger.kernel.org
-Fixes: cac173bea57d ("ACPI: processor: idle: Rework the handling of acpi_processor_ffh_lpi_probe()")
-Signed-off-by: Breno Leitao <leitao@debian.org>
+	btrfs_clear_extent_bit(&inode->io_tree, start_pos, end_of_last_block,
+			       EXTENT_DELALLOC | EXTENT_DO_ACCOUNTING | EXTENT_DEFRAG,
+			       cached);
+
+	ret = btrfs_set_extent_delalloc(inode, start_pos, end_of_last_block,
+					extra_bits, cached);
+	if (ret)
+		return ret;
+
+However btrfs_set_extent_delalloc() can return IO errors other than -ENOMEM
+through the following callchain:
+
+ btrfs_set_extent_delalloc()
+ \- btrfs_find_new_delalloc_bytes()
+    \- btrfs_get_extent()
+       \- btrfs_lookup_file_extent()
+          \- btrfs_search_slot()
+
+When such IO error happened, the previous btrfs_clear_extent_bit() has
+cleared the EXTENT_DELALLOC for the range, and we're expecting
+btrfs_set_extent_delalloc() to re-set EXTENT_DELALLOC.
+
+But since btrfs_set_extent_delalloc() failed before
+btrfs_set_extent_bit(), EXTENT_DELALLOC flag is no longere present.
+
+And if the folio range is dirty before entering
+btrfs_set_extent_delalloc(), we got a dirty folio but no EXTENT_DELALLOC
+flag now.
+
+Then we hit the folio writeback:
+
+ extent_writepage()
+ |- writepage_delalloc()
+ |  No ordered extent is created, as there is no EXTENT_DELALLOC set
+ |  for the folio range.
+ |  This also means the folio has no ordered flag set.
+ |
+ |- extent_writepage_io()
+    \- if (unlikely(!folio_test_ordered(folio))
+       Now we hit the warning.
+
+[FIX]
+Introduce a new helper, btrfs_reset_extent_delalloc() to replace the
+currently open-coded btrfs_clear_extent_bit() +
+btrfs_set_extent_delalloc() combination.
+
+Instead of calling btrfs_clear_extent_bit() first, update
+EXTENT_DELALLOC_NEW first, as that part can fail due to metadata IO,
+meanwhile btrfs_clear_extent_bit() and btrfs_set_extent_bit() can really
+only fail with -ENOMEM.
+
+This allows us to fail early without clearing EXTENT_DELALLOC bit, so
+even if that new btrfs_reset_extent_delalloc() failed before touching
+EXTENT_DELALLOC, the existing dirty range will still have their old
+EXTENT_DELALLOC flag present, thus avoid the warning.
+
+Cc: stable@vger.kernel.org # 6.1+
+Signed-off-by: Qu Wenruo <wqu@suse.com>
 ---
- drivers/acpi/arm64/cpuidle.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ fs/btrfs/btrfs_inode.h |  3 +++
+ fs/btrfs/file.c        | 25 +++---------------
+ fs/btrfs/inode.c       | 59 +++++++++++++++++++++++++++++++++++++-----
+ fs/btrfs/reflink.c     |  4 +--
+ 4 files changed, 59 insertions(+), 32 deletions(-)
 
-diff --git a/drivers/acpi/arm64/cpuidle.c b/drivers/acpi/arm64/cpuidle.c
-index 801f9c4501425..c68a5db8ebba8 100644
---- a/drivers/acpi/arm64/cpuidle.c
-+++ b/drivers/acpi/arm64/cpuidle.c
-@@ -16,7 +16,7 @@
+diff --git a/fs/btrfs/btrfs_inode.h b/fs/btrfs/btrfs_inode.h
+index 6e696b350dc5..ad523549d8b4 100644
+--- a/fs/btrfs/btrfs_inode.h
++++ b/fs/btrfs/btrfs_inode.h
+@@ -569,6 +569,9 @@ int btrfs_start_delalloc_roots(struct btrfs_fs_info *fs_info, long nr,
+ int btrfs_set_extent_delalloc(struct btrfs_inode *inode, u64 start, u64 end,
+ 			      unsigned int extra_bits,
+ 			      struct extent_state **cached_state);
++int btrfs_reset_extent_delalloc(struct btrfs_inode *inode, u64 start, u64 end,
++				unsigned int extra_bits,
++				struct extent_state **cached_state);
  
- static int psci_acpi_cpu_init_idle(unsigned int cpu)
- {
--	int i, count;
-+	int i;
- 	struct acpi_lpi_state *lpi;
- 	struct acpi_processor *pr = per_cpu(processors, cpu);
+ struct btrfs_new_inode_args {
+ 	/* Input */
+diff --git a/fs/btrfs/file.c b/fs/btrfs/file.c
+index a6f641a41d99..ab536a304500 100644
+--- a/fs/btrfs/file.c
++++ b/fs/btrfs/file.c
+@@ -85,16 +85,8 @@ int btrfs_dirty_folio(struct btrfs_inode *inode, struct folio *folio, loff_t pos
  
-@@ -30,14 +30,10 @@ static int psci_acpi_cpu_init_idle(unsigned int cpu)
- 	if (!psci_ops.cpu_suspend)
- 		return -EOPNOTSUPP;
+ 	end_of_last_block = start_pos + num_bytes - 1;
  
--	count = pr->power.count - 1;
--	if (count <= 0)
--		return -ENODEV;
+-	/*
+-	 * The pages may have already been dirty, clear out old accounting so
+-	 * we can set things up properly
+-	 */
+-	btrfs_clear_extent_bit(&inode->io_tree, start_pos, end_of_last_block,
+-			       EXTENT_DELALLOC | EXTENT_DO_ACCOUNTING | EXTENT_DEFRAG,
+-			       cached);
 -
--	for (i = 0; i < count; i++) {
-+	for (i = 1; i < pr->power.count; i++) {
- 		u32 state;
+-	ret = btrfs_set_extent_delalloc(inode, start_pos, end_of_last_block,
+-					extra_bits, cached);
++	ret = btrfs_reset_extent_delalloc(inode, start_pos, end_of_last_block,
++					  extra_bits, cached);
+ 	if (ret)
+ 		return ret;
  
--		lpi = &pr->power.lpi_states[i + 1];
-+		lpi = &pr->power.lpi_states[i];
- 		/*
- 		 * Only bits[31:0] represent a PSCI power_state while
- 		 * bits[63:32] must be 0x0 as per ARM ACPI FFH Specification
-
----
-base-commit: 1c7cc4904160c6fc6377564140062d68a3dc93a0
-change-id: 20260413-ffh-93f68b2f46a3
-
-Best regards,
---  
-Breno Leitao <leitao@debian.org>
+@@ -1952,18 +1944,7 @@ static vm_fault_t btrfs_page_mkwrite(struct vm_fault *vmf)
+ 		}
+ 	}
+ 
+-	/*
+-	 * page_mkwrite gets called when the page is firstly dirtied after it's
+-	 * faulted in, but write(2) could also dirty a page and set delalloc
+-	 * bits, thus in this case for space account reason, we still need to
+-	 * clear any delalloc bits within this page range since we have to
+-	 * reserve data&meta space before lock_page() (see above comments).
+-	 */
+-	btrfs_clear_extent_bit(io_tree, page_start, end,
+-			       EXTENT_DELALLOC | EXTENT_DO_ACCOUNTING |
+-			       EXTENT_DEFRAG, &cached_state);
+-
+-	ret = btrfs_set_extent_delalloc(inode, page_start, end, 0, &cached_state);
++	ret = btrfs_reset_extent_delalloc(inode, page_start, end, 0, &cached_state);
+ 	if (ret < 0) {
+ 		btrfs_unlock_extent(io_tree, page_start, page_end, &cached_state);
+ 		goto out_unlock;
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index 71129502333a..0dc5fe7f7705 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -2810,7 +2810,10 @@ int btrfs_set_extent_delalloc(struct btrfs_inode *inode, u64 start, u64 end,
+ 			      unsigned int extra_bits,
+ 			      struct extent_state **cached_state)
+ {
+-	WARN_ON(PAGE_ALIGNED(end));
++	const u32 blocksize = inode->root->fs_info->sectorsize;
++
++	ASSERT(IS_ALIGNED(start, blocksize), "start=%llu", start);
++	ASSERT(IS_ALIGNED(end + 1, blocksize), "end=%llu", end);
+ 
+ 	if (start >= i_size_read(&inode->vfs_inode) &&
+ 	    !(inode->flags & BTRFS_INODE_PREALLOC)) {
+@@ -2833,6 +2836,53 @@ int btrfs_set_extent_delalloc(struct btrfs_inode *inode, u64 start, u64 end,
+ 				    EXTENT_DELALLOC | extra_bits, cached_state);
+ }
+ 
++/*
++ * Clear the old accounting flags and set EXTENT_DELALLOC for the range.
++ *
++ * Return <0 for error, in that case no range has EXTENT_DELALLOC bit cleared or set.
++ */
++int btrfs_reset_extent_delalloc(struct btrfs_inode *inode, u64 start, u64 end,
++				unsigned int extra_bits,
++				struct extent_state **cached_state)
++{
++	const u32 blocksize = inode->root->fs_info->sectorsize;
++
++	/* The @extra_bits can only be EXTENT_NORESERVE for now. */
++	ASSERT(!(extra_bits & ~EXTENT_NORESERVE));
++
++	/* Basic alignment check. */
++	ASSERT(IS_ALIGNED(start, blocksize), "start=%llu", start);
++	ASSERT(IS_ALIGNED(end + 1, blocksize), "end=%llu", end);
++
++	/*
++	 * Check and set DELALLOC_NEW flags, this needs to search tree thus
++	 * can fail early.
++	 * Thus we want to do this before clearing DELALLOC_EXTENT.
++	 */
++	if (start >= i_size_read(&inode->vfs_inode) &&
++	    !(inode->flags & BTRFS_INODE_PREALLOC)) {
++		/*
++		 * There can't be any extents following eof in this case so just
++		 * set the delalloc new bit for the range directly.
++		 */
++		extra_bits |= EXTENT_DELALLOC_NEW;
++	} else {
++		int ret;
++
++		ret = btrfs_find_new_delalloc_bytes(inode, start,
++						    end + 1 - start,
++						    cached_state);
++		if (unlikely(ret))
++			return ret;
++	}
++	/* Clear the old accounting as the range may already be dirty. */
++	btrfs_clear_extent_bit(&inode->io_tree, start, end,
++			       EXTENT_DELALLOC | EXTENT_DO_ACCOUNTING |
++			       EXTENT_DEFRAG, cached_state);
++	return btrfs_set_extent_bit(&inode->io_tree, start, end,
++				    EXTENT_DELALLOC | extra_bits, cached_state);
++}
++
+ static int insert_reserved_file_extent(struct btrfs_trans_handle *trans,
+ 				       struct btrfs_inode *inode, u64 file_pos,
+ 				       struct btrfs_file_extent_item *stack_fi,
+@@ -4973,12 +5023,7 @@ int btrfs_truncate_block(struct btrfs_inode *inode, u64 offset, u64 start, u64 e
+ 		goto again;
+ 	}
+ 
+-	btrfs_clear_extent_bit(&inode->io_tree, block_start, block_end,
+-			       EXTENT_DELALLOC | EXTENT_DO_ACCOUNTING | EXTENT_DEFRAG,
+-			       &cached_state);
+-
+-	ret = btrfs_set_extent_delalloc(inode, block_start, block_end, 0,
+-					&cached_state);
++	ret = btrfs_reset_extent_delalloc(inode, block_start, block_end, 0, &cached_state);
+ 	if (ret) {
+ 		btrfs_unlock_extent(io_tree, block_start, block_end, &cached_state);
+ 		goto out_unlock;
+diff --git a/fs/btrfs/reflink.c b/fs/btrfs/reflink.c
+index 14742abe0f92..fb34598a77ff 100644
+--- a/fs/btrfs/reflink.c
++++ b/fs/btrfs/reflink.c
+@@ -94,9 +94,7 @@ static int copy_inline_to_page(struct btrfs_inode *inode,
+ 	if (ret < 0)
+ 		goto out_unlock;
+ 
+-	btrfs_clear_extent_bit(&inode->io_tree, file_offset, range_end,
+-			       EXTENT_DELALLOC | EXTENT_DO_ACCOUNTING | EXTENT_DEFRAG, NULL);
+-	ret = btrfs_set_extent_delalloc(inode, file_offset, range_end, 0, NULL);
++	ret = btrfs_reset_extent_delalloc(inode, file_offset, range_end, 0, NULL);
+ 	if (ret)
+ 		goto out_unlock;
+ 
+-- 
+2.53.0
 
 
