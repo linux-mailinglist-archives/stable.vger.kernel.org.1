@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-239491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239824-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OB/rHP5k5mlmvwEAu9opvQ
-	(envelope-from <stable+bounces-239491-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:40:14 +0200
+	id qMenC81n5mnBvwEAu9opvQ
+	(envelope-from <stable+bounces-239824-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:52:13 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1716A431C00
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:40:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B946F43232F
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:52:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 273EE35C2365
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:53:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DD9FB3716610
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:08:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C672B2E093A;
-	Mon, 20 Apr 2026 15:53:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F20BD33F5A9;
+	Mon, 20 Apr 2026 16:08:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I5SfV4K8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ela/obcZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89A08331A78;
-	Mon, 20 Apr 2026 15:53:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B42FB341AD6;
+	Mon, 20 Apr 2026 16:08:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700389; cv=none; b=pwkxjhDoDH+gGyBlxhe7ZaM5biGwuQn+XwNUjolmDySoxpnop8YV/+oaEJaEuWkDG6fh+3fgFire2sJ3bjEik5hyO2SqSyEm4CtOpB9Rmc+vTjqqkOTpt7m2kp3236JubUZO/0KurdWWEmjId0NET3zGrilPZ/2eozdL8AU7Pj0=
+	t=1776701309; cv=none; b=bFwC/jdpTjHxrY5ROY3iuPSV8qO8KREC2FrNfsMNOFl316ahROL5dzSRq6RD2H1HzcKkZQpOjpkdsWlXTudcQWlQ4SnYTBOboImOiij/zOEMfrhzt4HiwJWMLVDo9f7TxNiPs2bj5res3LpznxmA1mEIVMZ3mIrxMXEh9Eq59b8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700389; c=relaxed/simple;
-	bh=pPpnfJjmT/RB629I6SbA8hz9MmVAGcvl920OKQDRgyc=;
+	s=arc-20240116; t=1776701309; c=relaxed/simple;
+	bh=UrzkdctcUfC1aMh36qIG6V6MQU4t76LAvk2CCS3zCFw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k4vkVh1ZPVzMSEWRtH2PCO56sY6G8XDJgb9qSElPsmnumeX40a2NLNheVjRrU/6vbYJQx+RNIjE1svcwH8EkimVvdZVVMPpDiR5ar00K7hmXjEfSduk+GYgI2PMXVt53V3bza1NjLb8RsivI3utOLno55H/f2ZR3Xbcby2U70Oo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I5SfV4K8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F3E0C19425;
-	Mon, 20 Apr 2026 15:53:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Ar3Ptl4aLAV2QNUQVBou41jibUttxZvJ5JDnTvEGF6J20AmKsZLBECVPumosAgSfL0ksOeqW6sUvAvrLcfV8VmYbXo9anXtriqOeyr1v6jSAhETlyA9GW1ofI8vyGisrjVjqq6ydC34rNmQCLBCLSfgenu7CF1TzJ5lRBcpWe9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ela/obcZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B2C9C19425;
+	Mon, 20 Apr 2026 16:08:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700389;
-	bh=pPpnfJjmT/RB629I6SbA8hz9MmVAGcvl920OKQDRgyc=;
+	s=korg; t=1776701309;
+	bh=UrzkdctcUfC1aMh36qIG6V6MQU4t76LAvk2CCS3zCFw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I5SfV4K8VkQ+5EXjdZXpSJrMqjF02HL6X2ronguFiaCJEdawTiwnxq67Gv8TEq6U4
-	 6FA5ChvIqUAVdqdFDHCVSaFyxuI/HBQKCzBIphjVGhApBlfmZTGrvQinzXOCqXw+r7
-	 W2RZCs+tTYKTYab6gg+jEZ4SmvMKgFE7ctXajcHI=
+	b=Ela/obcZKXOiuUjjIg1hWHPGcrs0rQX2b5GXJ1oKYTVTmHvA6359fNJ4W876oy4Kw
+	 NrKlO1oTDqGzjjjUH1EZhgAkvxUjShMAZ3X4Lz/YY5G+bqFVsD8h8UZt/tw/KuWNJF
+	 dHaf38pFL0IhA6Z2/q8a4HkbsoR3BWrYq3B3oaxI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.19 154/220] usb: gadget: f_phonet: fix skb frags[] overflow in pn_rx_complete()
-Date: Mon, 20 Apr 2026 17:41:35 +0200
-Message-ID: <20260420153939.573337272@linuxfoundation.org>
+	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 064/162] xsk: validate MTU against usable frame size on bind
+Date: Mon, 20 Apr 2026 17:41:36 +0200
+Message-ID: <20260420153929.355929735@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
-References: <20260420153934.013228280@linuxfoundation.org>
+In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
+References: <20260420153927.006696811@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,88 +64,133 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-239824-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239491-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1716A431C00
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B946F43232F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 
-commit c088d5dd2fffb4de1fb8e7f57751c8b82942180a upstream.
+[ Upstream commit 36ee60b569ba0dfb6f961333b90d19ab5b323fa9 ]
 
-A broken/bored/mean USB host can overflow the skb_shared_info->frags[]
-array on a Linux gadget exposing a Phonet function by sending an
-unbounded sequence of full-page OUT transfers.
+AF_XDP bind currently accepts zero-copy pool configurations without
+verifying that the device MTU fits into the usable frame space provided
+by the UMEM chunk.
 
-pn_rx_complete() finalizes the skb only when req->actual < req->length,
-where req->length is set to PAGE_SIZE by the gadget.  If the host always
-sends exactly PAGE_SIZE bytes per transfer, fp->rx.skb will never be
-reset and each completion will add another fragment via
-skb_add_rx_frag().  Once nr_frags exceeds MAX_SKB_FRAGS (default 17),
-subsequent frag stores overwrite memory adjacent to the shinfo on the
-heap.
+This becomes a problem since we started to respect tailroom which is
+subtracted from chunk_size (among with headroom). 2k chunk size might
+not provide enough space for standard 1500 MTU, so let us catch such
+settings at bind time. Furthermore, validate whether underlying HW will
+be able to satisfy configured MTU wrt XSK's frame size multiplied by
+supported Rx buffer chain length (that is exposed via
+net_device::xdp_zc_max_segs).
 
-Drop the skb and account a length error when the frag limit is reached,
-matching the fix applied in t7xx by commit f0813bcd2d9d ("net: wwan:
-t7xx: fix potential skb->frags overflow in RX path").
-
-Cc: stable <stable@kernel.org>
-Assisted-by: gregkh_clanker_t1000
-Link: https://patch.msgid.link/2026040705-fruit-unloved-0701@gregkh
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 24ea50127ecf ("xsk: support mbuf on ZC RX")
+Reviewed-by: Björn Töpel <bjorn@kernel.org>
+Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Link: https://patch.msgid.link/20260402154958.562179-5-maciej.fijalkowski@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_phonet.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ net/xdp/xsk_buff_pool.c | 28 +++++++++++++++++++++++++---
+ 1 file changed, 25 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/gadget/function/f_phonet.c
-+++ b/drivers/usb/gadget/function/f_phonet.c
-@@ -333,6 +333,15 @@ static void pn_rx_complete(struct usb_ep
- 		if (unlikely(!skb))
- 			break;
+diff --git a/net/xdp/xsk_buff_pool.c b/net/xdp/xsk_buff_pool.c
+index a9d8aa83f8000..04fe499f76782 100644
+--- a/net/xdp/xsk_buff_pool.c
++++ b/net/xdp/xsk_buff_pool.c
+@@ -8,6 +8,8 @@
+ #include "xdp_umem.h"
+ #include "xsk.h"
  
-+		if (unlikely(skb_shinfo(skb)->nr_frags >= MAX_SKB_FRAGS)) {
-+			/* Frame count from host exceeds frags[] capacity */
-+			dev_kfree_skb_any(skb);
-+			if (fp->rx.skb == skb)
-+				fp->rx.skb = NULL;
-+			dev->stats.rx_length_errors++;
-+			break;
-+		}
++#define ETH_PAD_LEN (ETH_HLEN + 2 * VLAN_HLEN  + ETH_FCS_LEN)
 +
- 		if (skb->len == 0) { /* First fragment */
- 			skb->protocol = htons(ETH_P_PHONET);
- 			skb_reset_mac_header(skb);
+ void xp_add_xsk(struct xsk_buff_pool *pool, struct xdp_sock *xs)
+ {
+ 	unsigned long flags;
+@@ -163,8 +165,12 @@ static void xp_disable_drv_zc(struct xsk_buff_pool *pool)
+ int xp_assign_dev(struct xsk_buff_pool *pool,
+ 		  struct net_device *netdev, u16 queue_id, u16 flags)
+ {
++	u32 needed = netdev->mtu + ETH_PAD_LEN;
++	u32 segs = netdev->xdp_zc_max_segs;
++	bool mbuf = flags & XDP_USE_SG;
+ 	bool force_zc, force_copy;
+ 	struct netdev_bpf bpf;
++	u32 frame_size;
+ 	int err = 0;
+ 
+ 	ASSERT_RTNL();
+@@ -184,7 +190,7 @@ int xp_assign_dev(struct xsk_buff_pool *pool,
+ 	if (err)
+ 		return err;
+ 
+-	if (flags & XDP_USE_SG)
++	if (mbuf)
+ 		pool->umem->flags |= XDP_UMEM_SG_FLAG;
+ 
+ 	if (flags & XDP_USE_NEED_WAKEUP)
+@@ -206,8 +212,24 @@ int xp_assign_dev(struct xsk_buff_pool *pool,
+ 		goto err_unreg_pool;
+ 	}
+ 
+-	if (netdev->xdp_zc_max_segs == 1 && (flags & XDP_USE_SG)) {
+-		err = -EOPNOTSUPP;
++	if (mbuf) {
++		if (segs == 1) {
++			err = -EOPNOTSUPP;
++			goto err_unreg_pool;
++		}
++	} else {
++		segs = 1;
++	}
++
++	/* open-code xsk_pool_get_rx_frame_size() as pool->dev is not
++	 * set yet at this point; we are before getting down to driver
++	 */
++	frame_size = __xsk_pool_get_rx_frame_size(pool) -
++		     xsk_pool_get_tailroom(mbuf);
++	frame_size = ALIGN_DOWN(frame_size, 128);
++
++	if (needed > frame_size * segs) {
++		err = -EINVAL;
+ 		goto err_unreg_pool;
+ 	}
+ 
+-- 
+2.53.0
+
 
 
 
