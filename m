@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-239492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239676-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uKnjN3le5mnpvQEAu9opvQ
-	(envelope-from <stable+bounces-239492-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:12:25 +0200
+	id oEb+JHdO5mkgugEAu9opvQ
+	(envelope-from <stable+bounces-239676-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:04:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85B62430BC7
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:12:25 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5778B42EE90
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:04:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C238B39CF1A4
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:53:12 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id F1F70301BA73
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:02:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58C3D336EE1;
-	Mon, 20 Apr 2026 15:53:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E11F33F590;
+	Mon, 20 Apr 2026 16:02:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FI2+QsNM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nx9+zh2z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CEE0331A78;
-	Mon, 20 Apr 2026 15:53:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 113BC2AE78;
+	Mon, 20 Apr 2026 16:02:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700392; cv=none; b=q7pydDDK0YpibiRsjUJohuzHho0BG6QfY0eag63atHwjNCT892dR0d0hxrqNuZVofezkZel/js4kjZIkpDfx/Q5P/9BQdqpFXqn8X0sDFUckxnTr4ScgSPmtpfM3AD9+wQ1UF6PYNUUKUB/kgpzcP/kZyW+EELNQVJS7NeGUWcY=
+	t=1776700934; cv=none; b=KZ3a84nHcpicizJQcLh8OG11xz+ufhFtRczSxcbs8UHqZYz+qWvNH3zZhe0vajV8BbeRXVFReLE/jjVETdd77U6DVX3Tso7On98lj4K4/Kd4+YFGQI6BPXBJzogx6STvayR6YSa8RMI676NH+QriRDMK/S3rKJCEN5+lmRzHdEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700392; c=relaxed/simple;
-	bh=/pMWIMo9q3W9ChVqWrCYb6q+v06PNmVqb1xoJUpIH7E=;
+	s=arc-20240116; t=1776700934; c=relaxed/simple;
+	bh=QJD3cudOj3iq4usKcJj/U/3vrO4E7kE+Um2jn5r7KX4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uvIA9AqFqw210/NXpKQpOi3TLOK3ydbxNOPXhgpmzJnJ2AVOIkr2VvzbxoIOovQy0Ti2CJguBuz4w9RK1s8CqJWLh9l7lHELfiknaAVgFjAiU+2546t2Qb7LvEOpWSLuyvNjTD8qZJfsZDYvHmc9gnNiOuV6PG02O32scss1AIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FI2+QsNM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6FA9C19425;
-	Mon, 20 Apr 2026 15:53:11 +0000 (UTC)
+	 MIME-Version; b=BvgRdv2HwI7TmjiWwJHWVCQVbgbqPI+WauqSFe9r61f1QV9ss/yvBSmqmXnyu7ccAIXeKHzoIvCPm+OevLlH6rx+ZyicpOBAClukS3JYKxv9ZUgrQRSocguBZ1p0q3vpZkxCfJJRwidkdEsRF1UgQxWBD9naCqk9tf8Is5kTsPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nx9+zh2z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BC54C19425;
+	Mon, 20 Apr 2026 16:02:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700392;
-	bh=/pMWIMo9q3W9ChVqWrCYb6q+v06PNmVqb1xoJUpIH7E=;
+	s=korg; t=1776700934;
+	bh=QJD3cudOj3iq4usKcJj/U/3vrO4E7kE+Um2jn5r7KX4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FI2+QsNM1T05yHk7WqR0P82ICzmoGmtdEndQ2R82/FNWdEH6Vy7RZvpDbRLJGxs6Y
-	 3JBp8hqad/wqsgWrIlEKPZmuqFKfqcGpNFMsnt+3hppqgf8pJ/HXEPuU8hPdcxbvS9
-	 EGNOcvOwCKP+4TBvy2HCM3Mwqc9AfqVenwboHsDc=
+	b=Nx9+zh2z4WTA/oIn8G4i9BxGOK6e3hOxMztm2M++mDBFNF2EZIvchemHDChcywb+a
+	 0c7IAbWBmcMzk4L0UNhTJkUuLYK992ig/avcVVfCLVqze5RJ4A2vHFdi4cp7foZ3+Y
+	 Fpa+2TJA2ZCnjDAa/oh8/s1D1VIVISsEwU68C17o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.19 155/220] usb: gadget: renesas_usb3: validate endpoint index in standard request handlers
+	John Stultz <jstultz@google.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 117/198] sched/deadline: Use revised wakeup rule for dl_server
 Date: Mon, 20 Apr 2026 17:41:36 +0200
-Message-ID: <20260420153939.608626443@linuxfoundation.org>
+Message-ID: <20260420153939.818399287@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
-References: <20260420153934.013228280@linuxfoundation.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,82 +69,83 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239492-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239676-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 85B62430BC7
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 5778B42EE90
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Peter Zijlstra <peterz@infradead.org>
 
-commit f880aac8a57ebd92abfa685d45424b2998ac1059 upstream.
+[ Upstream commit 14a857056466be9d3d907a94e92a704ac1be149b ]
 
-The GET_STATUS and SET/CLEAR_FEATURE handlers extract the endpoint
-number from the host-supplied wIndex without any sort of validation.
-Fix this up by validating the number of endpoints actually match up with
-the number the device has before attempting to dereference a pointer
-based on this math.
+John noted that commit 115135422562 ("sched/deadline: Fix 'stuck' dl_server")
+unfixed the issue from commit a3a70caf7906 ("sched/deadline: Fix dl_server
+behaviour").
 
-This is just like what was done in commit ee0d382feb44 ("usb: gadget:
-aspeed_udc: validate endpoint index for ast udc") for the aspeed driver.
+The issue in commit 115135422562 was for wakeups of the server after the
+deadline; in which case you *have* to start a new period. The case for
+a3a70caf7906 is wakeups before the deadline.
 
-Fixes: 746bfe63bba3 ("usb: gadget: renesas_usb3: add support for Renesas USB3.0 peripheral controller")
-Cc: stable <stable@kernel.org>
-Assisted-by: gregkh_clanker_t1000
-Link: https://patch.msgid.link/2026040647-sincerity-untidy-b104@gregkh
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Now, because the server is effectively running a least-laxity policy, it means
+that any wakeup during the runnable phase means dl_entity_overflow() will be
+true. This means we need to adjust the runtime to allow it to still run until
+the existing deadline expires.
+
+Use the revised wakeup rule for dl_defer entities.
+
+Fixes: 115135422562 ("sched/deadline: Fix 'stuck' dl_server")
+Reported-by: John Stultz <jstultz@google.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Juri Lelli <juri.lelli@redhat.com>
+Tested-by: John Stultz <jstultz@google.com>
+Link: https://patch.msgid.link/20260404102244.GB22575@noisy.programming.kicks-ass.net
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/udc/renesas_usb3.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ kernel/sched/deadline.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/gadget/udc/renesas_usb3.c
-+++ b/drivers/usb/gadget/udc/renesas_usb3.c
-@@ -1669,6 +1669,10 @@ static bool usb3_std_req_get_status(stru
- 		break;
- 	case USB_RECIP_ENDPOINT:
- 		num = le16_to_cpu(ctrl->wIndex) & USB_ENDPOINT_NUMBER_MASK;
-+		if (num >= usb3->num_usb3_eps) {
-+			stall = true;
-+			break;
-+		}
- 		usb3_ep = usb3_get_ep(usb3, num);
- 		if (usb3_ep->halt)
- 			status |= 1 << USB_ENDPOINT_HALT;
-@@ -1781,7 +1785,8 @@ static bool usb3_std_req_feature_endpoin
- 	struct renesas_usb3_ep *usb3_ep;
- 	struct renesas_usb3_request *usb3_req;
+diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
+index 72499cf2a1db5..d5052f238adf7 100644
+--- a/kernel/sched/deadline.c
++++ b/kernel/sched/deadline.c
+@@ -1036,7 +1036,7 @@ static void update_dl_entity(struct sched_dl_entity *dl_se)
+ 	if (dl_time_before(dl_se->deadline, rq_clock(rq)) ||
+ 	    dl_entity_overflow(dl_se, rq_clock(rq))) {
  
--	if (le16_to_cpu(ctrl->wValue) != USB_ENDPOINT_HALT)
-+	if ((le16_to_cpu(ctrl->wValue) != USB_ENDPOINT_HALT) ||
-+	    (num >= usb3->num_usb3_eps))
- 		return true;	/* stall */
- 
- 	usb3_ep = usb3_get_ep(usb3, num);
+-		if (unlikely(!dl_is_implicit(dl_se) &&
++		if (unlikely((!dl_is_implicit(dl_se) || dl_se->dl_defer) &&
+ 			     !dl_time_before(dl_se->deadline, rq_clock(rq)) &&
+ 			     !is_dl_boosted(dl_se))) {
+ 			update_dl_revised_wakeup(dl_se, rq);
+-- 
+2.53.0
+
 
 
 
