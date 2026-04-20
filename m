@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-239473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239293-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +JeKIc5k5mkKvwEAu9opvQ
-	(envelope-from <stable+bounces-239473-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:39:26 +0200
+	id 8Ga9IqZf5mkwvgEAu9opvQ
+	(envelope-from <stable+bounces-239293-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:17:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C74A9431AFB
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:39:25 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2039430EAE
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:17:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8C6F235A7E00
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:52:24 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id EF81E3361444
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:45:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9E0F3358B0;
-	Mon, 20 Apr 2026 15:52:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 809163396EE;
+	Mon, 20 Apr 2026 15:44:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C3L6e5Ii"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RbPXqfL7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6803E2E093A;
-	Mon, 20 Apr 2026 15:52:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 439673382E1;
+	Mon, 20 Apr 2026 15:44:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700343; cv=none; b=hxWj3bO9Liz9s+2MWASFaTA8X0Z/km/tqJ21a/ugRUla9rSXQCOKH3j/V3hM369/vFYkXtfBg+UaywZSUcIwxHZHVtLtipvgTl8BdjAvncCa4NnELD897IP9dgRZDj7ueLjoHctjcAEGByC9gTBXQvNLTDABdjYatClYmIgJoJo=
+	t=1776699878; cv=none; b=n5tqnyfmamCd439x5+d2R66OsvKbgviZrWxsNtBqK5d2UmNHr9Cnt7gVQHzFnE2A08fz8yjhlAkS2JbyAyGonr1C4LqFsV5ar6/O0b2XtDtKlSIVRNFpwUpjAh3yGXK4arMXBHugXmwcX1GLcNlXRn9alZk87vYCyr0KKfuogxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700343; c=relaxed/simple;
-	bh=C5i0IrRHi1niETQrjEY9Ou1evnkyLTPXWAO85t/yNPw=;
+	s=arc-20240116; t=1776699878; c=relaxed/simple;
+	bh=PuieWxSLzPnvF9nTHuD8nE+1sMEFpXjh+2zrKCtpE+w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LgYOszV7HT+BplmC3qkPGk++aSe6eTXrRMagX/rbhTFjtaJp13r1avq7nWyV0Fbz5ikSEG3IM5WBQNgnw2UhsesQvxRCh7wxil/GgInnb+qRQBCrgL3h+nwfqWD/451SNzGNIzuXMMXs74khZeJYy3iIwcCFOuspc/j1R+BMjAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C3L6e5Ii; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F18A2C19425;
-	Mon, 20 Apr 2026 15:52:22 +0000 (UTC)
+	 MIME-Version; b=NgieolLHmAstir50TSh/BmhOexl5gHsgDGRESOmi27cd3Vwzm2fpr8MRTIb+1HgagCqZgtq1RiZWicdW5bPpst9471BhzGBvePvJs9PCIn5HQ4FmDzw2ozfAetiYKDjbCufpH2RY+bM+RWLHXtuShHhCwxW2if3kLTxxCrHX5I0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RbPXqfL7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94D31C2BCB4;
+	Mon, 20 Apr 2026 15:44:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700343;
-	bh=C5i0IrRHi1niETQrjEY9Ou1evnkyLTPXWAO85t/yNPw=;
+	s=korg; t=1776699877;
+	bh=PuieWxSLzPnvF9nTHuD8nE+1sMEFpXjh+2zrKCtpE+w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C3L6e5IiIjaFnmp3j0DOQ/7qBEc1J+acvyJRkuna8bo37ZqgTAdfYF6GCKGu9qMwa
-	 GgWUBWVW749ChWi89yNmptVtN5gvVSABl7KVMIZKNaY8rYWSF8c2nk2nRtr3lF3QYJ
-	 p4PuCfu0rZ7zkOYtBROFpSUiJvVAjXt52FqU5aEs=
+	b=RbPXqfL78qdCd8xfC+bydV0D9XJWKFWJ1uITh8YE9R2LrNVcFVFekZAKzb4l/EyyE
+	 tUW4rSBJko35fSkWDv7f2UGz4fbBvLEPOaIPYo9WzPuBulHLvR+J8VkUf93s7fdRnO
+	 pS5kVGE0zGeUjhzybDnRyVUjproNrZxoTk5cSkVM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve Wahl <steve.wahl@hpe.com>,
-	Zide Chen <zide.chen@intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 134/220] perf/x86/intel/uncore: Skip discovery table for offline dies
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	stable <stable@kernel.org>
+Subject: [PATCH 7.0 04/76] i2c: s3c24xx: check the size of the SMBUS message before using it
 Date: Mon, 20 Apr 2026 17:41:15 +0200
-Message-ID: <20260420153938.851807867@linuxfoundation.org>
+Message-ID: <20260420153910.976790329@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
-References: <20260420153934.013228280@linuxfoundation.org>
+In-Reply-To: <20260420153910.810034134@linuxfoundation.org>
+References: <20260420153910.810034134@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239473-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-239293-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,62 +86,61 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: C74A9431AFB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,samsung.com:email]
+X-Rspamd-Queue-Id: A2039430EAE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zide Chen <zide.chen@intel.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit 7b568e9eba2fad89a696f22f0413d44cf4a1f892 ]
+commit c0128c7157d639a931353ea344fb44aad6d6e17a upstream.
 
-This warning can be triggered if NUMA is disabled and the system
-boots with fewer CPUs than the number of CPUs in die 0.
+The first byte of an i2c SMBUS message is the size, and it should be
+verified to ensure that it is in the range of 0..I2C_SMBUS_BLOCK_MAX
+before processing it.
 
-WARNING: CPU: 9 PID: 7257 at uncore.c:1157 uncore_pci_pmu_register+0x136/0x160 [intel_uncore]
+This is the same logic that was added in commit a6e04f05ce0b ("i2c:
+tegra: check msg length in SMBUS block read") to the i2c tegra driver.
 
-Currently, the discovery table continues to be parsed even if all CPUs
-in the associated die are offline.  This can lead to an array overflow
-at "pmu->boxes[die] = box" in uncore_pci_pmu_register(), which may
-trigger the warning above or cause other issues.
-
-Fixes: edae1f06c2cd ("perf/x86/intel/uncore: Parse uncore discovery tables")
-Reported-by: Steve Wahl <steve.wahl@hpe.com>
-Signed-off-by: Zide Chen <zide.chen@intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Tested-by: Steve Wahl <steve.wahl@hpe.com>
-Link: https://patch.msgid.link/20260313174050.171704-3-zide.chen@intel.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Alim Akhtar <alim.akhtar@samsung.com>
+Cc: Andi Shyti <andi.shyti@kernel.org>
+Cc: stable <stable@kernel.org>
+Assisted-by: gkh_clanker_2000
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/2026022314-rely-scrubbed-4839@gregkh
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/events/intel/uncore_discovery.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-s3c2410.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/events/intel/uncore_discovery.c b/arch/x86/events/intel/uncore_discovery.c
-index 7d57ce706feb1..c5adbe4409047 100644
---- a/arch/x86/events/intel/uncore_discovery.c
-+++ b/arch/x86/events/intel/uncore_discovery.c
-@@ -383,7 +383,7 @@ static bool intel_uncore_has_discovery_tables_pci(int *ignore)
- 				     (val & UNCORE_DISCOVERY_DVSEC2_BIR_MASK) * UNCORE_DISCOVERY_BIR_STEP;
+--- a/drivers/i2c/busses/i2c-s3c2410.c
++++ b/drivers/i2c/busses/i2c-s3c2410.c
+@@ -503,8 +503,13 @@ static void i2c_s3c_irq_nextbyte(struct
+ 		i2c->msg->buf[i2c->msg_ptr++] = byte;
  
- 			die = get_device_die_id(dev);
--			if (die < 0)
-+			if ((die < 0) || (die >= uncore_max_dies()))
- 				continue;
- 
- 			parse_discovery_table(dev, die, bar_offset, &parsed, ignore);
--- 
-2.53.0
-
+ 		/* Add actual length to read for smbus block read */
+-		if (i2c->msg->flags & I2C_M_RECV_LEN && i2c->msg->len == 1)
++		if (i2c->msg->flags & I2C_M_RECV_LEN && i2c->msg->len == 1) {
++			if (byte == 0 || byte > I2C_SMBUS_BLOCK_MAX) {
++				s3c24xx_i2c_stop(i2c, -EPROTO);
++				break;
++			}
+ 			i2c->msg->len += byte;
++		}
+  prepare_read:
+ 		if (is_msglast(i2c)) {
+ 			/* last byte of buffer */
 
 
 
