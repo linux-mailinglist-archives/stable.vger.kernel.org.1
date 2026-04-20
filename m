@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-239399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239581-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EOahDXtX5ml5vAEAu9opvQ
-	(envelope-from <stable+bounces-239399-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:42:35 +0200
+	id KGPXC+tl5mmJvwEAu9opvQ
+	(envelope-from <stable+bounces-239581-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:44:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD89A42FDFF
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:42:34 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5B44431F2F
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:44:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4A3E530D04FF
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:49:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 95D81314975A
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:57:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB69F332635;
-	Mon, 20 Apr 2026 15:49:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40BE23264F1;
+	Mon, 20 Apr 2026 15:57:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YyKGwlc/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LZnM/SPQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E4693368AE;
-	Mon, 20 Apr 2026 15:49:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F00D117A31C;
+	Mon, 20 Apr 2026 15:56:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700147; cv=none; b=t3Fv/9dSxAXTIiAlS93y6Yj72eir2w73oy3ePBQtM0oYTRWizQphiGU+ZVkfs1ge3xzBGdlLEy6E2eI/N51zlgqKcuCjm+zii6sxBPHTRAox8ADu6ibI6KdtG2RDZ9H2L4p7hTqRpA8L1dsXLClFCg+/WDPDAkh+5wZxpRYxP18=
+	t=1776700620; cv=none; b=lrV6tN2VlIwXlSkdXPY7fjd0D8Ovqis0BYmya8UHxvW98/YvbKNVg3eEmuVbkWi9vBbqO/1jOV+uy9lgvbM/QwnOiRtaVPHtOD4GryN49rUrNv9S7it2oMrp0K/VjeLm4W7cw7X9B4ZfIfLo5zA0LCQrt802fJVGXgzNcqjLWD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700147; c=relaxed/simple;
-	bh=aXWJREE7yDC4mI+KVhfeAo7VQwFsUaK4GNbKjWT6wzI=;
+	s=arc-20240116; t=1776700620; c=relaxed/simple;
+	bh=JuHayxoBQd4lxN14qty1ClS7FwmUntufRXVov6XWEC0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=obGcdrkwoDZnUiwUaxKFe7eB/j3acziQpNeU9mi+CMQqrXm2pTRadG8bie2jevSvFT/Ti6oEwq2gd7tRh8KIWhN2TBzHRjHvjZQey76JsD5ml2yIak3A8FQAJCL3xHHvvJqaQ5M+dSaBZijZ1v1jmKeJvmTY1OdT8lXzj2QZjAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YyKGwlc/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0566AC19425;
-	Mon, 20 Apr 2026 15:49:06 +0000 (UTC)
+	 MIME-Version; b=TDptZv9M5ISKFm6BUBxP+x/iTElm7OPPz74mqwECJGkLNE1VsYVZ3YqUCj1foneFY/+VO9MHqe1GqfD6PveCVklklAWtPaUyFDav7oom40SpZ7vU6N4IsV+jC8/kynVyvPZf5gzOGewQoQk9Ssi5atXIZQVwp0GQMu8a7zRdVhA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LZnM/SPQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DAE4C19425;
+	Mon, 20 Apr 2026 15:56:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700147;
-	bh=aXWJREE7yDC4mI+KVhfeAo7VQwFsUaK4GNbKjWT6wzI=;
+	s=korg; t=1776700619;
+	bh=JuHayxoBQd4lxN14qty1ClS7FwmUntufRXVov6XWEC0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YyKGwlc/ql6xphSnw6TYCDDNatIPyep4ilBq7fdUE5JCVFkXX+z5SHqY8qV16x27X
-	 zTCLtytJrYTu8z6NINljH2luUF6nyN8BjFBBhGNe6ZlHmOPjSeYZLvO+OleWsRDUBh
-	 K46k1o8mMqTaHK+kcN1VfGSlQtQuUQIekBFtWvAM=
+	b=LZnM/SPQqSUhX5F6vXtTecMfFXO+qxKyD+ZRQEOKLa+MkUqQMpUXZhhNL68suirwE
+	 TkPS2k4x/g/mCjHzQjE77Hf8IHf1a8WItpQ9qx6TjBic8fVYVdS2d/38EnNQJJR8e2
+	 a+7hx8Y1TIz2oBxr3FiQyM124cbo3LSyoaLJWWV8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 060/220] arm64: dts: qcom: monaco: Reserve full Gunyah metadata region
+Subject: [PATCH 6.18 022/198] srcu: Use irq_work to start GP in tiny SRCU
 Date: Mon, 20 Apr 2026 17:40:01 +0200
-Message-ID: <20260420153936.202866293@linuxfoundation.org>
+Message-ID: <20260420153936.416139575@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
-References: <20260420153934.013228280@linuxfoundation.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,102 +64,168 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_FROM(0.00)[bounces-239399-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239581-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_PROHIBIT(0.00)[5.107.6.32:email];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: AD89A42FDFF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: A5B44431F2F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Loic Poulain <loic.poulain@oss.qualcomm.com>
+From: Joel Fernandes <joelagnelf@nvidia.com>
 
-[ Upstream commit 85d98669fa7f1d3041d962515e45ee6e392db6f8 ]
+[ Upstream commit a6fc88b22bc8d12ad52e8412c667ec0f5bf055af ]
 
-We observe spurious "Synchronous External Abort" exceptions
-(ESR=0x96000010) and kernel crashes on Monaco-based platforms.
-These faults are caused by the kernel inadvertently accessing
-hypervisor-owned memory that is not properly marked as reserved.
+Tiny SRCU's srcu_gp_start_if_needed() directly calls schedule_work(),
+which acquires the workqueue pool->lock.
 
->From boot log, The Qualcomm hypervisor reports the memory range
-at 0x91a80000 of size 0x80000 (512 KiB) as hypervisor-owned:
-qhee_hyp_assign_remove_memory: 0x91a80000/0x80000 -> ret 0
+This causes a lockdep splat when call_srcu() is called with a scheduler
+lock held, due to:
 
-However, the EFI memory map provided by firmware only reserves the
-subrange 0x91a40000–0x91a87fff (288 KiB). The remaining portion
-(0x91a88000–0x91afffff) is incorrectly reported as conventional
-memory (from efi debug):
-efi:   0x000091a40000-0x000091a87fff [Reserved...]
-efi:   0x000091a88000-0x0000938fffff [Conventional...]
+  call_srcu() [holding pi_lock]
+    srcu_gp_start_if_needed()
+      schedule_work() -> pool->lock
 
-As a result, the allocator may hand out PFNs inside the hypervisor
-owned region, causing fatal aborts when the kernel accesses those
-addresses.
+  workqueue_init() / create_worker() [holding pool->lock]
+    wake_up_process() -> try_to_wake_up() -> pi_lock
 
-Add a reserved-memory carveout for the Gunyah hypervisor metadata
-at 0x91a80000 (512 KiB) and mark it as no-map so Linux does not
-map or allocate from this area.
+Also add irq_work_sync() to cleanup_srcu_struct() to prevent a
+use-after-free if a queued irq_work fires after cleanup begins.
 
-For the record:
-Hyp version: gunyah-e78adb36e debug (2025-11-17 05:38:05 UTC)
-UEFI Ver: 6.0.260122.BOOT.MXF.1.0.c1-00449-KODIAKLA-1
+Tested with rcutorture SRCU-T and no lockdep warnings.
 
-Fixes: 7be190e4bdd2 ("arm64: dts: qcom: add QCS8300 platform")
-Signed-off-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20260302142603.1113355-1-loic.poulain@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+[ Thanks to Boqun for similar fix in patch "rcu: Use an intermediate irq_work
+to start process_srcu()" ]
+
+Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
+Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Boqun Feng <boqun@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/monaco.dtsi | 5 +++++
- 1 file changed, 5 insertions(+)
+ include/linux/srcutiny.h |  4 ++++
+ kernel/rcu/srcutiny.c    | 19 ++++++++++++++++++-
+ 2 files changed, 22 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/monaco.dtsi b/arch/arm64/boot/dts/qcom/monaco.dtsi
-index f74045be62420..a407f80bc5e1f 100644
---- a/arch/arm64/boot/dts/qcom/monaco.dtsi
-+++ b/arch/arm64/boot/dts/qcom/monaco.dtsi
-@@ -757,6 +757,11 @@ smem_mem: smem@90900000 {
- 			hwlocks = <&tcsr_mutex 3>;
- 		};
+diff --git a/include/linux/srcutiny.h b/include/linux/srcutiny.h
+index 51ce25f07930e..1f9a226e6fd81 100644
+--- a/include/linux/srcutiny.h
++++ b/include/linux/srcutiny.h
+@@ -11,6 +11,7 @@
+ #ifndef _LINUX_SRCU_TINY_H
+ #define _LINUX_SRCU_TINY_H
  
-+		gunyah_md_mem: gunyah-md-region@91a80000 {
-+			reg = <0x0 0x91a80000 0x0 0x80000>;
-+			no-map;
-+		};
++#include <linux/irq_work_types.h>
+ #include <linux/swait.h>
+ 
+ struct srcu_struct {
+@@ -24,18 +25,21 @@ struct srcu_struct {
+ 	struct rcu_head *srcu_cb_head;	/* Pending callbacks: Head. */
+ 	struct rcu_head **srcu_cb_tail;	/* Pending callbacks: Tail. */
+ 	struct work_struct srcu_work;	/* For driving grace periods. */
++	struct irq_work srcu_irq_work;	/* Defer schedule_work() to irq work. */
+ #ifdef CONFIG_DEBUG_LOCK_ALLOC
+ 	struct lockdep_map dep_map;
+ #endif /* #ifdef CONFIG_DEBUG_LOCK_ALLOC */
+ };
+ 
+ void srcu_drive_gp(struct work_struct *wp);
++void srcu_tiny_irq_work(struct irq_work *irq_work);
+ 
+ #define __SRCU_STRUCT_INIT(name, __ignored, ___ignored)			\
+ {									\
+ 	.srcu_wq = __SWAIT_QUEUE_HEAD_INITIALIZER(name.srcu_wq),	\
+ 	.srcu_cb_tail = &name.srcu_cb_head,				\
+ 	.srcu_work = __WORK_INITIALIZER(name.srcu_work, srcu_drive_gp),	\
++	.srcu_irq_work = { .func = srcu_tiny_irq_work },		\
+ 	__SRCU_DEP_MAP_INIT(name)					\
+ }
+ 
+diff --git a/kernel/rcu/srcutiny.c b/kernel/rcu/srcutiny.c
+index e3b64a5e0ec7e..d9c11d5f0ea45 100644
+--- a/kernel/rcu/srcutiny.c
++++ b/kernel/rcu/srcutiny.c
+@@ -9,6 +9,7 @@
+  */
+ 
+ #include <linux/export.h>
++#include <linux/irq_work.h>
+ #include <linux/mutex.h>
+ #include <linux/preempt.h>
+ #include <linux/rcupdate_wait.h>
+@@ -41,6 +42,7 @@ static int init_srcu_struct_fields(struct srcu_struct *ssp)
+ 	ssp->srcu_idx_max = 0;
+ 	INIT_WORK(&ssp->srcu_work, srcu_drive_gp);
+ 	INIT_LIST_HEAD(&ssp->srcu_work.entry);
++	init_irq_work(&ssp->srcu_irq_work, srcu_tiny_irq_work);
+ 	return 0;
+ }
+ 
+@@ -84,6 +86,7 @@ EXPORT_SYMBOL_GPL(init_srcu_struct);
+ void cleanup_srcu_struct(struct srcu_struct *ssp)
+ {
+ 	WARN_ON(ssp->srcu_lock_nesting[0] || ssp->srcu_lock_nesting[1]);
++	irq_work_sync(&ssp->srcu_irq_work);
+ 	flush_work(&ssp->srcu_work);
+ 	WARN_ON(ssp->srcu_gp_running);
+ 	WARN_ON(ssp->srcu_gp_waiting);
+@@ -172,6 +175,20 @@ void srcu_drive_gp(struct work_struct *wp)
+ }
+ EXPORT_SYMBOL_GPL(srcu_drive_gp);
+ 
++/*
++ * Use an irq_work to defer schedule_work() to avoid acquiring the workqueue
++ * pool->lock while the caller might hold scheduler locks, causing lockdep
++ * splats due to workqueue_init() doing a wakeup.
++ */
++void srcu_tiny_irq_work(struct irq_work *irq_work)
++{
++	struct srcu_struct *ssp;
 +
- 		lpass_machine_learning_mem: lpass-machine-learning-region@93b00000 {
- 			reg = <0x0 0x93b00000 0x0 0xf00000>;
- 			no-map;
++	ssp = container_of(irq_work, struct srcu_struct, srcu_irq_work);
++	schedule_work(&ssp->srcu_work);
++}
++EXPORT_SYMBOL_GPL(srcu_tiny_irq_work);
++
+ static void srcu_gp_start_if_needed(struct srcu_struct *ssp)
+ {
+ 	unsigned long cookie;
+@@ -184,7 +201,7 @@ static void srcu_gp_start_if_needed(struct srcu_struct *ssp)
+ 	WRITE_ONCE(ssp->srcu_idx_max, cookie);
+ 	if (!READ_ONCE(ssp->srcu_gp_running)) {
+ 		if (likely(srcu_init_done))
+-			schedule_work(&ssp->srcu_work);
++			irq_work_queue(&ssp->srcu_irq_work);
+ 		else if (list_empty(&ssp->srcu_work.entry))
+ 			list_add(&ssp->srcu_work.entry, &srcu_boot_list);
+ 	}
 -- 
 2.53.0
 
