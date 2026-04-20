@@ -1,60 +1,121 @@
-Return-Path: <stable+bounces-238739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238740-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IAypOYMW5mnCrQEAu9opvQ
-	(envelope-from <stable+bounces-238739-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 14:05:23 +0200
+	id kDPiNoMY5mkprgEAu9opvQ
+	(envelope-from <stable+bounces-238740-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 14:13:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EF4C42A695
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 14:05:23 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5DFA42A895
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 14:13:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 59DDA30193B5
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 12:02:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F1120300578B
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 12:11:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20FC739EF32;
-	Mon, 20 Apr 2026 12:02:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 779EE38757F;
+	Mon, 20 Apr 2026 12:11:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=aliyun.com header.i=@aliyun.com header.b="A3khxHSg"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="EBIsvub5";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="L9RYM4V3";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="vRql/Gje";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="2ltHycoY"
 X-Original-To: stable@vger.kernel.org
-Received: from out30-88.freemail.mail.aliyun.com (out30-88.freemail.mail.aliyun.com [115.124.30.88])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 090BA399369;
-	Mon, 20 Apr 2026 12:02:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.88
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3A562C11DE
+	for <stable@vger.kernel.org>; Mon, 20 Apr 2026 12:11:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776686527; cv=none; b=Doxo4miwtpZgYchecZ14CLVf4e/iR7so4VHholZsrKxtV26XuN6Ry8y9mq04IXH/jHuorCzmjdALulfT2OI4nujIpnzoDHg37yagqI29bWbc/ar2XwW7tMQKCv6EgOzvvJmy9xvXO75bN/pRJv05kZRYUSOpMtn5e02T9EpVngk=
+	t=1776687099; cv=none; b=S1JCXNJ/uoOKSvr3qDdpPKIfMqw9NO4LzadU5fzG88g/5bOxBZAIV1BWwt2Uca9+gKjVGg2wFkexwYhIQD08Fq7tejpnkHd/XP0MLHnNUC++7kHoi9r6tSqYZCOm+yhhUd4v+T41ZhQMq6bhNlh+cFMlOVTCoY7PDADFk2zD6s0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776686527; c=relaxed/simple;
-	bh=u5zHwkkuroZpozLhYbtDF6ZdIvdiozMrMB/+y+CbERo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sfF82yGxJ+njqcSLZ/CVGmUcG4NJng3QEE4J2lBitgd0qmDis8SiZ+iD4s/T6NhZ8mlimISkzrcOwqA9eVXJULiejUq4QxaZScicAW4NlyA613Azp1ixJVD9w++MsXW9TimHYnmALfIPkv2GRJeVbiozyYJFe7gdsPI/RyppePM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=aliyun.com; spf=pass smtp.mailfrom=aliyun.com; dkim=pass (1024-bit key) header.d=aliyun.com header.i=@aliyun.com header.b=A3khxHSg; arc=none smtp.client-ip=115.124.30.88
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=aliyun.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aliyun.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=aliyun.com; s=s1024;
-	t=1776686521; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=Sg5weHTm8+7SZpuZznGV+ept8OBehbdx25ccgIZF/w4=;
-	b=A3khxHSgFeF9TFannTxmhUcwIYIKgDNSh3R5dAORjeBX9ICToXmXNx/sn6ws8hVImg4lyfpGi94uHDeAikqojJ5s3Off83PKgxMQZGC1fnQYqd3IeZ1Vj+htAUiAydluw4NiHv/4OV6edVQbscC49auzrvuYqcCTuMnCXElGoKY=
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.06682798|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.0343396-0.00329653-0.962364;FP=15056820203674600438|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=ruohanlan@aliyun.com;NM=1;PH=DS;RN=8;RT=8;SR=0;TI=SMTPD_---0X1M6EfD_1776686495;
-Received: from China-team(mailfrom:ruohanlan@aliyun.com fp:SMTPD_---0X1M6EfD_1776686495 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 20 Apr 2026 20:02:01 +0800
-From: Ruohan Lan <ruohanlan@aliyun.com>
-To: gregkh@linuxfoundation.org,
-	sashal@kernel.org,
+	s=arc-20240116; t=1776687099; c=relaxed/simple;
+	bh=KSAnJsSk8KnCFNuFn+4yliQHzOIwbLgEssVAzV8SMVE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=jgtpkaSpgCr79kaLAnPui8TDz2ZRSwuaKiUJfFGjvN5BtkXfyclenQ5LJh6RE/RvN/LhGTGmDgnv7cZtHc+4Q/pFxpTwFjekQp/KjlEVOI74vRAJqeXwY92Xe8mqKCy1AweCr3ViQrCem2ZwIGVKBYEbPZ9yjVDfnK6qU1z54+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=EBIsvub5; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=L9RYM4V3; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=vRql/Gje; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=2ltHycoY; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id C49396A7E3;
+	Mon, 20 Apr 2026 12:11:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1776687096; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EXBQGpIN/NerzZ/cIS7lY2MflwttCrRqiuSNqhLh158=;
+	b=EBIsvub5oX6hQkNf9Eqvn3866TK88xylQ4AA+Y/fE1tXzLQVlVs8+TwYFerD63D7TzvwnP
+	xjMofU85sCu+WYoUnfp/8lH5xbFUK2fO9HK8MpBybtW+gsJf2M8epIRUUzn6Yjy751he18
+	vxbslu4XV80q/nIcCYPSqQBgRFT2tdM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1776687096;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EXBQGpIN/NerzZ/cIS7lY2MflwttCrRqiuSNqhLh158=;
+	b=L9RYM4V3iACGUdI+M6QQHDnJD7A9Cg4GqmjdQDaysFIhRUSdLKbhVxtyFenlnfvH9ZG3Lo
+	4fqm0xotvR1JpzBg==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1776687094; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EXBQGpIN/NerzZ/cIS7lY2MflwttCrRqiuSNqhLh158=;
+	b=vRql/GjeIRcGXn1ydLx3XMZGP3WnWuHLdFlW0V4nC9/4k/19dTtwkK6or952TeOzsfmBEY
+	27lvniDaxOrQXAigr4AoGC1Tz6I3LgD4QgdU7Cw2oT09icrFpveb2yLlZarn4y1z3kLZxU
+	vzU4G4zjc+uvYxJseJkdctkcFtXqGpM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1776687094;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EXBQGpIN/NerzZ/cIS7lY2MflwttCrRqiuSNqhLh158=;
+	b=2ltHycoYPlMXTG8P+ibjPaTWMISjqcK/Tj8637JzP0s+t2b62zH+x2pdTXnpKjr1vXIThj
+	VWiAr3perBLgr7AQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4C16E593AF;
+	Mon, 20 Apr 2026 12:11:34 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id cFVgEfYX5mkGZQAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Mon, 20 Apr 2026 12:11:34 +0000
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: xinliang.liu@linaro.org,
+	tiantao6@hisilicon.com,
+	kong.kongxinwei@hisilicon.com,
+	sumit.semwal@linaro.org,
+	yongqin.liu@linaro.org,
+	jstultz@google.com,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	airlied@gmail.com,
+	simona@ffwll.ch
+Cc: dri-devel@lists.freedesktop.org,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Rongrong Zou <zourongrong@gmail.com>,
+	Sean Paul <seanpaul@chromium.org>,
+	Dmitry Baryshkov <lumag@kernel.org>,
+	Baihan Li <libaihan@huawei.com>,
+	Yongbang Shi <shiyongbang@huawei.com>,
 	stable@vger.kernel.org
-Cc: linux-block@vger.kernel.org,
-	Ming Lei <ming.lei@redhat.com>,
-	Caleb Sander Mateos <csander@purestorage.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Ruohan Lan <ruohanlan@aliyun.com>
-Subject: [PATCH 6.1.y] ublk: fix deadlock when reading partition table
-Date: Mon, 20 Apr 2026 20:01:10 +0800
-Message-ID: <20260420120110.864-1-ruohanlan@aliyun.com>
-X-Mailer: git-send-email 2.43.0
+Subject: [PATCH v2 1/4] drm/hibmc: Use drm_atomic_helper_check_plane_state()
+Date: Mon, 20 Apr 2026 14:09:57 +0200
+Message-ID: <20260420121130.200133-2-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260420121130.200133-1-tzimmermann@suse.de>
+References: <20260420121130.200133-1-tzimmermann@suse.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,133 +123,146 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Spam-Flag: NO
+X-Spam-Score: -2.80
+X-Spam-Level: 
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[aliyun.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[aliyun.com:s=s1024];
+	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-238739-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[vger.kernel.org,redhat.com,purestorage.com,kernel.dk,aliyun.com];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	FREEMAIL_CC(0.00)[lists.freedesktop.org,suse.de,gmail.com,chromium.org,kernel.org,huawei.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-238740-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[linaro.org,hisilicon.com,google.com,linux.intel.com,kernel.org,gmail.com,ffwll.ch];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[aliyun.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ruohanlan@aliyun.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[tzimmermann@suse.de,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[aliyun.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[suse.de:+];
+	RCVD_COUNT_FIVE(0.00)[6];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[purestorage.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,aliyun.com:email,aliyun.com:dkim,aliyun.com:mid]
-X-Rspamd-Queue-Id: 8EF4C42A695
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linaro.org:email,huawei.com:email,chromium.org:email,suse.de:email,suse.de:dkim,suse.de:mid]
+X-Rspamd-Queue-Id: E5DFA42A895
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Ming Lei <ming.lei@redhat.com>
+Call drm_atomic_helper_check_plane_state() from the primary plane's
+atomic-check helper and replace the custom implementation.
 
-[ Upstream commit c258f5c4502c9667bccf5d76fa731ab9c96687c1 ]
+All plane's implementations of atomic_check should call the shared
+_check_plane_state() helper first. It adjusts the plane state for
+correct positioning, rotation and scaling of the plane. Do this
+even if the plane's CRTC has been disabled by setting the parameter
+can_update_disabled. The original code returned early in this case,
+but it's safe to so and cleaner to have all plane state initialized.
 
-When one process(such as udev) opens ublk block device (e.g., to read
-the partition table via bdev_open()), a deadlock[1] can occur:
+As we don't set can_position, drm_atomic_helper_check_plane_state()'s
+visibility check tests if the plane covers all of the CRTC. This is
+a small change from the original code, which tested if the plane is
+exactly the size of the CRTC. With the new test, the plane still has
+to cover all of the CRTC, but can be larger than the CRTC's size. A
+later patch can fully implement this feature in hibmc.
 
-1. bdev_open() grabs disk->open_mutex
-2. The process issues read I/O to ublk backend to read partition table
-3. In __ublk_complete_rq(), blk_update_request() or blk_mq_end_request()
-   runs bio->bi_end_io() callbacks
-4. If this triggers fput() on file descriptor of ublk block device, the
-   work may be deferred to current task's task work (see fput() implementation)
-5. This eventually calls blkdev_release() from the same context
-6. blkdev_release() tries to grab disk->open_mutex again
-7. Deadlock: same task waiting for a mutex it already holds
+If the plane is disabled, the helper clears the visibility flag in the
+plane state. On errors or if the plane is not visible, the atomic-check
+helper can return early. Implement all this in hibmc and drop the custom
+code that does some of it.
 
-The fix is to run blk_update_request() and blk_mq_end_request() with bottom
-halves disabled. This forces blkdev_release() to run in kernel work-queue
-context instead of current task work context, and allows ublk server to make
-forward progress, and avoids the deadlock.
+v2:
+- extend the commit description (Yongbang)
 
-Fixes: 71f28f3136af ("ublk_drv: add io_uring based userspace block driver")
-Link: https://github.com/ublk-org/ublksrv/issues/170 [1]
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Reviewed-by: Caleb Sander Mateos <csander@purestorage.com>
-[axboe: rewrite comment in ublk]
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-[ The fix omits the change in __ublk_do_auto_buf_reg() since this function
-doesn't exist in 6.1. ]
-Signed-off-by: Ruohan Lan <ruohanlan@aliyun.com>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: da52605eea8f ("drm/hisilicon/hibmc: Add support for display engine")
+Cc: Rongrong Zou <zourongrong@gmail.com>
+Cc: Sean Paul <seanpaul@chromium.org>
+Cc: Xinliang Liu <xinliang.liu@linaro.org>
+Cc: Dmitry Baryshkov <lumag@kernel.org>
+Cc: Baihan Li <libaihan@huawei.com>
+Cc: Yongbang Shi <shiyongbang@huawei.com>
+Cc: <stable@vger.kernel.org> # v4.10+
 ---
- drivers/block/ublk_drv.c | 28 ++++++++++++++++++++++++++--
- 1 file changed, 26 insertions(+), 2 deletions(-)
+ .../gpu/drm/hisilicon/hibmc/hibmc_drm_de.c    | 46 ++++++-------------
+ 1 file changed, 14 insertions(+), 32 deletions(-)
 
-diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
-index 121b62f8bb0a..00d29a3c3d28 100644
---- a/drivers/block/ublk_drv.c
-+++ b/drivers/block/ublk_drv.c
-@@ -603,12 +603,20 @@ static inline bool ubq_daemon_is_dying(struct ublk_queue *ubq)
- 	return ubq->ubq_daemon->flags & PF_EXITING;
- }
- 
-+static void ublk_end_request(struct request *req, blk_status_t error)
-+{
-+	local_bh_disable();
-+	blk_mq_end_request(req, error);
-+	local_bh_enable();
-+}
-+
- /* todo: handle partial completion */
- static void ublk_complete_rq(struct request *req)
+diff --git a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_de.c b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_de.c
+index 89bed78f1466..8fa2a95bcdd1 100644
+--- a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_de.c
++++ b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_de.c
+@@ -55,46 +55,28 @@ static const struct hibmc_dislay_pll_config hibmc_pll_table[] = {
+ static int hibmc_plane_atomic_check(struct drm_plane *plane,
+ 				    struct drm_atomic_state *state)
  {
- 	struct ublk_queue *ubq = req->mq_hctx->driver_data;
- 	struct ublk_io *io = &ubq->ios[req->tag];
- 	unsigned int unmapped_bytes;
-+	bool requeue;
+-	struct drm_plane_state *new_plane_state = drm_atomic_get_new_plane_state(state,
+-										 plane);
+-	struct drm_framebuffer *fb = new_plane_state->fb;
+-	struct drm_crtc *crtc = new_plane_state->crtc;
+-	struct drm_crtc_state *crtc_state;
+-	u32 src_w = new_plane_state->src_w >> 16;
+-	u32 src_h = new_plane_state->src_h >> 16;
+-
+-	if (!crtc || !fb)
+-		return 0;
++	struct drm_plane_state *new_plane_state =
++		drm_atomic_get_new_plane_state(state, plane);
++	struct drm_crtc_state *new_crtc_state = NULL;
++	int ret;
  
- 	/* failed read IO if nothing is read */
- 	if (!io->res && req_op(req) == REQ_OP_READ)
-@@ -641,7 +649,23 @@ static void ublk_complete_rq(struct request *req)
- 	if (unlikely(unmapped_bytes < io->res))
- 		io->res = unmapped_bytes;
+-	crtc_state = drm_atomic_get_crtc_state(state, crtc);
+-	if (IS_ERR(crtc_state))
+-		return PTR_ERR(crtc_state);
++	if (new_plane_state->crtc)
++		new_crtc_state = drm_atomic_get_new_crtc_state(state, new_plane_state->crtc);
  
--	if (blk_update_request(req, BLK_STS_OK, io->res))
-+	/*
-+	 * Run bio->bi_end_io() with softirqs disabled. If the final fput
-+	 * happens off this path, then that will prevent ublk's blkdev_release()
-+	 * from being called on current's task work, see fput() implementation.
-+	 *
-+	 * Otherwise, ublk server may not provide forward progress in case of
-+	 * reading the partition table from bdev_open() with disk->open_mutex
-+	 * held, and causes dead lock as we could already be holding
-+	 * disk->open_mutex here.
-+	 *
-+	 * Preferably we would not be doing IO with a mutex held that is also
-+	 * used for release, but this work-around will suffice for now.
-+	 */
-+	local_bh_disable();
-+	requeue = blk_update_request(req, BLK_STS_OK, io->res);
-+	local_bh_enable();
-+	if (requeue)
- 		blk_mq_requeue_request(req, true);
- 	else
- 		__blk_mq_end_request(req, BLK_STS_OK);
-@@ -694,7 +718,7 @@ static inline void __ublk_abort_rq(struct ublk_queue *ubq,
- 	if (ublk_queue_can_use_recovery(ubq))
- 		blk_mq_requeue_request(rq, false);
- 	else
--		blk_mq_end_request(rq, BLK_STS_IOERR);
-+		ublk_end_request(rq, BLK_STS_IOERR);
+-	if (src_w != new_plane_state->crtc_w || src_h != new_plane_state->crtc_h) {
+-		drm_dbg_atomic(plane->dev, "scale not support\n");
+-		return -EINVAL;
+-	}
+-
+-	if (new_plane_state->crtc_x < 0 || new_plane_state->crtc_y < 0) {
+-		drm_dbg_atomic(plane->dev, "crtc_x/y of drm_plane state is invalid\n");
+-		return -EINVAL;
+-	}
+-
+-	if (!crtc_state->enable)
++	ret = drm_atomic_helper_check_plane_state(new_plane_state, new_crtc_state,
++						  DRM_PLANE_NO_SCALING,
++						  DRM_PLANE_NO_SCALING,
++						  false, true);
++	if (ret)
++		return ret;
++	else if (!new_plane_state->visible)
+ 		return 0;
  
- 	mod_delayed_work(system_wq, &ubq->dev->monitor_work, 0);
+-	if (new_plane_state->crtc_x + new_plane_state->crtc_w >
+-	    crtc_state->adjusted_mode.hdisplay ||
+-	    new_plane_state->crtc_y + new_plane_state->crtc_h >
+-	    crtc_state->adjusted_mode.vdisplay) {
+-		drm_dbg_atomic(plane->dev, "visible portion of plane is invalid\n");
+-		return -EINVAL;
+-	}
+-
+ 	if (new_plane_state->fb->pitches[0] % 128 != 0) {
+ 		drm_dbg_atomic(plane->dev, "wrong stride with 128-byte aligned\n");
+ 		return -EINVAL;
+ 	}
++
+ 	return 0;
  }
+ 
 -- 
-2.43.0
+2.53.0
 
 
