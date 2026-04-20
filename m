@@ -1,64 +1,61 @@
-Return-Path: <stable+bounces-239481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239659-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4H1ZKuRk5mkKvwEAu9opvQ
-	(envelope-from <stable+bounces-239481-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:39:48 +0200
+	id GBSVJQVn5mmlvwEAu9opvQ
+	(envelope-from <stable+bounces-239659-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:48:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F7F7431B82
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:39:48 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA8EC432202
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:48:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E3EDD31C61DF
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:52:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3753631A0122
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:01:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FFC83382C7;
-	Mon, 20 Apr 2026 15:52:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 577A133B975;
+	Mon, 20 Apr 2026 16:01:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qChuNFux"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vQjwu/u4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E423A2E093A;
-	Mon, 20 Apr 2026 15:52:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A6D62E2665;
+	Mon, 20 Apr 2026 16:01:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700364; cv=none; b=NW+nKLchCAClxK6jHQTG1Qwi+wgVpnwnmDg0TZ3yFphFaDz0zH/floSJm34iFKB1RyhBn/Mc/K1N/rE1XNVeOK0wzHKAYOrqtvGlAYkaY6+gg4P3I+d+QSx7XdN7iSGvHVbGHdpSSqAo00Za7HZVe3EgM6KJF6n28ZmYUw3VjrU=
+	t=1776700893; cv=none; b=WcN4oPJ4Nx9yAoc70d7YNffE6opj8ZYybaalVpNskLDLp1NPOTKQOowxNMpGOI70xOEhLcf6hGpAU2WrfcGz0ImlFcett20P98T+CDZyGyt433YmLcFbSA6xC5fhC+9C3bAxm5clYaQjK8xg+JPiW7Qk+vVYFoApESCJUUIDcHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700364; c=relaxed/simple;
-	bh=Cv0ck2E7Dw/sBLyKxf7uBUjHlBUypCfBkyXpZ9sXKIA=;
+	s=arc-20240116; t=1776700893; c=relaxed/simple;
+	bh=NziIoVr6CJT6SiabbZdsyWZCZ2Y6Y/3+505Vf4IJ0D8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PO21erqRdCXYzqkGICyvvUh17iFMO97u7PJ2oB+4v6FHpVn182xrmP12MNgzJrTS3IYyE9FB/SyqW1hzaXB1jrnJ8WzP7YHj5YBLVwHsMfKleo+BqVLQXP/1sYA+zuSv1fJ3MCU6M/8XIi1MPt0E9rKnbqDKwDzAzfw3Rum2csE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qChuNFux; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79B1BC19425;
-	Mon, 20 Apr 2026 15:52:43 +0000 (UTC)
+	 MIME-Version; b=JCPSZ2+w3ii119xRwdJLjPAfy3ZZu7edzTQs+jq7e8ux9MQ6qgNHZP/43HH5soPMWzR7gCYjaILsP/VGDXrYANAYLDFDj+YZihup1dfHwydNR3d42f6DYNUe073RLvG+TMhg8/P+F6C8xLfkpFQESpLhziK2aQo+YEk045Cal7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vQjwu/u4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6542C19425;
+	Mon, 20 Apr 2026 16:01:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700363;
-	bh=Cv0ck2E7Dw/sBLyKxf7uBUjHlBUypCfBkyXpZ9sXKIA=;
+	s=korg; t=1776700893;
+	bh=NziIoVr6CJT6SiabbZdsyWZCZ2Y6Y/3+505Vf4IJ0D8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qChuNFuxUw2/PLIUwmIrVItySTs43QRodAfzcuicPiySbIbNk2Iw28o1uGro2ITzr
-	 6swIra1ym6IdEnOpSmYij+vBlx5pZTgAnP/1YmbD53o61RdQsmgDJIGdD5IlN1zNYi
-	 RBPachsQ10N7HN5MFXOqEXUg3Ua3TJb1th1+Ey3k=
+	b=vQjwu/u4hSP7D8iVDoLmQQlHUCPXPlNqiURLpsOdTjRkch8UQEb/5n1DJ32pQGYOa
+	 euhZ8YrqgFTJmqTSpTrD/3n1ikwCFfSpo1rHkqKSwqIXMFQrDRnKMOyC2sPtsCozIN
+	 +OJOz4tsTTwKVg4ErGF/uxLkJhCrQdHuqLVWTr68=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Xiao Liu <lx24@stu.ynu.edu.cn>,
-	Zhengchuan Liang <zcliangcn@gmail.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
+	Yiming Qian <yimingqian591@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Justin Iurman <justin.iurman@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 110/220] net: af_key: zero aligned sockaddr tail in PF_KEY exports
-Date: Mon, 20 Apr 2026 17:40:51 +0200
-Message-ID: <20260420153937.993115004@linuxfoundation.org>
+Subject: [PATCH 6.18 073/198] ipv6: ioam: fix potential NULL dereferences in __ioam6_fill_trace_data()
+Date: Mon, 20 Apr 2026 17:40:52 +0200
+Message-ID: <20260420153938.238420878@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
-References: <20260420153934.013228280@linuxfoundation.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,181 +66,155 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [3.84 / 15.00];
-	SEM_URIBL(3.50)[ynu.edu.cn:email];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
-	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,stu.ynu.edu.cn,secunet.com,kernel.org];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org];
+	URIBL_MULTI_FAIL(0.00)[sea.lore.kernel.org:server fail,msgid.link:server fail,linuxfoundation.org:server fail];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-239481-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	TAGGED_FROM(0.00)[bounces-239659-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	NEURAL_HAM(-0.00)[-0.540];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	R_SPF_ALLOW(0.00)[+ip4:172.234.253.10:c];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,secunet.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1F7F7431B82
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: EA8EC432202
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhengchuan Liang <zcliangcn@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 426c355742f02cf743b347d9d7dbdc1bfbfa31ef ]
+[ Upstream commit 4e65a8b8daa18d63255ec58964dd192c7fdd9f8b ]
 
-PF_KEY export paths use `pfkey_sockaddr_size()` when reserving sockaddr
-payload space, so IPv6 addresses occupy 32 bytes on the wire. However,
-`pfkey_sockaddr_fill()` initializes only the first 28 bytes of
-`struct sockaddr_in6`, leaving the final 4 aligned bytes uninitialized.
+We need to check __in6_dev_get() for possible NULL value, as
+suggested by Yiming Qian.
 
-Not every PF_KEY message is affected. The state and policy dump builders
-already zero the whole message buffer before filling the sockaddr
-payloads. Keep the fix to the export paths that still append aligned
-sockaddr payloads with plain `skb_put()`:
+Also add skb_dst_dev_rcu() instead of skb_dst_dev(),
+and two missing READ_ONCE().
 
-  - `SADB_ACQUIRE`
-  - `SADB_X_NAT_T_NEW_MAPPING`
-  - `SADB_X_MIGRATE`
+Note that @dev can't be NULL.
 
-Fix those paths by clearing only the aligned sockaddr tail after
-`pfkey_sockaddr_fill()`.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Fixes: 08de61beab8a ("[PFKEYV2]: Extension for dynamic update of endpoint address(es)")
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Co-developed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Yuan Tan <yuantan098@gmail.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Tested-by: Xiao Liu <lx24@stu.ynu.edu.cn>
-Signed-off-by: Zhengchuan Liang <zcliangcn@gmail.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Fixes: 9ee11f0fff20 ("ipv6: ioam: Data plane support for Pre-allocated Trace")
+Reported-by: Yiming Qian <yimingqian591@gmail.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Justin Iurman <justin.iurman@gmail.com>
+Link: https://patch.msgid.link/20260402101732.1188059-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/key/af_key.c | 52 +++++++++++++++++++++++++++++++-----------------
- 1 file changed, 34 insertions(+), 18 deletions(-)
+ net/ipv6/ioam6.c | 27 ++++++++++++++++-----------
+ 1 file changed, 16 insertions(+), 11 deletions(-)
 
-diff --git a/net/key/af_key.c b/net/key/af_key.c
-index bc91aeeb74bbf..a6a9a40717ee8 100644
---- a/net/key/af_key.c
-+++ b/net/key/af_key.c
-@@ -757,6 +757,22 @@ static unsigned int pfkey_sockaddr_fill(const xfrm_address_t *xaddr, __be16 port
- 	return 0;
- }
- 
-+static unsigned int pfkey_sockaddr_fill_zero_tail(const xfrm_address_t *xaddr,
-+						  __be16 port,
-+						  struct sockaddr *sa,
-+						  unsigned short family)
-+{
-+	unsigned int prefixlen;
-+	int sockaddr_len = pfkey_sockaddr_len(family);
-+	int sockaddr_size = pfkey_sockaddr_size(family);
-+
-+	prefixlen = pfkey_sockaddr_fill(xaddr, port, sa, family);
-+	if (sockaddr_size > sockaddr_len)
-+		memset((u8 *)sa + sockaddr_len, 0, sockaddr_size - sockaddr_len);
-+
-+	return prefixlen;
-+}
-+
- static struct sk_buff *__pfkey_xfrm_state2msg(const struct xfrm_state *x,
- 					      int add_keys, int hsc)
+diff --git a/net/ipv6/ioam6.c b/net/ipv6/ioam6.c
+index 8db7f965696aa..12350e1e18bde 100644
+--- a/net/ipv6/ioam6.c
++++ b/net/ipv6/ioam6.c
+@@ -710,7 +710,9 @@ static void __ioam6_fill_trace_data(struct sk_buff *skb,
+ 				    struct ioam6_schema *sc,
+ 				    unsigned int sclen, bool is_input)
  {
-@@ -3206,9 +3222,9 @@ static int pfkey_send_acquire(struct xfrm_state *x, struct xfrm_tmpl *t, struct
- 	addr->sadb_address_proto = 0;
- 	addr->sadb_address_reserved = 0;
- 	addr->sadb_address_prefixlen =
--		pfkey_sockaddr_fill(&x->props.saddr, 0,
--				    (struct sockaddr *) (addr + 1),
--				    x->props.family);
-+		pfkey_sockaddr_fill_zero_tail(&x->props.saddr, 0,
-+					      (struct sockaddr *)(addr + 1),
-+					      x->props.family);
- 	if (!addr->sadb_address_prefixlen)
- 		BUG();
+-	struct net_device *dev = skb_dst_dev(skb);
++	/* Note: skb_dst_dev_rcu() can't be NULL at this point. */
++	struct net_device *dev = skb_dst_dev_rcu(skb);
++	struct inet6_dev *i_skb_dev, *idev;
+ 	struct timespec64 ts;
+ 	ktime_t tstamp;
+ 	u64 raw64;
+@@ -721,13 +723,16 @@ static void __ioam6_fill_trace_data(struct sk_buff *skb,
  
-@@ -3221,9 +3237,9 @@ static int pfkey_send_acquire(struct xfrm_state *x, struct xfrm_tmpl *t, struct
- 	addr->sadb_address_proto = 0;
- 	addr->sadb_address_reserved = 0;
- 	addr->sadb_address_prefixlen =
--		pfkey_sockaddr_fill(&x->id.daddr, 0,
--				    (struct sockaddr *) (addr + 1),
--				    x->props.family);
-+		pfkey_sockaddr_fill_zero_tail(&x->id.daddr, 0,
-+					      (struct sockaddr *)(addr + 1),
-+					      x->props.family);
- 	if (!addr->sadb_address_prefixlen)
- 		BUG();
+ 	data = trace->data + trace->remlen * 4 - trace->nodelen * 4 - sclen * 4;
  
-@@ -3421,9 +3437,9 @@ static int pfkey_send_new_mapping(struct xfrm_state *x, xfrm_address_t *ipaddr,
- 	addr->sadb_address_proto = 0;
- 	addr->sadb_address_reserved = 0;
- 	addr->sadb_address_prefixlen =
--		pfkey_sockaddr_fill(&x->props.saddr, 0,
--				    (struct sockaddr *) (addr + 1),
--				    x->props.family);
-+		pfkey_sockaddr_fill_zero_tail(&x->props.saddr, 0,
-+					      (struct sockaddr *)(addr + 1),
-+					      x->props.family);
- 	if (!addr->sadb_address_prefixlen)
- 		BUG();
++	i_skb_dev = skb->dev ? __in6_dev_get(skb->dev) : NULL;
++	idev = __in6_dev_get(dev);
++
+ 	/* hop_lim and node_id */
+ 	if (trace->type.bit0) {
+ 		byte = ipv6_hdr(skb)->hop_limit;
+ 		if (is_input)
+ 			byte--;
  
-@@ -3443,9 +3459,9 @@ static int pfkey_send_new_mapping(struct xfrm_state *x, xfrm_address_t *ipaddr,
- 	addr->sadb_address_proto = 0;
- 	addr->sadb_address_reserved = 0;
- 	addr->sadb_address_prefixlen =
--		pfkey_sockaddr_fill(ipaddr, 0,
--				    (struct sockaddr *) (addr + 1),
--				    x->props.family);
-+		pfkey_sockaddr_fill_zero_tail(ipaddr, 0,
-+					      (struct sockaddr *)(addr + 1),
-+					      x->props.family);
- 	if (!addr->sadb_address_prefixlen)
- 		BUG();
+-		raw32 = dev_net(dev)->ipv6.sysctl.ioam6_id;
++		raw32 = READ_ONCE(dev_net(dev)->ipv6.sysctl.ioam6_id);
  
-@@ -3474,15 +3490,15 @@ static int set_sadb_address(struct sk_buff *skb, int sasize, int type,
- 	switch (type) {
- 	case SADB_EXT_ADDRESS_SRC:
- 		addr->sadb_address_prefixlen = sel->prefixlen_s;
--		pfkey_sockaddr_fill(&sel->saddr, 0,
--				    (struct sockaddr *)(addr + 1),
--				    sel->family);
-+		pfkey_sockaddr_fill_zero_tail(&sel->saddr, 0,
-+					      (struct sockaddr *)(addr + 1),
-+					      sel->family);
- 		break;
- 	case SADB_EXT_ADDRESS_DST:
- 		addr->sadb_address_prefixlen = sel->prefixlen_d;
--		pfkey_sockaddr_fill(&sel->daddr, 0,
--				    (struct sockaddr *)(addr + 1),
--				    sel->family);
-+		pfkey_sockaddr_fill_zero_tail(&sel->daddr, 0,
-+					      (struct sockaddr *)(addr + 1),
-+					      sel->family);
- 		break;
- 	default:
- 		return -EINVAL;
+ 		*(__be32 *)data = cpu_to_be32((byte << 24) | raw32);
+ 		data += sizeof(__be32);
+@@ -735,18 +740,18 @@ static void __ioam6_fill_trace_data(struct sk_buff *skb,
+ 
+ 	/* ingress_if_id and egress_if_id */
+ 	if (trace->type.bit1) {
+-		if (!skb->dev)
++		if (!i_skb_dev)
+ 			raw16 = IOAM6_U16_UNAVAILABLE;
+ 		else
+-			raw16 = (__force u16)READ_ONCE(__in6_dev_get(skb->dev)->cnf.ioam6_id);
++			raw16 = (__force u16)READ_ONCE(i_skb_dev->cnf.ioam6_id);
+ 
+ 		*(__be16 *)data = cpu_to_be16(raw16);
+ 		data += sizeof(__be16);
+ 
+-		if (dev->flags & IFF_LOOPBACK)
++		if ((dev->flags & IFF_LOOPBACK) || !idev)
+ 			raw16 = IOAM6_U16_UNAVAILABLE;
+ 		else
+-			raw16 = (__force u16)READ_ONCE(__in6_dev_get(dev)->cnf.ioam6_id);
++			raw16 = (__force u16)READ_ONCE(idev->cnf.ioam6_id);
+ 
+ 		*(__be16 *)data = cpu_to_be16(raw16);
+ 		data += sizeof(__be16);
+@@ -822,7 +827,7 @@ static void __ioam6_fill_trace_data(struct sk_buff *skb,
+ 		if (is_input)
+ 			byte--;
+ 
+-		raw64 = dev_net(dev)->ipv6.sysctl.ioam6_id_wide;
++		raw64 = READ_ONCE(dev_net(dev)->ipv6.sysctl.ioam6_id_wide);
+ 
+ 		*(__be64 *)data = cpu_to_be64(((u64)byte << 56) | raw64);
+ 		data += sizeof(__be64);
+@@ -830,18 +835,18 @@ static void __ioam6_fill_trace_data(struct sk_buff *skb,
+ 
+ 	/* ingress_if_id and egress_if_id (wide) */
+ 	if (trace->type.bit9) {
+-		if (!skb->dev)
++		if (!i_skb_dev)
+ 			raw32 = IOAM6_U32_UNAVAILABLE;
+ 		else
+-			raw32 = READ_ONCE(__in6_dev_get(skb->dev)->cnf.ioam6_id_wide);
++			raw32 = READ_ONCE(i_skb_dev->cnf.ioam6_id_wide);
+ 
+ 		*(__be32 *)data = cpu_to_be32(raw32);
+ 		data += sizeof(__be32);
+ 
+-		if (dev->flags & IFF_LOOPBACK)
++		if ((dev->flags & IFF_LOOPBACK) || !idev)
+ 			raw32 = IOAM6_U32_UNAVAILABLE;
+ 		else
+-			raw32 = READ_ONCE(__in6_dev_get(dev)->cnf.ioam6_id_wide);
++			raw32 = READ_ONCE(idev->cnf.ioam6_id_wide);
+ 
+ 		*(__be32 *)data = cpu_to_be32(raw32);
+ 		data += sizeof(__be32);
 -- 
 2.53.0
 
