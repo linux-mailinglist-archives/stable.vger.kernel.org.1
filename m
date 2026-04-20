@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-239590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239408-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WEBVFwNm5mmJvwEAu9opvQ
-	(envelope-from <stable+bounces-239590-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:44:35 +0200
+	id oAz9Chtk5mkKvwEAu9opvQ
+	(envelope-from <stable+bounces-239408-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:36:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCD60431F6F
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:44:34 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FD5E43193C
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:36:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 75D4A316A2C7
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:57:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E494E34E74A8
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:49:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D4B3332916;
-	Mon, 20 Apr 2026 15:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9F2D329E46;
+	Mon, 20 Apr 2026 15:49:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kaNXkgWS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ckPQ6/d4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D40DD17A31C;
-	Mon, 20 Apr 2026 15:57:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DC122D77E5;
+	Mon, 20 Apr 2026 15:49:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700642; cv=none; b=CFe8RINJpAvYJstdUBj03O5++6iNZV32YfDNGUSFHrAInQqPWfOcMTLpdAnwe+XcdimNmPuFDUBswAamTX7AjcHtfM0T1iNGhI6JV+9edJIJ8VYlyTEfN7nDOJIa34venMpxTL2I0+VpMr393egb4Mn3j1K+2SbYA7lW17R5lmc=
+	t=1776700170; cv=none; b=XUNxX3NHXQIk1Q8xCORtcoWcHlU/ScANiv2VSeS8YZufSN4zPhESRiu0uCsvuqydWWR2ipmC28HuiADy6tbjselTY8sLtTViX+hQLhefNLX/CmTF/RHPSJXfM9jLYvd+gRTVetb6OtFdKBa0hMgg39qYQbH1jV0aaVsnbLtyL5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700642; c=relaxed/simple;
-	bh=KFt/eMrzILL2fan9Zzzt/BzF+Hx/Ta5NmEqYK+1dZ/0=;
+	s=arc-20240116; t=1776700170; c=relaxed/simple;
+	bh=u323AYusz6wyzb2Hh6CTxXcnIafXvOWViU0hOjzTIis=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o6+xaanhXpJLCfiZdQOhc7/8R6ChCpjUkEwE4kp8Y7FVqq3j31RRbs12D2r0MdH2Rs7EJr+Ej3rrsYzwOvhRai1J/Ygv3zZMg38zj0qL+qXesE1fkGmHBg6sWx9GRMArOkSnjQ6XQB+9O+M038X4K87B4d1nH7XG68t1EmrBZGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kaNXkgWS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61CC8C19425;
-	Mon, 20 Apr 2026 15:57:22 +0000 (UTC)
+	 MIME-Version; b=iFNhm/P+LFy77Cz51YTu0FGNO3yLsKkVqc4ucwsU0TUOasY9BnHX+iALTHiKzJH01T5DVrnV97aZBhF9Uzmm6yFDVgz6CIgh+1hlS3bB2//F90Hb0QxFwQnz0ohJ8+/BH7TMimdxLNcytP2c65hks4K8bB7iAX63g93/p0wGuc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ckPQ6/d4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05339C2BCB7;
+	Mon, 20 Apr 2026 15:49:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700642;
-	bh=KFt/eMrzILL2fan9Zzzt/BzF+Hx/Ta5NmEqYK+1dZ/0=;
+	s=korg; t=1776700170;
+	bh=u323AYusz6wyzb2Hh6CTxXcnIafXvOWViU0hOjzTIis=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kaNXkgWS+l7+5VVUpBnM+ARPYDRjAdbOLope+EYUDE1LDmDzmjQ/rg2QaFndjTvX3
-	 kvaPVVKd4kAFgSBvPJPh3yjuMYGfsHXISpAsKTOy/SirActusTwAfz+a+Z4UbD7hlt
-	 Hl90WOen2kfvIuE7oR42HbTkqKad0ILASDvYp10w=
+	b=ckPQ6/d4PX5agtT59bqQKsOIBqyKvVrCN9aAPSihD0arU4bayJa5lGOB035XQueW+
+	 2202KPJraOfdUI3eVBk+ilVc9gIpQbZXF9SjT5y7xPPiH1W7JScFaDimjfA5pQhtK5
+	 +OCy7jSom+EdmkN4Fn43p1epx651yC8O0XotU6dg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Garcicasti <andresgarciacastilla@gmail.com>,
-	songxiebing <songxiebing@kylinos.cn>,
-	Takashi Iwai <tiwai@suse.de>,
+	Petr Tesarik <ptesarik@suse.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 030/198] ALSA: hda/realtek: Add quirk for Lenovo Yoga Slim 7 14AKP10
+Subject: [PATCH 6.19 068/220] dma-mapping: add DMA_ATTR_CPU_CACHE_CLEAN
 Date: Mon, 20 Apr 2026 17:40:09 +0200
-Message-ID: <20260420153936.702046214@linuxfoundation.org>
+Message-ID: <20260420153936.489182200@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
+References: <20260420153934.013228280@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,72 +69,94 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kylinos.cn,suse.de,kernel.org];
-	TAGGED_FROM(0.00)[bounces-239590-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239408-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,kylinos.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: CCD60431F6F
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.com:email,samsung.com:email]
+X-Rspamd-Queue-Id: 4FD5E43193C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: songxiebing <songxiebing@kylinos.cn>
+From: Michael S. Tsirkin <mst@redhat.com>
 
-[ Upstream commit e6c888202297eca21860b669edb74fc600e679d9 ]
+[ Upstream commit 61868dc55a119a5e4b912d458fc2c48ba80a35fe ]
 
-The Pin Complex 0x17 (bass/woofer speakers) is incorrectly reported as
-unconnected in the BIOS (pin default 0x411111f0 = N/A). This causes the
-kernel to configure speaker_outs=0, meaning only the tweeters (pin 0x14)
-are used. The result is very low, tinny audio with no bass.
+When multiple small DMA_FROM_DEVICE or DMA_BIDIRECTIONAL buffers share a
+cacheline, and DMA_API_DEBUG is enabled, we get this warning:
+	cacheline tracking EEXIST, overlapping mappings aren't supported.
 
-The existing quirk ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN (already present
-in patch_realtek.c for SSID 0x17aa3801) fixes the issue completely.
+This is because when one of the mappings is removed, while another one
+is active, CPU might write into the buffer.
 
-Reported-by: Garcicasti <andresgarciacastilla@gmail.com>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=221298
-Signed-off-by: songxiebing <songxiebing@kylinos.cn>
-Link: https://patch.msgid.link/20260331033650.285601-1-songxiebing@kylinos.cn
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Add an attribute for the driver to promise not to do this, making the
+overlapping safe, and suppressing the warning.
+
+Message-ID: <2d5d091f9d84b68ea96abd545b365dd1d00bbf48.1767601130.git.mst@redhat.com>
+Reviewed-by: Petr Tesarik <ptesarik@suse.com>
+Acked-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Stable-dep-of: 3d48c9fd78dd ("dma-debug: suppress cacheline overlap warning when arch has no DMA alignment requirement")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/hda/codecs/realtek/alc269.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/dma-mapping.h | 7 +++++++
+ kernel/dma/debug.c          | 3 ++-
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/realtek/alc269.c
-index c76d339009a9b..1c8ee8263ab3a 100644
---- a/sound/hda/codecs/realtek/alc269.c
-+++ b/sound/hda/codecs/realtek/alc269.c
-@@ -7464,6 +7464,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x17aa, 0x3902, "Lenovo E50-80", ALC269_FIXUP_DMIC_THINKPAD_ACPI),
- 	SND_PCI_QUIRK(0x17aa, 0x390d, "Lenovo Yoga Pro 7 14ASP10", ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN),
- 	SND_PCI_QUIRK(0x17aa, 0x3913, "Lenovo 145", ALC236_FIXUP_LENOVO_INV_DMIC),
-+	SND_PCI_QUIRK(0x17aa, 0x391a, "Lenovo Yoga Slim 7 14AKP10", ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN),
- 	SND_PCI_QUIRK(0x17aa, 0x391f, "Yoga S990-16 pro Quad YC Quad", ALC287_FIXUP_TXNW2781_I2C),
- 	SND_PCI_QUIRK(0x17aa, 0x3920, "Yoga S990-16 pro Quad VECO Quad", ALC287_FIXUP_TXNW2781_I2C),
- 	SND_PCI_QUIRK(0x17aa, 0x3929, "Thinkbook 13x Gen 5", ALC287_FIXUP_MG_RTKC_CSAMP_CS35L41_I2C_THINKPAD),
+diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
+index 190eab9f5e8c2..3e63046b899bc 100644
+--- a/include/linux/dma-mapping.h
++++ b/include/linux/dma-mapping.h
+@@ -78,6 +78,13 @@
+  */
+ #define DMA_ATTR_MMIO		(1UL << 10)
+ 
++/*
++ * DMA_ATTR_CPU_CACHE_CLEAN: Indicates the CPU will not dirty any cacheline
++ * overlapping this buffer while it is mapped for DMA. All mappings sharing
++ * a cacheline must have this attribute for this to be considered safe.
++ */
++#define DMA_ATTR_CPU_CACHE_CLEAN	(1UL << 11)
++
+ /*
+  * A dma_addr_t can hold any valid DMA or bus address for the platform.  It can
+  * be given to a device to use as a DMA source or target.  It is specific to a
+diff --git a/kernel/dma/debug.c b/kernel/dma/debug.c
+index 138ede653de40..7e66d863d573f 100644
+--- a/kernel/dma/debug.c
++++ b/kernel/dma/debug.c
+@@ -595,7 +595,8 @@ static void add_dma_entry(struct dma_debug_entry *entry, unsigned long attrs)
+ 	if (rc == -ENOMEM) {
+ 		pr_err_once("cacheline tracking ENOMEM, dma-debug disabled\n");
+ 		global_disable = true;
+-	} else if (rc == -EEXIST && !(attrs & DMA_ATTR_SKIP_CPU_SYNC) &&
++	} else if (rc == -EEXIST &&
++		   !(attrs & (DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_CPU_CACHE_CLEAN)) &&
+ 		   !(IS_ENABLED(CONFIG_DMA_BOUNCE_UNALIGNED_KMALLOC) &&
+ 		     is_swiotlb_active(entry->dev))) {
+ 		err_printk(entry->dev, entry,
 -- 
 2.53.0
 
