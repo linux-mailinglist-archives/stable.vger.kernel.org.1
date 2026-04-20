@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-239445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239629-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CHtzBJJk5mkKvwEAu9opvQ
-	(envelope-from <stable+bounces-239445-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:38:26 +0200
+	id yEYIDHZi5mmavgEAu9opvQ
+	(envelope-from <stable+bounces-239629-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:29:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E01A431A4D
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:38:25 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00B8143145A
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:29:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2D8BC3937F0D
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:51:34 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0DA05311831D
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:59:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 196333431E7;
-	Mon, 20 Apr 2026 15:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F407533BBCC;
+	Mon, 20 Apr 2026 15:59:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oUaYN/NZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dFUAiQnM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1E1E336EC9;
-	Mon, 20 Apr 2026 15:51:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5D3A33AD9A;
+	Mon, 20 Apr 2026 15:59:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700271; cv=none; b=dl/4wIaK8iCIlRGMj9GRroCB+4cvJCSFVNb7v7+JXyYJAmHd1HCRpPdiMdbGaYTvtphIr9hBbt36BcxbPX2mcwcW37gMPDx1b1EtjCdWnevBztRKIqErkIIg3Ewak1FL6Z2ryNfBzyPqIpDJ+gmqK+yR9YVAWAvMUv+Z0AXhG/4=
+	t=1776700746; cv=none; b=KxUURMcwe8kqqVqr15bkyl5h7bsnQdtY3i0KBgv/OEbr4JysNWvSzTROO3+i0F9/TQNnw/kd+DWDpiX2TBwWJ6j/dX2wK9HxxNtOhzlzrqDj4aXyxJV/w1D4EYurhcBFQYIieGt3vpJiih7SjWuyJV2kec1Hf5X+zRqDk/Ic3a8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700271; c=relaxed/simple;
-	bh=zFlRpd4gj/Wkqcma3qFesoVFp6JiUuwOGEjpFz6y6iQ=;
+	s=arc-20240116; t=1776700746; c=relaxed/simple;
+	bh=GLo1MvrbmjEonLiAFRmSSMpA9IqW5AufesytkhY+H7w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=D6xcMqYzfo4Nk93zMmh8C+zNIBcV0jbL2QjNBaztcjmX3QrDsQDYy8wu6hLHurZe0WvJxiWDPG1eU+5AeybcEFHhAfL4pyCtyfV3lQm/u5+Q9roTvAxiNTzELi/ViAtfFrjhNSqe0VBtBKcfDTjtOz3aHOXUK3MZ8UgXDTe09fw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oUaYN/NZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CA00C19425;
-	Mon, 20 Apr 2026 15:51:11 +0000 (UTC)
+	 MIME-Version; b=tS7sgQdXG8tT3aaqwVq3BJPn6aBwM3QFzjACvReFdxkzf483qLXdwn3aqGS94wcmigsQIgR/t4vUBRzUU76mZu3zflmuVW5PETvXXCQcBYZsu5vwd9YC7M38GD91eFKmJRChXCyViaUNFK+HOyAESx96K0TE8oBKwUA3/B8S5qU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dFUAiQnM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4607EC19425;
+	Mon, 20 Apr 2026 15:59:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700271;
-	bh=zFlRpd4gj/Wkqcma3qFesoVFp6JiUuwOGEjpFz6y6iQ=;
+	s=korg; t=1776700746;
+	bh=GLo1MvrbmjEonLiAFRmSSMpA9IqW5AufesytkhY+H7w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oUaYN/NZTC8/M/cH1YrHua61sVmzqepOqOJSYlJJ9Uud3P5xxbMlofKVtOKBDi1kX
-	 kSKFQQuqW7Rj18ebSG6sraFkkbHIX8rQJw9mCBWxHHSPynMNv8LysgWnNpmr7RJsYT
-	 3KkHkWb8c2v2jo2ggk+vdZhP2vbZaqb8h8Vz1kKc=
+	b=dFUAiQnMPxgbs7fxYmD9xK7uVDFYEIoNYACQHav/5Byi3z+NdCETCaKXz4idVyxqY
+	 tdGEjQgdjWpdyTjiAE4Fwa5XiFq07OL6GGyqlA+q1yqBwd6CjZa4qslgJrhLrxVCgR
+	 vRmKUGIpS71KUzwz0aJsGE1DGRlU8uldDH9fVt14=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Melissa Wen <mwen@igalia.com>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	leo vriska <leo@60228.dev>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 075/220] drm/vc4: Protect madv read in vc4_gem_object_mmap() with madv_lock
-Date: Mon, 20 Apr 2026 17:40:16 +0200
-Message-ID: <20260420153936.738796296@linuxfoundation.org>
+Subject: [PATCH 6.18 038/198] HID: quirks: add HID_QUIRK_ALWAYS_POLL for 8BitDo Pro 3
+Date: Mon, 20 Apr 2026 17:40:17 +0200
+Message-ID: <20260420153936.989166327@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
-References: <20260420153934.013228280@linuxfoundation.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +63,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239445-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-239629-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[igalia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 9E01A431A4D
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,60228.dev:email]
+X-Rspamd-Queue-Id: 00B8143145A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maíra Canal <mcanal@igalia.com>
+From: leo vriska <leo@60228.dev>
 
-[ Upstream commit 338c56050d8e892604da97f67bfa8cc4015a955f ]
+[ Upstream commit 532743944324a873bbaf8620fcabcd0e69e30c36 ]
 
-The mmap callback reads bo->madv without holding madv_lock, racing with
-concurrent DRM_IOCTL_VC4_GEM_MADVISE calls that modify the field under
-the same lock. Add the missing locking to prevent the data race.
+According to a mailing list report [1], this controller's predecessor
+has the same issue. However, it uses the xpad driver instead of HID, so
+this quirk wouldn't apply.
 
-Fixes: b9f19259b84d ("drm/vc4: Add the DRM_IOCTL_VC4_GEM_MADVISE ioctl")
-Reviewed-by: Melissa Wen <mwen@igalia.com>
-Link: https://patch.msgid.link/20260330-vc4-misc-fixes-v1-4-92defc940a29@igalia.com
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
+[1]: https://lore.kernel.org/linux-input/unufo3$det$1@ciao.gmane.io/
+
+Signed-off-by: leo vriska <leo@60228.dev>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vc4/vc4_bo.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/hid/hid-ids.h    | 3 +++
+ drivers/hid/hid-quirks.c | 1 +
+ 2 files changed, 4 insertions(+)
 
-diff --git a/drivers/gpu/drm/vc4/vc4_bo.c b/drivers/gpu/drm/vc4/vc4_bo.c
-index 46b4474ac41d4..44b1f2b00f9b0 100644
---- a/drivers/gpu/drm/vc4/vc4_bo.c
-+++ b/drivers/gpu/drm/vc4/vc4_bo.c
-@@ -739,12 +739,15 @@ static int vc4_gem_object_mmap(struct drm_gem_object *obj, struct vm_area_struct
- 		return -EINVAL;
- 	}
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index d9d354f1b8847..a245928933454 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -22,6 +22,9 @@
+ #define USB_DEVICE_ID_3M2256		0x0502
+ #define USB_DEVICE_ID_3M3266		0x0506
  
-+	mutex_lock(&bo->madv_lock);
- 	if (bo->madv != VC4_MADV_WILLNEED) {
- 		DRM_DEBUG("mmapping of %s BO not allowed\n",
- 			  bo->madv == VC4_MADV_DONTNEED ?
- 			  "purgeable" : "purged");
-+		mutex_unlock(&bo->madv_lock);
- 		return -EINVAL;
- 	}
-+	mutex_unlock(&bo->madv_lock);
++#define USB_VENDOR_ID_8BITDO		0x2dc8
++#define USB_DEVICE_ID_8BITDO_PRO_3	0x6009
++
+ #define USB_VENDOR_ID_A4TECH		0x09da
+ #define USB_DEVICE_ID_A4TECH_WCP32PU	0x0006
+ #define USB_DEVICE_ID_A4TECH_X5_005D	0x000a
+diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
+index 3217e436c052c..f6be3ffee0232 100644
+--- a/drivers/hid/hid-quirks.c
++++ b/drivers/hid/hid-quirks.c
+@@ -25,6 +25,7 @@
+  */
  
- 	return drm_gem_dma_mmap(&bo->base, vma);
- }
+ static const struct hid_device_id hid_quirks[] = {
++	{ HID_USB_DEVICE(USB_VENDOR_ID_8BITDO, USB_DEVICE_ID_8BITDO_PRO_3), HID_QUIRK_ALWAYS_POLL },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_AASHIMA, USB_DEVICE_ID_AASHIMA_GAMEPAD), HID_QUIRK_BADPAD },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_AASHIMA, USB_DEVICE_ID_AASHIMA_PREDATOR), HID_QUIRK_BADPAD },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ADATA_XPG, USB_VENDOR_ID_ADATA_XPG_WL_GAMING_MOUSE), HID_QUIRK_ALWAYS_POLL },
 -- 
 2.53.0
 
