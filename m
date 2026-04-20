@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-239624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239442-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mMYoLWpm5mmJvwEAu9opvQ
-	(envelope-from <stable+bounces-239624-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:46:18 +0200
+	id UDBQFt5b5mkwvQEAu9opvQ
+	(envelope-from <stable+bounces-239442-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:01:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7F1A4320F2
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:46:17 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24B0D430623
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:01:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5DBBE32F2E54
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:58:54 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 53BCD3017A23
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:51:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F969331A78;
-	Mon, 20 Apr 2026 15:58:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DE1E2D77E5;
+	Mon, 20 Apr 2026 15:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m5iutAlJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bn0foGH7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E77D622541C;
-	Mon, 20 Apr 2026 15:58:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E52E83358B0;
+	Mon, 20 Apr 2026 15:51:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700734; cv=none; b=OeIu4FWt6yvilnpNzBR8h1Oi7Dd+LG3gxYjtI8kaoc09PFpAHdy0lRGIznpCFMimb9h3QCHeuN3meN5Is2SC7TtiZzkr8rj81JjzfOVnsu97pWgF2Wmw1hAOdXlQyduqzr88bAGc1MZi/vdru3LdQ7W55Sb2amlR6395il7wAuc=
+	t=1776700264; cv=none; b=Gh1MwFKMPsLlfgypCHAjkDN5xtcV9c/Fmzc09oSs37ElduM1fk87IvCYWfGwEkXO8sQ8xTrCGZ2Cg1R7Uog1mc+kwCa5YdlWkeu2I9Y58WK1IG6vjXNJPDZnf5zOvPaN9oGCK8PqlL3iCnycb44G5Cy/6bawG7TKAgp2TYdz+eM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700734; c=relaxed/simple;
-	bh=VwWW/b7zQGXK8kCvGw1SEvJyhqxQEiHa5ZheBwYENl8=;
+	s=arc-20240116; t=1776700264; c=relaxed/simple;
+	bh=G4jfACR5TN8FevEQP/JDpuAIsupxGqUBq0CPXbo0FC0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IeoOndbKhQtZaNCupXGr6Ttvt0O/fiZYfv+2It95a3nGN5+SF/XEqvP3UDpm9oPJMjaL4YiunarAT5FxM5yXUGgz8YQSQzNHa1PmLxNGev/bePd6vh7yFx3jMEn68AdAAfADmv+xFrgFgV7G/x7vx1p4k+P7Z4U3htl9Hwm4KAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m5iutAlJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D3C7C19425;
-	Mon, 20 Apr 2026 15:58:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Tf2i8y874ENu5KMfBBqngVd0g++Q3TZASdSy5aiRAxvutluhZ1pnA9tX4I0frNwWrOlMbqzKMTmj7ibqWosDtWu7myYYuc6tSL5UZSMbtIdysoLFsDG/CVC4qrKf4hu0PLsIZdGm790s9O059TFi5+OESeelka3eytAZ9B3Hz3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bn0foGH7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E9CBC19425;
+	Mon, 20 Apr 2026 15:51:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700733;
-	bh=VwWW/b7zQGXK8kCvGw1SEvJyhqxQEiHa5ZheBwYENl8=;
+	s=korg; t=1776700263;
+	bh=G4jfACR5TN8FevEQP/JDpuAIsupxGqUBq0CPXbo0FC0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m5iutAlJ60I6g3MrKZ2VYZA4PgfEf5rENqtQTi5Gjf8i0d5SqmtHSBauSZOd96Zet
-	 zGa7QnrrTqGNnMcnZTyCIIV1yjEkYpOwNiTf6JEkV5sZ8i/hhFh8AjHiU6Hpj86DOZ
-	 ilxT72NhCrG/fvd3+NiZoTvzs0dUaVt3d9WfsWDY=
+	b=bn0foGH7VrtxXT5MNnc1TTO6XarkBwCbed+B/xv1J3QEZjlY01uq9gvwFyr3qPN7G
+	 VWMSBrpQhgloBdIVqE+wfQKbB7GEqi2DxFozyv2Xs05m2Lak1Z+DgAYxEurKz9LeSc
+	 /xf85mYeIhrKSkaP2xxKtpJM3EMIErgMX5bXW93I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Melissa Wen <mwen@igalia.com>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 065/198] drm/vc4: Release runtime PM reference after binding V3D
+Subject: [PATCH 6.19 103/220] xsk: respect tailroom for ZC setups
 Date: Mon, 20 Apr 2026 17:40:44 +0200
-Message-ID: <20260420153937.953795980@linuxfoundation.org>
+Message-ID: <20260420153937.743798496@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
+References: <20260420153934.013228280@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,72 +70,149 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-239442-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239624-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,igalia.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: E7F1A4320F2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,fomichev.me:email,msgid.link:url]
+X-Rspamd-Queue-Id: 24B0D430623
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maíra Canal <mcanal@igalia.com>
+From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 
-[ Upstream commit aaefbdde9abdc43699e110679c0e10972a5e1c59 ]
+[ Upstream commit 1ee1605138fc94cc8f8f273321dd2471c64977f9 ]
 
-The vc4_v3d_bind() function acquires a runtime PM reference via
-pm_runtime_resume_and_get() to access V3D registers during setup.
-However, this reference is never released after a successful bind.
-This prevents the device from ever runtime suspending, since the
-reference count never reaches zero.
+Multi-buffer XDP stores information about frags in skb_shared_info that
+sits at the tailroom of a packet. The storage space is reserved via
+xdp_data_hard_end():
 
-Release the runtime PM reference by adding pm_runtime_put_autosuspend()
-after autosuspend is configured, allowing the device to runtime suspend
-after the delay.
+	((xdp)->data_hard_start + (xdp)->frame_sz -	\
+	 SKB_DATA_ALIGN(sizeof(struct skb_shared_info)))
 
-Fixes: 266cff37d7fc ("drm/vc4: v3d: Rework the runtime_pm setup")
-Reviewed-by: Melissa Wen <mwen@igalia.com>
-Link: https://patch.msgid.link/20260330-vc4-misc-fixes-v1-1-92defc940a29@igalia.com
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
+and then we refer to it via macro below:
+
+static inline struct skb_shared_info *
+xdp_get_shared_info_from_buff(const struct xdp_buff *xdp)
+{
+        return (struct skb_shared_info *)xdp_data_hard_end(xdp);
+}
+
+Currently we do not respect this tailroom space in multi-buffer AF_XDP
+ZC scenario. To address this, introduce xsk_pool_get_tailroom() and use
+it within xsk_pool_get_rx_frame_size() which is used in ZC drivers to
+configure length of HW Rx buffer.
+
+Typically drivers on Rx Hw buffers side work on 128 byte alignment so
+let us align the value returned by xsk_pool_get_rx_frame_size() in order
+to avoid addressing this on driver's side. This addresses the fact that
+idpf uses mentioned function *before* pool->dev being set so we were at
+risk that after subtracting tailroom we would not provide 128-byte
+aligned value to HW.
+
+Since xsk_pool_get_rx_frame_size() is actively used in xsk_rcv_check()
+and __xsk_rcv(), add a variant of this routine that will not include 128
+byte alignment and therefore old behavior is preserved.
+
+Reviewed-by: Björn Töpel <bjorn@kernel.org>
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+Fixes: 24ea50127ecf ("xsk: support mbuf on ZC RX")
+Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Link: https://patch.msgid.link/20260402154958.562179-3-maciej.fijalkowski@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vc4/vc4_v3d.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/net/xdp_sock_drv.h | 23 ++++++++++++++++++++++-
+ net/xdp/xsk.c              |  4 ++--
+ 2 files changed, 24 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/vc4/vc4_v3d.c b/drivers/gpu/drm/vc4/vc4_v3d.c
-index bb09df5000bda..e470412851cc8 100644
---- a/drivers/gpu/drm/vc4/vc4_v3d.c
-+++ b/drivers/gpu/drm/vc4/vc4_v3d.c
-@@ -479,6 +479,7 @@ static int vc4_v3d_bind(struct device *dev, struct device *master, void *data)
+diff --git a/include/net/xdp_sock_drv.h b/include/net/xdp_sock_drv.h
+index 6b9ebae2dc952..46797645a0c24 100644
+--- a/include/net/xdp_sock_drv.h
++++ b/include/net/xdp_sock_drv.h
+@@ -41,16 +41,37 @@ static inline u32 xsk_pool_get_headroom(struct xsk_buff_pool *pool)
+ 	return XDP_PACKET_HEADROOM + pool->headroom;
+ }
  
- 	pm_runtime_use_autosuspend(dev);
- 	pm_runtime_set_autosuspend_delay(dev, 40); /* a little over 2 frames. */
-+	pm_runtime_put_autosuspend(dev);
++static inline u32 xsk_pool_get_tailroom(bool mbuf)
++{
++	return mbuf ? SKB_DATA_ALIGN(sizeof(struct skb_shared_info)) : 0;
++}
++
+ static inline u32 xsk_pool_get_chunk_size(struct xsk_buff_pool *pool)
+ {
+ 	return pool->chunk_size;
+ }
  
- 	return 0;
+-static inline u32 xsk_pool_get_rx_frame_size(struct xsk_buff_pool *pool)
++static inline u32 __xsk_pool_get_rx_frame_size(struct xsk_buff_pool *pool)
+ {
+ 	return xsk_pool_get_chunk_size(pool) - xsk_pool_get_headroom(pool);
+ }
  
++static inline u32 xsk_pool_get_rx_frame_size(struct xsk_buff_pool *pool)
++{
++	u32 frame_size =  __xsk_pool_get_rx_frame_size(pool);
++	struct xdp_umem *umem = pool->umem;
++	bool mbuf;
++
++	/* Reserve tailroom only for zero-copy pools that opted into
++	 * multi-buffer. The reserved area is used for skb_shared_info,
++	 * matching the XDP core's xdp_data_hard_end() layout.
++	 */
++	mbuf = pool->dev && (umem->flags & XDP_UMEM_SG_FLAG);
++	frame_size -= xsk_pool_get_tailroom(mbuf);
++
++	return ALIGN_DOWN(frame_size, 128);
++}
++
+ static inline u32 xsk_pool_get_rx_frag_step(struct xsk_buff_pool *pool)
+ {
+ 	return pool->unaligned ? 0 : xsk_pool_get_chunk_size(pool);
+diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
+index a6d3938154f21..4a1cc44ab305a 100644
+--- a/net/xdp/xsk.c
++++ b/net/xdp/xsk.c
+@@ -239,7 +239,7 @@ static u32 xsk_copy_xdp(void *to, void **from, u32 to_len,
+ 
+ static int __xsk_rcv(struct xdp_sock *xs, struct xdp_buff *xdp, u32 len)
+ {
+-	u32 frame_size = xsk_pool_get_rx_frame_size(xs->pool);
++	u32 frame_size = __xsk_pool_get_rx_frame_size(xs->pool);
+ 	void *copy_from = xsk_copy_xdp_start(xdp), *copy_to;
+ 	u32 from_len, meta_len, rem, num_desc;
+ 	struct xdp_buff_xsk *xskb;
+@@ -338,7 +338,7 @@ static int xsk_rcv_check(struct xdp_sock *xs, struct xdp_buff *xdp, u32 len)
+ 	if (xs->dev != xdp->rxq->dev || xs->queue_id != xdp->rxq->queue_index)
+ 		return -EINVAL;
+ 
+-	if (len > xsk_pool_get_rx_frame_size(xs->pool) && !xs->sg) {
++	if (len > __xsk_pool_get_rx_frame_size(xs->pool) && !xs->sg) {
+ 		xs->rx_dropped++;
+ 		return -ENOSPC;
+ 	}
 -- 
 2.53.0
 
