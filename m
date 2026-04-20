@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-239858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239322-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0GidM7NQ5mkDuwEAu9opvQ
-	(envelope-from <stable+bounces-239858-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:13:39 +0200
+	id eAdbOdRf5mkxvgEAu9opvQ
+	(envelope-from <stable+bounces-239322-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:18:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97AE742F29F
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:13:39 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B1DF430F2E
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:18:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A2331300B5AE
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:10:07 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4A61C323530F
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:45:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9400345749;
-	Mon, 20 Apr 2026 16:09:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E1E933A9F8;
+	Mon, 20 Apr 2026 15:45:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AG5tG7oU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CxGMNfoR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C1DF3446AF;
-	Mon, 20 Apr 2026 16:09:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F4CC2C236B;
+	Mon, 20 Apr 2026 15:45:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701396; cv=none; b=VIQKvKPtc3SUVgvo16niHbkHnszgkYsE4VPU5CNMiZn2satA9iUYRHSMZYKnBCZP0+kKwgxSWBg043XK/5mttXS2qbm9mkWhaxPQuFOEb7NTGBzhKXo2/iUY1OBB20rWBbo800wchbPIO1ADC6kgx5VmCkbArfX220M4KqAMcA8=
+	t=1776699950; cv=none; b=EKuAfcuD9QeT7H3PcKL8nAL64UXUjoyUfJUXbEBzKKD8TGeGwlyXY5lUBNahW2Txpq5kvMKMppraChLlAV69VE4vsr69GjY9dofZ/aUhLuW8nkRQ8OrLTm0Icn2FXD6mvjO087ajbUHthYbjkOtb9XERedljN9qlRPfM+Mqphts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701396; c=relaxed/simple;
-	bh=1vMdsIbVgwap351kwbMG9Rynsy+X/4bhaUAUWLjvkOM=;
+	s=arc-20240116; t=1776699950; c=relaxed/simple;
+	bh=l/AxNCS7Vw3wcuzHD65ONPgRnbsJOCxFDGPzbBajCgM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LL+mW2yCNU5NiXlnpxAalo6QInDmEYxuo0e80/HEA54reeJu3GGJpZedGpNYkxafmnXPjqYU4Fl//I2rVrOn39EVnpMFpXFogyIzG/He8udeqeLGAcKE96ADuM3AUlQFoFfv+u7h3LSZEGVce81P/ExyIqHz3KrCHcqWF7HLhbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AG5tG7oU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13555C19425;
-	Mon, 20 Apr 2026 16:09:55 +0000 (UTC)
+	 MIME-Version; b=sTb/AO6y4EjxOlv9ErGqPZ59ymY7WEpKF1/5aoibcCFDZCt+GrlxXMRKmMt7HJTbtfGYFQdcCFHYJ4S3X4yVen4tHXz7Q7RxwuB4BZzPFZnmu3IJOO7GeMnjLF/2m0EQ85hPOnOELvauSxMmu/U1vyE42phv7tg78ooPta0lGrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CxGMNfoR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A482BC19425;
+	Mon, 20 Apr 2026 15:45:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701396;
-	bh=1vMdsIbVgwap351kwbMG9Rynsy+X/4bhaUAUWLjvkOM=;
+	s=korg; t=1776699950;
+	bh=l/AxNCS7Vw3wcuzHD65ONPgRnbsJOCxFDGPzbBajCgM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AG5tG7oUShMRWDYXezU8vaoUsEhs8gWpDSl3pKpLGAXpap5lm2aKaA1mYDym52pj8
-	 mKvMHO+He36MIX0taE0FhN3LvTOuPRFQNiC5giguVmLQnbc7zM6qMhM8rfTCyjTdYz
-	 jyVDex3h65HraqrLN8ibQOOni/w1jDhZiV2nPyZI=
+	b=CxGMNfoRQgE/SaixoFZA3Pv9veHFMKFaX2boLHa6l+dUJsRVsJDJzS8Sp4+U49DMj
+	 OJOK87jUMhRzoM5t3b46J1XJeTP86evcJc2VTVnjiCxYxrDlRWuOiTVcU0mbtt8kmY
+	 RABuItwYNLtxsDuW9q75SFsjJSyDZ1sZm/en41c0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Jiri Kosina <jikos@kernel.org>,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	linux-input@vger.kernel.org,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 6.12 098/162] HID: core: clamp report_size in s32ton() to avoid undefined shift
-Date: Mon, 20 Apr 2026 17:42:10 +0200
-Message-ID: <20260420153930.589360189@linuxfoundation.org>
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 7.0 60/76] x86-64/arm64/powerpc: clean up and rename __copy_from_user_flushcache
+Date: Mon, 20 Apr 2026 17:42:11 +0200
+Message-ID: <20260420153913.004519604@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
-References: <20260420153927.006696811@linuxfoundation.org>
+In-Reply-To: <20260420153910.810034134@linuxfoundation.org>
+References: <20260420153910.810034134@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,80 +66,173 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239858-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239322-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 97AE742F29F
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1B1DF430F2E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-commit 69c02ffde6ed4d535fa4e693a9e572729cad3d0d upstream.
+commit 809b997a5ce945ab470f70c187048fe4f5df20bf upstream.
 
-s32ton() shifts by n-1 where n is the field's report_size, a value that
-comes directly from a HID device.  The HID parser bounds report_size
-only to <= 256, so a broken HID device can supply a report descriptor
-with a wide field that triggers shift exponents up to 256 on a 32-bit
-type when an output report is built via hid_output_field() or
-hid_set_field().
+This finishes the work on these odd functions that were only implemented
+by a handful of architectures.
 
-Commit ec61b41918587 ("HID: core: fix shift-out-of-bounds in
-hid_report_raw_event") added the same n > 32 clamp to the function
-snto32(), but s32ton() was never given the same fix as I guess syzbot
-hadn't figured out how to fuzz a device the same way.
+The 'flushcache' function was only used from the iterator code, and
+let's make it do the same thing that the nontemporal version does:
+remove the two underscores and add the user address checking.
 
-Fix this up by just clamping the max value of n, just like snto32()
-does.
+Yes, yes, the user address checking is also done at iovec import time,
+but we have long since walked away from the old double-underscore thing
+where we try to avoid address checking overhead at access time, and
+these functions shouldn't be so special and old-fashioned.
 
-Cc: stable <stable@kernel.org>
-Cc: Jiri Kosina <jikos@kernel.org>
-Cc: Benjamin Tissoires <bentiss@kernel.org>
-Cc: linux-input@vger.kernel.org
-Assisted-by: gregkh_clanker_t1000
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+The arm64 version already did the address check, in fact, so there it's
+just a matter of renaming it.  For powerpc and x86-64 we now do the
+proper user access boilerplate.
+
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-core.c |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm64/include/asm/uaccess.h   |    2 +-
+ arch/powerpc/include/asm/uaccess.h |    3 +--
+ arch/powerpc/lib/pmem.c            |   11 ++++++-----
+ arch/x86/include/asm/uaccess_64.h  |    8 ++++----
+ arch/x86/lib/usercopy_64.c         |    8 ++++----
+ lib/iov_iter.c                     |    2 +-
+ 6 files changed, 17 insertions(+), 17 deletions(-)
 
---- a/drivers/hid/hid-core.c
-+++ b/drivers/hid/hid-core.c
-@@ -71,6 +71,9 @@ static u32 s32ton(__s32 value, unsigned
- 	if (!value || !n)
- 		return 0;
+--- a/arch/arm64/include/asm/uaccess.h
++++ b/arch/arm64/include/asm/uaccess.h
+@@ -478,7 +478,7 @@ extern __must_check long strnlen_user(co
+ #ifdef CONFIG_ARCH_HAS_UACCESS_FLUSHCACHE
+ extern unsigned long __must_check __copy_user_flushcache(void *to, const void __user *from, unsigned long n);
  
-+	if (n > 32)
-+		n = 32;
-+
- 	a = value >> (n - 1);
- 	if (a && a != -1)
- 		return value < 0 ? 1 << (n - 1) : (1 << (n - 1)) - 1;
+-static inline int __copy_from_user_flushcache(void *dst, const void __user *src, unsigned size)
++static inline size_t copy_from_user_flushcache(void *dst, const void __user *src, size_t size)
+ {
+ 	kasan_check_write(dst, size);
+ 	return __copy_user_flushcache(dst, __uaccess_mask_ptr(src), size);
+--- a/arch/powerpc/include/asm/uaccess.h
++++ b/arch/powerpc/include/asm/uaccess.h
+@@ -434,8 +434,7 @@ copy_mc_to_user(void __user *to, const v
+ }
+ #endif
+ 
+-extern long __copy_from_user_flushcache(void *dst, const void __user *src,
+-		unsigned size);
++extern size_t copy_from_user_flushcache(void *dst, const void __user *src, size_t size);
+ 
+ static __must_check __always_inline bool __user_access_begin(const void __user *ptr, size_t len,
+ 							     unsigned long dir)
+--- a/arch/powerpc/lib/pmem.c
++++ b/arch/powerpc/lib/pmem.c
+@@ -66,15 +66,16 @@ EXPORT_SYMBOL_GPL(arch_invalidate_pmem);
+ /*
+  * CONFIG_ARCH_HAS_UACCESS_FLUSHCACHE symbols
+  */
+-long __copy_from_user_flushcache(void *dest, const void __user *src,
+-		unsigned size)
++size_t copy_from_user_flushcache(void *dest, const void __user *src,
++				 size_t size)
+ {
+-	unsigned long copied, start = (unsigned long) dest;
++	unsigned long not_copied, start = (unsigned long) dest;
+ 
+-	copied = __copy_from_user(dest, src, size);
++	src = mask_user_address(src);
++	not_copied = __copy_from_user(dest, src, size);
+ 	clean_pmem_range(start, start + size);
+ 
+-	return copied;
++	return not_copied;
+ }
+ 
+ void memcpy_flushcache(void *dest, const void *src, size_t size)
+--- a/arch/x86/include/asm/uaccess_64.h
++++ b/arch/x86/include/asm/uaccess_64.h
+@@ -149,7 +149,7 @@ raw_copy_to_user(void __user *dst, const
+ 
+ #define copy_to_nontemporal copy_to_nontemporal
+ extern size_t copy_to_nontemporal(void *dst, const void *src, size_t size);
+-extern long __copy_user_flushcache(void *dst, const void __user *src, unsigned size);
++extern size_t copy_user_flushcache(void *dst, const void __user *src, size_t size);
+ 
+ static inline int
+ copy_from_user_inatomic_nontemporal(void *dst, const void __user *src,
+@@ -164,11 +164,11 @@ copy_from_user_inatomic_nontemporal(void
+ 	return ret;
+ }
+ 
+-static inline int
+-__copy_from_user_flushcache(void *dst, const void __user *src, unsigned size)
++static inline size_t
++copy_from_user_flushcache(void *dst, const void __user *src, size_t size)
+ {
+ 	kasan_check_write(dst, size);
+-	return __copy_user_flushcache(dst, src, size);
++	return copy_user_flushcache(dst, src, size);
+ }
+ 
+ /*
+--- a/arch/x86/lib/usercopy_64.c
++++ b/arch/x86/lib/usercopy_64.c
+@@ -43,14 +43,14 @@ void arch_wb_cache_pmem(void *addr, size
+ }
+ EXPORT_SYMBOL_GPL(arch_wb_cache_pmem);
+ 
+-long __copy_user_flushcache(void *dst, const void __user *src, unsigned size)
++size_t copy_user_flushcache(void *dst, const void __user *src, size_t size)
+ {
+ 	unsigned long flushed, dest = (unsigned long) dst;
+-	long rc;
++	unsigned long rc;
+ 
+-	stac();
++	src = masked_user_access_begin(src);
+ 	rc = copy_to_nontemporal(dst, (__force const void *)src, size);
+-	clac();
++	user_access_end();
+ 
+ 	/*
+ 	 * copy_to_nontemporal() uses non-temporal stores for the bulk
+--- a/lib/iov_iter.c
++++ b/lib/iov_iter.c
+@@ -296,7 +296,7 @@ static __always_inline
+ size_t copy_from_user_iter_flushcache(void __user *iter_from, size_t progress,
+ 				      size_t len, void *to, void *priv2)
+ {
+-	return __copy_from_user_flushcache(to + progress, iter_from, len);
++	return copy_from_user_flushcache(to + progress, iter_from, len);
+ }
+ 
+ static __always_inline
 
 
 
