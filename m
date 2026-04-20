@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-239773-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239617-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6BALJM9Z5mmtvAEAu9opvQ
-	(envelope-from <stable+bounces-239773-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:52:31 +0200
+	id iC3oJZhZ5mmtvAEAu9opvQ
+	(envelope-from <stable+bounces-239617-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:51:36 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1001B430277
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:52:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58AC34301EB
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:51:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AFF7B325527E
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:06:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D3AB53160C53
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:58:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F83A33F586;
-	Mon, 20 Apr 2026 16:06:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 447112FE56A;
+	Mon, 20 Apr 2026 15:58:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tC/KGuyi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u06YKQG/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7BC633F8DC;
-	Mon, 20 Apr 2026 16:06:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08ECE1EB5CE;
+	Mon, 20 Apr 2026 15:58:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701177; cv=none; b=BiSmVL0zyG9ZCZKG+z0RzkmqXmjZ0WNWoi0IOjsZ4UHW+j3IW9ma8yxbYOJD5GCa0llDsFLEDQcoQ5wnEdV+0bj44zrlNMjqgvgL9L5AeRFCERh/fqklZW/TUzJfDPdQee7apTXSpumPfKclAJFO7t1mp1kOp9IqJ6eBdQQYZlE=
+	t=1776700716; cv=none; b=KGA4fXxkUHiJJWJ8s6s8Y8kDuQM0717UXmhV7E/HYSxRywiLHFbXaGQ08gwOfhi6dpV8VFsQ0Cs6mfIct91pEP22UPrt0bSIkwufemQ8+nHD5bR/+Q0h43K1WBvLOe4aJ4yNNLdncPz8yhgWbHW8dxHf4/T7Xc4p1Sz/nDBjBHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701177; c=relaxed/simple;
-	bh=lkXXK9tv7DEUSToGqftvPN2iS65Ft2XT8ErBVC2GFEg=;
+	s=arc-20240116; t=1776700716; c=relaxed/simple;
+	bh=9AvG9QARWTnCwS6xYa2wF/Okf++da3kSKH85oYegS2Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ccmU8NVd1o4T6mnxH6nEMPeeav9dVQnY9hLTSQzp5fzz698biaut3iuGk7/dE35Ac23ejqVKr2PxgGNH+otDwS2BXeONRp5RlMJx72eqRsL8isMDY+t+FnyTrCvg1XeEN5K9Pg1S8EdPumo7o+xAQSdEojO0g4NNfEWhQxPoQt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tC/KGuyi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23231C2BCB6;
-	Mon, 20 Apr 2026 16:06:16 +0000 (UTC)
+	 MIME-Version; b=gRySggyNHyu8qp5LRrc7KIq6QNqg6NgWS+fanVgaVNMCCo6wsH5YoLiEEZOI+sEhFoHQx19EVmugQTJAUIQvZV+wnH/LgPa/YPboPVK+KvBiQ+/pdE/YnLsL+DQc1bPKAH6fMouO9GHR+q1VgPpSMem0a2GxmvmGH5BQCelj6ss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u06YKQG/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9505DC19425;
+	Mon, 20 Apr 2026 15:58:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701177;
-	bh=lkXXK9tv7DEUSToGqftvPN2iS65Ft2XT8ErBVC2GFEg=;
+	s=korg; t=1776700715;
+	bh=9AvG9QARWTnCwS6xYa2wF/Okf++da3kSKH85oYegS2Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tC/KGuyiTbBfrhN32kxOWi8Gfa2HXtQ5zmuvaiLffSELYQg/Xs24sqQO0UqhspStz
-	 fR/N26GHoBH+MOc2QZZ8vXqttQ6BUaLtFXq4BOHqJ7Cq796pO+Wh5HgAz2O9isTWj9
-	 wGtwq6yjaM4/sCSnlcyMECY3mrWgPtjXb/km14KQ=
+	b=u06YKQG/w2Ak59C0UcGIyQT0hoVNyXDGd1aGIhrKk0gR3epbd5nxdJub5YIHcG8rH
+	 CzICl/x9C5RRJpz5noUa1vk03W2n3zxXNKteeE41YPmTmJMaHEkR1S0nNzzopiXoMS
+	 7XlP6Jij8RFoUoMbUy5jr8tQTbhRAocFjYvSr8hM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Long Li <longli@microsoft.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Wei Liu <wei.liu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 005/162] media: rkvdec: reduce stack usage in rkvdec_init_v4l2_vp9_count_tbl()
-Date: Mon, 20 Apr 2026 17:40:37 +0200
-Message-ID: <20260420153927.208313969@linuxfoundation.org>
+Subject: [PATCH 6.18 059/198] PCI: hv: Set default NUMA node to 0 for devices without affinity info
+Date: Mon, 20 Apr 2026 17:40:38 +0200
+Message-ID: <20260420153937.739752612@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
-References: <20260420153927.006696811@linuxfoundation.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,83 +65,91 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-239773-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,microsoft.com,outlook.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-239617-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	PRECEDENCE_BULK(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,huawei];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[collabora.com:email,arndb.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1001B430277
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,outlook.com:email]
+X-Rspamd-Queue-Id: 58AC34301EB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Long Li <longli@microsoft.com>
 
-[ Upstream commit c03b7dec3c4ddc97872fa12bfca75bae9cb46510 ]
+[ Upstream commit 7b3b1e5a87b2f5e35c52b5386d7c327be869454f ]
 
-The deeply nested loop in rkvdec_init_v4l2_vp9_count_tbl() needs a lot
-of registers, so when the clang register allocator runs out, it ends up
-spilling countless temporaries to the stack:
+When hv_pci_assign_numa_node() processes a device that does not have
+HV_PCI_DEVICE_FLAG_NUMA_AFFINITY set or has an out-of-range
+virtual_numa_node, the device NUMA node is left unset. On x86_64,
+the uninitialized default happens to be 0, but on ARM64 it is
+NUMA_NO_NODE (-1).
 
-drivers/media/platform/rockchip/rkvdec/rkvdec-vp9.c:966:12: error: stack frame size (1472) exceeds limit (1280) in 'rkvdec_vp9_start' [-Werror,-Wframe-larger-than]
+Tests show that when no NUMA information is available from the Hyper-V
+host, devices perform best when assigned to node 0. With NUMA_NO_NODE
+the kernel may spread work across NUMA nodes, which degrades
+performance on Hyper-V, particularly for high-throughput devices like
+MANA.
 
-Marking this function as noinline_for_stack keeps it out of
-rkvdec_vp9_start(), giving the compiler more room for optimization.
+Always set the device NUMA node to 0 before the conditional NUMA
+affinity check, so that devices get a performant default when the host
+provides no NUMA information, and behavior is consistent on both
+x86_64 and ARM64.
 
-The resulting code is good enough that both the total stack usage
-and the loop get enough better to stay under the warning limit,
-though it's still slow, and would need a larger rework if this
-function ends up being called in a fast path.
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Fixes: 999dd956d838 ("PCI: hv: Add support for protocol 1.3 and support PCI_BUS_RELATIONS2")
+Signed-off-by: Long Li <longli@microsoft.com>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/media/rkvdec/rkvdec-vp9.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/pci/controller/pci-hyperv.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/staging/media/rkvdec/rkvdec-vp9.c b/drivers/staging/media/rkvdec/rkvdec-vp9.c
-index 0e7e16f20eeb0..bc74d2d824ef2 100644
---- a/drivers/staging/media/rkvdec/rkvdec-vp9.c
-+++ b/drivers/staging/media/rkvdec/rkvdec-vp9.c
-@@ -923,7 +923,8 @@ static void rkvdec_vp9_done(struct rkvdec_ctx *ctx,
- 	update_ctx_last_info(vp9_ctx);
- }
+diff --git a/drivers/pci/controller/pci-hyperv.c b/drivers/pci/controller/pci-hyperv.c
+index 146b43981b278..28b1572974879 100644
+--- a/drivers/pci/controller/pci-hyperv.c
++++ b/drivers/pci/controller/pci-hyperv.c
+@@ -2486,6 +2486,14 @@ static void hv_pci_assign_numa_node(struct hv_pcibus_device *hbus)
+ 		if (!hv_dev)
+ 			continue;
  
--static void rkvdec_init_v4l2_vp9_count_tbl(struct rkvdec_ctx *ctx)
-+static noinline_for_stack void
-+rkvdec_init_v4l2_vp9_count_tbl(struct rkvdec_ctx *ctx)
- {
- 	struct rkvdec_vp9_ctx *vp9_ctx = ctx->priv;
- 	struct rkvdec_vp9_intra_frame_symbol_counts *intra_cnts = vp9_ctx->count_tbl.cpu;
++		/*
++		 * If the Hyper-V host doesn't provide a NUMA node for the
++		 * device, default to node 0. With NUMA_NO_NODE the kernel
++		 * may spread work across NUMA nodes, which degrades
++		 * performance on Hyper-V.
++		 */
++		set_dev_node(&dev->dev, 0);
++
+ 		if (hv_dev->desc.flags & HV_PCI_DEVICE_FLAG_NUMA_AFFINITY &&
+ 		    hv_dev->desc.virtual_numa_node < num_possible_nodes())
+ 			/*
 -- 
 2.53.0
 
