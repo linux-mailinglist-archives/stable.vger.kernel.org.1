@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-239527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239712-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2JgaLkxl5mlmvwEAu9opvQ
-	(envelope-from <stable+bounces-239527-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:41:32 +0200
+	id 0MdhKepO5mngugEAu9opvQ
+	(envelope-from <stable+bounces-239712-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:06:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61D37431D3B
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:41:32 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7244842EF96
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:06:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2734735DBD95
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:54:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8F4D6301907A
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:03:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDA0D33A9C4;
-	Mon, 20 Apr 2026 15:54:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 053F0341ADF;
+	Mon, 20 Apr 2026 16:03:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FoQo8v1S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rqzvqNZC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC4D93314C4;
-	Mon, 20 Apr 2026 15:54:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBD0234252C;
+	Mon, 20 Apr 2026 16:03:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700481; cv=none; b=RpGz2fI9EKoKooPwLLh1vG+PpR3pMZMw8sNBN1snwjEN0wzMT7zSKmgJLT82yZN0eT+Pi4KlnykmNbEkvc3p7NxgIqsl6e1w/ZFyTPieaBkRtaPCY3e6Q/SZ3QLXaZ8od4zwYJ1R1jui58LVrboCOs8NYcN9NcPPcNpsuEHOr/Y=
+	t=1776701023; cv=none; b=I7s0EHiOomTrtjtXTW82AUGvcP+lw6OsRoSSzO9aUXETEfTSaXxVJvPZx8pHHhI7bkRrJk3nqpn/MiWJuolmAXIUg/HJqwUAiQ5R3drAYkPgbDjx3ZBJv8cJ+M0NjWjS/ezDLlftvSjS6F5OyZO/J6305k0JdsdBAmESqTBXbQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700481; c=relaxed/simple;
-	bh=YvatBB+poIG+GJ1pbkyBxRBjA0thngF6pWhphiChDF0=;
+	s=arc-20240116; t=1776701023; c=relaxed/simple;
+	bh=HOOT8khQpY4FPj9Els6eiY9ToHxO32ASfkF0ftI3dSU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aqMTPb5sjz56aTyDJ7Gy7/NwFk86B0TArKQhJomGU5puAtGrkyPgBKpakHh0XWaRY5TZ9sHOIpN3Q/3rgI+dw8IstiFGeCRQdjmo0NJuxjXiJ3iud7oNBrp1v7hlA07yw1/Q1yBXCIRZ9G1iVNYcYmouQ4tJoMXdioUiDA6TQe4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FoQo8v1S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13457C19425;
-	Mon, 20 Apr 2026 15:54:40 +0000 (UTC)
+	 MIME-Version; b=R3gmMA/HqlnUUlzIfZcW5LIoVELF8lN9oNhdm2nIQuOkIuaizv02Dj5/vGtUt0FMSby/UI59LOcO+hmEwtr3SN9A9YfgrSI4Q+tg3ITAShNJdCDW5A7wwo20XE4zDa9PbGWAMyxeWgEuADbB6qZR6DdDBJ3mxCnIKrpOrOJKZK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rqzvqNZC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ABF4C19425;
+	Mon, 20 Apr 2026 16:03:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700481;
-	bh=YvatBB+poIG+GJ1pbkyBxRBjA0thngF6pWhphiChDF0=;
+	s=korg; t=1776701023;
+	bh=HOOT8khQpY4FPj9Els6eiY9ToHxO32ASfkF0ftI3dSU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FoQo8v1SMgKG7lfUi9aO0QE3hflmdWnf7OArVhks17FjvfJeDr5cd9i+3Mc0v1qJF
-	 nUmR7Ux7TCq4VZ3CpUG6t7ZtMSfWAeYGRaBvKKkeQKBj7Zr0N2EY14Af3cZAg2UJUZ
-	 1fp+L8VWLajS8Yn6k7O8DiY6UcStb8yuMwgLkp10=
+	b=rqzvqNZC4M6XHSv6DcxEsh7gmmhSISn+xOnwMZiLlbegcfNCYfyDOvk2TkL8uuz1O
+	 4WrAsRCcocp0oQfrsiJv9DiPuOn3l8wEtiiaKiBF52U/qjKf+JXGyw6zs6+c/N2c9M
+	 ats+o5WVOZg2FogGDhhfIGo6kLibuBY0g8CRDuV0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jethro Beekman <jethro@fortanix.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.19 190/220] KVM: SEV: Disallow LAUNCH_FINISH if vCPUs are actively being created
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Johan Hovold <johan@kernel.org>,
+	Ping-Ke Shih <pkshih@realtek.com>
+Subject: [PATCH 6.18 152/198] wifi: rtw88: fix device leak on probe failure
 Date: Mon, 20 Apr 2026 17:42:11 +0200
-Message-ID: <20260420153940.866825876@linuxfoundation.org>
+Message-ID: <20260420153941.079142934@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
-References: <20260420153934.013228280@linuxfoundation.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-239527-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-239712-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,98 +87,67 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,fortanix.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 61D37431D3B
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[pengutronix.de:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,realtek.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 7244842EF96
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 624bf3440d7214b62c22d698a0a294323f331d5d upstream.
+commit bbb15e71156cd9f5e1869eee7207a06ea8e96c39 upstream.
 
-Reject LAUNCH_FINISH for SEV-ES and SNP VMs if KVM is actively creating
-one or more vCPUs, as KVM needs to process and encrypt each vCPU's VMSA.
-Letting userspace create vCPUs while LAUNCH_FINISH is in-progress is
-"fine", at least in the current code base, as kvm_for_each_vcpu() operates
-on online_vcpus, LAUNCH_FINISH (all SEV+ sub-ioctls) holds kvm->mutex, and
-fully onlining a vCPU in kvm_vm_ioctl_create_vcpu() is done under
-kvm->mutex.  I.e. there's no difference between an in-progress vCPU and a
-vCPU that is created entirely after LAUNCH_FINISH.
+Driver core holds a reference to the USB interface and its parent USB
+device while the interface is bound to a driver and there is no need to
+take additional references unless the structures are needed after
+disconnect.
 
-However, given that concurrent LAUNCH_FINISH and vCPU creation can't
-possibly work (for any reasonable definition of "work"), since userspace
-can't guarantee whether a particular vCPU will be encrypted or not,
-disallow the combination as a hardening measure, to reduce the probability
-of introducing bugs in the future, and to avoid having to reason about the
-safety of future changes related to LAUNCH_FINISH.
+This driver takes a reference to the USB device during probe but does
+not to release it on all probe errors (e.g. when descriptor parsing
+fails).
 
-Cc: Jethro Beekman <jethro@fortanix.com>
-Closes: https://lore.kernel.org/all/b31f7c6e-2807-4662-bcdd-eea2c1e132fa@fortanix.com
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260310234829.2608037-5-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Drop the redundant device reference to fix the leak, reduce cargo
+culting, make it easier to spot drivers where an extra reference is
+needed, and reduce the risk of further memory leaks.
+
+Fixes: a82dfd33d123 ("wifi: rtw88: Add common USB chip support")
+Reported-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/netdev/2026022319-turbofan-darkened-206d@gregkh/
+Cc: stable@vger.kernel.org	# 6.2
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20260306085144.12064-19-johan@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/sev.c   |   10 ++++++++--
- include/linux/kvm_host.h |    7 +++++++
- 2 files changed, 15 insertions(+), 2 deletions(-)
+ drivers/net/wireless/realtek/rtw88/usb.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -1023,6 +1023,9 @@ static int sev_launch_update_vmsa(struct
- 	if (!sev_es_guest(kvm))
- 		return -ENOTTY;
- 
-+	if (kvm_is_vcpu_creation_in_progress(kvm))
-+		return -EBUSY;
-+
- 	kvm_for_each_vcpu(i, vcpu, kvm) {
- 		ret = mutex_lock_killable(&vcpu->mutex);
- 		if (ret)
-@@ -2043,8 +2046,8 @@ static int sev_check_source_vcpus(struct
- 	struct kvm_vcpu *src_vcpu;
- 	unsigned long i;
- 
--	if (src->created_vcpus != atomic_read(&src->online_vcpus) ||
--	    dst->created_vcpus != atomic_read(&dst->online_vcpus))
-+	if (kvm_is_vcpu_creation_in_progress(src) ||
-+	    kvm_is_vcpu_creation_in_progress(dst))
- 		return -EBUSY;
- 
- 	if (!sev_es_guest(src))
-@@ -2454,6 +2457,9 @@ static int snp_launch_update_vmsa(struct
- 	unsigned long i;
+--- a/drivers/net/wireless/realtek/rtw88/usb.c
++++ b/drivers/net/wireless/realtek/rtw88/usb.c
+@@ -1040,7 +1040,7 @@ static int rtw_usb_intf_init(struct rtw_
+ 			     struct usb_interface *intf)
+ {
+ 	struct rtw_usb *rtwusb = rtw_get_usb_priv(rtwdev);
+-	struct usb_device *udev = usb_get_dev(interface_to_usbdev(intf));
++	struct usb_device *udev = interface_to_usbdev(intf);
  	int ret;
  
-+	if (kvm_is_vcpu_creation_in_progress(kvm))
-+		return -EBUSY;
-+
- 	data.gctx_paddr = __psp_pa(sev->snp_context);
- 	data.page_type = SNP_PAGE_TYPE_VMSA;
+ 	rtwusb->udev = udev;
+@@ -1066,7 +1066,6 @@ static void rtw_usb_intf_deinit(struct r
+ {
+ 	struct rtw_usb *rtwusb = rtw_get_usb_priv(rtwdev);
  
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -1030,6 +1030,13 @@ static inline struct kvm_vcpu *kvm_get_v
- 	return NULL;
+-	usb_put_dev(rtwusb->udev);
+ 	kfree(rtwusb->usb_data);
+ 	usb_set_intfdata(intf, NULL);
  }
- 
-+static inline bool kvm_is_vcpu_creation_in_progress(struct kvm *kvm)
-+{
-+	lockdep_assert_held(&kvm->lock);
-+
-+	return kvm->created_vcpus != atomic_read(&kvm->online_vcpus);
-+}
-+
- void kvm_destroy_vcpus(struct kvm *kvm);
- 
- int kvm_trylock_all_vcpus(struct kvm *kvm);
 
 
 
