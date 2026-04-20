@@ -1,195 +1,157 @@
-Return-Path: <stable+bounces-239260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239256-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sJhHKTFb5mmtvAEAu9opvQ
-	(envelope-from <stable+bounces-239260-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:58:25 +0200
+	id 2HNwOS5K5mnSuAEAu9opvQ
+	(envelope-from <stable+bounces-239256-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 17:45:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D0154304DD
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:58:25 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22DA342E8A5
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 17:45:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 23D6136441EA
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:15:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E54A8346BCBE
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:15:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02A55342CBD;
-	Mon, 20 Apr 2026 14:59:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25B0233F5B0;
+	Mon, 20 Apr 2026 14:58:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VBlNqObr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b9cVgZ/K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B835834252C
-	for <stable@vger.kernel.org>; Mon, 20 Apr 2026 14:59:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD6D933F5A3
+	for <stable@vger.kernel.org>; Mon, 20 Apr 2026 14:58:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776697141; cv=none; b=JS2SnL/YuhI0fqPM7eIE9lUK2ydJj1SvnAHCKmoslY+hABJpQnnUqzp9l2SA1NnPdw5xx5tAtUE7z4jOcYQggCyTmfNzwWZxTl+s5GqJ2KKVEtrX89guzh1O0qX4IghB5qrJXuvsUaqy0C9XY42ZI66+NdGy5tFBRGl12qyU7bU=
+	t=1776697112; cv=none; b=QZg325CiLh0/d9bBUT1rmZYfgqDIpHlbSgUcs++aYWSZ2ClcssuST0uu+3RXtsmMoT2sZg2YJPrp9cx5aKKkNKgFoShtofghJoR1H7pV17rd8GZ7DBgacixazcq/9EzJrJPHBRl9klWkWh2lGJhZg4VLfSJQ/jObRbYGsqdb3P0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776697141; c=relaxed/simple;
-	bh=qwH2y8AOpJCUqW/8zoInSHYPzg/EdBpkgUTr/amh8Ko=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=aESxvYzKFUiRTi9WEJyKy5ztvrtRbjdbiwzN7KPCYuT0AW6i/tTfsr3hJDw+UjXhFJ2sr7nDE26ircrbVeRmvoSJNV2qgmBJdK2v2E42daCg+AVRDvWDYqh1yCtDmtnObs0Clu6NhZfh4HoM4u2J9m5UTZG7lvHk7HTSNnN8FWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VBlNqObr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D27FC19425;
-	Mon, 20 Apr 2026 14:59:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776697141;
-	bh=qwH2y8AOpJCUqW/8zoInSHYPzg/EdBpkgUTr/amh8Ko=;
-	h=Subject:To:Cc:From:Date:From;
-	b=VBlNqObr8kEXeJPdSRa0NYkNg9KIQaQxdturQgiCGy1mLP1UucLKvt8IhT+iZ/8pz
-	 1i8Ch0m/tzGN8BhlVBdP8fkrnXs+Ky2HTdcPScnvzd4YarsJ+32kGR9Mdqk6awFg1c
-	 dOtQ/S5/iw587eMf77uKmLc7dhTiHqhMSJFVQr+o=
-Subject: FAILED: patch "[PATCH] mm/userfaultfd: fix hugetlb fault mutex hash calculation" failed to apply to 6.12-stable tree
-To: jianhuizzzzz@gmail.com,JonasZhou@zhaoxin.com,aarcange@redhat.com,akpm@linux-foundation.org,david@kernel.org,hughd@google.com,jane.chu@oracle.com,muchun.song@linux.dev,osalvador@suse.de,peterx@redhat.com,rppt@kernel.org,sidhartha.kumar@oracle.com,sj@kernel.org,stable@vger.kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 20 Apr 2026 16:58:07 +0200
-Message-ID: <2026042007-casually-unaligned-fc88@gregkh>
+	s=arc-20240116; t=1776697112; c=relaxed/simple;
+	bh=La7BzzpXqI58WrZF9FvO0D48PeMdGO8j5VSs9KxLCTg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=PkKJb6ZPq9MIqklsMrU69n8nRLpnqvM3TK8CGLMak+seVVv8LBn6DK45cGL8nFL65S8O52VRs2A91ONpAyt5g9BtNzJHWqADJfB64Kq8uqx3HMmFE7k0ddsDYcOhmxSKv7JH4gcbjIIjnBMQWPe1d8QiEgF4zIOgXXUDwRvEYgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b9cVgZ/K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF491C19425;
+	Mon, 20 Apr 2026 14:58:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776697112;
+	bh=La7BzzpXqI58WrZF9FvO0D48PeMdGO8j5VSs9KxLCTg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=b9cVgZ/Kii5tzN0kiFYjzJQDlqJq1EzzDTocWGQAhTEVu9gWpo6r75m5wzYC7kc2Q
+	 mlTxD2/h5rQkUsyFvochm4otITVTeunfuwBp0YP4rSPeKIJ++GOEHIyAHtP5heYslQ
+	 I1pGZFW+7ku1j6uJFBDblHBQmBgCkAHW+/u2GtOr04mu+xUQNpde9ewk1xobuxQ+zr
+	 Kxi3fy0x3cQldFFgMGKv/HMev8aRQ9dh8HoDOu3h8g47qAt4gnQGALqz2WNBIOlL1o
+	 ruE86xk0azuanl9dciaJWtilf+9HPMN6WkwEy07IrM0lqILNq0pMXQGID8/PiF2b3O
+	 Odiafe7pyBvTw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Tamir Duberstein <tamird@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Fiona Behrens <me@kloenk.dev>,
+	Trevor Gross <tmgross@umich.edu>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0.y] scripts: generate_rust_analyzer.py: define scripts
+Date: Mon, 20 Apr 2026 10:58:30 -0400
+Message-ID: <20260420145830.1151150-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026042045-drool-wheat-4281@gregkh>
+References: <2026042045-drool-wheat-4281@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239260-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,zhaoxin.com,redhat.com,linux-foundation.org,kernel.org,google.com,oracle.com,linux.dev,suse.de,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-239256-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,syzkaller.appspot.com:url,zhaoxin.com:email,appspotmail.com:email,gregkh:email,suse.de:email,linux-foundation.org:email,linux.dev:email,linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 2D0154304DD
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,umich.edu:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,collabora.com:email]
+X-Rspamd-Queue-Id: 22DA342E8A5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+From: Tamir Duberstein <tamird@kernel.org>
 
-The patch below does not apply to the 6.12-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+[ Upstream commit 36c619f6bd793493294becb10a02fea370b67a91 ]
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Add IDE support for host-side scripts written in Rust. This support has
+been missing since these scripts were initially added in commit
+9a8ff24ce584 ("scripts: add `generate_rust_target.rs`"), thus add it.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
-git checkout FETCH_HEAD
-git cherry-pick -x 0217c7fb4de4a40cee667eb21901f3204effe5ac
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026042007-casually-unaligned-fc88@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+Change the existing instance of extension stripping to
+`pathlib.Path.stem` to maintain code consistency.
 
-Possible dependencies:
+Fixes: 9a8ff24ce584 ("scripts: add `generate_rust_target.rs`")
+Cc: stable@vger.kernel.org
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Reviewed-by: Fiona Behrens <me@kloenk.dev>
+Reviewed-by: Trevor Gross <tmgross@umich.edu>
+Link: https://patch.msgid.link/20260122-rust-analyzer-scripts-v1-1-ff6ba278170e@kernel.org
+Signed-off-by: Tamir Duberstein <tamird@kernel.org>
+[ changed `[std]` dep to `["std"]` and kept untyped `is_root_crate()` ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ scripts/generate_rust_analyzer.py | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 0217c7fb4de4a40cee667eb21901f3204effe5ac Mon Sep 17 00:00:00 2001
-From: Jianhui Zhou <jianhuizzzzz@gmail.com>
-Date: Tue, 10 Mar 2026 19:05:26 +0800
-Subject: [PATCH] mm/userfaultfd: fix hugetlb fault mutex hash calculation
-
-In mfill_atomic_hugetlb(), linear_page_index() is used to calculate the
-page index for hugetlb_fault_mutex_hash().  However, linear_page_index()
-returns the index in PAGE_SIZE units, while hugetlb_fault_mutex_hash()
-expects the index in huge page units.  This mismatch means that different
-addresses within the same huge page can produce different hash values,
-leading to the use of different mutexes for the same huge page.  This can
-cause races between faulting threads, which can corrupt the reservation
-map and trigger the BUG_ON in resv_map_release().
-
-Fix this by introducing hugetlb_linear_page_index(), which returns the
-page index in huge page granularity, and using it in place of
-linear_page_index().
-
-Link: https://lkml.kernel.org/r/20260310110526.335749-1-jianhuizzzzz@gmail.com
-Fixes: a08c7193e4f1 ("mm/filemap: remove hugetlb special casing in filemap.c")
-Signed-off-by: Jianhui Zhou <jianhuizzzzz@gmail.com>
-Reported-by: syzbot+f525fd79634858f478e7@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=f525fd79634858f478e7
-Acked-by: SeongJae Park <sj@kernel.org>
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Cc: Jane Chu <jane.chu@oracle.com>
-Cc: Andrea Arcangeli <aarcange@redhat.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: JonasZhou <JonasZhou@zhaoxin.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: SeongJae Park <sj@kernel.org>
-Cc: Sidhartha Kumar <sidhartha.kumar@oracle.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index aaf3d472e6b5..9c098a02a09e 100644
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -792,6 +792,23 @@ static inline unsigned huge_page_shift(struct hstate *h)
- 	return h->order + PAGE_SHIFT;
- }
+diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
+index f9b545104f21f..2fca0e70757ee 100755
+--- a/scripts/generate_rust_analyzer.py
++++ b/scripts/generate_rust_analyzer.py
+@@ -188,6 +188,18 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs, core_edit
+     append_crate_with_generated("uapi", ["core", "ffi", "pin_init"])
+     append_crate_with_generated("kernel", ["core", "macros", "build_error", "pin_init", "ffi", "bindings", "uapi"])
  
-+/**
-+ * hugetlb_linear_page_index() - linear_page_index() but in hugetlb
-+ *				 page size granularity.
-+ * @vma: the hugetlb VMA
-+ * @address: the virtual address within the VMA
-+ *
-+ * Return: the page offset within the mapping in huge page units.
-+ */
-+static inline pgoff_t hugetlb_linear_page_index(struct vm_area_struct *vma,
-+		unsigned long address)
-+{
-+	struct hstate *h = hstate_vma(vma);
++    scripts = srctree / "scripts"
++    makefile = (scripts / "Makefile").read_text()
++    for path in scripts.glob("*.rs"):
++        name = path.stem
++        if f"{name}-rust" not in makefile:
++            continue
++        append_crate(
++            name,
++            path,
++            ["std"],
++        )
 +
-+	return ((address - vma->vm_start) >> huge_page_shift(h)) +
-+		(vma->vm_pgoff >> huge_page_order(h));
-+}
-+
- static inline bool order_is_gigantic(unsigned int order)
- {
- 	return order > MAX_PAGE_ORDER;
-diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index e19872e51878..2c565c7134b6 100644
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -573,7 +573,7 @@ static __always_inline ssize_t mfill_atomic_hugetlb(
- 		 * in the case of shared pmds.  fault mutex prevents
- 		 * races with other faulting threads.
- 		 */
--		idx = linear_page_index(dst_vma, dst_addr);
-+		idx = hugetlb_linear_page_index(dst_vma, dst_addr);
- 		mapping = dst_vma->vm_file->f_mapping;
- 		hash = hugetlb_fault_mutex_hash(mapping, idx);
- 		mutex_lock(&hugetlb_fault_mutex_table[hash]);
+     def is_root_crate(build_file, target):
+         try:
+             return f"{target}.o" in open(build_file).read()
+@@ -203,7 +215,7 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs, core_edit
+     for folder in extra_dirs:
+         for path in folder.rglob("*.rs"):
+             logging.info("Checking %s", path)
+-            name = path.name.replace(".rs", "")
++            name = path.stem
+ 
+             # Skip those that are not crate roots.
+             if not is_root_crate(path.parent / "Makefile", name) and \
+-- 
+2.53.0
 
 
