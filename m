@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-239634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239418-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qMMSHYlm5mmJvwEAu9opvQ
-	(envelope-from <stable+bounces-239634-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:46:49 +0200
+	id 6NwSMp9X5mlQvAEAu9opvQ
+	(envelope-from <stable+bounces-239418-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:43:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFE2F432126
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:46:48 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 400B342FE3B
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:43:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1228031A809C
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:59:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 059323387D52
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:50:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 026DD329E44;
-	Mon, 20 Apr 2026 15:59:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B5B133262B;
+	Mon, 20 Apr 2026 15:50:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ojaK33zM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2J9b8FbL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9CAC33AD9A;
-	Mon, 20 Apr 2026 15:59:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27C1532E696;
+	Mon, 20 Apr 2026 15:50:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700759; cv=none; b=fBR0u8kfJC7GJDsgq0wmQEKg2rbtnK3v6dqB0GVnjcRZCNsVEAygOybZByUy2Cb9XKH3lLFJ3kkX5znlO5WRQn6m6UXzdVE7zuINkejD1JfDbW/gEYVQEQsgHcIefCLlvTS3ruztlYJwBNC48f2QNrW4WFl9HeC16S2ZV/HCOXk=
+	t=1776700200; cv=none; b=KadNo8+zTwHYnDUyIF9T98Sot4YqP0R5w/zx5tWWD0kWqe8SPsikQb1azJgMFbQEBfKhwkPBRVLcisKxTVPIsqyuGz3MFrCyo1c5uvTxHtbwLgmBBT25bgALUl3QGMeBhPNXlAgawgHyick2Ip5erzdscCNBw0wyX2DIpmgd1sA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700759; c=relaxed/simple;
-	bh=MYHS91XmdEuY4W4IjnevEDO01YrDhEiRMc0t4p8g5hM=;
+	s=arc-20240116; t=1776700200; c=relaxed/simple;
+	bh=i/2RTa5pmmIcQZfwo5t6y/MyllIujMydOrg8NbiDYeU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i/1//LFFt9EnkFSYdlNeu7TeDyCLX+Q2Vrpe30RSuBThQ0LGEV8AjkCDWvoxDgV9HT0rVNkBGHLEa7oCxLqnI0yCNqxXFaG3Dqu1IMomkHYuZcQbeyX4ZMAlz+LYbl+ez1qiJTqIVRIb4fsv35p/7l3iHZpMRe0r1LUaQkpb3QU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ojaK33zM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B3C0C19425;
-	Mon, 20 Apr 2026 15:59:18 +0000 (UTC)
+	 MIME-Version; b=ocQ7QwvaPB9BMWzr9uKbdZwyajax0B5+CRRoMngncs0vRXHFb4OnhcK/79plePpKQQigOpWDb2CaXIRBdXsmK3HiuI6SYqT7TptpJ4sumjOc3eGjvrdYGm/haCXCtvyxyUy9v+mhcxxyK3zd/JLSa/pgnJlD+O/59T8c1HQSVxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2J9b8FbL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B15ECC19425;
+	Mon, 20 Apr 2026 15:49:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700759;
-	bh=MYHS91XmdEuY4W4IjnevEDO01YrDhEiRMc0t4p8g5hM=;
+	s=korg; t=1776700200;
+	bh=i/2RTa5pmmIcQZfwo5t6y/MyllIujMydOrg8NbiDYeU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ojaK33zMqLGGeZ5e/i5JBBbt57kabJBobX0FJMbOQIPbwjaUjJX8D0Xnsj/Oc1eFW
-	 w/uHidESPte2ZZF8A7ccJWn8MQgX7Xqc1i64dVm2kwIcnF0jiMUadh+N7Fu1DnwGrA
-	 u9hGeXmaZUOKwnX1+XcMue8EjYsdI4KSCEJVfAw8=
+	b=2J9b8FbLrCKsqKzJApS1nQb9mXU3R+XIshC35j0wouNjdtMgeA7D4VtXfsa+WFgBB
+	 yUJWPJMSN5r03AG8EarunupcSJNGnqYH7z5siOxUMwGUAcd1/evlZbcP/Z9Asp9Egd
+	 bDImeDQFIdSqE4Jk0wUTRj353MaYSp7lQPQgEVo4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Marcin Nita <marcin.nita@leolabs.pl>,
-	John Pavlick <jspavlick@posteo.net>,
+	Yiming Qian <yimingqian591@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Justin Iurman <justin.iurman@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 043/198] net: sfp: add quirks for Hisense and HSGQ GPON ONT SFP modules
+Subject: [PATCH 6.19 081/220] ipv6: ioam: fix potential NULL dereferences in __ioam6_fill_trace_data()
 Date: Mon, 20 Apr 2026 17:40:22 +0200
-Message-ID: <20260420153937.168542679@linuxfoundation.org>
+Message-ID: <20260420153936.954187934@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
+References: <20260420153934.013228280@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,93 +72,148 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-239634-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-239418-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.989];
 	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,kernel];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,leolabs.pl:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,posteo.net:email]
-X-Rspamd-Queue-Id: CFE2F432126
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: 400B342FE3B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Pavlick <jspavlick@posteo.net>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 95aca8602ef70ffd3d971675751c81826e124f90 ]
+[ Upstream commit 4e65a8b8daa18d63255ec58964dd192c7fdd9f8b ]
 
-Several GPON ONT SFP sticks based on Realtek RTL960x report
-1000BASE-LX at 1300MBd in their EEPROM but can operate at 2500base-X.
-On hosts capable of 2500base-X (e.g. Banana Pi R3 / MT7986), the
-kernel negotiates only 1G because it trusts the incorrect EEPROM data.
+We need to check __in6_dev_get() for possible NULL value, as
+suggested by Yiming Qian.
 
-Add quirks for:
-- Hisense-Leox LXT-010S-H
-- Hisense ZNID-GPON-2311NA
-- HSGQ HSGQ-XPON-Stick
+Also add skb_dst_dev_rcu() instead of skb_dst_dev(),
+and two missing READ_ONCE().
 
-Each quirk advertises 2500base-X and ignores TX_FAULT during the
-module's ~40s Linux boot time.
+Note that @dev can't be NULL.
 
-Tested on Banana Pi R3 (MT7986) with OpenWrt 25.12.1, confirmed
-2.5Gbps link and full throughput with flow offloading.
-
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Suggested-by: Marcin Nita <marcin.nita@leolabs.pl>
-Signed-off-by: John Pavlick <jspavlick@posteo.net>
-Link: https://patch.msgid.link/20260406132321.72563-1-jspavlick@posteo.net
+Fixes: 9ee11f0fff20 ("ipv6: ioam: Data plane support for Pre-allocated Trace")
+Reported-by: Yiming Qian <yimingqian591@gmail.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Justin Iurman <justin.iurman@gmail.com>
+Link: https://patch.msgid.link/20260402101732.1188059-1-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/sfp.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ net/ipv6/ioam6.c | 27 ++++++++++++++++-----------
+ 1 file changed, 16 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
-index 7a85b758fb1e6..c62e3f364ea73 100644
---- a/drivers/net/phy/sfp.c
-+++ b/drivers/net/phy/sfp.c
-@@ -543,6 +543,22 @@ static const struct sfp_quirk sfp_quirks[] = {
- 	SFP_QUIRK("HUAWEI", "MA5671A", sfp_quirk_2500basex,
- 		  sfp_fixup_ignore_tx_fault_and_los),
+diff --git a/net/ipv6/ioam6.c b/net/ipv6/ioam6.c
+index 8db7f965696aa..12350e1e18bde 100644
+--- a/net/ipv6/ioam6.c
++++ b/net/ipv6/ioam6.c
+@@ -710,7 +710,9 @@ static void __ioam6_fill_trace_data(struct sk_buff *skb,
+ 				    struct ioam6_schema *sc,
+ 				    unsigned int sclen, bool is_input)
+ {
+-	struct net_device *dev = skb_dst_dev(skb);
++	/* Note: skb_dst_dev_rcu() can't be NULL at this point. */
++	struct net_device *dev = skb_dst_dev_rcu(skb);
++	struct inet6_dev *i_skb_dev, *idev;
+ 	struct timespec64 ts;
+ 	ktime_t tstamp;
+ 	u64 raw64;
+@@ -721,13 +723,16 @@ static void __ioam6_fill_trace_data(struct sk_buff *skb,
  
-+	// Hisense LXT-010S-H is a GPON ONT SFP (sold as LEOX LXT-010S-H) that
-+	// can operate at 2500base-X, but reports 1000BASE-LX / 1300MBd in its
-+	// EEPROM
-+	SFP_QUIRK("Hisense-Leox", "LXT-010S-H", sfp_quirk_2500basex,
-+		  sfp_fixup_ignore_tx_fault),
+ 	data = trace->data + trace->remlen * 4 - trace->nodelen * 4 - sclen * 4;
+ 
++	i_skb_dev = skb->dev ? __in6_dev_get(skb->dev) : NULL;
++	idev = __in6_dev_get(dev);
 +
-+	// Hisense ZNID-GPON-2311NA can operate at 2500base-X, but reports
-+	// 1000BASE-LX / 1300MBd in its EEPROM
-+	SFP_QUIRK("Hisense", "ZNID-GPON-2311NA", sfp_quirk_2500basex,
-+		  sfp_fixup_ignore_tx_fault),
-+
-+	// HSGQ HSGQ-XPON-Stick can operate at 2500base-X, but reports
-+	// 1000BASE-LX / 1300MBd in its EEPROM
-+	SFP_QUIRK("HSGQ", "HSGQ-XPON-Stick", sfp_quirk_2500basex,
-+		  sfp_fixup_ignore_tx_fault),
-+
- 	// Lantech 8330-262D-E and 8330-265D can operate at 2500base-X, but
- 	// incorrectly report 2500MBd NRZ in their EEPROM.
- 	// Some 8330-265D modules have inverted LOS, while all of them report
+ 	/* hop_lim and node_id */
+ 	if (trace->type.bit0) {
+ 		byte = ipv6_hdr(skb)->hop_limit;
+ 		if (is_input)
+ 			byte--;
+ 
+-		raw32 = dev_net(dev)->ipv6.sysctl.ioam6_id;
++		raw32 = READ_ONCE(dev_net(dev)->ipv6.sysctl.ioam6_id);
+ 
+ 		*(__be32 *)data = cpu_to_be32((byte << 24) | raw32);
+ 		data += sizeof(__be32);
+@@ -735,18 +740,18 @@ static void __ioam6_fill_trace_data(struct sk_buff *skb,
+ 
+ 	/* ingress_if_id and egress_if_id */
+ 	if (trace->type.bit1) {
+-		if (!skb->dev)
++		if (!i_skb_dev)
+ 			raw16 = IOAM6_U16_UNAVAILABLE;
+ 		else
+-			raw16 = (__force u16)READ_ONCE(__in6_dev_get(skb->dev)->cnf.ioam6_id);
++			raw16 = (__force u16)READ_ONCE(i_skb_dev->cnf.ioam6_id);
+ 
+ 		*(__be16 *)data = cpu_to_be16(raw16);
+ 		data += sizeof(__be16);
+ 
+-		if (dev->flags & IFF_LOOPBACK)
++		if ((dev->flags & IFF_LOOPBACK) || !idev)
+ 			raw16 = IOAM6_U16_UNAVAILABLE;
+ 		else
+-			raw16 = (__force u16)READ_ONCE(__in6_dev_get(dev)->cnf.ioam6_id);
++			raw16 = (__force u16)READ_ONCE(idev->cnf.ioam6_id);
+ 
+ 		*(__be16 *)data = cpu_to_be16(raw16);
+ 		data += sizeof(__be16);
+@@ -822,7 +827,7 @@ static void __ioam6_fill_trace_data(struct sk_buff *skb,
+ 		if (is_input)
+ 			byte--;
+ 
+-		raw64 = dev_net(dev)->ipv6.sysctl.ioam6_id_wide;
++		raw64 = READ_ONCE(dev_net(dev)->ipv6.sysctl.ioam6_id_wide);
+ 
+ 		*(__be64 *)data = cpu_to_be64(((u64)byte << 56) | raw64);
+ 		data += sizeof(__be64);
+@@ -830,18 +835,18 @@ static void __ioam6_fill_trace_data(struct sk_buff *skb,
+ 
+ 	/* ingress_if_id and egress_if_id (wide) */
+ 	if (trace->type.bit9) {
+-		if (!skb->dev)
++		if (!i_skb_dev)
+ 			raw32 = IOAM6_U32_UNAVAILABLE;
+ 		else
+-			raw32 = READ_ONCE(__in6_dev_get(skb->dev)->cnf.ioam6_id_wide);
++			raw32 = READ_ONCE(i_skb_dev->cnf.ioam6_id_wide);
+ 
+ 		*(__be32 *)data = cpu_to_be32(raw32);
+ 		data += sizeof(__be32);
+ 
+-		if (dev->flags & IFF_LOOPBACK)
++		if ((dev->flags & IFF_LOOPBACK) || !idev)
+ 			raw32 = IOAM6_U32_UNAVAILABLE;
+ 		else
+-			raw32 = READ_ONCE(__in6_dev_get(dev)->cnf.ioam6_id_wide);
++			raw32 = READ_ONCE(idev->cnf.ioam6_id_wide);
+ 
+ 		*(__be32 *)data = cpu_to_be32(raw32);
+ 		data += sizeof(__be32);
 -- 
 2.53.0
 
