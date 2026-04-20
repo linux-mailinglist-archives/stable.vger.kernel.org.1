@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-239606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239607-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kB+GODFm5mmJvwEAu9opvQ
-	(envelope-from <stable+bounces-239606-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:45:21 +0200
+	id WDhzLjNm5mlmvwEAu9opvQ
+	(envelope-from <stable+bounces-239607-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:45:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DFD8432028
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:45:21 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C0BB43202F
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:45:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5DEB431B5072
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:58:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 54A6A31B5044
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:58:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F90A322749;
-	Mon, 20 Apr 2026 15:58:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E36FD336896;
+	Mon, 20 Apr 2026 15:58:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rva9PyQM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bBH9irbe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D635B22259F;
-	Mon, 20 Apr 2026 15:58:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A708D1EB5CE;
+	Mon, 20 Apr 2026 15:58:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700687; cv=none; b=DuN0aZR1NHkDoGP9AdtkjVGvM47wgza3x8BFEWc5nJXTJAul/laMoTvuLtNGpON+l0MqAEZhGaz6OUPMaVOeA6HUmtyAeIUfPYPGaCHOABSh+YTrtR8oRNvIkdemHXZr3fZ/3LTNlFLJa9r/bkVAvxxUR8GMEvzVLZIjU1aVtUo=
+	t=1776700690; cv=none; b=f2ZVHZfFI2Gto0KLzX5Xt1BkIKrQzgP/XynVjepKGnsvJGmVXqBnnGgVkGZeT/zHqSBvkaRiOZueRm+Dpf+f8Bjq9A1VaijG2EM7ISyGG0InLJWHaqja7D09UvTGVNHkclzBYswSO5++YHx3S+lmOkHTQAl/5Qx9+2DcuDtp6S8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700687; c=relaxed/simple;
-	bh=YN7caUdg5uNRc5XVwSafaaRl3kzsi45KTuSSmXmSFiI=;
+	s=arc-20240116; t=1776700690; c=relaxed/simple;
+	bh=K1igz01rAnI8PeQr16ZrIrY43bOOIF4bGwmksJLfiq4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C3lxAEjl6+zXUjnOeOMSobcLGmobihnvxHGeXQ4XzSUhYhbWm9LJgeD0hdtK+lTJlVSS8au3c6BEiBlSpOUJLRmbE62MTCMuecepFUpn2FHnsGj2Lfqsxe9rHIiEm50d+z1AOrT9Ml/quGp9tiP3iAr9gWkqLwvHUI7DlgpQqP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rva9PyQM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CB32C19425;
-	Mon, 20 Apr 2026 15:58:07 +0000 (UTC)
+	 MIME-Version; b=rAjw/Vn+1A7yxK6AJ5Us7fsmb8bHC/8eld2D5ZVx+N1D4oRjgch35buBFmdNdl39o2qV8jr13FEi96nfTCYfQlcV6xWg50FZ5Xp+jgX4zTSUHuwqzBd9xZTeePx8UxsYaJHP/s0NQggLTKhf668zslyfO8V+rKkoXPTvlqwmQ/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bBH9irbe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00361C19425;
+	Mon, 20 Apr 2026 15:58:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700687;
-	bh=YN7caUdg5uNRc5XVwSafaaRl3kzsi45KTuSSmXmSFiI=;
+	s=korg; t=1776700690;
+	bh=K1igz01rAnI8PeQr16ZrIrY43bOOIF4bGwmksJLfiq4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rva9PyQMfJ0+d6x870koVXxxAIbs0mGHiGnPUd14jY49hQBy9fR6RxSPQQittc2qc
-	 Oibp28K465ryJhaUA4mRkGTjakaFHsloWXntC4a1KNHOgBI4YdWBz3pWat24H9dzpu
-	 5NwflaKbpqITy4mqSO6hGl4zZ29bn7W13GW1Zp4Y=
+	b=bBH9irbeCpMF/L3uYhYL14Gkr1RTdaWAfQN+QW4fggbOzSlrpEolK2SbXyt3JYF5c
+	 +pF1Zl3RmJgheCOlT4bPc/xDYprHSjRR8MG+bsW5MTbZlr2QBen77F+Wi2Z8EDWTFm
+	 qr6d2pDX+TQcHSPoxNestA6a1fWZjoZ0YRdfNUO8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Luke Wang <ziniu.wang_1@nxp.com>,
 	Frank Li <Frank.Li@nxp.com>,
-	Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
-	Peng Fan <peng.fan@nxp.com>,
-	Fabio Estevam <festevam@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 049/198] arm64: dts: imx8mq: Set the correct gpu_ahb clock frequency
-Date: Mon, 20 Apr 2026 17:40:28 +0200
-Message-ID: <20260420153937.382540937@linuxfoundation.org>
+Subject: [PATCH 6.18 050/198] arm64: dts: imx93-9x9-qsb: change usdhc tuning step for eMMC and SD
+Date: Mon, 20 Apr 2026 17:40:29 +0200
+Message-ID: <20260420153937.417765847@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
 References: <20260420153935.605963767@linuxfoundation.org>
@@ -70,31 +68,30 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,nxp.com,puri.sm,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-239606-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-239607-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,nxp.com:email,i.mx:url,2.67.213.128:email,puri.sm:email]
-X-Rspamd-Queue-Id: 4DFD8432028
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 5C0BB43202F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -102,36 +99,53 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
+From: Luke Wang <ziniu.wang_1@nxp.com>
 
-[ Upstream commit 1f99b5d93d99ca17d50b386a674d0ce1f20932d8 ]
+[ Upstream commit 08903184553def7ba1ad6ba4fa8afe1ba2ee0a21 ]
 
-According to i.MX 8M Quad Reference Manual, GPU_AHB_CLK_ROOT's maximum
-frequency is 400MHz.
+During system resume, the following errors occurred:
 
-Fixes: 45d2c84eb3a2 ("arm64: dts: imx8mq: add GPU node")
+  [  430.638625] mmc1: error -84 writing Cache Enable bit
+  [  430.643618] mmc1: error -84 doing runtime resume
+
+For eMMC and SD, there are two tuning pass windows and the gap between
+those two windows may only have one cell. If tuning step > 1, the gap may
+just be skipped and host assumes those two windows as a continuous
+windows. This will cause a wrong delay cell near the gap to be selected.
+
+Set the tuning step to 1 to avoid selecting the wrong delay cell.
+
+For SDIO, the gap is sufficiently large, so the default tuning step does
+not cause this issue.
+
+Fixes: 0565d20cd8c2 ("arm64: dts: freescale: Support i.MX93 9x9 Quick Start Board")
+Signed-off-by: Luke Wang <ziniu.wang_1@nxp.com>
 Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Fabio Estevam <festevam@gmail.com>
 Signed-off-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mq.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/freescale/imx93-9x9-qsb.dts | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mq.dtsi b/arch/arm64/boot/dts/freescale/imx8mq.dtsi
-index 607962f807beb..6a25e219832ce 100644
---- a/arch/arm64/boot/dts/freescale/imx8mq.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mq.dtsi
-@@ -1632,7 +1632,7 @@ gpu: gpu@38000000 {
- 			                         <&clk IMX8MQ_GPU_PLL_OUT>,
- 			                         <&clk IMX8MQ_GPU_PLL>;
- 			assigned-clock-rates = <800000000>, <800000000>,
--			                       <800000000>, <800000000>, <0>;
-+			                       <800000000>, <400000000>, <0>;
- 			power-domains = <&pgc_gpu>;
- 		};
+diff --git a/arch/arm64/boot/dts/freescale/imx93-9x9-qsb.dts b/arch/arm64/boot/dts/freescale/imx93-9x9-qsb.dts
+index 0852067eab2cb..197c8f8b7f669 100644
+--- a/arch/arm64/boot/dts/freescale/imx93-9x9-qsb.dts
++++ b/arch/arm64/boot/dts/freescale/imx93-9x9-qsb.dts
+@@ -507,6 +507,7 @@ &usdhc1 {
+ 	pinctrl-2 = <&pinctrl_usdhc1_200mhz>;
+ 	bus-width = <8>;
+ 	non-removable;
++	fsl,tuning-step = <1>;
+ 	status = "okay";
+ };
+ 
+@@ -519,6 +520,7 @@ &usdhc2 {
+ 	vmmc-supply = <&reg_usdhc2_vmmc>;
+ 	bus-width = <4>;
+ 	no-mmc;
++	fsl,tuning-step = <1>;
+ 	status = "okay";
+ };
  
 -- 
 2.53.0
