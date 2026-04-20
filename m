@@ -1,151 +1,194 @@
-Return-Path: <stable+bounces-239233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239234-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oP9UFYtV5mktvAEAu9opvQ
-	(envelope-from <stable+bounces-239233-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:34:19 +0200
+	id SCo2NJJV5mkDuwEAu9opvQ
+	(envelope-from <stable+bounces-239234-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:34:26 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4ECBF42FA41
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:34:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B10F442FA58
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:34:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1DC9E31AC650
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 14:57:20 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A2E9332CA7F7
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 14:57:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7638C37474E;
-	Mon, 20 Apr 2026 14:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E604B2E8B71;
+	Mon, 20 Apr 2026 14:13:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fozhAgKi"
+	dkim=pass (2048-bit key) header.d=tomeuvizoso-net.20251104.gappssmtp.com header.i=@tomeuvizoso-net.20251104.gappssmtp.com header.b="OndlmNgn"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f49.google.com (mail-dl1-f49.google.com [74.125.82.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37709374726;
-	Mon, 20 Apr 2026 14:12:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776694333; cv=none; b=MUtzx4XjUL2DsbB1Z9RH9lmlwtHvIrYanKL5XMpIaz44qykmjz93u+78tMfEoPCCeG7uQI2Gpwmekgm57XuTHM7gRVXD06zOElw6wfmPS/K7sBqXUNPhKIVRpWht8u2WbEC1wbOIVVoGBnppQxCoA/Vvj2pET8UzFAnkmL+bjk8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776694333; c=relaxed/simple;
-	bh=KUP+V4uqfCUMaSGxnbv21QPHCD50bcmDKtIbRcY1gAU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=rakqwsIb8G7fkPlTN48bg6Jq/c+LZCTuSYmsh3V0xcWulXhN8e75C9E9wmb3YY6BzS5XfvfDtTdl9kFeKUopZdGTIaZDn01IUUTUKRVwLFel40FPWrP0mSHxyPGahm3S1huSpxjlQJufRu83/O1QRwBVvs7la71MiTdFcnsrYYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fozhAgKi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 345DDC19425;
-	Mon, 20 Apr 2026 14:12:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776694332;
-	bh=KUP+V4uqfCUMaSGxnbv21QPHCD50bcmDKtIbRcY1gAU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=fozhAgKiO0oARp9McnWrXz36z+yMgW+gnevRQ3c/2puRTFLWSzQpxWvpGmWlsdS9y
-	 ajwWMVjBWTi920FtX2Cfjo4jkBRZrVsdTW3+nMPucOTiCJETgzbdRwdOWLmZMpQsPt
-	 eDORtrDe79ADrBDQQwa92qvlN4maUO+qNhmHus7pE28afezXitr4v3LGLZBlGV3ncY
-	 0CTgkUC9cXHlsU8hhMAtUAHQK1EfuLmmOCa7kgxMUB4R3S9r7TvrFALt+SNOC9Vi7V
-	 PGgJl/uXryxG8Ie6cfK8X13HjR/xrtItozEEGAVAQBSorsFP9KxAGnPejmTCOsFTy3
-	 e8FrUslvEEf4w==
-From: Thomas Gleixner <tglx@kernel.org>
-To: Sasha Levin <sashal@kernel.org>, patches@lists.linux.dev,
- stable@vger.kernel.org
-Cc: Calvin Owens <calvin@wbinvd.org>, Borislav Petkov <bp@alien8.de>, Sasha
- Levin <sashal@kernel.org>, fweisbec@gmail.com, mingo@kernel.org,
- akpm@linux-foundation.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.18] clockevents: Prevent timer interrupt
- starvation
-In-Reply-To: <20260420131539.986432-78-sashal@kernel.org>
-References: <20260420131539.986432-1-sashal@kernel.org>
- <20260420131539.986432-78-sashal@kernel.org>
-Date: Mon, 20 Apr 2026 16:12:09 +0200
-Message-ID: <87pl3ten5y.ffs@tglx>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D99E37266E
+	for <stable@vger.kernel.org>; Mon, 20 Apr 2026 14:13:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776694395; cv=pass; b=T7Cl7JNEhOT7gBVlZlSL/JjuXARNxRYWamNpIrO1lS3jfyalF2g67ZST721U3Yt3MFgaxB4PFH3Jf8D4Bs3PmULKkXnUdXE28TahRBOtB2pGXZJfLuc1IqeNIxgeLwKFqo4v9UECZoUaoagVehPfAFBvRkIEDgY3RUAdEkUxomo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776694395; c=relaxed/simple;
+	bh=wyFN4EfyT9jkbRHQzJ1vfkEIN/Sr0RbUF279Vtcb9Qw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MXHIXqcjwfhzeZePhKRw4k7TMTdbXZOHfoGrp4ccTwiRrMIU0O90VsdjFiAvR9V+o/zILZX6a09KsYb4CrHx63IPinLIhePvmAkWkkkqFcqtTZBic+LcdFx32JuKLyKs/EgIZWxVmCFrGHz8+jWC6wBvPfxOAdFj0LxBk9TTCOs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tomeuvizoso.net; spf=pass smtp.mailfrom=tomeuvizoso.net; dkim=pass (2048-bit key) header.d=tomeuvizoso-net.20251104.gappssmtp.com header.i=@tomeuvizoso-net.20251104.gappssmtp.com header.b=OndlmNgn; arc=pass smtp.client-ip=74.125.82.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tomeuvizoso.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tomeuvizoso.net
+Received: by mail-dl1-f49.google.com with SMTP id a92af1059eb24-12c726f46baso3571686c88.1
+        for <stable@vger.kernel.org>; Mon, 20 Apr 2026 07:13:13 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776694393; cv=none;
+        d=google.com; s=arc-20240605;
+        b=N6xwWi6s/bwcpWDuSlj4hGnaeQNHbNWAcghDdbuI6Qj4WbC1Lh/6PIkPC4ZscXs9yN
+         kYRg61w26kic4IGfIBiDoV/MrkkN0OWMe8Y2j2Wx/FXethxr0hk1Na895A9vpBlb+Ntp
+         4Lt53a7ABrFpxSgnpZQI7WvLrwri2dWUwLlm40q10IcbtqCX6ob2csFZJfDSU4OEoDwN
+         OOxrW3jN2+XL/UGdNCBYv0TVHFAY6siTCdQ40HMVGDCg3JGKOV8uKsHlceSvFolwVjv3
+         3KAeJGo7Szq44/2PH2VzrEoDcn4xUnD/V01+xj8Ky5KarGFjibeI2Fa1mgdIU835Tv/N
+         TWBg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=RY55dkbCNBUBL969VO5sT1O2XMpsnPH2PC4wwUHFnnE=;
+        fh=SvQScIE2HiwoZ/ZeL8QIr7rEt1k4fNqob1WlVWa7oCU=;
+        b=V+OXgoCra1Ki7aDSJDjVLd9dYnWszxfjEvoXYzjXq22e6+CrUmWddChk0qJK5dasUY
+         gRqddXE07uuAWapewf+SAIft80Pf5Y7HdZ0n9YbIkfKV4L/iR+4muiM5uDqYOBO6IHl3
+         /2O5O3Fku1MENimJIsmYJbsRRGmxvczioBlE2muIFuBGF6cZX6KGOSCi2thfQedd2Lvc
+         q/iNLHbvWi1dSdIstmi9eYa/lueUuOnXD3dw3aewyoR49taI8t6XkSWIWpIyO0bpGxQe
+         Uq3ix+yXeF4rfdiRwuQnX+VkVda/mwOt01U9atKykOEv5O5D30SCGlng48IL+B/w0iDZ
+         jL7g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=tomeuvizoso-net.20251104.gappssmtp.com; s=20251104; t=1776694393; x=1777299193; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RY55dkbCNBUBL969VO5sT1O2XMpsnPH2PC4wwUHFnnE=;
+        b=OndlmNgnPezTXTXCmCF6ITcjTmQYPRPibDXPJc7h5M+gqnjboPUDHAPpOvv2/CxoNV
+         P5jcTVS6jvSe7oWmXg7IulJvHV8UkkPQSUaUb79gZF3MC2/DOj+uUyWivtAHxfk8ftZQ
+         mKm+yU7WdfKLT48VdZbx2GlZUEENVPgOOxg1/s40g55zOEpvEmBA13YYenUJTNMEBmbr
+         fD1CbdXjCKLdMR1lMLDaE8H4tW6f8QGO6ZYUw5M3MEXgA+nBSXdcwByORqCiFoUDvUrE
+         YetV76AH95RjXbk+Vf0qAHwOiedxJKk1d8SJgpa81lbndDVQDHtD1Kj5TYFzzBOX/5IF
+         BvoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776694393; x=1777299193;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=RY55dkbCNBUBL969VO5sT1O2XMpsnPH2PC4wwUHFnnE=;
+        b=V/oJUpDilbNQNp1OX3si/rRxv5ZCcV1FIuemnjxraYqlEc7vyi7vxyCXZa79ecVETn
+         FkEjybxLqTsjsL2hwGN+MC1zEZErjSfHssRQDkPLKOyZkAc3i9r5K3HqQr3yxeBLYlW3
+         DREJvy9TeiOiDzPndaijFdz6ANteA7MQbzEvJbDIkU50yndD5ZKoh1auD5EY3453ggUm
+         iafSsWR1BgWRetSHM+Spw9lA+2aOczs6F3IUJcZiUtdjjzivWyvKEGUa1qVuNbKrH01n
+         kOIp/T3iQQBPbaCceZlnW8hwQNi1XgxOkw7Zci8F6/N8luGFQLpieCDExVobKIg4KvFr
+         ASOQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/d8QzenxuVck51Hio+7d8WkupwchbWGxFa6eCqQDec5kgu4dqB05hAWkJdtIEmLc3tVWS7FJE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw8wZMVLToaaPliMbnEXN1qSwv8u6LInDWnKMq07/7+RcXErxkJ
+	WNxDArxt9oOb3ODlwslg/0KQXGOALjGSmPoSoYzsDF5jXGKzFRWuTkIm51+RQ5D7IpeKBdpKvg7
+	sijXkEZcZMw0AumUBl5CGBSPJMaip4caxoko6VsIt9g==
+X-Gm-Gg: AeBDietjM/cWz7WFwlxD9mMsEpb8hYele6VX9TRf81BFFVPz1ss4RedzrMNJ6K4Owvt
+	3cykOhm/yFWh5GxHhsaZPE8AOm1c1qjT6SkmbwJ/q9sYUF35uNms6/w6EMzlQMAWua/2krA6Ro0
+	MUrAyNjUNLMR5ZL3/A+a3G5Y05Cs+/bjayapcXiHtdTisVw4QVDPaF/HirgOCNkTveg1M4AGQGR
+	7IBT1MExpQwuJ1saGo6tGPtVDhjyvsfC+HuUUWse06sfju3RV7X4Fhi+z8wzg5DdWz5WaIDrELx
+	6GeZ7n8olbU2u6/H
+X-Received: by 2002:a05:7022:2602:b0:128:d23d:81a2 with SMTP id
+ a92af1059eb24-12c73f9ae5cmr6646930c88.29.1776694393074; Mon, 20 Apr 2026
+ 07:13:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spamd-Result: default: False [2.84 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+References: <cover.1776581974.git.gye976@gmail.com> <c0ebf83b345721701b22d8f5bc41c52c0ecf5e16.1776581974.git.gye976@gmail.com>
+In-Reply-To: <c0ebf83b345721701b22d8f5bc41c52c0ecf5e16.1776581974.git.gye976@gmail.com>
+From: Tomeu Vizoso <tomeu@tomeuvizoso.net>
+Date: Mon, 20 Apr 2026 16:12:59 +0200
+X-Gm-Features: AQROBzDs4_XjqT-9GndbRM_zOc4QlFRBoosVudK8gwq0qmMTzSwHuryuZaTsSJc
+Message-ID: <CAPsqS2Q_p+_+XDstWworSL=Bdg=ENtDxaVTcxpchF4qm4WwWEw@mail.gmail.com>
+Subject: Re: [PATCH v1 1/2] accel/rocket: Fix prep_bo ioctl leaking positive
+ return from dma_resv_wait_timeout()
+To: Gyeyoung Baek <gye976@gmail.com>
+Cc: Boris Brezillon <boris.brezillon@collabora.com>, Rob Herring <robh@kernel.org>, 
+	Steven Price <steven.price@arm.com>, =?UTF-8?Q?Adri=C3=A1n_Larumbe?= <adrian.larumbe@collabora.com>, 
+	Oded Gabbay <ogabbay@kernel.org>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, dri-devel@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	R_DKIM_ALLOW(-0.20)[tomeuvizoso-net.20251104.gappssmtp.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[wbinvd.org,alien8.de,kernel.org,gmail.com,linux-foundation.org,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-239233-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tglx@kernel.org,stable@vger.kernel.org];
+	DMARC_NA(0.00)[tomeuvizoso.net];
 	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-239234-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.992];
+	DKIM_TRACE(0.00)[tomeuvizoso-net.20251104.gappssmtp.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tomeu@tomeuvizoso.net,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[collabora.com,kernel.org,arm.com,linux.intel.com,suse.de,gmail.com,ffwll.ch,lists.freedesktop.org,vger.kernel.org];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4ECBF42FA41
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,mail.gmail.com:mid,tomeuvizoso.net:email]
+X-Rspamd-Queue-Id: B10F442FA58
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, Apr 20 2026 at 09:09, Sasha Levin wrote:
-> From: Thomas Gleixner <tglx@kernel.org>
+On Sun, Apr 19, 2026 at 9:19=E2=80=AFAM Gyeyoung Baek <gye976@gmail.com> wr=
+ote:
 >
-> [ Upstream commit d6e152d905bdb1f32f9d99775e2f453350399a6a ]
+> dma_resv_wait_timeout() returns a positive 'remaining jiffies' value
+> on success, 0 on timeout, and -errno on failure.
 >
-> Calvin reported an odd NMI watchdog lockup which claims that the CPU locked
-> up in user space. He provided a reproducer, which sets up a timerfd based
-> timer and then rearms it in a loop with an absolute expiry time of 1ns.
+> rocket_ioctl_prep_bo() returns this 'long' result from an int-typed
+> ioctl handler, so positive values reach userspace as bogus errors.
+> Explicitly set ret to 0 on the success path.
 >
-> As the expiry time is in the past, the timer ends up as the first expiring
-> timer in the per CPU hrtimer base and the clockevent device is programmed
-> with the minimum delta value. If the machine is fast enough, this ends up
-> in a endless loop of programming the delta value to the minimum value
-> defined by the clock event device, before the timer interrupt can fire,
-> which starves the interrupt and consequently triggers the lockup detector
-> because the hrtimer callback of the lockup mechanism is never invoked.
->
-> As a first step to prevent this, avoid reprogramming the clock event device
-> when:
->      - a forced minimum delta event is pending
->      - the new expiry delta is less then or equal to the minimum delta
->
-> Thanks to Calvin for providing the reproducer and to Borislav for testing
-> and providing data from his Zen5 machine.
->
-> The problem is not limited to Zen5, but depending on the underlying
-> clock event device (e.g. TSC deadline timer on Intel) and the CPU speed
-> not necessarily observable.
->
-> This change serves only as the last resort and further changes will be made
-> to prevent this scenario earlier in the call chain as far as possible.
->
-> [ tglx: Updated to restore the old behaviour vs. !force and delta <= 0 and
->   	fixed up the tick-broadcast handlers as pointed out by Borislav ]
->
-> Fixes: d316c57ff6bf ("[PATCH] clockevents: add core functionality")
+> Fixes: 525ad89dd904 ("accel/rocket: Add IOCTLs for synchronizing memory a=
+ccesses")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Gyeyoung Baek <gye976@gmail.com>
 
-Please hold that off until
+Reviewed-by: Tomeu Vizoso <tomeu@tomeuvizoso.net>
 
-   4096fd0e8eae ("clockevents: Add missing resets of the next_event_forced flag")
+Thanks!
 
-hits Linus tree. It fixes above commit and is marked for stable. So
-ideally you apply them together.
+Tomeu
 
-4096fd0e8eae will not apply to 7.0 and older. I'll provide you a updated
-version once Linus pulled it.
-
-Thanks,
-
-        tglx
+> ---
+>  drivers/accel/rocket/rocket_gem.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/drivers/accel/rocket/rocket_gem.c b/drivers/accel/rocket/roc=
+ket_gem.c
+> index b6a385d2e..c80847192 100644
+> --- a/drivers/accel/rocket/rocket_gem.c
+> +++ b/drivers/accel/rocket/rocket_gem.c
+> @@ -145,6 +145,8 @@ int rocket_ioctl_prep_bo(struct drm_device *dev, void=
+ *data, struct drm_file *fi
+>         ret =3D dma_resv_wait_timeout(gem_obj->resv, DMA_RESV_USAGE_WRITE=
+, true, timeout);
+>         if (!ret)
+>                 ret =3D timeout ? -ETIMEDOUT : -EBUSY;
+> +       else if (ret > 0)
+> +               ret =3D 0;
+>
+>         shmem_obj =3D &to_rocket_bo(gem_obj)->base;
+>
+> --
+> 2.43.0
+>
 
