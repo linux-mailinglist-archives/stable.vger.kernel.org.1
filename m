@@ -1,60 +1,69 @@
-Return-Path: <stable+bounces-239861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239555-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QMKIC2Nk5mkKvwEAu9opvQ
-	(envelope-from <stable+bounces-239861-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:37:39 +0200
+	id 0JS1Eq5l5mlmvwEAu9opvQ
+	(envelope-from <stable+bounces-239555-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:43:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31C724319EA
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:37:38 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8C1B431E46
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:43:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6225C30A3462
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:10:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 684753287AF2
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:56:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4F21344D95;
-	Mon, 20 Apr 2026 16:10:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E62033F5BC;
+	Mon, 20 Apr 2026 15:55:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ds/5NZfM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fb7mMowv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8480E3446BC;
-	Mon, 20 Apr 2026 16:10:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20C9C33B975;
+	Mon, 20 Apr 2026 15:55:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701404; cv=none; b=HdYbV7KtgEjxqIR5xc6SjDg3jy960/16v3tDQi0AOENOIrmuNJOq/yUvZYZqVNwa/inKe5lRNkiTh3t6EzOPHMOY97KtSLCdt+/xdVsVrURbVwG7CLrwDuoqzLc3hvDqDYxs+fjD92+OUWwn6ztMDk3l0GKtubglG78h9jPm/sw=
+	t=1776700553; cv=none; b=c/35nS01/Ui5nA8ZJ+AmWUgn5YvJtntWxgqwNm5ANI51f2qT03Y/u3lsHdXJSbnIWibdMvRSFPStOQbKe2Xxq5TlpKQBM19j+hBWKPhiPFGHl9IyqWrI87T99n4W1ikTW+mmSF88RzX9TibxgFqtUJMcrEPbJAYwtZ14NRydWCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701404; c=relaxed/simple;
-	bh=fLis9AiKCbUccjCbwaVGPstO8PZCdRS3k8eVprsI90k=;
+	s=arc-20240116; t=1776700553; c=relaxed/simple;
+	bh=Wu2Fei/OFM7ZAayv3k1uD25m/KngVs4HP7aBlBdkqcY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZXqik99wxeguy5Htf7s2Xx3yhui62pWIrjjEBfmvnh7ZGXmyMaqnVkyKUcyy78+sJNWKQ7CQNzQgXaBQh1QPP+57CD4IgaI+aOIdm8FZNlePMnK1KgwFultoOkPZV/Lk27Ql39mkMsb8xF9WgCTyPV/g/FxW54CrqoUVdz07qQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ds/5NZfM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B46ECC19425;
-	Mon, 20 Apr 2026 16:10:03 +0000 (UTC)
+	 MIME-Version; b=hYMtLzMDSLaYB80DOO3vyknrKZ4vOFZ2s/O/dQLKfmx3D0pcJmsMf542383ZiLZiphnPjpoxHRBfX6eUAW+2OcffD38irwOuhLI4711nX4dM9utLXwQXI3uxPZpTf62P+0hfGJ2km0Xovl5mWwriwVOzo/mXyYb8foDc+XfCRZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fb7mMowv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 836A5C19425;
+	Mon, 20 Apr 2026 15:55:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701404;
-	bh=fLis9AiKCbUccjCbwaVGPstO8PZCdRS3k8eVprsI90k=;
+	s=korg; t=1776700553;
+	bh=Wu2Fei/OFM7ZAayv3k1uD25m/KngVs4HP7aBlBdkqcY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ds/5NZfMBiso7E+DsZbWzQMo9+gQTGi5HmithtcufvJL7fr4FZFogohWjRhc/ccwn
-	 Vae/mtc8jynS88zr3W/Wh3eFmFxDOldxKdTvZj0xrK+5/O6EVGhwh1gIKPairbuYa2
-	 jnn6SbnBJ1p12q1RsbXOsWAWUiyZ+6T9zHV7o2os=
+	b=Fb7mMowv+UhvCf5FP9ZKrpQFrRujg1dzdEmtd6EjZb5kxJaYRvNOOxBMYZa1pGp9k
+	 0JWrXjxX0rLwDLgYwJ6AsQ0brxjPcNpt4cPttAA91xQYY15ohDSPFcEEK2wn+Sca4q
+	 9y5b0+b8CZUkCVHzNisY336cSQvKkvnsIIXHcnmc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Stultz <jstultz@google.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 083/162] sched/deadline: Use revised wakeup rule for dl_server
+	Alistair Popple <apopple@nvidia.com>,
+	Zenghui Yu <zenghui.yu@linux.dev>,
+	Balbir Singh <balbirs@nvidia.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	David Hildenbrand <david@kernel.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Leon Romanovsky <leon@kernel.org>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.19 174/220] selftests/mm: hmm-tests: dont hardcode THP size to 2MB
 Date: Mon, 20 Apr 2026 17:41:55 +0200
-Message-ID: <20260420153930.040876538@linuxfoundation.org>
+Message-ID: <20260420153940.291178781@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
-References: <20260420153927.006696811@linuxfoundation.org>
+In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
+References: <20260420153934.013228280@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,83 +78,277 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239861-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-239555-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[16];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: 31C724319EA
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ziepe.ca:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email,linux-foundation.org:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,oracle.com:email,nvidia.com:email,linux.dev:email]
+X-Rspamd-Queue-Id: B8C1B431E46
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Alistair Popple <apopple@nvidia.com>
 
-[ Upstream commit 14a857056466be9d3d907a94e92a704ac1be149b ]
+commit f9d7975c52c00b3685cf9a90a81023d17817d991 upstream.
 
-John noted that commit 115135422562 ("sched/deadline: Fix 'stuck' dl_server")
-unfixed the issue from commit a3a70caf7906 ("sched/deadline: Fix dl_server
-behaviour").
+Several HMM tests hardcode TWOMEG as the THP size. This is wrong on
+architectures where the PMD size is not 2MB such as arm64 with 64K base
+pages where THP is 512MB. Fix this by using read_pmd_pagesize() from
+vm_util instead.
 
-The issue in commit 115135422562 was for wakeups of the server after the
-deadline; in which case you *have* to start a new period. The case for
-a3a70caf7906 is wakeups before the deadline.
+While here also replace the custom file_read_ulong() helper used to
+parse the default hugetlbfs page size from /proc/meminfo with the
+existing default_huge_page_size() from vm_util.
 
-Now, because the server is effectively running a least-laxity policy, it means
-that any wakeup during the runnable phase means dl_entity_overflow() will be
-true. This means we need to adjust the runtime to allow it to still run until
-the existing deadline expires.
-
-Use the revised wakeup rule for dl_defer entities.
-
-Fixes: 115135422562 ("sched/deadline: Fix 'stuck' dl_server")
-Reported-by: John Stultz <jstultz@google.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Juri Lelli <juri.lelli@redhat.com>
-Tested-by: John Stultz <jstultz@google.com>
-Link: https://patch.msgid.link/20260404102244.GB22575@noisy.programming.kicks-ass.net
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/20260331063445.3551404-3-apopple@nvidia.com
+Link: https://lore.kernel.org/linux-mm/8bd0396a-8997-4d2e-a13f-5aac033083d7@linux.dev/
+Fixes: fee9f6d1b8df ("mm/hmm/test: add selftests for HMM")
+Fixes: 519071529d2a ("selftests/mm/hmm-tests: new tests for zone device THP migration")
+Signed-off-by: Alistair Popple <apopple@nvidia.com>
+Reported-by: Zenghui Yu <zenghui.yu@linux.dev>
+Closes: https://lore.kernel.org/linux-mm/8bd0396a-8997-4d2e-a13f-5aac033083d7@linux.dev/
+Reviewed-by: Balbir Singh <balbirs@nvidia.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Leon Romanovsky <leon@kernel.org>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/deadline.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/mm/hmm-tests.c |   83 ++++++---------------------------
+ 1 file changed, 16 insertions(+), 67 deletions(-)
 
-diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
-index 8acdd97538546..1ef891f8e3f2f 100644
---- a/kernel/sched/deadline.c
-+++ b/kernel/sched/deadline.c
-@@ -1079,7 +1079,7 @@ static void update_dl_entity(struct sched_dl_entity *dl_se)
- 	if (dl_time_before(dl_se->deadline, rq_clock(rq)) ||
- 	    dl_entity_overflow(dl_se, rq_clock(rq))) {
+--- a/tools/testing/selftests/mm/hmm-tests.c
++++ b/tools/testing/selftests/mm/hmm-tests.c
+@@ -34,6 +34,7 @@
+  */
+ #include <lib/test_hmm_uapi.h>
+ #include <mm/gup_test.h>
++#include <mm/vm_util.h>
  
--		if (unlikely(!dl_is_implicit(dl_se) &&
-+		if (unlikely((!dl_is_implicit(dl_se) || dl_se->dl_defer) &&
- 			     !dl_time_before(dl_se->deadline, rq_clock(rq)) &&
- 			     !is_dl_boosted(dl_se))) {
- 			update_dl_revised_wakeup(dl_se, rq);
--- 
-2.53.0
-
+ struct hmm_buffer {
+ 	void		*ptr;
+@@ -548,7 +549,7 @@ TEST_F(hmm, anon_write_child)
+ 
+ 	for (migrate = 0; migrate < 2; ++migrate) {
+ 		for (use_thp = 0; use_thp < 2; ++use_thp) {
+-			npages = ALIGN(use_thp ? TWOMEG : HMM_BUFFER_SIZE,
++			npages = ALIGN(use_thp ? read_pmd_pagesize() : HMM_BUFFER_SIZE,
+ 				       self->page_size) >> self->page_shift;
+ 			ASSERT_NE(npages, 0);
+ 			size = npages << self->page_shift;
+@@ -728,7 +729,7 @@ TEST_F(hmm, anon_write_huge)
+ 	int *ptr;
+ 	int ret;
+ 
+-	size = 2 * TWOMEG;
++	size = 2 * read_pmd_pagesize();
+ 
+ 	buffer = malloc(sizeof(*buffer));
+ 	ASSERT_NE(buffer, NULL);
+@@ -744,7 +745,7 @@ TEST_F(hmm, anon_write_huge)
+ 			   buffer->fd, 0);
+ 	ASSERT_NE(buffer->ptr, MAP_FAILED);
+ 
+-	size = TWOMEG;
++	size /= 2;
+ 	npages = size >> self->page_shift;
+ 	map = (void *)ALIGN((uintptr_t)buffer->ptr, size);
+ 	ret = madvise(map, size, MADV_HUGEPAGE);
+@@ -771,54 +772,6 @@ TEST_F(hmm, anon_write_huge)
+ }
+ 
+ /*
+- * Read numeric data from raw and tagged kernel status files.  Used to read
+- * /proc and /sys data (without a tag) and from /proc/meminfo (with a tag).
+- */
+-static long file_read_ulong(char *file, const char *tag)
+-{
+-	int fd;
+-	char buf[2048];
+-	int len;
+-	char *p, *q;
+-	long val;
+-
+-	fd = open(file, O_RDONLY);
+-	if (fd < 0) {
+-		/* Error opening the file */
+-		return -1;
+-	}
+-
+-	len = read(fd, buf, sizeof(buf));
+-	close(fd);
+-	if (len < 0) {
+-		/* Error in reading the file */
+-		return -1;
+-	}
+-	if (len == sizeof(buf)) {
+-		/* Error file is too large */
+-		return -1;
+-	}
+-	buf[len] = '\0';
+-
+-	/* Search for a tag if provided */
+-	if (tag) {
+-		p = strstr(buf, tag);
+-		if (!p)
+-			return -1; /* looks like the line we want isn't there */
+-		p += strlen(tag);
+-	} else
+-		p = buf;
+-
+-	val = strtol(p, &q, 0);
+-	if (*q != ' ') {
+-		/* Error parsing the file */
+-		return -1;
+-	}
+-
+-	return val;
+-}
+-
+-/*
+  * Write huge TLBFS page.
+  */
+ TEST_F(hmm, anon_write_hugetlbfs)
+@@ -826,15 +779,13 @@ TEST_F(hmm, anon_write_hugetlbfs)
+ 	struct hmm_buffer *buffer;
+ 	unsigned long npages;
+ 	unsigned long size;
+-	unsigned long default_hsize;
++	unsigned long default_hsize = default_huge_page_size();
+ 	unsigned long i;
+ 	int *ptr;
+ 	int ret;
+ 
+-	default_hsize = file_read_ulong("/proc/meminfo", "Hugepagesize:");
+-	if (default_hsize < 0 || default_hsize*1024 < default_hsize)
++	if (!default_hsize)
+ 		SKIP(return, "Huge page size could not be determined");
+-	default_hsize = default_hsize*1024; /* KB to B */
+ 
+ 	size = ALIGN(TWOMEG, default_hsize);
+ 	npages = size >> self->page_shift;
+@@ -1606,7 +1557,7 @@ TEST_F(hmm, compound)
+ 	struct hmm_buffer *buffer;
+ 	unsigned long npages;
+ 	unsigned long size;
+-	unsigned long default_hsize;
++	unsigned long default_hsize = default_huge_page_size();
+ 	int *ptr;
+ 	unsigned char *m;
+ 	int ret;
+@@ -1614,10 +1565,8 @@ TEST_F(hmm, compound)
+ 
+ 	/* Skip test if we can't allocate a hugetlbfs page. */
+ 
+-	default_hsize = file_read_ulong("/proc/meminfo", "Hugepagesize:");
+-	if (default_hsize < 0 || default_hsize*1024 < default_hsize)
++	if (!default_hsize)
+ 		SKIP(return, "Huge page size could not be determined");
+-	default_hsize = default_hsize*1024; /* KB to B */
+ 
+ 	size = ALIGN(TWOMEG, default_hsize);
+ 	npages = size >> self->page_shift;
+@@ -2106,7 +2055,7 @@ TEST_F(hmm, migrate_anon_huge_empty)
+ 	int *ptr;
+ 	int ret;
+ 
+-	size = TWOMEG;
++	size = read_pmd_pagesize();
+ 
+ 	buffer = malloc(sizeof(*buffer));
+ 	ASSERT_NE(buffer, NULL);
+@@ -2158,7 +2107,7 @@ TEST_F(hmm, migrate_anon_huge_zero)
+ 	int ret;
+ 	int val;
+ 
+-	size = TWOMEG;
++	size = read_pmd_pagesize();
+ 
+ 	buffer = malloc(sizeof(*buffer));
+ 	ASSERT_NE(buffer, NULL);
+@@ -2221,7 +2170,7 @@ TEST_F(hmm, migrate_anon_huge_free)
+ 	int *ptr;
+ 	int ret;
+ 
+-	size = TWOMEG;
++	size = read_pmd_pagesize();
+ 
+ 	buffer = malloc(sizeof(*buffer));
+ 	ASSERT_NE(buffer, NULL);
+@@ -2280,7 +2229,7 @@ TEST_F(hmm, migrate_anon_huge_fault)
+ 	int *ptr;
+ 	int ret;
+ 
+-	size = TWOMEG;
++	size = read_pmd_pagesize();
+ 
+ 	buffer = malloc(sizeof(*buffer));
+ 	ASSERT_NE(buffer, NULL);
+@@ -2332,7 +2281,7 @@ TEST_F(hmm, migrate_partial_unmap_fault)
+ {
+ 	struct hmm_buffer *buffer;
+ 	unsigned long npages;
+-	unsigned long size = TWOMEG;
++	unsigned long size = read_pmd_pagesize();
+ 	unsigned long i;
+ 	void *old_ptr;
+ 	void *map;
+@@ -2398,7 +2347,7 @@ TEST_F(hmm, migrate_remap_fault)
+ {
+ 	struct hmm_buffer *buffer;
+ 	unsigned long npages;
+-	unsigned long size = TWOMEG;
++	unsigned long size = read_pmd_pagesize();
+ 	unsigned long i;
+ 	void *old_ptr, *new_ptr = NULL;
+ 	void *map;
+@@ -2498,7 +2447,7 @@ TEST_F(hmm, migrate_anon_huge_err)
+ 	int *ptr;
+ 	int ret;
+ 
+-	size = TWOMEG;
++	size = read_pmd_pagesize();
+ 
+ 	buffer = malloc(sizeof(*buffer));
+ 	ASSERT_NE(buffer, NULL);
+@@ -2593,7 +2542,7 @@ TEST_F(hmm, migrate_anon_huge_zero_err)
+ 	int *ptr;
+ 	int ret;
+ 
+-	size = TWOMEG;
++	size = read_pmd_pagesize();
+ 
+ 	buffer = malloc(sizeof(*buffer));
+ 	ASSERT_NE(buffer, NULL);
 
 
 
