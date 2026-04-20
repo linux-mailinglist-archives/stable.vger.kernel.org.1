@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-239275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239514-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EDeFGjRW5mktvAEAu9opvQ
-	(envelope-from <stable+bounces-239275-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:37:08 +0200
+	id gNGbK3dY5mmbvAEAu9opvQ
+	(envelope-from <stable+bounces-239514-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:46:47 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE6D642FB6B
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:37:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C3F742FFD9
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:46:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 221C8304BB9B
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:43:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E9A473093568
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:54:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34BFE338593;
-	Mon, 20 Apr 2026 15:43:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9189D3396EE;
+	Mon, 20 Apr 2026 15:54:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zYvqYXyQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cn214+O1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E396C336EDE;
-	Mon, 20 Apr 2026 15:43:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C61A2FE56A;
+	Mon, 20 Apr 2026 15:54:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776699832; cv=none; b=j/TcdVoceJxlPWQSTa7mfCc+CnrE8NIVN8lpSlMnszrJdWJaY4qcGynvX9kiZWo/BQ9HBVvetOTNcl35zbcWD5pRa+LSCKU9LJnHtit2BESCiA/42GRYKpeOGhFul7s81cjLFJj7UrkOX7vQnV2HEIwdWtfLz8brbmCGxLnt4Ck=
+	t=1776700448; cv=none; b=fpqkZATHwatxOMKD73bj1PMgz9Wo2V122uZbMz+GkRPi8eZfoja4xUhOwXRNU84dBzwUprnLdQxEe+KxBhcDMTXBjy7PpbC04xPbY0GaGAVOn03My3ZOxPSuDKQZXRX00tf4+ivKJvcKpYT2Wyf8xNXT4vyqgocWOLlWgsCbuQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776699832; c=relaxed/simple;
-	bh=4NgmwA0+lLhnM1RLJ3LQSvFiI1g8OspyQNREUc3YyxA=;
+	s=arc-20240116; t=1776700448; c=relaxed/simple;
+	bh=ts+njif5tJ+yKzHSP5a6ZN/Z4dH3gAcGZnRLVPQkwK4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a4HmCEq/gGVvXLW8Yc/U05dzai373/5GQ6NlKz/TXI4ycA7n67reby7IjSBzXOPH/eVyw4Jep1Emzs1MSoCRhMYz8IQXX9BIy4PgH8Zcq/yTOIxX7zw6lkLZzCV2Q22uIRy3p3xxkYcD9riy+fkuLTRtq3cPoNAxFqpDGC1lD8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zYvqYXyQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79896C2BCB4;
-	Mon, 20 Apr 2026 15:43:51 +0000 (UTC)
+	 MIME-Version; b=kMPDsaqiuIIqXk9fGnYDWu6xe0BciU+FJwcJ4swk0PMms6J13CmBmCG/wCfU2YhcFnzJldQH608Puj42bAXh1ibhjjvuwYvqlFp8wGaZNCrdQgS8FDlHVjmoUTFfTgASs6DFvK8I3z6ie5L7Z5dgZtyFoeTSiMKxCrBZ5QkPB4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cn214+O1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8C04C19425;
+	Mon, 20 Apr 2026 15:54:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776699831;
-	bh=4NgmwA0+lLhnM1RLJ3LQSvFiI1g8OspyQNREUc3YyxA=;
+	s=korg; t=1776700448;
+	bh=ts+njif5tJ+yKzHSP5a6ZN/Z4dH3gAcGZnRLVPQkwK4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zYvqYXyQfruTAgQafOOyxXngv3pxNov0nUZHRuAcr+0cRPdTP62/Djr/xqwwAStLt
-	 r18QrjjsJR1QdPvBHRK/1sqRlGS85lJWli/ZgfqvCWBYfxWzwf16EmkzIzycg8WqlL
-	 yh9skAPZwCwxRqdsqHHsMtz1thIb2CMEngUVLzZE=
+	b=Cn214+O1Rs83isXs8fHK9fReFjeMUeTxIUI6BeFS8U6DbMasUKifOM7A70WNZt4UL
+	 KVXzqxKhhF3hkV5QAY9uFVv+JJyodt+oJjM5djPQx+wywvnw4lvukl97RgJSWgiudK
+	 CqW6CSqh3kFONHJeRxAYQpiKlH4JWZ5au8Bz5rDI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>
-Subject: [PATCH 7.0 15/76] usb: gadget: f_ncm: validate minimum block_len in ncm_unwrap_ntb()
+	stable <stable@kernel.org>,
+	Jiri Kosina <jikos@kernel.org>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	linux-input@vger.kernel.org,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 6.19 145/220] HID: core: clamp report_size in s32ton() to avoid undefined shift
 Date: Mon, 20 Apr 2026 17:41:26 +0200
-Message-ID: <20260420153911.377388912@linuxfoundation.org>
+Message-ID: <20260420153939.247947839@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153910.810034134@linuxfoundation.org>
-References: <20260420153910.810034134@linuxfoundation.org>
+In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
+References: <20260420153934.013228280@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,78 +75,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239275-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239514-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: DE6D642FB6B
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 4C3F742FFD9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit 8f993d30b95dc9557a8a96ceca11abed674c8acb upstream.
+commit 69c02ffde6ed4d535fa4e693a9e572729cad3d0d upstream.
 
-The block_len read from the host-supplied NTB header is checked against
-ntb_max but has no lower bound. When block_len is smaller than
-opts->ndp_size, the bounds check of:
-	ndp_index > (block_len - opts->ndp_size)
-will underflow producing a huge unsigned value that ndp_index can never
-exceed, defeating the check entirely.
+s32ton() shifts by n-1 where n is the field's report_size, a value that
+comes directly from a HID device.  The HID parser bounds report_size
+only to <= 256, so a broken HID device can supply a report descriptor
+with a wide field that triggers shift exponents up to 256 on a 32-bit
+type when an output report is built via hid_output_field() or
+hid_set_field().
 
-The same underflow occurs in the datagram index checks against block_len
-- opts->dpe_size.  With those checks neutered, a malicious USB host can
-choose ndp_index and datagram offsets that point past the actual
-transfer, and the skb_put_data() copies adjacent kernel memory into the
-network skb.
+Commit ec61b41918587 ("HID: core: fix shift-out-of-bounds in
+hid_report_raw_event") added the same n > 32 clamp to the function
+snto32(), but s32ton() was never given the same fix as I guess syzbot
+hadn't figured out how to fuzz a device the same way.
 
-Fix this by rejecting block lengths that cannot hold at least the NTB
-header plus one NDP.  This will make block_len - opts->ndp_size and
-block_len - opts->dpe_size both well-defined.
+Fix this up by just clamping the max value of n, just like snto32()
+does.
 
-Commit 8d2b1a1ec9f5 ("CDC-NCM: avoid overflow in sanity checking") fixed
-a related class of issues on the host side of NCM.
-
-Fixes: 2b74b0a04d3e ("USB: gadget: f_ncm: add bounds checks to ncm_unwrap_ntb()")
 Cc: stable <stable@kernel.org>
+Cc: Jiri Kosina <jikos@kernel.org>
+Cc: Benjamin Tissoires <bentiss@kernel.org>
+Cc: linux-input@vger.kernel.org
 Assisted-by: gregkh_clanker_t1000
-Link: https://patch.msgid.link/2026040753-baffle-handheld-624d@gregkh
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/f_ncm.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/hid/hid-core.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/usb/gadget/function/f_ncm.c
-+++ b/drivers/usb/gadget/function/f_ncm.c
-@@ -1210,8 +1210,8 @@ parse_ntb:
+--- a/drivers/hid/hid-core.c
++++ b/drivers/hid/hid-core.c
+@@ -71,6 +71,9 @@ static u32 s32ton(__s32 value, unsigned
+ 	if (!value || !n)
+ 		return 0;
  
- 	block_len = get_ncm(&tmp, opts->block_length);
- 	/* (d)wBlockLength */
--	if (block_len > ntb_max) {
--		INFO(port->func.config->cdev, "OUT size exceeded\n");
-+	if ((block_len < opts->nth_size + opts->ndp_size) || (block_len > ntb_max)) {
-+		INFO(port->func.config->cdev, "Bad block length: %#X\n", block_len);
- 		goto err;
- 	}
- 
++	if (n > 32)
++		n = 32;
++
+ 	a = value >> (n - 1);
+ 	if (a && a != -1)
+ 		return value < 0 ? 1 << (n - 1) : (1 << (n - 1)) - 1;
 
 
 
