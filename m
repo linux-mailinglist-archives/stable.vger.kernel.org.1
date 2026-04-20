@@ -1,65 +1,60 @@
-Return-Path: <stable+bounces-239493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239287-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UGReLgNl5mlmvwEAu9opvQ
-	(envelope-from <stable+bounces-239493-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:40:19 +0200
+	id WE3jOsNh5mm6vgEAu9opvQ
+	(envelope-from <stable+bounces-239287-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:26:27 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A5F0431C1E
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:40:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 741F0431337
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:26:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BB62631EA92C
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:53:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0B6F536AFA3B
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:45:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB3DC3382C7;
-	Mon, 20 Apr 2026 15:53:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB54133A9FF;
+	Mon, 20 Apr 2026 15:44:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nLpuQThr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UG6R/aPK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD6AC2FD1B3;
-	Mon, 20 Apr 2026 15:53:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEDBA3382C7;
+	Mon, 20 Apr 2026 15:44:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700394; cv=none; b=uiCUn1LwR3I0vDyrdv85xgeEtZz9GmdDCpaTDiVH/lZRbCJT77t+L6qEklD4u7DDMPSAOJ8lKwt16N38b2vCPZgU5tkHmf/q5tF6rCvWfBzdG0INa1C0X31Uzl23GxKaK4FED6kNyIUG13CuG94pATQrfiC1BGX9lmgkE14v/xI=
+	t=1776699862; cv=none; b=aUqiYpwAhe/1Dtly0a9Nbd8YMK4Jizi8fpy79kp9vFTAEvmv6+9QNrGy1VAsak35G7LToEP/kI/jLKn0rpIFCawmMg4uatYiMPlRD5fjGBr1MnAPl3SY+dEPm0a/ZTJCs6S1I1mH0uRKlBDOHoCWzchZhDca8lH8IeWG9bUjY4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700394; c=relaxed/simple;
-	bh=ZFx+/6vyT9oO57nqY+rdh1WFRhVnjGOuSWjHUCnrJ3o=;
+	s=arc-20240116; t=1776699862; c=relaxed/simple;
+	bh=dUK6UkdFDF9BNm4MMv4tncD40AzS4sUzUcaNsM0oAwc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IZ3KRAAC/9dux6eflFrtzuSCH3308Tf9j2BrzidPVHybdWFlv+rCWIHZxRok8UXklRyQt4hZM5J5GEZOvqETbC0m1o7OQNl/VsLTJpG6Drb1OiwdWhRPtJ0Pc5p7VKscQ9ZAxVxr5vwLBmynz7NuAw7Aub1L4GfsEnWClYapZeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nLpuQThr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43E15C19425;
-	Mon, 20 Apr 2026 15:53:14 +0000 (UTC)
+	 MIME-Version; b=V5YtkqoaJReq7vgpGKoC+e7aMZURaq86Ag4HptO9K0dNSW33PzHDrDZeWAEjk3rGHDgvCDP2YZi597KK3KT4eMRDIU/sHYbR6v/Z2dCXel16laMw0QQnAebst3wyvMNiNFwjKliv050wJU9w/emG7UE9bFDMJPcqdbU6R7hnQuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UG6R/aPK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45D77C19425;
+	Mon, 20 Apr 2026 15:44:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700394;
-	bh=ZFx+/6vyT9oO57nqY+rdh1WFRhVnjGOuSWjHUCnrJ3o=;
+	s=korg; t=1776699862;
+	bh=dUK6UkdFDF9BNm4MMv4tncD40AzS4sUzUcaNsM0oAwc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nLpuQThrTXAVG92391D7KUgzPJnfyjGrJW6+N5zQPnPIa4ScsOiGgMPVC2PUaCE7U
-	 ri0Y3vhhwXB0O3m8peMkbNLzwgCCYFi1A2sIjPVL+e5dzfOXVVqBcNc09WHLZXOHIV
-	 TxfMSmYY0DRnnmLIRctgYY4yuWZxtU+kqrgr6LC4=
+	b=UG6R/aPKJuoRG8t1oprOuIA1zwtgQdcjEvNqOSrlzsJ84eHRzSSN5HE+zWKHVmjRm
+	 ea1dW8gEIbwlEEzteOIoS5uJKXKskQRf+HAefnBWrxoCIe19v1qPlLIjwvd0f1KCAD
+	 BZKdC9mc9kf8gxE5axkGdSurmn9pV+bd6Q8iOr0M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Tom Talpey <tom@talpey.com>,
-	Bharath SM <bharathsm@microsoft.com>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
 	stable <stable@kernel.org>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.19 156/220] smb: client: fix off-by-8 bounds check in check_wsl_eas()
+	Alexey Charkov <alchark@flipper.net>,
+	Hans de Goede <johannes.goede@oss.qualcomm.com>,
+	Heikki Krogerus <heikki.krogrerus@linux.intel.com>
+Subject: [PATCH 7.0 26/76] usb: typec: fusb302: Switch to threaded IRQ handler
 Date: Mon, 20 Apr 2026 17:41:37 +0200
-Message-ID: <20260420153939.644361730@linuxfoundation.org>
+Message-ID: <20260420153911.775662660@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
-References: <20260420153934.013228280@linuxfoundation.org>
+In-Reply-To: <20260420153910.810034134@linuxfoundation.org>
+References: <20260420153910.810034134@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,90 +67,74 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-239493-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,microsoft.com,talpey.com,vger.kernel.org,lists.samba.org,kernel.org,manguebit.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239287-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,samba.org:email,manguebit.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,talpey.com:email]
-X-Rspamd-Queue-Id: 6A5F0431C1E
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[flipper.net:email,msgid.link:url,qualcomm.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 741F0431337
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Alexey Charkov <alchark@flipper.net>
 
-commit 3d8b9d06bd3ac4c6846f5498800b0f5f8062e53b upstream.
+commit 6b9db53197094f38a18797495df2e3c758ec51dc upstream.
 
-The bounds check uses (u8 *)ea + nlen + 1 + vlen as the end of the EA
-name and value, but ea_data sits at offset sizeof(struct
-smb2_file_full_ea_info) = 8 from ea, not at offset 0.  The strncmp()
-later reads ea->ea_data[0..nlen-1] and the value bytes follow at
-ea_data[nlen+1..nlen+vlen], so the actual end is ea->ea_data + nlen + 1
-+ vlen.  Isn't pointer math fun?
+FUSB302 fails to probe with -EINVAL if its interrupt line is connected via
+an I2C GPIO expander, such as TI TCA6416.
 
-The earlier check (u8 *)ea > end - sizeof(*ea) only guarantees the
-8-byte header is in bounds, but since the last EA is placed within 8
-bytes of the end of the response, the name and value bytes are read past
-the end of iov.
+Switch the interrupt handler to a threaded one, which also works behind
+such GPIO expanders.
 
-Fix this mess all up by using ea->ea_data as the base for the bounds
-check.
-
-An "untrusted" server can use this to leak up to 8 bytes of kernel heap
-into the EA name comparison and influence which WSL xattr the data is
-interpreted as.
-
-Cc: Ronnie Sahlberg <ronniesahlberg@gmail.com>
-Cc: Shyam Prasad N <sprasad@microsoft.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: Bharath SM <bharathsm@microsoft.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
 Cc: stable <stable@kernel.org>
-Assisted-by: gregkh_clanker_t1000
-Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 309b6341d557 ("usb: typec: fusb302: Revert incorrect threaded irq fix")
+Signed-off-by: Alexey Charkov <alchark@flipper.net>
+Reviewed-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
+Reviewed-by: Heikki Krogerus <heikki.krogrerus@linux.intel.com>
+Link: https://patch.msgid.link/20260317-fusb302-irq-v2-1-dbabd5c5c961@flipper.net
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/smb2inode.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/typec/tcpm/fusb302.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/fs/smb/client/smb2inode.c
-+++ b/fs/smb/client/smb2inode.c
-@@ -128,7 +128,7 @@ static int check_wsl_eas(struct kvec *rs
- 		nlen = ea->ea_name_length;
- 		vlen = le16_to_cpu(ea->ea_value_length);
- 		if (nlen != SMB2_WSL_XATTR_NAME_LEN ||
--		    (u8 *)ea + nlen + 1 + vlen > end)
-+		    (u8 *)ea->ea_data + nlen + 1 + vlen > end)
- 			return -EINVAL;
+--- a/drivers/usb/typec/tcpm/fusb302.c
++++ b/drivers/usb/typec/tcpm/fusb302.c
+@@ -1755,8 +1755,9 @@ static int fusb302_probe(struct i2c_clie
+ 		goto destroy_workqueue;
+ 	}
  
- 		switch (vlen) {
+-	ret = request_irq(chip->gpio_int_n_irq, fusb302_irq_intn,
+-			  IRQF_TRIGGER_LOW, "fsc_interrupt_int_n", chip);
++	ret = request_threaded_irq(chip->gpio_int_n_irq, NULL, fusb302_irq_intn,
++				   IRQF_ONESHOT | IRQF_TRIGGER_LOW,
++				   "fsc_interrupt_int_n", chip);
+ 	if (ret < 0) {
+ 		dev_err(dev, "cannot request IRQ for GPIO Int_N, ret=%d", ret);
+ 		goto tcpm_unregister_port;
 
 
 
