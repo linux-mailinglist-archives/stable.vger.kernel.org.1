@@ -1,260 +1,204 @@
-Return-Path: <stable+bounces-238684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238685-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sOjsLu2c5Wm1mAEAu9opvQ
-	(envelope-from <stable+bounces-238684-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 05:26:37 +0200
+	id oMyfNOuo5WnomgEAu9opvQ
+	(envelope-from <stable+bounces-238685-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 06:17:47 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 666CA4268C9
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 05:26:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78FAA426B16
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 06:17:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 01EED302F39C
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 03:25:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 74E633018BFF
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 04:17:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F17737F8CF;
-	Mon, 20 Apr 2026 03:25:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 341231B81CA;
+	Mon, 20 Apr 2026 04:17:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="p+h4xQLH"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from SY5PR01CU010.outbound.protection.outlook.com (mail-australiaeastazolkn19012066.outbound.protection.outlook.com [52.103.72.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF04B35C185;
-	Mon, 20 Apr 2026 03:25:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776655524; cv=none; b=NfRzBotACsQSc++4If0u/vazVRMxAH0zXqMFdtjRpxtdpeez3Z7dE97QCK6qzbq2jfrSdnKmRxOgBKhGUzVJ0NGW60X++o+ovYw+T8WpiT5tEiX7JKFGLismg+N4uBp4cNksgJ/m54HBQ1T9SB8mI938LbHWvSrbmpSs6yFKIUg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776655524; c=relaxed/simple;
-	bh=o6WC5778xZWcRTJECjjLQorMrFwgvz0nLDUSBYqAmIU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NAwHVFyqvsFFBivZh0jkGj1q6UzInxN/QI9tz5PRmG/Aiuz7tqKNUbgzr/x/h1svdEd271Ke5YXCn3ZyD5aPDX0QtFysT2k+xesCF600XBaN6CVvh0lRsWCJMgi/uPDq1aAO1Cr5ti1v7s+BSb1p8pyL4sZFT6Xjx3+056Sjrh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from ubuntu.. (unknown [202.112.113.208])
-	by APP-05 (Coremail) with SMTP id zQCowADndwt9nOVpj2cbDg--.31217S2;
-	Mon, 20 Apr 2026 11:24:54 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: vz@mleia.com
-Cc: alexandre.belloni@bootlin.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	make24@iscas.ac.cn,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	piotr.wojtaszczyk@timesys.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] net: lpc_eth: Fix a possible memory leak in lpc_mii_probe()
-Date: Mon, 20 Apr 2026 11:24:45 +0800
-Message-ID: <20260420032445.2209758-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <60dea9e5-9890-49ab-b806-713c388d6e08@mleia.com>
-References: <60dea9e5-9890-49ab-b806-713c388d6e08@mleia.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C8431429D;
+	Mon, 20 Apr 2026 04:17:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.72.66
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776658661; cv=fail; b=ojueLdT2bcF1GhaYtQqOSJTQClEONgrms6QbpZJapPJOZmgX2b8n69hYQ15EpJhoeW9Ng8Wvf8Zki1gcwr5uBfLWxA/kCI9D8kRpiAYvrmNWrVCHpEpohwTRCqrUi62+PqyB08cHBxP6yG9dbExyX2ZYC6ME2dhmBQNNyxdaeU8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776658661; c=relaxed/simple;
+	bh=r4PFZR20tnWoX2TGxZGWttAPywSSDtGYyQ9xWze8Oeo=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=oIRFbgO7zGT2B8BcKPkUL0dpYlLstxT5G4nseBKHZkUVMdPyhoN/YeUH47EFzDsZ28ylDbp2yZTU8i40RW2yBsf9vH3bPjl2g3gCgS5RDeqPztUNwHXV7YO2uVUigBwmVGlJRni6yDYC9M7f4N4p/bmrEXH9dWF8egzojAPiGX8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=p+h4xQLH; arc=fail smtp.client-ip=52.103.72.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=xovWn1+RsuIWfLnnwR1G+kXxdWDc5g1ojtx3wqmJu7Ccp8UKBbN1gS/YIyS8LCSMN16VLwH2XhamxJ1+Gcf5y7AjQGKpHLhHFc3iZJ5xclCWs1tJlGWepP1TrxubzkD1DgpR9UAq/QRMhhS8H9DP2PNiBQF/8V0ZBGre0qEPbEVmhOxY4Jgi1dElk2wToQCHpQog5BIPO3wOUNLRjh3kjq4ZNrXFpY12uyhtJuWX4SrnjlCr+AA+Og8kKI8yOWomP9IyWeWdRghOBhStXe04krAKUEbcfJHaY+qXSmTqf1G75qK8GATrT/vgXO5k6BrAmmezfV7nl06WhV1w4pZpkQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=r4PFZR20tnWoX2TGxZGWttAPywSSDtGYyQ9xWze8Oeo=;
+ b=i4SQPDTPa5Qh2V0njJpaoTcdO4VxlN6i+jwE4A3t9ePku8oS/+NBG915XAL+AhF/+I/Fh5ABJ8shQ2NNGK48TTEeYRLp1cVTCvCOPlOG8mL+pyu1B0LoBTl8nBSiA3k1mxuzlIKZuaXxnMoetdmR4W56mvXMcqj6guQ5E0QBPgegW2fXZCRpxjv1kZETOrU8N3iDju/jKiV2aPl+oAl5m4DrW+H4eJIIcVD7GXukhDqEqy2mz8tYG707Z3NAG1g3YfahQjihLkEXYM8whsTWzSh5oSgGTNvFOIL8z2s+0i5WD5FC/UewqSM5BQqge9WWJjWTWy3Sijn8lzU9RaRtKw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=r4PFZR20tnWoX2TGxZGWttAPywSSDtGYyQ9xWze8Oeo=;
+ b=p+h4xQLH/2M7Pgp56sN+cHwVsEXV9JNvuMVvbXg4pdHCgHmMboc+X432tWkiprqQF35rf0irXS++6Yzp3HMHZDEr2tbIJ5ktTh0xM7/JUfUOJexR5ot5VTL/oE60LYs7pBHMkRoHAk6CKp2UPONATOsVjQHR7HbLpxcgyTH7TaCUaodmEP/8cbWbH13ir1vKZYvGUR4+Teo7AB9/hEGykPpDaz4nscJBPEIGH92KILterl3XdDCwkfu2JYRHA9CebakoErZSIaCASTc1CxAvy0ZKpYQvVU2ElX/5U5TovX0aFXc6cPMA7Kw5TMQ+O7U9vc9pe6KlsWkgPhlwlYUwIw==
+Received: from SYBPR01MB7881.ausprd01.prod.outlook.com (2603:10c6:10:1b0::5)
+ by SY0PR01MB10353.ausprd01.prod.outlook.com (2603:10c6:10:2f8::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.32; Mon, 20 Apr
+ 2026 04:17:34 +0000
+Received: from SYBPR01MB7881.ausprd01.prod.outlook.com
+ ([fe80::7cd2:d6e8:3fa0:5f0c]) by SYBPR01MB7881.ausprd01.prod.outlook.com
+ ([fe80::7cd2:d6e8:3fa0:5f0c%5]) with mapi id 15.20.9818.032; Mon, 20 Apr 2026
+ 04:17:34 +0000
+From: Junrui Luo <moonafterrain@outlook.com>
+To: James Bottomley <James.Bottomley@HansenPartnership.com>
+CC: Sathya Prakash Veerichetty <sathya.prakash@broadcom.com>, Kashyap Desai
+	<kashyap.desai@broadcom.com>, Sumit Saxena <sumit.saxena@broadcom.com>,
+	Sreekanth Reddy <sreekanth.reddy@broadcom.com>, "Martin K. Petersen"
+	<martin.petersen@oracle.com>, Himanshu Madhani <himanshu.madani@oracle.com>,
+	"mpi3mr-linuxdrv.pdl@broadcom.com" <mpi3mr-linuxdrv.pdl@broadcom.com>,
+	"linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Yuhao Jiang
+	<danisjiang@gmail.com>, "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH] scsi: mpi3mr: bounds-check phy_number in
+ mpi3mr_update_links()
+Thread-Topic: [PATCH] scsi: mpi3mr: bounds-check phy_number in
+ mpi3mr_update_links()
+Thread-Index: AQHcz/VIJiimLEFV+EqGuGyJXcwKTLXmcM+AgADoK4A=
+Date: Mon, 20 Apr 2026 04:17:34 +0000
+Message-ID: <923EB978-2D34-4152-8C27-4594FDE3550B@outlook.com>
+References:
+ <SYBPR01MB788162EDBF416DC5E714DFEEAF2E2@SYBPR01MB7881.ausprd01.prod.outlook.com>
+ <3b89ea4a9a664afac39744d6f58c68d6adea9f95.camel@HansenPartnership.com>
+In-Reply-To:
+ <3b89ea4a9a664afac39744d6f58c68d6adea9f95.camel@HansenPartnership.com>
+Accept-Language: en-US, zh-CN
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SYBPR01MB7881:EE_|SY0PR01MB10353:EE_
+x-ms-office365-filtering-correlation-id: 6fcad265-d5ea-479a-2bf4-08de9e93bfaf
+x-microsoft-antispam:
+ BCL:0;ARA:14566002|24121999003|22091999003|51005399006|461199028|8062599012|19110799012|8060799015|21061999006|15080799012|12121999013|31061999003|440099028|3412199025|12091999003|102099032|40105399003;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?D4HgMfFhFeuV72s084JvNBN2BpVtTDh6da4LiRDfDEyYH+ChdNKR/HqVD3a/?=
+ =?us-ascii?Q?n8xdINF15RCTLrAcI+kW9U4IlmVa8uxN4MjoXVsfudD/vjYsyOcovdC07Re0?=
+ =?us-ascii?Q?iCkhgRjpHTuhubMe7IjUmL96QwQTrsB3IhB3YF1thISvzQk80vlT1FJQ9wra?=
+ =?us-ascii?Q?jONqb537gbwnaAtrCJLShOzpIze2oLFoRMFGhRzBHsBIFiphPRo8xlxY2eTB?=
+ =?us-ascii?Q?WzhTw74kEX4cXq+0RUBJBJ7D14aKqKNxtrkvRBFxYt1wu1KkssuVdUjliwQp?=
+ =?us-ascii?Q?PJIuwKio/rR22qDa4jFj1wzqG4900E3QIL6Vv8ScRTPDkOClS8LI2xbyX5E6?=
+ =?us-ascii?Q?iqZ79a2OkaGSH7jeUIblsm1nZNtvcaSBqigRi6650EZeFshiq26dsE/4Pj3v?=
+ =?us-ascii?Q?KPY7Ii1RYIvK2rk6BjvxQlhL76bJfZYX55NAMTOEej9z4m+1e506VWd+kS5m?=
+ =?us-ascii?Q?us3i20eN3YdBjCw+ymSU2UwPdtmDA7rQgfB4IkvNG3v9oubluMr23yAX8q3j?=
+ =?us-ascii?Q?dV6DMafIxLFS38thhpTbj1iVddNqlEfkRJwVbaGk+HkdeHuaOhqnVK7GgxfL?=
+ =?us-ascii?Q?N9Wy0hrS+D33vJUOmjQIbzbYSFsZZ3Tjow+rVol9ZhQzd03zxgm3rFDy3TGG?=
+ =?us-ascii?Q?b7k1IYB5EnoO4apmO5YebGW/06CVUUWfHfvberI+NWb6lZaZDP2Fso0SKImf?=
+ =?us-ascii?Q?EpQ9hz4VOF/6iyEBoDAJ/cnqOQuj+eMKclzO2g2NzTtmJp7cdgDfKRWzXhCB?=
+ =?us-ascii?Q?4wtEyIPhnt7uGBwGH10OPDX2wSwDieKL7mJPWWhkhrpC22Z/pN5W6+926N2C?=
+ =?us-ascii?Q?R5fOEpKUSOIzLMU0++7Tj3WGdPW5u0bwPIHn7jNWtZfX8ImFT1xx55HKRkkc?=
+ =?us-ascii?Q?04jzZRE2Rrl19fdj3yYHXHY8uScDnhPgtZeVv8rX+3Acx5fcHGzF8GXjNH5U?=
+ =?us-ascii?Q?66z1YVDqlnptTy4iWubw9J8ZDuC4b0w375DrMMv8kZ6gahxL8TtefRO10VLP?=
+ =?us-ascii?Q?7GphxJi80D1iYTxxOeX9yDPIYFw2XmTZECXAc4WCcaPGd0F/+35G5Yuv2Ig7?=
+ =?us-ascii?Q?9R5EFZ4k?=
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?Nhv1VBKAz2SH9somUx+7kiXkMaNvvzhB+nIn09Fn7keN0JzqjM9EBhryUXMp?=
+ =?us-ascii?Q?aSxwBa0zy6qEEJJNGoWqeosrNJzoVWxPPt9Ek2vQ0k2vxdLIBohHdaYL0BkO?=
+ =?us-ascii?Q?AsHZweyVqZTg/BFqLxoxPEk0mo1SUcr8mRzfCkiGZkIphPVWbBAegbe3FhPL?=
+ =?us-ascii?Q?l2sQIAnX8on76jCWBNtAsnrU5g3QT/nai0RU+o2kG9rkvvZaYaeT0LKGx8pM?=
+ =?us-ascii?Q?xa/3VfdMh/DhlX0B9A4q0Te+2CUGneTc3jL2cOoVb0453k0DgD+ebkw4HSjz?=
+ =?us-ascii?Q?a6MTP9RLxt0feEpt+IvyrcTptq7AUm4lFlxX36QrnDK7fG5uvcwwv6bNepJZ?=
+ =?us-ascii?Q?ODuXCJ4OptbSAVKAk6J+ReAXHZTwiLC9oWZUKoVEld4uHz6RNb4ROcf+pdpm?=
+ =?us-ascii?Q?NXCmh5sJCJljUiDNf/zFkJZE3R0vqIzRF/a/n6AuRanFPeCPHjw1Z+PY9spB?=
+ =?us-ascii?Q?X397nhHkXqiqokf0ZF539JU1ifwY3+5tO9kv+sY1tuAor4YDilBHyKBZS73p?=
+ =?us-ascii?Q?chNDvcQwljYzbGuW7un5iYAErBXjnj0K2ahszL6XxREPh8Qc3uNsNNJ6LKsw?=
+ =?us-ascii?Q?SghsU1rKo61AehRz3lbftIRA52e9aSLIMZJQQdXGfSJi0CQ0v4ihScLtqw4t?=
+ =?us-ascii?Q?qWCbz1BoCfeKA+ltq1UrIZZTFHzGwvANZ1depsjyc6PwDk3pyvhBBDtnCQ3S?=
+ =?us-ascii?Q?1CmqP508/njlUrbrFoYOVhR/Af1goQQFlCQhITh6Nlc6JRjTO82gqokifV0Z?=
+ =?us-ascii?Q?1f0cNFbSnTuJlCM5Si1qdE0m84kbL/sK0XHhXjmj+tMUxeauRvTVxOavizee?=
+ =?us-ascii?Q?bVIZ8i7T3VxjboNuenRetEZbjxoM8CkL+CnTD1J/rO7e2cM+QVc/8ItVRrZD?=
+ =?us-ascii?Q?xQpGyR/wioU6HKRBsKHtoD79l3NEnn6JDO4ycbHLTtNxMkoh5Ocg1k+UMd3A?=
+ =?us-ascii?Q?0Ybj91pMWbcJbNxqGPWBha0A/tmnRLbbAnIWNgS2xgVjL050IPt9CX8hXc3u?=
+ =?us-ascii?Q?dwknfRbgP+yGQ6QnlK+kkIhs9Bwgq2YxBp+/kjtoP+0gSMcXy3FXa4q5kWui?=
+ =?us-ascii?Q?VuK86ZagodAw5ayiPsckCXPCFDZwrU0Tk/GYLsGAcS0JLE1mDSJXzC0phUow?=
+ =?us-ascii?Q?eYGYWuSW4arP0e5F+rWe1rASDyBr17V0sTXVF0roUPQp9Wsgku0aGDXtS7sL?=
+ =?us-ascii?Q?6CZ5EpCECG27V5uSdSPV9Uz3dH/IUnY1G+HVaeme7yudNjflwUaKfFeGZYN6?=
+ =?us-ascii?Q?xZKh6O+SNzw7Ssek8xWm9tm/X4iqKqrLNa73noD0Ez/rE7GPC1U3SSUBtSXs?=
+ =?us-ascii?Q?akjUZhes3d3mRA2mkAobKGSRPedbjyiCWUgXbv+FNJW57pY4V+kX8I3Ko7iA?=
+ =?us-ascii?Q?Nu9u4sti3YJXI02g30jjzu19TFych/g6w0D24LGjWVAKNRwR9Q=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <6812614D7F8C8B459A662F124A0B40A4@ausprd01.prod.outlook.com>
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowADndwt9nOVpj2cbDg--.31217S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxtF15Cr43Xr48Ar17urWDCFg_yoW7Zr47p3
-	yUGa4SkFykGr17Gw4vv3WUAryYvw42yw1rWFyjya45Wrn0qryfAry8trWY9r95CFZ7J3W0
-	vryakFZ3ZaykXaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUB214x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
-	6r4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
-	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r
-	4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I
-	648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2
-	Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s02
-	6x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0x
-	vE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE
-	42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6x
-	kF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUOmhFUUUUU
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
-X-Spamd-Result: default: False [1.54 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SYBPR01MB7881.ausprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6fcad265-d5ea-479a-2bf4-08de9e93bfaf
+X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Apr 2026 04:17:34.6383
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SY0PR01MB10353
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[outlook.com,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[outlook.com:s=selector1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-238685-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[broadcom.com,oracle.com,vger.kernel.org,gmail.com];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-238684-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	FROM_NEQ_ENVFROM(0.00)[make24@iscas.ac.cn,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	NEURAL_SPAM(0.00)[0.268];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FREEMAIL_FROM(0.00)[outlook.com];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	DKIM_TRACE(0.00)[outlook.com:+];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	R_DKIM_NA(0.00)[];
-	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,iscas.ac.cn:mid,iscas.ac.cn:email]
-X-Rspamd-Queue-Id: 666CA4268C9
+	FROM_NEQ_ENVFROM(0.00)[moonafterrain@outlook.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:dkim,outlook.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 78FAA426B16
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
->Hello Ma Ke.
->
->On 4/1/26 16:18, Ma Ke wrote:
->> On 3/30/26 13:04, Vladimir Zapolskiy wrote:
->>> On 3/30/26 11:16, Ma Ke wrote:
->>>> lpc_mii_probe() calls of_phy_find_device() to obtain a phy_device
->>>> pointer. of_phy_find_device() increments the refcount of the device.
->>>> The current implementation does not decrement the refcount after using
->>>> the pointer, which leads to a memory leak.
->>>
->>> this is correct, there is an actual detected bug.
->>>
->>>>
->>>> Add phy_device_free() to balance the refcount.
->>>
->>> But this does not sound right, you shoud use of_node_put(pldat->phy_node).
->>>
->>>>
->>>> Found by code review.
->>>>
->>>> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
->>>> Cc: stable@vger.kernel.org
->>>> Fixes: 3503bf024b3e ("net: lpc_eth: parse phy nodes from device tree")
->>>> ---
->>>>    drivers/net/ethernet/nxp/lpc_eth.c | 11 ++++++-----
->>>>    1 file changed, 6 insertions(+), 5 deletions(-)
->>>>
->>>> diff --git a/drivers/net/ethernet/nxp/lpc_eth.c b/drivers/net/ethernet/nxp/lpc_eth.c
->>>> index 8b9a3e3bba30..8ce7c9bb6dd6 100644
->>>> --- a/drivers/net/ethernet/nxp/lpc_eth.c
->>>> +++ b/drivers/net/ethernet/nxp/lpc_eth.c
->>>> @@ -751,7 +751,7 @@ static void lpc_handle_link_change(struct net_device *ndev)
->>>>    static int lpc_mii_probe(struct net_device *ndev)
->>>>    {
->>>>    	struct netdata_local *pldat = netdev_priv(ndev);
->>>> -	struct phy_device *phydev;
->>>> +	struct phy_device *phydev, *phydev_tmp;
->>>>    
->>>>    	/* Attach to the PHY */
->>>>    	if (lpc_phy_interface_mode(&pldat->pdev->dev) == PHY_INTERFACE_MODE_MII)
->>>> @@ -760,17 +760,18 @@ static int lpc_mii_probe(struct net_device *ndev)
->>>>    		netdev_info(ndev, "using RMII interface\n");
->>>>    
->>>>    	if (pldat->phy_node)
->>>> -		phydev =  of_phy_find_device(pldat->phy_node);
->>>> +		phydev_tmp =  of_phy_find_device(pldat->phy_node);
->>>>    	else
->>>> -		phydev = phy_find_first(pldat->mii_bus);
->>>> -	if (!phydev) {
->>>> +		phydev_tmp = phy_find_first(pldat->mii_bus);
->>>> +	if (!phydev_tmp) {
->>>
->>> I didn't get it, why the new phydev_tmp is needed above, please
->>> restore the original code above.
->>>
->>>>    		netdev_err(ndev, "no PHY found\n");
->>>>    		return -ENODEV;
->>>>    	}
->>>>    
->>>> -	phydev = phy_connect(ndev, phydev_name(phydev),
->>>> +	phydev = phy_connect(ndev, phydev_name(phydev_tmp),
->>>>    			     &lpc_handle_link_change,
->>>>    			     lpc_phy_interface_mode(&pldat->pdev->dev));
->>>> +	phy_device_free(phydev_tmp);
->>>
->>> This is plainly wrong and has to be dropped or changed to
->>>
->>> 	if (pldat->phy_node)
->>> 		of_node_put(pldat->phy_node);
->>>
->>>>    	if (IS_ERR(phydev)) {
->>>>    		netdev_err(ndev, "Could not attach to PHY\n");
->>>>    		return PTR_ERR(phydev);
->>>
->>> Is it AI generated fix or what?.. The change looks bad, it introduces
->>> more severe issues than it fixes.
->>>
->>> If you think you cannot create a proper change, let me know.
->>>
->> Thank you very much for your detailed review and guidance.
->> 
->> Now I think your point probably is: you are saying that the real leak
->> is not from of_phy_find_device(), but from the device node
->
->I was pretty indelicate in my comment, let's split the change into parts.
->
->1) I still do not understand, why phydev_tmp is introduced, please explain
->or remove this part of the change;
->
->2) phydev = of_phy_find_device() requires phy_device_free(phydev), but
->I do not see why phy_find_first() requires it, while it was added in your
->change.
->
->Let's start from resolving these two points.
->
->> pldat->phy_node which was obtained earlier (probably by
->> of_parse_phandle()) and never freed by of_node_put(). And you suggest
->> to add of_node_put(pldat->phy_node) instead of my wrong
->> phy_device_free().
->> 
->> However, I am still a little confused. In lpc_mii_probe(),
->> of_phy_find_device() is called. From my understanding, this function
->> increases the reference count of the device. To balance it, I thought
->> phy_device_free() (which calls put_device()) should be used.
->> 
->> Could you please kindly advise the correct patch? I will follow your
->> guidance and submit a proper fix.
->> 
->> I apologize again for my previous wrong patch. Thank you very much for
->> your help.
->
-> -- 
-> Best wishes,
-> Vladimir
-Hello Vladimir,
+On Sun, Apr 19, 2026 at 10:25:25AM -0400, James Bottomley wrote:
+> Our threat model for hardware is that we assume it behaves correctly
+> unless someone finds a buggy instance in the field ... have you found
+> such a buggy device?
 
-Thank you for the detailed explanation and for pointing out my mistakes.
+No, this came from a code audit rather than an observed incident.
+I noticed the sibling mpt3sas driver has a similar check, which led
+me to believe this might be a real issue.
 
-> 1) I still do not understand, why phydev_tmp is introduced, please explain
-> or remove this part of the change;
+If that's not the case, please feel free to drop the patch.
 
-I added phydev_tmp because I thought I needed to keep the original 
-phy_device pointer for releasing after phy_connect(). But as you 
-implied, it's perhaps unnecessary and only makes the code less 
-readable. I will drop this change completely in the next version.
-
-> 2) phydev = of_phy_find_device() requires phy_device_free(phydev), but
-> I do not see why phy_find_first() requires it, while it was added in your
-> change.
-
-You are absolutely right. I mistakenly assumed that both functions 
-return a reference-counted pointer. phy_find_first() does not 
-increment the refcount, so calling phy_device_free() on it is wrong 
-and dangerous. My patch introduced a new bug there.
-
-Now I understand that only the of_phy_find_device() branch needs a 
-corresponding put_device(). I will prepare a corrected patch that only
-releases the reference in that specific path (including on the error 
-path after phy_connect() failure). I will also look at the phy_node 
-reference leak you hinted at.
-
-Thank you again for your guidance. I will send a v2 after fixing it 
-properly.
-
-Best regards,
-Ma Ke
-
+Thanks,
+Junrui Luo
 
