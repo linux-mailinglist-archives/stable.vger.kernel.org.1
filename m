@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-239433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239615-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oPqICb9g5mkxvgEAu9opvQ
-	(envelope-from <stable+bounces-239433-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:22:07 +0200
+	id WDyFHZVZ5mnGvAEAu9opvQ
+	(envelope-from <stable+bounces-239615-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:51:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A6D94310DC
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:22:06 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0C8F4301DB
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:51:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A83FF34BA9F3
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:51:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 85DE8315EBFC
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:58:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1104D3431E7;
-	Mon, 20 Apr 2026 15:50:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 303C3332916;
+	Mon, 20 Apr 2026 15:58:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sbksWX7c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yNL8rGaS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7BCB33C187;
-	Mon, 20 Apr 2026 15:50:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3DE12FE56A;
+	Mon, 20 Apr 2026 15:58:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700240; cv=none; b=pbpDWLzE8MWA9kYU6BFB5H3hxoYkT7bBWKcuwg+IG2UD09H4h3E8D9oIwIq0kAG5hwq/DDJD5urdD8uB9y5UB1JsCfsqbIhr/dqlO3d+BusZ4IQotNexaIc5ujKLINl4EcI7+3fc6VSUnZcxKPU5lghMQM4BmB20RDpQVQiMyYs=
+	t=1776700711; cv=none; b=nmDWlSY3sllrZS8J2d07n3e2Ro9gPQJu7imzhclxn7y1bIulqStOLMO9emFIQAInkE/GBxI/ixdDZvbyl3bBpwscvVeEJZGtwupyHyDGl+cGmxKzbIUP4jSA9/sS1fR//pDOig8gfvEn46BAGj4toFonzUq3CrrCYAUS0IWRpso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700240; c=relaxed/simple;
-	bh=iPexWCrRc6FhDlnJR0YemyU6q3Cs4La2bQ+nW30b9OM=;
+	s=arc-20240116; t=1776700711; c=relaxed/simple;
+	bh=ZEQMvAoT7TU2samyFQpH0YmhbRAeb9Ty1pmC4hUzoHo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wp8ww0as/y6CQ/1FfIBimjQVFUDp3y178w3vOoIYHa6ATLUGbJRfwpGI72QY4EXWPwFSqsX0iFAVd3rbu8ZtwhEVYB9NN41XD0T701KfATOdrLJr78E1XP2ybR6VPqQSMY8RQPy7KTpQHzFmWXTz5jIn8w0o060TR7fz9oUfF+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sbksWX7c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E510C2BCB4;
-	Mon, 20 Apr 2026 15:50:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kWMCQwnuWlzGc3glrmCnhj54VbV8rz7uarDjwXoyp4v5m4cOe9yfI2FdFGT+k58lhdgOB7FlqT7lwfHaqwxRTTa1DuIlaDfnueE50Tk0mp7USU8f3RwXoUtVcCogn3BjNvdVcnekuEWuHWWF+RFDtvhDaHU6yP4hYQz/aRkCSbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yNL8rGaS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77DEAC19425;
+	Mon, 20 Apr 2026 15:58:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700240;
-	bh=iPexWCrRc6FhDlnJR0YemyU6q3Cs4La2bQ+nW30b9OM=;
+	s=korg; t=1776700710;
+	bh=ZEQMvAoT7TU2samyFQpH0YmhbRAeb9Ty1pmC4hUzoHo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sbksWX7cH0tDXJFBuNHRXOXFy/g4TA3wP/sNzilRbvatNc2x4NPKcJkU70dD5IRcH
-	 LRlBfd+Gu8/W2yUn+dOWgrKAOwd4iQBPlPgbgm9bTcgUtVkIs7SzrDJ5ABAVWfnpOF
-	 KMjS9UlatebXeo8h887XxaD+MNwF6lUFEa8AJuFU=
+	b=yNL8rGaSoQml77QlE6BkkJ4q/MtyvBYWqXV/1kCcz1+xWvTiQauuIxTOfebJV3437
+	 cvvF64FsaBzjGMG2l9TjdErebjOD2XwYFdkBUBWSiILnxnI4LqSFBWGDQayKbcqHYy
+	 JGW0cEuzluUpauC84QBxaep3I22BiSYn1+GuaXQ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gaggery Tsai <gaggery.tsai@intel.com>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+	Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 095/220] ASoC: SDCA: Fix errors in IRQ cleanup
+Subject: [PATCH 6.18 057/198] arm64: dts: qcom: monaco: Reserve full Gunyah metadata region
 Date: Mon, 20 Apr 2026 17:40:36 +0200
-Message-ID: <20260420153937.454423519@linuxfoundation.org>
+Message-ID: <20260420153937.668147168@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
-References: <20260420153934.013228280@linuxfoundation.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,238 +65,102 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239433-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-239615-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DBL_PROHIBIT(0.00)[5.107.6.32:email];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: 1A6D94310DC
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,93b00000:email]
+X-Rspamd-Queue-Id: E0C8F4301DB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
+From: Loic Poulain <loic.poulain@oss.qualcomm.com>
 
-[ Upstream commit 4e53116437e919c4b9a9d95fb73ae14fe0cfc8f9 ]
+[ Upstream commit 85d98669fa7f1d3041d962515e45ee6e392db6f8 ]
 
-IRQs are enabled through sdca_irq_populate() from component probe
-using devm_request_threaded_irq(), this however means the IRQs can
-persist if the sound card is torn down. Some of the IRQ handlers
-store references to the card and the kcontrols which can then
-fail. Some detail of the crash was explained in [1].
+We observe spurious "Synchronous External Abort" exceptions
+(ESR=0x96000010) and kernel crashes on Monaco-based platforms.
+These faults are caused by the kernel inadvertently accessing
+hypervisor-owned memory that is not properly marked as reserved.
 
-Generally it is not advised to use devm outside of bus probe, so
-the code is updated to not use devm. The IRQ requests are not moved
-to bus probe time as it makes passing the snd_soc_component into
-the IRQs very awkward and would the require a second step once the
-component is available, so it is simpler to just register the IRQs
-at this point, even though that necessitates some manual cleanup.
+>From boot log, The Qualcomm hypervisor reports the memory range
+at 0x91a80000 of size 0x80000 (512 KiB) as hypervisor-owned:
+qhee_hyp_assign_remove_memory: 0x91a80000/0x80000 -> ret 0
 
-Link: https://lore.kernel.org/linux-sound/20260310183829.2907805-1-gaggery.tsai@intel.com/ [1]
-Fixes: b126394d9ec6 ("ASoC: SDCA: Generic interrupt support")
-Reported-by: Gaggery Tsai <gaggery.tsai@intel.com>
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://patch.msgid.link/20260316141449.2950215-1-ckeepax@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+However, the EFI memory map provided by firmware only reserves the
+subrange 0x91a40000–0x91a87fff (288 KiB). The remaining portion
+(0x91a88000–0x91afffff) is incorrectly reported as conventional
+memory (from efi debug):
+efi:   0x000091a40000-0x000091a87fff [Reserved...]
+efi:   0x000091a88000-0x0000938fffff [Conventional...]
+
+As a result, the allocator may hand out PFNs inside the hypervisor
+owned region, causing fatal aborts when the kernel accesses those
+addresses.
+
+Add a reserved-memory carveout for the Gunyah hypervisor metadata
+at 0x91a80000 (512 KiB) and mark it as no-map so Linux does not
+map or allocate from this area.
+
+For the record:
+Hyp version: gunyah-e78adb36e debug (2025-11-17 05:38:05 UTC)
+UEFI Ver: 6.0.260122.BOOT.MXF.1.0.c1-00449-KODIAKLA-1
+
+Fixes: 7be190e4bdd2 ("arm64: dts: qcom: add QCS8300 platform")
+Signed-off-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260302142603.1113355-1-loic.poulain@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/sound/sdca_interrupts.h      |  5 ++
- sound/soc/sdca/sdca_class_function.c |  9 ++++
- sound/soc/sdca/sdca_interrupts.c     | 77 ++++++++++++++++++++++++++--
- 3 files changed, 87 insertions(+), 4 deletions(-)
+ arch/arm64/boot/dts/qcom/qcs8300.dtsi | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/include/sound/sdca_interrupts.h b/include/sound/sdca_interrupts.h
-index 8f13417d129ab..90651fea5b212 100644
---- a/include/sound/sdca_interrupts.h
-+++ b/include/sound/sdca_interrupts.h
-@@ -69,6 +69,8 @@ struct sdca_interrupt_info {
- int sdca_irq_request(struct device *dev, struct sdca_interrupt_info *interrupt_info,
- 		     int sdca_irq, const char *name, irq_handler_t handler,
- 		     void *data);
-+void sdca_irq_free(struct device *dev, struct sdca_interrupt_info *interrupt_info,
-+		   int sdca_irq, const char *name, void *data);
- int sdca_irq_data_populate(struct device *dev, struct regmap *function_regmap,
- 			   struct snd_soc_component *component,
- 			   struct sdca_function_data *function,
-@@ -81,6 +83,9 @@ int sdca_irq_populate_early(struct device *dev, struct regmap *function_regmap,
- int sdca_irq_populate(struct sdca_function_data *function,
- 		      struct snd_soc_component *component,
- 		      struct sdca_interrupt_info *info);
-+void sdca_irq_cleanup(struct sdca_function_data *function,
-+		      struct snd_soc_component *component,
-+		      struct sdca_interrupt_info *info);
- struct sdca_interrupt_info *sdca_irq_allocate(struct device *dev,
- 					      struct regmap *regmap, int irq);
+diff --git a/arch/arm64/boot/dts/qcom/qcs8300.dtsi b/arch/arm64/boot/dts/qcom/qcs8300.dtsi
+index b8d4a75baee22..7a4c3e872d8ee 100644
+--- a/arch/arm64/boot/dts/qcom/qcs8300.dtsi
++++ b/arch/arm64/boot/dts/qcom/qcs8300.dtsi
+@@ -756,6 +756,11 @@ smem_mem: smem@90900000 {
+ 			hwlocks = <&tcsr_mutex 3>;
+ 		};
  
-diff --git a/sound/soc/sdca/sdca_class_function.c b/sound/soc/sdca/sdca_class_function.c
-index 416948cfb5cb9..8b6b4ca998272 100644
---- a/sound/soc/sdca/sdca_class_function.c
-+++ b/sound/soc/sdca/sdca_class_function.c
-@@ -196,6 +196,14 @@ static int class_function_component_probe(struct snd_soc_component *component)
- 	return sdca_irq_populate(drv->function, component, core->irq_info);
- }
- 
-+static void class_function_component_remove(struct snd_soc_component *component)
-+{
-+	struct class_function_drv *drv = snd_soc_component_get_drvdata(component);
-+	struct sdca_class_drv *core = drv->core;
++		gunyah_md_mem: gunyah-md-region@91a80000 {
++			reg = <0x0 0x91a80000 0x0 0x80000>;
++			no-map;
++		};
 +
-+	sdca_irq_cleanup(drv->function, component, core->irq_info);
-+}
-+
- static int class_function_set_jack(struct snd_soc_component *component,
- 				   struct snd_soc_jack *jack, void *d)
- {
-@@ -207,6 +215,7 @@ static int class_function_set_jack(struct snd_soc_component *component,
- 
- static const struct snd_soc_component_driver class_function_component_drv = {
- 	.probe			= class_function_component_probe,
-+	.remove			= class_function_component_remove,
- 	.endianness		= 1,
- };
- 
-diff --git a/sound/soc/sdca/sdca_interrupts.c b/sound/soc/sdca/sdca_interrupts.c
-index 49b675e601433..be269f204d623 100644
---- a/sound/soc/sdca/sdca_interrupts.c
-+++ b/sound/soc/sdca/sdca_interrupts.c
-@@ -233,8 +233,7 @@ static int sdca_irq_request_locked(struct device *dev,
- 	if (irq < 0)
- 		return irq;
- 
--	ret = devm_request_threaded_irq(dev, irq, NULL, handler,
--					IRQF_ONESHOT, name, data);
-+	ret = request_threaded_irq(irq, NULL, handler, IRQF_ONESHOT, name, data);
- 	if (ret)
- 		return ret;
- 
-@@ -245,6 +244,22 @@ static int sdca_irq_request_locked(struct device *dev,
- 	return 0;
- }
- 
-+static void sdca_irq_free_locked(struct device *dev, struct sdca_interrupt_info *info,
-+				 int sdca_irq, const char *name, void *data)
-+{
-+	int irq;
-+
-+	irq = regmap_irq_get_virq(info->irq_data, sdca_irq);
-+	if (irq < 0)
-+		return;
-+
-+	free_irq(irq, data);
-+
-+	info->irqs[sdca_irq].irq = 0;
-+
-+	dev_dbg(dev, "freed irq %d for %s\n", irq, name);
-+}
-+
- /**
-  * sdca_irq_request - request an individual SDCA interrupt
-  * @dev: Pointer to the struct device against which things should be allocated.
-@@ -283,6 +298,30 @@ int sdca_irq_request(struct device *dev, struct sdca_interrupt_info *info,
- }
- EXPORT_SYMBOL_NS_GPL(sdca_irq_request, "SND_SOC_SDCA");
- 
-+/**
-+ * sdca_irq_free - free an individual SDCA interrupt
-+ * @dev: Pointer to the struct device.
-+ * @info: Pointer to the interrupt information structure.
-+ * @sdca_irq: SDCA interrupt position.
-+ * @name: Name to be given to the IRQ.
-+ * @data: Private data pointer that will be passed to the handler.
-+ *
-+ * Typically this is handled internally by sdca_irq_cleanup, however if
-+ * a device requires custom IRQ handling this can be called manually before
-+ * calling sdca_irq_cleanup, which will then skip that IRQ whilst processing.
-+ */
-+void sdca_irq_free(struct device *dev, struct sdca_interrupt_info *info,
-+		   int sdca_irq, const char *name, void *data)
-+{
-+	if (sdca_irq < 0 || sdca_irq >= SDCA_MAX_INTERRUPTS)
-+		return;
-+
-+	guard(mutex)(&info->irq_lock);
-+
-+	sdca_irq_free_locked(dev, info, sdca_irq, name, data);
-+}
-+EXPORT_SYMBOL_NS_GPL(sdca_irq_free, "SND_SOC_SDCA");
-+
- /**
-  * sdca_irq_data_populate - Populate common interrupt data
-  * @dev: Pointer to the Function device.
-@@ -309,8 +348,8 @@ int sdca_irq_data_populate(struct device *dev, struct regmap *regmap,
- 	if (!dev)
- 		return -ENODEV;
- 
--	name = devm_kasprintf(dev, GFP_KERNEL, "%s %s %s", function->desc->name,
--			      entity->label, control->label);
-+	name = kasprintf(GFP_KERNEL, "%s %s %s", function->desc->name,
-+			 entity->label, control->label);
- 	if (!name)
- 		return -ENOMEM;
- 
-@@ -497,6 +536,36 @@ int sdca_irq_populate(struct sdca_function_data *function,
- }
- EXPORT_SYMBOL_NS_GPL(sdca_irq_populate, "SND_SOC_SDCA");
- 
-+/**
-+ * sdca_irq_cleanup - Free all the individual IRQs for an SDCA Function
-+ * @function: Pointer to the SDCA Function.
-+ * @component: Pointer to the ASoC component for the Function.
-+ * @info: Pointer to the SDCA interrupt info for this device.
-+ *
-+ * Typically this would be called from the driver for a single SDCA Function.
-+ */
-+void sdca_irq_cleanup(struct sdca_function_data *function,
-+		      struct snd_soc_component *component,
-+		      struct sdca_interrupt_info *info)
-+{
-+	struct device *dev = component->dev;
-+	int i;
-+
-+	guard(mutex)(&info->irq_lock);
-+
-+	for (i = 0; i < SDCA_MAX_INTERRUPTS; i++) {
-+		struct sdca_interrupt *interrupt = &info->irqs[i];
-+
-+		if (interrupt->function != function || !interrupt->irq)
-+			continue;
-+
-+		sdca_irq_free_locked(dev, info, i, interrupt->name, interrupt);
-+
-+		kfree(interrupt->name);
-+	}
-+}
-+EXPORT_SYMBOL_NS_GPL(sdca_irq_cleanup, "SND_SOC_SDCA");
-+
- /**
-  * sdca_irq_allocate - allocate an SDCA interrupt structure for a device
-  * @sdev: Device pointer against which things should be allocated.
+ 		lpass_machine_learning_mem: lpass-machine-learning-region@93b00000 {
+ 			reg = <0x0 0x93b00000 0x0 0xf00000>;
+ 			no-map;
 -- 
 2.53.0
 
