@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-239686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239834-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aOorCaRO5mngugEAu9opvQ
-	(envelope-from <stable+bounces-239686-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:04:52 +0200
+	id EHQjOr1o5mkNwAEAu9opvQ
+	(envelope-from <stable+bounces-239834-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:56:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E10DC42EF01
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:04:51 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E3724324BC
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:56:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 30C403022C9F
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:02:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 043DE31868FD
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:08:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56EC733DEFE;
-	Mon, 20 Apr 2026 16:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BEAC2DF719;
+	Mon, 20 Apr 2026 16:08:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NAO2VSJR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i9yjGsOI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A2C62DE6E3;
-	Mon, 20 Apr 2026 16:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4859A3321AA;
+	Mon, 20 Apr 2026 16:08:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700957; cv=none; b=Io14szSOI7/WWR3FahuwEMfM664N+Klyl9NVHJlj0og1C9Z0Jutao68JNhgv0Yqmh1QyumtbTfo8ThN4yMdMoZseq0zkwfRIKuv+9FTIJxJXS3tdl4/pBDxlPF/sqbaeGVypdRae8vwsv+BtCjcJVQPaKXwrWWBa8nPwR9re54E=
+	t=1776701335; cv=none; b=F0EtnNunkbKGXstqcrENL0BpRZtRbVdVtiKx1ggHQOVqj+QsA+CQG2wpTxAMPeAG7rYZqxJBl6rrwfdt96lzSwN0gYgy15edSHH7TrEzV2/09pbKFD18lsyyQFaCCdaa3t/PH+BVhx5/OE/8MvMbBf+5wOjb3qMbCLIynZhNH9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700957; c=relaxed/simple;
-	bh=JINLryBGRixUhu7DMsa+0Jx3a9yZu8UfNXO9O2xx5X4=;
+	s=arc-20240116; t=1776701335; c=relaxed/simple;
+	bh=F0m21hXlDQl0pkxavpBWb8gWZ88MzJvcMXUkHY1+MOQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dJX/66TRwKNxJGgKB7hts93QLEkMG1zfGmxkiEcD7WrUV/6qbOMAszH72/LinrZy8HouQN3DrvKroSWGLFecwXeJ7qSvSpJLIsvcl1BobgI39hIgkjiSDIhtBzOzadFTbnpg4L4g0iAwTeeMX3aPQFY3JbDH0tma061E2EOMfmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NAO2VSJR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3822C19425;
-	Mon, 20 Apr 2026 16:02:36 +0000 (UTC)
+	 MIME-Version; b=MESBF2dE1sNlnTbJhSaV7gIB6R9oqNkBLO8E5Nm4tSwWDg2eBubf3EnV9siUD9W1pDWeUJSMqCRoGfDvR9Q++gruzBimfATtvteM/L5YYeAmoZ3zy1ORJaDwvV/8Imj7zlwuezrvhatZlJLMBNAw3SaE+NfsYwg7D34qDfxUu0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i9yjGsOI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D400EC19425;
+	Mon, 20 Apr 2026 16:08:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700957;
-	bh=JINLryBGRixUhu7DMsa+0Jx3a9yZu8UfNXO9O2xx5X4=;
+	s=korg; t=1776701335;
+	bh=F0m21hXlDQl0pkxavpBWb8gWZ88MzJvcMXUkHY1+MOQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NAO2VSJRwesP3WntLgtj6skiZe3HquMcVumglBuLLpwHtg+F7cqB1uFhRXl7Ik3Is
-	 soQ2PDOA6GvEzfiR/3Lbizr18fDzTmnlsmqUcXYphSwUC5rU32tNc9kTYfXuNhG0iL
-	 JQojP+Nnm79No/CKweaev1XMJbI71BJ8/SnJ0zF0=
+	b=i9yjGsOINc/USyBSCmNY8biM0Qn0BE9UU8Qlx3uNF+ddHjX6+BHrSiL7KgtlEa21R
+	 eccAH3AL5/xFIPopQ+AX24c2c+n3gSxGoShhZgE3i5Q65KQDHuBPZqfX2ryoDT5OY0
+	 cbsWo16jzy7TkxDE+aG+WiXUflLYH+8DutIHG1u0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Lin YuChen <starpt.official@gmail.com>
-Subject: [PATCH 6.18 125/198] staging: rtl8723bs: initialize le_tmp64 in rtw_BIP_verify()
-Date: Mon, 20 Apr 2026 17:41:44 +0200
-Message-ID: <20260420153940.108326141@linuxfoundation.org>
+	Florian Westphal <fw@strlen.de>,
+	Scott Mitchell <scott.k.mitch1@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 073/162] netfilter: nfnetlink_queue: nfqnl_instance GFP_ATOMIC -> GFP_KERNEL_ACCOUNT allocation
+Date: Mon, 20 Apr 2026 17:41:45 +0200
+Message-ID: <20260420153929.680967589@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
+References: <20260420153927.006696811@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,77 +69,208 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239686-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-239834-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,linaro.org,gmail.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,strlen.de,gmail.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linaro.org:email]
-X-Rspamd-Queue-Id: E10DC42EF01
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,strlen.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 8E3724324BC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lin YuChen <starpt.official@gmail.com>
+From: Scott Mitchell <scott.k.mitch1@gmail.com>
 
-commit 8c964b82a4e97ec7f25e17b803ee196009b38a57 upstream.
+[ Upstream commit a4400a5b343d1bc4aa8f685608515413238e7ee2 ]
 
-Initialize le_tmp64 to zero in rtw_BIP_verify() to prevent using
-uninitialized data.
+Currently, instance_create() uses GFP_ATOMIC because it's called while
+holding instances_lock spinlock. This makes allocation more likely to
+fail under memory pressure.
 
-Smatch warns that only 6 bytes are copied to this 8-byte (u64)
-variable, leaving the last two bytes uninitialized:
+Refactor nfqnl_recv_config() to drop RCU lock after instance_lookup()
+and peer_portid verification. A socket cannot simultaneously send a
+message and close, so the queue owned by the sending socket cannot be
+destroyed while processing its CONFIG message. This allows
+instance_create() to allocate with GFP_KERNEL_ACCOUNT before taking
+the spinlock.
 
-drivers/staging/rtl8723bs/core/rtw_security.c:1308 rtw_BIP_verify()
-warn: not copying enough bytes for '&le_tmp64' (8 vs 6 bytes)
-
-Initializing the variable at the start of the function fixes this
-warning and ensures predictable behavior.
-
-Fixes: 554c0a3abf21 ("staging: Add rtl8723bs sdio wifi driver")
-Cc: stable <stable@kernel.org>
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/linux-staging/abvwIQh0CHTp4wNJ@stanley.mountain/
-Signed-off-by: Lin YuChen <starpt.official@gmail.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/20260320172502.167332-1-starpt.official@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Scott Mitchell <scott.k.mitch1@gmail.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Stable-dep-of: 936206e3f6ff ("netfilter: nfnetlink_queue: make hash table per queue")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/rtl8723bs/core/rtw_security.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nfnetlink_queue.c | 75 +++++++++++++++------------------
+ 1 file changed, 34 insertions(+), 41 deletions(-)
 
---- a/drivers/staging/rtl8723bs/core/rtw_security.c
-+++ b/drivers/staging/rtl8723bs/core/rtw_security.c
-@@ -1321,7 +1321,7 @@ u32 rtw_BIP_verify(struct adapter *padap
- 	u8 mic[16];
- 	struct mlme_ext_priv *pmlmeext = &padapter->mlmeextpriv;
- 	__le16 le_tmp;
--	__le64 le_tmp64;
-+	__le64 le_tmp64 = 0;
+diff --git a/net/netfilter/nfnetlink_queue.c b/net/netfilter/nfnetlink_queue.c
+index df0232cf24ce2..5ab750556e992 100644
+--- a/net/netfilter/nfnetlink_queue.c
++++ b/net/netfilter/nfnetlink_queue.c
+@@ -178,17 +178,9 @@ instance_create(struct nfnl_queue_net *q, u_int16_t queue_num, u32 portid)
+ 	unsigned int h;
+ 	int err;
  
- 	ori_len = pattrib->pkt_len-WLAN_HDR_A3_LEN+BIP_AAD_SIZE;
- 	BIP_AAD = rtw_zmalloc(ori_len);
+-	spin_lock(&q->instances_lock);
+-	if (instance_lookup(q, queue_num)) {
+-		err = -EEXIST;
+-		goto out_unlock;
+-	}
+-
+-	inst = kzalloc(sizeof(*inst), GFP_ATOMIC);
+-	if (!inst) {
+-		err = -ENOMEM;
+-		goto out_unlock;
+-	}
++	inst = kzalloc(sizeof(*inst), GFP_KERNEL_ACCOUNT);
++	if (!inst)
++		return ERR_PTR(-ENOMEM);
+ 
+ 	inst->queue_num = queue_num;
+ 	inst->peer_portid = portid;
+@@ -198,9 +190,15 @@ instance_create(struct nfnl_queue_net *q, u_int16_t queue_num, u32 portid)
+ 	spin_lock_init(&inst->lock);
+ 	INIT_LIST_HEAD(&inst->queue_list);
+ 
++	spin_lock(&q->instances_lock);
++	if (instance_lookup(q, queue_num)) {
++		err = -EEXIST;
++		goto out_unlock;
++	}
++
+ 	if (!try_module_get(THIS_MODULE)) {
+ 		err = -EAGAIN;
+-		goto out_free;
++		goto out_unlock;
+ 	}
+ 
+ 	h = instance_hashfn(queue_num);
+@@ -210,10 +208,9 @@ instance_create(struct nfnl_queue_net *q, u_int16_t queue_num, u32 portid)
+ 
+ 	return inst;
+ 
+-out_free:
+-	kfree(inst);
+ out_unlock:
+ 	spin_unlock(&q->instances_lock);
++	kfree(inst);
+ 	return ERR_PTR(err);
+ }
+ 
+@@ -1602,7 +1599,8 @@ static int nfqnl_recv_config(struct sk_buff *skb, const struct nfnl_info *info,
+ 	struct nfqnl_msg_config_cmd *cmd = NULL;
+ 	struct nfqnl_instance *queue;
+ 	__u32 flags = 0, mask = 0;
+-	int ret = 0;
++
++	WARN_ON_ONCE(!lockdep_nfnl_is_held(NFNL_SUBSYS_QUEUE));
+ 
+ 	if (nfqa[NFQA_CFG_CMD]) {
+ 		cmd = nla_data(nfqa[NFQA_CFG_CMD]);
+@@ -1648,47 +1646,44 @@ static int nfqnl_recv_config(struct sk_buff *skb, const struct nfnl_info *info,
+ 		}
+ 	}
+ 
++	/* Lookup queue under RCU. After peer_portid check (or for new queue
++	 * in BIND case), the queue is owned by the socket sending this message.
++	 * A socket cannot simultaneously send a message and close, so while
++	 * processing this CONFIG message, nfqnl_rcv_nl_event() (triggered by
++	 * socket close) cannot destroy this queue. Safe to use without RCU.
++	 */
+ 	rcu_read_lock();
+ 	queue = instance_lookup(q, queue_num);
+ 	if (queue && queue->peer_portid != NETLINK_CB(skb).portid) {
+-		ret = -EPERM;
+-		goto err_out_unlock;
++		rcu_read_unlock();
++		return -EPERM;
+ 	}
++	rcu_read_unlock();
+ 
+ 	if (cmd != NULL) {
+ 		switch (cmd->command) {
+ 		case NFQNL_CFG_CMD_BIND:
+-			if (queue) {
+-				ret = -EBUSY;
+-				goto err_out_unlock;
+-			}
+-			queue = instance_create(q, queue_num,
+-						NETLINK_CB(skb).portid);
+-			if (IS_ERR(queue)) {
+-				ret = PTR_ERR(queue);
+-				goto err_out_unlock;
+-			}
++			if (queue)
++				return -EBUSY;
++			queue = instance_create(q, queue_num, NETLINK_CB(skb).portid);
++			if (IS_ERR(queue))
++				return PTR_ERR(queue);
+ 			break;
+ 		case NFQNL_CFG_CMD_UNBIND:
+-			if (!queue) {
+-				ret = -ENODEV;
+-				goto err_out_unlock;
+-			}
++			if (!queue)
++				return -ENODEV;
+ 			instance_destroy(q, queue);
+-			goto err_out_unlock;
++			return 0;
+ 		case NFQNL_CFG_CMD_PF_BIND:
+ 		case NFQNL_CFG_CMD_PF_UNBIND:
+ 			break;
+ 		default:
+-			ret = -ENOTSUPP;
+-			goto err_out_unlock;
++			return -EOPNOTSUPP;
+ 		}
+ 	}
+ 
+-	if (!queue) {
+-		ret = -ENODEV;
+-		goto err_out_unlock;
+-	}
++	if (!queue)
++		return -ENODEV;
+ 
+ 	if (nfqa[NFQA_CFG_PARAMS]) {
+ 		struct nfqnl_msg_config_params *params =
+@@ -1713,9 +1708,7 @@ static int nfqnl_recv_config(struct sk_buff *skb, const struct nfnl_info *info,
+ 		spin_unlock_bh(&queue->lock);
+ 	}
+ 
+-err_out_unlock:
+-	rcu_read_unlock();
+-	return ret;
++	return 0;
+ }
+ 
+ static const struct nfnl_callback nfqnl_cb[NFQNL_MSG_MAX] = {
+-- 
+2.53.0
+
 
 
 
