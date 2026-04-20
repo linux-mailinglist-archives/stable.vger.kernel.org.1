@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-239396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239397-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4MLsGiRf5mkWvgEAu9opvQ
-	(envelope-from <stable+bounces-239396-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:15:16 +0200
+	id eMS4BXlX5mlQvAEAu9opvQ
+	(envelope-from <stable+bounces-239397-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:42:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3FC9430D23
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:15:15 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F40542FDF4
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:42:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C58CF34A346F
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:49:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7F29F339C7F8
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:49:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B92733AD9A;
-	Mon, 20 Apr 2026 15:49:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9509C33262B;
+	Mon, 20 Apr 2026 15:49:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KKB8+JSA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TmEnPL6s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DE9C33262B;
-	Mon, 20 Apr 2026 15:48:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5845B2D77E5;
+	Mon, 20 Apr 2026 15:49:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700140; cv=none; b=FtUYFgLiEEMuDN3XW+JqsBBu73B/vtnbeOhAoD2SItezbEXDEPIqQwmr0BuIaIhIEy1JQiVJlKZienlhSqOIE2ukzWfPpBKJN7p6pJBq5oHPrSzB0TJY1tfjw2oqHKlz023g+yOW+32cSklXcHAxLSYR0eZXYiaixJs6ffZnoRw=
+	t=1776700142; cv=none; b=ACV/lSVMTfCIHksNLkqXANARDt7ahYG5ugD+tn6jEKdG80v7ExL6Fq1Jhs09QwwpTtZsVT+fy9jrTjU1NxVQndQZL6nBPJ3ULtwQB/wF1D7YEt0XWX3QIrq4GV9CC0Y/fKMgTkjAX4oh/NLOsULNICNE8K1wG6afR1raMq2A7go=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700140; c=relaxed/simple;
-	bh=F//j7PmZoYXaEEiiPZFhjEXcViOXWihfQNs1y0FLhmo=;
+	s=arc-20240116; t=1776700142; c=relaxed/simple;
+	bh=A5/b1ZjJz2ip38kipbuSbyCuIbpurAWSnE/UE4OrKO4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LL7/3LPkYbv/AcdHMUFITurklEbvD3pPpcQnB4l1KOI7DS/VWSxJcVEf3XNFqm4rApVxeJXawo273Jqwjn+Ul4rj1LbcBX9b5R84H1Mup30ujrJeBgjLhm/TX4QiwUIy5lZ8NLS6ASf+LDATwlvdOMnaZHynkpTx/hwMz1w6DT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KKB8+JSA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EED8C19425;
-	Mon, 20 Apr 2026 15:48:59 +0000 (UTC)
+	 MIME-Version; b=kmPrZPlPQiAXFOggC4YP+az6BdAL7PzC4YxJtOOr4ipDp3ToGfPkTNYqd9E4pGIreRImtVaznIzu+V5ed+kQ5zNNfSJgOKDAMf4n3VdUJE/pzfN9Rkiq1gMa+b/zih/Z/WiX8S0KQQvk1tgTAnI7EEKhf0nnZzOEHK/s1ztN49A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TmEnPL6s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3C90C19425;
+	Mon, 20 Apr 2026 15:49:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700139;
-	bh=F//j7PmZoYXaEEiiPZFhjEXcViOXWihfQNs1y0FLhmo=;
+	s=korg; t=1776700142;
+	bh=A5/b1ZjJz2ip38kipbuSbyCuIbpurAWSnE/UE4OrKO4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KKB8+JSALfKG1i2Nntf7RhgUf6wmuDgySeVcJB67h9xhEeQA7GnxXuKg2s4JTI0bk
-	 3spWiUzgU9U8WcdwMpbV7yCTDSGac+J2K/KWDNL4li9m/m7AjFKWzd/n+NfwZVhFji
-	 YLcu8/saKuwENBKAn3I7cqZBpU1zOrlGOWeB5TYM=
+	b=TmEnPL6seHXd/h0fKnENEU8rQGgJ4TcL4I7TJZ7LmRaASRaEw+k7F9Jhh8IDEOwUm
+	 20RxrTJ04AA1VwlU+I0cyYWRIWzEDuzB9fKoq/Qhbn5CqDbc9fAlLcubn7l2xalnqV
+	 Tr+sN19EvOqk1H0JqU1eCdwo+XIF767qCKlmWhaw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Serhii Pievniev <spevnev16@gmail.com>,
+	Artem Bityutskiy <artem.bityutskiy@linux.intel.com>,
 	Len Brown <len.brown@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 057/220] tools/power/turbostat: Fix microcode patch level output for AMD/Hygon
-Date: Mon, 20 Apr 2026 17:39:58 +0200
-Message-ID: <20260420153936.093219156@linuxfoundation.org>
+Subject: [PATCH 6.19 058/220] tools/power turbostat: Fix incorrect format variable
+Date: Mon, 20 Apr 2026 17:39:59 +0200
+Message-ID: <20260420153936.130911921@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
 References: <20260420153934.013228280@linuxfoundation.org>
@@ -66,33 +66,32 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-239396-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-239397-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A3FC9430D23
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 9F40542FDF4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,56 +99,53 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Serhii Pievniev <spevnev16@gmail.com>
+From: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
 
-[ Upstream commit a444083286434ec1fd127c5da11a3091e6013008 ]
+[ Upstream commit 23cb4f5c81766e70e5f32ed0987ee8fb5ab2e00a ]
 
-turbostat always used the same logic to read the microcode patch level,
-which is correct for Intel but not for AMD/Hygon.
-While Intel stores the patch level in the upper 32 bits of MSR, AMD
-stores it in the lower 32 bits, which causes turbostat to report the
-microcode version as 0x0 on AMD/Hygon.
+In the perf thread, core, and package counter loops, an incorrect
+'mp->format' variable is used instead of 'pp->format'.
 
-Fix by shifting right by 32 for non-AMD/Hygon, preserving the existing
-behavior for Intel and unknown vendors.
-
-Fixes: 3e4048466c39 ("tools/power turbostat: Add --no-msr option")
-Signed-off-by: Serhii Pievniev <spevnev16@gmail.com>
+[lenb: edit commit message]
+Fixes: 696d15cbd8c2 ("tools/power turbostat: Refactor floating point printout code")
+Signed-off-by: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
 Signed-off-by: Len Brown <len.brown@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/power/x86/turbostat/turbostat.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ tools/power/x86/turbostat/turbostat.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
-index 903943d30f713..83a90f413f976 100644
+index 83a90f413f976..603651e74dacf 100644
 --- a/tools/power/x86/turbostat/turbostat.c
 +++ b/tools/power/x86/turbostat/turbostat.c
-@@ -8812,10 +8812,13 @@ void process_cpuid()
- 	edx_flags = edx;
- 
- 	if (!no_msr) {
--		if (get_msr(sched_getcpu(), MSR_IA32_UCODE_REV, &ucode_patch))
-+		if (get_msr(sched_getcpu(), MSR_IA32_UCODE_REV, &ucode_patch)) {
- 			warnx("get_msr(UCODE)");
--		else
-+		} else {
- 			ucode_patch_valid = true;
-+			if (!authentic_amd && !hygon_genuine)
-+				ucode_patch >>= 32;
-+		}
- 	}
- 
- 	/*
-@@ -8829,7 +8832,7 @@ void process_cpuid()
- 	if (!quiet) {
- 		fprintf(outf, "CPUID(1): family:model:stepping 0x%x:%x:%x (%d:%d:%d)", family, model, stepping, family, model, stepping);
- 		if (ucode_patch_valid)
--			fprintf(outf, " microcode 0x%x", (unsigned int)((ucode_patch >> 32) & 0xFFFFFFFF));
-+			fprintf(outf, " microcode 0x%x", (unsigned int)ucode_patch);
- 		fputc('\n', outf);
- 
- 		fprintf(outf, "CPUID(0x80000000): max_extended_levels: 0x%x\n", max_extended_level);
+@@ -3330,7 +3330,7 @@ int format_counters(PER_THREAD_PARAMS)
+ 	for (i = 0, pp = sys.perf_tp; pp; ++i, pp = pp->next) {
+ 		if (pp->format == FORMAT_RAW)
+ 			outp += print_hex_value(pp->width, &printed, delim, t->perf_counter[i]);
+-		else if (pp->format == FORMAT_DELTA || mp->format == FORMAT_AVERAGE)
++		else if (pp->format == FORMAT_DELTA || pp->format == FORMAT_AVERAGE)
+ 			outp += print_decimal_value(pp->width, &printed, delim, t->perf_counter[i]);
+ 		else if (pp->format == FORMAT_PERCENT) {
+ 			if (pp->type == COUNTER_USEC)
+@@ -3400,7 +3400,7 @@ int format_counters(PER_THREAD_PARAMS)
+ 	for (i = 0, pp = sys.perf_cp; pp; i++, pp = pp->next) {
+ 		if (pp->format == FORMAT_RAW)
+ 			outp += print_hex_value(pp->width, &printed, delim, c->perf_counter[i]);
+-		else if (pp->format == FORMAT_DELTA || mp->format == FORMAT_AVERAGE)
++		else if (pp->format == FORMAT_DELTA || pp->format == FORMAT_AVERAGE)
+ 			outp += print_decimal_value(pp->width, &printed, delim, c->perf_counter[i]);
+ 		else if (pp->format == FORMAT_PERCENT)
+ 			outp += print_float_value(&printed, delim, pct(c->perf_counter[i], tsc));
+@@ -3558,7 +3558,7 @@ int format_counters(PER_THREAD_PARAMS)
+ 			outp += print_hex_value(pp->width, &printed, delim, p->perf_counter[i]);
+ 		else if (pp->type == COUNTER_K2M)
+ 			outp += sprintf(outp, "%s%d", (printed++ ? delim : ""), (unsigned int)p->perf_counter[i] / 1000);
+-		else if (pp->format == FORMAT_DELTA || mp->format == FORMAT_AVERAGE)
++		else if (pp->format == FORMAT_DELTA || pp->format == FORMAT_AVERAGE)
+ 			outp += print_decimal_value(pp->width, &printed, delim, p->perf_counter[i]);
+ 		else if (pp->format == FORMAT_PERCENT)
+ 			outp += print_float_value(&printed, delim, pct(p->perf_counter[i], tsc));
 -- 
 2.53.0
 
