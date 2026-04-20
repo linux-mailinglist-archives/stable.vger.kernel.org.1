@@ -1,66 +1,59 @@
-Return-Path: <stable+bounces-239843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239662-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WJp1JDJk5mkuvwEAu9opvQ
-	(envelope-from <stable+bounces-239843-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:36:50 +0200
+	id 0CoaEwxn5mmlvwEAu9opvQ
+	(envelope-from <stable+bounces-239662-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:49:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88809431985
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:36:49 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDE1B432212
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:48:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C97CF30A95C3
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:09:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4D6F936AAFBC
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:01:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94BAF33F5BC;
-	Mon, 20 Apr 2026 16:09:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A61933DEFE;
+	Mon, 20 Apr 2026 16:01:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ac3pVjlS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TaKkn0yQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5709E2E093A;
-	Mon, 20 Apr 2026 16:09:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF38C2E36F8;
+	Mon, 20 Apr 2026 16:01:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701358; cv=none; b=cs4lYzoJXaSQjLWTu/ZXa7qz9GVG56htl1GjyfGA4mzTE+Z5oKFosbFtoxVmiZMDCHpx2hnZoVHobhTmZrQR1SGqnvTZeBYhLr4yrMXxbI6bY+2CMJ1AKzAwb1OLDhvvMTvKlO3Apmhk6QGaDLOm6TquswEjzlRuGtWTHFkKJ5o=
+	t=1776700900; cv=none; b=AwBcTk9uBdi+iopRtlOZ/Yk1TXhN/V/TfN1INJYYag/8dWwnafWKsWxy1YTj8OH4ZgVW8q8TBUQzOI55An/b4n3RLBfdmOKD8dMQlQxkqRAujBWESLk5JoqUWheecLY9NroT8TTeIm9XBDCyeQWqXXHgKpLCtvY3qXpXuakfrmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701358; c=relaxed/simple;
-	bh=Ya3HBMYzyXJaE+JUeKIz4cdnFXGhVSncBWg4wxlEpKw=;
+	s=arc-20240116; t=1776700900; c=relaxed/simple;
+	bh=98oTM9UyWbL4A2KwChdyD+l6O4dZ1K55tjrFA1NSl8Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OVLKjLfQHGxTT1GPX4y6e+TFjqa+wrru1fN708raP68aJL+omzIBufVnlpFVfRrN9tdmLYwgbFomRRzSTBf52jDqEvY0X7yr6UbVFIf/FPP5Ipr+3baEWb6AWv9OSQQ8bgN66fMIKWUnUYQr+D2/mh7cI8xvWzcUvC7sU1Wef2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ac3pVjlS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD588C19425;
-	Mon, 20 Apr 2026 16:09:17 +0000 (UTC)
+	 MIME-Version; b=paZJaCipbbuOCrc7l1JRPTICm/h1zPA2t03Q/4bXvAmlcVahntyIDtQvf8y7hyVfwN83a0YJPgjU44VAS9iL5qDNbXcfFq5Zum8s7lDXtyPHuTG4bq5LIrZ+zaI5IbAu77yPQHaf0drhAr4JgakpMxPitt2edowCmcHGvFSNJKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TaKkn0yQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 550A4C19425;
+	Mon, 20 Apr 2026 16:01:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701358;
-	bh=Ya3HBMYzyXJaE+JUeKIz4cdnFXGhVSncBWg4wxlEpKw=;
+	s=korg; t=1776700900;
+	bh=98oTM9UyWbL4A2KwChdyD+l6O4dZ1K55tjrFA1NSl8Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ac3pVjlSATlpKLkACSEZHd4NjpLuNveJxS5tEXLvsvLi+nfI7Cyfg4cqcmAyudytm
-	 3KDqomKf7sZ5Q9DVhAJ/4zayqWuXrHusssZnIvmLjSM1rEoy1JLIWdKHFS0rUlAk3F
-	 ZqOHYnnq89dsuzn12pNYxbKhd0uO8q4gP02TLWJQ=
+	b=TaKkn0yQDb3RhYI54Om3M1IUVI6CenzTG+XS3hbFqzykHFBXP6MyuLe8XPM0KFmIL
+	 G8mp5rp5/TKxWQurtc3xG5th2glUyJ1Z+9NDDXSt/JavJ53hVjskc+rlENiixDjYzz
+	 U/zrdrA3BpGK3TlsCSkHXKzla6RrNtSF0usoKJK0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ren Wei <enjou1224z@gmail.com>,
-	Ruide Cao <caoruide123@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Florian Westphal <fw@strlen.de>,
+	Scott Mitchell <scott.k.mitch1@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 049/162] net: sched: act_csum: validate nested VLAN headers
+Subject: [PATCH 6.18 102/198] netfilter: nfnetlink_queue: nfqnl_instance GFP_ATOMIC -> GFP_KERNEL_ACCOUNT allocation
 Date: Mon, 20 Apr 2026 17:41:21 +0200
-Message-ID: <20260420153928.811992054@linuxfoundation.org>
+Message-ID: <20260420153939.274653935@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
-References: <20260420153927.006696811@linuxfoundation.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,94 +64,211 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-239843-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	URIBL_MULTI_FAIL(0.00)[linuxfoundation.org:server fail,strlen.de:server fail,sea.lore.kernel.org:server fail];
 	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,strlen.de,gmail.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-239662-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,lzu.edu.cn:email]
-X-Rspamd-Queue-Id: 88809431985
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,strlen.de:email]
+X-Rspamd-Queue-Id: BDE1B432212
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ruide Cao <caoruide123@gmail.com>
+From: Scott Mitchell <scott.k.mitch1@gmail.com>
 
-[ Upstream commit c842743d073bdd683606cb414eb0ca84465dd834 ]
+[ Upstream commit a4400a5b343d1bc4aa8f685608515413238e7ee2 ]
 
-tcf_csum_act() walks nested VLAN headers directly from skb->data when an
-skb still carries in-payload VLAN tags. The current code reads
-vlan->h_vlan_encapsulated_proto and then pulls VLAN_HLEN bytes without
-first ensuring that the full VLAN header is present in the linear area.
+Currently, instance_create() uses GFP_ATOMIC because it's called while
+holding instances_lock spinlock. This makes allocation more likely to
+fail under memory pressure.
 
-If only part of an inner VLAN header is linearized, accessing
-h_vlan_encapsulated_proto reads past the linear area, and the following
-skb_pull(VLAN_HLEN) may violate skb invariants.
+Refactor nfqnl_recv_config() to drop RCU lock after instance_lookup()
+and peer_portid verification. A socket cannot simultaneously send a
+message and close, so the queue owned by the sending socket cannot be
+destroyed while processing its CONFIG message. This allows
+instance_create() to allocate with GFP_KERNEL_ACCOUNT before taking
+the spinlock.
 
-Fix this by requiring pskb_may_pull(skb, VLAN_HLEN) before accessing and
-pulling each nested VLAN header. If the header still is not fully
-available, drop the packet through the existing error path.
-
-Fixes: 2ecba2d1e45b ("net: sched: act_csum: Fix csum calc for tagged packets")
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Co-developed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Yuan Tan <yuantan098@gmail.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Tested-by: Ren Wei <enjou1224z@gmail.com>
-Signed-off-by: Ruide Cao <caoruide123@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/22df2fcb49f410203eafa5d97963dd36089f4ecf.1774892775.git.caoruide123@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Suggested-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Scott Mitchell <scott.k.mitch1@gmail.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Stable-dep-of: 936206e3f6ff ("netfilter: nfnetlink_queue: make hash table per queue")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/act_csum.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ net/netfilter/nfnetlink_queue.c | 75 +++++++++++++++------------------
+ 1 file changed, 34 insertions(+), 41 deletions(-)
 
-diff --git a/net/sched/act_csum.c b/net/sched/act_csum.c
-index 5cc8e407e7911..8ea37c2c3c549 100644
---- a/net/sched/act_csum.c
-+++ b/net/sched/act_csum.c
-@@ -603,8 +603,12 @@ TC_INDIRECT_SCOPE int tcf_csum_act(struct sk_buff *skb,
- 			protocol = skb->protocol;
- 			orig_vlan_tag_present = true;
- 		} else {
--			struct vlan_hdr *vlan = (struct vlan_hdr *)skb->data;
-+			struct vlan_hdr *vlan;
+diff --git a/net/netfilter/nfnetlink_queue.c b/net/netfilter/nfnetlink_queue.c
+index 0b96d20bacb73..a39d3b989063c 100644
+--- a/net/netfilter/nfnetlink_queue.c
++++ b/net/netfilter/nfnetlink_queue.c
+@@ -178,17 +178,9 @@ instance_create(struct nfnl_queue_net *q, u_int16_t queue_num, u32 portid)
+ 	unsigned int h;
+ 	int err;
  
-+			if (!pskb_may_pull(skb, VLAN_HLEN))
-+				goto drop;
+-	spin_lock(&q->instances_lock);
+-	if (instance_lookup(q, queue_num)) {
+-		err = -EEXIST;
+-		goto out_unlock;
+-	}
+-
+-	inst = kzalloc(sizeof(*inst), GFP_ATOMIC);
+-	if (!inst) {
+-		err = -ENOMEM;
+-		goto out_unlock;
+-	}
++	inst = kzalloc(sizeof(*inst), GFP_KERNEL_ACCOUNT);
++	if (!inst)
++		return ERR_PTR(-ENOMEM);
+ 
+ 	inst->queue_num = queue_num;
+ 	inst->peer_portid = portid;
+@@ -198,9 +190,15 @@ instance_create(struct nfnl_queue_net *q, u_int16_t queue_num, u32 portid)
+ 	spin_lock_init(&inst->lock);
+ 	INIT_LIST_HEAD(&inst->queue_list);
+ 
++	spin_lock(&q->instances_lock);
++	if (instance_lookup(q, queue_num)) {
++		err = -EEXIST;
++		goto out_unlock;
++	}
 +
-+			vlan = (struct vlan_hdr *)skb->data;
- 			protocol = vlan->h_vlan_encapsulated_proto;
- 			skb_pull(skb, VLAN_HLEN);
- 			skb_reset_network_header(skb);
+ 	if (!try_module_get(THIS_MODULE)) {
+ 		err = -EAGAIN;
+-		goto out_free;
++		goto out_unlock;
+ 	}
+ 
+ 	h = instance_hashfn(queue_num);
+@@ -210,10 +208,9 @@ instance_create(struct nfnl_queue_net *q, u_int16_t queue_num, u32 portid)
+ 
+ 	return inst;
+ 
+-out_free:
+-	kfree(inst);
+ out_unlock:
+ 	spin_unlock(&q->instances_lock);
++	kfree(inst);
+ 	return ERR_PTR(err);
+ }
+ 
+@@ -1604,7 +1601,8 @@ static int nfqnl_recv_config(struct sk_buff *skb, const struct nfnl_info *info,
+ 	struct nfqnl_msg_config_cmd *cmd = NULL;
+ 	struct nfqnl_instance *queue;
+ 	__u32 flags = 0, mask = 0;
+-	int ret = 0;
++
++	WARN_ON_ONCE(!lockdep_nfnl_is_held(NFNL_SUBSYS_QUEUE));
+ 
+ 	if (nfqa[NFQA_CFG_CMD]) {
+ 		cmd = nla_data(nfqa[NFQA_CFG_CMD]);
+@@ -1650,47 +1648,44 @@ static int nfqnl_recv_config(struct sk_buff *skb, const struct nfnl_info *info,
+ 		}
+ 	}
+ 
++	/* Lookup queue under RCU. After peer_portid check (or for new queue
++	 * in BIND case), the queue is owned by the socket sending this message.
++	 * A socket cannot simultaneously send a message and close, so while
++	 * processing this CONFIG message, nfqnl_rcv_nl_event() (triggered by
++	 * socket close) cannot destroy this queue. Safe to use without RCU.
++	 */
+ 	rcu_read_lock();
+ 	queue = instance_lookup(q, queue_num);
+ 	if (queue && queue->peer_portid != NETLINK_CB(skb).portid) {
+-		ret = -EPERM;
+-		goto err_out_unlock;
++		rcu_read_unlock();
++		return -EPERM;
+ 	}
++	rcu_read_unlock();
+ 
+ 	if (cmd != NULL) {
+ 		switch (cmd->command) {
+ 		case NFQNL_CFG_CMD_BIND:
+-			if (queue) {
+-				ret = -EBUSY;
+-				goto err_out_unlock;
+-			}
+-			queue = instance_create(q, queue_num,
+-						NETLINK_CB(skb).portid);
+-			if (IS_ERR(queue)) {
+-				ret = PTR_ERR(queue);
+-				goto err_out_unlock;
+-			}
++			if (queue)
++				return -EBUSY;
++			queue = instance_create(q, queue_num, NETLINK_CB(skb).portid);
++			if (IS_ERR(queue))
++				return PTR_ERR(queue);
+ 			break;
+ 		case NFQNL_CFG_CMD_UNBIND:
+-			if (!queue) {
+-				ret = -ENODEV;
+-				goto err_out_unlock;
+-			}
++			if (!queue)
++				return -ENODEV;
+ 			instance_destroy(q, queue);
+-			goto err_out_unlock;
++			return 0;
+ 		case NFQNL_CFG_CMD_PF_BIND:
+ 		case NFQNL_CFG_CMD_PF_UNBIND:
+ 			break;
+ 		default:
+-			ret = -ENOTSUPP;
+-			goto err_out_unlock;
++			return -EOPNOTSUPP;
+ 		}
+ 	}
+ 
+-	if (!queue) {
+-		ret = -ENODEV;
+-		goto err_out_unlock;
+-	}
++	if (!queue)
++		return -ENODEV;
+ 
+ 	if (nfqa[NFQA_CFG_PARAMS]) {
+ 		struct nfqnl_msg_config_params *params =
+@@ -1715,9 +1710,7 @@ static int nfqnl_recv_config(struct sk_buff *skb, const struct nfnl_info *info,
+ 		spin_unlock_bh(&queue->lock);
+ 	}
+ 
+-err_out_unlock:
+-	rcu_read_unlock();
+-	return ret;
++	return 0;
+ }
+ 
+ static const struct nfnl_callback nfqnl_cb[NFQNL_MSG_MAX] = {
 -- 
 2.53.0
 
