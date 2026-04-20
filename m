@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-239397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239579-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eMS4BXlX5mlQvAEAu9opvQ
-	(envelope-from <stable+bounces-239397-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:42:33 +0200
+	id QBfdDHlP5mkgugEAu9opvQ
+	(envelope-from <stable+bounces-239579-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:08:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F40542FDF4
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:42:32 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC2ED42F0C4
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:08:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7F29F339C7F8
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:49:18 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AF45130074B9
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:56:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9509C33262B;
-	Mon, 20 Apr 2026 15:49:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 038CD32E696;
+	Mon, 20 Apr 2026 15:56:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TmEnPL6s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TKgxmaYp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5845B2D77E5;
-	Mon, 20 Apr 2026 15:49:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9F9F22259F;
+	Mon, 20 Apr 2026 15:56:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700142; cv=none; b=ACV/lSVMTfCIHksNLkqXANARDt7ahYG5ugD+tn6jEKdG80v7ExL6Fq1Jhs09QwwpTtZsVT+fy9jrTjU1NxVQndQZL6nBPJ3ULtwQB/wF1D7YEt0XWX3QIrq4GV9CC0Y/fKMgTkjAX4oh/NLOsULNICNE8K1wG6afR1raMq2A7go=
+	t=1776700614; cv=none; b=NyCQyd2BNw5md14dLVae71HYjMoJtT7XEPnNaCuDHhhk/iwfXrTx3bW4MnAXR9aLno6xP33D63DbAbrdFQ4rPfXCAcwuGUDlhcVybrM6s/jC/aJFU/Gg1aldgIHdwJAwAOBBfDiT1rLF08ss78YN1RiLqeIDIdaR+QjH8tP4f3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700142; c=relaxed/simple;
-	bh=A5/b1ZjJz2ip38kipbuSbyCuIbpurAWSnE/UE4OrKO4=;
+	s=arc-20240116; t=1776700614; c=relaxed/simple;
+	bh=hu1dsURhO8YOQMEJ7RV8VoFlR/exOW9QukW3I3uJG9U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kmPrZPlPQiAXFOggC4YP+az6BdAL7PzC4YxJtOOr4ipDp3ToGfPkTNYqd9E4pGIreRImtVaznIzu+V5ed+kQ5zNNfSJgOKDAMf4n3VdUJE/pzfN9Rkiq1gMa+b/zih/Z/WiX8S0KQQvk1tgTAnI7EEKhf0nnZzOEHK/s1ztN49A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TmEnPL6s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3C90C19425;
-	Mon, 20 Apr 2026 15:49:01 +0000 (UTC)
+	 MIME-Version; b=FcnzssXgkYsqlG699tg7M7U03VjMulSmyqMWzTNBBEkHYNyPZ2BBV1NfeYG9HRt3JO9fBigdiybA4/9jLtaIuMJ2wfeLenTaVEd9aD/jgIF3NLz7z2HHKb29GHwkRKsDq+QdRdiZpnxCRx/BbD4eRjQ2mQ/qD/iV2yW+kGmcrjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TKgxmaYp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50E98C19425;
+	Mon, 20 Apr 2026 15:56:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700142;
-	bh=A5/b1ZjJz2ip38kipbuSbyCuIbpurAWSnE/UE4OrKO4=;
+	s=korg; t=1776700614;
+	bh=hu1dsURhO8YOQMEJ7RV8VoFlR/exOW9QukW3I3uJG9U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TmEnPL6seHXd/h0fKnENEU8rQGgJ4TcL4I7TJZ7LmRaASRaEw+k7F9Jhh8IDEOwUm
-	 20RxrTJ04AA1VwlU+I0cyYWRIWzEDuzB9fKoq/Qhbn5CqDbc9fAlLcubn7l2xalnqV
-	 Tr+sN19EvOqk1H0JqU1eCdwo+XIF767qCKlmWhaw=
+	b=TKgxmaYpzDEtNgPz6WaIHoEMPdFLlpNENizMt/UQd5FtcJGMaTQ0/Mw+eIFMS3JrA
+	 r1zhqpJG0aKrU+PiT+MOVlJL/1OW617vSZ00yagF/i/3beNJZ3NxThdn/nxSCvAn6j
+	 x6zEmDENV3gliZgjVrBCd7DWd/iRc/gtlRUfo13Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Artem Bityutskiy <artem.bityutskiy@linux.intel.com>,
-	Len Brown <len.brown@intel.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 058/220] tools/power turbostat: Fix incorrect format variable
+Subject: [PATCH 6.18 020/198] netfilter: ctnetlink: ensure safe access to master conntrack
 Date: Mon, 20 Apr 2026 17:39:59 +0200
-Message-ID: <20260420153936.130911921@linuxfoundation.org>
+Message-ID: <20260420153936.343515057@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
-References: <20260420153934.013228280@linuxfoundation.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-239397-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-239579-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,63 +89,226 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 9F40542FDF4
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,strlen.de:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: CC2ED42F0C4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 23cb4f5c81766e70e5f32ed0987ee8fb5ab2e00a ]
+[ Upstream commit bffcaad9afdfe45d7fc777397d3b83c1e3ebffe5 ]
 
-In the perf thread, core, and package counter loops, an incorrect
-'mp->format' variable is used instead of 'pp->format'.
+Holding reference on the expectation is not sufficient, the master
+conntrack object can just go away, making exp->master invalid.
 
-[lenb: edit commit message]
-Fixes: 696d15cbd8c2 ("tools/power turbostat: Refactor floating point printout code")
-Signed-off-by: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
-Signed-off-by: Len Brown <len.brown@intel.com>
+To access exp->master safely:
+
+- Grab the nf_conntrack_expect_lock, this gets serialized with
+  clean_from_lists() which also holds this lock when the master
+  conntrack goes away.
+
+- Hold reference on master conntrack via nf_conntrack_find_get().
+  Not so easy since the master tuple to look up for the master conntrack
+  is not available in the existing problematic paths.
+
+This patch goes for extending the nf_conntrack_expect_lock section
+to address this issue for simplicity, in the cases that are described
+below this is just slightly extending the lock section.
+
+The add expectation command already holds a reference to the master
+conntrack from ctnetlink_create_expect().
+
+However, the delete expectation command needs to grab the spinlock
+before looking up for the expectation. Expand the existing spinlock
+section to address this to cover the expectation lookup. Note that,
+the nf_ct_expect_iterate_net() calls already grabs the spinlock while
+iterating over the expectation table, which is correct.
+
+The get expectation command needs to grab the spinlock to ensure master
+conntrack does not go away. This also expands the existing spinlock
+section to cover the expectation lookup too. I needed to move the
+netlink skb allocation out of the spinlock to keep it GFP_KERNEL.
+
+For the expectation events, the IPEXP_DESTROY event is already delivered
+under the spinlock, just move the delivery of IPEXP_NEW under the
+spinlock too because the master conntrack event cache is reached through
+exp->master.
+
+While at it, add lockdep notations to help identify what codepaths need
+to grab the spinlock.
+
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/power/x86/turbostat/turbostat.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ include/net/netfilter/nf_conntrack_core.h |  5 ++++
+ net/netfilter/nf_conntrack_ecache.c       |  2 ++
+ net/netfilter/nf_conntrack_expect.c       | 10 +++++++-
+ net/netfilter/nf_conntrack_netlink.c      | 28 +++++++++++++++--------
+ 4 files changed, 35 insertions(+), 10 deletions(-)
 
-diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
-index 83a90f413f976..603651e74dacf 100644
---- a/tools/power/x86/turbostat/turbostat.c
-+++ b/tools/power/x86/turbostat/turbostat.c
-@@ -3330,7 +3330,7 @@ int format_counters(PER_THREAD_PARAMS)
- 	for (i = 0, pp = sys.perf_tp; pp; ++i, pp = pp->next) {
- 		if (pp->format == FORMAT_RAW)
- 			outp += print_hex_value(pp->width, &printed, delim, t->perf_counter[i]);
--		else if (pp->format == FORMAT_DELTA || mp->format == FORMAT_AVERAGE)
-+		else if (pp->format == FORMAT_DELTA || pp->format == FORMAT_AVERAGE)
- 			outp += print_decimal_value(pp->width, &printed, delim, t->perf_counter[i]);
- 		else if (pp->format == FORMAT_PERCENT) {
- 			if (pp->type == COUNTER_USEC)
-@@ -3400,7 +3400,7 @@ int format_counters(PER_THREAD_PARAMS)
- 	for (i = 0, pp = sys.perf_cp; pp; i++, pp = pp->next) {
- 		if (pp->format == FORMAT_RAW)
- 			outp += print_hex_value(pp->width, &printed, delim, c->perf_counter[i]);
--		else if (pp->format == FORMAT_DELTA || mp->format == FORMAT_AVERAGE)
-+		else if (pp->format == FORMAT_DELTA || pp->format == FORMAT_AVERAGE)
- 			outp += print_decimal_value(pp->width, &printed, delim, c->perf_counter[i]);
- 		else if (pp->format == FORMAT_PERCENT)
- 			outp += print_float_value(&printed, delim, pct(c->perf_counter[i], tsc));
-@@ -3558,7 +3558,7 @@ int format_counters(PER_THREAD_PARAMS)
- 			outp += print_hex_value(pp->width, &printed, delim, p->perf_counter[i]);
- 		else if (pp->type == COUNTER_K2M)
- 			outp += sprintf(outp, "%s%d", (printed++ ? delim : ""), (unsigned int)p->perf_counter[i] / 1000);
--		else if (pp->format == FORMAT_DELTA || mp->format == FORMAT_AVERAGE)
-+		else if (pp->format == FORMAT_DELTA || pp->format == FORMAT_AVERAGE)
- 			outp += print_decimal_value(pp->width, &printed, delim, p->perf_counter[i]);
- 		else if (pp->format == FORMAT_PERCENT)
- 			outp += print_float_value(&printed, delim, pct(p->perf_counter[i], tsc));
+diff --git a/include/net/netfilter/nf_conntrack_core.h b/include/net/netfilter/nf_conntrack_core.h
+index 3384859a89210..8883575adcc1e 100644
+--- a/include/net/netfilter/nf_conntrack_core.h
++++ b/include/net/netfilter/nf_conntrack_core.h
+@@ -83,6 +83,11 @@ void nf_conntrack_lock(spinlock_t *lock);
+ 
+ extern spinlock_t nf_conntrack_expect_lock;
+ 
++static inline void lockdep_nfct_expect_lock_held(void)
++{
++	lockdep_assert_held(&nf_conntrack_expect_lock);
++}
++
+ /* ctnetlink code shared by both ctnetlink and nf_conntrack_bpf */
+ 
+ static inline void __nf_ct_set_timeout(struct nf_conn *ct, u64 timeout)
+diff --git a/net/netfilter/nf_conntrack_ecache.c b/net/netfilter/nf_conntrack_ecache.c
+index 81baf20826046..9df159448b897 100644
+--- a/net/netfilter/nf_conntrack_ecache.c
++++ b/net/netfilter/nf_conntrack_ecache.c
+@@ -247,6 +247,8 @@ void nf_ct_expect_event_report(enum ip_conntrack_expect_events event,
+ 	struct nf_ct_event_notifier *notify;
+ 	struct nf_conntrack_ecache *e;
+ 
++	lockdep_nfct_expect_lock_held();
++
+ 	rcu_read_lock();
+ 	notify = rcu_dereference(net->ct.nf_conntrack_event_cb);
+ 	if (!notify)
+diff --git a/net/netfilter/nf_conntrack_expect.c b/net/netfilter/nf_conntrack_expect.c
+index 2234c444a320e..24d0576d84b7f 100644
+--- a/net/netfilter/nf_conntrack_expect.c
++++ b/net/netfilter/nf_conntrack_expect.c
+@@ -51,6 +51,7 @@ void nf_ct_unlink_expect_report(struct nf_conntrack_expect *exp,
+ 	struct net *net = nf_ct_exp_net(exp);
+ 	struct nf_conntrack_net *cnet;
+ 
++	lockdep_nfct_expect_lock_held();
+ 	WARN_ON(!master_help);
+ 	WARN_ON(timer_pending(&exp->timeout));
+ 
+@@ -118,6 +119,8 @@ nf_ct_exp_equal(const struct nf_conntrack_tuple *tuple,
+ 
+ bool nf_ct_remove_expect(struct nf_conntrack_expect *exp)
+ {
++	lockdep_nfct_expect_lock_held();
++
+ 	if (timer_delete(&exp->timeout)) {
+ 		nf_ct_unlink_expect(exp);
+ 		nf_ct_expect_put(exp);
+@@ -177,6 +180,8 @@ nf_ct_find_expectation(struct net *net,
+ 	struct nf_conntrack_expect *i, *exp = NULL;
+ 	unsigned int h;
+ 
++	lockdep_nfct_expect_lock_held();
++
+ 	if (!cnet->expect_count)
+ 		return NULL;
+ 
+@@ -459,6 +464,8 @@ static inline int __nf_ct_expect_check(struct nf_conntrack_expect *expect,
+ 	unsigned int h;
+ 	int ret = 0;
+ 
++	lockdep_nfct_expect_lock_held();
++
+ 	if (!master_help) {
+ 		ret = -ESHUTDOWN;
+ 		goto out;
+@@ -515,8 +522,9 @@ int nf_ct_expect_related_report(struct nf_conntrack_expect *expect,
+ 
+ 	nf_ct_expect_insert(expect);
+ 
+-	spin_unlock_bh(&nf_conntrack_expect_lock);
+ 	nf_ct_expect_event_report(IPEXP_NEW, expect, portid, report);
++	spin_unlock_bh(&nf_conntrack_expect_lock);
++
+ 	return 0;
+ out:
+ 	spin_unlock_bh(&nf_conntrack_expect_lock);
+diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
+index 879413b9fa06a..becffc15e7579 100644
+--- a/net/netfilter/nf_conntrack_netlink.c
++++ b/net/netfilter/nf_conntrack_netlink.c
+@@ -3337,31 +3337,37 @@ static int ctnetlink_get_expect(struct sk_buff *skb,
+ 	if (err < 0)
+ 		return err;
+ 
++	skb2 = nlmsg_new(NLMSG_DEFAULT_SIZE, GFP_KERNEL);
++	if (!skb2)
++		return -ENOMEM;
++
++	spin_lock_bh(&nf_conntrack_expect_lock);
+ 	exp = nf_ct_expect_find_get(info->net, &zone, &tuple);
+-	if (!exp)
++	if (!exp) {
++		spin_unlock_bh(&nf_conntrack_expect_lock);
++		kfree_skb(skb2);
+ 		return -ENOENT;
++	}
+ 
+ 	if (cda[CTA_EXPECT_ID]) {
+ 		__be32 id = nla_get_be32(cda[CTA_EXPECT_ID]);
+ 
+ 		if (id != nf_expect_get_id(exp)) {
+ 			nf_ct_expect_put(exp);
++			spin_unlock_bh(&nf_conntrack_expect_lock);
++			kfree_skb(skb2);
+ 			return -ENOENT;
+ 		}
+ 	}
+ 
+-	skb2 = nlmsg_new(NLMSG_DEFAULT_SIZE, GFP_KERNEL);
+-	if (!skb2) {
+-		nf_ct_expect_put(exp);
+-		return -ENOMEM;
+-	}
+-
+ 	rcu_read_lock();
+ 	err = ctnetlink_exp_fill_info(skb2, NETLINK_CB(skb).portid,
+ 				      info->nlh->nlmsg_seq, IPCTNL_MSG_EXP_NEW,
+ 				      exp);
+ 	rcu_read_unlock();
+ 	nf_ct_expect_put(exp);
++	spin_unlock_bh(&nf_conntrack_expect_lock);
++
+ 	if (err <= 0) {
+ 		kfree_skb(skb2);
+ 		return -ENOMEM;
+@@ -3408,22 +3414,26 @@ static int ctnetlink_del_expect(struct sk_buff *skb,
+ 		if (err < 0)
+ 			return err;
+ 
++		spin_lock_bh(&nf_conntrack_expect_lock);
++
+ 		/* bump usage count to 2 */
+ 		exp = nf_ct_expect_find_get(info->net, &zone, &tuple);
+-		if (!exp)
++		if (!exp) {
++			spin_unlock_bh(&nf_conntrack_expect_lock);
+ 			return -ENOENT;
++		}
+ 
+ 		if (cda[CTA_EXPECT_ID]) {
+ 			__be32 id = nla_get_be32(cda[CTA_EXPECT_ID]);
+ 
+ 			if (id != nf_expect_get_id(exp)) {
+ 				nf_ct_expect_put(exp);
++				spin_unlock_bh(&nf_conntrack_expect_lock);
+ 				return -ENOENT;
+ 			}
+ 		}
+ 
+ 		/* after list removal, usage count == 1 */
+-		spin_lock_bh(&nf_conntrack_expect_lock);
+ 		if (timer_delete(&exp->timeout)) {
+ 			nf_ct_unlink_expect_report(exp, NETLINK_CB(skb).portid,
+ 						   nlmsg_report(info->nlh));
 -- 
 2.53.0
 
