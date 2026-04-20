@@ -1,469 +1,259 @@
-Return-Path: <stable+bounces-238823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238771-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4CZNJMAq5mkmswEAu9opvQ
-	(envelope-from <stable+bounces-238823-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:31:44 +0200
+	id 0CWZOXgm5mmgsgEAu9opvQ
+	(envelope-from <stable+bounces-238771-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:13:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C90A42BEA9
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:31:43 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF4B742B542
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:13:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AE20130F75AD
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 13:23:42 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 88E2630166C5
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 13:08:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 356CE3B4E81;
-	Mon, 20 Apr 2026 13:16:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A95663101CD;
+	Mon, 20 Apr 2026 13:08:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fRdXlrNH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YTvVYnDa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E89343B583D;
-	Mon, 20 Apr 2026 13:16:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D95235898
+	for <stable@vger.kernel.org>; Mon, 20 Apr 2026 13:08:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776691016; cv=none; b=eaALLex/4ZG1W08Yub2rDaK813MrCAbGKWioV2y5WOZFrwYCG6evLRZQtT7kLNgcJWY6x8r1rxgDg5DnmBIMJaF/JkgUsb+ReoPEJIyiROsLk1o+nkpiKtY3ouq9XXUEh/S+ACflqCJC/FOGyQYxGj3Klhz341azLkSJ/43R4+M=
+	t=1776690514; cv=none; b=WJr8rIigSpm7moSKwhuZrNIQg0HOBpjMPJaFgXdUPgX3ECvXrbz1kv5VOFPdN5tb4NITrBM5PDgj1uf1EFtlcsuD2sDaz64KFZsJjDtNS8vR9jsokvskumoyPImK3cXylbp36NtRVLIorvVoPgl3ZbCuXaEDAxR0u/rSzXxVifk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776691016; c=relaxed/simple;
-	bh=ZwMWE+j/Jpj1EWtkg4A1r8lGLJtnijJkTwl2FFZm2WY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lvqtDF/yjWFKCX3W9lgRoEkGQ8eCdNe02rJMKnQCS6n4DYARGMS68B56a9/AWtC3JnA9yxKqov091YAHgkhaLQvoRHSdEK5btxFvzTYkB7YGtrmFn+AmHjFcSHLvxNcpHUR19rLaXnx4POj7n8EyuStqi9CdmZQRxm2ImUfAiTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fRdXlrNH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1527C19425;
-	Mon, 20 Apr 2026 13:16:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776691015;
-	bh=ZwMWE+j/Jpj1EWtkg4A1r8lGLJtnijJkTwl2FFZm2WY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fRdXlrNHjfYIbgl03pTbi2A5jVSbcAmn5K5noXBypMcXBp1OdQTUDHjv/dzEcYH7E
-	 qHjGjnh3796R1VYx38YRBkKMEMpKCW7Fvo9pCfldzjYNOz2PM0b2iLJtqkxA1SYfvn
-	 meQsUvZauCW59PNOyRbQLL4nRe8WFRAIyBqBhB9D3f2/oRT0dnKniNEJUZslsKk+By
-	 GpzfRdu1DYbzOJLNHqyv553fvOHYsjnROQQy071xgk5obmZjlmRVncpgWteuZGFAFY
-	 FbwHsgtQJZ0JwAOFe/NLcACsdk9fbsrEf9hXHzRTG2eZIDE5wP2LGxIniyAE8NUJQp
-	 pe6APUuAh5prg==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Qingfang Deng <dqfext@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	linux-ppp@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 7.0-5.10] ppp: disconnect channel before nullifying pch->chan
-Date: Mon, 20 Apr 2026 09:08:30 -0400
-Message-ID: <20260420131539.986432-44-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420131539.986432-1-sashal@kernel.org>
-References: <20260420131539.986432-1-sashal@kernel.org>
+	s=arc-20240116; t=1776690514; c=relaxed/simple;
+	bh=bC06nIvQrKtlsTJwjFORZ40jUX68cKkRHCXJcDLyeTY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=hMBEspH5QuGEbGD8u1ZQ2CDJEBnp1EEDcBphxjbhySIKOusO0Nuru8yOO8EtT4JS4PjO/QY1apkrCCmp6POyukOlhgMd5IFia1eI0lOh1UuOtLOu8+A4ghn1vL6chFuVuv0eKHTqnn9Z8mvE/5a5Ly6ublO/FPZEJbnytBgCjAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YTvVYnDa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB49CC19425;
+	Mon, 20 Apr 2026 13:08:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1776690514;
+	bh=bC06nIvQrKtlsTJwjFORZ40jUX68cKkRHCXJcDLyeTY=;
+	h=Subject:To:Cc:From:Date:From;
+	b=YTvVYnDa2wGHcAVPvmPb3ZRpC6KlTUM7UpAtWn8D4LnPn+bP8HKIDZ6vUm169lxmP
+	 H4nr664WGiT76Uk5uhQD8H50RtaphbMDY2KCjCmstPc+t+x0CIbzpe66fxRLVMCqiF
+	 AquMmoew02Tkn38LySi2d4PgnoSSlGLqihpXvwX0=
+Subject: FAILED: patch "[PATCH] mm/pagewalk: fix race between concurrent split and refault" failed to apply to 7.0-stable tree
+To: mboone@akamai.com,akpm@linux-foundation.org,david@kernel.org,liam.howlett@oracle.com,ljs@kernel.org,mhocko@suse.com,rppt@kernel.org,stable@vger.kernel.org,surenb@google.com,vbabka@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 20 Apr 2026 15:08:31 +0200
+Message-ID: <2026042031-unmoved-approach-a81c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 7.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-238823-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[gmail.com,redhat.com,kernel.org,lunn.ch,davemloft.net,google.com,vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-238771-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FROM_NO_DN(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 5C90A42BEA9
+	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+]
+X-Rspamd-Queue-Id: EF4B742B542
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Qingfang Deng <dqfext@gmail.com>
-
-[ Upstream commit 6a196e83a1a7e50be93482d1cd4305641f1a9fb1 ]
-
-In ppp_unregister_channel(), pch->chan is set to NULL before calling
-ppp_disconnect_channel(), which removes the channel from ppp->channels
-list using list_del_rcu() + synchronize_net(). This creates an
-intermediate state where the channel is still connected (on the list)
-but already unregistered (pch->chan == NULL).
-
-Call ppp_disconnect_channel() before setting pch->chan to NULL. After
-the synchronize_net(), no new reader on the transmit path will hold a
-reference to the channel from the list.
-
-This eliminates the problematic state, and prepares for removing the
-pch->chan NULL checks from the transmit path in a subsequent patch.
-
-Signed-off-by: Qingfang Deng <dqfext@gmail.com>
-Link: https://patch.msgid.link/20260312093732.277254-1-dqfext@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
-
-LLM Generated explanations, may be completely bogus:
-
-Now I have all the information needed. Let me compile the complete
-analysis.
-
----
-
-## Phase 1: Commit Message Forensics
-
-### Step 1.1: Subject Line
-- **Subsystem**: `ppp` (PPP networking subsystem)
-- **Action verb**: "disconnect" / implied "fix" - reorder operations to
-  eliminate a race
-- **Summary**: Reorder `ppp_disconnect_channel()` and `pch->chan = NULL`
-  to eliminate a problematic intermediate state
-
-### Step 1.2: Tags
-- **Signed-off-by**: Qingfang Deng (author, active PPP contributor with
-  9+ commits to the subsystem)
-- **Link**:
-  `https://patch.msgid.link/20260312093732.277254-1-dqfext@gmail.com`
-  (the `-1-` suggests a single patch, not a series)
-- **Signed-off-by**: Paolo Abeni (netdev co-maintainer, merge authority)
-- No Fixes: tag (expected - that's why it's under review)
-- No Reported-by (no explicit crash report)
-
-### Step 1.3: Body Analysis
-The commit describes a concrete race condition: `pch->chan` is set to
-NULL before `ppp_disconnect_channel()` removes the channel from
-`ppp->channels`. This creates an intermediate state where the channel is
-still on the list but already has `pch->chan == NULL`. The fix reorders
-the operations: disconnect first (remove from list), then NULL-ify.
-
-### Step 1.4: Hidden Bug Fix Detection
-The phrase "This eliminates the problematic state" clearly describes
-fixing a race condition. The mention of "prepares for removing the
-pch->chan NULL checks from the transmit path in a subsequent patch"
-suggests a follow-up cleanup, but the reordering itself has standalone
-correctness value.
-
-**Record**: This IS a race condition fix, disguised slightly by the
-preparatory framing.
-
----
-
-## Phase 2: Diff Analysis
-
-### Step 2.1: Inventory
-- **1 file changed**: `drivers/net/ppp/ppp_generic.c`
-- **Net change**: 0 lines added, 0 removed - purely a reorder of one
-  line
-- **Function modified**: `ppp_unregister_channel()`
-- **Scope**: single-file, single-function, surgical
-
-### Step 2.2: Code Flow Change
-**Before**: In `ppp_unregister_channel()`:
-1. `down_write(&pch->chan_sem)` + `spin_lock_bh(&pch->downl)` +
-   `WRITE_ONCE(pch->chan, NULL)` + unlock
-2. `ppp_disconnect_channel(pch)` - removes from `ppp->channels` via
-   `list_del_rcu()` + `synchronize_net()`
-
-**After**:
-1. `ppp_disconnect_channel(pch)` - removes from list first
-2. `down_write(&pch->chan_sem)` + `spin_lock_bh(&pch->downl)` +
-   `WRITE_ONCE(pch->chan, NULL)` + unlock
-
-### Step 2.3: Bug Mechanism - RACE CONDITION / NULL POINTER DEREFERENCE
-
-The race occurs in `ppp_mp_explode()` (multilink transmit path):
-
-```1977:2001:drivers/net/ppp/ppp_generic.c
-list_for_each_entry(pch, &ppp->channels, clist) {
-    if (pch->chan) {          // Read #1 - no downl lock held
-        pch->avail = 1;
-        navail++;
-        pch->speed = pch->chan->speed;  // Read #2 - TOCTOU: pch->chan
-can be NULL here!
-    }
-```
-
-**Race scenario**:
-1. CPU A (`ppp_mp_explode`, under `ppp_xmit_lock`): reads `pch->chan !=
-   NULL` at line 1978
-2. CPU B (`ppp_unregister_channel`): does `WRITE_ONCE(pch->chan, NULL)`
-   under `downl` (NOT under `ppp_xmit_lock`)
-3. CPU A: dereferences `pch->chan->speed` at line 1981 - **NULL pointer
-   dereference / kernel oops**
-
-The channel is still on `ppp->channels` (hasn't been disconnected yet),
-so `ppp_mp_explode` finds it while iterating.
-
-With the fix, `ppp_disconnect_channel()` removes the channel from the
-list (under `ppp_lock`, which includes `ppp_xmit_lock`) FIRST. After it
-returns, no transmit code iterating `ppp->channels` will see this
-channel. Then setting `pch->chan = NULL` is safe.
-
-### Step 2.4: Fix Quality
-- Obviously correct - eliminates the problematic state entirely
-- Minimal/surgical - one line moved
-- No regression risk - the semantic operations are the same, just
-  reordered
-- No API changes, no locking changes, no new features
-
----
-
-## Phase 3: Git History Investigation
-
-### Step 3.1: Blame
-From git blame, the buggy code ordering dates back to `^1da177e4c3f41`
-(Linus Torvalds, 2005-04-16) - the initial kernel tree import. The
-`WRITE_ONCE` was added by `0417adf367a0af` (August 2025), but the
-fundamental ordering issue exists since v2.6.12.
-
-### Step 3.2: No Fixes: tag (expected)
-
-### Step 3.3: Related Changes
-The same author (Qingfang Deng) previously fixed a related race in
-`0417adf367a0af` ("ppp: fix race conditions in ppp_fill_forward_path"),
-which explicitly documented: "pch->chan can be NULL. When
-ppp_unregister_channel() is called, pch->chan is set to NULL before pch
-is removed from ppp->channels." That commit added workarounds (NULL
-checks, RCU). This commit fixes the **root cause**.
-
-### Step 3.4: Author
-Qingfang Deng has 9+ PPP commits, including critical race fixes and
-performance improvements. They are a de facto domain expert for this
-code.
-
-### Step 3.5: Dependencies
-The diff references `WRITE_ONCE(pch->chan, NULL)` which was introduced
-by `0417adf367a0af`. That commit has `Fixes: f6efc675c9dd` and was
-likely already auto-selected for stable. For trees without that commit,
-a trivial context adjustment (`pch->chan = NULL` instead of
-`WRITE_ONCE`) would be needed. The reordering logic works correctly
-regardless.
-
----
-
-## Phase 4: Mailing List Research
-
-### Step 4.1-4.2
-Lore is currently blocked by Anubis anti-bot protection. b4 dig could
-not find this specific commit by message-id (the commit doesn't exist in
-this tree). However, the patch was accepted and merged by Paolo Abeni,
-netdev co-maintainer, which provides strong confidence in correctness.
-
-### Step 4.3-4.5
-The earlier commit `0417adf367a0af` explicitly documents the bug that
-this commit fixes at the root: "pch->chan can be NULL. When
-ppp_unregister_channel() is called, pch->chan is set to NULL before pch
-is removed from ppp->channels." This was a known problem.
-
----
-
-## Phase 5: Code Semantic Analysis
-
-### Step 5.1-5.4: Call Path Tracing
-The vulnerable function `ppp_mp_explode()` is called from:
-- `ppp_push()` -> `ppp_send_frame()` -> `__ppp_xmit_process()` ->
-  `ppp_xmit_process()`
-
-This is the **hot transmit path** for PPP multilink, triggered every
-time a packet is sent on a multilink PPP connection. The race triggers
-when a channel is unregistered while multilink transmission is active -
-a common scenario during PPP session teardown or link failure.
-
-`ppp_fill_forward_path()` (already patched with NULL checks by
-`0417adf367a0af`) is also affected but has workarounds. This commit
-fixes the root cause for all paths.
-
-### Step 5.5: Similar Patterns
-The same TOCTOU pattern (check `pch->chan`, then dereference) also
-appears at:
-- Line 1978/1981: `ppp_mp_explode()` - **vulnerable** (no `downl` lock)
-- Line 1912-1914: `ppp_push()` - **safe** (holds `pch->downl`)
-- Line 2059-2060: `ppp_mp_explode()` phase 2 - **safe** (holds
-  `pch->downl`)
-- Line 2185-2189: `__ppp_channel_push()` - **safe** (holds `pch->downl`)
-
----
-
-## Phase 6: Stable Tree Analysis
-
-### Step 6.1: Buggy Code in Stable
-The buggy ordering exists since v2.6.12 (the very first git commit). It
-is present in ALL active stable trees.
-
-### Step 6.2: Backport Complications
-For 7.0.y: applies cleanly (code matches exactly).
-For older trees without `0417adf367a0af`: trivial context change needed
-(`pch->chan = NULL` vs `WRITE_ONCE(pch->chan, NULL)`), and
-`list_del_rcu`/`synchronize_net()` may not be present in
-`ppp_disconnect_channel()`. However, the reordering is still correct for
-the transmit path because `ppp_disconnect_channel()` takes `ppp_lock()`
-(which includes `ppp_xmit_lock`), ensuring mutual exclusion with
-transmit path iteration.
-
-### Step 6.3: Related Fixes
-`0417adf367a0af` added workarounds (NULL checks) for the same underlying
-issue. This commit fixes the root cause.
-
----
-
-## Phase 7: Subsystem Context
-
-### Step 7.1: PPP networking - **IMPORTANT** subsystem
-PPP is used by DSL/dial-up connections, VPN tunnels, and
-embedded/routing devices. Multilink PPP aggregates multiple physical
-links, common in WAN/enterprise networking.
-
-### Step 7.2: Actively maintained by the author (9+ commits), merged by
-netdev maintainers.
-
----
-
-## Phase 8: Impact and Risk Assessment
-
-### Step 8.1: Affected Users
-Users running PPP with multilink (`SC_MULTILINK` flag set). This
-includes enterprise WAN, embedded networking, and PPPoE configurations.
-
-### Step 8.2: Trigger Conditions
-- Multilink PPP transmitting while a channel is being unregistered
-- Happens during link failure, session teardown, or module unload
-- A timing-dependent race, but the window exists every time a channel is
-  unregistered during active multilink transmission
-
-### Step 8.3: Failure Mode
-**NULL pointer dereference** at `pch->chan->speed` -> kernel oops/crash.
-Severity: **HIGH** (kernel crash, potential data loss from interrupted
-operations).
-
-### Step 8.4: Risk-Benefit Ratio
-- **Benefit**: HIGH - prevents kernel crash in PPP multilink transmit
-  path
-- **Risk**: VERY LOW - moving one line, no semantic change, obviously
-  correct
-- **Ratio**: Strongly favorable
-
----
-
-## Phase 9: Final Synthesis
-
-### Step 9.1: Evidence
-**FOR backporting**:
-- Fixes a real NULL pointer dereference race condition
-- The race exists since v2.6.12 (all stable trees affected)
-- Extremely small change (1 line moved)
-- Obviously correct - eliminates invalid intermediate state
-- Author is a domain expert (9+ PPP commits)
-- Accepted by netdev co-maintainer
-- The same root cause was already documented by the earlier fix
-  (0417adf367a0af)
-- PPP multilink is a commonly used feature
-
-**AGAINST backporting**:
-- No crash report or syzbot reproduction (theoretical race, but
-  realistic trigger)
-- Commit message mentions "prepares for" a subsequent patch (partially
-  preparatory)
-- No Fixes: tag (expected)
-
-### Step 9.2: Stable Rules Checklist
-1. Obviously correct and tested? **YES** - merged by Paolo Abeni
-2. Fixes a real bug? **YES** - NULL deref race in multilink transmit
-3. Important issue? **YES** - kernel crash (NULL pointer deref)
-4. Small and contained? **YES** - 1 line moved in 1 function
-5. No new features/APIs? **YES** - pure reorder
-6. Applies to stable? **YES** - cleanly to 7.0.y
-
-### Step 9.3: Exception Categories
-Not an exception category - this is a standard race condition fix.
-
----
-
-## Verification
-
-- [Phase 1] Parsed tags: Signed-off-by author (Qingfang Deng) +
-  maintainer (Paolo Abeni), Link to patch
-- [Phase 2] Diff analysis: 1 line moved in `ppp_unregister_channel()`,
-  reordering `ppp_disconnect_channel()` before `WRITE_ONCE(pch->chan,
-  NULL)`
-- [Phase 2] Verified TOCTOU in `ppp_mp_explode()` lines 1978/1981: reads
-  `pch->chan` without `downl` lock
-- [Phase 3] git blame: buggy ordering from `^1da177e4c3f41` (Linus
-  Torvalds, 2005) - present in all stable trees
-- [Phase 3] Related commit `0417adf367a0af` explicitly documents this
-  same race condition as known bug
-- [Phase 3] Author has 9 commits to drivers/net/ppp/ - domain expert
-- [Phase 4] Lore blocked by Anubis; could not verify mailing list
-  discussion directly
-- [Phase 5] Traced call chain: `ppp_xmit_process` ->
-  `__ppp_xmit_process` -> `ppp_push` -> `ppp_mp_explode` - hot transmit
-  path under `ppp_xmit_lock`
-- [Phase 5] Verified `ppp_disconnect_channel()` takes `ppp_lock()`
-  (includes `ppp_xmit_lock`) - mutual exclusion with transmit path
-- [Phase 5] Verified `WRITE_ONCE(pch->chan, NULL)` is under
-  `chan_sem+downl` only, NOT `ppp_xmit_lock` - confirms race window
-- [Phase 6] Code exists in all active stable trees since v2.6.12
-- [Phase 6] Patch applies cleanly to 7.0.y; older trees need trivial
-  context adjustment
-- [Phase 8] Failure mode: NULL pointer dereference -> kernel oops,
-  severity HIGH
-- UNVERIFIED: Could not access lore.kernel.org to verify if stable was
-  requested by a reviewer
-
-The fix is a minimal, obviously correct reordering that eliminates a
-real NULL pointer dereference race condition in the PPP multilink
-transmit path. The bug has existed since the original kernel tree and
-affects all stable trees. The risk is negligible (one line moved) and
-the benefit is preventing a kernel crash.
-
-**YES**
-
- drivers/net/ppp/ppp_generic.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.c
-index e9b41777be809..7cd936bc6a7ea 100644
---- a/drivers/net/ppp/ppp_generic.c
-+++ b/drivers/net/ppp/ppp_generic.c
-@@ -3023,12 +3023,12 @@ ppp_unregister_channel(struct ppp_channel *chan)
- 	 * This ensures that we have returned from any calls into
- 	 * the channel's start_xmit or ioctl routine before we proceed.
- 	 */
-+	ppp_disconnect_channel(pch);
- 	down_write(&pch->chan_sem);
- 	spin_lock_bh(&pch->downl);
- 	WRITE_ONCE(pch->chan, NULL);
- 	spin_unlock_bh(&pch->downl);
- 	up_write(&pch->chan_sem);
--	ppp_disconnect_channel(pch);
+
+The patch below does not apply to the 7.0-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-7.0.y
+git checkout FETCH_HEAD
+git cherry-pick -x 9b25a6e3d243a8ce14eeaf74082c621a9944c776
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026042031-unmoved-approach-a81c@gregkh' --subject-prefix 'PATCH 7.0.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 9b25a6e3d243a8ce14eeaf74082c621a9944c776 Mon Sep 17 00:00:00 2001
+From: Max Boone <mboone@akamai.com>
+Date: Wed, 25 Mar 2026 10:59:16 +0100
+Subject: [PATCH] mm/pagewalk: fix race between concurrent split and refault
+
+The splitting of a PUD entry in walk_pud_range() can race with a
+concurrent thread refaulting the PUD leaf entry causing it to try walking
+a PMD range that has disappeared.
+
+An example and reproduction of this is to try reading numa_maps of a
+process while VFIO-PCI is setting up DMA (specifically the
+vfio_pin_pages_remote call) on a large BAR for that process.
+
+This will trigger a kernel BUG:
+vfio-pci 0000:03:00.0: enabling device (0000 -> 0002)
+BUG: unable to handle page fault for address: ffffa23980000000
+PGD 0 P4D 0
+Oops: Oops: 0000 [#1] SMP NOPTI
+...
+RIP: 0010:walk_pgd_range+0x3b5/0x7a0
+Code: 8d 43 ff 48 89 44 24 28 4d 89 ce 4d 8d a7 00 00 20 00 48 8b 4c 24
+28 49 81 e4 00 00 e0 ff 49 8d 44 24 ff 48 39 c8 4c 0f 43 e3 <49> f7 06
+   9f ff ff ff 75 3b 48 8b 44 24 20 48 8b 40 28 48 85 c0 74
+RSP: 0018:ffffac23e1ecf808 EFLAGS: 00010287
+RAX: 00007f44c01fffff RBX: 00007f4500000000 RCX: 00007f44ffffffff
+RDX: 0000000000000000 RSI: 000ffffffffff000 RDI: ffffffff93378fe0
+RBP: ffffac23e1ecf918 R08: 0000000000000004 R09: ffffa23980000000
+R10: 0000000000000020 R11: 0000000000000004 R12: 00007f44c0200000
+R13: 00007f44c0000000 R14: ffffa23980000000 R15: 00007f44c0000000
+FS:  00007fe884739580(0000) GS:ffff9b7d7a9c0000(0000)
+knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffffa23980000000 CR3: 000000c0650e2005 CR4: 0000000000770ef0
+PKRU: 55555554
+Call Trace:
+ <TASK>
+ __walk_page_range+0x195/0x1b0
+ walk_page_vma+0x62/0xc0
+ show_numa_map+0x12b/0x3b0
+ seq_read_iter+0x297/0x440
+ seq_read+0x11d/0x140
+ vfs_read+0xc2/0x340
+ ksys_read+0x5f/0xe0
+ do_syscall_64+0x68/0x130
+ ? get_page_from_freelist+0x5c2/0x17e0
+ ? mas_store_prealloc+0x17e/0x360
+ ? vma_set_page_prot+0x4c/0xa0
+ ? __alloc_pages_noprof+0x14e/0x2d0
+ ? __mod_memcg_lruvec_state+0x8d/0x140
+ ? __lruvec_stat_mod_folio+0x76/0xb0
+ ? __folio_mod_stat+0x26/0x80
+ ? do_anonymous_page+0x705/0x900
+ ? __handle_mm_fault+0xa8d/0x1000
+ ? __count_memcg_events+0x53/0xf0
+ ? handle_mm_fault+0xa5/0x360
+ ? do_user_addr_fault+0x342/0x640
+ ? arch_exit_to_user_mode_prepare.constprop.0+0x16/0xa0
+ ? irqentry_exit_to_user_mode+0x24/0x100
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+RIP: 0033:0x7fe88464f47e
+Code: c0 e9 b6 fe ff ff 50 48 8d 3d be 07 0b 00 e8 69 01 02 00 66 0f 1f
+84 00 00 00 00 00 64 8b 04 25 18 00 00 00 85 c0 75 14 0f 05 <48> 3d 00
+   f0 ff ff 77 5a c3 66 0f 1f 84 00 00 00 00 00 48 83 ec 28
+RSP: 002b:00007ffe6cd9a9b8 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
+RAX: ffffffffffffffda RBX: 0000000000020000 RCX: 00007fe88464f47e
+RDX: 0000000000020000 RSI: 00007fe884543000 RDI: 0000000000000003
+RBP: 00007fe884543000 R08: 00007fe884542010 R09: 0000000000000000
+R10: fffffffffffffbc5 R11: 0000000000000246 R12: 0000000000000000
+R13: 0000000000000003 R14: 0000000000020000 R15: 0000000000020000
+ </TASK>
+
+Fix this by validating the PUD entry in walk_pmd_range() using a stable
+snapshot (pudp_get()).  If the PUD is not present or is a leaf, retry the
+walk via ACTION_AGAIN instead of descending further.  This mirrors the
+retry logic in walk_pte_range(), which lets walk_pmd_range() retry if the
+PTE is not being got by pte_offset_map_lock().
+
+Link: https://lkml.kernel.org/r/20260325-pagewalk-check-pmd-refault-v2-1-707bff33bc60@akamai.com
+Fixes: f9e54c3a2f5b ("vfio/pci: implement huge_fault support")
+Co-developed-by: David Hildenbrand (Arm) <david@kernel.org>
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Signed-off-by: Max Boone <mboone@akamai.com>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+
+diff --git a/mm/pagewalk.c b/mm/pagewalk.c
+index cb358558807c..3ae2586ff45b 100644
+--- a/mm/pagewalk.c
++++ b/mm/pagewalk.c
+@@ -96,6 +96,7 @@ static int walk_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
+ static int walk_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
+ 			  struct mm_walk *walk)
+ {
++	pud_t pudval = pudp_get(pud);
+ 	pmd_t *pmd;
+ 	unsigned long next;
+ 	const struct mm_walk_ops *ops = walk->ops;
+@@ -104,6 +105,24 @@ static int walk_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
+ 	int err = 0;
+ 	int depth = real_depth(3);
  
- 	pn = ppp_pernet(pch->chan_net);
- 	spin_lock_bh(&pn->all_channels_lock);
--- 
-2.53.0
++	/*
++	 * For PTE handling, pte_offset_map_lock() takes care of checking
++	 * whether there actually is a page table. But it also has to be
++	 * very careful about concurrent page table reclaim.
++	 *
++	 * Similarly, we have to be careful here - a PUD entry that points
++	 * to a PMD table cannot go away, so we can just walk it. But if
++	 * it's something else, we need to ensure we didn't race something,
++	 * so need to retry.
++	 *
++	 * A pertinent example of this is a PUD refault after PUD split -
++	 * we will need to split again or risk accessing invalid memory.
++	 */
++	if (!pud_present(pudval) || pud_leaf(pudval)) {
++		walk->action = ACTION_AGAIN;
++		return 0;
++	}
++
+ 	pmd = pmd_offset(pud, addr);
+ 	do {
+ again:
+@@ -217,12 +236,12 @@ static int walk_pud_range(p4d_t *p4d, unsigned long addr, unsigned long end,
+ 		else if (pud_leaf(*pud) || !pud_present(*pud))
+ 			continue; /* Nothing to do. */
+ 
+-		if (pud_none(*pud))
+-			goto again;
+-
+ 		err = walk_pmd_range(pud, addr, next, walk);
+ 		if (err)
+ 			break;
++
++		if (walk->action == ACTION_AGAIN)
++			goto again;
+ 	} while (pud++, addr = next, addr != end);
+ 
+ 	return err;
 
 
