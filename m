@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-239391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239402-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AB22DrRc5mmtvAEAu9opvQ
-	(envelope-from <stable+bounces-239391-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:04:52 +0200
+	id IL9NMhRk5mkuvwEAu9opvQ
+	(envelope-from <stable+bounces-239402-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:36:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B0784307F7
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:04:51 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E585431926
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:36:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B669B34CDB4E
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:49:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 69C16320590E
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:49:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4218B33B945;
-	Mon, 20 Apr 2026 15:48:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CD0A2D77E5;
+	Mon, 20 Apr 2026 15:49:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l0QClfLh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yzAWjqr1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05170329E46;
-	Mon, 20 Apr 2026 15:48:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F585332919;
+	Mon, 20 Apr 2026 15:49:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700127; cv=none; b=tsTwo/XwDWHBbo6W+d4JYEuEtG3pFmR6ubY/0kMgG4LNdZZiI1Q6RzLcQ8Kbmbf8Gim4v7h3EcvlaHNL2hwFgYPiY+zqwa0OtR4LigREsA3X2lFKwEX8jA5SJPgJJjFCmVj58Yh09X9AvpiABKTMLd7n2tMCGe5i9rdFf/iphzg=
+	t=1776700155; cv=none; b=GEYso22tdLXR20Yjn/TRR4qaWJtyDF0TZh4JWWOaVvycJgrTg75NWxetyOt2a+qhNsKuE/1fnljQVB0aF92v0A7XUnwGp9wCvRYYA0zxOqaznwET4W9Sg0ieXhvd04bAN0KhzEH7r+6AR1Ccu9DaeD6DROjRfHIPAKntQSfI+KM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700127; c=relaxed/simple;
-	bh=E/uf1/C+3UYb9pYb/kFAySyZVzIfHYqnED/v6oVi2s0=;
+	s=arc-20240116; t=1776700155; c=relaxed/simple;
+	bh=kD46m8Yua7ucd6KzIYJSYRvwHIqm8BetGF+yO5ylFdk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dgaJ6C/uO/Lo5XC/tZQZ388LPupsYsmpADs7uAXva2MiPlZwHOHyKo6C7RDdJXVjB3ZbQquoyrydNMP/97e0qBxANMa/QgnXFumOAGwHTh+3D5QGn+HXQsNRaAVAnXpcvnThVrHd+OnrShe3GoYcuEE/dF8HmBFmlZn49tfMaAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l0QClfLh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EAFFC19425;
-	Mon, 20 Apr 2026 15:48:46 +0000 (UTC)
+	 MIME-Version; b=EzN5qEjFhhPTkfAIehqEpxDztQT2fq1WxT6O8O3XI1cvJTVby9hoxJ3MdP8HkJq7IIITc+QCyP0HMzf/Rvvi1AiBXm/+od9zNLoMxEhSwQIO2P6xUabeof+3ZLDO3p4507mcdHw2P8crXlpJ7n+yO7oaTo0giQxfuZYBeNneJRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yzAWjqr1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4982C19425;
+	Mon, 20 Apr 2026 15:49:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700126;
-	bh=E/uf1/C+3UYb9pYb/kFAySyZVzIfHYqnED/v6oVi2s0=;
+	s=korg; t=1776700155;
+	bh=kD46m8Yua7ucd6KzIYJSYRvwHIqm8BetGF+yO5ylFdk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l0QClfLhdw5yUQ966qS2YKcpJpenQb/PTbzHJHD9zX2cq9b+R+W6BNLoNeGLjTVn4
-	 QnP8x2P+8TLDXcgmi6wlOZB3IRbcQxuKVnDrNRMkZi0EV9gR6c/pD4IoB5TfZKbxB1
-	 EHSKljmoyvmu5Gmhc6h0H//H9Us9bQTVzWqkwQNE=
+	b=yzAWjqr1OPZsnNISLCIOMLXHpnaCGNSINFc0hnaeZu0CBdDBvCKvxTALYI/kbLHsu
+	 n/cPoR5BPP8/yR4kiOInSOFdZoF1nEjEf786hj/wIKnuAfK9CWNXNUcnPHdE+OioYy
+	 PstiX9YXh5bIQ6s+uoG4o2jLQIBNsgVgGDelYBaw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Savenko <alex.sav4387@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 035/220] ALSA: hda/realtek: Add quirk for Lenovo Yoga Pro 7 14IMH9
-Date: Mon, 20 Apr 2026 17:39:36 +0200
-Message-ID: <20260420153935.299892919@linuxfoundation.org>
+Subject: [PATCH 6.19 036/220] pinctrl: intel: Fix the revision for new features (1kOhm PD, HW debouncer)
+Date: Mon, 20 Apr 2026 17:39:37 +0200
+Message-ID: <20260420153935.335433827@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
 References: <20260420153934.013228280@linuxfoundation.org>
@@ -64,36 +63,34 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239391-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-239402-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.de:email,msgid.link:url]
-X-Rspamd-Queue-Id: 8B0784307F7
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 1E585431926
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,56 +98,32 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Alexander Savenko <alex.sav4387@gmail.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 217d5bc9f96272316ac5a3215c7cc32a5127bbf3 ]
+[ Upstream commit a4337a24d13e9e3b98a113e71d6b80dc5ed5f8c4 ]
 
-The Lenovo Yoga Pro 7 14IMH9 (DMI: 83E2) shares PCI SSID 17aa:3847
-with the Legion 7 16ACHG6, but has a different codec subsystem ID
-(17aa:38cf). The existing SND_PCI_QUIRK for 17aa:3847 applies
-ALC287_FIXUP_LEGION_16ACHG6, which attempts to initialize an external
-I2C amplifier (CLSA0100) that is not present on the Yoga Pro 7 14IMH9.
+The 1kOhm pull down and hardware debouncer are features of the revision 0.92
+of the Chassis specification. Fix that in the code accordingly.
 
-As a result, pin 0x17 (bass speakers) is connected to DAC 0x06 which
-has no volume control, making hardware volume adjustment completely
-non-functional. Audio is either silent or at maximum volume regardless
-of the slider position.
-
-Add a HDA_CODEC_QUIRK entry using the codec subsystem ID (17aa:38cf)
-to correctly identify the Yoga Pro 7 14IMH9 and apply
-ALC287_FIXUP_YOGA9_14IMH9_BASS_SPK_PIN, which redirects pin 0x17 to
-DAC 0x02 and restores proper volume control. The existing Legion entry
-is preserved unchanged.
-
-This follows the same pattern used for 17aa:386e, where Legion Y9000X
-and Yoga Pro 7 14ARP8 share a PCI SSID but are distinguished via
-HDA_CODEC_QUIRK.
-
-Link: https://github.com/nomad4tech/lenovo-yoga-pro-7-linux
-Tested-by: Alexander Savenko <alex.sav4387@gmail.com>
-Signed-off-by: Alexander Savenko <alex.sav4387@gmail.com>
-Link: https://patch.msgid.link/20260331082929.44890-1-alex.sav4387@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/hda/codecs/realtek/alc269.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/pinctrl/intel/pinctrl-intel.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/realtek/alc269.c
-index edbac69d3d99d..26bf942f0afb0 100644
---- a/sound/hda/codecs/realtek/alc269.c
-+++ b/sound/hda/codecs/realtek/alc269.c
-@@ -7606,6 +7606,10 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x17aa, 0x3834, "Lenovo IdeaPad Slim 9i 14ITL5", ALC287_FIXUP_YOGA7_14ITL_SPEAKERS),
- 	SND_PCI_QUIRK(0x17aa, 0x383d, "Legion Y9000X 2019", ALC285_FIXUP_LEGION_Y9000X_SPEAKERS),
- 	SND_PCI_QUIRK(0x17aa, 0x3843, "Lenovo Yoga 9i / Yoga Book 9i", ALC287_FIXUP_LENOVO_YOGA_BOOK_9I),
-+	/* Yoga Pro 7 14IMH9 shares PCI SSID 17aa:3847 with Legion 7 16ACHG6;
-+	 * use codec SSID to distinguish them
-+	 */
-+	HDA_CODEC_QUIRK(0x17aa, 0x38cf, "Lenovo Yoga Pro 7 14IMH9", ALC287_FIXUP_YOGA9_14IMH9_BASS_SPK_PIN),
- 	SND_PCI_QUIRK(0x17aa, 0x3847, "Legion 7 16ACHG6", ALC287_FIXUP_LEGION_16ACHG6),
- 	SND_PCI_QUIRK(0x17aa, 0x384a, "Lenovo Yoga 7 15ITL5", ALC287_FIXUP_YOGA7_14ITL_SPEAKERS),
- 	SND_PCI_QUIRK(0x17aa, 0x3852, "Lenovo Yoga 7 14ITL5", ALC287_FIXUP_YOGA7_14ITL_SPEAKERS),
+diff --git a/drivers/pinctrl/intel/pinctrl-intel.c b/drivers/pinctrl/intel/pinctrl-intel.c
+index cf9db8ac0f42e..106835b5ee5a5 100644
+--- a/drivers/pinctrl/intel/pinctrl-intel.c
++++ b/drivers/pinctrl/intel/pinctrl-intel.c
+@@ -1610,7 +1610,7 @@ int intel_pinctrl_probe(struct platform_device *pdev,
+ 		value = readl(regs + REVID);
+ 		if (value == ~0u)
+ 			return -ENODEV;
+-		if (((value & REVID_MASK) >> REVID_SHIFT) >= 0x94) {
++		if (((value & REVID_MASK) >> REVID_SHIFT) >= 0x92) {
+ 			community->features |= PINCTRL_FEATURE_DEBOUNCE;
+ 			community->features |= PINCTRL_FEATURE_1K_PD;
+ 		}
 -- 
 2.53.0
 
