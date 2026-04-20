@@ -1,64 +1,59 @@
-Return-Path: <stable+bounces-239885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239511-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MHinLZ1k5mkKvwEAu9opvQ
-	(envelope-from <stable+bounces-239885-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:38:37 +0200
+	id uC2CGjJl5mlmvwEAu9opvQ
+	(envelope-from <stable+bounces-239511-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:41:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE1D6431A72
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:38:36 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDF21431CFD
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:41:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 81E44304C47F
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:11:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1EE30321CD15
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:54:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEEFE3446BC;
-	Mon, 20 Apr 2026 16:11:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFBB933858B;
+	Mon, 20 Apr 2026 15:54:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wFihApzm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C6dWBoq3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72BC8344021;
-	Mon, 20 Apr 2026 16:11:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A53102E093A;
+	Mon, 20 Apr 2026 15:54:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701465; cv=none; b=tM6ReI/GICZWkD3oYsjss4AFtTTg160IC3QyfREeF00Bu02Tx0bgb+L/w87TVeetqKwfeG23njCsCDm7U4yvW5o1iqfJ6w/NbYcr+VTGoweLJW++ADgqj44ZxlyK8cecQcEVaqebyxfCrIPGzDbxV4ESanGLofnO+bjoJ1U38vQ=
+	t=1776700440; cv=none; b=HL85u1z1lTe65NOZS2hlBscQ86c4NqiCaJgGtAAUph5N4pZ3OdlD7BOtU6dhey2cXGkUALmXKn006SEAh8kJ8qJdKeMraaruyiKYeB2KO8q4bZUc2yr0yScEzRmYMohdYfKGVJKCWi6yWfOSJJhYjwrRoqHPjuAeuw7rjnOSSNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701465; c=relaxed/simple;
-	bh=OwEjorOTkfs/la0cu2sQQRm7zCVUZ7YuDMHxjVzSrgo=;
+	s=arc-20240116; t=1776700440; c=relaxed/simple;
+	bh=FibjBoyV1YOQ1m4XXWUQleJglFJnvkWH36jWPITBCNs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RHFL1fBlWfu6xnCejkh3T0LVZJvIZ2Efs6s9rR6YIARynuaRuUGBw1qXwMJnTQEIVEIhDpb4iiMwE+MpjCRaDmkokwGeLDRKFr0N4xmLt/I8qogAgH6Fgc2T2KBH+dPxncUVowmQPhhJYz9dOCT/HuOWvE7r5UA3fIqvP6VRs6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wFihApzm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08845C19425;
-	Mon, 20 Apr 2026 16:11:04 +0000 (UTC)
+	 MIME-Version; b=REjm5iv6pYG7b3cWqscsawRwWM5IJarQ/YcDbFCS6WsWFBidDQKrTOGa3x+LPaZbCTXr6YkE+TRIHQF9sTB/7cqIDLGpcdMGY+fZbqbABoVWdbyfdhZog3FtbMs6rA0Cz4qWW8bx//d9pMFjIhtkgz3oK8GYw9bLdUrtMl3BKSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C6dWBoq3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AA48C19425;
+	Mon, 20 Apr 2026 15:54:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701465;
-	bh=OwEjorOTkfs/la0cu2sQQRm7zCVUZ7YuDMHxjVzSrgo=;
+	s=korg; t=1776700440;
+	bh=FibjBoyV1YOQ1m4XXWUQleJglFJnvkWH36jWPITBCNs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wFihApzml/HgzS0MRuO2ZP7crkRvttQJ5glTqb1kaSbRTHEJcnAQwWkGb0IRKQC6Y
-	 Xh2KLI1U2m+dMOIPrtf5kJm8sM79t3IpJBxU/63pHzURhKu2aLV45UgQq8wJSiK2hs
-	 FwspFuzgcIrICDZWEUcorGaNg3Gkp5lThjpnjmLk=
+	b=C6dWBoq3CI3RlKwDK/LZFfe8aU1jNbdubVeh0XrXW26vsnpxOsdIRh4XNFGO+stBT
+	 7y/XFW/C2oJMHgorKUUiGEM5s+uDg7489NFIQL0V35d4kG8y9j3rAFp2lKMx1Eja8F
+	 WKjo0g3mQP5P5uNqk/V8GLHO2ojfpsEpSrlXiDwY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Douya Le <ldy3087146292@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 081/162] crypto: af_alg - limit RX SG extraction by receive buffer budget
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Johan Hovold <johan@kernel.org>,
+	Ping-Ke Shih <pkshih@realtek.com>
+Subject: [PATCH 6.19 172/220] wifi: rtw88: fix device leak on probe failure
 Date: Mon, 20 Apr 2026 17:41:53 +0200
-Message-ID: <20260420153929.969960609@linuxfoundation.org>
+Message-ID: <20260420153940.218713303@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
-References: <20260420153927.006696811@linuxfoundation.org>
+In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
+References: <20260420153934.013228280@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,101 +68,86 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,gondor.apana.org.au,kernel.org];
-	TAGGED_FROM(0.00)[bounces-239885-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-239511-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: BE1D6431A72
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,pengutronix.de:email]
+X-Rspamd-Queue-Id: DDF21431CFD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douya Le <ldy3087146292@gmail.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 8eceab19eba9dcbfd2a0daec72e1bf48aa100170 ]
+commit bbb15e71156cd9f5e1869eee7207a06ea8e96c39 upstream.
 
-Make af_alg_get_rsgl() limit each RX scatterlist extraction to the
-remaining receive buffer budget.
+Driver core holds a reference to the USB interface and its parent USB
+device while the interface is bound to a driver and there is no need to
+take additional references unless the structures are needed after
+disconnect.
 
-af_alg_get_rsgl() currently uses af_alg_readable() only as a gate
-before extracting data into the RX scatterlist. Limit each extraction
-to the remaining af_alg_rcvbuf(sk) budget so that receive-side
-accounting matches the amount of data attached to the request.
+This driver takes a reference to the USB device during probe but does
+not to release it on all probe errors (e.g. when descriptor parsing
+fails).
 
-If skcipher cannot obtain enough RX space for at least one chunk while
-more data remains to be processed, reject the recvmsg call instead of
-rounding the request length down to zero.
+Drop the redundant device reference to fix the leak, reduce cargo
+culting, make it easier to spot drivers where an extra reference is
+needed, and reduce the risk of further memory leaks.
 
-Fixes: e870456d8e7c8d57c059ea479b5aadbb55ff4c3a ("crypto: algif_skcipher - overhaul memory management")
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Co-developed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Yuan Tan <yuantan098@gmail.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Douya Le <ldy3087146292@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a82dfd33d123 ("wifi: rtw88: Add common USB chip support")
+Reported-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/netdev/2026022319-turbofan-darkened-206d@gregkh/
+Cc: stable@vger.kernel.org	# 6.2
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20260306085144.12064-19-johan@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- crypto/af_alg.c         | 2 ++
- crypto/algif_skcipher.c | 5 +++++
- 2 files changed, 7 insertions(+)
+ drivers/net/wireless/realtek/rtw88/usb.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/crypto/af_alg.c b/crypto/af_alg.c
-index 78e995dddf879..0530dc85e4f87 100644
---- a/crypto/af_alg.c
-+++ b/crypto/af_alg.c
-@@ -1258,6 +1258,8 @@ int af_alg_get_rsgl(struct sock *sk, struct msghdr *msg, int flags,
+--- a/drivers/net/wireless/realtek/rtw88/usb.c
++++ b/drivers/net/wireless/realtek/rtw88/usb.c
+@@ -1040,7 +1040,7 @@ static int rtw_usb_intf_init(struct rtw_
+ 			     struct usb_interface *intf)
+ {
+ 	struct rtw_usb *rtwusb = rtw_get_usb_priv(rtwdev);
+-	struct usb_device *udev = usb_get_dev(interface_to_usbdev(intf));
++	struct usb_device *udev = interface_to_usbdev(intf);
+ 	int ret;
  
- 		seglen = min_t(size_t, (maxsize - len),
- 			       msg_data_left(msg));
-+		/* Never pin more pages than the remaining RX accounting budget. */
-+		seglen = min_t(size_t, seglen, af_alg_rcvbuf(sk));
+ 	rtwusb->udev = udev;
+@@ -1066,7 +1066,6 @@ static void rtw_usb_intf_deinit(struct r
+ {
+ 	struct rtw_usb *rtwusb = rtw_get_usb_priv(rtwdev);
  
- 		if (list_empty(&areq->rsgl_list)) {
- 			rsgl = &areq->first_rsgl;
-diff --git a/crypto/algif_skcipher.c b/crypto/algif_skcipher.c
-index 125d395c5e009..3549ad1cc42e6 100644
---- a/crypto/algif_skcipher.c
-+++ b/crypto/algif_skcipher.c
-@@ -130,6 +130,11 @@ static int _skcipher_recvmsg(struct socket *sock, struct msghdr *msg,
- 	 * full block size buffers.
- 	 */
- 	if (ctx->more || len < ctx->used) {
-+		if (len < bs) {
-+			err = -EINVAL;
-+			goto free;
-+		}
-+
- 		len -= len % bs;
- 		cflags |= CRYPTO_SKCIPHER_REQ_NOTFINAL;
- 	}
--- 
-2.53.0
-
+-	usb_put_dev(rtwusb->udev);
+ 	kfree(rtwusb->usb_data);
+ 	usb_set_intfdata(intf, NULL);
+ }
 
 
 
