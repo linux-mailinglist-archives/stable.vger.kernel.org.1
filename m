@@ -1,64 +1,60 @@
-Return-Path: <stable+bounces-239900-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239751-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wM+7McNR5mkDuwEAu9opvQ
-	(envelope-from <stable+bounces-239900-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:18:11 +0200
+	id yEZEAgla5mmtvAEAu9opvQ
+	(envelope-from <stable+bounces-239751-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:53:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61F1042F47E
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:18:10 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 722154302D9
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:53:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8D20E3015797
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:11:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D3E413201275
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:05:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59F67344D8C;
-	Mon, 20 Apr 2026 16:11:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10FB0333727;
+	Mon, 20 Apr 2026 16:05:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ahcaBMI2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xzaHFEl7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D9EA344057;
-	Mon, 20 Apr 2026 16:11:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C87632DE6E3;
+	Mon, 20 Apr 2026 16:05:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701501; cv=none; b=u3OLumB1fKN4YbjJM8gklHQwyj+gfPUQOmA11uy903o4DcPCyOk11W5XyXU/eFfKXO5Uc5xjaYYnGVokdh/sZ2TFJHEbFpz+0mX8Y6sVruWEsiCkT76m8TPF/+FahmBlLwGM3XdpbZ2p5+esNDYYy5qkesj0W3WQtMwsSiTiUO4=
+	t=1776701123; cv=none; b=S/EMcQjOL2Y2qZDREXuOo2Wkgib2tHEIkkun82kVI7SrrGRfb5qz5c93T+xKfaMgiZXp8WfAd4juhwTar25E5XJtHKrj3Q8tJl0DC+mnYeJBtwTlLrB700YCUanNckhhIYpqL6cmsV/4vZxGn5B9x6Z/HxYeGS/JH9Tywn7Xb9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701501; c=relaxed/simple;
-	bh=VWGiMmcmL5+tiLXsq6ZqN9D+3zPvhNP5ZJ3yMvbASqA=;
+	s=arc-20240116; t=1776701123; c=relaxed/simple;
+	bh=GxzTNffU/3P+R7c0t9TqNJYntMjb4wFV//u+we0883c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nTjbvR53+x3R1+5snwhuG6taZTyYieao7BBH0dmcA/5td+pxvxVHuE04UHhly6TKlUrrDIqXxXFElQDJ5Y32HgTG7ObsXuTxAgepBukRBalD9THLtQyLXLBQ3OaFt109dFJgaRy0dgcJmd4nxN29BwyLInbzwse+CQG3d/nsiSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ahcaBMI2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A83B8C19425;
-	Mon, 20 Apr 2026 16:11:40 +0000 (UTC)
+	 MIME-Version; b=Xm1Cf05ipA0FDFxbJSrLg9TFuef7jGNXtVwFLmlAhJBBdAEZB/6tixdGTYiAcD4ngQa6GGIVH7FIM+pHf6GRh57kb+kwT1LnA3fcyMXEnjVwQSD7xvh82y0e1n6O1H30xy07ECTk7ZvuzW2Ins8ENb4ZNrx6razVkGCwvX+d//8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xzaHFEl7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E941C19425;
+	Mon, 20 Apr 2026 16:05:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701501;
-	bh=VWGiMmcmL5+tiLXsq6ZqN9D+3zPvhNP5ZJ3yMvbASqA=;
+	s=korg; t=1776701123;
+	bh=GxzTNffU/3P+R7c0t9TqNJYntMjb4wFV//u+we0883c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ahcaBMI2xKLnUpy5MW1+L2LvI2aG4NZ1FgIRIz4u0O7GcBlveusn485CK1vgXssLB
-	 N1lhoqOJ6JzaTbUGZ+QPzghWlyV3THyxwVQL8FYdDEfGt8dgaoVIg696WZbM94Xy1A
-	 FJZQQso99mO4ZehLQ7CMIlD8e0pB3xyJjWWX2FS0=
+	b=xzaHFEl7FYcK07VZc6YNEOHfqHxwCtVldxupHPv7Vxyz8ov1RyUD0ZONGeaMNhWdv
+	 l5VIll7SdezBQrx7eMeFegR1RFaKenFOgX1+Yw/L63Ae++JS/12nuYUhptoqDLo5R8
+	 6wObEsjHn1ZMMI4SuvggaNSlBIGdaQmX+t3pB9rA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sasha Levin <sashal@kernel.org>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Joe Perches <joe@perches.com>,
-	Andy Whitcroft <apw@canonical.com>,
-	Dwaipayan Ray <dwaipayanray1@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 138/162] checkpatch: add support for Assisted-by tag
+	syzbot+f2fbf7478a35a94c8b7c@syzkaller.appspotmail.com,
+	Shardul Bankar <shardul.b@mpiricsoftware.com>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.18 191/198] wireguard: device: use exit_rtnl callback instead of manual rtnl_lock in pre_exit
 Date: Mon, 20 Apr 2026 17:42:50 +0200
-Message-ID: <20260420153932.045455554@linuxfoundation.org>
+Message-ID: <20260420153942.496444502@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
-References: <20260420153927.006696811@linuxfoundation.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,105 +65,109 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [9.34 / 15.00];
-	URIBL_BLACK(7.50)[perches.com:email];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,acm.org,perches.com,canonical.com,gmail.com,lwn.net,linux-foundation.org];
-	TAGGED_FROM(0.00)[bounces-239900-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	MIME_TRACE(0.00)[0:+];
-	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
+	TAGGED_FROM(0.00)[bounces-239751-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	GREYLIST(0.00)[pass,meta];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_SPAM(0.00)[0.961];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	R_SPF_ALLOW(0.00)[+ip4:172.232.135.74:c];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	NEURAL_HAM(-0.00)[-0.998];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,lwn.net:email,checkpatch.pl:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,perches.com:email,canonical.com:email]
-X-Rspamd-Queue-Id: 61F1042F47E
-X-Rspamd-Action: add header
+	TAGGED_RCPT(0.00)[stable,f2fbf7478a35a94c8b7c];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,appspotmail.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,zx2c4.com:email,mpiricsoftware.com:email]
+X-Rspamd-Queue-Id: 722154302D9
+X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spam: Yes
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sasha Levin <sashal@kernel.org>
+From: Shardul Bankar <shardul.b@mpiricsoftware.com>
 
-commit d1db4118489fffd2b2f612140b7acbb477880839 upstream.
+commit 60a25ef8dacb3566b1a8c4de00572a498e2a3bf9 upstream.
 
-The Assisted-by tag was introduced in
-Documentation/process/coding-assistants.rst for attributing AI tool
-contributions to kernel patches.  However, checkpatch.pl did not recognize
-this tag, causing two issues:
+wg_netns_pre_exit() manually acquires rtnl_lock() inside the
+pernet .pre_exit callback.  This causes a hung task when another
+thread holds rtnl_mutex - the cleanup_net workqueue (or the
+setup_net failure rollback path) blocks indefinitely in
+wg_netns_pre_exit() waiting to acquire the lock.
 
-  WARNING: Non-standard signature: Assisted-by:
-  ERROR: Unrecognized email address: 'AGENT_NAME:MODEL_VERSION'
+Convert to .exit_rtnl, introduced in commit 7a60d91c690b ("net:
+Add ->exit_rtnl() hook to struct pernet_operations."), where the
+framework already holds RTNL and batches all callbacks under a
+single rtnl_lock()/rtnl_unlock() pair, eliminating the contention
+window.
 
-Fix this by:
-1. Adding Assisted-by to the recognized $signature_tags list
-2. Skipping email validation for Assisted-by lines since they use the
-   AGENT_NAME:MODEL_VERSION format instead of an email address
-3. Warning when the Assisted-by value doesn't match the expected format
+The rcu_assign_pointer(wg->creating_net, NULL) is safe to move
+from .pre_exit to .exit_rtnl (which runs after synchronize_rcu())
+because all RCU readers of creating_net either use maybe_get_net()
+- which returns NULL for a dying namespace with zero refcount - or
+access net->user_ns which remains valid throughout the entire
+ops_undo_list sequence.
 
-Link: https://lkml.kernel.org/r/20260311215818.518930-1-sashal@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-Reported-by: Bart Van Assche <bvanassche@acm.org>
-Acked-by: Joe Perches <joe@perches.com>
-Cc: Andy Whitcroft <apw@canonical.com>
-Cc: Dwaipayan Ray <dwaipayanray1@gmail.com>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Reported-by: syzbot+f2fbf7478a35a94c8b7c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?id=cb64c22a492202ca929e18262fdb8cb89e635c70
+Signed-off-by: Shardul Bankar <shardul.b@mpiricsoftware.com>
+[ Jason: added __net_exit and __read_mostly annotations that were missing. ]
+Fixes: 900575aa33a3 ("wireguard: device: avoid circular netns references")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Link: https://patch.msgid.link/20260414153944.2742252-5-Jason@zx2c4.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/checkpatch.pl |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/net/wireguard/device.c |    8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
---- a/scripts/checkpatch.pl
-+++ b/scripts/checkpatch.pl
-@@ -622,6 +622,7 @@ our $signature_tags = qr{(?xi:
- 	Reviewed-by:|
- 	Reported-by:|
- 	Suggested-by:|
-+	Assisted-by:|
- 	To:|
- 	Cc:
- )};
-@@ -3070,6 +3071,15 @@ sub process {
- 				}
- 			}
+--- a/drivers/net/wireguard/device.c
++++ b/drivers/net/wireguard/device.c
+@@ -411,12 +411,11 @@ static struct rtnl_link_ops link_ops __r
+ 	.newlink		= wg_newlink,
+ };
  
-+			# Assisted-by uses AGENT_NAME:MODEL_VERSION format, not email
-+			if ($sign_off =~ /^Assisted-by:/i) {
-+				if ($email !~ /^\S+:\S+/) {
-+					WARN("BAD_SIGN_OFF",
-+					     "Assisted-by expects 'AGENT_NAME:MODEL_VERSION [TOOL1] [TOOL2]' format\n" . $herecurr);
-+				}
-+				next;
-+			}
-+
- 			my ($email_name, $name_comment, $email_address, $comment) = parse_email($email);
- 			my $suggested_email = format_email(($email_name, $name_comment, $email_address, $comment));
- 			if ($suggested_email eq "") {
+-static void wg_netns_pre_exit(struct net *net)
++static void __net_exit wg_netns_exit_rtnl(struct net *net, struct list_head *dev_kill_list)
+ {
+ 	struct wg_device *wg;
+ 	struct wg_peer *peer;
+ 
+-	rtnl_lock();
+ 	list_for_each_entry(wg, &device_list, device_list) {
+ 		if (rcu_access_pointer(wg->creating_net) == net) {
+ 			pr_debug("%s: Creating namespace exiting\n", wg->dev->name);
+@@ -429,11 +428,10 @@ static void wg_netns_pre_exit(struct net
+ 			mutex_unlock(&wg->device_update_lock);
+ 		}
+ 	}
+-	rtnl_unlock();
+ }
+ 
+-static struct pernet_operations pernet_ops = {
+-	.pre_exit = wg_netns_pre_exit
++static struct pernet_operations pernet_ops __read_mostly = {
++	.exit_rtnl = wg_netns_exit_rtnl
+ };
+ 
+ int __init wg_device_init(void)
 
 
 
