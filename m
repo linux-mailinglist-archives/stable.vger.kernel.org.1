@@ -1,259 +1,480 @@
-Return-Path: <stable+bounces-238773-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238827-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mM2bK/cm5mm6sgEAu9opvQ
-	(envelope-from <stable+bounces-238773-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:15:35 +0200
+	id oBF1JIAr5mkDswEAu9opvQ
+	(envelope-from <stable+bounces-238827-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:34:56 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 022AB42B6D1
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:15:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F66D42C04C
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:34:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 44BB030D52B3
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 13:08:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A6E3631097DD
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 13:24:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E781F158535;
-	Mon, 20 Apr 2026 13:08:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 898603BA242;
+	Mon, 20 Apr 2026 13:17:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qufV/C+V"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E9TuX5zn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A75C339FCD6
-	for <stable@vger.kernel.org>; Mon, 20 Apr 2026 13:08:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 456F83A5421;
+	Mon, 20 Apr 2026 13:17:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776690519; cv=none; b=QuO/ZDZd+bWwZ9noUQcxSBQ1k0sNtySyilQBxs9TJCdIdfNI35+bXJTsdgo/uA/K1MVqG0C3Hl4iQHDtx0oJq0GivzHaKMspBoczQHLYmLEL5Wt7itHhwWCXB+Yxg/ML5FVkk64zBi8Qk5SXisYn0i7X+QMG4HTj5wJ2xKvpC/A=
+	t=1776691022; cv=none; b=LZjZ/XemkTmWL1wNH98dMhuUQuSvc5+YcRV2NRLgqwWpprx9QDLuIL8LgzH/so/6Ib1UplubnBUCDFtNHZT3ng5uKukk6L2tHhwfRijAGDJ83HrEyMgU15lEOV6cdDDh+tIFo87nLUmR8UTswgTjRYuSiYVZlana5HDVR8yHQjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776690519; c=relaxed/simple;
-	bh=fQwSI+jj5QDJ51FZeAv6WJ7SEOWtLw0uOy3qn5NtXtA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=etNXmW6zJz1TR0WQbFADLoddFW+0AINNZ/c4GVnUu+OVOqpikld05ObXX6NcsPFqbdhYD2MGBxk8ffwbuUCUu42k15OesGuYCpPVOiRdq9gjnrdN1TXVt1s8gQ2jhf+675VR5asYfOd6Fy8LrdhmzkAE7U1n8ywNl6a9+JOm41A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qufV/C+V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22465C2BCB6;
-	Mon, 20 Apr 2026 13:08:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776690519;
-	bh=fQwSI+jj5QDJ51FZeAv6WJ7SEOWtLw0uOy3qn5NtXtA=;
-	h=Subject:To:Cc:From:Date:From;
-	b=qufV/C+VnRvj08L5+mAAHp9Y7vrLvH08SyxnRqwgZ/rXSNns907LvbEwt0dajox3W
-	 NABIOl7/J3ndG3LHZAAVu7IWCeTA3hV56IopZiLvoUGvqca318ygZ+lbH6sjPVCJ0v
-	 8ecL7timuifqQ6xIDtJ14TH0jZ2WQJxd4VQ8voz4=
-Subject: FAILED: patch "[PATCH] mm/pagewalk: fix race between concurrent split and refault" failed to apply to 6.18-stable tree
-To: mboone@akamai.com,akpm@linux-foundation.org,david@kernel.org,liam.howlett@oracle.com,ljs@kernel.org,mhocko@suse.com,rppt@kernel.org,stable@vger.kernel.org,surenb@google.com,vbabka@kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 20 Apr 2026 15:08:34 +0200
-Message-ID: <2026042034-sake-nape-a60e@gregkh>
+	s=arc-20240116; t=1776691022; c=relaxed/simple;
+	bh=o2BQ8tLO1WJSMZ5lUAftphaYlqLGzweqzJDt9RDrhPc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Mb1SYNtyCAnxj3CHNObbWLxw/fqqx/6Lvd68ZT0/OXpur6B+3FCxMNLvvbZjOGnTWMotDoH6r5XkStDrwPw3bfRIYHBVej0d5lEEhnMfwOUCNJOhyiOegbjiN8y+fib+iP6jUgjY0PCcQI14YuKuczzCNSXlnm+j0b+BJqrBHzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E9TuX5zn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C592BC2BCB4;
+	Mon, 20 Apr 2026 13:17:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776691022;
+	bh=o2BQ8tLO1WJSMZ5lUAftphaYlqLGzweqzJDt9RDrhPc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=E9TuX5zndlpMP6skowVUy2QRHERihd6Ftu6tSFdCxMYGxGnEdREWUsJnR48cJi6GY
+	 gfGlNTmBZGS9BAh91ufyj7DuHA2r2h5BEQSB4v56ghUzge99Bnzc7LiMG8mD/M7hNy
+	 HbTizB8V71Y4xbDY4migjqIbzBVZqgnvEXeCzcOlKdyzZlYBEyA1N4muG5rPC6p982
+	 joAIjMzZpgiJA/dNt2OU4xhraWzs91TAGe1wy2+jORC1YiTsqoEeaeEaoD+VJVb7yM
+	 sgwUsnBkbRkatEUt8WQ+0eZmCx0/tXdqmACAwYseLzrIPRYmTLDWyub49XimQAfRF6
+	 Ylk6Co7VYG1qQ==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Shuai Zhang <shuai.zhang@oss.qualcomm.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	brgl@kernel.org,
+	marcel@holtmann.org,
+	luiz.dentz@gmail.com,
+	linux-arm-msm@vger.kernel.org,
+	linux-bluetooth@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH AUTOSEL 7.0-6.6] Bluetooth: hci_qca: Fix missing wakeup during SSR memdump handling
+Date: Mon, 20 Apr 2026 09:08:34 -0400
+Message-ID: <20260420131539.986432-48-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260420131539.986432-1-sashal@kernel.org>
+References: <20260420131539.986432-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 7.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_FROM(0.00)[bounces-238773-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
+	TAGGED_FROM(0.00)[bounces-238827-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[oss.qualcomm.com,molgen.mpg.de,intel.com,kernel.org,holtmann.org,gmail.com,vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NO_DN(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+]
-X-Rspamd-Queue-Id: 022AB42B6D1
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mpg.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,yhbt.net:url,qualcomm.com:email]
+X-Rspamd-Queue-Id: 0F66D42C04C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+From: Shuai Zhang <shuai.zhang@oss.qualcomm.com>
 
-The patch below does not apply to the 6.18-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+[ Upstream commit c347ca17d62a32c25564fee0ca3a2a7bc2d5fd6f ]
 
-To reproduce the conflict and resubmit, you may use the following commands:
+When a Bluetooth controller encounters a coredump, it triggers the
+Subsystem Restart (SSR) mechanism. The controller first reports the
+coredump data and, once the upload is complete, sends a hw_error
+event. The host relies on this event to proceed with subsequent
+recovery actions.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
-git checkout FETCH_HEAD
-git cherry-pick -x 9b25a6e3d243a8ce14eeaf74082c621a9944c776
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026042034-sake-nape-a60e@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
+If the host has not finished processing the coredump data when the
+hw_error event is received, it waits until either the processing is
+complete or the 8-second timeout expires before handling the event.
 
-Possible dependencies:
+The current implementation clears QCA_MEMDUMP_COLLECTION using
+clear_bit(), which does not wake up waiters sleeping in
+wait_on_bit_timeout(). As a result, the waiting thread may remain
+blocked until the timeout expires even if the coredump collection
+has already completed.
 
+Fix this by clearing QCA_MEMDUMP_COLLECTION with
+clear_and_wake_up_bit(), which also wakes up the waiting thread and
+allows the hw_error handling to proceed immediately.
 
+Test case:
+- Trigger a controller coredump using:
+    hcitool cmd 0x3f 0c 26
+- Tested on QCA6390.
+- Capture HCI logs using btmon.
+- Verify that the delay between receiving the hw_error event and
+  initiating the power-off sequence is reduced compared to the
+  timeout-based behavior.
 
-thanks,
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Shuai Zhang <shuai.zhang@oss.qualcomm.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
 
-greg k-h
+LLM Generated explanations, may be completely bogus:
 
------------------- original commit in Linus's tree ------------------
+Now I have all the information needed for a complete analysis. Let me
+compile it.
 
-From 9b25a6e3d243a8ce14eeaf74082c621a9944c776 Mon Sep 17 00:00:00 2001
-From: Max Boone <mboone@akamai.com>
-Date: Wed, 25 Mar 2026 10:59:16 +0100
-Subject: [PATCH] mm/pagewalk: fix race between concurrent split and refault
+---
 
-The splitting of a PUD entry in walk_pud_range() can race with a
-concurrent thread refaulting the PUD leaf entry causing it to try walking
-a PMD range that has disappeared.
+## PHASE 1: COMMIT MESSAGE FORENSICS
 
-An example and reproduction of this is to try reading numa_maps of a
-process while VFIO-PCI is setting up DMA (specifically the
-vfio_pin_pages_remote call) on a large BAR for that process.
+### Step 1.1: PARSE THE SUBJECT LINE
+- **Subsystem prefix:** Bluetooth: hci_qca
+- **Action verb:** "Fix" - explicitly a bug fix
+- **One-line summary:** Fix missing wakeup during SSR memdump handling -
+  `clear_bit()` doesn't wake up waiters sleeping in
+  `wait_on_bit_timeout()`.
 
-This will trigger a kernel BUG:
-vfio-pci 0000:03:00.0: enabling device (0000 -> 0002)
-BUG: unable to handle page fault for address: ffffa23980000000
-PGD 0 P4D 0
-Oops: Oops: 0000 [#1] SMP NOPTI
-...
-RIP: 0010:walk_pgd_range+0x3b5/0x7a0
-Code: 8d 43 ff 48 89 44 24 28 4d 89 ce 4d 8d a7 00 00 20 00 48 8b 4c 24
-28 49 81 e4 00 00 e0 ff 49 8d 44 24 ff 48 39 c8 4c 0f 43 e3 <49> f7 06
-   9f ff ff ff 75 3b 48 8b 44 24 20 48 8b 40 28 48 85 c0 74
-RSP: 0018:ffffac23e1ecf808 EFLAGS: 00010287
-RAX: 00007f44c01fffff RBX: 00007f4500000000 RCX: 00007f44ffffffff
-RDX: 0000000000000000 RSI: 000ffffffffff000 RDI: ffffffff93378fe0
-RBP: ffffac23e1ecf918 R08: 0000000000000004 R09: ffffa23980000000
-R10: 0000000000000020 R11: 0000000000000004 R12: 00007f44c0200000
-R13: 00007f44c0000000 R14: ffffa23980000000 R15: 00007f44c0000000
-FS:  00007fe884739580(0000) GS:ffff9b7d7a9c0000(0000)
-knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: ffffa23980000000 CR3: 000000c0650e2005 CR4: 0000000000770ef0
-PKRU: 55555554
-Call Trace:
- <TASK>
- __walk_page_range+0x195/0x1b0
- walk_page_vma+0x62/0xc0
- show_numa_map+0x12b/0x3b0
- seq_read_iter+0x297/0x440
- seq_read+0x11d/0x140
- vfs_read+0xc2/0x340
- ksys_read+0x5f/0xe0
- do_syscall_64+0x68/0x130
- ? get_page_from_freelist+0x5c2/0x17e0
- ? mas_store_prealloc+0x17e/0x360
- ? vma_set_page_prot+0x4c/0xa0
- ? __alloc_pages_noprof+0x14e/0x2d0
- ? __mod_memcg_lruvec_state+0x8d/0x140
- ? __lruvec_stat_mod_folio+0x76/0xb0
- ? __folio_mod_stat+0x26/0x80
- ? do_anonymous_page+0x705/0x900
- ? __handle_mm_fault+0xa8d/0x1000
- ? __count_memcg_events+0x53/0xf0
- ? handle_mm_fault+0xa5/0x360
- ? do_user_addr_fault+0x342/0x640
- ? arch_exit_to_user_mode_prepare.constprop.0+0x16/0xa0
- ? irqentry_exit_to_user_mode+0x24/0x100
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-RIP: 0033:0x7fe88464f47e
-Code: c0 e9 b6 fe ff ff 50 48 8d 3d be 07 0b 00 e8 69 01 02 00 66 0f 1f
-84 00 00 00 00 00 64 8b 04 25 18 00 00 00 85 c0 75 14 0f 05 <48> 3d 00
-   f0 ff ff 77 5a c3 66 0f 1f 84 00 00 00 00 00 48 83 ec 28
-RSP: 002b:00007ffe6cd9a9b8 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
-RAX: ffffffffffffffda RBX: 0000000000020000 RCX: 00007fe88464f47e
-RDX: 0000000000020000 RSI: 00007fe884543000 RDI: 0000000000000003
-RBP: 00007fe884543000 R08: 00007fe884542010 R09: 0000000000000000
-R10: fffffffffffffbc5 R11: 0000000000000246 R12: 0000000000000000
-R13: 0000000000000003 R14: 0000000000020000 R15: 0000000000020000
- </TASK>
+### Step 1.2: PARSE ALL COMMIT MESSAGE TAGS
+- **Reviewed-by:** Bartosz Golaszewski (Qualcomm contributor,
+  knowledgeable in this driver)
+- **Reviewed-by:** Paul Menzel (known active reviewer)
+- **Signed-off-by:** Shuai Zhang <shuai.zhang@oss.qualcomm.com> (author,
+  Qualcomm - QCA chipset vendor)
+- **Signed-off-by:** Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+  (Bluetooth maintainer)
+- No Fixes: tag, no Reported-by, no syzbot. Absence of Fixes: is
+  expected.
 
-Fix this by validating the PUD entry in walk_pmd_range() using a stable
-snapshot (pudp_get()).  If the PUD is not present or is a leaf, retry the
-walk via ACTION_AGAIN instead of descending further.  This mirrors the
-retry logic in walk_pte_range(), which lets walk_pmd_range() retry if the
-PTE is not being got by pte_offset_map_lock().
+### Step 1.3: ANALYZE THE COMMIT BODY TEXT
+- **Bug:** When Bluetooth controller encounters a coredump (SSR), it
+  sends memdump data then sends `hw_error` event. The host calls
+  `wait_on_bit_timeout()` on `QCA_MEMDUMP_COLLECTION` to wait for the
+  collection to complete. But the collection worker clears the bit with
+  `clear_bit()`, which does NOT wake up the waiter.
+- **Symptom:** The waiting thread blocks for the full 8-second timeout
+  (`MEMDUMP_TIMEOUT_MS = 8000`) even when collection finishes early.
+- **Root cause:** API misuse - `wait_on_bit_timeout()` documentation
+  explicitly requires wakeup via `wake_up_bit()` or
+  `clear_and_wake_up_bit()`.
+- **Test:** Tested on QCA6390 hardware using `hcitool` and btmon.
 
-Link: https://lkml.kernel.org/r/20260325-pagewalk-check-pmd-refault-v2-1-707bff33bc60@akamai.com
-Fixes: f9e54c3a2f5b ("vfio/pci: implement huge_fault support")
-Co-developed-by: David Hildenbrand (Arm) <david@kernel.org>
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-Signed-off-by: Max Boone <mboone@akamai.com>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+### Step 1.4: DETECT HIDDEN BUG FIXES
+This is an explicitly stated bug fix, not disguised. The
+`wait_on_bit_timeout` API documentation (in `include/linux/wait_bit.h`)
+states: "The clearing of the bit must be signalled with wake_up_bit(),
+often as clear_and_wake_up_bit()." Using plain `clear_bit()` is an API
+violation.
 
-diff --git a/mm/pagewalk.c b/mm/pagewalk.c
-index cb358558807c..3ae2586ff45b 100644
---- a/mm/pagewalk.c
-+++ b/mm/pagewalk.c
-@@ -96,6 +96,7 @@ static int walk_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
- static int walk_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
- 			  struct mm_walk *walk)
- {
-+	pud_t pudval = pudp_get(pud);
- 	pmd_t *pmd;
- 	unsigned long next;
- 	const struct mm_walk_ops *ops = walk->ops;
-@@ -104,6 +105,24 @@ static int walk_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
- 	int err = 0;
- 	int depth = real_depth(3);
+---
+
+## PHASE 2: DIFF ANALYSIS - LINE BY LINE
+
+### Step 2.1: INVENTORY THE CHANGES
+- **File:** `drivers/bluetooth/hci_qca.c` only
+- **Changes:** 2 lines changed (2 `clear_bit` → `clear_and_wake_up_bit`)
+- **Functions modified:** `qca_controller_memdump()` (2 locations)
+- **Scope:** Single-file, single-function surgical fix
+
+### Step 2.2: UNDERSTAND THE CODE FLOW CHANGE
+**Hunk 1 (line 1108):** Error path when `hci_devcd_init()` fails:
+- Before: `clear_bit(QCA_MEMDUMP_COLLECTION, &qca->flags)` — clears bit
+  but no wakeup
+- After: `clear_and_wake_up_bit(QCA_MEMDUMP_COLLECTION, &qca->flags)` —
+  clears bit AND wakes waiting thread
+
+**Hunk 2 (line 1186):** Normal completion path (last sequence received):
+- Before: same `clear_bit()` without wakeup
+- After: same `clear_and_wake_up_bit()` with wakeup
+
+### Step 2.3: IDENTIFY THE BUG MECHANISM
+This is a **synchronization bug**: missing wakeup. The
+`qca_wait_for_dump_collection()` function calls `wait_on_bit_timeout()`
+which puts the thread to sleep waiting for the bit to be cleared AND a
+wakeup signal. Without the wakeup, the thread sleeps for the full
+8-second timeout.
+
+### Step 2.4: ASSESS THE FIX QUALITY
+- **Obviously correct:** Yes. The `wait_on_bit_timeout` documentation
+  explicitly states wakeup is required.
+- **Minimal:** Yes, 2 line changes.
+- **Regression risk:** Negligible. `clear_and_wake_up_bit()` does
+  exactly what `clear_bit()` does plus a wakeup. No new side effects.
+
+---
+
+## PHASE 3: GIT HISTORY INVESTIGATION
+
+### Step 3.1: BLAME THE CHANGED LINES
+- Line 1108 (`clear_bit`): Introduced by `06d3fdfcdf5cef` (Sai Teja
+  Aluvala, 2023-06-14) — v6.6-rc1
+- Line 1186 (`clear_bit`): Introduced by `7c2c3e63e1e97c` (Venkata
+  Lakshmi, 2020-02-14) — v5.7-rc1
+- `wait_on_bit_timeout` (line 1606): Introduced by `d841502c79e3fd`
+  (Balakrishna Godavarthi, 2020-01-02) — v5.6-rc1
+
+So the bug at line 1186 has existed since v5.7, and the bug at line 1108
+since v6.6.
+
+### Step 3.2: FOLLOW THE FIXES: TAG
+No Fixes: tag (expected).
+
+### Step 3.3: CHECK FILE HISTORY
+Recent changes to `hci_qca.c` are active (73 commits since v5.15). The
+file sees regular activity.
+
+### Step 3.4: CHECK THE AUTHOR'S OTHER COMMITS
+Shuai Zhang is a Qualcomm contributor with multiple commits to the QCA
+Bluetooth stack. The fix was reviewed by the Bluetooth maintainer (Luiz
+Augusto von Dentz).
+
+### Step 3.5: CHECK FOR DEPENDENT/PREREQUISITE COMMITS
+None. `clear_and_wake_up_bit()` has existed since v4.17. The fix is a
+drop-in replacement for `clear_bit()` at two locations.
+
+---
+
+## PHASE 4: MAILING LIST AND EXTERNAL RESEARCH
+
+### Step 4.1-4.2: FIND THE ORIGINAL PATCH DISCUSSION
+Found at:
+https://yhbt.net/lore/lkml/177583080679.2077665.8641347877052929776.git-
+patchwork-notify@kernel.org/T/
+
+The patch went through **7 revisions** (v1 through v7), indicating
+extensive review:
+- v5→v6: Changed from `wake_up_bit` to `clear_and_wake_up_bit` (the
+  proper API)
+- Applied to bluetooth-next by Luiz Augusto von Dentz (Bluetooth
+  maintainer)
+- Commit in bluetooth-next: `9f07d5d04826`
+
+### Step 4.3: BUG REPORT
+No external bug report — the author identified the issue through
+code/testing.
+
+### Step 4.4-4.5: RELATED PATCHES AND STABLE HISTORY
+This is a standalone single-patch fix. No series dependencies.
+
+---
+
+## PHASE 5: CODE SEMANTIC ANALYSIS
+
+### Step 5.1-5.4: KEY FUNCTIONS AND CALL CHAINS
+The affected path:
+1. Bluetooth controller crashes → sends memdump data → sends `hw_error`
+   event
+2. `qca_hw_error()` or `qca_reset()` → calls
+   `qca_wait_for_dump_collection()` → `wait_on_bit_timeout()` on
+   `QCA_MEMDUMP_COLLECTION`
+3. Concurrently, `qca_controller_memdump()` (workqueue) processes dump
+   packets
+4. On completion, `qca_controller_memdump()` clears
+   `QCA_MEMDUMP_COLLECTION` — but without waking up the waiter in step 2
+5. Result: waiter in step 2 sleeps for full 8 seconds even though
+   collection finished
+
+Both `qca_hw_error()` and `qca_reset()` call
+`qca_wait_for_dump_collection()`, so both paths are affected.
+
+### Step 5.5: SIMILAR PATTERNS
+No other `clear_bit`/`wait_on_bit_timeout` mismatches found in this
+file.
+
+---
+
+## PHASE 6: CROSS-REFERENCING AND STABLE TREE ANALYSIS
+
+### Step 6.1: DOES THE BUGGY CODE EXIST IN STABLE TREES?
+- The `clear_bit` at the completion path (line 1186) has been present
+  since v5.7, so it exists in stable trees 5.10.y, 5.15.y, 6.1.y, 6.6.y,
+  6.12.y.
+- The `clear_bit` at the error path (line 1108) was introduced in v6.6,
+  so only in 6.6.y, 6.12.y.
+
+### Step 6.2: BACKPORT COMPLICATIONS
+The patch should apply cleanly or with minor context adjustments. The
+two lines being changed are simple API call replacements. Older trees
+may not have the first hunk (line 1108) since that code was added in
+v6.6.
+
+### Step 6.3: RELATED FIXES ALREADY IN STABLE
+No related fixes for this specific bug found.
+
+---
+
+## PHASE 7: SUBSYSTEM AND MAINTAINER CONTEXT
+
+### Step 7.1: SUBSYSTEM CRITICALITY
+- **Subsystem:** drivers/bluetooth — Bluetooth driver for Qualcomm
+  chipsets
+- **Criticality:** IMPORTANT — QCA Bluetooth chipsets are widely used in
+  laptops, phones, and embedded systems
+
+### Step 7.2: SUBSYSTEM ACTIVITY
+Active subsystem with regular commits.
+
+---
+
+## PHASE 8: IMPACT AND RISK ASSESSMENT
+
+### Step 8.1: AFFECTED POPULATION
+Users of QCA Bluetooth chipsets (QCA6390 and similar) — a significant
+population in the Android and laptop ecosystem.
+
+### Step 8.2: TRIGGER CONDITIONS
+Triggered when the Bluetooth controller crashes and SSR begins. Not
+common in normal operation, but when it happens (coredump, hw error),
+the 8-second unnecessary delay is always present.
+
+### Step 8.3: FAILURE MODE SEVERITY
+- **Failure mode:** Unnecessary 8-second delay during Bluetooth recovery
+  after controller crash
+- **Severity:** MEDIUM — Not a crash, not data corruption, not a
+  security issue. It's a latency bug during error recovery that affects
+  usability.
+
+### Step 8.4: RISK-BENEFIT RATIO
+- **Benefit:** Eliminates unnecessary 8-second delay during SSR
+  recovery. Correct API usage per documentation.
+- **Risk:** Very low — 2-line change, `clear_and_wake_up_bit` is a
+  strict superset of `clear_bit` (clear + wakeup). No new side effects.
+- **Ratio:** Very favorable — minimal risk for a real improvement in
+  error recovery behavior.
+
+---
+
+## PHASE 9: FINAL SYNTHESIS
+
+### Step 9.1: COMPILE THE EVIDENCE
+
+**FOR backporting:**
+- Fixes a genuine API misuse bug (`clear_bit` instead of
+  `clear_and_wake_up_bit`)
+- 2-line surgical fix, trivially correct per API documentation
+- Extensively reviewed (7 revisions), 2 Reviewed-by tags
+- Applied by Bluetooth maintainer
+- Tested on real hardware (QCA6390)
+- Very low regression risk
+- Bug exists since v5.7 for one path and v6.6 for the other
+- `clear_and_wake_up_bit()` exists since v4.17, no dependency issues
+
+**AGAINST backporting:**
+- The bug doesn't cause crashes, data corruption, or security issues
+- Only manifests during SSR (error recovery), not during normal
+  operation
+- It's a latency/usability improvement rather than a fix for a hard
+  failure
+
+### Step 9.2: STABLE RULES CHECKLIST
+1. **Obviously correct and tested?** YES — API documentation is
+   explicit, tested on hardware
+2. **Fixes a real bug?** YES — missing wakeup causing unnecessary
+   8-second delay
+3. **Important issue?** MEDIUM — recovery delay, not crash/corruption
+4. **Small and contained?** YES — 2 lines in 1 file
+5. **No new features or APIs?** YES — just corrects API usage
+6. **Can apply to stable trees?** YES — `clear_and_wake_up_bit` exists
+   since v4.17
+
+### Step 9.3: EXCEPTION CATEGORIES
+Not applicable — this is a standard bug fix.
+
+### Step 9.4: DECISION
+The fix is tiny, obviously correct, well-reviewed, and addresses a real
+bug where `wait_on_bit_timeout()` is used with `clear_bit()` instead of
+`clear_and_wake_up_bit()`, causing an unnecessary 8-second blocking
+delay during Bluetooth error recovery. While the impact is "only" a
+latency issue during recovery (not a crash or data loss), the extremely
+low risk of the fix and the real user-visible improvement make this
+appropriate for stable.
+
+---
+
+## Verification
+
+- [Phase 1] Parsed tags: Reviewed-by from Bartosz Golaszewski and Paul
+  Menzel; SOB from author and Bluetooth maintainer
+- [Phase 2] Diff analysis: 2 lines changed in
+  `qca_controller_memdump()`, replacing `clear_bit()` with
+  `clear_and_wake_up_bit()`
+- [Phase 3] git blame: Line 1108 introduced in `06d3fdfcdf5cef`
+  (v6.6-rc1); Line 1186 introduced in `7c2c3e63e1e97c` (v5.7-rc1);
+  `wait_on_bit_timeout` introduced in `d841502c79e3fd` (v5.6-rc1)
+- [Phase 3] git describe: `clear_and_wake_up_bit` introduced in
+  `8236b0ae31c83` (v4.17-rc4), present in all active stable trees
+- [Phase 4] lore thread found: patch went through v1→v7, applied to
+  bluetooth-next by maintainer as `9f07d5d04826`
+- [Phase 4] No NAKs or objections in the discussion thread
+- [Phase 5] Call chain: `qca_hw_error()`/`qca_reset()` →
+  `qca_wait_for_dump_collection()` → `wait_on_bit_timeout()` waits for
+  bit cleared by `qca_controller_memdump()` workqueue
+- [Phase 5] Verified `wait_on_bit_timeout()` documentation in
+  `include/linux/wait_bit.h` lines 118-120 explicitly requires
+  `clear_and_wake_up_bit()`
+- [Phase 6] Buggy code exists in stable trees 5.10+, 5.15+, 6.1+, 6.6+,
+  6.12+ (second hunk); 6.6+, 6.12+ (first hunk)
+- [Phase 6] `MEMDUMP_TIMEOUT_MS` is 8000 (8 seconds) — confirmed at line
+  54
+- [Phase 8] Failure mode: 8-second unnecessary delay during Bluetooth
+  SSR recovery, severity MEDIUM
+
+**YES**
+
+ drivers/bluetooth/hci_qca.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
+index edc907c4e870a..524e47392f919 100644
+--- a/drivers/bluetooth/hci_qca.c
++++ b/drivers/bluetooth/hci_qca.c
+@@ -1105,7 +1105,7 @@ static void qca_controller_memdump(struct work_struct *work)
+ 				qca->qca_memdump = NULL;
+ 				qca->memdump_state = QCA_MEMDUMP_COLLECTED;
+ 				cancel_delayed_work(&qca->ctrl_memdump_timeout);
+-				clear_bit(QCA_MEMDUMP_COLLECTION, &qca->flags);
++				clear_and_wake_up_bit(QCA_MEMDUMP_COLLECTION, &qca->flags);
+ 				clear_bit(QCA_IBS_DISABLED, &qca->flags);
+ 				mutex_unlock(&qca->hci_memdump_lock);
+ 				return;
+@@ -1183,7 +1183,7 @@ static void qca_controller_memdump(struct work_struct *work)
+ 			kfree(qca->qca_memdump);
+ 			qca->qca_memdump = NULL;
+ 			qca->memdump_state = QCA_MEMDUMP_COLLECTED;
+-			clear_bit(QCA_MEMDUMP_COLLECTION, &qca->flags);
++			clear_and_wake_up_bit(QCA_MEMDUMP_COLLECTION, &qca->flags);
+ 		}
  
-+	/*
-+	 * For PTE handling, pte_offset_map_lock() takes care of checking
-+	 * whether there actually is a page table. But it also has to be
-+	 * very careful about concurrent page table reclaim.
-+	 *
-+	 * Similarly, we have to be careful here - a PUD entry that points
-+	 * to a PMD table cannot go away, so we can just walk it. But if
-+	 * it's something else, we need to ensure we didn't race something,
-+	 * so need to retry.
-+	 *
-+	 * A pertinent example of this is a PUD refault after PUD split -
-+	 * we will need to split again or risk accessing invalid memory.
-+	 */
-+	if (!pud_present(pudval) || pud_leaf(pudval)) {
-+		walk->action = ACTION_AGAIN;
-+		return 0;
-+	}
-+
- 	pmd = pmd_offset(pud, addr);
- 	do {
- again:
-@@ -217,12 +236,12 @@ static int walk_pud_range(p4d_t *p4d, unsigned long addr, unsigned long end,
- 		else if (pud_leaf(*pud) || !pud_present(*pud))
- 			continue; /* Nothing to do. */
- 
--		if (pud_none(*pud))
--			goto again;
--
- 		err = walk_pmd_range(pud, addr, next, walk);
- 		if (err)
- 			break;
-+
-+		if (walk->action == ACTION_AGAIN)
-+			goto again;
- 	} while (pud++, addr = next, addr != end);
- 
- 	return err;
+ 		mutex_unlock(&qca->hci_memdump_lock);
+-- 
+2.53.0
 
 
