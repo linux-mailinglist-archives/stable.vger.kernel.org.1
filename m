@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-239787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239638-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +N15FLlj5mkuvwEAu9opvQ
-	(envelope-from <stable+bounces-239787-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:34:49 +0200
+	id sMlnCnBP5mkDuwEAu9opvQ
+	(envelope-from <stable+bounces-239638-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:08:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C5DF4317F9
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:34:47 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 967B842F0BD
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:08:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AD3E3313BB1F
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:06:55 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 46A7230087C9
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:59:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 498B423BD17;
-	Mon, 20 Apr 2026 16:06:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46AC333B975;
+	Mon, 20 Apr 2026 15:59:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wXMwmoe2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V/n5kpbT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B27933F5BC;
-	Mon, 20 Apr 2026 16:06:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08ED417A31C;
+	Mon, 20 Apr 2026 15:59:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701215; cv=none; b=iR9fZGjRjBqpw8QeIyNdTd/7xMFVUfupcf0kqoVeuYc44z+sJdv7dUfQ8UCfTPjF7colc8J5+Lt2xsAcL/VbYZqJSmojwFLgVHQopKQZNXcFS0+IdIVxph92cp3GvYoi3Qt8wQPcsTiqRFSYqfgTWq8XOuIUUXvacGL/48VU0+M=
+	t=1776700770; cv=none; b=B/rgyTgMpOM/8M2HXz5MMI4zBgjSBabvuFobsq1PqpPcLgKqWEzEDunk4dYSHOhXOg6L5otdzyKCBHvTVwmofGdA4H+EP6mCjmn4gbBwndLCjl/UDgkBgIPzEp61au1NT9lpwZ4tdu+g1621JE3trzPQrMSAig8CiWAfPqA4Gok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701215; c=relaxed/simple;
-	bh=vod8egGUn6RK7YPNCjB9SbkUHWnAQYGLFg+Vlvf5Lm8=;
+	s=arc-20240116; t=1776700770; c=relaxed/simple;
+	bh=TxVBwR3wFpBh3C49fh1xbTODDsukTD5wUkdGxlBMtOs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f04uIUnRG2ZkcXiOGEWh3bHsdNMkc3AzqhN8jLoQ2kAfHUkJQPT/ma6+Y9c/gInqiwCWlCLh59Br82UkuH0J1QG2M/JS0I48SoYQb3guS/vbREpD9LCtNf6/aC/sZbVeFTn8/xGkBP18dZF8YsBlDyFKap/V6n11iVkj4l2Ox0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wXMwmoe2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92B89C19425;
-	Mon, 20 Apr 2026 16:06:54 +0000 (UTC)
+	 MIME-Version; b=FBLAnyUWPlY8vQ5LKRRezijLe7g6VFYwKiENJDkLT7qqeH+ky0PwGnnE6Zt9wgGjwxnMuLhVB1eeI3wIWE0hoK/9R+6+R3F1+7mCyH+lKXLRI9mvb3WwTDbQ0b4o7JjR0jGiEbEY26PxoUIO6glskAsddzVdzdpCYitNQjGXugI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V/n5kpbT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5801AC19425;
+	Mon, 20 Apr 2026 15:59:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701214;
-	bh=vod8egGUn6RK7YPNCjB9SbkUHWnAQYGLFg+Vlvf5Lm8=;
+	s=korg; t=1776700769;
+	bh=TxVBwR3wFpBh3C49fh1xbTODDsukTD5wUkdGxlBMtOs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wXMwmoe2DoZLqevmsCBhPlxG6QTtx4Sf5EUQCVWFLwf0Oo8AtX3G9Hvv3u1ur1qrC
-	 Yegjs+WGlmJTD+5u3xXSW1imMw+Pdf5hW3itedIvI+zJBs/S76xlvVYe5Bdo/u75af
-	 eRBYALPljmbc/pNa/vECZ8VFpxE91otc9kZg6hMI=
+	b=V/n5kpbTuIw/Jw2kDGvtTS+wj3kqe7a+9fG7fCXEaFRtt+jdSj2+wsufrHkup+9Rl
+	 n4+6jdYWToWDb3G6cbLOZg8ojua5j54826e0sJZ0tZLRmJE2vmzWFL/+bxLb4cVIil
+	 Qry38BSTxAsfpOlyW0fy29z217DSZuOXEjMdN44A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	leo vriska <leo@60228.dev>,
-	Jiri Kosina <jkosina@suse.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 027/162] HID: quirks: add HID_QUIRK_ALWAYS_POLL for 8BitDo Pro 3
-Date: Mon, 20 Apr 2026 17:40:59 +0200
-Message-ID: <20260420153928.004001991@linuxfoundation.org>
+Subject: [PATCH 6.18 081/198] net: stmmac: Fix PTP ref clock for Tegra234
+Date: Mon, 20 Apr 2026 17:41:00 +0200
+Message-ID: <20260420153938.524602956@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
-References: <20260420153927.006696811@linuxfoundation.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,81 +69,112 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239638-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-239787-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,suse.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,60228.dev:email]
-X-Rspamd-Queue-Id: 4C5DF4317F9
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: 967B842F0BD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: leo vriska <leo@60228.dev>
+From: Jon Hunter <jonathanh@nvidia.com>
 
-[ Upstream commit 532743944324a873bbaf8620fcabcd0e69e30c36 ]
+[ Upstream commit 1345e9f4e3f3bc7d8a0a2138ae29e205a857a555 ]
 
-According to a mailing list report [1], this controller's predecessor
-has the same issue. However, it uses the xpad driver instead of HID, so
-this quirk wouldn't apply.
+Since commit 030ce919e114 ("net: stmmac: make sure that ptp_rate is not
+0 before configuring timestamping") was added the following error is
+observed on Tegra234:
 
-[1]: https://lore.kernel.org/linux-input/unufo3$det$1@ciao.gmane.io/
+ ERR KERN tegra-mgbe 6800000.ethernet eth0: Invalid PTP clock rate
+ WARNING KERN tegra-mgbe 6800000.ethernet eth0: PTP init failed
 
-Signed-off-by: leo vriska <leo@60228.dev>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+It turns out that the Tegra234 device-tree binding defines the PTP ref
+clock name as 'ptp-ref' and not 'ptp_ref' and the above commit now
+exposes this and that the PTP clock is not configured correctly.
+
+In order to update device-tree to use the correct 'ptp_ref' name, update
+the Tegra MGBE driver to use 'ptp_ref' by default and fallback to using
+'ptp-ref' if this clock name is present.
+
+Fixes: d8ca113724e7 ("net: stmmac: tegra: Add MGBE support")
+Signed-off-by: Jon Hunter <jonathanh@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260401102941.17466-2-jonathanh@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-ids.h    | 3 +++
- drivers/hid/hid-quirks.c | 1 +
- 2 files changed, 4 insertions(+)
+ .../net/ethernet/stmicro/stmmac/dwmac-tegra.c | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index 25eb5cc7de70e..475e6eb4702af 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -22,6 +22,9 @@
- #define USB_DEVICE_ID_3M2256		0x0502
- #define USB_DEVICE_ID_3M3266		0x0506
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-tegra.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-tegra.c
+index d765acbe37548..21a0a11fc0118 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-tegra.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-tegra.c
+@@ -9,7 +9,7 @@
+ #include "stmmac_platform.h"
  
-+#define USB_VENDOR_ID_8BITDO		0x2dc8
-+#define USB_DEVICE_ID_8BITDO_PRO_3	0x6009
+ static const char *const mgbe_clks[] = {
+-	"rx-pcs", "tx", "tx-pcs", "mac-divider", "mac", "mgbe", "ptp-ref", "mac"
++	"rx-pcs", "tx", "tx-pcs", "mac-divider", "mac", "mgbe", "ptp_ref", "mac"
+ };
+ 
+ struct tegra_mgbe {
+@@ -215,6 +215,7 @@ static int tegra_mgbe_probe(struct platform_device *pdev)
+ {
+ 	struct plat_stmmacenet_data *plat;
+ 	struct stmmac_resources res;
++	bool use_legacy_ptp = false;
+ 	struct tegra_mgbe *mgbe;
+ 	int irq, err, i;
+ 	u32 value;
+@@ -257,9 +258,23 @@ static int tegra_mgbe_probe(struct platform_device *pdev)
+ 	if (!mgbe->clks)
+ 		return -ENOMEM;
+ 
+-	for (i = 0; i <  ARRAY_SIZE(mgbe_clks); i++)
++	/* Older device-trees use 'ptp-ref' rather than 'ptp_ref'.
++	 * Fall back when the legacy name is present.
++	 */
++	if (of_property_match_string(pdev->dev.of_node, "clock-names",
++				     "ptp-ref") >= 0)
++		use_legacy_ptp = true;
 +
- #define USB_VENDOR_ID_A4TECH		0x09da
- #define USB_DEVICE_ID_A4TECH_WCP32PU	0x0006
- #define USB_DEVICE_ID_A4TECH_X5_005D	0x000a
-diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
-index 7a3e0675d9ba2..d9e33dde89899 100644
---- a/drivers/hid/hid-quirks.c
-+++ b/drivers/hid/hid-quirks.c
-@@ -25,6 +25,7 @@
-  */
++	for (i = 0; i < ARRAY_SIZE(mgbe_clks); i++) {
+ 		mgbe->clks[i].id = mgbe_clks[i];
  
- static const struct hid_device_id hid_quirks[] = {
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_8BITDO, USB_DEVICE_ID_8BITDO_PRO_3), HID_QUIRK_ALWAYS_POLL },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_AASHIMA, USB_DEVICE_ID_AASHIMA_GAMEPAD), HID_QUIRK_BADPAD },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_AASHIMA, USB_DEVICE_ID_AASHIMA_PREDATOR), HID_QUIRK_BADPAD },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ADATA_XPG, USB_VENDOR_ID_ADATA_XPG_WL_GAMING_MOUSE), HID_QUIRK_ALWAYS_POLL },
++		if (use_legacy_ptp && !strcmp(mgbe_clks[i], "ptp_ref")) {
++			dev_warn(mgbe->dev,
++				 "Device-tree update needed for PTP clock!\n");
++			mgbe->clks[i].id = "ptp-ref";
++		}
++	}
++
+ 	err = devm_clk_bulk_get(mgbe->dev, ARRAY_SIZE(mgbe_clks), mgbe->clks);
+ 	if (err < 0)
+ 		return err;
 -- 
 2.53.0
 
