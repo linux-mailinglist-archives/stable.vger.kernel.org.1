@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-239669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239783-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +OTPAs5g5mkxvgEAu9opvQ
-	(envelope-from <stable+bounces-239669-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:22:22 +0200
+	id uE1IBzpo5mnBvwEAu9opvQ
+	(envelope-from <stable+bounces-239783-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:54:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B72B431102
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:22:21 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A70194323C2
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:54:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ED81F3205C5D
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:02:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D3DD13361A6A
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:06:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AE9033F58E;
-	Mon, 20 Apr 2026 16:01:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A748A33F8D6;
+	Mon, 20 Apr 2026 16:06:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="trj6fWVQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z4YY4IGA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C31A33F5A9;
-	Mon, 20 Apr 2026 16:01:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61084336EE1;
+	Mon, 20 Apr 2026 16:06:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700916; cv=none; b=d+a3BS2temGALbvp8+dIfMugrwHZuO7c7CTz+JsVhv56DhJkZvDfp3xkH41RB1334jdCbkNMVQ+oaS+7V6qGzIgfa/yCQx5aShosS849gFp0hkCpkU8nAo+uPaM6c/qCFivTkIa2hAR33H/KQEg2Yhojw7JzLizAYCplrwi5bfs=
+	t=1776701207; cv=none; b=QYIo3Fr31rv6b0lREpozvvlzYKuIFP2nUSEw3TLJx+L0pKRNd0ITfk4hm4Lm3uxzvl439xP3pWFQmb6P8XAAQ5QJUt+SVa0WnBnH50qvjk87HqUlZA5uvIvj2fxTbuQ/gsNyyS+PjfoeWftwHu8R93zaoSupkA3WS5xrFybKCgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700916; c=relaxed/simple;
-	bh=oHGS9KGkgA0qFvxXmyd1JhVEl5jJivj1fc3zgfx/asE=;
+	s=arc-20240116; t=1776701207; c=relaxed/simple;
+	bh=eTTBJ5KKprb4AuajIlCneNYeGZ6lQkNOLP7onK2Q9sI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DbWj1z5TczziKob7PpxmmoBmxbpLPgH4zVC9uqRnuMxLQ2eYI9DWNVrauzgzujlSI5CdMCt276tua6NH9on+GIOdVF5qReBtMXZBTryYdgyzRj2nItbx9L6b4JV/BX3Fdd6FqIUoiRm3Z7jXpFlG9D3tHdhvOdtyV/kc/hzaAj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=trj6fWVQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A768DC19425;
-	Mon, 20 Apr 2026 16:01:55 +0000 (UTC)
+	 MIME-Version; b=eIYHHsaj4oHVSqEuWSxaQ5BVAWbL6irgOss8lrSMaWjcOQaAnEPTHlk3/NmPc9Gmn7mmHcUfdDJE84IDv/a2BNcKbFFwOgouQSpc1GsCi7ZjYvFizq6j5VL0uAWWlSVzxlj0XJP1Bh2lCIYpPa2fKiX/Lhrc5CVZ0XKMQPcAgqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z4YY4IGA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E939AC19425;
+	Mon, 20 Apr 2026 16:06:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700916;
-	bh=oHGS9KGkgA0qFvxXmyd1JhVEl5jJivj1fc3zgfx/asE=;
+	s=korg; t=1776701207;
+	bh=eTTBJ5KKprb4AuajIlCneNYeGZ6lQkNOLP7onK2Q9sI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=trj6fWVQr6QeJnwH5RWBR84QZWllAHI3g1QfOvXEpfzIW8MPB7oAmflzYG3qo4jQh
-	 TyTdq+JnN+AJ3Jr3hBNPdeqzuT4VGJrQBDZM6ULx80lOoGralA2CqYKRinohKdpCXA
-	 KYy2/e7Jlmy9o7DVhOVwMv0NA3pp8FL5veY6TihA=
+	b=Z4YY4IGAylkSo8yN/UPhIW3CIAKbm9jbTMpgjbV7s2u68fhSZgWT8TA7UKLkH2C1e
+	 epUsn4iBikcDLGFUFdwx19dogRpgE1IwdoQJTQKWY6OrphSqE1zcyF6JHSBZOT1j8l
+	 NiKJZ+d3WHyPdLt7tkRYqkLjQOhdJdCBFcW9kkPo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yiming Qian <yimingqian591@gmail.com>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Eric Dumazet <edumazet@google.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Alexander Savenko <alex.sav4387@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 077/198] ipv4: nexthop: allocate skb dynamically in rtm_get_nexthop()
+Subject: [PATCH 6.12 024/162] ALSA: hda/realtek: Add quirk for Lenovo Yoga Pro 7 14IMH9
 Date: Mon, 20 Apr 2026 17:40:56 +0200
-Message-ID: <20260420153938.382265122@linuxfoundation.org>
+Message-ID: <20260420153927.896780609@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
+References: <20260420153927.006696811@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,181 +64,93 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de,google.com,nvidia.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-239669-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,suse.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 5B72B431102
+	TAGGED_FROM(0.00)[bounces-239783-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: A70194323C2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fernando Fernandez Mancera <fmancera@suse.de>
+From: Alexander Savenko <alex.sav4387@gmail.com>
 
-[ Upstream commit 14cf0cd35361f4e94824bf8a42f72713d7702a73 ]
+[ Upstream commit 217d5bc9f96272316ac5a3215c7cc32a5127bbf3 ]
 
-When querying a nexthop object via RTM_GETNEXTHOP, the kernel currently
-allocates a fixed-size skb using NLMSG_GOODSIZE. While sufficient for
-single nexthops and small Equal-Cost Multi-Path groups, this fixed
-allocation fails for large nexthop groups like 512 nexthops.
+The Lenovo Yoga Pro 7 14IMH9 (DMI: 83E2) shares PCI SSID 17aa:3847
+with the Legion 7 16ACHG6, but has a different codec subsystem ID
+(17aa:38cf). The existing SND_PCI_QUIRK for 17aa:3847 applies
+ALC287_FIXUP_LEGION_16ACHG6, which attempts to initialize an external
+I2C amplifier (CLSA0100) that is not present on the Yoga Pro 7 14IMH9.
 
-This results in the following warning splat:
+As a result, pin 0x17 (bass speakers) is connected to DAC 0x06 which
+has no volume control, making hardware volume adjustment completely
+non-functional. Audio is either silent or at maximum volume regardless
+of the slider position.
 
- WARNING: net/ipv4/nexthop.c:3395 at rtm_get_nexthop+0x176/0x1c0, CPU#20: rep/4608
- [...]
- RIP: 0010:rtm_get_nexthop (net/ipv4/nexthop.c:3395)
- [...]
- Call Trace:
-  <TASK>
-  rtnetlink_rcv_msg (net/core/rtnetlink.c:6989)
-  netlink_rcv_skb (net/netlink/af_netlink.c:2550)
-  netlink_unicast (net/netlink/af_netlink.c:1319 net/netlink/af_netlink.c:1344)
-  netlink_sendmsg (net/netlink/af_netlink.c:1894)
-  ____sys_sendmsg (net/socket.c:721 net/socket.c:736 net/socket.c:2585)
-  ___sys_sendmsg (net/socket.c:2641)
-  __sys_sendmsg (net/socket.c:2671)
-  do_syscall_64 (arch/x86/entry/syscall_64.c:63 arch/x86/entry/syscall_64.c:94)
-  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-  </TASK>
+Add a HDA_CODEC_QUIRK entry using the codec subsystem ID (17aa:38cf)
+to correctly identify the Yoga Pro 7 14IMH9 and apply
+ALC287_FIXUP_YOGA9_14IMH9_BASS_SPK_PIN, which redirects pin 0x17 to
+DAC 0x02 and restores proper volume control. The existing Legion entry
+is preserved unchanged.
 
-Fix this by allocating the size dynamically using nh_nlmsg_size() and
-using nlmsg_new(), this is consistent with nexthop_notify() behavior. In
-addition, adjust nh_nlmsg_size_grp() so it calculates the size needed
-based on flags passed. While at it, also add the size of NHA_FDB for
-nexthop group size calculation as it was missing too.
+This follows the same pattern used for 17aa:386e, where Legion Y9000X
+and Yoga Pro 7 14ARP8 share a PCI SSID but are distinguished via
+HDA_CODEC_QUIRK.
 
-This cannot be reproduced via iproute2 as the group size is currently
-limited and the command fails as follows:
-
-addattr_l ERROR: message exceeded bound of 1048
-
-Fixes: 430a049190de ("nexthop: Add support for nexthop groups")
-Reported-by: Yiming Qian <yimingqian591@gmail.com>
-Closes: https://lore.kernel.org/netdev/CAL_bE8Li2h4KO+AQFXW4S6Yb_u5X4oSKnkywW+LPFjuErhqELA@mail.gmail.com/
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20260402072613.25262-2-fmancera@suse.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://github.com/nomad4tech/lenovo-yoga-pro-7-linux
+Tested-by: Alexander Savenko <alex.sav4387@gmail.com>
+Signed-off-by: Alexander Savenko <alex.sav4387@gmail.com>
+Link: https://patch.msgid.link/20260331082929.44890-1-alex.sav4387@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/nexthop.c | 38 +++++++++++++++++++++++++++-----------
- 1 file changed, 27 insertions(+), 11 deletions(-)
+ sound/pci/hda/patch_realtek.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/ipv4/nexthop.c b/net/ipv4/nexthop.c
-index aa53a74ac2389..c958b8edfe540 100644
---- a/net/ipv4/nexthop.c
-+++ b/net/ipv4/nexthop.c
-@@ -1006,16 +1006,32 @@ static size_t nh_nlmsg_size_grp_res(struct nh_group *nhg)
- 		nla_total_size_64bit(8);/* NHA_RES_GROUP_UNBALANCED_TIME */
- }
- 
--static size_t nh_nlmsg_size_grp(struct nexthop *nh)
-+static size_t nh_nlmsg_size_grp(struct nexthop *nh, u32 op_flags)
- {
- 	struct nh_group *nhg = rtnl_dereference(nh->nh_grp);
- 	size_t sz = sizeof(struct nexthop_grp) * nhg->num_nh;
- 	size_t tot = nla_total_size(sz) +
--		nla_total_size(2); /* NHA_GROUP_TYPE */
-+		nla_total_size(2) +	/* NHA_GROUP_TYPE */
-+		nla_total_size(0);	/* NHA_FDB */
- 
- 	if (nhg->resilient)
- 		tot += nh_nlmsg_size_grp_res(nhg);
- 
-+	if (op_flags & NHA_OP_FLAG_DUMP_STATS) {
-+		tot += nla_total_size(0) +	  /* NHA_GROUP_STATS */
-+		       nla_total_size(4);	  /* NHA_HW_STATS_ENABLE */
-+		tot += nhg->num_nh *
-+		       (nla_total_size(0) +	  /* NHA_GROUP_STATS_ENTRY */
-+			nla_total_size(4) +	  /* NHA_GROUP_STATS_ENTRY_ID */
-+			nla_total_size_64bit(8)); /* NHA_GROUP_STATS_ENTRY_PACKETS */
-+
-+		if (op_flags & NHA_OP_FLAG_DUMP_HW_STATS) {
-+			tot += nhg->num_nh *
-+			       nla_total_size_64bit(8); /* NHA_GROUP_STATS_ENTRY_PACKETS_HW */
-+			tot += nla_total_size(4);	/* NHA_HW_STATS_USED */
-+		}
-+	}
-+
- 	return tot;
- }
- 
-@@ -1050,14 +1066,14 @@ static size_t nh_nlmsg_size_single(struct nexthop *nh)
- 	return sz;
- }
- 
--static size_t nh_nlmsg_size(struct nexthop *nh)
-+static size_t nh_nlmsg_size(struct nexthop *nh, u32 op_flags)
- {
- 	size_t sz = NLMSG_ALIGN(sizeof(struct nhmsg));
- 
- 	sz += nla_total_size(4); /* NHA_ID */
- 
- 	if (nh->is_group)
--		sz += nh_nlmsg_size_grp(nh) +
-+		sz += nh_nlmsg_size_grp(nh, op_flags) +
- 		      nla_total_size(4) +	/* NHA_OP_FLAGS */
- 		      0;
- 	else
-@@ -1073,7 +1089,7 @@ static void nexthop_notify(int event, struct nexthop *nh, struct nl_info *info)
- 	struct sk_buff *skb;
- 	int err = -ENOBUFS;
- 
--	skb = nlmsg_new(nh_nlmsg_size(nh), gfp_any());
-+	skb = nlmsg_new(nh_nlmsg_size(nh, 0), gfp_any());
- 	if (!skb)
- 		goto errout;
- 
-@@ -3379,15 +3395,15 @@ static int rtm_get_nexthop(struct sk_buff *in_skb, struct nlmsghdr *nlh,
- 	if (err)
- 		return err;
- 
--	err = -ENOBUFS;
--	skb = alloc_skb(NLMSG_GOODSIZE, GFP_KERNEL);
--	if (!skb)
--		goto out;
--
- 	err = -ENOENT;
- 	nh = nexthop_find_by_id(net, id);
- 	if (!nh)
--		goto errout_free;
-+		goto out;
-+
-+	err = -ENOBUFS;
-+	skb = nlmsg_new(nh_nlmsg_size(nh, op_flags), GFP_KERNEL);
-+	if (!skb)
-+		goto out;
- 
- 	err = nh_fill_node(skb, nh, RTM_NEWNEXTHOP, NETLINK_CB(in_skb).portid,
- 			   nlh->nlmsg_seq, 0, op_flags);
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 04e10da997b53..b73c2741f8ae7 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -11524,6 +11524,10 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x17aa, 0x3834, "Lenovo IdeaPad Slim 9i 14ITL5", ALC287_FIXUP_YOGA7_14ITL_SPEAKERS),
+ 	SND_PCI_QUIRK(0x17aa, 0x383d, "Legion Y9000X 2019", ALC285_FIXUP_LEGION_Y9000X_SPEAKERS),
+ 	SND_PCI_QUIRK(0x17aa, 0x3843, "Lenovo Yoga 9i / Yoga Book 9i", ALC287_FIXUP_LENOVO_YOGA_BOOK_9I),
++	/* Yoga Pro 7 14IMH9 shares PCI SSID 17aa:3847 with Legion 7 16ACHG6;
++	 * use codec SSID to distinguish them
++	 */
++	HDA_CODEC_QUIRK(0x17aa, 0x38cf, "Lenovo Yoga Pro 7 14IMH9", ALC287_FIXUP_YOGA9_14IMH9_BASS_SPK_PIN),
+ 	SND_PCI_QUIRK(0x17aa, 0x3847, "Legion 7 16ACHG6", ALC287_FIXUP_LEGION_16ACHG6),
+ 	SND_PCI_QUIRK(0x17aa, 0x384a, "Lenovo Yoga 7 15ITL5", ALC287_FIXUP_YOGA7_14ITL_SPEAKERS),
+ 	SND_PCI_QUIRK(0x17aa, 0x3852, "Lenovo Yoga 7 14ITL5", ALC287_FIXUP_YOGA7_14ITL_SPEAKERS),
 -- 
 2.53.0
 
