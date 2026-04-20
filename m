@@ -1,157 +1,157 @@
-Return-Path: <stable+bounces-239680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239763-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SKA6N+hg5mkxvgEAu9opvQ
-	(envelope-from <stable+bounces-239680-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:22:48 +0200
+	id EH0xLf9Z5mmtvAEAu9opvQ
+	(envelope-from <stable+bounces-239763-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:53:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A29D431137
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:22:48 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5539D4302BB
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:53:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9E2B632CE196
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:02:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 044A3321B0A4
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:05:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9993F33F8AA;
-	Mon, 20 Apr 2026 16:02:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E076C33A70A;
+	Mon, 20 Apr 2026 16:05:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="0ccr1FAB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Da0EpII3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47E1C33E377;
-	Mon, 20 Apr 2026 16:02:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A44B92C11C6
+	for <stable@vger.kernel.org>; Mon, 20 Apr 2026 16:05:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700943; cv=none; b=f+iPnWFXIeYGmI8EUuUKbZjXRbJ7dVTiO4b67bWIU8nc7QhAuISJgdbOEB1tI2DFzIBCn5kCWWH16ChE3IhV4FwHIhM8KXCMngiZbfom6l9tNH9QuoD/Ktth/O1Ctd6t2UQuXFma0a6UdzGPE90wx0qvWeA0cWnvBO900cmuAgM=
+	t=1776701152; cv=none; b=COU5oAZF0UgFxQRnfJWrdhaXWMQ30qBlOvNCL6WWnyME0TnNZw28nq0ohqzHcxr9iCUpqfOyCwhm9cRvOWivbuAKd9wjOWiW4MXhpiJrFdOM/ggpg0hUw7tUyr0dahEPV7rlUAz8BXQjRiUAQ9GcREkx4HZpGSBtSUm2oXQ5Leg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700943; c=relaxed/simple;
-	bh=2oIhMKk5lIFp7QMHv3phBe62aQKpniqvOir5C2/gYYE=;
-	h=Date:To:From:Subject:Message-Id; b=WzlmrztI2sJ0TOdx6xRfqqcFJEtnjS2m4OsOzihakOtDLmM3qJw7DV1fqrb72Rqq+8MAkzwV4DQKFx4AEAJg1GaWrHDaqFfgrk+eainQComRAZtYQ7Kb5HvTYMii37stIuw9vOBI918GmYxg8mEHfYJWvOy1E4y84RUH3BRNYfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=0ccr1FAB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91FC8C2BCB6;
-	Mon, 20 Apr 2026 16:02:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1776700943;
-	bh=2oIhMKk5lIFp7QMHv3phBe62aQKpniqvOir5C2/gYYE=;
-	h=Date:To:From:Subject:From;
-	b=0ccr1FABWDOLmo2ducxbZgAfOK9ROolbmPmAQvRb8TGHEUDAdweZj4ci+kfZz/Ea6
-	 VjZlXvgg6ohOTfxa95NaXEybZU45nYPB80wGGpPNJkANBaAjGaCNr4+D2RxajJPaEZ
-	 zMVGksS1MT5c7FWmHaoxm0yd7FnzotVkaZ2OZ07A=
-Date: Mon, 20 Apr 2026 09:02:20 -0700
-To: mm-commits@vger.kernel.org,vbabka@kernel.org,urezki@gmail.com,stable@vger.kernel.org,harry@kernel.org,elver@google.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + vmalloc-fix-buffer-overflow-in-vrealloc_node_align.patch added to mm-hotfixes-unstable branch
-Message-Id: <20260420160222.91FC8C2BCB6@smtp.kernel.org>
+	s=arc-20240116; t=1776701152; c=relaxed/simple;
+	bh=1nWqsysMeAMaMFwnMMoWilObOiKO9FEV91o6ulwwoMw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=JscpvcGgXKKb6NXI7/w3VpErwAZXPnx9Dk3QRR48PohaY8xrJfbn7V4ssKai82GIik8XlPsVcLW706VML9PHv5pGC53H9GCdgGVUqx+JGuTl0T/RSQp5VjQpKM+yZvHkrX8/NBpqqeOr46akjVg5HKykoqYfYdkpI7YOGuSe7U8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Da0EpII3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D32C2C2BCB4;
+	Mon, 20 Apr 2026 16:05:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776701152;
+	bh=1nWqsysMeAMaMFwnMMoWilObOiKO9FEV91o6ulwwoMw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Da0EpII35XQsRxhEqfPusVK24HB5sga7H4/9lTT9kqHjeUFGhgYOxoX3XW3BCEhda
+	 ZtoaO0KQxBIs8HnvcV99eR4Q1s+8A/4YztcHi2gRJFYbBUhlk2ELeMSE6FRgVne9PZ
+	 aou35yuDut7tPvJWZWRHNoZcl9sexGBje3ZBoRTBIp9FfgJbK4V9WHn2ms2GhZlX9t
+	 7vrSc4KOKCxFUyDteV09AOx3a2W45/uShOdc5WVEx1WvZKB/2Fnj0Y7mD0sTALnwu4
+	 85tBrWGCrMIb9vwiMDtll+xqmvpBUU9OkBk87l65O4TQFDvUrSaZUEIsMeErEu43gh
+	 mAPUqvMbiwTiQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Tamir Duberstein <tamird@kernel.org>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Fiona Behrens <me@kloenk.dev>,
+	Trevor Gross <tmgross@umich.edu>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18.y] scripts: generate_rust_analyzer.py: define scripts
+Date: Mon, 20 Apr 2026 12:05:50 -0400
+Message-ID: <20260420160550.1184938-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026042046-underfeed-riding-d661@gregkh>
+References: <2026042046-underfeed-riding-d661@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [-1.16 / 15.00];
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-239680-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	DMARC_NA(0.00)[linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,kernel.org,gmail.com,google.com,linux-foundation.org];
+	TAGGED_FROM(0.00)[bounces-239763-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_HAS_DN(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,smtp.kernel.org:mid,linux-foundation.org:dkim,linux-foundation.org:email]
-X-Rspamd-Queue-Id: 6A29D431137
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,collabora.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,umich.edu:email,kloenk.dev:email]
+X-Rspamd-Queue-Id: 5539D4302BB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+From: Tamir Duberstein <tamird@kernel.org>
 
-The patch titled
-     Subject: vmalloc: fix buffer overflow in vrealloc_node_align()
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     vmalloc-fix-buffer-overflow-in-vrealloc_node_align.patch
+[ Upstream commit 36c619f6bd793493294becb10a02fea370b67a91 ]
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/vmalloc-fix-buffer-overflow-in-vrealloc_node_align.patch
+Add IDE support for host-side scripts written in Rust. This support has
+been missing since these scripts were initially added in commit
+9a8ff24ce584 ("scripts: add `generate_rust_target.rs`"), thus add it.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Change the existing instance of extension stripping to
+`pathlib.Path.stem` to maintain code consistency.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: Marco Elver <elver@google.com>
-Subject: vmalloc: fix buffer overflow in vrealloc_node_align()
-Date: Mon, 20 Apr 2026 13:47:26 +0200
-
-Commit 4c5d3365882d ("mm/vmalloc: allow to set node and align in
-vrealloc") added the ability to force a new allocation if the current
-pointer is on the wrong NUMA node, or if an alignment constraint is not
-met, even if the user is shrinking the allocation.
-
-On this path (need_realloc), the code allocates a new object of 'size'
-bytes and then memcpy()s 'old_size' bytes into it.  If the request is to
-shrink the object (size < old_size), this results in an out-of-bounds
-write on the new buffer.
-
-Fix this by bounding the copy length by the new allocation size.
-
-Link: https://lore.kernel.org/20260420114805.3572606-2-elver@google.com
-Fixes: 4c5d3365882d ("mm/vmalloc: allow to set node and align in vrealloc")
-Signed-off-by: Marco Elver <elver@google.com>
-Reported-by: Harry Yoo (Oracle) <harry@kernel.org>
-Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-Acked-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-Reviewed-by: Harry Yoo (Oracle) <harry@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 9a8ff24ce584 ("scripts: add `generate_rust_target.rs`")
+Cc: stable@vger.kernel.org
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Reviewed-by: Fiona Behrens <me@kloenk.dev>
+Reviewed-by: Trevor Gross <tmgross@umich.edu>
+Link: https://patch.msgid.link/20260122-rust-analyzer-scripts-v1-1-ff6ba278170e@kernel.org
+Signed-off-by: Tamir Duberstein <tamird@kernel.org>
+[ changed `[std]` dep to `["std"]` and kept untyped `is_root_crate()` ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
+ scripts/generate_rust_analyzer.py | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
- mm/vmalloc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/mm/vmalloc.c~vmalloc-fix-buffer-overflow-in-vrealloc_node_align
-+++ a/mm/vmalloc.c
-@@ -4361,7 +4361,7 @@ need_realloc:
- 		return NULL;
+diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
+index 852444352657e..1016f857f7be2 100755
+--- a/scripts/generate_rust_analyzer.py
++++ b/scripts/generate_rust_analyzer.py
+@@ -166,6 +166,18 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs, core_edit
+     append_crate_with_generated("uapi", ["core", "ffi", "pin_init"])
+     append_crate_with_generated("kernel", ["core", "macros", "build_error", "pin_init", "ffi", "bindings", "uapi"])
  
- 	if (p) {
--		memcpy(n, p, old_size);
-+		memcpy(n, p, min(size, old_size));
- 		vfree(p);
- 	}
++    scripts = srctree / "scripts"
++    makefile = (scripts / "Makefile").read_text()
++    for path in scripts.glob("*.rs"):
++        name = path.stem
++        if f"{name}-rust" not in makefile:
++            continue
++        append_crate(
++            name,
++            path,
++            ["std"],
++        )
++
+     def is_root_crate(build_file, target):
+         try:
+             return f"{target}.o" in open(build_file).read()
+@@ -181,7 +193,7 @@ def generate_crates(srctree, objtree, sysroot_src, external_src, cfgs, core_edit
+     for folder in extra_dirs:
+         for path in folder.rglob("*.rs"):
+             logging.info("Checking %s", path)
+-            name = path.name.replace(".rs", "")
++            name = path.stem
  
-_
-
-Patches currently in -mm which might be from elver@google.com are
-
-vmalloc-fix-buffer-overflow-in-vrealloc_node_align.patch
+             # Skip those that are not crate roots.
+             if not is_root_crate(path.parent / "Makefile", name) and \
+-- 
+2.53.0
 
 
