@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-239726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239875-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YMWKLBZP5mngugEAu9opvQ
-	(envelope-from <stable+bounces-239726-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:06:46 +0200
+	id SA+qF+Ji5mmavgEAu9opvQ
+	(envelope-from <stable+bounces-239875-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:31:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FD6042EFEB
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:06:46 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46AFB431536
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:31:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 68ABB302C150
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:04:27 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B7725318D9B1
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:10:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B421A343D66;
-	Mon, 20 Apr 2026 16:04:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5778933F5A9;
+	Mon, 20 Apr 2026 16:10:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AMEYkZdu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gHb2NN+g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C828342CBD;
-	Mon, 20 Apr 2026 16:04:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A33E34216C;
+	Mon, 20 Apr 2026 16:10:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701059; cv=none; b=WTSp1VrAYXdTHI5/kcWJgQuWV0vUI3d3kJX35RuWtgIm2mYlf5u0Vamo+5+T97smo3h4DfBCE7vowfE+DCruJYUMSJnxKkou8XqJzMyank3BYsyg6nsmsBu72Ksbz8tTvLHc44Blyv8/6IwKV7WxAjw3lkPSFnws4kPlX2kihsg=
+	t=1776701440; cv=none; b=MhaWCQtplETN6BZOqqaRoDhpDoM3ODaBJazCCopE0o41xLTUvOv/KBUMvFqsOAstuyvf0a7rdfpSyLgTJumz9G933nKob6pekqAR+eK2SegF+SQWnsHMLwlki+X0/IKDZ/RUXwxsX2zhlLoxGw3XmnGg0FmeuTLxWY6Ro3X0uCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701059; c=relaxed/simple;
-	bh=GD8kmLMk4Ts5C/1pz1/7gEe4lrUroV5mTn7YbCE3jsM=;
+	s=arc-20240116; t=1776701440; c=relaxed/simple;
+	bh=11by/CLScF+8fIbuXMA5JvsUcLvsahz7xkq45M3+zJs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HU/cVozPVsQLCrBYDmdCuvG4H7OOGtxinYO+xCQXT/1GZliXiznpNCTmR3UR6Z4vXuJyOSBSJ4AZu3RQ1b7XTMlnXf+DiIdjoVk0Xq9rmSDOnRzw04ijohk+cyQNXdiAoNDjT3isOTsR8i1j433B1dN+xoWHzS4/ZTcQuDZEdBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AMEYkZdu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05617C2BCB6;
-	Mon, 20 Apr 2026 16:04:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WcpG+1YU+O2Nz7PqJfJM5A8eNtA6A+KkS/+c5GwlF1Oiwt2ehyNSmg9DZlUmcgVb5kNJYAlpp7srS3TKdReoI7TH1AiR7Sw1ROxy+CMYMSiVtl8Axc80WOsLc/JfnsnVH65skgRdZF37eq43Vr03YRu8fsaG5DQ46r9hLFk20R0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gHb2NN+g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7454CC19425;
+	Mon, 20 Apr 2026 16:10:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701059;
-	bh=GD8kmLMk4Ts5C/1pz1/7gEe4lrUroV5mTn7YbCE3jsM=;
+	s=korg; t=1776701439;
+	bh=11by/CLScF+8fIbuXMA5JvsUcLvsahz7xkq45M3+zJs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AMEYkZduWgUqbCbz/6ewc78Um5dGRvPSNVWOXMazTp609JrxTfxQQyp1S/ky8p1LF
-	 mcyjUjMNl16W5oFGFh1Ix7Yv7LZJkn7TdZqhHUwxyrfrCrAYFuSJhGBvPWxw/7MVNr
-	 Qh+VoWaIJ3JTR1y4/cZatO1kNPaQB4oXiDfbsCKg=
+	b=gHb2NN+gKUk8dSje/7+WycZKfB50nW1VapAEXSU/zgrkY1FfxSzjZ81DFw5xRdEWH
+	 jts6WQNOSOks+fiMjtWWFzZEg/3RyX39QbnGlDXEAb5JTqZCWuHkLOGuLDT5Z7XsX2
+	 wjN+fDz9KyzRT2swQEzTzcLe3089eKke+RckUJG4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.18 165/198] KVM: selftests: Remove duplicate LAUNCH_UPDATE_VMSA call in SEV-ES migrate test
-Date: Mon, 20 Apr 2026 17:42:24 +0200
-Message-ID: <20260420153941.553250239@linuxfoundation.org>
+	Dave Carey <carvsdriver@gmail.com>,
+	stable <stable@kernel.org>,
+	Oliver Neukum <oneukum@suse.com>
+Subject: [PATCH 6.12 113/162] USB: cdc-acm: Add quirks for Yoga Book 9 14IAH10 INGENIC touchscreen
+Date: Mon, 20 Apr 2026 17:42:25 +0200
+Message-ID: <20260420153931.133404969@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
+References: <20260420153927.006696811@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +63,196 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239726-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239875-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,suse.com];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4FD6042EFEB
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 46AFB431536
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Dave Carey <carvsdriver@gmail.com>
 
-commit 25a642b6abc98bbbabbf2baef9fc498bbea6aee6 upstream.
+commit f58752ebcb35e156c85cd1a82d6579c7af3b9023 upstream.
 
-Drop the explicit KVM_SEV_LAUNCH_UPDATE_VMSA call when creating an SEV-ES
-VM in the SEV migration test, as sev_vm_create() automatically updates the
-VMSA pages for SEV-ES guests.  The only reason the duplicate call doesn't
-cause visible problems is because the test doesn't actually try to run the
-vCPUs.  That will change when KVM adds a check to prevent userspace from
-re-launching a VMSA (which corrupts the VMSA page due to KVM writing
-encrypted private memory).
+The Lenovo Yoga Book 9 14IAH10 (83KJ) has a composite USB device
+(17EF:6161) that controls both touchscreens via a CDC ACM interface.
+Interface 0 is a standard CDC ACM control interface, but interface 1
+(the data interface) incorrectly declares vendor-specific class (0xFF)
+instead of USB_CLASS_CDC_DATA. cdc-acm rejects the device at probe with
+-EINVAL, leaving interface 0 unbound and EP 0x82 never polled.
 
-Fixes: 69f8e15ab61f ("KVM: selftests: Use the SEV library APIs in the intra-host migration test")
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260310234829.2608037-2-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+With no consumer polling EP 0x82, the firmware's watchdog fires every
+~20 seconds and resets the USB bus, producing a continuous disconnect/
+reconnect loop that prevents the touchscreens from ever initialising.
+
+Add two new quirk flags:
+
+VENDOR_CLASS_DATA_IFACE: Bypasses the bInterfaceClass check in
+acm_probe() that would otherwise reject the vendor-class data
+interface with -EINVAL.
+
+ALWAYS_POLL_CTRL: Submits the notification URB at probe() rather than
+waiting for a TTY open. This keeps EP 0x82 polled at all times,
+permanently suppressing the firmware watchdog. The URB is resubmitted
+after port_shutdown() and on system resume. SET_CONTROL_LINE_STATE
+(DTR|RTS) is sent at probe and after port_shutdown() to complete
+firmware handshake.
+
+Note: the firmware performs exactly 4 USB connect/disconnect cycles
+(~19 s each) on every cold boot before stabilising. This is a fixed
+firmware property; touch is available ~75-80 s after power-on.
+
+Signed-off-by: Dave Carey <carvsdriver@gmail.com>
+Cc: stable <stable@kernel.org>
+Tested-by: Dave Carey <carvsdriver@gmail.com>
+Acked-by: Oliver Neukum <oneukum@suse.com>
+Link: https://patch.msgid.link/20260402182950.389016-1-carvsdriver@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/kvm/x86/sev_migrate_tests.c |    2 --
- 1 file changed, 2 deletions(-)
+ drivers/usb/class/cdc-acm.c |   53 ++++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 46 insertions(+), 7 deletions(-)
 
---- a/tools/testing/selftests/kvm/x86/sev_migrate_tests.c
-+++ b/tools/testing/selftests/kvm/x86/sev_migrate_tests.c
-@@ -36,8 +36,6 @@ static struct kvm_vm *sev_vm_create(bool
+--- a/drivers/usb/class/cdc-acm.c
++++ b/drivers/usb/class/cdc-acm.c
+@@ -114,6 +114,8 @@ static int acm_ctrl_msg(struct acm *acm,
+ 	int retval;
  
- 	sev_vm_launch(vm, es ? SEV_POLICY_ES : 0);
+ 	retval = usb_autopm_get_interface(acm->control);
++#define VENDOR_CLASS_DATA_IFACE		BIT(9)  /* data interface uses vendor-specific class */
++#define ALWAYS_POLL_CTRL		BIT(10) /* keep ctrl URB active even without an open TTY */
+ 	if (retval)
+ 		return retval;
  
--	if (es)
--		vm_sev_ioctl(vm, KVM_SEV_LAUNCH_UPDATE_VMSA, NULL);
- 	return vm;
+@@ -710,12 +712,14 @@ static int acm_port_activate(struct tty_
+ 	set_bit(TTY_NO_WRITE_SPLIT, &tty->flags);
+ 	acm->control->needs_remote_wakeup = 1;
+ 
+-	acm->ctrlurb->dev = acm->dev;
+-	retval = usb_submit_urb(acm->ctrlurb, GFP_KERNEL);
+-	if (retval) {
+-		dev_err(&acm->control->dev,
+-			"%s - usb_submit_urb(ctrl irq) failed\n", __func__);
+-		goto error_submit_urb;
++	if (!(acm->quirks & ALWAYS_POLL_CTRL)) {
++		acm->ctrlurb->dev = acm->dev;
++		retval = usb_submit_urb(acm->ctrlurb, GFP_KERNEL);
++		if (retval) {
++			dev_err(&acm->control->dev,
++				"%s - usb_submit_urb(ctrl irq) failed\n", __func__);
++			goto error_submit_urb;
++		}
+ 	}
+ 
+ 	acm_tty_set_termios(tty, NULL);
+@@ -788,6 +792,14 @@ static void acm_port_shutdown(struct tty
+ 
+ 	acm_unpoison_urbs(acm);
+ 
++	if (acm->quirks & ALWAYS_POLL_CTRL) {
++		acm->ctrlurb->dev = acm->dev;
++		if (usb_submit_urb(acm->ctrlurb, GFP_KERNEL))
++			dev_dbg(&acm->control->dev,
++				"ctrl polling restart failed after port close\n");
++		/* port_shutdown() cleared DTR/RTS; restore them */
++		acm_set_control(acm, USB_CDC_CTRL_DTR | USB_CDC_CTRL_RTS);
++	}
  }
  
+ static void acm_tty_cleanup(struct tty_struct *tty)
+@@ -1328,6 +1340,9 @@ skip_normal_probe:
+ 			dev_dbg(&intf->dev,
+ 				"Your device has switched interfaces.\n");
+ 			swap(control_interface, data_interface);
++		} else if (quirks & VENDOR_CLASS_DATA_IFACE) {
++			dev_dbg(&intf->dev,
++				"Vendor-specific data interface class, continuing.\n");
+ 		} else {
+ 			return -EINVAL;
+ 		}
+@@ -1522,6 +1537,9 @@ skip_countries:
+ 	acm->line.bDataBits = 8;
+ 	acm_set_line(acm, &acm->line);
+ 
++	if (quirks & ALWAYS_POLL_CTRL)
++		acm_set_control(acm, USB_CDC_CTRL_DTR | USB_CDC_CTRL_RTS);
++
+ 	if (!acm->combined_interfaces) {
+ 		rv = usb_driver_claim_interface(&acm_driver, data_interface, acm);
+ 		if (rv)
+@@ -1543,6 +1561,13 @@ skip_countries:
+ 
+ 	dev_info(&intf->dev, "ttyACM%d: USB ACM device\n", minor);
+ 
++	if (acm->quirks & ALWAYS_POLL_CTRL) {
++		acm->ctrlurb->dev = acm->dev;
++		if (usb_submit_urb(acm->ctrlurb, GFP_KERNEL))
++			dev_warn(&intf->dev,
++				 "failed to start persistent ctrl polling\n");
++	}
++
+ 	return 0;
+ 
+ err_release_data_interface:
+@@ -1669,7 +1694,7 @@ static int acm_resume(struct usb_interfa
+ 
+ 	acm_unpoison_urbs(acm);
+ 
+-	if (tty_port_initialized(&acm->port)) {
++	if (tty_port_initialized(&acm->port) || (acm->quirks & ALWAYS_POLL_CTRL)) {
+ 		rv = usb_submit_urb(acm->ctrlurb, GFP_ATOMIC);
+ 
+ 		for (;;) {
+@@ -2016,6 +2041,20 @@ static const struct usb_device_id acm_id
+ 	/* CH343 supports CAP_BRK, but doesn't advertise it */
+ 	{ USB_DEVICE(0x1a86, 0x55d3), .driver_info = MISSING_CAP_BRK, },
+ 
++	/*
++	 * Lenovo Yoga Book 9 14IAH10 (83KJ) — INGENIC 17EF:6161 touchscreen
++	 * composite device.  The CDC ACM control interface (0) uses a standard
++	 * Union descriptor, but the data interface (1) is declared as vendor-
++	 * specific class (0xff) with no CDC data descriptors, so cdc-acm would
++	 * normally reject it.  The firmware also requires continuous polling of
++	 * the notification endpoint (EP 0x82) to suppress a 20-second watchdog
++	 * reset; ALWAYS_POLL_CTRL keeps the ctrlurb active even when no TTY is
++	 * open.  Match only the control interface by class to avoid probing the
++	 * vendor-specific data interface.
++	 */
++	{ USB_DEVICE_INTERFACE_CLASS(0x17ef, 0x6161, USB_CLASS_COMM),
++	  .driver_info = VENDOR_CLASS_DATA_IFACE | ALWAYS_POLL_CTRL },
++
+ 	/* control interfaces without any protocol set */
+ 	{ USB_INTERFACE_INFO(USB_CLASS_COMM, USB_CDC_SUBCLASS_ACM,
+ 		USB_CDC_PROTO_NONE) },
 
 
 
