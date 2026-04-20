@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-239879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239531-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ILvLK6VZ5mmtvAEAu9opvQ
-	(envelope-from <stable+bounces-239879-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:51:49 +0200
+	id MLLJA2ll5mlmvwEAu9opvQ
+	(envelope-from <stable+bounces-239531-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:42:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2819343021D
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:51:49 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D07E431D92
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:42:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DC47032CF729
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:10:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C113D324CE09
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:54:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C08934252C;
-	Mon, 20 Apr 2026 16:10:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AF71336EE1;
+	Mon, 20 Apr 2026 15:54:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kl2cr3hR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N7cz8C9Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3017C33B945;
-	Mon, 20 Apr 2026 16:10:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF5872E093A;
+	Mon, 20 Apr 2026 15:54:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701450; cv=none; b=gJHiz75EIehJ8l7iMRNtWDQMJzAStBBNisVZuPa5cT4l4sVk8afoL/Ef61k8I5qYGJuKBNEU5a1YN3NR8HE3F3JMSbCFl7YmFxOwYc5dNpeLfTdRjp1XyoeHf1Eo4SS2qSnOgYTEBy86TOBq/SC6iifBN6gv+4OdL2gWpbroaTc=
+	t=1776700491; cv=none; b=WQgzuiTvb8GCPjHdFBW2BBwCkV5pzq/4xrxsv77/wuKUHyv3LE4MgxEJKBU3bOJL98iV6mztgiKVJR1vD8qRKgdc9dy7mUpfL+KYpBwlGgnmeJRLqtfZ18aRkCnayqPQtcZe5e45sSHkjsa0YMIP/9QWCXvt878BY+3SmrbPGCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701450; c=relaxed/simple;
-	bh=8NVmexDXbALKT7yGDh3n1Dc8dmzuznUrnRkZySrI99s=;
+	s=arc-20240116; t=1776700491; c=relaxed/simple;
+	bh=KrqGuZvpib+by2f/VfJs7CcPn8E6ZtB7+BFlqWpUqSM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gS7NpAj0k2dVJdIJimKcX6/oJXc3METNy3PKBdC3NHHjra3gSYp6C0WUOncytgsj2NksV1Y7Lqc/vcXc/XH+sumSojdeb1J2g3MxiaHdlXl6/fj+gGKRdjSBBYdCNH8D1Pt+5pamO7tPk/jY3rVIuFJm2yJPri+XYEb58dtWku0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kl2cr3hR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8A44C19425;
-	Mon, 20 Apr 2026 16:10:49 +0000 (UTC)
+	 MIME-Version; b=Yh0NCF4CxzIbBr+2+lY4cXBlZyt5aux3xqKuTm57uhYQ4I3ZSLcP5c1OlmktA2V6SIYiu59v5rB0WA0q7CKJxooiAxkr9JrcuVrI+0/t2vYLpYJDSbaupIPrDZHQ1r698hTffDu3yspb9mrcq/j23+fMKgGtcEDC61SylWKOuc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N7cz8C9Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47A3AC19425;
+	Mon, 20 Apr 2026 15:54:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701450;
-	bh=8NVmexDXbALKT7yGDh3n1Dc8dmzuznUrnRkZySrI99s=;
+	s=korg; t=1776700491;
+	bh=KrqGuZvpib+by2f/VfJs7CcPn8E6ZtB7+BFlqWpUqSM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kl2cr3hRcIpUqZqI01VbWC95itsqrn+9pNQyD2gPNUoZP9rJtZ50FVfXQcXip+PrC
-	 H+XWgoC2MGXwUcfRjf6+rlwfIrmgLuKmBgBvbh0j/FDOMIPcWNysvlynsZZoE/xrx8
-	 kV+C2iY0qM0dvdOYSWQGO6hBo3eiz+hfcp3kKP7Q=
+	b=N7cz8C9Y+d2LxIEiHor7Y0CffSWh8JqLkx5dtyu0uAepj8Fn9FYFiAqmnR0GqNMe/
+	 P81uGLp9hkwswklp2wuCxzzaBLzt1ePBxa/AM5IvdP4TQm2MP54KiWDT5dCN7wWJlc
+	 ygUDteQZRTbXcZqziIh2fCWtoBZAa2kjITQkCSdw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+aa11561819dc42ebbc7c@syzkaller.appspotmail.com,
-	Daniel Pouzzner <douzzer@mega.nu>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 085/162] crypto: algif_aead - Fix minimum RX size check for decryption
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.19 176/220] Docs/admin-guide/mm/damon/reclaim: warn commit_inputs vs param updates race
 Date: Mon, 20 Apr 2026 17:41:57 +0200
-Message-ID: <20260420153930.113240857@linuxfoundation.org>
+Message-ID: <20260420153940.363696909@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
-References: <20260420153927.006696811@linuxfoundation.org>
+In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
+References: <20260420153934.013228280@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,75 +63,94 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-239879-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-239531-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,aa11561819dc42ebbc7c];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,appspotmail.com:email,apana.org.au:email,mega.nu:email]
-X-Rspamd-Queue-Id: 2819343021D
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 7D07E431D92
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: SeongJae Park <sj@kernel.org>
 
-[ Upstream commit 3d14bd48e3a77091cbce637a12c2ae31b4a1687c ]
+commit 0beba407d4585a15b0dc09f2064b5b3ddcb0e857 upstream.
 
-The check for the minimum receive buffer size did not take the
-tag size into account during decryption.  Fix this by adding the
-required extra length.
+Patch series "Docs/admin-guide/mm/damon: warn commit_inputs vs other
+params race".
 
-Reported-by: syzbot+aa11561819dc42ebbc7c@syzkaller.appspotmail.com
-Reported-by: Daniel Pouzzner <douzzer@mega.nu>
-Fixes: d887c52d6ae4 ("crypto: algif_aead - overhaul memory management")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Writing 'Y' to the commit_inputs parameter of DAMON_RECLAIM and
+DAMON_LRU_SORT, and writing other parameters before the commit_inputs
+request is completely processed can cause race conditions.  While the
+consequence can be bad, the documentation is not clearly describing that.
+Add clear warnings.
+
+The issue was discovered [1,2] by sashiko.
+
+
+This patch (of 2):
+
+DAMON_RECLAIM handles commit_inputs request inside kdamond thread,
+reading the module parameters.  If the user updates the module
+parameters while the kdamond thread is reading those, races can happen.
+To avoid this, the commit_inputs parameter shows whether it is still in
+the progress, assuming users wouldn't update parameters in the middle of
+the work.  Some users might ignore that.  Add a warning about the
+behavior.
+
+The issue was discovered in [1] by sashiko.
+
+Link: https://lore.kernel.org/20260329153052.46657-2-sj@kernel.org
+Link: https://lore.kernel.org/20260319161620.189392-3-objecting@objecting.org [1]
+Link: https://lore.kernel.org/20260319161620.189392-2-objecting@objecting.org [3]
+Fixes: 81a84182c343 ("Docs/admin-guide/mm/damon/reclaim: document 'commit_inputs' parameter")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org> # 5.19.x
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- crypto/algif_aead.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/admin-guide/mm/damon/reclaim.rst |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/crypto/algif_aead.c b/crypto/algif_aead.c
-index 7d58cbbce4af2..481e66f8708bb 100644
---- a/crypto/algif_aead.c
-+++ b/crypto/algif_aead.c
-@@ -170,7 +170,7 @@ static int _aead_recvmsg(struct socket *sock, struct msghdr *msg,
- 	if (usedpages < outlen) {
- 		size_t less = outlen - usedpages;
+--- a/Documentation/admin-guide/mm/damon/reclaim.rst
++++ b/Documentation/admin-guide/mm/damon/reclaim.rst
+@@ -71,6 +71,10 @@ of parametrs except ``enabled`` again.
+ parameter is set as ``N``.  If invalid parameters are found while the
+ re-reading, DAMON_RECLAIM will be disabled.
  
--		if (used < less) {
-+		if (used < less + (ctx->enc ? 0 : as)) {
- 			err = -EINVAL;
- 			goto free;
- 		}
--- 
-2.53.0
-
++Once ``Y`` is written to this parameter, the user must not write to any
++parameters until reading ``commit_inputs`` again returns ``N``.  If users
++violate this rule, the kernel may exhibit undefined behavior.
++
+ min_age
+ -------
+ 
 
 
 
