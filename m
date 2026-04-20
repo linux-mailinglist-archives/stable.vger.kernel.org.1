@@ -1,162 +1,205 @@
-Return-Path: <stable+bounces-239972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239974-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KA22BRhm5mlmvwEAu9opvQ
-	(envelope-from <stable+bounces-239972-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:44:56 +0200
+	id mKOKLy9m5mlmvwEAu9opvQ
+	(envelope-from <stable+bounces-239974-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:45:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A53A1431FB5
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:44:55 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25152432020
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:45:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 32C2E303F688
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 17:42:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 979CF3025142
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 17:44:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94E9D3A6F19;
-	Mon, 20 Apr 2026 17:41:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ssLraHLc"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A40E3A7593;
+	Mon, 20 Apr 2026 17:44:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f47.google.com (mail-dl1-f47.google.com [74.125.82.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.unwrap.rs (mail.unwrap.rs [172.232.15.166])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FC593A6F1E
-	for <stable@vger.kernel.org>; Mon, 20 Apr 2026 17:41:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6E11355F35;
+	Mon, 20 Apr 2026 17:44:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=172.232.15.166
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776706919; cv=none; b=DAlvDrQjDMQaivC3RcNR3T3KJVPjv3Mg5wWtGTHI7o9P1iFkH/LJhKZkR+fNEua1zFKVxfQQmD2j0s1x33EROwxk3aVvx+r+8Gl3AucRi/LoX9pG0ZjXjdJbK1xmyPjPGUIYIb+aX3kl2es5NqOBCh5NQzVMavf+Rvu+O7qYSKY=
+	t=1776707058; cv=none; b=BVfK00QYrLvD6Np3gjWYxZnrnPSL0qyMgWgWZRlTvzNsw/aI4fCxPYOlgGWeqOjPDWNCz1/NlZ4dg2mJDk8UKNx+AumR2NGzJf9vEHes8CIHivOoXefn2XkHCg4rf7jsHiAtNeBEH/eGzckax2864mmcv81pLSRFufzEnf/ja9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776706919; c=relaxed/simple;
-	bh=6mi9vFMIa04wljYpzGoEMr7NIMDp0gt2cIZj3a2+bP0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pxh6rdKaBkyaV3NiPqsNM3Tf/jARCfUAn6khOVu1pQvQX90dZlT0lypBwIpjuMRX5b6+dGLxfwKwDeRhG1e7xDHOUeTCK+hwnYUmQkFayH8MR1qTQOPZBQsO1zv3vZOwGuplRweAXDDFcmDQBYqN6aDg2LfImb7+WQVg2gkXjHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ssLraHLc; arc=none smtp.client-ip=74.125.82.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dl1-f47.google.com with SMTP id a92af1059eb24-12c8f9846c8so1515608c88.0
-        for <stable@vger.kernel.org>; Mon, 20 Apr 2026 10:41:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776706917; x=1777311717; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=eF+5pDaN6FkJBacKO2EApxwPjev2fE092Gz+F85hoYk=;
-        b=ssLraHLcV4+fR9ARa9zfwJWRje901EcMMNlUwL3RRyupruXa6/OcvRWGOY65AfTTt0
-         JcVIrL0lLhaXUxfOIUj42iCaSX+p700lRRHaxbeptjLAQla9Xzeb/Ru62TXcBbrShKHX
-         XFXGsJ06V54iEPG+Si0PwNaGpk4XZly2LBcbNuKhabeE2/Q4ceDjgAIpZkpvngcMuyFs
-         R4VCftAR+yoos0cxHtTqCpzepT1cGl3kpS1hc5GBiXSuDyrAm/FJtfKGlGrfzcQCBSxs
-         WLhJe22I+mk/RO+2G6BlZaKYQ6mn/lkkYegg8SD76B7pl3lIT2Hmi2E9mbrSHgsutzKi
-         KiHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776706917; x=1777311717;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=eF+5pDaN6FkJBacKO2EApxwPjev2fE092Gz+F85hoYk=;
-        b=irpGIfWzkDkCW2dWCmVcinHAWGFZ1S8XALs8XkUQ1JEHGqIOYT7fPDSe45QnvmU8Z7
-         HZIWvw3bzLQeCYc+SuupZRU06cZG1VeoAX4XFsYIA2dUFEm/T3lYLGdh/dCaOomGmh4C
-         vCCkKmnQ99Tot3x7rBgIcWjo/IKcZx1V1PqPq1+JAsMCFKzniyPQvbpBZmpI8f9DV8hp
-         wLBggPWtazkYBdJZPWQF94F0FW/ND5szBeHsUJ/95MUmGKCi2k/1GgjJ0ViEMvMx9pXW
-         ENf5zcwB0V/5QFLFZVtGfeB7HLb9BFwKCRLUz4ZX04tmUsxHrBtLGZL04mJ4pi6NZl2K
-         E5xw==
-X-Forwarded-Encrypted: i=1; AFNElJ8raVq13tXUMuGI09GXcXyTShzpv4fFEUzD+MLCyBKND7Y0euz0RdSwh/fJkl/sMtu/Pxi7cdE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz6MP57QVy85jnhnu4lmugtuMpTP8kOdN0SZyc+sXKn16ByQOtM
-	63kzDuRjYnyCcX13NVqPk/yqrkOZ2TMRqfNzbQk9lnhd8LHAksgCeKfy
-X-Gm-Gg: AeBDietAiSIuEaPCxC4rCdrccAdM6gT04Og1XsaeOumTzfd2P11KCOeQMWSVSPodH1w
-	LZruZ3G5X5oJX2nqxjQ+MnxosyRdPySjJCHSJUKAEt18rp5b9gDzdSs5zVQ8ZWxMVNRa8HQKiUi
-	KSuGYTSijsN9qciu/hnwC1f76sMq+yA0qiWPml61j865I1r6IOX4XNhyxuykb1c2XRE4aGmpNfT
-	XC8kmowFqIKqOaGiJXsyGChQEEzppvz54mZiBpaQcX2mm1BSz/bAAMv7RdkbDmeb3oM7TekV6aw
-	zAyhJCQQLFReGMJTIxWao/WVaon/R2ehCHgpbO4cVA5nK8BSVzQ0LoCfapyBqYexOQ05B5q+oq+
-	IGETypT6/8FNygK/9TyFPmT3PuIUTEmR33BkMBw6PlSNQrqoYHA9JgJF6s3V953qY3fZb99d+an
-	hyURsnFSZdrwwNhR3EYp+SXUqzPuoEPjGowmjE22XDlBHFE9SH/TqVvoy51k00
-X-Received: by 2002:a05:7022:793:b0:12c:8cd7:d438 with SMTP id a92af1059eb24-12c8cd7dd7cmr2451612c88.9.1776706917221;
-        Mon, 20 Apr 2026 10:41:57 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12c74a18a2bsm22787328c88.10.2026.04.20.10.41.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 20 Apr 2026 10:41:56 -0700 (PDT)
-Message-ID: <82329956-697c-45d9-96c3-44859ff04483@gmail.com>
-Date: Mon, 20 Apr 2026 10:41:54 -0700
+	s=arc-20240116; t=1776707058; c=relaxed/simple;
+	bh=OL8S95UzA5AQbkJJTlTPyxJdS4Grcv4Xh3n1WHpvDkc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Uh1eXuwjuZKSj6y8xF+XY6+FcSXLByxRT53/WTYx/H5k8preprzRWSKFm7QR8o5qxAlD8i1JueVicyrnmjurGZ0J6lcU6NVYM2RJTuC2/bhdCVYwfaQBxDbl8vuslWjXD9gOj6+UdOf/G3RaVOOQALA1/U6brhv96xe1WxWTynE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=unwrap.rs; spf=pass smtp.mailfrom=unwrap.rs; arc=none smtp.client-ip=172.232.15.166
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=unwrap.rs
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=unwrap.rs
+From: Cole Leavitt <cole@unwrap.rs>
+To: linux-wireless@vger.kernel.org
+Cc: greearb@candelatech.com,
+	miriam.rachel.korenblit@intel.com,
+	johannes@sipsolutions.net,
+	cole@unwrap.rs,
+	stable@vger.kernel.org
+Subject: [PATCH v3 1/3] wifi: iwlwifi: add STATUS_FW_ERROR guards to NAPI/TX-notif paths
+Date: Mon, 20 Apr 2026 10:44:04 -0700
+Message-ID: <20260420174406.128254-2-cole@unwrap.rs>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260420174406.128254-1-cole@unwrap.rs>
+References: <20260420174406.128254-1-cole@unwrap.rs>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.19 000/220] 6.19.14-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
- hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
- sr@sladewatkins.com
-References: <20260420153934.013228280@linuxfoundation.org>
-Content-Language: en-US, fr-FR
-From: Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [2.04 / 15.00];
+	DMARC_POLICY_REJECT(2.00)[unwrap.rs : SPF not aligned (strict), No valid DKIM,reject];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-239972-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ffainelli@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_THREE(0.00)[3];
+	TAGGED_FROM(0.00)[bounces-239974-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[broadcom.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A53A1431FB5
+	R_DKIM_NA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[cole@unwrap.rs,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	TO_DN_NONE(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,unwrap.rs:mid,unwrap.rs:email]
+X-Rspamd-Queue-Id: 25152432020
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 4/20/26 08:39, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.19.14 release.
-> There are 220 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed, 22 Apr 2026 15:38:52 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.19.14-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.19.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+After firmware error is detected and STATUS_FW_ERROR is set, NAPI may
+still be in-flight from a prior interrupt or get scheduled by the MSIX
+IRQ handler before the error bit is processed.  The NAPI poll functions
+have no STATUS_FW_ERROR check and will continue processing stale RX ring
+entries from dying firmware.
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+iwl_trans_reclaim() already early-returns on STATUS_FW_ERROR, so any
+TX-response notification that makes it through to reclaim is a no-op.
+What remains is:
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+  * CPU spent parsing stale RX inside iwl_pcie_rx_handle() before
+    dispatching to the op_mode.
+  * No signal in the logs when the race fires, making the
+    post-FW-error sequence harder to debug.
+
+Add STATUS_FW_ERROR early-returns with WARN_ONCE() in four places:
+
+  * iwl_pcie_napi_poll()        (legacy NAPI poll)
+  * iwl_pcie_napi_poll_msix()   (MSIX NAPI poll)
+  * iwl_mld_handle_tx_resp_notif()
+  * iwl_mld_handle_compressed_ba_notif()
+
+Rationale:
+
+  1. Stop NAPI from consuming any more RX budget once firmware is
+     declared dead; the restart path will re-initialise the rings.
+  2. Provide a single, one-shot log line via WARN_ONCE so we can tell
+     from a user's dmesg whether the post-error race actually fired in
+     their configuration, which has been hard to reproduce outside
+     Ben Greear's test rig.
+
+_iwl_trans_pcie_gen2_stop_device() already calls iwl_pcie_rx_napi_sync()
+to quiesce NAPI during device teardown, but that runs much later in the
+restart sequence; these checks close the window between error detection
+and device stop.
+
+Fixes: d1e879ec600f ("wifi: iwlwifi: add iwlmld sub-driver")
+Cc: stable@vger.kernel.org
+Tested-by: Ben Greear <greearb@candelatech.com>
+Signed-off-by: Cole Leavitt <cole@unwrap.rs>
+---
+ drivers/net/wireless/intel/iwlwifi/mld/tx.c       | 19 +++++++++++++++++++
+ drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/rx.c | 18 ++++++++++++++++++
+ 2 files changed, 37 insertions(+)
+
+diff --git a/drivers/net/wireless/intel/iwlwifi/mld/tx.c b/drivers/net/wireless/intel/iwlwifi/mld/tx.c
+index 546d09a38dab..e341d12e5233 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mld/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/mld/tx.c
+@@ -1082,6 +1082,15 @@ void iwl_mld_handle_tx_resp_notif(struct iwl_mld *mld,
+ 	bool mgmt = false;
+ 	bool tx_failure = (status & TX_STATUS_MSK) != TX_STATUS_SUCCESS;
+ 
++	/* iwl_trans_reclaim() already guards on STATUS_FW_ERROR, but
++	 * bail out earlier (and log once) so we can tell from dmesg
++	 * whether this race actually fires in the field.
++	 */
++	if (unlikely(test_bit(STATUS_FW_ERROR, &mld->trans->status))) {
++		WARN_ONCE(1, "iwlwifi: TX resp notif (sta=%d txq=%d) after FW error\n",
++			  sta_id, txq_id);
++		return;
++	}
+ 	if (IWL_FW_CHECK(mld, tx_resp->frame_count != 1,
+ 			 "Invalid tx_resp notif frame_count (%d)\n",
+ 			 tx_resp->frame_count))
+@@ -1360,6 +1369,16 @@ void iwl_mld_handle_compressed_ba_notif(struct iwl_mld *mld,
+ 	u8 sta_id = ba_res->sta_id;
+ 	struct ieee80211_link_sta *link_sta;
+ 
++	/* Same rationale as iwl_mld_handle_tx_resp_notif: redundant with
++	 * iwl_trans_reclaim()'s own STATUS_FW_ERROR check, but fails fast
++	 * and logs via WARN_ONCE when the race is actually hit.
++	 */
++	if (unlikely(test_bit(STATUS_FW_ERROR, &mld->trans->status))) {
++		WARN_ONCE(1, "iwlwifi: BA notif (sta=%d) after FW error\n",
++			  sta_id);
++		return;
++	}
++
+ 	if (!tfd_cnt)
+ 		return;
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/rx.c b/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/rx.c
+index fe263cdc2e4f..554c22777ec1 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/rx.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/gen1_2/rx.c
+@@ -1012,6 +1012,15 @@ static int iwl_pcie_napi_poll(struct napi_struct *napi, int budget)
+ 	trans_pcie = iwl_netdev_to_trans_pcie(napi->dev);
+ 	trans = trans_pcie->trans;
+ 
++	/* Don't process RX for dying firmware; the restart path will
++	 * re-init the rings.  WARN_ONCE helps surface whether this race
++	 * actually fires in user dmesg.
++	 */
++	if (unlikely(test_bit(STATUS_FW_ERROR, &trans->status))) {
++		WARN_ONCE(1, "iwlwifi: NAPI poll[%d] invoked after FW error\n",
++			  rxq->id);
++		napi_complete_done(napi, 0);
++		return 0;
++	}
++
+ 	ret = iwl_pcie_rx_handle(trans, rxq->id, budget);
+ 
+ 	IWL_DEBUG_ISR(trans, "[%d] handled %d, budget %d\n",
+@@ -1039,6 +1048,15 @@ static int iwl_pcie_napi_poll_msix(struct napi_struct *napi, int budget)
+ 	trans_pcie = iwl_netdev_to_trans_pcie(napi->dev);
+ 	trans = trans_pcie->trans;
+ 
++	if (unlikely(test_bit(STATUS_FW_ERROR, &trans->status))) {
++		WARN_ONCE(1,
++			  "iwlwifi: NAPI MSIX poll[%d] invoked after FW error\n",
++			  rxq->id);
++		napi_complete_done(napi, 0);
++		return 0;
++	}
++
+ 	ret = iwl_pcie_rx_handle(trans, rxq->id, budget);
+ 	IWL_DEBUG_ISR(trans, "[%d] handled %d, budget %d\n", rxq->id, ret,
+ 		      budget);
 -- 
-Florian
+2.52.0
 
