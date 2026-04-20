@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-239625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239450-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SF+5NWtm5mlmvwEAu9opvQ
-	(envelope-from <stable+bounces-239625-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:46:19 +0200
+	id IA8pL5Vk5mkKvwEAu9opvQ
+	(envelope-from <stable+bounces-239450-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:38:29 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 750CC4320FB
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:46:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BEA3431A62
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:38:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 226D133034F9
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:58:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 96271393B8CB
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:51:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B162C2E36F8;
-	Mon, 20 Apr 2026 15:58:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BADAD17A31C;
+	Mon, 20 Apr 2026 15:51:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O9IDDBNV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uiFfgVM+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7553917A31C;
-	Mon, 20 Apr 2026 15:58:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D06C3396EE;
+	Mon, 20 Apr 2026 15:51:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700736; cv=none; b=Fr62mPT8ff7GqYYP1H0+NnzLZJSpbMyFinJHfbT+8Vo7CAxfKuyviMhBYelaHfmFgWz2Bt2oFfYvzvnbESg4YUMJxijnZS1biwU9E1i6LAnGaerh0eXcnwXUWX7CU4DRG8Um18Teg/IdPj4Bv1pa4blFapy3YlvftCpCMt0BMIc=
+	t=1776700284; cv=none; b=L5lva7wQ6NQKDlCWEjpaunqB/o7ODMPxJrxz9gddq/sT3yxBziRxLN7/2HZIrWMyCX2tUXOgVFvDzBFK5bEAIUOxPXGlGyvoCYEOgYWBjeMkWJJ9ymg/05Z8hD4VGZjbPHbjTZ0/UPxV+0L0CXjaWKruY1ChhUdaPlR7vvW/iuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700736; c=relaxed/simple;
-	bh=zl1vlMzaSN4qOE+81RQpu459HzRgtWGYdbUgv3ZvSa0=;
+	s=arc-20240116; t=1776700284; c=relaxed/simple;
+	bh=OvP3SmeFi7+CJyHTfOPZlPd3wFxzAWGs/wq8cJheV5I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=up4W+2aWEl2mSXLfZo7jg7RWEUagHVReqCq5U+iRqWCM4sztR+fbPOp7EsPxiklz+7HZOiM9TbyKv0/CzyZoho60JITJuuO2UsB2rk8HmCQgBrylyks5yGD+LUGI5jdijs3x7/8VV94nrtkKkwMc840b1NSuD6cExPmSMFi4Z7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O9IDDBNV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BFE9C19425;
-	Mon, 20 Apr 2026 15:58:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Cpk2dRXAh/4gD08C48NSd2XP/aYaYmFmjGqxAF9AJxxV+UNAdj6UiZhW487uEOaS6fxzsCIcPldplujyJUayWmzpoqMO6xK0WNKTf3Ty5OfrdDdVhbsv/P+XcExKAMFdT+XI4rtootPZs1I0goHWoO7YM8BTCNUk8tebWIrbE1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uiFfgVM+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1446DC19425;
+	Mon, 20 Apr 2026 15:51:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700736;
-	bh=zl1vlMzaSN4qOE+81RQpu459HzRgtWGYdbUgv3ZvSa0=;
+	s=korg; t=1776700284;
+	bh=OvP3SmeFi7+CJyHTfOPZlPd3wFxzAWGs/wq8cJheV5I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O9IDDBNVRGAIrU6vDSkfhDO8so8o1TLgQw1ivcCA4nKHxjGlApfBqeFX65ItU3Qbj
-	 ldhENsJ1++78RvZYONis87obU2+rCVHX1GwRfRlBg+1R55Y8jY0CbnDotNC37sBnmn
-	 RZcNHkf3bA4A6iMJG0xn2kuBt7cOTawXHR2yCdPg=
+	b=uiFfgVM+Ue3PUCF+iQxRxn/lp0eO11rOmbQ95Qb7BDHo6KXBsMI1hy2MmlAXPkINp
+	 iy/v/wInnV+UNf+AGRcs06PIhfDi8IJ7hrjtrZ5EkDVGWzWAzy9ugAN0qkrS0JVsan
+	 fiD8u22SwMBumtzYIB7Zt+3YjV8lfxv7bV0Cb/wU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Melissa Wen <mwen@igalia.com>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 066/198] drm/vc4: Fix memory leak of BO array in hang state
-Date: Mon, 20 Apr 2026 17:40:45 +0200
-Message-ID: <20260420153937.989102810@linuxfoundation.org>
+Subject: [PATCH 6.19 105/220] xsk: validate MTU against usable frame size on bind
+Date: Mon, 20 Apr 2026 17:40:46 +0200
+Message-ID: <20260420153937.815205042@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
+References: <20260420153934.013228280@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,60 +74,119 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-239450-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239625-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[igalia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 750CC4320FB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,intel.com:email]
+X-Rspamd-Queue-Id: 3BEA3431A62
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maíra Canal <mcanal@igalia.com>
+From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 
-[ Upstream commit f4dfd6847b3e5d24e336bca6057485116d17aea4 ]
+[ Upstream commit 36ee60b569ba0dfb6f961333b90d19ab5b323fa9 ]
 
-The hang state's BO array is allocated separately with kzalloc() in
-vc4_save_hang_state() but never freed in vc4_free_hang_state(). Add the
-missing kfree() for the BO array before freeing the hang state struct.
+AF_XDP bind currently accepts zero-copy pool configurations without
+verifying that the device MTU fits into the usable frame space provided
+by the UMEM chunk.
 
-Fixes: 214613656b51 ("drm/vc4: Add an interface for capturing the GPU state after a hang.")
-Reviewed-by: Melissa Wen <mwen@igalia.com>
-Link: https://patch.msgid.link/20260330-vc4-misc-fixes-v1-2-92defc940a29@igalia.com
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
+This becomes a problem since we started to respect tailroom which is
+subtracted from chunk_size (among with headroom). 2k chunk size might
+not provide enough space for standard 1500 MTU, so let us catch such
+settings at bind time. Furthermore, validate whether underlying HW will
+be able to satisfy configured MTU wrt XSK's frame size multiplied by
+supported Rx buffer chain length (that is exposed via
+net_device::xdp_zc_max_segs).
+
+Fixes: 24ea50127ecf ("xsk: support mbuf on ZC RX")
+Reviewed-by: Björn Töpel <bjorn@kernel.org>
+Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Link: https://patch.msgid.link/20260402154958.562179-5-maciej.fijalkowski@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vc4/vc4_gem.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/xdp/xsk_buff_pool.c | 28 +++++++++++++++++++++++++---
+ 1 file changed, 25 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/vc4/vc4_gem.c b/drivers/gpu/drm/vc4/vc4_gem.c
-index 255e5817618e3..6238630e46793 100644
---- a/drivers/gpu/drm/vc4/vc4_gem.c
-+++ b/drivers/gpu/drm/vc4/vc4_gem.c
-@@ -61,6 +61,7 @@ vc4_free_hang_state(struct drm_device *dev, struct vc4_hang_state *state)
- 	for (i = 0; i < state->user_state.bo_count; i++)
- 		drm_gem_object_put(state->bo[i]);
+diff --git a/net/xdp/xsk_buff_pool.c b/net/xdp/xsk_buff_pool.c
+index 6799ab6672f3e..1f96bdf1e7a60 100644
+--- a/net/xdp/xsk_buff_pool.c
++++ b/net/xdp/xsk_buff_pool.c
+@@ -10,6 +10,8 @@
+ #include "xdp_umem.h"
+ #include "xsk.h"
  
-+	kfree(state->bo);
- 	kfree(state);
- }
++#define ETH_PAD_LEN (ETH_HLEN + 2 * VLAN_HLEN  + ETH_FCS_LEN)
++
+ void xp_add_xsk(struct xsk_buff_pool *pool, struct xdp_sock *xs)
+ {
+ 	if (!xs->tx)
+@@ -158,8 +160,12 @@ static void xp_disable_drv_zc(struct xsk_buff_pool *pool)
+ int xp_assign_dev(struct xsk_buff_pool *pool,
+ 		  struct net_device *netdev, u16 queue_id, u16 flags)
+ {
++	u32 needed = netdev->mtu + ETH_PAD_LEN;
++	u32 segs = netdev->xdp_zc_max_segs;
++	bool mbuf = flags & XDP_USE_SG;
+ 	bool force_zc, force_copy;
+ 	struct netdev_bpf bpf;
++	u32 frame_size;
+ 	int err = 0;
+ 
+ 	ASSERT_RTNL();
+@@ -179,7 +185,7 @@ int xp_assign_dev(struct xsk_buff_pool *pool,
+ 	if (err)
+ 		return err;
+ 
+-	if (flags & XDP_USE_SG)
++	if (mbuf)
+ 		pool->umem->flags |= XDP_UMEM_SG_FLAG;
+ 
+ 	if (flags & XDP_USE_NEED_WAKEUP)
+@@ -201,8 +207,24 @@ int xp_assign_dev(struct xsk_buff_pool *pool,
+ 		goto err_unreg_pool;
+ 	}
+ 
+-	if (netdev->xdp_zc_max_segs == 1 && (flags & XDP_USE_SG)) {
+-		err = -EOPNOTSUPP;
++	if (mbuf) {
++		if (segs == 1) {
++			err = -EOPNOTSUPP;
++			goto err_unreg_pool;
++		}
++	} else {
++		segs = 1;
++	}
++
++	/* open-code xsk_pool_get_rx_frame_size() as pool->dev is not
++	 * set yet at this point; we are before getting down to driver
++	 */
++	frame_size = __xsk_pool_get_rx_frame_size(pool) -
++		     xsk_pool_get_tailroom(mbuf);
++	frame_size = ALIGN_DOWN(frame_size, 128);
++
++	if (needed > frame_size * segs) {
++		err = -EINVAL;
+ 		goto err_unreg_pool;
+ 	}
  
 -- 
 2.53.0
