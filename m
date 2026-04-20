@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-239808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239627-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CHHkKXto5mnBvwEAu9opvQ
-	(envelope-from <stable+bounces-239808-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:55:07 +0200
+	id gL70NXJi5mmavgEAu9opvQ
+	(envelope-from <stable+bounces-239627-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:29:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32DB3432421
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:55:07 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5A3D431452
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:29:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D0A6B33CC862
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:07:50 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3F8E531135A7
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:59:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09DC933EAF9;
-	Mon, 20 Apr 2026 16:07:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCC90329E44;
+	Mon, 20 Apr 2026 15:59:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ACBlgw+n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="duSLrFqp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C14593375C5;
-	Mon, 20 Apr 2026 16:07:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90A721EB5CE;
+	Mon, 20 Apr 2026 15:59:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701268; cv=none; b=HxNGDjGtsb5y6augS9OaZ0IjqcL9mvzvFafsnGPvQXcRTOAVdmlNckiQMUx1w1tK4NX4eDNPjSFSJmxnx1uM9Sb/uF8SaasmBXqNB2RtFUSsL0EpyILYGYszYGJ6yd6i0jRVjj99PajFi89GN0UGLKxyHYUUH5Y/r+tabnF+FS4=
+	t=1776700741; cv=none; b=G2MY2MqgNYcX8VtORUa6z+hmcsjpZiitQHLs1t6duiqghwSU+QDf1ErpZRK216GvUUxGAczgNdJxgUJTS4wwFCVZfYJfFwvm0V/XGl7feFgcTR06vZ8gXlRUB0NgSuei6EUe/Lqzhl2F95v9ZUCf/K+WtpxWoTrI9U3aHM2U6As=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701268; c=relaxed/simple;
-	bh=ovFRVzdXDg7Gx4kcrqcj3tQDZSwsIXq08in4lJRksiI=;
+	s=arc-20240116; t=1776700741; c=relaxed/simple;
+	bh=nzHr05GC+ZV/e6yXtgU+TsNohVCpcUZd0a/Ka68/tR8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U6KYpsVCiNouOOmV1lXpBtitsSZI99VHMnGw8c2zVXP0IuCMdm6Nmw4fXqZZX4i4JtP+t5rerHohbBQtip9IiY+dTA/YiYMINRj3ZKzTxdLZ/ZvrrqRsKZnC8AqwJfJDFEPtU9PHoqUWqCndIJ16r4rLOrGV86LVHJm+9+EONAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ACBlgw+n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57DE2C19425;
-	Mon, 20 Apr 2026 16:07:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bUw2kNfgzQ/fB5ljRJElKK0VOe1id8V3gVyKJ53QXaVt40eaXO52y8tkjF3fkZJA3lPlKNa/e7AeunWPQ8hAOkShcC94g1g9lgjQozzxCtwhpyv1bdrTCEO5QF3rsKmi29PPDNmo5uu5VTwef+RXxLSwzKIJbOizsdp7t0WjMR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=duSLrFqp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27FE1C19425;
+	Mon, 20 Apr 2026 15:59:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701268;
-	bh=ovFRVzdXDg7Gx4kcrqcj3tQDZSwsIXq08in4lJRksiI=;
+	s=korg; t=1776700741;
+	bh=nzHr05GC+ZV/e6yXtgU+TsNohVCpcUZd0a/Ka68/tR8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ACBlgw+noJvupmlFcIB87TAVp6DqVdTxjA9aNc3KYGod7t6CKjDQOpC5O7w4ZMMEv
-	 kRIs/i7sP7+GRG1l1Lb2SS4k8ALUFaZaK4T7Qigm7ZdqZKMs1keXSAl6/QLnDZNPpF
-	 iK/oQ3CJ1HhmnvavF8aBhyrWSLvV7tYPZzEgNX2Y=
+	b=duSLrFqpahlmVdjzAqiYHqpCBMj+9N++cScsX146o9eSqbiATIcviFUUUjeUQ+6kK
+	 oZnjvgt1R5UMQHvdmZ/brIx9UK6hKlJbAgOnuRGTFp4mV7nO4yMHmSJL1+0oZC4gQf
+	 1Qr9W3PwHdllbGjvSVoMqmid32PfgaGbRiaFpEBI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
+	Melissa Wen <mwen@igalia.com>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 015/162] srcu: Use irq_work to start GP in tiny SRCU
+Subject: [PATCH 6.18 068/198] drm/vc4: Protect madv read in vc4_gem_object_mmap() with madv_lock
 Date: Mon, 20 Apr 2026 17:40:47 +0200
-Message-ID: <20260420153927.571187768@linuxfoundation.org>
+Message-ID: <20260420153938.060315447@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
-References: <20260420153927.006696811@linuxfoundation.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,168 +63,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239808-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239627-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,nvidia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 32DB3432421
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[igalia.com:email,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: E5A3D431452
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joel Fernandes <joelagnelf@nvidia.com>
+From: Maíra Canal <mcanal@igalia.com>
 
-[ Upstream commit a6fc88b22bc8d12ad52e8412c667ec0f5bf055af ]
+[ Upstream commit 338c56050d8e892604da97f67bfa8cc4015a955f ]
 
-Tiny SRCU's srcu_gp_start_if_needed() directly calls schedule_work(),
-which acquires the workqueue pool->lock.
+The mmap callback reads bo->madv without holding madv_lock, racing with
+concurrent DRM_IOCTL_VC4_GEM_MADVISE calls that modify the field under
+the same lock. Add the missing locking to prevent the data race.
 
-This causes a lockdep splat when call_srcu() is called with a scheduler
-lock held, due to:
-
-  call_srcu() [holding pi_lock]
-    srcu_gp_start_if_needed()
-      schedule_work() -> pool->lock
-
-  workqueue_init() / create_worker() [holding pool->lock]
-    wake_up_process() -> try_to_wake_up() -> pi_lock
-
-Also add irq_work_sync() to cleanup_srcu_struct() to prevent a
-use-after-free if a queued irq_work fires after cleanup begins.
-
-Tested with rcutorture SRCU-T and no lockdep warnings.
-
-[ Thanks to Boqun for similar fix in patch "rcu: Use an intermediate irq_work
-to start process_srcu()" ]
-
-Signed-off-by: Joel Fernandes <joelagnelf@nvidia.com>
-Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Boqun Feng <boqun@kernel.org>
+Fixes: b9f19259b84d ("drm/vc4: Add the DRM_IOCTL_VC4_GEM_MADVISE ioctl")
+Reviewed-by: Melissa Wen <mwen@igalia.com>
+Link: https://patch.msgid.link/20260330-vc4-misc-fixes-v1-4-92defc940a29@igalia.com
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/srcutiny.h |  4 ++++
- kernel/rcu/srcutiny.c    | 19 ++++++++++++++++++-
- 2 files changed, 22 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/vc4/vc4_bo.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/include/linux/srcutiny.h b/include/linux/srcutiny.h
-index 4d96bbdb45f08..6f39d3d8ef879 100644
---- a/include/linux/srcutiny.h
-+++ b/include/linux/srcutiny.h
-@@ -11,6 +11,7 @@
- #ifndef _LINUX_SRCU_TINY_H
- #define _LINUX_SRCU_TINY_H
- 
-+#include <linux/irq_work_types.h>
- #include <linux/swait.h>
- 
- struct srcu_struct {
-@@ -24,18 +25,21 @@ struct srcu_struct {
- 	struct rcu_head *srcu_cb_head;	/* Pending callbacks: Head. */
- 	struct rcu_head **srcu_cb_tail;	/* Pending callbacks: Tail. */
- 	struct work_struct srcu_work;	/* For driving grace periods. */
-+	struct irq_work srcu_irq_work;	/* Defer schedule_work() to irq work. */
- #ifdef CONFIG_DEBUG_LOCK_ALLOC
- 	struct lockdep_map dep_map;
- #endif /* #ifdef CONFIG_DEBUG_LOCK_ALLOC */
- };
- 
- void srcu_drive_gp(struct work_struct *wp);
-+void srcu_tiny_irq_work(struct irq_work *irq_work);
- 
- #define __SRCU_STRUCT_INIT(name, __ignored, ___ignored)			\
- {									\
- 	.srcu_wq = __SWAIT_QUEUE_HEAD_INITIALIZER(name.srcu_wq),	\
- 	.srcu_cb_tail = &name.srcu_cb_head,				\
- 	.srcu_work = __WORK_INITIALIZER(name.srcu_work, srcu_drive_gp),	\
-+	.srcu_irq_work = { .func = srcu_tiny_irq_work },		\
- 	__SRCU_DEP_MAP_INIT(name)					\
- }
- 
-diff --git a/kernel/rcu/srcutiny.c b/kernel/rcu/srcutiny.c
-index 4dcbf8aa80ff7..ddea40b68e5f6 100644
---- a/kernel/rcu/srcutiny.c
-+++ b/kernel/rcu/srcutiny.c
-@@ -9,6 +9,7 @@
-  */
- 
- #include <linux/export.h>
-+#include <linux/irq_work.h>
- #include <linux/mutex.h>
- #include <linux/preempt.h>
- #include <linux/rcupdate_wait.h>
-@@ -37,6 +38,7 @@ static int init_srcu_struct_fields(struct srcu_struct *ssp)
- 	ssp->srcu_idx_max = 0;
- 	INIT_WORK(&ssp->srcu_work, srcu_drive_gp);
- 	INIT_LIST_HEAD(&ssp->srcu_work.entry);
-+	init_irq_work(&ssp->srcu_irq_work, srcu_tiny_irq_work);
- 	return 0;
- }
- 
-@@ -80,6 +82,7 @@ EXPORT_SYMBOL_GPL(init_srcu_struct);
- void cleanup_srcu_struct(struct srcu_struct *ssp)
- {
- 	WARN_ON(ssp->srcu_lock_nesting[0] || ssp->srcu_lock_nesting[1]);
-+	irq_work_sync(&ssp->srcu_irq_work);
- 	flush_work(&ssp->srcu_work);
- 	WARN_ON(ssp->srcu_gp_running);
- 	WARN_ON(ssp->srcu_gp_waiting);
-@@ -168,6 +171,20 @@ void srcu_drive_gp(struct work_struct *wp)
- }
- EXPORT_SYMBOL_GPL(srcu_drive_gp);
- 
-+/*
-+ * Use an irq_work to defer schedule_work() to avoid acquiring the workqueue
-+ * pool->lock while the caller might hold scheduler locks, causing lockdep
-+ * splats due to workqueue_init() doing a wakeup.
-+ */
-+void srcu_tiny_irq_work(struct irq_work *irq_work)
-+{
-+	struct srcu_struct *ssp;
-+
-+	ssp = container_of(irq_work, struct srcu_struct, srcu_irq_work);
-+	schedule_work(&ssp->srcu_work);
-+}
-+EXPORT_SYMBOL_GPL(srcu_tiny_irq_work);
-+
- static void srcu_gp_start_if_needed(struct srcu_struct *ssp)
- {
- 	unsigned long cookie;
-@@ -181,7 +198,7 @@ static void srcu_gp_start_if_needed(struct srcu_struct *ssp)
- 	WRITE_ONCE(ssp->srcu_idx_max, cookie);
- 	if (!READ_ONCE(ssp->srcu_gp_running)) {
- 		if (likely(srcu_init_done))
--			schedule_work(&ssp->srcu_work);
-+			irq_work_queue(&ssp->srcu_irq_work);
- 		else if (list_empty(&ssp->srcu_work.entry))
- 			list_add(&ssp->srcu_work.entry, &srcu_boot_list);
+diff --git a/drivers/gpu/drm/vc4/vc4_bo.c b/drivers/gpu/drm/vc4/vc4_bo.c
+index 4aaa587be3a5e..a1efda9c39f92 100644
+--- a/drivers/gpu/drm/vc4/vc4_bo.c
++++ b/drivers/gpu/drm/vc4/vc4_bo.c
+@@ -738,12 +738,15 @@ static int vc4_gem_object_mmap(struct drm_gem_object *obj, struct vm_area_struct
+ 		return -EINVAL;
  	}
+ 
++	mutex_lock(&bo->madv_lock);
+ 	if (bo->madv != VC4_MADV_WILLNEED) {
+ 		DRM_DEBUG("mmapping of %s BO not allowed\n",
+ 			  bo->madv == VC4_MADV_DONTNEED ?
+ 			  "purgeable" : "purged");
++		mutex_unlock(&bo->madv_lock);
+ 		return -EINVAL;
+ 	}
++	mutex_unlock(&bo->madv_lock);
+ 
+ 	return drm_gem_dma_mmap(&bo->base, vma);
+ }
 -- 
 2.53.0
 
