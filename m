@@ -1,65 +1,60 @@
-Return-Path: <stable+bounces-239699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239872-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UKyTONFO5mkgugEAu9opvQ
-	(envelope-from <stable+bounces-239699-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:05:37 +0200
+	id sEjMHOxi5mmavgEAu9opvQ
+	(envelope-from <stable+bounces-239872-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:31:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8418E42EF3D
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:05:37 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CD4143154E
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:31:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 950C5302570C
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:03:28 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B60EC3046291
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:10:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0B7E33F8AA;
-	Mon, 20 Apr 2026 16:03:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F93F33F5A9;
+	Mon, 20 Apr 2026 16:10:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UAk3rQJh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nwv0GKzG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 787903446AD;
-	Mon, 20 Apr 2026 16:03:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42F9E3446A7;
+	Mon, 20 Apr 2026 16:10:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700990; cv=none; b=RVp67JDXR8kbkUt2AuD5Hq6tc/geASXrt1XanOEnHiwsnUq17941tpPRIGykXi/KnZIYzYhvesU/qASPV5CzIv59g7Uo22uhLLc+PhuRayCk4keTxUDhiKO3IUnoOiWTw70/M1VZkBzCtwgrREQkiTbMMt+2XOVqBcNg6yR0Z5A=
+	t=1776701432; cv=none; b=mMMREfDQwDf0YxhZmLexsmYgKcBv/Ky8zgLHZ30oMeuRNpRvePRshJ74kzOADrgu1gVIWAIgt/NqdD6KrpvXAv13gZx43iaBG83yXazIn172C9CXAcy3Qzb+xoyJn8FJngGz2DJAKbakni9epu2+kXcFYWXMNcCx6ttyiVE6n9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700990; c=relaxed/simple;
-	bh=ZhcLdB0UlHcntoI5C+GV++UwFk94xpd4HZQQ0v1V8hM=;
+	s=arc-20240116; t=1776701432; c=relaxed/simple;
+	bh=Q2x3ZwJca8WJoXAe0I4LFpRqZi+9ENNoxtqFGQq+ikI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X5NfSRKU6+gxgzIfghNNJIdJFwFZF9/Os8CmrNGcDohOepZ7EGIjb4p868ARXH7gdm4TB1w/12NiVgBOnWDEgHJaHFOvwJt9VknE9AyvIUrVxAsW4zmJI2m3yVZXkLbGiJHNqpzHqxmOjvUP/B39JsQuEj2wHuUuK3QOPjyYLr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UAk3rQJh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B0B2C2BCB6;
-	Mon, 20 Apr 2026 16:03:09 +0000 (UTC)
+	 MIME-Version; b=Lb5dLyxkhJNzdZsFdBSUFNuuDLkIm7H7UcU54bbBgxtJFCjCKnJLxalSRIq5A/vP4lzF/Z2e6UYLrjXcYBRUEvCehJK1wxVKkE0GrYwqAcrbIavt6H9O3nHLBaFaNXp80cT8V3JMjoIli13JHit1wePZ5ZEEFiX8LpMidNm/IXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nwv0GKzG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF212C19425;
+	Mon, 20 Apr 2026 16:10:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700990;
-	bh=ZhcLdB0UlHcntoI5C+GV++UwFk94xpd4HZQQ0v1V8hM=;
+	s=korg; t=1776701432;
+	bh=Q2x3ZwJca8WJoXAe0I4LFpRqZi+9ENNoxtqFGQq+ikI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UAk3rQJhIDjMv2YIjVZboXJTmjFsCzwMlRanZBvNE1GT8YBk7Ag4ybNylnavQeeGa
-	 Zv2MIoXlCzm4a13Wq4t5iVhfC3YstvmleI3V9CeNaUa5dQH4r3g7P/3OP3GRQ/aRGD
-	 uSD0mPMM592ACscUXycDTmKe7oqlbk73W1tWCFvE=
+	b=nwv0GKzGw1MdNiFAgM3bUj4fwt1QiC10c+O5Kw6nkoFzHK8gep0v6JOjt5XhzuneL
+	 BwjArNm5/39Eo+Ywo1XmqQRTPNfJEzQitVdqbym0gqKRT1g4jbUpbczgQZV6uGccZn
+	 rMxDcumuJ8Lmy/X5GKNYnlvJGpMFzp11vhvWYYgI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Tom Talpey <tom@talpey.com>,
-	Bharath SM <bharathsm@microsoft.com>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	stable <stable@kernel.org>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.18 137/198] smb: client: fix off-by-8 bounds check in check_wsl_eas()
+	Calvin Owens <calvin@wbinvd.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Borislav Petkov <bp@alien8.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 084/162] clockevents: Prevent timer interrupt starvation
 Date: Mon, 20 Apr 2026 17:41:56 +0200
-Message-ID: <20260420153940.539666924@linuxfoundation.org>
+Message-ID: <20260420153930.076836934@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
+References: <20260420153927.006696811@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,90 +67,252 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-239699-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,microsoft.com,talpey.com,vger.kernel.org,lists.samba.org,kernel.org,manguebit.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239872-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,talpey.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 8418E42EF3D
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[wbinvd.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,alien8.de:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 9CD4143154E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Thomas Gleixner <tglx@kernel.org>
 
-commit 3d8b9d06bd3ac4c6846f5498800b0f5f8062e53b upstream.
+[ Upstream commit d6e152d905bdb1f32f9d99775e2f453350399a6a ]
 
-The bounds check uses (u8 *)ea + nlen + 1 + vlen as the end of the EA
-name and value, but ea_data sits at offset sizeof(struct
-smb2_file_full_ea_info) = 8 from ea, not at offset 0.  The strncmp()
-later reads ea->ea_data[0..nlen-1] and the value bytes follow at
-ea_data[nlen+1..nlen+vlen], so the actual end is ea->ea_data + nlen + 1
-+ vlen.  Isn't pointer math fun?
+Calvin reported an odd NMI watchdog lockup which claims that the CPU locked
+up in user space. He provided a reproducer, which sets up a timerfd based
+timer and then rearms it in a loop with an absolute expiry time of 1ns.
 
-The earlier check (u8 *)ea > end - sizeof(*ea) only guarantees the
-8-byte header is in bounds, but since the last EA is placed within 8
-bytes of the end of the response, the name and value bytes are read past
-the end of iov.
+As the expiry time is in the past, the timer ends up as the first expiring
+timer in the per CPU hrtimer base and the clockevent device is programmed
+with the minimum delta value. If the machine is fast enough, this ends up
+in a endless loop of programming the delta value to the minimum value
+defined by the clock event device, before the timer interrupt can fire,
+which starves the interrupt and consequently triggers the lockup detector
+because the hrtimer callback of the lockup mechanism is never invoked.
 
-Fix this mess all up by using ea->ea_data as the base for the bounds
-check.
+As a first step to prevent this, avoid reprogramming the clock event device
+when:
+     - a forced minimum delta event is pending
+     - the new expiry delta is less then or equal to the minimum delta
 
-An "untrusted" server can use this to leak up to 8 bytes of kernel heap
-into the EA name comparison and influence which WSL xattr the data is
-interpreted as.
+Thanks to Calvin for providing the reproducer and to Borislav for testing
+and providing data from his Zen5 machine.
 
-Cc: Ronnie Sahlberg <ronniesahlberg@gmail.com>
-Cc: Shyam Prasad N <sprasad@microsoft.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: Bharath SM <bharathsm@microsoft.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Cc: stable <stable@kernel.org>
-Assisted-by: gregkh_clanker_t1000
-Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The problem is not limited to Zen5, but depending on the underlying
+clock event device (e.g. TSC deadline timer on Intel) and the CPU speed
+not necessarily observable.
+
+This change serves only as the last resort and further changes will be made
+to prevent this scenario earlier in the call chain as far as possible.
+
+[ tglx: Updated to restore the old behaviour vs. !force and delta <= 0 and
+  	fixed up the tick-broadcast handlers as pointed out by Borislav ]
+
+Fixes: d316c57ff6bf ("[PATCH] clockevents: add core functionality")
+Reported-by: Calvin Owens <calvin@wbinvd.org>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Tested-by: Calvin Owens <calvin@wbinvd.org>
+Tested-by: Borislav Petkov <bp@alien8.de>
+Link: https://lore.kernel.org/lkml/acMe-QZUel-bBYUh@mozart.vkv.me/
+Link: https://patch.msgid.link/20260407083247.562657657@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smb2inode.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/clockchips.h   |  2 ++
+ kernel/time/clockevents.c    | 27 +++++++++++++++++++--------
+ kernel/time/hrtimer.c        |  1 +
+ kernel/time/tick-broadcast.c |  8 +++++++-
+ kernel/time/tick-common.c    |  1 +
+ kernel/time/tick-sched.c     |  1 +
+ 6 files changed, 31 insertions(+), 9 deletions(-)
 
---- a/fs/smb/client/smb2inode.c
-+++ b/fs/smb/client/smb2inode.c
-@@ -125,7 +125,7 @@ static int check_wsl_eas(struct kvec *rs
- 		nlen = ea->ea_name_length;
- 		vlen = le16_to_cpu(ea->ea_value_length);
- 		if (nlen != SMB2_WSL_XATTR_NAME_LEN ||
--		    (u8 *)ea + nlen + 1 + vlen > end)
-+		    (u8 *)ea->ea_data + nlen + 1 + vlen > end)
- 			return -EINVAL;
+diff --git a/include/linux/clockchips.h b/include/linux/clockchips.h
+index b0df28ddd394b..50cdc9da8d32a 100644
+--- a/include/linux/clockchips.h
++++ b/include/linux/clockchips.h
+@@ -80,6 +80,7 @@ enum clock_event_state {
+  * @shift:		nanoseconds to cycles divisor (power of two)
+  * @state_use_accessors:current state of the device, assigned by the core code
+  * @features:		features
++ * @next_event_forced:	True if the last programming was a forced event
+  * @retries:		number of forced programming retries
+  * @set_state_periodic:	switch state to periodic
+  * @set_state_oneshot:	switch state to oneshot
+@@ -108,6 +109,7 @@ struct clock_event_device {
+ 	u32			shift;
+ 	enum clock_event_state	state_use_accessors;
+ 	unsigned int		features;
++	unsigned int		next_event_forced;
+ 	unsigned long		retries;
  
- 		switch (vlen) {
+ 	int			(*set_state_periodic)(struct clock_event_device *);
+diff --git a/kernel/time/clockevents.c b/kernel/time/clockevents.c
+index 78c7bd64d0ddf..6f4257e63bba8 100644
+--- a/kernel/time/clockevents.c
++++ b/kernel/time/clockevents.c
+@@ -172,6 +172,7 @@ void clockevents_shutdown(struct clock_event_device *dev)
+ {
+ 	clockevents_switch_state(dev, CLOCK_EVT_STATE_SHUTDOWN);
+ 	dev->next_event = KTIME_MAX;
++	dev->next_event_forced = 0;
+ }
+ 
+ /**
+@@ -305,7 +306,6 @@ int clockevents_program_event(struct clock_event_device *dev, ktime_t expires,
+ {
+ 	unsigned long long clc;
+ 	int64_t delta;
+-	int rc;
+ 
+ 	if (WARN_ON_ONCE(expires < 0))
+ 		return -ETIME;
+@@ -324,16 +324,27 @@ int clockevents_program_event(struct clock_event_device *dev, ktime_t expires,
+ 		return dev->set_next_ktime(expires, dev);
+ 
+ 	delta = ktime_to_ns(ktime_sub(expires, ktime_get()));
+-	if (delta <= 0)
+-		return force ? clockevents_program_min_delta(dev) : -ETIME;
+ 
+-	delta = min(delta, (int64_t) dev->max_delta_ns);
+-	delta = max(delta, (int64_t) dev->min_delta_ns);
++	/* Required for tick_periodic() during early boot */
++	if (delta <= 0 && !force)
++		return -ETIME;
++
++	if (delta > (int64_t)dev->min_delta_ns) {
++		delta = min(delta, (int64_t) dev->max_delta_ns);
++		clc = ((unsigned long long) delta * dev->mult) >> dev->shift;
++		if (!dev->set_next_event((unsigned long) clc, dev))
++			return 0;
++	}
+ 
+-	clc = ((unsigned long long) delta * dev->mult) >> dev->shift;
+-	rc = dev->set_next_event((unsigned long) clc, dev);
++	if (dev->next_event_forced)
++		return 0;
+ 
+-	return (rc && force) ? clockevents_program_min_delta(dev) : rc;
++	if (dev->set_next_event(dev->min_delta_ticks, dev)) {
++		if (!force || clockevents_program_min_delta(dev))
++			return -ETIME;
++	}
++	dev->next_event_forced = 1;
++	return 0;
+ }
+ 
+ /*
+diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
+index 640d2ea4bd1fa..7c57fe7d20d9a 100644
+--- a/kernel/time/hrtimer.c
++++ b/kernel/time/hrtimer.c
+@@ -1852,6 +1852,7 @@ void hrtimer_interrupt(struct clock_event_device *dev)
+ 	BUG_ON(!cpu_base->hres_active);
+ 	cpu_base->nr_events++;
+ 	dev->next_event = KTIME_MAX;
++	dev->next_event_forced = 0;
+ 
+ 	raw_spin_lock_irqsave(&cpu_base->lock, flags);
+ 	entry_time = now = hrtimer_update_base(cpu_base);
+diff --git a/kernel/time/tick-broadcast.c b/kernel/time/tick-broadcast.c
+index ed58eebb4e8f4..99d2978ef9b98 100644
+--- a/kernel/time/tick-broadcast.c
++++ b/kernel/time/tick-broadcast.c
+@@ -76,8 +76,10 @@ const struct clock_event_device *tick_get_wakeup_device(int cpu)
+  */
+ static void tick_broadcast_start_periodic(struct clock_event_device *bc)
+ {
+-	if (bc)
++	if (bc) {
++		bc->next_event_forced = 0;
+ 		tick_setup_periodic(bc, 1);
++	}
+ }
+ 
+ /*
+@@ -403,6 +405,7 @@ static void tick_handle_periodic_broadcast(struct clock_event_device *dev)
+ 	bool bc_local;
+ 
+ 	raw_spin_lock(&tick_broadcast_lock);
++	tick_broadcast_device.evtdev->next_event_forced = 0;
+ 
+ 	/* Handle spurious interrupts gracefully */
+ 	if (clockevent_state_shutdown(tick_broadcast_device.evtdev)) {
+@@ -696,6 +699,7 @@ static void tick_handle_oneshot_broadcast(struct clock_event_device *dev)
+ 
+ 	raw_spin_lock(&tick_broadcast_lock);
+ 	dev->next_event = KTIME_MAX;
++	tick_broadcast_device.evtdev->next_event_forced = 0;
+ 	next_event = KTIME_MAX;
+ 	cpumask_clear(tmpmask);
+ 	now = ktime_get();
+@@ -1061,6 +1065,7 @@ static void tick_broadcast_setup_oneshot(struct clock_event_device *bc,
+ 
+ 
+ 	bc->event_handler = tick_handle_oneshot_broadcast;
++	bc->next_event_forced = 0;
+ 	bc->next_event = KTIME_MAX;
+ 
+ 	/*
+@@ -1173,6 +1178,7 @@ void hotplug_cpu__broadcast_tick_pull(int deadcpu)
+ 		}
+ 
+ 		/* This moves the broadcast assignment to this CPU: */
++		bc->next_event_forced = 0;
+ 		clockevents_program_event(bc, bc->next_event, 1);
+ 	}
+ 	raw_spin_unlock_irqrestore(&tick_broadcast_lock, flags);
+diff --git a/kernel/time/tick-common.c b/kernel/time/tick-common.c
+index 9a3859443c042..4b5a42192afa2 100644
+--- a/kernel/time/tick-common.c
++++ b/kernel/time/tick-common.c
+@@ -110,6 +110,7 @@ void tick_handle_periodic(struct clock_event_device *dev)
+ 	int cpu = smp_processor_id();
+ 	ktime_t next = dev->next_event;
+ 
++	dev->next_event_forced = 0;
+ 	tick_periodic(cpu);
+ 
+ 	/*
+diff --git a/kernel/time/tick-sched.c b/kernel/time/tick-sched.c
+index f203f000da1ad..e385555b456e8 100644
+--- a/kernel/time/tick-sched.c
++++ b/kernel/time/tick-sched.c
+@@ -1488,6 +1488,7 @@ static void tick_nohz_lowres_handler(struct clock_event_device *dev)
+ 	struct tick_sched *ts = this_cpu_ptr(&tick_cpu_sched);
+ 
+ 	dev->next_event = KTIME_MAX;
++	dev->next_event_forced = 0;
+ 
+ 	if (likely(tick_nohz_handler(&ts->sched_timer) == HRTIMER_RESTART))
+ 		tick_program_event(hrtimer_get_expires(&ts->sched_timer), 1);
+-- 
+2.53.0
+
 
 
 
