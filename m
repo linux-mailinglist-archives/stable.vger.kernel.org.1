@@ -1,67 +1,70 @@
-Return-Path: <stable+bounces-239205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239206-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YKE2O1pH5mnSuAEAu9opvQ
-	(envelope-from <stable+bounces-239205-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 17:33:46 +0200
+	id CHepCbdA5mlutgEAu9opvQ
+	(envelope-from <stable+bounces-239206-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 17:05:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6853E42E550
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 17:33:46 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29E7842DC7E
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 17:05:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6530530DD519
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 14:36:42 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 397E23315462
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 14:36:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1CF04D2EDB;
-	Mon, 20 Apr 2026 13:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CD304D2EC9;
+	Mon, 20 Apr 2026 13:33:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pCJmUMXQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pc6ojOcG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AE124CA285;
-	Mon, 20 Apr 2026 13:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 286573AE6EB;
+	Mon, 20 Apr 2026 13:33:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776692005; cv=none; b=i46sw2b3Apf9VnrH4CoGnCIAZtfZ5lrVO+69jz7svAgHqE9fvsMnEYQstkm5ucGwBp7XxTPS0S0RkMop5jIHCLAFRNgzBqdgcpgShSecvUw6wK/hG4+9+w8WnCVYEPJXMCHS1I8bCp2vE1wP3n5yI7MnF43uubdW0qbuUTlkMss=
+	t=1776692007; cv=none; b=E8EwnsPsodTyOyN4USDuvkIFeu5wsXmf1HUko4PWYnJ7ibsdC0mICdpuSIDfXhHnaujBjeZRimaGMt3UVLch5RJ3Y7Vvk9RWHPEJGZks5n9uQLtP9vKdkmfPNBKNmDkTn0cKSlch+W9O4s3r+anFYTjk6K5oLsvhVxPrrHD4GHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776692005; c=relaxed/simple;
-	bh=jWw+kjULLOINHtTCs/awCVSQNwIoMnd53DJYth8+OwQ=;
+	s=arc-20240116; t=1776692007; c=relaxed/simple;
+	bh=6ElqZfprnWkaD91inJ4k6uvGlxbYDLR08virTftN5es=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jnLqRLxA0CYkoQeOFTnJcN1g1Cj0w6NL11aO5jssdXRmaJvdb8MdoZQhCbQnFEAzWUJO1z44TUjghmcixIQI5v170pFrPImhk1C5QF4YhwrHgY92/T4Db1gvXUCjYI1BJ5K9R+1ihdAYXvGUMapGaQTt4RXCkbOqKqK1qZx9fKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pCJmUMXQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76A89C19425;
-	Mon, 20 Apr 2026 13:33:23 +0000 (UTC)
+	 MIME-Version; b=gODkiS4o6up2q9DoT/pEUW5Ert4mpWsInfcb22Lj6XUw3vzXdl987RNlY8A9aspC0ZtPwQJ15BxWeDLews1voKLPM34peYMwlLmBg14lt5EsaskrwDgjbLMFiHfVkdcpxIAfGQPkmZjazne05cC8dS5NmKGozewriJsb9xGF7NQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pc6ojOcG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 690C5C2BCB6;
+	Mon, 20 Apr 2026 13:33:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776692005;
-	bh=jWw+kjULLOINHtTCs/awCVSQNwIoMnd53DJYth8+OwQ=;
+	s=k20201202; t=1776692007;
+	bh=6ElqZfprnWkaD91inJ4k6uvGlxbYDLR08virTftN5es=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pCJmUMXQOENZT3exzQGpkk0F7MJP203NaxPQcmEv2LIb4hWFoa/b9HJoHqRNkEMtK
-	 S3baUfzwgdI9zTktULULbDw4NwmDootOXbAIG9IETPvi6/oL2twypufBa8p8JemXM5
-	 cILGM2/ACNgUMtMGEohZp8xTEaVG+FQHpfUtK/tUt66DpSDnxH/5TurjA3ZTXIDxk8
-	 rHEErtB1b2jpvZpUDj8aSi8vHnMija86Q1BnkpLgP0WoSRt7n2I1g0idvJYSvVqKmY
-	 YZpTHR2XL0rEOaC14dZkR8gWv3uL1KH1BIm5F80IUdsDwpa3UNjWaGL+GpOTsesPkN
-	 /fZgbM08Aijig==
+	b=pc6ojOcGEEpUZ8UIoR/oUpt84ySN/ytVq0S3X4jd1fhy0Um+uu/hohnPwYQlUFOGv
+	 tSgvDrJYkYxuyw/xSl5OG9rEawuztGiaR8ITwWxRhJeLqK0ciEdSmxNgnnkU1HcK4h
+	 dRE8iSaqM4QCQ6ECz0wGmnYxicy/pFDUhd30PKtyGhfb+eh63OB+iz0gbgNzmiosjE
+	 UJ9W/ybJ+Fvo8OcwqlgIIM9t07YnFVfqQ+x00Fq+vyYVfYPGwxA3akr2OpZ7NCswgR
+	 9saBmuJKAWeG1JeLRAHp5f97fkveRZR3i8/HFGOHOcdl7VjUSinabiegX1lZHf6Q1l
+	 0zIwCxeTMULzg==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
+Cc: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>,
+	Frank Li <Frank.Li@nxp.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Fabio Estevam <festevam@gmail.com>,
 	Sasha Levin <sashal@kernel.org>,
-	martin@strongswan.org,
-	netdev@vger.kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	shawnguo@kernel.org,
+	l.stach@pengutronix.de,
+	agx@sigxcpu.org,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18] xfrm_user: fix info leak in build_mapping()
-Date: Mon, 20 Apr 2026 09:21:51 -0400
-Message-ID: <20260420132314.1023554-317-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.18] arm64: dts: imx8mq: Set the correct gpu_ahb clock frequency
+Date: Mon, 20 Apr 2026 09:21:52 -0400
+Message-ID: <20260420132314.1023554-318-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260420132314.1023554-1-sashal@kernel.org>
 References: <20260420132314.1023554-1-sashal@kernel.org>
@@ -75,56 +78,51 @@ X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.18.23
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-239205-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[17];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239206-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[puri.sm,nxp.com,gmail.com,kernel.org,pengutronix.de,sigxcpu.org,vger.kernel.org,lists.linux.dev,lists.infradead.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.995];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable,dt];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 6853E42E550
+X-Rspamd-Queue-Id: 29E7842DC7E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
 
-[ Upstream commit 1beb76b2053b68c491b78370794b8ff63c8f8c02 ]
+[ Upstream commit 1f99b5d93d99ca17d50b386a674d0ce1f20932d8 ]
 
-struct xfrm_usersa_id has a one-byte padding hole after the proto
-field, which ends up never getting set to zero before copying out to
-userspace.  Fix that up by zeroing out the whole structure before
-setting individual variables.
+According to i.MX 8M Quad Reference Manual, GPU_AHB_CLK_ROOT's maximum
+frequency is 400MHz.
 
-Fixes: 3a2dfbe8acb1 ("xfrm: Notify changes in UDP encapsulation via netlink")
-Cc: Steffen Klassert <steffen.klassert@secunet.com>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>
-Assisted-by: gregkh_clanker_t1000
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Fixes: 45d2c84eb3a2 ("arm64: dts: imx8mq: add GPU node")
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Sebastian Krzyszkowiak <sebastian.krzyszkowiak@puri.sm>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Fabio Estevam <festevam@gmail.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
@@ -132,21 +130,22 @@ LLM Generated explanations, may be completely bogus:
 
 Error: Failed to generate final synthesis
 
- net/xfrm/xfrm_user.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/freescale/imx8mq.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
-index 1ddcf2a1eff7a..b3f69c0760d4c 100644
---- a/net/xfrm/xfrm_user.c
-+++ b/net/xfrm/xfrm_user.c
-@@ -4164,6 +4164,7 @@ static int build_mapping(struct sk_buff *skb, struct xfrm_state *x,
+diff --git a/arch/arm64/boot/dts/freescale/imx8mq.dtsi b/arch/arm64/boot/dts/freescale/imx8mq.dtsi
+index 607962f807beb..6a25e219832ce 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mq.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mq.dtsi
+@@ -1632,7 +1632,7 @@ gpu: gpu@38000000 {
+ 			                         <&clk IMX8MQ_GPU_PLL_OUT>,
+ 			                         <&clk IMX8MQ_GPU_PLL>;
+ 			assigned-clock-rates = <800000000>, <800000000>,
+-			                       <800000000>, <800000000>, <0>;
++			                       <800000000>, <400000000>, <0>;
+ 			power-domains = <&pgc_gpu>;
+ 		};
  
- 	um = nlmsg_data(nlh);
- 
-+	memset(&um->id, 0, sizeof(um->id));
- 	memcpy(&um->id.daddr, &x->id.daddr, sizeof(um->id.daddr));
- 	um->id.spi = x->id.spi;
- 	um->id.family = x->props.family;
 -- 
 2.53.0
 
