@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-239565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239764-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oOPUOMJl5mlmvwEAu9opvQ
-	(envelope-from <stable+bounces-239565-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:43:30 +0200
+	id yK9pLQtb5mmtvAEAu9opvQ
+	(envelope-from <stable+bounces-239764-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:57:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66E54431E98
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:43:30 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A177430498
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:57:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AF909328E6EE
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:56:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 48FA9321CD20
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:05:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E47822259F;
-	Mon, 20 Apr 2026 15:56:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A86D33396EE;
+	Mon, 20 Apr 2026 16:05:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mPIwL1Hh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VKQ8d+uT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 080D23368AF;
-	Mon, 20 Apr 2026 15:56:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AEDF3264F1;
+	Mon, 20 Apr 2026 16:05:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700579; cv=none; b=X0UHTH6AfS39tamJTGv/gcUkTNAR/50TXzPL3uhDFR393mjfAee056VvV+KlYQt1rmp2Yvcb3AJTfF4RxLuctQDzBk+BsZwDpAZHRa0i7GtiCm5cldlL40Vb9NnSlvC0kbarCC3S44X3QVFHOV4rRD5YQ7oFJPXQmiGZn53MBek=
+	t=1776701154; cv=none; b=ncbZ3QQfFguTYhS9BlkBq7T5TJ4ZiE1DvvmBjhjtqhYPuNeW8mtdwxh+FyJcGUH/BUCcAP0xZziyaBvkVZaoFeg8Gy86bYJ+GdzHMhxmn2XrYTZkDWMI2f343HBcEpSNPMpd77OKnA5dHkMZSHxdKGelz7X73r7n48M+nXkVTrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700579; c=relaxed/simple;
-	bh=vMTQe8JWtuSgrIaniyPz4Hz/sw1HFjaBfVYDDKVx9t8=;
+	s=arc-20240116; t=1776701154; c=relaxed/simple;
+	bh=ldKU0dCjI1u6Q1PXNGTkaCvkzQ0l7pnvWeCrQEULti8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lWcN4/IoNRHndxQM3PDZRpyw15Ez7ajEPxzylOAtQ+29MjqixFUWyNZeLKXT//uBTK5ziS1Fd+KIIrtiZoTYyFrwH7rCvO3ks9fitBa6/fVtZWMjkUOVm4fqMmPrugdRavEHdG8gdthqr9C6mrTb90oTtCu62KiXF9jShbQ2uk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mPIwL1Hh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95483C2BCB4;
-	Mon, 20 Apr 2026 15:56:18 +0000 (UTC)
+	 MIME-Version; b=MaVZASp0xP9y783xOukdLrXSMWtkhTw39rbxPOgU2IokFLxbbzZk18ZMFUhUVQcQTrsVDI/9ZZnW1VjDBhXAFAM3EFsr0gpcdOzNIzE0ZXdrCWG4GPOAr1vWHjeFFMuJqi6gRg+zQ/4WWJHLWt9yovpqeWVDUyuMXrOhNOJY5NM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VKQ8d+uT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00F01C2BCB6;
+	Mon, 20 Apr 2026 16:05:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700578;
-	bh=vMTQe8JWtuSgrIaniyPz4Hz/sw1HFjaBfVYDDKVx9t8=;
+	s=korg; t=1776701154;
+	bh=ldKU0dCjI1u6Q1PXNGTkaCvkzQ0l7pnvWeCrQEULti8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mPIwL1HhykhSwUHfb3vzBo43N8mc+RKPDuRFh6Uk9NY19+Rl7Qou6R02sXpURcH9e
-	 2gDIaBj7XidrcJ6Wrag+W4Bb6eJ34tXRtcZAdVXw5Fl6UfAXp9AzHhM3+EMdLmEFgS
-	 okKkn9DEEPr9ySKkDek6YGUgN8lD2HHldqjCJe7Q=
+	b=VKQ8d+uTWwxYAatFqjN/tBBDpQG/0aIXcbH0zCFVTAGNJW7R8rAuqbjbREYv5/b/g
+	 K5bUXyIe6sEl4Bfc4+nim63dZ4a0bhmrbm1QEMag07dzmyGd5lTcIbaqeFDcpKRZx1
+	 paLL0p+VSybhbkfrtSIqy+MIzEB9q7gHxHUyTWgY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>
-Subject: [PATCH 6.19 219/220] dma-debug: Allow multiple invocations of overlapping entries
-Date: Mon, 20 Apr 2026 17:42:40 +0200
-Message-ID: <20260420153941.911123710@linuxfoundation.org>
+	Stable@vger.kernel.org,
+	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.18 182/198] ASoC: qcom: q6apm: move component registration to unmanaged version
+Date: Mon, 20 Apr 2026 17:42:41 +0200
+Message-ID: <20260420153942.169930727@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
-References: <20260420153934.013228280@linuxfoundation.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-239565-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-239764-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,110 +87,162 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,samsung.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 66E54431E98
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qualcomm.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: 2A177430498
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
 
-commit eca58535b154e6951327319afda94ac80eae7dc3 upstream.
+commit 6ec1235fc941dac6c011b30ee01d9220ff87e0cd upstream.
 
-Repeated DMA mappings with DMA_ATTR_CPU_CACHE_CLEAN trigger the
-following splat. This prevents using the attribute in cases where a DMA
-region is shared and reused more than seven times.
+q6apm component registers dais dynamically from ASoC toplology, which
+are allocated using device managed version apis. Allocating both
+component and dynamic dais using managed version could lead to incorrect
+free ordering, dai will be freed while component still holding references
+to it.
 
- ------------[ cut here ]------------
- DMA-API: exceeded 7 overlapping mappings of cacheline 0x000000000438c440
- WARNING: kernel/dma/debug.c:467 at add_dma_entry+0x219/0x280, CPU#4: ibv_rc_pingpong/1644
- Modules linked in: xt_conntrack xt_MASQUERADE nf_conntrack_netlink nfnetlink iptable_nat nf_nat xt_addrtype br_netfilter rpcsec_gss_krb5 auth_rpcgss oid_registry overlay mlx5_fwctl zram zsmalloc mlx5_ib fuse rpcrdma rdma_ucm ib_uverbs ib_iser libiscsi scsi_transport_iscsi ib_umad rdma_cm ib_ipoib iw_cm ib_cm mlx5_core ib_core
- CPU: 4 UID: 2733 PID: 1644 Comm: ibv_rc_pingpong Not tainted 6.19.0+ #129 PREEMPT
- Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
- RIP: 0010:add_dma_entry+0x221/0x280
- Code: c0 0f 84 f2 fe ff ff 83 e8 01 89 05 6d 99 11 01 e9 e4 fe ff ff 0f 8e 1f ff ff ff 48 8d 3d 07 ef 2d 01 be 07 00 00 00 48 89 e2 <67> 48 0f b9 3a e9 06 ff ff ff 48 c7 c7 98 05 2b 82 c6 05 72 92 28
- RSP: 0018:ff1100010e657970 EFLAGS: 00010002
- RAX: 0000000000000007 RBX: ff1100010234eb00 RCX: 0000000000000000
- RDX: ff1100010e657970 RSI: 0000000000000007 RDI: ffffffff82678660
- RBP: 000000000438c440 R08: 0000000000000228 R09: 0000000000000000
- R10: 00000000000001be R11: 000000000000089d R12: 0000000000000800
- R13: 00000000ffffffef R14: 0000000000000202 R15: ff1100010234eb00
- FS:  00007fb15f3f6740(0000) GS:ff110008dcc19000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 00007fb15f32d3a0 CR3: 0000000116f59001 CR4: 0000000000373eb0
- Call Trace:
-  <TASK>
-  debug_dma_map_sg+0x1b4/0x390
-  __dma_map_sg_attrs+0x6d/0x1a0
-  dma_map_sgtable+0x19/0x30
-  ib_umem_get+0x284/0x3b0 [ib_uverbs]
-  mlx5_ib_reg_user_mr+0x68/0x2a0 [mlx5_ib]
-  ib_uverbs_reg_mr+0x17f/0x2a0 [ib_uverbs]
-  ib_uverbs_handler_UVERBS_METHOD_INVOKE_WRITE+0xc2/0x130 [ib_uverbs]
-  ib_uverbs_cmd_verbs+0xa0b/0xae0 [ib_uverbs]
-  ? ib_uverbs_handler_UVERBS_METHOD_QUERY_PORT_SPEED+0xe0/0xe0 [ib_uverbs]
-  ? mmap_region+0x7a/0xb0
-  ? do_mmap+0x3b8/0x5c0
-  ib_uverbs_ioctl+0xa7/0x110 [ib_uverbs]
-  __x64_sys_ioctl+0x14f/0x8b0
-  ? ksys_mmap_pgoff+0xc5/0x190
-  do_syscall_64+0x8c/0xbf0
-  entry_SYSCALL_64_after_hwframe+0x4b/0x53
- RIP: 0033:0x7fb15f5e4eed
- Code: 04 25 28 00 00 00 48 89 45 c8 31 c0 48 8d 45 10 c7 45 b0 10 00 00 00 48 89 45 b8 48 8d 45 d0 48 89 45 c0 b8 10 00 00 00 0f 05 <89> c2 3d 00 f0 ff ff 77 1a 48 8b 45 c8 64 48 2b 04 25 28 00 00 00
- RSP: 002b:00007ffe09a5c540 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
- RAX: ffffffffffffffda RBX: 00007ffe09a5c5d0 RCX: 00007fb15f5e4eed
- RDX: 00007ffe09a5c5f0 RSI: 00000000c0181b01 RDI: 0000000000000003
- RBP: 00007ffe09a5c590 R08: 0000000000000028 R09: 00007ffe09a5c794
- R10: 0000000000000001 R11: 0000000000000246 R12: 00007ffe09a5c794
- R13: 000000000000000c R14: 0000000025a49170 R15: 000000000000000c
-  </TASK>
- ---[ end trace 0000000000000000 ]---
+Fix this issue by moving component to unmanged version so
+that the dai pointers are only freeded after the component is removed.
 
-Fixes: 61868dc55a11 ("dma-mapping: add DMA_ATTR_CPU_CACHE_CLEAN")
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Link: https://lore.kernel.org/r/20260316-dma-debug-overlap-v3-1-1dde90a7f08b@nvidia.com
+==================================================================
+BUG: KASAN: slab-use-after-free in snd_soc_del_component_unlocked+0x3d4/0x400 [snd_soc_core]
+Read of size 8 at addr ffff00084493a6e8 by task kworker/u48:0/3426
+Tainted: [W]=WARN
+Hardware name: LENOVO 21N2ZC5PUS/21N2ZC5PUS, BIOS N42ET57W (1.31 ) 08/08/2024
+Workqueue: pdr_notifier_wq pdr_notifier_work [pdr_interface]
+Call trace:
+ show_stack+0x28/0x7c (C)
+ dump_stack_lvl+0x60/0x80
+ print_report+0x160/0x4b4
+ kasan_report+0xac/0xfc
+ __asan_report_load8_noabort+0x20/0x34
+ snd_soc_del_component_unlocked+0x3d4/0x400 [snd_soc_core]
+ snd_soc_unregister_component_by_driver+0x50/0x88 [snd_soc_core]
+ devm_component_release+0x30/0x5c [snd_soc_core]
+ devres_release_all+0x13c/0x210
+ device_unbind_cleanup+0x20/0x190
+ device_release_driver_internal+0x350/0x468
+ device_release_driver+0x18/0x30
+ bus_remove_device+0x1a0/0x35c
+ device_del+0x314/0x7f0
+ device_unregister+0x20/0xbc
+ apr_remove_device+0x5c/0x7c [apr]
+ device_for_each_child+0xd8/0x160
+ apr_pd_status+0x7c/0xa8 [apr]
+ pdr_notifier_work+0x114/0x240 [pdr_interface]
+ process_one_work+0x500/0xb70
+ worker_thread+0x630/0xfb0
+ kthread+0x370/0x6c0
+ ret_from_fork+0x10/0x20
+
+Allocated by task 77:
+ kasan_save_stack+0x40/0x68
+ kasan_save_track+0x20/0x40
+ kasan_save_alloc_info+0x44/0x58
+ __kasan_kmalloc+0xbc/0xdc
+ __kmalloc_node_track_caller_noprof+0x1f4/0x620
+ devm_kmalloc+0x7c/0x1c8
+ snd_soc_register_dai+0x50/0x4f0 [snd_soc_core]
+ soc_tplg_pcm_elems_load+0x55c/0x1eb8 [snd_soc_core]
+ snd_soc_tplg_component_load+0x4f8/0xb60 [snd_soc_core]
+ audioreach_tplg_init+0x124/0x1fc [snd_q6apm]
+ q6apm_audio_probe+0x10/0x1c [snd_q6apm]
+ snd_soc_component_probe+0x5c/0x118 [snd_soc_core]
+ soc_probe_component+0x44c/0xaf0 [snd_soc_core]
+ snd_soc_bind_card+0xad0/0x2370 [snd_soc_core]
+ snd_soc_register_card+0x3b0/0x4c0 [snd_soc_core]
+ devm_snd_soc_register_card+0x50/0xc8 [snd_soc_core]
+ x1e80100_platform_probe+0x208/0x368 [snd_soc_x1e80100]
+ platform_probe+0xc0/0x188
+ really_probe+0x188/0x804
+ __driver_probe_device+0x158/0x358
+ driver_probe_device+0x60/0x190
+ __device_attach_driver+0x16c/0x2a8
+ bus_for_each_drv+0x100/0x194
+ __device_attach+0x174/0x380
+ device_initial_probe+0x14/0x20
+ bus_probe_device+0x124/0x154
+ deferred_probe_work_func+0x140/0x220
+ process_one_work+0x500/0xb70
+ worker_thread+0x630/0xfb0
+ kthread+0x370/0x6c0
+ ret_from_fork+0x10/0x20
+
+Freed by task 3426:
+ kasan_save_stack+0x40/0x68
+ kasan_save_track+0x20/0x40
+ __kasan_save_free_info+0x4c/0x80
+ __kasan_slab_free+0x78/0xa0
+ kfree+0x100/0x4a4
+ devres_release_all+0x144/0x210
+ device_unbind_cleanup+0x20/0x190
+ device_release_driver_internal+0x350/0x468
+ device_release_driver+0x18/0x30
+ bus_remove_device+0x1a0/0x35c
+ device_del+0x314/0x7f0
+ device_unregister+0x20/0xbc
+ apr_remove_device+0x5c/0x7c [apr]
+ device_for_each_child+0xd8/0x160
+ apr_pd_status+0x7c/0xa8 [apr]
+ pdr_notifier_work+0x114/0x240 [pdr_interface]
+ process_one_work+0x500/0xb70
+ worker_thread+0x630/0xfb0
+ kthread+0x370/0x6c0
+ ret_from_fork+0x10/0x20
+
+Fixes: 5477518b8a0e ("ASoC: qdsp6: audioreach: add q6apm support")
+Cc: Stable@vger.kernel.org
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260402081118.348071-2-srinivas.kandagatla@oss.qualcomm.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/dma/debug.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ sound/soc/qcom/qdsp6/q6apm.c |   14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
---- a/kernel/dma/debug.c
-+++ b/kernel/dma/debug.c
-@@ -453,7 +453,7 @@ static int active_cacheline_set_overlap(
- 	return overlap;
+--- a/sound/soc/qcom/qdsp6/q6apm.c
++++ b/sound/soc/qcom/qdsp6/q6apm.c
+@@ -767,13 +767,22 @@ static int apm_probe(gpr_device_t *gdev)
+ 
+ 	q6apm_get_apm_state(apm);
+ 
+-	ret = devm_snd_soc_register_component(dev, &q6apm_audio_component, NULL, 0);
++	ret = snd_soc_register_component(dev, &q6apm_audio_component, NULL, 0);
+ 	if (ret < 0) {
+ 		dev_err(dev, "failed to register q6apm: %d\n", ret);
+ 		return ret;
+ 	}
+ 
+-	return of_platform_populate(dev->of_node, NULL, NULL, dev);
++	ret = of_platform_populate(dev->of_node, NULL, NULL, dev);
++	if (ret)
++		snd_soc_unregister_component(dev);
++
++	return ret;
++}
++
++static void apm_remove(gpr_device_t *gdev)
++{
++	snd_soc_unregister_component(&gdev->dev);
  }
  
--static void active_cacheline_inc_overlap(phys_addr_t cln)
-+static void active_cacheline_inc_overlap(phys_addr_t cln, bool is_cache_clean)
- {
- 	int overlap = active_cacheline_read_overlap(cln);
+ struct audioreach_module *q6apm_find_module_by_mid(struct q6apm_graph *graph, uint32_t mid)
+@@ -840,6 +849,7 @@ MODULE_DEVICE_TABLE(of, apm_device_id);
  
-@@ -462,7 +462,7 @@ static void active_cacheline_inc_overlap
- 	/* If we overflowed the overlap counter then we're potentially
- 	 * leaking dma-mappings.
- 	 */
--	WARN_ONCE(overlap > ACTIVE_CACHELINE_MAX_OVERLAP,
-+	WARN_ONCE(!is_cache_clean && overlap > ACTIVE_CACHELINE_MAX_OVERLAP,
- 		  pr_fmt("exceeded %d overlapping mappings of cacheline %pa\n"),
- 		  ACTIVE_CACHELINE_MAX_OVERLAP, &cln);
- }
-@@ -495,7 +495,7 @@ static int active_cacheline_insert(struc
- 	if (rc == -EEXIST) {
- 		struct dma_debug_entry *existing;
- 
--		active_cacheline_inc_overlap(cln);
-+		active_cacheline_inc_overlap(cln, entry->is_cache_clean);
- 		existing = radix_tree_lookup(&dma_active_cacheline, cln);
- 		/* A lookup failure here after we got -EEXIST is unexpected. */
- 		WARN_ON(!existing);
+ static gpr_driver_t apm_driver = {
+ 	.probe = apm_probe,
++	.remove = apm_remove,
+ 	.gpr_callback = apm_callback,
+ 	.driver = {
+ 		.name = "qcom-apm",
 
 
 
