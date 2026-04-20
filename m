@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-239789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239791-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WIWgE99P5mkDuwEAu9opvQ
-	(envelope-from <stable+bounces-239789-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:10:07 +0200
+	id 2NfHBUho5mnBvwEAu9opvQ
+	(envelope-from <stable+bounces-239791-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:54:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E969A42F18E
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:10:06 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97D234323D7
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:54:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3F4EA301EACF
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:07:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A2839338AE02
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:07:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ACCB336EE1;
-	Mon, 20 Apr 2026 16:07:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D534342CB0;
+	Mon, 20 Apr 2026 16:07:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qsviFPUs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z5El0bSV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E78C336EC9;
-	Mon, 20 Apr 2026 16:07:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F9C6342510;
+	Mon, 20 Apr 2026 16:07:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701220; cv=none; b=NAu6Xlb0RJIiyRzSTtBZMliEnjkDH5Aoy+ht/8b8B3dOGVxlAqRbocPwtkB6Xt64FGQnZbhnSOm5YUjnxXlG1iV/knSRzjvRaISRZijND9zftUI9KOL60jJshyMpTHFmyRW1E+KzmJ7bjmgrUKHa8oo40hUcnY8dIgBIaFRdJPo=
+	t=1776701225; cv=none; b=i+Gc5ksJKN+oMuvqc4XmHKnLq8oT7iVoE8vmf4n/uLpFm+UlOmPloFznmSJyvQdm3N79D2iSUMNaKZQ72RvRi+HSt8wX8L4rCl/J9Fb4bd2RKbrGCjn0lbw5vq1R9/zk5pfKVs66KCfjaHwcz6fEeENDHDflBoxXTe6zBcsRDsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701220; c=relaxed/simple;
-	bh=q1v77C63SOQYAD08in4vlPHUFfEIIlzBD554e7HRhYY=;
+	s=arc-20240116; t=1776701225; c=relaxed/simple;
+	bh=nTOT7hbFdiXqJSexMmNDiDULeFIH81EHcma8xMHaMF8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JblAolsuSb5a7Lxwk0Qapqfh5NtFJpgr4tXZZ3/6zvssXxK/sAUe3zn67ThURkV+/Wmz5jssTj/LqaYxTO8CqJ2O5zWtKPTvCqPAjCgoYfCDfM942ZnxBYefEeVKbCI2UN09KihAwKZgEd4o6KUXO4F1otM9I9w24s9tAthxBcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qsviFPUs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7610C19425;
-	Mon, 20 Apr 2026 16:06:59 +0000 (UTC)
+	 MIME-Version; b=XMMy9ksbnRd+8JDVzQyhqjjEokYqzlRX09XwY8ccUU+SdeRiUAO+YltY+Qr09ao0TuoPymoDPVjPDtK4+0nbYZuaj4pmLZUR0BkaNAsFaoUhNXYUufQzgnAN1gpvwZIgrOnteGGhDaaeYNVy3jojmA76aMeCfZm22P7WmbABjUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z5El0bSV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA1BFC2BCB6;
+	Mon, 20 Apr 2026 16:07:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701220;
-	bh=q1v77C63SOQYAD08in4vlPHUFfEIIlzBD554e7HRhYY=;
+	s=korg; t=1776701225;
+	bh=nTOT7hbFdiXqJSexMmNDiDULeFIH81EHcma8xMHaMF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qsviFPUsoFyyM8edhE6LZiSKfMLsJDZfE/0ohPzQ8AIcMku6sGOddcW7LhjWhta6N
-	 ZNqsXCBLPt0o/uxNXG9kFEA1gK25vfUQY/Ki6L2rN7xjsTkxXPCSp2g8YV9F1/GtKt
-	 kcdLJbjSiZROWxVdrOlEUyTBXuHv6RJ4h74Gd1BI=
+	b=z5El0bSVa0BVuXZ30aRiIA08ECzbvNZ/Lt/trZoKnKaBuaW1LT3UE/NSi1iv9zeKT
+	 a1XvZNPgdq4Sydx3ti1vW41lGxMjUcUUb8qoIwg1qnadtTHwpaHzdm4P3GcCiM15kO
+	 yR59lBsX9zqiIComNUa0X9R3a8ZiOR1fj2mc4JfU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Beno=C3=AEt=20Sevens?= <bsevens@google.com>,
-	Silvan Jegen <s.jegen@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
+	Arthur Husband <artmoty@gmail.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 029/162] HID: roccat: fix use-after-free in roccat_report_event
-Date: Mon, 20 Apr 2026 17:41:01 +0200
-Message-ID: <20260420153928.075327858@linuxfoundation.org>
+Subject: [PATCH 6.12 030/162] ata: ahci: force 32-bit DMA for JMicron JMB582/JMB585
+Date: Mon, 20 Apr 2026 17:41:02 +0200
+Message-ID: <20260420153928.111390673@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
 References: <20260420153927.006696811@linuxfoundation.org>
@@ -64,37 +64,36 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,suse.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-239789-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-239791-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E969A42F18E
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sata-io.org:url]
+X-Rspamd-Queue-Id: 97D234323D7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -102,45 +101,81 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Benoît Sevens <bsevens@google.com>
+From: Arthur Husband <artmoty@gmail.com>
 
-[ Upstream commit d802d848308b35220f21a8025352f0c0aba15c12 ]
+[ Upstream commit 105c42566a550e2d05fc14f763216a8765ee5d0e ]
 
-roccat_report_event() iterates over the device->readers list without
-holding the readers_lock. This allows a concurrent roccat_release() to
-remove and free a reader while it's still being accessed, leading to a
-use-after-free.
+The JMicron JMB585 (and JMB582) SATA controllers advertise 64-bit DMA
+support via the S64A bit in the AHCI CAP register, but their 64-bit DMA
+implementation is defective. Under sustained I/O, DMA transfers targeting
+addresses above 4GB silently corrupt data -- writes land at incorrect
+memory addresses with no errors logged.
 
-Protect the readers list traversal with the readers_lock mutex.
+The failure pattern is similar to the ASMedia ASM1061
+(commit 20730e9b2778 ("ahci: add 43-bit DMA address quirk for ASMedia
+ASM1061 controllers")), which also falsely advertised full 64-bit DMA
+support. However, the JMB585 requires a stricter 32-bit DMA mask rather
+than 43-bit, as corruption occurs with any address above 4GB.
 
-Signed-off-by: Benoît Sevens <bsevens@google.com>
-Reviewed-by: Silvan Jegen <s.jegen@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+On the Minisforum N5 Pro specifically, the combination of the JMB585's
+broken 64-bit DMA with the AMD Family 1Ah (Strix Point) IOMMU causes
+silent data corruption that is only detectable via checksumming
+filesystems (BTRFS/ZFS scrub). The corruption occurs when 32-bit IOVA
+space is exhausted and the kernel transparently switches to 64-bit DMA
+addresses.
+
+Add device-specific PCI ID entries for the JMB582 (0x0582) and JMB585
+(0x0585) before the generic JMicron class match, using a new board type
+that combines AHCI_HFLAG_IGN_IRQ_IF_ERR (preserving existing behavior)
+with AHCI_HFLAG_32BIT_ONLY to force 32-bit DMA masks.
+
+Signed-off-by: Arthur Husband <artmoty@gmail.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-roccat.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/ata/ahci.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/drivers/hid/hid-roccat.c b/drivers/hid/hid-roccat.c
-index c7f7562e22e56..e413662f75082 100644
---- a/drivers/hid/hid-roccat.c
-+++ b/drivers/hid/hid-roccat.c
-@@ -257,6 +257,7 @@ int roccat_report_event(int minor, u8 const *data)
- 	if (!new_value)
- 		return -ENOMEM;
+diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+index e78b97fe81708..57a7a2b68aaab 100644
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -68,6 +68,7 @@ enum board_ids {
+ 	/* board IDs for specific chipsets in alphabetical order */
+ 	board_ahci_al,
+ 	board_ahci_avn,
++	board_ahci_jmb585,
+ 	board_ahci_mcp65,
+ 	board_ahci_mcp77,
+ 	board_ahci_mcp89,
+@@ -212,6 +213,15 @@ static const struct ata_port_info ahci_port_info[] = {
+ 		.udma_mask	= ATA_UDMA6,
+ 		.port_ops	= &ahci_avn_ops,
+ 	},
++	/* JMicron JMB582/585: 64-bit DMA is broken, force 32-bit */
++	[board_ahci_jmb585] = {
++		AHCI_HFLAGS	(AHCI_HFLAG_IGN_IRQ_IF_ERR |
++				 AHCI_HFLAG_32BIT_ONLY),
++		.flags		= AHCI_FLAG_COMMON,
++		.pio_mask	= ATA_PIO4,
++		.udma_mask	= ATA_UDMA6,
++		.port_ops	= &ahci_ops,
++	},
+ 	[board_ahci_mcp65] = {
+ 		AHCI_HFLAGS	(AHCI_HFLAG_NO_FPDMA_AA | AHCI_HFLAG_NO_PMP |
+ 				 AHCI_HFLAG_YES_NCQ),
+@@ -439,6 +449,10 @@ static const struct pci_device_id ahci_pci_tbl[] = {
+ 	/* Elkhart Lake IDs 0x4b60 & 0x4b62 https://sata-io.org/product/8803 not tested yet */
+ 	{ PCI_VDEVICE(INTEL, 0x4b63), board_ahci_pcs_quirk }, /* Elkhart Lake AHCI */
  
-+	mutex_lock(&device->readers_lock);
- 	mutex_lock(&device->cbuf_lock);
- 
- 	report = &device->cbuf[device->cbuf_end];
-@@ -279,6 +280,7 @@ int roccat_report_event(int minor, u8 const *data)
- 	}
- 
- 	mutex_unlock(&device->cbuf_lock);
-+	mutex_unlock(&device->readers_lock);
- 
- 	wake_up_interruptible(&device->wait);
- 	return 0;
++	/* JMicron JMB582/585: force 32-bit DMA (broken 64-bit implementation) */
++	{ PCI_VDEVICE(JMICRON, 0x0582), board_ahci_jmb585 },
++	{ PCI_VDEVICE(JMICRON, 0x0585), board_ahci_jmb585 },
++
+ 	/* JMicron 360/1/3/5/6, match class to avoid IDE function */
+ 	{ PCI_VENDOR_ID_JMICRON, PCI_ANY_ID, PCI_ANY_ID, PCI_ANY_ID,
+ 	  PCI_CLASS_STORAGE_SATA_AHCI, 0xffffff, board_ahci_ign_iferr },
 -- 
 2.53.0
 
