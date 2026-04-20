@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-239372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239937-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sK7CBuFj5mkKvwEAu9opvQ
-	(envelope-from <stable+bounces-239372-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:35:29 +0200
+	id kJUDE7hp5mnBvwEAu9opvQ
+	(envelope-from <stable+bounces-239937-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 20:00:24 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C058431866
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:35:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD50543262A
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 20:00:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0C4A934BF3B3
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:48:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9AAF9316EDF5
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:15:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D03D7345740;
-	Mon, 20 Apr 2026 15:47:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEFFD345CD8;
+	Mon, 20 Apr 2026 16:15:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LhZKnmwd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1z4873Ve"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9418B345729;
-	Mon, 20 Apr 2026 15:47:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B324346AD5;
+	Mon, 20 Apr 2026 16:15:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700078; cv=none; b=a17mX3W9MVnlU8zVPqSQGrHc/BRQCqTdgDPfO3H2LxSl9j2w/LRFIV3AQj9WWNSbUTAC6lyWMFCzxGr8LLV/JC8Rp9BZKeIFR7arxmim1jkTGey1jPKF7FCWhiwez/XIqudORP7hSNvZmZ8b2c7+5txv0Bt1RueNxIl75xWE/NA=
+	t=1776701752; cv=none; b=pDrmPG8TsF0MLiw/99wETn58ii4UViRP9fgWbs3foAeDhTI/idA5iscg1iOYVQpujhZRp3Z1J0Q/DOLo3x3+TtGvRkOu6nqjwsWb/to0mlVO7bNVK38AQupqBbmwBvnp9NdUejCllVmEP7cqv0eH2HOLsjCY4ri+IVd4IOldGtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700078; c=relaxed/simple;
-	bh=1U/XrJA0b6QgNRflqXzo0yTGM7A2eEyHd5X7OP8tCKU=;
+	s=arc-20240116; t=1776701752; c=relaxed/simple;
+	bh=SIqvaC9CfY3BIJaBDtKgy/jvX0cblkLvaucgB80aSuY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qArSDuDrNDwABI8wVRn86PR3ygxcPN4gc3r3V9BIYUGwm6xUcuwWIvzABJ7VAQDt0bxW15e8O4iTjtWRAMWG3qzqhWu31AzvPNPSqFVjI8cgKYSTTzcv5IZjxcbKSaqVtSQrdJYhKJtlD775z/CH4ZEjohBaiHW1sSCSFuS3RvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LhZKnmwd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E74DAC2BCB6;
-	Mon, 20 Apr 2026 15:47:57 +0000 (UTC)
+	 MIME-Version; b=ef7S7/xYJuzma4VS34mPg0Q27HUQof/fLbAf1Zamu7uCs8L03DQF0D0sLgiE5Ka9LGXOEV+FhNG8IaUcPRkzRkzlVFf9arsmiZp3RQWaoCP77racJnx7z18Mns/r9LGpbm7lU3DSYLLyqWJRRaWEL2l/4L38T7ZD35MVq5Z2K+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1z4873Ve; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE666C19425;
+	Mon, 20 Apr 2026 16:15:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700078;
-	bh=1U/XrJA0b6QgNRflqXzo0yTGM7A2eEyHd5X7OP8tCKU=;
+	s=korg; t=1776701752;
+	bh=SIqvaC9CfY3BIJaBDtKgy/jvX0cblkLvaucgB80aSuY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LhZKnmwdEe8/Qtx/78NF827JHJ8/oQj7qlUr4ZpqQXzVqJScY5Q2ELfPhBHGQBHVK
-	 ILYxOLjq2Ra+/CCSbynrDdX0tqjpip31DHdAtXO6XaT5+dt3QMWS1VorjmV29PLW6A
-	 UfU3RrMIA04WYPAEXiI4JUbjRgTLDj3OrmhiBrW0=
+	b=1z4873VeCtAbO9SewZj0WgdLgTzwU6HKLQKRKD4dTIsT/pjMFdFWKYrnBqy0DwZRh
+	 8vbEdZ84K38b2sUR7qYCJNSL8FdXP2Y3+0qkGiLtyOPfHOBX8sdH9eqKpykc2y6HuI
+	 /sftcKhDZIMi0f08aW4cR7uHM3S8RQTVJxPPrSls=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Donet Tom <donettom@linux.ibm.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 032/220] drm/amdkfd: Fix queue preemption/eviction failures by aligning control stack size to GPU page size
-Date: Mon, 20 Apr 2026 17:39:33 +0200
-Message-ID: <20260420153935.190962667@linuxfoundation.org>
+	Fredric Cover <FredTheDude@proton.me>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Henrique Carvalho <henrique.carvalho@suse.com>
+Subject: [PATCH 6.19 033/220] fs/smb/client: fix out-of-bounds read in cifs_sanitize_prepath
+Date: Mon, 20 Apr 2026 17:39:34 +0200
+Message-ID: <20260420153935.227323600@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
 References: <20260420153934.013228280@linuxfoundation.org>
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239372-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-239937-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -91,8 +91,8 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,amd.com:email]
-X-Rspamd-Queue-Id: 8C058431866
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,proton.me:email,suse.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: BD50543262A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,74 +100,45 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Donet Tom <donettom@linux.ibm.com>
+From: Fredric Cover <FredTheDude@proton.me>
 
-[ Upstream commit 78746a474e92fc7aaed12219bec7c78ae1bd6156 ]
+[ Upstream commit 78ec5bf2f589ec7fd8f169394bfeca541b077317 ]
 
-The control stack size is calculated based on the number of CUs and
-waves, and is then aligned to PAGE_SIZE. When the resulting control
-stack size is aligned to 64 KB, GPU hangs and queue preemption
-failures are observed while running RCCL unit tests on systems with
-more than two GPUs.
+When cifs_sanitize_prepath is called with an empty string or a string
+containing only delimiters (e.g., "/"), the current logic attempts to
+check *(cursor2 - 1) before cursor2 has advanced. This results in an
+out-of-bounds read.
 
-amdgpu 0048:0f:00.0: amdgpu: Queue preemption failed for queue with
-doorbell_id: 80030008
-amdgpu 0048:0f:00.0: amdgpu: Failed to evict process queues
-amdgpu 0048:0f:00.0: amdgpu: GPU reset begin!. Source: 4
-amdgpu 0048:0f:00.0: amdgpu: Queue preemption failed for queue with
-doorbell_id: 80030008
-amdgpu 0048:0f:00.0: amdgpu: Failed to evict process queues
-amdgpu 0048:0f:00.0: amdgpu: Failed to restore process queues
+This patch adds an early exit check after stripping prepended
+delimiters. If no path content remains, the function returns NULL.
 
-This issue is observed on both 4 KB and 64 KB system page-size
-configurations.
+The bug was identified via manual audit and verified using a
+standalone test case compiled with AddressSanitizer, which
+triggered a SEGV on affected inputs.
 
-This patch fixes the issue by aligning the control stack size to
-AMDGPU_GPU_PAGE_SIZE instead of PAGE_SIZE, so the control stack size
-will not be 64 KB on systems with a 64 KB page size and queue
-preemption works correctly.
-
-Additionally, In the current code, wg_data_size is aligned to PAGE_SIZE,
-which can waste memory if the system page size is large. In this patch,
-wg_data_size is aligned to AMDGPU_GPU_PAGE_SIZE. The cwsr_size, calculated
-from wg_data_size and the control stack size, is aligned to PAGE_SIZE.
-
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Donet Tom <donettom@linux.ibm.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit a3e14436304392fbada359edd0f1d1659850c9b7)
+Signed-off-by: Fredric Cover <FredTheDude@proton.me>
+Reviewed-by: Henrique Carvalho <[2]henrique.carvalho@suse.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_queue.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ fs/smb/client/fs_context.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_queue.c b/drivers/gpu/drm/amd/amdkfd/kfd_queue.c
-index 2822c90bd7be4..b97f4a51db6e3 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_queue.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_queue.c
-@@ -444,10 +444,11 @@ void kfd_queue_ctx_save_restore_size(struct kfd_topology_device *dev)
- 		    min(cu_num * 40, props->array_count / props->simd_arrays_per_engine * 512)
- 		    : cu_num * 32;
+diff --git a/fs/smb/client/fs_context.c b/fs/smb/client/fs_context.c
+index e0d2cd78c82f1..e61bb6ac1d111 100644
+--- a/fs/smb/client/fs_context.c
++++ b/fs/smb/client/fs_context.c
+@@ -589,6 +589,10 @@ char *cifs_sanitize_prepath(char *prepath, gfp_t gfp)
+ 	while (IS_DELIM(*cursor1))
+ 		cursor1++;
  
--	wg_data_size = ALIGN(cu_num * WG_CONTEXT_DATA_SIZE_PER_CU(gfxv, props), PAGE_SIZE);
-+	wg_data_size = ALIGN(cu_num * WG_CONTEXT_DATA_SIZE_PER_CU(gfxv, props),
-+				AMDGPU_GPU_PAGE_SIZE);
- 	ctl_stack_size = wave_num * CNTL_STACK_BYTES_PER_WAVE(gfxv) + 8;
- 	ctl_stack_size = ALIGN(SIZEOF_HSA_USER_CONTEXT_SAVE_AREA_HEADER + ctl_stack_size,
--			       PAGE_SIZE);
-+			       AMDGPU_GPU_PAGE_SIZE);
++	/* exit in case of only delimiters */
++	if (!*cursor1)
++		return NULL;
++
+ 	/* copy the first letter */
+ 	*cursor2 = *cursor1;
  
- 	if ((gfxv / 10000 * 10000) == 100000) {
- 		/* HW design limits control stack size to 0x7000.
-@@ -459,7 +460,7 @@ void kfd_queue_ctx_save_restore_size(struct kfd_topology_device *dev)
- 
- 	props->ctl_stack_size = ctl_stack_size;
- 	props->debug_memory_size = ALIGN(wave_num * DEBUGGER_BYTES_PER_WAVE, DEBUGGER_BYTES_ALIGN);
--	props->cwsr_size = ctl_stack_size + wg_data_size;
-+	props->cwsr_size = ALIGN(ctl_stack_size + wg_data_size, PAGE_SIZE);
- 
- 	if (gfxv == 80002)	/* GFX_VERSION_TONGA */
- 		props->eop_buffer_size = 0x8000;
 -- 
 2.53.0
 
