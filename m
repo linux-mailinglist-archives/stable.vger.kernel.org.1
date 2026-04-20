@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-239580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239399-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qCi5AjRg5mkxvgEAu9opvQ
-	(envelope-from <stable+bounces-239580-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:19:48 +0200
+	id EOahDXtX5ml5vAEAu9opvQ
+	(envelope-from <stable+bounces-239399-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:42:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 638EC431019
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:19:46 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD89A42FDFF
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:42:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D436C32AE4EA
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:56:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4A3E530D04FF
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:49:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E10E3396EE;
-	Mon, 20 Apr 2026 15:56:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB69F332635;
+	Mon, 20 Apr 2026 15:49:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W8w3ZWLn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YyKGwlc/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A5AE3264F1;
-	Mon, 20 Apr 2026 15:56:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E4693368AE;
+	Mon, 20 Apr 2026 15:49:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700617; cv=none; b=MEHRuk/unlWRdwK1dqRyB8yyryuwO8Raq8TvfYr4JqJa5Ho6B6QhCQKirL57MYbE77j3XLHPUkNh4Gfau9vKI3ZgK8QFx7DWIR5Rrv/o4BCdiGGNjBFUCbORpF/u2w1ixzRp6JOvdCxi/bR+pcU9LiUqYQUt/tGFJPOkFsG+ptg=
+	t=1776700147; cv=none; b=t3Fv/9dSxAXTIiAlS93y6Yj72eir2w73oy3ePBQtM0oYTRWizQphiGU+ZVkfs1ge3xzBGdlLEy6E2eI/N51zlgqKcuCjm+zii6sxBPHTRAox8ADu6ibI6KdtG2RDZ9H2L4p7hTqRpA8L1dsXLClFCg+/WDPDAkh+5wZxpRYxP18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700617; c=relaxed/simple;
-	bh=bzsbvrgGQgsRrKYnBgrMXtWTzE7kNJeZt96cTz6ZlcM=;
+	s=arc-20240116; t=1776700147; c=relaxed/simple;
+	bh=aXWJREE7yDC4mI+KVhfeAo7VQwFsUaK4GNbKjWT6wzI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=m+oVscGL7YreFs9veUUvyv+JtbjRuMLElf+ZbH8G5DfHqTCD2ae+lqo//ryhOUEnoWUDn5cNBNp33CdD2r5MH5ClCCPNJs/+7VYxSnS+uffQgTw/RPweYlKXQWlxStUaeXKH5dIT/NEh7ZADj7Dq8Ay/wQfyRpDwX0JGZlQss1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W8w3ZWLn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5E54C19425;
-	Mon, 20 Apr 2026 15:56:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=obGcdrkwoDZnUiwUaxKFe7eB/j3acziQpNeU9mi+CMQqrXm2pTRadG8bie2jevSvFT/Ti6oEwq2gd7tRh8KIWhN2TBzHRjHvjZQey76JsD5ml2yIak3A8FQAJCL3xHHvvJqaQ5M+dSaBZijZ1v1jmKeJvmTY1OdT8lXzj2QZjAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YyKGwlc/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0566AC19425;
+	Mon, 20 Apr 2026 15:49:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700617;
-	bh=bzsbvrgGQgsRrKYnBgrMXtWTzE7kNJeZt96cTz6ZlcM=;
+	s=korg; t=1776700147;
+	bh=aXWJREE7yDC4mI+KVhfeAo7VQwFsUaK4GNbKjWT6wzI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W8w3ZWLnMvVMxXpzRd0fSo9aeV1taWvMJa262DUAO7k2BoDVz9IBWFNtf/v34TS1n
-	 HzbLyCfSDjBO0XSovEO0gPFIMc1OzXPVqwR6TP7yPfqJbQWYqEAji1AQ6r6vez/AYX
-	 u7KXXqvR8m7v5w3eKP20ywo0RBQA471TCSeNKXGg=
+	b=YyKGwlc/ql6xphSnw6TYCDDNatIPyep4ilBq7fdUE5JCVFkXX+z5SHqY8qV16x27X
+	 zTCLtytJrYTu8z6NINljH2luUF6nyN8BjFBBhGNe6ZlHmOPjSeYZLvO+OleWsRDUBh
+	 K46k1o8mMqTaHK+kcN1VfGSlQtQuUQIekBFtWvAM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Donet Tom <donettom@linux.ibm.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 021/198] drm/amdgpu: Handle GPU page faults correctly on non-4K page systems
-Date: Mon, 20 Apr 2026 17:40:00 +0200
-Message-ID: <20260420153936.380202709@linuxfoundation.org>
+Subject: [PATCH 6.19 060/220] arm64: dts: qcom: monaco: Reserve full Gunyah metadata region
+Date: Mon, 20 Apr 2026 17:40:01 +0200
+Message-ID: <20260420153936.202866293@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
+References: <20260420153934.013228280@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,95 +70,97 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-239580-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239399-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	DBL_PROHIBIT(0.00)[5.107.6.32:email];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,amd.com:email]
-X-Rspamd-Queue-Id: 638EC431019
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: AD89A42FDFF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Donet Tom <donettom@linux.ibm.com>
+From: Loic Poulain <loic.poulain@oss.qualcomm.com>
 
-[ Upstream commit 4e9597f22a3cb8600c72fc266eaac57981d834c8 ]
+[ Upstream commit 85d98669fa7f1d3041d962515e45ee6e392db6f8 ]
 
-During a GPU page fault, the driver restores the SVM range and then maps it
-into the GPU page tables. The current implementation passes a GPU-page-size
-(4K-based) PFN to svm_range_restore_pages() to restore the range.
+We observe spurious "Synchronous External Abort" exceptions
+(ESR=0x96000010) and kernel crashes on Monaco-based platforms.
+These faults are caused by the kernel inadvertently accessing
+hypervisor-owned memory that is not properly marked as reserved.
 
-SVM ranges are tracked using system-page-size PFNs. On systems where the
-system page size is larger than 4K, using GPU-page-size PFNs to restore the
-range causes two problems:
+>From boot log, The Qualcomm hypervisor reports the memory range
+at 0x91a80000 of size 0x80000 (512 KiB) as hypervisor-owned:
+qhee_hyp_assign_remove_memory: 0x91a80000/0x80000 -> ret 0
 
-Range lookup fails:
-Because the restore function receives PFNs in GPU (4K) units, the SVM
-range lookup does not find the existing range. This will result in a
-duplicate SVM range being created.
+However, the EFI memory map provided by firmware only reserves the
+subrange 0x91a40000–0x91a87fff (288 KiB). The remaining portion
+(0x91a88000–0x91afffff) is incorrectly reported as conventional
+memory (from efi debug):
+efi:   0x000091a40000-0x000091a87fff [Reserved...]
+efi:   0x000091a88000-0x0000938fffff [Conventional...]
 
-VMA lookup failure:
-The restore function also tries to locate the VMA for the faulting address.
-It converts the GPU-page-size PFN into an address using the system page
-size, which results in an incorrect address on non-4K page-size systems.
-As a result, the VMA lookup fails with the message: "address 0xxxx VMA is
-removed".
+As a result, the allocator may hand out PFNs inside the hypervisor
+owned region, causing fatal aborts when the kernel accesses those
+addresses.
 
-This patch passes the system-page-size PFN to svm_range_restore_pages() so
-that the SVM range is restored correctly on non-4K page systems.
+Add a reserved-memory carveout for the Gunyah hypervisor metadata
+at 0x91a80000 (512 KiB) and mark it as no-map so Linux does not
+map or allocate from this area.
 
-Acked-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Donet Tom <donettom@linux.ibm.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 074fe395fb13247b057f60004c7ebcca9f38ef46)
+For the record:
+Hyp version: gunyah-e78adb36e debug (2025-11-17 05:38:05 UTC)
+UEFI Ver: 6.0.260122.BOOT.MXF.1.0.c1-00449-KODIAKLA-1
+
+Fixes: 7be190e4bdd2 ("arm64: dts: qcom: add QCS8300 platform")
+Signed-off-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260302142603.1113355-1-loic.poulain@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/qcom/monaco.dtsi | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-index f2e00f408156c..69080e3734891 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-@@ -2960,14 +2960,14 @@ bool amdgpu_vm_handle_fault(struct amdgpu_device *adev, u32 pasid,
- 	if (!root)
- 		return false;
+diff --git a/arch/arm64/boot/dts/qcom/monaco.dtsi b/arch/arm64/boot/dts/qcom/monaco.dtsi
+index f74045be62420..a407f80bc5e1f 100644
+--- a/arch/arm64/boot/dts/qcom/monaco.dtsi
++++ b/arch/arm64/boot/dts/qcom/monaco.dtsi
+@@ -757,6 +757,11 @@ smem_mem: smem@90900000 {
+ 			hwlocks = <&tcsr_mutex 3>;
+ 		};
  
--	addr /= AMDGPU_GPU_PAGE_SIZE;
--
- 	if (is_compute_context && !svm_range_restore_pages(adev, pasid, vmid,
--	    node_id, addr, ts, write_fault)) {
-+	    node_id, addr >> PAGE_SHIFT, ts, write_fault)) {
- 		amdgpu_bo_unref(&root);
- 		return true;
- 	}
- 
-+	addr /= AMDGPU_GPU_PAGE_SIZE;
++		gunyah_md_mem: gunyah-md-region@91a80000 {
++			reg = <0x0 0x91a80000 0x0 0x80000>;
++			no-map;
++		};
 +
- 	r = amdgpu_bo_reserve(root, true);
- 	if (r)
- 		goto error_unref;
+ 		lpass_machine_learning_mem: lpass-machine-learning-region@93b00000 {
+ 			reg = <0x0 0x93b00000 0x0 0xf00000>;
+ 			no-map;
 -- 
 2.53.0
 
