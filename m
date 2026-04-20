@@ -1,57 +1,65 @@
-Return-Path: <stable+bounces-239761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239887-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CPrELoNj5mkKvwEAu9opvQ
-	(envelope-from <stable+bounces-239761-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:33:55 +0200
+	id UFKdJHNR5mkDuwEAu9opvQ
+	(envelope-from <stable+bounces-239887-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:16:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B5C2431736
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:33:54 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 546DD42F3E5
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:16:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id EC7B630FB2FB
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:05:49 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CE5023043E42
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:11:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91734336EE1;
-	Mon, 20 Apr 2026 16:05:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBC5C3446B7;
+	Mon, 20 Apr 2026 16:11:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iWC6BwSA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IJHcdvMX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54B262DE6E3;
-	Mon, 20 Apr 2026 16:05:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ECCA33B945;
+	Mon, 20 Apr 2026 16:11:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701149; cv=none; b=uhYVCWel/ppTweqAw1ZboLWWjefLp7el65rGPVy655bXKUL15SqD8Okt6Acv5Ze3tKU/8XbYj+Sf4BNKdbEI3oR80zVwgih6JfAoIxcuQC7cPs3Yu7sjcxhLKQ7BAizyr2nGbiiusWKBl7hSof24wmZqsQiOcQx2X+uwkJ8p8fs=
+	t=1776701470; cv=none; b=K8pyNb87do8Fn7cZGyTdT2NZcKPOTrKOhWCtjp8jDsmQtqwqTaWayqDp3b/TfvP4P7ZXqKCs1M+ib5iJpBlVf2OnzUNUvqtkZQs7X2mpfM+fXrzy2Xhb0D81sdLs03lU9Ym9oQp6mWI5sEwTYgMYetFWw/pcz3yfGW+a//FSwrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701149; c=relaxed/simple;
-	bh=xlhuKGNeql3vLoG4zSsLwx7DJFuGahMkJXalooCOsok=;
+	s=arc-20240116; t=1776701470; c=relaxed/simple;
+	bh=wN2XWpf1KFEcPouMR7rlaBuT4SxBY+i2d5G8PELXVrI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oHXrXGdvQ1C4g050aziC0rbB7tSxUDVCg9gJj+3KocyoPSTWize34PBnEMQ/yhjkHTLtSOjvjvVHuS5OTCccamM+etKZbKB5CI7M/G6J5l1MWMt0xPVBFEGufF//mCET6MCs5FfTPsxwVIFMa0NrQet5i7KU2pdqD9DkbaYo/Wc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iWC6BwSA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E008DC19425;
-	Mon, 20 Apr 2026 16:05:48 +0000 (UTC)
+	 MIME-Version; b=jVYr/byf2pYrH9RkJDqdaJ8U6c3FVBl4bwKteQ53UWDuc7SWdf+QnpgCUP1g2pYhqQF9y4xuzzGsBIs+dV/AUavwbXIoSeIH7szXBXw6RxmKXvbVvjbWc4iS/Vp9Rli9fQwOCRBCXVCtmDlLaKgJ8uD/KiVr2JsBseFfORw8ObE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IJHcdvMX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ECD3C19425;
+	Mon, 20 Apr 2026 16:11:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701149;
-	bh=xlhuKGNeql3vLoG4zSsLwx7DJFuGahMkJXalooCOsok=;
+	s=korg; t=1776701470;
+	bh=wN2XWpf1KFEcPouMR7rlaBuT4SxBY+i2d5G8PELXVrI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iWC6BwSArlpf4BFXcBAaNGNX8RRWMF5+P/qT1nhI3mZH8PsZOf4bE0a2IsR5AEShw
-	 d8hjTvDomvssRMjWgkYLMOuxEaZOCvEt5In8MY97T4csN1IGpUfOgCXk3IJypfs4ZF
-	 XDveLnWCBMSBG4LLtEZbHnu58jYEenMnMQMCpzlQ=
+	b=IJHcdvMXHqXgm6G6ukLRRqrJ+hI3c5L6QW2ivhvuoPBaiN6Gpcm1JlDebVr2zQb1G
+	 OwX6YmgJ+fQXH/pm1+eAeIb1YZmYqN+oyMw1T4TI09mKaNzbru9K1f6C8LGut0ayRZ
+	 4lxv1XjY4YPgqzbIGHiEY8CFgDQ66m9iJXbDCq/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.18 180/198] x86-64/arm64/powerpc: clean up and rename __copy_from_user_flushcache
+	ZhengYuan Huang <gality369@gmail.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Heming Zhao <heming.zhao@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 127/162] ocfs2: handle invalid dinode in ocfs2_group_extend
 Date: Mon, 20 Apr 2026 17:42:39 +0200
-Message-ID: <20260420153942.097481618@linuxfoundation.org>
+Message-ID: <20260420153931.641428753@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
+References: <20260420153927.006696811@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,175 +72,112 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239761-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239887-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.alibaba.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,suse.com,linux-foundation.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linux-foundation.org:email]
-X-Rspamd-Queue-Id: 9B5C2431736
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,alibaba.com:email,oracle.com:email,suse.com:email,fasheh.com:email,huawei.com:email,linux-foundation.org:email,evilplan.org:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 546DD42F3E5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: ZhengYuan Huang <gality369@gmail.com>
 
-commit 809b997a5ce945ab470f70c187048fe4f5df20bf upstream.
+commit 4a1c0ddc6e7bcf2e9db0eeaab9340dcfe97f448f upstream.
 
-This finishes the work on these odd functions that were only implemented
-by a handful of architectures.
+[BUG]
+kernel BUG at fs/ocfs2/resize.c:308!
+Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+RIP: 0010:ocfs2_group_extend+0x10aa/0x1ae0 fs/ocfs2/resize.c:308
+Code: 8b8520ff ffff83f8 860f8580 030000e8 5cc3c1fe
+Call Trace:
+ ...
+ ocfs2_ioctl+0x175/0x6e0 fs/ocfs2/ioctl.c:869
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:597 [inline]
+ __se_sys_ioctl fs/ioctl.c:583 [inline]
+ __x64_sys_ioctl+0x197/0x1e0 fs/ioctl.c:583
+ x64_sys_call+0x1144/0x26a0 arch/x86/include/generated/asm/syscalls_64.h:17
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x93/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+ ...
 
-The 'flushcache' function was only used from the iterator code, and
-let's make it do the same thing that the nontemporal version does:
-remove the two underscores and add the user address checking.
+[CAUSE]
+ocfs2_group_extend() assumes that the global bitmap inode block
+returned from ocfs2_inode_lock() has already been validated and
+BUG_ONs when the signature is not a dinode. That assumption is too
+strong for crafted filesystems because the JBD2-managed buffer path
+can bypass structural validation and return an invalid dinode to the
+resize ioctl.
 
-Yes, yes, the user address checking is also done at iovec import time,
-but we have long since walked away from the old double-underscore thing
-where we try to avoid address checking overhead at access time, and
-these functions shouldn't be so special and old-fashioned.
+[FIX]
+Validate the dinode explicitly in ocfs2_group_extend(). If the global
+bitmap buffer does not contain a valid dinode, report filesystem
+corruption with ocfs2_error() and fail the resize operation instead of
+crashing the kernel.
 
-The arm64 version already did the address check, in fact, so there it's
-just a matter of renaming it.  For powerpc and x86-64 we now do the
-proper user access boilerplate.
-
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lkml.kernel.org/r/20260401092303.3709187-1-gality369@gmail.com
+Fixes: 10995aa2451a ("ocfs2: Morph the haphazard OCFS2_IS_VALID_DINODE() checks.")
+Signed-off-by: ZhengYuan Huang <gality369@gmail.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Heming Zhao <heming.zhao@suse.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/uaccess.h   |    2 +-
- arch/powerpc/include/asm/uaccess.h |    3 +--
- arch/powerpc/lib/pmem.c            |   11 ++++++-----
- arch/x86/include/asm/uaccess_64.h  |    8 ++++----
- arch/x86/lib/usercopy_64.c         |    8 ++++----
- lib/iov_iter.c                     |    2 +-
- 6 files changed, 17 insertions(+), 17 deletions(-)
+ fs/ocfs2/resize.c |   10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
---- a/arch/arm64/include/asm/uaccess.h
-+++ b/arch/arm64/include/asm/uaccess.h
-@@ -480,7 +480,7 @@ extern __must_check long strnlen_user(co
- #ifdef CONFIG_ARCH_HAS_UACCESS_FLUSHCACHE
- extern unsigned long __must_check __copy_user_flushcache(void *to, const void __user *from, unsigned long n);
+--- a/fs/ocfs2/resize.c
++++ b/fs/ocfs2/resize.c
+@@ -303,9 +303,13 @@ int ocfs2_group_extend(struct inode * in
  
--static inline int __copy_from_user_flushcache(void *dst, const void __user *src, unsigned size)
-+static inline size_t copy_from_user_flushcache(void *dst, const void __user *src, size_t size)
- {
- 	kasan_check_write(dst, size);
- 	return __copy_user_flushcache(dst, __uaccess_mask_ptr(src), size);
---- a/arch/powerpc/include/asm/uaccess.h
-+++ b/arch/powerpc/include/asm/uaccess.h
-@@ -407,8 +407,7 @@ copy_mc_to_user(void __user *to, const v
- }
- #endif
+ 	fe = (struct ocfs2_dinode *)main_bm_bh->b_data;
  
--extern long __copy_from_user_flushcache(void *dst, const void __user *src,
--		unsigned size);
-+extern size_t copy_from_user_flushcache(void *dst, const void __user *src, size_t size);
+-	/* main_bm_bh is validated by inode read inside ocfs2_inode_lock(),
+-	 * so any corruption is a code bug. */
+-	BUG_ON(!OCFS2_IS_VALID_DINODE(fe));
++	/* JBD-managed buffers can bypass validation, so treat this as corruption. */
++	if (!OCFS2_IS_VALID_DINODE(fe)) {
++		ret = ocfs2_error(main_bm_inode->i_sb,
++				  "Invalid dinode #%llu\n",
++				  (unsigned long long)OCFS2_I(main_bm_inode)->ip_blkno);
++		goto out_unlock;
++	}
  
- static __must_check __always_inline bool user_access_begin(const void __user *ptr, size_t len)
- {
---- a/arch/powerpc/lib/pmem.c
-+++ b/arch/powerpc/lib/pmem.c
-@@ -66,15 +66,16 @@ EXPORT_SYMBOL_GPL(arch_invalidate_pmem);
- /*
-  * CONFIG_ARCH_HAS_UACCESS_FLUSHCACHE symbols
-  */
--long __copy_from_user_flushcache(void *dest, const void __user *src,
--		unsigned size)
-+size_t copy_from_user_flushcache(void *dest, const void __user *src,
-+				 size_t size)
- {
--	unsigned long copied, start = (unsigned long) dest;
-+	unsigned long not_copied, start = (unsigned long) dest;
- 
--	copied = __copy_from_user(dest, src, size);
-+	src = mask_user_address(src);
-+	not_copied = __copy_from_user(dest, src, size);
- 	clean_pmem_range(start, start + size);
- 
--	return copied;
-+	return not_copied;
- }
- 
- void memcpy_flushcache(void *dest, const void *src, size_t size)
---- a/arch/x86/include/asm/uaccess_64.h
-+++ b/arch/x86/include/asm/uaccess_64.h
-@@ -149,7 +149,7 @@ raw_copy_to_user(void __user *dst, const
- 
- #define copy_to_nontemporal copy_to_nontemporal
- extern size_t copy_to_nontemporal(void *dst, const void *src, size_t size);
--extern long __copy_user_flushcache(void *dst, const void __user *src, unsigned size);
-+extern size_t copy_user_flushcache(void *dst, const void __user *src, size_t size);
- 
- static inline int
- copy_from_user_inatomic_nontemporal(void *dst, const void __user *src,
-@@ -164,11 +164,11 @@ copy_from_user_inatomic_nontemporal(void
- 	return ret;
- }
- 
--static inline int
--__copy_from_user_flushcache(void *dst, const void __user *src, unsigned size)
-+static inline size_t
-+copy_from_user_flushcache(void *dst, const void __user *src, size_t size)
- {
- 	kasan_check_write(dst, size);
--	return __copy_user_flushcache(dst, src, size);
-+	return copy_user_flushcache(dst, src, size);
- }
- 
- /*
---- a/arch/x86/lib/usercopy_64.c
-+++ b/arch/x86/lib/usercopy_64.c
-@@ -43,14 +43,14 @@ void arch_wb_cache_pmem(void *addr, size
- }
- EXPORT_SYMBOL_GPL(arch_wb_cache_pmem);
- 
--long __copy_user_flushcache(void *dst, const void __user *src, unsigned size)
-+size_t copy_user_flushcache(void *dst, const void __user *src, size_t size)
- {
- 	unsigned long flushed, dest = (unsigned long) dst;
--	long rc;
-+	unsigned long rc;
- 
--	stac();
-+	src = masked_user_access_begin(src);
- 	rc = copy_to_nontemporal(dst, (__force const void *)src, size);
--	clac();
-+	user_access_end();
- 
- 	/*
- 	 * copy_to_nontemporal() uses non-temporal stores for the bulk
---- a/lib/iov_iter.c
-+++ b/lib/iov_iter.c
-@@ -284,7 +284,7 @@ static __always_inline
- size_t copy_from_user_iter_flushcache(void __user *iter_from, size_t progress,
- 				      size_t len, void *to, void *priv2)
- {
--	return __copy_from_user_flushcache(to + progress, iter_from, len);
-+	return copy_from_user_flushcache(to + progress, iter_from, len);
- }
- 
- static __always_inline
+ 	if (le16_to_cpu(fe->id2.i_chain.cl_cpg) !=
+ 		ocfs2_group_bitmap_size(osb->sb, 0,
 
 
 
