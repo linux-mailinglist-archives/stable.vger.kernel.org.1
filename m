@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-239777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239621-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sJcmMstZ5mnGvAEAu9opvQ
-	(envelope-from <stable+bounces-239777-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:52:27 +0200
+	id 2EdUMZZg5mkqvgEAu9opvQ
+	(envelope-from <stable+bounces-239621-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:21:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 163D043026F
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:52:27 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29CBA43107B
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:21:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5DA36325F67B
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:06:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7377732F0B67
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:58:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 099DF33F8AA;
-	Mon, 20 Apr 2026 16:06:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83F3A1EB5CE;
+	Mon, 20 Apr 2026 15:58:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IgHEhNTt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KZYB4PkL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C01EE1FB1;
-	Mon, 20 Apr 2026 16:06:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 462572E2665;
+	Mon, 20 Apr 2026 15:58:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701187; cv=none; b=u1rGDowfR5WHPZPCaHLh7XRH/FTZKrayNdEiShEhHOvWpD4PYQa9C/l6sLjtXZ7qedC9+/TAK4fH65YyQVi9HhrO+Dycjr+8uH8J2xCg6lrImAVrWVqifrWd62Y7i/2K84olm9WhDCRB2VuEAeTzVuCUqfhLEwcq8LWq5B7+GhY=
+	t=1776700726; cv=none; b=QC3DCQtjPrC/puTvAZ2NuejXIqepu7Mg06wWK3fdQrc9nUEOUr4CTDIK6zw1hVzHSA3orA+kzeRL5hnLVrvRgd4Ff6YvNCt5A+E6g7OsMwDusZ2ow5KG++Z8eTJa3Un7edzzbm+lvC2V7L+5Jh4w5NCeKgl2Ft+bKCYILvL4ltI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701187; c=relaxed/simple;
-	bh=IwYzNYcyzfjAxmOLtf9nIHi3h7LgQC0QKuKkuD0hu2I=;
+	s=arc-20240116; t=1776700726; c=relaxed/simple;
+	bh=6tGUYMmwBRUSUv/4WZPE1zODq0DZnHKL5rG2q9uWqpM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=o+/C1qeZhfj1QRTp6Q9SVDdBgAgGqO6uTZQQB5lFIDCs2QTaTslVyAmNU0wkphNR/Tm50mXRxSDy/DWJ1j0SLR3KMPK8Inz9v4vI2kIvVYW+OWK82pCYUd4hPbJO6aLghHwB9ZJwXOhbLi81zogreAgVkn1UmXyAsNnpMf/8R/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IgHEhNTt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57706C19425;
-	Mon, 20 Apr 2026 16:06:27 +0000 (UTC)
+	 MIME-Version; b=l3bpAkFv0UGYO+t/4G7IqBI3ydW/Gl6esRiNv0SBZRNLRG7JlDXl2ovjqjOJBswM52F3HopnED351kd/Udx2woQo94mXmaHahp8wqqpFwh7QjI8E5Z+gCr8OddFrg8ToXm8LFDdwYYVzQOGi12aJEEnDYRZ2mgwwpt7VLJ8hK9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KZYB4PkL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1C60C19425;
+	Mon, 20 Apr 2026 15:58:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701187;
-	bh=IwYzNYcyzfjAxmOLtf9nIHi3h7LgQC0QKuKkuD0hu2I=;
+	s=korg; t=1776700726;
+	bh=6tGUYMmwBRUSUv/4WZPE1zODq0DZnHKL5rG2q9uWqpM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IgHEhNTtm7Rv968NnWcN39hVgmuJrdrsTvKpatGE277YwNTjaXNklz1ucHueBYS+U
-	 dbFangisVH3stchmTiO8YDWsSKD+F2PF0wQcq9l9mqAxAx5sH3U6XRjuLO/CjmaF/S
-	 rNer/g3VaZOV52QGnFMLNN2YMFkZra9UyZCTcvsI=
+	b=KZYB4PkLY3EjlzRzPur4kBSignU+ricqWG+suS6XJHCqSJdQxzxve+J99JyxX7T+r
+	 T8XaCsaHckmV7MPnuRlmXN+HevgscsuucrvO4KhQi+1fx6lapL+gnhRymJa5Q8cd97
+	 vRdJdSUxJY3px6WNzKoYgKrFK1IXHEHc5xeEU1S4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Petr Tesarik <ptesarik@suse.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 009/162] ASoC: SOF: topology: reject invalid vendor array size in token parser
-Date: Mon, 20 Apr 2026 17:40:41 +0200
-Message-ID: <20260420153927.352826559@linuxfoundation.org>
+Subject: [PATCH 6.18 063/198] dma-debug: track cache clean flag in entries
+Date: Mon, 20 Apr 2026 17:40:42 +0200
+Message-ID: <20260420153937.882393355@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
-References: <20260420153927.006696811@linuxfoundation.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,78 +63,145 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-239777-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239621-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: 163D043026F
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 29CBA43107B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+From: Michael S. Tsirkin <mst@redhat.com>
 
-[ Upstream commit 215e5fe75881a7e2425df04aeeed47a903d5cd5d ]
+[ Upstream commit d5d846513128c1a3bc2f2d371f6e903177dea443 ]
 
-sof_parse_token_sets() accepts array->size values that can be invalid
-for a vendor tuple array header. In particular, a zero size does not
-advance the parser state and can lead to non-progress parsing on
-malformed topology data.
+If a driver is buggy and has 2 overlapping mappings but only
+sets cache clean flag on the 1st one of them, we warn.
+But if it only does it for the 2nd one, we don't.
 
-Validate array->size against the minimum header size and reject values
-smaller than sizeof(*array) before parsing. This preserves behavior for
-valid topologies and hardens malformed-input handling.
+Fix by tracking cache clean flag in the entry.
 
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
-Acked-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Link: https://patch.msgid.link/20260319-sof-topology-array-size-fix-v1-1-f9191b16b1b7@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Message-ID: <0ffb3513d18614539c108b4548cdfbc64274a7d1.1767601130.git.mst@redhat.com>
+Reviewed-by: Petr Tesarik <ptesarik@suse.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Stable-dep-of: 3d48c9fd78dd ("dma-debug: suppress cacheline overlap warning when arch has no DMA alignment requirement")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/topology.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/dma/debug.c | 27 ++++++++++++++++++++++-----
+ 1 file changed, 22 insertions(+), 5 deletions(-)
 
-diff --git a/sound/soc/sof/topology.c b/sound/soc/sof/topology.c
-index 0104257df930e..cdf8e56fd8a02 100644
---- a/sound/soc/sof/topology.c
-+++ b/sound/soc/sof/topology.c
-@@ -724,7 +724,7 @@ static int sof_parse_token_sets(struct snd_soc_component *scomp,
- 		asize = le32_to_cpu(array->size);
+diff --git a/kernel/dma/debug.c b/kernel/dma/debug.c
+index 7e66d863d573f..43d6a996d7a78 100644
+--- a/kernel/dma/debug.c
++++ b/kernel/dma/debug.c
+@@ -63,6 +63,7 @@ enum map_err_types {
+  * @sg_mapped_ents: 'mapped_ents' from dma_map_sg
+  * @paddr: physical start address of the mapping
+  * @map_err_type: track whether dma_mapping_error() was checked
++ * @is_cache_clean: driver promises not to write to buffer while mapped
+  * @stack_len: number of backtrace entries in @stack_entries
+  * @stack_entries: stack of backtrace history
+  */
+@@ -76,7 +77,8 @@ struct dma_debug_entry {
+ 	int		 sg_call_ents;
+ 	int		 sg_mapped_ents;
+ 	phys_addr_t	 paddr;
+-	enum map_err_types  map_err_type;
++	enum map_err_types map_err_type;
++	bool		 is_cache_clean;
+ #ifdef CONFIG_STACKTRACE
+ 	unsigned int	stack_len;
+ 	unsigned long	stack_entries[DMA_DEBUG_STACKTRACE_ENTRIES];
+@@ -472,12 +474,15 @@ static int active_cacheline_dec_overlap(phys_addr_t cln)
+ 	return active_cacheline_set_overlap(cln, --overlap);
+ }
  
- 		/* validate asize */
--		if (asize < 0) { /* FIXME: A zero-size array makes no sense */
-+		if (asize < sizeof(*array)) {
- 			dev_err(scomp->dev, "error: invalid array size 0x%x\n",
- 				asize);
- 			return -EINVAL;
+-static int active_cacheline_insert(struct dma_debug_entry *entry)
++static int active_cacheline_insert(struct dma_debug_entry *entry,
++				   bool *overlap_cache_clean)
+ {
+ 	phys_addr_t cln = to_cacheline_number(entry);
+ 	unsigned long flags;
+ 	int rc;
+ 
++	*overlap_cache_clean = false;
++
+ 	/* If the device is not writing memory then we don't have any
+ 	 * concerns about the cpu consuming stale data.  This mitigates
+ 	 * legitimate usages of overlapping mappings.
+@@ -487,8 +492,16 @@ static int active_cacheline_insert(struct dma_debug_entry *entry)
+ 
+ 	spin_lock_irqsave(&radix_lock, flags);
+ 	rc = radix_tree_insert(&dma_active_cacheline, cln, entry);
+-	if (rc == -EEXIST)
++	if (rc == -EEXIST) {
++		struct dma_debug_entry *existing;
++
+ 		active_cacheline_inc_overlap(cln);
++		existing = radix_tree_lookup(&dma_active_cacheline, cln);
++		/* A lookup failure here after we got -EEXIST is unexpected. */
++		WARN_ON(!existing);
++		if (existing)
++			*overlap_cache_clean = existing->is_cache_clean;
++	}
+ 	spin_unlock_irqrestore(&radix_lock, flags);
+ 
+ 	return rc;
+@@ -583,20 +596,24 @@ DEFINE_SHOW_ATTRIBUTE(dump);
+  */
+ static void add_dma_entry(struct dma_debug_entry *entry, unsigned long attrs)
+ {
++	bool overlap_cache_clean;
+ 	struct hash_bucket *bucket;
+ 	unsigned long flags;
+ 	int rc;
+ 
++	entry->is_cache_clean = !!(attrs & DMA_ATTR_CPU_CACHE_CLEAN);
++
+ 	bucket = get_hash_bucket(entry, &flags);
+ 	hash_bucket_add(bucket, entry);
+ 	put_hash_bucket(bucket, flags);
+ 
+-	rc = active_cacheline_insert(entry);
++	rc = active_cacheline_insert(entry, &overlap_cache_clean);
+ 	if (rc == -ENOMEM) {
+ 		pr_err_once("cacheline tracking ENOMEM, dma-debug disabled\n");
+ 		global_disable = true;
+ 	} else if (rc == -EEXIST &&
+-		   !(attrs & (DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_CPU_CACHE_CLEAN)) &&
++		   !(attrs & DMA_ATTR_SKIP_CPU_SYNC) &&
++		   !(entry->is_cache_clean && overlap_cache_clean) &&
+ 		   !(IS_ENABLED(CONFIG_DMA_BOUNCE_UNALIGNED_KMALLOC) &&
+ 		     is_swiotlb_active(entry->dev))) {
+ 		err_printk(entry->dev, entry,
 -- 
 2.53.0
 
