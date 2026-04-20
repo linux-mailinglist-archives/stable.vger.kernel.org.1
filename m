@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-239401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239583-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KB2DFOZc5mmtvAEAu9opvQ
-	(envelope-from <stable+bounces-239401-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:05:42 +0200
+	id KE1XGvNl5mkKvwEAu9opvQ
+	(envelope-from <stable+bounces-239583-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:44:19 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEB6A43087A
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:05:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF90C431F42
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:44:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5208B34E0E58
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:49:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A992F30FC35E
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:57:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C70173396EE;
-	Mon, 20 Apr 2026 15:49:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40D7533BBA7;
+	Mon, 20 Apr 2026 15:57:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T5RZQd0I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IIsBOxOH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A6342D77E5;
-	Mon, 20 Apr 2026 15:49:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6F47336EE1;
+	Mon, 20 Apr 2026 15:57:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700152; cv=none; b=PKyF+BhQuJKXh0s8P/n8GKcVBBFclxEdwboG122DAD6n3OZ4jyg+OgQAObYymwUltp8/2vcpSZmk1XEs7JidwIdWL2gogIvsjKV0Roa+bj2ejcjSmj/EPDiBtH3m+7x1/hHyoOH7FjWLWXRphwKwIu1KAEZRbbXgOqVjQHnNIJw=
+	t=1776700625; cv=none; b=BaNMR+ExH/45TNdGoGTeFK5Qx/96NMjgQ1WnkyrfAmYAakF4pKOc8XzY8a4rGXhGOcBJojgsOwh+mVdgBaiVSkDxLsWZ3IKceP8DW75G/kypAtYvCsak9EhFtpXDqm46NtXhLrYZMefVwGTTVizpFQt3G9FVRb106oyWe6j5VYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700152; c=relaxed/simple;
-	bh=pysmekRQorfCQfWNb20967DdaOuUOG0w6xqEwklbhoM=;
+	s=arc-20240116; t=1776700625; c=relaxed/simple;
+	bh=TroU1k/1DWjqjPZeBCMsp1r8wA9lGBLFrQtXBaGh79U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mO/+klxX0MQVdZicGosHJfNr3yvmUsyA9jx/VI69cA5+HotK7X77hcKGDzci/n7uo5AvdxaNwL1v7hjnJ+gH7TWeLwfAvhSBYcNGkyK3An0pmpc2yeJLWBu8RooznpmyW59Mp5iIGxkWGZzrr0CDcUOD6Vnhe15LzvsIqQllBK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T5RZQd0I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2140FC19425;
-	Mon, 20 Apr 2026 15:49:11 +0000 (UTC)
+	 MIME-Version; b=gZ+8jtLJGFvnwhfShh27zAgHhi1+QKgM4pULcUtBlBki4PONRFeFPpgwUQbIhtuaDZYH9p0MWNL55gbCE1Y39x0KK0zLYaeGCWJB4OvphVTPmmx1Blis9XqfxauK1cs9DtU0yQWTPcqdX4IgwI6bdTFyYGnS69/d20dvXwzX3IA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IIsBOxOH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A8D3C19425;
+	Mon, 20 Apr 2026 15:57:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700152;
-	bh=pysmekRQorfCQfWNb20967DdaOuUOG0w6xqEwklbhoM=;
+	s=korg; t=1776700624;
+	bh=TroU1k/1DWjqjPZeBCMsp1r8wA9lGBLFrQtXBaGh79U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T5RZQd0IHBIaft572segJ8aBGiC+4hRNf4V+m4aZAtBBgxvl4RO04y5jU89ayn0Y4
-	 GY8d3yX4xu+m9pGZH1+FyeZvJ0n1SO/OE7MhYFwttls20/0nM5q3OyPXTL7kgHF93A
-	 qvXb4XLA9/1v1O+LU5ShSw/Gi/jzpC6QbkqwQKAM=
+	b=IIsBOxOHHUrYUfVYR3TWyFoLnKcwdPvii/khb+CAHRK22KLdOYNiMuP4qN2SLGuMX
+	 7wzepU5OyTHmzklxk8rwxu7w/Y3KI6L0Gq6vp94lLAOzun+tCw8QjZ306wj+WCt1+V
+	 6TR+nw5n+4eQaRj9c7J2r9pR5WZDqlTBM3TeIbVI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Gu <ustc.gu@gmail.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
+	Florian Westphal <fw@strlen.de>,
+	Stefano Brivio <sbrivio@redhat.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 062/220] soc: microchip: mpfs-control-scb: Fix resource leak on driver unbind
+Subject: [PATCH 6.18 024/198] netfilter: nft_set_pipapo_avx2: dont return non-matching entry on expiry
 Date: Mon, 20 Apr 2026 17:40:03 +0200
-Message-ID: <20260420153936.274352388@linuxfoundation.org>
+Message-ID: <20260420153936.488116637@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
-References: <20260420153934.013228280@linuxfoundation.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +65,193 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239401-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,microchip.com,kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239583-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,microchip.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: DEB6A43087A
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,strlen.de:email,netfilter.org:email]
+X-Rspamd-Queue-Id: CF90C431F42
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Gu <ustc.gu@gmail.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 27459f86a43792d5c29f267a41dbd387601e772b ]
+[ Upstream commit d3c0037ffe1273fa1961e779ff6906234d6cf53c ]
 
-Use devm_mfd_add_devices() instead of mfd_add_devices() to ensure
-child devices are properly removed when the driver unbinds.
+New test case fails unexpectedly when avx2 matching functions are used.
 
-Fixes: 4aac11c9a6e7 ("soc: microchip: add mfd drivers for two syscon regions on PolarFire SoC")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+The test first loads a ranomly generated pipapo set
+with 'ipv4 . port' key, i.e.  nft -f foo.
+
+This works.  Then, it reloads the set after a flush:
+(echo flush set t s; cat foo) | nft -f -
+
+This is expected to work, because its the same set after all and it was
+already loaded once.
+
+But with avx2, this fails: nft reports a clashing element.
+
+The reported clash is of following form:
+
+    We successfully re-inserted
+      a . b
+      c . d
+
+Then we try to insert a . d
+
+avx2 finds the already existing a . d, which (due to 'flush set') is marked
+as invalid in the new generation.  It skips the element and moves to next.
+
+Due to incorrect masking, the skip-step finds the next matching
+element *only considering the first field*,
+
+i.e. we return the already reinserted "a . b", even though the
+last field is different and the entry should not have been matched.
+
+No such error is reported for the generic c implementation (no avx2) or when
+the last field has to use the 'nft_pipapo_avx2_lookup_slow' fallback.
+
+Bisection points to
+7711f4bb4b36 ("netfilter: nft_set_pipapo: fix range overlap detection")
+but that fix merely uncovers this bug.
+
+Before this commit, the wrong element is returned, but erronously
+reported as a full, identical duplicate.
+
+The root-cause is too early return in the avx2 match functions.
+When we process the last field, we should continue to process data
+until the entire input size has been consumed to make sure no stale
+bits remain in the map.
+
+Link: https://lore.kernel.org/netfilter-devel/20260321152506.037f68c0@elisabeth/
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/microchip/mpfs-control-scb.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/netfilter/nft_set_pipapo_avx2.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/soc/microchip/mpfs-control-scb.c b/drivers/soc/microchip/mpfs-control-scb.c
-index f0b84b1f49cbc..8dda5704a389f 100644
---- a/drivers/soc/microchip/mpfs-control-scb.c
-+++ b/drivers/soc/microchip/mpfs-control-scb.c
-@@ -14,8 +14,10 @@ static int mpfs_control_scb_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
+diff --git a/net/netfilter/nft_set_pipapo_avx2.c b/net/netfilter/nft_set_pipapo_avx2.c
+index 7ff90325c97fa..6395982e4d95c 100644
+--- a/net/netfilter/nft_set_pipapo_avx2.c
++++ b/net/netfilter/nft_set_pipapo_avx2.c
+@@ -242,7 +242,7 @@ static int nft_pipapo_avx2_lookup_4b_2(unsigned long *map, unsigned long *fill,
  
--	return mfd_add_devices(dev, PLATFORM_DEVID_NONE, mpfs_control_scb_devs,
--			       ARRAY_SIZE(mpfs_control_scb_devs), NULL, 0, NULL);
-+	return devm_mfd_add_devices(dev, PLATFORM_DEVID_NONE,
-+				    mpfs_control_scb_devs,
-+				    ARRAY_SIZE(mpfs_control_scb_devs), NULL, 0,
-+				    NULL);
- }
+ 		b = nft_pipapo_avx2_refill(i_ul, &map[i_ul], fill, f->mt, last);
+ 		if (last)
+-			return b;
++			ret = b;
  
- static const struct of_device_id mpfs_control_scb_of_match[] = {
+ 		if (unlikely(ret == -1))
+ 			ret = b / XSAVE_YMM_SIZE;
+@@ -319,7 +319,7 @@ static int nft_pipapo_avx2_lookup_4b_4(unsigned long *map, unsigned long *fill,
+ 
+ 		b = nft_pipapo_avx2_refill(i_ul, &map[i_ul], fill, f->mt, last);
+ 		if (last)
+-			return b;
++			ret = b;
+ 
+ 		if (unlikely(ret == -1))
+ 			ret = b / XSAVE_YMM_SIZE;
+@@ -414,7 +414,7 @@ static int nft_pipapo_avx2_lookup_4b_8(unsigned long *map, unsigned long *fill,
+ 
+ 		b = nft_pipapo_avx2_refill(i_ul, &map[i_ul], fill, f->mt, last);
+ 		if (last)
+-			return b;
++			ret = b;
+ 
+ 		if (unlikely(ret == -1))
+ 			ret = b / XSAVE_YMM_SIZE;
+@@ -505,7 +505,7 @@ static int nft_pipapo_avx2_lookup_4b_12(unsigned long *map, unsigned long *fill,
+ 
+ 		b = nft_pipapo_avx2_refill(i_ul, &map[i_ul], fill, f->mt, last);
+ 		if (last)
+-			return b;
++			ret = b;
+ 
+ 		if (unlikely(ret == -1))
+ 			ret = b / XSAVE_YMM_SIZE;
+@@ -641,7 +641,7 @@ static int nft_pipapo_avx2_lookup_4b_32(unsigned long *map, unsigned long *fill,
+ 
+ 		b = nft_pipapo_avx2_refill(i_ul, &map[i_ul], fill, f->mt, last);
+ 		if (last)
+-			return b;
++			ret = b;
+ 
+ 		if (unlikely(ret == -1))
+ 			ret = b / XSAVE_YMM_SIZE;
+@@ -699,7 +699,7 @@ static int nft_pipapo_avx2_lookup_8b_1(unsigned long *map, unsigned long *fill,
+ 
+ 		b = nft_pipapo_avx2_refill(i_ul, &map[i_ul], fill, f->mt, last);
+ 		if (last)
+-			return b;
++			ret = b;
+ 
+ 		if (unlikely(ret == -1))
+ 			ret = b / XSAVE_YMM_SIZE;
+@@ -764,7 +764,7 @@ static int nft_pipapo_avx2_lookup_8b_2(unsigned long *map, unsigned long *fill,
+ 
+ 		b = nft_pipapo_avx2_refill(i_ul, &map[i_ul], fill, f->mt, last);
+ 		if (last)
+-			return b;
++			ret = b;
+ 
+ 		if (unlikely(ret == -1))
+ 			ret = b / XSAVE_YMM_SIZE;
+@@ -839,7 +839,7 @@ static int nft_pipapo_avx2_lookup_8b_4(unsigned long *map, unsigned long *fill,
+ 
+ 		b = nft_pipapo_avx2_refill(i_ul, &map[i_ul], fill, f->mt, last);
+ 		if (last)
+-			return b;
++			ret = b;
+ 
+ 		if (unlikely(ret == -1))
+ 			ret = b / XSAVE_YMM_SIZE;
+@@ -925,7 +925,7 @@ static int nft_pipapo_avx2_lookup_8b_6(unsigned long *map, unsigned long *fill,
+ 
+ 		b = nft_pipapo_avx2_refill(i_ul, &map[i_ul], fill, f->mt, last);
+ 		if (last)
+-			return b;
++			ret = b;
+ 
+ 		if (unlikely(ret == -1))
+ 			ret = b / XSAVE_YMM_SIZE;
+@@ -1019,7 +1019,7 @@ static int nft_pipapo_avx2_lookup_8b_16(unsigned long *map, unsigned long *fill,
+ 
+ 		b = nft_pipapo_avx2_refill(i_ul, &map[i_ul], fill, f->mt, last);
+ 		if (last)
+-			return b;
++			ret = b;
+ 
+ 		if (unlikely(ret == -1))
+ 			ret = b / XSAVE_YMM_SIZE;
 -- 
 2.53.0
 
