@@ -1,61 +1,69 @@
-Return-Path: <stable+bounces-239822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239284-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uJ16NMNn5mnBvwEAu9opvQ
-	(envelope-from <stable+bounces-239822-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:52:03 +0200
+	id uMg8EPhi5mmavgEAu9opvQ
+	(envelope-from <stable+bounces-239284-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:31:36 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 298F9432328
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:52:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF769431574
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:31:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 44A7036FE0E8
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:08:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A012B345C949
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:44:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF45D3431F2;
-	Mon, 20 Apr 2026 16:08:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53D1033AD9C;
+	Mon, 20 Apr 2026 15:44:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F1iuhzqj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hLZNLI6m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF2D933C187;
-	Mon, 20 Apr 2026 16:08:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 167A33382DC;
+	Mon, 20 Apr 2026 15:44:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701304; cv=none; b=I6G1XMgKqD0m2ZacVo7UExMMomctUQzNbf0Fj18CF1yg/ljw62c5H0pjFpse2HcVqLFaXw2UodlEn0VzcRW/eVifPWDEdLpyADFDS1p526/ObzD470ZuoyyYrUo2blmbufs/NiBVTr6i8EoXsRvSxn/PPu0mhy1z3GfmWBGIT4U=
+	t=1776699855; cv=none; b=B08aURjMczGsjQgNb2ncggbjNSIcbRrvBoh5PAueywZ9ILG4auTMHOJl9Jn89PBuG37istGMm6Q+9460xEC6q3k5kBfzNgB03ZgheQC3KKOiE8ye/TTTyic5Pu52dl386fII4nN2I82k26YfaRmwDztq/tfnbDYab6sUTOSCrM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701304; c=relaxed/simple;
-	bh=JvZBj2LR503o2i1fADjKEGyLCw06+1oTpw7v436wd4Q=;
+	s=arc-20240116; t=1776699855; c=relaxed/simple;
+	bh=Vk2kKzquFB/Qm4cTL+3E64XGU5EoWCQmeG+FMHAt9zw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=X40Cw3cAi7SL5hEiylwBS9TPLJ+VfNemsdsSd+o0jURTNYBi/zi7gIUzclHKRPPu3N63vJYiJjGso6G+ZRTCLnOwCfDfUmXdGpF37CiTHqDsGodn+yaCIELkmNJTNwffP2YCIVhKBmsJIv/yigdXGs6Khvqv7vrfKoem+qOHc1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F1iuhzqj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42C2EC2BCC6;
-	Mon, 20 Apr 2026 16:08:24 +0000 (UTC)
+	 MIME-Version; b=A47UbFdJFRcjIH3ab7GyY3LA3X+kzJkGJPQ03YTNrUtWYFxMT31i/OUNKBe7fjjw0e6I47fRM2f5xbIGVwU00SCaLJyOVb81QddQetD3aaZu44MUyEFyyL/yhSMHz4aA2F5PnFE1zVUZ/rCLFFTwVJ7GIq9Cja3Hp6S+24dwVhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hLZNLI6m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7837AC19425;
+	Mon, 20 Apr 2026 15:44:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701304;
-	bh=JvZBj2LR503o2i1fADjKEGyLCw06+1oTpw7v436wd4Q=;
+	s=korg; t=1776699855;
+	bh=Vk2kKzquFB/Qm4cTL+3E64XGU5EoWCQmeG+FMHAt9zw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F1iuhzqj0jgoIbwpoZIQcRvT9Tl2Zr59tykOkOnydva3aWJOg+d3PnX1myKZb9Dl6
-	 pnDp2PUlc0MpT9D0mVijOgGmyHsCEEdJnkeAIxKxTmDGnUeJ7uQ9sVXSH+daFxAcSC
-	 ba3u/UANNOexcm2krGhYblp7Dg+mniDE9PGEGYNs=
+	b=hLZNLI6mTS8vImQCGH0JqULw8AC0ln0iWVF71wEHSpXD7ZYpYHlZzdkSAHM2OGrfK
+	 /boMuYMOiGvGK/1QUcs3q9VlNU9uyUzIPcgc1bsNUknjLLiv3LWqBbPgVzNWZCT1t+
+	 2r1nTUKdDhT7qfBfZgH3byFfkrgpaBYuFdtYxT1E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 062/162] xsk: respect tailroom for ZC setups
+	Ruikai Peng <ruikai@pwno.io>,
+	stable@kernel.org,
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	Long Li <longli@microsoft.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	security@kernel.org,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Stefan Metzmacher <metze@samba.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 7.0 23/76] smb: client: avoid double-free in smbd_free_send_io() after smbd_send_batch_flush()
 Date: Mon, 20 Apr 2026 17:41:34 +0200
-Message-ID: <20260420153929.283881613@linuxfoundation.org>
+Message-ID: <20260420153911.667528794@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
-References: <20260420153927.006696811@linuxfoundation.org>
+In-Reply-To: <20260420153910.810034134@linuxfoundation.org>
+References: <20260420153910.810034134@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,157 +73,101 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-239822-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239284-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,pwno.io,kernel.org,gmail.com,talpey.com,microsoft.com,chromium.org,vger.kernel.org,lists.samba.org,manguebit.org,samba.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,fomichev.me:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,intel.com:email]
-X-Rspamd-Queue-Id: 298F9432328
+	DBL_BLOCKED_OPENRESOLVER(0.00)[pwno.io:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,chromium.org:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,samba.org:email,talpey.com:email,manguebit.org:email]
+X-Rspamd-Queue-Id: BF769431574
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+From: Stefan Metzmacher <metze@samba.org>
 
-[ Upstream commit 1ee1605138fc94cc8f8f273321dd2471c64977f9 ]
+commit 27b7c3e916218b5eb2ee350211140e961bfc49be upstream.
 
-Multi-buffer XDP stores information about frags in skb_shared_info that
-sits at the tailroom of a packet. The storage space is reserved via
-xdp_data_hard_end():
+smbd_send_batch_flush() already calls smbd_free_send_io(),
+so we should not call it again after smbd_post_send()
+moved it to the batch list.
 
-	((xdp)->data_hard_start + (xdp)->frame_sz -	\
-	 SKB_DATA_ALIGN(sizeof(struct skb_shared_info)))
-
-and then we refer to it via macro below:
-
-static inline struct skb_shared_info *
-xdp_get_shared_info_from_buff(const struct xdp_buff *xdp)
-{
-        return (struct skb_shared_info *)xdp_data_hard_end(xdp);
-}
-
-Currently we do not respect this tailroom space in multi-buffer AF_XDP
-ZC scenario. To address this, introduce xsk_pool_get_tailroom() and use
-it within xsk_pool_get_rx_frame_size() which is used in ZC drivers to
-configure length of HW Rx buffer.
-
-Typically drivers on Rx Hw buffers side work on 128 byte alignment so
-let us align the value returned by xsk_pool_get_rx_frame_size() in order
-to avoid addressing this on driver's side. This addresses the fact that
-idpf uses mentioned function *before* pool->dev being set so we were at
-risk that after subtracting tailroom we would not provide 128-byte
-aligned value to HW.
-
-Since xsk_pool_get_rx_frame_size() is actively used in xsk_rcv_check()
-and __xsk_rcv(), add a variant of this routine that will not include 128
-byte alignment and therefore old behavior is preserved.
-
-Reviewed-by: Björn Töpel <bjorn@kernel.org>
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
-Fixes: 24ea50127ecf ("xsk: support mbuf on ZC RX")
-Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Link: https://patch.msgid.link/20260402154958.562179-3-maciej.fijalkowski@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Ruikai Peng <ruikai@pwno.io>
+Closes: https://lore.kernel.org/linux-cifs/CAFD3drNOSJ05y3A+jNXSDxW-2w09KHQ0DivhxQ_pcc7immVVOQ@mail.gmail.com/
+Fixes: 21538121efe6 ("smb: client: make use of smbdirect_socket.send_io.bcredits")
+Cc: stable@kernel.org
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: Long Li <longli@microsoft.com>
+Cc: Ruikai Peng <ruikai@pwno.io>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Cc: security@kernel.org
+Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Tested-by: Ruikai Peng <ruikai@pwno.io>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/xdp_sock_drv.h | 23 ++++++++++++++++++++++-
- net/xdp/xsk.c              |  4 ++--
- 2 files changed, 24 insertions(+), 3 deletions(-)
+ fs/smb/client/smbdirect.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/include/net/xdp_sock_drv.h b/include/net/xdp_sock_drv.h
-index 997e28dd38963..075bc09046463 100644
---- a/include/net/xdp_sock_drv.h
-+++ b/include/net/xdp_sock_drv.h
-@@ -37,16 +37,37 @@ static inline u32 xsk_pool_get_headroom(struct xsk_buff_pool *pool)
- 	return XDP_PACKET_HEADROOM + pool->headroom;
- }
+--- a/fs/smb/client/smbdirect.c
++++ b/fs/smb/client/smbdirect.c
+@@ -1551,17 +1551,25 @@ static int smbd_post_send_iter(struct sm
  
-+static inline u32 xsk_pool_get_tailroom(bool mbuf)
-+{
-+	return mbuf ? SKB_DATA_ALIGN(sizeof(struct skb_shared_info)) : 0;
-+}
+ 	rc = smbd_post_send(sc, batch, request);
+ 	if (!rc) {
++		/*
++		 * From here request is moved to batch
++		 * and we should not free it explicitly.
++		 */
 +
- static inline u32 xsk_pool_get_chunk_size(struct xsk_buff_pool *pool)
- {
- 	return pool->chunk_size;
- }
+ 		if (batch != &_batch)
+ 			return 0;
  
--static inline u32 xsk_pool_get_rx_frame_size(struct xsk_buff_pool *pool)
-+static inline u32 __xsk_pool_get_rx_frame_size(struct xsk_buff_pool *pool)
- {
- 	return xsk_pool_get_chunk_size(pool) - xsk_pool_get_headroom(pool);
- }
- 
-+static inline u32 xsk_pool_get_rx_frame_size(struct xsk_buff_pool *pool)
-+{
-+	u32 frame_size =  __xsk_pool_get_rx_frame_size(pool);
-+	struct xdp_umem *umem = pool->umem;
-+	bool mbuf;
+ 		rc = smbd_send_batch_flush(sc, batch, true);
+ 		if (!rc)
+ 			return 0;
 +
-+	/* Reserve tailroom only for zero-copy pools that opted into
-+	 * multi-buffer. The reserved area is used for skb_shared_info,
-+	 * matching the XDP core's xdp_data_hard_end() layout.
-+	 */
-+	mbuf = pool->dev && (umem->flags & XDP_UMEM_SG_FLAG);
-+	frame_size -= xsk_pool_get_tailroom(mbuf);
-+
-+	return ALIGN_DOWN(frame_size, 128);
-+}
-+
- static inline u32 xsk_pool_get_rx_frag_step(struct xsk_buff_pool *pool)
- {
- 	return pool->unaligned ? 0 : xsk_pool_get_chunk_size(pool);
-diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
-index ed1aeaded9be7..da7e11e3bfad2 100644
---- a/net/xdp/xsk.c
-+++ b/net/xdp/xsk.c
-@@ -231,7 +231,7 @@ static u32 xsk_copy_xdp(void *to, void **from, u32 to_len,
- 
- static int __xsk_rcv(struct xdp_sock *xs, struct xdp_buff *xdp, u32 len)
- {
--	u32 frame_size = xsk_pool_get_rx_frame_size(xs->pool);
-+	u32 frame_size = __xsk_pool_get_rx_frame_size(xs->pool);
- 	void *copy_from = xsk_copy_xdp_start(xdp), *copy_to;
- 	u32 from_len, meta_len, rem, num_desc;
- 	struct xdp_buff_xsk *xskb;
-@@ -323,7 +323,7 @@ static int xsk_rcv_check(struct xdp_sock *xs, struct xdp_buff *xdp, u32 len)
- 	if (xs->dev != xdp->rxq->dev || xs->queue_id != xdp->rxq->queue_index)
- 		return -EINVAL;
- 
--	if (len > xsk_pool_get_rx_frame_size(xs->pool) && !xs->sg) {
-+	if (len > __xsk_pool_get_rx_frame_size(xs->pool) && !xs->sg) {
- 		xs->rx_dropped++;
- 		return -ENOSPC;
++		goto err_flush;
  	}
--- 
-2.53.0
-
+ 
+ err_dma:
+ 	smbd_free_send_io(request);
+ 
++err_flush:
+ err_alloc:
+ 	atomic_inc(&sc->send_io.credits.count);
+ 	wake_up(&sc->send_io.credits.wait_queue);
 
 
 
