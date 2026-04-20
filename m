@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-239281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239487-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AFx4IW1W5mkDuwEAu9opvQ
-	(envelope-from <stable+bounces-239281-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:38:05 +0200
+	id 8KOHEfRk5mkKvwEAu9opvQ
+	(envelope-from <stable+bounces-239487-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:40:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E32F42FBDE
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:38:05 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86E7F431BD1
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:40:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4127B31FB8E0
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:44:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D7B6531D26F3
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:53:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE1B133DEFE;
-	Mon, 20 Apr 2026 15:44:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91F651E633C;
+	Mon, 20 Apr 2026 15:52:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O3TLhwyu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kecjt19o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEB6A33D6F9;
-	Mon, 20 Apr 2026 15:44:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54D432741A0;
+	Mon, 20 Apr 2026 15:52:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776699847; cv=none; b=HWXMbPL9mdzJGf54FFPmKkVcfNy72UKYcKj55fYNZCiTw0HmKzgo5vg/AwMzbmoXbRS7K2x9sgWZImvshcuDVYZkhz22MLf2uuR21DQ6JS/Vjg2WtNyckPP5n+62WKnEB1HbrnEyxp3XSG3B5Wi4vOps8NBi7PEqxNx2Es/dLww=
+	t=1776700379; cv=none; b=DV8EWE49LXzkR69PoICw8yrTYwpOV42h56oPC/hUM4Ci3CsUQv+Hg1Cm1MoXf9U2zxgRGzoAao0z6NXyPJoTZT/9tBWpVW4zx/+qk17+8cwH0iwwWPJG0Am4qWoo399z45ZVxaA2xHiAmArAErHWMW188ZVE9mOWeMQprh42WGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776699847; c=relaxed/simple;
-	bh=NsF4Las+Qylg6pE5DafJw9uyqEYAuiWve74xlp8ldKU=;
+	s=arc-20240116; t=1776700379; c=relaxed/simple;
+	bh=7mMpzfna4D/Q/trlVyipXu8fvEmMjJLoI95ljBy1qTk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uXvleuw7UhWBtj0auE04seY+e10eh6QdlHwLYTSZKohPqTvOe/ic2JzMtDDbfzVxlnNvIsszNQGAnn/CstVS89527WR62GiniIr8qLY6UwAX1BrFlWReK/MKOWkqZoBmMvUqQuP+4Yh9DUq+3+WRWwfQ7zRVIaPRfIMbRROxj6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O3TLhwyu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA87DC2BCB6;
-	Mon, 20 Apr 2026 15:44:06 +0000 (UTC)
+	 MIME-Version; b=JOzg6Rug3poRTgi0iRvOgKNoFEnkkm1/+1Uk831D3e56vkZUbgiyu6B/FsJWuUXBgAHWir3565hGpHQnuwoUkFrWRJ5J+QU2nAi0aouMs7JuqjhzH5ZUvW1//BPmPkSmijgerD2ILOQlmhsmlzm6ioCUHbni2h8vdQ+p3TwVGYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kecjt19o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6A58C19425;
+	Mon, 20 Apr 2026 15:52:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776699847;
-	bh=NsF4Las+Qylg6pE5DafJw9uyqEYAuiWve74xlp8ldKU=;
+	s=korg; t=1776700379;
+	bh=7mMpzfna4D/Q/trlVyipXu8fvEmMjJLoI95ljBy1qTk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O3TLhwyuXuxRGVoXuw51G79/zbddgC4XBRA45cofYDu8EC6rlaeTOuTba4fDwcGg4
-	 lDmzFmpXGgBJB3EKmwjLSkWtPL3dYPF7WUC/t+A62OE/nAOGmxEdXadua/aY7fOxD4
-	 MgKmVP7KS6FxJuR8kJDC8C1wwUSFjIaLfT9cn+Zw=
+	b=Kecjt19oyd/mH6+qThCGdLdZuucKvo5iipwGg73di8joidlIr8/+J9Z7AbBOr9KYq
+	 7e4F/WEDnB+bhqKHP7dHXfKRoPchaYIZeQF2B9oR0KR6LGRfjK5QAZHzMhl0fMv0BM
+	 E9eQHnGo+mqEoxH07uN9ci6b8e5S/d7Inke7X8Go=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <smfrench@gmail.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Tom Talpey <tom@talpey.com>,
-	linux-cifs@vger.kernel.org,
-	stable@kernel.org,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 7.0 20/76] ksmbd: validate EaNameLength in smb2_get_ea()
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	stable <stable@kernel.org>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.19 150/220] ALSA: usx2y: us144mkii: fix NULL deref on missing interface 0
 Date: Mon, 20 Apr 2026 17:41:31 +0200
-Message-ID: <20260420153911.560094913@linuxfoundation.org>
+Message-ID: <20260420153939.429880355@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153910.810034134@linuxfoundation.org>
-References: <20260420153910.810034134@linuxfoundation.org>
+In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
+References: <20260420153934.013228280@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,82 +69,77 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,chromium.org,talpey.com,vger.kernel.org,microsoft.com];
-	TAGGED_FROM(0.00)[bounces-239281-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239487-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[chromium.org:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,talpey.com:email]
-X-Rspamd-Queue-Id: 3E32F42FBDE
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[perex.cz:email,suse.com:email,suse.de:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 86E7F431BD1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit 66751841212c2cc196577453c37f7774ff363f02 upstream.
+commit 48bd344e1040b9f2eb512be73c13f5db83efc191 upstream.
 
-smb2_get_ea() reads ea_req->EaNameLength from the client request and
-passes it directly to strncmp() as the comparison length without
-verifying that the length of the name really is the size of the input
-buffer received.
+A malicious USB device with the TASCAM US-144MKII device id can have a
+configuration containing bInterfaceNumber=1 but no interface 0.  USB
+configuration descriptors are not required to assign interface numbers
+sequentially, so usb_ifnum_to_if(dev, 0) returns will NULL, which will
+then be dereferenced directly.
 
-Fix this up by properly checking the size of the name based on the value
-received and the overall size of the request, to prevent a later
-strncmp() call to use the length as a "trusted" size of the buffer.
-Without this check, uninitialized heap values might be slowly leaked to
-the client.
+Fix this up by checking the return value properly.
 
-Cc: Namjae Jeon <linkinjeon@kernel.org>
-Cc: Steve French <smfrench@gmail.com>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: <stable@kernel.org>
+Cc: Jaroslav Kysela <perex@perex.cz>
+Cc: Takashi Iwai <tiwai@suse.com>
+Fixes: dee1bcf28a3d ("ALSA: usb-audio: Add initial driver for TASCAM US-144MKII")
+Cc: stable <stable@kernel.org>
 Assisted-by: gregkh_clanker_t1000
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Link: https://patch.msgid.link/2026040955-fall-gaining-e338@gregkh
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/smb2pdu.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ sound/usb/usx2y/us144mkii.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -4716,6 +4716,11 @@ static int smb2_get_ea(struct ksmbd_work
+--- a/sound/usb/usx2y/us144mkii.c
++++ b/sound/usb/usx2y/us144mkii.c
+@@ -420,7 +420,11 @@ static int tascam_probe(struct usb_inter
  
- 		ea_req = (struct smb2_ea_info_req *)((char *)req +
- 						     le16_to_cpu(req->InputBufferOffset));
+ 	/* The device has two interfaces; we drive both from this driver. */
+ 	if (intf->cur_altsetting->desc.bInterfaceNumber == 1) {
+-		tascam = usb_get_intfdata(usb_ifnum_to_if(dev, 0));
++		struct usb_interface *intf_zero = usb_ifnum_to_if(dev, 0);
 +
-+		if (le32_to_cpu(req->InputBufferLength) <
-+		    offsetof(struct smb2_ea_info_req, name) +
-+		    ea_req->EaNameLength)
-+			return -EINVAL;
- 	} else {
- 		/* need to send all EAs, if no specific EA is requested*/
- 		if (le32_to_cpu(req->Flags) & SL_RETURN_SINGLE_ENTRY)
++		if (!intf_zero)
++			return -ENODEV;
++		tascam = usb_get_intfdata(intf_zero);
+ 		if (tascam) {
+ 			usb_set_intfdata(intf, tascam);
+ 			tascam->iface1 = intf;
 
 
 
