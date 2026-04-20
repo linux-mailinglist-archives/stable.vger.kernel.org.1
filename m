@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-238707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238708-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WGDwH9HJ5WmboAEAu9opvQ
-	(envelope-from <stable+bounces-238707-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 08:38:09 +0200
+	id 6IAREq3J5WlIoAEAu9opvQ
+	(envelope-from <stable+bounces-238708-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 08:37:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07417427498
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 08:38:08 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 741E142745D
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 08:37:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9FA6E300D319
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 06:37:06 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 572A1300809C
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 06:37:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16C5F383C71;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75876383C9F;
 	Mon, 20 Apr 2026 06:37:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tLjZBPx1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a+R6y7W3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6734382F30;
-	Mon, 20 Apr 2026 06:37:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 311E238236E;
+	Mon, 20 Apr 2026 06:37:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776667020; cv=none; b=NqH3l3bUYgy2xy7A2uwQqs3uSVEfQonC01lkxgIroieWHzEUJMVsJFksWS77Y8hOo8j6Gk0xkcpMHBil4zlFhhk2+VFzs2u7ClfCUjsZW7wpBXbbhn+N5LVeem0CgB0DhRpkF8orDwS7B7aDULGjuSgEo4emcgjbUEotNJe6LLg=
+	t=1776667021; cv=none; b=fCgSe37AaFgVZzfhaT9vg4ud+CSrFXSLwF04Kv8PDlzEIE5AdkJRebEbV3L43yiKKMGH6B/5HKjNiqSvsd/UbBpWQpPbZSmJdDy9xLuyPo7XULYkR+w+Wi1zULxlNsPu3EI4xwzu7+Utc5Q8RepZwpX0iPQuUQtYkwnv6RdvIQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776667020; c=relaxed/simple;
-	bh=E/caBFaT5oe5iu25OVDOFiTddXIWeBTyZnY1rZiZXwU=;
+	s=arc-20240116; t=1776667021; c=relaxed/simple;
+	bh=8M+wIAMl08TAO8KoZrYMwmaOEg0axbynMBgbBycn82A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UihbA5m7jH9BvZpg17TUlZxybQbQSlO/PIc7JTar610PlASyEx25yL/IN72NFTuZGGY0gYv+0uOu4VG1enCgaAZDw/yG6D7xg+8fvAuEVJ6xg1HU6OTSGs8wvCJssX8mOMjADTDIxU687I02AMkTKcPHIoJc7B6upaiI2wsOkzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tLjZBPx1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C379C2BCB3;
+	 MIME-Version; b=uaOYjoMn6GvjOLb3+LMHiVfzU1j1tCCHO4ukJYwu0yhoxdi9FIvqVdw8Paxlk2B6uf2G1/Gy5HZaSFtSfP/FhDxavUs8uRSbjlYPb3PFf9l/2ZIwYPZA/Ryd2LOB1x94yNKjbXQfgP+ythM8AbgNKKZSkdE9Nr4RqLGhESKWDS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a+R6y7W3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD412C19425;
 	Mon, 20 Apr 2026 06:37:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776667020;
-	bh=E/caBFaT5oe5iu25OVDOFiTddXIWeBTyZnY1rZiZXwU=;
+	s=k20201202; t=1776667021;
+	bh=8M+wIAMl08TAO8KoZrYMwmaOEg0axbynMBgbBycn82A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tLjZBPx1SsrFsCND9zwOT0GbL8Z+Ft464paDL0WAqQbCS5LlrlkPHCOL4kVBgJcqR
-	 yDVJ1u1maay5aJtArBKYvjAnxDzz9nj2JfK6CKRtSU6YiOmDQmIf7RMn/VwAOHUBkE
-	 CnA5yOR+VnorBp2KbOTWHzZnmr0ueFBQ7ttjUM5crmqby9q2HJKSpbnChhYwdoAMIB
-	 6hFaDZ1VgJ6xgwMoqpap3y36C5ECNCZQPA4d8nH4pyS53fxWKmqWiyzJulgbBlp5LF
-	 UPjQOrVbpbKM1m98wxZEEKRZc229u7oQY5XK1LxBtquPjn+/WTzAU88V95xdd3bwYF
-	 m+ym9jsLKZ9EQ==
+	b=a+R6y7W347pL6zDvh5UeZsADDbgG8d12od0Kvt6XuNUKPZMugxq1U0W9+D0o6ePRa
+	 mrzbq0ZEihp576M8bU6pcjvDJ2mSO4ZCcCBT+b9tw4r/UibuUfQ+OSP0ELv0uQ3YjJ
+	 FkxAoHn04dgxU9h3TRHlVqh3H0vBDT8UWqM8CpZvtay5uNrYuIoB1xtQ1XJjExCmDi
+	 hKrzTgz+qQZ6mYVHVMoAso7LYUbkwEgCo8+X9OEwL3zOpzaeQC2LTp3gjGkcL/ivLZ
+	 AX5X6q3lZjJ3LRSSisSHuxmQHFMYlpNt0E2nEu2+epG2zB/wPgcn0yoToZ3sflefxn
+	 Lt22Ba7bUqCLA==
 From: Eric Biggers <ebiggers@kernel.org>
 To: linux-crypto@vger.kernel.org,
 	Herbert Xu <herbert@gondor.apana.org.au>
@@ -52,9 +52,9 @@ Cc: linux-kernel@vger.kernel.org,
 	"Jason A . Donenfeld" <Jason@zx2c4.com>,
 	Eric Biggers <ebiggers@kernel.org>,
 	stable@vger.kernel.org
-Subject: [PATCH 04/38] crypto: drbg - Fix drbg_max_addtl() on 64-bit kernels
-Date: Sun, 19 Apr 2026 23:33:48 -0700
-Message-ID: <20260420063422.324906-5-ebiggers@kernel.org>
+Subject: [PATCH 05/38] crypto: drbg - Fix the fips_enabled priority boost
+Date: Sun, 19 Apr 2026 23:33:49 -0700
+Message-ID: <20260420063422.324906-6-ebiggers@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260420063422.324906-1-ebiggers@kernel.org>
 References: <20260420063422.324906-1-ebiggers@kernel.org>
@@ -70,7 +70,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,10 +78,10 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-238707-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-238708-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[ebiggers@kernel.org,stable@vger.kernel.org];
@@ -91,65 +91,44 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 07417427498
+X-Rspamd-Queue-Id: 741E142745D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 64-bit kernels, drbg_max_addtl() returns 2**35 bytes.  That's too
-large, for two reasons:
+When fips_enabled=1, it seems to have been intended for one of the
+algorithms defined in crypto/drbg.c to be the highest priority "stdrng"
+algorithm, so that it is what is used by "stdrng" users.
 
-1. SP800-90A says the maximum limit is 2**35 *bits*, not 2**35 bytes.
-   So the implemented limit has confused bits and bytes.
+However, the code only boosts the priority to 400, which is less than
+the priority 500 used in drivers/crypto/caam/caamprng.c.  Thus, the CAAM
+RNG could be used instead.
 
-2. When drbg_kcapi_hash() calls crypto_shash_update() on the additional
-   information string, the length is implicitly cast to 'unsigned int'.
-   That truncates the additional information string to U32_MAX bytes.
-
-Fix the maximum additional information string length to always be
-U32_MAX - 1, causing an error to be returned for any longer lengths.
+Fix this by boosting the priority by 2000 instead of 200.
 
 Fixes: 541af946fe13 ("crypto: drbg - SP800-90A Deterministic Random Bit Generator")
 Cc: stable@vger.kernel.org
 Signed-off-by: Eric Biggers <ebiggers@kernel.org>
 ---
- include/crypto/drbg.h | 18 +++++++-----------
- 1 file changed, 7 insertions(+), 11 deletions(-)
+ crypto/drbg.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/crypto/drbg.h b/include/crypto/drbg.h
-index 2d42518cbdce..c11eaf757ed0 100644
---- a/include/crypto/drbg.h
-+++ b/include/crypto/drbg.h
-@@ -146,23 +146,19 @@ static inline size_t drbg_max_request_bytes(struct drbg_state *drbg)
- {
- 	/* SP800-90A requires the limit 2**19 bits, but we return bytes */
- 	return (1 << 16);
- }
+diff --git a/crypto/drbg.c b/crypto/drbg.c
+index f23b431bd490..e3065fb9541b 100644
+--- a/crypto/drbg.c
++++ b/crypto/drbg.c
+@@ -1830,11 +1830,11 @@ static inline void __init drbg_fill_array(struct rng_alg *alg,
+ 	 * If FIPS mode enabled, the selected DRBG shall have the
+ 	 * highest cra_priority over other stdrng instances to ensure
+ 	 * it is selected.
+ 	 */
+ 	if (fips_enabled)
+-		alg->base.cra_priority += 200;
++		alg->base.cra_priority += 2000;
  
-+/*
-+ * SP800-90A allows implementations to support additional info / personalization
-+ * strings of up to 2**35 bits.  Implementations can have a smaller maximum.  We
-+ * use 2**35 - 16 bits == U32_MAX - 1 bytes so that the max + 1 always fits in a
-+ * size_t, allowing drbg_healthcheck_sanity() to verify its enforcement.
-+ */
- static inline size_t drbg_max_addtl(struct drbg_state *drbg)
- {
--	/* SP800-90A requires 2**35 bytes additional info str / pers str */
--#if (__BITS_PER_LONG == 32)
--	/*
--	 * SP800-90A allows smaller maximum numbers to be returned -- we
--	 * return SIZE_MAX - 1 to allow the verification of the enforcement
--	 * of this value in drbg_healthcheck_sanity.
--	 */
--	return (SIZE_MAX - 1);
--#else
--	return (1UL<<35);
--#endif
-+	return U32_MAX - 1;
- }
- 
- static inline size_t drbg_max_requests(struct drbg_state *drbg)
- {
- 	/* SP800-90A requires 2**48 maximum requests before reseeding */
+ 	alg->base.cra_ctxsize 	= sizeof(struct drbg_state);
+ 	alg->base.cra_module	= THIS_MODULE;
+ 	alg->base.cra_init	= drbg_kcapi_init;
+ 	alg->base.cra_exit	= drbg_kcapi_cleanup;
 -- 
 2.53.0
 
