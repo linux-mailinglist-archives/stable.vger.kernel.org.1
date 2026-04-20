@@ -1,465 +1,190 @@
-Return-Path: <stable+bounces-239235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239245-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SAEXItBD5ml/twEAu9opvQ
-	(envelope-from <stable+bounces-239235-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 17:18:40 +0200
+	id 0K1NNEFL5mnSuQEAu9opvQ
+	(envelope-from <stable+bounces-239245-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 17:50:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 352B742E07E
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 17:18:39 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E14042EA22
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 17:50:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3ECCB311453B
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:04:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8B61C334199F
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:11:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE1933CFF47;
-	Mon, 20 Apr 2026 14:25:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94FF12D5937;
+	Mon, 20 Apr 2026 14:48:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ngfLncbl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kM3jkTWP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DF8A3CF69C
-	for <stable@vger.kernel.org>; Mon, 20 Apr 2026 14:25:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 331762C11D9;
+	Mon, 20 Apr 2026 14:48:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776695114; cv=none; b=cZqw9fJZxGUC8bCBqQtE4D5Y2zVXKhId0J/o3Cb9IPbmraCoJw9u/cG0vNeArLT3Bs14UkL0hRT8DzgVxXLi2P2C1CVr0AZ17KMd1ickQquuTtsZe7sirQI1uKOGbyfDNukuzpV9pTeMETxMWLfctcPNHKYGMYeWQiaexqbefWE=
+	t=1776696523; cv=none; b=H2cB9WhVF8ctkC5fmBDwApX0/GZ7M0X7boJmcCelpPvTBowC+IT6fbYiqMbTPQTIzQ76ZTEvQYdD+686pGMp2dCZcAfFwmkLWy14cUBtQvVSrXT4znyqNVrrkVIxJOUFiDnnaF6RuxQftdwxdlWvLtDseJ7cozaHW0qFzBp6O3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776695114; c=relaxed/simple;
-	bh=7pHAUW45jkeiisjDLmrS/eMT1lBDoot/PNN8OVFMH2k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rRxMWdZDMvWo1msX534JioHUo+2vOwofuUWkbiEOH3A3fa4lknYW/KGcuYb75Lvo+hSiCAlp+Qqtgtu73n3xEj1j8rmWuTL5C7qG3PhIN695U+C4Z+vxZEHTISzXdK6npDd5XoHR6C2g1vhk0K+mtzWYw46JYoT6rCp9p6wflWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ngfLncbl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 433C0C2BCB4
-	for <stable@vger.kernel.org>; Mon, 20 Apr 2026 14:25:14 +0000 (UTC)
+	s=arc-20240116; t=1776696523; c=relaxed/simple;
+	bh=00lttEm2yNSCLaaJ8HV0cNziy+CMymLYRCkfifHVXt4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=N+/KSZ8wsi2KtYge4K53g/l4yiFz2Plo4GpWnQPGOIUWzj4n+6xaSYSmkHytbNi5sLgmUqVkZj7/6YXkLez33pVOYUVPY4QP/MuyoMlAEzNgPWe3RMgMhmXwGLggLLXKPezhvfzeoIST5RmGRzk3c6IvbcGKITF21bFDAmbjFGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kM3jkTWP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5322BC19425;
+	Mon, 20 Apr 2026 14:48:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776695114;
-	bh=7pHAUW45jkeiisjDLmrS/eMT1lBDoot/PNN8OVFMH2k=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=ngfLncblfp1K0UYVmBii3p3QyngfeIviuQtail2pZ8uBVudNNegECiUy4d/By/4iJ
-	 von+DJ1K2N/02P8lvRAVIODEJyS3IZwstlWpnHkmzPv2xcmmV/sM+OrugZMl7fZDNK
-	 IDHCFOpi3Ki3umXoDaI9Rq6PJyS+MS7Jh7xjT6sbYwvtB/30dSQa17cF3RYZWu8/Sw
-	 MmYgMfDz8V3ijMURcypKXQxlujgtCvQKKN3CfGMKp5Gr6ophrOcip93tGpk2PYuKsG
-	 I6366VAw66fSbnxIUTky7/6g5ybWYbkefNJdxS+mDFc6Jzh1e2QpJgxap2ZqBWZOHF
-	 Yn3fkSPbb3VDA==
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-b886fc047d5so574209466b.3
-        for <stable@vger.kernel.org>; Mon, 20 Apr 2026 07:25:14 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ9w2EqaZcCqATLt4nJU3UKM2fpCzA4f02HJ6ihrXnMSBfpaxZkcyxrjGYbaU0DjlGI9sByQGmg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyabQTtP3gWkihue3q+MZ8wDpyundiX+fsHc9Z6DW8cf6YGGXEC
-	dEBVjCeYckyX5lKGkMhmajohrrPGChSVq4+OhXdd5QQe30x+zUtgwwFwCiZrJrm8sMjsuu2CUk/
-	NB1meM+cgjx/h7ocobaF3+OwDkjMqP9o=
-X-Received: by 2002:a17:907:6d19:b0:ba4:ea47:5a2b with SMTP id
- a640c23a62f3a-ba4ea47b226mr533889466b.43.1776695112708; Mon, 20 Apr 2026
- 07:25:12 -0700 (PDT)
+	s=k20201202; t=1776696522;
+	bh=00lttEm2yNSCLaaJ8HV0cNziy+CMymLYRCkfifHVXt4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=kM3jkTWPV3Q8HCVBAxHNmFZK9cH3tU0uIg5DKX+c+gMrfA2OU1BvZiBa69sy0M/bj
+	 Cq9J7X+AIQYVPeSUCYbgS+azA/f8fURibttQRs0c8d2hBlczjnSKhy4Tmpvc7RRZS+
+	 E8OCaydFmFGIWC+P8/1TKO794wXt43L/meWdcpoP1adw0+oJZbVCUYO1a7eNuX9pAL
+	 M67J/00G/YzAKktbTDQOxRtSmzO8yXSoMWxkWC+VT2OVTJ7fA0ZHYxnfV+ltdIoNYz
+	 b0fxGRRm3bb+H+GA+hSv2ApeaOZ0DWVxPvm7ODM7zJ6s1MST3M6ApG2RNtkmTcC4Cd
+	 nmlfYOHhk2Cdg==
+From: Simon Horman <horms@kernel.org>
+To: ashutoshdesai993@gmail.com
+Cc: 'Simon Horman' <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-hams@vger.kernel.org,
+	jreuter@yaina.de,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	david.laight.linux@gmail.com
+Subject: Re: [PATCH v4 net] ax25: fix OOB read after address header strip in ax25_rcv()
+Date: Mon, 20 Apr 2026 15:30:02 +0100
+Message-ID: <20260420143001.537302-2-horms@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260417065407.206499-1-ashutoshdesai993@gmail.com>
+References: <20260417065407.206499-1-ashutoshdesai993@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <9941e0c488a0229ac9005bb0fb977823ee428ddb.1776685790.git.wqu@suse.com>
-In-Reply-To: <9941e0c488a0229ac9005bb0fb977823ee428ddb.1776685790.git.wqu@suse.com>
-From: Filipe Manana <fdmanana@kernel.org>
-Date: Mon, 20 Apr 2026 15:24:35 +0100
-X-Gmail-Original-Message-ID: <CAL3q7H7BPxykccZUR4x2uOMA7gs1mf=pGz9Z-WxyENnPeb9WKw@mail.gmail.com>
-X-Gm-Features: AQROBzCuc-XAJbm9X3rmTY_3AttIlNz5RqQBXpsbgGBQaSCMjH8cLYD7-hd3rRA
-Message-ID: <CAL3q7H7BPxykccZUR4x2uOMA7gs1mf=pGz9Z-WxyENnPeb9WKw@mail.gmail.com>
-Subject: Re: [PATCH v2] btrfs: check and set EXTENT_DELALLOC_NEW before
- clearing EXTENT_DELALLOC
-To: Qu Wenruo <wqu@suse.com>
-Cc: linux-btrfs@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239245-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	TAGGED_FROM(0.00)[bounces-239235-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,yaina.de,davemloft.net,google.com,redhat.com,gmail.com];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[fdmanana@kernel.org,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[horms@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,suse.com:email]
-X-Rspamd-Queue-Id: 352B742E07E
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 5E14042EA22
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, Apr 20, 2026 at 12:51=E2=80=AFPM Qu Wenruo <wqu@suse.com> wrote:
->
-> [WARNING]
-> When running test cases with injected errors or shutdown, e.g.
-> generic/388 or generic/475, there is a chance that the following kernel
-> warning is triggered:
->
->  BTRFS info (device dm-2): first mount of filesystem d8a19a28-3232-4809-b=
-0df-38df83e71bff
->  BTRFS info (device dm-2): using crc32c checksum algorithm
->  BTRFS info (device dm-2): checking UUID tree
->  BTRFS info (device dm-2): turning on async discard
->  BTRFS info (device dm-2): enabling free space tree
->  BTRFS critical (device dm-2 state E): emergency shutdown
->  ------------[ cut here ]------------
->  WARNING: extent_io.c:1742 at extent_writepage_io+0x437/0x520 [btrfs], CP=
-U#2: kworker/u43:2/651591
->  CPU: 2 UID: 0 PID: 651591 Comm: kworker/u43:2 Tainted: G        W  OE   =
-    7.0.0-rc6-custom+ #365 PREEMPT(full)  5804053f02137e627472d94b5128cc9fc=
-b110e88
->  RIP: 0010:extent_writepage_io+0x437/0x520 [btrfs]
->  Call Trace:
->   <TASK>
->   extent_write_cache_pages+0x2a5/0x820 [btrfs 70299925d0856939e93b17d4806=
-51713b3cbba58]
->   btrfs_writepages+0x74/0x130 [btrfs 70299925d0856939e93b17d480651713b3cb=
-ba58]
->   do_writepages+0xd0/0x160
->   __writeback_single_inode+0x42/0x340
->   writeback_sb_inodes+0x22d/0x580
->   wb_writeback+0xc6/0x360
->   wb_workfn+0xbd/0x470
->   process_one_work+0x198/0x3b0
->   worker_thread+0x1c8/0x330
->   kthread+0xee/0x120
->   ret_from_fork+0x2a6/0x330
->   ret_from_fork_asm+0x11/0x20
->   </TASK>
->  ---[ end trace 0000000000000000 ]---
->  BTRFS error (device dm-2 state E): root 5 ino 259 folio 1323008 is marke=
-d dirty without notifying the fs
->  BTRFS error (device dm-2 state E): failed to submit blocks, root=3D5 ino=
-de=3D259 folio=3D1323008 submit_bitmap=3D0: -117
->  BTRFS info (device dm-2 state E): last unmount of filesystem d8a19a28-32=
-32-4809-b0df-38df83e71bff
->
-> [CAUSE]
-> Inside btrfs we have the following pattern in several locations, for
-> example inside btrfs_dirty_folio():
->
->         btrfs_clear_extent_bit(&inode->io_tree, start_pos, end_of_last_bl=
-ock,
->                                EXTENT_DELALLOC | EXTENT_DO_ACCOUNTING | E=
-XTENT_DEFRAG,
->                                cached);
->
->         ret =3D btrfs_set_extent_delalloc(inode, start_pos, end_of_last_b=
-lock,
->                                         extra_bits, cached);
->         if (ret)
->                 return ret;
->
-> However btrfs_set_extent_delalloc() can return IO errors other than -ENOM=
-EM
-> through the following callchain:
->
->  btrfs_set_extent_delalloc()
->  \- btrfs_find_new_delalloc_bytes()
->     \- btrfs_get_extent()
->        \- btrfs_lookup_file_extent()
->           \- btrfs_search_slot()
->
-> When such IO error happened, the previous btrfs_clear_extent_bit() has
-> cleared the EXTENT_DELALLOC for the range, and we're expecting
-> btrfs_set_extent_delalloc() to re-set EXTENT_DELALLOC.
->
-> But since btrfs_set_extent_delalloc() failed before
-> btrfs_set_extent_bit(), EXTENT_DELALLOC flag is no longere present.
+From: 'Simon Horman' <horms@kernel.org>
 
-longere -> longer
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://sashiko.dev
+---
+ax25: fix OOB read after address header strip in ax25_rcv()
+    
+A crafted AX.25 frame with a valid address header but no control or PID
+bytes causes skb->len to drop to zero after skb_pull() strips the
+address header. The subsequent reads of skb->data[0] and skb->data[1]
+are then out of bounds.
 
->
-> And if the folio range is dirty before entering
-> btrfs_set_extent_delalloc(), we got a dirty folio but no EXTENT_DELALLOC
-> flag now.
->
-> Then we hit the folio writeback:
->
->  extent_writepage()
->  |- writepage_delalloc()
->  |  No ordered extent is created, as there is no EXTENT_DELALLOC set
->  |  for the folio range.
->  |  This also means the folio has no ordered flag set.
->  |
->  |- extent_writepage_io()
->     \- if (unlikely(!folio_test_ordered(folio))
->        Now we hit the warning.
->
-> [FIX]
-> Introduce a new helper, btrfs_reset_extent_delalloc() to replace the
-> currently open-coded btrfs_clear_extent_bit() +
-> btrfs_set_extent_delalloc() combination.
->
-> Instead of calling btrfs_clear_extent_bit() first, update
-> EXTENT_DELALLOC_NEW first, as that part can fail due to metadata IO,
-> meanwhile btrfs_clear_extent_bit() and btrfs_set_extent_bit() can really
-> only fail with -ENOMEM.
+> diff --git a/net/ax25/ax25_in.c b/net/ax25/ax25_in.c
+> index d75b3e9ed93de..d14ccebf9cdd5 100644
+> --- a/net/ax25/ax25_in.c
+> +++ b/net/ax25/ax25_in.c
+> @@ -190,6 +190,9 @@ static int ax25_rcv(struct sk_buff *skb, struct net_device *dev,
+>  	ax25_cb *ax25;
+>  	ax25_dev *ax25_dev;
+>  
+> +	if (skb_linearize(skb))
+> +		goto free;
 
-No, they don't fail with -ENOMEM. They keep looping until allocation succee=
-ds.
+Could calling skb_linearize() before verifying if the device is configured for
+AX.25 introduce a regression?
 
-Boris also misunderstood this recently, see:
+Since ax25_packet_type is registered globally, ax25_rcv() receives all
+ETH_P_AX25 packets from any network interface. skb_linearize() performs
+memory allocations to coalesce fragmented packets. By performing this before
+checking if ax25_dev is NULL, could an attacker send fragmented ETH_P_AX25
+packets to an unconfigured interface to force unnecessary memory allocation
+and CPU cycles?
 
-https://lore.kernel.org/linux-btrfs/CAL3q7H7v-9M485_svy_5BCaWVaf+61DvFB6gMU=
-EWhR=3D2ykM+qw@mail.gmail.com/
-
-So please correct that statement.
-
->
-> This allows us to fail early without clearing EXTENT_DELALLOC bit, so
-> even if that new btrfs_reset_extent_delalloc() failed before touching
-> EXTENT_DELALLOC, the existing dirty range will still have their old
-> EXTENT_DELALLOC flag present, thus avoid the warning.
->
-> Cc: stable@vger.kernel.org # 6.1+
-> Signed-off-by: Qu Wenruo <wqu@suse.com>
-> ---
-> Changelog:
-> v2:
-> - Use NULL as @cached_extent for btrfs_find_new_delalloc_bytes()
->   Unlike later btrfs_clear_extent_bit(), btrfs_find_new_delalloc_bytes()
->   can hit several different extent maps and update @cached_state.
->
->   This makes later btrfs_set/clear_extent_bit() to discard the cache,
->   making the original optimization less useful.
-> ---
->  fs/btrfs/btrfs_inode.h |  3 +++
->  fs/btrfs/file.c        | 25 +++---------------
->  fs/btrfs/inode.c       | 58 +++++++++++++++++++++++++++++++++++++-----
->  fs/btrfs/reflink.c     |  4 +--
->  4 files changed, 58 insertions(+), 32 deletions(-)
->
-> diff --git a/fs/btrfs/btrfs_inode.h b/fs/btrfs/btrfs_inode.h
-> index 6e696b350dc5..ad523549d8b4 100644
-> --- a/fs/btrfs/btrfs_inode.h
-> +++ b/fs/btrfs/btrfs_inode.h
-> @@ -569,6 +569,9 @@ int btrfs_start_delalloc_roots(struct btrfs_fs_info *=
-fs_info, long nr,
->  int btrfs_set_extent_delalloc(struct btrfs_inode *inode, u64 start, u64 =
-end,
->                               unsigned int extra_bits,
->                               struct extent_state **cached_state);
-> +int btrfs_reset_extent_delalloc(struct btrfs_inode *inode, u64 start, u6=
-4 end,
-> +                               unsigned int extra_bits,
-> +                               struct extent_state **cached_state);
->
->  struct btrfs_new_inode_args {
->         /* Input */
-> diff --git a/fs/btrfs/file.c b/fs/btrfs/file.c
-> index a6f641a41d99..ab536a304500 100644
-> --- a/fs/btrfs/file.c
-> +++ b/fs/btrfs/file.c
-> @@ -85,16 +85,8 @@ int btrfs_dirty_folio(struct btrfs_inode *inode, struc=
-t folio *folio, loff_t pos
->
->         end_of_last_block =3D start_pos + num_bytes - 1;
->
-> -       /*
-> -        * The pages may have already been dirty, clear out old accountin=
-g so
-> -        * we can set things up properly
-> -        */
-> -       btrfs_clear_extent_bit(&inode->io_tree, start_pos, end_of_last_bl=
-ock,
-> -                              EXTENT_DELALLOC | EXTENT_DO_ACCOUNTING | E=
-XTENT_DEFRAG,
-> -                              cached);
-> -
-> -       ret =3D btrfs_set_extent_delalloc(inode, start_pos, end_of_last_b=
-lock,
-> -                                       extra_bits, cached);
-> +       ret =3D btrfs_reset_extent_delalloc(inode, start_pos, end_of_last=
-_block,
-> +                                         extra_bits, cached);
->         if (ret)
->                 return ret;
->
-> @@ -1952,18 +1944,7 @@ static vm_fault_t btrfs_page_mkwrite(struct vm_fau=
-lt *vmf)
->                 }
->         }
->
-> -       /*
-> -        * page_mkwrite gets called when the page is firstly dirtied afte=
-r it's
-> -        * faulted in, but write(2) could also dirty a page and set delal=
-loc
-> -        * bits, thus in this case for space account reason, we still nee=
-d to
-> -        * clear any delalloc bits within this page range since we have t=
-o
-> -        * reserve data&meta space before lock_page() (see above comments=
-).
-> -        */
-> -       btrfs_clear_extent_bit(io_tree, page_start, end,
-> -                              EXTENT_DELALLOC | EXTENT_DO_ACCOUNTING |
-> -                              EXTENT_DEFRAG, &cached_state);
-> -
-> -       ret =3D btrfs_set_extent_delalloc(inode, page_start, end, 0, &cac=
-hed_state);
-> +       ret =3D btrfs_reset_extent_delalloc(inode, page_start, end, 0, &c=
-ached_state);
->         if (ret < 0) {
->                 btrfs_unlock_extent(io_tree, page_start, page_end, &cache=
-d_state);
->                 goto out_unlock;
-> diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-> index 71129502333a..ec2300698a6a 100644
-> --- a/fs/btrfs/inode.c
-> +++ b/fs/btrfs/inode.c
-> @@ -2810,7 +2810,10 @@ int btrfs_set_extent_delalloc(struct btrfs_inode *=
-inode, u64 start, u64 end,
->                               unsigned int extra_bits,
->                               struct extent_state **cached_state)
->  {
-> -       WARN_ON(PAGE_ALIGNED(end));
-> +       const u32 blocksize =3D inode->root->fs_info->sectorsize;
-> +
-> +       ASSERT(IS_ALIGNED(start, blocksize), "start=3D%llu", start);
-> +       ASSERT(IS_ALIGNED(end + 1, blocksize), "end=3D%llu", end);
-
-When not print blocksize too? It's useful.
-
->
->         if (start >=3D i_size_read(&inode->vfs_inode) &&
->             !(inode->flags & BTRFS_INODE_PREALLOC)) {
-> @@ -2833,6 +2836,52 @@ int btrfs_set_extent_delalloc(struct btrfs_inode *=
-inode, u64 start, u64 end,
->                                     EXTENT_DELALLOC | extra_bits, cached_=
-state);
->  }
->
-> +/*
-> + * Clear the old accounting flags and set EXTENT_DELALLOC for the range.
-> + *
-> + * Return <0 for error, in that case no range has EXTENT_DELALLOC bit cl=
-eared or set.
-> + */
-> +int btrfs_reset_extent_delalloc(struct btrfs_inode *inode, u64 start, u6=
-4 end,
-> +                               unsigned int extra_bits,
-> +                               struct extent_state **cached_state)
-> +{
-> +       const u32 blocksize =3D inode->root->fs_info->sectorsize;
-> +
-> +       /* The @extra_bits can only be EXTENT_NORESERVE for now. */
-> +       ASSERT(!(extra_bits & ~EXTENT_NORESERVE));
-
-Please make the assert verbose to print extra_bits in hex too.
+Should the skb_linearize() call be moved after the device configuration check?
 
 > +
-> +       /* Basic alignment check. */
-> +       ASSERT(IS_ALIGNED(start, blocksize), "start=3D%llu", start);
-> +       ASSERT(IS_ALIGNED(end + 1, blocksize), "end=3D%llu", end);
+>  	/*
+>  	 *	Process the AX.25/LAPB frame.
+>  	 */
+[ ... ]
+> @@ -217,6 +220,9 @@ static int ax25_rcv(struct sk_buff *skb, struct net_device *dev,
+>  	 */
+>  	skb_pull(skb, ax25_addr_size(&dp));
+>  
+> +	if (skb->len < 2)
+> +		goto free;
 
-Same here, printing blocksize is useful.
+Does this unconditionally drop all AX.25 LAPB control frames?
 
-> +
-> +       /*
-> +        * Check and set DELALLOC_NEW flags, this needs to search tree th=
-us
+Standard AX.25 LAPB control frames (such as SABM, DISC, UA, DM, and RR)
+consist solely of a 1-byte Control field and no PID byte. For these connection
+management frames, skb->len is exactly 1 after the address header is pulled.
+By discarding all frames shorter than 2 bytes, could this break the ability
+to establish, acknowledge, or disconnect AX.25 connections?
 
-flags -> flag (it's just one).
+Should the initial check only verify skb->len >= 1, and any requirement for
+skb->len >= 2 be strictly scoped to the code paths that actually parse a PID
+byte?
 
-> +        * can fail early.
-> +        * Thus we want to do this before clearing DELALLOC_EXTENT.
+Also, if this skb->len < 2 check is relaxed, there is a pre-existing
+out-of-bounds read in ax25_decode() for extended modulus frames.
 
-DELALLOC_EXTENT -> EXTENT_DELALLOC
+If a malformed 1-byte frame is received on an extended modulus (AX25_EMODULUS)
+connection, ax25_decode() unconditionally reads skb->data[1] for I-frames and
+S-frames. It then calls skb_pull(skb, 2) but ignores the return value. Should
+ax25_decode() validate that skb->len >= 2 before parsing the second control
+byte for extended modulus frames?
 
-Otherwise it looks fine, and with those small things addressed:
+Finally, there appears to be a pre-existing use-after-free and list corruption
+in the ax25_rcv() error path when allocating memory for ax25->digipeat.
 
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
+When handling an incoming connection request for a listener socket, the code
+physically links the skb into the listener socket's receive queue via
+skb_queue_head(&sk->sk_receive_queue, skb). Shortly after, it attempts to
+allocate memory. If this allocation fails, the error path explicitly calls
+kfree_skb(skb).
 
-Thanks.
-
-> +        */
-> +       if (start >=3D i_size_read(&inode->vfs_inode) &&
-> +           !(inode->flags & BTRFS_INODE_PREALLOC)) {
-> +               /*
-> +                * There can't be any extents following eof in this case =
-so just
-> +                * set the delalloc new bit for the range directly.
-> +                */
-> +               extra_bits |=3D EXTENT_DELALLOC_NEW;
-> +       } else {
-> +               int ret;
-> +
-> +               ret =3D btrfs_find_new_delalloc_bytes(inode, start, end +=
- 1 - start,
-> +                                                   NULL);
-> +               if (unlikely(ret))
-> +                       return ret;
-> +       }
-> +       /* Clear the old accounting as the range may already be dirty. */
-> +       btrfs_clear_extent_bit(&inode->io_tree, start, end,
-> +                              EXTENT_DELALLOC | EXTENT_DO_ACCOUNTING |
-> +                              EXTENT_DEFRAG, cached_state);
-> +       return btrfs_set_extent_bit(&inode->io_tree, start, end,
-> +                                   EXTENT_DELALLOC | extra_bits, cached_=
-state);
-> +}
-> +
->  static int insert_reserved_file_extent(struct btrfs_trans_handle *trans,
->                                        struct btrfs_inode *inode, u64 fil=
-e_pos,
->                                        struct btrfs_file_extent_item *sta=
-ck_fi,
-> @@ -4973,12 +5022,7 @@ int btrfs_truncate_block(struct btrfs_inode *inode=
-, u64 offset, u64 start, u64 e
->                 goto again;
->         }
->
-> -       btrfs_clear_extent_bit(&inode->io_tree, block_start, block_end,
-> -                              EXTENT_DELALLOC | EXTENT_DO_ACCOUNTING | E=
-XTENT_DEFRAG,
-> -                              &cached_state);
-> -
-> -       ret =3D btrfs_set_extent_delalloc(inode, block_start, block_end, =
-0,
-> -                                       &cached_state);
-> +       ret =3D btrfs_reset_extent_delalloc(inode, block_start, block_end=
-, 0, &cached_state);
->         if (ret) {
->                 btrfs_unlock_extent(io_tree, block_start, block_end, &cac=
-hed_state);
->                 goto out_unlock;
-> diff --git a/fs/btrfs/reflink.c b/fs/btrfs/reflink.c
-> index 14742abe0f92..fb34598a77ff 100644
-> --- a/fs/btrfs/reflink.c
-> +++ b/fs/btrfs/reflink.c
-> @@ -94,9 +94,7 @@ static int copy_inline_to_page(struct btrfs_inode *inod=
-e,
->         if (ret < 0)
->                 goto out_unlock;
->
-> -       btrfs_clear_extent_bit(&inode->io_tree, file_offset, range_end,
-> -                              EXTENT_DELALLOC | EXTENT_DO_ACCOUNTING | E=
-XTENT_DEFRAG, NULL);
-> -       ret =3D btrfs_set_extent_delalloc(inode, file_offset, range_end, =
-0, NULL);
-> +       ret =3D btrfs_reset_extent_delalloc(inode, file_offset, range_end=
-, 0, NULL);
->         if (ret)
->                 goto out_unlock;
->
-> --
-> 2.53.0
->
->
+However, it fails to unlink the skb from sk->sk_receive_queue. (The subsequent
+call to ax25_destroy_socket() flushes the newly created socket's queue, not
+the listener socket's queue). This leaves a freed skb in the listener socket's
+queue. When a user process later calls accept(), will it dequeue and
+dereference the freed skb, resulting in a use-after-free?
 
