@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-239438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239776-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KCDZEAZe5mm3vQEAu9opvQ
-	(envelope-from <stable+bounces-239438-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:10:30 +0200
+	id IGfsEyxo5mnBvwEAu9opvQ
+	(envelope-from <stable+bounces-239776-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:53:48 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0D67430A79
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:10:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA1574323AD
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:53:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 065173079229
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:51:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2F81530D00A1
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:06:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAF5E33F590;
-	Mon, 20 Apr 2026 15:50:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D96033A70A;
+	Mon, 20 Apr 2026 16:06:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FgCeEhMd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BwiG7EOq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB8AA313547;
-	Mon, 20 Apr 2026 15:50:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50FE73396EE;
+	Mon, 20 Apr 2026 16:06:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700253; cv=none; b=BARgOv6x/krAaVvWdJpv8ASOWjsr1n+QZrCLpzdIgMhQ6zYa+H1ZlfgrTX41w6vdkvQTesronQTLPPsgqW4m+ohl+1X3kYQ7DpMR5N5mh/TiQBrW+z0ShxDUvpDttJBTHhv5RfMHGb38KB3jGnUQIV+14lAw18P2CbOYbgBpJDw=
+	t=1776701185; cv=none; b=f8IidHLMS9ac2fZ789nTmloYV8gnsyrL/35eXzER+xLsMMwF1G97AcLQ928mh/peaZbBIbdLLc/inGTfAKFnRIN+2TzlhB8c+hTMUAWErG/lVXR+w6yLQ0Bdc/9UNya7l0WSPvdugCLy2D3ff2Va9QGPmfy0UDAuBvt9rHjIhI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700253; c=relaxed/simple;
-	bh=J336XRSS17MqIiT8u4BSrPV2FxsznXb4QsxZpIKbDNA=;
+	s=arc-20240116; t=1776701185; c=relaxed/simple;
+	bh=sCgHLzBfu/fobijh1+Ym9Zal1KmcdZ5FuSjHTbizyCw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U6OToaZp43MVRUUQCXo10OsAnZQBZamsk2xh0E63fSs65bwntrx7hX4+uV3WFX8MrUpHd8wRaaOiJ2och7BqcwkcgnMD6FmSHLBB4q0qzCbD6lnXRPZsUi9mCVUNOR6ibI3PWBFQqlgv3d+5unCyu7GJkGObgYP1rKt+RZMN7Q8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FgCeEhMd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 417EAC19425;
-	Mon, 20 Apr 2026 15:50:53 +0000 (UTC)
+	 MIME-Version; b=iwtY9VZKrtsQsnItkNPwj6/IqQuScOGmn4rNQux2it7Iz3W+fAoNwVOjik3FaEtDKIWy0j/xS5CH9f1p13nL54X8nVtnXJIvQnyct9RiVFNBf6pqNLK2facSyplva19qUtgT87KLhwxH0OSF8EsmwOeyXhi1oR4ABLLgDyzRPEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BwiG7EOq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7D34C19425;
+	Mon, 20 Apr 2026 16:06:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700253;
-	bh=J336XRSS17MqIiT8u4BSrPV2FxsznXb4QsxZpIKbDNA=;
+	s=korg; t=1776701185;
+	bh=sCgHLzBfu/fobijh1+Ym9Zal1KmcdZ5FuSjHTbizyCw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FgCeEhMdbqb6uuyi7BLFACN0iOUJzcO3SGL3WWgizzR5PMbqceh1Sr6lFjRFFS79L
-	 iGoS+hMCpHEvlY2KgVI8CSeIsIoRO2JWqBTnCIvcJDmz94MUDB/y0ktK0L6s2WTvsI
-	 GHqjTIqmrvhwFM8r315A+DALgm0qXbcRKepNULVY=
+	b=BwiG7EOqArGviPVe0Ajx4i89nteQJ5r4eARJ6JQoQ/lTkywmrQkx20uFq7hAcsxvp
+	 U4S2Ngh/UVeCjMv8DXzFVV2Fuqc2IdS8ZkhwytGXp+DqLCe9e/yTWBr9Pj3ZSBi8mN
+	 Fqwj5vxQJedTNQlK5iWf/TQUK+R40cj9JsvwNpZw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 6.19 099/220] ixgbe: stop re-reading flash on every get_drvinfo for e610
+	Zhang Heng <zhangheng@kylinos.cn>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 008/162] ASoC: amd: yc: Add DMI quirk for Thin A15 B7VF
 Date: Mon, 20 Apr 2026 17:40:40 +0200
-Message-ID: <20260420153937.599276847@linuxfoundation.org>
+Message-ID: <20260420153927.316183327@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
-References: <20260420153934.013228280@linuxfoundation.org>
+In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
+References: <20260420153927.006696811@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,167 +68,70 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239438-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-239776-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: C0D67430A79
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kylinos.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: CA1574323AD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+From: Zhang Heng <zhangheng@kylinos.cn>
 
-[ Upstream commit d8ae40dc20cbd7bb6e6b36a928e2db2296060ad2 ]
+[ Upstream commit 1f182ec9d7084db7dfdb2372d453c28f0e5c3f0a ]
 
-ixgbe_get_drvinfo() calls ixgbe_refresh_fw_version() on every ethtool
-query for e610 adapters.  That ends up in ixgbe_discover_flash_size(),
-which bisects the full 16 MB NVM space issuing one ACI command per
-step (~20 ms each, ~24 steps total = ~500 ms).
+Add a DMI quirk for the Thin A15 B7VF fixing the issue where
+the internal microphone was not detected.
 
-Profiling on an idle E610-XAT2 system with telegraf scraping ethtool
-stats every 10 seconds:
-
-  kretprobe:ixgbe_get_drvinfo took 527603 us
-  kretprobe:ixgbe_get_drvinfo took 523978 us
-  kretprobe:ixgbe_get_drvinfo took 552975 us
-  kretprobe:ice_get_drvinfo   took       3 us
-  kretprobe:igb_get_drvinfo   took       2 us
-  kretprobe:i40e_get_drvinfo  took       5 us
-
-The half-second stall happens under the RTNL lock, causing visible
-latency on ip-link and friends.
-
-The FW version can only change after an EMPR reset.  All flash data is
-already populated at probe time and the cached adapter->eeprom_id is
-what get_drvinfo should be returning.  The only place that needs to
-trigger a re-read is ixgbe_devlink_reload_empr_finish(), right after
-the EMPR completes and new firmware is running.  Additionally, refresh
-the FW version in ixgbe_reinit_locked() so that any PF that undergoes a
-reinit after an EMPR (e.g. triggered by another PF's devlink reload)
-also picks up the new version in adapter->eeprom_id.
-
-ixgbe_devlink_info_get() keeps its refresh call for explicit
-"devlink dev info" queries, which is fine given those are user-initiated.
-
-Fixes: c9e563cae19e ("ixgbe: add support for devlink reload")
-Co-developed-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
-Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
-Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=220833
+Signed-off-by: Zhang Heng <zhangheng@kylinos.cn>
+Link: https://patch.msgid.link/20260316080218.2931304-1-zhangheng@kylinos.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ixgbe/devlink/devlink.c |  2 +-
- drivers/net/ethernet/intel/ixgbe/ixgbe.h           |  2 +-
- drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c   | 13 +++++++------
- drivers/net/ethernet/intel/ixgbe/ixgbe_main.c      | 10 ++++++++++
- 4 files changed, 19 insertions(+), 8 deletions(-)
+ sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/devlink/devlink.c b/drivers/net/ethernet/intel/ixgbe/devlink/devlink.c
-index d227f4d2a2d17..f32e640ef4ac0 100644
---- a/drivers/net/ethernet/intel/ixgbe/devlink/devlink.c
-+++ b/drivers/net/ethernet/intel/ixgbe/devlink/devlink.c
-@@ -474,7 +474,7 @@ static int ixgbe_devlink_reload_empr_finish(struct devlink *devlink,
- 	adapter->flags2 &= ~(IXGBE_FLAG2_API_MISMATCH |
- 			     IXGBE_FLAG2_FW_ROLLBACK);
- 
--	return 0;
-+	return ixgbe_refresh_fw_version(adapter);
- }
- 
- static const struct devlink_ops ixgbe_devlink_ops = {
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe.h b/drivers/net/ethernet/intel/ixgbe/ixgbe.h
-index dce4936708eb4..047f04045585a 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe.h
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe.h
-@@ -973,7 +973,7 @@ int ixgbe_init_interrupt_scheme(struct ixgbe_adapter *adapter);
- bool ixgbe_wol_supported(struct ixgbe_adapter *adapter, u16 device_id,
- 			 u16 subdevice_id);
- void ixgbe_set_fw_version_e610(struct ixgbe_adapter *adapter);
--void ixgbe_refresh_fw_version(struct ixgbe_adapter *adapter);
-+int ixgbe_refresh_fw_version(struct ixgbe_adapter *adapter);
- #ifdef CONFIG_PCI_IOV
- void ixgbe_full_sync_mac_table(struct ixgbe_adapter *adapter);
- #endif
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
-index 2ad81f687a844..d82c51f673ec8 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
-@@ -1153,12 +1153,17 @@ static int ixgbe_set_eeprom(struct net_device *netdev,
- 	return ret_val;
- }
- 
--void ixgbe_refresh_fw_version(struct ixgbe_adapter *adapter)
-+int ixgbe_refresh_fw_version(struct ixgbe_adapter *adapter)
- {
- 	struct ixgbe_hw *hw = &adapter->hw;
-+	int err;
-+
-+	err = ixgbe_get_flash_data(hw);
-+	if (err)
-+		return err;
- 
--	ixgbe_get_flash_data(hw);
- 	ixgbe_set_fw_version_e610(adapter);
-+	return 0;
- }
- 
- static void ixgbe_get_drvinfo(struct net_device *netdev,
-@@ -1166,10 +1171,6 @@ static void ixgbe_get_drvinfo(struct net_device *netdev,
- {
- 	struct ixgbe_adapter *adapter = ixgbe_from_netdev(netdev);
- 
--	/* need to refresh info for e610 in case fw reloads in runtime */
--	if (adapter->hw.mac.type == ixgbe_mac_e610)
--		ixgbe_refresh_fw_version(adapter);
--
- 	strscpy(drvinfo->driver, ixgbe_driver_name, sizeof(drvinfo->driver));
- 
- 	strscpy(drvinfo->fw_version, adapter->eeprom_id,
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-index c58051e4350be..60eadef423ca7 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-@@ -6289,6 +6289,16 @@ void ixgbe_reinit_locked(struct ixgbe_adapter *adapter)
- 	if (adapter->flags & IXGBE_FLAG_SRIOV_ENABLED)
- 		msleep(2000);
- 	ixgbe_up(adapter);
-+
-+	/* E610 has no FW event to notify all PFs of an EMPR reset, so
-+	 * refresh the FW version here to pick up any new FW version after
-+	 * a hardware reset (e.g. EMPR triggered by another PF's devlink
-+	 * reload).  ixgbe_refresh_fw_version() updates both hw->flash and
-+	 * adapter->eeprom_id so ethtool -i reports the correct string.
-+	 */
-+	if (adapter->hw.mac.type == ixgbe_mac_e610)
-+		(void)ixgbe_refresh_fw_version(adapter);
-+
- 	clear_bit(__IXGBE_RESETTING, &adapter->state);
- }
+diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
+index b8a957602b0a0..2414c1bba0789 100644
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -717,6 +717,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "BM1403CDA"),
+ 		}
+ 	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "Micro-Star International Co., Ltd."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Thin A15 B7VE"),
++		}
++	},
+ 	{}
+ };
  
 -- 
 2.53.0
