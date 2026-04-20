@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-239302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239695-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iFL3Htxh5mmavgEAu9opvQ
-	(envelope-from <stable+bounces-239302-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:26:52 +0200
+	id kFJvMGFa5mnGvAEAu9opvQ
+	(envelope-from <stable+bounces-239695-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:54:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 924E843135E
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:26:51 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49522430351
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:54:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7DD5936F8F5D
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:45:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9C63031923C1
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:03:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD03833B945;
-	Mon, 20 Apr 2026 15:45:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 635E633EAF9;
+	Mon, 20 Apr 2026 16:03:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rIt8Axkx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vDjNWLIb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E916336896;
-	Mon, 20 Apr 2026 15:45:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2673933E373;
+	Mon, 20 Apr 2026 16:03:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776699901; cv=none; b=kBHyg6gMtOLb8SWHzmMHlNh3TRvnM8/GKeV/PxSX+YVxT8LFBKlqFJ0/hxmA8qjee+PVOlpDjASBQ4lKI83HDUvpRcSMMfmpH4XLK4LTRi5J7gBzjU6lxQ2pEBClQx7UNj6Z5unWm28KXK8bUBqUuzSojHKyId1ou6YWRPNRg3o=
+	t=1776700980; cv=none; b=JSCUwtxZLEUSdDEdJ+xMKUgBHtc525pPQ2o5htVh8ci4BJwYp/xoKSlxOlGUA4av1fBU0wtJKIuGyiQYXY+4epj2oZPUpCOGE6SJ3X2Sdo4fBzujg/3GlxpXFDTlJ6g1WK3EGaI5bAwTjlC6QbD9Y0K/tpAbuXRhh6YBYgqlJZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776699901; c=relaxed/simple;
-	bh=ECnoCFSMXRcHIdlsSL3WYxJRTeKQxr4FfLliShw0NzA=;
+	s=arc-20240116; t=1776700980; c=relaxed/simple;
+	bh=ha67FSK+9jlb0ij2z9ppLuZGju3jROH13J0Jdj0HuLM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GxE1ozhUE994b/7ttT+2yyTLW81ye+v19/DdQ+41HSzkVrvIiGfRWixssWCLEBgmCfd7bAGmC16cIHbFqn0sPAqLLnMdFT/YjdYStSyN9q1bbPHkdttZYbi782RhYCbXtRqBEH1D2GtfIghIdXj25ZeiYzrGjPJxksov6xr1LNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rIt8Axkx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7F01C19425;
-	Mon, 20 Apr 2026 15:45:00 +0000 (UTC)
+	 MIME-Version; b=j0VvaqBIA8yl4CUvZbO0NXLye5DBngGh5Ow/fMKA5qen8EcQJYUFk7MclojOEWdHPEfY+tHruZ0zeNTZvVdcnPEoRccPuLNgin4J3YKZvdjmPTYOCiuSdc6FyFo5ThuMcSze6y+/iglO+Y6rWWKDR+T2XQsCcnIm42uWVuQSdqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vDjNWLIb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC5BFC19425;
+	Mon, 20 Apr 2026 16:02:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776699901;
-	bh=ECnoCFSMXRcHIdlsSL3WYxJRTeKQxr4FfLliShw0NzA=;
+	s=korg; t=1776700980;
+	bh=ha67FSK+9jlb0ij2z9ppLuZGju3jROH13J0Jdj0HuLM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rIt8AxkxAIwG2N5N3phPuIPNXmjXzOXf7DsnAbW+k+hAE1bLnx6hoI/OTa/qnXbex
-	 q7iUxNbZNzk6Q8X0u3kNO6nsHRbsiXBQ/vt1/i7XuLmesSgrA2OkXeMmDJthN4D9HZ
-	 YAbOq+jsy9jgr1uH5jJwz7+iY19daFQ5mGXqs4Cs=
+	b=vDjNWLIb4b5Rfpx6y2R3P8ry9nygGm5aPFS8mgUC1FLEJOQhWWJdvg/HIxXdKOScR
+	 /PphiqVhGg1mEeTJlseTNMn3xd+2DlwSIJFXYjcfKmEPbh1E/a0k88WA+kL5Tn/Ahs
+	 c3pNp/RSwmO2q2DQuwnUSjdgDdkxaz/N6Sl7Szts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Micha=C5=82=20Winiarski?= <michal.winiarski@intel.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Alex Williamson <alex@shazbot.org>
-Subject: [PATCH 7.0 42/76] vfio/xe: Reorganize the init to decouple migration from reset
+	stable <stable@kernel.org>
+Subject: [PATCH 6.18 134/198] usb: gadget: f_ncm: validate minimum block_len in ncm_unwrap_ntb()
 Date: Mon, 20 Apr 2026 17:41:53 +0200
-Message-ID: <20260420153912.358168480@linuxfoundation.org>
+Message-ID: <20260420153940.432618681@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153910.810034134@linuxfoundation.org>
-References: <20260420153910.810034134@linuxfoundation.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,205 +61,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239302-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-239695-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[shazbot.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email]
-X-Rspamd-Queue-Id: 924E843135E
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 49522430351
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michał Winiarski <michal.winiarski@intel.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit 1b81ed612e12ea9df8c5cb6f0ddd4419fd0b8ac8 upstream.
+commit 8f993d30b95dc9557a8a96ceca11abed674c8acb upstream.
 
-Attempting to issue reset on VF devices that don't support migration
-leads to the following:
+The block_len read from the host-supplied NTB header is checked against
+ntb_max but has no lower bound. When block_len is smaller than
+opts->ndp_size, the bounds check of:
+	ndp_index > (block_len - opts->ndp_size)
+will underflow producing a huge unsigned value that ndp_index can never
+exceed, defeating the check entirely.
 
-  BUG: unable to handle page fault for address: 00000000000011f8
-  #PF: supervisor read access in kernel mode
-  #PF: error_code(0x0000) - not-present page
-  PGD 0 P4D 0
-  Oops: Oops: 0000 [#1] SMP NOPTI
-  CPU: 2 UID: 0 PID: 7443 Comm: xe_sriov_flr Tainted: G S   U              7.0.0-rc1-lgci-xe-xe-4588-cec43d5c2696af219-nodebug+ #1 PREEMPT(lazy)
-  Tainted: [S]=CPU_OUT_OF_SPEC, [U]=USER
-  Hardware name: Intel Corporation Alder Lake Client Platform/AlderLake-P DDR4 RVP, BIOS RPLPFWI1.R00.4035.A00.2301200723 01/20/2023
-  RIP: 0010:xe_sriov_vfio_wait_flr_done+0xc/0x80 [xe]
-  Code: ff c3 cc cc cc cc 0f 1f 84 00 00 00 00 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 1f 44 00 00 55 48 89 e5 41 54 53 <83> bf f8 11 00 00 02 75 61 41 89 f4 85 f6 74 52 48 8b 47 08 48 89
-  RSP: 0018:ffffc9000f7c39b8 EFLAGS: 00010202
-  RAX: ffffffffa04d8660 RBX: ffff88813e3e4000 RCX: 0000000000000000
-  RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-  RBP: ffffc9000f7c39c8 R08: 0000000000000000 R09: 0000000000000000
-  R10: 0000000000000000 R11: 0000000000000000 R12: ffff888101a48800
-  R13: ffff88813e3e4150 R14: ffff888130d0d008 R15: ffff88813e3e40d0
-  FS:  00007877d3d0d940(0000) GS:ffff88890b6d3000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 00000000000011f8 CR3: 000000015a762000 CR4: 0000000000f52ef0
-  PKRU: 55555554
-  Call Trace:
-   <TASK>
-   xe_vfio_pci_reset_done+0x49/0x120 [xe_vfio_pci]
-   pci_dev_restore+0x3b/0x80
-   pci_reset_function+0x109/0x140
-   reset_store+0x5c/0xb0
-   dev_attr_store+0x17/0x40
-   sysfs_kf_write+0x72/0x90
-   kernfs_fop_write_iter+0x161/0x1f0
-   vfs_write+0x261/0x440
-   ksys_write+0x69/0xf0
-   __x64_sys_write+0x19/0x30
-   x64_sys_call+0x259/0x26e0
-   do_syscall_64+0xcb/0x1500
-   ? __fput+0x1a2/0x2d0
-   ? fput_close_sync+0x3d/0xa0
-   ? __x64_sys_close+0x3e/0x90
-   ? x64_sys_call+0x1b7c/0x26e0
-   ? do_syscall_64+0x109/0x1500
-   ? __task_pid_nr_ns+0x68/0x100
-   ? __do_sys_getpid+0x1d/0x30
-   ? x64_sys_call+0x10b5/0x26e0
-   ? do_syscall_64+0x109/0x1500
-   ? putname+0x41/0x90
-   ? do_faccessat+0x1e8/0x300
-   ? __x64_sys_access+0x1c/0x30
-   ? x64_sys_call+0x1822/0x26e0
-   ? do_syscall_64+0x109/0x1500
-   ? tick_program_event+0x43/0xa0
-   ? hrtimer_interrupt+0x126/0x260
-   ? irqentry_exit+0xb2/0x710
-   entry_SYSCALL_64_after_hwframe+0x76/0x7e
-  RIP: 0033:0x7877d5f1c5a4
-  Code: c7 00 16 00 00 00 b8 ff ff ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 f3 0f 1e fa 80 3d a5 ea 0e 00 00 74 13 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 54 c3 0f 1f 00 55 48 89 e5 48 83 ec 20 48 89
-  RSP: 002b:00007fff48e5f908 EFLAGS: 00000202 ORIG_RAX: 0000000000000001
-  RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007877d5f1c5a4
-  RDX: 0000000000000001 RSI: 00007877d621b0c9 RDI: 0000000000000009
-  RBP: 0000000000000001 R08: 00005fb49113b010 R09: 0000000000000007
-  R10: 0000000000000000 R11: 0000000000000202 R12: 00007877d621b0c9
-  R13: 0000000000000009 R14: 00007fff48e5fac0 R15: 00007fff48e5fac0
-   </TASK>
+The same underflow occurs in the datagram index checks against block_len
+- opts->dpe_size.  With those checks neutered, a malicious USB host can
+choose ndp_index and datagram offsets that point past the actual
+transfer, and the skb_put_data() copies adjacent kernel memory into the
+network skb.
 
-This is caused by the fact that some of the xe_vfio_pci_core_device
-members needed for handling reset are only initialized as part of
-migration init.
+Fix this by rejecting block lengths that cannot hold at least the NTB
+header plus one NDP.  This will make block_len - opts->ndp_size and
+block_len - opts->dpe_size both well-defined.
 
-Fix the problem by reorganizing the code to decouple VF init from
-migration init.
+Commit 8d2b1a1ec9f5 ("CDC-NCM: avoid overflow in sanity checking") fixed
+a related class of issues on the host side of NCM.
 
-Fixes: 1f5556ec8b9ef ("vfio/xe: Add device specific vfio_pci driver variant for Intel graphics")
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/work_items/7352
-Cc: stable@vger.kernel.org
-Signed-off-by: Michał Winiarski <michal.winiarski@intel.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Link: https://lore.kernel.org/r/20260410224948.900550-1-michal.winiarski@intel.com
-Signed-off-by: Alex Williamson <alex@shazbot.org>
+Fixes: 2b74b0a04d3e ("USB: gadget: f_ncm: add bounds checks to ncm_unwrap_ntb()")
+Cc: stable <stable@kernel.org>
+Assisted-by: gregkh_clanker_t1000
+Link: https://patch.msgid.link/2026040753-baffle-handheld-624d@gregkh
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/vfio/pci/xe/main.c |   43 +++++++++++++++++++++++++------------------
- 1 file changed, 25 insertions(+), 18 deletions(-)
+ drivers/usb/gadget/function/f_ncm.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/vfio/pci/xe/main.c
-+++ b/drivers/vfio/pci/xe/main.c
-@@ -454,39 +454,46 @@ static const struct vfio_migration_ops x
- static void xe_vfio_pci_migration_init(struct xe_vfio_pci_core_device *xe_vdev)
- {
- 	struct vfio_device *core_vdev = &xe_vdev->core_device.vdev;
--	struct pci_dev *pdev = to_pci_dev(core_vdev->dev);
--	struct xe_device *xe = xe_sriov_vfio_get_pf(pdev);
+--- a/drivers/usb/gadget/function/f_ncm.c
++++ b/drivers/usb/gadget/function/f_ncm.c
+@@ -1210,8 +1210,8 @@ parse_ntb:
  
--	if (!xe)
--		return;
--	if (!xe_sriov_vfio_migration_supported(xe))
-+	if (!xe_sriov_vfio_migration_supported(xe_vdev->xe))
- 		return;
+ 	block_len = get_ncm(&tmp, opts->block_length);
+ 	/* (d)wBlockLength */
+-	if (block_len > ntb_max) {
+-		INFO(port->func.config->cdev, "OUT size exceeded\n");
++	if ((block_len < opts->nth_size + opts->ndp_size) || (block_len > ntb_max)) {
++		INFO(port->func.config->cdev, "Bad block length: %#X\n", block_len);
+ 		goto err;
+ 	}
  
--	mutex_init(&xe_vdev->state_mutex);
--	spin_lock_init(&xe_vdev->reset_lock);
--
--	/* PF internal control uses vfid index starting from 1 */
--	xe_vdev->vfid = pci_iov_vf_id(pdev) + 1;
--	xe_vdev->xe = xe;
--
- 	core_vdev->migration_flags = VFIO_MIGRATION_STOP_COPY | VFIO_MIGRATION_P2P;
- 	core_vdev->mig_ops = &xe_vfio_pci_migration_ops;
- }
- 
--static void xe_vfio_pci_migration_fini(struct xe_vfio_pci_core_device *xe_vdev)
-+static int xe_vfio_pci_vf_init(struct xe_vfio_pci_core_device *xe_vdev)
- {
--	if (!xe_vdev->vfid)
--		return;
-+	struct vfio_device *core_vdev = &xe_vdev->core_device.vdev;
-+	struct pci_dev *pdev = to_pci_dev(core_vdev->dev);
-+	struct xe_device *xe = xe_sriov_vfio_get_pf(pdev);
- 
--	mutex_destroy(&xe_vdev->state_mutex);
-+	if (!pdev->is_virtfn)
-+		return 0;
-+	if (!xe)
-+		return -ENODEV;
-+	xe_vdev->xe = xe;
-+
-+	/* PF internal control uses vfid index starting from 1 */
-+	xe_vdev->vfid = pci_iov_vf_id(pdev) + 1;
-+
-+	xe_vfio_pci_migration_init(xe_vdev);
-+
-+	return 0;
- }
- 
- static int xe_vfio_pci_init_dev(struct vfio_device *core_vdev)
- {
- 	struct xe_vfio_pci_core_device *xe_vdev =
- 		container_of(core_vdev, struct xe_vfio_pci_core_device, core_device.vdev);
-+	int ret;
- 
--	xe_vfio_pci_migration_init(xe_vdev);
-+	mutex_init(&xe_vdev->state_mutex);
-+	spin_lock_init(&xe_vdev->reset_lock);
-+
-+	ret = xe_vfio_pci_vf_init(xe_vdev);
-+	if (ret)
-+		return ret;
- 
- 	return vfio_pci_core_init_dev(core_vdev);
- }
-@@ -496,7 +503,7 @@ static void xe_vfio_pci_release_dev(stru
- 	struct xe_vfio_pci_core_device *xe_vdev =
- 		container_of(core_vdev, struct xe_vfio_pci_core_device, core_device.vdev);
- 
--	xe_vfio_pci_migration_fini(xe_vdev);
-+	mutex_destroy(&xe_vdev->state_mutex);
- }
- 
- static const struct vfio_device_ops xe_vfio_pci_ops = {
 
 
 
