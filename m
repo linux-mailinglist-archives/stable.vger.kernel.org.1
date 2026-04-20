@@ -1,95 +1,96 @@
-Return-Path: <stable+bounces-238740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238741-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kDPiNoMY5mkprgEAu9opvQ
-	(envelope-from <stable+bounces-238740-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 14:13:55 +0200
+	id wJ0jKY0Y5mkprgEAu9opvQ
+	(envelope-from <stable+bounces-238741-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 14:14:05 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5DFA42A895
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 14:13:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 446D442A89C
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 14:14:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F1120300578B
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 12:11:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4DD8E30086E3
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 12:11:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 779EE38757F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 999B9392820;
 	Mon, 20 Apr 2026 12:11:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="EBIsvub5";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="L9RYM4V3";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="vRql/Gje";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="2ltHycoY"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Wqlp6MRW";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="QGbqfYuj";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Wqlp6MRW";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="QGbqfYuj"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3A562C11DE
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BBD438737E
 	for <stable@vger.kernel.org>; Mon, 20 Apr 2026 12:11:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776687099; cv=none; b=S1JCXNJ/uoOKSvr3qDdpPKIfMqw9NO4LzadU5fzG88g/5bOxBZAIV1BWwt2Uca9+gKjVGg2wFkexwYhIQD08Fq7tejpnkHd/XP0MLHnNUC++7kHoi9r6tSqYZCOm+yhhUd4v+T41ZhQMq6bhNlh+cFMlOVTCoY7PDADFk2zD6s0=
+	t=1776687099; cv=none; b=blJHgFFWUF12cFvpwDIVyRy0UYJ4i4pXfBxtuYQMGBVwdtDpf0f829Kj3xa4peaRpGt5sTvFK40MXNSADEkHInoi3cKgCFeGG7XJHAKuL5EQQTT5oE3isDercECavfI3ZYA7Affzq6IC7kVCsNpVULRwCpSrU4FKfFClCjPQe4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1776687099; c=relaxed/simple;
-	bh=KSAnJsSk8KnCFNuFn+4yliQHzOIwbLgEssVAzV8SMVE=;
+	bh=VZN9nFJrl+O6+gBSCMEM1J6Uj/H5Ns+SAratsUCmn+s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jgtpkaSpgCr79kaLAnPui8TDz2ZRSwuaKiUJfFGjvN5BtkXfyclenQ5LJh6RE/RvN/LhGTGmDgnv7cZtHc+4Q/pFxpTwFjekQp/KjlEVOI74vRAJqeXwY92Xe8mqKCy1AweCr3ViQrCem2ZwIGVKBYEbPZ9yjVDfnK6qU1z54+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=EBIsvub5; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=L9RYM4V3; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=vRql/Gje; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=2ltHycoY; arc=none smtp.client-ip=195.135.223.130
+	 MIME-Version; b=LjAYn5+ukjKG+4104B6tN6rbiph2sLXlmMOa8yJ6fhMlhN4J7bck8eYKzw7Zd1wocZYiMf5k6ppCp/yxpc6PtaISYgjMN4hoh9v+/I/jjQCcEePfd4yY/J21mAUBL4i5NmVl7kFvFH9jJa7tNbsLuVj0hQosm7gDxmmZoVsg11Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Wqlp6MRW; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=QGbqfYuj; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Wqlp6MRW; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=QGbqfYuj; arc=none smtp.client-ip=195.135.223.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id C49396A7E3;
-	Mon, 20 Apr 2026 12:11:34 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 4F7765BD20;
+	Mon, 20 Apr 2026 12:11:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1776687096; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1776687095; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=EXBQGpIN/NerzZ/cIS7lY2MflwttCrRqiuSNqhLh158=;
-	b=EBIsvub5oX6hQkNf9Eqvn3866TK88xylQ4AA+Y/fE1tXzLQVlVs8+TwYFerD63D7TzvwnP
-	xjMofU85sCu+WYoUnfp/8lH5xbFUK2fO9HK8MpBybtW+gsJf2M8epIRUUzn6Yjy751he18
-	vxbslu4XV80q/nIcCYPSqQBgRFT2tdM=
+	bh=Y/RNRyr6+E9mhuUezviH3zVsIEDbgYw5Ek2t8dnnrgI=;
+	b=Wqlp6MRWl0zrmUvtjQohADEnnXLfoTRbdiZhhAzPoIUeQogKqL7iMTOIT0k3u5KukhampI
+	PP1Xw0wSfXHPk4YWrleSqN/dOvXgBYJ9WHvDnrAFSRzpJ1xtVUHlqWcLYqlCm7Rvk2zvol
+	lq6uGEYfy7Kv/oONPSwp8ncDLD7rx9Q=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1776687096;
+	s=susede2_ed25519; t=1776687095;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=EXBQGpIN/NerzZ/cIS7lY2MflwttCrRqiuSNqhLh158=;
-	b=L9RYM4V3iACGUdI+M6QQHDnJD7A9Cg4GqmjdQDaysFIhRUSdLKbhVxtyFenlnfvH9ZG3Lo
-	4fqm0xotvR1JpzBg==
-Authentication-Results: smtp-out1.suse.de;
-	none
+	bh=Y/RNRyr6+E9mhuUezviH3zVsIEDbgYw5Ek2t8dnnrgI=;
+	b=QGbqfYujYTi+5VDhSSAvmnlG+LG3zVseinG5cEBBMjwKyGiAIRYR2raZfrDmzgj+N3kQ3f
+	wURaCTPKvqt3wcAA==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Wqlp6MRW;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=QGbqfYuj
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1776687094; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1776687095; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=EXBQGpIN/NerzZ/cIS7lY2MflwttCrRqiuSNqhLh158=;
-	b=vRql/GjeIRcGXn1ydLx3XMZGP3WnWuHLdFlW0V4nC9/4k/19dTtwkK6or952TeOzsfmBEY
-	27lvniDaxOrQXAigr4AoGC1Tz6I3LgD4QgdU7Cw2oT09icrFpveb2yLlZarn4y1z3kLZxU
-	vzU4G4zjc+uvYxJseJkdctkcFtXqGpM=
+	bh=Y/RNRyr6+E9mhuUezviH3zVsIEDbgYw5Ek2t8dnnrgI=;
+	b=Wqlp6MRWl0zrmUvtjQohADEnnXLfoTRbdiZhhAzPoIUeQogKqL7iMTOIT0k3u5KukhampI
+	PP1Xw0wSfXHPk4YWrleSqN/dOvXgBYJ9WHvDnrAFSRzpJ1xtVUHlqWcLYqlCm7Rvk2zvol
+	lq6uGEYfy7Kv/oONPSwp8ncDLD7rx9Q=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1776687094;
+	s=susede2_ed25519; t=1776687095;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=EXBQGpIN/NerzZ/cIS7lY2MflwttCrRqiuSNqhLh158=;
-	b=2ltHycoYPlMXTG8P+ibjPaTWMISjqcK/Tj8637JzP0s+t2b62zH+x2pdTXnpKjr1vXIThj
-	VWiAr3perBLgr7AQ==
+	bh=Y/RNRyr6+E9mhuUezviH3zVsIEDbgYw5Ek2t8dnnrgI=;
+	b=QGbqfYujYTi+5VDhSSAvmnlG+LG3zVseinG5cEBBMjwKyGiAIRYR2raZfrDmzgj+N3kQ3f
+	wURaCTPKvqt3wcAA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4C16E593AF;
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CA1C4593AE;
 	Mon, 20 Apr 2026 12:11:34 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id cFVgEfYX5mkGZQAAD6G6ig
+	id aA8hMPYX5mkGZQAAD6G6ig
 	(envelope-from <tzimmermann@suse.de>); Mon, 20 Apr 2026 12:11:34 +0000
 From: Thomas Zimmermann <tzimmermann@suse.de>
 To: xinliang.liu@linaro.org,
@@ -104,15 +105,15 @@ To: xinliang.liu@linaro.org,
 	simona@ffwll.ch
 Cc: dri-devel@lists.freedesktop.org,
 	Thomas Zimmermann <tzimmermann@suse.de>,
+	Yongbang Shi <shiyongbang@huawei.com>,
 	Rongrong Zou <zourongrong@gmail.com>,
 	Sean Paul <seanpaul@chromium.org>,
 	Dmitry Baryshkov <lumag@kernel.org>,
 	Baihan Li <libaihan@huawei.com>,
-	Yongbang Shi <shiyongbang@huawei.com>,
 	stable@vger.kernel.org
-Subject: [PATCH v2 1/4] drm/hibmc: Use drm_atomic_helper_check_plane_state()
-Date: Mon, 20 Apr 2026 14:09:57 +0200
-Message-ID: <20260420121130.200133-2-tzimmermann@suse.de>
+Subject: [PATCH v2 2/4] drm/hibmc: Fix list of formats on the primary plane
+Date: Mon, 20 Apr 2026 14:09:58 +0200
+Message-ID: <20260420121130.200133-3-tzimmermann@suse.de>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260420121130.200133-1-tzimmermann@suse.de>
 References: <20260420121130.200133-1-tzimmermann@suse.de>
@@ -124,7 +125,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Flag: NO
-X-Spam-Score: -2.80
+X-Spam-Score: -3.01
 X-Spam-Level: 
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
@@ -137,8 +138,8 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCPT_COUNT_TWELVE(0.00)[18];
-	FREEMAIL_CC(0.00)[lists.freedesktop.org,suse.de,gmail.com,chromium.org,kernel.org,huawei.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-238740-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[lists.freedesktop.org,suse.de,huawei.com,gmail.com,chromium.org,kernel.org,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-238741-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -155,113 +156,59 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linaro.org:email,huawei.com:email,chromium.org:email,suse.de:email,suse.de:dkim,suse.de:mid]
-X-Rspamd-Queue-Id: E5DFA42A895
+X-Rspamd-Queue-Id: 446D442A89C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Call drm_atomic_helper_check_plane_state() from the primary plane's
-atomic-check helper and replace the custom implementation.
+Remove all formats from the primary plane that are unsupported for
+various reasons.
 
-All plane's implementations of atomic_check should call the shared
-_check_plane_state() helper first. It adjusts the plane state for
-correct positioning, rotation and scaling of the plane. Do this
-even if the plane's CRTC has been disabled by setting the parameter
-can_update_disabled. The original code returned early in this case,
-but it's safe to so and cleaner to have all plane state initialized.
+* Formats with alpha channel: planes should not announce alpha channels
+unless they support transparency. There's no transparency support in
+the primary plane's implementation.
 
-As we don't set can_position, drm_atomic_helper_check_plane_state()'s
-visibility check tests if the plane covers all of the CRTC. This is
-a small change from the original code, which tested if the plane is
-exactly the size of the CRTC. With the new test, the plane still has
-to cover all of the CRTC, but can be larger than the CRTC's size. A
-later patch can fully implement this feature in hibmc.
+* Formats with BGR order. The common format is in RGB channel order.
+There's no BGR support in the primary plane's implementation.
 
-If the plane is disabled, the helper clears the visibility flag in the
-plane state. On errors or if the plane is not visible, the atomic-check
-helper can return early. Implement all this in hibmc and drop the custom
-code that does some of it.
+* RGB888: atomic_update programs the format from cpp[0] * 8 / 16. For
+RGB888's cpp value of 3 this returns 1.5; rounded to 1. Programming
+the value of 1 to HIBMC_CRT_DISP_CTL_FORMAT sets up RGB565. Hence, the
+output is distorted. This can be tested by booting with video=1024x768-24.
 
-v2:
-- extend the commit description (Yongbang)
+Removing all unsupported formats leaves XRGB8888 and RGB565. Both of
+which are supported and work correctly.
 
 Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
 Fixes: da52605eea8f ("drm/hisilicon/hibmc: Add support for display engine")
+Reviewed-by: Yongbang Shi <shiyongbang@huawei.com>
 Cc: Rongrong Zou <zourongrong@gmail.com>
 Cc: Sean Paul <seanpaul@chromium.org>
 Cc: Xinliang Liu <xinliang.liu@linaro.org>
 Cc: Dmitry Baryshkov <lumag@kernel.org>
-Cc: Baihan Li <libaihan@huawei.com>
 Cc: Yongbang Shi <shiyongbang@huawei.com>
+Cc: Baihan Li <libaihan@huawei.com>
 Cc: <stable@vger.kernel.org> # v4.10+
 ---
- .../gpu/drm/hisilicon/hibmc/hibmc_drm_de.c    | 46 ++++++-------------
- 1 file changed, 14 insertions(+), 32 deletions(-)
+ drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_de.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_de.c b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_de.c
-index 89bed78f1466..8fa2a95bcdd1 100644
+index 8fa2a95bcdd1..c4f9ebd9250d 100644
 --- a/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_de.c
 +++ b/drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_de.c
-@@ -55,46 +55,28 @@ static const struct hibmc_dislay_pll_config hibmc_pll_table[] = {
- static int hibmc_plane_atomic_check(struct drm_plane *plane,
- 				    struct drm_atomic_state *state)
- {
--	struct drm_plane_state *new_plane_state = drm_atomic_get_new_plane_state(state,
--										 plane);
--	struct drm_framebuffer *fb = new_plane_state->fb;
--	struct drm_crtc *crtc = new_plane_state->crtc;
--	struct drm_crtc_state *crtc_state;
--	u32 src_w = new_plane_state->src_w >> 16;
--	u32 src_h = new_plane_state->src_h >> 16;
--
--	if (!crtc || !fb)
--		return 0;
-+	struct drm_plane_state *new_plane_state =
-+		drm_atomic_get_new_plane_state(state, plane);
-+	struct drm_crtc_state *new_crtc_state = NULL;
-+	int ret;
- 
--	crtc_state = drm_atomic_get_crtc_state(state, crtc);
--	if (IS_ERR(crtc_state))
--		return PTR_ERR(crtc_state);
-+	if (new_plane_state->crtc)
-+		new_crtc_state = drm_atomic_get_new_crtc_state(state, new_plane_state->crtc);
- 
--	if (src_w != new_plane_state->crtc_w || src_h != new_plane_state->crtc_h) {
--		drm_dbg_atomic(plane->dev, "scale not support\n");
--		return -EINVAL;
--	}
--
--	if (new_plane_state->crtc_x < 0 || new_plane_state->crtc_y < 0) {
--		drm_dbg_atomic(plane->dev, "crtc_x/y of drm_plane state is invalid\n");
--		return -EINVAL;
--	}
--
--	if (!crtc_state->enable)
-+	ret = drm_atomic_helper_check_plane_state(new_plane_state, new_crtc_state,
-+						  DRM_PLANE_NO_SCALING,
-+						  DRM_PLANE_NO_SCALING,
-+						  false, true);
-+	if (ret)
-+		return ret;
-+	else if (!new_plane_state->visible)
- 		return 0;
- 
--	if (new_plane_state->crtc_x + new_plane_state->crtc_w >
--	    crtc_state->adjusted_mode.hdisplay ||
--	    new_plane_state->crtc_y + new_plane_state->crtc_h >
--	    crtc_state->adjusted_mode.vdisplay) {
--		drm_dbg_atomic(plane->dev, "visible portion of plane is invalid\n");
--		return -EINVAL;
--	}
--
- 	if (new_plane_state->fb->pitches[0] % 128 != 0) {
- 		drm_dbg_atomic(plane->dev, "wrong stride with 128-byte aligned\n");
- 		return -EINVAL;
- 	}
-+
- 	return 0;
+@@ -118,10 +118,8 @@ static void hibmc_plane_atomic_update(struct drm_plane *plane,
  }
  
+ static const u32 channel_formats1[] = {
+-	DRM_FORMAT_RGB565, DRM_FORMAT_BGR565, DRM_FORMAT_RGB888,
+-	DRM_FORMAT_BGR888, DRM_FORMAT_XRGB8888, DRM_FORMAT_XBGR8888,
+-	DRM_FORMAT_RGBA8888, DRM_FORMAT_BGRA8888, DRM_FORMAT_ARGB8888,
+-	DRM_FORMAT_ABGR8888
++	DRM_FORMAT_XRGB8888,
++	DRM_FORMAT_RGB565,
+ };
+ 
+ static const struct drm_plane_funcs hibmc_plane_funcs = {
 -- 
 2.53.0
 
