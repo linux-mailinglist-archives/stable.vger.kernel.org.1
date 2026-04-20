@@ -1,61 +1,68 @@
-Return-Path: <stable+bounces-239884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239721-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4B7vJWNR5mkDuwEAu9opvQ
-	(envelope-from <stable+bounces-239884-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:16:35 +0200
+	id CObCIZpa5mmtvAEAu9opvQ
+	(envelope-from <stable+bounces-239721-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:55:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 379F842F3C5
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:16:35 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EF994303B3
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:55:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id ECCAE30418C6
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:11:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 111A131B00DD
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:04:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FDB7345740;
-	Mon, 20 Apr 2026 16:11:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38E9233D6FC;
+	Mon, 20 Apr 2026 16:04:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZSkzXwS1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JIiXfb1A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E71473451B0;
-	Mon, 20 Apr 2026 16:11:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F026D3396EE;
+	Mon, 20 Apr 2026 16:04:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701463; cv=none; b=eQ4wqa//CystkkANParhAiYfVweRjpcum+PjbotjFhKGutlLurMMqCNtX1Ept9NabZl0eIj/8/sR7/NjWxrp33b2FKXeLr7VuzEgAFU03++ZIj7yFjELbDnZZIHNNxLI7ECMghyZqmammaAI1gIAzc/6Gr670EWxzKzj6bzz5ec=
+	t=1776701047; cv=none; b=lFhgg2KtspqE15bYubbGa2eObsuqOL0fmLudLdaoBk02bnU7gEcZmNSB8zW8YMhWAMH1FUHfgX9EbAq2BulHUZUO+e7uHY9/LAuuWRwreVwK9M8wdvzQnYAybimGm/P8Hai+dV4k5fCp8FZo5gzYfSxKmCGZMijroKEbuUrKq3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701463; c=relaxed/simple;
-	bh=vdOOiOzfkF5jxZzsoXIghTI2Qr8Otbi3QTIVeeCzKko=;
+	s=arc-20240116; t=1776701047; c=relaxed/simple;
+	bh=SfVrtRfkFPP7Ft8CkDEohLASef10k2fFJjc/Y/WAdDA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UraL/dHDhbTEH9A/UOQCjNNa5iITCJk89fr63RY9W+DQmCXqram2d1YBdjPIsK4A5KnyAu98gYmWAReiYob1cwBGl7CoqQHhHlh+F21j4lfJ5XcPtTALtLrwH/nsYc4RysBpvr3JVL1mh5cWI9H5FhfR8klKQECae/KTL1WHr4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZSkzXwS1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D435C19425;
-	Mon, 20 Apr 2026 16:11:02 +0000 (UTC)
+	 MIME-Version; b=DfeOkx5iGU97WT/6XgaUDH2goA2uQchuiW5U/MneCy1ibHnO1FcZLDWHZG3nV9oJQ96g8NIiqPy1U97+QoXkTBJsU5O6ZZ3O/W95M+L22cGLXkd4X+XxsjCBuM+59c2K1OURasGFqnARVww/gydrsAg6ycxIb8zTsHDG9g6SWEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JIiXfb1A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20E7CC19425;
+	Mon, 20 Apr 2026 16:04:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701462;
-	bh=vdOOiOzfkF5jxZzsoXIghTI2Qr8Otbi3QTIVeeCzKko=;
+	s=korg; t=1776701046;
+	bh=SfVrtRfkFPP7Ft8CkDEohLASef10k2fFJjc/Y/WAdDA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZSkzXwS1UOwCYCx3wgUVxVeTnLTs3xO7DSn9noyC49NwIGOyxKU4aBM5AIceXxe7l
-	 HLUuE/KuC0c934fYDG1OX1e0JowlQ5z6UpF/K9tEwL3ENQyoi3PORK3oTTrq9DhiJj
-	 xMvOBz4mxEOtrlpC1gpyb7eHI6i03j2NELjhIFZ4=
+	b=JIiXfb1AKiZ0BKJAIBaoYzZ4/rMeJpHbRUSiZHXttwVIO7dVDOEas7o13dZsaIIaj
+	 XbRG4i9AEELz/1akeUa7Rlm1tGpnW6RV+TxP1H56h9NzAUBJ7dny8HhVpdUQqq/9u7
+	 nSWVCTIzIarkq0YYgEUmdUzNSAd/vfw3km4rtUcc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+3b3852c6031d0f30dfaf@syzkaller.appspotmail.com,
-	Mauricio Faria de Oliveira <mfo@igalia.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Lukasz Luba <lukasz.luba@arm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 090/162] thermal: core: Address thermal zone removal races with resume
+	Ruikai Peng <ruikai@pwno.io>,
+	stable@kernel.org,
+	Steve French <smfrench@gmail.com>,
+	Tom Talpey <tom@talpey.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	security@kernel.org,
+	Stefan Metzmacher <metze@samba.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.18 143/198] smb: server: avoid double-free in smb_direct_free_sendmsg after smb_direct_flush_send_list()
 Date: Mon, 20 Apr 2026 17:42:02 +0200
-Message-ID: <20260420153930.295576301@linuxfoundation.org>
+Message-ID: <20260420153940.758013934@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
-References: <20260420153927.006696811@linuxfoundation.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,221 +73,96 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-239721-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,pwno.io,kernel.org,gmail.com,talpey.com,chromium.org,vger.kernel.org,lists.samba.org,samba.org,manguebit.org,microsoft.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-239884-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[15];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,3b3852c6031d0f30dfaf];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,appspotmail.com:email,igalia.com:email,msgid.link:url,intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,syzbot.org:url]
-X-Rspamd-Queue-Id: 379F842F3C5
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,manguebit.org:email,samba.org:email,talpey.com:email]
+X-Rspamd-Queue-Id: 1EF994303B3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Stefan Metzmacher <metze@samba.org>
 
-[ Upstream commit 45b859b0728267a6199ee5002d62e6c6f3e8c89d ]
+commit 84ff995ae826aa6bbcc6c7b9ea569ff67c021d72 upstream.
 
-Since thermal_zone_pm_complete() and thermal_zone_device_resume()
-re-initialize the poll_queue delayed work for the given thermal zone,
-the cancel_delayed_work_sync() in thermal_zone_device_unregister()
-may miss some already running work items and the thermal zone may
-be freed prematurely [1].
+smb_direct_flush_send_list() already calls smb_direct_free_sendmsg(),
+so we should not call it again after post_sendmsg()
+moved it to the batch list.
 
-There are two failing scenarios that both start with
-running thermal_pm_notify_complete() right before invoking
-thermal_zone_device_unregister() for one of the thermal zones.
-
-In the first scenario, there is a work item already running for
-the given thermal zone when thermal_pm_notify_complete() calls
-thermal_zone_pm_complete() for that thermal zone and it continues to
-run when thermal_zone_device_unregister() starts.  Since the poll_queue
-delayed work has been re-initialized by thermal_pm_notify_complete(), the
-running work item will be missed by the cancel_delayed_work_sync() in
-thermal_zone_device_unregister() and if it continues to run past the
-freeing of the thermal zone object, a use-after-free will occur.
-
-In the second scenario, thermal_zone_device_resume() queued up by
-thermal_pm_notify_complete() runs right after the thermal_zone_exit()
-called by thermal_zone_device_unregister() has returned.  The poll_queue
-delayed work is re-initialized by it before cancel_delayed_work_sync() is
-called by thermal_zone_device_unregister(), so it may continue to run
-after the freeing of the thermal zone object, which also leads to a
-use-after-free.
-
-Address the first failing scenario by ensuring that no thermal work
-items will be running when thermal_pm_notify_complete() is called.
-For this purpose, first move the cancel_delayed_work() call from
-thermal_zone_pm_complete() to thermal_zone_pm_prepare() to prevent
-new work from entering the workqueue going forward.  Next, switch
-over to using a dedicated workqueue for thermal events and update
-the code in thermal_pm_notify() to flush that workqueue after
-thermal_pm_notify_prepare() has returned which will take care of
-all leftover thermal work already on the workqueue (that leftover
-work would do nothing useful anyway because all of the thermal zones
-have been flagged as suspended).
-
-The second failing scenario is addressed by adding a tz->state check
-to thermal_zone_device_resume() to prevent it from re-initializing
-the poll_queue delayed work if the thermal zone is going away.
-
-Note that the above changes will also facilitate relocating the suspend
-and resume of thermal zones closer to the suspend and resume of devices,
-respectively.
-
-Fixes: 5a5efdaffda5 ("thermal: core: Resume thermal zones asynchronously")
-Reported-by: syzbot+3b3852c6031d0f30dfaf@syzkaller.appspotmail.com
-Closes: https://syzbot.org/bug?extid=3b3852c6031d0f30dfaf
-Reported-by: Mauricio Faria de Oliveira <mfo@igalia.com>
-Closes: https://lore.kernel.org/linux-pm/20260324-thermal-core-uaf-init_delayed_work-v1-1-6611ae76a8a1@igalia.com/ [1]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Mauricio Faria de Oliveira <mfo@igalia.com>
-Tested-by: Mauricio Faria de Oliveira <mfo@igalia.com>
-Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
-Cc: All applicable <stable@vger.kernel.org>
-Link: https://patch.msgid.link/6267615.lOV4Wx5bFT@rafael.j.wysocki
-[ mfo: backport for 6.12.y:
-  - No guard() or thermal_pm_notify_{prepare,complete}() for the lack of
-    commit d1c8aa2a5c5c ("thermal: core: Manage thermal_list_lock using a mutex guard")
-    - thermal_zone_device_resume() calls mutex_unlock() to return;
-    - thermal_pm_notify() has thermal_pm_notify_prepare() in *_PREPARE;
-  - No WQ_PERCPU flag in alloc_workqueue(), introduced in v6.17. ]
-Signed-off-by: Mauricio Faria de Oliveira <mfo@igalia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Ruikai Peng <ruikai@pwno.io>
+Closes: https://lore.kernel.org/linux-cifs/CAFD3drNOSJ05y3A+jNXSDxW-2w09KHQ0DivhxQ_pcc7immVVOQ@mail.gmail.com/
+Fixes: 34abd408c8ba ("smb: server: make use of smbdirect_socket.send_io.bcredits")
+Cc: stable@kernel.org
+Cc: Steve French <smfrench@gmail.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: Ruikai Peng <ruikai@pwno.io>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: linux-cifs@vger.kernel.org
+Cc: samba-technical@lists.samba.org
+Cc: security@kernel.org
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Tested-by: Ruikai Peng <ruikai@pwno.io>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thermal/thermal_core.c | 33 ++++++++++++++++++++++++++++-----
- 1 file changed, 28 insertions(+), 5 deletions(-)
+ fs/smb/server/transport_rdma.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/thermal/thermal_core.c b/drivers/thermal/thermal_core.c
-index 4663ca7a587c5..8ce1134e15e56 100644
---- a/drivers/thermal/thermal_core.c
-+++ b/drivers/thermal/thermal_core.c
-@@ -42,6 +42,8 @@ static struct thermal_governor *def_governor;
+--- a/fs/smb/server/transport_rdma.c
++++ b/fs/smb/server/transport_rdma.c
+@@ -1473,15 +1473,21 @@ static int smb_direct_post_send_data(str
+ 	if (ret)
+ 		goto err;
  
- static bool thermal_pm_suspended;
- 
-+static struct workqueue_struct *thermal_wq __ro_after_init;
++	/*
++	 * From here msg is moved to send_ctx
++	 * and we should not free it explicitly.
++	 */
 +
- /*
-  * Governor section: set of functions to handle thermal governors
-  *
-@@ -328,7 +330,7 @@ static void thermal_zone_device_set_polling(struct thermal_zone_device *tz,
- 	if (delay > HZ)
- 		delay = round_jiffies_relative(delay);
+ 	if (send_ctx == &_send_ctx) {
+ 		ret = smb_direct_flush_send_list(sc, send_ctx, true);
+ 		if (ret)
+-			goto err;
++			goto flush_failed;
+ 	}
  
--	mod_delayed_work(system_freezable_power_efficient_wq, &tz->poll_queue, delay);
-+	mod_delayed_work(thermal_wq, &tz->poll_queue, delay);
- }
- 
- static void thermal_zone_recheck(struct thermal_zone_device *tz, int error)
-@@ -1691,6 +1693,12 @@ static void thermal_zone_device_resume(struct work_struct *work)
- 
- 	mutex_lock(&tz->lock);
- 
-+	/* If the thermal zone is going away, there's nothing to do. */
-+	if (tz->state & TZ_STATE_FLAG_EXIT) {
-+		mutex_unlock(&tz->lock);
-+		return;
-+	}
-+
- 	tz->state &= ~(TZ_STATE_FLAG_SUSPENDED | TZ_STATE_FLAG_RESUMING);
- 
- 	thermal_debug_tz_resume(tz);
-@@ -1722,6 +1730,9 @@ static void thermal_zone_pm_prepare(struct thermal_zone_device *tz)
- 
- 	tz->state |= TZ_STATE_FLAG_SUSPENDED;
- 
-+	/* Prevent new work from getting to the workqueue subsequently. */
-+	cancel_delayed_work(&tz->poll_queue);
-+
- 	mutex_unlock(&tz->lock);
- }
- 
-@@ -1729,8 +1740,6 @@ static void thermal_zone_pm_complete(struct thermal_zone_device *tz)
- {
- 	mutex_lock(&tz->lock);
- 
--	cancel_delayed_work(&tz->poll_queue);
--
- 	reinit_completion(&tz->resume);
- 	tz->state |= TZ_STATE_FLAG_RESUMING;
- 
-@@ -1740,7 +1749,7 @@ static void thermal_zone_pm_complete(struct thermal_zone_device *tz)
- 	 */
- 	INIT_DELAYED_WORK(&tz->poll_queue, thermal_zone_device_resume);
- 	/* Queue up the work without a delay. */
--	mod_delayed_work(system_freezable_power_efficient_wq, &tz->poll_queue, 0);
-+	mod_delayed_work(thermal_wq, &tz->poll_queue, 0);
- 
- 	mutex_unlock(&tz->lock);
- }
-@@ -1762,6 +1771,11 @@ static int thermal_pm_notify(struct notifier_block *nb,
- 			thermal_zone_pm_prepare(tz);
- 
- 		mutex_unlock(&thermal_list_lock);
-+		/*
-+		 * Allow any leftover thermal work items already on the
-+		 * worqueue to complete so they don't get in the way later.
-+		 */
-+		flush_workqueue(thermal_wq);
- 		break;
- 	case PM_POST_HIBERNATION:
- 	case PM_POST_RESTORE:
-@@ -1801,9 +1815,16 @@ static int __init thermal_init(void)
- 	if (result)
- 		goto error;
- 
-+	thermal_wq = alloc_workqueue("thermal_events",
-+				      WQ_FREEZABLE | WQ_POWER_EFFICIENT, 0);
-+	if (!thermal_wq) {
-+		result = -ENOMEM;
-+		goto unregister_netlink;
-+	}
-+
- 	result = thermal_register_governors();
- 	if (result)
--		goto unregister_netlink;
-+		goto destroy_workqueue;
- 
- 	thermal_class = kzalloc(sizeof(*thermal_class), GFP_KERNEL);
- 	if (!thermal_class) {
-@@ -1830,6 +1851,8 @@ static int __init thermal_init(void)
- 
- unregister_governors:
- 	thermal_unregister_governors();
-+destroy_workqueue:
-+	destroy_workqueue(thermal_wq);
- unregister_netlink:
- 	thermal_netlink_exit();
- error:
--- 
-2.53.0
-
+ 	return 0;
+ err:
+ 	smb_direct_free_sendmsg(sc, msg);
++flush_failed:
+ header_failed:
+ 	atomic_inc(&sc->send_io.credits.count);
+ credit_failed:
 
 
 
