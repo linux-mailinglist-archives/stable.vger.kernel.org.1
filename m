@@ -1,58 +1,68 @@
-Return-Path: <stable+bounces-239748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239896-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2MlvG2Nj5mmavgEAu9opvQ
-	(envelope-from <stable+bounces-239748-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:33:23 +0200
+	id kNYfEB5Z5mmtvAEAu9opvQ
+	(envelope-from <stable+bounces-239896-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:49:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A036F4316BC
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:33:22 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C33FC43012D
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:49:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 41019303CC5B
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:05:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A83E732F7602
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:11:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 685222E093A;
-	Mon, 20 Apr 2026 16:05:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3934633858B;
+	Mon, 20 Apr 2026 16:11:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HUZ3Cpaq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kB9e99In"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A1DE33E373;
-	Mon, 20 Apr 2026 16:05:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7390345729;
+	Mon, 20 Apr 2026 16:11:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701116; cv=none; b=fSvdGiA9lEpbul8QlfKLmL83gC9dOifKZnl+vPETP4SGC1tusHiEXRB24XMxv0e3JaXVS+2ZspD6Su4RO43fXILTdxpmO6ioOtoZNPpT+sQHAfHjVOlGYiRkv/v518GTu0a09pigbG1uBda4ZFt/wP0RZR7xuV2T9eLGKEuBUpM=
+	t=1776701491; cv=none; b=GEpqL4Ewluz871Eng485OEigJF+EPR/QG7+KaKjOVCQiWf3btm6Yf0L00DRRXqT7DUX/UvW52h9CzBoAAu2K+7UB3c3cgrO3udCKqGnCDtbwnfSJZ8dXjK496kyZE7i1WhPSZ8oKdtz3dV4uT0sPHClXF0GOMwaJb8Zc046houo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701116; c=relaxed/simple;
-	bh=zQqftcedO08THD06Li0rp4WXAV22JG/GzpVUlyFLxc8=;
+	s=arc-20240116; t=1776701491; c=relaxed/simple;
+	bh=zU1XPulFSABQIcRZF124PN/q/b0pBnrBLbFFqveonz8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C6FzPhTSDhZ5wZG2deXKd2i0WZYJxE+0+J5THNFuH8sfWOd+STjdmZnidEo1e4/WBiE7+FXm+qfhraURr2/jnG6UxGeNONqy5bFunxZgXJ4r+767GBnrfZUtuLXYVu++uh3Xox6chQzI4AEJ0KmN15mfOqi5T4p7cnA0AJbLsW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HUZ3Cpaq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABDC6C19425;
-	Mon, 20 Apr 2026 16:05:15 +0000 (UTC)
+	 MIME-Version; b=AcBifhFZw/SoLlKsBp6JuAHcRmCLNhZMipFuOuUMK3r/NBKLKyR1lYWkHXZsHPkRLvl45gjAeAagm+c3uXI05x6MPpd6AsNRr0Np1ZJOvumioulozVmTrrCMMIMZPGZ0Xl8jBH9OPRv/xUt9UUo6Rl9k2ILUKeDAFXIP42Hun0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kB9e99In; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56D51C19425;
+	Mon, 20 Apr 2026 16:11:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701116;
-	bh=zQqftcedO08THD06Li0rp4WXAV22JG/GzpVUlyFLxc8=;
+	s=korg; t=1776701490;
+	bh=zU1XPulFSABQIcRZF124PN/q/b0pBnrBLbFFqveonz8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HUZ3Cpaqtds50gUwhnqQGu3NzsMGtrR05wxfdfvS0/tkqSHXWRJ+u56Yi3Uw046Q3
-	 W5DvrE6kCoYLyiLC7P7lSh284NAdVZj/xp1pTXn2xY9L9uhJqit05hM4SB+w/cV9yH
-	 pi2IR/gc51uoquYsAJVUaOHHX+vitpoYgO9ySS9c=
+	b=kB9e99InmF89guz1EcOCq8OaEUm8nlnM5oYiYcq6dImPYXy5Iv/MoiZ7fd6RJZys1
+	 Ts+31FT88i9cHsF/hdTdg53q0twlMo658t/tJ8y4MYHQJcyHybDwdcQdYmWOinppX3
+	 x1b6lJnW3f51V6DsLq6qVDotYd0MH47nUcpKp9TQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanman Pradhan <psanman@juniper.net>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.18 188/198] hwmon: (powerz) Fix use-after-free on USB disconnect
+	"Liam R. Howlett" <Liam.Howlett@Oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Peng Zhang <zhangpeng.00@bytedance.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Heiko Stuebner <heiko.stuebner@cherry.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 135/162] kernel: be more careful about dup_mmap() failures and uprobe registering
 Date: Mon, 20 Apr 2026 17:42:47 +0200
-Message-ID: <20260420153942.388463495@linuxfoundation.org>
+Message-ID: <20260420153931.936189095@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
+References: <20260420153927.006696811@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,91 +87,141 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-239748-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239896-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[15];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,roeck-us.net:email,juniper.net:email]
-X-Rspamd-Queue-Id: A036F4316BC
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,bytedance.com:email,linux-foundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,infradead.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,oracle.com:email,cherry.de:email]
+X-Rspamd-Queue-Id: C33FC43012D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sanman Pradhan <psanman@juniper.net>
+From: Liam R. Howlett <Liam.Howlett@Oracle.com>
 
-commit 08e57f5e1a9067d5fbf33993aa7f51d60b3d13a4 upstream.
+[ Upstream commit 64c37e134b120fb462fb4a80694bfb8e7be77b14 ]
 
-After powerz_disconnect() frees the URB and releases the mutex, a
-subsequent powerz_read() call can acquire the mutex and call
-powerz_read_data(), which dereferences the freed URB pointer.
+If a memory allocation fails during dup_mmap(), the maple tree can be left
+in an unsafe state for other iterators besides the exit path.  All the
+locks are dropped before the exit_mmap() call (in mm/mmap.c), but the
+incomplete mm_struct can be reached through (at least) the rmap finding
+the vmas which have a pointer back to the mm_struct.
 
-Fix by:
- - Setting priv->urb to NULL in powerz_disconnect() so that
-   powerz_read_data() can detect the disconnected state.
- - Adding a !priv->urb check at the start of powerz_read_data()
-   to return -ENODEV on a disconnected device.
- - Moving usb_set_intfdata() before hwmon registration so the
-   disconnect handler can always find the priv pointer.
+Up to this point, there have been no issues with being able to find an
+mm_struct that was only partially initialised.  Syzbot was able to make
+the incomplete mm_struct fail with recent forking changes, so it has been
+proven unsafe to use the mm_struct that hasn't been initialised, as
+referenced in the link below.
 
-Fixes: 4381a36abdf1c ("hwmon: add POWER-Z driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sanman Pradhan <psanman@juniper.net>
-Link: https://lore.kernel.org/r/20260410002521.422645-2-sanman.pradhan@hpe.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Although 8ac662f5da19f ("fork: avoid inappropriate uprobe access to
+invalid mm") fixed the uprobe access, it does not completely remove the
+race.
+
+This patch sets the MMF_OOM_SKIP to avoid the iteration of the vmas on the
+oom side (even though this is extremely unlikely to be selected as an oom
+victim in the race window), and sets MMF_UNSTABLE to avoid other potential
+users from using a partially initialised mm_struct.
+
+When registering vmas for uprobe, skip the vmas in an mm that is marked
+unstable.  Modifying a vma in an unstable mm may cause issues if the mm
+isn't fully initialised.
+
+Link: https://lore.kernel.org/all/6756d273.050a0220.2477f.003d.GAE@google.com/
+Link: https://lkml.kernel.org/r/20250127170221.1761366-1-Liam.Howlett@oracle.com
+Fixes: d24062914837 ("fork: use __mt_dup() to duplicate maple tree in dup_mmap()")
+Signed-off-by: Liam R. Howlett <Liam.Howlett@Oracle.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Oleg Nesterov <oleg@redhat.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Jann Horn <jannh@google.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Peng Zhang <zhangpeng.00@bytedance.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[resolved conflict from missing header includes:
+ - linux/workqueue.h missing, introduced by commit 2bf8e5aceff8 ("uprobes:
+   allow put_uprobe() from non-sleepable softirq context")
+ - linux/srcu.h missing, introduced by commit dd1a7567784e ("uprobes:
+   SRCU-protect uretprobe lifetime (with timeout)") ]
+Signed-off-by: Heiko Stuebner <heiko.stuebner@cherry.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/powerz.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ kernel/events/uprobes.c |  4 ++++
+ kernel/fork.c           | 17 ++++++++++++++---
+ 2 files changed, 18 insertions(+), 3 deletions(-)
 
---- a/drivers/hwmon/powerz.c
-+++ b/drivers/hwmon/powerz.c
-@@ -108,6 +108,9 @@ static int powerz_read_data(struct usb_d
- {
- 	int ret;
+diff --git a/kernel/events/uprobes.c b/kernel/events/uprobes.c
+index 1ff26dc3bdb01..5059de5fcc230 100644
+--- a/kernel/events/uprobes.c
++++ b/kernel/events/uprobes.c
+@@ -27,6 +27,7 @@
+ #include <linux/shmem_fs.h>
+ #include <linux/khugepaged.h>
+ #include <linux/rcupdate_trace.h>
++#include <linux/oom.h>          /* check_stable_address_space */
  
-+	if (!priv->urb)
-+		return -ENODEV;
+ #include <linux/uprobes.h>
+ 
+@@ -1106,6 +1107,9 @@ register_for_each_vma(struct uprobe *uprobe, struct uprobe_consumer *new)
+ 		 * returns NULL in find_active_uprobe_rcu().
+ 		 */
+ 		mmap_write_lock(mm);
++		if (check_stable_address_space(mm))
++			goto unlock;
 +
- 	priv->status = -ETIMEDOUT;
- 	reinit_completion(&priv->completion);
- 
-@@ -224,6 +227,8 @@ static int powerz_probe(struct usb_inter
- 	mutex_init(&priv->mutex);
- 	init_completion(&priv->completion);
- 
-+	usb_set_intfdata(intf, priv);
+ 		vma = find_vma(mm, info->vaddr);
+ 		if (!vma || !valid_vma(vma, is_register) ||
+ 		    file_inode(vma->vm_file) != uprobe->inode)
+diff --git a/kernel/fork.c b/kernel/fork.c
+index 55086df4d24cb..a01cf3a904bfd 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -766,7 +766,8 @@ static __latent_entropy int dup_mmap(struct mm_struct *mm,
+ 		mt_set_in_rcu(vmi.mas.tree);
+ 		ksm_fork(mm, oldmm);
+ 		khugepaged_fork(mm, oldmm);
+-	} else if (mpnt) {
++	} else {
 +
- 	hwmon_dev =
- 	    devm_hwmon_device_register_with_info(parent, DRIVER_NAME, priv,
- 						 &powerz_chip_info, NULL);
-@@ -232,8 +237,6 @@ static int powerz_probe(struct usb_inter
- 		return PTR_ERR(hwmon_dev);
+ 		/*
+ 		 * The entire maple tree has already been duplicated. If the
+ 		 * mmap duplication fails, mark the failure point with
+@@ -774,8 +775,18 @@ static __latent_entropy int dup_mmap(struct mm_struct *mm,
+ 		 * stop releasing VMAs that have not been duplicated after this
+ 		 * point.
+ 		 */
+-		mas_set_range(&vmi.mas, mpnt->vm_start, mpnt->vm_end - 1);
+-		mas_store(&vmi.mas, XA_ZERO_ENTRY);
++		if (mpnt) {
++			mas_set_range(&vmi.mas, mpnt->vm_start, mpnt->vm_end - 1);
++			mas_store(&vmi.mas, XA_ZERO_ENTRY);
++			/* Avoid OOM iterating a broken tree */
++			set_bit(MMF_OOM_SKIP, &mm->flags);
++		}
++		/*
++		 * The mm_struct is going to exit, but the locks will be dropped
++		 * first.  Set the mm_struct as unstable is advisable as it is
++		 * not fully initialised.
++		 */
++		set_bit(MMF_UNSTABLE, &mm->flags);
  	}
- 
--	usb_set_intfdata(intf, priv);
--
- 	return 0;
- }
- 
-@@ -244,6 +247,7 @@ static void powerz_disconnect(struct usb
- 	mutex_lock(&priv->mutex);
- 	usb_kill_urb(priv->urb);
- 	usb_free_urb(priv->urb);
-+	priv->urb = NULL;
- 	mutex_unlock(&priv->mutex);
- }
- 
+ out:
+ 	mmap_write_unlock(mm);
+-- 
+2.53.0
+
 
 
 
