@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-239308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239702-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aExLD8xV5mkDuwEAu9opvQ
-	(envelope-from <stable+bounces-239308-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:35:24 +0200
+	id OHrBHVFh5mkxvgEAu9opvQ
+	(envelope-from <stable+bounces-239702-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:24:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFF5842FACC
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:35:23 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 055F843121B
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:24:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6DC4F3232B45
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:45:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A6A9D32326F6
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:03:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3022533F586;
-	Mon, 20 Apr 2026 15:45:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6231C3431E3;
+	Mon, 20 Apr 2026 16:03:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RSNAJSZP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n81K+9e9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E786233F37F;
-	Mon, 20 Apr 2026 15:45:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2529A342510;
+	Mon, 20 Apr 2026 16:03:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776699917; cv=none; b=QQnDKkVTvfuG5lmb14UzIoEB+66ynpxTtS0YgEymcbUqGcSrZk+e3/I2b+CwuifHL1qShTJx6SJo+bnHSBJ3NwyHe5Ue+KsCSyYmcEFm7ueaHdVGor3TRlvOY0hFaLsVra3gpcyaJUnd4FSyALsjxK0HbTOCUJsUiPd9bulzweU=
+	t=1776700998; cv=none; b=mZw9PdnY+uQZ7yfTMP1wrPpclmuENNVJiJi2nQngj84BCaeLRJlWcc0nmZk9OwJQj9llinXWzRwHjow4cwNjtHLf5pZK4wYm6L0079GR5w5OSJLKj8rJ/UjUfSb+f+25Fulk5IZpcEMlmjbxjIXN74RtO9a3Cbd8++99QKVy1Y4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776699917; c=relaxed/simple;
-	bh=15ENsi0cU0DU6ufJmM2JGY9vX25fRsHvB5zIMZcXXK8=;
+	s=arc-20240116; t=1776700998; c=relaxed/simple;
+	bh=JqKIT+ym+jtU59yV2c0par+zqPD/lqqZDkTgqshQkks=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tD+6yDeZ3iCI+21y8dQMdRZLvwYpzUI2TPhYxRgzioSVpJbtre2CyE3ZNIGNH4jb/JKUmdzve7GlgI9eqdi8aZFgMeMojNVCHEd7eltYBTTmqOLCuRsBCSfjjMDCmXQ73+wtGdl9tP1m6VRC4wDgKubwkJKj2K4L+QOBzJzfDcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RSNAJSZP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 448AFC19425;
-	Mon, 20 Apr 2026 15:45:16 +0000 (UTC)
+	 MIME-Version; b=LxuYHhxgn46wCa+Rw9ELElF8hTHx3gFF989/4FGqo4b8ugehiVidbCZzlb2KuAnOuzhn6YIcvKX+JLKC6F2k9bwiZB2oDjFKZ4YxUIUoqu/JGdgph2StChkh91W+hmtKQ0B/83Sf2TQlysk7/K++VLnVGb0tDE466SviC1AlQJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n81K+9e9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF5A5C19425;
+	Mon, 20 Apr 2026 16:03:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776699916;
-	bh=15ENsi0cU0DU6ufJmM2JGY9vX25fRsHvB5zIMZcXXK8=;
+	s=korg; t=1776700998;
+	bh=JqKIT+ym+jtU59yV2c0par+zqPD/lqqZDkTgqshQkks=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RSNAJSZPEsuORIhy6Bi7CEoiIzzjZ8zIdRTAVIsUEMRE3/QyleabM+dPH1tYQ9IZx
-	 s6yQS3Xl030X/0lIpSfYwv+hky0jDlgWpVfUvRW/mQBUPjhu8pWHVklftR91tM3ckk
-	 YtqD0VnV+F01TbD18H+RYSI1qio7IJkZt1QMsnJY=
+	b=n81K+9e9AczdPEk/TY6ElZf3eNsxLI9tT367JjxogpW9dN5mx2N6KiCZZsK757wfe
+	 SSseihhMCfYqvm2gmKYzVi17qpCB0syFsYVFznSK6B+X/hGGhoJ9nRdymAXAgGbE5/
+	 P4s7QkHM3nIJgzyG/kYVQ/SvrLlfsb+wGU7oLQO4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Koichiro Den <den@valinux.co.jp>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>
-Subject: [PATCH 7.0 48/76] PCI: endpoint: pci-epf-vntb: Stop cmd_handler work in epf_ntb_epc_cleanup
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <smfrench@gmail.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Tom Talpey <tom@talpey.com>,
+	linux-cifs@vger.kernel.org,
+	stable@kernel.org,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.18 140/198] ksmbd: require 3 sub-authorities before reading sub_auth[2]
 Date: Mon, 20 Apr 2026 17:41:59 +0200
-Message-ID: <20260420153912.574543601@linuxfoundation.org>
+Message-ID: <20260420153940.647660902@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153910.810034134@linuxfoundation.org>
-References: <20260420153910.810034134@linuxfoundation.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,76 +72,84 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,chromium.org,talpey.com,vger.kernel.org,microsoft.com];
+	TAGGED_FROM(0.00)[bounces-239702-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-239308-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,nxp.com:email,valinux.co.jp:email]
-X-Rspamd-Queue-Id: AFF5842FACC
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[talpey.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,chromium.org:email]
+X-Rspamd-Queue-Id: 055F843121B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Koichiro Den <den@valinux.co.jp>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit d799984233a50abd2667a7d17a9a710a3f10ebe2 upstream.
+commit 53370cf9090777774e07fd9a8ebce67c6cc333ab upstream.
 
-Disable the delayed work before clearing BAR mappings and doorbells to
-avoid running the handler after resources have been torn down.
+parse_dacl() compares each ACE SID against sid_unix_NFS_mode and on
+match reads sid.sub_auth[2] as the file mode.  If sid_unix_NFS_mode is
+the prefix S-1-5-88-3 with num_subauth = 2 then compare_sids() compares
+only min(num_subauth, 2) sub-authorities so a client SID with
+num_subauth = 2 and sub_auth = {88, 3} will match.
 
-  Unable to handle kernel paging request at virtual address ffff800083f46004
-  [...]
-  Internal error: Oops: 0000000096000007 [#1]  SMP
-  [...]
-  Call trace:
-   epf_ntb_cmd_handler+0x54/0x200 [pci_epf_vntb] (P)
-   process_one_work+0x154/0x3b0
-   worker_thread+0x2c8/0x400
-   kthread+0x148/0x210
-   ret_from_fork+0x10/0x20
+If num_subauth = 2 and the ACE is placed at the very end of the security
+descriptor, sub_auth[2] will be  4 bytes past end_of_acl.  The
+out-of-band bytes will then be masked to the low 9 bits and applied as
+the file's POSIX mode, probably not something that is good to have
+happen.
 
-Fixes: e35f56bb0330 ("PCI: endpoint: Support NTB transfer between RC and EP")
-Signed-off-by: Koichiro Den <den@valinux.co.jp>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260226084142.2226875-4-den@valinux.co.jp
+Fix this up by forcing the SID to actually carry a third sub-authority
+before reading it at all.
+
+Cc: Namjae Jeon <linkinjeon@kernel.org>
+Cc: Steve French <smfrench@gmail.com>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: linux-cifs@vger.kernel.org
+Cc: <stable@kernel.org>
+Assisted-by: gregkh_clanker_t1000
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/endpoint/functions/pci-epf-vntb.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/smb/server/smbacl.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/pci/endpoint/functions/pci-epf-vntb.c
-+++ b/drivers/pci/endpoint/functions/pci-epf-vntb.c
-@@ -955,6 +955,7 @@ err_config_interrupt:
-  */
- static void epf_ntb_epc_cleanup(struct epf_ntb *ntb)
- {
-+	disable_delayed_work_sync(&ntb->cmd_handler);
- 	epf_ntb_mw_bar_clear(ntb, ntb->num_mws);
- 	epf_ntb_db_bar_clear(ntb);
- 	epf_ntb_config_sspad_bar_clear(ntb);
+--- a/fs/smb/server/smbacl.c
++++ b/fs/smb/server/smbacl.c
+@@ -451,7 +451,8 @@ static void parse_dacl(struct mnt_idmap
+ 		ppace[i]->access_req =
+ 			smb_map_generic_desired_access(ppace[i]->access_req);
+ 
+-		if (!(compare_sids(&ppace[i]->sid, &sid_unix_NFS_mode))) {
++		if (ppace[i]->sid.num_subauth >= 3 &&
++		    !(compare_sids(&ppace[i]->sid, &sid_unix_NFS_mode))) {
+ 			fattr->cf_mode =
+ 				le32_to_cpu(ppace[i]->sid.sub_auth[2]);
+ 			break;
 
 
 
