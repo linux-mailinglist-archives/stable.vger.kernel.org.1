@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-239335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239831-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CKsWJ1RK5mnQuQEAu9opvQ
-	(envelope-from <stable+bounces-239335-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 17:46:28 +0200
+	id eH0SNLdo5mnBvwEAu9opvQ
+	(envelope-from <stable+bounces-239831-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:56:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BCF242E900
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 17:46:28 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39F9F4324A7
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:56:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DABFC3006110
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:46:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0A6BB372E7BB
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:08:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F9D4336896;
-	Mon, 20 Apr 2026 15:46:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8CAB3375C5;
+	Mon, 20 Apr 2026 16:08:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hClQZnDJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TcjGll0W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 526C033262B;
-	Mon, 20 Apr 2026 15:46:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99BC22BD11;
+	Mon, 20 Apr 2026 16:08:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776699983; cv=none; b=LuDbDY9bT9Tff3k+sHBl4SRU0OKtS7Qiv4/6zxBalfWGm6Hq4qW7zuRysdsmpyPhbgDMGKseAqlL1Fs6SvPwnkVPRJU93YbFWKKbHn7lj2t9WeQq7x1E6pEmXTGsZAPXbJz4jGD76R0yVx9VXRftQ2fvf0JqsRe0DM4UndGoBJI=
+	t=1776701327; cv=none; b=EuEJUshYTkd/ZpxOWp5Z6aVwSQV02i9rG7/lCWHQYeT0z1YtEtMFKOkfloLRQeNzcpwKk2weTYccRGxMXsyDgz2RVAEyariZtGGky/waBRtMEzQxwxQ9rR9AnZi4SriEOGHNJW8Y6haQ4qlsqnuIkLGAdiu8/7lGwL7uOAdMMJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776699983; c=relaxed/simple;
-	bh=2TT3lJ4PTIbCBGJ2VA4Nujm5eHgW9f9uclXRQi/EI2c=;
+	s=arc-20240116; t=1776701327; c=relaxed/simple;
+	bh=R6q9EtXCgC13p5ehgCVF8a+Ins2/cyeDydn2hAX+dQ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FQUQupJL0Iio8U+72UfVFMQ8QEkElgRxnIPy/3p4sDZMdivyKdrZrknh8fjz5O2xFohPobtnfrPaykkbTY6gRmXsaDH3qMa9MWdSQpHfGlI0ld2rZC8+MaIkCJV3McntFUSavCcz/E5i6dA9VMOrvPDJhAeN6DjXSTO4KwQrKF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hClQZnDJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD9CFC19425;
-	Mon, 20 Apr 2026 15:46:22 +0000 (UTC)
+	 MIME-Version; b=cKZjTA/fUCeRuP9cWMglpG6obOmGWffaGnmKSzXJjlYAuaabOsuhWD8IqdWZTOCe8TrSINl1nnFHR5Df9kaZZWUTZOljDSBKj7FD9nSSGJyHE0tbYJ01c4Vsad6PBxz4puxw+cQTrT1u5M0gQqKO76JdberPfpJtGGF1fXpQits=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TcjGll0W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ED6DC19425;
+	Mon, 20 Apr 2026 16:08:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776699983;
-	bh=2TT3lJ4PTIbCBGJ2VA4Nujm5eHgW9f9uclXRQi/EI2c=;
+	s=korg; t=1776701327;
+	bh=R6q9EtXCgC13p5ehgCVF8a+Ins2/cyeDydn2hAX+dQ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hClQZnDJC0878n40c4LDivpIhSD+wTWRZEN3Ugs+ckUPnm0HdOSQDpRyEWNkwZNMw
-	 EcTc+NDEKOLT3NzVFnwTliar1XJLwrqBsbj0aGM4+0FpN63BKNSAzxGmlDK06sIG7M
-	 ptJKZ8/ZQRSPO9BuhkAHjgGVhKy06maXMmTJ8/R8=
+	b=TcjGll0Wl21yzKkvaTy0NY4dt4lUxKcgViI8q4thioLy/SazdcShycrryg+dfyh6q
+	 rFAft9rgFDyWSjDHAu5M2QtTPgNizdEKsJfVrUbk9Fv2ZrXPEtrwSNp7BXp6d1eYaA
+	 iEL9tatamqpmT2JNWogYX2P+usRHKUm6qIjLNFrE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bernie Thompson <bernie@plugable.com>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 7.0 31/76] fbdev: udlfb: avoid divide-by-zero on FBIOPUT_VSCREENINFO
+	Weiming Shi <bestswngs@gmail.com>,
+	Xiang Mei <xmei5@asu.edu>,
+	Florian Westphal <fw@strlen.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 070/162] netfilter: nfnetlink_log: initialize nfgenmsg in NLMSG_DONE terminator
 Date: Mon, 20 Apr 2026 17:41:42 +0200
-Message-ID: <20260420153911.955256631@linuxfoundation.org>
+Message-ID: <20260420153929.572749204@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153910.810034134@linuxfoundation.org>
-References: <20260420153910.810034134@linuxfoundation.org>
+In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
+References: <20260420153927.006696811@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +65,90 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [3.84 / 15.00];
+	SEM_URIBL(3.50)[asu.edu:email];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
+	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-239335-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,plugable.com,gmx.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,asu.edu,strlen.de,kernel.org];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TAGGED_FROM(0.00)[bounces-239831-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	PRECEDENCE_BULK(0.00)[];
+	NEURAL_HAM(-0.00)[-0.560];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,gmx.de:email,plugable.com:email]
-X-Rspamd-Queue-Id: 3BCF242E900
+	R_SPF_ALLOW(0.00)[+ip4:172.234.253.10:c];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,asu.edu:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,strlen.de:email]
+X-Rspamd-Queue-Id: 39F9F4324A7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Xiang Mei <xmei5@asu.edu>
 
-commit a31e4518bec70333a0a98f2946a12b53b45fe5b9 upstream.
+[ Upstream commit 1f3083aec8836213da441270cdb1ab612dd82cf4 ]
 
-Much like commit 19f953e74356 ("fbdev: fb_pm2fb: Avoid potential divide
-by zero error"), we also need to prevent that same crash from happening
-in the udlfb driver as it uses pixclock directly when dividing, which
-will crash.
+When batching multiple NFLOG messages (inst->qlen > 1), __nfulnl_send()
+appends an NLMSG_DONE terminator with sizeof(struct nfgenmsg) payload via
+nlmsg_put(), but never initializes the nfgenmsg bytes. The nlmsg_put()
+helper only zeroes alignment padding after the payload, not the payload
+itself, so four bytes of stale kernel heap data are leaked to userspace
+in the NLMSG_DONE message body.
 
-Cc: Bernie Thompson <bernie@plugable.com>
-Cc: Helge Deller <deller@gmx.de>
-Fixes: 59277b679f8b ("Staging: udlfb: add dynamic modeset support")
-Assisted-by: gregkh_clanker_t1000
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Use nfnl_msg_put() to build the NLMSG_DONE terminator, which initializes
+the nfgenmsg payload via nfnl_fill_hdr(), consistent with how
+__build_packet_message() already constructs NFULNL_MSG_PACKET headers.
+
+Fixes: 29c5d4afba51 ("[NETFILTER]: nfnetlink_log: fix sending of multipart messages")
+Reported-by: Weiming Shi <bestswngs@gmail.com>
+Signed-off-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/udlfb.c |    3 +++
- 1 file changed, 3 insertions(+)
+ net/netfilter/nfnetlink_log.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/video/fbdev/udlfb.c
-+++ b/drivers/video/fbdev/udlfb.c
-@@ -1018,6 +1018,9 @@ static int dlfb_ops_check_var(struct fb_
- 	struct fb_videomode mode;
- 	struct dlfb_data *dlfb = info->par;
- 
-+	if (!var->pixclock)
-+		return -EINVAL;
-+
- 	/* set device-specific elements of var unrelated to mode */
- 	dlfb_var_color_format(var);
- 
+diff --git a/net/netfilter/nfnetlink_log.c b/net/netfilter/nfnetlink_log.c
+index f96421ad14afb..3da32d2f68e09 100644
+--- a/net/netfilter/nfnetlink_log.c
++++ b/net/netfilter/nfnetlink_log.c
+@@ -361,10 +361,10 @@ static void
+ __nfulnl_send(struct nfulnl_instance *inst)
+ {
+ 	if (inst->qlen > 1) {
+-		struct nlmsghdr *nlh = nlmsg_put(inst->skb, 0, 0,
+-						 NLMSG_DONE,
+-						 sizeof(struct nfgenmsg),
+-						 0);
++		struct nlmsghdr *nlh = nfnl_msg_put(inst->skb, 0, 0,
++						    NLMSG_DONE, 0,
++						    AF_UNSPEC, NFNETLINK_V0,
++						    htons(inst->group_num));
+ 		if (WARN_ONCE(!nlh, "bad nlskb size: %u, tailroom %d\n",
+ 			      inst->skb->len, skb_tailroom(inst->skb))) {
+ 			kfree_skb(inst->skb);
+-- 
+2.53.0
+
 
 
 
