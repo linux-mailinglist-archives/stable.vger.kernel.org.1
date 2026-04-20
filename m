@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-239312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239884-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IKeeOiBj5mmavgEAu9opvQ
-	(envelope-from <stable+bounces-239312-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:32:16 +0200
+	id 4B7vJWNR5mkDuwEAu9opvQ
+	(envelope-from <stable+bounces-239884-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:16:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C732431608
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:32:16 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 379F842F3C5
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:16:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6701934FAA21
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:45:35 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id ECCAE30418C6
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:11:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EEDE3368AF;
-	Mon, 20 Apr 2026 15:45:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FDB7345740;
+	Mon, 20 Apr 2026 16:11:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ucOUEyax"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZSkzXwS1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6239932E696;
-	Mon, 20 Apr 2026 15:45:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E71473451B0;
+	Mon, 20 Apr 2026 16:11:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776699927; cv=none; b=DuITy9XmvvMP5RpFKFvooECGz2uFQN0v9rctmpSTwLPQht7aAD1ON9k691hDyZFFNIxJnkQUSP7oktAohCKav492VzK+goMI+kI1rvxXLbBho2Mb3/ECxzQuCkHbKh0gXCXMuYqSG2vum07voUBQqLtcTSRFA4KMwXj7clLEpKo=
+	t=1776701463; cv=none; b=eQ4wqa//CystkkANParhAiYfVweRjpcum+PjbotjFhKGutlLurMMqCNtX1Ept9NabZl0eIj/8/sR7/NjWxrp33b2FKXeLr7VuzEgAFU03++ZIj7yFjELbDnZZIHNNxLI7ECMghyZqmammaAI1gIAzc/6Gr670EWxzKzj6bzz5ec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776699927; c=relaxed/simple;
-	bh=ZFSeAoCuQZL7qMXAElgOo2/ZXUW/YMbHRc6zaLb9klM=;
+	s=arc-20240116; t=1776701463; c=relaxed/simple;
+	bh=vdOOiOzfkF5jxZzsoXIghTI2Qr8Otbi3QTIVeeCzKko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uVXYR1sbZ0+eZ/r5aWr3QcTMRv6ED73xBGngoQbCUQKkjd5WD+2pL9lwJ9awQLuloEpKIrwXVzpF5C7X3sxXHrjAcVxPB1OLOGxSNxGgrAKxn6U0Efrbc1oHMtr3Q8hXA8n2tkm9cKfKLv2VlduM3oRkXoVgBFwEHWHtC1SDujc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ucOUEyax; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F685C19425;
-	Mon, 20 Apr 2026 15:45:26 +0000 (UTC)
+	 MIME-Version; b=UraL/dHDhbTEH9A/UOQCjNNa5iITCJk89fr63RY9W+DQmCXqram2d1YBdjPIsK4A5KnyAu98gYmWAReiYob1cwBGl7CoqQHhHlh+F21j4lfJ5XcPtTALtLrwH/nsYc4RysBpvr3JVL1mh5cWI9H5FhfR8klKQECae/KTL1WHr4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZSkzXwS1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D435C19425;
+	Mon, 20 Apr 2026 16:11:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776699927;
-	bh=ZFSeAoCuQZL7qMXAElgOo2/ZXUW/YMbHRc6zaLb9klM=;
+	s=korg; t=1776701462;
+	bh=vdOOiOzfkF5jxZzsoXIghTI2Qr8Otbi3QTIVeeCzKko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ucOUEyax4O8HSggRh6i6VS0Hbo1ufX9FuoPwsbuCK4uHMB40dlq1H/ldx0xYmsXZt
-	 FQjMCm8LIzdLwVUqwGula25nyah3AIfPff4o3VFrqi1tUdAff/jCs7JK2TzNMka62O
-	 REnkCRAsvLj3Sn302GqT/1OiqDV5FglDi5BWxw0I=
+	b=ZSkzXwS1UOwCYCx3wgUVxVeTnLTs3xO7DSn9noyC49NwIGOyxKU4aBM5AIceXxe7l
+	 HLUuE/KuC0c934fYDG1OX1e0JowlQ5z6UpF/K9tEwL3ENQyoi3PORK3oTTrq9DhiJj
+	 xMvOBz4mxEOtrlpC1gpyb7eHI6i03j2NELjhIFZ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jethro Beekman <jethro@fortanix.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 7.0 51/76] KVM: SEV: Reject attempts to sync VMSA of an already-launched/encrypted vCPU
+	syzbot+3b3852c6031d0f30dfaf@syzkaller.appspotmail.com,
+	Mauricio Faria de Oliveira <mfo@igalia.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Lukasz Luba <lukasz.luba@arm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 090/162] thermal: core: Address thermal zone removal races with resume
 Date: Mon, 20 Apr 2026 17:42:02 +0200
-Message-ID: <20260420153912.681836144@linuxfoundation.org>
+Message-ID: <20260420153930.295576301@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153910.810034134@linuxfoundation.org>
-References: <20260420153910.810034134@linuxfoundation.org>
+In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
+References: <20260420153927.006696811@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,104 +66,221 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-239312-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239884-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,fortanix.com:email]
-X-Rspamd-Queue-Id: 6C732431608
+	TAGGED_RCPT(0.00)[stable,3b3852c6031d0f30dfaf];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,appspotmail.com:email,igalia.com:email,msgid.link:url,intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,syzbot.org:url]
+X-Rspamd-Queue-Id: 379F842F3C5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-commit 9b9f7962e3e879d12da2bf47e02a24ec51690e3d upstream.
+[ Upstream commit 45b859b0728267a6199ee5002d62e6c6f3e8c89d ]
 
-Reject synchronizing vCPU state to its associated VMSA if the vCPU has
-already been launched, i.e. if the VMSA has already been encrypted.  On a
-host with SNP enabled, accessing guest-private memory generates an RMP #PF
-and panics the host.
+Since thermal_zone_pm_complete() and thermal_zone_device_resume()
+re-initialize the poll_queue delayed work for the given thermal zone,
+the cancel_delayed_work_sync() in thermal_zone_device_unregister()
+may miss some already running work items and the thermal zone may
+be freed prematurely [1].
 
-  BUG: unable to handle page fault for address: ff1276cbfdf36000
-  #PF: supervisor write access in kernel mode
-  #PF: error_code(0x80000003) - RMP violation
-  PGD 5a31801067 P4D 5a31802067 PUD 40ccfb5063 PMD 40e5954063 PTE 80000040fdf36163
-  SEV-SNP: PFN 0x40fdf36, RMP entry: [0x6010fffffffff001 - 0x000000000000001f]
-  Oops: Oops: 0003 [#1] SMP NOPTI
-  CPU: 33 UID: 0 PID: 996180 Comm: qemu-system-x86 Tainted: G           OE
-  Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
-  Hardware name: Dell Inc. PowerEdge R7625/0H1TJT, BIOS 1.5.8 07/21/2023
-  RIP: 0010:sev_es_sync_vmsa+0x54/0x4c0 [kvm_amd]
-  Call Trace:
-   <TASK>
-   snp_launch_update_vmsa+0x19d/0x290 [kvm_amd]
-   snp_launch_finish+0xb6/0x380 [kvm_amd]
-   sev_mem_enc_ioctl+0x14e/0x720 [kvm_amd]
-   kvm_arch_vm_ioctl+0x837/0xcf0 [kvm]
-   kvm_vm_ioctl+0x3fd/0xcc0 [kvm]
-   __x64_sys_ioctl+0xa3/0x100
-   x64_sys_call+0xfe0/0x2350
-   do_syscall_64+0x81/0x10f0
-   entry_SYSCALL_64_after_hwframe+0x76/0x7e
-  RIP: 0033:0x7ffff673287d
-   </TASK>
+There are two failing scenarios that both start with
+running thermal_pm_notify_complete() right before invoking
+thermal_zone_device_unregister() for one of the thermal zones.
 
-Note, the KVM flaw has been present since commit ad73109ae7ec ("KVM: SVM:
-Provide support to launch and run an SEV-ES guest"), but has only been
-actively dangerous for the host since SNP support was added.  With SEV-ES,
-KVM would "just" clobber guest state, which is totally fine from a host
-kernel perspective since userspace can clobber guest state any time before
-sev_launch_update_vmsa().
+In the first scenario, there is a work item already running for
+the given thermal zone when thermal_pm_notify_complete() calls
+thermal_zone_pm_complete() for that thermal zone and it continues to
+run when thermal_zone_device_unregister() starts.  Since the poll_queue
+delayed work has been re-initialized by thermal_pm_notify_complete(), the
+running work item will be missed by the cancel_delayed_work_sync() in
+thermal_zone_device_unregister() and if it continues to run past the
+freeing of the thermal zone object, a use-after-free will occur.
 
-Fixes: ad27ce155566 ("KVM: SEV: Add KVM_SEV_SNP_LAUNCH_FINISH command")
-Reported-by: Jethro Beekman <jethro@fortanix.com>
-Closes: https://lore.kernel.org/all/d98692e2-d96b-4c36-8089-4bc1e5cc3d57@fortanix.com
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260310234829.2608037-3-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In the second scenario, thermal_zone_device_resume() queued up by
+thermal_pm_notify_complete() runs right after the thermal_zone_exit()
+called by thermal_zone_device_unregister() has returned.  The poll_queue
+delayed work is re-initialized by it before cancel_delayed_work_sync() is
+called by thermal_zone_device_unregister(), so it may continue to run
+after the freeing of the thermal zone object, which also leads to a
+use-after-free.
+
+Address the first failing scenario by ensuring that no thermal work
+items will be running when thermal_pm_notify_complete() is called.
+For this purpose, first move the cancel_delayed_work() call from
+thermal_zone_pm_complete() to thermal_zone_pm_prepare() to prevent
+new work from entering the workqueue going forward.  Next, switch
+over to using a dedicated workqueue for thermal events and update
+the code in thermal_pm_notify() to flush that workqueue after
+thermal_pm_notify_prepare() has returned which will take care of
+all leftover thermal work already on the workqueue (that leftover
+work would do nothing useful anyway because all of the thermal zones
+have been flagged as suspended).
+
+The second failing scenario is addressed by adding a tz->state check
+to thermal_zone_device_resume() to prevent it from re-initializing
+the poll_queue delayed work if the thermal zone is going away.
+
+Note that the above changes will also facilitate relocating the suspend
+and resume of thermal zones closer to the suspend and resume of devices,
+respectively.
+
+Fixes: 5a5efdaffda5 ("thermal: core: Resume thermal zones asynchronously")
+Reported-by: syzbot+3b3852c6031d0f30dfaf@syzkaller.appspotmail.com
+Closes: https://syzbot.org/bug?extid=3b3852c6031d0f30dfaf
+Reported-by: Mauricio Faria de Oliveira <mfo@igalia.com>
+Closes: https://lore.kernel.org/linux-pm/20260324-thermal-core-uaf-init_delayed_work-v1-1-6611ae76a8a1@igalia.com/ [1]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Mauricio Faria de Oliveira <mfo@igalia.com>
+Tested-by: Mauricio Faria de Oliveira <mfo@igalia.com>
+Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
+Cc: All applicable <stable@vger.kernel.org>
+Link: https://patch.msgid.link/6267615.lOV4Wx5bFT@rafael.j.wysocki
+[ mfo: backport for 6.12.y:
+  - No guard() or thermal_pm_notify_{prepare,complete}() for the lack of
+    commit d1c8aa2a5c5c ("thermal: core: Manage thermal_list_lock using a mutex guard")
+    - thermal_zone_device_resume() calls mutex_unlock() to return;
+    - thermal_pm_notify() has thermal_pm_notify_prepare() in *_PREPARE;
+  - No WQ_PERCPU flag in alloc_workqueue(), introduced in v6.17. ]
+Signed-off-by: Mauricio Faria de Oliveira <mfo@igalia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/svm/sev.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/thermal/thermal_core.c | 33 ++++++++++++++++++++++++++++-----
+ 1 file changed, 28 insertions(+), 5 deletions(-)
 
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -882,6 +882,9 @@ static int sev_es_sync_vmsa(struct vcpu_
- 	u8 *d;
- 	int i;
+diff --git a/drivers/thermal/thermal_core.c b/drivers/thermal/thermal_core.c
+index 4663ca7a587c5..8ce1134e15e56 100644
+--- a/drivers/thermal/thermal_core.c
++++ b/drivers/thermal/thermal_core.c
+@@ -42,6 +42,8 @@ static struct thermal_governor *def_governor;
  
-+	if (vcpu->arch.guest_state_protected)
-+		return -EINVAL;
+ static bool thermal_pm_suspended;
+ 
++static struct workqueue_struct *thermal_wq __ro_after_init;
 +
- 	/* Check some debug related fields before encrypting the VMSA */
- 	if (svm->vcpu.guest_debug || (svm->vmcb->save.dr7 & ~DR7_FIXED_1))
- 		return -EINVAL;
+ /*
+  * Governor section: set of functions to handle thermal governors
+  *
+@@ -328,7 +330,7 @@ static void thermal_zone_device_set_polling(struct thermal_zone_device *tz,
+ 	if (delay > HZ)
+ 		delay = round_jiffies_relative(delay);
+ 
+-	mod_delayed_work(system_freezable_power_efficient_wq, &tz->poll_queue, delay);
++	mod_delayed_work(thermal_wq, &tz->poll_queue, delay);
+ }
+ 
+ static void thermal_zone_recheck(struct thermal_zone_device *tz, int error)
+@@ -1691,6 +1693,12 @@ static void thermal_zone_device_resume(struct work_struct *work)
+ 
+ 	mutex_lock(&tz->lock);
+ 
++	/* If the thermal zone is going away, there's nothing to do. */
++	if (tz->state & TZ_STATE_FLAG_EXIT) {
++		mutex_unlock(&tz->lock);
++		return;
++	}
++
+ 	tz->state &= ~(TZ_STATE_FLAG_SUSPENDED | TZ_STATE_FLAG_RESUMING);
+ 
+ 	thermal_debug_tz_resume(tz);
+@@ -1722,6 +1730,9 @@ static void thermal_zone_pm_prepare(struct thermal_zone_device *tz)
+ 
+ 	tz->state |= TZ_STATE_FLAG_SUSPENDED;
+ 
++	/* Prevent new work from getting to the workqueue subsequently. */
++	cancel_delayed_work(&tz->poll_queue);
++
+ 	mutex_unlock(&tz->lock);
+ }
+ 
+@@ -1729,8 +1740,6 @@ static void thermal_zone_pm_complete(struct thermal_zone_device *tz)
+ {
+ 	mutex_lock(&tz->lock);
+ 
+-	cancel_delayed_work(&tz->poll_queue);
+-
+ 	reinit_completion(&tz->resume);
+ 	tz->state |= TZ_STATE_FLAG_RESUMING;
+ 
+@@ -1740,7 +1749,7 @@ static void thermal_zone_pm_complete(struct thermal_zone_device *tz)
+ 	 */
+ 	INIT_DELAYED_WORK(&tz->poll_queue, thermal_zone_device_resume);
+ 	/* Queue up the work without a delay. */
+-	mod_delayed_work(system_freezable_power_efficient_wq, &tz->poll_queue, 0);
++	mod_delayed_work(thermal_wq, &tz->poll_queue, 0);
+ 
+ 	mutex_unlock(&tz->lock);
+ }
+@@ -1762,6 +1771,11 @@ static int thermal_pm_notify(struct notifier_block *nb,
+ 			thermal_zone_pm_prepare(tz);
+ 
+ 		mutex_unlock(&thermal_list_lock);
++		/*
++		 * Allow any leftover thermal work items already on the
++		 * worqueue to complete so they don't get in the way later.
++		 */
++		flush_workqueue(thermal_wq);
+ 		break;
+ 	case PM_POST_HIBERNATION:
+ 	case PM_POST_RESTORE:
+@@ -1801,9 +1815,16 @@ static int __init thermal_init(void)
+ 	if (result)
+ 		goto error;
+ 
++	thermal_wq = alloc_workqueue("thermal_events",
++				      WQ_FREEZABLE | WQ_POWER_EFFICIENT, 0);
++	if (!thermal_wq) {
++		result = -ENOMEM;
++		goto unregister_netlink;
++	}
++
+ 	result = thermal_register_governors();
+ 	if (result)
+-		goto unregister_netlink;
++		goto destroy_workqueue;
+ 
+ 	thermal_class = kzalloc(sizeof(*thermal_class), GFP_KERNEL);
+ 	if (!thermal_class) {
+@@ -1830,6 +1851,8 @@ static int __init thermal_init(void)
+ 
+ unregister_governors:
+ 	thermal_unregister_governors();
++destroy_workqueue:
++	destroy_workqueue(thermal_wq);
+ unregister_netlink:
+ 	thermal_netlink_exit();
+ error:
+-- 
+2.53.0
+
 
 
 
