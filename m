@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-239956-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239957-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EH04F2Ry5mlgwgEAu9opvQ
-	(envelope-from <stable+bounces-239956-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 20:37:24 +0200
+	id 4O9SKKBh5mmavgEAu9opvQ
+	(envelope-from <stable+bounces-239957-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:25:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDE75432F2D
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 20:37:23 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A4CE4312D3
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:25:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3F3E93058573
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 17:17:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 55E223010EE0
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 17:17:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 970C51E7C12;
-	Mon, 20 Apr 2026 17:17:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5730637FF77;
+	Mon, 20 Apr 2026 17:17:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SENfbOtz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SbRsyo96"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5910A34BA20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0997F34BA20
 	for <stable@vger.kernel.org>; Mon, 20 Apr 2026 17:17:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776705466; cv=none; b=LI7NY6EhICs8PtBaD/jl6zH6f+r5Z6ZvQ2PdsnbQVAJfvdegaTN/i0PmUA+3ZguQKgVKQdOENVlFWu+q8JsSCh6Y8CPL/Mtmy8mVjF9IaKwpU5fp532SSvlF0vQG+kiI3A/zzXctReXQYQi1N1MlghfKZhh+MTsK2MpZwuaoyyc=
+	t=1776705467; cv=none; b=tOqmOmLUAR/owkTafignwjbwzrU/Vqa8FWphVwiWdDsUTz8KA0CrODhHG7q4JcFb4MjZze4oHuzAWfiaDTCnM7FuKJlSOkUVy0X0k0blFqOhHxsBFn6G4MJ8Tq4nzqukwo26UCHlmo53zx8yGpmg7EQ8K8ZXL8W3igONY7WGsIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776705466; c=relaxed/simple;
-	bh=H3gckyagfx76Msdf4J3ZzYvnV9is4ckmlpXn43Bjoaw=;
+	s=arc-20240116; t=1776705467; c=relaxed/simple;
+	bh=3dpwg0Un2d8w4euzD5dTKIV05nzYGWf0uTjQKTaUGIk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tj30i/azzbI8fHKCUCQzweDD3bB6mDpUl8B2PLPAUfW4GRSNruhdxQ0TjV0KufqyTczWmibAAFYlRWWNBh7n13xhYvLRUIzPd/I/0DGrWlI1FUN8NdGWPynHVy2ZDeET/0/Q3BQmXTsuQ0daLCIlFSGswz8shmDI444NAc9SDLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SENfbOtz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78AE5C19425;
-	Mon, 20 Apr 2026 17:17:45 +0000 (UTC)
+	 MIME-Version; b=AHdUp028xUPy2z7S2JTg4xrR3AtFPDgMxVdzan7YJAsS9kZ+AWH1MpgfMmxj8mkVUe4pAWkchCXD9HgQAsKyCzrowcdHFWtlBWgFXlKo8Bc7dPkqxUxCSYvanE4oB+zF9chkDV5nMsxG+4shKrfiHXrSg3zIFLCo5U3SIKgURV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SbRsyo96; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D953C2BCB4;
+	Mon, 20 Apr 2026 17:17:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1776705466;
-	bh=H3gckyagfx76Msdf4J3ZzYvnV9is4ckmlpXn43Bjoaw=;
+	bh=3dpwg0Un2d8w4euzD5dTKIV05nzYGWf0uTjQKTaUGIk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SENfbOtz+AtmaCz9IdWQHoroEgp0tWegHf76MJ75P2v+XICKYsa3zi64772c2jD5h
-	 9z6CHWgfIbJHMtJpL5jT/m2CkWXq0EHv1rjKFuldV5tUYB0eDRCokbau4pSD0JLAaM
-	 pSFBt3VBNkcRO89fYP6cii6i/eWQoQ2jJCsVHwwVxIFOUWw/s01GbXTNqB1KIIKDw+
-	 nXIsp/taoeXJuV/1Bp+J/HMtGgxeYcOAahG4igSNYZplafqI9zNfQ5LXANi4M2zSin
-	 NjOf9/HtegLk6mn44xVCVRBfqbInY5Tyzp0polupN2COahWZv6KITmNY1/wMg/uJhc
-	 pXCkmaSPt9fEQ==
+	b=SbRsyo96eRKomtI4YByWKmZYHM9r7hxBVeoEPUGfvy62NMGTn1/RoOt1I5qv3nFud
+	 X/NKSllMSTlEEhIyekVaZPmtueEHvuj8PXyPRq1wc8eyx1Zpcm21aIcio1mEo6Can8
+	 9dBvGWWipNGD+odrIQHm6XUQBAFdrJOryIUJkP0xvICX1ojvfAP9qwc8DmXhARPiQ0
+	 KbNNrBd8FjWllnHPzBUc5gU4hSt2/WD7hu8BPrEzFKbG8ZnqdccWzuTB2BuZNlIY/k
+	 bHzBBuTGRiroKtMF57Qtq/cjZi/9D41wNXKPcpeqCUTxTbFMqbOwPXPEqIwWUZpkyM
+	 ino6fjfIsBHfw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Dawei Li <set_pte_at@outlook.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+Cc: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+	Stable@vger.kernel.org,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 1/2] soc: qcom: apr: make remove callback of apr driver void returned
-Date: Mon, 20 Apr 2026 13:17:42 -0400
-Message-ID: <20260420171743.1388144-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y 2/2] ASoC: qcom: q6apm: move component registration to unmanaged version
+Date: Mon, 20 Apr 2026 13:17:43 -0400
+Message-ID: <20260420171743.1388144-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026042044-spied-poster-f99b@gregkh>
+In-Reply-To: <20260420171743.1388144-1-sashal@kernel.org>
 References: <2026042044-spied-poster-f99b@gregkh>
+ <20260420171743.1388144-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,20 +69,19 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[outlook.com,kernel.org];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239957-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-239956-lists,stable=lfdr.de];
-	RCPT_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -88,69 +89,158 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: CDE75432F2D
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qualcomm.com:email]
+X-Rspamd-Queue-Id: 2A4CE4312D3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Dawei Li <set_pte_at@outlook.com>
+From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
 
-[ Upstream commit 33ae3d0955943ac5bacfcb6911cf7cb74822bf8c ]
+[ Upstream commit 6ec1235fc941dac6c011b30ee01d9220ff87e0cd ]
 
-Since commit fc7a6209d571 ("bus: Make remove callback return void")
-forces bus_type::remove be void-returned, it doesn't make much sense
-for any bus based driver implementing remove callbalk to return
-non-void to its caller.
+q6apm component registers dais dynamically from ASoC toplology, which
+are allocated using device managed version apis. Allocating both
+component and dynamic dais using managed version could lead to incorrect
+free ordering, dai will be freed while component still holding references
+to it.
 
-As such, change the remove function for apr bus based drivers to
-return void.
+Fix this issue by moving component to unmanged version so
+that the dai pointers are only freeded after the component is removed.
 
-Signed-off-by: Dawei Li <set_pte_at@outlook.com>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/TYCP286MB23232B7968D34DB8323B0F16CAFB9@TYCP286MB2323.JPNP286.PROD.OUTLOOK.COM
-Stable-dep-of: 6ec1235fc941 ("ASoC: qcom: q6apm: move component registration to unmanaged version")
+==================================================================
+BUG: KASAN: slab-use-after-free in snd_soc_del_component_unlocked+0x3d4/0x400 [snd_soc_core]
+Read of size 8 at addr ffff00084493a6e8 by task kworker/u48:0/3426
+Tainted: [W]=WARN
+Hardware name: LENOVO 21N2ZC5PUS/21N2ZC5PUS, BIOS N42ET57W (1.31 ) 08/08/2024
+Workqueue: pdr_notifier_wq pdr_notifier_work [pdr_interface]
+Call trace:
+ show_stack+0x28/0x7c (C)
+ dump_stack_lvl+0x60/0x80
+ print_report+0x160/0x4b4
+ kasan_report+0xac/0xfc
+ __asan_report_load8_noabort+0x20/0x34
+ snd_soc_del_component_unlocked+0x3d4/0x400 [snd_soc_core]
+ snd_soc_unregister_component_by_driver+0x50/0x88 [snd_soc_core]
+ devm_component_release+0x30/0x5c [snd_soc_core]
+ devres_release_all+0x13c/0x210
+ device_unbind_cleanup+0x20/0x190
+ device_release_driver_internal+0x350/0x468
+ device_release_driver+0x18/0x30
+ bus_remove_device+0x1a0/0x35c
+ device_del+0x314/0x7f0
+ device_unregister+0x20/0xbc
+ apr_remove_device+0x5c/0x7c [apr]
+ device_for_each_child+0xd8/0x160
+ apr_pd_status+0x7c/0xa8 [apr]
+ pdr_notifier_work+0x114/0x240 [pdr_interface]
+ process_one_work+0x500/0xb70
+ worker_thread+0x630/0xfb0
+ kthread+0x370/0x6c0
+ ret_from_fork+0x10/0x20
+
+Allocated by task 77:
+ kasan_save_stack+0x40/0x68
+ kasan_save_track+0x20/0x40
+ kasan_save_alloc_info+0x44/0x58
+ __kasan_kmalloc+0xbc/0xdc
+ __kmalloc_node_track_caller_noprof+0x1f4/0x620
+ devm_kmalloc+0x7c/0x1c8
+ snd_soc_register_dai+0x50/0x4f0 [snd_soc_core]
+ soc_tplg_pcm_elems_load+0x55c/0x1eb8 [snd_soc_core]
+ snd_soc_tplg_component_load+0x4f8/0xb60 [snd_soc_core]
+ audioreach_tplg_init+0x124/0x1fc [snd_q6apm]
+ q6apm_audio_probe+0x10/0x1c [snd_q6apm]
+ snd_soc_component_probe+0x5c/0x118 [snd_soc_core]
+ soc_probe_component+0x44c/0xaf0 [snd_soc_core]
+ snd_soc_bind_card+0xad0/0x2370 [snd_soc_core]
+ snd_soc_register_card+0x3b0/0x4c0 [snd_soc_core]
+ devm_snd_soc_register_card+0x50/0xc8 [snd_soc_core]
+ x1e80100_platform_probe+0x208/0x368 [snd_soc_x1e80100]
+ platform_probe+0xc0/0x188
+ really_probe+0x188/0x804
+ __driver_probe_device+0x158/0x358
+ driver_probe_device+0x60/0x190
+ __device_attach_driver+0x16c/0x2a8
+ bus_for_each_drv+0x100/0x194
+ __device_attach+0x174/0x380
+ device_initial_probe+0x14/0x20
+ bus_probe_device+0x124/0x154
+ deferred_probe_work_func+0x140/0x220
+ process_one_work+0x500/0xb70
+ worker_thread+0x630/0xfb0
+ kthread+0x370/0x6c0
+ ret_from_fork+0x10/0x20
+
+Freed by task 3426:
+ kasan_save_stack+0x40/0x68
+ kasan_save_track+0x20/0x40
+ __kasan_save_free_info+0x4c/0x80
+ __kasan_slab_free+0x78/0xa0
+ kfree+0x100/0x4a4
+ devres_release_all+0x144/0x210
+ device_unbind_cleanup+0x20/0x190
+ device_release_driver_internal+0x350/0x468
+ device_release_driver+0x18/0x30
+ bus_remove_device+0x1a0/0x35c
+ device_del+0x314/0x7f0
+ device_unregister+0x20/0xbc
+ apr_remove_device+0x5c/0x7c [apr]
+ device_for_each_child+0xd8/0x160
+ apr_pd_status+0x7c/0xa8 [apr]
+ pdr_notifier_work+0x114/0x240 [pdr_interface]
+ process_one_work+0x500/0xb70
+ worker_thread+0x630/0xfb0
+ kthread+0x370/0x6c0
+ ret_from_fork+0x10/0x20
+
+Fixes: 5477518b8a0e ("ASoC: qdsp6: audioreach: add q6apm support")
+Cc: Stable@vger.kernel.org
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260402081118.348071-2-srinivas.kandagatla@oss.qualcomm.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/soc/qcom/apr.h  | 2 +-
- sound/soc/qcom/qdsp6/q6core.c | 4 +---
- 2 files changed, 2 insertions(+), 4 deletions(-)
+ sound/soc/qcom/qdsp6/q6apm.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/soc/qcom/apr.h b/include/linux/soc/qcom/apr.h
-index 23c5b30f35114..be98aebcb3e19 100644
---- a/include/linux/soc/qcom/apr.h
-+++ b/include/linux/soc/qcom/apr.h
-@@ -153,7 +153,7 @@ typedef struct apr_device gpr_device_t;
+diff --git a/sound/soc/qcom/qdsp6/q6apm.c b/sound/soc/qcom/qdsp6/q6apm.c
+index 3c8640b42c5b1..94e01f99dc7dd 100644
+--- a/sound/soc/qcom/qdsp6/q6apm.c
++++ b/sound/soc/qcom/qdsp6/q6apm.c
+@@ -746,13 +746,22 @@ static int apm_probe(gpr_device_t *gdev)
  
- struct apr_driver {
- 	int	(*probe)(struct apr_device *sl);
--	int	(*remove)(struct apr_device *sl);
-+	void	(*remove)(struct apr_device *sl);
- 	int	(*callback)(struct apr_device *a,
- 			    struct apr_resp_pkt *d);
- 	int	(*gpr_callback)(struct gpr_resp_pkt *d, void *data, int op);
-diff --git a/sound/soc/qcom/qdsp6/q6core.c b/sound/soc/qcom/qdsp6/q6core.c
-index 5358fefd4210b..49cfb32cd2091 100644
---- a/sound/soc/qcom/qdsp6/q6core.c
-+++ b/sound/soc/qcom/qdsp6/q6core.c
-@@ -339,7 +339,7 @@ static int q6core_probe(struct apr_device *adev)
- 	return 0;
+ 	q6apm_get_apm_state(apm);
+ 
+-	ret = devm_snd_soc_register_component(dev, &q6apm_audio_component, NULL, 0);
++	ret = snd_soc_register_component(dev, &q6apm_audio_component, NULL, 0);
+ 	if (ret < 0) {
+ 		dev_err(dev, "failed to get register q6apm: %d\n", ret);
+ 		return ret;
+ 	}
+ 
+-	return of_platform_populate(dev->of_node, NULL, NULL, dev);
++	ret = of_platform_populate(dev->of_node, NULL, NULL, dev);
++	if (ret)
++		snd_soc_unregister_component(dev);
++
++	return ret;
++}
++
++static void apm_remove(gpr_device_t *gdev)
++{
++	snd_soc_unregister_component(&gdev->dev);
  }
  
--static int q6core_exit(struct apr_device *adev)
-+static void q6core_exit(struct apr_device *adev)
- {
- 	struct q6core *core = dev_get_drvdata(&adev->dev);
+ struct audioreach_module *q6apm_find_module_by_mid(struct q6apm_graph *graph, uint32_t mid)
+@@ -819,6 +828,7 @@ MODULE_DEVICE_TABLE(of, apm_device_id);
  
-@@ -350,8 +350,6 @@ static int q6core_exit(struct apr_device *adev)
- 
- 	g_core = NULL;
- 	kfree(core);
--
--	return 0;
- }
- 
- #ifdef CONFIG_OF
+ static gpr_driver_t apm_driver = {
+ 	.probe = apm_probe,
++	.remove = apm_remove,
+ 	.gpr_callback = apm_callback,
+ 	.driver = {
+ 		.name = "qcom-apm",
 -- 
 2.53.0
 
