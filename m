@@ -1,92 +1,60 @@
-Return-Path: <stable+bounces-238680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238684-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sJErMoOT5WnqlgEAu9opvQ
-	(envelope-from <stable+bounces-238680-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 04:46:27 +0200
+	id sOjsLu2c5Wm1mAEAu9opvQ
+	(envelope-from <stable+bounces-238684-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 05:26:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6ED8426624
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 04:46:26 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 666CA4268C9
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 05:26:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id CA9423003807
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 02:46:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 01EED302F39C
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 03:25:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3145D37E309;
-	Mon, 20 Apr 2026 02:46:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N5O8dowY"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F17737F8CF;
+	Mon, 20 Apr 2026 03:25:24 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D34BB2AF1D
-	for <stable@vger.kernel.org>; Mon, 20 Apr 2026 02:46:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF04B35C185;
+	Mon, 20 Apr 2026 03:25:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776653180; cv=none; b=mhaGmMkgPq2P4XjGBbHkL8yKQJLSZ3kU3TIZUGepYU4358abIrpOd6PgnqRSe6CU3z+HYHhPFlUbjeEYAYxkispf9jVxCX+A0i965iN2ENyBgc4JMRIbmXRzXr2ziJXiD/noI/moHyXuWsjZp37EeZSAhOJjkb5/u7jUrSHin5A=
+	t=1776655524; cv=none; b=NfRzBotACsQSc++4If0u/vazVRMxAH0zXqMFdtjRpxtdpeez3Z7dE97QCK6qzbq2jfrSdnKmRxOgBKhGUzVJ0NGW60X++o+ovYw+T8WpiT5tEiX7JKFGLismg+N4uBp4cNksgJ/m54HBQ1T9SB8mI938LbHWvSrbmpSs6yFKIUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776653180; c=relaxed/simple;
-	bh=bJZWL3XjU16A/mMj9ogl96Ckj2uQqXsZktpSDcOhYzE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=axt83sW8zvLZyDkROGNrRAu/o/SCBb3QqGOFjbI+3TQle8+3yMUK1bm9xmVkH+ZJTcfn10Sl9ASyladj5OWsMHB3g/kyC0vSFkncoIn2z3DtHpZ9O/qX0IDU+MILHSe+8foO/+OZahbP/ex7JeTJJXxxfoTZCrmtytsoHl3aN8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N5O8dowY; arc=none smtp.client-ip=209.85.210.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-82cebbdbdccso1444545b3a.1
-        for <stable@vger.kernel.org>; Sun, 19 Apr 2026 19:46:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776653178; x=1777257978; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=BK7WMJJgOkD4ogsiZrKHO2rDgX1emKX8e5Nvoh140S4=;
-        b=N5O8dowYKOZpUjXfE4jCBJTb0K+ZfcUrJIUN07+B+nAxz6XNVovQGqqr1grZT8tPRS
-         uN043JDKc3G85BcrbDYfbTACROhd+kh1p1RogP17pn4mDd3E12E3wLwexH3OgfSfPXwl
-         /H4JvdEXdfULKbZtUqPIMHyBhDaw01tGr6fOxanXqQjclDq4NXXEcMz7kz+xCQ0Wawyv
-         XY1KnGOYIzirjaztPti/qKjXtRpeCvUeDTJ7Ot7qbXrvhFx0lq1sHBUlW6pycAfk8jVr
-         +JZYX7m9HWo6IbMobcWgS1NM4Kw6UalFyAe5806h22JB4wb+sQAhwOQQMXMe/P0SJZBf
-         a8NQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776653178; x=1777257978;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BK7WMJJgOkD4ogsiZrKHO2rDgX1emKX8e5Nvoh140S4=;
-        b=UARgxunufk9Pq7Bhb9lcXC6ixEbMgZCsPwAFAAy/NYfSKQGdq3mxoPSQPzahTaP7jh
-         H8yPBcnMqpfCmU3niq5RXmavxXLZ7IiLb6gKvcLNvpGL3fphDQxhL1SeAiwopkcgP3se
-         flywNlrwrYYnOVKb9MdBrMyfWaN6E34ka5/C11cU4o+BxFqp98pkOLjU4d9EJe7rmwFd
-         WUjYnYHJID43w7lwgXqiWtjjaKW02d22NeOQ/q1RxJEm/6Ka+u/6Mj2sio18WKyit3Wv
-         TACYwaoqoGGW3+fGPKXNJuW91I/0AlLxZ5wfv/gS9U140Lcz83U1917ihVo4ugbqNvx5
-         9WWA==
-X-Forwarded-Encrypted: i=1; AFNElJ+V5hKoUDUbwaaJ6dCS+6YPA/7mWwbCMmbCR2qABv5jilOUMP4SodWrVviRUWxPNHg2yesRB0A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxtxMKZPtLgKPvLc0jA9i/h4tBpvw3v+m+6e1FZ1f8hcaD8C6M7
-	xcN1WE/8p2XvSMmDxtMX/bvSgQzbVfg6igTC2skQGEV0xLDxBT0K6LPr
-X-Gm-Gg: AeBDiesOmnrYxSdMYuHbz71tQhLZtPBdvYsebabTL6b9Lam+aosFAYQWCEvJSPJ0ND8
-	1ZT/IRERliGdzwHcjozUTfhH19VEQyKqiHfJym5IH7vCbomfvIsWYJ37sMxTexOgELk5uBSi1ug
-	kbroqH6DfmMTQa1D4N65CFmT86BGspzNflH2HuPPbuVz8lhfk1L/dzcx35Uqkl524YJRInWpbSw
-	gAm5Wdh6lvB8BlZIMhZEquXkfcRT8I9s7Z4KqcakVlS5ksnmiMkTfbwf4w9iU9EfxXbYuhNSj2a
-	myH4rf/enaaC4NVwurmDb0thuPrpX2ih60Ckg2aNMz/zTv4n1Sb8Da4yRdCtB93Lsi6yFUJooos
-	MNsQnr8imhcJb//OHwyG8VK1j2a64o4gI7gIKN79p2HkoRQng+c8+4qvBrP1EuDqEXRWDUYkFHs
-	0aasuCD+D8Ufc6Sv8c1p4neJ6M211+wPLOSBw=
-X-Received: by 2002:aa7:8892:0:b0:82f:1f43:7190 with SMTP id d2e1a72fcca58-82f8b32160dmr10160174b3a.3.1776653178104;
-        Sun, 19 Apr 2026 19:46:18 -0700 (PDT)
-Received: from lgs.. ([2408:8417:d50:4775:4566:2520:8878:87d4])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f8ebe41cfsm9351203b3a.43.2026.04.19.19.46.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 19 Apr 2026 19:46:17 -0700 (PDT)
-From: Guangshuo Li <lgs201920130244@gmail.com>
-To: Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Guangshuo Li <lgs201920130244@gmail.com>,
+	s=arc-20240116; t=1776655524; c=relaxed/simple;
+	bh=o6WC5778xZWcRTJECjjLQorMrFwgvz0nLDUSBYqAmIU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=NAwHVFyqvsFFBivZh0jkGj1q6UzInxN/QI9tz5PRmG/Aiuz7tqKNUbgzr/x/h1svdEd271Ke5YXCn3ZyD5aPDX0QtFysT2k+xesCF600XBaN6CVvh0lRsWCJMgi/uPDq1aAO1Cr5ti1v7s+BSb1p8pyL4sZFT6Xjx3+056Sjrh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from ubuntu.. (unknown [202.112.113.208])
+	by APP-05 (Coremail) with SMTP id zQCowADndwt9nOVpj2cbDg--.31217S2;
+	Mon, 20 Apr 2026 11:24:54 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: vz@mleia.com
+Cc: alexandre.belloni@bootlin.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	make24@iscas.ac.cn,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	piotr.wojtaszczyk@timesys.com,
 	stable@vger.kernel.org
-Subject: [PATCH v2] drm/bridge: imx8qxp-pxl2dpi: avoid of_node_put() on ERR_PTR()
-Date: Mon, 20 Apr 2026 10:45:59 +0800
-Message-ID: <20260420024559.114664-1-lgs201920130244@gmail.com>
+Subject: Re: [PATCH] net: lpc_eth: Fix a possible memory leak in lpc_mii_probe()
+Date: Mon, 20 Apr 2026 11:24:45 +0800
+Message-ID: <20260420032445.2209758-1-make24@iscas.ac.cn>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <60dea9e5-9890-49ab-b806-713c388d6e08@mleia.com>
+References: <60dea9e5-9890-49ab-b806-713c388d6e08@mleia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -94,79 +62,199 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-CM-TRANSID:zQCowADndwt9nOVpj2cbDg--.31217S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxtF15Cr43Xr48Ar17urWDCFg_yoW7Zr47p3
+	yUGa4SkFykGr17Gw4vv3WUAryYvw42yw1rWFyjya45Wrn0qryfAry8trWY9r95CFZ7J3W0
+	vryakFZ3ZaykXaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUB214x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+	6r4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
+	CE3s1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
+	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r
+	4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I
+	648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2
+	Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s02
+	6x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0x
+	vE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE
+	42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6x
+	kF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUOmhFUUUUU
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+X-Spamd-Result: default: False [1.54 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-238680-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-238684-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[iscas.ac.cn];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	FROM_NEQ_ENVFROM(0.00)[make24@iscas.ac.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	NEURAL_SPAM(0.00)[0.268];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C6ED8426624
+	R_DKIM_NA(0.00)[];
+	TO_DN_NONE(0.00)[];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,iscas.ac.cn:mid,iscas.ac.cn:email]
+X-Rspamd-Queue-Id: 666CA4268C9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-imx8qxp_pxl2dpi_get_available_ep_from_port() may return ERR_PTR(-ENODEV)
-or ERR_PTR(-EINVAL). imx8qxp_pxl2dpi_find_next_bridge() stores that
-value in a __free(device_node) variable and then immediately checks
-IS_ERR(ep).
+>Hello Ma Ke.
+>
+>On 4/1/26 16:18, Ma Ke wrote:
+>> On 3/30/26 13:04, Vladimir Zapolskiy wrote:
+>>> On 3/30/26 11:16, Ma Ke wrote:
+>>>> lpc_mii_probe() calls of_phy_find_device() to obtain a phy_device
+>>>> pointer. of_phy_find_device() increments the refcount of the device.
+>>>> The current implementation does not decrement the refcount after using
+>>>> the pointer, which leads to a memory leak.
+>>>
+>>> this is correct, there is an actual detected bug.
+>>>
+>>>>
+>>>> Add phy_device_free() to balance the refcount.
+>>>
+>>> But this does not sound right, you shoud use of_node_put(pldat->phy_node).
+>>>
+>>>>
+>>>> Found by code review.
+>>>>
+>>>> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+>>>> Cc: stable@vger.kernel.org
+>>>> Fixes: 3503bf024b3e ("net: lpc_eth: parse phy nodes from device tree")
+>>>> ---
+>>>>    drivers/net/ethernet/nxp/lpc_eth.c | 11 ++++++-----
+>>>>    1 file changed, 6 insertions(+), 5 deletions(-)
+>>>>
+>>>> diff --git a/drivers/net/ethernet/nxp/lpc_eth.c b/drivers/net/ethernet/nxp/lpc_eth.c
+>>>> index 8b9a3e3bba30..8ce7c9bb6dd6 100644
+>>>> --- a/drivers/net/ethernet/nxp/lpc_eth.c
+>>>> +++ b/drivers/net/ethernet/nxp/lpc_eth.c
+>>>> @@ -751,7 +751,7 @@ static void lpc_handle_link_change(struct net_device *ndev)
+>>>>    static int lpc_mii_probe(struct net_device *ndev)
+>>>>    {
+>>>>    	struct netdata_local *pldat = netdev_priv(ndev);
+>>>> -	struct phy_device *phydev;
+>>>> +	struct phy_device *phydev, *phydev_tmp;
+>>>>    
+>>>>    	/* Attach to the PHY */
+>>>>    	if (lpc_phy_interface_mode(&pldat->pdev->dev) == PHY_INTERFACE_MODE_MII)
+>>>> @@ -760,17 +760,18 @@ static int lpc_mii_probe(struct net_device *ndev)
+>>>>    		netdev_info(ndev, "using RMII interface\n");
+>>>>    
+>>>>    	if (pldat->phy_node)
+>>>> -		phydev =  of_phy_find_device(pldat->phy_node);
+>>>> +		phydev_tmp =  of_phy_find_device(pldat->phy_node);
+>>>>    	else
+>>>> -		phydev = phy_find_first(pldat->mii_bus);
+>>>> -	if (!phydev) {
+>>>> +		phydev_tmp = phy_find_first(pldat->mii_bus);
+>>>> +	if (!phydev_tmp) {
+>>>
+>>> I didn't get it, why the new phydev_tmp is needed above, please
+>>> restore the original code above.
+>>>
+>>>>    		netdev_err(ndev, "no PHY found\n");
+>>>>    		return -ENODEV;
+>>>>    	}
+>>>>    
+>>>> -	phydev = phy_connect(ndev, phydev_name(phydev),
+>>>> +	phydev = phy_connect(ndev, phydev_name(phydev_tmp),
+>>>>    			     &lpc_handle_link_change,
+>>>>    			     lpc_phy_interface_mode(&pldat->pdev->dev));
+>>>> +	phy_device_free(phydev_tmp);
+>>>
+>>> This is plainly wrong and has to be dropped or changed to
+>>>
+>>> 	if (pldat->phy_node)
+>>> 		of_node_put(pldat->phy_node);
+>>>
+>>>>    	if (IS_ERR(phydev)) {
+>>>>    		netdev_err(ndev, "Could not attach to PHY\n");
+>>>>    		return PTR_ERR(phydev);
+>>>
+>>> Is it AI generated fix or what?.. The change looks bad, it introduces
+>>> more severe issues than it fixes.
+>>>
+>>> If you think you cannot create a proper change, let me know.
+>>>
+>> Thank you very much for your detailed review and guidance.
+>> 
+>> Now I think your point probably is: you are saying that the real leak
+>> is not from of_phy_find_device(), but from the device node
+>
+>I was pretty indelicate in my comment, let's split the change into parts.
+>
+>1) I still do not understand, why phydev_tmp is introduced, please explain
+>or remove this part of the change;
+>
+>2) phydev = of_phy_find_device() requires phy_device_free(phydev), but
+>I do not see why phy_find_first() requires it, while it was added in your
+>change.
+>
+>Let's start from resolving these two points.
+>
+>> pldat->phy_node which was obtained earlier (probably by
+>> of_parse_phandle()) and never freed by of_node_put(). And you suggest
+>> to add of_node_put(pldat->phy_node) instead of my wrong
+>> phy_device_free().
+>> 
+>> However, I am still a little confused. In lpc_mii_probe(),
+>> of_phy_find_device() is called. From my understanding, this function
+>> increases the reference count of the device. To balance it, I thought
+>> phy_device_free() (which calls put_device()) should be used.
+>> 
+>> Could you please kindly advise the correct patch? I will follow your
+>> guidance and submit a proper fix.
+>> 
+>> I apologize again for my previous wrong patch. Thank you very much for
+>> your help.
+>
+> -- 
+> Best wishes,
+> Vladimir
+Hello Vladimir,
 
-On the error path, returning from the function triggers the cleanup
-handler for __free(device_node). Since the device_node cleanup helper
-only checks for NULL before calling of_node_put(), this results in
-of_node_put(ERR_PTR(...)), which may lead to an invalid kobject_put()
-dereference and crash the kernel.
+Thank you for the detailed explanation and for pointing out my mistakes.
 
-Fix it by avoiding __free(device_node) for the endpoint pointer and
-releasing it explicitly after obtaining the remote port parent.
+> 1) I still do not understand, why phydev_tmp is introduced, please explain
+> or remove this part of the change;
 
-This issue was found by a custom static analysis tool.
+I added phydev_tmp because I thought I needed to keep the original 
+phy_device pointer for releasing after phy_connect(). But as you 
+implied, it's perhaps unnecessary and only makes the code less 
+readable. I will drop this change completely in the next version.
 
-Fixes: ceea3f7806a10 ("drm/bridge: imx8qxp-pxl2dpi: simplify put of device_node pointers")
-Cc: stable@vger.kernel.org
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
----
-v2:
-  - Fix DEFINE_FREE(device_node, ...) directly
+> 2) phydev = of_phy_find_device() requires phy_device_free(phydev), but
+> I do not see why phy_find_first() requires it, while it was added in your
+> change.
 
- include/linux/of.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+You are absolutely right. I mistakenly assumed that both functions 
+return a reference-counted pointer. phy_find_first() does not 
+increment the refcount, so calling phy_device_free() on it is wrong 
+and dangerous. My patch introduced a new bug there.
 
-diff --git a/include/linux/of.h b/include/linux/of.h
-index 2b95777f16f6..600a6e8418bb 100644
---- a/include/linux/of.h
-+++ b/include/linux/of.h
-@@ -135,7 +135,7 @@ static inline struct device_node *of_node_get(struct device_node *node)
- }
- static inline void of_node_put(struct device_node *node) { }
- #endif /* !CONFIG_OF_DYNAMIC */
--DEFINE_FREE(device_node, struct device_node *, if (_T) of_node_put(_T))
-+DEFINE_FREE(device_node, struct device_node *, if (_T && !IS_ERR(_T)) of_node_put(_T))
- 
- /* Pointer for first entry in chain of all nodes. */
- extern struct device_node *of_root;
--- 
-2.43.0
+Now I understand that only the of_phy_find_device() branch needs a 
+corresponding put_device(). I will prepare a corrected patch that only
+releases the reference in that specific path (including on the error 
+path after phy_connect() failure). I will also look at the phy_node 
+reference leak you hinted at.
+
+Thank you again for your guidance. I will send a v2 after fixing it 
+properly.
+
+Best regards,
+Ma Ke
 
 
