@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-239772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239433-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WN/SHdJZ5mnGvAEAu9opvQ
-	(envelope-from <stable+bounces-239772-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:52:34 +0200
+	id oPqICb9g5mkxvgEAu9opvQ
+	(envelope-from <stable+bounces-239433-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:22:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31E9E43027F
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:52:34 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A6D94310DC
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:22:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 90BAA3252B8B
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:06:29 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A83FF34BA9F3
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:51:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 757D73431E3;
-	Mon, 20 Apr 2026 16:06:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1104D3431E7;
+	Mon, 20 Apr 2026 15:50:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P8WIVsWm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sbksWX7c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37C1234252C;
-	Mon, 20 Apr 2026 16:06:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7BCB33C187;
+	Mon, 20 Apr 2026 15:50:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701175; cv=none; b=KnEFwZFxyc9pWJZz0bHdPS30jCEaYslAGIN7/dIKf2T/8pHnr0nKu6lCHsBvCG+ej0ZC251jnIJ/vsKeLx2J/MS8siT7UY4fNXJtygcvkzhUF6gl3OHckIGw/SyifvSAX4FHxhqwFrN9VOSpeclfvlCKBs+Dpt/5HNfVoWYGPpY=
+	t=1776700240; cv=none; b=pbpDWLzE8MWA9kYU6BFB5H3hxoYkT7bBWKcuwg+IG2UD09H4h3E8D9oIwIq0kAG5hwq/DDJD5urdD8uB9y5UB1JsCfsqbIhr/dqlO3d+BusZ4IQotNexaIc5ujKLINl4EcI7+3fc6VSUnZcxKPU5lghMQM4BmB20RDpQVQiMyYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701175; c=relaxed/simple;
-	bh=RFoMvTt2iBGIsXGNek/xuFkAZOait5orCHpVLAeb3eI=;
+	s=arc-20240116; t=1776700240; c=relaxed/simple;
+	bh=iPexWCrRc6FhDlnJR0YemyU6q3Cs4La2bQ+nW30b9OM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZZilLZYzyya/6yGOrL9zR3+HvxFF0N7iXHKpM5H71Zt01+REDSAbgvsIjR5bP9X5nXnB5Nk3gL4tBiiX1+5ov0rj//yDUrYCapIM8iPsnbeEmU651E2oedy+mGDn1x7Dgi6mKUR+3ODPgh2QezTmmkXgRl+xXYsloSi/lRq9HQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P8WIVsWm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 918EEC2BCB6;
-	Mon, 20 Apr 2026 16:06:14 +0000 (UTC)
+	 MIME-Version; b=Wp8ww0as/y6CQ/1FfIBimjQVFUDp3y178w3vOoIYHa6ATLUGbJRfwpGI72QY4EXWPwFSqsX0iFAVd3rbu8ZtwhEVYB9NN41XD0T701KfATOdrLJr78E1XP2ybR6VPqQSMY8RQPy7KTpQHzFmWXTz5jIn8w0o060TR7fz9oUfF+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sbksWX7c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E510C2BCB4;
+	Mon, 20 Apr 2026 15:50:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701174;
-	bh=RFoMvTt2iBGIsXGNek/xuFkAZOait5orCHpVLAeb3eI=;
+	s=korg; t=1776700240;
+	bh=iPexWCrRc6FhDlnJR0YemyU6q3Cs4La2bQ+nW30b9OM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P8WIVsWmyGhI41qu3qj8ornkibPEk9185XVPvafizUnxIbGroA5O1DTolwH9dABpM
-	 CXCcqp7Q6RV79LQ0Nl9K0mvKpWa4cT5eA+XOFqwByrWbwPYYro0KOxiVARklcVcsIB
-	 GyQbLCRkHWvkrtfZ5OMfOI9klB82AhjYeTYuck1Y=
+	b=sbksWX7cH0tDXJFBuNHRXOXFy/g4TA3wP/sNzilRbvatNc2x4NPKcJkU70dD5IRcH
+	 LRlBfd+Gu8/W2yUn+dOWgrKAOwd4iQBPlPgbgm9bTcgUtVkIs7SzrDJ5ABAVWfnpOF
+	 KMjS9UlatebXeo8h887XxaD+MNwF6lUFEa8AJuFU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Schwartz <matthew.schwartz@linux.dev>,
-	Takashi Iwai <tiwai@suse.de>,
+	Gaggery Tsai <gaggery.tsai@intel.com>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 004/162] ALSA: hda/realtek: Add quirk for ASUS ROG Flow Z13-KJP GZ302EAC
+Subject: [PATCH 6.19 095/220] ASoC: SDCA: Fix errors in IRQ cleanup
 Date: Mon, 20 Apr 2026 17:40:36 +0200
-Message-ID: <20260420153927.171991385@linuxfoundation.org>
+Message-ID: <20260420153937.454423519@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
-References: <20260420153927.006696811@linuxfoundation.org>
+In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
+References: <20260420153934.013228280@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,64 +69,233 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239433-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-239772-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,suse.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.dev:email]
-X-Rspamd-Queue-Id: 31E9E43027F
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: 1A6D94310DC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Schwartz <matthew.schwartz@linux.dev>
+From: Charles Keepax <ckeepax@opensource.cirrus.com>
 
-[ Upstream commit 59f68dc1d8df3142cb58fd2568966a9bb7b0ed8a ]
+[ Upstream commit 4e53116437e919c4b9a9d95fb73ae14fe0cfc8f9 ]
 
-Fixes lack of audio output on the ASUS ROG Flow Z13-KJP GZ302EAC model,
-similar to the ASUS ROG Flow Z13 GZ302EA.
+IRQs are enabled through sdca_irq_populate() from component probe
+using devm_request_threaded_irq(), this however means the IRQs can
+persist if the sound card is torn down. Some of the IRQ handlers
+store references to the card and the kcontrols which can then
+fail. Some detail of the crash was explained in [1].
 
-Signed-off-by: Matthew Schwartz <matthew.schwartz@linux.dev>
-Link: https://patch.msgid.link/20260313172503.285846-1-matthew.schwartz@linux.dev
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Generally it is not advised to use devm outside of bus probe, so
+the code is updated to not use devm. The IRQ requests are not moved
+to bus probe time as it makes passing the snd_soc_component into
+the IRQs very awkward and would the require a second step once the
+component is available, so it is simpler to just register the IRQs
+at this point, even though that necessitates some manual cleanup.
+
+Link: https://lore.kernel.org/linux-sound/20260310183829.2907805-1-gaggery.tsai@intel.com/ [1]
+Fixes: b126394d9ec6 ("ASoC: SDCA: Generic interrupt support")
+Reported-by: Gaggery Tsai <gaggery.tsai@intel.com>
+Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://patch.msgid.link/20260316141449.2950215-1-ckeepax@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/sound/sdca_interrupts.h      |  5 ++
+ sound/soc/sdca/sdca_class_function.c |  9 ++++
+ sound/soc/sdca/sdca_interrupts.c     | 77 ++++++++++++++++++++++++++--
+ 3 files changed, 87 insertions(+), 4 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 0dd789119f96b..96df0d12b68dc 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -11197,6 +11197,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x14e3, "ASUS G513PI/PU/PV", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x14f2, "ASUS VivoBook X515JA", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1043, 0x1503, "ASUS G733PY/PZ/PZV/PYV", ALC287_FIXUP_CS35L41_I2C_2),
-+	SND_PCI_QUIRK(0x1043, 0x1514, "ASUS ROG Flow Z13 GZ302EAC", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x1517, "Asus Zenbook UX31A", ALC269VB_FIXUP_ASUS_ZENBOOK_UX31A),
- 	SND_PCI_QUIRK(0x1043, 0x1533, "ASUS GV302XA/XJ/XQ/XU/XV/XI", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x1573, "ASUS GZ301VV/VQ/VU/VJ/VA/VC/VE/VVC/VQC/VUC/VJC/VEC/VCC", ALC285_FIXUP_ASUS_HEADSET_MIC),
+diff --git a/include/sound/sdca_interrupts.h b/include/sound/sdca_interrupts.h
+index 8f13417d129ab..90651fea5b212 100644
+--- a/include/sound/sdca_interrupts.h
++++ b/include/sound/sdca_interrupts.h
+@@ -69,6 +69,8 @@ struct sdca_interrupt_info {
+ int sdca_irq_request(struct device *dev, struct sdca_interrupt_info *interrupt_info,
+ 		     int sdca_irq, const char *name, irq_handler_t handler,
+ 		     void *data);
++void sdca_irq_free(struct device *dev, struct sdca_interrupt_info *interrupt_info,
++		   int sdca_irq, const char *name, void *data);
+ int sdca_irq_data_populate(struct device *dev, struct regmap *function_regmap,
+ 			   struct snd_soc_component *component,
+ 			   struct sdca_function_data *function,
+@@ -81,6 +83,9 @@ int sdca_irq_populate_early(struct device *dev, struct regmap *function_regmap,
+ int sdca_irq_populate(struct sdca_function_data *function,
+ 		      struct snd_soc_component *component,
+ 		      struct sdca_interrupt_info *info);
++void sdca_irq_cleanup(struct sdca_function_data *function,
++		      struct snd_soc_component *component,
++		      struct sdca_interrupt_info *info);
+ struct sdca_interrupt_info *sdca_irq_allocate(struct device *dev,
+ 					      struct regmap *regmap, int irq);
+ 
+diff --git a/sound/soc/sdca/sdca_class_function.c b/sound/soc/sdca/sdca_class_function.c
+index 416948cfb5cb9..8b6b4ca998272 100644
+--- a/sound/soc/sdca/sdca_class_function.c
++++ b/sound/soc/sdca/sdca_class_function.c
+@@ -196,6 +196,14 @@ static int class_function_component_probe(struct snd_soc_component *component)
+ 	return sdca_irq_populate(drv->function, component, core->irq_info);
+ }
+ 
++static void class_function_component_remove(struct snd_soc_component *component)
++{
++	struct class_function_drv *drv = snd_soc_component_get_drvdata(component);
++	struct sdca_class_drv *core = drv->core;
++
++	sdca_irq_cleanup(drv->function, component, core->irq_info);
++}
++
+ static int class_function_set_jack(struct snd_soc_component *component,
+ 				   struct snd_soc_jack *jack, void *d)
+ {
+@@ -207,6 +215,7 @@ static int class_function_set_jack(struct snd_soc_component *component,
+ 
+ static const struct snd_soc_component_driver class_function_component_drv = {
+ 	.probe			= class_function_component_probe,
++	.remove			= class_function_component_remove,
+ 	.endianness		= 1,
+ };
+ 
+diff --git a/sound/soc/sdca/sdca_interrupts.c b/sound/soc/sdca/sdca_interrupts.c
+index 49b675e601433..be269f204d623 100644
+--- a/sound/soc/sdca/sdca_interrupts.c
++++ b/sound/soc/sdca/sdca_interrupts.c
+@@ -233,8 +233,7 @@ static int sdca_irq_request_locked(struct device *dev,
+ 	if (irq < 0)
+ 		return irq;
+ 
+-	ret = devm_request_threaded_irq(dev, irq, NULL, handler,
+-					IRQF_ONESHOT, name, data);
++	ret = request_threaded_irq(irq, NULL, handler, IRQF_ONESHOT, name, data);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -245,6 +244,22 @@ static int sdca_irq_request_locked(struct device *dev,
+ 	return 0;
+ }
+ 
++static void sdca_irq_free_locked(struct device *dev, struct sdca_interrupt_info *info,
++				 int sdca_irq, const char *name, void *data)
++{
++	int irq;
++
++	irq = regmap_irq_get_virq(info->irq_data, sdca_irq);
++	if (irq < 0)
++		return;
++
++	free_irq(irq, data);
++
++	info->irqs[sdca_irq].irq = 0;
++
++	dev_dbg(dev, "freed irq %d for %s\n", irq, name);
++}
++
+ /**
+  * sdca_irq_request - request an individual SDCA interrupt
+  * @dev: Pointer to the struct device against which things should be allocated.
+@@ -283,6 +298,30 @@ int sdca_irq_request(struct device *dev, struct sdca_interrupt_info *info,
+ }
+ EXPORT_SYMBOL_NS_GPL(sdca_irq_request, "SND_SOC_SDCA");
+ 
++/**
++ * sdca_irq_free - free an individual SDCA interrupt
++ * @dev: Pointer to the struct device.
++ * @info: Pointer to the interrupt information structure.
++ * @sdca_irq: SDCA interrupt position.
++ * @name: Name to be given to the IRQ.
++ * @data: Private data pointer that will be passed to the handler.
++ *
++ * Typically this is handled internally by sdca_irq_cleanup, however if
++ * a device requires custom IRQ handling this can be called manually before
++ * calling sdca_irq_cleanup, which will then skip that IRQ whilst processing.
++ */
++void sdca_irq_free(struct device *dev, struct sdca_interrupt_info *info,
++		   int sdca_irq, const char *name, void *data)
++{
++	if (sdca_irq < 0 || sdca_irq >= SDCA_MAX_INTERRUPTS)
++		return;
++
++	guard(mutex)(&info->irq_lock);
++
++	sdca_irq_free_locked(dev, info, sdca_irq, name, data);
++}
++EXPORT_SYMBOL_NS_GPL(sdca_irq_free, "SND_SOC_SDCA");
++
+ /**
+  * sdca_irq_data_populate - Populate common interrupt data
+  * @dev: Pointer to the Function device.
+@@ -309,8 +348,8 @@ int sdca_irq_data_populate(struct device *dev, struct regmap *regmap,
+ 	if (!dev)
+ 		return -ENODEV;
+ 
+-	name = devm_kasprintf(dev, GFP_KERNEL, "%s %s %s", function->desc->name,
+-			      entity->label, control->label);
++	name = kasprintf(GFP_KERNEL, "%s %s %s", function->desc->name,
++			 entity->label, control->label);
+ 	if (!name)
+ 		return -ENOMEM;
+ 
+@@ -497,6 +536,36 @@ int sdca_irq_populate(struct sdca_function_data *function,
+ }
+ EXPORT_SYMBOL_NS_GPL(sdca_irq_populate, "SND_SOC_SDCA");
+ 
++/**
++ * sdca_irq_cleanup - Free all the individual IRQs for an SDCA Function
++ * @function: Pointer to the SDCA Function.
++ * @component: Pointer to the ASoC component for the Function.
++ * @info: Pointer to the SDCA interrupt info for this device.
++ *
++ * Typically this would be called from the driver for a single SDCA Function.
++ */
++void sdca_irq_cleanup(struct sdca_function_data *function,
++		      struct snd_soc_component *component,
++		      struct sdca_interrupt_info *info)
++{
++	struct device *dev = component->dev;
++	int i;
++
++	guard(mutex)(&info->irq_lock);
++
++	for (i = 0; i < SDCA_MAX_INTERRUPTS; i++) {
++		struct sdca_interrupt *interrupt = &info->irqs[i];
++
++		if (interrupt->function != function || !interrupt->irq)
++			continue;
++
++		sdca_irq_free_locked(dev, info, i, interrupt->name, interrupt);
++
++		kfree(interrupt->name);
++	}
++}
++EXPORT_SYMBOL_NS_GPL(sdca_irq_cleanup, "SND_SOC_SDCA");
++
+ /**
+  * sdca_irq_allocate - allocate an SDCA interrupt structure for a device
+  * @sdev: Device pointer against which things should be allocated.
 -- 
 2.53.0
 
