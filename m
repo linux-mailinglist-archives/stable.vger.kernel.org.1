@@ -1,64 +1,66 @@
-Return-Path: <stable+bounces-239745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239919-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cAqIAiJ05mnKwgEAu9opvQ
-	(envelope-from <stable+bounces-239745-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 20:44:50 +0200
+	id 2NTOONtk5mkKvwEAu9opvQ
+	(envelope-from <stable+bounces-239919-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:39:39 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6180433052
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 20:44:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF77D431B4C
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:39:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0333A302F5F8
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:05:11 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C908031FE733
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:12:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C37582DE6E3;
-	Mon, 20 Apr 2026 16:05:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FDDF342CB0;
+	Mon, 20 Apr 2026 16:12:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x5WCzch6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g5ro1eDx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8754A2D978C;
-	Mon, 20 Apr 2026 16:05:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6E21333445;
+	Mon, 20 Apr 2026 16:12:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701108; cv=none; b=lV1RZ/nexrGW9V3q8SOifqBlRUOoK7W72O17S/4FtKfH4aqeF8uGTxyblWmw+2jqHd3/nTMxWjyPcK4mJUfKh7B3bYh/xCMHQ6cQ7Gq0X1ToS3ObHFUabW4p2L5wiiwxwF4ajd1a8HUVXpj7N3cOVY1cvHD9v7O+wWRbDw2+pLI=
+	t=1776701549; cv=none; b=D/Goit/SYpK0buWYKu+EcR56A5UZ4xY4E3iCuS6w+8WxmiypcSOLDvjpIBhNcf6Pwe/uNkAQKIAmsh8RtOJTyZmJU9G2/qIx39Nt2sfM76iQgWNszsMCxhNYwTdwnD01spb9knN4E7oHSD0vnsKWQ7XnQ6U06+4NcMg6BQpcV6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701108; c=relaxed/simple;
-	bh=UvHFnvYJaYA3dkgsoIvkZ60U1ZO/iYFp77rVRGCvmqI=;
+	s=arc-20240116; t=1776701549; c=relaxed/simple;
+	bh=umL5Lj7892/jaVfQl5NnwD8Nc1Xd2IItkhgfHCbEpDk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SBleGPzv8FAtpZknvSpWCbJtvrT54+xErOYDKeVbRUj+6871vTfEWr5NjO4YKdcawxM+Rj0l/hlHmcKsJWVive/85WKJKBZORXJluyCakwFrUqs6rMW+5eAMgi7kQPp0k0SRc0H15NFC17yfiaBGsb4oZTio/wj6XxXSUiFztqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x5WCzch6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 133BEC19425;
-	Mon, 20 Apr 2026 16:05:07 +0000 (UTC)
+	 MIME-Version; b=hTWkw3NDTTYgryWbPJ06IlzWQ+Le2DGYPkhJge2SvuUkyShcFVvO+9fnWPSR5Bp+t/m5gWntzdsuSy+wJscFbuBhntBfG9rNkFpbn8DUrqF6yM6bBNncuGofjUKieQKYn44VhBt2uk1+dhwFvNaHcYC5Ph63ePX0tiwegKQeOiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g5ro1eDx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45EA4C19425;
+	Mon, 20 Apr 2026 16:12:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701108;
-	bh=UvHFnvYJaYA3dkgsoIvkZ60U1ZO/iYFp77rVRGCvmqI=;
+	s=korg; t=1776701549;
+	bh=umL5Lj7892/jaVfQl5NnwD8Nc1Xd2IItkhgfHCbEpDk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x5WCzch6DZFGERqAUMsQzaKBXH8cvkBNiFd65WbfKfLfcY9d+HHZG5EmKWMNzHNCS
-	 gxLDU7c5mtHYPHqHv+DGqb3gAjq5x+nmjZU6NremGgtEhVsSeUpsbbRPi7tZEkGVZ8
-	 3pq0EawEzQwTm0+LQ8FDzY82qNpzPpijbjS4UiTw=
+	b=g5ro1eDx5Bnvc2aF1KGOWZJK94z5kRy/iwM6Kc+M5qh1PyNJnC6+KXOEB873V9lcJ
+	 H7NLf7P8i/dB2SdtOcjmteiOaas/b/MbpwNKbaRwiHe0OR+JBNc9AeRn56JkSitVUh
+	 LuSjvUNoBGPg+PDbRG4/ZzQv0SfqdQZbABi8XIOk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sasha Levin <sashal@kernel.org>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Joe Perches <joe@perches.com>,
-	Andy Whitcroft <apw@canonical.com>,
-	Dwaipayan Ray <dwaipayanray1@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+	syzbot+67b90111784a3eac8c04@syzkaller.appspotmail.com,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Heming Zhao <heming.zhao@suse.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Joseph Qi <jiangqi903@gmail.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.18 177/198] checkpatch: add support for Assisted-by tag
-Date: Mon, 20 Apr 2026 17:42:36 +0200
-Message-ID: <20260420153941.990587474@linuxfoundation.org>
+Subject: [PATCH 6.12 125/162] ocfs2: fix possible deadlock between unlink and dio_end_io_write
+Date: Mon, 20 Apr 2026 17:42:37 +0200
+Message-ID: <20260420153931.568940704@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
+References: <20260420153927.006696811@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,105 +71,120 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [9.34 / 15.00];
-	URIBL_BLACK(7.50)[perches.com:email];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,acm.org,perches.com,canonical.com,gmail.com,lwn.net,linux-foundation.org];
-	TAGGED_FROM(0.00)[bounces-239745-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
 	MIME_TRACE(0.00)[0:+];
-	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	TAGGED_FROM(0.00)[bounces-239919-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,linux.alibaba.com,suse.com,fasheh.com,evilplan.org,oracle.com,gmail.com,live.cn,huawei.com,linux-foundation.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	GREYLIST(0.00)[pass,body];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_SPAM(0.00)[0.956];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable,67b90111784a3eac8c04];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	R_SPF_ALLOW(0.00)[+ip4:104.64.211.4:c];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,lwn.net:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,acm.org:email,canonical.com:email,perches.com:email]
-X-Rspamd-Queue-Id: E6180433052
-X-Rspamd-Action: add header
+	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,appspotmail.com:email,linux-foundation.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,alibaba.com:email,fasheh.com:email,live.cn:email]
+X-Rspamd-Queue-Id: DF77D431B4C
+X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spam: Yes
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sasha Levin <sashal@kernel.org>
+From: Joseph Qi <joseph.qi@linux.alibaba.com>
 
-commit d1db4118489fffd2b2f612140b7acbb477880839 upstream.
+commit b02da26a992db0c0e2559acbda0fc48d4a2fd337 upstream.
 
-The Assisted-by tag was introduced in
-Documentation/process/coding-assistants.rst for attributing AI tool
-contributions to kernel patches.  However, checkpatch.pl did not recognize
-this tag, causing two issues:
+ocfs2_unlink takes orphan dir inode_lock first and then ip_alloc_sem,
+while in ocfs2_dio_end_io_write, it acquires these locks in reverse order.
+This creates an ABBA lock ordering violation on lock classes
+ocfs2_sysfile_lock_key[ORPHAN_DIR_SYSTEM_INODE] and
+ocfs2_file_ip_alloc_sem_key.
 
-  WARNING: Non-standard signature: Assisted-by:
-  ERROR: Unrecognized email address: 'AGENT_NAME:MODEL_VERSION'
+Lock Chain #0 (orphan dir inode_lock -> ip_alloc_sem):
+ocfs2_unlink
+  ocfs2_prepare_orphan_dir
+    ocfs2_lookup_lock_orphan_dir
+      inode_lock(orphan_dir_inode) <- lock A
+    __ocfs2_prepare_orphan_dir
+      ocfs2_prepare_dir_for_insert
+        ocfs2_extend_dir
+	  ocfs2_expand_inline_dir
+	    down_write(&oi->ip_alloc_sem) <- Lock B
 
-Fix this by:
-1. Adding Assisted-by to the recognized $signature_tags list
-2. Skipping email validation for Assisted-by lines since they use the
-   AGENT_NAME:MODEL_VERSION format instead of an email address
-3. Warning when the Assisted-by value doesn't match the expected format
+Lock Chain #1 (ip_alloc_sem -> orphan dir inode_lock):
+ocfs2_dio_end_io_write
+  down_write(&oi->ip_alloc_sem) <- Lock B
+  ocfs2_del_inode_from_orphan()
+    inode_lock(orphan_dir_inode) <- Lock A
 
-Link: https://lkml.kernel.org/r/20260311215818.518930-1-sashal@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-Reported-by: Bart Van Assche <bvanassche@acm.org>
-Acked-by: Joe Perches <joe@perches.com>
-Cc: Andy Whitcroft <apw@canonical.com>
-Cc: Dwaipayan Ray <dwaipayanray1@gmail.com>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Deadlock Scenario:
+  CPU0 (unlink)                     CPU1 (dio_end_io_write)
+  ------                            ------
+  inode_lock(orphan_dir_inode)
+                                    down_write(ip_alloc_sem)
+  down_write(ip_alloc_sem)
+                                    inode_lock(orphan_dir_inode)
+
+Since ip_alloc_sem is to protect allocation changes, which is unrelated
+with operations in ocfs2_del_inode_from_orphan.  So move
+ocfs2_del_inode_from_orphan out of ip_alloc_sem to fix the deadlock.
+
+Link: https://lkml.kernel.org/r/20260306032211.1016452-1-joseph.qi@linux.alibaba.com
+Reported-by: syzbot+67b90111784a3eac8c04@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=67b90111784a3eac8c04
+Fixes: a86a72a4a4e0 ("ocfs2: take ip_alloc_sem in ocfs2_dio_get_block & ocfs2_dio_end_io_write")
+Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Reviewed-by: Heming Zhao <heming.zhao@suse.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Joseph Qi <jiangqi903@gmail.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/checkpatch.pl |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ fs/ocfs2/aops.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/scripts/checkpatch.pl
-+++ b/scripts/checkpatch.pl
-@@ -641,6 +641,7 @@ our $signature_tags = qr{(?xi:
- 	Reviewed-by:|
- 	Reported-by:|
- 	Suggested-by:|
-+	Assisted-by:|
- 	To:|
- 	Cc:
- )};
-@@ -3087,6 +3088,15 @@ sub process {
- 				}
- 			}
+--- a/fs/ocfs2/aops.c
++++ b/fs/ocfs2/aops.c
+@@ -2318,8 +2318,6 @@ static int ocfs2_dio_end_io_write(struct
+ 		goto out;
+ 	}
  
-+			# Assisted-by uses AGENT_NAME:MODEL_VERSION format, not email
-+			if ($sign_off =~ /^Assisted-by:/i) {
-+				if ($email !~ /^\S+:\S+/) {
-+					WARN("BAD_SIGN_OFF",
-+					     "Assisted-by expects 'AGENT_NAME:MODEL_VERSION [TOOL1] [TOOL2]' format\n" . $herecurr);
-+				}
-+				next;
-+			}
-+
- 			my ($email_name, $name_comment, $email_address, $comment) = parse_email($email);
- 			my $suggested_email = format_email(($email_name, $name_comment, $email_address, $comment));
- 			if ($suggested_email eq "") {
+-	down_write(&oi->ip_alloc_sem);
+-
+ 	/* Delete orphan before acquire i_rwsem. */
+ 	if (dwc->dw_orphaned) {
+ 		BUG_ON(dwc->dw_writer_pid != task_pid_nr(current));
+@@ -2332,6 +2330,7 @@ static int ocfs2_dio_end_io_write(struct
+ 			mlog_errno(ret);
+ 	}
+ 
++	down_write(&oi->ip_alloc_sem);
+ 	di = (struct ocfs2_dinode *)di_bh->b_data;
+ 
+ 	ocfs2_init_dinode_extent_tree(&et, INODE_CACHE(inode), di_bh);
 
 
 
