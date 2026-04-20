@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-239551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239312-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GL1eJpVl5mkKvwEAu9opvQ
-	(envelope-from <stable+bounces-239551-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:42:45 +0200
+	id IKeeOiBj5mmavgEAu9opvQ
+	(envelope-from <stable+bounces-239312-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:32:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 148D1431DFE
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:42:45 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C732431608
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:32:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8CAAD3274916
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:55:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6701934FAA21
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:45:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11DB7329C6D;
-	Mon, 20 Apr 2026 15:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EEDE3368AF;
+	Mon, 20 Apr 2026 15:45:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bUMn3VrX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ucOUEyax"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9B3732B9B5;
-	Mon, 20 Apr 2026 15:55:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6239932E696;
+	Mon, 20 Apr 2026 15:45:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700542; cv=none; b=G1gT9NWTNiG2C/ziVmNpRW4dPrX3Tk9jaqu5g+R/xzh4/nQM7RGh4YHJKHuhzmMWYpwDEEL3KyujZRONXTG4Xa3o96mvxyC1xn4vWVf5cGqZLtAZ4CHiMsvWpEIio1ECtJGM41oYqIXeutd8rWNtl3oVpl/Xt6ySmRrFGvr+2sA=
+	t=1776699927; cv=none; b=DuITy9XmvvMP5RpFKFvooECGz2uFQN0v9rctmpSTwLPQht7aAD1ON9k691hDyZFFNIxJnkQUSP7oktAohCKav492VzK+goMI+kI1rvxXLbBho2Mb3/ECxzQuCkHbKh0gXCXMuYqSG2vum07voUBQqLtcTSRFA4KMwXj7clLEpKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700542; c=relaxed/simple;
-	bh=ibXjZSSuBDGjh7WMW4RB3YUBe8Mj5VTNKrNl8ScbTww=;
+	s=arc-20240116; t=1776699927; c=relaxed/simple;
+	bh=ZFSeAoCuQZL7qMXAElgOo2/ZXUW/YMbHRc6zaLb9klM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DEMYU7H3MG5/sK7jek/bd0zjgPaT4zkxbVtme8M8Oc6cqt122lPeT4Ka2PoPO0fN5qQMTa7Zh3+LX83qSXk+BsE8Bd0Wz8zIk5lENytyu9ydcAlWY1+SpkDLabhjSjtiOYrf5B5c8dC4a4VkZ02rLdtjUjhuLwmXEM3tPSwP+6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bUMn3VrX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F5C5C2BCB4;
-	Mon, 20 Apr 2026 15:55:42 +0000 (UTC)
+	 MIME-Version; b=uVXYR1sbZ0+eZ/r5aWr3QcTMRv6ED73xBGngoQbCUQKkjd5WD+2pL9lwJ9awQLuloEpKIrwXVzpF5C7X3sxXHrjAcVxPB1OLOGxSNxGgrAKxn6U0Efrbc1oHMtr3Q8hXA8n2tkm9cKfKLv2VlduM3oRkXoVgBFwEHWHtC1SDujc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ucOUEyax; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F685C19425;
+	Mon, 20 Apr 2026 15:45:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700542;
-	bh=ibXjZSSuBDGjh7WMW4RB3YUBe8Mj5VTNKrNl8ScbTww=;
+	s=korg; t=1776699927;
+	bh=ZFSeAoCuQZL7qMXAElgOo2/ZXUW/YMbHRc6zaLb9klM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bUMn3VrXkfNwfRtzdDr2BHo0GfKvTi18YFlV3ZOZKWLoVrHskjlTK4KxLhrr+1+xH
-	 CiRGUdYcALgf3Kz1iolXpAmZgeQ5eZXo1A0iidUESzSnTmEfjJCt19Q9lB0ZAVG9ch
-	 hBrLHDVovsm4ERBwIXv9ULFFga15X1yBMFWqP1tY=
+	b=ucOUEyax4O8HSggRh6i6VS0Hbo1ufX9FuoPwsbuCK4uHMB40dlq1H/ldx0xYmsXZt
+	 FQjMCm8LIzdLwVUqwGula25nyah3AIfPff4o3VFrqi1tUdAff/jCs7JK2TzNMka62O
+	 REnkCRAsvLj3Sn302GqT/1OiqDV5FglDi5BWxw0I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 6.19 180/220] arm64: mm: Handle invalid large leaf mappings correctly
-Date: Mon, 20 Apr 2026 17:42:01 +0200
-Message-ID: <20260420153940.508472198@linuxfoundation.org>
+	Jethro Beekman <jethro@fortanix.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 7.0 51/76] KVM: SEV: Reject attempts to sync VMSA of an already-launched/encrypted vCPU
+Date: Mon, 20 Apr 2026 17:42:02 +0200
+Message-ID: <20260420153912.681836144@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
-References: <20260420153934.013228280@linuxfoundation.org>
+In-Reply-To: <20260420153910.810034134@linuxfoundation.org>
+References: <20260420153910.810034134@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +67,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-239551-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-239312-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,411 +88,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 148D1431DFE
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,fortanix.com:email]
+X-Rspamd-Queue-Id: 6C732431608
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryan Roberts <ryan.roberts@arm.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 15bfba1ad77fad8e45a37aae54b3c813b33fe27c upstream.
+commit 9b9f7962e3e879d12da2bf47e02a24ec51690e3d upstream.
 
-It has been possible for a long time to mark ptes in the linear map as
-invalid. This is done for secretmem, kfence, realm dma memory un/share,
-and others, by simply clearing the PTE_VALID bit. But until commit
-a166563e7ec37 ("arm64: mm: support large block mapping when
-rodata=full") large leaf mappings were never made invalid in this way.
+Reject synchronizing vCPU state to its associated VMSA if the vCPU has
+already been launched, i.e. if the VMSA has already been encrypted.  On a
+host with SNP enabled, accessing guest-private memory generates an RMP #PF
+and panics the host.
 
-It turns out various parts of the code base are not equipped to handle
-invalid large leaf mappings (in the way they are currently encoded) and
-I've observed a kernel panic while booting a realm guest on a
-BBML2_NOABORT system as a result:
+  BUG: unable to handle page fault for address: ff1276cbfdf36000
+  #PF: supervisor write access in kernel mode
+  #PF: error_code(0x80000003) - RMP violation
+  PGD 5a31801067 P4D 5a31802067 PUD 40ccfb5063 PMD 40e5954063 PTE 80000040fdf36163
+  SEV-SNP: PFN 0x40fdf36, RMP entry: [0x6010fffffffff001 - 0x000000000000001f]
+  Oops: Oops: 0003 [#1] SMP NOPTI
+  CPU: 33 UID: 0 PID: 996180 Comm: qemu-system-x86 Tainted: G           OE
+  Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
+  Hardware name: Dell Inc. PowerEdge R7625/0H1TJT, BIOS 1.5.8 07/21/2023
+  RIP: 0010:sev_es_sync_vmsa+0x54/0x4c0 [kvm_amd]
+  Call Trace:
+   <TASK>
+   snp_launch_update_vmsa+0x19d/0x290 [kvm_amd]
+   snp_launch_finish+0xb6/0x380 [kvm_amd]
+   sev_mem_enc_ioctl+0x14e/0x720 [kvm_amd]
+   kvm_arch_vm_ioctl+0x837/0xcf0 [kvm]
+   kvm_vm_ioctl+0x3fd/0xcc0 [kvm]
+   __x64_sys_ioctl+0xa3/0x100
+   x64_sys_call+0xfe0/0x2350
+   do_syscall_64+0x81/0x10f0
+   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+  RIP: 0033:0x7ffff673287d
+   </TASK>
 
-[   15.432706] software IO TLB: Memory encryption is active and system is using DMA bounce buffers
-[   15.476896] Unable to handle kernel paging request at virtual address ffff000019600000
-[   15.513762] Mem abort info:
-[   15.527245]   ESR = 0x0000000096000046
-[   15.548553]   EC = 0x25: DABT (current EL), IL = 32 bits
-[   15.572146]   SET = 0, FnV = 0
-[   15.592141]   EA = 0, S1PTW = 0
-[   15.612694]   FSC = 0x06: level 2 translation fault
-[   15.640644] Data abort info:
-[   15.661983]   ISV = 0, ISS = 0x00000046, ISS2 = 0x00000000
-[   15.694875]   CM = 0, WnR = 1, TnD = 0, TagAccess = 0
-[   15.723740]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-[   15.755776] swapper pgtable: 4k pages, 48-bit VAs, pgdp=0000000081f3f000
-[   15.800410] [ffff000019600000] pgd=0000000000000000, p4d=180000009ffff403, pud=180000009fffe403, pmd=00e8000199600704
-[   15.855046] Internal error: Oops: 0000000096000046 [#1]  SMP
-[   15.886394] Modules linked in:
-[   15.900029] CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 7.0.0-rc4-dirty #4 PREEMPT
-[   15.935258] Hardware name: linux,dummy-virt (DT)
-[   15.955612] pstate: 21400005 (nzCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
-[   15.986009] pc : __pi_memcpy_generic+0x128/0x22c
-[   16.006163] lr : swiotlb_bounce+0xf4/0x158
-[   16.024145] sp : ffff80008000b8f0
-[   16.038896] x29: ffff80008000b8f0 x28: 0000000000000000 x27: 0000000000000000
-[   16.069953] x26: ffffb3976d261ba8 x25: 0000000000000000 x24: ffff000019600000
-[   16.100876] x23: 0000000000000001 x22: ffff0000043430d0 x21: 0000000000007ff0
-[   16.131946] x20: 0000000084570010 x19: 0000000000000000 x18: ffff00001ffe3fcc
-[   16.163073] x17: 0000000000000000 x16: 00000000003fffff x15: 646e612065766974
-[   16.194131] x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000000
-[   16.225059] x11: 0000000000000000 x10: 0000000000000010 x9 : 0000000000000018
-[   16.256113] x8 : 0000000000000018 x7 : 0000000000000000 x6 : 0000000000000000
-[   16.287203] x5 : ffff000019607ff0 x4 : ffff000004578000 x3 : ffff000019600000
-[   16.318145] x2 : 0000000000007ff0 x1 : ffff000004570010 x0 : ffff000019600000
-[   16.349071] Call trace:
-[   16.360143]  __pi_memcpy_generic+0x128/0x22c (P)
-[   16.380310]  swiotlb_tbl_map_single+0x154/0x2b4
-[   16.400282]  swiotlb_map+0x5c/0x228
-[   16.415984]  dma_map_phys+0x244/0x2b8
-[   16.432199]  dma_map_page_attrs+0x44/0x58
-[   16.449782]  virtqueue_map_page_attrs+0x38/0x44
-[   16.469596]  virtqueue_map_single_attrs+0xc0/0x130
-[   16.490509]  virtnet_rq_alloc.isra.0+0xa4/0x1fc
-[   16.510355]  try_fill_recv+0x2a4/0x584
-[   16.526989]  virtnet_open+0xd4/0x238
-[   16.542775]  __dev_open+0x110/0x24c
-[   16.558280]  __dev_change_flags+0x194/0x20c
-[   16.576879]  netif_change_flags+0x24/0x6c
-[   16.594489]  dev_change_flags+0x48/0x7c
-[   16.611462]  ip_auto_config+0x258/0x1114
-[   16.628727]  do_one_initcall+0x80/0x1c8
-[   16.645590]  kernel_init_freeable+0x208/0x2f0
-[   16.664917]  kernel_init+0x24/0x1e0
-[   16.680295]  ret_from_fork+0x10/0x20
-[   16.696369] Code: 927cec03 cb0e0021 8b0e0042 a9411c26 (a900340c)
-[   16.723106] ---[ end trace 0000000000000000 ]---
-[   16.752866] Kernel panic - not syncing: Attempted to kill init! exitcode=0x0000000b
-[   16.792556] Kernel Offset: 0x3396ea200000 from 0xffff800080000000
-[   16.818966] PHYS_OFFSET: 0xfff1000080000000
-[   16.837237] CPU features: 0x0000000,00060005,13e38581,957e772f
-[   16.862904] Memory Limit: none
-[   16.876526] ---[ end Kernel panic - not syncing: Attempted to kill init! exitcode=0x0000000b ]---
+Note, the KVM flaw has been present since commit ad73109ae7ec ("KVM: SVM:
+Provide support to launch and run an SEV-ES guest"), but has only been
+actively dangerous for the host since SNP support was added.  With SEV-ES,
+KVM would "just" clobber guest state, which is totally fine from a host
+kernel perspective since userspace can clobber guest state any time before
+sev_launch_update_vmsa().
 
-This panic occurs because the swiotlb memory was previously shared to
-the host (__set_memory_enc_dec()), which involves transitioning the
-(large) leaf mappings to invalid, sharing to the host, then marking the
-mappings valid again. But pageattr_p[mu]d_entry() would only update the
-entry if it is a section mapping, since otherwise it concluded it must
-be a table entry so shouldn't be modified. But p[mu]d_sect() only
-returns true if the entry is valid. So the result was that the large
-leaf entry was made invalid in the first pass then ignored in the second
-pass. It remains invalid until the above code tries to access it and
-blows up.
-
-The simple fix would be to update pageattr_pmd_entry() to use
-!pmd_table() instead of pmd_sect(). That would solve this problem.
-
-But the ptdump code also suffers from a similar issue. It checks
-pmd_leaf() and doesn't call into the arch-specific note_page() machinery
-if it returns false. As a result of this, ptdump wasn't even able to
-show the invalid large leaf mappings; it looked like they were valid
-which made this super fun to debug. the ptdump code is core-mm and
-pmd_table() is arm64-specific so we can't use the same trick to solve
-that.
-
-But we already support the concept of "present-invalid" for user space
-entries. And even better, pmd_leaf() will return true for a leaf mapping
-that is marked present-invalid. So let's just use that encoding for
-present-invalid kernel mappings too. Then we can use pmd_leaf() where we
-previously used pmd_sect() and everything is magically fixed.
-
-Additionally, from inspection kernel_page_present() was broken in a
-similar way, so I'm also updating that to use pmd_leaf().
-
-The transitional page tables component was also similarly broken; it
-creates a copy of the kernel page tables, making RO leaf mappings RW in
-the process. It also makes invalid (but-not-none) pte mappings valid.
-But it was not doing this for large leaf mappings. This could have
-resulted in crashes at kexec- or hibernate-time. This code is fixed to
-flip "present-invalid" mappings back to "present-valid" at all levels.
-
-Finally, I have hardened split_pmd()/split_pud() so that if it is passed
-a "present-invalid" leaf, it will maintain that property in the split
-leaves, since I wasn't able to convince myself that it would only ever
-be called for "present-valid" leaves.
-
-Fixes: a166563e7ec3 ("arm64: mm: support large block mapping when rodata=full")
+Fixes: ad27ce155566 ("KVM: SEV: Add KVM_SEV_SNP_LAUNCH_FINISH command")
+Reported-by: Jethro Beekman <jethro@fortanix.com>
+Closes: https://lore.kernel.org/all/d98692e2-d96b-4c36-8089-4bc1e5cc3d57@fortanix.com
 Cc: stable@vger.kernel.org
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Link: https://patch.msgid.link/20260310234829.2608037-3-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/pgtable-prot.h |    2 +
- arch/arm64/include/asm/pgtable.h      |    9 ++++--
- arch/arm64/mm/mmu.c                   |    4 ++
- arch/arm64/mm/pageattr.c              |   50 +++++++++++++++++++---------------
- arch/arm64/mm/trans_pgd.c             |   42 ++++------------------------
- 5 files changed, 48 insertions(+), 59 deletions(-)
+ arch/x86/kvm/svm/sev.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/arch/arm64/include/asm/pgtable-prot.h
-+++ b/arch/arm64/include/asm/pgtable-prot.h
-@@ -25,6 +25,8 @@
-  */
- #define PTE_PRESENT_INVALID	(PTE_NG)		 /* only when !PTE_VALID */
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -882,6 +882,9 @@ static int sev_es_sync_vmsa(struct vcpu_
+ 	u8 *d;
+ 	int i;
  
-+#define PTE_PRESENT_VALID_KERNEL (PTE_VALID | PTE_MAYBE_NG)
++	if (vcpu->arch.guest_state_protected)
++		return -EINVAL;
 +
- #ifdef CONFIG_HAVE_ARCH_USERFAULTFD_WP
- #define PTE_UFFD_WP		(_AT(pteval_t, 1) << 58) /* uffd-wp tracking */
- #define PTE_SWP_UFFD_WP		(_AT(pteval_t, 1) << 3)	 /* only for swp ptes */
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -357,9 +357,11 @@ static inline pte_t pte_mknoncont(pte_t
- 	return clear_pte_bit(pte, __pgprot(PTE_CONT));
- }
- 
--static inline pte_t pte_mkvalid(pte_t pte)
-+static inline pte_t pte_mkvalid_k(pte_t pte)
- {
--	return set_pte_bit(pte, __pgprot(PTE_VALID));
-+	pte = clear_pte_bit(pte, __pgprot(PTE_PRESENT_INVALID));
-+	pte = set_pte_bit(pte, __pgprot(PTE_PRESENT_VALID_KERNEL));
-+	return pte;
- }
- 
- static inline pte_t pte_mkinvalid(pte_t pte)
-@@ -629,6 +631,7 @@ static inline int pmd_protnone(pmd_t pmd
- #define pmd_mkclean(pmd)	pte_pmd(pte_mkclean(pmd_pte(pmd)))
- #define pmd_mkdirty(pmd)	pte_pmd(pte_mkdirty(pmd_pte(pmd)))
- #define pmd_mkyoung(pmd)	pte_pmd(pte_mkyoung(pmd_pte(pmd)))
-+#define pmd_mkvalid_k(pmd)	pte_pmd(pte_mkvalid_k(pmd_pte(pmd)))
- #define pmd_mkinvalid(pmd)	pte_pmd(pte_mkinvalid(pmd_pte(pmd)))
- #ifdef CONFIG_HAVE_ARCH_USERFAULTFD_WP
- #define pmd_uffd_wp(pmd)	pte_uffd_wp(pmd_pte(pmd))
-@@ -670,6 +673,8 @@ static inline pmd_t pmd_mkspecial(pmd_t
- 
- #define pud_young(pud)		pte_young(pud_pte(pud))
- #define pud_mkyoung(pud)	pte_pud(pte_mkyoung(pud_pte(pud)))
-+#define pud_mkwrite_novma(pud)	pte_pud(pte_mkwrite_novma(pud_pte(pud)))
-+#define pud_mkvalid_k(pud)	pte_pud(pte_mkvalid_k(pud_pte(pud)))
- #define pud_write(pud)		pte_write(pud_pte(pud))
- 
- static inline pud_t pud_mkhuge(pud_t pud)
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -602,6 +602,8 @@ static int split_pmd(pmd_t *pmdp, pmd_t
- 		tableprot |= PMD_TABLE_PXN;
- 
- 	prot = __pgprot((pgprot_val(prot) & ~PTE_TYPE_MASK) | PTE_TYPE_PAGE);
-+	if (!pmd_valid(pmd))
-+		prot = pte_pgprot(pte_mkinvalid(pfn_pte(0, prot)));
- 	prot = __pgprot(pgprot_val(prot) & ~PTE_CONT);
- 	if (to_cont)
- 		prot = __pgprot(pgprot_val(prot) | PTE_CONT);
-@@ -647,6 +649,8 @@ static int split_pud(pud_t *pudp, pud_t
- 		tableprot |= PUD_TABLE_PXN;
- 
- 	prot = __pgprot((pgprot_val(prot) & ~PMD_TYPE_MASK) | PMD_TYPE_SECT);
-+	if (!pud_valid(pud))
-+		prot = pmd_pgprot(pmd_mkinvalid(pfn_pmd(0, prot)));
- 	prot = __pgprot(pgprot_val(prot) & ~PTE_CONT);
- 	if (to_cont)
- 		prot = __pgprot(pgprot_val(prot) | PTE_CONT);
---- a/arch/arm64/mm/pageattr.c
-+++ b/arch/arm64/mm/pageattr.c
-@@ -25,6 +25,11 @@ static ptdesc_t set_pageattr_masks(ptdes
- {
- 	struct page_change_data *masks = walk->private;
- 
-+	/*
-+	 * Some users clear and set bits which alias each other (e.g. PTE_NG and
-+	 * PTE_PRESENT_INVALID). It is therefore important that we always clear
-+	 * first then set.
-+	 */
- 	val &= ~(pgprot_val(masks->clear_mask));
- 	val |= (pgprot_val(masks->set_mask));
- 
-@@ -36,7 +41,7 @@ static int pageattr_pud_entry(pud_t *pud
- {
- 	pud_t val = pudp_get(pud);
- 
--	if (pud_sect(val)) {
-+	if (pud_leaf(val)) {
- 		if (WARN_ON_ONCE((next - addr) != PUD_SIZE))
- 			return -EINVAL;
- 		val = __pud(set_pageattr_masks(pud_val(val), walk));
-@@ -52,7 +57,7 @@ static int pageattr_pmd_entry(pmd_t *pmd
- {
- 	pmd_t val = pmdp_get(pmd);
- 
--	if (pmd_sect(val)) {
-+	if (pmd_leaf(val)) {
- 		if (WARN_ON_ONCE((next - addr) != PMD_SIZE))
- 			return -EINVAL;
- 		val = __pmd(set_pageattr_masks(pmd_val(val), walk));
-@@ -132,11 +137,12 @@ static int __change_memory_common(unsign
- 	ret = update_range_prot(start, size, set_mask, clear_mask);
- 
- 	/*
--	 * If the memory is being made valid without changing any other bits
--	 * then a TLBI isn't required as a non-valid entry cannot be cached in
--	 * the TLB.
-+	 * If the memory is being switched from present-invalid to valid without
-+	 * changing any other bits then a TLBI isn't required as a non-valid
-+	 * entry cannot be cached in the TLB.
- 	 */
--	if (pgprot_val(set_mask) != PTE_VALID || pgprot_val(clear_mask))
-+	if (pgprot_val(set_mask) != PTE_PRESENT_VALID_KERNEL ||
-+	    pgprot_val(clear_mask) != PTE_PRESENT_INVALID)
- 		flush_tlb_kernel_range(start, start + size);
- 	return ret;
- }
-@@ -237,18 +243,18 @@ int set_memory_valid(unsigned long addr,
- {
- 	if (enable)
- 		return __change_memory_common(addr, PAGE_SIZE * numpages,
--					__pgprot(PTE_VALID),
--					__pgprot(0));
-+					__pgprot(PTE_PRESENT_VALID_KERNEL),
-+					__pgprot(PTE_PRESENT_INVALID));
- 	else
- 		return __change_memory_common(addr, PAGE_SIZE * numpages,
--					__pgprot(0),
--					__pgprot(PTE_VALID));
-+					__pgprot(PTE_PRESENT_INVALID),
-+					__pgprot(PTE_PRESENT_VALID_KERNEL));
- }
- 
- int set_direct_map_invalid_noflush(struct page *page)
- {
--	pgprot_t clear_mask = __pgprot(PTE_VALID);
--	pgprot_t set_mask = __pgprot(0);
-+	pgprot_t clear_mask = __pgprot(PTE_PRESENT_VALID_KERNEL);
-+	pgprot_t set_mask = __pgprot(PTE_PRESENT_INVALID);
- 
- 	if (!can_set_direct_map())
- 		return 0;
-@@ -259,8 +265,8 @@ int set_direct_map_invalid_noflush(struc
- 
- int set_direct_map_default_noflush(struct page *page)
- {
--	pgprot_t set_mask = __pgprot(PTE_VALID | PTE_WRITE);
--	pgprot_t clear_mask = __pgprot(PTE_RDONLY);
-+	pgprot_t set_mask = __pgprot(PTE_PRESENT_VALID_KERNEL | PTE_WRITE);
-+	pgprot_t clear_mask = __pgprot(PTE_PRESENT_INVALID | PTE_RDONLY);
- 
- 	if (!can_set_direct_map())
- 		return 0;
-@@ -296,8 +302,8 @@ static int __set_memory_enc_dec(unsigned
- 	 * entries or Synchronous External Aborts caused by RIPAS_EMPTY
- 	 */
- 	ret = __change_memory_common(addr, PAGE_SIZE * numpages,
--				     __pgprot(set_prot),
--				     __pgprot(clear_prot | PTE_VALID));
-+				     __pgprot(set_prot | PTE_PRESENT_INVALID),
-+				     __pgprot(clear_prot | PTE_PRESENT_VALID_KERNEL));
- 
- 	if (ret)
- 		return ret;
-@@ -311,8 +317,8 @@ static int __set_memory_enc_dec(unsigned
- 		return ret;
- 
- 	return __change_memory_common(addr, PAGE_SIZE * numpages,
--				      __pgprot(PTE_VALID),
--				      __pgprot(0));
-+				      __pgprot(PTE_PRESENT_VALID_KERNEL),
-+				      __pgprot(PTE_PRESENT_INVALID));
- }
- 
- static int realm_set_memory_encrypted(unsigned long addr, int numpages)
-@@ -404,15 +410,15 @@ bool kernel_page_present(struct page *pa
- 	pud = READ_ONCE(*pudp);
- 	if (pud_none(pud))
- 		return false;
--	if (pud_sect(pud))
--		return true;
-+	if (pud_leaf(pud))
-+		return pud_valid(pud);
- 
- 	pmdp = pmd_offset(pudp, addr);
- 	pmd = READ_ONCE(*pmdp);
- 	if (pmd_none(pmd))
- 		return false;
--	if (pmd_sect(pmd))
--		return true;
-+	if (pmd_leaf(pmd))
-+		return pmd_valid(pmd);
- 
- 	ptep = pte_offset_kernel(pmdp, addr);
- 	return pte_valid(__ptep_get(ptep));
---- a/arch/arm64/mm/trans_pgd.c
-+++ b/arch/arm64/mm/trans_pgd.c
-@@ -31,36 +31,6 @@ static void *trans_alloc(struct trans_pg
- 	return info->trans_alloc_page(info->trans_alloc_arg);
- }
- 
--static void _copy_pte(pte_t *dst_ptep, pte_t *src_ptep, unsigned long addr)
--{
--	pte_t pte = __ptep_get(src_ptep);
--
--	if (pte_valid(pte)) {
--		/*
--		 * Resume will overwrite areas that may be marked
--		 * read only (code, rodata). Clear the RDONLY bit from
--		 * the temporary mappings we use during restore.
--		 */
--		__set_pte(dst_ptep, pte_mkwrite_novma(pte));
--	} else if (!pte_none(pte)) {
--		/*
--		 * debug_pagealloc will removed the PTE_VALID bit if
--		 * the page isn't in use by the resume kernel. It may have
--		 * been in use by the original kernel, in which case we need
--		 * to put it back in our copy to do the restore.
--		 *
--		 * Other cases include kfence / vmalloc / memfd_secret which
--		 * may call `set_direct_map_invalid_noflush()`.
--		 *
--		 * Before marking this entry valid, check the pfn should
--		 * be mapped.
--		 */
--		BUG_ON(!pfn_valid(pte_pfn(pte)));
--
--		__set_pte(dst_ptep, pte_mkvalid(pte_mkwrite_novma(pte)));
--	}
--}
--
- static int copy_pte(struct trans_pgd_info *info, pmd_t *dst_pmdp,
- 		    pmd_t *src_pmdp, unsigned long start, unsigned long end)
- {
-@@ -76,7 +46,11 @@ static int copy_pte(struct trans_pgd_inf
- 
- 	src_ptep = pte_offset_kernel(src_pmdp, start);
- 	do {
--		_copy_pte(dst_ptep, src_ptep, addr);
-+		pte_t pte = __ptep_get(src_ptep);
-+
-+		if (pte_none(pte))
-+			continue;
-+		__set_pte(dst_ptep, pte_mkvalid_k(pte_mkwrite_novma(pte)));
- 	} while (dst_ptep++, src_ptep++, addr += PAGE_SIZE, addr != end);
- 
- 	return 0;
-@@ -109,8 +83,7 @@ static int copy_pmd(struct trans_pgd_inf
- 			if (copy_pte(info, dst_pmdp, src_pmdp, addr, next))
- 				return -ENOMEM;
- 		} else {
--			set_pmd(dst_pmdp,
--				__pmd(pmd_val(pmd) & ~PMD_SECT_RDONLY));
-+			set_pmd(dst_pmdp, pmd_mkvalid_k(pmd_mkwrite_novma(pmd)));
- 		}
- 	} while (dst_pmdp++, src_pmdp++, addr = next, addr != end);
- 
-@@ -145,8 +118,7 @@ static int copy_pud(struct trans_pgd_inf
- 			if (copy_pmd(info, dst_pudp, src_pudp, addr, next))
- 				return -ENOMEM;
- 		} else {
--			set_pud(dst_pudp,
--				__pud(pud_val(pud) & ~PUD_SECT_RDONLY));
-+			set_pud(dst_pudp, pud_mkvalid_k(pud_mkwrite_novma(pud)));
- 		}
- 	} while (dst_pudp++, src_pudp++, addr = next, addr != end);
- 
+ 	/* Check some debug related fields before encrypting the VMSA */
+ 	if (svm->vcpu.guest_debug || (svm->vmcb->save.dr7 & ~DR7_FIXED_1))
+ 		return -EINVAL;
 
 
 
