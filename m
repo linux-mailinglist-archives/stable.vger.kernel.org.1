@@ -1,466 +1,259 @@
-Return-Path: <stable+bounces-238825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238772-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8C0RIRkz5mlqtQEAu9opvQ
-	(envelope-from <stable+bounces-238825-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:07:21 +0200
+	id CAFGAeom5mmgsgEAu9opvQ
+	(envelope-from <stable+bounces-238772-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:15:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B26F942CA6E
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:07:20 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F26D42B6C2
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:15:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 321C4323E941
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 13:24:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4DC6C30D1A62
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 13:08:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CBA13B8D4B;
-	Mon, 20 Apr 2026 13:16:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 677123A0B3E;
+	Mon, 20 Apr 2026 13:08:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CruUGDRI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vdn0qKXl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C69603B8BB1;
-	Mon, 20 Apr 2026 13:16:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B33A3A0B1F
+	for <stable@vger.kernel.org>; Mon, 20 Apr 2026 13:08:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776691018; cv=none; b=r9D8+oNmU0v83tcF+9CF8aFSYxtUwjbVFZTxYunJbY1XrKuG/ONyrZiKtE9eAeCvyfjjTnFMreav+VMQuFh/uOyfy8UJlDFfyn5PkS6pcpuD6mEWwspYjrHC7A8vF6puf9uQL9ReN/8TAAxqFA1SypoWW/Ruq8JqnIVTuzv8Mnw=
+	t=1776690517; cv=none; b=JUQaqx1oRtMOTFhWtspK3Mxk/DDMv85ty+ndqE1QrLE4BcL4Pxppdfh2fXaGh1FDvPipbdO916/+ZKOxWhrp2MDm6D4FqmT+6vERZFnB4j97UkZAL64XBeDvcurvK+JTik01sQKknlfjU4ecxJ5Duc6BLkmjemES5IU5Q3tOiEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776691018; c=relaxed/simple;
-	bh=JstqvWirDuryhuf3EyWzGevVPhCeYRiqem/EiC9fIsQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Fs7zIkzNzbCy5mIFfcUfJxv1R8ODgVUdc2oxo+jQGqMPo1wxM/tQAXmygOJiyXxHj5fMQV+cULrRdfMdDDPqgxaDolLQByubvzh+pV6XzGNPRIxGSyJE4G2lUkaC8AJ8u0T1rO1KFG2uHHIFH7jXlPfZzZh5Nh57k4SRoxCJ2xc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CruUGDRI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B123BC19425;
-	Mon, 20 Apr 2026 13:16:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776691018;
-	bh=JstqvWirDuryhuf3EyWzGevVPhCeYRiqem/EiC9fIsQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CruUGDRIBrWZg8J/vLYVrvj+eQBp07rhLPfCamJ8Hc6qN2Ye+qzm4sGsr0Tsqd4fl
-	 apI2t+HFeuc8k2w/kBQujE0fY3bBk56lGSD1U/5AqPn2DZnFFotNLZIS/R40SUsEof
-	 1i/DrAN20Ia1AjzXw/YTcexV08q/gw+dWsMKBkF3A7Wa4u56MRYJJgLcusiFB2Fi7n
-	 3tQ0y7eqjheCzNofVbjpCV6WLiuvxSUcJUKXBIZDnf9HG4rgrjGQjrcNvgiELQuzHJ
-	 jypgd3Ir+PgFvxZ4Y8OxHXEd3v5/kTcgsoHQ+NKDb4Ip4VpUUeU/KUch9q5V0K4ANW
-	 0mDRCryF50QVA==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: =?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
-	Takashi Iwai <tiwai@suse.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>,
-	perex@perex.cz,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 7.0-5.15] ALSA: pcm: Serialize snd_pcm_suspend_all() with open_mutex
-Date: Mon, 20 Apr 2026 09:08:32 -0400
-Message-ID: <20260420131539.986432-46-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420131539.986432-1-sashal@kernel.org>
-References: <20260420131539.986432-1-sashal@kernel.org>
+	s=arc-20240116; t=1776690517; c=relaxed/simple;
+	bh=x6Q8flOO+mVt3Vs4njBvhbtw6LivCgChtCVcbwPhMUQ=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=N/4JYeUntWxJLFklmGS8IgsKztfa3uEsGvQt6ibmQaIF9yTZN5RS+KfkI8MLDQJnwqt+QelLfDEGmMIBugMO2rS4XqmP2DW3618wQKGN5mKoj8TzE0w9YfV6YsiMBkp8i8B/UbLULDwiM56s4nNfJh/hxIIC7ufjP75jlKa4aqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vdn0qKXl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88F26C19425;
+	Mon, 20 Apr 2026 13:08:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1776690516;
+	bh=x6Q8flOO+mVt3Vs4njBvhbtw6LivCgChtCVcbwPhMUQ=;
+	h=Subject:To:Cc:From:Date:From;
+	b=vdn0qKXlAEKf+GxX+gQIYf7r4HTGfNJD5N+E0giqSgj8jnVEeC8vnpQ8mpR1FwhFc
+	 AgJYiy8m2TIkj56eK6fmZ2yl6Mq9JTU8qZbediQsIDuLvYkIvmyhZQnQ5yY3hauMJm
+	 z8RJJH45lAQvD98dfO+W+w2VQPRkSTTjl2Cp9a7k=
+Subject: FAILED: patch "[PATCH] mm/pagewalk: fix race between concurrent split and refault" failed to apply to 6.19-stable tree
+To: mboone@akamai.com,akpm@linux-foundation.org,david@kernel.org,liam.howlett@oracle.com,ljs@kernel.org,mhocko@suse.com,rppt@kernel.org,stable@vger.kernel.org,surenb@google.com,vbabka@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 20 Apr 2026 15:08:33 +0200
+Message-ID: <2026042033-emote-enactment-a70e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 7.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmail.com,suse.com,suse.de,kernel.org,perex.cz,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-238825-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-238772-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FROM_NO_DN(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: B26F942CA6E
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+]
+X-Rspamd-Queue-Id: 3F26D42B6C2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
-
-[ Upstream commit 1a56641b7ae4f19216774a59d68024be3e6197d0 ]
-
-snd_pcm_suspend_all() walks all PCM substreams and uses a lockless
-runtime check to skip closed streams. It then calls snd_pcm_suspend()
-for each remaining substream and finally runs snd_pcm_sync_stop() in a
-second pass.
-
-The runtime lifetime is still controlled by pcm->open_mutex in the
-open/release path. That means a concurrent close can clear or free
-substream->runtime after the initial check in snd_pcm_suspend_all(),
-leaving the later suspend or sync-stop path to dereference a stale or
-NULL runtime pointer.
-
-Serialize snd_pcm_suspend_all() with pcm->open_mutex so the runtime
-pointer stays stable across both loops. This matches the existing PCM
-runtime lifetime rule already used by other core paths that access
-substream->runtime outside the stream lock.
-
-Suggested-by: Takashi Iwai <tiwai@suse.com>
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
-Link: https://patch.msgid.link/20260327-alsa-pcm-suspend-open-close-lock-v2-1-cc4baca4dcd6@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
-
-LLM Generated explanations, may be completely bogus:
-
-Here is my complete analysis:
-
----
-
-## PHASE 1: COMMIT MESSAGE FORENSICS
-
-### Step 1.1: Subject Line
-- **Subsystem**: `ALSA: pcm:` (ALSA PCM core)
-- **Action verb**: "Serialize" — implies fixing a synchronization issue
-  (race condition)
-- **Summary**: Serialize `snd_pcm_suspend_all()` with `open_mutex` to
-  prevent concurrent access
-
-Record: [ALSA PCM core] [Serialize] [Add mutex to prevent race between
-suspend and open/close]
-
-### Step 1.2: Tags
-- **Suggested-by: Takashi Iwai `<tiwai@suse.com>`** — Takashi Iwai is
-  the ALSA subsystem maintainer. He suggested this fix, which carries
-  enormous weight.
-- **Signed-off-by: Takashi Iwai `<tiwai@suse.de>`** — Maintainer also
-  signed off (committed it).
-- **Signed-off-by: Cássio Gabriel** — Author of the patch.
-- **Link:** to patch.msgid.link (v2 of the patch).
-- No Fixes: tag, no Reported-by, no Cc: stable — expected for autosel
-  candidates.
-
-Record: Fix suggested and committed by the subsystem maintainer (Takashi
-Iwai). This is the highest trust signal possible.
-
-### Step 1.3: Commit Body Analysis
-The commit describes:
-- **Bug**: `snd_pcm_suspend_all()` walks PCM substreams with a lockless
-  runtime check, then calls `snd_pcm_suspend()` and
-  `snd_pcm_sync_stop()`. A concurrent close can clear/free
-  `substream->runtime` via the open/close path (which uses
-  `pcm->open_mutex`).
-- **Failure mode**: Stale or NULL runtime pointer dereference —
-  crash/UAF.
-- **Fix approach**: Take `pcm->open_mutex` in `snd_pcm_suspend_all()`,
-  matching the existing PCM runtime lifetime rule.
-
-Record: UAF/NULL deref race during system suspend. Author explains clear
-mechanism.
-
-### Step 1.4: Hidden Bug Fix Detection
-This is NOT hidden — it's an explicit race condition fix. The code
-itself had a `/* FIXME: the open/close code should lock this as well */`
-comment acknowledging the bug.
-
----
-
-## PHASE 2: DIFF ANALYSIS
-
-### Step 2.1: Inventory
-- **Files changed**: 1 (`sound/core/pcm_native.c`)
-- **Lines**: +5 (including comment update), -1 (removing FIXME comment).
-  Net functional change: +1 line (`guard(mutex)(&pcm->open_mutex)`)
-- **Functions modified**: `snd_pcm_suspend_all()`
-- **Scope**: Single-file, single-function, surgical fix.
-
-### Step 2.2: Code Flow Change
-**Before**: `snd_pcm_suspend_all()` iterates substreams without any
-lock, checking `substream->runtime` and calling `snd_pcm_suspend()` /
-`snd_pcm_sync_stop()` unsynchronized with the open/close path.
-
-**After**: `guard(mutex)(&pcm->open_mutex)` is taken at function entry,
-serializing the entire function with the release path
-(`snd_pcm_release()` at line 2941 holds `open_mutex` around
-`snd_pcm_release_substream()`).
-
-### Step 2.3: Bug Mechanism
-**Category**: Race condition / Use-After-Free / NULL pointer dereference
-
-The race:
-1. Thread A (`snd_pcm_suspend_all`): checks `!substream->runtime` → sees
-   non-NULL
-2. Thread B (`snd_pcm_release`): under `open_mutex`, calls
-   `snd_pcm_detach_substream()` → sets `substream->runtime = NULL` →
-   `kfree(runtime)` (confirmed in `sound/core/pcm.c` lines 980-1003)
-3. Thread A: calls `snd_pcm_suspend(substream)` → dereferences
-   freed/NULL runtime → **CRASH**
-
-Second race window: the second loop calls `snd_pcm_sync_stop()` on ALL
-substreams, which accesses `substream->runtime` (line 641).
-
-### Step 2.4: Fix Quality
-- Obviously correct: takes the same mutex already used by open/close
-  paths.
-- Minimal: one functional line added.
-- Regression risk: Very low. The `open_mutex` is not taken in interrupt
-  context; `snd_pcm_suspend()` internally uses
-  `guard(pcm_stream_lock_irqsave)` which is a different lock, so no
-  deadlock risk. The mutex merely serializes with open/close.
-
----
-
-## PHASE 3: GIT HISTORY INVESTIGATION
-
-### Step 3.1: Blame
-The FIXME comment (`/* FIXME: the open/close code should lock this as
-well */`) was introduced in commit `8d19b4e0b377e2` (2021-02-06, "ALSA:
-pcm: Use for_each_pcm_substream() macro") by Takashi Iwai himself. The
-core `snd_pcm_suspend_all` function dates back to `1da177e4c3f41` (Linus
-Torvalds, 2005-04-16, the initial Linux tree).
-
-Record: The race has existed since v2.6.12 (original tree). It was made
-worse in v5.12 when `snd_pcm_sync_stop` loop was added (commit
-`2c87c1a49c9d`). The FIXME was planted by the maintainer acknowledging
-the bug.
-
-### Step 3.2: Fixes tag
-No Fixes: tag present. The race effectively has existed since the
-beginning.
-
-### Step 3.3: File History
-Recent changes to `pcm_native.c` include `guard()`-based locking
-conversions and race fixes (e.g., `93a81ca065775` "Fix race of buffer
-access at PCM OSS layer"). This shows the subsystem is actively being
-hardened for concurrency.
-
-### Step 3.4: Author
-Cássio Gabriel has one other commit in the sound subsystem. However, the
-fix was **suggested by Takashi Iwai** (ALSA maintainer) and **committed
-by Takashi Iwai**, giving it the highest credibility.
-
-### Step 3.5: Dependencies
-The fix uses `guard(mutex)` which requires the cleanup.h infrastructure
-(available since v6.5) and the guard conversions in pcm_native.c
-(`dd0da75b9a276`, available since v6.12). For older stable trees, a
-trivial adaptation to `mutex_lock`/`mutex_unlock` would be needed.
-
----
-
-## PHASE 4: MAILING LIST RESEARCH
-
-### Step 4.1-4.2: Patch Discussion
-b4 dig did not find the patch by commit hash (likely because this is on
-a v7.0 tree). The Link: tag points to `patch.msgid.link`, which
-redirected to lore.kernel.org but was blocked by anti-bot protection.
-However, the commit subject says "v2", indicating the patch went through
-at least two revisions. The maintainer (Takashi Iwai) suggested and
-committed the fix — the highest form of endorsement.
-
-### Step 4.3-4.5: Bug Report and Stable History
-No explicit bug report (no Reported-by:). This is a proactive fix based
-on code analysis (the FIXME comment). No prior stable discussion found.
-
----
-
-## PHASE 5: CODE SEMANTIC ANALYSIS
-
-### Step 5.1-5.2: Callers of `snd_pcm_suspend_all`
-- `sound/core/pcm.c:do_pcm_suspend()` — PM callback, called during
-  **system suspend**
-- `sound/soc/soc-core.c` — ASoC suspend
-- `sound/hda/common/codec.c` — HDA codec suspend
-- `sound/usb/usx2y/us144mkii.c` — USB audio suspend
-
-This is called on **every system suspend** for every PCM device. This
-means every laptop, desktop, or embedded system with audio is affected.
-
-### Step 5.3-5.4: Call Chain
-System suspend → `do_pcm_suspend()` → `snd_pcm_suspend_all()` → race
-with user-space closing audio fd → `snd_pcm_release()` → UAF/NULL deref.
-
-Trigger: Closing a laptop lid while an audio application is running.
-This is an extremely common scenario.
-
----
-
-## PHASE 6: STABLE TREE ANALYSIS
-
-### Step 6.1: Buggy Code in Stable
-The buggy code (unsynchronized runtime access in `snd_pcm_suspend_all`)
-has existed since v2.6.12. The `snd_pcm_sync_stop` second loop was added
-around v5.12. All active stable trees contain the buggy code.
-
-### Step 6.2: Backport Complications
-For v7.0 and v6.12+: should apply cleanly (same `guard()`
-infrastructure).
-For v6.6 and older: would need trivial adaptation from `guard(mutex)` to
-`mutex_lock`/`mutex_unlock`.
-
----
-
-## PHASE 7: SUBSYSTEM CONTEXT
-
-### Step 7.1: Subsystem Criticality
-- **Subsystem**: ALSA PCM core (`sound/core/`)
-- **Criticality**: IMPORTANT — affects every system with audio hardware
-  (virtually all Linux systems)
-
-### Step 7.2: Activity
-Very actively maintained by Takashi Iwai. Recent commits show ongoing
-concurrency hardening.
-
----
-
-## PHASE 8: IMPACT AND RISK ASSESSMENT
-
-### Step 8.1: Who Is Affected
-Every Linux system with audio hardware (virtually universal).
-
-### Step 8.2: Trigger Conditions
-System suspend while an audio stream is being closed. This is a common
-scenario on laptops (lid close while music playing). The race window is
-between checking `substream->runtime` and using it — a narrow but real
-window.
-
-### Step 8.3: Failure Mode Severity
-NULL pointer dereference or use-after-free → **kernel oops/crash during
-suspend**. Severity: **CRITICAL**.
-
-### Step 8.4: Risk-Benefit
-- **Benefit**: HIGH — prevents kernel crash during suspend for all
-  audio-capable systems
-- **Risk**: VERY LOW — one functional line, uses existing mutex already
-  employed by the open/close paths, no deadlock risk, suggested and
-  committed by the subsystem maintainer
-- **Ratio**: Strongly favorable
-
----
-
-## PHASE 9: FINAL SYNTHESIS
-
-### Step 9.1: Evidence Summary
-
-**FOR backporting:**
-- Fixes a real race condition (UAF / NULL deref) acknowledged by a FIXME
-  comment from the subsystem maintainer
-- Fix was suggested and committed by Takashi Iwai (ALSA maintainer)
-- Minimal change: 1 functional line added
-- Affects every system with audio during system suspend
-- Failure mode is kernel crash (CRITICAL severity)
-- Uses existing locking infrastructure already in use by the same code
-  paths
-- Second revision (v2), showing review iteration
-
-**AGAINST backporting:**
-- No user-reported crash (proactive fix based on code analysis)
-- May need minor adaptation for older stable trees (guard →
-  mutex_lock/unlock)
-
-### Step 9.2: Stable Rules Checklist
-1. Obviously correct and tested? **YES** — suggested by maintainer, uses
-   existing mutex pattern
-2. Fixes a real bug? **YES** — race between suspend and release, FIXME
-   acknowledged the issue
-3. Important issue? **YES** — UAF/NULL deref → kernel crash during
-   suspend
-4. Small and contained? **YES** — 1 functional line in 1 function in 1
-   file
-5. No new features or APIs? **YES** — pure synchronization fix
-6. Can apply to stable? **YES** — clean for 6.12+, trivial adaptation
-   for older
-
-### Step 9.3: Exception Categories
-Not an exception — this is a standard race condition fix, a core stable
-candidate.
-
-### Step 9.4: Decision
-This is a textbook stable fix: a single-line mutex acquisition that
-prevents a UAF/NULL deref race during system suspend, suggested and
-committed by the subsystem maintainer, fixing a longstanding FIXME.
-
----
-
-## Verification
-
-- [Phase 1] Parsed tags: Suggested-by and Signed-off-by from Takashi
-  Iwai (ALSA maintainer)
-- [Phase 2] Diff analysis: +1 functional line
-  (`guard(mutex)(&pcm->open_mutex)`), removes 1-line FIXME comment
-- [Phase 2] Verified `snd_pcm_sync_stop()` accesses `substream->runtime`
-  at line 641 without lock
-- [Phase 2] Verified `snd_pcm_detach_substream()` sets
-  `substream->runtime = NULL` and `kfree(runtime)` at lines 997-1003 of
-  `sound/core/pcm.c`
-- [Phase 2] Verified `snd_pcm_release()` holds `open_mutex` around
-  `snd_pcm_release_substream()` at line 2941
-- [Phase 3] git blame: FIXME comment introduced by Takashi Iwai in
-  `8d19b4e0b377e2` (2021-02-06), core function from `1da177e4c3f41`
-  (2005)
-- [Phase 3] `snd_pcm_sync_stop` loop added in `2c87c1a49c9d11` ("Assure
-  sync with pending stop operation at suspend", 2021)
-- [Phase 3] `guard()` infrastructure for pcm_native.c in `dd0da75b9a276`
-  (v6.12+)
-- [Phase 4] b4 dig: did not find match (this is a v7.0 tree). Link: in
-  commit points to v2 of the patch.
-- [Phase 5] Callers: `do_pcm_suspend()` (PM callback), soc-core, HDA
-  codec, USB audio — called on every system suspend
-- [Phase 6] Buggy code present in all active stable trees (since
-  v2.6.12)
-- [Phase 7] ALSA PCM core — affects virtually all Linux systems with
-  audio
-- [Phase 8] Failure mode: NULL deref or UAF during system suspend →
-  kernel crash (CRITICAL)
-
-**YES**
-
- sound/core/pcm_native.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/sound/core/pcm_native.c b/sound/core/pcm_native.c
-index 5a64453da7283..1ccc482a8dfd3 100644
---- a/sound/core/pcm_native.c
-+++ b/sound/core/pcm_native.c
-@@ -1761,6 +1761,9 @@ static int snd_pcm_suspend(struct snd_pcm_substream *substream)
-  * snd_pcm_suspend_all - trigger SUSPEND to all substreams in the given pcm
-  * @pcm: the PCM instance
-  *
-+ * Takes and releases pcm->open_mutex to serialize against
-+ * concurrent open/close while walking the substreams.
-+ *
-  * After this call, all streams are changed to SUSPENDED state.
-  *
-  * Return: Zero if successful (or @pcm is %NULL), or a negative error code.
-@@ -1773,8 +1776,9 @@ int snd_pcm_suspend_all(struct snd_pcm *pcm)
- 	if (! pcm)
- 		return 0;
+
+The patch below does not apply to the 6.19-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.19.y
+git checkout FETCH_HEAD
+git cherry-pick -x 9b25a6e3d243a8ce14eeaf74082c621a9944c776
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026042033-emote-enactment-a70e@gregkh' --subject-prefix 'PATCH 6.19.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 9b25a6e3d243a8ce14eeaf74082c621a9944c776 Mon Sep 17 00:00:00 2001
+From: Max Boone <mboone@akamai.com>
+Date: Wed, 25 Mar 2026 10:59:16 +0100
+Subject: [PATCH] mm/pagewalk: fix race between concurrent split and refault
+
+The splitting of a PUD entry in walk_pud_range() can race with a
+concurrent thread refaulting the PUD leaf entry causing it to try walking
+a PMD range that has disappeared.
+
+An example and reproduction of this is to try reading numa_maps of a
+process while VFIO-PCI is setting up DMA (specifically the
+vfio_pin_pages_remote call) on a large BAR for that process.
+
+This will trigger a kernel BUG:
+vfio-pci 0000:03:00.0: enabling device (0000 -> 0002)
+BUG: unable to handle page fault for address: ffffa23980000000
+PGD 0 P4D 0
+Oops: Oops: 0000 [#1] SMP NOPTI
+...
+RIP: 0010:walk_pgd_range+0x3b5/0x7a0
+Code: 8d 43 ff 48 89 44 24 28 4d 89 ce 4d 8d a7 00 00 20 00 48 8b 4c 24
+28 49 81 e4 00 00 e0 ff 49 8d 44 24 ff 48 39 c8 4c 0f 43 e3 <49> f7 06
+   9f ff ff ff 75 3b 48 8b 44 24 20 48 8b 40 28 48 85 c0 74
+RSP: 0018:ffffac23e1ecf808 EFLAGS: 00010287
+RAX: 00007f44c01fffff RBX: 00007f4500000000 RCX: 00007f44ffffffff
+RDX: 0000000000000000 RSI: 000ffffffffff000 RDI: ffffffff93378fe0
+RBP: ffffac23e1ecf918 R08: 0000000000000004 R09: ffffa23980000000
+R10: 0000000000000020 R11: 0000000000000004 R12: 00007f44c0200000
+R13: 00007f44c0000000 R14: ffffa23980000000 R15: 00007f44c0000000
+FS:  00007fe884739580(0000) GS:ffff9b7d7a9c0000(0000)
+knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffffa23980000000 CR3: 000000c0650e2005 CR4: 0000000000770ef0
+PKRU: 55555554
+Call Trace:
+ <TASK>
+ __walk_page_range+0x195/0x1b0
+ walk_page_vma+0x62/0xc0
+ show_numa_map+0x12b/0x3b0
+ seq_read_iter+0x297/0x440
+ seq_read+0x11d/0x140
+ vfs_read+0xc2/0x340
+ ksys_read+0x5f/0xe0
+ do_syscall_64+0x68/0x130
+ ? get_page_from_freelist+0x5c2/0x17e0
+ ? mas_store_prealloc+0x17e/0x360
+ ? vma_set_page_prot+0x4c/0xa0
+ ? __alloc_pages_noprof+0x14e/0x2d0
+ ? __mod_memcg_lruvec_state+0x8d/0x140
+ ? __lruvec_stat_mod_folio+0x76/0xb0
+ ? __folio_mod_stat+0x26/0x80
+ ? do_anonymous_page+0x705/0x900
+ ? __handle_mm_fault+0xa8d/0x1000
+ ? __count_memcg_events+0x53/0xf0
+ ? handle_mm_fault+0xa5/0x360
+ ? do_user_addr_fault+0x342/0x640
+ ? arch_exit_to_user_mode_prepare.constprop.0+0x16/0xa0
+ ? irqentry_exit_to_user_mode+0x24/0x100
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+RIP: 0033:0x7fe88464f47e
+Code: c0 e9 b6 fe ff ff 50 48 8d 3d be 07 0b 00 e8 69 01 02 00 66 0f 1f
+84 00 00 00 00 00 64 8b 04 25 18 00 00 00 85 c0 75 14 0f 05 <48> 3d 00
+   f0 ff ff 77 5a c3 66 0f 1f 84 00 00 00 00 00 48 83 ec 28
+RSP: 002b:00007ffe6cd9a9b8 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
+RAX: ffffffffffffffda RBX: 0000000000020000 RCX: 00007fe88464f47e
+RDX: 0000000000020000 RSI: 00007fe884543000 RDI: 0000000000000003
+RBP: 00007fe884543000 R08: 00007fe884542010 R09: 0000000000000000
+R10: fffffffffffffbc5 R11: 0000000000000246 R12: 0000000000000000
+R13: 0000000000000003 R14: 0000000000020000 R15: 0000000000020000
+ </TASK>
+
+Fix this by validating the PUD entry in walk_pmd_range() using a stable
+snapshot (pudp_get()).  If the PUD is not present or is a leaf, retry the
+walk via ACTION_AGAIN instead of descending further.  This mirrors the
+retry logic in walk_pte_range(), which lets walk_pmd_range() retry if the
+PTE is not being got by pte_offset_map_lock().
+
+Link: https://lkml.kernel.org/r/20260325-pagewalk-check-pmd-refault-v2-1-707bff33bc60@akamai.com
+Fixes: f9e54c3a2f5b ("vfio/pci: implement huge_fault support")
+Co-developed-by: David Hildenbrand (Arm) <david@kernel.org>
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Signed-off-by: Max Boone <mboone@akamai.com>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+
+diff --git a/mm/pagewalk.c b/mm/pagewalk.c
+index cb358558807c..3ae2586ff45b 100644
+--- a/mm/pagewalk.c
++++ b/mm/pagewalk.c
+@@ -96,6 +96,7 @@ static int walk_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
+ static int walk_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
+ 			  struct mm_walk *walk)
+ {
++	pud_t pudval = pudp_get(pud);
+ 	pmd_t *pmd;
+ 	unsigned long next;
+ 	const struct mm_walk_ops *ops = walk->ops;
+@@ -104,6 +105,24 @@ static int walk_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
+ 	int err = 0;
+ 	int depth = real_depth(3);
  
-+	guard(mutex)(&pcm->open_mutex);
++	/*
++	 * For PTE handling, pte_offset_map_lock() takes care of checking
++	 * whether there actually is a page table. But it also has to be
++	 * very careful about concurrent page table reclaim.
++	 *
++	 * Similarly, we have to be careful here - a PUD entry that points
++	 * to a PMD table cannot go away, so we can just walk it. But if
++	 * it's something else, we need to ensure we didn't race something,
++	 * so need to retry.
++	 *
++	 * A pertinent example of this is a PUD refault after PUD split -
++	 * we will need to split again or risk accessing invalid memory.
++	 */
++	if (!pud_present(pudval) || pud_leaf(pudval)) {
++		walk->action = ACTION_AGAIN;
++		return 0;
++	}
 +
- 	for_each_pcm_substream(pcm, stream, substream) {
--		/* FIXME: the open/close code should lock this as well */
- 		if (!substream->runtime)
- 			continue;
+ 	pmd = pmd_offset(pud, addr);
+ 	do {
+ again:
+@@ -217,12 +236,12 @@ static int walk_pud_range(p4d_t *p4d, unsigned long addr, unsigned long end,
+ 		else if (pud_leaf(*pud) || !pud_present(*pud))
+ 			continue; /* Nothing to do. */
  
--- 
-2.53.0
+-		if (pud_none(*pud))
+-			goto again;
+-
+ 		err = walk_pmd_range(pud, addr, next, walk);
+ 		if (err)
+ 			break;
++
++		if (walk->action == ACTION_AGAIN)
++			goto again;
+ 	} while (pud++, addr = next, addr != end);
+ 
+ 	return err;
 
 
