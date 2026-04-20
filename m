@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-239827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239678-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eDbfOq9o5mnBvwEAu9opvQ
-	(envelope-from <stable+bounces-239827-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:55:59 +0200
+	id EPdOCXtO5mkgugEAu9opvQ
+	(envelope-from <stable+bounces-239678-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:04:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D286432499
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:55:59 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id D384042EE9F
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:04:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1C446371B9A7
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:08:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 999A0300AC8D
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:02:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A13B8342510;
-	Mon, 20 Apr 2026 16:08:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74CA333DEDF;
+	Mon, 20 Apr 2026 16:02:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r48jJrdD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="esWCPtCo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6520A341077;
-	Mon, 20 Apr 2026 16:08:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 370852E36F8;
+	Mon, 20 Apr 2026 16:02:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701317; cv=none; b=Si9VmpgNeI9t1eb5guk7Ht2i7hngVT3xHp2UyZF4a+iB1k8E/YigI26tkJnYRXIqN0FE+u7WLSLRgFFbyJRPM4flnG1ttIR/k3BKsjKq3kaGL7Kd/IjTaMJwqsUhlnlcfhY+a82a6fZ+lDebXjgcaD6G4kMQ3eCvDcAgABJGYBM=
+	t=1776700939; cv=none; b=FUJ4SbDK2r/8h7hyxfFhUeL4J4VLtPIRmK3o/gNk9KsRM8zQBIwLiLaZPJZAfNgj7CuBM9RofN0Tmv8WcBR+vFc2RDBphCxQnOYSdiFjRSzlozeeXu/qvPiUCKVTuJlj9OtrS7LzgWTegv56tWdcIFUuZ7yRLPDBWw41L/bCzXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701317; c=relaxed/simple;
-	bh=3RMkqj54O6eqylpxMLf8i+nbOZqJ9P8wItv0r5YPUYk=;
+	s=arc-20240116; t=1776700939; c=relaxed/simple;
+	bh=uAHAjz1zyYgkosBvHstyMktqA2rKimeGuFKa3Dzw3OQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RiOYe+xmCH41v0C0C2C21o7PXUeEoOmzpsukDuMcP9OdLWKSxybQ3ELKbyiACm+OTxBbcPEBHr5u9KHFAkg1EkXg1NiC/VbqjSxNKCxpfFt8T3XGwvp9+Adpptpg06Z0Xm3+AVbEuxFPUc543jrxbGAD+iOGTrhRm0KpsWWhHbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r48jJrdD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7E2BC2BCB4;
-	Mon, 20 Apr 2026 16:08:36 +0000 (UTC)
+	 MIME-Version; b=nvXrZnSA0wcayTRG6y1slCbjw4sksUVnkoR1WxH5WTZ0BtlW4TLOJbAgR+P2EWqIdEU0/2FAOyiIFcUa7gos7O8Z1eabWYkTRJcCGz0cDWsvPDKpEG44E93QmmgVVCo+WCjKsxWWtcxOoxPpsTaoPq3v37GSxWpBW2+lF4SiYe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=esWCPtCo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2510C19425;
+	Mon, 20 Apr 2026 16:02:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701317;
-	bh=3RMkqj54O6eqylpxMLf8i+nbOZqJ9P8wItv0r5YPUYk=;
+	s=korg; t=1776700939;
+	bh=uAHAjz1zyYgkosBvHstyMktqA2rKimeGuFKa3Dzw3OQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r48jJrdDFXshhmPbXxxg/2WaDqgrI0Z3sqK6zKwnEOQ8MfjwEiivi7cjHE2ZxvW7A
-	 mWYmtC1eGxpd1sMUhq47e6+GT17FYKbIyZW3uAqHwpLtnqUuk+GgIhss7ZgdTbcQoc
-	 AiGVL61skZLZ8LtO+QpEucSfDd7Nc2LN5wgGoN8s=
+	b=esWCPtCot4+rvPq1J6a6xb6l5UhrKhFK9scKgHSQQpcOJowP9ixAb52Pxc4HtCySZ
+	 p4rIwi7fDQDYHAj6Yh/Ber4il6+2eRXgF6lZRrJp8tcIHROqU3qZN46KXsRca7ttzi
+	 Gm+GiR6rUnDLNIjORgGpBLrgMgNTKQhpL46+AzTw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kotlyarov Mihail <mihailkotlyarow@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
+	syzbot+d23888375c2737c17ba5@syzkaller.appspotmail.com,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 066/162] xfrm: fix refcount leak in xfrm_migrate_policy_find
+Subject: [PATCH 6.18 119/198] crypto: af_alg - Fix page reassignment overflow in af_alg_pull_tsgl
 Date: Mon, 20 Apr 2026 17:41:38 +0200
-Message-ID: <20260420153929.426971643@linuxfoundation.org>
+Message-ID: <20260420153939.890702567@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
-References: <20260420153927.006696811@linuxfoundation.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,86 +64,78 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,secunet.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-239827-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239678-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable,d23888375c2737c17ba5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[secunet.com:email,strlen.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 6D286432499
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,apana.org.au:email,appspotmail.com:email]
+X-Rspamd-Queue-Id: D384042EE9F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kotlyarov Mihail <mihailkotlyarow@gmail.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit 83317cce60a032c49480dcdabe146435bd689d03 ]
+[ Upstream commit 31d00156e50ecad37f2cb6cbf04aaa9a260505ef ]
 
-syzkaller reported a memory leak in xfrm_policy_alloc:
+When page reassignment was added to af_alg_pull_tsgl the original
+loop wasn't updated so it may try to reassign one more page than
+necessary.
 
-  BUG: memory leak
-  unreferenced object 0xffff888114d79000 (size 1024):
-    comm "syz.1.17", pid 931
-    ...
-    xfrm_policy_alloc+0xb3/0x4b0 net/xfrm/xfrm_policy.c:432
+Add the check to the reassignment so that this does not happen.
 
-The root cause is a double call to xfrm_pol_hold_rcu() in
-xfrm_migrate_policy_find(). The lookup function already returns
-a policy with held reference, making the second call redundant.
+Also update the comment which still refers to the obsolete offset
+argument.
 
-Remove the redundant xfrm_pol_hold_rcu() call to fix the refcount
-imbalance and prevent the memory leak.
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Fixes: 563d5ca93e88 ("xfrm: switch migrate to xfrm_policy_lookup_bytype")
-Signed-off-by: Kotlyarov Mihail <mihailkotlyarow@gmail.com>
-Reviewed-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Reported-by: syzbot+d23888375c2737c17ba5@syzkaller.appspotmail.com
+Fixes: e870456d8e7c ("crypto: algif_skcipher - overhaul memory management")
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/xfrm/xfrm_policy.c | 3 ---
- 1 file changed, 3 deletions(-)
+ crypto/af_alg.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
-index 5fa648a5abe96..fca07f8e60749 100644
---- a/net/xfrm/xfrm_policy.c
-+++ b/net/xfrm/xfrm_policy.c
-@@ -4516,9 +4516,6 @@ static struct xfrm_policy *xfrm_migrate_policy_find(const struct xfrm_selector *
- 	pol = xfrm_policy_lookup_bytype(net, type, &fl, sel->family, dir, if_id);
- 	if (IS_ERR_OR_NULL(pol))
- 		goto out_unlock;
--
--	if (!xfrm_pol_hold_rcu(pol))
--		pol = NULL;
- out_unlock:
- 	rcu_read_unlock();
- 	return pol;
+diff --git a/crypto/af_alg.c b/crypto/af_alg.c
+index 6867d177f2a2d..b61c3ba126ed1 100644
+--- a/crypto/af_alg.c
++++ b/crypto/af_alg.c
+@@ -705,8 +705,8 @@ void af_alg_pull_tsgl(struct sock *sk, size_t used, struct scatterlist *dst)
+ 			 * Assumption: caller created af_alg_count_tsgl(len)
+ 			 * SG entries in dst.
+ 			 */
+-			if (dst) {
+-				/* reassign page to dst after offset */
++			if (dst && plen) {
++				/* reassign page to dst */
+ 				get_page(page);
+ 				sg_set_page(dst + j, page, plen, sg[i].offset);
+ 				j++;
 -- 
 2.53.0
 
