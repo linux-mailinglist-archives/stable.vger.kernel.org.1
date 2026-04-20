@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-239476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239814-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ECSXG9hk5mkKvwEAu9opvQ
-	(envelope-from <stable+bounces-239476-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:39:36 +0200
+	id oMlQLJBo5mnBvwEAu9opvQ
+	(envelope-from <stable+bounces-239814-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:55:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB558431B38
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:39:35 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34AB0432464
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:55:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A6DE631BC7B9
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:52:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 92DFC33E5BE2
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:08:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59AEE3358B0;
-	Mon, 20 Apr 2026 15:52:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5104233B6EF;
+	Mon, 20 Apr 2026 16:08:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NYRbp/b/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I9UH4nX3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C58D2E093A;
-	Mon, 20 Apr 2026 15:52:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 140BD3264F1;
+	Mon, 20 Apr 2026 16:08:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700351; cv=none; b=k2ABuX9SbNS8B5t6fx3benTPcPJ+rsdiCXN3YEqxSH2OetaKeP8gbogXoF7ulmyMmniGunIVG4MrA8b7bl8EcAEuJjP4Jq5lmZMy7CrPJUfAQe+U2V907kUZYfDOPW+CfPcIPWgQGLcw2rMYMKyPdU7J2G83PxPS95I8fE3LFuc=
+	t=1776701284; cv=none; b=o3ikZ1oDIhKDUHdBV5ar5B8lFMrY1o4AgGh2oV74M3eTq24XyfE62P7gqX14DtREnGOFLiM5SSsMUu/QwYO058JrMd81dI8Uy90sgW643rNtswjvk7mEZoEnN3GmRGXKldVVqdWk1/BDzavL02LPR7LWFLqOLDz25yXdNd5xUy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700351; c=relaxed/simple;
-	bh=S3XPa8HCbByxMR/waqwGh2HTGbJGyEIkH35u3sss8mg=;
+	s=arc-20240116; t=1776701284; c=relaxed/simple;
+	bh=tjlqBejakTbcgR4B5gF5n6QX0KmlmaI1A+52sLQQYv4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qEFaFujXLGAvgJSc8lB8J5onYtvHDIHTixj83CJeF9/gyboHZ/V+Miazpze1HubQsU83FSxZ6As/OjcDWxFDHplHYFYIPDvzVNs3+GMJvIxwiAxcK2IoQo2wq9KoJFCJX+XzH0ruNK8mN0VMH5lqr9JBXoQoiW0XH+DZH2fQuuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NYRbp/b/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A62C1C19425;
-	Mon, 20 Apr 2026 15:52:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qzh7mpE8QA9CwM6rTagE/p2oGvxB1OeetWabKkO6z82xyuLSNMvfY02TmyC4GalRRUoPYoyTKxJg3A0e7uSzOy8Sydc8y0E78AcLOiutqa4xKnxP7VM9jfC154LiA64TCxyooyzKJHVyBWbt23pXCDxR5h984Bmni/mqHuYZlDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I9UH4nX3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EBC6C19425;
+	Mon, 20 Apr 2026 16:08:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700351;
-	bh=S3XPa8HCbByxMR/waqwGh2HTGbJGyEIkH35u3sss8mg=;
+	s=korg; t=1776701284;
+	bh=tjlqBejakTbcgR4B5gF5n6QX0KmlmaI1A+52sLQQYv4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NYRbp/b/HfEgAL49UOQmHHU+7nz2XQSHjYWu2urfw4n9eJ+SSQvEO7T5o1d9dCxkM
-	 TmUemnMa5pkiuWTawdTvvYDo+7xHa2xyYhKQgHzxcj1L+BxDHg61cSguGBSXJKOvON
-	 pg1H/xlRHvVV5etw3ZR/CdnP2I26C6dsgdclaDpo=
+	b=I9UH4nX3d9AoZauy4MOHBjEFaes6ZMRUpJgmc5r/31lgX0aBNULhdszVlF9Okj6JT
+	 xmzYgURcl5LQe4fI1Ql66oQ52RHREdjV/1Z6ZGCrXZl2/tGDf5KJ4FackQx2PC6Ct2
+	 o+6RQ7uoFepaz/7ez66Nb2FM28qC3D4f+/VhjXr8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Calvin Owens <calvin@wbinvd.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Borislav Petkov <bp@alien8.de>,
+	Melissa Wen <mwen@igalia.com>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 137/220] clockevents: Prevent timer interrupt starvation
+Subject: [PATCH 6.12 046/162] drm/vc4: Fix a memory leak in hang state error path
 Date: Mon, 20 Apr 2026 17:41:18 +0200
-Message-ID: <20260420153938.958323014@linuxfoundation.org>
+Message-ID: <20260420153928.695375033@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
-References: <20260420153934.013228280@linuxfoundation.org>
+In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
+References: <20260420153927.006696811@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,252 +63,105 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239476-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239814-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,wbinvd.org:email,alien8.de:email]
-X-Rspamd-Queue-Id: CB558431B38
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[igalia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 34AB0432464
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@kernel.org>
+From: Maíra Canal <mcanal@igalia.com>
 
-[ Upstream commit d6e152d905bdb1f32f9d99775e2f453350399a6a ]
+[ Upstream commit 9525d169e5fd481538cf8c663cc5839e54f2e481 ]
 
-Calvin reported an odd NMI watchdog lockup which claims that the CPU locked
-up in user space. He provided a reproducer, which sets up a timerfd based
-timer and then rearms it in a loop with an absolute expiry time of 1ns.
+When vc4_save_hang_state() encounters an early return condition, it
+returns without freeing the previously allocated `kernel_state`,
+leaking memory.
 
-As the expiry time is in the past, the timer ends up as the first expiring
-timer in the per CPU hrtimer base and the clockevent device is programmed
-with the minimum delta value. If the machine is fast enough, this ends up
-in a endless loop of programming the delta value to the minimum value
-defined by the clock event device, before the timer interrupt can fire,
-which starves the interrupt and consequently triggers the lockup detector
-because the hrtimer callback of the lockup mechanism is never invoked.
+Add the missing kfree() calls by consolidating the early return paths
+into a single place.
 
-As a first step to prevent this, avoid reprogramming the clock event device
-when:
-     - a forced minimum delta event is pending
-     - the new expiry delta is less then or equal to the minimum delta
-
-Thanks to Calvin for providing the reproducer and to Borislav for testing
-and providing data from his Zen5 machine.
-
-The problem is not limited to Zen5, but depending on the underlying
-clock event device (e.g. TSC deadline timer on Intel) and the CPU speed
-not necessarily observable.
-
-This change serves only as the last resort and further changes will be made
-to prevent this scenario earlier in the call chain as far as possible.
-
-[ tglx: Updated to restore the old behaviour vs. !force and delta <= 0 and
-  	fixed up the tick-broadcast handlers as pointed out by Borislav ]
-
-Fixes: d316c57ff6bf ("[PATCH] clockevents: add core functionality")
-Reported-by: Calvin Owens <calvin@wbinvd.org>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Tested-by: Calvin Owens <calvin@wbinvd.org>
-Tested-by: Borislav Petkov <bp@alien8.de>
-Link: https://lore.kernel.org/lkml/acMe-QZUel-bBYUh@mozart.vkv.me/
-Link: https://patch.msgid.link/20260407083247.562657657@kernel.org
+Fixes: 214613656b51 ("drm/vc4: Add an interface for capturing the GPU state after a hang.")
+Reviewed-by: Melissa Wen <mwen@igalia.com>
+Link: https://patch.msgid.link/20260330-vc4-misc-fixes-v1-3-92defc940a29@igalia.com
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/clockchips.h   |  2 ++
- kernel/time/clockevents.c    | 27 +++++++++++++++++++--------
- kernel/time/hrtimer.c        |  1 +
- kernel/time/tick-broadcast.c |  8 +++++++-
- kernel/time/tick-common.c    |  1 +
- kernel/time/tick-sched.c     |  1 +
- 6 files changed, 31 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/vc4/vc4_gem.c | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/include/linux/clockchips.h b/include/linux/clockchips.h
-index b0df28ddd394b..50cdc9da8d32a 100644
---- a/include/linux/clockchips.h
-+++ b/include/linux/clockchips.h
-@@ -80,6 +80,7 @@ enum clock_event_state {
-  * @shift:		nanoseconds to cycles divisor (power of two)
-  * @state_use_accessors:current state of the device, assigned by the core code
-  * @features:		features
-+ * @next_event_forced:	True if the last programming was a forced event
-  * @retries:		number of forced programming retries
-  * @set_state_periodic:	switch state to periodic
-  * @set_state_oneshot:	switch state to oneshot
-@@ -108,6 +109,7 @@ struct clock_event_device {
- 	u32			shift;
- 	enum clock_event_state	state_use_accessors;
- 	unsigned int		features;
-+	unsigned int		next_event_forced;
- 	unsigned long		retries;
+diff --git a/drivers/gpu/drm/vc4/vc4_gem.c b/drivers/gpu/drm/vc4/vc4_gem.c
+index 373d310c7b6a5..62d19601ef356 100644
+--- a/drivers/gpu/drm/vc4/vc4_gem.c
++++ b/drivers/gpu/drm/vc4/vc4_gem.c
+@@ -169,10 +169,8 @@ vc4_save_hang_state(struct drm_device *dev)
+ 	spin_lock_irqsave(&vc4->job_lock, irqflags);
+ 	exec[0] = vc4_first_bin_job(vc4);
+ 	exec[1] = vc4_first_render_job(vc4);
+-	if (!exec[0] && !exec[1]) {
+-		spin_unlock_irqrestore(&vc4->job_lock, irqflags);
+-		return;
+-	}
++	if (!exec[0] && !exec[1])
++		goto err_free_state;
  
- 	int			(*set_state_periodic)(struct clock_event_device *);
-diff --git a/kernel/time/clockevents.c b/kernel/time/clockevents.c
-index eaae1ce9f0600..38570998a19b8 100644
---- a/kernel/time/clockevents.c
-+++ b/kernel/time/clockevents.c
-@@ -172,6 +172,7 @@ void clockevents_shutdown(struct clock_event_device *dev)
- {
- 	clockevents_switch_state(dev, CLOCK_EVT_STATE_SHUTDOWN);
- 	dev->next_event = KTIME_MAX;
-+	dev->next_event_forced = 0;
- }
+ 	/* Get the bos from both binner and renderer into hang state. */
+ 	state->bo_count = 0;
+@@ -189,10 +187,8 @@ vc4_save_hang_state(struct drm_device *dev)
+ 	kernel_state->bo = kcalloc(state->bo_count,
+ 				   sizeof(*kernel_state->bo), GFP_ATOMIC);
  
- /**
-@@ -305,7 +306,6 @@ int clockevents_program_event(struct clock_event_device *dev, ktime_t expires,
- {
- 	unsigned long long clc;
- 	int64_t delta;
--	int rc;
+-	if (!kernel_state->bo) {
+-		spin_unlock_irqrestore(&vc4->job_lock, irqflags);
+-		return;
+-	}
++	if (!kernel_state->bo)
++		goto err_free_state;
  
- 	if (WARN_ON_ONCE(expires < 0))
- 		return -ETIME;
-@@ -324,16 +324,27 @@ int clockevents_program_event(struct clock_event_device *dev, ktime_t expires,
- 		return dev->set_next_ktime(expires, dev);
- 
- 	delta = ktime_to_ns(ktime_sub(expires, ktime_get()));
--	if (delta <= 0)
--		return force ? clockevents_program_min_delta(dev) : -ETIME;
- 
--	delta = min(delta, (int64_t) dev->max_delta_ns);
--	delta = max(delta, (int64_t) dev->min_delta_ns);
-+	/* Required for tick_periodic() during early boot */
-+	if (delta <= 0 && !force)
-+		return -ETIME;
-+
-+	if (delta > (int64_t)dev->min_delta_ns) {
-+		delta = min(delta, (int64_t) dev->max_delta_ns);
-+		clc = ((unsigned long long) delta * dev->mult) >> dev->shift;
-+		if (!dev->set_next_event((unsigned long) clc, dev))
-+			return 0;
-+	}
- 
--	clc = ((unsigned long long) delta * dev->mult) >> dev->shift;
--	rc = dev->set_next_event((unsigned long) clc, dev);
-+	if (dev->next_event_forced)
-+		return 0;
- 
--	return (rc && force) ? clockevents_program_min_delta(dev) : rc;
-+	if (dev->set_next_event(dev->min_delta_ticks, dev)) {
-+		if (!force || clockevents_program_min_delta(dev))
-+			return -ETIME;
-+	}
-+	dev->next_event_forced = 1;
-+	return 0;
- }
- 
- /*
-diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
-index 84c8ab2a0cebf..141b2beac63a4 100644
---- a/kernel/time/hrtimer.c
-+++ b/kernel/time/hrtimer.c
-@@ -1880,6 +1880,7 @@ void hrtimer_interrupt(struct clock_event_device *dev)
- 	BUG_ON(!cpu_base->hres_active);
- 	cpu_base->nr_events++;
- 	dev->next_event = KTIME_MAX;
-+	dev->next_event_forced = 0;
- 
- 	raw_spin_lock_irqsave(&cpu_base->lock, flags);
- 	entry_time = now = hrtimer_update_base(cpu_base);
-diff --git a/kernel/time/tick-broadcast.c b/kernel/time/tick-broadcast.c
-index f63c65881364d..7e57fa31ee26f 100644
---- a/kernel/time/tick-broadcast.c
-+++ b/kernel/time/tick-broadcast.c
-@@ -76,8 +76,10 @@ const struct clock_event_device *tick_get_wakeup_device(int cpu)
-  */
- static void tick_broadcast_start_periodic(struct clock_event_device *bc)
- {
--	if (bc)
-+	if (bc) {
-+		bc->next_event_forced = 0;
- 		tick_setup_periodic(bc, 1);
-+	}
- }
- 
- /*
-@@ -403,6 +405,7 @@ static void tick_handle_periodic_broadcast(struct clock_event_device *dev)
- 	bool bc_local;
- 
- 	raw_spin_lock(&tick_broadcast_lock);
-+	tick_broadcast_device.evtdev->next_event_forced = 0;
- 
- 	/* Handle spurious interrupts gracefully */
- 	if (clockevent_state_shutdown(tick_broadcast_device.evtdev)) {
-@@ -696,6 +699,7 @@ static void tick_handle_oneshot_broadcast(struct clock_event_device *dev)
- 
- 	raw_spin_lock(&tick_broadcast_lock);
- 	dev->next_event = KTIME_MAX;
-+	tick_broadcast_device.evtdev->next_event_forced = 0;
- 	next_event = KTIME_MAX;
- 	cpumask_clear(tmpmask);
- 	now = ktime_get();
-@@ -1063,6 +1067,7 @@ static void tick_broadcast_setup_oneshot(struct clock_event_device *bc,
- 
- 
- 	bc->event_handler = tick_handle_oneshot_broadcast;
-+	bc->next_event_forced = 0;
- 	bc->next_event = KTIME_MAX;
- 
- 	/*
-@@ -1175,6 +1180,7 @@ void hotplug_cpu__broadcast_tick_pull(int deadcpu)
- 		}
- 
- 		/* This moves the broadcast assignment to this CPU: */
-+		bc->next_event_forced = 0;
- 		clockevents_program_event(bc, bc->next_event, 1);
+ 	k = 0;
+ 	for (i = 0; i < 2; i++) {
+@@ -284,6 +280,12 @@ vc4_save_hang_state(struct drm_device *dev)
+ 		vc4->hang_state = kernel_state;
+ 		spin_unlock_irqrestore(&vc4->job_lock, irqflags);
  	}
- 	raw_spin_unlock_irqrestore(&tick_broadcast_lock, flags);
-diff --git a/kernel/time/tick-common.c b/kernel/time/tick-common.c
-index d305d85218961..6a9198a4279b5 100644
---- a/kernel/time/tick-common.c
-+++ b/kernel/time/tick-common.c
-@@ -110,6 +110,7 @@ void tick_handle_periodic(struct clock_event_device *dev)
- 	int cpu = smp_processor_id();
- 	ktime_t next = dev->next_event;
++
++	return;
++
++err_free_state:
++	spin_unlock_irqrestore(&vc4->job_lock, irqflags);
++	kfree(kernel_state);
+ }
  
-+	dev->next_event_forced = 0;
- 	tick_periodic(cpu);
- 
- 	/*
-diff --git a/kernel/time/tick-sched.c b/kernel/time/tick-sched.c
-index 2f8a7923fa279..6e2f239a4813f 100644
---- a/kernel/time/tick-sched.c
-+++ b/kernel/time/tick-sched.c
-@@ -1504,6 +1504,7 @@ static void tick_nohz_lowres_handler(struct clock_event_device *dev)
- 	struct tick_sched *ts = this_cpu_ptr(&tick_cpu_sched);
- 
- 	dev->next_event = KTIME_MAX;
-+	dev->next_event_forced = 0;
- 
- 	if (likely(tick_nohz_handler(&ts->sched_timer) == HRTIMER_RESTART))
- 		tick_program_event(hrtimer_get_expires(&ts->sched_timer), 1);
+ static void
 -- 
 2.53.0
 
