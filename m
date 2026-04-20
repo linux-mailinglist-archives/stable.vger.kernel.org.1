@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-239865-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239328-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QKpVKWdk5mkKvwEAu9opvQ
-	(envelope-from <stable+bounces-239865-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:37:43 +0200
+	id KDUHKDpj5mkKvwEAu9opvQ
+	(envelope-from <stable+bounces-239328-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:32:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E559A4319FA
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:37:42 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1302D431649
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:32:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 15F9730F6C88
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:10:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2724A3459996
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:46:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98A5434572B;
-	Mon, 20 Apr 2026 16:10:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B30863368AE;
+	Mon, 20 Apr 2026 15:46:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zyNRaF5p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l/t49b17"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AF2533F586;
-	Mon, 20 Apr 2026 16:10:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74FB9334C39;
+	Mon, 20 Apr 2026 15:46:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701414; cv=none; b=l/wxCYgdgktawvxtDlwEFppJvcgBjp6Y/M4rIcr9IHZinpkc5TsAe2v0wjs2S12ZtryeG3UVapMDa3jVruwj1YKXM8FegMn5h5lbO4DPZIO2uMrIF57mUNcudZW6G4Ypm82Izjf9lriNaWAaJ5/rGedlrhVhI0DRzkt7u2SpGNU=
+	t=1776699965; cv=none; b=s+pjhox3uVPcw1H815b5kNR72GRIBh7qHrat/qu3oXXIyVXxTudU8/55KxU84IHd5IIfOz9siG/qk+Zx+o0w9YcWMWVfjhp2x374ts4UsD2ppgvg80KZsapkht18wvFFBsUzOvQfJZ5Ej50X00thWSjfD07vSt3uWfALVnjhmK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701414; c=relaxed/simple;
-	bh=Er64kUKQw5Eoy96PC19VHuuOiI5wpLgsYgojeQs6g/4=;
+	s=arc-20240116; t=1776699965; c=relaxed/simple;
+	bh=hBkLX/9KTCxV9w2BNhYhU2LlD0L8/5gfpIyQ4hF7If8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NgQ1W5ecsrG/e8e2WrctYspTnA8WyNPw9qFVjyDVcBUzvGTIfddLwiIu4ms9Gf3sze6EEbe1PWw80N1yzbgewDYjoD2cmqyYhLCX8Osl5dh1xNp7ZaHaRt342UzmfbqMeGz2QiG9Y+OTSowQelw2zHKs3AijjLMx8yFOVOPhpyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zyNRaF5p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7228C2BCB7;
-	Mon, 20 Apr 2026 16:10:13 +0000 (UTC)
+	 MIME-Version; b=MotpfepkJ+3IOwv6xyh3/vhESwOLXs1bFDIx3HL8A0Cxy22UWi/mYDyZyTwbl1Oyx8zEojP0GU9xoDfO4bIUDKiIwucQCZy+jv8qvFY1+3EerxEpk3HOZs2zr0CnlnioJ8f9ep8kxltCtWebOgz8NYqTWUtvTqBMXzvcF38Zdw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l/t49b17; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B849C19425;
+	Mon, 20 Apr 2026 15:46:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701414;
-	bh=Er64kUKQw5Eoy96PC19VHuuOiI5wpLgsYgojeQs6g/4=;
+	s=korg; t=1776699965;
+	bh=hBkLX/9KTCxV9w2BNhYhU2LlD0L8/5gfpIyQ4hF7If8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zyNRaF5pdMQT+xrNZnFuN6bKeMGJWiBN1YZfyoYdAedPB1jrxaqBxfhp5t48yDXJx
-	 SjnZbJBOJBrjd/VcZTUax7Epo6fJzjPx2h2/f04XGwGIgetgd3x2GT9wkkdJBLv5Rf
-	 3ZumXiJu+iY/PDnguIgl3wWVZDTGUlMTmRdh7tao=
+	b=l/t49b17T5l+3zGH7NoFP/8rmK9OIDErdzhMCVQGfunXfRP3Bj2SMP8LY4/Idcx4m
+	 pYyY3IQ6bFoy+Wxv7X4NgOQBgioVIffWwP3aWh2rrLS61pSSDixUsRd0M2qlN3E+u7
+	 /p+0+aGs64b9TVPnsD9jHlPaQEbrCuE3JgjAhTT8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.12 104/162] usb: gadget: f_ncm: validate minimum block_len in ncm_unwrap_ntb()
+	syzbot+639ebc6ec75e96674741@syzkaller.appspotmail.com,
+	Ruslan Valiyev <linuxoid@gmail.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 7.0 65/76] media: vidtv: fix nfeeds state corruption on start_streaming failure
 Date: Mon, 20 Apr 2026 17:42:16 +0200
-Message-ID: <20260420153930.807453800@linuxfoundation.org>
+Message-ID: <20260420153913.186873278@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
-References: <20260420153927.006696811@linuxfoundation.org>
+In-Reply-To: <20260420153910.810034134@linuxfoundation.org>
+References: <20260420153910.810034134@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +64,100 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239865-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239328-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.997];
+	TAGGED_RCPT(0.00)[stable,639ebc6ec75e96674741,cisco];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: E559A4319FA
+	DBL_BLOCKED_OPENRESOLVER(0.00)[syzkaller.appspot.com:url,appspotmail.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 1302D431649
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Ruslan Valiyev <linuxoid@gmail.com>
 
-commit 8f993d30b95dc9557a8a96ceca11abed674c8acb upstream.
+commit a0e5a598fe9a4612b852406b51153b881592aede upstream.
 
-The block_len read from the host-supplied NTB header is checked against
-ntb_max but has no lower bound. When block_len is smaller than
-opts->ndp_size, the bounds check of:
-	ndp_index > (block_len - opts->ndp_size)
-will underflow producing a huge unsigned value that ndp_index can never
-exceed, defeating the check entirely.
+syzbot reported a memory leak in vidtv_psi_service_desc_init [1].
 
-The same underflow occurs in the datagram index checks against block_len
-- opts->dpe_size.  With those checks neutered, a malicious USB host can
-choose ndp_index and datagram offsets that point past the actual
-transfer, and the skb_put_data() copies adjacent kernel memory into the
-network skb.
+When vidtv_start_streaming() fails inside vidtv_start_feed(), the
+nfeeds counter is left incremented even though no feed was actually
+started. This corrupts the driver state: subsequent start_feed calls
+see nfeeds > 1 and skip starting the mux, while stop_feed calls
+eventually try to stop a non-existent stream.
 
-Fix this by rejecting block lengths that cannot hold at least the NTB
-header plus one NDP.  This will make block_len - opts->ndp_size and
-block_len - opts->dpe_size both well-defined.
+This state corruption can also lead to memory leaks, since the mux
+and channel resources may be partially allocated during a failed
+start_streaming but never cleaned up, as the stop path finds
+dvb->streaming == false and returns early.
 
-Commit 8d2b1a1ec9f5 ("CDC-NCM: avoid overflow in sanity checking") fixed
-a related class of issues on the host side of NCM.
+Fix by decrementing nfeeds back when start_streaming fails, keeping
+the counter in sync with the actual number of active feeds.
 
-Fixes: 2b74b0a04d3e ("USB: gadget: f_ncm: add bounds checks to ncm_unwrap_ntb()")
-Cc: stable <stable@kernel.org>
-Assisted-by: gregkh_clanker_t1000
-Link: https://patch.msgid.link/2026040753-baffle-handheld-624d@gregkh
+[1]
+BUG: memory leak
+unreferenced object 0xffff888145b50820 (size 32):
+ comm "syz.0.17", pid 6068, jiffies 4294944486
+ backtrace (crc 90a0c7d4):
+  vidtv_psi_service_desc_init+0x74/0x1b0 drivers/media/test-drivers/vidtv/vidtv_psi.c:288
+  vidtv_channel_s302m_init+0xb1/0x2a0 drivers/media/test-drivers/vidtv/vidtv_channel.c:83
+  vidtv_channels_init+0x1b/0x40 drivers/media/test-drivers/vidtv/vidtv_channel.c:524
+  vidtv_mux_init+0x516/0xbe0 drivers/media/test-drivers/vidtv/vidtv_mux.c:518
+  vidtv_start_streaming drivers/media/test-drivers/vidtv/vidtv_bridge.c:194 [inline]
+  vidtv_start_feed+0x33e/0x4d0 drivers/media/test-drivers/vidtv/vidtv_bridge.c:239
+
+Fixes: f90cf6079bf67 ("media: vidtv: add a bridge driver")
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+639ebc6ec75e96674741@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=639ebc6ec75e96674741
+Signed-off-by: Ruslan Valiyev <linuxoid@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/f_ncm.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/media/test-drivers/vidtv/vidtv_bridge.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/gadget/function/f_ncm.c
-+++ b/drivers/usb/gadget/function/f_ncm.c
-@@ -1209,8 +1209,8 @@ parse_ntb:
+--- a/drivers/media/test-drivers/vidtv/vidtv_bridge.c
++++ b/drivers/media/test-drivers/vidtv/vidtv_bridge.c
+@@ -237,8 +237,10 @@ static int vidtv_start_feed(struct dvb_d
  
- 	block_len = get_ncm(&tmp, opts->block_length);
- 	/* (d)wBlockLength */
--	if (block_len > ntb_max) {
--		INFO(port->func.config->cdev, "OUT size exceeded\n");
-+	if ((block_len < opts->nth_size + opts->ndp_size) || (block_len > ntb_max)) {
-+		INFO(port->func.config->cdev, "Bad block length: %#X\n", block_len);
- 		goto err;
+ 	if (dvb->nfeeds == 1) {
+ 		ret = vidtv_start_streaming(dvb);
+-		if (ret < 0)
++		if (ret < 0) {
++			dvb->nfeeds--;
+ 			rc = ret;
++		}
  	}
  
+ 	mutex_unlock(&dvb->feed_lock);
 
 
 
