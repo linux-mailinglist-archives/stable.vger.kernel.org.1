@@ -1,259 +1,429 @@
-Return-Path: <stable+bounces-238771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238824-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0CWZOXgm5mmgsgEAu9opvQ
-	(envelope-from <stable+bounces-238771-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:13:28 +0200
+	id cBWyEw8z5mlqtQEAu9opvQ
+	(envelope-from <stable+bounces-238824-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:07:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF4B742B542
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:13:27 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC6A242CA50
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:07:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 88E2630166C5
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 13:08:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0080B323729F
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 13:23:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A95663101CD;
-	Mon, 20 Apr 2026 13:08:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D93AC3B7B7A;
+	Mon, 20 Apr 2026 13:16:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YTvVYnDa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lP00IDrf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D95235898
-	for <stable@vger.kernel.org>; Mon, 20 Apr 2026 13:08:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8535A3B776E;
+	Mon, 20 Apr 2026 13:16:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776690514; cv=none; b=WJr8rIigSpm7moSKwhuZrNIQg0HOBpjMPJaFgXdUPgX3ECvXrbz1kv5VOFPdN5tb4NITrBM5PDgj1uf1EFtlcsuD2sDaz64KFZsJjDtNS8vR9jsokvskumoyPImK3cXylbp36NtRVLIorvVoPgl3ZbCuXaEDAxR0u/rSzXxVifk=
+	t=1776691017; cv=none; b=UEk3utK0iuQcjLqU4hQJOplWcl/ACcJL7WYJYs7Sax7O6cgP931LWI4nKmQaQ2pgNPUTXSJUXQVeek1kqBft8bpQrbXzulRdlaRy+XjnRTBMiISQvCrGCzeUhLa5HxWyZImuwRDs1rS/OPrzGn5HNmS4sxdEYN5TxN9NgjluTI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776690514; c=relaxed/simple;
-	bh=bC06nIvQrKtlsTJwjFORZ40jUX68cKkRHCXJcDLyeTY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=hMBEspH5QuGEbGD8u1ZQ2CDJEBnp1EEDcBphxjbhySIKOusO0Nuru8yOO8EtT4JS4PjO/QY1apkrCCmp6POyukOlhgMd5IFia1eI0lOh1UuOtLOu8+A4ghn1vL6chFuVuv0eKHTqnn9Z8mvE/5a5Ly6ublO/FPZEJbnytBgCjAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YTvVYnDa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB49CC19425;
-	Mon, 20 Apr 2026 13:08:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776690514;
-	bh=bC06nIvQrKtlsTJwjFORZ40jUX68cKkRHCXJcDLyeTY=;
-	h=Subject:To:Cc:From:Date:From;
-	b=YTvVYnDa2wGHcAVPvmPb3ZRpC6KlTUM7UpAtWn8D4LnPn+bP8HKIDZ6vUm169lxmP
-	 H4nr664WGiT76Uk5uhQD8H50RtaphbMDY2KCjCmstPc+t+x0CIbzpe66fxRLVMCqiF
-	 AquMmoew02Tkn38LySi2d4PgnoSSlGLqihpXvwX0=
-Subject: FAILED: patch "[PATCH] mm/pagewalk: fix race between concurrent split and refault" failed to apply to 7.0-stable tree
-To: mboone@akamai.com,akpm@linux-foundation.org,david@kernel.org,liam.howlett@oracle.com,ljs@kernel.org,mhocko@suse.com,rppt@kernel.org,stable@vger.kernel.org,surenb@google.com,vbabka@kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 20 Apr 2026 15:08:31 +0200
-Message-ID: <2026042031-unmoved-approach-a81c@gregkh>
+	s=arc-20240116; t=1776691017; c=relaxed/simple;
+	bh=sq/AHL5XJEXcLjE6SfDsH3BFsBbp39abJbIoOQPCmXo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=UNlCZ0HW6rdFuPV7Id81OHEhgayFv7jWM7HqI8fIy78urgItnN3P3KLTBDxnKhHrQkC5lsrtJVonqkotcmNA615mfIQKFgApMKH8oqFEuYjyLjb4K9CuNDccmLw25x2slMDqBWx3zb9ejC90cZOxpiJB6pRMi8urnLyL1GLBe3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lP00IDrf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62BB3C19425;
+	Mon, 20 Apr 2026 13:16:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776691017;
+	bh=sq/AHL5XJEXcLjE6SfDsH3BFsBbp39abJbIoOQPCmXo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=lP00IDrfuIreh2zLiz7FuSfr3SHabDLd+/SCS9B9JyOD3ZZrdXBzeWDi02IwkVY8f
+	 Xh6zLgqUcKXxSNenMFqx1xBtQIRaDSaAlFHHPDwNGOlQBNSn3+imWqXKD+BMJSyZRt
+	 U4MaSJbbYM97c+YC0L+ZHPWHHluCpLN2tJVLTzScVOsEZJZK1C4nOyZyObQbCP82FY
+	 KDQX/uHOQo9mbk/dGJlUegK05KqLud+bCMiHKknkLXFq5yl/+lyCg1wT2BaTGR+XmT
+	 vmgfGp7Lg9kVAx5lIr3XhNfDr/GIM1sI+mFpUVcGSNoCRLW8ZSuB0n+gk79nhE33mw
+	 rInT1nnxdCEPg==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH AUTOSEL 7.0-6.1] wifi: iwlwifi: mvm: zero iwl_geo_tx_power_profiles_cmd before sending
+Date: Mon, 20 Apr 2026 09:08:31 -0400
+Message-ID: <20260420131539.986432-45-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260420131539.986432-1-sashal@kernel.org>
+References: <20260420131539.986432-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 7.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-238824-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_FROM(0.00)[bounces-238771-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NO_DN(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+]
-X-Rspamd-Queue-Id: EF4B742B542
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,msgid.link:url,changeid:email]
+X-Rspamd-Queue-Id: AC6A242CA50
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-The patch below does not apply to the 7.0-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+[ Upstream commit 5562b3bbeede8be25092064720e4a942e9fd3e3e ]
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Otherwise we may send garbage.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-7.0.y
-git checkout FETCH_HEAD
-git cherry-pick -x 9b25a6e3d243a8ce14eeaf74082c621a9944c776
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026042031-unmoved-approach-a81c@gregkh' --subject-prefix 'PATCH 7.0.y' HEAD^..
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20260319204647.2d494b0f4692.I9afd0fa6b2ea5a27118144ac4e3bbbedc2089c10@changeid
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
 
-Possible dependencies:
+LLM Generated explanations, may be completely bogus:
 
+Now I have all the information needed for a thorough analysis. Let me
+compile it.
 
+---
 
-thanks,
+## PHASE 1: COMMIT MESSAGE FORENSICS
 
-greg k-h
+### Step 1.1: Subject Line
+- **Subsystem**: wifi: iwlwifi: mvm
+- **Action verb**: "zero" (initialization fix)
+- **Summary**: Zero-initialize `iwl_geo_tx_power_profiles_cmd` union
+  before sending to firmware
 
------------------- original commit in Linus's tree ------------------
+### Step 1.2: Tags
+- **Signed-off-by**: Emmanuel Grumbach (author, Intel iwlwifi core
+  developer)
+- **Reviewed-by**: Johannes Berg (iwlwifi/mac80211 subsystem maintainer
+  - strong trust signal)
+- **Signed-off-by**: Miri Korenblit (Intel wireless maintainer,
+  committer)
+- **Link**: patch.msgid.link for the original submission
+- No Fixes: tag (expected for AUTOSEL candidates)
+- No Cc: stable (expected)
 
-From 9b25a6e3d243a8ce14eeaf74082c621a9944c776 Mon Sep 17 00:00:00 2001
-From: Max Boone <mboone@akamai.com>
-Date: Wed, 25 Mar 2026 10:59:16 +0100
-Subject: [PATCH] mm/pagewalk: fix race between concurrent split and refault
+### Step 1.3: Commit Body
+- "Otherwise we may send garbage." - Clear and direct. The union is
+  stack-allocated and not zero-initialized, so whatever stack data
+  happens to be there gets sent to the firmware.
 
-The splitting of a PUD entry in walk_pud_range() can race with a
-concurrent thread refaulting the PUD leaf entry causing it to try walking
-a PMD range that has disappeared.
+### Step 1.4: Hidden Bug Fix?
+- YES. The word "zero" and "= {}" pattern is a classic **uninitialized
+  data fix**. Sending uninitialized stack data to firmware hardware is a
+  real bug: potential information leak and potential firmware
+  misbehavior.
 
-An example and reproduction of this is to try reading numa_maps of a
-process while VFIO-PCI is setting up DMA (specifically the
-vfio_pin_pages_remote call) on a large BAR for that process.
+---
 
-This will trigger a kernel BUG:
-vfio-pci 0000:03:00.0: enabling device (0000 -> 0002)
-BUG: unable to handle page fault for address: ffffa23980000000
-PGD 0 P4D 0
-Oops: Oops: 0000 [#1] SMP NOPTI
-...
-RIP: 0010:walk_pgd_range+0x3b5/0x7a0
-Code: 8d 43 ff 48 89 44 24 28 4d 89 ce 4d 8d a7 00 00 20 00 48 8b 4c 24
-28 49 81 e4 00 00 e0 ff 49 8d 44 24 ff 48 39 c8 4c 0f 43 e3 <49> f7 06
-   9f ff ff ff 75 3b 48 8b 44 24 20 48 8b 40 28 48 85 c0 74
-RSP: 0018:ffffac23e1ecf808 EFLAGS: 00010287
-RAX: 00007f44c01fffff RBX: 00007f4500000000 RCX: 00007f44ffffffff
-RDX: 0000000000000000 RSI: 000ffffffffff000 RDI: ffffffff93378fe0
-RBP: ffffac23e1ecf918 R08: 0000000000000004 R09: ffffa23980000000
-R10: 0000000000000020 R11: 0000000000000004 R12: 00007f44c0200000
-R13: 00007f44c0000000 R14: ffffa23980000000 R15: 00007f44c0000000
-FS:  00007fe884739580(0000) GS:ffff9b7d7a9c0000(0000)
-knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: ffffa23980000000 CR3: 000000c0650e2005 CR4: 0000000000770ef0
-PKRU: 55555554
-Call Trace:
- <TASK>
- __walk_page_range+0x195/0x1b0
- walk_page_vma+0x62/0xc0
- show_numa_map+0x12b/0x3b0
- seq_read_iter+0x297/0x440
- seq_read+0x11d/0x140
- vfs_read+0xc2/0x340
- ksys_read+0x5f/0xe0
- do_syscall_64+0x68/0x130
- ? get_page_from_freelist+0x5c2/0x17e0
- ? mas_store_prealloc+0x17e/0x360
- ? vma_set_page_prot+0x4c/0xa0
- ? __alloc_pages_noprof+0x14e/0x2d0
- ? __mod_memcg_lruvec_state+0x8d/0x140
- ? __lruvec_stat_mod_folio+0x76/0xb0
- ? __folio_mod_stat+0x26/0x80
- ? do_anonymous_page+0x705/0x900
- ? __handle_mm_fault+0xa8d/0x1000
- ? __count_memcg_events+0x53/0xf0
- ? handle_mm_fault+0xa5/0x360
- ? do_user_addr_fault+0x342/0x640
- ? arch_exit_to_user_mode_prepare.constprop.0+0x16/0xa0
- ? irqentry_exit_to_user_mode+0x24/0x100
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-RIP: 0033:0x7fe88464f47e
-Code: c0 e9 b6 fe ff ff 50 48 8d 3d be 07 0b 00 e8 69 01 02 00 66 0f 1f
-84 00 00 00 00 00 64 8b 04 25 18 00 00 00 85 c0 75 14 0f 05 <48> 3d 00
-   f0 ff ff 77 5a c3 66 0f 1f 84 00 00 00 00 00 48 83 ec 28
-RSP: 002b:00007ffe6cd9a9b8 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
-RAX: ffffffffffffffda RBX: 0000000000020000 RCX: 00007fe88464f47e
-RDX: 0000000000020000 RSI: 00007fe884543000 RDI: 0000000000000003
-RBP: 00007fe884543000 R08: 00007fe884542010 R09: 0000000000000000
-R10: fffffffffffffbc5 R11: 0000000000000246 R12: 0000000000000000
-R13: 0000000000000003 R14: 0000000000020000 R15: 0000000000020000
- </TASK>
+## PHASE 2: DIFF ANALYSIS
 
-Fix this by validating the PUD entry in walk_pmd_range() using a stable
-snapshot (pudp_get()).  If the PUD is not present or is a leaf, retry the
-walk via ACTION_AGAIN instead of descending further.  This mirrors the
-retry logic in walk_pte_range(), which lets walk_pmd_range() retry if the
-PTE is not being got by pte_offset_map_lock().
+### Step 2.1: Inventory
+- **1 file changed**: `drivers/net/wireless/intel/iwlwifi/mvm/fw.c`
+- **2 lines changed** (2 additions, 2 removals)
+- **Functions modified**: `iwl_mvm_get_sar_geo_profile()`,
+  `iwl_mvm_sar_geo_init()`
+- **Scope**: Extremely minimal, single-file surgical fix
 
-Link: https://lkml.kernel.org/r/20260325-pagewalk-check-pmd-refault-v2-1-707bff33bc60@akamai.com
-Fixes: f9e54c3a2f5b ("vfio/pci: implement huge_fault support")
-Co-developed-by: David Hildenbrand (Arm) <david@kernel.org>
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-Signed-off-by: Max Boone <mboone@akamai.com>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+### Step 2.2: Code Flow
+Two identical changes:
+- Line 910: `union iwl_geo_tx_power_profiles_cmd geo_tx_cmd;` → `...
+  geo_tx_cmd = {};`
+- Line 962: `union iwl_geo_tx_power_profiles_cmd cmd;` → `... cmd = {};`
 
-diff --git a/mm/pagewalk.c b/mm/pagewalk.c
-index cb358558807c..3ae2586ff45b 100644
---- a/mm/pagewalk.c
-+++ b/mm/pagewalk.c
-@@ -96,6 +96,7 @@ static int walk_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
- static int walk_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
- 			  struct mm_walk *walk)
+Both change stack-allocated union variables from uninitialized to zero-
+initialized.
+
+### Step 2.3: Bug Mechanism
+This is an **uninitialized data** bug (category e: initialization
+fixes).
+
+The union `iwl_geo_tx_power_profiles_cmd` contains 5 struct variants
+(v1-v5) of different sizes. The union is the size of the largest (v5),
+which contains `table[8][3]` of `iwl_per_chain_offset` structs plus ops
+and table_revision. This is a substantial structure.
+
+In `iwl_mvm_get_sar_geo_profile()`:
+- Only `geo_tx_cmd.v1.ops` is explicitly set
+- Then `len` bytes (up to `sizeof(geo_tx_cmd.v5)`) are sent to firmware
+- All table and table_revision fields are **uninitialized stack
+  garbage** being sent to firmware
+
+In `iwl_mvm_sar_geo_init()`:
+- `ops`, `table_revision`, and table contents are filled, but any
+  padding within the structure or unused bytes remain uninitialized
+
+### Step 2.4: Fix Quality
+- **Obviously correct**: `= {}` is the standard C idiom for zero-
+  initialization
+- **Minimal/surgical**: 2 lines changed, only adding initialization
+- **Regression risk**: Zero. Zero-initializing before populating fields
+  cannot break anything.
+- The newer `mld/regulatory.c` code already uses `= {}` initialization
+  (line 76), confirming this is the correct pattern.
+
+---
+
+## PHASE 3: GIT HISTORY INVESTIGATION
+
+### Step 3.1: Blame
+The uninitialized declarations were introduced in commit
+`dd2a1256e6a8d8` ("iwlwifi: acpi: rename geo structs to contain
+versioning") from **2020-09-28**, which restructured these commands into
+a union. The bug has existed since then.
+
+### Step 3.2: Fixes Tag
+No Fixes: tag present (expected for AUTOSEL). The bug was introduced by
+`dd2a1256e6a8d8` which is present in v5.10, v5.15, v6.1, v6.6, and all
+later stable trees.
+
+### Step 3.3: File History
+The file has significant recent activity (196 commits since the buggy
+commit). The newer `mld/regulatory.c` equivalent already uses zero-
+initialization, confirming the pattern was eventually corrected in newer
+code but the `mvm/fw.c` path was missed.
+
+### Step 3.4: Author Context
+Emmanuel Grumbach is a core Intel iwlwifi developer with many recent
+commits. Johannes Berg (who reviewed this) is the iwlwifi/mac80211
+maintainer. This is a fix from the subsystem's core team.
+
+### Step 3.5: Dependencies
+This patch is **fully standalone**. It only adds `= {}` to existing
+variable declarations. No prerequisite commits needed.
+
+---
+
+## PHASE 4: MAILING LIST RESEARCH
+
+### Step 4.1: Original Submission
+b4 dig found the patch at: `https://patch.msgid.link/20260319204647.2d49
+4b0f4692.I9afd0fa6b2ea5a27118144ac4e3bbbedc2089c10@changeid`
+
+It was submitted as **[PATCH iwlwifi-next 03/15]** as part of a 15-patch
+series. However, this patch is **completely independent** - it's just a
+variable initialization change.
+
+### Step 4.2: Reviewers
+- Johannes Berg (iwlwifi maintainer) gave **Reviewed-by**
+- linux-wireless@vger.kernel.org was CC'd
+
+### Step 4.3-4.5: Bug Report / Related Patches / Stable Discussion
+No explicit bug report or stable discussion found. The bug was found by
+code inspection by an Intel developer.
+
+---
+
+## PHASE 5: CODE SEMANTIC ANALYSIS
+
+### Step 5.1-5.2: Function Callers
+- `iwl_mvm_get_sar_geo_profile()`: Called from `debugfs.c` (debugfs
+  handler) and `nvm.c` (NVM/regulatory init)
+- `iwl_mvm_sar_geo_init()`: Called from main firmware init path at line
+  1735 during `iwl_mvm_up()` - this runs on **every iwlwifi device
+  initialization**
+
+### Step 5.4: Reachability
+`iwl_mvm_sar_geo_init` runs during driver initialization for every Intel
+WiFi device using the MVM firmware path. This is a **hot, commonly-
+executed path** affecting every Intel WiFi user.
+
+---
+
+## PHASE 6: STABLE TREE ANALYSIS
+
+### Step 6.1: Buggy Code in Stable
+The buggy commit `dd2a1256e6a8d8` is confirmed present in:
+- v5.10 ✓
+- v5.15 ✓
+- v6.1 ✓
+- v6.6 ✓
+
+The bug affects **all active stable trees**.
+
+### Step 6.2: Backport Complications
+The fix is trivial (adding `= {}` to declarations). The only concern is
+whether the variable declarations exist identically in stable trees.
+Since these are the same variable names in the same functions and the
+union type hasn't changed names, this should apply cleanly or with
+trivial adjustment.
+
+---
+
+## PHASE 7: SUBSYSTEM CONTEXT
+
+### Step 7.1: Subsystem
+- **Subsystem**: Wireless networking driver (iwlwifi) - Intel WiFi
+- **Criticality**: IMPORTANT - iwlwifi is one of the most widely used
+  WiFi drivers, found in most Intel-based laptops
+
+### Step 7.2: Activity
+Very actively developed (20+ recent commits shown in file history).
+
+---
+
+## PHASE 8: IMPACT AND RISK ASSESSMENT
+
+### Step 8.1: Who Is Affected
+All users with Intel WiFi hardware using iwlwifi MVM firmware (millions
+of laptops and desktops).
+
+### Step 8.2: Trigger Conditions
+- `iwl_mvm_sar_geo_init`: Triggered on **every driver initialization**
+  (boot, resume, WiFi toggle)
+- `iwl_mvm_get_sar_geo_profile`: Triggered from debugfs and NVM init
+
+### Step 8.3: Failure Mode Severity
+- **Uninitialized kernel stack data sent to firmware**: This is a
+  potential kernel info leak to firmware
+- **Firmware misbehavior**: If firmware interprets garbage values in the
+  table/revision fields, it could misapply TX power settings (regulatory
+  compliance issue) or behave unpredictably
+- **Severity**: MEDIUM-HIGH (info leak + potential incorrect radio
+  behavior)
+
+### Step 8.4: Risk-Benefit
+- **Benefit**: HIGH - fixes uninitialized data being sent to firmware on
+  every Intel WiFi init
+- **Risk**: VERY LOW - 2 lines, `= {}` is the safest possible change
+- **Ratio**: Strongly favorable for backport
+
+---
+
+## PHASE 9: FINAL SYNTHESIS
+
+### Step 9.1: Evidence Compilation
+
+**FOR backporting:**
+- Fixes a real bug: uninitialized kernel stack data sent to WiFi
+  firmware
+- Extremely minimal fix (2 lines, `= {}` only)
+- Obviously correct - zero-initialization is the standard pattern
+- Reviewed by iwlwifi maintainer (Johannes Berg)
+- Written by core Intel iwlwifi developer
+- Bug present in all active stable trees (since v5.10)
+- Affects all Intel WiFi users (common hardware)
+- Triggered on every driver initialization
+- No regression risk whatsoever
+- Standalone fix with zero dependencies
+- The newer MLD code path already uses this pattern
+
+**AGAINST backporting:**
+- No user-visible crash or panic reported (the firmware likely tolerates
+  the garbage in many cases)
+- No Fixes: tag, no syzbot report
+
+### Step 9.2: Stable Rules Checklist
+1. Obviously correct and tested? **YES** - `= {}` is trivially correct,
+   reviewed by maintainer
+2. Fixes a real bug? **YES** - uninitialized data sent to firmware
+   hardware
+3. Important issue? **YES** - info leak + potential firmware misbehavior
+   on common hardware
+4. Small and contained? **YES** - 2 lines in 1 file
+5. No new features or APIs? **YES** - no new functionality
+6. Can apply to stable? **YES** - trivial change to variable
+   declarations
+
+### Step 9.3: Exception Categories
+Not an exception category; this is a standard initialization bug fix.
+
+---
+
+## Verification
+
+- [Phase 1] Parsed all tags: Reviewed-by Johannes Berg (iwlwifi
+  maintainer), author is Emmanuel Grumbach (Intel iwlwifi developer)
+- [Phase 2] Diff analysis: exactly 2 lines changed - both add `= {}` to
+  union variable declarations in `iwl_mvm_get_sar_geo_profile()` and
+  `iwl_mvm_sar_geo_init()`
+- [Phase 3] git blame: buggy code introduced in commit dd2a1256e6a8d8
+  (2020-09-28), present since v5.10
+- [Phase 3] git merge-base: confirmed dd2a1256e6a8d8 is in v5.10, v5.15,
+  v6.1, v6.6
+- [Phase 3] No prerequisite commits needed - fix is standalone
+- [Phase 4] b4 dig -c: found original submission at lore, patch 3/15 of
+  iwlwifi-next series
+- [Phase 4] b4 dig -w: reviewed by Johannes Berg, CC'd to linux-wireless
+- [Phase 5] Callers traced: `iwl_mvm_sar_geo_init` called from main init
+  path (`iwl_mvm_up`); `iwl_mvm_get_sar_geo_profile` called from debugfs
+  and NVM init
+- [Phase 5] Confirmed newer `mld/regulatory.c` line 76 already uses `=
+  {}` pattern for same union type
+- [Phase 6] Buggy code exists in all active stable trees (v5.10+)
+- [Phase 6] Fix should apply cleanly or with trivial adjustment
+- [Phase 8] Impact: all Intel WiFi users; triggered on every driver
+  init; severity MEDIUM-HIGH (info leak + potential firmware
+  misbehavior)
+
+The fix is a textbook example of an uninitialized data bug fix: minimal,
+obviously correct, zero regression risk, affects widely-used hardware,
+and has been reviewed by the subsystem maintainer.
+
+**YES**
+
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+index 6cc78661116e5..cfe2bb6c1d90a 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
+@@ -907,7 +907,7 @@ int iwl_mvm_sar_select_profile(struct iwl_mvm *mvm, int prof_a, int prof_b)
+ 
+ int iwl_mvm_get_sar_geo_profile(struct iwl_mvm *mvm)
  {
-+	pud_t pudval = pudp_get(pud);
- 	pmd_t *pmd;
- 	unsigned long next;
- 	const struct mm_walk_ops *ops = walk->ops;
-@@ -104,6 +105,24 @@ static int walk_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
- 	int err = 0;
- 	int depth = real_depth(3);
- 
-+	/*
-+	 * For PTE handling, pte_offset_map_lock() takes care of checking
-+	 * whether there actually is a page table. But it also has to be
-+	 * very careful about concurrent page table reclaim.
-+	 *
-+	 * Similarly, we have to be careful here - a PUD entry that points
-+	 * to a PMD table cannot go away, so we can just walk it. But if
-+	 * it's something else, we need to ensure we didn't race something,
-+	 * so need to retry.
-+	 *
-+	 * A pertinent example of this is a PUD refault after PUD split -
-+	 * we will need to split again or risk accessing invalid memory.
-+	 */
-+	if (!pud_present(pudval) || pud_leaf(pudval)) {
-+		walk->action = ACTION_AGAIN;
-+		return 0;
-+	}
-+
- 	pmd = pmd_offset(pud, addr);
- 	do {
- again:
-@@ -217,12 +236,12 @@ static int walk_pud_range(p4d_t *p4d, unsigned long addr, unsigned long end,
- 		else if (pud_leaf(*pud) || !pud_present(*pud))
- 			continue; /* Nothing to do. */
- 
--		if (pud_none(*pud))
--			goto again;
--
- 		err = walk_pmd_range(pud, addr, next, walk);
- 		if (err)
- 			break;
-+
-+		if (walk->action == ACTION_AGAIN)
-+			goto again;
- 	} while (pud++, addr = next, addr != end);
- 
- 	return err;
+-	union iwl_geo_tx_power_profiles_cmd geo_tx_cmd;
++	union iwl_geo_tx_power_profiles_cmd geo_tx_cmd = {};
+ 	struct iwl_geo_tx_power_profiles_resp *resp;
+ 	u16 len;
+ 	int ret;
+@@ -959,7 +959,7 @@ int iwl_mvm_get_sar_geo_profile(struct iwl_mvm *mvm)
+ static int iwl_mvm_sar_geo_init(struct iwl_mvm *mvm)
+ {
+ 	u32 cmd_id = WIDE_ID(PHY_OPS_GROUP, PER_CHAIN_LIMIT_OFFSET_CMD);
+-	union iwl_geo_tx_power_profiles_cmd cmd;
++	union iwl_geo_tx_power_profiles_cmd cmd = {};
+ 	u16 len;
+ 	u32 n_bands;
+ 	u32 n_profiles;
+-- 
+2.53.0
 
 
