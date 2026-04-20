@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-239316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239739-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gAOfN89f5mkqvgEAu9opvQ
-	(envelope-from <stable+bounces-239316-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:18:07 +0200
+	id gK7zBcta5mmtvAEAu9opvQ
+	(envelope-from <stable+bounces-239739-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:56:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1DF0430F26
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:18:06 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B5D243040B
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:56:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4213F300863D
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:45:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 079B831E8300
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:04:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05A2533F586;
-	Mon, 20 Apr 2026 15:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10EE733E373;
+	Mon, 20 Apr 2026 16:04:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZfQmU44z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VT/HLNJe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCC3833DEFE;
-	Mon, 20 Apr 2026 15:45:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7D512E093A;
+	Mon, 20 Apr 2026 16:04:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776699934; cv=none; b=JqwoSazKse/FNYLrsTSlyJoeFXXlqBglVFHr0Cl26jTtedQ8OwnkhsUIElY2LlNAZdtiJWVg7lUKODsWKtp4GUhMyQgNZe3WXC748pQ175m8teHnAanSy5zGGAjzqs6yiTaodDT+DqbHoEVVYsd1YlgrAVVJFwtk+EfRlWSI3+E=
+	t=1776701092; cv=none; b=aQdlH9RV1FzyNohDHVIm8+5qh91Y/vQ6qLIhsa1BV6CnB9NVAOLNkdFCB6OqB2EyKTHqVgbDqxeJAQAVaTr38SldfWYbAWtxbklawMqxXVvafY91HKwPTYSbGj2puhD1inmL3h6yS81qbXr1ql/mMxWfkcV/t9wFP3gUuou+7DM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776699934; c=relaxed/simple;
-	bh=s9aTqRXBR9Le3zLLWEd/cOk8pnWJCx0H/9ymnJ8P764=;
+	s=arc-20240116; t=1776701092; c=relaxed/simple;
+	bh=EKIxXJyibHbCe5TlJw6CrFrH2Bu8t/7nhUeXaXw0WVM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SjSJsGCTT2zV8N2M9XO9GtuC5gHXtx8+DRSeCWRoYeUhAQ8PMVAutSOsD54Tvy2jDq+RwjsVBPobkyvhTsrrABu7doX4aTh0SMmHTMgUiK+eeLu/6+Hj35d6b7Ytx5rHju2TWGQck4yI22kTcJMXErCfhT4SQBzZLqbsf3ev5MQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZfQmU44z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52274C19425;
-	Mon, 20 Apr 2026 15:45:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GKAGE6KRS4b2SzGHkUbi+oSULQf3TFHZ8mOeQWEUoBywYs+cpyPhp+8qPEu0ISPLFNcf1eV72/BIbSFgfh+aR/6Oom9pIL8ZH3r7FLMzuIqa6ILRIvbMAlk24MlMKavAYcjjawsunSG4It/uh9gmush4tgst5hDnb30m1n1pr1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VT/HLNJe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E28DC19425;
+	Mon, 20 Apr 2026 16:04:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776699934;
-	bh=s9aTqRXBR9Le3zLLWEd/cOk8pnWJCx0H/9ymnJ8P764=;
+	s=korg; t=1776701092;
+	bh=EKIxXJyibHbCe5TlJw6CrFrH2Bu8t/7nhUeXaXw0WVM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZfQmU44zQFryjkLLNkLsuNBI9oiB4ZeMzgSfgau72CcYKIsPc8wJ9ZO6eP/7TwuS/
-	 nRPqPHhgcrUj8n5UrPrRz5+234aAYN0eLrU2N4ThyW2Yz+nz2CFVx0ksX+4NbreMEw
-	 2xeeGx6I4nmqhGF3MZuw3L3S4VCIs4jTmgWTW7Zo=
+	b=VT/HLNJeQCFjqzAnnNYWL8ib7AOMqoSulSJFWqEfOA5kjDKJiOb1C83rfr6y23duh
+	 xg3nvnaCu+8VJhbZ5GPRPsedIIYyMDeOE9wbf5OVOt3JX1AMFpu843Z1MSl1AqdR9X
+	 gHzwky3AEvT8b9BJEhIF7p9MssqLZlc6Q7ZBUXQA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 7.0 54/76] KVM: SEV: Lock all vCPUs when synchronzing VMSAs for SNP launch finish
+	=?UTF-8?q?Daniel=20Br=C3=A1t?= <danek.brat@gmail.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.18 146/198] usb: storage: Expand range of matched versions for VL817 quirks entry
 Date: Mon, 20 Apr 2026 17:42:05 +0200
-Message-ID: <20260420153912.788903857@linuxfoundation.org>
+Message-ID: <20260420153940.866272630@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153910.810034134@linuxfoundation.org>
-References: <20260420153910.810034134@linuxfoundation.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,120 +62,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-239739-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239316-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: B1DF0430F26
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,weissschuh.net:email]
+X-Rspamd-Queue-Id: 9B5D243040B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Daniel Brát <danek.brat@gmail.com>
 
-commit cb923ee6a80f4e604e6242a4702b59251e61a380 upstream.
+commit 609865ab3d5d803556f628e221ecd3d06aed9f30 upstream.
 
-Lock all vCPUs when synchronizing and encrypting VMSAs for SNP guests, as
-allowing userspace to manipulate and/or run a vCPU while its state is being
-synchronized would at best corrupt vCPU state, and at worst crash the host
-kernel.
+Expands range of matched bcdDevice values for the VL817 quirk entry.
+This is based on experience with Axagon EE35-GTR rev1 3.5" HDD
+enclosure, which reports its bcdDevice as 0x0843, but presumably other
+vendors using this IC in their products may set it to any other value.
 
-Opportunistically assert that vcpu->mutex is held when synchronizing its
-VMSA (the SEV-ES path already locks vCPUs).
-
-Fixes: ad27ce155566 ("KVM: SEV: Add KVM_SEV_SNP_LAUNCH_FINISH command")
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260310234829.2608037-6-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Daniel Brát <danek.brat@gmail.com>
+Cc: stable <stable@kernel.org>
+Link: https://patch.msgid.link/20260402172433.5227-1-danek.brat@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/sev.c |   16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ drivers/usb/storage/unusual_devs.h |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -882,6 +882,8 @@ static int sev_es_sync_vmsa(struct vcpu_
- 	u8 *d;
- 	int i;
+--- a/drivers/usb/storage/unusual_devs.h
++++ b/drivers/usb/storage/unusual_devs.h
+@@ -2350,10 +2350,11 @@ UNUSUAL_DEV(  0x2027, 0xa001, 0x0000, 0x
+ 		US_FL_SCM_MULT_TARG ),
  
-+	lockdep_assert_held(&vcpu->mutex);
-+
- 	if (vcpu->arch.guest_state_protected)
- 		return -EINVAL;
- 
-@@ -2456,6 +2458,10 @@ static int snp_launch_update_vmsa(struct
- 	if (kvm_is_vcpu_creation_in_progress(kvm))
- 		return -EBUSY;
- 
-+	ret = kvm_lock_all_vcpus(kvm);
-+	if (ret)
-+		return ret;
-+
- 	data.gctx_paddr = __psp_pa(sev->snp_context);
- 	data.page_type = SNP_PAGE_TYPE_VMSA;
- 
-@@ -2465,12 +2471,12 @@ static int snp_launch_update_vmsa(struct
- 
- 		ret = sev_es_sync_vmsa(svm);
- 		if (ret)
--			return ret;
-+			goto out;
- 
- 		/* Transition the VMSA page to a firmware state. */
- 		ret = rmp_make_private(pfn, INITIAL_VMSA_GPA, PG_LEVEL_4K, sev->asid, true);
- 		if (ret)
--			return ret;
-+			goto out;
- 
- 		/* Issue the SNP command to encrypt the VMSA */
- 		data.address = __sme_pa(svm->sev_es.vmsa);
-@@ -2479,7 +2485,7 @@ static int snp_launch_update_vmsa(struct
- 		if (ret) {
- 			snp_page_reclaim(kvm, pfn);
- 
--			return ret;
-+			goto out;
- 		}
- 
- 		svm->vcpu.arch.guest_state_protected = true;
-@@ -2493,7 +2499,9 @@ static int snp_launch_update_vmsa(struct
- 		svm_enable_lbrv(vcpu);
- 	}
- 
--	return 0;
-+out:
-+	kvm_unlock_all_vcpus(kvm);
-+	return ret;
- }
- 
- static int snp_launch_finish(struct kvm *kvm, struct kvm_sev_cmd *argp)
+ /*
+- * Reported by DocMAX <mail@vacharakis.de>
+- * and Thomas Weißschuh <linux@weissschuh.net>
++ * Reported by DocMAX <mail@vacharakis.de>,
++ * Thomas Weißschuh <linux@weissschuh.net>
++ * and Daniel Brát <danek.brat@gmail.com>
+  */
+-UNUSUAL_DEV( 0x2109, 0x0715, 0x9999, 0x9999,
++UNUSUAL_DEV( 0x2109, 0x0715, 0x0000, 0x9999,
+ 		"VIA Labs, Inc.",
+ 		"VL817 SATA Bridge",
+ 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
 
 
 
