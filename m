@@ -1,68 +1,60 @@
-Return-Path: <stable+bounces-239500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239684-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QFjbDqJe5mndvQEAu9opvQ
-	(envelope-from <stable+bounces-239500-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:13:06 +0200
+	id oAzwIaBO5mkgugEAu9opvQ
+	(envelope-from <stable+bounces-239684-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:04:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE87C430C0A
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:13:05 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 243D942EEE5
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:04:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1FA5D30DA10C
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:53:43 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5D0043021BAF
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:02:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39B9233F597;
-	Mon, 20 Apr 2026 15:53:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80A5133DEDF;
+	Mon, 20 Apr 2026 16:02:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n87Ysi3y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zxnRUT2R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF7E13385B6;
-	Mon, 20 Apr 2026 15:53:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43FD52DE6E3;
+	Mon, 20 Apr 2026 16:02:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700413; cv=none; b=qad4vfanTobh88UAZeWUCMuzcJ5y8WC+floyrI8k2qm1Xk1wbBwzfy7HFJoIJNdXPVILMbgDbs4x0sz6tnUE/mX5ycnJPRqgvqUQGpnC0Dy+03RKqh7ZbG6zx8pQE4wKb7Up6Xru1dDxIzA/QNJy1BLNMB+QbW7NauGVi2jHAxc=
+	t=1776700952; cv=none; b=O6G4qGSEqDm6OuTpPSdgNIAmcS1KtkevwLj5LtD5cQ+CTpnt/BEOfCqwQNjoB8Hx3wU5jn7BxoDLdMX+vKcVIwCw8d9tMDYHA36kVFZt2yzAUuBNeKmDVnA3J+AaaUR8Zv8ZRSCJCYrNCIWzJx1Gl/M6f9/59BlM76fvOYY6HdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700413; c=relaxed/simple;
-	bh=PCOAMG2cnXCVvseTE7WEixzt1QirYHj5a+Pu4sKdGmg=;
+	s=arc-20240116; t=1776700952; c=relaxed/simple;
+	bh=y9JQ5LL/JUPNCgmgbrtXGP8id9fZWubCBCtNwfXw7D8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rxyHHU5P+Q9fuDECA5iovD9yMqXZWDqnpybHOnppZZGE65FM06yrAqeQ2ggpHmZbmu1f1+DatumIW0PYKM63xlstWhV2GhqhpdgoE1KJAnF7XC+Po2ewtH9S3Pkb4SILFCqQxvvTo+I1e2Nu9iGNlsAfUqJzEoXpk1wiZ3SUvgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n87Ysi3y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EC73C4AF09;
-	Mon, 20 Apr 2026 15:53:32 +0000 (UTC)
+	 MIME-Version; b=E6MBND+aV9MaCkfwIFQSMfrMTjI4hfE+NbVguRkn/9tNtrkWGh33VkdDB6O1ro2Q/wo715OQTCfKlb1y6raBCbp4fMiakg4vYpWXc5RRo0OQgyUWUVuVy8l8CZ0fSd3JE4hXeWf4Yh+KXB/sBxt2g6nJ4ilU6JtsNzRSmLEQiq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zxnRUT2R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87F4EC19425;
+	Mon, 20 Apr 2026 16:02:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700412;
-	bh=PCOAMG2cnXCVvseTE7WEixzt1QirYHj5a+Pu4sKdGmg=;
+	s=korg; t=1776700951;
+	bh=y9JQ5LL/JUPNCgmgbrtXGP8id9fZWubCBCtNwfXw7D8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n87Ysi3yV/2roUX2iXyRJ09azXdfk6BrMUTVgQPOrHRs5erKxDXkncHVasJCxZN/E
-	 ekpXk9MRQiTbL8VzTOk0OTJ+feIkTzqg5XrukC3DjBU3T6WU/kXb0joblZN1A3AYkG
-	 Ype5BsLnl9Caq8qxq+U/jr31xL7M3r9GJvFk7ztU=
+	b=zxnRUT2R6nnfFaGqE/LqCLr685ZjXl8EUDCEGSErYjFbG/LpCkylKRxtmaLKUC06h
+	 QUMX8uaIU5hutiRJGmniggvnFmQue63UFmGqiKPS7WLUZg6Aku9R4d7DrNLZ71fahh
+	 ZD6kHqbT1AoDjNjga/TDXE9QnjAIo7dVZZ9InIb0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ruikai Peng <ruikai@pwno.io>,
-	stable@kernel.org,
-	Steve French <smfrench@gmail.com>,
-	Tom Talpey <tom@talpey.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	security@kernel.org,
-	Stefan Metzmacher <metze@samba.org>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.19 162/220] smb: server: avoid double-free in smb_direct_free_sendmsg after smb_direct_flush_send_list()
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.18 124/198] i2c: s3c24xx: check the size of the SMBUS message before using it
 Date: Mon, 20 Apr 2026 17:41:43 +0200
-Message-ID: <20260420153939.862198773@linuxfoundation.org>
+Message-ID: <20260420153940.071708569@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
-References: <20260420153934.013228280@linuxfoundation.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,94 +67,80 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-239500-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,pwno.io,kernel.org,gmail.com,talpey.com,chromium.org,vger.kernel.org,lists.samba.org,samba.org,manguebit.org,microsoft.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239684-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[chromium.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,manguebit.org:email,samba.org:email,talpey.com:email]
-X-Rspamd-Queue-Id: CE87C430C0A
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[samsung.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 243D942EEE5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Metzmacher <metze@samba.org>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit 84ff995ae826aa6bbcc6c7b9ea569ff67c021d72 upstream.
+commit c0128c7157d639a931353ea344fb44aad6d6e17a upstream.
 
-smb_direct_flush_send_list() already calls smb_direct_free_sendmsg(),
-so we should not call it again after post_sendmsg()
-moved it to the batch list.
+The first byte of an i2c SMBUS message is the size, and it should be
+verified to ensure that it is in the range of 0..I2C_SMBUS_BLOCK_MAX
+before processing it.
 
-Reported-by: Ruikai Peng <ruikai@pwno.io>
-Closes: https://lore.kernel.org/linux-cifs/CAFD3drNOSJ05y3A+jNXSDxW-2w09KHQ0DivhxQ_pcc7immVVOQ@mail.gmail.com/
-Fixes: 34abd408c8ba ("smb: server: make use of smbdirect_socket.send_io.bcredits")
-Cc: stable@kernel.org
-Cc: Steve French <smfrench@gmail.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: Ruikai Peng <ruikai@pwno.io>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: linux-cifs@vger.kernel.org
-Cc: samba-technical@lists.samba.org
-Cc: security@kernel.org
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Tested-by: Ruikai Peng <ruikai@pwno.io>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+This is the same logic that was added in commit a6e04f05ce0b ("i2c:
+tegra: check msg length in SMBUS block read") to the i2c tegra driver.
+
+Cc: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Alim Akhtar <alim.akhtar@samsung.com>
+Cc: Andi Shyti <andi.shyti@kernel.org>
+Cc: stable <stable@kernel.org>
+Assisted-by: gkh_clanker_2000
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/2026022314-rely-scrubbed-4839@gregkh
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/transport_rdma.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-s3c2410.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/fs/smb/server/transport_rdma.c
-+++ b/fs/smb/server/transport_rdma.c
-@@ -1575,15 +1575,21 @@ static int smb_direct_post_send_data(str
- 	if (ret)
- 		goto err;
+--- a/drivers/i2c/busses/i2c-s3c2410.c
++++ b/drivers/i2c/busses/i2c-s3c2410.c
+@@ -503,8 +503,13 @@ static void i2c_s3c_irq_nextbyte(struct
+ 		i2c->msg->buf[i2c->msg_ptr++] = byte;
  
-+	/*
-+	 * From here msg is moved to send_ctx
-+	 * and we should not free it explicitly.
-+	 */
-+
- 	if (send_ctx == &_send_ctx) {
- 		ret = smb_direct_flush_send_list(sc, send_ctx, true);
- 		if (ret)
--			goto err;
-+			goto flush_failed;
- 	}
- 
- 	return 0;
- err:
- 	smb_direct_free_sendmsg(sc, msg);
-+flush_failed:
- header_failed:
- 	atomic_inc(&sc->send_io.credits.count);
- credit_failed:
+ 		/* Add actual length to read for smbus block read */
+-		if (i2c->msg->flags & I2C_M_RECV_LEN && i2c->msg->len == 1)
++		if (i2c->msg->flags & I2C_M_RECV_LEN && i2c->msg->len == 1) {
++			if (byte == 0 || byte > I2C_SMBUS_BLOCK_MAX) {
++				s3c24xx_i2c_stop(i2c, -EPROTO);
++				break;
++			}
+ 			i2c->msg->len += byte;
++		}
+  prepare_read:
+ 		if (is_msglast(i2c)) {
+ 			/* last byte of buffer */
 
 
 
