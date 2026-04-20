@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-239646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239464-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CMREMO5N5mkgugEAu9opvQ
-	(envelope-from <stable+bounces-239646-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:01:50 +0200
+	id WJ4KEzBh5mmavgEAu9opvQ
+	(envelope-from <stable+bounces-239464-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:24:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A88DD42ED9F
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:01:49 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 515594311DE
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:23:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 334F53003987
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:01:01 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2B06331EAE02
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:52:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DEDC329C6D;
-	Mon, 20 Apr 2026 16:01:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EE7E33262B;
+	Mon, 20 Apr 2026 15:52:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y0izfqBz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wAe5Xvss"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5BB232E696;
-	Mon, 20 Apr 2026 16:00:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62511334C39;
+	Mon, 20 Apr 2026 15:52:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700859; cv=none; b=ct43MQ9RoWRHq3aHBoeVzA7JDDgHLsU8iQ5aFHP0lHvaAeWAfmxZC6ihzcYvURfcmRB78KpVAw8uulnzPopLhpf9dmmeJguYpkE7ACr1l+NrYD2Ba4nUiLcPlw9icmAoK8ESYg0np8HcRa1bm9hNgbxHGwGNLFgwb/3sHjQjrJ0=
+	t=1776700320; cv=none; b=PGG4SnszRuNH8IaN4tggMDqkdnLZTgJ/990DDQpN8JFt7H0xj6Vs/WDfUwVd3ZIWDMBwZohgzecthb1gvk5zUFFiWSy1HI8gmtsd1OlVZFJlNf8xSQrYfL40sDEyQmypj5VqeV2z1duM4ACq4EqgzGmlTXUQOV9PrwIGaNlv63o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700859; c=relaxed/simple;
-	bh=snOFseOE/OfJ0J7/DD5CZKyzg1yhvgj9RV9ZMdE5VOY=;
+	s=arc-20240116; t=1776700320; c=relaxed/simple;
+	bh=j8VbCZ9HbnqpSGlcWAfqTpOCEA9XXksrdbjhrAnbl6U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aLMnmnVTYSDr0qp1ElLam0WNijB0jOIWH8jcPbANDLtfnTVN7IyjTuy4BBBqqc4PDAXwyamhxQjiIuXu1Ozn4JjpKaq04xZk9WbMEbDmZNBQELp6ZZNJNcSAGr//WFSDFnv4kG5f2xfwrv04Qf5FppcWdbkcaa7FOzqUYVT9oEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y0izfqBz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FF22C19425;
-	Mon, 20 Apr 2026 16:00:59 +0000 (UTC)
+	 MIME-Version; b=GEnm34K33iTFS2QJAh0F6Hxg9EKVZi/9qvFQYZ8ZaBNxG1yBwu9yrY6hiyRiiccaFpn07DTQJaHlRyOhaJm5s6RF6S+I4TrDeOMrZQUHZs17DAzzDLT49KoCLEZ2TqYuaiWHh5AhFRLRdoksdPc3vuhgLlsMP+8xO3ki5d/4SM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wAe5Xvss; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC194C19425;
+	Mon, 20 Apr 2026 15:51:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700859;
-	bh=snOFseOE/OfJ0J7/DD5CZKyzg1yhvgj9RV9ZMdE5VOY=;
+	s=korg; t=1776700320;
+	bh=j8VbCZ9HbnqpSGlcWAfqTpOCEA9XXksrdbjhrAnbl6U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y0izfqBzzOmCdYcnoDIf+eKLvyteom57oxFd+6+6ZzL9TQWVqgx5CkeQCfjYjA1cg
-	 24fLMSxZFgWSA9kHdmA+LscDuofuHY7Cmz3oD1u8cKHA86+ojMciTUbsY3JSwLUg6y
-	 v14aqfNAzk8H5wLHJM2apSl9VB2e/8s6ySYDblEI=
+	b=wAe5Xvss3l91U8ZCo5T6f38nxqGULj8VfEClqdkowIttxOLJhcVtgkcHpfnE1vIh9
+	 SAZLN8rI6f+Yy8FEMeQnpzjlFFfqnGEcWVxvUENl/mqXThnvw79VigIZcz3nTYQESb
+	 rKbQTULDWCqaFRV7/pi3fHOpAs55DPHy0hpEI0RQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Fabio Baltieri <fabio.baltieri@gmail.com>,
+	Jiawen Wu <jiawenwu@trustnetic.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 088/198] xsk: tighten UMEM headroom validation to account for tailroom and min frame
+Subject: [PATCH 6.19 126/220] net: txgbe: leave space for null terminators on property_entry
 Date: Mon, 20 Apr 2026 17:41:07 +0200
-Message-ID: <20260420153938.776212279@linuxfoundation.org>
+Message-ID: <20260420153938.564408546@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
+References: <20260420153934.013228280@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,83 +64,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-239646-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239464-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,trustnetic.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[fomichev.me:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email]
-X-Rspamd-Queue-Id: A88DD42ED9F
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,trustnetic.com:email]
+X-Rspamd-Queue-Id: 515594311DE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+From: Fabio Baltieri <fabio.baltieri@gmail.com>
 
-[ Upstream commit a315e022a72d95ef5f1d4e58e903cb492b0ad931 ]
+[ Upstream commit 5a37d228799b0ec2c277459c83c814a59d310bc3 ]
 
-The current headroom validation in xdp_umem_reg() could leave us with
-insufficient space dedicated to even receive minimum-sized ethernet
-frame. Furthermore if multi-buffer would come to play then
-skb_shared_info stored at the end of XSK frame would be corrupted.
+Lists of struct property_entry are supposed to be terminated with an
+empty property, this driver currently seems to be allocating exactly the
+amount of entry used.
 
-HW typically works with 128-aligned sizes so let us provide this value
-as bare minimum.
+Change the struct definition to leave an extra element for all
+property_entry.
 
-Multi-buffer setting is known later in the configuration process so
-besides accounting for 128 bytes, let us also take care of tailroom space
-upfront.
-
-Reviewed-by: Björn Töpel <bjorn@kernel.org>
-Acked-by: Stanislav Fomichev <sdf@fomichev.me>
-Fixes: 99e3a236dd43 ("xsk: Add missing check on user supplied headroom size")
-Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Link: https://patch.msgid.link/20260402154958.562179-2-maciej.fijalkowski@intel.com
+Fixes: c3e382ad6d15 ("net: txgbe: Add software nodes to support phylink")
+Signed-off-by: Fabio Baltieri <fabio.baltieri@gmail.com>
+Tested-by: Jiawen Wu <jiawenwu@trustnetic.com>
+Link: https://patch.msgid.link/20260405222013.5347-1-fabio.baltieri@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/xdp/xdp_umem.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/wangxun/txgbe/txgbe_type.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/xdp/xdp_umem.c b/net/xdp/xdp_umem.c
-index 9f76ca591d54f..9ec7bd948acc7 100644
---- a/net/xdp/xdp_umem.c
-+++ b/net/xdp/xdp_umem.c
-@@ -202,7 +202,8 @@ static int xdp_umem_reg(struct xdp_umem *umem, struct xdp_umem_reg *mr)
- 	if (!unaligned_chunks && chunks_rem)
- 		return -EINVAL;
- 
--	if (headroom >= chunk_size - XDP_PACKET_HEADROOM)
-+	if (headroom > chunk_size - XDP_PACKET_HEADROOM -
-+		       SKB_DATA_ALIGN(sizeof(struct skb_shared_info)) - 128)
- 		return -EINVAL;
- 
- 	if (mr->flags & XDP_UMEM_TX_METADATA_LEN) {
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
+index 82433e9cb0e33..6b05f32b4a010 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
+@@ -424,10 +424,10 @@ struct txgbe_nodes {
+ 	char i2c_name[32];
+ 	char sfp_name[32];
+ 	char phylink_name[32];
+-	struct property_entry gpio_props[1];
+-	struct property_entry i2c_props[3];
+-	struct property_entry sfp_props[8];
+-	struct property_entry phylink_props[2];
++	struct property_entry gpio_props[2];
++	struct property_entry i2c_props[4];
++	struct property_entry sfp_props[9];
++	struct property_entry phylink_props[3];
+ 	struct software_node_ref_args i2c_ref[1];
+ 	struct software_node_ref_args gpio0_ref[1];
+ 	struct software_node_ref_args gpio1_ref[1];
 -- 
 2.53.0
 
