@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-239692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239333-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MFlRFhZh5mmavgEAu9opvQ
-	(envelope-from <stable+bounces-239692-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:23:34 +0200
+	id cEAIAVRj5mkKvwEAu9opvQ
+	(envelope-from <stable+bounces-239333-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:33:08 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B93924311A4
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:23:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0109431695
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:33:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DEF27330A76A
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:02:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CC41B333B148
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:46:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B97F533F8AA;
-	Mon, 20 Apr 2026 16:02:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78B51334C39;
+	Mon, 20 Apr 2026 15:46:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0t8qje/H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bsluzPcn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BCD333F5AE;
-	Mon, 20 Apr 2026 16:02:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B5DB329C6D;
+	Mon, 20 Apr 2026 15:46:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700972; cv=none; b=ZsaIXFkcUirHhLl9drviZWNj3h1TRtKUHIHgd6JiuFSDsGm5j0UONU7ujg0VpfhoZC2W+vOBRrypPvu1rFlMUvgn0QzYSIODmu9KRP/KC/PYnL1yvL847yMbXMgZogzTOYpZJdP8lBp1g4raUHTCv82XmwSs1GohH+NcxjV4pkM=
+	t=1776699978; cv=none; b=CGONeAohfWHz1dPNDpMATIQFX+itD4s3WCZOYnbFxXvVfO9C/6DGajO6tNrr33XQb1KAWWTify3Gesw8VtITWYgu6iY8imu+inGZuj72tWzxZFqXr7ZXL9aO+0MLnHHq1TFMDrN9Td3mDvbtUUGZH5GlsoJ/KD5oz9ny94t3vPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700972; c=relaxed/simple;
-	bh=FDtjR6lYM83MJzRtoYOWRC2f0ajqQXKdL0t4qE+IS9s=;
+	s=arc-20240116; t=1776699978; c=relaxed/simple;
+	bh=oDidoPwpAUjhSLJYpALyDYkVy0QaYh6EEQ3xZTpX0Qs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SvdJRFJUqaZ/n0aMLwKKLXYky7JJ8dJB7A4qZ7/4MYFFuAqNBdxSgghlurrXCuExdbmTc3VkKepgTFDl16NHrUgTNi4FwOgqxKAGsLZptCQ+57CKtGZdoNDZfPUddYsptcbeh0S0qH+ERz+/+B8ROkbrzrzVLElxR2uLxfwC4j4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0t8qje/H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1214FC19425;
-	Mon, 20 Apr 2026 16:02:51 +0000 (UTC)
+	 MIME-Version; b=W/fKIM3MBsnwxgalUpgWAaSL4H7A2gWs7ZzO77ViCb3eRcZJgNDMxR/TpcNygNXztp9xPS8GBwY08yaEDUeNRrsKswGwW+IWyLppTD0IOjwzAo0WWAVa0EXbBiQgRzPeGDwB0mc/fw6wGQqnEj2bzuWHo87RybhBQXwp4ivqGRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bsluzPcn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5E82C19425;
+	Mon, 20 Apr 2026 15:46:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700972;
-	bh=FDtjR6lYM83MJzRtoYOWRC2f0ajqQXKdL0t4qE+IS9s=;
+	s=korg; t=1776699978;
+	bh=oDidoPwpAUjhSLJYpALyDYkVy0QaYh6EEQ3xZTpX0Qs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0t8qje/HqNDzS00QvZ859BaGEgzPR9HNWgi0fn4bg8qIK4qcxRqW4AbUmmo2w+R0+
-	 kqaqwcMQNxEnSWMBzh+aSmbi0qWzsq6KxrLpdFqxJ2bRl686DI9/y1zPcHKy5MYKdj
-	 YFcxrx57o/L5gJnIqpWwscDQXSiIlRUl/oo6MXuY=
+	b=bsluzPcnw1vcSxAW1Na+9xMcIFahEd/8AV2Fq3FH+9hQ387yKv4E+L0JF0+qDTCZJ
+	 894xLJgs6ifYTRuyVPJxzlD5Sl7ZFU2DYxjLdsalNVooLG981kJeH58a4B0AbbDGXn
+	 KGhde3w7Ty8yUXKrJ5Ewn76tKiV47Xn8+WRLn6Ak=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	stable <stable@kernel.org>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.18 131/198] ALSA: usx2y: us144mkii: fix NULL deref on missing interface 0
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 7.0 39/76] Docs/admin-guide/mm/damon/lru_sort: warn commit_inputs vs param updates race
 Date: Mon, 20 Apr 2026 17:41:50 +0200
-Message-ID: <20260420153940.325853046@linuxfoundation.org>
+Message-ID: <20260420153912.249596336@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+In-Reply-To: <20260420153910.810034134@linuxfoundation.org>
+References: <20260420153910.810034134@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,72 +72,70 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239692-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-239333-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.com:email,suse.de:email,msgid.link:url,perex.cz:email]
-X-Rspamd-Queue-Id: B93924311A4
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: A0109431695
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: SeongJae Park <sj@kernel.org>
 
-commit 48bd344e1040b9f2eb512be73c13f5db83efc191 upstream.
+commit 0c13ed77dd2bc1c2d46db8ef27721213742cccd8 upstream.
 
-A malicious USB device with the TASCAM US-144MKII device id can have a
-configuration containing bInterfaceNumber=1 but no interface 0.  USB
-configuration descriptors are not required to assign interface numbers
-sequentially, so usb_ifnum_to_if(dev, 0) returns will NULL, which will
-then be dereferenced directly.
+DAMON_LRU_SORT handles commit_inputs request inside kdamond thread,
+reading the module parameters.  If the user updates the module
+parameters while the kdamond thread is reading those, races can happen.
+To avoid this, the commit_inputs parameter shows whether it is still in
+the progress, assuming users wouldn't update parameters in the middle of
+the work.  Some users might ignore that.  Add a warning about the
+behavior.
 
-Fix this up by checking the return value properly.
+The issue was discovered in [1] by sashiko.
 
-Cc: Jaroslav Kysela <perex@perex.cz>
-Cc: Takashi Iwai <tiwai@suse.com>
-Fixes: dee1bcf28a3d ("ALSA: usb-audio: Add initial driver for TASCAM US-144MKII")
-Cc: stable <stable@kernel.org>
-Assisted-by: gregkh_clanker_t1000
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://patch.msgid.link/2026040955-fall-gaining-e338@gregkh
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://lore.kernel.org/20260329153052.46657-3-sj@kernel.org
+Link: https://lore.kernel.org/20260319161620.189392-2-objecting@objecting.org [1]
+Fixes: 6acfcd0d7524 ("Docs/admin-guide/damon: add a document for DAMON_LRU_SORT")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org> # 6.0.x
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/usx2y/us144mkii.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ Documentation/admin-guide/mm/damon/lru_sort.rst |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/sound/usb/usx2y/us144mkii.c
-+++ b/sound/usb/usx2y/us144mkii.c
-@@ -421,7 +421,11 @@ static int tascam_probe(struct usb_inter
+--- a/Documentation/admin-guide/mm/damon/lru_sort.rst
++++ b/Documentation/admin-guide/mm/damon/lru_sort.rst
+@@ -79,6 +79,10 @@ of parametrs except ``enabled`` again.
+ parameter is set as ``N``.  If invalid parameters are found while the
+ re-reading, DAMON_LRU_SORT will be disabled.
  
- 	/* The device has two interfaces; we drive both from this driver. */
- 	if (intf->cur_altsetting->desc.bInterfaceNumber == 1) {
--		tascam = usb_get_intfdata(usb_ifnum_to_if(dev, 0));
-+		struct usb_interface *intf_zero = usb_ifnum_to_if(dev, 0);
++Once ``Y`` is written to this parameter, the user must not write to any
++parameters until reading ``commit_inputs`` again returns ``N``.  If users
++violate this rule, the kernel may exhibit undefined behavior.
 +
-+		if (!intf_zero)
-+			return -ENODEV;
-+		tascam = usb_get_intfdata(intf_zero);
- 		if (tascam) {
- 			usb_set_intfdata(intf, tascam);
- 			tascam->iface1 = intf;
+ active_mem_bp
+ -------------
+ 
 
 
 
