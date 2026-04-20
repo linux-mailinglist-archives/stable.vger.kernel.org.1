@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-239760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239563-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ULlaFAJa5mmtvAEAu9opvQ
-	(envelope-from <stable+bounces-239760-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:53:22 +0200
+	id mBDhL7tl5mkKvwEAu9opvQ
+	(envelope-from <stable+bounces-239563-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:43:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA4224302C9
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:53:21 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3311D431E81
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:43:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CF0093214DE1
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:05:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5B41B3114CD7
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:56:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78D843264F1;
-	Mon, 20 Apr 2026 16:05:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2957833AD9A;
+	Mon, 20 Apr 2026 15:56:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sEWy9L/h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jv9fB5/H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35C4F330B14;
-	Mon, 20 Apr 2026 16:05:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBBFF336896;
+	Mon, 20 Apr 2026 15:56:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701147; cv=none; b=YMi7bUuW/hjPTroL6N67lfHg7vzlAOTbObf5ZjJ0AgyczVwTns78Sev88u63mJ9QcUxZj5SE6DFUBDBcCU4tgVjBbVX3rexGjpbECG0j0VcYuRL8hX/6XzeIBsuvHfLdugm42Evmn5uxej/Ap5pIY5OD9TLd2VcAW1sZAUf0X9o=
+	t=1776700573; cv=none; b=b1rmmhFrZqxLdw59CiKSvqXH4M9hDIszq0ioGOUWTqvcXB0YDazgNK59GR3tas4mZbdk40+WVYohE9iz4Jb6gmXmsN/5PKl4agGMFLtam7nB0YaZkHpa91e2o4/J7puKTK9L6GMAG0Rvnn9L+uMX7YNAjcf6J9pHeUpBxYmUDu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701147; c=relaxed/simple;
-	bh=qoG6AH3B83A2kSZadwwIn5t4/Gc362iJ5rEFk8Be0+g=;
+	s=arc-20240116; t=1776700573; c=relaxed/simple;
+	bh=vSp1iQE4v4S7icYAhGNjgm15ayUfQuPATxRJl2Mki4M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KzvpbTlnyWB9QS6IOKhFE5y3dE0fBBn81wAQH6wEWCGT6jlFG+4eO0g8Q/1l6JZHEEXqQ2KrP04SNeYN9Mn7f5Zbag74dzHo5tidxwU4Ol86HnZm89CyFq3JU+Le9WWArM+89nrXW7ZvpIchW5CHI6JnQbHWhTWIQYdIl9AJWNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sEWy9L/h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56962C19425;
-	Mon, 20 Apr 2026 16:05:46 +0000 (UTC)
+	 MIME-Version; b=QzjHMeQkg3Eo5SGcRvC62xuW/b6UA6HLzO28bIFD2ZJ2q8fJ7o/QMnDO/dPsMi1OEpv8QZtexMfNTi78g25TT8IzI0NB3zAZgmc0ulpcZO6Zg2HkGR740qoU0jAWct7MouACMSR4KwGvVG9kV5TvpvyPwnMLyc1r3/cVTgh9orQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jv9fB5/H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 740ACC19425;
+	Mon, 20 Apr 2026 15:56:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701146;
-	bh=qoG6AH3B83A2kSZadwwIn5t4/Gc362iJ5rEFk8Be0+g=;
+	s=korg; t=1776700573;
+	bh=vSp1iQE4v4S7icYAhGNjgm15ayUfQuPATxRJl2Mki4M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sEWy9L/hGu/jbDOO1PyIy0xwZjGlS3RhulxaKxng/gW61KsJCsfo316LcEqETgw/l
-	 3XnmPmqrEB26Luk4b1Qpi7vsWVqHl5+E4jAWhQWhUJTxCtaasXToz75x3m2w+0o0Q5
-	 15T9PIqfnFQjVTgMIL5r2rRCVyCnHHUNOpAjxzDA=
+	b=jv9fB5/HHzeU7kKzRWR/uGCXNFcnMWlGFzvpDVpfKg1HwNAs6e2vUnJuVOBpN4CYM
+	 DG3mmivmTllM2z/hFRBmgzMuxRNumx02J0DsZXIBcK3MJm52GQL5TCTTpnlHl0+Lpl
+	 RrUL0rNM89sf8vbJ8nw01EQgLGH3xV8CJEZC2oCY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.18 179/198] x86: rename and clean up __copy_from_user_inatomic_nocache()
+	syzbot+6ffd76b5405c006a46b7@syzkaller.appspotmail.com,
+	syzbot+f1b20958f93d2d250727@syzkaller.appspotmail.com,
+	Jeongjun Park <aha310510@gmail.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.19 217/220] media: hackrf: fix to not free memory after the device is registered in hackrf_probe()
 Date: Mon, 20 Apr 2026 17:42:38 +0200
-Message-ID: <20260420153942.061513802@linuxfoundation.org>
+Message-ID: <20260420153941.839059140@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
+References: <20260420153934.013228280@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,210 +65,125 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239760-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-239563-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_RCPT(0.00)[stable,6ffd76b5405c006a46b7,f1b20958f93d2d250727,cisco];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: EA4224302C9
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,appspotmail.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,syzkaller.appspot.com:url]
+X-Rspamd-Queue-Id: 3311D431E81
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Jeongjun Park <aha310510@gmail.com>
 
-commit 5de7bcaadf160c1716b20a263cf8f5b06f658959 upstream.
+commit 3b7da2b4d0fe014eff181ed37e3bf832eb8ed258 upstream.
 
-Similarly to the previous commit, this renames the somewhat confusingly
-named function.  But in this case, it was at least less confusing: the
-__copy_from_user_inatomic_nocache is indeed copying from user memory,
-and it is indeed ok to be used in an atomic context, so it will not warn
-about it.
+In hackrf driver, the following race condition occurs:
+```
+		CPU0						CPU1
+hackrf_probe()
+  kzalloc(); // alloc hackrf_dev
+  ....
+  v4l2_device_register();
+  ....
+						fd = sys_open("/path/to/dev"); // open hackrf fd
+						....
+  v4l2_device_unregister();
+  ....
+  kfree(); // free hackrf_dev
+  ....
+						sys_ioctl(fd, ...);
+						  v4l2_ioctl();
+						    video_is_registered() // UAF!!
+						....
+						sys_close(fd);
+						  v4l2_release() // UAF!!
+						    hackrf_video_release()
+						      kfree(); // DFB!!
+```
 
-But the previous commit also removed the NTB mis-use of the
-__copy_from_user_inatomic_nocache() function, and as a result every
-call-site is now _actually_ doing a real user copy.  That means that we
-can now do the proper user pointer verification too.
+When a V4L2 or video device is unregistered, the device node is removed so
+new open() calls are blocked.
 
-End result: add proper address checking, remove the double underscores,
-and change the "nocache" to "nontemporal" to more accurately describe
-what this x86-only function actually does.  It might be worth noting
-that only the target is non-temporal: the actual user accesses are
-normal memory accesses.
+However, file descriptors that are already open-and any in-flight I/O-do
+not terminate immediately; they remain valid until the last reference is
+dropped and the driver's release() is invoked.
 
-Also worth noting is that non-x86 targets (and on older 32-bit x86 CPU's
-before XMM2 in the Pentium III) we end up just falling back on a regular
-user copy, so nothing can actually depend on the non-temporal semantics,
-but that has always been true.
+Therefore, freeing device memory on the error path after hackrf_probe()
+has registered dev it will lead to a race to use-after-free vuln, since
+those already-open handles haven't been released yet.
 
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+And since release() free memory too, race to use-after-free and
+double-free vuln occur.
+
+To prevent this, if device is registered from probe(), it should be
+modified to free memory only through release() rather than calling
+kfree() directly.
+
+Cc: <stable@vger.kernel.org>
+Reported-by: syzbot+6ffd76b5405c006a46b7@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=6ffd76b5405c006a46b7
+Reported-by: syzbot+f1b20958f93d2d250727@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=f1b20958f93d2d250727
+Fixes: 8bc4a9ed8504 ("[media] hackrf: add support for transmitter")
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/uaccess.h    |    2 +-
- arch/x86/include/asm/uaccess_32.h |    8 +-------
- arch/x86/include/asm/uaccess_64.h |    3 ++-
- arch/x86/lib/usercopy_32.c        |    9 +++++----
- drivers/gpu/drm/i915/i915_gem.c   |    2 +-
- drivers/gpu/drm/qxl/qxl_ioctl.c   |    2 +-
- include/linux/uaccess.h           |   11 ++++++++---
- lib/iov_iter.c                    |    2 +-
- 8 files changed, 20 insertions(+), 19 deletions(-)
+ drivers/media/usb/hackrf/hackrf.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/arch/x86/include/asm/uaccess.h
-+++ b/arch/x86/include/asm/uaccess.h
-@@ -507,7 +507,7 @@ extern struct movsl_mask {
- } ____cacheline_aligned_in_smp movsl_mask;
- #endif
- 
--#define ARCH_HAS_NOCACHE_UACCESS 1
-+#define ARCH_HAS_NONTEMPORAL_UACCESS 1
- 
- /*
-  * The "unsafe" user accesses aren't really "unsafe", but the naming
---- a/arch/x86/include/asm/uaccess_32.h
-+++ b/arch/x86/include/asm/uaccess_32.h
-@@ -26,13 +26,7 @@ raw_copy_from_user(void *to, const void
- 	return __copy_user_ll(to, (__force const void *)from, n);
- }
- 
--static __always_inline unsigned long
--__copy_from_user_inatomic_nocache(void *to, const void __user *from,
--				  unsigned long n)
--{
--       return __copy_from_user_ll_nocache_nozero(to, from, n);
--}
--
-+unsigned long __must_check copy_from_user_inatomic_nontemporal(void *, const void __user *, unsigned long n);
- unsigned long __must_check clear_user(void __user *mem, unsigned long len);
- unsigned long __must_check __clear_user(void __user *mem, unsigned long len);
- 
---- a/arch/x86/include/asm/uaccess_64.h
-+++ b/arch/x86/include/asm/uaccess_64.h
-@@ -152,11 +152,12 @@ extern size_t copy_to_nontemporal(void *
- extern long __copy_user_flushcache(void *dst, const void __user *src, unsigned size);
- 
- static inline int
--__copy_from_user_inatomic_nocache(void *dst, const void __user *src,
-+copy_from_user_inatomic_nontemporal(void *dst, const void __user *src,
- 				  unsigned size)
- {
- 	long ret;
- 	kasan_check_write(dst, size);
-+	src = mask_user_address(src);
- 	stac();
- 	ret = copy_to_nontemporal(dst, (__force const void *)src, size);
- 	clac();
---- a/arch/x86/lib/usercopy_32.c
-+++ b/arch/x86/lib/usercopy_32.c
-@@ -322,10 +322,11 @@ unsigned long __copy_user_ll(void *to, c
- }
- EXPORT_SYMBOL(__copy_user_ll);
- 
--unsigned long __copy_from_user_ll_nocache_nozero(void *to, const void __user *from,
-+unsigned long copy_from_user_inatomic_nontemporal(void *to, const void __user *from,
- 					unsigned long n)
- {
--	__uaccess_begin_nospec();
-+	if (!user_access_begin(from, n))
-+		return n;
- #ifdef CONFIG_X86_INTEL_USERCOPY
- 	if (n > 64 && static_cpu_has(X86_FEATURE_XMM2))
- 		n = __copy_user_intel_nocache(to, from, n);
-@@ -334,7 +335,7 @@ unsigned long __copy_from_user_ll_nocach
- #else
- 	__copy_user(to, from, n);
- #endif
--	__uaccess_end();
-+	user_access_end();
- 	return n;
- }
--EXPORT_SYMBOL(__copy_from_user_ll_nocache_nozero);
-+EXPORT_SYMBOL(copy_from_user_inatomic_nontemporal);
---- a/drivers/gpu/drm/i915/i915_gem.c
-+++ b/drivers/gpu/drm/i915/i915_gem.c
-@@ -519,7 +519,7 @@ ggtt_write(struct io_mapping *mapping,
- 
- 	/* We can use the cpu mem copy function because this is X86. */
- 	vaddr = io_mapping_map_atomic_wc(mapping, base);
--	unwritten = __copy_from_user_inatomic_nocache((void __force *)vaddr + offset,
-+	unwritten = copy_from_user_inatomic_nontemporal((void __force *)vaddr + offset,
- 						      user_data, length);
- 	io_mapping_unmap_atomic(vaddr);
- 	if (unwritten) {
---- a/drivers/gpu/drm/qxl/qxl_ioctl.c
-+++ b/drivers/gpu/drm/qxl/qxl_ioctl.c
-@@ -182,7 +182,7 @@ static int qxl_process_single_command(st
- 
- 	/* TODO copy slow path code from i915 */
- 	fb_cmd = qxl_bo_kmap_atomic_page(qdev, cmd_bo, (release->release_offset & PAGE_MASK));
--	unwritten = __copy_from_user_inatomic_nocache
-+	unwritten = copy_from_user_inatomic_nontemporal
- 		(fb_cmd + sizeof(union qxl_release_info) + (release->release_offset & ~PAGE_MASK),
- 		 u64_to_user_ptr(cmd->command), cmd->command_size);
- 
---- a/include/linux/uaccess.h
-+++ b/include/linux/uaccess.h
-@@ -320,16 +320,21 @@ static inline size_t probe_subpage_write
- 
- #endif /* CONFIG_ARCH_HAS_SUBPAGE_FAULTS */
- 
--#ifndef ARCH_HAS_NOCACHE_UACCESS
-+#ifndef ARCH_HAS_NONTEMPORAL_UACCESS
- 
- static inline __must_check unsigned long
--__copy_from_user_inatomic_nocache(void *to, const void __user *from,
-+copy_from_user_inatomic_nontemporal(void *to, const void __user *from,
- 				  unsigned long n)
- {
-+	if (can_do_masked_user_access())
-+		from = mask_user_address(from);
-+	else
-+		if (!access_ok(from, n))
-+			return n;
- 	return __copy_from_user_inatomic(to, from, n);
- }
- 
--#endif		/* ARCH_HAS_NOCACHE_UACCESS */
-+#endif		/* ARCH_HAS_NONTEMPORAL_UACCESS */
- 
- extern __must_check int check_zeroed_user(const void __user *from, size_t size);
- 
---- a/lib/iov_iter.c
-+++ b/lib/iov_iter.c
-@@ -265,7 +265,7 @@ static __always_inline
- size_t copy_from_user_iter_nocache(void __user *iter_from, size_t progress,
- 				   size_t len, void *to, void *priv2)
- {
--	return __copy_from_user_inatomic_nocache(to + progress, iter_from, len);
-+	return copy_from_user_inatomic_nontemporal(to + progress, iter_from, len);
- }
- 
- size_t _copy_from_iter_nocache(void *addr, size_t bytes, struct iov_iter *i)
+--- a/drivers/media/usb/hackrf/hackrf.c
++++ b/drivers/media/usb/hackrf/hackrf.c
+@@ -1485,7 +1485,7 @@ static int hackrf_probe(struct usb_inter
+ 	if (ret) {
+ 		dev_err(dev->dev,
+ 			"Failed to register as video device (%d)\n", ret);
+-		goto err_v4l2_device_unregister;
++		goto err_v4l2_device_put;
+ 	}
+ 	dev_info(dev->dev, "Registered as %s\n",
+ 		 video_device_node_name(&dev->rx_vdev));
+@@ -1513,8 +1513,9 @@ static int hackrf_probe(struct usb_inter
+ 	return 0;
+ err_video_unregister_device_rx:
+ 	video_unregister_device(&dev->rx_vdev);
+-err_v4l2_device_unregister:
+-	v4l2_device_unregister(&dev->v4l2_dev);
++err_v4l2_device_put:
++	v4l2_device_put(&dev->v4l2_dev);
++	return ret;
+ err_v4l2_ctrl_handler_free_tx:
+ 	v4l2_ctrl_handler_free(&dev->tx_ctrl_handler);
+ err_v4l2_ctrl_handler_free_rx:
 
 
 
