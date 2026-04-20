@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-239764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239890-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yK9pLQtb5mmtvAEAu9opvQ
-	(envelope-from <stable+bounces-239764-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:57:47 +0200
+	id MIc8ND5Z5mmtvAEAu9opvQ
+	(envelope-from <stable+bounces-239890-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:50:06 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A177430498
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:57:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 864DB43015F
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:50:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 48FA9321CD20
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:05:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B133432EF92F
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:11:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A86D33396EE;
-	Mon, 20 Apr 2026 16:05:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26B34342CB0;
+	Mon, 20 Apr 2026 16:11:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VKQ8d+uT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="chbM4tq2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AEDF3264F1;
-	Mon, 20 Apr 2026 16:05:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD2FF33858B;
+	Mon, 20 Apr 2026 16:11:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701154; cv=none; b=ncbZ3QQfFguTYhS9BlkBq7T5TJ4ZiE1DvvmBjhjtqhYPuNeW8mtdwxh+FyJcGUH/BUCcAP0xZziyaBvkVZaoFeg8Gy86bYJ+GdzHMhxmn2XrYTZkDWMI2f343HBcEpSNPMpd77OKnA5dHkMZSHxdKGelz7X73r7n48M+nXkVTrs=
+	t=1776701475; cv=none; b=lZW+so+BITz//PTw66hvslLo6zvaGyHHR/+sLdaBD/m14Zhj+aU8hLzBJoWLUxXbXoQeskMVMfAwSJ09paOwhbDmEcq1kPtoXR0gg59M+h32tvROIXvPPxgbne+7lv0EPY5PquSfXiNsnmfs5yapjvXFG11um+S35gp7I2Sg9as=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701154; c=relaxed/simple;
-	bh=ldKU0dCjI1u6Q1PXNGTkaCvkzQ0l7pnvWeCrQEULti8=;
+	s=arc-20240116; t=1776701475; c=relaxed/simple;
+	bh=ZoafX4QfFFyujP+273gPOt77mALZipPOhuWKm/Z2bZ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MaVZASp0xP9y783xOukdLrXSMWtkhTw39rbxPOgU2IokFLxbbzZk18ZMFUhUVQcQTrsVDI/9ZZnW1VjDBhXAFAM3EFsr0gpcdOzNIzE0ZXdrCWG4GPOAr1vWHjeFFMuJqi6gRg+zQ/4WWJHLWt9yovpqeWVDUyuMXrOhNOJY5NM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VKQ8d+uT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00F01C2BCB6;
-	Mon, 20 Apr 2026 16:05:53 +0000 (UTC)
+	 MIME-Version; b=qDmYhuMEkKbiON1lvu0jFEp/iXeYNy6FOWBp+/s59+rEcbl6nbHnJOpDqIBlIyKXdcYapn/nTIm3s9lmm9/pk20f3O8RWNe/Q4BJr/tyP/iXJDZKioSqqOa2OAEyTVDLFc/vaCPlRYvq1PrbIXgLWgV4nFNFle7/wK2K05bi12U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=chbM4tq2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 352C8C2BCB6;
+	Mon, 20 Apr 2026 16:11:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701154;
-	bh=ldKU0dCjI1u6Q1PXNGTkaCvkzQ0l7pnvWeCrQEULti8=;
+	s=korg; t=1776701475;
+	bh=ZoafX4QfFFyujP+273gPOt77mALZipPOhuWKm/Z2bZ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VKQ8d+uTWwxYAatFqjN/tBBDpQG/0aIXcbH0zCFVTAGNJW7R8rAuqbjbREYv5/b/g
-	 K5bUXyIe6sEl4Bfc4+nim63dZ4a0bhmrbm1QEMag07dzmyGd5lTcIbaqeFDcpKRZx1
-	 paLL0p+VSybhbkfrtSIqy+MIzEB9q7gHxHUyTWgY=
+	b=chbM4tq2ymmYRqL786YrYBTIUKcbatyEBCDFrXeJpRnW3OPZfxLcL0d6pw0xq/xkH
+	 7i2oaQtpIsxYAcY0u1EvSXiDN+5Mj/+jd1IOsJdwtdjyk/hHae1B2JWfyziRJd2pj7
+	 RhzfttatjRY0omvofeO7pehKOuWnAZ6/cQEwoQlc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stable@vger.kernel.org,
-	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.18 182/198] ASoC: qcom: q6apm: move component registration to unmanaged version
+	Jethro Beekman <jethro@fortanix.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.12 129/162] KVM: SEV: Reject attempts to sync VMSA of an already-launched/encrypted vCPU
 Date: Mon, 20 Apr 2026 17:42:41 +0200
-Message-ID: <20260420153942.169930727@linuxfoundation.org>
+Message-ID: <20260420153931.714396079@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
+References: <20260420153927.006696811@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -78,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-239764-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-239890-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,162 +86,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qualcomm.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: 2A177430498
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 864DB43015F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 6ec1235fc941dac6c011b30ee01d9220ff87e0cd upstream.
+commit 9b9f7962e3e879d12da2bf47e02a24ec51690e3d upstream.
 
-q6apm component registers dais dynamically from ASoC toplology, which
-are allocated using device managed version apis. Allocating both
-component and dynamic dais using managed version could lead to incorrect
-free ordering, dai will be freed while component still holding references
-to it.
+Reject synchronizing vCPU state to its associated VMSA if the vCPU has
+already been launched, i.e. if the VMSA has already been encrypted.  On a
+host with SNP enabled, accessing guest-private memory generates an RMP #PF
+and panics the host.
 
-Fix this issue by moving component to unmanged version so
-that the dai pointers are only freeded after the component is removed.
+  BUG: unable to handle page fault for address: ff1276cbfdf36000
+  #PF: supervisor write access in kernel mode
+  #PF: error_code(0x80000003) - RMP violation
+  PGD 5a31801067 P4D 5a31802067 PUD 40ccfb5063 PMD 40e5954063 PTE 80000040fdf36163
+  SEV-SNP: PFN 0x40fdf36, RMP entry: [0x6010fffffffff001 - 0x000000000000001f]
+  Oops: Oops: 0003 [#1] SMP NOPTI
+  CPU: 33 UID: 0 PID: 996180 Comm: qemu-system-x86 Tainted: G           OE
+  Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
+  Hardware name: Dell Inc. PowerEdge R7625/0H1TJT, BIOS 1.5.8 07/21/2023
+  RIP: 0010:sev_es_sync_vmsa+0x54/0x4c0 [kvm_amd]
+  Call Trace:
+   <TASK>
+   snp_launch_update_vmsa+0x19d/0x290 [kvm_amd]
+   snp_launch_finish+0xb6/0x380 [kvm_amd]
+   sev_mem_enc_ioctl+0x14e/0x720 [kvm_amd]
+   kvm_arch_vm_ioctl+0x837/0xcf0 [kvm]
+   kvm_vm_ioctl+0x3fd/0xcc0 [kvm]
+   __x64_sys_ioctl+0xa3/0x100
+   x64_sys_call+0xfe0/0x2350
+   do_syscall_64+0x81/0x10f0
+   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+  RIP: 0033:0x7ffff673287d
+   </TASK>
 
-==================================================================
-BUG: KASAN: slab-use-after-free in snd_soc_del_component_unlocked+0x3d4/0x400 [snd_soc_core]
-Read of size 8 at addr ffff00084493a6e8 by task kworker/u48:0/3426
-Tainted: [W]=WARN
-Hardware name: LENOVO 21N2ZC5PUS/21N2ZC5PUS, BIOS N42ET57W (1.31 ) 08/08/2024
-Workqueue: pdr_notifier_wq pdr_notifier_work [pdr_interface]
-Call trace:
- show_stack+0x28/0x7c (C)
- dump_stack_lvl+0x60/0x80
- print_report+0x160/0x4b4
- kasan_report+0xac/0xfc
- __asan_report_load8_noabort+0x20/0x34
- snd_soc_del_component_unlocked+0x3d4/0x400 [snd_soc_core]
- snd_soc_unregister_component_by_driver+0x50/0x88 [snd_soc_core]
- devm_component_release+0x30/0x5c [snd_soc_core]
- devres_release_all+0x13c/0x210
- device_unbind_cleanup+0x20/0x190
- device_release_driver_internal+0x350/0x468
- device_release_driver+0x18/0x30
- bus_remove_device+0x1a0/0x35c
- device_del+0x314/0x7f0
- device_unregister+0x20/0xbc
- apr_remove_device+0x5c/0x7c [apr]
- device_for_each_child+0xd8/0x160
- apr_pd_status+0x7c/0xa8 [apr]
- pdr_notifier_work+0x114/0x240 [pdr_interface]
- process_one_work+0x500/0xb70
- worker_thread+0x630/0xfb0
- kthread+0x370/0x6c0
- ret_from_fork+0x10/0x20
+Note, the KVM flaw has been present since commit ad73109ae7ec ("KVM: SVM:
+Provide support to launch and run an SEV-ES guest"), but has only been
+actively dangerous for the host since SNP support was added.  With SEV-ES,
+KVM would "just" clobber guest state, which is totally fine from a host
+kernel perspective since userspace can clobber guest state any time before
+sev_launch_update_vmsa().
 
-Allocated by task 77:
- kasan_save_stack+0x40/0x68
- kasan_save_track+0x20/0x40
- kasan_save_alloc_info+0x44/0x58
- __kasan_kmalloc+0xbc/0xdc
- __kmalloc_node_track_caller_noprof+0x1f4/0x620
- devm_kmalloc+0x7c/0x1c8
- snd_soc_register_dai+0x50/0x4f0 [snd_soc_core]
- soc_tplg_pcm_elems_load+0x55c/0x1eb8 [snd_soc_core]
- snd_soc_tplg_component_load+0x4f8/0xb60 [snd_soc_core]
- audioreach_tplg_init+0x124/0x1fc [snd_q6apm]
- q6apm_audio_probe+0x10/0x1c [snd_q6apm]
- snd_soc_component_probe+0x5c/0x118 [snd_soc_core]
- soc_probe_component+0x44c/0xaf0 [snd_soc_core]
- snd_soc_bind_card+0xad0/0x2370 [snd_soc_core]
- snd_soc_register_card+0x3b0/0x4c0 [snd_soc_core]
- devm_snd_soc_register_card+0x50/0xc8 [snd_soc_core]
- x1e80100_platform_probe+0x208/0x368 [snd_soc_x1e80100]
- platform_probe+0xc0/0x188
- really_probe+0x188/0x804
- __driver_probe_device+0x158/0x358
- driver_probe_device+0x60/0x190
- __device_attach_driver+0x16c/0x2a8
- bus_for_each_drv+0x100/0x194
- __device_attach+0x174/0x380
- device_initial_probe+0x14/0x20
- bus_probe_device+0x124/0x154
- deferred_probe_work_func+0x140/0x220
- process_one_work+0x500/0xb70
- worker_thread+0x630/0xfb0
- kthread+0x370/0x6c0
- ret_from_fork+0x10/0x20
-
-Freed by task 3426:
- kasan_save_stack+0x40/0x68
- kasan_save_track+0x20/0x40
- __kasan_save_free_info+0x4c/0x80
- __kasan_slab_free+0x78/0xa0
- kfree+0x100/0x4a4
- devres_release_all+0x144/0x210
- device_unbind_cleanup+0x20/0x190
- device_release_driver_internal+0x350/0x468
- device_release_driver+0x18/0x30
- bus_remove_device+0x1a0/0x35c
- device_del+0x314/0x7f0
- device_unregister+0x20/0xbc
- apr_remove_device+0x5c/0x7c [apr]
- device_for_each_child+0xd8/0x160
- apr_pd_status+0x7c/0xa8 [apr]
- pdr_notifier_work+0x114/0x240 [pdr_interface]
- process_one_work+0x500/0xb70
- worker_thread+0x630/0xfb0
- kthread+0x370/0x6c0
- ret_from_fork+0x10/0x20
-
-Fixes: 5477518b8a0e ("ASoC: qdsp6: audioreach: add q6apm support")
-Cc: Stable@vger.kernel.org
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260402081118.348071-2-srinivas.kandagatla@oss.qualcomm.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: ad27ce155566 ("KVM: SEV: Add KVM_SEV_SNP_LAUNCH_FINISH command")
+Reported-by: Jethro Beekman <jethro@fortanix.com>
+Closes: https://lore.kernel.org/all/d98692e2-d96b-4c36-8089-4bc1e5cc3d57@fortanix.com
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260310234829.2608037-3-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/qcom/qdsp6/q6apm.c |   14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ arch/x86/kvm/svm/sev.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/sound/soc/qcom/qdsp6/q6apm.c
-+++ b/sound/soc/qcom/qdsp6/q6apm.c
-@@ -767,13 +767,22 @@ static int apm_probe(gpr_device_t *gdev)
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -814,6 +814,9 @@ static int sev_es_sync_vmsa(struct vcpu_
+ 	u8 *d;
+ 	int i;
  
- 	q6apm_get_apm_state(apm);
- 
--	ret = devm_snd_soc_register_component(dev, &q6apm_audio_component, NULL, 0);
-+	ret = snd_soc_register_component(dev, &q6apm_audio_component, NULL, 0);
- 	if (ret < 0) {
- 		dev_err(dev, "failed to register q6apm: %d\n", ret);
- 		return ret;
- 	}
- 
--	return of_platform_populate(dev->of_node, NULL, NULL, dev);
-+	ret = of_platform_populate(dev->of_node, NULL, NULL, dev);
-+	if (ret)
-+		snd_soc_unregister_component(dev);
++	if (vcpu->arch.guest_state_protected)
++		return -EINVAL;
 +
-+	return ret;
-+}
-+
-+static void apm_remove(gpr_device_t *gdev)
-+{
-+	snd_soc_unregister_component(&gdev->dev);
- }
- 
- struct audioreach_module *q6apm_find_module_by_mid(struct q6apm_graph *graph, uint32_t mid)
-@@ -840,6 +849,7 @@ MODULE_DEVICE_TABLE(of, apm_device_id);
- 
- static gpr_driver_t apm_driver = {
- 	.probe = apm_probe,
-+	.remove = apm_remove,
- 	.gpr_callback = apm_callback,
- 	.driver = {
- 		.name = "qcom-apm",
+ 	/* Check some debug related fields before encrypting the VMSA */
+ 	if (svm->vcpu.guest_debug || (svm->vmcb->save.dr7 & ~DR7_FIXED_1))
+ 		return -EINVAL;
 
 
 
