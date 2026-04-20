@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-239525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239320-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mFztHUxl5mkKvwEAu9opvQ
-	(envelope-from <stable+bounces-239525-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:41:32 +0200
+	id mO2XDzRj5mkKvwEAu9opvQ
+	(envelope-from <stable+bounces-239320-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:32:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04899431D37
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:41:31 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2AC843163F
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:32:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5AADC35D9114
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:54:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1EAC334243C4
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:45:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1AAF2E093A;
-	Mon, 20 Apr 2026 15:54:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76CB92D978C;
+	Mon, 20 Apr 2026 15:45:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lylIyd7f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ejijzBfG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3241330675;
-	Mon, 20 Apr 2026 15:54:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36F1C3382C7;
+	Mon, 20 Apr 2026 15:45:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700476; cv=none; b=TPthWraKj0IouNg/lIc9LC+eho2TnlA67jEs6vD7H+4B0zybtPdNGf76Kshlnesv3JkHQUIELOpZTbt/f9wlfcL7qQpXawoYiFvLBFHP9GMqEvdGDfzNXVtOlCw0ROiPdjPYbLiPGwCqK0jjhd/zxZqp7lRA5EvxcutzbPNBYGg=
+	t=1776699945; cv=none; b=TnT3I3hji7un7gv4zddwVQaQJlMx1M8VJJqzSCmDMBdhf0te3/U0PblngyEDlV24/MK5GjMTNHU/vURLKfBXg3ATlkey0LL7f2NekQkJOkQ8HkQiFrlwNxO97sYDIjj0ZUFAW1uLz05X696HsUIPmHQa+cjC/R94U5axvYDzJvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700476; c=relaxed/simple;
-	bh=hbofeAXGNk9UmIjurpdsIBxFKbYfCelLABpQvKVh5z0=;
+	s=arc-20240116; t=1776699945; c=relaxed/simple;
+	bh=uKnQUw33ggBCLzscrat35dAJtlyk6M00CeLGefWQC3c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LhHomMQqb3vNi3ko6PGlPq4Ob9S/YG5BipEMQ4zR5IsmI3SOH2nYTL0aBVUda9ozZ81uuSiQxteGHl6Uy3D20WHDFWWvwa1c34fx8ZWzVshVo5Qo2wZ1DSYGcunRppQsk5xV1xWdVF29YPL6P+AI3qz5Czc3e1u46uAKK8TdgBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lylIyd7f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECFEFC19425;
-	Mon, 20 Apr 2026 15:54:35 +0000 (UTC)
+	 MIME-Version; b=byid73UNZfVIS63+2AR/mbfaUgCuAQhHLCDyckdmr32pYuDwTtV6TZnwqr4nvDrYVeINIEbVUqxZ1GrAmybEctYv4MVUU/L3fP6NNnltkfccHOUNUhs91aLMRv2MlKEiKdZuLtwZPLo+sosanQ+WVqiDGSbCkxCGQUakfPZKFjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ejijzBfG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 842DCC2BCB4;
+	Mon, 20 Apr 2026 15:45:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700476;
-	bh=hbofeAXGNk9UmIjurpdsIBxFKbYfCelLABpQvKVh5z0=;
+	s=korg; t=1776699944;
+	bh=uKnQUw33ggBCLzscrat35dAJtlyk6M00CeLGefWQC3c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lylIyd7fToJw2jbX+/QHSbkGWwp8Io37w7oehxLKCJlhR25hqogRQnPVkjJ0yJ4SL
-	 vHokJM/aeD+QuARx8pbXVb+1SOxA4I2INlkSPd5p3nCIOEofgmAMb7qN812oABhdqH
-	 9Hl/yq6AIW9sj+WuWQbw1YNfJ7RwViA4nKISGG6U=
+	b=ejijzBfGI6tX1yo2hCGkfNtVwrtqrHdZYqp/038xP/2Xhs0RbJcXghj6F1G3VPySl
+	 3yoIpN58WXt3Y4hGSKuJwV1Li+Ea4WYnxBAbNT9pu1q1ZKfjdYV5FwPlSmKckSNciU
+	 /CWUr0diPQxfGXkUu+Etc9Nrew9dq5ZCS7sVw18w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jethro Beekman <jethro@fortanix.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.19 188/220] KVM: SEV: Reject attempts to sync VMSA of an already-launched/encrypted vCPU
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 7.0 58/76] x86-64: rename misleadingly named __copy_user_nocache() function
 Date: Mon, 20 Apr 2026 17:42:09 +0200
-Message-ID: <20260420153940.795646549@linuxfoundation.org>
+Message-ID: <20260420153912.931958705@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
-References: <20260420153934.013228280@linuxfoundation.org>
+In-Reply-To: <20260420153910.810034134@linuxfoundation.org>
+References: <20260420153910.810034134@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,100 +66,199 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239320-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-239525-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,fortanix.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 04899431D37
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: C2AC843163F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-commit 9b9f7962e3e879d12da2bf47e02a24ec51690e3d upstream.
+commit d187a86de793f84766ea40b9ade7ac60aabbb4fe upstream.
 
-Reject synchronizing vCPU state to its associated VMSA if the vCPU has
-already been launched, i.e. if the VMSA has already been encrypted.  On a
-host with SNP enabled, accessing guest-private memory generates an RMP #PF
-and panics the host.
+This function was a masterclass in bad naming, for various historical
+reasons.
 
-  BUG: unable to handle page fault for address: ff1276cbfdf36000
-  #PF: supervisor write access in kernel mode
-  #PF: error_code(0x80000003) - RMP violation
-  PGD 5a31801067 P4D 5a31802067 PUD 40ccfb5063 PMD 40e5954063 PTE 80000040fdf36163
-  SEV-SNP: PFN 0x40fdf36, RMP entry: [0x6010fffffffff001 - 0x000000000000001f]
-  Oops: Oops: 0003 [#1] SMP NOPTI
-  CPU: 33 UID: 0 PID: 996180 Comm: qemu-system-x86 Tainted: G           OE
-  Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
-  Hardware name: Dell Inc. PowerEdge R7625/0H1TJT, BIOS 1.5.8 07/21/2023
-  RIP: 0010:sev_es_sync_vmsa+0x54/0x4c0 [kvm_amd]
-  Call Trace:
-   <TASK>
-   snp_launch_update_vmsa+0x19d/0x290 [kvm_amd]
-   snp_launch_finish+0xb6/0x380 [kvm_amd]
-   sev_mem_enc_ioctl+0x14e/0x720 [kvm_amd]
-   kvm_arch_vm_ioctl+0x837/0xcf0 [kvm]
-   kvm_vm_ioctl+0x3fd/0xcc0 [kvm]
-   __x64_sys_ioctl+0xa3/0x100
-   x64_sys_call+0xfe0/0x2350
-   do_syscall_64+0x81/0x10f0
-   entry_SYSCALL_64_after_hwframe+0x76/0x7e
-  RIP: 0033:0x7ffff673287d
-   </TASK>
+It claimed to be a non-cached user copy.  It is literally _neither_ of
+those things.  It's a specialty memory copy routine that uses
+non-temporal stores for the destination (but not the source), and that
+does exception handling for both source and destination accesses.
 
-Note, the KVM flaw has been present since commit ad73109ae7ec ("KVM: SVM:
-Provide support to launch and run an SEV-ES guest"), but has only been
-actively dangerous for the host since SNP support was added.  With SEV-ES,
-KVM would "just" clobber guest state, which is totally fine from a host
-kernel perspective since userspace can clobber guest state any time before
-sev_launch_update_vmsa().
+Also note that while it works for unaligned targets, any unaligned parts
+(whether at beginning or end) will not use non-temporal stores, since
+only words and quadwords can be non-temporal on x86.
 
-Fixes: ad27ce155566 ("KVM: SEV: Add KVM_SEV_SNP_LAUNCH_FINISH command")
-Reported-by: Jethro Beekman <jethro@fortanix.com>
-Closes: https://lore.kernel.org/all/d98692e2-d96b-4c36-8089-4bc1e5cc3d57@fortanix.com
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260310234829.2608037-3-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+The exception handling means that it _can_ be used for user space
+accesses, but not on its own - it needs all the normal "start user space
+access" logic around it.
+
+But typically the user space access would be the source, not the
+non-temporal destination.  That was the original intention of this,
+where the destination was some fragile persistent memory target that
+needed non-temporal stores in order to catch machine check exceptions
+synchronously and deal with them gracefully.
+
+Thus that non-descriptive name: one use case was to copy from user space
+into a non-cached kernel buffer.  However, the existing users are a mix
+of that intended use-case, and a couple of random drivers that just did
+this as a performance tweak.
+
+Some of those random drivers then actively misused the user copying
+version (with STAC/CLAC and all) to do kernel copies without ever even
+caring about the exception handling, _just_ for the non-temporal
+destination.
+
+Rename it as a first small step to actually make it halfway sane, and
+change the prototype to be more normal: it doesn't take a user pointer
+unless the caller has done the proper conversion, and the argument size
+is the full size_t (it still won't actually copy more than 4GB in one
+go, but there's also no reason to silently truncate the size argument in
+the caller).
+
+Finally, use this now sanely named function in the NTB code, which
+mis-used a user copy version (with STAC/CLAC and all) of this interface
+despite it not actually being a user copy at all.
+
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/sev.c |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/x86/include/asm/uaccess_64.h    |    5 +++--
+ arch/x86/lib/copy_user_uncached_64.S |    6 +++---
+ arch/x86/lib/usercopy_64.c           |    4 ++--
+ drivers/infiniband/sw/rdmavt/qp.c    |    8 +++-----
+ drivers/ntb/ntb_transport.c          |    7 ++++---
+ tools/objtool/check.c                |    2 +-
+ 6 files changed, 16 insertions(+), 16 deletions(-)
 
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -875,6 +875,9 @@ static int sev_es_sync_vmsa(struct vcpu_
- 	u8 *d;
- 	int i;
+--- a/arch/x86/include/asm/uaccess_64.h
++++ b/arch/x86/include/asm/uaccess_64.h
+@@ -147,7 +147,8 @@ raw_copy_to_user(void __user *dst, const
+ 	return copy_user_generic((__force void *)dst, src, size);
+ }
  
-+	if (vcpu->arch.guest_state_protected)
-+		return -EINVAL;
-+
- 	/* Check some debug related fields before encrypting the VMSA */
- 	if (svm->vcpu.guest_debug || (svm->vmcb->save.dr7 & ~DR7_FIXED_1))
- 		return -EINVAL;
+-extern long __copy_user_nocache(void *dst, const void __user *src, unsigned size);
++#define copy_to_nontemporal copy_to_nontemporal
++extern size_t copy_to_nontemporal(void *dst, const void *src, size_t size);
+ extern long __copy_user_flushcache(void *dst, const void __user *src, unsigned size);
+ 
+ static inline int
+@@ -157,7 +158,7 @@ __copy_from_user_inatomic_nocache(void *
+ 	long ret;
+ 	kasan_check_write(dst, size);
+ 	stac();
+-	ret = __copy_user_nocache(dst, src, size);
++	ret = copy_to_nontemporal(dst, (__force const void *)src, size);
+ 	clac();
+ 	return ret;
+ }
+--- a/arch/x86/lib/copy_user_uncached_64.S
++++ b/arch/x86/lib/copy_user_uncached_64.S
+@@ -27,7 +27,7 @@
+  * Output:
+  * rax uncopied bytes or 0 if successful.
+  */
+-SYM_FUNC_START(__copy_user_nocache)
++SYM_FUNC_START(copy_to_nontemporal)
+ 	ANNOTATE_NOENDBR
+ 	/* If destination is not 7-byte aligned, we'll have to align it */
+ 	testb $7,%dil
+@@ -240,5 +240,5 @@ _ASM_EXTABLE_UA(95b, .Ldone)
+ _ASM_EXTABLE_UA(52b, .Ldone0)
+ _ASM_EXTABLE_UA(53b, .Ldone0)
+ 
+-SYM_FUNC_END(__copy_user_nocache)
+-EXPORT_SYMBOL(__copy_user_nocache)
++SYM_FUNC_END(copy_to_nontemporal)
++EXPORT_SYMBOL(copy_to_nontemporal)
+--- a/arch/x86/lib/usercopy_64.c
++++ b/arch/x86/lib/usercopy_64.c
+@@ -49,11 +49,11 @@ long __copy_user_flushcache(void *dst, c
+ 	long rc;
+ 
+ 	stac();
+-	rc = __copy_user_nocache(dst, src, size);
++	rc = copy_to_nontemporal(dst, (__force const void *)src, size);
+ 	clac();
+ 
+ 	/*
+-	 * __copy_user_nocache() uses non-temporal stores for the bulk
++	 * copy_to_nontemporal() uses non-temporal stores for the bulk
+ 	 * of the transfer, but we need to manually flush if the
+ 	 * transfer is unaligned. A cached memory copy is used when
+ 	 * destination or size is not naturally aligned. That is:
+--- a/drivers/infiniband/sw/rdmavt/qp.c
++++ b/drivers/infiniband/sw/rdmavt/qp.c
+@@ -92,12 +92,10 @@ static int rvt_wss_llc_size(void)
+ static void cacheless_memcpy(void *dst, void *src, size_t n)
+ {
+ 	/*
+-	 * Use the only available X64 cacheless copy.  Add a __user cast
+-	 * to quiet sparse.  The src agument is already in the kernel so
+-	 * there are no security issues.  The extra fault recovery machinery
+-	 * is not invoked.
++	 * Use the only available X64 cacheless copy.
++	 * The extra fault recovery machinery is not invoked.
+ 	 */
+-	__copy_user_nocache(dst, (void __user *)src, n);
++	copy_to_nontemporal(dst, src, n);
+ }
+ 
+ void rvt_wss_exit(struct rvt_dev_info *rdi)
+--- a/drivers/ntb/ntb_transport.c
++++ b/drivers/ntb/ntb_transport.c
+@@ -1779,12 +1779,13 @@ static void ntb_tx_copy_callback(void *d
+ 
+ static void ntb_memcpy_tx_on_stack(struct ntb_queue_entry *entry, void __iomem *offset)
+ {
+-#ifdef ARCH_HAS_NOCACHE_UACCESS
++#ifdef copy_to_nontemporal
+ 	/*
+ 	 * Using non-temporal mov to improve performance on non-cached
+-	 * writes, even though we aren't actually copying from user space.
++	 * writes. This only works if __iomem is strictly memory-like,
++	 * but that is the case on x86-64
+ 	 */
+-	__copy_from_user_inatomic_nocache(offset, entry->buf, entry->len);
++	copy_to_nontemporal(offset, entry->buf, entry->len);
+ #else
+ 	memcpy_toio(offset, entry->buf, entry->len);
+ #endif
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -1301,7 +1301,7 @@ static const char *uaccess_safe_builtin[
+ 	"copy_mc_enhanced_fast_string",
+ 	"rep_stos_alternative",
+ 	"rep_movs_alternative",
+-	"__copy_user_nocache",
++	"copy_to_nontemporal",
+ 	NULL
+ };
+ 
 
 
 
