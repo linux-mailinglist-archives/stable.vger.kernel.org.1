@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-239744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239550-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MBJCF1BP5mkBuwEAu9opvQ
-	(envelope-from <stable+bounces-239744-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:07:44 +0200
+	id OEDiJ5dl5mlmvwEAu9opvQ
+	(envelope-from <stable+bounces-239550-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:42:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85A7142F057
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:07:42 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD242431E0C
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:42:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BCAA6300DF49
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:05:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E0DDE30D5F90
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:55:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31BDB33F58E;
-	Mon, 20 Apr 2026 16:05:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 835D73264F1;
+	Mon, 20 Apr 2026 15:55:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rnESLJsp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IOLJ/rsi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A622E093A;
-	Mon, 20 Apr 2026 16:05:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 465EA32E696;
+	Mon, 20 Apr 2026 15:55:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701106; cv=none; b=JUWAl5JLx6C4Rymv4IHcDVekksRrV58ebC5DonELiajgwBF8yjXvBka7qW9aDktgNyMeQUzHy0z+PiHLjkikbal99UELNNZODMhjZjV6vLEx1Eov4F3W2Sekgz2dgWrMy0/PTRC3SLd2hkGZ+g/6vlmAoWZvXABTGuspTeK3iyE=
+	t=1776700540; cv=none; b=qZ+u4p6YhUiLa8sk0IZNRz4RdbxFUPe/8Foi9L2/LDKYtw3Su4nu/7sMULdPkAryfOpHTnCtCsN5rELIGZzu0KKu1jtQvQmhGZW2fws6A3pVivheR+EMjBZ51gA6aBfN+ZKLrfaubmYcHum/6GcaQJEnyIJSLHBhTKMI7pquNoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701106; c=relaxed/simple;
-	bh=SaAh2dlX5xejDUabB4AekhBQ6/C9OnYLwlozv440c74=;
+	s=arc-20240116; t=1776700540; c=relaxed/simple;
+	bh=rYx/vEV+0U9kCIR6POHBGeFgo5lGJ6KfaUw65+hMvl8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NDjSXg5wuMHDHSGrMntlnO6h+MOvXyqi1gHdb2bthJ+axfRNN/q817hQ+6uaTHBjN8JgGC3tt3IvkHncrzp1omeNhmtKxqp91yYhDPqdQDx96SKB+j3BX7Gvk7cCqwc8dGsn2u0af+aHZPQTACe1hArW4lcHp5BFrAp5pYWD6JA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rnESLJsp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DA53C19425;
-	Mon, 20 Apr 2026 16:05:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=j0l+z3h9ADU9tySHoF3Yu5eflXhlALs0rNdfpKPYFxD8HWJqlrTZer+yhh13Xidw/EFYWq6cwzYoalDBUNuzZ/uu/lqQJn7HY2RlL93kdwcM+fYoxJbU71SwN68sUKEulQEs6U6m00hlY5V3pbMlHvI6XlRSLC9bdG17CQtZY/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IOLJ/rsi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9CC9C19425;
+	Mon, 20 Apr 2026 15:55:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701105;
-	bh=SaAh2dlX5xejDUabB4AekhBQ6/C9OnYLwlozv440c74=;
+	s=korg; t=1776700540;
+	bh=rYx/vEV+0U9kCIR6POHBGeFgo5lGJ6KfaUw65+hMvl8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rnESLJsprNMN5s1BcqGUZ/sUXDFHqDDX9EJA6Ev8Q1SUWsB7i/OVs+c2m0bc744nl
-	 FitKIWMFMzH8sinJR0eSIJs80HTeAYu4FdghLAcUFTollzJwtiS8PCeOMHaB2QiOFI
-	 YhBQGGTB+6qhDckn7BUzMtGbRa0Z4p9mJ4gxBijQ=
+	b=IOLJ/rsiJTf5Ovf8NyiBKVNGxVevZ3s8NKFyIdYT497Ha28mOJnmMTpv2fiZ0Vj6M
+	 1ZXJv28Hw4lmT7sSzLHco6B4d8X9jPg5b+29U5NGM/tT0/I0qezkpKDDM+fQi6+F66
+	 Au2GdsXgl4jq0Xfa8a7VEQsgX7Mufwk1r0KH3yPI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <smfrench@gmail.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Tom Talpey <tom@talpey.com>,
-	linux-cifs@vger.kernel.org,
-	stable@kernel.org,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.18 141/198] ksmbd: fix mechToken leak when SPNEGO decode fails after token alloc
+	=?UTF-8?q?Micha=C5=82=20Winiarski?= <michal.winiarski@intel.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Alex Williamson <alex@shazbot.org>
+Subject: [PATCH 6.19 179/220] vfio/xe: Reorganize the init to decouple migration from reset
 Date: Mon, 20 Apr 2026 17:42:00 +0200
-Message-ID: <20260420153940.683390850@linuxfoundation.org>
+Message-ID: <20260420153940.472089394@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
+References: <20260420153934.013228280@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,112 +63,210 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,chromium.org,talpey.com,vger.kernel.org,microsoft.com];
-	TAGGED_FROM(0.00)[bounces-239744-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239550-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[chromium.org:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,talpey.com:email]
-X-Rspamd-Queue-Id: 85A7142F057
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,gitlab.freedesktop.org:url,shazbot.org:email]
+X-Rspamd-Queue-Id: DD242431E0C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Michał Winiarski <michal.winiarski@intel.com>
 
-commit ad0057fb91218914d6c98268718ceb9d59b388e1 upstream.
+commit 1b81ed612e12ea9df8c5cb6f0ddd4419fd0b8ac8 upstream.
 
-The kernel ASN.1 BER decoder calls action callbacks incrementally as it
-walks the input.  When ksmbd_decode_negTokenInit() reaches the mechToken
-[2] OCTET STRING element, ksmbd_neg_token_alloc() allocates
-conn->mechToken immediately via kmemdup_nul().  If a later element in
-the same blob is malformed, then the decoder will return nonzero after
-the allocation is already live.  This could happen if mechListMIC [3]
-overrunse the enclosing SEQUENCE.
+Attempting to issue reset on VF devices that don't support migration
+leads to the following:
 
-decode_negotiation_token() then sets conn->use_spnego = false because
-both the negTokenInit and negTokenTarg grammars failed.  The cleanup at
-the bottom of smb2_sess_setup() is gated on use_spnego:
+  BUG: unable to handle page fault for address: 00000000000011f8
+  #PF: supervisor read access in kernel mode
+  #PF: error_code(0x0000) - not-present page
+  PGD 0 P4D 0
+  Oops: Oops: 0000 [#1] SMP NOPTI
+  CPU: 2 UID: 0 PID: 7443 Comm: xe_sriov_flr Tainted: G S   U              7.0.0-rc1-lgci-xe-xe-4588-cec43d5c2696af219-nodebug+ #1 PREEMPT(lazy)
+  Tainted: [S]=CPU_OUT_OF_SPEC, [U]=USER
+  Hardware name: Intel Corporation Alder Lake Client Platform/AlderLake-P DDR4 RVP, BIOS RPLPFWI1.R00.4035.A00.2301200723 01/20/2023
+  RIP: 0010:xe_sriov_vfio_wait_flr_done+0xc/0x80 [xe]
+  Code: ff c3 cc cc cc cc 0f 1f 84 00 00 00 00 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 1f 44 00 00 55 48 89 e5 41 54 53 <83> bf f8 11 00 00 02 75 61 41 89 f4 85 f6 74 52 48 8b 47 08 48 89
+  RSP: 0018:ffffc9000f7c39b8 EFLAGS: 00010202
+  RAX: ffffffffa04d8660 RBX: ffff88813e3e4000 RCX: 0000000000000000
+  RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+  RBP: ffffc9000f7c39c8 R08: 0000000000000000 R09: 0000000000000000
+  R10: 0000000000000000 R11: 0000000000000000 R12: ffff888101a48800
+  R13: ffff88813e3e4150 R14: ffff888130d0d008 R15: ffff88813e3e40d0
+  FS:  00007877d3d0d940(0000) GS:ffff88890b6d3000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 00000000000011f8 CR3: 000000015a762000 CR4: 0000000000f52ef0
+  PKRU: 55555554
+  Call Trace:
+   <TASK>
+   xe_vfio_pci_reset_done+0x49/0x120 [xe_vfio_pci]
+   pci_dev_restore+0x3b/0x80
+   pci_reset_function+0x109/0x140
+   reset_store+0x5c/0xb0
+   dev_attr_store+0x17/0x40
+   sysfs_kf_write+0x72/0x90
+   kernfs_fop_write_iter+0x161/0x1f0
+   vfs_write+0x261/0x440
+   ksys_write+0x69/0xf0
+   __x64_sys_write+0x19/0x30
+   x64_sys_call+0x259/0x26e0
+   do_syscall_64+0xcb/0x1500
+   ? __fput+0x1a2/0x2d0
+   ? fput_close_sync+0x3d/0xa0
+   ? __x64_sys_close+0x3e/0x90
+   ? x64_sys_call+0x1b7c/0x26e0
+   ? do_syscall_64+0x109/0x1500
+   ? __task_pid_nr_ns+0x68/0x100
+   ? __do_sys_getpid+0x1d/0x30
+   ? x64_sys_call+0x10b5/0x26e0
+   ? do_syscall_64+0x109/0x1500
+   ? putname+0x41/0x90
+   ? do_faccessat+0x1e8/0x300
+   ? __x64_sys_access+0x1c/0x30
+   ? x64_sys_call+0x1822/0x26e0
+   ? do_syscall_64+0x109/0x1500
+   ? tick_program_event+0x43/0xa0
+   ? hrtimer_interrupt+0x126/0x260
+   ? irqentry_exit+0xb2/0x710
+   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+  RIP: 0033:0x7877d5f1c5a4
+  Code: c7 00 16 00 00 00 b8 ff ff ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 f3 0f 1e fa 80 3d a5 ea 0e 00 00 74 13 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 54 c3 0f 1f 00 55 48 89 e5 48 83 ec 20 48 89
+  RSP: 002b:00007fff48e5f908 EFLAGS: 00000202 ORIG_RAX: 0000000000000001
+  RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007877d5f1c5a4
+  RDX: 0000000000000001 RSI: 00007877d621b0c9 RDI: 0000000000000009
+  RBP: 0000000000000001 R08: 00005fb49113b010 R09: 0000000000000007
+  R10: 0000000000000000 R11: 0000000000000202 R12: 00007877d621b0c9
+  R13: 0000000000000009 R14: 00007fff48e5fac0 R15: 00007fff48e5fac0
+   </TASK>
 
-	if (conn->use_spnego && conn->mechToken) {
-		kfree(conn->mechToken);
-		conn->mechToken = NULL;
-	}
+This is caused by the fact that some of the xe_vfio_pci_core_device
+members needed for handling reset are only initialized as part of
+migration init.
 
-so the kfree is skipped, causing the mechToken to never be freed.
+Fix the problem by reorganizing the code to decouple VF init from
+migration init.
 
-This codepath is reachable pre-authentication, so untrusted clients can
-cause slow memory leaks on a server without even being properly
-authenticated.
-
-Fix this up by not checking check for use_spnego, as it's not required,
-so the memory will always be properly freed.  At the same time, always
-free the memory in ksmbd_conn_free() incase some other failure path
-forgot to free it.
-
-Cc: Namjae Jeon <linkinjeon@kernel.org>
-Cc: Steve French <smfrench@gmail.com>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: <stable@kernel.org>
-Assisted-by: gregkh_clanker_t1000
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 1f5556ec8b9ef ("vfio/xe: Add device specific vfio_pci driver variant for Intel graphics")
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/work_items/7352
+Cc: stable@vger.kernel.org
+Signed-off-by: Michał Winiarski <michal.winiarski@intel.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Link: https://lore.kernel.org/r/20260410224948.900550-1-michal.winiarski@intel.com
+Signed-off-by: Alex Williamson <alex@shazbot.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/connection.c |    1 +
- fs/smb/server/smb2pdu.c    |    2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ drivers/vfio/pci/xe/main.c | 43 ++++++++++++++++++++++----------------
+ 1 file changed, 25 insertions(+), 18 deletions(-)
 
---- a/fs/smb/server/connection.c
-+++ b/fs/smb/server/connection.c
-@@ -39,6 +39,7 @@ void ksmbd_conn_free(struct ksmbd_conn *
- 	xa_destroy(&conn->sessions);
- 	kvfree(conn->request_buf);
- 	kfree(conn->preauth_info);
-+	kfree(conn->mechToken);
- 	if (atomic_dec_and_test(&conn->refcnt)) {
- 		conn->transport->ops->free_transport(conn->transport);
- 		kfree(conn);
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -1924,7 +1924,7 @@ out_err:
- 	else if (rc)
- 		rsp->hdr.Status = STATUS_LOGON_FAILURE;
+diff --git a/drivers/vfio/pci/xe/main.c b/drivers/vfio/pci/xe/main.c
+index fff95b2d5dde..409fa22dfc78 100644
+--- a/drivers/vfio/pci/xe/main.c
++++ b/drivers/vfio/pci/xe/main.c
+@@ -454,39 +454,46 @@ static const struct vfio_migration_ops xe_vfio_pci_migration_ops = {
+ static void xe_vfio_pci_migration_init(struct xe_vfio_pci_core_device *xe_vdev)
+ {
+ 	struct vfio_device *core_vdev = &xe_vdev->core_device.vdev;
+-	struct pci_dev *pdev = to_pci_dev(core_vdev->dev);
+-	struct xe_device *xe = xe_sriov_vfio_get_pf(pdev);
  
--	if (conn->use_spnego && conn->mechToken) {
-+	if (conn->mechToken) {
- 		kfree(conn->mechToken);
- 		conn->mechToken = NULL;
- 	}
+-	if (!xe)
++	if (!xe_sriov_vfio_migration_supported(xe_vdev->xe))
+ 		return;
+-	if (!xe_sriov_vfio_migration_supported(xe))
+-		return;
+-
+-	mutex_init(&xe_vdev->state_mutex);
+-	spin_lock_init(&xe_vdev->reset_lock);
+-
+-	/* PF internal control uses vfid index starting from 1 */
+-	xe_vdev->vfid = pci_iov_vf_id(pdev) + 1;
+-	xe_vdev->xe = xe;
+ 
+ 	core_vdev->migration_flags = VFIO_MIGRATION_STOP_COPY | VFIO_MIGRATION_P2P;
+ 	core_vdev->mig_ops = &xe_vfio_pci_migration_ops;
+ }
+ 
+-static void xe_vfio_pci_migration_fini(struct xe_vfio_pci_core_device *xe_vdev)
++static int xe_vfio_pci_vf_init(struct xe_vfio_pci_core_device *xe_vdev)
+ {
+-	if (!xe_vdev->vfid)
+-		return;
++	struct vfio_device *core_vdev = &xe_vdev->core_device.vdev;
++	struct pci_dev *pdev = to_pci_dev(core_vdev->dev);
++	struct xe_device *xe = xe_sriov_vfio_get_pf(pdev);
+ 
+-	mutex_destroy(&xe_vdev->state_mutex);
++	if (!pdev->is_virtfn)
++		return 0;
++	if (!xe)
++		return -ENODEV;
++	xe_vdev->xe = xe;
++
++	/* PF internal control uses vfid index starting from 1 */
++	xe_vdev->vfid = pci_iov_vf_id(pdev) + 1;
++
++	xe_vfio_pci_migration_init(xe_vdev);
++
++	return 0;
+ }
+ 
+ static int xe_vfio_pci_init_dev(struct vfio_device *core_vdev)
+ {
+ 	struct xe_vfio_pci_core_device *xe_vdev =
+ 		container_of(core_vdev, struct xe_vfio_pci_core_device, core_device.vdev);
++	int ret;
+ 
+-	xe_vfio_pci_migration_init(xe_vdev);
++	mutex_init(&xe_vdev->state_mutex);
++	spin_lock_init(&xe_vdev->reset_lock);
++
++	ret = xe_vfio_pci_vf_init(xe_vdev);
++	if (ret)
++		return ret;
+ 
+ 	return vfio_pci_core_init_dev(core_vdev);
+ }
+@@ -496,7 +503,7 @@ static void xe_vfio_pci_release_dev(struct vfio_device *core_vdev)
+ 	struct xe_vfio_pci_core_device *xe_vdev =
+ 		container_of(core_vdev, struct xe_vfio_pci_core_device, core_device.vdev);
+ 
+-	xe_vfio_pci_migration_fini(xe_vdev);
++	mutex_destroy(&xe_vdev->state_mutex);
+ }
+ 
+ static const struct vfio_device_ops xe_vfio_pci_ops = {
+-- 
+2.53.0
+
 
 
 
