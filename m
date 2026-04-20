@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-239842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239885-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gDr0D19Q5mkDuwEAu9opvQ
-	(envelope-from <stable+bounces-239842-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:12:15 +0200
+	id MHinLZ1k5mkKvwEAu9opvQ
+	(envelope-from <stable+bounces-239885-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:38:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB5A042F247
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:12:14 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE1D6431A72
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:38:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BB5443019D5F
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:09:16 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 81E44304C47F
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:11:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F065F33DEDF;
-	Mon, 20 Apr 2026 16:09:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEEFE3446BC;
+	Mon, 20 Apr 2026 16:11:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ozv0Ju/3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wFihApzm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B38862236E3;
-	Mon, 20 Apr 2026 16:09:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72BC8344021;
+	Mon, 20 Apr 2026 16:11:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701355; cv=none; b=NxehY2tQO9nVz6kbwYM/qwjdE1AF9RkiMY1ICeydpdhLqbJzsyxyhtd1LdvloflepWRDYqdt/FEPGVMtAtixWVseIJ9MNSv/KGUovEI1i6FkKubWEFKsaekkKgOYzGC+sYk6yyK/m+zzJ/ETM1RxilRj3AgfM3CUgJrnyW+fC0I=
+	t=1776701465; cv=none; b=tM6ReI/GICZWkD3oYsjss4AFtTTg160IC3QyfREeF00Bu02Tx0bgb+L/w87TVeetqKwfeG23njCsCDm7U4yvW5o1iqfJ6w/NbYcr+VTGoweLJW++ADgqj44ZxlyK8cecQcEVaqebyxfCrIPGzDbxV4ESanGLofnO+bjoJ1U38vQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701355; c=relaxed/simple;
-	bh=lzFQQHsKRHgIP39PTetC6HUGyxKIL5al+a+Cps4ZW4E=;
+	s=arc-20240116; t=1776701465; c=relaxed/simple;
+	bh=OwEjorOTkfs/la0cu2sQQRm7zCVUZ7YuDMHxjVzSrgo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dL+R05KTWn9YatBxsbgSeSZ0GW2h/Au2hoU6mpX7fwYkQ+RChollyrqkSigyZy1Mgk/hxQ0Kkic0YKsYm9P2DrF1nhgtGDPLuZR4DPM11DfK4ENvpRX2RmZA2v7CRDbxVqAvwiAaUOOeLLQpOczUnda8uEq8hczY88emH9JEc/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ozv0Ju/3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A973C19425;
-	Mon, 20 Apr 2026 16:09:15 +0000 (UTC)
+	 MIME-Version; b=RHFL1fBlWfu6xnCejkh3T0LVZJvIZ2Efs6s9rR6YIARynuaRuUGBw1qXwMJnTQEIVEIhDpb4iiMwE+MpjCRaDmkokwGeLDRKFr0N4xmLt/I8qogAgH6Fgc2T2KBH+dPxncUVowmQPhhJYz9dOCT/HuOWvE7r5UA3fIqvP6VRs6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wFihApzm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08845C19425;
+	Mon, 20 Apr 2026 16:11:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701355;
-	bh=lzFQQHsKRHgIP39PTetC6HUGyxKIL5al+a+Cps4ZW4E=;
+	s=korg; t=1776701465;
+	bh=OwEjorOTkfs/la0cu2sQQRm7zCVUZ7YuDMHxjVzSrgo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ozv0Ju/3Poo9Iltik0fVax6U0v0BA0jYqnGPyFJczXEzQurbPd1n3DyUsq6uDVq1e
-	 wMLl3/3U4oiTxkALIVBqZYRJJzi/cGJXR+tyNfJS1RQ4B5Pk+kOjTWk4wXP3y8RVCX
-	 y2FjgBJ+wP2Gm3lb6l1pfSOzTDzP8andUl2bXgOI=
+	b=wFihApzml/HgzS0MRuO2ZP7crkRvttQJ5glTqb1kaSbRTHEJcnAQwWkGb0IRKQC6Y
+	 Xh2KLI1U2m+dMOIPrtf5kJm8sM79t3IpJBxU/63pHzURhKu2aLV45UgQq8wJSiK2hs
+	 FwspFuzgcIrICDZWEUcorGaNg3Gkp5lThjpnjmLk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Yuan Tan <yuantan098@gmail.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Douya Le <ldy3087146292@gmail.com>,
+	Ren Wei <n05ec@lzu.edu.cn>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 080/162] gpio: tegra: fix irq_release_resources calling enable instead of disable
-Date: Mon, 20 Apr 2026 17:41:52 +0200
-Message-ID: <20260420153929.933911924@linuxfoundation.org>
+Subject: [PATCH 6.12 081/162] crypto: af_alg - limit RX SG extraction by receive buffer budget
+Date: Mon, 20 Apr 2026 17:41:53 +0200
+Message-ID: <20260420153929.969960609@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
 References: <20260420153927.006696811@linuxfoundation.org>
@@ -68,30 +73,31 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,gondor.apana.org.au,kernel.org];
+	TAGGED_FROM(0.00)[bounces-239885-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-239842-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,qualcomm.com:email,msgid.link:url,oracle.com:email]
-X-Rspamd-Queue-Id: DB5A042F247
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: BE1D6431A72
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,38 +105,66 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+From: Douya Le <ldy3087146292@gmail.com>
 
-[ Upstream commit 1561d96f5f55c1bca9ff047ace5813f4f244eea6 ]
+[ Upstream commit 8eceab19eba9dcbfd2a0daec72e1bf48aa100170 ]
 
-tegra_gpio_irq_release_resources() erroneously calls tegra_gpio_enable()
-instead of tegra_gpio_disable(). When IRQ resources are released, the
-GPIO configuration bit (CNF) should be cleared to deconfigure the pin as
-a GPIO. Leaving it enabled wastes power and can cause unexpected behavior
-if the pin is later reused for an alternate function via pinctrl.
+Make af_alg_get_rsgl() limit each RX scatterlist extraction to the
+remaining receive buffer budget.
 
-Fixes: 66fecef5bde0 ("gpio: tegra: Convert to gpio_irq_chip")
-Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
-Link: https://patch.msgid.link/20260407210247.1737938-1-samasth.norway.ananda@oracle.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+af_alg_get_rsgl() currently uses af_alg_readable() only as a gate
+before extracting data into the RX scatterlist. Limit each extraction
+to the remaining af_alg_rcvbuf(sk) budget so that receive-side
+accounting matches the amount of data attached to the request.
+
+If skcipher cannot obtain enough RX space for at least one chunk while
+more data remains to be processed, reject the recvmsg call instead of
+rounding the request length down to zero.
+
+Fixes: e870456d8e7c8d57c059ea479b5aadbb55ff4c3a ("crypto: algif_skcipher - overhaul memory management")
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Co-developed-by: Yuan Tan <yuantan098@gmail.com>
+Signed-off-by: Yuan Tan <yuantan098@gmail.com>
+Suggested-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Douya Le <ldy3087146292@gmail.com>
+Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-tegra.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ crypto/af_alg.c         | 2 ++
+ crypto/algif_skcipher.c | 5 +++++
+ 2 files changed, 7 insertions(+)
 
-diff --git a/drivers/gpio/gpio-tegra.c b/drivers/gpio/gpio-tegra.c
-index 6d3a39a03f58e..cc7435ecada80 100644
---- a/drivers/gpio/gpio-tegra.c
-+++ b/drivers/gpio/gpio-tegra.c
-@@ -593,7 +593,7 @@ static void tegra_gpio_irq_release_resources(struct irq_data *d)
- 	struct tegra_gpio_info *tgi = gpiochip_get_data(chip);
+diff --git a/crypto/af_alg.c b/crypto/af_alg.c
+index 78e995dddf879..0530dc85e4f87 100644
+--- a/crypto/af_alg.c
++++ b/crypto/af_alg.c
+@@ -1258,6 +1258,8 @@ int af_alg_get_rsgl(struct sock *sk, struct msghdr *msg, int flags,
  
- 	gpiochip_relres_irq(chip, d->hwirq);
--	tegra_gpio_enable(tgi, d->hwirq);
-+	tegra_gpio_disable(tgi, d->hwirq);
- }
+ 		seglen = min_t(size_t, (maxsize - len),
+ 			       msg_data_left(msg));
++		/* Never pin more pages than the remaining RX accounting budget. */
++		seglen = min_t(size_t, seglen, af_alg_rcvbuf(sk));
  
- static void tegra_gpio_irq_print_chip(struct irq_data *d, struct seq_file *s)
+ 		if (list_empty(&areq->rsgl_list)) {
+ 			rsgl = &areq->first_rsgl;
+diff --git a/crypto/algif_skcipher.c b/crypto/algif_skcipher.c
+index 125d395c5e009..3549ad1cc42e6 100644
+--- a/crypto/algif_skcipher.c
++++ b/crypto/algif_skcipher.c
+@@ -130,6 +130,11 @@ static int _skcipher_recvmsg(struct socket *sock, struct msghdr *msg,
+ 	 * full block size buffers.
+ 	 */
+ 	if (ctx->more || len < ctx->used) {
++		if (len < bs) {
++			err = -EINVAL;
++			goto free;
++		}
++
+ 		len -= len % bs;
+ 		cflags |= CRYPTO_SKCIPHER_REQ_NOTFINAL;
+ 	}
 -- 
 2.53.0
 
