@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-239657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239475-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KMNEDApO5mkgugEAu9opvQ
-	(envelope-from <stable+bounces-239657-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:02:18 +0200
+	id 6EpnGtdk5mlmvwEAu9opvQ
+	(envelope-from <stable+bounces-239475-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:39:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D448542EDFB
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:02:17 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B26AA431B30
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:39:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E7F5B30090B5
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:01:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1815E35AA87F
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:52:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 409F433E373;
-	Mon, 20 Apr 2026 16:01:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB046336EC9;
+	Mon, 20 Apr 2026 15:52:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xN//TEhm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a3eM/xtx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0485533B6EF;
-	Mon, 20 Apr 2026 16:01:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 804983358B0;
+	Mon, 20 Apr 2026 15:52:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700888; cv=none; b=scx91+ivwATOOekiq6fSObVZ6IQOWRCBAUedhS4EiZSk2t8h4vrYI/9eOvVOvZeamR3Fj7FilKR+os2OmwrKb85tlhHhEo5KIC+dWEo1ZaRgn5iv8EN5TPkA56CRYfW33hM0eNhhUpIzI4vKaVSYU0X2I+QbFg9y/LoRF17EIxk=
+	t=1776700348; cv=none; b=dsCD1ndcwHpDUtH8hTpfvbCs7+6QfO+Yzvc4nFuA3hOYA9xweFmtYmQOoz5UY5dNoMJLt1fOfAffPHr+Tu+XXQdDDM3XicAt8U/cvWhVmOPGY6A6q627JwdoDonR8+55X4YlmMXNvh7190CD1j+/JupljZLgh+QN19ucSTRMpOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700888; c=relaxed/simple;
-	bh=dXB+WLvXUWI+FLC7uwBiRJoZxyJ7MOdRgSKygcxDLTs=;
+	s=arc-20240116; t=1776700348; c=relaxed/simple;
+	bh=MPJo0ojCOlizG9KlHr5P9TkczhZniLzPHwkTy74qyAw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dZqv76q4MAEP/32/lKhoXSi3fcATCyk2mjb0qejTBYPXbRmIi4s1jEsTnrfLhfUyKgxIQgUw7E48xXyuZdwVd+Jp3C8p+bsD75Aa73bB2jzTTRO/EvGVxtf6SijJrK4UQc/9odv05az+THhM0yAlCUEKgU0lwRhYXAC9a5qZHEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xN//TEhm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F450C19425;
-	Mon, 20 Apr 2026 16:01:27 +0000 (UTC)
+	 MIME-Version; b=RBtSc5NCZyUvRa4+m3xM6zv5FWmf4kzU5xVOLm8TpFBJabGg+YyhUeYenAb114MB0yRRJ36uOb0TsWl0Te6usF9zPoHfLjd82UkX9uw9R7M6nPYPECBg8HHKSGMNihtzW9QZ7fEoBPNn9i7Va4+XMYtOTx+aVaM+L1PHVJuvwkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a3eM/xtx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 180E8C19425;
+	Mon, 20 Apr 2026 15:52:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700887;
-	bh=dXB+WLvXUWI+FLC7uwBiRJoZxyJ7MOdRgSKygcxDLTs=;
+	s=korg; t=1776700348;
+	bh=MPJo0ojCOlizG9KlHr5P9TkczhZniLzPHwkTy74qyAw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xN//TEhmOMEF7ThJ3iE0yhtT70WZk6OAu4jOoE3cWQ2MLEE5LlDdmV8lbxKanVOzV
-	 qa2zd5F7NsMg+SinXXr3J2hFjTSr2vo4kRnO/bFyjxGhqitffKH7ySWvmOWwJFJ2np
-	 MZ41TtejKaSsi75Tnp9RDnpr8IOuW9NzFyefAuBI=
+	b=a3eM/xtxMM4E/AjH1OYkCR2q/ZL0W2+7j3t0NsnWvh8KsjLjOw87Y9dZjmcmIEojp
+	 GyqwnUPa25CG1Czv2i4Q9fZs2U71fWbo0BK0nHziRkME1Nc4xdzSa6Q4SXeSrL3CsD
+	 PdYj4JTHfYdc0e+Cxwl0FlYAIG/J/iwtKBt8zcsM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Julian Anastasov <ja@ssi.bg>,
-	Florian Westphal <fw@strlen.de>,
+	John Stultz <jstultz@google.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 098/198] ipvs: fix NULL deref in ip_vs_add_service error path
+Subject: [PATCH 6.19 136/220] sched/deadline: Use revised wakeup rule for dl_server
 Date: Mon, 20 Apr 2026 17:41:17 +0200
-Message-ID: <20260420153939.132485830@linuxfoundation.org>
+Message-ID: <20260420153938.922892964@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
+References: <20260420153934.013228280@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,98 +65,84 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [3.84 / 15.00];
-	SEM_URIBL(3.50)[asu.edu:email];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
-	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,kernel.org,ssi.bg,strlen.de];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-239657-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-239475-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	NEURAL_HAM(-0.00)[-0.576];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	R_SPF_ALLOW(0.00)[+ip6:2600:3c09:e001:a7::/64:c];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,strlen.de:email,ssi.bg:email,asu.edu:email]
-X-Rspamd-Queue-Id: D448542EDFB
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,infradead.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B26AA431B30
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit 9a91797e61d286805ae10a92cc48959c30800556 ]
+[ Upstream commit 14a857056466be9d3d907a94e92a704ac1be149b ]
 
-When ip_vs_bind_scheduler() succeeds in ip_vs_add_service(), the local
-variable sched is set to NULL.  If ip_vs_start_estimator() subsequently
-fails, the out_err cleanup calls ip_vs_unbind_scheduler(svc, sched)
-with sched == NULL.  ip_vs_unbind_scheduler() passes the cur_sched NULL
-check (because svc->scheduler was set by the successful bind) but then
-dereferences the NULL sched parameter at sched->done_service, causing a
-kernel panic at offset 0x30 from NULL.
+John noted that commit 115135422562 ("sched/deadline: Fix 'stuck' dl_server")
+unfixed the issue from commit a3a70caf7906 ("sched/deadline: Fix dl_server
+behaviour").
 
- Oops: general protection fault, [..] [#1] PREEMPT SMP KASAN NOPTI
- KASAN: null-ptr-deref in range [0x0000000000000030-0x0000000000000037]
- RIP: 0010:ip_vs_unbind_scheduler (net/netfilter/ipvs/ip_vs_sched.c:69)
- Call Trace:
-  <TASK>
-  ip_vs_add_service.isra.0 (net/netfilter/ipvs/ip_vs_ctl.c:1500)
-  do_ip_vs_set_ctl (net/netfilter/ipvs/ip_vs_ctl.c:2809)
-  nf_setsockopt (net/netfilter/nf_sockopt.c:102)
-  [..]
+The issue in commit 115135422562 was for wakeups of the server after the
+deadline; in which case you *have* to start a new period. The case for
+a3a70caf7906 is wakeups before the deadline.
 
-Fix by simply not clearing the local sched variable after a successful
-bind.  ip_vs_unbind_scheduler() already detects whether a scheduler is
-installed via svc->scheduler, and keeping sched non-NULL ensures the
-error path passes the correct pointer to both ip_vs_unbind_scheduler()
-and ip_vs_scheduler_put().
+Now, because the server is effectively running a least-laxity policy, it means
+that any wakeup during the runnable phase means dl_entity_overflow() will be
+true. This means we need to adjust the runtime to allow it to still run until
+the existing deadline expires.
 
-While the bug is older, the problem popups in more recent kernels (6.2),
-when the new error path is taken after the ip_vs_start_estimator() call.
+Use the revised wakeup rule for dl_defer entities.
 
-Fixes: 705dd3444081 ("ipvs: use kthreads for stats estimation")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Acked-by: Simon Horman <horms@kernel.org>
-Acked-by: Julian Anastasov <ja@ssi.bg>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: 115135422562 ("sched/deadline: Fix 'stuck' dl_server")
+Reported-by: John Stultz <jstultz@google.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Juri Lelli <juri.lelli@redhat.com>
+Tested-by: John Stultz <jstultz@google.com>
+Link: https://patch.msgid.link/20260404102244.GB22575@noisy.programming.kicks-ass.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/ipvs/ip_vs_ctl.c | 1 -
- 1 file changed, 1 deletion(-)
+ kernel/sched/deadline.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/ipvs/ip_vs_ctl.c b/net/netfilter/ipvs/ip_vs_ctl.c
-index 4c8fa22be88ad..e442ba6033d5f 100644
---- a/net/netfilter/ipvs/ip_vs_ctl.c
-+++ b/net/netfilter/ipvs/ip_vs_ctl.c
-@@ -1453,7 +1453,6 @@ ip_vs_add_service(struct netns_ipvs *ipvs, struct ip_vs_service_user_kern *u,
- 		ret = ip_vs_bind_scheduler(svc, sched);
- 		if (ret)
- 			goto out_err;
--		sched = NULL;
- 	}
+diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
+index e3a6b8ed1d6db..3f80411972067 100644
+--- a/kernel/sched/deadline.c
++++ b/kernel/sched/deadline.c
+@@ -1027,7 +1027,7 @@ static void update_dl_entity(struct sched_dl_entity *dl_se)
+ 	if (dl_time_before(dl_se->deadline, rq_clock(rq)) ||
+ 	    dl_entity_overflow(dl_se, rq_clock(rq))) {
  
- 	ret = ip_vs_start_estimator(ipvs, &svc->stats);
+-		if (unlikely(!dl_is_implicit(dl_se) &&
++		if (unlikely((!dl_is_implicit(dl_se) || dl_se->dl_defer) &&
+ 			     !dl_time_before(dl_se->deadline, rq_clock(rq)) &&
+ 			     !is_dl_boosted(dl_se))) {
+ 			update_dl_revised_wakeup(dl_se, rq);
 -- 
 2.53.0
 
