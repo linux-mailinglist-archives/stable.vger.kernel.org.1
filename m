@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-239853-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239316-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0MNFEtxb5mmtvAEAu9opvQ
-	(envelope-from <stable+bounces-239853-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:01:16 +0200
+	id gAOfN89f5mkqvgEAu9opvQ
+	(envelope-from <stable+bounces-239316-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:18:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD4AF43061B
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:01:15 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1DF0430F26
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:18:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6BBA4317133C
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:09:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4213F300863D
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:45:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F4E534107F;
-	Mon, 20 Apr 2026 16:09:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05A2533F586;
+	Mon, 20 Apr 2026 15:45:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MXUwA1pW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZfQmU44z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF011336EE1;
-	Mon, 20 Apr 2026 16:09:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCC3833DEFE;
+	Mon, 20 Apr 2026 15:45:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701383; cv=none; b=M/8ImqM36g7m6JOg9sTAWnwgCRbtBkVnB/CTt/b3myPJAljnvQMoEhS0qzqH56HxCOQmZ7ru/7NlhxujIoBfxQlFZt2mJNwk6kDoASWYDqtljTfDbTVrog9tf9fWu0pGkt+IpjAoJDydYgtRxsk4TNKG7puGMYV0LqHKNkTJQP8=
+	t=1776699934; cv=none; b=JqwoSazKse/FNYLrsTSlyJoeFXXlqBglVFHr0Cl26jTtedQ8OwnkhsUIElY2LlNAZdtiJWVg7lUKODsWKtp4GUhMyQgNZe3WXC748pQ175m8teHnAanSy5zGGAjzqs6yiTaodDT+DqbHoEVVYsd1YlgrAVVJFwtk+EfRlWSI3+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701383; c=relaxed/simple;
-	bh=IbsVS2MGydAkg0n8mdx2xqXtkRCbv4jF6Q5EwIqYKBY=;
+	s=arc-20240116; t=1776699934; c=relaxed/simple;
+	bh=s9aTqRXBR9Le3zLLWEd/cOk8pnWJCx0H/9ymnJ8P764=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GpAjWTE3Jh2LpGaEEwj0BczZ0ZhXAV3rUJFJTlFiN6a5I3GTgmFhJdtG9tkL3jQJcTpfR1gu/ImhsMmnMcXHi0FMibkgpLNBaVdrwDQc5gSnhvP09N1KZt53Pghuky3LIbytSJvorWLfDuUq9I0XQ3CPYqtFJmoz9x4lUQHm4kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MXUwA1pW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CDB4C19425;
-	Mon, 20 Apr 2026 16:09:43 +0000 (UTC)
+	 MIME-Version; b=SjSJsGCTT2zV8N2M9XO9GtuC5gHXtx8+DRSeCWRoYeUhAQ8PMVAutSOsD54Tvy2jDq+RwjsVBPobkyvhTsrrABu7doX4aTh0SMmHTMgUiK+eeLu/6+Hj35d6b7Ytx5rHju2TWGQck4yI22kTcJMXErCfhT4SQBzZLqbsf3ev5MQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZfQmU44z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52274C19425;
+	Mon, 20 Apr 2026 15:45:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701383;
-	bh=IbsVS2MGydAkg0n8mdx2xqXtkRCbv4jF6Q5EwIqYKBY=;
+	s=korg; t=1776699934;
+	bh=s9aTqRXBR9Le3zLLWEd/cOk8pnWJCx0H/9ymnJ8P764=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MXUwA1pWVxIPuOnbCR2GFPGpGtKehWE737PMU95pdScz/TfFptrCH5hpybqzzqJ4M
-	 GMJo5+LAVKlxA7qPvFrQ9yCgbXtEmFu5eJDbPgue8sk2q+duViObykWHc+RZteIYE6
-	 M3+k8YAoTPRUngVQmHjxhnJwg/wINQi45xm9fHr8=
+	b=ZfQmU44zQFryjkLLNkLsuNBI9oiB4ZeMzgSfgau72CcYKIsPc8wJ9ZO6eP/7TwuS/
+	 nRPqPHhgcrUj8n5UrPrRz5+234aAYN0eLrU2N4ThyW2Yz+nz2CFVx0ksX+4NbreMEw
+	 2xeeGx6I4nmqhGF3MZuw3L3S4VCIs4jTmgWTW7Zo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junxi Qian <qjx1298677004@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 093/162] nfc: llcp: add missing return after LLCP_CLOSED checks
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 7.0 54/76] KVM: SEV: Lock all vCPUs when synchronzing VMSAs for SNP launch finish
 Date: Mon, 20 Apr 2026 17:42:05 +0200
-Message-ID: <20260420153930.404130904@linuxfoundation.org>
+Message-ID: <20260420153912.788903857@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
-References: <20260420153927.006696811@linuxfoundation.org>
+In-Reply-To: <20260420153910.810034134@linuxfoundation.org>
+References: <20260420153910.810034134@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,83 +64,117 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-239853-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239316-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: AD4AF43061B
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: B1DF0430F26
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junxi Qian <qjx1298677004@gmail.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 2b5dd4632966c39da6ba74dbc8689b309065e82c upstream.
+commit cb923ee6a80f4e604e6242a4702b59251e61a380 upstream.
 
-In nfc_llcp_recv_hdlc() and nfc_llcp_recv_disc(), when the socket
-state is LLCP_CLOSED, the code correctly calls release_sock() and
-nfc_llcp_sock_put() but fails to return. Execution falls through to
-the remainder of the function, which calls release_sock() and
-nfc_llcp_sock_put() again. This results in a double release_sock()
-and a refcount underflow via double nfc_llcp_sock_put(), leading to
-a use-after-free.
+Lock all vCPUs when synchronizing and encrypting VMSAs for SNP guests, as
+allowing userspace to manipulate and/or run a vCPU while its state is being
+synchronized would at best corrupt vCPU state, and at worst crash the host
+kernel.
 
-Add the missing return statements after the LLCP_CLOSED branches
-in both functions to prevent the fall-through.
+Opportunistically assert that vcpu->mutex is held when synchronizing its
+VMSA (the SEV-ES path already locks vCPUs).
 
-Fixes: d646960f7986 ("NFC: Initial LLCP support")
-Signed-off-by: Junxi Qian <qjx1298677004@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260408081006.3723-1-qjx1298677004@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: ad27ce155566 ("KVM: SEV: Add KVM_SEV_SNP_LAUNCH_FINISH command")
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260310234829.2608037-6-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/nfc/llcp_core.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/kvm/svm/sev.c |   16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
---- a/net/nfc/llcp_core.c
-+++ b/net/nfc/llcp_core.c
-@@ -1089,6 +1089,7 @@ static void nfc_llcp_recv_hdlc(struct nf
- 	if (sk->sk_state == LLCP_CLOSED) {
- 		release_sock(sk);
- 		nfc_llcp_sock_put(llcp_sock);
-+		return;
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -882,6 +882,8 @@ static int sev_es_sync_vmsa(struct vcpu_
+ 	u8 *d;
+ 	int i;
+ 
++	lockdep_assert_held(&vcpu->mutex);
++
+ 	if (vcpu->arch.guest_state_protected)
+ 		return -EINVAL;
+ 
+@@ -2456,6 +2458,10 @@ static int snp_launch_update_vmsa(struct
+ 	if (kvm_is_vcpu_creation_in_progress(kvm))
+ 		return -EBUSY;
+ 
++	ret = kvm_lock_all_vcpus(kvm);
++	if (ret)
++		return ret;
++
+ 	data.gctx_paddr = __psp_pa(sev->snp_context);
+ 	data.page_type = SNP_PAGE_TYPE_VMSA;
+ 
+@@ -2465,12 +2471,12 @@ static int snp_launch_update_vmsa(struct
+ 
+ 		ret = sev_es_sync_vmsa(svm);
+ 		if (ret)
+-			return ret;
++			goto out;
+ 
+ 		/* Transition the VMSA page to a firmware state. */
+ 		ret = rmp_make_private(pfn, INITIAL_VMSA_GPA, PG_LEVEL_4K, sev->asid, true);
+ 		if (ret)
+-			return ret;
++			goto out;
+ 
+ 		/* Issue the SNP command to encrypt the VMSA */
+ 		data.address = __sme_pa(svm->sev_es.vmsa);
+@@ -2479,7 +2485,7 @@ static int snp_launch_update_vmsa(struct
+ 		if (ret) {
+ 			snp_page_reclaim(kvm, pfn);
+ 
+-			return ret;
++			goto out;
+ 		}
+ 
+ 		svm->vcpu.arch.guest_state_protected = true;
+@@ -2493,7 +2499,9 @@ static int snp_launch_update_vmsa(struct
+ 		svm_enable_lbrv(vcpu);
  	}
  
- 	/* Pass the payload upstream */
-@@ -1180,6 +1181,7 @@ static void nfc_llcp_recv_disc(struct nf
- 	if (sk->sk_state == LLCP_CLOSED) {
- 		release_sock(sk);
- 		nfc_llcp_sock_put(llcp_sock);
-+		return;
- 	}
+-	return 0;
++out:
++	kvm_unlock_all_vcpus(kvm);
++	return ret;
+ }
  
- 	if (sk->sk_state == LLCP_CONNECTED) {
+ static int snp_launch_finish(struct kvm *kvm, struct kvm_sev_cmd *argp)
 
 
 
