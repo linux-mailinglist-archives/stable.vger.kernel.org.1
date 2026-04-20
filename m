@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-239852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239314-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yN95KUlk5mkKvwEAu9opvQ
-	(envelope-from <stable+bounces-239852-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:37:13 +0200
+	id KB35Kuth5mm6vgEAu9opvQ
+	(envelope-from <stable+bounces-239314-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:27:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2C564319CB
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:37:12 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58C4243138B
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:27:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6325E316FA19
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:09:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A8E9D375D3CF
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:45:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 984D9341077;
-	Mon, 20 Apr 2026 16:09:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74D093385B6;
+	Mon, 20 Apr 2026 15:45:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JzJRtTay"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ft1EWry4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A68F2DF719;
-	Mon, 20 Apr 2026 16:09:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 375B73382C7;
+	Mon, 20 Apr 2026 15:45:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701381; cv=none; b=UoTkhykDiERDKWKcwe9KMqNLcgq2bKy5WSCCZCYYeyvqVdhfRxlAn1iloEUELRvNhc7u7YKdJmZWl8WkhSlgirtLqAs/UxMFvscV8Apnjj8ER8KDJCnc5FAB0nGsCM689zKt7piH/xpfX/hA6SzYI3oHNP5aFrovKy0i522ZsU0=
+	t=1776699932; cv=none; b=gB4EqYF5x3Cf1+KFqp1owOzZww3/0ZAugfAPHOYvrz0GRIG/MD6/0Gc6Rfr1STxzeyRarqEaKNE9poBTrGIu28wJjcNB/mwrGBKySHd6F1pObN8oXMpJ9grzYnD2Rd6GRc+z5jRI79Ndq7WiXQuWablfrbRW2LbRwKOBpxscTmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701381; c=relaxed/simple;
-	bh=LCQ9IMsO3/Yv0wzBPriPecjLbMa2U8GTHDq2hEWH7qQ=;
+	s=arc-20240116; t=1776699932; c=relaxed/simple;
+	bh=fSNeL+ioRXW45SQ6o6+vHPkyfr5V0Q/bOuvXHg5osRs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TcXgK0REVCKWU/KJrVxGgCH1PflSL5wZtW4CmOT/y5Dq8ISyvwRHDYr3Etl4ee3bVw/6zW4vPAjVKsu0R+6r+loA9K+sAhHYvGpAIbPBgrfPYXg0BpphA0gSgq/2xSGHPr5Gt96x8vuR26CmC2AwXj1QFVrpM2CpwkzhoH/fuAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JzJRtTay; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA897C19425;
-	Mon, 20 Apr 2026 16:09:40 +0000 (UTC)
+	 MIME-Version; b=uru3pRkjWZ+zJQqYmvFMufgmtLLWtiqA3459rkop530Wny4dSOr4sfrcfBJlIUrm+mGBfbidp8chWbXcWX8++BilT9n3aSIIGym++ntegMHd1uGEzfrr3AmePFjxdfyH6lRCAEcPVZm8U2m8seo34By+fnZBQXyA2riFFgvrW7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ft1EWry4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1C57C19425;
+	Mon, 20 Apr 2026 15:45:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701381;
-	bh=LCQ9IMsO3/Yv0wzBPriPecjLbMa2U8GTHDq2hEWH7qQ=;
+	s=korg; t=1776699932;
+	bh=fSNeL+ioRXW45SQ6o6+vHPkyfr5V0Q/bOuvXHg5osRs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JzJRtTayzfaKFXevS1PYK9jEIakATYj+NhixIrUILDNiGW/Zf7Hqs4RPRh9+ouD/2
-	 XqOIhUw59Yf+uo5OdgpLUEsFvhCF9RjUJfek7AGrEl1MOej4H4Tr6N86RtpT4IWrp7
-	 I1K9z34w32erav+7JmqtXtZYbPwtA3ppanTEJR8I=
+	b=Ft1EWry4/h350y9WHLaT1j+AuDXW/za+v5C8iwRyJpYOs6rnKhDlg77rfLhms0j3P
+	 BlN50npi8cphKFM3gXsLsCye+3/RM1DZHSNKd02ygIp5+GC8fx16G/dQFGql6wuMe8
+	 az6RACIrkyIcPl18DWO6FTvU1ujHp4GLC4p4+l/s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Ray Zhang <sgzhang@google.com>,
-	Emil Tantilov <emil.s.tantilov@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Samuel Salin <Samuel.salin@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 092/162] idpf: fix PREEMPT_RT raw/bh spinlock nesting for async VC handling
+	Jethro Beekman <jethro@fortanix.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 7.0 53/76] KVM: SEV: Disallow LAUNCH_FINISH if vCPUs are actively being created
 Date: Mon, 20 Apr 2026 17:42:04 +0200
-Message-ID: <20260420153930.367855420@linuxfoundation.org>
+Message-ID: <20260420153912.753071910@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
-References: <20260420153927.006696811@linuxfoundation.org>
+In-Reply-To: <20260420153910.810034134@linuxfoundation.org>
+References: <20260420153910.810034134@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,152 +67,117 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239852-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-239314-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email]
-X-Rspamd-Queue-Id: C2C564319CB
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,fortanix.com:email]
+X-Rspamd-Queue-Id: 58C4243138B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emil Tantilov <emil.s.tantilov@intel.com>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit 591478118293c1bd628de330a99eb1eb2ef8d76b ]
+commit 624bf3440d7214b62c22d698a0a294323f331d5d upstream.
 
-Switch from using the completion's raw spinlock to a local lock in the
-idpf_vc_xn struct. The conversion is safe because complete/_all() are
-called outside the lock and there is no reason to share the completion
-lock in the current logic. This avoids invalid wait context reported by
-the kernel due to the async handler taking BH spinlock:
+Reject LAUNCH_FINISH for SEV-ES and SNP VMs if KVM is actively creating
+one or more vCPUs, as KVM needs to process and encrypt each vCPU's VMSA.
+Letting userspace create vCPUs while LAUNCH_FINISH is in-progress is
+"fine", at least in the current code base, as kvm_for_each_vcpu() operates
+on online_vcpus, LAUNCH_FINISH (all SEV+ sub-ioctls) holds kvm->mutex, and
+fully onlining a vCPU in kvm_vm_ioctl_create_vcpu() is done under
+kvm->mutex.  I.e. there's no difference between an in-progress vCPU and a
+vCPU that is created entirely after LAUNCH_FINISH.
 
-[  805.726977] =============================
-[  805.726991] [ BUG: Invalid wait context ]
-[  805.727006] 7.0.0-rc2-net-devq-031026+ #28 Tainted: G S         OE
-[  805.727026] -----------------------------
-[  805.727038] kworker/u261:0/572 is trying to lock:
-[  805.727051] ff190da6a8dbb6a0 (&vport_config->mac_filter_list_lock){+...}-{3:3}, at: idpf_mac_filter_async_handler+0xe9/0x260 [idpf]
-[  805.727099] other info that might help us debug this:
-[  805.727111] context-{5:5}
-[  805.727119] 3 locks held by kworker/u261:0/572:
-[  805.727132]  #0: ff190da6db3e6148 ((wq_completion)idpf-0000:83:00.0-mbx){+.+.}-{0:0}, at: process_one_work+0x4b5/0x730
-[  805.727163]  #1: ff3c6f0a6131fe50 ((work_completion)(&(&adapter->mbx_task)->work)){+.+.}-{0:0}, at: process_one_work+0x1e5/0x730
-[  805.727191]  #2: ff190da765190020 (&x->wait#34){+.+.}-{2:2}, at: idpf_recv_mb_msg+0xc8/0x710 [idpf]
-[  805.727218] stack backtrace:
-...
-[  805.727238] Workqueue: idpf-0000:83:00.0-mbx idpf_mbx_task [idpf]
-[  805.727247] Call Trace:
-[  805.727249]  <TASK>
-[  805.727251]  dump_stack_lvl+0x77/0xb0
-[  805.727259]  __lock_acquire+0xb3b/0x2290
-[  805.727268]  ? __irq_work_queue_local+0x59/0x130
-[  805.727275]  lock_acquire+0xc6/0x2f0
-[  805.727277]  ? idpf_mac_filter_async_handler+0xe9/0x260 [idpf]
-[  805.727284]  ? _printk+0x5b/0x80
-[  805.727290]  _raw_spin_lock_bh+0x38/0x50
-[  805.727298]  ? idpf_mac_filter_async_handler+0xe9/0x260 [idpf]
-[  805.727303]  idpf_mac_filter_async_handler+0xe9/0x260 [idpf]
-[  805.727310]  idpf_recv_mb_msg+0x1c8/0x710 [idpf]
-[  805.727317]  process_one_work+0x226/0x730
-[  805.727322]  worker_thread+0x19e/0x340
-[  805.727325]  ? __pfx_worker_thread+0x10/0x10
-[  805.727328]  kthread+0xf4/0x130
-[  805.727333]  ? __pfx_kthread+0x10/0x10
-[  805.727336]  ret_from_fork+0x32c/0x410
-[  805.727345]  ? __pfx_kthread+0x10/0x10
-[  805.727347]  ret_from_fork_asm+0x1a/0x30
-[  805.727354]  </TASK>
+However, given that concurrent LAUNCH_FINISH and vCPU creation can't
+possibly work (for any reasonable definition of "work"), since userspace
+can't guarantee whether a particular vCPU will be encrypted or not,
+disallow the combination as a hardening measure, to reduce the probability
+of introducing bugs in the future, and to avoid having to reason about the
+safety of future changes related to LAUNCH_FINISH.
 
-Fixes: 34c21fa894a1 ("idpf: implement virtchnl transaction manager")
+Cc: Jethro Beekman <jethro@fortanix.com>
+Closes: https://lore.kernel.org/all/b31f7c6e-2807-4662-bcdd-eea2c1e132fa@fortanix.com
 Cc: stable@vger.kernel.org
-Suggested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Reported-by: Ray Zhang <sgzhang@google.com>
-Signed-off-by: Emil Tantilov <emil.s.tantilov@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Acked-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Tested-by: Samuel Salin <Samuel.salin@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://patch.msgid.link/20260310234829.2608037-5-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/idpf/idpf_virtchnl.c | 15 ++++++---------
- 1 file changed, 6 insertions(+), 9 deletions(-)
+ arch/x86/kvm/svm/sev.c   |   10 ++++++++--
+ include/linux/kvm_host.h |    7 +++++++
+ 2 files changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-index a3d4a0185c542..c4ae7d62aaf8d 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-@@ -59,6 +59,7 @@ typedef int (*async_vc_cb) (struct idpf_adapter *, struct idpf_vc_xn *,
-  */
- struct idpf_vc_xn {
- 	struct completion completed;
-+	spinlock_t lock;
- 	enum idpf_vc_xn_state state;
- 	size_t reply_sz;
- 	struct kvec reply;
-@@ -312,26 +313,21 @@ int idpf_send_mb_msg(struct idpf_adapter *adapter, u32 op,
- 	return err;
+--- a/arch/x86/kvm/svm/sev.c
++++ b/arch/x86/kvm/svm/sev.c
+@@ -1030,6 +1030,9 @@ static int sev_launch_update_vmsa(struct
+ 	if (!sev_es_guest(kvm))
+ 		return -ENOTTY;
+ 
++	if (kvm_is_vcpu_creation_in_progress(kvm))
++		return -EBUSY;
++
+ 	kvm_for_each_vcpu(i, vcpu, kvm) {
+ 		ret = mutex_lock_killable(&vcpu->mutex);
+ 		if (ret)
+@@ -2050,8 +2053,8 @@ static int sev_check_source_vcpus(struct
+ 	struct kvm_vcpu *src_vcpu;
+ 	unsigned long i;
+ 
+-	if (src->created_vcpus != atomic_read(&src->online_vcpus) ||
+-	    dst->created_vcpus != atomic_read(&dst->online_vcpus))
++	if (kvm_is_vcpu_creation_in_progress(src) ||
++	    kvm_is_vcpu_creation_in_progress(dst))
+ 		return -EBUSY;
+ 
+ 	if (!sev_es_guest(src))
+@@ -2450,6 +2453,9 @@ static int snp_launch_update_vmsa(struct
+ 	unsigned long i;
+ 	int ret;
+ 
++	if (kvm_is_vcpu_creation_in_progress(kvm))
++		return -EBUSY;
++
+ 	data.gctx_paddr = __psp_pa(sev->snp_context);
+ 	data.page_type = SNP_PAGE_TYPE_VMSA;
+ 
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -1029,6 +1029,13 @@ static inline struct kvm_vcpu *kvm_get_v
+ 	return NULL;
  }
  
--/* API for virtchnl "transaction" support ("xn" for short).
-- *
-- * We are reusing the completion lock to serialize the accesses to the
-- * transaction state for simplicity, but it could be its own separate synchro
-- * as well. For now, this API is only used from within a workqueue context;
-- * raw_spin_lock() is enough.
-- */
-+/* API for virtchnl "transaction" support ("xn" for short). */
++static inline bool kvm_is_vcpu_creation_in_progress(struct kvm *kvm)
++{
++	lockdep_assert_held(&kvm->lock);
 +
- /**
-  * idpf_vc_xn_lock - Request exclusive access to vc transaction
-  * @xn: struct idpf_vc_xn* to access
-  */
- #define idpf_vc_xn_lock(xn)			\
--	raw_spin_lock(&(xn)->completed.wait.lock)
-+	spin_lock(&(xn)->lock)
++	return kvm->created_vcpus != atomic_read(&kvm->online_vcpus);
++}
++
+ void kvm_destroy_vcpus(struct kvm *kvm);
  
- /**
-  * idpf_vc_xn_unlock - Release exclusive access to vc transaction
-  * @xn: struct idpf_vc_xn* to access
-  */
- #define idpf_vc_xn_unlock(xn)		\
--	raw_spin_unlock(&(xn)->completed.wait.lock)
-+	spin_unlock(&(xn)->lock)
- 
- /**
-  * idpf_vc_xn_release_bufs - Release reference to reply buffer(s) and
-@@ -363,6 +359,7 @@ static void idpf_vc_xn_init(struct idpf_vc_xn_manager *vcxn_mngr)
- 		xn->state = IDPF_VC_XN_IDLE;
- 		xn->idx = i;
- 		idpf_vc_xn_release_bufs(xn);
-+		spin_lock_init(&xn->lock);
- 		init_completion(&xn->completed);
- 	}
- 
--- 
-2.53.0
-
+ int kvm_trylock_all_vcpus(struct kvm *kvm);
 
 
 
