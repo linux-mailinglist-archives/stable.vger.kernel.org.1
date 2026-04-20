@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-239693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239509-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QLBzD1Jn5mmlvwEAu9opvQ
-	(envelope-from <stable+bounces-239693-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:50:10 +0200
+	id aAXnMm9h5mmavgEAu9opvQ
+	(envelope-from <stable+bounces-239509-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:25:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E31A43227C
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:50:09 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E385A431241
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:25:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F1ADF330C24A
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:02:57 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 122DA323DE70
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:53:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BD6D33F8BC;
-	Mon, 20 Apr 2026 16:02:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D550D3385B6;
+	Mon, 20 Apr 2026 15:53:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aj5uNo+s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bjekE2y8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F7AE33F37F;
-	Mon, 20 Apr 2026 16:02:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97EE43382DE;
+	Mon, 20 Apr 2026 15:53:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700975; cv=none; b=pbFzSxl9aSJnweyNKGFbVID6Bxp0ZDMm3Rv3OseEPMRdQ4ZW+zRgz6aeHAN+gtUSfwXQrAlnW7zozcde3SGQeUT+LxJvqrOX8hNRG1z5JPlyA/1TrNima9KVeuoyXd+3H78AF5TGyxv5cUMh11bhm8hPMmZDUZsRsFOY5DuxD9s=
+	t=1776700435; cv=none; b=fQdkK9g1zkJXKQOBf/cHgGxCanuZJRyUuczqncYSroBzlsxkUhlgsTG0xQYQdB6AhU0Cwy9tz6IBNM4U2mIAgIFXvRkthVK6IObBeQxT0M/lDXQ2xcdogx0FJ7NeKpv16Sn8OB4SgDZsXm0xreGmK6cxH28ppX9btpQYHXC0Bc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700975; c=relaxed/simple;
-	bh=60iK6IHCTQiF0ecmoy9E7MP/Nx/jLZSeSOTVcelMGqI=;
+	s=arc-20240116; t=1776700435; c=relaxed/simple;
+	bh=Wi9dAfd14ExG8jHx8ij/IyNBypmv8JAMqqssnYI/4hY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BouPlEY9WIg2wD5P4tHHkCypp6uwAD7ofX3U0x/5Y+vkA+IYVTTPI6vQxACHXEuCAGgivGeMtGAowWZHoekBAkS5DmBcJ0gKF9uR/NA6yYn33bVEWJWUVpPuVK/fsPfWtkcQavNJsKvpsRhAjCcnzNV74qx0UKcNZS+elhDJjFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aj5uNo+s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 991D4C19425;
-	Mon, 20 Apr 2026 16:02:54 +0000 (UTC)
+	 MIME-Version; b=RTa4Sp9R3ctBlxjga4IZ3urnp6Q2+7aDhGZaIBo3H0sBFqa/b342JbRMFL9I32+lovOD1yTCLQAjttJr/yq94UFvZnuH+YiuAHSNNBAc9XaQdvI53kdbGaEJrmxKIM/k93y0YgEGGwkIa3vDE+yFZWy9nf9v5tHh1PUiWGni4Gw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bjekE2y8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A2E0C19425;
+	Mon, 20 Apr 2026 15:53:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700974;
-	bh=60iK6IHCTQiF0ecmoy9E7MP/Nx/jLZSeSOTVcelMGqI=;
+	s=korg; t=1776700435;
+	bh=Wi9dAfd14ExG8jHx8ij/IyNBypmv8JAMqqssnYI/4hY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aj5uNo+sKbTDYu7EJ116TGA0i4h2IcMyPpIgs5OGaH9TnFOo7URvoA968Y+P7WoYG
-	 1rjgTwXeJwO/6YCTLqQImT7rJc0zO5RyB5XWmvfsez89TOIJsQJkVEqY3DJtXmgdw/
-	 U4BfxEJlfZ6/BIggYxK9Ayr+GXMQnIIlvctQHTRI=
+	b=bjekE2y8wInz5P93p9QCXNO8vf2PRqqEyYfngcgmEM3vUfslI4FOObl2Nk58xYjo/
+	 QXKxLFeBB88/2+GtQiCcBYuK5/Y3e0l3xnM5PTvbKBLNrAT3ylLYF3GgfmBP2l78oe
+	 PUrtcCoyFtZiK19ZdYOnopV/JffpWM6vSUXrOepY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Clemens Ladisch <clemens@ladisch.de>,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	stable <stable@kernel.org>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.18 132/198] ALSA: fireworks: bound device-supplied status before string array lookup
+	Benjamin Berg <benjamin.berg@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Ilya Leoshkevich <iii@linux.ibm.com>,
+	Jan Kiszka <jan.kiszka@siemens.com>,
+	Kieran Bingham <kbingham@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.19 170/220] scripts/gdb/symbols: handle module path parameters
 Date: Mon, 20 Apr 2026 17:41:51 +0200
-Message-ID: <20260420153940.361480164@linuxfoundation.org>
+Message-ID: <20260420153940.147714985@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
+References: <20260420153934.013228280@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,7 +71,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239693-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-239509-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,67 +88,60 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-0.999];
 	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.de:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,perex.cz:email,sakamocchi.jp:email,ladisch.de:email]
-X-Rspamd-Queue-Id: 9E31A43227C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linux-foundation.org:email,intel.com:email]
+X-Rspamd-Queue-Id: E385A431241
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Benjamin Berg <benjamin.berg@intel.com>
 
-commit 07704bbf36f57e4379e4cadf96410dab14621e3b upstream.
+commit 8e4513303b8726e4434f718ab39749cbb4c142b1 upstream.
 
-The status field in an EFW response is a 32-bit value supplied by the
-firewire device.  efr_status_names[] has 17 entries so a status value
-outside that range goes off into the weeds when looking at the %s value.
+commit 581ee79a2547 ("scripts/gdb/symbols: make BPF debug info available
+to GDB") added support to make BPF debug information available to GDB.
+However, the argument handling loop was slightly broken, causing it to
+fail if further modules were passed.  Fix it to append these passed
+modules to the instance variable after expansion.
 
-Even worse, the status could return EFR_STATUS_INCOMPLETE which is
-0x80000000, and is obviously not in that array of potential strings.
-
-Fix this up by properly bounding the index against the array size and
-printing "unknown" if it's not recognized.
-
-Cc: Clemens Ladisch <clemens@ladisch.de>
-Cc: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Cc: Jaroslav Kysela <perex@perex.cz>
-Cc: Takashi Iwai <tiwai@suse.com>
-Fixes: bde8a8f23bbe ("ALSA: fireworks: Add transaction and some commands")
-Cc: stable <stable@kernel.org>
-Assisted-by: gregkh_clanker_t1000
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Link: https://patch.msgid.link/2026040953-astute-camera-1aa1@gregkh
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://lkml.kernel.org/r/20260304110642.2020614-2-benjamin@sipsolutions.net
+Fixes: 581ee79a2547 ("scripts/gdb/symbols: make BPF debug info available to GDB")
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Cc: Ilya Leoshkevich <iii@linux.ibm.com>
+Cc: Jan Kiszka <jan.kiszka@siemens.com>
+Cc: Kieran Bingham <kbingham@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/firewire/fireworks/fireworks_command.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ scripts/gdb/linux/symbols.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/firewire/fireworks/fireworks_command.c
-+++ b/sound/firewire/fireworks/fireworks_command.c
-@@ -151,10 +151,13 @@ efw_transaction(struct snd_efw *efw, uns
- 	    (be32_to_cpu(header->category) != category) ||
- 	    (be32_to_cpu(header->command) != command) ||
- 	    (be32_to_cpu(header->status) != EFR_STATUS_OK)) {
-+		u32 st = be32_to_cpu(header->status);
-+
- 		dev_err(&efw->unit->device, "EFW command failed [%u/%u]: %s\n",
- 			be32_to_cpu(header->category),
- 			be32_to_cpu(header->command),
--			efr_status_names[be32_to_cpu(header->status)]);
-+			st < ARRAY_SIZE(efr_status_names) ?
-+				efr_status_names[st] : "unknown");
- 		err = -EIO;
- 		goto end;
- 	}
+diff --git a/scripts/gdb/linux/symbols.py b/scripts/gdb/linux/symbols.py
+index d4308b726183..943ff1228b48 100644
+--- a/scripts/gdb/linux/symbols.py
++++ b/scripts/gdb/linux/symbols.py
+@@ -298,7 +298,7 @@ are loaded as well."""
+             if p == "-bpf":
+                 monitor_bpf = True
+             else:
+-                p.append(os.path.abspath(os.path.expanduser(p)))
++                self.module_paths.append(os.path.abspath(os.path.expanduser(p)))
+         self.module_paths.append(os.getcwd())
+ 
+         if self.breakpoint is not None:
+-- 
+2.53.0
+
 
 
 
