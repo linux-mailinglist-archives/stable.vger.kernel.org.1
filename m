@@ -1,61 +1,74 @@
-Return-Path: <stable+bounces-239965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239966-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SCZVKLZs5mmBwAEAu9opvQ
-	(envelope-from <stable+bounces-239965-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 20:13:10 +0200
+	id EHXCHBFw5mmBwAEAu9opvQ
+	(envelope-from <stable+bounces-239966-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 20:27:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13DCE43293F
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 20:13:09 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1819432D2A
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 20:27:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BE0EF3004068
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 17:29:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DDC0133AEF63
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 17:29:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93B4639DBDF;
-	Mon, 20 Apr 2026 17:29:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F4FB3845BC;
+	Mon, 20 Apr 2026 17:29:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I3evR7bU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pgRJ/lTm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 578C43803C8
-	for <stable@vger.kernel.org>; Mon, 20 Apr 2026 17:29:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EE773803DB
+	for <stable@vger.kernel.org>; Mon, 20 Apr 2026 17:29:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776706158; cv=none; b=h3cRpKT4oj1qnwqV7nQUQMi1GVL27Io6PTZM6ShCo9vOvxkO5n1UvmfszocbWLSLNOQyqijVD5JllX3MSA8vFk9zuyyNonQkzMc6MFbg6VRM/NkR48GFtYPQncfJNVnhFdlmuUA/E21CO6dK6jUhp1GK78QJKBUNxpmW8MO545M=
+	t=1776706175; cv=none; b=R0b7w+FP+EcXswrS5W7312O010dExFIaAH04yFEHmlx1xllXE1qJ+j2CXb0DJakp6RxsdGL4b+S79eFJXeZ4KcMfaflotI6soztVFueIJomie/JmkvsXKdLuoLjQEgZo32SgKl2EKWoMq5JcHXuQHKJXmsqBHVR/i1kg11nNPx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776706158; c=relaxed/simple;
-	bh=/DjWlL5SvXK6umZ3lSdfEZKgNzNT9kPxhPSi5UTrgco=;
+	s=arc-20240116; t=1776706175; c=relaxed/simple;
+	bh=t0CE49eVKMLTx91QRp0lyV3rGXkJh80xJLleLIAMJro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lW+XIpQ6+PElThwx10lJzP7mklZKGnN62Y3mMRffyKx2KbmjHDaPMxai1Hs5Zwfaz2uPQVcd+/0DZgVkvM/RTXhQtsfk/OdJW+bn4zjlzBCGbMU20ZFbYU3DpHqLc7g051MfL7lkFK39rCEno/znuVUoNrFWd+rGMaszoQ9S6LI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I3evR7bU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A2B6C19425;
-	Mon, 20 Apr 2026 17:29:17 +0000 (UTC)
+	 MIME-Version; b=ob8UcwLmV+CDaqb+VOwKlC2UpWe9RTKX5rtIHlU0Nbi+WnMGre1c1r13vt7MsM46rYLyp3ds7hq05IW6TehGfkYTTMioWleQzzCuFEhOoPxVCF5eojxYtSqV1aW7UqhDdxDqDgj7XIjstAIEJfDPe1i9z0KzsgFKlqT64sfs+0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pgRJ/lTm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19DD3C19425;
+	Mon, 20 Apr 2026 17:29:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776706157;
-	bh=/DjWlL5SvXK6umZ3lSdfEZKgNzNT9kPxhPSi5UTrgco=;
+	s=k20201202; t=1776706174;
+	bh=t0CE49eVKMLTx91QRp0lyV3rGXkJh80xJLleLIAMJro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I3evR7bUw7Pw02DJRbXeM16TWETjquz3BdKdsNAjizAaMKL8F8bPh1bM8XCvSr6LL
-	 IT15aPjrP0ST1fcpL8kBZxWyQLEmqdn8CeOKT3ePpzsiag3UoQwKAITGW10YhIFLZK
-	 mAolyEkqb97pT+lTD4TtzKLjULMXHmmdDZKs0PZqOoBlG4tLva9XzW9Ycri+xegtHU
-	 x/t7vhnFUH263WD/mcMcHlh32B8OoR/RpTxCuStYWjW5ehbW8gpBp9+FIKBS277Vph
-	 kuUwog0OsMOAVuoQ61+M+sl0mw6dBQ02S1Ykc2MEP9Ea7lejIiYZP+k4loTXMxmuxv
-	 /Q2xECdeetQbQ==
+	b=pgRJ/lTmLBV5gmbteonTkwHBnfUx0s7HUzoNUMS51gfS5GJJTnFpb4+rH7JUfJ/F4
+	 hatc0p5Rs7nzpfOOGhXsRhTN/dd5Z2LsyNacusGK6vTC/Bm40DSPDmKlFJq6/r9d8i
+	 KjJKKVNkssOqbl4+Ai9u2mLyoSC1D/B/01n7XqswoGB4vIu1rUzVe9bihw6dyrUliU
+	 x1BnvlcAWbWHimn59eHyVfnuaHAit+p1aYGgzM5gajdaAp6TJI9y/pzX22OHK8srdI
+	 73+9NLV6QDHZ7WX6ldOunPMQqpoux+gF+kIe/2/nqflFbPDWaN45S8UNjotYOYJ/wg
+	 TqZlK6NdccTyA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Koichiro Den <den@valinux.co.jp>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
+Cc: Breno Leitao <leitao@debian.org>,
+	Dennis Zhou <dennis@kernel.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Josef Bacik <josef@toxicpanda.com>,
+	JP Kobryn <inwardvessel@gmail.com>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Tejun Heo <tj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] PCI: endpoint: pci-epf-vntb: Stop cmd_handler work in epf_ntb_epc_cleanup
-Date: Mon, 20 Apr 2026 13:29:14 -0400
-Message-ID: <20260420172914.1421779-1-sashal@kernel.org>
+Subject: [PATCH 5.15.y] mm: blk-cgroup: fix use-after-free in cgwb_release_workfn()
+Date: Mon, 20 Apr 2026 13:29:31 -0400
+Message-ID: <20260420172931.1421876-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026042042-storeroom-specked-3d65@gregkh>
-References: <2026042042-storeroom-specked-3d65@gregkh>
+In-Reply-To: <2026042027-thinly-unrigged-91da@gregkh>
+References: <2026042027-thinly-unrigged-91da@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,19 +81,20 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239965-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[debian.org,kernel.org,linux.dev,kernel.dk,cmpxchg.org,toxicpanda.com,gmail.com,oracle.com,suse.com,google.com,linux-foundation.org];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239966-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[18];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -88,54 +102,96 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[valinux.co.jp:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,nxp.com:email]
-X-Rspamd-Queue-Id: 13DCE43293F
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel.dk:email,suse.com:email,linux.dev:email,oracle.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:email]
+X-Rspamd-Queue-Id: D1819432D2A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Koichiro Den <den@valinux.co.jp>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit d799984233a50abd2667a7d17a9a710a3f10ebe2 ]
+[ Upstream commit 8f5857be99f1ed1fa80991c72449541f634626ee ]
 
-Disable the delayed work before clearing BAR mappings and doorbells to
-avoid running the handler after resources have been torn down.
+cgwb_release_workfn() calls css_put(wb->blkcg_css) and then later accesses
+wb->blkcg_css again via blkcg_unpin_online().  If css_put() drops the last
+reference, the blkcg can be freed asynchronously (css_free_rwork_fn ->
+blkcg_css_free -> kfree) before blkcg_unpin_online() dereferences the
+pointer to access blkcg->online_pin, resulting in a use-after-free:
 
-  Unable to handle kernel paging request at virtual address ffff800083f46004
-  [...]
-  Internal error: Oops: 0000000096000007 [#1]  SMP
-  [...]
-  Call trace:
-   epf_ntb_cmd_handler+0x54/0x200 [pci_epf_vntb] (P)
-   process_one_work+0x154/0x3b0
-   worker_thread+0x2c8/0x400
-   kthread+0x148/0x210
-   ret_from_fork+0x10/0x20
+  BUG: KASAN: slab-use-after-free in blkcg_unpin_online (./include/linux/instrumented.h:112 ./include/linux/atomic/atomic-instrumented.h:400 ./include/linux/refcount.h:389 ./include/linux/refcount.h:432 ./include/linux/refcount.h:450 block/blk-cgroup.c:1367)
+  Write of size 4 at addr ff11000117aa6160 by task kworker/71:1/531
+   Workqueue: cgwb_release cgwb_release_workfn
+   Call Trace:
+    <TASK>
+     blkcg_unpin_online (./include/linux/instrumented.h:112 ./include/linux/atomic/atomic-instrumented.h:400 ./include/linux/refcount.h:389 ./include/linux/refcount.h:432 ./include/linux/refcount.h:450 block/blk-cgroup.c:1367)
+     cgwb_release_workfn (mm/backing-dev.c:629)
+     process_scheduled_works (kernel/workqueue.c:3278 kernel/workqueue.c:3385)
 
-Fixes: e35f56bb0330 ("PCI: endpoint: Support NTB transfer between RC and EP")
-Signed-off-by: Koichiro Den <den@valinux.co.jp>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260226084142.2226875-4-den@valinux.co.jp
-[ replaced disable_delayed_work_sync() with cancel_delayed_work_sync() ]
+   Freed by task 1016:
+    kfree (./include/linux/kasan.h:235 mm/slub.c:2689 mm/slub.c:6246 mm/slub.c:6561)
+    css_free_rwork_fn (kernel/cgroup/cgroup.c:5542)
+    process_scheduled_works (kernel/workqueue.c:3302 kernel/workqueue.c:3385)
+
+** Stack based on commit 66672af7a095 ("Add linux-next specific files
+for 20260410")
+
+I am seeing this crash sporadically in Meta fleet across multiple kernel
+versions.  A full reproducer is available at:
+https://github.com/leitao/debug/blob/main/reproducers/repro_blkcg_uaf.sh
+
+(The race window is narrow.  To make it easily reproducible, inject a
+msleep(100) between css_put() and blkcg_unpin_online() in
+cgwb_release_workfn().  With that delay and a KASAN-enabled kernel, the
+reproducer triggers the splat reliably in less than a second.)
+
+Fix this by moving blkcg_unpin_online() before css_put(), so the
+cgwb's CSS reference keeps the blkcg alive while blkcg_unpin_online()
+accesses it.
+
+Link: https://lore.kernel.org/20260413-blkcg-v1-1-35b72622d16c@debian.org
+Fixes: 59b57717fff8 ("blkcg: delay blkg destruction until after writeback has finished")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Dennis Zhou <dennis@kernel.org>
+Reviewed-by: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Josef Bacik <josef@toxicpanda.com>
+Cc: JP Kobryn <inwardvessel@gmail.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Cc: Martin KaFai Lau <martin.lau@linux.dev>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/endpoint/functions/pci-epf-vntb.c | 1 +
- 1 file changed, 1 insertion(+)
+ mm/backing-dev.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/endpoint/functions/pci-epf-vntb.c b/drivers/pci/endpoint/functions/pci-epf-vntb.c
-index d057537781f60..c55a1bf88f466 100644
---- a/drivers/pci/endpoint/functions/pci-epf-vntb.c
-+++ b/drivers/pci/endpoint/functions/pci-epf-vntb.c
-@@ -813,6 +813,7 @@ static int epf_ntb_epc_init(struct epf_ntb *ntb)
-  */
- static void epf_ntb_epc_cleanup(struct epf_ntb *ntb)
- {
-+	cancel_delayed_work_sync(&ntb->cmd_handler);
- 	epf_ntb_mw_bar_clear(ntb, ntb->num_mws);
- 	epf_ntb_db_bar_clear(ntb);
- 	epf_ntb_config_sspad_bar_clear(ntb);
+diff --git a/mm/backing-dev.c b/mm/backing-dev.c
+index afdd132768455..0a00c9efafd84 100644
+--- a/mm/backing-dev.c
++++ b/mm/backing-dev.c
+@@ -404,12 +404,13 @@ static void cgwb_release_workfn(struct work_struct *work)
+ 	wb_shutdown(wb);
+ 
+ 	css_put(wb->memcg_css);
+-	css_put(wb->blkcg_css);
+-	mutex_unlock(&wb->bdi->cgwb_release_mutex);
+ 
+ 	/* triggers blkg destruction if no online users left */
+ 	blkcg_unpin_online(blkcg);
+ 
++	css_put(wb->blkcg_css);
++	mutex_unlock(&wb->bdi->cgwb_release_mutex);
++
+ 	fprop_local_destroy_percpu(&wb->memcg_completions);
+ 
+ 	spin_lock_irq(&cgwb_lock);
 -- 
 2.53.0
 
