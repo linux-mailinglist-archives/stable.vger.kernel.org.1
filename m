@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-239321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239711-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uKPHJ71V5mktvAEAu9opvQ
-	(envelope-from <stable+bounces-239321-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:35:09 +0200
+	id yJnYKelO5mngugEAu9opvQ
+	(envelope-from <stable+bounces-239711-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:06:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E493542FABD
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:35:08 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4663742EF8E
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:06:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3DB78325D705
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:45:54 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 321A03027CC8
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:03:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF75C33A70A;
-	Mon, 20 Apr 2026 15:45:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72BD9342CBD;
+	Mon, 20 Apr 2026 16:03:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fIsCvGEs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hOABzS9F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA8A63385B6;
-	Mon, 20 Apr 2026 15:45:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35B7533EAF9;
+	Mon, 20 Apr 2026 16:03:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776699947; cv=none; b=c0qM+Kc8Od4SeWQPImIRz6726XkNRktzMSSAvReadwopWXAGjQWtKtpEEPtu3xiCBc0jA65mnlObBhbkedsWZuyrN3LbTwyZL3nzuWcklib5TBEjrYw0LRbpSLbgiGs9xYjHzjN+lIo4JRBqVSDNtGm0srCYzko1Rgm/yVAx+OY=
+	t=1776701021; cv=none; b=gAmaJpPCM2KJO53DS6CZWY+uc+A3c3sVFjDfpGUCi14bef/Rmyk4ZZZPUBTXnQ+9A+fC4D5jbJYj35LR3NMB4TjLcKptcW2R+wWkuYK+GNQ+MFHRX5LQBQdeyKAcXAlAjapz+kvM6KEDrbUDAioQvb/hPbIWG8MmGceD68lb5wk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776699947; c=relaxed/simple;
-	bh=8U62FcL+ZGj3qGj8r0DHIiBsxAKcO2UYsDy3x08yv+s=;
+	s=arc-20240116; t=1776701021; c=relaxed/simple;
+	bh=74ky5X6xQL4pQV4Y1fN4C7ITBle5ET0j4jUD0JRZ7dI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jA0D6YAMPbDrnxdvM18qFd+FkHPvJAWmryZiT8D9o8hUWQXY15xjTIO0dfnZ5UFwloe97BjerZ/gby2u9NhV0TZztFv52XDxXD8knh05rK9/Ww+ZjNgJCPoLmFiTMBH+gK+G5WCY+wTMIukLQV7m0e10k1DaGdifg/akDq1UvpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fIsCvGEs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13968C19425;
-	Mon, 20 Apr 2026 15:45:46 +0000 (UTC)
+	 MIME-Version; b=TUejQ2Rmg1UjbYexmnL1M/2obrFyT87jG+bl1IPwQPJWnMKzof4HIDFdWzjFOJ8BDgs/yBBSkXAgOHaXzi8MS4DieNfnhNEHW98PrRJkTCeSL8i2MxluWEePWmkkWlg+OGl53D4J2ahkm/qCfLLnM7AvfA6JTZD3H4WGHelKi2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hOABzS9F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7039C19425;
+	Mon, 20 Apr 2026 16:03:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776699947;
-	bh=8U62FcL+ZGj3qGj8r0DHIiBsxAKcO2UYsDy3x08yv+s=;
+	s=korg; t=1776701021;
+	bh=74ky5X6xQL4pQV4Y1fN4C7ITBle5ET0j4jUD0JRZ7dI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fIsCvGEsjMGcxc4GuGXANr5KOP1ULz1C8e721h0icr8q3Zr95efXj6DB3TpicjPth
-	 PINe1VSjhpVoI4ALXOrxFXJ/r0Ctj2rK9iZzk2RfyWlh60/UVz1Mr6eZDNI9moAotq
-	 n2HI7927PxGHyMPjEDlwQzVzzAzIsNtzjAOejvM4=
+	b=hOABzS9FqKDJp2ieDm/8BI4Oxg4g5H8ajoIm/2m+cEHv9LafoxrsUvZhzCu2oTOD4
+	 0Vp0htNpLZX4aIbgfSadXW6wRds+N2ovaXfpj3msIJYZi3K8lx54vW9H3TmIOPHMUz
+	 jyMyLoG1YKl/qvBIAInbB/WEWzb3JsgPi5CQmmF8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 7.0 59/76] x86: rename and clean up __copy_from_user_inatomic_nocache()
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Fiona Behrens <me@kloenk.dev>,
+	Trevor Gross <tmgross@umich.edu>,
+	Tamir Duberstein <tamird@kernel.org>
+Subject: [PATCH 6.18 151/198] scripts: generate_rust_analyzer.py: avoid FD leak
 Date: Mon, 20 Apr 2026 17:42:10 +0200
-Message-ID: <20260420153912.968061091@linuxfoundation.org>
+Message-ID: <20260420153941.044039182@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153910.810034134@linuxfoundation.org>
-References: <20260420153910.810034134@linuxfoundation.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,206 +69,69 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239321-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239711-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linux-foundation.org:email]
-X-Rspamd-Queue-Id: E493542FABD
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,kloenk.dev:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,collabora.com:email,umich.edu:email]
+X-Rspamd-Queue-Id: 4663742EF8E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Tamir Duberstein <tamird@kernel.org>
 
-commit 5de7bcaadf160c1716b20a263cf8f5b06f658959 upstream.
+commit 9b4744d8eda2824041064a5639ccbb079850914d upstream.
 
-Similarly to the previous commit, this renames the somewhat confusingly
-named function.  But in this case, it was at least less confusing: the
-__copy_from_user_inatomic_nocache is indeed copying from user memory,
-and it is indeed ok to be used in an atomic context, so it will not warn
-about it.
+Use `pathlib.Path.read_text()` to avoid leaking file descriptors.
 
-But the previous commit also removed the NTB mis-use of the
-__copy_from_user_inatomic_nocache() function, and as a result every
-call-site is now _actually_ doing a real user copy.  That means that we
-can now do the proper user pointer verification too.
-
-End result: add proper address checking, remove the double underscores,
-and change the "nocache" to "nontemporal" to more accurately describe
-what this x86-only function actually does.  It might be worth noting
-that only the target is non-temporal: the actual user accesses are
-normal memory accesses.
-
-Also worth noting is that non-x86 targets (and on older 32-bit x86 CPU's
-before XMM2 in the Pentium III) we end up just falling back on a regular
-user copy, so nothing can actually depend on the non-temporal semantics,
-but that has always been true.
-
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Fixes: 8c4555ccc55c ("scripts: add `generate_rust_analyzer.py`")
+Cc: stable@vger.kernel.org
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Reviewed-by: Fiona Behrens <me@kloenk.dev>
+Reviewed-by: Trevor Gross <tmgross@umich.edu>
+Link: https://patch.msgid.link/20260127-rust-analyzer-fd-leak-v2-1-1bb55b9b6822@kernel.org
+Signed-off-by: Tamir Duberstein <tamird@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/uaccess.h    |    2 +-
- arch/x86/include/asm/uaccess_32.h |    8 +-------
- arch/x86/include/asm/uaccess_64.h |    3 ++-
- arch/x86/lib/usercopy_32.c        |    9 +++++----
- drivers/gpu/drm/i915/i915_gem.c   |    2 +-
- drivers/gpu/drm/qxl/qxl_ioctl.c   |    2 +-
- include/linux/uaccess.h           |   11 ++++++++---
- lib/iov_iter.c                    |    2 +-
- 8 files changed, 20 insertions(+), 19 deletions(-)
+ scripts/generate_rust_analyzer.py |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/x86/include/asm/uaccess.h
-+++ b/arch/x86/include/asm/uaccess.h
-@@ -507,7 +507,7 @@ extern struct movsl_mask {
- } ____cacheline_aligned_in_smp movsl_mask;
- #endif
+--- a/scripts/generate_rust_analyzer.py
++++ b/scripts/generate_rust_analyzer.py
+@@ -168,9 +168,10 @@ def generate_crates(srctree, objtree, sy
  
--#define ARCH_HAS_NOCACHE_UACCESS 1
-+#define ARCH_HAS_NONTEMPORAL_UACCESS 1
+     def is_root_crate(build_file, target):
+         try:
+-            return f"{target}.o" in open(build_file).read()
++            contents = build_file.read_text()
+         except FileNotFoundError:
+             return False
++        return f"{target}.o" in contents
  
- /*
-  * The "unsafe" user accesses aren't really "unsafe", but the naming
---- a/arch/x86/include/asm/uaccess_32.h
-+++ b/arch/x86/include/asm/uaccess_32.h
-@@ -26,13 +26,7 @@ raw_copy_from_user(void *to, const void
- 	return __copy_user_ll(to, (__force const void *)from, n);
- }
- 
--static __always_inline unsigned long
--__copy_from_user_inatomic_nocache(void *to, const void __user *from,
--				  unsigned long n)
--{
--       return __copy_from_user_ll_nocache_nozero(to, from, n);
--}
--
-+unsigned long __must_check copy_from_user_inatomic_nontemporal(void *, const void __user *, unsigned long n);
- unsigned long __must_check clear_user(void __user *mem, unsigned long len);
- unsigned long __must_check __clear_user(void __user *mem, unsigned long len);
- 
---- a/arch/x86/include/asm/uaccess_64.h
-+++ b/arch/x86/include/asm/uaccess_64.h
-@@ -152,11 +152,12 @@ extern size_t copy_to_nontemporal(void *
- extern long __copy_user_flushcache(void *dst, const void __user *src, unsigned size);
- 
- static inline int
--__copy_from_user_inatomic_nocache(void *dst, const void __user *src,
-+copy_from_user_inatomic_nontemporal(void *dst, const void __user *src,
- 				  unsigned size)
- {
- 	long ret;
- 	kasan_check_write(dst, size);
-+	src = mask_user_address(src);
- 	stac();
- 	ret = copy_to_nontemporal(dst, (__force const void *)src, size);
- 	clac();
---- a/arch/x86/lib/usercopy_32.c
-+++ b/arch/x86/lib/usercopy_32.c
-@@ -322,10 +322,11 @@ unsigned long __copy_user_ll(void *to, c
- }
- EXPORT_SYMBOL(__copy_user_ll);
- 
--unsigned long __copy_from_user_ll_nocache_nozero(void *to, const void __user *from,
-+unsigned long copy_from_user_inatomic_nontemporal(void *to, const void __user *from,
- 					unsigned long n)
- {
--	__uaccess_begin_nospec();
-+	if (!user_access_begin(from, n))
-+		return n;
- #ifdef CONFIG_X86_INTEL_USERCOPY
- 	if (n > 64 && static_cpu_has(X86_FEATURE_XMM2))
- 		n = __copy_user_intel_nocache(to, from, n);
-@@ -334,7 +335,7 @@ unsigned long __copy_from_user_ll_nocach
- #else
- 	__copy_user(to, from, n);
- #endif
--	__uaccess_end();
-+	user_access_end();
- 	return n;
- }
--EXPORT_SYMBOL(__copy_from_user_ll_nocache_nozero);
-+EXPORT_SYMBOL(copy_from_user_inatomic_nontemporal);
---- a/drivers/gpu/drm/i915/i915_gem.c
-+++ b/drivers/gpu/drm/i915/i915_gem.c
-@@ -520,7 +520,7 @@ ggtt_write(struct io_mapping *mapping,
- 
- 	/* We can use the cpu mem copy function because this is X86. */
- 	vaddr = io_mapping_map_atomic_wc(mapping, base);
--	unwritten = __copy_from_user_inatomic_nocache((void __force *)vaddr + offset,
-+	unwritten = copy_from_user_inatomic_nontemporal((void __force *)vaddr + offset,
- 						      user_data, length);
- 	io_mapping_unmap_atomic(vaddr);
- 	if (unwritten) {
---- a/drivers/gpu/drm/qxl/qxl_ioctl.c
-+++ b/drivers/gpu/drm/qxl/qxl_ioctl.c
-@@ -183,7 +183,7 @@ static int qxl_process_single_command(st
- 
- 	/* TODO copy slow path code from i915 */
- 	fb_cmd = qxl_bo_kmap_atomic_page(qdev, cmd_bo, (release->release_offset & PAGE_MASK));
--	unwritten = __copy_from_user_inatomic_nocache
-+	unwritten = copy_from_user_inatomic_nontemporal
- 		(fb_cmd + sizeof(union qxl_release_info) + (release->release_offset & ~PAGE_MASK),
- 		 u64_to_user_ptr(cmd->command), cmd->command_size);
- 
---- a/include/linux/uaccess.h
-+++ b/include/linux/uaccess.h
-@@ -331,16 +331,21 @@ static inline size_t probe_subpage_write
- 
- #endif /* CONFIG_ARCH_HAS_SUBPAGE_FAULTS */
- 
--#ifndef ARCH_HAS_NOCACHE_UACCESS
-+#ifndef ARCH_HAS_NONTEMPORAL_UACCESS
- 
- static inline __must_check unsigned long
--__copy_from_user_inatomic_nocache(void *to, const void __user *from,
-+copy_from_user_inatomic_nontemporal(void *to, const void __user *from,
- 				  unsigned long n)
- {
-+	if (can_do_masked_user_access())
-+		from = mask_user_address(from);
-+	else
-+		if (!access_ok(from, n))
-+			return n;
- 	return __copy_from_user_inatomic(to, from, n);
- }
- 
--#endif		/* ARCH_HAS_NOCACHE_UACCESS */
-+#endif		/* ARCH_HAS_NONTEMPORAL_UACCESS */
- 
- extern __must_check int check_zeroed_user(const void __user *from, size_t size);
- 
---- a/lib/iov_iter.c
-+++ b/lib/iov_iter.c
-@@ -277,7 +277,7 @@ static __always_inline
- size_t copy_from_user_iter_nocache(void __user *iter_from, size_t progress,
- 				   size_t len, void *to, void *priv2)
- {
--	return __copy_from_user_inatomic_nocache(to + progress, iter_from, len);
-+	return copy_from_user_inatomic_nontemporal(to + progress, iter_from, len);
- }
- 
- size_t _copy_from_iter_nocache(void *addr, size_t bytes, struct iov_iter *i)
+     # Then, the rest outside of `rust/`.
+     #
 
 
 
