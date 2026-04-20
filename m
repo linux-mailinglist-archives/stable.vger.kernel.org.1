@@ -1,60 +1,66 @@
-Return-Path: <stable+bounces-239738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239554-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CHPBE0VP5mkgugEAu9opvQ
-	(envelope-from <stable+bounces-239738-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:07:33 +0200
+	id YM1sFaVf5mndvQEAu9opvQ
+	(envelope-from <stable+bounces-239554-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:17:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECBBE42F045
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:07:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE48D430EA6
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:17:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E43EB3021A28
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:04:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0FB4F3285D12
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:55:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BDE82DE6E3;
-	Mon, 20 Apr 2026 16:04:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C79423396EE;
+	Mon, 20 Apr 2026 15:55:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ao3lTP5O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OYrw/lDT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E44A33E373;
-	Mon, 20 Apr 2026 16:04:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 872AC33F597;
+	Mon, 20 Apr 2026 15:55:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701090; cv=none; b=Cy4pYtJ6LrfENTuHnR2KfNEGVPWlNqJmDWLtKXTBtmYWqkxtaU8PyZI5fnThaltPSavXS8shVHcrozDmew5ZYxEu/1hi3x3VZzU9jmurtHjnqSUZ0AG3ooE6QU2LET5TfBwLDu/7bH6SK6WqLwV07MQUqhyZrcJkQoKahWiaIRs=
+	t=1776700550; cv=none; b=ob9B6wOVwLnHv0hum609FaTpr/mSEMUkHbMvyzNoU0s8lIjY6QIEOQCtWKer7DVMhemtjoUcUd2oxgBy7Qpw8HN/l6jmg/2Z+wUZYe8RGzmlDJ6yyvGjfMfCdq8stjIxEXKx3Zzl/0KhbXkeZzG8iyyGH95IzcHkUGZgulwPpjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701090; c=relaxed/simple;
-	bh=HsxjKbojB2dyscvySW+aqJT91rOoFelFKc/x8J2zJAo=;
+	s=arc-20240116; t=1776700550; c=relaxed/simple;
+	bh=ekwJ5z3eMG0TqtDXU+d8sVrMS4+I4sZ8LodJZdRmor4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GQjz3C2Di+8NYkn1TwoaIovSubeZFfDW0XEvEI2Kp9uMlSlnC52o7C/qjQXkGLStiuiXDGDITfQ3m/iSEjs5F0REj0KLyAkqxFv5gUVqtCvZ5obVGumt9nHG8OKpj88kjEXOO0/WYj7RzL49JK6WpvUByEUKuuyPYnnkajJcvsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ao3lTP5O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C905CC19425;
-	Mon, 20 Apr 2026 16:04:49 +0000 (UTC)
+	 MIME-Version; b=L4XIJXZN2bSeNmxeIPCd9J/DwYNOoM+8pbHcwNa+2cE3fudXLLtvoqkJA6GVQB3NT/+FqLssLPNFv3zL7rA0rwP2vNw6K/+dRzZ+f/XwcplIU0vfvG6+uj4AiFztc32xJjMHFyxgNWB3pNDIFjNrz5BvKZrun7K7yUtjFBDFQNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OYrw/lDT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA9F9C19425;
+	Mon, 20 Apr 2026 15:55:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701090;
-	bh=HsxjKbojB2dyscvySW+aqJT91rOoFelFKc/x8J2zJAo=;
+	s=korg; t=1776700550;
+	bh=ekwJ5z3eMG0TqtDXU+d8sVrMS4+I4sZ8LodJZdRmor4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ao3lTP5OlfbXdsA/tSQw/AbCCi2PzuNy3fgtxlkvMRzXWVTUP8IfZ4vqCjBkUYfS1
-	 I+ZvVSmVGjKcqLVzeX97TitoRSJjAI9W3VYXfqq4bUZfs7SC43Uwp91+a0sR/u1xg8
-	 kYWWatlUPiU0srhDp8NL9DijYlgXNxKQNXSgj6Do=
+	b=OYrw/lDTA4bCjNP/Itm7DtTwoLLcOBx5KTF2dGKsUB8jo+/ID75nc4BImjMVQykro
+	 vprjpzMeOWSXB9U53nj2Riuh81nrB9oM58Xg+80wnji8a0JvlCGzB6DdQIgJAEsK70
+	 p3LZb8DIoEbU+jLu8YH4OpV+uz5xXJxA1MrBihHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Alexey Charkov <alchark@flipper.net>,
-	Hans de Goede <johannes.goede@oss.qualcomm.com>,
-	Heikki Krogerus <heikki.krogrerus@linux.intel.com>
-Subject: [PATCH 6.18 145/198] usb: typec: fusb302: Switch to threaded IRQ handler
+	Tejas Bharambe <tejas.bharambe@outlook.com>,
+	syzbot+a49010a0e8fcdeea075f@syzkaller.appspotmail.com,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Heming Zhao <heming.zhao@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.19 183/220] ocfs2: fix use-after-free in ocfs2_fault() when VM_FAULT_RETRY
 Date: Mon, 20 Apr 2026 17:42:04 +0200
-Message-ID: <20260420153940.829277350@linuxfoundation.org>
+Message-ID: <20260420153940.616316696@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
+References: <20260420153934.013228280@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,76 +71,139 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239738-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	TAGGED_FROM(0.00)[bounces-239554-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,syzkaller.appspotmail.com,linux.alibaba.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,suse.com,linux-foundation.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable,a49010a0e8fcdeea075f];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,intel.com:email,flipper.net:email,qualcomm.com:email]
-X-Rspamd-Queue-Id: ECBBE42F045
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,evilplan.org:email,appspotmail.com:email,fasheh.com:email,suse.com:email,live.cn:email,oracle.com:email,linux-foundation.org:email,syzkaller.appspot.com:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,huawei.com:email,alibaba.com:email]
+X-Rspamd-Queue-Id: AE48D430EA6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Charkov <alchark@flipper.net>
+From: Tejas Bharambe <tejas.bharambe@outlook.com>
 
-commit 6b9db53197094f38a18797495df2e3c758ec51dc upstream.
+commit 7de554cabf160e331e4442e2a9ad874ca9875921 upstream.
 
-FUSB302 fails to probe with -EINVAL if its interrupt line is connected via
-an I2C GPIO expander, such as TI TCA6416.
+filemap_fault() may drop the mmap_lock before returning VM_FAULT_RETRY,
+as documented in mm/filemap.c:
 
-Switch the interrupt handler to a threaded one, which also works behind
-such GPIO expanders.
+  "If our return value has VM_FAULT_RETRY set, it's because the mmap_lock
+  may be dropped before doing I/O or by lock_folio_maybe_drop_mmap()."
 
-Cc: stable <stable@kernel.org>
-Fixes: 309b6341d557 ("usb: typec: fusb302: Revert incorrect threaded irq fix")
-Signed-off-by: Alexey Charkov <alchark@flipper.net>
-Reviewed-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
-Reviewed-by: Heikki Krogerus <heikki.krogrerus@linux.intel.com>
-Link: https://patch.msgid.link/20260317-fusb302-irq-v2-1-dbabd5c5c961@flipper.net
+When this happens, a concurrent munmap() can call remove_vma() and free
+the vm_area_struct via RCU. The saved 'vma' pointer in ocfs2_fault() then
+becomes a dangling pointer, and the subsequent trace_ocfs2_fault() call
+dereferences it -- a use-after-free.
+
+Fix this by saving ip_blkno as a plain integer before calling
+filemap_fault(), and removing vma from the trace event. Since
+ip_blkno is copied by value before the lock can be dropped, it
+remains valid regardless of what happens to the vma or inode
+afterward.
+
+Link: https://lkml.kernel.org/r/20260410083816.34951-1-tejas.bharambe@outlook.com
+Fixes: 614a9e849ca6 ("ocfs2: Remove FILE_IO from masklog.")
+Signed-off-by: Tejas Bharambe <tejas.bharambe@outlook.com>
+Reported-by: syzbot+a49010a0e8fcdeea075f@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=a49010a0e8fcdeea075f
+Suggested-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Heming Zhao <heming.zhao@suse.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/tcpm/fusb302.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/ocfs2/mmap.c        |    7 +++----
+ fs/ocfs2/ocfs2_trace.h |   10 ++++------
+ 2 files changed, 7 insertions(+), 10 deletions(-)
 
---- a/drivers/usb/typec/tcpm/fusb302.c
-+++ b/drivers/usb/typec/tcpm/fusb302.c
-@@ -1755,8 +1755,9 @@ static int fusb302_probe(struct i2c_clie
- 		goto destroy_workqueue;
- 	}
+--- a/fs/ocfs2/mmap.c
++++ b/fs/ocfs2/mmap.c
+@@ -30,7 +30,8 @@
  
--	ret = request_irq(chip->gpio_int_n_irq, fusb302_irq_intn,
--			  IRQF_TRIGGER_LOW, "fsc_interrupt_int_n", chip);
-+	ret = request_threaded_irq(chip->gpio_int_n_irq, NULL, fusb302_irq_intn,
-+				   IRQF_ONESHOT | IRQF_TRIGGER_LOW,
-+				   "fsc_interrupt_int_n", chip);
- 	if (ret < 0) {
- 		dev_err(dev, "cannot request IRQ for GPIO Int_N, ret=%d", ret);
- 		goto tcpm_unregister_port;
+ static vm_fault_t ocfs2_fault(struct vm_fault *vmf)
+ {
+-	struct vm_area_struct *vma = vmf->vma;
++	unsigned long long ip_blkno =
++		OCFS2_I(file_inode(vmf->vma->vm_file))->ip_blkno;
+ 	sigset_t oldset;
+ 	vm_fault_t ret;
+ 
+@@ -38,11 +39,9 @@ static vm_fault_t ocfs2_fault(struct vm_
+ 	ret = filemap_fault(vmf);
+ 	ocfs2_unblock_signals(&oldset);
+ 
+-	trace_ocfs2_fault(OCFS2_I(vma->vm_file->f_mapping->host)->ip_blkno,
+-			  vma, vmf->page, vmf->pgoff);
++	trace_ocfs2_fault(ip_blkno, vmf->page, vmf->pgoff);
+ 	return ret;
+ }
+-
+ static vm_fault_t __ocfs2_page_mkwrite(struct file *file,
+ 			struct buffer_head *di_bh, struct folio *folio)
+ {
+--- a/fs/ocfs2/ocfs2_trace.h
++++ b/fs/ocfs2/ocfs2_trace.h
+@@ -1246,22 +1246,20 @@ TRACE_EVENT(ocfs2_write_end_inline,
+ 
+ TRACE_EVENT(ocfs2_fault,
+ 	TP_PROTO(unsigned long long ino,
+-		 void *area, void *page, unsigned long pgoff),
+-	TP_ARGS(ino, area, page, pgoff),
++		 void *page, unsigned long pgoff),
++	TP_ARGS(ino, page, pgoff),
+ 	TP_STRUCT__entry(
+ 		__field(unsigned long long, ino)
+-		__field(void *, area)
+ 		__field(void *, page)
+ 		__field(unsigned long, pgoff)
+ 	),
+ 	TP_fast_assign(
+ 		__entry->ino = ino;
+-		__entry->area = area;
+ 		__entry->page = page;
+ 		__entry->pgoff = pgoff;
+ 	),
+-	TP_printk("%llu %p %p %lu",
+-		  __entry->ino, __entry->area, __entry->page, __entry->pgoff)
++	TP_printk("%llu %p %lu",
++		  __entry->ino, __entry->page, __entry->pgoff)
+ );
+ 
+ /* End of trace events for fs/ocfs2/mmap.c. */
 
 
 
