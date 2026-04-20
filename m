@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-239579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239398-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QBfdDHlP5mkgugEAu9opvQ
-	(envelope-from <stable+bounces-239579-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:08:25 +0200
+	id XQ8wB3lX5ml5vAEAu9opvQ
+	(envelope-from <stable+bounces-239398-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:42:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC2ED42F0C4
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:08:24 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3AF042FDF5
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:42:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AF45130074B9
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:56:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7E13D339C7E6
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:49:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 038CD32E696;
-	Mon, 20 Apr 2026 15:56:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25C5533DEDF;
+	Mon, 20 Apr 2026 15:49:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TKgxmaYp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AMKgRcNy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9F9F22259F;
-	Mon, 20 Apr 2026 15:56:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD6662E11C7;
+	Mon, 20 Apr 2026 15:49:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700614; cv=none; b=NyCQyd2BNw5md14dLVae71HYjMoJtT7XEPnNaCuDHhhk/iwfXrTx3bW4MnAXR9aLno6xP33D63DbAbrdFQ4rPfXCAcwuGUDlhcVybrM6s/jC/aJFU/Gg1aldgIHdwJAwAOBBfDiT1rLF08ss78YN1RiLqeIDIdaR+QjH8tP4f3Q=
+	t=1776700144; cv=none; b=X+496hqhKyroDQBoyQ05qmJ2aq1UHawnjnQxmDp1fankSuP8Q6OQElErLY6ru/RVm5jG1DGUiwUir8ZS+ecLNkzFt/f7XB/FW30AtIJlzPPnVq1T62eZff+8X+ystPC+jSvArVxaFNjfrrVRhsvw8pvFRqsz741uz6uIY4buxug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700614; c=relaxed/simple;
-	bh=hu1dsURhO8YOQMEJ7RV8VoFlR/exOW9QukW3I3uJG9U=;
+	s=arc-20240116; t=1776700144; c=relaxed/simple;
+	bh=AEJgazPvLUyMsw9N+k2HHbEvN72OevGmW4N5JZruWxQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FcnzssXgkYsqlG699tg7M7U03VjMulSmyqMWzTNBBEkHYNyPZ2BBV1NfeYG9HRt3JO9fBigdiybA4/9jLtaIuMJ2wfeLenTaVEd9aD/jgIF3NLz7z2HHKb29GHwkRKsDq+QdRdiZpnxCRx/BbD4eRjQ2mQ/qD/iV2yW+kGmcrjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TKgxmaYp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50E98C19425;
-	Mon, 20 Apr 2026 15:56:54 +0000 (UTC)
+	 MIME-Version; b=CCnCMasbNRlfUIPWO41j+2ZPUOutLa2M4Xe5b8yT7PlPl+h2+wjWCoGkyhMBI9Njfm5X1JARtpntCKWETCwgWS2ZLkz08nDoQtKmZw3lmHFQs4oEQgKzgiHPWJWD9J6sx+AO0l/r9Kzuo0hHbrZdOvMVBRc/DOIDqHn1LDPuMbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AMKgRcNy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72C44C19425;
+	Mon, 20 Apr 2026 15:49:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700614;
-	bh=hu1dsURhO8YOQMEJ7RV8VoFlR/exOW9QukW3I3uJG9U=;
+	s=korg; t=1776700144;
+	bh=AEJgazPvLUyMsw9N+k2HHbEvN72OevGmW4N5JZruWxQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TKgxmaYpzDEtNgPz6WaIHoEMPdFLlpNENizMt/UQd5FtcJGMaTQ0/Mw+eIFMS3JrA
-	 r1zhqpJG0aKrU+PiT+MOVlJL/1OW617vSZ00yagF/i/3beNJZ3NxThdn/nxSCvAn6j
-	 x6zEmDENV3gliZgjVrBCd7DWd/iRc/gtlRUfo13Q=
+	b=AMKgRcNyV9KDrEo80+yRdzqQGqnrKQAzUIlqq/rOCAfPVJcPGN9LX5WCLPPsOv5vX
+	 G7uSfNtM1yLWgwo/93FSCN2X4gJ1l+pYTDdylG5YuyGjQWRXJl8cOs4l+9FL8nE+Mn
+	 2EkpdA4HGuiR25v2hA6NY5poil3l4EQMsQkFiDgo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Artem Bityutskiy <artem.bityutskiy@linux.intel.com>,
+	Len Brown <len.brown@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 020/198] netfilter: ctnetlink: ensure safe access to master conntrack
-Date: Mon, 20 Apr 2026 17:39:59 +0200
-Message-ID: <20260420153936.343515057@linuxfoundation.org>
+Subject: [PATCH 6.19 059/220] tools/power turbostat: Fix --show/--hide for individual cpuidle counters
+Date: Mon, 20 Apr 2026 17:40:00 +0200
+Message-ID: <20260420153936.167113385@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
+References: <20260420153934.013228280@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-239579-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-239398-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,226 +89,125 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,strlen.de:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: CC2ED42F0C4
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: B3AF042FDF5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
 
-[ Upstream commit bffcaad9afdfe45d7fc777397d3b83c1e3ebffe5 ]
+[ Upstream commit b6398bc2ef3a78f1be37ba01ae0a5eedaee47803 ]
 
-Holding reference on the expectation is not sufficient, the master
-conntrack object can just go away, making exp->master invalid.
+Problem: individual swidle counter names (C1, C1+, C1-, etc.) cannot be
+selected via --show/--hide due to two bugs in probe_cpuidle_counts():
+1. The function returns immediately when BIC_cpuidle is not enabled,
+   without checking deferred_add_index.
+2. The deferred name check runs against name_buf before the trailing
+   newline is stripped, so is_deferred_add("C1\n") never matches "C1".
 
-To access exp->master safely:
+Fix:
+1. Relax the early return to pass through when deferred names are
+   queued.
+2. Strip the trailing newline from name_buf before performing deferred
+   name checks.
+3. Check each suffixed variant (C1+, C1, C1-) individually so that
+   e.g. "--show C1+" enables only the requested metric.
 
-- Grab the nf_conntrack_expect_lock, this gets serialized with
-  clean_from_lists() which also holds this lock when the master
-  conntrack goes away.
+In addition, introduce a helper function to avoid repeating the
+condition (readability cleanup).
 
-- Hold reference on master conntrack via nf_conntrack_find_get().
-  Not so easy since the master tuple to look up for the master conntrack
-  is not available in the existing problematic paths.
-
-This patch goes for extending the nf_conntrack_expect_lock section
-to address this issue for simplicity, in the cases that are described
-below this is just slightly extending the lock section.
-
-The add expectation command already holds a reference to the master
-conntrack from ctnetlink_create_expect().
-
-However, the delete expectation command needs to grab the spinlock
-before looking up for the expectation. Expand the existing spinlock
-section to address this to cover the expectation lookup. Note that,
-the nf_ct_expect_iterate_net() calls already grabs the spinlock while
-iterating over the expectation table, which is correct.
-
-The get expectation command needs to grab the spinlock to ensure master
-conntrack does not go away. This also expands the existing spinlock
-section to cover the expectation lookup too. I needed to move the
-netlink skb allocation out of the spinlock to keep it GFP_KERNEL.
-
-For the expectation events, the IPEXP_DESTROY event is already delivered
-under the spinlock, just move the delivery of IPEXP_NEW under the
-spinlock too because the master conntrack event cache is reached through
-exp->master.
-
-While at it, add lockdep notations to help identify what codepaths need
-to grab the spinlock.
-
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: ec4acd3166d8 ("tools/power turbostat: disable "cpuidle" invocation counters, by default")
+Signed-off-by: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
+Signed-off-by: Len Brown <len.brown@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/netfilter/nf_conntrack_core.h |  5 ++++
- net/netfilter/nf_conntrack_ecache.c       |  2 ++
- net/netfilter/nf_conntrack_expect.c       | 10 +++++++-
- net/netfilter/nf_conntrack_netlink.c      | 28 +++++++++++++++--------
- 4 files changed, 35 insertions(+), 10 deletions(-)
+ tools/power/x86/turbostat/turbostat.c | 35 ++++++++++++++++-----------
+ 1 file changed, 21 insertions(+), 14 deletions(-)
 
-diff --git a/include/net/netfilter/nf_conntrack_core.h b/include/net/netfilter/nf_conntrack_core.h
-index 3384859a89210..8883575adcc1e 100644
---- a/include/net/netfilter/nf_conntrack_core.h
-+++ b/include/net/netfilter/nf_conntrack_core.h
-@@ -83,6 +83,11 @@ void nf_conntrack_lock(spinlock_t *lock);
+diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
+index 603651e74dacf..b01a905bd24a7 100644
+--- a/tools/power/x86/turbostat/turbostat.c
++++ b/tools/power/x86/turbostat/turbostat.c
+@@ -10908,6 +10908,14 @@ void probe_cpuidle_residency(void)
+ 	}
+ }
  
- extern spinlock_t nf_conntrack_expect_lock;
- 
-+static inline void lockdep_nfct_expect_lock_held(void)
++static bool cpuidle_counter_wanted(char *name)
 +{
-+	lockdep_assert_held(&nf_conntrack_expect_lock);
++	if (is_deferred_skip(name))
++		return false;
++
++	return DO_BIC(BIC_cpuidle) || is_deferred_add(name);
 +}
 +
- /* ctnetlink code shared by both ctnetlink and nf_conntrack_bpf */
- 
- static inline void __nf_ct_set_timeout(struct nf_conn *ct, u64 timeout)
-diff --git a/net/netfilter/nf_conntrack_ecache.c b/net/netfilter/nf_conntrack_ecache.c
-index 81baf20826046..9df159448b897 100644
---- a/net/netfilter/nf_conntrack_ecache.c
-+++ b/net/netfilter/nf_conntrack_ecache.c
-@@ -247,6 +247,8 @@ void nf_ct_expect_event_report(enum ip_conntrack_expect_events event,
- 	struct nf_ct_event_notifier *notify;
- 	struct nf_conntrack_ecache *e;
- 
-+	lockdep_nfct_expect_lock_held();
-+
- 	rcu_read_lock();
- 	notify = rcu_dereference(net->ct.nf_conntrack_event_cb);
- 	if (!notify)
-diff --git a/net/netfilter/nf_conntrack_expect.c b/net/netfilter/nf_conntrack_expect.c
-index 2234c444a320e..24d0576d84b7f 100644
---- a/net/netfilter/nf_conntrack_expect.c
-+++ b/net/netfilter/nf_conntrack_expect.c
-@@ -51,6 +51,7 @@ void nf_ct_unlink_expect_report(struct nf_conntrack_expect *exp,
- 	struct net *net = nf_ct_exp_net(exp);
- 	struct nf_conntrack_net *cnet;
- 
-+	lockdep_nfct_expect_lock_held();
- 	WARN_ON(!master_help);
- 	WARN_ON(timer_pending(&exp->timeout));
- 
-@@ -118,6 +119,8 @@ nf_ct_exp_equal(const struct nf_conntrack_tuple *tuple,
- 
- bool nf_ct_remove_expect(struct nf_conntrack_expect *exp)
+ void probe_cpuidle_counts(void)
  {
-+	lockdep_nfct_expect_lock_held();
-+
- 	if (timer_delete(&exp->timeout)) {
- 		nf_ct_unlink_expect(exp);
- 		nf_ct_expect_put(exp);
-@@ -177,6 +180,8 @@ nf_ct_find_expectation(struct net *net,
- 	struct nf_conntrack_expect *i, *exp = NULL;
- 	unsigned int h;
+ 	char path[64];
+@@ -10917,7 +10925,7 @@ void probe_cpuidle_counts(void)
+ 	int min_state = 1024, max_state = 0;
+ 	char *sp;
  
-+	lockdep_nfct_expect_lock_held();
-+
- 	if (!cnet->expect_count)
- 		return NULL;
+-	if (!DO_BIC(BIC_cpuidle))
++	if (!DO_BIC(BIC_cpuidle) && !deferred_add_index)
+ 		return;
  
-@@ -459,6 +464,8 @@ static inline int __nf_ct_expect_check(struct nf_conntrack_expect *expect,
- 	unsigned int h;
- 	int ret = 0;
+ 	for (state = 10; state >= 0; --state) {
+@@ -10932,12 +10940,6 @@ void probe_cpuidle_counts(void)
  
-+	lockdep_nfct_expect_lock_held();
-+
- 	if (!master_help) {
- 		ret = -ESHUTDOWN;
- 		goto out;
-@@ -515,8 +522,9 @@ int nf_ct_expect_related_report(struct nf_conntrack_expect *expect,
+ 		remove_underbar(name_buf);
  
- 	nf_ct_expect_insert(expect);
- 
--	spin_unlock_bh(&nf_conntrack_expect_lock);
- 	nf_ct_expect_event_report(IPEXP_NEW, expect, portid, report);
-+	spin_unlock_bh(&nf_conntrack_expect_lock);
-+
- 	return 0;
- out:
- 	spin_unlock_bh(&nf_conntrack_expect_lock);
-diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
-index 879413b9fa06a..becffc15e7579 100644
---- a/net/netfilter/nf_conntrack_netlink.c
-+++ b/net/netfilter/nf_conntrack_netlink.c
-@@ -3337,31 +3337,37 @@ static int ctnetlink_get_expect(struct sk_buff *skb,
- 	if (err < 0)
- 		return err;
- 
-+	skb2 = nlmsg_new(NLMSG_DEFAULT_SIZE, GFP_KERNEL);
-+	if (!skb2)
-+		return -ENOMEM;
-+
-+	spin_lock_bh(&nf_conntrack_expect_lock);
- 	exp = nf_ct_expect_find_get(info->net, &zone, &tuple);
--	if (!exp)
-+	if (!exp) {
-+		spin_unlock_bh(&nf_conntrack_expect_lock);
-+		kfree_skb(skb2);
- 		return -ENOENT;
-+	}
- 
- 	if (cda[CTA_EXPECT_ID]) {
- 		__be32 id = nla_get_be32(cda[CTA_EXPECT_ID]);
- 
- 		if (id != nf_expect_get_id(exp)) {
- 			nf_ct_expect_put(exp);
-+			spin_unlock_bh(&nf_conntrack_expect_lock);
-+			kfree_skb(skb2);
- 			return -ENOENT;
- 		}
- 	}
- 
--	skb2 = nlmsg_new(NLMSG_DEFAULT_SIZE, GFP_KERNEL);
--	if (!skb2) {
--		nf_ct_expect_put(exp);
--		return -ENOMEM;
--	}
+-		if (!DO_BIC(BIC_cpuidle) && !is_deferred_add(name_buf))
+-			continue;
 -
- 	rcu_read_lock();
- 	err = ctnetlink_exp_fill_info(skb2, NETLINK_CB(skb).portid,
- 				      info->nlh->nlmsg_seq, IPCTNL_MSG_EXP_NEW,
- 				      exp);
- 	rcu_read_unlock();
- 	nf_ct_expect_put(exp);
-+	spin_unlock_bh(&nf_conntrack_expect_lock);
-+
- 	if (err <= 0) {
- 		kfree_skb(skb2);
- 		return -ENOMEM;
-@@ -3408,22 +3414,26 @@ static int ctnetlink_del_expect(struct sk_buff *skb,
- 		if (err < 0)
- 			return err;
+-		if (is_deferred_skip(name_buf))
+-			continue;
+-
+ 		/* truncate "C1-HSW\n" to "C1", or truncate "C1\n" to "C1" */
+ 		sp = strchr(name_buf, '-');
+ 		if (!sp)
+@@ -10952,16 +10954,19 @@ void probe_cpuidle_counts(void)
+ 			 * Add 'C1+' for C1, and so on. The 'below' sysfs file always contains 0 for
+ 			 * the last state, so do not add it.
+ 			 */
+-
+ 			*sp = '+';
+ 			*(sp + 1) = '\0';
+-			sprintf(path, "cpuidle/state%d/below", state);
+-			add_counter(0, path, name_buf, 64, SCOPE_CPU, COUNTER_ITEMS, FORMAT_DELTA, SYSFS_PERCPU, 0);
++			if (cpuidle_counter_wanted(name_buf)) {
++				sprintf(path, "cpuidle/state%d/below", state);
++				add_counter(0, path, name_buf, 64, SCOPE_CPU, COUNTER_ITEMS, FORMAT_DELTA, SYSFS_PERCPU, 0);
++			}
+ 		}
  
-+		spin_lock_bh(&nf_conntrack_expect_lock);
-+
- 		/* bump usage count to 2 */
- 		exp = nf_ct_expect_find_get(info->net, &zone, &tuple);
--		if (!exp)
-+		if (!exp) {
-+			spin_unlock_bh(&nf_conntrack_expect_lock);
- 			return -ENOENT;
+ 		*sp = '\0';
+-		sprintf(path, "cpuidle/state%d/usage", state);
+-		add_counter(0, path, name_buf, 64, SCOPE_CPU, COUNTER_ITEMS, FORMAT_DELTA, SYSFS_PERCPU, 0);
++		if (cpuidle_counter_wanted(name_buf)) {
++			sprintf(path, "cpuidle/state%d/usage", state);
++			add_counter(0, path, name_buf, 64, SCOPE_CPU, COUNTER_ITEMS, FORMAT_DELTA, SYSFS_PERCPU, 0);
 +		}
  
- 		if (cda[CTA_EXPECT_ID]) {
- 			__be32 id = nla_get_be32(cda[CTA_EXPECT_ID]);
- 
- 			if (id != nf_expect_get_id(exp)) {
- 				nf_ct_expect_put(exp);
-+				spin_unlock_bh(&nf_conntrack_expect_lock);
- 				return -ENOENT;
- 			}
+ 		/*
+ 		 * The 'above' sysfs file always contains 0 for the shallowest state (smallest
+@@ -10970,8 +10975,10 @@ void probe_cpuidle_counts(void)
+ 		if (state != min_state) {
+ 			*sp = '-';
+ 			*(sp + 1) = '\0';
+-			sprintf(path, "cpuidle/state%d/above", state);
+-			add_counter(0, path, name_buf, 64, SCOPE_CPU, COUNTER_ITEMS, FORMAT_DELTA, SYSFS_PERCPU, 0);
++			if (cpuidle_counter_wanted(name_buf)) {
++				sprintf(path, "cpuidle/state%d/above", state);
++				add_counter(0, path, name_buf, 64, SCOPE_CPU, COUNTER_ITEMS, FORMAT_DELTA, SYSFS_PERCPU, 0);
++			}
  		}
- 
- 		/* after list removal, usage count == 1 */
--		spin_lock_bh(&nf_conntrack_expect_lock);
- 		if (timer_delete(&exp->timeout)) {
- 			nf_ct_unlink_expect_report(exp, NETLINK_CB(skb).portid,
- 						   nlmsg_report(info->nlh));
+ 	}
+ }
 -- 
 2.53.0
 
