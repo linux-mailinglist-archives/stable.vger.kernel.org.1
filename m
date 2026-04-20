@@ -1,57 +1,66 @@
-Return-Path: <stable+bounces-239756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239920-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UFV2IHVj5mkKvwEAu9opvQ
-	(envelope-from <stable+bounces-239756-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:33:41 +0200
+	id iDsWF59Y5mlQvAEAu9opvQ
+	(envelope-from <stable+bounces-239920-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:47:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FAE84316EF
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:33:40 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC9BC43003F
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:47:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D637C30E8FAD
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:05:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E8BCB30221E0
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:12:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B51D3396EE;
-	Mon, 20 Apr 2026 16:05:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5CDD3431F8;
+	Mon, 20 Apr 2026 16:12:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UVxBqBpP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JuM4ZP3Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1C3C2C11C6;
-	Mon, 20 Apr 2026 16:05:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7615034252C;
+	Mon, 20 Apr 2026 16:12:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701136; cv=none; b=ummWEGkZrF9INuKVe5b7JQCEQ74VZn2idoHth4jtkWWoMx5lD6wwkfaRCQquWpiwifQRT71jD15xUQVh9NSdF2ZP42QwJjipSpLIrfXTcgX+gwwWHOoolabM8HJ2mWk4D72h66EtQrJn7+ryVHeW9HLOs56mcsNfeF5hlTE8zkU=
+	t=1776701552; cv=none; b=tqMGCzsbIULh8eQ3aTCfR5OGSTC2ZBwVvwE1WVBv148cd+zdeIjF/FsGVoQ/BN6Hex//0Q8W7iU0ajqlYFAiOW8t1AD7OS9xYHSp+YsHl04tt/nhk1ODoylKLGKia021WG3uRoRPENTuwhVc3qMeI8djjCJoJyNinBwwIo34hs8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701136; c=relaxed/simple;
-	bh=jRSrpdESyShBuKo9MwAnVNKKiM+BQPlAwyhtLcBmr5c=;
+	s=arc-20240116; t=1776701552; c=relaxed/simple;
+	bh=pbx1Lu2n6SZQ/JeH6goPTe0vySwepCBgMpcS9Fn69AQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FD1/sbZVP/3mtGfSa+o3z4kCc3cDGzY83cNrbHF+P82zJuWp9N/jdJOdeFN0tU/s3v3skR41weEc5CSLfhMykwJyrfLfrPIEBvRmblzrq69tsEMcOclN4jByV2LcIrdWIK+vmun3P+tgBg4WbnjRVWVx0VIofmT8xs2+Lngs+Io=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UVxBqBpP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2763AC19425;
-	Mon, 20 Apr 2026 16:05:36 +0000 (UTC)
+	 MIME-Version; b=TOXo4A6nEJN18lmuXOuZ1uCGaVVBbJNCFQBsqXzURWx8tZGdqpByp5ceo3VUCNCjTxki8JGW/ZtIBcW3bhVGTKjB7AlHb3HIDXsQSidPnJbKvAdaYErCrfrfnAmyCle9vlIUQ6zuimefdf+V7A6IJFFNnDiHEMOJNTL1FBG9kIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JuM4ZP3Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D05C1C19425;
+	Mon, 20 Apr 2026 16:12:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701136;
-	bh=jRSrpdESyShBuKo9MwAnVNKKiM+BQPlAwyhtLcBmr5c=;
+	s=korg; t=1776701552;
+	bh=pbx1Lu2n6SZQ/JeH6goPTe0vySwepCBgMpcS9Fn69AQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UVxBqBpPuXBNjeyhJQq3DjlI/L/2vsWkNVvijte7md920jFPYMI9FykEuoKjpsQ3O
-	 SXmyAuKvxiZRqqPuFfXdGygNIiIMw3Ynn82FL0UndRBPjAApucEKt5y40ikFno9Asq
-	 3sfb5IvHJImWjSr3rBQJ402MZpiixfZJ10ZJMXhU=
+	b=JuM4ZP3Y1d+5elDfT4iQHVRK/LhpQ3+YRGnyN7V9hPT4Kc4uXWQiVHUvOe9fu69PF
+	 CMB3/WbIXEHWDc2436+bKhQBTecOo9Nity1YGqtB77t25IdVBfNCXUd3U3uE9cDPrr
+	 jwpBDSvqOYlSKtIuGa/cZiWfm1hsn9cwB0Hd4uEc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.18 178/198] x86-64: rename misleadingly named __copy_user_nocache() function
-Date: Mon, 20 Apr 2026 17:42:37 +0200
-Message-ID: <20260420153942.025975773@linuxfoundation.org>
+	Tejas Bharambe <tejas.bharambe@outlook.com>,
+	syzbot+a49010a0e8fcdeea075f@syzkaller.appspotmail.com,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Heming Zhao <heming.zhao@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 126/162] ocfs2: fix use-after-free in ocfs2_fault() when VM_FAULT_RETRY
+Date: Mon, 20 Apr 2026 17:42:38 +0200
+Message-ID: <20260420153931.605400708@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
+References: <20260420153927.006696811@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,203 +71,139 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239756-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	TAGGED_FROM(0.00)[bounces-239920-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,syzkaller.appspotmail.com,linux.alibaba.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,suse.com,linux-foundation.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable,a49010a0e8fcdeea075f];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linux-foundation.org:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 9FAE84316EF
+	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:email,fasheh.com:email,evilplan.org:email,huawei.com:email,alibaba.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,appspotmail.com:email,syzkaller.appspot.com:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux-foundation.org:email]
+X-Rspamd-Queue-Id: DC9BC43003F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Tejas Bharambe <tejas.bharambe@outlook.com>
 
-commit d187a86de793f84766ea40b9ade7ac60aabbb4fe upstream.
+commit 7de554cabf160e331e4442e2a9ad874ca9875921 upstream.
 
-This function was a masterclass in bad naming, for various historical
-reasons.
+filemap_fault() may drop the mmap_lock before returning VM_FAULT_RETRY,
+as documented in mm/filemap.c:
 
-It claimed to be a non-cached user copy.  It is literally _neither_ of
-those things.  It's a specialty memory copy routine that uses
-non-temporal stores for the destination (but not the source), and that
-does exception handling for both source and destination accesses.
+  "If our return value has VM_FAULT_RETRY set, it's because the mmap_lock
+  may be dropped before doing I/O or by lock_folio_maybe_drop_mmap()."
 
-Also note that while it works for unaligned targets, any unaligned parts
-(whether at beginning or end) will not use non-temporal stores, since
-only words and quadwords can be non-temporal on x86.
+When this happens, a concurrent munmap() can call remove_vma() and free
+the vm_area_struct via RCU. The saved 'vma' pointer in ocfs2_fault() then
+becomes a dangling pointer, and the subsequent trace_ocfs2_fault() call
+dereferences it -- a use-after-free.
 
-The exception handling means that it _can_ be used for user space
-accesses, but not on its own - it needs all the normal "start user space
-access" logic around it.
+Fix this by saving ip_blkno as a plain integer before calling
+filemap_fault(), and removing vma from the trace event. Since
+ip_blkno is copied by value before the lock can be dropped, it
+remains valid regardless of what happens to the vma or inode
+afterward.
 
-But typically the user space access would be the source, not the
-non-temporal destination.  That was the original intention of this,
-where the destination was some fragile persistent memory target that
-needed non-temporal stores in order to catch machine check exceptions
-synchronously and deal with them gracefully.
-
-Thus that non-descriptive name: one use case was to copy from user space
-into a non-cached kernel buffer.  However, the existing users are a mix
-of that intended use-case, and a couple of random drivers that just did
-this as a performance tweak.
-
-Some of those random drivers then actively misused the user copying
-version (with STAC/CLAC and all) to do kernel copies without ever even
-caring about the exception handling, _just_ for the non-temporal
-destination.
-
-Rename it as a first small step to actually make it halfway sane, and
-change the prototype to be more normal: it doesn't take a user pointer
-unless the caller has done the proper conversion, and the argument size
-is the full size_t (it still won't actually copy more than 4GB in one
-go, but there's also no reason to silently truncate the size argument in
-the caller).
-
-Finally, use this now sanely named function in the NTB code, which
-mis-used a user copy version (with STAC/CLAC and all) of this interface
-despite it not actually being a user copy at all.
-
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lkml.kernel.org/r/20260410083816.34951-1-tejas.bharambe@outlook.com
+Fixes: 614a9e849ca6 ("ocfs2: Remove FILE_IO from masklog.")
+Signed-off-by: Tejas Bharambe <tejas.bharambe@outlook.com>
+Reported-by: syzbot+a49010a0e8fcdeea075f@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=a49010a0e8fcdeea075f
+Suggested-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Heming Zhao <heming.zhao@suse.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/uaccess_64.h    |    5 +++--
- arch/x86/lib/copy_user_uncached_64.S |    6 +++---
- arch/x86/lib/usercopy_64.c           |    4 ++--
- drivers/infiniband/sw/rdmavt/qp.c    |    8 +++-----
- drivers/ntb/ntb_transport.c          |    7 ++++---
- tools/objtool/check.c                |    2 +-
- 6 files changed, 16 insertions(+), 16 deletions(-)
+ fs/ocfs2/mmap.c        |    7 +++----
+ fs/ocfs2/ocfs2_trace.h |   10 ++++------
+ 2 files changed, 7 insertions(+), 10 deletions(-)
 
---- a/arch/x86/include/asm/uaccess_64.h
-+++ b/arch/x86/include/asm/uaccess_64.h
-@@ -147,7 +147,8 @@ raw_copy_to_user(void __user *dst, const
- 	return copy_user_generic((__force void *)dst, src, size);
- }
+--- a/fs/ocfs2/mmap.c
++++ b/fs/ocfs2/mmap.c
+@@ -30,7 +30,8 @@
  
--extern long __copy_user_nocache(void *dst, const void __user *src, unsigned size);
-+#define copy_to_nontemporal copy_to_nontemporal
-+extern size_t copy_to_nontemporal(void *dst, const void *src, size_t size);
- extern long __copy_user_flushcache(void *dst, const void __user *src, unsigned size);
+ static vm_fault_t ocfs2_fault(struct vm_fault *vmf)
+ {
+-	struct vm_area_struct *vma = vmf->vma;
++	unsigned long long ip_blkno =
++		OCFS2_I(file_inode(vmf->vma->vm_file))->ip_blkno;
+ 	sigset_t oldset;
+ 	vm_fault_t ret;
  
- static inline int
-@@ -157,7 +158,7 @@ __copy_from_user_inatomic_nocache(void *
- 	long ret;
- 	kasan_check_write(dst, size);
- 	stac();
--	ret = __copy_user_nocache(dst, src, size);
-+	ret = copy_to_nontemporal(dst, (__force const void *)src, size);
- 	clac();
+@@ -38,11 +39,9 @@ static vm_fault_t ocfs2_fault(struct vm_
+ 	ret = filemap_fault(vmf);
+ 	ocfs2_unblock_signals(&oldset);
+ 
+-	trace_ocfs2_fault(OCFS2_I(vma->vm_file->f_mapping->host)->ip_blkno,
+-			  vma, vmf->page, vmf->pgoff);
++	trace_ocfs2_fault(ip_blkno, vmf->page, vmf->pgoff);
  	return ret;
  }
---- a/arch/x86/lib/copy_user_uncached_64.S
-+++ b/arch/x86/lib/copy_user_uncached_64.S
-@@ -27,7 +27,7 @@
-  * Output:
-  * rax uncopied bytes or 0 if successful.
-  */
--SYM_FUNC_START(__copy_user_nocache)
-+SYM_FUNC_START(copy_to_nontemporal)
- 	ANNOTATE_NOENDBR
- 	/* If destination is not 7-byte aligned, we'll have to align it */
- 	testb $7,%dil
-@@ -240,5 +240,5 @@ _ASM_EXTABLE_UA(95b, .Ldone)
- _ASM_EXTABLE_UA(52b, .Ldone0)
- _ASM_EXTABLE_UA(53b, .Ldone0)
- 
--SYM_FUNC_END(__copy_user_nocache)
--EXPORT_SYMBOL(__copy_user_nocache)
-+SYM_FUNC_END(copy_to_nontemporal)
-+EXPORT_SYMBOL(copy_to_nontemporal)
---- a/arch/x86/lib/usercopy_64.c
-+++ b/arch/x86/lib/usercopy_64.c
-@@ -49,11 +49,11 @@ long __copy_user_flushcache(void *dst, c
- 	long rc;
- 
- 	stac();
--	rc = __copy_user_nocache(dst, src, size);
-+	rc = copy_to_nontemporal(dst, (__force const void *)src, size);
- 	clac();
- 
- 	/*
--	 * __copy_user_nocache() uses non-temporal stores for the bulk
-+	 * copy_to_nontemporal() uses non-temporal stores for the bulk
- 	 * of the transfer, but we need to manually flush if the
- 	 * transfer is unaligned. A cached memory copy is used when
- 	 * destination or size is not naturally aligned. That is:
---- a/drivers/infiniband/sw/rdmavt/qp.c
-+++ b/drivers/infiniband/sw/rdmavt/qp.c
-@@ -92,12 +92,10 @@ static int rvt_wss_llc_size(void)
- static void cacheless_memcpy(void *dst, void *src, size_t n)
+-
+ static vm_fault_t __ocfs2_page_mkwrite(struct file *file,
+ 			struct buffer_head *di_bh, struct page *page)
  {
- 	/*
--	 * Use the only available X64 cacheless copy.  Add a __user cast
--	 * to quiet sparse.  The src agument is already in the kernel so
--	 * there are no security issues.  The extra fault recovery machinery
--	 * is not invoked.
-+	 * Use the only available X64 cacheless copy.
-+	 * The extra fault recovery machinery is not invoked.
- 	 */
--	__copy_user_nocache(dst, (void __user *)src, n);
-+	copy_to_nontemporal(dst, src, n);
- }
+--- a/fs/ocfs2/ocfs2_trace.h
++++ b/fs/ocfs2/ocfs2_trace.h
+@@ -1246,22 +1246,20 @@ TRACE_EVENT(ocfs2_write_end_inline,
  
- void rvt_wss_exit(struct rvt_dev_info *rdi)
---- a/drivers/ntb/ntb_transport.c
-+++ b/drivers/ntb/ntb_transport.c
-@@ -1810,12 +1810,13 @@ static void ntb_tx_copy_callback(void *d
+ TRACE_EVENT(ocfs2_fault,
+ 	TP_PROTO(unsigned long long ino,
+-		 void *area, void *page, unsigned long pgoff),
+-	TP_ARGS(ino, area, page, pgoff),
++		 void *page, unsigned long pgoff),
++	TP_ARGS(ino, page, pgoff),
+ 	TP_STRUCT__entry(
+ 		__field(unsigned long long, ino)
+-		__field(void *, area)
+ 		__field(void *, page)
+ 		__field(unsigned long, pgoff)
+ 	),
+ 	TP_fast_assign(
+ 		__entry->ino = ino;
+-		__entry->area = area;
+ 		__entry->page = page;
+ 		__entry->pgoff = pgoff;
+ 	),
+-	TP_printk("%llu %p %p %lu",
+-		  __entry->ino, __entry->area, __entry->page, __entry->pgoff)
++	TP_printk("%llu %p %lu",
++		  __entry->ino, __entry->page, __entry->pgoff)
+ );
  
- static void ntb_memcpy_tx(struct ntb_queue_entry *entry, void __iomem *offset)
- {
--#ifdef ARCH_HAS_NOCACHE_UACCESS
-+#ifdef copy_to_nontemporal
- 	/*
- 	 * Using non-temporal mov to improve performance on non-cached
--	 * writes, even though we aren't actually copying from user space.
-+	 * writes. This only works if __iomem is strictly memory-like,
-+	 * but that is the case on x86-64
- 	 */
--	__copy_from_user_inatomic_nocache(offset, entry->buf, entry->len);
-+	copy_to_nontemporal(offset, entry->buf, entry->len);
- #else
- 	memcpy_toio(offset, entry->buf, entry->len);
- #endif
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -1207,7 +1207,7 @@ static const char *uaccess_safe_builtin[
- 	"copy_mc_enhanced_fast_string",
- 	"rep_stos_alternative",
- 	"rep_movs_alternative",
--	"__copy_user_nocache",
-+	"copy_to_nontemporal",
- 	NULL
- };
- 
+ /* End of trace events for fs/ocfs2/mmap.c. */
 
 
 
