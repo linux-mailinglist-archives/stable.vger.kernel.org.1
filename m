@@ -1,152 +1,162 @@
-Return-Path: <stable+bounces-239977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239978-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id RdfPBK5t5ml+wQEAu9opvQ
-	(envelope-from <stable+bounces-239977-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 20:17:18 +0200
+	id yBfbOhpx5mlgwgEAu9opvQ
+	(envelope-from <stable+bounces-239978-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 20:31:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CB0A432A5C
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 20:17:17 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27E6B432E08
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 20:31:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 562273018742
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:17:16 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 956D1302D61E
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:17:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 194403ACF1E;
-	Mon, 20 Apr 2026 18:17:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 021D23ACF1C;
+	Mon, 20 Apr 2026 18:17:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cC+ZeEvU"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XIlcHmwg"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC91D3ACEFE;
-	Mon, 20 Apr 2026 18:17:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F9283ACEE0
+	for <stable@vger.kernel.org>; Mon, 20 Apr 2026 18:17:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776709034; cv=none; b=TX+smH/+DNeWllCb+J6IG94oBn6aLgw26kqjEeuxthe/CQIvIgPwhfNly3bfVje1OkVb1N4blNOrb8m2MZbIH4/WEcfUmLsnRerUephwE1l3vJenDey39yvcy+nFfER60k47G660PpCw9NtCzyCfSJCjTDbeFG27zJi/QU+h8s8=
+	t=1776709052; cv=none; b=ZpN6ZG/BniIrbNxBi7CGrOx28c+K1VwIZtqUz8IWx6UVXo6oviCh9xH2CmjOoQ6pEtX6EYc7m82PFB239J7VigFISGxzp1MMwh12cZY2Keq5+x6FfHQpsMfOOute/XvfCr3YfrSkoIyXH+uFVAGgmsaoa1JKTI9sXv0c+3TSU78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776709034; c=relaxed/simple;
-	bh=I939YAlSQyQ60aQQDOOtNxBWKwdqX4j5CIaOSRzUtfI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aZzm8ohuoLWEfPwkUBhHMe6Nps85YKh7FJvN38WkAmocWPfjB9gLInsZi21AXBntnsm4ftE2mnTaJnMR3864q4hbqXn/aolaxVwCNYUGhSf6qo061GVWIMt7mlgmSGiGqUsAOMl24rP7RuYpKRm1fxHClPPXFpQTiZveXw6aUyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cC+ZeEvU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 402D9C19425;
-	Mon, 20 Apr 2026 18:17:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776709034;
-	bh=I939YAlSQyQ60aQQDOOtNxBWKwdqX4j5CIaOSRzUtfI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=cC+ZeEvUwk6l8MoXRbdOPdL4kWcUVWbvCObzk9aQSjRzB+Efvm4hU9HkmUH12pVYg
-	 f7NGQim3SuLtHAN2n7AW9uy3/R7Jsutxc3iZcN+yTrnXll5y6sklSCyvCXBTKJeZPI
-	 I9k3jHDLDwEWKxPRqVB/4Ep6pHgjYGxFXtsS06KTMXJ2Na8ZP7wMvx4zN64zD9zcjF
-	 3LP7amUQ8ThrWqOEQOsjMbSC66jh0qBDyP/FQXPTHhZnymIU0JbM2hWOK9X1hsogvp
-	 gnIcTCKmshC9nNdRycOqmoymWcB2fkaj6OPxuCLCuQ2hTU3phGkSl1jQn2DYl6U2bp
-	 aa0qMjDcGzHyw==
-Date: Mon, 20 Apr 2026 19:17:04 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Robert Garcia <rob_garcia@163.com>
-Cc: stable@vger.kernel.org, Nuno Sa <nuno.sa@analog.com>, Jonathan Cameron
- <Jonathan.Cameron@huawei.com>, Zicheng Qu <quzicheng@huawei.com>,
- Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Daniel Junho <djunho@gmail.com>, Alexandru
- Ardelean <alexandru.ardelean@analog.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 5.15.y] iio: adc: ad7923: Fix buffer overflow for tx_buf
- and ring_xfer
-Message-ID: <20260420191704.3dce3ae8@jic23-huawei>
-In-Reply-To: <20260409065147.136824-1-rob_garcia@163.com>
-References: <20260409065147.136824-1-rob_garcia@163.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1776709052; c=relaxed/simple;
+	bh=V5EC+3U8AklyCgan+vJfwHlRkHMhPgczsTl3WMn/fDA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=L5U13qxzjS5EUEL5wqNlDrPv0+dB3tPwBu3O29nhsyFNn6vcS2ZC70+8+6LSda0BE4iFpTDlUsmL/oR5vV7mow0fZcIDxmRfT69fHGnin7a58j2ywrwnjtPuwp8/Eifr4JGDHQaQubaY4pLA55OWLVoCluEjIxEzAdw++yDy8Gg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XIlcHmwg; arc=none smtp.client-ip=209.85.222.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-8d424af6282so349848585a.0
+        for <stable@vger.kernel.org>; Mon, 20 Apr 2026 11:17:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776709049; x=1777313849; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=9lt/Z3RJdhJdXLDrfVQy86Oma13FPqwNnNxDceu5vR8=;
+        b=XIlcHmwgLmJhmyueq5P+6fOVXu5Mq93+ZT4cdaaQNL5JtFq1cFuYNja6akSPDp7Ohm
+         9uUMEyg022IbRmQaLXHfrV6P3VJ+df5Lr2YhQoQH3lxNEsE/GxrHx1RYO8PsD7iilaMu
+         IDm6uW9ODad3RGTyHtwtk8ae3jEhp1jBuwwq3Vgv57ExI/tpLDts2SJ4x+11gNHc8O+N
+         qUxmjqMYkTEJrY+al1UcK2HEKxXTL+2PaSAm3rqoDznJsIPW4hrYTmXs3qdS4sI7dm7E
+         +iUGG/RzRcTOf8RVXTOeolgAVi8eSGHVyZoFP6AK0dR2ZKHj0FJQMNO9hSn2v0SRdRXc
+         sLJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776709049; x=1777313849;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9lt/Z3RJdhJdXLDrfVQy86Oma13FPqwNnNxDceu5vR8=;
+        b=qa85xrPKQsKJbnwCbN5083kYyJ5ELhTZTJr7bMNWDUAM6gN3iY+mSxLLHrcvUK20HH
+         S4IirWQIS6Jrd5/KPjZhahQRyS7Tu12dB+pq/GcKQjCYWbbAVvAA7SD6RB80Z84ATuX+
+         2uEHKJ0KfymowO+7+QRgUV7GNJ4ccof6TpeUAhgEmzBpbHAXCU67uFRtch37oarJYdD8
+         thShRKa7H06JR8RJOtmDSsF6hTw/bp2YJlkKKR5D4F2bZkqRKkCUK9Rdtl8dAdTt0TkE
+         mG5DvErgzRFwBWlOxRNlNVI3Bi8Erl7XfhFsNVH3hSoS8YlWLqgEaAJ10mJWGzaTgBdp
+         Ru0A==
+X-Forwarded-Encrypted: i=1; AFNElJ/GmQvLxNXVQkUe+wybFEw4NR+a4WErBkfqzB0fdo0EOMCgx9s3QuidLnHpxOVyzm8BtbVLrPI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwVx0+3A9ik3EC/wD3jaMozd0nNWYgAjMQ/MwD00Sym6BnKNtR+
+	hIJuD9FsUAUohbW4/uKA98or6A/KUiLw5/2Se/Irgln29UilNr4UIZya
+X-Gm-Gg: AeBDieuSF78LEAkDO1ck2isfNmRJD2IRofj/mzBTVAkOAG9gwJSA83O7bCKQzqBPWq3
+	WcTeaWwHHRQWcbMI1YusE9lqGWt1dtP17MHRrIkuSjamLfb7NrFFuLv+0bvkTAfix1KN7ckJM8h
+	RXINdd+MztQlD0tqRc5YSe0pTk8LeVgwjrgMaXuEYX/Gg1ukjF/UtneMzdwzhOJMe2sa5CuNM4D
+	hbUK3aKIoYCj1bR5B9rENQ0B5CSLiFZ7xUg2C5FV09PDcIsr86Xq2/1ifZzUD2cIn5iU7AoRYHt
+	2rNplrAMxODZNA5qv2XIkMGWjVbqXfR/cc5dFDDx7KHd+OHGxCj8IU2bc0wFv4Z4xgrOtMrhoq6
+	jJIoowZz6Qlv2EI4bz8h8jzgzK1/jo/rBahJUpYcKd9wnA5x+WKbW2z1sjBB5TA0Zoxm2IXwurb
+	w7O1mVTCmlCD2lxn4VSHWwSAs0d6IiIEl3Qep6Af+4I6lj8lNirwHlAbvvBOSU
+X-Received: by 2002:a05:620a:4554:b0:8ee:2c17:2ff3 with SMTP id af79cd13be357-8ee2c1733c4mr44142485a.0.1776709049110;
+        Mon, 20 Apr 2026 11:17:29 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8e7d69ae320sm990989085a.20.2026.04.20.11.17.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 20 Apr 2026 11:17:28 -0700 (PDT)
+Message-ID: <7cc779f6-3cad-42fe-a8a3-fcfcea581015@gmail.com>
+Date: Mon, 20 Apr 2026 11:17:23 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 7.0 00/76] 7.0.1-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+ hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+ sr@sladewatkins.com
+References: <20260420153910.810034134@linuxfoundation.org>
+Content-Language: en-US, fr-FR
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20260420153910.810034134@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-239978-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239977-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[163.com];
-	FREEMAIL_CC(0.00)[vger.kernel.org,analog.com,huawei.com,metafoo.de,gmail.com];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[19];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jic23@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ffainelli@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[analog.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 5CB0A432A5C
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,broadcom.com:email]
+X-Rspamd-Queue-Id: 27E6B432E08
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu,  9 Apr 2026 14:51:47 +0800
-Robert Garcia <rob_garcia@163.com> wrote:
-
-> From: Nuno Sa <nuno.sa@analog.com>
+On 4/20/26 08:41, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 7.0.1 release.
+> There are 76 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> [ Upstream commit 3a4187ec454e19903fd15f6e1825a4b84e59a4cd ]
+> Responses should be made by Wed, 22 Apr 2026 15:38:50 +0000.
+> Anything received after that time might be too late.
 > 
-> The AD7923 was updated to support devices with 8 channels, but the size
-> of tx_buf and ring_xfer was not increased accordingly, leading to a
-> potential buffer overflow in ad7923_update_scan_mode().
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v7.x/stable-review/patch-7.0.1-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-7.0.y
+> and the diffstat can be found below.
 > 
-> Fixes: 851644a60d20 ("iio: adc: ad7923: Add support for the ad7908/ad7918/ad7928")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-> Signed-off-by: Zicheng Qu <quzicheng@huawei.com>
-> Link: https://patch.msgid.link/20241029134637.2261336-1-quzicheng@huawei.com
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> [ Context change fixed. ]
-> Signed-off-by: Robert Garcia <rob_garcia@163.com>
-
-If it's not picked up already, then backporting as here looks fine to me.
-Acked-by: Jonathan Cameron <jic23@kernel.org>
-
-> ---
->  drivers/iio/adc/ad7923.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+> thanks,
 > 
-> diff --git a/drivers/iio/adc/ad7923.c b/drivers/iio/adc/ad7923.c
-> index b8cc94b7dd80..a8e59fd2dcf3 100644
-> --- a/drivers/iio/adc/ad7923.c
-> +++ b/drivers/iio/adc/ad7923.c
-> @@ -47,7 +47,7 @@
->  
->  struct ad7923_state {
->  	struct spi_device		*spi;
-> -	struct spi_transfer		ring_xfer[5];
-> +	struct spi_transfer		ring_xfer[9];
->  	struct spi_transfer		scan_single_xfer[2];
->  	struct spi_message		ring_msg;
->  	struct spi_message		scan_single_msg;
-> @@ -63,7 +63,7 @@ struct ad7923_state {
->  	 * Length = 8 channels + 4 extra for 8 byte timestamp
->  	 */
->  	__be16				rx_buf[12] ____cacheline_aligned;
-> -	__be16				tx_buf[4];
-> +	__be16				tx_buf[8];
->  };
->  
->  struct ad7923_chip_info {
+> greg k-h
 
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
+
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
 
