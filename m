@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-239487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239706-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8KOHEfRk5mkKvwEAu9opvQ
-	(envelope-from <stable+bounces-239487-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:40:04 +0200
+	id oMwkFONO5mkgugEAu9opvQ
+	(envelope-from <stable+bounces-239706-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:05:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86E7F431BD1
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:40:03 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFD4942EF6F
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:05:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D7B6531D26F3
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:53:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0AC2F3017526
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:03:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91F651E633C;
-	Mon, 20 Apr 2026 15:52:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BF2634404B;
+	Mon, 20 Apr 2026 16:03:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kecjt19o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mm7B/PTt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54D432741A0;
-	Mon, 20 Apr 2026 15:52:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C65533F8BC;
+	Mon, 20 Apr 2026 16:03:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700379; cv=none; b=DV8EWE49LXzkR69PoICw8yrTYwpOV42h56oPC/hUM4Ci3CsUQv+Hg1Cm1MoXf9U2zxgRGzoAao0z6NXyPJoTZT/9tBWpVW4zx/+qk17+8cwH0iwwWPJG0Am4qWoo399z45ZVxaA2xHiAmArAErHWMW188ZVE9mOWeMQprh42WGQ=
+	t=1776701008; cv=none; b=ELeLhm7gLJvjEHkxX8qdqxtdzAwpmInf7O5gw5BSOVy2VwUuOE2HacjhupSBZZWehmGiWg3nuqFJKsYXI+PAOgEqy+DKhSK2LODYAvHZyqVFex95qdBY1xv9s9Xm2Wsd0wp2guYpxv/LYEyQcwr4Dy6JNK5F3ndN0jc9Eix/NUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700379; c=relaxed/simple;
-	bh=7mMpzfna4D/Q/trlVyipXu8fvEmMjJLoI95ljBy1qTk=;
+	s=arc-20240116; t=1776701008; c=relaxed/simple;
+	bh=f2YeIs4nMyzf3l4iH5wvxKYwC1bYUgKP/sv7ePPUEes=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JOzg6Rug3poRTgi0iRvOgKNoFEnkkm1/+1Uk831D3e56vkZUbgiyu6B/FsJWuUXBgAHWir3565hGpHQnuwoUkFrWRJ5J+QU2nAi0aouMs7JuqjhzH5ZUvW1//BPmPkSmijgerD2ILOQlmhsmlzm6ioCUHbni2h8vdQ+p3TwVGYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kecjt19o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6A58C19425;
-	Mon, 20 Apr 2026 15:52:58 +0000 (UTC)
+	 MIME-Version; b=KfSOMURENSDgQHamn0sq1L6rtSg0NkM7wIe6D9A/R+/GQ4023tEr1iM5f+17z2xe+3G2nbnJxWoZQvcisk7/kOlMEZtmR6gTlaP5Dm0WrCtUo+sl2KpuPgqBAPn5IjZ+K64ElO9gvI7h88r8oEWUduOjYGP20wpTUoN0FOEJY0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mm7B/PTt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5742C19425;
+	Mon, 20 Apr 2026 16:03:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700379;
-	bh=7mMpzfna4D/Q/trlVyipXu8fvEmMjJLoI95ljBy1qTk=;
+	s=korg; t=1776701008;
+	bh=f2YeIs4nMyzf3l4iH5wvxKYwC1bYUgKP/sv7ePPUEes=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kecjt19oyd/mH6+qThCGdLdZuucKvo5iipwGg73di8joidlIr8/+J9Z7AbBOr9KYq
-	 7e4F/WEDnB+bhqKHP7dHXfKRoPchaYIZeQF2B9oR0KR6LGRfjK5QAZHzMhl0fMv0BM
-	 E9eQHnGo+mqEoxH07uN9ci6b8e5S/d7Inke7X8Go=
+	b=Mm7B/PTtFkn8sajMt/2caqkmQ1hSuM0bWmRrcID2yqs/dblwWLjlDt5HgZgA9WseC
+	 TdX7Jrh4gXwFa6Byr3W1pkHulSu+6zpIRNlwUDX1n3Tn+H4C3kFqXOIB8ErKF/A0HS
+	 rwCvCt85bJ+QaxFKkTBeDCJt7ddC/Chqq1Auou1c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	stable <stable@kernel.org>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.19 150/220] ALSA: usx2y: us144mkii: fix NULL deref on missing interface 0
+	Alexander Koskovich <akoskovich@pm.me>,
+	Luca Weiss <luca.weiss@fairphone.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 112/198] net: ipa: fix event ring index not programmed for IPA v5.0+
 Date: Mon, 20 Apr 2026 17:41:31 +0200
-Message-ID: <20260420153939.429880355@linuxfoundation.org>
+Message-ID: <20260420153939.636821238@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
-References: <20260420153934.013228280@linuxfoundation.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +70,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +78,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239487-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-239706-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,60 +87,64 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[perex.cz:email,suse.com:email,suse.de:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 86E7F431BD1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,pm.me:email,fairphone.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: EFD4942EF6F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Alexander Koskovich <akoskovich@pm.me>
 
-commit 48bd344e1040b9f2eb512be73c13f5db83efc191 upstream.
+[ Upstream commit 56007972c0b1e783ca714d6f1f4d6e66e531d21f ]
 
-A malicious USB device with the TASCAM US-144MKII device id can have a
-configuration containing bInterfaceNumber=1 but no interface 0.  USB
-configuration descriptors are not required to assign interface numbers
-sequentially, so usb_ifnum_to_if(dev, 0) returns will NULL, which will
-then be dereferenced directly.
+For IPA v5.0+, the event ring index field moved from CH_C_CNTXT_0 to
+CH_C_CNTXT_1. The v5.0 register definition intended to define this
+field in the CH_C_CNTXT_1 fmask array but used the old identifier of
+ERINDEX instead of CH_ERINDEX.
 
-Fix this up by checking the return value properly.
+Without a valid event ring, GSI channels could never signal transfer
+completions. This caused gsi_channel_trans_quiesce() to block
+forever in wait_for_completion().
 
-Cc: Jaroslav Kysela <perex@perex.cz>
-Cc: Takashi Iwai <tiwai@suse.com>
-Fixes: dee1bcf28a3d ("ALSA: usb-audio: Add initial driver for TASCAM US-144MKII")
-Cc: stable <stable@kernel.org>
-Assisted-by: gregkh_clanker_t1000
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://patch.msgid.link/2026040955-fall-gaining-e338@gregkh
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+At least for IPA v5.2 this resolves an issue seen where runtime
+suspend, system suspend, and remoteproc stop all hanged forever. It
+also meant the IPA data path was completely non functional.
+
+Fixes: faf0678ec8a0 ("net: ipa: add IPA v5.0 GSI register definitions")
+Signed-off-by: Alexander Koskovich <akoskovich@pm.me>
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260403-milos-ipa-v1-2-01e9e4e03d3e@fairphone.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/usx2y/us144mkii.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/ipa/reg/gsi_reg-v5.0.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/usb/usx2y/us144mkii.c
-+++ b/sound/usb/usx2y/us144mkii.c
-@@ -420,7 +420,11 @@ static int tascam_probe(struct usb_inter
+diff --git a/drivers/net/ipa/reg/gsi_reg-v5.0.c b/drivers/net/ipa/reg/gsi_reg-v5.0.c
+index 3334d8e20ad28..6c4a7fbe4de94 100644
+--- a/drivers/net/ipa/reg/gsi_reg-v5.0.c
++++ b/drivers/net/ipa/reg/gsi_reg-v5.0.c
+@@ -30,7 +30,7 @@ REG_STRIDE_FIELDS(CH_C_CNTXT_0, ch_c_cntxt_0,
  
- 	/* The device has two interfaces; we drive both from this driver. */
- 	if (intf->cur_altsetting->desc.bInterfaceNumber == 1) {
--		tascam = usb_get_intfdata(usb_ifnum_to_if(dev, 0));
-+		struct usb_interface *intf_zero = usb_ifnum_to_if(dev, 0);
-+
-+		if (!intf_zero)
-+			return -ENODEV;
-+		tascam = usb_get_intfdata(intf_zero);
- 		if (tascam) {
- 			usb_set_intfdata(intf, tascam);
- 			tascam->iface1 = intf;
+ static const u32 reg_ch_c_cntxt_1_fmask[] = {
+ 	[CH_R_LENGTH]					= GENMASK(23, 0),
+-	[ERINDEX]					= GENMASK(31, 24),
++	[CH_ERINDEX]					= GENMASK(31, 24),
+ };
+ 
+ REG_STRIDE_FIELDS(CH_C_CNTXT_1, ch_c_cntxt_1,
+-- 
+2.53.0
+
 
 
 
