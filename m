@@ -1,65 +1,59 @@
-Return-Path: <stable+bounces-239521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239853-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ULK9HGhf5mkrvgEAu9opvQ
-	(envelope-from <stable+bounces-239521-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:16:24 +0200
+	id 0MNFEtxb5mmtvAEAu9opvQ
+	(envelope-from <stable+bounces-239853-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:01:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1187430E0E
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:16:23 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD4AF43061B
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:01:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AED5035CE23C
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:54:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6BBA4317133C
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:09:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 763CC2E11C7;
-	Mon, 20 Apr 2026 15:54:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F4E534107F;
+	Mon, 20 Apr 2026 16:09:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0IG+9v+k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MXUwA1pW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 305D62D77E5;
-	Mon, 20 Apr 2026 15:54:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF011336EE1;
+	Mon, 20 Apr 2026 16:09:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700466; cv=none; b=FrCXrFvIov50r+4t2nwtPNfARqSIS89cW1+IDb1holKCH4KBW6CQhccE8HdBWh2Jnf3JSJRBsmbgXdOHUDBRuJc8DatnskOhuVksf+IdB32J5VJyjRBPHzaUX6tsLLU8AiKxSUVRm6l58FpCvbQVflZqwmjd3jZxEjDf2VrHRL8=
+	t=1776701383; cv=none; b=M/8ImqM36g7m6JOg9sTAWnwgCRbtBkVnB/CTt/b3myPJAljnvQMoEhS0qzqH56HxCOQmZ7ru/7NlhxujIoBfxQlFZt2mJNwk6kDoASWYDqtljTfDbTVrog9tf9fWu0pGkt+IpjAoJDydYgtRxsk4TNKG7puGMYV0LqHKNkTJQP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700466; c=relaxed/simple;
-	bh=kmYMbWsRW2KY6zlgqYGZ5vBc9pF9EeYFhtp0RKgPSLo=;
+	s=arc-20240116; t=1776701383; c=relaxed/simple;
+	bh=IbsVS2MGydAkg0n8mdx2xqXtkRCbv4jF6Q5EwIqYKBY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JVE5CCBh5wfNEfJmjn7h0yXsu6rN4B6pi8nBuhFRHgAEMNbc0dbLAlVahbUQ8vV0oLhM5XPYUjXBqIL6YhxKKriVigATmp1a3mu2TlGrKRK1k+3YL1OtNFA5B0XFXA4Uh+Z958fCfo07V1Sgx99tQL/AyjV20MA5kaQtTEMkrtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0IG+9v+k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC268C19425;
-	Mon, 20 Apr 2026 15:54:25 +0000 (UTC)
+	 MIME-Version; b=GpAjWTE3Jh2LpGaEEwj0BczZ0ZhXAV3rUJFJTlFiN6a5I3GTgmFhJdtG9tkL3jQJcTpfR1gu/ImhsMmnMcXHi0FMibkgpLNBaVdrwDQc5gSnhvP09N1KZt53Pghuky3LIbytSJvorWLfDuUq9I0XQ3CPYqtFJmoz9x4lUQHm4kg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MXUwA1pW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CDB4C19425;
+	Mon, 20 Apr 2026 16:09:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700466;
-	bh=kmYMbWsRW2KY6zlgqYGZ5vBc9pF9EeYFhtp0RKgPSLo=;
+	s=korg; t=1776701383;
+	bh=IbsVS2MGydAkg0n8mdx2xqXtkRCbv4jF6Q5EwIqYKBY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0IG+9v+kdFJ8JnqgvIB71AjS1JfTpvMXmuQWUQGn/u5MPsthlT0NJdAlDJV2gjMNf
-	 7ZcwhS7yoM9KDY3JoosGhWSwVMcvRlzwpmLNg4uBDezhHwVsINaAtMPTJfYsttaIn1
-	 XoZnLqjj23S91Y3mmb48HRdO5WcHukLXsFLxT5BM=
+	b=MXUwA1pWVxIPuOnbCR2GFPGpGtKehWE737PMU95pdScz/TfFptrCH5hpybqzzqJ4M
+	 GMJo5+LAVKlxA7qPvFrQ9yCgbXtEmFu5eJDbPgue8sk2q+duViObykWHc+RZteIYE6
+	 M3+k8YAoTPRUngVQmHjxhnJwg/wINQi45xm9fHr8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ZhengYuan Huang <gality369@gmail.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Heming Zhao <heming.zhao@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.19 184/220] ocfs2: handle invalid dinode in ocfs2_group_extend
+	Junxi Qian <qjx1298677004@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 093/162] nfc: llcp: add missing return after LLCP_CLOSED checks
 Date: Mon, 20 Apr 2026 17:42:05 +0200
-Message-ID: <20260420153940.651813605@linuxfoundation.org>
+Message-ID: <20260420153930.404130904@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
-References: <20260420153934.013228280@linuxfoundation.org>
+In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
+References: <20260420153927.006696811@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,20 +69,20 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-239521-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.alibaba.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,suse.com,linux-foundation.org];
+	TAGGED_FROM(0.00)[bounces-239853-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
@@ -97,87 +91,58 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[alibaba.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,live.cn:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,oracle.com:email,suse.com:email,evilplan.org:email,huawei.com:email,fasheh.com:email,linux-foundation.org:email]
-X-Rspamd-Queue-Id: D1187430E0E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: AD4AF43061B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ZhengYuan Huang <gality369@gmail.com>
+From: Junxi Qian <qjx1298677004@gmail.com>
 
-commit 4a1c0ddc6e7bcf2e9db0eeaab9340dcfe97f448f upstream.
+commit 2b5dd4632966c39da6ba74dbc8689b309065e82c upstream.
 
-[BUG]
-kernel BUG at fs/ocfs2/resize.c:308!
-Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
-RIP: 0010:ocfs2_group_extend+0x10aa/0x1ae0 fs/ocfs2/resize.c:308
-Code: 8b8520ff ffff83f8 860f8580 030000e8 5cc3c1fe
-Call Trace:
- ...
- ocfs2_ioctl+0x175/0x6e0 fs/ocfs2/ioctl.c:869
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:597 [inline]
- __se_sys_ioctl fs/ioctl.c:583 [inline]
- __x64_sys_ioctl+0x197/0x1e0 fs/ioctl.c:583
- x64_sys_call+0x1144/0x26a0 arch/x86/include/generated/asm/syscalls_64.h:17
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x93/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
- ...
+In nfc_llcp_recv_hdlc() and nfc_llcp_recv_disc(), when the socket
+state is LLCP_CLOSED, the code correctly calls release_sock() and
+nfc_llcp_sock_put() but fails to return. Execution falls through to
+the remainder of the function, which calls release_sock() and
+nfc_llcp_sock_put() again. This results in a double release_sock()
+and a refcount underflow via double nfc_llcp_sock_put(), leading to
+a use-after-free.
 
-[CAUSE]
-ocfs2_group_extend() assumes that the global bitmap inode block
-returned from ocfs2_inode_lock() has already been validated and
-BUG_ONs when the signature is not a dinode. That assumption is too
-strong for crafted filesystems because the JBD2-managed buffer path
-can bypass structural validation and return an invalid dinode to the
-resize ioctl.
+Add the missing return statements after the LLCP_CLOSED branches
+in both functions to prevent the fall-through.
 
-[FIX]
-Validate the dinode explicitly in ocfs2_group_extend(). If the global
-bitmap buffer does not contain a valid dinode, report filesystem
-corruption with ocfs2_error() and fail the resize operation instead of
-crashing the kernel.
-
-Link: https://lkml.kernel.org/r/20260401092303.3709187-1-gality369@gmail.com
-Fixes: 10995aa2451a ("ocfs2: Morph the haphazard OCFS2_IS_VALID_DINODE() checks.")
-Signed-off-by: ZhengYuan Huang <gality369@gmail.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: Heming Zhao <heming.zhao@suse.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: d646960f7986 ("NFC: Initial LLCP support")
+Signed-off-by: Junxi Qian <qjx1298677004@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260408081006.3723-1-qjx1298677004@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ocfs2/resize.c |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ net/nfc/llcp_core.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/ocfs2/resize.c
-+++ b/fs/ocfs2/resize.c
-@@ -303,9 +303,13 @@ int ocfs2_group_extend(struct inode * in
+--- a/net/nfc/llcp_core.c
++++ b/net/nfc/llcp_core.c
+@@ -1089,6 +1089,7 @@ static void nfc_llcp_recv_hdlc(struct nf
+ 	if (sk->sk_state == LLCP_CLOSED) {
+ 		release_sock(sk);
+ 		nfc_llcp_sock_put(llcp_sock);
++		return;
+ 	}
  
- 	fe = (struct ocfs2_dinode *)main_bm_bh->b_data;
+ 	/* Pass the payload upstream */
+@@ -1180,6 +1181,7 @@ static void nfc_llcp_recv_disc(struct nf
+ 	if (sk->sk_state == LLCP_CLOSED) {
+ 		release_sock(sk);
+ 		nfc_llcp_sock_put(llcp_sock);
++		return;
+ 	}
  
--	/* main_bm_bh is validated by inode read inside ocfs2_inode_lock(),
--	 * so any corruption is a code bug. */
--	BUG_ON(!OCFS2_IS_VALID_DINODE(fe));
-+	/* JBD-managed buffers can bypass validation, so treat this as corruption. */
-+	if (!OCFS2_IS_VALID_DINODE(fe)) {
-+		ret = ocfs2_error(main_bm_inode->i_sb,
-+				  "Invalid dinode #%llu\n",
-+				  (unsigned long long)OCFS2_I(main_bm_inode)->ip_blkno);
-+		goto out_unlock;
-+	}
- 
- 	if (le16_to_cpu(fe->id2.i_chain.cl_cpg) !=
- 		ocfs2_group_bitmap_size(osb->sb, 0,
+ 	if (sk->sk_state == LLCP_CONNECTED) {
 
 
 
