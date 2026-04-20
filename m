@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-239617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239435-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iC3oJZhZ5mmtvAEAu9opvQ
-	(envelope-from <stable+bounces-239617-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:51:36 +0200
+	id mIJBCIJk5mkKvwEAu9opvQ
+	(envelope-from <stable+bounces-239435-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:38:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58AC34301EB
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:51:36 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87C72431A34
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:38:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D3AB53160C53
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:58:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 824CB3589EEF
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:51:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 447112FE56A;
-	Mon, 20 Apr 2026 15:58:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 341E7344057;
+	Mon, 20 Apr 2026 15:50:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u06YKQG/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VcNIrHc9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08ECE1EB5CE;
-	Mon, 20 Apr 2026 15:58:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC5B833DEFE;
+	Mon, 20 Apr 2026 15:50:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700716; cv=none; b=KGA4fXxkUHiJJWJ8s6s8Y8kDuQM0717UXmhV7E/HYSxRywiLHFbXaGQ08gwOfhi6dpV8VFsQ0Cs6mfIct91pEP22UPrt0bSIkwufemQ8+nHD5bR/+Q0h43K1WBvLOe4aJ4yNNLdncPz8yhgWbHW8dxHf4/T7Xc4p1Sz/nDBjBHE=
+	t=1776700246; cv=none; b=qo0Lc9PN+Ww+1UFbslWurTrZa6VDxtcgzPOCW38mDDz4PZP+5gtr41Lz1POLcXrSlO+2W+y2O87Ly+O5Id3fqy6Tx3l2CgIFLVaRhPSA4p5LPjo3Ksd1VBUmyIRARMlqLRkMASdt605gqZ6cSC/czIwT2peuyjTNCcA9irXf7Yc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700716; c=relaxed/simple;
-	bh=9AvG9QARWTnCwS6xYa2wF/Okf++da3kSKH85oYegS2Q=;
+	s=arc-20240116; t=1776700246; c=relaxed/simple;
+	bh=ZvJoJsZG3B2KG+3qgKG310VxldYIH+sKzGOgaCvN3o4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gRySggyNHyu8qp5LRrc7KIq6QNqg6NgWS+fanVgaVNMCCo6wsH5YoLiEEZOI+sEhFoHQx19EVmugQTJAUIQvZV+wnH/LgPa/YPboPVK+KvBiQ+/pdE/YnLsL+DQc1bPKAH6fMouO9GHR+q1VgPpSMem0a2GxmvmGH5BQCelj6ss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u06YKQG/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9505DC19425;
-	Mon, 20 Apr 2026 15:58:35 +0000 (UTC)
+	 MIME-Version; b=LFRII/BlywFNovAetqN+x0taUwdnJ4vuOC2iguwOds4WaEPAkelDpycrUV8m9wtY3XqqwtBrkr8/i2Kb2FHn0KMeSpsqVy8TmVOgdqi8pPq2y0+CQrhwwwApbGIBrsn0QfAkBW5jtlEMvvpQEK4pcSWFZkHyihyXDAXdmuwA4Xo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VcNIrHc9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8184EC2BCB4;
+	Mon, 20 Apr 2026 15:50:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700715;
-	bh=9AvG9QARWTnCwS6xYa2wF/Okf++da3kSKH85oYegS2Q=;
+	s=korg; t=1776700245;
+	bh=ZvJoJsZG3B2KG+3qgKG310VxldYIH+sKzGOgaCvN3o4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u06YKQG/w2Ak59C0UcGIyQT0hoVNyXDGd1aGIhrKk0gR3epbd5nxdJub5YIHcG8rH
-	 CzICl/x9C5RRJpz5noUa1vk03W2n3zxXNKteeE41YPmTmJMaHEkR1S0nNzzopiXoMS
-	 7XlP6Jij8RFoUoMbUy5jr8tQTbhRAocFjYvSr8hM=
+	b=VcNIrHc9++/iZkaK7r6o5anFNNEtshCQ2JMdAzME8O6LsVS9IP66PYs0nVrVE2u1E
+	 SrUONRNqU+AJ6xTujn220JyNRsYDp26yMPO9kby4sFQx05qk1TeeKrCqcrikbhqgoI
+	 QkPZjar+qXwGod/Dph7PMOi5Q3g/O8i5kfa8wOMI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Long Li <longli@microsoft.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Wei Liu <wei.liu@kernel.org>,
+	Maciej Strozek <mstrozek@opensource.cirrus.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 059/198] PCI: hv: Set default NUMA node to 0 for devices without affinity info
+Subject: [PATCH 6.19 097/220] ASoC: SOF: Intel: fix iteration in is_endpoint_present()
 Date: Mon, 20 Apr 2026 17:40:38 +0200
-Message-ID: <20260420153937.739752612@linuxfoundation.org>
+Message-ID: <20260420153937.526101543@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
+References: <20260420153934.013228280@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,87 +69,86 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,microsoft.com,outlook.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-239617-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239435-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,outlook.com:email]
-X-Rspamd-Queue-Id: 58AC34301EB
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,cirrus.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,intel.com:email]
+X-Rspamd-Queue-Id: 87C72431A34
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Long Li <longli@microsoft.com>
+From: Maciej Strozek <mstrozek@opensource.cirrus.com>
 
-[ Upstream commit 7b3b1e5a87b2f5e35c52b5386d7c327be869454f ]
+[ Upstream commit 1de6ddcddc954a69f96b1c23205e03ddd603e3c8 ]
 
-When hv_pci_assign_numa_node() processes a device that does not have
-HV_PCI_DEVICE_FLAG_NUMA_AFFINITY set or has an out-of-range
-virtual_numa_node, the device NUMA node is left unset. On x86_64,
-the uninitialized default happens to be 0, but on ARM64 it is
-NUMA_NO_NODE (-1).
+is_endpoint_present() iterates over sdca_data.num_functions, but checks
+the dai_type according to codec info list, which will cause problems if
+not all endpoints from the codec info list are present. Make sure the
+type of actually present functions is compared against target dai_type.
 
-Tests show that when no NUMA information is available from the Hyper-V
-host, devices perform best when assigned to node 0. With NUMA_NO_NODE
-the kernel may spread work across NUMA nodes, which degrades
-performance on Hyper-V, particularly for high-throughput devices like
-MANA.
-
-Always set the device NUMA node to 0 before the conditional NUMA
-affinity check, so that devices get a performant default when the host
-provides no NUMA information, and behavior is consistent on both
-x86_64 and ARM64.
-
-Fixes: 999dd956d838 ("PCI: hv: Add support for protocol 1.3 and support PCI_BUS_RELATIONS2")
-Signed-off-by: Long Li <longli@microsoft.com>
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Fixes: 5226d19d4cae ("ASoC: SOF: Intel: use sof_sdw as default SDW machine driver")
+Signed-off-by: Maciej Strozek <mstrozek@opensource.cirrus.com>
+Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Link: https://patch.msgid.link/20260402064531.2287261-3-yung-chuan.liao@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/pci-hyperv.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ sound/soc/sof/intel/hda.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/pci/controller/pci-hyperv.c b/drivers/pci/controller/pci-hyperv.c
-index 146b43981b278..28b1572974879 100644
---- a/drivers/pci/controller/pci-hyperv.c
-+++ b/drivers/pci/controller/pci-hyperv.c
-@@ -2486,6 +2486,14 @@ static void hv_pci_assign_numa_node(struct hv_pcibus_device *hbus)
- 		if (!hv_dev)
- 			continue;
+diff --git a/sound/soc/sof/intel/hda.c b/sound/soc/sof/intel/hda.c
+index 882198308319e..b039306454da2 100644
+--- a/sound/soc/sof/intel/hda.c
++++ b/sound/soc/sof/intel/hda.c
+@@ -1133,13 +1133,12 @@ static void hda_generic_machine_select(struct snd_sof_dev *sdev,
  
-+		/*
-+		 * If the Hyper-V host doesn't provide a NUMA node for the
-+		 * device, default to node 0. With NUMA_NO_NODE the kernel
-+		 * may spread work across NUMA nodes, which degrades
-+		 * performance on Hyper-V.
-+		 */
-+		set_dev_node(&dev->dev, 0);
-+
- 		if (hv_dev->desc.flags & HV_PCI_DEVICE_FLAG_NUMA_AFFINITY &&
- 		    hv_dev->desc.virtual_numa_node < num_possible_nodes())
- 			/*
+ #if IS_ENABLED(CONFIG_SND_SOC_SOF_INTEL_SOUNDWIRE)
+ 
+-static bool is_endpoint_present(struct sdw_slave *sdw_device,
+-				struct asoc_sdw_codec_info *dai_info, int dai_type)
++static bool is_endpoint_present(struct sdw_slave *sdw_device, int dai_type)
+ {
+ 	int i;
+ 
+ 	for (i = 0; i < sdw_device->sdca_data.num_functions; i++) {
+-		if (dai_type == dai_info->dais[i].dai_type)
++		if (dai_type == asoc_sdw_get_dai_type(sdw_device->sdca_data.function[i].type))
+ 			return true;
+ 	}
+ 	dev_dbg(&sdw_device->dev, "Endpoint DAI type %d not found\n", dai_type);
+@@ -1193,8 +1192,7 @@ static struct snd_soc_acpi_adr_device *find_acpi_adr_device(struct device *dev,
+ 		}
+ 		for (j = 0; j < codec_info_list[i].dai_num; j++) {
+ 			/* Check if the endpoint is present by the SDCA DisCo table */
+-			if (!is_endpoint_present(sdw_device, &codec_info_list[i],
+-						 codec_info_list[i].dais[j].dai_type))
++			if (!is_endpoint_present(sdw_device, codec_info_list[i].dais[j].dai_type))
+ 				continue;
+ 
+ 			endpoints[ep_index].num = j;
 -- 
 2.53.0
 
