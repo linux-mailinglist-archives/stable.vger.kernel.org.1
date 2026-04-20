@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-239816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239516-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MJ3zB31o5mnBvwEAu9opvQ
-	(envelope-from <stable+bounces-239816-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:55:09 +0200
+	id YM8GH4BY5mmbvAEAu9opvQ
+	(envelope-from <stable+bounces-239516-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:46:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3786432428
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:55:08 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1165742FFF5
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:46:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EF7DF33ECEAA
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:08:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E449930A11D1
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:54:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A9C733AD9A;
-	Mon, 20 Apr 2026 16:08:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7A0433A9C4;
+	Mon, 20 Apr 2026 15:54:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ld5FmDc4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yn5R2u5+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DF732DE6E3;
-	Mon, 20 Apr 2026 16:08:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78AF92FD1B3;
+	Mon, 20 Apr 2026 15:54:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701289; cv=none; b=sHLPe5flhf04j9UVNjuO1bE8fp6aJw+Wu6YKsk2MlymVgwlNSgHWLGOJjb/y83UCg5yzaUPmoX7ewZpvTqMyG5Ej7F/xD9Ab3BY0LId0A+ijuQx6buQh4gHhewaXzO65dneWE54fjD638wuOm6aktYx+YGB7Ml/lxRyr0zuOx+M=
+	t=1776700453; cv=none; b=QUorFfH3CuZKAesJejDGfSUH8rynHfTFp7pZvdre4lHHJ5rswMiPojOy62Hh1sk7ohXbZhB7ruDX895FbZciK5N1gilHQoi/EDdsaWWfMuTRlAnaDnwViyMjfC+5sZALllm4fB28kx/yZuangyAF/YIXEdHblFHoPWapBQ3DCuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701289; c=relaxed/simple;
-	bh=8JYox2SQ+GPKUYrlFVp1fOk5f2gijSI/Ot41c9/R63w=;
+	s=arc-20240116; t=1776700453; c=relaxed/simple;
+	bh=8ay/uxEsXBzSMxh121j7ohxUV4wVvZPUEmgXhSPB6mo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EXcMx8sG+o0FqtFu2I6KMUnv1sIJMjjoTbTNKvO4PJPQNM8m+XLIkjgKsvs4Mdvedqtws7qMhz+UxxV0e0rGr6tGtCPykXMhkqfvDnppUPIDWoMatNQskDY33Ylx1ZKoLlVwnDIJeDvTbtHOeXhqSeZhExFitbCFtkH1XggLjkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ld5FmDc4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8E01C19425;
-	Mon, 20 Apr 2026 16:08:08 +0000 (UTC)
+	 MIME-Version; b=Y9Roj6RCP6n6DJkHbWJmOlWM5PObtUx7100VmqgMwxUesIjK9327eSHgM/RfUj5YyhX7StbvTmrwLfJFkQdwdfvGKTNf2HLthBz2/Tt8CJK6I0DHL/lEGSMPSoIiEWRkdjxpSddzUu/lm/PRTCtm3deK/E6jDFyvkZEhKSRw9js=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yn5R2u5+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0037AC2BCB4;
+	Mon, 20 Apr 2026 15:54:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701289;
-	bh=8JYox2SQ+GPKUYrlFVp1fOk5f2gijSI/Ot41c9/R63w=;
+	s=korg; t=1776700453;
+	bh=8ay/uxEsXBzSMxh121j7ohxUV4wVvZPUEmgXhSPB6mo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ld5FmDc4631isqBdfO06Ol4dW3TPeYMO8eRdi5fXxHp2XuTRN+7Ht1DcA5fp4LWAX
-	 K5PHudJnjqCUZ2mvjnY7JJU9zsC+nbz/k0oPp9OpvlszYDZlDC24T42B+G6B477wCS
-	 dAsX2J3P9+9RUY/fiN+0x6FC+tuVnH15W1qdX8dI=
+	b=Yn5R2u5+6n4dqmz/oUdN0i6iZaeoHAYRGvpBws1tuLbWx5i+7V2N7DTf8J4wPAY+U
+	 tFAKdkAKgQzMkX2VC19saEKNotEo8IPlEpOJ6XxvGXeb3IcKVStjSSQ2GL96oPZEN+
+	 NdWGVw9VoLkQNLv9YaKSset8TyuM8y/0N224mUzo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jon Hunter <jonathanh@nvidia.com>,
 	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 056/162] net: stmmac: Fix PTP ref clock for Tegra234
+	Kees Cook <kees@kernel.org>,
+	Thierry Escande <thierry.escande@linux.intel.com>,
+	Samuel Ortiz <sameo@linux.intel.com>,
+	stable <stable@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.19 147/220] NFC: digital: Bounds check NFC-A cascade depth in SDD response handler
 Date: Mon, 20 Apr 2026 17:41:28 +0200
-Message-ID: <20260420153929.064585430@linuxfoundation.org>
+Message-ID: <20260420153939.318986797@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
-References: <20260420153927.006696811@linuxfoundation.org>
+In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
+References: <20260420153934.013228280@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +71,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +79,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239816-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-239516-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,98 +88,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,nvidia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B3786432428
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: 1165742FFF5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jon Hunter <jonathanh@nvidia.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit 1345e9f4e3f3bc7d8a0a2138ae29e205a857a555 ]
+commit 46ce8be2ced389bccd84bcc04a12cf2f4d0c22d1 upstream.
 
-Since commit 030ce919e114 ("net: stmmac: make sure that ptp_rate is not
-0 before configuring timestamping") was added the following error is
-observed on Tegra234:
+The NFC-A anti-collision cascade in digital_in_recv_sdd_res() appends 3
+or 4 bytes to target->nfcid1 on each round, but the number of cascade
+rounds is controlled entirely by the peer device.  The peer sets the
+cascade tag in the SDD_RES (deciding 3 vs 4 bytes) and the
+cascade-incomplete bit in the SEL_RES (deciding whether another round
+follows).
 
- ERR KERN tegra-mgbe 6800000.ethernet eth0: Invalid PTP clock rate
- WARNING KERN tegra-mgbe 6800000.ethernet eth0: PTP init failed
+ISO 14443-3 limits NFC-A to three cascade levels and target->nfcid1 is
+sized accordingly (NFC_NFCID1_MAXSIZE = 10), but nothing in the driver
+actually enforces this.  This means a malicious peer can keep the
+cascade running, writing past the heap-allocated nfc_target with each
+round.
 
-It turns out that the Tegra234 device-tree binding defines the PTP ref
-clock name as 'ptp-ref' and not 'ptp_ref' and the above commit now
-exposes this and that the PTP clock is not configured correctly.
+Fix this by rejecting the response when the accumulated UID would exceed
+the buffer.
 
-In order to update device-tree to use the correct 'ptp_ref' name, update
-the Tegra MGBE driver to use 'ptp_ref' by default and fallback to using
-'ptp-ref' if this clock name is present.
+Commit e329e71013c9 ("NFC: nci: Bounds check struct nfc_target arrays")
+fixed similar missing checks against the same field on the NCI path.
 
-Fixes: d8ca113724e7 ("net: stmmac: tegra: Add MGBE support")
-Signed-off-by: Jon Hunter <jonathanh@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260401102941.17466-2-jonathanh@nvidia.com
+Cc: Simon Horman <horms@kernel.org>
+Cc: Kees Cook <kees@kernel.org>
+Cc: Thierry Escande <thierry.escande@linux.intel.com>
+Cc: Samuel Ortiz <sameo@linux.intel.com>
+Fixes: 2c66daecc409 ("NFC Digital: Add NFC-A technology support")
+Cc: stable <stable@kernel.org>
+Assisted-by: gregkh_clanker_t1000
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/2026040913-figure-seducing-bd3f@gregkh
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/stmicro/stmmac/dwmac-tegra.c | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ net/nfc/digital_technology.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-tegra.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-tegra.c
-index 2996bcdea9a28..1e28ac9344771 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-tegra.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-tegra.c
-@@ -9,7 +9,7 @@
- #include "stmmac_platform.h"
+--- a/net/nfc/digital_technology.c
++++ b/net/nfc/digital_technology.c
+@@ -424,6 +424,12 @@ static void digital_in_recv_sdd_res(stru
+ 		size = 4;
+ 	}
  
- static const char *const mgbe_clks[] = {
--	"rx-pcs", "tx", "tx-pcs", "mac-divider", "mac", "mgbe", "ptp-ref", "mac"
-+	"rx-pcs", "tx", "tx-pcs", "mac-divider", "mac", "mgbe", "ptp_ref", "mac"
- };
- 
- struct tegra_mgbe {
-@@ -215,6 +215,7 @@ static int tegra_mgbe_probe(struct platform_device *pdev)
- {
- 	struct plat_stmmacenet_data *plat;
- 	struct stmmac_resources res;
-+	bool use_legacy_ptp = false;
- 	struct tegra_mgbe *mgbe;
- 	int irq, err, i;
- 	u32 value;
-@@ -257,9 +258,23 @@ static int tegra_mgbe_probe(struct platform_device *pdev)
- 	if (!mgbe->clks)
- 		return -ENOMEM;
- 
--	for (i = 0; i <  ARRAY_SIZE(mgbe_clks); i++)
-+	/* Older device-trees use 'ptp-ref' rather than 'ptp_ref'.
-+	 * Fall back when the legacy name is present.
-+	 */
-+	if (of_property_match_string(pdev->dev.of_node, "clock-names",
-+				     "ptp-ref") >= 0)
-+		use_legacy_ptp = true;
-+
-+	for (i = 0; i < ARRAY_SIZE(mgbe_clks); i++) {
- 		mgbe->clks[i].id = mgbe_clks[i];
- 
-+		if (use_legacy_ptp && !strcmp(mgbe_clks[i], "ptp_ref")) {
-+			dev_warn(mgbe->dev,
-+				 "Device-tree update needed for PTP clock!\n");
-+			mgbe->clks[i].id = "ptp-ref";
-+		}
++	if (target->nfcid1_len + size > NFC_NFCID1_MAXSIZE) {
++		PROTOCOL_ERR("4.7.2.1");
++		rc = -EPROTO;
++		goto exit;
 +	}
 +
- 	err = devm_clk_bulk_get(mgbe->dev, ARRAY_SIZE(mgbe_clks), mgbe->clks);
- 	if (err < 0)
- 		return err;
--- 
-2.53.0
-
+ 	memcpy(target->nfcid1 + target->nfcid1_len, sdd_res->nfcid1 + offset,
+ 	       size);
+ 	target->nfcid1_len += size;
 
 
 
