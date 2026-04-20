@@ -1,58 +1,70 @@
-Return-Path: <stable+bounces-239729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239337-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4J4RAStP5mkgugEAu9opvQ
-	(envelope-from <stable+bounces-239729-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:07:07 +0200
+	id MDpHHAli5mmavgEAu9opvQ
+	(envelope-from <stable+bounces-239337-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:27:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B395842F002
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:07:06 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6A0A4313DE
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:27:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2DBDF302F489
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:04:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 97EC9377E6ED
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:46:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B66433F8D6;
-	Mon, 20 Apr 2026 16:04:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED3C8334C39;
+	Mon, 20 Apr 2026 15:46:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r8euEZuB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kn1Ih9e+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C72D33F586;
-	Mon, 20 Apr 2026 16:04:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B08272D978C;
+	Mon, 20 Apr 2026 15:46:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701067; cv=none; b=ZqSokM13hoiId0XtlpFUZ7vMlweBMJdRvIPKvoM40yvQPmB4KVOZ+dVpEGWBIqLDemxrIJN9JzzUWy9CyJ0KwepZJaobQH3QgF94x1Q2cF3CwTlwNJI2BAsqNxs1GhWq4kh57QsAKRZud8ckhR8GWx8aIws2UVyFZFaWiYtKppw=
+	t=1776699988; cv=none; b=YEg0bJKEgDETSgIr2wg2hwo+FSDxPlF+im80HpiLXrM0+M2eA1vaRA+GOvY4Org3VQsh9zeOqgFzCCjukeGqU/BGs9MiFCPh7EqOBavMCXY2gvf2a/E0Vj24+BNgBP2x0LFuwqImGv2h0rC0MkjZXhBkeid8BkBdMnntO/IJJjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701067; c=relaxed/simple;
-	bh=8tDWD8hcJ2O5fEYHeeJDZw6x89gnwLXLP3wpJdFnFTU=;
+	s=arc-20240116; t=1776699988; c=relaxed/simple;
+	bh=A89L311zH7DnX1WSmLelxE1qDt69zWhKLfj/47iC81E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rrmrxh1BBlLfK6gEaSfR+kkdiPOnIfGrNLEz9iKxOTh8yAnUK+wghhmOw3khRPHFZ02642yPc7NmQWtUZqU4xHXchvRTzjP8zixuIXSCI3J+a/ATNc/9TEWkn93EVDxnNb89oJB6YfjZLnyfBFEocrGf8v/8OdCT1XHvECVOrOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r8euEZuB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A72D4C19425;
-	Mon, 20 Apr 2026 16:04:26 +0000 (UTC)
+	 MIME-Version; b=L9xBbBSAs9p7W/iHd7WlZGybDmvdNSBcfrfhYd9JIT9n2V736jK6rYax+kUF4YSAFL6AJEqMtvpeBkMoAKcHhLhqgJsPSJfx0LjVYFIYOid76KUy2dHOzhesE4jStj6WkB+FvSgO2mU9SmU+HmBHrlttfn8gYKH1zo6ST+6ASeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kn1Ih9e+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9FC6C19425;
+	Mon, 20 Apr 2026 15:46:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701067;
-	bh=8tDWD8hcJ2O5fEYHeeJDZw6x89gnwLXLP3wpJdFnFTU=;
+	s=korg; t=1776699988;
+	bh=A89L311zH7DnX1WSmLelxE1qDt69zWhKLfj/47iC81E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r8euEZuBXGp1ryk85MgdZVHyYGMT33Yirgy5llI8Kv2XMmI/g7gT+oXuvdq9ORgi0
-	 foIfqTLxG6dSdHwFPlc4vOCIfdH8+K4bQBwqV6SYYQtN3ZCE2hheibRAfEm3qhERD7
-	 cJNRZ47MZxT91lHjVX8J5jNU6+TZ4jMp3izxrilw=
+	b=kn1Ih9e+ySOM4q5eysj+tzBC89y5BntSTNjNB3WXeBF9nC28gw+Bxbswu0k9I0ak5
+	 XNaJvYiSeNtLyB1QRLb8pKqc5mJ9z+8AwI2YwUSOrgChh0rJK4yK0WStLgI1c+mQd6
+	 tmqWXwUTjN4qBC0eK3OA1lFZFYgyllORqgJ3fK1E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jethro Beekman <jethro@fortanix.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.18 168/198] KVM: SEV: Disallow LAUNCH_FINISH if vCPUs are actively being created
+	Jianhui Zhou <jianhuizzzzz@gmail.com>,
+	syzbot+f525fd79634858f478e7@syzkaller.appspotmail.com,
+	SeongJae Park <sj@kernel.org>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	Jane Chu <jane.chu@oracle.com>,
+	Andrea Arcangeli <aarcange@redhat.com>,
+	Hugh Dickins <hughd@google.com>,
+	JonasZhou <JonasZhou@zhaoxin.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Peter Xu <peterx@redhat.com>,
+	Sidhartha Kumar <sidhartha.kumar@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 7.0 76/76] mm/userfaultfd: fix hugetlb fault mutex hash calculation
 Date: Mon, 20 Apr 2026 17:42:27 +0200
-Message-ID: <20260420153941.660131323@linuxfoundation.org>
+Message-ID: <20260420153913.582050056@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+In-Reply-To: <20260420153910.810034134@linuxfoundation.org>
+References: <20260420153910.810034134@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,121 +75,122 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-239729-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	TAGGED_FROM(0.00)[bounces-239337-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,syzkaller.appspotmail.com,kernel.org,oracle.com,redhat.com,google.com,zhaoxin.com,linux.dev,suse.de,linux-foundation.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable,f525fd79634858f478e7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,fortanix.com:email]
-X-Rspamd-Queue-Id: B395842F002
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,appspotmail.com:email,linux.dev:email,linux-foundation.org:email,oracle.com:email,syzkaller.appspot.com:url,suse.de:email,zhaoxin.com:email]
+X-Rspamd-Queue-Id: D6A0A4313DE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Jianhui Zhou <jianhuizzzzz@gmail.com>
 
-commit 624bf3440d7214b62c22d698a0a294323f331d5d upstream.
+commit 0217c7fb4de4a40cee667eb21901f3204effe5ac upstream.
 
-Reject LAUNCH_FINISH for SEV-ES and SNP VMs if KVM is actively creating
-one or more vCPUs, as KVM needs to process and encrypt each vCPU's VMSA.
-Letting userspace create vCPUs while LAUNCH_FINISH is in-progress is
-"fine", at least in the current code base, as kvm_for_each_vcpu() operates
-on online_vcpus, LAUNCH_FINISH (all SEV+ sub-ioctls) holds kvm->mutex, and
-fully onlining a vCPU in kvm_vm_ioctl_create_vcpu() is done under
-kvm->mutex.  I.e. there's no difference between an in-progress vCPU and a
-vCPU that is created entirely after LAUNCH_FINISH.
+In mfill_atomic_hugetlb(), linear_page_index() is used to calculate the
+page index for hugetlb_fault_mutex_hash().  However, linear_page_index()
+returns the index in PAGE_SIZE units, while hugetlb_fault_mutex_hash()
+expects the index in huge page units.  This mismatch means that different
+addresses within the same huge page can produce different hash values,
+leading to the use of different mutexes for the same huge page.  This can
+cause races between faulting threads, which can corrupt the reservation
+map and trigger the BUG_ON in resv_map_release().
 
-However, given that concurrent LAUNCH_FINISH and vCPU creation can't
-possibly work (for any reasonable definition of "work"), since userspace
-can't guarantee whether a particular vCPU will be encrypted or not,
-disallow the combination as a hardening measure, to reduce the probability
-of introducing bugs in the future, and to avoid having to reason about the
-safety of future changes related to LAUNCH_FINISH.
+Fix this by introducing hugetlb_linear_page_index(), which returns the
+page index in huge page granularity, and using it in place of
+linear_page_index().
 
-Cc: Jethro Beekman <jethro@fortanix.com>
-Closes: https://lore.kernel.org/all/b31f7c6e-2807-4662-bcdd-eea2c1e132fa@fortanix.com
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260310234829.2608037-5-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Link: https://lkml.kernel.org/r/20260310110526.335749-1-jianhuizzzzz@gmail.com
+Fixes: a08c7193e4f1 ("mm/filemap: remove hugetlb special casing in filemap.c")
+Signed-off-by: Jianhui Zhou <jianhuizzzzz@gmail.com>
+Reported-by: syzbot+f525fd79634858f478e7@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=f525fd79634858f478e7
+Acked-by: SeongJae Park <sj@kernel.org>
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Cc: Jane Chu <jane.chu@oracle.com>
+Cc: Andrea Arcangeli <aarcange@redhat.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: JonasZhou <JonasZhou@zhaoxin.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: SeongJae Park <sj@kernel.org>
+Cc: Sidhartha Kumar <sidhartha.kumar@oracle.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/sev.c   |   10 ++++++++--
- include/linux/kvm_host.h |    7 +++++++
- 2 files changed, 15 insertions(+), 2 deletions(-)
+ include/linux/hugetlb.h |   17 +++++++++++++++++
+ mm/userfaultfd.c        |    2 +-
+ 2 files changed, 18 insertions(+), 1 deletion(-)
 
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -1019,6 +1019,9 @@ static int sev_launch_update_vmsa(struct
- 	if (!sev_es_guest(kvm))
- 		return -ENOTTY;
- 
-+	if (kvm_is_vcpu_creation_in_progress(kvm))
-+		return -EBUSY;
-+
- 	kvm_for_each_vcpu(i, vcpu, kvm) {
- 		ret = mutex_lock_killable(&vcpu->mutex);
- 		if (ret)
-@@ -2039,8 +2042,8 @@ static int sev_check_source_vcpus(struct
- 	struct kvm_vcpu *src_vcpu;
- 	unsigned long i;
- 
--	if (src->created_vcpus != atomic_read(&src->online_vcpus) ||
--	    dst->created_vcpus != atomic_read(&dst->online_vcpus))
-+	if (kvm_is_vcpu_creation_in_progress(src) ||
-+	    kvm_is_vcpu_creation_in_progress(dst))
- 		return -EBUSY;
- 
- 	if (!sev_es_guest(src))
-@@ -2446,6 +2449,9 @@ static int snp_launch_update_vmsa(struct
- 	unsigned long i;
- 	int ret;
- 
-+	if (kvm_is_vcpu_creation_in_progress(kvm))
-+		return -EBUSY;
-+
- 	data.gctx_paddr = __psp_pa(sev->snp_context);
- 	data.page_type = SNP_PAGE_TYPE_VMSA;
- 
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -1030,6 +1030,13 @@ static inline struct kvm_vcpu *kvm_get_v
- 	return NULL;
+--- a/include/linux/hugetlb.h
++++ b/include/linux/hugetlb.h
+@@ -796,6 +796,23 @@ static inline unsigned huge_page_shift(s
+ 	return h->order + PAGE_SHIFT;
  }
  
-+static inline bool kvm_is_vcpu_creation_in_progress(struct kvm *kvm)
++/**
++ * hugetlb_linear_page_index() - linear_page_index() but in hugetlb
++ *				 page size granularity.
++ * @vma: the hugetlb VMA
++ * @address: the virtual address within the VMA
++ *
++ * Return: the page offset within the mapping in huge page units.
++ */
++static inline pgoff_t hugetlb_linear_page_index(struct vm_area_struct *vma,
++		unsigned long address)
 +{
-+	lockdep_assert_held(&kvm->lock);
++	struct hstate *h = hstate_vma(vma);
 +
-+	return kvm->created_vcpus != atomic_read(&kvm->online_vcpus);
++	return ((address - vma->vm_start) >> huge_page_shift(h)) +
++		(vma->vm_pgoff >> huge_page_order(h));
 +}
 +
- void kvm_destroy_vcpus(struct kvm *kvm);
- 
- int kvm_trylock_all_vcpus(struct kvm *kvm);
+ static inline bool order_is_gigantic(unsigned int order)
+ {
+ 	return order > MAX_PAGE_ORDER;
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -573,7 +573,7 @@ retry:
+ 		 * in the case of shared pmds.  fault mutex prevents
+ 		 * races with other faulting threads.
+ 		 */
+-		idx = linear_page_index(dst_vma, dst_addr);
++		idx = hugetlb_linear_page_index(dst_vma, dst_addr);
+ 		mapping = dst_vma->vm_file->f_mapping;
+ 		hash = hugetlb_fault_mutex_hash(mapping, idx);
+ 		mutex_lock(&hugetlb_fault_mutex_table[hash]);
 
 
 
