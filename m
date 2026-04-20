@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-239314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239738-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KB35Kuth5mm6vgEAu9opvQ
-	(envelope-from <stable+bounces-239314-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:27:07 +0200
+	id CHPBE0VP5mkgugEAu9opvQ
+	(envelope-from <stable+bounces-239738-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:07:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58C4243138B
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:27:07 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECBBE42F045
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:07:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A8E9D375D3CF
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:45:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E43EB3021A28
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:04:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74D093385B6;
-	Mon, 20 Apr 2026 15:45:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BDE82DE6E3;
+	Mon, 20 Apr 2026 16:04:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ft1EWry4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ao3lTP5O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 375B73382C7;
-	Mon, 20 Apr 2026 15:45:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E44A33E373;
+	Mon, 20 Apr 2026 16:04:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776699932; cv=none; b=gB4EqYF5x3Cf1+KFqp1owOzZww3/0ZAugfAPHOYvrz0GRIG/MD6/0Gc6Rfr1STxzeyRarqEaKNE9poBTrGIu28wJjcNB/mwrGBKySHd6F1pObN8oXMpJ9grzYnD2Rd6GRc+z5jRI79Ndq7WiXQuWablfrbRW2LbRwKOBpxscTmY=
+	t=1776701090; cv=none; b=Cy4pYtJ6LrfENTuHnR2KfNEGVPWlNqJmDWLtKXTBtmYWqkxtaU8PyZI5fnThaltPSavXS8shVHcrozDmew5ZYxEu/1hi3x3VZzU9jmurtHjnqSUZ0AG3ooE6QU2LET5TfBwLDu/7bH6SK6WqLwV07MQUqhyZrcJkQoKahWiaIRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776699932; c=relaxed/simple;
-	bh=fSNeL+ioRXW45SQ6o6+vHPkyfr5V0Q/bOuvXHg5osRs=;
+	s=arc-20240116; t=1776701090; c=relaxed/simple;
+	bh=HsxjKbojB2dyscvySW+aqJT91rOoFelFKc/x8J2zJAo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uru3pRkjWZ+zJQqYmvFMufgmtLLWtiqA3459rkop530Wny4dSOr4sfrcfBJlIUrm+mGBfbidp8chWbXcWX8++BilT9n3aSIIGym++ntegMHd1uGEzfrr3AmePFjxdfyH6lRCAEcPVZm8U2m8seo34By+fnZBQXyA2riFFgvrW7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ft1EWry4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1C57C19425;
-	Mon, 20 Apr 2026 15:45:31 +0000 (UTC)
+	 MIME-Version; b=GQjz3C2Di+8NYkn1TwoaIovSubeZFfDW0XEvEI2Kp9uMlSlnC52o7C/qjQXkGLStiuiXDGDITfQ3m/iSEjs5F0REj0KLyAkqxFv5gUVqtCvZ5obVGumt9nHG8OKpj88kjEXOO0/WYj7RzL49JK6WpvUByEUKuuyPYnnkajJcvsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ao3lTP5O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C905CC19425;
+	Mon, 20 Apr 2026 16:04:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776699932;
-	bh=fSNeL+ioRXW45SQ6o6+vHPkyfr5V0Q/bOuvXHg5osRs=;
+	s=korg; t=1776701090;
+	bh=HsxjKbojB2dyscvySW+aqJT91rOoFelFKc/x8J2zJAo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ft1EWry4/h350y9WHLaT1j+AuDXW/za+v5C8iwRyJpYOs6rnKhDlg77rfLhms0j3P
-	 BlN50npi8cphKFM3gXsLsCye+3/RM1DZHSNKd02ygIp5+GC8fx16G/dQFGql6wuMe8
-	 az6RACIrkyIcPl18DWO6FTvU1ujHp4GLC4p4+l/s=
+	b=Ao3lTP5OlfbXdsA/tSQw/AbCCi2PzuNy3fgtxlkvMRzXWVTUP8IfZ4vqCjBkUYfS1
+	 I+ZvVSmVGjKcqLVzeX97TitoRSJjAI9W3VYXfqq4bUZfs7SC43Uwp91+a0sR/u1xg8
+	 kYWWatlUPiU0srhDp8NL9DijYlgXNxKQNXSgj6Do=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jethro Beekman <jethro@fortanix.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 7.0 53/76] KVM: SEV: Disallow LAUNCH_FINISH if vCPUs are actively being created
+	stable <stable@kernel.org>,
+	Alexey Charkov <alchark@flipper.net>,
+	Hans de Goede <johannes.goede@oss.qualcomm.com>,
+	Heikki Krogerus <heikki.krogrerus@linux.intel.com>
+Subject: [PATCH 6.18 145/198] usb: typec: fusb302: Switch to threaded IRQ handler
 Date: Mon, 20 Apr 2026 17:42:04 +0200
-Message-ID: <20260420153912.753071910@linuxfoundation.org>
+Message-ID: <20260420153940.829277350@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153910.810034134@linuxfoundation.org>
-References: <20260420153910.810034134@linuxfoundation.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,117 +69,72 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239738-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-239314-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,fortanix.com:email]
-X-Rspamd-Queue-Id: 58C4243138B
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,intel.com:email,flipper.net:email,qualcomm.com:email]
+X-Rspamd-Queue-Id: ECBBE42F045
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Alexey Charkov <alchark@flipper.net>
 
-commit 624bf3440d7214b62c22d698a0a294323f331d5d upstream.
+commit 6b9db53197094f38a18797495df2e3c758ec51dc upstream.
 
-Reject LAUNCH_FINISH for SEV-ES and SNP VMs if KVM is actively creating
-one or more vCPUs, as KVM needs to process and encrypt each vCPU's VMSA.
-Letting userspace create vCPUs while LAUNCH_FINISH is in-progress is
-"fine", at least in the current code base, as kvm_for_each_vcpu() operates
-on online_vcpus, LAUNCH_FINISH (all SEV+ sub-ioctls) holds kvm->mutex, and
-fully onlining a vCPU in kvm_vm_ioctl_create_vcpu() is done under
-kvm->mutex.  I.e. there's no difference between an in-progress vCPU and a
-vCPU that is created entirely after LAUNCH_FINISH.
+FUSB302 fails to probe with -EINVAL if its interrupt line is connected via
+an I2C GPIO expander, such as TI TCA6416.
 
-However, given that concurrent LAUNCH_FINISH and vCPU creation can't
-possibly work (for any reasonable definition of "work"), since userspace
-can't guarantee whether a particular vCPU will be encrypted or not,
-disallow the combination as a hardening measure, to reduce the probability
-of introducing bugs in the future, and to avoid having to reason about the
-safety of future changes related to LAUNCH_FINISH.
+Switch the interrupt handler to a threaded one, which also works behind
+such GPIO expanders.
 
-Cc: Jethro Beekman <jethro@fortanix.com>
-Closes: https://lore.kernel.org/all/b31f7c6e-2807-4662-bcdd-eea2c1e132fa@fortanix.com
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260310234829.2608037-5-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Cc: stable <stable@kernel.org>
+Fixes: 309b6341d557 ("usb: typec: fusb302: Revert incorrect threaded irq fix")
+Signed-off-by: Alexey Charkov <alchark@flipper.net>
+Reviewed-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
+Reviewed-by: Heikki Krogerus <heikki.krogrerus@linux.intel.com>
+Link: https://patch.msgid.link/20260317-fusb302-irq-v2-1-dbabd5c5c961@flipper.net
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/sev.c   |   10 ++++++++--
- include/linux/kvm_host.h |    7 +++++++
- 2 files changed, 15 insertions(+), 2 deletions(-)
+ drivers/usb/typec/tcpm/fusb302.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -1030,6 +1030,9 @@ static int sev_launch_update_vmsa(struct
- 	if (!sev_es_guest(kvm))
- 		return -ENOTTY;
+--- a/drivers/usb/typec/tcpm/fusb302.c
++++ b/drivers/usb/typec/tcpm/fusb302.c
+@@ -1755,8 +1755,9 @@ static int fusb302_probe(struct i2c_clie
+ 		goto destroy_workqueue;
+ 	}
  
-+	if (kvm_is_vcpu_creation_in_progress(kvm))
-+		return -EBUSY;
-+
- 	kvm_for_each_vcpu(i, vcpu, kvm) {
- 		ret = mutex_lock_killable(&vcpu->mutex);
- 		if (ret)
-@@ -2050,8 +2053,8 @@ static int sev_check_source_vcpus(struct
- 	struct kvm_vcpu *src_vcpu;
- 	unsigned long i;
- 
--	if (src->created_vcpus != atomic_read(&src->online_vcpus) ||
--	    dst->created_vcpus != atomic_read(&dst->online_vcpus))
-+	if (kvm_is_vcpu_creation_in_progress(src) ||
-+	    kvm_is_vcpu_creation_in_progress(dst))
- 		return -EBUSY;
- 
- 	if (!sev_es_guest(src))
-@@ -2450,6 +2453,9 @@ static int snp_launch_update_vmsa(struct
- 	unsigned long i;
- 	int ret;
- 
-+	if (kvm_is_vcpu_creation_in_progress(kvm))
-+		return -EBUSY;
-+
- 	data.gctx_paddr = __psp_pa(sev->snp_context);
- 	data.page_type = SNP_PAGE_TYPE_VMSA;
- 
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -1029,6 +1029,13 @@ static inline struct kvm_vcpu *kvm_get_v
- 	return NULL;
- }
- 
-+static inline bool kvm_is_vcpu_creation_in_progress(struct kvm *kvm)
-+{
-+	lockdep_assert_held(&kvm->lock);
-+
-+	return kvm->created_vcpus != atomic_read(&kvm->online_vcpus);
-+}
-+
- void kvm_destroy_vcpus(struct kvm *kvm);
- 
- int kvm_trylock_all_vcpus(struct kvm *kvm);
+-	ret = request_irq(chip->gpio_int_n_irq, fusb302_irq_intn,
+-			  IRQF_TRIGGER_LOW, "fsc_interrupt_int_n", chip);
++	ret = request_threaded_irq(chip->gpio_int_n_irq, NULL, fusb302_irq_intn,
++				   IRQF_ONESHOT | IRQF_TRIGGER_LOW,
++				   "fsc_interrupt_int_n", chip);
+ 	if (ret < 0) {
+ 		dev_err(dev, "cannot request IRQ for GPIO Int_N, ret=%d", ret);
+ 		goto tcpm_unregister_port;
 
 
 
