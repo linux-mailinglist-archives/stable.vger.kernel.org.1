@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-239762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239888-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CJwtLmZP5mkDuwEAu9opvQ
-	(envelope-from <stable+bounces-239762-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:08:06 +0200
+	id oFSvFURZ5mmtvAEAu9opvQ
+	(envelope-from <stable+bounces-239888-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:50:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26D4342F09B
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:08:06 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFF86430166
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:50:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 07AE83012BF0
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:05:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A634330A7279
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:11:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C6FB33EAF9;
-	Mon, 20 Apr 2026 16:05:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB83C344057;
+	Mon, 20 Apr 2026 16:11:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CrMxK2GF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G/kOdq4f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EA1D330B14;
-	Mon, 20 Apr 2026 16:05:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6273A34107F;
+	Mon, 20 Apr 2026 16:11:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701152; cv=none; b=ABK0QcPiUyu/3lXbedbU/FsfncD7Hg5/XVc6VNqna8Xsv7Zbw0nyQ+p6Dh+Cjnv7/m/OyJ0sgWIy2Q34cMCH4JcbgMh35txf803Gc0LyxT1xQBcTfmPP+sORhSt+qaTcb+oeXDlANrTkdGlt2Oriuo0NK4OC5/XnipeqtKza4sY=
+	t=1776701473; cv=none; b=Xa/cMM2oKv1j531BqsXmWqQc/wFltwTxgiAx9sS6LZNvKpvJw3BkZpQKEErpupa16VPNeQmGF96l7CiVkMjynaB/ExzDwFE0U/LP/A0dcgaMRIYAhTZw9TpSNDGGa35x1ZNYu6xhYZUpLEKLplJn55K80L1YIDU6rANWH7mZ8zk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701152; c=relaxed/simple;
-	bh=PSaOcektKws8oimU1HZ3GOw++PTd3AieO+Y+M+6RanY=;
+	s=arc-20240116; t=1776701473; c=relaxed/simple;
+	bh=n07AGA4e7G6iRNgCIwmHmxiUrpj/MKWLjJvVH1JJ/8U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XhBLEvMjc6WKwdM82N9gju4ShhJ2qkh6jDxKY9C1LmxuWQfyHOYq+4IjdWEMMqLX/E0k35qNputF6PjaCzjNT2LmB4c9RTt/zgj2J/fqyyIq6oJw5q/jqObkOaaphRjEbH1XNE2iHRG2RHUbuzJUHHulWTropXwtHpmMSR4NR2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CrMxK2GF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D34CC19425;
-	Mon, 20 Apr 2026 16:05:51 +0000 (UTC)
+	 MIME-Version; b=NOr+ZnjqpjnkwKWha5Ju0tcL1TM56OFuuaczT1QFVb5759VyZPEwdYAcRxK+rJNjP+zICG9cF96cX8+4Z2Aoo456wKr3uksO3OeZ8gjin65QiiE30JrLHIyg4/NmU2wWva37kxqTHWq4YpNrULZJCOINhxVN09fRRUu64V9tSKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G/kOdq4f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A78D6C19425;
+	Mon, 20 Apr 2026 16:11:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701151;
-	bh=PSaOcektKws8oimU1HZ3GOw++PTd3AieO+Y+M+6RanY=;
+	s=korg; t=1776701473;
+	bh=n07AGA4e7G6iRNgCIwmHmxiUrpj/MKWLjJvVH1JJ/8U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CrMxK2GFyRGKPnuj651dCcq+zpIbgfvhZF1bK0Z4td2wB3pMefQxGBbo+0+HNed0y
-	 9sIzywnBTVJMmyaF4hTD4E1ThzYATffqvKO96ppu+TRzKAkk7VK9bpt5KCjsIpuk0T
-	 HrUieT5AfsPONfvn2F6os3wlfF/c0XZPfcY08+Bk=
+	b=G/kOdq4fK4NbW4m2TO8m2fQQ47B/JG7HHGk9SeplH8hg9X2WwMiqPlpP4Qm0BlNux
+	 m3vIT1FmeQopxF9/hlImyhB+4DNGUwM8eYqgFjKQXS6GRQzbMk/k6FKkS3BlFs0N59
+	 6lVcdcN3LZFuH+UWRt4JOfiOToWCbSqM8S6qsJVA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yashu Zhang <zhangjiaji1@huawei.com>,
-	Tom Lendacky <thomas.lendacky@gmail.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.18 181/198] KVM: x86: Use scratch field in MMIO fragment to hold small write values
+	Koichiro Den <den@valinux.co.jp>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH 6.12 128/162] PCI: endpoint: pci-epf-vntb: Stop cmd_handler work in epf_ntb_epc_cleanup
 Date: Mon, 20 Apr 2026 17:42:40 +0200
-Message-ID: <20260420153942.133574474@linuxfoundation.org>
+Message-ID: <20260420153931.677955645@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
+References: <20260420153927.006696811@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,195 +64,80 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-239762-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,huawei.com,gmail.com,intel.com,google.com];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-239888-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,huawei.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,qemu.org:url,intel.com:email]
-X-Rspamd-Queue-Id: 26D4342F09B
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,valinux.co.jp:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: CFF86430166
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Koichiro Den <den@valinux.co.jp>
 
-commit 0b16e69d17d8c35c5c9d5918bf596c75a44655d3 upstream.
+commit d799984233a50abd2667a7d17a9a710a3f10ebe2 upstream.
 
-When exiting to userspace to service an emulated MMIO write, copy the
-to-be-written value to a scratch field in the MMIO fragment if the size
-of the data payload is 8 bytes or less, i.e. can fit in a single chunk,
-instead of pointing the fragment directly at the source value.
+Disable the delayed work before clearing BAR mappings and doorbells to
+avoid running the handler after resources have been torn down.
 
-This fixes a class of use-after-free bugs that occur when the emulator
-initiates a write using an on-stack, local variable as the source, the
-write splits a page boundary, *and* both pages are MMIO pages.  Because
-KVM's ABI only allows for physically contiguous MMIO requests, accesses
-that split MMIO pages are separated into two fragments, and are sent to
-userspace one at a time.  When KVM attempts to complete userspace MMIO in
-response to KVM_RUN after the first fragment, KVM will detect the second
-fragment and generate a second userspace exit, and reference the on-stack
-variable.
+  Unable to handle kernel paging request at virtual address ffff800083f46004
+  [...]
+  Internal error: Oops: 0000000096000007 [#1]  SMP
+  [...]
+  Call trace:
+   epf_ntb_cmd_handler+0x54/0x200 [pci_epf_vntb] (P)
+   process_one_work+0x154/0x3b0
+   worker_thread+0x2c8/0x400
+   kthread+0x148/0x210
+   ret_from_fork+0x10/0x20
 
-The issue is most visible if the second KVM_RUN is performed by a separate
-task, in which case the stack of the initiating task can show up as truly
-freed data.
-
-  ==================================================================
-  BUG: KASAN: use-after-free in complete_emulated_mmio+0x305/0x420
-  Read of size 1 at addr ffff888009c378d1 by task syz-executor417/984
-
-  CPU: 1 PID: 984 Comm: syz-executor417 Not tainted 5.10.0-182.0.0.95.h2627.eulerosv2r13.x86_64 #3
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.15.0-0-g2dd4b9b3f840-prebuilt.qemu.org 04/01/2014 Call Trace:
-  dump_stack+0xbe/0xfd
-  print_address_description.constprop.0+0x19/0x170
-  __kasan_report.cold+0x6c/0x84
-  kasan_report+0x3a/0x50
-  check_memory_region+0xfd/0x1f0
-  memcpy+0x20/0x60
-  complete_emulated_mmio+0x305/0x420
-  kvm_arch_vcpu_ioctl_run+0x63f/0x6d0
-  kvm_vcpu_ioctl+0x413/0xb20
-  __se_sys_ioctl+0x111/0x160
-  do_syscall_64+0x30/0x40
-  entry_SYSCALL_64_after_hwframe+0x67/0xd1
-  RIP: 0033:0x42477d
-  Code: <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
-  RSP: 002b:00007faa8e6890e8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-  RAX: ffffffffffffffda RBX: 00000000004d7338 RCX: 000000000042477d
-  RDX: 0000000000000000 RSI: 000000000000ae80 RDI: 0000000000000005
-  RBP: 00000000004d7330 R08: 00007fff28d546df R09: 0000000000000000
-  R10: 0000000000000000 R11: 0000000000000246 R12: 00000000004d733c
-  R13: 0000000000000000 R14: 000000000040a200 R15: 00007fff28d54720
-
-  The buggy address belongs to the page:
-  page:0000000029f6a428 refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x9c37
-  flags: 0xfffffc0000000(node=0|zone=1|lastcpupid=0x1fffff)
-  raw: 000fffffc0000000 0000000000000000 ffffea0000270dc8 0000000000000000
-  raw: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000 page dumped because: kasan: bad access detected
-
-  Memory state around the buggy address:
-  ffff888009c37780: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-  ffff888009c37800: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-  >ffff888009c37880: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-                                                   ^
-  ffff888009c37900: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-  ffff888009c37980: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-  ==================================================================
-
-The bug can also be reproduced with a targeted KVM-Unit-Test by hacking
-KVM to fill a large on-stack variable in complete_emulated_mmio(), i.e. by
-overwrite the data value with garbage.
-
-Limit the use of the scratch fields to 8-byte or smaller accesses, and to
-just writes, as larger accesses and reads are not affected thanks to
-implementation details in the emulator, but add a sanity check to ensure
-those details don't change in the future.  Specifically, KVM never uses
-on-stack variables for accesses larger that 8 bytes, e.g. uses an operand
-in the emulator context, and *all* reads are buffered through the mem_read
-cache.
-
-Note!  Using the scratch field for reads is not only unnecessary, it's
-also extremely difficult to handle correctly.  As above, KVM buffers all
-reads through the mem_read cache, and heavily relies on that behavior when
-re-emulating the instruction after a userspace MMIO read exit.  If a read
-splits a page, the first page is NOT an MMIO page, and the second page IS
-an MMIO page, then the MMIO fragment needs to point at _just_ the second
-chunk of the destination, i.e. its position in the mem_read cache.  Taking
-the "obvious" approach of copying the fragment value into the destination
-when re-emulating the instruction would clobber the first chunk of the
-destination, i.e. would clobber the data that was read from guest memory.
-
-Fixes: f78146b0f923 ("KVM: Fix page-crossing MMIO")
-Suggested-by: Yashu Zhang <zhangjiaji1@huawei.com>
-Reported-by: Yashu Zhang <zhangjiaji1@huawei.com>
-Closes: https://lore.kernel.org/all/369eaaa2b3c1425c85e8477066391bc7@huawei.com
+Fixes: e35f56bb0330 ("PCI: endpoint: Support NTB transfer between RC and EP")
+Signed-off-by: Koichiro Den <den@valinux.co.jp>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 Cc: stable@vger.kernel.org
-Tested-by: Tom Lendacky <thomas.lendacky@gmail.com>
-Tested-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Link: https://patch.msgid.link/20260225012049.920665-2-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Link: https://patch.msgid.link/20260226084142.2226875-4-den@valinux.co.jp
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/x86.c       |   14 +++++++++++++-
- include/linux/kvm_host.h |    3 ++-
- 2 files changed, 15 insertions(+), 2 deletions(-)
+ drivers/pci/endpoint/functions/pci-epf-vntb.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -8236,7 +8236,13 @@ static int emulator_read_write_onepage(u
- 	WARN_ON(vcpu->mmio_nr_fragments >= KVM_MAX_MMIO_FRAGMENTS);
- 	frag = &vcpu->mmio_fragments[vcpu->mmio_nr_fragments++];
- 	frag->gpa = gpa;
--	frag->data = val;
-+	if (write && bytes <= 8u) {
-+		frag->val = 0;
-+		frag->data = &frag->val;
-+		memcpy(&frag->val, val, bytes);
-+	} else {
-+		frag->data = val;
-+	}
- 	frag->len = bytes;
- 	return X86EMUL_CONTINUE;
- }
-@@ -8251,6 +8257,9 @@ static int emulator_read_write(struct x8
- 	gpa_t gpa;
- 	int rc;
- 
-+	if (WARN_ON_ONCE((bytes > 8u || !ops->write) && object_is_on_stack(val)))
-+		return X86EMUL_UNHANDLEABLE;
-+
- 	if (ops->read_write_prepare &&
- 		  ops->read_write_prepare(vcpu, val, bytes))
- 		return X86EMUL_CONTINUE;
-@@ -11823,6 +11832,9 @@ static int complete_emulated_mmio(struct
- 		frag++;
- 		vcpu->mmio_cur_fragment++;
- 	} else {
-+		if (WARN_ON_ONCE(frag->data == &frag->val))
-+			return -EIO;
-+
- 		/* Go forward to the next mmio piece. */
- 		frag->data += len;
- 		frag->gpa += len;
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -320,7 +320,8 @@ static inline bool kvm_vcpu_can_poll(kti
- struct kvm_mmio_fragment {
- 	gpa_t gpa;
- 	void *data;
--	unsigned len;
-+	u64 val;
-+	unsigned int len;
- };
- 
- struct kvm_vcpu {
+--- a/drivers/pci/endpoint/functions/pci-epf-vntb.c
++++ b/drivers/pci/endpoint/functions/pci-epf-vntb.c
+@@ -799,6 +799,7 @@ err_config_interrupt:
+  */
+ static void epf_ntb_epc_cleanup(struct epf_ntb *ntb)
+ {
++	disable_delayed_work_sync(&ntb->cmd_handler);
+ 	epf_ntb_mw_bar_clear(ntb, ntb->num_mws);
+ 	epf_ntb_db_bar_clear(ntb);
+ 	epf_ntb_config_sspad_bar_clear(ntb);
 
 
 
