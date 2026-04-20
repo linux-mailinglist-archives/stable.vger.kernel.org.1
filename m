@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-239619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239620-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mEXhMVdi5mmavgEAu9opvQ
-	(envelope-from <stable+bounces-239619-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:28:55 +0200
+	id uA2OC2Bm5mlmvwEAu9opvQ
+	(envelope-from <stable+bounces-239620-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:46:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4B9D431436
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:28:54 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A25744320C4
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:46:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9595A30193BE
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:58:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8D0EE32F15AF
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:58:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4A5D329E44;
-	Mon, 20 Apr 2026 15:58:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED19117A31C;
+	Mon, 20 Apr 2026 15:58:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v/trmtu2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="INPGiFFP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65B952E2665;
-	Mon, 20 Apr 2026 15:58:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B01D71EB5CE;
+	Mon, 20 Apr 2026 15:58:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700721; cv=none; b=HvWAFOqCOZQ/B36rdK93cXC9AY7+bKhY9r3RX9Qf6mMbRYcLSQztWl7bBrHiy+KOcpA1jS9VRN1R3VSXz8PFUUv8708K2UFIFj7qaDa/Biwm5Bvjufb+5yiaqLH/dpi3FDofyHANAiAlLQrofbn3BxRHdbUiBLIX1WTFKptVLA4=
+	t=1776700723; cv=none; b=m0V6mO0g83VlSicoVSCJM+UDiHJEqh6Kn0ds4jzv12p5dM2wZBtH4Hs0H1aYCH10b9ykI8XIrdUMe6jt5jLUxGEpgORyvrAh0g5UTJ1E3XVxPHoJRX9S+Qj4eJD5JMnYNUWe3bxYFgrDiw2c82MoRG0J60X0Xx3dFtyH5AEwsRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700721; c=relaxed/simple;
-	bh=OrAXAOFHteKUOEVPdzKBzmGI9rJ7XxzC2lwgFIPuClw=;
+	s=arc-20240116; t=1776700723; c=relaxed/simple;
+	bh=p4KSzn6QUlTMCRFiwz5LWWdJmcBpGGW2yv+UTorWbh0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UVdhigM/1uUTQUcV6ytjDdxNrOwv1osuT0IjtIk+iUm6Cw8bGnuBKgv09KxlmrnRNy7fPq6sxJusOXy330O3ClHpqAmE51ZaPdx8vDrYWrfXJXtFxaFcpJlD0chrU+m+vOp2WFGZdBmL+JYIgrh5GvEBhYqSkZ2fAZ2tUT3vfqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v/trmtu2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2E8DC19425;
-	Mon, 20 Apr 2026 15:58:40 +0000 (UTC)
+	 MIME-Version; b=NdCYxvE6MBKTXEk6LerUEj1hRkaqfzcp3owBIP2ne7597F5kmh2Q7rCjvnRm1R8x0UfZnUmmmd7RP+AyR/+EQn/z7iqt7dAni/ZfAOt1icgEOtjIQoY7pPxkEK7j9Y8Nuown+caE7A+qL9OlU7wOeWw0vzZXYTEn73SMYbrtVNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=INPGiFFP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 476B1C19425;
+	Mon, 20 Apr 2026 15:58:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700721;
-	bh=OrAXAOFHteKUOEVPdzKBzmGI9rJ7XxzC2lwgFIPuClw=;
+	s=korg; t=1776700723;
+	bh=p4KSzn6QUlTMCRFiwz5LWWdJmcBpGGW2yv+UTorWbh0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v/trmtu2KbP3HFjtnR7Kbcw5ESYhTu+Jqn89sO0QYalYaT1i8g5hu0nsg8g8KGHxJ
-	 O7AfXVpZSF5sDbVNnpr2DrwpbQhzK0X9mWhydCmlcC4QsW2gtXyVOAL+RwePPv79nX
-	 Kyp9VDjZnfxywF0CtTWfWI3lpkKWIYQ2v5frtWhM=
+	b=INPGiFFPLBp1jkv6DgxJJqan+ufN6RVbof2Yz89QCujOIFC2kPNVoxnnC0ybaO1fL
+	 3SVorbchbR+dsZ3XbhMvYZHrgy27ZJoJBsBnjV2saX8G2fqPtiKYjEUDf57uMd4BKo
+	 LgM3hZklUVQDmzAiyWg9ix01MLpNB8iZ0kv61Ncg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Keenan Dong <keenanat2000@gmail.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
+	Petr Tesarik <ptesarik@suse.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 061/198] xfrm: account XFRMA_IF_ID in aevent size calculation
-Date: Mon, 20 Apr 2026 17:40:40 +0200
-Message-ID: <20260420153937.810783451@linuxfoundation.org>
+Subject: [PATCH 6.18 062/198] dma-mapping: add DMA_ATTR_CPU_CACHE_CLEAN
+Date: Mon, 20 Apr 2026 17:40:41 +0200
+Message-ID: <20260420153937.846481869@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
 References: <20260420153935.605963767@linuxfoundation.org>
@@ -66,33 +67,32 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-239619-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,secunet.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239620-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: E4B9D431436
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[samsung.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email]
+X-Rspamd-Queue-Id: A25744320C4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,59 +100,63 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Keenan Dong <keenanat2000@gmail.com>
+From: Michael S. Tsirkin <mst@redhat.com>
 
-[ Upstream commit 7081d46d32312f1a31f0e0e99c6835a394037599 ]
+[ Upstream commit 61868dc55a119a5e4b912d458fc2c48ba80a35fe ]
 
-xfrm_get_ae() allocates the reply skb with xfrm_aevent_msgsize(), then
-build_aevent() appends attributes including XFRMA_IF_ID when x->if_id is
-set.
+When multiple small DMA_FROM_DEVICE or DMA_BIDIRECTIONAL buffers share a
+cacheline, and DMA_API_DEBUG is enabled, we get this warning:
+	cacheline tracking EEXIST, overlapping mappings aren't supported.
 
-xfrm_aevent_msgsize() does not include space for XFRMA_IF_ID. For states
-with if_id, build_aevent() can fail with -EMSGSIZE and hit BUG_ON(err < 0)
-in xfrm_get_ae(), turning a malformed netlink interaction into a kernel
-panic.
+This is because when one of the mappings is removed, while another one
+is active, CPU might write into the buffer.
 
-Account XFRMA_IF_ID in the size calculation unconditionally and replace
-the BUG_ON with normal error unwinding.
+Add an attribute for the driver to promise not to do this, making the
+overlapping safe, and suppressing the warning.
 
-Fixes: 7e6526404ade ("xfrm: Add a new lookup key to match xfrm interfaces.")
-Reported-by: Keenan Dong <keenanat2000@gmail.com>
-Signed-off-by: Keenan Dong <keenanat2000@gmail.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Message-ID: <2d5d091f9d84b68ea96abd545b365dd1d00bbf48.1767601130.git.mst@redhat.com>
+Reviewed-by: Petr Tesarik <ptesarik@suse.com>
+Acked-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Stable-dep-of: 3d48c9fd78dd ("dma-debug: suppress cacheline overlap warning when arch has no DMA alignment requirement")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/xfrm/xfrm_user.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ include/linux/dma-mapping.h | 7 +++++++
+ kernel/dma/debug.c          | 3 ++-
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
-index 306e4f65ce264..1ddcf2a1eff7a 100644
---- a/net/xfrm/xfrm_user.c
-+++ b/net/xfrm/xfrm_user.c
-@@ -2668,7 +2668,8 @@ static inline unsigned int xfrm_aevent_msgsize(struct xfrm_state *x)
- 	       + nla_total_size(4) /* XFRM_AE_RTHR */
- 	       + nla_total_size(4) /* XFRM_AE_ETHR */
- 	       + nla_total_size(sizeof(x->dir)) /* XFRMA_SA_DIR */
--	       + nla_total_size(4); /* XFRMA_SA_PCPU */
-+	       + nla_total_size(4) /* XFRMA_SA_PCPU */
-+	       + nla_total_size(sizeof(x->if_id)); /* XFRMA_IF_ID */
- }
+diff --git a/include/linux/dma-mapping.h b/include/linux/dma-mapping.h
+index 190eab9f5e8c2..3e63046b899bc 100644
+--- a/include/linux/dma-mapping.h
++++ b/include/linux/dma-mapping.h
+@@ -78,6 +78,13 @@
+  */
+ #define DMA_ATTR_MMIO		(1UL << 10)
  
- static int build_aevent(struct sk_buff *skb, struct xfrm_state *x, const struct km_event *c)
-@@ -2780,7 +2781,12 @@ static int xfrm_get_ae(struct sk_buff *skb, struct nlmsghdr *nlh,
- 	c.portid = nlh->nlmsg_pid;
- 
- 	err = build_aevent(r_skb, x, &c);
--	BUG_ON(err < 0);
-+	if (err < 0) {
-+		spin_unlock_bh(&x->lock);
-+		xfrm_state_put(x);
-+		kfree_skb(r_skb);
-+		return err;
-+	}
- 
- 	err = nlmsg_unicast(net->xfrm.nlsk, r_skb, NETLINK_CB(skb).portid);
- 	spin_unlock_bh(&x->lock);
++/*
++ * DMA_ATTR_CPU_CACHE_CLEAN: Indicates the CPU will not dirty any cacheline
++ * overlapping this buffer while it is mapped for DMA. All mappings sharing
++ * a cacheline must have this attribute for this to be considered safe.
++ */
++#define DMA_ATTR_CPU_CACHE_CLEAN	(1UL << 11)
++
+ /*
+  * A dma_addr_t can hold any valid DMA or bus address for the platform.  It can
+  * be given to a device to use as a DMA source or target.  It is specific to a
+diff --git a/kernel/dma/debug.c b/kernel/dma/debug.c
+index 138ede653de40..7e66d863d573f 100644
+--- a/kernel/dma/debug.c
++++ b/kernel/dma/debug.c
+@@ -595,7 +595,8 @@ static void add_dma_entry(struct dma_debug_entry *entry, unsigned long attrs)
+ 	if (rc == -ENOMEM) {
+ 		pr_err_once("cacheline tracking ENOMEM, dma-debug disabled\n");
+ 		global_disable = true;
+-	} else if (rc == -EEXIST && !(attrs & DMA_ATTR_SKIP_CPU_SYNC) &&
++	} else if (rc == -EEXIST &&
++		   !(attrs & (DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_CPU_CACHE_CLEAN)) &&
+ 		   !(IS_ENABLED(CONFIG_DMA_BOUNCE_UNALIGNED_KMALLOC) &&
+ 		     is_swiotlb_active(entry->dev))) {
+ 		err_printk(entry->dev, entry,
 -- 
 2.53.0
 
