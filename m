@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-239834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239323-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EHQjOr1o5mkNwAEAu9opvQ
-	(envelope-from <stable+bounces-239834-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:56:13 +0200
+	id kK49GrhW5mkDuwEAu9opvQ
+	(envelope-from <stable+bounces-239323-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:39:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E3724324BC
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:56:13 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C08342FC6F
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:39:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 043DE31868FD
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:08:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C05783261115
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:45:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BEAC2DF719;
-	Mon, 20 Apr 2026 16:08:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC2E13368B2;
+	Mon, 20 Apr 2026 15:45:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i9yjGsOI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kc7DhykJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4859A3321AA;
-	Mon, 20 Apr 2026 16:08:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ECB622541C;
+	Mon, 20 Apr 2026 15:45:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701335; cv=none; b=F0EtnNunkbKGXstqcrENL0BpRZtRbVdVtiKx1ggHQOVqj+QsA+CQG2wpTxAMPeAG7rYZqxJBl6rrwfdt96lzSwN0gYgy15edSHH7TrEzV2/09pbKFD18lsyyQFaCCdaa3t/PH+BVhx5/OE/8MvMbBf+5wOjb3qMbCLIynZhNH9g=
+	t=1776699952; cv=none; b=FWOzd3c/AmFr61YJ4Ys6Mf+iaBDgSCrjCDBFAsIUugRgQeZ4D1FA+oJew4KYOhyYMM/QQy39lgce84eFddoLxLDYoQZpx2/x44fyv+HYTttqHjcY4mbncP+dAQKb7l691i5ZrCOs6ViSQoCthqavyTxsfQ6I4pQ5BU+ttR2ZdDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701335; c=relaxed/simple;
-	bh=F0m21hXlDQl0pkxavpBWb8gWZ88MzJvcMXUkHY1+MOQ=;
+	s=arc-20240116; t=1776699952; c=relaxed/simple;
+	bh=5d8j5NrSLw+mGoqbx+TJqv8ObrVcz0k7yK0HmkmEGcE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MESBF2dE1sNlnTbJhSaV7gIB6R9oqNkBLO8E5Nm4tSwWDg2eBubf3EnV9siUD9W1pDWeUJSMqCRoGfDvR9Q++gruzBimfATtvteM/L5YYeAmoZ3zy1ORJaDwvV/8Imj7zlwuezrvhatZlJLMBNAw3SaE+NfsYwg7D34qDfxUu0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i9yjGsOI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D400EC19425;
-	Mon, 20 Apr 2026 16:08:54 +0000 (UTC)
+	 MIME-Version; b=ct/JjSZCC9fwayNtFD7RN4kmLaQ1ygwe4jEi0KqF28U+fWiaGqsVqil2JszGCfgw5OkJZUtzojFxqWXdK1cpOpMFDYjvCHDnZn8xg68pBUHNpwXLGryVc87alrAur6HcTbi4VcxlUSVjARkbs8jgWkdrCkSUAdLr1Ewcc6EFjZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kc7DhykJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35826C19425;
+	Mon, 20 Apr 2026 15:45:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701335;
-	bh=F0m21hXlDQl0pkxavpBWb8gWZ88MzJvcMXUkHY1+MOQ=;
+	s=korg; t=1776699952;
+	bh=5d8j5NrSLw+mGoqbx+TJqv8ObrVcz0k7yK0HmkmEGcE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i9yjGsOINc/USyBSCmNY8biM0Qn0BE9UU8Qlx3uNF+ddHjX6+BHrSiL7KgtlEa21R
-	 eccAH3AL5/xFIPopQ+AX24c2c+n3gSxGoShhZgE3i5Q65KQDHuBPZqfX2ryoDT5OY0
-	 cbsWo16jzy7TkxDE+aG+WiXUflLYH+8DutIHG1u0=
+	b=kc7DhykJyWZPm6poicgwZTY3P95qPdCLHmS1R+GbvhgeT1/ajcSyjZC07ub5Oy48O
+	 HEffAZzObW8OXZyTlYRw4Iou82Gs5necjCQenGnsXrarXMcKzJlO2l3m+SJlZ77Qri
+	 +TJU8wDAnPSuoGplQd9ZxZNZB9ho4qkN3y5AcbFc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Scott Mitchell <scott.k.mitch1@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 073/162] netfilter: nfnetlink_queue: nfqnl_instance GFP_ATOMIC -> GFP_KERNEL_ACCOUNT allocation
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Johan Hovold <johan@kernel.org>,
+	Ping-Ke Shih <pkshih@realtek.com>
+Subject: [PATCH 7.0 34/76] wifi: rtw88: fix device leak on probe failure
 Date: Mon, 20 Apr 2026 17:41:45 +0200
-Message-ID: <20260420153929.680967589@linuxfoundation.org>
+Message-ID: <20260420153912.063125050@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
-References: <20260420153927.006696811@linuxfoundation.org>
+In-Reply-To: <20260420153910.810034134@linuxfoundation.org>
+References: <20260420153910.810034134@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,213 +64,90 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239834-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,strlen.de,gmail.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-239323-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,strlen.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 8E3724324BC
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,pengutronix.de:email,realtek.com:email]
+X-Rspamd-Queue-Id: 5C08342FC6F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Scott Mitchell <scott.k.mitch1@gmail.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit a4400a5b343d1bc4aa8f685608515413238e7ee2 ]
+commit bbb15e71156cd9f5e1869eee7207a06ea8e96c39 upstream.
 
-Currently, instance_create() uses GFP_ATOMIC because it's called while
-holding instances_lock spinlock. This makes allocation more likely to
-fail under memory pressure.
+Driver core holds a reference to the USB interface and its parent USB
+device while the interface is bound to a driver and there is no need to
+take additional references unless the structures are needed after
+disconnect.
 
-Refactor nfqnl_recv_config() to drop RCU lock after instance_lookup()
-and peer_portid verification. A socket cannot simultaneously send a
-message and close, so the queue owned by the sending socket cannot be
-destroyed while processing its CONFIG message. This allows
-instance_create() to allocate with GFP_KERNEL_ACCOUNT before taking
-the spinlock.
+This driver takes a reference to the USB device during probe but does
+not to release it on all probe errors (e.g. when descriptor parsing
+fails).
 
-Suggested-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Scott Mitchell <scott.k.mitch1@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Stable-dep-of: 936206e3f6ff ("netfilter: nfnetlink_queue: make hash table per queue")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Drop the redundant device reference to fix the leak, reduce cargo
+culting, make it easier to spot drivers where an extra reference is
+needed, and reduce the risk of further memory leaks.
+
+Fixes: a82dfd33d123 ("wifi: rtw88: Add common USB chip support")
+Reported-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/netdev/2026022319-turbofan-darkened-206d@gregkh/
+Cc: stable@vger.kernel.org	# 6.2
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20260306085144.12064-19-johan@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nfnetlink_queue.c | 75 +++++++++++++++------------------
- 1 file changed, 34 insertions(+), 41 deletions(-)
+ drivers/net/wireless/realtek/rtw88/usb.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nfnetlink_queue.c b/net/netfilter/nfnetlink_queue.c
-index df0232cf24ce2..5ab750556e992 100644
---- a/net/netfilter/nfnetlink_queue.c
-+++ b/net/netfilter/nfnetlink_queue.c
-@@ -178,17 +178,9 @@ instance_create(struct nfnl_queue_net *q, u_int16_t queue_num, u32 portid)
- 	unsigned int h;
- 	int err;
+--- a/drivers/net/wireless/realtek/rtw88/usb.c
++++ b/drivers/net/wireless/realtek/rtw88/usb.c
+@@ -1041,7 +1041,7 @@ static int rtw_usb_intf_init(struct rtw_
+ 			     struct usb_interface *intf)
+ {
+ 	struct rtw_usb *rtwusb = rtw_get_usb_priv(rtwdev);
+-	struct usb_device *udev = usb_get_dev(interface_to_usbdev(intf));
++	struct usb_device *udev = interface_to_usbdev(intf);
+ 	int ret;
  
--	spin_lock(&q->instances_lock);
--	if (instance_lookup(q, queue_num)) {
--		err = -EEXIST;
--		goto out_unlock;
--	}
--
--	inst = kzalloc(sizeof(*inst), GFP_ATOMIC);
--	if (!inst) {
--		err = -ENOMEM;
--		goto out_unlock;
--	}
-+	inst = kzalloc(sizeof(*inst), GFP_KERNEL_ACCOUNT);
-+	if (!inst)
-+		return ERR_PTR(-ENOMEM);
+ 	rtwusb->udev = udev;
+@@ -1067,7 +1067,6 @@ static void rtw_usb_intf_deinit(struct r
+ {
+ 	struct rtw_usb *rtwusb = rtw_get_usb_priv(rtwdev);
  
- 	inst->queue_num = queue_num;
- 	inst->peer_portid = portid;
-@@ -198,9 +190,15 @@ instance_create(struct nfnl_queue_net *q, u_int16_t queue_num, u32 portid)
- 	spin_lock_init(&inst->lock);
- 	INIT_LIST_HEAD(&inst->queue_list);
- 
-+	spin_lock(&q->instances_lock);
-+	if (instance_lookup(q, queue_num)) {
-+		err = -EEXIST;
-+		goto out_unlock;
-+	}
-+
- 	if (!try_module_get(THIS_MODULE)) {
- 		err = -EAGAIN;
--		goto out_free;
-+		goto out_unlock;
- 	}
- 
- 	h = instance_hashfn(queue_num);
-@@ -210,10 +208,9 @@ instance_create(struct nfnl_queue_net *q, u_int16_t queue_num, u32 portid)
- 
- 	return inst;
- 
--out_free:
--	kfree(inst);
- out_unlock:
- 	spin_unlock(&q->instances_lock);
-+	kfree(inst);
- 	return ERR_PTR(err);
+-	usb_put_dev(rtwusb->udev);
+ 	kfree(rtwusb->usb_data);
+ 	usb_set_intfdata(intf, NULL);
  }
- 
-@@ -1602,7 +1599,8 @@ static int nfqnl_recv_config(struct sk_buff *skb, const struct nfnl_info *info,
- 	struct nfqnl_msg_config_cmd *cmd = NULL;
- 	struct nfqnl_instance *queue;
- 	__u32 flags = 0, mask = 0;
--	int ret = 0;
-+
-+	WARN_ON_ONCE(!lockdep_nfnl_is_held(NFNL_SUBSYS_QUEUE));
- 
- 	if (nfqa[NFQA_CFG_CMD]) {
- 		cmd = nla_data(nfqa[NFQA_CFG_CMD]);
-@@ -1648,47 +1646,44 @@ static int nfqnl_recv_config(struct sk_buff *skb, const struct nfnl_info *info,
- 		}
- 	}
- 
-+	/* Lookup queue under RCU. After peer_portid check (or for new queue
-+	 * in BIND case), the queue is owned by the socket sending this message.
-+	 * A socket cannot simultaneously send a message and close, so while
-+	 * processing this CONFIG message, nfqnl_rcv_nl_event() (triggered by
-+	 * socket close) cannot destroy this queue. Safe to use without RCU.
-+	 */
- 	rcu_read_lock();
- 	queue = instance_lookup(q, queue_num);
- 	if (queue && queue->peer_portid != NETLINK_CB(skb).portid) {
--		ret = -EPERM;
--		goto err_out_unlock;
-+		rcu_read_unlock();
-+		return -EPERM;
- 	}
-+	rcu_read_unlock();
- 
- 	if (cmd != NULL) {
- 		switch (cmd->command) {
- 		case NFQNL_CFG_CMD_BIND:
--			if (queue) {
--				ret = -EBUSY;
--				goto err_out_unlock;
--			}
--			queue = instance_create(q, queue_num,
--						NETLINK_CB(skb).portid);
--			if (IS_ERR(queue)) {
--				ret = PTR_ERR(queue);
--				goto err_out_unlock;
--			}
-+			if (queue)
-+				return -EBUSY;
-+			queue = instance_create(q, queue_num, NETLINK_CB(skb).portid);
-+			if (IS_ERR(queue))
-+				return PTR_ERR(queue);
- 			break;
- 		case NFQNL_CFG_CMD_UNBIND:
--			if (!queue) {
--				ret = -ENODEV;
--				goto err_out_unlock;
--			}
-+			if (!queue)
-+				return -ENODEV;
- 			instance_destroy(q, queue);
--			goto err_out_unlock;
-+			return 0;
- 		case NFQNL_CFG_CMD_PF_BIND:
- 		case NFQNL_CFG_CMD_PF_UNBIND:
- 			break;
- 		default:
--			ret = -ENOTSUPP;
--			goto err_out_unlock;
-+			return -EOPNOTSUPP;
- 		}
- 	}
- 
--	if (!queue) {
--		ret = -ENODEV;
--		goto err_out_unlock;
--	}
-+	if (!queue)
-+		return -ENODEV;
- 
- 	if (nfqa[NFQA_CFG_PARAMS]) {
- 		struct nfqnl_msg_config_params *params =
-@@ -1713,9 +1708,7 @@ static int nfqnl_recv_config(struct sk_buff *skb, const struct nfnl_info *info,
- 		spin_unlock_bh(&queue->lock);
- 	}
- 
--err_out_unlock:
--	rcu_read_unlock();
--	return ret;
-+	return 0;
- }
- 
- static const struct nfnl_callback nfqnl_cb[NFQNL_MSG_MAX] = {
--- 
-2.53.0
-
 
 
 
