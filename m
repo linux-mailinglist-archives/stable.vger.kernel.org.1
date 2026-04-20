@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-239459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239641-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gCqKL/xX5mlQvAEAu9opvQ
-	(envelope-from <stable+bounces-239459-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:44:44 +0200
+	id sOaZLppm5mmJvwEAu9opvQ
+	(envelope-from <stable+bounces-239641-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:47:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71F8C42FF0C
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:44:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E66843216D
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:47:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3D778311156D
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:51:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 28EE031C2CF9
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:59:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D67E12E093A;
-	Mon, 20 Apr 2026 15:51:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6382330675;
+	Mon, 20 Apr 2026 15:59:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PSQ6aQbe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SRR57Qdj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99FCD2E11C7;
-	Mon, 20 Apr 2026 15:51:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 798462E093A;
+	Mon, 20 Apr 2026 15:59:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700307; cv=none; b=i+j4tM3MUPS8MpGlIfuInw63K4sbBoIgsTdbr67RWt05vuDeTK7XnpI7UZGXXa/EgV1R1rrdRdgXui3yg1nNllz33SiHxlbyV2OEMkeALEqf65BeZZIXnRy65KWR3VtqUzPJqYbYhHgv3DiKaieDmZuUqWsXwVCMNEr1JgSZUgs=
+	t=1776700777; cv=none; b=Rs4pHHvMTawA2oQD9nJgn9nWkSVxiXwPf+q6X64cu+R65xRBVh8le/ZHchG5vPK3xBAFCKDQMQaiqtAu3z453TThQtnNhUp9WLokn1lsP9MV/6MrejlnkNXsAzqk7INF/1CNSTOHGtBicbjPr7MLNUCAVpRdopXXKSfP98S8YWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700307; c=relaxed/simple;
-	bh=ZgkdlZCvdu4JGASS8wGjH/dXTtGgUlUm0RCMSXxVJ18=;
+	s=arc-20240116; t=1776700777; c=relaxed/simple;
+	bh=gQLPDidOiBzysNMmN8zsLxKUThfta+6xcf2H3LsCg/Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jf3fQD67kBcxuHSvTIXrRDqqTSDX126d5ccaUziNIVy6uf6YHRclxG3AtWcwAUE4dOM1oZ/Z/m2hFcRpF+OvtXl91zLXDTUXiMUj2xiFvMZWVM26YG+gFCl/KLOz8UNOQIgbGdBYi9c96XT+guGHrFiDL0nwWB6K1PGTArkgP8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PSQ6aQbe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30054C19425;
-	Mon, 20 Apr 2026 15:51:47 +0000 (UTC)
+	 MIME-Version; b=uvIYeFFFCBiajQqbzAy5Yvh9V7Tv1/HPiTARZnFPGReSNtkAc4GFH1Eq/qGEcHck5B01Xn7VDiKLE/+NpYq6b4P5WKZdlb0rlToZTABNnNxkkpkowpt8GSWTfyIFDtd8OvRdj3pg9IjCXFYrbqIr4UI1xE5B9z8A6FdLuZ1Ecn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SRR57Qdj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F8E4C19425;
+	Mon, 20 Apr 2026 15:59:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700307;
-	bh=ZgkdlZCvdu4JGASS8wGjH/dXTtGgUlUm0RCMSXxVJ18=;
+	s=korg; t=1776700777;
+	bh=gQLPDidOiBzysNMmN8zsLxKUThfta+6xcf2H3LsCg/Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PSQ6aQbeBShwZgZBK6NhZk8J/Kjt1fBK1DQ9HfB2D1SLdze+Py83/FCx4bTMTQJvP
-	 R2nd7u7w6pWfnRJipvnhs/d545c4cHXfSsDMS2ubr+zAtgzXxSfCDJ137cT1z6OLDi
-	 wBuoRaZjv7791bQMhSdyM8SJ8Ykq3FTJ/ekRmsdQ=
+	b=SRR57QdjcIZ1X1tk8MViWvFhXMrRpWNHPTK07fdPmQOPn7UQiLMaeyF1+1nMxHh/x
+	 SyldTJ+lS4B9jXEtxoKm/9+COJJwYYEUaooUFSuPcnA6qUTQ+rz9KcHeBcWN+hiEAm
+	 /zF5XWyXgA8aKvwuBuQEH6Bgh/yrYeLQwBewmZqM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+	Kohei Enju <kohei@enjuk.jp>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 122/220] ASoC: SDCA: Unregister IRQ handlers on module remove
+Subject: [PATCH 6.18 084/198] ice: ptp: dont WARN when controlling PF is unavailable
 Date: Mon, 20 Apr 2026 17:41:03 +0200
-Message-ID: <20260420153938.421370378@linuxfoundation.org>
+Message-ID: <20260420153938.632058786@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
-References: <20260420153934.013228280@linuxfoundation.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,7 +69,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239459-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-239641-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -86,120 +86,60 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,cirrus.com:email]
-X-Rspamd-Queue-Id: 71F8C42FF0C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: 1E66843216D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Kohei Enju <kohei@enjuk.jp>
 
-[ Upstream commit 0b8757b220f94421bd4ff50cce03886387c4e71c ]
+[ Upstream commit bb3f21edc7056cdf44a7f7bd7ba65af40741838c ]
 
-Ensure that all interrupt handlers are unregistered before the parent
-regmap_irq is unregistered.
+In VFIO passthrough setups, it is possible to pass through only a PF
+which doesn't own the source timer. In that case the PTP controlling PF
+(adapter->ctrl_pf) is never initialized in the VM, so ice_get_ctrl_ptp()
+returns NULL and triggers WARN_ON() in ice_ptp_setup_pf().
 
-sdca_irq_cleanup() was only called from the component_remove(). If the
-module was loaded and removed without ever being component probed the
-FDL interrupts would not be unregistered and this would hit a WARN
-when devm called regmap_del_irq_chip() during the removal of the
-parent IRQ.
+Since this is an expected behavior in that configuration, replace
+WARN_ON() with an informational message and return -EOPNOTSUPP.
 
-Fixes: 4e53116437e9 ("ASoC: SDCA: Fix errors in IRQ cleanup")
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://patch.msgid.link/20260408093835.2881486-5-ckeepax@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: e800654e85b5 ("ice: Use ice_adapter for PTP shared data instead of auxdev")
+Signed-off-by: Kohei Enju <kohei@enjuk.jp>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/sound/sdca_interrupts.h      |  4 ++--
- sound/soc/sdca/sdca_class_function.c | 10 +++++++++-
- sound/soc/sdca/sdca_interrupts.c     |  7 +++----
- 3 files changed, 14 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_ptp.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/include/sound/sdca_interrupts.h b/include/sound/sdca_interrupts.h
-index 90651fea5b212..109e7826ce38c 100644
---- a/include/sound/sdca_interrupts.h
-+++ b/include/sound/sdca_interrupts.h
-@@ -83,8 +83,8 @@ int sdca_irq_populate_early(struct device *dev, struct regmap *function_regmap,
- int sdca_irq_populate(struct sdca_function_data *function,
- 		      struct snd_soc_component *component,
- 		      struct sdca_interrupt_info *info);
--void sdca_irq_cleanup(struct sdca_function_data *function,
--		      struct snd_soc_component *component,
-+void sdca_irq_cleanup(struct device *dev,
-+		      struct sdca_function_data *function,
- 		      struct sdca_interrupt_info *info);
- struct sdca_interrupt_info *sdca_irq_allocate(struct device *dev,
- 					      struct regmap *regmap, int irq);
-diff --git a/sound/soc/sdca/sdca_class_function.c b/sound/soc/sdca/sdca_class_function.c
-index 8b6b4ca998272..92600f419db43 100644
---- a/sound/soc/sdca/sdca_class_function.c
-+++ b/sound/soc/sdca/sdca_class_function.c
-@@ -201,7 +201,7 @@ static void class_function_component_remove(struct snd_soc_component *component)
- 	struct class_function_drv *drv = snd_soc_component_get_drvdata(component);
- 	struct sdca_class_drv *core = drv->core;
+diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
+index df38345b12d72..02517772fb5f4 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ptp.c
++++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
+@@ -3041,7 +3041,13 @@ static int ice_ptp_setup_pf(struct ice_pf *pf)
+ 	struct ice_ptp *ctrl_ptp = ice_get_ctrl_ptp(pf);
+ 	struct ice_ptp *ptp = &pf->ptp;
  
--	sdca_irq_cleanup(drv->function, component, core->irq_info);
-+	sdca_irq_cleanup(component->dev, drv->function, core->irq_info);
- }
- 
- static int class_function_set_jack(struct snd_soc_component *component,
-@@ -402,6 +402,13 @@ static int class_function_probe(struct auxiliary_device *auxdev,
- 	return 0;
- }
- 
-+static void class_function_remove(struct auxiliary_device *auxdev)
-+{
-+	struct class_function_drv *drv = auxiliary_get_drvdata(auxdev);
+-	if (WARN_ON(!ctrl_ptp) || pf->hw.mac_type == ICE_MAC_UNKNOWN)
++	if (!ctrl_ptp) {
++		dev_info(ice_pf_to_dev(pf),
++			 "PTP unavailable: no controlling PF\n");
++		return -EOPNOTSUPP;
++	}
 +
-+	sdca_irq_cleanup(drv->dev, drv->function, drv->core->irq_info);
-+}
-+
- static int class_function_runtime_suspend(struct device *dev)
- {
- 	struct auxiliary_device *auxdev = to_auxiliary_dev(dev);
-@@ -473,6 +480,7 @@ static struct auxiliary_driver class_function_drv = {
- 	},
++	if (pf->hw.mac_type == ICE_MAC_UNKNOWN)
+ 		return -ENODEV;
  
- 	.probe		= class_function_probe,
-+	.remove		= class_function_remove,
- 	.id_table	= class_function_id_table
- };
- module_auxiliary_driver(class_function_drv);
-diff --git a/sound/soc/sdca/sdca_interrupts.c b/sound/soc/sdca/sdca_interrupts.c
-index 4739fabb75f23..76f50a0f6b0ef 100644
---- a/sound/soc/sdca/sdca_interrupts.c
-+++ b/sound/soc/sdca/sdca_interrupts.c
-@@ -536,17 +536,16 @@ EXPORT_SYMBOL_NS_GPL(sdca_irq_populate, "SND_SOC_SDCA");
- 
- /**
-  * sdca_irq_cleanup - Free all the individual IRQs for an SDCA Function
-+ * @sdev: Device pointer against which the sdca_interrupt_info was allocated.
-  * @function: Pointer to the SDCA Function.
-- * @component: Pointer to the ASoC component for the Function.
-  * @info: Pointer to the SDCA interrupt info for this device.
-  *
-  * Typically this would be called from the driver for a single SDCA Function.
-  */
--void sdca_irq_cleanup(struct sdca_function_data *function,
--		      struct snd_soc_component *component,
-+void sdca_irq_cleanup(struct device *dev,
-+		      struct sdca_function_data *function,
- 		      struct sdca_interrupt_info *info)
- {
--	struct device *dev = component->dev;
- 	int i;
- 
- 	guard(mutex)(&info->irq_lock);
+ 	INIT_LIST_HEAD(&ptp->port.list_node);
 -- 
 2.53.0
 
