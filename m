@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-239894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239746-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0NSNCYZi5mmavgEAu9opvQ
-	(envelope-from <stable+bounces-239894-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:29:42 +0200
+	id SKzZMVBP5mkgugEAu9opvQ
+	(envelope-from <stable+bounces-239746-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:07:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D7B2431469
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:29:41 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7547542F065
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:07:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AA71A31ADAC3
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:11:26 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D2BBD300DED6
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:05:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B3C62853F3;
-	Mon, 20 Apr 2026 16:11:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A27A33DEDF;
+	Mon, 20 Apr 2026 16:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g7ykHOnU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v4d+X5In"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D17B1FB1;
-	Mon, 20 Apr 2026 16:11:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A9933396EE;
+	Mon, 20 Apr 2026 16:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701486; cv=none; b=ZDaeXxgXlSJIkfLfHh9F0BlbtozIh1bS1OuzGhe/kTOx+JBx4cdghBZi2bkqPQU1KlhIQJGHxZd2g1baARYZiN1ErWPSPXGvylD6qtmfH6fMBg9b5BX9BJLjmL5Y6F+P+iMR4108peQcFt+QjOgoWaSFn+Sr34ebCDVQpDXH47w=
+	t=1776701111; cv=none; b=Sq7yayaHf7dLIg3UV0tH9cEUKULs5PABVF2u9JjWXQHivP/EZgvDY1Q0zkwyCnJcUuQkIw62BsRuC6mEQs/88/GkAhPU8d1zO7HMrSivxe8q9gOAAVQls+N3/aJcA24U0SKnFfDHjQOGA7WWYMXUFey5NB0HlsbcQ8pKA3V5hbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701486; c=relaxed/simple;
-	bh=BL0F4xSQJ2M71R/dSfNM2e3f0IEB1HWBxq7ZRRDtxbQ=;
+	s=arc-20240116; t=1776701111; c=relaxed/simple;
+	bh=HWJkYBMWLMtrWTJTK4QIzJLcoCXySbTq+G2ePNO8ABk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gxdCivTPwhf8Yc2mo7ROdweiPNxHrhY708Ac1zMurSgPZy8KSownJGra4uSrNa3QF0N29iQl3UyRaeTXvbtzzZa7P2EPn5x8BQlLEAwAHI/Dmh7bTmcH1bly4JMd9Clp5CeDx0r5eXVBG0J1PUig+b2jjWUzA3cXHdRetQ/ngwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g7ykHOnU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 618D4C19425;
-	Mon, 20 Apr 2026 16:11:25 +0000 (UTC)
+	 MIME-Version; b=V3v6I1LQ2rNi4rj38c/OYRW0O2PHHIIza7tHhENNuCffrHp1fCtPG2WOxhz7mm/oJBT4IeFYU7VAHc3Hb2BtEAPezqcYKjbZGNxl6FoysXkLs+o+jWnwosFdMBlmXfUOA0erfrvD2ahUuWaqblvk6HGenHCav9VKKnPTaonHVKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v4d+X5In; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94F4BC19425;
+	Mon, 20 Apr 2026 16:05:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701485;
-	bh=BL0F4xSQJ2M71R/dSfNM2e3f0IEB1HWBxq7ZRRDtxbQ=;
+	s=korg; t=1776701110;
+	bh=HWJkYBMWLMtrWTJTK4QIzJLcoCXySbTq+G2ePNO8ABk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g7ykHOnUxuKBDdCNNnTPxyiXRVJwho6gpYm2lRTBDgyaq5oDXyzislbjEiFn7ccPo
-	 Wm0tpVwKRVpUDluQol2ZAuSAJSssBQgmH6SUxxA+Z4PVH9QARA6GZ8jaPPbvuBGk7E
-	 8n//eR6Vsj6Qh+XQLCN1YOK8gG/PDWbb/iBYxLZI=
+	b=v4d+X5Inc9ypwKqRZFOZzWw2hYiUWCJcfOnJ7FAHpp7zTpngR5/eS8/CXhQ3MNMc/
+	 EUBhOe9OnYQDN2dpET6G+axQ8nFA9jR3FZ1K00HSn9rG/om2cs6paBY/+MrKwKokHv
+	 nG0qjhdSvZ63eqW8ZmlgdM9QNYguZGYWo8R2XJ4k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Lewalski <jakub.lewalski@nokia.com>,
-	=?UTF-8?q?Pawe=C5=82=20Narewski?= <pawel.narewski@nokia.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
-	Quentin Schulz <quentin.schulz@cherry.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 133/162] gpiolib: fix race condition for gdev->srcu
+	Fan Wu <fanwu01@zju.edu.cn>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.18 186/198] media: mediatek: vcodec: fix use-after-free in encoder release path
 Date: Mon, 20 Apr 2026 17:42:45 +0200
-Message-ID: <20260420153931.862711703@linuxfoundation.org>
+Message-ID: <20260420153942.314091999@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
-References: <20260420153927.006696811@linuxfoundation.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,198 +63,145 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+X-Spamd-Result: default: False [5.34 / 15.00];
+	SEM_URIBL(3.50)[zju.edu.cn:email];
+	SUSPICIOUS_RECIPS(1.50)[];
+	R_MISSING_CHARSET(0.50)[];
 	MAILLIST(-0.15)[generic];
+	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-239894-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-239746-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
 	RCVD_COUNT_THREE(0.00)[4];
+	GREYLIST(0.00)[pass,meta];
+	TO_DN_SOME(0.00)[];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_SPAM(0.00)[0.926];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[stable,cisco];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,nokia.com:email]
-X-Rspamd-Queue-Id: 2D7B2431469
+	R_SPF_ALLOW(0.00)[+ip4:172.232.135.74:c];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,zju.edu.cn:email,collabora.com:email]
+X-Rspamd-Queue-Id: 7547542F065
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paweł Narewski <pawel.narewski@nokia.com>
+From: Fan Wu <fanwu01@zju.edu.cn>
 
-[ Upstream commit a7ac22d53d0990152b108c3f4fe30df45fcb0181 ]
+commit 76e35091ffc722ba39b303e48bc5d08abb59dd56 upstream.
 
-If two drivers were calling gpiochip_add_data_with_key(), one may be
-traversing the srcu-protected list in gpio_name_to_desc(), meanwhile
-other has just added its gdev in gpiodev_add_to_list_unlocked().
-This creates a non-mutexed and non-protected timeframe, when one
-instance is dereferencing and using &gdev->srcu, before the other
-has initialized it, resulting in crash:
+The fops_vcodec_release() function frees the context structure (ctx)
+without first cancelling any pending or running work in ctx->encode_work.
+This creates a race window where the workqueue handler (mtk_venc_worker)
+may still be accessing the context memory after it has been freed.
 
-[    4.935481] Unable to handle kernel paging request at virtual address ffff800272bcc000
-[    4.943396] Mem abort info:
-[    4.943400]   ESR = 0x0000000096000005
-[    4.943403]   EC = 0x25: DABT (current EL), IL = 32 bits
-[    4.943407]   SET = 0, FnV = 0
-[    4.943410]   EA = 0, S1PTW = 0
-[    4.943413]   FSC = 0x05: level 1 translation fault
-[    4.943416] Data abort info:
-[    4.943418]   ISV = 0, ISS = 0x00000005, ISS2 = 0x00000000
-[    4.946220]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-[    4.955261]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-[    4.955268] swapper pgtable: 4k pages, 48-bit VAs, pgdp=0000000038e6c000
-[    4.961449] [ffff800272bcc000] pgd=0000000000000000
-[    4.969203] , p4d=1000000039739003
-[    4.979730] , pud=0000000000000000
-[    4.980210] phandle (CPU): 0x0000005e, phandle (BE): 0x5e000000 for node "reset"
-[    4.991736] Internal error: Oops: 0000000096000005 [#1] PREEMPT SMP
-...
-[    5.121359] pc : __srcu_read_lock+0x44/0x98
-[    5.131091] lr : gpio_name_to_desc+0x60/0x1a0
-[    5.153671] sp : ffff8000833bb430
-[    5.298440]
-[    5.298443] Call trace:
-[    5.298445]  __srcu_read_lock+0x44/0x98
-[    5.309484]  gpio_name_to_desc+0x60/0x1a0
-[    5.320692]  gpiochip_add_data_with_key+0x488/0xf00
-    5.946419] ---[ end trace 0000000000000000 ]---
+Race condition:
 
-Move initialization code for gdev fields before it is added to
-gpio_devices, with adjacent initialization code.
-Adjust goto statements  to reflect modified order of operations
+    CPU 0 (release path)               CPU 1 (workqueue)
+    ---------------------               ------------------
+    fops_vcodec_release()
+      v4l2_m2m_ctx_release()
+        v4l2_m2m_cancel_job()
+        // waits for m2m job "done"
+                                        mtk_venc_worker()
+                                          v4l2_m2m_job_finish()
+                                          // m2m job "done"
+                                          // BUT worker still running!
+                                          // post-job_finish access:
+                                        other ctx dereferences
+                                          // UAF if ctx already freed
+        // returns (job "done")
+      kfree(ctx)  // ctx freed
 
-Fixes: 47d8b4c1d868 ("gpio: add SRCU infrastructure to struct gpio_device")
-Reviewed-by: Jakub Lewalski <jakub.lewalski@nokia.com>
-Signed-off-by: Paweł Narewski <pawel.narewski@nokia.com>
-[Bartosz: fixed a build issue, removed stray newline]
-Link: https://lore.kernel.org/r/20251224082641.10769-1-bartosz.golaszewski@oss.qualcomm.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-[missing commit fcc8b637c542 ("gpiolib: switch the line state notifier
- to atomic"), commit dcb73cbaaeb3 ("gpio: cdev: use raw notifier for
- line state events") and commit d4f335b410dd ("gpiolib: rename GPIO chip
- printk macros") in 6.12.y.
- Both notifiers as well as both srcu inits are moved before the
- scoped_guard, following same logic as in a7ac22d53d09.
- Rest is changes to git context only.]
-Cc: stable@vger.kernel.org # 6.12
-Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Root cause: The v4l2_m2m_ctx_release() only waits for the m2m job
+lifecycle (via TRANS_RUNNING flag), not the workqueue lifecycle.
+After v4l2_m2m_job_finish() is called, the m2m framework considers
+the job complete and v4l2_m2m_ctx_release() returns, but the worker
+function continues executing and may still access ctx.
+
+The work is queued during encode operations via:
+  queue_work(ctx->dev->encode_workqueue, &ctx->encode_work)
+The worker function accesses ctx->m2m_ctx, ctx->dev, and other ctx
+fields even after calling v4l2_m2m_job_finish().
+
+This vulnerability was confirmed with KASAN by running an instrumented
+test module that widens the post-job_finish race window. KASAN detected:
+
+  BUG: KASAN: slab-use-after-free in mtk_venc_worker+0x159/0x180
+  Read of size 4 at addr ffff88800326e000 by task kworker/u8:0/12
+
+  Workqueue: mtk_vcodec_enc_wq mtk_venc_worker
+
+  Allocated by task 47:
+    __kasan_kmalloc+0x7f/0x90
+    fops_vcodec_open+0x85/0x1a0
+
+  Freed by task 47:
+    __kasan_slab_free+0x43/0x70
+    kfree+0xee/0x3a0
+    fops_vcodec_release+0xb7/0x190
+
+Fix this by calling cancel_work_sync(&ctx->encode_work) before kfree(ctx).
+This ensures the workqueue handler is both cancelled (if pending) and
+synchronized (waits for any running handler to complete) before the
+context is freed.
+
+Placement rationale: The fix is placed after v4l2_ctrl_handler_free()
+and before list_del_init(&ctx->list). At this point, all m2m operations
+are done (v4l2_m2m_ctx_release() has returned), and we need to ensure
+the workqueue is synchronized before removing ctx from the list and
+freeing it.
+
+Note: The open error path does NOT need cancel_work_sync() because
+INIT_WORK() only initializes the work structure - it does not schedule
+it. Work is only scheduled later during device_run() operations.
+
+Fixes: 0934d3759615 ("media: mediatek: vcodec: separate decoder and encoder")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fan Wu <fanwu01@zju.edu.cn>
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpiolib.c | 38 +++++++++++++++++++-------------------
- 1 file changed, 19 insertions(+), 19 deletions(-)
+ drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_drv.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index 3f9019cc832ac..5c8cd81656963 100644
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -988,6 +988,17 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
- 	gdev->ngpio = gc->ngpio;
- 	gdev->can_sleep = gc->can_sleep;
+--- a/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_drv.c
++++ b/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_drv.c
+@@ -215,6 +215,15 @@ static int fops_vcodec_release(struct fi
+ 	v4l2_fh_exit(&ctx->fh);
+ 	v4l2_ctrl_handler_free(&ctx->ctrl_hdl);
  
-+	BLOCKING_INIT_NOTIFIER_HEAD(&gdev->line_state_notifier);
-+	BLOCKING_INIT_NOTIFIER_HEAD(&gdev->device_notifier);
++	/*
++	 * Cancel any pending encode work before freeing the context.
++	 * Although v4l2_m2m_ctx_release() waits for m2m job completion,
++	 * the workqueue handler (mtk_venc_worker) may still be accessing
++	 * the context after v4l2_m2m_job_finish() returns. Without this,
++	 * a use-after-free occurs when the worker accesses ctx after kfree.
++	 */
++	cancel_work_sync(&ctx->encode_work);
 +
-+	ret = init_srcu_struct(&gdev->srcu);
-+	if (ret)
-+		goto err_free_label;
-+
-+	ret = init_srcu_struct(&gdev->desc_srcu);
-+	if (ret)
-+		goto err_cleanup_gdev_srcu;
-+
- 	scoped_guard(mutex, &gpio_devices_lock) {
- 		/*
- 		 * TODO: this allocates a Linux GPIO number base in the global
-@@ -1002,7 +1013,7 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
- 			if (base < 0) {
- 				ret = base;
- 				base = 0;
--				goto err_free_label;
-+				goto err_cleanup_desc_srcu;
- 			}
- 
- 			/*
-@@ -1022,21 +1033,10 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
- 		ret = gpiodev_add_to_list_unlocked(gdev);
- 		if (ret) {
- 			chip_err(gc, "GPIO integer space overlap, cannot add chip\n");
--			goto err_free_label;
-+			goto err_cleanup_desc_srcu;
- 		}
- 	}
- 
--	BLOCKING_INIT_NOTIFIER_HEAD(&gdev->line_state_notifier);
--	BLOCKING_INIT_NOTIFIER_HEAD(&gdev->device_notifier);
--
--	ret = init_srcu_struct(&gdev->srcu);
--	if (ret)
--		goto err_remove_from_list;
--
--	ret = init_srcu_struct(&gdev->desc_srcu);
--	if (ret)
--		goto err_cleanup_gdev_srcu;
--
- #ifdef CONFIG_PINCTRL
- 	INIT_LIST_HEAD(&gdev->pin_ranges);
- #endif
-@@ -1046,11 +1046,11 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
- 
- 	ret = gpiochip_set_names(gc);
- 	if (ret)
--		goto err_cleanup_desc_srcu;
-+		goto err_remove_from_list;
- 
- 	ret = gpiochip_init_valid_mask(gc);
- 	if (ret)
--		goto err_cleanup_desc_srcu;
-+		goto err_remove_from_list;
- 
- 	for (desc_index = 0; desc_index < gc->ngpio; desc_index++) {
- 		struct gpio_desc *desc = &gdev->descs[desc_index];
-@@ -1117,10 +1117,6 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
- 	of_gpiochip_remove(gc);
- err_free_valid_mask:
- 	gpiochip_free_valid_mask(gc);
--err_cleanup_desc_srcu:
--	cleanup_srcu_struct(&gdev->desc_srcu);
--err_cleanup_gdev_srcu:
--	cleanup_srcu_struct(&gdev->srcu);
- err_remove_from_list:
- 	scoped_guard(mutex, &gpio_devices_lock)
- 		list_del_rcu(&gdev->list);
-@@ -1130,6 +1126,10 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
- 		gpio_device_put(gdev);
- 		goto err_print_message;
- 	}
-+err_cleanup_desc_srcu:
-+	cleanup_srcu_struct(&gdev->desc_srcu);
-+err_cleanup_gdev_srcu:
-+	cleanup_srcu_struct(&gdev->srcu);
- err_free_label:
- 	kfree_const(gdev->label);
- err_free_descs:
--- 
-2.53.0
-
+ 	spin_lock_irqsave(&dev->dev_ctx_lock, flags);
+ 	list_del_init(&ctx->list);
+ 	spin_unlock_irqrestore(&dev->dev_ctx_lock, flags);
 
 
 
