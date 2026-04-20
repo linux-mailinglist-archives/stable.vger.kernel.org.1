@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-239323-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239687-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kK49GrhW5mkDuwEAu9opvQ
-	(envelope-from <stable+bounces-239323-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:39:20 +0200
+	id sEfONPtg5mkxvgEAu9opvQ
+	(envelope-from <stable+bounces-239687-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:23:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C08342FC6F
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:39:18 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AE0943116D
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:23:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C05783261115
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:45:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ED9F63645420
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:02:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC2E13368B2;
-	Mon, 20 Apr 2026 15:45:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAA8733E377;
+	Mon, 20 Apr 2026 16:02:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kc7DhykJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rQeMzHQe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ECB622541C;
-	Mon, 20 Apr 2026 15:45:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CF1F2AE78;
+	Mon, 20 Apr 2026 16:02:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776699952; cv=none; b=FWOzd3c/AmFr61YJ4Ys6Mf+iaBDgSCrjCDBFAsIUugRgQeZ4D1FA+oJew4KYOhyYMM/QQy39lgce84eFddoLxLDYoQZpx2/x44fyv+HYTttqHjcY4mbncP+dAQKb7l691i5ZrCOs6ViSQoCthqavyTxsfQ6I4pQ5BU+ttR2ZdDc=
+	t=1776700959; cv=none; b=Imp2Ei4zuDm9R/gX2X8s+Xzm6nnj2jvG2aXHt8xlUEagB0rTeQIY1LtUbsOtO51bYjWc4V4zo2uW+4kZP5d7gdaz7PLRfdO0YSekazHTnQvIpwM8pjvigbVieYkxy6g+fJw1L55gdMYNHDwVjAptD09uBxU5GmY1hBZIUQTVdUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776699952; c=relaxed/simple;
-	bh=5d8j5NrSLw+mGoqbx+TJqv8ObrVcz0k7yK0HmkmEGcE=;
+	s=arc-20240116; t=1776700959; c=relaxed/simple;
+	bh=fH8CWSnXMhTd16aSccW7aGJGNAqocwQQNVjcSzRkpLU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ct/JjSZCC9fwayNtFD7RN4kmLaQ1ygwe4jEi0KqF28U+fWiaGqsVqil2JszGCfgw5OkJZUtzojFxqWXdK1cpOpMFDYjvCHDnZn8xg68pBUHNpwXLGryVc87alrAur6HcTbi4VcxlUSVjARkbs8jgWkdrCkSUAdLr1Ewcc6EFjZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kc7DhykJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35826C19425;
-	Mon, 20 Apr 2026 15:45:52 +0000 (UTC)
+	 MIME-Version; b=Oxm5PsbroQpimTAzBZJ4w4gh1GaTs+Xcdu888vtJ5sQUPXxmRPTW1HpaIRm2EXWCc18ygd3z8oJASK+YijSFQ/qWTMn+wDdbhRoZhLaR0viQUvCvrqLPcgOIxf6EcXNIwHdAjCLdNz8PLDo1RjDCRHsQ71BipsfX0gVOqCV0vYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rQeMzHQe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3331EC19425;
+	Mon, 20 Apr 2026 16:02:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776699952;
-	bh=5d8j5NrSLw+mGoqbx+TJqv8ObrVcz0k7yK0HmkmEGcE=;
+	s=korg; t=1776700959;
+	bh=fH8CWSnXMhTd16aSccW7aGJGNAqocwQQNVjcSzRkpLU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kc7DhykJyWZPm6poicgwZTY3P95qPdCLHmS1R+GbvhgeT1/ajcSyjZC07ub5Oy48O
-	 HEffAZzObW8OXZyTlYRw4Iou82Gs5necjCQenGnsXrarXMcKzJlO2l3m+SJlZ77Qri
-	 +TJU8wDAnPSuoGplQd9ZxZNZB9ho4qkN3y5AcbFc=
+	b=rQeMzHQeNtTloJu2bd5/21sDAYzK9qyvoNeFTQCDOhHfoS7s+PWnb3w1XUfmMxb3S
+	 FFhpyXHJfyzgum0WmgaQ5iuVto0csPujPJ59JK3Ods0ea2B/qybFMQDNs7sgnsGodv
+	 jIIonBzGxdeWVLujTik7tcL2zJiBAd6dPYNGNXks=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Johan Hovold <johan@kernel.org>,
-	Ping-Ke Shih <pkshih@realtek.com>
-Subject: [PATCH 7.0 34/76] wifi: rtw88: fix device leak on probe failure
+	stable <stable@kernel.org>,
+	Jiri Kosina <jikos@kernel.org>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	Masaki Ota <masaki.ota@jp.alps.com>,
+	linux-input@vger.kernel.org,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 6.18 126/198] HID: alps: fix NULL pointer dereference in alps_raw_event()
 Date: Mon, 20 Apr 2026 17:41:45 +0200
-Message-ID: <20260420153912.063125050@linuxfoundation.org>
+Message-ID: <20260420153940.144481826@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153910.810034134@linuxfoundation.org>
-References: <20260420153910.810034134@linuxfoundation.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,86 +71,76 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-239687-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-239323-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,pengutronix.de:email,realtek.com:email]
-X-Rspamd-Queue-Id: 5C08342FC6F
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,alps.com:email]
+X-Rspamd-Queue-Id: 6AE0943116D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit bbb15e71156cd9f5e1869eee7207a06ea8e96c39 upstream.
+commit 1badfc4319224820d5d890f8eab6aa52e4e83339 upstream.
 
-Driver core holds a reference to the USB interface and its parent USB
-device while the interface is bound to a driver and there is no need to
-take additional references unless the structures are needed after
-disconnect.
+Commit ecfa6f34492c ("HID: Add HID_CLAIMED_INPUT guards in raw_event
+callbacks missing them") attempted to fix up the HID drivers that had
+missed the previous fix that was done in 2ff5baa9b527 ("HID: appleir:
+Fix potential NULL dereference at raw event handle"), but the alps
+driver was missed.
 
-This driver takes a reference to the USB device during probe but does
-not to release it on all probe errors (e.g. when descriptor parsing
-fails).
+Fix this up by properly checking in the hid-alps driver that it had been
+claimed correctly before attempting to process the raw event.
 
-Drop the redundant device reference to fix the leak, reduce cargo
-culting, make it easier to spot drivers where an extra reference is
-needed, and reduce the risk of further memory leaks.
-
-Fixes: a82dfd33d123 ("wifi: rtw88: Add common USB chip support")
-Reported-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://lore.kernel.org/netdev/2026022319-turbofan-darkened-206d@gregkh/
-Cc: stable@vger.kernel.org	# 6.2
-Cc: Sascha Hauer <s.hauer@pengutronix.de>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20260306085144.12064-19-johan@kernel.org
+Fixes: 73196ebe134d ("HID: alps: add support for Alps T4 Touchpad device")
+Cc: stable <stable@kernel.org>
+Cc: Jiri Kosina <jikos@kernel.org>
+Cc: Benjamin Tissoires <bentiss@kernel.org>
+Cc: Masaki Ota <masaki.ota@jp.alps.com>
+Cc: linux-input@vger.kernel.org
+Assisted-by: gregkh_clanker_t1000
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtw88/usb.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/hid/hid-alps.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/net/wireless/realtek/rtw88/usb.c
-+++ b/drivers/net/wireless/realtek/rtw88/usb.c
-@@ -1041,7 +1041,7 @@ static int rtw_usb_intf_init(struct rtw_
- 			     struct usb_interface *intf)
- {
- 	struct rtw_usb *rtwusb = rtw_get_usb_priv(rtwdev);
--	struct usb_device *udev = usb_get_dev(interface_to_usbdev(intf));
-+	struct usb_device *udev = interface_to_usbdev(intf);
- 	int ret;
+--- a/drivers/hid/hid-alps.c
++++ b/drivers/hid/hid-alps.c
+@@ -437,6 +437,9 @@ static int alps_raw_event(struct hid_dev
+ 	int ret = 0;
+ 	struct alps_dev *hdata = hid_get_drvdata(hdev);
  
- 	rtwusb->udev = udev;
-@@ -1067,7 +1067,6 @@ static void rtw_usb_intf_deinit(struct r
- {
- 	struct rtw_usb *rtwusb = rtw_get_usb_priv(rtwdev);
- 
--	usb_put_dev(rtwusb->udev);
- 	kfree(rtwusb->usb_data);
- 	usb_set_intfdata(intf, NULL);
- }
++	if (!(hdev->claimed & HID_CLAIMED_INPUT) || !hdata->input)
++		return 0;
++
+ 	switch (hdev->product) {
+ 	case HID_PRODUCT_ID_T4_BTNLESS:
+ 		ret = t4_raw_event(hdata, data, size);
 
 
 
