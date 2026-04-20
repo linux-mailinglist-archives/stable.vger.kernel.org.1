@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-239568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239569-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8HapF8pl5mkKvwEAu9opvQ
-	(envelope-from <stable+bounces-239568-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:43:38 +0200
+	id iM/lIcxl5mlmvwEAu9opvQ
+	(envelope-from <stable+bounces-239569-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:43:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5F87431EC1
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:43:37 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E585E431ECE
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:43:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 512A735FEE6E
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:56:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A042C35FF48A
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:56:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2DA633B975;
-	Mon, 20 Apr 2026 15:56:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79EDE33B6EF;
+	Mon, 20 Apr 2026 15:56:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OJaPAJ22"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FwK8n/4j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5638322749;
-	Mon, 20 Apr 2026 15:56:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39A1422259F;
+	Mon, 20 Apr 2026 15:56:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776700586; cv=none; b=FiWQYAM81z/zbW0ZPOPaVyeOnk3V063tc/KLnB8cwPcSn2VI240ndQl6wBwTWaech+ZE5gkq0V2JzXYqvdx79X3qvsrsmJWcDLyNlOmrVi7WJm29ddkibMopO/1WbA+Fam+icWpi1N07rz/oqgQHyyIFWw8KMQcj0EhR1YBne0M=
+	t=1776700589; cv=none; b=vEzeusWex9ueTQaYMywoC0t+wqpCRn4Zq0X+H8OI7OZPk9r4bU2hLfQtIirb8ALnrX0PclvugHsdcXreKHbHfA4nP3sfL3mPIU94NY+W97RCLm1iYZDNzE1e39hgBAlWtXrCUZjfD39oaTpDErtYlReGNIlRrNMSCAAd5X8cFdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776700586; c=relaxed/simple;
-	bh=9mxVMI3Oa2urib/uaYj+CgL/6SSxDNoY5ZP1CyZmuPQ=;
+	s=arc-20240116; t=1776700589; c=relaxed/simple;
+	bh=s+wTvAigG/gYwgWzHHMrbWJMXAvvMVaWM3+aOkV9f7U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FoJ0KD+N4zaANgo1ZDaI8Vt7nGob9pDL7a1Ake5/RcQ5IgjFH6b1AOxRilYzTX37+i9Art0ivQyddNd38ADsKsEZVYAB4//0BNhkwm6F24Uu34aLzHe/YAqgLU894jAHweuNuZ98rh84ILyr7moYNvo4W30wNT5JnuJ7vM2rq0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OJaPAJ22; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E78DC19425;
-	Mon, 20 Apr 2026 15:56:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mha4D6fDUUAOiTJxtdSTNkprOaJLqEu3hCwvXRb6ccO557L/0GSifIOHCl6eeOHR9YpNgLeFiAuwgTMqauodpSyIo0lWuDLjf/mwoZGqtnwgQGRpr4kGZpS/yvoK99z7vJsJNhZb6ftcil/ymwr+tUTw4UKbS64Oc2UASkzV1Ik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FwK8n/4j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C483EC19425;
+	Mon, 20 Apr 2026 15:56:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776700586;
-	bh=9mxVMI3Oa2urib/uaYj+CgL/6SSxDNoY5ZP1CyZmuPQ=;
+	s=korg; t=1776700589;
+	bh=s+wTvAigG/gYwgWzHHMrbWJMXAvvMVaWM3+aOkV9f7U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OJaPAJ22uKbOS27aMNditYH0bcrm2DWp3ZbgfkS0cl+hOdeSkJKzfzeT3C5eccin1
-	 7bNoxoFim6nZ8wkgMHHQW9pctkOKZf42/ici0ctfezdZamrr/9FFNIfTcuIYIJ0MZx
-	 Jz00M4QEcQ8hvaaBtjGT5pXSDHlJseYl/TbOTSD0=
+	b=FwK8n/4jrk6tb62+hfDzZWGlc51Ht0CDOrRm30YyNjICPaNlKsON4TlaVwNz0+hT9
+	 iXCu8xzFlrdl5WSgnodf93BCmZVzNR6DVPnazi9CvJjWDfgzPSwPq2RMclSvbSma0m
+	 EIbFH1JXrZpFbMbD5KNHv0JoeGeBuyNByJ0JZEoE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Heng <zhangheng@kylinos.cn>,
+	=?UTF-8?q?C=C3=A1ssio=20Gabriel?= <cassiogabrielcontato@gmail.com>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 010/198] ASoC: amd: yc: Add DMI quirk for Thin A15 B7VF
-Date: Mon, 20 Apr 2026 17:39:49 +0200
-Message-ID: <20260420153935.984892601@linuxfoundation.org>
+Subject: [PATCH 6.18 011/198] ASoC: SOF: topology: reject invalid vendor array size in token parser
+Date: Mon, 20 Apr 2026 17:39:50 +0200
+Message-ID: <20260420153936.021209995@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
 References: <20260420153935.605963767@linuxfoundation.org>
@@ -63,35 +64,36 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-239568-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-239569-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B5F87431EC1
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: E585E431ECE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,40 +101,41 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Zhang Heng <zhangheng@kylinos.cn>
+From: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
-[ Upstream commit 1f182ec9d7084db7dfdb2372d453c28f0e5c3f0a ]
+[ Upstream commit 215e5fe75881a7e2425df04aeeed47a903d5cd5d ]
 
-Add a DMI quirk for the Thin A15 B7VF fixing the issue where
-the internal microphone was not detected.
+sof_parse_token_sets() accepts array->size values that can be invalid
+for a vendor tuple array header. In particular, a zero size does not
+advance the parser state and can lead to non-progress parsing on
+malformed topology data.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=220833
-Signed-off-by: Zhang Heng <zhangheng@kylinos.cn>
-Link: https://patch.msgid.link/20260316080218.2931304-1-zhangheng@kylinos.cn
+Validate array->size against the minimum header size and reject values
+smaller than sizeof(*array) before parsing. This preserves behavior for
+valid topologies and hardens malformed-input handling.
+
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+Acked-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Link: https://patch.msgid.link/20260319-sof-topology-array-size-fix-v1-1-f9191b16b1b7@gmail.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ sound/soc/sof/topology.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index c536de1bb94ad..6f1c105ca77e3 100644
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -724,6 +724,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "BM1403CDA"),
- 		}
- 	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "Micro-Star International Co., Ltd."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Thin A15 B7VE"),
-+		}
-+	},
- 	{}
- };
+diff --git a/sound/soc/sof/topology.c b/sound/soc/sof/topology.c
+index b6d5c8024f8cf..4c8dba285408a 100644
+--- a/sound/soc/sof/topology.c
++++ b/sound/soc/sof/topology.c
+@@ -736,7 +736,7 @@ static int sof_parse_token_sets(struct snd_soc_component *scomp,
+ 		asize = le32_to_cpu(array->size);
  
+ 		/* validate asize */
+-		if (asize < 0) { /* FIXME: A zero-size array makes no sense */
++		if (asize < sizeof(*array)) {
+ 			dev_err(scomp->dev, "error: invalid array size 0x%x\n",
+ 				asize);
+ 			return -EINVAL;
 -- 
 2.53.0
 
