@@ -1,96 +1,97 @@
-Return-Path: <stable+bounces-239230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239231-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2OWOHOA95mlutgEAu9opvQ
-	(envelope-from <stable+bounces-239230-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:53:20 +0200
+	id im2OH1tW5mlQvAEAu9opvQ
+	(envelope-from <stable+bounces-239231-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:37:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13D5742D90A
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:53:19 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B42942FBB4
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:37:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3B7003024172
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 14:46:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A9E0D31F0D6E
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 14:50:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E3F82E719C;
-	Mon, 20 Apr 2026 13:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E16DA342CB0;
+	Mon, 20 Apr 2026 14:00:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eX1CBI0I"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Dz0otMsN"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACF2F2E11A6
-	for <stable@vger.kernel.org>; Mon, 20 Apr 2026 13:51:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62131342524
+	for <stable@vger.kernel.org>; Mon, 20 Apr 2026 13:59:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776693066; cv=none; b=RqRQ3+MyIBuSLZP3ljnUzJ+6sLCipD68QADsbyRoZS3ONaywdjiNxOVr6d8InoW0fp1du4Dr5jzSFOC83QZnQXRunC8/Bgsm8xGUmnnkht4lTb2P2V7ApTp52g1TvgwW7jGmpiVjYfg8MS1jrq/SYelUrPoGo52DcpswO7bJoj8=
+	t=1776693600; cv=none; b=YboKXwOGej978QjMecQ+4UUSdyZPYmUlLOZ5JTJUcIs3rNRR94qcLnVQ0IEkBfebdH+St7J+LFOv8Q3blMgBlPYMdA3kSHTJfwHEL7TfKdk4FGslnOmGpzDW250Lk85JnqMP70lgne/Eh1tpGd40D8iH/hetYRPGg7c0mFNLuJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776693066; c=relaxed/simple;
-	bh=vmZvs6UHY7QD3B9MWYRhLwssp9+U49BA9oDYPNJlnbQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=X8j040IwbWQnir4G/Gz6GwOL/zxqOX8wT0+DaUk0aqODvK98Br+lcXt6KDNSXpffc1Der6vfXefdX+xITt1RrD0G7S6xupqXxSs6jHZG2/0Gg5/D9rPhDjNmlPOQdXDyjWq/i2V4By/8KheHDo6of4meDJ6zb8igF3P6z+o6PFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eX1CBI0I; arc=none smtp.client-ip=209.85.222.182
+	s=arc-20240116; t=1776693600; c=relaxed/simple;
+	bh=SrgFMyROmHNBLrFbCgp+FteKbeTypwiuhwV7d4eZYLc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=G4N9NP9zaJTe9BY6q1Jkzyh3NOxejk4zquWl449mSi5fPm8ohnj0S55pi8+tF6r6eWqiViFIkaJcPpGkbYXEy707U3rNET8vN4YcozOyXAfb5fda9JmXKS1hE9d3Gm8TRKaDn2kePenzPnb5xbweLBJcIVQcwk0UAl5+wh3dJc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Dz0otMsN; arc=none smtp.client-ip=209.85.214.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-8d736211595so190401185a.0
-        for <stable@vger.kernel.org>; Mon, 20 Apr 2026 06:51:03 -0700 (PDT)
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2a7a9b8ed69so27271555ad.2
+        for <stable@vger.kernel.org>; Mon, 20 Apr 2026 06:59:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776693062; x=1777297862; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1776693599; x=1777298399; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=2CQQpu+pTCuIRdY5y4O2DIzGNhbLx1QOGGuLTzhze6c=;
-        b=eX1CBI0ISZbv2Dtqx9JEmkmhtO9WaeFmWzGJxfDY58gGclDPTjLddsg7dijrhcFXk3
-         8tikwhZAkUd9yivwOGS4nIrbrPlVeeTGyt/QJ96yEgr2rNgWwVmR6Eg/svqHb0XY8eee
-         j/erY13lySWTYWbaCnMMrA/QnmOV9zEkqEYFVXgvl/uXL3B05RgaFYiKDv0MCuenp0ZR
-         ig5Dr2pmSIRFGnff1TeBnfbk28J5SdUTENMRYPW3kQY+UlPA98EdVDdf4FauSpOxG2o6
-         yy5ycx8LcPKoGDCGjfqCR1naZ9Iew6mwU7H9zVCG7VyQiOcXlo9D55lcHE73dtJQnGbZ
-         LEbA==
+        bh=PtA7XaAsBped8tzDKGVHSMvp1WbWNwbAvXQ8vkybz/I=;
+        b=Dz0otMsNBrkSCoftCpN6lgdJzZGySk2ML3Gi0iXbv4MCNDcOPEhpj+lzWWGNAlbTAI
+         hL2n4lmaRlU3GmtU8jNskPwEi6F2ovaH+6OAqlm9wCNLSS9HWwbkGzzUOHvE2j9iNhsQ
+         BR2EL2o/NDPHLoAax39Y6aqKBbvz7rymXPprPa4Y4gAFtnyI+VamwVwrYGzO4/Yi0O9v
+         uAczbASKykuQQhrzoG024NKStsrgEOkJEUNcrMANQ7x/2PVMxLAOHKrnY/uYGW1tEnba
+         B+7JrHXdFh2e6++zQpz9V54zoYVPhS1zuk73L4iSslChBoWx9nG07AJUvtONCg1LoVs3
+         FfLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776693062; x=1777297862;
+        d=1e100.net; s=20251104; t=1776693599; x=1777298399;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=2CQQpu+pTCuIRdY5y4O2DIzGNhbLx1QOGGuLTzhze6c=;
-        b=nHdZ1jp1vqi2lL3iGqjnYLdjkD93bsu84UruAZLJem8y5nvH6LIm9wczX3uNwOqUHp
-         JIe6OfexeYRE/T+j80rzTJilIiYHWILV9PoPKfcUNKsl+/9HwLda1UTSAdTFUTzdiK3J
-         KvLyDPaThHo+u+s2FzzN21bK4SB/emcmbotrQvbHElc083bDeWGjXLyMEyOsVufI3Lqx
-         tSlQKI7IudWMMl/Eb1YTXbV2pbIRL5PPkNj8pPDs+ijGABQKBU+wfmcjAcAh1i+Yjc/w
-         dN177wAR2K2edS7a9KdSjtmiORlfJV8d/pyxEjAlKQHv4Yt853LBpAxtGjDtVAmHtapq
-         3qPQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9dXrObp6asizRJEWA/YR1crhB5RUUJM/WFFhk23WYfDUihTco0FiJgwh9PhhwIQdijWNf7Qfg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxU1GDJnfs1u861JpgFgMZskuwUSD8HVVD4EiDyOPHT9Da/hrTY
-	9f0Dzy5Xy/9NtLvxtZzO9GcdpQWtRX7lZtKWN8BGOoWb/TsT+ot3rYiu
-X-Gm-Gg: AeBDietgTGvoiCuLos1B/mBlHgZK/sfZkK+JewOp3u7BeaMYEwB9iNdHYUV44teRHFJ
-	VYJbrSZ/dBist2BofDISQ6T1oInQDggVEqQV85XSRAzaOVQu0oMJXDzc+FXxnj5WxM+iQQpClWb
-	eEAqy/uQlWFXobdjI2UhbXdrCflO8HYCc5JLhjiTaicHV3ILvmr8DGjJ13ppI+ZiwqRgOJGJ3QZ
-	r8/uxLMNtxolbS2gNcbkKGyQ1dHm0aQzsO7ZYxrnIIsA2K5y7TtA9+YstEr27eb9pZyZn+yOGIT
-	x6RbQDoluCOwPuMoJpZE0afYbFV74ehKmUgOKzIa1qdCzpaynKB70a03TJXNUqusuSwMGOtJnt8
-	fpMF4LWx8U+JhOzcUe3TUj4K+k9TP9RPkstPn+lpje43gODu0jT/dqyNxSx23L5sAq0iWA9j6ts
-	68mazkY4+cO7bAS5tY+hVBc2PW9wUtYXeTksX55p3llRLDhg/MPJd4E7x+n3M6y5ziNXVjI9v5L
-	PtgOtQVzeOUfqAvy5dDioMS0tnsVVSCBV4QGBLGIQ==
-X-Received: by 2002:a05:620a:370e:b0:8cf:d953:b4f1 with SMTP id af79cd13be357-8e78f72ffd4mr1870500885a.1.1776693061842;
-        Mon, 20 Apr 2026 06:51:01 -0700 (PDT)
-Received: from server0 (c-68-48-65-54.hsd1.mi.comcast.net. [68.48.65.54])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8e7d69abee3sm790342385a.17.2026.04.20.06.51.00
+        bh=PtA7XaAsBped8tzDKGVHSMvp1WbWNwbAvXQ8vkybz/I=;
+        b=klO0erRHl71eI4L/vEA4vY5ZDMbt9yDQFAnBHHIAxMidA5BAR2O31Y6AirqAavWROp
+         ZiZd14UJFvtB9cP06qzhRnl1wDG6e5tR4By/nGFD2szruc5w/nFzA6FLFbjEGQu9O7JP
+         S0mw02bAFmrqBWp5tlqEZwOV4yRY3yYp0d/J1hRxOHsH7Ay4afpnHH9BoFm01A0wl2Qt
+         g8UzyUPAEkk7aQvc6sI6sSimIRV646iC22FhLAtnYMF1Dgrd5j4rSL4Vg/Y+mJkvGW6C
+         XWR4ste3uFKktNIcTI6XmkqddEz/bTkdFZyfKzP/31iStmNqKos6wRf/pFCo2AdOXJam
+         OOHQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+bw3ix9XhhUhscFxoGYfJP9Dc17NTnohUfdK1gt+I1uvW1s0nXSGYs4i4bAtXOsgHc1drndBY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyvX4q/nLPwowhRvp49wcMuMFw4tK/hlwDCnouVPbNZ0ux6QJaF
+	punMqq2N7DVam/cMEXzpENBqv8wRf5vmKpG/X4I154+PSrusfeCnc7GEyVl/uXTd
+X-Gm-Gg: AeBDieu1Fza1ZDTvFCnEVOmqzLwzV6nn6powhLlhfV30nt3zhVXMYMuCSrLGLoFgmLm
+	J0d/Zbi0abqFhk1U8tTY5933RQK+lDTu/yGnp6BgmUs5kygwL6i1XtWBDqr7ImDxslpSzVb8PqH
+	hsaeCyPC+8lL9FFPHo0QRlxPgYeKzbHunqFUT9+z9OoOBHG7aCvg16Y/65AAEQABgZoqvbyxsCI
+	HNI+P75vwkJ0ZCOTiB4ptH172xD+MAvNUC5uVVSxP8nUqFuGPRIsUSijvVOF3lIdnTVJ5AiuAh/
+	/fjBnJZhlwl6it9Fdkfom8q7qdtXqUBOZfdy88oczJzDd+pJdBry2Xn5nCb+jo92KhQgbmgBX4i
+	9CjFKLLT8+/bnDdfiB94J7kOpvAlNBa9As2ZbRqmIsbVuHJ1hPv0234gP1fInB9pYmTG7CkIAVL
+	0qKgRYE5oaQYxQdVslzPl3b+dNuoqssvcIKrHEsZPGH/PJEiJnZBDfkQTeG6uQoggPZQBMLatc
+X-Received: by 2002:a17:902:ee84:b0:2b2:4697:78f4 with SMTP id d9443c01a7336-2b5f9fe094fmr113361365ad.31.1776693598648;
+        Mon, 20 Apr 2026 06:59:58 -0700 (PDT)
+Received: from localhost.localdomain ([115.110.225.242])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b5fab0cd18sm112575965ad.45.2026.04.20.06.59.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Apr 2026 06:51:01 -0700 (PDT)
-From: Michael Bommarito <michael.bommarito@gmail.com>
-To: Steve French <sfrench@samba.org>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	linux-cifs@vger.kernel.org
-Cc: Paulo Alcantara <pc@manguebit.org>,
-	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Tom Talpey <tom@talpey.com>,
-	Bharath SM <bharathsm@microsoft.com>,
-	samba-technical@lists.samba.org,
+        Mon, 20 Apr 2026 06:59:58 -0700 (PDT)
+From: Shitalkumar Gandhi <shital.gandhi45@gmail.com>
+X-Google-Original-From: Shitalkumar Gandhi <shitalkumar.gandhi@cambiumnetworks.com>
+To: gregkh@linuxfoundation.org,
+	jirislaby@kernel.org
+Cc: bhuvanchandra.dv@toradex.com,
+	Frank.Li@nxp.com,
+	peng.fan@nxp.com,
+	sherry.sun@nxp.com,
+	linux-serial@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] smb: client: require a full NFS mode SID before reading mode bits
-Date: Mon, 20 Apr 2026 09:50:58 -0400
-Message-ID: <20260420135058.469990-1-michael.bommarito@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	stable@vger.kernel.org,
+	Shitalkumar Gandhi <shitalkumar.gandhi@cambiumnetworks.com>
+Subject: [PATCH] serial: fsl_lpuart: fix rx buffer and DMA map leaks in start_rx_dma
+Date: Mon, 20 Apr 2026 19:29:03 +0530
+Message-Id: <20260420135903.2062024-1-shitalkumar.gandhi@cambiumnetworks.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -100,71 +101,117 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[manguebit.org,gmail.com,microsoft.com,talpey.com,lists.samba.org,vger.kernel.org];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-239230-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[michaelbommarito@gmail.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-239231-lists,stable=lfdr.de];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[shitalgandhi45@gmail.com,stable@vger.kernel.org];
 	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 13D5742D90A
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 4B42942FBB4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-parse_dacl() treats an ACE SID matching sid_unix_NFS_mode as an NFS
-mode SID and reads sid.sub_auth[2] to recover the mode bits.
+lpuart_start_rx_dma() allocates sport->rx_ring.buf with kzalloc() and
+then maps a scatterlist via dma_map_sg().  On three subsequent error
+paths the function returns directly without releasing those resources:
 
-That assumes the ACE carries three subauthorities, but compare_sids()
-only compares min(a, b) subauthorities.  A malicious server can return
-an ACE with num_subauth = 2 and sub_auth[] = {88, 3}, which still
-matches sid_unix_NFS_mode and then drives the sub_auth[2] read four
-bytes past the end of the ACE.
+  - when dma_map_sg() returns 0 (-EINVAL):
+      ring->buf is leaked.
+  - when dmaengine_slave_config() fails:
+      ring->buf and the DMA mapping are leaked.
+  - when dmaengine_prep_dma_cyclic() returns NULL:
+      ring->buf and the DMA mapping are leaked.
 
-Require num_subauth >= 3 before treating the ACE as an NFS mode SID.
-This keeps the fix local to the special-SID mode path without changing
-compare_sids() semantics for the rest of cifsacl.
+The sole cleanup path, lpuart_dma_rx_free(), is only reached when
+lpuart_dma_rx_use is set, and the caller lpuart_rx_dma_startup() clears
+that flag on failure of lpuart_start_rx_dma().  So these resources are
+permanently leaked on every failure in this function.  Repeated port
+open/close or termios changes under error conditions will slowly consume
+memory and leave stale streaming DMA mappings behind.
 
-Fixes: e2f8fbfb8d09 ("cifs: get mode bits from special sid on stat")
+Fix it by introducing two error labels that unmap the scatterlist and
+free the ring buffer as appropriate.  While here, replace the misleading
+-EFAULT (bad userspace pointer) returned when dmaengine_prep_dma_cyclic()
+fails with the more accurate -ENOMEM, matching how other dmaengine users
+in the tree treat this failure.
+
+No functional change on the success path.
+
+Fixes: 5887ad43ee02 ("tty: serial: fsl_lpuart: Use cyclic DMA for Rx")
 Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-6
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
----
- fs/smb/client/cifsacl.c | 1 +
- 1 file changed, 1 insertion(+)
 
-diff --git a/fs/smb/client/cifsacl.c b/fs/smb/client/cifsacl.c
-index c920039d733c..a62c8a733779 100644
---- a/fs/smb/client/cifsacl.c
-+++ b/fs/smb/client/cifsacl.c
-@@ -831,6 +831,7 @@ static void parse_dacl(struct smb_acl *pdacl, char *end_of_acl,
- 			dump_ace(ppace[i], end_of_acl);
- #endif
- 			if (mode_from_special_sid &&
-+			    ppace[i]->sid.num_subauth >= 3 &&
- 			    (compare_sids(&(ppace[i]->sid),
- 					  &sid_unix_NFS_mode) == 0)) {
- 				/*
+Signed-off-by: Shitalkumar Gandhi <shitalkumar.gandhi@cambiumnetworks.com>
+---
+ drivers/tty/serial/fsl_lpuart.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/tty/serial/fsl_lpuart.c b/drivers/tty/serial/fsl_lpuart.c
+index f36d50fe056f..296a096be351 100644
+--- a/drivers/tty/serial/fsl_lpuart.c
++++ b/drivers/tty/serial/fsl_lpuart.c
+@@ -1376,7 +1376,8 @@ static inline int lpuart_start_rx_dma(struct lpuart_port *sport)
+ 
+ 	if (!nent) {
+ 		dev_err(sport->port.dev, "DMA Rx mapping error\n");
+-		return -EINVAL;
++		ret = -EINVAL;
++		goto err_free_buf;
+ 	}
+ 
+ 	dma_rx_sconfig.src_addr = lpuart_dma_datareg_addr(sport);
+@@ -1388,7 +1389,7 @@ static inline int lpuart_start_rx_dma(struct lpuart_port *sport)
+ 	if (ret < 0) {
+ 		dev_err(sport->port.dev,
+ 				"DMA Rx slave config failed, err = %d\n", ret);
+-		return ret;
++		goto err_unmap_sg;
+ 	}
+ 
+ 	sport->dma_rx_desc = dmaengine_prep_dma_cyclic(chan,
+@@ -1399,7 +1400,8 @@ static inline int lpuart_start_rx_dma(struct lpuart_port *sport)
+ 				 DMA_PREP_INTERRUPT);
+ 	if (!sport->dma_rx_desc) {
+ 		dev_err(sport->port.dev, "Cannot prepare cyclic DMA\n");
+-		return -EFAULT;
++		ret = -ENOMEM;
++		goto err_unmap_sg;
+ 	}
+ 
+ 	sport->dma_rx_desc->callback = lpuart_dma_rx_complete;
+@@ -1423,6 +1425,13 @@ static inline int lpuart_start_rx_dma(struct lpuart_port *sport)
+ 	}
+ 
+ 	return 0;
++
++err_unmap_sg:
++	dma_unmap_sg(chan->device->dev, &sport->rx_sgl, 1, DMA_FROM_DEVICE);
++err_free_buf:
++	kfree(ring->buf);
++	ring->buf = NULL;
++	return ret;
+ }
+ 
+ static void lpuart_dma_rx_free(struct uart_port *port)
 -- 
-2.53.0
+2.25.1
 
 
