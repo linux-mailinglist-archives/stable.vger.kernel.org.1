@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-239837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239689-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eE0COMRo5mnBvwEAu9opvQ
-	(envelope-from <stable+bounces-239837-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:56:20 +0200
+	id EHWGJgth5mkxvgEAu9opvQ
+	(envelope-from <stable+bounces-239689-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:23:23 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FB4D4324CC
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:56:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDB97431193
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 19:23:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 60601374053B
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:09:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6604E36C76C2
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:02:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BB0534107F;
-	Mon, 20 Apr 2026 16:09:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47CEC341077;
+	Mon, 20 Apr 2026 16:02:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZFx/kdG/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bB+x17OQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED6BB33F5BC;
-	Mon, 20 Apr 2026 16:09:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AAE533F5BC;
+	Mon, 20 Apr 2026 16:02:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701343; cv=none; b=dNWcu2jz0DP6JwM+9XRwMgUc3R73ILP3BX9x6HVh5o/6f9De91aglrNceClf8IWZN4O6kRJngndRT7qXlA6tio9+n5YWUDTywq6uY3YeDhsPn0VY7c/ebsCq99HEDvEcQTDMxoLaMubUQ/XrChy+l1JTCWw7wYVaAHg/JfaDqwY=
+	t=1776700965; cv=none; b=pPpl5ZQROIg4rQ43Cx0+GnszY4o4h6lNRQvyXMaRc3AUosbzVWPPvht6M//RTC+c0LIWptkH6lK+0WFDyT/IBdLC78bKRxrQxv06wU4/j+irgVLNH0DYEsybavGkFG8J/1ADCj3uqJGkUQKV8NFyKlrNO9E3qF9eHhbumRJ81WQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701343; c=relaxed/simple;
-	bh=9EbpEJ8Z/OK5Ay5R1rMsgiwx+h0nuQf+DZh7Rp+N3cw=;
+	s=arc-20240116; t=1776700965; c=relaxed/simple;
+	bh=x93jEvUpY2QOWaFE45roo1WIGEoOzOLDD/rqj6n94Is=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NS3M1D06NvOFBwhsKY0NhW/f8w1IZ3HEkRCm3504i8p5aV9Rk3sqo3+kH062ei7TB5lNxU+7UkQnTPl/fa5yY1+/RvMv2nUZ5eMy/fy5WmTUj2ZNm62C+Fce4EpZRZqBH9AQyVgrv7+HuGCbjQeAz2GqqRBmZcFNy+4GzU9LpMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZFx/kdG/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 832C2C19425;
-	Mon, 20 Apr 2026 16:09:02 +0000 (UTC)
+	 MIME-Version; b=rs9NzMchL1C00qVlInsl44MSNU2wI9vExtluao5ABQdZFSA0k6v7x87azKkUuDhtHuuG0qebs31CtVEXDvL1jrm33Au/VVx+ih5bSIi6RMCM6sCadib+gDkr/Llm5AWprFtW0PCu7SCse+gY0y9brsuUX5av/nnBjI3jEZ+aMTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bB+x17OQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58FFDC2BCB4;
+	Mon, 20 Apr 2026 16:02:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701342;
-	bh=9EbpEJ8Z/OK5Ay5R1rMsgiwx+h0nuQf+DZh7Rp+N3cw=;
+	s=korg; t=1776700964;
+	bh=x93jEvUpY2QOWaFE45roo1WIGEoOzOLDD/rqj6n94Is=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZFx/kdG/sCA9b7+H7A00jLKFsRvk5HDIxfBRQKMm0aHVmH7jEbuqwQ1fTwJmD1tDm
-	 ChsaJl42vgKmpxiUu/MxBEVIEbg/VCtrtmWeGC33gjbX4P5ZSyvD1Mj7GwnmNxKpmS
-	 LnRHjWfQfb0i/D7UgQLDnHc/FSMIJhB0O36cELPg=
+	b=bB+x17OQ71vGYGwtxzJIfAgT1mwuL3zg1eX3JAjH6JdY/zyaQE9eE8aZfRJIZ2bnS
+	 F8MgMLRp20b6VBVBkNCNH0NJhPXk7UChzgxUkccrapwMHwi6Zpqp7eJxq/W0oWvBb/
+	 4VpwTQU+4CpQ60a+5sKlqydglfvu9RYfxpdmpjaE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Baltieri <fabio.baltieri@gmail.com>,
-	Jiawen Wu <jiawenwu@trustnetic.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 075/162] net: txgbe: leave space for null terminators on property_entry
+	Paolo Abeni <pabeni@redhat.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.18 128/198] net: usb: cdc-phonet: fix skb frags[] overflow in rx_complete()
 Date: Mon, 20 Apr 2026 17:41:47 +0200
-Message-ID: <20260420153929.753729867@linuxfoundation.org>
+Message-ID: <20260420153940.216190569@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
-References: <20260420153927.006696811@linuxfoundation.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,75 +78,80 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-239837-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-239689-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,trustnetic.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,trustnetic.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 5FB4D4324CC
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.987];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,davemloft.net:email,msgid.link:url,lunn.ch:email]
+X-Rspamd-Queue-Id: DDB97431193
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Baltieri <fabio.baltieri@gmail.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit 5a37d228799b0ec2c277459c83c814a59d310bc3 ]
+commit 600dc40554dc5ad1e6f3af51f700228033f43ea7 upstream.
 
-Lists of struct property_entry are supposed to be terminated with an
-empty property, this driver currently seems to be allocating exactly the
-amount of entry used.
+A malicious USB device claiming to be a CDC Phonet modem can overflow
+the skb_shared_info->frags[] array by sending an unbounded sequence of
+full-page bulk transfers.
 
-Change the struct definition to leave an extra element for all
-property_entry.
+Drop the skb and increment the length error when the frag limit is
+reached.  This matches the same fix that commit f0813bcd2d9d ("net:
+wwan: t7xx: fix potential skb->frags overflow in RX path") did for the
+t7xx driver.
 
-Fixes: c3e382ad6d15 ("net: txgbe: Add software nodes to support phylink")
-Signed-off-by: Fabio Baltieri <fabio.baltieri@gmail.com>
-Tested-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Link: https://patch.msgid.link/20260405222013.5347-1-fabio.baltieri@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: stable <stable@kernel.org>
+Assisted-by: gregkh_clanker_t1000
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/2026041134-dreamboat-buddhism-d1ec@gregkh
+Fixes: 87cf65601e17 ("USB host CDC Phonet network interface driver")
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/wangxun/txgbe/txgbe_type.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/usb/cdc-phonet.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
-index 5fe415f3f2ca9..27f8db89a5c7e 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
-@@ -295,10 +295,10 @@ struct txgbe_nodes {
- 	char i2c_name[32];
- 	char sfp_name[32];
- 	char phylink_name[32];
--	struct property_entry gpio_props[1];
--	struct property_entry i2c_props[3];
--	struct property_entry sfp_props[8];
--	struct property_entry phylink_props[2];
-+	struct property_entry gpio_props[2];
-+	struct property_entry i2c_props[4];
-+	struct property_entry sfp_props[9];
-+	struct property_entry phylink_props[3];
- 	struct software_node_ref_args i2c_ref[1];
- 	struct software_node_ref_args gpio0_ref[1];
- 	struct software_node_ref_args gpio1_ref[1];
--- 
-2.53.0
-
+--- a/drivers/net/usb/cdc-phonet.c
++++ b/drivers/net/usb/cdc-phonet.c
+@@ -157,11 +157,16 @@ static void rx_complete(struct urb *req)
+ 						PAGE_SIZE);
+ 				page = NULL;
+ 			}
+-		} else {
++		} else if (skb_shinfo(skb)->nr_frags < MAX_SKB_FRAGS) {
+ 			skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags,
+ 					page, 0, req->actual_length,
+ 					PAGE_SIZE);
+ 			page = NULL;
++		} else {
++			dev_kfree_skb_any(skb);
++			pnd->rx_skb = NULL;
++			skb = NULL;
++			dev->stats.rx_length_errors++;
+ 		}
+ 		if (req->actual_length < PAGE_SIZE)
+ 			pnd->rx_skb = NULL; /* Last fragment */
 
 
 
