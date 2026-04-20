@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-239785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-239453-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qK78AdpP5mkDuwEAu9opvQ
-	(envelope-from <stable+bounces-239785-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:10:02 +0200
+	id 8AiYD5VV5mkDuwEAu9opvQ
+	(envelope-from <stable+bounces-239453-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:34:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A97B042F187
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:10:01 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB01342FA5F
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 18:34:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 43080302864A
-	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 16:06:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6A2FB3453E91
+	for <lists+stable@lfdr.de>; Mon, 20 Apr 2026 15:51:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E3B033F8D6;
-	Mon, 20 Apr 2026 16:06:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 747E133AD9A;
+	Mon, 20 Apr 2026 15:51:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wlJa1CH5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F3qTux1m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2FAE34216C;
-	Mon, 20 Apr 2026 16:06:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 372F72E093A;
+	Mon, 20 Apr 2026 15:51:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776701210; cv=none; b=rR71ncHKVom+6bW3AoUZ46qyvTCK8U661dQxGhit65Vya6vEEqr3AjSDd7iaZsm00PBZG2H/ZX0K6UZXIEbK4qFSIDEwc5UVYMIN1ztimuuoPKtsaQJakuwz1Gp/EDgk8EXdDlj4+yCBWzeA70UkhaosuHJrlHP7SxuKtEtCz1E=
+	t=1776700292; cv=none; b=jnzvKSU5neKNprXya8qGdtmt5A2n9C5m+3LoUOzcNzOUIA7Ddb/i9iS0Bg+bI7O9bfCvdaV/7kysnJg1Pyu+RA1pu//5HWR0NRPNL6fq7VgCTGlF/03+rW7JIAt2XTd7Ty4aRMB0gYIPqtzTKop73/bOV5sxTsh0YLktN+7UX+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776701210; c=relaxed/simple;
-	bh=Hm/Ir3lG8ovCjfvPyxCgkzyqx81bHb0mVoTLCag6NWQ=;
+	s=arc-20240116; t=1776700292; c=relaxed/simple;
+	bh=rGPO+u3SIRrc0WP/EjFkdF1MllnOj3f/ntwv8sEOnoE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r8ifXRTDNUX7o0pvTxu5BvsmRWoeIqdq/lIewHC4MkKDqR/uvMxDpdOifsCbf9wps+HUsRv+j+4uh0Da59v6gtU/XnX1PnR1x47wFFY3sfFx4hDAxM1dGVlJ+eiBeOSQ1QR/5sl759gTZ0qAjfLMdkVRuLIux1ZBNCEaxnLCPGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wlJa1CH5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D347C2BCB4;
-	Mon, 20 Apr 2026 16:06:49 +0000 (UTC)
+	 MIME-Version; b=GSAgW9THPMp6vHYszdZzq7kloxS90gk/sxu2xymfdpBpL1WuMz8wbQHb+uEGrjhrocNAOOIg//iOSSkXDW+MhXH2jNUgqubs7I7X6yUN+bBQMg8ZilwvPK5Oj8SganiLf9g0wUqJplKoFQb829zIuSVFR3uQ+SZhAnhwBkWreo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F3qTux1m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C18E1C19425;
+	Mon, 20 Apr 2026 15:51:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776701209;
-	bh=Hm/Ir3lG8ovCjfvPyxCgkzyqx81bHb0mVoTLCag6NWQ=;
+	s=korg; t=1776700292;
+	bh=rGPO+u3SIRrc0WP/EjFkdF1MllnOj3f/ntwv8sEOnoE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wlJa1CH59xyk9c/vU2uR5qTMB+p0b7STeRq+SeBjtPrdu3c762dwFGfEo5G9RKhWY
-	 Ddzco3UfO3FfOvgrjoIG6kojpmW/CENE6M/uNt2AZnkdajWc2wgsZiC0SpbuEggfQF
-	 LvmKiQqZR2epCB1xFsxIb9b/dLshHkMnKHWAbWzE=
+	b=F3qTux1mO+JiyCtKIy17ITHO4nSBk2MpflfYnW3uSh53TFUkQnCRIgz1BWiMYl7NA
+	 1PB+HPkkI1+ufLL/9vZ5wddTVosDg6KhxUJorG1VcGnEwkgX4H3ao04xZFkuh8HeRd
+	 Lu2UwiUsRw++TZfDliwI8lKmUZP+qhq82QkACsHs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Xiang Mei <xmei5@asu.edu>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 025/162] pinctrl: intel: Fix the revision for new features (1kOhm PD, HW debouncer)
+Subject: [PATCH 6.19 116/220] netfilter: nfnetlink_log: initialize nfgenmsg in NLMSG_DONE terminator
 Date: Mon, 20 Apr 2026 17:40:57 +0200
-Message-ID: <20260420153927.932550246@linuxfoundation.org>
+Message-ID: <20260420153938.205950429@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
-References: <20260420153927.006696811@linuxfoundation.org>
+In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
+References: <20260420153934.013228280@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +65,87 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+X-Spamd-Result: default: False [3.84 / 15.00];
+	SEM_URIBL(3.50)[asu.edu:email];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
+	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-239785-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,asu.edu,strlen.de,kernel.org];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-239453-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	PRECEDENCE_BULK(0.00)[];
+	NEURAL_HAM(-0.00)[-0.291];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A97B042F187
+	R_SPF_ALLOW(0.00)[+ip6:2600:3c04:e001:36c::/64:c];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,strlen.de:email]
+X-Rspamd-Queue-Id: AB01342FA5F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Xiang Mei <xmei5@asu.edu>
 
-[ Upstream commit a4337a24d13e9e3b98a113e71d6b80dc5ed5f8c4 ]
+[ Upstream commit 1f3083aec8836213da441270cdb1ab612dd82cf4 ]
 
-The 1kOhm pull down and hardware debouncer are features of the revision 0.92
-of the Chassis specification. Fix that in the code accordingly.
+When batching multiple NFLOG messages (inst->qlen > 1), __nfulnl_send()
+appends an NLMSG_DONE terminator with sizeof(struct nfgenmsg) payload via
+nlmsg_put(), but never initializes the nfgenmsg bytes. The nlmsg_put()
+helper only zeroes alignment padding after the payload, not the payload
+itself, so four bytes of stale kernel heap data are leaked to userspace
+in the NLMSG_DONE message body.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Use nfnl_msg_put() to build the NLMSG_DONE terminator, which initializes
+the nfgenmsg payload via nfnl_fill_hdr(), consistent with how
+__build_packet_message() already constructs NFULNL_MSG_PACKET headers.
+
+Fixes: 29c5d4afba51 ("[NETFILTER]: nfnetlink_log: fix sending of multipart messages")
+Reported-by: Weiming Shi <bestswngs@gmail.com>
+Signed-off-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/intel/pinctrl-intel.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nfnetlink_log.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pinctrl/intel/pinctrl-intel.c b/drivers/pinctrl/intel/pinctrl-intel.c
-index f8abc69a39d16..5d147a3a49389 100644
---- a/drivers/pinctrl/intel/pinctrl-intel.c
-+++ b/drivers/pinctrl/intel/pinctrl-intel.c
-@@ -1588,7 +1588,7 @@ int intel_pinctrl_probe(struct platform_device *pdev,
- 		value = readl(regs + REVID);
- 		if (value == ~0u)
- 			return -ENODEV;
--		if (((value & REVID_MASK) >> REVID_SHIFT) >= 0x94) {
-+		if (((value & REVID_MASK) >> REVID_SHIFT) >= 0x92) {
- 			community->features |= PINCTRL_FEATURE_DEBOUNCE;
- 			community->features |= PINCTRL_FEATURE_1K_PD;
- 		}
+diff --git a/net/netfilter/nfnetlink_log.c b/net/netfilter/nfnetlink_log.c
+index dcd2493a9a404..b1f3eda85989c 100644
+--- a/net/netfilter/nfnetlink_log.c
++++ b/net/netfilter/nfnetlink_log.c
+@@ -361,10 +361,10 @@ static void
+ __nfulnl_send(struct nfulnl_instance *inst)
+ {
+ 	if (inst->qlen > 1) {
+-		struct nlmsghdr *nlh = nlmsg_put(inst->skb, 0, 0,
+-						 NLMSG_DONE,
+-						 sizeof(struct nfgenmsg),
+-						 0);
++		struct nlmsghdr *nlh = nfnl_msg_put(inst->skb, 0, 0,
++						    NLMSG_DONE, 0,
++						    AF_UNSPEC, NFNETLINK_V0,
++						    htons(inst->group_num));
+ 		if (WARN_ONCE(!nlh, "bad nlskb size: %u, tailroom %d\n",
+ 			      inst->skb->len, skb_tailroom(inst->skb))) {
+ 			kfree_skb(inst->skb);
 -- 
 2.53.0
 
