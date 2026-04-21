@@ -1,311 +1,233 @@
-Return-Path: <stable+bounces-240092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240093-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6MjnFow652no5QEAu9opvQ
-	(envelope-from <stable+bounces-240092-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 10:51:24 +0200
+	id 6IV/A2U952kK5wEAu9opvQ
+	(envelope-from <stable+bounces-240093-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 11:03:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B502143864A
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 10:51:23 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B29043890B
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 11:03:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 083193020AB1
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 08:51:05 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0D25C3012217
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 09:03:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C3ED39FCBA;
-	Tue, 21 Apr 2026 08:51:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B2C33A5453;
+	Tue, 21 Apr 2026 09:02:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XV+Bb8sL"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="YxtO80Py"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F4AE38422F
-	for <stable@vger.kernel.org>; Tue, 21 Apr 2026 08:51:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.174
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776761464; cv=pass; b=ETFJKEqqqjIzIsiqQiQvBTUlmcpiRxTscvHErCUrcbLO8hjlYVs4Wek+T3NYn0vFzHF6OWZSuCiPTZGaR4HPBH3/La1fB+MebHqNu4Spy3tnDxFb+lapQqx70RNMfFOGXZ5LsUW5S8dHLGakkeytSHCcbSB4UXNSb5fvqpMaSWU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776761464; c=relaxed/simple;
-	bh=y77IYP6Hfi6BU2wcOSiDcNLVbYrOD1kTkZMOUnLAzJ8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MqjulcoWKUO0pPXe1PLgh/80MLnGUD1JtlPLQzfE7tE3gNx1f23HRr3pO/TaxS0l5VaTXAnd54sxMGCh33ddKGEr7yZw+LSz7R/oym9SStcpy8kLZGj4hdFccW99kkeDjbyi4Vk8KEEaIsBqb6dkIZepuIO9xFeag4UhMz60jaY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XV+Bb8sL; arc=pass smtp.client-ip=209.85.167.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oi1-f174.google.com with SMTP id 5614622812f47-479932ccab1so2241434b6e.0
-        for <stable@vger.kernel.org>; Tue, 21 Apr 2026 01:51:02 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776761461; cv=none;
-        d=google.com; s=arc-20240605;
-        b=XZFPBQ4RsoRMy+b8qWDRZ7T+Y24EDlIRufaPG+nxPzABKMeTqmaXobGRtH8g/MaxmN
-         PRVV7hUu+nvtQQ/3W9+XNnfQXR+vi0MlI3ppSGuVoBD6Kj/WfuIVyfznkEgkvAF9JxOr
-         VIKKHaQN4qeOHPzA/gKd+wMeYfgzhvFU6YREWtFH3JO8n3LXZi6l0bapW6QrS6hUiR6e
-         uvWVnepz08KVpfVFuHI+z6yzDw8CLhVExJ2d1KG5y+ze2pXQVDwXE64EcGHs4t1v4Y/3
-         n+9XYcPxU5e1TL4jxC0+o6ZdUvrv1uqOFyvyJojn3rKIh2rhtwKrbjr4KRQBOfFVPSlv
-         +U4A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ZrXwOSjEWlXRCH3bSQkhhPPRUpo780ifbYsUKTYhEY4=;
-        fh=lj+WA3y3FouB5OlCNyfyzBPIct8jDo64RrRiKnIGgNE=;
-        b=W/pLZhHMXGnZf3SlMFfYCH3kc5dZ/3i6f0f/+kFsm9jF7teDPm31R0E2Dyh48NxUT5
-         8ZpoQvK5MO/GdMvnmLnJ7WK0Nf6oNaukSdRFZBRiakv55v6XSLodWpREax2Pp1hDHxG0
-         gjlUJ5GCQTmY/SVHwnu3tMkT75l4ZZkX0I6FFHmKWIr6Na6vEDEoRFTzYtlwG3cTV1tg
-         uPRtrKCjwUdAzG2KRWoXmaP9Rt2QADE6BxL/Zg8FuVy5K6eTR2EFfAvkSWpZ/OEryCGM
-         afgLBoyDnXLlCjciOSoWfpOvufrxos6hOawL1tAnXbyWEBLbYVxetJycjEBcH2GRYC9B
-         yxOw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4CEE3A451F
+	for <stable@vger.kernel.org>; Tue, 21 Apr 2026 09:02:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776762172; cv=none; b=qnhY1zzC8BtUsh/0vWBfmj7Da9pFa+urwpTZozJrhOK4GmYEKshl7teGSHpHj9NSFYmDt9bAf9iUDhKIjKeSJJ/eSySAQwV2yl+l6+1pVTuE78yf8x2SshS6T2lDcY1wPVcaXtHuEn4CO+UV4aRJ9omowKN+yjFxQhVXXlUcJnQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776762172; c=relaxed/simple;
+	bh=PtUQkhF8ODo+uUc8J4/pGSkHu0QMqX1x2kVB2oV6dAg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hK3tVPW4EL571E/YAyRfUQLeJQ/n7gXfF76241gRx5jVEz4R1WbWorjqTYVBXMB1wMO+sGvDGjpRekkHE+KPUmHGxBDECAuwrnFeMa3BsrojA4xHBoduZbwf0GAp6fq/1dsZ1GZAjiTIgG4JX/6HTKmDWnEJyrct8kHyeDZ72P4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=YxtO80Py; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-4411e2dfe9fso81527f8f.0
+        for <stable@vger.kernel.org>; Tue, 21 Apr 2026 02:02:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776761461; x=1777366261; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZrXwOSjEWlXRCH3bSQkhhPPRUpo780ifbYsUKTYhEY4=;
-        b=XV+Bb8sLMG9kXgilN4sunJ3OPkamlh6R5tZjK1j9Lv3F7nyxzh8Zn+FFDnJJPSXXMu
-         GewAhEB3TPSoYIe9Z6fAUOjnQuXNX51P9Y0hX/6K1xPdVAUqLzpPV96xZSrqKpEO57JB
-         f16sFkiSAcS/wqsecqNt99hjmkg+EBA8AlDMJv/6Xnkbfd5nC35thQLWq7ePs2PROQ8h
-         jhaYu+FnNUSwKIrAk3XbrRiDZ4LPAHfeWCF/1gAcmQadDJPn0uChp2euxH/JJsU0OHLT
-         PJpLUCwUXXwevxXs52AkOeQQtlNBWZRZC1p3MMtkBbZSOE5R1PscX6MEMmTio8+wSFRX
-         GoSQ==
+        d=suse.com; s=google; t=1776762168; x=1777366968; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=D1tUMNKsUka20XG67YhLFUj+hBxuaCOCgy+TNZlHY/s=;
+        b=YxtO80Py/n3gxmHgHjs6Eh2Bk/cI921/+YOfcAx40aw+LmhohQLDFN1GIT4Wp077ua
+         Y4jmQInmJHK8GCoDFgXDFcH+vwSsEUjI5gHcJU0ZgC2MfQSZkQGp1rWISfvGxl7W3yny
+         fVXbiZNfhKawTeLkjmeRLfPw5dOJ2lmBbtU4hPu8MtuY984kNYJBjzvHXOK5mFej75ue
+         w1lnfg0a+JuRFDsl/Vo3f5dJcvMOc4S9hTN+B1+ODqq4paqSR39Q9BNAYnvXuWxE3blK
+         0kGKgYXhct+6Td08nRtNpfWJ8E0Tdu8IV2PPtP+hqfaComPktR3Qfw008gI8uOJWS8kq
+         PUQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776761461; x=1777366261;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ZrXwOSjEWlXRCH3bSQkhhPPRUpo780ifbYsUKTYhEY4=;
-        b=IxUDaox3yf2RcX+tylw9CNn+UIZw/TXODYB9u/XVPaZCC572pZFQ5nSQJLeTSRB5oY
-         xcDOShImKC9HZ0MOyviSYX3kwZTd9WtaDr6WRaH2AAjPtXHPBI6IKi88Nv/Oc1WHtt3u
-         VWomUx2+jy0MUy5BDUC8xvMXzmcvC3POAwkZz7BVvzJA/0QdhTKHTkRhNXKdkagf7Ohg
-         uq8kHcb/kJhLLxoBL1dyy2k5VXPrVPr+VurpY9GVNBF49iBztkxe1zgQa0/AhR9vaphs
-         ZbQZuHvYZW5EcJLOyMpypuqtDOhh4PR/TMedJrT+L35hPX8UQpPc69bMH1ffFH9IdLV6
-         sguw==
-X-Forwarded-Encrypted: i=1; AFNElJ+EJS/gs8M06i8lthaMWaGhPt+QhCDBn80SgrHZdDncWHX26GLpHEsQ7pYLlg95jFff7oIMLoU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzlb3da9aYIN7cYpnS50iuoYRq7/phjgwq6/hSuHZ0J1Gbn3SVx
-	8dLhy0yIlz2mWTxLB8uKe6vNW0u2mpHCZMGmz8qFIeS5gQTOryEKLyip83nSc0LBzD6UcWI8s/z
-	vmz5aB4Wew7rgu5ecCPgQihehQ9ohadg=
-X-Gm-Gg: AeBDies5OUuewWLC4doXpRIpbFq3CvHquWQ21SsIsT8knIghz2hnjh2r/hrHu75FOQW
-	dmui+6+VuP327N7OuaC+TBnFITmpozjEGC3b+ikOkm7TniPD3aNjwHylOpOLMoLoI7s3fQqIbVs
-	CZKFp85chIMJj6ltEwvsN87lL9uqnfk97JlV5U+w+DDBFhxI26P6LOjBtxInyWQAOFby5wGMk4W
-	1KpAF6dhXsAyDPlWtjUAJPHLiqLL6adwhUPUYeImttqKtRuD1emquMokjcecYzuStYYw1yJ+8FL
-	cufm/F0CbD+uG2yJK68=
-X-Received: by 2002:a05:6820:c8d:b0:694:85a9:d8a9 with SMTP id
- 006d021491bc7-69485a9e0a3mr3899810eaf.46.1776761461337; Tue, 21 Apr 2026
- 01:51:01 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1776762168; x=1777366968;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=D1tUMNKsUka20XG67YhLFUj+hBxuaCOCgy+TNZlHY/s=;
+        b=HP+lI1d0bsTmsBQQtkMb85gDTAFw1IcyUSewab+MLIiTsKU6UtspH1ZQ9RmEp8c6Hs
+         gFnNtIMXECCE1TGFEFlUJoGFzlr30m0d0YzPaBkLqiKo8IP50zY03WWkzaRgr2RZAIps
+         OORxn9shYUE5BIWMi1haIFgBXqGIYf7fBU4fm4NHSU/Lg9JmUJjuyKUE7Bq3uFOmrDHD
+         h24u6l1/hhGz20yIIc+OGbtsNC/vqcJ6ItSIFsdw8ZaX7ZojZRZK40RptkrfpZX4QO85
+         1kycMvw3kMZl3O9Fwo4PIPEhdKQsdN7+8JCoNy0L68xm/yLObZlZ9oU2g5ZEW+8rxF+A
+         c7ZQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9/dK+0s6Kql2+9Y7TocwNu8YqcXMm6EL+0z2viUsdW990T/WSyUKhrYaGBXsQ4HnFZacGa/58=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxJsGOhPURfjjtIITXDWObt6gXbG9pj4t1euYeyCnYx7EC4658Y
+	scgDwXWda5fhuG6+FUG9M8Ydv5epcw/gyH/pW9LT9XWS01ngSjUgO79YANUEAjXpabw=
+X-Gm-Gg: AeBDiesfmqZjlWPDQCsB2aG1NJSsj52pxchCe0K9EN+3mdQFMay3+hgkooxotOVssM+
+	x5d0SML9XH0+pLe0L1MLpupFmAHZX9ZbA3xi5cswfH3fx7fdYmGinzZDnChYyaOVz5Mi6lGEjbI
+	aJphTo3ye5ysjxgHtfXgasjB2RJDH5sI78o1Z+e9xXI1DpXm/uPdPOc/CcUnDApZ90bGY2/jGyx
+	YUQVpfbmzT6oC3Pb7IcBqllml7boyROHY6xFlTK+nfk85wNpTE0hQXDMS2ZT8PDIP0/dPwPe1Tv
+	toltGRxGgYmoo1B71o5+XxUrTCCcs7Eth9iM2437X0BNQ7eHN0wNpL2xeb9vws3jTGFq9VIQqpv
+	0KTKQ0T2xZ5BkDXhdKMmrhzz4myKqWSjuv81rnWu/VzHg57F2weYdjSFkuoIn6lI+otGfKBnse2
+	9I9t8BO6Kf3d+LAZlC4cpiVRquYiLDaC9Jo4oyyG2+8SOMf8WrRyuvFePUtVdjUaK10iRi
+X-Received: by 2002:a05:600c:4746:b0:488:ac4b:59d1 with SMTP id 5b1f17b1804b1-488fb7ab49cmr115940905e9.8.1776762168051;
+        Tue, 21 Apr 2026 02:02:48 -0700 (PDT)
+Received: from ?IPV6:2001:1a48:8:903:1ed6:4f73:ce38:f9d4? ([2001:1a48:8:903:1ed6:4f73:ce38:f9d4])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4891c08faffsm269654935e9.1.2026.04.21.02.02.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 21 Apr 2026 02:02:47 -0700 (PDT)
+Message-ID: <1f50ce04-20e6-46a0-9d8a-00a5f7a74967@suse.com>
+Date: Tue, 21 Apr 2026 11:02:45 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CA+bbHrW0Z6NdFsUwycvRhLbe3xnbXSwmb24EW4FKFtn=0TVzBw@mail.gmail.com>
- <20260326013719.1662-1-fjhhz1997@gmail.com> <CA+bbHrX3CdXqW6b0GbY_C7rmte3_9Q=89TJN=A2EBCQM1xSzag@mail.gmail.com>
- <CA+bbHrUkGP5bX6SFVXLS-bTyHWUiRyHaSojvMW6RGPz+T55yHg@mail.gmail.com> <CA+bbHrVJz3O-2yUs-KJC5anADzqt-vA-5LNpu=nZsdxjRJ2U=A@mail.gmail.com>
-In-Reply-To: <CA+bbHrVJz3O-2yUs-KJC5anADzqt-vA-5LNpu=nZsdxjRJ2U=A@mail.gmail.com>
-From: =?UTF-8?B?w5NzY2FyIEFsZm9uc28gRMOtYXo=?= <oscar.alfonso.diaz@gmail.com>
-Date: Tue, 21 Apr 2026 10:50:51 +0200
-X-Gm-Features: AQROBzDLzt2nEeuvJml9b13__9hjzcZ8b-c7s6sxPrR06FTk8Dye17dQw-zo5Og
-Message-ID: <CA+bbHrVWmSpWZ9GBVJ5vffh1qYEye=EWMq9tKA-_uzfW+raC8A@mail.gmail.com>
-Subject: Re: [PATCH v2] wifi: mac80211: fix the issue of NULL pointer access
- when deleting the virtual interface
-To: =?UTF-8?B?5YKF57un5pmX?= <fjhhz1997@gmail.com>, brite.airgeddon@gmail.com
-Cc: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] iomap: avoid compaction for costly folio order
+ allocation
+Content-Language: en-US
+To: Dave Chinner <dgc@kernel.org>, Salvatore Dipietro <dipiets@amazon.it>
+Cc: linux-kernel@vger.kernel.org, alisaidi@amazon.com, blakgeof@amazon.com,
+ abuehaze@amazon.de, dipietro.salvatore@gmail.com, willy@infradead.org,
+ stable@vger.kernel.org, Christian Brauner <brauner@kernel.org>,
+ "Darrick J. Wong" <djwong@kernel.org>, linux-xfs@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, "Ritesh Harjani (IBM)"
+ <ritesh.list@gmail.com>, Christoph Hellwig <hch@infradead.org>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>, Michal Hocko <mhocko@suse.com>,
+ "David Hildenbrand (Red Hat)" <david@kernel.org>,
+ Johannes Weiner <hannes@cmpxchg.org>
+References: <20260403193535.9970-1-dipiets@amazon.it>
+ <20260403193535.9970-2-dipiets@amazon.it> <adLlrSZ5oRAa_Hfd@dread>
+From: Vlastimil Babka <vbabka@suse.com>
+In-Reply-To: <adLlrSZ5oRAa_Hfd@dread>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240092-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	FREEMAIL_CC(0.00)[vger.kernel.org,amazon.com,amazon.de,gmail.com,infradead.org,kernel.org,kvack.org,suse.com,cmpxchg.org];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240093-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[suse.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[oscaralfonsodiaz@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[vbabka@suse.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_FIVE(0.00)[6]
-X-Rspamd-Queue-Id: B502143864A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amazon.it:email,suse.com:dkim,suse.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8B29043890B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hello, I would like to copy Brite from the airgeddon team, who has
-come up with a solution. I will include him in the email, and he will
-send you a patch for you to review.
+On 4/6/26 00:43, Dave Chinner wrote:
+> On Fri, Apr 03, 2026 at 07:35:34PM +0000, Salvatore Dipietro wrote:
+>> Commit 5d8edfb900d5 ("iomap: Copy larger chunks from userspace")
+>> introduced high-order folio allocations in the buffered write
+>> path. When memory is fragmented, each failed allocation triggers
+>> compaction and drain_all_pages() via __alloc_pages_slowpath(),
+>> causing a 0.75x throughput drop on pgbench (simple-update) with 
+>> 1024 clients on a 96-vCPU arm64 system.
+>> 
+>> Strip __GFP_DIRECT_RECLAIM from folio allocations in
+>> iomap_get_folio() when the order exceeds PAGE_ALLOC_COSTLY_ORDER,
+>> making them purely opportunistic.
+>> 
+>> Fixes: 5d8edfb900d5 ("iomap: Copy larger chunks from userspace")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Salvatore Dipietro <dipiets@amazon.it>
 
-This patch has been refined after a lot of work and no longer has any
-=E2=80=9Cside effects=E2=80=9D. At least, we have not detected anything unu=
-sual, and
-it has been tested extensively with many different chipsets. In any
-case, it=E2=80=99s best if he replies to the email himself to explain it an=
-d
-propose the patch.
+BTW, backporting perf regressions fixes to 6.6, when they are only reported
+at the time 7.0 is released, might be too risky. There will likely be a
+different workload that will regress as a result, no matter what we do.
 
-Thanks and regards.
---
-Oscar
+>> ---
+>>  fs/iomap/buffered-io.c | 15 ++++++++++++++-
+>>  1 file changed, 14 insertions(+), 1 deletion(-)
+>> 
+>> diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+>> index 92a831cf4bf1..cb843d54b4d9 100644
+>> --- a/fs/iomap/buffered-io.c
+>> +++ b/fs/iomap/buffered-io.c
+>> @@ -715,6 +715,7 @@ EXPORT_SYMBOL_GPL(iomap_is_partially_uptodate);
+>>  struct folio *iomap_get_folio(struct iomap_iter *iter, loff_t pos, size_t len)
+>>  {
+>>  	fgf_t fgp = FGP_WRITEBEGIN | FGP_NOFS;
+>> +	gfp_t gfp;
+>>  
+>>  	if (iter->flags & IOMAP_NOWAIT)
+>>  		fgp |= FGP_NOWAIT;
+>> @@ -722,8 +723,20 @@ struct folio *iomap_get_folio(struct iomap_iter *iter, loff_t pos, size_t len)
+>>  		fgp |= FGP_DONTCACHE;
+>>  	fgp |= fgf_set_order(len);
+>>  
+>> +	gfp = mapping_gfp_mask(iter->inode->i_mapping);
+>> +
+>> +	/*
+>> +	 * If the folio order hint exceeds PAGE_ALLOC_COSTLY_ORDER,
+>> +	 * strip __GFP_DIRECT_RECLAIM to make the allocation purely
+>> +	 * opportunistic.  This avoids compaction + drain_all_pages()
+>> +	 * in __alloc_pages_slowpath() that devastate throughput
+>> +	 * on large systems during buffered writes.
+>> +	 */
+>> +	if (FGF_GET_ORDER(fgp) > PAGE_ALLOC_COSTLY_ORDER)
+>> +		gfp &= ~__GFP_DIRECT_RECLAIM;
+> 
+> Adding these "gfp &= ~__GFP_DIRECT_RECLAIM" hacks everywhere
+> we need to do high order folio allocation is getting out of hand.
+> 
+> Compaction improves long term system performance, so we don't really
+> just want to turn it off whenever we have demand for high order
+> folios.
+> 
+> We should be doing is getting rid of compaction out of the direct
+> reclaim path - it is -clearly- way too costly for hot paths that use
+> large allocations, especially those with fallbacks to smaller
+> allocations or vmalloc.
+> 
+> Instead, memory reclaim should kick background compaction and let it
+> do the work. If the allocation path really, really needs high order
+> allocation to succeed, then it can direct the allocation to retry
+> until it succeeds and the allocator itself can wait for background
+> compaction to make progress.
+> 
+> For code that has fallbacks to smaller allocations, then there is no
+> need to wait for compaction - we can attempt fast smaller allocations
+> and continue that way until an allocation succeeds....
 
-OpenPGP Key: DA9C60E9 ||
-https://pgp.mit.edu/pks/lookup?op=3Dget&search=3D0x79B17260DA9C60E9
-4F74 B302 354D 817D DE38 0A43 79B1 7260 DA9C 60E9
---
+So, should we do a LSF/MM session?
 
-El jue, 2 abr 2026 a las 2:06, =C3=93scar Alfonso D=C3=ADaz
-(<oscar.alfonso.diaz@gmail.com>) escribi=C3=B3:
->
-> Hello everyone, a member of the airgeddon team made a kernel
-> modification that seems to work. I=E2=80=99ve tested it on VMware and als=
-o on
-> bare metal with a 7.0.0-rc5 kernel, using both a Fenvi AX1800
-> (MT7921U) and an Alfa AWUS036AXML (MT7921AUN), and it appears to work
-> well. Deauthentication during VIF operation (evil twin attack) is now
-> working for MediaTek.
->
-> Everything is documented at this comment in the GitHub thread
-> (https://github.com/morrownr/USB-WiFi/issues/682#issuecomment-4167080451)=
-,
-> including the patch used. A patch that is modifying these three files
-> (tx.c, chan.c and ieee80211_i.h). Take a look at it  on the Github
-> thread please.
->
-> Regards.
-> --
-> Oscar
->
-> OpenPGP Key: DA9C60E9 ||
-> https://pgp.mit.edu/pks/lookup?op=3Dget&search=3D0x79B17260DA9C60E9
-> 4F74 B302 354D 817D DE38 0A43 79B1 7260 DA9C 60E9
-> --
->
-> El dom, 29 mar 2026 a las 23:55, =C3=93scar Alfonso D=C3=ADaz
-> (<oscar.alfonso.diaz@gmail.com>) escribi=C3=B3:
-> >
-> > Please review my latest messages in the GitHub thread.
-> > https://github.com/morrownr/USB-WiFi/issues/682
-> >
-> > There you=E2=80=99ll even find a link to a video I recorded so you can =
-see
-> > that even on bare metal with Kali Linux installed natively, it still
-> > doesn=E2=80=99t work. It behaves exactly the same as it does in the VM.
-> >
-> > Here is the link
-> > https://www.dropbox.com/scl/fi/i6h8xbls5xkvae0pitrbg/video_2026-03-29_2=
-3-44-36.mp4?rlkey=3Djm48ly9tjwbhsi4aauml2auh9&dl=3D1
-> >
-> > Regards.
-> > --
-> > Oscar
-> >
-> > OpenPGP Key: DA9C60E9 ||
-> > https://pgp.mit.edu/pks/lookup?op=3Dget&search=3D0x79B17260DA9C60E9
-> > 4F74 B302 354D 817D DE38 0A43 79B1 7260 DA9C 60E9
-> > --
-> >
-> > El jue, 26 mar 2026 a las 13:16, =C3=93scar Alfonso D=C3=ADaz
-> > (<oscar.alfonso.diaz@gmail.com>) escribi=C3=B3:
-> > >
-> > > Hi, in response to the three points:
-> > >
-> > > 1. VMware
-> > >
-> > > 2. This is the output of the lsusb command: "Bus 004 Device 002: ID
-> > > 0e8d:7961 MediaTek Inc. Wireless_Device". The adapter is very cheap,
-> > > it=E2=80=99s a Fenvi AX1800 (MT7921U), this one:
-> > > https://s.click.aliexpress.com/e/_okxhxNl . But as I said, the bug
-> > > also happens when using the Alfa AWUS036AXML (MT7921AUN).
-> > >
-> > > 3. I=E2=80=99m not sure about this right now. I=E2=80=99d say everyth=
-ing dies. I=E2=80=99ll
-> > > test that to see if SSH is still available (I don=E2=80=99t think so,=
- but I=E2=80=99m
-> > > not 100% sure at the moment).
-> > >
-> > > Give me a few days. I=E2=80=99ll test this again over the weekend. I=
-=E2=80=99ll also
-> > > run a test on bare metal (not in a VM). That said, like me, many
-> > > people use VMs for pentesting. So even if it works on bare metal,
-> > > which I=E2=80=99ll test this weekend, I think it would still be worth
-> > > investigating whether it can be fixed for VMs, since many people,
-> > > myself included, use them for work. If it works with other WiFi
-> > > adapters, it would be a big drawback if it didn=E2=80=99t work with M=
-ediaTek
-> > > adapters.
-> > >
-> > > I=E2=80=99ll also reply with a similar message in the thread.
-> > >
-> > > Thanks and regards.
-> > > --
-> > > Oscar
-> > >
-> > > OpenPGP Key: DA9C60E9 ||
-> > > https://pgp.mit.edu/pks/lookup?op=3Dget&search=3D0x79B17260DA9C60E9
-> > > 4F74 B302 354D 817D DE38 0A43 79B1 7260 DA9C 60E9
-> > > --
-> > >
-> > > El jue, 26 mar 2026 a las 2:37, =E5=82=85=E7=BB=A7=E6=99=97 (<fjhhz19=
-97@gmail.com>) escribi=C3=B3:
-> > > >
-> > > > Hi =C3=93scar,
-> > > >
-> > > > Lucid-Duck spent some time trying to reproduce your crash and wasn'=
-t able
-> > > > to trigger it. Here's a summary of what was tested:
-> > > >
-> > > > - Kali 2025.4 (kernel 6.18.12+kali-amd64) VM on QEMU/KVM, with my v=
-2
-> > > >   patch applied
-> > > > - MT7921AU USB adapter, passthrough to VM
-> > > > - Full airgeddon evil twin flow: monitor VIF + hostapd AP + continu=
-ous
-> > > >   deauth via aireplay-ng
-> > > > - Also tested on bare metal Fedora 6.19.8 with the same adapter
-> > > >
-> > > > All tests were stable -- no crash, no dmesg errors, load stayed low=
-. The
-> > > > deauth frames were confirmed sending for 30+ seconds under the v2 p=
-atch
-> > > > without issues.
-> > > >
-> > > > The one variable that couldn't be matched was the VM hypervisor.
-> > > > Lucid-Duck used QEMU/KVM, which handles USB passthrough at the kern=
-el
-> > > > level (xHCI). If you're using VirtualBox or VMware, the USB passthr=
-ough
-> > > > path is quite different (userspace proxy), and that could potential=
-ly
-> > > > explain a total VM freeze that isn't a kernel panic.
-> > > >
-> > > > Could you please reply to Lucid-Duck directly on GitHub with the
-> > > > following information? Here's the link:
-> > > > https://github.com/morrownr/USB-WiFi/issues/682#issuecomment-412919=
-8757
-> > > >
-> > > > 1. Which hypervisor are you using? (VirtualBox, VMware, QEMU/KVM, e=
-tc.)
-> > > > 2. Your exact USB adapter model and ID? (0e8d:7961 covers several
-> > > >    MT7921 variants)
-> > > > 3. If possible, try SSHing into the VM from the host while the disp=
-lay
-> > > >    is frozen -- if SSH still works, the issue is at the hypervisor/=
-display
-> > > >    level, not the kernel.
-> > > >
-> > > > Thanks,
-> > > > =E5=82=85=E7=BB=A7=E6=99=97
+But I think in any case, the page allocator needs to know which allocations
+do have the fallback. __GFP_NORETRY exists for this. Here it wasn't tried at
+all, in v2 [1] it was, but not alone. I'd start from __GFP_NORETRY alone,
+and then we can look at tweaking what it does if it's currently insufficient.
+
+We could have a helper to encapsulate this "turn this allocation to a
+lightweight fallbackable one", which would add __GFP_NORETRY. It probably
+already exists somewhere but not gfp.h. But I'm not sure we can simply
+change GFP_KERNEL to start failing more for non-costly orders. We've
+discussed that a lot in the past :)
+
+[1] https://lore.kernel.org/all/20260420161404.642-1-dipiets@amazon.it/
+
+> -Dave.
+
 
