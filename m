@@ -1,133 +1,168 @@
-Return-Path: <stable+bounces-240233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240234-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YPDIHcHZ52kBBwIAu9opvQ
-	(envelope-from <stable+bounces-240233-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 22:10:41 +0200
+	id ONVLAV3c52nJBwIAu9opvQ
+	(envelope-from <stable+bounces-240234-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 22:21:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1FD943F4DE
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 22:10:40 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70E8743F5F9
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 22:21:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5DE61301D693
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 20:04:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8FE6F3077776
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 20:20:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BC023DD509;
-	Tue, 21 Apr 2026 20:04:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D2603D8103;
+	Tue, 21 Apr 2026 20:20:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zue+wSUS"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="KjqLFL/c"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DE2A374E7A;
-	Tue, 21 Apr 2026 20:04:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E06FE36826E
+	for <stable@vger.kernel.org>; Tue, 21 Apr 2026 20:20:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776801888; cv=none; b=JdLQfwONlNVPkwredbQmsUXxJPX9GPIIMC/vYQkUQUbcE2cudcObPztaxjYwkIa6coCs0p/jU9xQ/gJXm841F3YA0bJMJM7kOgrMohVY5QhxzkOxiGO8DB5WfDBnavFyaO2OIGlZKIqV5Lf0RYhnq02SQfYFZHLJDqbzjrrPUnY=
+	t=1776802837; cv=none; b=j4JZ14NBq4s/ECtIr6913fkzAhjA3n4x+6razxYbTkjt2B+xObajHM9b1p7ZncVZGsB6bqiX0VLOMDGyDgWdnf1kwNhESxAb9u3I1dwF5xFZqNgho4t/aGQTw1vR3Z6SQICjP//RKXMLo0xET1/vzggSNK0l+nN49vwKCvIQXQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776801888; c=relaxed/simple;
-	bh=WybtY0lMzqcCEbRto++JM6GkPDutZ76eh+c7Eurl0Ug=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eUnk6WxwRDmIEPrKD/6phqqyDKyTCEBn2bQYf2JOnJG6oMdOfX0DidHTh7KVMNn+syQRdi0MKF/GeFBUTQ7e6xd+Qot7fK6hwiJAgGmiV3aBet3YmlGprEuCr7pQYBbmKMLItbZs3R/KiXpqmJ2QTguAncOg88tp4DtRwdTfmAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zue+wSUS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42246C2BCB0;
-	Tue, 21 Apr 2026 20:04:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776801888;
-	bh=WybtY0lMzqcCEbRto++JM6GkPDutZ76eh+c7Eurl0Ug=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Zue+wSUSTuF/0CUel5mRMOUVaJAKnbWSgbFYbRJjRK0k7fx4iHJK7p3LkLvbIJGL9
-	 tRTMmoU+yD0Q4TOiD5SvRSByD1VF/hapHwliduk8g9h+KPDWjptZrtpRgrp/Ha3Jf5
-	 s8oDrGjQLcAOEiynplJARmyzExpQJ9VzjSgs0IRFXeiUldXLKcmyXypD70821FMAct
-	 v1s/VRcdqEzuEhD0jgaLv2oZn3oQGx3R4nwkao7FDNP85KoEP4fLsIxlM/MOndg2xA
-	 AX7AtPQGWA4kClLwaZAmz41aMBy5dk711/JCanBbbHdYupoCN9enkKwVdL9RyBhXef
-	 g4kYzLJmkR19g==
-Date: Tue, 21 Apr 2026 21:04:41 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org,
-	pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, achill@achill.org, sr@sladewatkins.com
-Subject: Re: [PATCH 7.0 00/76] 7.0.1-rc1 review
-Message-ID: <7dc1dbe7-a030-4d5b-8c9a-e32d8fb1bff0@sirena.org.uk>
-References: <20260420153910.810034134@linuxfoundation.org>
+	s=arc-20240116; t=1776802837; c=relaxed/simple;
+	bh=45XAOuz0OqwNn6boAX9lmria/vzaaZB2g94/HwMz0IE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=F5/+MOZ3rJs3lT5vPJeazdon4xYXGrJ9UUx9DHcj1OQeJEHiIh4ZyPDymJWy+TrEIHhM8u54hmLrOI/uYP0eCEVI8rdVE11JkKnLO7aHVBAzAdeaWhmG4Crmshzf9iLInujOPfefK8ICCVzPHhuxNNpaA7zCMJQkFUEjKBA6Yhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=KjqLFL/c; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-43d43e09de5so2600840f8f.1
+        for <stable@vger.kernel.org>; Tue, 21 Apr 2026 13:20:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1776802834; x=1777407634; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=61W3FDen/JDgh3XHK5UZj5HtIe9MHjg+PhurMbllz2Y=;
+        b=KjqLFL/c9xf9acawTx4C+83P4d57AfPEVh9t9g/2neMThAWkgEbfBkDy1ClKhyoc3H
+         wshlerDeqfW3VBZhTe++GU2vk+JTVBpl5d5wMfJZfV3cQWUSqIRQJJYvlrzj2ojNPUSL
+         Zm1Fq4e5LHr2AO2zwlZlQpnlORCHrI9yWN3kMAffHUt3Hz2vBOluckM8Fnc/tDCdL7AS
+         Ea+5ph+wg/wfa/bW+d+4bJEzWjlZNpeuArbbbhMm9JCrHpRHib59NDjZfR2o0kmGGbIO
+         2lmZuM+2coogOcWyOOMYiuLjZiXZNPRRWGnnCs82XrKPRkEbFChvPqSASURb0uBop11W
+         Pxog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776802834; x=1777407634;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=61W3FDen/JDgh3XHK5UZj5HtIe9MHjg+PhurMbllz2Y=;
+        b=Lrv1yQfJiv2I7fBv+lKK3qm+qwPzBFG5w1E7GwFg0hgfWNqvImCm9O6iCGQyucPxGr
+         ltGx70Xd7Ml1nKvWBxQP62uL4VRdmZuhWR/7JbTaO1fAxdJE+THn1EOEoUdpq+e+T9NJ
+         UnzTzAv5PhKm06zO1qs4VNUQB56jV2Gf4e/9aKMSibSMCR84kWVUKurwTccGZt2Zlsnb
+         IXUzQOmOOvviL3jY79zdtbi0X36HY4PQOJlxY+E2FOeqoDEb1R4YWxU8fP7C7oBMQiLu
+         Fy0d4scPzp/PPYLHmoX8RyN1osy/4MadWvALH1FA55qCCdIfTm1FRfKcJ/aFp3ot4mI6
+         AGvQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/f60tQtw5PgMk/AaY9GUVOh8iEXqaoh0iX6iHy438yfpAbPIXfnDZxdzechV0bnyu6eAwoYiE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwBVpnghCvSmhD/HFYJaQ8lpmVoNnMwm49BU+VgIqHWYB1Q907m
+	pDHs3ezTA55quBvKgE2t6rB/E0AxpsmeR5IxtZIURuGgaY203tivS/7alh++MF21R/k=
+X-Gm-Gg: AeBDieuXsZYxNlToql3eA1kr8I0qJCZIHGaj3gwnEeajJCJpco0hiG7nC+4VYiUw8eW
+	2jE0Da8M5F9ODtLMwsxQkdurkM7wfpZj0MEmUvge+BGjvGEJBsErdRrL57kJFjNlvqCIHomsJyk
+	Zexg44FH5AoGa9ZipqOLIJHT6k0WkaoPDyLsxxgU9e07wHWcLG0EmFbUyfp1lRqG68D2gpnnAbm
+	Q8fliKbihSs3TaT2nuhNOaoUkmu0NrvnLGOFQsb1WKPa4MxvgSxPGqGNBNtaqc/JkAd4JvalP3T
+	md8itnL8gqBHiOGh7v+1AJ8tPUlHglqo22kZqdX0yzxqE6BQupfMUpDCvdVpUaJeQsXBTDjnQYD
+	MYxTHMOnfTR5upPJMilPIHThLEnibj/RGQLsYBgif9DviB5dfDsmadiw/R2HvymzC36UPhIeul6
+	tIjgD1dzKNK+bJ+3gcb4d8ca9hxkgmf5vyb2RaH3ii9Cgmg7Uf6N9+sVzYMRFRCUmmI3kdUdstQ
+	Igbpvyy++dRuKLRiFEVunCu
+X-Received: by 2002:a05:600c:628c:b0:48a:52d4:888c with SMTP id 5b1f17b1804b1-48a52d48985mr104909355e9.3.1776802834191;
+        Tue, 21 Apr 2026 13:20:34 -0700 (PDT)
+Received: from localhost (p200300de374a06005c73df0aad605173.dip0.t-ipconnect.de. [2003:de:374a:600:5c73:df0a:ad60:5173])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-488fb78d1bcsm171910825e9.5.2026.04.21.13.20.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 21 Apr 2026 13:20:33 -0700 (PDT)
+From: Martin Wilck <martin.wilck@suse.com>
+X-Google-Original-From: Martin Wilck <mwilck@suse.com>
+To: "Martin K. Petersen" <martin.petersen@oracle.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Don Brace <don.brace@microchip.com>
+Cc: linux-scsi@vger.kernel.org,
+	Hannes Reinecke <hare@suse.de>,
+	Lee Duncan <lduncan@suse.com>,
+	Martin Wilck <mwilck@suse.com>,
+	storagedev@microchip.com,
+	stable@vger.kernel.org
+Subject: [PATCH v2 1/2] scsi: smartpqi: use shost_to_hba() in pqi_scan_finished()
+Date: Tue, 21 Apr 2026 22:20:17 +0200
+Message-ID: <20260421202018.511388-2-mwilck@suse.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260421202018.511388-1-mwilck@suse.com>
+References: <20260421202018.511388-1-mwilck@suse.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ozitZSXaFsarPyAx"
-Content-Disposition: inline
-In-Reply-To: <20260420153910.810034134@linuxfoundation.org>
-X-Cookie: Jenkinson's Law:
-X-Spamd-Result: default: False [-2.76 / 15.00];
-	SIGNED_PGP(-2.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-240234-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240233-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[martin.wilck@suse.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[suse.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sirena.org.uk:mid]
-X-Rspamd-Queue-Id: D1FD943F4DE
+	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,suse.com:dkim,suse.com:mid,microchip.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.de:email]
+X-Rspamd-Queue-Id: 70E8743F5F9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+shost_to_hba() is used everywhere except to obtain pqi_ctrl_info
+from shosti, except in pqi_scan_finished(), where shost_priv() is used.
+This causes one pointer dereference to be missed, as shost->hostdata
+is a pointer in smartpqi. Fix it.
 
---ozitZSXaFsarPyAx
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Fixes: 6c223761eb54 ("smartpqi: initial commit of Microsemi smartpqi driver")
+Signed-off-by: Martin Wilck <mwilck@suse.com>
+Cc: Don Brace <don.brace@microchip.com>
+Cc: storagedev@microchip.com
+Cc: stable@vger.kernel.org
+Reviewed-by: Don Brace <don.brace@microchip.com>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
 
-On Mon, Apr 20, 2026 at 05:41:11PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 7.0.1 release.
-> There are 76 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+---
+ drivers/scsi/smartpqi/smartpqi_init.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Tested-by: Mark Brown <broonie@kernel.org>
+diff --git a/drivers/scsi/smartpqi/smartpqi_init.c b/drivers/scsi/smartpqi/smartpqi_init.c
+index b4ed991976d0..65ff50982978 100644
+--- a/drivers/scsi/smartpqi/smartpqi_init.c
++++ b/drivers/scsi/smartpqi/smartpqi_init.c
+@@ -2642,7 +2642,7 @@ static int pqi_scan_finished(struct Scsi_Host *shost,
+ {
+ 	struct pqi_ctrl_info *ctrl_info;
+ 
+-	ctrl_info = shost_priv(shost);
++	ctrl_info = shost_to_hba(shost);
+ 
+ 	return !mutex_is_locked(&ctrl_info->scan_mutex);
+ }
+-- 
+2.53.0
 
---ozitZSXaFsarPyAx
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnn2FgACgkQJNaLcl1U
-h9AhDwf/RKJavycvuzoK7ERmzKaBXhoKRBeB6xObNMhTcZjCIbTSQNLRxkrnrDGd
-8Gsm5nuFScHxLEYGOHMCROVZsOVtRzUhHHXmCbGeqmDlmoxqh4UWh9dGuApwdyIl
-2b0n9EIyAOrhGCQqzqm20Q3TPEqmuVggXmhCstLv3hkgiC8pqdRCZyrrwfHKsi2J
-eDTkJFummK7TyU7/RBKeWEgWjYemtZXF1WDlfhzifU4gaMq050aDMmI+ENcgAKzr
-srRxTLetcMuQvjBMT+EqEnBfT+L0zRREmO0MKYJnfHwCWcRa17P/WcSKR49we8j8
-t4NEjX4W9hZd+DsQ5LnYk8tK57BLPA==
-=WcpM
------END PGP SIGNATURE-----
-
---ozitZSXaFsarPyAx--
 
