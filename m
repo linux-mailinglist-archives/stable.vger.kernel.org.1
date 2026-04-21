@@ -1,256 +1,256 @@
-Return-Path: <stable+bounces-240193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240195-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MOlXEcCb52l9+QEAu9opvQ
-	(envelope-from <stable+bounces-240193-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 17:46:08 +0200
+	id CDofOoCd52ml+QEAu9opvQ
+	(envelope-from <stable+bounces-240195-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 17:53:36 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D76C543CE7C
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 17:46:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48FBF43CFB2
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 17:53:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 36D6C3028B14
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 15:43:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9340E30480AF
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 15:51:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ABC5315D5D;
-	Tue, 21 Apr 2026 15:43:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 346C434C990;
+	Tue, 21 Apr 2026 15:51:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="mJaRA4+m";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Bax/ao/3"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="faajLDNh"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB76931715B
-	for <stable@vger.kernel.org>; Tue, 21 Apr 2026 15:43:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B78D9295DA6;
+	Tue, 21 Apr 2026 15:51:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776786196; cv=none; b=hvU96fQZVxYYGRE/kVmXo2njTvHF1ty+38YDHteIqzB+PLirwp5BUs++b4cLNWsa7Fmp+KUfmZ90IlVUWufinw+h/XTW7Pai/zb1TxQLhNM0anwBbY6AMjcAOf2ONezgPT8u9Pn/kIjiUE06CGSmVYfp60dejPuqJo6hFMw2Zk8=
+	t=1776786686; cv=none; b=mk7eD0AqV0Ku2Rae3+r/mlp+MIJ4afOcvwO9FXvUxbNe3QyrEtbWay448dTAOPu7OUTadPW6Wo4QbXG2xKw6cjewgORaplQZCCa1/ColPxcz9/r/nLx6dVA+6U++5wgR8I0Q0mnGAnzmffZNAQbJwtjxaI13qpU/9S6C0CEibEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776786196; c=relaxed/simple;
-	bh=DELrGybNgDl8L2FX+JgpL3bq2IVDiMkx1kK6Sq3WZ5g=;
+	s=arc-20240116; t=1776786686; c=relaxed/simple;
+	bh=PgNeSfUwXuNTIAWz0lFy9e6I68v66mw46lASzOGwHT0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Eyqpu6KBhWDJ+/PRU+CWnTcxSvSmXp6K+08qrR+hEOhHK5QdCM/7+Imn5YX54ltp0QobQwGjiqXZAiK/Wo7v2ezez7e5a89hH8BzHudZ1He5MSa6eRWg7luSD0IkJFrXEfQxwAlkBnIhuKgxqoZPRhte0tMpKR+rI3UfAcunBA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=mJaRA4+m; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Bax/ao/3; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63L9XP9g3164584
-	for <stable@vger.kernel.org>; Tue, 21 Apr 2026 15:43:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	u5HE/DGbc89CJzO8XqH4Y0bSW5WRIaeIl+JsFKEhiZ0=; b=mJaRA4+mTRDxf0z+
-	9ue0/VE1CYRC4wymZqmhVsbJIRPaMQsxiJ4hQMLIn9pKTVe8AmJZ4YdaxrstGFAw
-	MYXzt80peyGpMC3d3xBYPBOnsW1+iljhtanftdtEioH39CktTRXNcZ1uQTbheZ0+
-	K96SEaBaWecO9xCBU30s9BDTeOcC9hIxTkkDBmDdeWRPBgInWTgXXvYvIUdeX+9D
-	DY5CpVBeG7Qduw7s9iz9aCKAb/iL/GqRKV8j+0dWmhPgUmhe+iCy6H/8YM8sOtfr
-	kthnWKbVnzgPJNHLWBqVMuE9k8HYKha3SnCkTwgu8SG688xYXZtPx0TwK3KqRYt4
-	EPM5cg==
-Received: from mail-vs1-f69.google.com (mail-vs1-f69.google.com [209.85.217.69])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4dp6q818ux-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Tue, 21 Apr 2026 15:43:11 +0000 (GMT)
-Received: by mail-vs1-f69.google.com with SMTP id ada2fe7eead31-5fb6622ca5dso1789625137.0
-        for <stable@vger.kernel.org>; Tue, 21 Apr 2026 08:43:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1776786190; x=1777390990; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=u5HE/DGbc89CJzO8XqH4Y0bSW5WRIaeIl+JsFKEhiZ0=;
-        b=Bax/ao/3fH4m15oeDXiQS5M2At79JP1LFkB/tTGxsqxeoHbZAuOQyE4paucbPYAhnD
-         QZQtcK1MJt09C73T1WkwovvTI9tIyPXfXetpkRPkNQLINGF4RIdvjVu4MEjYCw2q0Efe
-         6Bjd/XTu8HxZcSR5lGS59hQt1IOqhw3hO7yfAMnMFqivGwIhh2txfhotgqnOn6AXP20E
-         YfoMsXeNIlLHIuw8HnCcgJ46mWRURUaRssA+G8PCCdM4yjaXHnbzSQclG+g3m6/P1+77
-         KbYxZ/GXerVs8HYIQPGoNl6mV5HlT+0ajchC0h068fnD00Ezf882BickQAwDZbKEwjb9
-         Qf7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776786190; x=1777390990;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=u5HE/DGbc89CJzO8XqH4Y0bSW5WRIaeIl+JsFKEhiZ0=;
-        b=mFBvbHr9Zqnnc3Yb4ygj9OVv0NshbY+hhjkTPfjwgNXtazkPezfa9ug1izFLhA6wyA
-         pP8XgyDK/7Q6FcSrMAcVrIzIODU2+moeGlDs8rB6/ptcneiEVza+3Jg6sfuMc9qBDuMz
-         p6i8NcCBX+FAYkbe6yQda6+w4T8Keu8no1dAKZdw2/UsDDuuRS5q8X1akxrcXzquCLSj
-         znIKy1XUPF258nFkGLLjDwyx1UX94DYAh3V9/RbugOQidhwzg4h7B6uS+B7lXynJCC5V
-         8M/DAd2NBaktdFncec460iG/G8xHwbFj1yZNhq5p/mrqiC/N6CwjOa43X96Uf02+ol+q
-         cFHg==
-X-Forwarded-Encrypted: i=1; AFNElJ8XemeDFFe0rqKt12H32Fj0wgWIn6p3P5mLEZvGpMc51mhNiEzrNKntoDxPNJxqpKB66UZmBXE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzGs0YF3FiWqCSDBVMzx07R26b9TPa20azAsxTV3yJfocBKoNvf
-	X7FbVVl6D3L4x+DWymVvWKFCTKOjU/HsQFVEEYxTLxheG3DB0R/UmlLUJzXcPJlNS3DtVzgLJQk
-	2DUNZQKw7ib8xJg+IKP5FA6C42egaznvLBu2j4Kez8h5KBKdpRAtOntfjuBc=
-X-Gm-Gg: AeBDievsrs2ZCQ1gyJHAVbsHMjt23u5htzhyF8YQI+m8bJHPp5wSCzknmzVlV5qyLNZ
-	W4vYdLhPmOWehbRe9J+kiN1hmO+adkuzSw8pb6HH9L/6unzLphcmMikxX+ZUcaSvbzQWbayu2cr
-	VLNQ7whDwI7rHsCNBV0TUN+kkF8L4Lb9xHHP9Cb4nW9NF7IPj4XSjvK55YrSBqfshPcb8W6kJ0u
-	xNPA/dW0sobY06py2Zr7siwQR80zL27enun1ToFGEkBhZzwHhSxfC8OUydvv0gVQQ0NTyuE8rdE
-	vInNBbRejGHg8WxMRzr1e2UleV9Dm/iXOtatgDCVO5goafdZu7fE4USxhhtbCqRz8XMQTH6bCmA
-	UCATYLcJX8iCcilN3VjJZ0E4iEXZ9tajsrHIB1HFBIv7MNawPRYpnuyac/PJTP7hNU+pRDhKzSt
-	nUbzwEiTzeGTvEwA05529gL801Ad1teq1Aq+2TaOwip664mg==
-X-Received: by 2002:a05:6102:d8a:b0:607:b901:5d71 with SMTP id ada2fe7eead31-616f7c5399dmr7434557137.24.1776786190134;
-        Tue, 21 Apr 2026 08:43:10 -0700 (PDT)
-X-Received: by 2002:a05:6102:d8a:b0:607:b901:5d71 with SMTP id ada2fe7eead31-616f7c5399dmr7434548137.24.1776786189586;
-        Tue, 21 Apr 2026 08:43:09 -0700 (PDT)
-Received: from umbar.lan (2001-14ba-a073-af00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a073:af00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-38ecb724929sm30383761fa.32.2026.04.21.08.43.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Apr 2026 08:43:08 -0700 (PDT)
-Date: Tue, 21 Apr 2026 18:43:06 +0300
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: Yongxing Mou <yongxing.mou@oss.qualcomm.com>
-Cc: Vinod Koul <vkoul@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Bjorn Andersson <andersson@kernel.org>, linux-arm-msm@vger.kernel.org,
-        linux-phy@lists.infradead.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v3 1/2] phy: qcom: edp: Add eDP/DP mode switch support
-Message-ID: <omz64pyd63daz4cezabx6ckvtqocq5p4zgiwwdxrecyzdtfg4t@26ftjmqlj52c>
-References: <20260302-edp_phy-v3-0-ca8888d793b0@oss.qualcomm.com>
- <20260302-edp_phy-v3-1-ca8888d793b0@oss.qualcomm.com>
- <islxoe4wbqx5pl54difetdcl5lrqvfd5ysbaicxz5lv235sfmd@6hwrq3rmqx7c>
- <fffa03f6-82c5-4d87-9a41-19e6f82ec39b@oss.qualcomm.com>
- <vywmtt6p3itkrbnucahzvsh6hpwqbno7al5h5zrqdcf3cejyto@pr4of7o3zdeo>
- <f27b39fc-a6c5-4450-93bc-babb7d6dd9a5@oss.qualcomm.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=J1tjgmko8MZkXMQ4QraG1mtrNVrmNpxHMIF1DMXhGWmL5br8VzAIQql4FG+UrNKrZuZwwnbuXsgCop9ZXVmlW4rW3L35vUiSX3uv0xgnudwddzbt5c6ekuVbcHc0iTgyvNhN4DhmIHO0RxNmHDQRfYAq7i/vm08+goV+YTfHWTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=faajLDNh; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1776786683; x=1808322683;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=PgNeSfUwXuNTIAWz0lFy9e6I68v66mw46lASzOGwHT0=;
+  b=faajLDNhU6nxcoYHOvJtJNhAMoUZBpDGv02h9AQG+3eJ8yRchoJD8X4S
+   dGsJS1eeYHEp5e2fgxtx8sIs+w8hqLK0wjrQMbaIVYxPxt1kPYSJ2vCwV
+   l/S7Jz3bYfxo6htVUmnRaey23MAqSWkMeEs0HuePBrQo65Xbwdqs6FO9p
+   eP/kebmObf0nHrTbjqKn4Sznzzcg3GPG3vkgWoPCJDkHmISXH62O1B65c
+   FD7ISxMKKxkXqyWfKnrVXCc7KNEGBD11di2z2zqSi+Oqo5/9531rBkODh
+   I7zekHesSUPG4aDfmlB8CV6w8R1u7tWvACEQdsuD+7aJ+a1OsC35Tqdfi
+   g==;
+X-CSE-ConnectionGUID: eD5mZM4HQ0O8K+FXtWFrgg==
+X-CSE-MsgGUID: FD8spK5FT7uyO/fjxP8/1g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11763"; a="76759464"
+X-IronPort-AV: E=Sophos;i="6.23,192,1770624000"; 
+   d="scan'208";a="76759464"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2026 08:51:20 -0700
+X-CSE-ConnectionGUID: pjaNHav+QTySKwbAVILdKw==
+X-CSE-MsgGUID: VJw3IVDiTYa0yM6QJWX92Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,192,1770624000"; 
+   d="scan'208";a="231186758"
+Received: from lkp-server01.sh.intel.com (HELO 7e48d0ff8e22) ([10.239.97.150])
+  by orviesa010.jf.intel.com with ESMTP; 21 Apr 2026 08:51:18 -0700
+Received: from kbuild by 7e48d0ff8e22 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wFDNb-000000003iK-1yRP;
+	Tue, 21 Apr 2026 15:51:15 +0000
+Date: Tue, 21 Apr 2026 23:50:46 +0800
+From: kernel test robot <lkp@intel.com>
+To: Tristan Madani <tristmd@gmail.com>, linux-bluetooth@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, luiz.dentz@gmail.com,
+	marcel@holtmann.org, sven@svenpeter.dev, marcan@marcan.st,
+	asahi@lists.linux.dev, stable@vger.kernel.org
+Subject: Re: [PATCH v3] Bluetooth: hci_bcm4377: validate firmware event
+ length in completion ring
+Message-ID: <202604220005.gyhLDa7b-lkp@intel.com>
+References: <20260417104639.2608008-1-tristmd@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <f27b39fc-a6c5-4450-93bc-babb7d6dd9a5@oss.qualcomm.com>
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDIxMDE1NiBTYWx0ZWRfX9hpI/7Lankgf
- SUU9nlfnIpoDyO/caUl2/AqMTaEJsZ0lFXC67/mwunA/CDl9WJYrvma4AlAk5GLAw8zaSPGl4cD
- tYdorpZsxNE0zQVqLjs1ToV57DTY7PIzam5dyLfK4HcejCYFw2FrTHr7GuHgZMYmvk5hoGvNgRh
- GSkPiOGXkYbjPGpahyCjwrxpf+IrbxG8nSVCVYA8VChxaVtOoC+u05NQfmD1WqmGjB+Soc1Hdiz
- vS2J5fvtv1MzScAQE2D8o99KLaNk0s3LMnewOJEx6t1mxX6eE7uXW42J0Xrorcc/m6ZnHx0Q8B8
- 4vaZNbclmlfD1p50NJMwozj9gIcEJ7hJdHcNRWTYoSwsU0oUv1SCRGEDtwmQeiABQbYmX9H7vNA
- JquTv8rsaPyEeBtmT8mBkGdZJff+xk5+NwmAp3bQmHdHxbWWfhjGh4hJyJof2Fhw3z/dorN/fDm
- HfryIq/pnnH60qigKrA==
-X-Proofpoint-ORIG-GUID: dS58OMkuMxNFv1OTjKlGEKkZbie_GqcN
-X-Authority-Analysis: v=2.4 cv=eOYjSnp1 c=1 sm=1 tr=0 ts=69e79b0f cx=c_pps
- a=5HAIKLe1ejAbszaTRHs9Ug==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=A5OVakUREuEA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=gowsoOTTUOVcmtlkKump:22 a=VwQbUJbxAAAA:8
- a=EUspDBNiAAAA:8 a=VqdVp4WgveevkikIt2YA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=gYDTvv6II1OnSo0itH1n:22
-X-Proofpoint-GUID: dS58OMkuMxNFv1OTjKlGEKkZbie_GqcN
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-21_03,2026-04-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 spamscore=0 phishscore=0 impostorscore=0 malwarescore=0
- bulkscore=0 adultscore=0 clxscore=1015 lowpriorityscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604070000 definitions=main-2604210156
-X-Spamd-Result: default: False [-1.66 / 15.00];
+In-Reply-To: <20260417104639.2608008-1-tristmd@gmail.com>
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[lists.linux.dev,gmail.com,holtmann.org,svenpeter.dev,marcan.st,vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240193-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oss.qualcomm.com:dkim,qualcomm.com:dkim,qualcomm.com:email];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dmitry.baryshkov@oss.qualcomm.com,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240195-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[intel.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: D76C543CE7C
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[git-scm.com:url,intel.com:email,intel.com:dkim,intel.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 48FBF43CFB2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Apr 21, 2026 at 10:32:49AM +0800, Yongxing Mou wrote:
-> 
-> 
-> On 4/21/2026 2:32 AM, Dmitry Baryshkov wrote:
-> > On Mon, Apr 20, 2026 at 08:47:09PM +0800, Yongxing Mou wrote:
-> > > 
-> > > 
-> > > On 3/20/2026 2:36 PM, Dmitry Baryshkov wrote:
-> > > > On Mon, Mar 02, 2026 at 04:28:29PM +0800, Yongxing Mou wrote:
-> > > > > The eDP PHY supports both eDP&DP modes, each requires a different table.
-> > > > > The current driver doesn't fully support every combo PHY mode and use
-> > > > > either the eDP or DP table when enable the platform. In addition, some
-> > > > > platforms mismatch between the mode and the table where DP mode uses
-> > > > > the eDP table or eDP mode use the DP table.
-> > > > > 
-> > > > > Clean up and correct the tables for currently supported platforms based on
-> > > > > the HPG specification.
-> > > > > 
-> > > > > Here lists the tables can be reused across current platforms.
-> > > > > DP mode：
-> > > > > 	-sa8775p/sc7280/sc8280xp/x1e80100
-> > > > > 	-glymur
-> > > > > eDP mode(low vdiff):
-> > > > 
-> > > > Separate question: should we extend phy_configure_dp_opts with the
-> > > > low/high vdiff? Is there a point in providing the ability to toggle
-> > > > between low vdiff and high vdiff?
-> > > > 
-> > > Emm ,i haven't found any platform using high vdiff so far, and I'm not clear
-> > > in which cases switching between low and high vdiff would be needed.
-> > 
-> >  From my (maybe incorrect) understanding of eDP B.3, the high vs low
-> > vdiff selection should be based on the cable length.
-> > 
-> Thanks for the explanation. Maybe we can add this when we really need it.
-> > > 
-> > > > > 	-glymur/sa8775p/sc8280xp/x1e80100
-> > > > > 	-sc7280
-> > > > 
-> > > > I understand your wish to perform all the changes in a single patch, but
-> > > > there is one problem with that. Consider this patch regresses one of the
-> > > > platforms (I'm looking at Kodiak and SC8180X as they get the biggest set
-> > > > of changes). It would be almost impossible to separate, which particular
-> > > > change caused the regression. I'd suggest splitting this patch into a
-> > > > set of more atomic changes. E.g. the AUX_CFG8 is definitely a separate
-> > > > change. Writing swing / pre_emph tables on Kodiak and SC8180X is a
-> > > > separate change (or two). Switching each of the platforms to the
-> > > > corrected set of tables ideally also should come as a separate change,
-> > > > so that in case of a regression the issue would be easier to identify.
-> > > > 
-> > > Thank for point this, will separate the change.
-> > > I mostly overlooked SC8180X here, since I assumed it shares the same PHY as
-> > > SC7280. However, they are using different PHY sub‑versions. Will add proper
-> > > support for it in the next version.
-> > 
-> > Thanks!
-> > 
-> Emm, one more question.. Based on Konard's comments, should I split this
-> patch, and send a new revision, or  post a new SC8180X patch on top of these
-> two existing patches?
+Hi Tristan,
 
-Please split this commit into logical chunks, as I wrote before. SC8180X
-would be one of those patches.
+kernel test robot noticed the following build warnings:
 
-> > > > > 
-> > > > > Cc: stable@vger.kernel.org
-> > > > > Fixes: f199223cb490 ("phy: qcom: Introduce new eDP PHY driver")
-> > > > > Signed-off-by: Yongxing Mou <yongxing.mou@oss.qualcomm.com>
-> > > > > ---
-> > > > >    drivers/phy/qualcomm/phy-qcom-edp.c | 90 ++++++++++++++++++++++---------------
-> > > > >    1 file changed, 53 insertions(+), 37 deletions(-)
+[auto build test WARNING on bluetooth/master]
+[also build test WARNING on bluetooth-next/master linus/master v7.0 next-20260420]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Tristan-Madani/Bluetooth-hci_bcm4377-validate-firmware-event-length-in-completion-ring/20260420-161359
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth.git master
+patch link:    https://lore.kernel.org/r/20260417104639.2608008-1-tristmd%40gmail.com
+patch subject: [PATCH v3] Bluetooth: hci_bcm4377: validate firmware event length in completion ring
+config: um-allyesconfig (https://download.01.org/0day-ci/archive/20260422/202604220005.gyhLDa7b-lkp@intel.com/config)
+compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260422/202604220005.gyhLDa7b-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202604220005.gyhLDa7b-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   In file included from include/linux/device.h:15,
+                    from include/linux/async.h:14,
+                    from drivers/bluetooth/hci_bcm4377.c:8:
+   drivers/bluetooth/hci_bcm4377.c: In function 'bcm4377_handle_completion':
+>> drivers/bluetooth/hci_bcm4377.c:760:26: warning: format '%zu' expects argument of type 'size_t', but argument 4 has type 'int' [-Wformat=]
+     760 |                          "event data len %zu exceeds payload size %zu for ring %d\n",
+         |                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/dev_printk.h:110:30: note: in definition of macro 'dev_printk_index_wrap'
+     110 |                 _p_func(dev, fmt, ##__VA_ARGS__);                       \
+         |                              ^~~
+   include/linux/dev_printk.h:156:61: note: in expansion of macro 'dev_fmt'
+     156 |         dev_printk_index_wrap(_dev_warn, KERN_WARNING, dev, dev_fmt(fmt), ##__VA_ARGS__)
+         |                                                             ^~~~~~~
+   drivers/bluetooth/hci_bcm4377.c:759:17: note: in expansion of macro 'dev_warn'
+     759 |                 dev_warn(&bcm4377->pdev->dev,
+         |                 ^~~~~~~~
+   drivers/bluetooth/hci_bcm4377.c:760:69: note: format string is defined here
+     760 |                          "event data len %zu exceeds payload size %zu for ring %d\n",
+         |                                                                   ~~^
+         |                                                                     |
+         |                                                                     long unsigned int
+         |                                                                   %u
+
+
+vim +760 drivers/bluetooth/hci_bcm4377.c
+
+   734	
+   735	static void bcm4377_handle_completion(struct bcm4377_data *bcm4377,
+   736					      struct bcm4377_completion_ring *ring,
+   737					      u16 pos)
+   738	{
+   739		struct bcm4377_completion_ring_entry *entry;
+   740		u16 msg_id, transfer_ring;
+   741		size_t entry_size, data_len;
+   742		void *data;
+   743	
+   744		if (pos >= ring->n_entries) {
+   745			dev_warn(&bcm4377->pdev->dev,
+   746				 "invalid offset %d for completion ring %d\n", pos,
+   747				 ring->ring_id);
+   748			return;
+   749		}
+   750	
+   751		entry_size = sizeof(*entry) + ring->payload_size;
+   752		entry = ring->ring + pos * entry_size;
+   753		data = ring->ring + pos * entry_size + sizeof(*entry);
+   754		data_len = le32_to_cpu(entry->len);
+   755		msg_id = le16_to_cpu(entry->msg_id);
+   756		transfer_ring = le16_to_cpu(entry->ring_id);
+   757	
+   758		if (data_len > ring->payload_size) {
+   759			dev_warn(&bcm4377->pdev->dev,
+ > 760				 "event data len %zu exceeds payload size %zu for ring %d\n",
+   761				 data_len, ring->payload_size, ring->ring_id);
+   762			return;
+   763		}
+   764	
+   765		if ((ring->transfer_rings & BIT(transfer_ring)) == 0) {
+   766			dev_warn(
+   767				&bcm4377->pdev->dev,
+   768				"invalid entry at offset %d for transfer ring %d in completion ring %d\n",
+   769				pos, transfer_ring, ring->ring_id);
+   770			return;
+   771		}
+   772	
+   773		dev_dbg(&bcm4377->pdev->dev,
+   774			"entry in completion ring %d for transfer ring %d with msg_id %d\n",
+   775			ring->ring_id, transfer_ring, msg_id);
+   776	
+   777		switch (transfer_ring) {
+   778		case BCM4377_XFER_RING_CONTROL:
+   779			bcm4377_handle_ack(bcm4377, &bcm4377->control_h2d_ring, msg_id);
+   780			break;
+   781		case BCM4377_XFER_RING_HCI_H2D:
+   782			bcm4377_handle_ack(bcm4377, &bcm4377->hci_h2d_ring, msg_id);
+   783			break;
+   784		case BCM4377_XFER_RING_SCO_H2D:
+   785			bcm4377_handle_ack(bcm4377, &bcm4377->sco_h2d_ring, msg_id);
+   786			break;
+   787		case BCM4377_XFER_RING_ACL_H2D:
+   788			bcm4377_handle_ack(bcm4377, &bcm4377->acl_h2d_ring, msg_id);
+   789			break;
+   790	
+   791		case BCM4377_XFER_RING_HCI_D2H:
+   792			bcm4377_handle_event(bcm4377, &bcm4377->hci_d2h_ring, msg_id,
+   793					     entry->flags, HCI_EVENT_PKT, data,
+   794					     data_len);
+   795			break;
+   796		case BCM4377_XFER_RING_SCO_D2H:
+   797			bcm4377_handle_event(bcm4377, &bcm4377->sco_d2h_ring, msg_id,
+   798					     entry->flags, HCI_SCODATA_PKT, data,
+   799					     data_len);
+   800			break;
+   801		case BCM4377_XFER_RING_ACL_D2H:
+   802			bcm4377_handle_event(bcm4377, &bcm4377->acl_d2h_ring, msg_id,
+   803					     entry->flags, HCI_ACLDATA_PKT, data,
+   804					     data_len);
+   805			break;
+   806	
+   807		default:
+   808			dev_warn(
+   809				&bcm4377->pdev->dev,
+   810				"entry in completion ring %d for unknown transfer ring %d with msg_id %d\n",
+   811				ring->ring_id, transfer_ring, msg_id);
+   812		}
+   813	}
+   814	
 
 -- 
-With best wishes
-Dmitry
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
