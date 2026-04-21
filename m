@@ -1,303 +1,256 @@
-Return-Path: <stable+bounces-240192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240193-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yEbLKo+a52lj+QEAu9opvQ
-	(envelope-from <stable+bounces-240192-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 17:41:03 +0200
+	id MOlXEcCb52l9+QEAu9opvQ
+	(envelope-from <stable+bounces-240193-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 17:46:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3A6A43CDEC
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 17:41:02 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D76C543CE7C
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 17:46:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 36C3930131E1
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 15:39:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 36D6C3028B14
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 15:43:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A19692E173D;
-	Tue, 21 Apr 2026 15:39:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ABC5315D5D;
+	Tue, 21 Apr 2026 15:43:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DolYikg4"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="mJaRA4+m";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Bax/ao/3"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63DA42D94AB;
-	Tue, 21 Apr 2026 15:39:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB76931715B
+	for <stable@vger.kernel.org>; Tue, 21 Apr 2026 15:43:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776785957; cv=none; b=kjvdyrt9bPv2KjaR8xnh/8lkxBkML7lIOqO6ju+riw2hP9h3OunfD77Y9aTxOq8x/v6hOwoCjc/J/9nEQpBZO0HHo9i/rmlWD/ZlShuze+o4borkd87hu4a42uTCN5hLZh+hYoWM2YJDBkGXQp0VLN7TAnLeZ4N/z15tX8nI/Ow=
+	t=1776786196; cv=none; b=hvU96fQZVxYYGRE/kVmXo2njTvHF1ty+38YDHteIqzB+PLirwp5BUs++b4cLNWsa7Fmp+KUfmZ90IlVUWufinw+h/XTW7Pai/zb1TxQLhNM0anwBbY6AMjcAOf2ONezgPT8u9Pn/kIjiUE06CGSmVYfp60dejPuqJo6hFMw2Zk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776785957; c=relaxed/simple;
-	bh=Ik9BfKVfhf9yZ3LiURODlQpyNGNrs0AnoKj75WR+DEs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=jM2vMosycFA+njt3F5RpKTZ3e6GfdJd5Y2jbqfYSjMz6LAelPOeRKFC3z4Cn+b8/gd9jKZwAcvdpk1fWJckV7pnuIfCrts8U46lzH1Gth8gPlutIOYYXcWnduEJdmyM7V2v3Jq2OdMw9N/QnJwc5U3QEtUqL9k/LDMYiv963BKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DolYikg4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74479C2BCB6;
-	Tue, 21 Apr 2026 15:39:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776785957;
-	bh=Ik9BfKVfhf9yZ3LiURODlQpyNGNrs0AnoKj75WR+DEs=;
-	h=From:Date:Subject:To:Cc:From;
-	b=DolYikg4H+7mnTbsnAlHUOtejFyckSeDJsZa0O/KWPbowntUsHTsFthTt2vYLcUKO
-	 n4ibgl7imYZNrM6J0+PbmHuuRWivxHQXAU3aYCe2Qplntj+ueiR3wkzCABpt+oMNGE
-	 1hvNlZZFJoZSYSsr3804XezMrmndYGYHDcCXhM57Mx3CyLyFOyCGEd+V0qxFAOm447
-	 A5kekRRFZP6GiSY/nwS4uPO2prdRQwW23XzReaDYX1RgrtxB0ifppG3EyoAnVVVJ6I
-	 1xuAQapdwHznNrlaASa1C0jaaKzawk8hZK28N0xA3xJ3eUTFbmTNlHuBwXousJEdPr
-	 j1/sVa5TeUllA==
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Tue, 21 Apr 2026 17:39:07 +0200
-Subject: [PATCH v2] mm/page_alloc: fix initialization of tags of the huge
- zero folio with init_on_free
+	s=arc-20240116; t=1776786196; c=relaxed/simple;
+	bh=DELrGybNgDl8L2FX+JgpL3bq2IVDiMkx1kK6Sq3WZ5g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Eyqpu6KBhWDJ+/PRU+CWnTcxSvSmXp6K+08qrR+hEOhHK5QdCM/7+Imn5YX54ltp0QobQwGjiqXZAiK/Wo7v2ezez7e5a89hH8BzHudZ1He5MSa6eRWg7luSD0IkJFrXEfQxwAlkBnIhuKgxqoZPRhte0tMpKR+rI3UfAcunBA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=mJaRA4+m; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Bax/ao/3; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63L9XP9g3164584
+	for <stable@vger.kernel.org>; Tue, 21 Apr 2026 15:43:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	u5HE/DGbc89CJzO8XqH4Y0bSW5WRIaeIl+JsFKEhiZ0=; b=mJaRA4+mTRDxf0z+
+	9ue0/VE1CYRC4wymZqmhVsbJIRPaMQsxiJ4hQMLIn9pKTVe8AmJZ4YdaxrstGFAw
+	MYXzt80peyGpMC3d3xBYPBOnsW1+iljhtanftdtEioH39CktTRXNcZ1uQTbheZ0+
+	K96SEaBaWecO9xCBU30s9BDTeOcC9hIxTkkDBmDdeWRPBgInWTgXXvYvIUdeX+9D
+	DY5CpVBeG7Qduw7s9iz9aCKAb/iL/GqRKV8j+0dWmhPgUmhe+iCy6H/8YM8sOtfr
+	kthnWKbVnzgPJNHLWBqVMuE9k8HYKha3SnCkTwgu8SG688xYXZtPx0TwK3KqRYt4
+	EPM5cg==
+Received: from mail-vs1-f69.google.com (mail-vs1-f69.google.com [209.85.217.69])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4dp6q818ux-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Tue, 21 Apr 2026 15:43:11 +0000 (GMT)
+Received: by mail-vs1-f69.google.com with SMTP id ada2fe7eead31-5fb6622ca5dso1789625137.0
+        for <stable@vger.kernel.org>; Tue, 21 Apr 2026 08:43:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1776786190; x=1777390990; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=u5HE/DGbc89CJzO8XqH4Y0bSW5WRIaeIl+JsFKEhiZ0=;
+        b=Bax/ao/3fH4m15oeDXiQS5M2At79JP1LFkB/tTGxsqxeoHbZAuOQyE4paucbPYAhnD
+         QZQtcK1MJt09C73T1WkwovvTI9tIyPXfXetpkRPkNQLINGF4RIdvjVu4MEjYCw2q0Efe
+         6Bjd/XTu8HxZcSR5lGS59hQt1IOqhw3hO7yfAMnMFqivGwIhh2txfhotgqnOn6AXP20E
+         YfoMsXeNIlLHIuw8HnCcgJ46mWRURUaRssA+G8PCCdM4yjaXHnbzSQclG+g3m6/P1+77
+         KbYxZ/GXerVs8HYIQPGoNl6mV5HlT+0ajchC0h068fnD00Ezf882BickQAwDZbKEwjb9
+         Qf7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776786190; x=1777390990;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=u5HE/DGbc89CJzO8XqH4Y0bSW5WRIaeIl+JsFKEhiZ0=;
+        b=mFBvbHr9Zqnnc3Yb4ygj9OVv0NshbY+hhjkTPfjwgNXtazkPezfa9ug1izFLhA6wyA
+         pP8XgyDK/7Q6FcSrMAcVrIzIODU2+moeGlDs8rB6/ptcneiEVza+3Jg6sfuMc9qBDuMz
+         p6i8NcCBX+FAYkbe6yQda6+w4T8Keu8no1dAKZdw2/UsDDuuRS5q8X1akxrcXzquCLSj
+         znIKy1XUPF258nFkGLLjDwyx1UX94DYAh3V9/RbugOQidhwzg4h7B6uS+B7lXynJCC5V
+         8M/DAd2NBaktdFncec460iG/G8xHwbFj1yZNhq5p/mrqiC/N6CwjOa43X96Uf02+ol+q
+         cFHg==
+X-Forwarded-Encrypted: i=1; AFNElJ8XemeDFFe0rqKt12H32Fj0wgWIn6p3P5mLEZvGpMc51mhNiEzrNKntoDxPNJxqpKB66UZmBXE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzGs0YF3FiWqCSDBVMzx07R26b9TPa20azAsxTV3yJfocBKoNvf
+	X7FbVVl6D3L4x+DWymVvWKFCTKOjU/HsQFVEEYxTLxheG3DB0R/UmlLUJzXcPJlNS3DtVzgLJQk
+	2DUNZQKw7ib8xJg+IKP5FA6C42egaznvLBu2j4Kez8h5KBKdpRAtOntfjuBc=
+X-Gm-Gg: AeBDievsrs2ZCQ1gyJHAVbsHMjt23u5htzhyF8YQI+m8bJHPp5wSCzknmzVlV5qyLNZ
+	W4vYdLhPmOWehbRe9J+kiN1hmO+adkuzSw8pb6HH9L/6unzLphcmMikxX+ZUcaSvbzQWbayu2cr
+	VLNQ7whDwI7rHsCNBV0TUN+kkF8L4Lb9xHHP9Cb4nW9NF7IPj4XSjvK55YrSBqfshPcb8W6kJ0u
+	xNPA/dW0sobY06py2Zr7siwQR80zL27enun1ToFGEkBhZzwHhSxfC8OUydvv0gVQQ0NTyuE8rdE
+	vInNBbRejGHg8WxMRzr1e2UleV9Dm/iXOtatgDCVO5goafdZu7fE4USxhhtbCqRz8XMQTH6bCmA
+	UCATYLcJX8iCcilN3VjJZ0E4iEXZ9tajsrHIB1HFBIv7MNawPRYpnuyac/PJTP7hNU+pRDhKzSt
+	nUbzwEiTzeGTvEwA05529gL801Ad1teq1Aq+2TaOwip664mg==
+X-Received: by 2002:a05:6102:d8a:b0:607:b901:5d71 with SMTP id ada2fe7eead31-616f7c5399dmr7434557137.24.1776786190134;
+        Tue, 21 Apr 2026 08:43:10 -0700 (PDT)
+X-Received: by 2002:a05:6102:d8a:b0:607:b901:5d71 with SMTP id ada2fe7eead31-616f7c5399dmr7434548137.24.1776786189586;
+        Tue, 21 Apr 2026 08:43:09 -0700 (PDT)
+Received: from umbar.lan (2001-14ba-a073-af00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a073:af00:264b:feff:fe8b:be8a])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-38ecb724929sm30383761fa.32.2026.04.21.08.43.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Apr 2026 08:43:08 -0700 (PDT)
+Date: Tue, 21 Apr 2026 18:43:06 +0300
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+To: Yongxing Mou <yongxing.mou@oss.qualcomm.com>
+Cc: Vinod Koul <vkoul@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Bjorn Andersson <andersson@kernel.org>, linux-arm-msm@vger.kernel.org,
+        linux-phy@lists.infradead.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] phy: qcom: edp: Add eDP/DP mode switch support
+Message-ID: <omz64pyd63daz4cezabx6ckvtqocq5p4zgiwwdxrecyzdtfg4t@26ftjmqlj52c>
+References: <20260302-edp_phy-v3-0-ca8888d793b0@oss.qualcomm.com>
+ <20260302-edp_phy-v3-1-ca8888d793b0@oss.qualcomm.com>
+ <islxoe4wbqx5pl54difetdcl5lrqvfd5ysbaicxz5lv235sfmd@6hwrq3rmqx7c>
+ <fffa03f6-82c5-4d87-9a41-19e6f82ec39b@oss.qualcomm.com>
+ <vywmtt6p3itkrbnucahzvsh6hpwqbno7al5h5zrqdcf3cejyto@pr4of7o3zdeo>
+ <f27b39fc-a6c5-4450-93bc-babb7d6dd9a5@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260421-zerotags-v2-1-05cb1035482e@kernel.org>
-X-B4-Tracking: v=1; b=H4sIABqa52kC/0XMSwrCMBSF4a2UOzaSl6115D6kg7S5pkFJ5KYEt
- WTvxiI4/A+Hb4WE5DHBqVmBMPvkY6ghdw1MswkOmbe1QXLZci069kaKi3GJKa2MajuF4mih3h+
- EV//cqMtQe/ZpifTa5Cy+6w+R/I9kwQRTaKdeYX8YR32+IQW87yM5GEopH77SdXuhAAAA
-To: linux-arm-kernel@lists.infradead.org
-Cc: Catalin Marinas <catalin.marinas@arm.com>, 
- Will Deacon <will@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
- Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
- Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>, 
- Ryan Roberts <ryan.roberts@arm.com>, Mark Brown <broonie@kernel.org>, 
- Dev Jain <dev.jain@arm.com>, linux-kernel@vger.kernel.org, 
- linux-mm@kvack.org, stable@vger.kernel.org, 
- "David Hildenbrand (Arm)" <david@kernel.org>
-X-Mailer: b4 0.13.0
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <f27b39fc-a6c5-4450-93bc-babb7d6dd9a5@oss.qualcomm.com>
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDIxMDE1NiBTYWx0ZWRfX9hpI/7Lankgf
+ SUU9nlfnIpoDyO/caUl2/AqMTaEJsZ0lFXC67/mwunA/CDl9WJYrvma4AlAk5GLAw8zaSPGl4cD
+ tYdorpZsxNE0zQVqLjs1ToV57DTY7PIzam5dyLfK4HcejCYFw2FrTHr7GuHgZMYmvk5hoGvNgRh
+ GSkPiOGXkYbjPGpahyCjwrxpf+IrbxG8nSVCVYA8VChxaVtOoC+u05NQfmD1WqmGjB+Soc1Hdiz
+ vS2J5fvtv1MzScAQE2D8o99KLaNk0s3LMnewOJEx6t1mxX6eE7uXW42J0Xrorcc/m6ZnHx0Q8B8
+ 4vaZNbclmlfD1p50NJMwozj9gIcEJ7hJdHcNRWTYoSwsU0oUv1SCRGEDtwmQeiABQbYmX9H7vNA
+ JquTv8rsaPyEeBtmT8mBkGdZJff+xk5+NwmAp3bQmHdHxbWWfhjGh4hJyJof2Fhw3z/dorN/fDm
+ HfryIq/pnnH60qigKrA==
+X-Proofpoint-ORIG-GUID: dS58OMkuMxNFv1OTjKlGEKkZbie_GqcN
+X-Authority-Analysis: v=2.4 cv=eOYjSnp1 c=1 sm=1 tr=0 ts=69e79b0f cx=c_pps
+ a=5HAIKLe1ejAbszaTRHs9Ug==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=A5OVakUREuEA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=gowsoOTTUOVcmtlkKump:22 a=VwQbUJbxAAAA:8
+ a=EUspDBNiAAAA:8 a=VqdVp4WgveevkikIt2YA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=gYDTvv6II1OnSo0itH1n:22
+X-Proofpoint-GUID: dS58OMkuMxNFv1OTjKlGEKkZbie_GqcN
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-21_03,2026-04-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 spamscore=0 phishscore=0 impostorscore=0 malwarescore=0
+ bulkscore=0 adultscore=0 clxscore=1015 lowpriorityscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604070000 definitions=main-2604210156
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240192-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-240193-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oss.qualcomm.com:dkim,qualcomm.com:dkim,qualcomm.com:email];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[david@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dmitry.baryshkov@oss.qualcomm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C3A6A43CDEC
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: D76C543CE7C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-__GFP_ZEROTAGS semantics are currently a bit weird, but effectively this
-flag is only ever set alongside __GFP_ZERO and __GFP_SKIP_KASAN.
+On Tue, Apr 21, 2026 at 10:32:49AM +0800, Yongxing Mou wrote:
+> 
+> 
+> On 4/21/2026 2:32 AM, Dmitry Baryshkov wrote:
+> > On Mon, Apr 20, 2026 at 08:47:09PM +0800, Yongxing Mou wrote:
+> > > 
+> > > 
+> > > On 3/20/2026 2:36 PM, Dmitry Baryshkov wrote:
+> > > > On Mon, Mar 02, 2026 at 04:28:29PM +0800, Yongxing Mou wrote:
+> > > > > The eDP PHY supports both eDP&DP modes, each requires a different table.
+> > > > > The current driver doesn't fully support every combo PHY mode and use
+> > > > > either the eDP or DP table when enable the platform. In addition, some
+> > > > > platforms mismatch between the mode and the table where DP mode uses
+> > > > > the eDP table or eDP mode use the DP table.
+> > > > > 
+> > > > > Clean up and correct the tables for currently supported platforms based on
+> > > > > the HPG specification.
+> > > > > 
+> > > > > Here lists the tables can be reused across current platforms.
+> > > > > DP mode：
+> > > > > 	-sa8775p/sc7280/sc8280xp/x1e80100
+> > > > > 	-glymur
+> > > > > eDP mode(low vdiff):
+> > > > 
+> > > > Separate question: should we extend phy_configure_dp_opts with the
+> > > > low/high vdiff? Is there a point in providing the ability to toggle
+> > > > between low vdiff and high vdiff?
+> > > > 
+> > > Emm ,i haven't found any platform using high vdiff so far, and I'm not clear
+> > > in which cases switching between low and high vdiff would be needed.
+> > 
+> >  From my (maybe incorrect) understanding of eDP B.3, the high vs low
+> > vdiff selection should be based on the cable length.
+> > 
+> Thanks for the explanation. Maybe we can add this when we really need it.
+> > > 
+> > > > > 	-glymur/sa8775p/sc8280xp/x1e80100
+> > > > > 	-sc7280
+> > > > 
+> > > > I understand your wish to perform all the changes in a single patch, but
+> > > > there is one problem with that. Consider this patch regresses one of the
+> > > > platforms (I'm looking at Kodiak and SC8180X as they get the biggest set
+> > > > of changes). It would be almost impossible to separate, which particular
+> > > > change caused the regression. I'd suggest splitting this patch into a
+> > > > set of more atomic changes. E.g. the AUX_CFG8 is definitely a separate
+> > > > change. Writing swing / pre_emph tables on Kodiak and SC8180X is a
+> > > > separate change (or two). Switching each of the platforms to the
+> > > > corrected set of tables ideally also should come as a separate change,
+> > > > so that in case of a regression the issue would be easier to identify.
+> > > > 
+> > > Thank for point this, will separate the change.
+> > > I mostly overlooked SC8180X here, since I assumed it shares the same PHY as
+> > > SC7280. However, they are using different PHY sub‑versions. Will add proper
+> > > support for it in the next version.
+> > 
+> > Thanks!
+> > 
+> Emm, one more question.. Based on Konard's comments, should I split this
+> patch, and send a new revision, or  post a new SC8180X patch on top of these
+> two existing patches?
 
-If we run with init_on_free, we will zero out pages during
-__free_pages_prepare(), to skip zeroing on the allocation path.
+Please split this commit into logical chunks, as I wrote before. SC8180X
+would be one of those patches.
 
-However, when allocating with __GFP_ZEROTAG set, post_alloc_hook() will
-consequently not only skip clearing page content, but also skip
-clearing tag memory.
+> > > > > 
+> > > > > Cc: stable@vger.kernel.org
+> > > > > Fixes: f199223cb490 ("phy: qcom: Introduce new eDP PHY driver")
+> > > > > Signed-off-by: Yongxing Mou <yongxing.mou@oss.qualcomm.com>
+> > > > > ---
+> > > > >    drivers/phy/qualcomm/phy-qcom-edp.c | 90 ++++++++++++++++++++++---------------
+> > > > >    1 file changed, 53 insertions(+), 37 deletions(-)
 
-Not clearing tags through __GFP_ZEROTAGS is irrelevant for most pages that
-will get mapped to user space through set_pte_at() later: set_pte_at() and
-friends will detect that the tags have not been initialized yet
-(PG_mte_tagged not set), and initialize them.
-
-However, for the huge zero folio, which will be mapped through a PMD
-marked as special, this initialization will not be performed, ending up
-exposing whatever tags were still set for the pages.
-
-The docs (Documentation/arch/arm64/memory-tagging-extension.rst) state
-that allocation tags are set to 0 when a page is first mapped to user
-space. That no longer holds with the huge zero folio when init_on_free
-is enabled.
-
-Fix it by decoupling __GFP_ZEROTAGS from __GFP_ZERO, passing to
-tag_clear_highpages() whether we want to also clear page content.
-
-Invert the meaning of the tag_clear_highpages() return value to have
-clearer semantics.
-
-Reproduced with the huge zero folio by modifying the check_buffer_fill
-arm64/mte selftest to use a 2 MiB area, after making sure that pages have
-a non-0 tag set when freeing (note that, during boot, we will not
-actually initialize tags, but only set KASAN_TAG_KERNEL in the page
-flags).
-
-	$ ./check_buffer_fill
-	1..20
-	...
-	not ok 17 Check initial tags with private mapping, sync error mode and mmap memory
-	not ok 18 Check initial tags with private mapping, sync error mode and mmap/mprotect memory
-	...
-
-This code needs more cleanups; we'll tackle that next, like
-decoupling __GFP_ZEROTAGS from __GFP_SKIP_KASAN.
-
-Fixes: adfb6609c680 ("mm/huge_memory: initialise the tags of the huge zero folio")
-Cc: stable@vger.kernel.org
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
----
-Changes in v2:
-- Drop kasan_hw_tags_enabled() handling, as it missed the case of
-  user-space MTE without KASAN.
-- Keep letting_clear_highpages() return a bool and re-instantiate
-  system_supports_mte() handling in the arm64 variant.
-- Rephrase __GFP_ZEROTAGS comment, making it clearer that this is not
-  just a performance improvement.
-- Retested and more excessively build tested
-- Using a new b4 template, hopefully that doesn't mess things up
-- Link to v1: https://lore.kernel.org/r/20260420-zerotags-v1-1-3edc93e95bb4@kernel.org
----
- arch/arm64/include/asm/page.h |  2 +-
- arch/arm64/mm/fault.c         | 11 +++++++----
- include/linux/gfp_types.h     | 10 +++++-----
- include/linux/highmem.h       |  7 ++++---
- mm/page_alloc.c               |  8 ++++----
- 5 files changed, 21 insertions(+), 17 deletions(-)
-
-diff --git a/arch/arm64/include/asm/page.h b/arch/arm64/include/asm/page.h
-index e25d0d18f6d7..58200de8a221 100644
---- a/arch/arm64/include/asm/page.h
-+++ b/arch/arm64/include/asm/page.h
-@@ -33,7 +33,7 @@ struct folio *vma_alloc_zeroed_movable_folio(struct vm_area_struct *vma,
- 						unsigned long vaddr);
- #define vma_alloc_zeroed_movable_folio vma_alloc_zeroed_movable_folio
- 
--bool tag_clear_highpages(struct page *to, int numpages);
-+bool tag_clear_highpages(struct page *to, int numpages, bool clear_pages);
- #define __HAVE_ARCH_TAG_CLEAR_HIGHPAGES
- 
- #define copy_user_page(to, from, vaddr, pg)	copy_page(to, from)
-diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
-index 0f3c5c7ca054..739800835920 100644
---- a/arch/arm64/mm/fault.c
-+++ b/arch/arm64/mm/fault.c
-@@ -1018,7 +1018,7 @@ struct folio *vma_alloc_zeroed_movable_folio(struct vm_area_struct *vma,
- 	return vma_alloc_folio(flags, 0, vma, vaddr);
- }
- 
--bool tag_clear_highpages(struct page *page, int numpages)
-+bool tag_clear_highpages(struct page *page, int numpages, bool clear_pages)
- {
- 	/*
- 	 * Check if MTE is supported and fall back to clear_highpage().
-@@ -1026,13 +1026,16 @@ bool tag_clear_highpages(struct page *page, int numpages)
- 	 * post_alloc_hook() will invoke tag_clear_highpages().
- 	 */
- 	if (!system_supports_mte())
--		return false;
-+		return clear_pages;
- 
- 	/* Newly allocated pages, shouldn't have been tagged yet */
- 	for (int i = 0; i < numpages; i++, page++) {
- 		WARN_ON_ONCE(!try_page_mte_tagging(page));
--		mte_zero_clear_page_tags(page_address(page));
-+		if (clear_pages)
-+			mte_zero_clear_page_tags(page_address(page));
-+		else
-+			mte_clear_page_tags(page_address(page));
- 		set_page_mte_tagged(page);
- 	}
--	return true;
-+	return false;
- }
-diff --git a/include/linux/gfp_types.h b/include/linux/gfp_types.h
-index 6c75df30a281..d79049291b1a 100644
---- a/include/linux/gfp_types.h
-+++ b/include/linux/gfp_types.h
-@@ -273,11 +273,11 @@ enum {
-  *
-  * %__GFP_ZERO returns a zeroed page on success.
-  *
-- * %__GFP_ZEROTAGS zeroes memory tags at allocation time if the memory itself
-- * is being zeroed (either via __GFP_ZERO or via init_on_alloc, provided that
-- * __GFP_SKIP_ZERO is not set). This flag is intended for optimization: setting
-- * memory tags at the same time as zeroing memory has minimal additional
-- * performance impact.
-+ * %__GFP_ZEROTAGS zeroes memory tags at allocation time. Setting memory tags at
-+ * the same time as zeroing memory (e.g., with __GPF_ZERO) has minimal
-+ * additional performance impact. However, __GFP_ZEROTAGS also zeroes the tags
-+ * even if memory is not getting zeroed at allocation time (e.g.,
-+ * with init_on_free).
-  *
-  * %__GFP_SKIP_KASAN makes KASAN skip unpoisoning on page allocation.
-  * Used for userspace and vmalloc pages; the latter are unpoisoned by
-diff --git a/include/linux/highmem.h b/include/linux/highmem.h
-index af03db851a1d..d7aac9de1c8a 100644
---- a/include/linux/highmem.h
-+++ b/include/linux/highmem.h
-@@ -347,10 +347,11 @@ static inline void clear_highpage_kasan_tagged(struct page *page)
- 
- #ifndef __HAVE_ARCH_TAG_CLEAR_HIGHPAGES
- 
--/* Return false to let people know we did not initialize the pages */
--static inline bool tag_clear_highpages(struct page *page, int numpages)
-+/* Returns true if the caller has to initialize the pages */
-+static inline bool tag_clear_highpages(struct page *page, int numpages,
-+		bool clear_pages)
- {
--	return false;
-+	return clear_pages;
- }
- 
- #endif
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 65e205111553..71859993dd54 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -1808,9 +1808,9 @@ static inline bool should_skip_init(gfp_t flags)
- inline void post_alloc_hook(struct page *page, unsigned int order,
- 				gfp_t gfp_flags)
- {
-+	const bool zero_tags = gfp_flags & __GFP_ZEROTAGS;
- 	bool init = !want_init_on_free() && want_init_on_alloc(gfp_flags) &&
- 			!should_skip_init(gfp_flags);
--	bool zero_tags = init && (gfp_flags & __GFP_ZEROTAGS);
- 	int i;
- 
- 	set_page_private(page, 0);
-@@ -1832,11 +1832,11 @@ inline void post_alloc_hook(struct page *page, unsigned int order,
- 	 */
- 
- 	/*
--	 * If memory tags should be zeroed
--	 * (which happens only when memory should be initialized as well).
-+	 * Clearing tags can efficiently clear the memory for us as well, if
-+	 * required.
- 	 */
- 	if (zero_tags)
--		init = !tag_clear_highpages(page, 1 << order);
-+		init = tag_clear_highpages(page, 1 << order, /* clear_pages= */init);
- 
- 	if (!should_skip_kasan_unpoison(gfp_flags) &&
- 	    kasan_unpoison_pages(page, order, init)) {
-
----
-
-base-commit: f1541b40cd422d7e22273be9b7e9edfc9ea4f0d7
-
-change-id: 20260417-zerotags-343a3673e18d
-
---
-
-Cheers,
-
-David
-
+-- 
+With best wishes
+Dmitry
 
