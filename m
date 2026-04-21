@@ -1,211 +1,194 @@
-Return-Path: <stable+bounces-240249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240250-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QCv3FRzz52mhCwIAu9opvQ
-	(envelope-from <stable+bounces-240249-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 23:58:52 +0200
+	id 2AakIqf352kVDgIAu9opvQ
+	(envelope-from <stable+bounces-240250-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 00:18:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A86843FEDD
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 23:58:51 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A79D440191
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 00:18:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 75508301552F
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 21:58:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9DE92306F307
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 22:16:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 516C5379ED6;
-	Tue, 21 Apr 2026 21:58:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 981053A5E71;
+	Tue, 21 Apr 2026 22:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iT5NkZMq"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="E4HroXwv";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="DMtb/ane"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 969C7194C96;
-	Tue, 21 Apr 2026 21:58:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6CAE26B2DA;
+	Tue, 21 Apr 2026 22:16:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776808727; cv=none; b=RgqABzI2OKo9jietRWX7WvhrnRuSQNQy84bWAwTu1Qu6NTN/ij7s5Kat7WVlXPnDbDXPM54OgFpyKNgKkiNBPZE88MZ0WCU5hG6Xw3OuZZQKrzctYws+/mHNcDyz90Hf5e336JuoN4rxGiyiU7k4RnkBjJP/Fe5JInkKgDkMY1g=
+	t=1776809812; cv=none; b=a+gAfrbLMxiQNp5e4soBUFt7L0feznEVzqbanEUpr54OLj6u5DU+xNBgEnkXu4Io+VA0n4ulXohhitMUlQXCi8DtZhtADNftI4eTuAmTjjcjdGklqjPvXXcKzwq84I/6bflHmRAflwQKyORHZMcxydBc3LoBHG6spYWW6uzVl70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776808727; c=relaxed/simple;
-	bh=mM9l120PwvCb6pBLBa97RryQjf936e+knIHkhOOg0X4=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=tuTaaz9xOQJ4bUdVQq3kdcQDCGI43uaNjka0N4myM0Xvmr0/GlZqM9ynlzrb1+5+2HlVNG+rgCvVPaNLTBbvqBfsy9SzdTndQBweXidmDBdnKHgMgB7eSHPyqU9E9PIodkktlatSLQLiuDQbs1OmjD3pQGDCfz5vtc5NN1nQNfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iT5NkZMq; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776808725; x=1808344725;
-  h=message-id:date:mime-version:from:subject:to:cc:
-   references:in-reply-to:content-transfer-encoding;
-  bh=mM9l120PwvCb6pBLBa97RryQjf936e+knIHkhOOg0X4=;
-  b=iT5NkZMq7DXMHAtBm/o/MKN2VLtG8VKxohzg//tSOeJqDTvsWYqdJWB/
-   1t5ftoqSsJ9LUTZhpwyOyl2JcgcLaN7jzglSs/5PIREahfTm6L+fxMTU0
-   crm/DUwBfQ7h2SkRk8SQmGJnrJOuOWsdh2vAoBlWvjtHPcJ9NF6a9N1WO
-   fEiourr79/CY057Z/x9iEJiS/I3CvI/DZyBxSuWdAtLXhOM0SboOQFZIe
-   c/SNaw9ApEKK5sBpXSE5XZuDmRvRFuY8g74TZPghHm/S6rDHJZ6OTOhCU
-   pFnIupFVnopeKivTvkrvaMxK4auGWf35jE/QRlucqUD4xDtuGTQIpLBTB
-   A==;
-X-CSE-ConnectionGUID: pWXh6l7RTHW9WByiZl0kVA==
-X-CSE-MsgGUID: spVCcThGRDeEkokWDV167g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11763"; a="77824121"
-X-IronPort-AV: E=Sophos;i="6.23,192,1770624000"; 
-   d="scan'208";a="77824121"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2026 14:58:43 -0700
-X-CSE-ConnectionGUID: 6rwEQcXFSKyScyFWN+o0OQ==
-X-CSE-MsgGUID: ny8u1QXOSDu2KwzqKBKJ9Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,192,1770624000"; 
-   d="scan'208";a="232452487"
-Received: from unknown (HELO [10.241.241.106]) ([10.241.241.106])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2026 14:58:42 -0700
-Message-ID: <546d7ebd-492c-4544-bcb0-adf4046a2447@intel.com>
-Date: Tue, 21 Apr 2026 14:58:42 -0700
+	s=arc-20240116; t=1776809812; c=relaxed/simple;
+	bh=MO7LT3Wd4wCUZsRnxW9Th1ZlQ2STgxaOkMEhqlVI3bk=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=X+Pc0uQgpqee1DfSwsegrQm3Az/Z+zR04zZn5Je/HM8YQaRC5WnSrk8Y8sEA133y3WTT+2Gj8yuTFsuKbZDczDRte2W3wnVxFoKczUi39o0x1qCOzSNrASbcYNhaUpSWGc5+sGNyn9mxc9hx8lVxN6ld6ceQZ3qAUQQcj1xukgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=E4HroXwv; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=DMtb/ane; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Tue, 21 Apr 2026 22:16:40 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1776809801;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KtUGH/+F659qA4GJAIiHYLMKbFHz4mce1PxHhKljapI=;
+	b=E4HroXwvNWxO14AmtiNsLEoTbIj+eOu/CbSry5j1nCbItKDBNgVhWDGTv6K6MzBiL0KoTs
+	AaKkDo01Xas2M2AH2mBL+MmVJTpcxeq3Ehjtq56Eo21CndaGqjW4VzGj0o2bzJoCtZQdZI
+	9dq5heGd2bvYAFV6/+EZcCfKZ9giYdeqqJlUOd/QXIwLoq2w52TDClaZ51jGhL1yZm3pbf
+	VWz3Ta+5WAIUPkXn7jQ/0jvyPUOCzE4UoreVb/d7REFGGJ6ESV7Yw616f5G+REgLTVsazv
+	yoR1PRg7WX7HN8aVQXD1uTavgZ0YJpQvTvpiLglc8hpLRleZze0dsbBbpT/drw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1776809801;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KtUGH/+F659qA4GJAIiHYLMKbFHz4mce1PxHhKljapI=;
+	b=DMtb/aneQn45WkmsgLMiHzaYKj2+2OXAMojYcWLNIMmadstApLNYMIBkWUOnH04XoljB0S
+	KdH+2gjMo4AhFfBw==
+From: "tip-bot2 for Dave Hansen" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/urgent] x86/cpu: Disable FRED when PTI is forced on
+Cc: Gayatri Kammela <Gayatri.Kammela@amd.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ "Borislav Petkov (AMD)" <bp@alien8.de>,
+ "Maciej Wieczor-Retman" <maciej.wieczor-retman@intel.com>,
+ stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20260421163136.E7C6788A@davehans-spike.ostc.intel.com>
+References: <20260421163136.E7C6788A@davehans-spike.ostc.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: "Chen, Zide" <zide.chen@intel.com>
-Subject: Re: [PATCH] perf/x86/intel: Remove anythread_deprecated bit from
- perf_capabilities
-To: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>,
- Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>, Ian Rogers <irogers@google.com>,
- Adrian Hunter <adrian.hunter@intel.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Andi Kleen <ak@linux.intel.com>, Eranian Stephane <eranian@google.com>,
- linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
- Dapeng Mi <dapeng1.mi@intel.com>, Falcon Thomas <thomas.falcon@intel.com>,
- Xudong Hao <xudong.hao@intel.com>, stable@vger.kernel.org
-References: <20260415021010.1248083-1-dapeng1.mi@linux.intel.com>
- <aeaZUZyILpy6HKnJ@google.com>
- <d93ccac4-d1c6-4d56-9714-33a32e5c4f48@linux.intel.com>
-Content-Language: en-US
-In-Reply-To: <d93ccac4-d1c6-4d56-9714-33a32e5c4f48@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Message-ID: <177680980021.2419917.7984257856496493958.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@kernel.org> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	TAGGED_FROM(0.00)[bounces-240249-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240250-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	REPLYTO_DOM_EQ_TO_DOM(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[zide.chen@intel.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	HAS_REPLYTO(0.00)[linux-kernel@vger.kernel.org];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tip-bot2@linutronix.de,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linutronix.de:+];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email,intel.com:dkim,intel.com:mid]
-X-Rspamd-Queue-Id: 5A86843FEDD
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:replyto,intel.com:email,linutronix.de:dkim]
+X-Rspamd-Queue-Id: 2A79D440191
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+The following commit has been merged into the x86/urgent branch of tip:
 
+Commit-ID:     932d922285ef4d0d655a6f5def2779ae86ca0d73
+Gitweb:        https://git.kernel.org/tip/932d922285ef4d0d655a6f5def2779ae86c=
+a0d73
+Author:        Dave Hansen <dave.hansen@linux.intel.com>
+AuthorDate:    Tue, 21 Apr 2026 09:31:36 -07:00
+Committer:     Dave Hansen <dave.hansen@linux.intel.com>
+CommitterDate: Tue, 21 Apr 2026 15:11:40 -07:00
 
-On 4/20/2026 5:51 PM, Mi, Dapeng wrote:
-> 
-> On 4/21/2026 5:23 AM, Namhyung Kim wrote:
->> On Wed, Apr 15, 2026 at 10:10:10AM +0800, Dapeng Mi wrote:
->>> AnyThread mode deprecation is enumerated by CPUID.0AH:EDX[15] instead of
->>> PERF_CAPABILITIES MSR. It's not a good practice to define a bit to
->>> represent "anythread deprecation" in perf_capabilities. It leads to the
->>> anythread_deprecated bit could be overwritten by the real value of
->>> PERF_CAPABILITIES MSR, just like the below code in update_pmu_cap() does.
->>>
->>> ```
->>> if (!intel_pmu_broken_perf_cap()) {
->>> 	/* Perf Metric (Bit 15) and PEBS via PT (Bit 16) are hybrid enumeration */
->>> 	rdmsrq(MSR_IA32_PERF_CAPABILITIES, hybrid(pmu, intel_cap).capabilities);
->>> }
->>> ```
->>>
->>> It leads to the anythread_deprecated bit is cleared to 0 and the "any"
->>> attribute is incorrectly shown in the /sys/devices/cpu/format/ folder on
->>> these support Perfmon v6 platforms, like Clearwater Forest.
->>>
->>> ```
->>> $grep . /sys/devices/cpu/format/*
->>> /sys/devices/cpu/format/acr_mask:config2:0-63
->>> /sys/devices/cpu/format/any:config:21
->>> /sys/devices/cpu/format/cmask:config:24-31
->>> ```
->>>
->>> So remove the anythread_deprecated bit from perf_capabilities structure
->>> and directly depends on CPUID.0AH:EDX[15] to judge if anythread is
->>> deprecated.
->>>
->>> Cc: stable@vger.kernel.org
->>> Reported-by: Namhyung Kim <namhyung@kernel.org>
->>> Fixes: cadbaa039b99 ("perf/x86/intel: Make anythread filter support conditional")
->>> Acked-by: Namhyung Kim <namhyung@kernel.org>
->>> Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
->>> ---
->>>  arch/x86/events/intel/core.c | 9 +++------
->>>  arch/x86/events/perf_event.h | 2 +-
->>>  2 files changed, 4 insertions(+), 7 deletions(-)
->>>
->>> diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
->>> index 793335c3ce78..450c63165a22 100644
->>> --- a/arch/x86/events/intel/core.c
->>> +++ b/arch/x86/events/intel/core.c
->>> @@ -7612,11 +7612,8 @@ __init int intel_pmu_init(void)
->>>  
->>>  	x86_add_quirk(intel_arch_events_quirk); /* Install first, so it runs last */
->>>  
->>> -	if (version >= 5) {
->>> -		x86_pmu.intel_cap.anythread_deprecated = edx.split.anythread_deprecated;
->>> -		if (x86_pmu.intel_cap.anythread_deprecated)
->>> -			pr_cont(" AnyThread deprecated, ");
->>> -	}
->>> +	if (version >= 5 && edx.split.anythread_deprecated)
->>> +		pr_cont(" AnyThread deprecated, ");
->>>  
->>>  	/* The perf side of core PMU is ready to support the mediated vPMU. */
->>>  	x86_get_pmu(smp_processor_id())->capabilities |= PERF_PMU_CAP_MEDIATED_VPMU;
->>> @@ -8467,7 +8464,7 @@ __init int intel_pmu_init(void)
->>>  				      &x86_pmu.intel_ctrl);
->>>  
->>>  	/* AnyThread may be deprecated on arch perfmon v5 or later */
->>> -	if (x86_pmu.intel_cap.anythread_deprecated)
->>> +	if (edx.split.anythread_deprecated)
->> Do we need to check the version here as well?
-> 
-> hmm, it should be enough to only check the CPUID
-> "edx.split.anythread_deprecated" bit  in practice. But if we want to follow
-> the SDM 100%, the version check should be added here.
-> 
-> I would add an version check here. Thanks.
+x86/cpu: Disable FRED when PTI is forced on
 
-How about merging pr_cont(" AnyThread deprecated, ") to here? No need to
-repeat "if (version >= 5 && edx.split.anythread_deprecated)" twice in
-one single API.
+FRED and PTI were never intended to work together. No FRED hardware is
+vulnerable to Meltdown and all of it should have LASS anyway.
+Nevertheless, if you boot a system with pti=3Don and fred=3Don, the kernel
+tries to do what is asked of it and dies a horrible death on the first
+attempt to run userspace (since it never switches to the user page
+tables).
 
+Disable FRED when PTI is forced on, and print a warning about it.
 
->>
->> Thanks,
->> Namhyung
->>
->>
->>>  		x86_pmu.format_attrs = intel_arch_formats_attr;
->>>  
+A quick brain dump about what a FRED+PTI implementation would look like
+is below. I'm not sure it would make any sense to do it, but never say
+never. All I know is that it's way too complicated to be worth it today.
 
+<brain dump>
+The SWITCH_TO_USER/KERNEL_CR3 bits are simple to fix (or at least we
+have the assembly tools to do it already), as is sticking the FRED entry
+text in .entry.text (it's not in there today).
+
+The nasty part is the stacks. Today, the CPU pops into the kernel on
+MSR_IA32_FRED_RSP0 which is normal old kernel memory and not mapped to
+userspace. The hardware pushes gunk on to MSR_IA32_FRED_RSP0, which is
+currently the task stacks. MSR_IA32_FRED_RSP0 would need to point
+elsewhere, probably cpu_entry_stack(). Then, start playing games with
+stacks on entry/exit, including copying gunk to and from the task stack.
+
+While I'd *like* to have PTI everywhere, I'm not sure it's worth mucking
+up the FRED code with PTI kludges. If a user wants fast entry/exit, they
+use FRED. If you want PTI (and sekuritay), you certainly don't care
+about fast entry and FRED isn't going to help you *all* that much, so
+you can just stay with the IDT.
+
+Plus, FRED hardware should have LASS which gives you a similar security
+profile to PTI without the CR3 munging.
+</brain dump>
+
+Reported-by: Gayatri Kammela <Gayatri.Kammela@amd.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Borislav Petkov (AMD) <bp@alien8.de>
+Tested-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+Cc:stable@vger.kernel.org
+Link: https://patch.msgid.link/20260421163136.E7C6788A@davehans-spike.ostc.in=
+tel.com
+---
+ arch/x86/mm/pti.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/arch/x86/mm/pti.c b/arch/x86/mm/pti.c
+index f7546e9..631f037 100644
+--- a/arch/x86/mm/pti.c
++++ b/arch/x86/mm/pti.c
+@@ -105,6 +105,11 @@ void __init pti_check_boottime_disable(void)
+ 		pr_debug("PTI enabled, disabling INVLPGB\n");
+ 		setup_clear_cpu_cap(X86_FEATURE_INVLPGB);
+ 	}
++
++	if (cpu_feature_enabled(X86_FEATURE_FRED)) {
++		pr_debug("PTI enabled, disabling FRED\n");
++		setup_clear_cpu_cap(X86_FEATURE_FRED);
++	}
+ }
+=20
+ static int __init pti_parse_cmdline(char *arg)
 
