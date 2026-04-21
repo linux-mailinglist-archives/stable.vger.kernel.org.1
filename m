@@ -1,244 +1,289 @@
-Return-Path: <stable+bounces-240212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240213-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cNYFJ7iy52no/gEAu9opvQ
-	(envelope-from <stable+bounces-240212-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 19:24:08 +0200
+	id KJ8aFB6152lU/wEAu9opvQ
+	(envelope-from <stable+bounces-240213-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 19:34:22 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 607D843DE80
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 19:24:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1DCD43E08E
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 19:34:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9FDA93060231
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 17:20:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2F7B2304EB8E
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 17:31:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A17902F3C3E;
-	Tue, 21 Apr 2026 17:20:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 847E131077A;
+	Tue, 21 Apr 2026 17:31:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eOv5casS"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lO7qyD7d"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 077AA2F6160
-	for <stable@vger.kernel.org>; Tue, 21 Apr 2026 17:20:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A89A02BDC0B
+	for <stable@vger.kernel.org>; Tue, 21 Apr 2026 17:31:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.10
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776792020; cv=pass; b=u0XzKYyAlt7Ima7GkDGBn0sQk0avOxw1lG6pVCkyZihCCXVkrxfFUc/+40FP18Q7UVEmQNRxtU6gz1WoAgZiqw8taPafZ51qRXu4POoZLV2nACZmUc2D6pw9zE+X4R8QLkSRpkGDujqe4cwBXeOvFhG3vzddDhLcB28YHyKqV/s=
+	t=1776792669; cv=fail; b=jbVzrKh2MfcPD9Qt5IYALKGs75mbW0SEiLTHZRW91DmdP+f6FZBFcjmnIiPm+WhBcIE1FD4Tbv/4kgdjg9WgTHeQMiP4IQrB3JlkSg2EgQHKiIlKpO30Rx/Ot9XHJMSMjzQmL98MfrG9y7JswdzPyrqlCTzBbcvR08eg2xLTDLM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776792020; c=relaxed/simple;
-	bh=Vxeh3HrJSuiP4oJvDrptNJN1vnuRJPPVEP7iiGSRHi4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=seT7A2DbjMy1v7bxwQQp16sjFPjLbD3Ow+oP/96Dij2peyKzJTH0OfocKVBfLO+r97y4oc0rScpGsxElP6MwrHdEtj2idjSZ5Efl+/+B212f80L7vF0an1LPwvl79AjGCFu/XdCwH8YEYgwHg5i2N7cQ8jhl41RiknbkGU/Ar34=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eOv5casS; arc=pass smtp.client-ip=209.85.160.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-50d864c23bdso2372401cf.1
-        for <stable@vger.kernel.org>; Tue, 21 Apr 2026 10:20:17 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776792017; cv=none;
-        d=google.com; s=arc-20240605;
-        b=GAfBZXKZhsbTj7uSB9DeY4IRj000Iy+OIcnojQ8/aD2P9tXT+n56ejY8KvNUC0zqWS
-         c49OJFA9v6tJi7EsGbN7Cx3apLuSCxIF05rMK7SJLT7MpDoJvkGkxMb6MaFabkxumyGI
-         06PfR36JW/5JDvLxygkd7y0AP12BOa6ElbtaDha6W0lVWQ8PBd50+OvBbcKxYPxYdc4D
-         tTuuzm2rl1JfCIwqjq2B/6vaEnU8DuysVIQRil3OdPOUBlEoI2h/1Ncw1FZ+p0LDUyw1
-         BrPbNYJajZ4qA0Cw17h/V8P2AeJ3DCXBR/Zvgq++OzAlOoS9pNT7qClwJj7obmn6h9f1
-         0Ong==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Ha9b3BYC/DPqvosH7Lf4u9Isf4lxfWOStmLn8gp6G1A=;
-        fh=UX3S0eqxH/PJygf2a3wkZML0zTbgEDZK6s03CrC95k8=;
-        b=K3ZT7G7ZHNIJm25QvJ59xE6szMlrtvRZTMBePrTBtVW+hPVgGX7yHs7eOAoQNkCC+Z
-         532ihkQT5SgMj8H22uqVF+5EU/vO2rgMiNX3OvZUuSVA23gxYzumuq1XLkB5MgiRraRY
-         aTZOvNfWAy5eFyITnKJ2RWPT4GFqNF68enTVZWWy6RbvvW9zR4wrATgbO22nHAHNxlH8
-         lWTs2WWhDW3PzsCa9hMzoLET0P+COH2lFYYIo81EI2clUX//BcXxWmFhWDtSsu67ptmk
-         yA1a9p0UgMkVI9aSfU0FwXsfLSGkFQFRA0Tml08+7D0ApUhRciJ9+2t+KSnER5cN2/fb
-         KxeA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1776792017; x=1777396817; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ha9b3BYC/DPqvosH7Lf4u9Isf4lxfWOStmLn8gp6G1A=;
-        b=eOv5casSBww4kZRMsL4ioPLPsN5wwgraVByVXAcUvATWEpNXh9QstLWtcBGlzioA9q
-         eN27LS0YCsR4uUYFdrKG9dd+d9BMqgaI0Tr10b2PmZBIibqwyvE3lNG/tIOj1Qgg04+5
-         n1RjTMilcXx663FR0V5fNz50x3rVhiOdH+bQ23vCIwTnnv0VH0GYiteDNTLkSaIDtDL8
-         KCvcoGi/pXOYD2pgbxuIfpTbenqGZfDSepgUf+1Pn0z+g6TRHmjyQVjiVb/+1bCfLUp4
-         kl215eOmhEKk48vdQKz4hRrHaC60gBhC17kC1E3SFdbGY1noCO83yukZ2owmxV5Y7Fig
-         ZvAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776792017; x=1777396817;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Ha9b3BYC/DPqvosH7Lf4u9Isf4lxfWOStmLn8gp6G1A=;
-        b=tWpNxBjGLBCpBM41xpobckLy7BkQ8TONOr4VmORnnL6lsJfwLZC0724AW8vlzu7PwG
-         cLbZh8nbQLheUB1k9VM0nej6YoujOZk2sj5/GUbrmgZ4fO47QV6mVnCDnCju5in52/DD
-         UkWZC7DlBWUtjetG3/LPxZVEQuBx5jXgozqnWKBdPrmF3w7Ctz5aO8IdV/N7obIZUBq7
-         5OCxrwaTF4v1cpLGW0QutVTbZ4Zgyzwnt9Zx3aTtfOfjIi20zNPNpUX8LOWnJmssjgjJ
-         LxKTW3rcmPAh6wlF2UrVEv3IUv4d1GjRgiURkoHOS2JJxCPJXJCpLY5VBsAw1Gijv+0b
-         20XQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/Mcdm1X+wha0rAhPJ9vcnF3R3IY+Ax46TLr8YRHVb7R3RZZYD7yQukENHsu/uQfWTtFj3JNDk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw6OQpY07ykyWMnOAc7o/1hx7x8gOG2QBnHCaOSKPJxx+gg4Is1
-	RJsVpmBuXIRDTDL+dmCvBzqMqAGe3p2aTTHHkFyoMqu62xFehThQD3PDsscpPX+mwNUVn+PWtfv
-	qT6/ylqfDVgv5gX8WBn7t03sXaXRI+lFVbhsiVh5/
-X-Gm-Gg: AeBDiesd40AKeR3cuqP+jxHA/U37mHjBpAdjeJN7akWrdgXYOoQDx84THwjOPPDto4m
-	D2ax78sADVVY7NM2k1ljpt0ONqjaN3u2hUs/LLLzCp+sxzxqXSbu8+dKXEemO2mSL8IoI/AITHz
-	CaMxTf/pKSeXmBg6GghrY95DuCZrl1RLm5D9jpw5kLjuvHZKvtiXp1My1kMW4IIslNUpNB4GV5H
-	Gq9VrpKhznk+2zUZhIBYG8Ur9jXpf48Dg/JeXCXuqR+YzwKam2IXFENMfuct6Uo8VD7daekASQW
-	DE1XQsXbTOWAW4rTKUNzjgYYQPv3
-X-Received: by 2002:a05:622a:5a87:b0:508:fd42:fd05 with SMTP id
- d75a77b69052e-50e4420283bmr53961561cf.15.1776792014053; Tue, 21 Apr 2026
- 10:20:14 -0700 (PDT)
+	s=arc-20240116; t=1776792669; c=relaxed/simple;
+	bh=KSZDSQ8QBcGh5xZonEtTBGx7ezb+FpA8hTktwCvynCA=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=bOmuHZDtjzKfmL8lnyXsTXIzDSbWpWsUAz3wYPK2wKB8mni0XgB+qVQWO090pDqwicixgVqLl62rI3vQ9Am7HHq0wcdjYx2vZWCgdNvLZ2G7qfOFN4OqJWdWU6BcsFoJnCfbcwhKt6yNVY/B2U2Eylcz8YaDojEFuiT8rrelo9g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lO7qyD7d; arc=fail smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1776792668; x=1808328668;
+  h=date:from:to:cc:subject:message-id:references:
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=KSZDSQ8QBcGh5xZonEtTBGx7ezb+FpA8hTktwCvynCA=;
+  b=lO7qyD7dFUXlGF10oQ7V9NEfrkig7KdCCMeDzjSf4l7b8ywkAMbtaPII
+   //CPOPbPxoYInGai7vAQ78gs6i1TSD7x3CRHK3fkt3wEav6E+8JJoYvu/
+   x96NmIQAKT41fJo1hyFCHIQz9nksuAfoMpqdt6Qh26HP46XEO4oj7QcA7
+   t33Djl1sI8MFinLJxEIAwXEIINjbn+2qm7WZdFUaurQvsIBKum+whl98Q
+   Rpo8fzh1+q9Q8C6qes7jTBJzwHZul7U5S/+kVz9LBXjdLxryiKPKylRaP
+   A6jH9ud2/7JdiaW7yJOEurVXpmAblr3mO3zmfOWAfH9sRMTepj61H2P0x
+   Q==;
+X-CSE-ConnectionGUID: 47yVX9f2T6qD8fPpPcp/HQ==
+X-CSE-MsgGUID: 1TsiZbfVQsaw0AE8ooWzhA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11763"; a="95147730"
+X-IronPort-AV: E=Sophos;i="6.23,192,1770624000"; 
+   d="scan'208";a="95147730"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2026 10:31:07 -0700
+X-CSE-ConnectionGUID: sZZ838V3SSW1KFnvxePm6A==
+X-CSE-MsgGUID: DlLPhItuQ+OzXXGGei5drg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,192,1770624000"; 
+   d="scan'208";a="237124426"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2026 10:31:07 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 21 Apr 2026 10:31:06 -0700
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Tue, 21 Apr 2026 10:31:06 -0700
+Received: from CH1PR05CU001.outbound.protection.outlook.com (52.101.193.64) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 21 Apr 2026 10:31:05 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=VAueysljNdYh7lK4E77JxjmJM1uQUM5y4y/i0Fk5weOpy1ZVQuilG13e+adAZ9sgMgAbLA1G4cBEMtPR5uYT447yCiMlF2lkf6FVbcbSLO5Oj2biH0I2o8GWcJX3RJ5e6iUEMbr/LXcSuAWfkW4ozd3zTxnLrTJok5ytbawbB6MkaHmD+c582ek8BNfhGzbVgGph5cn/TY/qNAK5IgQMq+O8HfIeqWeuyETCXu9WT9iRPRYECQUyCTdBTltcHzTmAVujLX1IUX3qInF3k6Z19s62YQgkoL9sSSZVgA7fjvTj0S7HXRgfMNvLtho409hbECzowIdiS+OiR1907Y+tjw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=hu2gW8dESTdt1j/pgvrePkyGvjqUmKXyHh9Netf4nOc=;
+ b=b3IBFZsr7c2Hlmi9Z6H8Tmm21gUzgq6vhLQ9GfhxdvUbZurUempF3sngVmvCrssWoTELuWkEqKilKs2aRYX+cwAD0VhMzK1u4NWWDjBql9GuRSsUKe0eYDaEIHlaFCgGvAYr6N3402cu7TIPrkgIE3quKOiPUIoYqG4hOKseLvahT81KQNo0fCeqKhQzm81oPd8N2+vKJBs86HYeChyM/RFIDkE/2mclfEVk4nTusJQt+KZOmofQbbDYVaJS4fCRaVFJPjFPVMIbHes62aTxurniXn9t8zF/+i7LQYJk8n0fzsL0Hn6hhzguvcp/8DNoqvpcha0egL6axlw19i3jPQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB8182.namprd11.prod.outlook.com (2603:10b6:8:163::17)
+ by DS7PR11MB6295.namprd11.prod.outlook.com (2603:10b6:8:95::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.16; Tue, 21 Apr
+ 2026 17:31:03 +0000
+Received: from DS0PR11MB8182.namprd11.prod.outlook.com
+ ([fe80::7b65:81e6:c6c4:449e]) by DS0PR11MB8182.namprd11.prod.outlook.com
+ ([fe80::7b65:81e6:c6c4:449e%7]) with mapi id 15.20.9846.016; Tue, 21 Apr 2026
+ 17:31:03 +0000
+Date: Tue, 21 Apr 2026 10:31:00 -0700
+From: Matt Roper <matthew.d.roper@intel.com>
+To: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+CC: Tvrtko Ursulin <tursulin@ursulin.net>, <intel-xe@lists.freedesktop.org>,
+	<kernel-dev@igalia.com>, Matthew Brost <matthew.brost@intel.com>, Thomas
+ =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>, Rodrigo Vivi
+	<rodrigo.vivi@intel.com>, <stable@vger.kernel.org>
+Subject: Re: [PATCH] drm/xe/xelp: Fix Wa_18022495364
+Message-ID: <20260421173100.GC2131374@mdroper-desk1.amr.corp.intel.com>
+References: <20260420131603.70357-1-tvrtko.ursulin@igalia.com>
+ <384adac7-2aa4-4568-b7a5-987e914fbaf2@ursulin.net>
+ <20260420202932.GH7476@mdroper-desk1.amr.corp.intel.com>
+ <866fe0f9-73a6-47b3-ac37-41bb26c0c6a6@igalia.com>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <866fe0f9-73a6-47b3-ac37-41bb26c0c6a6@igalia.com>
+X-ClientProxiedBy: BYAPR07CA0060.namprd07.prod.outlook.com
+ (2603:10b6:a03:60::37) To DS0PR11MB8182.namprd11.prod.outlook.com
+ (2603:10b6:8:163::17)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAHWLEDHfXZScF5jNDzgOxGXf-MBDcVNtqW0DbNz8Ra8rtcuL+w@mail.gmail.com>
- <CAOdxtTbwipkyAfDakLAB6aVp6YkPWtKpDdVDUTz88WDB-18HXQ@mail.gmail.com>
- <CAOQ4uxhUn6oCBuVJqZu+FcMx8XeAQHZbXFAGon4Xeg2SPLJW_A@mail.gmail.com>
- <CAOdxtTaWWu_7eJWu68zf28zHQP3Y--vXTfbGFsceO47BpN3qxA@mail.gmail.com> <CAOQ4uxhCNhGinePrnkSfT9Mtf4o5FmBX7mTA2m4miCMOt3mJqA@mail.gmail.com>
-In-Reply-To: <CAOQ4uxhCNhGinePrnkSfT9Mtf4o5FmBX7mTA2m4miCMOt3mJqA@mail.gmail.com>
-From: Chenglong Tang <chenglongtang@google.com>
-Date: Tue, 21 Apr 2026 10:20:03 -0700
-X-Gm-Features: AQROBzDjNAxFnpR4sQRC9kzmG1vz5c9sq9OzKeP03GuQb7DjEPQ23ObObnZ8GC8
-Message-ID: <CAOdxtTZGFxaayJpqsiFQrWBqXvDn7oyxSL3_9TWP919k0FhWTg@mail.gmail.com>
-Subject: Re: [REGRESSION] Return change in 6.12.80+ with volatile mounting
-To: Amir Goldstein <amir73il@gmail.com>
-Cc: Derek Taylor <ddtaylor@google.com>, stable@vger.kernel.org, 
-	regressions@lists.linux.dev, Kevin Berry <kpberry@google.com>, 
-	overlayfs <linux-unionfs@vger.kernel.org>, Samuel Karp <samuelkarp@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB8182:EE_|DS7PR11MB6295:EE_
+X-MS-Office365-Filtering-Correlation-Id: acb3236c-7d87-4605-5044-08de9fcbc2c4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|56012099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info: qLFAAQIb3m+TagkICInqzcQi9z0FEX6It0swKV7eZ5ncjz2C1B/qIXG9PH0ciZ6/YibZ1In5tz9QCk67BJqL6xPME3D51NjlRrkIilzRf9+am4owFFZpVrumciRU6UqkdSMqP6XYSU3CqADoNcXFkcbqrHpSQyEoMOt0LqLAmdq+CdHej75M+01cxCy3rcl6MAqvUynPWO30ZjdvdpPMdXM57FnrZun+5GsXndvFyy84lik0US/tYsPC/S8BjBBuF26amscZT79G6WdIbmaEOcruRKaglaKRXR+pVGaJSE54UWe5WgN1sqbDH6jw2S+l4BB6Nxuxx0bXHkdLzyG6M3waqUfdmKOIQhCYCqTxgv74YMipi+OhTHr4x/dsUYPzX4+rNboGOIdecvw4t9J1LHLjbfNAH26a/AYinonRZG1whGEUJtQWWwJ6xTgMyiZoBoWQlTefsRpSujSRf597Mn+1oxDSoA5dBLlZB/3nUafAO2GI+4OC5PgRj2UxVNv0MIouTXfLdS+w23TqQFL47UTGcl1aaFUZ1GVv4LFHYDh2S0hgXHshktlAjuwJ685TgRUekJeuPkd0q240vTszx9/SjNxtR2PUAUw2l1LKJPV86kOab/YhhsBJpqJeDJpZtBGG+hiMDoZnX9Sw7HsX+DYPOqtFIyPyrlJWEM6GEyFqAtd8EPi6GhgM8GPXzFKjYnp6Vmlp9SnUfZk3CYMn0ckmIxptA9FFJVSpEAOLbtw=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB8182.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?n2hcTzzdatZIVIMez2zs15JP8RPyjB4wQQIdYffsKvawx5CKcX+Tm/SOkc?=
+ =?iso-8859-1?Q?mzKtixRzdKVzC1cqNkl+B0XSyH95gg9HAO6aRf8k+GeX4mATq2D0C5oWAp?=
+ =?iso-8859-1?Q?wYEOZkDeAEDZ7v+2rzCg32aFNGWV1RiSjYzux3OYhpcHToIboS9kaRV0T6?=
+ =?iso-8859-1?Q?bO2otYmMgpNmX36+rHLHPZFY2/SkIO7ItSh4QBA3o5k2C1G1EzcfE9dgqK?=
+ =?iso-8859-1?Q?Of/DrZlSuFcCNg0voFS2DyOIBpcPFPsARekiNWQ2s0qgXleqmu0QLGwHid?=
+ =?iso-8859-1?Q?v+3YY1tkjyo/uzGeVShmaRXYR84FwFxikgmGlOJnea/P6Yo6yjb5n5lcbm?=
+ =?iso-8859-1?Q?85XJFNpUB/iDX+0elKu/Hz5xTi9Axyn6Pacb2aoHkXgMlAS1/Ymi1tztkj?=
+ =?iso-8859-1?Q?6j5J4204veJpmfZay21r/X/YmuYn8xzOsBS2e1igb/Xeh93lCLjNoH+Ovw?=
+ =?iso-8859-1?Q?u1itAsfZmXhhr9MemOXYBNKvBPDnrCijrjyckXQXtXC5vbUWHkHi9FNGuA?=
+ =?iso-8859-1?Q?LZHfIOjkNkOGD74KjrRHkXr7KioC0VqdH/OT89arHUozCYCxOc2lHW7HnC?=
+ =?iso-8859-1?Q?alOnciyF7Q/uzslMzFb++T3Q10wK3AznsVf6wcXgo2z+Cypj70MIAUe2+f?=
+ =?iso-8859-1?Q?9nSsYkdbF5JZgzglUPrVmAdNgwES3UUgtEjW7rPEhTTNMrkaFigxp2ZzeY?=
+ =?iso-8859-1?Q?JOg1WghI9RodBXRIW2zmEU+Vyl7GUX38AGdBoIE4sKTvu+nDHVxLkDS5j9?=
+ =?iso-8859-1?Q?ItdOF+L/KFmckplm8jYD5p0RJJL48LJkPahiTaY155UwAjEs7EbBpDU0CN?=
+ =?iso-8859-1?Q?KZqn0gPC6JeIFh8Qsh5HEUdIJDgb5fc9WDPnD0YGiUV9HXD8EInIE9/sfX?=
+ =?iso-8859-1?Q?N4G0MatVupBWPjrM190mSSnotZMmIS07iqhLbCUplhMDfkfs7Hh3HT5uPl?=
+ =?iso-8859-1?Q?lVsWZrcPBn5hMvYa9qPlqkwkHh3Vehcbg6NFbcyG3UcmduxH10OOtlWtxc?=
+ =?iso-8859-1?Q?EO/RaEK8zOmYEUVAE/0qXrbxLrvB+oWPUugokXEXGlWf24jBQTx8DTT4vE?=
+ =?iso-8859-1?Q?XIQUgAD4FTbBCSXCtqWKyzTU0YEZi6leWmjex0fg/ajCAQO6LKhy2IIj2S?=
+ =?iso-8859-1?Q?WE5PU5drW9sLIitL+SnHwmPlqUr8FksLVbtxvU2fDGjDvEsF7uePuKrUdZ?=
+ =?iso-8859-1?Q?IdzhTFT37tBehObAkTil8x07S2fDqd+G+k9/k/8/SHsewz2DujbDpZakbj?=
+ =?iso-8859-1?Q?vN/VjIgJzJkObiQ19j/errFyAqf1nWOpKtl5o8Ddhjhj+NEPL9zbl2/aB9?=
+ =?iso-8859-1?Q?aWLBnnQOZUSQJTZRucStZxXujD3OUqc0CMnz3Bm8VJmZyoSYS4bLmz/oJc?=
+ =?iso-8859-1?Q?Wluw0gU4Q+LBSnwrbUcMtW599jyL0ctMedSBSYi4uHG/ypMZPJRewaL4jw?=
+ =?iso-8859-1?Q?j7Q+WdpOBRloVqk2an/Y7GxIs111pqC9pj5Qgdo3wLEkXp9S+XBbbR9932?=
+ =?iso-8859-1?Q?AVCb1VDE3ybdUzPuOBYNN/75LxGpKztIR2Fyks/L3lWCK8KC2qvfqKjHzq?=
+ =?iso-8859-1?Q?KY4fPnuQP2ohYs/Qq1BpevyEaH3TZja5U7wdiAh9u1Nou7+xIo5Q0hUb0K?=
+ =?iso-8859-1?Q?vJH/2hDS/Xe/82cWmxesgJOe10JN9xVLUkddF3QhfN4lNlYgB8vfnz2A/g?=
+ =?iso-8859-1?Q?z9K8zY0j/wDM8GvdtLOXzCGow0qYOrszRGUEr6Wk3Y6jiWZkN56EynQC/e?=
+ =?iso-8859-1?Q?qpVB1sG0nXJhegZIjOvd+hTBJN+5vukM+bHz0O87UoqIRynlQLR8t1LX8R?=
+ =?iso-8859-1?Q?CKG7nkEdeUk+s/vu8dr4TR1rXPEek04=3D?=
+X-Exchange-RoutingPolicyChecked: wKK97BknL5a37PSe4/9M627i1o4Po3AQud0FR6EUSh+aY6D7QEnPybokpAJ2xLHA/BEQfTk5bo+Aw1DHa160i90WmPxi+OoR0SZcih/zFADsu8dHZdeDrVgTFzklAYo6LO91+M0b2GoN4WnFmHUuY9ej3mmFd4vBsXuqEkEloaI5YwnkHH4D5sxp93xG4G8KVxB+XV0/uo/YlUSjw6KffhqWqqZUGcBsxKl3oT2z/V2NqNLxz8xWamPvTfUaR31fdio3NtJuPX054wwxOGPs3nh6sar3CUT4IU0qY3SRKb3QDy3VgeFPey55lqhkfoogrpCMUFU8YPcpnLnWGEk4Lw==
+X-MS-Exchange-CrossTenant-Network-Message-Id: acb3236c-7d87-4605-5044-08de9fcbc2c4
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB8182.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Apr 2026 17:31:02.9230
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: LGsP5miwK77t7kh+Nmcn/2cYVhlCEQ0cQC/aVSZvv14Wxn/og9w3EK/QWNMB1yKwPQtFC6KHVTOrCYbZ+SOVXHSrCVZ3To3nV7Lq30bM0Ck=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR11MB6295
+X-OriginatorOrg: intel.com
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-240213-lists,stable=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[igalia.com:email,intel.com:dkim,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns];
+	DKIM_TRACE(0.00)[intel.com:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240212-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[google.com:+];
-	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[chenglongtang@google.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[matthew.d.roper@intel.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 607D843DE80
+	RCVD_COUNT_SEVEN(0.00)[10]
+X-Rspamd-Queue-Id: D1DCD43E08E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-CC: Samnuel from containerd
+On Tue, Apr 21, 2026 at 04:09:25PM +0100, Tvrtko Ursulin wrote:
+> 
+> On 20/04/2026 21:29, Matt Roper wrote:
+> > On Mon, Apr 20, 2026 at 02:24:05PM +0100, Tvrtko Ursulin wrote:
+> > > 
+> > > On 20/04/2026 14:16, Tvrtko Ursulin wrote:
+> > > > Command parser relative MMIO addressing needs to be enabled when writing
+> > > > to the register.
+> > > > 
+> > > > Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+> > > > Fixes: ca33cd271ef9 ("drm/xe/xelp: Add Wa_18022495364")
+> > > > Cc: Matt Roper <matthew.d.roper@intel.com>
+> > > > Cc: Matthew Brost <matthew.brost@intel.com>
+> > > > Cc: "Thomas Hellström" <thomas.hellstrom@linux.intel.com>
+> > > > Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> > > > Cc: <stable@vger.kernel.org> # v6.18+
+> > 
+> > I don't think we want/need the stable Cc here; this workaround doesn't
+> > apply to any of the Xe2 and later platforms that the Xe driver supports
+> > for users.  While it's possible for developers to manually override the
+> > driver's detection flags and force it to load on Xe1-era platforms that
+> > this workaround does apply to, doing so will taint the kernel and we
+> > already know that a lot of Xe1 era workarounds aren't implemented.
+> 
+> You are right, I just blindly copied the output of dim fixes. But it doesn't
+> matter hugely either way since as long as there is Fixes: it would get
+> picked up for -stable anyway.
+> 
+> > 
+> > > > ---
+> > > >    drivers/gpu/drm/xe/xe_lrc.c | 2 +-
+> > > >    1 file changed, 1 insertion(+), 1 deletion(-)
+> > > > 
+> > > > diff --git a/drivers/gpu/drm/xe/xe_lrc.c b/drivers/gpu/drm/xe/xe_lrc.c
+> > > > index 9d12a0d2f0b5..c725cde4508d 100644
+> > > > --- a/drivers/gpu/drm/xe/xe_lrc.c
+> > > > +++ b/drivers/gpu/drm/xe/xe_lrc.c
+> > > > @@ -1214,7 +1214,7 @@ static ssize_t setup_invalidate_state_cache_wa(struct xe_lrc *lrc,
+> > > >    	if (xe_gt_WARN_ON(lrc->gt, max_len < 3))
+> > > >    		return -ENOSPC;
+> > > > -	*cmd++ = MI_LOAD_REGISTER_IMM | MI_LRI_NUM_REGS(1);
+> > > > +	*cmd++ = MI_LOAD_REGISTER_IMM | MI_LRI_LRM_CS_MMIO | MI_LRI_NUM_REGS(1);
+> > > 
+> > > Or if this register exists only for RCS would it be better to define
+> > > CS_DEBUG_MODE2 as the absolute 0x20d8 (as in i915)? Unfortunately the public
+> > > TGL PRM does not list neither the register or the workaround so I am not
+> > > sure.
+> > 
+> > CS_DEBUG_MODE2 exists on both the RCS and CCS engines, so I think the
+> > current register definition is fine.
+> > 
+> > Personally I might have changed the line farther down to
+> > CS_DEBUG_MODE2(hwe->mmio_base) so that we're using an absolute offset
+> > instead of relative, but adding the MI_LRI_LRM_CS_MMIO flag and passing
+> > the relative offset should work fine too.
+> 
+> Good to know, thanks! I am happy to change to absolute if you prefer.
+>  > Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
+> 
+> Thank you!
+> 
+> I assume someone will pull the patch in?
 
-On Mon, Apr 20, 2026 at 12:59=E2=80=AFAM Amir Goldstein <amir73il@gmail.com=
-> wrote:
->
-> On Mon, Apr 20, 2026 at 8:31=E2=80=AFAM Chenglong Tang <chenglongtang@goo=
-gle.com> wrote:
-> >
-> > Hi, Amir,
-> >
-> > Thanks for looking into this! To answer your questions:
-> >
-> > 1. Production vs. Test Suite Impact
-> >
-> > The immediate failure we encountered is in containerd's integration
-> > test suite (TestImageVolumeCheckVolatileOption). The test explicitly
-> > reads /proc/mounts and expects the exact string "volatile".
-> >
-> > In default production, containerd passes the legacy "volatile" string
-> > to the mount syscall, which your patch correctly handles under the
-> > hood. So the standard "happy path" is not broken in production.
-> >
-> > 2. The purpose of WithTempMount() / RemoveVolatileOption
-> >
-> > Containerd regularly makes temporary overlay mounts (e.g., for
-> > unpacking layers). Because overlayfs rejects reusing upper/work dirs
-> > from a volatile mount, containerd uses RemoveVolatileOption to strip
-> > the volatile flag before these temporary mounts.
-> >
-> > Currently, containerd's RemoveVolatileOption does an exact string
-> > match for "volatile". While it works for the default path, there is a
-> > production edge case: if a user explicitly configures their container
-> > runtime to use the new "fsync=3Dvolatile" option, older containerd
-> > binaries will fail to strip it, and the temporary mounts will be
-> > rejected by the kernel.
->
-> I need to challenge this specific argument because I do not agree
-> that this edge case could be considered a regression at all.
->
-> An admin from the past could not have set an explicit
-> "fsync=3Dvolatile" mount option.
->
-> Though experiment - overlayfs adds a new mode fsync=3Doff
-> which is more loose than "volatile" because "volatile" can actually
-> return error on fsync in some cases.
->
-> Overlayfs would also not allow to reuse workdir from such
-> a mount.
->
-> So would you then claim that adding the new mount option
-> "fsync=3Doff" is a regression because of the edge case that an admin
-> decided to explicitly add "fsync=3Doff" and RemoveVolatileOption()
-> does not handle it.
->
-> I don't buy it.
->
-> There is a more correct way to handle this situation and it is
-> documented in overlayfs.rst:
->
-> "When overlay is mounted with "volatile" option, the directory
-> "$workdir/work/incompat/volatile" is created.  During next mount, overlay
-> checks for this directory and refuses to mount if present. This is a stro=
-ng
-> indicator that the user should discard upper and work directories and cre=
-ate
-> fresh ones. In very limited cases where the user knows that the system ha=
-s
-> not crashed and contents of upperdir are intact, the "volatile" directory
-> can be removed."
->
-> containerd unpacking layers falls under this very limited case.
-> containerd can syncfs() workdir after unpack & unmount of temp
-> overlayfs and remove the "incompat/volatile" directory and then
-> the upperdir/workdir are are free to be remounted.
->
-> >
-> > Conclusion
-> >
-> > While containerd could theoretically patch their code to accept
-> > strings.Contains() or fsync=3Dvolatile going forward, there are many
->
-> Following the documentation advise would be better.
->
-> > existing containerd binaries in the wild. Given that this patch breaks
-> > containerd's CI tests and introduces an edge case for
-> > RemoveVolatileOption, it might be safest to fix ovl_show_options in
-> > the kernel to continue outputting the legacy "volatile" string to
-> > strictly guarantee backwards compatibility with userspace.
-> >
->
-> Considering my comments above, I think we have not yet reached
-> the point where the backward compat "volatile" string is called for,
-> but with other reports from production workloads, we could get there.
->
-> Thanks for the clear and honest explanations of the containerd situation!
-> Amir.
+Yeah, I just pushed it; the CI results weren't available when I checked
+yesterday (likely due to the weekend CI farm downtime creating a big
+testing backlog).
+
+Thanks.
+
+
+Matt
+
+> 
+> Regards,
+> 
+> Tvrtko
+> 
+> 
+
+-- 
+Matt Roper
+Graphics Software Engineer
+Linux GPU Platform Enablement
+Intel Corporation
 
