@@ -1,183 +1,132 @@
-Return-Path: <stable+bounces-240071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240072-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IHClKfcr52nv4wEAu9opvQ
-	(envelope-from <stable+bounces-240071-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 09:49:11 +0200
+	id oO95Mt0s52lg5AEAu9opvQ
+	(envelope-from <stable+bounces-240072-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 09:53:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43D72437D81
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 09:49:10 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 605B3437DF7
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 09:53:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 96D4F3023D8A
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 07:47:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4330B301EC59
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 07:52:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC4BE301474;
-	Tue, 21 Apr 2026 07:47:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8A1B387585;
+	Tue, 21 Apr 2026 07:52:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="qBtAk1+n"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="deiTA/zq"
 X-Original-To: stable@vger.kernel.org
-Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E898C1FB1
-	for <stable@vger.kernel.org>; Tue, 21 Apr 2026 07:47:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96D993446B7;
+	Tue, 21 Apr 2026 07:52:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776757633; cv=none; b=ennh7y+TLhqDASjZ5hDX7rSwwqL1KFtoLgjPlq8fNV+zGb29oyWZ+4fs5dN4Sh2DGlyriMjhyUfiQCC8M0QZzqyrBolz2Uw5yyGCmmWGdI+tA/J2Qft5jA5SZ2W1jCXxf17jw43XnLj9ypcmnLRdOYnXHJjSGKNNVf2F1F/1/H4=
+	t=1776757959; cv=none; b=BmM1UtlQyR6AxfAQ7W2tYeTBsXRoNrav81NCmwd8Dc3IOhPtleZHRAib3YIeT3ZcDcnjDmNoBdEfzS+7LSeV7oH6yN67/Xm0DU7YU9PJmDGwldwEWRp9ceA/yp3nI4vLE7mu4QSu6brYLj5+vuXA2dYr5WUXlmUVLIDjAnWE2/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776757633; c=relaxed/simple;
-	bh=pwLYsZ1hj4BhebbyXGH7ndw+0vhnMN7D2DVlWGwcad8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=T/qN8qaaS5OIZs46YCVXfcRg1V44d56lL9o1tOtkfQ0kKgo45mSs4GmiQCKgPOLR21PkYfLUcVBjzDQEY1/GNgOK2k2vGh1XbAAsyrNaAutAiXeouVMDtRPLU7KkRla+IkWWzg5IZ15WG9QrAtUQPr3Rf7Ypd6G7T/qJdBn8zMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=qBtAk1+n; arc=none smtp.client-ip=95.215.58.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1776757619;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Tf1/Nczyer/GJCIPDHmGkMVMbW3+J8WCh6h++SMiyOA=;
-	b=qBtAk1+nNzp4Kl8q08RFuv48IsTFWM+xt/tlv/kUr3tpqfe5xYPcqNG/NSCwj3GwEDrPKS
-	Tjr5tT3APq2SB/EiN7Ju/Bzjfsc+cB8DPKdlY5NB+DfHxzv1EkzgASI+y8IFrTqVl8uJdT
-	d269iHpA5/QvNdycBlZjGdhfBEdJHB0=
-From: Lance Yang <lance.yang@linux.dev>
-To: david@kernel.org
-Cc: catalin.marinas@arm.com,
-	will@kernel.org,
-	akpm@linux-foundation.org,
-	ljs@kernel.org,
-	Liam.Howlett@oracle.com,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	jackmanb@google.com,
-	hannes@cmpxchg.org,
-	ziy@nvidia.com,
-	lance.yang@linux.dev,
-	ryan.roberts@arm.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mm/page_alloc: fix initialization of tags of the huge zero folio with init_on_free
-Date: Tue, 21 Apr 2026 15:46:30 +0800
-Message-Id: <20260421074630.72451-1-lance.yang@linux.dev>
-In-Reply-To: <20260420-zerotags-v1-1-3edc93e95bb4@kernel.org>
-References: <20260420-zerotags-v1-1-3edc93e95bb4@kernel.org>
+	s=arc-20240116; t=1776757959; c=relaxed/simple;
+	bh=1UJdStWuXc+3P6vByY9wa8GVOgl0OgdrU4BHWgXWlrc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=jtMcAOz38wrdmzGyX1x0EMyNZ0PHL1+IMyn4kKm0vuyjmVbW9hI8RMf2S058VnUdMRWWf+5xoxtVisraty+84YcSFe+OzgBOf2xnq19WgySje+G4dUl6ShieQzqGpj1IpMdPThf0dNLmqhyJzKbv/Hg3nYKD4St3yCIZI/CRbGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=deiTA/zq; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 322E4C5C9A8;
+	Tue, 21 Apr 2026 07:53:16 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id E7DB7600D2;
+	Tue, 21 Apr 2026 07:52:35 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DE1E910460A02;
+	Tue, 21 Apr 2026 09:52:30 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1776757954; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=1UJdStWuXc+3P6vByY9wa8GVOgl0OgdrU4BHWgXWlrc=;
+	b=deiTA/zq9+xnKePVLAxop9BBN2NUkb67CAWuKL2Svmbf66rzR7fvRlfOSZAQNIdf7a8MTo
+	I2DZMsoiaNmYbIiMw3kl+95j8AQPbW0z7O76zMkvPylYlGWiFXcPZLNPWIasnTAOTAGxOB
+	KOxXPnlwULLTzpl2hXhfPd1UmT1xecTcXGNyGQCP7afVWITQ+LAGGjSmuOJt4wlFB6ttWg
+	OiX7+OqRo1m1PKL5uF6uWbUYCYriU1dCXXp/PXSGVb4T7OTIOAQ6RHhjB8lt3CcC1xtuQA
+	h9JrUFjl9ZmhMystswXLe9FrmeC1y/8hF2x6REQ0yw4loTOlLAv0zREF9/1wOQ==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Shitalkumar Gandhi <shital.gandhi45@gmail.com>
+Cc: alex.aring@gmail.com,  stefan@datenfreihafen.org,
+  andrew+netdev@lunn.ch,  davem@davemloft.net,  edumazet@google.com,
+  kuba@kernel.org,  pabeni@redhat.com,  linux-wpan@vger.kernel.org,
+  netdev@vger.kernel.org,  linux-kernel@vger.kernel.org,
+  stable@vger.kernel.org,  Shitalkumar Gandhi
+ <shitalkumar.gandhi@cambiumnetworks.com>
+Subject: Re: [PATCH] ieee802154: ca8210: fix cas_ctl leak on spi_async failure
+In-Reply-To: <20260421073259.2259783-1-shitalkumar.gandhi@cambiumnetworks.com>
+	(Shitalkumar Gandhi's message of "Tue, 21 Apr 2026 13:02:59 +0530")
+References: <20260421073259.2259783-1-shitalkumar.gandhi@cambiumnetworks.com>
+User-Agent: mu4e 1.12.7; emacs 30.2
+Date: Tue, 21 Apr 2026 09:52:30 +0200
+Message-ID: <87340o7nsx.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Spamd-Result: default: False [-1.16 / 15.00];
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Last-TLS-Session-Version: TLSv1.3
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-240071-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
+	TAGGED_FROM(0.00)[bounces-240072-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	FREEMAIL_CC(0.00)[gmail.com,datenfreihafen.org,lunn.ch,davemloft.net,google.com,kernel.org,redhat.com,vger.kernel.org,cambiumnetworks.com];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linux.dev:+];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lance.yang@linux.dev,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[miquel.raynal@bootlin.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[bootlin.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:dkim,linux.dev:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 43D72437D81
+	TAGGED_RCPT(0.00)[stable,netdev];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[cambiumnetworks.com:email,bootlin.com:email,bootlin.com:dkim,bootlin.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 605B3437DF7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+Hello,
 
-On Mon, Apr 20, 2026 at 11:16:46PM +0200, David Hildenbrand (Arm) wrote:
->__GFP_ZEROTAGS semantics are currently a bit weird, but effectively this
->flag is only ever set alongside __GFP_ZERO and __GFP_SKIP_KASAN.
->
->If we run with init_on_free, we will zero out pages during
->__free_pages_prepare(), to skip zeroing on the allocation path.
->
->However, when allocating with __GFP_ZEROTAG set, post_alloc_hook() will
->consequently not only skip clearing page content, but also skip
->clearing tag memory.
->
->Not clearing tags through __GFP_ZEROTAGS is irrelevant for most pages that
->will get mapped to user space through set_pte_at() later: set_pte_at() and
->friends will detect that the tags have not been initialized yet
->(PG_mte_tagged not set), and initialize them.
->
->However, for the huge zero folio, which will be mapped through a PMD
->marked as special, this initialization will not be performed, ending up
->exposing whatever tags were still set for the pages.
->
->The docs (Documentation/arch/arm64/memory-tagging-extension.rst) state
->that allocation tags are set to 0 when a page is first mapped to user
->space. That no longer holds with the huge zero folio when init_on_free
->is enabled.
->
->Fix it by decoupling __GFP_ZEROTAGS from __GFP_ZERO, passing to
->tag_clear_highpages() whether we want to also clear page content.
->
->As we are touching the interface either way, just clean it up by
->only calling it when HW tags are enabled, dropping the return value, and
->dropping the common code stub.
->
->Reproduced with the huge zero folio by modifying the check_buffer_fill
->arm64/mte selftest to use a 2 MiB area, after making sure that pages have
->a non-0 tag set when freeing (note that, during boot, we will not
->actually initialize tags, but only set KASAN_TAG_KERNEL in the page
->flags).
+On 21/04/2026 at 13:02:59 +0530, Shitalkumar Gandhi <shital.gandhi45@gmail.=
+com> wrote:
 
-Good catch!
+> ca8210_spi_transfer() allocates cas_ctl with kzalloc_obj(GFP_ATOMIC)
+> and relies entirely on the SPI completion callback
+> ca8210_spi_transfer_complete() to free it.
 
-I can reproduce it reliably with this small debug change:
+[...]
 
----8<---
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 970e077019b7..d5b6e2474f47 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -225,8 +225,7 @@ static bool get_huge_zero_folio(void)
-        if (likely(atomic_inc_not_zero(&huge_zero_refcount)))
-                return true;
+> Fixes: ded845a781a5 ("ieee802154: Add CA8210 IEEE 802.15.4 device driver")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Shitalkumar Gandhi <shitalkumar.gandhi@cambiumnetworks.com>
+> ---
 
--       zero_folio = folio_alloc((GFP_TRANSHUGE | __GFP_ZERO | __GFP_ZEROTAGS) &
--                                ~__GFP_MOVABLE,
-+       zero_folio = folio_alloc(GFP_TRANSHUGE | __GFP_ZERO | __GFP_ZEROTAGS,
-                        HPAGE_PMD_ORDER);
-        if (!zero_folio) {
-                count_vm_event(THP_ZERO_PAGE_ALLOC_FAILED);
----
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
 
-That makes it much easier to hit. Userspace can seed tagged 2 MB folios,
-but only as __GFP_MOVABLE.
-
-The original huge zero folio allocation uses "& ~__GFP_MOVABLE", so it
-will only reach these folios through fallback, which is hard to force
-reliably from userspace :(
-
-Will get back once testing is done :P
-
-Cheers,
-Lance
+Thanks,
+Miqu=C3=A8l
 
