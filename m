@@ -1,192 +1,155 @@
-Return-Path: <stable+bounces-240107-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240106-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2OTkJqpL52lW6QEAu9opvQ
-	(envelope-from <stable+bounces-240107-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 12:04:26 +0200
+	id oP1aG49L52lW6QEAu9opvQ
+	(envelope-from <stable+bounces-240106-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 12:03:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FEFA4394AC
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 12:04:21 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52B91439487
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 12:03:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9DFEA302D13E
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 09:58:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 124C3300A106
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 09:58:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC2693B2FF9;
-	Tue, 21 Apr 2026 09:58:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E249B3B2FDA;
+	Tue, 21 Apr 2026 09:58:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cP3xKsVI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mv9mPaLb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DB4E3A8FEA;
-	Tue, 21 Apr 2026 09:58:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4C2C3A63F2;
+	Tue, 21 Apr 2026 09:58:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776765531; cv=none; b=nYy7vEITp4kVo7Z3oLqCSqqNVd/onwnzdyqWnyuk0ie1f7zxSimoDlJTc8MP+qd1/6BVCoIbxAgKEdAzNYn01+gnn/v21yPQOGNkxrm60At3r3DjWgIbdFCw2IrwTa9Pm7tlV8yt/Z6K1oPD9mjDkYGrqxVRNXZwkPPHLmYeKqw=
+	t=1776765512; cv=none; b=kCmSHjpYg1wtTAUEXl96T9+p9vSXLt1p8sERh1pGm0qxkEprFZ3+hm58nOdPMn2lKrlppfbXE1OiqpICzSrpHNrCd1hLYRMkWa6aaPoYj23ktHsTllobdg7nTeRI7blTIGqTjhDtHrSW1HoXEJb/FmE4vq2OfNLrw5HR+xK61Rk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776765531; c=relaxed/simple;
-	bh=Tsq1SH4wRGWaW6shCyBF9cxjiMaM2pGcEJjUycGIkHA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HFWgM9tl9MuRKlW9avi6fZLkaL0wyJZu19jiI0eaeXW8Vlrj8ANp5q0UUZqrbqN4D+a/vfzn8JMPjz2Z5wPTl51BMjmrccfaBmjyW3FJFQXe2XESexFPJYQdfVhlkZwA2yk/BgweRtjE1EUlR6EzYn2Hj8Gvu1zV3SElOCHOVzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cP3xKsVI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02BA6C2BCB5;
-	Tue, 21 Apr 2026 09:58:41 +0000 (UTC)
+	s=arc-20240116; t=1776765512; c=relaxed/simple;
+	bh=fexoY8X6Nq2k603tJTu41pqTFs2zfJKg3RNrn/E/JGY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=opnys4n/tqluCIvoSL8NIUvIqo57XnlQkTrAh1df2D3YxFYeqkg0Gw9vXHwGrGkS6IVF9eJqgQJH6m7kbFfmdYRzaNzHibEJSNARoByd6S+9KWslSW/rOKegKFPGnUusyMl6jvOKd+IAzGiJnD8nGCTofVMmgedMfprXY38xbJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mv9mPaLb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D5FAC2BCB0;
+	Tue, 21 Apr 2026 09:58:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776765530;
-	bh=Tsq1SH4wRGWaW6shCyBF9cxjiMaM2pGcEJjUycGIkHA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cP3xKsVIfM1kILDzW4ycKUXK9pvUGTHfseBrcSwd+2BIdsiGmWFM+P0KumzB72UI1
-	 lOkEWUgX/r4+nhLTVFZbEjMoNH6v2xIfPRUU9YnXvACZ8pUCme0aEKoyIWxnN5L/wv
-	 oM0epl8AYqBESabhGOuC/pYlp0IHdg8bZhbCD75w64NEUceMywaSHpWz1pPPziQMLk
-	 UZD9/NZw6FNzHPB5s38EwvNa+54WGupllvRBZbi7hqz6g6l3BGSyJAhPl5UcQbg/Jt
-	 6cSJOyasZ92wwBEQAHfhVIhs5j9r0q5XFpoE7gSE598t4XZdlexDJQkBZ6EOoKf+sE
-	 9NpzFHHIujcQQ==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: gregkh@linuxfoundation.org
-Cc: achill@achill.org,
-	akpm@linux-foundation.org,
-	broonie@kernel.org,
-	conor@kernel.org,
-	f.fainelli@gmail.com,
-	hargar@microsoft.com,
-	jonathanh@nvidia.com,
-	linux-kernel@vger.kernel.org,
-	linux@roeck-us.net,
-	lkft-triage@lists.linaro.org,
-	patches@kernelci.org,
-	patches@lists.linux.dev,
-	pavel@nabladev.com,
-	rwarsow@gmx.de,
-	shuah@kernel.org,
-	sr@sladewatkins.com,
-	stable@vger.kernel.org,
-	sudipm.mukherjee@gmail.com,
-	torvalds@linux-foundation.org,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Zqiang <qiang.zhang@linux.dev>,
-	rcu@vger.kernel.org,
-	Richard Weinberger <richard@nod.at>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	linux-um@lists.infradead.org
-Subject: Re: [PATCH 6.18 000/198] 6.18.24-rc1 review
-Date: Tue, 21 Apr 2026 11:55:49 +0200
-Message-ID: <20260421095549.47476-1-ojeda@kernel.org>
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+	s=k20201202; t=1776765512;
+	bh=fexoY8X6Nq2k603tJTu41pqTFs2zfJKg3RNrn/E/JGY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mv9mPaLbyWMAANPZxFQ2Jqxq5kFDbd1iBmp7XwiQCZ34zvxiCQb7IK7U19EJ8GtjN
+	 lStK/YU1TztoxxoMGN8Mn/84E/Y9K3sUSy+rVKnQtkFcroPboRGRl41yDoOkjiyccB
+	 cEKvJwFMCY8AI6VIgzizisSEx+xZzU6qh1lrtgWn/Er+MhqcuWVCJqH/NRjentTI12
+	 toheS5KdS76FCvNVprwVRY72thTgkj5FLnepiLvc2M4bvwj3hwo6AuFsLMHCXm/STS
+	 kwqhEchqckpqu4N6n/vSViRDaNHQjbYX8st7sR2rtHzXKMws2uy/3uIBMXzExC1rKz
+	 hAcEKZ2+yuOkw==
+Date: Tue, 21 Apr 2026 10:58:27 +0100
+From: Sudeep Holla <sudeep.holla@kernel.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Hanjun Guo <guohanjun@huawei.com>,
+	Sudeep Holla <sudeep.holla@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, Huisong Li <lihuisong@huawei.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, pjaroszynski@nvidia.com,
+	rmikey@meta.com, kernel-team@meta.com, stable@vger.kernel.org
+Subject: Re: [PATCH] ACPI: arm64: cpuidle: Tolerate platforms with no deep
+ PSCI idle states
+Message-ID: <20260421-accomplished-ethereal-whale-0e1cba@sudeepholla>
+References: <20260420-ffh-v1-1-6b4c10fec442@debian.org>
+ <20260420-sturdy-unique-shark-c4ca8c@sudeepholla>
+ <aedGoi-Fk5HPK0OO@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+In-Reply-To: <aedGoi-Fk5HPK0OO@gmail.com>
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
+	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[achill.org,linux-foundation.org,kernel.org,gmail.com,microsoft.com,nvidia.com,vger.kernel.org,roeck-us.net,lists.linaro.org,kernelci.org,lists.linux.dev,nabladev.com,gmx.de,sladewatkins.com,joshtriplett.org,efficios.com,infradead.org,goodmis.org,linutronix.de,linux.dev,nod.at,cambridgegreys.com,sipsolutions.net,lists.infradead.org];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[38];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240106-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[17];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-240107-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	MAILSPIKE_FAIL(0.00)[172.234.253.10:query timed out];
-	FROM_NEQ_ENVFROM(0.00)[ojeda@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sudeep.holla@kernel.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linutronix.de:email,nvidia.com:email,goodmis.org:email,linux.dev:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,infradead.org:email,nod.at:email,sipsolutions.net:email,joshtriplett.org:email]
-X-Rspamd-Queue-Id: 3FEFA4394AC
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 52B91439487
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, 20 Apr 2026 17:39:39 +0200 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+On Tue, Apr 21, 2026 at 02:51:42AM -0700, Breno Leitao wrote:
+> On Mon, Apr 20, 2026 at 04:12:38PM +0100, Sudeep Holla wrote:
+> > On Mon, Apr 20, 2026 at 02:27:13AM -0700, Breno Leitao wrote:
+> > > -	count = pr->power.count - 1;
+> > > -	if (count <= 0)
+> > > -		return -ENODEV;
+> > > -
+> >
+> > Does it make sense to retain this check like
+> >   if (pr->power.count < 1)
+> >   	return -EINVAL;
+> >
+> > Though I see the assignment to pr->power.count in drivers/acpi/processor_idle.c
+> > is through unsigned int. So I am fine even without the above check.
+> 
+> I don't think the check is necessary. When count is 0 or 1, the loop
+> for (i = 1; i < pr->power.count; i++) body won't execute, and the
+> function will return 0.
 >
-> This is the start of the stable review cycle for the 6.18.24 release.
-> There are 198 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 22 Apr 2026 15:38:57 +0000.
-> Anything received after that time might be too late.
 
-Boot-tested under QEMU for Rust x86_64, arm64 and riscv64; built-tested
-for loongarch64:
+Yes but the point is to handle invalid pr->power.count(0 or less) which
+is not possible here though it is signed it because it is assigned from
+an unsigned int during initialisation.
 
-Tested-by: Miguel Ojeda <ojeda@kernel.org>
+> This seems like the correct behavior — if there are no FFH PSCI states
+> to validate, there's nothing that should fail.
+> 
 
-For UML (x86_64) I am seeing:
+Agreed, but I was thinking of error in parsing _LPI being propogated here
+but again that's not happening here.
 
-    In file included from arch/um/kernel/asm-offsets.c:3:
-    In file included from ./arch/x86/um/shared/sysdep/kernel-offsets.h:5:
-    In file included from ./include/linux/crypto.h:18:
-    In file included from ./include/linux/slab.h:16:
-    In file included from ./include/linux/gfp.h:7:
-    In file included from ./include/linux/mmzone.h:1538:
-    In file included from ./include/linux/memory_hotplug.h:7:
-    In file included from ./include/linux/notifier.h:16:
-    In file included from ./include/linux/srcu.h:59:
-    ./include/linux/srcutiny.h:14:10: fatal error: 'linux/irq_work_types.h' file not found
-       14 | #include <linux/irq_work_types.h>
-          |          ^~~~~~~~~~~~~~~~~~~~~~~~
-    1 error generated.
+> Additionally, returning -ENODEV would trigger the "Invalid FFH LPI data"
+> error message, which would be misleading since the LPI data isn't
+> invalid, it's just not present.
+> 
 
-Caused by commit 95721c9fb3a1 ("srcu: Use irq_work to start GP in tiny
-SRCU"). The header seems to simply not be there, i.e. either the
-`#include` is changed or commit c809f081fe40 ("irqwork: Move data struct
-to a types header") is backported.
+The point was to throw that error if _LPI parsing fails.
 
-Cc: Joel Fernandes <joelagnelf@nvidia.com>
-Cc: Paul E. McKenney <paulmck@kernel.org>
-Cc: Boqun Feng <boqun@kernel.org>
-Cc: Sasha Levin <sashal@kernel.org>
-Cc: Josh Triplett <josh@joshtriplett.org>
-Cc: Lai Jiangshan <jiangshanlai@gmail.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Uladzislau Rezki <urezki@gmail.com>
-Cc: Zqiang <qiang.zhang@linux.dev>
-Cc: rcu@vger.kernel.org
+> That said, please take this with a grain of salt since I'm not deeply
+> familiar with _LPI states and their expected behavior.
+> 
 
-Cc: Richard Weinberger <richard@nod.at>
-Cc: Anton Ivanov <anton.ivanov@cambridgegreys.com>
-Cc: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-um@lists.infradead.org
+No worries, I agree the check I asked for is not needed.
 
-I hope that helps!
-
-Cheers,
-Miguel
+-- 
+Regards,
+Sudeep
 
