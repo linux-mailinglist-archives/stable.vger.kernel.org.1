@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-240163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240164-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YFWwDb5752nC9QEAu9opvQ
-	(envelope-from <stable+bounces-240163-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 15:29:34 +0200
+	id GIUTO9V752nC9QEAu9opvQ
+	(envelope-from <stable+bounces-240164-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 15:29:57 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C7CE43B5B6
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 15:29:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90C9443B5C4
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 15:29:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3BB8A301F9F7
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 13:27:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E5323302A52D
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 13:27:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDEAA40855;
-	Tue, 21 Apr 2026 13:27:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C2E93AE191;
+	Tue, 21 Apr 2026 13:27:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from air.basealt.ru (air.basealt.ru [193.43.8.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 636602417D9;
-	Tue, 21 Apr 2026 13:27:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B919C3C9437;
+	Tue, 21 Apr 2026 13:27:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.43.8.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776778026; cv=none; b=SVJrxB+V/5T4eUQspNCGymLD+liqvihpVgxh0w937rlGu71HB6SfJtCHLFohql2viRoTbBxOt4Me5kE5kC1LUMmRFNAzTZpKeQrcNCADkZ5EVK1bPUGwwoYrdsukkw6pHD4I08YfjYEjpnagH/OEjPs0PDsF1bC8YtJfA5gHSlw=
+	t=1776778053; cv=none; b=dO5rTWmLRGG7J8mmHdJE70WNu3cZgcIDohboX5uBqPV6GzrtO8TFcNBJW4Odd8fOre2tN8hagMeh57CcDQ0BKdl0/78dt8mHk9FpWQPjtP+Mb5ouQmv8Uf8Jn00c68maAlGjlSuOwEwP+qEBe/Kt/LRCvFH4QAPjGv1nflR/3Y4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776778026; c=relaxed/simple;
-	bh=QjHbiCWr0l2/cGP1WHcqBGnDFCoxWMk7Lc/zBqoModE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=co7JcwRblvMi9LfohucqHvwXpZWwQOU3VwSs34FigQmQTCfP40BQuQgsYP0et3F9yWNpdbN5lKWlj0gteIeikxHxselqd9fjdVZMBrl1W8CH571mrHsjoLWZryg87z0CjZrBlQ1k1Eb+JTbMYfGwVzdl6vpv2rAf7QF3wCEIPpw=
+	s=arc-20240116; t=1776778053; c=relaxed/simple;
+	bh=J78oUUAhNyJ/encrpjCKQitXEcNFDvPCjirUqiPXbIM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=dNDrPIxSeB6N87DA08NYSffD2PgbS8RT9ASVrX5SFcnAb21UOFA4tc9hP0qCTTnEb2Fw5gnw9LgQwohIQUjjKpB4CMgYE8kSfQTEapHVc3ji7uHUc6MhcCQKrvN1/yRbRe3lDnoYu/wvqECziOcGnxkhqWccCtidUauNHWkdVBY=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=193.43.8.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
 Received: from altlinux.ipa.basealt.ru (unknown [193.43.11.2])
 	(Authenticated sender: kovalevvv)
-	by air.basealt.ru (Postfix) with ESMTPSA id A4E7C23390;
-	Tue, 21 Apr 2026 16:27:02 +0300 (MSK)
+	by air.basealt.ru (Postfix) with ESMTPSA id BCF9823390;
+	Tue, 21 Apr 2026 16:27:29 +0300 (MSK)
 From: Vasiliy Kovalev <kovalev@altlinux.org>
 To: stable@vger.kernel.org
 Cc: "David S . Miller" <davem@davemloft.net>,
@@ -43,9 +43,9 @@ Cc: "David S . Miller" <davem@davemloft.net>,
 	netdev@vger.kernel.org,
 	lvc-project@linuxtesting.org,
 	kovalev@altlinux.org
-Subject: [PATCH 5.15.y] net: tap: NULL pointer derefence in dev_parse_header_protocol when skb->dev is null
-Date: Tue, 21 Apr 2026 16:27:02 +0300
-Message-Id: <20260421132702.38588-1-kovalev@altlinux.org>
+Subject: [PATCH 5.10.y] net: tap: NULL pointer derefence in dev_parse_header_protocol when skb->dev is null
+Date: Tue, 21 Apr 2026 16:27:29 +0300
+Message-Id: <20260421132729.38626-1-kovalev@altlinux.org>
 X-Mailer: git-send-email 2.33.8
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,7 +63,7 @@ X-Spamd-Result: default: False [0.04 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FREEMAIL_CC(0.00)[davemloft.net,google.com,gmail.com,vger.kernel.org,linuxtesting.org,altlinux.org];
-	TAGGED_FROM(0.00)[bounces-240163-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-240164-lists,stable=lfdr.de];
 	DMARC_NA(0.00)[altlinux.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
@@ -80,8 +80,8 @@ X-Spamd-Result: default: False [0.04 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	R_DKIM_NA(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,davemloft.net:email,altlinux.org:mid,altlinux.org:email]
-X-Rspamd-Queue-Id: 8C7CE43B5B6
+	DBL_BLOCKED_OPENRESOLVER(0.00)[altlinux.org:mid,altlinux.org:email,davemloft.net:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 90C9443B5C4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -139,7 +139,7 @@ Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
  1 file changed, 13 insertions(+), 10 deletions(-)
 
 diff --git a/drivers/net/tap.c b/drivers/net/tap.c
-index 53eadd82f9b8..a08adca412b4 100644
+index 16fa0e3e752a..18f19fc66c64 100644
 --- a/drivers/net/tap.c
 +++ b/drivers/net/tap.c
 @@ -703,11 +703,22 @@ static ssize_t tap_get_user(struct tap_queue *q, void *msg_control,
@@ -174,9 +174,9 @@ index 53eadd82f9b8..a08adca412b4 100644
 -	tap = rcu_dereference(q->tap);
  	/* copy skb_ubuf_info for callback when skb has no error */
  	if (zerocopy) {
- 		skb_zcopy_init(skb, msg_control);
-@@ -727,14 +736,8 @@ static ssize_t tap_get_user(struct tap_queue *q, void *msg_control,
- 		uarg->callback(NULL, uarg, false);
+ 		skb_shinfo(skb)->destructor_arg = msg_control;
+@@ -729,14 +738,8 @@ static ssize_t tap_get_user(struct tap_queue *q, void *msg_control,
+ 		uarg->callback(uarg, false);
  	}
  
 -	if (tap) {
