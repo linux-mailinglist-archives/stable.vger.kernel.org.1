@@ -1,178 +1,181 @@
-Return-Path: <stable+bounces-240018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240019-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +AvMDEfV5mkz1QEAu9opvQ
-	(envelope-from <stable+bounces-240018-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 03:39:19 +0200
+	id iJDoA7TW5mkz1QEAu9opvQ
+	(envelope-from <stable+bounces-240019-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 03:45:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E4CD435476
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 03:39:18 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 394F2435518
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 03:45:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A905D30054C6
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 01:39:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6EB2930103B8
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 01:44:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75A5A1E98EF;
-	Tue, 21 Apr 2026 01:39:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C236123F40D;
+	Tue, 21 Apr 2026 01:44:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b="oTZ0Tzag";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="GQQCOd4a"
+	dkim=pass (2048-bit key) header.d=richtek.com header.i=@richtek.com header.b="Xl3RJmo1";
+	dkim=pass (2048-bit key) header.d=richtek.com header.i=@richtek.com header.b="ZDPO9lQQ"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-a2-smtp.messagingengine.com (fhigh-a2-smtp.messagingengine.com [103.168.172.153])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9535118FC80;
-	Tue, 21 Apr 2026 01:39:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.153
+Received: from mg.richtek.com (mg.richtek.com [220.130.44.152])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D2971A9FA4;
+	Tue, 21 Apr 2026 01:44:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.130.44.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776735556; cv=none; b=PX2LsAAWvhXE07G3aIOMSgXIpmpnT60epyYuOA9uxABdVm3DhVxCToxNp1ZOIprX+RhT+QRALsUQAaZMGfyDXyOy9B36+MOCd6yqFiHeQrZWICDE7ARnkEuiNn9QK2FYRLlp8RidSh6idU2TUdchA0kYLIHnYKJ3fIMf7x1G3Rk=
+	t=1776735897; cv=none; b=sOO0++YMRXBPMK9uJINZ4WfJL4SyfbL/JKa9upiPiHOoE7Dh208xGvY+aT6pdHDdelFtvrXvPauV3LWbKuf3CaJXynro2jOoBrt6mJN1BY3+RQGH1C16LSG4UBRZUHmr/1qEa90bzEGdZDr0yoHylPgvQH0LxwuBTW+gNH2Yfv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776735556; c=relaxed/simple;
-	bh=u9xQ+bpNIHcevNXiT7b7wjsEEmiaBfxWTIwHp2CAxiE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EFVzZi1rUC/CgA/9gDYMZyt1/9Lyc7XIxXfnH4kFTSmoC8xeWlQUPwB0whPc3FnUjuv44fGJbJ8xgVgV8Fuwik51mvO0Mb1UdDtTK2AwawQYFypVZVbd+ale+hoqWroSGJUof2Cf0S+d79+y1qSNkyTraPPlqx6QDhbx0D7SZjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com; spf=pass smtp.mailfrom=pobox.com; dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b=oTZ0Tzag; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=GQQCOd4a; arc=none smtp.client-ip=103.168.172.153
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pobox.com
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id D394E1400151;
-	Mon, 20 Apr 2026 21:39:13 -0400 (EDT)
-Received: from phl-frontend-01 ([10.202.2.160])
-  by phl-compute-06.internal (MEProxy); Mon, 20 Apr 2026 21:39:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pobox.com; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1776735553;
-	 x=1776821953; bh=4EPMUerUOgXaVf1LZV4LV4cb+nNOHeQUpzdQ6HHApOk=; b=
-	oTZ0TzagyjAc3UVcqaKjqb65ZgI8wOCUuS+ShF0qYFvR3X01j8zz3zJoKuLrPjda
-	1UZaYDcty0QL/tRaurZdB8osOG5Qe2jWTZqgo0o7ZWGSndNHNzasT2HcdWspMTWm
-	LAOcoWvq+AuLEpMZCMxXJLzb0BloSm6yR4yuKFdI7bVUp1telOIOkR7d0pjllzvV
-	lj3d/Rf+GgN7HjM0p6IjpBaEekQ+joZvqxkWo9nicw9Jmd7ZNGRv2SF++gUIB4Dr
-	kE8JKJr9NZcusfdDwL4DjPpu81vBVtrpb+72P24PD3joLG2cfinnHQ8ADoswYX8I
-	x9P4zyY3/H0s/sMW9URkrg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1776735553; x=
-	1776821953; bh=4EPMUerUOgXaVf1LZV4LV4cb+nNOHeQUpzdQ6HHApOk=; b=G
-	QQCOd4a8INO1iA5Ocw9jRYf8qFFwc0ZbtPEM46tcGrh5jrXJnY4Zytd/1ga2o7nH
-	Dlo87wugzkcBINzof1HJIdapQfN0oxisSfPctCKidBBnfwoWzOIh5BwoCxNQv//a
-	cKwXVokehJpX3icYs36JKw78Btd7KnI5Al1pIUOO9e1REDBJXzyuPBVWQYQ/n90e
-	3jwXcZBmQUDOcuqHZ6Xz/ISQxiihwW51JVJDZKo/DHsDOEYAwjjwsmB7PVMItlR0
-	+vO81vPLVVWFwMashEaKMRMBUlLImUMvJNqo7CxoLzrKIitMt5xopSYeHzBybCsC
-	xkh3EKLrfgqbTsj5WqxMg==
-X-ME-Sender: <xms:QNXmaQX_Ihnlwln5RUxm1l619q160t1yewwTgHYtsngt-ErbGtiq7A>
-    <xme:QNXmaQdipG87ti4obO6iE5eU87q0eR-z9W-oSJjaeBbOI4iwoSPQE3z2w2HEXhT33
-    WfzsBzeWJ5bG0dKr-lK5GiO0diviavYGmD44qbijmes_4kbe5jUmw>
-X-ME-Received: <xmr:QNXmaf7tl7JOaDI99ccOv0kCuswcjSkQ0QtFU7BaRpjYamoj7Bbx6rLI78r4xLI5j2JC7mBVI5lWQJu9BzeGJkSf5lZ0DhbM>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdeitddutdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefkffggfgfuvfevfhfhjggtgfesthejredttddvjeenucfhrhhomhepfdeurghrrhih
-    ucfmrdcupfgrthhhrghnfdcuoegsrghrrhihnhesphhosghogidrtghomheqnecuggftrf
-    grthhtvghrnhepfeelheekheelkeejlefffefhvdeljeetheeltdeiudffveetffelteeg
-    gfefhfejnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiii
-    gvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsrghrrhihnhesphhosghogidrtgho
-    mhdpnhgspghrtghpthhtohepvddtpdhmohguvgepshhmthhpohhuthdprhgtphhtthhope
-    hgrhgvghhkhheslhhinhhugihfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehs
-    thgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehprghttghhvg
-    hssehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtoheplhhinhhugidqkhgvrhhn
-    vghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthhorhhvrghlughsse
-    hlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopegrkhhpmheslhhi
-    nhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheplhhinhhugiesrhhovg
-    gtkhdquhhsrdhnvghtpdhrtghpthhtohepshhhuhgrhheskhgvrhhnvghlrdhorhhgpdhr
-    tghpthhtohepphgrthgthhgvsheskhgvrhhnvghltghirdhorhhg
-X-ME-Proxy: <xmx:QNXmaTRzHYhET9YgqiesMmG1HjcdPTWWtXj89ZkgtHO4npruyklG6A>
-    <xmx:QNXmaSd-ZjH8_FifijKSsFndndqAKLzr9OW3e_T_nD2WA3msUl5WeA>
-    <xmx:QNXmaTRXSvy-OmjasoibPfvzaRMdMFkqJy5iCzp5F9eXpBOpVpFZCQ>
-    <xmx:QNXmabP6ubsbpjqA6he7MYiclknzmzlFT5GKvTlPn1fsnkpZywdpxA>
-    <xmx:QdXmaUr8k4yIdHyLfvbSHS28CJfXtRTD6NgWOQs8skPC0VGYc8QBzZLI>
-Feedback-ID: i6289494f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 20 Apr 2026 21:39:10 -0400 (EDT)
-Message-ID: <e12f2b89-753f-466d-8157-587f1e0b83be@pobox.com>
-Date: Mon, 20 Apr 2026 18:39:09 -0700
+	s=arc-20240116; t=1776735897; c=relaxed/simple;
+	bh=c6q9oQkbovfdRANQ03O3aL99Sm5ehXOdqaDo9UPMz/U=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Dw3BxcAJiZoER9SsL1izG8tsSSjSivKNlqsDApyp0dIHW+9QRcJaqPxjokNTWvI6KTkppnTWL2YUe1U9g73hgg7maSHpwSWZTT7YiH7GEL6qwhzWOMZAjf9Y92biNfOTyJAGwjF5cWQfxKto7udaW9SE120GoRSDphJs8n5pj94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=richtek.com; spf=pass smtp.mailfrom=richtek.com; dkim=pass (2048-bit key) header.d=richtek.com header.i=@richtek.com header.b=Xl3RJmo1; dkim=pass (2048-bit key) header.d=richtek.com header.i=@richtek.com header.b=ZDPO9lQQ; arc=none smtp.client-ip=220.130.44.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=richtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=richtek.com
+X-MailGates: (SIP:2,PASS,NONE)(compute_score:DELIVER,40,3)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=richtek.com;
+	s=richtek; t=1776735893;
+	bh=hgJYTfLM6ixBP8ZTg+ugrd/LAtv9wxJUHiWP3SanoKU=; l=1778;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=Xl3RJmo1Y0iJSL6gdECV2ueh+jKsMOUZ6Cb07/1F/lX6tr7OPtLwpkX7Xxb5xO27d
+	 ervkAC1+Hk9L4PUQlsfvcZkfu7sj/WYhXW+T7S8aLrhp7Nfr3N+UCwMDV0Sr30iIaE
+	 bbtDsmdDB72xJTAC8JSAiEyxlZchAZ1a8Wj3m0yzQJ2ggp7npjbec/ZKIyfLTt2o+9
+	 bZu9QUN0s4s/jzhV0oe45CSbMvaYoRXz2cGsEpWVrwhpuXV9dxskKL4A6rnY6bwHmr
+	 OMEoX08wYOi4uBuoguhxfgdCrSFbnEABeYZqMxegqEPuGwMxtflKj2wPfTLZVfBIDi
+	 NegXnZtdO/Mkg==
+Received: from 192.168.8.21
+	by mg.richtek.com with MailGates ESMTP Server V3.0(1128077:0:AUTH_RELAY)
+	(envelope-from <prvs=1569D0B0C6=cy_huang@richtek.com>); Tue, 21 Apr 2026 09:44:51 +0800 (CST)
+X-MailGates: (compute_score:DELIVER,40,3)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=richtek.com;
+	s=richtek; t=1776735891;
+	bh=hgJYTfLM6ixBP8ZTg+ugrd/LAtv9wxJUHiWP3SanoKU=; l=1778;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=ZDPO9lQQ7UJdpWNELTYa/bCyyzJVnx6RuvAZmqdtmLXDXRjQAtYCCFxosuj3rliQo
+	 gkEOmvOhtMWxvKlt6LYFfBAAgJmDPF/uoXP3w92lMFYh5xn1SeupC0j3YJEU5bI/ol
+	 TFZSR+a2hJgaRRTgPeZbn6fCLeeNa5Uc4E6FePNYfmI9Lz56oqoYf2BCWVC5Dc5XSj
+	 LC4Qe2prVM72M7OZLFbM1MwBYsUF6nbvPAnpmG3L6Nfb4I410Nl44uH5MgktDbjCFc
+	 kaBVGwz6/JhBmnnE9PbewGdygV+D6nPiqPRMz3AmsILQlhoJRiNYCUSSZxYy/OdE6H
+	 jEZobgTRxlIUA==
+Received: from 192.168.10.47
+	by mg.richtek.com with MailGates ESMTPS Server V6.0(1227023:0:AUTH_RELAY)
+	(envelope-from <cy_huang@richtek.com>)
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256/256); Tue, 21 Apr 2026 09:41:22 +0800 (CST)
+Received: from ex4.rt.l (192.168.10.47) by ex4.rt.l (192.168.10.47) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.26; Tue, 21 Apr
+ 2026 09:41:21 +0800
+Received: from git-send.richtek.com (192.168.10.154) by ex4.rt.l
+ (192.168.10.45) with Microsoft SMTP Server id 15.2.1748.26 via Frontend
+ Transport; Tue, 21 Apr 2026 09:41:21 +0800
+From: <cy_huang@richtek.com>
+To: Jonathan Cameron <jic23@kernel.org>
+CC: David Lechner <dlechner@baylibre.com>, =?UTF-8?q?Nuno=20S=C3=A1?=
+	<nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>, Kevin Tung
+	<kevin.tung.openbmc@gmail.com>, ChiYuan Huang <cy_huang@richtek.com>, "Lucas
+ Tsai" <lucas_tsai@richtek.com>, <kevin.tung@quantatw.com>,
+	<linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<stable@vger.kernel.org>
+Subject: [PATCH] iio: adc: rtq6056: Fix the manual device instantiation via sysfs
+Date: Tue, 21 Apr 2026 09:41:17 +0800
+Message-ID: <db4f5ded64ca7d2e56abfa30c6a174342c44fabb.1776735120.git.cy_huang@richtek.com>
+X-Mailer: git-send-email 2.43.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.12 000/162] 6.12.83-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com
-References: <20260420153927.006696811@linuxfoundation.org>
-Content-Language: en-US
-From: "Barry K. Nathan" <barryn@pobox.com>
-In-Reply-To: <20260420153927.006696811@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[pobox.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[pobox.com:s=fm1,messagingengine.com:s=fm2];
+	DMARC_POLICY_ALLOW(-0.50)[richtek.com,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[richtek.com:s=richtek];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	TAGGED_FROM(0.00)[bounces-240018-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[baylibre.com,analog.com,kernel.org,gmail.com,richtek.com,quantatw.com,vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240019-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[pobox.com:+,messagingengine.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DKIM_TRACE(0.00)[richtek.com:+];
+	FROM_NO_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,richtek.com:email,richtek.com:dkim,richtek.com:mid];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[barryn@pobox.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[cy_huang@richtek.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[messagingengine.com:dkim,pobox.com:email,pobox.com:dkim,pobox.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 6E4CD435476
+	RCPT_COUNT_SEVEN(0.00)[11];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 394F2435518
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 4/20/26 08:40, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.12.83 release.
-> There are 162 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed, 22 Apr 2026 15:38:55 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.83-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+From: Kevin Tung <kevin.tung.openbmc@gmail.com>
 
-I tested 6.12.83-rc1 with clockevents-prevent-timer-interrupt-starvation.patch
-reverted (since it has been reverted in the stable-queue) on an amd64
-laptop (Lenovo ThinkPad T14 Gen 1). Working well, no regressions observed.
+Add i2c_device_id to support sysfs manual device instantiation.
 
-Tested-by: Barry K. Nathan <barryn@pobox.com>
+Fixes: 89a1034cd841 ("iio: adc: rtq6056: Add support for the whole RTQ6056 family")
+Signed-off-by: Kevin Tung <kevin.tung.openbmc@gmail.com>
+Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
+Cc: <stable@vger.kernel.org>
+---
+Hi, Jonathan:
+
+For some BSP limit, still some user instantiate rtq6056 deivce via sysfs.
+Therefore, add old style i2c id to make it compatible for this kind of usage.
+
+BR,
+ChiYuan.
+---
+ drivers/iio/adc/rtq6056.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/iio/adc/rtq6056.c b/drivers/iio/adc/rtq6056.c
+index 2bf3a09ac6b0..e7036dc7d7b9 100644
+--- a/drivers/iio/adc/rtq6056.c
++++ b/drivers/iio/adc/rtq6056.c
+@@ -728,7 +728,7 @@ static int rtq6056_probe(struct i2c_client *i2c)
+ 	if (!i2c_check_functionality(i2c->adapter, I2C_FUNC_SMBUS_WORD_DATA))
+ 		return -EOPNOTSUPP;
+ 
+-	devdata = device_get_match_data(dev);
++	devdata = i2c_get_match_data(i2c);
+ 	if (!devdata)
+ 		return dev_err_probe(dev, -EINVAL, "Invalid dev data\n");
+ 
+@@ -878,6 +878,13 @@ static const struct of_device_id rtq6056_device_match[] = {
+ };
+ MODULE_DEVICE_TABLE(of, rtq6056_device_match);
+ 
++static const struct i2c_device_id rtq6056_id[] = {
++	{ "rtq6056", (kernel_ulong_t)&rtq6056_devdata },
++	{ "rtq6059", (kernel_ulong_t)&rtq6059_devdata },
++	{ }
++};
++MODULE_DEVICE_TABLE(i2c, rtq6056_id);
++
+ static struct i2c_driver rtq6056_driver = {
+ 	.driver = {
+ 		.name = "rtq6056",
+@@ -885,6 +892,7 @@ static struct i2c_driver rtq6056_driver = {
+ 		.pm = pm_ptr(&rtq6056_pm_ops),
+ 	},
+ 	.probe = rtq6056_probe,
++	.id_table = rtq6056_id,
+ };
+ module_i2c_driver(rtq6056_driver);
+ 
 -- 
--Barry K. Nathan  <barryn@pobox.com>
+2.34.1
+
 
