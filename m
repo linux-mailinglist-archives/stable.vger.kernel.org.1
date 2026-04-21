@@ -1,171 +1,144 @@
-Return-Path: <stable+bounces-240180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240181-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uN01G+uI52kU9wEAu9opvQ
-	(envelope-from <stable+bounces-240180-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 16:25:47 +0200
+	id kIrpKHqM52m89wEAu9opvQ
+	(envelope-from <stable+bounces-240181-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 16:40:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1684F43BFBB
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 16:25:46 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 008FA43C32D
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 16:40:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1FFC3300D1F7
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 14:25:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9B07D3087BB0
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 14:34:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A4BF3D88E6;
-	Tue, 21 Apr 2026 14:25:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50DD03D9021;
+	Tue, 21 Apr 2026 14:33:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dmlrW0kq"
+	dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b="cJMg/IOA"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp9.infineon.com (smtp9.infineon.com [217.10.52.204])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38FBF3D8116;
-	Tue, 21 Apr 2026 14:25:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1CFA3A4F58;
+	Tue, 21 Apr 2026 14:33:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.10.52.204
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776781544; cv=none; b=FMTpLdyehUD6Pq4gbD1UNHzRDgrYppElAyRc4K1W5lBSHWkJDyeoR4QkedmhYjbXOKZzULIlXoI8+TfS4XcM0h8pEbnlTABWcOqUNU0Xu6B2dJ80pDEWRe0Log3qOrhOr4thKxiHqDxABq0Et+9Ro/FETg8P61ac1HzlZ3hfiJc=
+	t=1776782039; cv=none; b=dlwIzk0Ed/kAdC6Hl+tuy9HbeaRi15ypG1owptmqoCBXq6W0pcEGEqmWPZuHoTaMDvZYPrMznE/43snaOQvXipuD8Tw+6CRYUirLyFoPlkEkffd1QMce1OQhI/9Ptmi2py52zK8gKbOKx8Go2yqcWuML4TdTCEE1BmlloG0Ijf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776781544; c=relaxed/simple;
-	bh=YSxGlcQS3U1Wutb2J/VUv/2OSR9GifsEC+73SgTBQOI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UuGpHPbNbIGvVRjm/8Tn8gzZ7Z2vmQnUHJZ7/Qf1Q2A6gZUf3NFxu64lvFK1XzgLLGAt3w9DVKE+AnVTLq4tdj/KebJOlOpd51GY5Up+Z/QyvdxNqMG4jUr5No8/cyAT5tgzjHYfoex7K2P+L9HrNr2KkP7xGIcQsHSWgtFBHxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dmlrW0kq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EE4FC2BCB0;
-	Tue, 21 Apr 2026 14:25:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776781543;
-	bh=YSxGlcQS3U1Wutb2J/VUv/2OSR9GifsEC+73SgTBQOI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dmlrW0kq2qwKedKZVYa/gk4R47bz9FuApozdzY47ikUR4EG5WBsqR24nn+3QlPz22
-	 MYX/GbhHpcG+YBHmFTKqWS6WJJtrcdaEzkJPs8iuZF+Lo+8M/m1UKrv97flgD1CG7g
-	 rVb8rrdru4bu50nPP9VcbZ+pIRDwHQX2umDcpn8Sxuk9MSk6pUwSBHMWOpp5GxiHOr
-	 FCPiYhUwVHzKTHJ6LGghGgZMwNX/r1XXYxUgeWgqUipoHBHQAgkfFh7StLmmi6gZlj
-	 G7CtG8nCmlScNlKdxDodyFPBQKBjUpw71v8nTW+aIm/NuOy/53ZMNuW0CFVgW4ZedC
-	 +L9uL7HlJnMxA==
-Date: Tue, 21 Apr 2026 15:25:32 +0100
-From: Simon Horman <horms@kernel.org>
-To: Andrea Mayer <andrea.mayer@uniroma2.it>
-Cc: davem@davemloft.net, dsahern@kernel.org, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, bigeasy@linutronix.de,
-	clrkwllms@kernel.org, rostedt@goodmis.org,
-	david.lebrun@uclouvain.be, alex.aring@gmail.com,
-	stefano.salsano@uniroma2.it, netdev@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net] net: ipv6: fix NOREF dst use in seg6 and rpl
- lwtunnels
-Message-ID: <20260421142532.GD651125@horms.kernel.org>
-References: <20260421094735.20997-1-andrea.mayer@uniroma2.it>
+	s=arc-20240116; t=1776782039; c=relaxed/simple;
+	bh=ArMpXotcTeEwyqUdj8I1RO41SIFb1S0fVagj1cHmjlc=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=sKAUCVrCulXa5MPoBSIpGfk/hI93af21+SXvbPB8ogZGQf3edM04KPsOYr6TGVoq+H8utdLNvC7YkUlhmGzf5Olp/XNglVYv4TK/tk4aNJjVecxSCpWblqou3AQtVdgsuOhH6e2VdcqilipX3v1dLGRNSKYrwFimFbuaj2uhu9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=infineon.com; spf=pass smtp.mailfrom=infineon.com; dkim=pass (1024-bit key) header.d=infineon.com header.i=@infineon.com header.b=cJMg/IOA; arc=none smtp.client-ip=217.10.52.204
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=infineon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infineon.com
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=infineon.com; i=@infineon.com; q=dns/txt; s=IFXMAIL;
+  t=1776782038; x=1808318038;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=ArMpXotcTeEwyqUdj8I1RO41SIFb1S0fVagj1cHmjlc=;
+  b=cJMg/IOAQTtN6XGOEGk+Sa35GIE+TMbfjTuvwt9ouBLEem1Cq42MPx/C
+   JUbW1s1C5IH4oZUiVE5AbCKvVYFm2t6gvQ0VKt9MJmkAEMMwlIuJwEJ+i
+   7HJY6wmUdLO/eIoJg+ZV76vP8eXH00M3Ubqf1NUOOR3xSHH25t6abP66C
+   Y=;
+X-CSE-ConnectionGUID: +FeV1V4KQSyIe2LMbQyvdg==
+X-CSE-MsgGUID: A+6UxzbISeGE7osJaVQCWg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11763"; a="90661278"
+X-IronPort-AV: E=Sophos;i="6.23,191,1770591600"; 
+   d="scan'208";a="90661278"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO MUCSE812.infineon.com) ([172.23.29.38])
+  by smtp9.infineon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2026 16:32:46 +0200
+Received: from MUCSE820.infineon.com (172.23.29.46) by MUCSE812.infineon.com
+ (172.23.29.38) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Tue, 21 Apr
+ 2026 16:32:46 +0200
+Received: from MUCSE815.infineon.com (172.23.29.41) by MUCSE820.infineon.com
+ (172.23.29.46) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Tue, 21 Apr
+ 2026 16:32:45 +0200
+Received: from MUCSE815.infineon.com ([fe80::b54c:c0bd:546c:c9be]) by
+ MUCSE815.infineon.com ([fe80::b54c:c0bd:546c:c9be%12]) with mapi id
+ 15.02.2562.037; Tue, 21 Apr 2026 16:32:45 +0200
+From: <Takahiro.Kuwano@infineon.com>
+To: <tudor.ambarus@linaro.org>, <pratyush@kernel.org>, <mwalle@kernel.org>,
+	<miquel.raynal@bootlin.com>, <richard@nod.at>, <vigneshr@ti.com>
+CC: <p.yadav@ti.com>, <michael@walle.cc>, <linux-mtd@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: RE: [PATCH] mtd: spi-nor: debugfs: fix out-of-bounds read in
+ spi_nor_params_show()
+Thread-Topic: [PATCH] mtd: spi-nor: debugfs: fix out-of-bounds read in
+ spi_nor_params_show()
+Thread-Index: AQHczn5R2lmDsActuEKo+AhMPfaN4bXpmZig
+Date: Tue, 21 Apr 2026 14:32:45 +0000
+Message-ID: <308e7510718f46169d9465658f2c385a@infineon.com>
+References: <20260417-fix-oob-read-spi-nor-v1-1-2132e61a684a@linaro.org>
+In-Reply-To: <20260417-fix-oob-read-spi-nor-v1-1-2132e61a684a@linaro.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260421094735.20997-1-andrea.mayer@uniroma2.it>
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.06 / 15.00];
+	MIME_BASE64_TEXT_BOGUS(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[infineon.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[infineon.com:s=IFXMAIL];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	MIME_BASE64_TEXT(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-240180-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[davemloft.net,kernel.org,google.com,redhat.com,linutronix.de,goodmis.org,uclouvain.be,gmail.com,uniroma2.it,vger.kernel.org,lists.linux.dev];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-240181-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[Takahiro.Kuwano@infineon.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[infineon.com:+];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[horms@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_NO_DN(0.00)[];
+	NEURAL_HAM(-0.00)[-0.969];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 1684F43BFBB
+	RCPT_COUNT_SEVEN(0.00)[11];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 008FA43C32D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Apr 21, 2026 at 11:47:35AM +0200, Andrea Mayer wrote:
-> seg6_input_core() and rpl_input() call ip6_route_input() which sets a
-> NOREF dst on the skb, then pass it to dst_cache_set_ip6() invoking
-> dst_hold() unconditionally.
-> On PREEMPT_RT, ksoftirqd is preemptible and a higher-priority task can
-> release the underlying pcpu_rt between the lookup and the caching
-> through a concurrent FIB lookup on a shared nexthop.
-> Simplified race sequence:
-> 
->   ksoftirqd/X                       higher-prio task (same CPU X)
->   -----------                       --------------------------------
->   seg6_input_core(,skb)/rpl_input(skb)
->     dst_cache_get()
->       -> miss
->     ip6_route_input(skb)
->       -> ip6_pol_route(,skb,flags)
->          [RT6_LOOKUP_F_DST_NOREF in flags]
->         -> FIB lookup resolves fib6_nh
->            [nhid=N route]
->         -> rt6_make_pcpu_route()
->            [creates pcpu_rt, refcount=1]
->              pcpu_rt->sernum = fib6_sernum
->              [fib6_sernum=W]
->            -> cmpxchg(fib6_nh.rt6i_pcpu,
->                       NULL, pcpu_rt)
->               [slot was empty, store succeeds]
->       -> skb_dst_set_noref(skb, dst)
->          [dst is pcpu_rt, refcount still 1]
-> 
->                                     rt_genid_bump_ipv6()
->                                       -> bumps fib6_sernum
->                                          [fib6_sernum from W to Z]
->                                     ip6_route_output()
->                                       -> ip6_pol_route()
->                                         -> FIB lookup resolves fib6_nh
->                                            [nhid=N]
->                                         -> rt6_get_pcpu_route()
->                                              pcpu_rt->sernum != fib6_sernum
->                                              [W <> Z, stale]
->                                           -> prev = xchg(rt6i_pcpu, NULL)
->                                           -> dst_release(prev)
->                                              [prev is pcpu_rt,
->                                               refcount 1->0, dead]
-> 
->     dst = skb_dst(skb)
->     [dst is the dead pcpu_rt]
->     dst_cache_set_ip6(dst)
->       -> dst_hold() on dead dst
->       -> WARN / use-after-free
-> 
-> For the race to occur, ksoftirqd must be preemptible (PREEMPT_RT without
-> PREEMPT_RT_NEEDS_BH_LOCK) and a concurrent task must be able to release
-> the pcpu_rt. Shared nexthop objects provide such a path, as two routes
-> pointing to the same nhid share the same fib6_nh and its rt6i_pcpu
-> entry.
-> 
-> Fix seg6_input_core() and rpl_input() by calling skb_dst_force() after
-> ip6_route_input() to force the NOREF dst into a refcounted one before
-> caching.
-> The output path is not affected as ip6_route_output() already returns a
-> refcounted dst.
-> 
-> Fixes: af4a2209b134 ("ipv6: sr: use dst_cache in seg6_input")
-> Fixes: a7a29f9c361f ("net: ipv6: add rpl sr tunnel")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
-
-Reviewed-by: Simon Horman <horms@kernel.org>
-
+PiBTYXNoaWtvIG5vdGljZWQgYW4gb3V0LW9mLWJvdW5kcyByZWFkIFsxXS4NCj4gDQo+IEluIHNw
+aV9ub3JfcGFyYW1zX3Nob3coKSwgdGhlIHNub3JfZl9uYW1lcyBhcnJheSBpcyBwYXNzZWQgdG8N
+Cj4gc3BpX25vcl9wcmludF9mbGFncygpIHVzaW5nIHNpemVvZihzbm9yX2ZfbmFtZXMpLg0KPiAN
+Cj4gU2luY2Ugc25vcl9mX25hbWVzIGlzIGFuIGFycmF5IG9mIHBvaW50ZXJzLCBzaXplb2YoKSBy
+ZXR1cm5zIHRoZSB0b3RhbA0KPiBudW1iZXIgb2YgYnl0ZXMgb2NjdXBpZWQgYnkgdGhlIHBvaW50
+ZXJzDQo+ICAgICAgICAgKGVsZW1lbnRfY291bnQgKiBzaXplb2Yodm9pZCAqKSkNCj4gcmF0aGVy
+IHRoYW4gdGhlIGVsZW1lbnQgY291bnQgaXRzZWxmLiBPbiA2NC1iaXQgc3lzdGVtcywgdGhpcyBt
+YWtlcyB0aGUNCj4gcGFzc2VkIGxlbmd0aCA4eCBsYXJnZXIgdGhhbiBpbnRlbmRlZC4NCj4gDQo+
+IEluc2lkZSBzcGlfbm9yX3ByaW50X2ZsYWdzKCksIHRoZSAnbmFtZXNfbGVuJyBhcmd1bWVudCBp
+cyB1c2VkIHRvDQo+IGJvdW5kcy1jaGVjayB0aGUgJ25hbWVzJyBhcnJheSBhY2Nlc3MuIEFuIG91
+dC1vZi1ib3VuZHMgcmVhZCBvY2N1cnMNCj4gaWYgYSBmbGFnIGJpdCBpcyBzZXQgdGhhdCBleGNl
+ZWRzIHRoZSBhcnJheSdzIGFjdHVhbCBlbGVtZW50IGNvdW50DQo+IGJ1dCBpcyB3aXRoaW4gdGhl
+IGluZmxhdGVkIGJ5dGUtc2l6ZSBjb3VudC4NCj4gDQo+IENvcnJlY3QgdGhpcyBieSB1c2luZyBB
+UlJBWV9TSVpFKCkgdG8gcGFzcyB0aGUgYWN0dWFsIG51bWJlciBvZg0KPiBzdHJpbmcgcG9pbnRl
+cnMgaW4gdGhlIGFycmF5Lg0KPiANCj4gQ2M6IHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmcNCj4gRml4
+ZXM6IDAyNTdiZTc5ZmM0YSAoIm10ZDogc3BpLW5vcjogZXhwb3NlIGludGVybmFsIHBhcmFtZXRl
+cnMgdmlhIGRlYnVnZnMiKQ0KPiBDbG9zZXM6IGh0dHBzOi8vc2FzaGlrby5kZXYvIy9wYXRjaHNl
+dC8yMDI2MDQxNy1kaWUtZXJhc2UtZml4LXYyLTEtNzNiYjcwMDRlYmFkJTQwaW5maW5lb24uY29t
+IFsxXQ0KPiBTaWduZWQtb2ZmLWJ5OiBUdWRvciBBbWJhcnVzIDx0dWRvci5hbWJhcnVzQGxpbmFy
+by5vcmc+DQoNClJldmlld2VkLWJ5OiBUYWthaGlybyBLdXdhbm8gPHRha2FoaXJvLmt1d2Fub0Bp
+bmZpbmVvbi5jb20+DQoNCg==
 
