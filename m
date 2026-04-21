@@ -1,34 +1,34 @@
-Return-Path: <stable+bounces-240187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240188-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yANRGqOU52mp+AEAu9opvQ
-	(envelope-from <stable+bounces-240187-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 17:15:47 +0200
+	id 6HmNAfKT52lE+AEAu9opvQ
+	(envelope-from <stable+bounces-240188-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 17:12:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5F6E43CA27
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 17:15:46 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7509243C991
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 17:12:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 556D03022685
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 15:11:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6ECCF300E5CA
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 15:11:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC85C3D9026;
-	Tue, 21 Apr 2026 15:11:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F4153D75C5;
+	Tue, 21 Apr 2026 15:11:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28C8F30E836
-	for <stable@vger.kernel.org>; Tue, 21 Apr 2026 15:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 752D13D8906
+	for <stable@vger.kernel.org>; Tue, 21 Apr 2026 15:11:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776784279; cv=none; b=SLyHtIee3/ikvEVFnQApazC+I8Pu5ei+ucWyd7j7MJigP+iJ8aGlxi5yRdJuwK+RvzG/naYcTXsUVtEZ4CC8HI7ej2FZ/n1TlD79Oe2UuOOrmM7OU4mOsldqHKQmjrJjHG7kAEIjK0Ifj/0ZBWtm2ok5LyazGk3Jnma5Kp3V+ZQ=
+	t=1776784287; cv=none; b=ZgmgMQdkEpSbHaF8DvIzlwEruJUtalTzxCB3v6xh+o/Roume+dAt+IlAeH+2iKfGF/ffwag47YZchsT6iq7Ee94CZhg4kAaVKY4ehLZ7f3cthgX7GUkauBeLtAut5TtH3vi78lIaoqaTTsI7pZ+R4o9OHN32W+T751kw6NuKXSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776784279; c=relaxed/simple;
-	bh=CtBOa6WxEBkxScFg46NqF8egAPv5v3+TpvNRAotB7HY=;
+	s=arc-20240116; t=1776784287; c=relaxed/simple;
+	bh=9SDnqJfS686YuncXEgLUto58ybB1JTLxLsn6/YdDTbo=;
 	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=pFG/0YdFSrsjCSksHPEivnp2KyjX+yJASKbfllAfoJIB1/gjZB6yA99Ykl80NVjbhax+vDVb2Mk6uqz52UElrS73SceVHFNY8a17rUahLMtIsv1vz+FaHRVHrG7hhnUy2+UPK5V1XYdKIJuioClEY7X96YlKYCuhkyY3eW+LNGo=
+	 Content-Disposition; b=bjIN/HmKpbaNi2gNy0poF6rOrZ44QZgiVVRWkQ/U1KVXPbG6RlMl7nfxy47J65u/mMI14D87ytPzQudHXqbLrBcB5KEHR6bISxthfAgGsnFpMYg602IDDxlltqbVV4ax4j8/vyEDN9ACDehzl9BWm4r3cpuJ8a1fUOpGFgcbQQ8=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
@@ -36,14 +36,14 @@ Received: from local
 	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
 	 (Exim 4.99)
 	(envelope-from <daniel@makrotopia.org>)
-	id 1wFCkn-0000000031M-1oEj;
-	Tue, 21 Apr 2026 15:11:09 +0000
-Date: Tue, 21 Apr 2026 16:11:06 +0100
+	id 1wFCl2-0000000031R-2Fnd;
+	Tue, 21 Apr 2026 15:11:24 +0000
+Date: Tue, 21 Apr 2026 16:11:22 +0100
 From: Daniel Golle <daniel@makrotopia.org>
 To: gregkh@linuxfoundation.org, stable@vger.kernel.org
-Subject: [PATCH 6.6.y] net: ethernet: mtk_eth_soc: initialize PPE
+Subject: [PATCH 6.12.y] net: ethernet: mtk_eth_soc: initialize PPE
  per-tag-layer MTU registers
-Message-ID: <40029f29246988189c77cfee7580115a3f95dab5.1776783784.git.daniel@makrotopia.org>
+Message-ID: <11ae701bdb629969cdc0a3b93a82cf46e49ca37f.1776783626.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,13 +55,13 @@ Content-Disposition: inline
 X-Spamd-Result: default: False [-0.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCPT_COUNT_TWO(0.00)[2];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240187-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-240188-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	DMARC_NA(0.00)[makrotopia.org];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -72,13 +72,13 @@ X-Spamd-Result: default: False [-0.46 / 15.00];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[daniel@makrotopia.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	R_DKIM_NA(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E5F6E43CA27
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 7509243C991
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -105,10 +105,10 @@ Signed-off-by: Jakub Kicinski <kuba@kernel.org>
  3 files changed, 52 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-index e2d3bda1dc923..74cb96dbff9ee 100644
+index 45d4bac984a52..7406b706fb753 100644
 --- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
 +++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-@@ -3368,11 +3368,22 @@ static int mtk_device_event(struct notifier_block *n, unsigned long event, void
+@@ -3384,12 +3384,23 @@ static int mtk_device_event(struct notifier_block *n, unsigned long event, void
  	return NOTIFY_DONE;
  }
  
@@ -127,14 +127,15 @@ index e2d3bda1dc923..74cb96dbff9ee 100644
  {
  	struct mtk_mac *mac = netdev_priv(dev);
  	struct mtk_eth *eth = mac->hw;
--	int i, err;
-+	int i, err, mtu;
+ 	struct mtk_mac *target_mac;
+-	int i, err, ppe_num;
++	int i, err, ppe_num, mtu;
  
- 	err = phylink_of_phy_connect(mac->phylink, mac->of_node, 0);
- 	if (err) {
-@@ -3400,6 +3411,10 @@ static int mtk_open(struct net_device *dev)
- 						  : MTK_GDMA_TO_PDMA;
- 		mtk_gdm_config(eth, gdm_config);
+ 	ppe_num = eth->soc->ppe_num;
+ 
+@@ -3436,6 +3447,10 @@ static int mtk_open(struct net_device *dev)
+ 			mtk_gdm_config(eth, target_mac->id, gdm_config);
+ 		}
  
 +		mtu = mtk_max_gmac_mtu(eth);
 +		for (i = 0; i < ARRAY_SIZE(eth->ppe); i++)
@@ -143,7 +144,7 @@ index e2d3bda1dc923..74cb96dbff9ee 100644
  		napi_enable(&eth->tx_napi);
  		napi_enable(&eth->rx_napi);
  		mtk_tx_irq_enable(eth, MTK_TX_DONE_INT);
-@@ -4088,6 +4103,7 @@ static int mtk_change_mtu(struct net_device *dev, int new_mtu)
+@@ -4129,6 +4144,7 @@ static int mtk_change_mtu(struct net_device *dev, int new_mtu)
  	int length = new_mtu + MTK_RX_ETH_HLEN;
  	struct mtk_mac *mac = netdev_priv(dev);
  	struct mtk_eth *eth = mac->hw;
@@ -151,9 +152,9 @@ index e2d3bda1dc923..74cb96dbff9ee 100644
  
  	if (rcu_access_pointer(eth->prog) &&
  	    length > MTK_PP_MAX_BUF_SIZE) {
-@@ -4098,6 +4114,10 @@ static int mtk_change_mtu(struct net_device *dev, int new_mtu)
+@@ -4139,6 +4155,10 @@ static int mtk_change_mtu(struct net_device *dev, int new_mtu)
  	mtk_set_mcr_max_rx(mac, length);
- 	dev->mtu = new_mtu;
+ 	WRITE_ONCE(dev->mtu, new_mtu);
  
 +	max_mtu = mtk_max_gmac_mtu(eth);
 +	for (i = 0; i < ARRAY_SIZE(eth->ppe); i++)
@@ -163,10 +164,10 @@ index e2d3bda1dc923..74cb96dbff9ee 100644
  }
  
 diff --git a/drivers/net/ethernet/mediatek/mtk_ppe.c b/drivers/net/ethernet/mediatek/mtk_ppe.c
-index 6e222a000bf7e..1e033d63b4510 100644
+index ada852adc5f70..fa688a42a22f5 100644
 --- a/drivers/net/ethernet/mediatek/mtk_ppe.c
 +++ b/drivers/net/ethernet/mediatek/mtk_ppe.c
-@@ -971,6 +971,36 @@ static void mtk_ppe_init_foe_table(struct mtk_ppe *ppe)
+@@ -973,6 +973,36 @@ static void mtk_ppe_init_foe_table(struct mtk_ppe *ppe)
  	}
  }
  
@@ -204,7 +205,7 @@ index 6e222a000bf7e..1e033d63b4510 100644
  {
  	u32 val;
 diff --git a/drivers/net/ethernet/mediatek/mtk_ppe.h b/drivers/net/ethernet/mediatek/mtk_ppe.h
-index e3d0ec72bc699..11c76fb8289ac 100644
+index 223f709e2704f..ba85e39a155bf 100644
 --- a/drivers/net/ethernet/mediatek/mtk_ppe.h
 +++ b/drivers/net/ethernet/mediatek/mtk_ppe.h
 @@ -346,6 +346,7 @@ struct mtk_ppe {
