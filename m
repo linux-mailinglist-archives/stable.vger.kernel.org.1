@@ -1,61 +1,79 @@
-Return-Path: <stable+bounces-240244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240245-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IJGpHSbn52lbCgIAu9opvQ
-	(envelope-from <stable+bounces-240244-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 23:07:50 +0200
+	id EBz+ETTq52koCwIAu9opvQ
+	(envelope-from <stable+bounces-240245-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 23:20:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F76543FA3E
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 23:07:50 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6A8343FB63
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 23:20:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E3C72300D730
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 21:06:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 61DDC3056159
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 21:20:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BED4E383C8C;
-	Tue, 21 Apr 2026 21:06:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 476C3387373;
+	Tue, 21 Apr 2026 21:20:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pn6CEO1u"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="Z0Cwx8QB"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81E373DE442;
-	Tue, 21 Apr 2026 21:06:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C157D29CB24;
+	Tue, 21 Apr 2026 21:20:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776805598; cv=none; b=JlkqE0OUTp8sGFI4TBJ6WVLVz/digCKKIeeiBeserN5aYRfvCiu/H+XQLbzW9HNTDgiake2pqwTLouQE4ZKnrE6H/fMAYtV7//DimofasXe0X5arfQ8sea+kjtcTRrAagN2T3y1EM2015rXJe09uMS89Lgpg4Fjzv4vzXz3/WEo=
+	t=1776806409; cv=none; b=fVy2/yLKbwWVFdxdVbbmZIByrOowtlTZdB3MJtq2eDLZAeLJj1zPK/9wip8Th6FflisZx4EjFaJI+x4My/TmXCHPk/2abllCewW4tigOII/B1dfDLMUiGwa/ArahdmiScfKQGg4Fj3EoZfwwTry4n3lXjqinGGmc5TaE2tfdDzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776805598; c=relaxed/simple;
-	bh=35LDYpViL2Z6AX7jBOzJkwpedKVCP8iYwHVo3Dy53RU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sou+LQfQKW+10BMOh30Z0YHWSN5fkRVe425j2Au6eJlZ7SNq3k5/P51qYK9zgDkM484WzuEqHCwPtR11vu3jWtUq1iqDdF7Un+PvGscWA7kcK55MrWumYZRWCh3+p9kVbgnestQaVK4xYnwmHEziXxB1+HZTcfFolh8AdpvgN3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pn6CEO1u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D10C4C2BCB0;
-	Tue, 21 Apr 2026 21:06:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776805598;
-	bh=35LDYpViL2Z6AX7jBOzJkwpedKVCP8iYwHVo3Dy53RU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pn6CEO1uC04II4/TloxEqfBiUjpZyUQ0rngExqakIZvZM5+wboNuXXYstWpEOBi6L
-	 tQxN0SHUc6NIOH6Z8P6Tfg9aUPiTO8rMsEN3oe3Jtp7pKsdj1Vya94SSNLRyjAdgZn
-	 cxgAUA1PRzn1X5v6G0FXcUhlCO/BQgrb91fTGrsbcHCizOJfDFXQRe3lTn+zGlCjiX
-	 maq/b6eyj4I6ZsRKfwqE22Rs1Et+60/RhOvEN3N5JbI3W4pQly/6e+EAew9QpRMWMv
-	 c/FQU1QacY8wbEBO0PHSJ+YRRhKu7+JmSWP8F0+8ZhvvZVbmFCKY9ODiR6ZKXvBxGz
-	 hcyXM6RCWNp6Q==
-From: Eric Biggers <ebiggers@kernel.org>
-To: stable@vger.kernel.org
-Cc: linux-crypto@vger.kernel.org,
-	kunit-dev@googlegroups.com,
-	Eric Biggers <ebiggers@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 6.18 8/8] lib/crypto: tests: Drop the default to CRYPTO_SELFTESTS
-Date: Tue, 21 Apr 2026 14:05:54 -0700
-Message-ID: <20260421210554.36096-9-ebiggers@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260421210554.36096-1-ebiggers@kernel.org>
-References: <20260421210554.36096-1-ebiggers@kernel.org>
+	s=arc-20240116; t=1776806409; c=relaxed/simple;
+	bh=qP++HqK5+HNctbGjwnjNhR+DOU3bV7dRtm3vuwsJ+oY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=sgoQlwA3FfLejttjcUGfx9UkJawHdjZvPYbtBbEBVwpFW/ZmSfZi596Jha9dDSe72fbb1llqJRjjPAYgRLAAix+gRBxoogvGU17O63TUFUBFQQj0vdU+ASM/ZrJ5O5D8cC+6uW3DDn/hELTdymaq1F9ccfYOMI4IfGw1Pbpz7kg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=Z0Cwx8QB; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1776806406; x=1808342406;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=qP++HqK5+HNctbGjwnjNhR+DOU3bV7dRtm3vuwsJ+oY=;
+  b=Z0Cwx8QB5nvyS83WEkB9ViFs8LqAwLkLLjTSUB8UePahLGSe+LPEBXDk
+   a0oOCeFf7XX8FA5H9oB/r5ApCo1jQtrUHod5sKSGehDkasq7BupJBXm7m
+   Na1wbQlpkrZ6gi+EGeXF+GU4BZm6BYf752gw/pnvoA5QVjZ90UryCi9Mu
+   jWXm9eLYQmSwtK9wp6F6w9eRiI41XyK2HbeiBMIEpLj56URqOOucVI+z8
+   XDHUHRs1sx0RllhGesr2Y3rTkwat4JII2/u8SuHQjRhTvQWPYlnUYR2Mu
+   flxRau95pjyXZ4dlDWPIECVaaXCgQk8JxgZS9WshjfTMmIOS/CY9po2V7
+   w==;
+X-CSE-ConnectionGUID: p6p45Q1BTtynQgbu01/Y0A==
+X-CSE-MsgGUID: 6qLn3UWcQBKSodIBJae7uw==
+X-IronPort-AV: E=Sophos;i="6.23,192,1770620400"; 
+   d="scan'208";a="56435724"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 21 Apr 2026 14:19:59 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.58; Tue, 21 Apr 2026 14:20:00 -0700
+Received: from c34249-workdesk.microsemi.net (10.10.85.11) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server id
+ 15.1.2507.58 via Frontend Transport; Tue, 21 Apr 2026 14:19:59 -0700
+From: Sagar Biradar <sagar.biradar@microchip.com>
+To: "Martin K . Petersen" <martin.petersen@oracle.com>, James Bottomley
+	<James.Bottomley@HansenPartnership.com>, Jack Wang
+	<jinpu.wang@cloud.ionos.com>
+CC: linux-scsi <linux-scsi@vger.kernel.org>, <stable@vger.kernel.org>, "Don
+ Brace" <don.brace@microchip.com>, Raja VS <raja.vs@microchip.com>, "Kumar
+ Meiyappan" <kumar.meiyappan@microchip.com>, Abhinav Kuchibhotla
+	<abhinav.kuchibhotla@microchip.com>, Uday kumar Bagam
+	<udaykumar.bagam@microchip.com>, Advait Churi <advait.churi@microchip.com>,
+	Sagar Biradar <sagar.biradar@microchip.com>
+Subject: [PATCH] scsi: pm8001: bump driver version to 1.50
+Date: Tue, 21 Apr 2026 14:19:50 -0700
+Message-ID: <20260421211950.433910-1-sagar.biradar@microchip.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,139 +81,69 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[microchip.com,reject];
+	R_DKIM_ALLOW(-0.20)[microchip.com:s=mchp];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240244-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-240245-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[microchip.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sagar.biradar@microchip.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ebiggers@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[6];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 2F76543FA3E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[microchip.com:email,microchip.com:dkim,microchip.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B6A8343FB63
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-commit 6d80749becf8fc5ffa004194e578f79b558235ef upstream.
+The pm8001 driver has seen very little upstream activity for years,
+with the version string remaining at 0.1.40.
+In the meantime, significant internal development and clean-ups
+have accumulated.
 
-Defaulting the crypto KUnit tests to KUNIT_ALL_TESTS || CRYPTO_SELFTESTS
-instead of simply KUNIT_ALL_TESTS was originally intended to make it
-easy to enable all the crypto KUnit tests.  This additional default is
-nonstandard for KUnit tests, though, and it can cause all the KUnit
-tests to be built-in unexpectedly if CRYPTO_SELFTESTS is set.  It also
-constitutes a back-reference to crypto/ from lib/crypto/, which is
-something that we should be avoiding in order to get clean layering.
+Bump the version to 1.50 to mark the start of renewed
+upstreaming work. This provides a clean baseline for the upcoming
+series that will bring pending patches and later enable new
+hardware support.
 
-Now that we provide a lib/crypto/.kunitconfig file that enables all
-crypto KUnit tests, let's consider that to be the supported way to
-enable all these tests, and drop the default of CRYPTO_SELFTESTS.
+This patch only updates the version string and introduces no
+functional changes.
 
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Link: https://lore.kernel.org/r/20260317040626.5697-1-ebiggers@kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Signed-off-by: Sagar Biradar <sagar.biradar@microchip.com>
 ---
- lib/crypto/tests/Kconfig | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/scsi/pm8001/pm8001_sas.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lib/crypto/tests/Kconfig b/lib/crypto/tests/Kconfig
-index 73200134916e8..a91815ec9b3ad 100644
---- a/lib/crypto/tests/Kconfig
-+++ b/lib/crypto/tests/Kconfig
-@@ -1,68 +1,68 @@
- # SPDX-License-Identifier: GPL-2.0-or-later
+diff --git a/drivers/scsi/pm8001/pm8001_sas.h b/drivers/scsi/pm8001/pm8001_sas.h
+index b63b6ffcaaf5..4e8c7c11f319 100644
+--- a/drivers/scsi/pm8001/pm8001_sas.h
++++ b/drivers/scsi/pm8001/pm8001_sas.h
+@@ -59,7 +59,7 @@
+ #include "pm8001_defs.h"
  
- config CRYPTO_LIB_BLAKE2S_KUNIT_TEST
- 	tristate "KUnit tests for BLAKE2s" if !KUNIT_ALL_TESTS
- 	depends on KUNIT
--	default KUNIT_ALL_TESTS || CRYPTO_SELFTESTS
-+	default KUNIT_ALL_TESTS
- 	select CRYPTO_LIB_BENCHMARK_VISIBLE
- 	# No need to depend on CRYPTO_LIB_BLAKE2S here, as that option doesn't
- 	# exist; the BLAKE2s code is always built-in for the /dev/random driver.
- 	help
- 	  KUnit tests for the BLAKE2s cryptographic hash function.
- 
- config CRYPTO_LIB_CURVE25519_KUNIT_TEST
- 	tristate "KUnit tests for Curve25519" if !KUNIT_ALL_TESTS
- 	depends on KUNIT && CRYPTO_LIB_CURVE25519
--	default KUNIT_ALL_TESTS || CRYPTO_SELFTESTS
-+	default KUNIT_ALL_TESTS
- 	select CRYPTO_LIB_BENCHMARK_VISIBLE
- 	help
- 	  KUnit tests for the Curve25519 Diffie-Hellman function.
- 
- config CRYPTO_LIB_MD5_KUNIT_TEST
- 	tristate "KUnit tests for MD5" if !KUNIT_ALL_TESTS
- 	depends on KUNIT && CRYPTO_LIB_MD5
--	default KUNIT_ALL_TESTS || CRYPTO_SELFTESTS
-+	default KUNIT_ALL_TESTS
- 	select CRYPTO_LIB_BENCHMARK_VISIBLE
- 	help
- 	  KUnit tests for the MD5 cryptographic hash function and its
- 	  corresponding HMAC.
- 
- config CRYPTO_LIB_POLY1305_KUNIT_TEST
- 	tristate "KUnit tests for Poly1305" if !KUNIT_ALL_TESTS
- 	depends on KUNIT && CRYPTO_LIB_POLY1305
--	default KUNIT_ALL_TESTS || CRYPTO_SELFTESTS
-+	default KUNIT_ALL_TESTS
- 	select CRYPTO_LIB_BENCHMARK_VISIBLE
- 	help
- 	  KUnit tests for the Poly1305 library functions.
- 
- config CRYPTO_LIB_SHA1_KUNIT_TEST
- 	tristate "KUnit tests for SHA-1" if !KUNIT_ALL_TESTS
- 	depends on KUNIT && CRYPTO_LIB_SHA1
--	default KUNIT_ALL_TESTS || CRYPTO_SELFTESTS
-+	default KUNIT_ALL_TESTS
- 	select CRYPTO_LIB_BENCHMARK_VISIBLE
- 	help
- 	  KUnit tests for the SHA-1 cryptographic hash function and its
- 	  corresponding HMAC.
- 
- # Option is named *_SHA256_KUNIT_TEST, though both SHA-224 and SHA-256 tests are
- # included, for consistency with the naming used elsewhere (e.g. CRYPTO_SHA256).
- config CRYPTO_LIB_SHA256_KUNIT_TEST
- 	tristate "KUnit tests for SHA-224 and SHA-256" if !KUNIT_ALL_TESTS
- 	depends on KUNIT && CRYPTO_LIB_SHA256
--	default KUNIT_ALL_TESTS || CRYPTO_SELFTESTS
-+	default KUNIT_ALL_TESTS
- 	select CRYPTO_LIB_BENCHMARK_VISIBLE
- 	help
- 	  KUnit tests for the SHA-224 and SHA-256 cryptographic hash functions
- 	  and their corresponding HMACs.
- 
- # Option is named *_SHA512_KUNIT_TEST, though both SHA-384 and SHA-512 tests are
- # included, for consistency with the naming used elsewhere (e.g. CRYPTO_SHA512).
- config CRYPTO_LIB_SHA512_KUNIT_TEST
- 	tristate "KUnit tests for SHA-384 and SHA-512" if !KUNIT_ALL_TESTS
- 	depends on KUNIT && CRYPTO_LIB_SHA512
--	default KUNIT_ALL_TESTS || CRYPTO_SELFTESTS
-+	default KUNIT_ALL_TESTS
- 	select CRYPTO_LIB_BENCHMARK_VISIBLE
- 	help
- 	  KUnit tests for the SHA-384 and SHA-512 cryptographic hash functions
- 	  and their corresponding HMACs.
- 
+ #define DRV_NAME		"pm80xx"
+-#define DRV_VERSION		"0.1.40"
++#define DRV_VERSION		"0.1.50"
+ #define PM8001_FAIL_LOGGING	0x01 /* Error message logging */
+ #define PM8001_INIT_LOGGING	0x02 /* driver init logging */
+ #define PM8001_DISC_LOGGING	0x04 /* discovery layer logging */
 -- 
-2.53.0
+2.43.0
 
 
