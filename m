@@ -1,134 +1,298 @@
-Return-Path: <stable+bounces-240121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240122-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6CruNexP52lR6gEAu9opvQ
-	(envelope-from <stable+bounces-240121-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 12:22:36 +0200
+	id MKw0HIZT52mn6gEAu9opvQ
+	(envelope-from <stable+bounces-240122-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 12:37:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6317343970C
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 12:22:36 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD828439A05
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 12:37:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CBB073029C01
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 10:22:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 068C3303D708
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 10:36:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C23D35AC36;
-	Tue, 21 Apr 2026 10:22:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D93C93A1A5F;
+	Tue, 21 Apr 2026 10:36:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IW32JZ6u"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="AtoDX2iu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B223536AB56;
-	Tue, 21 Apr 2026 10:22:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90A683F9FB;
+	Tue, 21 Apr 2026 10:36:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776766946; cv=none; b=BWnzwFvG6W61qdBFeHmTWVOeYe7eC8ozy2bwOr9QIBLyySUYXajOIJ8YDaIm6ATyaBoIgZJceItnKZZtjSPDmpNW/MB8U4fynFQL1V36EjIoeuq3YSdJyRQLYlSWy1mFKG+d94AXG+B8S4sBYn/O5lV3LT3TRrlpIXoOVHVyrdk=
+	t=1776767770; cv=none; b=lGXZdhsdr/Bb1msrQbsY8uOsfu06k5XC5ttt/EeN6x0OM3qz6wmZVQEHHExzsb6JHbTuYJ0qyXhMJS60RbmxiDPU0tQTvdPsypki7R+rwz9GLdvFGP0ToWEjwn25U8YaMWVQEuh1ux2pKGBSBpcA/l4dlhkf52pPOuYt+z5hw+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776766946; c=relaxed/simple;
-	bh=yq8DCpxCypg2h6lQBEDeMsZdsBGc1bcsoGnGFjiDwRY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Do8gl578awOFWTmeOnBzWvS8qk4Giv7a10/LOhdpjvQgxaQ7AqGGRFcD99M5ZbPYYQXslBOkmjx96RXDvfvmEF0xZfxUiOxmLJpvlAqXJhbXXXL8+mPrXvUJudn9Pe2A3FCS4cS3wnxd5yyIBiaRWkAua35BExVQL88nPFKVEU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IW32JZ6u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A66CC2BCB0;
-	Tue, 21 Apr 2026 10:22:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776766946;
-	bh=yq8DCpxCypg2h6lQBEDeMsZdsBGc1bcsoGnGFjiDwRY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IW32JZ6u3LNBahGyKV9Rx1Els/dUzXfTEWxSUwRBqdk+xUF0QQEl1uVRx/5e2D0nm
-	 n6zdi3bOpOLr4/+eMmXcaKjUwBU8SZYtlSlSjZPqP6c9erRcSELXawUeEwX0kNWf/u
-	 P7YTyYoDcn8TVvxPHi5RDEXeX1HqGWv4BuH7vQDSqwSM6NFKx9Xp7E70sP8lzpQ7nO
-	 W4xfKKeaixJb1FII9XuXBgmpeI5eqCKhzrpXcn049aCGYjDr5lcjAM2RimJ4s3MjZC
-	 WR0Qf20IPkfW1RNzZtAPHzbj6+aF+4PI7s9+tUeRshqMqjUMgNviCFqb193+piAAHF
-	 auSpCAISKfCEA==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: gregkh@linuxfoundation.org
-Cc: achill@achill.org,
-	akpm@linux-foundation.org,
-	broonie@kernel.org,
-	conor@kernel.org,
-	f.fainelli@gmail.com,
-	hargar@microsoft.com,
-	jonathanh@nvidia.com,
-	linux-kernel@vger.kernel.org,
-	linux@roeck-us.net,
-	lkft-triage@lists.linaro.org,
-	patches@kernelci.org,
-	patches@lists.linux.dev,
-	pavel@nabladev.com,
-	rwarsow@gmx.de,
-	shuah@kernel.org,
-	sr@sladewatkins.com,
-	stable@vger.kernel.org,
-	sudipm.mukherjee@gmail.com,
-	torvalds@linux-foundation.org,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: Re: [PATCH 7.0 00/76] 7.0.1-rc1 review
-Date: Tue, 21 Apr 2026 12:22:16 +0200
-Message-ID: <20260421102216.51168-1-ojeda@kernel.org>
-In-Reply-To: <20260420153910.810034134@linuxfoundation.org>
-References: <20260420153910.810034134@linuxfoundation.org>
+	s=arc-20240116; t=1776767770; c=relaxed/simple;
+	bh=Thkm8FEgdmMQkcZIsHXL5Zt1EA1XVjNddKgCseGUmLM=;
+	h=Date:To:From:Subject:Message-Id; b=F8bEwJ4HRUAtmF9ekyHFpaWe5qrf7DZktCTEGw3kYyfSJRP97zavaDARRLdzap0c7nA+9ZAz0vkC8lZUQ+veWbJL1ieOCrJ4z7RsfYbuFS2pNDkXblW/QHxBTRngDka1Us7OUMzxnnkZNK3Tnryo7UOcFCgcId5NWMgL9HeDHA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=AtoDX2iu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A850EC2BCB0;
+	Tue, 21 Apr 2026 10:36:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1776767770;
+	bh=Thkm8FEgdmMQkcZIsHXL5Zt1EA1XVjNddKgCseGUmLM=;
+	h=Date:To:From:Subject:From;
+	b=AtoDX2iuCvqINrTckoF1CBW+Ns8IaCUW8OiLVdZDW0wMbs4wYCPArrf+hMDWekskq
+	 otA8O17j8XPMuMuSPX8wgAsJdQ6xxpOk+zBFQ9dZwd0S1J+BlV7e2Mi7yc4DGNUsSc
+	 EuS1VVNoNjN2z6+GFc/9cfhFe13AfddAy7zy2+tM=
+Date: Tue, 21 Apr 2026 03:36:06 -0700
+To: mm-commits@vger.kernel.org,surenb@google.com,stable@vger.kernel.org,rppt@kernel.org,pfalcato@suse.de,mhocko@suse.com,liam.howlett@oracle.com,jannh@google.com,david@kernel.org,ljs@kernel.org,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-vma-do-not-try-to-unmap-a-vma-if-mmap_prepare-invoked-from-mmap.patch added to mm-hotfixes-unstable branch
+Message-Id: <20260421103609.A850EC2BCB0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[achill.org,linux-foundation.org,kernel.org,gmail.com,microsoft.com,nvidia.com,vger.kernel.org,roeck-us.net,lists.linaro.org,kernelci.org,lists.linux.dev,nabladev.com,gmx.de,sladewatkins.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	TAGGED_FROM(0.00)[bounces-240121-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ojeda@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	TAGGED_FROM(0.00)[bounces-240122-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	DMARC_NA(0.00)[linux-foundation.org];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: 6317343970C
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_NONE(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,appspotmail.com:email,oracle.com:email,suse.com:email]
+X-Rspamd-Queue-Id: AD828439A05
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, 20 Apr 2026 17:41:11 +0200 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 7.0.1 release.
-> There are 76 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed, 22 Apr 2026 15:38:50 +0000.
-> Anything received after that time might be too late.
 
-Boot-tested under QEMU for Rust x86_64, arm64 and riscv64; built-tested
-for loongarch64:
+The patch titled
+     Subject: mm/vma: do not try to unmap a VMA if mmap_prepare() invoked from mmap()
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-vma-do-not-try-to-unmap-a-vma-if-mmap_prepare-invoked-from-mmap.patch
 
-Tested-by: Miguel Ojeda <ojeda@kernel.org>
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-vma-do-not-try-to-unmap-a-vma-if-mmap_prepare-invoked-from-mmap.patch
 
-Thanks!
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Cheers,
-Miguel
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: Lorenzo Stoakes <ljs@kernel.org>
+Subject: mm/vma: do not try to unmap a VMA if mmap_prepare() invoked from mmap()
+Date: Tue, 21 Apr 2026 11:21:50 +0100
+
+The mmap_prepare hook functionality includes the ability to invoke
+mmap_prepare() from the mmap() hook of existing 'stacked' drivers, that is
+ones which are capable of calling the mmap hooks of other drivers/file
+systems (e.g.  overlayfs, shm).
+
+As part of the mmap_prepare action functionality, we deal with errors by
+unmapping the VMA should one arise.  This works in the usual mmap_prepare
+case, as we invoke this action at the last moment, when the VMA is
+established in the maple tree.
+
+However, the mmap() hook passes a not-fully-established VMA pointer to the
+caller (which is the motivation behind the mmap_prepare() work), which is
+detached.
+
+So attempting to unmap a VMA in this state will be problematic, with the
+most obvious symptom being a warning in vma_mark_detached(), because the
+VMA is already detached.
+
+It's also unncessary - the mmap() handler will clean up the VMA on error.
+
+So to fix this issue, this patch propagates whether or not an mmap action
+is being completed via the compatibility layer or directly.
+
+If the former, then we do not attempt VMA cleanup, if the latter, then we
+do.
+
+This patch also updates the userland VMA tests to reflect the change.
+
+Link: https://lore.kernel.org/20260421102150.189982-1-ljs@kernel.org
+Fixes: ac0a3fc9c07d ("mm: add ability to take further action in vm_area_desc")
+Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+Reported-by: syzbot+db390288d141a1dccf96@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/69e69734.050a0220.24bfd3.0027.GAE@google.com/
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Jann Horn <jannh@google.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Pedro Falcato <pfalcato@suse.de>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ include/linux/mm.h                |    2 +-
+ mm/util.c                         |   26 +++++++++++++++++---------
+ mm/vma.c                          |    3 ++-
+ tools/testing/vma/include/dup.h   |    2 +-
+ tools/testing/vma/include/stubs.h |    3 ++-
+ 5 files changed, 23 insertions(+), 13 deletions(-)
+
+--- a/include/linux/mm.h~mm-vma-do-not-try-to-unmap-a-vma-if-mmap_prepare-invoked-from-mmap
++++ a/include/linux/mm.h
+@@ -4391,7 +4391,7 @@ static inline void mmap_action_map_kerne
+ 
+ int mmap_action_prepare(struct vm_area_desc *desc);
+ int mmap_action_complete(struct vm_area_struct *vma,
+-			 struct mmap_action *action);
++			 struct mmap_action *action, bool is_compat);
+ 
+ /* Look up the first VMA which exactly match the interval vm_start ... vm_end */
+ static inline struct vm_area_struct *find_exact_vma(struct mm_struct *mm,
+--- a/mm/util.c~mm-vma-do-not-try-to-unmap-a-vma-if-mmap_prepare-invoked-from-mmap
++++ a/mm/util.c
+@@ -1232,7 +1232,7 @@ int __compat_vma_mmap(struct vm_area_des
+ 	/* Update the VMA from the descriptor. */
+ 	compat_set_vma_from_desc(vma, desc);
+ 	/* Complete any specified mmap actions. */
+-	return mmap_action_complete(vma, &desc->action);
++	return mmap_action_complete(vma, &desc->action, /*is_compat=*/true);
+ }
+ EXPORT_SYMBOL(__compat_vma_mmap);
+ 
+@@ -1389,7 +1389,8 @@ static int call_vma_mapped(struct vm_are
+ }
+ 
+ static int mmap_action_finish(struct vm_area_struct *vma,
+-			      struct mmap_action *action, int err)
++			      struct mmap_action *action, int err,
++			      bool is_compat)
+ {
+ 	size_t len;
+ 
+@@ -1400,8 +1401,12 @@ static int mmap_action_finish(struct vm_
+ 
+ 	/* do_munmap() might take rmap lock, so release if held. */
+ 	maybe_rmap_unlock_action(vma, action);
+-	if (!err)
+-		return 0;
++	/*
++	 * If this is invoked from the compatibility layer, post-mmap() hook
++	 * logic will handle cleanup for us.
++	 */
++	if (!err || is_compat)
++		return err;
+ 
+ 	/*
+ 	 * If an error occurs, unmap the VMA altogether and return an error. We
+@@ -1451,13 +1456,15 @@ EXPORT_SYMBOL(mmap_action_prepare);
+  * mmap_action_complete - Execute VMA descriptor action.
+  * @vma: The VMA to perform the action upon.
+  * @action: The action to perform.
++ * @is_compat: Is this being invoked from the compatibility layer?
+  *
+  * Similar to mmap_action_prepare().
+  *
+- * Return: 0 on success, or error, at which point the VMA will be unmapped.
++ * Return: 0 on success, or error, at which point the VMA will be unmapped if
++ * !@is_compat.
+  */
+ int mmap_action_complete(struct vm_area_struct *vma,
+-			 struct mmap_action *action)
++			 struct mmap_action *action, bool is_compat)
+ {
+ 	int err = 0;
+ 
+@@ -1478,7 +1485,7 @@ int mmap_action_complete(struct vm_area_
+ 		break;
+ 	}
+ 
+-	return mmap_action_finish(vma, action, err);
++	return mmap_action_finish(vma, action, err, is_compat);
+ }
+ EXPORT_SYMBOL(mmap_action_complete);
+ #else
+@@ -1500,7 +1507,8 @@ int mmap_action_prepare(struct vm_area_d
+ EXPORT_SYMBOL(mmap_action_prepare);
+ 
+ int mmap_action_complete(struct vm_area_struct *vma,
+-			 struct mmap_action *action)
++			 struct mmap_action *action,
++			 bool is_compat)
+ {
+ 	int err = 0;
+ 
+@@ -1517,7 +1525,7 @@ int mmap_action_complete(struct vm_area_
+ 		break;
+ 	}
+ 
+-	return mmap_action_finish(vma, action, err);
++	return mmap_action_finish(vma, action, err, is_compat);
+ }
+ EXPORT_SYMBOL(mmap_action_complete);
+ #endif
+--- a/mm/vma.c~mm-vma-do-not-try-to-unmap-a-vma-if-mmap_prepare-invoked-from-mmap
++++ a/mm/vma.c
+@@ -2780,7 +2780,8 @@ static unsigned long __mmap_region(struc
+ 	__mmap_complete(&map, vma);
+ 
+ 	if (have_mmap_prepare && allocated_new) {
+-		error = mmap_action_complete(vma, &desc.action);
++		error = mmap_action_complete(vma, &desc.action,
++					     /*is_compat=*/false);
+ 		if (error)
+ 			return error;
+ 	}
+--- a/tools/testing/vma/include/dup.h~mm-vma-do-not-try-to-unmap-a-vma-if-mmap_prepare-invoked-from-mmap
++++ a/tools/testing/vma/include/dup.h
+@@ -1330,7 +1330,7 @@ static inline int __compat_vma_mmap(stru
+ 	/* Update the VMA from the descriptor. */
+ 	compat_set_vma_from_desc(vma, desc);
+ 	/* Complete any specified mmap actions. */
+-	return mmap_action_complete(vma, &desc->action);
++	return mmap_action_complete(vma, &desc->action, /*is_compat=*/true);
+ }
+ 
+ static inline int compat_vma_mmap(struct file *file, struct vm_area_struct *vma)
+--- a/tools/testing/vma/include/stubs.h~mm-vma-do-not-try-to-unmap-a-vma-if-mmap_prepare-invoked-from-mmap
++++ a/tools/testing/vma/include/stubs.h
+@@ -87,7 +87,8 @@ static inline int mmap_action_prepare(st
+ }
+ 
+ static inline int mmap_action_complete(struct vm_area_struct *vma,
+-				       struct mmap_action *action)
++				       struct mmap_action *action,
++				       bool is_compat)
+ {
+ 	return 0;
+ }
+_
+
+Patches currently in -mm which might be from ljs@kernel.org are
+
+mm-vma-do-not-try-to-unmap-a-vma-if-mmap_prepare-invoked-from-mmap.patch
+
 
