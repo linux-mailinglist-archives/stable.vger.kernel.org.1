@@ -1,243 +1,255 @@
-Return-Path: <stable+bounces-240023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240024-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gOZUF57f5mk71gEAu9opvQ
-	(envelope-from <stable+bounces-240023-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 04:23:26 +0200
+	id QAu0KIrh5mmr1gEAu9opvQ
+	(envelope-from <stable+bounces-240024-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 04:31:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2BC5435769
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 04:23:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08E8B4357E5
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 04:31:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DE564300599C
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 02:23:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0865F300DE0E
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 02:31:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 967DD23D7F0;
-	Tue, 21 Apr 2026 02:23:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9751207A20;
+	Tue, 21 Apr 2026 02:31:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="ihaRhIQK";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="ofbagnR/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZcDX6BhZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f50.google.com (mail-yx1-f50.google.com [74.125.224.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1962542A96;
-	Tue, 21 Apr 2026 02:23:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776738201; cv=fail; b=Ju14IUUVAl41ZRNAA8hWDmscHQjqVcDfdjuROXsr8yO7sXMKpSdJEmCkS9hG2nWqbqQA+SWgyyIb4kCqji/7esai0d2fmCXmcZdqYccHoT7EJH3NSdgHSh2JqCTtEqBrTXiby0dPp7Wh9HhbqtHBJYm7ZmfWRZpdp3w9ywvBqMA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776738201; c=relaxed/simple;
-	bh=hHuQXFxA/Qn+vjOI7Ohz1eBMqnIRTyRpO3pohr5i/7I=;
-	h=To:Cc:Subject:From:In-Reply-To:Message-ID:References:Date:
-	 Content-Type:MIME-Version; b=nVCIK6VCyJP/Cd5kMrf0xKHoQMeWCfMo1r+WPZbBYCDYS8wfB9/iW3C1l03df2VZ1mnNIoN3nOd43yshl9eMArKckqnbm0Usv/sjKznS3XDFuEyTGt82Y/JfetmIBCgDxmMkAERjuqpPgIdbMdh44RpxxZsGpvRtNtA9pY54a64=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=ihaRhIQK; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=ofbagnR/; arc=fail smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63KLtmde089785;
-	Tue, 21 Apr 2026 02:23:03 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=q3lWbF6TDFbFzQZcdV
-	x5adDoe2BDnAnIP9250tkDwpk=; b=ihaRhIQKoS9E89AY46reuFKGKnnU81K+/D
-	oVeO6YNRbjbjjXR78+SpOvKBSjuSz/Rx0pzsxXUJoYwvt8xGAb8/DW8L/xmtQdlt
-	vNxvGCgBp7WO2GyOm3RhlE2WmhToPBJrqRGaCw0X9bEhMAzXGEhGRVbnqdlcm8J3
-	/D+t1w5U/JKCK++am+SIjyMCyPipSAnyIsRl+/l9snKvmHRiV6AM/QNG+sDmtN6g
-	CP2E5/j0Qmw/JpUIqrWGc0GXYf5uC1UyEz/bTYa4XsvkKTNaGloFoeCmTKkUrElb
-	HUrSfEBA11HDoiehe2Rh7VdtsMxzxm54z/8/SPWq0R2ZrqvQSlMw==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4dm2cevnd2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 21 Apr 2026 02:23:02 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 63L2LD6k010162;
-	Tue, 21 Apr 2026 02:23:02 GMT
-Received: from bl2pr02cu003.outbound.protection.outlook.com (mail-eastusazon11011035.outbound.protection.outlook.com [52.101.52.35])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4dn187y1qj-2
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 21 Apr 2026 02:23:01 +0000 (GMT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=IrLomEt5Yh+A2IjHh3uGdFl8WvXw/H2dKHrBzCRTxYLsj1oQP6823Km2M0RzTjCd/IVfhLAximow1/eBOnIzCto6NIp2oTarfWdt3hUWGH12xD4eAXLjbpmvnVpfSDmRYLE/pjXH2TvWkThvmB90N8HxH9ve5xuM/Fmh964BniyERaIqDiNy5hyRszYZa7OgsrWVP6mFTmg8xDHAqUsHHWXo43HYu4B4I5x1XnqlXf8uncfmx/PzaBSky+8i/kVqESq/nkGez3Pkdcz8TqKfcqvdraXi1yRFDS1WdD6FrOiRlDWzXc+NVoCXfcsdjri8IWy88jOAaEGwuwdSqyMl0A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=q3lWbF6TDFbFzQZcdVx5adDoe2BDnAnIP9250tkDwpk=;
- b=e781/34DwDnWYM2pguYFKlDeHx00u7kK0GEC8ZRoTqD5DKwB7L1jK+znC4lo71wtHSGt6XDLGG43CZxXSZGWhjd7XYCQgW6g1JRJqp2h2ISAxV0ZLcFW4VofDlNGQE3RTCAD86qTLGBHftkh9WYo6dIXI6Ob4z4rsX3bSdqJaOig7nkXyy/ncT2ZxqQQlxvhYTiS3I4ye+nw8xtKJWLJHGvbkLbhyEBepdrHLyMAqowmQz/3vgSxs3PyhK15/wIFaRt3GFp2yaXrGEg85p8bUdl/bwM3bJ9xZu35r9dedJB1rhC+svvDwmOhokN1gshgXHnTAzekA/e+Gcr0smClGw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5195915B0EC
+	for <stable@vger.kernel.org>; Tue, 21 Apr 2026 02:31:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.50
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776738693; cv=none; b=Alfn6rCBWXOdkow3f/475dOQvSwEE6pc7NrLQxMD6Y5k7oe7WKpsJ/TPUYZh5bzhws0ZckFuHbnJ94PpGBd2BDsPCgLRuyiLepJ7f4gJngxpIK0PgJHQctV/u6GqnyU7BitdCrPYrrhhQfL93mU8D6CZE8K1+bMnjy566sdfvUM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776738693; c=relaxed/simple;
+	bh=sp3R6bmYxrno0C9baRRapNxuKoTU+SdyfvK5YZwdvZI=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=Obq4JPUIVnJ7spQ0vnZRF0ZcaXQQpcREdiH5BPROa5/+lRaUpRQ12dEnNNrEQhqfOLq5ocVtz5cz/pg6KoxvWve/4JSobvMwhiAbpJyCfmzCUVbGoddPsYCdAc1aPiaTsN4YovqzKL8ybh5LRZ0ArbUpUneTdUiiyyI9b6DNaX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZcDX6BhZ; arc=none smtp.client-ip=74.125.224.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-6543c251311so97580d50.0
+        for <stable@vger.kernel.org>; Mon, 20 Apr 2026 19:31:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=q3lWbF6TDFbFzQZcdVx5adDoe2BDnAnIP9250tkDwpk=;
- b=ofbagnR/qQKg4uVJvcAZdswTMOc/zrQgXasSVBLaEn6+9GZ/HK8Te543TnPHMxMBNwDFjc3tgV7aGONOgXT2z6Xdy7o8JbWd5BuHiPN9+qDr+vXdnBqlWWMZFXUtCDfssqUalesGUvvjDhhOtIHlQoS+ykXZp00tf/gLKsWTjgM=
-Received: from CH0PR10MB5338.namprd10.prod.outlook.com (2603:10b6:610:cb::8)
- by DS0PR10MB997624.namprd10.prod.outlook.com (2603:10b6:8:315::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.30; Tue, 21 Apr
- 2026 02:22:58 +0000
-Received: from CH0PR10MB5338.namprd10.prod.outlook.com
- ([fe80::e525:dd71:b002:6ad5]) by CH0PR10MB5338.namprd10.prod.outlook.com
- ([fe80::e525:dd71:b002:6ad5%6]) with mapi id 15.20.9818.033; Tue, 21 Apr 2026
- 02:22:58 +0000
-To: Ranjan Kumar <ranjan.kumar@broadcom.com>
-Cc: linux-scsi@vger.kernel.org, martin.petersen@oracle.com,
-        sathya.prakash@broadcom.com, chandrakanth.patil@broadcom.com,
-        dlemoal@kernel.org, david.laight.linux@gmail.com,
-        stable@vger.kernel.org, Mira Limbeck <m.limbeck@proxmox.com>,
-        Keith
- Busch <kbusch@kernel.org>
-Subject: Re: [PATCH v4] mpt3sas: Limit NVMe request size to 2 MiB
-From: "Martin K. Petersen" <martin.petersen@oracle.com>
-In-Reply-To: <20260414110811.85156-1-ranjan.kumar@broadcom.com> (Ranjan
-	Kumar's message of "Tue, 14 Apr 2026 16:38:11 +0530")
-Organization: Oracle Corporation
-Message-ID: <yq1se8poxvz.fsf@ca-mkp.ca.oracle.com>
-References: <20260414110811.85156-1-ranjan.kumar@broadcom.com>
-Date: Mon, 20 Apr 2026 22:22:56 -0400
-Content-Type: text/plain
-X-ClientProxiedBy: YQZPR01CA0176.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:c01:8b::25) To CH0PR10MB5338.namprd10.prod.outlook.com
- (2603:10b6:610:cb::8)
+        d=gmail.com; s=20251104; t=1776738691; x=1777343491; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=ipI0idJGNrZodVG5ZIm4eDtcetTLm6jd3SJUdqoCiio=;
+        b=ZcDX6BhZtNbLhUpJbhYyKmq3eStaasVn5q9t0RT4t5Hpg+VgtEmnvJA9S8GyOOURj2
+         ar6nJ7gHivNtPdhjByT5yC/av83bTY3VYqIYRIAojkkDSjupyuyMDyAJdj7gE7XR1VUN
+         Lkoomj7qlltUkriSffcb7nLIQhiYLdcJyjiHS7h4+VI2GOSTHzYA7+4CixCaAMcSepyA
+         +GtlEmFGJiAg2WBXa65No0/aZfD+xhrqoHFPGgb26B2TEr6VH+I9Ct9XG/iiAJPSHmd7
+         AYQAkAHiVSBMwKAjzEFmsTE2ncyGCznBdz9wYkR1Q9cOZQ6poFG3J6adtuOzn8dp0MYL
+         A/ag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776738691; x=1777343491;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ipI0idJGNrZodVG5ZIm4eDtcetTLm6jd3SJUdqoCiio=;
+        b=jsZPQoP0OEKhJVoiPuzAVvTRbS3mzJYH5VEqmRD3ayCRQ0m6mSjhLcKzuUhEQTaJj0
+         M2no0IWkzKWn0ubnA2h30e2laUvimM7Yai9MWKK8wyfMkhVi/mWB9Tei7xklfK2bHqzU
+         XROW6iuYfwdn7iVOQq8KXbxtLJNS54p75YvoOHIaSxZgi0D3U33rMl5uAURg3REJrRET
+         qs+HbyP5KzsuLhn5PAKxX4bCMiUHZSiFGlYL1kIccAP2M7wFxyUdT5vL6sJcN6iXtoVo
+         jmbY7N6ibEZjiRSC970atxS31icbmR1PkuCgHLhSU21syGRQ4XdEW4TaKP3VGdTNgvC7
+         2xxw==
+X-Forwarded-Encrypted: i=1; AFNElJ+6Gl9LQNr9LCX6TVsx8RDW8xOOjljvzDyNz/l3jukkje901/mMkb8RnzKj8nTR8cT/5UODHGM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz6OuycAX+jk8eevAQFDqhZKF+eXLUnNuSf89TKIup5rQdeW1iy
+	QpX/fePTe5ihXLsMOnUgBlL/OGRRAkiNA6EOlX9DF86Tpxz0m6WWr8gD
+X-Gm-Gg: AeBDies9jNAtvmOOOhZDHNa8kXyJAHnq7JMs7h/VJG/Pu3uAdm8A9deHGX4F57LgStF
+	IIUKHKfEQuYvxkNgNNMbqt0DGzvyCgzTbbxGplvv3tCB+KdWamcQjdamPWSxClMS/vRrvv3i0bU
+	m/wW9Sw2ZIv8LVwbTG8ePSSOQUiJKf3tfddmXw1rh4ywaWXp7lOlMhxQjfM/Kl5FCUg9CZnY6m0
+	y042amAL98LSLeKYzivRcnZ6sgo7v8Q+I9IiR6XXpL7w71Mx58l+Y7wRGRA6pC4H37TVvSClLUd
+	rJQQAEvn9GHsrYWfLtPl/TkQeNMXT+qitb9bXnCrpVEAcXDfVIb2WhJZOJGNv7C7B6JUCbJmXPk
+	tjR+eM3Htq+DnIcVd1YH4wkQ1Ugi4gGZlfMuY7YBAkCCXdI/JLs37ETZ5z4dX1tYPJ5zjWeXqTg
+	gYtsW2I/NDX6DwVejPYXi8vBMqjP9ESNu3sNzUW4A5Pr9RYLYwxdshx67Yvl7kaimw8k8ghJo17
+	f/B8hj+ke4oGUM=
+X-Received: by 2002:a05:690c:4b92:b0:7b1:c8e4:3271 with SMTP id 00721157ae682-7b9ed12bbc9mr119038577b3.3.1776738691366;
+        Mon, 20 Apr 2026 19:31:31 -0700 (PDT)
+Received: from [192.168.11.79] (2607-8700-5500-a805-0000-0000-0000-0002.16clouds.com. [2607:8700:5500:a805::2])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-7b9ee8be8e4sm52804197b3.14.2026.04.20.19.31.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 20 Apr 2026 19:31:30 -0700 (PDT)
+Message-ID: <99f6fde4-ac69-4e7d-a345-a378762eb9bb@gmail.com>
+Date: Tue, 21 Apr 2026 10:31:19 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH0PR10MB5338:EE_|DS0PR10MB997624:EE_
-X-MS-Office365-Filtering-Correlation-Id: d5e31977-b10f-4aac-a8c6-08de9f4ce779
-X-LD-Processed: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|376014|366016|1800799024|18002099003|22082099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
- K8trwGrgl260u+zLYbPPvhOqwF+rCGzaUw1PkOjaPAc3ag1MRh1XlfirhOfHQYaxTmLFnhDZ/Kzto6EgvhG5FP7YRYPmHcx+YQaoDTVZuvkNmq0Ck06P5HBq1PR3znhGrpvjkFOnvZ/9rdU3Od6Pa0jxN2+0PWyPpW1rKpA3eW+sLhLATTZJn7qtjLZqmuQ0DWSQaZiUdV4q87Dd4t3MdVDf2FXHMpZN49LvAt7DVxW4ac/nYddlso0R7JqsRs0+PCYZWSuH98URtJ2+6pzYkWuI2p3oE5ewpRA/TI7G/dLBEbAxsjDKZfamDt+e4BWbuG4PZeacoxMJC7bZnyJvGICqG/MA2C1+8jnv0Id4WzPL/eFR0SQRhCzD23MShlXt/UkNhJjylUNOcZsnehE9eJEhZ1L7fq3NVsdi92UqwewNsIQVzbilOhT1/b0xW49PHZ69IM++Ixjupq2rH3LNAYOM1xmd0eoc1+U3dWS0tq4nKURGhqMUVrzRCV5TXjoAYPcQvrV+aa3zvT9pct9D5BGVVtRH6G/PZet+IE/BiZz8+5LJnI45YQO1YYKK3+CffKoREY7Nc67+r7lIwHY2sW4kdtWgF/GAArmrTzb0A00ypxvw2L8qA89vWMuG/h9oZtW9YjmQ270vfIwJkF+F87Xxs67/5yJuyap4owI0nOW0f7b8yTIRj0KWh3zG5wyno5fGNdI0Sa9Md8p63wfILi6ntonJMGSpNeABN3V2NqE=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH0PR10MB5338.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?us-ascii?Q?VNwLs+ni2TWAbWsCxzly3rLVen1BmR1ndAwNH40upKJHvfYb31fqlE8izn6w?=
- =?us-ascii?Q?Jn5shdAsM+qjy/9sMcHYzLauuQuO9+sKH1yfJ7GBWmcXEKdCiKV0PVQkE7PD?=
- =?us-ascii?Q?AU4aYBQoJdo7rA0nB0fpHPZ2InfrWOYiy8ff85c/ZfB1zVEad+n2B9/gEoLd?=
- =?us-ascii?Q?WKBcVIOloOBUpRxLoEV6AVUQ8SaJ8AYx3KflvDoHfYhs3yNuZ16WEnmUt4Y4?=
- =?us-ascii?Q?0fljO67tw4CSgeSGguZoc16He08fZusCkgvcWmApAVR1oNWA+vAZI92L9bfl?=
- =?us-ascii?Q?klul4OQ9ynyKefSwcQiuzivwd9s4xv021ap7leTZ/7gvfOkWNVKWgjU5xtRp?=
- =?us-ascii?Q?iIAkxqZiqpxzN22atb7IX/SZfj7jEHGZ06M049grhR8oy75L4lOZaufjvEAd?=
- =?us-ascii?Q?oBM/5k7oIF8ELo1RNhfa0Itsdw+7LBJnyqa2Eyy9kgRIyFibcvv4NguOk1mm?=
- =?us-ascii?Q?3D1Qn3kjIsa2FdkKXlO47g0I/aGTEFOuXu3+4F6kOPB9LJldX71QVaIAmC0H?=
- =?us-ascii?Q?rnQrw3osEiam1LsvC/5WmwTQ5HyC6KdSLQ7PktDt373x2UVzn6u4TP0JuCZr?=
- =?us-ascii?Q?gpkawMYYKdj+YC/NoKdJfQC/5fDhBMvbiiwDCF9tK4db/6W3GBBK0BLqg9+U?=
- =?us-ascii?Q?jV2DSfmoOe75hfiSr1gvqWtfXB+SOaGzrHRtGa+W0hcRZBjo+k9z6DprynCt?=
- =?us-ascii?Q?o/V5pWJA+aFzFoPAEFZrRUSLY9mSL/6Xj1W+IfIEST3ZBwmoh5OtWYvBawf3?=
- =?us-ascii?Q?XpeTy2A6RjVXcOhUOiMnPsuEsezRYD5UvqDs1kU3o05B7vbMjXozLnwg0e2X?=
- =?us-ascii?Q?xXM8BEO/WLPXLHhhT3buTF3NYHIRQaWVoYE9AJVtN6/EQphc8mtMAKizNN5H?=
- =?us-ascii?Q?tqgCIXjGg40/hf4OuNcGy+mABIaX3UaBlw8UNqIMeQVF6zStZuKgfvNQ9EL5?=
- =?us-ascii?Q?h5koktNnBc70keGlxLeMYOkzHvXItvRB5M4DWxBIIv0KBz6sYc93eQSFLX9b?=
- =?us-ascii?Q?i+9mf8ke3wUmHEnu8dwCTRFJ+TJgLMI5PJZC6Xzdn+gnQLTC5jVGZk3G0HR2?=
- =?us-ascii?Q?B5yCNIT5vnnvysd9co3bsXvD95nFKzuJ4NTFU55E1a7aMwZlz5uRdnn1DKYn?=
- =?us-ascii?Q?gnnKo/rJbnQS0omybcRyEpyOUx2gZUbdEZvitcfTR2C77s8+eTn9fiPag2s9?=
- =?us-ascii?Q?2rNsEvV7cOTimo2Kf2WoazF1UY8J2rI38yJGKPOu8FxJHpRvQI0s504UWlt0?=
- =?us-ascii?Q?bifDtNiMEc+Y6nQ5muRmqrL12t9kpmdpoMamKLdLgSqrpDcy0H3G3vVJOSqP?=
- =?us-ascii?Q?dLQCdT+5UlT3NbNsdgLRgUEtANyZaG4U0Y9Hd4GvHG+286o0IE2x7C8h0GPF?=
- =?us-ascii?Q?p0xcgHZ423juQf96UnymbzNxtOkq7hyzr6xS45RAl11HkTyz9+esFu2NgsPt?=
- =?us-ascii?Q?Ov3vlhCvLOlmtJHzt9y/NALeCIyrcrZJctY3+rF/1m+lVy3SuWLXJCc49jQt?=
- =?us-ascii?Q?nISIvjRZwCIsFwkr4y6c0rhilLJEvxutc+1DMrr0CLWIqVBhLeT4Ak/kLRbT?=
- =?us-ascii?Q?IXfOb73nzTd5MY0aghSN7jyQs07QQY7p/Y6T9RYU9ggUAo835eM5VIputAjM?=
- =?us-ascii?Q?z5YX+nfWQV3U7L/peT3619t6j4z+gfs1RDHs+Y0DnnnAPcW/Z0sJDPGkQzb9?=
- =?us-ascii?Q?DGk/zLcAJ1ufO1X54zj3ezadtrNOWMtqW5JstBRRk6Z/pONtDaRMEJBHffYL?=
- =?us-ascii?Q?Ymoikq5XkdCnPh/VlXU0hwMBniLALLs=3D?=
-X-Exchange-RoutingPolicyChecked:
-	NRmvVsUNy4g6dnJYFa3MRiRfPu5x27dkOmt5+B6tmQHHrNqgCld3NTV1MVU9TwOOPtYA7ADmMzpLJOQk2z2RPJ1bNlW7tcaU7PmrcwpzGUEITQ/TcYtgGQSCSrSVIDCMLY+HmSoI+Mgn17SQT15B+LStsiNLr4oJMltATIsmTNnbsSgIGa8KNHyf55iCIlSzGhfut+aPHiLfLUNEVQbVIzsvhfLuRnxojDSown3NWg4lotLs0rLalEayyO0aXzFosR2/SpvoCIrT6hB8FU5JkT4hPyPKCY7RqhSkdmI42XITmq1Kr4Unj8aLAZNu/q3sUoH7EmUVRUhEsOLRrdlMrQ==
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	nKEGLOX/O/jz/H9NuQ43SXHm5mIWdoP0mShfepxkl7JTmUF3WatWDL+xKjCf/tlDyt5SZa7D50o1NP0GXnjI9+v6qTQ+Y3ukgNfcZguR91po+5QDrbxfT4DcpaH+1avJHNOVyCgIYWci7p9pm6ErlAlkUrPiTMyDEoZdgu2SO5aQuIiJjY1h6KJIKXGr9CVr/d0KpqND3T6jAXaxugBp3wvIhNhkSuPHkpt8w0cS35PSi1+xIhnS3k83FNGDMj8n2DBB4jpzX6hDjOL91lZ+KmqNz5Nvt9Szq2VpU3xZOu+XlqfI4zfVAS3usVWq74spI8lMpVlOUGfH9jauVPwQXkKedpP+Sg3NwMR0x1DeuEZ6e0fwwV2ScRxbNXbjlmQfcLPbKrh0bqcP5SjbI13fT/PnmJFwkGNOw+EVU7Z4N/iukj6oHoAW2MJ5fe5rqvB8Be90RKiLtl1936Ezg0h6sbfYIbuCkW6oe5tV4MPSq0T/saMUkBxGHBCm7z7UooCzCwYblBYc53xvQUcXNjHVjnjmk8u5tWSlYyXy7ZALXeNWPTd8JttuIa0xEljvgh9kNaxhsRrc8kcSKRiCOvcY4Ea4VGwnTnAXBJpWXuy6ZEo=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d5e31977-b10f-4aac-a8c6-08de9f4ce779
-X-MS-Exchange-CrossTenant-AuthSource: CH0PR10MB5338.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Apr 2026 02:22:58.4328
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5OoATSLpVSH/m1PHogzaU7Q+eG/ebVm9khHImvTSN/P0UkmKzp/W639lOOTyZVl9UmiRG0J3zMLOO/vlb5eOdyRAv45t8wbFXbedVxiDE3o=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR10MB997624
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-20_05,2026-04-20_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
- spamscore=0 mlxscore=0 lowpriorityscore=0 bulkscore=0 malwarescore=0
- adultscore=0 mlxlogscore=860 suspectscore=0 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.19.0-2604070000 definitions=main-2604210021
-X-Authority-Analysis: v=2.4 cv=BaPoFLt2 c=1 sm=1 tr=0 ts=69e6df86 cx=c_pps
- a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=A5OVakUREuEA:10
- a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22 a=jiCTI4zE5U7BLdzWsZGv:22
- a=BqU2WV_vvsyTyxaotp0D:22 a=anrGc2dYs3bqXeueZeAA:9 a=ZXulRonScM0A:10
-X-Proofpoint-ORIG-GUID: IKkZIWD_gep4SytscuX9GT0Rxwe-Tnid
-X-Proofpoint-GUID: IKkZIWD_gep4SytscuX9GT0Rxwe-Tnid
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDIxMDAyMSBTYWx0ZWRfXxuHxauPa1rvN
- +ghrhgJ6xrHEgV4rxEuHkkBxp0W542XrfnNe+eky1EuBCVyc29JQ5hvBDtb+ElhdWsQrMXT0B+F
- zBWrGDHWeQTBBM/NFE6IYJzB827ahUpZO8Tzt9jMNiXmeTJlGo9lb60d461zXyVhgw3X34x7N9O
- tLsr1SLZXPZvOcNT2P6xPU4MFvqTSdRfNuwF3JzD9DcmLmebmFzIg3/cos7t3fVzjNkweWB0x+3
- yriGETVY7jmxzJiHKttENCHTemAGdNaUBsbiDR3jc0ICyvhO86Gek+OEhdJE8J+x2LXttPTZuIK
- 2iTl/aveYtAvMV62T6aC0ELXofvu4Dd6i3caxboRvhB8MRjtfR+c/f0OxKZ3INLq5qXyQ5xJ+AK
- WnFciR29S1jUhPviPDUVa0Vip2kdYH2uos/XbFVfhmhaM+zCmfC1IPKgGgmHqV93PAYPajLcnf9
- s8s7qn0CCxjId//YvlQ==
-X-Spamd-Result: default: False [1.84 / 15.00];
+User-Agent: Mozilla Thunderbird
+From: Frank Zhang <rmxpzlb@gmail.com>
+Subject: Re: [PATCH v2] drm/bridge: dw-hdmi-qp: Guard clear_audio_infoframe
+ when PHY is down
+To: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Cc: andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org,
+ maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
+ airlied@gmail.com, simona@ffwll.ch, detlev.casanova@collabora.com,
+ cristian.ciocaltea@collabora.com, Laurent.pinchart@ideasonboard.com,
+ jonas@kwiboo.se, jernej.skrabec@gmail.com, dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260418101936.7731-1-rmxpzlb@gmail.com>
+ <hdl63shkqubkvczlg7ryjah5psiqzrhu5llelzaetw7skbpujv@nyxgriryjxd5>
+ <9c198d0e-a675-4d7e-a485-5a8ee4d97f88@gmail.com>
+ <ggmfrel7xrhigcsvoegxwdxpljohiyspzcmhpmkxkqycu53zwm@ltkecyoshdax>
+Content-Language: en-US
+In-Reply-To: <ggmfrel7xrhigcsvoegxwdxpljohiyspzcmhpmkxkqycu53zwm@ltkecyoshdax>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[oracle.com,reject];
-	R_DKIM_ALLOW(-0.20)[oracle.com:s=corp-2025-04-25,oracle.onmicrosoft.com:s=selector2-oracle-onmicrosoft-com];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,oracle.com,broadcom.com,kernel.org,gmail.com,proxmox.com];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-240023-lists,stable=lfdr.de];
-	HAS_ORG_HEADER(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240024-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[oracle.com:+,oracle.onmicrosoft.com:+];
-	MISSING_XM_UA(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,ca-mkp.ca.oracle.com:mid,oracle.onmicrosoft.com:dkim];
-	FROM_NEQ_ENVFROM(0.00)[martin.petersen@oracle.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[intel.com,linaro.org,kernel.org,linux.intel.com,suse.de,gmail.com,ffwll.ch,collabora.com,ideasonboard.com,kwiboo.se,lists.freedesktop.org,vger.kernel.org];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[17];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rmxpzlb@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[9]
-X-Rspamd-Queue-Id: F2BC5435769
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 08E8B4357E5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+On 4/20/26 17:00, Dmitry Baryshkov wrote:
+> On Mon, Apr 20, 2026 at 02:11:28PM +0800, Frank Zhang wrote:
+>> On 4/19/26 08:40, Dmitry Baryshkov wrote:
+>>> On Sat, Apr 18, 2026 at 06:19:36PM +0800, Frank Zhang wrote:
+>>>> The following panic was observed during system reboot:
+>>>>
+>>>> Kernel panic - not syncing: Asynchronous SError Interrupt
+>>>> CPU: 7 UID: 1000 PID: 2637 Comm: pipewire ... 6.19.10-300.fc44.aarch64
+>>>> Call trace:
+>>>>    ...
+>>>>    regmap_update_bits_base+0x5c/0x90
+>>>>    dw_hdmi_qp_bridge_clear_infoframe+0xb0/0x120 [dw_hdmi_qp]
+>>>>    drm_bridge_connector_clear_infoframe+0x28/0x48 [drm_display_helper]
+>>>>    ...
+>>>>    dw_hdmi_qp_audio_disable+0x24/0xb8 [dw_hdmi_qp]
+>>>>    drm_bridge_connector_audio_shutdown+0x30/0x60 [drm_display_helper]
+>>>>    drm_connector_hdmi_audio_shutdown+0x24/0x38 [drm_display_helper]
+>>>>    hdmi_codec_shutdown+0x60/0x90 [snd_soc_hdmi_codec]
+>>>>    ...
+>>>>    snd_pcm_release_substream.part.0+0x44/0xd8 [snd_pcm]
+>>>>    snd_pcm_release+0x60/0xe8 [snd_pcm]
+>>>>    ...
+>>>>
+>>>> The root cause is pipewire tries to close the HDMI audio device after
+>>>> atomic_disable(), which sets tmds_char_rate to 0 and disable the PHY.
+>>>>
+>>>> In this case, dw_hdmi_qp_audio_disable() will call
+>>>> drm_atomic_helper_connector_hdmi_clear_audio_infoframe() directly,
+>>>> accessing registers without checking tmds_char_rate.
+>>>>
+>>>> Move drm_atomic_helper_connector_hdmi_clear_audio_infoframe() inside the
+>>>> if (hdmi->tmds_char_rate) of dw_hdmi_qp_audio_disable().
+>>>>
+>>>> Fixes: fd0141d1a8a2 ("drm/bridge: synopsys: Add audio support for dw-hdmi-qp")
+>>>> Signed-off-by: Frank Zhang <rmxpzlb@gmail.com>
+>>>>
+>>>> ---
+>>>> Changes in v2:
+>>>> - Move drm_atomic_helper_connector_hdmi_clear_audio_infoframe() inside
+>>>>     the if (hdmi->tmds_char_rate) of dw_hdmi_qp_audio_disable().
+>>>> - Link to v1: https://lore.kernel.org/all/20260416093150.13853-1-rmxpzlb@gmail.com/
+>>>>
+>>>> diff --git a/drivers/gpu/drm/bridge/synopsys/dw-hdmi-qp.c b/drivers/gpu/drm/bridge/synopsys/dw-hdmi-qp.c
+>>>> index d649a1cf07f5..7760527484c8 100644
+>>>> --- a/drivers/gpu/drm/bridge/synopsys/dw-hdmi-qp.c
+>>>> +++ b/drivers/gpu/drm/bridge/synopsys/dw-hdmi-qp.c
+>>>> @@ -526,10 +526,10 @@ static void dw_hdmi_qp_audio_disable(struct drm_bridge *bridge,
+>>>>    {
+>>>>    	struct dw_hdmi_qp *hdmi = dw_hdmi_qp_from_bridge(bridge);
+>>>> -	drm_atomic_helper_connector_hdmi_clear_audio_infoframe(connector);
+>>>> -
+>>>> -	if (hdmi->tmds_char_rate)
+>>>> +	if (hdmi->tmds_char_rate) {
+>>>> +		drm_atomic_helper_connector_hdmi_clear_audio_infoframe(connector);
+>>>>    		dw_hdmi_qp_audio_disable_regs(hdmi);
+>>>> +	}
+>>>
+>>> Will audio and audio infoframe remain disabled after consequetive
+>>> atomic_enable() call?
+>>>
+>>>>    }
+>>>>    static int dw_hdmi_qp_i2c_read(struct dw_hdmi_qp *hdmi,
+>>>> -- 
+>>>> 2.53.0
+>>>>
+>>>
+>>
+>> Sorry, I missed clearing the audio infoframe when the PHY is down. The next
+>> atomic_enable() will write the stale audio infoframe. My mistake.
+>>
+>> To clear the stale audio infoframe, dw_hdmi_qp_audio_disable() can handle it
+>> in the else branch directly, but this seems like a layering violation for a
+>> bridge driver
+>>
+>> I think the better approach is to add a 'reset_audio_infoframe' interface in
+>> drm_hdmi_state_helper.c that does basically the same as
+>> drm_atomic_helper_connector_hdmi_clear_audio_infoframe(), but only clearing
+>> the software state without calling clear_infoframe(). It's also a bit odd
+>> since it would only be used by dw-hdmi-qp.
+> 
+> That sounds too fine-grained and it also will not work straight ahead...
+> 
+> Just for my understanding, let's consider the opposite situation: the
+> user tries to start audio playback before setting the mode. How is it
+> handled in the driver?
+> 
 
-Ranjan,
+audio_prepare() will return -ENODEV before the mode is set.
 
-> The HBA firmware reports NVMe MDTS values based on the underlying
-> drive capability. However, because the driver allocates a fixed 4K
-> buffer for the PRP list, accommodating at most 512 entries, the driver
-> supports a maximum I/O transfer size of 2 MiB.
->
-> Limit max_hw_sectors to the smaller of the reported MDTS and the 2 MiB
-> driver limit to prevent issuing oversized I/O that may lead to a
-> kernel oops.
+I admit modifying dw-hdmi-qp is more reasonable. I have a new approach:
 
-Applied to 7.1/scsi-staging, thanks!
+dw-hdmi-qp should have an internal function to clear the audio infoframe 
+related registers.
+dw_hdmi_qp_bridge_clear_audio_infoframe() should check tmds_char_rate, 
+call the new function only when tmds_char_rate is available.
+dw_hdmi_qp_bridge_write_audio_infoframe() should call the new function 
+directly instead of dw_hdmi_qp_bridge_clear_audio_infoframe(), without 
+checking tmds_char_rate.
+dw_hdmi_qp_audio_disable() doesn't need any modification.
 
--- 
-Martin K. Petersen
+With this approach, clear_audio_infoframe guards register access by 
+checking tmds_char_rate, while write_audio_infoframe does not need to 
+check it again. How about it?
+
+Thanks,
+Frank Zhang
+
+>>
+>> I'd like to get the maintainers' opinion about adding such an interface.
+>>
+>> Thanks,
+>> Frank Zhang
+>>
+> 
+
 
