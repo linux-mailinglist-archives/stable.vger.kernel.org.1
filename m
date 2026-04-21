@@ -1,210 +1,342 @@
-Return-Path: <stable+bounces-240247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240248-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yOErL3bt52mhCwIAu9opvQ
-	(envelope-from <stable+bounces-240247-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 23:34:46 +0200
+	id ULIpC33y52mhCwIAu9opvQ
+	(envelope-from <stable+bounces-240248-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 23:56:13 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41DD043FC5F
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 23:34:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A76743FE6F
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 23:56:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A7664306DEB5
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 21:34:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A4ACE30523F7
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 21:52:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCEC839EF39;
-	Tue, 21 Apr 2026 21:34:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2154634F46D;
+	Tue, 21 Apr 2026 21:52:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PRt8KlSb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="skK3joQs"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 409823DD512;
-	Tue, 21 Apr 2026 21:34:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.11
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776807261; cv=fail; b=GnWYrFg/mWMz17RC1Bf1surdQ+/7r3QG2Ts5KFftdx3/ss+SloIbOxbtPehxpwnYr7X9uuDPwlxeRSF6heaekPZAr8CiR/FY1B4gV7Sdzdy5/pRqloCmIKG1YhhY+g0ZY18AboKJpNlPwXQjMdAG8wtahpmS3Qf5BH5ENuKa5l4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776807261; c=relaxed/simple;
-	bh=4FhBSYmP5VAERkO/DboIW2dv+0aLNSMWZeJxWhNRXMA=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=H/o/tPLoVgg+pOtCI7lREJJ4Leve1O0QxCgPaa3Njur2amXAPy6W9z+Y83A0gnnuMuIjK1fdCyHCOLQcfEQzwfN4MV85tBOpgA3Jxxsll/VF/asdaMUvM8ylIyUgEmjFzxiB8msBA3rZn6R3eGe6vMguPMsjG43TUvXlQJD5hj8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PRt8KlSb; arc=fail smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776807259; x=1808343259;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=4FhBSYmP5VAERkO/DboIW2dv+0aLNSMWZeJxWhNRXMA=;
-  b=PRt8KlSbc3hAHVJiCKpSV3r9eiD356ZwqRmf47f8+VeSHGvfLod9o+/W
-   Ni5wS6v9VEVCki8teEq39AnLqH0SHkOxeqk4B0OCNqPK0bCYJLxmeba1U
-   Jq0aAhG1IQX1azp3mnFga7nPKENRMzvmNgUrRCrCel3tqr2s6AWzhdxEt
-   QTk0VD3tYPmiXG3GGj/GgviMwUGDmko18R45sFYYOwpMDYHJAtha3N63a
-   527/6W1xDucutTaNJqoljM233eyzIyn9uqVQefoPi5/2J6tbXe7bOU5NT
-   OCKdy2uMPoh1FONZaNnvci0VyE+WRWJqj54cD1V+37q5EzLzAZdgwkFQ5
-   Q==;
-X-CSE-ConnectionGUID: p9YjnYSdT0m15cF17uY8EQ==
-X-CSE-MsgGUID: YHdqATi4Tk6hOP9Q0PODQQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11763"; a="88053977"
-X-IronPort-AV: E=Sophos;i="6.23,192,1770624000"; 
-   d="scan'208";a="88053977"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2026 14:34:19 -0700
-X-CSE-ConnectionGUID: SUNz6rHaQ1aG+533mh0GIA==
-X-CSE-MsgGUID: YJU6gloYQQ+5FeVTyEr4HQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,192,1770624000"; 
-   d="scan'208";a="236161622"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2026 14:34:19 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 21 Apr 2026 14:34:18 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Tue, 21 Apr 2026 14:34:18 -0700
-Received: from CY3PR05CU001.outbound.protection.outlook.com (40.93.201.1) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 21 Apr 2026 14:34:16 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gdz+ZX5MfjwrjtccUtOcuB5ncbr8KXj1LpPV16MaYqrrAbo6qpNg3WciVXbuZDu/IN5E5G6nlaYXI+hucf8Sqen//WG0UVepwFAwzGGb6nsAs5FbBMF0fqz8yZSIj+g2u0gyHtFOJl9E9Tz5+paLpthbvgtw6zZ0RvX5Zcg2b1vdwu1pMkD5DQpcKHw3IZQ3B2WZENVZ7w57bryEVmLKI5RaV+dtVhXSDf0GOfrmBlvJASMEw3k/ad70fX+ojbWk6C/1GXumCpK3O438/+WOUIiQqjYAFDdELK1eYbFajOy+szDjTZrmJTBrPBVzQryyKIva44u0cfGLaPzZobxMpQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UIGNJjobwdL9d+ELCEr+frqpjnWjg6blL5AnSbhlt1o=;
- b=AVs18WAHnSTgKOsvmNCX1BBu04QbTalVMiOr8gy3C6Wrad0DBBxkoAOaVg92EnBtpKPr/3R0vhM7vznESGY/1khJrDyZVb2pKCCI7Yj4UhN+lVcGD9SGk4pHg15XDWVBvsOjWwoW4V7lTeGZKNdBaH1FlY+9l0jurNdIjnE8FusSTv3IWKd08Pmpkb0pguPh9q4tcHe4CQHDMFJfIQlFkLHDGLjdagggNigC8eh36gEEooeAd3Wo+az2JDmOkmFZfrfEUFCu9rHM8DnVvkKxzPm3Y844Pfv4qyL35gyArrZe7XtzJhFEGXsjNPKt4wXudy+dJea7kfNnHvtabEN2EQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from BL0PR11MB3282.namprd11.prod.outlook.com (2603:10b6:208:6a::32)
- by DM4PR11MB6528.namprd11.prod.outlook.com (2603:10b6:8:8f::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.16; Tue, 21 Apr
- 2026 21:34:14 +0000
-Received: from BL0PR11MB3282.namprd11.prod.outlook.com
- ([fe80::5050:537c:f8b:6a19]) by BL0PR11MB3282.namprd11.prod.outlook.com
- ([fe80::5050:537c:f8b:6a19%4]) with mapi id 15.20.9846.014; Tue, 21 Apr 2026
- 21:34:14 +0000
-Date: Tue, 21 Apr 2026 23:34:07 +0200
-From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
-To: Dave Hansen <dave.hansen@linux.intel.com>
-CC: <linux-kernel@vger.kernel.org>, Andy Lutomirski <luto@kernel.org>,
-	Borislav Petkov <bp@alien8.de>, Gayatri Kammela <Gayatri.Kammela@amd.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, "Peter
- Zijlstra" <peterz@infradead.org>, <stable@vger.kernel.org>, Thomas Gleixner
-	<tglx@kernel.org>, <x86@kernel.org>
-Subject: Re: [PATCH] x86/cpu: Disable FRED when PTI is forced on
-Message-ID: <aefsYucEBzwPAjYB@wieczorr-mobl1.localdomain>
-References: <20260421163136.E7C6788A@davehans-spike.ostc.intel.com>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260421163136.E7C6788A@davehans-spike.ostc.intel.com>
-X-ClientProxiedBy: DUZPR01CA0031.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:468::16) To BL0PR11MB3282.namprd11.prod.outlook.com
- (2603:10b6:208:6a::32)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D85F22D23B9
+	for <stable@vger.kernel.org>; Tue, 21 Apr 2026 21:52:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776808323; cv=none; b=Ha6NT1HWH2dmufR9mybKXymlW8OKfX1p71dpc2iTN3CuNvSdVpoP2ukjoc2oGM85YmoZgGP4q1/YybZ+a2/VmUX2rmAgH6nijMMVrMJHk0J4mlHORUK120HhAQeE+4A3jr805ISgj3JKWReKRC+1rKU3BeST2bnyeHhJgSykRDg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776808323; c=relaxed/simple;
+	bh=OlWtbmYbOWnAJpeScXahNQiA9AtqdGgQZoXaMjcy5tA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lBXoCCU3QQThpDrgwkUVyD207uBWlvGgHfnnBrSx6QaVbofao16WOMxRZbhv1Jit0r5U+7FYcyJnz5mHEC0t32BjW9bFl9I9Y8lRxDm8sP7a7q/IZkK5Wp+7O0QDKx5Mfn0WwnM5IfS9oNksNXir0cx6MK2+8vF80WaXtgXQmlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=skK3joQs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F858C2BCB0;
+	Tue, 21 Apr 2026 21:52:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776808323;
+	bh=OlWtbmYbOWnAJpeScXahNQiA9AtqdGgQZoXaMjcy5tA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=skK3joQsw1DrbmsPot4bHmwLJukEtMwUCJ72ROrFtW4tv8Dzk+W1Zj+74kvzxq3FG
+	 UAKjA21KWp29UOwlnOg4Ypfxjs0LgAJ2Iugee6XhVZAK6/TQqhGUf5cYC9haXrCS0L
+	 yq6JeDNCuwlQSN/JOE0BK65HmBjJ+UhaMi87ixYFBKKqlUoZPNiW0+TclJq65LCRNq
+	 Hk+BX2Fy5LkhhLVFJZukTfUBbUzYX4bVUV1/f7oxJniS9YT83hZ/ATbYHUXna0bmz7
+	 3wF4f7t/xGZQcUpN2LGnBpbaiXEVznIyQDZ5p5KiqjlqWocEUJGM+jPJ86TjudcDr6
+	 hVWkoWlTi3jwA==
+Date: Tue, 21 Apr 2026 21:52:01 +0000
+From: Jaegeuk Kim <jaegeuk@kernel.org>
+To: Chao Yu <chao@kernel.org>
+Cc: Yongpeng Yang <monty_pavel@sina.com>,
+	Yongpeng Yang <yangyongpeng@xiaomi.com>, stable@vger.kernel.org,
+	linux-f2fs-devel@lists.sourceforge.net
+Subject: Re: [f2fs-dev] [PATCH] f2fs: fix node_cnt race between extent node
+ destroy and writeback
+Message-ID: <aefxgWziiiNc73d2@google.com>
+References: <20260403144015.221811-3-monty_pavel@sina.com>
+ <f997ceb6-85d1-4872-be06-2a50469b3b18@kernel.org>
+ <5c222edf-6888-4007-9240-9e7988b2dc71@sina.com>
+ <ac9d0f35-52dc-4371-a692-39c1d4ae5555@kernel.org>
+ <a643b967-cb05-4de5-96f2-f1b783c9758d@sina.com>
+ <bedd1951-681b-4364-80c9-c7fe6886c992@kernel.org>
+ <252cb446-e313-417b-b780-85dcdcf34a87@sina.com>
+ <9b518ad1-18ad-4eb4-86d4-3a27e40a7635@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL0PR11MB3282:EE_|DM4PR11MB6528:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2761dcf8-bae3-4530-7181-08de9fedbbec
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024|18002099003|56012099003|22082099003;
-X-Microsoft-Antispam-Message-Info: u/CVsZBnCTk4MfWdhHEwXbkOrdIqrtEJLqmUqUPjO+2h5wcwj0m0RkWlc9c3D6lQ58IdWRUgzpXwdDbPS5gQGqrRaBEgc84hW1cjoGOdbvMTgH+I/zfYk2pqd8DUFSJRXjyp2YE9Dqg6eA8EbtRkq69L+mBSNmd74j2YUAteEoSGhjRmjaGc2sWC6Nb7vjbtyWIh9jibMWiaONI1txQJ1pB1RDT3B+8B6ol89RcLOEzFPIJRRbssnNJexiJHQgXgVc49a2TpoaMz5+/qmE0wJHbXSdO9UXWc4nmHs2eNXFIcWQKwSx1IRR1PR4IujKPi/5AJS2uKtDcdhjpu3KmsVdsycXbIWVhxMAsTp5p09x1Ivh8szIAO7c8V3bRi3Cu6URxsqkbwqpz0WTrVgCFrGzKoH0tBfMp6cgwFvdtxksbkJParxCiRtvIFyZGNLkCxDBu3fnLz0fzrbiJRhQObu0GlQT3p75W2U9Im0YLimrESEmRsORJvRNI/q+JSZZQ+6nr20eQDA/em9y8JB7yucG18LhRzcZ/SnoE3OYEPgj603OEq1+RcjPhuQ489CuylhYi/dM8iY3GDYDdBX3zSAgv6mE0RnlJOCFh5UYJZUF5P6wjoTJtLh3Xqv47YWV4P5FcfzJ+QKGZNT/GAl4lWwuecAxo4cremj9S+KWC1xgivbXoMHvlQUv30edIWq7kEM5714G7xbxzLh4f7AaOgwvDEYLe+bdzdA6F4eawQPko=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR11MB3282.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?DWG7ZaGUOGA3FYVGiDzKIwyCtuitFajMk/rP/SCMehcS0svBhvZq9J0+J7?=
- =?iso-8859-1?Q?/T/kCD3gU7au7jDuxMqfh5RN6nnvsWc6WbqQ9dfTLGTOVs9RW+8k3TdXzf?=
- =?iso-8859-1?Q?6slbScTGHen0mkz2tDcuAOZZSIHDwGeR0v/xSvdc3TeoD7NQKFoKWBQX/w?=
- =?iso-8859-1?Q?mV09iXKUEIKfnS9rutVXG+E91Lmue76eLHUyAFnbwY30SnjcQZuyiYW8vf?=
- =?iso-8859-1?Q?6BuxekA0fwYMll4lfjyCDHL7Q+3S2HErNjx8o7wAbWP6U3fAd+ai/bBzum?=
- =?iso-8859-1?Q?3WmZ1H3ZvsKpbr5omM63C+XkTatdwaanG2vO4Brx/ffhMmoYKZviQ5aeN7?=
- =?iso-8859-1?Q?lWIpeV6DdFEjazXOqkE25RbMtKdqykP5AzGVst/5oa+ki9wtfR2eA6xEZO?=
- =?iso-8859-1?Q?edjV7bVBYOt07Q5PGdP+JLMX9ntAxNhw1440VvFAXYpzdVtZZ6Td33qt0/?=
- =?iso-8859-1?Q?f+3MwlkRll1JajqOvyyUuoYCO8szuf4ZrgM1430TIVA3QRsLebqYYPIvmF?=
- =?iso-8859-1?Q?B6tSk64cyWSsm85fwIuQrMYyh+ilcj8zZ0RKQwiuqKO6vGCWLBG6ZHmDsv?=
- =?iso-8859-1?Q?ReKXw2HeYJztuG97Wy/MkYUXkklREg2e6rYoqmJOUqFSmq+yFeUH0gucGy?=
- =?iso-8859-1?Q?1fYzFnon6GxhalE7FAGpznppOwPRIwNcBcE69Vby+QnVqB2IHr1Dq4EiXx?=
- =?iso-8859-1?Q?/M79GKbLXg2G2wTU8qYHDQE7rcdsapWg0a2d94zOsHFCl5zNJALw/X/66M?=
- =?iso-8859-1?Q?QQnXJM7lwm6XyUwivoNkAScr2GRm+SCzo6E+WxoPfyhouNGhWvq8IQeTvd?=
- =?iso-8859-1?Q?/8iiKViKMICUbrnDjIV7iVHRGl9jfs0ZDHsyQicAor906SpvVo7fuJfrMd?=
- =?iso-8859-1?Q?rrN+4n/WMfZujzEs9XBYbKxteA/cw3K6gpgKN6lKcdWOo3g6Oa/xEDDDOS?=
- =?iso-8859-1?Q?LQhC2RXrAs3ZqLY0G4k6dN8WACgKF065XIJ3T4/lY4w9or7CSbR0h1ig+I?=
- =?iso-8859-1?Q?pgb+8Ez8Gbd3KKuvyGmFEa073N5bJ4aqty1t+0ux9IK/+roBtsAn5M7Xjn?=
- =?iso-8859-1?Q?hR/IAq1yzoD6TuaXVxkGBV7J9VNCgfFaTLMTOdDOJvlIO6sDDdq/gdeOQu?=
- =?iso-8859-1?Q?aR7r4kmW42XOLIU+BL/5tnq+Ft9E9uqRmIlm9j7FHWa/zqPUjLXs+0DwU2?=
- =?iso-8859-1?Q?aJzk2bcYup3C3Oulrti2KgtlQWvCf65u4MaR7O332tnVDwt72JjNjTL1P9?=
- =?iso-8859-1?Q?MJH3ig7R2ku0Lv2THl0l7zWUT0Z3BBFRIHtRWGJKfwIcSvBODpdsLOPYGo?=
- =?iso-8859-1?Q?+8/G+K0J62swgw8+eZpQkH1UnMA8lj+OTT9WSxA+uRsv/dFVuTidcq1mAA?=
- =?iso-8859-1?Q?hXnIQYJFaP9c4DwjBFAh8QHN2zZIqjmE3NYehlc9m+wvAAME3KeqrRZEs2?=
- =?iso-8859-1?Q?cmAEtNCX5+sQXQb4B+Az991gU431viJ4QpBntHWK8gP85b/9yZacd89F5F?=
- =?iso-8859-1?Q?mDAvWed5ZotLx5PPenrDvlDmy03NtiBa3Vz4UTshDf3RHV9FZ0DysbBFRr?=
- =?iso-8859-1?Q?6HU23EXGK8F8NqyU3MvPSc+vJI0n6BZRPoSOJUcKxV/vvDt3lP03XnnVD7?=
- =?iso-8859-1?Q?9PXUNvEmwruvQKEDHFJz5oOwJwSIa+9HRSljlYCUFF7iPZ/Zhpk8fGPsd9?=
- =?iso-8859-1?Q?GTPRKVE2/cPSOe4zp9bsUYmOsyitk3IaFkqLd0IpdhKiMIhGDoEXtnE7jf?=
- =?iso-8859-1?Q?DxggboC0CDUnQWfyH+I9ARx6M+wKgcN0yo6FuqggLt8Wg9MwM9CtMZpm7B?=
- =?iso-8859-1?Q?2QRZqHUMi0ZX8qb3cxfgJyFBpn1QFkBIZNe84VnvlMtq3/q1Jt0N?=
-X-Exchange-RoutingPolicyChecked: pfB+9CsByb7xMrV+hwOUY5cO3WFPm9LNUza3MpZLs+lQ30DrVEQNbpPhT5RY0hijALJbVwK+GnCjF8cWtYhkG7RQ6iVd0Wlk4PdjEuC+8XNTP6KVqHBtY3AYWhz8Gt3bUGQIXknZIxDbGGaJIX2r+2grfX523FJo5Rt+CIRpYa84RatCGVkAHPxmplz4xOUQ+G8lB1I9dP8oL2NB6miSyrjVLjz/wfekVPyqL4YjEipLbT9vCt1eoF+LFhYrHUZS32Dzog6k33dsKQU5BSZZSSF5qjWT0fYrstIRGnmWF3PeaYu+pOQ/mIBHgGiyO+SPSixYo+SpOOdSPwKkUVmY4w==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2761dcf8-bae3-4530-7181-08de9fedbbec
-X-MS-Exchange-CrossTenant-AuthSource: BL0PR11MB3282.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Apr 2026 21:34:14.4441
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6+1v73IOLvCr204zaLv986YX8qLTX/UTSh+pBkLgbXlNOfk3NGeiQ7uvXJrVcaAGruAFc9kN1lF6H1i+QOu4s5vW6iFgddLLcKqKacuP6xA=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB6528
-X-OriginatorOrg: intel.com
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <9b518ad1-18ad-4eb4-86d4-3a27e40a7635@kernel.org>
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-240247-lists,stable=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:dkim,intel.com:email,wieczorr-mobl1.localdomain:mid];
-	DKIM_TRACE(0.00)[intel.com:+];
+	TAGGED_FROM(0.00)[bounces-240248-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FREEMAIL_CC(0.00)[sina.com,xiaomi.com,vger.kernel.org,lists.sourceforge.net];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[maciej.wieczor-retman@intel.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jaegeuk@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[10]
-X-Rspamd-Queue-Id: 41DD043FC5F
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[xiaomi.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8A76743FE6F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Tested on a Panther Lake system. After applying the patch, FRED gets disabled
-when 'pti=on' is used. No other issues were observed.
+On 04/21, Chao Yu wrote:
+> On 4/21/2026 4:44 PM, Yongpeng Yang wrote:
+> > 
+> > On 4/20/26 15:28, Chao Yu via Linux-f2fs-devel wrote:
+> > > On 4/19/2026 12:29 AM, Yongpeng Yang wrote:
+> > > > 
+> > > > On 4/18/26 8:51 AM, Chao Yu via Linux-f2fs-devel wrote:
+> > > > > On 4/17/26 21:26, Yongpeng Yang wrote:
+> > > > > > 
+> > > > > > On 4/17/26 17:00, Chao Yu via Linux-f2fs-devel wrote:
+> > > > > > > On 4/3/26 22:40, Yongpeng Yang wrote:
+> > > > > > > > From: Yongpeng Yang <yangyongpeng@xiaomi.com>
+> > > > > > > > 
+> > > > > > > > f2fs_destroy_extent_node() does not set FI_NO_EXTENT before clearing
+> > > > > > > > extent nodes. When called from f2fs_drop_inode() with I_SYNC set,
+> > > > > > > > concurrent kworker writeback can insert new extent nodes into the
+> > > > > > > > same
+> > > > > > > > extent tree, racing with the destroy and triggering f2fs_bug_on() in
+> > > > > > > > __destroy_extent_node(). The scenario is as follows:
+> > > > > > > > 
+> > > > > > > > drop inode                            writeback
+> > > > > > > >      - iput
+> > > > > > > >       - f2fs_drop_inode  // I_SYNC set
+> > > > > > > >        - f2fs_destroy_extent_node
+> > > > > > > >         - __destroy_extent_node
+> > > > > > > >          - while (node_cnt) {
+> > > > > > > >             write_lock(&et->lock)
+> > > > > > > >             __free_extent_tree
+> > > > > > > >             write_unlock(&et->lock)
+> > > > > > > >                                            - __writeback_single_inode
+> > > > > > > >                                             - f2fs_outplace_write_data
+> > > > > > > >                                              -
+> > > > > > > > f2fs_update_read_extent_cache
+> > > > > > > >                                               -
+> > > > > > > > __update_extent_tree_range
+> > > > > > > >                                                // FI_NO_EXTENT not
+> > > > > > > > set,
+> > > > > > > >                                                // insert new extent
+> > > > > > > > node
+> > > > > > > >            } // node_cnt == 0, exit while
+> > > > > > > >          - f2fs_bug_on(node_cnt)  // node_cnt > 0
+> > > > > > > > 
+> > > > > > > > Additionally, __update_extent_tree_range() only checks
+> > > > > > > > FI_NO_EXTENT for
+> > > > > > > > EX_READ type, leaving EX_BLOCK_AGE updates completely unprotected.
+> > > > > > > > 
+> > > > > > > > This patch set FI_NO_EXTENT under et->lock in
+> > > > > > > > __destroy_extent_node(),
+> > > > > > > > consistent with other callers (__update_extent_tree_range and
+> > > > > > > > __drop_extent_tree) and check FI_NO_EXTENT for both EX_READ and
+> > > > > > > > EX_BLOCK_AGE tree.
+> > > > > > > 
+> > > > > > > I suffered below test failure, then I bisect to this change.
+> > > > > > > 
+> > > > > > >        generic/475  84s ... [failed, exit status 1]- output mismatch
+> > > > > > > (see /
+> > > > > > > share/git/fstests/results//generic/475.out.bad)
+> > > > > > >        --- tests/generic/475.out   2025-01-12 21:57:40.279440664 +0800
+> > > > > > >        +++ /share/git/fstests/results//generic/475.out.bad 2026-04-17
+> > > > > > > 12:08:28.000000000 +0800
+> > > > > > >        @@ -1,2 +1,6 @@
+> > > > > > >         QA output created by 475
+> > > > > > >         Silence is golden.
+> > > > > > >        +mount: /mnt/scratch_f2fs: mount system call failed: Structure
+> > > > > > > needs
+> > > > > > > cleaning.
+> > > > > > >        +       dmesg(1) may have more information after failed mount
+> > > > > > > system
+> > > > > > > call.
+> > > > > > >        +mount failed
+> > > > > > >        +(see /share/git/fstests/results//generic/475.full for details)
+> > > > > > >        ...
+> > > > > > >        (Run 'diff -u /share/git/fstests/tests/generic/475.out /
+> > > > > > > share/git/
+> > > > > > > fstests/results//generic/475.out.bad'  to see the entire diff)
+> > > > > > > 
+> > > > > > > 
+> > > > > > >        generic/388  73s ... [failed, exit status 1]- output mismatch
+> > > > > > > (see /
+> > > > > > > share/git/fstests/results//generic/388.out.bad)
+> > > > > > >        --- tests/generic/388.out   2025-01-12 21:57:40.275440602 +0800
+> > > > > > >        +++ /share/git/fstests/results//generic/388.out.bad 2026-04-17
+> > > > > > > 11:58:05.000000000 +0800
+> > > > > > >        @@ -1,2 +1,6 @@
+> > > > > > >         QA output created by 388
+> > > > > > >         Silence is golden.
+> > > > > > >        +mount: /mnt/scratch_f2fs: mount system call failed: Structure
+> > > > > > > needs
+> > > > > > > cleaning.
+> > > > > > >        +       dmesg(1) may have more information after failed mount
+> > > > > > > system
+> > > > > > > call.
+> > > > > > >        +cycle mount failed
+> > > > > > >        +(see /share/git/fstests/results//generic/388.full for details)
+> > > > > > >        ...
+> > > > > > >        (Run 'diff -u /share/git/fstests/tests/generic/388.out /
+> > > > > > > share/git/
+> > > > > > > fstests/results//generic/388.out.bad'  to see the entire diff)
+> > > > > > > 
+> > > > > > > 
+> > > > > > >        F2FS-fs (dm-0): sanity_check_extent_cache: inode (ino=1761)
+> > > > > > > extent
+> > > > > > > info [220057, 57, 6] is incorrect, run fsck to fix
+> > > > > > > 
+> > > > > > > I suspect we may miss any extent updates after we set FI_NO_EXTENT in
+> > > > > > > __destroy_extent_node(), result in failing in
+> > > > > > > sanity_check_extent_cache().
+> > > > > > > 
+> > > > > > > Can we just relocate f2fs_bug_on(node_cnt) rather than complicated
+> > > > > > > change?
+> > > > > > > Thoughts?
+> > > > > > 
+> > > > > > Oh, I overlooked largest extent. How about relocate
+> > > > > > f2fs_bug_on(node_cnt) to __destroy_extent_tree?
+> > > > > > 
+> > > > > > static void __destroy_extent_tree(struct inode *inode, enum extent_type
+> > > > > > type)
+> > > > > > 
+> > > > > >            /* free all extent info belong to this extent tree */
+> > > > > >            node_cnt = __destroy_extent_node(inode, type);
+> > > > > > +       f2fs_bug_on(sbi, atomic_read(&et->node_cnt));
+> > > > > 
+> > > > >        /* free all extent info belong to this extent tree */
+> > > > >        node_cnt = __destroy_extent_node(inode, type);
+> > > > > 
+> > > > >        /* delete extent tree entry in radix tree */
+> > > > >        mutex_lock(&eti->extent_tree_lock);
+> > > > >        f2fs_bug_on(sbi, atomic_read(&et->node_cnt));  <---
+> > > > > 
+> > > > > Oh, it has already checked node_cnt, so, maybe we can just remove the
+> > > > > check in
+> > > > > __destroy_extent_node()?
+> > > > 
+> > > > Yes. BTW, is it correct to remove the call to f2fs_destroy_extent_node()
+> > > > in f2fs_drop_inode()? It seems this call is unnecessary, since
+> > > > f2fs_evict_inode() will eventually delete all extent nodes properly.
+> > > 
+> > > I think it's fine to keep it according to original intention "destroy
+> > > extent_tree for the truncation case" introduced from 3e72f721390d
+> > > ("f2fs: use extent_cache by default"). It helps the performance w/
+> > > in batch extent node release.
+> > 
+> > Oh, I see. This patch has already been merged into the dev branch. Which
+> > of the following approaches would be more appropriate?
+> > 1. Drop the current patch from the dev branch, then submit a patch to
+> > remove the f2fs_bug_on() in __destroy_extent_node.
+> > 2. Send two patches: the first reverts the change, and the second
+> > removes the f2fs_bug_on() in __destroy_extent_node().
+> 
+> It's near the end of merge window, I think we need to keep dev as
+> it is, and create another patch to revert previous change and drop
+> the f2fs_bug_on() as well, what do you think?
 
-Tested-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+Yes, I just sent a pull request. If the merge patch doesn't break anything,
+let's apply a new one only.
 
--- 
-Kind regards
-Maciej Wieczór-Retman
+> 
+> To Jaegeuk, thoughts?
+> 
+> Thanks,
+> 
+> > 
+> > Thanks
+> > Yongpeng,
+> > 
+> > > 
+> > > Thanks,
+> > > 
+> > > > 
+> > > > Thanks
+> > > > Yongpeng,
+> > > > 
+> > > > > 
+> > > > > Thanks,
+> > > > > 
+> > > > > 
+> > > > > > 
+> > > > > > Thanks
+> > > > > > Yongpeng,
+> > > > > > 
+> > > > > > > 
+> > > > > > > Thanks,
+> > > > > > > 
+> > > > > > > > 
+> > > > > > > > Fixes: 3fc5d5a182f6 ("f2fs: fix to shrink read extent node in
+> > > > > > > > batches")
+> > > > > > > > Cc: stable@vger.kernel.org
+> > > > > > > > Signed-off-by: Yongpeng Yang <yangyongpeng@xiaomi.com>
+> > > > > > > > ---
+> > > > > > > >      fs/f2fs/extent_cache.c | 17 ++++++++++-------
+> > > > > > > >      1 file changed, 10 insertions(+), 7 deletions(-)
+> > > > > > > > 
+> > > > > > > > diff --git a/fs/f2fs/extent_cache.c b/fs/f2fs/extent_cache.c
+> > > > > > > > index 0ed84cc065a7..87169fd29d89 100644
+> > > > > > > > --- a/fs/f2fs/extent_cache.c
+> > > > > > > > +++ b/fs/f2fs/extent_cache.c
+> > > > > > > > @@ -119,9 +119,10 @@ static bool __may_extent_tree(struct inode
+> > > > > > > > *inode, enum extent_type type)
+> > > > > > > >          if (!__init_may_extent_tree(inode, type))
+> > > > > > > >              return false;
+> > > > > > > >      +    if (is_inode_flag_set(inode, FI_NO_EXTENT))
+> > > > > > > > +        return false;
+> > > > > > > > +
+> > > > > > > >          if (type == EX_READ) {
+> > > > > > > > -        if (is_inode_flag_set(inode, FI_NO_EXTENT))
+> > > > > > > > -            return false;
+> > > > > > > >              if (is_inode_flag_set(inode, FI_COMPRESSED_FILE) &&
+> > > > > > > >                       !f2fs_sb_has_readonly(F2FS_I_SB(inode)))
+> > > > > > > >                  return false;
+> > > > > > > > @@ -644,6 +645,8 @@ static unsigned int __destroy_extent_node(struct
+> > > > > > > > inode *inode,
+> > > > > > > >            while (atomic_read(&et->node_cnt)) {
+> > > > > > > >              write_lock(&et->lock);
+> > > > > > > > +        if (!is_inode_flag_set(inode, FI_NO_EXTENT))
+> > > > > > > > +            set_inode_flag(inode, FI_NO_EXTENT);
+> > > > > > > >              node_cnt += __free_extent_tree(sbi, et, nr_shrink);
+> > > > > > > >              write_unlock(&et->lock);
+> > > > > > > >          }
+> > > > > > > > @@ -688,12 +691,12 @@ static void __update_extent_tree_range(struct
+> > > > > > > > inode *inode,
+> > > > > > > >            write_lock(&et->lock);
+> > > > > > > >      -    if (type == EX_READ) {
+> > > > > > > > -        if (is_inode_flag_set(inode, FI_NO_EXTENT)) {
+> > > > > > > > -            write_unlock(&et->lock);
+> > > > > > > > -            return;
+> > > > > > > > -        }
+> > > > > > > > +    if (is_inode_flag_set(inode, FI_NO_EXTENT)) {
+> > > > > > > > +        write_unlock(&et->lock);
+> > > > > > > > +        return;
+> > > > > > > > +    }
+> > > > > > > >      +    if (type == EX_READ) {
+> > > > > > > >              prev = et->largest;
+> > > > > > > >              dei.len = 0;
+> > > > > > > 
+> > > > > > > 
+> > > > > > > 
+> > 
 
