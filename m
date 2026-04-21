@@ -1,230 +1,188 @@
-Return-Path: <stable+bounces-240069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240070-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MGEJBk8p52mo4wEAu9opvQ
-	(envelope-from <stable+bounces-240069-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 09:37:51 +0200
+	id 8Pt+F3Iq52mo4wEAu9opvQ
+	(envelope-from <stable+bounces-240070-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 09:42:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F6E4437B36
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 09:37:50 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2BB9437C59
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 09:42:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A05F230055B2
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 07:37:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B1BE830451F7
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 07:39:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 656613822AE;
-	Tue, 21 Apr 2026 07:37:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97FD4384236;
+	Tue, 21 Apr 2026 07:39:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="bXduOs3p"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="sNl7Ekjz"
 X-Original-To: stable@vger.kernel.org
-Received: from out203-205-221-205.mail.qq.com (out203-205-221-205.mail.qq.com [203.205.221.205])
+Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 763F2331A78;
-	Tue, 21 Apr 2026 07:37:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB6B32D97B9;
+	Tue, 21 Apr 2026 07:39:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776757066; cv=none; b=UwyNEapbbMqoz7GLwyuPvbaa7DVIoVmKiMeRsYPYLr6V+e+Ut8s2PIg9YUAkcNsg9zTOZ+KuT9JIaNrK7L1LFlbzqTKVUB6RqINtHBllut72f/i++Oc41XsbzXQjqjoz6kdt4sKRJWI3Zsmapui23AOE/XsZPQAZ072IcQc5vxQ=
+	t=1776757147; cv=none; b=X9YWKOg+BtDk4UxyvmD64prIcBXOFAfDm2BGsXWCKUJsdZGDcKiaoRCnk4ay5eOGYW4f9RIcRhNuHqLsW2EWj4fkG7x3vqDR0aF/vQBSn0roVJwlaS9sixR0C7iDDq5k7ju4CTnNjwiYPkCsW44KDUzC9JmuXTovpXcinvBOZBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776757066; c=relaxed/simple;
-	bh=SZcklxgbjsX5ROMo/zD0+7P0xxMaGcOIVethWe0eTFs=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=SVjLvBwZGiIhEKv+WqbhVRpZXPEUAJbFmXE2hn16bglqH23ioruHEVsWEAxGIAsAt3NQBdcafh9AfA482aZ+oqTF8SnXO057uIDURsi5BZfhPVLUnpHs+xO0MKsT+fJplxlr2wkKyR65sT/ewVflMmWnICT5L8SwRPwxdkhJU9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=bXduOs3p; arc=none smtp.client-ip=203.205.221.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1776757053;
-	bh=2BBidtQmGzyXD/iwQeUorAjjDt5+eczMlZJZiK5y47c=;
-	h=From:To:Cc:Subject:Date;
-	b=bXduOs3pnI4YZBLFrqcm4AI041rmihVF05/4sE+aVLBNg2GTX8be7PHk1eyFuXqYV
-	 nkNqw/3+7CZahOxCKH/KwFLbS9e8b4USSPZtdnRuMspl+ziW4wxkkHJCoWApbh43xB
-	 AVl1FS9l8ufHs8yC/3ZnFdGZsmvakdUrIhgHBx/c=
-Received: from China-team ([183.241.55.34])
-	by newxmesmtplogicsvrszc56-0.qq.com (NewEsmtp) with SMTP
-	id 93391298; Tue, 21 Apr 2026 15:36:51 +0800
-X-QQ-mid: xmsmtpt1776757011tmk20dh89
-Message-ID: <tencent_7584C190359CD12AD5987DB848D65BFFE10A@qq.com>
-X-QQ-XMAILINFO: OR37DonC/00MCS5yXHp3/J333TXtMSiu4sUMVoulxmLaPnaZ+qLLlKiJasG2PD
-	 Qo0QAT+YomW1B2LG9A9pKvYf2sxRjn4//1Thrpr86bbvpDzTFAk2Q5obkZodZoCO8zAdlcpmQekS
-	 TxSmsHffYRpHw3caEjkD4P8J1xXMAlclFBbUuBzDC8CiS6lZauwEEEiKDZS540iaQM7hIrSN+e/G
-	 pWd5AVA/FnVIAaiQMUbGoAYdXU5mMQ2ZtT49U5Nzf90BtptrrtcM8sBEZsftSJVb2PCixDnzX0yK
-	 r3ReoODyuRwMk6lB+ZPB3u+WIOId8JXZ4/zb9xCjFygJuPmf/Hnkjsfi4upVThOP5s+CAxFLg/Sf
-	 vsofBNDt/VKMbCosuJdJD6stSmyqLODX8Yi5xqcRXSQECwNoyz9vuJuhiuQnB5GMuORSDldxtSi3
-	 1S+JZawexCJr0PHs/0Q7Wny2V3LCvXhZmrspSVDUdwXDN/jXbeYz/I3Dh3j1o0jKKjuHcyt3edWk
-	 kK5nHota+T1AVxvTLw+5fUDpqcjKnTeCUcwb8HWA9d1cfvZXFJiZgH/aXtMQDpLOtUfIguAn+jgG
-	 r16KaiJ9o1g1E+rxRzlpt8Ssg/DUh6IZaUaEIuSYPpRDcdNqGuShbD0GVsZzRIrdodTzPulQQPjo
-	 R5yU1eu6OIfhTUT50kob8ofVl0lOZNg8TiYp96VfQKp4rGn/GLXUSYtad3jxJsWAtBpdM8xn1KpA
-	 8+iPMI51vvYW0yDhUwcr50GRnVrOQfJ4xMgP57wFiaPJDw+c7p/1RsUCrstRLoHG2mmBirqqlGsd
-	 L7sdCb4xFsThghJ73gJyS6qN6Ae4s2Qp8NU70kNhElyLf8KRVrIleF+fOORHY/+avdXbcY4+HIIJ
-	 PV6XFk9FkkVsKaz8LrwJ/SOpsGe6yEz3f+oXuYSOygYziUUTGRAaDqvpEIQ/bNisyBb01wmUTFq8
-	 R8X7fomkvsvFLsCvpjgYu4Da6lXcus39CHPMdxkSZteezAwmtau8l4EQPC3XHLjROe988Hyh9gYj
-	 cLiRxOENFiun0ufmIxIa/6MFWw0RhqtGj3Uup7iIBQSF9fblu72GPbwNi18W2kPDfB06TW5nUBcf
-	 mOQ7soKt+jQzNAZHk=
-X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
-From: Alva Lan <alvalan9@foxmail.com>
-To: gregkh@linuxfoundation.org,
-	sashal@kernel.org,
-	stable@vger.kernel.org
-Cc: netdev@vger.kernel.org,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Alva Lan <alvalan9@foxmail.com>
-Subject: [PATCH 6.1.y] net: dsa: clean up FDB, MDB, VLAN entries on unbind
-Date: Tue, 21 Apr 2026 15:36:35 +0800
-X-OQ-MSGID: <20260421073635.531-1-alvalan9@foxmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1776757147; c=relaxed/simple;
+	bh=TAh2SSn8HR4LiXY7T0ZM3gunZfpEVZsC431nR139Gaw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Cte/NQxNqxz1awjVjwbEiDYMY/BvoNueBsKZR7MvOL9VgRN5vhuQdc/ixGzr7pA9EXf1gPZ8g3CpVjjdLOk0IWBrKEDnFjKWnruHoUi7sGpmR4NePdZefLP9sFU1+FXjan6+lBwiyhc2cP0ruLwssG+n5/aGHyTyirkuwth58sc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=sNl7Ekjz; arc=none smtp.client-ip=115.124.30.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1776757136; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=bBR+x8/rFj/yPCNM4srOeJsm+pZYnjkZyx2mrSw3Ooc=;
+	b=sNl7Ekjz4XaeEI2G5MZXWT4zcQ3aWmuestUG0HBFB3V+Pd5+nqwG6xZKEV04wiwc/jSmjVeIV+yuBFNj7F2U8zcxNbIs7gKa0AM/5YK9p4DgYl7hQu54i/5nfqHbKuel5rz/ynQc3mqrdRttZfKry7Xd+Uv4mQWvwNY6nxyi5FA=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R141e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=hsiangkao@linux.alibaba.com;NM=1;PH=DS;RN=6;SR=0;TI=SMTPD_---0X1S7tuK_1776757134;
+Received: from 30.221.132.26(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0X1S7tuK_1776757134 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 21 Apr 2026 15:38:55 +0800
+Message-ID: <d1fe814b-9527-4dc7-b79a-9952b4199242@linux.alibaba.com>
+Date: Tue, 21 Apr 2026 15:38:54 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] erofs: fix the out-of-bounds nameoff handling for
+ trailing dirents
+To: Chao Yu <chao@kernel.org>, linux-erofs@lists.ozlabs.org
+Cc: LKML <linux-kernel@vger.kernel.org>, Yuhao Jiang <danisjiang@gmail.com>,
+ Junrui Luo <moonafterrain@outlook.com>, stable@vger.kernel.org
+References: <20260416063511.3173774-1-hsiangkao@linux.alibaba.com>
+ <20260416094408.3466613-1-hsiangkao@linux.alibaba.com>
+ <b9d787ce-9020-4140-8d13-23a20809976d@kernel.org>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
+In-Reply-To: <b9d787ce-9020-4140-8d13-23a20809976d@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-9.16 / 15.00];
+	WHITELIST_DMARC(-7.00)[alibaba.com:D:+];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[foxmail.com,none];
-	R_DKIM_ALLOW(-0.20)[foxmail.com:s=s201512];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linux.alibaba.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[linux.alibaba.com:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240069-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,nxp.com,kernel.org,foxmail.com];
+	TAGGED_FROM(0.00)[bounces-240070-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,outlook.com];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alvalan9@foxmail.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[foxmail.com:+];
+	FROM_NEQ_ENVFROM(0.00)[hsiangkao@linux.alibaba.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux.alibaba.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	FREEMAIL_FROM(0.00)[foxmail.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[foxmail.com:dkim,foxmail.com:email,qq.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,nxp.com:email]
-X-Rspamd-Queue-Id: 3F6E4437B36
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.alibaba.com:dkim,linux.alibaba.com:mid,outlook.com:email,alibaba.com:email,sashiko.dev:url]
+X-Rspamd-Queue-Id: C2BB9437C59
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit 7afb5fb42d4950f33af2732b8147c552659f79b7 ]
 
-As explained in many places such as commit b117e1e8a86d ("net: dsa:
-delete dsa_legacy_fdb_add and dsa_legacy_fdb_del"), DSA is written given
-the assumption that higher layers have balanced additions/deletions.
-As such, it only makes sense to be extremely vocal when those
-assumptions are violated and the driver unbinds with entries still
-present.
+On 2026/4/21 15:26, Chao Yu wrote:
+> On 4/16/2026 5:44 PM, Gao Xiang wrote:
+>> Currently we already have boundary-checks for nameoffs, but the trailing
+>> dirents are special since the namelens are calculated with strnlen()
+>> with unchecked nameoffs.
+>>
+>> If a crafted EROFS has a trailing dirent with nameoff >= maxsize,
+>> maxsize - nameoff can underflow, causing strnlen() to read past the
+>> directory block.
+>>
+>> nameoff0 should also be verified to be a multiple of
+>> `sizeof(struct erofs_dirent)` as well [1].
+>>
+>> [1] https://sashiko.dev/#/patchset/20260416063511.3173774-1-hsiangkao%40linux.alibaba.com
+>> Fixes: 3aa8ec716e52 ("staging: erofs: add directory operations")
+>> Fixes: 33bac912840f ("staging: erofs: keep corrupted fs from crashing kernel in erofs_readdir()")
+>> Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+>> Reported-by: Junrui Luo <moonafterrain@outlook.com>
+>> Closes: https://lore.kernel.org/r/A0FD7E0F-7558-49B0-8BC8-EB1ECDB2479A@outlook.com
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+>> ---
+>> v3:
+>>   - Disallow unaligned nameoff0 to avoid petential oob reads as well.
+>>
+>>   fs/erofs/dir.c | 29 ++++++++++++++++-------------
+>>   1 file changed, 16 insertions(+), 13 deletions(-)
+>>
+>> diff --git a/fs/erofs/dir.c b/fs/erofs/dir.c
+>> index e5132575b9d3..d074fded1577 100644
+>> --- a/fs/erofs/dir.c
+>> +++ b/fs/erofs/dir.c
+>> @@ -19,20 +19,18 @@ static int erofs_fill_dentries(struct inode *dir, struct dir_context *ctx,
+>>           const char *de_name = (char *)dentry_blk + nameoff;
+>>           unsigned int de_namelen;
+>> -        /* the last dirent in the block? */
+>> -        if (de + 1 >= end)
+>> -            de_namelen = strnlen(de_name, maxsize - nameoff);
+>> -        else
+>> +        /* non-trailing dirent in the directory block? */
+>> +        if (de + 1 < end)
+>>               de_namelen = le16_to_cpu(de[1].nameoff) - nameoff;
+>> +        else if (maxsize <= nameoff)
+>> +            goto err_bogus;
+>> +        else
+>> +            de_namelen = strnlen(de_name, maxsize - nameoff);
+>> -        /* a corrupted entry is found */
+>> -        if (nameoff + de_namelen > maxsize ||
+>> -            de_namelen > EROFS_NAME_LEN) {
+>> -            erofs_err(dir->i_sb, "bogus dirent @ nid %llu",
+>> -                  EROFS_I(dir)->nid);
+>> -            DBG_BUGON(1);
+>> -            return -EFSCORRUPTED;
+>> -        }
+>> +        /* a corrupted entry is found (including negative namelen) */
+>> +        if (!in_range32(de_namelen, 1, EROFS_NAME_LEN) ||
+>> +            nameoff + de_namelen > maxsize)
+>> +            goto err_bogus;
+>>           if (!dir_emit(ctx, de_name, de_namelen,
+>>                     erofs_nid_to_ino64(EROFS_SB(dir->i_sb),
+>> @@ -42,6 +40,10 @@ static int erofs_fill_dentries(struct inode *dir, struct dir_context *ctx,
+>>           ctx->pos += sizeof(struct erofs_dirent);
+>>       }
+>>       return 0;
+>> +err_bogus:
+>> +    erofs_err(dir->i_sb, "bogus dirent @ nid %llu", EROFS_I(dir)->nid);
+>> +    DBG_BUGON(1);
+>> +    return -EFSCORRUPTED;
+>>   }
+>>   static int erofs_readdir(struct file *f, struct dir_context *ctx)
+>> @@ -88,7 +90,8 @@ static int erofs_readdir(struct file *f, struct dir_context *ctx)
+>>           }
+>>           nameoff = le16_to_cpu(de->nameoff);
+>> -        if (nameoff < sizeof(struct erofs_dirent) || nameoff >= bsz) {
+> 
+> You mean?
+> 
+> if (!nameoff || nameoff >= bsz || nameoff % sizeof(struct erofs_dirent))
 
-But Ido Schimmel points out a very simple situation where that is wrong:
-https://lore.kernel.org/netdev/ZDazSM5UsPPjQuKr@shredder/
-(also briefly discussed by me in the aforementioned commit).
+The explanation can be seen as:
+https://sashiko.dev/#/patchset/20260416063511.3173774-1-hsiangkao%40linux.alibaba.com
 
-Basically, while the bridge bypass operations are not something that DSA
-explicitly documents, and for the majority of DSA drivers this API
-simply causes them to go to promiscuous mode, that isn't the case for
-all drivers. Some have the necessary requirements for bridge bypass
-operations to do something useful - see dsa_switch_supports_uc_filtering().
+But I think `nameoff < sizeof(struct erofs_dirent)` is also fine?
+I could also switch to your suggested version.
 
-Although in tools/testing/selftests/net/forwarding/local_termination.sh,
-we made an effort to popularize better mechanisms to manage address
-filters on DSA interfaces from user space - namely macvlan for unicast,
-and setsockopt(IP_ADD_MEMBERSHIP) - through mtools - for multicast, the
-fact is that 'bridge fdb add ... self static local' also exists as
-kernel UAPI, and might be useful to someone, even if only for a quick
-hack.
-
-It seems counter-productive to block that path by implementing shim
-.ndo_fdb_add and .ndo_fdb_del operations which just return -EOPNOTSUPP
-in order to prevent the ndo_dflt_fdb_add() and ndo_dflt_fdb_del() from
-running, although we could do that.
-
-Accepting that cleanup is necessary seems to be the only option.
-Especially since we appear to be coming back at this from a different
-angle as well. Russell King is noticing that the WARN_ON() triggers even
-for VLANs:
-https://lore.kernel.org/netdev/Z_li8Bj8bD4-BYKQ@shell.armlinux.org.uk/
-
-What happens in the bug report above is that dsa_port_do_vlan_del() fails,
-then the VLAN entry lingers on, and then we warn on unbind and leak it.
-
-This is not a straight revert of the blamed commit, but we now add an
-informational print to the kernel log (to still have a way to see
-that bugs exist), and some extra comments gathered from past years'
-experience, to justify the logic.
-
-Fixes: 0832cd9f1f02 ("net: dsa: warn if port lists aren't empty in dsa_port_teardown")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20250414212930.2956310-1-vladimir.oltean@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Apply the patch to net/dsa/dsa2.c in v6.1 since commit
-47d2ce03dcfb ("net: dsa: rename dsa2.c back into dsa.c and create its header")
-renamed this file to net/dsa/dsa.c starting from v6.2. ]
-Signed-off-by: Alva Lan <alvalan9@foxmail.com>
----
- net/dsa/dsa2.c | 38 +++++++++++++++++++++++++++++++++++---
- 1 file changed, 35 insertions(+), 3 deletions(-)
-
-diff --git a/net/dsa/dsa2.c b/net/dsa/dsa2.c
-index 415e856ba0ac..9ecb5e34e484 100644
---- a/net/dsa/dsa2.c
-+++ b/net/dsa/dsa2.c
-@@ -1738,12 +1738,44 @@ static int dsa_switch_parse(struct dsa_switch *ds, struct dsa_chip_data *cd)
- 
- static void dsa_switch_release_ports(struct dsa_switch *ds)
- {
-+	struct dsa_mac_addr *a, *tmp;
- 	struct dsa_port *dp, *next;
-+	struct dsa_vlan *v, *n;
- 
- 	dsa_switch_for_each_port_safe(dp, next, ds) {
--		WARN_ON(!list_empty(&dp->fdbs));
--		WARN_ON(!list_empty(&dp->mdbs));
--		WARN_ON(!list_empty(&dp->vlans));
-+		/* These are either entries that upper layers lost track of
-+		 * (probably due to bugs), or installed through interfaces
-+		 * where one does not necessarily have to remove them, like
-+		 * ndo_dflt_fdb_add().
-+		 */
-+		list_for_each_entry_safe(a, tmp, &dp->fdbs, list) {
-+			dev_info(ds->dev,
-+				 "Cleaning up unicast address %pM vid %u from port %d\n",
-+				 a->addr, a->vid, dp->index);
-+			list_del(&a->list);
-+			kfree(a);
-+		}
-+
-+		list_for_each_entry_safe(a, tmp, &dp->mdbs, list) {
-+			dev_info(ds->dev,
-+				 "Cleaning up multicast address %pM vid %u from port %d\n",
-+				 a->addr, a->vid, dp->index);
-+			list_del(&a->list);
-+			kfree(a);
-+		}
-+
-+		/* These are entries that upper layers have lost track of,
-+		 * probably due to bugs, but also due to dsa_port_do_vlan_del()
-+		 * having failed and the VLAN entry still lingering on.
-+		 */
-+		list_for_each_entry_safe(v, n, &dp->vlans, list) {
-+			dev_info(ds->dev,
-+				 "Cleaning up vid %u from port %d\n",
-+				 v->vid, dp->index);
-+			list_del(&v->list);
-+			kfree(v);
-+		}
-+
- 		list_del(&dp->list);
- 		kfree(dp);
- 	}
--- 
-2.43.0
+Thanks,
+Gao Xiang
 
 
