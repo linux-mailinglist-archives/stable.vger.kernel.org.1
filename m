@@ -1,50 +1,51 @@
-Return-Path: <stable+bounces-240162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240163-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OLxFG45752nC9QEAu9opvQ
-	(envelope-from <stable+bounces-240162-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 15:28:46 +0200
+	id YFWwDb5752nC9QEAu9opvQ
+	(envelope-from <stable+bounces-240163-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 15:29:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 283FF43B580
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 15:28:46 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C7CE43B5B6
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 15:29:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0A2A6305AC9E
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 13:26:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3BB8A301F9F7
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 13:27:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E55093A3E87;
-	Tue, 21 Apr 2026 13:26:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDEAA40855;
+	Tue, 21 Apr 2026 13:27:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from air.basealt.ru (air.basealt.ru [193.43.8.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EBDA19004A;
-	Tue, 21 Apr 2026 13:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 636602417D9;
+	Tue, 21 Apr 2026 13:27:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.43.8.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776777976; cv=none; b=tXsIhDX56PsIsgcrFRZq4bE8i1LJt63e7VQhHFZZVm5FnXI/Fk/Isz+TFdbaccepd5AXi6MS9B6ex7+vMcY1Nm4s09Hvx06g9M5xx3LE7iLI0qL+SYsFZDS+fSA83ejQIztiK73PXKF7hSHkzL9PTppFJUnTuP6bf1oeZYB7RW4=
+	t=1776778026; cv=none; b=SVJrxB+V/5T4eUQspNCGymLD+liqvihpVgxh0w937rlGu71HB6SfJtCHLFohql2viRoTbBxOt4Me5kE5kC1LUMmRFNAzTZpKeQrcNCADkZ5EVK1bPUGwwoYrdsukkw6pHD4I08YfjYEjpnagH/OEjPs0PDsF1bC8YtJfA5gHSlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776777976; c=relaxed/simple;
-	bh=oYn8wqJFenAgTBU6zT0gfzUkCUtPMUGM8nu/rQnPnV0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pns8ZbxvCQAzEWP8tLiDz69kBQNS+iw3u5FPnOsLDMim79KVxQhAVzA5ZGG+OLt3z82qjfYJ2ITfllPvUxOgYsYJgndfzuCu5FTPjFXv6Nwi6JpOu0X1YlXD4eew3XKWTRMJC7zfqtRQ19Iow1hftaDm7g+g8/7JeJrq7JES0HU=
+	s=arc-20240116; t=1776778026; c=relaxed/simple;
+	bh=QjHbiCWr0l2/cGP1WHcqBGnDFCoxWMk7Lc/zBqoModE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=co7JcwRblvMi9LfohucqHvwXpZWwQOU3VwSs34FigQmQTCfP40BQuQgsYP0et3F9yWNpdbN5lKWlj0gteIeikxHxselqd9fjdVZMBrl1W8CH571mrHsjoLWZryg87z0CjZrBlQ1k1Eb+JTbMYfGwVzdl6vpv2rAf7QF3wCEIPpw=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=193.43.8.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
 Received: from altlinux.ipa.basealt.ru (unknown [193.43.11.2])
 	(Authenticated sender: kovalevvv)
-	by air.basealt.ru (Postfix) with ESMTPSA id 2E1C82338F;
-	Tue, 21 Apr 2026 16:26:13 +0300 (MSK)
+	by air.basealt.ru (Postfix) with ESMTPSA id A4E7C23390;
+	Tue, 21 Apr 2026 16:27:02 +0300 (MSK)
 From: Vasiliy Kovalev <kovalev@altlinux.org>
 To: stable@vger.kernel.org
-Cc: Steve French <sfrench@samba.org>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
+Cc: "David S . Miller" <davem@davemloft.net>,
+	Willem de Bruijn <willemb@google.com>,
+	Cezar Bulinaru <cbulinaru@gmail.com>,
+	netdev@vger.kernel.org,
 	lvc-project@linuxtesting.org,
 	kovalev@altlinux.org
-Subject: [PATCH 5.10.y] cifs: Fix connections leak when tlink setup failed
-Date: Tue, 21 Apr 2026 16:26:12 +0300
-Message-Id: <20260421132612.38517-1-kovalev@altlinux.org>
+Subject: [PATCH 5.15.y] net: tap: NULL pointer derefence in dev_parse_header_protocol when skb->dev is null
+Date: Tue, 21 Apr 2026 16:27:02 +0300
+Message-Id: <20260421132702.38588-1-kovalev@altlinux.org>
 X-Mailer: git-send-email 2.33.8
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -57,93 +58,139 @@ X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[davemloft.net,google.com,gmail.com,vger.kernel.org,linuxtesting.org,altlinux.org];
+	TAGGED_FROM(0.00)[bounces-240163-lists,stable=lfdr.de];
 	DMARC_NA(0.00)[altlinux.org];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-240162-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[kovalev@altlinux.org,stable@vger.kernel.org];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,altlinux.org:mid,altlinux.org:email,huawei.com:email,cjr.nz:email]
-X-Rspamd-Queue-Id: 283FF43B580
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[kovalev@altlinux.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	R_DKIM_NA(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,davemloft.net:email,altlinux.org:mid,altlinux.org:email]
+X-Rspamd-Queue-Id: 8C7CE43B5B6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Zhang Xiaoxu <zhangxiaoxu5@huawei.com>
+From: Cezar Bulinaru <cbulinaru@gmail.com>
 
-commit 1dcdf5f5b2137185cbdd5385f29949ab3da4f00c upstream.
+commit 4f61f133f354853bc394ec7d6028adb9b02dd701 upstream.
 
-If the tlink setup failed, lost to put the connections, then
-the module refcnt leak since the cifsd kthread not exit.
+Fixes a NULL pointer derefence bug triggered from tap driver.
+When tap_get_user calls virtio_net_hdr_to_skb the skb->dev is null
+(in tap.c skb->dev is set after the call to virtio_net_hdr_to_skb)
+virtio_net_hdr_to_skb calls dev_parse_header_protocol which
+needs skb->dev field to be valid.
 
-Also leak the fscache info, and for next mount with fsc, it will
-print the follow errors:
-  CIFS: Cache volume key already in use (cifs,127.0.0.1:445,TEST)
+The line that trigers the bug is in dev_parse_header_protocol
+(dev is at offset 0x10 from skb and is stored in RAX register)
+  if (!dev->header_ops || !dev->header_ops->parse_protocol)
+  22e1:   mov    0x10(%rbx),%rax
+  22e5:	  mov    0x230(%rax),%rax
 
-Let's check the result of tlink setup, and do some cleanup.
+Setting skb->dev before the call in tap.c fixes the issue.
 
-Fixes: 56c762eb9bee ("cifs: Refactor out cifs_mount()")
-Reviewed-by: Paulo Alcantara (SUSE) <pc@cjr.nz>
-Signed-off-by: Zhang Xiaoxu <zhangxiaoxu5@huawei.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[ kovalev: bp to fix CVE-2022-49822; adapted to use direct xid/ses/tcon
-  variables instead of mnt_ctx struct fields due to the older kernel not
-  having the corresponding cifs_mount() refactoring (see upstream commit
-  c88f7dcd6d64) ]
+BUG: kernel NULL pointer dereference, address: 0000000000000230
+RIP: 0010:virtio_net_hdr_to_skb.constprop.0+0x335/0x410 [tap]
+Code: c0 0f 85 b7 fd ff ff eb d4 41 39 c6 77 cf 29 c6 48 89 df 44 01 f6 e8 7a 79 83 c1 48 85 c0 0f 85 d9 fd ff ff eb b7 48 8b 43 10 <48> 8b 80 30 02 00 00 48 85 c0 74 55 48 8b 40 28 48 85 c0 74 4c 48
+RSP: 0018:ffffc90005c27c38 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: ffff888298f25300 RCX: 0000000000000010
+RDX: 0000000000000005 RSI: ffffc90005c27cb6 RDI: ffff888298f25300
+RBP: ffffc90005c27c80 R08: 00000000ffffffea R09: 00000000000007e8
+R10: ffff88858ec77458 R11: 0000000000000000 R12: 0000000000000001
+R13: 0000000000000014 R14: ffffc90005c27e08 R15: ffffc90005c27cb6
+FS:  0000000000000000(0000) GS:ffff88858ec40000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000230 CR3: 0000000281408006 CR4: 00000000003706e0
+Call Trace:
+ tap_get_user+0x3f1/0x540 [tap]
+ tap_sendmsg+0x56/0x362 [tap]
+ ? get_tx_bufs+0xc2/0x1e0 [vhost_net]
+ handle_tx_copy+0x114/0x670 [vhost_net]
+ handle_tx+0xb0/0xe0 [vhost_net]
+ handle_tx_kick+0x15/0x20 [vhost_net]
+ vhost_worker+0x7b/0xc0 [vhost]
+ ? vhost_vring_call_reset+0x40/0x40 [vhost]
+ kthread+0xfa/0x120
+ ? kthread_complete_and_exit+0x20/0x20
+ ret_from_fork+0x1f/0x30
+
+Fixes: 924a9bc362a5 ("net: check if protocol extracted by virtio_net_hdr_set_proto is correct")
+Signed-off-by: Cezar Bulinaru <cbulinaru@gmail.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+[ kovalev: bp to fix CVE-2022-50073 ]
 Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
 ---
- fs/cifs/connect.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ drivers/net/tap.c | 23 +++++++++++++----------
+ 1 file changed, 13 insertions(+), 10 deletions(-)
 
-diff --git a/fs/cifs/connect.c b/fs/cifs/connect.c
-index 769c7759601d..3161155fd069 100644
---- a/fs/cifs/connect.c
-+++ b/fs/cifs/connect.c
-@@ -4786,9 +4786,13 @@ int cifs_mount(struct cifs_sb_info *cifs_sb, struct smb_vol *vol)
- 	vol->prepath = NULL;
+diff --git a/drivers/net/tap.c b/drivers/net/tap.c
+index 53eadd82f9b8..a08adca412b4 100644
+--- a/drivers/net/tap.c
++++ b/drivers/net/tap.c
+@@ -703,11 +703,22 @@ static ssize_t tap_get_user(struct tap_queue *q, void *msg_control,
+ 	skb_reset_mac_header(skb);
+ 	skb->protocol = eth_hdr(skb)->h_proto;
  
- out:
--	free_xid(xid);
- 	cifs_try_adding_channels(ses);
--	return mount_setup_tlink(cifs_sb, ses, tcon);
-+	rc = mount_setup_tlink(cifs_sb, ses, tcon);
-+	if (rc)
-+		goto error;
++	rcu_read_lock();
++	tap = rcu_dereference(q->tap);
++	if (!tap) {
++		kfree_skb(skb);
++		rcu_read_unlock();
++		return total_len;
++	}
++	skb->dev = tap->dev;
 +
-+	free_xid(xid);
-+	return rc;
- 
- error:
- 	kfree(ref_path);
-@@ -4820,9 +4824,12 @@ int cifs_mount(struct cifs_sb_info *cifs_sb, struct smb_vol *vol)
- 			goto error;
+ 	if (vnet_hdr_len) {
+ 		err = virtio_net_hdr_to_skb(skb, &vnet_hdr,
+ 					    tap_is_little_endian(q));
+-		if (err)
++		if (err) {
++			rcu_read_unlock();
+ 			goto err_kfree;
++		}
  	}
  
--	free_xid(xid);
-+	rc = mount_setup_tlink(cifs_sb, ses, tcon);
-+	if (rc)
-+		goto error;
+ 	skb_probe_transport_header(skb);
+@@ -717,8 +728,6 @@ static ssize_t tap_get_user(struct tap_queue *q, void *msg_control,
+ 	    vlan_get_protocol_and_depth(skb, skb->protocol, &depth) != 0)
+ 		skb_set_network_header(skb, depth);
  
--	return mount_setup_tlink(cifs_sb, ses, tcon);
-+	free_xid(xid);
-+	return rc;
+-	rcu_read_lock();
+-	tap = rcu_dereference(q->tap);
+ 	/* copy skb_ubuf_info for callback when skb has no error */
+ 	if (zerocopy) {
+ 		skb_zcopy_init(skb, msg_control);
+@@ -727,14 +736,8 @@ static ssize_t tap_get_user(struct tap_queue *q, void *msg_control,
+ 		uarg->callback(NULL, uarg, false);
+ 	}
  
- error:
- 	mount_put_conns(cifs_sb, xid, server, ses, tcon);
+-	if (tap) {
+-		skb->dev = tap->dev;
+-		dev_queue_xmit(skb);
+-	} else {
+-		kfree_skb(skb);
+-	}
++	dev_queue_xmit(skb);
+ 	rcu_read_unlock();
+-
+ 	return total_len;
+ 
+ err_kfree:
 -- 
 2.50.1
 
