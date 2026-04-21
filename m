@@ -1,92 +1,83 @@
-Return-Path: <stable+bounces-240131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240132-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MDvGLThc52l87AEAu9opvQ
-	(envelope-from <stable+bounces-240131-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 13:15:04 +0200
+	id MEC9HRld52l87AEAu9opvQ
+	(envelope-from <stable+bounces-240132-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 13:18:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F17EC439FC1
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 13:15:03 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2AF343A05C
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 13:18:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 193D63029760
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 11:15:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 947F03007947
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 11:18:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11EA23BE17A;
-	Tue, 21 Apr 2026 11:14:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 458413A1A5F;
+	Tue, 21 Apr 2026 11:18:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aVOPb/1D"
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="QxPD1/w/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbgbr1.qq.com (smtpbgbr1.qq.com [54.207.19.206])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AAD93AD52D
-	for <stable@vger.kernel.org>; Tue, 21 Apr 2026 11:14:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 349382EE611;
+	Tue, 21 Apr 2026 11:18:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.19.206
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776770098; cv=none; b=h15Q2d/dfdFidMdK6rL0dw9VtSL/CkYktfYHTl6seoXtEeRtQZBOqergv3X3f6cScEBxeist2VTfwOxgLIg63CiyUmbTQlvyTTspTFfghcu+ULbVw5U1k+CGx76LcZ0TK7eQr/8/0Q/kLq3jj+Qsu4vdK1TLi8lqWsCg8mdFMDM=
+	t=1776770326; cv=none; b=ML6JifKdXzhzh+DbxY2UcVNaIrNfBkJFyEHIaHiN1MJw3TV33cbGOKGOmLjtVyhMKBjFA1KgdWwbrOjieNoBs+Vsj7u5gs8ldxh95EwC8gKJfAWQjAkzeJdF5EJ5i4oAHUFg/wjOrqgteqT1WRcCqmc9M4OBMA3PBJHOnxfFH7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776770098; c=relaxed/simple;
-	bh=MH029eDJfEvKtox6zoGFIugdoIrSt90GG37NR0eJiAI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GKkHVJLMchE1P0uMqt9LuFYWDyAAnrG22f7C7Dj5/xatELwhbkCDlYnZIl3nisKx/rF3ejKO8qfS+S9luq7LtkIWtGynpw28GucOyW8hfEPtV0Pa2Uc9rWCwVEipJndq4QlVoXg8Hi8KLXLkF6rgxtpIAxhzAwdBCK0Dx6PheTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aVOPb/1D; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-43cf8d550bdso3676670f8f.0
-        for <stable@vger.kernel.org>; Tue, 21 Apr 2026 04:14:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776770096; x=1777374896; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=kjPHv1Hru04ZXzIaQ9HvSw3rx3tnPbEFHQIlqAw5RuA=;
-        b=aVOPb/1DYinFAxge6hyLa+szvLEjQjJFYpIHKc63H5XqmdzkQ7lbn2y0atN1kAlmv6
-         9FGRArzEASWeRCiMbw5In4OEMMS8OOaf5ysAF8UiSosKO/Vd3w1+DfkmGBIwk2lpNKS6
-         Lcap4FudwTxV6vx6o/EzZ0QW5ZofPmL+XKXX9hkTIqK0SDgGKB3LsbM0T9/CsqibpCzc
-         sD3qTs4dGSAdiRjpMUE2aomLLM7A6dYTkzUcO3xB8/jDJGqzAfOxxsgQny0A31YvlFiM
-         Lim8hJ5S0Lk1DoQE4EV4nkzOaKQgrz0Ute1B9CwvJJpEtNeQHD1jBJj9GwYWHPNMVeoQ
-         S23Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776770096; x=1777374896;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kjPHv1Hru04ZXzIaQ9HvSw3rx3tnPbEFHQIlqAw5RuA=;
-        b=mP3EYC8HQPbFApjh1tiSR2iOQIhtHNGAXCopAenKH0dxJrAKCrCUD5fq9RQg9lQjUQ
-         XPMYJcRCQETz4BO5RK8zRORXSWwkgVP6e9gLBB224PPZHvdeYR8n3cfsboeXabqMsuuN
-         /bCAoxPGRi8gIxvdb2sGVGvujjd5skn6z8X70OfAxpHfq1SUQFjdDnry//ONnEyVBnfT
-         hd7fHDn7O0o0yPnjWUA+pot2pKPEzNOq1u2uuyDpg2AN+PuqvKVwVHxyi1ai77gMn6gn
-         Cb6vWVJS1z0B9ClHM7JcUCwLJGpRgPKRPAb09bvXfjwXSYVDU7WXuPpGUSm0icIX4QUd
-         J4sA==
-X-Forwarded-Encrypted: i=1; AFNElJ+Nr8BYZbah69fZX3G1gczLIMMKLjkNJ+XvO9T+wiJUYIBrwp0W6RlwbxTbuG9Kokk6CHwLAOA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxbuz0PFm3BF2WPie92DKMZ0DHgBWhdNb7Hd0pbLYo2qKoZ7Rze
-	iKRPdNnB4tjUR346hoy9nL57LyNo1hea16MgB3genQAQtZEs4FJLNjc=
-X-Gm-Gg: AeBDiesudM5SQ9AtQLIwdpNZq672h2lakki+l6qgE6LFcuEzgAtPLe1LehxWN9NTWxr
-	uippB7lT79cWtU6tz31OyaLa4RNTQI96rlwT9u/vVA/6spEj4TxtMbKCQ6/qVRgez7AB8t1xYw+
-	k8l0zB8nkC89K0qDSv6bTyUzdLPVeyf7Pp+pYml6Ew2iZ56K67cbF398m8i/GLiEIe8OQdcCPyJ
-	CKA91O+BX+lFQWUGp1nd1y3aHsnGLp6ArtSKxLSCMmIBtiXEUoNiiz95pvj+aIW7hNbHJe5Ba1J
-	tBweDUDQj7jXW6C3FM4AVab2WqGQ8SFrEUhgh8PxnaXfvYA3UAlL8MaCo71XaxNNBr/iGQ4kjdN
-	z73VesBOpSiMgfV3h1+ibRn2kM//TInfH/5ONlMmZylNWkOnPFoZcClh0U0fmK3+zkBI6aN0ovU
-	WI2e4=
-X-Received: by 2002:a05:6000:1889:b0:43d:7b7b:ab76 with SMTP id ffacd0b85a97d-43fe3dc54ddmr27175189f8f.10.1776770095504;
-        Tue, 21 Apr 2026 04:14:55 -0700 (PDT)
-Received: from debian.. ([2001:41d0:303:db6b::])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43fe4c221cdsm36910279f8f.0.2026.04.21.04.14.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Apr 2026 04:14:54 -0700 (PDT)
-From: Tristan Madani <tristmd@gmail.com>
-To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Cc: Marcel Holtmann <marcel@holtmann.org>,
-	Sean Wang <sean.wang@mediatek.com>,
-	Mark Chen <mark-yw.chen@mediatek.com>,
-	linux-mediatek@lists.infradead.org,
+	s=arc-20240116; t=1776770326; c=relaxed/simple;
+	bh=Y56t0wmAE32zViZuf8hZJhYzxrKVtfh+UlZVUuHasKU=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=L9PFpgYwRlYwSUctUKw61pEikmATyFO/Ih41npJrySodN3ysJfwvVl3tw/me2/LaMGIhw3CvqZfoT1nkX7t9yVlGBlbXAegG/Vvg4BInZXsqixSESLKM39gGIhcVDAvkONHiNZsDPfJb9BMIGf+B9YfcGSuIMxjEB8bNgNj9Iv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=QxPD1/w/; arc=none smtp.client-ip=54.207.19.206
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1776770248;
+	bh=Y56t0wmAE32zViZuf8hZJhYzxrKVtfh+UlZVUuHasKU=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version;
+	b=QxPD1/w/fheRrBwfzHnz79vUiqh7vFd1rIYSw9QbEeppUyIF7S3vVC8tXftorrs6k
+	 ikCbSTgIwSIozkjZFcJlMYKV3ptIGxgWA8mKU9UqLb5/eZlC2RnEPHHWwdXm+rPVJG
+	 I93PcR5n/pqpK7/GnaR7pJKlcthcfqSk82qXOT9Y=
+X-QQ-mid: esmtpgz14t1776770241t24fc306a
+X-QQ-Originating-IP: PgtO6fYtjq71wOcExxHFlwUdHZBlLY+GdPCI4226Oyg=
+Received: from localhost.localdomain ( [113.57.152.160])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Tue, 21 Apr 2026 19:17:18 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 17719987415262611358
+EX-QQ-RecipientCnt: 21
+From: Wentao Guan <guanwentao@uniontech.com>
+To: gregkh@linuxfoundation.org
+Cc: achill@achill.org,
+	akpm@linux-foundation.org,
+	broonie@kernel.org,
+	conor@kernel.org,
+	f.fainelli@gmail.com,
+	hargar@microsoft.com,
+	jonathanh@nvidia.com,
+	linux-kernel@vger.kernel.org,
+	linux@roeck-us.net,
+	lkft-triage@lists.linaro.org,
+	patches@kernelci.org,
+	patches@lists.linux.dev,
+	pavel@nabladev.com,
+	rwarsow@gmx.de,
+	shuah@kernel.org,
+	sr@sladewatkins.com,
 	stable@vger.kernel.org,
-	linux-bluetooth@vger.kernel.org,
-	Tristan Madani <tristan@talencesecurity.com>
-Subject: [PATCH v4] Bluetooth: btmtk: validate WMT event SKB length before struct access
-Date: Tue, 21 Apr 2026 11:14:54 +0000
-Message-ID: <20260421111454.3403059-1-tristmd@gmail.com>
-X-Mailer: git-send-email 2.47.3
+	sudipm.mukherjee@gmail.com,
+	torvalds@linux-foundation.org,
+	Wentao Guan <guanwentao@uniontech.com>
+Subject: Re: [PATCH 6.18 000/198] 6.18.24-rc1 review
+Date: Tue, 21 Apr 2026 19:16:02 +0800
+Message-Id: <20260421111601.51467-1-guanwentao@uniontech.com>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -94,99 +85,77 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpgz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
+X-QQ-XMAILINFO: NJL+bfc5gN/mU/QdHlxlyeWw1gRq1J6zEfsP8T+SnM2lvEFEa5hLkQKq
+	RD0Xzt6o+/M2PONnc6ELbu9yMu4d9+fGxmmiswBCnMIzpU6FYE3MUTj63v2YfU8mNLRK7IC
+	wYpMz+JhzjNRTZaV4FpyOWw7pdyiEe3h1+Qf4E75iJe2JMOws6ghyYUn5/OhWkJnWFdamg9
+	QEJjFALnkjH0X1MVCmQ7YMcXB9B9pzB+AiVc1cyQb+SSTbveIFbaoAkslbUqAK2L7gLuG8P
+	c6oeeUaej7fCYCHjCEXe7wKXmm5w6HK/NMyCCvpD4P6je05SqC/HlQZBP4j8rhOxEh5JuSo
+	LUL2PV1HXrcD7sizOkPoT/jD6ALUhfg2EsA29/ltOaW6wBydgObPTusGdg+G5OIPBga95zc
+	MrVK2b3LKunw4WooVIHs5NPzIgU3PD3Kk6iPnIwfaZA1MIgUGOSytoWQOdjBc2LQWbBUTkU
+	IZGr8DweuA/scTO/bXQIhqffqrE/6S/9yBvyrWpT94wY254j4dc3dgjQ7OYcfdvOd5+7bfx
+	povWDMWZ/c/oh3oc5wdf1BJ0wERPhGPyWvrP3UWkuWLbJXO+9RWWeyfVxmoJ09/R+qA/Xk2
+	DRU4G+i6PdWtvKd6zLutCwGRg+ca252RbPMaEuES3j/nePyhEsNGLpjf/aScxcMKPvxzC0O
+	Hh3aN8u+e2Nlq9Vy6DXqape/lnR5o4Ed7qiF4THXOK21Y9Ve7uddZe70AX8iBqvKr4bKwRk
+	h8LIbG2rRkTJBJkRLo+WYi9tBRw9e2n+LQXgjJINyQZ2PoJ9j14P/SZifmJmVlROz+C9QDX
+	2S0FY48XK5rKukK0XkiGS38JRM/bJh/QraFsUa2sd642P2kJ5rar3nLurPJVNxle9hU6fh3
+	ML7WD3uAKN0nQPnNi0j5reYp/Bvr5fg596hd6mZ2G0nhzh1WN+A8gkGm3s+e72t4ojWmmg2
+	H4tgHJZO7qI+QWNmfEGKfLz5opQrDtpHWug69xcOaVf3QkYsnZCgSRdnmupneywqBNTjmaa
+	m9vqtdWReazlpbZGmk8lfhJc09Gxrir9rsvX6DJl3RV5AhA26dKCiQgyRnX3RqMxjD0uz7G
+	FlJMW++Acg3vdIodS0x7/kJEKJyPIsNBkspN/qx3ammNi6Nn+sK5dY=
+X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
+X-QQ-RECHKSPAM: 0
 X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[uniontech.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[uniontech.com:s=onoh2408];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	URIBL_MULTI_FAIL(0.00)[sea.lore.kernel.org:server fail,talencesecurity.com:server fail];
-	TAGGED_FROM(0.00)[bounces-240131-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-240132-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[achill.org,linux-foundation.org,kernel.org,gmail.com,microsoft.com,nvidia.com,vger.kernel.org,roeck-us.net,lists.linaro.org,kernelci.org,lists.linux.dev,nabladev.com,gmx.de,sladewatkins.com,uniontech.com];
+	DKIM_TRACE(0.00)[uniontech.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[tristmd@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[talencesecurity.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: F17EC439FC1
+	NEURAL_HAM(-0.00)[-0.994];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,uniontech.com:email,uniontech.com:dkim,uniontech.com:mid,uos-pc:email]
+X-Rspamd-Queue-Id: A2AF343A05C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Tristan Madani <tristan@talencesecurity.com>
+Build tested in our x86,arm64,loongarch,riscv config successfully without error.
 
-btmtk_usb_hci_wmt_sync() casts the WMT event response SKB data to
-struct btmtk_hci_wmt_evt (7 bytes) and struct btmtk_hci_wmt_evt_funcc
-(9 bytes) without first checking that the SKB contains enough data.
-A short firmware response causes out-of-bounds reads from SKB tailroom.
+Tested-by: Wentao Guan <guanwentao@uniontech.com>
 
-Use skb_pull_data() to validate and advance past the base WMT event
-header. For the FUNC_CTRL case, pull the additional status field bytes
-before accessing them.
+BRs
+Wentao Guan
 
-Fixes: d019930b0049 ("Bluetooth: btmtk: move btusb_mtk_hci_wmt_sync to btmtk.c")
-Cc: stable@vger.kernel.org
-Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
----
-Changes in v4:
-  - Use skb_pull_data() instead of manual length checks, per
-    Luiz Augusto von Dentz.
+defconfigs:
+https://gist.github.com/opsiff/decbc7d88fbf68488a7d90e46f6d3e59
 
-Changes in v3:
-  - CI all pass (CheckPatch, BuildKernel, CheckSparse, etc.).
- drivers/bluetooth/btmtk.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/bluetooth/btmtk.c b/drivers/bluetooth/btmtk.c
-index 6fb6ca2748086..f70c1b0f89903 100644
---- a/drivers/bluetooth/btmtk.c
-+++ b/drivers/bluetooth/btmtk.c
-@@ -695,8 +695,13 @@ static int btmtk_usb_hci_wmt_sync(struct hci_dev *hdev,
- 	if (data->evt_skb == NULL)
- 		goto err_free_wc;
- 
--	/* Parse and handle the return WMT event */
--	wmt_evt = (struct btmtk_hci_wmt_evt *)data->evt_skb->data;
-+	wmt_evt = skb_pull_data(data->evt_skb, sizeof(*wmt_evt));
-+	if (!wmt_evt) {
-+		bt_dev_err(hdev, "WMT event too short (%u bytes)",
-+			   data->evt_skb->len);
-+		err = -EINVAL;
-+		goto err_free_skb;
-+	}
- 	if (wmt_evt->whdr.op != hdr->op) {
- 		bt_dev_err(hdev, "Wrong op received %d expected %d",
- 			   wmt_evt->whdr.op, hdr->op);
-@@ -712,6 +717,12 @@ static int btmtk_usb_hci_wmt_sync(struct hci_dev *hdev,
- 			status = BTMTK_WMT_PATCH_DONE;
- 		break;
- 	case BTMTK_WMT_FUNC_CTRL:
-+		if (!skb_pull_data(data->evt_skb,
-+				   sizeof(wmt_evt_funcc->status))) {
-+			err = -EINVAL;
-+			goto err_free_skb;
-+		}
-+
- 		wmt_evt_funcc = (struct btmtk_hci_wmt_evt_funcc *)wmt_evt;
- 		if (be16_to_cpu(wmt_evt_funcc->status) == 0x404)
- 			status = BTMTK_WMT_ON_DONE;
--- 
-2.47.3
+Log:
+Linux version 6.18.24-rc1-g79c8a3af6b8b (guanwentao@uos-PC) (aarch64-linux-gnu-gcc-12 (Deepin 12.3.0-17deepin8) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) # SMP PREEMPT_DYNAMIC
+Linux version 6.18.24-rc1-g79c8a3af6b8b (guanwentao@uos-PC) (aarch64-linux-gnu-gcc-12 (Deepin 12.3.0-17deepin8) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) #2 SMP PREEMPT_DYNAMIC Tue Apr 21 16:18:20 CST 2026
+Linux version 6.18.24-rc1-loong64-desktop-hwe-g79c8a3af6b8b (guanwentao@uos-PC) (loongarch64-linux-gnu-gcc-12 (Deepin 12.3.0-17deepin8) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) # SMP PREEMPT_DYNAMIC
+Linux version 6.18.24-rc1-loong64-desktop-hwe-g79c8a3af6b8b (guanwentao@uos-PC) (loongarch64-linux-gnu-gcc-12 (Deepin 12.3.0-17deepin8) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) #3 SMP PREEMPT_DYNAMIC Tue Apr 21 16:42:38 CST 2026
+Linux version 6.18.24-rc1+ (guanwentao@uos-PC) (riscv64-linux-gnu-gcc-12 (Deepin 12.3.0-17deepin8) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) # SMP PREEMPT
+Linux version 6.18.24-rc1+ (guanwentao@uos-PC) (riscv64-linux-gnu-gcc-12 (Deepin 12.3.0-17deepin8) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) #4 SMP PREEMPT Tue Apr 21 17:08:51 CST 2026
+Linux version 6.18.24-rc1-g79c8a3af6b8b (guanwentao@uos-PC) (gcc (Deepin 12.3.0-17deepin15) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) # SMP PREEMPT_DYNAMIC
+Linux version 6.18.24-rc1-g79c8a3af6b8b (guanwentao@uos-PC) (gcc (Deepin 12.3.0-17deepin15) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) #1 SMP PREEMPT_DYNAMIC Tue Apr 21 15:52:00 CST 2026
 
 
