@@ -1,145 +1,182 @@
-Return-Path: <stable+bounces-240175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240176-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CHp2BwGE52m+9gEAu9opvQ
-	(envelope-from <stable+bounces-240175-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 16:04:49 +0200
+	id CHrhCn2F52m+9gEAu9opvQ
+	(envelope-from <stable+bounces-240176-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 16:11:09 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B58BF43BB9F
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 16:04:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9827543BCC6
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 16:11:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 03CC230039AD
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 14:04:43 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8E6633018638
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 14:10:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 280723D7D7C;
-	Tue, 21 Apr 2026 14:04:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBD293D7D79;
+	Tue, 21 Apr 2026 14:10:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EvBeSsyZ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YhcDVgzC"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 563163D75C6;
-	Tue, 21 Apr 2026 14:04:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7679D3D6CB8
+	for <stable@vger.kernel.org>; Tue, 21 Apr 2026 14:10:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776780280; cv=none; b=n0hw4ChrvMS2cOqn+CaPClqLP9h4InlLJ9YOESLltjklQs4w3tsXo0+Mjmm1WiaqLsVmYg3PORBVwNQE5GO8iXQ2qJiPPutTfLIO40BqwBCoe53f3Mo4VxJ76jNLM2UxG9l47hl7yVd27uQT5zg2XRxsHVuQP2oCuVYYvA8jW8M=
+	t=1776780621; cv=none; b=nLHDABbgipbrbeUdwB6Hr9huvYjcXP0gixGMUueW8/Rf+Mf6lUjS/AFskLPZErKIxqMjBoK6Bw/WWr2vsIXZt8ont1hwvNGFIha+W+jj6vtHBfdoMdW9wdD644WUkjpKxMb5q+co9cEZw4uv2jn6RGTCZOrNwbchEG6wTTJlk8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776780280; c=relaxed/simple;
-	bh=Dyiuqc/C9bY03ncMuf0GqWO0n+VZ9Bbu4HKBL3cumh8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FojVroDXLyMf9nO4R+RDRLMsZ8oqTP7T+rMSf+yjIBLuzdx2184dp86yjfWM7P7G5iq8sptu32OoXK46wcYeRKEtNTnCdYbqnV3Qe6KZv1Xk9SDiUQxwRieEMPKcg7pad8uKgHGENNB2O2WGWyd/suvHF8bLraV4KL52FmJV+nE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EvBeSsyZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3226AC2BCB0;
-	Tue, 21 Apr 2026 14:04:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776780279;
-	bh=Dyiuqc/C9bY03ncMuf0GqWO0n+VZ9Bbu4HKBL3cumh8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EvBeSsyZNmXVWTvaWqb2WuiDeYLiF83JOxU3yahojw5+5RCcvGzQHMXazslXehHZG
-	 N2dwKyE1EG83Rd/ZutJZ2U6YtjOqAxiDjl88sb+FtkvhLR6N4lhu9c0bd5MkP51a04
-	 e/QdeyD/mwWd8ZTPsDEZ/YBbtKtetQXGs2Z7Zi8oXsVg9KNcbKGLvsnnMzBMRip4kD
-	 Az7CIKSK1x0oaLufUxfsPPS4t/sWt8gr6PlYBHjKRnE2ReBFm1OXHTvSnaDxkqdaHt
-	 WgKeFoDFWfF4nnD5xZdo3wEnvASxlBmN5E216CRoz3DCuWOTg8nePkRcMnf2KQ8Beg
-	 88H9g+rqzgc/w==
-Date: Tue, 21 Apr 2026 15:04:33 +0100
-From: Mark Brown <broonie@kernel.org>
+	s=arc-20240116; t=1776780621; c=relaxed/simple;
+	bh=kIm5kH85UH7+YNKd5iqnnO1F9CcZhlSMdP4GNhN/Tck=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KUP74w+X3yTpygz/H1AAI8VNIXGnvzL48ABMR5fqT8UarzHxURYmBxPkuJigDWo+UKR2ArhwTbYrEaXrEmstxX30zpHxJ/R6YzMYHnqxHBibhCONF265dDvllNCFVPQZL64xaknTc9hfD0B68BcGIgcWkuE0EMmrcAMfT6htvcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YhcDVgzC; arc=none smtp.client-ip=74.125.82.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-12d4bed3384so1635189c88.0
+        for <stable@vger.kernel.org>; Tue, 21 Apr 2026 07:10:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776780619; x=1777385419; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=qY87NJeBopBZl+AvWsat0W4p5pkhAeY8QFNi7OA2YE0=;
+        b=YhcDVgzCYZ9mHwwA07q2HfXzqGm6Tfld5Hlt+8ux6yxRh2gL/43tYtShuSiZ35XxUG
+         jRMV9Go/GF6JmNISgFfq28ZSEzTfZKfMwYcDCOIChpMkl0NlS58bpsX/l/Fq5rbiKrQq
+         KLbKlMOpOWizjYaYUHaoBcnBfZMdb32HpN5lq/PHoKeFHC/TaMHZg+Dv3jBjrGKVZW3o
+         4n1BZ+bO/4x8+OwJT9nbEDdVK5kDRfyi2EfOIiyMOCCVfVTP2S4/5LnIqPVsute6DimE
+         hdfZ7HVGoxDt36h2Zx71+fa23TO8qBD4BSkr/p7bT+E6dyJd3nxuy40CmlgmivYL9G3u
+         /zfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776780619; x=1777385419;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qY87NJeBopBZl+AvWsat0W4p5pkhAeY8QFNi7OA2YE0=;
+        b=GqgX29jetND9aHBDaHaxE13GnIVF1HcWKfgKyuZdrW0pMACUhT5PADvsW060VvkHXT
+         6+EgUrKOPLukjju0EnC+nmfXt0O4RGXkqK5unqLdVrGeFIVEAeLAYpPEKBpPYHnPmkkx
+         VklfJoiLZ/UEgfozWR5YG0a7A7nwJ09wbojiM46gn0MVgVDKSO7JP4rZRJv9LPNZkkn1
+         fUdBxwoLj83MsdBZ3Lsrtp8cs+u9vhEaOBw0tcZxCRMISaO4OQIPTXYDYYUdLz70GpGa
+         qT9gXoVgKZiMSPWYP6aKCyMwj3y0YK/jCs1wW4jSaqyLkguiZq6oMY1QKISFVt2vjksj
+         eSkA==
+X-Forwarded-Encrypted: i=1; AFNElJ93L0IdG/L0Hsl/lWFJsL4MyfRO074RnJxMdPu2YoHmCu8D4N0jG+17aHDCogbE+qaxjcnYUTk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzTx1PwnqiisuIlLsUMAgU0sSMMucW5GvLZQX5htclLCb1XxHOV
+	TxRyD67SY0R/eeZQnkRNiJ6++SCJ8itFC8TGsodl0m6sp+ckzgZI5EYKAt3KGPRHz0S0mA==
+X-Gm-Gg: AeBDievrcihydSYgdcQDAz3komMH4tvm+3NyHaNK/xkFFya8Zb5T7hAaMa8KhDH6uP7
+	9FzoCzfNoIxEiu56mx1/ivTLM4tuAqzuSoX9jK4XjZCKtTXVl3h96Xx4b1fJBYXCSPoSBDOusZc
+	TlYAkk+4uWf7DdBolQdBhqFxnZlGagXsb4+kacWd8SkE7xzbJAclSXvq5dYG6ChSF43UW+Zo1EV
+	ZbNaTbmHyWlIINhVJdM6tOe0PQ783TSGEIDe8yjgD2Qe8v7XwJjCjJ8EDVcnXtdlmS0+nrBW9M1
+	z3STsCvWwUoFzRfGHmWIub2EIh6qDZVrU+4zeUyuz/Z3eNDt/5Ayj+Cb0JKSJux0PuXJKrBlJrM
+	QMKnZoVz4ISXpCmCfVfIYmB6X94SBct4jj+m1o4/iHDIwrO24mbOrVqkHRkXorjhEaJ8xQuP83h
+	rQmE0E4IgvtxnHjJhEX++Ew2DxbY35RuCvHGBdmvferdypnu0TNR9y2IdxwmgcQNnpkEG+UNsyW
+	tgmwYcQ
+X-Received: by 2002:a05:7022:6988:b0:128:bae0:e03c with SMTP id a92af1059eb24-12c73fac23bmr9805997c88.30.1776780619321;
+        Tue, 21 Apr 2026 07:10:19 -0700 (PDT)
+Received: from localhost.localdomain ([159.54.180.171])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12c831d5b29sm17997432c88.8.2026.04.21.07.10.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Apr 2026 07:10:18 -0700 (PDT)
+From: Bingquan Chen <patzilla007@gmail.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org,
-	pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, achill@achill.org, sr@sladewatkins.com
-Subject: Re: [PATCH 6.18 000/198] 6.18.24-rc1 review
-Message-ID: <67def94b-6ed0-4000-be08-314f30c7a923@sirena.org.uk>
-References: <20260420153935.605963767@linuxfoundation.org>
+Cc: linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	security@kernel.org,
+	Bingquan Chen <patzilla007@gmail.com>
+Subject: [PATCH] usb: gadget: configfs: fix 1-byte OOB read in ext_prop_data_show()
+Date: Tue, 21 Apr 2026 22:10:10 +0800
+Message-ID: <20260421141010.5607-1-patzilla007@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="PiWz+K6M2ZpPludO"
-Content-Disposition: inline
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-X-Cookie: Jenkinson's Law:
-X-Spamd-Result: default: False [-2.76 / 15.00];
-	SIGNED_PGP(-2.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-240176-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240175-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,sirena.org.uk:mid]
-X-Rspamd-Queue-Id: B58BF43BB9F
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[patzilla007@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 9827543BCC6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+In ext_prop_data_store(), for unicode property types, the data buffer
+is allocated via kmemdup() with size 'len', but data_len is inflated
+to len*2+2 to account for the UTF-16 encoding and a 2-byte null
+terminator. The null terminator is not actually stored in the data
+buffer.
 
---PiWz+K6M2ZpPludO
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+When ext_prop_data_show() reads the data back, it computes the read
+length as data_len >> 1 = len+1, then does memcpy(page, data, len+1),
+reading 1 byte past the allocated buffer. This is a slab-out-of-bounds
+read that leaks 1 byte of adjacent heap data to userspace via configfs.
 
-On Mon, Apr 20, 2026 at 05:39:39PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.18.24 release.
-> There are 198 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+KASAN report (5.10.252):
 
-This doesn't build for arm multi_v5_defconfig or bcm2835_defconfig:
+  BUG: KASAN: slab-out-of-bounds in ext_prop_data_show+0x4a/0x60
+  Read of size 9 at addr ffff888005546008 by task poc/62
 
-In file included from /build/stage/linux/include/linux/srcu.h:59,
-                 from /build/stage/linux/include/linux/notifier.h:16,
-                 from /build/stage/linux/include/linux/memory_hotplug.h:7,
-                 from /build/stage/linux/include/linux/mmzone.h:1538,
-                 from /build/stage/linux/include/linux/gfp.h:7,
-                 from /build/stage/linux/include/linux/mm.h:7,
-                 from /build/stage/linux/arch/arm/kernel/asm-offsets.c:14:
-/build/stage/linux/include/linux/srcutiny.h:14:10: fatal error: linux/irq_work_t
-ypes.h: No such file or directory
-   14 | #include <linux/irq_work_types.h>
-      |          ^~~~~~~~~~~~~~~~~~~~~~~~
+  Allocated by task 62:
+   kmemdup+0x17/0x40
+   ext_prop_data_store+0x52/0x130
+   configfs_write_file+0x168/0x200
 
---PiWz+K6M2ZpPludO
-Content-Type: application/pgp-signature; name="signature.asc"
+  The buggy address belongs to the object at ffff888005546008
+   which belongs to the cache kmalloc-8 of size 8
 
------BEGIN PGP SIGNATURE-----
+Fix by allocating len+1 bytes and null-terminating the buffer, so the
+extra byte read in show() returns a known-zero byte instead of
+adjacent slab data.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnng/AACgkQJNaLcl1U
-h9AUaAf8DcixXw4lIRltf12kBt4W6WBOMvGjfkt2z8EsthTTZlrTMJNW5Ydj5U8r
-PY1kFHDYIpusBL/Juku0wuEPzhzOjr7lNtEJDPZAXCL3SmXkFs6Xfb7xlfv1Tqfd
-KN89Ft4q18lmFPsFSnrL6mXaCVExkNfBZccC+71UdUQKwTvUQjMO17dE18Zk7a9M
-4AOZSrQwg3FxwtCWgKtD9svNCvAQQo3gQy4B4TUccLfgffZt7HItg7rwlWfzs8I9
-fgl3pmQr1RG24SNLbiQV/i6aCGra/PV43CRmve8jncdNLSB4d/QeUmVG3jQFZI9h
-THfRgvnFol48VsvNVaLTwhkxJzDKeQ==
-=V9kt
------END PGP SIGNATURE-----
+Fixes: 7419485f197c ("usb: gadget: configfs: OS Extended Properties descriptors support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bingquan Chen <patzilla007@gmail.com>
+---
+ drivers/usb/gadget/configfs.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---PiWz+K6M2ZpPludO--
+diff --git a/drivers/usb/gadget/configfs.c b/drivers/usb/gadget/configfs.c
+index 183a25f65ac8..a1b2c3d4e5f6 100644
+--- a/drivers/usb/gadget/configfs.c
++++ b/drivers/usb/gadget/configfs.c
+@@ -1352,8 +1352,11 @@ static ssize_t ext_prop_data_store(struct config_item *item,
+
+ 	if (page[len - 1] == '\n' || page[len - 1] == '\0')
+ 		--len;
+-	new_data = kmemdup(page, len, GFP_KERNEL);
++	new_data = kmalloc(len + 1, GFP_KERNEL);
+ 	if (!new_data)
+ 		return -ENOMEM;
++	memcpy(new_data, page, len);
++	new_data[len] = '\0';
+
+ 	if (desc->opts_mutex)
+--
+2.43.0
 
