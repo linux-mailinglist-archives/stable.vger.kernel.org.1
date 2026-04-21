@@ -1,158 +1,311 @@
-Return-Path: <stable+bounces-240091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240092-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sEIlODk652no5QEAu9opvQ
-	(envelope-from <stable+bounces-240091-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 10:50:01 +0200
+	id 6MjnFow652no5QEAu9opvQ
+	(envelope-from <stable+bounces-240092-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 10:51:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E9CE438600
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 10:50:01 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B502143864A
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 10:51:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0BA2A300D34D
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 08:50:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 083193020AB1
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 08:51:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D74C3876A1;
-	Tue, 21 Apr 2026 08:49:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C3ED39FCBA;
+	Tue, 21 Apr 2026 08:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EGyex/uU"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XV+Bb8sL"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E17D2AF1D
-	for <stable@vger.kernel.org>; Tue, 21 Apr 2026 08:49:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776761397; cv=none; b=A/IQU+WHdDornUQ/PwBd+EDTABdL41JyeUxhFvu4r9f2IZD5KH8I1QGAgdm81tEwnZ3jkQCMiAEd/SakeGKb7X3smEcUuT9j9w68RWSBGPI133vIxAkN3mlmR0oPJjDjbacg4EE1I8h0ISZi+B5RUBp84j11DMM/bKLI/6f6jyA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776761397; c=relaxed/simple;
-	bh=ilTd8G6rGzWSYiPXW0gzw/K+PrTHWdJYsdsOd+dPDUs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LXetbjI12GRp8M6Hob7RuksU56yknfq9SVPnCkESrcrGMiQdhfq1kBkCzt4183bZ9M4I8ViPQaP7vGKAdjADnw9n4CcXhHHYPYcakS2Bc4JFUD7Rix7VRaEqCAH2+rVILOQRa/1zgu4PCq3S8xwK2aMcKO2ButYiqSvvZT8jWxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EGyex/uU; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F4AE38422F
+	for <stable@vger.kernel.org>; Tue, 21 Apr 2026 08:51:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.174
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776761464; cv=pass; b=ETFJKEqqqjIzIsiqQiQvBTUlmcpiRxTscvHErCUrcbLO8hjlYVs4Wek+T3NYn0vFzHF6OWZSuCiPTZGaR4HPBH3/La1fB+MebHqNu4Spy3tnDxFb+lapQqx70RNMfFOGXZ5LsUW5S8dHLGakkeytSHCcbSB4UXNSb5fvqpMaSWU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776761464; c=relaxed/simple;
+	bh=y77IYP6Hfi6BU2wcOSiDcNLVbYrOD1kTkZMOUnLAzJ8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MqjulcoWKUO0pPXe1PLgh/80MLnGUD1JtlPLQzfE7tE3gNx1f23HRr3pO/TaxS0l5VaTXAnd54sxMGCh33ddKGEr7yZw+LSz7R/oym9SStcpy8kLZGj4hdFccW99kkeDjbyi4Vk8KEEaIsBqb6dkIZepuIO9xFeag4UhMz60jaY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XV+Bb8sL; arc=pass smtp.client-ip=209.85.167.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-488b150559bso31023375e9.1
-        for <stable@vger.kernel.org>; Tue, 21 Apr 2026 01:49:55 -0700 (PDT)
+Received: by mail-oi1-f174.google.com with SMTP id 5614622812f47-479932ccab1so2241434b6e.0
+        for <stable@vger.kernel.org>; Tue, 21 Apr 2026 01:51:02 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776761461; cv=none;
+        d=google.com; s=arc-20240605;
+        b=XZFPBQ4RsoRMy+b8qWDRZ7T+Y24EDlIRufaPG+nxPzABKMeTqmaXobGRtH8g/MaxmN
+         PRVV7hUu+nvtQQ/3W9+XNnfQXR+vi0MlI3ppSGuVoBD6Kj/WfuIVyfznkEgkvAF9JxOr
+         VIKKHaQN4qeOHPzA/gKd+wMeYfgzhvFU6YREWtFH3JO8n3LXZi6l0bapW6QrS6hUiR6e
+         uvWVnepz08KVpfVFuHI+z6yzDw8CLhVExJ2d1KG5y+ze2pXQVDwXE64EcGHs4t1v4Y/3
+         n+9XYcPxU5e1TL4jxC0+o6ZdUvrv1uqOFyvyJojn3rKIh2rhtwKrbjr4KRQBOfFVPSlv
+         +U4A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ZrXwOSjEWlXRCH3bSQkhhPPRUpo780ifbYsUKTYhEY4=;
+        fh=lj+WA3y3FouB5OlCNyfyzBPIct8jDo64RrRiKnIGgNE=;
+        b=W/pLZhHMXGnZf3SlMFfYCH3kc5dZ/3i6f0f/+kFsm9jF7teDPm31R0E2Dyh48NxUT5
+         8ZpoQvK5MO/GdMvnmLnJ7WK0Nf6oNaukSdRFZBRiakv55v6XSLodWpREax2Pp1hDHxG0
+         gjlUJ5GCQTmY/SVHwnu3tMkT75l4ZZkX0I6FFHmKWIr6Na6vEDEoRFTzYtlwG3cTV1tg
+         uPRtrKCjwUdAzG2KRWoXmaP9Rt2QADE6BxL/Zg8FuVy5K6eTR2EFfAvkSWpZ/OEryCGM
+         afgLBoyDnXLlCjciOSoWfpOvufrxos6hOawL1tAnXbyWEBLbYVxetJycjEBcH2GRYC9B
+         yxOw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776761394; x=1777366194; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=6n++iIdotMt6CGRY5H4br6XbDJigW7PJuq4uyuIolAg=;
-        b=EGyex/uUeAITQJUif3DYxYdLL0Gs8QZVjc3MlML6wHCcsZ7MzTESRyFRNi5r+LbzkJ
-         r5bFGYScuHL2bC0cfphqVtcFQw1rgkUo++uAxNNxXue7/xQb9G0HQY6YO8D7Gztw8Al9
-         DxLeHiu8KM6hVHPg/8ubRBCjT3WcepRQq46ojNmL57GYFagjRwGQnP1p1XNIRnOjpHnu
-         DJKhZr0XA4F6lD2uEQAxXIHVP1gEN3G3NQn1calC7WKy9X93V4Y31CwTALescYiWjWiV
-         N2Ujyw21RSCrEaT3pdO9C3UuXtiyWg49xvWqzdxHqVN2cKs1v5BXoOTX/SG4iBWHduBp
-         YOKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776761394; x=1777366194;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1776761461; x=1777366261; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=6n++iIdotMt6CGRY5H4br6XbDJigW7PJuq4uyuIolAg=;
-        b=EpSHm4JoEYP3+QDoPggK+Vyv3dg3YP+Uh0CNKpqaaBQHxz2Kr4/81ycPTYLWtfL99y
-         azsA7zEtUopK/wO2QeJRMYkgwk0PNOnLmnhm4QibmGMSe8EcLifyzU8vYqwoDtq6mlIK
-         onNLooQKYGYSGaOV4WEeoHv4zXQXr831nd3ca9TRkl8s+emdCpzJ0GuMgTcfbRKKYHy/
-         BgUFdMEdapp+vHu/DS0kZZ4NqfOObadqEm9gJa7xe1QkSqoehKFV3bPCauUhXk9rhP9A
-         HSsOn0yu1wQFAJZqojuNfINevKcOLiGktdJL9iOA0D8x+FcDa/iQ7OyK9YYvAFaF6vNL
-         e/GA==
-X-Forwarded-Encrypted: i=1; AFNElJ++/UE5Xq6v5dVRb/pfjHi4QLTar+Xi0pbud0nI3AsuzLiPdjVlI+Oxl13JnTfZe/0zDTKbzxo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwWgqM79K9S/WDiwyWesgdd1Cb+75bs9bd14J/05+M0640apQNx
-	A+R/4e6tWsYNGhr6EsQN+MYDmeXJXZK3TSnH3MtDPkUEF3ho9tBAq/Te
-X-Gm-Gg: AeBDietAEzVmpJvxwPI24rl7rw8+tvuiLqZpL1lFUDilI4Q9MXnY8DNx+sWDHT1/F4O
-	TpJ4SLM9Nzcm2a9BdtI65QUb3P6H4pTggD83QeQuHqeOnQNHM/YhdFm80ScMl3N2wt6tKWnZrzJ
-	jUoL9nAg7KPEuj0pqTA4HMI5GxZA9s4YLkEmjuIjXDq2rdoyiV6rOs7C2cEeZtI4pt5fLBYVA0x
-	4TpVNju5yVyu1sJDBmhGHE3mRs2aIHJbEs1cePdF54K661h8atYTbvhEbKDbBSF49gMXNOghMVw
-	3P0/kum4zUF5oYOOfNzXnMSPbLs4tMsY+zIhCJvs6cloT64V6bvi30jwoxIYxXV2Cd2WK2+Y27t
-	trn+sr4GmrJm5SJzqUASm2yla5w6OjKjax6lc0/rZwOSL4Otj9WCQ/TvYixfr4f7XxwQIN8m6xs
-	nt1Y5yQx+1WZ8g54wC3x3GypwOaUbzHYQpElS5llnwkkS+ELrYVxDemhyzRIsKgC8NS40/H9Sqp
-	XjlsyiqYWLhycL/Z+r5b5xY
-X-Received: by 2002:a05:600c:c10a:b0:483:2c98:4368 with SMTP id 5b1f17b1804b1-488fb771613mr189503025e9.18.1776761394058;
-        Tue, 21 Apr 2026 01:49:54 -0700 (PDT)
-Received: from Friday (dsl-197-245-177-193.voxdsl.co.za. [197.245.177.193])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488fb74c68asm110715915e9.3.2026.04.21.01.49.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Apr 2026 01:49:53 -0700 (PDT)
-From: Spencer Payton <spayton681@gmail.com>
-To: alsa-devel@alsa-project.org
-Cc: perex@perex.cz,
-	tiwai@suse.com,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Spencer Payton <spayton681@gmail.com>
-Subject: [PATCH] ALSA: hda/realtek - Add mute LED support for HP Victus 15-fa2xxx
-Date: Tue, 21 Apr 2026 10:49:18 +0200
-Message-ID: <20260421084918.14685-1-spayton681@gmail.com>
-X-Mailer: git-send-email 2.53.0
+        bh=ZrXwOSjEWlXRCH3bSQkhhPPRUpo780ifbYsUKTYhEY4=;
+        b=XV+Bb8sLMG9kXgilN4sunJ3OPkamlh6R5tZjK1j9Lv3F7nyxzh8Zn+FFDnJJPSXXMu
+         GewAhEB3TPSoYIe9Z6fAUOjnQuXNX51P9Y0hX/6K1xPdVAUqLzpPV96xZSrqKpEO57JB
+         f16sFkiSAcS/wqsecqNt99hjmkg+EBA8AlDMJv/6Xnkbfd5nC35thQLWq7ePs2PROQ8h
+         jhaYu+FnNUSwKIrAk3XbrRiDZ4LPAHfeWCF/1gAcmQadDJPn0uChp2euxH/JJsU0OHLT
+         PJpLUCwUXXwevxXs52AkOeQQtlNBWZRZC1p3MMtkBbZSOE5R1PscX6MEMmTio8+wSFRX
+         GoSQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776761461; x=1777366261;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ZrXwOSjEWlXRCH3bSQkhhPPRUpo780ifbYsUKTYhEY4=;
+        b=IxUDaox3yf2RcX+tylw9CNn+UIZw/TXODYB9u/XVPaZCC572pZFQ5nSQJLeTSRB5oY
+         xcDOShImKC9HZ0MOyviSYX3kwZTd9WtaDr6WRaH2AAjPtXHPBI6IKi88Nv/Oc1WHtt3u
+         VWomUx2+jy0MUy5BDUC8xvMXzmcvC3POAwkZz7BVvzJA/0QdhTKHTkRhNXKdkagf7Ohg
+         uq8kHcb/kJhLLxoBL1dyy2k5VXPrVPr+VurpY9GVNBF49iBztkxe1zgQa0/AhR9vaphs
+         ZbQZuHvYZW5EcJLOyMpypuqtDOhh4PR/TMedJrT+L35hPX8UQpPc69bMH1ffFH9IdLV6
+         sguw==
+X-Forwarded-Encrypted: i=1; AFNElJ+EJS/gs8M06i8lthaMWaGhPt+QhCDBn80SgrHZdDncWHX26GLpHEsQ7pYLlg95jFff7oIMLoU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzlb3da9aYIN7cYpnS50iuoYRq7/phjgwq6/hSuHZ0J1Gbn3SVx
+	8dLhy0yIlz2mWTxLB8uKe6vNW0u2mpHCZMGmz8qFIeS5gQTOryEKLyip83nSc0LBzD6UcWI8s/z
+	vmz5aB4Wew7rgu5ecCPgQihehQ9ohadg=
+X-Gm-Gg: AeBDies5OUuewWLC4doXpRIpbFq3CvHquWQ21SsIsT8knIghz2hnjh2r/hrHu75FOQW
+	dmui+6+VuP327N7OuaC+TBnFITmpozjEGC3b+ikOkm7TniPD3aNjwHylOpOLMoLoI7s3fQqIbVs
+	CZKFp85chIMJj6ltEwvsN87lL9uqnfk97JlV5U+w+DDBFhxI26P6LOjBtxInyWQAOFby5wGMk4W
+	1KpAF6dhXsAyDPlWtjUAJPHLiqLL6adwhUPUYeImttqKtRuD1emquMokjcecYzuStYYw1yJ+8FL
+	cufm/F0CbD+uG2yJK68=
+X-Received: by 2002:a05:6820:c8d:b0:694:85a9:d8a9 with SMTP id
+ 006d021491bc7-69485a9e0a3mr3899810eaf.46.1776761461337; Tue, 21 Apr 2026
+ 01:51:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
+References: <CA+bbHrW0Z6NdFsUwycvRhLbe3xnbXSwmb24EW4FKFtn=0TVzBw@mail.gmail.com>
+ <20260326013719.1662-1-fjhhz1997@gmail.com> <CA+bbHrX3CdXqW6b0GbY_C7rmte3_9Q=89TJN=A2EBCQM1xSzag@mail.gmail.com>
+ <CA+bbHrUkGP5bX6SFVXLS-bTyHWUiRyHaSojvMW6RGPz+T55yHg@mail.gmail.com> <CA+bbHrVJz3O-2yUs-KJC5anADzqt-vA-5LNpu=nZsdxjRJ2U=A@mail.gmail.com>
+In-Reply-To: <CA+bbHrVJz3O-2yUs-KJC5anADzqt-vA-5LNpu=nZsdxjRJ2U=A@mail.gmail.com>
+From: =?UTF-8?B?w5NzY2FyIEFsZm9uc28gRMOtYXo=?= <oscar.alfonso.diaz@gmail.com>
+Date: Tue, 21 Apr 2026 10:50:51 +0200
+X-Gm-Features: AQROBzDLzt2nEeuvJml9b13__9hjzcZ8b-c7s6sxPrR06FTk8Dye17dQw-zo5Og
+Message-ID: <CA+bbHrVWmSpWZ9GBVJ5vffh1qYEye=EWMq9tKA-_uzfW+raC8A@mail.gmail.com>
+Subject: Re: [PATCH v2] wifi: mac80211: fix the issue of NULL pointer access
+ when deleting the virtual interface
+To: =?UTF-8?B?5YKF57un5pmX?= <fjhhz1997@gmail.com>, brite.airgeddon@gmail.com
+Cc: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[perex.cz,suse.com,vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-240091-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240092-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[spayton681@gmail.com,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[oscaralfonsodiaz@gmail.com,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9E9CE438600
+	RCPT_COUNT_FIVE(0.00)[6]
+X-Rspamd-Queue-Id: B502143864A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The mute LED on this laptop uses ALC245 but requires a quirk to work.
-This patch enables the existing ALC245_FIXUP_HP_MUTE_LED_COEFBIT
-quirk for the device.
+Hello, I would like to copy Brite from the airgeddon team, who has
+come up with a solution. I will include him in the email, and he will
+send you a patch for you to review.
 
-Tested my Victus 15-fa2xxx (PCI SSID 103c:8dcd).
-The LED behaviour works as intended.
+This patch has been refined after a lot of work and no longer has any
+=E2=80=9Cside effects=E2=80=9D. At least, we have not detected anything unu=
+sual, and
+it has been tested extensively with many different chipsets. In any
+case, it=E2=80=99s best if he replies to the email himself to explain it an=
+d
+propose the patch.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Spencer Payton <spayton681@gmail.com>
----
- sound/hda/codecs/realtek/alc269.c | 1 +
- 1 file changed, 1 insertion(+)
+Thanks and regards.
+--
+Oscar
 
-diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/realtek/alc269.c
-index 4b6266536..98f218844 100644
---- a/sound/hda/codecs/realtek/alc269.c
-+++ b/sound/hda/codecs/realtek/alc269.c
-@@ -7154,6 +7154,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x103c, 0x8d90, "HP EliteBook 16 G12", ALC285_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8d91, "HP ZBook Firefly 14 G12", ALC285_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8d92, "HP ZBook Firefly 16 G12", ALC285_FIXUP_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8dcd, "HP Victus 15-fa2xxx", ALC245_FIXUP_HP_MUTE_LED_COEFBIT),
- 	SND_PCI_QUIRK(0x103c, 0x8d9b, "HP 17 Turbine OmniBook 7 UMA", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x8d9c, "HP 17 Turbine OmniBook 7 DIS", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x8d9d, "HP 17 Turbine OmniBook X UMA", ALC287_FIXUP_CS35L41_I2C_2),
--- 
-2.53.0
+OpenPGP Key: DA9C60E9 ||
+https://pgp.mit.edu/pks/lookup?op=3Dget&search=3D0x79B17260DA9C60E9
+4F74 B302 354D 817D DE38 0A43 79B1 7260 DA9C 60E9
+--
 
+El jue, 2 abr 2026 a las 2:06, =C3=93scar Alfonso D=C3=ADaz
+(<oscar.alfonso.diaz@gmail.com>) escribi=C3=B3:
+>
+> Hello everyone, a member of the airgeddon team made a kernel
+> modification that seems to work. I=E2=80=99ve tested it on VMware and als=
+o on
+> bare metal with a 7.0.0-rc5 kernel, using both a Fenvi AX1800
+> (MT7921U) and an Alfa AWUS036AXML (MT7921AUN), and it appears to work
+> well. Deauthentication during VIF operation (evil twin attack) is now
+> working for MediaTek.
+>
+> Everything is documented at this comment in the GitHub thread
+> (https://github.com/morrownr/USB-WiFi/issues/682#issuecomment-4167080451)=
+,
+> including the patch used. A patch that is modifying these three files
+> (tx.c, chan.c and ieee80211_i.h). Take a look at it  on the Github
+> thread please.
+>
+> Regards.
+> --
+> Oscar
+>
+> OpenPGP Key: DA9C60E9 ||
+> https://pgp.mit.edu/pks/lookup?op=3Dget&search=3D0x79B17260DA9C60E9
+> 4F74 B302 354D 817D DE38 0A43 79B1 7260 DA9C 60E9
+> --
+>
+> El dom, 29 mar 2026 a las 23:55, =C3=93scar Alfonso D=C3=ADaz
+> (<oscar.alfonso.diaz@gmail.com>) escribi=C3=B3:
+> >
+> > Please review my latest messages in the GitHub thread.
+> > https://github.com/morrownr/USB-WiFi/issues/682
+> >
+> > There you=E2=80=99ll even find a link to a video I recorded so you can =
+see
+> > that even on bare metal with Kali Linux installed natively, it still
+> > doesn=E2=80=99t work. It behaves exactly the same as it does in the VM.
+> >
+> > Here is the link
+> > https://www.dropbox.com/scl/fi/i6h8xbls5xkvae0pitrbg/video_2026-03-29_2=
+3-44-36.mp4?rlkey=3Djm48ly9tjwbhsi4aauml2auh9&dl=3D1
+> >
+> > Regards.
+> > --
+> > Oscar
+> >
+> > OpenPGP Key: DA9C60E9 ||
+> > https://pgp.mit.edu/pks/lookup?op=3Dget&search=3D0x79B17260DA9C60E9
+> > 4F74 B302 354D 817D DE38 0A43 79B1 7260 DA9C 60E9
+> > --
+> >
+> > El jue, 26 mar 2026 a las 13:16, =C3=93scar Alfonso D=C3=ADaz
+> > (<oscar.alfonso.diaz@gmail.com>) escribi=C3=B3:
+> > >
+> > > Hi, in response to the three points:
+> > >
+> > > 1. VMware
+> > >
+> > > 2. This is the output of the lsusb command: "Bus 004 Device 002: ID
+> > > 0e8d:7961 MediaTek Inc. Wireless_Device". The adapter is very cheap,
+> > > it=E2=80=99s a Fenvi AX1800 (MT7921U), this one:
+> > > https://s.click.aliexpress.com/e/_okxhxNl . But as I said, the bug
+> > > also happens when using the Alfa AWUS036AXML (MT7921AUN).
+> > >
+> > > 3. I=E2=80=99m not sure about this right now. I=E2=80=99d say everyth=
+ing dies. I=E2=80=99ll
+> > > test that to see if SSH is still available (I don=E2=80=99t think so,=
+ but I=E2=80=99m
+> > > not 100% sure at the moment).
+> > >
+> > > Give me a few days. I=E2=80=99ll test this again over the weekend. I=
+=E2=80=99ll also
+> > > run a test on bare metal (not in a VM). That said, like me, many
+> > > people use VMs for pentesting. So even if it works on bare metal,
+> > > which I=E2=80=99ll test this weekend, I think it would still be worth
+> > > investigating whether it can be fixed for VMs, since many people,
+> > > myself included, use them for work. If it works with other WiFi
+> > > adapters, it would be a big drawback if it didn=E2=80=99t work with M=
+ediaTek
+> > > adapters.
+> > >
+> > > I=E2=80=99ll also reply with a similar message in the thread.
+> > >
+> > > Thanks and regards.
+> > > --
+> > > Oscar
+> > >
+> > > OpenPGP Key: DA9C60E9 ||
+> > > https://pgp.mit.edu/pks/lookup?op=3Dget&search=3D0x79B17260DA9C60E9
+> > > 4F74 B302 354D 817D DE38 0A43 79B1 7260 DA9C 60E9
+> > > --
+> > >
+> > > El jue, 26 mar 2026 a las 2:37, =E5=82=85=E7=BB=A7=E6=99=97 (<fjhhz19=
+97@gmail.com>) escribi=C3=B3:
+> > > >
+> > > > Hi =C3=93scar,
+> > > >
+> > > > Lucid-Duck spent some time trying to reproduce your crash and wasn'=
+t able
+> > > > to trigger it. Here's a summary of what was tested:
+> > > >
+> > > > - Kali 2025.4 (kernel 6.18.12+kali-amd64) VM on QEMU/KVM, with my v=
+2
+> > > >   patch applied
+> > > > - MT7921AU USB adapter, passthrough to VM
+> > > > - Full airgeddon evil twin flow: monitor VIF + hostapd AP + continu=
+ous
+> > > >   deauth via aireplay-ng
+> > > > - Also tested on bare metal Fedora 6.19.8 with the same adapter
+> > > >
+> > > > All tests were stable -- no crash, no dmesg errors, load stayed low=
+. The
+> > > > deauth frames were confirmed sending for 30+ seconds under the v2 p=
+atch
+> > > > without issues.
+> > > >
+> > > > The one variable that couldn't be matched was the VM hypervisor.
+> > > > Lucid-Duck used QEMU/KVM, which handles USB passthrough at the kern=
+el
+> > > > level (xHCI). If you're using VirtualBox or VMware, the USB passthr=
+ough
+> > > > path is quite different (userspace proxy), and that could potential=
+ly
+> > > > explain a total VM freeze that isn't a kernel panic.
+> > > >
+> > > > Could you please reply to Lucid-Duck directly on GitHub with the
+> > > > following information? Here's the link:
+> > > > https://github.com/morrownr/USB-WiFi/issues/682#issuecomment-412919=
+8757
+> > > >
+> > > > 1. Which hypervisor are you using? (VirtualBox, VMware, QEMU/KVM, e=
+tc.)
+> > > > 2. Your exact USB adapter model and ID? (0e8d:7961 covers several
+> > > >    MT7921 variants)
+> > > > 3. If possible, try SSHing into the VM from the host while the disp=
+lay
+> > > >    is frozen -- if SSH still works, the issue is at the hypervisor/=
+display
+> > > >    level, not the kernel.
+> > > >
+> > > > Thanks,
+> > > > =E5=82=85=E7=BB=A7=E6=99=97
 
