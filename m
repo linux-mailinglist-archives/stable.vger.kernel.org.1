@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-240120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240121-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CGBtJaxO52lW6QEAu9opvQ
-	(envelope-from <stable+bounces-240120-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 12:17:16 +0200
+	id 6CruNexP52lR6gEAu9opvQ
+	(envelope-from <stable+bounces-240121-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 12:22:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 839044396A6
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 12:17:15 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6317343970C
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 12:22:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A51D830095E9
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 10:17:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CBB073029C01
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 10:22:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B72D3A8756;
-	Tue, 21 Apr 2026 10:17:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C23D35AC36;
+	Tue, 21 Apr 2026 10:22:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jRAHah0J"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IW32JZ6u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B68D35AC1B;
-	Tue, 21 Apr 2026 10:17:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B223536AB56;
+	Tue, 21 Apr 2026 10:22:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776766626; cv=none; b=MGSCNXKZY0F/tPm7LmDMf7K5EIsArFgOiUDBY2E660ePYbVwPIKCtNyRNbIH5Sd8ntK1HL7XRvf/ril7G7Nb6wJpqKrIUhfYwZBtKDYpV/iZ32j+kQuPpEKvL3ikcIIfJya0VFznACU15tJpTHH75VUjSlaVr4ZameAI6ubjQwo=
+	t=1776766946; cv=none; b=BWnzwFvG6W61qdBFeHmTWVOeYe7eC8ozy2bwOr9QIBLyySUYXajOIJ8YDaIm6ATyaBoIgZJceItnKZZtjSPDmpNW/MB8U4fynFQL1V36EjIoeuq3YSdJyRQLYlSWy1mFKG+d94AXG+B8S4sBYn/O5lV3LT3TRrlpIXoOVHVyrdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776766626; c=relaxed/simple;
-	bh=4PRqmWDtQ76sNSo2eUskyCxMXlYwICJjI6rrLmEXqtc=;
+	s=arc-20240116; t=1776766946; c=relaxed/simple;
+	bh=yq8DCpxCypg2h6lQBEDeMsZdsBGc1bcsoGnGFjiDwRY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o9DUSJklJd7hLlO3WIGidGwklvdXwXZxJU3Z4BfSqAjBNsOufSKt3dtvs9ZLf9P0OtVF/eh5CLE6/vEw3ubGtzdvEZ6TGYSK9xdMmUc0bUI/4tqFjjhiNvgiDMkk3QekUTQfsmURzI4Dl2yeJQuPT8lbrVuMQ/3pRsf8MWCPNn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jRAHah0J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2334AC2BCB6;
-	Tue, 21 Apr 2026 10:17:00 +0000 (UTC)
+	 MIME-Version; b=Do8gl578awOFWTmeOnBzWvS8qk4Giv7a10/LOhdpjvQgxaQ7AqGGRFcD99M5ZbPYYQXslBOkmjx96RXDvfvmEF0xZfxUiOxmLJpvlAqXJhbXXXL8+mPrXvUJudn9Pe2A3FCS4cS3wnxd5yyIBiaRWkAua35BExVQL88nPFKVEU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IW32JZ6u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A66CC2BCB0;
+	Tue, 21 Apr 2026 10:22:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776766625;
-	bh=4PRqmWDtQ76sNSo2eUskyCxMXlYwICJjI6rrLmEXqtc=;
+	s=k20201202; t=1776766946;
+	bh=yq8DCpxCypg2h6lQBEDeMsZdsBGc1bcsoGnGFjiDwRY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jRAHah0JoY8tVdXJlledkZRtcmGHF4mBq8TEEATMG6TvGBE78pNgT9u8+mYycCkfk
-	 suBE8jzUmM80PychO5xdPOJ8Lk/ZfCI/BSvCIbH7yDUQvINZlPFk+gyku+069CXBiU
-	 8MBzDvXtIp18FPBatVglkxxlUcRdO6vHEdhcGr+ytwyRpZXIAm/iaQQ22NmGYVVtB6
-	 vVq28PEqDsS/gCaqC/8g6zz2LuLhe1ii6kqPcU5Er375td2AONajSIctpZMLSk5fT8
-	 FtYBiZYjlhbJnDGozjvUWCjXDOZR7BpPxAszAPy3T692xqm+mEXY8bsMXlUNDRVWMJ
-	 eOgyqy74nOPzw==
+	b=IW32JZ6u3LNBahGyKV9Rx1Els/dUzXfTEWxSUwRBqdk+xUF0QQEl1uVRx/5e2D0nm
+	 n6zdi3bOpOLr4/+eMmXcaKjUwBU8SZYtlSlSjZPqP6c9erRcSELXawUeEwX0kNWf/u
+	 P7YTyYoDcn8TVvxPHi5RDEXeX1HqGWv4BuH7vQDSqwSM6NFKx9Xp7E70sP8lzpQ7nO
+	 W4xfKKeaixJb1FII9XuXBgmpeI5eqCKhzrpXcn049aCGYjDr5lcjAM2RimJ4s3MjZC
+	 WR0Qf20IPkfW1RNzZtAPHzbj6+aF+4PI7s9+tUeRshqMqjUMgNviCFqb193+piAAHF
+	 auSpCAISKfCEA==
 From: Miguel Ojeda <ojeda@kernel.org>
 To: gregkh@linuxfoundation.org
 Cc: achill@achill.org,
@@ -66,11 +66,11 @@ Cc: achill@achill.org,
 	sudipm.mukherjee@gmail.com,
 	torvalds@linux-foundation.org,
 	Miguel Ojeda <ojeda@kernel.org>
-Subject: Re: [PATCH 6.19 000/220] 6.19.14-rc1 review
-Date: Tue, 21 Apr 2026 12:16:55 +0200
-Message-ID: <20260421101655.49996-1-ojeda@kernel.org>
-In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
-References: <20260420153934.013228280@linuxfoundation.org>
+Subject: Re: [PATCH 7.0 00/76] 7.0.1-rc1 review
+Date: Tue, 21 Apr 2026 12:22:16 +0200
+Message-ID: <20260421102216.51168-1-ojeda@kernel.org>
+In-Reply-To: <20260420153910.810034134@linuxfoundation.org>
+References: <20260420153910.810034134@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -85,14 +85,14 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FREEMAIL_CC(0.00)[achill.org,linux-foundation.org,kernel.org,gmail.com,microsoft.com,nvidia.com,vger.kernel.org,roeck-us.net,lists.linaro.org,kernelci.org,lists.linux.dev,nabladev.com,gmx.de,sladewatkins.com];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCPT_COUNT_TWELVE(0.00)[21];
-	TAGGED_FROM(0.00)[bounces-240120-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-240121-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
@@ -106,28 +106,26 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 839044396A6
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: 6317343970C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, 20 Apr 2026 17:39:01 +0200 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+On Mon, 20 Apr 2026 17:41:11 +0200 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
 >
-> This is the start of the stable review cycle for the 6.19.14 release.
-> There are 220 patches in this series, all will be posted as a response
+> This is the start of the stable review cycle for the 7.0.1 release.
+> There are 76 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
->
-> Responses should be made by Wed, 22 Apr 2026 15:38:52 +0000.
+> 
+> Responses should be made by Wed, 22 Apr 2026 15:38:50 +0000.
 > Anything received after that time might be too late.
 
 Boot-tested under QEMU for Rust x86_64, arm64 and riscv64; built-tested
 for loongarch64:
 
 Tested-by: Miguel Ojeda <ojeda@kernel.org>
-
-I also did a few arm 32-bit build-tests, and they look fine.
 
 Thanks!
 
