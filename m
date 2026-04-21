@@ -1,250 +1,183 @@
-Return-Path: <stable+bounces-240255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240256-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0KFoGzYB6GlJEAIAu9opvQ
-	(envelope-from <stable+bounces-240255-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 00:59:02 +0200
+	id sG7SE+ME6Gl2EQIAu9opvQ
+	(envelope-from <stable+bounces-240256-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 01:14:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F000F4405E0
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 00:59:01 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BA1244077E
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 01:14:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BDB0C3029D4B
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 22:59:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C2B4930CBD2E
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 23:13:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 958F238552F;
-	Tue, 21 Apr 2026 22:58:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 873573806AD;
+	Tue, 21 Apr 2026 23:13:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b="GUEBSGKF"
+	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="XYVxmFvt"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-f177.google.com (mail-oi1-f177.google.com [209.85.167.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BA913822AA
-	for <stable@vger.kernel.org>; Tue, 21 Apr 2026 22:58:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 769723A0B13;
+	Tue, 21 Apr 2026 23:13:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776812337; cv=none; b=nz1yVgdt+bLMQaqjBcTGkwSCTN/jH2YlxOotUvbL8wy4HO7ylCEHXM1waZpKC65Bf5yE0FJhv2EjjSE1yw3Goih7lG5VFpd0J49tTjGXXY+2PtfowwH7fogq5s3OjwutNK2SfLZ3kqCjPQ4Q2jP9Oabnekou//PHkC1AmapJVXc=
+	t=1776813188; cv=none; b=XgATH0ZlKMNFpSOnZVTa3MlBKO35oriSBnIoYGvmc1uBLKR0FR1fHZaopjgWh4RUzhba34yf/xwnSKCMEFWuOpKrH3faYQ5n8ucjKjq+hBztPuzJeufN5ISGmWg2HooLZFgV2lWEkfcO5UVkPa6ziPe/HlWlm63k8i4bOLmaeco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776812337; c=relaxed/simple;
-	bh=tVS1I51gR8ialQjV66JTaRvpNhYQyIiFfnHQHHNlOKg=;
-	h=Content-Type:Message-ID:Date:MIME-Version:Subject:From:To:Cc:
-	 References:In-Reply-To; b=XojiZL+4an6CNk+FHwi/zHz5gMtwtXDNhsazlJlI3RrFLNPPK82w9saHFYEgfbfm2UCzUAoa4T7cjW1haSBh1J+Huizp6X4GJtJgZPRoepairYZlQQ0iYLjEOZj9/8VIMlWlZF/KT2LWQQqrlkJhVyeMI5NVASNf7xucHkstPMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b=GUEBSGKF; arc=none smtp.client-ip=209.85.167.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-oi1-f177.google.com with SMTP id 5614622812f47-4779b2497b4so2831378b6e.3
-        for <stable@vger.kernel.org>; Tue, 21 Apr 2026 15:58:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20251104.gappssmtp.com; s=20251104; t=1776812334; x=1777417134; darn=vger.kernel.org;
-        h=in-reply-to:content-language:references:cc:to:from:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qCp5VnunPbPtqwjenjYn7N3AFQ6NsGppCcqzyezyOQw=;
-        b=GUEBSGKFglWNFmo1o4PYySQGP7LMkEHRiQzkC3Ivsi62gHSwOE5MX3TfutGV6mGa/f
-         yX/7V1eiBF3D6S96ncbxAxbZYQ7s9BWwK2o5D5tV07ZIzbV4u9235tEajnB6VaRK3hAx
-         vzbUxq8L0FcqXQ0oSX9nBrqXE9yzPrWdyUa5X6TxriGAi/vOktU5L49KfHvxLGgyLl83
-         e/Ju9UltiJXYY3biR9ff+RIhBa4OY2+zcnw4mny2ixsf2FZyYKx03lPB8TD7w+2iiTnv
-         1MfeLH5mDjPENI+YSG2t3fDVJpAdUz9TpcZkbwBR+wfi3TUgKoZn3mekW0MiGn3lg82Z
-         dZ4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776812334; x=1777417134;
-        h=in-reply-to:content-language:references:cc:to:from:subject
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=qCp5VnunPbPtqwjenjYn7N3AFQ6NsGppCcqzyezyOQw=;
-        b=G5HCJek8e8oPNj56CVFrAwjnPwZHSbJ0haw/ASJ2xotaTb9wgl6cbYmCCTB0Oz6Ykr
-         R/Y7BWeRZPOP4wIzuFIGqbsSTbDDsKyLlW8pQEujqqbTz4czX3cR1MfirFagNlrF/fKI
-         0mTjx8dt/syMFcpYSmEcABJwpNdM80isqBaKE6rm7uBslvBtWTMJxzSn0wHligicPKwM
-         dgdct85NRSamR3U/zC63BS+wPndqjzi5WJcy+pq6N/lMTshaE1z7pRn3nmAWCmac0saE
-         G9wmmmEKoS1hHE0xRRha7SRRjH9WbMy0/NZCYfkQO7hqiH6fCulXFGu3cXph1HobFHlu
-         ryPQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+JZQrFxeGgY1F2oYW6Np4wwVLURaR6d1W+O9V2bLvRZwkGI7Txk/cHxMXioH+zjtskZintu0A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzIHZGS4uJS6Z1GYV+lHx0+FJlC5lwWcDZ2neb7edFEkJiZZnc0
-	/VU9UHdSdhbHa9giCNeZrxIRjiTgzycbPv8cZF85jiW5Qto4P8BZ6ks6dotPN13EyhGNkPUh/7b
-	qq6HXQtk=
-X-Gm-Gg: AeBDieuSyjtiS/MyuLT/gB9VnL3bL98/90Eqo2lR6QELGghG3s9zK6EKQwqIIT75J06
-	FBpSwQ04KJjX+syWy0XAMupX5c0Ej8/XgBwNnoCbqmChUlW4/6zwDyRMb2TqyPyokPOb6EsYMEE
-	ZTuJBDRkRbsGE+Tdz4RSUbISSZ1bSA/ZnoPkTDnw2Fp/MRRIgK1cZwXMG3ODnZS6AEuD98D3b9Y
-	Wn3RbWeEOcYfFLUoHMipKUa8DRGt6jOSbHPakSNB3SAJ4faGfPn94F3kKSRUcxOvqc0MC3XozLs
-	LWZlqs43tNP0Huo8Q+OFRfy5CuXO+4iWPPSk7WRGfLz+4ZMXPtqfTzA1z7nGeDvdPsutIdJ8FsP
-	xl8l9aanJdt7bASKp/MKJan1KKo5PaKVdCK7q9AGxwC0nzpCmXdlizhW54HQmkO/wPzhzmlfQbj
-	0qBH5fSjWPStMH9nJNFuRKwXPieZVXwtvC8DV4Gf6uzuA7s9KopN986NKdAVZomPkj9xUxcqWZ3
-	XFnGOmqzfiz97Vsl9Xn
-X-Received: by 2002:a05:6808:690b:b0:467:16e4:d263 with SMTP id 5614622812f47-4799ca9c15emr10810877b6e.44.1776812334343;
-        Tue, 21 Apr 2026 15:58:54 -0700 (PDT)
-Received: from [192.168.1.150] ([198.8.77.157])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-4799ff451d9sm9841826b6e.8.2026.04.21.15.58.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 21 Apr 2026 15:58:53 -0700 (PDT)
-Content-Type: multipart/mixed; boundary="------------A7X9iAKAQsAJ4DD6TaBJvWWc"
-Message-ID: <3512c6ae-0b99-4c50-89ed-f1087a558a25@kernel.dk>
-Date: Tue, 21 Apr 2026 16:58:52 -0600
+	s=arc-20240116; t=1776813188; c=relaxed/simple;
+	bh=TcLXkd2I/ZvLX7dVlkAIZjnxaPXjjf0UY9RNvYinQeM=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=PAkn6zIJRFpDz6BNqnIM9TOt8Z/OEiEPdKaR2ewbWN1g90tHDN0iNTrUw11wK9edRAb15Jk4l5UZukfKgai2OV4b7SOCr/kHCjMrtXB5EGTu1V3977dkiXrJUZm8jUiqbVgnzOwdUSo8gevqGM0w6fpPLaUAF+yqHEdQ0jF0/58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=XYVxmFvt; arc=none smtp.client-ip=198.137.202.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+Received: from ehlo.thunderbird.net (c-76-133-66-138.hsd1.ca.comcast.net [76.133.66.138])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 63LNCFcT1363037
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Tue, 21 Apr 2026 16:12:16 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 63LNCFcT1363037
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2026032601; t=1776813137;
+	bh=LaJcDYtG7/5Kt21btLCyRMXVdK5jUtXJyiF0SqSRq3U=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=XYVxmFvtyTNj3K0hBIsWLcdu84nhUl8BrQaHFpeew1ezrfFokOuVlmgq2EYlZsmH4
+	 umP9C7iDZESStEQHSiqbrPRqKmzZk84XpZ3YvHhqurfNKTknXc8NePtfj+TtbZKohY
+	 grB4o+ocLd7j14VC1ZXIgQFVVyId9NKFXpRiJaLbNEsQHCSpLPEWikEAkLmN2kcbvr
+	 aYEty37/cr8dKPbbmQ+T10mkREnYcHZ9VbxycA1VJ4U1Ws1qHaCjOOf7W51IVSjcfM
+	 B8qsKL3vIhpTEDey2Kbcf2/sJH+1ZJsspZn1ix8pSQJ9F887ntHWWfKqGK27txC0IC
+	 pvz8y+1sGo0Cw==
+Date: Tue, 21 Apr 2026 16:12:06 -0700
+From: "H. Peter Anvin" <hpa@zytor.com>
+To: Dave Hansen <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org
+CC: Andy Lutomirski <luto@kernel.org>, Borislav Petkov <bp@alien8.de>,
+        Gayatri Kammela <Gayatri.Kammela@amd.com>,
+        Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+        stable@vger.kernel.org, Thomas Gleixner <tglx@kernel.org>,
+        x86@kernel.org
+Subject: Re: [PATCH] x86/cpu: Disable FRED when PTI is forced on
+User-Agent: K-9 Mail for Android
+In-Reply-To: <20260421163136.E7C6788A@davehans-spike.ostc.intel.com>
+References: <20260421163136.E7C6788A@davehans-spike.ostc.intel.com>
+Message-ID: <BE6E847D-371B-4C46-8104-725C5E71E162@zytor.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.10 491/491] io_uring/poll: correctly handle
- io_poll_add() return value on update
-From: Jens Axboe <axboe@kernel.dk>
-To: Ben Hutchings <ben@decadent.org.uk>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev,
- syzbot+641eec6b7af1f62f2b99@syzkaller.appspotmail.com
-References: <20260413155819.042779211@linuxfoundation.org>
- <20260413155837.438151458@linuxfoundation.org>
- <d4b85e905345dc69e9c660c7f51775703fa83320.camel@decadent.org.uk>
- <d7d521e7-35bb-463b-b1f5-552bb931bdff@kernel.dk>
-Content-Language: en-US
-In-Reply-To: <d7d521e7-35bb-463b-b1f5-552bb931bdff@kernel.dk>
-X-Spamd-Result: default: False [0.94 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MIME_BASE64_TEXT_BOGUS(1.00)[];
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[kernel-dk.20251104.gappssmtp.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[zytor.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[zytor.com:s=2026032601];
 	MAILLIST(-0.15)[generic];
-	MIME_BASE64_TEXT(0.10)[];
-	MIME_GOOD(-0.10)[multipart/mixed,text/plain,text/x-patch];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-240255-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-240256-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[kernel.dk];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+,1:+,2:+,3:+];
-	HAS_ATTACHMENT(0.00)[];
+	DKIM_TRACE(0.00)[zytor.com:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[axboe@kernel.dk,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel-dk.20251104.gappssmtp.com:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable,641eec6b7af1f62f2b99];
+	FROM_NEQ_ENVFROM(0.00)[hpa@zytor.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,kernel.dk:mid,kernel.dk:email]
-X-Rspamd-Queue-Id: F000F4405E0
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,zytor.com:email,zytor.com:dkim,zytor.com:mid,infradead.org:email,alien8.de:email]
+X-Rspamd-Queue-Id: 9BA1244077E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-This is a multi-part message in MIME format.
---------------A7X9iAKAQsAJ4DD6TaBJvWWc
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+On April 21, 2026 9:31:36 AM PDT, Dave Hansen <dave=2Ehansen@linux=2Eintel=
+=2Ecom> wrote:
+>
+>From: Dave Hansen <dave=2Ehansen@linux=2Eintel=2Ecom>
+>
+>FRED and PTI were never intended to work together=2E No FRED hardware is
+>vulnerable to Meltdown and all of it should have LASS anyway=2E
+>Nevertheless, if you boot a system with pti=3Don and fred=3Don, the kerne=
+l
+>tries to do what is asked of it and dies a horrible death on the first
+>attempt to run userspace (since it never switches to the user page
+>tables)=2E
+>
+>Disable FRED when PTI is forced on, and print a warning about it=2E
+>
+>A quick brain dump about what a FRED+PTI implementation would look like
+>is below=2E I'm not sure it would make any sense to do it, but never say
+>never=2E All I know is that it's way too complicated to be worth it today=
+=2E
+>
+><brain dump>
+>The SWITCH_TO_USER/KERNEL_CR3 bits are simple to fix (or at least we
+>have the assembly tools to do it already), as is sticking the FRED entry
+>text in =2Eentry=2Etext (it's not in there today)=2E
+>
+>The nasty part is the stacks=2E Today, the CPU pops into the kernel on
+>MSR_IA32_FRED_RSP0 which is normal old kernel memory and not mapped to
+>userspace=2E The hardware pushes gunk on to MSR_IA32_FRED_RSP0, which is
+>currently the task stacks=2E MSR_IA32_FRED_RSP0 would need to point
+>elsewhere, probably cpu_entry_stack()=2E Then, start playing games with
+>stacks on entry/exit, including copying gunk to and from the task stack=
+=2E
+>
+>While I'd *like* to have PTI everywhere, I'm not sure it's worth mucking
+>up the FRED code with PTI kludges=2E If a user wants fast entry/exit, the=
+y
+>use FRED=2E If you want PTI (and sekuritay), you certainly don't care
+>about fast entry and FRED isn't going to help you *all* that much, so
+>you can just stay with the IDT=2E
+>
+>Plus, FRED hardware should have LASS which gives you a similar security
+>profile to PTI without the CR3 munging=2E
+></brain dump>
+>
+>Signed-off-by: Dave Hansen <dave=2Ehansen@linux=2Eintel=2Ecom>
+>Reported-by: Gayatri Kammela <Gayatri=2EKammela@amd=2Ecom>
+>Cc: stable@vger=2Ekernel=2Eorg
+>Cc: Andy Lutomirski <luto@kernel=2Eorg>
+>Cc: Peter Zijlstra <peterz@infradead=2Eorg>
+>Cc: Thomas Gleixner <tglx@kernel=2Eorg>
+>Cc: Ingo Molnar <mingo@redhat=2Ecom>
+>Cc: Borislav Petkov <bp@alien8=2Ede>
+>Cc: x86@kernel=2Eorg
+>Cc: "H=2E Peter Anvin" <hpa@zytor=2Ecom>
+>---
+>
+> b/arch/x86/mm/pti=2Ec |    5 +++++
+> 1 file changed, 5 insertions(+)
+>
+>diff -puN arch/x86/mm/pti=2Ec~fred-vs-kpti arch/x86/mm/pti=2Ec
+>--- a/arch/x86/mm/pti=2Ec~fred-vs-kpti	2026-04-21 08:37:01=2E124709928 -0=
+700
+>+++ b/arch/x86/mm/pti=2Ec	2026-04-21 08:41:11=2E219700206 -0700
+>@@ -105,6 +105,11 @@ void __init pti_check_boottime_disable(v
+> 		pr_debug("PTI enabled, disabling INVLPGB\n");
+> 		setup_clear_cpu_cap(X86_FEATURE_INVLPGB);
+> 	}
+>+
+>+	if (cpu_feature_enabled(X86_FEATURE_FRED)) {
+>+		pr_debug("PTI enabled, disabling FRED\n");
+>+		setup_clear_cpu_cap(X86_FEATURE_FRED);
+>+	}
+> }
+>=20
+> static int __init pti_parse_cmdline(char *arg)
+>_
 
-On 4/21/26 4:18 PM, Jens Axboe wrote:
->>> @@ -6024,16 +6035,17 @@ static int io_poll_update(struct io_kioc
->>>  		if (req->poll_update.update_user_data)
->>>  			preq->user_data = req->poll_update.new_user_data;
->>>  
->>> -		ret2 = io_poll_add(preq, issue_flags);
->>> +		ret2 = __io_poll_add(preq, issue_flags);
->>>  		/* successfully updated, don't complete poll request */
->>>  		if (!ret2)
->>>  			goto out;
->>> +		preq->result = ret2;
->>> +
->>>  	}
->>> -	req_set_fail(preq);
->>> -	io_req_complete(preq, -ECANCELED);
->>> +	if (preq->result < 0)
->>> +		req_set_fail(preq);
->>> +	io_req_complete(preq, preq->result);
->>
->> If __io_poll_add() returned an events mask then it completed preq, but
->> then we also complete preq here.  Is that really correct?
-> 
-> Let me take a closer look, I do agree with you that the final result
-> does not look entirely correct.
-
-As far as I can tell, these two should be applied to 5.10 and 5.15
-stable. The first one fixes an old backporting issue that I didn't
-notice until doing some targeted testing just now. The second one should
-take care of the issues that Ben spotted in the current backport.
-
-Will be nice when 5.x is finally taken out behind the barn :-)
-
--- 
-Jens Axboe
---------------A7X9iAKAQsAJ4DD6TaBJvWWc
-Content-Type: text/x-patch; charset=UTF-8;
- name="0001-io_uring-poll-fix-EPOLL_URING_WAKE-sometimes-not-bei.patch"
-Content-Disposition: attachment;
- filename*0="0001-io_uring-poll-fix-EPOLL_URING_WAKE-sometimes-not-bei.pa";
- filename*1="tch"
-Content-Transfer-Encoding: base64
-
-RnJvbSA3ZmRmZmZjZTUwOGYzOGQ4OTMzOGU4YmJlZDQyMWRkOTFkZGZjYjNmIE1vbiBTZXAg
-MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBKZW5zIEF4Ym9lIDxheGJvZUBrZXJuZWwuZGs+CkRh
-dGU6IFR1ZSwgMjEgQXByIDIwMjYgMTY6NDE6MzIgLTA2MDAKU3ViamVjdDogW1BBVENIIDEv
-Ml0gaW9fdXJpbmcvcG9sbDogZml4IEVQT0xMX1VSSU5HX1dBS0Ugc29tZXRpbWVzIG5vdCBi
-ZWluZwogbWFza2VkIGluCgpSYXRoZXIgdGhhbiBkbyBpdCBvbmx5IHdoZW4gd2UganVtcCBz
-dHJhaWdodCB0byBleGVjdXRpb24sIG1hcmsgaXQKcmVnYXJkbGVzcy4gVGhpcyBlbnN1cmVz
-IGl0IGRvZXNuJ3QgZ2V0IGxvc3QuCgpGaXhlczogY2NmMDZiNWE5ODFjICgiaW9fdXJpbmc6
-IHBhc3MgaW4gRVBPTExfVVJJTkdfV0FLRSBmb3IgZXZlbnRmZCBzaWduYWxpbmcgYW5kIHdh
-a2V1cHMiKQpTaWduZWQtb2ZmLWJ5OiBKZW5zIEF4Ym9lIDxheGJvZUBrZXJuZWwuZGs+Ci0t
-LQogaW9fdXJpbmcvaW9fdXJpbmcuYyB8IDE3ICsrKysrKysrLS0tLS0tLS0tCiAxIGZpbGUg
-Y2hhbmdlZCwgOCBpbnNlcnRpb25zKCspLCA5IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBh
-L2lvX3VyaW5nL2lvX3VyaW5nLmMgYi9pb191cmluZy9pb191cmluZy5jCmluZGV4IDM4ZGVj
-ZmMxYTkxNC4uZGI1YzlmYmRlYzNiIDEwMDY0NAotLS0gYS9pb191cmluZy9pb191cmluZy5j
-CisrKyBiL2lvX3VyaW5nL2lvX3VyaW5nLmMKQEAgLTU3OTQsMTcgKzU3OTQsMTYgQEAgc3Rh
-dGljIGludCBpb19wb2xsX3dha2Uoc3RydWN0IHdhaXRfcXVldWVfZW50cnkgKndhaXQsIHVu
-c2lnbmVkIG1vZGUsIGludCBzeW5jLAogCWlmIChtYXNrICYmICEobWFzayAmIHBvbGwtPmV2
-ZW50cykpCiAJCXJldHVybiAwOwogCi0JaWYgKGlvX3BvbGxfZ2V0X293bmVyc2hpcChyZXEp
-KSB7Ci0JCS8qCi0JCSAqIElmIHdlIHRyaWdnZXIgYSBtdWx0aXNob3QgcG9sbCBvZmYgb3Vy
-IG93biB3YWtldXAgcGF0aCwKLQkJICogZGlzYWJsZSBtdWx0aXNob3QgYXMgdGhlcmUgaXMg
-YSBjaXJjdWxhciBkZXBlbmRlbmN5IGJldHdlZW4KLQkJICogQ1EgcG9zdGluZyBhbmQgdHJp
-Z2dlcmluZyB0aGUgZXZlbnQuCi0JCSAqLwotCQlpZiAobWFzayAmIEVQT0xMX1VSSU5HX1dB
-S0UpCi0JCQlwb2xsLT5ldmVudHMgfD0gRVBPTExPTkVTSE9UOworCS8qCisJICogSWYgd2Ug
-dHJpZ2dlciBhIG11bHRpc2hvdCBwb2xsIG9mZiBvdXIgb3duIHdha2V1cCBwYXRoLAorCSAq
-IGRpc2FibGUgbXVsdGlzaG90IGFzIHRoZXJlIGlzIGEgY2lyY3VsYXIgZGVwZW5kZW5jeSBi
-ZXR3ZWVuCisJICogQ1EgcG9zdGluZyBhbmQgdHJpZ2dlcmluZyB0aGUgZXZlbnQuCisJICov
-CisJaWYgKG1hc2sgJiBFUE9MTF9VUklOR19XQUtFKQorCQlwb2xsLT5ldmVudHMgfD0gRVBP
-TExPTkVTSE9UOwogCisJaWYgKGlvX3BvbGxfZ2V0X293bmVyc2hpcChyZXEpKQogCQlfX2lv
-X3BvbGxfZXhlY3V0ZShyZXEsIG1hc2spOwotCX0KIAlyZXR1cm4gMTsKIH0KIAotLSAKMi41
-My4wCgo=
---------------A7X9iAKAQsAJ4DD6TaBJvWWc
-Content-Type: text/x-patch; charset=UTF-8;
- name="0002-io_uring-poll-fix-backport-of-io_poll_add-changes.patch"
-Content-Disposition: attachment;
- filename*0="0002-io_uring-poll-fix-backport-of-io_poll_add-changes.patch"
-Content-Transfer-Encoding: base64
-
-RnJvbSA3YTYxYzM4YzRkNmFlM2Q1Y2JlNmVmYTA2ODg1YjFjYTgyMWExMjljIE1vbiBTZXAg
-MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBKZW5zIEF4Ym9lIDxheGJvZUBrZXJuZWwuZGs+CkRh
-dGU6IFR1ZSwgMjEgQXByIDIwMjYgMTY6NDQ6MDYgLTA2MDAKU3ViamVjdDogW1BBVENIIDIv
-Ml0gaW9fdXJpbmcvcG9sbDogZml4IGJhY2twb3J0IG9mIGlvX3BvbGxfYWRkKCkgY2hhbmdl
-cwoKVGhlIDUuMTUvNS4xMCBiYWNrcG9ydCBvZiA4NDIzMGFkMmQyYWYgaGFkIGEgZmV3IGlz
-c3VlcywgZHVlIHRvIHRoZQpvbGRlciBwb2xsIGJhc2UuIE5vdGFibHkgcmV0dXJuIHZhbHVl
-IGhhbmRsaW5nIF9faW9fYXJtX3BvbGxfaGFuZGxlcigpCmFuZCBpbiByZXR1cm4gX19pb19w
-b2xsX2FkZCgpIGFzIHdlbGwuIEZpeCB0aGVtIHVwLgoKUmVwb3J0ZWQtYnk6IEJlbiBIdXRj
-aGluZ3MgPGJlbkBkZWNhZGVudC5vcmcudWs+CkZpeGVzOiAzNDllZjVkMmU3YmYgKCJpb191
-cmluZy9wb2xsOiBjb3JyZWN0bHkgaGFuZGxlIGlvX3BvbGxfYWRkKCkgcmV0dXJuIHZhbHVl
-IG9uIHVwZGF0ZSIpClNpZ25lZC1vZmYtYnk6IEplbnMgQXhib2UgPGF4Ym9lQGtlcm5lbC5k
-az4KLS0tCiBpb191cmluZy9pb191cmluZy5jIHwgMTIgKysrKy0tLS0tLS0tCiAxIGZpbGUg
-Y2hhbmdlZCwgNCBpbnNlcnRpb25zKCspLCA4IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBh
-L2lvX3VyaW5nL2lvX3VyaW5nLmMgYi9pb191cmluZy9pb191cmluZy5jCmluZGV4IGRiNWM5
-ZmJkZWMzYi4uMDc1MTllOWE2OTVjIDEwMDY0NAotLS0gYS9pb191cmluZy9pb191cmluZy5j
-CisrKyBiL2lvX3VyaW5nL2lvX3VyaW5nLmMKQEAgLTYxMzgsMTkgKzYxMzgsMTUgQEAgc3Rh
-dGljIGludCBfX2lvX3BvbGxfYWRkKHN0cnVjdCBpb19raW9jYiAqcmVxLCB1bnNpZ25lZCBp
-bnQgaXNzdWVfZmxhZ3MpCiAJaWYgKCFyZXQgJiYgaXB0LmVycm9yKQogCQlyZXFfc2V0X2Zh
-aWwocmVxKTsKIAlyZXQgPSByZXQgPzogaXB0LmVycm9yOwotCWlmIChyZXQgPiAwKSB7CisJ
-aWYgKHJldCkKIAkJX19pb19yZXFfY29tcGxldGUocmVxLCBpc3N1ZV9mbGFncywgcmV0LCAw
-KTsKLQkJcmV0dXJuIHJldDsKLQl9Ci0JcmV0dXJuIDA7CisJcmV0dXJuIHJldDsKIH0KIAog
-c3RhdGljIGludCBpb19wb2xsX2FkZChzdHJ1Y3QgaW9fa2lvY2IgKnJlcSwgdW5zaWduZWQg
-aW50IGlzc3VlX2ZsYWdzKQogewotCWludCByZXQ7Ci0KLQlyZXQgPSBfX2lvX3BvbGxfYWRk
-KHJlcSwgaXNzdWVfZmxhZ3MpOwotCXJldHVybiByZXQgPCAwID8gcmV0IDogMDsKKwlfX2lv
-X3BvbGxfYWRkKHJlcSwgaXNzdWVfZmxhZ3MpOworCXJldHVybiAwOwogfQogCiBzdGF0aWMg
-aW50IGlvX3BvbGxfdXBkYXRlKHN0cnVjdCBpb19raW9jYiAqcmVxLCB1bnNpZ25lZCBpbnQg
-aXNzdWVfZmxhZ3MpCi0tIAoyLjUzLjAKCg==
-
---------------A7X9iAKAQsAJ4DD6TaBJvWWc--
+Acked-by: H=2E Peter Anvin (Intel) <hpa@zytor=2Ecom>
 
