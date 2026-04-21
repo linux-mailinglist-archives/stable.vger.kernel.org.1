@@ -1,72 +1,61 @@
-Return-Path: <stable+bounces-240031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240032-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OM1XG+fk5mn01gEAu9opvQ
-	(envelope-from <stable+bounces-240031-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 04:45:59 +0200
+	id 80AHFkLo5mlx1wEAu9opvQ
+	(envelope-from <stable+bounces-240032-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 05:00:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BAB8435969
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 04:45:59 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1FEB435A63
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 05:00:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5AB923012E86
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 02:44:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 09D75300FFBE
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 03:00:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85356282F00;
-	Tue, 21 Apr 2026 02:44:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="nv0pVy81"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26CED1DD0EF;
+	Tue, 21 Apr 2026 03:00:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from n169-112.mail.139.com (n169-112.mail.139.com [120.232.169.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B88DD26B2DA;
-	Tue, 21 Apr 2026 02:44:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.112
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0CE6283FE6;
+	Tue, 21 Apr 2026 03:00:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776739472; cv=none; b=rNTfECwzP2PvljMH9rVe/E9hpho319Hx1Iy/ltz8IsAP2yBQDUWGAhmJO5CfOcLJo3N2cJ9pfg9upRMjDCZw8nsEYQ8H7I8UkRGSsiOyh3EU1MZHNm+YCeNojZuVWfni4IU3TNxIfIjAPi0BzXqskmyvXnu27fcNI/HSSlbgoUg=
+	t=1776740415; cv=none; b=Qq/a00O+9iwTBNeyWVesUxOI8qLYApNC/v4kiTKRBHr25p+KcqGEx+uE9e+EGOO7Jp46nW1wDx+KjRPPwccPJ/9W1HUdxmNcJce9a8BXsyFQPMeWatWb+0R+Fg3ixAwkHyGJ0820GIKMWBgbAEvcu1N5joQY17FGur7lo8bNVHk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776739472; c=relaxed/simple;
-	bh=mUs1vF9eqk+D7+IZ4R8oddL6sf7eMJULCmOr6/g/GGE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=m6n4m+ZOjaO2BMrpGcw0Ob3fVQSpD4wYEhET7aeHVhvtk4GmvCaHeal7bdI1rKdJ0xu3oZnr+tQlBbBjGzoZ6CBZ5K/M3619ACc3ecUhBCAuVD78wWbgLoxZ7gwPujPpvR/jkFVbBLUJLMOsNUsJDaJnV9WIlENcHs8r4XM2s2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=nv0pVy81; arc=none smtp.client-ip=120.232.169.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=139.com; s=dkim; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=nv0pVy81nB8ijr8fH/wOse2fCi/ONoInZF85o3Fb1jlrQymUSl4NbDzKock5oHcGJqGHQm8DOy1Wd
-	 VYxRttoC2UAM95932WAvYz2D+x8a5JUcB3Xxo7TcZNsl/M9o8lmRHBLfJu+gHZPfYogpgc8N1lb9Sa
-	 9BSTmHVrH/WLE9AU=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM:                                                                                        
-X-RM-SPAM-FLAG:00000000
-Received:from NTT-kernel-dev (unknown[60.247.85.88])
-	by rmsmtp-lg-appmail-20-12023 (RichMail) with SMTP id 2ef769e6e487384-013a1;
-	Tue, 21 Apr 2026 10:44:26 +0800 (CST)
-X-RM-TRANSID:2ef769e6e487384-013a1
-From: Li hongliang <1468888505@139.com>
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org,
-	nbd@nbd.name
-Cc: patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	toke@toke.dk,
-	kvalo@kernel.org,
-	johannes@sipsolutions.net,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	nbd@openwrt.org,
-	linux-wireless@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	johannes.berg@intel.com
-Subject: [PATCH 5.10.y] wifi: mac80211: always free skb on ieee80211_tx_prepare_skb() failure
-Date: Tue, 21 Apr 2026 10:44:25 +0800
-Message-Id: <20260421024425.3133110-1-1468888505@139.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1776740415; c=relaxed/simple;
+	bh=oNW7xMaTEhp1CPbPLkE7pkH+64rQO8MKAKD7dZIRLVo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cdqOr6jcoQpBPwxA2u93aEkTBAZcm+WH6xy9ln1R25H6XpWMuLCEGZND4nMUXMcqkGY4AG2xRDPQ8WJ4sGvyOHosRrP0+AS/jS8HS0K4BjbniZUP5bDt6vEGQnXaia0TQqEzafszZx4d18wmxfQfDMgFsoCca6AjHSblhyRml5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1009)
+	id E12AC20B7128; Mon, 20 Apr 2026 20:00:13 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com E12AC20B7128
+From: Dexuan Cui <decui@microsoft.com>
+To: kys@microsoft.com,
+	haiyangz@microsoft.com,
+	wei.liu@kernel.org,
+	decui@microsoft.com,
+	longli@microsoft.com,
+	sgarzare@redhat.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	niuxuewei.nxw@antgroup.com,
+	linux-hyperv@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org,
+	Ben Hillis <Ben.Hillis@microsoft.com>,
+	Mitchell Levy <levymitchell0@gmail.com>
+Subject: [PATCH net v3] hv_sock: Report EOF instead of -EIO for FIN
+Date: Mon, 20 Apr 2026 19:59:50 -0700
+Message-ID: <20260421025950.1099495-1-decui@microsoft.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -74,139 +63,118 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [2.54 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_REJECT(1.00)[139.com:s=dkim];
+X-Spamd-Result: default: False [2.04 / 15.00];
+	DMARC_POLICY_REJECT(2.00)[microsoft.com : SPF not aligned (relaxed), No valid DKIM,reject];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	TAGGED_FROM(0.00)[bounces-240031-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,toke.dk,kernel.org,sipsolutions.net,gmail.com,collabora.com,openwrt.org,lists.infradead.org,intel.com];
-	DMARC_NA(0.00)[139.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[139.com];
-	FROM_NEQ_ENVFROM(0.00)[1468888505@139.com,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-240032-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	FREEMAIL_CC(0.00)[vger.kernel.org,microsoft.com,gmail.com];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[139.com:-];
-	TO_DN_NONE(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_SPAM(0.00)[0.161];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,nbd.name:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,139.com:mid,139.com:email,intel.com:email]
-X-Rspamd-Queue-Id: 0BAB8435969
+	FROM_NEQ_ENVFROM(0.00)[decui@microsoft.com,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C1FEB435A63
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Felix Fietkau <nbd@nbd.name>
+Commit f0c5827d07cb unluckily causes a regression for the FIN packet,
+and the final read syscall gets an error rather than 0.
 
-[ Upstream commit d5ad6ab61cbd89afdb60881f6274f74328af3ee9 ]
+Ideally, we would want to fix hvs_channel_readable_payload() so that it
+could return 0 in the FIN scenario, but it's not good for the hv_sock
+driver to use the VMBus ringbuffer's cached priv_read_index, which is
+internal data in the VMBus driver.
 
-ieee80211_tx_prepare_skb() has three error paths, but only two of them
-free the skb. The first error path (ieee80211_tx_prepare() returning
-TX_DROP) does not free it, while invoke_tx_handlers() failure and the
-fragmentation check both do.
+Fix the regression in hv_sock by returning 0 rather than -EIO.
 
-Add kfree_skb() to the first error path so all three are consistent,
-and remove the now-redundant frees in callers (ath9k, mt76,
-mac80211_hwsim) to avoid double-free.
+In case we see a malformed/short packet, we still return -EIO.
 
-Document the skb ownership guarantee in the function's kdoc.
+Fixes: f0c5827d07cb ("hv_sock: Return the readable bytes in hvs_stream_has_data()")
+Cc: stable@vger.kernel.org
+Reported-by: Ben Hillis <Ben.Hillis@microsoft.com>
+Reported-by: Mitchell Levy <levymitchell0@gmail.com>
+Signed-off-by: Dexuan Cui <decui@microsoft.com>
 
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Link: https://patch.msgid.link/20260314065455.2462900-1-nbd@nbd.name
-Fixes: 06be6b149f7e ("mac80211: add ieee80211_tx_prepare_skb() helper function")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-[ Exclude changes to drivers/net/wireless/mediatek/mt76/scan.c as this file is first
- introduced by commit 31083e38548f("wifi: mt76: add code for emulating hardware scanning")
- after linux-6.14.]
-Signed-off-by: Li hongliang <1468888505@139.com>
 ---
- drivers/net/wireless/ath/ath9k/channel.c | 6 ++----
- drivers/net/wireless/mac80211_hwsim.c    | 1 -
- include/net/mac80211.h                   | 4 ++++
- net/mac80211/tx.c                        | 4 +++-
- 4 files changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/channel.c b/drivers/net/wireless/ath/ath9k/channel.c
-index 6cf087522157..31b7921bf34f 100644
---- a/drivers/net/wireless/ath/ath9k/channel.c
-+++ b/drivers/net/wireless/ath/ath9k/channel.c
-@@ -1011,7 +1011,7 @@ static void ath_scan_send_probe(struct ath_softc *sc,
- 	skb_set_queue_mapping(skb, IEEE80211_AC_VO);
+Changes since v1:
+    Removed the local variable 'need_refill' to make the code more 
+    readable. Stefano, thanks!
+
+    No other change.
+
+
+Changes since v2:
+    Added code to test the flag SEND_SHUTDOWN. Copilot, thanks!
+    Updated the comment and the commit messages accordingly.
+
+ net/vmw_vsock/hyperv_transport.c | 29 +++++++++++++++++++++++++----
+ 1 file changed, 25 insertions(+), 4 deletions(-)
+
+diff --git a/net/vmw_vsock/hyperv_transport.c b/net/vmw_vsock/hyperv_transport.c
+index 069386a74557..da150de10f0d 100644
+--- a/net/vmw_vsock/hyperv_transport.c
++++ b/net/vmw_vsock/hyperv_transport.c
+@@ -694,7 +694,6 @@ static ssize_t hvs_stream_enqueue(struct vsock_sock *vsk, struct msghdr *msg,
+ static s64 hvs_stream_has_data(struct vsock_sock *vsk)
+ {
+ 	struct hvsock *hvs = vsk->trans;
+-	bool need_refill;
+ 	s64 ret;
  
- 	if (!ieee80211_tx_prepare_skb(sc->hw, vif, skb, band, NULL))
--		goto error;
-+		return;
+ 	if (hvs->recv_data_len > 0)
+@@ -702,9 +701,31 @@ static s64 hvs_stream_has_data(struct vsock_sock *vsk)
  
- 	txctl.txq = sc->tx.txq_map[IEEE80211_AC_VO];
- 	if (ath_tx_start(sc->hw, skb, &txctl))
-@@ -1124,10 +1124,8 @@ ath_chanctx_send_vif_ps_frame(struct ath_softc *sc, struct ath_vif *avp,
+ 	switch (hvs_channel_readable_payload(hvs->chan)) {
+ 	case 1:
+-		need_refill = !hvs->recv_desc;
+-		if (!need_refill)
+-			return -EIO;
++		if (hvs->recv_desc) {
++			/* Here hvs->recv_data_len is 0, so hvs->recv_desc must
++			 * be NULL unless it points to the 0-byte-payload FIN
++			 * packet or a malformed/short packet: see
++			 * hvs_update_recv_data().
++			 *
++			 * If hvs->recv_desc points to the FIN packet, here all
++			 * the payload has been dequeued and the peer_shutdown
++			 * flag is set, but hvs_channel_readable_payload() still
++			 * returns 1, because the VMBus ringbuffer's read_index
++			 * is not updated for the FIN packet:
++			 * hvs_stream_dequeue() -> hv_pkt_iter_next() updates
++			 * the cached priv_read_index but has no opportunity to
++			 * update the read_index in hv_pkt_iter_close() as
++			 * hvs_stream_has_data() returns 0 for the FIN packet,
++			 * so it won't get dequeued.
++			 *
++			 * In case hvs->recv_desc points to a malformed/short
++			 * packet, return -EIO.
++			 */
++			if (hvs->vsk->peer_shutdown & SEND_SHUTDOWN)
++				return 0;
++			else
++				return -EIO;
++		}
  
- 		skb->priority = 7;
- 		skb_set_queue_mapping(skb, IEEE80211_AC_VO);
--		if (!ieee80211_tx_prepare_skb(sc->hw, vif, skb, band, &sta)) {
--			dev_kfree_skb_any(skb);
-+		if (!ieee80211_tx_prepare_skb(sc->hw, vif, skb, band, &sta))
- 			return false;
--		}
- 		break;
- 	default:
- 		return false;
-diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
-index 037358606a51..865bbe029343 100644
---- a/drivers/net/wireless/mac80211_hwsim.c
-+++ b/drivers/net/wireless/mac80211_hwsim.c
-@@ -2275,7 +2275,6 @@ static void hw_scan_work(struct work_struct *work)
- 						      hwsim->tmp_chan->band,
- 						      NULL)) {
- 				rcu_read_unlock();
--				kfree_skb(probe);
- 				continue;
- 			}
- 
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index 8f91609f928c..70ee982f08d9 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -6337,6 +6337,10 @@ void ieee80211_report_wowlan_wakeup(struct ieee80211_vif *vif,
-  * @band: the band to transmit on
-  * @sta: optional pointer to get the station to send the frame to
-  *
-+ * Return: %true if the skb was prepared, %false otherwise.
-+ * On failure, the skb is freed by this function; callers must not
-+ * free it again.
-+ *
-  * Note: must be called under RCU lock
-  */
- bool ieee80211_tx_prepare_skb(struct ieee80211_hw *hw,
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 30ad46cfcad8..b923cd755a68 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -1869,8 +1869,10 @@ bool ieee80211_tx_prepare_skb(struct ieee80211_hw *hw,
- 	struct ieee80211_tx_data tx;
- 	struct sk_buff *skb2;
- 
--	if (ieee80211_tx_prepare(sdata, &tx, NULL, skb) == TX_DROP)
-+	if (ieee80211_tx_prepare(sdata, &tx, NULL, skb) == TX_DROP) {
-+		kfree_skb(skb);
- 		return false;
-+	}
- 
- 	info->band = band;
- 	info->control.vif = vif;
+ 		hvs->recv_desc = hv_pkt_iter_first(hvs->chan);
+ 		if (!hvs->recv_desc)
 -- 
-2.34.1
-
+2.49.0
 
 
