@@ -1,137 +1,192 @@
-Return-Path: <stable+bounces-240105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240107-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +FmaJ4VJ52lW6QEAu9opvQ
-	(envelope-from <stable+bounces-240105-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 11:55:17 +0200
+	id 2OTkJqpL52lW6QEAu9opvQ
+	(envelope-from <stable+bounces-240107-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 12:04:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED9594392E2
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 11:55:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FEFA4394AC
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 12:04:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7FA0630497BC
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 09:52:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9DFEA302D13E
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 09:58:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A0743AF66F;
-	Tue, 21 Apr 2026 09:52:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC2693B2FF9;
+	Tue, 21 Apr 2026 09:58:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="p2CwlWz8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cP3xKsVI"
 X-Original-To: stable@vger.kernel.org
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D51994414;
-	Tue, 21 Apr 2026 09:52:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DB4E3A8FEA;
+	Tue, 21 Apr 2026 09:58:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776765123; cv=none; b=iSbJ7Bu9sdrOTY+zKUJyD2jLn62J99abEKSLK7zdT2LWm/XgHTWK7dXM0wHInvTrmbxFJTVxl/av1XW5r+mwkLeKgPTy3cPV0yeOiTshbD6mNMc3grExwPqK0cnB7dkrJxEp6CjSn1zEniqjjaacaXyj+V0xxmp9ggcQO3oczgY=
+	t=1776765531; cv=none; b=nYy7vEITp4kVo7Z3oLqCSqqNVd/onwnzdyqWnyuk0ie1f7zxSimoDlJTc8MP+qd1/6BVCoIbxAgKEdAzNYn01+gnn/v21yPQOGNkxrm60At3r3DjWgIbdFCw2IrwTa9Pm7tlV8yt/Z6K1oPD9mjDkYGrqxVRNXZwkPPHLmYeKqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776765123; c=relaxed/simple;
-	bh=09YPZAKY7rOpxPUVTsTAmxP+32o1aRIEB6eOcqRhE9Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oYTf0Z9AwRWH3+KYEzd9CQTnS5jN5FDQAOyVgVN7NyvEPLp6FBO/vgFl2rUsc/ZNFomkDS637LV5dRoCG4luMJQYMODe/xLp2fglQYpnkBTLgFJ5iDczwBc2+duLr+4ScyDALFJdsslkVV8xZ6+C6ZVsW9vzD+WZfAE65DqxMxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=p2CwlWz8; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Reply-To:Content-ID:Content-Description;
-	bh=83aVEK9f9SufcwCkUntBBw2eItisKLS4TV7VwcFpGhQ=; b=p2CwlWz8heTBsicOtaS2dH9rBt
-	Kr4Td/2WmHq18jsZCKQDBg+pO7qQBnsluvlLuZkKpBNRyCr07yRuJMh0U3YcVpMTX6TqmB0/XDT7j
-	Jpyttg3XmIA+/oVluiKg+WX0jEB4BAfgJcYOJSCHyyMvtrwoAHg9kpJVrSA7ZPQ08IsYKt1/EuKSi
-	d9pvrqYPTApN5+eYn/4kGTcHeTz/KLCe/5NlZZ/9OB4gqj+qoiPZE5xx6056yfvcs4Sivix9RU52p
-	LbT5mT65YUAtTEjy4OPDHHSiz+zYjo8M7QzF9svrO1RI8A2pZh3RkXmV1mq86aZM1yRKogYzo8SWy
-	KX9JieMQ==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1wF7lj-000lhS-10;
-	Tue, 21 Apr 2026 09:51:47 +0000
-Date: Tue, 21 Apr 2026 02:51:42 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Sudeep Holla <sudeep.holla@kernel.org>
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>, 
-	Hanjun Guo <guohanjun@huawei.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Len Brown <lenb@kernel.org>, Huisong Li <lihuisong@huawei.com>, 
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, pjaroszynski@nvidia.com, rmikey@meta.com, kernel-team@meta.com, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] ACPI: arm64: cpuidle: Tolerate platforms with no deep
- PSCI idle states
-Message-ID: <aedGoi-Fk5HPK0OO@gmail.com>
-References: <20260420-ffh-v1-1-6b4c10fec442@debian.org>
- <20260420-sturdy-unique-shark-c4ca8c@sudeepholla>
+	s=arc-20240116; t=1776765531; c=relaxed/simple;
+	bh=Tsq1SH4wRGWaW6shCyBF9cxjiMaM2pGcEJjUycGIkHA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=HFWgM9tl9MuRKlW9avi6fZLkaL0wyJZu19jiI0eaeXW8Vlrj8ANp5q0UUZqrbqN4D+a/vfzn8JMPjz2Z5wPTl51BMjmrccfaBmjyW3FJFQXe2XESexFPJYQdfVhlkZwA2yk/BgweRtjE1EUlR6EzYn2Hj8Gvu1zV3SElOCHOVzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cP3xKsVI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02BA6C2BCB5;
+	Tue, 21 Apr 2026 09:58:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776765530;
+	bh=Tsq1SH4wRGWaW6shCyBF9cxjiMaM2pGcEJjUycGIkHA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=cP3xKsVIfM1kILDzW4ycKUXK9pvUGTHfseBrcSwd+2BIdsiGmWFM+P0KumzB72UI1
+	 lOkEWUgX/r4+nhLTVFZbEjMoNH6v2xIfPRUU9YnXvACZ8pUCme0aEKoyIWxnN5L/wv
+	 oM0epl8AYqBESabhGOuC/pYlp0IHdg8bZhbCD75w64NEUceMywaSHpWz1pPPziQMLk
+	 UZD9/NZw6FNzHPB5s38EwvNa+54WGupllvRBZbi7hqz6g6l3BGSyJAhPl5UcQbg/Jt
+	 6cSJOyasZ92wwBEQAHfhVIhs5j9r0q5XFpoE7gSE598t4XZdlexDJQkBZ6EOoKf+sE
+	 9NpzFHHIujcQQ==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: gregkh@linuxfoundation.org
+Cc: achill@achill.org,
+	akpm@linux-foundation.org,
+	broonie@kernel.org,
+	conor@kernel.org,
+	f.fainelli@gmail.com,
+	hargar@microsoft.com,
+	jonathanh@nvidia.com,
+	linux-kernel@vger.kernel.org,
+	linux@roeck-us.net,
+	lkft-triage@lists.linaro.org,
+	patches@kernelci.org,
+	patches@lists.linux.dev,
+	pavel@nabladev.com,
+	rwarsow@gmx.de,
+	shuah@kernel.org,
+	sr@sladewatkins.com,
+	stable@vger.kernel.org,
+	sudipm.mukherjee@gmail.com,
+	torvalds@linux-foundation.org,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Zqiang <qiang.zhang@linux.dev>,
+	rcu@vger.kernel.org,
+	Richard Weinberger <richard@nod.at>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	linux-um@lists.infradead.org
+Subject: Re: [PATCH 6.18 000/198] 6.18.24-rc1 review
+Date: Tue, 21 Apr 2026 11:55:49 +0200
+Message-ID: <20260421095549.47476-1-ojeda@kernel.org>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+References: <20260420153935.605963767@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260420-sturdy-unique-shark-c4ca8c@sudeepholla>
-X-Debian-User: leitao
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[debian.org:s=smtpauto.stravinsky];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	DMARC_NA(0.00)[debian.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[leitao@debian.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240105-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[achill.org,linux-foundation.org,kernel.org,gmail.com,microsoft.com,nvidia.com,vger.kernel.org,roeck-us.net,lists.linaro.org,kernelci.org,lists.linux.dev,nabladev.com,gmx.de,sladewatkins.com,joshtriplett.org,efficios.com,infradead.org,goodmis.org,linutronix.de,linux.dev,nod.at,cambridgegreys.com,sipsolutions.net,lists.infradead.org];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[debian.org:+]
-X-Rspamd-Queue-Id: ED9594392E2
+	RCPT_COUNT_TWELVE(0.00)[38];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-240107-lists,stable=lfdr.de];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	MAILSPIKE_FAIL(0.00)[172.234.253.10:query timed out];
+	FROM_NEQ_ENVFROM(0.00)[ojeda@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linutronix.de:email,nvidia.com:email,goodmis.org:email,linux.dev:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,infradead.org:email,nod.at:email,sipsolutions.net:email,joshtriplett.org:email]
+X-Rspamd-Queue-Id: 3FEFA4394AC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, Apr 20, 2026 at 04:12:38PM +0100, Sudeep Holla wrote:
-> On Mon, Apr 20, 2026 at 02:27:13AM -0700, Breno Leitao wrote:
-> > -	count = pr->power.count - 1;
-> > -	if (count <= 0)
-> > -		return -ENODEV;
-> > -
+On Mon, 20 Apr 2026 17:39:39 +0200 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
 >
-> Does it make sense to retain this check like
->   if (pr->power.count < 1)
->   	return -EINVAL;
+> This is the start of the stable review cycle for the 6.18.24 release.
+> There are 198 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
-> Though I see the assignment to pr->power.count in drivers/acpi/processor_idle.c
-> is through unsigned int. So I am fine even without the above check.
+> Responses should be made by Wed, 22 Apr 2026 15:38:57 +0000.
+> Anything received after that time might be too late.
 
-I don't think the check is necessary. When count is 0 or 1, the loop
-for (i = 1; i < pr->power.count; i++) body won't execute, and the
-function will return 0.
+Boot-tested under QEMU for Rust x86_64, arm64 and riscv64; built-tested
+for loongarch64:
 
-This seems like the correct behavior — if there are no FFH PSCI states
-to validate, there's nothing that should fail.
+Tested-by: Miguel Ojeda <ojeda@kernel.org>
 
-Additionally, returning -ENODEV would trigger the "Invalid FFH LPI data"
-error message, which would be misleading since the LPI data isn't
-invalid, it's just not present.
+For UML (x86_64) I am seeing:
 
-That said, please take this with a grain of salt since I'm not deeply
-familiar with _LPI states and their expected behavior.
+    In file included from arch/um/kernel/asm-offsets.c:3:
+    In file included from ./arch/x86/um/shared/sysdep/kernel-offsets.h:5:
+    In file included from ./include/linux/crypto.h:18:
+    In file included from ./include/linux/slab.h:16:
+    In file included from ./include/linux/gfp.h:7:
+    In file included from ./include/linux/mmzone.h:1538:
+    In file included from ./include/linux/memory_hotplug.h:7:
+    In file included from ./include/linux/notifier.h:16:
+    In file included from ./include/linux/srcu.h:59:
+    ./include/linux/srcutiny.h:14:10: fatal error: 'linux/irq_work_types.h' file not found
+       14 | #include <linux/irq_work_types.h>
+          |          ^~~~~~~~~~~~~~~~~~~~~~~~
+    1 error generated.
 
-Thanks for the review,
---breno
+Caused by commit 95721c9fb3a1 ("srcu: Use irq_work to start GP in tiny
+SRCU"). The header seems to simply not be there, i.e. either the
+`#include` is changed or commit c809f081fe40 ("irqwork: Move data struct
+to a types header") is backported.
+
+Cc: Joel Fernandes <joelagnelf@nvidia.com>
+Cc: Paul E. McKenney <paulmck@kernel.org>
+Cc: Boqun Feng <boqun@kernel.org>
+Cc: Sasha Levin <sashal@kernel.org>
+Cc: Josh Triplett <josh@joshtriplett.org>
+Cc: Lai Jiangshan <jiangshanlai@gmail.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Uladzislau Rezki <urezki@gmail.com>
+Cc: Zqiang <qiang.zhang@linux.dev>
+Cc: rcu@vger.kernel.org
+
+Cc: Richard Weinberger <richard@nod.at>
+Cc: Anton Ivanov <anton.ivanov@cambridgegreys.com>
+Cc: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-um@lists.infradead.org
+
+I hope that helps!
+
+Cheers,
+Miguel
 
