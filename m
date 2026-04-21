@@ -1,221 +1,198 @@
-Return-Path: <stable+bounces-240189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240190-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aG5hO8GU52mp+AEAu9opvQ
-	(envelope-from <stable+bounces-240189-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 17:16:17 +0200
+	id GKhaCHGX52mp+AEAu9opvQ
+	(envelope-from <stable+bounces-240190-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 17:27:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5358143CA3C
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 17:16:16 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCA6B43CBB8
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 17:27:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A2EEE30648B4
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 15:11:37 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A2861301C5FE
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 15:26:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70FB02BF3E2;
-	Tue, 21 Apr 2026 15:11:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A26673D905F;
+	Tue, 21 Apr 2026 15:26:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AL8sndUb"
 X-Original-To: stable@vger.kernel.org
-Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f49.google.com (mail-yx1-f49.google.com [74.125.224.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D01B43C3BE0
-	for <stable@vger.kernel.org>; Tue, 21 Apr 2026 15:11:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776784296; cv=none; b=tVQTGnOKXRKuEE85enfOQlT0oR9PUDfvDPMhd0Yyhrz+SIVCNjf2rjpq90jvNqoszkQ5aIPXYrQ/SUOaJrkmWXDnATgS/5slvkojp55cf/0FdVaYPtMxMyFhxwhedWpY0ndzhK6TMNGl55p8GShpujr7OFu1qjEM2erhpE0U5ac=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776784296; c=relaxed/simple;
-	bh=wAr2w4nn0wagXXQwq+eZBPIe5xu1vyHzwJ8h01sGrhA=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=byqtI6U1mawRPS6qVqPiN3uTmwhj+47p0aQMQJRLPWkCRTCzh/LDA5kvMV2zhGylZ5GRR0eYw5YWT+0N866p0V2rAIE9gBEuznvVxcAfieXPS2VqQOZnvs93RkZ3mdGGcVDeRYuJfDg5nByYUwrDW6AuwXoCAsjVhJa2ePJ4dcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
-Received: from local
-	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
-	 (Exim 4.99)
-	(envelope-from <daniel@makrotopia.org>)
-	id 1wFClA-0000000031i-2QCy;
-	Tue, 21 Apr 2026 15:11:32 +0000
-Date: Tue, 21 Apr 2026 16:11:30 +0100
-From: Daniel Golle <daniel@makrotopia.org>
-To: gregkh@linuxfoundation.org, stable@vger.kernel.org
-Subject: [PATCH 6.18.y] net: ethernet: mtk_eth_soc: initialize PPE
- per-tag-layer MTU registers
-Message-ID: <3e3fe06bd630b35b1f7cf25ea69c2da374130fd5.1776778532.git.daniel@makrotopia.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDE7B3D891F
+	for <stable@vger.kernel.org>; Tue, 21 Apr 2026 15:26:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776785205; cv=pass; b=Z79zLEcXODuvxq3+AZTnkYtynLx5w4BykIV+fF7dWRQAGacY3ZVhnx1iA5BZbyRGFC8gdtVlCgh1eNPLWg9XDWJUuePWlH9qVlMYk5su+Ij+cRok5j2+3lE2rAXT2hF91wZ9wQNpK9X+lI64DUftuHK5WNrxnvmJ1NLRoQEkB+0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776785205; c=relaxed/simple;
+	bh=yPHRahqtUOMV/Hb4WJF5/YBWLujURcb0PRjmy2lESXI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MOOK+t8cUA6oUUu+r7CGQVOvQjJjO8ZamdAzoQuitz8tHBP2x8s6PcZ1bFeVqn+Ar6JcAyG8FACWAb7NdOvzgd+5+VeuvRUg6UEmDILMZmsX2DhsXKrDWt6hxRuPSyYv0UmnuEtQmC3AxIScsV+IrCm06kzTg/uRIPgb9b0qfGg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AL8sndUb; arc=pass smtp.client-ip=74.125.224.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yx1-f49.google.com with SMTP id 956f58d0204a3-65005a8840dso3777379d50.0
+        for <stable@vger.kernel.org>; Tue, 21 Apr 2026 08:26:42 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776785202; cv=none;
+        d=google.com; s=arc-20240605;
+        b=P/iUtGXFL8sd1CEhExpEEEDBDSovwT/0v0+tWCg2kqJkHX77z3lI2d3SQjZ6ojWEhC
+         RPr6slkf4xXqLjvxmpQYqDKpiKEIaiCzGGuRWuYJQhgi5RvuAPwKKs4xdj1Avui0ksFt
+         45dyXf5YsbWSmzK88cs7Ivi2cM0yNzkBCN1vtcqTS2qgjJtO06W654bkXkNhRhEAvO0G
+         9p4S6KHs45O0ZTjSWCtD7l7xxYnXMyfqvulgUsx31aiqaZRmbEtGc/nTDO+wm68UU/Dj
+         vSNEdOKbilhNpY55O5vz6Xmp1ZugHbqta1IsydjTPthgp9Qm5l5Fa6eaWZsvz344CCO7
+         E86Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=gq4JGCjbD0peb76RqIvyQzPZR38TXeWbvqiNZavVYoE=;
+        fh=IBbr98MFrc+OjzjBTfEIUuHjCDEEYv22un9rkATwMG0=;
+        b=BpZ/NNVv6PYw1oqjyluQmaQbE4AkC+FL04TGmwN8zItXGzYnNGeIogiaAqkJ1YnHqx
+         5N1+2kvRvaSOXiSCgYAcYr921EE9whdTG4/ZGUzGLqzMc7OXM125nsK3qxzsbreRSY7B
+         oFtlfZg0XR5KiRCk+bK4lXfLifvhWs6/l0WKRdzl9/bxAHISDnYLz7mmnK60KeSVOZgv
+         zdZNxA1SukSGeApkZNwuDzWFwn3IaTafTySnTIB20f89edoCN9xsk5s607+AZb4L1oaR
+         4of02KJ08kUjGwk19BnOogaKQYjC9K8LY3RC6ooLfdsm2UhPIjQP9PazZFCEA3b+zITX
+         F7gw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776785202; x=1777390002; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gq4JGCjbD0peb76RqIvyQzPZR38TXeWbvqiNZavVYoE=;
+        b=AL8sndUbEqJnN4LtUsy2isXmtUjPFDsLa5TuM8Gors5ID7DiX+UGK9uQcVAQOLc5+L
+         onW/sFTq0TQrFXRlGmisbruq7iwSUxVmW0azZ5JE1vrXHpTklGCpBqRSDFEW8LoFV/Wg
+         nM9uFV30p9KCt1FYXLm4bXS+26lhUMjvEM2SNmvJNwwsc3w4HM+bFhPx9vCb3IPSyLhR
+         We5pwxSPKgsaFxeYgprlJ2RKLMSxJvZMSyZSqJ65E2qNv7C4vdHVkOR0j+ckK61zqCgn
+         B6jAE125sP8UneibGwCr/NezMLtVBUyrGe4hCEa46IH15Pc9ktqG5WQmFlxiCzS3wGj4
+         cEgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776785202; x=1777390002;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=gq4JGCjbD0peb76RqIvyQzPZR38TXeWbvqiNZavVYoE=;
+        b=hhuwD2Z52EiYg4O5fr7coPM/kzeaGGC7eMu5h0J0sr0hR6CaYO/rMNxiBIbVLtDGma
+         qWpApBb+WR+xcaXmP4HGgtVUJJM658h4yKkFbysaF5AHmNq79YVBXz6cMTGFpxBG7u5V
+         AFQXJCyfJbPYkR1P1QF98u+ZXuB+jVrkH6FNCz/T5RrDgIExY01CIwhWD0Cdde5zZNcS
+         F62dqTq4CnTDmW5Ja/W68pcfpqgkXhJT6OvJ2QBgFNnVvOD3n5Ce0tqn39WAFPdTM3yI
+         YeF90GRhd8cl5LJ4qjYwojvDHr1esEJ7PATLmDXmYN1AY/zRtDtEpdqXmdNp0tSG0vZz
+         TuoA==
+X-Forwarded-Encrypted: i=1; AFNElJ+TRPFgvSAnjSylI1h2HGfVU8OfoJ/GHkgd/bq7v2eq3wHxmZaaSCss7Wy4E/qhz4bd190raiA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy5XTUlKyv0fpKSvnJ+8p3Wa/r4TlGlKtq3F3rfZe2MArXF8013
+	PgX3nIOzTrWMCNOg9SoyS3xSEpsF5CqDyOS5rgVTig1CFWOlln7Xbyd7O0OzLv0DpRI1rTGhRib
+	E6QEWJg8w8X+30VW1b9YL55DJ51UTS14=
+X-Gm-Gg: AeBDies46wJ5guGFd+VbJ6IugHiAwMNvgWIeWJTY/6JjFLcxUKlkkF49BIT2OcnW0ZE
+	pRVnTK3OVhunKBSf+7KWXC7OxZfdpxwa6aOzdbTF4kMz30WDAhJuGbjucnVnVpmDJA0CScnUraJ
+	coDrVYZhNFEcN7l1tp0yuvgnLFJ0wQT94yFzrYHHo/BhBmrTnsMUzFHcODWXOUuL1ooGqteX0gf
+	EBgkBymtDjmeOTADVqSlLNiTNHexQmyFyk1euVWaA9YssiUpumjpWlZC3RfP2HR12p3KKXhX3du
+	WeW/IRRzace/c66AG69ZhFF6qauTqeJkbAwVc7cbkcuSKFUU1Q==
+X-Received: by 2002:a05:690e:1688:b0:651:bcd7:709e with SMTP id
+ 956f58d0204a3-65310a71a81mr16767427d50.46.1776785201788; Tue, 21 Apr 2026
+ 08:26:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Spamd-Result: default: False [-0.46 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+References: <20260421063955.99164-1-sprasad@microsoft.com> <20260421063955.99164-2-sprasad@microsoft.com>
+In-Reply-To: <20260421063955.99164-2-sprasad@microsoft.com>
+From: Bharath SM <bharathsm.hsk@gmail.com>
+Date: Tue, 21 Apr 2026 08:26:30 -0700
+X-Gm-Features: AQROBzCohKFBLFtob7mlCVxxtoiPObLo3LCBJqTRkUUEkaO51_Su7hdh5BVHQMc
+Message-ID: <CAGypqWzrOmR6rUimbBJa9qJ-=+KJFzccMjere9dX=KwWeDFe+A@mail.gmail.com>
+Subject: Re: [PATCH v2 2/7] cifs: abort open_cached_dir if we don't request leases
+To: nspmangalore@gmail.com
+Cc: linux-cifs@vger.kernel.org, smfrench@gmail.com, pc@manguebit.org, 
+	bharathsm@microsoft.com, dhowells@redhat.com, henrique.carvalho@suse.com, 
+	ematsumiya@suse.de, Shyam Prasad N <sprasad@microsoft.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240189-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-240190-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[makrotopia.org];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,manguebit.org,microsoft.com,redhat.com,suse.com,suse.de];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[daniel@makrotopia.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bharathsmhsk@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	R_DKIM_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,makrotopia.org:mid,makrotopia.org:email]
-X-Rspamd-Queue-Id: 5358143CA3C
+	RCPT_COUNT_SEVEN(0.00)[10];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: BCA6B43CBB8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-commit 2dddb34dd0d07b01fa770eca89480a4da4f13153 upstream.
+On Mon, Apr 20, 2026 at 11:40=E2=80=AFPM <nspmangalore@gmail.com> wrote:
+>
+> From: Shyam Prasad N <sprasad@microsoft.com>
+>
+> It is possible that SMB2_open_init may not set lease context based
+> on the requested oplock level. This can happen when leases have been
+> temporarily or permanently disabled. When this happens, we will have
+> open_cached_dir making an open without lease context and the response
+> will anyway be rejected by open_cached_dir (thereby forcing a close to
+> discard this open). That's unnecessary two round-trips to the server.
+>
+> This change adds a check before making the open request to the server
+> to make sure that SMB2_open_init did add the expected lease context
+> to the open in open_cached_dir.
+>
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+> ---
+>  fs/smb/client/cached_dir.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+>
+> diff --git a/fs/smb/client/cached_dir.c b/fs/smb/client/cached_dir.c
+> index 04bb95091f498..e9917e5204b00 100644
+> --- a/fs/smb/client/cached_dir.c
+> +++ b/fs/smb/client/cached_dir.c
+> @@ -286,6 +286,13 @@ int open_cached_dir(unsigned int xid, struct cifs_tc=
+on *tcon,
+>                             &rqst[0], &oplock, &oparms, utf16_path);
+>         if (rc)
+>                 goto oshr_free;
+> +
+> +       if (oplock !=3D SMB2_OPLOCK_LEVEL_II) {
+> +               rc =3D -EINVAL;
+> +               cifs_dbg(FYI, "unexpected oplock level %d for cached dire=
+ctory\n", oplock);
+Should we reword the log from "'unexpected' oplock level for cached
+directory" to something like
+lease not available for cached dir.? Considering  the client itself
+might be disabling oplock temporarily.
+"unexpected" might look misleading.
 
-The PPE enforces output frame size limits via per-tag-layer VLAN_MTU
-registers that the driver never initializes. The hardware defaults do
-not account for PPPoE overhead, causing the PPE to punt encapsulated
-frames back to the CPU instead of forwarding them.
+> +               goto oshr_free;
+> +       }
+> +
+>         smb2_set_next_command(tcon, &rqst[0]);
+>
+>         memset(&qi_iov, 0, sizeof(qi_iov));
 
-Initialize the registers at PPE start and on MTU changes using the
-maximum GMAC MTU. This is a conservative approximation -- the actual
-per-PPE requirement depends on egress path, but using the global
-maximum ensures the limits are never too small.
-
-Fixes: ba37b7caf1ed2 ("net: ethernet: mtk_eth_soc: add support for initializing the PPE")
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Link: https://patch.msgid.link/ec995ab8ce8be423267a1cc093147a74d2eb9d82.1775789829.git.daniel@makrotopia.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
- drivers/net/ethernet/mediatek/mtk_eth_soc.c | 22 ++++++++++++++-
- drivers/net/ethernet/mediatek/mtk_ppe.c     | 30 +++++++++++++++++++++
- drivers/net/ethernet/mediatek/mtk_ppe.h     |  1 +
- 3 files changed, 52 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-index 8d3e15bc867d2..0f676bd72832b 100644
---- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-+++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-@@ -3567,12 +3567,23 @@ static int mtk_device_event(struct notifier_block *n, unsigned long event, void
- 	return NOTIFY_DONE;
- }
- 
-+static int mtk_max_gmac_mtu(struct mtk_eth *eth)
-+{
-+	int i, max_mtu = ETH_DATA_LEN;
-+
-+	for (i = 0; i < ARRAY_SIZE(eth->netdev); i++)
-+		if (eth->netdev[i] && eth->netdev[i]->mtu > max_mtu)
-+			max_mtu = eth->netdev[i]->mtu;
-+
-+	return max_mtu;
-+}
-+
- static int mtk_open(struct net_device *dev)
- {
- 	struct mtk_mac *mac = netdev_priv(dev);
- 	struct mtk_eth *eth = mac->hw;
- 	struct mtk_mac *target_mac;
--	int i, err, ppe_num;
-+	int i, err, ppe_num, mtu;
- 
- 	ppe_num = eth->soc->ppe_num;
- 
-@@ -3619,6 +3630,10 @@ static int mtk_open(struct net_device *dev)
- 			mtk_gdm_config(eth, target_mac->id, gdm_config);
- 		}
- 
-+		mtu = mtk_max_gmac_mtu(eth);
-+		for (i = 0; i < ARRAY_SIZE(eth->ppe); i++)
-+			mtk_ppe_update_mtu(eth->ppe[i], mtu);
-+
- 		napi_enable(&eth->tx_napi);
- 		napi_enable(&eth->rx_napi);
- 		mtk_tx_irq_enable(eth, MTK_TX_DONE_INT);
-@@ -4312,6 +4327,7 @@ static int mtk_change_mtu(struct net_device *dev, int new_mtu)
- 	int length = new_mtu + MTK_RX_ETH_HLEN;
- 	struct mtk_mac *mac = netdev_priv(dev);
- 	struct mtk_eth *eth = mac->hw;
-+	int max_mtu, i;
- 
- 	if (rcu_access_pointer(eth->prog) &&
- 	    length > MTK_PP_MAX_BUF_SIZE) {
-@@ -4322,6 +4338,10 @@ static int mtk_change_mtu(struct net_device *dev, int new_mtu)
- 	mtk_set_mcr_max_rx(mac, length);
- 	WRITE_ONCE(dev->mtu, new_mtu);
- 
-+	max_mtu = mtk_max_gmac_mtu(eth);
-+	for (i = 0; i < ARRAY_SIZE(eth->ppe); i++)
-+		mtk_ppe_update_mtu(eth->ppe[i], max_mtu);
-+
- 	return 0;
- }
- 
-diff --git a/drivers/net/ethernet/mediatek/mtk_ppe.c b/drivers/net/ethernet/mediatek/mtk_ppe.c
-index ada852adc5f70..fa688a42a22f5 100644
---- a/drivers/net/ethernet/mediatek/mtk_ppe.c
-+++ b/drivers/net/ethernet/mediatek/mtk_ppe.c
-@@ -973,6 +973,36 @@ static void mtk_ppe_init_foe_table(struct mtk_ppe *ppe)
- 	}
- }
- 
-+void mtk_ppe_update_mtu(struct mtk_ppe *ppe, int mtu)
-+{
-+	int base;
-+	u32 val;
-+
-+	if (!ppe)
-+		return;
-+
-+	/* The PPE checks output frame size against per-tag-layer MTU limits,
-+	 * treating PPPoE and DSA tags just like 802.1Q VLAN tags. The Linux
-+	 * device MTU already accounts for PPPoE (PPPOE_SES_HLEN) and DSA tag
-+	 * overhead, but 802.1Q VLAN tags are handled transparently without
-+	 * being reflected by the lower device MTU being increased by 4.
-+	 * Use the maximum MTU across all GMAC interfaces so that PPE output
-+	 * frame limits are sufficiently high regardless of which port a flow
-+	 * egresses through.
-+	 */
-+	base = ETH_HLEN + mtu;
-+
-+	val = FIELD_PREP(MTK_PPE_VLAN_MTU0_NONE, base) |
-+	      FIELD_PREP(MTK_PPE_VLAN_MTU0_1TAG, base + VLAN_HLEN);
-+	ppe_w32(ppe, MTK_PPE_VLAN_MTU0, val);
-+
-+	val = FIELD_PREP(MTK_PPE_VLAN_MTU1_2TAG,
-+			 base + 2 * VLAN_HLEN) |
-+	      FIELD_PREP(MTK_PPE_VLAN_MTU1_3TAG,
-+			 base + 3 * VLAN_HLEN);
-+	ppe_w32(ppe, MTK_PPE_VLAN_MTU1, val);
-+}
-+
- void mtk_ppe_start(struct mtk_ppe *ppe)
- {
- 	u32 val;
-diff --git a/drivers/net/ethernet/mediatek/mtk_ppe.h b/drivers/net/ethernet/mediatek/mtk_ppe.h
-index 223f709e2704f..ba85e39a155bf 100644
---- a/drivers/net/ethernet/mediatek/mtk_ppe.h
-+++ b/drivers/net/ethernet/mediatek/mtk_ppe.h
-@@ -346,6 +346,7 @@ struct mtk_ppe {
- struct mtk_ppe *mtk_ppe_init(struct mtk_eth *eth, void __iomem *base, int index);
- 
- void mtk_ppe_deinit(struct mtk_eth *eth);
-+void mtk_ppe_update_mtu(struct mtk_ppe *ppe, int mtu);
- void mtk_ppe_start(struct mtk_ppe *ppe);
- int mtk_ppe_stop(struct mtk_ppe *ppe);
- int mtk_ppe_prepare_reset(struct mtk_ppe *ppe);
--- 
-2.53.0
+Other than the above minor comment, Changes look good to me.
+Reviewed-by: Bharath SM <bharathsm@microsoft.com>
 
