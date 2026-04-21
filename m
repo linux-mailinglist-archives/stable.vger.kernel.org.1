@@ -1,174 +1,220 @@
-Return-Path: <stable+bounces-240186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240187-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8MFjK6eT52lE+AEAu9opvQ
-	(envelope-from <stable+bounces-240186-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 17:11:35 +0200
+	id yANRGqOU52mp+AEAu9opvQ
+	(envelope-from <stable+bounces-240187-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 17:15:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3037943C955
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 17:11:35 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5F6E43CA27
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 17:15:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0C5343013B50
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 15:09:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 556D03022685
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 15:11:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FF7A3C2782;
-	Tue, 21 Apr 2026 15:09:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="lLCeCYep"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC85C3D9026;
+	Tue, 21 Apr 2026 15:11:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76BF1223707
-	for <stable@vger.kernel.org>; Tue, 21 Apr 2026 15:09:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28C8F30E836
+	for <stable@vger.kernel.org>; Tue, 21 Apr 2026 15:11:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776784186; cv=none; b=QfXomJkaGRvjCe/+Uc8d+S5utn6xABz4QOKsdc2fOGT6BjPRJ2WVV6+sxNymVbD9v9u1lBwCMKScLdxD1EGSUU4iNQcX84GywAiYUymsVuMTIN0mRM3dKnDmKEDMpUAMjMBrNgbWwFuJ/afmgw+Cf/WqIPbAeIF9j7ss0eXkXXI=
+	t=1776784279; cv=none; b=SLyHtIee3/ikvEVFnQApazC+I8Pu5ei+ucWyd7j7MJigP+iJ8aGlxi5yRdJuwK+RvzG/naYcTXsUVtEZ4CC8HI7ej2FZ/n1TlD79Oe2UuOOrmM7OU4mOsldqHKQmjrJjHG7kAEIjK0Ifj/0ZBWtm2ok5LyazGk3Jnma5Kp3V+ZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776784186; c=relaxed/simple;
-	bh=KDwN96U5E6R4W6SWZ60dPGTpsHJNZ3TsnV7dEMJsfdA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=T1Z/kOSGNetvkzwQqdsQniUrGSVU176GDWKzS9bhEjzLLc90MOgdLMKJXnayg0oj+o+IjT0t0z4GcHZmuak5Kai/wtUARlAgPc/DCFmDbsxVfH/QLqhiA84Zee55vvYGdYLl9LAju7cHUol3CpV0HQEFekhQdI3Jps2BC0iWERI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=lLCeCYep; arc=none smtp.client-ip=213.97.179.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=p9B8Qt2oRG8/qwzcjUyXCkccz6Xb3kE22c28rGUWAX0=; b=lLCeCYepiC9Efkman12VwmXSW0
-	x3P3YGXdlD/rujFEULwvfJT87unW5GAwPDGZRxpMlT52lrSsyi6caIyTkBY3S6xYi+vMK2oZ8y9Yy
-	j2Qzbf+eunMzMIkFXjo2KGrTLxy0/yxAXdwcDqdIVARhZ7pijX7fwovmUXrCglXkbJJrU8qwVclvH
-	SozRnnB+FIitDJUbbZeA73II6eanbJSqmLwS0rWBsfMy7wczNGv4ZxS6/miczGwROxbjwjWjW9PCe
-	7f2AP1JDu830JZL4Uycmt3hjT0trN4R2C+T6AbI1TzBBzF64J5BwG9e3JufURVJs2kXnJ1M5cMyHK
-	HgJkAznQ==;
-Received: from [90.240.106.137] (helo=[192.168.0.101])
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
-	id 1wFCj8-001yGK-JM; Tue, 21 Apr 2026 17:09:26 +0200
-Message-ID: <866fe0f9-73a6-47b3-ac37-41bb26c0c6a6@igalia.com>
-Date: Tue, 21 Apr 2026 16:09:25 +0100
+	s=arc-20240116; t=1776784279; c=relaxed/simple;
+	bh=CtBOa6WxEBkxScFg46NqF8egAPv5v3+TpvNRAotB7HY=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=pFG/0YdFSrsjCSksHPEivnp2KyjX+yJASKbfllAfoJIB1/gjZB6yA99Ykl80NVjbhax+vDVb2Mk6uqz52UElrS73SceVHFNY8a17rUahLMtIsv1vz+FaHRVHrG7hhnUy2+UPK5V1XYdKIJuioClEY7X96YlKYCuhkyY3eW+LNGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
+Received: from local
+	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
+	 (Exim 4.99)
+	(envelope-from <daniel@makrotopia.org>)
+	id 1wFCkn-0000000031M-1oEj;
+	Tue, 21 Apr 2026 15:11:09 +0000
+Date: Tue, 21 Apr 2026 16:11:06 +0100
+From: Daniel Golle <daniel@makrotopia.org>
+To: gregkh@linuxfoundation.org, stable@vger.kernel.org
+Subject: [PATCH 6.6.y] net: ethernet: mtk_eth_soc: initialize PPE
+ per-tag-layer MTU registers
+Message-ID: <40029f29246988189c77cfee7580115a3f95dab5.1776783784.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/xe/xelp: Fix Wa_18022495364
-To: Matt Roper <matthew.d.roper@intel.com>,
- Tvrtko Ursulin <tursulin@ursulin.net>
-Cc: intel-xe@lists.freedesktop.org, kernel-dev@igalia.com,
- Matthew Brost <matthew.brost@intel.com>,
- =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, stable@vger.kernel.org
-References: <20260420131603.70357-1-tvrtko.ursulin@igalia.com>
- <384adac7-2aa4-4568-b7a5-987e914fbaf2@ursulin.net>
- <20260420202932.GH7476@mdroper-desk1.amr.corp.intel.com>
-Content-Language: en-GB
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-In-Reply-To: <20260420202932.GH7476@mdroper-desk1.amr.corp.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.36 / 15.00];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spamd-Result: default: False [-0.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_REJECT(1.00)[igalia.com:s=20170329];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[igalia.com : SPF not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-240186-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWO(0.00)[2];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[igalia.com:-];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-240187-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[makrotopia.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tvrtko.ursulin@igalia.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[daniel@makrotopia.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	R_DKIM_NA(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,igalia.com:mid,igalia.com:email]
-X-Rspamd-Queue-Id: 3037943C955
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E5F6E43CA27
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+commit 2dddb34dd0d07b01fa770eca89480a4da4f13153 upstream.
 
-On 20/04/2026 21:29, Matt Roper wrote:
-> On Mon, Apr 20, 2026 at 02:24:05PM +0100, Tvrtko Ursulin wrote:
->>
->> On 20/04/2026 14:16, Tvrtko Ursulin wrote:
->>> Command parser relative MMIO addressing needs to be enabled when writing
->>> to the register.
->>>
->>> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
->>> Fixes: ca33cd271ef9 ("drm/xe/xelp: Add Wa_18022495364")
->>> Cc: Matt Roper <matthew.d.roper@intel.com>
->>> Cc: Matthew Brost <matthew.brost@intel.com>
->>> Cc: "Thomas Hellström" <thomas.hellstrom@linux.intel.com>
->>> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
->>> Cc: <stable@vger.kernel.org> # v6.18+
-> 
-> I don't think we want/need the stable Cc here; this workaround doesn't
-> apply to any of the Xe2 and later platforms that the Xe driver supports
-> for users.  While it's possible for developers to manually override the
-> driver's detection flags and force it to load on Xe1-era platforms that
-> this workaround does apply to, doing so will taint the kernel and we
-> already know that a lot of Xe1 era workarounds aren't implemented.
+The PPE enforces output frame size limits via per-tag-layer VLAN_MTU
+registers that the driver never initializes. The hardware defaults do
+not account for PPPoE overhead, causing the PPE to punt encapsulated
+frames back to the CPU instead of forwarding them.
 
-You are right, I just blindly copied the output of dim fixes. But it 
-doesn't matter hugely either way since as long as there is Fixes: it 
-would get picked up for -stable anyway.
+Initialize the registers at PPE start and on MTU changes using the
+maximum GMAC MTU. This is a conservative approximation -- the actual
+per-PPE requirement depends on egress path, but using the global
+maximum ensures the limits are never too small.
 
-> 
->>> ---
->>>    drivers/gpu/drm/xe/xe_lrc.c | 2 +-
->>>    1 file changed, 1 insertion(+), 1 deletion(-)
->>>
->>> diff --git a/drivers/gpu/drm/xe/xe_lrc.c b/drivers/gpu/drm/xe/xe_lrc.c
->>> index 9d12a0d2f0b5..c725cde4508d 100644
->>> --- a/drivers/gpu/drm/xe/xe_lrc.c
->>> +++ b/drivers/gpu/drm/xe/xe_lrc.c
->>> @@ -1214,7 +1214,7 @@ static ssize_t setup_invalidate_state_cache_wa(struct xe_lrc *lrc,
->>>    	if (xe_gt_WARN_ON(lrc->gt, max_len < 3))
->>>    		return -ENOSPC;
->>> -	*cmd++ = MI_LOAD_REGISTER_IMM | MI_LRI_NUM_REGS(1);
->>> +	*cmd++ = MI_LOAD_REGISTER_IMM | MI_LRI_LRM_CS_MMIO | MI_LRI_NUM_REGS(1);
->>
->> Or if this register exists only for RCS would it be better to define
->> CS_DEBUG_MODE2 as the absolute 0x20d8 (as in i915)? Unfortunately the public
->> TGL PRM does not list neither the register or the workaround so I am not
->> sure.
-> 
-> CS_DEBUG_MODE2 exists on both the RCS and CCS engines, so I think the
-> current register definition is fine.
-> 
-> Personally I might have changed the line farther down to
-> CS_DEBUG_MODE2(hwe->mmio_base) so that we're using an absolute offset
-> instead of relative, but adding the MI_LRI_LRM_CS_MMIO flag and passing
-> the relative offset should work fine too.
+Fixes: ba37b7caf1ed ("net: ethernet: mtk_eth_soc: add support for initializing the PPE")
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+Link: https://patch.msgid.link/ec995ab8ce8be423267a1cc093147a74d2eb9d82.1775789829.git.daniel@makrotopia.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+---
+ drivers/net/ethernet/mediatek/mtk_eth_soc.c | 22 ++++++++++++++-
+ drivers/net/ethernet/mediatek/mtk_ppe.c     | 30 +++++++++++++++++++++
+ drivers/net/ethernet/mediatek/mtk_ppe.h     |  1 +
+ 3 files changed, 52 insertions(+), 1 deletion(-)
 
-Good to know, thanks! I am happy to change to absolute if you prefer.
-  > Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
-
-Thank you!
-
-I assume someone will pull the patch in?
-
-Regards,
-
-Tvrtko
-
-
+diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+index e2d3bda1dc923..74cb96dbff9ee 100644
+--- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
++++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+@@ -3368,11 +3368,22 @@ static int mtk_device_event(struct notifier_block *n, unsigned long event, void
+ 	return NOTIFY_DONE;
+ }
+ 
++static int mtk_max_gmac_mtu(struct mtk_eth *eth)
++{
++	int i, max_mtu = ETH_DATA_LEN;
++
++	for (i = 0; i < ARRAY_SIZE(eth->netdev); i++)
++		if (eth->netdev[i] && eth->netdev[i]->mtu > max_mtu)
++			max_mtu = eth->netdev[i]->mtu;
++
++	return max_mtu;
++}
++
+ static int mtk_open(struct net_device *dev)
+ {
+ 	struct mtk_mac *mac = netdev_priv(dev);
+ 	struct mtk_eth *eth = mac->hw;
+-	int i, err;
++	int i, err, mtu;
+ 
+ 	err = phylink_of_phy_connect(mac->phylink, mac->of_node, 0);
+ 	if (err) {
+@@ -3400,6 +3411,10 @@ static int mtk_open(struct net_device *dev)
+ 						  : MTK_GDMA_TO_PDMA;
+ 		mtk_gdm_config(eth, gdm_config);
+ 
++		mtu = mtk_max_gmac_mtu(eth);
++		for (i = 0; i < ARRAY_SIZE(eth->ppe); i++)
++			mtk_ppe_update_mtu(eth->ppe[i], mtu);
++
+ 		napi_enable(&eth->tx_napi);
+ 		napi_enable(&eth->rx_napi);
+ 		mtk_tx_irq_enable(eth, MTK_TX_DONE_INT);
+@@ -4088,6 +4103,7 @@ static int mtk_change_mtu(struct net_device *dev, int new_mtu)
+ 	int length = new_mtu + MTK_RX_ETH_HLEN;
+ 	struct mtk_mac *mac = netdev_priv(dev);
+ 	struct mtk_eth *eth = mac->hw;
++	int max_mtu, i;
+ 
+ 	if (rcu_access_pointer(eth->prog) &&
+ 	    length > MTK_PP_MAX_BUF_SIZE) {
+@@ -4098,6 +4114,10 @@ static int mtk_change_mtu(struct net_device *dev, int new_mtu)
+ 	mtk_set_mcr_max_rx(mac, length);
+ 	dev->mtu = new_mtu;
+ 
++	max_mtu = mtk_max_gmac_mtu(eth);
++	for (i = 0; i < ARRAY_SIZE(eth->ppe); i++)
++		mtk_ppe_update_mtu(eth->ppe[i], max_mtu);
++
+ 	return 0;
+ }
+ 
+diff --git a/drivers/net/ethernet/mediatek/mtk_ppe.c b/drivers/net/ethernet/mediatek/mtk_ppe.c
+index 6e222a000bf7e..1e033d63b4510 100644
+--- a/drivers/net/ethernet/mediatek/mtk_ppe.c
++++ b/drivers/net/ethernet/mediatek/mtk_ppe.c
+@@ -971,6 +971,36 @@ static void mtk_ppe_init_foe_table(struct mtk_ppe *ppe)
+ 	}
+ }
+ 
++void mtk_ppe_update_mtu(struct mtk_ppe *ppe, int mtu)
++{
++	int base;
++	u32 val;
++
++	if (!ppe)
++		return;
++
++	/* The PPE checks output frame size against per-tag-layer MTU limits,
++	 * treating PPPoE and DSA tags just like 802.1Q VLAN tags. The Linux
++	 * device MTU already accounts for PPPoE (PPPOE_SES_HLEN) and DSA tag
++	 * overhead, but 802.1Q VLAN tags are handled transparently without
++	 * being reflected by the lower device MTU being increased by 4.
++	 * Use the maximum MTU across all GMAC interfaces so that PPE output
++	 * frame limits are sufficiently high regardless of which port a flow
++	 * egresses through.
++	 */
++	base = ETH_HLEN + mtu;
++
++	val = FIELD_PREP(MTK_PPE_VLAN_MTU0_NONE, base) |
++	      FIELD_PREP(MTK_PPE_VLAN_MTU0_1TAG, base + VLAN_HLEN);
++	ppe_w32(ppe, MTK_PPE_VLAN_MTU0, val);
++
++	val = FIELD_PREP(MTK_PPE_VLAN_MTU1_2TAG,
++			 base + 2 * VLAN_HLEN) |
++	      FIELD_PREP(MTK_PPE_VLAN_MTU1_3TAG,
++			 base + 3 * VLAN_HLEN);
++	ppe_w32(ppe, MTK_PPE_VLAN_MTU1, val);
++}
++
+ void mtk_ppe_start(struct mtk_ppe *ppe)
+ {
+ 	u32 val;
+diff --git a/drivers/net/ethernet/mediatek/mtk_ppe.h b/drivers/net/ethernet/mediatek/mtk_ppe.h
+index e3d0ec72bc699..11c76fb8289ac 100644
+--- a/drivers/net/ethernet/mediatek/mtk_ppe.h
++++ b/drivers/net/ethernet/mediatek/mtk_ppe.h
+@@ -346,6 +346,7 @@ struct mtk_ppe {
+ struct mtk_ppe *mtk_ppe_init(struct mtk_eth *eth, void __iomem *base, int index);
+ 
+ void mtk_ppe_deinit(struct mtk_eth *eth);
++void mtk_ppe_update_mtu(struct mtk_ppe *ppe, int mtu);
+ void mtk_ppe_start(struct mtk_ppe *ppe);
+ int mtk_ppe_stop(struct mtk_ppe *ppe);
+ int mtk_ppe_prepare_reset(struct mtk_ppe *ppe);
+-- 
+2.53.0
 
