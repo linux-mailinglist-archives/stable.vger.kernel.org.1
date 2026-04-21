@@ -1,161 +1,157 @@
-Return-Path: <stable+bounces-240132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240133-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MEC9HRld52l87AEAu9opvQ
-	(envelope-from <stable+bounces-240132-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 13:18:49 +0200
+	id UEMhBUxd52l87AEAu9opvQ
+	(envelope-from <stable+bounces-240133-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 13:19:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2AF343A05C
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 13:18:48 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7F2343A079
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 13:19:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 947F03007947
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 11:18:47 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 379DF3014FDA
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 11:19:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 458413A1A5F;
-	Tue, 21 Apr 2026 11:18:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07D663A4F27;
+	Tue, 21 Apr 2026 11:19:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="QxPD1/w/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QgrStmFh"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbgbr1.qq.com (smtpbgbr1.qq.com [54.207.19.206])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f45.google.com (mail-dl1-f45.google.com [74.125.82.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 349382EE611;
-	Tue, 21 Apr 2026 11:18:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.19.206
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776770326; cv=none; b=ML6JifKdXzhzh+DbxY2UcVNaIrNfBkJFyEHIaHiN1MJw3TV33cbGOKGOmLjtVyhMKBjFA1KgdWwbrOjieNoBs+Vsj7u5gs8ldxh95EwC8gKJfAWQjAkzeJdF5EJ5i4oAHUFg/wjOrqgteqT1WRcCqmc9M4OBMA3PBJHOnxfFH7k=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776770326; c=relaxed/simple;
-	bh=Y56t0wmAE32zViZuf8hZJhYzxrKVtfh+UlZVUuHasKU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=L9PFpgYwRlYwSUctUKw61pEikmATyFO/Ih41npJrySodN3ysJfwvVl3tw/me2/LaMGIhw3CvqZfoT1nkX7t9yVlGBlbXAegG/Vvg4BInZXsqixSESLKM39gGIhcVDAvkONHiNZsDPfJb9BMIGf+B9YfcGSuIMxjEB8bNgNj9Iv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=QxPD1/w/; arc=none smtp.client-ip=54.207.19.206
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1776770248;
-	bh=Y56t0wmAE32zViZuf8hZJhYzxrKVtfh+UlZVUuHasKU=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version;
-	b=QxPD1/w/fheRrBwfzHnz79vUiqh7vFd1rIYSw9QbEeppUyIF7S3vVC8tXftorrs6k
-	 ikCbSTgIwSIozkjZFcJlMYKV3ptIGxgWA8mKU9UqLb5/eZlC2RnEPHHWwdXm+rPVJG
-	 I93PcR5n/pqpK7/GnaR7pJKlcthcfqSk82qXOT9Y=
-X-QQ-mid: esmtpgz14t1776770241t24fc306a
-X-QQ-Originating-IP: PgtO6fYtjq71wOcExxHFlwUdHZBlLY+GdPCI4226Oyg=
-Received: from localhost.localdomain ( [113.57.152.160])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 21 Apr 2026 19:17:18 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 17719987415262611358
-EX-QQ-RecipientCnt: 21
-From: Wentao Guan <guanwentao@uniontech.com>
-To: gregkh@linuxfoundation.org
-Cc: achill@achill.org,
-	akpm@linux-foundation.org,
-	broonie@kernel.org,
-	conor@kernel.org,
-	f.fainelli@gmail.com,
-	hargar@microsoft.com,
-	jonathanh@nvidia.com,
-	linux-kernel@vger.kernel.org,
-	linux@roeck-us.net,
-	lkft-triage@lists.linaro.org,
-	patches@kernelci.org,
-	patches@lists.linux.dev,
-	pavel@nabladev.com,
-	rwarsow@gmx.de,
-	shuah@kernel.org,
-	sr@sladewatkins.com,
-	stable@vger.kernel.org,
-	sudipm.mukherjee@gmail.com,
-	torvalds@linux-foundation.org,
-	Wentao Guan <guanwentao@uniontech.com>
-Subject: Re: [PATCH 6.18 000/198] 6.18.24-rc1 review
-Date: Tue, 21 Apr 2026 19:16:02 +0800
-Message-Id: <20260421111601.51467-1-guanwentao@uniontech.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-References: <20260420153935.605963767@linuxfoundation.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A43D5231832
+	for <stable@vger.kernel.org>; Tue, 21 Apr 2026 11:19:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776770375; cv=pass; b=piYInZVP7sO4Jl5burTQ/uCorECwmNOPQT1W58G9srrkNAMJ4rmlnSr+8OYSBpzV/K2QC03YLsmHl+pe4RuQLj4Zt3TwejCe0flw4/zDn/F149ZRUWZmL8o7+QtRshILaizAXJEvxh7074T+5vX1JHQpV/jpOPXDz17masxtOd8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776770375; c=relaxed/simple;
+	bh=jvHB0tpXLL67tt7aZ4GBhjJYCz/hwel69VLAp+NB8Ic=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=tHNWiZuKQyden5Y36nR1ZNJ8Dzqbu+zEZ6OcKXDvq9np4HTIJ6Vg2Cztn/MA86BrTBBup5lpaYe15jbVnNm14ds91TAfx/QUSPEcyFqSwgHad2coGXHaokPJay6kHaWPRfiqfSV/C/Y87Jecm5WypPXhGcDfrfwPtwZVYcNL8Ys=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QgrStmFh; arc=pass smtp.client-ip=74.125.82.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dl1-f45.google.com with SMTP id a92af1059eb24-12c373ee97fso114812c88.1
+        for <stable@vger.kernel.org>; Tue, 21 Apr 2026 04:19:34 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776770374; cv=none;
+        d=google.com; s=arc-20240605;
+        b=aXB216Y9yznBCiJ0AVl6SHLDkIZu1r2+gFmmOH/ymVfpZXjVIRbmoBR4KO2kiJA2UJ
+         IQ6BCC9loSQEzyXQEjtTjRY9GiKghdrOZ4dQkjGC87wGiGPlAYEbIRsuBTOfboSodGTV
+         hANw8wNHyW65m5u59Ef5FFWX/7fNBVDh1yJ9rFDyPy63Ec/8YhZYQGSanbWigLbTE1RV
+         GLwSJKBV1/TmrJTzRr8+WQtDLCQTxp/uoeOdiNrXjcj16JvL1+ofwDpsACLkwi9/xoJt
+         bbc0S40+0zGE6m7ugFWX6WIIeqa8utbBPTbJCTGSLbJT/1Q+M0UGYrHS9XpUBnCEEPcV
+         RD+Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=xqUnRX8dW8RdIIKAQHBXv+iPDb7VMQOQ+WS2QfdoqP8=;
+        fh=JDGG7ZayOHq+Rk5JjpwWhgLnkLiyHUGE2YsoPjDwqB0=;
+        b=QlJGjMQ8NTLVCkELeNbDJ2huVpnm+GXeGqTUk5U8Qv0be4rOCgkxtwT188ra6Pqiy0
+         5XSC6NNOTbJPPb9MBzgfWsZBzm75D2IhzpTAc/dbcYyedEyKDn1IFCqFNtGfqNAbaKNG
+         lnE3Ha7ue2so2EAyXZ7ii+zu77e67QmVopRjCFZo4aVtLGimulHwtDr72DQMre9qd1ih
+         0lpzR/mM83zDVjV+PnLbGn9czSB8swv1fWdS9VS/9fQYbN6zk85xYCtXwZofv4GTbU43
+         9W5DZFBCk48gm8ME8ksTg2pi0S9Yxy2tpi22BEKAP7J2rXCQRZpNl8oF0+/pVWtE21XL
+         X8EA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776770374; x=1777375174; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=xqUnRX8dW8RdIIKAQHBXv+iPDb7VMQOQ+WS2QfdoqP8=;
+        b=QgrStmFhn1bIXkKFlLozV5Sk6FDyl59Y/gvxUZT5VHIRRekGMQOHZ5RvoTzVVHNTip
+         DOugjoNJF/Apzzk+A4eK6USrvv4DNk9EP9rufIZoUu2Cmxfh6Zhit6KoFiXtwunmY73Y
+         hk9zFgc2nKqOrztOnfc6Bq92XlwViSrhzh0wiLFq2N8kQBF/gQiyb8kCL6CkUaGwz4tK
+         Wpj176Blz+CrmmtNk3Rkpn1kL1Tvo7QKYIWJfQkA2EKjDL+vbWIsEW4fkGjro80EBEc3
+         uubHY1/eYdGU2Dv1hdEYdgTT1I9DfmozyhQPVix7+084Hn7g3ZqSW1maV1K+lTEIxnUD
+         FE/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776770374; x=1777375174;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=xqUnRX8dW8RdIIKAQHBXv+iPDb7VMQOQ+WS2QfdoqP8=;
+        b=oG3u3t0AlVwxOhVqUXdOf4X16YwdOUJzkm3hlNytSfL2fpLG904H5TtUL/S10/jnJ2
+         9voMplI2dtVSNumj7srJiwqhPRezBE+x0QZkkC/MlZlb7xuTvB7wHEDp5L2faXBjyk6y
+         yHiajCOYkd9WbWL83JrK33Qf24+FH4Kfykr5LiiXiGJfBd1N7pq79leeqcaQdDuPN7n7
+         1XRZxOgLu5ew17RcktmYMzAJzKZ44mCbqhMxAfhBR4BR72CcTAPc6ZIEKx7JYD0THZiX
+         Akg4TYD222OdRzNp+osEj4ZJxsDr3TFHCru+OwMuf0+4XycoNj7P89/yo3gaP0fFK2yh
+         KZhQ==
+X-Gm-Message-State: AOJu0YxaYSr39nuvSlbz2SWrjCNGSJ6GuGXjaQFpVvJhOt0cknu9d+Wh
+	ANLlA0+JAuU+1VR2AGblM4CCWJGWpy07iC7D+7SdJ2Y33I/1CJHa+e8JZrMwopOi7/l+vtuUk+j
+	rKbGi9J7DcLhrtzd8O4/useB2NtKptmceTsRlQRA=
+X-Gm-Gg: AeBDieu3piLny/4uid6hGq6kqXNmulblk3GMdQGzke1UvV1eLATDn1RJpWgoAu1UtR0
+	tgsbU9Qpkx/rdNf3bzyFKzG7+06bbWyTAhhlY9x5EGl3LczCYqT74gVv/oipdHsPn7lNsPZyXmW
+	5DrGKQlCC4bjSB7P6GdkGxGieZTTPais7mA6yo8dXxyo3Of5sDxHIXNyVSIuMdUStEzhl1JMP0b
+	N2zqjJXMsU16ETeOWFIcT8cVBc0xRDakdWbwkxRe6ZLErP8/5D7A77DsXogrOqEFrGkvC2D/Zp2
+	uG5DAujsu8f5yk7E7CDS8SC4l+AgZyFaOgW6B+uhS+RH5glPw6uuHKgNT8XeF1CvPuZ27z3DPSY
+	lRcBzeZ6H3tZczjDjZvWTnOKeJLn3ceeXpCBirKQ1nw5G
+X-Received: by 2002:a05:7300:e9db:10b0:2e6:b55a:76ca with SMTP id
+ 5a478bee46e88-2e6b55a8630mr1682892eec.0.1776770373605; Tue, 21 Apr 2026
+ 04:19:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpgz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
-X-QQ-XMAILINFO: NJL+bfc5gN/mU/QdHlxlyeWw1gRq1J6zEfsP8T+SnM2lvEFEa5hLkQKq
-	RD0Xzt6o+/M2PONnc6ELbu9yMu4d9+fGxmmiswBCnMIzpU6FYE3MUTj63v2YfU8mNLRK7IC
-	wYpMz+JhzjNRTZaV4FpyOWw7pdyiEe3h1+Qf4E75iJe2JMOws6ghyYUn5/OhWkJnWFdamg9
-	QEJjFALnkjH0X1MVCmQ7YMcXB9B9pzB+AiVc1cyQb+SSTbveIFbaoAkslbUqAK2L7gLuG8P
-	c6oeeUaej7fCYCHjCEXe7wKXmm5w6HK/NMyCCvpD4P6je05SqC/HlQZBP4j8rhOxEh5JuSo
-	LUL2PV1HXrcD7sizOkPoT/jD6ALUhfg2EsA29/ltOaW6wBydgObPTusGdg+G5OIPBga95zc
-	MrVK2b3LKunw4WooVIHs5NPzIgU3PD3Kk6iPnIwfaZA1MIgUGOSytoWQOdjBc2LQWbBUTkU
-	IZGr8DweuA/scTO/bXQIhqffqrE/6S/9yBvyrWpT94wY254j4dc3dgjQ7OYcfdvOd5+7bfx
-	povWDMWZ/c/oh3oc5wdf1BJ0wERPhGPyWvrP3UWkuWLbJXO+9RWWeyfVxmoJ09/R+qA/Xk2
-	DRU4G+i6PdWtvKd6zLutCwGRg+ca252RbPMaEuES3j/nePyhEsNGLpjf/aScxcMKPvxzC0O
-	Hh3aN8u+e2Nlq9Vy6DXqape/lnR5o4Ed7qiF4THXOK21Y9Ve7uddZe70AX8iBqvKr4bKwRk
-	h8LIbG2rRkTJBJkRLo+WYi9tBRw9e2n+LQXgjJINyQZ2PoJ9j14P/SZifmJmVlROz+C9QDX
-	2S0FY48XK5rKukK0XkiGS38JRM/bJh/QraFsUa2sd642P2kJ5rar3nLurPJVNxle9hU6fh3
-	ML7WD3uAKN0nQPnNi0j5reYp/Bvr5fg596hd6mZ2G0nhzh1WN+A8gkGm3s+e72t4ojWmmg2
-	H4tgHJZO7qI+QWNmfEGKfLz5opQrDtpHWug69xcOaVf3QkYsnZCgSRdnmupneywqBNTjmaa
-	m9vqtdWReazlpbZGmk8lfhJc09Gxrir9rsvX6DJl3RV5AhA26dKCiQgyRnX3RqMxjD0uz7G
-	FlJMW++Acg3vdIodS0x7/kJEKJyPIsNBkspN/qx3ammNi6Nn+sK5dY=
-X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
-X-QQ-RECHKSPAM: 0
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[uniontech.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[uniontech.com:s=onoh2408];
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 21 Apr 2026 13:19:21 +0200
+X-Gm-Features: AQROBzCRQ4d_HZtiqcwbiuJrOypsymY-L2f7pzkuHVSAiEIU4HYpdYKlUlKJEKI
+Message-ID: <CANiq72nBCnXY5rmD6N4GBO-rfX2ZVd=PE2kcDscq15jEbLWs+w@mail.gmail.com>
+Subject: Consider b2603f8ac821 for 6.12.y
+To: Greg KH <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-240133-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240132-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[achill.org,linux-foundation.org,kernel.org,gmail.com,microsoft.com,nvidia.com,vger.kernel.org,roeck-us.net,lists.linaro.org,kernelci.org,lists.linux.dev,nabladev.com,gmx.de,sladewatkins.com,uniontech.com];
-	DKIM_TRACE(0.00)[uniontech.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[miguelojedasandonis@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.994];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,uniontech.com:email,uniontech.com:dkim,uniontech.com:mid,uos-pc:email]
-X-Rspamd-Queue-Id: A2AF343A05C
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C7F2343A079
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Build tested in our x86,arm64,loongarch,riscv config successfully without error.
+Hi Greg, Sasha,
 
-Tested-by: Wentao Guan <guanwentao@uniontech.com>
+Please consider backporting to 6.12.y:
 
-BRs
-Wentao Guan
+  b2603f8ac821 ("rust: warn on bindgen < 0.69.5 and libclang >= 19.1")
 
-defconfigs:
-https://gist.github.com/opsiff/decbc7d88fbf68488a7d90e46f6d3e59
+It adds a warning to the Rust toolchain checks (very early in the
+build) that applies to 6.12.y.
 
-Log:
-Linux version 6.18.24-rc1-g79c8a3af6b8b (guanwentao@uos-PC) (aarch64-linux-gnu-gcc-12 (Deepin 12.3.0-17deepin8) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) # SMP PREEMPT_DYNAMIC
-Linux version 6.18.24-rc1-g79c8a3af6b8b (guanwentao@uos-PC) (aarch64-linux-gnu-gcc-12 (Deepin 12.3.0-17deepin8) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) #2 SMP PREEMPT_DYNAMIC Tue Apr 21 16:18:20 CST 2026
-Linux version 6.18.24-rc1-loong64-desktop-hwe-g79c8a3af6b8b (guanwentao@uos-PC) (loongarch64-linux-gnu-gcc-12 (Deepin 12.3.0-17deepin8) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) # SMP PREEMPT_DYNAMIC
-Linux version 6.18.24-rc1-loong64-desktop-hwe-g79c8a3af6b8b (guanwentao@uos-PC) (loongarch64-linux-gnu-gcc-12 (Deepin 12.3.0-17deepin8) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) #3 SMP PREEMPT_DYNAMIC Tue Apr 21 16:42:38 CST 2026
-Linux version 6.18.24-rc1+ (guanwentao@uos-PC) (riscv64-linux-gnu-gcc-12 (Deepin 12.3.0-17deepin8) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) # SMP PREEMPT
-Linux version 6.18.24-rc1+ (guanwentao@uos-PC) (riscv64-linux-gnu-gcc-12 (Deepin 12.3.0-17deepin8) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) #4 SMP PREEMPT Tue Apr 21 17:08:51 CST 2026
-Linux version 6.18.24-rc1-g79c8a3af6b8b (guanwentao@uos-PC) (gcc (Deepin 12.3.0-17deepin15) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) # SMP PREEMPT_DYNAMIC
-Linux version 6.18.24-rc1-g79c8a3af6b8b (guanwentao@uos-PC) (gcc (Deepin 12.3.0-17deepin15) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) #1 SMP PREEMPT_DYNAMIC Tue Apr 21 15:52:00 CST 2026
+It is not a big deal, but it could avoid confusion if someone hits the
+toolchain bug (I noticed we don't warn when I was testing something
+else with another toolchain for 6.12.y).
 
+I also plan to send another similar warning to mainline, so I will
+also tag for backport that one.
+
+Thanks!
+
+Cheers,
+Miguel
 
