@@ -1,194 +1,244 @@
-Return-Path: <stable+bounces-240250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240251-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2AakIqf352kVDgIAu9opvQ
-	(envelope-from <stable+bounces-240250-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 00:18:15 +0200
+	id aK2bOtP352kVDgIAu9opvQ
+	(envelope-from <stable+bounces-240251-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 00:18:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A79D440191
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 00:18:15 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 920114401DF
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 00:18:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9DE92306F307
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 22:16:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id F24AB3012BE2
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 22:18:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 981053A5E71;
-	Tue, 21 Apr 2026 22:16:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D60173A453D;
+	Tue, 21 Apr 2026 22:18:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="E4HroXwv";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="DMtb/ane"
+	dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b="vdRfz6uw"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6CAE26B2DA;
-	Tue, 21 Apr 2026 22:16:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAFF03A5E82
+	for <stable@vger.kernel.org>; Tue, 21 Apr 2026 22:18:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776809812; cv=none; b=a+gAfrbLMxiQNp5e4soBUFt7L0feznEVzqbanEUpr54OLj6u5DU+xNBgEnkXu4Io+VA0n4ulXohhitMUlQXCi8DtZhtADNftI4eTuAmTjjcjdGklqjPvXXcKzwq84I/6bflHmRAflwQKyORHZMcxydBc3LoBHG6spYWW6uzVl70=
+	t=1776809935; cv=none; b=higfZXcvxQalqtO+Metup4PHyU3/e7UD0g/cygY1mK+D7/h7MJiej31Zff4rHpwEbaTLpBBNOSO/JaVnC6YRYZiwGj7+Lp+BG06AnUscEjp+XFXH67oCI5UdoH//TDIHeePUs0Y0GoArLxEj+ZNLIQXZg2nFNyOnbVI14qCN+64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776809812; c=relaxed/simple;
-	bh=MO7LT3Wd4wCUZsRnxW9Th1ZlQ2STgxaOkMEhqlVI3bk=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=X+Pc0uQgpqee1DfSwsegrQm3Az/Z+zR04zZn5Je/HM8YQaRC5WnSrk8Y8sEA133y3WTT+2Gj8yuTFsuKbZDczDRte2W3wnVxFoKczUi39o0x1qCOzSNrASbcYNhaUpSWGc5+sGNyn9mxc9hx8lVxN6ld6ceQZ3qAUQQcj1xukgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=E4HroXwv; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=DMtb/ane; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 21 Apr 2026 22:16:40 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1776809801;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KtUGH/+F659qA4GJAIiHYLMKbFHz4mce1PxHhKljapI=;
-	b=E4HroXwvNWxO14AmtiNsLEoTbIj+eOu/CbSry5j1nCbItKDBNgVhWDGTv6K6MzBiL0KoTs
-	AaKkDo01Xas2M2AH2mBL+MmVJTpcxeq3Ehjtq56Eo21CndaGqjW4VzGj0o2bzJoCtZQdZI
-	9dq5heGd2bvYAFV6/+EZcCfKZ9giYdeqqJlUOd/QXIwLoq2w52TDClaZ51jGhL1yZm3pbf
-	VWz3Ta+5WAIUPkXn7jQ/0jvyPUOCzE4UoreVb/d7REFGGJ6ESV7Yw616f5G+REgLTVsazv
-	yoR1PRg7WX7HN8aVQXD1uTavgZ0YJpQvTvpiLglc8hpLRleZze0dsbBbpT/drw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1776809801;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KtUGH/+F659qA4GJAIiHYLMKbFHz4mce1PxHhKljapI=;
-	b=DMtb/aneQn45WkmsgLMiHzaYKj2+2OXAMojYcWLNIMmadstApLNYMIBkWUOnH04XoljB0S
-	KdH+2gjMo4AhFfBw==
-From: "tip-bot2 for Dave Hansen" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/cpu: Disable FRED when PTI is forced on
-Cc: Gayatri Kammela <Gayatri.Kammela@amd.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- "Borislav Petkov (AMD)" <bp@alien8.de>,
- "Maciej Wieczor-Retman" <maciej.wieczor-retman@intel.com>,
- stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20260421163136.E7C6788A@davehans-spike.ostc.intel.com>
-References: <20260421163136.E7C6788A@davehans-spike.ostc.intel.com>
+	s=arc-20240116; t=1776809935; c=relaxed/simple;
+	bh=YxaDhucYJqR+pLsF3cmCQy1mP20FRBqBNvoFdl7AKRY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EcbrMcKmBcvG/2uyI1uI7kVdT3MwE+u5SKmhwbAxEpYADq7G85xxpT5OBnOd8DktZOm3c1ET3w28ScNC/R5NgBDGdLEKzPyL60EiHeB/zMxItfAX48NPtGW+JWM5pvhJpKQ631NzozoQHNZYk8J4wzCFTKvTRi3akveUiTOd87A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b=vdRfz6uw; arc=none smtp.client-ip=209.85.167.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-479d9b155deso882457b6e.3
+        for <stable@vger.kernel.org>; Tue, 21 Apr 2026 15:18:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20251104.gappssmtp.com; s=20251104; t=1776809930; x=1777414730; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=B3VPUbIOBm8jC+mr0MXSF2GSTvOeKJwM6inCehb0UtI=;
+        b=vdRfz6uwMVENFc54nCSIqc4/Ty+znz2i9SVyWMfBPoKR7nRKvIHxAjxhb35x8yV0Z4
+         Jq86gImufq6TZk9I4S7gaILPM243KFrbGB21SaIKFGNFShljvKHAVpwZE59rPrNNZfmn
+         ctMZDQ9qZh3tbMC5OS1upR0UuYBEZUAt1OnnfMLYNP6Pxr6tgnr7z2ljbNfvUIP8PFNz
+         0OXIcJSK4gGu1kMQjIZn0m+cUbFiQuQtwF0ae7cyJmZuqkgAcMPm6Ixiu4RJ5ffqZxe5
+         RKIYzG2mim/fzv4N/zBitB4+NReqPXaJa061mNZhhduOyWOiFQUtICtJu1h3xgbZoERV
+         2CFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776809930; x=1777414730;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=B3VPUbIOBm8jC+mr0MXSF2GSTvOeKJwM6inCehb0UtI=;
+        b=mXWMtVrn4ORkaA0lrqncyI2HLO33h9OgkSvNgqSVb5O94I7VXZLraltitQL1fGBuN3
+         wvybhPDy09u5tgcPNQkXMhLECwrm1f+HjUeeOK2+gEXPSGZ1UV3p0u53+HsmzIXnE6zr
+         +nGFAzffAVTwbBFvDXWf5Bjmv4yiI7qr8yIxItM4DVgPOY5GzlsoA3nCc81SowjLBwNk
+         pxYIDc1kQ0IbvUkgwMc8BYvTCWPg9c+nM53KBoT3yfjcUl9cnvt0fAqx0IllYuyPmHHS
+         ILKzrMDrfud9FJzGA8jxTDCqTQLu46i/aVbYBn1RVSeTQpriDJm91J+W8JNaQET2N6OT
+         URCA==
+X-Forwarded-Encrypted: i=1; AFNElJ/3XGTzmDkTYlnsQnJVw9TtShci6KMFIyO20xsNZOviqmZgVnCMWK09+s1w0Y2O5Vm1glwnRNA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxnn6bYKnZkYG/Msr6f4lFKuROtY/7axFsKqJGUUArBY8Ej+LxJ
+	WhrzdufVwler+Yw9S9WcgankAbgkgSAk2B30zfUOA6BAMXHqwSZdhZK216Nr8gpZFqY=
+X-Gm-Gg: AeBDies1ZNH9fjoYk7aBEt5ZJtx2ZgsIH1Ria2WNAgxDIZ6OFHJgGmOh2gyc8yQzDKw
+	tuJy5sOaH1SAi3kn5h1Ewv2Ry970G+jrr8fA49WX/9VXhOr4h0AUF98bSZ5c4uY/ePQqoTmeC3Y
+	EFLAupCYWIzmMGDlFedxFuavrqPejhvPxgH3Qc/EbmbBjXS4DQiGbdzUCUajmlbXgxjKEKhK1UO
+	I/CwEjn4QKGFG8UikV1lUfDKwlaz+/ccFjUeqEN8vDLJlJLLqyHQaxZMk9+SrolzsKv/YAHEY/A
+	LaisXt40+1eKBh51z3qzTcDJL4TwC5+EKU/jWC7FLvnyZn7gO0ZWZuM9YKtSvHbti5JtZpjlj4d
+	Ae86sqlGlhZYEuv7+LDP0C35uu14AnOfFZGha4PN/cWurEI0rsUDgnqvTAxmM2k1U1jC0ITaXZ+
+	ERkHRYDJvc/RiSvvL6T1VSbyFJygh249P65KoVN4qFImoQcldMHtFMe+F7Lp9oWRo1R8vrYAGjJ
+	x56O22azLEWqQfNL129
+X-Received: by 2002:a05:6808:1a03:b0:466:ff3a:c745 with SMTP id 5614622812f47-4799c8d25famr10432101b6e.21.1776809930454;
+        Tue, 21 Apr 2026 15:18:50 -0700 (PDT)
+Received: from [192.168.1.150] ([198.8.77.157])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-4799fc19273sm9795783b6e.0.2026.04.21.15.18.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 21 Apr 2026 15:18:49 -0700 (PDT)
+Message-ID: <d7d521e7-35bb-463b-b1f5-552bb931bdff@kernel.dk>
+Date: Tue, 21 Apr 2026 16:18:49 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <177680980021.2419917.7984257856496493958.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@kernel.org> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-1.66 / 15.00];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.10 491/491] io_uring/poll: correctly handle
+ io_poll_add() return value on update
+To: Ben Hutchings <ben@decadent.org.uk>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev,
+ syzbot+641eec6b7af1f62f2b99@syzkaller.appspotmail.com
+References: <20260413155819.042779211@linuxfoundation.org>
+ <20260413155837.438151458@linuxfoundation.org>
+ <d4b85e905345dc69e9c660c7f51775703fa83320.camel@decadent.org.uk>
+Content-Language: en-US
+From: Jens Axboe <axboe@kernel.dk>
+In-Reply-To: <d4b85e905345dc69e9c660c7f51775703fa83320.camel@decadent.org.uk>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[kernel-dk.20251104.gappssmtp.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-240250-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-240251-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	REPLYTO_DOM_EQ_TO_DOM(0.00)[];
+	DMARC_NA(0.00)[kernel.dk];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
+	DKIM_TRACE(0.00)[kernel-dk.20251104.gappssmtp.com:+];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	HAS_REPLYTO(0.00)[linux-kernel@vger.kernel.org];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tip-bot2@linutronix.de,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linutronix.de:+];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,vger.kernel.org:replyto,intel.com:email,linutronix.de:dkim]
-X-Rspamd-Queue-Id: 2A79D440191
+	FROM_NEQ_ENVFROM(0.00)[axboe@kernel.dk,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable,641eec6b7af1f62f2b99];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,kernel-dk.20251104.gappssmtp.com:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,kernel.dk:mid,kernel.dk:email]
+X-Rspamd-Queue-Id: 920114401DF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The following commit has been merged into the x86/urgent branch of tip:
+On 4/19/26 9:45 AM, Ben Hutchings wrote:
+> On Mon, 2026-04-13 at 18:02 +0200, Greg Kroah-Hartman wrote:
+>> 5.10-stable review patch.  If anyone has any objections, please let me know.
+>>
+>> ------------------
+>>
+>> From: Jens Axboe <axboe@kernel.dk>
+>>
+>> Commit 84230ad2d2afbf0c44c32967e525c0ad92e26b4e upstream.
+>>
+>> When the core of io_uring was updated to handle completions
+>> consistently and with fixed return codes, the POLL_REMOVE opcode
+>> with updates got slightly broken. If a POLL_ADD is pending and
+>> then POLL_REMOVE is used to update the events of that request, if that
+>> update causes the POLL_ADD to now trigger, then that completion is lost
+>> and a CQE is never posted.
+>>
+>> Additionally, ensure that if an update does cause an existing POLL_ADD
+>> to complete, that the completion value isn't always overwritten with
+>> -ECANCELED. For that case, whatever io_poll_add() set the value to
+>> should just be retained.
+> 
+> This backport is very different from the upstream version, and I have
+> some questions about that (inline below).
 
-Commit-ID:     932d922285ef4d0d655a6f5def2779ae86ca0d73
-Gitweb:        https://git.kernel.org/tip/932d922285ef4d0d655a6f5def2779ae86c=
-a0d73
-Author:        Dave Hansen <dave.hansen@linux.intel.com>
-AuthorDate:    Tue, 21 Apr 2026 09:31:36 -07:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Tue, 21 Apr 2026 15:11:40 -07:00
+It is, was quite painful.
 
-x86/cpu: Disable FRED when PTI is forced on
+>> Cc: stable@vger.kernel.org
+>> Fixes: 97b388d70b53 ("io_uring: handle completions in the core")
+>> Reported-by: syzbot+641eec6b7af1f62f2b99@syzkaller.appspotmail.com
+>> Tested-by: syzbot+641eec6b7af1f62f2b99@syzkaller.appspotmail.com
+>> Signed-off-by: Jens Axboe <axboe@kernel.dk>
+>> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>> ---
+>>  io_uring/io_uring.c |   26 +++++++++++++++++++-------
+>>  1 file changed, 19 insertions(+), 7 deletions(-)
+>>
+>> --- a/io_uring/io_uring.c
+>> +++ b/io_uring/io_uring.c
+>> @@ -5980,7 +5980,7 @@ static int io_poll_add_prep(struct io_ki
+>>  	return 0;
+>>  }
+>>  
+>> -static int io_poll_add(struct io_kiocb *req, unsigned int issue_flags)
+>> +static int __io_poll_add(struct io_kiocb *req, unsigned int issue_flags)
+>>  {
+>>  	struct io_poll_iocb *poll = &req->poll;
+>>  	struct io_poll_table ipt;
+>> @@ -5992,11 +5992,21 @@ static int io_poll_add(struct io_kiocb *
+>>  	if (!ret && ipt.error)
+>>  		req_set_fail(req);
+>>  	ret = ret ?: ipt.error;
+>> -	if (ret)
+>> +	if (ret > 0) {
+>>  		__io_req_complete(req, issue_flags, ret, 0);
+>> +		return ret;
+>> +	}
+>>  	return 0;
+>>  }
+>>  
+>> +static int io_poll_add(struct io_kiocb *req, unsigned int issue_flags)
+>> +{
+>> +	int ret;
+>> +
+>> +	ret = __io_poll_add(req, issue_flags);
+>> +	return ret < 0 ? ret : 0;
+> 
+> __io_poll_add() still never returns a negative result, so why is there a
+> check for that here?
+> 
+>> +}
+>> +
+>>  static int io_poll_update(struct io_kiocb *req, unsigned int issue_flags)
+>>  {
+>>  	struct io_ring_ctx *ctx = req->ctx;
+>> @@ -6012,6 +6022,7 @@ static int io_poll_update(struct io_kioc
+>>  		ret = preq ? -EALREADY : -ENOENT;
+>>  		goto out;
+>>  	}
+>> +	preq->result = -ECANCELED;
+>>  	spin_unlock(&ctx->completion_lock);
+>>  
+>>  	if (req->poll_update.update_events || req->poll_update.update_user_data) {
+>> @@ -6024,16 +6035,17 @@ static int io_poll_update(struct io_kioc
+>>  		if (req->poll_update.update_user_data)
+>>  			preq->user_data = req->poll_update.new_user_data;
+>>  
+>> -		ret2 = io_poll_add(preq, issue_flags);
+>> +		ret2 = __io_poll_add(preq, issue_flags);
+>>  		/* successfully updated, don't complete poll request */
+>>  		if (!ret2)
+>>  			goto out;
+>> +		preq->result = ret2;
+>> +
+>>  	}
+>> -	req_set_fail(preq);
+>> -	io_req_complete(preq, -ECANCELED);
+>> +	if (preq->result < 0)
+>> +		req_set_fail(preq);
+>> +	io_req_complete(preq, preq->result);
+> 
+> If __io_poll_add() returned an events mask then it completed preq, but
+> then we also complete preq here.  Is that really correct?
 
-FRED and PTI were never intended to work together. No FRED hardware is
-vulnerable to Meltdown and all of it should have LASS anyway.
-Nevertheless, if you boot a system with pti=3Don and fred=3Don, the kernel
-tries to do what is asked of it and dies a horrible death on the first
-attempt to run userspace (since it never switches to the user page
-tables).
+Let me take a closer look, I do agree with you that the final result
+does not look entirely correct.
 
-Disable FRED when PTI is forced on, and print a warning about it.
-
-A quick brain dump about what a FRED+PTI implementation would look like
-is below. I'm not sure it would make any sense to do it, but never say
-never. All I know is that it's way too complicated to be worth it today.
-
-<brain dump>
-The SWITCH_TO_USER/KERNEL_CR3 bits are simple to fix (or at least we
-have the assembly tools to do it already), as is sticking the FRED entry
-text in .entry.text (it's not in there today).
-
-The nasty part is the stacks. Today, the CPU pops into the kernel on
-MSR_IA32_FRED_RSP0 which is normal old kernel memory and not mapped to
-userspace. The hardware pushes gunk on to MSR_IA32_FRED_RSP0, which is
-currently the task stacks. MSR_IA32_FRED_RSP0 would need to point
-elsewhere, probably cpu_entry_stack(). Then, start playing games with
-stacks on entry/exit, including copying gunk to and from the task stack.
-
-While I'd *like* to have PTI everywhere, I'm not sure it's worth mucking
-up the FRED code with PTI kludges. If a user wants fast entry/exit, they
-use FRED. If you want PTI (and sekuritay), you certainly don't care
-about fast entry and FRED isn't going to help you *all* that much, so
-you can just stay with the IDT.
-
-Plus, FRED hardware should have LASS which gives you a similar security
-profile to PTI without the CR3 munging.
-</brain dump>
-
-Reported-by: Gayatri Kammela <Gayatri.Kammela@amd.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Borislav Petkov (AMD) <bp@alien8.de>
-Tested-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
-Cc:stable@vger.kernel.org
-Link: https://patch.msgid.link/20260421163136.E7C6788A@davehans-spike.ostc.in=
-tel.com
----
- arch/x86/mm/pti.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/arch/x86/mm/pti.c b/arch/x86/mm/pti.c
-index f7546e9..631f037 100644
---- a/arch/x86/mm/pti.c
-+++ b/arch/x86/mm/pti.c
-@@ -105,6 +105,11 @@ void __init pti_check_boottime_disable(void)
- 		pr_debug("PTI enabled, disabling INVLPGB\n");
- 		setup_clear_cpu_cap(X86_FEATURE_INVLPGB);
- 	}
-+
-+	if (cpu_feature_enabled(X86_FEATURE_FRED)) {
-+		pr_debug("PTI enabled, disabling FRED\n");
-+		setup_clear_cpu_cap(X86_FEATURE_FRED);
-+	}
- }
-=20
- static int __init pti_parse_cmdline(char *arg)
+-- 
+Jens Axboe
 
