@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-240200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240201-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ACrUGkuk52nX+gEAu9opvQ
-	(envelope-from <stable+bounces-240200-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 18:22:35 +0200
+	id sOLzLYml52kI+wEAu9opvQ
+	(envelope-from <stable+bounces-240201-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 18:27:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23BA643D477
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 18:22:35 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49AA643D569
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 18:27:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id ECA74303D37D
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 16:22:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9C66030205F7
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 16:27:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00643374E7A;
-	Tue, 21 Apr 2026 16:22:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29905375F87;
+	Tue, 21 Apr 2026 16:27:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fZjMlnIJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NpM8ijQc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6B18292B44;
-	Tue, 21 Apr 2026 16:22:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9782374E73;
+	Tue, 21 Apr 2026 16:27:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776788544; cv=none; b=aNRzO8+s6G7kFr1SJceLeb9CWObDnwjqpJqb4K6CmpyOMDT000yRba/iarACrleH38T5+HNzOqBLk9A+HCVX6J5cogqcwLilh+zxK3hddJCF8jbhvEZLokEz/Ae7n1njQqXQTVEJ6nTWdlPIbZ0pSaoVlH9bmAgzQsomTpD/4qo=
+	t=1776788868; cv=none; b=cc8zzUFxmzanO4mT+E4J3/MABQ0Svr1c7cPW0/cw6dbgf3KJjqaeLJbpWu6SnDApo9Bh5QQINv9peFRyMsp692CmZRbwaMJpeCbf1lzWPBHALQOuAdhrlJXysQg+Ogpn4zwecjR1tZsLsnKfqXivyEpFctBUhqPdT8VV7HiGLt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776788544; c=relaxed/simple;
-	bh=gHsASOzXsEnqn/QnRRYJ8wPU43DiCZy7Il0YtQlOeXU=;
+	s=arc-20240116; t=1776788868; c=relaxed/simple;
+	bh=ddWGhFzjEXQESeoHCh3VyJ6n4+xSdQgSj9qEoccxP5U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZRiikyK7cl0e7/XMKtvwSj2OQPbJxOkZpudCLW02PzBrVkSn7HAgZPohoCJvIAFuW1T3r5zWG6sEkolLPw8AZllHDF6FsvnodawqDfan05H9MHAbnXBifdKMTXpAh0tuMMb3aTNQ0EsxPOPpukc2kFlLkoRDAYi+aEo6bCmKXy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fZjMlnIJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F68FC2BCB3;
-	Tue, 21 Apr 2026 16:22:22 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=AbhzV6PCC9QMe1XAXhDfri/DXR4LSRHYa1xTSYHRyh4JZ4I/mgbDKK4u7ee1A9Uwz7YPAahPG3kLZekqUQ2yI7vo4CJESyhEKuP9UXaADdUkhgsks+mEMXq8Pv5D5nlMPWsutFGIZbZ4egL8O/3+PVc94xOf9pYIgCwtmgggN78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NpM8ijQc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDA18C2BCB0;
+	Tue, 21 Apr 2026 16:27:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776788544;
-	bh=gHsASOzXsEnqn/QnRRYJ8wPU43DiCZy7Il0YtQlOeXU=;
+	s=k20201202; t=1776788868;
+	bh=ddWGhFzjEXQESeoHCh3VyJ6n4+xSdQgSj9qEoccxP5U=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fZjMlnIJ+uLakBqR6xQhCF0xSWL5z8DoQg7YYlYMFLjWqUNFq1uss0a4Voi1KI/Av
-	 OTW6qjbjiCx/VR/qN33KfV/HJz9rnfm/rN9KsaTAEcaVkjmU7rdrONmei7C2csGCfx
-	 a/cznI8IIe92qBd3SpigKuU3IlFc4cs39HHke94B6stxDcStl3vfL7lrrn617uJwJN
-	 s8I76Mfjcf7x2Fp2P604SwhuK+2HHQZxMvTT9YulJQFwkx7t5gZ0pAm78urEO+Pv5u
-	 uzzz7WOOujUwnyjd6gLKVbQlou9F3Ger/94ixOPDpfxs5dCrGThSnDKjG7qB5Tpbck
-	 rgoPyff8ZLl7Q==
-Date: Tue, 21 Apr 2026 17:22:19 +0100
-From: Simon Horman <horms@kernel.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Matthew Wood <thepacketgeek@gmail.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kernel-team@meta.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net] netconsole: avoid out-of-bounds access on empty
- string in trim_newline()
-Message-ID: <20260421162219.GF651125@horms.kernel.org>
-References: <20260420-netcons_trim_newline-v1-1-dc35889aeedf@debian.org>
+	b=NpM8ijQcBWrKNkHDT5oAo5ZzMOBYtMwdYIdA9M9Sm8pe55YTfGX3xmDHyBbUucQHg
+	 LEW0cv3FCHEGHajRzvWVb73KvjPhy/b8kuU4rMJopS4FmTrcJgUBGadb0799KHOVaa
+	 qY+0v55HEe/Zo+aGrEBMPYKrp0sumoopb0oXprvk4TNfcm8Ebo0srdwAKE1mFdVF5e
+	 DOS8hFb0VQWTHHoQVnERKNyym9uf9lCgbbrdjYqnqDuF3yTo35gNCsslfrkt8IvWNX
+	 ihthy+cmMz3qUYh+2wxNUmdCguuYCW2N+Vz3x5ijC5ckkV4eGpuI8WI8yEjwjE1bu4
+	 V+L5zgoCxMyZw==
+Date: Tue, 21 Apr 2026 09:27:48 -0700
+From: Kees Cook <kees@kernel.org>
+To: Bingquan Chen <patzilla007@gmail.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, security@kernel.org
+Subject: Re: [PATCH] usb: gadget: configfs: fix 1-byte OOB read in
+ ext_prop_data_show()
+Message-ID: <202604210919.03157F8@keescook>
+References: <20260421141010.5607-1-patzilla007@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,71 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260420-netcons_trim_newline-v1-1-dc35889aeedf@debian.org>
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+In-Reply-To: <20260421141010.5607-1-patzilla007@gmail.com>
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[lunn.ch,davemloft.net,google.com,kernel.org,redhat.com,gmail.com,vger.kernel.org,meta.com];
-	TAGGED_FROM(0.00)[bounces-240200-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2600:3c04:e001:36c::12fc:5321:from];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240201-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[horms@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[kees@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[10.30.226.201:received,100.90.174.1:received];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 23BA643D477
+X-Rspamd-Queue-Id: 49AA643D569
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, Apr 20, 2026 at 03:18:36AM -0700, Breno Leitao wrote:
-> trim_newline() unconditionally dereferences s[len - 1] after computing
-> len = strnlen(s, maxlen). When the string is empty, len is 0 and the
-> expression underflows to s[(size_t)-1], reading (and potentially
-> writing) one byte before the buffer.
-> 
-> The two callers feed trim_newline() with the result of strscpy() from
-> configfs store callbacks (dev_name_store, userdatum_value_store).
-> configfs guarantees count >= 1 reaches the callback, but the byte
-> itself can be NUL: a userspace write(fd, "\0", 1) leaves the
-> destination empty after strscpy() and triggers the underflow. The OOB
-> write only fires if the adjacent byte happens to be '\n', so this is
-> not a security issue, but the access is undefined behaviour either way.
-> 
-> This pattern is commonly flagged by LLM-based code reviewers. While it
-> is not a security fix, the underlying access is undefined behaviour and
-> the change is small and self-contained, so it is a reasonable candidate
-> for the stable trees.
-> 
-> Guard the dereference on a non-zero length.
-> 
-> Fixes: ae001dc67907 ("net: netconsole: move newline trimming to function")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Breno Leitao <leitao@debian.org>
+On Tue, Apr 21, 2026 at 10:10:10PM +0800, Bingquan Chen wrote:
+> In ext_prop_data_store(), for unicode property types, the data buffer
+> is allocated via kmemdup() with size 'len', but data_len is inflated
+> to len*2+2 to account for the UTF-16 encoding and a 2-byte null
+> terminator. The null terminator is not actually stored in the data
+> buffer.
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+Isn't the problem the "+2" in the size calculation? The terminator is
+never stored nor used.
 
-Sashiko has provided some feedback on this patch.
-I do not believe that should hold up progress of this patch.
-But I'd appreciate it if you could look over that feedback
-and see if any follow-up is warranted.
-
-Thanks!
+-- 
+Kees Cook
 
