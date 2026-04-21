@@ -1,215 +1,156 @@
-Return-Path: <stable+bounces-240118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240119-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AMUjDQJM52lW6QEAu9opvQ
-	(envelope-from <stable+bounces-240118-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 12:05:54 +0200
+	id OGbuHY9M52lW6QEAu9opvQ
+	(envelope-from <stable+bounces-240119-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 12:08:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABDDA4394F6
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 12:05:48 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A9AF439554
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 12:08:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4B3CE302C75F
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 10:05:04 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7BDAA3017A21
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 10:05:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2759386450;
-	Tue, 21 Apr 2026 10:05:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22CD0386450;
+	Tue, 21 Apr 2026 10:05:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="R0Ie1Hmj";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="JexmV41L";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="0ILnJQty";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="fKxBvfv6"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cMmw0WBL"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC4DF26B777
-	for <stable@vger.kernel.org>; Tue, 21 Apr 2026 10:05:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776765902; cv=none; b=UKFQUHViYKWnorg6fzNeWnDzfMQwv0IW8clungdoVZWIpVJ3YKj9ALoFXshl1CjfTMo/smR+goMnFhKzu0woRjmDOPTCG19ehljalMEXkcPoTFyIDtIL2vQGd29QpsfljEwWYhc/b9Wu9KJB8MUSl4MUOwkN1ZsNFGnKTTJJfTc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776765902; c=relaxed/simple;
-	bh=V3CqbP81QnQZqF17/gxCDj0g9AX7dC6Nl3PXf6aiHzs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gyqIv0TuQGkYMj09oAFsB7O0F/LaAIWY9wyTtXsrEHV8ekKASZa1ESKBgMK0qvgRq44H/IS9+RRN9sZUaz68HEH0KyUdIZ/Di/pYvB21zlkZ31TfRrvm10JSHChqrmbasJGitavypK7ds6ICyw5tKRqeA55FpFGU8bdIxVA8aOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=R0Ie1Hmj; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=JexmV41L; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=0ILnJQty; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=fKxBvfv6; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id EAB2E5BCC1;
-	Tue, 21 Apr 2026 10:04:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1776765899; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vs7u0fpOfhPpewcQZ54sx4EuzH250jnHBMd8ooAY/p0=;
-	b=R0Ie1Hmj3R4ewMXJ9ZbszEkoET7rmBYiQx2sWhiWetpG5nto/pGihVys/OO/EWG4UKEdM2
-	hI4bvrXt/8sAlTuhFA84fccZ8JJ7UwfQpeLJvwUu2D9M+7qok2YS2oT9G6UnPk687w98sf
-	+lDOgS99ELDRG8TJtlzJ9TukCX53q1o=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1776765899;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vs7u0fpOfhPpewcQZ54sx4EuzH250jnHBMd8ooAY/p0=;
-	b=JexmV41LbqPBwuTgiMy9kLCXNstf4EcmGdZnlaNfOwcKl6T6LC5K/xl1nb93BQu8X0Majx
-	oLh6RRK1UuU+V0AQ==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1776765898; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vs7u0fpOfhPpewcQZ54sx4EuzH250jnHBMd8ooAY/p0=;
-	b=0ILnJQtyNYSCQatzjFnQ579MfBiai+mPljSweMp5Bila5GR2PP2+sZjiY+P2plhgtQa2+Y
-	GN9ft20b1ez7oz7sVmD651TNrnDEFiWLumqcpYfd/U07r8b6EJklGQojoJCZj4gHXSPdPe
-	HHphBNbel49BvVSTEAGlhAVZUOJ4AjA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1776765898;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vs7u0fpOfhPpewcQZ54sx4EuzH250jnHBMd8ooAY/p0=;
-	b=fKxBvfv6t+DWeK0Qyah5eEzwk20PT777KML7fhaQWbo9Gar1cYcv+ZUxo6dx4DtKzIIwS9
-	G/kJifpIwxeZ0JBw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E0864593AF;
-	Tue, 21 Apr 2026 10:04:58 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id uXbDNspL52kgRAAAD6G6ig
-	(envelope-from <jack@suse.cz>); Tue, 21 Apr 2026 10:04:58 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id A1E37A0AE1; Tue, 21 Apr 2026 12:04:50 +0200 (CEST)
-Date: Tue, 21 Apr 2026 12:04:50 +0200
-From: Jan Kara <jack@suse.cz>
-To: Junjie Cao <junjie.cao@intel.com>
-Cc: tytso@mit.edu, adilger.kernel@dilger.ca, jack@suse.cz, 
-	libaokun@linux.alibaba.com, ojaswin@linux.ibm.com, ritesh.list@gmail.com, 
-	yi.zhang@huawei.com, linux-ext4@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, syzbot+26c4a8cab92d0cda3e3b@syzkaller.appspotmail.com
-Subject: Re: [PATCH] ext4: prevent out-of-bounds read in
- ext4_read_inline_data()
-Message-ID: <ulfo7ut5ziqvrjy24besb4jtobijunycglvmqki7cwfzsancwi@5ycrwypubh56>
-References: <20260421093138.906266-1-junjie.cao@intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE0F83B4E99
+	for <stable@vger.kernel.org>; Tue, 21 Apr 2026 10:05:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.180
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776765944; cv=pass; b=kGGmTEVo1Nj3nQYOPMJJE59xZcLBwNdnTKM0mAgepGiS7lvaykU/wTUQ+rnBSZ8dXHX7iUXtzxb8PN/JuMZfq/LbA9dx15ayBqlGTI/3/+lOv8wlW8TlkGSLcMbAb0YKi/5EE/lv8eQzIoOJjS6xkEVeRd/vzkuU279mC4i2680=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776765944; c=relaxed/simple;
+	bh=YyerS+ssSLZLHal/c0zlG9T7hN10Qn3AYCrzmaiROnE=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=papfXAnBYZNNxXh2HPf/T9EJJqcuF4S2i5SOnegu5bfex4g+Q5sCVYeGKC6x+XKICDdMYqejEmUCHTZ4wiZHDiYIHRKM/hfuOEI+8YGMPe2mRcGFpin1VhjDn/keeyao6/9MENWB48F33qqchDJ1hYPrQw4inTQIl5ztWHrXiFA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cMmw0WBL; arc=pass smtp.client-ip=74.125.82.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-2e92c54bab4so231502eec.0
+        for <stable@vger.kernel.org>; Tue, 21 Apr 2026 03:05:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776765943; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Mm7CkXq8+FG63OBHDEjkQGLGSmrGWSmyGzNJFIba5CNHSwSQ4Mz0o6qJPvIYXcc2D8
+         7V7Hq7TX4xRyxc853COD/qDLTNlHXNW7nz5n4YcyLSbH+eCQqN221aoahoY32/kUGMsE
+         i+s7+2eTsVqjvOV2gA6aty7ZhnDR4R4n33RZh6CE2d4/3wLqMYypib2NhHMkt6FNGf+w
+         uhICcS4k/GXgEDxz/uPIysDo0k0VVGuuW9w4UQ2DUsbKC5/+KqgajP4hoOWrA9GY1mPQ
+         TKfT0qVF1oNpG/pmQxCV2T5ymnTnOO5wGtmoJO57z23SNoFOc3vBSGbURflYS5xUSzAz
+         5e2Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=1dZ/Fp8cG6i9MYpHL3TtWcrwUGEg5Pe/LLPLGrUqrCU=;
+        fh=te9kzfqRZmLccFvs9XJQ44BhiIvLUs56S9THMXx8AyU=;
+        b=GX379QnKmM3imM1/Uz9fnNFMMdbFJ04A+l083enEIwSEPvDDKlfHFdLnUbP3Mu55z4
+         fcx6gmNx50Lzx5R0JboVazMotd7cRvVVG+a2wty/w3KLXrFujjEpLSkW4Kku5ZYbyf9i
+         djeWKSVPFltKgDu9cydSDCO6750ppBknKXQm8K+DgJK5PiUg+kQVZfhWDkv42iNNPE4/
+         OkJQZpmc8XOyjvehYglgl1ANFpwKpHpVT4XGky5Rx0BV3e3snMr0RHImkf9C2Cr3/0kr
+         WQKZ3mKvO+vWXDtvr0l149d4xV+Qk91PPXqfe+HzUB2LuxKHt+Kj0ZQCk6wi2Yd6JrGx
+         r0Bg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776765943; x=1777370743; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=1dZ/Fp8cG6i9MYpHL3TtWcrwUGEg5Pe/LLPLGrUqrCU=;
+        b=cMmw0WBLo0uIFQwJpetLfxzltor1uknW7tLQZrOIxDJBTxShktFaU54u/Iam959uVI
+         qKSZsuZWDkXdmEHsfujRGD/DZ4ai2/ViddhcG24BS6T6splbkxZHWjX4UxTGV3f0q5Xv
+         XoLGfvpeXAw0dT9QiL4ZdgHeLczrRjdWxsIIKJ6I5b34kSTxEN7bGjxn6nlH62/UWJw9
+         3rCO8iVz6Q8I1SdGKMiJbvgi0C43lXLyinEnsHxydTRCmRmwL+lvACLdCtNuNkdUJ7qS
+         JyNYwGL92z/xudkcWWEbkQYAkrx9+izfDhBfVusJwULYDLzFaNKPl42tCUMa4ky27IqD
+         yQ1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776765943; x=1777370743;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1dZ/Fp8cG6i9MYpHL3TtWcrwUGEg5Pe/LLPLGrUqrCU=;
+        b=Mm0D+C9vQ46vyDiBEhHqGCYLO00xjcOU2sRtXvQWNPsaI00AGTkFZJ0bLnMFtR5Zip
+         ikc+WDtm49lxIPCGi+XdYv605OoIykhA/xgelu3USf63xohY69iZZAoL7YizsIOPva3Q
+         1IZkCErZN3vXdM1DJYVnNJdk2Viy+hEWQuDa/4kEES7nWafKABjIecg98bo1KKzxhZOz
+         BWgzsX+751d817YIqjTV6JK6FL1tYUM/UoShOFESe7QHHu4Fs04LGjzo+7t17aQ2/8iK
+         Cs9gwk7UPaO4Ri9RDw8wiKoMYOYRyK7FN+5LSpJftXa/9JlNry31szLciOQgtJNyUi1G
+         n/UQ==
+X-Gm-Message-State: AOJu0YzAqYkzmCkX0UiS3D3UJBccHVGiRT4YKai+LUk/qKno6Ui9qQR+
+	38tTcEuhzrQtMzJFUuylVToWsJl/pbX5nBQJK8B5fBaMNS+3B4CWbPmT9p2lu0QW/+PbF1MNM1r
+	ubAclipfuxYg+f/nyfFvUuV9lasQE0fM=
+X-Gm-Gg: AeBDiev9WItXml23VRVQZtA1vdK99vuErlL36r0att+5LuxtYs1pmcXAE1JtpoI26O1
+	SpX8YipoQK50HFxahZr7H1mN/eP2eMoRMivpOqQTIqsTXKinnxxTYJyGLkE8thGdm69GUKKwJUX
+	hNhrLSBzrhn1uhOYQcN8KuXe+AaMo/GA9bERABron30wxfftGbHNIUIKiJpSYxT1yAFwk1AJWke
+	Isg5nnreEfXyUvaa1rFRjFu15PCpn0zGQqMYZwrtIY8srsDeX8JpvFpyNTWzRLsb4JqM8OW5fh2
+	4P8oWgYnDC1eqEx7iaH5dXJHjW8EdRzRvPs7gdzsZvU4N1FhOPWknCh4oK6S565m/kin8WTczvg
+	R+DHvHH7T0B8BtzzmSKNcpl9f8BlUi5FTf1ZTpugZmveg
+X-Received: by 2002:a05:7301:1984:b0:2d9:94b4:a1bc with SMTP id
+ 5a478bee46e88-2e479517ab5mr3706270eec.8.1776765942884; Tue, 21 Apr 2026
+ 03:05:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260421093138.906266-1-junjie.cao@intel.com>
-X-Spam-Flag: NO
-X-Spam-Score: -2.30
-X-Spam-Level: 
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 21 Apr 2026 12:05:29 +0200
+X-Gm-Features: AQROBzBHndCdnCZ9AkZQJc_y_l5t9egxWJ2AbAQmbhMA8aKX5dBFyeoPiO7wZgs
+Message-ID: <CANiq72m7E3E86XwYT5c_3osYHiS9bp6pu7LQBjPFY+d8=8XsoQ@mail.gmail.com>
+Subject: Consider aa8f35172ab6 for 6.19.y and 7.0.y
+To: Greg KH <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org, Michal Wilczynski <m.wilczynski@samsung.com>, 
+	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <ukleinek@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-240118-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-240119-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,syzkaller.appspot.com:url,appspotmail.com:email,intel.com:email,suse.com:email,suse.cz:dkim];
-	DMARC_NA(0.00)[suse.cz];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FREEMAIL_CC(0.00)[mit.edu,dilger.ca,suse.cz,linux.alibaba.com,linux.ibm.com,gmail.com,huawei.com,vger.kernel.org,syzkaller.appspotmail.com];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[suse.cz:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jack@suse.cz,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	MAILSPIKE_FAIL(0.00)[2600:3c15:e001:75::12fc:5321:query timed out];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[miguelojedasandonis@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MAILSPIKE_FAIL(0.00)[2600:3c04:e001:36c::12fc:5321:query timed out];
-	TAGGED_RCPT(0.00)[stable,26c4a8cab92d0cda3e3b];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: ABDDA4394F6
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8A9AF439554
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue 21-04-26 17:31:38, Junjie Cao wrote:
-> ext4_read_inline_data() reads e_value_offs from the inode buffer_head on
-> each call, but the decision to enter the xattr value path depends on
-> i_inline_size cached in EXT4_I(inode) at iget time. If the buffer
-> contents change after the initial validation, e_value_offs can point
-> beyond the inode body while i_inline_size still directs the code into
-> the xattr value path, causing an out-of-bounds read in the memcpy.
-> 
-> Add a bounds check before the memcpy, consistent with
-> ext4_xattr_ibody_get(). Also guard folio_mark_uptodate() in
-> ext4_read_inline_folio() since ext4_read_inline_data() can now return
-> -EFSCORRUPTED.
-> 
-> Fixes: 67cf5b09a46f ("ext4: add the basic function for inline data support")
-> Cc: stable@vger.kernel.org
-> Reported-by: syzbot+26c4a8cab92d0cda3e3b@syzkaller.appspotmail.com
-> Tested-by: syzbot+26c4a8cab92d0cda3e3b@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=26c4a8cab92d0cda3e3b
-> Signed-off-by: Junjie Cao <junjie.cao@intel.com>
+Hi Greg, Sasha,
 
-If the buffer contents changes after the initial validation, there is some
-problem somewhere and this isn't going to fix it (likely the fs is
-corrupted and that isn't properly detected). Please fix the real problem,
-not just paper over it.
+Please consider backporting to 6.19.y and 7.0.y:
 
-								Honza
+  aa8f35172ab6 ("pwm: th1520: fix `CLIPPY=1` warning")
 
-> ---
->  fs/ext4/inline.c | 11 ++++++++++-
->  1 file changed, 10 insertions(+), 1 deletion(-)
-> 
-> diff --git a/fs/ext4/inline.c b/fs/ext4/inline.c
-> index 408677fa8196..18c678df0a6e 100644
-> --- a/fs/ext4/inline.c
-> +++ b/fs/ext4/inline.c
-> @@ -211,6 +211,14 @@ static int ext4_read_inline_data(struct inode *inode, void *buffer,
->  	len = min_t(unsigned int, len,
->  		    (unsigned int)le32_to_cpu(entry->e_value_size));
->  
-> +	if (unlikely((void *)IFIRST(header) + le16_to_cpu(entry->e_value_offs) +
-> +		     len > (void *)ITAIL(inode, raw_inode))) {
-> +		EXT4_ERROR_INODE(inode,
-> +			"inline data value out of bounds (offs %u len %u)",
-> +			le16_to_cpu(entry->e_value_offs), len);
-> +		return -EFSCORRUPTED;
-> +	}
-> +
->  	memcpy(buffer,
->  	       (void *)IFIRST(header) + le16_to_cpu(entry->e_value_offs), len);
->  	cp_len += len;
-> @@ -535,7 +543,8 @@ static int ext4_read_inline_folio(struct inode *inode, struct folio *folio)
->  	ret = ext4_read_inline_data(inode, kaddr, len, &iloc);
->  	kaddr = folio_zero_tail(folio, len, kaddr + len);
->  	kunmap_local(kaddr);
-> -	folio_mark_uptodate(folio);
-> +	if (ret >= 0)
-> +		folio_mark_uptodate(folio);
->  	brelse(iloc.bh);
->  
->  out:
-> -- 
-> 2.43.0
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+It is straightforward, and perhaps you will automatically pick it up
+after -rc1, but it doesn't have Cc: stable, so I am sending a message
+before I forget.
+
+(For 6.19.y, if you are dropping it soon anyway, please ignore it --
+this is not an important backport of course)
+
+Thanks!
+
+Cheers,
+Miguel
 
