@@ -1,155 +1,135 @@
-Return-Path: <stable+bounces-240106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240108-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oP1aG49L52lW6QEAu9opvQ
-	(envelope-from <stable+bounces-240106-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 12:03:59 +0200
+	id 6Jb2BzlM52lW6QEAu9opvQ
+	(envelope-from <stable+bounces-240108-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 12:06:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52B91439487
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 12:03:58 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59DDE439516
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 12:06:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 124C3300A106
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 09:58:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B035A3051D39
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 10:00:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E249B3B2FDA;
-	Tue, 21 Apr 2026 09:58:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38EF03B0AE1;
+	Tue, 21 Apr 2026 10:00:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mv9mPaLb"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="XFxvG5To"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4C2C3A63F2;
-	Tue, 21 Apr 2026 09:58:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97D5838F226
+	for <stable@vger.kernel.org>; Tue, 21 Apr 2026 10:00:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776765512; cv=none; b=kCmSHjpYg1wtTAUEXl96T9+p9vSXLt1p8sERh1pGm0qxkEprFZ3+hm58nOdPMn2lKrlppfbXE1OiqpICzSrpHNrCd1hLYRMkWa6aaPoYj23ktHsTllobdg7nTeRI7blTIGqTjhDtHrSW1HoXEJb/FmE4vq2OfNLrw5HR+xK61Rk=
+	t=1776765626; cv=none; b=byhrgL6SlWPjdVc6O63fDuqRVrXnknxUEDfD8QUZrh4QVkezrUiak1ydv9vMIN1YyL5ue3f+rFOmTQMEOJXkgS12k6IQxKS5GFTvJU6iWmhR0P/T5sK2FGLOYk/Hagxh7dSkCrKiMegxcjyiMDsUO7RMHBtQszLLejX/gxoj834=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776765512; c=relaxed/simple;
-	bh=fexoY8X6Nq2k603tJTu41pqTFs2zfJKg3RNrn/E/JGY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=opnys4n/tqluCIvoSL8NIUvIqo57XnlQkTrAh1df2D3YxFYeqkg0Gw9vXHwGrGkS6IVF9eJqgQJH6m7kbFfmdYRzaNzHibEJSNARoByd6S+9KWslSW/rOKegKFPGnUusyMl6jvOKd+IAzGiJnD8nGCTofVMmgedMfprXY38xbJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mv9mPaLb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D5FAC2BCB0;
-	Tue, 21 Apr 2026 09:58:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776765512;
-	bh=fexoY8X6Nq2k603tJTu41pqTFs2zfJKg3RNrn/E/JGY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mv9mPaLbyWMAANPZxFQ2Jqxq5kFDbd1iBmp7XwiQCZ34zvxiCQb7IK7U19EJ8GtjN
-	 lStK/YU1TztoxxoMGN8Mn/84E/Y9K3sUSy+rVKnQtkFcroPboRGRl41yDoOkjiyccB
-	 cEKvJwFMCY8AI6VIgzizisSEx+xZzU6qh1lrtgWn/Er+MhqcuWVCJqH/NRjentTI12
-	 toheS5KdS76FCvNVprwVRY72thTgkj5FLnepiLvc2M4bvwj3hwo6AuFsLMHCXm/STS
-	 kwqhEchqckpqu4N6n/vSViRDaNHQjbYX8st7sR2rtHzXKMws2uy/3uIBMXzExC1rKz
-	 hAcEKZ2+yuOkw==
-Date: Tue, 21 Apr 2026 10:58:27 +0100
-From: Sudeep Holla <sudeep.holla@kernel.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Hanjun Guo <guohanjun@huawei.com>,
-	Sudeep Holla <sudeep.holla@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Huisong Li <lihuisong@huawei.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, pjaroszynski@nvidia.com,
-	rmikey@meta.com, kernel-team@meta.com, stable@vger.kernel.org
-Subject: Re: [PATCH] ACPI: arm64: cpuidle: Tolerate platforms with no deep
- PSCI idle states
-Message-ID: <20260421-accomplished-ethereal-whale-0e1cba@sudeepholla>
-References: <20260420-ffh-v1-1-6b4c10fec442@debian.org>
- <20260420-sturdy-unique-shark-c4ca8c@sudeepholla>
- <aedGoi-Fk5HPK0OO@gmail.com>
+	s=arc-20240116; t=1776765626; c=relaxed/simple;
+	bh=/8RmMYmmwNGvGVhnupL/glGhwB2u023lC29k8r4ek9k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TdsihjOCaDOK/xIfUbhXaFkXEMmT9HPm+hk0aNC6iatOi1pCCXcnulBh+BwNMCn/nZfhNCqs5E5gXjlzrvG/sonRS2x2Tlb30KNYhV+itnQzUnCap+69dqMZSZ+sexuRRLk/CSftXhAudprwwgTKlQjAaElUmcLzpBYo95R9gOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=XFxvG5To; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 737C825E4;
+	Tue, 21 Apr 2026 03:00:18 -0700 (PDT)
+Received: from localhost.localdomain (unknown [10.57.89.2])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3EFAC3FBCB;
+	Tue, 21 Apr 2026 03:00:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1776765624; bh=/8RmMYmmwNGvGVhnupL/glGhwB2u023lC29k8r4ek9k=;
+	h=From:To:Cc:Subject:Date:From;
+	b=XFxvG5ToWnTtlw+Z4Xr+lHHH7itSBWAaA62sUcsSt03kEafsTV4eQIM3mZtxvdOYi
+	 dgjKtcFyffdmGWCKigmIe5RZw6GHrUXCROZAOFrSCezcpjWQ8haGTg96HEWZTdXyII
+	 iTZA52g6ydTyLvfk78rzYKQwMhsgUJeLoHH+xu8w=
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: stable@vger.kernel.org
+Cc: Will Deacon <will@kernel.org>,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH 6.18.y 0/6] arm64: Stable backport of the C1-Pro erratum 4193714 workaround
+Date: Tue, 21 Apr 2026 11:00:11 +0100
+Message-ID: <20260421100018.335793-1-catalin.marinas@arm.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <aedGoi-Fk5HPK0OO@gmail.com>
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[arm.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[arm.com:s=foss];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240106-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240108-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[catalin.marinas@arm.com,stable@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[3];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sudeep.holla@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[arm.com:+];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 52B91439487
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,arm.com:dkim,arm.com:mid]
+X-Rspamd-Queue-Id: 59DDE439516
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Apr 21, 2026 at 02:51:42AM -0700, Breno Leitao wrote:
-> On Mon, Apr 20, 2026 at 04:12:38PM +0100, Sudeep Holla wrote:
-> > On Mon, Apr 20, 2026 at 02:27:13AM -0700, Breno Leitao wrote:
-> > > -	count = pr->power.count - 1;
-> > > -	if (count <= 0)
-> > > -		return -ENODEV;
-> > > -
-> >
-> > Does it make sense to retain this check like
-> >   if (pr->power.count < 1)
-> >   	return -EINVAL;
-> >
-> > Though I see the assignment to pr->power.count in drivers/acpi/processor_idle.c
-> > is through unsigned int. So I am fine even without the above check.
-> 
-> I don't think the check is necessary. When count is 0 or 1, the loop
-> for (i = 1; i < pr->power.count; i++) body won't execute, and the
-> function will return 0.
->
+Hi Greg, Sasha,
 
-Yes but the point is to handle invalid pr->power.count(0 or less) which
-is not possible here though it is signed it because it is assigned from
-an unsigned int during initialisation.
+As the workaround for this CPU bug just went in, I'm sending it for
+stable 6.18. The first two patches are prerequisites to make the
+backporting easier. I do not intend to send them for stable 6.12 since
+SME is not supported in that version anyway (Android folk did their own
+backports already).
 
-> This seems like the correct behavior — if there are no FFH PSCI states
-> to validate, there's nothing that should fail.
-> 
+A heads-up, the workaround itself is larger than the recommended max 100
+lines suitability for stable backports.
 
-Agreed, but I was thinking of error in parsing _LPI being propogated here
-but again that's not happening here.
+Thanks.
 
-> Additionally, returning -ENODEV would trigger the "Invalid FFH LPI data"
-> error message, which would be misleading since the LPI data isn't
-> invalid, it's just not present.
-> 
+Catalin Marinas (4):
+  arm64: tlb: Introduce __tlbi_sync_s1ish_{kernel,batch}() for TLB
+    maintenance
+  arm64: tlb: Pass the corresponding mm to __tlbi_sync_s1ish()
+  arm64: cputype: Add C1-Pro definitions
+  arm64: errata: Work around early CME DVMSync acknowledgement
 
-The point was to throw that error if _LPI parsing fails.
+Mark Rutland (2):
+  arm64: tlb: Allow XZR argument to TLBI ops
+  arm64: tlb: Optimize ARM64_WORKAROUND_REPEAT_TLBI
 
-> That said, please take this with a grain of salt since I'm not deeply
-> familiar with _LPI states and their expected behavior.
-> 
+ Documentation/arch/arm64/silicon-errata.rst |   2 +
+ arch/arm64/Kconfig                          |  12 ++
+ arch/arm64/include/asm/cpucaps.h            |   2 +
+ arch/arm64/include/asm/cputype.h            |   2 +
+ arch/arm64/include/asm/fpsimd.h             |  21 +++
+ arch/arm64/include/asm/tlbbatch.h           |  10 +-
+ arch/arm64/include/asm/tlbflush.h           | 143 ++++++++++++++++----
+ arch/arm64/kernel/cpu_errata.c              |  30 ++++
+ arch/arm64/kernel/entry-common.c            |   3 +
+ arch/arm64/kernel/fpsimd.c                  |  79 +++++++++++
+ arch/arm64/kernel/process.c                 |  36 +++++
+ arch/arm64/kernel/sys_compat.c              |   2 +-
+ arch/arm64/kvm/hyp/nvhe/mm.c                |   2 +-
+ arch/arm64/kvm/hyp/nvhe/tlb.c               |   8 +-
+ arch/arm64/kvm/hyp/pgtable.c                |   2 +-
+ arch/arm64/kvm/hyp/vhe/tlb.c                |  10 +-
+ arch/arm64/tools/cpucaps                    |   1 +
+ 17 files changed, 325 insertions(+), 40 deletions(-)
 
-No worries, I agree the check I asked for is not needed.
-
--- 
-Regards,
-Sudeep
 
