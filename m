@@ -1,289 +1,256 @@
-Return-Path: <stable+bounces-240213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240214-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KJ8aFB6152lU/wEAu9opvQ
-	(envelope-from <stable+bounces-240213-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 19:34:22 +0200
+	id qDVgDV6252mu/wEAu9opvQ
+	(envelope-from <stable+bounces-240214-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 19:39:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1DCD43E08E
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 19:34:21 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87CBF43E136
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 19:39:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2F7B2304EB8E
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 17:31:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 062123016EF3
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 17:33:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 847E131077A;
-	Tue, 21 Apr 2026 17:31:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D2A731AF2D;
+	Tue, 21 Apr 2026 17:33:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lO7qyD7d"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DbmcYJb8"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A89A02BDC0B
-	for <stable@vger.kernel.org>; Tue, 21 Apr 2026 17:31:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.10
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776792669; cv=fail; b=jbVzrKh2MfcPD9Qt5IYALKGs75mbW0SEiLTHZRW91DmdP+f6FZBFcjmnIiPm+WhBcIE1FD4Tbv/4kgdjg9WgTHeQMiP4IQrB3JlkSg2EgQHKiIlKpO30Rx/Ot9XHJMSMjzQmL98MfrG9y7JswdzPyrqlCTzBbcvR08eg2xLTDLM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776792669; c=relaxed/simple;
-	bh=KSZDSQ8QBcGh5xZonEtTBGx7ezb+FpA8hTktwCvynCA=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=bOmuHZDtjzKfmL8lnyXsTXIzDSbWpWsUAz3wYPK2wKB8mni0XgB+qVQWO090pDqwicixgVqLl62rI3vQ9Am7HHq0wcdjYx2vZWCgdNvLZ2G7qfOFN4OqJWdWU6BcsFoJnCfbcwhKt6yNVY/B2U2Eylcz8YaDojEFuiT8rrelo9g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lO7qyD7d; arc=fail smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776792668; x=1808328668;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=KSZDSQ8QBcGh5xZonEtTBGx7ezb+FpA8hTktwCvynCA=;
-  b=lO7qyD7dFUXlGF10oQ7V9NEfrkig7KdCCMeDzjSf4l7b8ywkAMbtaPII
-   //CPOPbPxoYInGai7vAQ78gs6i1TSD7x3CRHK3fkt3wEav6E+8JJoYvu/
-   x96NmIQAKT41fJo1hyFCHIQz9nksuAfoMpqdt6Qh26HP46XEO4oj7QcA7
-   t33Djl1sI8MFinLJxEIAwXEIINjbn+2qm7WZdFUaurQvsIBKum+whl98Q
-   Rpo8fzh1+q9Q8C6qes7jTBJzwHZul7U5S/+kVz9LBXjdLxryiKPKylRaP
-   A6jH9ud2/7JdiaW7yJOEurVXpmAblr3mO3zmfOWAfH9sRMTepj61H2P0x
-   Q==;
-X-CSE-ConnectionGUID: 47yVX9f2T6qD8fPpPcp/HQ==
-X-CSE-MsgGUID: 1TsiZbfVQsaw0AE8ooWzhA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11763"; a="95147730"
-X-IronPort-AV: E=Sophos;i="6.23,192,1770624000"; 
-   d="scan'208";a="95147730"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2026 10:31:07 -0700
-X-CSE-ConnectionGUID: sZZ838V3SSW1KFnvxePm6A==
-X-CSE-MsgGUID: DlLPhItuQ+OzXXGGei5drg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,192,1770624000"; 
-   d="scan'208";a="237124426"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2026 10:31:07 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 21 Apr 2026 10:31:06 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Tue, 21 Apr 2026 10:31:06 -0700
-Received: from CH1PR05CU001.outbound.protection.outlook.com (52.101.193.64) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 21 Apr 2026 10:31:05 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VAueysljNdYh7lK4E77JxjmJM1uQUM5y4y/i0Fk5weOpy1ZVQuilG13e+adAZ9sgMgAbLA1G4cBEMtPR5uYT447yCiMlF2lkf6FVbcbSLO5Oj2biH0I2o8GWcJX3RJ5e6iUEMbr/LXcSuAWfkW4ozd3zTxnLrTJok5ytbawbB6MkaHmD+c582ek8BNfhGzbVgGph5cn/TY/qNAK5IgQMq+O8HfIeqWeuyETCXu9WT9iRPRYECQUyCTdBTltcHzTmAVujLX1IUX3qInF3k6Z19s62YQgkoL9sSSZVgA7fjvTj0S7HXRgfMNvLtho409hbECzowIdiS+OiR1907Y+tjw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hu2gW8dESTdt1j/pgvrePkyGvjqUmKXyHh9Netf4nOc=;
- b=b3IBFZsr7c2Hlmi9Z6H8Tmm21gUzgq6vhLQ9GfhxdvUbZurUempF3sngVmvCrssWoTELuWkEqKilKs2aRYX+cwAD0VhMzK1u4NWWDjBql9GuRSsUKe0eYDaEIHlaFCgGvAYr6N3402cu7TIPrkgIE3quKOiPUIoYqG4hOKseLvahT81KQNo0fCeqKhQzm81oPd8N2+vKJBs86HYeChyM/RFIDkE/2mclfEVk4nTusJQt+KZOmofQbbDYVaJS4fCRaVFJPjFPVMIbHes62aTxurniXn9t8zF/+i7LQYJk8n0fzsL0Hn6hhzguvcp/8DNoqvpcha0egL6axlw19i3jPQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB8182.namprd11.prod.outlook.com (2603:10b6:8:163::17)
- by DS7PR11MB6295.namprd11.prod.outlook.com (2603:10b6:8:95::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.16; Tue, 21 Apr
- 2026 17:31:03 +0000
-Received: from DS0PR11MB8182.namprd11.prod.outlook.com
- ([fe80::7b65:81e6:c6c4:449e]) by DS0PR11MB8182.namprd11.prod.outlook.com
- ([fe80::7b65:81e6:c6c4:449e%7]) with mapi id 15.20.9846.016; Tue, 21 Apr 2026
- 17:31:03 +0000
-Date: Tue, 21 Apr 2026 10:31:00 -0700
-From: Matt Roper <matthew.d.roper@intel.com>
-To: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-CC: Tvrtko Ursulin <tursulin@ursulin.net>, <intel-xe@lists.freedesktop.org>,
-	<kernel-dev@igalia.com>, Matthew Brost <matthew.brost@intel.com>, Thomas
- =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>, Rodrigo Vivi
-	<rodrigo.vivi@intel.com>, <stable@vger.kernel.org>
-Subject: Re: [PATCH] drm/xe/xelp: Fix Wa_18022495364
-Message-ID: <20260421173100.GC2131374@mdroper-desk1.amr.corp.intel.com>
-References: <20260420131603.70357-1-tvrtko.ursulin@igalia.com>
- <384adac7-2aa4-4568-b7a5-987e914fbaf2@ursulin.net>
- <20260420202932.GH7476@mdroper-desk1.amr.corp.intel.com>
- <866fe0f9-73a6-47b3-ac37-41bb26c0c6a6@igalia.com>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <866fe0f9-73a6-47b3-ac37-41bb26c0c6a6@igalia.com>
-X-ClientProxiedBy: BYAPR07CA0060.namprd07.prod.outlook.com
- (2603:10b6:a03:60::37) To DS0PR11MB8182.namprd11.prod.outlook.com
- (2603:10b6:8:163::17)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90BD42236E3
+	for <stable@vger.kernel.org>; Tue, 21 Apr 2026 17:33:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776792818; cv=none; b=KyXzGKqzJJElvfRgNxajILvWnIUVrQeG++hp2g6nH/jpBz6S3AozyME2ok5lQELCJv0sdKfmshm9gA34KUy0FOBqFzlfzJKZ5QBfClNY4GrAQ+SeOq6WdfOVEApKyRu+AKq6uAj22nJZW4MbrUaNUwSRV0wV0zEz5aSp1x1s5uE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776792818; c=relaxed/simple;
+	bh=/scXEeQaRN4B/NeF1PUsl2czhaClwcX6Cf0nOChKG7Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rsQ7m2EExC41gbGf+vyBg10tMnG3nq4VBNEe0ldsXgPAMoK3BHA8QFPRENqoLLIGMieLf05BAt5qRztOAKBdF53O6tn3prN6MrzkND8H2XfpCszQUTMLyFkYKEoawaw56VZBlRCh+xyqE1znfuBK8ihp8d88pcWviSJY2zC1Nsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DbmcYJb8; arc=none smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-ba922426c5cso286041866b.3
+        for <stable@vger.kernel.org>; Tue, 21 Apr 2026 10:33:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776792815; x=1777397615; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=DoCWrohdiik85XEdHlXUw0nj/jBXY1QzvkY+M7xyZZ4=;
+        b=DbmcYJb8H7k+fsq8ScvYfPAIn69IO2kaxdhnOqw8CtGjvewOR3pEAVd14DYY4rYnPg
+         2fWbGVLFu0wPXftCrPMXII+KsvOLDNI3siMK7l3FRhozP8pc06+LHD0pBH9Z2CUrzsNe
+         a0Ie/zDXKXZaJnJO4gwaiG2zFJ7+k3MK/bYwO9qR40UTk9Q+bCf0Gk0pfUSITjtLGZvv
+         5+/N3DDHupTOApEqOiq874Ke3CpQ7VCEw1SNEUUAQeqQOBwWpEp0JAqXd4Hgwix12CFN
+         Zj/CZ1gqr5SsTacJxlCMq/4xhAWI4Fud0bYyqs4m1SKAxJLk1YH+Yie6v2oGZ1taU8t/
+         lNQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776792815; x=1777397615;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=DoCWrohdiik85XEdHlXUw0nj/jBXY1QzvkY+M7xyZZ4=;
+        b=XYDZvz0KVnDW1Cgp2yJ9D6ufgNoiRMJKBWz3tJHsIkIz+UaGdPP1LaTAyNshqVX52U
+         PUy/dJKXvTesrweGG99jDUk8ADx8PjA6DsinCtSzF6W7p/ejwRJ8TE9VeeWo+CsC5+G5
+         6iSOMrW09b8sJgYUOVOeyeeh2nS3iWVPlJbeKIc4M40SZQOnB38mBB5UJvnDSsKDgbpj
+         qTcP5NyXHxOQUWxS1gQQDtDRGg6ePRa7R96tHkLFXipDVyqp7XzbJ/eHon6PIEB0tvLY
+         ZT1UYKCUfyncUXoCucgM2WrG+WSGe8RLGVPdH9DDPexml3XgFDypCqf/GMXpEOzidvRq
+         K7IA==
+X-Forwarded-Encrypted: i=1; AFNElJ/WXhXlhYAFHjveUF7Nbk/qplNA6UVMlYrqCAK2SVsXueEu+fN5N8L//b1n4KHzuJBhJXik0IA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyirewgrlebmUhl0Fi1Pw7xOeh3txmTITLEswTyXvy58wHHFmYk
+	nhzwoF51T48+gB29nuhvSJeQPRcZsYx07DiwWEv6HHvDdRHNI9lnZOwx
+X-Gm-Gg: AeBDietIh8Wx8H/VBDJmOBaV2anmVGH1tNVnHuzeDjkEwBPpNbuCQqz4JlA4PsCWZv2
+	onsHx/yP0a3ef0SfhDPUH/5ftVxI350yxUrTSsen9dQWkKjJUeLKCTUiNXhv9G4xPk4b0HRx/6r
+	8lcZMLN8siZeGv5qMbkQ+M5nHCDjE42pqJPi10v90w/5CZR2yXpu4vtXSUm/zjhoyNysnFYTBFX
+	DCWMtv4ivnodXdF56KEUZluvXK67yJt7eyRqps9LWkX108+nJs37L3HKg7ht9EYvg/QNhC29C2L
+	ze0lH3yFfxaWZJQxYfEd8MBBc2D+69pw4cNJOOIIYYwmB8otifRn0h7YI7MT7H1ZF9WnUp9usY/
+	+XIGIEMxAi2/GVpo1nJam/PENigVrpz43UCStVI/05Q4ZEAtIwrQtvWDUqgllMFPXnVrhPzX/Db
+	t79rQy82USZQGV6+bemWTmE1Ebbm3NUz8EWu9dY+kQtPuQKeWRgoIQDjujhX4hpMZ+SrikPYlQe
+	t4XihWuG2wD+yIDgyZndY78394=
+X-Received: by 2002:a17:907:ea6:b0:b96:f6f1:e7af with SMTP id a640c23a62f3a-ba41916eb4dmr907537666b.9.1776792814542;
+        Tue, 21 Apr 2026 10:33:34 -0700 (PDT)
+Received: from ?IPV6:2a02:a03f:a75e:9a00:7546:18b7:2c8c:e879? ([2a02:a03f:a75e:9a00:7546:18b7:2c8c:e879])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ba4519ee4adsm469401966b.19.2026.04.21.10.33.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 21 Apr 2026 10:33:34 -0700 (PDT)
+Message-ID: <8ce64ee4-dce1-4052-9558-61c97121cc37@gmail.com>
+Date: Tue, 21 Apr 2026 19:33:32 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB8182:EE_|DS7PR11MB6295:EE_
-X-MS-Office365-Filtering-Correlation-Id: acb3236c-7d87-4605-5044-08de9fcbc2c4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info: qLFAAQIb3m+TagkICInqzcQi9z0FEX6It0swKV7eZ5ncjz2C1B/qIXG9PH0ciZ6/YibZ1In5tz9QCk67BJqL6xPME3D51NjlRrkIilzRf9+am4owFFZpVrumciRU6UqkdSMqP6XYSU3CqADoNcXFkcbqrHpSQyEoMOt0LqLAmdq+CdHej75M+01cxCy3rcl6MAqvUynPWO30ZjdvdpPMdXM57FnrZun+5GsXndvFyy84lik0US/tYsPC/S8BjBBuF26amscZT79G6WdIbmaEOcruRKaglaKRXR+pVGaJSE54UWe5WgN1sqbDH6jw2S+l4BB6Nxuxx0bXHkdLzyG6M3waqUfdmKOIQhCYCqTxgv74YMipi+OhTHr4x/dsUYPzX4+rNboGOIdecvw4t9J1LHLjbfNAH26a/AYinonRZG1whGEUJtQWWwJ6xTgMyiZoBoWQlTefsRpSujSRf597Mn+1oxDSoA5dBLlZB/3nUafAO2GI+4OC5PgRj2UxVNv0MIouTXfLdS+w23TqQFL47UTGcl1aaFUZ1GVv4LFHYDh2S0hgXHshktlAjuwJ685TgRUekJeuPkd0q240vTszx9/SjNxtR2PUAUw2l1LKJPV86kOab/YhhsBJpqJeDJpZtBGG+hiMDoZnX9Sw7HsX+DYPOqtFIyPyrlJWEM6GEyFqAtd8EPi6GhgM8GPXzFKjYnp6Vmlp9SnUfZk3CYMn0ckmIxptA9FFJVSpEAOLbtw=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB8182.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?n2hcTzzdatZIVIMez2zs15JP8RPyjB4wQQIdYffsKvawx5CKcX+Tm/SOkc?=
- =?iso-8859-1?Q?mzKtixRzdKVzC1cqNkl+B0XSyH95gg9HAO6aRf8k+GeX4mATq2D0C5oWAp?=
- =?iso-8859-1?Q?wYEOZkDeAEDZ7v+2rzCg32aFNGWV1RiSjYzux3OYhpcHToIboS9kaRV0T6?=
- =?iso-8859-1?Q?bO2otYmMgpNmX36+rHLHPZFY2/SkIO7ItSh4QBA3o5k2C1G1EzcfE9dgqK?=
- =?iso-8859-1?Q?Of/DrZlSuFcCNg0voFS2DyOIBpcPFPsARekiNWQ2s0qgXleqmu0QLGwHid?=
- =?iso-8859-1?Q?v+3YY1tkjyo/uzGeVShmaRXYR84FwFxikgmGlOJnea/P6Yo6yjb5n5lcbm?=
- =?iso-8859-1?Q?85XJFNpUB/iDX+0elKu/Hz5xTi9Axyn6Pacb2aoHkXgMlAS1/Ymi1tztkj?=
- =?iso-8859-1?Q?6j5J4204veJpmfZay21r/X/YmuYn8xzOsBS2e1igb/Xeh93lCLjNoH+Ovw?=
- =?iso-8859-1?Q?u1itAsfZmXhhr9MemOXYBNKvBPDnrCijrjyckXQXtXC5vbUWHkHi9FNGuA?=
- =?iso-8859-1?Q?LZHfIOjkNkOGD74KjrRHkXr7KioC0VqdH/OT89arHUozCYCxOc2lHW7HnC?=
- =?iso-8859-1?Q?alOnciyF7Q/uzslMzFb++T3Q10wK3AznsVf6wcXgo2z+Cypj70MIAUe2+f?=
- =?iso-8859-1?Q?9nSsYkdbF5JZgzglUPrVmAdNgwES3UUgtEjW7rPEhTTNMrkaFigxp2ZzeY?=
- =?iso-8859-1?Q?JOg1WghI9RodBXRIW2zmEU+Vyl7GUX38AGdBoIE4sKTvu+nDHVxLkDS5j9?=
- =?iso-8859-1?Q?ItdOF+L/KFmckplm8jYD5p0RJJL48LJkPahiTaY155UwAjEs7EbBpDU0CN?=
- =?iso-8859-1?Q?KZqn0gPC6JeIFh8Qsh5HEUdIJDgb5fc9WDPnD0YGiUV9HXD8EInIE9/sfX?=
- =?iso-8859-1?Q?N4G0MatVupBWPjrM190mSSnotZMmIS07iqhLbCUplhMDfkfs7Hh3HT5uPl?=
- =?iso-8859-1?Q?lVsWZrcPBn5hMvYa9qPlqkwkHh3Vehcbg6NFbcyG3UcmduxH10OOtlWtxc?=
- =?iso-8859-1?Q?EO/RaEK8zOmYEUVAE/0qXrbxLrvB+oWPUugokXEXGlWf24jBQTx8DTT4vE?=
- =?iso-8859-1?Q?XIQUgAD4FTbBCSXCtqWKyzTU0YEZi6leWmjex0fg/ajCAQO6LKhy2IIj2S?=
- =?iso-8859-1?Q?WE5PU5drW9sLIitL+SnHwmPlqUr8FksLVbtxvU2fDGjDvEsF7uePuKrUdZ?=
- =?iso-8859-1?Q?IdzhTFT37tBehObAkTil8x07S2fDqd+G+k9/k/8/SHsewz2DujbDpZakbj?=
- =?iso-8859-1?Q?vN/VjIgJzJkObiQ19j/errFyAqf1nWOpKtl5o8Ddhjhj+NEPL9zbl2/aB9?=
- =?iso-8859-1?Q?aWLBnnQOZUSQJTZRucStZxXujD3OUqc0CMnz3Bm8VJmZyoSYS4bLmz/oJc?=
- =?iso-8859-1?Q?Wluw0gU4Q+LBSnwrbUcMtW599jyL0ctMedSBSYi4uHG/ypMZPJRewaL4jw?=
- =?iso-8859-1?Q?j7Q+WdpOBRloVqk2an/Y7GxIs111pqC9pj5Qgdo3wLEkXp9S+XBbbR9932?=
- =?iso-8859-1?Q?AVCb1VDE3ybdUzPuOBYNN/75LxGpKztIR2Fyks/L3lWCK8KC2qvfqKjHzq?=
- =?iso-8859-1?Q?KY4fPnuQP2ohYs/Qq1BpevyEaH3TZja5U7wdiAh9u1Nou7+xIo5Q0hUb0K?=
- =?iso-8859-1?Q?vJH/2hDS/Xe/82cWmxesgJOe10JN9xVLUkddF3QhfN4lNlYgB8vfnz2A/g?=
- =?iso-8859-1?Q?z9K8zY0j/wDM8GvdtLOXzCGow0qYOrszRGUEr6Wk3Y6jiWZkN56EynQC/e?=
- =?iso-8859-1?Q?qpVB1sG0nXJhegZIjOvd+hTBJN+5vukM+bHz0O87UoqIRynlQLR8t1LX8R?=
- =?iso-8859-1?Q?CKG7nkEdeUk+s/vu8dr4TR1rXPEek04=3D?=
-X-Exchange-RoutingPolicyChecked: wKK97BknL5a37PSe4/9M627i1o4Po3AQud0FR6EUSh+aY6D7QEnPybokpAJ2xLHA/BEQfTk5bo+Aw1DHa160i90WmPxi+OoR0SZcih/zFADsu8dHZdeDrVgTFzklAYo6LO91+M0b2GoN4WnFmHUuY9ej3mmFd4vBsXuqEkEloaI5YwnkHH4D5sxp93xG4G8KVxB+XV0/uo/YlUSjw6KffhqWqqZUGcBsxKl3oT2z/V2NqNLxz8xWamPvTfUaR31fdio3NtJuPX054wwxOGPs3nh6sar3CUT4IU0qY3SRKb3QDy3VgeFPey55lqhkfoogrpCMUFU8YPcpnLnWGEk4Lw==
-X-MS-Exchange-CrossTenant-Network-Message-Id: acb3236c-7d87-4605-5044-08de9fcbc2c4
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB8182.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Apr 2026 17:31:02.9230
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: LGsP5miwK77t7kh+Nmcn/2cYVhlCEQ0cQC/aVSZvv14Wxn/og9w3EK/QWNMB1yKwPQtFC6KHVTOrCYbZ+SOVXHSrCVZ3To3nV7Lq30bM0Ck=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR11MB6295
-X-OriginatorOrg: intel.com
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net: ipv6: fix NOREF dst use in seg6 and rpl
+ lwtunnels
+To: Andrea Mayer <andrea.mayer@uniroma2.it>, davem@davemloft.net,
+ dsahern@kernel.org, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org
+Cc: bigeasy@linutronix.de, clrkwllms@kernel.org, rostedt@goodmis.org,
+ david.lebrun@uclouvain.be, alex.aring@gmail.com,
+ stefano.salsano@uniroma2.it, netdev@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20260421094735.20997-1-andrea.mayer@uniroma2.it>
+Content-Language: en-US
+From: Justin Iurman <justin.iurman@gmail.com>
+In-Reply-To: <20260421094735.20997-1-andrea.mayer@uniroma2.it>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-240213-lists,stable=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[igalia.com:email,intel.com:dkim,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns];
-	DKIM_TRACE(0.00)[intel.com:+];
+	TAGGED_FROM(0.00)[bounces-240214-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[matthew.d.roper@intel.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linutronix.de,kernel.org,goodmis.org,uclouvain.be,gmail.com,uniroma2.it,vger.kernel.org,lists.linux.dev];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[17];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[justiniurman@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[10]
-X-Rspamd-Queue-Id: D1DCD43E08E
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[uniroma2.it:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 87CBF43E136
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Apr 21, 2026 at 04:09:25PM +0100, Tvrtko Ursulin wrote:
+On 4/21/26 11:47, Andrea Mayer wrote:
+> seg6_input_core() and rpl_input() call ip6_route_input() which sets a
+> NOREF dst on the skb, then pass it to dst_cache_set_ip6() invoking
+> dst_hold() unconditionally.
+> On PREEMPT_RT, ksoftirqd is preemptible and a higher-priority task can
+> release the underlying pcpu_rt between the lookup and the caching
+> through a concurrent FIB lookup on a shared nexthop.
+> Simplified race sequence:
 > 
-> On 20/04/2026 21:29, Matt Roper wrote:
-> > On Mon, Apr 20, 2026 at 02:24:05PM +0100, Tvrtko Ursulin wrote:
-> > > 
-> > > On 20/04/2026 14:16, Tvrtko Ursulin wrote:
-> > > > Command parser relative MMIO addressing needs to be enabled when writing
-> > > > to the register.
-> > > > 
-> > > > Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-> > > > Fixes: ca33cd271ef9 ("drm/xe/xelp: Add Wa_18022495364")
-> > > > Cc: Matt Roper <matthew.d.roper@intel.com>
-> > > > Cc: Matthew Brost <matthew.brost@intel.com>
-> > > > Cc: "Thomas Hellström" <thomas.hellstrom@linux.intel.com>
-> > > > Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> > > > Cc: <stable@vger.kernel.org> # v6.18+
-> > 
-> > I don't think we want/need the stable Cc here; this workaround doesn't
-> > apply to any of the Xe2 and later platforms that the Xe driver supports
-> > for users.  While it's possible for developers to manually override the
-> > driver's detection flags and force it to load on Xe1-era platforms that
-> > this workaround does apply to, doing so will taint the kernel and we
-> > already know that a lot of Xe1 era workarounds aren't implemented.
+>    ksoftirqd/X                       higher-prio task (same CPU X)
+>    -----------                       --------------------------------
+>    seg6_input_core(,skb)/rpl_input(skb)
+>      dst_cache_get()
+>        -> miss
+>      ip6_route_input(skb)
+>        -> ip6_pol_route(,skb,flags)
+>           [RT6_LOOKUP_F_DST_NOREF in flags]
+>          -> FIB lookup resolves fib6_nh
+>             [nhid=N route]
+>          -> rt6_make_pcpu_route()
+>             [creates pcpu_rt, refcount=1]
+>               pcpu_rt->sernum = fib6_sernum
+>               [fib6_sernum=W]
+>             -> cmpxchg(fib6_nh.rt6i_pcpu,
+>                        NULL, pcpu_rt)
+>                [slot was empty, store succeeds]
+>        -> skb_dst_set_noref(skb, dst)
+>           [dst is pcpu_rt, refcount still 1]
 > 
-> You are right, I just blindly copied the output of dim fixes. But it doesn't
-> matter hugely either way since as long as there is Fixes: it would get
-> picked up for -stable anyway.
+>                                      rt_genid_bump_ipv6()
+>                                        -> bumps fib6_sernum
+>                                           [fib6_sernum from W to Z]
+>                                      ip6_route_output()
+>                                        -> ip6_pol_route()
+>                                          -> FIB lookup resolves fib6_nh
+>                                             [nhid=N]
+>                                          -> rt6_get_pcpu_route()
+>                                               pcpu_rt->sernum != fib6_sernum
+>                                               [W <> Z, stale]
+>                                            -> prev = xchg(rt6i_pcpu, NULL)
+>                                            -> dst_release(prev)
+>                                               [prev is pcpu_rt,
+>                                                refcount 1->0, dead]
 > 
-> > 
-> > > > ---
-> > > >    drivers/gpu/drm/xe/xe_lrc.c | 2 +-
-> > > >    1 file changed, 1 insertion(+), 1 deletion(-)
-> > > > 
-> > > > diff --git a/drivers/gpu/drm/xe/xe_lrc.c b/drivers/gpu/drm/xe/xe_lrc.c
-> > > > index 9d12a0d2f0b5..c725cde4508d 100644
-> > > > --- a/drivers/gpu/drm/xe/xe_lrc.c
-> > > > +++ b/drivers/gpu/drm/xe/xe_lrc.c
-> > > > @@ -1214,7 +1214,7 @@ static ssize_t setup_invalidate_state_cache_wa(struct xe_lrc *lrc,
-> > > >    	if (xe_gt_WARN_ON(lrc->gt, max_len < 3))
-> > > >    		return -ENOSPC;
-> > > > -	*cmd++ = MI_LOAD_REGISTER_IMM | MI_LRI_NUM_REGS(1);
-> > > > +	*cmd++ = MI_LOAD_REGISTER_IMM | MI_LRI_LRM_CS_MMIO | MI_LRI_NUM_REGS(1);
-> > > 
-> > > Or if this register exists only for RCS would it be better to define
-> > > CS_DEBUG_MODE2 as the absolute 0x20d8 (as in i915)? Unfortunately the public
-> > > TGL PRM does not list neither the register or the workaround so I am not
-> > > sure.
-> > 
-> > CS_DEBUG_MODE2 exists on both the RCS and CCS engines, so I think the
-> > current register definition is fine.
-> > 
-> > Personally I might have changed the line farther down to
-> > CS_DEBUG_MODE2(hwe->mmio_base) so that we're using an absolute offset
-> > instead of relative, but adding the MI_LRI_LRM_CS_MMIO flag and passing
-> > the relative offset should work fine too.
+>      dst = skb_dst(skb)
+>      [dst is the dead pcpu_rt]
+>      dst_cache_set_ip6(dst)
+>        -> dst_hold() on dead dst
+>        -> WARN / use-after-free
 > 
-> Good to know, thanks! I am happy to change to absolute if you prefer.
->  > Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
+> For the race to occur, ksoftirqd must be preemptible (PREEMPT_RT without
+> PREEMPT_RT_NEEDS_BH_LOCK) and a concurrent task must be able to release
+> the pcpu_rt. Shared nexthop objects provide such a path, as two routes
+> pointing to the same nhid share the same fib6_nh and its rt6i_pcpu
+> entry.
 > 
-> Thank you!
+> Fix seg6_input_core() and rpl_input() by calling skb_dst_force() after
+> ip6_route_input() to force the NOREF dst into a refcounted one before
+> caching.
+> The output path is not affected as ip6_route_output() already returns a
+> refcounted dst.
 > 
-> I assume someone will pull the patch in?
+> Fixes: af4a2209b134 ("ipv6: sr: use dst_cache in seg6_input")
+> Fixes: a7a29f9c361f ("net: ipv6: add rpl sr tunnel")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
+> ---
+>   net/ipv6/rpl_iptunnel.c  | 9 +++++++++
+>   net/ipv6/seg6_iptunnel.c | 9 +++++++++
+>   2 files changed, 18 insertions(+)
+> 
+> diff --git a/net/ipv6/rpl_iptunnel.c b/net/ipv6/rpl_iptunnel.c
+> index c7942cf65567..4e10adcd70e8 100644
+> --- a/net/ipv6/rpl_iptunnel.c
+> +++ b/net/ipv6/rpl_iptunnel.c
+> @@ -287,7 +287,16 @@ static int rpl_input(struct sk_buff *skb)
+>   
+>   	if (!dst) {
+>   		ip6_route_input(skb);
+> +
+> +		/* ip6_route_input() sets a NOREF dst; force a refcount on it
+> +		 * before caching or further use.
+> +		 */
+> +		skb_dst_force(skb);
+>   		dst = skb_dst(skb);
+> +		if (unlikely(!dst)) {
+> +			err = -ENETUNREACH;
+> +			goto drop;
+> +		}
+>   
+>   		/* cache only if we don't create a dst reference loop */
+>   		if (!dst->error && lwtst != dst->lwtstate) {
+> diff --git a/net/ipv6/seg6_iptunnel.c b/net/ipv6/seg6_iptunnel.c
+> index 97b50d9b1365..94284b483be0 100644
+> --- a/net/ipv6/seg6_iptunnel.c
+> +++ b/net/ipv6/seg6_iptunnel.c
+> @@ -515,7 +515,16 @@ static int seg6_input_core(struct net *net, struct sock *sk,
+>   
+>   	if (!dst) {
+>   		ip6_route_input(skb);
+> +
+> +		/* ip6_route_input() sets a NOREF dst; force a refcount on it
+> +		 * before caching or further use.
+> +		 */
+> +		skb_dst_force(skb);
+>   		dst = skb_dst(skb);
+> +		if (unlikely(!dst)) {
+> +			err = -ENETUNREACH;
+> +			goto drop;
+> +		}
+>   
+>   		/* cache only if we don't create a dst reference loop */
+>   		if (!dst->error && lwtst != dst->lwtstate) {
 
-Yeah, I just pushed it; the CI results weren't available when I checked
-yesterday (likely due to the weekend CI farm downtime creating a big
-testing backlog).
+Thanks for taking care of this, Andrea! LGTM.
 
-Thanks.
-
-
-Matt
-
-> 
-> Regards,
-> 
-> Tvrtko
-> 
-> 
-
--- 
-Matt Roper
-Graphics Software Engineer
-Linux GPU Platform Enablement
-Intel Corporation
+Reviewed-by: Justin Iurman <justin.iurman@gmail.com>
 
