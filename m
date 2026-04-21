@@ -1,152 +1,184 @@
-Return-Path: <stable+bounces-240253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240254-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cLO1HC3852mADwIAu9opvQ
-	(envelope-from <stable+bounces-240253-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 00:37:33 +0200
+	id YPOaLxMB6GlJEAIAu9opvQ
+	(envelope-from <stable+bounces-240254-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 00:58:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62BDF440343
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 00:37:31 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41BF34405B3
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 00:58:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0355130166D9
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 22:37:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0967B30555CD
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 22:55:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CACC3A5E82;
-	Tue, 21 Apr 2026 22:37:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B690E3A6B74;
+	Tue, 21 Apr 2026 22:55:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WaXyqS3k"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="T1rFC0W8"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f43.google.com (mail-dl1-f43.google.com [74.125.82.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84C9131282F;
-	Tue, 21 Apr 2026 22:37:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776811047; cv=none; b=WLmJDOL90bv0k6w8F4FO76AIwY49tHpPxzvKEO+SabDgXFqiBLYbYCro6boaRIxl73ZwgnWVhd+ig3lq9cdn8cPsQM9Gv6/DF+AOnswXSaAwmpebJd70RgiBiw5bMAekC6evyFVPSy6Xj2Ykb5KQixOrcHdInlooHp+SEdrujPM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776811047; c=relaxed/simple;
-	bh=9asddOYunBnLRNQiRd5AYd47HrnxvGGkWFIRCnjNamY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r4FUVR9GMeftolxSnswvOTtrCk70AfX71MHcMQdarv/zY710z1yKT7GKtNtNTDcf5KE7Pn7ItcJGSF8+UWjRXcUvNW4mu5IvKduRE+lrMiHPav81cEuMIQ6GvzlcnJ2AiZiWVQH9Kc1KNVHyEkBUVgDEJPH1p9McfwdnZuWtcVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WaXyqS3k; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776811046; x=1808347046;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=9asddOYunBnLRNQiRd5AYd47HrnxvGGkWFIRCnjNamY=;
-  b=WaXyqS3knDUZqfJHEIWALQdWTOdjlaj5wub5G0exDtD37I2/grY1VTa4
-   1lj71r7Zz4QRHG/IJsKLCkcstNP1UwqyXKwOtLh5SNR1FVWHlKNmlfy9c
-   y+R6RIbTvwdZQcx7+Mek3nfNXp1KEqYipWfvBp26r161ral9jBRtnfvOd
-   qvnEfnD0VDh4ULyk3QwkO414s/F01BbupoF/xx4x5xg/2Nb6d9e1ofRzH
-   k5uP3FURWnUXQlbR+aQUgnjn7lOO0SP/5YGfs7ODacpMNooqermxnPFGt
-   ePAQ6j9Y6yYBZTepAupEBRR2CqbOmKcWknEaMg0iVr3re8+tU+IrkI2Cs
-   w==;
-X-CSE-ConnectionGUID: Pu7bgGWdRB292F8NepyWow==
-X-CSE-MsgGUID: I3+QqWRnQZWdG2RX3ngGng==
-X-IronPort-AV: E=McAfee;i="6800,10657,11763"; a="77670599"
-X-IronPort-AV: E=Sophos;i="6.23,192,1770624000"; 
-   d="scan'208";a="77670599"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2026 15:37:25 -0700
-X-CSE-ConnectionGUID: LV++u1zaSXm15/wOZgckRw==
-X-CSE-MsgGUID: ueANhsdgQh+/0shTyaXZKQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,192,1770624000"; 
-   d="scan'208";a="262567024"
-Received: from tassilo.jf.intel.com (HELO tassilo) ([10.54.38.190])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2026 15:37:25 -0700
-Date: Tue, 21 Apr 2026 15:37:22 -0700
-From: Andi Kleen <ak@linux.intel.com>
-To: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>, Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Eranian Stephane <eranian@google.com>, linux-kernel@vger.kernel.org,
-	linux-perf-users@vger.kernel.org, Dapeng Mi <dapeng1.mi@intel.com>,
-	Zide Chen <zide.chen@intel.com>,
-	Falcon Thomas <thomas.falcon@intel.com>,
-	Xudong Hao <xudong.hao@intel.com>, stable@vger.kernel.org
-Subject: Re: [Patch v2 2/4] perf/x86/intel: Disable PMI for self-reloaded ACR
- events
-Message-ID: <aef8InBGlZaXNuPk@tassilo>
-References: <20260420024528.2130065-1-dapeng1.mi@linux.intel.com>
- <20260420024528.2130065-3-dapeng1.mi@linux.intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B8584414
+	for <stable@vger.kernel.org>; Tue, 21 Apr 2026 22:55:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776812147; cv=pass; b=Y9GEa9CPmPV8UjWTwu/xlKamk537yv+CmOvP/JnHtEl69u40Ie+J2b5mo7zZ51Z+JzoHz9LAxkhA/AYLfrElrqShQ4CsatitTlg+jBSfwAqchfjiCWcE/+PeOGjvLXyABKatogEWkRcJE83YBGLuUAjikb4R6E3iA0zJrsUBDtw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776812147; c=relaxed/simple;
+	bh=7g+6Nj4I9wlSgMa6eYN57nLSLjoKXWzdMIwO8KfWfA0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MSzEnI+hEnhu1xY34Vn4HYnFLu2HYpJHaEE5ouYKmD/yPU/WtxueiuO4JL4ym1jMO3KTMUA9n6dEHTBlBX7ny0hiQ9qi3uG3y21FhhiClPACiJRavHrSXB6+/3pUB0svci2WbReniyzvsy6NMz9hARyyy/HMzKH5A6mq7FyyL1c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=T1rFC0W8; arc=pass smtp.client-ip=74.125.82.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-dl1-f43.google.com with SMTP id a92af1059eb24-12c1a170a50so5944471c88.0
+        for <stable@vger.kernel.org>; Tue, 21 Apr 2026 15:55:46 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776812145; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Yoo7lKO2QtyCWaXbx75FTrfHMpbkxYNYFasAKLgekslf/dvsVWTzbuwWtw8Ui8HVNP
+         7P7mDBieCRPbUb5NFQAR8ZvVZhb303GXsX8UBFBALIKOxw/5yBX+qphuwYkM2HiESBuD
+         P8mVQV7wuQX5zYyUelFLFad5EN0+BhAlOg2UrqYoVophsBY7jG1ZUTP4HQYcV78Ks6V1
+         mM4qm1Ve5o837NAaiI0xw3iqbIfv78/7axnj303RjknI+RIv48lLZm9APXycLy7Cyehk
+         xoWWHN8QWPQ3Y0fNHNBZ7SBAMlWu52vsBEYxWlCj7sV2Zqet8odc7kjCGGBkLMRUc+Up
+         EIIA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=7g+6Nj4I9wlSgMa6eYN57nLSLjoKXWzdMIwO8KfWfA0=;
+        fh=j5lgojJllvzhqxIB9oh04oKdx10KaY+K0X98aIxa76U=;
+        b=gCm+02tFy0RE3tkMH/d9FJ4X2Mt2Wc31lPgX6lcK51HEV2c2QrW6yET7Bn9Ny/RtSR
+         4rlhSra0sF4o0Ex8QmaE3EkVQCiMn+3trljUVTaWMd4LnPbBYODRNeJl1sQXSvUS6+aM
+         OADEKmikCE+cDj+f1+PVL6TOGFc6FufzLn/yTvjUgMfVNfXhlGe0Vhjh82I9hEwSrK4P
+         YNxZEz8iWRtou1C1vSKjSRykBFAWpBbBGxvhgwNTtbgYnK2wcc5Wz8qdmk7nq81LWmV5
+         NIwINLV2oy9uUib+GQ62F7qKLfo0KFQWF7CoLbeOHvcCitqsB6tNcELcEFyqzoUZNGtM
+         peXQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1776812145; x=1777416945; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7g+6Nj4I9wlSgMa6eYN57nLSLjoKXWzdMIwO8KfWfA0=;
+        b=T1rFC0W8HJjEU5SYA02Yi58j2YaXzPiQfqL+81p8TaMFaUhTnYnp0fMRhmKsRdY4vW
+         ROjCRNiuafgBnFCzoVCuvtgYyZHlGBuJyMB0OQWu73QxEBrHz0WqzkmD/uUgRjCpWLp3
+         pfW9IBLsuNEqRRhUcJamdHgV/Ajncj2v8JVDqYQ1vAv2YC5Ui1LmgRpeuqE6w4O0p40+
+         xXzSwMO3NaQQZ/tLGkzd3X51HGIAWIg1kjgI5VhsnNGOo6RxU6OFTxAo9TmG4JPmLSHF
+         MEiVGFRbNRuBzxyOCM4s+2VlFVXE83XLAAIxgOh7pCrq1Slz6+MuBWHv8tumHp1WgWz7
+         JXtA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776812145; x=1777416945;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=7g+6Nj4I9wlSgMa6eYN57nLSLjoKXWzdMIwO8KfWfA0=;
+        b=IbjPCYJVelYcI+QpfHJFoyTxqcaVS1JiQRdwTakuzLESFipkZg9rjgFF0sOP540Cq7
+         WD0lX7pIidhAMv4g/vn/gCc0WkHDHyE6ABdqOZ3l9gldN/YP4jaxODAtNKs/rPaF3HHG
+         ND+xCj5CpkW8etK8cgNT4aguV2IEfx/tiPtYkkR3mYikOctYNNjV+AjUzqTGPmrUX+gg
+         q3DxcyrGqzYPT8QeuVOQG2XYnASxbL2axbyQphrnXGbyhzePP1lupJfFONvvkUEy368G
+         EqPAIlMWjFuNATBGwfvypmjOkN/UPXuVu1kRXL5OEJNXWicUyME8no0i66aK/WVV1Fqu
+         nFgg==
+X-Forwarded-Encrypted: i=1; AFNElJ/Q9fh3yBQ+mgWXOY4HL8hR+8UOygKgQ+rmmL8K6NRkmGVuLIt6NKw2heiucIhpkAYKoyID6V0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxrrpwYTdmraqlF2qdXjaHBuQZ6cGrlAnVuZVqfVE92jUWxi5/7
+	h+Qn49XrdTsl3Bmx2p3qjFDyTKKJNSM5YwghLopMaF54trNDkdOMvJ/fr5UF2jL0UKx0PZeummJ
+	MS9n6GFq05mpua7oloieHJC0c3tjCuFCg9wjcgV7qy7+NmYwAPfuapMxt
+X-Gm-Gg: AeBDietojMpBSAVmZrjnraikHAuUxXx725Rga+neh1WCanBbzSsQN913bT4SsfBuQ4z
+	ah9d70dMBnFEYt4vhpHZUyTdZSG4n2MvyMTBO6ta9cLUYB8Nx3Zm9T05nibBf/7brTt6GLH0GIk
+	CFNKkTB3qa33wHUWxHdnE0py5lK2H6qUuKRiIg3x2w/NjlPPXAcxKUEjyKUrAhAaUabc/9+/5dE
+	214O6ekz0hmWZGk12DPu81E/tTVVnNFrZMY5arPXrTvhyT6m3d6L6SAEn6DDKU2qHaN134vE+xu
+	Xvf0WXH7zrRFEPF1nYa8Fvel5KLePe8PGuoy8ROMpaAQ2QpXGxfNoNpL5XVOCHX293U5IXKbUKL
+	yYUVhVLRSesGECQQsaCqo18X8gcwv6NQFqi3nO7PcWMYKTkqacBstZzwMfKqOfsG2NDE0sIixRA
+	==
+X-Received: by 2002:a05:7022:6627:b0:128:ca83:5aa1 with SMTP id
+ a92af1059eb24-12c73f9217dmr11175890c88.16.1776812144868; Tue, 21 Apr 2026
+ 15:55:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260420024528.2130065-3-dapeng1.mi@linux.intel.com>
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+References: <20260421123106.142299-1-jt26wzz@gmail.com> <20260421123106.142299-2-jt26wzz@gmail.com>
+In-Reply-To: <20260421123106.142299-2-jt26wzz@gmail.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Tue, 21 Apr 2026 15:55:33 -0700
+X-Gm-Features: AQROBzD2b51gLvsY15bbLEJ6mf5qB0jtCSoEC5dNs0R6RYbWMCDYXu37HOUp92I
+Message-ID: <CAAVpQUCW2rAdz47kYM-YN7Er2iKVReyZbFSCJXG04Cw-8y_VjA@mail.gmail.com>
+Subject: Re: [PATCH net v3 1/2] tcp: call sk_data_ready() after listener migration
+To: Zhenzhong Wu <jt26wzz@gmail.com>
+Cc: netdev@vger.kernel.org, edumazet@google.com, ncardwell@google.com, 
+	davem@davemloft.net, dsahern@kernel.org, kuba@kernel.org, pabeni@redhat.com, 
+	horms@kernel.org, shuah@kernel.org, tamird@kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240253-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	DKIM_TRACE(0.00)[intel.com:+];
-	MISSING_XM_UA(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240254-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ak@linux.intel.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[kuniyu@google.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[google.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 62BDF440343
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: 41BF34405B3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, Apr 20, 2026 at 10:45:26AM +0800, Dapeng Mi wrote:
-> @@ -3306,6 +3306,15 @@ static void intel_pmu_enable_event(struct perf_event *event)
->  		intel_set_masks(event, idx);
->  		static_call_cond(intel_pmu_enable_acr_event)(event);
->  		static_call_cond(intel_pmu_enable_event_ext)(event);
-> +		/*
-> +		 * For self-reloaded ACR event, don't enable PMI since
-> +		 * HW won't set overflow bit in GLOBAL_STATUS. Otherwise,
-> +		 * the PMI would be recognized as a suspicious NMI.
-> +		 */
-> +		if (is_acr_self_reload_event(event))
-> +			hwc->config &= ~ARCH_PERFMON_EVENTSEL_INT;
-> +		else if (!event->attr.precise_ip)
-> +			hwc->config |= ARCH_PERFMON_EVENTSEL_INT;
+On Tue, Apr 21, 2026 at 5:31=E2=80=AFAM Zhenzhong Wu <jt26wzz@gmail.com> wr=
+ote:
+>
+> When inet_csk_listen_stop() migrates an established child socket from
+> a closing listener to another socket in the same SO_REUSEPORT group,
+> the target listener gets a new accept-queue entry via
+> inet_csk_reqsk_queue_add(), but that path never notifies the target
+> listener's waiters. A nonblocking accept() still works because it
+> checks the queue directly, but poll()/epoll_wait() waiters and
+> blocking accept() callers can also remain asleep indefinitely.
+>
+> Call READ_ONCE(nsk->sk_data_ready)(nsk) after a successful migration
+> in inet_csk_listen_stop().
+>
+> However, after inet_csk_reqsk_queue_add() succeeds, the ref acquired
+> in reuseport_migrate_sock() is effectively transferred to
+> nreq->rsk_listener. Another CPU can then dequeue nreq via accept()
+> or listener shutdown, hit reqsk_put(), and drop that listener ref.
+> Since listeners are SOCK_RCU_FREE, wrap the post-queue_add()
+> dereferences of nsk in rcu_read_lock()/rcu_read_unlock(), which also
+> covers the existing sock_net(nsk) access in that path.
+>
+> The reqsk_timer_handler() path does not need the same changes for two
+> reasons: half-open requests become readable only after the final ACK,
+> where tcp_child_process() already wakes the listener; and once nreq is
+> visible via inet_ehash_insert(), the success path no longer touches
+> nsk directly.
+>
+> Fixes: 54b92e841937 ("tcp: Migrate TCP_ESTABLISHED/TCP_SYN_RECV sockets i=
+n accept queues.")
+> Cc: stable@vger.kernel.org
+> Suggested-by: Eric Dumazet <edumazet@google.com>
+> Signed-off-by: Zhenzhong Wu <jt26wzz@gmail.com>
 
-It seems weird to either clear or set the bit. You don't know the previous
-state of the bit here? I would assume it starts with zero?
-
-> +static inline bool is_acr_self_reload_event(struct perf_event *event)
-> +{
-> +	struct hw_perf_event *hwc = &event->hw;
-> +
-> +	if (hwc->idx < 0)
-> +		return false;
-> +
-> +	return test_bit(hwc->idx, (unsigned long *)&hwc->config1);
-
-Are you sure this doesn't conflict with some other non ACR usage of config1?
-
-
--Andi
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
 
