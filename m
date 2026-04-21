@@ -1,183 +1,139 @@
-Return-Path: <stable+bounces-240228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240229-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id pJFHHJLP52k1BAIAu9opvQ
-	(envelope-from <stable+bounces-240228-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 21:27:14 +0200
+	id CBfXBK7R52k4BAIAu9opvQ
+	(envelope-from <stable+bounces-240229-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 21:36:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D8B743EEF4
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 21:27:12 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9545043F015
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 21:36:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D2A2E3021B01
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 19:27:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 43A52306B103
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 19:32:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A8ED3D9DA6;
-	Tue, 21 Apr 2026 19:27:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8E77351C03;
+	Tue, 21 Apr 2026 19:32:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="JQtQxoid"
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="jxuSwfoo"
 X-Original-To: stable@vger.kernel.org
-Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
+Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FBD0288D0
-	for <stable@vger.kernel.org>; Tue, 21 Apr 2026 19:27:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70A72372EE0;
+	Tue, 21 Apr 2026 19:32:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776799629; cv=none; b=JTn7BbaY+yEwMAGXRWlYfnJcAb1G6m+PXZlD9D6zrAg9HF9svaVzhRqts3Wor3HYYbhgHf5RanBIJ9zsYUu+Li8ISJCUDhaplRgQ2DiMjutRHtdpjEPd4RcWi03B0KgJX+rIdce7AUTqEQomeAwjqBYPaTp0OAmEhK9YhIKFrK4=
+	t=1776799971; cv=none; b=rDuKFuStn+54Ga47Oy/WY1Tqfx9GwkvRQfCZya2dzguFgFyl54uu8lChas3ulOMoTwJpT7pfo9jMvhcSr4lfocnyTTbLhnhsFY7g59ze3J0rUA81kWcXFGhPLvkUhq25BLs1DUbS1LJ46Ah8n8jHVeRPhbV5RKJTZNvjfo2nBH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776799629; c=relaxed/simple;
-	bh=vfjoOLZRLHrzWh7KAuxNROKCvJcO+e8hunyr5RlAQqs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=VZAAXXJ4HzlJmukWZqRQhA2gYxuu+0Q5DydAIbdyA1h8mzvfaHY86zI5F8LFc9WlFp31kqrTvtDyg7lp2KWA8KIXG9u+Lu0uDTQ1QU6UjZoZ0+zUKeECcIC2AWpQSRJ8aYnEJ0QT2u+k5FF8OinCSn5oITQQ6LbQnHxeZgj2Mi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=JQtQxoid; arc=none smtp.client-ip=95.215.58.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1776799615;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=3sJeS58A7kF1kifMPXuvvNzeZ+Rukp0hi1eq+lRanZ8=;
-	b=JQtQxoidpVLNT0G+sauoSitoJ3zFwptAdIyH957gu0hFiqm2pd+7P53lmPHmWIcH7m5n+e
-	lTPWsRjeZLpF8S8GR+QAinQDMOjsIYrTUQJYVvKXSvRqGVKTDpTzpDEwm1alERGG8e8Xw6
-	YMF7wJRcAKnbMshTdBsSD+LuPycfccs=
-From: "Jose Fernandez (Anthropic)" <jose.fernandez@linux.dev>
-Date: Tue, 21 Apr 2026 19:26:13 +0000
-Subject: [PATCH] iommu/amd: Bounds-check devid in __rlookup_amd_iommu()
+	s=arc-20240116; t=1776799971; c=relaxed/simple;
+	bh=j5KQxKW//7RedThBgyCpv51USOErsi/YjVJU1ufoQm8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=csYwtQGmNDywP50y7csZLt61bSzrr51x37vupIeY5owrRf1gtqZpo5SdhyCqZJnwdrQzsAeiLPfkGL6S4dYfklVg9QxEn3bIJKq7RITk85rcI7UZHExX5bEgzTG6509Js/tVbqgqUJKvW/3qwRIq1UTtozaco2cwXXtBFsXUEm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=jxuSwfoo; arc=none smtp.client-ip=178.251.229.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 98FD8112337;
+	Tue, 21 Apr 2026 21:32:44 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
+	s=dkim; t=1776799966;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=pQoCZsVj5FUYn1T4GNPxV/Nj1cWxrAgoNqVpZdwmB24=;
+	b=jxuSwfoo0LD3K1s81baAcjgYwB4KNZLyFjL7WZ6d1oBhieIFp/WMeGFpbtDt8kjilXEAn9
+	r8GavVssVzd9IEyIsbYiv9tYYaOTOPd4lUPwxZGQh6QRxlifrIws0MqS50/aP5tbqlqxm9
+	nudLZ9VMs9FE1TQClv9qp6kLTSVgksPAGQIa5Msxwgpagcx6rO/98Cp+SsWE20aPfmKe3M
+	cesDaM7IX5vOBlHFFv28jQbSXTKJiic31Nzm/FO9LXFIDAuhew5uHsLzvqhnCPluCIMdU8
+	g8Yz5xIlupgyEYS91Ngw9JzSkzXSATZI89qaxodK/5R/0JuSS3WJi6BrlxBGrw==
+Date: Tue, 21 Apr 2026 21:32:42 +0200
+From: Pavel Machek <pavel@nabladev.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org,
+	pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+	sr@sladewatkins.com
+Subject: Re: [PATCH 6.19 000/220] 6.19.14-rc1 review
+Message-ID: <aefQ2k7CfppQOQ3w@duo.ucw.cz>
+References: <20260420153934.013228280@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260421-amd-iommu-rlookup-bounds-v1-1-bbac5f0f48bd@linux.dev>
-X-B4-Tracking: v=1; b=H4sIAFXP52kC/yWMSw6CQBAFr0J6bUcYCTFexbiYTwOtzgzpZogJ4
- e6CLuvlVa2gJEwKt2oFoYWVc9qhOVXgR5sGQg47g6lNV7emQRsDco6xoLxzfpUJXS4pKLZkat/
- 2/uK6K+z6JNTz55e+P/6sxT3Jz0fveDirhE5s8uMxZeGB0zlanUlg274Qh8D+nAAAAA==
-X-Change-ID: 20260421-amd-iommu-rlookup-bounds-4e20c4fc3b68
-To: Joerg Roedel <joro@8bytes.org>, 
- Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>, 
- Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, 
- Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Joerg Roedel <jroedel@suse.de>, iommu@lists.linux.dev, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- Ziyuan Chen <zc@anthropic.com>, Josef Bacik <josef@toxicpanda.com>, 
- "Jose Fernandez (Anthropic)" <jose.fernandez@linux.dev>
-X-Migadu-Flow: FLOW_OUT
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="7n2I5B9ECmoYpYMJ"
+Content-Disposition: inline
+In-Reply-To: <20260420153934.013228280@linuxfoundation.org>
+X-Last-TLS-Session-Version: TLSv1.3
+X-Spamd-Result: default: False [-2.76 / 15.00];
+	SIGNED_PGP(-2.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	DMARC_POLICY_ALLOW(-0.50)[nabladev.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[nabladev.com:s=dkim];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240228-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-240229-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	MIME_TRACE(0.00)[0:+];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	DKIM_TRACE(0.00)[linux.dev:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jose.fernandez@linux.dev,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pavel@nabladev.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[nabladev.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:email,linux.dev:dkim,linux.dev:mid,anthropic.com:email,toxicpanda.com:email]
-X-Rspamd-Queue-Id: 5D8B743EEF4
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nabladev.com:dkim,nabladev.com:email,gitlab.com:url,duo.ucw.cz:mid]
+X-Rspamd-Queue-Id: 9545043F015
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-iommu_device_register() walks every device on the PCI bus via
-bus_for_each_dev() and calls amd_iommu_probe_device() for each. The
-inlined check_device() path computes the device's sbdf, calls
-rlookup_amd_iommu() to find the owning IOMMU, and only afterwards
-verifies devid <= pci_seg->last_bdf. __rlookup_amd_iommu() indexes
-rlookup_table[devid] with no bounds check of its own, so for a PCI
-device whose BDF is not described by the IVRS, the lookup reads past
-the end of the allocation before the caller's bounds check can run.
 
-This was harmless before commit e874c666b15b ("iommu/amd: Change
-rlookup, irq_lookup, and alias to use kvalloc()"): the table was a
-zeroed page-order allocation, so the over-read returned NULL and the
-caller's NULL check skipped the device. After that commit the table is
-a tight kvcalloc() and the over-read returns adjacent slab contents,
-which check_device() then dereferences as a struct amd_iommu *,
-causing a boot-time GPF.
+--7n2I5B9ECmoYpYMJ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Seen on Google Compute Engine ct6e VMs, where the virtualized IVRS
-describes only the four TPU endpoints 00:04.0-07.0; the gVNIC at
-00:08.0 (devid 0x40) indexes 56 bytes past the 456-byte allocation,
-into the adjacent kmalloc-512 slab object:
+Hi!
 
-  pci 0000:00:04.0: Adding to iommu group 0
-  pci 0000:00:05.0: Adding to iommu group 1
-  pci 0000:00:06.0: Adding to iommu group 2
-  pci 0000:00:07.0: Adding to iommu group 3
-  Oops: general protection fault, probably for non-canonical address 0x3a64695f78746382: 0000 [#1] SMP NOPTI
-  CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.18.22 #1
-  Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 12/06/2025
-  RIP: 0010:amd_iommu_probe_device+0x54/0x3a0
-  Call Trace:
-   __iommu_probe_device+0x107/0x520
-   probe_iommu_group+0x29/0x50
-   bus_for_each_dev+0x7e/0xe0
-   iommu_device_register+0xc9/0x240
-   iommu_go_to_state+0x9c0/0x1c60
-   amd_iommu_init+0x14/0x40
-   pci_iommu_init+0x16/0x60
-   do_one_initcall+0x47/0x2f0
+> This is the start of the stable review cycle for the 6.19.14 release.
+> There are 220 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Guard the array access in __rlookup_amd_iommu(). With the fix applied
-on 6.18.22, the gVNIC at 00:08.0 is skipped cleanly and the VM boots.
+CIP testing did not find any problems here:
 
-Fixes: e874c666b15b ("iommu/amd: Change rlookup, irq_lookup, and alias to use kvalloc()")
-Cc: stable@vger.kernel.org
-Reported-by: Ziyuan Chen <zc@anthropic.com>
-Tested-by: Ziyuan Chen <zc@anthropic.com>
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Assisted-by: Claude:unspecified
-Signed-off-by: Jose Fernandez (Anthropic) <jose.fernandez@linux.dev>
----
- drivers/iommu/amd/iommu.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-6.19.y
 
-diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
-index 760d5f4623b55..66dd0b6b98069 100644
---- a/drivers/iommu/amd/iommu.c
-+++ b/drivers/iommu/amd/iommu.c
-@@ -351,8 +351,12 @@ static struct amd_iommu *__rlookup_amd_iommu(u16 seg, u16 devid)
- 	struct amd_iommu_pci_seg *pci_seg;
- 
- 	for_each_pci_segment(pci_seg) {
--		if (pci_seg->id == seg)
--			return pci_seg->rlookup_table[devid];
-+		if (pci_seg->id != seg)
-+			continue;
-+		/* IVRS may not describe every device on the bus */
-+		if (devid > pci_seg->last_bdf)
-+			return NULL;
-+		return pci_seg->rlookup_table[devid];
- 	}
- 	return NULL;
- }
-
----
-base-commit: 028ef9c96e96197026887c0f092424679298aae8
-change-id: 20260421-amd-iommu-rlookup-bounds-4e20c4fc3b68
+Tested-by: Pavel Machek (CIP) <pavel@nabladev.com>
 
 Best regards,
---  
-Jose Fernandez (Anthropic) <jose.fernandez@linux.dev>
+                                                                Pavel
 
+--7n2I5B9ECmoYpYMJ
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCaefQ2gAKCRAw5/Bqldv6
+8oj6AJ0fyiS29bPrvsIdFJdoCDlUBJbbOQCgqbTNI4ZJiAdYreF3TRmeoG9j3so=
+=M+U6
+-----END PGP SIGNATURE-----
+
+--7n2I5B9ECmoYpYMJ--
 
