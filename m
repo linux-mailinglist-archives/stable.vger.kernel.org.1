@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-240101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240102-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4GliMO5H52kF6QEAu9opvQ
-	(envelope-from <stable+bounces-240101-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 11:48:30 +0200
+	id 6KzNKelJ52lW6QEAu9opvQ
+	(envelope-from <stable+bounces-240102-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 11:56:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E06E439103
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 11:48:30 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16504439363
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 11:56:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E72E63065797
-	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 09:45:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 40D5D30671AB
+	for <lists+stable@lfdr.de>; Tue, 21 Apr 2026 09:46:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 125103BAD85;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8C183B19DB;
 	Tue, 21 Apr 2026 09:45:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=0leil.net header.i=@0leil.net header.b="JHJycwIX"
+	dkim=pass (2048-bit key) header.d=0leil.net header.i=@0leil.net header.b="MuBqGykW"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-8fab.mail.infomaniak.ch (smtp-8fab.mail.infomaniak.ch [83.166.143.171])
+Received: from smtp-190f.mail.infomaniak.ch (smtp-190f.mail.infomaniak.ch [185.125.25.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B955E3AEF33
-	for <stable@vger.kernel.org>; Tue, 21 Apr 2026 09:45:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.166.143.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F6AA3B9D98
+	for <stable@vger.kernel.org>; Tue, 21 Apr 2026 09:45:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.25.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776764734; cv=none; b=qBsW3QdaxE5x34EpZr4q0EjZ52ZwTz7n768WcnY6TZhCb+8vUgAsSs5++rHVPXxsNYrT0Gwr9Ozj5dpIn3Xbdg/FW7sOVJAISow5eb8SZSXIdRuicPRdO4ImPFrtetNgOjhnyD1l1rQMmaycbrqDbXaX1xfBriuBwa4mll72FZ8=
+	t=1776764735; cv=none; b=UGni31tto84m8RiBYmAubgKBMfdgUzr+12KKatlWv7V5Ekz7/05xjXl9Z3Rh9AmK9pSVrOEd6U/WpcSzqLsb5vmnpXRma/uFGCrvGoFcM59WsR4voHBL/zQx8bmZmcqJSGPV2DTlQjONes4k4T+lkumTXdviHlSqntooSMT8UQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776764734; c=relaxed/simple;
-	bh=bsijqOyWswuF6NZXlWSly9Z6xtYtxBitACbUnOhzrrc=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=pAUJaHHhGWr2FwItVmr9jKGE0DBSD+Ofz2UBsY3jmknMBtlI7C31KcbM5TfK6+SA/BMhW9kbRPn2+zgoCbSJpOWscr0+gNaw75PrufE3okaHQmuj4aFXutQZWLRuc82RLOPAqIZCr4X97fXiMpgcqQB1OffMPZ03fCnlE7mXbvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=0leil.net; spf=pass smtp.mailfrom=0leil.net; dkim=pass (2048-bit key) header.d=0leil.net header.i=@0leil.net header.b=JHJycwIX; arc=none smtp.client-ip=83.166.143.171
+	s=arc-20240116; t=1776764735; c=relaxed/simple;
+	bh=rSczTOBfEa8J0mWHfJY7Ropk3TcTNHrAiSB2/t02U20=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=T959WAJE6g9EhpdEhfjKmstYhdZddLOtO8QhnY3GlrQmTdfKtcu7jK8q+Wrfyqi+6AGyW5ES7tMZY8da3Jc/o/QimEYdEaTDLsNkhdnDxK4p7H4L82Cq2RvNEUR++ZPxEdpn8jINcndI3QY4IkNCmKTM7Sc81y2x6zAp6GEV2u4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=0leil.net; spf=pass smtp.mailfrom=0leil.net; dkim=pass (2048-bit key) header.d=0leil.net header.i=@0leil.net header.b=MuBqGykW; arc=none smtp.client-ip=185.125.25.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=0leil.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=0leil.net
-Received: from smtp-4-0000.mail.infomaniak.ch (smtp-4-0000.mail.infomaniak.ch [10.7.10.107])
-	by smtp-4-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4g0HXL1FVbzZgZ;
-	Tue, 21 Apr 2026 11:45:22 +0200 (CEST)
+Received: from smtp-4-0000.mail.infomaniak.ch (unknown [IPv6:2001:1600:7:10::a6b])
+	by smtp-4-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4g0HXM6MgnzXpK;
+	Tue, 21 Apr 2026 11:45:23 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=0leil.net;
-	s=20231125; t=1776764721;
-	bh=kIVgKNfgffVMWOXygW28hZLiTs45qb7bepzWyDmIFWE=;
-	h=From:Subject:Date:To:Cc:From;
-	b=JHJycwIXX42FlfTd+u4A59doxw/P/8wi7aixczLnYwx8rPbJEKMk/ee5UOgb/sfM+
-	 HcRSNQebL02r9z6JsNllBFBpeBJyMq2AZ5ynFjou5Y9z4RaTM/lFkZiFj54HuEALDe
-	 4Cza9BPIM13DNIE3MIK/nhcc9GaX2v9pZxGnh0dhX8+Z7KlqfqKKFao3WGRibTujCN
-	 BX2C/BDJt7qsImvlfW48kUJQGIOiIOTyUpke7j7ecN9ybKR+VyCby6YH5V8M3gTUwP
-	 57PLkL1Fb9m+mBUcmMGB+UNQxAXd95vcurSXc7KaeEiI/AvFxditWLZiQU41mM4jl+
-	 bn95jv4y4u28g==
-Received: from unknown by smtp-4-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4g0HXH6wHbzZxF;
-	Tue, 21 Apr 2026 11:45:19 +0200 (CEST)
+	s=20231125; t=1776764723;
+	bh=CV9c1b3x442J4d7fS2IkKGulkxFv3w2YEEORXf6cDj8=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=MuBqGykWqgBJzLlqi7pe3zx6e3hd5EYSpG6cJ0iJiKGsy9flvPEmCZa7V2lTOnv70
+	 5T7ekGqlve+q3Ui5cwBSRVar4v+t4xTDA+5g3VUibJLiOBebp090IUfcCGqB5kaMpn
+	 n0VF9VymGzVM/SpU2J4uuYrDwRJlEKvXWR/pbU7KKV6j/zLQoBwEuGD6WleMsz7ILx
+	 po1tpN6CHfvgnd7qCu9xJym4owq09TQo5Kdgqe++7eApSy1DciZyG32QCaHWuWvrr5
+	 W/uDHntsHUZuU6mACQcv7fppI0njjp/wrxvw/7F9tuh7pfbVabXRtM+v+DPQRGiJKl
+	 /Ral8emt65UVg==
+Received: from unknown by smtp-4-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4g0HXL6s14zb5b;
+	Tue, 21 Apr 2026 11:45:22 +0200 (CEST)
 From: Quentin Schulz <foss+kernel@0leil.net>
-Subject: [PATCH v2 0/2] arm64: dts: rockchip: fix Ethernet PHY on Theobroma
- PX30 devices
-Date: Tue, 21 Apr 2026 11:45:04 +0200
-Message-Id: <20260421-px30-eth-phy-v2-0-68c375b120fd@cherry.de>
+Date: Tue, 21 Apr 2026 11:45:06 +0200
+Subject: [PATCH v2 2/2] arm64: dts: rockchip: fix Ethernet PHY not found on
+ PX30 Ringneck
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,10 +61,9 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/1WMOw7CMBAFrxJtjZHXgeVTcQ+UIiRr7Cax7MiKF
- fnuLKGiGWme9GaDxNFzgnuzQeTsk58nEXNoYHD99GblR3Ew2pDGVquwCnhxKrii6EK2xysyIoF
- cQmTr1z337MSdT8scy17P+F1/IcF/KKMSsS2dX0ynmzGPwXGM5TgydLXWD6P5EimoAAAA
-X-Change-ID: 20260130-px30-eth-phy-676fa181e116
+Message-Id: <20260421-px30-eth-phy-v2-2-68c375b120fd@cherry.de>
+References: <20260421-px30-eth-phy-v2-0-68c375b120fd@cherry.de>
+In-Reply-To: <20260421-px30-eth-phy-v2-0-68c375b120fd@cherry.de>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
  Conor Dooley <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>
 Cc: Andrew Lunn <andrew@lunn.ch>, Heiko Stuebner <heiko.stuebner@cherry.de>, 
@@ -73,96 +72,85 @@ Cc: Andrew Lunn <andrew@lunn.ch>, Heiko Stuebner <heiko.stuebner@cherry.de>,
  Quentin Schulz <quentin.schulz@cherry.de>, stable@vger.kernel.org
 X-Mailer: b4 0.15-dev-47773
 X-Infomaniak-Routing: alpha
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [4.84 / 15.00];
+	SEM_URIBL(3.50)[0.0.0.0:email];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[0leil.net,reject];
-	R_DKIM_ALLOW(-0.20)[0leil.net:s=20231125];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-240101-lists,stable=lfdr.de,kernel];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240102-lists,stable=lfdr.de,kernel];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	R_DKIM_ALLOW(0.00)[0leil.net:s=20231125];
+	GREYLIST(0.00)[pass,body];
+	DMARC_POLICY_ALLOW(0.00)[0leil.net,reject];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[0leil.net:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[foss@0leil.net,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-0.627];
+	R_SPF_ALLOW(0.00)[+ip4:172.105.105.114:c];
 	TAGGED_RCPT(0.00)[stable,dt];
-	NEURAL_HAM(-0.00)[-1.000];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,cherry.de:mid,cherry.de:email]
-X-Rspamd-Queue-Id: 2E06E439103
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 16504439363
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-This removes the reliance on the bootloader setting up the Ethernet PHY
-for the Linux kernel to be able to use Ethernet.
+From: Quentin Schulz <quentin.schulz@cherry.de>
 
-This is due to the HW default of the PHY reset line being active and the
-MDIO auto-detection mechanism not controlling a PHY's reset line such
-that we need to hardcode the PHY ID in the compatible property for it to
-be usable by the kernel, regardless of what the bootloader is doing.
+When not passing the PHY ID with an ethernet-phy-idX.Y compatible
+property, the MDIO bus will attempt to auto-detect the PHY by reading
+its registers and then probing the appropriate driver. For this to work,
+the PHY needs to be in a working state.
 
-We only ever had one PHY (DP83825) for both devices, so it's fine to
-hardcode this way.
+Unfortunately, the net subsystem doesn't control the PHY reset GPIO when
+attempting to auto-detect the PHY. This means the PHY needs to be in a
+working state when entering the Linux kernel. This historically has been
+the case for this device, but only because the bootloader was taking
+care of initializing the Ethernet controller even when not using it.
+We're attempting to support the removal of the network stack in the
+bootloader, which means the Linux kernel will be entered with the PHY
+still in reset and now Ethernet doesn't work anymore.
 
-As discussed in v1[1][2], even though they suffer from the same
-limitation, only the patch for Ringneck is targeted for stable releases.
+The devices in the field only ever had a TI DP83825, so let's simply
+bypass the auto-detection mechanism entirely by passing the appropriate
+PHY IDs via the compatible.
 
-Ethernet is currently broken if the bootloader is built without Ethernet
-support for those two boards. Cobra is a product for which the software
-stack can only be replaced or updated by Cherry. Ringneck is a SoM
-supported since kernel 6.1, the user is likely going to write their own
-bootloader support based on the motherboard they attach the SoM to. They
-may disable Ethernet support in the bootloader if they don't need to
-(e.g. to reduce the attack surface or have an easier time certifying a
- device when arguing with an audit company).
+Note that this is only an issue since commit e463625af7f9 ("arm64: dts:
+rockchip: move reset to dedicated eth-phy node on ringneck") as before
+that commit the reset was done by the MAC controller before starting the
+MDIO auto-detection mechanism, via the snps,reset-* properties.
 
-Ethernet-less bootloader was supported until commit e463625af7f9
-("arm64: dts: rockchip: move reset to dedicated eth-phy node on
-ringneck") for Ringneck. Because I do not control what our users have
-made with Ringneck, and that it used to work before commit e463625af7f9,
-the patch fixing the issue on Ringneck is a candidate for backporting to
-stable.
-
-Cobra never supported it due to its support in the kernel being added 
-with this (unknown at the time) limitation. Moreover, Cherry controls
-the whole software stack so this is already patched downstream whenever
-required. Therefore, the patch fixing the issue on Cobra is not marked
-as a candidate for backporting to stable (but if it ends up being
-backported, it's fine as well).
-
-[1] https://lore.kernel.org/linux-rockchip/38452338-6e65-47ad-a696-b90c02ac42f0@lunn.ch/
-[2] https://lore.kernel.org/linux-rockchip/b2f12140-ee3d-45bc-864e-d51317c83b8d@cherry.de/
-
+Cc: stable@vger.kernel.org
+Fixes: e463625af7f9 ("arm64: dts: rockchip: move reset to dedicated eth-phy node on ringneck")
 Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
 ---
-Changes in v2:
-- removed Cc stable on Cobra's patch,
-- Link to v1: https://patch.msgid.link/20260202-px30-eth-phy-v1-0-ef365be64922@cherry.de
-
----
-Quentin Schulz (2):
-      arm64: dts: rockchip: fix Ethernet PHY not found on PX30 Cobra
-      arm64: dts: rockchip: fix Ethernet PHY not found on PX30 Ringneck
-
- arch/arm64/boot/dts/rockchip/px30-cobra.dtsi    | 2 +-
  arch/arm64/boot/dts/rockchip/px30-ringneck.dtsi | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
----
-base-commit: c1f49dea2b8f335813d3b348fd39117fb8efb428
-change-id: 20260130-px30-eth-phy-676fa181e116
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Best regards,
---  
-Quentin Schulz <quentin.schulz@cherry.de>
+diff --git a/arch/arm64/boot/dts/rockchip/px30-ringneck.dtsi b/arch/arm64/boot/dts/rockchip/px30-ringneck.dtsi
+index 4203b335a2633..973b4c5880e24 100644
+--- a/arch/arm64/boot/dts/rockchip/px30-ringneck.dtsi
++++ b/arch/arm64/boot/dts/rockchip/px30-ringneck.dtsi
+@@ -344,7 +344,7 @@ &io_domains {
+ 
+ &mdio {
+ 	dp83825: ethernet-phy@0 {
+-		compatible = "ethernet-phy-ieee802.3-c22";
++		compatible = "ethernet-phy-id2000.a140";
+ 		reg = <0x0>;
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&phy_rst>;
+
+-- 
+2.53.0
 
 
