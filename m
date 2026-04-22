@@ -1,206 +1,307 @@
-Return-Path: <stable+bounces-240380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240381-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +BdGIgUc6Wm7UQIAu9opvQ
-	(envelope-from <stable+bounces-240380-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 21:05:41 +0200
+	id +CWuM0kd6Wl+UgIAu9opvQ
+	(envelope-from <stable+bounces-240381-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 21:11:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0AD244A03F
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 21:05:40 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4703C44A070
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 21:11:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B5E4F300AB18
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 19:05:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 109E030F3CDC
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 19:07:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CE213603F7;
-	Wed, 22 Apr 2026 19:05:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 209E534B661;
+	Wed, 22 Apr 2026 19:07:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="H4P8N4vs";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="IOSd9Eig"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="jVnwLagj";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="MMcvoKbB"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA85A346E54
-	for <stable@vger.kernel.org>; Wed, 22 Apr 2026 19:05:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EBB833DED5
+	for <stable@vger.kernel.org>; Wed, 22 Apr 2026 19:07:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776884730; cv=none; b=NfYZXbFBBuASzE6fNQ99nnebMWw+KuoQS1StW1b2K+DydNP6ifB48KbGuVkKO6T+0TK2ISxEQvTHi5Kl6RxR1m3XYr3Qq3HhWIb/lnchwGsXyVWG9ZSYoyyWva04/yz6MG0W3DRZFUwyzBeCze6JNqILy7doc5nYzdSyq8C2Uos=
+	t=1776884828; cv=none; b=jCb39Q4Ru+usQoSBwJUtjNetGScl40MG0SXfb4hAK+PhSVQsdmsPpa+WMKC6yQh00dbNsVZvThaN3QZN5fKdZPSCJTHllKsLTV1OTi2+fPc0jKCx3I1opZjFde2/PSNxD2uzxgoWh7H1so0Iw8qvWGEhFVxlo0YhZnoriawe0c8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776884730; c=relaxed/simple;
-	bh=Tz3hhX5x+6vq9gkHGTZMedq2MVdkGKiJWeelP5fat0c=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=hH2F3GuGRTwxP760rN0UrZNMF8uu+QGijzVZuw8bOiHFYPv2VR1QJ8WFtasKutZKI2Av1XEEbQp+q/tQQFUh1c4XB5sy8jgsBXJ07vLYTXVtQmxPrMWkTV+QiX/Fu60YQV6T0ZdWNqJ936ckcGSJm5gJ5l+BPUB5Ui8T9VmitOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=H4P8N4vs; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=IOSd9Eig; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1776884715;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qdmwawli/VQb0uXVhY3lVbW18VGZ4FsWwRRf0cqAFUQ=;
-	b=H4P8N4vsSxEL1yGbdwe/UTWyyrfI7OYqI+sLIcUqm2hZ32+mn1AJbxJVXJC440r2SgiHJX
-	PsymYtBkaru8I5RSLG5Xp/3XhKYx2t52IyIaswGZ07LkUebCqa2zyml9B0yJV7Dt2tR82c
-	ERxGKPuilhd/ln1cicq2+m7gTD9VreY=
-Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com
- [209.85.167.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-679-u2Ty1jZyMrS4dMWQBxAvoA-1; Wed, 22 Apr 2026 15:05:13 -0400
-X-MC-Unique: u2Ty1jZyMrS4dMWQBxAvoA-1
-X-Mimecast-MFC-AGG-ID: u2Ty1jZyMrS4dMWQBxAvoA_1776884712
-Received: by mail-oi1-f198.google.com with SMTP id 5614622812f47-46fec31defdso9601845b6e.0
-        for <stable@vger.kernel.org>; Wed, 22 Apr 2026 12:05:13 -0700 (PDT)
+	s=arc-20240116; t=1776884828; c=relaxed/simple;
+	bh=YpPybOjNzb/K1Bmz4REhOqae1lLzwg3wkx8ZqS1Nu/U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UDcj/ZRdytpgGR0gnlXHKST9bNmT8wac9kH2QMYWT61wCQasQ8tiV6Nzzzmg+VqUg4gLQFP+BGAQxQPA6bFUSP3gkxFBbbaib+sh9TUR1dnXeHWH2hORFzG6WJdUVn9cl/TNAQFXFIn87Dxz0Ny6i+NLmVEbaZkTzpvb9h7jwDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=jVnwLagj; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=MMcvoKbB; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63MFDLvT664127
+	for <stable@vger.kernel.org>; Wed, 22 Apr 2026 19:07:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=7EZiYe5N6hRvm3v4NIe+b/e9
+	uhWdqKzT0/KCiMPYNrs=; b=jVnwLagjUG5doy+C7taNoVt8DrO9QX7I2rU0QGG3
+	vl/10/xgV4szHYqArzA2GWY7TzN+teJWKSM/eQqjfqzO/K1R3Ja50fzS40Xt0DLF
+	uRZQywMtd0W5RySjbJdsb1PCsz5S6RAMlvnXzqN8EOnAlhu5z1VhLsWb280Uam0K
+	EB/ojqeXH2USNHvyC0SmUt1JB2TaE+LELgnt7Q06Y7NbkkZN+7nQxJPUYD4OVAJt
+	DdoYrjVkyscQBcj+7oSxqWsZkKk1BtuTjobLgq+PbaUzmWLkzjVynB+bSQWKTgiq
+	ChcqiSRarCj8jRF2XkIaYuVdgZWrpBK1yqlnMpwZuOJhkQ==
+Received: from mail-ua1-f70.google.com (mail-ua1-f70.google.com [209.85.222.70])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4dpudgt67m-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Wed, 22 Apr 2026 19:06:59 +0000 (GMT)
+Received: by mail-ua1-f70.google.com with SMTP id a1e0cc1a2514c-953e9d7ba08so2598997241.0
+        for <stable@vger.kernel.org>; Wed, 22 Apr 2026 12:06:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1776884712; x=1777489512; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=qdmwawli/VQb0uXVhY3lVbW18VGZ4FsWwRRf0cqAFUQ=;
-        b=IOSd9EigKPcZ1clLdaXJHrlMLwWAOVmHCz55mDHh8kioJAYYB5OumqGF4K8hkttG+D
-         DDu+H7gO0krhwYhWPVdrlAngyqrNAx9A77O4pCv1WIAACD1cjYFwKsqBwUMBoGGUKEkd
-         DVGtTgUdy1jTb8pFxwO7Ou3mvn4InAIorDTMBKYmk7RSXqhoX/y1he8Kl6AItIF6COlM
-         DswE1iQ7TS70cOsHmMF1SIySR/9v333W/dY62eGmFZQmFe1p2bxDF+G2Zrjr05n5Ervl
-         n8bQNZvIMXK8dXgiybtNQWQBRlT5aBiZftjgl915NeeQxlRf/+WkZ2miNDjvC6uKBP+m
-         XfYw==
+        d=oss.qualcomm.com; s=google; t=1776884818; x=1777489618; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=7EZiYe5N6hRvm3v4NIe+b/e9uhWdqKzT0/KCiMPYNrs=;
+        b=MMcvoKbBpYp7ccosInXRijzlqe3N29EwL6Gpv0dvM247+y88hhJNXjpefXWYySmY1H
+         VF2sxAF2P8lxyRh9bH6jBIcFeZJXqZOlep3E1jWxscIHhbmmq69RZRoucKj2MEJ6jHhw
+         ECaPrbwil4UVxTHj+HLREzm9L0mDUiBIsZecuxCx5ShgqSDdnXHvwsjgmrXZoKJ9HX6s
+         VS3QWUTd4hi45oBTAKNDZ/gloHIaNKpNVEWC7Xc9IuYQCBfSF1KvM3unFcUkUyDqpBYJ
+         6ig3ps8kwAGmcCO2Ju6749DytHa15z1XTCZ9XjGedIt5hR1ToKFxrqwyv9tLj29PheYw
+         IFvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776884712; x=1777489512;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qdmwawli/VQb0uXVhY3lVbW18VGZ4FsWwRRf0cqAFUQ=;
-        b=o3sFCNR6HB39QBxAdFFMVjMSv1XOtTe22gWlqeBNToQ+5cgSFgwKKawkK7o8YGAasU
-         mxmGOvA5GGt0PJDGkFKt5/KXnZYywLAnH9AoQz8KJFX9VrtsqVCLyIHRoInjqTAa1I9N
-         CS6icP0RW6fbFYLRaiO4omvOVwMIL3VuBVPUuHmgWGGMgl56wyEMjD5aRRUXMaKveLYf
-         WuW2Fys+V7DKQaaTGPJWCtpS9812ALUUQhtGHNnUE/AO4fVovktSz3feBJnlu4xn32IT
-         Xs00pFyM91ah8La7DCPFfThFP4WmWdNHEPbja0oIIvuFCsTXYS0gDu755qwON5ke9Hpk
-         UT0w==
-X-Forwarded-Encrypted: i=1; AFNElJ8kQRC8N0OM1wg47L6OGyO1jBlPFNTa/jNKwYTSJt+tKtpwXdfjeCZa8QYE/0vfb+l3wJe4vAA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyESFPvtpiOBSpvsivKvP+1m8WsOCNdz/G11GAwyogqiqCqIw/X
-	/bpiCY4Q9wlD5VeZdqpAybVt3R3tcKCO3pouBSvY5AcbI/YA/ZEle4rMgkGFM3ehxWayvBaPVp1
-	IAlBY77JQFxIaLx6bXYJWaxMf1kBbIMPGY9bYcRBmMNqeyk3g/qBkfJZ5vabZ8HdMNg==
-X-Gm-Gg: AeBDieujzD1KUROCVvb0p1SzVKYAGtCgXsYGmZuENr4p01M4LzvGKTeOf/4xkuOpby/
-	k5aa//ffuTaqgf66BZAuipzM7MMLaL2N+lzMCiWli/TvMEnmgEn9iT5j8VbqAcmOcBs6VwYxUya
-	fNELfOIQDIFTEXSoOetT3N23vxAHtDSnOr9fLSJOorJSAkBESbelvQZ0QPycWfhazFP6hKluLJU
-	ygJRqMYd/jTfAB8QpW3CqkbFuwGOYrZSij6Le4wYqsxlzgPZ5vBs411XbEw9xhCNMrcLTWpn0QL
-	OVlrXCL/l72oC5DP1+iPsT8H8fhCFnFYNgGPyWv1QBcpw9z+ltPfiRrCw06mBGE4Tfgh1RNAiuB
-	YlHU25UZMNDyoj+uRJNd+D25Va7aycvMIfweKoEFmnlXBx09sfhcCm2ZU9kHdplM=
-X-Received: by 2002:a05:6808:158f:b0:479:ec96:f4de with SMTP id 5614622812f47-479ec97413amr4506888b6e.2.1776884712031;
-        Wed, 22 Apr 2026 12:05:12 -0700 (PDT)
-X-Received: by 2002:a05:6808:158f:b0:479:ec96:f4de with SMTP id 5614622812f47-479ec97413amr4506875b6e.2.1776884711604;
-        Wed, 22 Apr 2026 12:05:11 -0700 (PDT)
-Received: from li-4c4c4544-0032-4210-804c-c3c04f423534.ibm.com ([2600:1700:6476:1430::29])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-42c05ca16e2sm7973157fac.15.2026.04.22.12.05.10
+        d=1e100.net; s=20251104; t=1776884818; x=1777489618;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7EZiYe5N6hRvm3v4NIe+b/e9uhWdqKzT0/KCiMPYNrs=;
+        b=sUCCdsSLhGtI1BxctCRj5ZL6QfwcEUJKZhJvaI4ivAxYPx4iT9C6HdzxJvFnVN57Fj
+         kxWxt/lqy4r6OhjofxziU10emkAz9TDBg7uPWXdXM89ncbjFImu8FUvBgBUSQfhHq97i
+         5qeJ2T2EhJ874FXb8PY/XulxmqgJ4jmy4U2+JRBDn/yVoZHSyJeAd9B/rr/60UdNy9FE
+         jaDPAOAibrvzILxDIo+DZVqjtU0guTFWaO2LXWbsFOj/VcOiAI8MIfCrFNgy2u8nl7UE
+         msG1mw7n1Rv4wLUSfuu14u8mjx8nTbPzGRBEis4dGZ1KayNwjS9aJtY/VpurK4sGqAT8
+         BI3g==
+X-Forwarded-Encrypted: i=1; AFNElJ/zNaAsN/jccbfbAHIS3+Ldbkc3yXnbIt04Y6EeCHNXTqGS2TS4W6wdJe+TBAxC7CXDINdjcMw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YykTQ941z51pm8LY0Hji4K/aJBFGiAzN52qhmf0VjwYNNftq6IY
+	nqJIi4OvtOkI5UtULhe/KhltX4PoOdTjdI5GZb5QO/HAVTi78CWemhme1YLhrcX7YdupffloTkx
+	W2Zbh95zYKdhbJKZwi4O2Y7TCYh0pfsjG+79J5cfsuXAc1VD02EBvot90fh8=
+X-Gm-Gg: AeBDiesTwb5YVapf18BpIwvk8wZNmpr2SIPDB3N7jbIJp0zzQTkBSJYYOQvF4ig/aFG
+	ExHVsO2HHlizqDCFJapvVukmxv4aqo5cy3oVQ3iMoJQUd1u85em39oBcc1GdT5/PNkCnh1oXi5x
+	OpwtDAIcCVQHAo/9u4XgncDED+pU0st/e3CstSRvtUn2dzvapynyBud8l01kPFRJlV70Mjkob0n
+	ghFG3TdreSzzm8viS0brxlrMJyuV6xaEhlHl14xgZT8rwQcu4hB6UGQWYxqrSrdWgvdaERS5DyC
+	+XUKG3cj280YneZayIONOmMCwwpBmCSYOREsHquXIEl5tMu/XzLyAYv9P2cqCBwAF6UCXc/5UmR
+	SFdI1LCAKFuAywMfod5Vz+ToOIJ0IH28dOhoRRQVzzETszrBtorUSFt5sl/8776SHAqGWEWbMod
+	1rNbWSCZ/8frCtMF8kRBCbmjSNFqFX3hoXDEdQw1GrR4d2xA==
+X-Received: by 2002:a05:6102:80a8:b0:608:a960:c852 with SMTP id ada2fe7eead31-616f4d792b0mr12274695137.9.1776884818511;
+        Wed, 22 Apr 2026 12:06:58 -0700 (PDT)
+X-Received: by 2002:a05:6102:80a8:b0:608:a960:c852 with SMTP id ada2fe7eead31-616f4d792b0mr12274635137.9.1776884817942;
+        Wed, 22 Apr 2026 12:06:57 -0700 (PDT)
+Received: from umbar.lan (2001-14ba-a073-af00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a073:af00:264b:feff:fe8b:be8a])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-38ecb5f65absm37608011fa.11.2026.04.22.12.06.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Apr 2026 12:05:11 -0700 (PDT)
-Message-ID: <44cc78470b0b550d24bba9d159ebe1e07e2ef9c5.camel@redhat.com>
-Subject: Re: [PATCH] hfsplus: zero-initialize buffer in hfs_bnode_read
-From: Viacheslav Dubeyko <vdubeyko@redhat.com>
-To: Tristan Madani <tristmd@gmail.com>, slava@dubeyko.com, 
-	glaubitz@physik.fu-berlin.de, frank.li@vivo.com
-Cc: linux-fsdevel@vger.kernel.org, akpm@linux-foundation.org, 
-	stable@vger.kernel.org,
- syzbot+217eb327242d08197efb@syzkaller.appspotmail.com,  Tristan Madani
- <tristan@talencesecurity.com>
-Date: Wed, 22 Apr 2026 12:05:10 -0700
-In-Reply-To: <20260418134003.1719393-1-tristan@talencesecurity.com>
-References: <20260418134003.1719393-1-tristan@talencesecurity.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43app2) 
+        Wed, 22 Apr 2026 12:06:56 -0700 (PDT)
+Date: Wed, 22 Apr 2026 22:06:55 +0300
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+To: Frank Zhang <rmxpzlb@gmail.com>
+Cc: andrzej.hajda@intel.com, neil.armstrong@linaro.org, rfoss@kernel.org,
+        maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+        tzimmermann@suse.de, airlied@gmail.com, simona@ffwll.ch,
+        detlev.casanova@collabora.com, cristian.ciocaltea@collabora.com,
+        Laurent.pinchart@ideasonboard.com, jonas@kwiboo.se,
+        jernej.skrabec@gmail.com, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] drm/bridge: dw-hdmi-qp: Guard clear_audio_infoframe
+ when PHY is down
+Message-ID: <urguajogb4zsz4jg3ef32hpyf2awxkywdtlk5ackdi2gjai4l7@vpjaf3sznkto>
+References: <20260418101936.7731-1-rmxpzlb@gmail.com>
+ <hdl63shkqubkvczlg7ryjah5psiqzrhu5llelzaetw7skbpujv@nyxgriryjxd5>
+ <9c198d0e-a675-4d7e-a485-5a8ee4d97f88@gmail.com>
+ <ggmfrel7xrhigcsvoegxwdxpljohiyspzcmhpmkxkqycu53zwm@ltkecyoshdax>
+ <99f6fde4-ac69-4e7d-a345-a378762eb9bb@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Spamd-Result: default: False [-0.66 / 15.00];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <99f6fde4-ac69-4e7d-a345-a378762eb9bb@gmail.com>
+X-Proofpoint-ORIG-GUID: Lg2dJ7taFpRKTEcc6DxaBXy46YxmktX8
+X-Authority-Analysis: v=2.4 cv=c5ibhx9l c=1 sm=1 tr=0 ts=69e91c53 cx=c_pps
+ a=R6oCqFB+Yf/t2GF8e0/dFg==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=A5OVakUREuEA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=DJpcGTmdVt4CTyJn9g5Z:22 a=VwQbUJbxAAAA:8
+ a=pGLkceISAAAA:8 a=kn-r4vqxNxNuTmBUix8A:9 a=CjuIK1q_8ugA:10
+ a=TD8TdBvy0hsOASGTdmB-:22
+X-Proofpoint-GUID: Lg2dJ7taFpRKTEcc6DxaBXy46YxmktX8
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDIyMDE4NCBTYWx0ZWRfX57+S/vep853A
+ V5Egw2cPTPjYlsCqj1RET+lj8sTfqlsAoq0YLl8Y//Ru0ASgFDragrI44GJyDXB02ofi+Tb4mPc
+ RLOFuCT6RdwxeqbQOXz0ZqEqQ4SaG3eacVrPMRFK5M6VeJVGUKGZTDznELNRoUJVkdY52mqQxb5
+ TIjBtc82cp+W2/99xtq4wNkB5s69s3nTGMntXXZKxCSHtBhET+hpdqlkrh+il0FdsbzFoRd6i7U
+ /ifJArt2R+xRdok4vyypndTx3qLGNeGkADTD4lloxoxmNUSq54EC1eQKxKT8/CYihbB/TvXeXVk
+ gHXNUhHFEPJbGpfyRTnxApLy7D8tbidNK1WbT6u+edI5tZBY44rHJsaf4L1bYS3md/UaSLpjNSu
+ WH1I/z+SRA7U3V5v7+/Jrwcqm4/9RE+o6bnI0di9/WZEehyaOyu9Q/1aQuen9IGn2MNvFqj3lTC
+ yVNJRxIq0KY45421kCQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-22_02,2026-04-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 malwarescore=0 spamscore=0 lowpriorityscore=0 suspectscore=0
+ adultscore=0 impostorscore=0 phishscore=0 clxscore=1015 priorityscore=1501
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2604220184
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[gmail.com,dubeyko.com,physik.fu-berlin.de,vivo.com];
-	TAGGED_FROM(0.00)[bounces-240380-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[redhat.com:+];
+	RCPT_COUNT_TWELVE(0.00)[17];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240381-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[intel.com,linaro.org,kernel.org,linux.intel.com,suse.de,gmail.com,ffwll.ch,collabora.com,ideasonboard.com,kwiboo.se,lists.freedesktop.org,vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,oss.qualcomm.com:dkim,qualcomm.com:dkim];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vdubeyko@redhat.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[dmitry.baryshkov@oss.qualcomm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,217eb327242d08197efb];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,syzkaller.appspot.com:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E0AD244A03F
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 4703C44A070
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Sat, 2026-04-18 at 13:40 +0000, Tristan Madani wrote:
-> hfs_bnode_read() can return early without initializing the output
-> buffer when the offset is invalid or the requested length is
-> corrected to zero by check_and_correct_requested_length().  Callers
-> such as hfs_bnode_read_u16() pass stack-allocated buffers and use the
-> result unconditionally, leading to KMSAN uninit-value reports.
->=20
-> Rather than initializing at each individual call site, zero the buffer
-> at the start of hfs_bnode_read() before any validation checks.  This
-> ensures the buffer is always in a known state regardless of which
-> early-return path is taken.
->=20
-> Reported-by: syzbot+217eb327242d08197efb@syzkaller.appspotmail.com
-> Tested-by: syzbot+217eb327242d08197efb@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=3D217eb327242d08197efb
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
-> ---
->  fs/hfsplus/bnode.c | 2 ++
->  1 file changed, 2 insertions(+)
->=20
-> diff --git a/fs/hfsplus/bnode.c b/fs/hfsplus/bnode.c
-> index f8b5a8ae58ff5..14d1af2c7ba93 100644
-> --- a/fs/hfsplus/bnode.c
-> +++ b/fs/hfsplus/bnode.c
-> @@ -25,6 +25,8 @@ void hfs_bnode_read(struct hfs_bnode *node, void *buf, =
-u32 off, u32 len)
->  	struct page **pagep;
->  	u32 l;
-> =20
-> +	memset(buf, 0, len);
-> +
+On Tue, Apr 21, 2026 at 10:31:19AM +0800, Frank Zhang wrote:
+> On 4/20/26 17:00, Dmitry Baryshkov wrote:
+> > On Mon, Apr 20, 2026 at 02:11:28PM +0800, Frank Zhang wrote:
+> > > On 4/19/26 08:40, Dmitry Baryshkov wrote:
+> > > > On Sat, Apr 18, 2026 at 06:19:36PM +0800, Frank Zhang wrote:
+> > > > > The following panic was observed during system reboot:
+> > > > > 
+> > > > > Kernel panic - not syncing: Asynchronous SError Interrupt
+> > > > > CPU: 7 UID: 1000 PID: 2637 Comm: pipewire ... 6.19.10-300.fc44.aarch64
+> > > > > Call trace:
+> > > > >    ...
+> > > > >    regmap_update_bits_base+0x5c/0x90
+> > > > >    dw_hdmi_qp_bridge_clear_infoframe+0xb0/0x120 [dw_hdmi_qp]
+> > > > >    drm_bridge_connector_clear_infoframe+0x28/0x48 [drm_display_helper]
+> > > > >    ...
+> > > > >    dw_hdmi_qp_audio_disable+0x24/0xb8 [dw_hdmi_qp]
+> > > > >    drm_bridge_connector_audio_shutdown+0x30/0x60 [drm_display_helper]
+> > > > >    drm_connector_hdmi_audio_shutdown+0x24/0x38 [drm_display_helper]
+> > > > >    hdmi_codec_shutdown+0x60/0x90 [snd_soc_hdmi_codec]
+> > > > >    ...
+> > > > >    snd_pcm_release_substream.part.0+0x44/0xd8 [snd_pcm]
+> > > > >    snd_pcm_release+0x60/0xe8 [snd_pcm]
+> > > > >    ...
+> > > > > 
+> > > > > The root cause is pipewire tries to close the HDMI audio device after
+> > > > > atomic_disable(), which sets tmds_char_rate to 0 and disable the PHY.
+> > > > > 
+> > > > > In this case, dw_hdmi_qp_audio_disable() will call
+> > > > > drm_atomic_helper_connector_hdmi_clear_audio_infoframe() directly,
+> > > > > accessing registers without checking tmds_char_rate.
+> > > > > 
+> > > > > Move drm_atomic_helper_connector_hdmi_clear_audio_infoframe() inside the
+> > > > > if (hdmi->tmds_char_rate) of dw_hdmi_qp_audio_disable().
+> > > > > 
+> > > > > Fixes: fd0141d1a8a2 ("drm/bridge: synopsys: Add audio support for dw-hdmi-qp")
+> > > > > Signed-off-by: Frank Zhang <rmxpzlb@gmail.com>
+> > > > > 
+> > > > > ---
+> > > > > Changes in v2:
+> > > > > - Move drm_atomic_helper_connector_hdmi_clear_audio_infoframe() inside
+> > > > >     the if (hdmi->tmds_char_rate) of dw_hdmi_qp_audio_disable().
+> > > > > - Link to v1: https://lore.kernel.org/all/20260416093150.13853-1-rmxpzlb@gmail.com/
+> > > > > 
+> > > > > diff --git a/drivers/gpu/drm/bridge/synopsys/dw-hdmi-qp.c b/drivers/gpu/drm/bridge/synopsys/dw-hdmi-qp.c
+> > > > > index d649a1cf07f5..7760527484c8 100644
+> > > > > --- a/drivers/gpu/drm/bridge/synopsys/dw-hdmi-qp.c
+> > > > > +++ b/drivers/gpu/drm/bridge/synopsys/dw-hdmi-qp.c
+> > > > > @@ -526,10 +526,10 @@ static void dw_hdmi_qp_audio_disable(struct drm_bridge *bridge,
+> > > > >    {
+> > > > >    	struct dw_hdmi_qp *hdmi = dw_hdmi_qp_from_bridge(bridge);
+> > > > > -	drm_atomic_helper_connector_hdmi_clear_audio_infoframe(connector);
+> > > > > -
+> > > > > -	if (hdmi->tmds_char_rate)
+> > > > > +	if (hdmi->tmds_char_rate) {
+> > > > > +		drm_atomic_helper_connector_hdmi_clear_audio_infoframe(connector);
+> > > > >    		dw_hdmi_qp_audio_disable_regs(hdmi);
+> > > > > +	}
+> > > > 
+> > > > Will audio and audio infoframe remain disabled after consequetive
+> > > > atomic_enable() call?
+> > > > 
+> > > > >    }
+> > > > >    static int dw_hdmi_qp_i2c_read(struct dw_hdmi_qp *hdmi,
+> > > > > -- 
+> > > > > 2.53.0
+> > > > > 
+> > > > 
+> > > 
+> > > Sorry, I missed clearing the audio infoframe when the PHY is down. The next
+> > > atomic_enable() will write the stale audio infoframe. My mistake.
+> > > 
+> > > To clear the stale audio infoframe, dw_hdmi_qp_audio_disable() can handle it
+> > > in the else branch directly, but this seems like a layering violation for a
+> > > bridge driver
+> > > 
+> > > I think the better approach is to add a 'reset_audio_infoframe' interface in
+> > > drm_hdmi_state_helper.c that does basically the same as
+> > > drm_atomic_helper_connector_hdmi_clear_audio_infoframe(), but only clearing
+> > > the software state without calling clear_infoframe(). It's also a bit odd
+> > > since it would only be used by dw-hdmi-qp.
+> > 
+> > That sounds too fine-grained and it also will not work straight ahead...
+> > 
+> > Just for my understanding, let's consider the opposite situation: the
+> > user tries to start audio playback before setting the mode. How is it
+> > handled in the driver?
+> > 
+> 
+> audio_prepare() will return -ENODEV before the mode is set.
+> 
+> I admit modifying dw-hdmi-qp is more reasonable. I have a new approach:
+> 
+> dw-hdmi-qp should have an internal function to clear the audio infoframe
+> related registers.
+> dw_hdmi_qp_bridge_clear_audio_infoframe() should check tmds_char_rate, call
+> the new function only when tmds_char_rate is available.
+> dw_hdmi_qp_bridge_write_audio_infoframe() should call the new function
+> directly instead of dw_hdmi_qp_bridge_clear_audio_infoframe(), without
+> checking tmds_char_rate.
+> dw_hdmi_qp_audio_disable() doesn't need any modification.
 
-The patch looks good. However, I have this point in my mind. Let's imagine =
-that
-we receive a valid buf pointer but len is 0. It sounds to me that memset()
-simply will do nothing. But if buffer has not zero length, then it means th=
-at we
-have no initialization again. What do you think?
+Assuming that all audio-related registers are cleared when you perform
+PHY disable / enable cycle, this looks good to me.
 
->  	if (!is_bnode_offset_valid(node, off))
->  		return;
-> =20
+> 
+> With this approach, clear_audio_infoframe guards register access by checking
+> tmds_char_rate, while write_audio_infoframe does not need to check it again.
+> How about it?
+> 
+> Thanks,
+> Frank Zhang
+> 
+> > > 
+> > > I'd like to get the maintainers' opinion about adding such an interface.
+> > > 
+> > > Thanks,
+> > > Frank Zhang
+> > > 
+> > 
+> 
 
-I assume that this is a second version of the patch. You can use this comma=
-nd to
-add version to the patch: 'git format-patch -v2 -1 HEAD', for example. Fran=
-kly
-speaking, the patch without version looks slightly confusing for my taste. =
-:)
-
-Thanks,
-Slava.
-
+-- 
+With best wishes
+Dmitry
 
