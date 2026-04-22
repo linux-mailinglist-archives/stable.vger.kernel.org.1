@@ -1,201 +1,172 @@
-Return-Path: <stable+bounces-240265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240266-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2KiiCVM46GkbHAIAu9opvQ
-	(envelope-from <stable+bounces-240265-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 04:54:11 +0200
+	id CNIGM3A36GkbHAIAu9opvQ
+	(envelope-from <stable+bounces-240266-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 04:50:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D07E441A3E
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 04:54:10 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D94D94419DC
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 04:50:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 29706301F5D8
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 02:46:50 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2A85E301A082
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 02:48:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B141B3939B6;
-	Wed, 22 Apr 2026 02:46:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45757392C34;
+	Wed, 22 Apr 2026 02:48:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HlCKI4rc"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="cGZM44r4"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8CE72505AA
-	for <stable@vger.kernel.org>; Wed, 22 Apr 2026 02:46:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D9B239281E
+	for <stable@vger.kernel.org>; Wed, 22 Apr 2026 02:47:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776826003; cv=none; b=EBhy1tr4Pq4sUbkGBy4uWmzKhqzeix3Wjwx/aQGrGkWS/t4qwivyyNtow5bjy+jYQMjzBiEKjExOkRQMZTv1G8tomlhPeycmtmVXIkADP3RmNhrbSWOMGzGJyp1AKE7qYuS+1xC1Imnq35U27gLbaw0T5NTkEsBV5nMl+I97ip0=
+	t=1776826080; cv=none; b=rbznUW8Rs/Obu6vyc7HLZzMJ+7Wlvi6aan3Y2t90wmIf4pY/M3Z8WlMC42bZeefKhT8P8cj4QLUmVjsMmkcQAUq7/G/1jp+d4TzCsJJVVwpN4SshfiguftWywF1SzAth2AsH035zNKpeM1Ej1MN9Rm80O53tKod5C9wZQDbUsDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776826003; c=relaxed/simple;
-	bh=54mdUmpSfgqjXDGwvG814qjfvfFiFaCFWzugdgFYZ/s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d1pCgV9iXdpivUXf3KO1Ze5SEN9Zl+IDdlQ3kG8zlwkhSevGmFqPRylauBuIaZuC/2OioKIE+c+o6iuOpR3bC6VLXtOU/sRqT2eZNvQhKu47CPsevbGu450h7jyAPUKBuC6VpxXy8qCbhl2CxFOtZSEBaJWOl+VRK1nnR4e6nR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HlCKI4rc; arc=none smtp.client-ip=209.85.216.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-35fb16e56efso3248812a91.2
-        for <stable@vger.kernel.org>; Tue, 21 Apr 2026 19:46:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776825992; x=1777430792; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Fcd+LZFK9AMyl2emRFE9iJQXg1L+/s8eBXtgz15uq2o=;
-        b=HlCKI4rcIT6GzPAm1eX0Dxdabz54vsziUFvzkUy73YnLUgbD8Ia/n8B8aqzSiKj8s5
-         aK9uYActb3pA6MwqlsO6lFSYkCpDap7nfZDhe0YKmHJmfpdt5+z5m7Kq0T+3Y4JafZHG
-         gx2OgQ4yPXDOXSDFbn1IrabDS2Aa1OILkds2ImPDKvV3f3Q2glXQVLm6Tb/7DJbJU/S1
-         AMojfLiJlwxw8y8w9ZEsDSlTJ6Wap6Jt4s1bPs/GUPGC5EB7D8peYKvzxJLTccbag96n
-         Ne5tGr5DaymAMfBM/iVjMhVqk3H0hHj7XBM4MIhPkk1PJTgOF5dtrHjkGG8XJmxg3zsJ
-         AJPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776825992; x=1777430792;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Fcd+LZFK9AMyl2emRFE9iJQXg1L+/s8eBXtgz15uq2o=;
-        b=DOAjdjCjQdnXvkCKSCznIXe/AnBrMxsXJDF8eP6dDGSzT9nu6SdGwoDsknUlhQel6V
-         HNFy5w1nRBFs8LFyj2NTXNnSKkI3i1xLYMU6wp2WwK44V/Bf7U4uX/R7I6dV0kETHadO
-         zv+2rgKcwxw6xQi2MSclpwK3fthvUBLzjwp5uMuPGyvRgrvSGiVFaEsP129n2BBBGg3f
-         ftQPG7BXC4vDYd8HQBEo4FQiKcrmq0TOJBRyeCKwad0ikCafvzgf0BPoe5aHMshlJh4n
-         06TNjjxJRNAFm4dw/AqvXFN18z5HuWG9NGk6njhICPugicn2HPIVhiRgFAeqtWH0VUMR
-         EP+A==
-X-Forwarded-Encrypted: i=1; AFNElJ8f9MenxAJB9Ak9OC3TTCOxwwyejbQ++xw/JaUR+TD7L8Zabipu5YEC+lGVbJwjxkMtN56QAok=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxuWXSPnc4GPw2Koefp/s6Q6nIr1ge7q1H1Tm7BTjykyBy5mN2B
-	S3HNjCVIxI/0I746BFfrgF6nubnjOLMHJFi/1leOPRcTi1AglpDZ5w3x
-X-Gm-Gg: AeBDiesdHw7LK+pV+KS2dRFd/b8DG/NZTdPdmQ7XoqunLojL6g0LTphIUhKltLwg5pi
-	4MF2EJyH1qkEoGJtRgBgj752P9pb61Kx7L1wQAkpaje7FKH0bnRVW1nuLTNf9Y074yy+CYLi02f
-	A+4BRGF9N80vXegg2fojQZH47kMEwHVKvufy37hq7thUKaug4F4Er0zeg9HduJ/krDHMcLDKDev
-	OKx+TnKqG5q7j5blM+wqaEf4X7E7JafeQ0WOhepgbfvKG9Sloy2bPBkIPEHTdjlUXaZAKd5ZNDN
-	OMGxL8cWWb+mUZwjnVXI/m1eReqdpfu5t8+o/vZvbekp0KMSjhNp8Y0/BLHzKoiRpgvy0c2F/GF
-	ErJmM4GXlY8gCkqK5dfJ55Q6JPdaHmtYNwMw/0zIAIaGeEety/51taO+yUZeSa+7mWzfeMKT7M9
-	x4nVnpEzemHI22U+fuXixYcYw17NRN+iqZ2Rv4AgMhdw2CfkhMsffOn8n/twI9Ug==
-X-Received: by 2002:a05:6a20:9187:b0:3a2:dd8a:5084 with SMTP id adf61e73a8af0-3a2dd8a5be1mr8799899637.37.1776825991972;
-        Tue, 21 Apr 2026 19:46:31 -0700 (PDT)
-Received: from DESKTOP-MUHC17F.tail07b66e.ts.net ([188.253.121.151])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c7976f92183sm10656632a12.3.2026.04.21.19.46.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Apr 2026 19:46:31 -0700 (PDT)
-From: Zhenzhong Wu <jt26wzz@gmail.com>
-To: netdev@vger.kernel.org
-Cc: edumazet@google.com,
-	ncardwell@google.com,
-	kuniyu@google.com,
-	davem@davemloft.net,
-	dsahern@kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	shuah@kernel.org,
-	tamird@kernel.org,
+	s=arc-20240116; t=1776826080; c=relaxed/simple;
+	bh=EOmXBM6YQ0kkaif3U+KbihqEFu7AXqzlgz9NvMUxLmk=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=shh3ivtBdYdiVpXFbutv1fbPRozQkQwbcD2qoTHqu40PL7NxJcdZeVyDOFxesmz4n93k7sBGrP6VvDsVOB9/3fm0Obo0QkgEZNBVJJ6zJaFG1HRqiETHmUasoTsP4QNQa49dtX9OgC3X6TBVr02YfBrdmN7BGG51lk8imFCVSjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=cGZM44r4; arc=none smtp.client-ip=95.215.58.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1776826068;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GZQT0s2wUO2WZ6VaxUd4q0Cex0JTnd7JiwzgE6NWCYE=;
+	b=cGZM44r49NJUlLAuQ8Aw4WQthcwoCIfYOTdFUY/tOEqlyLmYeIQaniKeQUZ40a4/uPKL23
+	ZKmWPRhyBQ0+zHs2xqUsv61Pg9+2NPLCnnWS80pkxlYxtLKg1D7OSRkW9qy6+8zhbw9Pg9
+	vOmcRT9UVY5pER/ELSwk++RheXdwOfk=
+From: Lance Yang <lance.yang@linux.dev>
+To: david@kernel.org
+Cc: linux-arm-kernel@lists.infradead.org,
+	catalin.marinas@arm.com,
+	will@kernel.org,
+	akpm@linux-foundation.org,
+	ljs@kernel.org,
+	Liam.Howlett@oracle.com,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	jackmanb@google.com,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com,
+	lance.yang@linux.dev,
+	ryan.roberts@arm.com,
+	broonie@kernel.org,
+	dev.jain@arm.com,
 	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	Zhenzhong Wu <jt26wzz@gmail.com>,
+	linux-mm@kvack.org,
 	stable@vger.kernel.org
-Subject: [PATCH net v4 1/2] tcp: call sk_data_ready() after listener migration
-Date: Wed, 22 Apr 2026 10:45:53 +0800
-Message-ID: <20260422024554.130346-2-jt26wzz@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260422024554.130346-1-jt26wzz@gmail.com>
-References: <20260422024554.130346-1-jt26wzz@gmail.com>
+Subject: Re: [PATCH v2] mm/page_alloc: fix initialization of tags of the huge zero folio with init_on_free
+Date: Wed, 22 Apr 2026 10:47:33 +0800
+Message-Id: <20260422024733.70662-1-lance.yang@linux.dev>
+In-Reply-To: <20260421-zerotags-v2-1-05cb1035482e@kernel.org>
+References: <20260421-zerotags-v2-1-05cb1035482e@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Migadu-Flow: FLOW_OUT
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	URIBL_MULTI_FAIL(0.00)[sea.lore.kernel.org:server fail];
-	FREEMAIL_CC(0.00)[google.com,davemloft.net,kernel.org,redhat.com,vger.kernel.org,gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	TAGGED_FROM(0.00)[bounces-240265-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-240266-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linux.dev:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jt26wzz@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lance.yang@linux.dev,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 6D07E441A3E
+	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[21]
+X-Rspamd-Queue-Id: D94D94419DC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-When inet_csk_listen_stop() migrates an established child socket from
-a closing listener to another socket in the same SO_REUSEPORT group,
-the target listener gets a new accept-queue entry via
-inet_csk_reqsk_queue_add(), but that path never notifies the target
-listener's waiters. A nonblocking accept() still works because it
-checks the queue directly, but poll()/epoll_wait() waiters and
-blocking accept() callers can also remain asleep indefinitely.
 
-Call READ_ONCE(nsk->sk_data_ready)(nsk) after a successful migration
-in inet_csk_listen_stop().
+On Tue, Apr 21, 2026 at 05:39:07PM +0200, David Hildenbrand (Arm) wrote:
+>__GFP_ZEROTAGS semantics are currently a bit weird, but effectively this
+>flag is only ever set alongside __GFP_ZERO and __GFP_SKIP_KASAN.
+>
+>If we run with init_on_free, we will zero out pages during
+>__free_pages_prepare(), to skip zeroing on the allocation path.
+>
+>However, when allocating with __GFP_ZEROTAG set, post_alloc_hook() will
+>consequently not only skip clearing page content, but also skip
+>clearing tag memory.
+>
+>Not clearing tags through __GFP_ZEROTAGS is irrelevant for most pages that
+>will get mapped to user space through set_pte_at() later: set_pte_at() and
+>friends will detect that the tags have not been initialized yet
+>(PG_mte_tagged not set), and initialize them.
+>
+>However, for the huge zero folio, which will be mapped through a PMD
+>marked as special, this initialization will not be performed, ending up
+>exposing whatever tags were still set for the pages.
+>
+>The docs (Documentation/arch/arm64/memory-tagging-extension.rst) state
+>that allocation tags are set to 0 when a page is first mapped to user
+>space. That no longer holds with the huge zero folio when init_on_free
+>is enabled.
+>
+>Fix it by decoupling __GFP_ZEROTAGS from __GFP_ZERO, passing to
+>tag_clear_highpages() whether we want to also clear page content.
+>
+>Invert the meaning of the tag_clear_highpages() return value to have
+>clearer semantics.
+>
+>Reproduced with the huge zero folio by modifying the check_buffer_fill
+>arm64/mte selftest to use a 2 MiB area, after making sure that pages have
+>a non-0 tag set when freeing (note that, during boot, we will not
+>actually initialize tags, but only set KASAN_TAG_KERNEL in the page
+>flags).
+>
+>	$ ./check_buffer_fill
+>	1..20
+>	...
+>	not ok 17 Check initial tags with private mapping, sync error mode and mmap memory
+>	not ok 18 Check initial tags with private mapping, sync error mode and mmap/mprotect memory
+>	...
+>
+>This code needs more cleanups; we'll tackle that next, like
+>decoupling __GFP_ZEROTAGS from __GFP_SKIP_KASAN.
+>
+>Fixes: adfb6609c680 ("mm/huge_memory: initialise the tags of the huge zero folio")
+>Cc: stable@vger.kernel.org
+>Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+>---
 
-However, after inet_csk_reqsk_queue_add() succeeds, the ref acquired
-in reuseport_migrate_sock() is effectively transferred to
-nreq->rsk_listener. Another CPU can then dequeue nreq via accept()
-or listener shutdown, hit reqsk_put(), and drop that listener ref.
-Since listeners are SOCK_RCU_FREE, wrap the post-queue_add()
-dereferences of nsk in rcu_read_lock()/rcu_read_unlock(), which also
-covers the existing sock_net(nsk) access in that path.
+Tested this fix on MTE with both kasan=on and kasan=off. Works as
+expected in both cases.
 
-The reqsk_timer_handler() path does not need the same changes for two
-reasons: half-open requests become readable only after the final ACK,
-where tcp_child_process() already wakes the listener; and once nreq is
-visible via inet_ehash_insert(), the success path no longer touches
-nsk directly.
+Nothing jumped out at me, LGTM!
 
-Fixes: 54b92e841937 ("tcp: Migrate TCP_ESTABLISHED/TCP_SYN_RECV sockets in accept queues.")
-Cc: stable@vger.kernel.org
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Signed-off-by: Zhenzhong Wu <jt26wzz@gmail.com>
----
- net/ipv4/inet_connection_sock.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
-index 4ac3ae1bc..928654c34 100644
---- a/net/ipv4/inet_connection_sock.c
-+++ b/net/ipv4/inet_connection_sock.c
-@@ -1479,16 +1479,19 @@ void inet_csk_listen_stop(struct sock *sk)
- 			if (nreq) {
- 				refcount_set(&nreq->rsk_refcnt, 1);
- 
-+				rcu_read_lock();
- 				if (inet_csk_reqsk_queue_add(nsk, nreq, child)) {
- 					__NET_INC_STATS(sock_net(nsk),
- 							LINUX_MIB_TCPMIGRATEREQSUCCESS);
- 					reqsk_migrate_reset(req);
-+					READ_ONCE(nsk->sk_data_ready)(nsk);
- 				} else {
- 					__NET_INC_STATS(sock_net(nsk),
- 							LINUX_MIB_TCPMIGRATEREQFAILURE);
- 					reqsk_migrate_reset(nreq);
- 					__reqsk_free(nreq);
- 				}
-+				rcu_read_unlock();
- 
- 				/* inet_csk_reqsk_queue_add() has already
- 				 * called inet_child_forget() on failure case.
--- 
-2.43.0
+Tested-by: Lance Yang <lance.yang@linux.dev>
 
