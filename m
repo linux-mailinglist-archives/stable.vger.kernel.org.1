@@ -1,180 +1,156 @@
-Return-Path: <stable+bounces-240286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240287-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2JW4M/Zy6GlCKgIAu9opvQ
-	(envelope-from <stable+bounces-240286-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 09:04:22 +0200
+	id yG5DCNZ36GmVKgIAu9opvQ
+	(envelope-from <stable+bounces-240287-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 09:25:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB900442BA1
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 09:04:21 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77CE7442EBC
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 09:25:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5F2D03036D68
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 07:03:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0F625304AAD0
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 07:20:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C616633C52F;
-	Wed, 22 Apr 2026 07:03:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b="yct43tcI";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="iqHJOMTO"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C2A9370D43;
+	Wed, 22 Apr 2026 07:20:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-a5-smtp.messagingengine.com (fhigh-a5-smtp.messagingengine.com [103.168.172.156])
+Received: from smtpbgau2.qq.com (smtpbgau2.qq.com [54.206.34.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 280053603FC;
-	Wed, 22 Apr 2026 07:03:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.156
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6734E35AC3E;
+	Wed, 22 Apr 2026 07:20:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.34.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776841394; cv=none; b=gd/dKADNL5fevw0L82Cri8bQQd0mElMuubSa7yEokop2yh0bgR1Rx/eMPX3wlOccP/b3gTU4iH+jZ2q30IszSoCcsViI8Ah4Elj5PhdTkRJJSdv8FhH+XOwTyiSE+DOx4ol5HTwW3Xijz42AgB5eUpMVDABgu+aSmnMJqevJaYg=
+	t=1776842431; cv=none; b=ioZpB34nIpvQkDqlUc/bCHWQ4vH6suYwvG/NI9cefP0G6uPwPw8+qynN3SWSRneZp8gZe3XfJBJT7zmUhdLwLXgToDpQiTAHP1oiuwancOgWsSo4w6q3oWMP2BeZktamM5w345pl7P+zNxCBfG8sViYm1xoom7V2z1FoGMSI2KQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776841394; c=relaxed/simple;
-	bh=WkhNZCJwNgHd0N5khdpRXMOOJ8X7K9P2eioLiC0zyQs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=C47hJvUnv4ZDJ3fMB+8DpDMJF8mQ1NpMa2pZ+1+5m3ufeA9XiLMrL2FEn6Ji/e9OJ/Ae5QOknPAC9mJ9eHfVDmww+LCderaYBI3QnnQ+W/vTcmZPIsDYiOL9e2640nOBkqhhBYxIbMCXvTM8sSOmg7zqlrbn8umYWKQMFxgCWPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com; spf=pass smtp.mailfrom=pobox.com; dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b=yct43tcI; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=iqHJOMTO; arc=none smtp.client-ip=103.168.172.156
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pobox.com
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 7B1841400105;
-	Wed, 22 Apr 2026 03:03:10 -0400 (EDT)
-Received: from phl-frontend-02 ([10.202.2.161])
-  by phl-compute-04.internal (MEProxy); Wed, 22 Apr 2026 03:03:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pobox.com; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1776841390;
-	 x=1776927790; bh=gYmL0iGFIRmXH+uTkCEjHW4J+LglNX8qo6vj+5zaX9M=; b=
-	yct43tcI3ovdK3QZEps95srUoEV1L0M7w9KMWTLOZSkXHuddtRqHw0xn+vjtMN98
-	xylLbVM/usFcUYPDrO8yr57d0U9TE7n3p7FtJoQr6PkeEB+9Zx7uYUetvM9P3bOk
-	7njevt6TULWuYavTFcbLqCYyf4/ORZngMX14QI0BQeoAv2ms57zPPH42q6lMxnFa
-	Fao+3t+EBABrL1XM3cPAGBxHcHX+paairdS9XnuU8e7DEOKByQX55yYPOlgaKc0j
-	6g4/oqQQJ4k8DJ+YBfHUdBj5SSMtM9NLovRJn0hZtUvriQNJvKaKiqur3CGCYJnn
-	dM2XYEwsQycqHFifB5HfAA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1776841390; x=
-	1776927790; bh=gYmL0iGFIRmXH+uTkCEjHW4J+LglNX8qo6vj+5zaX9M=; b=i
-	qHJOMTOHX58eJOAo0DA0eQZYJoEtmOX0EnYTZUslptDQfvshGOqj4da7UzkkhIUd
-	uAS4nqkdNLingBw0kYoU6TNgrECfgVGPgkoFPeZHpFmri/XRJ1ul2zni+Ra5s5yN
-	FE22t7gTOKKI0ij3Bx64l9sKViPG6jCABESXuAWN+owFxWnHDFv5+Vg5LhZ//eF2
-	MT1AczCSQc4LXKIiXycAFn6iIRHGFc4rtPVCFsM4edji5XkhsGnwWgqq/dabsusQ
-	dowksY62RqSkAC2oxGLUc3EE1jsuxG2+YQ22GYkHQMsexfrfP3JgDm/RPHaQljhI
-	44vcvTzTL9CN4yy6ICNyQ==
-X-ME-Sender: <xms:rXLoacdBwNfW_YxR2KH2OfxksFh6uSDmCcsKeLSNo2Md53AVBIot5A>
-    <xme:rXLoaaEabKlwPKu9fv8k3ClqeErcoQCCJ5XB9FSIYw0fsr6BwAWDvWPfsPROV4VM2
-    vBsR0hfxncic6W5LsniIva2ms7QWPbUahxF86vu2KIk4IHz5KrevJxn>
-X-ME-Received: <xmr:rXLoaZDjc3Zd6d-CP_sVAqIvmhsFoh6PG8DOCuLVdTlgFyF0b9XRERobmThtEWUinLwR6ggwcD3KmuXqfpAyPGXmJG6S4C6O>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdeifeeivdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefkffggfgfuvfevfhfhjggtgfesthejredttddvjeenucfhrhhomhepfdeurghrrhih
-    ucfmrdcupfgrthhhrghnfdcuoegsrghrrhihnhesphhosghogidrtghomheqnecuggftrf
-    grthhtvghrnhepfeelheekheelkeejlefffefhvdeljeetheeltdeiudffveetffelteeg
-    gfefhfejnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiii
-    gvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsrghrrhihnhesphhosghogidrtgho
-    mhdpnhgspghrtghpthhtohepvddtpdhmohguvgepshhmthhpohhuthdprhgtphhtthhope
-    hgrhgvghhkhheslhhinhhugihfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehs
-    thgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehprghttghhvg
-    hssehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtoheplhhinhhugidqkhgvrhhn
-    vghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthhorhhvrghlughsse
-    hlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopegrkhhpmheslhhi
-    nhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheplhhinhhugiesrhhovg
-    gtkhdquhhsrdhnvghtpdhrtghpthhtohepshhhuhgrhheskhgvrhhnvghlrdhorhhgpdhr
-    tghpthhtohepphgrthgthhgvsheskhgvrhhnvghltghirdhorhhg
-X-ME-Proxy: <xmx:rXLoaV4u_okd9Bici2qq6jQLuVPWSQtHpn_o0qQ7FTqqrOR8DL1_xw>
-    <xmx:rXLoaQnr9dy62XxT9y-J16FDuFBJgGe8fJBTlkRwM48CD-P0Bdyipg>
-    <xmx:rXLoaW6_hkAx5dCWsg11zikwTlHRrdJ-n-hCwMw4pfp8Iu4A566zjQ>
-    <xmx:rXLoaWV3jnCmNHByKtWw1vUdTjf9zt1EjSqVQBfXEylaj1woTFLWng>
-    <xmx:rnLoaSyYDLUg8_XHPJDiTfXx2mCnc50AYFgH_qn1JSrA_XmiT36ebuwT>
-Feedback-ID: i6289494f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 22 Apr 2026 03:03:07 -0400 (EDT)
-Message-ID: <3ebcde26-a996-4379-bdf1-1b44ff24e875@pobox.com>
-Date: Wed, 22 Apr 2026 00:03:06 -0700
+	s=arc-20240116; t=1776842431; c=relaxed/simple;
+	bh=QRtIgV4x9+6CYTWFtHRGgz6SzZpqQ+7fNEGQxfdJHZE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sQ5OI3M/eb735i0Txbr4ytSmDF9ASRE9xKgBnyQduDIe22zSU3FePPUneTyWGoA3SrhNzn7NEuO1vYv+iQ4Dg1NoKxoZuBdPCcSmoBLQ3cNXZw9lHwcmV0Kl7YTPHA8uusUOaFAhVVskJvH0WtGRziLIpgZx5w/+Q205ehe6tY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.206.34.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid: zesmtpsz3t1776842330td48872f5
+X-QQ-Originating-IP: v0j4EOrzRINB0pfmcQ4ZtBVVfMZ/+x7k2qt+NRXUHWA=
+Received: from w-MS-7E16.trustnetic.com ( [36.24.64.215])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Wed, 22 Apr 2026 15:18:42 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 1675610184200092300
+EX-QQ-RecipientCnt: 11
+From: Jiawen Wu <jiawenwu@trustnetic.com>
+To: netdev@vger.kernel.org
+Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jiawen Wu <jiawenwu@trustnetic.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net] net: txgbe: fix firmware version check
+Date: Wed, 22 Apr 2026 15:18:37 +0800
+Message-ID: <C787AA5C07598B13+20260422071837.372731-1-jiawenwu@trustnetic.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.18 000/198] 6.18.24-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com
-References: <20260420153935.605963767@linuxfoundation.org>
-Content-Language: en-US
-From: "Barry K. Nathan" <barryn@pobox.com>
-In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: OPHbpUvlYj5kH4k9x256hTf6+Ec5qQunaVEmOLKBxuAFzmZGhwARQlXz
+	JKXLMci8Al7LOybI/39YX2LiT7fALQazGThmjnyuojZdsPgmWNg8NG/d4qbLd3uTX2RGuIf
+	eL7+QPJZ+yi7OcjdSvaxqU+B6sE1ZPSxNZyxe0kJWeW3+yU4UQnpnRu35A88wtlAm4mLjzR
+	rYUNpcanNTSN2KimG28zoIJSZBsswHSBG58mOelkiW7BrJ8xuO0JxBoEZ1Im2blDLEzxSNy
+	q0WJJ1xqHU9a67XMMKb7FZvApkiy2Wyr5bKvAbsnobNlnGexYtFHb+EWO+W1BRefIUg5IUc
+	d/tIVC15GzuwxLjd/F51hsMM/G2YQM/TVwrzW3yjVJlMLZ/LjxNDSQ7CFvbBdueBXvEZoGI
+	jPHzZwGQ0Tljp/oAxc8mPkR/NFhLxZrs5ZbhWEBKlcEm6USke6p+muGi0x0Mr0jxf2QHdOC
+	WApkowWLi0G/q1rBViFk7uJY7WNUe32Aw1ks3Bh1aznHZXFl0FiJpVNqB/zYpaOcSUOlwk3
+	r+6cl5+PJh8s/5WNwiHv8SvSMDDYQQWHL/KGdAg2cQ6BPONmQ5j6YzJrjeTEuieRNDZ6uYq
+	oVv9V9VaJEjXxzBx6jqWb+ct7EsgxT1MS+dBJPmi1D8lMDgI5qYLHCYQY8eUBxHQiF7xoyT
+	0ikrGAQkwUSWtuD/AQ0AUObRaoT/mxj6Kk8F62RoVLQvZrOdiWLEpzOyF3AaMk0l3fLCnQE
+	cSoH3aDit/hfR/efb4qw+f+CAF3dm2FWWnSe5xx18aVxH0EY3W3fB3Wmby9xwwOGOIg4Oze
+	jBvdO/kPweLQJJIyZXCULdT2zx9CBljqyk2I/VGng4K9oMCcH0o4mXGbeNjDrA8fWmySGZG
+	AqfSHZT8xSXIT8QujKL9ewtcSkI7qvhZxOY5iM7X5X71jQTo4OvmJ0lYTmaSDl90Vq3Wpmk
+	nUsbyKqIuwP4QfWz9FK2xIh8eMjfL4uZXHSXBe/M87Ef2YN6aSLE0J+/TzD3s7EpT5ii5KG
+	Wp2v6W4n6axmFtbRGzzrtq+XOPml6qkvuhOmECwdgfcoQYIyrd2OvSADvTo7k=
+X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
+X-QQ-RECHKSPAM: 0
+X-Spamd-Result: default: False [1.54 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[pobox.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[pobox.com:s=fm1,messagingengine.com:s=fm2];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	TAGGED_FROM(0.00)[bounces-240286-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
+	TAGGED_FROM(0.00)[bounces-240287-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[trustnetic.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[pobox.com:+,messagingengine.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[barryn@pobox.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[jiawenwu@trustnetic.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,pobox.com:email,pobox.com:dkim,pobox.com:mid]
-X-Rspamd-Queue-Id: EB900442BA1
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.976];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,trustnetic.com:mid,trustnetic.com:email]
+X-Rspamd-Queue-Id: 77CE7442EBC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 4/20/26 08:39, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.18.24 release.
-> There are 198 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed, 22 Apr 2026 15:38:57 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.18.24-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.18.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+For the device SP, the firmware version is a 32-bit value where the
+lower 20 bits represent the base version number. And the customized
+firmware version populates the upper 12 bits with a specific
+identification number.
 
-I tested 6.18.24-rc1 with srcu-use-irq_work-to-start-gp-in-tiny-srcu.patch
-and clockevents-prevent-timer-interrupt-starvation.patch reverted (since
-these two patches were reverted in the 6.18.y stable-queue) on an arm64
-virtual machine. Working well, no regressions observed.
+For other devices AML 25G and 40G, the upper 12 bits of the firmware
+version is always non-zero, and they have other naming conventions.
 
-Tested-by: Barry K. Nathan <barryn@pobox.com>
+Only SP devices need to check this to tell if XPCS will work properly.
+So the judgement of MAC type is added here.
 
+And the original logic compared the entire 32-bit value against 0x20010,
+which caused the outdated base firmwares bypass the version check
+without a warning. Apply a mask 0xfffff to isolate the lower 20 bits for
+an accurate base version comparison.
+
+Fixes: ab928c24e6cd ("net: txgbe: add FW version warning")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+---
+ drivers/net/ethernet/wangxun/txgbe/txgbe_main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+index ec32a5f422f2..8b7c3753bb6a 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+@@ -864,7 +864,8 @@ static int txgbe_probe(struct pci_dev *pdev,
+ 			 "0x%08x", etrack_id);
+ 	}
+ 
+-	if (etrack_id < 0x20010)
++	if (wx->mac.type == wx_mac_sp &&
++	    ((etrack_id & 0xfffff) < 0x20010))
+ 		dev_warn(&pdev->dev, "Please upgrade the firmware to 0x20010 or above.\n");
+ 
+ 	err = txgbe_test_hostif(wx);
 -- 
--Barry K. Nathan  <barryn@pobox.com>
+2.51.0
+
 
