@@ -1,131 +1,131 @@
-Return-Path: <stable+bounces-240369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240370-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KPglKI8B6Wl5SgIAu9opvQ
-	(envelope-from <stable+bounces-240369-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 19:12:47 +0200
+	id EG5/FuQB6Wl5SgIAu9opvQ
+	(envelope-from <stable+bounces-240370-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 19:14:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11AC2449304
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 19:12:46 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B013C449321
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 19:14:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0C6CA3091C83
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 17:07:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4031D302410E
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 17:13:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E3B9383C97;
-	Wed, 22 Apr 2026 17:07:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C57E33A007;
+	Wed, 22 Apr 2026 17:13:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aWosdQvS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mDOSsl4z"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BFD735C190;
-	Wed, 22 Apr 2026 17:07:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D7C62D8385;
+	Wed, 22 Apr 2026 17:13:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776877654; cv=none; b=e3rx1rJnBv2+Bh1I4k+n04/Ut7TMwFb+/d3Re9Y6xw7tqD1p5yBKpDc+Eqqt0KvDluZvpg2HRn1B5PK9M6MEr3pCIGl1O2AxVyYrMNfE+7G/TUdDdnmXB//XxJ2sQYA6WuCtwP9/W1GnMnquJmF4I4gRz4Z6AXapedUmdHwmA6A=
+	t=1776877983; cv=none; b=cZNWy4QdB+6yqKKVwuMIH1wGc6nyrBA2wYdGdg2CbXIHLeV22+J/Jh9lYuYJXzhUfdial8k3srP1PbeP93aeEk0c0xt7D5LefZoPo4X+DAJ03g/VaFypS6Tt05/dpcSNR8ucc7Sjb9zIEXbn0cTk6dx8ikxCZo4WJZgwBHzk1vI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776877654; c=relaxed/simple;
-	bh=zJd4/g8VBCdh8xvZ0oZIhR50cxWuszu1ZS6WcfY+oHQ=;
+	s=arc-20240116; t=1776877983; c=relaxed/simple;
+	bh=HjIOrqhn+f8xgCu0bhls2WUldXYCMEzSemaAJZDBqEw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HJmqqTqGHkJSI8zyRrt0xj7rPDFkPEQpzjxvjem8vmjYBr8aFa89nncBj74a0aKK8M5/+3MYWHs2j2ILq4OFaYLVuP2dSWIIc6zaTTH5JHSIC2xe9zeQrCnfgYMeKybw7CBv+DlFF/ePfIOufsQn4XQxD9s3/NwvRNgpFbCff1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aWosdQvS; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776877652; x=1808413652;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=zJd4/g8VBCdh8xvZ0oZIhR50cxWuszu1ZS6WcfY+oHQ=;
-  b=aWosdQvSteUxToFPFHXTKinvwALRyQCkYgQZuzhxZ+xLPgrdPoexMZmE
-   zvWOuYaIvL0F5L7NC1FUVaQk2HtQviMRHG8ifwz4byvcBp5idvZePwa07
-   qHA2u/VGNRUAgmrz1cLe6sjfZZnUSoYIr80A1bcIUv1wEkbxH/aR8uELE
-   mc3/MuGrFBfeZRGCAUb92ZM0fsbxbDuoz5PZvE5c8rBaR7g1vfFsTJEhz
-   whshuIhRmRli5GWNcdyiXrD7zC0ivTPW3VDxJGv1iY0dgATLUtUBH1yd3
-   TMPBvK/I3xXkCijxP0IMDRq2v+rlnxrvKudbs14qm1+VLCiiDPKKr9WRa
-   g==;
-X-CSE-ConnectionGUID: PjoKBMHtTsC42k+55umVoA==
-X-CSE-MsgGUID: KgStBRWHQEWH5X4sz9Hn8A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11764"; a="77001905"
-X-IronPort-AV: E=Sophos;i="6.23,193,1770624000"; 
-   d="scan'208";a="77001905"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2026 10:07:31 -0700
-X-CSE-ConnectionGUID: V/yY5WyeR+qFdSzGdYEPow==
-X-CSE-MsgGUID: 4jK5+xNWTIeLZC5k34gU8Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,193,1770624000"; 
-   d="scan'208";a="232723852"
-Received: from tassilo.jf.intel.com (HELO tassilo) ([10.54.38.190])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2026 10:07:31 -0700
-Date: Wed, 22 Apr 2026 10:07:29 -0700
-From: Andi Kleen <ak@linux.intel.com>
-To: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
-Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>, Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Eranian Stephane <eranian@google.com>, linux-kernel@vger.kernel.org,
-	linux-perf-users@vger.kernel.org, Dapeng Mi <dapeng1.mi@intel.com>,
-	Zide Chen <zide.chen@intel.com>,
-	Falcon Thomas <thomas.falcon@intel.com>,
-	Xudong Hao <xudong.hao@intel.com>, stable@vger.kernel.org
-Subject: Re: [Patch v2 2/4] perf/x86/intel: Disable PMI for self-reloaded ACR
- events
-Message-ID: <aekAUXkbHfOfPxX1@tassilo>
-References: <20260420024528.2130065-1-dapeng1.mi@linux.intel.com>
- <20260420024528.2130065-3-dapeng1.mi@linux.intel.com>
- <aef8InBGlZaXNuPk@tassilo>
- <f1cb6c84-d8ff-46a0-a062-816fce9fc164@linux.intel.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Xl3EbYs5uk1AZa4fsb7vUJ5qcsvOYloa+Q6Os1cIXGCfi9jQBvOIH5ThuebWlSqRMzPEm5k8gcke557GtE/5aljjR1UmyeoV+HLqGCBtqXh8BILNG/fZqK+JobpFL0vWieRKrJqZdSO6xj8WyfBvPj7BZmuEhQWk+Yj8Vo1T2XM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mDOSsl4z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90115C19425;
+	Wed, 22 Apr 2026 17:13:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776877982;
+	bh=HjIOrqhn+f8xgCu0bhls2WUldXYCMEzSemaAJZDBqEw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mDOSsl4zd7HGq01mATKJOntWwnAnu6j26vv1owk3gdcvkvBG/UGuRAInqkepzunIq
+	 /Ae1iKuae5PmYkGn3wdhOM7NA4R3d7BZUXKRRaQ5YRN2bBkxT1Z4VLWfxuxMwV6lGN
+	 fuw1rJIoMytzxzxOMOJhPDxwxakhPYWD+n8hx5HwJmF4wfmf5KQhabn9cxtjJw0sY+
+	 1Tyb+gYjYQ9m8aeM2FyRTDZA7ScGKxcWta/zNuYhpKJN7RQbIXLki7BCt/zSYwlln5
+	 bEXVU7pTR1yFnL7RVWaZvefWQCJz4jht1UZoKE4ZbnsiXxASr9jCYrqMWk4JgVd8WJ
+	 6985YVnBCE4UA==
+Date: Wed, 22 Apr 2026 18:12:58 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Johan Hovold <johan@kernel.org>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [PATCH] spi: mpc52xx: fix use-after-free on registration failure
+Message-ID: <9230f719-2c5f-40d6-9486-612c8fec311a@sirena.org.uk>
+References: <20260421125800.1537361-1-johan@kernel.org>
+ <aejsLE_vnchmCKtN@hovoldconsulting.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="MdPjpW5FjVoKVQ+D"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <f1cb6c84-d8ff-46a0-a062-816fce9fc164@linux.intel.com>
-X-Spamd-Result: default: False [-1.66 / 15.00];
+In-Reply-To: <aejsLE_vnchmCKtN@hovoldconsulting.com>
+X-Cookie: I'm definitely not in Omaha!
+X-Spamd-Result: default: False [-4.26 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-240370-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240369-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	DKIM_TRACE(0.00)[intel.com:+];
-	MISSING_XM_UA(0.00)[];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ak@linux.intel.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 11AC2449304
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sirena.org.uk:mid]
+X-Rspamd-Queue-Id: B013C449321
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-> > Are you sure this doesn't conflict with some other non ACR usage of config1?
-> 
-> Yes, currently hw.config1 is only used to store ACR  event indices.
 
-Thanks. Should probably rename the field to make that clear.
+--MdPjpW5FjVoKVQ+D
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
--Andi
+On Wed, Apr 22, 2026 at 05:41:32PM +0200, Johan Hovold wrote:
+> On Tue, Apr 21, 2026 at 02:58:00PM +0200, Johan Hovold wrote:
+> > Make sure to disable and free the interrupts in case controller
+> > registration fails to avoid a potential use-after-free and resource
+> > leak.
+
+> This one will need another spin to address some further pre-existing
+> issues flagged by Sashiko.
+
+Please do an incremental change, it's already in CI with some merges on
+top of it.
+
+--MdPjpW5FjVoKVQ+D
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnpAZoACgkQJNaLcl1U
+h9DPeQf+KsFW8U7Neu5Ml+7cmSc7haG3yrKtZnPZeRhPF9a1O80NPGUpnoChc25L
+lxrWA0CV3t1wrmizbi9cnEGIplEIDaljX5hhSBqhjNUzvbIVAs76pMVhJuCj8HfQ
+eVYc5D/b1c31hIVgmSM13xINvBUcJdEEdf0nVNaqfGZfMvYyhcmoai/Xio8yYIS2
+OfruMmzlMuwXT5dYJYnUufNyMnWgLxstzeEUa7nnUypNV9t3BN18a+lfznUdVX9n
+z3pFta1+Qd06t3VXofBsR7yiDZOdDXDR00DhAlGoD/r3NPxlP7FyWAJoMUZs4Yow
+yl+3tsr2wjkxEOjeI3w18LEOA4oPuQ==
+=Jaci
+-----END PGP SIGNATURE-----
+
+--MdPjpW5FjVoKVQ+D--
 
