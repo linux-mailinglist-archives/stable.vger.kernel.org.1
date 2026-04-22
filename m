@@ -1,238 +1,171 @@
-Return-Path: <stable+bounces-240372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240373-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MBZGMlME6Wl5SgIAu9opvQ
-	(envelope-from <stable+bounces-240372-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 19:24:35 +0200
+	id QEexEr8H6WmgTQIAu9opvQ
+	(envelope-from <stable+bounces-240373-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 19:39:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EC7344944F
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 19:24:34 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A57DE4494C9
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 19:39:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1338A30309A8
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 17:24:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DCE87302F5AB
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 17:38:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CABD1382F1C;
-	Wed, 22 Apr 2026 17:24:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA2B6386C3B;
+	Wed, 22 Apr 2026 17:38:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Hp9NRYUZ";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Uwr0bUxH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M6rwZLP4"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57ABA2BF3F4
-	for <stable@vger.kernel.org>; Wed, 22 Apr 2026 17:24:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6717F378D9B
+	for <stable@vger.kernel.org>; Wed, 22 Apr 2026 17:38:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776878664; cv=none; b=NuyI6UmRYD9F6XJvgeqiNRWg2eE1W7slXrrdsa4xTbs2NTNOk3Fhq3aCeeE23hJAQrk8AHhfTHAdQed80Nl8cztFKGqZ8MAGC8OoxjDpR42Y36JX526w6q+97nNweGck4vXjFhoSJtZRhZFo4Pf+dWmXIo/Q0e5gfZpRz79GS6U=
+	t=1776879537; cv=none; b=MiReak3xmrhtyPcb/QOwaOu51wj6vujxsftJJ47NP4DgwDf/p4HqPCB2Tb9lWVNNZEWRsxjbiWKlShUAwRmKT9e4MV+8atap1JF+EM2hATbkGJB4BwphycGjaIn/P7RxO3blN9jSoH7WTqqYvqd6DOu10/l2elxtPJ/cRU+ki/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776878664; c=relaxed/simple;
-	bh=k1KXrTLU7dUkXksoHKAxb24nQMXABD9g+ynla4ak+00=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Q33yGwuzV8544VdzRm0+PeURbUGfigevEDUK7LnYGOTlvpfImSzekACcDIC1kUgIQZdyZSpbBL2tgz82vxpeAKWoDfUvhqQQnq+1d47JLuVcwWGqhUKOpB3+QwP5MS1tbxcaRJkHR7PeZ72vzlBtFfN8pYu+2tMPa7xAwMJNgpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Hp9NRYUZ; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Uwr0bUxH; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63MG3v7J2012272
-	for <stable@vger.kernel.org>; Wed, 22 Apr 2026 17:24:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=UfAxfiLJzxkm1m8t+L1t3IM8
-	HEx6RLiSD0+sOVMBjl8=; b=Hp9NRYUZZDmBKjQEUhispssv88TvIgeuxgZ8adv9
-	Jk+r5KALueCITQu6vIn5q1LIdb6QJRQ892M7XI85ajwxn+MnNE/eaPS2U9i0DrB8
-	lF18qQE6Iz+wGu/HG876fxLJ7a7feSIQ9lVNDZtUU4BpIivlX/cGFXvkjdSBt6AI
-	32FoeluAk0SH5uclVuqjNTvSJNph2MDQMwMdvNWytCX/165XZTI1kYMMd2lVwNCK
-	QnPtiaXyvkh7VnrsqfMSpSdRUZBGFB+GdfjnBUSE2eaPSVGegbVD5SfvyXuGdj8w
-	rhm+frOVXD3w0htIwKzgP/xhDQiBMs/KFRK6oRKrdPotgg==
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4dq1h78a9q-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Wed, 22 Apr 2026 17:24:21 +0000 (GMT)
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-50df4c130dbso52212651cf.1
-        for <stable@vger.kernel.org>; Wed, 22 Apr 2026 10:24:21 -0700 (PDT)
+	s=arc-20240116; t=1776879537; c=relaxed/simple;
+	bh=bFP5AY+UYMSrKv1tWAgu98ebUaRPsKu3WMtQE+No8Po=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=O6qkEzADoW3lKDy2fl8ZTks/hXGQ7aPJWdrUBKm065707Pzx6sjcoyV1MJflC4jpC0ed9MQDyXauNhLN36PG775MN4ui+eLzmXTb1Z7Q2Jzj8hEQOCTJUwNkmNNJO7CxONV7fSf2h8dBO9q126RsLr6nd4L3xhaif+r2dixa9PI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M6rwZLP4; arc=none smtp.client-ip=209.85.210.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-824c9da9928so2889192b3a.3
+        for <stable@vger.kernel.org>; Wed, 22 Apr 2026 10:38:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1776878661; x=1777483461; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=UfAxfiLJzxkm1m8t+L1t3IM8HEx6RLiSD0+sOVMBjl8=;
-        b=Uwr0bUxHwmRefk2tLYos072EptHmT0m1JC2yQNRs1mXKxBBu7c5xY5u6o+TtPpdJQo
-         dsLVtMZKGzssjcrLeQhLo+cLPSFu+DnsZ4Ky33iWl3G0/EiPMpYPwu44dAyfgDjuPz+V
-         ewzOTHcBBLzPHLBG0E0x6qsPNFFMEOWXsZc+ECQj2qgOzsFa9fJsO6yuFrNdGx8TNy09
-         1nzmjAogPnFc9ILrJZxuIMI0rSDgoHfNfus+aNO1KGpwPNIfgj5pIGEe27K9dwTr8iFA
-         l8Lcm1tiGBS//W4BIeYtlnOyakE5LHStLmufqpX19Otw9ZxyO8dJ2qz+DwwG3OrvjBDZ
-         jbnw==
+        d=gmail.com; s=20251104; t=1776879536; x=1777484336; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=NEFtXcpoTUuSx2EDCkhHpiXviuYOC89Clel/2QQUNdI=;
+        b=M6rwZLP4eXmqVS4bj2zvnY3V6mXoQ+XH6oiAE12QgXwPCnY78iPJtXjcB0YI2FE7Li
+         gJ/D0hWs2S3UBPoJ00uXHRfEIXYsE93rB+P0rwqroIfFzOZ00zyCPw9MKedwEQfDvVhq
+         0yiWHTYm/MwsdBhR3n+fbIWaialy/Ha3TYjKfypV2O51tmU9QzVexYe/kHfqNTn06BcD
+         XfSVI2CZg+3nKfE8pwg9CGUJVlh41lpxX14kAJEraexfpHTrJsFbME6FsAeeVZheY+Jy
+         aVvDYy72R9pV/xu+FIxBD9l3l8OKBigx4iwIoiU9oXy4PuZbKVjXhLkWpFLsmBiMq15M
+         LCtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776878661; x=1777483461;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UfAxfiLJzxkm1m8t+L1t3IM8HEx6RLiSD0+sOVMBjl8=;
-        b=ZYyqhghUhCkgFx66gCAjehe/kg/Y+I4btqljXqB2V6dHRo6I+AuSVnW6wx8XCsSSdQ
-         xPrcRWlFvNPzKGPMWov3VnF2So/LYUjXEXS3OBMILNzsaB5URvoQeFYkGAz+mVZyydoA
-         RaJEL6xn7xjAx03cqrFbHgLL9ZmFLzdLPfECnaM0v4U4h/VumAXUTybYSaYbF7uJzz5g
-         z5vHRR9h56BhSLicxwS9Vlw2b9Ef4KCh0eZigeTKrnM0bpgpaDUz9vYkGzE7s2DZLYSf
-         YXpeQ7KxmdLo1LCmYUv7Cob7AIHLdw3oXACIk7KRvI/UZufb76ZCNJsU17hMvg0BMOYa
-         3VmQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/JxOU8oz6CI8E81ry6HLc6J8J60STj01TP0CSZQNZgdByVGweBzNyLwaKdZvillINCGG+bktY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxkA3nme2m/B5gSWxhHCW503TydeB0N2Hik0YRdBrEunYTmBtmF
-	RbnfbkqsAYFjBJKmRrKgI8wmdQKaJXamgVIAprfBe8j4MsCRtJueXKBgtYpK0WvfkIFW47it0cu
-	J5WiZqtcxNrVOKl4Z2AKzcKQIGQgq68uPr0iWZ406fngZa4sOSGXKLdY9VGY=
-X-Gm-Gg: AeBDies497sfDjw6BQeVej1HIrggpMXFKrLUkyw2w5MoZtbpVCfY6xsuW2vcGdunS+q
-	ekZOhMsSsz9vSAbhzKagFSS91KlbtxhFjjL+SusWnRT3M9NIde9hRqdhSTPo8vajb8ZGYUaFDrB
-	DChL1D07nCZsDm+36vBbtT6MiVeOItGCxOLclA7zPYiATVbEdLYIpLF4APPx1FLcHldhyi5NO9x
-	AmzApsEEtoAj97SEGnLRPkMe2VYRfHXoBtb6QAVE8cDP6iVuwxYmOzJpkym5ay/tp4GS8bMKGL2
-	USK4IyjPW0lsjLJP7kTkFx4IR2w5TXsLx/T6dtaWZZyKyA8vFJgHEn2EeENDxGc5IdzbgQk0Vzs
-	BYGdlIunG1hTmYh7p49kfnrY67Me+Tl0YEsa0mi9ISqgJ9ivct1+zh5eDMUcBTfiY3dANTU/jiW
-	nwZdtelTZ9EXEvtvthBJnDUhd/ifLBQwNEMBv5hQUST8UopA==
-X-Received: by 2002:ac8:5816:0:b0:50e:5f9b:eb55 with SMTP id d75a77b69052e-50e5f9bedc0mr175002991cf.15.1776878661209;
-        Wed, 22 Apr 2026 10:24:21 -0700 (PDT)
-X-Received: by 2002:ac8:5816:0:b0:50e:5f9b:eb55 with SMTP id d75a77b69052e-50e5f9bedc0mr175002511cf.15.1776878660705;
-        Wed, 22 Apr 2026 10:24:20 -0700 (PDT)
-Received: from umbar.lan (2001-14ba-a073-af00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a073:af00:264b:feff:fe8b:be8a])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a4185bc328sm4700740e87.25.2026.04.22.10.24.19
+        d=1e100.net; s=20251104; t=1776879536; x=1777484336;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NEFtXcpoTUuSx2EDCkhHpiXviuYOC89Clel/2QQUNdI=;
+        b=PEmYxctmteaZUl6PzARe7RgvgmNTV2mzcCdvGTCBGRu9yyyF97nakNwUN0HrAe+Qzh
+         DAx02nZ76A9k/Cis8aaFhRgrd41QYNziFRR/XQ/dneVfWgnmCriKx+WHlAak62gzz9FR
+         8L9fRArYlxqa2jMp6SyFmK1UdwDbimBzrCmuSfhmMvRYiCGbTONMnoqOGqU5q9Vcp6pY
+         ZyzsIGcFLez5KfST3iwH5gYV1gymU7XVxSgRdixQOzA1xj6uz/5IvOfNqOlyE/XOj5Ie
+         M+bMOJHBpey+ueKjk1aWMnTZY0R8gQG1BMdIPT4lz02P3WdeZegKDzI/sVFo+L60o99p
+         sR0A==
+X-Forwarded-Encrypted: i=1; AFNElJ/+L2wCUgS8lkDyUYNQyb+usseNlQv6qajY/QxV7evkM1b4UgUE1hnk4142ifxYafTaJgWcGGc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzYxYqN5LQzJejmryFQ5Tmehr+deI/pFSPziblZN0QF+yoKrapH
+	3Au1eq2LU1pBQzL/IpyxdaGmHzs22lgde9TA+WE8EB/Il0sj6SGXDTSx
+X-Gm-Gg: AeBDietL+a51G+KvjiNHOqpKe73E4B7AkEsAcTiyytFivSSWdP2hnkwfmp06kEiaRIj
+	3xvvepIeRmcrUJ4vrax1J9sTAzMOqivl5lLAk6mBK22i58nIgaVHN0NoBc5zQOFjt3JxnKIWmf2
+	YlquHBTzr4ITWpzEiDfZyOgVFsyof0s1SwEbGJyJbFh+W1KQ5EBj+tjqFqEztgAKphVhTm4Ce7o
+	/snOvEX8FMVKKED+o/4oc36caDdVvdRNIcF4AoZ4Q/UzICW11OUZN0ABFDxgSAyr7eE7EXC/eVp
+	FywQqLRRJF7D5C/7e6Ej8ndRtxID1CDVOThtZPPcOilinXfVjSH0MzLlpUOaOmN2tJub8nL9tOx
+	XoeX7MxQ2UrnillebHBccvJBf9xcLx2lGiWicIAoqwpCWJUJDvVmg1Fq1anTMXdMMV3g/jfaCmX
+	lSO+cX3mgfJrf4/WUb8rpesU6wBLG9u8ChqahsFVZEK8PN6mtarFJyng==
+X-Received: by 2002:a05:6a00:1826:b0:82f:37e3:ae6e with SMTP id d2e1a72fcca58-82f8c961f73mr25139528b3a.31.1776879535597;
+        Wed, 22 Apr 2026 10:38:55 -0700 (PDT)
+Received: from name2965-Precision-7820-Tower.. ([14.48.8.61])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f8ec0307esm18014517b3a.53.2026.04.22.10.38.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Apr 2026 10:24:19 -0700 (PDT)
-Date: Wed, 22 Apr 2026 20:24:17 +0300
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-To: Yongxing Mou <yongxing.mou@oss.qualcomm.com>
-Cc: Vinod Koul <vkoul@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Bjorn Andersson <andersson@kernel.org>, linux-arm-msm@vger.kernel.org,
-        linux-phy@lists.infradead.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Subject: Re: [PATCH v4 0/5] phy: qcom: edp: Add DP/eDP switch for phys
-Message-ID: <ifwckc6zx3ymlyjpqyt6iqglgz2c4thianaxxups7h5ts7ikyk@m67gguvtkvzb>
-References: <20260422-edp_phy-v4-0-c38bef2d027b@oss.qualcomm.com>
+        Wed, 22 Apr 2026 10:38:55 -0700 (PDT)
+From: Jeongjun Park <aha310510@gmail.com>
+To: Johannes Berg <johannes.berg@intel.com>,
+	Kalle Valo <kvalo@kernel.org>
+Cc: linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	syzbot+5de83f57cd8531f55596@syzkaller.appspotmail.com,
+	stable@vger.kernel.org,
+	Jeongjun Park <aha310510@gmail.com>
+Subject: [PATCH] wifi: rsi: fix kthread lifetime race between self-exit and external-stop
+Date: Thu, 23 Apr 2026 02:38:46 +0900
+Message-Id: <20260422173846.37640-1-aha310510@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260422-edp_phy-v4-0-c38bef2d027b@oss.qualcomm.com>
-X-Proofpoint-ORIG-GUID: LEd2DSx38uCZCw69kvCid7Ff-UkID-6b
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDIyMDE2NyBTYWx0ZWRfXy4Cv14raF1mJ
- /hbxWTmjsToV0ijzFaOvSGCRwGpbiHkry1mKw2f+/v7rlAxmXf4DrgsQP+71X2Qd2oWK1uUv+Aj
- qGRMP57iG19M86ZhGl2HAY1oOeU4A9E8ij7lGI4UpsrsdzT7dEs2rUFSXG+ACjeuC5WAz+HHkt6
- U9/9DRvNQgxvVmuL1AIUbwnAYdtfY9hvxfiIuTEYIq8rimyJR59FhFGSn13uwMb80DV1YwLiQPs
- g9/YxOxJ7iIVYQ4s1TrEz3M0Be4wGLFVpdTINVkBUQTnNp9/MptxOsa71u5N0Psmb7Qkd9dHLdI
- IVnVbzVhzML5mOdaYA1ci9qV+2TH+w+Gk1ofMtKse/vniNwVSLULSXE4pAMkG+6Vo4qtYeqpG1l
- yxREQfbdI9Vsn7Li3Kk9j8zPiQQL/+zM+ICGeOL5NnY2c0uQ/93xrvSn71geDAuyW2QBe8ZG3nr
- UaHSJpA5qxRRwl+PxJg==
-X-Authority-Analysis: v=2.4 cv=UqNT8ewB c=1 sm=1 tr=0 ts=69e90445 cx=c_pps
- a=JbAStetqSzwMeJznSMzCyw==:117 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=A5OVakUREuEA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=yx91gb_oNiZeI1HMLzn7:22 a=VwQbUJbxAAAA:8
- a=EUspDBNiAAAA:8 a=JfrnYn6hAAAA:8 a=eAMIGqEPAvrGGsoAY1IA:9 a=CjuIK1q_8ugA:10
- a=uxP6HrT_eTzRwkO_Te1X:22 a=1CNFftbPRP8L7MoqJWF3:22
-X-Proofpoint-GUID: LEd2DSx38uCZCw69kvCid7Ff-UkID-6b
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-22_02,2026-04-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 adultscore=0 malwarescore=0 spamscore=0 suspectscore=0
- priorityscore=1501 impostorscore=0 bulkscore=0 lowpriorityscore=0
- phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
- definitions=main-2604220167
-X-Spamd-Result: default: False [-1.66 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	FREEMAIL_CC(0.00)[vger.kernel.org,syzkaller.appspotmail.com,gmail.com];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240372-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,oss.qualcomm.com:dkim];
+	TAGGED_FROM(0.00)[bounces-240373-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dmitry.baryshkov@oss.qualcomm.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[aha310510@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 3EC7344944F
+	TAGGED_RCPT(0.00)[stable,5de83f57cd8531f55596];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,appspotmail.com:email]
+X-Rspamd-Queue-Id: A57DE4494C9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Apr 22, 2026 at 02:01:50PM +0800, Yongxing Mou wrote:
-> Currently the PHY selects the DP/eDP configuration tables in a fixed way,
-> choosing the table when enable. This driver has known issues:
-> 1. The selected table does not match the actual platform mode.
-> 2. It cannot support both modes at the same time.
-> 
-> As discussed here[1], this series:
-> 1. Cleans up duplicated and incorrect tables based on the HPG.
-> 2. Fixes the LDO programming error in eDP mode.
-> 3. Adds DP/eDP mode switching support.
-> 
-> Note: x1e80100/sa8775p/sc7280/SC8280XP have been tested, while
+RSI driver use both self-exit(kthread_complete_and_exit) and external-stop
+(kthread_stop) when killing a kthread. Generally, kthread_stop() is called
+first, and in this case, no particular issues occur.
 
-Tested with eDP or with mini-DP too?
+However, in rare instances where kthread_complete_and_exit() is called
+first and then kthread_stop() is called, a UAF occurs because the kthread
+object, which has already exited and been freed, is accessed again.
 
-> glymur/sc8180x have not been tested.
-> 
-> [1] https://lore.kernel.org/all/20260119-klm_dpphy-v2-1-52252190940b@oss.qualcomm.com/
-> 
-> Signed-off-by: Yongxing Mou <yongxing.mou@oss.qualcomm.com>
-> ---
-> Changes in v4:
-> - Splite changes.[Dmitry]
-> - Add sc8180x tables in a single chagne.[Dmitry][Konrad]
-> - Link to v3: https://lore.kernel.org/r/20260302-edp_phy-v3-0-ca8888d793b0@oss.qualcomm.com
-> 
-> Changes in v3:
-> - Rebase to next-20260224.[Dmitry]
-> - Only enable TX1 LDO when lane counts > 2.[Konrad]
-> - Link to v2: https://lore.kernel.org/all/20260213-edp_phy-v2-0-43c40976435e@oss.qualcomm.com/
-> 
-> Changes in v2:
-> - Combine the third patch with the first one.[Dmitry]
-> - Fix code formatting issues.[Konrad][Dmitry]
-> - Update the commit message description.[Dmitry][Konrad]
-> - Fix kodiak swing/pre_emp table values.[Konrad]
-> 
-> ---
-> Yongxing Mou (5):
->       phy: qcom: edp: Unify generic DP/eDP swing and pre-emphasis tables
->       phy: qcom: edp: Add eDP/DP mode switch support
->       phy: qcom: edp: Add SC7280/SC8180X swing/pre-emphasis tables
->       phy: qcom: edp: Fix AUX_CFG8 programming for DP mode
->       phy: qcom: edp: Add PHY-specific LDO config for eDP low vdiff
-> 
->  drivers/phy/qualcomm/phy-qcom-edp.c | 221 ++++++++++++++++++++++++++++--------
->  1 file changed, 173 insertions(+), 48 deletions(-)
-> ---
-> base-commit: bee6ea30c48788e18348309f891ed8afbf7702ac
-> change-id: 20260205-edp_phy-1eca3ed074c0
-> 
-> Best regards,
-> -- 
-> Yongxing Mou <yongxing.mou@oss.qualcomm.com>
-> 
-> 
-> -- 
-> linux-phy mailing list
-> linux-phy@lists.infradead.org
-> https://lists.infradead.org/mailman/listinfo/linux-phy
+Therefore, to prevent this with minimal modification, you must remove
+kthread_stop() and change the code to wait until the self-exit operation
+is completed.
 
--- 
-With best wishes
-Dmitry
+Cc: <stable@vger.kernel.org>
+Reported-by: syzbot+5de83f57cd8531f55596@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/69e5d03b.a00a0220.1bd0ca.0064.GAE@google.com/
+Fixes: 4c62764d0fc2 ("rsi: improve kernel thread handling to fix kernel panic")
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+---
+ drivers/net/wireless/rsi/rsi_common.h | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/wireless/rsi/rsi_common.h b/drivers/net/wireless/rsi/rsi_common.h
+index 591602beeec6..3cdf9ded876d 100644
+--- a/drivers/net/wireless/rsi/rsi_common.h
++++ b/drivers/net/wireless/rsi/rsi_common.h
+@@ -70,12 +70,11 @@ static inline int rsi_create_kthread(struct rsi_common *common,
+ 	return 0;
+ }
+ 
+-static inline int rsi_kill_thread(struct rsi_thread *handle)
++static inline void rsi_kill_thread(struct rsi_thread *handle)
+ {
+ 	atomic_inc(&handle->thread_done);
+ 	rsi_set_event(&handle->event);
+-
+-	return kthread_stop(handle->task);
++	wait_for_completion(&handle->completion);
+ }
+ 
+ void rsi_mac80211_detach(struct rsi_hw *hw);
+--
 
