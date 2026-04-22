@@ -1,91 +1,103 @@
-Return-Path: <stable+bounces-240264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240265-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AAmDHtM36GkbHAIAu9opvQ
-	(envelope-from <stable+bounces-240264-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 04:52:03 +0200
+	id 2KiiCVM46GkbHAIAu9opvQ
+	(envelope-from <stable+bounces-240265-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 04:54:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D04444419F4
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 04:52:02 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D07E441A3E
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 04:54:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C05D73077E20
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 02:39:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 29706301F5D8
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 02:46:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CFF139182A;
-	Wed, 22 Apr 2026 02:39:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B141B3939B6;
+	Wed, 22 Apr 2026 02:46:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZZpQO593"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HlCKI4rc"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A79539280D
-	for <stable@vger.kernel.org>; Wed, 22 Apr 2026 02:39:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8CE72505AA
+	for <stable@vger.kernel.org>; Wed, 22 Apr 2026 02:46:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776825578; cv=none; b=irjjOJXZnaHLsjl/j1sILAFiPXcvr1SF/w65E75qlA/l1UNAOul5QhvnzWVxrtuBxY9vw+mvKuZXRrArIuxhqjCARCNTv/U2xO4co1CmMHal3rnTCXiUKX8GWBxLKwgiuwE6ZSDhjGAKAXzqN2pv1cggYHshbHzjjrLPcdUkDDQ=
+	t=1776826003; cv=none; b=EBhy1tr4Pq4sUbkGBy4uWmzKhqzeix3Wjwx/aQGrGkWS/t4qwivyyNtow5bjy+jYQMjzBiEKjExOkRQMZTv1G8tomlhPeycmtmVXIkADP3RmNhrbSWOMGzGJyp1AKE7qYuS+1xC1Imnq35U27gLbaw0T5NTkEsBV5nMl+I97ip0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776825578; c=relaxed/simple;
-	bh=yGfvG2cBrEHidy4K2K9IqvK7y2YzIga4aXzMCqEx6Xw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ly0RyjcjooGg21OkGUKPR1js16Y3wqg4odMMR7Rs6rmj5fffWbnDPqx0PtOWTd0PEIX59ZTUUrumlIkFBXJm6zwyu4prnCcI2zZ8s8VgpzS3u6Rf5cH8QeMeRpLN97DC1lkPf2IVhHTrYdmHDOvKcfsUdJG7BmugaG/GtDvTCQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZZpQO593; arc=none smtp.client-ip=209.85.214.172
+	s=arc-20240116; t=1776826003; c=relaxed/simple;
+	bh=54mdUmpSfgqjXDGwvG814qjfvfFiFaCFWzugdgFYZ/s=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=d1pCgV9iXdpivUXf3KO1Ze5SEN9Zl+IDdlQ3kG8zlwkhSevGmFqPRylauBuIaZuC/2OioKIE+c+o6iuOpR3bC6VLXtOU/sRqT2eZNvQhKu47CPsevbGu450h7jyAPUKBuC6VpxXy8qCbhl2CxFOtZSEBaJWOl+VRK1nnR4e6nR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HlCKI4rc; arc=none smtp.client-ip=209.85.216.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2ab46931cf1so41608865ad.0
-        for <stable@vger.kernel.org>; Tue, 21 Apr 2026 19:39:29 -0700 (PDT)
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-35fb16e56efso3248812a91.2
+        for <stable@vger.kernel.org>; Tue, 21 Apr 2026 19:46:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776825565; x=1777430365; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=jIzrzYUxwj+eWN+y9Ww82vKCDAA7PiDEJITHsFxKlBM=;
-        b=ZZpQO593G6+ys2LgqHXSldPqAnbOFvW0Wgd2EFBtXvxi5Oj+5lovD6gBdp+eOe08l6
-         bm1W0KBMDntwkD6xtNTzBBYUXUrJcYX2uOQ6j6gLG1NDTHZr5PgteIrpbnpLC0tAfVC7
-         a0tq8X05i3Dw9Xk7r3LIiRPNbM2oHmUsglB1uCw/ZXKWKTcFZBf6UQSXNUd67qDA2NX3
-         DLAjSPWEYsNvpHR8mJdIlem7rWotgD7OdyJim6oJP6QVB4nQE/KyMvbCFPyv/dG3rwo6
-         hKpa3FbYiviMqUgNoqwowaPZl1qYxAL2yKbsRXyRi3dQOD0QSOkoW5chCPh8tVhCIyGv
-         iKuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776825565; x=1777430365;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1776825992; x=1777430792; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=jIzrzYUxwj+eWN+y9Ww82vKCDAA7PiDEJITHsFxKlBM=;
-        b=Ij4l5MwIO9KDlpd5BQca7mLIW7W2HpBdd1DR5VmD+rAHEEIh4vi7zcLzjIhILVtnUd
-         +UEJpVCD3OEOjdXCFdsA/MN0/ENgYoMGc4KnjC96Ibx4T1vPjOi6cJuWvXiuNdlQY6/W
-         qipOKQrdt9L7+s8/Ti1/C/yfZ1jP1lQ3JeIQRqP687C54gNL5MqLQvrdCXKBuEyfyW/c
-         3rDJFijlmD7TDoMjO8bnfwsWxtIOVH2Qp6uqO1j+4vF+Gc6sGUYnyzZF4yM9xu2UWFO/
-         7+/okE/twlQGzbfxQGeA6TN4SqNZKy08PSAgIA+hsVyTygPZzzgfuX8rQUx2sOAJ5q1x
-         eGAA==
-X-Forwarded-Encrypted: i=1; AFNElJ8Xfb01MUXw09pzmxU6qm3Myzg3f1TnX7rBUbwHYArmT5LGWC39mO6/C8+SyHmQE0lk4Lt69Rw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyqfJ7Vc8aavYjIqKBOWj2uIT42tDVMghPsl4V6uCiQ60UGBsDM
-	KwPkDjwGAz1q+lVQdoVHvbfoQ2gQpZVuJQCv6ZQYF0VFULDLZ4FHCZe+
-X-Gm-Gg: AeBDieutVAh4ez6AB8p6wJywTRzJBRyMBdwX0FRl6J0pNErzKQ292sfVvAP2WEWoX/z
-	aSbKHChf2129LZdrTEqhbQRXs9LTZiwh+LUwKd/DwdwMb8tI7umXhH3TNpMvK3zXNg+xeFYPz2g
-	K7l5mR61fAMSsAtmPfQBT2nx2pYdTfbd0hv7WZrEWkj/UER2g+bslnR5G1Q1aBKJinAXId6XU5z
-	EbNeJ6ZoMB4ftFZ2iK4axG0Pc0j3S/ld+rpTBVtOrAWPXHM1XfUGF11ap+BWRs2w1G5aW2sKARK
-	yPC/wDx5BV4Vs3VmiZs8LKsu5lhPZAZ7QqLFAsBJTHMb7BjDmMZ/lsh+gScrE/RDaUOSa7WJYzA
-	qWJ8Y3ZiYhnJtlluqjVA/vfKpOBzjtmcZHCNLzAZ2XSxdlHlDB3I3FN9Wd2dedr2Skm9537SCC8
-	0D/bGqUdscMFjcRjNbYxd4TF2Y8R0NUDk6W7+P+1wV3CmyYj+BekT1xZ1kf5OLyZMWPItffe3eG
-	kz3q5iIhA7DaPTA
-X-Received: by 2002:a17:902:db11:b0:2b2:5070:8b with SMTP id d9443c01a7336-2b5f9da50b3mr187447215ad.1.1776825565303;
-        Tue, 21 Apr 2026 19:39:25 -0700 (PDT)
-Received: from localhost.localdomain ([156.59.4.114])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b5fab28e35sm147548145ad.64.2026.04.21.19.39.22
+        bh=Fcd+LZFK9AMyl2emRFE9iJQXg1L+/s8eBXtgz15uq2o=;
+        b=HlCKI4rcIT6GzPAm1eX0Dxdabz54vsziUFvzkUy73YnLUgbD8Ia/n8B8aqzSiKj8s5
+         aK9uYActb3pA6MwqlsO6lFSYkCpDap7nfZDhe0YKmHJmfpdt5+z5m7Kq0T+3Y4JafZHG
+         gx2OgQ4yPXDOXSDFbn1IrabDS2Aa1OILkds2ImPDKvV3f3Q2glXQVLm6Tb/7DJbJU/S1
+         AMojfLiJlwxw8y8w9ZEsDSlTJ6Wap6Jt4s1bPs/GUPGC5EB7D8peYKvzxJLTccbag96n
+         Ne5tGr5DaymAMfBM/iVjMhVqk3H0hHj7XBM4MIhPkk1PJTgOF5dtrHjkGG8XJmxg3zsJ
+         AJPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776825992; x=1777430792;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Fcd+LZFK9AMyl2emRFE9iJQXg1L+/s8eBXtgz15uq2o=;
+        b=DOAjdjCjQdnXvkCKSCznIXe/AnBrMxsXJDF8eP6dDGSzT9nu6SdGwoDsknUlhQel6V
+         HNFy5w1nRBFs8LFyj2NTXNnSKkI3i1xLYMU6wp2WwK44V/Bf7U4uX/R7I6dV0kETHadO
+         zv+2rgKcwxw6xQi2MSclpwK3fthvUBLzjwp5uMuPGyvRgrvSGiVFaEsP129n2BBBGg3f
+         ftQPG7BXC4vDYd8HQBEo4FQiKcrmq0TOJBRyeCKwad0ikCafvzgf0BPoe5aHMshlJh4n
+         06TNjjxJRNAFm4dw/AqvXFN18z5HuWG9NGk6njhICPugicn2HPIVhiRgFAeqtWH0VUMR
+         EP+A==
+X-Forwarded-Encrypted: i=1; AFNElJ8f9MenxAJB9Ak9OC3TTCOxwwyejbQ++xw/JaUR+TD7L8Zabipu5YEC+lGVbJwjxkMtN56QAok=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxuWXSPnc4GPw2Koefp/s6Q6nIr1ge7q1H1Tm7BTjykyBy5mN2B
+	S3HNjCVIxI/0I746BFfrgF6nubnjOLMHJFi/1leOPRcTi1AglpDZ5w3x
+X-Gm-Gg: AeBDiesdHw7LK+pV+KS2dRFd/b8DG/NZTdPdmQ7XoqunLojL6g0LTphIUhKltLwg5pi
+	4MF2EJyH1qkEoGJtRgBgj752P9pb61Kx7L1wQAkpaje7FKH0bnRVW1nuLTNf9Y074yy+CYLi02f
+	A+4BRGF9N80vXegg2fojQZH47kMEwHVKvufy37hq7thUKaug4F4Er0zeg9HduJ/krDHMcLDKDev
+	OKx+TnKqG5q7j5blM+wqaEf4X7E7JafeQ0WOhepgbfvKG9Sloy2bPBkIPEHTdjlUXaZAKd5ZNDN
+	OMGxL8cWWb+mUZwjnVXI/m1eReqdpfu5t8+o/vZvbekp0KMSjhNp8Y0/BLHzKoiRpgvy0c2F/GF
+	ErJmM4GXlY8gCkqK5dfJ55Q6JPdaHmtYNwMw/0zIAIaGeEety/51taO+yUZeSa+7mWzfeMKT7M9
+	x4nVnpEzemHI22U+fuXixYcYw17NRN+iqZ2Rv4AgMhdw2CfkhMsffOn8n/twI9Ug==
+X-Received: by 2002:a05:6a20:9187:b0:3a2:dd8a:5084 with SMTP id adf61e73a8af0-3a2dd8a5be1mr8799899637.37.1776825991972;
+        Tue, 21 Apr 2026 19:46:31 -0700 (PDT)
+Received: from DESKTOP-MUHC17F.tail07b66e.ts.net ([188.253.121.151])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c7976f92183sm10656632a12.3.2026.04.21.19.46.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Apr 2026 19:39:24 -0700 (PDT)
-From: Bingquan Chen <patzilla007@gmail.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-usb@vger.kernel.org,
+        Tue, 21 Apr 2026 19:46:31 -0700 (PDT)
+From: Zhenzhong Wu <jt26wzz@gmail.com>
+To: netdev@vger.kernel.org
+Cc: edumazet@google.com,
+	ncardwell@google.com,
+	kuniyu@google.com,
+	davem@davemloft.net,
+	dsahern@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	shuah@kernel.org,
+	tamird@kernel.org,
 	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	security@kernel.org,
-	Bingquan Chen <patzilla007@gmail.com>
-Subject: [PATCH v2] usb: gadget: configfs: fix OOB read in ext_prop_data_show()
-Date: Wed, 22 Apr 2026 10:39:19 +0800
-Message-ID: <20260422023919.37588-1-patzilla007@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	linux-kselftest@vger.kernel.org,
+	Zhenzhong Wu <jt26wzz@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net v4 1/2] tcp: call sk_data_ready() after listener migration
+Date: Wed, 22 Apr 2026 10:45:53 +0800
+Message-ID: <20260422024554.130346-2-jt26wzz@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260422024554.130346-1-jt26wzz@gmail.com>
+References: <20260422024554.130346-1-jt26wzz@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -96,91 +108,94 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,gmail.com];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240264-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	URIBL_MULTI_FAIL(0.00)[sea.lore.kernel.org:server fail];
+	FREEMAIL_CC(0.00)[google.com,davemloft.net,kernel.org,redhat.com,vger.kernel.org,gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	TAGGED_FROM(0.00)[bounces-240265-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[patzilla007@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[jt26wzz@gmail.com,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[gmail.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: D04444419F4
+X-Rspamd-Queue-Id: 6D07E441A3E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-In ext_prop_data_store(), for unicode property types, the data buffer
-is allocated via kmemdup() with size 'len', but data_len is set to
-len*2+2 to account for the UTF-16 encoding and a 2-byte null
-terminator, as required by the Microsoft OS Extended Properties
-Descriptor specification (dwPropertyDataLength must include the
-terminator).
+When inet_csk_listen_stop() migrates an established child socket from
+a closing listener to another socket in the same SO_REUSEPORT group,
+the target listener gets a new accept-queue entry via
+inet_csk_reqsk_queue_add(), but that path never notifies the target
+listener's waiters. A nonblocking accept() still works because it
+checks the queue directly, but poll()/epoll_wait() waiters and
+blocking accept() callers can also remain asleep indefinitely.
 
-However, the null terminator is never actually stored in the data
-buffer. When ext_prop_data_show() reads the data back, it computes the
-read length as data_len >> 1 = len+1, then does memcpy(page, data,
-len+1), reading 1 byte past the allocated buffer. This is a
-slab-out-of-bounds read that leaks 1 byte of adjacent heap data to
-userspace via configfs.
+Call READ_ONCE(nsk->sk_data_ready)(nsk) after a successful migration
+in inet_csk_listen_stop().
 
-KASAN report (5.10.252):
+However, after inet_csk_reqsk_queue_add() succeeds, the ref acquired
+in reuseport_migrate_sock() is effectively transferred to
+nreq->rsk_listener. Another CPU can then dequeue nreq via accept()
+or listener shutdown, hit reqsk_put(), and drop that listener ref.
+Since listeners are SOCK_RCU_FREE, wrap the post-queue_add()
+dereferences of nsk in rcu_read_lock()/rcu_read_unlock(), which also
+covers the existing sock_net(nsk) access in that path.
 
-  BUG: KASAN: slab-out-of-bounds in ext_prop_data_show+0x4a/0x60
-  Read of size 9 at addr ffff888005546008 by task poc/62
+The reqsk_timer_handler() path does not need the same changes for two
+reasons: half-open requests become readable only after the final ACK,
+where tcp_child_process() already wakes the listener; and once nreq is
+visible via inet_ehash_insert(), the success path no longer touches
+nsk directly.
 
-  Allocated by task 62:
-   kmemdup+0x17/0x40
-   ext_prop_data_store+0x52/0x130
-   configfs_write_file+0x168/0x200
-
-  The buggy address belongs to the object at ffff888005546008
-   which belongs to the cache kmalloc-8 of size 8
-
-Fix by allocating len+2 bytes and explicitly zero-terminating with a
-full 2-byte UTF-16 null terminator. This ensures the buffer fully
-matches the dwPropertyDataLength semantics (len*2+2) while eliminating
-the OOB read.
-
-Fixes: 7419485f197c ("usb: gadget: configfs: OS Extended Properties descriptors support")
+Fixes: 54b92e841937 ("tcp: Migrate TCP_ESTABLISHED/TCP_SYN_RECV sockets in accept queues.")
 Cc: stable@vger.kernel.org
-Signed-off-by: Bingquan Chen <patzilla007@gmail.com>
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Signed-off-by: Zhenzhong Wu <jt26wzz@gmail.com>
 ---
- drivers/usb/gadget/configfs.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ net/ipv4/inet_connection_sock.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/usb/gadget/configfs.c b/drivers/usb/gadget/configfs.c
-index 183a25f65ac8..b2c3d4e5f6a7 100644
---- a/drivers/usb/gadget/configfs.c
-+++ b/drivers/usb/gadget/configfs.c
-@@ -1352,8 +1352,12 @@ static ssize_t ext_prop_data_store(struct config_item *item,
-
- 	if (page[len - 1] == '\n' || page[len - 1] == '\0')
- 		--len;
--	new_data = kmemdup(page, len, GFP_KERNEL);
-+	new_data = kmalloc(len + 2, GFP_KERNEL);
- 	if (!new_data)
- 		return -ENOMEM;
-+	memcpy(new_data, page, len);
-+	new_data[len]     = '\0';
-+	new_data[len + 1] = '\0';
-
- 	if (desc->opts_mutex)
---
+diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
+index 4ac3ae1bc..928654c34 100644
+--- a/net/ipv4/inet_connection_sock.c
++++ b/net/ipv4/inet_connection_sock.c
+@@ -1479,16 +1479,19 @@ void inet_csk_listen_stop(struct sock *sk)
+ 			if (nreq) {
+ 				refcount_set(&nreq->rsk_refcnt, 1);
+ 
++				rcu_read_lock();
+ 				if (inet_csk_reqsk_queue_add(nsk, nreq, child)) {
+ 					__NET_INC_STATS(sock_net(nsk),
+ 							LINUX_MIB_TCPMIGRATEREQSUCCESS);
+ 					reqsk_migrate_reset(req);
++					READ_ONCE(nsk->sk_data_ready)(nsk);
+ 				} else {
+ 					__NET_INC_STATS(sock_net(nsk),
+ 							LINUX_MIB_TCPMIGRATEREQFAILURE);
+ 					reqsk_migrate_reset(nreq);
+ 					__reqsk_free(nreq);
+ 				}
++				rcu_read_unlock();
+ 
+ 				/* inet_csk_reqsk_queue_add() has already
+ 				 * called inet_child_forget() on failure case.
+-- 
 2.43.0
 
