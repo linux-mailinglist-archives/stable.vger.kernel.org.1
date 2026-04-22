@@ -1,116 +1,144 @@
-Return-Path: <stable+bounces-240390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240391-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sF7BOa036WmBWAIAu9opvQ
-	(envelope-from <stable+bounces-240390-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 23:03:41 +0200
+	id cFv6DB1E6WmqWwIAu9opvQ
+	(envelope-from <stable+bounces-240391-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 23:56:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BF3C44AC53
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 23:03:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B13B644B2D5
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 23:56:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D527E300E2A5
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 21:03:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 16575305E1D6
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 21:56:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A04A834BA56;
-	Wed, 22 Apr 2026 21:03:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15D303A2549;
+	Wed, 22 Apr 2026 21:56:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="RqdPfp8j"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AWFEv+JD"
 X-Original-To: stable@vger.kernel.org
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0870235898
-	for <stable@vger.kernel.org>; Wed, 22 Apr 2026 21:03:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56C282882B7;
+	Wed, 22 Apr 2026 21:56:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776891817; cv=none; b=BUk2dZejjLPWNz7IlqITs9Cj/CdhLfM04Z1kbPU1vVoo16AXzSYeOyCmGb/c/n836IDJYzqX0BAzDmYuBuIRCxBcUknhhHiutEt7D2LqzmNk1xSyKJZkuE6c1v6nBMxvXJPeEdTJ1/qnswqC95sFiPLCMfRy7T4/8TjEHdGWGFk=
+	t=1776894997; cv=none; b=QzjOkhlnPAXLa0hqJ7oaoLz2uMp0imCPS9F5Oz7GqlM85rhSDp8YFp5r7kbCP+fS+Ys6RadzRf96FfmEWTVSbCHdO1TEyz/EK5udeaCgPlGyA4FnhKyUXxzdrQa8RILra1gHAhQyH3DArTzhw+0Zh58a5jUea1PDm+0TNB7JIvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776891817; c=relaxed/simple;
-	bh=XWLOYO1gKbrrrBDEFkh8O1EcFuPow71n79j2gD5SDlA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Av9GEBxz1c1Y8FgZO4hntIFMYZvfRLqRcgDy6wAFWfCxLM9cmgVi2Ej/C7kuomJxE/JNUCwFb7/Af1rlfG6EndEgjsH+vOSy/WXnoKnKJCzBghUwghRkmp3k78D4l+FtIW+0hfVazbIrPAoEwD0Ur0dMlZ8XLnjgQUX5TlNJffA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=RqdPfp8j; arc=none smtp.client-ip=91.218.175.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Wed, 22 Apr 2026 14:03:14 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1776891803;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RYkjy4WCea2cSCblSBZyO98tvVtY1skLCklo2d0JXqM=;
-	b=RqdPfp8jkNesnz71XLeUWehb1/ED5gNVGRrMoDkXFwa3EONIQXLPt/Cp98x3clQzJW7h66
-	rd/60f+flZHorRlAq1WcLYfv1K800LusVLxNF4a8TJhuVSjGENYmgVl3ph8K5P5HXnO72A
-	dXe87x8k7amX3pyNhDZGdoqmbe6k+6w=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Martin KaFai Lau <martin.lau@linux.dev>
-To: Werner Kasselman <werner@verivus.ai>
-Cc: "bpf@vger.kernel.org" <bpf@vger.kernel.org>, 
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, "stable@vger.kernel.org" <stable@vger.kernel.org>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
-	John Fastabend <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Lawrence Brakmo <brakmo@fb.com>, open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH bpf v5 1/2] bpf: guard sock_ops rtt_min against
- non-locked tcp_sock
-Message-ID: <2026422205858.dBi3.martin.lau@linux.dev>
-References: <20260417023119.3830723-1-werner@verivus.com>
- <20260420230030.2802408-1-werner@verivus.com>
- <20260420230030.2802408-2-werner@verivus.com>
+	s=arc-20240116; t=1776894997; c=relaxed/simple;
+	bh=HNAMYz5AtPHIhDSjv6tsP5jrePYIGO3SagzyMioYCKQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=JrGRACc5lepP8CEEbWZo5p/S8W/nRPSPQOywdoKt3YOTSuFD7b+p1PnGfY5A3BjO9umVx0PVxsvKfCB6znMGgZkmDjbsFWm7OJaIPL3FpMb5ign/UUM1QaY2OTuEO/ZL0B72qtB9rkfYR4dj2/5HZkfqbAyy3j6AYgN+XhKhkzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AWFEv+JD; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1776894995; x=1808430995;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version;
+  bh=HNAMYz5AtPHIhDSjv6tsP5jrePYIGO3SagzyMioYCKQ=;
+  b=AWFEv+JDqJ0svL75sJel8w+sNnYL12XFU+z4queZoqQFkhdwfbtZLtAM
+   iI357QJMfEk+rUdotgWmJcJrEtaqOgMJs+pJ2dl7zOcIc7RWEMeQS1BWY
+   evuf0GQnBe9Pn0Tjg21YNp3FHcMhsuSZqsPeyBASHZeHLCa9EYZrcgvu6
+   se3uJdghiXqDjg7DSH8oqc9DFJoZ75/QI0IjAbMzi7F5qURqejo5vPSK5
+   y1kGk3CHm9cGvAD+YXfr0y87qOUff46cgHsxPBU+8d2RoN2Tn9uV2QKxs
+   Do+jMfPzrJdiKUnlAKwSu+DAIQu2uq3MC7dtIOz6IbZSMf0x6+0PDG5x8
+   A==;
+X-CSE-ConnectionGUID: Tl4r5bmFTUu5++SswiE8dw==
+X-CSE-MsgGUID: T2Ny5bAGSCK5bF1gM6U68Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11764"; a="80447626"
+X-IronPort-AV: E=Sophos;i="6.23,193,1770624000"; 
+   d="scan'208";a="80447626"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2026 14:56:18 -0700
+X-CSE-ConnectionGUID: 2VsgkjtXQrmUNPrxPfNQZA==
+X-CSE-MsgGUID: 8TLOyhpARhW5FVxn8JtrMA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,193,1770624000"; 
+   d="scan'208";a="234257420"
+Received: from vcostago-desk1.jf.intel.com (HELO vcostago-desk1) ([10.88.27.144])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2026 14:56:18 -0700
+From: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+To: Guangshuo Li <lgs201920130244@gmail.com>, Dave Jiang
+ <dave.jiang@intel.com>, Vinod Koul <vkoul@kernel.org>, Fenghua Yu
+ <fenghuay@nvidia.com>, Shuai Xue <xueshuai@linux.alibaba.com>,
+ dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: Guangshuo Li <lgs201920130244@gmail.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v2] dmaengine: idxd: fix double free in idxd_alloc()
+ error path
+In-Reply-To: <20260413113113.2725940-1-lgs201920130244@gmail.com>
+References: <20260413113113.2725940-1-lgs201920130244@gmail.com>
+Date: Wed, 22 Apr 2026 14:56:18 -0700
+Message-ID: <87340m3bi5.fsf@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260420230030.2802408-2-werner@verivus.com>
-X-Migadu-Flow: FLOW_OUT
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+Content-Type: text/plain
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,iogearbox.net,gmail.com,linux.dev,fomichev.me,davemloft.net,google.com,redhat.com,fb.com];
-	TAGGED_FROM(0.00)[bounces-240390-lists,stable=lfdr.de];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com,intel.com,kernel.org,nvidia.com,linux.alibaba.com,vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240391-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[intel.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[21];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[martin.lau@linux.dev,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linux.dev:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[vinicius.gomes@intel.com,stable@vger.kernel.org];
 	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 7BF3C44AC53
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: B13B644B2D5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, Apr 20, 2026 at 11:00:35PM +0000, Werner Kasselman wrote:
-> sock_ops_convert_ctx_access() reads rtt_min without the is_locked_tcp_sock guard used for every other tcp_sock field. On request_sock-backed sock_ops callbacks, sk points at a tcp_request_sock and the converted load reads past the end of the allocation.
-> 
-> Extract the guarded tcp_sock field load sequence into SOCK_OPS_LOAD_TCP_SOCK_FIELD() and use it for the rtt_min access after computing the sub-field offset with offsetof(struct minmax_sample, v). Reusing the shared helper keeps rtt_min aligned with the other guarded tcp_sock field loads and preserves the dst_reg == src_reg failure path that zeros the destination register when the guard fails.
+Guangshuo Li <lgs201920130244@gmail.com> writes:
 
-I think some formatting instruction was not given to the AI this time and
-no human bothered to look at the formatting of the commit message
-before posting?
+> When dev_set_name() fails after device_initialize(), idxd_alloc()
+> calls put_device(conf_dev).
+>
+> For these devices, conf_dev->type is set from idxd->data->dev_type,
+> which resolves to dsa_device_type or iax_device_type, and both use
+> idxd_conf_device_release() as their release callback. That release
+> callback frees idxd, idxd->opcap_bmap, and releases idxd->id, but
+> the current error path then frees those resources again directly,
+> causing a double free.
+>
+> The issue was identified by a static analysis tool I developed and
+> confirmed by manual review.
+>
+> Keep the cleanup in idxd_conf_device_release() after put_device() and
+> avoid freeing idxd-managed resources again in idxd_alloc().
+>
+> Fixes: 46a5cca76c76 ("dmaengine: idxd: fix memory leak in error handling path of idxd_alloc")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+> ---
+
+On the review of 'v1', you agreed to the comments I made, but they are
+neither reflected in the code nor in the series organization.
+
+
+-- 
+Vinicius
 
