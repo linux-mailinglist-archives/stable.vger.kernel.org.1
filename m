@@ -1,140 +1,169 @@
-Return-Path: <stable+bounces-240387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240329-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yJMKDaMo6WljVAIAu9opvQ
-	(envelope-from <stable+bounces-240387-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 21:59:31 +0200
+	id MO2LJO3O6GklQQIAu9opvQ
+	(envelope-from <stable+bounces-240329-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 15:36:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B918844A5A7
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 21:59:30 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB9C8446D03
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 15:36:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A88F53074F7F
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 19:58:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E3B0630C16BA
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 13:28:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88E133F2110;
-	Wed, 22 Apr 2026 19:58:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 351883E8C7D;
+	Wed, 22 Apr 2026 13:28:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m8DJE3+f"
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="K11UIZwC"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 477443F166F;
-	Wed, 22 Apr 2026 19:58:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05AC63CD8A2;
+	Wed, 22 Apr 2026 13:28:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.37.111.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776887883; cv=none; b=jvmKYwyoLC2CPhoVesLeuHj1gKIS2qFpPZ/EmRvvml/5tUW4FYzECU+dxUtQ10rL4MCUBdLdEReUPdOlx9cP6ISmQcmkUpPsz2uhPLj43bytPVU87vOl28vyZn5k6EyCeyG9lcQOkzWay8fjs7gyyf4Int+aEtd+WvhIxjIUw2Y=
+	t=1776864488; cv=none; b=ZA5/YNvGfqkCL0gKJXkoKigATPD/1xOAbyuE+8NdYpfL2v6TvZI8caE7bk5T4gUUztz4zMQY0kzLdJ1suhPqRU7iOyLrczuDyCu+HxunOmh56g9ssGW00wPVInAy5rsqWiNsBXpESmDJS5/CjyREPEp3fmP/abiAkwFPESeeSgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776887883; c=relaxed/simple;
-	bh=qE9Tlx8MC+zwl5VejlE9OLQJ7rKqT9HwZRcKuaZm1dM=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=ZMoVfCxLNYJzAgyyAqf1147obK4x02oyG8GwRYXyMI+m7kdChbH0vKJYGxfKRalfSCCv3mp/M00+iGwv2IqupUbkZC5GRxj+vLYNHaZEYtA2V9UnjoESoXL35F8mE+8NudCGMOIAx3u3tjA94fdLA+fmfq5iLnwC81+lJWFkeck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m8DJE3+f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DB5EC19425;
-	Wed, 22 Apr 2026 19:58:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776887882;
-	bh=qE9Tlx8MC+zwl5VejlE9OLQJ7rKqT9HwZRcKuaZm1dM=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=m8DJE3+fBuWrq6Emm2Dlpmf6j/5nmfXaTxmH3gP7JoYVj1mV5/Z33bQIdSiuKEgiH
-	 +Ydq0B7kRGIGhAfgbikBnh9oCauZD0YFV3j0nP2X9yfSyFkFSOSsIbKqp4gDjoKpod
-	 JSSjaYK29SQ+kuvT0yJmxT/4rEyYbYvgCXw1YGbkXO0jO1UlJHNrl88L9T/w7+Iese
-	 1nC3N30VesUGuKDZTfjSbwLfKfamQdcYHnMtwRFPYxRkFRrZT6iLi5r+czCbCjQYls
-	 U8ALxh/jREhf0L9zeZNri73p8/+Z83VYigukq+eOkws/f9X40afCvkA/htbD/MJoBC
-	 EV0rjocwMzfrw==
-From: Mark Brown <broonie@kernel.org>
-To: Johan Hovold <johan@kernel.org>
-Cc: Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, linux-spi@vger.kernel.org, 
- imx@lists.linux.dev, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-In-Reply-To: <20260421125632.1537235-1-johan@kernel.org>
-References: <20260421125632.1537235-1-johan@kernel.org>
-Subject: Re: [PATCH] spi: imx: fix runtime pm leak on probe deferral
-Message-Id: <177686186865.36226.7596459545113208031.b4-ty@b4>
-Date: Wed, 22 Apr 2026 13:44:28 +0100
+	s=arc-20240116; t=1776864488; c=relaxed/simple;
+	bh=zsYBKSHdM+yMRAfQ7NXyOx0ruN8ZujpUQUpgEeVTULA=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ASCJlwn1JJJQ6+R4vjl+xc88sJ7M+Ozw0vvzkYhmnC8cbO3nbJ1fHBNZCNoxEP9PG0lmEsbD0ZMSiDeQZC5tw8seJPjpOAj6/D1mShff3iLEf0uOtlDOmolUSvEfwp+rrzIki2n8okLjJjPFruVfuolwL/7bIOmyJ4nEv5A7Q3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=K11UIZwC; arc=none smtp.client-ip=198.37.111.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1776864484;
+	bh=zsYBKSHdM+yMRAfQ7NXyOx0ruN8ZujpUQUpgEeVTULA=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=K11UIZwCYeEI8/cH0FlbO6A+tSghQqDJWwonZwVMoska2kEDCnbYSc/o1To+22Hp6
+	 UOZFMn8T7AuxRa43nsfpDG8J2+nP2VOsetiqqO5JkwzrHYcsWtVu+mkLr36MlueHsl
+	 /BUTOVoSMcq6TVqFgU+PHc8vY3oY4I6DEWajyyYM=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4300:d341::a774])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 6D2F51C02F5;
+	Wed, 22 Apr 2026 09:28:04 -0400 (EDT)
+Message-ID: <a265733e9bd63abe7be8f5e77e6a288247c4ad4c.camel@HansenPartnership.com>
+Subject: Re: [PATCH] scsi: lpfc: fix heap overflow in
+ lpfc_bsg_diag_loopback_run()
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Junrui Luo <moonafterrain@outlook.com>, Justin Tee
+ <justin.tee@broadcom.com>,  Paul Ely <paul.ely@broadcom.com>, "Martin K.
+ Petersen" <martin.petersen@oracle.com>, James Smart
+ <james.smart@emulex.com>, James Bottomley <James.Bottomley@suse.de>
+Cc: linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org, Yuhao Jiang
+	 <danisjiang@gmail.com>, stable@vger.kernel.org
+Date: Wed, 22 Apr 2026 09:28:03 -0400
+In-Reply-To: <SYBPR01MB7881DCD912ADB83C9D290F7AAF2D2@SYBPR01MB7881.ausprd01.prod.outlook.com>
+References: 
+	<SYBPR01MB7881DCD912ADB83C9D290F7AAF2D2@SYBPR01MB7881.ausprd01.prod.outlook.com>
+Autocrypt: addr=James.Bottomley@HansenPartnership.com;
+ prefer-encrypt=mutual;
+ keydata=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
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1108; i=broonie@kernel.org;
- h=from:subject:message-id; bh=qE9Tlx8MC+zwl5VejlE9OLQJ7rKqT9HwZRcKuaZm1dM=;
- b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBp6ShILd7oHSFT3up9wbwkQCWSymhOcdl0Ol8UH
- BDyHyIcXlOJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCaekoSAAKCRAk1otyXVSH
- 0IFHB/9NeKC4DcoTAo4BAq0Gfpf7lKd16HBOHmZGkgM6+7eMKOvjRfvW+tnaOMhkURibHKPUBMY
- k0HynZwvDK89zty36Ryp+QuzZZ08SchSoH+sQzW3i7CUW2hmmAfACyPDKvkdkOW+7jKT7mDh1mF
- +yugP90/USvTmderY9qMrahUbQrZmNWRl9mRojj3yMmnKnG190AkvgwcM7lBEDmVD3z7UbauAib
- SG2GibMyAX1PcnL0yJ4BaS0lBeCRcoK+wXZIq0Z9uVZs3XFL9tIXBTbh/nuOBW/VE1Fz7MzyWqT
- GWUAGwSisgbZe2UXr8wL40hfzXtWkkcUZSlSmP5DcE77Yi8w
-X-Developer-Key: i=broonie@kernel.org; a=openpgp;
- fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[hansenpartnership.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[hansenpartnership.com:s=20151216];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-240387-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[nxp.com,pengutronix.de,gmail.com,vger.kernel.org,lists.linux.dev];
+	TAGGED_FROM(0.00)[bounces-240329-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[outlook.com,broadcom.com,oracle.com,emulex.com,suse.de];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[hansenpartnership.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[James.Bottomley@HansenPartnership.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B918844A5A7
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[HansenPartnership.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,outlook.com:email,hansenpartnership.com:dkim]
+X-Rspamd-Queue-Id: BB9C8446D03
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, 21 Apr 2026 14:56:32 +0200, Johan Hovold wrote:
-> spi: imx: fix runtime pm leak on probe deferral
+On Wed, 2026-04-22 at 17:18 +0800, Junrui Luo wrote:
+> lpfc_bsg_diag_loopback_run() allocates dataout as a staging buffer
+> before copying loopback test data into DMA segments. When the
+> user-supplied payload size exceeds 64KB, the allocation is capped at
+> 64KB while sg_copy_to_buffer() and the subsequent memcpy loop operate
+> on the full payload (up to 80 * 4096 bytes).
 
-Applied to
+Are you sure?  The comment above the code you're changing says:
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-7.1
+/*
+ * Allocate memory for ioctl data. If buffer is bigger than 64k,
+ * then we allocate 64k and re-use that buffer over and over to
+ * xfer the whole block. This is because Linux kernel has a
+ * problem allocating more than 120k of kernel space memory. Saw
+ * problem with GET_FCPTARGETMAPPING...
+ */
 
-Thanks!
+Which implies the intention is to allocate only 64kb if the payload
+exceeds that and break the work into 64kb or less sized chunks.  So if
+there is a problem here, it sounds like the loop over 64k chunks would
+need fixing rather than the allocation.
 
-[1/1] spi: imx: fix runtime pm leak on probe deferral
-      https://git.kernel.org/broonie/spi/c/a1d50a37d3b1
+>=20
+> This leads to a heap buffer overflow with user-controlled data.
+>=20
+> Fix by allocating full_size in the large-size path, consistent with
+> the small-size path and with diag_cmd_data_alloc().
+>=20
+> Fixes: 3b5dd52aaffd ("[SCSI] lpfc 8.3.8: (BSG4) Add new vendor
+> specific BSG Commands")
+> Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+> ---
+> =C2=A0drivers/scsi/lpfc/lpfc_bsg.c | 2 +-
+> =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/scsi/lpfc/lpfc_bsg.c
+> b/drivers/scsi/lpfc/lpfc_bsg.c
+> index 7406dfa60016..83fef256f324 100644
+> --- a/drivers/scsi/lpfc/lpfc_bsg.c
+> +++ b/drivers/scsi/lpfc/lpfc_bsg.c
+> @@ -3111,7 +3111,7 @@ lpfc_bsg_diag_loopback_run(struct bsg_job *job)
+> =C2=A0		if (size <=3D (64 * 1024))
+> =C2=A0			total_mem =3D full_size;
+> =C2=A0		else
+> -			total_mem =3D 64 * 1024;
+> +			total_mem =3D full_size;
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+This would render the if clause useless because the branches have the
+same statement.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+Regards,
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+James
 
 
