@@ -1,264 +1,221 @@
-Return-Path: <stable+bounces-240301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240302-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WChAMN+Y6GnVNAIAu9opvQ
-	(envelope-from <stable+bounces-240301-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 11:46:07 +0200
+	id gIG1G7yY6GkwNQIAu9opvQ
+	(envelope-from <stable+bounces-240302-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 11:45:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 615EF444306
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 11:46:07 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 871454442C9
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 11:45:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A2299302612E
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 09:39:39 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5D6823030DCD
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 09:40:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80D323C3C0B;
-	Wed, 22 Apr 2026 09:39:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B58143C3BFB;
+	Wed, 22 Apr 2026 09:40:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="LRfczsno";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="ZnEUZiFP"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="C4PVpMAA";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="VeRRzpV0"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E37EE3C3BE2
-	for <stable@vger.kernel.org>; Wed, 22 Apr 2026 09:39:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B12C20B22
+	for <stable@vger.kernel.org>; Wed, 22 Apr 2026 09:40:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776850776; cv=none; b=i4uZB5klBwTaw4OY6MfcOLCprUta3gkuLgNYhR6bVbMJZgdUm8YudoZBHDaikbWsQkIoiAK7sDoR6yC1YjcF1ZIaoWyeuAWc6wwCp6yLczcPIClKdnA/EBm/IEqr0Zo9kL9wsSU1jKMmyCHo8o2OC/XhVP5eHKqYH5x7n4bMovQ=
+	t=1776850819; cv=none; b=iw20V2XclqyNLsmfcnIjNpjwOptqJ65V1OwrijmYPhCC1LWWGxnKg6BvnfHFR05nB6kAs6uCmqtyqFr7TBJYBwzDrPhO7zNO/hOmVeMK/jrCwVcS+/B253y99CNxFNJ/Pfd8oDvOyh6PfO3ldsQvAR93R/dJEBdZZEOy8yU1cSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776850776; c=relaxed/simple;
-	bh=lYBtb/FXLnrKMGDRY9R5zWWqwoEjMD1L30jny+RJLSM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=cY4UiZ+c+6x8fzSL4U6FHSjIz3YsRimAeK6Q1aBdRr7BCNje5H5iLzrwCZdHAnFvZVpw3bjj40o2t5zM8JsnkTzvRBdLOYGTznSbjfKxH+e2YE4TJqdLYvyI5V8s6r11+NL/gxFcewm8yLRoT2gvW6ewGjPGnWbx8ovRE/WmX3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=LRfczsno; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=ZnEUZiFP; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63M992OD1442696
-	for <stable@vger.kernel.org>; Wed, 22 Apr 2026 09:39:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=qcppdkim1; bh=K+FRj/TOjFm+Bx5q74z+YlRnH1IU+JAqkB0
-	bSNcN+l0=; b=LRfczsno+Gy73PGx/ywrfzaDoeyRo5wWkJgMKsVePg2bBXz1efL
-	egsSWS4rW2tIT2I//4+gP9cFGhPQHKrCppe58OjOwOadzVjqzQWL90kWuNQyqojY
-	3/OAuFX2txcOBGSBPqCZzQoAa8umqlkHgY9H/1aRGsUP56tY339xRK+14jIbLBBT
-	VAocVtsjrUdfGAuSrdJCgAccRl1EvOLrsZaazFkIMEZAcpLQno6M/7JdDSKljqGB
-	rHpIyfSgDiNL/I/2S+x3XkRtHwmOgnfXcXa31CI78aT9WQkVoBuwe56cW21NCvpA
-	r0RYCOChN/X4VEtfqdwqSmACY92cJUnDFJg==
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4dpenftpdt-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Wed, 22 Apr 2026 09:39:33 +0000 (GMT)
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-354c0234c1fso5626925a91.2
-        for <stable@vger.kernel.org>; Wed, 22 Apr 2026 02:39:33 -0700 (PDT)
+	s=arc-20240116; t=1776850819; c=relaxed/simple;
+	bh=zAkck15aRQTZ1Q05U2YBuMYW04iQrWlQkMLWra0PA3Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TwbMqyC3qaFTA4DnkCDrxXyhWRgkDio+JDaqt2A7nX76ltGwi5oApPcCnjRACPnSto46HwHkL5f1PvjB5/InHNZ3FMjc0soPAf66GWZ1lsD9nbPBeEJm5ngv0QK7BS9SLSClEnSXzZ5I3paFomR5ob75Qj96PVD0ab2Cl1ybeUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=C4PVpMAA; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=VeRRzpV0; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1776850817;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8cr/tWxIjPFzBjhqZCt4BN4Fwf/3ahvnB9QHJ9ZKhqw=;
+	b=C4PVpMAAWteYzwyy/Swrt1q83Hel8TZTclJR3+MW4SBSXh2+J7jbhePxrXvLblIMKPUvSk
+	44W/QrQEiL52aaULdFlaMRk8HvaGaA2eNEWAuRFrGYQvDuUS3wKT46qKHrHG3YiOIa1qQe
+	b90KVG8jTiIvE6UtZ+hgbrdPYfG4iCA=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-617-6ZtDWtq5MUeRaMm1m8xnvg-1; Wed, 22 Apr 2026 05:40:16 -0400
+X-MC-Unique: 6ZtDWtq5MUeRaMm1m8xnvg-1
+X-Mimecast-MFC-AGG-ID: 6ZtDWtq5MUeRaMm1m8xnvg_1776850815
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-48a5adc12ffso3471035e9.0
+        for <stable@vger.kernel.org>; Wed, 22 Apr 2026 02:40:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1776850773; x=1777455573; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=K+FRj/TOjFm+Bx5q74z+YlRnH1IU+JAqkB0bSNcN+l0=;
-        b=ZnEUZiFPTdP7zF/hc/EDx3+/J/pyoeCX7HiDdUT9YhX+D8MNrTazGThFRFOdfkSj/c
-         L1Tp9JqQJPG7eYCXA/xUgvdUND99SEfazVXK/NNf0hIoJ5p4KWXciViNJn5ARUpDFEZX
-         wIIAHkKQYfrnSbXwjd/M/UY12P4mb/Y4U45vdiRjVEdBRIEJgL5LTJ21DUJu533BVdhg
-         KGzAHUHRh6sZbkUgMnqc7VjsIWI2rBpwaPlm5/liY891MQj40ZVikH9kYylRDXKTDlmR
-         m4rnKnpJeOjpCMQofS8hHDtkKUOtdVTbsl8ML9Hqla9bHHlxlATsu6QjQPJmIFjiroeq
-         kDmQ==
+        d=redhat.com; s=google; t=1776850814; x=1777455614; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=8cr/tWxIjPFzBjhqZCt4BN4Fwf/3ahvnB9QHJ9ZKhqw=;
+        b=VeRRzpV0/dDyqn+Wm3d8CjC0JQG3fHYKdRrDp4KHIo/FdG0A6DAWLvMRp1G9jm/cTF
+         RfONIbS2yswWRpm2fNJMrHngtOQpHPCUd9M8hQilOeELw8dfIbTExq9qy+ZEr1hrf8gf
+         Fe8MqtTYMFj5iBOLGXK0LKseG4fJVTqHopvQRwiyDR2fMsHJkXtw4cLN4W+rfsg3AT25
+         Hxi/DEAtUIFtxTHf0EqUTxAc6CbsKoZSDRUw02y6ejsRgj0sxJcUJ/fuNd6eOnTTPAha
+         zgAdgIk0R+dfRFqcKHIV5QE3nbViWfSIjFePx8YFhakmHIwbW36BysSLkv9X6gDFHrAE
+         YiYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776850773; x=1777455573;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=K+FRj/TOjFm+Bx5q74z+YlRnH1IU+JAqkB0bSNcN+l0=;
-        b=Ehhp5xWpdUXJ/bkDZSb+WIn+fVxeKJSNh0Mf7jmX5TLqcYg9JAyL0CHQgpTT/tNMhs
-         T50rFIKz0CWcEqqG6yyqz4TIGVs9BYIbR6BvG6J9nplelUI/oRpeweM9RaDWY/2uFpli
-         3GxCfBwOTbUXFwdCJ8sFDPdT8s5wqvnRjdzj4Zdrki0q0L/dLr10VOwqGjObPeD4cXSq
-         4d5+6OXiVa1cjEPydUgZ3qOU7/+N9A5sclXzysauc1U5px7I6Nu/ngbWSqORo+Cc49x5
-         XNFWa9wj2T7Bk6GJ8ZYYqfDOMqyIH6VAH44PZv2SmxxMlcaSfSuZpi6QhVIwEhkiFOdS
-         8dOQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/t3FloBOUUDxI9ObU4U3tmAy192FcNHpHUZeFueN//jnJQpIMnBdzISRn6WEsKtDNWXmro41s=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy37y4wRcwqfThePtw04IZtb1ptJMyahorpR7O/aTgdqE/IHVBb
-	/1a0KlSxSIguBCCsmEqvBNXQTsv9JHEZlDluEg0i6Zgr4SmdlyhmjsYL2NPB4iprRioe5fGAymL
-	gaIkhNn09xAI30jmXE75IwiCMeBl+KsRxGyy0qQC/3js0Aoy96jYnY1utVGc=
-X-Gm-Gg: AeBDievn30bJ55BY8dYn3nYI1XESuJbgfnILLti8+lrvccyikh+G3cSYp4p59E2b2lw
-	Ufpeqk4m0sPesH1Vzke9HPdmIGz69aHpt30zb+L6YgqzJh/wTMjTRZYp8Py1FrRBJBHx5HYuRdZ
-	E0cfryoQQrR9JWK/AcRsK4YYAgNW9jBrGcvzMqZBZa/czPVlDAistqLW49xbxcRqtZl1MbqKsTQ
-	kSj7agHLja2HxVHchz7JursyYqAyW/XhP1F00K07z4caOSBdY7FoYPNGEFC9j4NbOqKMgKKmp6h
-	6riJlzFq4/tBqTCdv5NJEHkwORZgc+AAucmmmSqKbYHDV3bUcsOS1MRB7IT2pJufP2mNF9m7AJ3
-	YEbIgz5L1jRY2rn2+tt9fsf+XWU61F1K49tHRd5kdpBFMM4QcGjHzRjuhtYre
-X-Received: by 2002:a17:90b:5203:b0:35d:9560:3efc with SMTP id 98e67ed59e1d1-361404632e8mr20112387a91.14.1776850772398;
-        Wed, 22 Apr 2026 02:39:32 -0700 (PDT)
-X-Received: by 2002:a17:90b:5203:b0:35d:9560:3efc with SMTP id 98e67ed59e1d1-361404632e8mr20112345a91.14.1776850771789;
-        Wed, 22 Apr 2026 02:39:31 -0700 (PDT)
-Received: from hu-prashk-hyd.qualcomm.com ([202.46.22.19])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-361417748aesm16097037a91.0.2026.04.22.02.39.28
+        d=1e100.net; s=20251104; t=1776850814; x=1777455614;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8cr/tWxIjPFzBjhqZCt4BN4Fwf/3ahvnB9QHJ9ZKhqw=;
+        b=mNFL64CSlqmPhJaU6IauV/51Nl9qalZwahm57zIz+LvGxfuSLR3/6Zgx0LUbhkK2YF
+         6eV0k3YYk0d3Gj2wvvoeFYvSq9abXBFZjSiZrwawRlyfyd6lDuu5uB6LQjoRMKYGb03C
+         ivcqc+Ge76UeMXUECYbqOszJnjJvGOOYiwNLyN5XanVi7ZUGmYp5zaTmYkdclTtwLIN9
+         eTKN59Gfg8o36l3HyNs6aEC1VTttWGM+mSbIRJmlcYjCxD7xMoEZkNVRBjTx5DN0XZB1
+         i8HFv6BDy1fMo5MONGQVEsCokfw5D0OqKP+/LHXqQ1/plXcW7QKx2xOEQcU6EHV2AMxB
+         osgQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/xPZjm9LTERXuLPbZ8kwSetOc0/AJkx9gsXI+qOBAVj8qdfPJgjPnHlrV4D+qr69+yDnG5pH0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxtKAd5pJoE8oGg1DHKsUDweff+2+Npxyf7dNxp2NEtN5+dgvwc
+	b+UxhUerrrTqhtC8CF5PKRfebc9pkIFL4jJzMMMjR1u3AXuaFASyfK9MU9W39/nWQSNM2BU1Bzg
+	fErq3Pm8MqAOoMnc0N1Pxv08bZr0AuiRcpLEnQrM8TSjrtRVy/8MKhwE3IpGg5FXK4Q==
+X-Gm-Gg: AeBDiesmYGkcoeAMaRteSzAMmPCsqW/UzR6eQNJJw8u72C2hIYqnMRdEKMDB3mzqm9/
+	y99MSI1qrfeKAFZjesA2jNjB85NQH0ETx5k1e4O5+klJqQhyrUSJenZYF0lvwTWCPwL44hr92Cx
+	2cnORcr2yLV91B8cY26uKUs/7+YGkvAyeCaMU4lZmIFWM1f4VavOgIcVcSDorDg+Kn1bX8K0tFD
+	IISERZYLpU8XW1NIsNBQSfHLdYFxADmiz5sZwytCSrjAcXVHswFExHRZRjpTK2otWsyx2Eo92TB
+	dOFflTj8IsE3c5w/A1wo/b67z3TDZHNl/oALEk9l+hdvHO8I6zJzPFozMqnstaC7mi2Q1pFN2kg
+	/ReeObA5YcG3NdTnWmsFHZoVHKj0H1u4dbfTRvy7pcf+AWjvpHdrnNlqa3EACgSRnBI1Kx1hLxz
+	SGLiHNcQ==
+X-Received: by 2002:a05:600c:5294:b0:48a:563c:c8d6 with SMTP id 5b1f17b1804b1-48a563cd0eemr82211695e9.7.1776850809633;
+        Wed, 22 Apr 2026 02:40:09 -0700 (PDT)
+X-Received: by 2002:a05:600c:5294:b0:48a:563c:c8d6 with SMTP id 5b1f17b1804b1-48a563cd0eemr82211215e9.7.1776850809081;
+        Wed, 22 Apr 2026 02:40:09 -0700 (PDT)
+Received: from sgarzare-redhat (host-87-16-204-83.retail.telecomitalia.it. [87.16.204.83])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488fc18bccfsm396567715e9.8.2026.04.22.02.40.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Apr 2026 02:39:31 -0700 (PDT)
-From: Prashanth K <prashanth.k@oss.qualcomm.com>
-To: Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>,
-        Prashanth K <prashanth.k@oss.qualcomm.com>, stable@vger.kernel.org
-Subject: [PATCH] arm64: dts: qcom: hamoa-iot-evk: Enable retimer on USB0 port
-Date: Wed, 22 Apr 2026 15:09:24 +0530
-Message-Id: <20260422093924.2976069-1-prashanth.k@oss.qualcomm.com>
-X-Mailer: git-send-email 2.34.1
+        Wed, 22 Apr 2026 02:40:08 -0700 (PDT)
+Date: Wed, 22 Apr 2026 11:40:00 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Dexuan Cui <decui@microsoft.com>
+Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org, 
+	longli@microsoft.com, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, horms@kernel.org, niuxuewei.nxw@antgroup.com, 
+	linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net] hv_sock: Return -EIO for malformed/short packets
+Message-ID: <aeiEsYqcKumplu5P@sgarzare-redhat>
+References: <20260421174931.1152238-1-decui@microsoft.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: qiKlKpZ9bqkbkbAXiOPbPlC2QOiVyIo0
-X-Authority-Analysis: v=2.4 cv=YJuvDxGx c=1 sm=1 tr=0 ts=69e89755 cx=c_pps
- a=0uOsjrqzRL749jD1oC5vDA==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
- a=A5OVakUREuEA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22 a=VwQbUJbxAAAA:8
- a=EUspDBNiAAAA:8 a=UU6esRB091ZTEFAXl-wA:9 a=mQ_c8vxmzFEMiUWkPHU9:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDIyMDA5MSBTYWx0ZWRfXw+heej5xTEio
- FIIWmWSWCxXgyfIVKt5rk5oV3fcWO/7+RvSQmA85FwL1+6FxEvlMMTeIBOgw7+3BiHAuqLVqTWP
- Ar9wykDIf9RrDPUg/xhfgWh6tNow0scX4XOGi7+wNLWBLB/H4aIFGtxS2VJvQYOP9XN9O5p4+9y
- NkCgxwGGZlWBrD+08mLWCu3w3/Hm0L2nL79NOgV2fL5iAiukStnf2DCgMHKDRlICIUqFLeSJGwx
- JXOzzT4SjERdCnja5ROZhHP7PXLTf0v8tdyQA2LSYXGvsKYABuSzA7ImTr6sVfWecvDlDsFJzeL
- hJeMSNRyCEhJ9cb3u/bPZWntgkVABpNMBWPbyc4gIXV8niFTQOOSXgVIsw57x8whNoTQgzNbcGE
- bwM5YxiVIyGmfq4o9XNF648gBwTNUegbDXppCraF0/GXG3Lh5pKe1KPeUk+umt7jaMhpEwvf1ps
- Kg1LCPwaZSoA7cObyYg==
-X-Proofpoint-ORIG-GUID: qiKlKpZ9bqkbkbAXiOPbPlC2QOiVyIo0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-22_01,2026-04-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 phishscore=0 lowpriorityscore=0 adultscore=0 spamscore=0
- malwarescore=0 impostorscore=0 priorityscore=1501 bulkscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2604220091
-X-Spamd-Result: default: False [4.84 / 15.00];
-	SEM_URIBL(3.50)[0.0.0.0:email];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260421174931.1152238-1-decui@microsoft.com>
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
-	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	DMARC_POLICY_ALLOW(0.00)[qualcomm.com,reject];
-	MIME_TRACE(0.00)[0:+];
-	R_DKIM_ALLOW(0.00)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
-	TAGGED_FROM(0.00)[bounces-240301-lists,stable=lfdr.de];
-	GREYLIST(0.00)[pass,body];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	NEURAL_SPAM(0.00)[0.367];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	PRECEDENCE_BULK(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:dkim,qualcomm.com:email,0.0.0.0:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,0.0.0.8:email,oss.qualcomm.com:dkim,oss.qualcomm.com:mid];
-	FROM_NEQ_ENVFROM(0.00)[prashanth.k@oss.qualcomm.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-240302-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DBL_PROHIBIT(0.00)[0.0.0.1:email];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sgarzare@redhat.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	R_SPF_ALLOW(0.00)[+ip6:2600:3c09:e001:a7::/64:c];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 615EF444306
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 871454442C9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Add the retimer for usb_1_ss0 port (USB0), in order to enable
-super-speed enumeration on that port.
+On Tue, Apr 21, 2026 at 10:49:31AM -0700, Dexuan Cui wrote:
+>Commit f63152958994 fixes a regression, however it fails to report an
+>error for malformed/short packets -- normally we should never see such
+>packets, but let's report an error for them just in case.
+>
+>Fixes: f63152958994 ("hv_sock: Report EOF instead of -EIO for FIN")
+>Cc: stable@vger.kernel.org
+>Signed-off-by: Dexuan Cui <decui@microsoft.com>
+>---
+>
+>Commit f63152958994 is currently only in net.git's master branch.
+>
+> net/vmw_vsock/hyperv_transport.c | 29 +++++++++++++++++++----------
+> 1 file changed, 19 insertions(+), 10 deletions(-)
+>
+>diff --git a/net/vmw_vsock/hyperv_transport.c b/net/vmw_vsock/hyperv_transport.c
+>index 76e78c83fdbc..8faaa14bccda 100644
+>--- a/net/vmw_vsock/hyperv_transport.c
+>+++ b/net/vmw_vsock/hyperv_transport.c
+>@@ -704,18 +704,27 @@ static s64 hvs_stream_has_data(struct vsock_sock *vsk)
+> 		if (hvs->recv_desc) {
+> 			/* Here hvs->recv_data_len is 0, so hvs->recv_desc must
+> 			 * be NULL unless it points to the 0-byte-payload FIN
+>-			 * packet: see hvs_update_recv_data().
+>+			 * packet or a malformed/short packet: see
+>+			 * hvs_update_recv_data().
+> 			 *
+>-			 * Here all the payload has been dequeued, but
+>-			 * hvs_channel_readable_payload() still returns 1,
+>-			 * because the VMBus ringbuffer's read_index is not
+>-			 * updated for the FIN packet: hvs_stream_dequeue() ->
+>-			 * hv_pkt_iter_next() updates the cached priv_read_index
+>-			 * but has no opportunity to update the read_index in
+>-			 * hv_pkt_iter_close() as hvs_stream_has_data() returns
+>-			 * 0 for the FIN packet, so it won't get dequeued.
+>+			 * If hvs->recv_desc points to the FIN packet, here all
+>+			 * the payload has been dequeued and the peer_shutdown
+>+			 * flag is set, but hvs_channel_readable_payload() still
+>+			 * returns 1, because the VMBus ringbuffer's read_index
+>+			 * is not updated for the FIN packet:
+>+			 * hvs_stream_dequeue() -> hv_pkt_iter_next() updates
+>+			 * the cached priv_read_index but has no opportunity to
+>+			 * update the read_index in hv_pkt_iter_close() as
+>+			 * hvs_stream_has_data() returns 0 for the FIN packet,
+>+			 * so it won't get dequeued.
+>+			 *
+>+			 * In case hvs->recv_desc points to a malformed/short
+>+			 * packet, return -EIO.
+> 			 */
+>-			return 0;
+>+			if (hvs->vsk->peer_shutdown & SEND_SHUTDOWN)
 
-Fixes: c11645afb0e2 ("arm64: dts: qcom: Add base HAMOA-IOT-EVK board")
-Cc: stable@vger.kernel.org
-Signed-off-by: Prashanth K <prashanth.k@oss.qualcomm.com>
----
- arch/arm64/boot/dts/qcom/hamoa-iot-evk.dts | 54 +++++++++++++++++++++-
- 1 file changed, 52 insertions(+), 2 deletions(-)
+We can access `vsk` directly, I mean `vsk->peer_shutdown`.
 
-diff --git a/arch/arm64/boot/dts/qcom/hamoa-iot-evk.dts b/arch/arm64/boot/dts/qcom/hamoa-iot-evk.dts
-index 460f27dcd6f6..a9ad05bef5d6 100644
---- a/arch/arm64/boot/dts/qcom/hamoa-iot-evk.dts
-+++ b/arch/arm64/boot/dts/qcom/hamoa-iot-evk.dts
-@@ -118,7 +118,7 @@ port@1 {
- 					reg = <1>;
- 
- 					pmic_glink_ss0_ss_in: endpoint {
--						remote-endpoint = <&usb_1_ss0_qmpphy_out>;
-+						remote-endpoint = <&retimer_ss0_ss_out>;
- 					};
- 				};
- 
-@@ -785,6 +785,56 @@ retimer_ss2_con_sbu_out: endpoint {
- 	};
- };
- 
-+&i2c3 {
-+	clock-frequency = <400000>;
-+
-+	status = "okay";
-+
-+	typec-mux@8 {
-+		compatible = "parade,ps8830";
-+		reg = <0x08>;
-+
-+		clocks = <&rpmhcc RPMH_RF_CLK3>;
-+
-+		vdd-supply = <&vreg_rtmr0_1p15>;
-+		vdd33-supply = <&vreg_rtmr0_3p3>;
-+		vdd33-cap-supply = <&vreg_rtmr0_3p3>;
-+		vddar-supply = <&vreg_rtmr0_1p15>;
-+		vddat-supply = <&vreg_rtmr0_1p15>;
-+		vddio-supply = <&vreg_rtmr0_1p8>;
-+
-+		reset-gpios = <&pm8550_gpios 10 GPIO_ACTIVE_LOW>;
-+
-+		pinctrl-0 = <&rtmr0_default>;
-+		pinctrl-names = "default";
-+
-+		retimer-switch;
-+		orientation-switch;
-+
-+		ports {
-+			#address-cells = <1>;
-+			#size-cells = <0>;
-+
-+			port@0 {
-+				reg = <0>;
-+
-+				retimer_ss0_ss_out: endpoint {
-+					remote-endpoint = <&pmic_glink_ss0_ss_in>;
-+				};
-+			};
-+
-+			port@1 {
-+				reg = <1>;
-+
-+				retimer_ss0_ss_in: endpoint {
-+					remote-endpoint = <&usb_1_ss0_qmpphy_out>;
-+				};
-+			};
-+
-+		};
-+	};
-+};
-+
- &i2c5 {
- 	clock-frequency = <400000>;
- 
-@@ -1541,7 +1591,7 @@ &usb_1_ss0_hsphy {
- };
- 
- &usb_1_ss0_qmpphy_out {
--	remote-endpoint = <&pmic_glink_ss0_ss_in>;
-+	remote-endpoint = <&retimer_ss0_ss_in>;
- };
- 
- &usb_1_ss1_dwc3_hs {
--- 
-2.34.1
+>+				return 0;
+>+			else
+
+nit: we usually avoid the `else` if the other branch returns early, and 
+maybe have the error returned first, so it's more clear when reading the 
+comment on top.  I mean something like this:
+
+			if (!(vsk->peer_shutdown & SEND_SHUTDOWN))
+				return -EIO;
+
+			return 0;
+
+BTW, not a strong opinion on that.
+
+The rest, LGTM!
+
+Thanks,
+Stefano
 
 
