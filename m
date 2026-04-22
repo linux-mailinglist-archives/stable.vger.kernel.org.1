@@ -1,150 +1,178 @@
-Return-Path: <stable+bounces-240260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240261-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MArGHQgd6Gm/FAIAu9opvQ
-	(envelope-from <stable+bounces-240260-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 02:57:44 +0200
+	id UNdzD3Mf6GnqFQIAu9opvQ
+	(envelope-from <stable+bounces-240261-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 03:08:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9847440F56
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 02:57:43 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8FCF441043
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 03:08:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E3BC8302F436
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 00:57:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3E416302AE0C
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 01:07:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 748CC1E5702;
-	Wed, 22 Apr 2026 00:57:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E601243387;
+	Wed, 22 Apr 2026 01:07:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ow712zn0"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ECrmDrMS"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEE4F1DF26E;
-	Wed, 22 Apr 2026 00:57:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26B7D235BE2
+	for <stable@vger.kernel.org>; Wed, 22 Apr 2026 01:07:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776819449; cv=none; b=I/8LXENhLo857b7Q6ht4IiKbWJi3Kuj9co0igP+aYvPw+KeeP+zGtShFmPpUvM+SSYJr/NsSWkaZ93ubX5iHD4GnEZHhFbf3QUWx1nN41rjnd77RQ2Zlbzib7v/ftrrl4+onDWqrbEagm/DcA5dqCiBVsI9LFflqwEg8KUiEkF4=
+	t=1776820078; cv=none; b=EQPsjKfecbv99Mg/1DDSTVZ56qPlFZux0Epl+XXYrJ2J1MRkbgnATSJnP1DwvGPGFHKMSXGXjeJlOLirXjnrfjb222BWDmBkkPRN4FqW1r6thHP4UCuYEGWb0Gqtos03Ob5Ku9udPDFzrYwsoggZGPNHhi2Hmr9+pr/I5R34sKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776819449; c=relaxed/simple;
-	bh=nhehAw6Z+DPT+nNjSZV2c7dJLnh4W2YjeY8ZBqsswOs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iF4Z9Rth3Lwwa1h0cJMUj8BAGiMsO1BOGyWLfYQ8HBuGmJKjIBwNJeUdb6Lyykyo33H6T6/w4I1sfoi/WQSs5zSxc7y+2Z0pHdt9xlju/Hy+VDBUInnaSEfMPLXWLloYOem8pIJ8J01WYIlhdPN30gMwaBPdVPcZfGpOTXJbWDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ow712zn0; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776819448; x=1808355448;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=nhehAw6Z+DPT+nNjSZV2c7dJLnh4W2YjeY8ZBqsswOs=;
-  b=Ow712zn0mgufhCneo08gYIOyrqv4WXbNFHeT6vxcMyLB3PIPZMrRtqAr
-   9AdOj4MudeRoI7r/b6qrTww5N9LpCfbvPDK0uqFGZtVTzsL1YRMjX8s5j
-   Sytg+3wk+WTvErb7RS0cliUWH2zIhEe1yP++WRUJkF3bNbinfJvgAq12O
-   m5+0BSWgt0GZsgB0sVSckRw6wLeP1DGyTNzWiQFp1129P0AnpiO+DGHi6
-   k4xz6CPHVKoer8dtvp1+S9k3R7NG1AYAr1cxlPlJjXrsU9XqrCh9PlzK8
-   B16V9fpFleZKjZfFNtjUSMuDXRhEidJl7x34rpsfqs+0DF04aNpBFa2jc
-   w==;
-X-CSE-ConnectionGUID: qiPHIe0DTLCrCNFeqtYPxA==
-X-CSE-MsgGUID: 0oNrcRYURmiRR+55gWYPlQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11763"; a="77835357"
-X-IronPort-AV: E=Sophos;i="6.23,192,1770624000"; 
-   d="scan'208";a="77835357"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2026 17:57:27 -0700
-X-CSE-ConnectionGUID: u7N3OE2PTwK/DKD5a6g9kw==
-X-CSE-MsgGUID: qniPAnqBRme7nBL9zTBu6Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,192,1770624000"; 
-   d="scan'208";a="255673856"
-Received: from dapengmi-mobl1.ccr.corp.intel.com (HELO [10.124.241.147]) ([10.124.241.147])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2026 17:57:23 -0700
-Message-ID: <e25134c3-87c8-4c2e-b9f6-d6222bfaa5eb@linux.intel.com>
-Date: Wed, 22 Apr 2026 08:57:20 +0800
+	s=arc-20240116; t=1776820078; c=relaxed/simple;
+	bh=DmvQdbnSVkU390Uki7nhoRgUGLW/SfBTGzh+vLC9FdE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=C7aqSBw958XabVSTMxNjAniYJkVzzfv1/PN36enHoVE6nng3tj8zMeLTcbA3BcUqMOvAHSvPfsGyTj6Anng9o554jkMxr0VFjCWLJHWzUsN+C6GF2kLymbYKmD+jg4XFNlBkiVKA+QN38LwQkGsqmm3T5FwqzsiNfPW9YSWUMzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ECrmDrMS; arc=none smtp.client-ip=74.125.82.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-2c156c4a9efso6515697eec.1
+        for <stable@vger.kernel.org>; Tue, 21 Apr 2026 18:07:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776820075; x=1777424875; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=UAr7c0jVgzuAHNJ5czeyIB1hhcntc/AZfRD30ixgZSs=;
+        b=ECrmDrMSyjgggLD1EG7dgg7XKM8x51S4Ct46jhfFB4zWlwF0skale0ssqnKvs/5dGs
+         pgpEz2X+gP7ub8DqT9xUfLurepXeTnldvekth5E3zDjvlaqZN/Gb0hf/Klse003Gaiq5
+         6Zg4QPGJs9AZSrHAX1myMO4YJv5nxj5YNSyU8u/58IzEBQyw7eQyYyLfPzzODLQe+sFC
+         ctB0uW2AK83DvRfeF3caF7KCF+T/RUKJnfjOqFlGm+j7iBkO+8g+03M6F9T4Zv6BF4HY
+         Wdefd4CbTG83Z8c7unYu+94aIJA8HL3cpK4vY8LxMAeNWjfYIXzjaEszK83Q0opk7wWh
+         pHdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776820075; x=1777424875;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UAr7c0jVgzuAHNJ5czeyIB1hhcntc/AZfRD30ixgZSs=;
+        b=g79saas/AbtvPltQ09VWg6/vnYf/K51Sh59a4AUk5uas5rH/j8DA29TwsdC8yUPHao
+         ufHdaHeZITlf2wGOTTXzgRFaq2Wnjz+nnAWNtCymzL92jUAXs4fLF2XNKA5PPLA5Gy6C
+         FDYJhT5xEF5hwxLfUjecBHb6l0LI0XsuGMbnkccebQzmshGHNuoZZoZJSjl/frizaoL2
+         qvIXi2e633IOC6EyXGMlOT7tyLg6LytXltTT/JyZDQPXTUO6RPDs4eW2VKYYOGONVq3G
+         4wzqaUqoBm17OHlRxX9i3lGHFPpo1ORU3fMVYNjGaRKJLNvYsfyAZHVcY8hhHcYKKEAs
+         v6fg==
+X-Forwarded-Encrypted: i=1; AFNElJ8/r4wAGwkyhxRoz/1FAzMpk2dNwLcz1GUVd39LS78juTVRm/dBAVTrkhsLo26bCxQao14Rmxw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw4aeFGxYrEcsg9bh7fjFaO+dGCtaqdeAt9ld+xl1OIHwGqgtUa
+	rIljFHNszwuvC1P8YBGR+M9/NYXJdJ8cCj4Vj/UqUcCt06xNpXjxCLghxerasPec
+X-Gm-Gg: AeBDievvkCnPzat9NL7Qto944MjFbuXg8kY5SgOg1hPtwqztgpflLBGCjhpW5lGOTSl
+	wgXMC0YJCvhWc6axSj4xsEI3yyt1gepjKn5oetRJVZUdWr/CxJc13wvijvVor+5+TLG/cYtCl/p
+	yr8zvSa84e+sBaOUUtJW/UtH6V0CTfAMonBt8Qldv7RYPa5uIm+bE7BKgfS34i5qVbpVjJaH7Nj
+	a4mRYFJoaj11c0lfONwKzAN0LgwCvGcWWztUdCPXcgPd4DvAtNMGG05tDZ1GO2BRT9zxzmiLdeq
+	QZanqfWpiAbINwJpVn8BNQ5aAFXeuySpCgVEWu2yzD+8GCXLmMHDs9DcMlZ/YkZMdi+e5IBCJ0I
+	PGakSElYGpF33HeNw41cXhtFiy47E52UZTUkyYxZPCziAYFCaI2MVoggUO6dAMdAGcoOmnuLYSp
+	g7v5jQRUxtexSXw3kYjxgQMD9x4t28llYZ2fUF43O7SHA4J+DGKoe0zB7gvyhB/9CVecaM422VV
+	z+UW34qVITfkyaOlfVSklA=
+X-Received: by 2002:a05:7022:ef09:b0:12a:6b99:1ad4 with SMTP id a92af1059eb24-12c73f6c3c6mr11619846c88.11.1776820075248;
+        Tue, 21 Apr 2026 18:07:55 -0700 (PDT)
+Received: from [192.168.1.18] (177-4-161-87.user3p.v-tal.net.br. [177.4.161.87])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12c919266f6sm12358283c88.1.2026.04.21.18.07.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 Apr 2026 18:07:54 -0700 (PDT)
+From: =?utf-8?q?C=C3=A1ssio_Gabriel?= <cassiogabrielcontato@gmail.com>
+Date: Tue, 21 Apr 2026 22:07:41 -0300
+Subject: [PATCH] ALSA: usb-audio: Fix Audio Advantage Micro II SPDIF switch
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Patch v2 1/4] perf/x86/intel: Clear stale ACR mask before
- updating new mask
-To: Andi Kleen <ak@linux.intel.com>
-Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Ian Rogers <irogers@google.com>,
- Adrian Hunter <adrian.hunter@intel.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Eranian Stephane <eranian@google.com>, linux-kernel@vger.kernel.org,
- linux-perf-users@vger.kernel.org, Dapeng Mi <dapeng1.mi@intel.com>,
- Zide Chen <zide.chen@intel.com>, Falcon Thomas <thomas.falcon@intel.com>,
- Xudong Hao <xudong.hao@intel.com>, stable@vger.kernel.org
-References: <20260420024528.2130065-1-dapeng1.mi@linux.intel.com>
- <20260420024528.2130065-2-dapeng1.mi@linux.intel.com>
- <aef6XiN8TTWdIAiK@tassilo>
-Content-Language: en-US
-From: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
-In-Reply-To: <aef6XiN8TTWdIAiK@tassilo>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260421-microii-spdif-switch-fix-v1-1-5c50dc28b88f@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMUQqDMBCE4avIPnfBpGq1VxEfarLWKVQlq60g3
+ r2pPn4D82+kEiBK92SjIB8oxiHCXBJy/WN4CsNHk01tkWbmxm+4MAKsk0fH+sXseu6wcuXLtrC
+ muuZlTvE+BYnzka6b07q0L3Hzv0f7/gPWlx8VfAAAAA==
+X-Change-ID: 20260417-microii-spdif-switch-fix-9d8b62193585
+To: Takashi Iwai <tiwai@suse.com>, Jaroslav Kysela <perex@perex.cz>
+Cc: linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, 
+ =?utf-8?q?C=C3=A1ssio_Gabriel?= <cassiogabrielcontato@gmail.com>
+X-Mailer: b4 0.15.1
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1283;
+ i=cassiogabrielcontato@gmail.com; h=from:subject:message-id;
+ bh=DmvQdbnSVkU390Uki7nhoRgUGLW/SfBTGzh+vLC9FdE=;
+ b=owGbwMvMwCV2IdZeKur/u2bG02pJDJkv5NPPu15ZNsl05XWBA/VxjtMLQvf9OmkVoSFyesu2p
+ aVduz7YdZSyMIhxMciKKbKsTlpkuafrwdX6uBUeMHNYmUCGMHBxCsBE/hcxMnQcSvWctF4ibx5/
+ omDc6vsTitc+ufDR75jYF46cLI4Nh64w/JVqvLuHUXFtUsH7JYKLrzufmCcdpBGyoynj456fE7Z
+ XbeEFAA==
+X-Developer-Key: i=cassiogabrielcontato@gmail.com; a=openpgp;
+ fpr=AB62A239BC8AE0D57F5EA848D05D3F1A5AFFEE83
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	TAGGED_FROM(0.00)[bounces-240260-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-240261-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dapeng1.mi@linux.intel.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[cassiogabrielcontato@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,linux.intel.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E9847440F56
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C8FCF441043
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+snd_microii_spdif_switch_put() returns 0 when the requested
+vendor register value differs from the cached one.
 
-On 4/22/2026 6:29 AM, Andi Kleen wrote:
->> diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
->> index 4768236c054b..774ae9a4eeaf 100644
->> --- a/arch/x86/events/intel/core.c
->> +++ b/arch/x86/events/intel/core.c
->> @@ -3334,6 +3334,12 @@ static void intel_pmu_acr_late_setup(struct cpu_hw_events *cpuc)
->>  	struct perf_event *event, *leader;
->>  	int i, j, idx;
->>  
->> +	/* Clear stale ACR mask first. */
->> +	for (i = 0; i < cpuc->n_events; i++) {
->> +		event = cpuc->event_list[i];
->> +		event->hw.config1 = 0;
->> +	}
-> Are you sure nothing else could be using config1?
->
-> In principle ACR events can be used with some config1 setting.
+This comparison was inverted by the resume-support conversion,
+so real SPDIF switch toggles are ignored while no-op writes still
+issue SET_CUR and report success.
 
-Yes, the field "hw.config1" is introduced for support auto counter reload,
-it's only used to store the ACR counter indices. Thanks.
+Return early only when the requested value matches the cached one.
 
-https://lore.kernel.org/all/20250327195217.2683619-6-kan.liang@linux.intel.com/
+Fixes: 288673beae6c ("ALSA: usb-audio: Add resume support for MicroII SPDIF ctls")
+Cc: stable@vger.kernel.org
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+---
+ sound/usb/mixer_quirks.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
+index a01510a855c2..6cd50cfc563b 100644
+--- a/sound/usb/mixer_quirks.c
++++ b/sound/usb/mixer_quirks.c
+@@ -2025,7 +2025,7 @@ static int snd_microii_spdif_switch_put(struct snd_kcontrol *kcontrol,
+ 	int err;
+ 
+ 	reg = ucontrol->value.integer.value[0] ? 0x28 : 0x2a;
+-	if (reg != list->kctl->private_value)
++	if (reg == list->kctl->private_value)
+ 		return 0;
+ 
+ 	kcontrol->private_value = reg;
 
->
->
-> -Andi
+---
+base-commit: 46b0e9075ce97e82726d45ce9b048840d0b4eec7
+change-id: 20260417-microii-spdif-switch-fix-9d8b62193585
+
+Best regards,
+--  
+Cássio Gabriel <cassiogabrielcontato@gmail.com>
+
 
