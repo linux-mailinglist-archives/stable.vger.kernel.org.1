@@ -1,224 +1,303 @@
-Return-Path: <stable+bounces-240307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240308-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sNFAM4Ck6GngOAIAu9opvQ
-	(envelope-from <stable+bounces-240307-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 12:35:44 +0200
+	id qNAgApSl6GngOAIAu9opvQ
+	(envelope-from <stable+bounces-240308-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 12:40:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E899444C76
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 12:35:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 750E0444D0F
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 12:40:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 81DDA306BC73
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 10:32:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6974F307184A
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 10:38:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BB3836A022;
-	Wed, 22 Apr 2026 10:32:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA7083BFE40;
+	Wed, 22 Apr 2026 10:37:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="dVMv3m59";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="AaE1pbCi"
+	dkim=pass (1024-bit key) header.d=aliyun.com header.i=@aliyun.com header.b="bDcyOlx3"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from out30-77.freemail.mail.aliyun.com (out30-77.freemail.mail.aliyun.com [115.124.30.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC9223A5E98
-	for <stable@vger.kernel.org>; Wed, 22 Apr 2026 10:32:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E55493B27E2
+	for <stable@vger.kernel.org>; Wed, 22 Apr 2026 10:37:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776853968; cv=none; b=Et5OrAesUdf1+TmEbQbf+wUV6whUo/oKUpbTId46RWcMCfrCE81+k7Tpyq+dDbFKifvrBorFCe7ACowJQSVDFPYqoqOVSH5iwuxIK1rvtPRc1z/g93PMUwK3n+2CmZq1nnaTX7wtYq+u4WuhnB0PBVcuVNRIdSZvLFR/1zVq/T0=
+	t=1776854279; cv=none; b=hJxbMjnXhBmZbFo7ct5A1qTOAuqUTjobs45Cuipz+1i3wrSb11MnrIDaZiHHujK+n7x0ljV8dVA+KcR4hBtkyeoWUfT/5jbbSkk0y7g4KJFfCsE+lRqfq5lSvEqYRyvOyK3biTLCp5rIfce3SFyH/SIctiXrIlLb5NIA3Y6UD5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776853968; c=relaxed/simple;
-	bh=rIFfrXsNqItade2pDyhej3CucOfiOYuuR3y4hDhrMAk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OapsiCspY2rq7MJ+8s9bwI3OvVm77DnaHRhtxrQBPeK9om53wpuUNSwnCo5TjCna6+Vo4Paovsedqb0LXDLMIeed0cz+JZx9wHFjoSyNFby8Fnofv/n+BERzxknn1cKtRgMwbWmbkege/a1BWLYH/1UMmb6eEMDhjdpSkaByGgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=dVMv3m59; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=AaE1pbCi; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63M96EHL664048
-	for <stable@vger.kernel.org>; Wed, 22 Apr 2026 10:32:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	XS8rWs2PV+b0Pwye+4y9eJeB+rJFDeOBFQOuGjsERsU=; b=dVMv3m59G9nSMnzg
-	U6TzqNDpje0grW0dIFlVs/6Gyjp8HD0p48T/KkOTkfy+/eSrATna9LM0Igwrw3Pw
-	Kf7JtaZme86UtaEkuqfKVLjOyTZMG4Cw9DwiFVIRa3qZpAeQza8hJpb+p5pt9GZJ
-	JwdJZuN/FYEELGL9L6bv+NRiTO5eSZOjhKIqr62zQb8CrolwhQ4jgvIMPcode9JM
-	ti69nuse04NiAK69GqLS6fZ8HURXAZsvvk6jz2j5mvGCH+g61/GPin8mUhIwblEo
-	CEqiKlwWEg/ZsYL0kALBxPRMdvZnTT05WEh0gWO4Wvk+GtoDke4AUtGnYNH1ljo8
-	YPvSTg==
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4dpudgrba6-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Wed, 22 Apr 2026 10:32:45 +0000 (GMT)
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-c798e905c29so1620212a12.3
-        for <stable@vger.kernel.org>; Wed, 22 Apr 2026 03:32:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1776853965; x=1777458765; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=XS8rWs2PV+b0Pwye+4y9eJeB+rJFDeOBFQOuGjsERsU=;
-        b=AaE1pbCiU8EDC4GKBqoxzgezdnv1kdjvNKqSnqNNG2ibwsS7hsmX9EWFPat0JKcyDo
-         GDxKzUppsf7IHnZQU/eA2uW2KQrBkqoN9je+wqk6OehKSwU+q7d3PymreLiHt4JUQlQm
-         ttzx7ywSmXWGhUVDc3SHWk0F5liZYNj2tdTYOhJYQl+IGO5PfA9FyEo4TjB7iasIlEmI
-         y3ZbIix9AMXfNapoy7mr8KDt2jWPHNSUsReqChgKD5ds1e7b6ZZAR01BhOxTkMQaOJhx
-         o9XZ5JdZrl/Eas3wv8V6kIz10i6Pc7odzQk/+oIvpsRU2LUlFbEJaJZ+AuigifXRAO2E
-         Vhhw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776853965; x=1777458765;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=XS8rWs2PV+b0Pwye+4y9eJeB+rJFDeOBFQOuGjsERsU=;
-        b=GbYnympiafb/7JCTGVP3e4dxEKLI1k4y5l5BUDR2X6VQkfONTLbvU3rzs3mPuWLsXC
-         7LhYEEOsk0e7KQI94/sLI48cnloWby/Z6BylEs2XTdqoqdfNXV7IBYQxBz5rnV2rngsC
-         rCI19OifoPfDK3jX4dgdbhFFx3F6gSNjXkQjORhTWufyPDxkr6peAx1vZdEK6V+L35QD
-         oMba/LSlO420UtBAsdZA1DA/pJqbp+ydCg3DXdBCtDlv/rfVWI28vxDyWtlOxAIWc+Xz
-         ZaizC0vgCP1lEf+F1ebmxU8aPmOfuIWXY9u+puciVi5puKyFSPWb9Z++xh7pnpiavLBY
-         Qkkw==
-X-Forwarded-Encrypted: i=1; AFNElJ+iPdwF7lK+2jo1WZr+1mcBzUq6GAOERty7hSt+oeD1g/WrGY4hgChWb66nMj3VsrujMQymmuU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyONXtTzJxNdm+mFPMd4eY1F1lwnx1WkEqTaDD8Z4++aR3ocWjf
-	8Yth9VXNkz7jZ9eeTnBIeceoLamO/Yiyr60jRJCsmfs4jhc0iJyKbrSXw7dKjuZuX6EBqw31RcP
-	ctOtkueki/JwFvxElBNmhtq1cKhW3UZK/avQaPOBcP5dOTG5U2IG34hbvDJY=
-X-Gm-Gg: AeBDiev4IWYWWgSmla0jvlK0uI+6vzMu6+vkC5N9uj71f9blrkGXaSz8Cw5397QTtwu
-	/C1mWH0/LEvL5kD3yyRF4HwVTcJ0zVzGyk7COGhe1l6Okf8SE9eKpV3dNsgZfyENuNQQWlJk9S6
-	MHZzJoT0BjEEqnqpnZn1ofQ9C12TqmAAWtEHTVGy4YyXY3Y2K7G9dVqyPMrcYyy/noFNHBNfx1J
-	DYBA3oPcqcJALnxHK7KMoQdSs95zainguZg6Jm2AHYr+qBWcB4cTeVUOOZK/nlQDweK/kDUXhYD
-	T3oEyBaK0Afv0icmXQJdk/uRhFU6k4f6KsJdzYt03XJNEUN4jGGjua4jVWeQMrW7OaaxsfrhUUn
-	qtmJUm0HDBAM/ZrbnWDOsWr7SdYsXZekSIkXdMCEwELEQ3L79sViQseTYTdM7
-X-Received: by 2002:a05:6a00:14c2:b0:81f:4e6a:7276 with SMTP id d2e1a72fcca58-82f8c856e48mr22036480b3a.14.1776853965256;
-        Wed, 22 Apr 2026 03:32:45 -0700 (PDT)
-X-Received: by 2002:a05:6a00:14c2:b0:81f:4e6a:7276 with SMTP id d2e1a72fcca58-82f8c856e48mr22036453b3a.14.1776853964794;
-        Wed, 22 Apr 2026 03:32:44 -0700 (PDT)
-Received: from [10.218.10.142] ([202.46.22.19])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f8e981829sm20345091b3a.12.2026.04.22.03.32.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 22 Apr 2026 03:32:44 -0700 (PDT)
-Message-ID: <8cb5e28c-1c6e-450e-855b-32491ee73885@oss.qualcomm.com>
-Date: Wed, 22 Apr 2026 16:02:40 +0530
+	s=arc-20240116; t=1776854279; c=relaxed/simple;
+	bh=FTg86uEgLwuC0SIvcEcGkvTxp3j8RwTXxGJulZSocIY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nmpWRUz0q/jWcyqn0tDSoDKFUIjWN95Q1lD5KtPui+W0g+H2IYAcDiF/6UP5OQqSrremVRvu29HPYP2g1ilLOJ3bLBB4ziC7RClzI7PncAF5x+TFotj+rkxYu4kSQc+6GmadKzsP/K5yBxn3+zDeVKxjrlkiBa9GITIDzgwnub4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=aliyun.com; spf=pass smtp.mailfrom=aliyun.com; dkim=pass (1024-bit key) header.d=aliyun.com header.i=@aliyun.com header.b=bDcyOlx3; arc=none smtp.client-ip=115.124.30.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=aliyun.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aliyun.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=aliyun.com; s=s1024;
+	t=1776854275; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=giu4UdQxgp7Bk91no0BuZanFFW1VAifCnQk2CkFd+D8=;
+	b=bDcyOlx3005Zr5UzznUQw1k2itg3NDbQEZzY8a8SL/OSr69wuwM1dVvnD3mqvkKY/LMLxxkoUQFLc4EVC7QSWCyO7mD3wYtg4pFfFe6vf2M16sVvzd5RIuYdt75X2ukSPDExxyE324HqhBZnu/7K2J/lkbEZaBXN6383HkYF7O8=
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.07357557|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.031584-0.000368737-0.968047;FP=10563034622423729618|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=ruohanlan@aliyun.com;NM=1;PH=DS;RN=7;RT=7;SR=0;TI=SMTPD_---0X1Vu76z_1776854272;
+Received: from China-team(mailfrom:ruohanlan@aliyun.com fp:SMTPD_---0X1Vu76z_1776854272 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 22 Apr 2026 18:37:55 +0800
+From: Ruohan Lan <ruohanlan@aliyun.com>
+To: gregkh@linuxfoundation.org,
+	sashal@kernel.org,
+	stable@vger.kernel.org
+Cc: gfs2@lists.linux.dev,
+	Andrew Price <anprice@redhat.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Ruohan Lan <ruohanlan@aliyun.com>
+Subject: [PATCH 6.1.y 1/2] gfs2: Improve gfs2_consist_inode() usage
+Date: Wed, 22 Apr 2026 18:37:16 +0800
+Message-ID: <20260422103717.613-1-ruohanlan@aliyun.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] arm64: dts: qcom: hamoa-iot-evk: Enable retimer on USB0
- port
-To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Krishna Kurapati <krishna.kurapati@oss.qualcomm.com>,
-        stable@vger.kernel.org
-References: <20260422093924.2976069-1-prashanth.k@oss.qualcomm.com>
- <6c2c5fd6-c032-4658-9a15-039c77074c4b@oss.qualcomm.com>
-Content-Language: en-US
-From: Prashanth K <prashanth.k@oss.qualcomm.com>
-In-Reply-To: <6c2c5fd6-c032-4658-9a15-039c77074c4b@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: XaF2utqG8hCrAypa_dRINTRUeg32_DLZ
-X-Authority-Analysis: v=2.4 cv=c5ibhx9l c=1 sm=1 tr=0 ts=69e8a3cd cx=c_pps
- a=oF/VQ+ItUULfLr/lQ2/icg==:117 a=fChuTYTh2wq5r3m49p7fHw==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=DJpcGTmdVt4CTyJn9g5Z:22
- a=VwQbUJbxAAAA:8 a=SFoN1qW29ypxsV0XCrEA:9 a=QEXdDO2ut3YA:10
- a=3WC7DwWrALyhR5TkjVHa:22
-X-Proofpoint-GUID: XaF2utqG8hCrAypa_dRINTRUeg32_DLZ
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDIyMDEwMCBTYWx0ZWRfX26A816kjzKMD
- V/GRg95yd+tyohw8VcX+nRBrkKNtzNqlmFd9RxUeY8DDnSP9YdF5le3jCwc/HrNPZohYm9qIAJv
- kKuZwKcY3Rh0TMNgtK/e2jbmkfEmB2Y1YoLWYJ8cxn6/DfU+O96vVp6gwzP4cBMfKQn9yH6mYca
- KpvNmGOjDYiivpK9PH72J1WxEXjhwojsJRzz/lpnRbfyFm1t28kb7/fUMr3xskBVfN3i0MR2Dq8
- 5nKmSVAcdaVqzkkWVY5RbNxgNXEc7ybw0inGF+4K2mHBHRX9S5KG7gZBmK1dQf0PxGZxiuDubYr
- e+z87C3Zhqr61LzEQM2tlPGqlPbRWRVrX5v1+cADQiRvca87p+Pkc3bQFMGBm63+4HijpNVaC4x
- IPUt5SubviWYoWR6ja2BHclPZx8MWufCCBsA5Oxtw8/27UIZLf/WCIJn8WaNZpSdxcR8NMYRHet
- 88sIdHKVPqlTtmjkOVQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-22_01,2026-04-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 malwarescore=0 spamscore=0 lowpriorityscore=0 suspectscore=0
- adultscore=0 impostorscore=0 phishscore=0 clxscore=1015 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2604220100
-X-Spamd-Result: default: False [3.34 / 15.00];
-	SEM_URIBL(3.50)[0.0.0.0:email];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[aliyun.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[aliyun.com:s=s1024];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	DMARC_POLICY_ALLOW(0.00)[qualcomm.com,reject];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240307-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-240308-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[lists.linux.dev,redhat.com,aliyun.com];
+	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	R_DKIM_ALLOW(0.00)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[0.0.0.0:email,qualcomm.com:dkim,0.0.0.2:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oss.qualcomm.com:dkim,oss.qualcomm.com:mid,0.0.0.1:email];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[aliyun.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[prashanth.k@oss.qualcomm.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[ruohanlan@aliyun.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.973];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	R_SPF_ALLOW(0.00)[+ip6:2600:3c0a:e001:db::/64:c];
+	DKIM_TRACE(0.00)[aliyun.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 2E899444C76
+	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[aliyun.com:email,aliyun.com:dkim,aliyun.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 750E0444D0F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+From: Andrew Price <anprice@redhat.com>
 
+[ Upstream commit 10398ef57aa189153406c110f5957145030f08fe ]
 
-On 4/22/2026 3:56 PM, Konrad Dybcio wrote:
-> On 4/22/26 11:39 AM, Prashanth K wrote:
->> Add the retimer for usb_1_ss0 port (USB0), in order to enable
->> super-speed enumeration on that port.
->>
->> Fixes: c11645afb0e2 ("arm64: dts: qcom: Add base HAMOA-IOT-EVK board")
->> Cc: stable@vger.kernel.org
-> 
-> This is a feature addition, not a fix
-> 
-> [...]
-> 
-Sure.
->> +		ports {
->> +			#address-cells = <1>;
->> +			#size-cells = <0>;
->> +
->> +			port@0 {
->> +				reg = <0>;
->> +
->> +				retimer_ss0_ss_out: endpoint {
->> +					remote-endpoint = <&pmic_glink_ss0_ss_in>;
->> +				};
->> +			};
->> +
->> +			port@1 {
->> +				reg = <1>;
->> +
->> +				retimer_ss0_ss_in: endpoint {
->> +					remote-endpoint = <&usb_1_ss0_qmpphy_out>;
->> +				};
->> +			};
->> +
-> 
-> Stray \n, but you should really have a @2 port here as well.
-> 
-> Konrad
-Can we ad port@2 and leave it empty?
+gfs2_consist_inode() logs an error message with the source file and line
+number. When we jump before calling it, the line number becomes less
+useful as it no longer relates to the source of the error. To aid
+troubleshooting, replace the gotos with the gfs2_consist_inode() calls
+so that the error messages are more informative.
 
-Regards,
-Prashanth K
+Signed-off-by: Andrew Price <anprice@redhat.com>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Signed-off-by: Ruohan Lan <ruohanlan@aliyun.com>
+---
+ fs/gfs2/dir.c   | 31 +++++++++++++++++--------------
+ fs/gfs2/glops.c | 34 ++++++++++++++++++++--------------
+ fs/gfs2/xattr.c | 28 ++++++++++++++++------------
+ 3 files changed, 53 insertions(+), 40 deletions(-)
+
+diff --git a/fs/gfs2/dir.c b/fs/gfs2/dir.c
+index 54a6d17b8c25..96924af95c8e 100644
+--- a/fs/gfs2/dir.c
++++ b/fs/gfs2/dir.c
+@@ -562,15 +562,18 @@ static struct gfs2_dirent *gfs2_dirent_scan(struct inode *inode, void *buf,
+ 	int ret = 0;
+ 
+ 	ret = gfs2_dirent_offset(GFS2_SB(inode), buf);
+-	if (ret < 0)
+-		goto consist_inode;
+-
++	if (ret < 0) {
++		gfs2_consist_inode(GFS2_I(inode));
++		return ERR_PTR(-EIO);
++	}
+ 	offset = ret;
+ 	prev = NULL;
+ 	dent = buf + offset;
+ 	size = be16_to_cpu(dent->de_rec_len);
+-	if (gfs2_check_dirent(GFS2_SB(inode), dent, offset, size, len, 1))
+-		goto consist_inode;
++	if (gfs2_check_dirent(GFS2_SB(inode), dent, offset, size, len, 1)) {
++		gfs2_consist_inode(GFS2_I(inode));
++		return ERR_PTR(-EIO);
++	}
+ 	do {
+ 		ret = scan(dent, name, opaque);
+ 		if (ret)
+@@ -582,8 +585,10 @@ static struct gfs2_dirent *gfs2_dirent_scan(struct inode *inode, void *buf,
+ 		dent = buf + offset;
+ 		size = be16_to_cpu(dent->de_rec_len);
+ 		if (gfs2_check_dirent(GFS2_SB(inode), dent, offset, size,
+-				      len, 0))
+-			goto consist_inode;
++				      len, 0)) {
++			gfs2_consist_inode(GFS2_I(inode));
++			return ERR_PTR(-EIO);
++		}
+ 	} while(1);
+ 
+ 	switch(ret) {
+@@ -597,10 +602,6 @@ static struct gfs2_dirent *gfs2_dirent_scan(struct inode *inode, void *buf,
+ 		BUG_ON(ret > 0);
+ 		return ERR_PTR(ret);
+ 	}
+-
+-consist_inode:
+-	gfs2_consist_inode(GFS2_I(inode));
+-	return ERR_PTR(-EIO);
+ }
+ 
+ static int dirent_check_reclen(struct gfs2_inode *dip,
+@@ -609,14 +610,16 @@ static int dirent_check_reclen(struct gfs2_inode *dip,
+ 	const void *ptr = d;
+ 	u16 rec_len = be16_to_cpu(d->de_rec_len);
+ 
+-	if (unlikely(rec_len < sizeof(struct gfs2_dirent)))
+-		goto broken;
++	if (unlikely(rec_len < sizeof(struct gfs2_dirent))) {
++		gfs2_consist_inode(dip);
++		return -EIO;
++	}
+ 	ptr += rec_len;
+ 	if (ptr < end_p)
+ 		return rec_len;
+ 	if (ptr == end_p)
+ 		return -ENOENT;
+-broken:
++
+ 	gfs2_consist_inode(dip);
+ 	return -EIO;
+ }
+diff --git a/fs/gfs2/glops.c b/fs/gfs2/glops.c
+index bb5bc32a5eea..f4bd487a9b3b 100644
+--- a/fs/gfs2/glops.c
++++ b/fs/gfs2/glops.c
+@@ -404,10 +404,14 @@ static int gfs2_dinode_in(struct gfs2_inode *ip, const void *buf)
+ 	struct inode *inode = &ip->i_inode;
+ 	bool is_new = inode->i_state & I_NEW;
+ 
+-	if (unlikely(ip->i_no_addr != be64_to_cpu(str->di_num.no_addr)))
+-		goto corrupt;
+-	if (unlikely(!is_new && inode_wrong_type(inode, mode)))
+-		goto corrupt;
++	if (unlikely(ip->i_no_addr != be64_to_cpu(str->di_num.no_addr))) {
++		gfs2_consist_inode(ip);
++		return -EIO;
++	}
++	if (unlikely(!is_new && inode_wrong_type(inode, mode))) {
++		gfs2_consist_inode(ip);
++		return -EIO;
++	}
+ 	ip->i_no_formal_ino = be64_to_cpu(str->di_num.no_formal_ino);
+ 	inode->i_mode = mode;
+ 	if (is_new) {
+@@ -443,26 +447,28 @@ static int gfs2_dinode_in(struct gfs2_inode *ip, const void *buf)
+ 	/* i_diskflags and i_eattr must be set before gfs2_set_inode_flags() */
+ 	gfs2_set_inode_flags(inode);
+ 	height = be16_to_cpu(str->di_height);
+-	if (unlikely(height > sdp->sd_max_height))
+-		goto corrupt;
++	if (unlikely(height > sdp->sd_max_height)) {
++		gfs2_consist_inode(ip);
++		return -EIO;
++	}
+ 	ip->i_height = (u8)height;
+ 
+ 	depth = be16_to_cpu(str->di_depth);
+-	if (unlikely(depth > GFS2_DIR_MAX_DEPTH))
+-		goto corrupt;
++	if (unlikely(depth > GFS2_DIR_MAX_DEPTH)) {
++		gfs2_consist_inode(ip);
++		return -EIO;
++	}
+ 	ip->i_depth = (u8)depth;
+ 	ip->i_entries = be32_to_cpu(str->di_entries);
+ 
+-	if (gfs2_is_stuffed(ip) && inode->i_size > gfs2_max_stuffed_size(ip))
+-		goto corrupt;
+-
++	if (gfs2_is_stuffed(ip) && inode->i_size > gfs2_max_stuffed_size(ip)) {
++		gfs2_consist_inode(ip);
++		return -EIO;
++	}
+ 	if (S_ISREG(inode->i_mode))
+ 		gfs2_set_aops(inode);
+ 
+ 	return 0;
+-corrupt:
+-	gfs2_consist_inode(ip);
+-	return -EIO;
+ }
+ 
+ /**
+diff --git a/fs/gfs2/xattr.c b/fs/gfs2/xattr.c
+index f6a66050380e..6590aad6720b 100644
+--- a/fs/gfs2/xattr.c
++++ b/fs/gfs2/xattr.c
+@@ -96,30 +96,34 @@ static int ea_foreach_i(struct gfs2_inode *ip, struct buffer_head *bh,
+ 		return -EIO;
+ 
+ 	for (ea = GFS2_EA_BH2FIRST(bh);; prev = ea, ea = GFS2_EA2NEXT(ea)) {
+-		if (!GFS2_EA_REC_LEN(ea))
+-			goto fail;
++		if (!GFS2_EA_REC_LEN(ea)) {
++			gfs2_consist_inode(ip);
++			return -EIO;
++		}
+ 		if (!(bh->b_data <= (char *)ea && (char *)GFS2_EA2NEXT(ea) <=
+-						  bh->b_data + bh->b_size))
+-			goto fail;
+-		if (!gfs2_eatype_valid(sdp, ea->ea_type))
+-			goto fail;
++						  bh->b_data + bh->b_size)) {
++			gfs2_consist_inode(ip);
++			return -EIO;
++		}
++		if (!gfs2_eatype_valid(sdp, ea->ea_type)) {
++			gfs2_consist_inode(ip);
++			return -EIO;
++		}
+ 		error = ea_call(ip, bh, ea, prev, data);
+ 		if (error)
+ 			return error;
+ 
+ 		if (GFS2_EA_IS_LAST(ea)) {
+ 			if ((char *)GFS2_EA2NEXT(ea) !=
+-			    bh->b_data + bh->b_size)
+-				goto fail;
++			    bh->b_data + bh->b_size) {
++				gfs2_consist_inode(ip);
++				return -EIO;
++			}
+ 			break;
+ 		}
+ 	}
+ 
+ 	return error;
+-
+-fail:
+-	gfs2_consist_inode(ip);
+-	return -EIO;
+ }
+ 
+ static int ea_foreach(struct gfs2_inode *ip, ea_call_t ea_call, void *data)
+-- 
+2.43.0
+
 
