@@ -1,183 +1,212 @@
-Return-Path: <stable+bounces-240294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240295-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qEMJKTyJ6Gk6LgIAu9opvQ
-	(envelope-from <stable+bounces-240294-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 10:39:24 +0200
+	id ZZVgN/+M6Gl/MQIAu9opvQ
+	(envelope-from <stable+bounces-240295-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 10:55:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F78444390F
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 10:39:23 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3964D443AC3
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 10:55:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D08DA3007B1B
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 08:39:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BC6A83007F58
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 08:55:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFD6B3BF677;
-	Wed, 22 Apr 2026 08:39:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D2DE3BFE3C;
+	Wed, 22 Apr 2026 08:55:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OzpvqIxL"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Df/kHEcK"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DEFA1A9FA7;
-	Wed, 22 Apr 2026 08:39:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC3153B27F3;
+	Wed, 22 Apr 2026 08:55:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776847152; cv=none; b=IPZNzh7Nrcph3jLaX7cBnSAsQjl+eRzVDnm+V4ARuOwys1g1orp60yHw0O/tsIBTo2piuf4zIFiP1umGdRAdFROfbn8d51CZS0pq+GO5qMZ4yRW+9mov83KmxBLnlZ8oj9CV2eIY4KcY9ZrvSED8gbvc97/ATxsCrgiKv08aPCE=
+	t=1776848121; cv=none; b=V9I5iGkvcsd0utm0Jy86/K8kQHNr24yVHs2mBkluFy0095gfEAzWIxmmBdBAllfabuMCoXSAneNKox6AT6JoWXAJqrAB95A0frOWm8UeWrwhJre2ILHFZkxp0gT2mqF2MXgSCGhjU52GUAolvNqHJG7KNj2qMFG7WW17P7vv9ts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776847152; c=relaxed/simple;
-	bh=w73KMIQlHjPb+N1olkaiecVh/4Mf9dDmU8qVJtpkvSg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Rl1qkC219TtzJIrL1Z+p/zsYRn22m234LeWCP/xKGodyKVLcTyZilijVv8e6AhnqRsJ0zRK7ynQYj87pXg4zk0vORZ6PCB2hb8U0yMc/MTh3FHTGEx+Gh5WbbEbZw1aX0ZCTA3XSneKif2sswtreHeeuCOJGjvMqe1P+fFngZSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OzpvqIxL; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1776848121; c=relaxed/simple;
+	bh=eOkmPRPYTp5oCLIg6v7jpCiPYUCRmqpat94cyp5tfUg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OQ+D6rON+FG/q577FV3bNMDi9o6x35SMfwn11Ko+X1XOLsfK+yjTxPXGQbz03MnhQTRgekVdJ2Ej9lV2xyHF0SckJ14iXRmOiLfgFKWFbsGbqoqTJPx5WBnTq83Zmf0b+glzSzmEDPT6kAFctj8QbJca+aRkUTROCjIyuHpQlrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Df/kHEcK; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776847151; x=1808383151;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=w73KMIQlHjPb+N1olkaiecVh/4Mf9dDmU8qVJtpkvSg=;
-  b=OzpvqIxLaUY1Fy7FWxl/HVigYMNS+yQcluFXNbQhYyimXfI1UBqG/a7e
-   EjrJjW89Eo/+5ebs5KNr6z9r5EKU7ERYjphG1MKSealICzFoYStRlV6pe
-   4vv6XNhK3key+ojfVIoRJvmqrOdyhLvCZ51/iphQd5RUy+xtqU2SQKtvT
-   nVyBSaWSnfXpxt3210QesP2Tqk36yW4JA24hMj8/V/TPiUv94ERfpgKt/
-   UMwA1vwlo0h9ftjrllIAw7BixvUW9QFFL9UocfsXNE5oOhtYPVzERCyLG
-   pQg6acuXRVEFtZ3ss0k/LDD4aZQT8vjDAoESgtfKI3+XPt2doKMPjQIWK
-   g==;
-X-CSE-ConnectionGUID: dhDUlPErTBeLX9L2bdWh1Q==
-X-CSE-MsgGUID: P9jqPVRqQzGsLyxw/A27CA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11763"; a="76827701"
+  t=1776848120; x=1808384120;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=eOkmPRPYTp5oCLIg6v7jpCiPYUCRmqpat94cyp5tfUg=;
+  b=Df/kHEcKnF4238D536U4MLTkZ+ubRIB9DJkaiQpFcUj6GJzG7qzb3UHS
+   ZvQ138wpbkzJspo14b+GvUVVrR+kB7y8WA/+IsrWCx9JM0mxdpwriT+Qv
+   Pdkfi2Ki+gk870icqc9XVcabvz2QQg0SqiY8PhEca/zVTC2nQCTv9ENcW
+   mc4EQuJI8OqoZU9BMycBJjHZez7lWh88JI1EECXw0ugYTfrAzVg0tKD3X
+   ABOYCKDgXobUWJKQNG2kXDWZyLbLhy8uAu0ydI1W8c/JS3Kj452nTGZp6
+   yIGJlA7teXI3L51r/9rsFYFmDaBxOzCbIdk7S3tPYT20B9MP6CF8M0qZ3
+   w==;
+X-CSE-ConnectionGUID: lfkZHd4pSTGfFBJ/Kvpffw==
+X-CSE-MsgGUID: la0PjGMFRcO0MMg7LDGuUA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11763"; a="76958548"
 X-IronPort-AV: E=Sophos;i="6.23,192,1770624000"; 
-   d="scan'208";a="76827701"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2026 01:39:10 -0700
-X-CSE-ConnectionGUID: bgQrZQfHQaazekliRtVgvg==
-X-CSE-MsgGUID: TjLeu755Si6KxtFXz56UZQ==
+   d="scan'208";a="76958548"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2026 01:55:19 -0700
+X-CSE-ConnectionGUID: BufUmKSQSnqvnke0qTAdQA==
+X-CSE-MsgGUID: YFpuhfBWSr+3MjDBZSbH1A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,192,1770624000"; 
-   d="scan'208";a="227957981"
-Received: from mohdfai2-mobl.gar.corp.intel.com (HELO [10.247.20.189]) ([10.247.20.189])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2026 01:39:08 -0700
-Message-ID: <dfdf4a8c-41cd-482f-baf6-64fe82698453@linux.intel.com>
-Date: Wed, 22 Apr 2026 16:38:59 +0800
+   d="scan'208";a="232204588"
+Received: from lkp-server01.sh.intel.com (HELO aa799cca880d) ([10.239.97.150])
+  by orviesa008.jf.intel.com with ESMTP; 22 Apr 2026 01:55:16 -0700
+Received: from kbuild by aa799cca880d with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wFTMX-000000000Ll-0gKp;
+	Wed, 22 Apr 2026 08:55:13 +0000
+Date: Wed, 22 Apr 2026 16:54:41 +0800
+From: kernel test robot <lkp@intel.com>
+To: Guangshuo Li <lgs201920130244@gmail.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Mahesh Salgaonkar <mahesh@linux.ibm.com>,
+	Haren Myneni <haren@linux.ibm.com>,
+	Tyrel Datwyler <tyreld@linux.ibm.com>,
+	Christian Brauner <brauner@kernel.org>, Kees Cook <kees@kernel.org>,
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, stable@vger.kernel.org
+Subject: Re: [PATCH v2] powerpc/pseries/papr-hvpipe: fix NULL dereference in
+ handle creation
+Message-ID: <202604221653.KzDQsCY8-lkp@intel.com>
+References: <20260420132429.128075-1-lgs201920130244@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH iwl-net v2] igc: fix potential skb leak in
- igc_fpe_xmit_smd_frame()
-To: Kohei Enju <kohei@enjuk.jp>, intel-wired-lan@lists.osuosl.org,
- netdev@vger.kernel.org
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- kohei.enju@gmail.com, stable@vger.kernel.org
-References: <20260415025226.114115-1-kohei@enjuk.jp>
-Content-Language: en-US
-From: "Abdul Rahim, Faizal" <faizal.abdul.rahim@linux.intel.com>
-In-Reply-To: <20260415025226.114115-1-kohei@enjuk.jp>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260420132429.128075-1-lgs201920130244@gmail.com>
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240294-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[intel.com,lunn.ch,davemloft.net,google.com,kernel.org,redhat.com,gmail.com,vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240295-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com,linux.ibm.com,ellerman.id.au,kernel.org,lists.ozlabs.org,vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[faizal.abdul.rahim@linux.intel.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[intel.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.intel.com:mid,intel.com:dkim,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9F78444390F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,intel.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,git-scm.com:url]
+X-Rspamd-Queue-Id: 3964D443AC3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+Hi Guangshuo,
+
+kernel test robot noticed the following build errors:
+
+[auto build test ERROR on powerpc/next]
+[also build test ERROR on powerpc/fixes linus/master v7.0 next-20260421]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Guangshuo-Li/powerpc-pseries-papr-hvpipe-fix-NULL-dereference-in-handle-creation/20260420-224327
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+patch link:    https://lore.kernel.org/r/20260420132429.128075-1-lgs201920130244%40gmail.com
+patch subject: [PATCH v2] powerpc/pseries/papr-hvpipe: fix NULL dereference in handle creation
+config: powerpc-allmodconfig (https://download.01.org/0day-ci/archive/20260422/202604221653.KzDQsCY8-lkp@intel.com/config)
+compiler: powerpc64-linux-gcc (GCC) 15.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260422/202604221653.KzDQsCY8-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202604221653.KzDQsCY8-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   arch/powerpc/platforms/pseries/papr-hvpipe.c: In function 'papr_hvpipe_dev_create_handle':
+>> arch/powerpc/platforms/pseries/papr-hvpipe.c:513:24: error: invalid use of void expression
+     513 |         owned_src_info = retain_and_null_ptr(src_info);
+         |                        ^
 
 
-On 15/4/2026 10:52 am, Kohei Enju wrote:
-> When igc_fpe_init_tx_descriptor() fails, no one takes care of an
-> allocated skb, leaking it. [1]
-> Use dev_kfree_skb_any() on failure.
-> 
-> Tested on an I226 adapter with the following command, while injecting
-> faults in igc_fpe_init_tx_descriptor() to trigger the error path.
->   # ethtool --set-mm $DEV verify-enabled on tx-enabled on pmac-enabled on
-> 
-> [1]
-> unreferenced object 0xffff888113c6cdc0 (size 224):
-> ...
->    backtrace (crc be3d3fda):
->      kmem_cache_alloc_node_noprof+0x3b1/0x410
->      __alloc_skb+0xde/0x830
->      igc_fpe_xmit_smd_frame.isra.0+0xad/0x1b0
->      igc_fpe_send_mpacket+0x37/0x90
->      ethtool_mmsv_verify_timer+0x15e/0x300
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 5422570c0010 ("igc: add support for frame preemption verification")
-> Signed-off-by: Kohei Enju <kohei@enjuk.jp>
-> ---
-> Changes:
->    v2:
->      - change to idiomatic style with goto (Simon)
->      - add Cc to stable (Alex)
->      - add reprodunction steps (Alex)
->    v1: https://lore.kernel.org/all/20260329145122.126040-1-kohei@enjuk.jp/
-> ---
->   drivers/net/ethernet/intel/igc/igc_tsn.c | 8 +++++++-
->   1 file changed, 7 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/ethernet/intel/igc/igc_tsn.c b/drivers/net/ethernet/intel/igc/igc_tsn.c
-> index 8a110145bfee..02dd9f0290a3 100644
-> --- a/drivers/net/ethernet/intel/igc/igc_tsn.c
-> +++ b/drivers/net/ethernet/intel/igc/igc_tsn.c
-> @@ -109,10 +109,16 @@ static int igc_fpe_xmit_smd_frame(struct igc_adapter *adapter,
->   	__netif_tx_lock(nq, cpu);
->   
->   	err = igc_fpe_init_tx_descriptor(ring, skb, type);
-> -	igc_flush_tx_descriptors(ring);
-> +	if (err)
-> +		goto err_free_skb_any;
->   
-> +	igc_flush_tx_descriptors(ring);
->   	__netif_tx_unlock(nq);
-> +	return 0;
->   
-> +err_free_skb_any:
-> +	__netif_tx_unlock(nq);
-> +	dev_kfree_skb_any(skb);
->   	return err;
->   }
->   
+vim +513 arch/powerpc/platforms/pseries/papr-hvpipe.c
 
-Thanks for helping to fix this.
+   479	
+   480	static int papr_hvpipe_dev_create_handle(u32 srcID)
+   481	{
+   482		struct hvpipe_source_info *src_info __free(kfree) = NULL;
+   483		struct hvpipe_source_info *owned_src_info;
+   484	
+   485		spin_lock(&hvpipe_src_list_lock);
+   486		/*
+   487		 * Do not allow more than one process communicates with
+   488		 * each source.
+   489		 */
+   490		src_info = hvpipe_find_source(srcID);
+   491		if (src_info) {
+   492			spin_unlock(&hvpipe_src_list_lock);
+   493			pr_err("pid(%d) is already using the source(%d)\n",
+   494					src_info->tsk->pid, srcID);
+   495			return -EALREADY;
+   496		}
+   497		spin_unlock(&hvpipe_src_list_lock);
+   498	
+   499		src_info = kzalloc_obj(*src_info, GFP_KERNEL_ACCOUNT);
+   500		if (!src_info)
+   501			return -ENOMEM;
+   502	
+   503		src_info->srcID = srcID;
+   504		src_info->tsk = current;
+   505		init_waitqueue_head(&src_info->recv_wqh);
+   506	
+   507		FD_PREPARE(fdf, O_RDONLY | O_CLOEXEC,
+   508			   anon_inode_getfile("[papr-hvpipe]", &papr_hvpipe_handle_ops,
+   509					      (void *)src_info, O_RDWR));
+   510		if (fdf.err)
+   511			return fdf.err;
+   512	
+ > 513		owned_src_info = retain_and_null_ptr(src_info);
+   514		spin_lock(&hvpipe_src_list_lock);
+   515		/*
+   516		 * If two processes are executing ioctl() for the same
+   517		 * source ID concurrently, prevent the second process to
+   518		 * acquire FD.
+   519		 */
+   520		if (hvpipe_find_source(srcID)) {
+   521			spin_unlock(&hvpipe_src_list_lock);
+   522			return -EALREADY;
+   523		}
+   524		list_add(&owned_src_info->list, &hvpipe_src_list);
+   525		spin_unlock(&hvpipe_src_list_lock);
+   526		return fd_publish(fdf);
+   527	}
+   528	
 
-Reviewed-by: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
-
-
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
