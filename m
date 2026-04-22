@@ -1,141 +1,180 @@
-Return-Path: <stable+bounces-240285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240286-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4ME8Jq9y6GlCKgIAu9opvQ
-	(envelope-from <stable+bounces-240285-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 09:03:11 +0200
+	id 2JW4M/Zy6GlCKgIAu9opvQ
+	(envelope-from <stable+bounces-240286-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 09:04:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09458442B61
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 09:03:10 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB900442BA1
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 09:04:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1FA54300CBDF
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 07:03:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5F2D03036D68
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 07:03:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67CE93537F2;
-	Wed, 22 Apr 2026 07:03:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C616633C52F;
+	Wed, 22 Apr 2026 07:03:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="wJX1KPQc"
+	dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b="yct43tcI";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="iqHJOMTO"
 X-Original-To: stable@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from fhigh-a5-smtp.messagingengine.com (fhigh-a5-smtp.messagingengine.com [103.168.172.156])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8065C23D7E3;
-	Wed, 22 Apr 2026 07:03:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 280053603FC;
+	Wed, 22 Apr 2026 07:03:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.156
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776841388; cv=none; b=U5tcrG5l5CqCz842LQ+9vceXDu8uC4W0rRH21tGDi16uUV9Pdyib5WIY2TrLt/xSTldDzu8+astZFAJfKBFhoDQVdPHNKxXr4UOGxmB155wsj9ZS4i1fo85tXUX/ShNwnuA2gwJHkoJXKsJVTLRGgDQfJiBmV7xs6mmv+dZ71+Q=
+	t=1776841394; cv=none; b=gd/dKADNL5fevw0L82Cri8bQQd0mElMuubSa7yEokop2yh0bgR1Rx/eMPX3wlOccP/b3gTU4iH+jZ2q30IszSoCcsViI8Ah4Elj5PhdTkRJJSdv8FhH+XOwTyiSE+DOx4ol5HTwW3Xijz42AgB5eUpMVDABgu+aSmnMJqevJaYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776841388; c=relaxed/simple;
-	bh=souXIlQv8+iFw9zCxKwZUGD1h7PhrwEDbv7Rj5/8daE=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=iiLpIRKBcgT3DRGYG7PRD7VFWFId1/dgxliOaOB/cya4oQbwmeiLzbXesvweRgJgui9m8CRT4jOMBL+6cmzfISTJxvzlyBcJ6cu+S6DoOulcYyY6LoUvTmrVrIgp2KqJ8rOdpUh1cT1W0K4TU9WuQ0qlkbAhcv4fepjmCEPDinU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=none smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=wJX1KPQc; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=YHNRGC1hGWc6m3ZzcDaW9en/CqZpzjUfDH3bqt0lyZw=;
-	t=1776841386; x=1778050986; b=wJX1KPQc6S5TmpHv74CjYS8ePA1kWs2754l/HFA8cNMxh+/
-	t2IJLZaDzfXl4m7uUUiGhFvmB0HZRxIn+bayT+rl58kKcQA+i9vWYCHPROwENAPbqozqjSMZbzr3C
-	sJSQSR4XmDVGhzYM2Yl67UgnIKc/R9ubqJbEwXvxp5IvaoG5d4WqsVeBz2sB/Zs7Kjb7DrqvWzog3
-	2K7qLYpUdhQ1ne9nERw3IwuK+Q6eqp8O2N5PcCUpWSCO8MjbYZ5BPeHwz0tavEtUyQA+meSDW70Ua
-	dFMWnKOzMXmKuF3GkYK23cauUwdyWBJhAZQvbWljqbZ09NRCUcscEah/u4uQHaMQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1wFRbx-000000067S7-1ywB;
-	Wed, 22 Apr 2026 09:03:01 +0200
-Message-ID: <2fd57f98e3149ba56c83994a9181e92a0104cfe3.camel@sipsolutions.net>
-Subject: Re: [PATCH] um: vector: fix NULL pointer derefs in queue-less
- transports
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Michael Bommarito <michael.bommarito@gmail.com>, richard@nod.at, 
-	anton.ivanov@cambridgegreys.com
-Cc: linux-um@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Date: Wed, 22 Apr 2026 09:03:00 +0200
-In-Reply-To: <20260410203028.3717914-1-michael.bommarito@gmail.com>
-References: <20260410203028.3717914-1-michael.bommarito@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	s=arc-20240116; t=1776841394; c=relaxed/simple;
+	bh=WkhNZCJwNgHd0N5khdpRXMOOJ8X7K9P2eioLiC0zyQs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=C47hJvUnv4ZDJ3fMB+8DpDMJF8mQ1NpMa2pZ+1+5m3ufeA9XiLMrL2FEn6Ji/e9OJ/Ae5QOknPAC9mJ9eHfVDmww+LCderaYBI3QnnQ+W/vTcmZPIsDYiOL9e2640nOBkqhhBYxIbMCXvTM8sSOmg7zqlrbn8umYWKQMFxgCWPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com; spf=pass smtp.mailfrom=pobox.com; dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b=yct43tcI; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=iqHJOMTO; arc=none smtp.client-ip=103.168.172.156
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pobox.com
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 7B1841400105;
+	Wed, 22 Apr 2026 03:03:10 -0400 (EDT)
+Received: from phl-frontend-02 ([10.202.2.161])
+  by phl-compute-04.internal (MEProxy); Wed, 22 Apr 2026 03:03:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pobox.com; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1776841390;
+	 x=1776927790; bh=gYmL0iGFIRmXH+uTkCEjHW4J+LglNX8qo6vj+5zaX9M=; b=
+	yct43tcI3ovdK3QZEps95srUoEV1L0M7w9KMWTLOZSkXHuddtRqHw0xn+vjtMN98
+	xylLbVM/usFcUYPDrO8yr57d0U9TE7n3p7FtJoQr6PkeEB+9Zx7uYUetvM9P3bOk
+	7njevt6TULWuYavTFcbLqCYyf4/ORZngMX14QI0BQeoAv2ms57zPPH42q6lMxnFa
+	Fao+3t+EBABrL1XM3cPAGBxHcHX+paairdS9XnuU8e7DEOKByQX55yYPOlgaKc0j
+	6g4/oqQQJ4k8DJ+YBfHUdBj5SSMtM9NLovRJn0hZtUvriQNJvKaKiqur3CGCYJnn
+	dM2XYEwsQycqHFifB5HfAA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1776841390; x=
+	1776927790; bh=gYmL0iGFIRmXH+uTkCEjHW4J+LglNX8qo6vj+5zaX9M=; b=i
+	qHJOMTOHX58eJOAo0DA0eQZYJoEtmOX0EnYTZUslptDQfvshGOqj4da7UzkkhIUd
+	uAS4nqkdNLingBw0kYoU6TNgrECfgVGPgkoFPeZHpFmri/XRJ1ul2zni+Ra5s5yN
+	FE22t7gTOKKI0ij3Bx64l9sKViPG6jCABESXuAWN+owFxWnHDFv5+Vg5LhZ//eF2
+	MT1AczCSQc4LXKIiXycAFn6iIRHGFc4rtPVCFsM4edji5XkhsGnwWgqq/dabsusQ
+	dowksY62RqSkAC2oxGLUc3EE1jsuxG2+YQ22GYkHQMsexfrfP3JgDm/RPHaQljhI
+	44vcvTzTL9CN4yy6ICNyQ==
+X-ME-Sender: <xms:rXLoacdBwNfW_YxR2KH2OfxksFh6uSDmCcsKeLSNo2Md53AVBIot5A>
+    <xme:rXLoaaEabKlwPKu9fv8k3ClqeErcoQCCJ5XB9FSIYw0fsr6BwAWDvWPfsPROV4VM2
+    vBsR0hfxncic6W5LsniIva2ms7QWPbUahxF86vu2KIk4IHz5KrevJxn>
+X-ME-Received: <xmr:rXLoaZDjc3Zd6d-CP_sVAqIvmhsFoh6PG8DOCuLVdTlgFyF0b9XRERobmThtEWUinLwR6ggwcD3KmuXqfpAyPGXmJG6S4C6O>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdeifeeivdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefkffggfgfuvfevfhfhjggtgfesthejredttddvjeenucfhrhhomhepfdeurghrrhih
+    ucfmrdcupfgrthhhrghnfdcuoegsrghrrhihnhesphhosghogidrtghomheqnecuggftrf
+    grthhtvghrnhepfeelheekheelkeejlefffefhvdeljeetheeltdeiudffveetffelteeg
+    gfefhfejnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiii
+    gvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsrghrrhihnhesphhosghogidrtgho
+    mhdpnhgspghrtghpthhtohepvddtpdhmohguvgepshhmthhpohhuthdprhgtphhtthhope
+    hgrhgvghhkhheslhhinhhugihfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehs
+    thgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehprghttghhvg
+    hssehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtoheplhhinhhugidqkhgvrhhn
+    vghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthhorhhvrghlughsse
+    hlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopegrkhhpmheslhhi
+    nhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheplhhinhhugiesrhhovg
+    gtkhdquhhsrdhnvghtpdhrtghpthhtohepshhhuhgrhheskhgvrhhnvghlrdhorhhgpdhr
+    tghpthhtohepphgrthgthhgvsheskhgvrhhnvghltghirdhorhhg
+X-ME-Proxy: <xmx:rXLoaV4u_okd9Bici2qq6jQLuVPWSQtHpn_o0qQ7FTqqrOR8DL1_xw>
+    <xmx:rXLoaQnr9dy62XxT9y-J16FDuFBJgGe8fJBTlkRwM48CD-P0Bdyipg>
+    <xmx:rXLoaW6_hkAx5dCWsg11zikwTlHRrdJ-n-hCwMw4pfp8Iu4A566zjQ>
+    <xmx:rXLoaWV3jnCmNHByKtWw1vUdTjf9zt1EjSqVQBfXEylaj1woTFLWng>
+    <xmx:rnLoaSyYDLUg8_XHPJDiTfXx2mCnc50AYFgH_qn1JSrA_XmiT36ebuwT>
+Feedback-ID: i6289494f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 22 Apr 2026 03:03:07 -0400 (EDT)
+Message-ID: <3ebcde26-a996-4379-bdf1-1b44ff24e875@pobox.com>
+Date: Wed, 22 Apr 2026 00:03:06 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Spamd-Result: default: False [-0.16 / 15.00];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.18 000/198] 6.18.24-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20260420153935.605963767@linuxfoundation.org>
+Content-Language: en-US
+From: "Barry K. Nathan" <barryn@pobox.com>
+In-Reply-To: <20260420153935.605963767@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[sipsolutions.net:s=mail];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[pobox.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[pobox.com:s=fm1,messagingengine.com:s=fm2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com,nod.at,cambridgegreys.com];
-	TAGGED_FROM(0.00)[bounces-240285-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	DMARC_NA(0.00)[sipsolutions.net: no valid DMARC record];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	TAGGED_FROM(0.00)[bounces-240286-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[pobox.com:+,messagingengine.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johannes@sipsolutions.net,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[sipsolutions.net:+];
+	FROM_NEQ_ENVFROM(0.00)[barryn@pobox.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sipsolutions.net:dkim,sipsolutions.net:mid]
-X-Rspamd-Queue-Id: 09458442B61
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,pobox.com:email,pobox.com:dkim,pobox.com:mid]
+X-Rspamd-Queue-Id: EB900442BA1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Sorry, I didn't pay much attention to this before...
+On 4/20/26 08:39, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.18.24 release.
+> There are 198 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 22 Apr 2026 15:38:57 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.18.24-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.18.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-On Fri, 2026-04-10 at 16:30 -0400, Michael Bommarito wrote:
-> TAP transport sets neither VECTOR_RX nor VECTOR_TX, so
-> vector_net_open() never allocates rx_queue or tx_queue.  HYBRID sets
-> VECTOR_RX but not VECTOR_TX, so tx_queue is NULL there too.
->=20
-> vector_reset_stats(), vector_poll(), vector_get_ethtool_stats(), and
-> vector_get_ringparam() unconditionally deref these queue pointers,
-> causing a NULL pointer crash on SMP or with any lock debugging option.
->=20
-> Guard all queue pointer accesses with NULL checks.
+I tested 6.18.24-rc1 with srcu-use-irq_work-to-start-gp-in-tiny-srcu.patch
+and clockevents-prevent-timer-interrupt-starvation.patch reverted (since
+these two patches were reverted in the 6.18.y stable-queue) on an arm64
+virtual machine. Working well, no regressions observed.
 
-I see how that fixes the crash, but maybe you could write a few words on
-why it's still correct?
+Tested-by: Barry K. Nathan <barryn@pobox.com>
 
-> -	spin_lock(&vp->tx_queue->head_lock);
-> -	spin_lock(&vp->rx_queue->head_lock);
-> +	if (vp->tx_queue)
-> +		spin_lock(&vp->tx_queue->head_lock);
-> +	if (vp->rx_queue)
-> +		spin_lock(&vp->rx_queue->head_lock);
->  	memcpy(tmp_stats, &vp->estats, sizeof(struct vector_estats));
-
-I could imagine for example this memcpy() observing a torn write or
-something like that and getting strange results out?
-
-Or is that just not a thing because UML is (still) mostly non-SMP?
-
-
-Also I think there are related issues that wouldn't show up for a broken
-configuration, such as if create_queue() fails to allocate memory and we
-get an inconsistency between tx_queue / rx_queue pointers and VECTOR_TX
-/ VECTOR_RX flags? Though I'll admit that seems highly unlikely.
-
-johannes
+-- 
+-Barry K. Nathan  <barryn@pobox.com>
 
