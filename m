@@ -1,219 +1,137 @@
-Return-Path: <stable+bounces-240366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240368-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MMdhM8H/6Gl5SgIAu9opvQ
-	(envelope-from <stable+bounces-240366-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 19:05:05 +0200
+	id oF9nOeAA6Wl5SgIAu9opvQ
+	(envelope-from <stable+bounces-240368-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 19:09:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F833449264
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 19:05:05 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F5714492C6
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 19:09:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F048D308640A
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 16:56:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2D18F3016246
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 17:04:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E71B382384;
-	Wed, 22 Apr 2026 16:56:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70D9B382F07;
+	Wed, 22 Apr 2026 17:04:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="drFPjMig"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hTBMtIYC"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f54.google.com (mail-dl1-f54.google.com [74.125.82.54])
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64680175A79
-	for <stable@vger.kernel.org>; Wed, 22 Apr 2026 16:56:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776876991; cv=pass; b=ja0te/QOveXgTpe9lFan2vtDHX7xGNoppwQGK2HGs1pNg0HHIl/90mdzLrzoo1BvP4g8fHYKOjrAbwY1EqRvrQQwPjyOPhzOTJeX0M+ZSOLLlqEmnez5leclYKNPv+A7NGKXJYJ0mFUg2NwS7Le5Ctc/cBHXKoLdCMXfMwk7EEI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776876991; c=relaxed/simple;
-	bh=JysO+d3AJaHVSwsW5DrmaBgzvBL9SD0zNm6uNSsmh5E=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nWTXWy6DS7pfCSwC92c4RfxU1ofj9RqLlItFQSAs5T+brFsOKilcrCqM4yY3Njjm8HtpZtHGn42oRUMM/LWU+417QpDqCJsjbFNdZH+vONY18JU4msSxOy/CfZ/LlnG0o/mVPxJKe4hE7I1Z35EiZMEhCAlLoI2VUFetk5nfGDo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=drFPjMig; arc=pass smtp.client-ip=74.125.82.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA687383C85
+	for <stable@vger.kernel.org>; Wed, 22 Apr 2026 17:04:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776877494; cv=none; b=OqtJlr704bXAS9vMLnBY55OjgOWWwfVbPae3g+htS/YxLXZHMoXWMr50vwGXv/JWav96N5BV9x9aHQb+EM3ZvNxl/VVsOwdgYPCQEe+tk7afpRu8Wvk+2czy3zPB6KbKyQOgvKFbgkHZH9TnGC4MwN8/M0bloXymu0UTY5jPk8o=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776877494; c=relaxed/simple;
+	bh=wxRogsKDIsoJB6Ejik8bx1NvCJ1Ic3LbqgNvDi3FMgQ=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type; b=k8Qhc0sc/PkIPuCjtB+hiU28nThIszXeMYQZN5Oe84gOKJyL2RInjmBakh09/ddbnPV21+vFYt+USs3LEBR/jH1r+WUDP3qmFIJR7OI+yhnQATl3DYQf0JgZ+Gt1wO/phm/IjDlbYKuW6ZCFdtoYrXvcoxJ+5w3UxtxTceJy0YA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hTBMtIYC; arc=none smtp.client-ip=209.85.221.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dl1-f54.google.com with SMTP id a92af1059eb24-12db2e9b3bcso280801c88.3
-        for <stable@vger.kernel.org>; Wed, 22 Apr 2026 09:56:30 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776876989; cv=none;
-        d=google.com; s=arc-20240605;
-        b=gQbjBjPA3GGCmIEVkKgPoGlU31v33e4rFyhHPcIuH7OZXNPQHXc1qwV/4bZLjBR7CF
-         MIPVjEn0OotpVwweBDoPaNrlrUIzzpJ3zmsJ/S9yWBK9Hjen7bZk8AEQf7Eij098iJTA
-         ffQnPMwHGT2cyL0YsYWXVHkieSwyAKhCKJGkEvls079vv9VSD4VBPhcC8XDzpQavUByB
-         kC7SVhS9uKSdcf+SJCG4qb1nWenASChQ3URXxqF/9sFoomLAFJl2jcuILVJ1GehYo45u
-         0CpfBJ0Wl8zFaQKkPOri2HteOZrHbJjuNtQVETr2TqG8tRr6c9XRXrSFL1efSnJcJNDJ
-         rcYA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=OojRBDFDIIdZR3BWENJt7a7Gu+luw6kbzdUuLsqds4Q=;
-        fh=+RfGf+8zUxSVDwNsEproEIaYplRCyF1c5IYYYL26SUQ=;
-        b=ict6TVRFpHG875pKbTcpga+HU2gucRnzIdEGCD0dKr4YqrB251NgDYME9GlHo/DNZ+
-         2unPePHIdBnqOuxx3S6K3t5EL75ad4/bLhktgUu3LC6MYXB/TYoftF+mWED4TYGIetre
-         8xwU1vekqMlV8ZUzxAkhbFmzRXn1KCgkGwy1JGknX2RPSauZ3SX4yhYa2CPnHraOpjQp
-         zEYMMwZ/q2+DEaatoZ0W1U5PeqRuKLp+u9uX2n4P9+NsH5WC/PWONKTQZLNcJAoc+BOK
-         +MEU3hZtO3BuEsAo1EY3kayvrX5Xjw5eMnWISoouZTxQNyiyHCj1cXc9A8SdMM/+Q7oA
-         i5GA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-43d572f7437so3807293f8f.1
+        for <stable@vger.kernel.org>; Wed, 22 Apr 2026 10:04:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776876989; x=1777481789; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OojRBDFDIIdZR3BWENJt7a7Gu+luw6kbzdUuLsqds4Q=;
-        b=drFPjMigcALnBjZPYhi1jlRF9zC9mE9eVBn72fFDdKKIUmhIeimGy6tWlkpPRJsg8B
-         HGW9IuSpJmM5iBnHC4mjJZA06UdWiNNs9yIw6R5DcHNsga9bnO47Vcl+o3IXb2uDl5Fw
-         AfuGadhq8X1UJn/K7PFpOVjAMihtBjGhI2p9c1+o40ONREvg8La3w5nJEpuUZPHANlpG
-         5W1eLkayF1bVqxC9W8H9XJrbbW1gENNEKjU+y6ssRksYp3qKtVHsFZyrgi0kbBDMeBLA
-         bBY280VpuRd3Yoxfc0C70W48ZXQ5rLUBHjnr2dawLonRQAHEy2SorfuiZHlqCqIh9ATM
-         2/uw==
+        d=gmail.com; s=20251104; t=1776877491; x=1777482291; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:subject:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=b+1GBySnBtUImPxIEZErCoyczLirxpWSG/4UwkhhzXE=;
+        b=hTBMtIYCi/LnQ3hOy3efrlekPADe01nDcYvGyDxsarNLxAAMgUE9UJpw4cXvFzJipw
+         bzrnVJV09Tcb8IMdfSAUhO3UlHUW0vgyjDjmY8mRyINfHBPaMn/MAWEqNd/h/OI+07Ym
+         sQxbcTwb5U8wKWB4MwFW4jRCSey+1MhuwJoUj1TcRG9kY5xCPvEWUKGaggd88KPtpT1Y
+         P+VU4mNwNLSSl9NbmCEe784IvCyOFlMGKqj41u9wxSs8kzVztrxZMk1Y00h/Da1qmE0d
+         vDiW/7U/2kMpvAw+rTUzDJ50ldh6Ue0GaGKum3zF4hb0bY+3VPXGc7gbGDRTRrtftnv2
+         SoEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776876989; x=1777481789;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=OojRBDFDIIdZR3BWENJt7a7Gu+luw6kbzdUuLsqds4Q=;
-        b=F+0ZdxbBb8wYJff/uZ1DNpMhrOQULPk+AEix5hMmWD1eg6da0LkwltBBJG4pdFn10Z
-         0o8ju0W1bmKzv1n1PM6NaBJTF1W+/SYUZieZ8JVjtLp/Ear3ClWmvLbpXMaH+4G3nJmb
-         MnnzHAtvtVcNf/LNKNNQ5ZYUIMXXQmcHTd8uds5d5ZYZfdB3gGt1wht/3bnhi5zIZzDI
-         lgtW1Ps5H5XAmqNCO7ys35Ex7TfNl24VR46CCYl+eJgcJSqORlWhr13Jr6ASZjU1bKx/
-         /EyKBJPmHyo1AxqRdI6QhVkR+WXVNmLNtRBrdECTkvcsUhKLnG1q80kTphHLeSJOgrv5
-         4AzA==
-X-Forwarded-Encrypted: i=1; AFNElJ+NovFJIu5uW84d63S87V6w59I89jw4trrJemtxH7tJ+ju67bfqCGgRhf4r6nKfD6woscUoVA0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzFnYjIU3+7wYWkJjQuyIeEVSTED4vrBlbSSEvFIgwWGlKF3Z1R
-	IeHOt8ehTw5PRmHDc8vZJYzf6h727Bkmr8zPz/7ROq2zM0IZLWQBAkR1ZKblpOThBvADw4CG3qy
-	fvCmjFLLTvpcGECBvwSLYw8CFPx1z/kc=
-X-Gm-Gg: AeBDieuFd3nH3KCE+6BjtM5u6kerCaXjE8Zmho+klCNdQ9H5Jh3cH9c95kgDR2eYO4x
-	rHnfA9vvgG4OMyudrbj5ZYkLtT7gzULDX9K9dfLfv4Ia0oKdVcAqMpcNHzjDPM27Gs/g5Qx6Zei
-	Ed4xgjr1FQd0FUQd4VQuFi9YWwZqvQMcGz2p5Q3WVAiiqiEE8ChmC6jUcV0ko+uZG3+qgObOc7E
-	vdYCpzKHOAouBYnwn5axH4mpK+Sl6m2293iVX5RfGq2uPqRNUUIbfCArS9skJJzqSET1TbhMzMY
-	fmBjbQBCFRPsGpUaFlZEaBERobTLNjnQ/yqKGkPaidFUxGyAHQuJwBPW/Q6O0pZ2rxn94y4AMIu
-	OFkn6KtBjiJLUsMo=
-X-Received: by 2002:a05:7022:6b97:b0:11b:ad6a:6e39 with SMTP id
- a92af1059eb24-12c73f97796mr4503914c88.5.1776876989352; Wed, 22 Apr 2026
- 09:56:29 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1776877491; x=1777482291;
+        h=content-transfer-encoding:mime-version:message-id:subject:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=b+1GBySnBtUImPxIEZErCoyczLirxpWSG/4UwkhhzXE=;
+        b=QgOwkoxue9RG094GdyVAnIioNKRuqNVwdYU1CjcfvS5rx3dRm0hiGTTCP8/xq9TjCB
+         TaDqIYEdXw/V7hZ7XjuHQ2lZnfvkhmhQNf4wokshfsZLi2qp8JMj/lG9rkAk+Ff7ZVCO
+         HjrmrqfUxvjjsGe7x5WQkTS5Y8th+kqLFAElVWwCVgwpxSibtiHULn6oUujDSMw34aEy
+         ZQvgaExHjpHPZkVsB7xhZT+mnrTO6hOQCwVSUuOC4OiFk43u8RnahcbTtXduXJxWUJz2
+         d6U79dsw8KR/Ekc5p64q8ZwPetDv2QGRiCEkSpGBi1zUsyv/VH7w2fApya/5wbFm4Wu+
+         BmuQ==
+X-Gm-Message-State: AOJu0YxeL++sQ4orCDgbIge8DFIttkPajwjQtEXmM2i/CCNlM0Z78Z/z
+	AyjxymC9imQVF2c0LhSB39DZlrPdLvB6jT3X32+mIpRD9t0ZSoqaGgrmUijt4mJf2Wo=
+X-Gm-Gg: AeBDievvJ+zgJGp7QvP2YRxmqWjEAJE7RQH9JxoPoNSG41K9+hR2uh2Mmlsb4U4bg3A
+	8lGzJYl6eToLly/62KbCk19dz8MocvaI7Sho8ob2elO1/UPqxLs+mtcUfASD6WUdRugRBI+9tPb
+	fLe9S0RQu6bK/Ov1FGkX9mAYaRJagrCweCWd1khXa82/ofJsykaN4B2bfpLiv/efls8C3ltKgzt
+	PuWlagWD7CG7iiNyehgC5+g2F2jrSkBgAl+mbGDgKsMyTzcH8m4qPW9PocwJax+5HtBQcLwGv85
+	Ch//FYn+xYgij4++jpaAg8qwAyHsxMm5WStFNpWnr+anD2ML+AbMiaAuiCKbaG4y6LO1SwoJfIZ
+	ZPh1k9o6W93MIhHUUNJuGeI80kfYeLgAKXLnxYaZowCZKQageJKfYSw4H60bi7Rj2B5yE9E0yGD
+	ubYHZ+cNGOd1ExjTmL9GeVDHzl8qOt1G0pTaq9
+X-Received: by 2002:a05:6000:2212:b0:43d:7868:21e5 with SMTP id ffacd0b85a97d-43fe3dcbee2mr36155291f8f.12.1776877490684;
+        Wed, 22 Apr 2026 10:04:50 -0700 (PDT)
+Received: from ehlo.thunderbird.net ([86.1.69.5])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43fe4cb11b4sm47818545f8f.2.2026.04.22.10.04.50
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 22 Apr 2026 10:04:50 -0700 (PDT)
+Date: Wed, 22 Apr 2026 18:04:50 +0100
+From: Josh Law <joshlaw48@gmail.com>
+To: stable@vger.kernel.org
+Subject: Backport request
+Message-ID: <C9577A36-B531-4480-BEA5-42F660C184CA@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260422162956.620362-1-sunpeng.li@amd.com>
-In-Reply-To: <20260422162956.620362-1-sunpeng.li@amd.com>
-From: Alex Deucher <alexdeucher@gmail.com>
-Date: Wed, 22 Apr 2026 12:56:17 -0400
-X-Gm-Features: AQROBzA8X_HznQYPthmAG1DOnYsxrf075XbF75tbmIHFKTHf3mAp6zlU5dVB72k
-Message-ID: <CADnq5_OYNSoWteuXDJrCOtj4qYn2q+vyXUKZaHvgNN+5xFFg2Q@mail.gmail.com>
-Subject: Re: [PATCH] drm/amd/display: Restore 5s vbl offdelay for NV3x+ DGPUs
-To: sunpeng.li@amd.com
-Cc: amd-gfx@lists.freedesktop.org, Harry.Wentland@amd.com, 
-	Aurabindo.Pillai@amd.com, mario.limonciello@amd.com, wiagn233@outlook.com, 
-	sysdadmin@m1k.cloud, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[lists.freedesktop.org,amd.com,outlook.com,m1k.cloud,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-240366-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	DKIM_TRACE(0.00)[gmail.com:+];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-240368-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_ONE(0.00)[1];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alexdeucher@gmail.com,stable@vger.kernel.org];
 	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[joshlaw48@gmail.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_NONE(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,m1k.cloud:email,mail.gmail.com:mid,amd.com:email]
-X-Rspamd-Queue-Id: 5F833449264
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 5F5714492C6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Apr 22, 2026 at 12:49=E2=80=AFPM <sunpeng.li@amd.com> wrote:
->
-> From: Leo Li <sunpeng.li@amd.com>
->
-> [Why]
->
-> Rapid vblank off is causing flip-done timeouts for NV3x and newer
-> family of GPUs that support more idle optimization features.
->
-> A proper fix requires further investigation. In lieu of it, let's
-> workaround it for now.
->
-> [How]
->
-> For NV3x and newer family of DGPUs, restore the old 5s vblank off timer.
->
-> Fixes: 9b47278cec98 ("drm/amd/display: temp w/a for dGPU to enter idle op=
-timizations")
-> Link: https://gitlab.freedesktop.org/drm/amd/-/issues/3787
-> Link: https://lore.kernel.org/amd-gfx/20260217191632.1243826-1-sysdadmin@=
-m1k.cloud/
-> Signed-off-by: Leo Li <sunpeng.li@amd.com>
-> Tested-by: Michele Palazzi <sysdadmin@m1k.cloud>
-> ---
->  .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c  | 18 +++++++++++++++---
->  1 file changed, 15 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/=
-gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-> index 3fa4dbda4517c..ce5063928413c 100644
-> --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-> +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-> @@ -9511,9 +9511,21 @@ static void manage_dm_interrupts(struct amdgpu_dev=
-ice *adev,
->         if (acrtc_state) {
->                 timing =3D &acrtc_state->stream->timing;
->
-> -               if (amdgpu_ip_version(adev, DCE_HWIP, 0) <
-> -                          IP_VERSION(3, 5, 0) ||
-> -                          !(adev->flags & AMD_IS_APU)) {
-> +               if (amdgpu_ip_version(adev, DCE_HWIP, 0) >=3D
-> +                     IP_VERSION(3, 2, 0) &&
-> +                     !(adev->flags & AMD_IS_APU)) {
+Hello, I would like backports for 
 
-Why only dGPUs?  Seems like this is reported as least as often on APUs
-if not more.
+Mainline hashes:
 
-Alex
+https://github.com/torvalds/linux/commit/8cdf30813ea8ce881cecc08664144416dbdb3e16
 
-> +                       /*
-> +                        * DGPUs NV3x and newer that support idle optimiz=
-ations
-> +                        * experience intermittent flip-done timeouts on =
-cursor
-> +                        * updates. Restore 5s offdelay behavior for now.
-> +                        *
-> +                        * Discussion on the issue:
-> +                        * https://lore.kernel.org/amd-gfx/20260217191632=
-.1243826-1-sysdadmin@m1k.cloud/
-> +                        */
-> +                       config.offdelay_ms =3D 5000;
-> +                       config.disable_immediate =3D false;
-> +               } else if (amdgpu_ip_version(adev, DCE_HWIP, 0) <
-> +                            IP_VERSION(3, 5, 0)) {
->                         /*
->                          * Older HW and DGPU have issues with instant off=
-;
->                          * use a 2 frame offdelay.
-> --
-> 2.53.0
->
+https://github.com/torvalds/linux/commit/9003ec6f7f394943880618737d797a9f257e6e1e
+
+No idea why it isn't on kernel.org git trees, Linus merged that PR...
+
+Thanks!
+
+
+
 
