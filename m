@@ -1,150 +1,369 @@
-Return-Path: <stable+bounces-240305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240306-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aCaRNcqj6GngOAIAu9opvQ
-	(envelope-from <stable+bounces-240305-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 12:32:42 +0200
+	id 4KM2E8yj6GngOAIAu9opvQ
+	(envelope-from <stable+bounces-240306-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 12:32:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E338E444C12
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 12:32:41 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8FE7444C1A
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 12:32:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 05AC930046B5
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 10:32:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4B9F4301B179
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 10:32:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C62F33A6B6F;
-	Wed, 22 Apr 2026 10:32:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 319973B2FD8;
+	Wed, 22 Apr 2026 10:32:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="UEvTgWhL";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="vQw3/1bB";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="UEvTgWhL";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="vQw3/1bB"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B6B23A5E98;
-	Wed, 22 Apr 2026 10:32:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D3B63A5E98
+	for <stable@vger.kernel.org>; Wed, 22 Apr 2026 10:32:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776853944; cv=none; b=IYL4KZFD6fxIUVsXcPIeL2YgzbRUlduJiJDOvZoaiEdPH9VuVg6WUFFuGNC+UWWfKv6oNpfImPDRUodgmd0nvJXPHEhCRAA8My2T3ER3niSjCnK4ZPSUdpDlBv7fAQhN+lNIem+n1q7awZfCsQTt/zDLQqidFdCFYOq/KhSG1yg=
+	t=1776853960; cv=none; b=mYy8Zw8eb5VNMYYtaplmjGTaEmZhxqwQXYhZe2za3iVO9vF4brB7qpLbshhvW7cUZxxxgd3AzeqBuIyjGDqbK+tla9UWoQXz+4uHM8wt6M5xH9++XDor27FyH89OetcmeVq7pxG0xYg7Q41Wx8+Hra9JKX31IRICI0qNBrJ81MM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776853944; c=relaxed/simple;
-	bh=82h2/uMxRpAbFgwLTzVEK7omZXq7HC3v7dgouAkza0s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=e+fvFBAkrF5Efh92iAaWzPkxQGAal5bfs124vdSqKCWo33YGQrbPWRjB2Gj/9sEqtRusWDKwARlskU7usX1npnbQXhgUtCL11RIbedMeiqn7Ld4xmXVAqThB1kHy/rXFRgHVcI1RX8IgnrSYKO7QDFuIAyGgvwL74Kb1SYhBtTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19ABEC19425;
-	Wed, 22 Apr 2026 10:32:20 +0000 (UTC)
-Date: Wed, 22 Apr 2026 11:32:18 +0100
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org, Will Deacon <will@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Lance Yang <lance.yang@linux.dev>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Mark Brown <broonie@kernel.org>, Dev Jain <dev.jain@arm.com>,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] mm/page_alloc: fix initialization of tags of the huge
- zero folio with init_on_free
-Message-ID: <aeiivYFfC_EfGuFC@arm.com>
-References: <20260421-zerotags-v2-1-05cb1035482e@kernel.org>
+	s=arc-20240116; t=1776853960; c=relaxed/simple;
+	bh=ftRsGwbBlXG7HcFqgFKI7EuKypI1HTPKPs5lzguV42A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YUU7wQj0oa67Q/RLforDoH4/Z+jySRnK8RQjNA7Ntlk6VAoPlCqaKN7gEGpMFy3ksy3uVTbbCu4IJdXW7yYjFaJdpVxZZtICxB0qM6ZM0wsjSqw7/Bjq5/rfCJQIzJl1ILEaUY5F+/G7k6VOAr4i2ryDUjld9T5oLkvQR6ktKQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=UEvTgWhL; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=vQw3/1bB; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=UEvTgWhL; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=vQw3/1bB; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 511C05BCC6;
+	Wed, 22 Apr 2026 10:32:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1776853956; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=geV2Y7KD8rYaVnkoozVtIqkBqooK12/gV2sn3Od+HHI=;
+	b=UEvTgWhLaRsV1pncheyz7SidQnKJcLb3KBUOPTEYUYfiuQMem9ra6GYwtXsrPrUN0kV+3r
+	mxhD0U6+a7c+hMbA4eV+E3bObpGB7KSS+CoXK+uk7hj0toGluH4r33wEAwITu3d7PZ1gSF
+	QKqvK1Rtd7IKIpuP8p+mldx9Kea9zCA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1776853956;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=geV2Y7KD8rYaVnkoozVtIqkBqooK12/gV2sn3Od+HHI=;
+	b=vQw3/1bB094z91bzpC4wdAamqcU30XlX7zEL45SeIHZi8Yd3kEf/JF1WHzuVC2uUzI0+Ve
+	9BGJuCkic6KRAwDw==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=UEvTgWhL;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="vQw3/1bB"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1776853956; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=geV2Y7KD8rYaVnkoozVtIqkBqooK12/gV2sn3Od+HHI=;
+	b=UEvTgWhLaRsV1pncheyz7SidQnKJcLb3KBUOPTEYUYfiuQMem9ra6GYwtXsrPrUN0kV+3r
+	mxhD0U6+a7c+hMbA4eV+E3bObpGB7KSS+CoXK+uk7hj0toGluH4r33wEAwITu3d7PZ1gSF
+	QKqvK1Rtd7IKIpuP8p+mldx9Kea9zCA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1776853956;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=geV2Y7KD8rYaVnkoozVtIqkBqooK12/gV2sn3Od+HHI=;
+	b=vQw3/1bB094z91bzpC4wdAamqcU30XlX7zEL45SeIHZi8Yd3kEf/JF1WHzuVC2uUzI0+Ve
+	9BGJuCkic6KRAwDw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 46CC6593AF;
+	Wed, 22 Apr 2026 10:32:35 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id yn6wDMOj6GmUdgAAD6G6ig
+	(envelope-from <fmancera@suse.de>); Wed, 22 Apr 2026 10:32:35 +0000
+Message-ID: <f67a985f-c6a0-4796-b255-59d99e317b6f@suse.de>
+Date: Wed, 22 Apr 2026 12:32:34 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260421-zerotags-v2-1-05cb1035482e@kernel.org>
-X-Spamd-Result: default: False [-1.36 / 15.00];
+User-Agent: Mozilla Thunderbird
+Subject: Re: Bug#1130336: [regression] Network failure beyond first connection
+ after 69894e5b4c5e ("netfilter: nft_connlimit: update the count if add was
+ skipped")
+To: Thorsten Leemhuis <regressions@leemhuis.info>,
+ =?UTF-8?Q?Alejandro_Oliv=C3=A1n_Alvarez?=
+ <alejandro.olivan.alvarez@gmail.com>,
+ Salvatore Bonaccorso <carnil@debian.org>, 1130336@bugs.debian.org
+Cc: Florian Westphal <fw@strlen.de>, Pablo Neira Ayuso <pablo@netfilter.org>,
+ Phil Sutter <phil@nwl.cc>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ regressions@lists.linux.dev, stable@vger.kernel.org
+References: <177349610461.3071718.4083978280323144323@eldamar.lan>
+ <c72a56ab-a16c-4866-9a44-a03393f074db@suse.de>
+ <b3cbfd15-acd1-4500-ba30-eac6f48523fb@suse.de> <abW2MAAqLnKZm3KF@strlen.de>
+ <177322336258.4376.10097494324750307114.reportbug@Desk1.simalex.iccbroadcast.com>
+ <4da571ab-fa1d-4ee6-b71c-24f4a28243ed@suse.de> <abqfSB0TUik1kRU4@eldamar.lan>
+ <e24a281622cedf9e8f4dc93c961813aeb7b6ce4c.camel@gmail.com>
+ <8788e351-553f-48da-a6e6-ce082adacb8d@suse.de>
+ <0b8607c8-2d29-4fca-961a-b7a677e968a1@leemhuis.info>
+Content-Language: en-US
+From: Fernando Fernandez Mancera <fmancera@suse.de>
+In-Reply-To: <0b8607c8-2d29-4fca-961a-b7a677e968a1@leemhuis.info>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Flag: NO
+X-Spam-Score: -3.01
+X-Spam-Level: 
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[arm.com : SPF not aligned (relaxed), No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240305-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	MIME_TRACE(0.00)[0:+];
-	MISSING_XM_UA(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240306-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[leemhuis.info,gmail.com,debian.org,bugs.debian.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[suse.de:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[catalin.marinas@arm.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	R_DKIM_NA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[fmancera@suse.de,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:mid,arm.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E338E444C12
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.de:email,suse.de:dkim,suse.de:mid]
+X-Rspamd-Queue-Id: D8FE7444C1A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Apr 21, 2026 at 05:39:07PM +0200, David Hildenbrand wrote:
-> __GFP_ZEROTAGS semantics are currently a bit weird, but effectively this
-> flag is only ever set alongside __GFP_ZERO and __GFP_SKIP_KASAN.
+On 4/22/26 11:18 AM, Thorsten Leemhuis wrote:
+> Lo! Top-posting on purpose to make this easy to process.
 > 
-> If we run with init_on_free, we will zero out pages during
-> __free_pages_prepare(), to skip zeroing on the allocation path.
+> What happened to this regression? It looks a bit like things stalled and
+> fell through the cracks. Or Fernando, did you post a patch like you
+> mentioned? I looked for one referring the commit or the reporter, but
+> could not find anything -- but maybe I missed it.
 > 
-> However, when allocating with __GFP_ZEROTAG set, post_alloc_hook() will
-> consequently not only skip clearing page content, but also skip
-> clearing tag memory.
-> 
-> Not clearing tags through __GFP_ZEROTAGS is irrelevant for most pages that
-> will get mapped to user space through set_pte_at() later: set_pte_at() and
-> friends will detect that the tags have not been initialized yet
-> (PG_mte_tagged not set), and initialize them.
-> 
-> However, for the huge zero folio, which will be mapped through a PMD
-> marked as special, this initialization will not be performed, ending up
-> exposing whatever tags were still set for the pages.
-> 
-> The docs (Documentation/arch/arm64/memory-tagging-extension.rst) state
-> that allocation tags are set to 0 when a page is first mapped to user
-> space. That no longer holds with the huge zero folio when init_on_free
-> is enabled.
-> 
-> Fix it by decoupling __GFP_ZEROTAGS from __GFP_ZERO, passing to
-> tag_clear_highpages() whether we want to also clear page content.
-> 
-> Invert the meaning of the tag_clear_highpages() return value to have
-> clearer semantics.
-> 
-> Reproduced with the huge zero folio by modifying the check_buffer_fill
-> arm64/mte selftest to use a 2 MiB area, after making sure that pages have
-> a non-0 tag set when freeing (note that, during boot, we will not
-> actually initialize tags, but only set KASAN_TAG_KERNEL in the page
-> flags).
-> 
-> 	$ ./check_buffer_fill
-> 	1..20
-> 	...
-> 	not ok 17 Check initial tags with private mapping, sync error mode and mmap memory
-> 	not ok 18 Check initial tags with private mapping, sync error mode and mmap/mprotect memory
-> 	...
-> 
-> This code needs more cleanups; we'll tackle that next, like
-> decoupling __GFP_ZEROTAGS from __GFP_SKIP_KASAN.
-> 
-> Fixes: adfb6609c680 ("mm/huge_memory: initialise the tags of the huge zero folio")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-The logic looks fine to me. Thanks!
+Yes, it stalled and fell through the cracks. Let me prepare a fix as I 
+mentioned.
 
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Thanks for the reminder Thorsten!
+
+> Ciao, Thorsten
+> 
+> On 3/19/26 09:59, Fernando Fernandez Mancera wrote:
+>> On 3/19/26 9:44 AM, Alejandro Oliván Alvarez wrote:
+>>> Hi folks.
+>>>
+>>> On Wed, 2026-03-18 at 13:49 +0100, Salvatore Bonaccorso wrote:
+>>>> Hi Alejandro,
+>>>>
+>>>> On Sun, Mar 15, 2026 at 02:09:33AM +0100, Fernando Fernandez Mancera
+>>>> wrote:
+>>>>> On 3/14/26 8:25 PM, Florian Westphal wrote:
+>>>>>> Fernando Fernandez Mancera <fmancera@suse.de> wrote:
+>>>>>>> On 3/14/26 5:13 PM, Fernando Fernandez Mancera wrote:
+>>>>>>>> Hi,
+>>>>>>>>
+>>>>>>>> On 3/14/26 3:03 PM, Salvatore Bonaccorso wrote:
+>>>>>>>>> Control: forwarded -1
+>>>>>>>>> https://lore.kernel.org/
+>>>>>>>>> regressions/177349610461.3071718.4083978280323144323@eldama
+>>>>>>>>> r.lan
+>>>>>>>>> Control: tags -1 + upstream
+>>>>>>>>>
+>>>>>>>>> Hi
+>>>>>>>>>
+>>>>>>>>> In Debian, in https://bugs.debian.org/1130336, Alejandro
+>>>>>>>>> reported that
+>>>>>>>>> after updates including 69894e5b4c5e ("netfilter:
+>>>>>>>>> nft_connlimit:
+>>>>>>>>> update the count if add was skipped"), when the following
+>>>>>>>>> rule is set
+>>>>>>>>>
+>>>>>>>>>        iptables -A INPUT -p tcp -m
+>>>>>>>>> connlimit --connlimit-above 111 -j
+>>>>>>>>> REJECT --reject-with tcp-reset
+>>>>>>>>>
+>>>>>>>>> connections get stuck accordingly, it can be easily
+>>>>>>>>> reproduced by:
+>>>>>>>>>
+>>>>>>>>> # iptables -A INPUT -p tcp -m connlimit
+>>>>>>>>> --connlimit-above 111 -j REJECT
+>>>>>>>>> --reject-with tcp-reset
+>>>>>>>>> # nft list ruleset
+>>>>>>>>> # Warning: table ip filter is managed by iptables-nft, do
+>>>>>>>>> not touch!
+>>>>>>>>> table ip filter {
+>>>>>>>>>             chain INPUT {
+>>>>>>>>>                     type filter hook input priority filter;
+>>>>>>>>> policy accept;
+>>>>>>>>>                     ip protocol tcp xt
+>>>>>>>>> match "connlimit" counter packets 0
+>>>>>>>>> bytes 0 reject with tcp reset
+>>>>>>>>>             }
+>>>>>>>>> }
+>>>>>>>>> # wget -O /dev/null
+>>>>>>>>> https://git.kernel.org/torvalds/t/linux-7.0-
+>>>>>>>>> rc3.tar.gz
+>>>>>>>>> --2026-03-14 14:53:51--
+>>>>>>>>> https://git.kernel.org/torvalds/t/linux-7.0-
+>>>>>>>>> rc3.tar.gz
+>>>>>>>>> Resolving git.kernel.org
+>>>>>>>>> (git.kernel.org)... 172.105.64.184,
+>>>>>>>>> 2a01:7e01:e001:937:0:1991:8:25
+>>>>>>>>> Connecting to git.kernel.org
+>>>>>>>>> (git.kernel.org)|172.105.64.184|:443...
+>>>>>>>>> connected.
+>>>>>>>>> HTTP request sent, awaiting response... 301 Moved
+>>>>>>>>> Permanently
+>>>>>>>>> Location:
+>>>>>>>>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/
+>>>>>>>>> linux.git/snapshot/linux-7.0-rc3.tar.gz
+>>>>>>>>> [following]
+>>>>>>>>> --2026-03-14 14:53:51--
+>>>>>>>>> https://git.kernel.org/pub/scm/linux/kernel/ git/torvalds/l
+>>>>>>>>> inux.git/snapshot/linux-7.0-rc3.tar.gz
+>>>>>>>>> Reusing existing connection to git.kernel.org:443.
+>>>>>>>>> HTTP request sent, awaiting response... 200 OK
+>>>>>>>>> Length: unspecified [application/x-gzip]
+>>>>>>>>> Saving to: ‘/dev/null’
+>>>>>>>>>
+>>>>>>>>> /dev/null                         [
+>>>>>>>>> <=>                    ] 248.03M
+>>>>>>>>> 51.9MB/s    in 5.0s
+>>>>>>>>>
+>>>>>>>>> 2026-03-14 14:53:56 (49.3 MB/s) - ‘/dev/null’ saved
+>>>>>>>>> [260080129]
+>>>>>>>>>
+>>>>>>>>> # wget -O /dev/null
+>>>>>>>>> https://git.kernel.org/torvalds/t/linux-7.0-
+>>>>>>>>> rc3.tar.gz
+>>>>>>>>> --2026-03-14 14:53:58--
+>>>>>>>>> https://git.kernel.org/torvalds/t/linux-7.0-
+>>>>>>>>> rc3.tar.gz
+>>>>>>>>> Resolving git.kernel.org
+>>>>>>>>> (git.kernel.org)... 172.105.64.184,
+>>>>>>>>> 2a01:7e01:e001:937:0:1991:8:25
+>>>>>>>>> Connecting to git.kernel.org
+>>>>>>>>> (git.kernel.org)|172.105.64.184|:443...
+>>>>>>>>> failed: Connection timed out.
+>>>>>>>>> Connecting to git.kernel.org
+>>>>>>>>> (git.kernel.org)|
+>>>>>>>>> 2a01:7e01:e001:937:0:1991:8:25|:443...
+>>>>>>>>> failed: Network is unreachable.
+>>>>>>>>>
+>>>>>>>>> Before the 69894e5b4c5e ("netfilter: nft_connlimit: update
+>>>>>>>>> the count
+>>>>>>>>> if add was skipped") commit this worked.
+>>>>>>>>>
+>>>>>>>>
+>>>>>>>> Thanks for the report. I have reproduced
+>>>>>>>> this on upstream kernel. I am working on it.
+>>>>>>>>
+>>>>>>>
+>>>>>>> This is what is happening:
+>>>>>>>
+>>>>>>> 1. The first connection is established and
+>>>>>>> tracked, all good. When it finishes, it goes to
+>>>>>>> TIME_WAIT state
+>>>>>>> 2. The second connection is established, ct is
+>>>>>>> confirmed since the beginning, skipping the
+>>>>>>> tracking and calling a GC.
+>>>>>>> 3. The previously tracked connection is cleaned
+>>>>>>> up during GC as TIME_WAIT is considered closed.
+>>>>>>
+>>>>>> This is stupid.  The fix is to add --syn or use
+>>>>>> OUTPUT.  Its not even clear to me what the user wants to achive
+>>>>>> with this rule.
+>>>>>>
+>>>>>
+>>>>> Yes, the ruleset shown does not make sense. Having said this, it
+>>>>> could
+>>>>> affect to a soft-limit scenario as the one described on the blamed
+>>>>> commit..
+>>>>
+>>>> Alejandro, can you describe what you would like to achieve with the
+>>>> specific rule?
+>>>>
+>>>> Regards,
+>>>> Salvatore
+>>>
+>>> The intended use of that rule was to prevent (limit) a single host from
+>>> establishing too many TCP connections to given host (Denial of
+>>> Service... particularly on streaming servers).
+>>>
+>>> I learnt about it in several IPtables guides/howtos (maaaany years
+>>> ago!), and never was an issue on itself.
+>>> Was it stupid? ... possibly... It 'seemed' to work, or, at least, when
+>>> checking iptables -L -v one could see packet counter for the rule
+>>> catching some traffic, without ever noticing it being troublesome, so,
+>>> at the very least it 'didn't hurt', and, since DoS ever happened over
+>>> the years...well, I tended to think it was indeed working the way I
+>>> read it did.
+>>>
+>>> Certainly, I never (the authors of those guides at their time indeed)
+>>> though about the possibility of just target the TCP syn.
+>>> I have given a try to adding the --syn option to the rule to see the
+>>> difference, and well, it is way less disruptive that way, but it still
+>>> breaks things (I saw postfix queues hanging, for instance).
+>>>
+>>
+>> The current problem with the ruleset is that it mixes both, incoming and
+>> outgoing connections. This should probably use --syn flag so it targets
+>> connections established against your host only.
+>>
+>> Anyway, I am sending a patch fixing this as it makes sense to do it IMO.
+>> We just want to understand what is the real use-case and how the ruleset
+>> can be improved.
+>>
+>> In addition, I would recommend you to transition to nftables because it
+>> would be ideal for your use-case. With nftables it would be easy to
+>> combine this with sets and probably quota expression to limit the usage.
+>>
+>> What is wrong with the current ruleset? (Even before the blammed
+>> commit), if you reach the connlimit limit **ALL** TCP connections will
+>> be rejected (including legit ones), I do not think that is what you want
+>> to achieve.
+>>
+>> Thanks,
+>> Fernando.
+>>
+>>> So, I have but screwed the idea of using connlimit anymore anyways.
+>>> Sorry for the noise. Lesson learned.
+>>>
+>>> Cheers!
+>>
+>>
+> 
+> 
+
 
