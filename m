@@ -1,221 +1,164 @@
-Return-Path: <stable+bounces-240302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240303-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gIG1G7yY6GkwNQIAu9opvQ
-	(envelope-from <stable+bounces-240302-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 11:45:32 +0200
+	id kGQUFZOi6GngOAIAu9opvQ
+	(envelope-from <stable+bounces-240303-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 12:27:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 871454442C9
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 11:45:31 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D278B444AFD
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 12:27:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5D6823030DCD
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 09:40:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0F15B301C97A
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 10:26:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B58143C3BFB;
-	Wed, 22 Apr 2026 09:40:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 086263CCFB7;
+	Wed, 22 Apr 2026 10:25:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="C4PVpMAA";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="VeRRzpV0"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Q/HL9pxb"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B12C20B22
-	for <stable@vger.kernel.org>; Wed, 22 Apr 2026 09:40:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F8E33CD8BC
+	for <stable@vger.kernel.org>; Wed, 22 Apr 2026 10:25:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776850819; cv=none; b=iw20V2XclqyNLsmfcnIjNpjwOptqJ65V1OwrijmYPhCC1LWWGxnKg6BvnfHFR05nB6kAs6uCmqtyqFr7TBJYBwzDrPhO7zNO/hOmVeMK/jrCwVcS+/B253y99CNxFNJ/Pfd8oDvOyh6PfO3ldsQvAR93R/dJEBdZZEOy8yU1cSk=
+	t=1776853558; cv=none; b=PqJgXcYxAWDGYeX4OPCxaTd6ZLk4igY2x/Nuv6/zMNmWq20MuA9tZ6A+yWLJlUztS1DKiJFqGCO7tbi70CijN+4JJnpM9zzkx8qnSvjPrspU/pD2ik06HvVad6TrugmGmHVq7CTAaPOpZRJK8rqxSn9UQC23a2012qSkO91HmpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776850819; c=relaxed/simple;
-	bh=zAkck15aRQTZ1Q05U2YBuMYW04iQrWlQkMLWra0PA3Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TwbMqyC3qaFTA4DnkCDrxXyhWRgkDio+JDaqt2A7nX76ltGwi5oApPcCnjRACPnSto46HwHkL5f1PvjB5/InHNZ3FMjc0soPAf66GWZ1lsD9nbPBeEJm5ngv0QK7BS9SLSClEnSXzZ5I3paFomR5ob75Qj96PVD0ab2Cl1ybeUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=C4PVpMAA; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=VeRRzpV0; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1776850817;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8cr/tWxIjPFzBjhqZCt4BN4Fwf/3ahvnB9QHJ9ZKhqw=;
-	b=C4PVpMAAWteYzwyy/Swrt1q83Hel8TZTclJR3+MW4SBSXh2+J7jbhePxrXvLblIMKPUvSk
-	44W/QrQEiL52aaULdFlaMRk8HvaGaA2eNEWAuRFrGYQvDuUS3wKT46qKHrHG3YiOIa1qQe
-	b90KVG8jTiIvE6UtZ+hgbrdPYfG4iCA=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-617-6ZtDWtq5MUeRaMm1m8xnvg-1; Wed, 22 Apr 2026 05:40:16 -0400
-X-MC-Unique: 6ZtDWtq5MUeRaMm1m8xnvg-1
-X-Mimecast-MFC-AGG-ID: 6ZtDWtq5MUeRaMm1m8xnvg_1776850815
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-48a5adc12ffso3471035e9.0
-        for <stable@vger.kernel.org>; Wed, 22 Apr 2026 02:40:16 -0700 (PDT)
+	s=arc-20240116; t=1776853558; c=relaxed/simple;
+	bh=4e9RR3Fkt5ZYKdTIbJ3Mu4JFWKC86taawCJaNBynDdI=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=aKyFrOv1WciTgXCKDqKHlPyx8A+/TEIFLOOop3pyRwRGCOWqdo6xvTD5N3WeoiTgFH5cwBUDwGNIH4s975Y+CpuP7yC0iDgi2j+UDrgV/uyjBe3hwSuGrJgaFV0Kkhy3J8AL14595Ta+pNb1sSqD3yqUwu6UTsjNgO0EOqEu/L8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--sebastianene.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Q/HL9pxb; arc=none smtp.client-ip=209.85.221.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--sebastianene.bounces.google.com
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-43d1fec59c9so3199555f8f.0
+        for <stable@vger.kernel.org>; Wed, 22 Apr 2026 03:25:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1776850814; x=1777455614; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=8cr/tWxIjPFzBjhqZCt4BN4Fwf/3ahvnB9QHJ9ZKhqw=;
-        b=VeRRzpV0/dDyqn+Wm3d8CjC0JQG3fHYKdRrDp4KHIo/FdG0A6DAWLvMRp1G9jm/cTF
-         RfONIbS2yswWRpm2fNJMrHngtOQpHPCUd9M8hQilOeELw8dfIbTExq9qy+ZEr1hrf8gf
-         Fe8MqtTYMFj5iBOLGXK0LKseG4fJVTqHopvQRwiyDR2fMsHJkXtw4cLN4W+rfsg3AT25
-         Hxi/DEAtUIFtxTHf0EqUTxAc6CbsKoZSDRUw02y6ejsRgj0sxJcUJ/fuNd6eOnTTPAha
-         zgAdgIk0R+dfRFqcKHIV5QE3nbViWfSIjFePx8YFhakmHIwbW36BysSLkv9X6gDFHrAE
-         YiYw==
+        d=google.com; s=20251104; t=1776853556; x=1777458356; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=5zVG8CK37G2H3h+/vsooWmb/JX2s+XnozBdTiycqzLw=;
+        b=Q/HL9pxbj9fjfJerdkMdihhSQ2Es3zUJ1UQciZSRFoQZb61cDd/FUUksRrwVpTfZW2
+         MVnFlk9zNhCuc1MWIvdwzybRtZ+chsatmizS+7J/RiAhctWKwSqJUZujedxIvGMHY2Ak
+         zhJMO7MTafnBGD+UqTKTxwc1MHaHzbcivdxFxDlUdtKwu76EP+ek9JAvQpKoAOZTZEM5
+         5pyT2aDaXjgljGYg7YApUPvNFEQZ+E9AaF3e2K7cSp+K4q+7bohbsr8116JAl2x4HHLa
+         asO452DorM3KKZCrxL3JKwi6ILU3KpFJ9EPeFpKSuOwNG631TPtQ76luXsFysbkR0RQR
+         KT1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776850814; x=1777455614;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8cr/tWxIjPFzBjhqZCt4BN4Fwf/3ahvnB9QHJ9ZKhqw=;
-        b=mNFL64CSlqmPhJaU6IauV/51Nl9qalZwahm57zIz+LvGxfuSLR3/6Zgx0LUbhkK2YF
-         6eV0k3YYk0d3Gj2wvvoeFYvSq9abXBFZjSiZrwawRlyfyd6lDuu5uB6LQjoRMKYGb03C
-         ivcqc+Ge76UeMXUECYbqOszJnjJvGOOYiwNLyN5XanVi7ZUGmYp5zaTmYkdclTtwLIN9
-         eTKN59Gfg8o36l3HyNs6aEC1VTttWGM+mSbIRJmlcYjCxD7xMoEZkNVRBjTx5DN0XZB1
-         i8HFv6BDy1fMo5MONGQVEsCokfw5D0OqKP+/LHXqQ1/plXcW7QKx2xOEQcU6EHV2AMxB
-         osgQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/xPZjm9LTERXuLPbZ8kwSetOc0/AJkx9gsXI+qOBAVj8qdfPJgjPnHlrV4D+qr69+yDnG5pH0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxtKAd5pJoE8oGg1DHKsUDweff+2+Npxyf7dNxp2NEtN5+dgvwc
-	b+UxhUerrrTqhtC8CF5PKRfebc9pkIFL4jJzMMMjR1u3AXuaFASyfK9MU9W39/nWQSNM2BU1Bzg
-	fErq3Pm8MqAOoMnc0N1Pxv08bZr0AuiRcpLEnQrM8TSjrtRVy/8MKhwE3IpGg5FXK4Q==
-X-Gm-Gg: AeBDiesmYGkcoeAMaRteSzAMmPCsqW/UzR6eQNJJw8u72C2hIYqnMRdEKMDB3mzqm9/
-	y99MSI1qrfeKAFZjesA2jNjB85NQH0ETx5k1e4O5+klJqQhyrUSJenZYF0lvwTWCPwL44hr92Cx
-	2cnORcr2yLV91B8cY26uKUs/7+YGkvAyeCaMU4lZmIFWM1f4VavOgIcVcSDorDg+Kn1bX8K0tFD
-	IISERZYLpU8XW1NIsNBQSfHLdYFxADmiz5sZwytCSrjAcXVHswFExHRZRjpTK2otWsyx2Eo92TB
-	dOFflTj8IsE3c5w/A1wo/b67z3TDZHNl/oALEk9l+hdvHO8I6zJzPFozMqnstaC7mi2Q1pFN2kg
-	/ReeObA5YcG3NdTnWmsFHZoVHKj0H1u4dbfTRvy7pcf+AWjvpHdrnNlqa3EACgSRnBI1Kx1hLxz
-	SGLiHNcQ==
-X-Received: by 2002:a05:600c:5294:b0:48a:563c:c8d6 with SMTP id 5b1f17b1804b1-48a563cd0eemr82211695e9.7.1776850809633;
-        Wed, 22 Apr 2026 02:40:09 -0700 (PDT)
-X-Received: by 2002:a05:600c:5294:b0:48a:563c:c8d6 with SMTP id 5b1f17b1804b1-48a563cd0eemr82211215e9.7.1776850809081;
-        Wed, 22 Apr 2026 02:40:09 -0700 (PDT)
-Received: from sgarzare-redhat (host-87-16-204-83.retail.telecomitalia.it. [87.16.204.83])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488fc18bccfsm396567715e9.8.2026.04.22.02.40.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Apr 2026 02:40:08 -0700 (PDT)
-Date: Wed, 22 Apr 2026 11:40:00 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Dexuan Cui <decui@microsoft.com>
-Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org, 
-	longli@microsoft.com, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, horms@kernel.org, niuxuewei.nxw@antgroup.com, 
-	linux-hyperv@vger.kernel.org, virtualization@lists.linux.dev, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net] hv_sock: Return -EIO for malformed/short packets
-Message-ID: <aeiEsYqcKumplu5P@sgarzare-redhat>
-References: <20260421174931.1152238-1-decui@microsoft.com>
+        d=1e100.net; s=20251104; t=1776853556; x=1777458356;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=5zVG8CK37G2H3h+/vsooWmb/JX2s+XnozBdTiycqzLw=;
+        b=Sv5i6O4IRWvs5ek5zZOjkxWpan3xFfQv4UC6gTwHKS/h/2JXajQmQ4CwnJ8OfVowpI
+         dl0cAlu1bK85l/2Qt8FYCABDuY+yyWR4z76B8HxmMB/VWMot+1//Kath+IiqvQdaMR5U
+         jw0c5GPZqWNaJRkJxJg1p1CssMSIzTlRp3nGYXRFUlE+iXtM4GNCAmzBnEih1FYTDhED
+         pCSN76Q1GSvc0kPAGJsSDVEpfLbmLFZhmudKEn5ocZ2kp2OhSFIodkAh75mSzsClmMKc
+         EBhx2jjewBdExgZq5hx+6BVtYySYxN0D33L+xmmYcfPFYMbRV+qGXSi6pOQnGVFoTOE4
+         wHNA==
+X-Forwarded-Encrypted: i=1; AFNElJ8XhWn47lyTx2F4Aw1iSDbJvmbySFuQHX8eAIKWpPiL5F50IEcUdr3RcKh12F1gFootzoOBaB0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzy2mWs7d+jjh2xtRXUWVMDROWv2Ao9KAZ9oZr/6ZBO8NaDDsEg
+	p1jPV0DeZ13xMrEEA4U3BXpfimlxV457H4oKg8UVZmR6RapgeAU4okvLBp8GE6BFOZuZu8KIt23
+	Qpm4RXvfR6YJ4z81I6vU2a/pZTiSPmA==
+X-Received: from wrnl17.prod.google.com ([2002:adf:e9d1:0:b0:43c:ff2f:44d7])
+ (user=sebastianene job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:2812:b0:43d:7192:2ca6 with SMTP id ffacd0b85a97d-43fe407e0eemr21607407f8f.16.1776853555738;
+ Wed, 22 Apr 2026 03:25:55 -0700 (PDT)
+Date: Wed, 22 Apr 2026 10:25:40 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20260421174931.1152238-1-decui@microsoft.com>
-X-Spamd-Result: default: False [-1.66 / 15.00];
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.rc1.555.g9c883467ad-goog
+Message-ID: <20260422102540.1433704-1-sebastianene@google.com>
+Subject: [PATCH] KVM: arm64: Validate the FF-A memory access descriptor placement
+From: Sebastian Ene <sebastianene@google.com>
+To: maz@kernel.org, oupton@kernel.org, will@kernel.org
+Cc: ayrton@google.com, catalin.marinas@arm.com, joey.gouly@arm.com, 
+	korneld@google.com, kvmarm@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	android-kvm@google.com, mrigendra.chaubey@gmail.com, perlarsen@google.com, 
+	sebastianene@google.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	MV_CASE(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240302-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[google.com,arm.com,lists.linux.dev,lists.infradead.org,vger.kernel.org,gmail.com,huawei.com];
+	TAGGED_FROM(0.00)[bounces-240303-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	DKIM_TRACE(0.00)[redhat.com:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sgarzare@redhat.com,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sebastianene@google.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[google.com:+];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 871454442C9
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D278B444AFD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Apr 21, 2026 at 10:49:31AM -0700, Dexuan Cui wrote:
->Commit f63152958994 fixes a regression, however it fails to report an
->error for malformed/short packets -- normally we should never see such
->packets, but let's report an error for them just in case.
->
->Fixes: f63152958994 ("hv_sock: Report EOF instead of -EIO for FIN")
->Cc: stable@vger.kernel.org
->Signed-off-by: Dexuan Cui <decui@microsoft.com>
->---
->
->Commit f63152958994 is currently only in net.git's master branch.
->
-> net/vmw_vsock/hyperv_transport.c | 29 +++++++++++++++++++----------
-> 1 file changed, 19 insertions(+), 10 deletions(-)
->
->diff --git a/net/vmw_vsock/hyperv_transport.c b/net/vmw_vsock/hyperv_transport.c
->index 76e78c83fdbc..8faaa14bccda 100644
->--- a/net/vmw_vsock/hyperv_transport.c
->+++ b/net/vmw_vsock/hyperv_transport.c
->@@ -704,18 +704,27 @@ static s64 hvs_stream_has_data(struct vsock_sock *vsk)
-> 		if (hvs->recv_desc) {
-> 			/* Here hvs->recv_data_len is 0, so hvs->recv_desc must
-> 			 * be NULL unless it points to the 0-byte-payload FIN
->-			 * packet: see hvs_update_recv_data().
->+			 * packet or a malformed/short packet: see
->+			 * hvs_update_recv_data().
-> 			 *
->-			 * Here all the payload has been dequeued, but
->-			 * hvs_channel_readable_payload() still returns 1,
->-			 * because the VMBus ringbuffer's read_index is not
->-			 * updated for the FIN packet: hvs_stream_dequeue() ->
->-			 * hv_pkt_iter_next() updates the cached priv_read_index
->-			 * but has no opportunity to update the read_index in
->-			 * hv_pkt_iter_close() as hvs_stream_has_data() returns
->-			 * 0 for the FIN packet, so it won't get dequeued.
->+			 * If hvs->recv_desc points to the FIN packet, here all
->+			 * the payload has been dequeued and the peer_shutdown
->+			 * flag is set, but hvs_channel_readable_payload() still
->+			 * returns 1, because the VMBus ringbuffer's read_index
->+			 * is not updated for the FIN packet:
->+			 * hvs_stream_dequeue() -> hv_pkt_iter_next() updates
->+			 * the cached priv_read_index but has no opportunity to
->+			 * update the read_index in hv_pkt_iter_close() as
->+			 * hvs_stream_has_data() returns 0 for the FIN packet,
->+			 * so it won't get dequeued.
->+			 *
->+			 * In case hvs->recv_desc points to a malformed/short
->+			 * packet, return -EIO.
-> 			 */
->-			return 0;
->+			if (hvs->vsk->peer_shutdown & SEND_SHUTDOWN)
+Prevent the pKVM hypervisor from making assumptions that the
+endpoint memory access descriptor (EMAD) comes right after the
+FF-A memory region header and enforce a strict placement for it
+when validating an FF-A memory lend/share transaction.
 
-We can access `vsk` directly, I mean `vsk->peer_shutdown`.
+Prior to FF-A version 1.1 the header of the memory region
+didn't contain an offset to the endpoint memory access descriptor.
+The layout of a memory transaction looks like this:
 
->+				return 0;
->+			else
+  Field name				| Offset
+					 -- 0
+[ Header (ffa_mem_region)               |__ ep_mem_offset
+  EMAD 1 (ffa_mem_region_attributes)	|
+]
 
-nit: we usually avoid the `else` if the other branch returns early, and 
-maybe have the error returned first, so it's more clear when reading the 
-comment on top.  I mean something like this:
+Reject the host from specifying a memory access descriptor offset
+that is different than the size of the memory region header.
 
-			if (!(vsk->peer_shutdown & SEND_SHUTDOWN))
-				return -EIO;
+Cc: stable@vger.kernel.org
+Fixes: 42fb33dde42b ("KVM: arm64: Use FF-A 1.1 with pKVM")
+Signed-off-by: Sebastian Ene <sebastianene@google.com>
+---
+ arch/arm64/kvm/hyp/nvhe/ffa.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-			return 0;
-
-BTW, not a strong opinion on that.
-
-The rest, LGTM!
-
-Thanks,
-Stefano
+diff --git a/arch/arm64/kvm/hyp/nvhe/ffa.c b/arch/arm64/kvm/hyp/nvhe/ffa.c
+index 94161ea1cd60..0703c0ad8dff 100644
+--- a/arch/arm64/kvm/hyp/nvhe/ffa.c
++++ b/arch/arm64/kvm/hyp/nvhe/ffa.c
+@@ -508,6 +508,12 @@ static void __do_ffa_mem_xfer(const u64 func_id,
+ 	buf = hyp_buffers.tx;
+ 	memcpy(buf, host_buffers.tx, fraglen);
+ 
++	if (FFA_MEM_REGION_HAS_EP_MEM_OFFSET(hyp_ffa_version) &&
++	    buf->ep_mem_offset != sizeof(struct ffa_mem_region)) {
++		ret = FFA_RET_INVALID_PARAMETERS;
++		goto out_unlock;
++	}
++
+ 	ep_mem_access = (void *)buf +
+ 			ffa_mem_desc_offset(buf, 0, hyp_ffa_version);
+ 	offset = ep_mem_access->composite_off;
+-- 
+2.54.0.rc1.555.g9c883467ad-goog
 
 
