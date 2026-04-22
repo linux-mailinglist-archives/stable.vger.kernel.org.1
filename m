@@ -1,249 +1,328 @@
-Return-Path: <stable+bounces-240297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240298-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6Ia3C4CS6Gl9MgIAu9opvQ
-	(envelope-from <stable+bounces-240297-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 11:18:56 +0200
+	id 0OrjAZ2S6Gl9MgIAu9opvQ
+	(envelope-from <stable+bounces-240298-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 11:19:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7797443D99
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 11:18:55 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 356F2443DC7
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 11:19:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7F82B3020748
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 09:18:54 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DFA333015FE7
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 09:19:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2A4B3C2768;
-	Wed, 22 Apr 2026 09:18:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8036F3C1989;
+	Wed, 22 Apr 2026 09:19:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="HUcR7dH3"
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="fGSIJcxd"
 X-Original-To: stable@vger.kernel.org
-Received: from SY2PR01CU004.outbound.protection.outlook.com (mail-australiaeastazolkn19011060.outbound.protection.outlook.com [52.103.72.60])
+Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [188.68.63.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D3C71DF256;
-	Wed, 22 Apr 2026 09:18:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.72.60
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776849531; cv=fail; b=bqgBeyklYOo7vDG27ehp8xR9cQ+DN0gbrYZa3VccH3EaxVI+p0mK1puByzh66zik+k6VDoH3LVbjyJf93cG8o4Fvtqx79NNsAyqbxWzCYTS35QEC1RCsJLQ75CHwTxRqFoh3Hg8fuO7akaP7ejlUXjvCsYa/7kkFs6OuJZ8LJnE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776849531; c=relaxed/simple;
-	bh=vDHsx7Klc9kUM8rpdCwWGoOzM/1Cxc8+OCXarCPoDIE=;
-	h=From:Date:Subject:Content-Type:Message-ID:To:Cc:MIME-Version; b=nBvHahd/ptA8u0lbTNWMYCMgCxda+ydNF/l+EHnJP11d3BO1Eq3W0Qho+OyZYUG0oSRNNZo95zdWW88roXLLxY3arb3OehBm7Ylvzz5ONSp+5l7h4LCYeF8M16yOcQtAjzaTSEYD/lyxSkn95YQ5KUwRuh0abKJydEbFIGA4hog=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=HUcR7dH3; arc=fail smtp.client-ip=52.103.72.60
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hWeYomxEev1c/s/Yd2fedOqu85QW/2ETr/Ip72SMEHJhFUhpQPSSdPZEZ7LJzwhRqNS1447Kxi+3yUBBj7TPERlscxO06ys4PsvFGj7/0mgjRrbil6qJD9Uhp2jt9zftj0eeTME4v39NNGas2BGoYtdTXlccVMhMVQLgeMvEws2qknr/FJaijeg1MzXjS+6VHZiGFg8uxMdNSSB3x7DAHp3A0mE9t1Prjsholpm5/WN54+hWG6o4sqnU7slCH86qBRBcKC7/SSrYZ3io40HXOPmuHPqihB3WSKDWyls75kZL4Y7DLkaF9mNHSgmQjcXGa2yMEyzZnA/stVu875MEPg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BtBVJ9D48OjKEh2tZ8iWNEFiYb7UAmAIZEZzoEz+o7U=;
- b=KOdbIfVADb9fq6ZjUarH06IXgDkAFxQ2loeh2alXrEwFf8T8bIGGlrNTLDqUdfOVFriOVYnBXW8e5BR0Vk9o0IL+udAjCqi8OGfUUAZtLkEIKmVrggH6tbNB69XqHq+xsajTY6euQGUeyu+VbGhaijd17ELwK9XIDLv4YN1rUNdpclcfHyuziD0+FXglte53umgcEBOElbUWzc6chJT9vUsBkSEL6n3Me4dXcURO89zMrPE8pRrgnO63kKXEZLWoAIAmy7LNZIbNpkEF/bh/lhhDE28FcLN+51MJJq7BThoqUxWNbE2lemLusSTRdl+DPC3vPBMxELn0JAi+YdfX+A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BtBVJ9D48OjKEh2tZ8iWNEFiYb7UAmAIZEZzoEz+o7U=;
- b=HUcR7dH3AoHniQzf1gMZIU+N4nUNxUY7ChU33R6yhXlzw9o6Dmhq6iikXXEQeR03FacV1ElYNqeb7x1mmKdj4BTnthdTg4L8lI/TEuLpe2/qzmA8OePM7w0Vb6PgxS2aHoHL4wte3CSTkqNc4phnmPWCtjQ0BnHDsFWyyA/UiAs9sDS6J8JmZnZdmH1uq9lJjco0GuIsh29Mxcw8x5Lg4HYWeef1pnUGAiO4mAVO/gqmPPTinTTNvXKe+1vzhTNUkVthZ+eq57YC7TQeWLQ/Cf8v3thfIMrKEbUgdZCv0kE6g7ni8jQ4Jg4i8p7el6Uka+8NaY11ASate9eOF4RHJg==
-Received: from SYBPR01MB7881.ausprd01.prod.outlook.com (2603:10c6:10:1b0::5)
- by ME3PR01MB5735.ausprd01.prod.outlook.com (2603:10c6:220:ca::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.17; Wed, 22 Apr
- 2026 09:18:45 +0000
-Received: from SYBPR01MB7881.ausprd01.prod.outlook.com
- ([fe80::7cd2:d6e8:3fa0:5f0c]) by SYBPR01MB7881.ausprd01.prod.outlook.com
- ([fe80::7cd2:d6e8:3fa0:5f0c%5]) with mapi id 15.20.9846.016; Wed, 22 Apr 2026
- 09:18:45 +0000
-From: Junrui Luo <moonafterrain@outlook.com>
-Date: Wed, 22 Apr 2026 17:18:02 +0800
-Subject: [PATCH] scsi: lpfc: fix heap overflow in
- lpfc_bsg_diag_loopback_run()
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID:
- <SYBPR01MB7881DCD912ADB83C9D290F7AAF2D2@SYBPR01MB7881.ausprd01.prod.outlook.com>
-X-B4-Tracking: v=1; b=H4sIAEmS6GkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDEyMj3bTMitRiXZMkk9SUJIMk81QLCyWg2oKiVLAEUGl0bG0tABXmYKd
- XAAAA
-X-Change-ID: 20260422-fixes-4b4edb0b7e88
-To: Justin Tee <justin.tee@broadcom.com>, Paul Ely <paul.ely@broadcom.com>, 
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
- "Martin K. Petersen" <martin.petersen@oracle.com>, 
- James Smart <james.smart@emulex.com>, 
- James Bottomley <James.Bottomley@suse.de>
-Cc: linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Yuhao Jiang <danisjiang@gmail.com>, stable@vger.kernel.org, 
- Junrui Luo <moonafterrain@outlook.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1446;
- i=moonafterrain@outlook.com; h=from:subject:message-id;
- bh=vDHsx7Klc9kUM8rpdCwWGoOzM/1Cxc8+OCXarCPoDIE=;
- b=owJ4nJvAy8zAJVb4wiKgu++DA+NptSSGzBeTPCd1z/rwVKPHZfaF/dOPO6Q9ZlmW1MoZv0o10
- On9rOvJNhEdpSwMYlwMsmKKLMcLLn2z8N2iu8VnSzLMHFYmkCEMXJwCMJEpjgy/WS24hJ5qVOb1
- TJszb+/GH5IPX8qcWPxkv/NuizgL1tpkE4b/ITuTkuc0epmenssx70aaxOSJmRu6redNDF/fa+k
- pIdbBCwBIukr9
-X-Developer-Key: i=moonafterrain@outlook.com; a=openpgp;
- fpr=C770D2F6384DB42DB44CB46371E838508B8EF040
-X-ClientProxiedBy: TYCP286CA0361.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:405:79::17) To SYBPR01MB7881.ausprd01.prod.outlook.com
- (2603:10c6:10:1b0::5)
-X-Microsoft-Original-Message-ID:
- <20260422-fixes-v1-1-702b116fbd7f@outlook.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D9EC3C1969;
+	Wed, 22 Apr 2026 09:18:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.68.63.98
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776849540; cv=none; b=t0rPs3TXkB/a6s3bgEG73zMI4Vn/H17RInZ5aFsi0sxCVKA2Duo9LwMUZo/Fid3xXYBgHj/H7JWK3PYLm8ttwKjkMXnt+6u4wNcAAIQ+YlIhJaO7gNNywidCj4k+SlzwqiwcGB0mlkXRLI1G23oLUpwaJU5NnoilFNYBAtmqnGE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776849540; c=relaxed/simple;
+	bh=BF1zEbvNk3kTqMH+V92H0EY8hWcWDUFqzNweMj+pj7A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=phwp0oguyFN3NAYEeRLaN1Gmhk+WfYK0/izZG6K0s7qdRhaEXxOOggx5FpdNZmZc4Ilmnhu01+UUkCaaOgVd4NeBbU88wPuloVATn8vJoA7379Jsb3S3DVb4ahl/FosvjQDphPpYtmBPV8nMhhRudSaXRl9lWXk3lKg9GTeJqP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=fGSIJcxd; arc=none smtp.client-ip=188.68.63.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+Received: from mors-relay-2501.netcup.net (localhost [127.0.0.1])
+	by mors-relay-2501.netcup.net (Postfix) with ESMTPS id 4g0tvG6VDdz66yb;
+	Wed, 22 Apr 2026 11:18:50 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
+	s=key2; t=1776849530;
+	bh=BF1zEbvNk3kTqMH+V92H0EY8hWcWDUFqzNweMj+pj7A=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=fGSIJcxdGOQA5EjsNjngXsYrBrHIYnfiyM09VQTkqbONmKhnu+o0E8P4794qF2oIW
+	 jDB2jJByrZOupL+zxrxn41udM9fmHrVia11fwN4Jn4uwshQXu17eQy7AqqvxhQUlJL
+	 mCHo93vzHC//z96gJacLP/wImyF2G/v6UWpHR0NnMZ5fZOLj48pX4CNBqyeyIo1W8J
+	 7Qt1lcawvI2mar9ilBrYyrLjpQ1KJSMmwAZ3z2uRJQTtD+sYcon+qDPo6lPVn0q/4Q
+	 cjKIR4N5VLPvucHEkqKubV6haAKepoPLRy6/5beAG95dLHuqV1m5T2zd1UC/jWGrMt
+	 zhj7Dy//1f8jg==
+Received: from policy02-mors.netcup.net (unknown [46.38.225.35])
+	by mors-relay-2501.netcup.net (Postfix) with ESMTPS id 4g0tvG5mVkz4xNb;
+	Wed, 22 Apr 2026 11:18:50 +0200 (CEST)
+Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by policy02-mors.netcup.net (Postfix) with ESMTPS id 4g0tvF0Qv0z8sZP;
+	Wed, 22 Apr 2026 11:18:48 +0200 (CEST)
+Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
+	by mxe9fb.netcup.net (Postfix) with ESMTPSA id 8CF1E632A6;
+	Wed, 22 Apr 2026 11:18:47 +0200 (CEST)
+Authentication-Results: mxe9fb;
+        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=regressions@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
+Received-SPF: pass (mxe9fb: connection is authenticated)
+Message-ID: <0b8607c8-2d29-4fca-961a-b7a677e968a1@leemhuis.info>
+Date: Wed, 22 Apr 2026 11:18:47 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SYBPR01MB7881:EE_|ME3PR01MB5735:EE_
-X-MS-Office365-Filtering-Correlation-Id: 340f6d03-6cdf-4a96-c343-08dea05026a7
-X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|24121999003|22091999003|5062599005|8060799015|19110799012|55001999006|23021999003|15080799012|6090799003|5072599009|461199028|52005399003|40105399003|3412199025|440099028|1710799026;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?VFZEVlRvZ0FZQTVxSHVmUW9VenkreGFYTnBNUEwrVnd2QWZ1eWFnaEV2MWhI?=
- =?utf-8?B?aDJwUzJNQk9nNmIrVXZ6NjRPWlZVQVZBcEJESnhCRTFtWlJHd0NSa2NtMkNC?=
- =?utf-8?B?MmpWSHVNK0g4WnQ1L2s2c0J5bjl4c284QU84L2F5ZzBWOWpmdElZTno5QkRO?=
- =?utf-8?B?VEV6b1crWmhVV3lOOHVjTGhmai9ndHR4bGE5TWNBNmdKeUhod1lFT2haZWpS?=
- =?utf-8?B?NEdlaWNTaFNGbHczOG04bVh4RHZwNThmaFZhOVlQU0N6RXU5MHpLaVFvd3FR?=
- =?utf-8?B?YUVrVDVudkRnVHJWQzRabzZRWTVlcnhjK3lYZHZVdnJYa0FxMTNTaExpcENO?=
- =?utf-8?B?NnNad0FKd1VZdVJPVFJPUndEUEMxdWFUV3RGQ2dyVDYwYTg1ekJDK3pKNFMy?=
- =?utf-8?B?MDMxY0taL0FFMG9FTDNhb1ovTGIwN0tSSWZoODFBZnRsNmt4Vnc3d29UcEZ1?=
- =?utf-8?B?UXlLR1Bha3dNSytMYndtWDBNU29qNUtiOVU5Z0NoSExDNmdsVWVtL1k3bGpo?=
- =?utf-8?B?aVNja1RjUUh3ZjhqUjQrZWZlR1RaSWlqa08wZ1lYOE5MOXJQc0xSUVVTUW01?=
- =?utf-8?B?T2hZWUpuMi9tZkVRSXd0R3AxNkJMRkhoaDROaWYzV0FXZnJONnRRTm9iczRS?=
- =?utf-8?B?RzA3UHcyeUdIS1JOVXZjTHZTMHZMMi92MnJEK2xDWS85clk4UDI0Nm1wNG5C?=
- =?utf-8?B?UmV2Y3lkYnF4TUxwZjFMVnE1Z0tSRHBvenBHbll6UlRYNXVuVlVVTEZkQWtN?=
- =?utf-8?B?Q3BNU0RMeEZTcFpGM2ZwY0VSOUZJcEFQTGtjeHUyYnU3ZWpML3Zmb0xzbkF0?=
- =?utf-8?B?aW9ENzhwL3R1QU9aQnJoZ2RwbCtaRFh4YzJrMHdGQjF3SkJLRmRidTQ2QlQy?=
- =?utf-8?B?a2tJZjBYaWhGL2dpNWljcUpHV25FYmE1MldENzg3N0gyREZQcC9qUmJocFp3?=
- =?utf-8?B?cE10WllyMVRYQm8yTmhRQUE0Nml5eGRIdmwxdVZpOXdpbFJjVFdlWE5GZS9K?=
- =?utf-8?B?RUhNUmVnSjFOeEg1aUphcTdsK2Y1eEh3aHJLSFJkaVlna0NMWUl0a1VjQUw4?=
- =?utf-8?B?Y2N6eWIzeXh4K1NNd1k2NjBBVVJyNk40YVlXbWtUSFl4YlhJcWkzeXRrSzND?=
- =?utf-8?B?YmJWeXI2bUpOQ0o1WjQxL2tXUXowWVFTQlZHd0wvSWNkVmNRd0xBN0ZOYWpI?=
- =?utf-8?B?cnVQUUtDSDNKTWFnZURXMU0xRDZ5SVFFSVNjOW9rU2tVdVQvUjg5Y2E5RFRz?=
- =?utf-8?B?UnhJVUxrdEJQVmZ4eEtjdFhJcHhnV1NiL3hKY250K0lkbmxteDVQbHVYY1pS?=
- =?utf-8?B?cU80MGF6Nys5eWZ3NVQxT3BQeVFERnJGaEhyNm1HdjVBYm5Xd21XVTA5V2Fs?=
- =?utf-8?B?NFZqcFJHZ0QzU2RsdlhzZVRaOVB4bUhralpRSjNRZS9sRnFHck1GYVBEY0Vy?=
- =?utf-8?B?UWdiQU9jWWRnQTU0d0lGRy9kVndKVzgzWDFVeElBPT0=?=
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?M0k5aHdzQkdLeUpNMytNQU5Fb0VDT01WTFQwYmFDUHMzeG5TTk41aTkyejR6?=
- =?utf-8?B?ZnVacW0wNkxZN1NIY29BTm9POW82WHhoa2UzSk00eEsyTUhoZ29odkVkaytq?=
- =?utf-8?B?MDFMQ2J3dFVXVmdOQ3lKVm9MZTQ5UDYzdzFTVWtMNlRpSFpMOW9ueHhUbUhT?=
- =?utf-8?B?YkVPQ3JUZGtyQWhJbDRreHJIZ0FMNWtvSHd0U01CcDExY2JOSUlLc2VFUXhH?=
- =?utf-8?B?QThXdzhIQTU0TS9DRWI1a2Q3cFVVM2ExS29MMVFwRTR0bm9QeE9tZkt2TFdV?=
- =?utf-8?B?MFdaUktYSEZMWWFRb3J2YldJTm13aVJsM2c4SDZUZ2pScWE5N3BaQW9mMU9k?=
- =?utf-8?B?clRwRlJuZm1VaUhCR2x6RHRoS3F6UHNzMjFYSUxoQUZvYUNxdjdOc2xWakF6?=
- =?utf-8?B?RUVJWVlkaFVKdjUzYnVRNFRIRUtBdW8yRlF5aXNqQnlPNjFZUkl0WGtwcXpu?=
- =?utf-8?B?azhhKzhpNzh0RjhoUHpzWmdjaktnTEYxQ1ZPenlPSWNxSkx2cERNQ05oeFVL?=
- =?utf-8?B?alVkakMrZWFrYUkyM0d0aGJrLzlrNnlDTUNsSXBhOTBSUE41QTlNbmlrek0y?=
- =?utf-8?B?ZS9kdXJJL1NlWUFTMDUwNk9JajlFVmMrVU1TZ0dTTUZDT1BlajFvRnpGYS9F?=
- =?utf-8?B?MysySmhrNzBseHdRVTRmMk9rb0MxNTdqS1laalVKZ254WHB2U2FEcE1IdlBs?=
- =?utf-8?B?SFkza04wS3IvY2MraG5SZUdTdVF6bUgvNmIwV0hYbTZBb0JJSW9SZ3N4Wk9p?=
- =?utf-8?B?OWZaVjhuTkExR2hWU011SFhZM2QzQmJzNzVwbjRUdGVZSDBJQU1na3ZaMThI?=
- =?utf-8?B?aEVEcGcxVnJneG5xV0MwaU5hbjNOQTJhNkN1bHF2dVNYKzNDbzhQRnBjR0tU?=
- =?utf-8?B?WkV0SnBYQkU5ZnFBVTJJc2Y2NGthWVp3aFY3aVRYTkpDMEY2bUo0MFprc3c1?=
- =?utf-8?B?ZzhMNHB4MWFOb05UYkxZL1ZzUjA1M0ZsbnF2V2g0cldrRkZ1TUoxTUJDYVVw?=
- =?utf-8?B?U0syZXhEUHpaM1grQWdOSHkvOWwvdkRUV3phZExmWkNiYzJuRTVYMlloajQ5?=
- =?utf-8?B?SSs5VGZVa05Ka1hDMVdHWUhVRjBhOUcwUCtSRUlOUXc3UmM3TUpGKzdFclVV?=
- =?utf-8?B?VkF0aXp3OWF3UFZJUzVRUExXaDhFVjdsUnZjMU5HZEdJNkxLQjRSNEVZWkRm?=
- =?utf-8?B?cHNWWHZVYVRrNHIzT09yNHdUbjBrbXNabTN2anNQalF0QUZGNEljZlc1NG5o?=
- =?utf-8?B?WWkrQXlsOXRRQ0wxc0UyY0ZmWUh4eGtSa2J1dGtyZWZGaFljcmZPSFZLWElu?=
- =?utf-8?B?dnAraFl1NGFOeTFzeU5rSFY5OEF0SllHeHkzb01pbm1iY1A2U2I5anNjaThI?=
- =?utf-8?B?M1F2K1FXUWlBbzBLOGRqTUVFSUt6aU1ZcGQ4YXM0RG9ITFFyS2Q4QnNwS3I4?=
- =?utf-8?B?VVZ5bmhTcUdSZ0N1T2JIai9iYk9vd090SFB6bkVXU3Y5YkM0c1VRc1Y4YzM3?=
- =?utf-8?B?cHBrK2JEb1hMWXNDVmZYVzd4cS9RZjRFM3FaMW1HZW9mVmNGOEtCWXQya3c5?=
- =?utf-8?B?MnQ4ZFV0dmlFMHpRSmFyYW1xeWVUTXZTelhXQWhpTkJuR0U0TytJa3hKZ3Zq?=
- =?utf-8?B?RmpOalFEQW41THJMdnVPLzdtcStSU05HUjJTZ2hsMzBlKzZxVytzRURaZ3d5?=
- =?utf-8?B?OHQ5YjdhYUFWVTJVbXlnKzVyN1Z5eVkvNm5nelNCMlF5ODZIT3BBTnMvUTNp?=
- =?utf-8?B?RkFoazVkWG1zUXk0cjFoanFLQThsNFRpWHY3TG1sdjNTdFRjUHpVc3hoUjg4?=
- =?utf-8?B?OGtsSHl1cEhxanRpdHhOT0YyVExXemJRVVpsT3hTaVMvVDBTODBJVE03NW5w?=
- =?utf-8?B?RUh2TTMzWTFyb1V1cFg5ekp4SFc1d1JDTWduZWpjVDdWWGc9PQ==?=
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 340f6d03-6cdf-4a96-c343-08dea05026a7
-X-MS-Exchange-CrossTenant-AuthSource: SYBPR01MB7881.ausprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Apr 2026 09:18:44.9700
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: ME3PR01MB5735
+User-Agent: Mozilla Thunderbird
+Subject: Re: Bug#1130336: [regression] Network failure beyond first connection
+ after 69894e5b4c5e ("netfilter: nft_connlimit: update the count if add was
+ skipped")
+To: Fernando Fernandez Mancera <fmancera@suse.de>,
+ =?UTF-8?Q?Alejandro_Oliv=C3=A1n_Alvarez?=
+ <alejandro.olivan.alvarez@gmail.com>,
+ Salvatore Bonaccorso <carnil@debian.org>, 1130336@bugs.debian.org
+Cc: Florian Westphal <fw@strlen.de>, Pablo Neira Ayuso <pablo@netfilter.org>,
+ Phil Sutter <phil@nwl.cc>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ regressions@lists.linux.dev, stable@vger.kernel.org
+References: <177349610461.3071718.4083978280323144323@eldamar.lan>
+ <c72a56ab-a16c-4866-9a44-a03393f074db@suse.de>
+ <b3cbfd15-acd1-4500-ba30-eac6f48523fb@suse.de> <abW2MAAqLnKZm3KF@strlen.de>
+ <177322336258.4376.10097494324750307114.reportbug@Desk1.simalex.iccbroadcast.com>
+ <4da571ab-fa1d-4ee6-b71c-24f4a28243ed@suse.de> <abqfSB0TUik1kRU4@eldamar.lan>
+ <e24a281622cedf9e8f4dc93c961813aeb7b6ce4c.camel@gmail.com>
+ <8788e351-553f-48da-a6e6-ce082adacb8d@suse.de>
+From: Thorsten Leemhuis <regressions@leemhuis.info>
+Content-Language: de-DE, en-US
+In-Reply-To: <8788e351-553f-48da-a6e6-ce082adacb8d@suse.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-PPP-Message-ID: <177684952826.1966882.4123776011656959757@mxe9fb.netcup.net>
+X-NC-CID: Fc5/BRl+Om7MAoRUqKOqqQj6z/ve4Im5YY7m19THIqIw/0EvzvA=
 X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[outlook.com,none];
-	R_DKIM_ALLOW(-0.20)[outlook.com:s=selector1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[leemhuis.info:s=key2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,outlook.com];
-	TAGGED_FROM(0.00)[bounces-240297-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240298-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,leemhuis.info:dkim,leemhuis.info:mid,suse.de:email,eldama:email];
+	FREEMAIL_TO(0.00)[suse.de,gmail.com,debian.org,bugs.debian.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[leemhuis.info];
+	RCPT_COUNT_TWELVE(0.00)[18];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[outlook.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FREEMAIL_FROM(0.00)[outlook.com];
-	RCVD_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[leemhuis.info:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[moonafterrain@outlook.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[regressions@leemhuis.info,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:dkim,outlook.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,SYBPR01MB7881.ausprd01.prod.outlook.com:mid]
-X-Rspamd-Queue-Id: C7797443D99
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: 356F2443DC7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-lpfc_bsg_diag_loopback_run() allocates dataout as a staging buffer
-before copying loopback test data into DMA segments. When the
-user-supplied payload size exceeds 64KB, the allocation is capped at
-64KB while sg_copy_to_buffer() and the subsequent memcpy loop operate
-on the full payload (up to 80 * 4096 bytes).
+Lo! Top-posting on purpose to make this easy to process.
 
-This leads to a heap buffer overflow with user-controlled data.
+What happened to this regression? It looks a bit like things stalled and
+fell through the cracks. Or Fernando, did you post a patch like you
+mentioned? I looked for one referring the commit or the reporter, but
+could not find anything -- but maybe I missed it.
 
-Fix by allocating full_size in the large-size path, consistent with the
-small-size path and with diag_cmd_data_alloc().
+Ciao, Thorsten
 
-Fixes: 3b5dd52aaffd ("[SCSI] lpfc 8.3.8: (BSG4) Add new vendor specific BSG Commands")
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
----
- drivers/scsi/lpfc/lpfc_bsg.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/scsi/lpfc/lpfc_bsg.c b/drivers/scsi/lpfc/lpfc_bsg.c
-index 7406dfa60016..83fef256f324 100644
---- a/drivers/scsi/lpfc/lpfc_bsg.c
-+++ b/drivers/scsi/lpfc/lpfc_bsg.c
-@@ -3111,7 +3111,7 @@ lpfc_bsg_diag_loopback_run(struct bsg_job *job)
- 		if (size <= (64 * 1024))
- 			total_mem = full_size;
- 		else
--			total_mem = 64 * 1024;
-+			total_mem = full_size;
- 	} else
- 		/* Allocate memory for ioctl data */
- 		total_mem = BUF_SZ_4K;
-
----
-base-commit: 7aaa8047eafd0bd628065b15757d9b48c5f9c07d
-change-id: 20260422-fixes-4b4edb0b7e88
-
-Best regards,
--- 
-Junrui Luo <moonafterrain@outlook.com>
+On 3/19/26 09:59, Fernando Fernandez Mancera wrote:
+> On 3/19/26 9:44 AM, Alejandro Oliván Alvarez wrote:
+>> Hi folks.
+>>
+>> On Wed, 2026-03-18 at 13:49 +0100, Salvatore Bonaccorso wrote:
+>>> Hi Alejandro,
+>>>
+>>> On Sun, Mar 15, 2026 at 02:09:33AM +0100, Fernando Fernandez Mancera
+>>> wrote:
+>>>> On 3/14/26 8:25 PM, Florian Westphal wrote:
+>>>>> Fernando Fernandez Mancera <fmancera@suse.de> wrote:
+>>>>>> On 3/14/26 5:13 PM, Fernando Fernandez Mancera wrote:
+>>>>>>> Hi,
+>>>>>>>
+>>>>>>> On 3/14/26 3:03 PM, Salvatore Bonaccorso wrote:
+>>>>>>>> Control: forwarded -1
+>>>>>>>> https://lore.kernel.org/
+>>>>>>>> regressions/177349610461.3071718.4083978280323144323@eldama
+>>>>>>>> r.lan
+>>>>>>>> Control: tags -1 + upstream
+>>>>>>>>
+>>>>>>>> Hi
+>>>>>>>>
+>>>>>>>> In Debian, in https://bugs.debian.org/1130336, Alejandro
+>>>>>>>> reported that
+>>>>>>>> after updates including 69894e5b4c5e ("netfilter:
+>>>>>>>> nft_connlimit:
+>>>>>>>> update the count if add was skipped"), when the following
+>>>>>>>> rule is set
+>>>>>>>>
+>>>>>>>>       iptables -A INPUT -p tcp -m
+>>>>>>>> connlimit --connlimit-above 111 -j
+>>>>>>>> REJECT --reject-with tcp-reset
+>>>>>>>>
+>>>>>>>> connections get stuck accordingly, it can be easily
+>>>>>>>> reproduced by:
+>>>>>>>>
+>>>>>>>> # iptables -A INPUT -p tcp -m connlimit
+>>>>>>>> --connlimit-above 111 -j REJECT
+>>>>>>>> --reject-with tcp-reset
+>>>>>>>> # nft list ruleset
+>>>>>>>> # Warning: table ip filter is managed by iptables-nft, do
+>>>>>>>> not touch!
+>>>>>>>> table ip filter {
+>>>>>>>>            chain INPUT {
+>>>>>>>>                    type filter hook input priority filter;
+>>>>>>>> policy accept;
+>>>>>>>>                    ip protocol tcp xt
+>>>>>>>> match "connlimit" counter packets 0
+>>>>>>>> bytes 0 reject with tcp reset
+>>>>>>>>            }
+>>>>>>>> }
+>>>>>>>> # wget -O /dev/null
+>>>>>>>> https://git.kernel.org/torvalds/t/linux-7.0-
+>>>>>>>> rc3.tar.gz
+>>>>>>>> --2026-03-14 14:53:51--
+>>>>>>>> https://git.kernel.org/torvalds/t/linux-7.0-
+>>>>>>>> rc3.tar.gz
+>>>>>>>> Resolving git.kernel.org
+>>>>>>>> (git.kernel.org)... 172.105.64.184,
+>>>>>>>> 2a01:7e01:e001:937:0:1991:8:25
+>>>>>>>> Connecting to git.kernel.org
+>>>>>>>> (git.kernel.org)|172.105.64.184|:443...
+>>>>>>>> connected.
+>>>>>>>> HTTP request sent, awaiting response... 301 Moved
+>>>>>>>> Permanently
+>>>>>>>> Location:
+>>>>>>>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/
+>>>>>>>> linux.git/snapshot/linux-7.0-rc3.tar.gz
+>>>>>>>> [following]
+>>>>>>>> --2026-03-14 14:53:51--
+>>>>>>>> https://git.kernel.org/pub/scm/linux/kernel/ git/torvalds/l
+>>>>>>>> inux.git/snapshot/linux-7.0-rc3.tar.gz
+>>>>>>>> Reusing existing connection to git.kernel.org:443.
+>>>>>>>> HTTP request sent, awaiting response... 200 OK
+>>>>>>>> Length: unspecified [application/x-gzip]
+>>>>>>>> Saving to: ‘/dev/null’
+>>>>>>>>
+>>>>>>>> /dev/null                         [
+>>>>>>>> <=>                    ] 248.03M
+>>>>>>>> 51.9MB/s    in 5.0s
+>>>>>>>>
+>>>>>>>> 2026-03-14 14:53:56 (49.3 MB/s) - ‘/dev/null’ saved
+>>>>>>>> [260080129]
+>>>>>>>>
+>>>>>>>> # wget -O /dev/null
+>>>>>>>> https://git.kernel.org/torvalds/t/linux-7.0-
+>>>>>>>> rc3.tar.gz
+>>>>>>>> --2026-03-14 14:53:58--
+>>>>>>>> https://git.kernel.org/torvalds/t/linux-7.0-
+>>>>>>>> rc3.tar.gz
+>>>>>>>> Resolving git.kernel.org
+>>>>>>>> (git.kernel.org)... 172.105.64.184,
+>>>>>>>> 2a01:7e01:e001:937:0:1991:8:25
+>>>>>>>> Connecting to git.kernel.org
+>>>>>>>> (git.kernel.org)|172.105.64.184|:443...
+>>>>>>>> failed: Connection timed out.
+>>>>>>>> Connecting to git.kernel.org
+>>>>>>>> (git.kernel.org)|
+>>>>>>>> 2a01:7e01:e001:937:0:1991:8:25|:443...
+>>>>>>>> failed: Network is unreachable.
+>>>>>>>>
+>>>>>>>> Before the 69894e5b4c5e ("netfilter: nft_connlimit: update
+>>>>>>>> the count
+>>>>>>>> if add was skipped") commit this worked.
+>>>>>>>>
+>>>>>>>
+>>>>>>> Thanks for the report. I have reproduced
+>>>>>>> this on upstream kernel. I am working on it.
+>>>>>>>
+>>>>>>
+>>>>>> This is what is happening:
+>>>>>>
+>>>>>> 1. The first connection is established and
+>>>>>> tracked, all good. When it finishes, it goes to
+>>>>>> TIME_WAIT state
+>>>>>> 2. The second connection is established, ct is
+>>>>>> confirmed since the beginning, skipping the
+>>>>>> tracking and calling a GC.
+>>>>>> 3. The previously tracked connection is cleaned
+>>>>>> up during GC as TIME_WAIT is considered closed.
+>>>>>
+>>>>> This is stupid.  The fix is to add --syn or use
+>>>>> OUTPUT.  Its not even clear to me what the user wants to achive
+>>>>> with this rule.
+>>>>>
+>>>>
+>>>> Yes, the ruleset shown does not make sense. Having said this, it
+>>>> could
+>>>> affect to a soft-limit scenario as the one described on the blamed
+>>>> commit..
+>>>
+>>> Alejandro, can you describe what you would like to achieve with the
+>>> specific rule?
+>>>
+>>> Regards,
+>>> Salvatore
+>>
+>> The intended use of that rule was to prevent (limit) a single host from
+>> establishing too many TCP connections to given host (Denial of
+>> Service... particularly on streaming servers).
+>>
+>> I learnt about it in several IPtables guides/howtos (maaaany years
+>> ago!), and never was an issue on itself.
+>> Was it stupid? ... possibly... It 'seemed' to work, or, at least, when
+>> checking iptables -L -v one could see packet counter for the rule
+>> catching some traffic, without ever noticing it being troublesome, so,
+>> at the very least it 'didn't hurt', and, since DoS ever happened over
+>> the years...well, I tended to think it was indeed working the way I
+>> read it did.
+>>
+>> Certainly, I never (the authors of those guides at their time indeed)
+>> though about the possibility of just target the TCP syn.
+>> I have given a try to adding the --syn option to the rule to see the
+>> difference, and well, it is way less disruptive that way, but it still
+>> breaks things (I saw postfix queues hanging, for instance).
+>>
+> 
+> The current problem with the ruleset is that it mixes both, incoming and
+> outgoing connections. This should probably use --syn flag so it targets
+> connections established against your host only.
+> 
+> Anyway, I am sending a patch fixing this as it makes sense to do it IMO.
+> We just want to understand what is the real use-case and how the ruleset
+> can be improved.
+> 
+> In addition, I would recommend you to transition to nftables because it
+> would be ideal for your use-case. With nftables it would be easy to
+> combine this with sets and probably quota expression to limit the usage.
+> 
+> What is wrong with the current ruleset? (Even before the blammed
+> commit), if you reach the connlimit limit **ALL** TCP connections will
+> be rejected (including legit ones), I do not think that is what you want
+> to achieve.
+> 
+> Thanks,
+> Fernando.
+> 
+>> So, I have but screwed the idea of using connlimit anymore anyways.
+>> Sorry for the noise. Lesson learned.
+>>
+>> Cheers!
+> 
+> 
 
 
