@@ -1,328 +1,235 @@
-Return-Path: <stable+bounces-240298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240299-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0OrjAZ2S6Gl9MgIAu9opvQ
-	(envelope-from <stable+bounces-240298-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 11:19:25 +0200
+	id SAbLMWmU6Gl9MgIAu9opvQ
+	(envelope-from <stable+bounces-240299-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 11:27:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 356F2443DC7
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 11:19:23 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id B185D443F36
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 11:27:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DFA333015FE7
-	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 09:19:04 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CB6E6302479F
+	for <lists+stable@lfdr.de>; Wed, 22 Apr 2026 09:27:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8036F3C1989;
-	Wed, 22 Apr 2026 09:19:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 015F13C279D;
+	Wed, 22 Apr 2026 09:27:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="fGSIJcxd"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="PtHtlA9X"
 X-Original-To: stable@vger.kernel.org
-Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [188.68.63.98])
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010060.outbound.protection.outlook.com [40.93.198.60])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D9EC3C1969;
-	Wed, 22 Apr 2026 09:18:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.68.63.98
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776849540; cv=none; b=t0rPs3TXkB/a6s3bgEG73zMI4Vn/H17RInZ5aFsi0sxCVKA2Duo9LwMUZo/Fid3xXYBgHj/H7JWK3PYLm8ttwKjkMXnt+6u4wNcAAIQ+YlIhJaO7gNNywidCj4k+SlzwqiwcGB0mlkXRLI1G23oLUpwaJU5NnoilFNYBAtmqnGE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776849540; c=relaxed/simple;
-	bh=BF1zEbvNk3kTqMH+V92H0EY8hWcWDUFqzNweMj+pj7A=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=phwp0oguyFN3NAYEeRLaN1Gmhk+WfYK0/izZG6K0s7qdRhaEXxOOggx5FpdNZmZc4Ilmnhu01+UUkCaaOgVd4NeBbU88wPuloVATn8vJoA7379Jsb3S3DVb4ahl/FosvjQDphPpYtmBPV8nMhhRudSaXRl9lWXk3lKg9GTeJqP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=fGSIJcxd; arc=none smtp.client-ip=188.68.63.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-Received: from mors-relay-2501.netcup.net (localhost [127.0.0.1])
-	by mors-relay-2501.netcup.net (Postfix) with ESMTPS id 4g0tvG6VDdz66yb;
-	Wed, 22 Apr 2026 11:18:50 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
-	s=key2; t=1776849530;
-	bh=BF1zEbvNk3kTqMH+V92H0EY8hWcWDUFqzNweMj+pj7A=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=fGSIJcxdGOQA5EjsNjngXsYrBrHIYnfiyM09VQTkqbONmKhnu+o0E8P4794qF2oIW
-	 jDB2jJByrZOupL+zxrxn41udM9fmHrVia11fwN4Jn4uwshQXu17eQy7AqqvxhQUlJL
-	 mCHo93vzHC//z96gJacLP/wImyF2G/v6UWpHR0NnMZ5fZOLj48pX4CNBqyeyIo1W8J
-	 7Qt1lcawvI2mar9ilBrYyrLjpQ1KJSMmwAZ3z2uRJQTtD+sYcon+qDPo6lPVn0q/4Q
-	 cjKIR4N5VLPvucHEkqKubV6haAKepoPLRy6/5beAG95dLHuqV1m5T2zd1UC/jWGrMt
-	 zhj7Dy//1f8jg==
-Received: from policy02-mors.netcup.net (unknown [46.38.225.35])
-	by mors-relay-2501.netcup.net (Postfix) with ESMTPS id 4g0tvG5mVkz4xNb;
-	Wed, 22 Apr 2026 11:18:50 +0200 (CEST)
-Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by policy02-mors.netcup.net (Postfix) with ESMTPS id 4g0tvF0Qv0z8sZP;
-	Wed, 22 Apr 2026 11:18:48 +0200 (CEST)
-Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
-	by mxe9fb.netcup.net (Postfix) with ESMTPSA id 8CF1E632A6;
-	Wed, 22 Apr 2026 11:18:47 +0200 (CEST)
-Authentication-Results: mxe9fb;
-        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=regressions@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
-Received-SPF: pass (mxe9fb: connection is authenticated)
-Message-ID: <0b8607c8-2d29-4fca-961a-b7a677e968a1@leemhuis.info>
-Date: Wed, 22 Apr 2026 11:18:47 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F2343C2785;
+	Wed, 22 Apr 2026 09:26:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.60
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776850020; cv=fail; b=itH8qWRMDAbxGincDQtPSFRy8h4Tpb0y92yqubt/FtSXkylapHEx5ExYXNOkFvJkEv/5oQY6yXhnLi91jwDLaqhT6H1zh9ChD6wyZSds7zIYVmyAyKS4rcpbFlwPSyQPNgNzNovYQp8sGKlxI8kQ/Z/6zowaR3caOCq+E9Eafvs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776850020; c=relaxed/simple;
+	bh=BTpq4WGxdB9HgpkbQths38aFNV8TsWeG40KPIypiB6c=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=Zd+bIYJDO1iRo4U9nLvIu/E8MBwHwjMap7JcZVtFgSDlFhz0RhJtgIPGw+uyStuzb+0OTAbSHIIar+KKenG1eiE8oVuTvJ8t4ZZpZnnbaQHDovZ24nSU0UWTOkRwlYPfM5lqupjc9XAT5a2NZ23t0+ijVa0hH5El1XW4Bj1XEl8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=PtHtlA9X; arc=fail smtp.client-ip=40.93.198.60
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=cgmwE9Cqn2kLlJfYZF0t5LVpWjrh/zkZLl3+vwk2nyorMEsCYrtY2hgJZzrgRQREa14pBO6vo3+uLEba9DwH2BwKFr3AZyKoP67uB/UkC/VmFEJp1pUuQgyxLOBSC5qe1fsVtAILyh9Jvkc61rQAb7VS14/12o/zvttqlTiAh0K4pXDP6wZuo0b9FyJNa7Md+ui0OTeWde/ChovYir36WSCZGFjHGp0E1p/dNqc44WM08uth5SfXlE/a9Is1bzzqq4eTDWc6HfIIDJ8pN1yhrj5QS1FdMVuaHpIExEZCaKU6reOeUF6u8jbSTij0eifqNN/cTMP9ix0/+TZfZBnHkg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0hd8cjdoO5//MNLKSU5zzRL5/KZczjt0FjznJjlsCws=;
+ b=eagPOiZNGiFyvV22latpNvP9tKIzA0AIN2Wgcob78JTMYV053ZT3gDnKZiot+sezbw46XaDXmXYkgkpF49ybaV8q6s/jDyT56RnvWsBLnBXdmdXilLhzF2tC711YejNqcsPTVeUXGl8E8pfP6quCtfUMzVU4Rk5b+D+vPj/XlivOLVQ4tge2gK5smDhQO2WU5H3JiPlCpOmJeO8WoOdbxPAVNpXU8V6yWpUgw3ZKytzE4mp15XhAhfUAsWBKpnOppj2Tj0pIzw302VCQ6ZIalIX4MNrot/pkpvCzCc8ipX9Cy8ocKqGZGVPASiYXD55x0ksSEK8CnIcw278GXqLjzQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0hd8cjdoO5//MNLKSU5zzRL5/KZczjt0FjznJjlsCws=;
+ b=PtHtlA9XhbMmcP2fhKfedcR+z+BQE6H4hKCARPY82aaWi9x2iLe5S/pjpV0KLkbxsxrFMfSPx4/0oc7PwMdwlDLvTpCOS84W1VdNKc6UCU/xdeQ/sdc7aAru5hVU05LzFSs4wDC9LzrCGOD4TmBOI1gC29QnxDEjp4BH8tw+QaHF08BO8tv4u5Z6jUaDHePkVUIZLBXifZHOd63mmSG2LDBPHPE8Pq9/adQn4zN2itU2MB8Sv+AEl4f5wxG5BtxggrEFfeJtaCHcfhTRRA+0LK1QLh7vlR44ruizpMtarIaCFXu9aXoVgD0ErSA0VcGiPE+a1OP83CB6ppPsCKNpfA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS2PR12MB9750.namprd12.prod.outlook.com (2603:10b6:8:2b0::12)
+ by DS0PR12MB8814.namprd12.prod.outlook.com (2603:10b6:8:14e::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.15; Wed, 22 Apr
+ 2026 09:26:54 +0000
+Received: from DS2PR12MB9750.namprd12.prod.outlook.com
+ ([fe80::56a8:d6bf:e24c:b391]) by DS2PR12MB9750.namprd12.prod.outlook.com
+ ([fe80::56a8:d6bf:e24c:b391%6]) with mapi id 15.20.9846.017; Wed, 22 Apr 2026
+ 09:26:52 +0000
+Message-ID: <98255b77-dcef-40c8-8851-91e723b82ea1@nvidia.com>
+Date: Wed, 22 Apr 2026 10:26:47 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RESEND] dmaengine: tegra: Fix burst size calculation
+To: Kartik Rajput <kkartik@nvidia.com>, ldewangan@nvidia.com,
+ akhilrajeev@nvidia.com, vkoul@kernel.org, Frank.Li@kernel.org,
+ thierry.reding@kernel.org, digetx@gmail.com, pkunapuli@nvidia.com,
+ dmaengine@vger.kernel.org, linux-tegra@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org, Frank Li <Frank.Li@nxp.com>
+References: <20260422064134.1323610-1-kkartik@nvidia.com>
+From: Jon Hunter <jonathanh@nvidia.com>
+Content-Language: en-US
+In-Reply-To: <20260422064134.1323610-1-kkartik@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO4P123CA0516.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:272::9) To DS2PR12MB9750.namprd12.prod.outlook.com
+ (2603:10b6:8:2b0::12)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Bug#1130336: [regression] Network failure beyond first connection
- after 69894e5b4c5e ("netfilter: nft_connlimit: update the count if add was
- skipped")
-To: Fernando Fernandez Mancera <fmancera@suse.de>,
- =?UTF-8?Q?Alejandro_Oliv=C3=A1n_Alvarez?=
- <alejandro.olivan.alvarez@gmail.com>,
- Salvatore Bonaccorso <carnil@debian.org>, 1130336@bugs.debian.org
-Cc: Florian Westphal <fw@strlen.de>, Pablo Neira Ayuso <pablo@netfilter.org>,
- Phil Sutter <phil@nwl.cc>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- regressions@lists.linux.dev, stable@vger.kernel.org
-References: <177349610461.3071718.4083978280323144323@eldamar.lan>
- <c72a56ab-a16c-4866-9a44-a03393f074db@suse.de>
- <b3cbfd15-acd1-4500-ba30-eac6f48523fb@suse.de> <abW2MAAqLnKZm3KF@strlen.de>
- <177322336258.4376.10097494324750307114.reportbug@Desk1.simalex.iccbroadcast.com>
- <4da571ab-fa1d-4ee6-b71c-24f4a28243ed@suse.de> <abqfSB0TUik1kRU4@eldamar.lan>
- <e24a281622cedf9e8f4dc93c961813aeb7b6ce4c.camel@gmail.com>
- <8788e351-553f-48da-a6e6-ce082adacb8d@suse.de>
-From: Thorsten Leemhuis <regressions@leemhuis.info>
-Content-Language: de-DE, en-US
-In-Reply-To: <8788e351-553f-48da-a6e6-ce082adacb8d@suse.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-PPP-Message-ID: <177684952826.1966882.4123776011656959757@mxe9fb.netcup.net>
-X-NC-CID: Fc5/BRl+Om7MAoRUqKOqqQj6z/ve4Im5YY7m19THIqIw/0EvzvA=
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS2PR12MB9750:EE_|DS0PR12MB8814:EE_
+X-MS-Office365-Filtering-Correlation-Id: c840477d-348c-4a61-2ca0-08dea051497b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|376014|366016|1800799024|18002099003|921020|22082099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	D4/LNlJWqIj9pp7vKni/pZwa1W5yoWdDVGu3jiDO3TMx56dPzCzNTfIQvFfhtEHewFGI2O1Z1UJ9QSnyv/9adWo6bEsazJwWakN6SVzQ7wY89jT35VvM26iGfizFPc1id4l/UTocpRDDKFJyixDPXOe97M42wth+uvy7XrVp7skKSlyzo2VJYV9g7lsqEe26HXTG/jHjL9s4SA7/wTnKiGboTIR03Tf6YtborIRvn2t1D5stxTeGm+4AzwqvCUyY8fmUmKmky8hCh88OOA0YjIRuNUyoTAdRZSQowrOTWFR26SLgNYZB02PRSQ5bkzYzpQgGO8PE5JySP5yt6/5bSKKeuKejp1IepiEO3VPB4Lm5oOM3ylFDotKRpi4W79OvoC5aPmLgjFBMSXfO8KtKGqxx0NGau76aoUhL7fQHz4I3wcbA/x/aa+EJNfXwTzJN43X/iicE+1JnzT444g35hb9QVYb945+jZlAWn5qDArejHU/qCZx18AMjUjJCECS3iy4YopIez51xDjZQ0oEJlTOjupD9gRZ/vc7FIisxuPM/PNEqVyG19xwOynEe6SmfNvK+iTUMe6vdZt2zvWfYMl0IbXfaZCQ7VQM2NQZLrOfjTXwZmQsd70Htd/ZGxTnLw0jXLx/WCDDcD7m1WTMb3sQiMNwrkfefk08due53z3JXgomT3NsbH6pVxVhRjw2E5Aez2zaA/ARRwfMN7vNfQtIbBBwo+zxXPlogAEqxpKtGHgB9shrIYUu5YHiCazdGJ6hBjBd8IqhupCrQv7p02g==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS2PR12MB9750.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(376014)(366016)(1800799024)(18002099003)(921020)(22082099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?UGFXeWtaaHp0UTVmb0d5R2Q1MnRIdEtMRzF6dVVWZ29lVkhDQ21kK2h2ZkFp?=
+ =?utf-8?B?SnBNVzJIYkRVRGsyRnNNWlc5SXhvcW15c2F1OUNVeGw2ZzI0Q0VPelltejVz?=
+ =?utf-8?B?TnlmdjhBTjA5WnZIc3lkRG93WERGS1E3UlYrd3lsOWEvOFg2Y0RaSHppSTNh?=
+ =?utf-8?B?QlVNeU5pNk95R3BwdWYvZWJvb2dLSXlodFQ2bnNXT01xTjE5UUQvUXAyTzcz?=
+ =?utf-8?B?RWQ1ZkR0ekNueE01bmRYTisvQkIwTkc4YW81ckk2bThJQXRlVUpLRzV0YzZs?=
+ =?utf-8?B?aGNvdm0yakxhenJPMnpscHZWNkVDSnJYZHN6MFVEalZQYnVNRmk0alJyYmRR?=
+ =?utf-8?B?UENtaFZBQzFkb2Q0eVlJd09ZNjhaOGp3U0d4OUpaN21nZ21kbytUaTkwZDFu?=
+ =?utf-8?B?UGFDZHhyQXJSL0lDWWptOEhnTEJqSVE3Vld0ZUVmZUcvN0F6WVFIN2wweTJC?=
+ =?utf-8?B?S3dzWjNSSXJDdG44eW9OcmtkbjF5bkF2aEQ1S29QeHZuZEhXdkpYYlhTNTdD?=
+ =?utf-8?B?L2dQUkFoVzVlai9DaEowa1Jjc3d2K0xMcCttQnpTa2pEWEVaQ0dadWFsZ000?=
+ =?utf-8?B?dVlmZTc1K1lzUCt4SXZMZ203UW9zUTBpQ3g2ZjFXWk9POW9oZFp1anV4SzNy?=
+ =?utf-8?B?NHpqSEZxZCtZS2toY1ZaY0IrZXBycW1WYkdJNVFjUlNxaGNiWnhuQnhBNW5E?=
+ =?utf-8?B?T0ZsYkt0U0NyYk5rK1NiTmo5SlZQRUFpSklGcHVheU1yU2tMYWVtRkRpQTNq?=
+ =?utf-8?B?bzVSRkRNMjc1RjNTc2FVNE03L1Z5c3U2REczZVlwbE9mSUtlM0VPakdiSm5l?=
+ =?utf-8?B?RExoc281TExqMjI5NGswLzBoZFJkTkJkWXZKZnhaVC85eFUzT05VV29Ed3I1?=
+ =?utf-8?B?NzdrdnF3VUh6UnVxcXBoaS9jRFFoU0FFdnEzdjJHRVFpUGdwNFIxd1hDS2Jv?=
+ =?utf-8?B?L2oxNXlEYXB3R2RQY2duRm0yTFluMEJLMzgxdVV2bFpUWnBITlg5bFJISm5v?=
+ =?utf-8?B?V3VWdS9WL3UrTWlCM2wrbXVaR05BTlZ4d1g5ZXlVc3k5amFvN05LdmkrNWpW?=
+ =?utf-8?B?MXUreTNaUEh0UDZublVxam5kNU0rUVpDOGpaak0yYTNCUjNjaVgrbVNLOE1x?=
+ =?utf-8?B?L0dxenVMTmlnS1JoQ0hZUkVscjcxVy9PNk9waG5qNHk2bGRXQ2ZSdUVoVFVt?=
+ =?utf-8?B?bk5nWGlLRC9BWGNXUTJOWGtTaHFITGJyVkZRUXJTakNsSUtLc2dWR25NUXpj?=
+ =?utf-8?B?cEVISG9ScFppTjUrM1Q1T0thNHJpcjdXNWRrOXZkNlhEUzVwdGtBSHJDOFdl?=
+ =?utf-8?B?Mi94NHNiMzRWSUhPWUtSV0QvM2tFVWdUWHZwWnBtQW42RTkyMldZbWdEamxS?=
+ =?utf-8?B?RDFjRUhFNEd2SlR2RTlUcGxJaWZUR1lSdVhXOHNJZ1B6OVZkS0VEQVdSZzVF?=
+ =?utf-8?B?bysvVzQxNDJxWmczbHg4VFh0QzFzUnY3bVBmNHVVNUVyY1dnTCt6K1FtZDBu?=
+ =?utf-8?B?OHltblp5LzZPQWt0ekcxdklYTXFpUWVVMDg5dkp5RFgwQ2l3N0FOYi9sT09Q?=
+ =?utf-8?B?S1FIOWMyV21seFdJL0ljTVVMb1NQQmlWUis5bWkrYkU1eXRtdnF6TXlqNWlY?=
+ =?utf-8?B?WDAyRU5ya2ZLMVRYUmVVMEh5cEdhdXFkRklqejV1QlhhbjFCRUYvZ0dhSEh0?=
+ =?utf-8?B?dkhnVVI2OFYrcURuWlB0NlRPT2RTdC9WWTh1UnRPbWdDZnk5MW1GUUZ6a3Vo?=
+ =?utf-8?B?SEUvS0JFTTlrSDFQL0J2QWFRd0hCRU1GWlJWcHJjMnJHZkQ2djhhTmVMdFhF?=
+ =?utf-8?B?aW5sdVI0U1I2Z1U0Kzc2SUFObW54aEVsK0FjZ2FGU2hNaXI1SXNvYzVhMVVl?=
+ =?utf-8?B?d1plYzRVU1FILzU4ZTBNSER0eFlIbFN0akxzR2hpeWVkWG0rczkwbWlqeVhZ?=
+ =?utf-8?B?S24yUkdEbk12V1Z1ZzRHZEJkci9OVHNZKzlRRDBKZ21FaVlzenlPaTBMRjBQ?=
+ =?utf-8?B?YWZLYThtam5WckthRXRMb2NCT0liTzhnYW13QjRFZDZhRERpNlhDczZVM0dM?=
+ =?utf-8?B?QW5MZW1mWFVSOVdCSlBrWlh2VVRETWhWSDBET3VCeklkZmxmNnR6RldKNkdW?=
+ =?utf-8?B?c0hkcFNWSjZKcVVKYzMzcHhISk5ndi96VWI1N3ZOREpyQ3VIRzQxMWIrQ2NI?=
+ =?utf-8?B?WWdPazQ2WXJld0x2OTh4My9Da2lLRWFTRVNDMElBc3hhNlYyTVBQT0JxWm5I?=
+ =?utf-8?B?eGpROGNpYVNlSnNjaXNjYU5CZENLZHVndEpuKzVQWFdmU3k4MytPbEtSOUQ1?=
+ =?utf-8?B?MkdVdnI3OXFjS0RNUVNYT0FxY3JSTzZaaENRUXIwN0x2WVZ5Skw3Uis0UWZq?=
+ =?utf-8?Q?fdD7bW0OVbSKF4ZCD8y2EseFt4MnRaPTY/o/dh+SXujE+?=
+X-MS-Exchange-AntiSpam-MessageData-1: kE3RkLtJjG6cow==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c840477d-348c-4a61-2ca0-08dea051497b
+X-MS-Exchange-CrossTenant-AuthSource: DS2PR12MB9750.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Apr 2026 09:26:52.0876
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: GwlcCKIOPSWwLBjrX6T9ybYO+4LwvNHCw4WZjx/1JOp5N+PGjqNhcdhUfpfbZNxJ+miBeNB4IdhkDNVLnA7gAw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8814
 X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[leemhuis.info:s=key2];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
+	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-240298-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	TAGGED_FROM(0.00)[bounces-240299-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,leemhuis.info:dkim,leemhuis.info:mid,suse.de:email,eldama:email];
-	FREEMAIL_TO(0.00)[suse.de,gmail.com,debian.org,bugs.debian.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[leemhuis.info];
-	RCPT_COUNT_TWELVE(0.00)[18];
+	FREEMAIL_TO(0.00)[nvidia.com,kernel.org,gmail.com,vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[leemhuis.info:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[regressions@leemhuis.info,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jonathanh@nvidia.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[Nvidia.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 356F2443DC7
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[Nvidia.com:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,nvidia.com:mid,nvidia.com:email,nxp.com:email]
+X-Rspamd-Queue-Id: B185D443F36
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Lo! Top-posting on purpose to make this easy to process.
 
-What happened to this regression? It looks a bit like things stalled and
-fell through the cracks. Or Fernando, did you post a patch like you
-mentioned? I looked for one referring the commit or the reporter, but
-could not find anything -- but maybe I missed it.
+On 22/04/2026 07:41, Kartik Rajput wrote:
+> Currently, the Tegra GPC DMA hardware requires the transfer length to
+> be a multiple of the max burst size configured for the channel. When a
+> client requests a transfer where the length is not evenly divisible by
+> the configured max burst size, the DMA hangs with partial burst at
+> the end.
+> 
+> Fix this by reducing the burst size to the largest power-of-2 value
+> that evenly divides the transfer length. For example, a 40-byte
+> transfer with a 16-byte max burst will now use an 8-byte burst
+> (40 / 8 = 5 complete bursts) instead of causing a hang.
+> 
+> This issue was observed with the PL011 UART driver where TX DMA
+> transfers of arbitrary lengths were stuck.
+> 
+> Fixes: ee17028009d4 ("dmaengine: tegra: Add tegra gpcdma driver")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Kartik Rajput <kkartik@nvidia.com>
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> ---
+>   drivers/dma/tegra186-gpc-dma.c | 7 +++++++
+>   1 file changed, 7 insertions(+)
+> 
+> diff --git a/drivers/dma/tegra186-gpc-dma.c b/drivers/dma/tegra186-gpc-dma.c
+> index 5948fbf32c21..0aa3a02b2277 100644
+> --- a/drivers/dma/tegra186-gpc-dma.c
+> +++ b/drivers/dma/tegra186-gpc-dma.c
+> @@ -825,6 +825,13 @@ static unsigned int get_burst_size(struct tegra_dma_channel *tdc,
+>   	 * len to calculate the optimum burst size
+>   	 */
+>   	burst_byte = burst_size ? burst_size * slave_bw : len;
+> +
+> +	/*
+> +	 * Find the largest burst size that evenly divides the transfer length.
+> +	 * The hardware requires the transfer length to be a multiple of the
+> +	 * burst size - partial bursts are not supported.
+> +	 */
+> +	burst_byte = min(burst_byte, 1U << __ffs(len));
+>   	burst_mmio_width = burst_byte / 4;
+>   
+>   	if (burst_mmio_width < TEGRA_GPCDMA_MMIOSEQ_BURST_MIN)
 
-Ciao, Thorsten
 
-On 3/19/26 09:59, Fernando Fernandez Mancera wrote:
-> On 3/19/26 9:44 AM, Alejandro Oliván Alvarez wrote:
->> Hi folks.
->>
->> On Wed, 2026-03-18 at 13:49 +0100, Salvatore Bonaccorso wrote:
->>> Hi Alejandro,
->>>
->>> On Sun, Mar 15, 2026 at 02:09:33AM +0100, Fernando Fernandez Mancera
->>> wrote:
->>>> On 3/14/26 8:25 PM, Florian Westphal wrote:
->>>>> Fernando Fernandez Mancera <fmancera@suse.de> wrote:
->>>>>> On 3/14/26 5:13 PM, Fernando Fernandez Mancera wrote:
->>>>>>> Hi,
->>>>>>>
->>>>>>> On 3/14/26 3:03 PM, Salvatore Bonaccorso wrote:
->>>>>>>> Control: forwarded -1
->>>>>>>> https://lore.kernel.org/
->>>>>>>> regressions/177349610461.3071718.4083978280323144323@eldama
->>>>>>>> r.lan
->>>>>>>> Control: tags -1 + upstream
->>>>>>>>
->>>>>>>> Hi
->>>>>>>>
->>>>>>>> In Debian, in https://bugs.debian.org/1130336, Alejandro
->>>>>>>> reported that
->>>>>>>> after updates including 69894e5b4c5e ("netfilter:
->>>>>>>> nft_connlimit:
->>>>>>>> update the count if add was skipped"), when the following
->>>>>>>> rule is set
->>>>>>>>
->>>>>>>>       iptables -A INPUT -p tcp -m
->>>>>>>> connlimit --connlimit-above 111 -j
->>>>>>>> REJECT --reject-with tcp-reset
->>>>>>>>
->>>>>>>> connections get stuck accordingly, it can be easily
->>>>>>>> reproduced by:
->>>>>>>>
->>>>>>>> # iptables -A INPUT -p tcp -m connlimit
->>>>>>>> --connlimit-above 111 -j REJECT
->>>>>>>> --reject-with tcp-reset
->>>>>>>> # nft list ruleset
->>>>>>>> # Warning: table ip filter is managed by iptables-nft, do
->>>>>>>> not touch!
->>>>>>>> table ip filter {
->>>>>>>>            chain INPUT {
->>>>>>>>                    type filter hook input priority filter;
->>>>>>>> policy accept;
->>>>>>>>                    ip protocol tcp xt
->>>>>>>> match "connlimit" counter packets 0
->>>>>>>> bytes 0 reject with tcp reset
->>>>>>>>            }
->>>>>>>> }
->>>>>>>> # wget -O /dev/null
->>>>>>>> https://git.kernel.org/torvalds/t/linux-7.0-
->>>>>>>> rc3.tar.gz
->>>>>>>> --2026-03-14 14:53:51--
->>>>>>>> https://git.kernel.org/torvalds/t/linux-7.0-
->>>>>>>> rc3.tar.gz
->>>>>>>> Resolving git.kernel.org
->>>>>>>> (git.kernel.org)... 172.105.64.184,
->>>>>>>> 2a01:7e01:e001:937:0:1991:8:25
->>>>>>>> Connecting to git.kernel.org
->>>>>>>> (git.kernel.org)|172.105.64.184|:443...
->>>>>>>> connected.
->>>>>>>> HTTP request sent, awaiting response... 301 Moved
->>>>>>>> Permanently
->>>>>>>> Location:
->>>>>>>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/
->>>>>>>> linux.git/snapshot/linux-7.0-rc3.tar.gz
->>>>>>>> [following]
->>>>>>>> --2026-03-14 14:53:51--
->>>>>>>> https://git.kernel.org/pub/scm/linux/kernel/ git/torvalds/l
->>>>>>>> inux.git/snapshot/linux-7.0-rc3.tar.gz
->>>>>>>> Reusing existing connection to git.kernel.org:443.
->>>>>>>> HTTP request sent, awaiting response... 200 OK
->>>>>>>> Length: unspecified [application/x-gzip]
->>>>>>>> Saving to: ‘/dev/null’
->>>>>>>>
->>>>>>>> /dev/null                         [
->>>>>>>> <=>                    ] 248.03M
->>>>>>>> 51.9MB/s    in 5.0s
->>>>>>>>
->>>>>>>> 2026-03-14 14:53:56 (49.3 MB/s) - ‘/dev/null’ saved
->>>>>>>> [260080129]
->>>>>>>>
->>>>>>>> # wget -O /dev/null
->>>>>>>> https://git.kernel.org/torvalds/t/linux-7.0-
->>>>>>>> rc3.tar.gz
->>>>>>>> --2026-03-14 14:53:58--
->>>>>>>> https://git.kernel.org/torvalds/t/linux-7.0-
->>>>>>>> rc3.tar.gz
->>>>>>>> Resolving git.kernel.org
->>>>>>>> (git.kernel.org)... 172.105.64.184,
->>>>>>>> 2a01:7e01:e001:937:0:1991:8:25
->>>>>>>> Connecting to git.kernel.org
->>>>>>>> (git.kernel.org)|172.105.64.184|:443...
->>>>>>>> failed: Connection timed out.
->>>>>>>> Connecting to git.kernel.org
->>>>>>>> (git.kernel.org)|
->>>>>>>> 2a01:7e01:e001:937:0:1991:8:25|:443...
->>>>>>>> failed: Network is unreachable.
->>>>>>>>
->>>>>>>> Before the 69894e5b4c5e ("netfilter: nft_connlimit: update
->>>>>>>> the count
->>>>>>>> if add was skipped") commit this worked.
->>>>>>>>
->>>>>>>
->>>>>>> Thanks for the report. I have reproduced
->>>>>>> this on upstream kernel. I am working on it.
->>>>>>>
->>>>>>
->>>>>> This is what is happening:
->>>>>>
->>>>>> 1. The first connection is established and
->>>>>> tracked, all good. When it finishes, it goes to
->>>>>> TIME_WAIT state
->>>>>> 2. The second connection is established, ct is
->>>>>> confirmed since the beginning, skipping the
->>>>>> tracking and calling a GC.
->>>>>> 3. The previously tracked connection is cleaned
->>>>>> up during GC as TIME_WAIT is considered closed.
->>>>>
->>>>> This is stupid.  The fix is to add --syn or use
->>>>> OUTPUT.  Its not even clear to me what the user wants to achive
->>>>> with this rule.
->>>>>
->>>>
->>>> Yes, the ruleset shown does not make sense. Having said this, it
->>>> could
->>>> affect to a soft-limit scenario as the one described on the blamed
->>>> commit..
->>>
->>> Alejandro, can you describe what you would like to achieve with the
->>> specific rule?
->>>
->>> Regards,
->>> Salvatore
->>
->> The intended use of that rule was to prevent (limit) a single host from
->> establishing too many TCP connections to given host (Denial of
->> Service... particularly on streaming servers).
->>
->> I learnt about it in several IPtables guides/howtos (maaaany years
->> ago!), and never was an issue on itself.
->> Was it stupid? ... possibly... It 'seemed' to work, or, at least, when
->> checking iptables -L -v one could see packet counter for the rule
->> catching some traffic, without ever noticing it being troublesome, so,
->> at the very least it 'didn't hurt', and, since DoS ever happened over
->> the years...well, I tended to think it was indeed working the way I
->> read it did.
->>
->> Certainly, I never (the authors of those guides at their time indeed)
->> though about the possibility of just target the TCP syn.
->> I have given a try to adding the --syn option to the rule to see the
->> difference, and well, it is way less disruptive that way, but it still
->> breaks things (I saw postfix queues hanging, for instance).
->>
-> 
-> The current problem with the ruleset is that it mixes both, incoming and
-> outgoing connections. This should probably use --syn flag so it targets
-> connections established against your host only.
-> 
-> Anyway, I am sending a patch fixing this as it makes sense to do it IMO.
-> We just want to understand what is the real use-case and how the ruleset
-> can be improved.
-> 
-> In addition, I would recommend you to transition to nftables because it
-> would be ideal for your use-case. With nftables it would be easy to
-> combine this with sets and probably quota expression to limit the usage.
-> 
-> What is wrong with the current ruleset? (Even before the blammed
-> commit), if you reach the connlimit limit **ALL** TCP connections will
-> be rejected (including legit ones), I do not think that is what you want
-> to achieve.
-> 
-> Thanks,
-> Fernando.
-> 
->> So, I have but screwed the idea of using connlimit anymore anyways.
->> Sorry for the noise. Lesson learned.
->>
->> Cheers!
-> 
-> 
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+
+Thanks
+Jon
+
+-- 
+nvpublic
 
 
