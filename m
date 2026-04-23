@@ -1,208 +1,152 @@
-Return-Path: <stable+bounces-240515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240516-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oK9nGxtD6mnqxQIAu9opvQ
-	(envelope-from <stable+bounces-240515-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 18:04:43 +0200
+	id KAPZN41D6mnqxQIAu9opvQ
+	(envelope-from <stable+bounces-240516-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 18:06:37 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C07F454A12
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 18:04:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFB0E454A3E
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 18:06:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 25F7030497BF
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 16:03:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 00890303E8E6
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 16:06:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02E8535E936;
-	Thu, 23 Apr 2026 16:03:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="RDGM0I9e"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72BFF36E488;
+	Thu, 23 Apr 2026 16:06:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-m1973173.qiye.163.com (mail-m1973173.qiye.163.com [220.197.31.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB9742080C1;
-	Thu, 23 Apr 2026 16:03:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3C9B36E47A;
+	Thu, 23 Apr 2026 16:06:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776960225; cv=none; b=s3xkaaDtA3NgrFe4R4EQlB4CQzRrljvVqA2/gsjilpHgZdlv7A2otuW+x3w8/ZyIWs2l7Br5zSIbc58qoIheqE0rsivwpJ9wNtz3caBFV6m1q78F2ogFUUmp82U5TZLgd47APTDr2IqMVakyRVaeQ5zgv6YwbkNnyLFGaEU3Nqs=
+	t=1776960389; cv=none; b=L13tHw5JgFs+H7TiPxPR8LEsyWNZkoLo8AW9I8Ph3o6m5RMKfu5er6P6Rzhh0o1bZ8tsFtBBOWXYrkYSTMshbkQO0WnDL6RK33ImoOPvRPEDsh8yCoz37FskqAlXRYOGDPLwCQ74fO4PwDH/vKiCGaQI7JxZWis13ckAFrKnSmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776960225; c=relaxed/simple;
-	bh=0MqkS3pEJJEHMAinvcJOMq9F+y5UEPVL0I4bxXe0zUk=;
-	h=Date:To:From:Subject:Message-Id; b=iLfziyfLpy5WHOGLN1Vu8AVULfdhcQnK1ZXYN9aho/7QWIs0iH7gGxzFSb1jEk5GzMAHO4xWUUnZFJzegV3e0saF9aOxai1rXlu68uevDWaiJssvUkiliE7pjNn9oQ8dXZp6xHMhDPu67CCA3lnEMfovknYkjpfRcYdW6OnWZsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=RDGM0I9e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34122C2BCAF;
-	Thu, 23 Apr 2026 16:03:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1776960225;
-	bh=0MqkS3pEJJEHMAinvcJOMq9F+y5UEPVL0I4bxXe0zUk=;
-	h=Date:To:From:Subject:From;
-	b=RDGM0I9evGor9UQ2BuKJgfpXw4aT/w+Fi03c1TQDhOCL95GPVjGpQwZfSIPdiARSq
-	 L9g+latU/HkPofqo7ykLdSpT7iiU21M31dBC8HiUbb9r2sFLM3wJmBPJOrQzTUpN1r
-	 OHfR1ERkOeP15O/uLfCt4kt/ZoK3u8LQ9itk2oFk=
-Date: Thu, 23 Apr 2026 09:03:44 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,peterx@redhat.com,jhubbard@nvidia.com,jgg@ziepe.ca,david@kernel.org,gregkh@linuxfoundation.org,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-gup-honour-foll_pin-in-nommu-__get_user_pages_locked.patch added to mm-new branch
-Message-Id: <20260423160345.34122C2BCAF@smtp.kernel.org>
+	s=arc-20240116; t=1776960389; c=relaxed/simple;
+	bh=1JrHli4SssiBkayVs215LdfbzOlofYgSJbx/Op1ZIIY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Nt415/c7wpGemLguDOsoe4bZ4o0jQGT/3RV5w524nfOsKQlAqI9838zBgduoJ9TnVzXOz/sOSOA6sfAQJsMJEUnj/3eWo1rLVEPg01KbAA4i4W6OAGcMw18fDGST2ZxM+74p+vGVgUX863xeyA8sz5TEq92CFhPfdttTjibU3d8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=autochips.com; spf=pass smtp.mailfrom=autochips.com; arc=none smtp.client-ip=220.197.31.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=autochips.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=autochips.com
+Received: from H20F120008.autochips.inc (unknown [223.244.89.246])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 3be7c0b5a;
+	Fri, 24 Apr 2026 00:06:12 +0800 (GMT+08:00)
+From: Yongchao Wu <yongchao.wu@autochips.com>
+To: peter.chen@kernel.org,
+	pawell@cadence.com
+Cc: rogerq@kernel.org,
+	gregkh@linuxfoundation.org,
+	linux-usb@vger.kernel.org,
+	stable@vger.kernel.org,
+	Yongchao Wu <yongchao.wu@autochips.com>
+Subject: [PATCH] usb: cdns3: gadget: fix request skipping after clearing halt
+Date: Fri, 24 Apr 2026 00:06:01 +0800
+Message-ID: <20260423160601.2949010-1-yongchao.wu@autochips.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [-1.16 / 15.00];
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9dbb177f6f03ackunm83a281af13c76d
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDGU9PVk5OSUoaQx1IGUNMTVYVFA
+	kWGhdVEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUhVSU9PVUNCVUlPTVlXWRYaDxIVHRRZQVlPS0hVSk
+	tJT09PSFVKS0tVSkJLS1kG
+X-Spamd-Result: default: False [1.54 / 15.00];
+	DMARC_POLICY_QUARANTINE(1.50)[autochips.com : SPF not aligned (relaxed), No valid DKIM,quarantine];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-240516-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	TAGGED_FROM(0.00)[bounces-240515-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_NA(0.00)[linux-foundation.org];
-	MISSING_XM_UA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[yongchao.wu@autochips.com,stable@vger.kernel.org];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_NONE(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux-foundation.org:dkim,linux-foundation.org:email,ziepe.ca:email]
-X-Rspamd-Queue-Id: 0C07F454A12
+	DBL_BLOCKED_OPENRESOLVER(0.00)[autochips.com:mid,autochips.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: DFB0E454A3E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+According to the cdns3 datasheet, the EPRST (Endpoint Reset) command
+causes the DMA engine to reposition its internal pointer to the next
+Transfer Descriptor (TD) if it was already processing one.
 
-The patch titled
-     Subject: mm/gup: honour FOLL_PIN in NOMMU __get_user_pages_locked()
-has been added to the -mm mm-new branch.  Its filename is
-     mm-gup-honour-foll_pin-in-nommu-__get_user_pages_locked.patch
+This issue is consistently observed during the ADB identification
+process on macOS hosts, where the host issues a Clear_Halt. Although
+commit 4bf2dd65135a ("usb: cdns3: gadget: toggle cycle bit before reset
+endpoint") attempted to avoid DMA advance by toggling the cycle bit,
+trace logs show that on certain hosts like macOS, the DMA pointer
+(EP_TRADDR) still shifts after EPRST:
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-gup-honour-foll_pin-in-nommu-__get_user_pages_locked.patch
+  cdns3_ctrl_req: Clear Endpoint Feature(Halt ep1out)
+  cdns3_doorbell_epx: ep1out, ep_trbaddr f9c04030  <-- Should be f9c04000
+  cdns3_gadget_giveback: ep1out: req: ... length: 16384/16384
 
-This patch will later appear in the mm-new branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+As shown above, the DMA pointer jumped to index 3 (offset 0x30), causing
+the controller to skip the initial TRBs of the request. This leads to
+data misalignment and ADB protocol hangs on macOS.
 
-Note, mm-new is a provisional staging ground for work-in-progress
-patches, and acceptance into mm-new is a notification for others take
-notice and to finish up reviews.  Please do not hesitate to respond to
-review feedback and post updated versions to replace or incrementally
-fixup patches in mm-new.
+Fix this by manually restoring the EP_TRADDR register to the starting
+physical address of the current request after the EPRST operation is
+complete.
 
-The mm-new branch of mm.git is not included in linux-next
-
-If a few days of testing in mm-new is successful, the patch will me moved
-into mm.git's mm-unstable branch, which is included in linux-next
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: mm/gup: honour FOLL_PIN in NOMMU __get_user_pages_locked()
-Date: Thu, 23 Apr 2026 16:28:04 +0200
-
-The !CONFIG_MMU implementation of __get_user_pages_locked() takes a bare
-get_page() reference for each page regardless of foll_flags:
-
-	if (pages[i])
-		get_page(pages[i]);
-
-This is reached from pin_user_pages*() with FOLL_PIN set. 
-unpin_user_page() is shared between MMU and NOMMU configurations and
-unconditionally calls gup_put_folio(..., FOLL_PIN), which subtracts
-GUP_PIN_COUNTING_BIAS (1024) from the folio refcount.
-
-This means that pin adds 1, and then unpin will subtract 1024.
-
-If a user maps a page (refcount 1), registers it 1023 times as an io_uring
-fixed buffer (1023 pin_user_pages calls -> refcount 1024), then
-unregisters: the first unpin_user_page subtracts 1024, refcount hits 0,
-the page is freed and returned to the buddy allocator.  The remaining 1022
-unpins write into whatever was reallocated, and the user's VMA still maps
-the freed page (NOMMU has no MMU to invalidate it).  Reallocating the page
-for an io_uring pbuf_ring then lets userspace corrupt the new owner's data
-through the stale mapping.
-
-Use try_grab_folio() which adds GUP_PIN_COUNTING_BIAS for FOLL_PIN and 1
-for FOLL_GET, mirroring the CONFIG_MMU path so pin and unpin are
-symmetric.
-
-Link: https://lore.kernel.org/2026042303-vendor-outright-b9d2@gregkh
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: Peter Xu <peterx@redhat.com>
-Reported-by: Anthropic
-Assisted-by: gkh_clanker_t1000
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
+Cc: stable@vger.kernel.org
+Cc: Peter Chen <peter.chen@kernel.org>
+Signed-off-by: Yongchao Wu <yongchao.wu@autochips.com>
 ---
+ drivers/usb/cdns3/cdns3-gadget.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
- mm/gup.c |   13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
-
---- a/mm/gup.c~mm-gup-honour-foll_pin-in-nommu-__get_user_pages_locked
-+++ a/mm/gup.c
-@@ -1983,6 +1983,7 @@ static long __get_user_pages_locked(stru
- 	struct vm_area_struct *vma;
- 	bool must_unlock = false;
- 	vm_flags_t vm_flags;
-+	int ret, err = -EFAULT;
- 	long i;
+diff --git a/drivers/usb/cdns3/cdns3-gadget.c b/drivers/usb/cdns3/cdns3-gadget.c
+index d59a60a16ec77..96653c7d18f20 100644
+--- a/drivers/usb/cdns3/cdns3-gadget.c
++++ b/drivers/usb/cdns3/cdns3-gadget.c
+@@ -2814,9 +2814,19 @@ int __cdns3_gadget_ep_clear_halt(struct cdns3_endpoint *priv_ep)
+ 	priv_ep->flags &= ~(EP_STALLED | EP_STALL_PENDING);
  
- 	if (!nr_pages)
-@@ -2019,8 +2020,14 @@ static long __get_user_pages_locked(stru
+ 	if (request) {
+-		if (trb)
++		if (trb) {
+ 			*trb = trb_tmp;
  
- 		if (pages) {
- 			pages[i] = virt_to_page((void *)start);
--			if (pages[i])
--				get_page(pages[i]);
-+			if (!pages[i])
-+				break;
-+			ret = try_grab_folio(page_folio(pages[i]), 1, foll_flags);
-+			if (unlikely(ret)) {
-+				pages[i] = NULL;
-+				err = ret;
-+				break;
-+			}
- 		}
- 
- 		start = (start + PAGE_SIZE) & PAGE_MASK;
-@@ -2031,7 +2038,7 @@ static long __get_user_pages_locked(stru
- 		*locked = 0;
++			/*
++			 * Per datasheet, EPRST causes DMA to reposition to the next TD.
++			 * Manually reset EP_TRADDR to the current TRB to prevent
++			 * the hardware from skipping the interrupted request.
++			 */
++			writel(EP_TRADDR_TRADDR(priv_ep->trb_pool_dma +
++						priv_req->start_trb * TRB_SIZE),
++						&priv_dev->regs->ep_traddr);
++		}
++
+ 		cdns3_rearm_transfer(priv_ep, 1);
  	}
  
--	return i ? : -EFAULT;
-+	return i ? : err;
- }
- #endif /* !CONFIG_MMU */
- 
-_
 
-Patches currently in -mm which might be from gregkh@linuxfoundation.org are
-
-mm-gup-honour-foll_pin-in-nommu-__get_user_pages_locked.patch
+base-commit: 46b513250491a7bfc97d98791dbe6a10bcc8129d
+-- 
+2.43.0
 
 
