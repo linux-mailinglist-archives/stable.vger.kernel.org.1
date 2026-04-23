@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-240410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240411-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oFBRCbSm6WmzgQIAu9opvQ
-	(envelope-from <stable+bounces-240410-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 06:57:24 +0200
+	id CE1zKKKm6WmzgQIAu9opvQ
+	(envelope-from <stable+bounces-240411-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 06:57:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 745B844D1CB
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 06:57:23 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 336F044D1C4
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 06:57:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 74082302E414
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 04:55:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 055833023A69
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 04:57:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22567244687;
-	Thu, 23 Apr 2026 04:55:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1288244687;
+	Thu, 23 Apr 2026 04:57:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QKvPMJHY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BcSlBE3e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9D63611E
-	for <stable@vger.kernel.org>; Thu, 23 Apr 2026 04:55:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95267611E
+	for <stable@vger.kernel.org>; Thu, 23 Apr 2026 04:57:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776920145; cv=none; b=O93QsqK71CxU4Xktf7xib6esWfG0YlZmNnoCBmzDCNlY5ANU8+4yJue7ZzJXaRUHzJq8x5Rsy/lJqOJYNGDeRSyka47bhGdG/0asu5CANYSiGolw7XkBcS+9acz4YlSs8eWdOSDJ/sqoB0Weo9OM2afvgIVw7ysX4+Dx9u9qhR8=
+	t=1776920222; cv=none; b=jBnfwdP0+Oz9yQ/YgoYR4iC5tAtOzk/dQi3kofuMFU8iLLhoHg//JoJJ+jPWCozJqMsU4imUMH+3EPPIdfKuAPJyk0L11ukwhVU3i9/pocoWJI8c84r/OdTYUQ34A0gBJMWeK2r6jXr09X2rZRD80dbHejBL4ob1xb02kYCulYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776920145; c=relaxed/simple;
-	bh=RUY7zs3U2LknWW0qy/Zh3yBZlxSTz3al1m/dNRBHwEk=;
+	s=arc-20240116; t=1776920222; c=relaxed/simple;
+	bh=BC9GTBdNO0Lq8OWjR7BelcdwpVcqM4n+6HABP1TV9jU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dsNR0Mib6jKeFHJFB3qUUmXljKwcDoU9kZeeuVT+pMhwUGAtwuCeHxEjiR8Owqz7DHuTeAc4rwyo4VgX2robWSOzBJ0ADd+h75grPfCURJF+uKjP7f0jJcMDpFN++jmUe3u11NRthUaHzLRdENGcd3nqMNiXTQNmzBBCEffj4I0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QKvPMJHY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2040CC2BCB2;
-	Thu, 23 Apr 2026 04:55:44 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=NcrOA/kcctbo4OKp362dQoX0Vj9n5UrEX8w4e/Chi+8wuvR53KE9Rq7Qx0qHavn7Oj7YUO2JZkyTVIBkJ3R7FawMDVmBMK77hbxN5qtnMRu1QmpJgWjZx4GXHuhKvM542Y6q1YLhqUikuChBe92HG4Z1CTHWtNuGX57p3ht1aEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BcSlBE3e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8E46C2BCB2;
+	Thu, 23 Apr 2026 04:57:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776920145;
-	bh=RUY7zs3U2LknWW0qy/Zh3yBZlxSTz3al1m/dNRBHwEk=;
+	s=korg; t=1776920222;
+	bh=BC9GTBdNO0Lq8OWjR7BelcdwpVcqM4n+6HABP1TV9jU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QKvPMJHYNzLAhd3Xly9dbWX/cZsYXJg3TmdNkibLwV0o6JGvw6LiGOKzJmDOJHYPE
-	 ZSP/UZshJI/xhj4vCmZA1takA1DE8HVuIaOG0p5aDbOXTMpyJEnvlYgrXA65Tegqi3
-	 v4xQ3JG/7cBs4vw5Nb8+44JNOy+K/eRju2J8SMRg=
-Date: Thu, 23 Apr 2026 06:55:42 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: colyli@fnnas.com
-Cc: stable@vger.kernel.org, Mingzhe Zou <mingzhe.zou@easystack.cn>,
-	stable@vger.kerenl.org, Jens Axboe <axboe@kernel.dk>
-Subject: Re: [PATCH] bcache: fix uninitialized closure object
-Message-ID: <2026042335-frantic-parakeet-f251@gregkh>
-References: <20260422152113.70337-1-colyli@fnnas.com>
+	b=BcSlBE3ejMRolK1b2I31m6rHoqU7gvooilnUcbgvwPEhS9XNKHlmeUm0JNStpdLTd
+	 HHGr/3i7pZ6evursT7Z5m9HMnKqG33YxyJw7UdMYclMk5h3VRw3U9Fn6dJ7x90Zukl
+	 9gWYR3rNoRlcWGdmD83CYUZoZ2mHM0DaF0awc2FI=
+Date: Thu, 23 Apr 2026 06:56:59 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Wolfgang Walter <linux@stwm.de>
+Cc: stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>
+Subject: Re: Fwd: [PATCH] crypto: authencesn - Fix src offset when decrypting
+ in-place
+Message-ID: <2026042353-bonded-easel-15c0@gregkh>
+References: <2026041152-boaster-patrol-1918@gregkh>
+ <b397c5b34ed7484aad6e0acf7e1319c6@stwm.de>
+ <ad7QGhjPKRh-Vvm5@gondor.apana.org.au>
+ <0462b2759106bbb145297a49369820c4@stwm.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,91 +60,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260422152113.70337-1-colyli@fnnas.com>
+In-Reply-To: <0462b2759106bbb145297a49369820c4@stwm.de>
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240410-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-240411-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,easystack.cn:email,linuxfoundation.org:dkim,kerenl.org:email,msgid.link:url,fnnas.com:email]
-X-Rspamd-Queue-Id: 745B844D1CB
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: 336F044D1C4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Apr 22, 2026 at 11:21:13PM +0800, colyli@fnnas.com wrote:
-> From: Mingzhe Zou <mingzhe.zou@easystack.cn>
+On Wed, Apr 22, 2026 at 11:30:11AM +0200, Wolfgang Walter wrote:
+> Hello,
 > 
-> In the previous patch ("bcache: fix cached_dev.sb_bio use-after-free and
-> crash"), we adopted a simple modification suggestion from AI to fix the
-> use-after-free.
+> the fix from Herbert Xu has landed in Torvald's tree as:
 > 
-> But in actual testing, we found an extreme case where the device is
-> stopped before calling bch_write_bdev_super().
-> 
-> At this point, struct closure sb_write has not been initialized yet.
-> For this patch, we ensure that sb_bio has been completed via
-> sb_write_mutex.
-> 
-> Signed-off-by: Mingzhe Zou <mingzhe.zou@easystack.cn>
-> Signed-off-by: Coly Li <colyli@fnnas.com>
-> Link: https://patch.msgid.link/20260403042135.2221247-1-colyli@fnnas.com
-> Fixes: fec114a98b87 ("bcache: fix cached_dev.sb_bio use-after-free and crash")
-> Cc: stable@vger.kerenl.org
-> Signed-off-by: Jens Axboe <axboe@kernel.dk>
-> ---
->  drivers/md/bcache/super.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/md/bcache/super.c b/drivers/md/bcache/super.c
-> index 6627a381f65a..97d9adb0bf96 100644
-> --- a/drivers/md/bcache/super.c
-> +++ b/drivers/md/bcache/super.c
-> @@ -1376,11 +1376,12 @@ static CLOSURE_CALLBACK(cached_dev_free)
->  	/*
->  	 * Wait for any pending sb_write to complete before free.
->  	 * The sb_bio is embedded in struct cached_dev, so we must
->  	 * ensure no I/O is in progress.
->  	 */
-> -	closure_sync(&dc->sb_write);
-> +	down(&dc->sb_write_mutex);
-> +	up(&dc->sb_write_mutex);
->  
->  	if (dc->sb_disk)
->  		folio_put(virt_to_folio(dc->sb_disk));
->  
->  	if (dc->bdev_file)
-> -- 
-> 2.47.3
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=1f48ad3b19a9dfc947868edda0bb8e48e5b5a8fa
 > 
 > 
-<formletter>
+> Would it be possible to include it in the next stable releases? I using it
+> already for v6.18.22 and v6.18.23 and it fixes ipsec with esn.
 
-This is not the correct way to submit patches for inclusion in the
-stable kernel tree.  Please read:
-    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-for how to do this properly.
+Now queued up, thanks.
 
-</formletter>
+greg k-h
 
