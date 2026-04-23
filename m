@@ -1,198 +1,171 @@
-Return-Path: <stable+bounces-240440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240441-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QO2ULpzT6Wm9kgIAu9opvQ
-	(envelope-from <stable+bounces-240440-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 10:09:00 +0200
+	id yPOtBHXU6WnxlAIAu9opvQ
+	(envelope-from <stable+bounces-240441-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 10:12:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E8DB44E592
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 10:08:54 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B70CE44E61F
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 10:12:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 975CC301A7EA
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 08:08:52 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 279B330117E7
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 08:12:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77146364926;
-	Thu, 23 Apr 2026 08:08:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N3BSPJ+J"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8046730BF66;
+	Thu, 23 Apr 2026 08:12:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from air.basealt.ru (air.basealt.ru [193.43.8.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 387AB311963;
-	Thu, 23 Apr 2026 08:08:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CEB1311C2A;
+	Thu, 23 Apr 2026 08:12:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.43.8.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776931729; cv=none; b=DjT2BZmlKsbK1RZI3eVqenCQIGTW7uQsXFRZQ0Eoiu0KPRJkYfTOLkdoj5TafCClLK7uRN0mV6zRp04rcfBvW666X+Vg5+AP1KzHh636mO9VdwPiYiELxqXo1bZQPkGF7Ez1R2KDENT9Tmj6uIxIV/HQU9urhAdBEJ9h/dxGAuk=
+	t=1776931936; cv=none; b=j5nkGHgeeSM2SPYfXm0rZ6fJddZK5Gi2cz2X5GfDWlva9reZmAjrQp8Hd+Fd89irhveVXlujwuBrJJwV05G4MQuHYw0mM1TBrFGIOnkQXl7/pYsoNuv/i8kVAGKWZrZ6FsWvY3jq1/yvl9g+Uu2cQ/ZUk/2NQCqPE+NxBpSFP5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776931729; c=relaxed/simple;
-	bh=Yy/Tfq/9F8NbivnASS2KOxeiLK7q4WMxkOdk5fR99pI=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JINQ/8B52FkzHUVGurzXEioefw/fdPQqAPYfoVcMEHX5pQqIpSQNDFr9OdqoNw8SLpINZ/rgHhRYFxR+ZxlO+6FE1ow2eZUtujigZDIM4TDkkv/zTu/wjJ3xzbdWGE4yWhvqehdI5w4xuTg62jE+77Bi1iGo/TciWr8GUQqmhA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N3BSPJ+J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D71E8C2BCB2;
-	Thu, 23 Apr 2026 08:08:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776931728;
-	bh=Yy/Tfq/9F8NbivnASS2KOxeiLK7q4WMxkOdk5fR99pI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=N3BSPJ+JUmCeDLYPRnJec2nJwSVaWKdxbDy6Idc8Ll/rx3aRuNiMv+R3GNQrGVRGF
-	 DsGv58QdWyGZ9vrOgEnNtyiImWPrHeDEj95Gc1kwcgvy6escuhqf/odwTog1CGS0+O
-	 4ro8EWWAFM42JhZiDfrimtjt6ueB3o6Hyi97dF9IjFSMlaSRdKKGs3TZMnnV4l3T/k
-	 A+MjrtP9zJRcBnw4b1fSrwM410KZfdVcfN3nE+0H9skBDJXXK3tBfe69y6+jJm/sPl
-	 0Gugrt/fpholSb+Wj5+kgml2oLFt7aGAKMr3x0ClZEI3wIMoUClHAgqMsJU40skP01
-	 Ug6cY5u7D193A==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wFp78-0000000DyA0-2GNW;
-	Thu, 23 Apr 2026 08:08:46 +0000
-Date: Thu, 23 Apr 2026 09:08:46 +0100
-Message-ID: <867bpy14kx.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Sebastian Ene <sebastianene@google.com>
-Cc: oupton@kernel.org,
-	will@kernel.org,
-	ayrton@google.com,
-	catalin.marinas@arm.com,
-	joey.gouly@arm.com,
-	korneld@google.com,
-	kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	android-kvm@google.com,
-	mrigendra.chaubey@gmail.com,
-	perlarsen@google.com,
-	suzuki.poulose@arm.com,
-	yuzenghui@huawei.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] KVM: arm64: Validate the FF-A memory access descriptor placement
-In-Reply-To: <aejOu98q1lEZoFfW@google.com>
-References: <20260422102540.1433704-1-sebastianene@google.com>
-	<86bjfb18v1.wl-maz@kernel.org>
-	<aejOu98q1lEZoFfW@google.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=arc-20240116; t=1776931936; c=relaxed/simple;
+	bh=nKQU54g931q8pOJIugciQZ77/INbwVM7ELiBJomhXac=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HmTFHaK+RXR0hXXtvbGhxxZHgtsIZBWRooEKFgEwjSLHWy9lbARlV0o62tVpky2J12MbUKBp1vvCgYNE7spJK67NZYqFGpkDHkYKB0NTqs/d7zcGErCtMXW1ecTv+9mGxNDaCp+N4UnRoxGWgQnnmE7jKJOU73DUPaGG9OlqSU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=193.43.8.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
+Received: from [10.88.129.61] (obninsk.basealt.ru [217.15.195.17])
+	(Authenticated sender: kovalevvv)
+	by air.basealt.ru (Postfix) with ESMTPSA id 76F862339B;
+	Thu, 23 Apr 2026 11:12:04 +0300 (MSK)
+Message-ID: <9ffc6bb5-927c-2729-71f1-10180e826ccc@basealt.ru>
+Date: Thu, 23 Apr 2026 11:12:04 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: sebastianene@google.com, oupton@kernel.org, will@kernel.org, ayrton@google.com, catalin.marinas@arm.com, joey.gouly@arm.com, korneld@google.com, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, android-kvm@google.com, mrigendra.chaubey@gmail.com, perlarsen@google.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, stable@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
-X-Spamd-Result: default: False [0.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH 5.10.y] scsi: ufs: core: Improve SCSI abort handling
+To: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
+Cc: "Martin K . Petersen" <martin.petersen@oracle.com>,
+ linux-scsi@vger.kernel.org, Bart Van Assche <bvanassche@acm.org>,
+ Bean Huo <beanhuo@micron.com>, Stanley Chu <stanley.chu@mediatek.com>,
+ lvc-project@linuxtesting.org, Fedor Pchelkin <pchelkin@ispras.ru>
+References: <20260421131941.38176-1-kovalev@altlinux.org>
+Content-Language: en-US
+From: Vasiliy Kovalev <kovalev@altlinux.org>
+In-Reply-To: <20260421131941.38176-1-kovalev@altlinux.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	FREEMAIL_CC(0.00)[kernel.org,google.com,arm.com,lists.linux.dev,lists.infradead.org,vger.kernel.org,gmail.com,huawei.com];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-240440-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MAILSPIKE_FAIL(0.00)[172.105.105.114:query timed out];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[maz@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-240441-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[altlinux.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MAILSPIKE_FAIL(0.00)[2600:3c09:e001:a7::12fc:5321:query timed out];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[kovalev@altlinux.org,stable@vger.kernel.org];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,bootlin.com:url]
-X-Rspamd-Queue-Id: 3E8DB44E592
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	R_DKIM_NA(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,altlinux.org:email,basealt.ru:mid,acm.org:email,micron.com:email]
+X-Rspamd-Queue-Id: B70CE44E61F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, 22 Apr 2026 14:35:55 +0100,
-Sebastian Ene <sebastianene@google.com> wrote:
-> 
-> On Wed, Apr 22, 2026 at 01:24:02PM +0100, Marc Zyngier wrote:
-> > On Wed, 22 Apr 2026 11:25:40 +0100,
-> > Sebastian Ene <sebastianene@google.com> wrote:
-> > > 
-> > > Prevent the pKVM hypervisor from making assumptions that the
-> > > endpoint memory access descriptor (EMAD) comes right after the
-> > > FF-A memory region header and enforce a strict placement for it
-> > > when validating an FF-A memory lend/share transaction.
-> 
-> Hello Marc,
-> 
-> > 
-> > As I read this, you want to remove a bad assumption...
-> > 
-> > > 
-> > > Prior to FF-A version 1.1 the header of the memory region
-> > > didn't contain an offset to the endpoint memory access descriptor.
-> > > The layout of a memory transaction looks like this:
-> > > 
-> > >   Field name				| Offset
-> > > 					 -- 0
-> > > [ Header (ffa_mem_region)               |__ ep_mem_offset
-> > >   EMAD 1 (ffa_mem_region_attributes)	|
-> > > ]
-> > > 
-> > > Reject the host from specifying a memory access descriptor offset
-> > > that is different than the size of the memory region header.
-> > 
-> > And yet you decide that you want to enforce this assumption. I don't
-> > understand how you arrive to this conclusion.
-> > 
-> > Looking at the spec, it appears that the offset is *designed* to allow
-> > a gap between the header and the EMAD. Refusing to handle a it seems to be a
-> > violation of the spec.
-> > 
-> > What am I missing?
-> 
-> While the spec allows the gap to be variable (since version 1.1), the
-> arm ff-a driver places it at a fixed position in:
-> ffa_mem_region_additional_setup() 
-> https://elixir.bootlin.com/linux/v7.0/source/drivers/firmware/arm_ffa/driver.c#L671
+Hi Sasha,
 
-That's an implementation detail, and you shouldn't rely on this.
-
-> and makes use of the same assumption in: ffa_mem_desc_offset().
-> https://elixir.bootlin.com/linux/v7.0/source/include/linux/arm_ffa.h#L448
-> The later one seems wrong IMO. because we should compute the offset
-> based on the value stored in ep_mem_offset and not adding it up with
-> sizeof(struct ffa_mem_region).
+On 4/21/26 16:19, Vasiliy Kovalev wrote:
+> From: Bart Van Assche <bvanassche@acm.org>
 > 
-> Maybe this should be the fix instead and not the one in pKVM ? What do
-> you think ?
-
-I think you should parse the buffers as the spec intends them, without
-assumptions or limitations.
-
+> commit 3ff1f6b6ba6f97f50862aa50e79959cc8ddc2566 upstream.
 > 
-> The current implementation in pKVM makes use of the
-> ffa_mem_desc_offset() to validate the first EMAD. If a compromised host
-> places an EMAD at a different offset than sizeof(struct ffa_mem_region),
-> then pKVM will not validate that EMAD.
+> The following has been observed on a test setup:
+> 
+> WARNING: CPU: 4 PID: 250 at drivers/scsi/ufs/ufshcd.c:2737 ufshcd_queuecommand+0x468/0x65c
+> Call trace:
+>   ufshcd_queuecommand+0x468/0x65c
+>   scsi_send_eh_cmnd+0x224/0x6a0
+>   scsi_eh_test_devices+0x248/0x418
+>   scsi_eh_ready_devs+0xc34/0xe58
+>   scsi_error_handler+0x204/0x80c
+>   kthread+0x150/0x1b4
+>   ret_from_fork+0x10/0x30
+> 
+> That warning is triggered by the following statement:
+> 
+> 	WARN_ON(lrbp->cmd);
+> 
+> Fix this warning by clearing lrbp->cmd from the abort handler.
+> 
+> Link: https://lore.kernel.org/r/20211104181059.4129537-1-bvanassche@acm.org
+> Fixes: 7a3e97b0dc4b ("[SCSI] ufshcd: UFS Host controller driver")
+> Reviewed-by: Bean Huo <beanhuo@micron.com>
+> Reviewed-by: Stanley Chu <stanley.chu@mediatek.com>
+> Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+> Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+> [ kovalev: bp to fix CVE-2021-47188; adapted placement of
+>    lrbp->cmd = NULL for 5.10 function structure ]
 
-Why compromised? Isn't that a perfectly valid thing to do? What I
-understand is that the FFA 1.1 implementation in pKVM doesn't match
-the expectations of the spec. If that's indeed the case, pKVM should
-be fixed to accept these messages correctly, or stop using FFA 1.1.
+Please drop this backport from the 5.10 queue — it is not needed.
 
-	M.
+After review feedback from Fedor Pchelkin, we verified that 5.10 is not
+affected by this bug. The upstream commit 3ff1f6b6ba6f carries an
+incorrect Fixes tag:
+
+Fixes: 7a3e97b0dc4b ("[SCSI] ufshcd: UFS Host controller driver")
+
+The actual regression was introduced by:
+
+64180742605f ("scsi: ufs: Fix the SCSI abort handler")   [v5.15-rc1]
+
+which restructured ufshcd_abort() and removed the 
+__ufshcd_transfer_req_compl()
+call from the successful abort path. Before that commit — and in 5.10 to
+this day — __ufshcd_transfer_req_compl() is always called on the successful
+path via the cleanup: label, and it clears lrbp->cmd. So the 
+WARN_ON(lrbp->cmd)
+in ufshcd_queuecommand() cannot trigger on 5.10, and the lrbp->cmd = NULL;
+added by this patch would be dead code there.
+
+64180742605f is not present in 5.10.y, therefore CVE-2021-47188 does not 
+apply to 5.10.y.
+
+Sorry for the noise.
+
+> Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+> ---
+>   drivers/scsi/ufs/ufshcd.c | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/scsi/ufs/ufshcd.c b/drivers/scsi/ufs/ufshcd.c
+> index c7bf0e6bc303..1b8072f47e7e 100644
+> --- a/drivers/scsi/ufs/ufshcd.c
+> +++ b/drivers/scsi/ufs/ufshcd.c
+> @@ -6788,6 +6788,7 @@ static int ufshcd_abort(struct scsi_cmnd *cmd)
+>   		__ufshcd_transfer_req_compl(hba, (1UL << tag));
+>   		spin_unlock_irqrestore(host->host_lock, flags);
+>   out:
+> +		lrbp->cmd = NULL;
+>   		err = SUCCESS;
+>   	} else {
+>   		dev_err(hba->dev, "%s: failed with err %d\n", __func__, err);
 
 -- 
-Without deviation from the norm, progress is not possible.
+Thanks,
+Vasiliy
 
