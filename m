@@ -1,212 +1,167 @@
-Return-Path: <stable+bounces-240400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240401-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QE4oOm2E6WlMcAIAu9opvQ
-	(envelope-from <stable+bounces-240400-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 04:31:09 +0200
+	id aJz8EouO6WkvdQIAu9opvQ
+	(envelope-from <stable+bounces-240401-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 05:14:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B32744C489
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 04:31:09 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E862944C7B3
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 05:14:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 733943031B23
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 02:30:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3FC143024528
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 03:14:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E201A30C637;
-	Thu, 23 Apr 2026 02:30:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BD172343BE;
+	Thu, 23 Apr 2026 03:14:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci.org header.i=@kernelci.org header.b="J8MBo0Z5"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JDM+ziEE"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f52.google.com (mail-dl1-f52.google.com [74.125.82.52])
+Received: from mail-yx1-f48.google.com (mail-yx1-f48.google.com [74.125.224.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7735A23D28C
-	for <stable@vger.kernel.org>; Thu, 23 Apr 2026 02:30:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.52
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776911447; cv=none; b=FemsNvOCCG+ax/NtCofRCIc+nHB/htM5oBBe69Iij/4ppCSI02n46NG07fh0gZnWFKdkLb9U9IzjQPFnUTfs5GYA43r6X/T1lMQZvdKdga/Im4o+VL+vN46+yriYOEB6K5K+JQTwlJWBRGa2azvPFDbAt9vI5TmbRAjsNXGANl8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776911447; c=relaxed/simple;
-	bh=8AWACIIdw+nhHlJCpwwB/QrBA3V3uZ8RiUmvuVgaCas=;
-	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=cf3/cgc19U67MOnIg+ISZDW/5vTS9S/KVP8ug0LdAbhOnScQInPtdSZ+vfggIwL8kUt4Al3ewwqwdbLMcJ9utSAOt/Jpr6uIKdbwMyPgk6M4WBBo6QRmugaAzUkLZcCUx7AJm9wTNHWXFX6Ae3D5+kHHIkUwnJjatYMpEC5qRPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kernelci.org; spf=pass smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci.org header.i=@kernelci.org header.b=J8MBo0Z5; arc=none smtp.client-ip=74.125.82.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernelci.org
-Received: by mail-dl1-f52.google.com with SMTP id a92af1059eb24-12c726f46baso7611842c88.1
-        for <stable@vger.kernel.org>; Wed, 22 Apr 2026 19:30:46 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7F6C1F8AC5
+	for <stable@vger.kernel.org>; Thu, 23 Apr 2026 03:14:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776914051; cv=pass; b=TUoPfaCTkoN3yhRa+zeXpfmnJtALywHT4MYotoOc22bk8L/rcvqGmtd6vWdkgJDk+B1xIu8EO36hlg6BcRNuCwswKZBwjVF9zLoWyFWA2MEnL0IrDIDVQi3Kkb84ICdIQtvTbpPI8HLzwi5+WMZgU2NvnVTOSS8ds9yrGcmUaTU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776914051; c=relaxed/simple;
+	bh=shudGTvVCzWOaBlrtpLXOI7LUGzeV4XSn+NNbmOFUmo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KEH+EXkJ1URbPIXyKsAsq9RsPI9VhyCiw1Cvv8Ue+rzVLdc/KS7nHPO0Fa489nT/WvmERyY536kA7YkjEhUUh0Eo2UzyG4g64sAaPPWJSrpFywVvtoftpIobxgAIcavBrDq6304HZu9GvJ5XfjhgTMgQiIH3rX13ueXUTRkhGaM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JDM+ziEE; arc=pass smtp.client-ip=74.125.224.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yx1-f48.google.com with SMTP id 956f58d0204a3-6501c9903edso6318855d50.1
+        for <stable@vger.kernel.org>; Wed, 22 Apr 2026 20:14:09 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776914049; cv=none;
+        d=google.com; s=arc-20240605;
+        b=ELWwRWRsbpEdcW1gQ8l6nFgaxJqWQCK2yHhsSoo0ZCqO2fs0n8KqU97kTf0zsN901c
+         xjUxf8VVBsKH0Fmj0AOQjqpkmiUlpy3AOu89hrbMbNx8bhioKKSVJxdW69nSda0Ql/dw
+         j77UN9Hkqz6XKi963WCnGVbplsZ/uT7KQ1c/NqKfJria//+QD2hXwUr8sPTzooQLcmED
+         8r4yPWG/S12OWlkgjvNnngAxaEtRHGznIciDX7h7Ovd2M6T/sSzVmDGxInA15mR2NSoJ
+         QRQL7IPXNcc1hqsJCy+DylRuqAlKz2kZtMLThnrahzY8BkEa6nooux2eltUlcdtG19NB
+         k7Eg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=shudGTvVCzWOaBlrtpLXOI7LUGzeV4XSn+NNbmOFUmo=;
+        fh=PKmBne7sLULxGXrRD30NFQLguLkN93mXhuW9QJFXIc0=;
+        b=ML0o194jo7Ipha+zQZWsK5Caf0ywC59pgUL+O99jg4NAqypQohozaWaq/kXh62RoSr
+         BxiYb6Eif/Gx+vX2EbDVMNUHRdgVmeaAlCdufcaK0MfGTuPQWJo0Y6eQMevcdAi9Sxch
+         y+qjhZftTB+WRN7AZo6i5gxcMmDxgtsWsDh/vKXh+tWxl27cSNDC3wrc+Zwb/1impwy+
+         D260geyBNItXRU+ryVzOzc9uxLkroqTZzi+llHUxlkcGc8Hi34xGMr3S6Pyp9iuzAlZ3
+         Rw1RPO/qCGdLt6evmLzt7UVzT00mSNnK7SfyqrH/HCJURBFkzaAPORUpLZ/0WbOxFfdc
+         xjFQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci.org; s=google; t=1776911445; x=1777516245; darn=vger.kernel.org;
-        h=message-id:date:reply-to:cc:to:from:subject
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1776914049; x=1777518849; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=YEyRhgeTJATbXPMHfukMI+GeAxxAiI6T/Win7Pckn+c=;
-        b=J8MBo0Z54xBOed1C4mTi1QX7SCH59axt7RUOrRKSW/s2+fEE600KrTlu9fq85tDTdz
-         JVrWbrVxPobykYvxLLo2V2SzT647jmcRfBLtSJlbxrIUW0VpD6HezD/k4p9pc9fa+qod
-         zclTXPsYQZb3EWEQSM25Mf0luulN/AAPNpWqzirGwHOoYbb93Oe6TpP0IRsSx0mfJV8h
-         +XlgxaF1b8mIo7ZvV00omigeDgZPl7e2i6yQpHESpkwACj0hncSSGSn0KP9U8uq9azZK
-         DqMhHzwpkqeyWM7Re9YfvqjbvrQSdpD4IvYwkRqnAJ/ZxrNJ2yO/R9yLRe5eO2Y8laPe
-         sf8g==
+        bh=shudGTvVCzWOaBlrtpLXOI7LUGzeV4XSn+NNbmOFUmo=;
+        b=JDM+ziEEPNxxZRqTtmymOQxKyWfud3CVlWEshx0CilZMfKeO/48XvUVOJCvrDz8lT3
+         uund3iHiOe0s7yxhmKYt2m/+C9dxnJxYkuXOwG+04odSgDjFFid2+eXMQ+xg9/tUQ5CQ
+         1qsUl9i6pIh0NC7t1VjaNBAN6jmlFvp3jWpJzzwdTYIY8Llm5AXYjiZZE7x0iEAqz44N
+         HjjLFdk36FI9rCI8O+16YWUKWLMVageLwz2jRRxZSKjw6AGuUq+22Q6lGCuRY5BoAPWO
+         kTqAH8saZKxARiEitI0XHL/Y9KKfzUbTtBoDhmHi1Nj1qyp8rj3zAlAsFtA0cCnWFJYu
+         y3wA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776911445; x=1777516245;
-        h=message-id:date:reply-to:cc:to:from:subject
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=YEyRhgeTJATbXPMHfukMI+GeAxxAiI6T/Win7Pckn+c=;
-        b=s+X095vBXso6laIFD2w3Fgr8nqcJZ0MBd6wnvhdNMcKk25F2kpmyMgm4fJSAR2JxDd
-         xxNUjXmeEKBH33ScC6RWUOXRKHqwf7Dot0zs/4kynH+H2ntR3w0jtbZIwd3IlMohrw4K
-         ydW9hCvavtw4R3b/zjEGzXSESpJfCrc/3dc3jZyH2bUXSxJpVPUTkeYMXc+2xfAMwmVN
-         AW4v7bkHTvUDQqgwU+Fu7G7h/U4cYnKUyhzSdMmt1+ItMyNMw6Y2smKjXBAUPWXItB/E
-         7Qi0j2qgc89t6GbZLU0rc5nmYC2Ja0frPayLr+8AevPbq9ou7Tu5y7vDJgmMCLsiG6Qe
-         lLSw==
-X-Gm-Message-State: AOJu0YxoYD2lBKSxvB2RX6CuVxUfw9HYBWoSCOVUcz11Gh0+hVkGHXBp
-	mJ4YcJGAuE6uZhdkNaRnWW8caWR0b7KbO3pPfxfiYbrjVqE4lZ9x5BiOr3E0l6qXcZY=
-X-Gm-Gg: AeBDietxvXGibHWWlllpjcS6+veJKTyUGvrbuU1UYXKOpsPSy7mrQG0fjR88/TuNm4J
-	JaGnDj+vJS9r1KAVqzCmIwLxQgO/WNGDcaHx4iBDuEFzv5y9nxcTqaHOU4oq3pessfhAtIUbOcm
-	dfHHfaLkf7rfsyhCBBNH27BXFI7XUYn1RPzOzksYIVRmlLym75fLZ/Y7g3SB0aderZrFhi7c435
-	HJnHkTDfvn3gK3Y1HaGws9ndCMNMiKwmUoO5buV8yaWbBPmNw8I/G9SWuVmk0L/Ua8NcL2XHifC
-	WcJwlbKyif9vYr/Ql67k1B5t/zbUWB6I6mcMtoDifwyw2cRf3aDxA+IkjZn23JurX0RssU2wWBI
-	lX4djhG1Fjx0Tr7XuoV1n+q18ygSW1jezINdqdEp+5dI840P3V16OpyuohInpxABNP8/G4zFwSb
-	KedzWL97p74Hf3KaLEw1p0PHRXUtc=
-X-Received: by 2002:a05:7022:4395:b0:128:d24a:a5ba with SMTP id a92af1059eb24-12c73f90c45mr12876291c88.20.1776911445377;
-        Wed, 22 Apr 2026 19:30:45 -0700 (PDT)
-Received: from ab39070dab57 ([20.38.40.137])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12da8b8fbc4sm17305011c88.4.2026.04.22.19.30.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Apr 2026 19:30:44 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        d=1e100.net; s=20251104; t=1776914049; x=1777518849;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=shudGTvVCzWOaBlrtpLXOI7LUGzeV4XSn+NNbmOFUmo=;
+        b=VRhB7SoPtY5LfJU3BMm981U8MCl0VU3akalsJ1bFo99SacgbP0v921XPzPPRTuoMiI
+         V457IBFoz+3G0IxzUHVP0psFwU8Y6eRzZfpSapxxdjXnVSlxt/vd2+0lDfaOeLItSnE7
+         xhYPKFPEZ3Or1qw7oA5mpCaW7TNGNrZ9vKr23wZvV1NQZl+dUqZGd7A+pqE/cgJh7fcw
+         qzFPg+S8VeOytX7xDa/37zgSv7iYFctmGqRvl5sLKMMyWo2viXNqoUDQz3Ru6jyGBEyi
+         7ms6/pYFBwM2NvPWQg7XyXcv61KBZefIXJrfF96TF0Nup86XiSMrOU60QJG6jkvgB1LL
+         Huig==
+X-Forwarded-Encrypted: i=1; AFNElJ8r0PUkCoizr7fuHQ83aXF+mM4KuRxOKlOsygbKeVQPv73QZ35L//CYqXvQhn47iBAv93u2jAs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwFNFH9mrkegEYswdgMtkMh2gYzKq63frB7GrJr3KJmBuJ1wAZ0
+	YkyPGHp1ObVHlpUxKUgFzM7S0QE+flnG3DYeaUTglV/9yZsooTRpanaWF5cshO1OMGjEiRHZQ7E
+	qPpXyt/A1Gz0GsLudh42O6t7kV6IyMXY=
+X-Gm-Gg: AeBDievvj9TG2vLdITG0f9Vx2k0sGwq5+2SbJj/G/YHnWrfTPWuiveRXcr2JmJ3dTjJ
+	25f4bYiljLYXxl99j/ffCdcqFllm0R6p5DlqO4ScjU/rpcjVefdKi3YsCA7fyHlJncMTV4tRC/A
+	wHmoNedtNWATBeRLpsGitYwbvfpGH/Udptz/7+RSlVqPTwQraDl3hdzKJSbpgrLTD6vbJf9RXeA
+	8F2UQL6Jpq3sM7E3/cWRz6hYBiPCF2D3KM8SIIgm9KT0XDY51WX4ONY6elynbmhGJGbkPC4SC/b
+	GByaEnJsDoFimasgwLSc
+X-Received: by 2002:a05:690e:ed3:b0:650:3e1f:907c with SMTP id
+ 956f58d0204a3-6531059530emr16317023d50.0.1776914048967; Wed, 22 Apr 2026
+ 20:14:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: [STATUS] stable/linux-6.12.y -
- eefc95626b5cb02ea6268d1ae58237768004a60d
-From: KernelCI bot <bot@kernelci.org>
-To: kernelci-results@groups.io
-Cc: stable@vger.kernel.org
-Reply-To: kernelci@lists.linux.dev
-Date: Thu, 23 Apr 2026 02:30:44 -0000
-Message-ID: <177691144437.1164.8832087116366260339@ab39070dab57>
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernelci.org,reject];
-	R_DKIM_ALLOW(-0.20)[kernelci.org:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+References: <20260413113113.2725940-1-lgs201920130244@gmail.com> <87340m3bi5.fsf@intel.com>
+In-Reply-To: <87340m3bi5.fsf@intel.com>
+From: Guangshuo Li <lgs201920130244@gmail.com>
+Date: Thu, 23 Apr 2026 11:13:56 +0800
+X-Gm-Features: AQROBzBcHjCWMDIKu4eKnHDHBqJWQ-q-pT5XmmSFEBvux7VpXdd8kUaCt7bwZFo
+Message-ID: <CANUHTR_UiN8V6wWkb2d=9p2FpxH79Fvv-mXCG9217h-aeak6bQ@mail.gmail.com>
+Subject: Re: [PATCH v2] dmaengine: idxd: fix double free in idxd_alloc() error path
+To: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Cc: Dave Jiang <dave.jiang@intel.com>, Vinod Koul <vkoul@kernel.org>, 
+	Fenghua Yu <fenghuay@nvidia.com>, Shuai Xue <xueshuai@linux.alibaba.com>, 
+	dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240400-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernelci.org:+];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-240401-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	HAS_REPLYTO(0.00)[kernelci@lists.linux.dev];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bot@kernelci.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,kernelci.org:dkim,kernelci.org:url,lists.linux.dev:replyto]
-X-Rspamd-Queue-Id: 1B32744C489
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	FREEMAIL_FROM(0.00)[gmail.com]
+X-Rspamd-Queue-Id: E862944C7B3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+Hi Vinicius,
 
+Thanks for reviewing.
 
+On Thu, 23 Apr 2026 at 05:56, Vinicius Costa Gomes
+<vinicius.gomes@intel.com> wrote:
+>
+> On the review of 'v1', you agreed to the comments I made, but they are
+> neither reflected in the code nor in the series organization.
+>
 
+You're right =E2=80=94 my v2 did not incorporate the broader issues you poi=
+nted out.
 
-Hello,
+At the moment I don't have a good fix for the similar patterns in
+idxd_clean_wqs(), idxd_clean_engines(), idxd_clean_groups(), and
+idxd_free(). Do you have any suggestion on the preferred way to
+restructure those cleanup paths?
 
-Status summary for stable/linux-6.12.y
-
-Dashboard:
-https://d.kernelci.org/c/stable/linux-6.12.y/eefc95626b5cb02ea6268d1ae58237768004a60d/
-
-giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
-branch: linux-6.12.y
-commit hash: eefc95626b5cb02ea6268d1ae58237768004a60d
-origin: maestro
-test start time: 2026-04-22 11:39:16.053000+00:00
-
-Builds:	   42 ✅    0 ❌    0 ⚠️
-Boots: 	   76 ✅    0 ❌    0 ⚠️
-Tests: 	 8375 ✅  518 ❌ 2498 ⚠️
-
-### POSSIBLE REGRESSIONS
-    
-Hardware: imx8mp-evk
-  > Config: defconfig+arm64-chromebook+kselftest
-    - Architecture/compiler: arm64/gcc-14
-      - kselftest.kvm.kvm_arch_timer_edge_cases
-      last run: https://d.kernelci.org/test/maestro:69e9025d9b5a968309f5075e
-      history:  > ✅  > ❌  
-            
-Hardware: imx8mp-verdin-nonwifi-dahlia
-  > Config: defconfig+arm64-chromebook+kselftest
-    - Architecture/compiler: arm64/gcc-14
-      - kselftest.kvm.kvm_arch_timer_edge_cases
-      last run: https://d.kernelci.org/test/maestro:69e8f1df9b5a968309f4e024
-      history:  > ✅  > ❌  
-            
-Hardware: k3-am625-verdin-wifi-mallow
-  > Config: defconfig+arm64-chromebook+kselftest
-    - Architecture/compiler: arm64/gcc-14
-      - kselftest.kvm.kvm_arch_timer_edge_cases
-      last run: https://d.kernelci.org/test/maestro:69e90ad19b5a968309f51852
-      history:  > ✅  > ❌  
-            
-Hardware: sun50i-h5-libretech-all-h3-cc
-  > Config: defconfig+arm64-chromebook+kselftest
-    - Architecture/compiler: arm64/gcc-14
-      - kselftest.uevent
-      last run: https://d.kernelci.org/test/maestro:69e8c4689b5a968309f3fd44
-      history:  > ✅  > ❌  
-            
-      - kselftest.uevent.uevent_uevent_filtering
-      last run: https://d.kernelci.org/test/maestro:69e8dc779b5a968309f43a01
-      history:  > ✅  > ❌  
-            
-      - kselftest.uevent.uevent_uevent_filtering_global_uevent_filtering
-      last run: https://d.kernelci.org/test/maestro:69e8dc779b5a968309f43a02
-      history:  > ✅  > ❌  
-            
-
-
-### FIXED REGRESSIONS
-    
-Hardware: mt8183-kukui-jacuzzi-juniper-sku16
-  > Config: defconfig+lab-setup+arm64-chromebook+CONFIG_MODULE_COMPRESS=n+CONFIG_MODULE_COMPRESS_NONE=y
-    - Architecture/compiler: arm64/gcc-14
-      - kernelci_watchdog_reset.wdt-reset.wdt-trigger-reset
-      last run: https://d.kernelci.org/test/maestro:69e8c7089b5a968309f408a3
-      history:  > ❌  > ✅  
-            
-
-
-### UNSTABLE TESTS
-
-  No unstable tests observed.
-
-
-Sent every day if there were changes in the past 24 hours.
-Legend: ✅ PASS   ❌ FAIL  ⚠️ INCONCLUSIVE
-
---
-This is an experimental report format. Please send feedback in!
-Talk to us at kernelci@lists.linux.dev
-
-Made with love by the KernelCI team - https://kernelci.org
+Thanks,
+Guangshuo
 
