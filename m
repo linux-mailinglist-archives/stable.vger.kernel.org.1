@@ -1,67 +1,93 @@
-Return-Path: <stable+bounces-240533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240534-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8PE5B9xv6mlBzQIAu9opvQ
-	(envelope-from <stable+bounces-240533-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 21:15:40 +0200
+	id yEwpMBty6mkRzgIAu9opvQ
+	(envelope-from <stable+bounces-240534-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 21:25:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id B55BD456966
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 21:15:38 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3C28456C2F
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 21:25:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 97AD33023C92
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 19:12:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2CF1D3024141
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 19:21:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F40F03A4539;
-	Thu, 23 Apr 2026 19:12:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E52ED391E49;
+	Thu, 23 Apr 2026 19:21:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pii5z+9K"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bjETA5eY"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3D963A3E7A;
-	Thu, 23 Apr 2026 19:12:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9467548CFC
+	for <stable@vger.kernel.org>; Thu, 23 Apr 2026 19:21:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776971532; cv=none; b=WSO3YWdM+Nt56hhclELK7rkk+qHyXSs6az+CgkcEn2tltS9EdyXEDj1kVEuPh4nrYm5A+JwZC3lb0nAIZSAKcRlhIGZ8CqQbfduVlK+Y1F+dqW3eqGvX/Y8TVecZVmwU/vIKiz8K7DWyFZ50D0Bs0STqds+HInxi19FSXBmpcpY=
+	t=1776972077; cv=none; b=OLPLc7QXQvKtGbYaWseayMNA8RnsDxUoAz2R8wYf+EU8lkDmZynlerASWe+e5/+VXrexaETIOSDCe+m+Xhha+Z8ZyVgSm8Hid/AEFjx8Z2pjQdOY6wv1W+JDv0H4fSjo6SD4uKgs7whTswvGI8wTy148HG3VucHAR3chDmWkdf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776971532; c=relaxed/simple;
-	bh=g6vNzNCJwHf3dC57rvt74SpjXQGmzPRvLwlJDi+jNL0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=etKVD47OIHSVMsENsRJYymXLDwbyT9z1feCnQvUF3XFDZVLmtPfJi/t6QNz42/QfURS7Otj5LRtdYiPFEcDWC4YVZTcSMoqBnMS+ZhYVluOPC6rHvrDA1/cbynOgT0OUoAM9aPd/uLFkSuwC2YY44Ai5HF9KemPUD0nzDRSdyQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pii5z+9K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD227C2BCB2;
-	Thu, 23 Apr 2026 19:12:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776971532;
-	bh=g6vNzNCJwHf3dC57rvt74SpjXQGmzPRvLwlJDi+jNL0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pii5z+9KlKCJy2TSmufYR7tzZYcGnKRm0ek7ZJjmribXO5UdRW4TS7UzHn0TwkQk3
-	 SUkKUzp1IzrP5GjWpHxKdvnLiiSGJGnNi+RhaZvdRNLm7U+E4JK/YvBbRy472Xyh/V
-	 i2GptTta91KlSmjMofzFiVuczAPjQqr9W06W52tjg/exbHqqIo3ZPZ3x6V7T9YbwNG
-	 vMvrTu2c5DuRInsR6wIGols9gL6Am+dhJz2JmDeN24gp16zX4H1ZPSs4cBwmxTpXgZ
-	 UdayjOC9qPO/P0hBY1iF0AvgeSiE8BQOTxmj3ii67MtZDqys4HFzvza28pyORTD40C
-	 jX1WnFuUCVfTA==
-From: Jakub Kicinski <kuba@kernel.org>
-To: michael.bommarito@gmail.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	sam@mendozajonas.com,
-	fercerpav@gmail.com,
-	netdev@vger.kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	horms@kernel.org,
+	s=arc-20240116; t=1776972077; c=relaxed/simple;
+	bh=V1RO7qmNIESq5JTAu2eT4weLTLz/UDB/my05SY9oDxY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tJ/GftU/mgn3BmZM5cBQicTY4BqK3RdZfrO/VSc5vamW8OgvX/leEg2OjJ/ZihVkRzfPS/kHZlR/j3ByW0miaeb/QaRAg7vRaWjG+uhlKD4Q73IMWvXahn7E3V7rH9OXULHb4Lh8yPb/xmsPYAKbBxoKAW7KUHPxyMtRGUXfHVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bjETA5eY; arc=none smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-35d9f68d011so4739867a91.2
+        for <stable@vger.kernel.org>; Thu, 23 Apr 2026 12:21:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776972076; x=1777576876; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=FD+mnSjT2GzzjnT7c/+m0+ys37kefIgr9Jgnl09Emew=;
+        b=bjETA5eY/H9UvlkerKEpISoAuKhEGtehAYnqAp0ipMwinwqWBep4tFN9MpwcXL3ir1
+         GuWooMaDKReVRl93eBFNPl/ELa0G1232Tby04/Y1hE5HIF7OqfFxSzOqolIHbP9YaLPF
+         WjopQser2IKuCUf9o+boXXi1cN4wZs7LFAveW8jNLkbMTiz58WUfFrPtrjsYgOYxmpME
+         0+UD/g9LdRzldCuV7xDVUcB9o8JAmKtPYrxA8haFZv/fHZkvtS2dqzAN9yQzgAjQtLIx
+         9G4Yg0p19GHreMo68SnOcKOD+Dt4IIZRO539zA62P1Bb9/wH/xgN0K5qpHcsPrwSb6li
+         sLdg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776972076; x=1777576876;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FD+mnSjT2GzzjnT7c/+m0+ys37kefIgr9Jgnl09Emew=;
+        b=e3+nvyrUUeg9fT1BQPJOvYpgQsSvXCl6MaaB2xMcNOprsYuvaKPNa8B/xQCpeyjY+y
+         5BPzdepclxehvugvLvRGIIP4UuRHHdVpHEr3icWXW4cnNHw3e/mChYF0tSzfxT6kX+ag
+         b4kkKTFxXTjlXMHY76QSTEP3TiCTVBXCNkUsKSJkEvXLjGueLScianYaSSuxVNY2Dmqo
+         UrLZ/X2Zy4se1vRufgO5dwYIOoQTSvQE8dPY+auo0TX09OdDGyS+PYCFecoufpTofqVZ
+         Lb6PK85ZkNOTGhQCPvVXt5m2zDp74lNuqGhw2jk2FbEfTjZA4AbFmNPNkE3cxoP7c26q
+         C+fw==
+X-Forwarded-Encrypted: i=1; AFNElJ+L9aC0C8UdJ1E7fUslOsLTRqKt8e+SpCkJ0BQUG149HEExP+Yq7cTmfDD9Qtyumupoms6/o9k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxVF0FcmAFN9GvjuyU2qvR0SyP57/vvUMXm0xfExVUAQ1gisugN
+	8z2DSc5PJ6wFB9RwoEOhpf/A5LZ9RHV9wDg+7lFs0+adzRm26MewW9EmWIeH7OFq
+X-Gm-Gg: AeBDietoSLcWqfS2c/kpYfwdkNSD7/FwIL4c7mawyOZBK2ztW/uQdKBcPKSfzxTJMyl
+	teaaRpsFgRVDbh2zkY0AUcokQgMpGYI9RKfSEDy9gIZQJ7BYZ5BlO5exyir+78FyHKXVbQ2jSh0
+	8cengngKDeHzeV0BcCo3ZSMhp0057uT/j/VLNThmvBYP+FJk4QJN3lyaODsOPPVaZx6+tl0JITH
+	hpQUj3FzlAX9qIN3cI0gKu7KPDttoBEY+8+hCPnVKiCePAoQR4Y94OhZtTjZd5ws9KBinKwaCG5
+	mCzzRF4pxs62XBlHYxGPVRihjJBfpFZ4dbT7BJK9FiO/Cw5cY0fEQmcenOnlbrNgGKDJXtJoRDJ
+	/iTTw5HqOyJHcvch5oSFrm5KLdClE8xY6e9hbzaw9zQTp5cZDjSuDpgD40/LQIIn2q3nAjujOYb
+	QQAs72J8FGYFD8Yk36uiYRnzrDGD5agkQyiOc0nsYQrB7bD3BdaT/bv90VBSumD4jZ9E9a4q9Fl
+	msj9w==
+X-Received: by 2002:a17:90b:2892:b0:35e:5ae3:2993 with SMTP id 98e67ed59e1d1-36140462ae6mr27327818a91.15.1776972075908;
+        Thu, 23 Apr 2026 12:21:15 -0700 (PDT)
+Received: from LAPTOP-97G9G880.bbrouter ([106.51.151.135])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36141898ebasm21101867a91.7.2026.04.23.12.21.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Apr 2026 12:21:15 -0700 (PDT)
+From: root <karthiproffesional@gmail.com>
+X-Google-Original-From: root <root@LAPTOP-97G9G880.localdomain>
+To: joel@jms.id.au,
+	andrew@codeconstruct.com.au
+Cc: jdelvare@suse.de,
+	linux-aspeed@lists.ozlabs.org,
 	linux-kernel@vger.kernel.org,
+	Karthikeyan KS <karthiproffesional@gmail.com>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH net 6/6] net/ncsi: validate GP payload lengths before parsing
-Date: Thu, 23 Apr 2026 12:12:11 -0700
-Message-ID: <20260423191211.3296634-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260422160342.1975093-7-michael.bommarito@gmail.com>
-References: <20260422160342.1975093-7-michael.bommarito@gmail.com>
+Subject: [PATCH] soc: aspeed: lpc-snoop: Fix usercopy overflow in snoop_file_read
+Date: Thu, 23 Apr 2026 19:20:45 +0000
+Message-ID: <20260423192045.5729-1-root@LAPTOP-97G9G880.localdomain>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,116 +95,75 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[kernel.org,mendozajonas.com,gmail.com,vger.kernel.org,davemloft.net,google.com,redhat.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240533-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240534-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[suse.de,lists.ozlabs.org,vger.kernel.org,gmail.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kuba@kernel.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[karthiproffesional@gmail.com,stable@vger.kernel.org];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B55BD456966
+	TAGGED_RCPT(0.00)[stable];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,LAPTOP-97G9G880.localdomain:mid]
+X-Rspamd-Queue-Id: F3C28456C2F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
+From: Karthikeyan KS <karthiproffesional@gmail.com>
+
+snoop_file_read() passes the userspace count directly to
+kfifo_to_user() without clamping. The kfifo backing buffer is
+2048 bytes (SNOOP_FIFO_SIZE), allocated from kmalloc-2k slab.
+A read larger than 2048 bytes triggers a BUG under
+CONFIG_HARDENED_USERCOPY:
+
+  kernel BUG at mm/usercopy.c:99!
+
+Reproducer:
+  hexdump /dev/aspeed-lpc-snoop0
+
+Fix by clamping count to SNOOP_FIFO_SIZE before the copy.
+
+Fixes: 3772e5da4454 ("drivers/misc: Aspeed LPC snoop output using misc chardev")
+Cc: stable@vger.kernel.org
+Signed-off-by: Karthikeyan KS <karthiproffesional@gmail.com>
 ---
-net/ncsi: validate GP payload lengths before parsing
+ drivers/soc/aspeed/aspeed-lpc-snoop.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-This commit bounds MAC and VLAN counts to software and GC-reported limits.
-It adds validation to ensure the declared GP payload covers the fixed GP
-prefix, consumed entries, and the checksum before parsing filter tables.
+diff --git a/drivers/soc/aspeed/aspeed-lpc-snoop.c b/drivers/soc/aspeed/aspeed-lpc-snoop.c
+index b03310c0830d..5b59e826cc68 100644
+--- a/drivers/soc/aspeed/aspeed-lpc-snoop.c
++++ b/drivers/soc/aspeed/aspeed-lpc-snoop.c
+@@ -125,6 +125,7 @@ static ssize_t snoop_file_read(struct file *file, char __user *buffer,
+        if (ret == -ERESTARTSYS)
+            return -EINTR;
+    }
++   count = min(count, (size_t)SNOOP_FIFO_SIZE);
+    ret = kfifo_to_user(&chan->fifo, buffer, count, &copied);
+    if (ret)
+        return ret;
+-- 
+2.34.1
 
-> diff --git a/net/ncsi/ncsi-rsp.c b/net/ncsi/ncsi-rsp.c
-> index 94354dca23eac..565d38fd4b92d 100644
-> --- a/net/ncsi/ncsi-rsp.c
-> +++ b/net/ncsi/ncsi-rsp.c
-[ ... ]
-> @@ -924,6 +926,14 @@ static int ncsi_rsp_handler_gp(struct ncsi_request *nr)
->  	if (rsp->mac_cnt > mac_nbits || rsp->vlan_cnt > ncvf->n_vids)
->  		return -ERANGE;
 
-Does this code read rsp->mac_cnt and rsp->vlan_cnt before validating the
-payload length?
 
-If a malformed packet with a payload length of 0 is received,
-ncsi_validate_rsp_pkt() guarantees only 20 bytes (the common response
-header) are pulled into the skb linear data area.
-
-Since rsp->mac_cnt and rsp->vlan_cnt are at offsets 20 and 24 respectively,
-could accessing them prior to the payload length check trigger an
-out-of-bounds read?
-
-> +	payload = ncsi_rsp_payload(nr->rsp);
-> +	needed = offsetof(struct ncsi_rsp_gp_pkt, mac) - sizeof(rsp->rsp);
-> +	needed += mac_cnt * ETH_ALEN;
-> +	needed += vlan_cnt * sizeof(__be16);
-> +	needed += sizeof(rsp->checksum);
-> +	if (payload < needed)
-> +		return -EINVAL;
-
-Are there missing timer cancellations during NCSI device unregistration
-that could lead to a use-after-free regression?
-
-ncsi_register_dev() initializes timers for 256 NCSI requests. If an NCSI
-request is pending when the device is unregistered, and
-ncsi_unregister_dev() calls kfree(ndp) without a prior timer_delete_sync(),
-could the timer fire later and cause ncsi_request_timeout() to dereference
-the freed memory?
-
-Is there a synchronization issue between the workqueue teardown order and
-device unregistration?
-
-ncsi_unregister_dev() frees all packages and their channels via
-ncsi_remove_package() before calling disable_work_sync(&ndp->work).
-
-If the background task ncsi_dev_work() executes concurrently during this
-teardown, could it attempt to suspend or configure the active channel
-(e.g., in ncsi_suspend_channel()) and access ndp->active_package and
-ndp->active_channel after they have already been freed?
-
-Does the RCU synchronization in the package and channel removal paths properly
-prevent use-after-free regressions during receive?
-
-ncsi_remove_channel() and ncsi_remove_package() unlink elements from
-RCU-protected lists (list_del_rcu(&nc->node)) and immediately call kfree()
-without invoking synchronize_rcu() or using kfree_rcu().
-
-Since the Rx path in ncsi_rcv_rsp() concurrently searches these lists using
-list_for_each_entry_rcu(), could an incoming packet cause the Rx handler to
-traverse and dereference recently freed package or channel memory?
-
-Does ncsi_rsp_handler_gc() leak the MAC and VLAN filter arrays on repeated Get
-Capabilities (GC) responses?
-
-The handler unconditionally allocates memory for nc->mac_filter.addrs and
-nc->vlan_filter.vids using kzalloc() and kcalloc(), but does not appear to
-check for or free any previously allocated memory.
-
-If a channel goes through a reset cycle via ncsi_reset_dev(), or if a GC
-command is explicitly injected via Netlink, could the handler execute again
-and overwrite the pointers, leaking the previous allocations?
 
