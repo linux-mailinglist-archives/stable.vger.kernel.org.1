@@ -1,268 +1,208 @@
-Return-Path: <stable+bounces-240543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240515-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gFZsF4Sh6mlF1gIAu9opvQ
-	(envelope-from <stable+bounces-240543-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 00:47:32 +0200
+	id oK9nGxtD6mnqxQIAu9opvQ
+	(envelope-from <stable+bounces-240515-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 18:04:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08FAE458384
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 00:47:31 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C07F454A12
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 18:04:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9F49E3033D1D
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 22:46:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 25F7030497BF
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 16:03:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13589377EC1;
-	Thu, 23 Apr 2026 22:46:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02E8535E936;
+	Thu, 23 Apr 2026 16:03:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="RDGM0I9e"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BA162D23A6;
-	Thu, 23 Apr 2026 22:46:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB9742080C1;
+	Thu, 23 Apr 2026 16:03:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776984412; cv=none; b=N16DyVp2q26rLvfIV1e4riNjgmmKE6KpAROnTpah90AOVBBFTqDo0HBhpZjA4BZuRW3AsIW4s20EvyYdi6hEoMqqbARUW6o8gPZqpF3ySh4sM3K3hDuMaZr3M/IH0gB8dNtbX3DX7qRKHn/dSWmEbZ2L47tfvAL45MrQLlK4S7Q=
+	t=1776960225; cv=none; b=s3xkaaDtA3NgrFe4R4EQlB4CQzRrljvVqA2/gsjilpHgZdlv7A2otuW+x3w8/ZyIWs2l7Br5zSIbc58qoIheqE0rsivwpJ9wNtz3caBFV6m1q78F2ogFUUmp82U5TZLgd47APTDr2IqMVakyRVaeQ5zgv6YwbkNnyLFGaEU3Nqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776984412; c=relaxed/simple;
-	bh=4SbV4uHU0godCT1/3NGT36CdwDD9N3zEjz7VsiGEAZo=;
-	h=From:Date:Message-ID:To:Cc:Subject:In-Reply-To:References; b=YJGfA42sI03M5lR+tBSI6dypXTmSYZLhgrrNG0Hx/JHwfW/+Oqcvk6EebciPkVm2Kf76alLU6pMZk43Ct0p/G3uCEy2eMFtoqXY7f0Hhq9LxZEw+5FiSTyYzbrWjzMvSEdJ3iBjbMBlbmnHivjB27FtTgmuM+VmYIQuGBzy0BXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from 05-bpf-crypto-v2.eml (unknown [111.196.245.116])
-	by APP-05 (Coremail) with SMTP id zQCowADndwtMoeppMXtsDg--.13949S2;
-	Fri, 24 Apr 2026 06:46:37 +0800 (CST)
-From: Pengpeng Hou <pengpeng@iscas.ac.cn>
-Date: Thu, 23 Apr 2026 23:34:00 +0800
-Message-ID: <20260424070105.1-bpf-crypto-v2-pengpeng@iscas.ac.cn>
-To: Vadim Fedorenko <vadim.fedorenko@linux.dev>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>
-Cc: Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>, Shuah Khan <shuah@kernel.org>, bpf@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, pengpeng@iscas.ac.cn
-Subject: [PATCH v2] bpf: crypto: snapshot params before string validation
-In-Reply-To: <20260417073128.91029-1-pengpeng@iscas.ac.cn>
-References: <20260417073128.91029-1-pengpeng@iscas.ac.cn>
-X-CM-TRANSID:zQCowADndwtMoeppMXtsDg--.13949S2
-X-Coremail-Antispam: 1UD129KBjvJXoW3WF1Duw4UWr17Jw4kGr1ftFb_yoW7Cryrpa
-	4rW3yqk34rJr47Cry8XF4rZr1rAFyxZF13GrW5GF15KF9xXr92gF1IkrWUZFy3Xa9xWw1Y
-	yrZYk3yUuw13J37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUB214x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2jI8I6cxK6x804I0_JFv_Gryl8cAvFVAK0II2c7
-	xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW8JVW5JwA2z4x0Y4vE
-	2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjc
-	xK6I8E87Iv6xkF7I0E14v26F4UJVW0owAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40E
-	FcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUAVWUtwAv7VC2z280aVAFwI0_Jr
-	0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
-	rcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVW8ZVWrXwCF04k20xvY0x
-	0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E
-	7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcV
-	C0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Cr0_Gr1UMIIF0xvE
-	42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6x
-	kF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjTRMv31DUUUU
-X-CM-SenderInfo: pshqw1xhqjqxpvfd2hldfou0/
+	s=arc-20240116; t=1776960225; c=relaxed/simple;
+	bh=0MqkS3pEJJEHMAinvcJOMq9F+y5UEPVL0I4bxXe0zUk=;
+	h=Date:To:From:Subject:Message-Id; b=iLfziyfLpy5WHOGLN1Vu8AVULfdhcQnK1ZXYN9aho/7QWIs0iH7gGxzFSb1jEk5GzMAHO4xWUUnZFJzegV3e0saF9aOxai1rXlu68uevDWaiJssvUkiliE7pjNn9oQ8dXZp6xHMhDPu67CCA3lnEMfovknYkjpfRcYdW6OnWZsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=RDGM0I9e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34122C2BCAF;
+	Thu, 23 Apr 2026 16:03:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1776960225;
+	bh=0MqkS3pEJJEHMAinvcJOMq9F+y5UEPVL0I4bxXe0zUk=;
+	h=Date:To:From:Subject:From;
+	b=RDGM0I9evGor9UQ2BuKJgfpXw4aT/w+Fi03c1TQDhOCL95GPVjGpQwZfSIPdiARSq
+	 L9g+latU/HkPofqo7ykLdSpT7iiU21M31dBC8HiUbb9r2sFLM3wJmBPJOrQzTUpN1r
+	 OHfR1ERkOeP15O/uLfCt4kt/ZoK3u8LQ9itk2oFk=
+Date: Thu, 23 Apr 2026 09:03:44 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,peterx@redhat.com,jhubbard@nvidia.com,jgg@ziepe.ca,david@kernel.org,gregkh@linuxfoundation.org,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-gup-honour-foll_pin-in-nommu-__get_user_pages_locked.patch added to mm-new branch
+Message-Id: <20260423160345.34122C2BCAF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [1.54 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-240543-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[iscas.ac.cn];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linux.dev,gmail.com,kernel.org,fomichev.me,google.com,vger.kernel.org,iscas.ac.cn];
-	RCVD_COUNT_THREE(0.00)[4];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pengpeng@iscas.ac.cn,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	TAGGED_FROM(0.00)[bounces-240515-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	DMARC_NA(0.00)[linux-foundation.org];
+	MISSING_XM_UA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_NONE(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	R_DKIM_NA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,iscas.ac.cn:mid,iscas.ac.cn:email]
-X-Rspamd-Queue-Id: 08FAE458384
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux-foundation.org:dkim,linux-foundation.org:email,ziepe.ca:email]
+X-Rspamd-Queue-Id: 0C07F454A12
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-bpf_crypto_ctx_create() receives a BPF-supplied params pointer. The
-current selftests use static initializers, but BPF programs can also
-build the struct in writable BPF memory before calling the kfunc. The
-verifier checks that the memory is accessible; it does not prove that
-the fixed type[] and algo[] fields are NUL-terminated strings.
 
-Copy the params once into a local snapshot, validate the reserved fields
-and fixed-width strings there, and then use the same snapshot for all
-later checks and crypto API calls. This also keeps key_len and authsize
-stable across validation and use if params points at mutable BPF memory.
+The patch titled
+     Subject: mm/gup: honour FOLL_PIN in NOMMU __get_user_pages_locked()
+has been added to the -mm mm-new branch.  Its filename is
+     mm-gup-honour-foll_pin-in-nommu-__get_user_pages_locked.patch
 
-Add a selftest that fills algo[] completely and expects -EINVAL.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-gup-honour-foll_pin-in-nommu-__get_user_pages_locked.patch
 
-Fixes: 3e1c6f35409f ("bpf: make common crypto API for TC/XDP programs")
-Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+This patch will later appear in the mm-new branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Note, mm-new is a provisional staging ground for work-in-progress
+patches, and acceptance into mm-new is a notification for others take
+notice and to finish up reviews.  Please do not hesitate to respond to
+review feedback and post updated versions to replace or incrementally
+fixup patches in mm-new.
+
+The mm-new branch of mm.git is not included in linux-next
+
+If a few days of testing in mm-new is successful, the patch will me moved
+into mm.git's mm-unstable branch, which is included in linux-next
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: mm/gup: honour FOLL_PIN in NOMMU __get_user_pages_locked()
+Date: Thu, 23 Apr 2026 16:28:04 +0200
+
+The !CONFIG_MMU implementation of __get_user_pages_locked() takes a bare
+get_page() reference for each page regardless of foll_flags:
+
+	if (pages[i])
+		get_page(pages[i]);
+
+This is reached from pin_user_pages*() with FOLL_PIN set. 
+unpin_user_page() is shared between MMU and NOMMU configurations and
+unconditionally calls gup_put_folio(..., FOLL_PIN), which subtracts
+GUP_PIN_COUNTING_BIAS (1024) from the folio refcount.
+
+This means that pin adds 1, and then unpin will subtract 1024.
+
+If a user maps a page (refcount 1), registers it 1023 times as an io_uring
+fixed buffer (1023 pin_user_pages calls -> refcount 1024), then
+unregisters: the first unpin_user_page subtracts 1024, refcount hits 0,
+the page is freed and returned to the buddy allocator.  The remaining 1022
+unpins write into whatever was reallocated, and the user's VMA still maps
+the freed page (NOMMU has no MMU to invalidate it).  Reallocating the page
+for an io_uring pbuf_ring then lets userspace corrupt the new owner's data
+through the stale mapping.
+
+Use try_grab_folio() which adds GUP_PIN_COUNTING_BIAS for FOLL_PIN and 1
+for FOLL_GET, mirroring the CONFIG_MMU path so pin and unpin are
+symmetric.
+
+Link: https://lore.kernel.org/2026042303-vendor-outright-b9d2@gregkh
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Peter Xu <peterx@redhat.com>
+Reported-by: Anthropic
+Assisted-by: gkh_clanker_t1000
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
-Changes since v1:
-- copy struct bpf_crypto_params into a local snapshot before validation
-- use the snapshot for all string, key_len and authsize checks and uses
-- add a BPF selftest for an unterminated algorithm name
 
-diff --git a/kernel/bpf/crypto.c b/kernel/bpf/crypto.c
-index 51f89cecefb4..e2dc3dfb4d85 100644
---- a/kernel/bpf/crypto.c
-+++ b/kernel/bpf/crypto.c
-@@ -147,31 +147,46 @@ bpf_crypto_ctx_create(const struct bpf_crypto_params *params, u32 params__sz,
- 		      int *err)
- {
- 	const struct bpf_crypto_type *type;
-+	struct bpf_crypto_params params_copy;
- 	struct bpf_crypto_ctx *ctx;
+ mm/gup.c |   13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
+
+--- a/mm/gup.c~mm-gup-honour-foll_pin-in-nommu-__get_user_pages_locked
++++ a/mm/gup.c
+@@ -1983,6 +1983,7 @@ static long __get_user_pages_locked(stru
+ 	struct vm_area_struct *vma;
+ 	bool must_unlock = false;
+ 	vm_flags_t vm_flags;
++	int ret, err = -EFAULT;
+ 	long i;
  
--	if (!params || params->reserved[0] || params->reserved[1] ||
--	    params__sz != sizeof(struct bpf_crypto_params)) {
-+	if (!params || params__sz != sizeof(params_copy)) {
- 		*err = -EINVAL;
- 		return NULL;
+ 	if (!nr_pages)
+@@ -2019,8 +2020,14 @@ static long __get_user_pages_locked(stru
+ 
+ 		if (pages) {
+ 			pages[i] = virt_to_page((void *)start);
+-			if (pages[i])
+-				get_page(pages[i]);
++			if (!pages[i])
++				break;
++			ret = try_grab_folio(page_folio(pages[i]), 1, foll_flags);
++			if (unlikely(ret)) {
++				pages[i] = NULL;
++				err = ret;
++				break;
++			}
+ 		}
+ 
+ 		start = (start + PAGE_SIZE) & PAGE_MASK;
+@@ -2031,7 +2038,7 @@ static long __get_user_pages_locked(stru
+ 		*locked = 0;
  	}
  
--	type = bpf_crypto_get_type(params->type);
-+	params_copy = *params;
-+
-+	if (params_copy.reserved[0] || params_copy.reserved[1]) {
-+		*err = -EINVAL;
-+		return NULL;
-+	}
-+
-+	if (strnlen(params_copy.type, sizeof(params_copy.type)) ==
-+	    sizeof(params_copy.type) ||
-+	    strnlen(params_copy.algo, sizeof(params_copy.algo)) ==
-+	    sizeof(params_copy.algo)) {
-+		*err = -EINVAL;
-+		return NULL;
-+	}
-+
-+	type = bpf_crypto_get_type(params_copy.type);
- 	if (IS_ERR(type)) {
- 		*err = PTR_ERR(type);
- 		return NULL;
- 	}
- 
--	if (!type->has_algo(params->algo)) {
-+	if (!type->has_algo(params_copy.algo)) {
- 		*err = -EOPNOTSUPP;
- 		goto err_module_put;
- 	}
- 
--	if (!!params->authsize ^ !!type->setauthsize) {
-+	if (!!params_copy.authsize ^ !!type->setauthsize) {
- 		*err = -EOPNOTSUPP;
- 		goto err_module_put;
- 	}
- 
--	if (!params->key_len || params->key_len > sizeof(params->key)) {
-+	if (!params_copy.key_len || params_copy.key_len > sizeof(params_copy.key)) {
- 		*err = -EINVAL;
- 		goto err_module_put;
- 	}
-@@ -183,19 +198,19 @@ bpf_crypto_ctx_create(const struct bpf_crypto_params *params, u32 params__sz,
- 	}
- 
- 	ctx->type = type;
--	ctx->tfm = type->alloc_tfm(params->algo);
-+	ctx->tfm = type->alloc_tfm(params_copy.algo);
- 	if (IS_ERR(ctx->tfm)) {
- 		*err = PTR_ERR(ctx->tfm);
- 		goto err_free_ctx;
- 	}
- 
--	if (params->authsize) {
--		*err = type->setauthsize(ctx->tfm, params->authsize);
-+	if (params_copy.authsize) {
-+		*err = type->setauthsize(ctx->tfm, params_copy.authsize);
- 		if (*err)
- 			goto err_free_tfm;
- 	}
- 
--	*err = type->setkey(ctx->tfm, params->key, params->key_len);
-+	*err = type->setkey(ctx->tfm, params_copy.key, params_copy.key_len);
- 	if (*err)
- 		goto err_free_tfm;
- 
-diff --git a/tools/testing/selftests/bpf/prog_tests/crypto_sanity.c b/tools/testing/selftests/bpf/prog_tests/crypto_sanity.c
-index 42bd07f7218d..044711e7263a 100644
---- a/tools/testing/selftests/bpf/prog_tests/crypto_sanity.c
-+++ b/tools/testing/selftests/bpf/prog_tests/crypto_sanity.c
-@@ -117,6 +117,19 @@ void test_crypto_sanity(void)
- 	udp_test_port = skel->data->udp_test_port;
- 	memcpy(skel->bss->key, crypto_key, sizeof(crypto_key));
- 	snprintf(skel->bss->algo, 128, "%s", algo);
-+
-+	pfd = bpf_program__fd(skel->progs.skb_crypto_setup_bad_algo);
-+	if (!ASSERT_GT(pfd, 0, "skb_crypto_setup_bad_algo fd"))
-+		goto fail;
-+
-+	err = bpf_prog_test_run_opts(pfd, &opts);
-+	if (!ASSERT_OK(err, "skb_crypto_setup_bad_algo") ||
-+	    !ASSERT_OK(opts.retval, "skb_crypto_setup_bad_algo retval"))
-+		goto fail;
-+
-+	if (!ASSERT_OK(skel->bss->status, "skb_crypto_setup_bad_algo status"))
-+		goto fail;
-+
- 	pfd = bpf_program__fd(skel->progs.skb_crypto_setup);
- 	if (!ASSERT_GT(pfd, 0, "skb_crypto_setup fd"))
- 		goto fail;
-diff --git a/tools/testing/selftests/bpf/progs/crypto_sanity.c b/tools/testing/selftests/bpf/progs/crypto_sanity.c
-index dfd8a258f14a..32977b797042 100644
---- a/tools/testing/selftests/bpf/progs/crypto_sanity.c
-+++ b/tools/testing/selftests/bpf/progs/crypto_sanity.c
-@@ -82,6 +82,34 @@ int skb_crypto_setup(void *ctx)
- 	return 0;
+-	return i ? : -EFAULT;
++	return i ? : err;
  }
+ #endif /* !CONFIG_MMU */
  
-+SEC("syscall")
-+int skb_crypto_setup_bad_algo(void *ctx)
-+{
-+	struct bpf_crypto_params params = {
-+		.type = "skcipher",
-+		.key_len = 16,
-+	};
-+	struct bpf_crypto_ctx *cctx;
-+	int err = 0;
-+
-+	status = 0;
-+
-+	__builtin_memset(params.algo, 'a', sizeof(params.algo));
-+	__builtin_memcpy(&params.key, key, sizeof(key));
-+
-+	cctx = bpf_crypto_ctx_create(&params, sizeof(params), &err);
-+	if (cctx) {
-+		bpf_crypto_ctx_release(cctx);
-+		status = -EIO;
-+		return 0;
-+	}
-+
-+	if (err != -EINVAL)
-+		status = err;
-+
-+	return 0;
-+}
-+
- SEC("tc")
- int decrypt_sanity(struct __sk_buff *skb)
- {
--- 
-2.50.1 (Apple Git-155)
+_
+
+Patches currently in -mm which might be from gregkh@linuxfoundation.org are
+
+mm-gup-honour-foll_pin-in-nommu-__get_user_pages_locked.patch
 
 
