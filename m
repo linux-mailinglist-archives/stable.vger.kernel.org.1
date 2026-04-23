@@ -1,287 +1,152 @@
-Return-Path: <stable+bounces-240404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240405-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EFWSF4yQ6WnQdgIAu9opvQ
-	(envelope-from <stable+bounces-240404-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 05:22:52 +0200
+	id gGZwCLOb6Wm3ewIAu9opvQ
+	(envelope-from <stable+bounces-240405-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 06:10:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA48744C811
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 05:22:51 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9780944CC09
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 06:10:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E83733037D64
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 03:22:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 56D7E30E91D3
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 04:02:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D722A3CAE66;
-	Thu, 23 Apr 2026 03:22:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7F38349AF3;
+	Thu, 23 Apr 2026 04:00:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YwygvMXj"
+	dkim=pass (1024-bit key) header.d=ldtlb.com header.i=@ldtlb.com header.b="cCrgQD6Z"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from ldtlb.com (ldtlb.com [52.11.21.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C280224AFA
-	for <stable@vger.kernel.org>; Thu, 23 Apr 2026 03:22:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AACA2853EE
+	for <stable@vger.kernel.org>; Thu, 23 Apr 2026 04:00:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.11.21.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776914557; cv=none; b=EVU0lA+CnOiDA3V6xMQ18W6wMpToAIbnU8H1PRVnQYxJU+bk+2ZqUnt+Lc8ozwPXZCyjK8AXTtRwM3uelsiv6gKKu0qWgdsAqfUkBP4VffOOtLlOqCUuheDu6ksqyZuFct+5v6lm6d7Lz6uKED4nWcWM3JI1Iive0JRCbypjXDs=
+	t=1776916824; cv=none; b=atUQUXZn9SPw4uS36mH5uoQEe7WJ+JdpdINRX060pAvsbr0gaoooQfgbxo4zlc9EM6xrAqtzoljcFq8mY7VEofTTO0zoEXlYUs7HyQhm9NGqcOXtTqO/rlKJWLb3rTfFIdBmSnAWzB3/D5EfG+JYsX8KQfH3WpCBJypCVhcRAAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776914557; c=relaxed/simple;
-	bh=NubATWqIlRQtHd86zU1bKapSR3mZbmlH/41h5Ws8wx0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=OvUImJRQtWpOssrkmvhWvE+pH8cng0iZ4bGyHDXtQXgtOhp9TieeokM5n01vCvZ/c1XCz7bZIZ4xS0sYvr7xC33LAMeo/Bzyc/QIokv8N1Tp2YzKAdqJPpF0ly0hwZcgtB+f9bPuEEqbGhH1FK7dLPg4e7yte1uejR9doarKaNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YwygvMXj; arc=none smtp.client-ip=74.125.82.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-2de831d2b20so3559794eec.1
-        for <stable@vger.kernel.org>; Wed, 22 Apr 2026 20:22:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776914554; x=1777519354; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=QncE8TBARcMHwtxwUcHJfb/q3J332m6DpzRIhKgNNdc=;
-        b=YwygvMXjxbFi76b4v2p16YaztYpwVr3DJeiS53ZHjt1pNcRzOo5RLYVILx6TvtmXtZ
-         XhXOpKQFMa8JFwA5Vk91hcbL0gksLTc16Blw+nRxAyAQEu2Y/a9RJ734xQS8T+WeqQ7K
-         iFjnfVZO62IzS1T9yfjwju7wXkiKRmg0zZ0W9Efy3QV7ZuFYKEDJ/vZbYetF5lK9/6/t
-         EJ0TK9GJleV36r6HRsSmEqIelk1IB58xh1+wP4g0l5eIwHT9PWZnmsBIOvx7hulGpx+B
-         zyZMJXItdHauieZenVwUchkBC+QovcIAycdzBPWr3ZN4RU6GqrIunOGCDXa3sOtMnYUj
-         AXyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776914554; x=1777519354;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QncE8TBARcMHwtxwUcHJfb/q3J332m6DpzRIhKgNNdc=;
-        b=mzrJ7AwKiPGcseEGwi7B/O6UArUFiTRIcPsaRfMYN7cFAQ3Zh4eDNT/AQHWwz3wIIm
-         PkDfd7COEOvFwVv+vjA8WWWjihFAyXgjT+pNl0Oj3AvxGmcX+95IiWXhOj4TjQLti4ER
-         xEuw8FAPg7MHyGiXrZlAR+iyLG42nikBHVua9fOZp7lxnsXkz6E8NO4/+0tnWQPWD8kI
-         PHZN8qX3NIxO3xZyb1P49mN+eL9sDSEhgmmp2+eoDoLIncfAXKub2BX7ZvYNTy+W2Oe6
-         U3bv1fAgGXAUqkqyUQLFi4SyYaIrDYqs1fFpB3yAs3EiDoUKHdfJLzcIKMoikijhFYrS
-         UCNw==
-X-Forwarded-Encrypted: i=1; AFNElJ+RagX/jd99ljwyEzLDx0l5Sd1aLqAp/PucK9ck3qbvq4yrrVJDVQcOnP3uqN6wmip3W2t6W08=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyRLGR3wBBPo4rHuKH0WGZaNAFZ1xblR9Ox5XfhB6PBvdMnpz+C
-	n+Wd17eUmVcpajPqVU9yNrUt6oTNG5AP1f6Hu4LzoWhB20DDwO2DqCn3
-X-Gm-Gg: AeBDietfpUFjO4GV1fqgoIXx4W3GHO6j+dE+1Wdj7cUP326MFMGuh/gNx9CxLHgDqK+
-	l8rB/taaT1BMzIcHMvh5D6C+9Tj8MOxPbxaXM38OA1O8moqivPfycH5lnLMfyo6hpXFoaFy7cA0
-	rCNbO/27pClUnbN2YkU5ZxY5RMUY27Ui59GOcVqKB+AcCBNy3QP6M2lm4bUkjX2Q9N85MldcipD
-	jNZvFuxtBZT8OB/C7Ov9ICUjZRBE1LTv8kM+cQiQrNxzGUsNv5MRe4ketSvCYVYdcP3UyoJ2o7n
-	RZNhMQqExRVQUMnEL++5pOVZ0M4gblLRUwZNaF9otIs+FX2p6A9WNB9NSFJAyBG2vRkIlNDr7Fc
-	C4iGyZ1bkQsTzrUTAuLupIjHKzDrP1+l7o5HT1KQzc2K+kw2iovC7KHbCZ+lR4F+AxNq4S4iNyP
-	lc0V4O47bl4bbSRctdEwPVecYbcbm4E2TOb7sLhyJDgcbyZhbKYgHKyIrDpOU5LK1Y9uXTNgHdD
-	lJhRNrWT0cS1WIQSIxzFrI=
-X-Received: by 2002:a05:693c:2a07:b0:2e5:8123:c7f3 with SMTP id 5a478bee46e88-2e581244e84mr11175794eec.28.1776914553963;
-        Wed, 22 Apr 2026 20:22:33 -0700 (PDT)
-Received: from [192.168.1.18] (177-4-161-87.user3p.v-tal.net.br. [177.4.161.87])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2e53d2cfd3esm25599854eec.21.2026.04.22.20.22.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Apr 2026 20:22:32 -0700 (PDT)
-From: =?utf-8?q?C=C3=A1ssio_Gabriel?= <cassiogabrielcontato@gmail.com>
-Date: Thu, 23 Apr 2026 00:22:22 -0300
-Subject: [PATCH] ALSA: aloop: Fix peer runtime UAF during format-change
- stop
+	s=arc-20240116; t=1776916824; c=relaxed/simple;
+	bh=kpGbs1Qsb8Hzn0bN67bd7NVcaGwp16Z3//0zSoUc+iM=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=lY6vm3sw6bVsQjTpf+qMNBtC2K75PgZiFYUaYp9sWMtmoD4UQiaxox35g+PMimk1ZhiA74ASOZBxpb2kCv4K+GkDWqoa6HhrkiFziw5uCGQtd9d5aWSxJsVJ9diMatkZClnH+58sLtSVoBhAASwXhX+7vDFJ9i9ffXTHIT71Qkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ldtlb.com; spf=pass smtp.mailfrom=ldtlb.com; dkim=pass (1024-bit key) header.d=ldtlb.com header.i=@ldtlb.com header.b=cCrgQD6Z; arc=none smtp.client-ip=52.11.21.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ldtlb.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ldtlb.com
+Date: Wed, 22 Apr 2026 19:53:22 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ldtlb.com; s=mail;
+	t=1776916403; bh=FYQs0UMR7IfJH4eMJZSVIg4o0YenrsVE4l9Rv0CYlyQ=;
+	h=Date:From:To:Subject;
+	b=cCrgQD6Z/O6V5ENNXLKGw8QecRWUdOzzIDNEEvquIJwoElAscqUSFIzS9KKn3FbXF
+	 HjK8Pood+3QN+7FqNAwDcJNDQuxasrSY1vLfaBCI5GBegEydtfdP5TJO/GKtp6xXv+
+	 B3swYOxMYCeaWPx2tSbNfIYMRXi9dL10i5PcEUUg=
+From: Thomas Sowell <tom@ldtlb.com>
+To: stable@vger.kernel.org
+Subject: Please backport 3c863ff920b4 ("drm/amdgpu: replace PASID IDR with
+ XArray")
+Message-ID: <gh5bqoabelvwdkmuvgb2ue7j3g2xw6i6w7upqsh3uefy7uxbym@3zuucinf7pqq>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260423-alsa-aloop-peer-stop-uaf-v1-1-25d8a9745f6c@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMQQrCQAxFr1KyNpCG6sKriItp+6sR6QyTVoTSu
- xt18/lv8d5GjmpwOjcbVbzMLc8B7aGh4Z7mG9jGYFLRk3SqnJ6eYnIuXIDKvsRb08Qi3QhtVfq
- jUuilYrL3L325/tnX/oFh+fZo3z9cgOsefAAAAA==
-X-Change-ID: 20260422-alsa-aloop-peer-stop-uaf-004de2120b52
-To: Takashi Iwai <tiwai@suse.com>, Jaroslav Kysela <perex@perex.cz>
-Cc: linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org, 
- syzbot+8fa95c41eafbc9d2ff6f@syzkaller.appspotmail.com, 
- stable@vger.kernel.org, 
- =?utf-8?q?C=C3=A1ssio_Gabriel?= <cassiogabrielcontato@gmail.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5283;
- i=cassiogabrielcontato@gmail.com; h=from:subject:message-id;
- bh=NubATWqIlRQtHd86zU1bKapSR3mZbmlH/41h5Ws8wx0=;
- b=owGbwMvMwCV2IdZeKur/u2bG02pJDJkvJ5Q6GH73bOneFOY0ZbH+/uMv79fdK/w89cjtrZXSp
- 7Kqlsi97ShlYRDjYpAVU2RZnbTIck/Xg6v1cSs8YOawMoEMYeDiFICJNKozMjR4B025vHTXh3nh
- P7+lfnuqbL/2aHxO/N6cN2+P9+ZO3beJ4a+oj/GbFm+bax8/dLaJ/Jq66F9GyLbXkwt+STq9uvV
- gcSsnAA==
-X-Developer-Key: i=cassiogabrielcontato@gmail.com; a=openpgp;
- fpr=AB62A239BC8AE0D57F5EA848D05D3F1A5AFFEE83
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[ldtlb.com,none];
+	R_DKIM_ALLOW(-0.20)[ldtlb.com:s=mail];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,syzkaller.appspotmail.com,gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_FROM(0.00)[bounces-240404-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240405-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_ONE(0.00)[1];
+	RCVD_COUNT_THREE(0.00)[3];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[ldtlb.com:+];
+	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[cassiogabrielcontato@gmail.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[tom@ldtlb.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_NONE(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,8fa95c41eafbc9d2ff6f];
-	FREEMAIL_FROM(0.00)[gmail.com]
-X-Rspamd-Queue-Id: EA48744C811
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,ldtlb.com:dkim]
+X-Rspamd-Queue-Id: 9780944CC09
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-loopback_check_format() may stop the capture side when playback starts
-with parameters that no longer match a running capture stream. Commit
-826af7fa62e3 ("ALSA: aloop: Fix racy access at PCM trigger") moved
-the peer lookup under cable->lock, but the actual snd_pcm_stop() still
-runs after dropping that lock.
+Hello,
 
-A concurrent close can clear the capture entry from cable->streams[] and
-detach or free its runtime while the playback trigger path still holds a
-stale peer substream pointer.
+Please consider backporting mainline commit 3c863ff920b4 ("drm/amdgpu: replace
+PASID IDR with XArray") to 6.18.y and 7.0.y. It fixes a regression introduced
+in 14b81abe7bdc ("drm/amdgpu: prevent immediate PASID reuse case").
 
-Keep a per-cable count of in-flight peer stops before dropping
-cable->lock, make free_cable() wait for those stops before detaching the
-runtime, and take the peer stream lock around snd_pcm_stop(). This
-preserves the existing behavior while making the peer runtime lifetime
-explicit.
+Using the reproduction steps below I've confirmed that both 6.18 and 7.0 are
+affected by the regression and that 3c863ff920b4 resolves it in both.
 
-Reported-by: syzbot+8fa95c41eafbc9d2ff6f@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=8fa95c41eafbc9d2ff6f
-Fixes: 597603d615d2 ("ALSA: introduce the snd-aloop module for the PCM loopback")
-Cc: stable@vger.kernel.org
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
----
- sound/drivers/aloop.c | 56 ++++++++++++++++++++++++++++++++++++---------------
- 1 file changed, 40 insertions(+), 16 deletions(-)
+On my system I frequently see symptoms with sway and physlock. Locking the
+screen with physlock and then unlocking it sometimes leaves sway unable to
+display any output, recoverable only by killing sway. Sometimes unlocking
+instead hangs the entire machine, requiring a hard reboot. In normal usage
+these problems occur intermittently, but I also have a procedure (outlined
+below) that reliably triggers lockups.
 
-diff --git a/sound/drivers/aloop.c b/sound/drivers/aloop.c
-index aa0d2fcb1a18..a997ee262740 100644
---- a/sound/drivers/aloop.c
-+++ b/sound/drivers/aloop.c
-@@ -99,6 +99,9 @@ struct loopback_ops {
- struct loopback_cable {
- 	spinlock_t lock;
- 	struct loopback_pcm *streams[2];
-+	/* in-flight peer stops running outside cable->lock */
-+	atomic_t stop_count;
-+	wait_queue_head_t stop_wait;
- 	struct snd_pcm_hardware hw;
- 	/* flags */
- 	unsigned int valid;
-@@ -337,10 +340,10 @@ static bool is_access_interleaved(snd_pcm_access_t access)
- static int loopback_check_format(struct loopback_cable *cable, int stream)
- {
- 	struct loopback_pcm *dpcm_play, *dpcm_capt;
-+	struct loopback_pcm *stop_dpcm = NULL;
- 	struct snd_pcm_runtime *runtime, *cruntime;
- 	struct loopback_setup *setup;
- 	struct snd_card *card;
--	bool stop_capture = false;
- 	int check;
- 
- 	scoped_guard(spinlock_irqsave, &cable->lock) {
-@@ -366,8 +369,11 @@ static int loopback_check_format(struct loopback_cable *cable, int stream)
- 				return 0;
- 			if (stream == SNDRV_PCM_STREAM_CAPTURE)
- 				return -EIO;
--			else if (cruntime->state == SNDRV_PCM_STATE_RUNNING)
--				stop_capture = true;
-+			else if (cruntime->state == SNDRV_PCM_STATE_RUNNING) {
-+				/* close must not free the peer runtime below */
-+				atomic_inc(&cable->stop_count);
-+				stop_dpcm = dpcm_capt;
-+			}
- 		}
- 
- 		setup = get_setup(dpcm_play);
-@@ -396,8 +402,18 @@ static int loopback_check_format(struct loopback_cable *cable, int stream)
- 		}
- 	}
- 
--	if (stop_capture)
--		snd_pcm_stop(dpcm_capt->substream, SNDRV_PCM_STATE_DRAINING);
-+	if (stop_dpcm) {
-+		struct snd_pcm_substream *stop_substream = stop_dpcm->substream;
-+		unsigned long flags;
-+
-+		snd_pcm_stream_lock_irqsave_nested(stop_substream, flags);
-+		if (stop_substream->runtime && snd_pcm_running(stop_substream))
-+			snd_pcm_stop(stop_substream, SNDRV_PCM_STATE_DRAINING);
-+		snd_pcm_stream_unlock_irqrestore(stop_substream, flags);
-+
-+		if (atomic_dec_and_test(&cable->stop_count))
-+			wake_up(&cable->stop_wait);
-+	}
- 
- 	return 0;
- }
-@@ -1049,23 +1065,29 @@ static void free_cable(struct snd_pcm_substream *substream)
- 	struct loopback *loopback = substream->private_data;
- 	int dev = get_cable_index(substream);
- 	struct loopback_cable *cable;
-+	struct loopback_pcm *dpcm;
-+	bool other_alive;
- 
- 	cable = loopback->cables[substream->number][dev];
- 	if (!cable)
- 		return;
--	if (cable->streams[!substream->stream]) {
--		/* other stream is still alive */
--		guard(spinlock_irq)(&cable->lock);
--		cable->streams[substream->stream] = NULL;
--	} else {
--		struct loopback_pcm *dpcm = substream->runtime->private_data;
- 
--		if (cable->ops && cable->ops->close_cable && dpcm)
--			cable->ops->close_cable(dpcm);
--		/* free the cable */
--		loopback->cables[substream->number][dev] = NULL;
--		kfree(cable);
-+	scoped_guard(spinlock_irq, &cable->lock) {
-+		cable->streams[substream->stream] = NULL;
-+		other_alive = cable->streams[!substream->stream];
- 	}
-+
-+	/* Pair with the stop_count increment in loopback_check_format(). */
-+	wait_event(cable->stop_wait, !atomic_read(&cable->stop_count));
-+	if (other_alive)
-+		return;
-+
-+	dpcm = substream->runtime->private_data;
-+	if (cable->ops && cable->ops->close_cable && dpcm)
-+		cable->ops->close_cable(dpcm);
-+	/* free the cable */
-+	loopback->cables[substream->number][dev] = NULL;
-+	kfree(cable);
- }
- 
- static int loopback_jiffies_timer_open(struct loopback_pcm *dpcm)
-@@ -1260,6 +1282,8 @@ static int loopback_open(struct snd_pcm_substream *substream)
- 			goto unlock;
- 		}
- 		spin_lock_init(&cable->lock);
-+		atomic_set(&cable->stop_count, 0);
-+		init_waitqueue_head(&cable->stop_wait);
- 		cable->hw = loopback_pcm_hardware;
- 		if (loopback->timer_source)
- 			cable->ops = &loopback_snd_timer_ops;
+I've observed this hard lockup:
 
----
-base-commit: 03ef04a70af3ddfa925d78015713fdb4a15e4e88
-change-id: 20260422-alsa-aloop-peer-stop-uaf-004de2120b52
+  watchdog: CPU8: Watchdog detected hard LOCKUP on cpu 8
+  CPU: 8 UID: 0 PID: 24349 Comm: drmdevice
+  Call Trace:
+   <IRQ>
+   _raw_spin_lock+0x29/0x30
+   amdgpu_pasid_free+0x1a/0x80 [amdgpu]
+   amdgpu_pasid_free_cb+0x19/0x60 [amdgpu]
+   dma_fence_signal_timestamp_locked+0x8e/0x110
+   dma_fence_signal+0x30/0x60
+   drm_sched_job_done.isra.0+0x58/0x160 [gpu_sched]
+   dma_fence_signal_timestamp_locked+0x8e/0x110
+   dma_fence_signal+0x30/0x60
+   amdgpu_fence_process+0xe1/0x160 [amdgpu]
+   sdma_v5_2_process_trap_irq+0x8d/0x130 [amdgpu]
+   amdgpu_irq_dispatch+0x176/0x240 [amdgpu]
+   amdgpu_ih_process+0x66/0x190 [amdgpu]
+   amdgpu_irq_handler+0x23/0x60 [amdgpu]
+   __handle_irq_event_percpu+0x58/0x210
+   handle_irq_event+0x3e/0x90
+   handle_edge_irq+0xe3/0x1e0
+   __common_interrupt+0x47/0xe0
+   common_interrupt+0x82/0xa0
+   </IRQ>
+   <TASK>
+   asm_common_interrupt+0x26/0x40
+   idr_alloc_u32+0xb9/0x100
+   idr_alloc_cyclic+0x55/0xc0
+   amdgpu_pasid_alloc+0x44/0xb0 [amdgpu]
+   amdgpu_driver_open_kms+0xc5/0x300 [amdgpu]
+   drm_file_alloc+0x238/0x370
+   drm_open_helper+0x8d/0x160
+   drm_open+0x72/0x100
 
-Best regards,
---  
-Cássio Gabriel <cassiogabrielcontato@gmail.com>
+The following steps reproduce it reliably:
 
+1. Start sway
+2. Find out which core amdgpu IRQs fire on:
+   awk 'NR==1 || /amdgpu/' /proc/interrupts
+3. Run libdrm's drmdevice test program
+   (https://cgit.freedesktop.org/drm/libdrm/tree/tests/drmdevice.c) in a tight
+   loop on the same core:
+   while true; do taskset -c $AMDGPU_CORE drmdevice; done
+4. If that hasn't triggered it yet, lock and unlock screen with physlock
+
+Thanks!
+-- 
+Thomas Sowell
 
