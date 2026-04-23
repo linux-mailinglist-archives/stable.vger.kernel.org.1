@@ -1,185 +1,167 @@
-Return-Path: <stable+bounces-240466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240467-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YPvyLhgE6mk/rQIAu9opvQ
-	(envelope-from <stable+bounces-240466-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 13:35:52 +0200
+	id WCNRFWwE6mk/rQIAu9opvQ
+	(envelope-from <stable+bounces-240467-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 13:37:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 593C045156E
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 13:35:52 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B89CC4515C8
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 13:37:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BE827300BBB1
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 11:35:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A7CA83014C77
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 11:37:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 876AD377EA9;
-	Thu, 23 Apr 2026 11:35:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32BF53E928E;
+	Thu, 23 Apr 2026 11:37:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Ztg0YlTF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s/ZRLaIQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41B9530EF8F;
-	Thu, 23 Apr 2026 11:35:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E64E43E9594;
+	Thu, 23 Apr 2026 11:37:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776944148; cv=none; b=tz/YpttOlUzg2VzZohH00tHk2+4AsQkKBQsYrBcFOBSSVSJNjQ4uDjlZwECGd/ZWTrRw7+23f7mn5eqdUu9JMu1zWJ5V7LwM3oqhDeeScvQaW+mVi639ApwadR0C78V07dcTeWbuRzbhx6K8wBglK+P3Tv+obL6nJRHk0npO96s=
+	t=1776944231; cv=none; b=nOE0pYPddf+htjQnu2va5TqESe8pHeYlY1aRkCbQeFhm9NBVIm6GGEghJM5UkGUjC85TlMtUMG5Mbr5jJyknVARLJ02YDcEOfMDy2mcS6VJ0O2JNXwrmcpEQauwDO2bhx58uakjPpFVkx43Y4EHPF5TztyUy3gB3ln3LxfFcpJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776944148; c=relaxed/simple;
-	bh=VhspuBBVeCMZ7cVKQ7OO5c/C0hcEdDLBwLRdNqCEUik=;
-	h=Date:To:From:Subject:Message-Id; b=JpeTJaCqvOWJQla4xBWvrSdpHV+viNapeCwTdHWoVpkhBIQDgUzqmoktZaemM8CjXeQLEH46FMjU35h5wlKzgFCqOp9sfR6EptkXsq147jWZuttLdVSkQf1l+okDRBj/Bu6+kMXIpWqqqjgYVM7xXmRGtL8Y/PBze5k+IOk7VTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Ztg0YlTF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD6F9C2BCAF;
-	Thu, 23 Apr 2026 11:35:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1776944147;
-	bh=VhspuBBVeCMZ7cVKQ7OO5c/C0hcEdDLBwLRdNqCEUik=;
-	h=Date:To:From:Subject:From;
-	b=Ztg0YlTFe0oquXA2QebT3XQqE+YZEBEcE+YXfu+fa6LC+Zq7rea/ehEcf8E/nyg+F
-	 IdOZj2COcvWfy4/86BTGMWZvN+vYdO5nddbgTs3KrsdM28MqZ56gfyCUZ0XWCILiDd
-	 XM3KbzMHWS2w7ZSOx8nswdiFcbnwU9bTcE8YivxI=
-Date: Thu, 23 Apr 2026 04:35:47 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,osalvador@suse.de,muchun.song@linux.dev,david@kernel.org,ekffu200098@gmail.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-hugetlb_cma-round-up-per_node-before-logging-it.patch added to mm-hotfixes-unstable branch
-Message-Id: <20260423113547.AD6F9C2BCAF@smtp.kernel.org>
+	s=arc-20240116; t=1776944231; c=relaxed/simple;
+	bh=m9/JFjgzTqhPrqkzyzm6cCd274LhVOdNJDyQamWher0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=C3OjXKCsVoOoocdm5RNiYFoxQ9AThtVrJt5RF/fTHgYCIyH8YrbhX69+lnW0Tdb2spWw+hzN5EjfuwRBdea+YVKIC33YZTUzg6ZzYyI+Pz/8v2K0EH3oFgYsXx/mxi0+3ve0aLzljveD5JWght6MxsGSPUYlKWPTYvuVdpFIqGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s/ZRLaIQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AFB7C2BCB3;
+	Thu, 23 Apr 2026 11:37:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1776944230;
+	bh=m9/JFjgzTqhPrqkzyzm6cCd274LhVOdNJDyQamWher0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=s/ZRLaIQxgCzrhu9ur4Du3FBYhj3jx2jfYPwgSR724mAVnys5xFRujLH5Gttw1SHW
+	 n+LH5eeOeGkoCPaHs/UqkfyGxfpfif1/7JZETdfPUEYJjd9A9a6ZrlTLO91xADKuHr
+	 gBIlpKVtxHURa5vRGxdj5mwPoIVpSt/nwA2IAalc=
+Date: Thu, 23 Apr 2026 13:37:08 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Johnny Hao <johnny_haocn@sina.com>
+Cc: stable@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Alexey Nepomnyashih <sdl@nppct.ru>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: Re: [PATCH 5.15.y] xen-netfront: handle NULL returned by
+ xdp_convert_buff_to_frame()
+Message-ID: <2026042315-moonshine-enticing-be37@gregkh>
+References: <20260327055950.2618928-1-johnny_haocn@sina.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [-1.16 / 15.00];
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260327055950.2618928-1-johnny_haocn@sina.com>
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-240466-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	DMARC_NA(0.00)[linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
 	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[sina.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,suse.de,linux.dev,kernel.org,gmail.com,linux-foundation.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FROM_HAS_DN(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_FROM(0.00)[bounces-240467-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linux-foundation.org:dkim,linux-foundation.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,suse.de:email,smtp.kernel.org:mid]
-X-Rspamd-Queue-Id: 593C045156E
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nppct.ru:email,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: B89CC4515C8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+On Fri, Mar 27, 2026 at 01:59:50PM +0800, Johnny Hao wrote:
+> From: Alexey Nepomnyashih <sdl@nppct.ru>
+> 
+> [ Upstream commit cc3628dcd851ddd8d418bf0c897024b4621ddc92 ]
+> 
+> The function xdp_convert_buff_to_frame() may return NULL if it fails
+> to correctly convert the XDP buffer into an XDP frame due to memory
+> constraints, internal errors, or invalid data. Failing to check for NULL
+> may lead to a NULL pointer dereference if the result is used later in
+> processing, potentially causing crashes, data corruption, or undefined
+> behavior.
+> 
+> On XDP redirect failure, the associated page must be released explicitly
+> if it was previously retained via get_page(). Failing to do so may result
+> in a memory leak, as the pages reference count is not decremented.
+> 
+> Cc: stable@vger.kernel.org # v5.9+
+> Fixes: 6c5aa6fc4def ("xen networking: add basic XDP support for xen-netfront")
+> Signed-off-by: Alexey Nepomnyashih <sdl@nppct.ru>
+> Link: https://patch.msgid.link/20250417122118.1009824-1-sdl@nppct.ru
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> Signed-off-by: Johnny Hao <johnny_haocn@sina.com>
+> ---
+>  drivers/net/xen-netfront.c | 17 ++++++++++++-----
+>  1 file changed, 12 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/net/xen-netfront.c b/drivers/net/xen-netfront.c
+> index 4b19d54fa2e2..310bc1f7d404 100644
+> --- a/drivers/net/xen-netfront.c
+> +++ b/drivers/net/xen-netfront.c
+> @@ -982,20 +982,27 @@ static u32 xennet_run_xdp(struct netfront_queue *queue, struct page *pdata,
+>  	act = bpf_prog_run_xdp(prog, xdp);
+>  	switch (act) {
+>  	case XDP_TX:
+> -		get_page(pdata);
+>  		xdpf = xdp_convert_buff_to_frame(xdp);
+> +		if (unlikely(!xdpf)) {
+> +			trace_xdp_exception(queue->info->netdev, prog, act);
+> +			break;
+> +		}
+> +		get_page(pdata);
+>  		err = xennet_xdp_xmit(queue->info->netdev, 1, &xdpf, 0);
+> -		if (unlikely(!err))
+> +		if (unlikely(err <= 0)) {
+> +			if (err < 0)
+> +				trace_xdp_exception(queue->info->netdev, prog, act);
+>  			xdp_return_frame_rx_napi(xdpf);
+> -		else if (unlikely(err < 0))
+> -			trace_xdp_exception(queue->info->netdev, prog, act);
+> +		}
+>  		break;
+>  	case XDP_REDIRECT:
+>  		get_page(pdata);
+>  		err = xdp_do_redirect(queue->info->netdev, xdp, prog);
+>  		*need_xdp_flush = true;
+> -		if (unlikely(err))
+> +		if (unlikely(err)) {
+>  			trace_xdp_exception(queue->info->netdev, prog, act);
+> +			xdp_return_buff(xdp);
+> +		}
+>  		break;
+>  	case XDP_PASS:
+>  	case XDP_DROP:
+> -- 
+> 2.34.1
+> 
 
-The patch titled
-     Subject: mm/hugetlb_cma: round up per_node before logging it
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-hugetlb_cma-round-up-per_node-before-logging-it.patch
+Breaks the build:
+	ERROR: modpost: "xdp_return_buff" [drivers/net/xen-netfront.ko] undefined!
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-hugetlb_cma-round-up-per_node-before-logging-it.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: Sang-Heon Jeon <ekffu200098@gmail.com>
-Subject: mm/hugetlb_cma: round up per_node before logging it
-Date: Wed, 22 Apr 2026 23:33:53 +0900
-
-When the user requests a total hugetlb CMA size without per-node
-specification, hugetlb_cma_reserve() computes per_node from
-hugetlb_cma_size and the number of nodes that have memory
-
-        per_node = DIV_ROUND_UP(hugetlb_cma_size,
-                                nodes_weight(hugetlb_bootmem_nodes));
-
-The reservation loop later computes
-
-        size = round_up(min(per_node, hugetlb_cma_size - reserved),
-                          PAGE_SIZE << order);
-
-So the actually reserved per_node size is multiple of (PAGE_SIZE <<
-order), but the logged per_node is not rounded up, so it may be smaller
-than the actual reserved size.
-
-For example, as the existing comment describes, if a 3 GB area is
-requested on a machine with 4 NUMA nodes that have memory, 1 GB is
-allocated on the first three nodes, but the printed log is
-
-        hugetlb_cma: reserve 3072 MiB, up to 768 MiB per node
-
-Round per_node up to (PAGE_SIZE << order) before logging so that the
-printed log always matches the actual reserved size.  No functional change
-to the actual reservation size, as the following case analysis shows
-
-1. remaining (hugetlb_cma_size - reserved) >= rounded per_node
- - AS-IS: min() picks unrounded per_node;
-    round_up() returns rounded per_node
- - TO-BE: min() picks rounded per_node;
-    round_up() returns rounded per_node (no-op)
-2. remaining < unrounded per_node
- - AS-IS: min() picks remaining;
-    round_up() returns round_up(remaining)
- - TO-BE: min() picks remaining;
-    round_up() returns round_up(remaining)
-3. unrounded per_node <= remaining < rounded per_node
- - AS-IS: min() picks unrounded per_node;
-    round_up() returns rounded per_node
- - TO-BE: min() picks remaining;
-    round_up() returns round_up(remaining) equals rounded per_node
-
-Link: https://lore.kernel.org/20260422143353.852257-1-ekffu200098@gmail.com
-Fixes: cf11e85fc08c ("mm: hugetlb: optionally allocate gigantic hugepages using cma") # 5.7
-Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
-Reviewed-by: Muchun Song <muchun.song@linux.dev>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/hugetlb_cma.c |    1 +
- 1 file changed, 1 insertion(+)
-
---- a/mm/hugetlb_cma.c~mm-hugetlb_cma-round-up-per_node-before-logging-it
-+++ a/mm/hugetlb_cma.c
-@@ -204,6 +204,7 @@ void __init hugetlb_cma_reserve(void)
- 		 */
- 		per_node = DIV_ROUND_UP(hugetlb_cma_size,
- 					nodes_weight(hugetlb_bootmem_nodes));
-+		per_node = round_up(per_node, PAGE_SIZE << order);
- 		pr_info("hugetlb_cma: reserve %lu MiB, up to %lu MiB per node\n",
- 			hugetlb_cma_size / SZ_1M, per_node / SZ_1M);
- 	}
-_
-
-Patches currently in -mm which might be from ekffu200098@gmail.com are
-
-mm-hugetlb_cma-round-up-per_node-before-logging-it.patch
 
 
