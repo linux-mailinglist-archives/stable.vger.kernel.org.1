@@ -1,53 +1,71 @@
-Return-Path: <stable+bounces-240407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240408-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AJfGAf6c6Wm3ewIAu9opvQ
-	(envelope-from <stable+bounces-240407-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 06:15:58 +0200
+	id K2y1Nymd6WkAfQIAu9opvQ
+	(envelope-from <stable+bounces-240408-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 06:16:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5AED44CD7A
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 06:15:57 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C96D044CDAF
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 06:16:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 76F9930362C9
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 04:11:07 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D2E58300B442
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 04:15:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDF3B29992B;
-	Thu, 23 Apr 2026 04:10:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 628ED35B62F;
+	Thu, 23 Apr 2026 04:15:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kzr2Ckfa"
+	dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b="VRNwzgHX"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from r3-11.sinamail.sina.com.cn (r3-11.sinamail.sina.com.cn [202.108.3.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC11E3CD8CE;
-	Thu, 23 Apr 2026 04:10:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F4D833C188
+	for <stable@vger.kernel.org>; Thu, 23 Apr 2026 04:15:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.108.3.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776917455; cv=none; b=sa6Ckr/qv9jHNY83zN6uE+6X/aC1HCofL3z6DeOGJhGsX8JAnUczigUXj3wodKqYoZd6ttlNloKMQ451uLEl9OQnohxvaqQ1QBuKHMntJiLcD1A6Hd0Eh5NRM3Pm1Th/0QyyaSHErAOIeqRt+7Yt4NWs20aL3G8Tvs8KvszkfeE=
+	t=1776917718; cv=none; b=i1XQrjXyyFqjDAyXK+hnSKAawgZr0qkaJvnKS2Ecn/P9oacTC0NnW57/5bSp8OODq/8C3XljrECvCzYtSypbi9NWPkjBSJEKBAlUuptBqegDXreTbnQPn6tuYu3n8J1uBNbOUTiVRrFDc1P6CFaKTW6z7PlxL4X3sdmNpDeWfs0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776917455; c=relaxed/simple;
-	bh=JnoSNSp5LUZ5lvo051Sc6/fJSCoROc7l7aTWaA8rpLw=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=hLkLOYuncYxIQ6S5ry3uzwgEYGTGUTAtdCos7BJGb92+DLb16DrQm26SmePe/Fs9EpoaBdlG3Ecs/N9d67MTRX9ghrLKD71cOxXbdeA/sbV+PGnYzoGmergDw/PSxZT0So9bQuUT5VVqloBXdXP4S9hhsPQVrCfxTJFtm+nQ7qc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kzr2Ckfa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 922C9C2BCB2;
-	Thu, 23 Apr 2026 04:10:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776917454;
-	bh=JnoSNSp5LUZ5lvo051Sc6/fJSCoROc7l7aTWaA8rpLw=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=kzr2CkfaXi7at4ScwzrLrfeK6cqTzGBpdN+QdcvTLG2UEGGpkkUTq0cXIGmtzXmfR
-	 VrVmjCwl4fRfra7ZZw5Dia/yQsshunioD/jNKFj4OxHDilrGN/gceDTJ0dSSuxlCsK
-	 NVnehnB41rDlMC1mB+YgA01AGSssR4bAUzlWA25jc3sgJyBKPVTadO8+KR0SALdBYu
-	 qhWu9syhJ7ifnerUJZ5IIVYyPL/JLwBnUUB9/pKp3hpGR28n7ntB8xOmKXBMgvrNea
-	 /cjf1AU/cH0xg2aljRuDol3QIFsb2KGnpelyieIJtn/XDcQcLFmanaOR3/Pg3oebA6
-	 ppJb94bS9wvoA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BA4B53809A86;
-	Thu, 23 Apr 2026 04:10:17 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1776917718; c=relaxed/simple;
+	bh=Qz70XQWqkjFL1n7DMKpRt8RNanc3bCYxPXKEjrvC0wg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ejxwjhYyYnma+4sCLMO+3syC2wRr6Hv3dIrfFQhtnWpGFg0XDKHuXkxIkGxpIz+1BsNb8FrIC7PKi82DZvo09YBkyzN0HHBeZytrhVVzJAd4vJJbM6dipFQWAfl9+cz6nf8dip4NN/fUg5JrN++Xm260dk/GGktKalaMhs9dQs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com; spf=pass smtp.mailfrom=sina.com; dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b=VRNwzgHX; arc=none smtp.client-ip=202.108.3.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1776917713;
+	bh=kXgg4bK6ZCKpzRg3Eg2FXeTLIzhmAY6ilX5qNb/Q9O0=;
+	h=From:Subject:Date:Message-ID;
+	b=VRNwzgHXlEaWhBj6wpwBrXVR7jx0VFnAPnmv8e8hkCCeOC5hWNuqfT0BzECxZ1ucM
+	 5qBMC/+25bg4AanjGHqwzjXfxsi50JIJ4zPX7iyT59wOuF7wXtmIPBclePYbztzwKv
+	 xA8Y3G4IRBvuz9QIzw7xcFNnBrPKRkUb0x3BN2og=
+X-SMAIL-HELO: localhost.localdomain
+Received: from unknown (HELO localhost.localdomain)([114.249.62.144])
+	by sina.com (10.54.253.34) with ESMTP
+	id 69E99CCB000034DA; Thu, 23 Apr 2026 12:15:09 +0800 (CST)
+X-Sender: hdanton@sina.com
+X-Auth-ID: hdanton@sina.com
+Authentication-Results: sina.com;
+	 spf=none smtp.mailfrom=hdanton@sina.com;
+	 dkim=none header.i=none;
+	 dmarc=none action=none header.from=hdanton@sina.com
+X-SMAIL-MID: 553076291788
+X-SMAIL-UIID: 3D56BE0CC2034011917CE9A522D806FC-20260423-121509-1
+From: Hillf Danton <hdanton@sina.com>
+To: Jeongjun Park <aha310510@gmail.com>
+Cc: Johannes Berg <johannes.berg@intel.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	syzbot+5de83f57cd8531f55596@syzkaller.appspotmail.com,
+	syzkaller-bugs@googlegroups.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] wifi: rsi: fix kthread lifetime race between self-exit and external-stop
+Date: Thu, 23 Apr 2026 12:14:58 +0800
+Message-ID: <20260423041500.2020-1-hdanton@sina.com>
+In-Reply-To: <20260422173846.37640-1-aha310510@gmail.com>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,85 +73,97 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] net/rds: zero per-item info buffer before handing
- it
- to visitors
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177691741629.4152232.6489849358405426037.git-patchwork-notify@kernel.org>
-Date: Thu, 23 Apr 2026 04:10:16 +0000
-References: <20260418141047.3398203-1-michael.bommarito@gmail.com>
-In-Reply-To: <20260418141047.3398203-1-michael.bommarito@gmail.com>
-To: Michael Bommarito <michael.bommarito@gmail.com>
-Cc: achender@kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, sharath.srinivasan@oracle.com,
- horms@kernel.org, netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
- rds-devel@oss.oracle.com, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[sina.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[sina.com:s=201208];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_NEQ_ENVFROM(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-240407-lists,stable=lfdr.de,netdevbpf];
-	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FREEMAIL_TO(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-240408-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B5AED44CD7A
+	FREEMAIL_FROM(0.00)[sina.com];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[hdanton@sina.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[sina.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable,5de83f57cd8531f55596];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,appspotmail.com:email]
+X-Rspamd-Queue-Id: C96D044CDAF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hello:
-
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Sat, 18 Apr 2026 10:10:47 -0400 you wrote:
-> rds_for_each_conn_info() and rds_walk_conn_path_info() both hand a
-> caller-allocated on-stack u64 buffer to a per-connection visitor and
-> then copy the full item_len bytes back to user space via
-> rds_info_copy() regardless of how much of the buffer the visitor
-> actually wrote.
+On Thu, 23 Apr 2026 02:38:46 +0900 Jeongjun Park wrote:
+> RSI driver use both self-exit(kthread_complete_and_exit) and external-stop
+> (kthread_stop) when killing a kthread. Generally, kthread_stop() is called
+> first, and in this case, no particular issues occur.
 > 
-> rds_ib_conn_info_visitor() and rds6_ib_conn_info_visitor() only
-> write a subset of their output struct when the underlying
-> rds_connection is not in state RDS_CONN_UP (src/dst addr, tos, sl
-> and the two GIDs via explicit memsets). Several u32 fields
-> (max_send_wr, max_recv_wr, max_send_sge, rdma_mr_max, rdma_mr_size,
-> cache_allocs) and the 2-byte alignment hole between sl and
-> cache_allocs remain as whatever stack contents preceded the visitor
-> call and are then memcpy_to_user()'d out to user space.
+> However, in rare instances where kthread_complete_and_exit() is called
+> first and then kthread_stop() is called, a UAF occurs because the kthread
+> object, which has already exited and been freed, is accessed again.
 > 
-> [...]
+Alternatively the race could be described with the regular diagram to better
+understand the uaf.
 
-Here is the summary with links:
-  - [net,v2] net/rds: zero per-item info buffer before handing it to visitors
-    https://git.kernel.org/netdev/net/c/c88eb7e8d839
+	rsi_kill_thread()	rsi_tx_scheduler_thread()
+	---			---
+	atomic_inc(&handle->thread_done); // set the done flag
+ 	rsi_set_event(&handle->event);
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+				do {
+					something;
+				} while (atomic_read(&common->tx_thread.thread_done) == 0);
+				// exit after done
+				kthread_complete_and_exit(&common->tx_thread.completion, 0);
 
+	kthread_stop(handle->task); // uaf
 
+> Therefore, to prevent this with minimal modification, you must remove
+> kthread_stop() and change the code to wait until the self-exit operation
+> is completed.
+> 
+> Cc: <stable@vger.kernel.org>
+> Reported-by: syzbot+5de83f57cd8531f55596@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/all/69e5d03b.a00a0220.1bd0ca.0064.GAE@google.com/
+> Fixes: 4c62764d0fc2 ("rsi: improve kernel thread handling to fix kernel panic")
+> Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+> ---
+>  drivers/net/wireless/rsi/rsi_common.h | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/rsi/rsi_common.h b/drivers/net/wireless/rsi/rsi_common.h
+> index 591602beeec6..3cdf9ded876d 100644
+> --- a/drivers/net/wireless/rsi/rsi_common.h
+> +++ b/drivers/net/wireless/rsi/rsi_common.h
+> @@ -70,12 +70,11 @@ static inline int rsi_create_kthread(struct rsi_common *common,
+>  	return 0;
+>  }
+>  
+> -static inline int rsi_kill_thread(struct rsi_thread *handle)
+> +static inline void rsi_kill_thread(struct rsi_thread *handle)
+>  {
+>  	atomic_inc(&handle->thread_done);
+>  	rsi_set_event(&handle->event);
+> -
+> -	return kthread_stop(handle->task);
+> +	wait_for_completion(&handle->completion);
+>  }
+>  
+>  void rsi_mac80211_detach(struct rsi_hw *hw);
+> --
+> 
 
