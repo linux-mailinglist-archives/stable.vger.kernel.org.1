@@ -1,81 +1,81 @@
-Return-Path: <stable+bounces-240456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240457-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eHTJNTLx6WkzpQIAu9opvQ
-	(envelope-from <stable+bounces-240456-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 12:15:14 +0200
+	id sHqZMRry6WmepQIAu9opvQ
+	(envelope-from <stable+bounces-240457-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 12:19:06 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CDEA450708
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 12:15:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43AE0450856
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 12:19:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C17A230826CA
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 10:09:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7E1EC3013A5D
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 10:14:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C693379980;
-	Thu, 23 Apr 2026 10:09:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D618237AA88;
+	Thu, 23 Apr 2026 10:14:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="juohZ7uP"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mmcAkOdf"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0413C377556
-	for <stable@vger.kernel.org>; Thu, 23 Apr 2026 10:09:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34C8437B02D
+	for <stable@vger.kernel.org>; Thu, 23 Apr 2026 10:14:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776938979; cv=none; b=a4ZSqrpfF/Y9EiRWrHDCDspq4lIY5VhQrmkxEWYgczrx0pw7WEHg80MUzTfKvkY/oY2aghoQmaPBZo3xIfpFgzQMHQgP+ZLF9q8ih1ka4o70tAV//JpAc6OtYuLpKIBaRy747M1BoW+3z8Jvif1YTrDWLhJojipGyYZezvF8iRo=
+	t=1776939256; cv=none; b=Hb6zUCdayUU073ZMW4PCHdCL16ZygCF58lf3Oe4CPh/DjWpvA5hk8YUMz9J4ET64RQqPLACCvAJjTENQbvcAIOU7tRm+Dk/lVJOAKogWFH829q+x3cL+Whe/WnSlqjzc5R1A9qk8e6b0ZkZrOJEOe24Pv5EAmjTZHRwxFwc/fPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776938979; c=relaxed/simple;
-	bh=UTlbVQte9MXWRTLRKgI2LMgHRO0jaYQooyHaYcX98aU=;
+	s=arc-20240116; t=1776939256; c=relaxed/simple;
+	bh=bfflzEHdpLESHwzPVr7kcu++Rfuj6zUYLaa4J7zWLPM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=H85sW/1rVUEZlf5Xl3EUqSdOag8yqTNeONmHlKHKwi3++SJva3Oelb48NLYIKBv3fZf5zm7u78r+KZnZ7X1qDjJsjycEEMcRlGITIOnoJFeFcdTWeZT/UDp2td/DyOjCNNZ31MvfWzOlskoj3sZpF5MRCdiyjI/r06qwrgLTHwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=juohZ7uP; arc=none smtp.client-ip=209.85.216.43
+	 MIME-Version:Content-Type; b=UwPt+0jNhfpfm+V4In98QxL1GB/V4vahVKchCdc2/0eepvWmNI/gFyP1QEzOrhavzIO0t72Gq7EHxoo7SJ00mkPioPeBhCh1X+bhVyOcrcYgP+jFACxwmbdLkjtlyUTDX5nNqzQRRgR0k2x6UIcnUClANoivv7iJ3IkhrHqMa7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mmcAkOdf; arc=none smtp.client-ip=209.85.215.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-35e576110adso4406413a91.0
-        for <stable@vger.kernel.org>; Thu, 23 Apr 2026 03:09:37 -0700 (PDT)
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-c795f096fa5so2595568a12.3
+        for <stable@vger.kernel.org>; Thu, 23 Apr 2026 03:14:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776938977; x=1777543777; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1776939254; x=1777544054; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=9hw3+dt4upvwPZbcilhyfG5LgQIqATsWm5ea0NmPrr4=;
-        b=juohZ7uP31L4eLYx2MIWQQo2PZjSza5N3Mu6X7d0r5Br4kpMrF5nMo+ATaiZloSw0O
-         rrij3dT6pZg/QV8USUVwVjrm09qL1qNxrzAiEu8RVk5vlzVtjR5X8137uTTWIRrRmqzA
-         XOgSCJqQVmhTCUFjBEjqmworhx+HZ/pzTh0FTdkx/4VkLa5sgj6z8QISAwNxAzmYvr5w
-         aiC+swWNcbtf/NAAwJiPl9dd9T6Qbe5HYLdAL/ms0f4M4WTCWteK+JGUJZACClvw08ka
-         DDyx7y1vL//i9lCjOzxVKe8dejt+g3PJUiuuJtAQP962bjam0tmjtHRM4krKlLG8/Pbf
-         XKOw==
+        bh=D105fItJZxsqyXtCtVn6aQ3UIkkHqVrtT7Vq4lq6K4g=;
+        b=mmcAkOdfAILC0KYFpuH/oHKxF8UBpCQC5d75oANoeRSziiUMzMbiPkqiSEb95zGoLl
+         bAJJXjtMlulUh5DYxpUymeXGNj8XeWbwbHu4drad8zLwFyVu9CUh3qv6aMVYoY47ZTfm
+         lWpRbESERoyVIA41knIuRQQP/w0L+wnBtJxEjHnWrGJ4hzuIYIvzg+YM+DH/fhABZ56G
+         B6wAub5wPrx7MkwSy9LAEXmEGEpmnHz3k+Oe1/wlfRrrkEHykB8t9/72dV3MfP3NWBiM
+         nbwINtmp1+sF8V3277jQM1PQz8sXCNhyNWY6HGnfiAiAyvprO0u2TuJxKL7thHHbkSQt
+         cJDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776938977; x=1777543777;
+        d=1e100.net; s=20251104; t=1776939254; x=1777544054;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=9hw3+dt4upvwPZbcilhyfG5LgQIqATsWm5ea0NmPrr4=;
-        b=MqNiwgyxXU8LrIi/KZeRbSwaVxjtXOP4b8w9K9j9MkMAIvPualeMwLYBGCw4cwTbvi
-         9HyZrATENYAr4WcLEn92WgcBsP4x6Flv8HCNTBDhHqBOY5ke0MPpsAuW4TMZ+OdqF+sE
-         os8M9xhxO4gf9YCZCW/YvdpgIExHTRKwtqmXS+7Gx7dl+gC9oE5hc+D+lWXeFekMyBGm
-         D7ZpTC2+JNSxEcHYvvRCEpE26rQ/WIvwMvZe+6J8VtecwLjI55m+/vh6p1NhLg5BmfIx
-         dND0FQdJ5SUxSqQqyFvTLIuBDoAH/hjpt981RUxRz26DJ6sEWDRM1SQ8pHUdrGaCX3BI
-         aVrg==
-X-Forwarded-Encrypted: i=1; AFNElJ+kBowOYXVyi+f1BwM6XRmjv2wK/E9YM5PT9FNcWoH/qAl8bjMTZOC7x11bI+x+TzPl4siJnJw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwUy6cNOUd6HouhMEGR2gdqnZnvji75P1mVnfaGuyvLftAeGLor
-	37PZX4+lo/+IjoGBV1zWCHUtaYQ3oH7EiFUwLis/aQQgGtxCnJ3ZpJ24
-X-Gm-Gg: AeBDietVQxa5l2Ny5sJmz0QTBSstnY8cU/U1V+ZrJssaXoZIL8nFmfuOk0DFB+gvoDd
-	2nk4mJdZ4FSOBSGFWl3gBf/4o9tOw9Vu4LIy1yETFbLrqZ7fI0817ZyQuPFTYL9lsS4kRlMb3UG
-	kbEYPAru3ZwERc4M9bcpxdaTNCzQqYrevItA8SMGKHo+U1NusaoA4LXLn2q+B8gA2QSWOcWmnsd
-	saiMkPGkkdXG8LPuWu/NhMehpkbIvhpshSS0rsrJz0N4Q1KkJnpZ9wbrzOOJiC9IN5uOjv2SSa1
-	05J8I8FWo2aBRvXdhgJaWR9iCHsfDP6TuXK0rYWMsyRDQNtbVDdfAz1hORvJUsqgrCmbTs00fcD
-	aI8MbEMpqdVp+Bbw4mdSv31GKv+D2Qo/d4agqGJETRHhjfJV0rQNyV9r20pfejzpjbFsqonvJFo
-	4AFtcJXH+dhSY5WLX0ZzioOiPVo98lt1DafQ==
-X-Received: by 2002:a17:90b:4b83:b0:356:21e9:73ff with SMTP id 98e67ed59e1d1-361402ebfebmr20950907a91.11.1776938977213;
-        Thu, 23 Apr 2026 03:09:37 -0700 (PDT)
+        bh=D105fItJZxsqyXtCtVn6aQ3UIkkHqVrtT7Vq4lq6K4g=;
+        b=dFZY1TKMDmDINF4yg2Lx/tKFjXya4FyWoAQJoCwKGGzioMgttGf0IZQTNT/25NrMiM
+         biMB/Wc/KDQv8XFUtvg9fcohBgBwauQXbREnb+2SelPp1ZNuX9sI3BvVXtubPvKfexHy
+         Eool5Nt8Y/iI60Zkgw42+l66Qs1nSi9Zt1bh2guXAyKk6/ntLmjrBY8atz6ZO7Xd7J7Q
+         j7SCNCKzQ2IWchDLBdXnOrcEUj1ZhfomBfD8++FMhRaZm4O1xPcZT4gvFnBOxuj3+y3G
+         ydJ8bDnoOW6FrHXJZ7q/X2GU0+admxGVDS1roqPeDjfCn1QEo4xzGHgc+RnM6jZu9elI
+         zHdQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9xSDXdp3vesglyJfEZEUrR0y8ghuzlBAtRSGZBJa/qPaMBLbaNow5hni9X2lZuPoMjqVNiq2A=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyu+yiVD86ytUBiggfdqUF76gXuL+yNPvEI0zEW1WVYXrhKhFRZ
+	TK3wFdwiF4GnFIuwTamypCykZ5vbxmWLVF8O5MCN0JeXKAHXzwxN17Sp
+X-Gm-Gg: AeBDiesjhu+wnfkcFNWYRnsvMIXY3CaIW5cLTzZYZ2R5odL1/8Hqrl5CkzXk0VdFzR4
+	u0S+g+OsFFHD6lziVadVVzKLPLVh+90PVNPSIGp443ZklHFpVN9L/AYceSdbSC/snSd5nKC1rIf
+	6TgvW1CJ4xHxEYAqr1Bx4FHPfbuoOFdQDMPsU5BISPsgbzC3KTociRdaIj1tRPICr2BSenDKDj4
+	UN6LIsseRG91aFOBEkplg/Y0Syxj9r4p83kOC9pn5tn+H4sHLIg/ygw+Q1Ne906fWNPDfRZ4b5m
+	rf7VWYvR8emC1TZQUHLWkLpPZxC2eAJXAknRvL8f8sJMb2F//PEc6MQQXPj0ks2SKX3R7iuvCpb
+	/eYrppN42QYXMtNfzl0nPXtuRcWz3L+lUCf9Hg00I7B/bYVTgYHA3/fRy6jrHuzNJKGXqm+sPsv
+	kWZowD8FKQjvbl7l04+Lpv2uIPVwOgpCn0yQ==
+X-Received: by 2002:a17:90b:4b49:b0:35d:9560:3f09 with SMTP id 98e67ed59e1d1-361404b8efbmr26679621a91.24.1776939254431;
+        Thu, 23 Apr 2026 03:14:14 -0700 (PDT)
 Received: from fedora ([2401:4900:1cbc:314:9667:4972:a94c:125a])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36140fc5d94sm25275714a91.2.2026.04.23.03.09.32
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36140fc5d94sm25275714a91.2.2026.04.23.03.14.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Apr 2026 03:09:36 -0700 (PDT)
+        Thu, 23 Apr 2026 03:14:14 -0700 (PDT)
 From: avinash pal <avinashpal441@gmail.com>
 To: David Woodhouse <dwmw2@infradead.org>
 Cc: Lu Baolu <baolu.lu@linux.intel.com>,
@@ -87,9 +87,9 @@ Cc: Lu Baolu <baolu.lu@linux.intel.com>,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org,
 	Giovanni Pancotti <giovanni.pancotti@example.com>
-Subject: [PATCH stable 6.12 1/2] iommu/vt-d: fail map loudly on stale DMA PTE
-Date: Thu, 23 Apr 2026 15:39:03 +0530
-Message-ID: <20260423100904.5966-2-avinashpal441@gmail.com>
+Subject: [PATCH stable 6.12 2/2] iommu/dma: sync IOTLB before releasing IOVA on sg unmap
+Date: Thu, 23 Apr 2026 15:39:04 +0530
+Message-ID: <20260423100904.5966-3-avinashpal441@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260423100904.5966-1-avinashpal441@gmail.com>
 References: <20260423100904.5966-1-avinashpal441@gmail.com>
@@ -111,7 +111,7 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FREEMAIL_CC(0.00)[linux.intel.com,8bytes.org,kernel.org,arm.com,gmail.com,lists.linux.dev,vger.kernel.org,example.com];
-	TAGGED_FROM(0.00)[bounces-240456-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-240457-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
@@ -129,97 +129,59 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4CDEA450708
+X-Rspamd-Queue-Id: 43AE0450856
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-In __domain_mapping(), when dma_pte_present(pte) is true the existing
-WARN continues execution, leaving the domain in an inconsistent state:
-a new PTE is silently installed on top of a live one.
+On the lazy-flush path, __iommu_dma_unmap_sg() calls free_iova_fast()
+before iommu_iotlb_sync() has drained the old mapping from hardware.
+A concurrent dma_map_sg() can then allocate the same IOVA and hit the
+stale-PTE WARN_ON in __domain_mapping() / intel_iommu_map_pages():
 
-Replace it with:
-  - pr_err_ratelimited: prints conflicting vPFN + old PTE value
-  - WARN_ON_ONCE: one-shot kernel warning with stack trace
-  - return -EEXIST: abort the bad map; no silent corruption
+    CPU 0 (unmap, lazy)              CPU 1 (map)
+    ───────────────────              ─────────────────────────────
+    iommu_unmap(iova)
+    free_iova_fast(iova)  ← live!
+                                     alloc_iova_fast() → same iova
+                                     __domain_mapping()
+                                       dma_pte_present() == true ← WARN
 
-The root cause is in the unmap path — see the companion dma-iommu.c fix.
+Fix: insert iommu_iotlb_sync() immediately before free_iova_fast() on
+the lazy path so the IOTLB is fully drained before IOVA reuse.
+
+The strict-mode path already serialises here; this closes the same gap
+for lazy/deferred flushing (regression introduced between v6.12.74 and
+v6.12.76 — confirmed by reporter).
 
 Reported-by: Giovanni Pancotti <giovanni.pancotti@example.com>
 Link: https://bugzilla.kernel.org/show_bug.cgi?id=221389
+Fixes: <run: git log v6.12.74..v6.12.76 -- drivers/iommu/dma-iommu.c>
 Cc: stable@vger.kernel.org
 Signed-off-by: avinash pal <avinashpal441@gmail.com>
 ---
- drivers/iommu/intel/iommu.c | 50 ++++++++++++++++++++++++++++---------
- 1 file changed, 38 insertions(+), 12 deletions(-)
+ drivers/iommu/dma-iommu.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
-index c799cc67d..4a8937b44 100644
---- a/drivers/iommu/intel/iommu.c
-+++ b/drivers/iommu/intel/iommu.c
-@@ -1777,14 +1777,25 @@ static void switch_to_super_page(struct dmar_domain *domain,
- 			pte = pfn_to_dma_pte(domain, start_pfn, &level,
- 					     GFP_ATOMIC);
+diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
+index 0f0caf590..90071cf4a 100644
+--- a/drivers/iommu/dma-iommu.c
++++ b/drivers/iommu/dma-iommu.c
+@@ -159,6 +159,15 @@ static void fq_ring_free_locked(struct iommu_dma_cookie *cookie, struct iova_fq
+ 			break;
  
--		if (dma_pte_present(pte)) {
--			dma_pte_free_pagetable(domain, start_pfn,
--					       start_pfn + lvl_pages - 1,
--					       level + 1);
--
--			cache_tag_flush_range(domain, start_pfn << VTD_PAGE_SHIFT,
--					      end_pfn << VTD_PAGE_SHIFT, 0);
--		}
-+    		if (dma_pte_present(pte)) {
-+    			/*
-+    			 * A live DMA PTE is already installed at this vPFN.
-+    			 * This violates the map/unmap contract: an IOVA must be
-+    			 * fully unmapped and the IOTLB drained before reuse.
-+    			 *
-+    			 * Root cause: missing iommu_iotlb_sync() before
-+    			 * free_iova_fast() in __iommu_dma_unmap_sg() on the
-+    			 * lazy-flush path.  The companion patch in dma-iommu.c
-+    			 * fixes that; this guard makes the violation explicit.
-+    			 */
-+    			pr_err_ratelimited(
-+    				"DMAR: stale PTE at vPFN 0x%lx (val=0x%016llx) "
-+    				"-- IOVA reused before IOTLB drain
-+",
-+    				iov_pfn, (unsigned long long)pte->val);
-+    			WARN_ON_ONCE(1);
-+    			return -EEXIST;
-+    		}
- 
- 		pte++;
- 		start_pfn += lvl_pages;
-@@ -3663,10 +3674,25 @@ int prepare_domain_attach_device(struct iommu_domain *domain,
- 		struct dma_pte *pte;
- 
- 		pte = dmar_domain->pgd;
--		if (dma_pte_present(pte)) {
--			dmar_domain->pgd = phys_to_virt(dma_pte_addr(pte));
--			iommu_free_page(pte);
--		}
-+    		if (dma_pte_present(pte)) {
-+    			/*
-+    			 * A live DMA PTE is already installed at this vPFN.
-+    			 * This violates the map/unmap contract: an IOVA must be
-+    			 * fully unmapped and the IOTLB drained before reuse.
-+    			 *
-+    			 * Root cause: missing iommu_iotlb_sync() before
-+    			 * free_iova_fast() in __iommu_dma_unmap_sg() on the
-+    			 * lazy-flush path.  The companion patch in dma-iommu.c
-+    			 * fixes that; this guard makes the violation explicit.
-+    			 */
-+    			pr_err_ratelimited(
-+    				"DMAR: stale PTE at vPFN 0x%lx (val=0x%016llx) "
-+    				"-- IOVA reused before IOTLB drain
-+",
-+    				iov_pfn, (unsigned long long)pte->val);
-+    			WARN_ON_ONCE(1);
-+    			return -EEXIST;
-+    		}
- 		dmar_domain->agaw--;
- 	}
- 
+ 		iommu_put_pages_list(&fq->entries[idx].freelist);
++/*
++ * Bug fix (Bugzilla #221389, regression v6.12.75/v6.12.76):
++ * Drain the IOTLB before handing the IOVA back to the allocator.
++ * On the lazy-flush path, free_iova_fast() makes the IOVA
++ * immediately reusable.  A concurrent map() call can then receive
++ * the same IOVA while the old PTE is still live in hardware,
++ * triggering a stale-PTE WARN in __domain_mapping().
++ */
++iommu_iotlb_sync(domain, &iotlb_gather);
+ 		free_iova_fast(&cookie->iovad,
+ 			       fq->entries[idx].iova_pfn,
+ 			       fq->entries[idx].pages);
 -- 
 2.53.0
 
