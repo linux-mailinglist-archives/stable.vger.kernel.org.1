@@ -1,224 +1,177 @@
-Return-Path: <stable+bounces-240494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240495-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UDVvKTEj6mnKuwIAu9opvQ
-	(envelope-from <stable+bounces-240494-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 15:48:33 +0200
+	id mJx3IfYh6mnKuwIAu9opvQ
+	(envelope-from <stable+bounces-240495-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 15:43:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 201D2453420
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 15:48:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5C5F4532E5
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 15:43:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8D2DA3030571
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 13:36:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6FAE6303F293
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 13:41:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 056972C324D;
-	Thu, 23 Apr 2026 13:36:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E89942C11E4;
+	Thu, 23 Apr 2026 13:41:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ILRKhLsf"
+	dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b="tLbrkzTe"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+Received: from mail-oa1-f44.google.com (mail-oa1-f44.google.com [209.85.160.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 657C32C11E4
-	for <stable@vger.kernel.org>; Thu, 23 Apr 2026 13:36:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.170
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776951387; cv=pass; b=obNXglT6aI7ssECUU2az70H+/U3VILZa2DmR8WdjLk3CPpeCBlRxUh6dp+eUcCyanTNwripdy3yvtnyKvUGcSdY1SWhsBUtsa+tQKYYmQl8dvnpL+RnpA2yhUFvMaPerjiwSao0xXOveS5A/LTE2hFIh1trHlbK+JpoSTQj/ii8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776951387; c=relaxed/simple;
-	bh=F/cep53Ywkv6YQpg2IYGnHWs7tOX/EjkwJiVvWu7UnE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eV/oRMRbIqGPHmigMn/HbWVnO0VCvCFBy+zsxv0clUfjBqhiNDCLHvgnswmSvyQQZdQDVbLTzj+XBqJ5Pv5s9LuBF1CjcVZJq8SfWhKSU0zE3Xrc9GQtiFj2MdaDVer5hH+2m0Mm6O9odPc4XFfzyKtt4x8JOfJk//QcMeyicg4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ILRKhLsf; arc=pass smtp.client-ip=209.85.215.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-c7963df6f17so4437698a12.0
-        for <stable@vger.kernel.org>; Thu, 23 Apr 2026 06:36:26 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776951386; cv=none;
-        d=google.com; s=arc-20240605;
-        b=E010F19BSUONewj/3vkuA6X3hoVn5G3nE9MftVmQa7RjLyS+Jo+o2QdlwViBgKsxMI
-         4fg4sFOUEWNf06JpygMV7goXYBOr5HHsDSaXY2EYPmVQsIUW7PUMIeffXFUgZOFFIZWR
-         be30b1gevuEq5UXeCIqUsuHdrzrU7Y4IG0vkMEQSmyDyzZIe5PPUxMG0uSxa7DmGOTvW
-         fBfIDObOZpfstywBtWjFraLf9T7GXtTyT/oqZrKqQcZaK+S4qCq58J/j3UAb9zS2f24z
-         +dQzXefrW7WhK51eLMHTmxC6yM2hyQt3XctYuVgkqSVB43me/W+WjYMtEcLBfsG+KAoj
-         i5yg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=VhuOOby+gqJo2HpDu1be6m2G5DzT3bivgrqq1vW5a5g=;
-        fh=si+Uk+ldnz5zyi3hQC6JllhxCv/dYdAihees0/YuzL8=;
-        b=KnbE5h7WhXmRJJ6D5QVTzcXYYrlI9kJS5KJtcQUicuFFWlFULFTjTZKQ9wSX5oiEJr
-         hDES7/at5IAbHLhuxaN2e9EBQBT5/zDTSIE2UykrLLJHPS1cAJJbUII31WRRW1yxl8Bt
-         XkYD65d56CDMY2RjElNuIWbR43bi5UDPh48WS9rogG24BY/HJvVnhex5tadctyQi/EBI
-         v08Ig/vKRE05+7kio38DRqoZf6EnCe2rOCarvDakArdPrvtndM3eS0Ycby5gh897SvQK
-         2UkQnkpQOh/HmrrHpbeotMd49j9pPwe+BaOjMD2WE8uzlhoxPR8yDG1GdpLoNbIdw38N
-         Hydw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 753062C21F0
+	for <stable@vger.kernel.org>; Thu, 23 Apr 2026 13:41:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.44
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776951664; cv=none; b=pWiIZlCMHFXkPK3PvgWEN7cLiwmdgE1v8k+wRkFYLtG/owlMQ2fCyIcFW7TSovPd5o5hTyxyHHaorgt03t86qdk5td2mkQkYVBg9wj3i90Q4w+8BE+w0xKNDAV5WLJnmoTi0ZIwUxqKaEvJooWLRmz8uMRb/ONH34JuaBbdzd88=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776951664; c=relaxed/simple;
+	bh=KHbkGPjyeLB4Om2TsdTE+d/BBxJhMzMDgtS9P09hd8Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jtT1IuIvrmEhYgLY1ViyheO7pflpukGFRC+U5i0LFhRZLmzuIdH6v70wPJx+HNcWfraMYueXy5pEOApniAt8wQ6xwbt8NXPYaIXZP5/KCzgc799TzJ5ocvs4o532VyGxAdcei/ChkvUMbJds3+YwL/dCYoON5p46kUSeWCbGiGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b=tLbrkzTe; arc=none smtp.client-ip=209.85.160.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-42321c8b8f5so5484580fac.1
+        for <stable@vger.kernel.org>; Thu, 23 Apr 2026 06:41:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776951386; x=1777556186; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=VhuOOby+gqJo2HpDu1be6m2G5DzT3bivgrqq1vW5a5g=;
-        b=ILRKhLsfYxFOUP+1l8w/YFDDyzUiS7Pt3De07hqJbP467jZLMy/sjphkvyAFXryV2b
-         XKwPx1N64YxdBYiHYs5hJclYE2ltHWHdWEbK7HeJH8omidnlgoCTqo16AHr3Ey7BYCfY
-         iRB1k1P8JyTFM7ebXIA8HxlmPlu8Ftwln9MNuq2TzgV601V0zMP/xs9A74XIzqGOxm7u
-         slL9IRfTuYTNNqiB5YBpFmn54JPK2jKxSRImY+HQZTymwOT4kF/IH9cAlPjpA+hJmoVg
-         Co6e3dZwauZXTg5kNGTrv184F3GEDlOrk4bfAJK/QuqEoDS3kNFtMYfUP3uR02B9NFsH
-         lSFA==
+        d=kernel-dk.20251104.gappssmtp.com; s=20251104; t=1776951661; x=1777556461; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=8ioJ5CdUnXoI+VkUi/GtIzycQxY2QvCDY2phJmyrZvY=;
+        b=tLbrkzTe7hB9BAKuvqcvzpJzZV0uHq/lK3QnWRoJhrAwCGbItqN2gC60XE3U3MLK2T
+         EBBTnlSrKZcevM1uzi3KHeBXCC3VXDuUl3T6prHyVesa4f3C2DVef+lyyqNZtOIF+RWS
+         ha7b79y9Eu7NOQWAnQwiIOp7iHoXKmb83yFrPQHnEOJPzxm83SJQhN+w9nzmJwpv4ZF7
+         aNdHZTv3QMng9lW3Jte0uEUk1foyBtby3fcqmPHCMAgG774aNjdpeASo/2iHHvbRBlaA
+         6ogx13y+xAq4ocq7mUZRzStalk/4Ogw8765o33ItPBnvZ06eyqFPK9TEa67Si8icVIeh
+         ifow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776951386; x=1777556186;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VhuOOby+gqJo2HpDu1be6m2G5DzT3bivgrqq1vW5a5g=;
-        b=l5ejcd9uGmlz0CsrwFr/Xo6TalxcWBG5KkdQIpBNgiYGXgPCB2EaZl0hAvc1m1n68p
-         78L7ggkiXEaZ0ET9V1T4tmXQ6toWvS+jxd06tBhg9qEtldDhZ3AGR+ZFaewzKqIAGduR
-         7Z/4MopfFYG17WzI2HQRrh665Njv9T87FUU6UZj2XJ9lRhVWRNuuapHzTAUrUgNN9YNz
-         YwipRfw7Fp9d+YJ0d5UqvoEf0/xFU4H+yR0Zp6zL50kU6Wk9xdAMOAbxatkKYQg9aRFZ
-         qi04E+RFSXf00EQsJtEh4QU+CMHbYlqkvfWovR1oubEFZkCxK8U9vnhNUFUwGkeFeCcC
-         KtHg==
-X-Gm-Message-State: AOJu0YxHBeg5lRHIwwpst4ngyVzuhDhqZt/sc2R5C0XoFBXe0W4wD4dN
-	K0WEyRD3LtNfOXa4FiOUn36G0D85Xs4eOnPJ702QMLQ4QhdsbQdjsvFQFCspH+dPe8Ml0h/Ubnv
-	tVG103TOjRNShk4T3+G2/ls/0hmUW2gw=
-X-Gm-Gg: AeBDieuwr5NeQPzYzkxYAX2/xsbsVdzyqEr536mFSvwujG8snDMNVMXQSJIKTB3FL3l
-	BLvOP0FPjwfQdH1FPegPsfXb8bXSdk+sqkcc91lAjTMn2wut/mzx7ku3e3Cl1BuA5PVnmln/IYq
-	ls/3AdNHFYeksK0ZO9a6y1Ixv9euM5ni+MLB+70DXKuGDvdzNPOZ8xOA1jFcl3snDMH5ec0l9B/
-	Ll4O9NAyckAHhzOeOMsF4kHycM+l9dA4x8/Qy82ovWunObaT1DsHYXs+EWbapqcBdiRUBp2keYz
-	tE4AE+JX85EeUQ==
-X-Received: by 2002:a05:6a20:728c:b0:39b:e789:7d20 with SMTP id
- adf61e73a8af0-3a08d8d9d5bmr32380807637.44.1776951385500; Thu, 23 Apr 2026
- 06:36:25 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1776951661; x=1777556461;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8ioJ5CdUnXoI+VkUi/GtIzycQxY2QvCDY2phJmyrZvY=;
+        b=H1xfqsPpbM3zD8drxn0xEOlinoVPgMRm3LbtJ/2kkhdc35vXVORB8H5Cf4RmRBb7yT
+         P8ywG2iDBBYd9j7TgS3bhYddH1xs5pRYNAHDsTnXPIFigVLD5RLTKVzVPcDgRwLP6OC7
+         c7Dsdxg4UinxDyiUpIDlJ14Dy/NicqX2JS4UfzmDtqMXv3paPBMb0iKrKpB99Iq3taGz
+         2xwYOOjbbj6LFGasODhsZsZujzAA0+WU1tKMBxsNtbED3Kyh3Clgdku4txVnulLWNB6I
+         9b7vVKnrPTO9kIvjyePRjCj99N3PJlqGalSoNmPsmd1cotEBzHiPON5zdnXYDQEk1EU9
+         +Qxw==
+X-Forwarded-Encrypted: i=1; AFNElJ9yBitcEHZKEWnD0wWRHObDDlUbsOhpV+eiVbFaNJG4mbAW031B8Ocqy7z0f+xFT8JHAc/6Vww=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyrHWY6/3quUsz223gxn2Due+/yxE5mmKGsQEsfzQgKex2lKNCI
+	oRfP/VRBJF2SgYwWKtlr8f1l7L1Hm99FpJnzWjg90dqSXrGwJWYBBGWTIVTyXLaa9o0=
+X-Gm-Gg: AeBDiev5STb6QBau8EqjNW41bN9KeNqnxJKz+o5NVlHxZAWJrfpUGerqAq0jfxelPoZ
+	6v+sGfK54mFMPYIYZ8Y2ngpWAT8dSpP8iNNtUUgUW8L8EZTPY2UGkcr1+k85zKsmgcdYoxaFK18
+	sY9lF4Modka3N+orZ5qZCsw88UozFFqjvPIHjuYEH0mrxfE3C3TaQgkkEJ0/T0vwk9SPhejhTC6
+	xWHWBwRvNqQkeBvbAJXOWmvpdJMA8TyowPWqnjPr8mZCWVpKiw9FJymWSj9rQTYd3yN7O/7vYJl
+	0YOt29i25m5ZUpim/H4if4nNz5KlgugzP4TKkfCUMftAr/+L7vntG+HePWGq+VlsBeAtXPoI+N2
+	7MJG01qU6t3H0UzXTRG9WXrVKGLgXz7DaJQTfdz7haQuJhFH53+urh/Rrr+QXcfLUtHuEoEbHgz
+	Gpn/jEv6msDswaDnW14R3LKUjLCq6phC4CQMC/WGOGsiQEsP+24cLUSjsgmw7X5I0o6+1azdJAm
+	U9mEkRtkPUbc2hAqmI=
+X-Received: by 2002:a05:6871:b24:b0:42d:8229:ba3d with SMTP id 586e51a60fabf-42d8229deb5mr6336961fac.11.1776951661410;
+        Thu, 23 Apr 2026 06:41:01 -0700 (PDT)
+Received: from [192.168.1.102] ([96.43.243.2])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-42b934a2e8esm18586587fac.10.2026.04.23.06.40.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 23 Apr 2026 06:41:00 -0700 (PDT)
+Message-ID: <b68738dd-fcd3-4387-b5fc-ab3feb4d213a@kernel.dk>
+Date: Thu, 23 Apr 2026 07:40:59 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260219171310.118170-1-aha310510@gmail.com> <2026042355-blighted-chewing-5e50@gregkh>
-In-Reply-To: <2026042355-blighted-chewing-5e50@gregkh>
-From: Jeongjun Park <aha310510@gmail.com>
-Date: Thu, 23 Apr 2026 22:36:13 +0900
-X-Gm-Features: AQROBzAosyDO_yslNQKDZhWDhMLXCShJ7vPs7duQruIbTcEGDHRZq9mj7spWcms
-Message-ID: <CAO9qdTE0NhB58hqK8_1=69bD7uG_vF-FfpQXGR8dqcuWV4H2Mw@mail.gmail.com>
-Subject: Re: [PATCH 5.10.y 00/15] timers: Provide timer_shutdown[_sync]()
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, tglx@linutronix.de, Julia.Lawall@inria.fr, 
-	akpm@linux-foundation.org, anna-maria@linutronix.de, arnd@arndb.de, 
-	linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux@roeck-us.net, luiz.dentz@gmail.com, marcel@holtmann.org, maz@kernel.org, 
-	peterz@infradead.org, rostedt@goodmis.org, sboyd@kernel.org, 
-	viresh.kumar@linaro.org, zouyipeng@huawei.com, linux-staging@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-X-Spamd-Result: default: False [-0.66 / 15.00];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.10 491/491] io_uring/poll: correctly handle
+ io_poll_add() return value on update
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Ben Hutchings <ben@decadent.org.uk>, stable@vger.kernel.org,
+ patches@lists.linux.dev,
+ syzbot+641eec6b7af1f62f2b99@syzkaller.appspotmail.com
+References: <20260413155819.042779211@linuxfoundation.org>
+ <20260413155837.438151458@linuxfoundation.org>
+ <d4b85e905345dc69e9c660c7f51775703fa83320.camel@decadent.org.uk>
+ <d7d521e7-35bb-463b-b1f5-552bb931bdff@kernel.dk>
+ <3512c6ae-0b99-4c50-89ed-f1087a558a25@kernel.dk>
+ <2026042354-doorstep-stray-0fe0@gregkh>
+Content-Language: en-US
+From: Jens Axboe <axboe@kernel.dk>
+In-Reply-To: <2026042354-doorstep-stray-0fe0@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel-dk.20251104.gappssmtp.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240494-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	FREEMAIL_CC(0.00)[vger.kernel.org,linutronix.de,inria.fr,linux-foundation.org,arndb.de,roeck-us.net,gmail.com,holtmann.org,kernel.org,infradead.org,goodmis.org,linaro.org,huawei.com,lists.linux.dev];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-240495-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[kernel.dk];
+	DKIM_TRACE(0.00)[kernel-dk.20251104.gappssmtp.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	MAILSPIKE_FAIL(0.00)[2600:3c0a:e001:db::12fc:5321:server fail];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[aha310510@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,mail.gmail.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 201D2453420
+	FROM_NEQ_ENVFROM(0.00)[axboe@kernel.dk,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,641eec6b7af1f62f2b99];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D5C5F4532E5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Greg KH <gregkh@linuxfoundation.org> wrote:
->
-> On Fri, Feb 20, 2026 at 02:12:55AM +0900, Jeongjun Park wrote:
-> > The "timers: Provide timer_shutdown[_sync]()" patch series implemented a
-> > useful feature that addresses various bugs caused by attempts to rearm
-> > shutdown timers.
-> >
-> > https://lore.kernel.org/all/20221123201306.823305113@linutronix.de/
-> >
-> > However, this patch series was not fully backported to versions prior to
-> > 6.2, requiring separate patches for older kernels if these bugs were
-> > encountered.
-> >
-> > The biggest problem with this is that even if these bugs were discovered
-> > and patched in the upstream kernel, if the maintainer or author didn't
-> > create a separate backport patch for versions prior to 6.2, the bugs would
-> > remain untouched in older kernels.
-> >
-> > Therefore, to reduce the hassle of having to write a separate patch, we
-> > should backport the remaining unbackported commits from the
-> > "timers: Provide timer_shutdown[_sync]()" patch series to versions prior
-> > to 6.2.
-> >
-> > ---
-> >  Documentation/RCU/Design/Requirements/Requirements.rst      |   2 +-
-> >  Documentation/core-api/local_ops.rst                        |   2 +-
-> >  Documentation/kernel-hacking/locking.rst                    |  17 ++---
-> >  Documentation/timers/hrtimers.rst                           |   2 +-
-> >  Documentation/translations/it_IT/kernel-hacking/locking.rst |  14 ++---
-> >  arch/arm/mach-spear/time.c                                  |   8 +--
-> >  drivers/bluetooth/hci_qca.c                                 |  10 ++-
-> >  drivers/char/tpm/tpm-dev-common.c                           |   4 +-
-> >  drivers/clocksource/arm_arch_timer.c                        |  12 ++--
-> >  drivers/clocksource/timer-sp804.c                           |   6 +-
-> >  drivers/staging/wlan-ng/hfa384x_usb.c                       |   4 +-
-> >  drivers/staging/wlan-ng/prism2usb.c                         |   6 +-
-> >  include/linux/timer.h                                       |  17 ++++-
-> >  kernel/time/timer.c                                         | 316 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-----------------
-> >  net/sunrpc/xprt.c                                           |   2 +-
-> >  15 files changed, 322 insertions(+), 100 deletions(-)
-> >
->
-> Ugh, I got the following build error for this series:
-> ../drivers/misc/sgi-xp/xpc_partition.c: In function 'xpc_partition_disengaged':
-> ../drivers/misc/sgi-xp/xpc_partition.c:294:25: error: implicit declaration of function 'del_singleshot_timer_sync' [-Werror=implicit-function-declaration]
->   294 |                         del_singleshot_timer_sync(&part->disengage_timer);
->       |                         ^~~~~~~~~~~~~~~~~~~~~~~~~
->
+On 4/23/26 6:38 AM, Greg Kroah-Hartman wrote:
+> On Tue, Apr 21, 2026 at 04:58:52PM -0600, Jens Axboe wrote:
+>> On 4/21/26 4:18 PM, Jens Axboe wrote:
+>>>>> @@ -6024,16 +6035,17 @@ static int io_poll_update(struct io_kioc
+>>>>>  		if (req->poll_update.update_user_data)
+>>>>>  			preq->user_data = req->poll_update.new_user_data;
+>>>>>  
+>>>>> -		ret2 = io_poll_add(preq, issue_flags);
+>>>>> +		ret2 = __io_poll_add(preq, issue_flags);
+>>>>>  		/* successfully updated, don't complete poll request */
+>>>>>  		if (!ret2)
+>>>>>  			goto out;
+>>>>> +		preq->result = ret2;
+>>>>> +
+>>>>>  	}
+>>>>> -	req_set_fail(preq);
+>>>>> -	io_req_complete(preq, -ECANCELED);
+>>>>> +	if (preq->result < 0)
+>>>>> +		req_set_fail(preq);
+>>>>> +	io_req_complete(preq, preq->result);
+>>>>
+>>>> If __io_poll_add() returned an events mask then it completed preq, but
+>>>> then we also complete preq here.  Is that really correct?
+>>>
+>>> Let me take a closer look, I do agree with you that the final result
+>>> does not look entirely correct.
+>>
+>> As far as I can tell, these two should be applied to 5.10 and 5.15
+>> stable. The first one fixes an old backporting issue that I didn't
+>> notice until doing some targeted testing just now. The second one should
+>> take care of the issues that Ben spotted in the current backport.
+> 
+> Now applied.
 
-Oh dear. This issue occurred because commit 997754f114ef ("misc/sgi-xp:
-Replace in_interrupt() usage") was merged into version 5.11-rc1 and was
-therefore not backported to 5.10.y.
+Thanks!
 
-Since this is a simple fix that only requires adding this commit to this
-patch series, I will quickly write and send you the v2 patch.
-
-https://lore.kernel.org/all/20201119103151.ppo45mj53ulbxjx4@linutronix.de/
-
->
-> Don't know what happened, but I'll go and drop them all now.
->
-> Do you _REALLY_ need these in the 5.10.y kernel?  Who is going to use
-> them?
->
-
-You might think it is unnecessary, but I have seen bug patches related to
-timer_shutdown[_sync]() being backported after I backported it, and I
-believe it is well worth backporting if this feature allows various
-bug-fixing patches to be backported smoothly.
-
-> thanks,
->
-> greg k-h
-
-Regards,
-Jeongjun Park
+-- 
+Jens Axboe
 
