@@ -1,224 +1,131 @@
-Return-Path: <stable+bounces-240442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240443-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6GW/FZDV6WnxlAIAu9opvQ
-	(envelope-from <stable+bounces-240442-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 10:17:20 +0200
+	id ad+dAovf6WlemQIAu9opvQ
+	(envelope-from <stable+bounces-240443-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 10:59:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B88F244E6B3
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 10:17:19 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5215544EE7A
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 10:59:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E5359302F719
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 08:15:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4727430B44B8
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 08:57:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57E7E366550;
-	Thu, 23 Apr 2026 08:15:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 136BB2F2914;
+	Thu, 23 Apr 2026 08:57:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VAcNnt59"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sf8CpHoa"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E034636607C
-	for <stable@vger.kernel.org>; Thu, 23 Apr 2026 08:15:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEAB43DEFE1
+	for <stable@vger.kernel.org>; Thu, 23 Apr 2026 08:57:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776932134; cv=none; b=GNYBD1O5TDsyaF5CoBP0KhzMjgq8s33AQlZWRVyV64wWtXdAqBZDiVdHywjIcJSCHxlxUbqBPHTyJf5p21U2veqXC4csr8M2lDcyNiNt2MYPJQkG/76D2JIa2crZRT7R3ES9klUF6AZKE1vWjFwo0TOUyChO99gQARiOdwVsCSc=
+	t=1776934643; cv=none; b=gHHBxvbm9o3OQPKrNKf2GY10R+xoUNZ5zBAFpkdadgeqvN8Qyw22BXd787JD9EfJcSSIUgkAoqU798Mh5UqdTUNsNTWwkadOVFTNwax0tisC1vkYCFr76HvlShntOgj60BNzm1DWclTKIgYhL9TU4iXaPjad4PxNMxGafPesNKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776932134; c=relaxed/simple;
-	bh=vbXFXdDNH9CWDwD/M4tOAcTT2UeqIyCWutuohVIoFME=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ASgYeKy1wx6xiH9QMgRfkgkOfJkxYI0XiMkD9it4OIUWSBOVwuhYWvRQtPQr9FmEXCaubxdk5aHubns9u8uWmjzjQzQfVBZzDRB4AOsxG9EPphR+WIJWtIhHZR1Kj3b876EKsfDdlNCSeIChH1Hog9y7oO7xQHCGEQrC139Aeuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VAcNnt59; arc=none smtp.client-ip=209.85.216.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-35d99c906d5so1100823a91.1
-        for <stable@vger.kernel.org>; Thu, 23 Apr 2026 01:15:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776932132; x=1777536932; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=hAlmZfpdk3Iz3porN4R6dSq4Ld5esbkgYHoF3QfFzLg=;
-        b=VAcNnt59HwiRRoySMcFRPBIVO1zl9umyVrhbeiJGR0H66vb41wQVUkvUFumxqV3Leo
-         r6gj3CM8tlP0Tz4oOyXrgoeTl9TziqskOWIwigjO+9C1Xqe/cZrU3t8W8wWw+FzNsnQM
-         SY91H36RUrpFjzhpL72gftrcnJrcfEIIGyFVJEkBePkHmdor+6iSpQG7YjfOAmZ7cHAV
-         p/o5mgXwF7O7OgvjK0q+X63MdXLyVYrBnLQZr2D5lLa7dDWzay+4E/yVth5GQdWr1T/V
-         UPbCi8iLdGI+KBfhHBe9aApOCnvrL1iPKQV8+4VyK3Y+qSEf+VMqZr18+bKOoYjeicU7
-         Iaqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776932132; x=1777536932;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hAlmZfpdk3Iz3porN4R6dSq4Ld5esbkgYHoF3QfFzLg=;
-        b=Kox3+x8QdmgGFAjrPt0iBoHn2kGGqsf9iUpf3gpPg2IR/5miSlQVXEIwoMUHYHDTVe
-         M0JzUc42lLnMImNRmy3P91mboVGgVRQYetl4Py4LXMI579Xr2hLjM/gAnByq6YP8QyJE
-         +SX4Hx+r/V+MWnvgy1Fvw6kMFs3LVClvILjvWs1SsAR5O1DbxVLlJTo9QCeizmubRl96
-         znod6GOou8NjeciIunzpN2gUY3l3xhoMgxpx7i5Hi8laj0TOeRDtOu8eMvVMLMVbiMpb
-         CZnZZDLDHfcGGAHkKpYf45WuyrXt9PN4z+8Uc2Tl62WtqFFPfgpZhef3ttBkHv+4PZ3K
-         Uchg==
-X-Forwarded-Encrypted: i=1; AFNElJ+ySJzvOXTeLhsHNOJ6gTux9O3/RzFG7vHkqoZdp6YVDiqAfiPhWG5o+RMm6s0qyd2qjVxJX0I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyUh8ylmz3vrMR+n1tAgrf10nmYR8nU9VWBWLHNtOKT4j7aUsvJ
-	ETneTqa2bUBljhikJVkQxkVEzA6RzP3Ri5A6UdQ3rXUaR9i0XyNsuVfU
-X-Gm-Gg: AeBDiesWp6wJ4qtJoINmZi+u1tal7ZhnGQVyU/0CzQD2T1QdJ9gQRp+pLXjUuNxbs5e
-	FNsbyihzvU5en4MZ2AelV3cyTiETf3AQNTwPuM/EdSCXlZIw2hyN7XN+jiEtCcXrGB3T8JlTL8c
-	UAI3GrLpeytlClfq+ONaUUqDZWhm5Zms6YYQOj0o4hvhG91WTJ9dXropEqcflhlWtyJU2pKFM06
-	Jf9wTbsFr+U8E/uYCB++ahNCQonyNV0HmcTlGUyopy37HdpTs/8QNR5mJP84yLF9d4KH0ghIoKf
-	jOU8khbT4x8nPCCHCE/r1uFsHeuWq3wwChp4kCcs/QDCdJ2uSXZn97iDExi2fKAsX205BWeHHoS
-	PzRf3/D9TnJmmoYJlARl4zX1Sc2JRnV9DfJAwRRu9rtI8nTCWTSU1C54lk8NcwAa6hkUOdt13EZ
-	Q5ELEYegsNWfDcFUHae8coEfjAUPQQ4XcoIALCrv5uNx5UgsR0ySPLIQ+MlsIphQ==
-X-Received: by 2002:a17:90a:ec87:b0:362:bc7c:55cf with SMTP id 98e67ed59e1d1-362bc7c5d34mr5499791a91.8.1776932132310;
-        Thu, 23 Apr 2026 01:15:32 -0700 (PDT)
-Received: from fedora.izzigo.tv (45.62.127.193.16clouds.com. [45.62.127.193])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-361418c3944sm24091557a91.8.2026.04.23.01.15.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Apr 2026 01:15:31 -0700 (PDT)
-From: Frank Zhang <rmxpzlb@gmail.com>
-To: andrzej.hajda@intel.com,
-	neil.armstrong@linaro.org,
-	rfoss@kernel.org,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	simona@ffwll.ch
-Cc: detlev.casanova@collabora.com,
-	cristian.ciocaltea@collabora.com,
-	Laurent.pinchart@ideasonboard.com,
-	jonas@kwiboo.se,
-	jernej.skrabec@gmail.com,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v3] drm/bridge: dw-hdmi-qp: Guard clear_audio_infoframe when PHY is down
-Date: Thu, 23 Apr 2026 16:15:14 +0800
-Message-ID: <20260423081514.15444-1-rmxpzlb@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	s=arc-20240116; t=1776934643; c=relaxed/simple;
+	bh=s/mVlPzEebqAesHz/sLkbRMTIWafF4uV9ydlEIHsbbU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=d5x/md4DshriPc4oKyC1G4Uzl2UgYSovuGliU0w0TQaOuWvbcB3npj5Fwsn2OKullqjn4tAmRp5Xd14uovhR6VscVPbJKYz1/Rcs8MQqpuuWUHtknfByxmY7hnR6vIrJm0SwH91GQH8HGbFoCOnQtiGbcA87/AcXu7LjykxBZJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sf8CpHoa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C43CC2BCB2;
+	Thu, 23 Apr 2026 08:57:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1776934643;
+	bh=s/mVlPzEebqAesHz/sLkbRMTIWafF4uV9ydlEIHsbbU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Sf8CpHoaL+a5k2dVuN2jmMb04nqrchsuw4gl2y9GI9Prs+cYCZ5u/yS5uyQpSegPN
+	 wq80DQQ+wLnarznDUipCT/44ZhZ9ZTGIDFQAqTrb38vshI8JW2KZjBPxq7wBhSgg3i
+	 yvqaBJruKbq9kM9IHMsFtJFVW5X0sVrYN+lHPQTM=
+Date: Thu, 23 Apr 2026 10:57:21 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc: stable@vger.kernel.org,
+	Google Big Sleep <big-sleep-vuln-reports+bigsleep-501448199@google.com>,
+	Jens Axboe <axboe@kernel.dk>, Jan Kara <jack@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH 6.18.y] mm: call ->free_folio() directly in
+ folio_unmap_invalidate()
+Message-ID: <2026042345-t-shirt-december-6836@gregkh>
+References: <2026042002-idealness-evade-7213@gregkh>
+ <20260420145343.2046992-1-willy@infradead.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.84 / 15.00];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260420145343.2046992-1-willy@infradead.org>
+X-Spamd-Result: default: False [3.84 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	FREEMAIL_CC(0.00)[collabora.com,ideasonboard.com,kwiboo.se,gmail.com,lists.freedesktop.org,vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[intel.com,linaro.org,kernel.org,linux.intel.com,suse.de,gmail.com,ffwll.ch];
-	TAGGED_FROM(0.00)[bounces-240442-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[rmxpzlb@gmail.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-240443-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable,bigsleep-501448199];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B88F244E6B3
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:email,infradead.org:email,suse.cz:email]
+X-Rspamd-Queue-Id: 5215544EE7A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The following panic was observed during system reboot:
+On Mon, Apr 20, 2026 at 03:53:43PM +0100, Matthew Wilcox (Oracle) wrote:
+> We can only call filemap_free_folio() if we have a reference to (or hold a
+> lock on) the mapping.  Otherwise, we've already removed the folio from the
+> mapping so it no longer pins the mapping and the mapping can be removed,
+> causing a use-after-free when accessing mapping->a_ops.
+> 
+> Follow the same pattern as __remove_mapping() and load the free_folio
+> function pointer before dropping the lock on the mapping.  That lets us
+> make filemap_free_folio() static as this was the only caller outside
+> filemap.c.
+> 
+> Link: https://lore.kernel.org/20260413184314.3419945-1-willy@infradead.org
+> Fixes: fb7d3bc41493 ("mm/filemap: drop streaming/uncached pages when writeback completes")
+> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> Reported-by: Google Big Sleep <big-sleep-vuln-reports+bigsleep-501448199@google.com>
+> Cc: Jens Axboe <axboe@kernel.dk>
+> Cc: Jan Kara <jack@suse.cz>
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> (cherry picked from commit 615d9bb2ccad42f9e21d837431e401db2e471195)
+> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> ---
+>  mm/filemap.c  | 3 ++-
+>  mm/internal.h | 1 -
+>  mm/truncate.c | 6 +++++-
+>  3 files changed, 7 insertions(+), 3 deletions(-)
 
-Kernel panic - not syncing: Asynchronous SError Interrupt
-CPU: 7 UID: 1000 PID: 2637 Comm: pipewire ... 6.19.10-300.fc44.aarch64
-Call trace:
- ...
- regmap_update_bits_base+0x5c/0x90
- dw_hdmi_qp_bridge_clear_infoframe+0xb0/0x120 [dw_hdmi_qp]
- drm_bridge_connector_clear_infoframe+0x28/0x48 [drm_display_helper]
- ...
- dw_hdmi_qp_audio_disable+0x24/0xb8 [dw_hdmi_qp]
- drm_bridge_connector_audio_shutdown+0x30/0x60 [drm_display_helper]
- drm_connector_hdmi_audio_shutdown+0x24/0x38 [drm_display_helper]
- hdmi_codec_shutdown+0x60/0x90 [snd_soc_hdmi_codec]
- ...
- snd_pcm_release_substream.part.0+0x44/0xd8 [snd_pcm]
- snd_pcm_release+0x60/0xe8 [snd_pcm]
- ...
+This is odd, it's applying with a ton of fuzz, which puts things in the
+wrong functions and breaks the build.  Let me go fix it up by hand...
 
-The root cause is pipewire tries to close the HDMI audio device after
-atomic_disable(), which sets tmds_char_rate to 0 and disables the PHY.
+thanks,
 
-In this case, dw_hdmi_qp_audio_disable() will call
-dw_hdmi_qp_bridge_clear_audio_infoframe(), accessing register without
-checking tmds_char_rate.
-
-Add a tmds_char_rate guard in dw_hdmi_qp_bridge_clear_audio_infoframe().
-Decouple write_audio_infoframe from clear_audio_infoframe to avoid the
-redundant check in the write path.
-Add PKTSCHED_AMD_TX_EN to the clear mask to keep the enable/disable
-balance.
-
-Fixes: fd0141d1a8a2 ("drm/bridge: synopsys: Add audio support for dw-hdmi-qp")
-Cc: stable@vger.kernel.org
-Signed-off-by: Frank Zhang <rmxpzlb@gmail.com>
-
----
-Changes in v2:
-- Move drm_atomic_helper_connector_hdmi_clear_audio_infoframe() inside
-  the if (hdmi->tmds_char_rate) of dw_hdmi_qp_audio_disable().
-- Link to v1: https://lore.kernel.org/all/20260416093150.13853-1-rmxpzlb@gmail.com/
-
-Changes in v3:
-- Add a tmds_char_rate guard in clear_audio_infoframe path.
-- Decouple write_audio_infoframe from clear_audio_infoframe.
-- Balance the PKTSCHED_AMD_TX_EN bit enable/disable.
-- Link to v2: https://lore.kernel.org/all/20260418101936.7731-1-rmxpzlb@gmail.com/
-
-diff --git a/drivers/gpu/drm/bridge/synopsys/dw-hdmi-qp.c b/drivers/gpu/drm/bridge/synopsys/dw-hdmi-qp.c
-index d649a1cf07f5..1c18f8650fcd 100644
---- a/drivers/gpu/drm/bridge/synopsys/dw-hdmi-qp.c
-+++ b/drivers/gpu/drm/bridge/synopsys/dw-hdmi-qp.c
-@@ -886,11 +886,11 @@ static int dw_hdmi_qp_bridge_clear_audio_infoframe(struct drm_bridge *bridge)
- {
- 	struct dw_hdmi_qp *hdmi = bridge->driver_private;
- 
--	dw_hdmi_qp_mod(hdmi, 0,
--		       PKTSCHED_ACR_TX_EN |
--		       PKTSCHED_AUDS_TX_EN |
--		       PKTSCHED_AUDI_TX_EN,
--		       PKTSCHED_PKT_EN);
-+	if (hdmi->tmds_char_rate)
-+		dw_hdmi_qp_mod(hdmi, 0,
-+			       PKTSCHED_ACR_TX_EN | PKTSCHED_AMD_TX_EN |
-+			       PKTSCHED_AUDS_TX_EN | PKTSCHED_AUDI_TX_EN,
-+			       PKTSCHED_PKT_EN);
- 
- 	return 0;
- }
-@@ -989,7 +989,10 @@ static int dw_hdmi_qp_bridge_write_audio_infoframe(struct drm_bridge *bridge,
- {
- 	struct dw_hdmi_qp *hdmi = bridge->driver_private;
- 
--	dw_hdmi_qp_bridge_clear_audio_infoframe(bridge);
-+	dw_hdmi_qp_mod(hdmi, 0,
-+		       PKTSCHED_ACR_TX_EN | PKTSCHED_AMD_TX_EN |
-+		       PKTSCHED_AUDS_TX_EN | PKTSCHED_AUDI_TX_EN,
-+		       PKTSCHED_PKT_EN);
- 
- 	/*
- 	 * AUDI_CONTENTS0: { RSV, HB2, HB1, RSV }
--- 
-2.53.0
-
+greg k-h
 
