@@ -1,171 +1,224 @@
-Return-Path: <stable+bounces-240441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240442-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yPOtBHXU6WnxlAIAu9opvQ
-	(envelope-from <stable+bounces-240441-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 10:12:37 +0200
+	id 6GW/FZDV6WnxlAIAu9opvQ
+	(envelope-from <stable+bounces-240442-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 10:17:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B70CE44E61F
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 10:12:31 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B88F244E6B3
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 10:17:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 279B330117E7
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 08:12:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E5359302F719
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 08:15:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8046730BF66;
-	Thu, 23 Apr 2026 08:12:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57E7E366550;
+	Thu, 23 Apr 2026 08:15:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VAcNnt59"
 X-Original-To: stable@vger.kernel.org
-Received: from air.basealt.ru (air.basealt.ru [193.43.8.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CEB1311C2A;
-	Thu, 23 Apr 2026 08:12:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.43.8.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E034636607C
+	for <stable@vger.kernel.org>; Thu, 23 Apr 2026 08:15:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776931936; cv=none; b=j5nkGHgeeSM2SPYfXm0rZ6fJddZK5Gi2cz2X5GfDWlva9reZmAjrQp8Hd+Fd89irhveVXlujwuBrJJwV05G4MQuHYw0mM1TBrFGIOnkQXl7/pYsoNuv/i8kVAGKWZrZ6FsWvY3jq1/yvl9g+Uu2cQ/ZUk/2NQCqPE+NxBpSFP5U=
+	t=1776932134; cv=none; b=GNYBD1O5TDsyaF5CoBP0KhzMjgq8s33AQlZWRVyV64wWtXdAqBZDiVdHywjIcJSCHxlxUbqBPHTyJf5p21U2veqXC4csr8M2lDcyNiNt2MYPJQkG/76D2JIa2crZRT7R3ES9klUF6AZKE1vWjFwo0TOUyChO99gQARiOdwVsCSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776931936; c=relaxed/simple;
-	bh=nKQU54g931q8pOJIugciQZ77/INbwVM7ELiBJomhXac=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HmTFHaK+RXR0hXXtvbGhxxZHgtsIZBWRooEKFgEwjSLHWy9lbARlV0o62tVpky2J12MbUKBp1vvCgYNE7spJK67NZYqFGpkDHkYKB0NTqs/d7zcGErCtMXW1ecTv+9mGxNDaCp+N4UnRoxGWgQnnmE7jKJOU73DUPaGG9OlqSU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=193.43.8.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
-Received: from [10.88.129.61] (obninsk.basealt.ru [217.15.195.17])
-	(Authenticated sender: kovalevvv)
-	by air.basealt.ru (Postfix) with ESMTPSA id 76F862339B;
-	Thu, 23 Apr 2026 11:12:04 +0300 (MSK)
-Message-ID: <9ffc6bb5-927c-2729-71f1-10180e826ccc@basealt.ru>
-Date: Thu, 23 Apr 2026 11:12:04 +0300
+	s=arc-20240116; t=1776932134; c=relaxed/simple;
+	bh=vbXFXdDNH9CWDwD/M4tOAcTT2UeqIyCWutuohVIoFME=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ASgYeKy1wx6xiH9QMgRfkgkOfJkxYI0XiMkD9it4OIUWSBOVwuhYWvRQtPQr9FmEXCaubxdk5aHubns9u8uWmjzjQzQfVBZzDRB4AOsxG9EPphR+WIJWtIhHZR1Kj3b876EKsfDdlNCSeIChH1Hog9y7oO7xQHCGEQrC139Aeuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VAcNnt59; arc=none smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-35d99c906d5so1100823a91.1
+        for <stable@vger.kernel.org>; Thu, 23 Apr 2026 01:15:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776932132; x=1777536932; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=hAlmZfpdk3Iz3porN4R6dSq4Ld5esbkgYHoF3QfFzLg=;
+        b=VAcNnt59HwiRRoySMcFRPBIVO1zl9umyVrhbeiJGR0H66vb41wQVUkvUFumxqV3Leo
+         r6gj3CM8tlP0Tz4oOyXrgoeTl9TziqskOWIwigjO+9C1Xqe/cZrU3t8W8wWw+FzNsnQM
+         SY91H36RUrpFjzhpL72gftrcnJrcfEIIGyFVJEkBePkHmdor+6iSpQG7YjfOAmZ7cHAV
+         p/o5mgXwF7O7OgvjK0q+X63MdXLyVYrBnLQZr2D5lLa7dDWzay+4E/yVth5GQdWr1T/V
+         UPbCi8iLdGI+KBfhHBe9aApOCnvrL1iPKQV8+4VyK3Y+qSEf+VMqZr18+bKOoYjeicU7
+         Iaqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776932132; x=1777536932;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hAlmZfpdk3Iz3porN4R6dSq4Ld5esbkgYHoF3QfFzLg=;
+        b=Kox3+x8QdmgGFAjrPt0iBoHn2kGGqsf9iUpf3gpPg2IR/5miSlQVXEIwoMUHYHDTVe
+         M0JzUc42lLnMImNRmy3P91mboVGgVRQYetl4Py4LXMI579Xr2hLjM/gAnByq6YP8QyJE
+         +SX4Hx+r/V+MWnvgy1Fvw6kMFs3LVClvILjvWs1SsAR5O1DbxVLlJTo9QCeizmubRl96
+         znod6GOou8NjeciIunzpN2gUY3l3xhoMgxpx7i5Hi8laj0TOeRDtOu8eMvVMLMVbiMpb
+         CZnZZDLDHfcGGAHkKpYf45WuyrXt9PN4z+8Uc2Tl62WtqFFPfgpZhef3ttBkHv+4PZ3K
+         Uchg==
+X-Forwarded-Encrypted: i=1; AFNElJ+ySJzvOXTeLhsHNOJ6gTux9O3/RzFG7vHkqoZdp6YVDiqAfiPhWG5o+RMm6s0qyd2qjVxJX0I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyUh8ylmz3vrMR+n1tAgrf10nmYR8nU9VWBWLHNtOKT4j7aUsvJ
+	ETneTqa2bUBljhikJVkQxkVEzA6RzP3Ri5A6UdQ3rXUaR9i0XyNsuVfU
+X-Gm-Gg: AeBDiesWp6wJ4qtJoINmZi+u1tal7ZhnGQVyU/0CzQD2T1QdJ9gQRp+pLXjUuNxbs5e
+	FNsbyihzvU5en4MZ2AelV3cyTiETf3AQNTwPuM/EdSCXlZIw2hyN7XN+jiEtCcXrGB3T8JlTL8c
+	UAI3GrLpeytlClfq+ONaUUqDZWhm5Zms6YYQOj0o4hvhG91WTJ9dXropEqcflhlWtyJU2pKFM06
+	Jf9wTbsFr+U8E/uYCB++ahNCQonyNV0HmcTlGUyopy37HdpTs/8QNR5mJP84yLF9d4KH0ghIoKf
+	jOU8khbT4x8nPCCHCE/r1uFsHeuWq3wwChp4kCcs/QDCdJ2uSXZn97iDExi2fKAsX205BWeHHoS
+	PzRf3/D9TnJmmoYJlARl4zX1Sc2JRnV9DfJAwRRu9rtI8nTCWTSU1C54lk8NcwAa6hkUOdt13EZ
+	Q5ELEYegsNWfDcFUHae8coEfjAUPQQ4XcoIALCrv5uNx5UgsR0ySPLIQ+MlsIphQ==
+X-Received: by 2002:a17:90a:ec87:b0:362:bc7c:55cf with SMTP id 98e67ed59e1d1-362bc7c5d34mr5499791a91.8.1776932132310;
+        Thu, 23 Apr 2026 01:15:32 -0700 (PDT)
+Received: from fedora.izzigo.tv (45.62.127.193.16clouds.com. [45.62.127.193])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-361418c3944sm24091557a91.8.2026.04.23.01.15.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Apr 2026 01:15:31 -0700 (PDT)
+From: Frank Zhang <rmxpzlb@gmail.com>
+To: andrzej.hajda@intel.com,
+	neil.armstrong@linaro.org,
+	rfoss@kernel.org,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	simona@ffwll.ch
+Cc: detlev.casanova@collabora.com,
+	cristian.ciocaltea@collabora.com,
+	Laurent.pinchart@ideasonboard.com,
+	jonas@kwiboo.se,
+	jernej.skrabec@gmail.com,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v3] drm/bridge: dw-hdmi-qp: Guard clear_audio_infoframe when PHY is down
+Date: Thu, 23 Apr 2026 16:15:14 +0800
+Message-ID: <20260423081514.15444-1-rmxpzlb@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH 5.10.y] scsi: ufs: core: Improve SCSI abort handling
-To: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
-Cc: "Martin K . Petersen" <martin.petersen@oracle.com>,
- linux-scsi@vger.kernel.org, Bart Van Assche <bvanassche@acm.org>,
- Bean Huo <beanhuo@micron.com>, Stanley Chu <stanley.chu@mediatek.com>,
- lvc-project@linuxtesting.org, Fedor Pchelkin <pchelkin@ispras.ru>
-References: <20260421131941.38176-1-kovalev@altlinux.org>
-Content-Language: en-US
-From: Vasiliy Kovalev <kovalev@altlinux.org>
-In-Reply-To: <20260421131941.38176-1-kovalev@altlinux.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.46 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240441-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[altlinux.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	FREEMAIL_CC(0.00)[collabora.com,ideasonboard.com,kwiboo.se,gmail.com,lists.freedesktop.org,vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MAILSPIKE_FAIL(0.00)[2600:3c09:e001:a7::12fc:5321:query timed out];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[intel.com,linaro.org,kernel.org,linux.intel.com,suse.de,gmail.com,ffwll.ch];
+	TAGGED_FROM(0.00)[bounces-240442-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kovalev@altlinux.org,stable@vger.kernel.org];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	R_DKIM_NA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[rmxpzlb@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,altlinux.org:email,basealt.ru:mid,acm.org:email,micron.com:email]
-X-Rspamd-Queue-Id: B70CE44E61F
+	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B88F244E6B3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Sasha,
+The following panic was observed during system reboot:
 
-On 4/21/26 16:19, Vasiliy Kovalev wrote:
-> From: Bart Van Assche <bvanassche@acm.org>
-> 
-> commit 3ff1f6b6ba6f97f50862aa50e79959cc8ddc2566 upstream.
-> 
-> The following has been observed on a test setup:
-> 
-> WARNING: CPU: 4 PID: 250 at drivers/scsi/ufs/ufshcd.c:2737 ufshcd_queuecommand+0x468/0x65c
-> Call trace:
->   ufshcd_queuecommand+0x468/0x65c
->   scsi_send_eh_cmnd+0x224/0x6a0
->   scsi_eh_test_devices+0x248/0x418
->   scsi_eh_ready_devs+0xc34/0xe58
->   scsi_error_handler+0x204/0x80c
->   kthread+0x150/0x1b4
->   ret_from_fork+0x10/0x30
-> 
-> That warning is triggered by the following statement:
-> 
-> 	WARN_ON(lrbp->cmd);
-> 
-> Fix this warning by clearing lrbp->cmd from the abort handler.
-> 
-> Link: https://lore.kernel.org/r/20211104181059.4129537-1-bvanassche@acm.org
-> Fixes: 7a3e97b0dc4b ("[SCSI] ufshcd: UFS Host controller driver")
-> Reviewed-by: Bean Huo <beanhuo@micron.com>
-> Reviewed-by: Stanley Chu <stanley.chu@mediatek.com>
-> Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-> Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-> [ kovalev: bp to fix CVE-2021-47188; adapted placement of
->    lrbp->cmd = NULL for 5.10 function structure ]
+Kernel panic - not syncing: Asynchronous SError Interrupt
+CPU: 7 UID: 1000 PID: 2637 Comm: pipewire ... 6.19.10-300.fc44.aarch64
+Call trace:
+ ...
+ regmap_update_bits_base+0x5c/0x90
+ dw_hdmi_qp_bridge_clear_infoframe+0xb0/0x120 [dw_hdmi_qp]
+ drm_bridge_connector_clear_infoframe+0x28/0x48 [drm_display_helper]
+ ...
+ dw_hdmi_qp_audio_disable+0x24/0xb8 [dw_hdmi_qp]
+ drm_bridge_connector_audio_shutdown+0x30/0x60 [drm_display_helper]
+ drm_connector_hdmi_audio_shutdown+0x24/0x38 [drm_display_helper]
+ hdmi_codec_shutdown+0x60/0x90 [snd_soc_hdmi_codec]
+ ...
+ snd_pcm_release_substream.part.0+0x44/0xd8 [snd_pcm]
+ snd_pcm_release+0x60/0xe8 [snd_pcm]
+ ...
 
-Please drop this backport from the 5.10 queue — it is not needed.
+The root cause is pipewire tries to close the HDMI audio device after
+atomic_disable(), which sets tmds_char_rate to 0 and disables the PHY.
 
-After review feedback from Fedor Pchelkin, we verified that 5.10 is not
-affected by this bug. The upstream commit 3ff1f6b6ba6f carries an
-incorrect Fixes tag:
+In this case, dw_hdmi_qp_audio_disable() will call
+dw_hdmi_qp_bridge_clear_audio_infoframe(), accessing register without
+checking tmds_char_rate.
 
-Fixes: 7a3e97b0dc4b ("[SCSI] ufshcd: UFS Host controller driver")
+Add a tmds_char_rate guard in dw_hdmi_qp_bridge_clear_audio_infoframe().
+Decouple write_audio_infoframe from clear_audio_infoframe to avoid the
+redundant check in the write path.
+Add PKTSCHED_AMD_TX_EN to the clear mask to keep the enable/disable
+balance.
 
-The actual regression was introduced by:
+Fixes: fd0141d1a8a2 ("drm/bridge: synopsys: Add audio support for dw-hdmi-qp")
+Cc: stable@vger.kernel.org
+Signed-off-by: Frank Zhang <rmxpzlb@gmail.com>
 
-64180742605f ("scsi: ufs: Fix the SCSI abort handler")   [v5.15-rc1]
+---
+Changes in v2:
+- Move drm_atomic_helper_connector_hdmi_clear_audio_infoframe() inside
+  the if (hdmi->tmds_char_rate) of dw_hdmi_qp_audio_disable().
+- Link to v1: https://lore.kernel.org/all/20260416093150.13853-1-rmxpzlb@gmail.com/
 
-which restructured ufshcd_abort() and removed the 
-__ufshcd_transfer_req_compl()
-call from the successful abort path. Before that commit — and in 5.10 to
-this day — __ufshcd_transfer_req_compl() is always called on the successful
-path via the cleanup: label, and it clears lrbp->cmd. So the 
-WARN_ON(lrbp->cmd)
-in ufshcd_queuecommand() cannot trigger on 5.10, and the lrbp->cmd = NULL;
-added by this patch would be dead code there.
+Changes in v3:
+- Add a tmds_char_rate guard in clear_audio_infoframe path.
+- Decouple write_audio_infoframe from clear_audio_infoframe.
+- Balance the PKTSCHED_AMD_TX_EN bit enable/disable.
+- Link to v2: https://lore.kernel.org/all/20260418101936.7731-1-rmxpzlb@gmail.com/
 
-64180742605f is not present in 5.10.y, therefore CVE-2021-47188 does not 
-apply to 5.10.y.
-
-Sorry for the noise.
-
-> Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
-> ---
->   drivers/scsi/ufs/ufshcd.c | 1 +
->   1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/scsi/ufs/ufshcd.c b/drivers/scsi/ufs/ufshcd.c
-> index c7bf0e6bc303..1b8072f47e7e 100644
-> --- a/drivers/scsi/ufs/ufshcd.c
-> +++ b/drivers/scsi/ufs/ufshcd.c
-> @@ -6788,6 +6788,7 @@ static int ufshcd_abort(struct scsi_cmnd *cmd)
->   		__ufshcd_transfer_req_compl(hba, (1UL << tag));
->   		spin_unlock_irqrestore(host->host_lock, flags);
->   out:
-> +		lrbp->cmd = NULL;
->   		err = SUCCESS;
->   	} else {
->   		dev_err(hba->dev, "%s: failed with err %d\n", __func__, err);
-
+diff --git a/drivers/gpu/drm/bridge/synopsys/dw-hdmi-qp.c b/drivers/gpu/drm/bridge/synopsys/dw-hdmi-qp.c
+index d649a1cf07f5..1c18f8650fcd 100644
+--- a/drivers/gpu/drm/bridge/synopsys/dw-hdmi-qp.c
++++ b/drivers/gpu/drm/bridge/synopsys/dw-hdmi-qp.c
+@@ -886,11 +886,11 @@ static int dw_hdmi_qp_bridge_clear_audio_infoframe(struct drm_bridge *bridge)
+ {
+ 	struct dw_hdmi_qp *hdmi = bridge->driver_private;
+ 
+-	dw_hdmi_qp_mod(hdmi, 0,
+-		       PKTSCHED_ACR_TX_EN |
+-		       PKTSCHED_AUDS_TX_EN |
+-		       PKTSCHED_AUDI_TX_EN,
+-		       PKTSCHED_PKT_EN);
++	if (hdmi->tmds_char_rate)
++		dw_hdmi_qp_mod(hdmi, 0,
++			       PKTSCHED_ACR_TX_EN | PKTSCHED_AMD_TX_EN |
++			       PKTSCHED_AUDS_TX_EN | PKTSCHED_AUDI_TX_EN,
++			       PKTSCHED_PKT_EN);
+ 
+ 	return 0;
+ }
+@@ -989,7 +989,10 @@ static int dw_hdmi_qp_bridge_write_audio_infoframe(struct drm_bridge *bridge,
+ {
+ 	struct dw_hdmi_qp *hdmi = bridge->driver_private;
+ 
+-	dw_hdmi_qp_bridge_clear_audio_infoframe(bridge);
++	dw_hdmi_qp_mod(hdmi, 0,
++		       PKTSCHED_ACR_TX_EN | PKTSCHED_AMD_TX_EN |
++		       PKTSCHED_AUDS_TX_EN | PKTSCHED_AUDI_TX_EN,
++		       PKTSCHED_PKT_EN);
+ 
+ 	/*
+ 	 * AUDI_CONTENTS0: { RSV, HB2, HB1, RSV }
 -- 
-Thanks,
-Vasiliy
+2.53.0
+
 
