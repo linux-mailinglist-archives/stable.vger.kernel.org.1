@@ -1,117 +1,118 @@
-Return-Path: <stable+bounces-240527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240528-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OAteOyxr6mmhzAIAu9opvQ
-	(envelope-from <stable+bounces-240527-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 20:55:40 +0200
+	id ODd7Lh9s6mmhzAIAu9opvQ
+	(envelope-from <stable+bounces-240528-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 20:59:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63BB44563F0
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 20:55:40 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EA48456469
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 20:59:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8252B3014683
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 18:55:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AD492300C9A0
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 18:59:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17E363B0ADB;
-	Thu, 23 Apr 2026 18:55:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 237693B19DA;
+	Thu, 23 Apr 2026 18:59:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lQ9yjLNh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B6P9ju65"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C783D3AE18F;
-	Thu, 23 Apr 2026 18:55:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB46F3A783E;
+	Thu, 23 Apr 2026 18:59:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776970534; cv=none; b=BFPePSKwm0Dr5gLxjK3oImPs/3Fgyda0dfzrxJ5mEQ/Q/AhtC5lfP3Sb6vmB96EPok4zEzSU63TmsTFog/S95hiNxKbAhYPiPf5VUaZkHuMB3Jsc56o+0jSAsnrthyAlRgE5I72aglWTcSufbFpR1KR4nSciBb30r6+E09qyndM=
+	t=1776970778; cv=none; b=J9931SGt/fxGJ7ARla32Qc6tYQzy88BlxdwyfXMF8pGYsn7Ovb8XgZh7eQLEyfd0q6Ig0kZI8TCdP+YthsYkP20PSqLytuXyI+ZGdJ+exzdju+0pTI9s0BJNyCoBy0jA1lklY4zphsGr+HV+CwnjFH3zGOwwYXlLK2np93ZlP28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776970534; c=relaxed/simple;
-	bh=4yoTlqQgbbVE28AVWHdC5lL1x5os8T5h1viP5QpkKlQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uVQdfrqF0XX/4lYcVPhKkqcN5u7xYBS4uxTUasYcljcfVtYs8YgO2boTaPI1yZvBVVVi7sn85g7OiE0UNmuwOiVf9L2T8j5S4gmxlKkRoWdjH+My6wpI6fdQQXAW02EKhpqPOtn0hlJeUCK+qekrv8qcykNHHTgYwXNri8IutMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lQ9yjLNh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36726C2BCAF;
-	Thu, 23 Apr 2026 18:55:33 +0000 (UTC)
+	s=arc-20240116; t=1776970778; c=relaxed/simple;
+	bh=89CpwZWpqz6tMu+rKPycm3pbZSmQA7XFPfnmi/2V8ek=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=DqZ3BP/LtxxgEDMp9nyb4KQBPLQ32L/MO1XbHN3ji0m8wCBhUCpnEZ18pKyxGlavSITN6Kqy6z2oducNV5MvbyuqO+iDfzNPjTToMGmPkIvDlbJ0CP5J5FCe0slUM8HsTJJEHbpJfJjA5b5yGQRaMUZH+B93qnWPHaGHOxMFVbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B6P9ju65; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B91CC2BCAF;
+	Thu, 23 Apr 2026 18:59:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1776970534;
-	bh=4yoTlqQgbbVE28AVWHdC5lL1x5os8T5h1viP5QpkKlQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lQ9yjLNhzeNgz5LnKP7c5B4CVVdkDK1FCMsDtp50OIQeKLf5otwlCPfWdgWSPycw/
-	 XTvQQiA9S+ZybzC9eqC7oQzsM81L7y6MNR7n4RHDo2QaO/5k9PX7EV1EEAok+xCXA+
-	 f3xysYpsbXmlJ00lhGseIfBYTZq0JzKgi7HG5BkJ5ydr9JUbYQPm6Gid/Hg6hSDHz5
-	 liAN2JVUnjU+EY4FBqBhoJoIltNPHvSjLCUCMvKUosbMN6Kk79SCWlApAasPYFpayE
-	 JUE8mai8Fd4DutEfbulAEx6LvAf6+32ED2XpeKNOTrex27dKq87SQDqapgCZUOuE1Y
-	 Qv/sCT2faOyhQ==
-Date: Thu, 23 Apr 2026 19:55:30 +0100
-From: Simon Horman <horms@kernel.org>
-To: Corinna Vinschen <vinschen@redhat.com>
-Cc: intel-wired-lan@osuosl.org, netdev@vger.kernel.org,
-	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
-	Michal Schmidt <mschmidt@redhat.com>, stable@vger.kernel.org
-Subject: Re: [PATCH net] iavf: iavf_virtchnl_completion: drop duplicate
- ether_addr_equal() test
-Message-ID: <20260423185530.GI900403@horms.kernel.org>
-References: <IA3PR11MB898664A49E614F197D4FED6EE52C2@IA3PR11MB8986.namprd11.prod.outlook.com>
- <20260421111236.875379-1-vinschen@redhat.com>
+	s=k20201202; t=1776970778;
+	bh=89CpwZWpqz6tMu+rKPycm3pbZSmQA7XFPfnmi/2V8ek=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=B6P9ju65CgdS/TxjbyJsj5gr8mme0lUX2y5Sue+pRjrxTW5DjJ2rqmWRZP0g4a6TK
+	 b3W4utHhvZ+x3hLk9RVPtyuVGjSq/BtzDsG4LmqEyraqODBfHHYXMaRJBApnpUaCH2
+	 7vYbLsSEghXq5PUryVx70tBbfQrlNI2JS2JvE9ddVbs8XoWJRl2vQHdFoqR9QuRGP9
+	 /eHTfAqx/06VcKdeIHJ0KH8KZ2VBLZ/FW2FxNoUfyzi4aboFhPLwGOUaQZ3SmKrhpb
+	 FtJiivRQx+obea2vsDIgcMVCQY1xvBziOlWmpEYBEjUn5eeHvcMBZoII1nAAYJNWjJ
+	 ZGCwwG5Xa8ltw==
+From: Sasha Levin <sashal@kernel.org>
+To: Vasiliy Kovalev <kovalev@altlinux.org>
+Cc: Sasha Levin <sashal@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	stable@vger.kernel.org,
+	Steve French <sfrench@samba.org>,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	lvc-project@linuxtesting.org
+Subject: Re: [PATCH v2 5.10.y] cifs: Fix connections leak when tlink setup failed
+Date: Thu, 23 Apr 2026 14:59:36 -0400
+Message-ID: <20260423185936.1060816-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <83e432c2-8749-aca3-b5c8-ea89edc75ae9@basealt.ru>
+References: <20260423140245.195039-1-kovalev@altlinux.org> <83e432c2-8749-aca3-b5c8-ea89edc75ae9@basealt.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260421111236.875379-1-vinschen@redhat.com>
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240527-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	URIBL_MULTI_FAIL(0.00)[tor.lore.kernel.org:server fail];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240528-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[horms@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,horms.kernel.org:mid]
-X-Rspamd-Queue-Id: 63BB44563F0
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1EA48456469
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Apr 21, 2026 at 01:12:36PM +0200, Corinna Vinschen wrote:
-> This is just a simple cleanup fix.  Commit 35a2443d0910f ("iavf: Add
-> waiting for response from PF in set mac") introduced a duplicate
-> ether_addr_equal() check, so the current code tests the new MAC twice
-> against the former MAC.
-> 
-> Remove the outer ether_addr_equal() test, remnant of commit c5c922b3e09b
-> ("iavf: fix MAC address setting for VFs when filter is rejected")
-> 
-> Signed-off-by: Corinna Vinschen <vinschen@redhat.com>
-> Fixes: 35a2443d0910f ("iavf: Add waiting for response from PF in set mac")
-> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-> ---
-> Added CC: stable@vger.kernel.org
+On Thu, Apr 23, 2026 at 05:41:12PM +0300, Vasiliy Kovalev wrote:
+> v1 of "cifs: Fix connections leak when tlink setup failed"
+> (CVE-2022-49822) is currently in queue-5.10:
+>
+> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/commit/?h=queue/5.10&id=685f89e4d2b45768ca796eb22ec1a553fecbdf05
+>
+> Please drop it and apply v2 instead. v1 introduces a double-free for
+> mntdata on the new goto error path from mount_setup_tlink() failure:
+> after a successful dfs_cache_add_vol() the pointer is owned by vol_list
+> (vi->mntdata), but the error: label still calls kfree(mntdata). v2 NULLs
+> out mntdata after the ownership transfer.
 
-Hi,
+I've dropped v1 from pending-5.10 and queued v2 in its place.
 
-This feels more like a cleanup for net-next (without a Fixes tag)
-than a fix for net. I'm missing where the bug is here.
+--
+Thanks,
+Sasha
 
