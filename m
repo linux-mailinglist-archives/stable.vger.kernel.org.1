@@ -1,150 +1,142 @@
-Return-Path: <stable+bounces-240436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240437-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aPiyANDQ6Wm9kgIAu9opvQ
-	(envelope-from <stable+bounces-240436-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 09:57:04 +0200
+	id QNPCLsLR6Wm9kgIAu9opvQ
+	(envelope-from <stable+bounces-240437-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 10:01:06 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2459D44E39C
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 09:57:03 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D27744E43E
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 10:00:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C094D30136B6
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 07:57:01 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 97AB73008C24
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 08:00:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 202A034DB74;
-	Thu, 23 Apr 2026 07:57:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4B25363C40;
+	Thu, 23 Apr 2026 08:00:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oyyvt5vB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kuxhYJmJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CCA4306B08
-	for <stable@vger.kernel.org>; Thu, 23 Apr 2026 07:56:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93E103630A7;
+	Thu, 23 Apr 2026 08:00:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776931019; cv=none; b=QrsrKtFLdlWio3hVwhpiznY2cXH0P+pES3wpUwzUoPqt8UrCBFty3RE56ekuJwZi91FFFHatlaE3oGrlBa9IEr7fnFZsIX5syXd3O/QJQ9813R5iV6PVvXM5OMBhSojX+MoCpCjmM7Zp5vA+atI01+YKQ2cGuEO/uatPQtdNnAY=
+	t=1776931256; cv=none; b=AiPrpnoB3Y06BvlBwiYrmPkupRHwJo0gCdW0FCb2cCTSvI5dMn4NuDXgR48tWr9X6DZwAJ0daLmDMt7hUfji4vrmpTCfgzCemrGsp+vHp2bn0JhYkaLEIDv5lmtYIo9XJlvbs4uu8JwCVniYyaPJLTzqeVam+g+if4hCXp08DsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776931019; c=relaxed/simple;
-	bh=pDZE86GjStzoJINHCxxrcMWBHjoVB/TGMbM/dLPD2BU=;
+	s=arc-20240116; t=1776931256; c=relaxed/simple;
+	bh=a84X/P/i35Cjebk4Jk6qux65Owf16nUFeA7GMQ2Bucc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uyGgINvxvsARjAxeg1puDMI5NJeG4NvJ0SONyDO+22vk7047yPZfOD3zoAcVxYDXrSLDLATVRCh5lYv9QWZmXezr3wdRD8og7nZp3FZ0YyuDWbRca3DF/U63/Zz80gCziDkuYAFddj1WG5OCwb2kLCmJDe+EGJhnWF/8GUT56I0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oyyvt5vB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8FADC2BCAF;
-	Thu, 23 Apr 2026 07:56:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776931019;
-	bh=pDZE86GjStzoJINHCxxrcMWBHjoVB/TGMbM/dLPD2BU=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=U2qiJoXzxSueM/UwehApVJCbNqLWwSPJLr4nZounzr0bGoUlxbWaZuPJ5ahr1HBjpMswdc2oTuRu23jmLnZNJPV0Yb7FmFUFgM6osqb34Y0Vyu3Osq5tudYIDm0X7VvNjHdwZ2CD/MUk+su3+Y6bFZQEyfwRkrxN97bdOR0kVQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kuxhYJmJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35B52C2BCAF;
+	Thu, 23 Apr 2026 08:00:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776931256;
+	bh=a84X/P/i35Cjebk4Jk6qux65Owf16nUFeA7GMQ2Bucc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Oyyvt5vBHIDbed1/OTJzd+NBxCKY0tM5cGJbo6CDKn+4EDYckh7y+EPzkudfTRsKh
-	 0RbikoYLxhhDfMlO0Iv1VRYK5jA93Cw1u8x0omGSTG05NrXs5euOe5zdTGw4QnzRoM
-	 n1Z4SaXdkSXhRkAfSgjvWs/rsBOFFyzif116JKx4=
-Date: Thu, 23 Apr 2026 09:56:56 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Josh Law <joshlaw48@gmail.com>, stable@vger.kernel.org
-Subject: Re: Backport request
-Message-ID: <2026042329-battered-anthem-f4ce@gregkh>
-References: <C9577A36-B531-4480-BEA5-42F660C184CA@gmail.com>
- <2026042325-backhand-vanish-f69d@gregkh>
- <fc6ea52a-320a-4821-972c-3376e687fecf@kernel.org>
- <2026042320-husband-brought-c7c7@gregkh>
- <1ee4f907-1eca-473d-93b2-c99d733a432b@kernel.org>
+	b=kuxhYJmJ5D/bDOw2fmnMoLdo5USmjI2XW87AsaqkO6U/CMaSQwc5f+1Ll/kkNHwX+
+	 +rq/yX+6I6x7Ntds5sPBOoWJkLpIudwWLRElr6sPgg6VTabFSbWFkuQjgYy8sM0XZK
+	 Ahe+a6kXUeWye63duWH2qxwTvq1v1Om5yjmP8wSBefDFssjDuUdBnZISWw2NjCghHL
+	 IU5yvzapOpyciDpxckbPajHf+NvjX5IP+/Cz73R9DjxvponlORw67qDlcRiaEVJ2PZ
+	 jw/F18A0UoAlPhsK65VDvC/asFzyD5MCziOBpBlcQrGwzELfXdZ5yMLcD86fVX77lE
+	 ZgoxRFBwgeeYA==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1wFozW-00000009S0O-08O8;
+	Thu, 23 Apr 2026 10:00:54 +0200
+Date: Thu, 23 Apr 2026 10:00:54 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Mark Brown <broonie@kernel.org>
+Cc: linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Grant Likely <grant.likely@secretlab.ca>
+Subject: Re: [PATCH] spi: mpc52xx: fix use-after-free on registration failure
+Message-ID: <aenRtqDVr-ACBeG9@hovoldconsulting.com>
+References: <20260421125800.1537361-1-johan@kernel.org>
+ <aejsLE_vnchmCKtN@hovoldconsulting.com>
+ <9230f719-2c5f-40d6-9486-612c8fec311a@sirena.org.uk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="tidtdNHKx6qF0btn"
 Content-Disposition: inline
-In-Reply-To: <1ee4f907-1eca-473d-93b2-c99d733a432b@kernel.org>
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+In-Reply-To: <9230f719-2c5f-40d6-9486-612c8fec311a@sirena.org.uk>
+X-Spamd-Result: default: False [-4.26 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240436-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-240437-lists,stable=lfdr.de];
+	ASN_FAIL(0.00)[74.135.232.172.asn.rspamd.com:query timed out];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim]
-X-Rspamd-Queue-Id: 2459D44E39C
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5]
+X-Rspamd-Queue-Id: 9D27744E43E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, Apr 23, 2026 at 09:02:11AM +0200, Krzysztof Kozlowski wrote:
-> On 23/04/2026 08:46, Greg KH wrote:
-> > On Thu, Apr 23, 2026 at 08:39:29AM +0200, Krzysztof Kozlowski wrote:
-> >> On 23/04/2026 06:55, Greg KH wrote:
-> >>> On Wed, Apr 22, 2026 at 06:04:50PM +0100, Josh Law wrote:
-> >>>> Hello, I would like backports for 
-> >>>>
-> >>>> Mainline hashes:
-> >>>>
-> >>>> https://github.com/torvalds/linux/commit/8cdf30813ea8ce881cecc08664144416dbdb3e16
-> >>>>
-> >>>> https://github.com/torvalds/linux/commit/9003ec6f7f394943880618737d797a9f257e6e1e
-> >>>
-> >>> None of those have showed up in an actual release yet, so why should
-> >>> they be included "early"?
-> >>
-> >> None of the code was tested as Josh Law lied more than once about tests
-> >> [1] or laughed at us when we asked for testing:
-> >>
-> >> "laugh my ass out and your test cases, absolutely ill add some test
-> >> cases" [2]
-> >>
-> >> and then Josh Law was pushing his patches to get merged:
-> >>
-> >> "This most definitely needs to be merged." [3]
-> >> "Yeah in my opinion I think this may need to be merged.. if you would
-> >> like I can add the NOWARN" [4]
-> >>
-> >> And now we see a push for these commits to stable!
-> >>
-> >> Nothing from Josh Law should be going to stable trees, because nothing
-> >> was ever tested.
-> > 
-> > Makes sense, is anyone going to send reverts for these?
-> 
-> Untested does not mean yet incorrect, so not sure if we need to act on
-> already accepted commits getting to stable. Especially that for a revert
-> I would need to provide some stronger arguments, IMO. Easier to drop
-> from the queue in review.
-> 
-> OTOH, if the actor is not trusted, a past correct patch is not a
-> positive indication for another patch. Untrusted, for whatever reason,
-> actor can write correct patches for some time...
-> 
-> When untrusted person pushes why things are not in stable, it feels to
-> me like a warning sign.
 
-Fair enough, I'll just drop these from the stable queue and not worry
-about them UNLESS someone can prove that they actually fix a real bug.
+--tidtdNHKx6qF0btn
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-thanks,
+On Wed, Apr 22, 2026 at 06:12:58PM +0100, Mark Brown wrote:
+> On Wed, Apr 22, 2026 at 05:41:32PM +0200, Johan Hovold wrote:
+> > On Tue, Apr 21, 2026 at 02:58:00PM +0200, Johan Hovold wrote:
+> > > Make sure to disable and free the interrupts in case controller
+> > > registration fails to avoid a potential use-after-free and resource
+> > > leak.
+>=20
+> > This one will need another spin to address some further pre-existing
+> > issues flagged by Sashiko.
+>=20
+> Please do an incremental change, it's already in CI with some merges on
+> top of it.
 
-greg k-h
+False alarm. Sashiko flagged the freeing of interrupt zero as triggering
+a warning, but that should only be the case on x86.
+
+I've sent a clean up patch for this here:
+
+	https://lore.kernel.org/r/20260423075801.2252318-1-johan@kernel.org
+
+Johan
+
+--tidtdNHKx6qF0btn
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iJEEABYKADkWIQQHbPq+cpGvN/peuzMLxc3C7H1lCAUCaenRsxsUgAAAAAAEAA5t
+YW51MiwyLjUrMS4xMiwyLDIACgkQC8XNwux9ZQjTOQD8CgPPLep57HU/zQfJ6ejL
+qNBiWUe2dqXa83NMSRP2b6sA/2lf0kDT5OWFiZYEQ61062jtRanRhEsy5Woa3z+M
+/IwD
+=4B8r
+-----END PGP SIGNATURE-----
+
+--tidtdNHKx6qF0btn--
 
