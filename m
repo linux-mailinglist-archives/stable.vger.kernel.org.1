@@ -1,173 +1,185 @@
-Return-Path: <stable+bounces-240464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240466-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +KuAMAgE6mk/rQIAu9opvQ
-	(envelope-from <stable+bounces-240464-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 13:35:36 +0200
+	id YPvyLhgE6mk/rQIAu9opvQ
+	(envelope-from <stable+bounces-240466-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 13:35:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D0AB45155D
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 13:35:35 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 593C045156E
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 13:35:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1F0BD301C895
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 11:34:49 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BE827300BBB1
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 11:35:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FD8C3E959F;
-	Thu, 23 Apr 2026 11:34:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 876AD377EA9;
+	Thu, 23 Apr 2026 11:35:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eFN/luxW"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Ztg0YlTF"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1828938422A
-	for <stable@vger.kernel.org>; Thu, 23 Apr 2026 11:34:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41B9530EF8F;
+	Thu, 23 Apr 2026 11:35:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776944087; cv=none; b=VSU+51tCU0CaUdT78NpnLc2tY1JnLqWGrDBKxhCszxDlH3vcmFUUa3m1BEF4t8XeiPzJuENDIjswLYY30jDBIVE/WbASYcbY5LTufEFEDbsW2knj4kHZ/bwGcJSGTWEIx3+nwfkbBJwy+Eyi/yCDtOWH7eS223hw+HosH1dRt3E=
+	t=1776944148; cv=none; b=tz/YpttOlUzg2VzZohH00tHk2+4AsQkKBQsYrBcFOBSSVSJNjQ4uDjlZwECGd/ZWTrRw7+23f7mn5eqdUu9JMu1zWJ5V7LwM3oqhDeeScvQaW+mVi639ApwadR0C78V07dcTeWbuRzbhx6K8wBglK+P3Tv+obL6nJRHk0npO96s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776944087; c=relaxed/simple;
-	bh=0WfnOZbXeCCnN3w3UE+Jw0ce/6J+iDbqFJsV/ehYRCw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YftDWhnMZYWsPI6PJvTUDvK0RUwCFms5Htzk8xvUO1LJZ0NdWAE9kDMoRjE6hasLyoc0yqSeNJc5MieEV9rn7TRZ9+byu3Lf8vswXI37GGszCOBXraHMFPo6kYR+IguPuW0avEboU/XpWQtN8yU2SDJ8gBaflHBj9qfcfRUw0as=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eFN/luxW; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-488a8ca4aadso90063085e9.3
-        for <stable@vger.kernel.org>; Thu, 23 Apr 2026 04:34:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776944084; x=1777548884; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0WfnOZbXeCCnN3w3UE+Jw0ce/6J+iDbqFJsV/ehYRCw=;
-        b=eFN/luxW+aGDZZH66Ri2eaFyiP+8c8eaR4DjtZnGdI6OYF6Wj/Y8iDh3ObzaA/8sV9
-         wVy656szM5Q4qx0qjp0zjqde7b+FZY7gimuh4FopS09ng8IKrxi9AZA3oHJP4xwwHEKd
-         oZH5UHlpc2h7LxRlqOnHnniGyto+3TtGp+dBVMKXaCxHmrXT5D927vsjMPjsUuH6o6Tl
-         eolDVpQwCPJVHSERsZsZKAHko70h0rJlFPfDymc44t2rEAEN4MG7dC+GWGjmrSCmB1jc
-         6+G0SBwQIjMY6LPLeIhlLIImTDTuK7MSu5epJX8KJNTu5KbbgIzWluX2l7EnWwrl15NX
-         h2FA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776944084; x=1777548884;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=0WfnOZbXeCCnN3w3UE+Jw0ce/6J+iDbqFJsV/ehYRCw=;
-        b=a3V0oJwBGblqcJS8oUEJoDdGlXkPFWxIp49anUy8FfVCmBF4R33I526WkZLWhJ+hFI
-         tCMXljTL4rWBtSKLKPKTVUCKdgfcHP1GY7fLZqnA8qOo5Pi1Z5qfflTTpFVUEE4fgV11
-         5J5nuFThAmG2VrTEnC9WyXC5OvXY31Cg97HCSLCTnecek3X3Wu1JvjvChPrRoF2yEed3
-         wVMyRqQfAQ7qLFof3Usu5HF2JlcPjsnE0t0Ok03rSysGfNdYGI6qkfh+awJnv9N313tD
-         u1Of8n8XvldhCZfu7GJMi6J269K7XDvc+9zsFDJ5QQ6V28zTJccNh59bJYPO/jWGlTCq
-         a7vg==
-X-Gm-Message-State: AOJu0YzAunolXYR6muTD74Js1jjR3d24Qb3eAFWoxw6zN2Wpv4Ficfff
-	RxdkEmvCrJrppA2OZNKFn28hA30GPRaL7F9ex/rd8/NtkgV6829VJ4N9
-X-Gm-Gg: AeBDieutq0iRoNSs/QPJBm4eGplpOfY60vIlm8bnXE4a5CTCuvXrq2TMNpXiTe7U3ub
-	WkdvX8XRHoaMSYCTMdruAKW5BHgtLj9EnUFOuz95FHDciHpZS27PnK2Hav0uD3rdNYChL/tg66L
-	Cnp596bIiIyyT7X9q2Y4/iYB9YfEoNLkqgLwvqXJXjarHjsdg9cyi/iguRs10ZEwK++lGPT2cUC
-	/Ho9kQfXkmAccM1CJWk1euDY7eQG0UqEO3DZHSD++JjBlEg81GeRwOwGrNycGd1Zb7cY/TOWvSB
-	f/I32DwKGdfJ8Esg+6LGsUJfnYuWbEzv/e2y2ZWMsJKc157+SpSMOhOkIwVVJ7D02eeeOKQWQvt
-	75bzrgqEMRaxAJeE0wzxbR0l6P9AZrpt/qbrANtGV6/vabVDsSFey5+d0QBW9seGHZy28wuGYvZ
-	dLL+vnoWZiP+Yu2HQLw7FOHZ1WB8srR9u1i1kUJJbRczy5Pc6B/2lcig+bIlOHmhLobSHrNof4T
-	vbOMIjq1Uw=
-X-Received: by 2002:a05:600c:620d:b0:489:1d23:4524 with SMTP id 5b1f17b1804b1-4891d23468bmr239536185e9.5.1776944084219;
-        Thu, 23 Apr 2026 04:34:44 -0700 (PDT)
-Received: from timur-hyperion.localnet (5E1B98A2.dsl.pool.telekom.hu. [94.27.152.162])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4891c08faffsm552416145e9.1.2026.04.23.04.34.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Apr 2026 04:34:43 -0700 (PDT)
-From: Timur =?UTF-8?B?S3Jpc3TDs2Y=?= <timur.kristof@gmail.com>
-To: Christian =?UTF-8?B?S8O2bmln?= <christian.koenig@amd.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, Robert Garcia <rob_garcia@163.com>,
- Alex Deucher <alexander.deucher@amd.com>, Pan Xinhui <Xinhui.Pan@amd.com>,
- David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
- Yifan Zha <Yifan.Zha@amd.com>, amd-gfx@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 6.1.y] drm/amdgpu: remove two invalid BUG_ON()s
-Date: Thu, 23 Apr 2026 13:34:42 +0200
-Message-ID: <4885687.vXUDI8C0e8@timur-hyperion>
-In-Reply-To: <2026042335-probation-heftiness-7399@gregkh>
-References:
- <20260417074010.1607496-1-rob_garcia@163.com>
- <6064b45a-b8de-4848-856f-383d2d06680d@amd.com>
- <2026042335-probation-heftiness-7399@gregkh>
+	s=arc-20240116; t=1776944148; c=relaxed/simple;
+	bh=VhspuBBVeCMZ7cVKQ7OO5c/C0hcEdDLBwLRdNqCEUik=;
+	h=Date:To:From:Subject:Message-Id; b=JpeTJaCqvOWJQla4xBWvrSdpHV+viNapeCwTdHWoVpkhBIQDgUzqmoktZaemM8CjXeQLEH46FMjU35h5wlKzgFCqOp9sfR6EptkXsq147jWZuttLdVSkQf1l+okDRBj/Bu6+kMXIpWqqqjgYVM7xXmRGtL8Y/PBze5k+IOk7VTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Ztg0YlTF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD6F9C2BCAF;
+	Thu, 23 Apr 2026 11:35:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1776944147;
+	bh=VhspuBBVeCMZ7cVKQ7OO5c/C0hcEdDLBwLRdNqCEUik=;
+	h=Date:To:From:Subject:From;
+	b=Ztg0YlTFe0oquXA2QebT3XQqE+YZEBEcE+YXfu+fa6LC+Zq7rea/ehEcf8E/nyg+F
+	 IdOZj2COcvWfy4/86BTGMWZvN+vYdO5nddbgTs3KrsdM28MqZ56gfyCUZ0XWCILiDd
+	 XM3KbzMHWS2w7ZSOx8nswdiFcbnwU9bTcE8YivxI=
+Date: Thu, 23 Apr 2026 04:35:47 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,osalvador@suse.de,muchun.song@linux.dev,david@kernel.org,ekffu200098@gmail.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-hugetlb_cma-round-up-per_node-before-logging-it.patch added to mm-hotfixes-unstable branch
+Message-Id: <20260423113547.AD6F9C2BCAF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-240466-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240464-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	DMARC_NA(0.00)[linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,163.com,amd.com,gmail.com,ffwll.ch,lists.freedesktop.org];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FREEMAIL_TO(0.00)[vger.kernel.org,suse.de,linux.dev,kernel.org,gmail.com,linux-foundation.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[timurkristof@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 2D0AB45155D
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linux-foundation.org:dkim,linux-foundation.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,suse.de:email,smtp.kernel.org:mid]
+X-Rspamd-Queue-Id: 593C045156E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thursday, April 23, 2026 1:22:22=E2=80=AFPM Central European Summer Time=
- Greg=20
-Kroah-Hartman wrote:
-> On Wed, Apr 22, 2026 at 04:11:15PM +0200, Christian K=C3=B6nig wrote:
-> > Those points are certainly valid.
-> >=20
-> > I've also up-streamed a patch which completely rejects userspace
-> > submissions who try to use the CE.
-> >=20
-> > The problem is that those BUG_ON() can lead to a deny of service because
-> > they crash the whole kernel.
-> >=20
-> > A BUG_ON() is only justified if it prevents even worse things to happen,
-> > e.g. data corruption or it would crash later on anyway just not so
-> > obvious on what is wrong.
-> >=20
-> > Otherwise we should use WARN_ON().
->=20
-> WARN_ON() crashes the kernel as well when panic-on-warn is enabled, as
-> it is in a few billion Linux systems :(
->=20
-> As this commit is upstream, and in other stable trees, I'll apply this
-> as it's not nice to have a simple way for userspace to crash the system.
->=20
-> thanks,
->=20
-> greg k-h
 
-Sounds reasonable, if you feel this improves stability.
+The patch titled
+     Subject: mm/hugetlb_cma: round up per_node before logging it
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-hugetlb_cma-round-up-per_node-before-logging-it.patch
 
-That being said, there are many other ways besides this one for userspace t=
-o=20
-crash the system equally easily.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-hugetlb_cma-round-up-per_node-before-logging-it.patch
 
-Timur
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: Sang-Heon Jeon <ekffu200098@gmail.com>
+Subject: mm/hugetlb_cma: round up per_node before logging it
+Date: Wed, 22 Apr 2026 23:33:53 +0900
+
+When the user requests a total hugetlb CMA size without per-node
+specification, hugetlb_cma_reserve() computes per_node from
+hugetlb_cma_size and the number of nodes that have memory
+
+        per_node = DIV_ROUND_UP(hugetlb_cma_size,
+                                nodes_weight(hugetlb_bootmem_nodes));
+
+The reservation loop later computes
+
+        size = round_up(min(per_node, hugetlb_cma_size - reserved),
+                          PAGE_SIZE << order);
+
+So the actually reserved per_node size is multiple of (PAGE_SIZE <<
+order), but the logged per_node is not rounded up, so it may be smaller
+than the actual reserved size.
+
+For example, as the existing comment describes, if a 3 GB area is
+requested on a machine with 4 NUMA nodes that have memory, 1 GB is
+allocated on the first three nodes, but the printed log is
+
+        hugetlb_cma: reserve 3072 MiB, up to 768 MiB per node
+
+Round per_node up to (PAGE_SIZE << order) before logging so that the
+printed log always matches the actual reserved size.  No functional change
+to the actual reservation size, as the following case analysis shows
+
+1. remaining (hugetlb_cma_size - reserved) >= rounded per_node
+ - AS-IS: min() picks unrounded per_node;
+    round_up() returns rounded per_node
+ - TO-BE: min() picks rounded per_node;
+    round_up() returns rounded per_node (no-op)
+2. remaining < unrounded per_node
+ - AS-IS: min() picks remaining;
+    round_up() returns round_up(remaining)
+ - TO-BE: min() picks remaining;
+    round_up() returns round_up(remaining)
+3. unrounded per_node <= remaining < rounded per_node
+ - AS-IS: min() picks unrounded per_node;
+    round_up() returns rounded per_node
+ - TO-BE: min() picks remaining;
+    round_up() returns round_up(remaining) equals rounded per_node
+
+Link: https://lore.kernel.org/20260422143353.852257-1-ekffu200098@gmail.com
+Fixes: cf11e85fc08c ("mm: hugetlb: optionally allocate gigantic hugepages using cma") # 5.7
+Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+Reviewed-by: Muchun Song <muchun.song@linux.dev>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/hugetlb_cma.c |    1 +
+ 1 file changed, 1 insertion(+)
+
+--- a/mm/hugetlb_cma.c~mm-hugetlb_cma-round-up-per_node-before-logging-it
++++ a/mm/hugetlb_cma.c
+@@ -204,6 +204,7 @@ void __init hugetlb_cma_reserve(void)
+ 		 */
+ 		per_node = DIV_ROUND_UP(hugetlb_cma_size,
+ 					nodes_weight(hugetlb_bootmem_nodes));
++		per_node = round_up(per_node, PAGE_SIZE << order);
+ 		pr_info("hugetlb_cma: reserve %lu MiB, up to %lu MiB per node\n",
+ 			hugetlb_cma_size / SZ_1M, per_node / SZ_1M);
+ 	}
+_
+
+Patches currently in -mm which might be from ekffu200098@gmail.com are
+
+mm-hugetlb_cma-round-up-per_node-before-logging-it.patch
 
 
