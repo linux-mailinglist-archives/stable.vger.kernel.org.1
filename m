@@ -1,169 +1,108 @@
-Return-Path: <stable+bounces-240408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240409-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id K2y1Nymd6WkAfQIAu9opvQ
-	(envelope-from <stable+bounces-240408-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 06:16:41 +0200
+	id EVO1Elam6WmzgQIAu9opvQ
+	(envelope-from <stable+bounces-240409-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 06:55:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C96D044CDAF
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 06:16:40 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFA6644D197
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 06:55:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D2E58300B442
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 04:15:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BFF74301410D
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 04:55:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 628ED35B62F;
-	Thu, 23 Apr 2026 04:15:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10970244687;
+	Thu, 23 Apr 2026 04:55:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b="VRNwzgHX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FHnBtarR"
 X-Original-To: stable@vger.kernel.org
-Received: from r3-11.sinamail.sina.com.cn (r3-11.sinamail.sina.com.cn [202.108.3.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F4D833C188
-	for <stable@vger.kernel.org>; Thu, 23 Apr 2026 04:15:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.108.3.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6B55611E
+	for <stable@vger.kernel.org>; Thu, 23 Apr 2026 04:55:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776917718; cv=none; b=i1XQrjXyyFqjDAyXK+hnSKAawgZr0qkaJvnKS2Ecn/P9oacTC0NnW57/5bSp8OODq/8C3XljrECvCzYtSypbi9NWPkjBSJEKBAlUuptBqegDXreTbnQPn6tuYu3n8J1uBNbOUTiVRrFDc1P6CFaKTW6z7PlxL4X3sdmNpDeWfs0=
+	t=1776920118; cv=none; b=MAZGuSUxaLYWmSkAnmuxBkgvYgbz22PoMGnCfvgxcK2kqTB8Xa1YGt/ubjJoS3dEvl4ypftVEWbebrk6alFAXoveyxneS2VO+Dcu6DN9j/4rnrVGRHwbagkJehG8fELzRBfzQfGSypHIcCYz7j8H6hLvRT7IzAR3ZiRSeBPLtCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776917718; c=relaxed/simple;
-	bh=Qz70XQWqkjFL1n7DMKpRt8RNanc3bCYxPXKEjrvC0wg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ejxwjhYyYnma+4sCLMO+3syC2wRr6Hv3dIrfFQhtnWpGFg0XDKHuXkxIkGxpIz+1BsNb8FrIC7PKi82DZvo09YBkyzN0HHBeZytrhVVzJAd4vJJbM6dipFQWAfl9+cz6nf8dip4NN/fUg5JrN++Xm260dk/GGktKalaMhs9dQs0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com; spf=pass smtp.mailfrom=sina.com; dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b=VRNwzgHX; arc=none smtp.client-ip=202.108.3.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1776917713;
-	bh=kXgg4bK6ZCKpzRg3Eg2FXeTLIzhmAY6ilX5qNb/Q9O0=;
-	h=From:Subject:Date:Message-ID;
-	b=VRNwzgHXlEaWhBj6wpwBrXVR7jx0VFnAPnmv8e8hkCCeOC5hWNuqfT0BzECxZ1ucM
-	 5qBMC/+25bg4AanjGHqwzjXfxsi50JIJ4zPX7iyT59wOuF7wXtmIPBclePYbztzwKv
-	 xA8Y3G4IRBvuz9QIzw7xcFNnBrPKRkUb0x3BN2og=
-X-SMAIL-HELO: localhost.localdomain
-Received: from unknown (HELO localhost.localdomain)([114.249.62.144])
-	by sina.com (10.54.253.34) with ESMTP
-	id 69E99CCB000034DA; Thu, 23 Apr 2026 12:15:09 +0800 (CST)
-X-Sender: hdanton@sina.com
-X-Auth-ID: hdanton@sina.com
-Authentication-Results: sina.com;
-	 spf=none smtp.mailfrom=hdanton@sina.com;
-	 dkim=none header.i=none;
-	 dmarc=none action=none header.from=hdanton@sina.com
-X-SMAIL-MID: 553076291788
-X-SMAIL-UIID: 3D56BE0CC2034011917CE9A522D806FC-20260423-121509-1
-From: Hillf Danton <hdanton@sina.com>
-To: Jeongjun Park <aha310510@gmail.com>
-Cc: Johannes Berg <johannes.berg@intel.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	syzbot+5de83f57cd8531f55596@syzkaller.appspotmail.com,
-	syzkaller-bugs@googlegroups.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] wifi: rsi: fix kthread lifetime race between self-exit and external-stop
-Date: Thu, 23 Apr 2026 12:14:58 +0800
-Message-ID: <20260423041500.2020-1-hdanton@sina.com>
-In-Reply-To: <20260422173846.37640-1-aha310510@gmail.com>
-References: 
+	s=arc-20240116; t=1776920118; c=relaxed/simple;
+	bh=hRT8ZYcRyFjaFI/y9ahOaT0sVTHYZkkVF++4Yq6plRw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=c7o7ILi4pqJDpEFn6SyfcEbCgf0kWxI8XOvUzp1xC18IOjyZw57XxBNLKmOJB8FXvh5FENaU8V4zfm4jkkzaIf5BbVmqnBz/73SpiXlXeAYSyRa1XJru/KKlka+werhwNcK+S/bQdI+mLsr4tKCsuVDIYhrml7a8J7CXZBZ0x0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FHnBtarR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 199CDC2BCB2;
+	Thu, 23 Apr 2026 04:55:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1776920118;
+	bh=hRT8ZYcRyFjaFI/y9ahOaT0sVTHYZkkVF++4Yq6plRw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FHnBtarRmFlr21e/jAIGfNgV8m7CnmdyBhTnbXMyvsTJarDXaCr/PDzm7oWk/UMxe
+	 wiUIXG7T4I/SFiMrccKopFw99CXpyQA09//y92fiN27QjqOiNX57N+Ceh1XKfL3xzL
+	 FEEDcjQANZlVLZkSragNFQ8+Izs4InrVimT09Xsw=
+Date: Thu, 23 Apr 2026 06:55:15 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Josh Law <joshlaw48@gmail.com>
+Cc: stable@vger.kernel.org
+Subject: Re: Backport request
+Message-ID: <2026042325-backhand-vanish-f69d@gregkh>
+References: <C9577A36-B531-4480-BEA5-42F660C184CA@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <C9577A36-B531-4480-BEA5-42F660C184CA@gmail.com>
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[sina.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[sina.com:s=201208];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-240408-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWO(0.00)[2];
+	FREEMAIL_TO(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-240409-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[sina.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hdanton@sina.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[sina.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,5de83f57cd8531f55596];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,appspotmail.com:email]
-X-Rspamd-Queue-Id: C96D044CDAF
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: AFA6644D197
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, 23 Apr 2026 02:38:46 +0900 Jeongjun Park wrote:
-> RSI driver use both self-exit(kthread_complete_and_exit) and external-stop
-> (kthread_stop) when killing a kthread. Generally, kthread_stop() is called
-> first, and in this case, no particular issues occur.
+On Wed, Apr 22, 2026 at 06:04:50PM +0100, Josh Law wrote:
+> Hello, I would like backports for 
 > 
-> However, in rare instances where kthread_complete_and_exit() is called
-> first and then kthread_stop() is called, a UAF occurs because the kthread
-> object, which has already exited and been freed, is accessed again.
+> Mainline hashes:
 > 
-Alternatively the race could be described with the regular diagram to better
-understand the uaf.
+> https://github.com/torvalds/linux/commit/8cdf30813ea8ce881cecc08664144416dbdb3e16
+> 
+> https://github.com/torvalds/linux/commit/9003ec6f7f394943880618737d797a9f257e6e1e
 
-	rsi_kill_thread()	rsi_tx_scheduler_thread()
-	---			---
-	atomic_inc(&handle->thread_done); // set the done flag
- 	rsi_set_event(&handle->event);
+None of those have showed up in an actual release yet, so why should
+they be included "early"?
 
-				do {
-					something;
-				} while (atomic_read(&common->tx_thread.thread_done) == 0);
-				// exit after done
-				kthread_complete_and_exit(&common->tx_thread.completion, 0);
+thanks,
 
-	kthread_stop(handle->task); // uaf
-
-> Therefore, to prevent this with minimal modification, you must remove
-> kthread_stop() and change the code to wait until the self-exit operation
-> is completed.
-> 
-> Cc: <stable@vger.kernel.org>
-> Reported-by: syzbot+5de83f57cd8531f55596@syzkaller.appspotmail.com
-> Closes: https://lore.kernel.org/all/69e5d03b.a00a0220.1bd0ca.0064.GAE@google.com/
-> Fixes: 4c62764d0fc2 ("rsi: improve kernel thread handling to fix kernel panic")
-> Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-> ---
->  drivers/net/wireless/rsi/rsi_common.h | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/rsi/rsi_common.h b/drivers/net/wireless/rsi/rsi_common.h
-> index 591602beeec6..3cdf9ded876d 100644
-> --- a/drivers/net/wireless/rsi/rsi_common.h
-> +++ b/drivers/net/wireless/rsi/rsi_common.h
-> @@ -70,12 +70,11 @@ static inline int rsi_create_kthread(struct rsi_common *common,
->  	return 0;
->  }
->  
-> -static inline int rsi_kill_thread(struct rsi_thread *handle)
-> +static inline void rsi_kill_thread(struct rsi_thread *handle)
->  {
->  	atomic_inc(&handle->thread_done);
->  	rsi_set_event(&handle->event);
-> -
-> -	return kthread_stop(handle->task);
-> +	wait_for_completion(&handle->completion);
->  }
->  
->  void rsi_mac80211_detach(struct rsi_hw *hw);
-> --
-> 
+gregk -h
 
