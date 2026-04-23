@@ -1,78 +1,59 @@
-Return-Path: <stable+bounces-240432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240433-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6EmIGIjK6WnAkAIAu9opvQ
-	(envelope-from <stable+bounces-240432-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 09:30:16 +0200
+	id wGaUMNLM6WkKkgIAu9opvQ
+	(envelope-from <stable+bounces-240433-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 09:40:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B95244DFAA
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 09:30:15 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF36644E0E8
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 09:40:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1F44D3009F32
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 07:30:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 54E86301ABBA
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 07:39:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ED0B30BB8D;
-	Thu, 23 Apr 2026 07:30:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76C5B30BB8C;
+	Thu, 23 Apr 2026 07:39:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="bS9B5PlZ"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="A2OqDnrN"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C91592F6596;
-	Thu, 23 Apr 2026 07:29:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8111830595C;
+	Thu, 23 Apr 2026 07:39:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776929402; cv=none; b=T+9pILRXR07mYZ6637DsSqZ10Ef1d+ySVSOlX5U001doFGh29WLByuR3AjoslhXjwJEdm7W8rBOxU+6EoePITgC/bIQqwtIcUUhPmX73CYkc5JSL25Q45wZ3g/E0ro3yssdlTr0SULe3/CQ9b1jCwH4y2zZHMJEAUi8WZA1dyco=
+	t=1776929992; cv=none; b=TEBPT6wl7FXnLgqbLFr2caUFv1JJW5aNuAYd106kiogrurbil5aDuxyqlSLQyNdEGvbtMokna/UVAcQ0mJ5yFniM0fTQP9CUYO2MkCNeMiKfeQ7OJF8lMFqv7t6M4vgYIsoE15R+mwT/QueaFLCVMokDcwJN7GYB1pSvoyZasME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776929402; c=relaxed/simple;
-	bh=yo8fG/qXz7Jdmem42yieCkMHYPxwpZndyUqM+3OyGVc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=XPde4SM/ipKsD3yvK61DEGturXWUlBkBHtRWTVwOx65adit3YBGpoLuQb+KgO57KxmMQZxIk7CKJrJlTGOKEwfOQi181IEuExQRhyoYfD7LuPwbsMxbOe/168Esw+eYfJygPtthB9PdCERQm4kX3zXHRRFgmndwIJuqsYViZIdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=bS9B5PlZ; arc=none smtp.client-ip=117.135.210.3
+	s=arc-20240116; t=1776929992; c=relaxed/simple;
+	bh=1Pq47hVZbphU/+I1iiDvZirGah4H1IwyQaY6xggwXRI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=QhW2QWd/5pWVaMtveYVPC/v1Ppx4fmtJSNI90+2sdqkGKqIDM93KwjN8Xnjk5RpZ+YDRCZxkT1wJ/k7ZIMw7HSpe7P6GIHlRjtLEwFbahCpNB7xnh7VvFtQVZESuc6d9qKuiUjhjP5gaEIUuZMXVkVzEok6TPcGmkCE8XwWWr5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=A2OqDnrN; arc=none smtp.client-ip=117.135.210.2
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version:
-	Content-Type; bh=ZqmFIZQNzLju/LPLC25sB/+v3To0tZhI3EY/5leSH8E=;
-	b=bS9B5PlZMRciiod03TuWp04VXfwLIu3Pd85DNgPwbkBibmCh8ZAVl9iMLQMGmv
-	hPJYZo7UzWGZHEsZuHr9ud0C25/Fsx7zCzaoNIAqrdcgKQ9rbpvSMRkwnt/9yNed
-	hTsUh4JbEWS+GwPQ7+wA+SU+ljUlm9Ix0mxaSAIiL9W2o=
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Io
+	FPxMS70khgTGXGferxsRnIrCPyg+kivGt85Qun7iI=; b=A2OqDnrNOzw5hGlQwf
+	WnImK48FUST82KYMOiSZiOg5mOdwDU3JzXuTYyDyB/oYKmHac3nSPBLO+0vtWa+O
+	O/NS6IMw6/NiuQexmWems8Q5m/GUSlBdIl+kVVbdF4AkbUYmXY7aUgseCqTItDA9
+	0oeF9t7pGhIvVb7aFAQNObJDg=
 Received: from pek-lpg-core5.wrs.com (unknown [])
-	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wD3_9wVyulpx2gVBQ--.33882S2;
-	Thu, 23 Apr 2026 15:28:22 +0800 (CST)
+	by gzsmtp4 (Coremail) with SMTP id PygvCgBHCRCCzOlpjMVvBA--.61S2;
+	Thu, 23 Apr 2026 15:38:45 +0800 (CST)
 From: Robert Garcia <rob_garcia@163.com>
 To: stable@vger.kernel.org,
-	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>
-Cc: "Martin K . Petersen" <martin.petersen@oracle.com>,
+	Filipe Manana <fdmanana@suse.com>
+Cc: David Sterba <dsterba@suse.com>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Chris Mason <clm@fb.com>,
 	Robert Garcia <rob_garcia@163.com>,
-	Bean Huo <beanhuo@micron.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	Avri Altman <avri.altman@wdc.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"James E . J . Bottomley" <jejb@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Peter Wang <peter.wang@mediatek.com>,
-	Wang Shuaiwei <wangshuaiwei1@xiaomi.com>,
-	Eric Biggers <ebiggers@google.com>,
-	Manish Pandey <quic_mapa@quicinc.com>,
-	Brian Kao <powenkao@google.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Archana Patni <archana.patni@intel.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Jens Axboe <axboe@kernel.dk>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Mike Snitzer <snitzer@redhat.com>,
-	Satya Tangirala <satyat@google.com>,
-	linux-scsi@vger.kernel.org,
+	linux-btrfs@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 6.1.y] scsi: ufs: core: Fix use-after free in init error and remove paths
-Date: Thu, 23 Apr 2026 15:28:21 +0800
-Message-Id: <20260423072821.3454022-1-rob_garcia@163.com>
+Subject: [PATCH 5.15.y] btrfs: lock the inode in shared mode before starting fiemap
+Date: Thu, 23 Apr 2026 15:38:42 +0800
+Message-Id: <20260423073842.3827122-1-rob_garcia@163.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -80,289 +61,215 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3_9wVyulpx2gVBQ--.33882S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxtw13XFWfGw4DWryDKrWkCrg_yoW3uFykpF
-	WYqay5Ar4kGr42gr1UJw48CFyrKw4xG345GrZ2934ruw1jkFn3Xa4vyF109F15GFZxZ3WU
-	XFWjyw48u3W7XaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zRewZ7UUUUU=
-X-CM-SenderInfo: 5uresw5dufxti6rwjhhfrp/xtbDAReM92npyhdG-gAA3I
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-CM-TRANSID:PygvCgBHCRCCzOlpjMVvBA--.61S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxKrW7WF15AFW3Cr43Ar1rXrb_yoWfXFyxpr
+	ya9r1UGws5W34DWrZ7Ca1kZr1Fgws8Aay7Xr4xGrn8ZF1UXr17Jr1ktr47Xa1DJrs7JFya
+	vF4v93y8Kw4DtaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0z_WlkDUUUUU=
+X-CM-SenderInfo: 5uresw5dufxti6rwjhhfrp/xtbDAgYplGnpzIa32gAA3e
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[27];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_FROM(0.00)[163.com];
-	TAGGED_FROM(0.00)[bounces-240432-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[163.com:+];
+	TAGGED_FROM(0.00)[bounces-240433-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[suse.com,toxicpanda.com,fb.com,163.com,vger.kernel.org];
 	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[163.com];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[rob_garcia@163.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[oracle.com,163.com,micron.com,linaro.org,kernel.org,samsung.com,wdc.com,acm.org,linux.ibm.com,mediatek.com,xiaomi.com,google.com,quicinc.com,linuxfoundation.org,intel.com,arndb.de,kernel.dk,redhat.com,vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[163.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4B95244DFAA
+	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,appspotmail.com:email,toxicpanda.com:email]
+X-Rspamd-Queue-Id: DF36644E0E8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: André Draszik <andre.draszik@linaro.org>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit f8fb2403ddebb5eea0033d90d9daae4c88749ada ]
+[ Upstream commit 519b7e13b5ae8dd38da1e52275705343be6bb508 ]
 
-devm_blk_crypto_profile_init() registers a cleanup handler to run when
-the associated (platform-) device is being released. For UFS, the
-crypto private data and pointers are stored as part of the ufs_hba's
-data structure 'struct ufs_hba::crypto_profile'. This structure is
-allocated as part of the underlying ufshcd and therefore Scsi_host
-allocation.
+Currently fiemap does not take the inode's lock (VFS lock), it only locks
+a file range in the inode's io tree. This however can lead to a deadlock
+if we have a concurrent fsync on the file and fiemap code triggers a fault
+when accessing the user space buffer with fiemap_fill_next_extent(). The
+deadlock happens on the inode's i_mmap_lock semaphore, which is taken both
+by fsync and btrfs_page_mkwrite(). This deadlock was recently reported by
+syzbot and triggers a trace like the following:
 
-During driver release or during error handling in ufshcd_pltfrm_init(),
-this structure is released as part of ufshcd_dealloc_host() before the
-(platform-) device associated with the crypto call above is released.
-Once this device is released, the crypto cleanup code will run, using
-the just-released 'struct ufs_hba::crypto_profile'. This causes a
-use-after-free situation:
+   task:syz-executor361 state:D stack:20264 pid:5668  ppid:5119   flags:0x00004004
+   Call Trace:
+    <TASK>
+    context_switch kernel/sched/core.c:5293 [inline]
+    __schedule+0x995/0xe20 kernel/sched/core.c:6606
+    schedule+0xcb/0x190 kernel/sched/core.c:6682
+    wait_on_state fs/btrfs/extent-io-tree.c:707 [inline]
+    wait_extent_bit+0x577/0x6f0 fs/btrfs/extent-io-tree.c:751
+    lock_extent+0x1c2/0x280 fs/btrfs/extent-io-tree.c:1742
+    find_lock_delalloc_range+0x4e6/0x9c0 fs/btrfs/extent_io.c:488
+    writepage_delalloc+0x1ef/0x540 fs/btrfs/extent_io.c:1863
+    __extent_writepage+0x736/0x14e0 fs/btrfs/extent_io.c:2174
+    extent_write_cache_pages+0x983/0x1220 fs/btrfs/extent_io.c:3091
+    extent_writepages+0x219/0x540 fs/btrfs/extent_io.c:3211
+    do_writepages+0x3c3/0x680 mm/page-writeback.c:2581
+    filemap_fdatawrite_wbc+0x11e/0x170 mm/filemap.c:388
+    __filemap_fdatawrite_range mm/filemap.c:421 [inline]
+    filemap_fdatawrite_range+0x175/0x200 mm/filemap.c:439
+    btrfs_fdatawrite_range fs/btrfs/file.c:3850 [inline]
+    start_ordered_ops fs/btrfs/file.c:1737 [inline]
+    btrfs_sync_file+0x4ff/0x1190 fs/btrfs/file.c:1839
+    generic_write_sync include/linux/fs.h:2885 [inline]
+    btrfs_do_write_iter+0xcd3/0x1280 fs/btrfs/file.c:1684
+    call_write_iter include/linux/fs.h:2189 [inline]
+    new_sync_write fs/read_write.c:491 [inline]
+    vfs_write+0x7dc/0xc50 fs/read_write.c:584
+    ksys_write+0x177/0x2a0 fs/read_write.c:637
+    do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+    do_syscall_64+0x3d/0xb0 arch/x86/entry/common.c:80
+    entry_SYSCALL_64_after_hwframe+0x63/0xcd
+   RIP: 0033:0x7f7d4054e9b9
+   RSP: 002b:00007f7d404fa2f8 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+   RAX: ffffffffffffffda RBX: 00007f7d405d87a0 RCX: 00007f7d4054e9b9
+   RDX: 0000000000000090 RSI: 0000000020000000 RDI: 0000000000000006
+   RBP: 00007f7d405a51d0 R08: 0000000000000000 R09: 0000000000000000
+   R10: 0000000000000000 R11: 0000000000000246 R12: 61635f65646f6e69
+   R13: 65646f7475616f6e R14: 7261637369646f6e R15: 00007f7d405d87a8
+    </TASK>
+   INFO: task syz-executor361:5697 blocked for more than 145 seconds.
+         Not tainted 6.2.0-rc3-syzkaller-00376-g7c6984405241 #0
+   "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+   task:syz-executor361 state:D stack:21216 pid:5697  ppid:5119   flags:0x00004004
+   Call Trace:
+    <TASK>
+    context_switch kernel/sched/core.c:5293 [inline]
+    __schedule+0x995/0xe20 kernel/sched/core.c:6606
+    schedule+0xcb/0x190 kernel/sched/core.c:6682
+    rwsem_down_read_slowpath+0x5f9/0x930 kernel/locking/rwsem.c:1095
+    __down_read_common+0x54/0x2a0 kernel/locking/rwsem.c:1260
+    btrfs_page_mkwrite+0x417/0xc80 fs/btrfs/inode.c:8526
+    do_page_mkwrite+0x19e/0x5e0 mm/memory.c:2947
+    wp_page_shared+0x15e/0x380 mm/memory.c:3295
+    handle_pte_fault mm/memory.c:4949 [inline]
+    __handle_mm_fault mm/memory.c:5073 [inline]
+    handle_mm_fault+0x1b79/0x26b0 mm/memory.c:5219
+    do_user_addr_fault+0x69b/0xcb0 arch/x86/mm/fault.c:1428
+    handle_page_fault arch/x86/mm/fault.c:1519 [inline]
+    exc_page_fault+0x7a/0x110 arch/x86/mm/fault.c:1575
+    asm_exc_page_fault+0x22/0x30 arch/x86/include/asm/idtentry.h:570
+   RIP: 0010:copy_user_short_string+0xd/0x40 arch/x86/lib/copy_user_64.S:233
+   Code: 74 0a 89 (...)
+   RSP: 0018:ffffc9000570f330 EFLAGS: 00050202
+   RAX: ffffffff843e6601 RBX: 00007fffffffefc8 RCX: 0000000000000007
+   RDX: 0000000000000000 RSI: ffffc9000570f3e0 RDI: 0000000020000120
+   RBP: ffffc9000570f490 R08: 0000000000000000 R09: fffff52000ae1e83
+   R10: fffff52000ae1e83 R11: 1ffff92000ae1e7c R12: 0000000000000038
+   R13: ffffc9000570f3e0 R14: 0000000020000120 R15: ffffc9000570f3e0
+    copy_user_generic arch/x86/include/asm/uaccess_64.h:37 [inline]
+    raw_copy_to_user arch/x86/include/asm/uaccess_64.h:58 [inline]
+    _copy_to_user+0xe9/0x130 lib/usercopy.c:34
+    copy_to_user include/linux/uaccess.h:169 [inline]
+    fiemap_fill_next_extent+0x22e/0x410 fs/ioctl.c:144
+    emit_fiemap_extent+0x22d/0x3c0 fs/btrfs/extent_io.c:3458
+    fiemap_process_hole+0xa00/0xad0 fs/btrfs/extent_io.c:3716
+    extent_fiemap+0xe27/0x2100 fs/btrfs/extent_io.c:3922
+    btrfs_fiemap+0x172/0x1e0 fs/btrfs/inode.c:8209
+    ioctl_fiemap fs/ioctl.c:219 [inline]
+    do_vfs_ioctl+0x185b/0x2980 fs/ioctl.c:810
+    __do_sys_ioctl fs/ioctl.c:868 [inline]
+    __se_sys_ioctl+0x83/0x170 fs/ioctl.c:856
+    do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+    do_syscall_64+0x3d/0xb0 arch/x86/entry/common.c:80
+    entry_SYSCALL_64_after_hwframe+0x63/0xcd
+   RIP: 0033:0x7f7d4054e9b9
+   RSP: 002b:00007f7d390d92f8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+   RAX: ffffffffffffffda RBX: 00007f7d405d87b0 RCX: 00007f7d4054e9b9
+   RDX: 0000000020000100 RSI: 00000000c020660b RDI: 0000000000000005
+   RBP: 00007f7d405a51d0 R08: 00007f7d390d9700 R09: 0000000000000000
+   R10: 00007f7d390d9700 R11: 0000000000000246 R12: 61635f65646f6e69
+   R13: 65646f7475616f6e R14: 7261637369646f6e R15: 00007f7d405d87b8
+    </TASK>
 
-  Call trace:
-   kfree+0x60/0x2d8 (P)
-   kvfree+0x44/0x60
-   blk_crypto_profile_destroy_callback+0x28/0x70
-   devm_action_release+0x1c/0x30
-   release_nodes+0x6c/0x108
-   devres_release_all+0x98/0x100
-   device_unbind_cleanup+0x20/0x70
-   really_probe+0x218/0x2d0
+What happens is the following:
 
-In other words, the initialisation code flow is:
+1) Task A is doing an fsync, enters btrfs_sync_file() and flushes delalloc
+   before locking the inode and the i_mmap_lock semaphore, that is, before
+   calling btrfs_inode_lock();
 
-  platform-device probe
-    ufshcd_pltfrm_init()
-      ufshcd_alloc_host()
-        scsi_host_alloc()
-          allocation of struct ufs_hba
-          creation of scsi-host devices
-    devm_blk_crypto_profile_init()
-      devm registration of cleanup handler using platform-device
+2) After task A flushes delalloc and before it calls btrfs_inode_lock(),
+   another task dirties a page;
 
-and during error handling of ufshcd_pltfrm_init() or during driver
-removal:
+3) Task B starts a fiemap without FIEMAP_FLAG_SYNC, so the page dirtied
+   at step 2 remains dirty and unflushed. Then when it enters
+   extent_fiemap() and it locks a file range that includes the range of
+   the page dirtied in step 2;
 
-  ufshcd_dealloc_host()
-    scsi_host_put()
-      put_device(scsi-host)
-        release of struct ufs_hba
-  put_device(platform-device)
-    crypto cleanup handler
+4) Task A calls btrfs_inode_lock() and locks the inode (VFS lock) and the
+   inode's i_mmap_lock semaphore in write mode. Then it tries to flush
+   delalloc by calling start_ordered_ops(), which will block, at
+   find_lock_delalloc_range(), when trying to lock the range of the page
+   dirtied at step 2, since this range was locked by the fiemap task (at
+   step 3);
 
-To fix this use-after free, change ufshcd_alloc_host() to register a
-devres action to automatically cleanup the underlying SCSI device on
-ufshcd destruction, without requiring explicit calls to
-ufshcd_dealloc_host(). This way:
+5) Task B generates a page fault when accessing the user space fiemap
+   buffer with a call to fiemap_fill_next_extent().
 
-    * the crypto profile and all other ufs_hba-owned resources are
-      destroyed before SCSI (as they've been registered after)
-    * a memleak is plugged in tc-dwc-g210-pci.c remove() as a
-      side-effect
-    * EXPORT_SYMBOL_GPL(ufshcd_dealloc_host) can be removed fully as
-      it's not needed anymore
-    * no future drivers using ufshcd_alloc_host() could ever forget
-      adding the cleanup
+   The fault handler needs to call btrfs_page_mkwrite() for some other
+   page of our inode, and there we deadlock when trying to lock the
+   inode's i_mmap_lock semaphore in read mode, since the fsync task locked
+   it in write mode (step 4) and the fsync task can not progress because
+   it's waiting to lock a file range that is currently locked by us (the
+   fiemap task, step 3).
 
-Fixes: cb77cb5abe1f ("blk-crypto: rename blk_keyslot_manager to blk_crypto_profile")
-Fixes: d76d9d7d1009 ("scsi: ufs: use devm_blk_ksm_init()")
-Cc: stable@vger.kernel.org
-Signed-off-by: André Draszik <andre.draszik@linaro.org>
-Link: https://lore.kernel.org/r/20250124-ufshcd-fix-v4-1-c5d0144aae59@linaro.org
-Reviewed-by: Bean Huo <beanhuo@micron.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Acked-by: Eric Biggers <ebiggers@kernel.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-[ Delete modifications about ufshcd_parse_operating_points() for it's added from
-commit 72208ebe181e3("scsi: ufs: core: Add support for parsing OPP")
-and that in ufshcd_pltfrm_remove() for it's added from commit
-897df60c16d54("scsi: ufs: pltfrm: Dellocate HBA during ufshcd_pltfrm_remove()"). ]
+Fix this by taking the inode's lock (VFS lock) in shared mode when
+entering fiemap. This effectively serializes fiemap with fsync (except the
+most expensive part of fsync, the log sync), preventing this deadlock.
+
+Reported-by: syzbot+cc35f55c41e34c30dcb5@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/linux-btrfs/00000000000032dc7305f2a66f46@google.com/
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Robert Garcia <rob_garcia@163.com>
 ---
- drivers/ufs/core/ufshcd.c        | 31 +++++++++++++++++++++----------
- drivers/ufs/host/ufshcd-pci.c    |  2 --
- drivers/ufs/host/ufshcd-pltfrm.c | 25 ++++++++-----------------
- include/ufs/ufshcd.h             |  1 -
- 4 files changed, 29 insertions(+), 30 deletions(-)
+ fs/btrfs/extent_io.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index a39ffc62d88a..f8f64b8f111c 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -9661,16 +9661,6 @@ void ufshcd_remove(struct ufs_hba *hba)
- }
- EXPORT_SYMBOL_GPL(ufshcd_remove);
- 
--/**
-- * ufshcd_dealloc_host - deallocate Host Bus Adapter (HBA)
-- * @hba: pointer to Host Bus Adapter (HBA)
-- */
--void ufshcd_dealloc_host(struct ufs_hba *hba)
--{
--	scsi_host_put(hba->host);
--}
--EXPORT_SYMBOL_GPL(ufshcd_dealloc_host);
--
- /**
-  * ufshcd_set_dma_mask - Set dma mask based on the controller
-  *			 addressing capability
-@@ -9689,11 +9679,25 @@ static int ufshcd_set_dma_mask(struct ufs_hba *hba)
- 	return dma_set_mask_and_coherent(hba->dev, DMA_BIT_MASK(32));
- }
- 
-+/**
-+ * ufshcd_devres_release - devres cleanup handler, invoked during release of
-+ *			   hba->dev
-+ * @host: pointer to SCSI host
-+ */
-+static void ufshcd_devres_release(void *host)
-+{
-+	scsi_host_put(host);
-+}
-+
- /**
-  * ufshcd_alloc_host - allocate Host Bus Adapter (HBA)
-  * @dev: pointer to device handle
-  * @hba_handle: driver private handle
-  * Returns 0 on success, non-zero value on failure
-+ *
-+ * NOTE: There is no corresponding ufshcd_dealloc_host() because this function
-+ * keeps track of its allocations using devres and deallocates everything on
-+ * device removal automatically.
-  */
- int ufshcd_alloc_host(struct device *dev, struct ufs_hba **hba_handle)
- {
-@@ -9715,6 +9719,13 @@ int ufshcd_alloc_host(struct device *dev, struct ufs_hba **hba_handle)
- 		err = -ENOMEM;
- 		goto out_error;
- 	}
-+
-+	err = devm_add_action_or_reset(dev, ufshcd_devres_release,
-+				       host);
-+	if (err)
-+		return dev_err_probe(dev, err,
-+				     "failed to add ufshcd dealloc action\n");
-+
- 	host->nr_maps = HCTX_TYPE_POLL + 1;
- 	hba = shost_priv(host);
- 	hba->host = host;
-diff --git a/drivers/ufs/host/ufshcd-pci.c b/drivers/ufs/host/ufshcd-pci.c
-index 9d4b0bda0819..9efe0ad9da8f 100644
---- a/drivers/ufs/host/ufshcd-pci.c
-+++ b/drivers/ufs/host/ufshcd-pci.c
-@@ -629,7 +629,6 @@ static void ufshcd_pci_remove(struct pci_dev *pdev)
- 	pm_runtime_forbid(&pdev->dev);
- 	pm_runtime_get_noresume(&pdev->dev);
- 	ufshcd_remove(hba);
--	ufshcd_dealloc_host(hba);
- }
- 
- /**
-@@ -674,7 +673,6 @@ ufshcd_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	err = ufshcd_init(hba, mmio_base, pdev->irq);
- 	if (err) {
- 		dev_err(&pdev->dev, "Initialization failed\n");
--		ufshcd_dealloc_host(hba);
- 		return err;
+diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+index 3b671e9bf684..659f3eae9ab9 100644
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -5591,6 +5591,7 @@ int extent_fiemap(struct btrfs_inode *inode, struct fiemap_extent_info *fieinfo,
+ 		last_for_get_extent = isize;
  	}
  
-diff --git a/drivers/ufs/host/ufshcd-pltfrm.c b/drivers/ufs/host/ufshcd-pltfrm.c
-index 5739ff007828..44668edc3224 100644
---- a/drivers/ufs/host/ufshcd-pltfrm.c
-+++ b/drivers/ufs/host/ufshcd-pltfrm.c
-@@ -343,21 +343,17 @@ int ufshcd_pltfrm_init(struct platform_device *pdev,
- 	struct device *dev = &pdev->dev;
++	btrfs_inode_lock(&inode->vfs_inode, BTRFS_ILOCK_SHARED);
+ 	lock_extent_bits(&inode->io_tree, start, start + len - 1,
+ 			 &cached_state);
  
- 	mmio_base = devm_platform_ioremap_resource(pdev, 0);
--	if (IS_ERR(mmio_base)) {
--		err = PTR_ERR(mmio_base);
--		goto out;
--	}
-+	if (IS_ERR(mmio_base))
-+		return PTR_ERR(mmio_base);
+@@ -5706,6 +5707,7 @@ int extent_fiemap(struct btrfs_inode *inode, struct fiemap_extent_info *fieinfo,
+ out:
+ 	unlock_extent_cached(&inode->io_tree, start, start + len - 1,
+ 			     &cached_state);
++	btrfs_inode_unlock(&inode->vfs_inode, BTRFS_ILOCK_SHARED);
  
- 	irq = platform_get_irq(pdev, 0);
--	if (irq < 0) {
--		err = irq;
--		goto out;
--	}
-+	if (irq < 0)
-+		return irq;
- 
- 	err = ufshcd_alloc_host(dev, &hba);
- 	if (err) {
- 		dev_err(dev, "Allocation failed\n");
--		goto out;
-+		return err;
- 	}
- 
- 	hba->vops = vops;
-@@ -366,13 +362,13 @@ int ufshcd_pltfrm_init(struct platform_device *pdev,
- 	if (err) {
- 		dev_err(dev, "%s: clock parse failed %d\n",
- 				__func__, err);
--		goto dealloc_host;
-+		return err;
- 	}
- 	err = ufshcd_parse_regulator_info(hba);
- 	if (err) {
- 		dev_err(dev, "%s: regulator init failed %d\n",
- 				__func__, err);
--		goto dealloc_host;
-+		return err;
- 	}
- 
- 	ufshcd_init_lanes_per_dir(hba);
-@@ -380,18 +376,13 @@ int ufshcd_pltfrm_init(struct platform_device *pdev,
- 	err = ufshcd_init(hba, mmio_base, irq);
- 	if (err) {
- 		dev_err(dev, "Initialization failed\n");
--		goto dealloc_host;
-+		return err;
- 	}
- 
- 	pm_runtime_set_active(dev);
- 	pm_runtime_enable(dev);
- 
- 	return 0;
--
--dealloc_host:
--	ufshcd_dealloc_host(hba);
--out:
--	return err;
- }
- EXPORT_SYMBOL_GPL(ufshcd_pltfrm_init);
- 
-diff --git a/include/ufs/ufshcd.h b/include/ufs/ufshcd.h
-index 54bcbfe66163..db93a86e57ff 100644
---- a/include/ufs/ufshcd.h
-+++ b/include/ufs/ufshcd.h
-@@ -1063,7 +1063,6 @@ static inline void ufshcd_rmwl(struct ufs_hba *hba, u32 mask, u32 val, u32 reg)
- }
- 
- int ufshcd_alloc_host(struct device *, struct ufs_hba **);
--void ufshcd_dealloc_host(struct ufs_hba *);
- int ufshcd_hba_enable(struct ufs_hba *hba);
- int ufshcd_init(struct ufs_hba *, void __iomem *, unsigned int);
- int ufshcd_link_recovery(struct ufs_hba *hba);
+ out_free_ulist:
+ 	btrfs_free_path(path);
 -- 
 2.34.1
 
