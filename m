@@ -1,276 +1,221 @@
-Return-Path: <stable+bounces-240433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240434-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wGaUMNLM6WkKkgIAu9opvQ
-	(envelope-from <stable+bounces-240433-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 09:40:02 +0200
+	id UAIKHL7O6Wm9kgIAu9opvQ
+	(envelope-from <stable+bounces-240434-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 09:48:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF36644E0E8
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 09:40:01 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCFBB44E227
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 09:48:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 54E86301ABBA
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 07:39:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 852853083D86
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 07:45:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76C5B30BB8C;
-	Thu, 23 Apr 2026 07:39:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A9E8292B44;
+	Thu, 23 Apr 2026 07:45:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="A2OqDnrN"
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="OMUQN4R5"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+Received: from SY2PR01CU004.outbound.protection.outlook.com (mail-australiaeastazolkn19011030.outbound.protection.outlook.com [52.103.72.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8111830595C;
-	Thu, 23 Apr 2026 07:39:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776929992; cv=none; b=TEBPT6wl7FXnLgqbLFr2caUFv1JJW5aNuAYd106kiogrurbil5aDuxyqlSLQyNdEGvbtMokna/UVAcQ0mJ5yFniM0fTQP9CUYO2MkCNeMiKfeQ7OJF8lMFqv7t6M4vgYIsoE15R+mwT/QueaFLCVMokDcwJN7GYB1pSvoyZasME=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776929992; c=relaxed/simple;
-	bh=1Pq47hVZbphU/+I1iiDvZirGah4H1IwyQaY6xggwXRI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=QhW2QWd/5pWVaMtveYVPC/v1Ppx4fmtJSNI90+2sdqkGKqIDM93KwjN8Xnjk5RpZ+YDRCZxkT1wJ/k7ZIMw7HSpe7P6GIHlRjtLEwFbahCpNB7xnh7VvFtQVZESuc6d9qKuiUjhjP5gaEIUuZMXVkVzEok6TPcGmkCE8XwWWr5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=A2OqDnrN; arc=none smtp.client-ip=117.135.210.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Io
-	FPxMS70khgTGXGferxsRnIrCPyg+kivGt85Qun7iI=; b=A2OqDnrNOzw5hGlQwf
-	WnImK48FUST82KYMOiSZiOg5mOdwDU3JzXuTYyDyB/oYKmHac3nSPBLO+0vtWa+O
-	O/NS6IMw6/NiuQexmWems8Q5m/GUSlBdIl+kVVbdF4AkbUYmXY7aUgseCqTItDA9
-	0oeF9t7pGhIvVb7aFAQNObJDg=
-Received: from pek-lpg-core5.wrs.com (unknown [])
-	by gzsmtp4 (Coremail) with SMTP id PygvCgBHCRCCzOlpjMVvBA--.61S2;
-	Thu, 23 Apr 2026 15:38:45 +0800 (CST)
-From: Robert Garcia <rob_garcia@163.com>
-To: stable@vger.kernel.org,
-	Filipe Manana <fdmanana@suse.com>
-Cc: David Sterba <dsterba@suse.com>,
-	Josef Bacik <josef@toxicpanda.com>,
-	Chris Mason <clm@fb.com>,
-	Robert Garcia <rob_garcia@163.com>,
-	linux-btrfs@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 5.15.y] btrfs: lock the inode in shared mode before starting fiemap
-Date: Thu, 23 Apr 2026 15:38:42 +0800
-Message-Id: <20260423073842.3827122-1-rob_garcia@163.com>
-X-Mailer: git-send-email 2.34.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAF762F39B8;
+	Thu, 23 Apr 2026 07:45:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.72.30
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776930324; cv=fail; b=JBXT+ozKE2TMeLcHAw1hJRn6/j5SbpBOPV2glNpnl4LuiXNuhKWoHV612JMN4wNhPDieycfgvib1r8DRk6ZXjgXGDub1UHfD7jFARlHSTsKGu1o2JMlHNpQSCf6jaXzADFNzU0At63c5feksdTviE3Pa8sjZv7WUGKG3zPO6oU8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776930324; c=relaxed/simple;
+	bh=sPzuiGE62Xgdf6d8+gf4Nha0jK3pqg7sZzzUWEDggrc=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=ihcpofZtpPNftYhm7yu+n/WxzBj9xjMEMCiF5mNSb4iosFvmOQo0SqWTyNYU1W1YAMUWaEr4qSk5L6gBDK4cR/d+rEc/XhiiRBb7m8XH3P4UNbGWnF2hcX1k41ZeOLiEPBBhTBmn+/MVmwAU6Rm2rAzgZa2afePF4n8ko3hUYTU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=OMUQN4R5; arc=fail smtp.client-ip=52.103.72.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ci8H6RNkgSYwWcJxZTD03/YvJObxMQy6dWuIsPQyMhF0zsJjrtFMaKPVe1AUHLSwNVBQtDgIXaZ4GQg9vLRS7rn+WzF1Ogz/+aFmL4IcTWs0jEiM54E0Ka/mfyRnngnJwB6XH8uq9gVJU5659ZNpfXA28PTujgSU+QCqXNvXItM8e6kVcwfMJdAWOAD9JtV426P0WvwbEwIfErNgAe1d2710PQBG/9+QrzurOvSH+UU+UqaiCaFFaU7lQEj0F6PnFmGku7SU+pjEp4j3AAUt/SehXEUQ1pMl0bPzRfNh8P4sD8F91jwJvhVyR434eI1VUE3CtA6CxRxsP8h99TMRPA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=LAEhTP2M8vFdw1tD3vUjMCCyrMySL23feXdTefUqxpQ=;
+ b=VPKxjij62j6AfH2WIlP7DY+JguqqaT4jgkLBASBWAPelOKrFsK3V7njuZB6sNe381gPp8XHy5zIhFJHJgsixqmqdGctu9NhvBJ8V2s8vxCY19vIL8DkWpW636x69yKUaXltnVBa3HvWwdvGXVm23GXpy4J0pEAfuXVZeL9uOck/w9SGM3xN2lWyg0/GapPN/PWZmXzBNb4X3jxZL+SyO6DXaSv3CYPO1bGW3EfSyZupWoWdCdyWG0dtBH5+iaTJugl/7mURRV2fv9k9pYqJe7s7OtU046P1xW+0hsWyJuLvCII0WcnWep6WaP9SwSPiRmT8JoArOe4THrG98nuc9jg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=LAEhTP2M8vFdw1tD3vUjMCCyrMySL23feXdTefUqxpQ=;
+ b=OMUQN4R5v4bssHWI0TX0GHfIpU0y6KzV7SMbBVM73XIgsAY3ZG5c3CL7+qsyLv6IRozF6kFTORxb1S0NoFh82R2kq6VjSGwj8SQZKudq6qdfzlmq6a1F6qoGIY5GV+vfVWgHYPVR7gHuqkYtAvgKcF7rrBVnxKe8ljz+NcMxOczmUHmxh1bf8/BNNdsI5vG/59og3kZvFVdLeEJIJg9Ft2un+U5MDFOXjaSbRMWBH/VOeYYCzCD/lMoNPrJd71yDNrVC1ipsS918RuLZaPa4we4NbFhJ5oExrr5n3LBzqHno7XqAb60oWhHyI6bl5DsuXb/JGDTjkV1i7BhAz89Wtg==
+Received: from SYBPR01MB7881.ausprd01.prod.outlook.com (2603:10c6:10:1b0::5)
+ by ME5PR01MB10830.ausprd01.prod.outlook.com (2603:10c6:220:261::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.16; Thu, 23 Apr
+ 2026 07:45:17 +0000
+Received: from SYBPR01MB7881.ausprd01.prod.outlook.com
+ ([fe80::7cd2:d6e8:3fa0:5f0c]) by SYBPR01MB7881.ausprd01.prod.outlook.com
+ ([fe80::7cd2:d6e8:3fa0:5f0c%5]) with mapi id 15.20.9846.021; Thu, 23 Apr 2026
+ 07:45:16 +0000
+From: Junrui Luo <moonafterrain@outlook.com>
+To: James Bottomley <James.Bottomley@HansenPartnership.com>
+CC: Justin Tee <justin.tee@broadcom.com>, Paul Ely <paul.ely@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>, James Smart
+	<james.smart@emulex.com>, James Bottomley <James.Bottomley@suse.de>,
+	"linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Yuhao Jiang
+	<danisjiang@gmail.com>, "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH] scsi: lpfc: fix heap overflow in
+ lpfc_bsg_diag_loopback_run()
+Thread-Topic: [PATCH] scsi: lpfc: fix heap overflow in
+ lpfc_bsg_diag_loopback_run()
+Thread-Index: AQHc0jkEbPrp93J6QESyMQS8jMxCi7XrEz6AgAEyfAA=
+Date: Thu, 23 Apr 2026 07:45:16 +0000
+Message-ID: <E49826B4-1136-4DEA-8792-4FD708E1B2D2@outlook.com>
+References:
+ <SYBPR01MB7881DCD912ADB83C9D290F7AAF2D2@SYBPR01MB7881.ausprd01.prod.outlook.com>
+ <a265733e9bd63abe7be8f5e77e6a288247c4ad4c.camel@HansenPartnership.com>
+In-Reply-To:
+ <a265733e9bd63abe7be8f5e77e6a288247c4ad4c.camel@HansenPartnership.com>
+Accept-Language: en-US, zh-CN
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SYBPR01MB7881:EE_|ME5PR01MB10830:EE_
+x-ms-office365-filtering-correlation-id: 013b1e44-9d62-4fb1-f5c4-08dea10c42fe
+x-microsoft-antispam:
+ BCL:0;ARA:14566002|15080799012|22091999003|12121999013|24121999003|8060799015|8062599012|8022599003|461199028|24021099003|19110799012|55001999006|31061999003|3412199025|440099028|102099032;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?wT5zm/3tfeS0TpxaHk0yPzOyg9kw31LxH8IX8lxytb55qGBgP8hN3d+Ry0TC?=
+ =?us-ascii?Q?TY4zADE/L9dAgQHWBC0VyRlti+gXVgLbFT/beE54wo9BRb5d5RQC8ChBjpM1?=
+ =?us-ascii?Q?/PFffTE4xc8Aigr/SPwu4CcdsunE8gbBHAdEMzuHtVytZ5vQDO/sIgX2JLEZ?=
+ =?us-ascii?Q?gv8Blm7hT9plTgP9/boZUq+J1m/vJ7elZ8b1RIV/nswPFfhJDWxWMnQyDA1f?=
+ =?us-ascii?Q?RWg+YjQU/Io0p3sYnlCFlYRgy0F4DfQjd44gEELJc13oQ/DAi4/XJJJFczYV?=
+ =?us-ascii?Q?khLEOKuj+V24X9OZWf/rxHQE53iUeIDFUeH6n42URR1+zuoCNnBIXB472jN9?=
+ =?us-ascii?Q?SgFMpJ1u46uO6nwT1mXEvMIFlAth2xAssxsv5HiR52gcKzsmORH6i/uatXpL?=
+ =?us-ascii?Q?KTV0AslLQH19vkgXv3hKztmGxaQJ1zeV0Kd33ApEiboxrk5aRoipLH8qdUzm?=
+ =?us-ascii?Q?/JsNtHWfIGUr0HpVtnT3eWN7KvcVc4pRlp5K/SrQU6QLjZAvdbktAy99BpMK?=
+ =?us-ascii?Q?weTatLFwBdWcetk4JDDsCfTT1NL8MsxnbRbBtDpaaKlp2zmeWV2NypMreK/b?=
+ =?us-ascii?Q?HRk+qFSE0L4MA31lB5Um4yoYhrCHOOLLVT79037PYBF23zzIb2kvKUuzNjXJ?=
+ =?us-ascii?Q?3dJrBNqeYxxBc3lBaFcSXiCOw4D91REayQFIcsL7WLGkfQpncMAWnNdG0ADn?=
+ =?us-ascii?Q?cgGEXeF11QPDhSTKRrnhzvlMS2hB7Stzgy7wseuy3grBpWFSlUKiS9+YlwRT?=
+ =?us-ascii?Q?nNApaayrjEfx1RwLUdGf2DuJeO9JIS+NRwa2u8b840We9QJUV5K85PYliooX?=
+ =?us-ascii?Q?l1c+/emOEtXk36MoTU+sHI/yOfLBl1xD+ox1ZN4wvjgjeIjsp6bYb6p1baC1?=
+ =?us-ascii?Q?/myZewPE2PyziodVokWgO1bPc1+JlMZQXTvMxXynOuBb9Xn475Os6GYcsPaT?=
+ =?us-ascii?Q?EdQ0qq+NHqisdFloaj9LGse+DH+GnAOu/QOlffOBZVI+IXXIJo4qeimC1z/7?=
+ =?us-ascii?Q?y23QSH/gQfC6U7GzmBp/XygRtKcleJT8nF2KFpabfjkueSU=3D?=
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?UU3dexYOr58wnKwPMNeRO+PDW6975mlFsYB0JJ74vqpESRlFdLwYFNNJLSNV?=
+ =?us-ascii?Q?p6EicaSJCT0wq+TPFjRqdM98Rg882nRjYG82a9fNTj5GB5x6JGK2dXT7a5jO?=
+ =?us-ascii?Q?XnNzZUidsKXXVavzt+7c+aQVX4STdZckp3OL6JWMKTBXmT2N4PkMFbhl1qgY?=
+ =?us-ascii?Q?/GW1N6x9kZpSpkt7kRxtgv2qnpS7aMFR1XKOHxi/ako1G5o/Xj6eCbB7mXTc?=
+ =?us-ascii?Q?r1y/nrIYZwKisCDX1bbGFJ1ub1P4ADYfdgEQbyDSln+H97ecN0TMJ8rnD07J?=
+ =?us-ascii?Q?aAeSE5tyamyb5lIbWYyMFsZf1QuE1ymojA+Ze8Hz++AP77zdZ1wqcx5wLcxv?=
+ =?us-ascii?Q?EaydnGLOry+TvHp6UBOLFFi2ExODHmuD6FMoS8WvAjeabF89Po9yELlov64s?=
+ =?us-ascii?Q?8LyK5NrjzrR8XnK5SfdK6gcwNIHYGufuRf44H+M7xT9ekHQB1T0DFc1z4sQM?=
+ =?us-ascii?Q?SjjXzq2/lNhu63e8WQoQ9tgbvHNYYEqg2YJLJQIGpQF3ChVohOJPBPZ93FQL?=
+ =?us-ascii?Q?0X67le874vfEsKXCZqFSkwlk47K9tCrPbX1dSySG7rh7mqIVgkNdSM7ESUh2?=
+ =?us-ascii?Q?AHpEgHDnXjFkV+h2jWusb17sOWzlj4AGoZONuk/Ojkbnza7l5dPQCoO2oLJV?=
+ =?us-ascii?Q?223aKq+37HPBySEqHi41U02O0QjBDI2Ow5r5MxGBfl/T7tJsztKPnaxW+B2I?=
+ =?us-ascii?Q?5Tf07mo+Yc/sFqmT1enN+E0xvcXfgj2VKgO4ybG2Drz6WJvfYRDPVN2Ek2YU?=
+ =?us-ascii?Q?6uMfUdgZi3HEY9G8j4tgrbZ/RLNcgxmYOofer9+XmcnNEUeI05ZCMonjW2lD?=
+ =?us-ascii?Q?U8AJMkiIR5H4Cpr5z/qoEgVeXN3OTnS6fvbIq8ZcPn9oo7opDsj+bDDsDGvA?=
+ =?us-ascii?Q?uWltyBHQCFRP5xKXG+iHjfc5n6g5niNRWD/kqJuyI6QLk6YFDH3Y3qgoTiM1?=
+ =?us-ascii?Q?0J9UWPUc8Z2medZHNcaGgW9+M5pu+lDq+nzCHnjWbmPCz2dQHTcv9Xb1O9AW?=
+ =?us-ascii?Q?GvkTPtO8BUWF+XUOUAWPVrh3xa826GvBXzCqyT2goLmhGMFFqNWhrI5ex25b?=
+ =?us-ascii?Q?RN1TbLiX9dpNFhl9gSlji4kBmFi1zemYZhvjKzjnzxMyCX6R96Vi/IquLe/J?=
+ =?us-ascii?Q?HO2qtkV1uOv2oJS1cyZ882/2LIZGCcSLI/UOWGs0SMT/sHhXUk0OAairw9Vq?=
+ =?us-ascii?Q?hjP/3cfQGdFwUQLk5xHLBH/VZ64snR7dDKG2zT5VTCvYA1S0IAbhIhhIODVK?=
+ =?us-ascii?Q?9ehDSaovxgiS+j7ZVo3k6WINrIbtAeK3DATvnf4zR9oo5lxPiRpSlVKcGjMy?=
+ =?us-ascii?Q?C2Nd6Kp9R35HN1yMRenxhfvH34zSTRsWJGaW2jZl1pQACgwaELMXxS5Ghb6w?=
+ =?us-ascii?Q?uuvu+wNj37oogB61Q5MP0uMFc5NubRLebonPpv7U/9wsy4wEJw=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <6D9DD80996BE7C458262D72244A96A68@ausprd01.prod.outlook.com>
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PygvCgBHCRCCzOlpjMVvBA--.61S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxKrW7WF15AFW3Cr43Ar1rXrb_yoWfXFyxpr
-	ya9r1UGws5W34DWrZ7Ca1kZr1Fgws8Aay7Xr4xGrn8ZF1UXr17Jr1ktr47Xa1DJrs7JFya
-	vF4v93y8Kw4DtaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0z_WlkDUUUUU=
-X-CM-SenderInfo: 5uresw5dufxti6rwjhhfrp/xtbDAgYplGnpzIa32gAA3e
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SYBPR01MB7881.ausprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: 013b1e44-9d62-4fb1-f5c4-08dea10c42fe
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Apr 2026 07:45:16.8674
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: ME5PR01MB10830
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[outlook.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[outlook.com:s=selector1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-240433-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[suse.com,toxicpanda.com,fb.com,163.com,vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[163.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rob_garcia@163.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[163.com:+];
+	FREEMAIL_CC(0.00)[broadcom.com,oracle.com,emulex.com,suse.de,vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-240434-lists,stable=lfdr.de];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_FROM(0.00)[outlook.com];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[outlook.com:+];
+	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[moonafterrain@outlook.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,appspotmail.com:email,toxicpanda.com:email]
-X-Rspamd-Queue-Id: DF36644E0E8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,outlook.com:dkim,outlook.com:mid]
+X-Rspamd-Queue-Id: CCFBB44E227
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Filipe Manana <fdmanana@suse.com>
+On Wed, Apr 22, 2026 at 09:28:03AM -0400, James Bottomley wrote:
+> Are you sure?  The comment above the code you're changing says:
+>=20
+> /*
+>  * Allocate memory for ioctl data. If buffer is bigger than 64k,
+>  * then we allocate 64k and re-use that buffer over and over to
+>  * xfer the whole block. This is because Linux kernel has a
+>  * problem allocating more than 120k of kernel space memory. Saw
+>  * problem with GET_FCPTARGETMAPPING...
+>  */
+>=20
+> Which implies the intention is to allocate only 64kb if the payload
+> exceeds that and break the work into 64kb or less sized chunks.  So if
+> there is a problem here, it sounds like the loop over 64k chunks would
+> need fixing rather than the allocation.
+>=20
 
-[ Upstream commit 519b7e13b5ae8dd38da1e52275705343be6bb508 ]
+The chunked transfer described in the comment was never implemented.
+sg_copy_to_buffer() at line 3127 copies the full size bytes into
+dataout in one shot, and the list_for_each_entry loop reads from it
+linearly without any chunked reuse.
 
-Currently fiemap does not take the inode's lock (VFS lock), it only locks
-a file range in the inode's io tree. This however can lead to a deadlock
-if we have a concurrent fsync on the file and fiemap code triggers a fault
-when accessing the user space buffer with fiemap_fill_next_extent(). The
-deadlock happens on the inode's i_mmap_lock semaphore, which is taken both
-by fsync and btrfs_page_mkwrite(). This deadlock was recently reported by
-syzbot and triggers a trace like the following:
+The comment's concern about "Linux kernel has a problem allocating more
+than 120k" dates from 2010. Modern kmalloc supports up to
+4MB (KMALLOC_MAX_SIZE in include/linux/slab.h).
 
-   task:syz-executor361 state:D stack:20264 pid:5668  ppid:5119   flags:0x00004004
-   Call Trace:
-    <TASK>
-    context_switch kernel/sched/core.c:5293 [inline]
-    __schedule+0x995/0xe20 kernel/sched/core.c:6606
-    schedule+0xcb/0x190 kernel/sched/core.c:6682
-    wait_on_state fs/btrfs/extent-io-tree.c:707 [inline]
-    wait_extent_bit+0x577/0x6f0 fs/btrfs/extent-io-tree.c:751
-    lock_extent+0x1c2/0x280 fs/btrfs/extent-io-tree.c:1742
-    find_lock_delalloc_range+0x4e6/0x9c0 fs/btrfs/extent_io.c:488
-    writepage_delalloc+0x1ef/0x540 fs/btrfs/extent_io.c:1863
-    __extent_writepage+0x736/0x14e0 fs/btrfs/extent_io.c:2174
-    extent_write_cache_pages+0x983/0x1220 fs/btrfs/extent_io.c:3091
-    extent_writepages+0x219/0x540 fs/btrfs/extent_io.c:3211
-    do_writepages+0x3c3/0x680 mm/page-writeback.c:2581
-    filemap_fdatawrite_wbc+0x11e/0x170 mm/filemap.c:388
-    __filemap_fdatawrite_range mm/filemap.c:421 [inline]
-    filemap_fdatawrite_range+0x175/0x200 mm/filemap.c:439
-    btrfs_fdatawrite_range fs/btrfs/file.c:3850 [inline]
-    start_ordered_ops fs/btrfs/file.c:1737 [inline]
-    btrfs_sync_file+0x4ff/0x1190 fs/btrfs/file.c:1839
-    generic_write_sync include/linux/fs.h:2885 [inline]
-    btrfs_do_write_iter+0xcd3/0x1280 fs/btrfs/file.c:1684
-    call_write_iter include/linux/fs.h:2189 [inline]
-    new_sync_write fs/read_write.c:491 [inline]
-    vfs_write+0x7dc/0xc50 fs/read_write.c:584
-    ksys_write+0x177/0x2a0 fs/read_write.c:637
-    do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-    do_syscall_64+0x3d/0xb0 arch/x86/entry/common.c:80
-    entry_SYSCALL_64_after_hwframe+0x63/0xcd
-   RIP: 0033:0x7f7d4054e9b9
-   RSP: 002b:00007f7d404fa2f8 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-   RAX: ffffffffffffffda RBX: 00007f7d405d87a0 RCX: 00007f7d4054e9b9
-   RDX: 0000000000000090 RSI: 0000000020000000 RDI: 0000000000000006
-   RBP: 00007f7d405a51d0 R08: 0000000000000000 R09: 0000000000000000
-   R10: 0000000000000000 R11: 0000000000000246 R12: 61635f65646f6e69
-   R13: 65646f7475616f6e R14: 7261637369646f6e R15: 00007f7d405d87a8
-    </TASK>
-   INFO: task syz-executor361:5697 blocked for more than 145 seconds.
-         Not tainted 6.2.0-rc3-syzkaller-00376-g7c6984405241 #0
-   "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-   task:syz-executor361 state:D stack:21216 pid:5697  ppid:5119   flags:0x00004004
-   Call Trace:
-    <TASK>
-    context_switch kernel/sched/core.c:5293 [inline]
-    __schedule+0x995/0xe20 kernel/sched/core.c:6606
-    schedule+0xcb/0x190 kernel/sched/core.c:6682
-    rwsem_down_read_slowpath+0x5f9/0x930 kernel/locking/rwsem.c:1095
-    __down_read_common+0x54/0x2a0 kernel/locking/rwsem.c:1260
-    btrfs_page_mkwrite+0x417/0xc80 fs/btrfs/inode.c:8526
-    do_page_mkwrite+0x19e/0x5e0 mm/memory.c:2947
-    wp_page_shared+0x15e/0x380 mm/memory.c:3295
-    handle_pte_fault mm/memory.c:4949 [inline]
-    __handle_mm_fault mm/memory.c:5073 [inline]
-    handle_mm_fault+0x1b79/0x26b0 mm/memory.c:5219
-    do_user_addr_fault+0x69b/0xcb0 arch/x86/mm/fault.c:1428
-    handle_page_fault arch/x86/mm/fault.c:1519 [inline]
-    exc_page_fault+0x7a/0x110 arch/x86/mm/fault.c:1575
-    asm_exc_page_fault+0x22/0x30 arch/x86/include/asm/idtentry.h:570
-   RIP: 0010:copy_user_short_string+0xd/0x40 arch/x86/lib/copy_user_64.S:233
-   Code: 74 0a 89 (...)
-   RSP: 0018:ffffc9000570f330 EFLAGS: 00050202
-   RAX: ffffffff843e6601 RBX: 00007fffffffefc8 RCX: 0000000000000007
-   RDX: 0000000000000000 RSI: ffffc9000570f3e0 RDI: 0000000020000120
-   RBP: ffffc9000570f490 R08: 0000000000000000 R09: fffff52000ae1e83
-   R10: fffff52000ae1e83 R11: 1ffff92000ae1e7c R12: 0000000000000038
-   R13: ffffc9000570f3e0 R14: 0000000020000120 R15: ffffc9000570f3e0
-    copy_user_generic arch/x86/include/asm/uaccess_64.h:37 [inline]
-    raw_copy_to_user arch/x86/include/asm/uaccess_64.h:58 [inline]
-    _copy_to_user+0xe9/0x130 lib/usercopy.c:34
-    copy_to_user include/linux/uaccess.h:169 [inline]
-    fiemap_fill_next_extent+0x22e/0x410 fs/ioctl.c:144
-    emit_fiemap_extent+0x22d/0x3c0 fs/btrfs/extent_io.c:3458
-    fiemap_process_hole+0xa00/0xad0 fs/btrfs/extent_io.c:3716
-    extent_fiemap+0xe27/0x2100 fs/btrfs/extent_io.c:3922
-    btrfs_fiemap+0x172/0x1e0 fs/btrfs/inode.c:8209
-    ioctl_fiemap fs/ioctl.c:219 [inline]
-    do_vfs_ioctl+0x185b/0x2980 fs/ioctl.c:810
-    __do_sys_ioctl fs/ioctl.c:868 [inline]
-    __se_sys_ioctl+0x83/0x170 fs/ioctl.c:856
-    do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-    do_syscall_64+0x3d/0xb0 arch/x86/entry/common.c:80
-    entry_SYSCALL_64_after_hwframe+0x63/0xcd
-   RIP: 0033:0x7f7d4054e9b9
-   RSP: 002b:00007f7d390d92f8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-   RAX: ffffffffffffffda RBX: 00007f7d405d87b0 RCX: 00007f7d4054e9b9
-   RDX: 0000000020000100 RSI: 00000000c020660b RDI: 0000000000000005
-   RBP: 00007f7d405a51d0 R08: 00007f7d390d9700 R09: 0000000000000000
-   R10: 00007f7d390d9700 R11: 0000000000000246 R12: 61635f65646f6e69
-   R13: 65646f7475616f6e R14: 7261637369646f6e R15: 00007f7d405d87b8
-    </TASK>
+> This would render the if clause useless because the branches have the
+> same statement.
 
-What happens is the following:
+I'll send a v2 removing the branch and the outdated comment.
 
-1) Task A is doing an fsync, enters btrfs_sync_file() and flushes delalloc
-   before locking the inode and the i_mmap_lock semaphore, that is, before
-   calling btrfs_inode_lock();
-
-2) After task A flushes delalloc and before it calls btrfs_inode_lock(),
-   another task dirties a page;
-
-3) Task B starts a fiemap without FIEMAP_FLAG_SYNC, so the page dirtied
-   at step 2 remains dirty and unflushed. Then when it enters
-   extent_fiemap() and it locks a file range that includes the range of
-   the page dirtied in step 2;
-
-4) Task A calls btrfs_inode_lock() and locks the inode (VFS lock) and the
-   inode's i_mmap_lock semaphore in write mode. Then it tries to flush
-   delalloc by calling start_ordered_ops(), which will block, at
-   find_lock_delalloc_range(), when trying to lock the range of the page
-   dirtied at step 2, since this range was locked by the fiemap task (at
-   step 3);
-
-5) Task B generates a page fault when accessing the user space fiemap
-   buffer with a call to fiemap_fill_next_extent().
-
-   The fault handler needs to call btrfs_page_mkwrite() for some other
-   page of our inode, and there we deadlock when trying to lock the
-   inode's i_mmap_lock semaphore in read mode, since the fsync task locked
-   it in write mode (step 4) and the fsync task can not progress because
-   it's waiting to lock a file range that is currently locked by us (the
-   fiemap task, step 3).
-
-Fix this by taking the inode's lock (VFS lock) in shared mode when
-entering fiemap. This effectively serializes fiemap with fsync (except the
-most expensive part of fsync, the log sync), preventing this deadlock.
-
-Reported-by: syzbot+cc35f55c41e34c30dcb5@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/linux-btrfs/00000000000032dc7305f2a66f46@google.com/
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Robert Garcia <rob_garcia@163.com>
----
- fs/btrfs/extent_io.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-index 3b671e9bf684..659f3eae9ab9 100644
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -5591,6 +5591,7 @@ int extent_fiemap(struct btrfs_inode *inode, struct fiemap_extent_info *fieinfo,
- 		last_for_get_extent = isize;
- 	}
- 
-+	btrfs_inode_lock(&inode->vfs_inode, BTRFS_ILOCK_SHARED);
- 	lock_extent_bits(&inode->io_tree, start, start + len - 1,
- 			 &cached_state);
- 
-@@ -5706,6 +5707,7 @@ int extent_fiemap(struct btrfs_inode *inode, struct fiemap_extent_info *fieinfo,
- out:
- 	unlock_extent_cached(&inode->io_tree, start, start + len - 1,
- 			     &cached_state);
-+	btrfs_inode_unlock(&inode->vfs_inode, BTRFS_ILOCK_SHARED);
- 
- out_free_ulist:
- 	btrfs_free_path(path);
--- 
-2.34.1
-
+Thanks,
+Junrui Luo
 
