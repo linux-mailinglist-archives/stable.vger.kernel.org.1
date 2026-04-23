@@ -1,68 +1,84 @@
-Return-Path: <stable+bounces-240449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240450-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WFn0Igrq6Wm2nAIAu9opvQ
-	(envelope-from <stable+bounces-240449-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 11:44:42 +0200
+	id uGqwInDq6Wm2nAIAu9opvQ
+	(envelope-from <stable+bounces-240450-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 11:46:24 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8D4444FECA
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 11:44:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ACAF44FF50
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 11:46:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 638A33022E09
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 09:30:40 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A0A1B3012A93
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 09:34:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46C703DEAEB;
-	Thu, 23 Apr 2026 09:30:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5EBE3E4C6F;
+	Thu, 23 Apr 2026 09:34:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dikejyKK"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="CsOjvdS0"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07A3135C183;
-	Thu, 23 Apr 2026 09:30:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFA361F1932
+	for <stable@vger.kernel.org>; Thu, 23 Apr 2026 09:34:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776936637; cv=none; b=QhummEYJq/6xvBrUlbS2wwVjV8dJOunNDwcfV1PFQWBZwxSZanIjkK4W80sGegadoDA6wj6Pl6uPKs2QEqbkG7OA43ZLKNAza35UsvaOAnNZX3QfRfrmM8Z8p13IobPSmh6MyU2osOQTkpoqLqkaTh3Og4WCVMKrPF3Ok7B57Z4=
+	t=1776936873; cv=none; b=dKGqniiXcOCsJn492q7kOkLVHY7htcgJI0tWd1WH6GYAMUA3E9MtTmat6aQ2HTpyRu+V2rccbLVNudJ73zR8B5HhYfH7Nvu5oFetrpMN+P7BAQIznwtSawQUclBGRI3o9BMiO3UAVhzXUycmDUgSgQYV8OSawRVZOp+zzjWMoDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776936637; c=relaxed/simple;
-	bh=Lw5CoPM3yw6I/ruCGCCd366Q19a0AsNp39fk5OWzGVU=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=BxpooB4y1uK+mkDECDIGDtbqiIi119fiyjP6TpGER11ZjH4cPLRsw35/iw0XnOZEa18gcVuruglNUHmE+Ow2SlaJ/rVESwHd7G3hL+qref/FDvZzhkNasz4fpLkRCZW/fSSqqOY3M7eVwurA7KUpw7CRRatclN2tgPuImVZGcnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dikejyKK; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1776936636; x=1808472636;
-  h=message-id:date:mime-version:subject:from:to:cc:
-   references:in-reply-to:content-transfer-encoding;
-  bh=Lw5CoPM3yw6I/ruCGCCd366Q19a0AsNp39fk5OWzGVU=;
-  b=dikejyKK3ZRIxRV3VfYioBJLR27kiZlrBJGScb3SqeAZII4FjYEHqn75
-   yup5Zq1vDW6Awaa3jHuaRbYlVpBA4tfHTQ6aPyIk+F1Yu95yX6dcY71tV
-   oK6TW+BM3luD1EEPM2IOAHzJyXI9Wza0kJpRhbrvPBUJi/GzeTMP105Vt
-   tmo2u4r6HhvMJJ0ogLFMMqYWJww4G4xGF1soYKTEqc7R7V7nbska7hBJ8
-   mpiSeFVk765De8B739mq9aXkrOeP8Md1xq+3kQBNiPc47rCfUenvM25pH
-   AR5LBd3602k8J9LTMtoQ1ERfsf2fd35pQUPI3P9san13qLYdi2M08sGkG
-   g==;
-X-CSE-ConnectionGUID: wz252mQ8TgqX6BH0/XxR6Q==
-X-CSE-MsgGUID: Io/2PEyGQGmpuLqdUdBKyQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11764"; a="77784671"
-X-IronPort-AV: E=Sophos;i="6.23,194,1770624000"; 
-   d="scan'208";a="77784671"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2026 02:30:34 -0700
-X-CSE-ConnectionGUID: +eplm5smQu61G0DcQrX+8g==
-X-CSE-MsgGUID: w1QmiCopTbSIvsQci7p5Lw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,194,1770624000"; 
-   d="scan'208";a="263001252"
-Received: from dapengmi-mobl1.ccr.corp.intel.com (HELO [10.124.241.147]) ([10.124.241.147])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2026 02:30:24 -0700
-Message-ID: <4dc87e05-7a94-4f8b-a31a-b9be7183f483@linux.intel.com>
-Date: Thu, 23 Apr 2026 17:30:21 +0800
+	s=arc-20240116; t=1776936873; c=relaxed/simple;
+	bh=uNBIefZDxhBdTplR4Rutsfb3Br0hvsb2IXlHcCoomHE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sDyUP3I+83RElnmMDg8SMjQPKbVDgToPYLtIudWWgEI3nfx7ctj0+w/uOsZ9pe3hSsBdRfYnBTSue8U2eaWXGEfildSMOigSJQjr3D2t9BO/rwtXDekxdcGlhuGWFqNaEE+m44pJ9farGk/h85X4sY6Xl+WERwiTW26u1DHnTZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=CsOjvdS0; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-48a3e9862f0so28713735e9.1
+        for <stable@vger.kernel.org>; Thu, 23 Apr 2026 02:34:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1776936870; x=1777541670; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=nlLH7AnUkh/yIK3b4miCcJ1QsnDeuZTPALrNv48Gw7Y=;
+        b=CsOjvdS0AK08aup7D6oTiLrYCaIW9py4QiBhmjyyYmdeKpieHQ/4+fqI4rQ3Bs6UtO
+         2+gnaWyTZ3p8OZSiYMiz+c3c9FM31vY8myBzcO1zdqjssrzBN4dbJFY60h59l6gT/USo
+         iCEWeaDEH0puJMDhzRJY5SRVmI5Pd1iO65R4TtcvgYiOIh2J37a/YuKVyeYLGneOVDT6
+         ni9OIDoLgkECVIW3HDVNllRC7TyAeIwPI2CncNOdKXs35LJBpzejSKgqlzjvFIpuYxqJ
+         TLUqD+Hbb7I6yAV29wsXfERRaOjhrBNuIH2BGTkelbrKt7NJrfk5Ebc604TfVZlZSXin
+         HOfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776936870; x=1777541670;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=nlLH7AnUkh/yIK3b4miCcJ1QsnDeuZTPALrNv48Gw7Y=;
+        b=NQCQCfh81jr3rjTCi4+ZxBQOjMl3uCJUNkizQBft/zIs6UiBE/m9JwrziyTynC25gB
+         xRGlgxNyppWltexezdTgD6OQD8k/twhlygpzA8ag+/gkXRLODALLwqubxtDaz/3cPuWE
+         jD3B0/tvuvlGhlf5L0x4JPmF07V0hVpApm9c4irhwBH1KCQYZbhRcH7gCKQN6vyTrJMv
+         vALqhFxE+3vZfBGZZ+MOEmAxGRhUG+nlPDEYj+U0heOHvClnZkazsGr9Bsv1zJIn1YTt
+         xQ8k3ZSowU2zdWX5TWbCPl7mLDiPznWEdmrSQiWin4+Kh5WEUvvGmr/mVO7+d6AFTftH
+         RbIg==
+X-Forwarded-Encrypted: i=1; AFNElJ8eUuKN2hRSLigjTR3DqGY8OfC89pWkXR3QQJ9S5m00W9pFPuv1RcAhTD2PLbZ0oV2mq0xZJ1c=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwlS7M3cDbK2XtX2HdStXwmPq+qzMfEUTqaxpmzQu91sEl5yUbK
+	EN2lH/CqnB/DsRPK2RKCDakmrxvIfPTN+Py4dDXAlfXKENkJHs1m1v4dY1pUiq4LdXQ=
+X-Gm-Gg: AeBDieuaUde+9XSvQsSIRQSbQ8lK6XwL4oBwX1CwZF0Oyu44Pnc0U5Wr7Eh2gR4Sz4j
+	phmeCwXjLRWZ/dh6uvSUH0AskIq6w0mOWs08UDIpQ20dWR9sMZGSJRv6lCvRm8PWPAmN2mLz9ke
+	X4y8EPl425TRhJdtpFjtoy4EC762i5SU+ftQLWc6LwrUNspqUQ+aFJPNHI29QlA7hEoGlp/9TkU
+	Oaj9TZvh22gRDLoQO6N3u2KwC+ogbbk3Pv2tawWCOaSdyZ3kPMIdKHgq27gjJhUov8tlJpUXj0h
+	gPabvyPpvU5LmZqR6L8fBsFgecxLH1iOaAuJKy+7PajIJW/E6LH0r9tuL9tm8zQJRhnjPxAbigV
+	a/x9hYxcQpLxTX/T9jlLj8QxmEggKsG84VGY8Q65PnUY5wCoH0eBLD4jhxYk1a1icOHJdQgpbbC
+	blP8yGXU2hhmGBHr+5Jj35Yx8cDgDu1Ilsl3RRfKEtBlvDekrZYlmX3/A=
+X-Received: by 2002:a05:600c:1d05:b0:489:1baf:8c03 with SMTP id 5b1f17b1804b1-4891baf8d2cmr224085135e9.11.1776936870253;
+        Thu, 23 Apr 2026 02:34:30 -0700 (PDT)
+Received: from [10.100.51.209] (nat2.prg.suse.com. [195.250.132.146])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-489fec8f7cbsm237232245e9.11.2026.04.23.02.34.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 23 Apr 2026 02:34:29 -0700 (PDT)
+Message-ID: <3df70252-1a11-4360-8803-8a093c12ac75@suse.com>
+Date: Thu, 23 Apr 2026 11:34:29 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,77 +86,135 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [Patch v2 2/4] perf/x86/intel: Disable PMI for self-reloaded ACR
- events
-From: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
-To: Andi Kleen <ak@linux.intel.com>
-Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Ian Rogers <irogers@google.com>,
- Adrian Hunter <adrian.hunter@intel.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Eranian Stephane <eranian@google.com>, linux-kernel@vger.kernel.org,
- linux-perf-users@vger.kernel.org, Dapeng Mi <dapeng1.mi@intel.com>,
- Zide Chen <zide.chen@intel.com>, Falcon Thomas <thomas.falcon@intel.com>,
- Xudong Hao <xudong.hao@intel.com>, stable@vger.kernel.org
-References: <20260420024528.2130065-1-dapeng1.mi@linux.intel.com>
- <20260420024528.2130065-3-dapeng1.mi@linux.intel.com>
- <aef8InBGlZaXNuPk@tassilo>
- <f1cb6c84-d8ff-46a0-a062-816fce9fc164@linux.intel.com>
- <aekAUXkbHfOfPxX1@tassilo>
- <4b7e6df6-3a9c-45c2-84ae-f738e5741bb6@linux.intel.com>
+Subject: Re: [PATCH] params: bound array element output to the caller's page
+ buffer
+To: Pengpeng Hou <pengpeng@iscas.ac.cn>
+Cc: Daniel Gomez <da.gomez@samsung.com>,
+ Sami Tolvanen <samitolvanen@google.com>, Kees Cook <kees@kernel.org>,
+ Aaron Tomlin <atomlin@atomlin.com>, Dmitry Antipov <dmantipov@yandex.ru>,
+ Thorsten Blum <thorsten.blum@linux.dev>,
+ Andreas Hindborg <a.hindborg@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20260417075042.26632-1-pengpeng@iscas.ac.cn>
 Content-Language: en-US
-In-Reply-To: <4b7e6df6-3a9c-45c2-84ae-f738e5741bb6@linux.intel.com>
+From: Petr Pavlu <petr.pavlu@suse.com>
+In-Reply-To: <20260417075042.26632-1-pengpeng@iscas.ac.cn>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	FREEMAIL_CC(0.00)[samsung.com,google.com,kernel.org,atomlin.com,yandex.ru,linux.dev,linuxfoundation.org,vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	TAGGED_FROM(0.00)[bounces-240449-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240450-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[suse.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dapeng1.mi@linux.intel.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[petr.pavlu@suse.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.intel.com:mid,intel.com:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B8D4444FECA
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,suse.com:dkim,suse.com:mid]
+X-Rspamd-Queue-Id: 8ACAF44FF50
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+On 4/17/26 9:50 AM, Pengpeng Hou wrote:
+> param_array_get() appends each element's string representation into the
+> shared sysfs page buffer by passing buffer + off to the element getter.
+> 
+> That works for getters that only write a small bounded string, but
+> param_get_charp() and similar helpers format against PAGE_SIZE from the
+> pointer they receive. Once off is non-zero, an element getter can
+> therefore write past the end of the original sysfs page buffer.
+> 
+> Collect each element into a temporary PAGE_SIZE buffer first and then
+> copy only the remaining space into the caller's page buffer.
 
-On 4/23/2026 9:01 AM, Mi, Dapeng wrote:
-> On 4/23/2026 1:07 AM, Andi Kleen wrote:
->>>> Are you sure this doesn't conflict with some other non ACR usage of config1?
->>> Yes, currently hw.config1 is only used to store ACR  event indices.
->> Thanks. Should probably rename the field to make that clear.
-> Yeah, would do. Thanks.
+The underlying issue is that the kernel_param_ops::get() callback only
+takes a pointer to a buffer where the result should be stored, with the
+implicit knowledge that it is at least PAGE_SIZE in size. The params
+code apparently borrows this from the sysfs code, which is
+understandable because only sysfs can currently print module parameters.
 
-Just look the code again, the config1 is defined in hw_perf_event structure
-which is a generic structure used by all kinds of different architectures.
-Although currently it's only used to save the ACR events index mask by x86,
-it could still be used for other specific usages on other architectures in
-the future. So we'd better keep this generic name "config1" then. 
+Nonetheless, the question is whether it would be better to rework the
+kernel_param_ops::get() callback to also include a size argument. This
+modification would prevent the copying in param_array_get() and having
+an explicit size is generally a better interface. It could also be
+useful for Rust integration, even though the current code doesn't
+support reading module parameters via sysfs. However, this change would
+require more work to update all current implementations of this
+callback.
 
-Thanks.
+-- 
+Thanks,
+Petr
 
+> 
+> Fixes: 9bbb9e5a3310 ("param: use ops in struct kernel_param, rather than get and set fns directly")
+> Cc: stable@vger.kernel.org
+> 
+> Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+> ---
+>  kernel/params.c | 18 +++++++++++++++---
+>  1 file changed, 15 insertions(+), 3 deletions(-)
+> 
+> diff --git a/kernel/params.c b/kernel/params.c
+> index 74d620bc2521..8910daa12816 100644
+> --- a/kernel/params.c
+> +++ b/kernel/params.c
+> @@ -475,22 +475,34 @@ static int param_array_set(const char *val, const struct kernel_param *kp)
+>  static int param_array_get(char *buffer, const struct kernel_param *kp)
+>  {
+>  	int i, off, ret;
+> +	char *elem_buf;
+>  	const struct kparam_array *arr = kp->arr;
+>  	struct kernel_param p = *kp;
+>  
+> +	elem_buf = kmalloc(PAGE_SIZE, GFP_KERNEL);
+> +	if (!elem_buf)
+> +		return -ENOMEM;
+> +
+>  	for (i = off = 0; i < (arr->num ? *arr->num : arr->max); i++) {
+>  		/* Replace \n with comma */
+>  		if (i)
+>  			buffer[off - 1] = ',';
+>  		p.arg = arr->elem + arr->elemsize * i;
+>  		check_kparam_locked(p.mod);
+> -		ret = arr->ops->get(buffer + off, &p);
+> +		ret = arr->ops->get(elem_buf, &p);
+>  		if (ret < 0)
+> -			return ret;
+> +			goto out;
+> +		ret = min(ret, (int)(PAGE_SIZE - 1 - off));
+> +		memcpy(buffer + off, elem_buf, ret);
+>  		off += ret;
+> +		if (off == PAGE_SIZE - 1)
+> +			break;
+>  	}
+>  	buffer[off] = '\0';
+> -	return off;
+> +	ret = off;
+> +out:
+> +	kfree(elem_buf);
+> +	return ret;
+>  }
+>  
+>  static void param_array_free(void *arg)
 
->
->
->> -Andi
->>
 
