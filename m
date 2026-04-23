@@ -1,139 +1,149 @@
-Return-Path: <stable+bounces-240469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240470-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ENgIGW8F6mk/rQIAu9opvQ
-	(envelope-from <stable+bounces-240469-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 13:41:35 +0200
+	id QClbNtMF6mk/rQIAu9opvQ
+	(envelope-from <stable+bounces-240470-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 13:43:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B93D145167B
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 13:41:34 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9B80451699
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 13:43:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E1FAE301991A
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 11:40:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A9A1A300CFE6
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 11:43:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39FD03E120B;
-	Thu, 23 Apr 2026 11:40:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 249543E120B;
+	Thu, 23 Apr 2026 11:43:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A9zIJ8W5"
+	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="ieI+PmJq"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out203-205-221-210.mail.qq.com (out203-205-221-210.mail.qq.com [203.205.221.210])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F00D93BC687;
-	Thu, 23 Apr 2026 11:40:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 365DD2E62A9
+	for <stable@vger.kernel.org>; Thu, 23 Apr 2026 11:43:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.210
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776944442; cv=none; b=Ve1ZtrYH0p46nJ+yNyuGflUrn8GPAbt8PX+zxHmB1YnxTTPZ9NosnT8+W5WZfDRQwwBPSFHXY2b7dOfGOoRTRa3ZwOhtz2xgczfuEyM+jdE/qxPAFq56C87R4INQMX2ebCCLXgQvyaMwD/OlXGN6T3GKFQhYmNxt7kmxjN6ygeY=
+	t=1776944590; cv=none; b=k/53yjC8jzp7P7QR/KXOXX6avhGM1sNv653CaT/uNfrqkW/9U8A0FgeOJV+edNUUnho1EtOuYD3HF80vO7bp8oNAuW1GiQjnVj0/eVkJaAv29tJDpqe/Tnw2YNNL266oi0v4QubOcoGwILnJ9VaE8/6wQo/42spNLiCwmpT+LE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776944442; c=relaxed/simple;
-	bh=XWpyzthTDl8osOJZCyGUAdA1IW4nOmyc8fO7wAVzzhk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DLqbzdys4/h6PV7JaGO7pp9QM0A9CgWE9VlHY9NaB7ub+5Yx/6z0J7oPWGKHSx9lnJXkUUv07OllLCK0sDwprI/c3ByVEXl/+AI8Y56/rP9FpRIZlaJO5NRYFRlSvcF4UoldvQfK/AGMpSGYE7IGUdk/McbmSVC2tf7+QJs+394=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A9zIJ8W5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60D82C2BCAF;
-	Thu, 23 Apr 2026 11:40:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1776944441;
-	bh=XWpyzthTDl8osOJZCyGUAdA1IW4nOmyc8fO7wAVzzhk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=A9zIJ8W5rUljqWcYOM2NMB8yCRv5QyRJso61Dr+oylA1kSt3a58vGL9WIEFRWn75I
-	 bPSFsVbGzQhg9+HByVx9r2XzSY1cjq3g/jexNuy/h4HkRV34294O5bRNUa5rlLt+Eg
-	 l544Jm3OVB4hk49omkplHMkr9Lg6RM4ONxWHrD6A=
-Date: Thu, 23 Apr 2026 13:40:39 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Timur =?iso-8859-1?Q?Krist=F3f?= <timur.kristof@gmail.com>
-Cc: Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	stable@vger.kernel.org, Robert Garcia <rob_garcia@163.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Pan Xinhui <Xinhui.Pan@amd.com>, David Airlie <airlied@gmail.com>,
-	Daniel Vetter <daniel@ffwll.ch>, Yifan Zha <Yifan.Zha@amd.com>,
-	amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 6.1.y] drm/amdgpu: remove two invalid BUG_ON()s
-Message-ID: <2026042330-washhouse-amusement-db9e@gregkh>
-References: <20260417074010.1607496-1-rob_garcia@163.com>
- <6064b45a-b8de-4848-856f-383d2d06680d@amd.com>
- <2026042335-probation-heftiness-7399@gregkh>
- <4885687.vXUDI8C0e8@timur-hyperion>
+	s=arc-20240116; t=1776944590; c=relaxed/simple;
+	bh=t1CY1cRjo91Z5M3YkhpIYo3++aFpBsaDtyzhwVK2QYE=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=EMO7bv3F1vfl+B73C1QT80liIiBgl05qQiKdEkMKpUdybL+yG4m8BYx2WGeNxL0L19GrjxGuW0cMhfXc+FRI0RRWtt7iZIHrCqRX87X5Tx+M8h+vOB69Ec9qzIZcPlyC7J6UoAeCsjoVU1aM9+lk/MP7k649v29j2pqrWSy92+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=ieI+PmJq; arc=none smtp.client-ip=203.205.221.210
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+	s=s201512; t=1776944579;
+	bh=P6BCcr6LahNFj6sgm9z3oJHU5rxlSeOj+UbmdBVzBUE=;
+	h=From:To:Cc:Subject:Date;
+	b=ieI+PmJq7eupNWa/GiYLSGht9BnTq3UPvaZWjgEIqX7hdkKnyCcP4Y+N1Z+r1BXIL
+	 VQ4jR2mkoD3eHlL2oC+Z2x1aweSriwSIkRcEsFnRWfXmLhOsUoMowYqV/BPvFaK6o7
+	 ZEPr+zBCN281FTuI0uWmutNANuKaeAWToKI6yumA=
+Received: from China-team ([183.241.55.34])
+	by newxmesmtplogicsvrszc50-0.qq.com (NewEsmtp) with SMTP
+	id AB09CC11; Thu, 23 Apr 2026 19:42:48 +0800
+X-QQ-mid: xmsmtpt1776944568txlc6cvfn
+Message-ID: <tencent_49373CD3B2D5E47DCC496A5823E090C2680A@qq.com>
+X-QQ-XMAILINFO: NvOKxKupJG5HqpPurNPOcHp5pqr20vlXC4ey3fEWbK447uzhGIQU1Ow73rPedj
+	 19nVluesTkyQcoHQdU/X0gZTkYcZzPHOCxz5igomUQ7t5fOteDDoHpOIxjMiHGWgPhcajeJpc6NA
+	 P10+JVSbnTn+shfp+L4OBJ6gW5j3RwqKLBBlez4RZ/cj8a8BFF/aoiHR8D4Vo6j9uBs4hwdc+qye
+	 pl57qVlKt6YPTGXiPM6rfaV+rdaQ2NTxaLtl2UVJFWqVPrIVda9F5ryo5M0OK4gezq4hDEJg75j1
+	 ASkZHkbb7W4FK/DUGb6PEJa0V7aJRTqkEUHFaacVxfTXBi/RXlzSpSiOZT/3Cxwhq3uu45BWCt6s
+	 RRh8FBteWzPkzTHEuHR/FV3cQ2pc8tWWZSTUCwrvZzE91uQiUzoLEPF75aLSfMVoGGtjOmYLhd/q
+	 rGd3FPKCheeAyPWh7n3A5SfPqz/gQbrGvqRbnpInu5KqZi8xER2Rxfc2Yi/yQtZPvdUzGBsecuaJ
+	 pN8lMR2bVY3OVJkzPB1BJJXUVexJVnQjU6vy+o2Vx9nTgh25jBKyvqhtQhGnJ7DsRio3JXeuIch/
+	 SQvsWzv9q2mx3h//O+g0NmcWNYvr8rJvAf6YxZoYJ/mhASGCKWu2SgZSBZk8sJvWqL0baXkYnQmn
+	 xfM0P/yS5iFRwGRXnBn4NG1uO1df0VELnMVAeNj0DgmRyFao9jHK1GxIBdM+S54HDaR/Z6UUXgaO
+	 mzneQLpwJ6NbrRu5K6ax8vSpB/Iu04tT+9d3lV5CsLvc4tcE543rLkITgYOAjRts4pf/3aerp7Te
+	 7/dYmO1MfhrfBeB19JZ8nj9J6G/gfMN8KEukoQZyv03O++G0o71J8wZhJVz5LDxa1IRtJgAgf/7X
+	 JnVvsuSOcPmVGXKtFH0Noj+kM984Z4wo5aGHYuCbK7Fsh+WFLiQN0Nh1LQQaR7mHuNMGCWSKMSAq
+	 1VPMUs4lLari1EuwBXA8AxNzwkGA78YA05DRa7Fyd+iYqgOsmLrJNcMk1uL1ylC2QbsCA2S5jani
+	 cxOxNuJYKdQYLibFO9MgCJfZsITrJU/WylLwAzZroeKnzF91e6MEdjdjl11myok5qcTDvH+w==
+X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
+From: Alva Lan <alvalan9@foxmail.com>
+To: gregkh@linuxfoundation.org,
+	sashal@kernel.org,
+	stable@vger.kernel.org
+Cc: Namjae Jeon <linkinjeon@kernel.org>,
+	Hyunwoo Kim <imv4bel@gmail.com>,
+	Steve French <stfrench@microsoft.com>,
+	Alva Lan <alvalan9@foxmail.com>
+Subject: [PATCH 5.15.y] ksmbd: unset conn->binding on failed binding request
+Date: Thu, 23 Apr 2026 19:42:04 +0800
+X-OQ-MSGID: <20260423114204.8238-1-alvalan9@foxmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <4885687.vXUDI8C0e8@timur-hyperion>
-X-Spamd-Result: default: False [3.84 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[foxmail.com,none];
+	R_DKIM_ALLOW(-0.20)[foxmail.com:s=s201512];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240469-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[amd.com,vger.kernel.org,163.com,gmail.com,ffwll.ch,lists.freedesktop.org];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B93D145167B
+	TAGGED_FROM(0.00)[bounces-240470-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,gmail.com,microsoft.com,foxmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[alvalan9@foxmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[foxmail.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	FREEMAIL_FROM(0.00)[foxmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qq.com:mid,foxmail.com:dkim,foxmail.com:email]
+X-Rspamd-Queue-Id: E9B80451699
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, Apr 23, 2026 at 01:34:42PM +0200, Timur Kristóf wrote:
-> On Thursday, April 23, 2026 1:22:22 PM Central European Summer Time Greg 
-> Kroah-Hartman wrote:
-> > On Wed, Apr 22, 2026 at 04:11:15PM +0200, Christian König wrote:
-> > > Those points are certainly valid.
-> > > 
-> > > I've also up-streamed a patch which completely rejects userspace
-> > > submissions who try to use the CE.
-> > > 
-> > > The problem is that those BUG_ON() can lead to a deny of service because
-> > > they crash the whole kernel.
-> > > 
-> > > A BUG_ON() is only justified if it prevents even worse things to happen,
-> > > e.g. data corruption or it would crash later on anyway just not so
-> > > obvious on what is wrong.
-> > > 
-> > > Otherwise we should use WARN_ON().
-> > 
-> > WARN_ON() crashes the kernel as well when panic-on-warn is enabled, as
-> > it is in a few billion Linux systems :(
-> > 
-> > As this commit is upstream, and in other stable trees, I'll apply this
-> > as it's not nice to have a simple way for userspace to crash the system.
-> > 
-> > thanks,
-> > 
-> > greg k-h
-> 
-> Sounds reasonable, if you feel this improves stability.
-> 
-> That being said, there are many other ways besides this one for userspace to 
-> crash the system equally easily.
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-Great, please fix up those as well :)
+[ Upstream commit 282343cf8a4a5a3603b1cb0e17a7083e4a593b03 ]
+
+When a multichannel SMB2_SESSION_SETUP request with
+SMB2_SESSION_REQ_FLAG_BINDING fails ksmbd sets conn->binding = true
+but never clears it on the error path. This leaves the connection in
+a binding state where all subsequent ksmbd_session_lookup_all() calls
+fall back to the global sessions table. This fix it by clearing
+conn->binding = false in the error path.
+
+Cc: stable@vger.kernel.org
+Reported-by: Hyunwoo Kim <imv4bel@gmail.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Alva Lan <alvalan9@foxmail.com>
+---
+ fs/ksmbd/smb2pdu.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/fs/ksmbd/smb2pdu.c b/fs/ksmbd/smb2pdu.c
+index 978a103e72bb..700c8070f57a 100644
+--- a/fs/ksmbd/smb2pdu.c
++++ b/fs/ksmbd/smb2pdu.c
+@@ -1949,6 +1949,7 @@ int smb2_sess_setup(struct ksmbd_work *work)
+ 			}
+ 		}
+ 		smb2_set_err_rsp(work);
++		conn->binding = false;
+ 	} else {
+ 		unsigned int iov_len;
+ 
+-- 
+2.43.0
+
 
