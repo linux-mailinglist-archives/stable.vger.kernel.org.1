@@ -1,179 +1,201 @@
-Return-Path: <stable+bounces-240497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240498-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sJ6PCJ4m6mnwvAIAu9opvQ
-	(envelope-from <stable+bounces-240497-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 16:03:10 +0200
+	id 0ABbM+Qn6mnkvQIAu9opvQ
+	(envelope-from <stable+bounces-240498-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 16:08:36 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE0024536B5
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 16:03:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52F854537A7
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 16:08:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B3E723013A56
-	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 14:02:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 29B5D300D695
+	for <lists+stable@lfdr.de>; Thu, 23 Apr 2026 14:07:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5766E30E821;
-	Thu, 23 Apr 2026 14:02:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF17630C61F;
+	Thu, 23 Apr 2026 14:07:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="s/jVyTsG"
 X-Original-To: stable@vger.kernel.org
-Received: from air.basealt.ru (air.basealt.ru [193.43.8.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4B00194C96;
-	Thu, 23 Apr 2026 14:02:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.43.8.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776952973; cv=none; b=kU9CKLi0M93oLCR6HKf70K97j6zSy2eciwPZ7NhI+WZqeKaS4jcrYwMsBPGiyzuhdxfSrckWqGrX73blvuPz8Q2cqHWkv7GQPpfdgkCfjvA7y8MClG5fc+b7O8fGk+53Znnit8k4Cu9GXCpo4cUD/GsJqmoj5YtSURi7ByUvZSk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776952973; c=relaxed/simple;
-	bh=N6ElxsER6+0Y62WC5jN8bk+IWLyIvM7A0v5OKiLyzKE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qWRPcmMcChtKlKCC6pIDZnD6KjMlqwUs4snF4oV8EJ5wgi3MjhYtOmw6JICCFnCsJXklTxnNdV2dfBxd8/iF0e6P5NBqUNp0CbIwn1CsXrc4ABgR69N7G12OoyutGpSCUOwhT/AE4fMyhinUPV2B8+lq4gbYjffvJCBeFtBJMXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=193.43.8.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
-Received: from altlinux.malta.altlinux.ru (obninsk.basealt.ru [217.15.195.17])
-	(Authenticated sender: kovalevvv)
-	by air.basealt.ru (Postfix) with ESMTPSA id 86D1A233A4;
-	Thu, 23 Apr 2026 17:02:45 +0300 (MSK)
-From: Vasiliy Kovalev <kovalev@altlinux.org>
-To: stable@vger.kernel.org
-Cc: Steve French <sfrench@samba.org>,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	lvc-project@linuxtesting.org,
-	kovalev@altlinux.org
-Subject: [PATCH v2 5.10.y] cifs: Fix connections leak when tlink setup failed
-Date: Thu, 23 Apr 2026 17:02:45 +0300
-Message-Id: <20260423140245.195039-1-kovalev@altlinux.org>
-X-Mailer: git-send-email 2.33.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6359230E821
+	for <stable@vger.kernel.org>; Thu, 23 Apr 2026 14:07:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1776953249; cv=pass; b=oWbvAZmkpeRnDkRoJTSlv84IV3FJ0coPakrXFHaIVdlIiG8gz1YWlTFaqsXwocfkdC+4H62frBBcG3xCvURT5zAqeMV1C9QCoktsfsejZTaN6EXaxXjNm03Srz2x+jUISBkKOVcgochdKObT7TgwRXm1xvVTvg6cVdB4GkFdE7M=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1776953249; c=relaxed/simple;
+	bh=vdEgnQ7UYncJPIweIDG0txiZ1qkftEmzo9ZKETJ59o0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mRwfPKhsWXYfFiJ3zSZ/K0Q+TDaLAxKE8HPUWoDHNnwrXDprStjzeYNp+g33FfaATefyI7/lcTvaBWu+jYaS7zVFic7ft2XuEhlMYIDpIZ9atoLJPArY6AO6c4o3/ADq5D0C+8NB7YRdhXw/shmRAb8qbyjkDqoXnrgmXYbssyg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=s/jVyTsG; arc=pass smtp.client-ip=209.85.219.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-8b1f2b7f1bcso43679296d6.1
+        for <stable@vger.kernel.org>; Thu, 23 Apr 2026 07:07:28 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776953247; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Kkru7d8POzDbVSVGLKm74w2D7xbcrlo+AG/dZJsSUbxPztKZlY9Lf/6oAf+3Jd/JFP
+         9ySv/XVYnmgl3Daj3gEwx/S7qixbqjKBUiMtOzWKMM5yGcfG8jNLzI+EhbdPzuVmsoQC
+         GjMQxFsvzO1zDJ2qlcoJC/grsw/GDnhwEpy0i+GY6RGqqvyhXqdD+TfQ1FMBTF+UpzKS
+         YCoIh+ApUdmoZZP9x01UXpLdOYYeH4YSK4g/gYsT/7sjpa35eOYZ3Fdcvs7W+edxUhBJ
+         bLTJwNKyltN9uP/fy/qnZXLbylsjUQ6bpBurenCzapGXpb0pU/SqNo3cIcSyrrRGNsR4
+         ijSw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=YnWvO7yjwrQhs9Z8T4RkhOyGwxBUSEXUTTKsZ/p4eKo=;
+        fh=si+Uk+ldnz5zyi3hQC6JllhxCv/dYdAihees0/YuzL8=;
+        b=J56RYew5SyD6GcnYvRh8kajBDlsllU7wr3qCjcO+zJj2SJR8Mq2B5jDpJyUfP4XFCe
+         TpAeiUQ43VNBhex9dzdhS1e61VP75NlPgWENbwyeNZZcxUkWHauebictC9zBjaGa53jM
+         uLQMZjyIJDBFO6/iAmBJ0UC5fun5rsBKIEKH1pNYtWlx2/fIO9w48lSqpinBNTl1Sx+Z
+         /c/fel7NTI0P3kwSDD9+faR4mW7xiaNkxWf9m/5Psc5ZoqDrwYsbksFvogofr+lKieat
+         758mDwhaUSGzvrnth68KjaiJL4Ps4qDDu/P8ZhmUF8DbbHm+vgPvqKZbj6bUjNM48RsX
+         IeOw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776953247; x=1777558047; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=YnWvO7yjwrQhs9Z8T4RkhOyGwxBUSEXUTTKsZ/p4eKo=;
+        b=s/jVyTsGiyxgRH6irkrvazOlJ8hh77TwqdWVTqJOHk2RZbYFY7lA+SMJiqQluWOsGW
+         Qhm5sYAM1+wsa2rtVMJpgR8T1CmU/vi4uOBwc+GEa52TceRDn3BBIdkxbehMpvh/fT6v
+         0DWm5GXz4PUxaV6T/o5Ne+sVqRrO4w3sYF/L4X/kiCltCTJG2/KxqqNc4DK8JDMm6xQh
+         JhP116cS8NGI3wkJBQf3YDB4HGdpLweTYgK4uQ9YQOrzX9ksUciNoux3TxJfEtsIGKHf
+         oZq0RhuCFWik05NjL0PNis2pMAMCYf0yIVwybcPtg9EPM6osIPCfHIKENbr2BfoNB8kC
+         YKzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776953247; x=1777558047;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YnWvO7yjwrQhs9Z8T4RkhOyGwxBUSEXUTTKsZ/p4eKo=;
+        b=aoJeMt2fNVzshT8FAscQjVNwXlPcGKpLnPjz6sy4M3n1bVeOqye9A0FxhTfnSPdjTJ
+         0kfgzSPv7uznkdCdNiuBbGWtnLAEbTmNR4Qza63TQ9RIGjazdWUeLy19zyvRtgdy2dsU
+         8GkghtY416QrbmYw9jhlEVajc85v/UZzaSdePTR4WpY5/hwU15S3UVcncQ4cNlQ50UK8
+         ywoCsxrMuFXrA7xipVRC5NgWOSubQKz+Mllebqr7A4B2aG0FE/jMtlKSeA7/CtovgJQQ
+         //JfYFBEINy7vVppcTiOVgrN+UyERI/k36GSmSwN4RYGjY2SLPG2SWXdvIWZURa4rVqO
+         TDYw==
+X-Gm-Message-State: AOJu0Yy7ShD5H0tJhQ47DEpE4XzeFguM4liWp6rjyT38vkViO93ZdjGn
+	PCQNX2bGbV3EteXIPy4eiH0tetW8V7ihaTChYAiBE1tNKuz2D/HoQFD60Ip/wBuAjpEaOJCVBjD
+	4A4dDBgTt56dRRSiUZUaWGrce2Vsh28I=
+X-Gm-Gg: AeBDietgqMAIfmtsU29qc3lImBzoQ94Jsk6womE8hTw7ADg4yHOLRXvFZFJ7W1Bxz14
+	A0sVH1T02KuwQV06J4Q7w8lGWAMtDX5P2vknHzpd5go9hAHTPVeCwbpr/TYLAhaXmV77Gz1GEpr
+	3ccZnEmUJ8AULIjTUjzC3vm2cngplxOJN5a0IjGJba1sP4XMKLSU53o9U9Tog3fsS/0SkzAyMVb
+	VHqwMLquoN4jchWVhLG5dHqwpP7QGX15+G0T4BQ3aLinHMvhO4HHWOANV8wpcwMulcJBP0sv3ut
+	A7VvyhRDtwRbKw==
+X-Received: by 2002:a05:6214:5505:b0:89c:cb57:6227 with SMTP id
+ 6a1803df08f44-8b028565f9fmr389605626d6.12.1776953247144; Thu, 23 Apr 2026
+ 07:07:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.04 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
+References: <20260219171310.118170-1-aha310510@gmail.com> <2026042355-blighted-chewing-5e50@gregkh>
+ <CAO9qdTE0NhB58hqK8_1=69bD7uG_vF-FfpQXGR8dqcuWV4H2Mw@mail.gmail.com> <2026042327-wackiness-purify-09c2@gregkh>
+In-Reply-To: <2026042327-wackiness-purify-09c2@gregkh>
+From: Jeongjun Park <aha310510@gmail.com>
+Date: Thu, 23 Apr 2026 23:07:14 +0900
+X-Gm-Features: AQROBzCIjy63kF1LW75_LGFH4-N7i7woPyvD8ToIg_JgdzxbdpkrD0vUqxkoZkY
+Message-ID: <CAO9qdTGQPoMdh6ds6LFWEDtPSnjWEM746mrpfaVfxi8LBtckwQ@mail.gmail.com>
+Subject: Re: [PATCH 5.10.y 00/15] timers: Provide timer_shutdown[_sync]()
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, tglx@linutronix.de, Julia.Lawall@inria.fr, 
+	akpm@linux-foundation.org, anna-maria@linutronix.de, arnd@arndb.de, 
+	linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux@roeck-us.net, luiz.dentz@gmail.com, marcel@holtmann.org, maz@kernel.org, 
+	peterz@infradead.org, rostedt@goodmis.org, sboyd@kernel.org, 
+	viresh.kumar@linaro.org, zouyipeng@huawei.com, linux-staging@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DMARC_NA(0.00)[altlinux.org];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240498-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[vger.kernel.org,linutronix.de,inria.fr,linux-foundation.org,arndb.de,roeck-us.net,gmail.com,holtmann.org,kernel.org,infradead.org,goodmis.org,linaro.org,huawei.com,lists.linux.dev];
+	RCPT_COUNT_TWELVE(0.00)[19];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-240497-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[kovalev@altlinux.org,stable@vger.kernel.org];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MAILSPIKE_FAIL(0.00)[2600:3c04:e001:36c::12fc:5321:query timed out];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[aha310510@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,altlinux.org:mid,altlinux.org:email,sashiko.dev:url]
-X-Rspamd-Queue-Id: BE0024536B5
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: 52F854537A7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Zhang Xiaoxu <zhangxiaoxu5@huawei.com>
+Greg KH <gregkh@linuxfoundation.org> wrote:
+> > >
+> > > Ugh, I got the following build error for this series:
+> > > ../drivers/misc/sgi-xp/xpc_partition.c: In function 'xpc_partition_disengaged':
+> > > ../drivers/misc/sgi-xp/xpc_partition.c:294:25: error: implicit declaration of function 'del_singleshot_timer_sync' [-Werror=implicit-function-declaration]
+> > >   294 |                         del_singleshot_timer_sync(&part->disengage_timer);
+> > >       |                         ^~~~~~~~~~~~~~~~~~~~~~~~~
+> > >
+> >
+> > Oh dear. This issue occurred because commit 997754f114ef ("misc/sgi-xp:
+> > Replace in_interrupt() usage") was merged into version 5.11-rc1 and was
+> > therefore not backported to 5.10.y.
+> >
+> > Since this is a simple fix that only requires adding this commit to this
+> > patch series, I will quickly write and send you the v2 patch.
+> >
+> > https://lore.kernel.org/all/20201119103151.ppo45mj53ulbxjx4@linutronix.de/
+> >
+> > >
+> > > Don't know what happened, but I'll go and drop them all now.
+> > >
+> > > Do you _REALLY_ need these in the 5.10.y kernel?  Who is going to use
+> > > them?
+> > >
+> >
+> > You might think it is unnecessary, but I have seen bug patches related to
+> > timer_shutdown[_sync]() being backported after I backported it, and I
+> > believe it is well worth backporting if this feature allows various
+> > bug-fixing patches to be backported smoothly.
+>
+> So you don't have a specific issue you are hitting with this patch set
+> that you want to have it here for?  It can't be for android devices, as
+> this patch series will be reverted from that tree, just like it was for
+> the 5.15.y Android trees, so what systems require it?
+>
 
-commit 1dcdf5f5b2137185cbdd5385f29949ab3da4f00c upstream.
+I am not backporting because it is absolutely necessary for Android or a
+specific system.
 
-If the tlink setup failed, lost to put the connections, then
-the module refcnt leak since the cifsd kthread not exit.
+https://lore.kernel.org/all/20251007155808.438441-1-aha310510@gmail.com/T/#u
 
-Also leak the fscache info, and for next mount with fsc, it will
-print the follow errors:
-  CIFS: Cache volume key already in use (cifs,127.0.0.1:445,TEST)
+I simply started this in the hope that the same problem will not recur, as
+I had to write a separate patch a few months ago when I backported a bug
+fix patch I had written because the feature was missing.
 
-Let's check the result of tlink setup, and do some cleanup.
+> thanks,
+>
+> greg k-h
 
-Fixes: 56c762eb9bee ("cifs: Refactor out cifs_mount()")
-Reviewed-by: Paulo Alcantara (SUSE) <pc@cjr.nz>
-Signed-off-by: Zhang Xiaoxu <zhangxiaoxu5@huawei.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[ kovalev: bp to fix CVE-2022-49822; adapted to use direct xid/ses/tcon
-  variables instead of mnt_ctx struct fields due to the older kernel not
-  having the corresponding cifs_mount() refactoring (see upstream commit
-  c88f7dcd6d64); additionally NULL out mntdata after dfs_cache_add_vol()
-  transfers its ownership to vol_list, otherwise the new error path from
-  mount_setup_tlink() failure would double-free it via kfree(mntdata) in
-  the error: label ]
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
----
-v2: address mntdata double-free flagged by sashiko-bot review [1].
-  - NULL out mntdata after dfs_cache_add_vol() in the DFS branch of
-    cifs_mount(); otherwise the new goto error from mount_setup_tlink()
-    failure hits kfree(mntdata) in the error: label while the pointer
-    is already owned by vol_list (vi->mntdata set in dfs_cache_add_vol).
-
-  The second concern raised by sashiko-bot (UAF on
-  cifs_sb->origin_fullpath via cifs_kill_sb()) does not apply to 5.10.y:
-  cifs_smb3_do_mount() handles cifs_mount() failure via the out_free
-  label, which kfree()s cifs_sb directly without calling cifs_umount(),
-  so the kfree(cifs_sb->origin_fullpath) in the error: label is the
-  only release on this path and must stay.
-
-  [1] https://sashiko.dev/#/patchset/20260421132612.38517-1-kovalev%40altlinux.org
-
-v1: https://lore.kernel.org/all/20260421132612.38517-1-kovalev@altlinux.org/
-
- fs/cifs/connect.c | 17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
-
-diff --git a/fs/cifs/connect.c b/fs/cifs/connect.c
-index 769c7759601d..3ce86a88fad4 100644
---- a/fs/cifs/connect.c
-+++ b/fs/cifs/connect.c
-@@ -4770,6 +4770,8 @@ int cifs_mount(struct cifs_sb_info *cifs_sb, struct smb_vol *vol)
- 	rc = dfs_cache_add_vol(mntdata, vol, cifs_sb->origin_fullpath);
- 	if (rc)
- 		goto error;
-+	/* mntdata is now owned by vol_list */
-+	mntdata = NULL;
- 	/*
- 	 * After reconnecting to a different server, unique ids won't
- 	 * match anymore, so we disable serverino. This prevents
-@@ -4786,9 +4788,13 @@ int cifs_mount(struct cifs_sb_info *cifs_sb, struct smb_vol *vol)
- 	vol->prepath = NULL;
- 
- out:
--	free_xid(xid);
- 	cifs_try_adding_channels(ses);
--	return mount_setup_tlink(cifs_sb, ses, tcon);
-+	rc = mount_setup_tlink(cifs_sb, ses, tcon);
-+	if (rc)
-+		goto error;
-+
-+	free_xid(xid);
-+	return rc;
- 
- error:
- 	kfree(ref_path);
-@@ -4820,9 +4826,12 @@ int cifs_mount(struct cifs_sb_info *cifs_sb, struct smb_vol *vol)
- 			goto error;
- 	}
- 
--	free_xid(xid);
-+	rc = mount_setup_tlink(cifs_sb, ses, tcon);
-+	if (rc)
-+		goto error;
- 
--	return mount_setup_tlink(cifs_sb, ses, tcon);
-+	free_xid(xid);
-+	return rc;
- 
- error:
- 	mount_put_conns(cifs_sb, xid, server, ses, tcon);
--- 
-2.50.1
-
+Regards,
+Jeongjun Park
 
