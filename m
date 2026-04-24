@@ -1,185 +1,187 @@
-Return-Path: <stable+bounces-240968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240969-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kIdjNLV162kQNAAAu9opvQ
-	(envelope-from <stable+bounces-240968-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:52:53 +0200
+	id 4EmpLGR262kQNAAAu9opvQ
+	(envelope-from <stable+bounces-240969-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:55:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1ACC45FCE5
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:52:52 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B340945FD9C
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:55:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 44C3D3007A7C
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:52:43 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3E536300AD5D
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:55:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E18F03D903C;
-	Fri, 24 Apr 2026 13:52:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42A9D3DA5C0;
+	Fri, 24 Apr 2026 13:55:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pkNjGAb4"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d+JRRqZg"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 373543C3440
-	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 13:52:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.41
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777038758; cv=pass; b=Qv4LRZxGrLmWx/GFFOuuTULJlnVSjpC9D7IRfipklBpzw76WVbCF8R7Uwhk3cKy81lN/HXHJoAQyV7llX7MyYhu7v/TdBJ9Z0uxgE1ZFuzzXjoPbzuYx6gjhhN6fcoBYJOmUW3SrTslylym1H+GIbnT1JTaEilHbsQtbq/LIO4U=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777038758; c=relaxed/simple;
-	bh=/kNEUq4+vMrJehBhGv0WTeFng4QIMYLHowGQS7Rn/Og=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=laC7jlVPvb1SKnrZ2bZubjVbKmlzw0CnZxJJUxmXTH39NDKfznhd8Hgu5WrX8WmMBHhcDayWnHShA2AB/3WlbFXIDSPS/xXp8LPjqI5It5bKHWoBYNVSgaEYDdAMnCY7HfWv3cpZDAVOkjgpc9umkrGhn3UygiyK1tQ75sQzYlw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pkNjGAb4; arc=pass smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-678a526f374so1935954a12.0
-        for <stable@vger.kernel.org>; Fri, 24 Apr 2026 06:52:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777038755; cv=none;
-        d=google.com; s=arc-20240605;
-        b=a79jsYI5dK8VdoQ/ItSn/XrfeluFernbAvLLI163dJI9yEBbCr5KsvchA2ubMdqgvZ
-         9Ys2jI2mFnV3tHnbTJXtpZ2/QdNEb5bB0V1TwacJ9yo9Xns9RoX6ZGb1yoriG5pQf/Co
-         RSqkf4sl9743tC3jCTCVUt4mGm0TniulA7Sgecotu6rNGjV6QYFKXyOxT1DJ1DXVucRU
-         2XGsYtXC3U6gXxIa+N083d95b42+m2IeRUxkR1h3ml1r0MvNZJdGl5SvNvcGA9kWrOCU
-         i68h6eoE+jRQBuG4GhsF9Sbv/Iwd+qojw5yC5ZcyB53Ng66inPbDWwLTnc4Q94fudORy
-         ep8w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=wJJT0JoPIZZHN/QqfMLvwfSqlNJF6a+bk91astgGZbs=;
-        fh=auQ7KU1h/rwn46mlxXE1QvV0rSXj9N9PtRErziEmyiE=;
-        b=avv8Yw0qHgBrohMLJERAHZS9E+goakKUDyrwaCVr8X0vuXwxLXwSRUcWVnh+aljD/J
-         iAJAlQ2g+XicfkAWiRaRpBoIqmyZkB9CXk7WQp1d85aWDL/5hvXzrWyEGwg0G4HJSBgm
-         9TJUPtOIe+iOwCHW0N34GJdl15o76sdqB2UKqeV/iyR2fMgnGrabPE4It1krAcT8s6YC
-         l3Iu+G/wvXorw9C/9Yd/7UHIiyOrDOiZ4sx+PPAtHe2/1jcHHgSAgUM4GVUD+A1E4vZR
-         q58Jyie5uyyy5csW49OHcnN6yaRFARhSezX3FRHbRv8NN0wOaDd1Cdql9zE9/pBN4lI4
-         +1Gg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FE943DA5D2
+	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 13:55:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777038917; cv=none; b=b4yx46yLD3B1qalKdsP/veV2PJjsNdv+WUVNXuYo7bykC2I4xisFETBmiCoWOdZwpYEkGvvy1JCLMzyFP7oyLmaOlhkIJ9tM7gA9TEJLh6+3HrvD/9k8Qzw5F3NnbJxiRjxCm/zQdXXAia3RW631+hTsmlRaKOusvwIa0GFExxM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777038917; c=relaxed/simple;
+	bh=d4mxzTO2Ltl/eUXMBRQNyDiMx5nB3UU/ry0cuOPEU7c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ol8kjrSbdvd02AZiKL13SiAb/Fpd5Zg35OWV0EB+ql9iso99eE6K499nvuPaY4Qk8YnKgwu4fy5ALtuOkd0huaTA67CeeDXLRnxbuGlOvX+Etyean6swYIZSDo5jyAk9SFxyi1jpBJwDgqyJt8FEzRHPb0cSoMWsrlEPujRhlew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d+JRRqZg; arc=none smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-35da01fc0baso4960620a91.2
+        for <stable@vger.kernel.org>; Fri, 24 Apr 2026 06:55:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777038755; x=1777643555; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wJJT0JoPIZZHN/QqfMLvwfSqlNJF6a+bk91astgGZbs=;
-        b=pkNjGAb4njl3opb7rr8ARVz2X/cGMJozafUsICGruDsy2zTufNLdhMP0bpe3pS4AQc
-         hpZUOYey0sij5zjb2rbqscZ4KWHI9bmd6kjnwL96ZQLoDxuylcG1VpQ8VJxGZg422HxU
-         VjtoIDPoMB5fTEOj7WmokQFx7Yoo2HY9T1V2HsEEmWemLi6+HJNU/xMA6nIAATPsdYxB
-         Cyti+wftXiNnoeuksRg8b080LWymj7CY+3KIfYLJUxHRA+OfXkSwea3tw1bSjkcCu8tn
-         QY1K9TK7aaZHriVKtAfbTv7UoEerHbHC59yuFfFOyRAAhP28rQVHtucdT23vj6J3jpKT
-         iGEA==
+        d=gmail.com; s=20251104; t=1777038907; x=1777643707; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=kMeiAHdTbFhy7JXd41HJZsYauWdI9RVH3tSuSNB+WCI=;
+        b=d+JRRqZgBWm5eHzCotkrGA1DvbtNAj0yNxMFMHHbY40U5UKLx9RVRziBJmu0658wRd
+         KAjrmzDMbkyPMCKeWDbQO/dmuGs5j0VhEhrWsy92RrHHg9Q67dy8B7BC5oCt0+dENMty
+         wgTEg7DLvak2JCUKyNUv5xCQOyjyH4smLEcsGuHA9e1blvpqycokR0h4+8TQwcULT2Ud
+         zuFySnxLJl/H9wfyzBHDTduJ0rujzZbPhaoX/Y9utJt3wjuElRdqNyXK6VpRiGBihlfF
+         lo0vA7c/RKVav+x4cIp3/6aUfMyK5OVpaPAPEw3mjln7itI4PT5qRHdZ6zaXV1CYrVl+
+         n6Eg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777038755; x=1777643555;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=wJJT0JoPIZZHN/QqfMLvwfSqlNJF6a+bk91astgGZbs=;
-        b=gkvWu2b5eETxqqz8xySXmiUnDR9+wg15YFGQk7dWIich9prp7Hr592gxYSgnt+9541
-         tI4iedpPohIg3s94RuLko+BYFG6A+FiB8p4YkD5443u7gyFQHD7RExU3nlbrNdQZFzgb
-         T8ZYtMZMZ2xf7DNvVnS63kG6ga4wFG1Di7T9EP8z2xCJV/yvWFIvkqmHI9b+3Hs/ueSE
-         9Djg/xT4NoKSqiGPz4C8B5l8sLTg148PHtSbLymbxf9QmSqlyrz7pnWUqW8T+bev5H/h
-         2HOIP++OFrlsYs+hITE+l/kSecaiX1PuutTfNKaIbHr5qD99fPK6vryFUnBgB4562wWb
-         7Xjw==
-X-Forwarded-Encrypted: i=1; AFNElJ+wRf1d46tyaZoqY4YiNEOrD9aSfZXfFvNFETbcICfX51QiBivl8vvzk9W6IiZNsRF+Lw8rA6w=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzjck2UJygXoG8I3OXnfL0vzQvTaqdFnp+PAzlESmcNdlv01HpN
-	bCKu+f52isWJmqEWXIvCadXoGya6mpRlcM673IokvFDKcmP7nzePZ7Fk9qM8Mk+OMVekCPXr4Ce
-	sYePEWpadY9iXO46pml82aPO2UscL7VeMU/AwB0Yg
-X-Gm-Gg: AeBDiev+y1SmfC3BqQWA/GR2AN9LQpD99/rjyT1u6O6tPYj24vqrhfC0iLEGnF9hm6E
-	BTEtm+hNVVn+eWjTIdK3xqzuctJeJYaQGIcv6ATdXZwS84ypME4/b4ubTmOQqORLXCpF1gbsZ2t
-	FLt/UOhNX0rmwdF0PRB5zUMkMeuiG4cdMv5u1L7bogjFaC7z1fWs3yC7ZvE0lLTw4UUl49Xwt5B
-	MjGuNC/ie1lOXIytqYJ1nL3RNyK9N/Zf3n2yw+zS3IcH88UM6dFW7hM08+ukhvbID+VGt8c16zO
-	wwhSt84qAOgWxMLvOHu3ZtIohthB68Udv9LKoOy6Jr6C2rDgPnzlya2MGLA1BgGj1mXdqg1mI0L
-	t+kBZSKCWDiOmIFJw7Is=
-X-Received: by 2002:a05:6402:312d:b0:670:8b38:5717 with SMTP id
- 4fb4d7f45d1cf-672bfde2984mr8860876a12.24.1777038755002; Fri, 24 Apr 2026
- 06:52:35 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1777038907; x=1777643707;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kMeiAHdTbFhy7JXd41HJZsYauWdI9RVH3tSuSNB+WCI=;
+        b=QfPTpBX7MJb87z3UbpyjLRqsS070pwWtCvLO8Ti/cchTrlnDatZLtP2GT/nMM9qjzA
+         wjlJRHKv8bsS03XSwP53pp7RLOM0FxrkvxToeBpEQG5PTswTZirZGpvKaE5qGoqcl0GB
+         DAeU5xz8t6QBJTPYLLG6qARtUDJeegGHh8X5AOOIIw9yc2UCgy3X7qstM/CgAw1n7Pt5
+         pLvmwd5unbkPOrIH0MW+JmsZvE9WegDSOh1SBPFDXK8wO0ZOlnLH9jVATg0hmtsYcbR+
+         jrGXWF3MPUf6IV8/WDPp/9nXxVbjLHAwoDqP2tABwU1Z9Le9qQtAL7GwJyS2A/3PlBTg
+         fO3Q==
+X-Forwarded-Encrypted: i=1; AFNElJ9A2JVuR3TClkBrmsFJny/CgxhkSRUYW2kii78zaw2NlEx/QlJKbdYxL6uuY7HtzQU+61MlXtM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxW5yxAuKfLxCPvCUjEI9NaBbST0ocSt0DW/HvXqMCUb5XzI0fi
+	xi9rP2obtf+N8BySkmUNNCcUQUJCAU+yquZ3K+r/N4oP17r4NWXYrjE=
+X-Gm-Gg: AeBDieu6hrI93W9nwhzi8kLf7/gVJwg0sc9R0wj8dknHLGy1I2CQa0a2R0teYzKx6MR
+	KXq/bi50pXiXXp7lFFDPNy88v4ZTHNhkp6pS9aMn4weg/OnddoRC1C6gevWDUAqkoJ5zH4fFeVq
+	o4nWkre7SeJGjTXiVUUegOdGAWBKr0mRIXNptDP5rLh1DU0Nrop5ve2JHruh/Mdj+IWwIcADjYl
+	DLifyGQhWyJbb2H4Y8Fr+/rHLGKLgt2n0mTQVS+QjflwcxJrbQYIT3wLpk+Fi6zKCx+l/v1BGns
+	xwHk6+NMdCWZrSaiGyyjy/WGr37c7OwuYha5tE96eIeoQxHUK3X7YdBD0JWoG+4wQuuXVD0SjKG
+	0uG/nazPasvxSixXfxWpbPXxpcF4IqassZyBXKU8fW9sQ1zcdkOLpXWgFevv2X9O9rMCvXrcAuW
+	+IqE3ybkZUgWnDeLDs0bg1k6BR0MTRWGyjtJ1CXKrold7WmYL8iV8Sgp+ui5+9qu0mT/UczBPtP
+	A1bnE+I4iRl/y4=
+X-Received: by 2002:a17:90b:2dc1:b0:35e:30bc:96e2 with SMTP id 98e67ed59e1d1-361403f1901mr33384481a91.10.1777038906954;
+        Fri, 24 Apr 2026 06:55:06 -0700 (PDT)
+Received: from localhost.localdomain ([1.226.165.54])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36141990bb6sm24427479a91.17.2026.04.24.06.55.04
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Fri, 24 Apr 2026 06:55:06 -0700 (PDT)
+From: Myeonghun Pak <mhun512@gmail.com>
+To: Gerd Hoffmann <kraxel@redhat.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>
+Cc: Myeonghun Pak <mhun512@gmail.com>,
+	virtualization@lists.linux.dev,
+	dri-devel@lists.freedesktop.org,
+	stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] drm/bochs: Drop manual put on probe error path
+Date: Fri, 24 Apr 2026 22:54:42 +0900
+Message-ID: <20260424135501.18483-1-mhun512@gmail.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <2026042433-outwit-cognitive-f970@gregkh>
-In-Reply-To: <2026042433-outwit-cognitive-f970@gregkh>
-From: Willem de Bruijn <willemb@google.com>
-Date: Fri, 24 Apr 2026 09:51:56 -0400
-X-Gm-Features: AQROBzDJC9eu_b2xQIeP4q9m7u4xd26yz65cE70L66aUTsOtNmQZXfuDaxpbOmg
-Message-ID: <CA+FuTScyXkgugNyRoyHUTSt98CQEzGv=2kGH5Zwq8ho1Q4_+Bw@mail.gmail.com>
-Subject: Re: FAILED: patch "[PATCH] net/packet: fix TOCTOU race on mmap'd
- vnet_hdr in" failed to apply to 6.1-stable tree
-To: gregkh@linuxfoundation.org, patzilla007@gmail.com
-Cc: kuba@kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: D1ACC45FCE5
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: B340945FD9C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-240968-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[google.com:+];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[linuxfoundation.org,gmail.com];
-	RCPT_COUNT_THREE(0.00)[4];
-	MISSING_XM_UA(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[gmail.com,lists.linux.dev,lists.freedesktop.org,vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240969-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[redhat.com,linux.intel.com,kernel.org,suse.de,gmail.com,ffwll.ch];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[willemb@google.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[mhun512@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 
-On Fri, Apr 24, 2026 at 5:50=E2=80=AFAM <gregkh@linuxfoundation.org> wrote:
->
->
-> The patch below does not apply to the 6.1-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
->
-> To reproduce the conflict and resubmit, you may use the following command=
-s:
->
-> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.gi=
-t/ linux-6.1.y
-> git checkout FETCH_HEAD
-> git cherry-pick -x 2c054e17d9d41f1020376806c7f750834ced4dc5
-> # <resolve conflicts, build, test, etc.>
-> git commit -s
-> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026042433-=
-outwit-cognitive-f970@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
->
-> Possible dependencies:
+bochs_pci_probe() allocates the DRM device with devm_drm_dev_alloc(),
+which registers a devres action to drop the initial DRM device reference
+on driver detach or probe failure.
 
-This appears to be due to feature commit dfc39d4026fb ("net/packet:
-support mergeable feature of virtio"). Backporting that is not
-practical, or wanted.
+The error path currently calls drm_dev_put() manually. If probe then
+returns an error, devres will run the registered release action and put
+the same device again, after the first put may already have released it.
 
-The actual conflict is small, on conversion of direct read
+Return the probe error directly and let devres own the final put.
 
-  +              if (po->has_vnet_hdr) {
+Fixes: 04826f588682 ("drm/bochs: Allocate DRM device in struct bochs_device")
+Cc: stable@vger.kernel.org
+Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
+---
+ drivers/gpu/drm/tiny/bochs.c | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
-with cached function variable
-
-+               if (vnet_hdr_sz) {
-
-I think we can fix that up in a backport fix. From quick check the
-conflict is the same for 6.1 and 5.10 (i.e., no additional issues with
-older branches).
-
-Bingquan, do you want to send patches to these three stable branches
-5.10, 5.15 and 6.1? Else I can take a stab.
+diff --git a/drivers/gpu/drm/tiny/bochs.c b/drivers/gpu/drm/tiny/bochs.c
+index 222e4ae1ab..5d8dc5efec 100644
+--- a/drivers/gpu/drm/tiny/bochs.c
++++ b/drivers/gpu/drm/tiny/bochs.c
+@@ -761,25 +761,21 @@ static int bochs_pci_probe(struct pci_dev *pdev, const struct pci_device_id *ent
+ 
+ 	ret = pcim_enable_device(pdev);
+ 	if (ret)
+-		goto err_free_dev;
++		return ret;
+ 
+ 	pci_set_drvdata(pdev, dev);
+ 
+ 	ret = bochs_load(bochs);
+ 	if (ret)
+-		goto err_free_dev;
++		return ret;
+ 
+ 	ret = drm_dev_register(dev, 0);
+ 	if (ret)
+-		goto err_free_dev;
++		return ret;
+ 
+ 	drm_client_setup(dev, NULL);
+ 
+ 	return ret;
+-
+-err_free_dev:
+-	drm_dev_put(dev);
+-	return ret;
+ }
+ 
+ static void bochs_pci_remove(struct pci_dev *pdev)
+-- 
+2.39.5
 
