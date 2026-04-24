@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-240687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240845-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GPy2IO5x62ndMwAAu9opvQ
-	(envelope-from <stable+bounces-240687-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:36:46 +0200
+	id OHmgJkZ062koNAAAu9opvQ
+	(envelope-from <stable+bounces-240845-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:46:46 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 319B045F388
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:36:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E26A45F9AE
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:46:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B84B7303029E
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:33:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 37A4C30A7D16
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:39:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FF0C23645D;
-	Fri, 24 Apr 2026 13:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C3B23D75D3;
+	Fri, 24 Apr 2026 13:39:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="isKwipl8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UcTm9n/7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1344C3AC00;
-	Fri, 24 Apr 2026 13:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DED0A3D75C6;
+	Fri, 24 Apr 2026 13:39:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777037580; cv=none; b=V+JGgVP1CwB7Bpw1Z+lsfmdCHRk6JgC249cCm28u0V0nEOLT8DHlx+ERN1+RG14nj1yGbPEvDvAhhjzh2yP0wOfBhr7kK/I5WnRja5wdJwvM11GY5CRGWcuZLKKh+wr0f53nMuKaR9oj8YkiRuVDlq9jdtwc+wvWJeq/3ox1g/M=
+	t=1777037988; cv=none; b=fljc8UI8TZ6hu5wiMS6xBkH8r1sZUZ2TY9wRRRKGqOr4aHbRMw58dxAUZeyFmdJDJMSKp8F8veE13qAfZhC4pDjo0blBgg3UJnn2ydII9DRPNHiZYUi4HV/iwprlS7XrtFb7j5bkG5zzjPhe8kv0xmcmAH9JEAlgs66C6Bangqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777037580; c=relaxed/simple;
-	bh=NJWQAAkAG1yJ2KvOj2zUXOakzMNnk4z5ToaXcZtk7sc=;
+	s=arc-20240116; t=1777037988; c=relaxed/simple;
+	bh=N1MIzopuj5vOKhCOb7r1cnrHGkN+EFatqbltbsBs4AM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rL5du1td/fkRdbU2AOn/gHa5EH2Uw7BHwa9uysFTY7/6TiafGY+rR164eolYOC+MXa8kKnOL9uaar4CGvmqptBRKlOyVbzdAGzCI3QN0Rc+v5dvWb1TXHhA5kNlJp93AxiGDgV+Fn2mrSayqZj8+0IwOUK99w4tWp5IwcoQyWW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=isKwipl8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BCAAC2BCB2;
-	Fri, 24 Apr 2026 13:32:59 +0000 (UTC)
+	 MIME-Version; b=TH+QZ1AMt5P9laSJQSxV3y6r9ZjmTXXYNvXUVbgFpzz9WiXKTgWBez7wp7O5JjAX/Ze2Cyh7ncm3xxESbPzvtbKmveaG2YZb3GdWpCSuKH9oTZ45KuH8vWcwwJ7yFeP491kDKgrA0rGoK2veKnUmIppMX58UnyAASQDSjEvoUBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UcTm9n/7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D756C19425;
+	Fri, 24 Apr 2026 13:39:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777037580;
-	bh=NJWQAAkAG1yJ2KvOj2zUXOakzMNnk4z5ToaXcZtk7sc=;
+	s=korg; t=1777037988;
+	bh=N1MIzopuj5vOKhCOb7r1cnrHGkN+EFatqbltbsBs4AM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=isKwipl8loGZGxRHTBEvA0hOSA6vugmCBf+SlIRZnFTgyxFvcjqcQn5YLmVS+AZfn
-	 kv4hw5TMa52wPVc/9ni8a0+COtR4Z1X36WKr4ZwgTNbnCC4yEvatVxSCPuxR0R36ar
-	 dOPLe9pO+IvMaEGZcc8gw9yAbCMmzZnGkVwJSWzM=
+	b=UcTm9n/7+78TiarGRDvo4bPSnzd8xYdgShXKZ/yRlSYpD7wKohucRzdwGM0Dy85cQ
+	 b1JVMUh5ACq1dgeyh0wg8odCrmRHSqe5NkNawRNjX83jVGzfktOX6Aj4DR0R+2jeJO
+	 7Q3tFlxC//ygIsjde2rxd8wLIcWndab97B+mdth4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"stable@vger.kernel.org, devicetree@vger.kernel.org,  Nathan Chancellor" <nathan@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>
-Subject: [PATCH 7.0 09/42] scripts/dtc: Remove unused dts_version in dtc-lexer.l
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Berk Cem Goksel <berkcgoksel@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 120/166] ALSA: 6fire: fix use-after-free on disconnect
 Date: Fri, 24 Apr 2026 15:30:34 +0200
-Message-ID: <20260424132422.437228652@linuxfoundation.org>
+Message-ID: <20260424132557.920552779@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132420.410310336@linuxfoundation.org>
-References: <20260424132420.410310336@linuxfoundation.org>
+In-Reply-To: <20260424132532.812258529@linuxfoundation.org>
+References: <20260424132532.812258529@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +64,119 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 319B045F388
+X-Rspamd-Queue-Id: 1E26A45F9AE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-240845-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-240687-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.de:email,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Berk Cem Goksel <berkcgoksel@gmail.com>
 
-This patch is for stable only. Commit 5a09df20872c ("scripts/dtc: Update
-to upstream version v1.7.2-69-g53373d135579") upstream applied it as
-part of a regular scripts/dtc sync, which may be unsuitable for older
-versions of stable where the warning it fixes is present.
+commit b9c826916fdce6419b94eb0cd8810fdac18c2386 upstream.
 
-A recent strengthening of -Wunused-but-set-variable (enabled with -Wall)
-in clang under a new subwarning, -Wunused-but-set-global, points out an
-unused static global variable in dtc-lexer.lex.c (compiled from
-dtc-lexer.l):
+In usb6fire_chip_abort(), the chip struct is allocated as the card's
+private data (via snd_card_new with sizeof(struct sfire_chip)).  When
+snd_card_free_when_closed() is called and no file handles are open, the
+card and embedded chip are freed synchronously.  The subsequent
+chip->card = NULL write then hits freed slab memory.
 
-  scripts/dtc/dtc-lexer.lex.c:641:12: warning: variable 'dts_version' set but not used [-Wunused-but-set-global]
-    641 | static int dts_version = 1;
-        |            ^
+Call trace:
+  usb6fire_chip_abort sound/usb/6fire/chip.c:59 [inline]
+  usb6fire_chip_disconnect+0x348/0x358 sound/usb/6fire/chip.c:182
+  usb_unbind_interface+0x1a8/0x88c drivers/usb/core/driver.c:458
+  ...
+  hub_event+0x1a04/0x4518 drivers/usb/core/hub.c:5953
 
-Remove it to clear up the warning, as it is truly unused.
+Fix by moving the card lifecycle out of usb6fire_chip_abort() and into
+usb6fire_chip_disconnect().  The card pointer is saved in a local
+before any teardown, snd_card_disconnect() is called first to prevent
+new opens, URBs are aborted while chip is still valid, and
+snd_card_free_when_closed() is called last so chip is never accessed
+after the card may be freed.
 
-Fixes: 658f29a51e98 ("of/flattree: Update dtc to current mainline.")
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Fixes: a0810c3d6dd2 ("ALSA: 6fire: Release resources at card release")
+Cc: stable@vger.kernel.org
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Signed-off-by: Berk Cem Goksel <berkcgoksel@gmail.com>
+Link: https://patch.msgid.link/20260410051341.1069716-1-berkcgoksel@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
-This should apply cleanly to all supported stable branches.
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- scripts/dtc/dtc-lexer.l |    3 ---
- 1 file changed, 3 deletions(-)
+ sound/usb/6fire/chip.c |   17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
---- a/scripts/dtc/dtc-lexer.l
-+++ b/scripts/dtc/dtc-lexer.l
-@@ -39,8 +39,6 @@ extern bool treesource_error;
- #define DPRINT(fmt, ...)	do { } while (0)
- #endif
+--- a/sound/usb/6fire/chip.c
++++ b/sound/usb/6fire/chip.c
+@@ -53,11 +53,6 @@ static void usb6fire_chip_abort(struct s
+ 			usb6fire_comm_abort(chip);
+ 		if (chip->control)
+ 			usb6fire_control_abort(chip);
+-		if (chip->card) {
+-			snd_card_disconnect(chip->card);
+-			snd_card_free_when_closed(chip->card);
+-			chip->card = NULL;
+-		}
+ 	}
+ }
  
--static int dts_version = 1;
--
- #define BEGIN_DEFAULT()		DPRINT("<V1>\n"); \
- 				BEGIN(V1); \
+@@ -170,6 +165,7 @@ destroy_chip:
+ static void usb6fire_chip_disconnect(struct usb_interface *intf)
+ {
+ 	struct sfire_chip *chip;
++	struct snd_card *card;
  
-@@ -101,7 +99,6 @@ static void PRINTF(1, 2) lexical_error(c
+ 	chip = usb_get_intfdata(intf);
+ 	if (chip) { /* if !chip, fw upload has been performed */
+@@ -180,8 +176,19 @@ static void usb6fire_chip_disconnect(str
+ 			chips[chip->regidx] = NULL;
+ 			mutex_unlock(&register_mutex);
  
- <*>"/dts-v1/"	{
- 			DPRINT("Keyword: /dts-v1/\n");
--			dts_version = 1;
- 			BEGIN_DEFAULT();
- 			return DT_V1;
++			/*
++			 * Save card pointer before teardown.
++			 * snd_card_free_when_closed() may free card (and
++			 * the embedded chip) immediately, so it must be
++			 * called last and chip must not be accessed after.
++			 */
++			card = chip->card;
+ 			chip->shutdown = true;
++			if (card)
++				snd_card_disconnect(card);
+ 			usb6fire_chip_abort(chip);
++			if (card)
++				snd_card_free_when_closed(card);
  		}
+ 	}
+ }
 
 
 
