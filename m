@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-240812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240674-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0KCILldy62nmMwAAu9opvQ
-	(envelope-from <stable+bounces-240812-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:38:31 +0200
+	id SC53MK1x62ndMwAAu9opvQ
+	(envelope-from <stable+bounces-240674-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:35:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 853E945F48A
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:38:31 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2403D45F2B5
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:35:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 856B13008332
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:38:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B591830421D2
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:32:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F27233D6690;
-	Fri, 24 Apr 2026 13:38:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91F243D6CD6;
+	Fri, 24 Apr 2026 13:32:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HfO/ekPP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="spqTXqBW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4B6233E347;
-	Fri, 24 Apr 2026 13:38:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12B0D3D6CC2;
+	Fri, 24 Apr 2026 13:32:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777037903; cv=none; b=GclmWAYw8qNuXeUMNEPmoh7v3KEsrQfs4JJZxy95alMfxSTikW/qjo3Z7JWQixW1WTWLML3QrQUYlvQTNvLWcmzaTSTmlJKqCvkyw9BtBdaK3TMXW0A6bPNEq8UzWNe0OE3SJB8iRasSMzMXzu9Jb60/r/LwO6oFf0lJbgioMBU=
+	t=1777037547; cv=none; b=l02o5vlPEFXk3wfxbh+l7/j4ky7QFbObmb01YaPRsU0QOgg44N4bqerA6jj+GsTwg6e6+fl6eNJWoRKLlI6AVI9zDrM5PFGcSoDKRXvJ7TqRoOBrg10Kw63co24yaSsJKGPQFYuie+aqL8ZSvjXXDNI0xS3erXd6pWXqIHyKcd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777037903; c=relaxed/simple;
-	bh=fTNJ9vtKjeDwUSuMa2qDHOenbZV1Ctb1gCoX46nkVuQ=;
+	s=arc-20240116; t=1777037547; c=relaxed/simple;
+	bh=bmMF0PxciaZMfnlDWjao9Xmw33ya6ol9CqplpYcwbac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kJ3nz72bhGJkrxODhvQVjheGxqDfY20vV8esHtOmKGCEdTQeG+ve17QN3HpkT2QIgcR+1Uu7hGYA3AYE9lgGSu4nMVWNZ+fIYU3VjFEA1yfJdbUZuNeEo59OOo2OQ3uhJ4AuY0jmxVZsI14/NViJ7i/zfqARF551YeqzAlXB/Mc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HfO/ekPP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ADBAC2BCB2;
-	Fri, 24 Apr 2026 13:38:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=buuIa+Hjq+/UHUbzDwvcumzdDyRkhVk+X6vHXnAaZ+154o8DgmGDIYNYraha94fZ++NFon+p9RPtPhGjDkgiEhq6fro/69+3sF19h2pvJPQ3X4eaRBDWw3RdIUVsABN5XwoS3gDWCZ/2+D1p/Z7kCrXzY9m6Sk/v4DTeIo+aWN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=spqTXqBW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D6DAC2BCB6;
+	Fri, 24 Apr 2026 13:32:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777037903;
-	bh=fTNJ9vtKjeDwUSuMa2qDHOenbZV1Ctb1gCoX46nkVuQ=;
+	s=korg; t=1777037546;
+	bh=bmMF0PxciaZMfnlDWjao9Xmw33ya6ol9CqplpYcwbac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HfO/ekPPa6WVc59iVvtVzIha8NiP8SzeL4WBZtNFwNIRTIYfqR7wTeQ4kcRk1m9u8
-	 KyBo/CLNSd9TxyCzbkgZGjwbub/BvnpO9FrA4AHXUe78Y3AVsOx0RCMR0dcNpGcMQq
-	 naOCkB8JYn28m/C5h9rMWjLWUV1POPmlp4qNoMMQ=
+	b=spqTXqBWZjD7vLnAyrL884+3vAWV7WWRtC1VqMFRDWXbnk61XrhoaMHCgau+AS1FM
+	 IBbskFT9KjlxT+sfMKg28lvHlu1h6olDNMK4db1lwUMrL/MXJLuFCGLrkoOgTfK1a4
+	 0xB2tOv1qCFWWZZaZIWMeA02ADgRRX1040nyQ+3E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yashu Zhang <zhangjiaji1@huawei.com>,
-	Tom Lendacky <thomas.lendacky@gmail.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.6 113/166] KVM: x86: Use scratch field in MMIO fragment to hold small write values
+	Miguel Ojeda <ojeda@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Michal Wilczynski <m.wilczynski@samsung.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0 02/42] pwm: th1520: fix `CLIPPY=1` warning
 Date: Fri, 24 Apr 2026 15:30:27 +0200
-Message-ID: <20260424132556.440909073@linuxfoundation.org>
+Message-ID: <20260424132420.891656628@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132532.812258529@linuxfoundation.org>
-References: <20260424132532.812258529@linuxfoundation.org>
+In-Reply-To: <20260424132420.410310336@linuxfoundation.org>
+References: <20260424132420.410310336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,196 +65,109 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 853E945F48A
+X-Rspamd-Queue-Id: 2403D45F2B5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-240812-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240674-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,huawei.com,gmail.com,intel.com,google.com];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,huawei.com:email,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,rust-for-linux.com:url,samsung.com:email]
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-commit 0b16e69d17d8c35c5c9d5918bf596c75a44655d3 upstream.
+[ Upstream commit aa8f35172ab66c57d4355a8c4e28d05b44c938e3 ]
 
-When exiting to userspace to service an emulated MMIO write, copy the
-to-be-written value to a scratch field in the MMIO fragment if the size
-of the data payload is 8 bytes or less, i.e. can fit in a single chunk,
-instead of pointing the fragment directly at the source value.
+The Rust kernel code should be kept `CLIPPY=1`-clean [1].
 
-This fixes a class of use-after-free bugs that occur when the emulator
-initiates a write using an on-stack, local variable as the source, the
-write splits a page boundary, *and* both pages are MMIO pages.  Because
-KVM's ABI only allows for physically contiguous MMIO requests, accesses
-that split MMIO pages are separated into two fragments, and are sent to
-userspace one at a time.  When KVM attempts to complete userspace MMIO in
-response to KVM_RUN after the first fragment, KVM will detect the second
-fragment and generate a second userspace exit, and reference the on-stack
-variable.
+Clippy reports:
 
-The issue is most visible if the second KVM_RUN is performed by a separate
-task, in which case the stack of the initiating task can show up as truly
-freed data.
+    error: this pattern reimplements `Option::unwrap_or`
+      --> drivers/pwm/pwm_th1520.rs:64:5
+       |
+    64 | /     (match ns.checked_mul(rate_hz) {
+    65 | |         Some(product) => product,
+    66 | |         None => u64::MAX,
+    67 | |     }) / NSEC_PER_SEC_U64
+       | |______^ help: replace with: `ns.checked_mul(rate_hz).unwrap_or(u64::MAX)`
+       |
+       = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.92.0/index.html#manual_unwrap_or
+       = note: `-D clippy::manual-unwrap-or` implied by `-D warnings`
+       = help: to override `-D warnings` add `#[allow(clippy::manual_unwrap_or)]`
 
-  ==================================================================
-  BUG: KASAN: use-after-free in complete_emulated_mmio+0x305/0x420
-  Read of size 1 at addr ffff888009c378d1 by task syz-executor417/984
+Applying the suggestion then triggers:
 
-  CPU: 1 PID: 984 Comm: syz-executor417 Not tainted 5.10.0-182.0.0.95.h2627.eulerosv2r13.x86_64 #3
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.15.0-0-g2dd4b9b3f840-prebuilt.qemu.org 04/01/2014 Call Trace:
-  dump_stack+0xbe/0xfd
-  print_address_description.constprop.0+0x19/0x170
-  __kasan_report.cold+0x6c/0x84
-  kasan_report+0x3a/0x50
-  check_memory_region+0xfd/0x1f0
-  memcpy+0x20/0x60
-  complete_emulated_mmio+0x305/0x420
-  kvm_arch_vcpu_ioctl_run+0x63f/0x6d0
-  kvm_vcpu_ioctl+0x413/0xb20
-  __se_sys_ioctl+0x111/0x160
-  do_syscall_64+0x30/0x40
-  entry_SYSCALL_64_after_hwframe+0x67/0xd1
-  RIP: 0033:0x42477d
-  Code: <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
-  RSP: 002b:00007faa8e6890e8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-  RAX: ffffffffffffffda RBX: 00000000004d7338 RCX: 000000000042477d
-  RDX: 0000000000000000 RSI: 000000000000ae80 RDI: 0000000000000005
-  RBP: 00000000004d7330 R08: 00007fff28d546df R09: 0000000000000000
-  R10: 0000000000000000 R11: 0000000000000246 R12: 00000000004d733c
-  R13: 0000000000000000 R14: 000000000040a200 R15: 00007fff28d54720
+    error: manual saturating arithmetic
+      --> drivers/pwm/pwm_th1520.rs:64:5
+       |
+    64 |     ns.checked_mul(rate_hz).unwrap_or(u64::MAX) / NSEC_PER_SEC_U64
+       |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: consider using `saturating_mul`: `ns.saturating_mul(rate_hz)`
+       |
+       = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.92.0/index.html#manual_saturating_arithmetic
+       = note: `-D clippy::manual-saturating-arithmetic` implied by `-D warnings`
+       = help: to override `-D warnings` add `#[allow(clippy::manual_saturating_arithmetic)]`
 
-  The buggy address belongs to the page:
-  page:0000000029f6a428 refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x9c37
-  flags: 0xfffffc0000000(node=0|zone=1|lastcpupid=0x1fffff)
-  raw: 000fffffc0000000 0000000000000000 ffffea0000270dc8 0000000000000000
-  raw: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000 page dumped because: kasan: bad access detected
+Thus fix it by using saturating arithmetic, which simplifies the code
+as well.
 
-  Memory state around the buggy address:
-  ffff888009c37780: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-  ffff888009c37800: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-  >ffff888009c37880: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-                                                   ^
-  ffff888009c37900: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-  ffff888009c37980: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-  ==================================================================
-
-The bug can also be reproduced with a targeted KVM-Unit-Test by hacking
-KVM to fill a large on-stack variable in complete_emulated_mmio(), i.e. by
-overwrite the data value with garbage.
-
-Limit the use of the scratch fields to 8-byte or smaller accesses, and to
-just writes, as larger accesses and reads are not affected thanks to
-implementation details in the emulator, but add a sanity check to ensure
-those details don't change in the future.  Specifically, KVM never uses
-on-stack variables for accesses larger that 8 bytes, e.g. uses an operand
-in the emulator context, and *all* reads are buffered through the mem_read
-cache.
-
-Note!  Using the scratch field for reads is not only unnecessary, it's
-also extremely difficult to handle correctly.  As above, KVM buffers all
-reads through the mem_read cache, and heavily relies on that behavior when
-re-emulating the instruction after a userspace MMIO read exit.  If a read
-splits a page, the first page is NOT an MMIO page, and the second page IS
-an MMIO page, then the MMIO fragment needs to point at _just_ the second
-chunk of the destination, i.e. its position in the mem_read cache.  Taking
-the "obvious" approach of copying the fragment value into the destination
-when re-emulating the instruction would clobber the first chunk of the
-destination, i.e. would clobber the data that was read from guest memory.
-
-Fixes: f78146b0f923 ("KVM: Fix page-crossing MMIO")
-Suggested-by: Yashu Zhang <zhangjiaji1@huawei.com>
-Reported-by: Yashu Zhang <zhangjiaji1@huawei.com>
-Closes: https://lore.kernel.org/all/369eaaa2b3c1425c85e8477066391bc7@huawei.com
-Cc: stable@vger.kernel.org
-Tested-by: Tom Lendacky <thomas.lendacky@gmail.com>
-Tested-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Link: https://patch.msgid.link/20260225012049.920665-2-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://rust-for-linux.com/contributing#submit-checklist-addendum [1]
+Fixes: e03724aac758 ("pwm: Add Rust driver for T-HEAD TH1520 SoC")
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+Reviewed-by: Michal Wilczynski <m.wilczynski@samsung.com>
+Link: https://patch.msgid.link/20260121183719.71659-1-ojeda@kernel.org
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/x86.c       |   14 +++++++++++++-
- include/linux/kvm_host.h |    3 ++-
- 2 files changed, 15 insertions(+), 2 deletions(-)
+ drivers/pwm/pwm_th1520.rs | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -7713,7 +7713,13 @@ static int emulator_read_write_onepage(u
- 	WARN_ON(vcpu->mmio_nr_fragments >= KVM_MAX_MMIO_FRAGMENTS);
- 	frag = &vcpu->mmio_fragments[vcpu->mmio_nr_fragments++];
- 	frag->gpa = gpa;
--	frag->data = val;
-+	if (write && bytes <= 8u) {
-+		frag->val = 0;
-+		frag->data = &frag->val;
-+		memcpy(&frag->val, val, bytes);
-+	} else {
-+		frag->data = val;
-+	}
- 	frag->len = bytes;
- 	return X86EMUL_CONTINUE;
+diff --git a/drivers/pwm/pwm_th1520.rs b/drivers/pwm/pwm_th1520.rs
+index b0e24ee724e45..36567fc17dcc8 100644
+--- a/drivers/pwm/pwm_th1520.rs
++++ b/drivers/pwm/pwm_th1520.rs
+@@ -64,10 +64,7 @@ const fn th1520_pwm_fp(n: u32) -> usize {
+ fn ns_to_cycles(ns: u64, rate_hz: u64) -> u64 {
+     const NSEC_PER_SEC_U64: u64 = time::NSEC_PER_SEC as u64;
+ 
+-    (match ns.checked_mul(rate_hz) {
+-        Some(product) => product,
+-        None => u64::MAX,
+-    }) / NSEC_PER_SEC_U64
++    ns.saturating_mul(rate_hz) / NSEC_PER_SEC_U64
  }
-@@ -7728,6 +7734,9 @@ static int emulator_read_write(struct x8
- 	gpa_t gpa;
- 	int rc;
  
-+	if (WARN_ON_ONCE((bytes > 8u || !ops->write) && object_is_on_stack(val)))
-+		return X86EMUL_UNHANDLEABLE;
-+
- 	if (ops->read_write_prepare &&
- 		  ops->read_write_prepare(vcpu, val, bytes))
- 		return X86EMUL_CONTINUE;
-@@ -11136,6 +11145,9 @@ static int complete_emulated_mmio(struct
- 		frag++;
- 		vcpu->mmio_cur_fragment++;
- 	} else {
-+		if (WARN_ON_ONCE(frag->data == &frag->val))
-+			return -EIO;
-+
- 		/* Go forward to the next mmio piece. */
- 		frag->data += len;
- 		frag->gpa += len;
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -316,7 +316,8 @@ static inline bool kvm_vcpu_can_poll(kti
- struct kvm_mmio_fragment {
- 	gpa_t gpa;
- 	void *data;
--	unsigned len;
-+	u64 val;
-+	unsigned int len;
- };
- 
- struct kvm_vcpu {
+ fn cycles_to_ns(cycles: u64, rate_hz: u64) -> u64 {
+-- 
+2.53.0
+
 
 
 
