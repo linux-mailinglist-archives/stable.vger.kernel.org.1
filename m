@@ -1,106 +1,71 @@
-Return-Path: <stable+bounces-240647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240648-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +BFTIEtf62lGLwAAu9opvQ
-	(envelope-from <stable+bounces-240647-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 14:17:15 +0200
+	id kMHFKVxg62kCMAAAu9opvQ
+	(envelope-from <stable+bounces-240648-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 14:21:48 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C974F45E4A4
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 14:17:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 150D045E58D
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 14:21:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 935403012C70
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 12:17:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3D217302659D
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 12:21:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6961D3BFE4D;
-	Fri, 24 Apr 2026 12:17:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7057C3C5DB6;
+	Fri, 24 Apr 2026 12:21:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="jjW6slul";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="SSmERdS0"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="a7e1g3P4"
 X-Original-To: stable@vger.kernel.org
-Received: from fout-a8-smtp.messagingengine.com (fout-a8-smtp.messagingengine.com [103.168.172.151])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1523A3C5DC3;
-	Fri, 24 Apr 2026 12:17:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.151
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 682463C343E;
+	Fri, 24 Apr 2026 12:21:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777033026; cv=none; b=ZsrWTBjOjw5mPoBp1ldnwhz1ua7rIULKKfywupm6Kk8wKMprr4joIoICNzmRwnMm/PMN+IwdUnVbq2yUgvS19fCZlSfvnrZA26vd5q0D7yGgCf5ZmA0FKASuvqWwO+SmkApd3Uv0lfUvTo3kx4qbcGvLZoJcqmXbAVyGxVvn44I=
+	t=1777033285; cv=none; b=bvm8c0NLUUapjed/M5UvHOoJsFTiRG+bgEiOXbdwXKKfF4WLVMlp1BudCFuIu51r6hbDw3gsJ0NDK8EfElhetb1q2xKdNiyulfyRmvVLoikkC395jIXrQvg1Xz73PlwtLh+vbIdhjg4z8WHQN8HekbYgxdOyY7LfFt+Rzp/8/Es=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777033026; c=relaxed/simple;
-	bh=p3waIAl630iRszEnJiKjXUzSHcUGwn9r0UxnN/sOVNg=;
+	s=arc-20240116; t=1777033285; c=relaxed/simple;
+	bh=7of1kJsvzdpEsSZJeO17x5YeTfnIvMKbWpeoSZwJixs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=adrUomS02MosRS/atOev+EYG1cCQrm90dlKYeDDKCjhU+tYC2DnfvUH5oPMbIqNArSPH6Vi0UQuttr6RQOke6k2cDhbe2EPx+11W2fsfFW8jQZ/5oQI9w14jV5mFL+ALHYxAaR1hSfKy1UtxU2kp6d2Gzaila9UBk46ou6aw6a8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=jjW6slul; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=SSmERdS0; arc=none smtp.client-ip=103.168.172.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfout.phl.internal (Postfix) with ESMTP id CA057EC0534;
-	Fri, 24 Apr 2026 08:17:01 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-10.internal (MEProxy); Fri, 24 Apr 2026 08:17:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm2; t=1777033021; x=1777119421; bh=ux5cqlt4IM
-	80vxhXkNBd6OQ3EP72rkh1zYIAaIFNIkU=; b=jjW6slullV9r/3hYNmf9Xjoi+7
-	c+rSkX+wUDNRIGDUjKLnRt1iDKERhOiUttYgSd+F7q4SUfS0pBm6vGgVjCnNAFlU
-	S9XFlki9qlDAoF2sL1cFezMOm9wZ4tZliYDogbdpy/b2EyTKdqZOVfNHSKuCzAoU
-	vWYMDtUrwLNHaxfCJFkINAHAgJN62MhJquZeJkUzio6wr4JowHhj6yxA9aiB4mHt
-	7KTKqlXF9C2j9MYKIeTr7k6u9MfSuU8xOdbFksfgDs3kgSKPbPkUgUJRSNoDhYcU
-	8x5nQ2yBxHFBIh0tEdnxUhPJoboD7Ldpw9AjM5Fs691US5z2OfPDDnpc8sag==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1777033021; x=1777119421; bh=ux5cqlt4IM80vxhXkNBd6OQ3EP72rkh1zYI
-	AaIFNIkU=; b=SSmERdS0QpAIXWKHxjOapRlf/85qFBj+AOoV461Lp0UJfOPfGB1
-	zIQ0a763AcCEHfNFcb5J1BdaE+VQZjgiF/Bpn97IQc+48NL2AnysMk7VHNElUROW
-	qaLfDId2LPRjOrhIKjVu/wbSCX2FNNC3hZ0GtC31FKwv/co9Yizxc3fsOo9aYZMx
-	Z505pcFYBu3KlCuY2zLjzg7s1bvAB+OH6RNLX3NQdFG7tLcRFSly80SG8FezmhT8
-	ZvdJVqyo0xuIvNQimzVDTNzTT3fiDlZ+GTOcuuYhRNCOMu0XGOSvBNP+MbAV83pS
-	42UbRFQiEf2hEwzF4kdvXRKX2zAv3YvFWyw==
-X-ME-Sender: <xms:PV_rabVJx7Ci6-KR5YD1v3_0aIk-sSee-322LAWY0epGEOUwZ90CPQ>
-    <xme:PV_raTAkVlXXaLdQuzA_TGenR-GEH6wgodunWSYyo_yam3Qx_srrcLTQDrydXNQQL
-    3t4xzpW5YGz7MpUUdSqnw0Qm8FOYjpAJyLAylEZv-Vt74elcw>
-X-ME-Received: <xmr:PV_raYeNm0pWV5qqcAo2tFJKamog6mpPPdan8s_PKlD_i-waW1opnENDncLYQfrd1ljisxOggh7NqVimDSwpxKXiLQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdejtddttdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgvghcumffj
-    uceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeehgedvvedvle
-    ejuefgtdduudfhkeeltdeihfevjeekjeeuhfdtueefhffgheekteenucevlhhushhtvghr
-    ufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtg
-    homhdpnhgspghrtghpthhtohepudegpdhmohguvgepshhmthhpohhuthdprhgtphhtthho
-    pegsrhhithgvrdgrihhrghgvugguohhnsehgmhgrihhlrdgtohhmpdhrtghpthhtohepjh
-    hohhgrnhhnvghssehsihhpshholhhuthhiohhnshdrnhgvthdprhgtphhtthhopehlihhn
-    uhigqdifihhrvghlvghsshesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhope
-    hlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthho
-    pehsthgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehfjhhhhh
-    iiudelleejsehgmhgrihhlrdgtohhmpdhrtghpthhtohepohhstggrrhdrrghlfhhonhhs
-    ohdrughirgiisehgmhgrihhlrdgtohhm
-X-ME-Proxy: <xmx:PV_raar_gEN8AGqyd5uLVEHKR8s47PGZbANY5Bzv9CN9My_6oI54dw>
-    <xmx:PV_raZQHOyFYIMdQlV4zeg_3oek81NqUHVAW1Kh8SL1mig8F-CCH4Q>
-    <xmx:PV_raaUB89l3Fl_66fS4DKA4n5d8fR3gIOCEArRQxTFFTiM-ma6S8A>
-    <xmx:PV_raef7uNSgGPfAYf_NGZrS5q40MLa68R6AF7jb4I38NTikY8lprQ>
-    <xmx:PV_raTDPwFIgzoCkX-gmWuNX4cTuRWV0gH4KFsknqQNrHxhSyBFyk7Dn>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 24 Apr 2026 08:17:01 -0400 (EDT)
-Date: Fri, 24 Apr 2026 14:17:00 +0200
-From: Greg KH <greg@kroah.com>
-To: Brite <brite.airgeddon@gmail.com>
-Cc: Johannes Berg <johannes@sipsolutions.net>,
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, fjhhz1997@gmail.com,
-	oscar.alfonso.diaz@gmail.com
-Subject: Re: [PATCH] wifi: mac80211: restore monitor injection when
- coexisting with another VIF
-Message-ID: <2026042441-destitute-swagger-0ca9@gregkh>
-References: <CA+bbHrVWmSpWZ9GBVJ5vffh1qYEye=EWMq9tKA-_uzfW+raC8A@mail.gmail.com>
- <20260424120807.25005-1-brite.airgeddon@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=VCBWmrS2rN0a/AvdZhfnu0p3r85Dpu/tD/EHkeE2YXUoNidjUl2rZtp2E8GhRLX63xad/t3/AgHBpJW9sxI38O9NOUHMv7nmuDV3fO1HgEwbL3Jw9bDuLAIlDuPmtJmLp6UB27/jEN8zLIDzrHepApg5agAazME+4R26Jbs/r6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=a7e1g3P4; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1204)
+	id 8B05620B7165; Fri, 24 Apr 2026 05:21:23 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 8B05620B7165
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1777033283;
+	bh=b7zfRNW0UNlPkhYc2JrkSF24b0gzNF9MAngEWRuE3dE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=a7e1g3P45gfCXvk9AzIi/j9ubyrUUDJKWp+9SZSKsZtb2WJTQ0ZAQQCFDdOcQ9xb3
+	 JTS0nzgcWMyk7Jaxu6i5b+TqLH5i6NetoqVsLogT6iHWcJTyu+uUhhw3KoxCxE4SS8
+	 MUKfVxEeqKVtgY807cb95moUdjTRrpJW4UFyU99k=
+Date: Fri, 24 Apr 2026 05:21:23 -0700
+From: Dipayaan Roy <dipayanroy@linux.microsoft.com>
+To: Shradha Gupta <shradhagupta@linux.microsoft.com>
+Cc: Dexuan Cui <decui@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Konstantin Taranov <kotaranov@microsoft.com>,
+	Simon Horman <horms@kernel.org>,
+	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
+	Shiraz Saleem <shirazsaleem@microsoft.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Long Li <longli@microsoft.com>, Yury Norov <yury.norov@gmail.com>,
+	linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, Paul Rosswurm <paulros@microsoft.com>,
+	Shradha Gupta <shradhagupta@microsoft.com>,
+	Saurabh Singh Sengar <ssengar@microsoft.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net] net: mana: Optimize irq affinity for low vcpu configs
+Message-ID: <aetgQ1gCYlGJjiKk@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+References: <20260424061702.1442618-1-shradhagupta@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -109,77 +74,184 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260424120807.25005-1-brite.airgeddon@gmail.com>
-X-Rspamd-Queue-Id: C974F45E4A4
+In-Reply-To: <20260424061702.1442618-1-shradhagupta@linux.microsoft.com>
+X-Rspamd-Queue-Id: 150D045E58D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kroah.com,none];
-	R_DKIM_ALLOW(-0.20)[kroah.com:s=fm2,messagingengine.com:s=fm2];
+	DMARC_POLICY_ALLOW(-0.50)[linux.microsoft.com,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linux.microsoft.com:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-240647-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[sipsolutions.net,vger.kernel.org,gmail.com];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240648-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kroah.com:+,messagingengine.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[greg@kroah.com,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[24];
+	FREEMAIL_CC(0.00)[microsoft.com,kernel.org,lunn.ch,davemloft.net,google.com,redhat.com,linux.microsoft.com,outlook.com,gmail.com,vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,messagingengine.com:dkim]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dipayanroy@linux.microsoft.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux.microsoft.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-On Sat, Apr 25, 2026 at 12:08:07AM +1200, Brite wrote:
-> Monitor-mode packet injection is broken on drivers that implement
-> real channel context ops (mt76 and others) when the
-> monitor interface runs alongside another interface (typically AP).
-> The monitor VIF never gets a chanctx of its own in this case, so
-> ieee80211_monitor_start_xmit() finds vif.bss_conf.chanctx_conf ==
-> NULL and takes the fail_rcu path, silently dropping the skb. In
-> practice this breaks tooling like mdk4 and aireplay-ng on mt76
-> hardware, including airgeddon's evil-twin deauth flow, which runs
-> hostapd on an AP VIF and injects deauth frames from a coexisting
-> monitor VIF.
-
-Hi,
-
-This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
-a patch that has triggered this response.  He used to manually respond
-to these common problems, but in order to save his sanity (he kept
-writing the same thing over and over, yet to different people), I was
-created.  Hopefully you will not take offence and will fix the problem
-in your patch and resubmit it so that it can be accepted into the Linux
-kernel tree.
-
-You are receiving this message because of the following common error(s)
-as indicated below:
-
-- It looks like you did not use your "real" name for the patch on either
-  the Signed-off-by: line, or the From: line (both of which have to
-  match).  Please read the kernel file,
-  Documentation/process/submitting-patches.rst for how to do this
-  correctly.
-
-If you wish to discuss this problem further, or you have questions about
-how to resolve this issue, please feel free to respond to this email and
-Greg will reply once he has dug out from the pending patches received
-from other developers.
-
-thanks,
-
-greg k-h's patch email bot
+On Thu, Apr 23, 2026 at 11:17:00PM -0700, Shradha Gupta wrote:
+> In mana driver, the number of IRQs allocated are capped by the
+> min(num_cpu + 1, queue count). In cases, where the IRQ count is greater
+> than the vcpu count, we want to utilize all the vcpus, irrespective of
+> their NUMA/core bindings.
+> 
+> This is important, especially in the envs where number of vcpus are so
+> few that the softIRQ handling overhead on two IRQs on the same vcpu is
+> much more than their overheads if they were spread across sibling vcpus
+> 
+> This behaviour is more evident with dynamic IRQ allocation. Since MANA
+> IRQs are assigned at a later stage compared to static allocation, other
+> device IRQs may already be affinitized to the vCPUs. As a result, IRQ
+> weights become imbalanced, causing multiple MANA IRQs to land on the
+> same vCPU.
+> 
+> In such cases when many parallel TCP connections are tested, the
+> throughput drops significantly
+> 
+> Test envs:
+> =======================================================
+> Case 1: without this patch
+> =======================================================
+> 4 vcpu(2 cores), 5 MANA IRQs (1 HWC + 4 Queue)
+> 
+> 	TYPE		effective vCPU aff
+> =======================================================
+> IRQ0:	HWC		0
+> IRQ1:	mana_q1		0
+> IRQ2:	mana_q2		2
+> IRQ3:	mana_q3		0
+> IRQ4:	mana_q4		3
+> 
+> %soft on each vCPU(mpstat -P ALL 1) on receiver
+> vCPU		0	1	2	3
+> =======================================================
+> pass 1:		38.85	0.03	24.89	24.65
+> pass 2:		39.15	0.03	24.57	25.28
+> pass 3:		40.36	0.03	23.20	23.17
+> 
+> =======================================================
+> Case 2: with this patch
+> =======================================================
+> 4 vcpu(2 cores), 5 MANA IRQs (1 HWC + 4 Queue)
+> 
+>         TYPE            effective vCPU aff
+> =======================================================
+> IRQ0:   HWC             0
+> IRQ1:   mana_q1         0
+> IRQ2:   mana_q2         1
+> IRQ3:   mana_q3         2
+> IRQ4:   mana_q4         3
+> 
+> %soft on each vCPU(mpstat -P ALL 1) on receiver
+> vCPU            0       1       2       3
+> =======================================================
+> pass 1:         15.42	15.85	14.99	14.51
+> pass 2:         15.53	15.94	15.81	15.93
+> pass 3:         16.41	16.35	16.40	16.36
+> 
+> =======================================================
+> Throughput Impact(in Gbps, same env)
+> =======================================================
+> TCP conn	with patch	w/o patch
+> 20480		15.65		7.73
+> 10240		15.63		8.93
+> 8192		15.64		9.69
+> 6144		15.64		13.16
+> 4096		15.69		15.75
+> 2048		15.69		15.83
+> 1024		15.71		15.28
+> 
+> Fixes: 755391121038 ("net: mana: Allocate MSI-X vectors dynamically")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
+> Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+> Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
+> ---
+>  .../net/ethernet/microsoft/mana/gdma_main.c   | 35 +++++++++++++++++--
+>  1 file changed, 33 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+> index 098fbda0d128..433c044d53c6 100644
+> --- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
+> +++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+> @@ -1672,6 +1672,23 @@ static int irq_setup(unsigned int *irqs, unsigned int len, int node,
+>  	return 0;
+>  }
+>  
+> +static int irq_setup_linear(unsigned int *irqs, unsigned int len)
+> +{
+> +	int cpu;
+> +
+> +	rcu_read_lock();
+We do not need to call rcu_read_lock here, as the caller of this
+function has already acquired cpus_read_lock.
+> +	for_each_online_cpu(cpu) {
+> +		if (len <= 0)
+len is unsigned here so <= doesnot makes sense. PLease change it to int
+or better use if(!len)
+> +			break;
+> +
+> +		irq_set_affinity_and_hint(*irqs++, cpumask_of(cpu));
+> +		len--;
+> +	}
+> +	rcu_read_unlock();
+> +
+> +	return 0;
+> +}
+> +
+>  static int mana_gd_setup_dyn_irqs(struct pci_dev *pdev, int nvec)
+>  {
+>  	struct gdma_context *gc = pci_get_drvdata(pdev);
+> @@ -1722,10 +1739,24 @@ static int mana_gd_setup_dyn_irqs(struct pci_dev *pdev, int nvec)
+>  	 * first CPU sibling group since they are already affinitized to HWC IRQ
+>  	 */
+>  	cpus_read_lock();
+> -	if (gc->num_msix_usable <= num_online_cpus())
+> +	if (gc->num_msix_usable <= num_online_cpus()) {
+>  		skip_first_cpu = true;
+> +		err = irq_setup(irqs, nvec, gc->numa_node, skip_first_cpu);
+> +	} else {
+> +		/*
+> +		 * In case our IRQs are more than num_online_cpus, we try to
+> +		 * make sure we are using all vcpus. In such a case NUMA or
+> +		 * CPU core affinity does not matter.
+> +		 * Note that in this case the total mana IRQ should always be
+> +		 * num_online_cpu + 1. The first HWC IRQ is already handled
+> +		 * in HWC setup calls
+> +		 * So, the nvec value in this path should always be equal to
+> +		 * num_online_cpu
+nit: typo: should be num_online_cpus
+> +		 */
+> +		WARN_ON(nvec > num_online_cpus());
+> +		err = irq_setup_linear(irqs, nvec);
+> +	}
+>  
+> -	err = irq_setup(irqs, nvec, gc->numa_node, skip_first_cpu);
+>  	if (err) {
+>  		cpus_read_unlock();
+>  		goto free_irq;
+> 
+> base-commit: e728258debd553c95d2e70f9cd97c9fde27c7130
+> -- 
+> 2.34.1
+> 
+Regards
+Dipayaan Roy
 
