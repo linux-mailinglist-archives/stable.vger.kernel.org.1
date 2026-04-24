@@ -1,82 +1,82 @@
-Return-Path: <stable+bounces-240978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240979-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EJfDDVh562npNAAAu9opvQ
-	(envelope-from <stable+bounces-240978-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 16:08:24 +0200
+	id SB2LAAF662npNAAAu9opvQ
+	(envelope-from <stable+bounces-240979-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 16:11:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA4F1460021
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 16:08:23 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B81C4600A2
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 16:11:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A38E93007BBC
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8E3E83025D18
 	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 14:08:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A6C53DB644;
-	Fri, 24 Apr 2026 14:08:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6987F3DBD4A;
+	Fri, 24 Apr 2026 14:08:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Os1co7mV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Etqt9rUM"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com [209.85.210.52])
+Received: from mail-oa1-f43.google.com (mail-oa1-f43.google.com [209.85.160.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ECA63D813E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07E0B1862
 	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 14:08:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.52
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777039701; cv=none; b=ok0gXzuR4MIq8UuHCMTbsD6oUb7lhPNId+SyfWzRG4Gm3Zu2mCDJ3a+yjmFyd8rVIiPcvlf1Q8GysffG3J5romOcmaAgXiYCKCFFVbGlyl+nIbgOar/9xz+ws/CfTOwcWdv2u1PEnesh2FU3ptMWr2rGs/b//36d91QzSS2xEt0=
+	t=1777039702; cv=none; b=Znldwzjyk/gWLmAydcUY0sIv0weJQgmK1Hv9TjXsk4NL5nX0W4e0ouXSgMDd90DgmtWYJh0lvJgyxnqSgAmD6qQOCNpDVGI8zsvmaQ/ny2FiE2W98M66tcbxSaj/056UEQw39YxFLljROZs9d/h96/LZqC5p1EJifMmnL3TFm78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777039701; c=relaxed/simple;
-	bh=lVGOWOzAdzolib8EMYbv/le1a5M6MmUXlgwtNMMTxfU=;
+	s=arc-20240116; t=1777039702; c=relaxed/simple;
+	bh=THAxbK6mdbOVtarKmn9UTK1imz6oPtEKp2BayRcElHM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AkhbVRO0Rmjg5GVT+V7rm7uHWJqmz/45n9tNAmEu17QpYf7+dZXg8mqIibqGX/A8TWCa/FFKwi8B2mtdwzef75fddNf41uoteXPMWsR7+be3OB6ItWxFEgSC/g6KrU1l1Hc4uLdSjH2tzh79v9iRpaR011fCSb8JG1Hsxi83rzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Os1co7mV; arc=none smtp.client-ip=209.85.210.52
+	 MIME-Version; b=VzEfmOtx5wFvXVF7Iecq486a4Pixweiy+uux07JIi2yLqVsSU0vJWyVN4cvjYFQ7hbx3W1oZthYctzoK39czXmgRl8smdVHTc/bLwcgI+7r1bMwgPmYACHtnIE/wt8A7ekdTflRYqgX6YCSBZPnwfd2eXAUlSVjTOO8R9vkk+DU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Etqt9rUM; arc=none smtp.client-ip=209.85.160.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-7dd73b7c757so1704209a34.0
-        for <stable@vger.kernel.org>; Fri, 24 Apr 2026 07:08:19 -0700 (PDT)
+Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-42c0b0ffac1so2831711fac.2
+        for <stable@vger.kernel.org>; Fri, 24 Apr 2026 07:08:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777039699; x=1777644499; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1777039700; x=1777644500; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=QCyLy6DDJKSoLzccYLKiC2rCMua8OU8Lv96sFiOKNFg=;
-        b=Os1co7mVYdb3tS/pke+iYLTJchw3Jv5Q+XUdNUC6+rDHqwajJhK7+KoilOSsrLbYVi
-         fbiogXbi+uqldqHkzh5s7aZXOXw9DIc7hXdtoS0jKdX0kBlU9ygiAguCnSMlvbnUW9Va
-         CVpcXAtGi1MHAeELitALXV9sBs7iIw496O/tlrnEls3KDGv5jxtF4KspGktOqxmWJxyN
-         IZ003XUiKCD2IrGhpHuS6uYprSsVPBCGxn2zdifoNliuDVUNaEAb5Ni0saBu93WQxSp9
-         6JyBB8PpRpbZ+5DDNQYQcNRJsyQ33JLunhcRXvROPO7WzUkPGZ7Cs/Ml9UOOKDxDRvUA
-         8HQQ==
+        bh=Awi4viU8NvHRlCqV4pUg2d0xyjRYURsNTCZSqlhhrUI=;
+        b=Etqt9rUMvX0Q117/6fAR3npEhuDiU2acTwDeG/Pa+0OkuopL0IjAfokoWIZrk8vpya
+         BYVTZ7U8GgJTCJcj7IsaXN7JODg/AZUY7tIN4IPpnIdRB+AZxOoxroitrXzut9qK517h
+         akZCTZtYMlojuKlL8eniXbl/ZZNs0mpPLzYVyP416gbPRaZFi0pwrX3UwxkTzQR6L1Sq
+         m127IP5ZHQ1ISvYuQyHM0DwnC+Sxrb3w7UhUguqdmGLdGH8+3/C/rco6a3ljIZ0DghFx
+         ff4uY3TpzuXNUXWsB38OMkFHVf8sdJmJdYBm5CkBFVFoUSCamo8Rx2bvIsC3w5lifYtU
+         l53Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777039699; x=1777644499;
+        d=1e100.net; s=20251104; t=1777039700; x=1777644500;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=QCyLy6DDJKSoLzccYLKiC2rCMua8OU8Lv96sFiOKNFg=;
-        b=hG7+LNHYHu2fQLKpJoJmbXSxTm1OCf7vRJCJ/NDtcJPrL5jkQgSNiH1UtkraJwnn0P
-         /R6JyHL8p/S4UwK2bAZYBkpSHvPRXHpo8i4lqIYBwpRQCfXCTqxztqoMJ1f0mJaqMuX8
-         JIq+zkT9p9A45fobUi14mk/Lm/0WvjElk6Q5Zv9jY8+6SwiWanwO7wUlqjckMD9Xhs88
-         fSx44ZVEXc/SibpxR/5JKw+0Hh35POKwiG+VIawOv2AMNvWTWdQ+hvzGSXX8dv9fbdxU
-         LP+vUrNYpOLZqCBPDzk9Kt16F7tqE8zUve5rHvvHrR3HSX6/reghSPiDEpfnpxlVJ9/C
-         DJow==
-X-Forwarded-Encrypted: i=1; AFNElJ9kpjHINMXTR5nW6lsUTfI6QweHN7rbfuNdBdIZXW2uuHZxfKkwhRgolXoPWQMpu5bo1AAw9y8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwY2kJVyGuECxfkW6iYcVEchhh/Kfe7OfVPyCBISWYyCqZK+iim
-	oux9Mui7MtUfRrR3eO+yelGqZ6BhdwHQuMxAJ2bPLW0oPpuqCivm8sQ=
-X-Gm-Gg: AeBDieuGpi62VVbkGs65IZLmki6CkU3ptEamKTRbchOU+vzOv5MM4dNW46qhCMSSY8t
-	pS3dNt45QZRVyyTMFhNDEzUscAxr5m4kgrWJzf6cTl0ZAOC73GHed/fugj4kDLfNY4WLS/mN3eR
-	BkU6RbjGjpWjx7sPpqTUOfKllTn4Qqcvdzh0XU4pxVHCrcvbt56E7nFMglLIzH9M4zOXp3AKFRJ
-	qWUr0YhbDOiBbD+Jf/zdhz3HQdt8Ki46Q+abFGXKOg+67/N+M5QD2AJQfUgN5R2gFe8V0OeLdS1
-	8xNgSoec+ikrsOWbU7JMSFtzgecFO8RppUCdp0Rjo+j1qcuL1jAJns85mBQLG3a1pF43EY1HdML
-	basNpUCyN5X0OwALzZDJJaYrw+4aMYmuxHZAtypEsJwr15h+GEBJcxBiVwQ6zwPcLKnPtLkb2yk
-	DuGtF7PKuPt2zlvWPX/KrHZEfvHt/7O+TCaeo+vV3eoDboxHqVisLms62/T/5uRtwexj2x6hEME
-	MBDSyQL4swU0dGAfJ6t8pVoxYfJFIJ+GJU=
-X-Received: by 2002:a05:6830:490e:b0:7dc:dd19:7f69 with SMTP id 46e09a7af769-7dcdd198242mr9266087a34.17.1777039699009;
+        bh=Awi4viU8NvHRlCqV4pUg2d0xyjRYURsNTCZSqlhhrUI=;
+        b=kPz7HgfL7hYAIXLeK6B7J+9CQIdHWqnDCmbZkR7VvbAdD2URInrdvDQurn07KzA2iY
+         9qWdsI+VtMJ7fpW3H2eZidJi1UMK1eU8cFO9sHOPf71Zies/D2sNp0LnAFu721Rnnd07
+         Ejh6fW5Lt4cnuTsNzPOb+ZK8KWCcCJCQiLr4117S2AXNa3Q6+l1LJuVDw0pSoWou/EbX
+         VB32KIYG9P52wGsYi5eveIDUCKQ3PriQivuiZRAAohdgzhaBWz6dQGkbv6/qiNcYVfy7
+         gO6LDJsKM3i6lgk1NTurXte7Jq0IVtVucSuUUO5473jLmsi/qzPAGNi3muNfHTxs4sSo
+         zl1A==
+X-Forwarded-Encrypted: i=1; AFNElJ+mplWvw4wR2t8u8+uinl0RtyOKtvxIKF7dkb41z+uypVL6g+OXfVULcvr52XeW+OWF3HczHhw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxDXtFFhad/1As0vouEmdmgSu8qp9Tm6iWdOcPZr4u/jwgrwKGE
+	AiePD7X6IXPg3Zvh2QbDOFE3YlaXPzxz5I4mw0CXlGV1WWJrfTuLdBo=
+X-Gm-Gg: AeBDietidNYZELRCwyVb3aYl42lAB3rvkVNrz1oA0Pv94q78aEy/VChTCWtjcmK9GKt
+	2XPWpKDo0u1ba7fAYapmuiqsH19OUzWkYyfKn4Ss2kHvOxVZTHTTND/IuD0VOZ1iGA+UsMMeNen
+	GLPsV/TTxcvuS3RxmUmFcx+eOc/Rkw7zup68jN28A0eqL8M86ibQ5KF+1LwmwbRUTGZxC/Rnfnx
+	M0MXwagrUMK6VYsFkWI3t5RCgE6HdJpdKb7NFNXeBqlZ1WOCfJDnI9h+9g0iwf9cpxFBj41/xU4
+	ZzKkqqosk+LtjXrly7PcHo+g6YRgSkyAljrbuALQZCBd5njYqVQvtUS8KTl+4m7aEtk9UP2BVJx
+	aWynIx9Cb/KLLqRsuFONbkod0YINgFYSAbzxihtH+bkcOGi0U4MMv7PH10TsykyGeW4OQuB6zNP
+	Pt1HUGFk+kGA33WFE3iHd5VQe3vviNjrdFonB1kW2idViyPY1J+KaJQeUU2zAUIc2XAMW2Nf0CC
+	7GQAyIutUNZwfYZu1VMmKmdjp5PRAC7h/w=
+X-Received: by 2002:a05:6870:9109:b0:42c:f89:7555 with SMTP id 586e51a60fabf-42c0f89783cmr10667903fac.11.1777039699909;
         Fri, 24 Apr 2026 07:08:19 -0700 (PDT)
 Received: from localhost.localdomain ([47.188.191.104])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-42b934a2dd1sm22228653fac.9.2026.04.24.07.08.18
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-42b934a2dd1sm22228653fac.9.2026.04.24.07.08.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Apr 2026 07:08:18 -0700 (PDT)
+        Fri, 24 Apr 2026 07:08:19 -0700 (PDT)
 From: "John B. Moore" <jbmoore61@gmail.com>
 To: alexander.deucher@amd.com,
 	christian.koenig@amd.com
@@ -86,9 +86,9 @@ Cc: amd-gfx@lists.freedesktop.org,
 	simona@ffwll.ch,
 	stable@vger.kernel.org,
 	"John B. Moore" <jbmoore61@gmail.com>
-Subject: [PATCH v2 1/2] drm/amdgpu: reject IB addresses with reserved byte-swap bits
-Date: Fri, 24 Apr 2026 09:08:15 -0500
-Message-ID: <20260424140816.43766-2-jbmoore61@gmail.com>
+Subject: [PATCH v2 2/2] drm/amdgpu: remove superfluous BUG_ON in amdgpu_cs_vm_handling
+Date: Fri, 24 Apr 2026 09:08:16 -0500
+Message-ID: <20260424140816.43766-3-jbmoore61@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260424140816.43766-1-jbmoore61@gmail.com>
 References: <20260424140816.43766-1-jbmoore61@gmail.com>
@@ -99,7 +99,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: CA4F1460021
+X-Rspamd-Queue-Id: 6B81C4600A2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
@@ -108,13 +108,13 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	FREEMAIL_CC(0.00)[lists.freedesktop.org,gmail.com,ffwll.ch,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-240978-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-240979-lists,stable=lfdr.de];
 	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
@@ -129,69 +129,31 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-Reject IB GPU addresses with bits [1:0] set early in the CS parser,
-before they reach ring emission callbacks. On legacy AMD hardware
-(pre-amdgpu era), these two bits encoded byte-swap mode for IB memory
-fetches. That feature was dropped on all hardware that amdgpu supports,
-but the ring emission paths still contain BUG_ON(addr & 0x3) assertions
-that crash the kernel if userspace submits a misaligned IB address.
+Remove the BUG_ON(!bo_va) in amdgpu_cs_vm_handling() that is
+unreachable: bo_va is assigned from fpriv->csa_va on the line
+directly above, inside an if (fpriv->csa_va) block, so it is
+guaranteed to be non-NULL at that point.
 
-Add an early check in amdgpu_cs_p2_ib() to reject such submissions
-with -EINVAL before the IB is allocated, and a defense-in-depth
-WARN_ON_ONCE in amdgpu_ib_schedule() to catch any that slip through
-from other code paths.
-
-Fixes: b0635e808290 ("drm/amdgpu: implement GFX 9.0 support (v2)")
-Cc: stable@vger.kernel.org
 Signed-off-by: John B. Moore <jbmoore61@gmail.com>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c |  8 ++++++++
- drivers/gpu/drm/amd/amdgpu/amdgpu_ib.c | 10 ++++++++++
- 2 files changed, 18 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c | 1 -
+ 1 file changed, 1 deletion(-)
 
 diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
-index 10d8dcc3a..53f537f3e 100644
+index 53f537f3e..556c62948 100644
 --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
 +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
-@@ -379,6 +379,14 @@ static int amdgpu_cs_p2_ib(struct amdgpu_cs_parser *p,
- 	if (chunk_ib->flags & AMDGPU_IB_FLAG_PREAMBLE)
- 		job->preamble_status |= AMDGPU_PREAMBLE_IB_PRESENT;
+@@ -1137,7 +1137,6 @@ static int amdgpu_cs_vm_handling(struct amdgpu_cs_parser *p)
  
-+	/* Reject IB addresses with reserved byte-swap bits set.
-+	 * On legacy HW (pre-amdgpu), bits [1:0] encoded byte-swap mode
-+	 * for IB fetches. That feature is deprecated on all HW that
-+	 * amdgpu supports, so these bits must be zero.
-+	 */
-+	if (chunk_ib->va_start & 0x3)
-+		return -EINVAL;
-+
- 	r =  amdgpu_ib_get(p->adev, vm, ring->funcs->parse_cs ?
- 			   chunk_ib->ib_bytes : 0,
- 			   AMDGPU_IB_POOL_DELAYED, ib);
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ib.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ib.c
-index f1ed4a436..3111d2c7e 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ib.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ib.c
-@@ -272,6 +272,16 @@ int amdgpu_ib_schedule(struct amdgpu_ring *ring, unsigned int num_ibs,
- 	for (i = 0; i < num_ibs; ++i) {
- 		ib = &ibs[i];
- 
-+		/* Defense-in-depth: the CS parser rejects misaligned IB
-+		 * addresses, but catch any that slip through before they
-+		 * hit BUG_ON(addr & 0x3) in ring emission callbacks.
-+		 */
-+		if (WARN_ON_ONCE(ib->gpu_addr & 0x3)) {
-+			r = -EINVAL;
-+			amdgpu_ring_undo(ring);
-+			goto free_fence;
-+		}
-+
- 		if (job && ring->funcs->emit_frame_cntl) {
- 			if (secure != !!(ib->flags & AMDGPU_IB_FLAGS_SECURE)) {
- 				amdgpu_ring_emit_frame_cntl(ring, false, secure);
+ 	if (fpriv->csa_va) {
+ 		bo_va = fpriv->csa_va;
+-		BUG_ON(!bo_va);
+ 		r = amdgpu_vm_bo_update(adev, bo_va, false);
+ 		if (r)
+ 			return r;
 -- 
 2.43.0
 
