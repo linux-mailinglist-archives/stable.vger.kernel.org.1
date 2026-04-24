@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-240903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240861-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6OpAIyx162kQNAAAu9opvQ
-	(envelope-from <stable+bounces-240903-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:50:36 +0200
+	id qAooG9h062kQNAAAu9opvQ
+	(envelope-from <stable+bounces-240861-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:49:12 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1637745FBD7
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:50:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BF0F45FB27
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:49:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D3E9C305E1FE
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:42:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B06BD30B3F08
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:40:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B966221DB6;
-	Fri, 24 Apr 2026 13:42:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7016A3D5241;
+	Fri, 24 Apr 2026 13:40:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oAp5InZg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yfe7Ww1T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E07F19A288;
-	Fri, 24 Apr 2026 13:42:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 335E33C1976;
+	Fri, 24 Apr 2026 13:40:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777038138; cv=none; b=QLFUbWjObU6JzDZmJ3sV6eDI5rG+oofq4EKbmREOOgTNHtnZXZmNxXxVpLh7zsbiWv5s6tsV/oSiU5bs4UGIMaRsUevxyrtQmnjTt1zXXdGNEv8qHjdiQGJ2WVW28k6xm9IkrtZVQ6MoAb4C66/bVJpNs6foOOxD0s663NdcSqw=
+	t=1777038030; cv=none; b=QZMg/1P/HiVqS1QingtEis/7IEpwPM6M5am6jABJnDnXV+HffKIRMCTbwUfA/hebJL1NBojhxbaO0siX9S+W1BC3arTLu74WlFvQruoJwDJMlcANMD8v4i/t3DUK8r61Clt7oc165p0yjoY3mhGWCYTwbGYVx1ASAwF+cYcVR/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777038138; c=relaxed/simple;
-	bh=O3W1S9aw9DHE0sPDUadlmrT4E0hC8+XDFUYqvSp+sSk=;
+	s=arc-20240116; t=1777038030; c=relaxed/simple;
+	bh=KwLJpwpNcIstCNqAQLD+7Rk/3pGPnT3qqpxNvuvXowI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mMTZRsTGuztpdy0wGeMHXkKvnIDXghdsiwI7rd4HWji2DcZr/ZSvsE5tNicPVrLbuPvchatlbO8Uk6RBWvLBIcHfeEN14OLg/WN6On7mwhp9nOBXlmYm4Rma15XEZW5Px+CIsML1rsXg7V7FrQ/MBjSD3e3kSLuUxtNCAJwURKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oAp5InZg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7C09C2BCB2;
-	Fri, 24 Apr 2026 13:42:17 +0000 (UTC)
+	 MIME-Version; b=KP4Dx9aUtQRwvUnq5g3yb1z/uUoqMr4Y1SjSnxUYHg8mFE9cq9f1R2N088DDFB0SsykNCcC4boPaKrUYE/oZCvnr+xLTahWiET8OX58JT5CCc2ALZTQVOGuWgt/SpaX+/jbqI1YxwczjSVovp3zfL+VEnvh7WZSqCJLPV0W4ilE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yfe7Ww1T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A0E4C19425;
+	Fri, 24 Apr 2026 13:40:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777038138;
-	bh=O3W1S9aw9DHE0sPDUadlmrT4E0hC8+XDFUYqvSp+sSk=;
+	s=korg; t=1777038029;
+	bh=KwLJpwpNcIstCNqAQLD+7Rk/3pGPnT3qqpxNvuvXowI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oAp5InZgAcSXiNLsp/0D/Oq5LWGHNe6o38d9VdHaxqfCmnwnI4bsRHzUcssIZDDyO
-	 449a+7KwjeL67QJVIeoq4+lZBD/C9IJDbIv60D3SSHeEtSCe9G3r8LG4WvzfbIP2GN
-	 NTWr1wcwk0SmvLYoCgHPmQkfTFxxQtAd5BUocEjI=
+	b=yfe7Ww1T0SKQ7Wv9j9AX/QzVgBtXHMBa3lun4pS712skT8VNczvmG+oin2JtOg5l9
+	 3MgyUXHEu9uq4JbHkfre+191os6qgsWMLX9O07lHoVpwDDLh1Up0mMUDlUiBCmPk9N
+	 6sqkGTjUUFvbCUttjA46t7HVCgczw2lKBoL2o8cs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.18 39/55] smb: client: require a full NFS mode SID before reading mode bits
+	Alexander Potapenko <glider@google.com>,
+	Sebastian Alba Vives <sebasjosue84@gmail.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.6 164/166] crypto: ccp: Dont attempt to copy ID to userspace if PSP command failed
 Date: Fri, 24 Apr 2026 15:31:18 +0200
-Message-ID: <20260424132438.108975913@linuxfoundation.org>
+Message-ID: <20260424132607.359726993@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132430.006424517@linuxfoundation.org>
-References: <20260424132430.006424517@linuxfoundation.org>
+In-Reply-To: <20260424132532.812258529@linuxfoundation.org>
+References: <20260424132532.812258529@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +65,109 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1637745FBD7
+X-Rspamd-Queue-Id: 1BF0F45FB27
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240903-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,microsoft.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,gondor.apana.org.au];
+	TAGGED_FROM(0.00)[bounces-240861-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,apana.org.au:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 2757ad3e4b6f9e0fed4c7739594e702abc5cab21 upstream.
+commit 4f685dbfa87c546e51d9dc6cab379d20f275e114 upstream.
 
-parse_dacl() treats an ACE SID matching sid_unix_NFS_mode as an NFS
-mode SID and reads sid.sub_auth[2] to recover the mode bits.
+When retrieving the ID for the CPU, don't attempt to copy the ID blob to
+userspace if the firmware command failed.  If the failure was due to an
+invalid length, i.e. the userspace buffer+length was too small, copying
+the number of bytes _firmware_ requires will overflow the kernel-allocated
+buffer and leak data to userspace.
 
-That assumes the ACE carries three subauthorities, but compare_sids()
-only compares min(a, b) subauthorities.  A malicious server can return
-an ACE with num_subauth = 2 and sub_auth[] = {88, 3}, which still
-matches sid_unix_NFS_mode and then drives the sub_auth[2] read four
-bytes past the end of the ACE.
+  BUG: KASAN: slab-out-of-bounds in instrument_copy_to_user ../include/linux/instrumented.h:129 [inline]
+  BUG: KASAN: slab-out-of-bounds in _inline_copy_to_user ../include/linux/uaccess.h:205 [inline]
+  BUG: KASAN: slab-out-of-bounds in _copy_to_user+0x66/0xa0 ../lib/usercopy.c:26
+  Read of size 64 at addr ffff8881867f5960 by task syz.0.906/24388
 
-Require num_subauth >= 3 before treating the ACE as an NFS mode SID.
-This keeps the fix local to the special-SID mode path without changing
-compare_sids() semantics for the rest of cifsacl.
+  CPU: 130 UID: 0 PID: 24388 Comm: syz.0.906 Tainted: G     U     O        7.0.0-smp-DEV #28 PREEMPTLAZY
+  Tainted: [U]=USER, [O]=OOT_MODULE
+  Hardware name: Google, Inc. Arcadia_IT_80/Arcadia_IT_80, BIOS 12.62.0-0 11/19/2025
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0xc5/0x110 ../lib/dump_stack.c:120
+   print_address_description ../mm/kasan/report.c:378 [inline]
+   print_report+0xbc/0x260 ../mm/kasan/report.c:482
+   kasan_report+0xa2/0xe0 ../mm/kasan/report.c:595
+   check_region_inline ../mm/kasan/generic.c:-1 [inline]
+   kasan_check_range+0x264/0x2c0 ../mm/kasan/generic.c:200
+   instrument_copy_to_user ../include/linux/instrumented.h:129 [inline]
+   _inline_copy_to_user ../include/linux/uaccess.h:205 [inline]
+   _copy_to_user+0x66/0xa0 ../lib/usercopy.c:26
+   copy_to_user ../include/linux/uaccess.h:236 [inline]
+   sev_ioctl_do_get_id2+0x361/0x490 ../drivers/crypto/ccp/sev-dev.c:2222
+   sev_ioctl+0x25f/0x490 ../drivers/crypto/ccp/sev-dev.c:2575
+   vfs_ioctl ../fs/ioctl.c:51 [inline]
+   __do_sys_ioctl ../fs/ioctl.c:597 [inline]
+   __se_sys_ioctl+0x11d/0x1b0 ../fs/ioctl.c:583
+   do_syscall_x64 ../arch/x86/entry/syscall_64.c:63 [inline]
+   do_syscall_64+0xe0/0x800 ../arch/x86/entry/syscall_64.c:94
+   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+   </TASK>
 
-Fixes: e2f8fbfb8d09 ("cifs: get mode bits from special sid on stat")
+WARN if the driver says the command succeeded, but the firmware error code
+says otherwise, as __sev_do_cmd_locked() is expected to return -EIO on any
+firwmware error.
+
+Reported-by: Alexander Potapenko <glider@google.com>
+Reported-by: Sebastian Alba Vives <sebasjosue84@gmail.com>
+Fixes: d6112ea0cb34 ("crypto: ccp - introduce SEV_GET_ID2 command")
 Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-6
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cifsacl.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/crypto/ccp/sev-dev.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/smb/client/cifsacl.c
-+++ b/fs/smb/client/cifsacl.c
-@@ -831,6 +831,7 @@ static void parse_dacl(struct smb_acl *p
- 			dump_ace(ppace[i], end_of_acl);
- #endif
- 			if (mode_from_special_sid &&
-+			    ppace[i]->sid.num_subauth >= 3 &&
- 			    (compare_sids(&(ppace[i]->sid),
- 					  &sid_unix_NFS_mode) == 0)) {
- 				/*
+--- a/drivers/crypto/ccp/sev-dev.c
++++ b/drivers/crypto/ccp/sev-dev.c
+@@ -932,6 +932,9 @@ static int sev_ioctl_do_get_id2(struct s
+ 		goto e_free;
+ 	}
+ 
++	if (ret || WARN_ON_ONCE(argp->error))
++		goto e_free;
++
+ 	if (id_blob) {
+ 		if (copy_to_user(input_address, id_blob, data.len)) {
+ 			ret = -EFAULT;
 
 
 
