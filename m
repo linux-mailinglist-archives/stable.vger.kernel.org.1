@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-240905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240863-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qMqvFENz62kLNAAAu9opvQ
-	(envelope-from <stable+bounces-240905-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:42:27 +0200
+	id 0DITDWR062kQNAAAu9opvQ
+	(envelope-from <stable+bounces-240863-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:47:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E474D45F6E0
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:42:26 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8BEA45F9F6
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:47:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4C7D83002B25
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:42:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AA80730B44AB
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:40:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 919E93D6494;
-	Fri, 24 Apr 2026 13:42:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DE4C3D3D04;
+	Fri, 24 Apr 2026 13:40:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yVoceahB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HzfDl73M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 517E3221DB6;
-	Fri, 24 Apr 2026 13:42:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2208F3290A5;
+	Fri, 24 Apr 2026 13:40:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777038143; cv=none; b=X2itjzE3+Fm8RkLqYfBd5fW/RnPH6G5gsaCpUxLU99hly83FALs3bRjXheD6IjOHcreMhRVCzGPxfXwauu152OtSfj66CSZCSKM4aYnKQCDSssmeB/v+Yl8Dn5kqvhPZVM/gspo1RHlON/FqAdyMmpYkK8vj8NwPVBMEWh5DzaY=
+	t=1777038035; cv=none; b=dvtPq3fKKP1qeVHJa26S0OJsP9S1ed/9CiXtSudAgMBuRpSH0S4gBfTHBhNBfGSUdkwiqofsatcjiO7GGOaoIM0YO1VAaWabeOeC9fj2KTh13rP52WjNkhp3vUMS1crLeEYzSNWpNL4Aqleg17FibS47Yf2KPXk395jXXa/1coQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777038143; c=relaxed/simple;
-	bh=B4cMRZ0jSiNQuknMvnIWr5nj+SEV6C85/FumwfLDSFQ=;
+	s=arc-20240116; t=1777038035; c=relaxed/simple;
+	bh=ndJsUsSwYirsRIkSg6jmyNl+aU4SoSI9NhQzmDo5GnI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sMs6txFwaPVO1v7tPCKeALI+/ohQw9LmaCJ2QOzvMQ86D4qByySqgaIHMKDtGL6zjpZLuaAOZA3sCO6/RBkumDplTGaR/aLUF7JWzLzKxeb52Mf1LLQ0Ah9YliRIyogJDZB8AUJ5ZZNfsC9DXQVHKgtOmdewaifP08iWHwJTVL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yVoceahB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7B63C2BCB2;
-	Fri, 24 Apr 2026 13:42:22 +0000 (UTC)
+	 MIME-Version; b=ZzuG2QdIUwT/Gt9BcHif5kJdAArBxl3pSYhCdcmRDp7DfD3IyfHR1JkfzIPYK/VB+A2R0KsTzpm3Kr8OaawXyxSXqnZe6th+TuLuNQT+FbnW3AFvgGEcy4M3rODKFTkhp4g1gfZcSo697hz44i2rkcXQtxa+EZWYE6t34+APv/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HzfDl73M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC1AEC19425;
+	Fri, 24 Apr 2026 13:40:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777038143;
-	bh=B4cMRZ0jSiNQuknMvnIWr5nj+SEV6C85/FumwfLDSFQ=;
+	s=korg; t=1777038035;
+	bh=ndJsUsSwYirsRIkSg6jmyNl+aU4SoSI9NhQzmDo5GnI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yVoceahBH1SPZdgBuCQBQUS+lqPRgKYNj8aIceJeAKctPMnvRJ9GB+NMySdcVq/3r
-	 6i6HbEi2cGtsUoLYe+k5ssWERgmAeA7Yj7C+hnacgswRR+A/C6KXDr5LZhjX+MbuaJ
-	 0nPFhqA61Tiif2ZQn8z16XpUbqfg2QU3kTHfkznE=
+	b=HzfDl73M3PSFf65Qz7efr2ycbDgMNC/cZudjwEpIZ+sX+dsRzrMYdJhZBgtHhIjtb
+	 lluJKxu0XOG5fE7XA4JN1921Pc363PrNQ8pHfyzGPFNIrZNdNmDcNVN02VU7UkfRwP
+	 oNKluT4+glaAJbVdo5QAn8eENHbggbxQZKyalRdY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.18 41/55] ksmbd: validate response sizes in ipc_validate_msg()
+	Yu Kuai <yukuai3@huawei.com>,
+	Li Nan <linan122@huawei.com>,
+	Ian Dall <ian@beware.dropbear.id.au>
+Subject: [PATCH 6.6 166/166] md/raid1: fix data lost for writemostly rdev
 Date: Fri, 24 Apr 2026 15:31:20 +0200
-Message-ID: <20260424132438.484553517@linuxfoundation.org>
+Message-ID: <20260424132607.802962503@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132430.006424517@linuxfoundation.org>
-References: <20260424132430.006424517@linuxfoundation.org>
+In-Reply-To: <20260424132532.812258529@linuxfoundation.org>
+References: <20260424132532.812258529@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,160 +64,75 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E474D45F6E0
+X-Rspamd-Queue-Id: A8BEA45F9F6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240905-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-240863-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,dropbear.id.au:email,huawei.com:email]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-commit d6a6aa81eac2c9bff66dc6e191179cb69a14426b upstream.
+commit 93dec51e716db88f32d770dc9ab268964fff320b upstream.
 
-ipc_validate_msg() computes the expected message size for each
-response type by adding (or multiplying) attacker-controlled fields
-from the daemon response to a fixed struct size in unsigned int
-arithmetic.  Three cases can overflow:
+If writemostly is enabled, alloc_behind_master_bio() will allocate a new
+bio for rdev, with bi_opf set to 0. Later, raid1_write_request() will
+clone from this bio, hence bi_opf is still 0 for the cloned bio. Submit
+this cloned bio will end up to be read, causing write data lost.
 
-  KSMBD_EVENT_RPC_REQUEST:
-      msg_sz = sizeof(struct ksmbd_rpc_command) + resp->payload_sz;
-  KSMBD_EVENT_SHARE_CONFIG_REQUEST:
-      msg_sz = sizeof(struct ksmbd_share_config_response) +
-               resp->payload_sz;
-  KSMBD_EVENT_LOGIN_REQUEST_EXT:
-      msg_sz = sizeof(struct ksmbd_login_response_ext) +
-               resp->ngroups * sizeof(gid_t);
+Fix this problem by inheriting bi_opf from original bio for
+behind_mast_bio.
 
-resp->payload_sz is __u32 and resp->ngroups is __s32.  Each addition
-can wrap in unsigned int; the multiplication by sizeof(gid_t) mixes
-signed and size_t, so a negative ngroups is converted to SIZE_MAX
-before the multiply.  A wrapped value of msg_sz that happens to
-equal entry->msg_sz bypasses the size check on the next line, and
-downstream consumers (smb2pdu.c:6742 memcpy using rpc_resp->payload_sz,
-kmemdup in ksmbd_alloc_user using resp_ext->ngroups) then trust the
-unverified length.
-
-Use check_add_overflow() on the RPC_REQUEST and SHARE_CONFIG_REQUEST
-paths to detect integer overflow without constraining functional
-payload size; userspace ksmbd-tools grows NDR responses in 4096-byte
-chunks for calls like NetShareEnumAll, so a hard transport cap is
-unworkable on the response side.  For LOGIN_REQUEST_EXT, reject
-resp->ngroups outside the signed [0, NGROUPS_MAX] range up front and
-report the error from ipc_validate_msg() so it fires at the IPC
-boundary; with that bound the subsequent multiplication and addition
-stay well below UINT_MAX.  The now-redundant ngroups check and
-pr_err in ksmbd_alloc_user() are removed.
-
-This is the response-side analogue of aab98e2dbd64 ("ksmbd: fix
-integer overflows on 32 bit systems"), which hardened the request
-side.
-
-Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
-Fixes: a77e0e02af1c ("ksmbd: add support for supplementary groups")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-6
-Assisted-by: Codex:gpt-5-4
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: e879a0d9cb08 ("md/raid1,raid10: don't ignore IO flags")
+Reported-and-tested-by: Ian Dall <ian@beware.dropbear.id.au>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220507
+Link: https://lore.kernel.org/linux-raid/20250903014140.3690499-1-yukuai1@huaweicloud.com
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Reviewed-by: Li Nan <linan122@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/mgmt/user_config.c |    6 ------
- fs/smb/server/transport_ipc.c    |   16 +++++++++++++---
- 2 files changed, 13 insertions(+), 9 deletions(-)
+ drivers/md/raid1.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/smb/server/mgmt/user_config.c
-+++ b/fs/smb/server/mgmt/user_config.c
-@@ -56,12 +56,6 @@ struct ksmbd_user *ksmbd_alloc_user(stru
- 		goto err_free;
+--- a/drivers/md/raid1.c
++++ b/drivers/md/raid1.c
+@@ -1119,7 +1119,7 @@ static void alloc_behind_master_bio(stru
+ 	int i = 0;
+ 	struct bio *behind_bio = NULL;
  
- 	if (resp_ext) {
--		if (resp_ext->ngroups > NGROUPS_MAX) {
--			pr_err("ngroups(%u) from login response exceeds max groups(%d)\n",
--					resp_ext->ngroups, NGROUPS_MAX);
--			goto err_free;
--		}
--
- 		user->sgid = kmemdup(resp_ext->____payload,
- 				     resp_ext->ngroups * sizeof(gid_t),
- 				     KSMBD_DEFAULT_GFP);
---- a/fs/smb/server/transport_ipc.c
-+++ b/fs/smb/server/transport_ipc.c
-@@ -13,6 +13,7 @@
- #include <net/genetlink.h>
- #include <linux/socket.h>
- #include <linux/workqueue.h>
-+#include <linux/overflow.h>
- 
- #include "vfs_cache.h"
- #include "transport_ipc.h"
-@@ -497,7 +498,9 @@ static int ipc_validate_msg(struct ipc_m
- 	{
- 		struct ksmbd_rpc_command *resp = entry->response;
- 
--		msg_sz = sizeof(struct ksmbd_rpc_command) + resp->payload_sz;
-+		if (check_add_overflow(sizeof(struct ksmbd_rpc_command),
-+				       resp->payload_sz, &msg_sz))
-+			return -EINVAL;
- 		break;
- 	}
- 	case KSMBD_EVENT_SPNEGO_AUTHEN_REQUEST:
-@@ -516,8 +519,9 @@ static int ipc_validate_msg(struct ipc_m
- 			if (resp->payload_sz < resp->veto_list_sz)
- 				return -EINVAL;
- 
--			msg_sz = sizeof(struct ksmbd_share_config_response) +
--					resp->payload_sz;
-+			if (check_add_overflow(sizeof(struct ksmbd_share_config_response),
-+					       resp->payload_sz, &msg_sz))
-+				return -EINVAL;
- 		}
- 		break;
- 	}
-@@ -526,6 +530,12 @@ static int ipc_validate_msg(struct ipc_m
- 		struct ksmbd_login_response_ext *resp = entry->response;
- 
- 		if (resp->ngroups) {
-+			if (resp->ngroups < 0 ||
-+			    resp->ngroups > NGROUPS_MAX) {
-+				pr_err("ngroups(%d) from login response exceeds max groups(%d)\n",
-+				       resp->ngroups, NGROUPS_MAX);
-+				return -EINVAL;
-+			}
- 			msg_sz = sizeof(struct ksmbd_login_response_ext) +
- 					resp->ngroups * sizeof(gid_t);
- 		}
+-	behind_bio = bio_alloc_bioset(NULL, vcnt, 0, GFP_NOIO,
++	behind_bio = bio_alloc_bioset(NULL, vcnt, bio->bi_opf, GFP_NOIO,
+ 				      &r1_bio->mddev->bio_set);
+ 	if (!behind_bio)
+ 		return;
 
 
 
