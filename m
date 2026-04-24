@@ -1,132 +1,167 @@
-Return-Path: <stable+bounces-241062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241063-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IC+VKijm62nNSgAAu9opvQ
-	(envelope-from <stable+bounces-241062-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 23:52:40 +0200
+	id MPhACtXm62nNSgAAu9opvQ
+	(envelope-from <stable+bounces-241063-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 23:55:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57E0446396C
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 23:52:39 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D73B4639D3
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 23:55:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 62FAA300753A
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 21:52:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 975433022F77
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 21:55:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FCA234C9AD;
-	Fri, 24 Apr 2026 21:52:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4BD934A788;
+	Fri, 24 Apr 2026 21:55:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pKhSjNLl"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cwzicBAM"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7A0827FD74;
-	Fri, 24 Apr 2026 21:52:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777067558; cv=none; b=ZrqEzGwSdOrCb8hzCXKob6kLZY5pseYghUD/JI8Nsz6kDEuWxMzDtokbBo4S3bJdX9x0TpO+pzlLuk+kVuwSLENtQt/E0Lf82CVmNwqjP1kqucPFqIb6X38F/tHvxO7DQAeABy2qnxm5GZRMKNxT1ybC6mvrL4VDi2d4Deh1Nwk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777067558; c=relaxed/simple;
-	bh=ST06IZ20xS4Ttq7iDzC6ZhT8+wvrY4tI7A/2SqWMbuU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=d2vKcG59WvgJYoQ4jNUSTaWzGTDYethJBbH3LKhlCmIcUoHoXOB+zGdpUCfKqL2FNvFCPf5/0Bnl2RYyRuQlrgmcXQGjzFe0P45qXNDVJWzK+EKonMoVnx8V862InSliHH8SyTVDuaBNoPWCZyC1mnLHSTCbaVsC1TieV5MQtgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pKhSjNLl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34538C19425;
-	Fri, 24 Apr 2026 21:52:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777067557;
-	bh=ST06IZ20xS4Ttq7iDzC6ZhT8+wvrY4tI7A/2SqWMbuU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pKhSjNLlDGsv0YJYsP577h4T1zdzKUxNJbXE/g3gqX40H2dUR5eOY15q0oOr0tZcw
-	 frY92C5XL2ciVyicdzPzNoOXwOP7l/C+2CAOjKgr0ieY/FvjEKeqjWLqxS9tIy5xrJ
-	 GcfeW+oWxsiM/ZZ+azCHNtkQX4IbZHH+6XFNxq5e+6BaLDUsth1Z9nvgeVeM5ZZqkQ
-	 zBk97tlxGDj0xCsFJbbtEmlvqXpQqwGFeVUXW+PuVXpohHWWuOrNHde4T+I0CjqMG8
-	 +X8PEz4M012825Q34YyY5g5InDLzTqAJxYPVwKl5btNZH1o6/XgNQfSflhuxC8rEg3
-	 qNZ5PS5NXnNog==
-Date: Fri, 24 Apr 2026 22:52:31 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org,
-	pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, achill@achill.org, sr@sladewatkins.com
-Subject: Re: [PATCH 6.6 000/166] 6.6.136-rc1 review
-Message-ID: <07e46cfd-c55e-4f41-99a5-7780546a1016@sirena.org.uk>
-References: <20260424132532.812258529@linuxfoundation.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9150227FD74
+	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 21:55:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.179
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777067730; cv=pass; b=DrgVxJTR1sA0s0NZRFRLqa8+mYcw7KZ46NqPdOfy7cHY7RK74aQ7E34RWmJWB6p31ROPRiJTYFdHOPlMRYNQuXrp0zKcojHCSgubIZUwJcL0JNlHq+zDXARrgiKJXJPgmpm7lkH95Rd/Ecihle2TU/GQwb8OZmyKzZZGNOiVQfA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777067730; c=relaxed/simple;
+	bh=14hH6MJSJt1rLvJvDMs0E8Uap9zO0DF0fK1TJoEhudU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HFg09npxyQfE5vJJ5QhiZzhgkQINIXt3Itxe8fjEnOvzcYzCuUaVsxxgOKxYumAjYrxEbVEk1GDe30mS24ejUXADTe8l9tAH+xGW3xjw1EZzacAhlJEX68ODReR4DulmMqYUgie+7QxVf+t9l2JQBYlFdY6IdsEDVAUjzVOlWa4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cwzicBAM; arc=pass smtp.client-ip=209.85.215.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-c7973bbc16dso5446126a12.0
+        for <stable@vger.kernel.org>; Fri, 24 Apr 2026 14:55:29 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777067729; cv=none;
+        d=google.com; s=arc-20240605;
+        b=JNUrRfcd2+1Hr8xxuzfDIaUlJfBHKL0L6YHAm2zvr7ZGrK9gIUIOtu/+79GrxXt5ZU
+         eOKqzjubxkhZE9rO+ozXbnDFpoIwXnvOE3JDxG73uOGvxKffwcAOsQlza/hNT5HH4JyN
+         mBik52ZcyyjLpnS1pC3R60r3sciBXitKdDIFZYjU1UU+7ngiseec3vQf65RN5Jn3B2qy
+         S8yVIaIipJXCswq92vzyoBAMxpSdR8kPqtOYTH6ALtK/yxDoTQvyEbZdCGA07Wd6cxVa
+         xVJLyz4F4QspU5DIU/OwJqlDWxtZYhy/3joeMwQFioq8hzTk3n/RT/J9zn2BGKxnutkq
+         f/ZA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=wV3WwlEXBochrsy1CA45CmB9c2B1ZTUDcYL4AxMb+u8=;
+        fh=dfYJyRJLaxbHt/Y/5fLYeAja/7amU5viP1xhaZZnL+Y=;
+        b=ZjUrf6RlON0NYbH0tRmElhEJ0LB3lYgAeYKJD7HX1uP/emYR503zfKICi9cPF3cZPe
+         m0MoZTvTnzKWNDQq/O1Ms+v+1uId0rsu2venBu/VHwiTbibCJqlf08FuzXv5l6HP9upu
+         yKY5eYHdYsI73tS52TeZ3yl+kgzyesBCZSDPRWtiEBRSIt9fAbuSpk5jA2YImTY/NpEJ
+         ckYdMxblXPjp8mERsjLkI8IRAgUkArL+ML1ySypkjfIe0Lu4DUAtsLFvZLIkerVOR7EF
+         1zHGiAOwWGL+dUIAKCGI8f5zKHdkY5+OXPwjjjACUzlfNnp7fIP43ry0o878wG4dJIAP
+         K/LQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777067729; x=1777672529; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wV3WwlEXBochrsy1CA45CmB9c2B1ZTUDcYL4AxMb+u8=;
+        b=cwzicBAMQVNCwA7QtfCjqGwftDxOo/+v/ni8RcVqh7x5gBEIb2990BswUfWE0ajYHR
+         3ITW8NJy0Fl4YoV3i8oL5c+b3tVHrnA63bbmip2i0ijqRHLhDhXyC2eQzZHVFRo4qp3C
+         i2SukwBDic0uDTFXdNH3qoVSUs9v33AEJLWXjUz4nZ+SAdD6fLANfpD0/A8hgKivr1tz
+         s+JT5FibKLYO81Ud44z37nSOoO4fQL65urtVD+KzlMX/g2FnKM2ZaLD/XuVI7EYZxY1q
+         t6BOLY0/4aU1V9owWl2gq0pqdYaMfDRA++bbwpdLbbg6EijLPNajh/vYwv9V94RQqT50
+         JqpA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777067729; x=1777672529;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=wV3WwlEXBochrsy1CA45CmB9c2B1ZTUDcYL4AxMb+u8=;
+        b=alSLcW3tZBJQTCT03434yrerHfVxGmD/bF5cbIS9IZ7SDx9nDnb+z9Sdwl1p0DYCMf
+         xEWJSpB1BH+ZopbrL6csN5gVUlKFJEjofRjb9U71YfvFmBhMnV8ih5vDba+Qd0hrsy0r
+         gtyI7wNYEnKtFZR/lbldg38trEyQhZ8pvXwce6vVF4UsvF+jmD5gW607rXWIMkkvA9B2
+         u4Ior2ZKxKUndinlQ4o5GgU9iVuCdtSGg2ZHj0RUq2fVM6KbYl3n6a84+RFxZbeDgr8M
+         FWg/BnsQu73J34ZZD6y9zK5cs0edZNMbRaqjMFr8Z2rcXNck7u5jQ3G36THZzmiv1K0+
+         RJ/w==
+X-Gm-Message-State: AOJu0YyXAfJ5W90mMZVA41ehPth9a3LXY0YdtCB0+X0MPC+EVALFOui+
+	ATfzJ7l/+0G7kYBhGB9UjpKvlNjbt3a2vZy7tjSrN4/vIFV21vSDHLkK90zzfnkuSxJ3rWPaBoV
+	va133vjQI7CM4cr2Rcvm6IJDnvM1OPHM=
+X-Gm-Gg: AeBDiesCGSSSOd9Os3dEdkE1jX2+1lLyiHiYbzNCPcPEDWtZwsEZ9zZystM6M52Qbk3
+	QBfoEMQ5YCxScxuLy+VDL8JWERtMy4UE4/kOELNsAcrpeaDUTeOynEZqsdORCxPSLK5/v58/4mx
+	A76BJRcDeAzmqB7kF6AdVQeaZV7S2cNneiuAxyR+aHQrsuyYi0zO7q5Uw/oXTfAdqu2Y1rpb9WV
+	eCbhlU2Ah3wFbRsrJkSwvV4bGoIkCH8oG2tY3icgtgg/Zga/uAJcZscSfZGG4f7AlBAAdOSC3Ok
+	dnOIX0eYsScRNG50mA==
+X-Received: by 2002:a05:6a20:3949:b0:39c:39d1:dbf4 with SMTP id
+ adf61e73a8af0-3a08d8ff840mr35917229637.46.1777067728871; Fri, 24 Apr 2026
+ 14:55:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="oK0jRgtiKL7GDmO1"
-Content-Disposition: inline
-In-Reply-To: <20260424132532.812258529@linuxfoundation.org>
-X-Cookie: 1 bulls, 3 cows.
-X-Rspamd-Queue-Id: 57E0446396C
+References: <20260424211315.1072123-1-elaidya225@gmail.com>
+In-Reply-To: <20260424211315.1072123-1-elaidya225@gmail.com>
+From: Andrei Vagin <avagin@gmail.com>
+Date: Fri, 24 Apr 2026 14:55:15 -0700
+X-Gm-Features: AQROBzDN_E_Xia8560eNxbzM6hD9BoLzIKdVdqtBw9a4JXpxaFyoIMTKdTXXxG4
+Message-ID: <CANaxB-y=SD7V7dcBXuAqq8=p2R46SAr1uKZtMACynvk1=Cftqg@mail.gmail.com>
+Subject: Re: [PATCH 6.18.y v1 0/9] mm: backport sticky VMA flags and
+ soft-dirty fix
+To: Ahmed Elaidy <elaidya225@gmail.com>
+Cc: stable@vger.kernel.org, linux-mm@kvack.org, akpm@linux-foundation.org, 
+	lorenzo.stoakes@oracle.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 9D73B4639D3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.76 / 15.00];
-	SIGNED_PGP(-2.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-241062-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	TAGGED_FROM(0.00)[bounces-241063-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[broonie@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_NEQ_ENVFROM(0.00)[avagin@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	TO_DN_SOME(0.00)[]
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_FIVE(0.00)[5]
 
+On Fri, Apr 24, 2026 at 2:13=E2=80=AFPM Ahmed Elaidy <elaidya225@gmail.com>=
+ wrote:
+>
+> This series backports the sticky VMA flags infrastructure and the
+> VM_SOFTDIRTY-on-merge fix to linux-6.18.y.
+>
+> Motivation: CRIU incremental dump/restore can hit a missing-parent-pagema=
+p
+> failure when VM_SOFTDIRTY is lost during VMA merge operations.
+>
+> Patch 8 is the target fix:
+>   mm: propagate VM_SOFTDIRTY on merge
 
---oK0jRgtiKL7GDmO1
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Have you tried fixing only the VM_SOFTDIRTY propagation issue without porti=
+ng
+the entire series?
 
-On Fri, Apr 24, 2026 at 03:28:34PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.136 release.
-> There are 166 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+I think this fix will be small, reducing the chance of breaking something e=
+lse.
 
-Tested-by: Mark Brown <broonie@kernel.org>
-
---oK0jRgtiKL7GDmO1
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmnr5h4ACgkQJNaLcl1U
-h9CXJgf+N+xmbDHE/OOQ2uiDdE2KmdSpFIZSICrH7hb5LLxH1f7Wl9o9AQVfyg9Q
-xoCrx3Eqo/JeFP1N2RA/udUC6wuOiRubbX7MCF+awwvQ4r1O6G+mbrEgxqvpfwhf
-OQBEqwk0GrYrPG1BSV4lDsnkqOVawgri+7+YxjmRrM3+RY7xfuKu8r6c9qPrzLGI
-Grt7ziD+Z+JPfV+1BP25RipuKo0TgGmUhXUuuPrFRrPmooyU6hUwvrYSZu91USs5
-Nap2HyyxMSRuw/ybOEt8ez/JSwAVciaxi5cNYsxXF9Ago0wHscL5BYnoHKCn6/YC
-XAmh8GcsIjpvloS+YHilvdYZnCfYPA==
-=uJ7R
------END PGP SIGNATURE-----
-
---oK0jRgtiKL7GDmO1--
+Thanks,
+Andrei
 
