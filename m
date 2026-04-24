@@ -1,201 +1,192 @@
-Return-Path: <stable+bounces-241014-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241015-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gDFvG+in62mrPwAAu9opvQ
-	(envelope-from <stable+bounces-241014-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 19:27:04 +0200
+	id yJlsO3qv62mRQQAAu9opvQ
+	(envelope-from <stable+bounces-241015-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 19:59:22 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D734C461EB8
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 19:27:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 627724622D3
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 19:59:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CCA45300C9AF
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 17:25:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1283C300AEF0
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 17:59:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 397F033C195;
-	Fri, 24 Apr 2026 17:25:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDE9534887E;
+	Fri, 24 Apr 2026 17:59:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VHM3bIyy"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="y/bzgXhD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F161C19D89E
-	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 17:25:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1D1D277C81;
+	Fri, 24 Apr 2026 17:59:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777051515; cv=none; b=E+ju6bLbqYQobBm7X0oZCdXyBGwNt/175l9Jnhanw4rPQTGDpgT5gLPWHCP4yI65/TIRbd6ZxNNtd8hvopxQidzBSAgbWXqkB92XqgLHC6hkVSdlVMn5fu1NPRNzQ6pla6KBDglOlKi7/6knRinSVV3czhGHrScBo9VPWACpvAM=
+	t=1777053556; cv=none; b=HVQGJj75ZxgFSkklPNnGMuqxcHmvTOjdeNBRYFpg8rD9FzqYjH2CYCdYfEA9L+Pia1rqgRVOLe/UqyPeKwwAor9FML4YdhYHG1KXL3GUFYHs5mwfE4r/XSGt1tQeGoifbxlghv+103Suho9CI9cn9fWVAU22khF3YAGqwywMc8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777051515; c=relaxed/simple;
-	bh=dMLA+2B0tNgwHHRcPOX3qA7yR+LVQuj7tajUVpjDaBc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y1eUlNjeqfecdKXs941Cdr89dnrc+L5490Gr4IJFMHZY0ireUV946sr2ZK2NMZQ44BAqZvhmZ3XslC+xoypbRxvWW2FvmX/Fgrz2aSRz0M4/lLzq2U8qcQz2rp2Oa9jU1TIwt2kFxPtrYtvPzh//Xvbs6D+unI7nnC07dE3xGhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VHM3bIyy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47F15C19425;
-	Fri, 24 Apr 2026 17:25:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777051514;
-	bh=dMLA+2B0tNgwHHRcPOX3qA7yR+LVQuj7tajUVpjDaBc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VHM3bIyyKdZRUAywb5n6y+ZTvvUXOh5opmtBB7+dicCK3gCaf2ekbDVMC4cK1S8Ue
-	 PEhgdaMXC0z5hYWaaOu9TfBfgwDDul0xkc9LX74/riYThSUCGfkRhxfxBhWXju7oTv
-	 Yxc6+iJYKtl6ZgyagAKvkRlsHPzw9awOA105ehu/gTmwUOGFopyvHvFa/QqtPMQ/UB
-	 +O/bjY4pMU6Q5VSjUrionAgvtEmTy24V3Qi8JA2hA4DAlQVbxHvlOa3ILJGl+3Qzkt
-	 q6gjLZFg5z1nexHZSKznUkRFtNj/R7uQ5UheJDUJxTCNjjkFuNYudMs9wRaGHxijD/
-	 LGouKSWdy52BA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Michael Bommarito <michael.bommarito@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] ksmbd: require minimum ACE size in smb_check_perm_dacl()
-Date: Fri, 24 Apr 2026 13:25:12 -0400
-Message-ID: <20260424172512.2372287-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026042429-think-provoking-8c8b@gregkh>
-References: <2026042429-think-provoking-8c8b@gregkh>
+	s=arc-20240116; t=1777053556; c=relaxed/simple;
+	bh=2epIewfIp/afu2F0T6RVYciGpJ4fO92UuDRyczGNmKs=;
+	h=Date:To:From:Subject:Message-Id; b=UZeKG2BtkgVjlX7eWQsJSMUFwHQLsb6kg8fv6rsYer6W1PqJ6G+OqCkMUif1hiIkIzWjuGmRufT+fK4UyMCcCIJz1la5iGZ0Ze0xjZEMBOyoRENVxbpI3G/BD8xv02yGR/PjwoFL1ZFlST5ag7DrDA6tuxC5likqrNV5lnbR4Lw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=y/bzgXhD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43F73C19425;
+	Fri, 24 Apr 2026 17:59:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1777053556;
+	bh=2epIewfIp/afu2F0T6RVYciGpJ4fO92UuDRyczGNmKs=;
+	h=Date:To:From:Subject:From;
+	b=y/bzgXhDJRVkbsHBgadH4NGyLDiQaaHAx4s0WHzV8+6nxLwZpmqcIju7Gl5lchuLz
+	 yAkjWIG2a/IrX/OOrwA846aotQDjC954WadMWghRfGMzPkb9YDHdelxvnnLtnpH/pk
+	 JWryIjjuxeGYxR4Oz+XBkuQZRSGfR0lpLFWYAyy4=
+Date: Fri, 24 Apr 2026 10:59:15 -0700
+To: mm-commits@vger.kernel.org,zaslonko@linux.ibm.com,stable@vger.kernel.org,ptikhomirov@virtuozzo.com,ojeda@kernel.org,oberpar@linux.ibm.com,nathan@kernel.org,masahiroy@kernel.org,linux@weissschuh.net,arnd@arndb.de,khorenko@virtuozzo.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + gcov-use-atomic-counter-updates-to-fix-concurrent-access-crashes.patch added to mm-nonmm-unstable branch
+Message-Id: <20260424175916.43F73C19425@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D734C461EB8
+X-Rspamd-Queue-Id: 627724622D3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [3.84 / 15.00];
+	R_BAD_CTE_7BIT(3.50)[unknown];
+	BROKEN_CONTENT_TYPE(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[linux-foundation.org];
+	TAGGED_FROM(0.00)[bounces-241015-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241014-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,microsoft.com];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	FROM_HAS_DN(0.00)[]
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
 
-[ Upstream commit d07b26f39246a82399661936dd0c853983cfade7 ]
+The patch titled
+     Subject: gcov: use atomic counter updates to fix concurrent access crashes
+has been added to the -mm mm-nonmm-unstable branch.  Its filename is
+     gcov-use-atomic-counter-updates-to-fix-concurrent-access-crashes.patch
 
-Both ACE-walk loops in smb_check_perm_dacl() only guard against an
-under-sized remaining buffer, not against an ACE whose declared
-`ace->size` is smaller than the struct it claims to describe:
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/gcov-use-atomic-counter-updates-to-fix-concurrent-access-crashes.patch
 
-  if (offsetof(struct smb_ace, access_req) > aces_size)
-      break;
-  ace_size = le16_to_cpu(ace->size);
-  if (ace_size > aces_size)
-      break;
+This patch will later appear in the mm-nonmm-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-The first check only requires the 4-byte ACE header to be in bounds;
-it does not require access_req (4 bytes at offset 4) to be readable.
-An attacker who has set a crafted DACL on a file they own can declare
-ace->size == 4 with aces_size == 4, pass both checks, and then
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-  granted |= le32_to_cpu(ace->access_req);               /* upper loop */
-  compare_sids(&sid, &ace->sid);                         /* lower loop */
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-reads access_req at offset 4 (OOB by up to 4 bytes) and ace->sid at
-offset 8 (OOB by up to CIFS_SID_BASE_SIZE + SID_MAX_SUB_AUTHORITIES
-* 4 bytes).
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
 
-Tighten both loops to require
+------------------------------------------------------
+From: Konstantin Khorenko <khorenko@virtuozzo.com>
+Subject: gcov: use atomic counter updates to fix concurrent access crashes
+Date: Wed, 22 Apr 2026 15:51:12 +0300
 
-  ace_size >= offsetof(struct smb_ace, sid) + CIFS_SID_BASE_SIZE
+GCC's GCOV instrumentation can merge global branch counters with loop
+induction variables as an optimization.  In inflate_fast(), the inner copy
+loops get transformed so that the GCOV counter value is loaded multiple
+times to compute the loop base address, start index, and end bound.  Since
+GCOV counters are global (not per-CPU), concurrent execution on different
+CPUs causes the counter to change between loads, producing inconsistent
+values and out-of-bounds memory writes.
 
-which is the smallest valid on-wire ACE layout (4-byte header +
-4-byte access_req + 8-byte sid base with zero sub-auths).  Also
-reject ACEs whose sid.num_subauth exceeds SID_MAX_SUB_AUTHORITIES
-before letting compare_sids() dereference sub_auth[] entries.
+The crash manifests during IPComp (IP Payload Compression) processing when
+inflate_fast() runs concurrently on multiple CPUs:
 
-parse_sec_desc() already enforces an equivalent check (lines 441-448);
-smb_check_perm_dacl() simply grew weaker validation over time.
+  BUG: unable to handle page fault for address: ffffd0a3c0902ffa
+  RIP: inflate_fast+1431
+  Call Trace:
+   zlib_inflate
+   __deflate_decompress
+   crypto_comp_decompress
+   ipcomp_decompress [xfrm_ipcomp]
+   ipcomp_input [xfrm_ipcomp]
+   xfrm_input
 
-Reachability: authenticated SMB client with permission to set an ACL
-on a file.  On a subsequent CREATE against that file, the kernel
-walks the stored DACL via smb_check_perm_dacl() and triggers the
-OOB read.  Not pre-auth, and the OOB read is not reflected to the
-attacker, but KASAN reports and kernel state corruption are
-possible.
+At the crash point, the compiler generated three loads from the same
+global GCOV counter (__gcov0.inflate_fast+216) to compute base, start, and
+end for an indexed loop.  Another CPU modified the counter between loads,
+making the values inconsistent - the write went 3.4 MB past a 65 KB
+buffer.
 
-Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-6
-Assisted-by: Codex:gpt-5-4
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[ changed le16_to_cpu to le32_to_cpu for num_aces field which is __le32 ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add -fprofile-update=prefer-atomic to CFLAGS_GCOV at the global level in
+the top-level Makefile.  On architectures where the target supports atomic
+profile updates (x86_64, arm64, ...) GCC emits atomic instructions (e.g. 
+lock addq) for GCOV counter updates instead of plain load/store, which
+prevents the compiler from merging counters with loop induction variables
+and fixes the observed concurrent-access crash.
+
+On architectures that do not support atomic profile updates (m68k and
+other small/UP targets) GCC silently falls back to the non-atomic 'single'
+mode, so behaviour there is no worse than before this patch.
+
+Applying this globally rather than per-subsystem not only addresses the
+observed crash in zlib but makes GCOV coverage data more consistent
+overall, preventing similar issues in any kernel code path that may
+execute concurrently.
+
+Link: https://lore.kernel.org/20260422125112.3583649-2-khorenko@virtuozzo.com
+Signed-off-by: Konstantin Khorenko <khorenko@virtuozzo.com>
+Tested-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Reviewed-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>
+Cc: Mikhail Zaslonko <zaslonko@linux.ibm.com>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+Cc: Thomas Weißschuh <linux@weissschuh.net>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- fs/ksmbd/smbacl.c | 17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/fs/ksmbd/smbacl.c b/fs/ksmbd/smbacl.c
-index ecf9db3d69c38..8d0e1b1c3cdc6 100644
---- a/fs/ksmbd/smbacl.c
-+++ b/fs/ksmbd/smbacl.c
-@@ -1265,10 +1265,13 @@ int smb_check_perm_dacl(struct ksmbd_conn *conn, const struct path *path,
- 		ace = (struct smb_ace *)((char *)pdacl + sizeof(struct smb_acl));
- 		aces_size = acl_size - sizeof(struct smb_acl);
- 		for (i = 0; i < le32_to_cpu(pdacl->num_aces); i++) {
--			if (offsetof(struct smb_ace, access_req) > aces_size)
-+			if (offsetof(struct smb_ace, sid) +
-+			    aces_size < CIFS_SID_BASE_SIZE)
- 				break;
- 			ace_size = le16_to_cpu(ace->size);
--			if (ace_size > aces_size)
-+			if (ace_size > aces_size ||
-+			    ace_size < offsetof(struct smb_ace, sid) +
-+				       CIFS_SID_BASE_SIZE)
- 				break;
- 			aces_size -= ace_size;
- 			granted |= le32_to_cpu(ace->access_req);
-@@ -1286,13 +1289,19 @@ int smb_check_perm_dacl(struct ksmbd_conn *conn, const struct path *path,
- 	ace = (struct smb_ace *)((char *)pdacl + sizeof(struct smb_acl));
- 	aces_size = acl_size - sizeof(struct smb_acl);
- 	for (i = 0; i < le32_to_cpu(pdacl->num_aces); i++) {
--		if (offsetof(struct smb_ace, access_req) > aces_size)
-+		if (offsetof(struct smb_ace, sid) +
-+		    aces_size < CIFS_SID_BASE_SIZE)
- 			break;
- 		ace_size = le16_to_cpu(ace->size);
--		if (ace_size > aces_size)
-+		if (ace_size > aces_size ||
-+		    ace_size < offsetof(struct smb_ace, sid) +
-+			       CIFS_SID_BASE_SIZE)
- 			break;
- 		aces_size -= ace_size;
+ Makefile |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/Makefile~gcov-use-atomic-counter-updates-to-fix-concurrent-access-crashes
++++ a/Makefile
+@@ -824,7 +824,7 @@ all: vmlinux
  
-+		if (ace->sid.num_subauth > SID_MAX_SUB_AUTHORITIES)
-+			break;
-+
- 		if (!compare_sids(&sid, &ace->sid) ||
- 		    !compare_sids(&sid_unix_NFS_mode, &ace->sid)) {
- 			found = 1;
--- 
-2.53.0
+ CFLAGS_GCOV	:= -fprofile-arcs -ftest-coverage
+ ifdef CONFIG_CC_IS_GCC
+-CFLAGS_GCOV	+= -fno-tree-loop-im
++CFLAGS_GCOV	+= -fno-tree-loop-im -fprofile-update=prefer-atomic
+ endif
+ export CFLAGS_GCOV
+ 
+_
+
+Patches currently in -mm which might be from khorenko@virtuozzo.com are
+
+gcov-use-atomic-counter-updates-to-fix-concurrent-access-crashes.patch
 
 
