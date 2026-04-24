@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-240908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240937-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kNm9ADJ162lRNAAAu9opvQ
-	(envelope-from <stable+bounces-240908-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:50:42 +0200
+	id kMkqEip062kQNAAAu9opvQ
+	(envelope-from <stable+bounces-240937-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:46:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B5F545FBE5
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:50:41 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B138E45F959
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:46:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7AF23307920F
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:42:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 31D4930471DA
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:43:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F6E5221DB6;
-	Fri, 24 Apr 2026 13:42:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 600483D6494;
+	Fri, 24 Apr 2026 13:43:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lYFzmsS6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="veK8IIvD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11BCC3563D4;
-	Fri, 24 Apr 2026 13:42:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23C22386C0A;
+	Fri, 24 Apr 2026 13:43:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777038151; cv=none; b=RX4ECZS+nR0pwBOGKcO8L7WlbaOtRDyJWLD8T2X4L91Ejp6I6Mn8enohpwQnfYyHMKbYAnoqDY+PIe6+qQhKC1WFQHRvWsRJ6LIB1BMnxByhLqQIamafGxTI7CIFS09NoVpuhT1uoA8rYxscLkSD48KOvBthrbgatCchRgrHwBo=
+	t=1777038223; cv=none; b=diQCB1l5iSzK0Po4dIEGEJc6Jrve9SbzJmgS+WEm49kRaR68w4AT38z7cg9CZnuTJ36wIOs+JHDuRFspN4vsLb8UznRSDic1A2tbLRgwvI5pjf8AyX4sji/lyBFrjdY2O/75B3B3Iw9nx2bXCrBLajESYS99G2BsocHRwtxKbDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777038151; c=relaxed/simple;
-	bh=hHYTfZQzCOZfTiA3ksb39R2BniL1jhsQrdTQzguakNA=;
+	s=arc-20240116; t=1777038223; c=relaxed/simple;
+	bh=83tDZxR6FcflMM3g4hiUDk1EKC73XGLYj2abI7am0Gc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lJKSQg2ZcSQygzOiA0LUEb9YWJZ1XpFRQS3/OGf3Xx/l9QWjOUQCiX4zS0ZX7HjEOWQKO3TmCBIZBEJ8iIZ3NDLxO6Gg7kD2oVzmuCbqLtpFwXMtjKx8AyVpQoWGmp0r8G0QBEL9wRwiejwfrd4FnfvxnUHUduDoFmVqcLmPb4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lYFzmsS6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C7D1C19425;
-	Fri, 24 Apr 2026 13:42:30 +0000 (UTC)
+	 MIME-Version; b=Z6bEl26j2DtFQptz8/V8Q4/p851DX5t1ZAg6o7uiAIQtmATq1io8eE8Z06cnO97bXsD4/6e5Ya4TWy4rq8FMZUXZrBmYFvlQELLhubYKDpij2lOjQnTadQdWzcXpW9rnc0epahpgAPWuM6Cvo099HhUU0DZ3+MzhRoId9z6C7zg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=veK8IIvD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADC0FC19425;
+	Fri, 24 Apr 2026 13:43:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777038151;
-	bh=hHYTfZQzCOZfTiA3ksb39R2BniL1jhsQrdTQzguakNA=;
+	s=korg; t=1777038223;
+	bh=83tDZxR6FcflMM3g4hiUDk1EKC73XGLYj2abI7am0Gc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lYFzmsS6U/cvqUMsY8bs6NQP01enFKWq9NQ3qqbq3w0LyKB3Y3FuilJW14PDHBIv3
-	 PnPRCIKEiQQmWa1lAc/sNLepaV/lnjQjNoCkk9ypDJjcvQ6XJZcWOdGxGfDXi9j/rb
-	 0KNsh/chACOjmf36Sm1nGY5a12EwUb6x4fIrREpY=
+	b=veK8IIvDhJN96QnhvNrCtpHCNN+Vc7/GwgjPaejQS/a2mrCHOibHjlw3n9chqPA3F
+	 2WJ6aFsIEsCVyfFCG1fIT49/VBy1DQYwYyutb1gLr/yA9SMQvZluC7Mxa4M1XX6kr4
+	 9Gur7Ve0U8u8mPgoxKYIzWX0NZNO75WvRI0VRR/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tristan Madani <tristan@talencesecurity.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.18 43/55] ksmbd: fix out-of-bounds write in smb2_get_ea() EA alignment
-Date: Fri, 24 Apr 2026 15:31:22 +0200
-Message-ID: <20260424132438.973010750@linuxfoundation.org>
+	Samuel Page <sam@bynar.io>,
+	Qi Tang <tpluszz77@gmail.com>,
+	Zijun Hu <nightu@northwestern.edu>,
+	Miklos Szeredi <mszeredi@redhat.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.12 16/35] fuse: reject oversized dirents in page cache
+Date: Fri, 24 Apr 2026 15:31:23 +0200
+Message-ID: <20260424132415.087398761@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132430.006424517@linuxfoundation.org>
-References: <20260424132430.006424517@linuxfoundation.org>
+In-Reply-To: <20260424132411.427029259@linuxfoundation.org>
+References: <20260424132411.427029259@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,88 +66,89 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7B5F545FBE5
+X-Rspamd-Queue-Id: B138E45F959
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+X-Spamd-Result: default: False [3.84 / 15.00];
+	SEM_URIBL(3.50)[northwestern.edu:email];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
+	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-240908-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,bynar.io,gmail.com,northwestern.edu,redhat.com,kernel.org];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-240937-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	PRECEDENCE_BULK(0.00)[];
+	NEURAL_HAM(-0.00)[-0.895];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[talencesecurity.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+	R_SPF_ALLOW(0.00)[+ip6:2600:3c04:e001:36c::/64:c];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[northwestern.edu:email,bynar.io:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tristan Madani <tristan@talencesecurity.com>
+From: Samuel Page <sam@bynar.io>
 
-commit 30010c952077a1c89ecdd71fc4d574c75a8f5617 upstream.
+commit 51a8de6c50bf947c8f534cd73da4c8f0a13e7bed upstream.
 
-smb2_get_ea() applies 4-byte alignment padding via memset() after
-writing each EA entry. The bounds check on buf_free_len is performed
-before the value memcpy, but the alignment memset fires unconditionally
-afterward with no check on remaining space.
+fuse_add_dirent_to_cache() computes a serialized dirent size from the
+server-controlled namelen field and copies the dirent into a single
+page-cache page. The existing logic only checks whether the dirent fits
+in the remaining space of the current page and advances to a fresh page
+if not. It never checks whether the dirent itself exceeds PAGE_SIZE.
 
-When the EA value exactly fills the remaining buffer (buf_free_len == 0
-after value subtraction), the alignment memset writes 1-3 NUL bytes
-past the buf_free_len boundary. In compound requests where the response
-buffer is shared across commands, the first command (e.g., READ) can
-consume most of the buffer, leaving a tight remainder for the QUERY_INFO
-EA response. The alignment memset then overwrites past the physical
-kvmalloc allocation into adjacent kernel heap memory.
+As a result, a malicious FUSE server can return a dirent with
+namelen=4095, producing a serialized record size of 4120 bytes. On 4 KiB
+page systems this causes memcpy() to overflow the cache page by 24 bytes
+into the following kernel page.
 
-Add a bounds check before the alignment memset to ensure buf_free_len
-can accommodate the padding bytes.
+Reject dirents that cannot fit in a single page before copying them into
+the readdir cache.
 
-This is the same bug pattern fixed by commit beef2634f81f ("ksmbd: fix
-potencial OOB in get_file_all_info() for compound requests") and
-commit fda9522ed6af ("ksmbd: fix OOB write in QUERY_INFO for compound
-requests"), both of which added bounds checks before unconditional
-writes in QUERY_INFO response handlers.
-
-Cc: stable@vger.kernel.org
-Fixes: e2b76ab8b5c9 ("ksmbd: add support for read compound")
-Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 69e34551152a ("fuse: allow caching readdir")
+Cc: stable@vger.kernel.org # v6.16+
+Assisted-by: Bynario AI
+Signed-off-by: Samuel Page <sam@bynar.io>
+Reported-by: Qi Tang <tpluszz77@gmail.com>
+Reported-by: Zijun Hu <nightu@northwestern.edu>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Link: https://patch.msgid.link/20260420090139.662772-1-mszeredi@redhat.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/smb2pdu.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/fuse/readdir.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -4831,6 +4831,8 @@ static int smb2_get_ea(struct ksmbd_work
- 		/* align next xattr entry at 4 byte bundary */
- 		alignment_bytes = ((next_offset + 3) & ~3) - next_offset;
- 		if (alignment_bytes) {
-+			if (buf_free_len < alignment_bytes)
-+				break;
- 			memset(ptr, '\0', alignment_bytes);
- 			ptr += alignment_bytes;
- 			next_offset += alignment_bytes;
+--- a/fs/fuse/readdir.c
++++ b/fs/fuse/readdir.c
+@@ -41,6 +41,10 @@ static void fuse_add_dirent_to_cache(str
+ 	unsigned int offset;
+ 	void *addr;
+ 
++	/* Dirent doesn't fit in readdir cache page?  Skip caching. */
++	if (reclen > PAGE_SIZE)
++		return;
++
+ 	spin_lock(&fi->rdc.lock);
+ 	/*
+ 	 * Is cache already completed?  Or this entry does not go at the end of
 
 
 
