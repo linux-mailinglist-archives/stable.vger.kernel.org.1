@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-240850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240922-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YHKhJ1Z062koNAAAu9opvQ
-	(envelope-from <stable+bounces-240850-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:47:02 +0200
+	id yGxyHHJz62kQNAAAu9opvQ
+	(envelope-from <stable+bounces-240922-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:43:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C3F045F9CB
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:47:01 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FFA345F780
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:43:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DB1D5302529A
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:40:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8E1903003485
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:43:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0093E3D6CC1;
-	Fri, 24 Apr 2026 13:40:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62A703C061E;
+	Fri, 24 Apr 2026 13:43:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HVXlE57k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0mkvAsgc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B65F919A288;
-	Fri, 24 Apr 2026 13:40:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 251B419A288;
+	Fri, 24 Apr 2026 13:43:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777038001; cv=none; b=nz283ct9CnxzXPlTBaSAcQyBAO40cHrtAcD6J78iOPE8Qg1cK+U0M11iwp5CCUFtcsIsLuhA4DFG+IAhO9uj8SFj6lobaLIESEqB21UJc3ZuJE57ZodvnT4ZvkZQz/iSihXUy2XByFsNhQHsIvaRKa6G9yCkeXjS6xMBHA3CMOo=
+	t=1777038187; cv=none; b=giRZN44GL4gxMEUjopecdCMD3p4W/LhwyQR21Vz/NPiK5Fmd3hlIaulrSu6yOqXkji5RhfVfX5EXnmvtCtPj1HTvI+jQZWD0ibkWiompDPhUb1uQ9TnTYDLkcqLLcScqMEcPTMfOnsrKhOb9whZOMcBrB0U4abZw96XLGBsRWT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777038001; c=relaxed/simple;
-	bh=KutRypQEmczM34oMqxwpGywO3ZySNLAspRYLUf5x78c=;
+	s=arc-20240116; t=1777038187; c=relaxed/simple;
+	bh=aBise1O3I8jXQiPnlST0GVizZDJlIvJeH6r4wqLc4TE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iwJp74ijeJxyxZF5df47adNsyO8HYMvJwlNhWaBqfLLB/KC5PvI1jumTuqT7j5hXDzQT+HwRiodf5tcwBsQwGgMaNcuznAMMXh3qSaN4RAPlpnpna1g+JCFaqa6cdlN+CCPt60vwRg7wPO7fWY84dzforGXo1H+rTf5u+vWGeIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HVXlE57k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B202C19425;
-	Fri, 24 Apr 2026 13:40:01 +0000 (UTC)
+	 MIME-Version; b=b6HKnhnPLb71YOWGh2nme8ykjL/EDPA+dHEB+3fIWlkN4dgZZrhK+/8XFJbvK8eYE6PwWFBysk5+TZbtaiqzx4cRKIars7OqKDX/ccHA3j+aEQ6lbx/t52eMa1UZiSbjDuVJm/3iGAu3C21uxJKGIaBQQyH2K1Mmk4v5XZA9ZsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0mkvAsgc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A694CC19425;
+	Fri, 24 Apr 2026 13:43:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777038001;
-	bh=KutRypQEmczM34oMqxwpGywO3ZySNLAspRYLUf5x78c=;
+	s=korg; t=1777038187;
+	bh=aBise1O3I8jXQiPnlST0GVizZDJlIvJeH6r4wqLc4TE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HVXlE57kb+H2z92rBaxj2NRowXU7TE58V0Us0fkYc05XGwLyvoT1TwatEjiFz9lK8
-	 uVZUM9paMQICh8ztxUOn37d/DV5jbTLLMt8XM9Ws4BXoRLrojbrd8dqRVkbraHCfz8
-	 UCbm1uCEJCWg59RxzcJ7PxMmu8+gK+qiwUomLC5M=
+	b=0mkvAsgcxebI9X+IpCpNYXrRl1Q3getDQaVKIS6QJPzF5jiQORKdDxKlLlkdbJtl7
+	 JIhHprAU0zG/3AVUazUmWjDNNVZGSw3poY5o6HW7C3OadjEFu9CraWmXsABXT+6Fjq
+	 hs2xNTDSr2Aw9VS9RiLDJI2/HCL3YRVjtQ/VZq+0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	DaeMyung Kang <charsyam@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 151/166] smb: server: fix max_connections off-by-one in tcp accept path
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.18 26/55] fs/ntfs3: validate rec->used in journal-replay file record check
 Date: Fri, 24 Apr 2026 15:31:05 +0200
-Message-ID: <20260424132604.803847042@linuxfoundation.org>
+Message-ID: <20260424132435.484651206@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132532.812258529@linuxfoundation.org>
-References: <20260424132532.812258529@linuxfoundation.org>
+In-Reply-To: <20260424132430.006424517@linuxfoundation.org>
+References: <20260424132430.006424517@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,89 +63,114 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3C3F045F9CB
+X-Rspamd-Queue-Id: 8FFA345F780
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-240850-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-240922-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: DaeMyung Kang <charsyam@gmail.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit ce23158bfe584bd90d1918f279fdf9de57802012 upstream.
+commit 0ca0485e4b2e837ebb6cbd4f2451aba665a03e4b upstream.
 
-The global max_connections check in ksmbd's TCP accept path counts
-the newly accepted connection with atomic_inc_return(), but then
-rejects the connection when the result is greater than or equal to
-server_conf.max_connections.
+check_file_record() validates rec->total against the record size but
+never validates rec->used.  The do_action() journal-replay handlers read
+rec->used from disk and use it to compute memmove lengths:
 
-That makes the effective limit one smaller than configured. For
-example:
+  DeleteAttribute:    memmove(attr, ..., used - asize - roff)
+  CreateAttribute:    memmove(..., attr, used - roff)
+  change_attr_size:   memmove(..., used - PtrOffset(rec, next))
 
-- max_connections=1 rejects the first connection
-- max_connections=2 allows only one connection
+When rec->used is smaller than the offset of a validated attribute, or
+larger than the record size, these subtractions can underflow allowing
+us to copy huge amounts of memory in to a 4kb buffer, generally
+considered a bad idea overall.
 
-The per-IP limit in the same function uses <= correctly because it
-counts only pre-existing connections. The global limit instead checks
-the post-increment total, so it should reject only when that total
-exceeds the configured maximum.
+This requires a corrupted filesystem, which isn't a threat model the
+kernel really needs to worry about, but checking for such an obvious
+out-of-bounds value is good to keep things robust, especially on journal
+replay
 
-Fix this by changing the comparison from >= to >, so exactly
-max_connections simultaneous connections are allowed and the next one
-is rejected. This matches the documented meaning of max_connections
-in fs/smb/server/ksmbd_netlink.h as the "Number of maximum simultaneous
-connections".
+Fix this up by bounding rec->used correctly.
 
-Fixes: 0d0d4680db22 ("ksmbd: add max connections parameter")
-Cc: stable@vger.kernel.org
-Signed-off-by: DaeMyung Kang <charsyam@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+This is much like commit b2bc7c44ed17 ("fs/ntfs3: Fix slab-out-of-bounds
+read in DeleteIndexEntryRoot") which checked different values in this
+same switch statement.
+
+Cc: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Fixes: b46acd6a6a62 ("fs/ntfs3: Add NTFS journal")
+Cc: stable <stable@kernel.org>
+Assisted-by: gregkh_clanker_t1000
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/transport_tcp.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ntfs3/fslog.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
---- a/fs/smb/server/transport_tcp.c
-+++ b/fs/smb/server/transport_tcp.c
-@@ -298,7 +298,7 @@ static int ksmbd_kthread_fn(void *p)
- skip_max_ip_conns_limit:
+--- a/fs/ntfs3/fslog.c
++++ b/fs/ntfs3/fslog.c
+@@ -2789,13 +2789,14 @@ static inline bool check_file_record(con
+ 	u16 fn = le16_to_cpu(rec->rhdr.fix_num);
+ 	u16 ao = le16_to_cpu(rec->attr_off);
+ 	u32 rs = sbi->record_size;
++	u32 used = le32_to_cpu(rec->used);
  
- 		if (server_conf.max_connections &&
--		    atomic_inc_return(&active_num_conn) >= server_conf.max_connections) {
-+		    atomic_inc_return(&active_num_conn) > server_conf.max_connections) {
- 			pr_info_ratelimited("Limit the maximum number of connections(%u)\n",
- 					    atomic_read(&active_num_conn));
- 			atomic_dec(&active_num_conn);
+ 	/* Check the file record header for consistency. */
+ 	if (rec->rhdr.sign != NTFS_FILE_SIGNATURE ||
+ 	    fo > (SECTOR_SIZE - ((rs >> SECTOR_SHIFT) + 1) * sizeof(short)) ||
+ 	    (fn - 1) * SECTOR_SIZE != rs || ao < MFTRECORD_FIXUP_OFFSET_1 ||
+ 	    ao > sbi->record_size - SIZEOF_RESIDENT || !is_rec_inuse(rec) ||
+-	    le32_to_cpu(rec->total) != rs) {
++	    le32_to_cpu(rec->total) != rs || used > rs || used < ao) {
+ 		return false;
+ 	}
+ 
+@@ -2807,6 +2808,15 @@ static inline bool check_file_record(con
+ 		return false;
+ 	}
+ 
++	/*
++	 * The do_action() handlers compute memmove lengths as
++	 * "rec->used - <offset of validated attr>", which underflows when
++	 * rec->used is smaller than the attribute walk reached.  At this
++	 * point attr is the ATTR_END marker; rec->used must cover it.
++	 */
++	if (used < PtrOffset(rec, attr) + sizeof(attr->type))
++		return false;
++
+ 	return true;
+ }
+ 
 
 
 
