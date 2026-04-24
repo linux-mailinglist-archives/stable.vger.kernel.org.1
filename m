@@ -1,59 +1,65 @@
-Return-Path: <stable+bounces-240676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240829-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2O9YAsdx62nCMwAAu9opvQ
-	(envelope-from <stable+bounces-240676-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:36:07 +0200
+	id 6ChULH5y62nmMwAAu9opvQ
+	(envelope-from <stable+bounces-240829-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:39:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4317445F2ED
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:36:06 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60BCD45F507
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:39:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 51722302BEBA
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:32:33 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B6E2330028A9
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:39:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 304D623E356;
-	Fri, 24 Apr 2026 13:32:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB1463D5643;
+	Fri, 24 Apr 2026 13:39:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dUJwIGuE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XqRnp5ve"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E86853AC00;
-	Fri, 24 Apr 2026 13:32:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D2AF3563D4;
+	Fri, 24 Apr 2026 13:39:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777037552; cv=none; b=WbL/UG3J+RBuVa4HXhozJkGUH5okIEdfUBMFt9xx6h6Ja9NJQ8OKqgjnXl3muEHcDlErHUM4ps9jdsr1JxNRjIt9sRQeAclu2r2Q4oAuIW/ZHaJuw2K8exFCt4oFRhzGLaK1L8JLx6SfBU7EJV+y+CFVmIHfoRhb6mHqpPvjxqM=
+	t=1777037947; cv=none; b=SoanF1KYU6Pa9r+BmoKaeR8jLMBRnZUVpgj4NyiWMRNGn/yV6xEbOzLB0NG2vWkNJ7ZIvAEJYNTFBg+L+pCFRLn7vFqtEHi2hVh80vBtXNMrvnZI1d4eSCjH1wLbWcMh1abbMJ+S2zfijiXgowDqzUCSsemUudw2vw0IMPVWqCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777037552; c=relaxed/simple;
-	bh=+QaF78pvgeXyaXauiC3LsHRAe5b3VSC+R3+efsMK+0Q=;
+	s=arc-20240116; t=1777037947; c=relaxed/simple;
+	bh=xrZplwLbjp7afcyNpDD7g/vbLyWCaDs2S6yjbQdjRKQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O9i3QYpVp3xMZz4qzHAtJLNiPG0O6LtsA5G4J1DMDOhGOAT0L5g8Q/WIiAo0t6sslPA1i/zw2YGdM2Lfiy73lrNe94PZqAVKrlYhxBRYMU83vwgepCzqltVOB3KOK8FHvsFLMwNtGwL4V6uKdWz19sE2fTVI7EymtsecwBDCAxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dUJwIGuE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B093C2BCB2;
-	Fri, 24 Apr 2026 13:32:31 +0000 (UTC)
+	 MIME-Version; b=Uhj9SabCFdilsk2KU7efsuocTjZ4eXinCRhzprgZZM1yyKxqkKooTr0QqlrJ1IimTnVT0386PJimE9NW2YzS6W0OQvVBNYEQC31rxRWdgAmDWGq8+KvE2GUYVyrxrIHWTVYIXoeNMwzISZJo93nnBTgJITE4GNLUJs30QWQU1Tc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XqRnp5ve; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19104C2BCB2;
+	Fri, 24 Apr 2026 13:39:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777037551;
-	bh=+QaF78pvgeXyaXauiC3LsHRAe5b3VSC+R3+efsMK+0Q=;
+	s=korg; t=1777037947;
+	bh=xrZplwLbjp7afcyNpDD7g/vbLyWCaDs2S6yjbQdjRKQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dUJwIGuEyoyiqyhU6uMa9/ZZVVIAsWFaxyy3n7INSLD4U8vmmVDFsKLkjDTosoHbD
-	 JVKk9dxvkrFWJXJx+rWl3CkCzvdk/uS1p23LkiTATAZ33mFX/pSPrqwjUsDBFYz+Mu
-	 S021VsKR+6TAsvFeEDj45eMMAY9rvZ5d8TX9Xg+c=
+	b=XqRnp5vewbueWqH6DFyYBpvIw78+LzJUSW2FUes8/W7W9600TIgIPcrXkHG+DsY7R
+	 Zo5UjzR2U5vOUjIx8Y0qG0C9mDSh660otc2bqw2GOigcBusHvmIlMy65XXzPPZwNtv
+	 VjnYE8R/5lxCRVq1uW+hBwUgp8tpXhpL2J7Ir9wo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 7.0 21/42] smb: server: fix active_num_conn leak on transport allocation failure
+	Thomas Gleixner <tglx@kernel.org>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org,
+	Joe Damato <joe@dama.to>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Charles Xu <charles_xu@189.cn>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 132/166] i40e: Fix preempt count leak in napi poll tracepoint
 Date: Fri, 24 Apr 2026 15:30:46 +0200
-Message-ID: <20260424132424.890208544@linuxfoundation.org>
+Message-ID: <20260424132600.532894958@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132420.410310336@linuxfoundation.org>
-References: <20260424132420.410310336@linuxfoundation.org>
+In-Reply-To: <20260424132532.812258529@linuxfoundation.org>
+References: <20260424132532.812258529@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,106 +70,86 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4317445F2ED
+X-Rspamd-Queue-Id: 60BCD45F507
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240676-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240829-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,intel.com,lists.osuosl.org,vger.kernel.org,dama.to,189.cn];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,189.cn:email,osuosl.org:email]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Thomas Gleixner <tglx@kernel.org>
 
-commit 6551300dc452ac16a855a83dbd1e74899542d3b3 upstream.
+[ Upstream commit 4b3d54a85bd37ebf2d9836f0d0de775c0ff21af9 ]
 
-Commit 77ffbcac4e56 ("smb: server: fix leak of active_num_conn in
-ksmbd_tcp_new_connection()") addressed the kthread_run() failure
-path.  The earlier alloc_transport() == NULL path in the same
-function has the same leak, is reachable pre-authentication via any
-TCP connect to port 445, and was empirically reproduced on UML
-(ARCH=um, v7.0-rc7): a small number of forced allocation failures
-were sufficient to put ksmbd into a state where every subsequent
-connection attempt was rejected for the remainder of the boot.
+Using get_cpu() in the tracepoint assignment causes an obvious preempt
+count leak because nothing invokes put_cpu() to undo it:
 
-ksmbd_kthread_fn() increments active_num_conn before calling
-ksmbd_tcp_new_connection() and discards the return value, so when
-alloc_transport() returns NULL the socket is released and -ENOMEM
-returned without decrementing the counter.  Each such failure
-permanently consumes one slot from the max_connections pool; once
-cumulative failures reach the cap, atomic_inc_return() hits the
-threshold on every subsequent accept and every new connection is
-rejected.  The counter is only reset by module reload.
+  softirq: huh, entered softirq 3 NET_RX with preempt_count 00000100, exited with 00000101?
 
-An unauthenticated remote attacker can drive the server toward the
-memory pressure that makes alloc_transport() fail by holding open
-connections with large RFC1002 lengths up to MAX_STREAM_PROT_LEN
-(0x00FFFFFF); natural transient allocation failures on a loaded
-host produce the same drift more slowly.
+This clearly has seen a lot of testing in the last 3+ years...
 
-Mirror the existing rollback pattern in ksmbd_kthread_fn(): on the
-alloc_transport() failure path, decrement active_num_conn gated on
-server_conf.max_connections.
+Use smp_processor_id() instead.
 
-Repro details: with the patch reverted, forced alloc_transport()
-NULL returns leaked counter slots and subsequent connection
-attempts -- including legitimate connects issued after the
-forced-fail window had closed -- were all rejected with "Limit the
-maximum number of connections".  With this patch applied, the same
-connect sequence produces no rejections and the counter cycles
-cleanly between zero and one on every accept.
-
-Fixes: 0d0d4680db22 ("ksmbd: add max connections parameter")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-6
-Assisted-by: Codex:gpt-5-4
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6d4d584a7ea8 ("i40e: Add i40e_napi_poll tracepoint")
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>
+Cc: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Cc: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org
+Reviewed-by: Joe Damato <joe@dama.to>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Charles Xu <charles_xu@189.cn>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/transport_tcp.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/intel/i40e/i40e_trace.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/smb/server/transport_tcp.c
-+++ b/fs/smb/server/transport_tcp.c
-@@ -183,6 +183,8 @@ static int ksmbd_tcp_new_connection(stru
- 	t = alloc_transport(client_sk);
- 	if (!t) {
- 		sock_release(client_sk);
-+		if (server_conf.max_connections)
-+			atomic_dec(&active_num_conn);
- 		return -ENOMEM;
- 	}
- 
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_trace.h b/drivers/net/ethernet/intel/i40e/i40e_trace.h
+index 33b4e30f5e004..9b735a9e21140 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_trace.h
++++ b/drivers/net/ethernet/intel/i40e/i40e_trace.h
+@@ -88,7 +88,7 @@ TRACE_EVENT(i40e_napi_poll,
+ 		__entry->rx_clean_complete = rx_clean_complete;
+ 		__entry->tx_clean_complete = tx_clean_complete;
+ 		__entry->irq_num = q->irq_num;
+-		__entry->curr_cpu = get_cpu();
++		__entry->curr_cpu = smp_processor_id();
+ 		__assign_str(qname, q->name);
+ 		__assign_str(dev_name, napi->dev ? napi->dev->name : NO_DEV);
+ 		__assign_bitmask(irq_affinity, cpumask_bits(&q->affinity_mask),
+-- 
+2.53.0
+
 
 
 
