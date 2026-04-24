@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-240674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240681-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SC53MK1x62ndMwAAu9opvQ
-	(envelope-from <stable+bounces-240674-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:35:41 +0200
+	id eEkbLdhx62ndMwAAu9opvQ
+	(envelope-from <stable+bounces-240681-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:36:24 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2403D45F2B5
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:35:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3576545F329
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:36:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B591830421D2
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:32:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 10072304C100
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:32:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91F243D6CD6;
-	Fri, 24 Apr 2026 13:32:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4F293563D4;
+	Fri, 24 Apr 2026 13:32:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="spqTXqBW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xs/isXkl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12B0D3D6CC2;
-	Fri, 24 Apr 2026 13:32:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9822878F4A;
+	Fri, 24 Apr 2026 13:32:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777037547; cv=none; b=l02o5vlPEFXk3wfxbh+l7/j4ky7QFbObmb01YaPRsU0QOgg44N4bqerA6jj+GsTwg6e6+fl6eNJWoRKLlI6AVI9zDrM5PFGcSoDKRXvJ7TqRoOBrg10Kw63co24yaSsJKGPQFYuie+aqL8ZSvjXXDNI0xS3erXd6pWXqIHyKcd0=
+	t=1777037564; cv=none; b=bTL2ZXHrUIY+bZOxXVMT5l6G104+I8BK3BhqRQyx7c4cwDvnblZlmBD5gy920p5LqHbjbkrUT4P85mVevfhDiPEabtc9yLl+R3LYQ972LVxvl8XHV3p5lRLVgMGSlOR/I4Lecg8bgZOqK/8t3oA5afkikdl+RhKXxzQn9yXQEZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777037547; c=relaxed/simple;
-	bh=bmMF0PxciaZMfnlDWjao9Xmw33ya6ol9CqplpYcwbac=;
+	s=arc-20240116; t=1777037564; c=relaxed/simple;
+	bh=5kROmjtvG63ZUZUmudIJfHRpcTb2hX4LSQ0tfRCTxN8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=buuIa+Hjq+/UHUbzDwvcumzdDyRkhVk+X6vHXnAaZ+154o8DgmGDIYNYraha94fZ++NFon+p9RPtPhGjDkgiEhq6fro/69+3sF19h2pvJPQ3X4eaRBDWw3RdIUVsABN5XwoS3gDWCZ/2+D1p/Z7kCrXzY9m6Sk/v4DTeIo+aWN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=spqTXqBW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D6DAC2BCB6;
-	Fri, 24 Apr 2026 13:32:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=e6LsrNqezM1Az08j1WJDbSR1AiuOOfGCHhCElZxi+VMFYScEWszCmRk96k+bgBFPRnyeNEG1hgKEuW+eT3OVvZXGdCPneV3baV5cpqwu8dgrgxjneHd1/isvnAghax3pbCWvAiDbA2Oa3wbIatJvqx8uGlg9N3xGy+eLVSC+ESM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xs/isXkl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25491C2BCB2;
+	Fri, 24 Apr 2026 13:32:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777037546;
-	bh=bmMF0PxciaZMfnlDWjao9Xmw33ya6ol9CqplpYcwbac=;
+	s=korg; t=1777037564;
+	bh=5kROmjtvG63ZUZUmudIJfHRpcTb2hX4LSQ0tfRCTxN8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=spqTXqBWZjD7vLnAyrL884+3vAWV7WWRtC1VqMFRDWXbnk61XrhoaMHCgau+AS1FM
-	 IBbskFT9KjlxT+sfMKg28lvHlu1h6olDNMK4db1lwUMrL/MXJLuFCGLrkoOgTfK1a4
-	 0xB2tOv1qCFWWZZaZIWMeA02ADgRRX1040nyQ+3E=
+	b=Xs/isXklLWRd6x+4ZuW96Mco5WFSp3WPrgup6s/0pUwG1V5VYfgvpT51Wact+rCYz
+	 X9H0L0xbFxVrSTDkpS0XvOpcruRjqRgOuhV4JZPpiVC7pIBcuNvZxmjqMZ9cDc/ecP
+	 6j0C7mdKP6oVSqPYkAFPiw7FVkOAhkdK6NL3MQnA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Michal Wilczynski <m.wilczynski@samsung.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 02/42] pwm: th1520: fix `CLIPPY=1` warning
-Date: Fri, 24 Apr 2026 15:30:27 +0200
-Message-ID: <20260424132420.891656628@linuxfoundation.org>
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Thomas Sowell <tom@ldtlb.com>
+Subject: [PATCH 7.0 03/42] drm/amdgpu: replace PASID IDR with XArray
+Date: Fri, 24 Apr 2026 15:30:28 +0200
+Message-ID: <20260424132421.100913011@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260424132420.410310336@linuxfoundation.org>
 References: <20260424132420.410310336@linuxfoundation.org>
@@ -67,107 +67,174 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2403D45F2B5
+X-Rspamd-Queue-Id: 3576545F329
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-240674-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,amd.com,gmail.com,ldtlb.com];
+	TAGGED_FROM(0.00)[bounces-240681-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,rust-for-linux.com:url,samsung.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,ldtlb.com:email]
 
 7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
 
-[ Upstream commit aa8f35172ab66c57d4355a8c4e28d05b44c938e3 ]
+commit 3c863ff920b45fa7a9b7d4cb932f466488a87a58 upstream.
 
-The Rust kernel code should be kept `CLIPPY=1`-clean [1].
+Replace the PASID IDR + spinlock with XArray as noted in the TODO
+left by commit ea56aa262570 ("drm/amdgpu: fix the idr allocation
+flags").
 
-Clippy reports:
+The IDR conversion still has an IRQ safety issue:
+amdgpu_pasid_free() can be called from hardirq context via the fence
+signal path, but amdgpu_pasid_idr_lock is taken with plain spin_lock()
+in process context, creating a potential deadlock:
 
-    error: this pattern reimplements `Option::unwrap_or`
-      --> drivers/pwm/pwm_th1520.rs:64:5
-       |
-    64 | /     (match ns.checked_mul(rate_hz) {
-    65 | |         Some(product) => product,
-    66 | |         None => u64::MAX,
-    67 | |     }) / NSEC_PER_SEC_U64
-       | |______^ help: replace with: `ns.checked_mul(rate_hz).unwrap_or(u64::MAX)`
-       |
-       = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.92.0/index.html#manual_unwrap_or
-       = note: `-D clippy::manual-unwrap-or` implied by `-D warnings`
-       = help: to override `-D warnings` add `#[allow(clippy::manual_unwrap_or)]`
+     CPU0
+     ----
+     spin_lock(&amdgpu_pasid_idr_lock)   // process context, IRQs on
+     <Interrupt>
+       spin_lock(&amdgpu_pasid_idr_lock) // deadlock
 
-Applying the suggestion then triggers:
+   The hardirq call chain is:
 
-    error: manual saturating arithmetic
-      --> drivers/pwm/pwm_th1520.rs:64:5
-       |
-    64 |     ns.checked_mul(rate_hz).unwrap_or(u64::MAX) / NSEC_PER_SEC_U64
-       |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ help: consider using `saturating_mul`: `ns.saturating_mul(rate_hz)`
-       |
-       = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.92.0/index.html#manual_saturating_arithmetic
-       = note: `-D clippy::manual-saturating-arithmetic` implied by `-D warnings`
-       = help: to override `-D warnings` add `#[allow(clippy::manual_saturating_arithmetic)]`
+     sdma_v6_0_process_trap_irq
+      -> amdgpu_fence_process
+       -> dma_fence_signal
+        -> drm_sched_job_done
+         -> dma_fence_signal
+          -> amdgpu_pasid_free_cb
+           -> amdgpu_pasid_free
 
-Thus fix it by using saturating arithmetic, which simplifies the code
-as well.
+Use XArray with XA_FLAGS_LOCK_IRQ (all xa operations use IRQ-safe
+locking internally) and XA_FLAGS_ALLOC1 (zero is not a valid PASID).
+Both xa_alloc_cyclic() and xa_erase() then handle locking
+consistently, fixing the IRQ safety issue and removing the need for
+an explicit spinlock.
 
-Link: https://rust-for-linux.com/contributing#submit-checklist-addendum [1]
-Fixes: e03724aac758 ("pwm: Add Rust driver for T-HEAD TH1520 SoC")
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Reviewed-by: Danilo Krummrich <dakr@kernel.org>
-Reviewed-by: Michal Wilczynski <m.wilczynski@samsung.com>
-Link: https://patch.msgid.link/20260121183719.71659-1-ojeda@kernel.org
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+v8: squash in irq safe fix
+
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Suggested-by: Lijo Lazar <lijo.lazar@amd.com>
+Fixes: ea56aa262570 ("drm/amdgpu: fix the idr allocation flags")
+Fixes: 8f1de51f49be ("drm/amdgpu: prevent immediate PASID reuse case")
+Signed-off-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: Thomas Sowell <tom@ldtlb.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pwm/pwm_th1520.rs | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c |   39 +++++++++++++++-----------------
+ 1 file changed, 19 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/pwm/pwm_th1520.rs b/drivers/pwm/pwm_th1520.rs
-index b0e24ee724e45..36567fc17dcc8 100644
---- a/drivers/pwm/pwm_th1520.rs
-+++ b/drivers/pwm/pwm_th1520.rs
-@@ -64,10 +64,7 @@ const fn th1520_pwm_fp(n: u32) -> usize {
- fn ns_to_cycles(ns: u64, rate_hz: u64) -> u64 {
-     const NSEC_PER_SEC_U64: u64 = time::NSEC_PER_SEC as u64;
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c
+@@ -22,7 +22,7 @@
+  */
+ #include "amdgpu_ids.h"
  
--    (match ns.checked_mul(rate_hz) {
--        Some(product) => product,
--        None => u64::MAX,
--    }) / NSEC_PER_SEC_U64
-+    ns.saturating_mul(rate_hz) / NSEC_PER_SEC_U64
+-#include <linux/idr.h>
++#include <linux/xarray.h>
+ #include <linux/dma-fence-array.h>
+ 
+ 
+@@ -40,8 +40,8 @@
+  * VMs are looked up from the PASID per amdgpu_device.
+  */
+ 
+-static DEFINE_IDR(amdgpu_pasid_idr);
+-static DEFINE_SPINLOCK(amdgpu_pasid_idr_lock);
++static DEFINE_XARRAY_FLAGS(amdgpu_pasid_xa, XA_FLAGS_LOCK_IRQ | XA_FLAGS_ALLOC1);
++static u32 amdgpu_pasid_xa_next;
+ 
+ /* Helper to free pasid from a fence callback */
+ struct amdgpu_pasid_cb {
+@@ -62,36 +62,37 @@ struct amdgpu_pasid_cb {
+  */
+ int amdgpu_pasid_alloc(unsigned int bits)
+ {
+-	int pasid;
++	u32 pasid;
++	int r;
+ 
+ 	if (bits == 0)
+ 		return -EINVAL;
+ 
+-	spin_lock(&amdgpu_pasid_idr_lock);
+-	/* TODO: Need to replace the idr with an xarry, and then
+-	 * handle the internal locking with ATOMIC safe paths.
+-	 */
+-	pasid = idr_alloc_cyclic(&amdgpu_pasid_idr, NULL, 1,
+-				 1U << bits, GFP_ATOMIC);
+-	spin_unlock(&amdgpu_pasid_idr_lock);
+-
+-	if (pasid >= 0)
+-		trace_amdgpu_pasid_allocated(pasid);
++	r = xa_alloc_cyclic_irq(&amdgpu_pasid_xa, &pasid, xa_mk_value(0),
++			    XA_LIMIT(1, (1U << bits) - 1),
++			    &amdgpu_pasid_xa_next, GFP_KERNEL);
++	if (r < 0)
++		return r;
+ 
++	trace_amdgpu_pasid_allocated(pasid);
+ 	return pasid;
  }
  
- fn cycles_to_ns(cycles: u64, rate_hz: u64) -> u64 {
--- 
-2.53.0
-
+ /**
+  * amdgpu_pasid_free - Free a PASID
+  * @pasid: PASID to free
++ *
++ * Called in IRQ context.
+  */
+ void amdgpu_pasid_free(u32 pasid)
+ {
++	unsigned long flags;
++
+ 	trace_amdgpu_pasid_freed(pasid);
+ 
+-	spin_lock(&amdgpu_pasid_idr_lock);
+-	idr_remove(&amdgpu_pasid_idr, pasid);
+-	spin_unlock(&amdgpu_pasid_idr_lock);
++	xa_lock_irqsave(&amdgpu_pasid_xa, flags);
++	__xa_erase(&amdgpu_pasid_xa, pasid);
++	xa_unlock_irqrestore(&amdgpu_pasid_xa, flags);
+ }
+ 
+ static void amdgpu_pasid_free_cb(struct dma_fence *fence,
+@@ -634,7 +635,5 @@ void amdgpu_vmid_mgr_fini(struct amdgpu_
+  */
+ void amdgpu_pasid_mgr_cleanup(void)
+ {
+-	spin_lock(&amdgpu_pasid_idr_lock);
+-	idr_destroy(&amdgpu_pasid_idr);
+-	spin_unlock(&amdgpu_pasid_idr_lock);
++	xa_destroy(&amdgpu_pasid_xa);
+ }
 
 
 
