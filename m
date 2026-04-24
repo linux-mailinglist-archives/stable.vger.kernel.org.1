@@ -1,63 +1,91 @@
-Return-Path: <stable+bounces-240930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240966-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ALTVFoFz62kQNAAAu9opvQ
-	(envelope-from <stable+bounces-240930-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:43:29 +0200
+	id UCs7K5J262kQNAAAu9opvQ
+	(envelope-from <stable+bounces-240966-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:56:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DDA845F7B4
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:43:28 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6421445FDDA
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:56:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 88859300750A
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:43:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BD526304299A
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:51:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C07703D6CC7;
-	Fri, 24 Apr 2026 13:43:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B22823D813E;
+	Fri, 24 Apr 2026 13:51:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U40K9pYT"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cznsQXEE"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 852D13D6494
-	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 13:43:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 568343AE6EB
+	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 13:51:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777038205; cv=none; b=XlXEK6D1mPNGAwf2mT63lFpPOSQuXkQXia3QmR6A7KoUzrYrvEsPzmYr2hNRMTmY1z5QFh7u5IFr7Q2oBoUznpi2U3ePGIyH9MGhYEht1E1wL0354aJO8h8Aij1zuAoNCuA9oKzzXe/u3eCBSKemPfecqbVJfgFcJceZ5Mxwhi4=
+	t=1777038675; cv=none; b=in0y82Kevq51jSBXUh/KiiJ/1bR4mcDqbpDQycrMcb+mcPx7GVHbMT+yO5d5PrfY/V4zGNl21VRpTipvpvIT0RWg1A9TJBcVDumsVWdDJJyIXu7wg0DB7Hh7d17Pn8Ea6PaXOIPrNGcG3eSQFilgVwNFChPyZJWXy1KHM6hoLVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777038205; c=relaxed/simple;
-	bh=hznFsPXdYJbAkVQWEfKTgW3uBmIv9yDPKd56jHsdk58=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OhbdRpXmkMu9NWUMyU6SFbWM45wt5NvMWpUPdoqzwrKNbfvPXrMBFMKRDn78LnGOmkFlFjP8jSpVVKdotUa24V0swlRwGqofJcPKS7+GdqN7StGInHSgIzyYfpg8mPT9DlNUz6OAcy2xIU5U/dScV+YPwSwsV/cpatXcM2t5woU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U40K9pYT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9473DC2BCB2;
-	Fri, 24 Apr 2026 13:43:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777038205;
-	bh=hznFsPXdYJbAkVQWEfKTgW3uBmIv9yDPKd56jHsdk58=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U40K9pYTrmfAb4EsVxhtZvJFCTBWmadBu8TIEIj0INPcYHoP4mKXMSji7TFfmSpJF
-	 KTSlWWactooNGjFnfAXd8Ito6/QHpmOugxM8rOoZzHkEFppII2s3y28cAxqHL1ggX+
-	 Lc4NwGYKewnFvCAsgWYjDn2li1SjdCxwWWHW2NuhqYeisp9TzHaV41XYl0J5OAWIs6
-	 rZnvuN+pY/Z1IxgOX3km0Noh/wHq/4QgTJ24nOVJyp5vZmvLCaNOgczvE739fexRIH
-	 vd3qerVPfjnR7Vk0o+pX8HQXe4H0Cx0ijU6kUo91BpruHtneD9JxkFPVFvQwmATy20
-	 EKVrLcyQve4Qg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Yongpeng Yang <yangyongpeng@xiaomi.com>,
-	stable@kernel.org,
-	syzbot+6e4cb1cac5efc96ea0ca@syzkaller.appspotmail.com,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] f2fs: fix UAF caused by decrementing sbi->nr_pages[] in f2fs_write_end_io()
-Date: Fri, 24 Apr 2026 09:43:22 -0400
-Message-ID: <20260424134323.2017162-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026042434-undead-bronzing-dd24@gregkh>
-References: <2026042434-undead-bronzing-dd24@gregkh>
+	s=arc-20240116; t=1777038675; c=relaxed/simple;
+	bh=858P5mFpF+TrKrI6ZyGiotk5+CzcEz31qN54eKosWAQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UnWGDNtC2aMICFKhkXKe/CXWnvVUvIe5BXltnXLcjh1TqVqUHia/JIVigSUnX4dVwS/fhYZX37HXOZPHg9ACyLLwhIEvt8yv+wdIL92O8ea5dH8K/OpjCyYv2z7Y2mAQEXinCstHpSpbLAiobRL2bmBo7LIJuYqilDrxupuqtKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cznsQXEE; arc=none smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-82735a41920so3232839b3a.2
+        for <stable@vger.kernel.org>; Fri, 24 Apr 2026 06:51:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777038673; x=1777643473; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=5BzP7d1QHnmFXYW9OV542PaMIY/QnoUuc/2j7D+PjyI=;
+        b=cznsQXEEMwHAveO4Uxx/xWl5VJxSOL/au8OU9oKdR2sDP31241rakHs8I5v9EYqZMu
+         lPlPRII2yJcuXxNBX6WNvCXErWyTpBNBlTFHBtg0FahHT2iNydo4OSc9UCgqwIIFXA/J
+         qlPX7279SnHS91aBK/b94W5mdp/kQb0uCVW0RkDjpJ7RqSfDa97tFuSjluu/8B98iO3c
+         /THZp7Lov3MY7x8sUV9KjGnPuNkGNmC4xHhRmKAGPChrxYC2D70KWQnlOiE3eXsBox8J
+         OWhIU59W28hjeeD69vjxneHcvlh593UWOc2kkzJSBBxSgsa9W6k0rAyKv2kJmXp1fOYy
+         N7yQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777038673; x=1777643473;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5BzP7d1QHnmFXYW9OV542PaMIY/QnoUuc/2j7D+PjyI=;
+        b=q3kWAauOcR/I2iKtL8LYUeegSRavV6wCKrVkgaAvTPdBViwfeaMpz4fK06XYcheBHn
+         9TpAJP8582dUcCY9Sd7Mp0nElXGjnxQ7V7JVkrVc8Ul4YjuDs7XEeN1Tf1kBwTEJ0utG
+         Fepa5PWsKzcKIe+OLbNcWO0yIWK72KsOX1OoiimlNkOFaVt0OWzmlHDmFDa2PotRqfcE
+         rWpmkZoHheYv5etDEqTabfP5rySnbwVYKidXuCf6e+dK+pX+Fhao10md/EWo9X56Cn1p
+         euR3tQN7/ErU00q+tnsrUOjOXmsmqZUkr4D+Q9dr93l09SDVfvxWbX4EjH660PKmSOHD
+         re1A==
+X-Forwarded-Encrypted: i=1; AFNElJ/fh7WvKiWOSM+pXb+qe/4UbeSoQwcqfmDiLxThE/GDsrtHGHg3jILMEY0n6ihfOytkC3dnsrg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwjUihQcf0a+6e7w3NW57LD+y24lCRcS9s4aDhEW5uNwgqEGQYW
+	ZWXDw+X+QXEqPYwqiRVag91oLREomY9zcCTiuoezwSDPGCtDi6z+m6g=
+X-Gm-Gg: AeBDiesARGohhhomgUvwQVstYzh55B4jZ0qcuNaAr/9QIakNbZxpGfP/51NPl+4dCxp
+	vTVeEHyoySSyf9gQO0IXFEPApfzHtFtUpZOvPZprD7FerTSFLjL5ubO2FCRt08hWccooHfjMisx
+	NEnA7w1lY18ifk+GEF/iBnxVl9BeDniezJ45z4//NmhbPNT/RHm2KWLXMRjbdjd1sTDRBR63cMl
+	Nnrjv4TMjRdPv064Q6xjlf9pJjHHLm6id8Lmb+mCOJL4xBr6mxw0WDAoPjiXaqOojaGWYJQuRoL
+	hR9819YECfdHN7bi75hR+zMgVD+Fi+HoqufullOK3QDMXplnF7uytrsfym8G9SXLlfKqMn6nEL0
+	+88Q3xLoDPs5QAKf9Gh3IzBmKo8nYAvOlBW3LDa1dWhzX1zgZVKy4N88DOpD5dJS7+EPXsLClel
+	PfQocQHuxelMLR9H42tS4VqfvL7BmMTjRtORDeUeKm0Ph8dzcf72/4rQ65XUYGNpJx5YhRZnSeG
+	gc0TicLFxOixWk=
+X-Received: by 2002:a05:6a00:1307:b0:827:3b1b:43e6 with SMTP id d2e1a72fcca58-82f8c83bf5dmr31712297b3a.21.1777038672699;
+        Fri, 24 Apr 2026 06:51:12 -0700 (PDT)
+Received: from localhost.localdomain ([1.226.165.54])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f8e9cbb28sm22402386b3a.13.2026.04.24.06.51.10
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Fri, 24 Apr 2026 06:51:12 -0700 (PDT)
+From: Myeonghun Pak <mhun512@gmail.com>
+To: Wilken Gottwalt <wilken.gottwalt@posteo.net>,
+	Guenter Roeck <linux@roeck-us.net>
+Cc: linux-hwmon@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Myeonghun Pak <mhun512@gmail.com>
+Subject: [PATCH] hwmon: (corsair-psu) Close HID device on probe errors
+Date: Fri, 24 Apr 2026 22:50:51 +0900
+Message-ID: <20260424135107.13720-1-mhun512@gmail.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,108 +93,74 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2DDA845F7B4
+X-Rspamd-Queue-Id: 6421445FDDA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-240966-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240930-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mhun512@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,6e4cb1cac5efc96ea0ca];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[xiaomi.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,appspotmail.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 
-From: Yongpeng Yang <yangyongpeng@xiaomi.com>
+corsairpsu_probe() opens the HID device before sending the device init
+and firmware-info commands. If either command fails, the error path jumps
+directly to fail_and_stop and skips hid_hw_close().
 
-[ Upstream commit 2d9c4a4ed4eef1f82c5b16b037aee8bad819fd53 ]
+Use the existing fail_and_close label for those post-open failures so the
+open count and low-level close callback are balanced before hid_hw_stop().
 
-The xfstests case "generic/107" and syzbot have both reported a NULL
-pointer dereference.
-
-The concurrent scenario that triggers the panic is as follows:
-
-F2FS_WB_CP_DATA write callback          umount
-                                        - f2fs_write_checkpoint
-                                         - f2fs_wait_on_all_pages(sbi, F2FS_WB_CP_DATA)
-- blk_mq_end_request
- - bio_endio
-  - f2fs_write_end_io
-   : dec_page_count(sbi, F2FS_WB_CP_DATA)
-   : wake_up(&sbi->cp_wait)
-                                        - kill_f2fs_super
-                                         - kill_block_super
-                                          - f2fs_put_super
-                                           : iput(sbi->node_inode)
-                                           : sbi->node_inode = NULL
-   : f2fs_in_warm_node_list
-    - is_node_folio // sbi->node_inode is NULL and panic
-
-The root cause is that f2fs_put_super() calls iput(sbi->node_inode) and
-sets sbi->node_inode to NULL after sbi->nr_pages[F2FS_WB_CP_DATA] is
-decremented to zero. As a result, f2fs_in_warm_node_list() may
-dereference a NULL node_inode when checking whether a folio belongs to
-the node inode, leading to a panic.
-
-This patch fixes the issue by calling f2fs_in_warm_node_list() before
-decrementing sbi->nr_pages[F2FS_WB_CP_DATA], thus preventing the
-use-after-free condition.
-
-Cc: stable@kernel.org
-Fixes: 50fa53eccf9f ("f2fs: fix to avoid broken of dnode block list")
-Reported-by: syzbot+6e4cb1cac5efc96ea0ca@syzkaller.appspotmail.com
-Signed-off-by: Yongpeng Yang <yangyongpeng@xiaomi.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-[ folio => page ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d115b51e0e56 ("hwmon: add Corsair PSU HID controller driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
 ---
- fs/f2fs/data.c | 4 ++--
+ drivers/hwmon/corsair-psu.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
-index 887e286d2c329..9b4112177168d 100644
---- a/fs/f2fs/data.c
-+++ b/fs/f2fs/data.c
-@@ -339,6 +339,8 @@ static void f2fs_write_end_io(struct bio *bio)
- 
- 		f2fs_bug_on(sbi, page->mapping == NODE_MAPPING(sbi) &&
- 					page->index != nid_of_node(page));
-+		if (f2fs_in_warm_node_list(sbi, page))
-+			f2fs_del_fsync_node_entry(sbi, page);
- 
- 		dec_page_count(sbi, type);
- 
-@@ -350,8 +352,6 @@ static void f2fs_write_end_io(struct bio *bio)
- 				wq_has_sleeper(&sbi->cp_wait))
- 			wake_up(&sbi->cp_wait);
- 
--		if (f2fs_in_warm_node_list(sbi, page))
--			f2fs_del_fsync_node_entry(sbi, page);
- 		clear_page_private_gcing(page);
- 		end_page_writeback(page);
+diff --git a/drivers/hwmon/corsair-psu.c b/drivers/hwmon/corsair-psu.c
+index dddbd2463f..76f3e1da68 100644
+--- a/drivers/hwmon/corsair-psu.c
++++ b/drivers/hwmon/corsair-psu.c
+@@ -796,13 +796,13 @@ static int corsairpsu_probe(struct hid_device *hdev, const struct hid_device_id
+ 	ret = corsairpsu_init(priv);
+ 	if (ret < 0) {
+ 		dev_err(&hdev->dev, "unable to initialize device (%d)\n", ret);
+-		goto fail_and_stop;
++		goto fail_and_close;
  	}
+ 
+ 	ret = corsairpsu_fwinfo(priv);
+ 	if (ret < 0) {
+ 		dev_err(&hdev->dev, "unable to query firmware (%d)\n", ret);
+-		goto fail_and_stop;
++		goto fail_and_close;
+ 	}
+ 
+ 	corsairpsu_get_criticals(priv);
 -- 
-2.53.0
+2.50.1
 
 
