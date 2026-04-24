@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-240739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240741-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qLwQIbNx62nCMwAAu9opvQ
-	(envelope-from <stable+bounces-240739-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:35:47 +0200
+	id 2GYQOONx62ndMwAAu9opvQ
+	(envelope-from <stable+bounces-240741-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:36:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9046145F2CA
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:35:46 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8440D45F35E
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:36:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 38F5F300B2AF
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:35:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 095683017F87
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:35:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B77FC3563D4;
-	Fri, 24 Apr 2026 13:35:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA91333E347;
+	Fri, 24 Apr 2026 13:35:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OJHYJgyi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bjCsYEuk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BAA6179A3;
-	Fri, 24 Apr 2026 13:35:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD86019A288;
+	Fri, 24 Apr 2026 13:35:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777037711; cv=none; b=CYmPHkWDXqb9qDnwQfep44S8yWTUyceOgSgvCxPtmREfDXxSAGnQ8jhdcazJF90QOpP3UxZMMvh9Xy3L2oCzgc5qi7IkUvc2X0EC6GY64qKd89Omamyh3npsOivEY7rvQZxpPDSntj2Wjt8ikDfB8p9PEeeY1Ik7WU30Y4GVvTk=
+	t=1777037716; cv=none; b=TWY779BP3hRdvPT6F2NgQYeaUCll9u6skT8ibO8Ykfs+RJSN6H+w7UonoGlqUpaZxW7MiFuHX6f+V2kT5xmtRPi2d7h2h6c+AFIdtioebb1twOjdjmY0SWQm0YfEeeKMPfdXAGM6pqfahfR8/nvKNY9M2aGSFjmJVxcpGRZsDio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777037711; c=relaxed/simple;
-	bh=dzpwnaus4zHQzUriy2Hb6dZi0uH6SfrdUqi8M3ljj1g=;
+	s=arc-20240116; t=1777037716; c=relaxed/simple;
+	bh=BFFkso9IPGSkOKFElFROKOokO/1hI6PApG+Pmyt58So=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=peRDnNkg24hVeaXUFmEwx9J0IHHqfJgdGzZKayWESJix5DtqrGMJHfglaRP+es9JFvbBu6Exll/rJt4f7XNhYXymyd1fQBSMbOCqKIntJdXZ17/Riw9MJo8eYS/TP1HwXU61gdukkV3XV/lbPcTPjFceHv2QYK/0yYef+bPxEJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OJHYJgyi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10C8CC19425;
-	Fri, 24 Apr 2026 13:35:10 +0000 (UTC)
+	 MIME-Version; b=sVBeHA7GqQ8TM1w90NTnnMDdrT7+1mw7ykSlsQLI8hKYDzWhWoUdQvokwJAAHz5I+zjibrgp/+PGZ6E0a6oCACEXDhxU99BzNyfVchrcNNWAecvAJnu0CcEIWpkS5dhYKhIq58KJeFp0hnszc0XLIy6AvXTNgqQ4u7jK6Q7kPUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bjCsYEuk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41606C2BCB2;
+	Fri, 24 Apr 2026 13:35:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777037711;
-	bh=dzpwnaus4zHQzUriy2Hb6dZi0uH6SfrdUqi8M3ljj1g=;
+	s=korg; t=1777037716;
+	bh=BFFkso9IPGSkOKFElFROKOokO/1hI6PApG+Pmyt58So=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OJHYJgyiVGQ9DXb8uFGm4QaaMzdzTbVRymql0SBUO0Z0+k9SLCxUJqNcHMn2HDh+h
-	 2DAlHB9p7r6cj3qAVhst2AOXkXGVMhG0iGFKEAkUXfI/xX+iwCXxNe9+8Ul4i02Zhd
-	 Avir/s9rnX5NUX5UjEHblp7DeImmNMfTm4YH1wSE=
+	b=bjCsYEuk3yqpRO+ECpvdYcQE2YPRN1B95QfjBy/MwqR7pJvniwxK3rMeShmQ3CysZ
+	 XzFmCU1buyZornmjipta3ucR47sPI5NybWeayPFn67GF3DsxrSFvrGqBgGzEZJq6YK
+	 XUlTJ2aW4VOqu9kEYcKqon6P36CFyxUm3Po/3g6I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Pengpeng Hou <pengpeng@iscas.ac.cn>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 040/166] dt-bindings: net: Fix Tegra234 MGBE PTP clock
-Date: Fri, 24 Apr 2026 15:29:14 +0200
-Message-ID: <20260424132541.223703664@linuxfoundation.org>
+Subject: [PATCH 6.6 041/166] tracing/probe: reject non-closed empty immediate strings
+Date: Fri, 24 Apr 2026 15:29:15 +0200
+Message-ID: <20260424132541.453115471@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260424132532.812258529@linuxfoundation.org>
 References: <20260424132532.812258529@linuxfoundation.org>
@@ -65,14 +65,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9046145F2CA
+X-Rspamd-Queue-Id: 8440D45F35E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -80,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240739-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-240741-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,68 +89,52 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,qualcomm.com:email,nvidia.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jon Hunter <jonathanh@nvidia.com>
+From: Pengpeng Hou <pengpeng@iscas.ac.cn>
 
-[ Upstream commit fb22b1fc5bca3c0aad95388933497ceb30f1fb26 ]
+[ Upstream commit 4346be6577aaa04586167402ae87bbdbe32484a4 ]
 
-The PTP clock for the Tegra234 MGBE device is incorrectly named
-'ptp-ref' and should be 'ptp_ref'. This is causing the following
-warning to be observed on Tegra234 platforms that use this device:
+parse_probe_arg() accepts quoted immediate strings and passes the body
+after the opening quote to __parse_imm_string(). That helper currently
+computes strlen(str) and immediately dereferences str[len - 1], which
+underflows when the body is empty and not closed with double-quotation.
 
- ERR KERN tegra-mgbe 6800000.ethernet eth0: Invalid PTP clock rate
- WARNING KERN tegra-mgbe 6800000.ethernet eth0: PTP init failed
+Reject empty non-closed immediate strings before checking for the closing quote.
 
-Although this constitutes an ABI breakage in the binding for this
-device, PTP support has clearly never worked and so fix this now
-so we can correct the device-tree for this device. Note that the
-MGBE driver still supports the legacy 'ptp-ref' clock name and so
-older/existing device-trees will still work, but given that this
-is not the correct name, there is no point to advertise this in the
-binding.
+Link: https://lore.kernel.org/all/20260401160315.88518-1-pengpeng@iscas.ac.cn/
 
-Fixes: 189c2e5c7669 ("dt-bindings: net: Add Tegra234 MGBE")
-Signed-off-by: Jon Hunter <jonathanh@nvidia.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260401102941.17466-3-jonathanh@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: a42e3c4de964 ("tracing/probe: Add immediate string parameter support")
+Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
+Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../devicetree/bindings/net/nvidia,tegra234-mgbe.yaml         | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/trace/trace_probe.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/net/nvidia,tegra234-mgbe.yaml b/Documentation/devicetree/bindings/net/nvidia,tegra234-mgbe.yaml
-index 2bd3efff2485e..215f14d1897d2 100644
---- a/Documentation/devicetree/bindings/net/nvidia,tegra234-mgbe.yaml
-+++ b/Documentation/devicetree/bindings/net/nvidia,tegra234-mgbe.yaml
-@@ -42,7 +42,7 @@ properties:
-       - const: mgbe
-       - const: mac
-       - const: mac-divider
--      - const: ptp-ref
-+      - const: ptp_ref
-       - const: rx-input-m
-       - const: rx-input
-       - const: tx
-@@ -133,7 +133,7 @@ examples:
-                  <&bpmp TEGRA234_CLK_MGBE0_RX_PCS_M>,
-                  <&bpmp TEGRA234_CLK_MGBE0_RX_PCS>,
-                  <&bpmp TEGRA234_CLK_MGBE0_TX_PCS>;
--        clock-names = "mgbe", "mac", "mac-divider", "ptp-ref", "rx-input-m",
-+        clock-names = "mgbe", "mac", "mac-divider", "ptp_ref", "rx-input-m",
-                       "rx-input", "tx", "eee-pcs", "rx-pcs-input", "rx-pcs-m",
-                       "rx-pcs", "tx-pcs";
-         resets = <&bpmp TEGRA234_RESET_MGBE0_MAC>,
+diff --git a/kernel/trace/trace_probe.c b/kernel/trace/trace_probe.c
+index 187b1fc403c13..d46a1033ba5b3 100644
+--- a/kernel/trace/trace_probe.c
++++ b/kernel/trace/trace_probe.c
+@@ -1039,7 +1039,7 @@ static int __parse_imm_string(char *str, char **pbuf, int offs)
+ {
+ 	size_t len = strlen(str);
+ 
+-	if (str[len - 1] != '"') {
++	if (!len || str[len - 1] != '"') {
+ 		trace_probe_log_err(offs + len, IMMSTR_NO_CLOSE);
+ 		return -EINVAL;
+ 	}
 -- 
 2.53.0
 
