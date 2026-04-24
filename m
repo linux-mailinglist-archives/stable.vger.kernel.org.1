@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-240861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240960-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qAooG9h062kQNAAAu9opvQ
-	(envelope-from <stable+bounces-240861-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:49:12 +0200
+	id qO1vNsJ062kQNAAAu9opvQ
+	(envelope-from <stable+bounces-240960-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:48:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BF0F45FB27
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:49:12 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7042F45FAF8
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:48:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B06BD30B3F08
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:40:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A43FA305D709
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:44:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7016A3D5241;
-	Fri, 24 Apr 2026 13:40:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8156A3563D4;
+	Fri, 24 Apr 2026 13:44:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yfe7Ww1T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CLI5WpaP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 335E33C1976;
-	Fri, 24 Apr 2026 13:40:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3532D3D75C4;
+	Fri, 24 Apr 2026 13:44:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777038030; cv=none; b=QZMg/1P/HiVqS1QingtEis/7IEpwPM6M5am6jABJnDnXV+HffKIRMCTbwUfA/hebJL1NBojhxbaO0siX9S+W1BC3arTLu74WlFvQruoJwDJMlcANMD8v4i/t3DUK8r61Clt7oc165p0yjoY3mhGWCYTwbGYVx1ASAwF+cYcVR/w=
+	t=1777038282; cv=none; b=AhqQzLF0U5OeT7L0LJBZ20DChoeFVmOs1OQs+7DJRhZVWKlKfvCC/Ia76pD0lWFAtVCEDSMtT935ZWMRiHvQtaWV1saWK1WeWww475soV2vhzjhD5DZQChQqoLxNoYOd6HKmMgkG7gr16Qtl/ALaykoXeygZ06Cay2SsO78IdDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777038030; c=relaxed/simple;
-	bh=KwLJpwpNcIstCNqAQLD+7Rk/3pGPnT3qqpxNvuvXowI=;
+	s=arc-20240116; t=1777038282; c=relaxed/simple;
+	bh=K5QVxvhKDVGza16l2GgGnmXEvqp+eA7l6YDmUl1F6qs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KP4Dx9aUtQRwvUnq5g3yb1z/uUoqMr4Y1SjSnxUYHg8mFE9cq9f1R2N088DDFB0SsykNCcC4boPaKrUYE/oZCvnr+xLTahWiET8OX58JT5CCc2ALZTQVOGuWgt/SpaX+/jbqI1YxwczjSVovp3zfL+VEnvh7WZSqCJLPV0W4ilE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yfe7Ww1T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A0E4C19425;
-	Fri, 24 Apr 2026 13:40:29 +0000 (UTC)
+	 MIME-Version; b=Se/1rur9osNT/SgPa9IkenIGy19OPLRB2IdSIQi9ZTuPvb9m/he29pxPpakZkcKKquYG3o2NeL29klD6eZjCP3/E/FjLjar7+279xbkfAlSfv+vYTBrHnBtGWWyKCykpve0kPcDYwJSoVDz97dFLMIQpg15hoeUDjsrgS0R5+RY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CLI5WpaP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF001C19425;
+	Fri, 24 Apr 2026 13:44:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777038029;
-	bh=KwLJpwpNcIstCNqAQLD+7Rk/3pGPnT3qqpxNvuvXowI=;
+	s=korg; t=1777038282;
+	bh=K5QVxvhKDVGza16l2GgGnmXEvqp+eA7l6YDmUl1F6qs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yfe7Ww1T0SKQ7Wv9j9AX/QzVgBtXHMBa3lun4pS712skT8VNczvmG+oin2JtOg5l9
-	 3MgyUXHEu9uq4JbHkfre+191os6qgsWMLX9O07lHoVpwDDLh1Up0mMUDlUiBCmPk9N
-	 6sqkGTjUUFvbCUttjA46t7HVCgczw2lKBoL2o8cs=
+	b=CLI5WpaPXqIiUxSAwOxQnjypFjc6F0OFBZrrfpV+EeIliHeiqAu1jfRPq2ELUgAKs
+	 KICzSENN+mOfWlhbuCW2UtIroCzaRASA4OYWyQzh+DXRv+r1lUf+MdHxRAWeNBJ5fb
+	 KENhRiYYEBIKfXO8+YXovJGrIF6wbgsrFK52iR6M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Potapenko <glider@google.com>,
-	Sebastian Alba Vives <sebasjosue84@gmail.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.6 164/166] crypto: ccp: Dont attempt to copy ID to userspace if PSP command failed
+	munan Huang <munanevil@gmail.com>,
+	ChenXiaoSong <chenxiaosong@kylinos.cn>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 11/35] ksmbd: fix use-after-free in __ksmbd_close_fd() via durable scavenger
 Date: Fri, 24 Apr 2026 15:31:18 +0200
-Message-ID: <20260424132607.359726993@linuxfoundation.org>
+Message-ID: <20260424132414.001061703@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132532.812258529@linuxfoundation.org>
-References: <20260424132532.812258529@linuxfoundation.org>
+In-Reply-To: <20260424132411.427029259@linuxfoundation.org>
+References: <20260424132411.427029259@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,109 +66,170 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1BF0F45FB27
+X-Rspamd-Queue-Id: 7042F45FAF8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,gondor.apana.org.au];
-	TAGGED_FROM(0.00)[bounces-240861-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kylinos.cn,kernel.org,microsoft.com];
+	TAGGED_FROM(0.00)[bounces-240960-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,apana.org.au:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,kylinos.cn:email]
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 4f685dbfa87c546e51d9dc6cab379d20f275e114 upstream.
+[ Upstream commit 235e32320a470fcd3998fb3774f2290a0eb302a1 ]
 
-When retrieving the ID for the CPU, don't attempt to copy the ID blob to
-userspace if the firmware command failed.  If the failure was due to an
-invalid length, i.e. the userspace buffer+length was too small, copying
-the number of bytes _firmware_ requires will overflow the kernel-allocated
-buffer and leak data to userspace.
+When a durable file handle survives session disconnect (TCP close without
+SMB2_LOGOFF), session_fd_check() sets fp->conn = NULL to preserve the
+handle for later reconnection. However, it did not clean up the byte-range
+locks on fp->lock_list.
 
-  BUG: KASAN: slab-out-of-bounds in instrument_copy_to_user ../include/linux/instrumented.h:129 [inline]
-  BUG: KASAN: slab-out-of-bounds in _inline_copy_to_user ../include/linux/uaccess.h:205 [inline]
-  BUG: KASAN: slab-out-of-bounds in _copy_to_user+0x66/0xa0 ../lib/usercopy.c:26
-  Read of size 64 at addr ffff8881867f5960 by task syz.0.906/24388
+Later, when the durable scavenger thread times out and calls
+__ksmbd_close_fd(NULL, fp), the lock cleanup loop did:
 
-  CPU: 130 UID: 0 PID: 24388 Comm: syz.0.906 Tainted: G     U     O        7.0.0-smp-DEV #28 PREEMPTLAZY
-  Tainted: [U]=USER, [O]=OOT_MODULE
-  Hardware name: Google, Inc. Arcadia_IT_80/Arcadia_IT_80, BIOS 12.62.0-0 11/19/2025
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0xc5/0x110 ../lib/dump_stack.c:120
-   print_address_description ../mm/kasan/report.c:378 [inline]
-   print_report+0xbc/0x260 ../mm/kasan/report.c:482
-   kasan_report+0xa2/0xe0 ../mm/kasan/report.c:595
-   check_region_inline ../mm/kasan/generic.c:-1 [inline]
-   kasan_check_range+0x264/0x2c0 ../mm/kasan/generic.c:200
-   instrument_copy_to_user ../include/linux/instrumented.h:129 [inline]
-   _inline_copy_to_user ../include/linux/uaccess.h:205 [inline]
-   _copy_to_user+0x66/0xa0 ../lib/usercopy.c:26
-   copy_to_user ../include/linux/uaccess.h:236 [inline]
-   sev_ioctl_do_get_id2+0x361/0x490 ../drivers/crypto/ccp/sev-dev.c:2222
-   sev_ioctl+0x25f/0x490 ../drivers/crypto/ccp/sev-dev.c:2575
-   vfs_ioctl ../fs/ioctl.c:51 [inline]
-   __do_sys_ioctl ../fs/ioctl.c:597 [inline]
-   __se_sys_ioctl+0x11d/0x1b0 ../fs/ioctl.c:583
-   do_syscall_x64 ../arch/x86/entry/syscall_64.c:63 [inline]
-   do_syscall_64+0xe0/0x800 ../arch/x86/entry/syscall_64.c:94
-   entry_SYSCALL_64_after_hwframe+0x76/0x7e
-   </TASK>
+    spin_lock(&fp->conn->llist_lock);
 
-WARN if the driver says the command succeeded, but the firmware error code
-says otherwise, as __sev_do_cmd_locked() is expected to return -EIO on any
-firwmware error.
+This caused a slab use-after-free because fp->conn was NULL and the
+original connection object had already been freed by
+ksmbd_tcp_disconnect().
 
-Reported-by: Alexander Potapenko <glider@google.com>
-Reported-by: Sebastian Alba Vives <sebasjosue84@gmail.com>
-Fixes: d6112ea0cb34 ("crypto: ccp - introduce SEV_GET_ID2 command")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+The root cause is asymmetric cleanup: lock entries (smb_lock->clist) were
+left dangling on the freed conn->lock_list while fp->conn was nulled out.
+
+To fix this issue properly, we need to handle the lifetime of
+smb_lock->clist across three paths:
+ - Safely skip clist deletion when list is empty and fp->conn is NULL.
+ - Remove the lock from the old connection's lock_list in
+   session_fd_check()
+ - Re-add the lock to the new connection's lock_list in
+   ksmbd_reopen_durable_fd().
+
+Fixes: c8efcc786146 ("ksmbd: add support for durable handles v1/v2")
+Co-developed-by: munan Huang <munanevil@gmail.com>
+Signed-off-by: munan Huang <munanevil@gmail.com>
+Reviewed-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/ccp/sev-dev.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/smb/server/vfs_cache.c |   41 ++++++++++++++++++++++++++++++-----------
+ 1 file changed, 30 insertions(+), 11 deletions(-)
 
---- a/drivers/crypto/ccp/sev-dev.c
-+++ b/drivers/crypto/ccp/sev-dev.c
-@@ -932,6 +932,9 @@ static int sev_ioctl_do_get_id2(struct s
- 		goto e_free;
+--- a/fs/smb/server/vfs_cache.c
++++ b/fs/smb/server/vfs_cache.c
+@@ -370,9 +370,11 @@ static void __ksmbd_close_fd(struct ksmb
+ 	 * there are not accesses to fp->lock_list.
+ 	 */
+ 	list_for_each_entry_safe(smb_lock, tmp_lock, &fp->lock_list, flist) {
+-		spin_lock(&fp->conn->llist_lock);
+-		list_del(&smb_lock->clist);
+-		spin_unlock(&fp->conn->llist_lock);
++		if (!list_empty(&smb_lock->clist) && fp->conn) {
++			spin_lock(&fp->conn->llist_lock);
++			list_del(&smb_lock->clist);
++			spin_unlock(&fp->conn->llist_lock);
++		}
+ 
+ 		list_del(&smb_lock->flist);
+ 		locks_free_lock(smb_lock->fl);
+@@ -902,6 +904,7 @@ static bool session_fd_check(struct ksmb
+ 	struct ksmbd_inode *ci;
+ 	struct oplock_info *op;
+ 	struct ksmbd_conn *conn;
++	struct ksmbd_lock *smb_lock, *tmp_lock;
+ 
+ 	if (!is_reconnectable(fp))
+ 		return false;
+@@ -918,6 +921,12 @@ static bool session_fd_check(struct ksmb
+ 	}
+ 	up_write(&ci->m_lock);
+ 
++	list_for_each_entry_safe(smb_lock, tmp_lock, &fp->lock_list, flist) {
++		spin_lock(&fp->conn->llist_lock);
++		list_del_init(&smb_lock->clist);
++		spin_unlock(&fp->conn->llist_lock);
++	}
++
+ 	fp->conn = NULL;
+ 	fp->tcon = NULL;
+ 	fp->volatile_id = KSMBD_NO_FID;
+@@ -996,6 +1005,9 @@ int ksmbd_reopen_durable_fd(struct ksmbd
+ {
+ 	struct ksmbd_inode *ci;
+ 	struct oplock_info *op;
++	struct ksmbd_conn *conn = work->conn;
++	struct ksmbd_lock *smb_lock;
++	unsigned int old_f_state;
+ 
+ 	if (!fp->is_durable || fp->conn || fp->tcon) {
+ 		pr_err("Invalid durable fd [%p:%p]\n", fp->conn, fp->tcon);
+@@ -1007,9 +1019,23 @@ int ksmbd_reopen_durable_fd(struct ksmbd
+ 		return -EBADF;
  	}
  
-+	if (ret || WARN_ON_ONCE(argp->error))
-+		goto e_free;
+-	fp->conn = work->conn;
++	old_f_state = fp->f_state;
++	fp->f_state = FP_NEW;
++	__open_id(&work->sess->file_table, fp, OPEN_ID_TYPE_VOLATILE_ID);
++	if (!has_file_id(fp->volatile_id)) {
++		fp->f_state = old_f_state;
++		return -EBADF;
++	}
 +
- 	if (id_blob) {
- 		if (copy_to_user(input_address, id_blob, data.len)) {
- 			ret = -EFAULT;
++	fp->conn = conn;
+ 	fp->tcon = work->tcon;
+ 
++	list_for_each_entry(smb_lock, &fp->lock_list, flist) {
++		spin_lock(&conn->llist_lock);
++		list_add_tail(&smb_lock->clist, &conn->lock_list);
++		spin_unlock(&conn->llist_lock);
++	}
++
+ 	ci = fp->f_ci;
+ 	down_write(&ci->m_lock);
+ 	list_for_each_entry_rcu(op, &ci->m_op_list, op_entry) {
+@@ -1020,13 +1046,6 @@ int ksmbd_reopen_durable_fd(struct ksmbd
+ 	}
+ 	up_write(&ci->m_lock);
+ 
+-	fp->f_state = FP_NEW;
+-	__open_id(&work->sess->file_table, fp, OPEN_ID_TYPE_VOLATILE_ID);
+-	if (!has_file_id(fp->volatile_id)) {
+-		fp->conn = NULL;
+-		fp->tcon = NULL;
+-		return -EBADF;
+-	}
+ 	return 0;
+ }
+ 
 
 
 
