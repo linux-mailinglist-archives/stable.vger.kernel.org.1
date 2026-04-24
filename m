@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-241033-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241034-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YEs/LlTW62lISAAAu9opvQ
-	(envelope-from <stable+bounces-241033-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 22:45:08 +0200
+	id oFJRAkLW62lISAAAu9opvQ
+	(envelope-from <stable+bounces-241034-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 22:44:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 315AB463431
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 22:45:08 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3FE246342A
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 22:44:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 32A8D30309BB
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 20:44:31 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2EC96301223F
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 20:44:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 708103FCB26;
-	Fri, 24 Apr 2026 20:44:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A75113FE35F;
+	Fri, 24 Apr 2026 20:44:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uyWJ9R1B"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ewKkUAf3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33DFA3FBEDD;
-	Fri, 24 Apr 2026 20:44:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69AD83FD14E;
+	Fri, 24 Apr 2026 20:44:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777063462; cv=none; b=tuOZD+xdZvX+Y7ZG+zY6X/yLxzAibGxd4RMWYjyWm2O7FznSUG0pEcq8Txx8yWz8YpsBHVcCqXxu2i1NEPS+qc8n2vcU8teG/xdCJgmSGsExwrLyTDSd7Wx4qzXDV8thjOIu/YmNjVERmc1E0TTQzC8GG+FG42fZC+NJ9ws+5zY=
+	t=1777063463; cv=none; b=fpu6bvtzbwkKle371r/Mnidh/DjuBKhNBZrSHp5qoRIUDfHXrPomSYMM0Mk4p03C7ZGXTx4vEwGk4hOAM6OkHTSbtBpkoOVCLbqZlZBKlav6amy7NKAzGP/PXNO6XB46lc8tcs92lNYurzq6N6ZprXhqqu72vqaloD+QMNefvr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777063462; c=relaxed/simple;
-	bh=4zgA/8D5i8VIk2iiuAZijpdOo+YcCOiQlUoXstiK0x8=;
+	s=arc-20240116; t=1777063463; c=relaxed/simple;
+	bh=BqAdOCk1D5oAloLZseRfFomUyN6bCfzFNQZ2SgsjhEc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EIi3JhhBCIsta0RzLLjEcx9Sn//c9Ox99q9p8ps65f+RRMqKdC0WuC1ymimvdLpuhyRJDdLRsRE/mjQlXG5bS5Yn6Ubs6EUpmEeI3pR+f7A5mthThzeC1qRdKHBL1V1GxjaJAE6QGRrVnYANKKBVDff11HlHgI/QbEo/tw+XqLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uyWJ9R1B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF12FC2BCB0;
-	Fri, 24 Apr 2026 20:44:21 +0000 (UTC)
+	 MIME-Version; b=cSGpBEQhuyDanj+fG4p+D8u1B9i4BygP360lxwUvE0Nq7ngjYaUVtVxZcOcxs5v2FvUcwrPlESaurxX0rMk31yMQSyN9MseD2PksuAzQykp+8bn0r4Bcrkb56fa7WqijUc/A04aS3wEBEBVA3f8BD2ipQAxJeD4qnIN2xkVzZc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ewKkUAf3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF824C19425;
+	Fri, 24 Apr 2026 20:44:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777063462;
-	bh=4zgA/8D5i8VIk2iiuAZijpdOo+YcCOiQlUoXstiK0x8=;
+	s=k20201202; t=1777063463;
+	bh=BqAdOCk1D5oAloLZseRfFomUyN6bCfzFNQZ2SgsjhEc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uyWJ9R1B+AWZ5TyRrDDy+uH1L7QK+ou0w1yaZ2vGWnjqAr+4aPTatYfWaivS60dFY
-	 JUxsro0O85EBB/XRFuDZWvO9OH2BIwdUhktV0j32VQJmLKqdUXL1vR4FJdBa9VX2vm
-	 HyfJaJm+nqX9U27J9iRSeBprxZj6swLjd3OjB6VPZH62cAfweQjL1r9egtiMDFrc8V
-	 GuSlbtl0iG8z4i0SAgmNbANMmSPAoIzV3LlX8EkG3T1KkgLFq9YwfGivm7Wd4OSnbH
-	 zZqHhEzJLXp5wpVOAHJMmaBVsf2tNgqYstH3eIbG+2kflshFmEBR0ak3XEN1IyG+jp
-	 9122HFW++nlkg==
+	b=ewKkUAf3IHrJNAL27VGyLyuWXOcrND32jt49Lcg1Z1QC/uDBnVYyHBUlgMX+TKVkY
+	 wwID+LFuVdAzWMWv7RqDkz/57oaZ/EaDWK6Ktwj8lV13nHlOcX8JLalbfh//GIV/W6
+	 +QI7CDjzo4fDLWpWvYVNUPpUsfDv34MkDobmA4gBPj4GTdGzlVEH0O7mtPcUsSjBym
+	 EMLB0ihNEb/DvtfmHXdCzoWau/fAPW5kVDbysafpZ9uM6SJ8tJkerJqVCqTvpZWW2A
+	 RFQXZUkoZQH8qOYJWA06llkypxmSm2fmepCUodHVnJhbctVZsrCj7ZNrdOdb4wUnO3
+	 XP1op+NqjGsBg==
 From: Tejun Heo <tj@kernel.org>
 To: David Vernet <void@manifault.com>,
 	Andrea Righi <arighi@nvidia.com>,
@@ -55,9 +55,9 @@ Cc: sched-ext@lists.linux.dev,
 	Ryan Newton <newton@meta.com>,
 	Tejun Heo <tj@kernel.org>,
 	stable@vger.kernel.org
-Subject: [PATCH 02/13] sched_ext: Guard scx_dsq_move() against NULL kit->dsq after failed iter_new
-Date: Fri, 24 Apr 2026 10:44:07 -1000
-Message-ID: <20260424204418.3809733-3-tj@kernel.org>
+Subject: [PATCH 03/13] sched_ext: Skip tasks with stale task_rq in bypass_lb_cpu()
+Date: Fri, 24 Apr 2026 10:44:08 -1000
+Message-ID: <20260424204418.3809733-4-tj@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260424204418.3809733-1-tj@kernel.org>
 References: <20260424204418.3809733-1-tj@kernel.org>
@@ -68,7 +68,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 315AB463431
+X-Rspamd-Queue-Id: C3FE246342A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
@@ -76,7 +76,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -84,10 +84,10 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241033-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-241034-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[tj@kernel.org,stable@vger.kernel.org];
@@ -98,49 +98,42 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
 
-bpf_iter_scx_dsq_new() clears kit->dsq on failure and
-bpf_iter_scx_dsq_{next,destroy}() guard against that. scx_dsq_move() doesn't -
-it dereferences kit->dsq immediately, so a BPF program that calls
-scx_bpf_dsq_move[_vtime]() after a failed iter_new oopses the kernel.
+bypass_lb_cpu() transfers tasks between per-CPU bypass DSQs without
+migrating them - task_cpu() only updates when the donee later consumes the
+task via move_remote_task_to_local_dsq(). If the LB timer fires again before
+consumption and the new DSQ becomes a donor, @p is still on the previous CPU
+and task_rq(@p) != donor_rq. @p can't be moved without its own rq locked.
 
-Return false if kit->dsq is NULL.
+Skip such tasks.
 
-Fixes: 4c30f5ce4f7a ("sched_ext: Implement scx_bpf_dispatch[_vtime]_from_dsq()")
-Cc: stable@vger.kernel.org # v6.12+
+Fixes: 95d1df610cdc ("sched_ext: Implement load balancer for bypass mode")
+Cc: stable@vger.kernel.org # v6.19+
 Reported-by: Chris Mason <clm@meta.com>
 Signed-off-by: Tejun Heo <tj@kernel.org>
 ---
- kernel/sched/ext.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ kernel/sched/ext.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
 diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
-index 0c435a4612dc..89170a0e5779 100644
+index 89170a0e5779..62b4139a4cc8 100644
 --- a/kernel/sched/ext.c
 +++ b/kernel/sched/ext.c
-@@ -8055,12 +8055,22 @@ static bool scx_dsq_move(struct bpf_iter_scx_dsq_kern *kit,
- 			 struct task_struct *p, u64 dsq_id, u64 enq_flags)
- {
- 	struct scx_dispatch_q *src_dsq = kit->dsq, *dst_dsq;
--	struct scx_sched *sch = src_dsq->sched;
-+	struct scx_sched *sch;
- 	struct rq *this_rq, *src_rq, *locked_rq;
- 	bool dispatched = false;
- 	bool in_balance;
- 	unsigned long flags;
+@@ -5002,6 +5002,15 @@ static u32 bypass_lb_cpu(struct scx_sched *sch, s32 donor,
+ 		if (cpumask_empty(donee_mask))
+ 			break;
  
-+	/*
-+	 * The verifier considers an iterator slot initialized on any
-+	 * KF_ITER_NEW return, so a BPF program may legally reach here after
-+	 * bpf_iter_scx_dsq_new() failed and left @kit->dsq NULL.
-+	 */
-+	if (unlikely(!src_dsq))
-+		return false;
++		/*
++		 * If an earlier pass placed @p on @donor_dsq from a different
++		 * CPU and the donee hasn't consumed it yet, @p is still on the
++		 * previous CPU and task_rq(@p) != @donor_rq. @p can't be moved
++		 * without its rq locked. Skip.
++		 */
++		if (task_rq(p) != donor_rq)
++			continue;
 +
-+	sch = src_dsq->sched;
-+
- 	if (!scx_vet_enq_flags(sch, dsq_id, &enq_flags))
- 		return false;
- 
+ 		donee = cpumask_any_and_distribute(donee_mask, p->cpus_ptr);
+ 		if (donee >= nr_cpu_ids)
+ 			continue;
 -- 
 2.53.0
 
