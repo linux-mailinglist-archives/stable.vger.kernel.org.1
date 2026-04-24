@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-240844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240886-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eB2+GqRy62nmMwAAu9opvQ
-	(envelope-from <stable+bounces-240844-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:39:48 +0200
+	id 4Px4CSVz62nCMwAAu9opvQ
+	(envelope-from <stable+bounces-240886-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:41:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 232ED45F597
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:39:48 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EBC945F69A
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:41:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4CCBF3005AA4
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:39:47 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2A9F03004621
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:41:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 659463D6690;
-	Fri, 24 Apr 2026 13:39:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95F6E3D6CC7;
+	Fri, 24 Apr 2026 13:41:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1tJ0AOEM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fcQmXVqN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 271F93290A5;
-	Fri, 24 Apr 2026 13:39:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 597BF3537DF;
+	Fri, 24 Apr 2026 13:41:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777037986; cv=none; b=AO4O53ZsZJl3BW57dZNvBQeS5u/lfH59KAD+WEbsxQvyt5aKWoxX8GoIqndUzkrUqsCW1Dtu51GN/FPDmJl/Zg8iywjMZBhHOuAJIVz3AiJEWW9+RRkelTKaFQvH9LdphG8MU0f0XsM/K7DrLMJySYkcqNg/HEFUIFJpEp6p4RE=
+	t=1777038094; cv=none; b=W/pYAf4AhMB5vOIVsmnP7AC7+MFlvO9167N+6XxnXSoToEyBmmCas03k2uDDsahYeW9QGFyCUbT2H8YLcEI+QuUv0/muFv8Le0TIuI5L39HkGnOwQTGhKIRvHIjZXMto0Fc9zQM4kv386T8xiz8gtUQrV3AmA+8tKusDrM/Se2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777037986; c=relaxed/simple;
-	bh=alehJjcUMwfPDhEen7LCqXcZoFlkOfsz6EbvTf/6r5g=;
+	s=arc-20240116; t=1777038094; c=relaxed/simple;
+	bh=0iEiqTfDuW1G85gYn7uhvcJg2POyTTK13J1nK3OriKk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VpCLow+M6gJ2ulsKDv3pTpHAmz9h5oAwQnTVFh0Ey05Npl2e380VQKFYTk2egCjydUS8H7dU+PCr25NFQBZzTOZnSUmUC0GxexIiD9l3TR72N0zRNKBgB/XPc0QdLVtd3WWlYouvRxQkJqfO9AM9+2KsriD0XLvwvokP33rHBnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1tJ0AOEM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B040FC19425;
-	Fri, 24 Apr 2026 13:39:45 +0000 (UTC)
+	 MIME-Version; b=odJWcA55AIiV105gtj3XkA4QGzBCAJZZYodCuh/ON3fMwpEJTKh5MqFMhenbUEjV0GotaRyGK0Zw2zALAcl/vR8w9nN5hvqfz0NHc7Rfq1LTogcNcRDzLT1REpYGWaFS5dALbQJPKzKqOqNbIAX773X8171+ICwf/WI1OnSTops=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fcQmXVqN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E47E3C19425;
+	Fri, 24 Apr 2026 13:41:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777037986;
-	bh=alehJjcUMwfPDhEen7LCqXcZoFlkOfsz6EbvTf/6r5g=;
+	s=korg; t=1777038094;
+	bh=0iEiqTfDuW1G85gYn7uhvcJg2POyTTK13J1nK3OriKk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1tJ0AOEMgfiIRqqpTR/qbz1kEUMQwVMGG0XgWCGFr/Ir0PVlxSeJpjvDc3iOliOxN
-	 N9HyPk6CIloJ9pa7CqClF7R5MjTg0kg2t56KlOmj1KI8Nl8IT7z4ks3P7zUYvg+yo9
-	 xEluumr2e0SRn3oIXKwts1SCEZ732pHt+BTLZ+14=
+	b=fcQmXVqN912Q4PrcYG0QL0SN/3YbsD9Cv4+JUZjJb/atMAoOkNMI8QtP6Pduc1iZh
+	 gDwt+hhsJ8yFNW+56DqzhxwN1fuBMHbJ7daaAMv8ahsIq4ezkRNn5JPoAnHMEHZFHk
+	 /mBjhuDMQ9NhFbiXt5yBQjA73bV7yUC0f9X3TdaI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	syzbot+cf7946ab25b21abc4b66@syzkaller.appspotmail.com,
-	Eric Biggers <ebiggers@kernel.org>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 6.6 146/166] f2fs: fix to avoid memory leak in f2fs_rename()
+	Ard Biesheuvel <ardb@kernel.org>,
+	Eric Biggers <ebiggers@kernel.org>
+Subject: [PATCH 6.18 21/55] lib/crypto: tests: Add a .kunitconfig file
 Date: Fri, 24 Apr 2026 15:31:00 +0200
-Message-ID: <20260424132603.637329005@linuxfoundation.org>
+Message-ID: <20260424132434.493557648@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132532.812258529@linuxfoundation.org>
-References: <20260424132532.812258529@linuxfoundation.org>
+In-Reply-To: <20260424132430.006424517@linuxfoundation.org>
+References: <20260424132430.006424517@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,100 +63,89 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 232ED45F597
+X-Rspamd-Queue-Id: 1EBC945F69A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-240844-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-240886-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,cf7946ab25b21abc4b66];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,appspotmail.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,kunit.py:url]
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Eric Biggers <ebiggers@kernel.org>
 
-commit 3cf11e6f36c170050c12171dd6fd3142711478fc upstream.
+commit 20d6f07004d639967dcb00994d56ce6d16118e9e upstream.
 
-syzbot reported a f2fs bug as below:
+Add a .kunitconfig file to the lib/crypto/ directory so that the crypto
+library tests can be run more easily using kunit.py.  Example with UML:
 
-BUG: memory leak
-unreferenced object 0xffff888127f70830 (size 16):
-  comm "syz.0.23", pid 6144, jiffies 4294943712
-  hex dump (first 16 bytes):
-    3c af 57 72 5b e6 8f ad 6e 8e fd 33 42 39 03 ff  <.Wr[...n..3B9..
-  backtrace (crc 925f8a80):
-    kmemleak_alloc_recursive include/linux/kmemleak.h:44 [inline]
-    slab_post_alloc_hook mm/slub.c:4520 [inline]
-    slab_alloc_node mm/slub.c:4844 [inline]
-    __do_kmalloc_node mm/slub.c:5237 [inline]
-    __kmalloc_noprof+0x3bd/0x560 mm/slub.c:5250
-    kmalloc_noprof include/linux/slab.h:954 [inline]
-    fscrypt_setup_filename+0x15e/0x3b0 fs/crypto/fname.c:364
-    f2fs_setup_filename+0x52/0xb0 fs/f2fs/dir.c:143
-    f2fs_rename+0x159/0xca0 fs/f2fs/namei.c:961
-    f2fs_rename2+0xd5/0xf20 fs/f2fs/namei.c:1308
-    vfs_rename+0x7ff/0x1250 fs/namei.c:6026
-    filename_renameat2+0x4f4/0x660 fs/namei.c:6144
-    __do_sys_renameat2 fs/namei.c:6173 [inline]
-    __se_sys_renameat2 fs/namei.c:6168 [inline]
-    __x64_sys_renameat2+0x59/0x80 fs/namei.c:6168
-    do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-    do_syscall_64+0xe2/0xf80 arch/x86/entry/syscall_64.c:94
-    entry_SYSCALL_64_after_hwframe+0x77/0x7f
+    tools/testing/kunit/kunit.py run --kunitconfig=lib/crypto
 
-The root cause is in commit 40b2d55e0452 ("f2fs: fix to create selinux
-label during whiteout initialization"), we added a call to
-f2fs_setup_filename() without a matching call to f2fs_free_filename(),
-fix it.
+Example with QEMU:
 
-Fixes: 40b2d55e0452 ("f2fs: fix to create selinux label during whiteout initialization")
-Cc: stable@kernel.org
-Reported-by: syzbot+cf7946ab25b21abc4b66@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-f2fs-devel/69a75fe1.a70a0220.b118c.0014.GAE@google.com
-Suggested-by: Eric Biggers <ebiggers@kernel.org>
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+    tools/testing/kunit/kunit.py run --kunitconfig=lib/crypto --arch=arm64 --make_options LLVM=1
+
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://lore.kernel.org/r/20260301040140.490310-1-ebiggers@kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/namei.c |    1 +
- 1 file changed, 1 insertion(+)
+ lib/crypto/.kunitconfig |   23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
+ create mode 100644 lib/crypto/.kunitconfig
 
---- a/fs/f2fs/namei.c
-+++ b/fs/f2fs/namei.c
-@@ -940,6 +940,7 @@ static int f2fs_rename(struct mnt_idmap
- 			return err;
- 
- 		err = f2fs_create_whiteout(idmap, old_dir, &whiteout, &fname);
-+		f2fs_free_filename(&fname);
- 		if (err)
- 			return err;
- 	}
+--- /dev/null
++++ b/lib/crypto/.kunitconfig
+@@ -0,0 +1,23 @@
++CONFIG_KUNIT=y
++
++# These kconfig options select all the CONFIG_CRYPTO_LIB_* symbols that have a
++# corresponding KUnit test.  Those symbols cannot be directly enabled here,
++# since they are hidden symbols.
++CONFIG_CRYPTO=y
++CONFIG_CRYPTO_MD5=y
++CONFIG_CRYPTO_SHA1=y
++CONFIG_CRYPTO_SHA256=y
++CONFIG_CRYPTO_SHA512=y
++CONFIG_INET=y
++CONFIG_IPV6=y
++CONFIG_NET=y
++CONFIG_NETDEVICES=y
++CONFIG_WIREGUARD=y
++
++CONFIG_CRYPTO_LIB_BLAKE2S_KUNIT_TEST=y
++CONFIG_CRYPTO_LIB_CURVE25519_KUNIT_TEST=y
++CONFIG_CRYPTO_LIB_MD5_KUNIT_TEST=y
++CONFIG_CRYPTO_LIB_POLY1305_KUNIT_TEST=y
++CONFIG_CRYPTO_LIB_SHA1_KUNIT_TEST=y
++CONFIG_CRYPTO_LIB_SHA256_KUNIT_TEST=y
++CONFIG_CRYPTO_LIB_SHA512_KUNIT_TEST=y
 
 
 
