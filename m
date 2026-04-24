@@ -1,211 +1,225 @@
-Return-Path: <stable+bounces-240570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240571-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kPb7In8h62k9IwAAu9opvQ
-	(envelope-from <stable+bounces-240570-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 09:53:35 +0200
+	id 2CVgKSAj62muIwAAu9opvQ
+	(envelope-from <stable+bounces-240571-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 10:00:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D786F45AF7A
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 09:53:34 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18BF945B085
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 10:00:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 023A8301AD25
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 07:52:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B830C300C924
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 08:00:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B349230F7FF;
-	Fri, 24 Apr 2026 07:52:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37547379EE2;
+	Fri, 24 Apr 2026 08:00:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="HL1E7NUB"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GPVPiTlt"
 X-Original-To: stable@vger.kernel.org
-Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f47.google.com (mail-yx1-f47.google.com [74.125.224.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02B8517D6
-	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 07:52:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.186
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777017153; cv=none; b=bYmrFgbeDulWs9j2TTGUGza9jWZxNQDEQaHZg8hPQs/5yY7v2bWCr3INzoNZ9eqLTKzme9EudtRqYW66zuBDmFNkV7Va00PBrB5XPuiCvp4m5khKuppQVCNvCZXvDdpb4KMPxlpTUsTcZeZKy7DQYa1yKVayvG3Vk9QsMGHJNyc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777017153; c=relaxed/simple;
-	bh=ln5xvtTyToI62jV8j0dDLYIOZoRHIVOK6bNHjdglo6A=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=BznTjyyyXLKkDsIEZuN6jI/wP44x+43uXMuAY8jPnxz5nswQV6ZCUgG3jq4iweP9DZBl9z3y0yGeEE+jmkkHGTAtHAyyTl7oG1za9jbVYvm+8OpWigcTACTOH8QZIk9ani6LTFupxHI28Us91JlHVgeXCEYth8eIoeabZ1brTy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=HL1E7NUB; arc=none smtp.client-ip=91.218.175.186
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Content-Type: text/plain;
-	charset=us-ascii
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1777017139;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/ORSaWnko0V3NhVqidFGTv7S6AWqSkqSLorMuOfpODA=;
-	b=HL1E7NUBfrmfGBSNnIg0IFuXJmCojA+FtVYuyBg8KOcmlrUO9cLeJ7SVUAJZoHig82NPHc
-	XwLoEm9VXXYtiCmqrTOBSuN+yi6Ath1uWVMB5eB8XU5hlr9HPATAd8j6wP6pnfoZyGn5Ne
-	t4hIqIjEm13i48vC5ec+Tom0EeD+sLc=
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A094737DE9F
+	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 08:00:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777017627; cv=pass; b=kEJaRh/7hlu7sLuQjbV7altwyTs9o5JUT6+/md+DBKQJ9ed590gPdRRv2J6MDDKb58kjQzCgkdeESjh9NFmPDEJApAs3jiBKn+h1GtREBf9/ejsJJUv60ooCLbkR3T7nSV1U/csyE7Mp4jk6UZyEMqpMjQKBU1wzkIaclw3O8u0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777017627; c=relaxed/simple;
+	bh=H9V5KfJK8VWSkWZzm/7oR5jhNPvSpl081u1G+mn469o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=p/xXDakhIFpHbLRuxVYBOJc9x96GyiZVjY/2x6Pc9A8uXoI5DnEWgjghAn4SI/xMrOeIQ3REddGFRKYA4stnH48egr1MBx1mTvHWJN32tXX8781HV/ITB5tji/OIGHFYS4hNkWFiWXp1Gv6ADVPaqb8XhDjGoA+gmUk08GcoOWc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GPVPiTlt; arc=pass smtp.client-ip=74.125.224.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yx1-f47.google.com with SMTP id 956f58d0204a3-656d749109cso101539d50.3
+        for <stable@vger.kernel.org>; Fri, 24 Apr 2026 01:00:25 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777017625; cv=none;
+        d=google.com; s=arc-20240605;
+        b=BMFea9recytJQHL6XKBM5mT7+ASAgV+mLxO/MBG98XMrbR4fq68BVmkPfQLSWiU1zO
+         X6z1ZJlAdbCSa+87nA5xZ5ndR9ONcLPpY4A2Kq4l42XCdYl9dM0Fa16dIZzKCTPbyRAd
+         q7xlpjjh023gR7T9hdHQi0j0WeTSXmATtDlVPWkv3wiXXSrb+odOq20JF8ilm7sNCtkq
+         SABnBh2mKNlUox0RqgxNqSZCpCgnGp3qWxpAZGlwIoGdGB8oER6v7RItLMuQtqnXoQnE
+         yvLViac1ae1PI4qC+lvhnsNBREC4Er61BqjzNNarMpl3i7lp2MzWHSj5i8kDO60/oByp
+         ELpA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=7/Pf7FKJvV5p6OiWqf5fVKF7/RdrgTzsTTFg4r2irt0=;
+        fh=380ngqXB+z37m4UOtukPWlDY/icpfRmlmNcsBruP5kI=;
+        b=ddBODPZEaQqLuofIqJMjK9Tb6M+jmdB7PTXXsu+MxUQe7ux8IsL7sHHl3Vk0OGsiAK
+         5J7Ytl88HNagYMObsb0VAcZt0k22/7MVVbhtsSyOCUV/6NUUnBR4/8iHpPp0F+rTGONV
+         zjwUxgFJtI2pFrF+581v9yrAzKNPRgnIc3J8CssehnC2AtdLSRlYnhjDhGFrO663Ce1a
+         9aIIrktMUBz78E1iVny79T6Q9TaMFlFoZeSpJDHd+O2vAfVsALwgcxsm9/m7roIr+sst
+         /oQCOma3aBtI1lczQ0sUoiUhXQF0kOjVX0JOJ87hG+5IsQ7UlJ1Znc6FENTA5FElWp36
+         KBMA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777017625; x=1777622425; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7/Pf7FKJvV5p6OiWqf5fVKF7/RdrgTzsTTFg4r2irt0=;
+        b=GPVPiTlthl+Wx2vYtWk3vG6wLQh2U64yJG7Xt9nbE6pegZTMnV2Hbi3rOgUs4SnVNq
+         QHNWs5dVUqk+d+JEgJ9BbV24jPEKMPLvnacC8ATk5aTdBAoyQGaiNB1DsXZaXkM6GZc/
+         d7TdH/DMjZAcvTgVFy1OS8EnCi4+gCHyZz4XlgPUX29Fih3zB1chAy5+nkWO3Rs9fCuy
+         NVkVD/k7E4HG8LIHaYju3ZlpO9+Yo7HiVGH/6FpLDIa7zREJyih2XHebynyDI6g1R4gq
+         W12pBSPIDLmrGsSNE5o7JWC7ldBGB/B4mmE6n03RvlUs8jTRHJ1PmX3DiZGRwJlmOOeR
+         iY/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777017625; x=1777622425;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=7/Pf7FKJvV5p6OiWqf5fVKF7/RdrgTzsTTFg4r2irt0=;
+        b=RjLwYG6JFWzCh4giJvxxXnPvBc84iJlmQCQIgzTW9HQS8JM/4jvbxPUTzSHCNKPoI1
+         RpKvD+r6i/4l3UANoSYn5WOeut3OZOVzUYCYOfD9dngovZfkfC4PkBxcu4ZG4sFcLQEb
+         KfaoAdB8QA1dP0P/Ez3N1eR6xjg2hFjfWYRygoo0JemCeuhjujobJPm9yaWhCE/9Rfxe
+         y1W6ZHHnV4fZ6FiAwzLSSEz0YZx9NTTV7JZ4igiO+Zyi1DOrOH5aBIKY+R99eTYMzuPh
+         sbqKwZ+My2udn+Qy/p/mM0yel/7duwTwIMV3c938kwvC2AjnRyxdLa13QR/8yJhyhubA
+         QEkQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8AwrdV4QRbZci6RpXU8Gmx0ZZO4Nb+lEFkcvxyYI8dmzExZxceJiwX12xYo9hg7erxAcmwTgI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw3RZZDXPqzcyTQBWfZYhlZTgPsDV0Z03cd9pRZOJ1Dei0pKjSt
+	oxwe2b2SBw1kfpEFdM1g4nuv/jEsWgYSD9rZR/+Lspz0Kfj47ZhgdMVbHOYZC8l3c5LnGZchrfn
+	D7J4EFDAAEXlPVd/VDEANzW7xjKLnLis=
+X-Gm-Gg: AeBDiesZE3Zf8RzSKK6CnIT2Id+mZQkXmM0Ji2Uw16LyAAYkfDZSsRoi+rjyHl3dp1H
+	EnapOpf2TjWIegONocmK1HgksIma1yiF2TLfrDow45UXrB2UZ6WEu50I0Fl2WZV6U/pKas3QKtQ
+	u4fhwJNbmpHTngleL20ignr34v+FAn/nEOKd/P6Xh2vRuekzYcALoSmWJ59IGYMFXoqEiWzhZ5O
+	FrSPLdMbfvV2N1amFfF74sNmZXQkRI/R9DG3rG7l0RhW88G44IJ1exgckHUYQJxEj6wM87uPyr3
+	AZkoPUgdh+ylB74AZXax
+X-Received: by 2002:a05:690e:d42:b0:64e:e896:a7c with SMTP id
+ 956f58d0204a3-65310acebf1mr26232243d50.55.1777017624640; Fri, 24 Apr 2026
+ 01:00:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.500.181\))
-Subject: Re: [PATCH v6 4/7] mm/sparse-vmemmap: Fix DAX vmemmap accounting with
- optimization
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <0fe62163-cdfd-47e4-bc88-df7a69dc5a6d@kernel.org>
-Date: Fri, 24 Apr 2026 15:48:44 +0800
-Cc: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Oscar Salvador <osalvador@suse.de>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>,
- Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <chleroy@kernel.org>,
- aneesh.kumar@linux.ibm.com,
- joao.m.martins@oracle.com,
- linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
+MIME-Version: 1.0
+References: <20260413154727.3051321-1-lgs201920130244@gmail.com>
+ <CAD++jLnC5MGg1e_Suv6BD_=XKbsn1aLxHxRfCdD3Nos+2XRzfw@mail.gmail.com>
+ <aa801626-2e33-489a-931f-600540fe4ae3@roeck-us.net> <CAD++jLkv=5rJhGv6t9H-oP9k5MY8s-fH1=gHVC88ctbiaMPC7A@mail.gmail.com>
+In-Reply-To: <CAD++jLkv=5rJhGv6t9H-oP9k5MY8s-fH1=gHVC88ctbiaMPC7A@mail.gmail.com>
+From: Guangshuo Li <lgs201920130244@gmail.com>
+Date: Fri, 24 Apr 2026 16:00:10 +0800
+X-Gm-Features: AQROBzCp7GbvsKNqFEL0lZZwrTRJ-dOMRbt04jshHAKKnM3_ynbfvbbhROtoI7c
+Message-ID: <CANUHTR8SLnhQ_Yx2tXbDcrZfDSXP+dRnNVhq1WbWJuUDvVhPxQ@mail.gmail.com>
+Subject: Re: [PATCH] watchdog: ixp4xx: fix reference leak on
+ platform_device_register() failure
+To: Linus Walleij <linusw@kernel.org>
+Cc: Guenter Roeck <linux@roeck-us.net>, Imre Kaloz <kaloz@openwrt.org>, 
+	Daniel Lezcano <daniel.lezcano@linaro.org>, Thomas Gleixner <tglx@kernel.org>, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <5A4644D9-B64E-4AD9-9D9A-B3DAB84CB827@linux.dev>
-References: <20260424025547.3806072-1-songmuchun@bytedance.com>
- <20260424025547.3806072-5-songmuchun@bytedance.com>
- <0fe62163-cdfd-47e4-bc88-df7a69dc5a6d@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: D786F45AF7A
+X-Rspamd-Queue-Id: 18BF945B085
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MV_CASE(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240570-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[bytedance.com,linux-foundation.org,suse.de,ellerman.id.au,linux.ibm.com,kernel.org,oracle.com,google.com,suse.com,gmail.com,kvack.org,lists.ozlabs.org,vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[3];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[muchun.song@linux.dev,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linux.dev:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_FROM(0.00)[bounces-240571-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:dkim,linux.dev:mid,bytedance.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.de:email]
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid,roeck-us.net:email]
 
+Hi Linus, Guenter,
 
+Thanks for reviewing and discussing this.
 
-> On Apr 24, 2026, at 15:33, David Hildenbrand (Arm) <david@kernel.org> =
-wrote:
->=20
-> On 4/24/26 04:55, Muchun Song wrote:
->> When vmemmap optimization is enabled for DAX, the nr_memmap_pages
->> counter in /proc/vmstat is incorrect. The current code always =
-accounts
->> for the full, non-optimized vmemmap size, but vmemmap optimization
->> reduces the actual number of vmemmap pages by reusing tail pages. =
-This
->> causes the system to overcount vmemmap usage, leading to inaccurate
->> page statistics in /proc/vmstat.
->>=20
->> Fix this by introducing section_vmemmap_pages(), which returns the =
-exact
->> vmemmap page count for a given pfn range based on whether =
-optimization
->> is in effect.
->>=20
->> Fixes: 15995a352474 ("mm: report per-page metadata information")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
->> Acked-by: Oscar Salvador <osalvador@suse.de>
->> ---
->> mm/sparse-vmemmap.c | 31 +++++++++++++++++++++++++++----
->> 1 file changed, 27 insertions(+), 4 deletions(-)
->>=20
->> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
->> index 3340f6d30b01..2e642c5ff3f2 100644
->> --- a/mm/sparse-vmemmap.c
->> +++ b/mm/sparse-vmemmap.c
->> @@ -652,6 +652,28 @@ void offline_mem_sections(unsigned long =
-start_pfn, unsigned long end_pfn)
->> }
->> }
->>=20
->> +static int __meminit section_nr_vmemmap_pages(unsigned long pfn, =
-unsigned long nr_pages,
->> + 		struct vmem_altmap *altmap, struct dev_pagemap *pgmap)
->> +{
->> + 	const unsigned int order =3D pgmap ? pgmap->vmemmap_shift : 0;
->> + 	const unsigned long pages_per_compound =3D 1UL << order;
->> +
->> + 	VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages,
->> +     				    min(pages_per_compound, =
-PAGES_PER_SECTION)));
->=20
-> FWIW, I though the right thing to do here would be:
->=20
-> VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages, pages_per_compound);
-> VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages, PAGES_PER_SUBSECTION);
->=20
-> I don't really see how PAGES_PER_SECTION make sense given that
-> PAGES_PER_SUBSECTION are the smallest granularity we allow =
-adding/removing.
->=20
-> Also, the "min()" implies that there is a connection between both =
-properties,
-> but there isn't to that degree.
->=20
-> If order =3D=3D 0, then you'd only ever check alignment for ... 1, not
-> PAGES_PER_SUBSECTION, which already looks weird.
->=20
-> So you really want to check "max(pages_per_compound, =
-PAGES_PER_SUBSECTION)", but
-> just having two statements is clearer.
->=20
-> Or am I getting something very wrong here? :)
->=20
+On Mon, 20 Apr 2026 at 05:34, Linus Walleij <linusw@kernel.org> wrote:
+>
+> On Sun, Apr 19, 2026 at 11:08=E2=80=AFPM Guenter Roeck <linux@roeck-us.ne=
+t> wrote:
+> > On 4/19/26 13:22, Linus Walleij wrote:
+>
+> > > Hi Guangshuo,
+> > >
+> > > thanks for your patch!
+> > >
+> > > On Mon, Apr 13, 2026 at 5:47=E2=80=AFPM Guangshuo Li <lgs201920130244=
+@gmail.com> wrote:
+> > >
+> > >> ixp4xx_timer_probe() directly returns the result of
+> > >> platform_device_register(&ixp4xx_watchdog_device). When registration
+> > >> fails, the embedded struct device in ixp4xx_watchdog_device has alre=
+ady
+> > >> been initialized by device_initialize(), but the failure path does n=
+ot
+> > >> drop the device reference, leading to a reference leak.
+> > > (...)
+> > >
+> > >> -       return platform_device_register(&ixp4xx_watchdog_device);
+> > >> +       ret =3D platform_device_register(&ixp4xx_watchdog_device);
+> > >> +       if (ret)
+> > >> +               platform_device_put(&ixp4xx_watchdog_device);
+> > >
+> > > If the problem in the description is indeed there, it seems the bug
+> > > is inside platform_device_register(), surely a function returning an
+> > > error code is supposed to clean up any resources it takes before
+> > > returning an error. It seems wrong to try to fix this in all the
+> > > consumers.
+> > >
+> >
+> >  From platform_device_register():
+> >
+> > /**
+> >   * platform_device_register - add a platform-level device
+> >   * @pdev: platform device we're adding
+> >   *
+> >   * NOTE: _Never_ directly free @pdev after calling this function, even=
+ if it
+> >   * returned an error! Always use platform_device_put() to give up the
+> >   * reference initialised in this function instead.
+> >   */
+> >
+> > Not that any code actually does that as far as I can see, but isn't
+> > the above doing exactly what the comment suggests ?
+>
+> Yeah and Johan Hovold wrote that comment and he usually knows
+> what he's doing so let's go with this then, I'm convinced!
+>
+> Reviewed-by: Linus Walleij <linusw@kernel.org>
+>
+> Yours,
+> Linus Walleij
 
-You are absolutely right. I misread it earlier. I mistakenly read
-PAGES_PER_SUBSECTION as PAGES_PER_SECTION, which is why I still used
-PAGES_PER_SECTION in v5. That was my mistake and obviously not what
-you originally meant.
+After further checking, this patch is not appropriate for this driver.
+ixp4xx_watchdog_device is a static platform_device, and it does not have
+a dev.release callback. Calling platform_device_put() on the
+platform_device_register() failure path can therefore trigger the missing
+release callback warning.
 
-I completely agree with your suggestion to use two statements here,
-as it makes the alignment requirements much clearer. I'll fix this in
-the next version. Thanks for pointing this out!
+So please disregard this patch. I will drop it and will also go back and
+check the other patches I sent for the same pattern, and send follow-ups
+where they should be ignored or reverted.
 
-Muchun,
-Thanks.
+Sorry for the confusion, and thanks again for the review.
 
->=20
-> --=20
-> Cheers,
->=20
-> David
-
-
+Best regards,
+Guangshuo Li
 
