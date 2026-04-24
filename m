@@ -1,176 +1,200 @@
-Return-Path: <stable+bounces-240619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240620-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8HCpLJc862mWKAAAu9opvQ
-	(envelope-from <stable+bounces-240619-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 11:49:11 +0200
+	id KH6AOPA862mfKAAAu9opvQ
+	(envelope-from <stable+bounces-240620-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 11:50:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AF3745C75A
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 11:49:10 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FDD745C812
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 11:50:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DC8E43010514
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 09:48:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8EE9E3003D05
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 09:50:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 378652D2488;
-	Fri, 24 Apr 2026 09:48:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34BEC320A00;
+	Fri, 24 Apr 2026 09:50:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b="Cs4SohD+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U7I8+agP"
 X-Original-To: stable@vger.kernel.org
-Received: from r3-21.sinamail.sina.com.cn (r3-21.sinamail.sina.com.cn [202.108.3.21])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D82E292B44
-	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 09:48:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.108.3.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED2EB3090C6
+	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 09:50:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777024117; cv=none; b=cA2aiSL2EaOit1uot2bkzaOAEA/H1UjQc3CH9RcpWEvm265Em9ZLRJLGhqQnAvl/ULAybfFJXDbTWl9zabo/Kk87nwwQKTfQ+d1oy7P+XuKg+SCgK2SIjDaVF/rTQxuDer5C9PlNAOEIYmRO3f3ml3iuvN201q9bl6QMtsfXFzY=
+	t=1777024236; cv=none; b=t86ZFq5ouPJopjRU9lS9m7c3SyBGbJR0L06o9Qi35dCDISB1DBCJtaT2Xl3mqF8/2p5Jma7LzZglYsg3FuELv4ZrF3zNq+p8p/XB/PyTdqlDl1QkEaippVhv1A6q2GpxiFkfiRgzkjyim76sinME+oXEHc+tP3yP2ne0LDYYVCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777024117; c=relaxed/simple;
-	bh=y0lENNfXcfad3lb7NW0MseI0zloT0NbBY5/dLInqywY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NTjN1QJK+OjECJ/aVYTT8qVlvMEt+z2vRjaX+JX4rtwozm2d97GX0F0qV2rDheC2i1ETYV95HIBIng/UkHeJHiVYp24BimzjHygzXSX7TR/lGs07MxKa6tvKy9A4NEbU1PJcQM1hy3xny576RHxZNjbpc3O7YjOMwvqovLST9Es=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com; spf=pass smtp.mailfrom=sina.com; dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b=Cs4SohD+; arc=none smtp.client-ip=202.108.3.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1777024113;
-	bh=59EqtpJy4/2gF4KeCUUvmFmLqxMdJYSoXzV/Rf0zN6Q=;
-	h=Message-ID:Date:Subject:From;
-	b=Cs4SohD+ilEer+3uZpsUUNdrYUJMmZC4LnDsSnV0UvggsjDVImeuul/OotjskZPGd
-	 S+4c2+cDSewC0/DhK/3gg5sLe5xKIC+tPrt9eI0OtqdTW3syD5Y75olyUKxIxt2zgi
-	 QjzUpPmciC7td8/v+d0RQuxqohafmo43kBcyQ83Y=
-X-SMAIL-HELO: [10.189.138.37]
-Received: from unknown (HELO [10.189.138.37])([114.247.175.249])
-	by sina.com (10.54.253.33) with ESMTP
-	id 69EB3BC100002ABD; Fri, 24 Apr 2026 17:45:39 +0800 (CST)
-X-Sender: monty_pavel@sina.com
-X-Auth-ID: monty_pavel@sina.com
-Authentication-Results: sina.com;
-	 spf=none smtp.mailfrom=monty_pavel@sina.com;
-	 dkim=none header.i=none;
-	 dmarc=none action=none header.from=monty_pavel@sina.com
-X-SMAIL-MID: 4387756685161
-X-SMAIL-UIID: 1CEC3BD731DF4B128E69BBDA3B45E8C9-20260424-174539-1
-Message-ID: <8f3dee76-6094-421f-bb32-a059815b405c@sina.com>
-Date: Fri, 24 Apr 2026 17:45:37 +0800
+	s=arc-20240116; t=1777024236; c=relaxed/simple;
+	bh=x7pV9l2f7kLFWNVtoQ2UBCXHXPb57GGlzs2K/pn+kjk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=W/Wbven60/f/kb0JEzMuw0ArEp9ZCuJwjNCXYMiNa6/iJEfS5Rx9nlFkHU3I/CQIbPtU7clNOJOi+NNv0mRR+RYeJ4FegfDIqqn5Sh+I1l3lLWGHtfDxoPTIDLhQuj5Z+1dc5gyxPOdUtKSDKgwmn+t0qxaaZ19eQFNmLpiuQLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U7I8+agP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43DAEC19425;
+	Fri, 24 Apr 2026 09:50:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1777024235;
+	bh=x7pV9l2f7kLFWNVtoQ2UBCXHXPb57GGlzs2K/pn+kjk=;
+	h=Subject:To:Cc:From:Date:From;
+	b=U7I8+agPSaGV+j5xD5h4CdO250oAsSlWiIDa8NYYYD9YBYgXdzTM2N4YiUjOLvRZw
+	 fkEK6azUgJhlfoMFoFUcwEmAGoatoPPRPizV84xg50UK/P3LlXJCRyeFHZAN2JOo84
+	 P0wQ+ba4bLgs8Wo6/vdE3f3gHl+1pLftM52PFpvg=
+Subject: FAILED: patch "[PATCH] net/packet: fix TOCTOU race on mmap'd vnet_hdr in" failed to apply to 6.1-stable tree
+To: patzilla007@gmail.com,kuba@kernel.org,willemb@google.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Fri, 24 Apr 2026 11:50:33 +0200
+Message-ID: <2026042433-outwit-cognitive-f970@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [f2fs-dev] [PATCH] f2fs: fix incorrect FI_NO_EXTENT handling in
- __destroy_extent_node()
-To: Chao Yu <chao@kernel.org>, Jaegeuk Kim <jaegeuk@kernel.org>
-Cc: Yongpeng Yang <yangyongpeng@xiaomi.com>, stable@vger.kernel.org,
- linux-f2fs-devel@lists.sourceforge.net
-References: <20260422073525.2063784-2-monty_pavel@sina.com>
- <206a897a-2860-40b5-bbb8-829954d7e568@kernel.org>
-Content-Language: en-US
-From: Yongpeng Yang <monty_pavel@sina.com>
-In-Reply-To: <206a897a-2860-40b5-bbb8-829954d7e568@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7AF3745C75A
+X-Rspamd-Queue-Id: 8FDD745C812
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[sina.com,none];
-	R_DKIM_ALLOW(-0.20)[sina.com:s=201208];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240620-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[gmail.com,kernel.org,google.com];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-240619-lists,stable=lfdr.de];
-	FREEMAIL_FROM(0.00)[sina.com];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[monty_pavel@sina.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[sina.com:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[xiaomi.com:email,sina.com:dkim,sina.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,gregkh:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 
 
-On 4/22/26 20:33, Chao Yu via Linux-f2fs-devel wrote:
-> On 4/22/2026 3:35 PM, Yongpeng Yang wrote:
->> From: yangyongpeng <yangyongpeng@xiaomi.com>
->>
->> When __destroy_extent_node() sets the inode flag FI_NO_EXTENT, it does
->> not reset the length of the largest extent to 0 and update the inode
->> folio. Since modifications to the extent tree are disallowed afterward,
->> the cached largest extent may become stale. This can trigger the
->> following error in xfstests generic/388:
->>
->> F2FS-fs (dm-0): sanity_check_extent_cache: inode (ino=1761) extent
->> info [220057, 57, 6] is incorrect, run fsck to fix
->>
->> In the f2fs_drop_inode path, __destroy_extent_node() does not need to
->> guarantee that et->node_cnt is 0, because concurrency with writeback
->> is expected in this path, and writeback may update the extent cache.
->>
->> This patch updates __destroy_extent_node() to avoid setting the inode
->> flag FI_NO_EXTENT, and to remove the check zero of et->node_cnt.
->>
->> Fixes: ed78aeebef05 ("f2fs: fix node_cnt race between extent node
->> destroy and writeback")
->> Cc: stable@vger.kernel.org
->> Reported-by: Chao Yu <chao@kernel.org>
->> Suggested-by: Chao Yu <chao@kernel.org>
->> Signed-off-by: yangyongpeng <yangyongpeng@xiaomi.com>
->> ---
->>   fs/f2fs/extent_cache.c | 4 ----
->>   1 file changed, 4 deletions(-)
->>
->> diff --git a/fs/f2fs/extent_cache.c b/fs/f2fs/extent_cache.c
->> index 87169fd29d89..3adbead27953 100644
->> --- a/fs/f2fs/extent_cache.c
->> +++ b/fs/f2fs/extent_cache.c
->> @@ -645,14 +645,10 @@ static unsigned int __destroy_extent_node(struct
->> inode *inode,
->>         while (atomic_read(&et->node_cnt)) {
->>           write_lock(&et->lock);
->> -        if (!is_inode_flag_set(inode, FI_NO_EXTENT))
->> -            set_inode_flag(inode, FI_NO_EXTENT);
-> 
-> We'd better revert all change lines in "f2fs: fix node_cnt race between
-> extent node destroy and writeback"?
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-The others all check whether FI_NO_EXTENT is set. When it is set,
-inserting an age extent is disallowed, so nothing was removed.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Thanks
-Yongpeng,
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x 2c054e17d9d41f1020376806c7f750834ced4dc5
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026042433-outwit-cognitive-f970@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
-> 
-> Thanks,
-> 
->>           node_cnt += __free_extent_tree(sbi, et, nr_shrink);
->>           write_unlock(&et->lock);
->>       }
->>   -    f2fs_bug_on(sbi, atomic_read(&et->node_cnt));
->> -
->>       return node_cnt;
->>   }
->>   
-> 
-> 
-> 
-> _______________________________________________
-> Linux-f2fs-devel mailing list
-> Linux-f2fs-devel@lists.sourceforge.net
-> https://lists.sourceforge.net/lists/listinfo/linux-f2fs-devel
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 2c054e17d9d41f1020376806c7f750834ced4dc5 Mon Sep 17 00:00:00 2001
+From: Bingquan Chen <patzilla007@gmail.com>
+Date: Sat, 18 Apr 2026 19:20:06 +0800
+Subject: [PATCH] net/packet: fix TOCTOU race on mmap'd vnet_hdr in
+ tpacket_snd()
+
+In tpacket_snd(), when PACKET_VNET_HDR is enabled, vnet_hdr points
+directly into the mmap'd TX ring buffer shared with userspace. The
+kernel validates the header via __packet_snd_vnet_parse() but then
+re-reads all fields later in virtio_net_hdr_to_skb(). A concurrent
+userspace thread can modify the vnet_hdr fields between validation
+and use, bypassing all safety checks.
+
+The non-TPACKET path (packet_snd()) already correctly copies vnet_hdr
+to a stack-local variable. All other vnet_hdr consumers in the kernel
+(tun.c, tap.c, virtio_net.c) also use stack copies. The TPACKET TX
+path is the only caller of virtio_net_hdr_to_skb() that reads directly
+from user-controlled shared memory.
+
+Fix this by copying vnet_hdr from the mmap'd ring buffer to a
+stack-local variable before validation and use, consistent with the
+approach used in packet_snd() and all other callers.
+
+Fixes: 1d036d25e560 ("packet: tpacket_snd gso and checksum offload")
+Signed-off-by: Bingquan Chen <patzilla007@gmail.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20260418112006.78823-1-patzilla007@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index 4b043241fd56..8e6f3a734ba0 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -2718,7 +2718,8 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
+ {
+ 	struct sk_buff *skb = NULL;
+ 	struct net_device *dev;
+-	struct virtio_net_hdr *vnet_hdr = NULL;
++	struct virtio_net_hdr vnet_hdr;
++	bool has_vnet_hdr = false;
+ 	struct sockcm_cookie sockc;
+ 	__be16 proto;
+ 	int err, reserve = 0;
+@@ -2819,16 +2820,20 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
+ 		hlen = LL_RESERVED_SPACE(dev);
+ 		tlen = dev->needed_tailroom;
+ 		if (vnet_hdr_sz) {
+-			vnet_hdr = data;
+ 			data += vnet_hdr_sz;
+ 			tp_len -= vnet_hdr_sz;
+-			if (tp_len < 0 ||
+-			    __packet_snd_vnet_parse(vnet_hdr, tp_len)) {
++			if (tp_len < 0) {
++				tp_len = -EINVAL;
++				goto tpacket_error;
++			}
++			memcpy(&vnet_hdr, data - vnet_hdr_sz, sizeof(vnet_hdr));
++			if (__packet_snd_vnet_parse(&vnet_hdr, tp_len)) {
+ 				tp_len = -EINVAL;
+ 				goto tpacket_error;
+ 			}
+ 			copylen = __virtio16_to_cpu(vio_le(),
+-						    vnet_hdr->hdr_len);
++						    vnet_hdr.hdr_len);
++			has_vnet_hdr = true;
+ 		}
+ 		copylen = max_t(int, copylen, dev->hard_header_len);
+ 		skb = sock_alloc_send_skb(&po->sk,
+@@ -2865,12 +2870,12 @@ tpacket_error:
+ 			}
+ 		}
+ 
+-		if (vnet_hdr_sz) {
+-			if (virtio_net_hdr_to_skb(skb, vnet_hdr, vio_le())) {
++		if (has_vnet_hdr) {
++			if (virtio_net_hdr_to_skb(skb, &vnet_hdr, vio_le())) {
+ 				tp_len = -EINVAL;
+ 				goto tpacket_error;
+ 			}
+-			virtio_net_hdr_set_proto(skb, vnet_hdr);
++			virtio_net_hdr_set_proto(skb, &vnet_hdr);
+ 		}
+ 
+ 		skb->destructor = tpacket_destruct_skb;
 
 
