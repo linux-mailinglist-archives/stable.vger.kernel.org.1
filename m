@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-240936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240869-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SOgvIqVz62kQNAAAu9opvQ
-	(envelope-from <stable+bounces-240936-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:44:05 +0200
+	id UM8mI+x062kQNAAAu9opvQ
+	(envelope-from <stable+bounces-240869-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:49:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CFCF45F825
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:44:04 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2844245FB5E
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:49:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0F868300ADA5
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:43:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 55D5D30B6EB8
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:40:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6E433D75D6;
-	Fri, 24 Apr 2026 13:43:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB1EA3D5645;
+	Fri, 24 Apr 2026 13:40:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H1DCDAFM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1d/mMbyE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89C3F3D75C8;
-	Fri, 24 Apr 2026 13:43:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ED1A3B38AE;
+	Fri, 24 Apr 2026 13:40:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777038220; cv=none; b=Cfl7qS0uYE66QydIJVCxabQKeOrpoh0WTz/iEiwX/8vKlFCjH8tH7BUlxKZpN0JAOmymvz4k7wboPfKVygop8Xxm6IW7cHXM+qZM1C3aEtC3jV8xs0VEPZ2KDToZ2N9L5YNNmYiCjxz/ZpCOuDi89OdzNzlulcsUP+L5haVM0B8=
+	t=1777038050; cv=none; b=rJyqrAMo82woE+IKNhriSWj96ra4pRUh7JzAnaiEU8i89hp0rfUrnNxTq/TqFmxeZv7zi3RYO6Wa1uvYM14Mv+6qntIynZXkV/b59sRP1GaViV4FaVzz1iCQ99puyvrLvQAJxm5iguD9KjzmJSepPZOV4Tf1T1MivMkRyA38mQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777038220; c=relaxed/simple;
-	bh=9yaMXBbuLvWtPvUjUsFv6LbGvBWMHElFuzS7ChmcUS8=;
+	s=arc-20240116; t=1777038050; c=relaxed/simple;
+	bh=sLpiuWJAvF+F5pjrqiFGvJVH+b6UPCbeTWvJ/C8BV8g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bKzQ9VSPfmTPkhuz4Wpgm3+R3CknnBxY8hWpEATr42TQ766/f0xf/uHETmnavrMkRUc+kCVZZ5MJvkKj6f0M4EW929v8VYNShFL+Fetr7+eMj7P5ToJcxKpFlKKD3iaPICtZk/tqxHKOo5mt8ON237WH65jfZdsGaagCf1l8JEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H1DCDAFM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 215D4C2BCB2;
-	Fri, 24 Apr 2026 13:43:39 +0000 (UTC)
+	 MIME-Version; b=CbOaOJ5p6LvlVyhAFnr9vDRJPu4UP5GVrGqhyd6ePXLUg44U3WOcQVYicV5cRGR0C6NqCj6Fn2Uwlv2RFbjnHQ+DN8x9y7+aTjzxzqvfZ82rSqv3M3dnM12IbbQfLb0FIOVF2sDiyfTIy7TB0RjARki3SC+untbYG37BWvAMUl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1d/mMbyE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34230C19425;
+	Fri, 24 Apr 2026 13:40:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777038220;
-	bh=9yaMXBbuLvWtPvUjUsFv6LbGvBWMHElFuzS7ChmcUS8=;
+	s=korg; t=1777038050;
+	bh=sLpiuWJAvF+F5pjrqiFGvJVH+b6UPCbeTWvJ/C8BV8g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H1DCDAFMPElbNo1L79CMiXVMGOpC9cKKQyQzWKaiXbb5LsGUUCGLcJpMH5EqerHmD
-	 8vSafby17+z5BJkOcFlGw/qCaJjEgjYg/QAB4Hx1Vk0MBjvAZ0J3i3asi2YKvZHY+P
-	 pb0jPszlIZX7fbNlWiEBVO5IetbB669MglYV3uQw=
+	b=1d/mMbyEHT2d23KU9V3y5B5dBi99OO0i40uAIPC3yw2hYWP2Ri1PPyccSCLnagc5Y
+	 oFR2CFtZD9VlTuURM1walHj4qL+QGhmVy74Qh2dIjiXSc5Tim9vgLHoGxfP4G2haWr
+	 mrCd7PBtnbVMEu1MIrp9vPAAE2dsI0nIs09gOYC8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Golle <daniel@makrotopia.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 07/35] net: ethernet: mtk_eth_soc: initialize PPE per-tag-layer MTU registers
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+Subject: [PATCH 6.6 160/166] crypto: testmgr - Hide ENOENT errors
 Date: Fri, 24 Apr 2026 15:31:14 +0200
-Message-ID: <20260424132413.130423039@linuxfoundation.org>
+Message-ID: <20260424132606.533695847@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132411.427029259@linuxfoundation.org>
-References: <20260424132411.427029259@linuxfoundation.org>
+In-Reply-To: <20260424132532.812258529@linuxfoundation.org>
+References: <20260424132532.812258529@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,14 +63,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8CFCF45F825
+X-Rspamd-Queue-Id: 2844245FB5E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -81,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-240936-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-240869-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,155 +89,134 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,makrotopia.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,apana.org.au:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Golle <daniel@makrotopia.org>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-commit 2dddb34dd0d07b01fa770eca89480a4da4f13153 upstream.
+commit 4eded6d14f5b7bb857b68872970a40cf3105c015 upstream.
 
-The PPE enforces output frame size limits via per-tag-layer VLAN_MTU
-registers that the driver never initializes. The hardware defaults do
-not account for PPPoE overhead, causing the PPE to punt encapsulated
-frames back to the CPU instead of forwarding them.
+When a crypto algorithm with a higher priority is registered, it
+kills the spawns of all lower-priority algorithms.  Thus it is to
+be expected for an algorithm to go away at any time, even during
+a self-test.  This is now much more common with asynchronous testing.
 
-Initialize the registers at PPE start and on MTU changes using the
-maximum GMAC MTU. This is a conservative approximation -- the actual
-per-PPE requirement depends on egress path, but using the global
-maximum ensures the limits are never too small.
+Remove the printk when an ENOENT is encountered during a self-test.
+This is not really an error since the algorithm being tested is no
+longer there (i.e., it didn't fail the test which is what we care
+about).
 
-Fixes: ba37b7caf1ed ("net: ethernet: mtk_eth_soc: add support for initializing the PPE")
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Link: https://patch.msgid.link/ec995ab8ce8be423267a1cc093147a74d2eb9d82.1775789829.git.daniel@makrotopia.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mediatek/mtk_eth_soc.c | 22 ++++++++++++++-
- drivers/net/ethernet/mediatek/mtk_ppe.c     | 30 +++++++++++++++++++++
- drivers/net/ethernet/mediatek/mtk_ppe.h     |  1 +
- 3 files changed, 52 insertions(+), 1 deletion(-)
+ crypto/testmgr.c |   23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-index 45d4bac984a52..7406b706fb753 100644
---- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-+++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-@@ -3384,12 +3384,23 @@ static int mtk_device_event(struct notifier_block *n, unsigned long event, void
- 	return NOTIFY_DONE;
- }
+--- a/crypto/testmgr.c
++++ b/crypto/testmgr.c
+@@ -1916,6 +1916,8 @@ static int __alg_test_hash(const struct
  
-+static int mtk_max_gmac_mtu(struct mtk_eth *eth)
-+{
-+	int i, max_mtu = ETH_DATA_LEN;
-+
-+	for (i = 0; i < ARRAY_SIZE(eth->netdev); i++)
-+		if (eth->netdev[i] && eth->netdev[i]->mtu > max_mtu)
-+			max_mtu = eth->netdev[i]->mtu;
-+
-+	return max_mtu;
-+}
-+
- static int mtk_open(struct net_device *dev)
- {
- 	struct mtk_mac *mac = netdev_priv(dev);
- 	struct mtk_eth *eth = mac->hw;
- 	struct mtk_mac *target_mac;
--	int i, err, ppe_num;
-+	int i, err, ppe_num, mtu;
+ 	atfm = crypto_alloc_ahash(driver, type, mask);
+ 	if (IS_ERR(atfm)) {
++		if (PTR_ERR(atfm) == -ENOENT)
++			return -ENOENT;
+ 		pr_err("alg: hash: failed to allocate transform for %s: %ld\n",
+ 		       driver, PTR_ERR(atfm));
+ 		return PTR_ERR(atfm);
+@@ -2680,6 +2682,8 @@ static int alg_test_aead(const struct al
  
- 	ppe_num = eth->soc->ppe_num;
+ 	tfm = crypto_alloc_aead(driver, type, mask);
+ 	if (IS_ERR(tfm)) {
++		if (PTR_ERR(tfm) == -ENOENT)
++			return -ENOENT;
+ 		pr_err("alg: aead: failed to allocate transform for %s: %ld\n",
+ 		       driver, PTR_ERR(tfm));
+ 		return PTR_ERR(tfm);
+@@ -3257,6 +3261,8 @@ static int alg_test_skcipher(const struc
  
-@@ -3436,6 +3447,10 @@ static int mtk_open(struct net_device *dev)
- 			mtk_gdm_config(eth, target_mac->id, gdm_config);
- 		}
+ 	tfm = crypto_alloc_skcipher(driver, type, mask);
+ 	if (IS_ERR(tfm)) {
++		if (PTR_ERR(tfm) == -ENOENT)
++			return -ENOENT;
+ 		pr_err("alg: skcipher: failed to allocate transform for %s: %ld\n",
+ 		       driver, PTR_ERR(tfm));
+ 		return PTR_ERR(tfm);
+@@ -3670,6 +3676,8 @@ static int alg_test_cipher(const struct
  
-+		mtu = mtk_max_gmac_mtu(eth);
-+		for (i = 0; i < ARRAY_SIZE(eth->ppe); i++)
-+			mtk_ppe_update_mtu(eth->ppe[i], mtu);
-+
- 		napi_enable(&eth->tx_napi);
- 		napi_enable(&eth->rx_napi);
- 		mtk_tx_irq_enable(eth, MTK_TX_DONE_INT);
-@@ -4129,6 +4144,7 @@ static int mtk_change_mtu(struct net_device *dev, int new_mtu)
- 	int length = new_mtu + MTK_RX_ETH_HLEN;
- 	struct mtk_mac *mac = netdev_priv(dev);
- 	struct mtk_eth *eth = mac->hw;
-+	int max_mtu, i;
+ 	tfm = crypto_alloc_cipher(driver, type, mask);
+ 	if (IS_ERR(tfm)) {
++		if (PTR_ERR(tfm) == -ENOENT)
++			return -ENOENT;
+ 		printk(KERN_ERR "alg: cipher: Failed to load transform for "
+ 		       "%s: %ld\n", driver, PTR_ERR(tfm));
+ 		return PTR_ERR(tfm);
+@@ -3694,6 +3702,8 @@ static int alg_test_comp(const struct al
+ 	if (algo_type == CRYPTO_ALG_TYPE_ACOMPRESS) {
+ 		acomp = crypto_alloc_acomp(driver, type, mask);
+ 		if (IS_ERR(acomp)) {
++			if (PTR_ERR(acomp) == -ENOENT)
++				return -ENOENT;
+ 			pr_err("alg: acomp: Failed to load transform for %s: %ld\n",
+ 			       driver, PTR_ERR(acomp));
+ 			return PTR_ERR(acomp);
+@@ -3706,6 +3716,8 @@ static int alg_test_comp(const struct al
+ 	} else {
+ 		comp = crypto_alloc_comp(driver, type, mask);
+ 		if (IS_ERR(comp)) {
++			if (PTR_ERR(comp) == -ENOENT)
++				return -ENOENT;
+ 			pr_err("alg: comp: Failed to load transform for %s: %ld\n",
+ 			       driver, PTR_ERR(comp));
+ 			return PTR_ERR(comp);
+@@ -3782,6 +3794,8 @@ static int alg_test_cprng(const struct a
  
- 	if (rcu_access_pointer(eth->prog) &&
- 	    length > MTK_PP_MAX_BUF_SIZE) {
-@@ -4139,6 +4155,10 @@ static int mtk_change_mtu(struct net_device *dev, int new_mtu)
- 	mtk_set_mcr_max_rx(mac, length);
- 	WRITE_ONCE(dev->mtu, new_mtu);
+ 	rng = crypto_alloc_rng(driver, type, mask);
+ 	if (IS_ERR(rng)) {
++		if (PTR_ERR(rng) == -ENOENT)
++			return -ENOENT;
+ 		printk(KERN_ERR "alg: cprng: Failed to load transform for %s: "
+ 		       "%ld\n", driver, PTR_ERR(rng));
+ 		return PTR_ERR(rng);
+@@ -3809,10 +3823,13 @@ static int drbg_cavs_test(const struct d
  
-+	max_mtu = mtk_max_gmac_mtu(eth);
-+	for (i = 0; i < ARRAY_SIZE(eth->ppe); i++)
-+		mtk_ppe_update_mtu(eth->ppe[i], max_mtu);
-+
- 	return 0;
- }
- 
-diff --git a/drivers/net/ethernet/mediatek/mtk_ppe.c b/drivers/net/ethernet/mediatek/mtk_ppe.c
-index ada852adc5f70..fa688a42a22f5 100644
---- a/drivers/net/ethernet/mediatek/mtk_ppe.c
-+++ b/drivers/net/ethernet/mediatek/mtk_ppe.c
-@@ -973,6 +973,36 @@ static void mtk_ppe_init_foe_table(struct mtk_ppe *ppe)
+ 	drng = crypto_alloc_rng(driver, type, mask);
+ 	if (IS_ERR(drng)) {
++		if (PTR_ERR(drng) == -ENOENT)
++			goto out_no_rng;
+ 		printk(KERN_ERR "alg: drbg: could not allocate DRNG handle for "
+ 		       "%s\n", driver);
++out_no_rng:
+ 		kfree_sensitive(buf);
+-		return -ENOMEM;
++		return PTR_ERR(drng);
  	}
- }
  
-+void mtk_ppe_update_mtu(struct mtk_ppe *ppe, int mtu)
-+{
-+	int base;
-+	u32 val;
-+
-+	if (!ppe)
-+		return;
-+
-+	/* The PPE checks output frame size against per-tag-layer MTU limits,
-+	 * treating PPPoE and DSA tags just like 802.1Q VLAN tags. The Linux
-+	 * device MTU already accounts for PPPoE (PPPOE_SES_HLEN) and DSA tag
-+	 * overhead, but 802.1Q VLAN tags are handled transparently without
-+	 * being reflected by the lower device MTU being increased by 4.
-+	 * Use the maximum MTU across all GMAC interfaces so that PPE output
-+	 * frame limits are sufficiently high regardless of which port a flow
-+	 * egresses through.
-+	 */
-+	base = ETH_HLEN + mtu;
-+
-+	val = FIELD_PREP(MTK_PPE_VLAN_MTU0_NONE, base) |
-+	      FIELD_PREP(MTK_PPE_VLAN_MTU0_1TAG, base + VLAN_HLEN);
-+	ppe_w32(ppe, MTK_PPE_VLAN_MTU0, val);
-+
-+	val = FIELD_PREP(MTK_PPE_VLAN_MTU1_2TAG,
-+			 base + 2 * VLAN_HLEN) |
-+	      FIELD_PREP(MTK_PPE_VLAN_MTU1_3TAG,
-+			 base + 3 * VLAN_HLEN);
-+	ppe_w32(ppe, MTK_PPE_VLAN_MTU1, val);
-+}
-+
- void mtk_ppe_start(struct mtk_ppe *ppe)
- {
- 	u32 val;
-diff --git a/drivers/net/ethernet/mediatek/mtk_ppe.h b/drivers/net/ethernet/mediatek/mtk_ppe.h
-index 223f709e2704f..ba85e39a155bf 100644
---- a/drivers/net/ethernet/mediatek/mtk_ppe.h
-+++ b/drivers/net/ethernet/mediatek/mtk_ppe.h
-@@ -346,6 +346,7 @@ struct mtk_ppe {
- struct mtk_ppe *mtk_ppe_init(struct mtk_eth *eth, void __iomem *base, int index);
+ 	test_data.testentropy = &testentropy;
+@@ -4054,6 +4071,8 @@ static int alg_test_kpp(const struct alg
  
- void mtk_ppe_deinit(struct mtk_eth *eth);
-+void mtk_ppe_update_mtu(struct mtk_ppe *ppe, int mtu);
- void mtk_ppe_start(struct mtk_ppe *ppe);
- int mtk_ppe_stop(struct mtk_ppe *ppe);
- int mtk_ppe_prepare_reset(struct mtk_ppe *ppe);
--- 
-2.53.0
-
+ 	tfm = crypto_alloc_kpp(driver, type, mask);
+ 	if (IS_ERR(tfm)) {
++		if (PTR_ERR(tfm) == -ENOENT)
++			return -ENOENT;
+ 		pr_err("alg: kpp: Failed to load tfm for %s: %ld\n",
+ 		       driver, PTR_ERR(tfm));
+ 		return PTR_ERR(tfm);
+@@ -4282,6 +4301,8 @@ static int alg_test_akcipher(const struc
+ 
+ 	tfm = crypto_alloc_akcipher(driver, type, mask);
+ 	if (IS_ERR(tfm)) {
++		if (PTR_ERR(tfm) == -ENOENT)
++			return -ENOENT;
+ 		pr_err("alg: akcipher: Failed to load tfm for %s: %ld\n",
+ 		       driver, PTR_ERR(tfm));
+ 		return PTR_ERR(tfm);
 
 
 
