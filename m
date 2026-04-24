@@ -1,92 +1,60 @@
-Return-Path: <stable+bounces-240985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240986-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6J4WOr6A62lLNgAAu9opvQ
-	(envelope-from <stable+bounces-240985-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 16:39:58 +0200
+	id orD4CSyC62n+NgAAu9opvQ
+	(envelope-from <stable+bounces-240986-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 16:46:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D03A460504
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 16:39:58 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9938A460583
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 16:46:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 598FD306C377
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 14:36:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 21C143008741
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 14:46:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2C103DD520;
-	Fri, 24 Apr 2026 14:36:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4250F3DFC61;
+	Fri, 24 Apr 2026 14:46:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MkYEtM2a"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tac2xG9N"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DE2714AD20
-	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 14:36:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0444B3DA7E0
+	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 14:45:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777041374; cv=none; b=iLucXOP2gGygo2FaiTMhtKel9XIx36ctwxbRFxFgTVwY0W4o37qIjhqu7muPyLOdQtVu5PPABiQmCjmVj/psbulzUdMqFe1OUZ4wV82XjM3jHFzPYkBalOSApjh+f9W6ZmHbZ9vk9lxgzEFIwbc+c6KX/GoQFRt5YKOkakeHVa0=
+	t=1777041960; cv=none; b=CAcjxukAdfKadlXq3PlpdIlPZMIgQOVlZFzYBo0FEwOYh8R3cO+hVAOGriZ7xEAF8D1FmTK+n/FeB/OhJbC2AbzNkq3PdBAscG2Js9Se7uQSE+GDoBaMIQuJuVv0HreDkWZmRXhN6Kxb4hjxb2k/kQapy2XjnwMi1eAz6IqlXJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777041374; c=relaxed/simple;
-	bh=qmCZG3NsgyNnx//Q3I0cBUENxgZbXGkZyQVfNZJYt74=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qbeatc6JUY+Gy1SXsJyd5vGliP0uyeZzFiLpaRsEwjiFISqBKuvUNvub/FScrnD2mF8a9Q9YAtNPE+Xb3JsZXUnkSMwrZdKZsojnbfbrRZzwUvYnNJuZorkjkdpyB/k8bzmENFMIYyyWWsBpDn2AylOyRV2nOBZu3p40jD9HFj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MkYEtM2a; arc=none smtp.client-ip=209.85.210.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-827270d50d4so7289150b3a.3
-        for <stable@vger.kernel.org>; Fri, 24 Apr 2026 07:36:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777041373; x=1777646173; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=fiYSxmjQt4BB8G17wfMVpfBYmyS+agHfH0aiwr6Qa6U=;
-        b=MkYEtM2a7gBK98Dj4C2Ll/4viZRU0UwZPO+3sc95EqY/8zE6cUrPDrec0oyb9eE6Ns
-         M9cw+MWGy0xbtZxmgCJaVswojnnX8dOotv3NDEqNrNjKGTkrtRRWG7JZf/xCy55p7am0
-         8grjR6x06Blt8f6Q/zZ892nD07EuIlZHRObGQRYww2KIUHbnSHxCB5/sPNbmocUfSgqz
-         kQkoFJ/II9vP5/cyXNY2kNT5CPfgMI0q26Vji9P58gRTYcnPMp6HlU6emUi40eUMHWp4
-         YuycsCRof3TH5PZzTrbVDSatS1WfbRajST7iGdIJm0MV1iMt9eucbUz7JDI3ZaacAl1Z
-         8TiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777041373; x=1777646173;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fiYSxmjQt4BB8G17wfMVpfBYmyS+agHfH0aiwr6Qa6U=;
-        b=EOEkjKcgBfdMfd7OIdizs4zBCeujUUuJLe6aueyZP5KkGblLQkhuU5EZwqyPlDnzYm
-         0C0VArL2Bq0WEOvCyqJGPzvMo9KYGJdhiyM4EH5uzNiOoHBU55ZCHbONoVG4wC0egdkx
-         5aBSJMVJXWDVW2e7W4YKbGRFriwShjLajQ9QMl4ygfcj2gQIeuh3p2R+xBlGFtWKUGPw
-         8XyB+J4VLPoe+RdfOVSFqy5AxYqmDGTWrd+xusCxZUgedlbx/utA/RM8aShmNRkCbaiS
-         AQgLN0nmRRod1U/hx91GZajHt5Wg1tkLHFChfBhimzopati1LkYpLC2OdzYHqor506gg
-         ajAw==
-X-Forwarded-Encrypted: i=1; AFNElJ+e6G62zPvD+05VM07BovBmQa49rs+A0RKw/3KYlKu4RajJZ8r0TZzhgHGHmhY/ju0Aw9cv1qo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwMLBE/weUqllqlUZnukdf2sTQ8h0L1rL/py2Y40YK8o1mJgag0
-	H34MhYaY63FkRooH8xmvoP1je+UAZRT7SjgCtlr+Sh/F2+uh6GHrvKU=
-X-Gm-Gg: AeBDieunfFrkozRzQWCg7UoYgu7DvVipdQh8WmMuFpQxvT4wbzf0RAs1s380+F6MhK+
-	emmYYSUBV9mTGlx9snVbrkrSTmdxkJX47UAQpL4SfJ0vr1jBPWiuATtQBiK1tftDWEb+VvEMXxi
-	qC7eaqwi8mzjPogdlZ4aSzbj2NyZ4bKCwx88BVxLVkaJ9PGoSMFCe3OFIFuJ0t5RJXalwTJL9Is
-	Y8zl6Q5Tue2BTcV0x3G/s2r4YIu48LsNFkMkYRicssQtEbzOFPmUhyJSPrp/Qqc1y6c/PWadYAd
-	ci6SD3Xf+zztBPiDmdbEDsfWglghnytFcWfTUi+hdISjMeyXfcqyXpyCUfJ+g+pWvh7xuxM2L0u
-	Nfuuh8oaqjrGvMJHBPEt/zNasSJ1+Qy4a2KcHTnO2+AyuWTQRpB+Sss9CPoiQEIhfIiqz0GcD9l
-	MKV3herGnbtyvPalurGmnaAkxHy1VgTfbYs6XdGPxcXqWZsHWocaDzirO+aqkeqau5br0UEZA8J
-	07JyK0hrw==
-X-Received: by 2002:a05:6a00:4fcc:b0:82f:5034:77a4 with SMTP id d2e1a72fcca58-82f8c8409b4mr34482294b3a.21.1777041372626;
-        Fri, 24 Apr 2026 07:36:12 -0700 (PDT)
-Received: from localhost.localdomain ([1.226.165.54])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f8e9d35acsm24448401b3a.15.2026.04.24.07.36.10
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 24 Apr 2026 07:36:12 -0700 (PDT)
-From: Myeonghun Pak <mhun512@gmail.com>
-To: Ettore Chimenti <ek5.chimenti@gmail.com>,
-	Hans Verkuil <hverkuil@kernel.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: Myeonghun Pak <mhun512@gmail.com>,
-	linux-media@vger.kernel.org,
-	stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] media: cec: seco: unregister adapter on IR probe failure
-Date: Fri, 24 Apr 2026 23:36:01 +0900
-Message-ID: <20260424143607.60807-1-mhun512@gmail.com>
-X-Mailer: git-send-email 2.47.1
+	s=arc-20240116; t=1777041960; c=relaxed/simple;
+	bh=GhRtXjymjCNijOdTAQCVBgkGME0C1c0P4CwG9l0l5SE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=EnvIsZq+6h/ZR6V8HAMDsgoQ9wqenXxXtlT47MSgTgwpnQyBviYrBfHNIrFaO0xUhjfYneaaU/wJHTnVz2n7Rm8i5dc/sS7j1jyioB8zc2Z262HyDncqJs7HSIxM4jvQ7IgA5noYolPP1ITULLQrm2bSg2CV07PMDBuGI8qSsrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tac2xG9N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 550ACC19425;
+	Fri, 24 Apr 2026 14:45:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777041959;
+	bh=GhRtXjymjCNijOdTAQCVBgkGME0C1c0P4CwG9l0l5SE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=tac2xG9NO74YSVpt8VlQCUKxF9hDGezxWyYfCr56g46K/6/N0rjts0lEu/sfL0gAN
+	 M6NFpSRCG33l76ay20VnJHaBv5SuE2XWTO++5hki6XM+JsHGO+JgdyAyIiwUDeTIcM
+	 ZWPPh/9RTNx5zYjgN9HXnKb7QZX/uIec81gZdyll3keTfM7GBoMlNTPmlvLkIrLxrP
+	 1osGxzQJJbWZtZ7tr8eH9BMWb+K6oGjMmPXsIubts2mjLXnLmE6gYHdm/5O/kxFECs
+	 o6voPxq9+r6ZF9MP5N3bWBCj3ztI3ILhfdyvPvASOt185O4A8ES4j93r+irPdltNZd
+	 gh38zsSc+JaPA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Michael Bommarito <michael.bommarito@gmail.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10.y] smb: client: require a full NFS mode SID before reading mode bits
+Date: Fri, 24 Apr 2026 10:45:56 -0400
+Message-ID: <20260424144556.2184965-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026042430-gumball-harmonics-5661@gregkh>
+References: <2026042430-gumball-harmonics-5661@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -94,78 +62,79 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7D03A460504
+X-Rspamd-Queue-Id: 9938A460583
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[gmail.com,microsoft.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240986-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240985-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com,kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mhun512@gmail.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-If secocec_ir_probe() fails after cec_register_adapter() succeeds,
-probe returns an error and the driver remove callback is not called.
-The current unwind path unregisters the notifier and then falls through
-to cec_delete_adapter(), which violates the CEC adapter lifetime rules
-after a successful registration.
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-Add a registered-adapter unwind path that unregisters the notifier and
-the adapter instead.
+[ Upstream commit 2757ad3e4b6f9e0fed4c7739594e702abc5cab21 ]
 
-Fixes: daef95769b3a ("media: seco-cec: add Consumer-IR support")
+parse_dacl() treats an ACE SID matching sid_unix_NFS_mode as an NFS
+mode SID and reads sid.sub_auth[2] to recover the mode bits.
+
+That assumes the ACE carries three subauthorities, but compare_sids()
+only compares min(a, b) subauthorities.  A malicious server can return
+an ACE with num_subauth = 2 and sub_auth[] = {88, 3}, which still
+matches sid_unix_NFS_mode and then drives the sub_auth[2] read four
+bytes past the end of the ACE.
+
+Require num_subauth >= 3 before treating the ACE as an NFS mode SID.
+This keeps the fix local to the special-SID mode path without changing
+compare_sids() semantics for the rest of cifsacl.
+
+Fixes: e2f8fbfb8d09 ("cifs: get mode bits from special sid on stat")
 Cc: stable@vger.kernel.org
-Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
+Assisted-by: Claude:claude-opus-4-6
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/cec/platform/seco/seco-cec.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ fs/cifs/cifsacl.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/media/cec/platform/seco/seco-cec.c b/drivers/media/cec/platform/seco/seco-cec.c
-index b7bb49f023..97ed9654c7 100644
---- a/drivers/media/cec/platform/seco/seco-cec.c
-+++ b/drivers/media/cec/platform/seco/seco-cec.c
-@@ -649,7 +649,7 @@ static int secocec_probe(struct platform_device *pdev)
- 
- 	ret = secocec_ir_probe(secocec);
- 	if (ret)
--		goto err_notifier;
-+		goto err_unregister_adapter;
- 
- 	platform_set_drvdata(pdev, secocec);
- 
-@@ -657,6 +657,10 @@ static int secocec_probe(struct platform_device *pdev)
- 
- 	return ret;
- 
-+err_unregister_adapter:
-+	cec_notifier_cec_adap_unregister(secocec->notifier, secocec->cec_adap);
-+	cec_unregister_adapter(secocec->cec_adap);
-+	goto err;
- err_notifier:
- 	cec_notifier_cec_adap_unregister(secocec->notifier, secocec->cec_adap);
- err_delete_adapter:
+diff --git a/fs/cifs/cifsacl.c b/fs/cifs/cifsacl.c
+index ef4784e72b1d5..472a110158eca 100644
+--- a/fs/cifs/cifsacl.c
++++ b/fs/cifs/cifsacl.c
+@@ -757,6 +757,7 @@ static void parse_dacl(struct cifs_acl *pdacl, char *end_of_acl,
+ 			dump_ace(ppace[i], end_of_acl);
+ #endif
+ 			if (mode_from_special_sid &&
++			    ppace[i]->sid.num_subauth >= 3 &&
+ 			    (compare_sids(&(ppace[i]->sid),
+ 					  &sid_unix_NFS_mode) == 0)) {
+ 				/*
+-- 
+2.53.0
+
 
