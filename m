@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-240911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240939-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oNISAlZz62nCMwAAu9opvQ
-	(envelope-from <stable+bounces-240911-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:42:46 +0200
+	id SPZzOTJ062kQNAAAu9opvQ
+	(envelope-from <stable+bounces-240939-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:46:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C4D145F721
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:42:44 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A072945F96F
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:46:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 13D513002D22
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:42:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 41EE03048EE1
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:43:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D99E386C0A;
-	Fri, 24 Apr 2026 13:42:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CCBF19A288;
+	Fri, 24 Apr 2026 13:43:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ko4zT96B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YTs/0S71"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5AD4221DB6;
-	Fri, 24 Apr 2026 13:42:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4053E3563D4;
+	Fri, 24 Apr 2026 13:43:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777038158; cv=none; b=TgV1/BNH2PFNjlovRB6Lx/quLq0mJtbvAsacVs0wch8IzY6spdOJZhw3nUjeqmV6anc7tYUM0ACXiicFbigguhoxgZljQ+dCBLEd35JyI1yF+dUkBh7yqF93DwPETQl5WAYWGiIzSXUtvM1vjTAs58DmDoBDazobQTC0NW7MxAk=
+	t=1777038228; cv=none; b=W2UxxnYBSr+Uzak70GP2j7+CCPmIlPIc2lyguyEiRf0UtlWuHC4itRj+JJhYT3LhlMAHVwkNIVxj8gDXLVBTESlR0pzkI2jbh7oIP3GBBq/LGJ/3oIGy4nb4yKDu/S8KqhUP3bfuq3HfvF8GTSzIOUoVRzSCT9OIK3tG+/RdHY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777038158; c=relaxed/simple;
-	bh=QgL6JtZFyFNzw2H+Tr3ShFZcwUFvIZD9vnSJNDJhIOI=;
+	s=arc-20240116; t=1777038228; c=relaxed/simple;
+	bh=z7XXMUe6AJV7eWKHaIXknmqr56/bsqEPZhcUfMn4+ls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ub8moxCOsPlsB/6/4740snhHgl080pfBvb/UMnMcFzho1/HNe6Mc7B2FytHNEf48pJ11G7oAcQzAtdzoFYYMCxpBSoC17dkkMfMT6yxzTE/KYLdJYLO4mzXYdihHQCLP1jcHCYoBWxHhLlrUYJojBzZNF0RBUWMXISkYu9BLuh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ko4zT96B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CD33C19425;
-	Fri, 24 Apr 2026 13:42:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mySRRvyyKLhoHl+VjUf0KHVrxak2H//hf99s/Rsb2vzwgLgnBY9I98j9QgpkJGSMUwJ11gcJ7zyw56nCMS6LIhODYi08FFzRRzprMehM+SBizG9MzHwNUrevqTA7x1mo8SoTB7gCyrfNcIqR0ya/WUMA+t0aW+em7wPlv8pGC1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YTs/0S71; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA04EC19425;
+	Fri, 24 Apr 2026 13:43:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777038158;
-	bh=QgL6JtZFyFNzw2H+Tr3ShFZcwUFvIZD9vnSJNDJhIOI=;
+	s=korg; t=1777038228;
+	bh=z7XXMUe6AJV7eWKHaIXknmqr56/bsqEPZhcUfMn4+ls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ko4zT96BS47qDlQxP0jcK5Pyc37ItWyn6mAwqyHmbJ1XeZo2u7duxkg91l89Db0Tr
-	 iDE7ZYOX66qoSNgirSNNCewuU+X+r4AXAR6cXSm7R2Mibiv71gQhbHAI6lldppOP1c
-	 v5874XpgljRk2suygjDaOLYJjSY8gxztuCF20ghw=
+	b=YTs/0S71rCnDGX5ZqLYjSjrdbD8fOzoRytXu78OIxty1wsflikLWV30EsOMDUQTX2
+	 vXUXvjao487fdTTqgO+Jk/KVlq65bGKcG9Rg6kL1DaCu5ZJtxEvtW4rndWuH5w8U8c
+	 Xye7BrzjbZ4WVcNOD6k8Ewh3S0gr6ZGbLZIRRUFE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Tejun Heo <tj@kernel.org>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.18 46/55] writeback: Fix use after free in inode_switch_wbs_work_fn()
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Miklos Szeredi <mszeredi@redhat.com>
+Subject: [PATCH 6.12 18/35] fuse: quiet down complaints in fuse_conn_limit_write
 Date: Fri, 24 Apr 2026 15:31:25 +0200
-Message-ID: <20260424132439.600334826@linuxfoundation.org>
+Message-ID: <20260424132415.501060309@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132430.006424517@linuxfoundation.org>
-References: <20260424132430.006424517@linuxfoundation.org>
+In-Reply-To: <20260424132411.427029259@linuxfoundation.org>
+References: <20260424132411.427029259@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,140 +62,100 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0C4D145F721
+X-Rspamd-Queue-Id: A072945F96F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-240911-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240939-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,suse.cz:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Darrick J. Wong <djwong@kernel.org>
 
-commit 6689f01d6740cf358932b3e97ee968c6099800d9 upstream.
+commit 129a45f9755a89f573c6a513a6b9e3d234ce89b0 upstream.
 
-inode_switch_wbs_work_fn() has a loop like:
+gcc 15 complains about an uninitialized variable val that is passed by
+reference into fuse_conn_limit_write:
 
-  wb_get(new_wb);
-  while (1) {
-    list = llist_del_all(&new_wb->switch_wbs_ctxs);
-    /* Nothing to do? */
-    if (!list)
-      break;
-    ... process the items ...
-  }
+ control.c: In function ‘fuse_conn_congestion_threshold_write’:
+ include/asm-generic/rwonce.h:55:37: warning: ‘val’ may be used uninitialized [-Wmaybe-uninitialized]
+    55 |         *(volatile typeof(x) *)&(x) = (val);                            \
+       |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~
+ include/asm-generic/rwonce.h:61:9: note: in expansion of macro ‘__WRITE_ONCE’
+    61 |         __WRITE_ONCE(x, val);                                           \
+       |         ^~~~~~~~~~~~
+ control.c:178:9: note: in expansion of macro ‘WRITE_ONCE’
+   178 |         WRITE_ONCE(fc->congestion_threshold, val);
+       |         ^~~~~~~~~~
+ control.c:166:18: note: ‘val’ was declared here
+   166 |         unsigned val;
+       |                  ^~~
 
-Now adding of items to the list looks like:
+Unfortunately there's enough macro spew involved in kstrtoul_from_user
+that I think gcc gives up on its analysis and sprays the above warning.
+AFAICT it's not actually a bug, but we could just zero-initialize the
+variable to enable using -Wmaybe-uninitialized to find real problems.
 
-wb_queue_isw()
-  if (llist_add(&isw->list, &wb->switch_wbs_ctxs))
-    queue_work(isw_wq, &wb->switch_work);
+Previously we would use some weird uninitialized_var annotation to quiet
+down the warnings, so clearly this code has been like this for quite
+some time.
 
-Because inode_switch_wbs_work_fn() loops when processing isw items, it
-can happen that wb->switch_work is pending while wb->switch_wbs_ctxs is
-empty. This is a problem because in that case wb can get freed (no isw
-items -> no wb reference) while the work is still pending causing
-use-after-free issues.
-
-We cannot just fix this by cancelling work when freeing wb because that
-could still trigger problematic 0 -> 1 transitions on wb refcount due to
-wb_get() in inode_switch_wbs_work_fn(). It could be all handled with
-more careful code but that seems unnecessarily complex so let's avoid
-that until it is proven that the looping actually brings practical
-benefit. Just remove the loop from inode_switch_wbs_work_fn() instead.
-That way when wb_queue_isw() queues work, we are guaranteed we have
-added the first item to wb->switch_wbs_ctxs and nobody is going to
-remove it (and drop the wb reference it holds) until the queued work
-runs.
-
-Fixes: e1b849cfa6b6 ("writeback: Avoid contention on wb->list_lock when switching inodes")
-CC: stable@vger.kernel.org
-Signed-off-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20260413093618.17244-2-jack@suse.cz
-Acked-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Cc: stable@vger.kernel.org # v5.9
+Fixes: 3f649ab728cda8 ("treewide: Remove uninitialized_var() usage")
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/fs-writeback.c |   36 +++++++++++++++++++-----------------
- 1 file changed, 19 insertions(+), 17 deletions(-)
+ fs/fuse/control.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/fs-writeback.c
-+++ b/fs/fs-writeback.c
-@@ -558,28 +558,30 @@ void inode_switch_wbs_work_fn(struct wor
- 	struct inode_switch_wbs_context *isw, *next_isw;
- 	struct llist_node *list;
+--- a/fs/fuse/control.c
++++ b/fs/fuse/control.c
+@@ -120,7 +120,7 @@ static ssize_t fuse_conn_max_background_
+ 					      const char __user *buf,
+ 					      size_t count, loff_t *ppos)
+ {
+-	unsigned val;
++	unsigned int val = 0;
+ 	ssize_t ret;
  
-+	list = llist_del_all(&new_wb->switch_wbs_ctxs);
- 	/*
--	 * Grab out reference to wb so that it cannot get freed under us
-+	 * Nothing to do? That would be a problem as references held by isw
-+	 * items protect wb from freeing...
-+	 */
-+	if (WARN_ON_ONCE(!list))
-+		return;
-+
-+	/*
-+	 * Grab our reference to wb so that it cannot get freed under us
- 	 * after we process all the isw items.
- 	 */
- 	wb_get(new_wb);
--	while (1) {
--		list = llist_del_all(&new_wb->switch_wbs_ctxs);
--		/* Nothing to do? */
--		if (!list)
--			break;
--		/*
--		 * In addition to synchronizing among switchers, I_WB_SWITCH
--		 * tells the RCU protected stat update paths to grab the i_page
--		 * lock so that stat transfer can synchronize against them.
--		 * Let's continue after I_WB_SWITCH is guaranteed to be
--		 * visible.
--		 */
--		synchronize_rcu();
-+	/*
-+	 * In addition to synchronizing among switchers, I_WB_SWITCH
-+	 * tells the RCU protected stat update paths to grab the i_page
-+	 * lock so that stat transfer can synchronize against them.
-+	 * Let's continue after I_WB_SWITCH is guaranteed to be
-+	 * visible.
-+	 */
-+	synchronize_rcu();
- 
--		llist_for_each_entry_safe(isw, next_isw, list, list)
--			process_inode_switch_wbs(new_wb, isw);
--	}
-+	llist_for_each_entry_safe(isw, next_isw, list, list)
-+		process_inode_switch_wbs(new_wb, isw);
- 	wb_put(new_wb);
- }
+ 	ret = fuse_conn_limit_write(file, buf, count, ppos, &val,
+@@ -162,7 +162,7 @@ static ssize_t fuse_conn_congestion_thre
+ 						    const char __user *buf,
+ 						    size_t count, loff_t *ppos)
+ {
+-	unsigned val;
++	unsigned int val = 0;
+ 	struct fuse_conn *fc;
+ 	ssize_t ret;
  
 
 
