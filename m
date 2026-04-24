@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-240679-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240874-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QEYZGv9w62nCMwAAu9opvQ
-	(envelope-from <stable+bounces-240679-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:32:47 +0200
+	id IP8NLfl062kQNAAAu9opvQ
+	(envelope-from <stable+bounces-240874-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:49:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 758D745F135
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:32:46 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3617945FB74
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:49:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 023563003486
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:32:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BC67B302D5FC
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:41:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E75223645D;
-	Fri, 24 Apr 2026 13:32:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC98C3290A5;
+	Fri, 24 Apr 2026 13:41:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AoyjyTks"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OiXEOYlJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 620863AC00;
-	Fri, 24 Apr 2026 13:32:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 802DF19A288;
+	Fri, 24 Apr 2026 13:41:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777037559; cv=none; b=SPXkGscC8ibxGXmQzrZFiUBRyaJpdO7H621PlB9cFdmnWJMuPJlP6fAxj+m6v1BtftNygYSiMcO05BfcVH/zYgoSC62FF0UjKhvWCzvmIBulg3i99oLyI3/M0CFO6wvzVRZuSVEH56MsCGEYH6i9+0ygvuj7TS8GUYF2P6+7xlw=
+	t=1777038063; cv=none; b=br6s7liB0nsiQLLBKUbPrpb0djFYp3qRYfzbtlkMbACoAK9ZQBhtMQrhImbQ2gSSzFNbY3f4jhlz2B/RWnCbQf2ZND9O95lZhVUf+STYNga/xuHt9vJFE9XzSL0BhFsNG7nR+DnAAimpbR9zmj5IYGGEyDqz53sI6/LTTFVPeog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777037559; c=relaxed/simple;
-	bh=qGxRQ5cdByIfQFa2xfpKvP5t5ULfECZFDavwu8oFnzI=;
+	s=arc-20240116; t=1777038063; c=relaxed/simple;
+	bh=RCx3PG0FYdfhcB07R9QKlxQsZ7rl8BTJJZuQDdwpm3o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gZly5OrS3Rs7MGgfaV8e00QriJbUYZnmLp+hO9VU/cita4EnuVRaJutK7ZP84DBdm3ep7hx4yKh+WuF4xIwlNkrbd5VhgWJwkfsRQ6JKvSrZVWD8APV+SquIZSCGzypakPw9Ob/1u984TysNvfLJx5UALDCj3dUxWDnnjmZY3cY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AoyjyTks; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED22DC19425;
-	Fri, 24 Apr 2026 13:32:38 +0000 (UTC)
+	 MIME-Version; b=iVz9dBKPsrdlnTtLLRZJ/jvcpOR5G8KJe+3W6n1kgEyBY0whlyWfS0l7gmLTbiky8t2mP/m/bbuVBvAQsKBkZxiHNrNIbS0Tck5qzYdOhqQsxo7IN9Nw9+r88A15DYReGufwlRlSOLsdVbasy/ugvuelPG2h6NeAOX8ncqSpaa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OiXEOYlJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 183B3C2BCB2;
+	Fri, 24 Apr 2026 13:41:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777037559;
-	bh=qGxRQ5cdByIfQFa2xfpKvP5t5ULfECZFDavwu8oFnzI=;
+	s=korg; t=1777038063;
+	bh=RCx3PG0FYdfhcB07R9QKlxQsZ7rl8BTJJZuQDdwpm3o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AoyjyTksgI7u1c/dxgH4E/Lqux70JxrCHDWw+2ikf5ZFNYOwXybelL0wj8BiYl83p
-	 MAsg1m2DOeGZ6pY2uktef+pvFmSRTqS53C7qw3LuTNIxCKTCs/Afki4VR0LtPhhx9W
-	 fTH2VlBltGrSn5qaoE3mQHp/9z488vCyx04mosfw=
+	b=OiXEOYlJQGUl3oRa0caBkBivQzXhSPb3x/y1l6aAXrQHlG7BJbvcUDkfwsINbbXbJ
+	 E1JnuYonYt7Av582AI5eNElbiZW+lm6xyYHqekr93RMKOtGw4v1rE9kbhn0pWLVA8n
+	 FsiV6T7tI4dRykjFsiGnukKl9Y3+8uIDnT0tuOiw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 7.0 24/42] smb: client: require a full NFS mode SID before reading mode bits
+	Mark Rutland <mark.rutland@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oupton@kernel.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 6.18 10/55] arm64: tlb: Allow XZR argument to TLBI ops
 Date: Fri, 24 Apr 2026 15:30:49 +0200
-Message-ID: <20260424132425.455671886@linuxfoundation.org>
+Message-ID: <20260424132432.247271226@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132420.410310336@linuxfoundation.org>
-References: <20260424132420.410310336@linuxfoundation.org>
+In-Reply-To: <20260424132430.006424517@linuxfoundation.org>
+References: <20260424132430.006424517@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +67,90 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 758D745F135
+X-Rspamd-Queue-Id: 3617945FB74
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240679-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,microsoft.com];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240874-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-commit 2757ad3e4b6f9e0fed4c7739594e702abc5cab21 upstream.
+commit bfd9c931d19aa59fb8371d557774fa169b15db9a upstream.
 
-parse_dacl() treats an ACE SID matching sid_unix_NFS_mode as an NFS
-mode SID and reads sid.sub_auth[2] to recover the mode bits.
+The TLBI instruction accepts XZR as a register argument, and for TLBI
+operations with a register argument, there is no functional difference
+between using XZR or another GPR which contains zeroes. Operations
+without a register argument are encoded as if XZR were used.
 
-That assumes the ACE carries three subauthorities, but compare_sids()
-only compares min(a, b) subauthorities.  A malicious server can return
-an ACE with num_subauth = 2 and sub_auth[] = {88, 3}, which still
-matches sid_unix_NFS_mode and then drives the sub_auth[2] read four
-bytes past the end of the ACE.
+Allow the __TLBI_1() macro to use XZR when a register argument is all
+zeroes.
 
-Require num_subauth >= 3 before treating the ACE as an NFS mode SID.
-This keeps the fix local to the special-SID mode path without changing
-compare_sids() semantics for the rest of cifsacl.
+Today this only results in a trivial code saving in
+__do_compat_cache_op()'s workaround for Neoverse-N1 erratum #1542419. In
+subsequent patches this pattern will be used more generally.
 
-Fixes: e2f8fbfb8d09 ("cifs: get mode bits from special sid on stat")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-6
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+There should be no functional change as a result of this patch.
+
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Marc Zyngier <maz@kernel.org>
+Cc: Oliver Upton <oupton@kernel.org>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cifsacl.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/include/asm/tlbflush.h |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/fs/smb/client/cifsacl.c
-+++ b/fs/smb/client/cifsacl.c
-@@ -831,6 +831,7 @@ static void parse_dacl(struct smb_acl *p
- 			dump_ace(ppace[i], end_of_acl);
- #endif
- 			if (mode_from_special_sid &&
-+			    ppace[i]->sid.num_subauth >= 3 &&
- 			    (compare_sids(&(ppace[i]->sid),
- 					  &sid_unix_NFS_mode) == 0)) {
- 				/*
+--- a/arch/arm64/include/asm/tlbflush.h
++++ b/arch/arm64/include/asm/tlbflush.h
+@@ -38,12 +38,12 @@
+ 			    : : )
+ 
+ #define __TLBI_1(op, arg) asm (ARM64_ASM_PREAMBLE			       \
+-			       "tlbi " #op ", %0\n"			       \
++			       "tlbi " #op ", %x0\n"			       \
+ 		   ALTERNATIVE("nop\n			nop",		       \
+-			       "dsb ish\n		tlbi " #op ", %0",     \
++			       "dsb ish\n		tlbi " #op ", %x0",    \
+ 			       ARM64_WORKAROUND_REPEAT_TLBI,		       \
+ 			       CONFIG_ARM64_WORKAROUND_REPEAT_TLBI)	       \
+-			    : : "r" (arg))
++			    : : "rZ" (arg))
+ 
+ #define __TLBI_N(op, arg, n, ...) __TLBI_##n(op, arg)
+ 
 
 
 
