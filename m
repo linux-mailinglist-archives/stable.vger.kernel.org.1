@@ -1,280 +1,173 @@
-Return-Path: <stable+bounces-241005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241006-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wddbI6Cd62l2PQAAu9opvQ
-	(envelope-from <stable+bounces-241005-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 18:43:12 +0200
+	id yDfMC0ui62kbPgAAu9opvQ
+	(envelope-from <stable+bounces-241006-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 19:03:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CED484615C3
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 18:43:11 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A93D046188E
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 19:03:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E03F5300B600
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 16:43:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F29C3314299F
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 16:56:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 267A83D75A9;
-	Fri, 24 Apr 2026 16:43:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17F9F3E6DED;
+	Fri, 24 Apr 2026 16:52:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="O2mish4R"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HcKRubrl"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE3519CCF5;
-	Fri, 24 Apr 2026 16:43:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F8EC3E63BA
+	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 16:52:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777048987; cv=none; b=s4106k7CpLG9KXTq/iADhROZfySPC51StOiIb31+Cg+JEeIX5P8FNpWZpT0bqODph5oETlJIarJ2PFWnIul4lGJ25tlQC0goQbbnAd9T2o+yrzkuVFLrNi5NA4hbeCN5XJtXVGSj5UeVTiJnyZXmWs7TX9Rd9lu2gchPikBipyo=
+	t=1777049564; cv=none; b=iWv2kLJhvoHQ6efZ3f4QsSw7WUdn/XMcU4g+tVa9djkKQlmgGmgmimkzH1HZyecPANxAl2eOdYVqJUguSysx13Gi7pAaTR9QHmZYP89c17VR1fBOnexbYYiILuzTj8YTc11irwvUVkyLhth5ncATxmQFEQ+FJ5JDam3QXH0/R94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777048987; c=relaxed/simple;
-	bh=lVrWuISnAX3cWzHsUBJCTF+WP7hg/DzLZ0tOb6JVFc8=;
-	h=Date:To:From:Subject:Message-Id; b=Nx5eMj8744+tVc/HGn7doyW1FIiR9rHgTNywjTQeNKnD2RDWrluzkeBoX5C/UIo0BIxaOYSYxyHM0qi+Lgo7R4Zmgo2fAwpVQH6o6KNajbv5xGvRe8WRY3cBzZSJXEhqeSeSNV/2Kghsd8D+tR4e3n0fs1fB0Uz8/kLMUVDk4Sc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=O2mish4R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AC6FC2BCB2;
-	Fri, 24 Apr 2026 16:43:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1777048987;
-	bh=lVrWuISnAX3cWzHsUBJCTF+WP7hg/DzLZ0tOb6JVFc8=;
-	h=Date:To:From:Subject:From;
-	b=O2mish4RxtmIyHE9LEJffpoczpGJJwtutPxcllah4cAloLchDFNbJV7M+3peHpADf
-	 z7pNl9epX+s5kAhfR8QtWLpN51czxIbo2AbxGrIcrVnURoXp6v3pf375kYMc/3/8gM
-	 vwdQs5fi3LeD1eDzMk8jqJofqHL2KBF9XE7I22/E=
-Date: Fri, 24 Apr 2026 09:43:06 -0700
-To: mm-commits@vger.kernel.org,yang.yang29@zte.com.cn,wang.yaxin@zte.com.cn,thomas.orgis@uni-hamburg.de,stable@vger.kernel.org,oleg@redhat.com,balbirs@nvidia.com,cyyzero16@gmail.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + taskstats-retain-dead-thread-stats-in-tgid-queries.patch added to mm-nonmm-unstable branch
-Message-Id: <20260424164307.5AC6FC2BCB2@smtp.kernel.org>
+	s=arc-20240116; t=1777049564; c=relaxed/simple;
+	bh=gOq1TfW+S0UWD7Z2KXCott8iD54/eMJygLK8vcCtgp0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=V0+UHZO6G3sm6jU/YGsuZyL/KQ6uP8rcpfq39SlAyrCNYq+Hj5w769ou57YdILIRiOxBHy5tNjfkJEdSGCIZcxRV1JxQjoGNIOAvmSRjgO0ia+A5B7lLTGoUUxgbw54FhDVP8sP7x9vl4H52qdpRhwZrdczdHf9P4lYRrnm+2iA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HcKRubrl; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2b788a98557so33245145ad.2
+        for <stable@vger.kernel.org>; Fri, 24 Apr 2026 09:52:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777049563; x=1777654363; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=N8m0d9jgffml56tOWD/yiI/9bSBwutf977iNuQiC6e8=;
+        b=HcKRubrlSQ7PC7nzavVHXfghnZn1C/YbRWO8DaN/buFU0/PAZlWqoCPt4bwMxyGUO2
+         9iD/RZRQxp3RJHoOANXZwI59iWzuEiw+/BFnIszwjpIEMqyTdGk6OevIcJz89/4JfH2Q
+         9DBRXDbzlC9tJtYVlHy0bXsIRIn57vAwXy3OoJQZrdU8jtinjThtTbk5rFg22hNBE/3P
+         SPJMWM5lcMxRn1TvFcxlLjlJksKlwVIi7gaQCeBrGqjoqtMzQICr/pH6EIFL6+MJ1zBh
+         GM/jYOsjoYR2WxhOHZ3dJywHrupQAoW3GPCXlpSUg5xoJGt/LewTx5Dhh6uLAAkwkVQQ
+         Sapg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777049563; x=1777654363;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=N8m0d9jgffml56tOWD/yiI/9bSBwutf977iNuQiC6e8=;
+        b=SoyHeBNOgZsRwWOWd1C5+sv47F0QqNyUJSTf792/ya4vbhY6Yig86oaXeeqUnR3h1W
+         y32hnfcuDbqYgXBIYWiYyeFJFtnC9XSuEyYcMG4AQaZRJsgR3/fr2LylliHooAe/k9Pi
+         30AXxmdsmZtX+ZF/Ii3Gza/8JCwxfyEDl3brPNVmZSn5KHLqSa92nXtuZs/5ADu/CpPy
+         R08nFxbvd04YCI5C8eCHuAkp+QbLDP9Y4/jYJEFa5u4/RZ6yzeA1wUUOlUxXKFcErCo+
+         mOK0uPPv/auClDVvQ+iiLiFllhkO8XlQ2Yu97vp+jP2vMhWWERM5eRvS1cVpPyC7OpCc
+         Ub6Q==
+X-Forwarded-Encrypted: i=1; AFNElJ8gwiWRlXzKwBA8HbJhkySrhmJ3RJSgb868AjpUk4uq0iAcss20qhdLtD8OgXI7EHAkHF/UgQw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxxg4+ajluUnGF/A3EoqCtYR3/FV8UFSokXEKpmjQX5I1msQL3V
+	WOKxXLs1RTi4QEKCMbOzh8teptmT61GqJoL/rCvNzKHfULbJwEznShc=
+X-Gm-Gg: AeBDieu+5GlYLAZeuoMUGqJaM4JH57hYoEaIYeZv22c4hZTFDVc+ojvGiw9Oqaqqqb8
+	11caQyHAzlInAdCe1uj5o2KQrmpS5Akbeg+oxdeN7D1dP5NMC7Cyvj/s+vol1L8KcnA/YF2Jf0A
+	GyqRrBSZ8oERDNwr6vutiyUGjijomU44JK2gKwXpxpl+SnzroDpenvfhZNGRdHwN1y1e8SWH+/r
+	LV9hmET/0B1YTlaiQeKpuKGcy9zz9BtasObZeBkS8K8lWMaElR6tJFhL/pKmrOzk+4fUGlxBE8p
+	7zxSKB6yJ3uuNk9Mt/14XxFNoEFlPrHVCyDRmPYsV4TcfMwZUuXYE6Svwk05cuV9/ypvS7A4L+b
+	NVWkbaZK3LKKtQRhY/k5DuCSD1uHoh+20TwdQMIJsxAakWiWoA4JPIdOOuIDm/VRoZbfRyXzIUM
+	aQr1+l7JXzzsIKPH5Uuot4pcVQ/gigA+d1ZP6KpZN7aR3pjBZ6haMWgceQ6E5NnoRk57wx1DEyC
+	e+g97VojQ==
+X-Received: by 2002:a17:902:f98e:b0:2b2:481b:de5f with SMTP id d9443c01a7336-2b5f9e86057mr239985835ad.5.1777049562978;
+        Fri, 24 Apr 2026 09:52:42 -0700 (PDT)
+Received: from localhost.localdomain ([1.226.165.54])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b5fab30f29sm229362825ad.68.2026.04.24.09.52.40
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Fri, 24 Apr 2026 09:52:42 -0700 (PDT)
+From: Myeonghun Pak <mhun512@gmail.com>
+To: Benjamin Mugnier <benjamin.mugnier@foss.st.com>,
+	Sylvain Petinot <sylvain.petinot@foss.st.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: Myeonghun Pak <mhun512@gmail.com>,
+	linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v2] media: i2c: vd56g3: clean up subdev state on probe failure
+Date: Sat, 25 Apr 2026 01:52:10 +0900
+Message-ID: <20260424165238.31333-1-mhun512@gmail.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Rspamd-Queue-Id: CED484615C3
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: A93D046188E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-241005-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	DMARC_NA(0.00)[linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,zte.com.cn,uni-hamburg.de,redhat.com,nvidia.com,gmail.com,linux-foundation.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_HAS_DN(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:dkim,linux-foundation.org:email,nvidia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,uni-hamburg.de:email,zte.com.cn:email]
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-241006-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mhun512@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
 
+vd56g3_subdev_init() calls v4l2_subdev_init_finalize(), which allocates
+the subdev active state and requires v4l2_subdev_cleanup() to release it.
 
-The patch titled
-     Subject: taskstats: retain dead thread stats in TGID queries
-has been added to the -mm mm-nonmm-unstable branch.  Its filename is
-     taskstats-retain-dead-thread-stats-in-tgid-queries.patch
+If vd56g3_update_controls() fails after finalize succeeds, the probe error
+path currently skips v4l2_subdev_cleanup() and returns an error. The driver
+.remove() callback is not called after a failed probe, so the active state
+is leaked.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/taskstats-retain-dead-thread-stats-in-tgid-queries.patch
+Route this error through a subdev cleanup label before freeing the control
+handler and media entity.
 
-This patch will later appear in the mm-nonmm-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: Yiyang Chen <cyyzero16@gmail.com>
-Subject: taskstats: retain dead thread stats in TGID queries
-Date: Mon, 13 Apr 2026 23:45:44 +0800
-
-Patch series "taskstats: fix TGID dead-thread stat retention", v3.
-
-This series fixes a taskstats TGID aggregation bug where fields added in
-the TGID query path were not preserved after thread exit, and adds a
-kselftest covering the regression.
-
-The first patch keeps the cached TGID aggregate used for dead threads in
-step with the fields already accumulated for live threads, and also fixes
-the final TGID exit notification emitted when group_dead is true.
-
-The second patch adds a kselftest that verifies TGID CPU stats do not
-regress after a worker thread exits and has been reaped.
-
-
-This patch (of 2):
-
-fill_stats_for_tgid() builds TGID stats from two sources: the cached
-aggregate in signal->stats and a scan of the live threads in the group.
-
-However, fill_tgid_exit() only accumulates delay accounting into
-signal->stats.  This means that once a thread exits, TGID queries lose the
-fields that fill_stats_for_tgid() adds for live threads.
-
-This gap was introduced incrementally by two earlier changes that extended
-fill_stats_for_tgid() but did not make the corresponding update to
-fill_tgid_exit():
-
-- commit 8c733420bdd5 ("taskstats: add e/u/stime for TGID command")
-  added ac_etime, ac_utime, and ac_stime to the TGID query path.
-- commit b663a79c1915 ("taskstats: add context-switch counters")
-  added nvcsw and nivcsw to the TGID query path.
-
-As a result, those fields were accounted for live threads in TGID queries,
-but were dropped from the cached TGID aggregate after thread exit.  The
-final TGID exit notification emitted when group_dead is true also copies
-that cached aggregate, so it loses the same fields.
-
-Factor the per-task TGID accumulation into tgid_stats_add_task() and use
-it in both fill_stats_for_tgid() and fill_tgid_exit().  This keeps the
-cached aggregate used for dead threads aligned with the live-thread
-accumulation used by TGID queries.
-
-Link: https://lore.kernel.org/cover.1776094300.git.cyyzero16@gmail.com
-Link: https://lore.kernel.org/abd2a15d33343636ab5ba43d540bcfe508bd66c7.1776094300.git.cyyzero16@gmail.com
-Fixes: 8c733420bdd5 ("taskstats: add e/u/stime for TGID command")
-Fixes: b663a79c1915 ("taskstats: add context-switch counters")
-Signed-off-by: Yiyang Chen <cyyzero16@gmail.com>
-Acked-by: Balbir Singh <balbirs@nvidia.com>
-Cc: Dr. Thomas Orgis <thomas.orgis@uni-hamburg.de>
-Cc: Oleg Nesterov <oleg@redhat.com>
-Cc: Wang Yaxin <wang.yaxin@zte.com.cn>
-Cc: Yang Yang <yang.yang29@zte.com.cn>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 87aa97fc3157 ("media: i2c: Add driver for ST VD56G3 camera sensor")
+Cc: stable@vger.kernel.org
+Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
 ---
+Changes in v2:
+- Use a lowercase subject summary.
 
- kernel/taskstats.c |   62 ++++++++++++++++++++++---------------------
- 1 file changed, 33 insertions(+), 29 deletions(-)
+ drivers/media/i2c/vd56g3.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/kernel/taskstats.c~taskstats-retain-dead-thread-stats-in-tgid-queries
-+++ a/kernel/taskstats.c
-@@ -210,13 +210,39 @@ static int fill_stats_for_pid(pid_t pid,
- 	return 0;
- }
- 
-+static void tgid_stats_add_task(struct taskstats *stats,
-+				struct task_struct *tsk, u64 now_ns)
-+{
-+	u64 delta, utime, stime;
-+
-+	/*
-+	 * Each accounting subsystem calls its functions here to
-+	 * accumulate its per-task stats for tsk, into the per-tgid structure
-+	 *
-+	 *	per-task-foo(stats, tsk);
-+	 */
-+	delayacct_add_tsk(stats, tsk);
-+
-+	/* calculate task elapsed time in nsec */
-+	delta = now_ns - tsk->start_time;
-+	/* Convert to micro seconds */
-+	do_div(delta, NSEC_PER_USEC);
-+	stats->ac_etime += delta;
-+
-+	task_cputime(tsk, &utime, &stime);
-+	stats->ac_utime += div_u64(utime, NSEC_PER_USEC);
-+	stats->ac_stime += div_u64(stime, NSEC_PER_USEC);
-+
-+	stats->nvcsw += tsk->nvcsw;
-+	stats->nivcsw += tsk->nivcsw;
-+}
-+
- static int fill_stats_for_tgid(pid_t tgid, struct taskstats *stats)
- {
- 	struct task_struct *tsk, *first;
- 	unsigned long flags;
- 	int rc = -ESRCH;
--	u64 delta, utime, stime;
--	u64 start_time;
-+	u64 now_ns;
- 
- 	/*
- 	 * Add additional stats from live tasks except zombie thread group
-@@ -233,30 +259,12 @@ static int fill_stats_for_tgid(pid_t tgi
- 	else
- 		memset(stats, 0, sizeof(*stats));
- 
--	start_time = ktime_get_ns();
-+	now_ns = ktime_get_ns();
- 	for_each_thread(first, tsk) {
- 		if (tsk->exit_state)
- 			continue;
--		/*
--		 * Accounting subsystem can call its functions here to
--		 * fill in relevant parts of struct taskstsats as follows
--		 *
--		 *	per-task-foo(stats, tsk);
--		 */
--		delayacct_add_tsk(stats, tsk);
--
--		/* calculate task elapsed time in nsec */
--		delta = start_time - tsk->start_time;
--		/* Convert to micro seconds */
--		do_div(delta, NSEC_PER_USEC);
--		stats->ac_etime += delta;
--
--		task_cputime(tsk, &utime, &stime);
--		stats->ac_utime += div_u64(utime, NSEC_PER_USEC);
--		stats->ac_stime += div_u64(stime, NSEC_PER_USEC);
- 
--		stats->nvcsw += tsk->nvcsw;
--		stats->nivcsw += tsk->nivcsw;
-+		tgid_stats_add_task(stats, tsk, now_ns);
+diff --git a/drivers/media/i2c/vd56g3.c b/drivers/media/i2c/vd56g3.c
+index 157acea9e2..43f792288a 100644
+--- a/drivers/media/i2c/vd56g3.c
++++ b/drivers/media/i2c/vd56g3.c
+@@ -1427,11 +1427,14 @@ static int vd56g3_subdev_init(struct vd56g3 *sensor)
+ 	v4l2_subdev_unlock_state(state);
+ 	if (ret) {
+ 		dev_err(sensor->dev, "Controls update failed: %d\n", ret);
+-		goto err_ctrls;
++		goto err_subdev;
  	}
  
- 	unlock_task_sighand(first, &flags);
-@@ -275,18 +283,14 @@ out:
- static void fill_tgid_exit(struct task_struct *tsk)
- {
- 	unsigned long flags;
-+	u64 now_ns;
+ 	return 0;
  
- 	spin_lock_irqsave(&tsk->sighand->siglock, flags);
- 	if (!tsk->signal->stats)
- 		goto ret;
++err_subdev:
++	v4l2_subdev_cleanup(&sensor->sd);
++
+ err_ctrls:
+ 	v4l2_ctrl_handler_free(sensor->sd.ctrl_handler);
  
--	/*
--	 * Each accounting subsystem calls its functions here to
--	 * accumalate its per-task stats for tsk, into the per-tgid structure
--	 *
--	 *	per-task-foo(tsk->signal->stats, tsk);
--	 */
--	delayacct_add_tsk(tsk->signal->stats, tsk);
-+	now_ns = ktime_get_ns();
-+	tgid_stats_add_task(tsk->signal->stats, tsk, now_ns);
- ret:
- 	spin_unlock_irqrestore(&tsk->sighand->siglock, flags);
- 	return;
-_
-
-Patches currently in -mm which might be from cyyzero16@gmail.com are
-
-tools-accounting-getdelays-fix-wformat-truncation-warning-in-format_timespec.patch
-taskstats-retain-dead-thread-stats-in-tgid-queries.patch
-selftests-acct-add-taskstats-tgid-retention-test.patch
-
+-- 
+2.50.1
 
