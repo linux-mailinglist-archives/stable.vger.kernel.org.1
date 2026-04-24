@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-240900-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240870-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6JYUAyZ162kQNAAAu9opvQ
-	(envelope-from <stable+bounces-240900-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:50:30 +0200
+	id +JViBehy62nCMwAAu9opvQ
+	(envelope-from <stable+bounces-240870-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:40:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85A5445FBC9
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:50:29 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id A534845F607
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:40:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 04BB9305D17B
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:42:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 932B4300612C
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:40:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D54119A288;
-	Fri, 24 Apr 2026 13:42:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70CE03D5236;
+	Fri, 24 Apr 2026 13:40:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WYovMB2w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c8dzLj2x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 509D8221DB6;
-	Fri, 24 Apr 2026 13:42:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3433519A288;
+	Fri, 24 Apr 2026 13:40:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777038130; cv=none; b=EQl3sskK2WwiFkelH5Aj1AhSauInERFoiOFFZ7/gablDH3hooA5UKW0gz89pFRA/nI3SIaH8JohC3Gzb0PvAlpLdI5zvIseFcy2wrlD1ZL6wInKc9te/MqE4kDH7S3ArfSezpG5+WRTT6h7sE1JhqZCk1T0VSRd02hLtVisL950=
+	t=1777038053; cv=none; b=epRYy7yJECmFGNRavAuqBQpV9+UL1bpPvLBEyTyHld8oXjvetUXBVOFpMM4nzI0lDYzcWgKUF+8VIIPjZ0wQd09P4cpy5PwEC3PuD4K3N0pxntQIvFFANhxFMk9xu7I2jpk2RNNiFylm6gyO0a/aO+Wj6TVrVbZh71oZCab6/w8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777038130; c=relaxed/simple;
-	bh=S702JQ3+Ou4X0C+9K5HWk9HOjt6KHiRDFnp23dxoY8Y=;
+	s=arc-20240116; t=1777038053; c=relaxed/simple;
+	bh=Zm4s1oFs5kM+LBxhOu971tawV6Ow4haRwUQP4Za6vCI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BP0C6S1NlBWjCSEmWyPE9S3iS/Rrl7U/RIDeRHy9UofnU+hbG1JOIpgo2iWtnht4xAbEI0LhMmv+8FNBWNFNyNOxtEd6K3rVuCGXo2Do7pPPlpeqSWUhVNG9Xxfm+PhjT+Z+Tysy1VwQq47QZudcgdlD96BXowrFmQCU8LWEDlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WYovMB2w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA2EBC19425;
-	Fri, 24 Apr 2026 13:42:09 +0000 (UTC)
+	 MIME-Version; b=TGl4SyLiOG7uSCHG2Gh1eUAzMjgh1TVU+arZ5N7Gawt8oQf+1S/uuGwd7y/VRVDC/W7y7cZAEHtWZUEBPH+MjZOBDjE5xl3hpXb+W6s/ovKvViPFc5TMWLHmrVDwVvjtPIgy4vu5VIP+j4f5WKZ/V9zesxAJs7qkJdoDipAv/OA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c8dzLj2x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE4C4C19425;
+	Fri, 24 Apr 2026 13:40:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777038130;
-	bh=S702JQ3+Ou4X0C+9K5HWk9HOjt6KHiRDFnp23dxoY8Y=;
+	s=korg; t=1777038053;
+	bh=Zm4s1oFs5kM+LBxhOu971tawV6Ow4haRwUQP4Za6vCI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WYovMB2wV+Cp7S3Jc/zaVcdYS+iVH/pmDN5q9tGdxuhr/sZJiyCe0IDJD7XIp35SO
-	 uvb7wsSjC9CR0I3ZGEX0mK38JdbBxpz+qZ4Rt5Ud8KkoRAqsJosamuTkqAy0gLTNer
-	 0P+Ro3kPc/uwTLutq4FEdxoHXX6InGPW8kzULcBc=
+	b=c8dzLj2x0IJ3UGfZURAvDxCfZGkV7gfskXzo6RNRsB8flia9qC4nkxosgwkQPkl+6
+	 eY4lHQTN+cJYxVfQ4b1MGaUQ/WxesqU5piE3sQxop+klSgzDWlAeIBH+j5/qPiYFYg
+	 oZqaTfz4EcOVCXcv8MGu2bYpkbz+KjHZj9CIKpxU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.18 36/55] ksmbd: require minimum ACE size in smb_check_perm_dacl()
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+Subject: [PATCH 6.6 161/166] crypto: testmgr - Hide ENOENT errors better
 Date: Fri, 24 Apr 2026 15:31:15 +0200
-Message-ID: <20260424132437.496940349@linuxfoundation.org>
+Message-ID: <20260424132606.737126228@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132430.006424517@linuxfoundation.org>
-References: <20260424132430.006424517@linuxfoundation.org>
+In-Reply-To: <20260424132532.812258529@linuxfoundation.org>
+References: <20260424132532.812258529@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,140 +63,158 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 85A5445FBC9
+X-Rspamd-Queue-Id: A534845F607
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240900-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-240870-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,apana.org.au:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-commit d07b26f39246a82399661936dd0c853983cfade7 upstream.
+commit 6318fbe26e67f9c27a1917fe63936b0fc6000373 upstream.
 
-Both ACE-walk loops in smb_check_perm_dacl() only guard against an
-under-sized remaining buffer, not against an ACE whose declared
-`ace->size` is smaller than the struct it claims to describe:
+The previous patch removed the ENOENT warning at the point of
+allocation, but the overall self-test warning is still there.
 
-  if (offsetof(struct smb_ace, access_req) > aces_size)
-      break;
-  ace_size = le16_to_cpu(ace->size);
-  if (ace_size > aces_size)
-      break;
+Fix all of them by returning zero as the test result.  This is
+safe because if the algorithm has gone away, then it cannot be
+marked as tested.
 
-The first check only requires the 4-byte ACE header to be in bounds;
-it does not require access_req (4 bytes at offset 4) to be readable.
-An attacker who has set a crafted DACL on a file they own can declare
-ace->size == 4 with aces_size == 4, pass both checks, and then
-
-  granted |= le32_to_cpu(ace->access_req);               /* upper loop */
-  compare_sids(&sid, &ace->sid);                         /* lower loop */
-
-reads access_req at offset 4 (OOB by up to 4 bytes) and ace->sid at
-offset 8 (OOB by up to CIFS_SID_BASE_SIZE + SID_MAX_SUB_AUTHORITIES
-* 4 bytes).
-
-Tighten both loops to require
-
-  ace_size >= offsetof(struct smb_ace, sid) + CIFS_SID_BASE_SIZE
-
-which is the smallest valid on-wire ACE layout (4-byte header +
-4-byte access_req + 8-byte sid base with zero sub-auths).  Also
-reject ACEs whose sid.num_subauth exceeds SID_MAX_SUB_AUTHORITIES
-before letting compare_sids() dereference sub_auth[] entries.
-
-parse_sec_desc() already enforces an equivalent check (lines 441-448);
-smb_check_perm_dacl() simply grew weaker validation over time.
-
-Reachability: authenticated SMB client with permission to set an ACL
-on a file.  On a subsequent CREATE against that file, the kernel
-walks the stored DACL via smb_check_perm_dacl() and triggers the
-OOB read.  Not pre-auth, and the OOB read is not reflected to the
-attacker, but KASAN reports and kernel state corruption are
-possible.
-
-Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-6
-Assisted-by: Codex:gpt-5-4
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 4eded6d14f5b ("crypto: testmgr - Hide ENOENT errors")
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/smbacl.c |   17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
+ crypto/testmgr.c |   23 +++++++++++------------
+ 1 file changed, 11 insertions(+), 12 deletions(-)
 
---- a/fs/smb/server/smbacl.c
-+++ b/fs/smb/server/smbacl.c
-@@ -1342,10 +1342,13 @@ int smb_check_perm_dacl(struct ksmbd_con
- 		ace = (struct smb_ace *)((char *)pdacl + sizeof(struct smb_acl));
- 		aces_size = acl_size - sizeof(struct smb_acl);
- 		for (i = 0; i < le16_to_cpu(pdacl->num_aces); i++) {
--			if (offsetof(struct smb_ace, access_req) > aces_size)
-+			if (offsetof(struct smb_ace, sid) +
-+			    aces_size < CIFS_SID_BASE_SIZE)
- 				break;
- 			ace_size = le16_to_cpu(ace->size);
--			if (ace_size > aces_size)
-+			if (ace_size > aces_size ||
-+			    ace_size < offsetof(struct smb_ace, sid) +
-+				       CIFS_SID_BASE_SIZE)
- 				break;
- 			aces_size -= ace_size;
- 			granted |= le32_to_cpu(ace->access_req);
-@@ -1363,13 +1366,19 @@ int smb_check_perm_dacl(struct ksmbd_con
- 	ace = (struct smb_ace *)((char *)pdacl + sizeof(struct smb_acl));
- 	aces_size = acl_size - sizeof(struct smb_acl);
- 	for (i = 0; i < le16_to_cpu(pdacl->num_aces); i++) {
--		if (offsetof(struct smb_ace, access_req) > aces_size)
-+		if (offsetof(struct smb_ace, sid) +
-+		    aces_size < CIFS_SID_BASE_SIZE)
- 			break;
- 		ace_size = le16_to_cpu(ace->size);
--		if (ace_size > aces_size)
-+		if (ace_size > aces_size ||
-+		    ace_size < offsetof(struct smb_ace, sid) +
-+			       CIFS_SID_BASE_SIZE)
- 			break;
- 		aces_size -= ace_size;
+--- a/crypto/testmgr.c
++++ b/crypto/testmgr.c
+@@ -1917,7 +1917,7 @@ static int __alg_test_hash(const struct
+ 	atfm = crypto_alloc_ahash(driver, type, mask);
+ 	if (IS_ERR(atfm)) {
+ 		if (PTR_ERR(atfm) == -ENOENT)
+-			return -ENOENT;
++			return 0;
+ 		pr_err("alg: hash: failed to allocate transform for %s: %ld\n",
+ 		       driver, PTR_ERR(atfm));
+ 		return PTR_ERR(atfm);
+@@ -2683,7 +2683,7 @@ static int alg_test_aead(const struct al
+ 	tfm = crypto_alloc_aead(driver, type, mask);
+ 	if (IS_ERR(tfm)) {
+ 		if (PTR_ERR(tfm) == -ENOENT)
+-			return -ENOENT;
++			return 0;
+ 		pr_err("alg: aead: failed to allocate transform for %s: %ld\n",
+ 		       driver, PTR_ERR(tfm));
+ 		return PTR_ERR(tfm);
+@@ -3262,7 +3262,7 @@ static int alg_test_skcipher(const struc
+ 	tfm = crypto_alloc_skcipher(driver, type, mask);
+ 	if (IS_ERR(tfm)) {
+ 		if (PTR_ERR(tfm) == -ENOENT)
+-			return -ENOENT;
++			return 0;
+ 		pr_err("alg: skcipher: failed to allocate transform for %s: %ld\n",
+ 		       driver, PTR_ERR(tfm));
+ 		return PTR_ERR(tfm);
+@@ -3677,7 +3677,7 @@ static int alg_test_cipher(const struct
+ 	tfm = crypto_alloc_cipher(driver, type, mask);
+ 	if (IS_ERR(tfm)) {
+ 		if (PTR_ERR(tfm) == -ENOENT)
+-			return -ENOENT;
++			return 0;
+ 		printk(KERN_ERR "alg: cipher: Failed to load transform for "
+ 		       "%s: %ld\n", driver, PTR_ERR(tfm));
+ 		return PTR_ERR(tfm);
+@@ -3703,7 +3703,7 @@ static int alg_test_comp(const struct al
+ 		acomp = crypto_alloc_acomp(driver, type, mask);
+ 		if (IS_ERR(acomp)) {
+ 			if (PTR_ERR(acomp) == -ENOENT)
+-				return -ENOENT;
++				return 0;
+ 			pr_err("alg: acomp: Failed to load transform for %s: %ld\n",
+ 			       driver, PTR_ERR(acomp));
+ 			return PTR_ERR(acomp);
+@@ -3717,7 +3717,7 @@ static int alg_test_comp(const struct al
+ 		comp = crypto_alloc_comp(driver, type, mask);
+ 		if (IS_ERR(comp)) {
+ 			if (PTR_ERR(comp) == -ENOENT)
+-				return -ENOENT;
++				return 0;
+ 			pr_err("alg: comp: Failed to load transform for %s: %ld\n",
+ 			       driver, PTR_ERR(comp));
+ 			return PTR_ERR(comp);
+@@ -3795,7 +3795,7 @@ static int alg_test_cprng(const struct a
+ 	rng = crypto_alloc_rng(driver, type, mask);
+ 	if (IS_ERR(rng)) {
+ 		if (PTR_ERR(rng) == -ENOENT)
+-			return -ENOENT;
++			return 0;
+ 		printk(KERN_ERR "alg: cprng: Failed to load transform for %s: "
+ 		       "%ld\n", driver, PTR_ERR(rng));
+ 		return PTR_ERR(rng);
+@@ -3823,12 +3823,11 @@ static int drbg_cavs_test(const struct d
  
-+		if (ace->sid.num_subauth > SID_MAX_SUB_AUTHORITIES)
-+			break;
-+
- 		if (!compare_sids(&sid, &ace->sid) ||
- 		    !compare_sids(&sid_unix_NFS_mode, &ace->sid)) {
- 			found = 1;
+ 	drng = crypto_alloc_rng(driver, type, mask);
+ 	if (IS_ERR(drng)) {
++		kfree_sensitive(buf);
+ 		if (PTR_ERR(drng) == -ENOENT)
+-			goto out_no_rng;
++			return 0;
+ 		printk(KERN_ERR "alg: drbg: could not allocate DRNG handle for "
+ 		       "%s\n", driver);
+-out_no_rng:
+-		kfree_sensitive(buf);
+ 		return PTR_ERR(drng);
+ 	}
+ 
+@@ -4072,7 +4071,7 @@ static int alg_test_kpp(const struct alg
+ 	tfm = crypto_alloc_kpp(driver, type, mask);
+ 	if (IS_ERR(tfm)) {
+ 		if (PTR_ERR(tfm) == -ENOENT)
+-			return -ENOENT;
++			return 0;
+ 		pr_err("alg: kpp: Failed to load tfm for %s: %ld\n",
+ 		       driver, PTR_ERR(tfm));
+ 		return PTR_ERR(tfm);
+@@ -4302,7 +4301,7 @@ static int alg_test_akcipher(const struc
+ 	tfm = crypto_alloc_akcipher(driver, type, mask);
+ 	if (IS_ERR(tfm)) {
+ 		if (PTR_ERR(tfm) == -ENOENT)
+-			return -ENOENT;
++			return 0;
+ 		pr_err("alg: akcipher: Failed to load tfm for %s: %ld\n",
+ 		       driver, PTR_ERR(tfm));
+ 		return PTR_ERR(tfm);
 
 
 
