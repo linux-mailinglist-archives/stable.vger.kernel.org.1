@@ -1,226 +1,148 @@
-Return-Path: <stable+bounces-240549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240550-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QODEFdjV6mlQEgAAu9opvQ
-	(envelope-from <stable+bounces-240549-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 04:30:48 +0200
+	id EBeWH/PW6mmXEgAAu9opvQ
+	(envelope-from <stable+bounces-240550-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 04:35:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1121458FB7
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 04:30:46 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBB86458FF6
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 04:35:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AFCFE3011585
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 02:30:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E7737300ECBA
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 02:35:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B8AA2253EC;
-	Fri, 24 Apr 2026 02:30:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5842239E9A;
+	Fri, 24 Apr 2026 02:35:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="Tbm+Qd9A"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zo9c7Xz3"
 X-Original-To: stable@vger.kernel.org
-Received: from xmbghk7.mail.qq.com (xmbghk7.mail.qq.com [43.163.128.53])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4116F33E7
-	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 02:30:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=43.163.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A979019CCF5;
+	Fri, 24 Apr 2026 02:35:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1776997835; cv=none; b=tmmPZcpQvKxEeYLAKNnDoV14b7LqTF8u7Elu9RW2zI/JIqnbBTa6EMr8JYnu2+0T2YzM678wUD1qautQvXMPvnyA4WRcekDGxc3Fm+PGw5zTvb1AizdkrKOwp/jBNKCbsVBQEMzQHNRPrjADxaHcQKqPSZnkKdrpSYXouvNirGg=
+	t=1776998124; cv=none; b=VQJNa2zaDfHpEt+0qVZDCa1v5OGB/g84Mo76vzztJ+RDTkkXEERFgNDcARJNQ8Jn1kqsOoanYRmBDbfssNaey00O6/5NOopbAtl8/5kz97YYyMLJKd6kRZLeBp4958/1jxibLhyIjuTXWBrbYvp33x8WWo2bEc0ckZs6bzCFwR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1776997835; c=relaxed/simple;
-	bh=8pEnnD41yxIR3nLVFwLRZILWOASlPifVA1qeKcRpiCo=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=RfugoTWm0z8sqpDwLNf10LT2/kx73p3jstZyetExrp3n4RyMxXBGLAK2h1nVcKH1hblcOFerikxd+T+sXNNnXycTjqPHhov8KPCBqp9cgvBpk8SRNR6TE82IVdZ+yfvbqCrJM62DqWpNJyiiz7uHcRPGfe267z8Jtup20e51ke8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=Tbm+Qd9A; arc=none smtp.client-ip=43.163.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1776997823;
-	bh=0OrM2zulGw7FX0n14ZZhn63gz9NxxF3iSw5fX5FUW3w=;
-	h=From:To:Cc:Subject:Date;
-	b=Tbm+Qd9AVN1TYdped8ElU571cHa/rqoFaOBtUkkorBUsnzEWLaVUO3PF6Jmqbq8fw
-	 g64DvrtssFl9xMW7fSIuEHHRcfn+FsZZ94V/DTNuqg4/tG1gG7nMRKFI42LnRCrk9f
-	 G4tYbkpgyqXiVh2Vma5mj5nJeCx+p58fqfYKbZ6I=
-Received: from China-team ([183.241.55.34])
-	by newxmesmtplogicsvrsza53-0.qq.com (NewEsmtp) with SMTP
-	id 72519857; Fri, 24 Apr 2026 10:28:37 +0800
-X-QQ-mid: xmsmtpt1776997717tdh861y2f
-Message-ID: <tencent_581BD6694B6AC63E30240FAD05708C600A09@qq.com>
-X-QQ-XMAILINFO: NdJjTjI40ejMgBKJsit9mgL+lqrJRZug5RzCxPshV1O78ePq59uch1ZGt2k3ld
-	 p56OERgcgz8kBdlKJfaOBF++NyN9ca4aEZAWCW75Nn+0178dJun7nEwLov9jWnXVrzlGW92CxlZL
-	 a8t1u2V3zf+XLSGrr0+9oM88SRvWmalah/BCSeE2EOTn7zEZhC46uMQ5K66mcTZfowMnOtvKzJs7
-	 rnP9jGo7HRM5JxIw/5nGBu0v5DsJB+/EZ1kFJNoWDrZ8NMG8pjUBPllhnKARkD4N70mPYejAtTri
-	 u/tnHW8fV92e0p1q+SufdpwhOK/t3t5CZpMuzk/jVU32+8n1o9YGEe7P3Vr9xWt+Np0uiGWNeKF2
-	 HxDU+ASHAB5B10Kv4X/LWym/NWIXO32qTqeic56sBtWe2rzDU1k/FnsS8vOk3IgSsa26r5ea5ttH
-	 cIK7//L7RvEpcIrT4e6Ym/F+lr6Nnvj0lZXoL45HIKt1aL6+Q4SWMSch6IBFieMnVyHPhi3xJ9nX
-	 4E4YnhNbei/DYPa+Jh5ZyUDGLn5L0NBpTDUu99hltwwarIFaMj+P1V6JKcfKGD7eukebO3X+WPe/
-	 mYXDZvnY7Ewd5gf6EWFelqQEuFTAGtQFY7A849YdiZA37RwkvYqSpS6+34E6LjiEElBLdRBrZHWX
-	 TBsIIqNgphMACPjl7hgCOkkxdsLwpJHzHJJBEbwTypKJIbU6xhfHjN/Dpncgu54dccJwXEXHQs9m
-	 1MklNWn+KB89I+HgyWktntGjXMWZmJsuUY1oGObjK/lq6xC3Jx+sBQpB6oQ7Vu3R067J9muUqn8r
-	 1pkwCr7FgNGholXL5xLnZ4xuaCYIO2+6FjaWnzdjB3dEyfjLCdNLZo+UXOJWVszfJIpWyglbeAoQ
-	 GslHy/wMyQ0X/vvnwcGweIFYCcWCmxu85uRPNnc7qWG95Aa1XeVc5jdse4VC0oCQNzFpz8YpySlz
-	 1uj9jt0qXqi5kOVf9lFAYJoiv9EVLJWcfUj57efx/TfrceHOOrHHVYlN/BmzBLoD4mjA9R/goAYA
-	 i/R7b6OblUhFSfbtemkMrp7CTctaKeF/jEN/gjfAKagdybgg1vjImIPKN0R9CNEqHaGOBjlRL1Lo
-	 KAqReCq+JbzMkGiqMReyfpYQ1qbg==
-X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
-From: Alva Lan <alvalan9@foxmail.com>
-To: gregkh@linuxfoundation.org,
-	sashal@kernel.org,
-	stable@vger.kernel.org
-Cc: Mark Rutland <mark.rutland@arm.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Steve Capper <steve.capper@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Russell King <rmk+kernel@armlinux.org.uk>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Alva Lan <alvalan9@foxmail.com>
-Subject: [PATCH 6.1.y] arm64: mm: fix VA-range sanity check
-Date: Fri, 24 Apr 2026 10:28:21 +0800
-X-OQ-MSGID: <20260424022821.470-1-alvalan9@foxmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1776998124; c=relaxed/simple;
+	bh=ql9tB+FOewJ/1EnZjjHJLHs0QKWqoKCl2PwWth2civE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WgfYiR6kPuvaBhaRVx0oZUKu7uCzYvJLGiB1mnsA9eaiYxx5CAPKknk9hiqnGT4+M55be/S5mTgvsnKvQMsrmtz6LdMbgL7ZIDPaQt0FMCxwa0QUz5frZf2iNnoZhHVMbIXTB2JVmlYXIggCo/MJF69az+8rE95Ay7AyrFEyZQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zo9c7Xz3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C08AC2BCAF;
+	Fri, 24 Apr 2026 02:35:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1776998124;
+	bh=ql9tB+FOewJ/1EnZjjHJLHs0QKWqoKCl2PwWth2civE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Zo9c7Xz3sYkyoWGLxP5MP5O0enPxGtzsgAqJz00SIBCtSU/RBfS4J6bqXUM58Lo2+
+	 ot0Rdj/ICGVj9UdNxqrTrc5SjkKTwWO4l5Y9W0Th/gL2tKwEeMw8h7jSETnlxkB7Qy
+	 znNnow6gMmm3338bxhKM9GbT4g+QCMa9PGWR81vtkXX0zE8Tm9YncJuxyA3SkEAGbq
+	 2snqSUoN4BGotlRT6sLKPjeNGDtNa9BdJxmWsMNWxEmgibsijI8xIvV2zb/LIgIXAX
+	 UBjrcuzZYmI4qfHnvohQBUmvnRANwJk4rYBgHlbXhQkYU7Ou5PmyL7JrJkfTWbf3MN
+	 mmu6fSD25KDzw==
+Message-ID: <66414927-481a-4464-8a3d-d6d77ab1aefb@kernel.org>
+Date: Fri, 24 Apr 2026 11:35:20 +0900
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D1121458FB7
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] scsi: pm8001: add MODULE_AUTHOR entries for new
+ contributors
+To: Sagar Biradar <sagar.biradar@microchip.com>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>,
+ James Bottomley <James.Bottomley@HansenPartnership.com>,
+ Jack Wang <jinpu.wang@cloud.ionos.com>
+Cc: linux-scsi <linux-scsi@vger.kernel.org>, stable@vger.kernel.org,
+ Don Brace <don.brace@microchip.com>, Raja VS <raja.vs@microchip.com>,
+ Kumar Meiyappan <kumar.meiyappan@microchip.com>,
+ Abhinav Kuchibhotla <abhinav.kuchibhotla@microchip.com>,
+ Uday kumar Bagam <udaykumar.bagam@microchip.com>,
+ Advait Churi <advait.churi@microchip.com>
+References: <20260421212218.433963-1-sagar.biradar@microchip.com>
+Content-Language: en-US
+From: Damien Le Moal <dlemoal@kernel.org>
+Organization: Western Digital Research
+In-Reply-To: <20260421212218.433963-1-sagar.biradar@microchip.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: EBB86458FF6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[foxmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[foxmail.com:s=s201512];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-240549-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-240550-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[arm.com,armlinux.org.uk,kernel.org,foxmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	HAS_ORG_HEADER(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[foxmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alvalan9@foxmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[dlemoal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[foxmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,kernel];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qq.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,usish.com:email]
 
-From: Mark Rutland <mark.rutland@arm.com>
+On 4/22/26 06:22, Sagar Biradar wrote:
+> Add MODULE_AUTHOR declarations for the developers who have
+> been actively working on the pm8001/pm80xx driver in recent years.
+> 
+> This helps properly credit the people involved in the ongoing
+> maintenance and the current upstreaming effort.
+> 
+> Signed-off-by: Sagar Biradar <sagar.biradar@microchip.com>
 
-[ Upstream commit ab9b4008092c86dc12497af155a0901cc1156999 ]
+Well, if you go there, then you are really missing *a lot* of people.
+Just run:
 
-Both create_mapping_noalloc() and update_mapping_prot() sanity-check
-their 'virt' parameter, but the check itself doesn't make much sense.
-The condition used today appears to be a historical accident.
+git shortlog -n -s -- drivers/scsi/pm8001
 
-The sanity-check condition:
+and see the ranking by number of commits.
 
-	if ((virt >= PAGE_END) && (virt < VMALLOC_START)) {
-		[ ... warning here ... ]
-		return;
-	}
+So in the end, I really do not see the point of this patch since git log can
+give a full (and correct) list of contributors.
 
-... can only be true for the KASAN shadow region or the module region,
-and there's no reason to exclude these specifically for creating and
-updateing mappings.
+> ---
+>  drivers/scsi/pm8001/pm8001_init.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/scsi/pm8001/pm8001_init.c b/drivers/scsi/pm8001/pm8001_init.c
+> index e93ea76b565e..487f9bc237ef 100644
+> --- a/drivers/scsi/pm8001/pm8001_init.c
+> +++ b/drivers/scsi/pm8001/pm8001_init.c
+> @@ -1569,6 +1569,9 @@ MODULE_AUTHOR("Jack Wang <jack_wang@usish.com>");
+>  MODULE_AUTHOR("Anand Kumar Santhanam <AnandKumar.Santhanam@pmcs.com>");
+>  MODULE_AUTHOR("Sangeetha Gnanasekaran <Sangeetha.Gnanasekaran@pmcs.com>");
+>  MODULE_AUTHOR("Nikith Ganigarakoppal <Nikith.Ganigarakoppal@pmcs.com>");
+> +MODULE_AUTHOR("Abhinav Kuchibhotla <Abhinav.Kuchibhotla@microchip.com>");
+> +MODULE_AUTHOR("Kumar Meiyappan <Kumar.Meiyappan@microchip.com>");
+> +MODULE_AUTHOR("Sagar Biradar <Sagar.Biradar@microchip.com>");
+>  MODULE_DESCRIPTION(
+>  		"PMC-Sierra PM8001/8006/8081/8088/8089/8074/8076/8077/8070/8072 "
+>  		"SAS/SATA controller driver");
 
-When arm64 support was first upstreamed in commit:
 
-  c1cc1552616d0f35 ("arm64: MMU initialisation")
-
-... the condition was:
-
-	if (virt < VMALLOC_START) {
-		[ ... warning here ... ]
-		return;
-	}
-
-At the time, VMALLOC_START was the lowest kernel address, and this was
-checking whether 'virt' would be translated via TTBR1.
-
-Subsequently in commit:
-
-  14c127c957c1c607 ("arm64: mm: Flip kernel VA space")
-
-... the condition was changed to:
-
-	if ((virt >= VA_START) && (virt < VMALLOC_START)) {
-		[ ... warning here ... ]
-		return;
-	}
-
-This appear to have been a thinko. The commit moved the linear map to
-the bottom of the kernel address space, with VMALLOC_START being at the
-halfway point. The old condition would warn for changes to the linear
-map below this, and at the time VA_START was the end of the linear map.
-
-Subsequently we cleaned up the naming of VA_START in commit:
-
-  77ad4ce69321abbe ("arm64: memory: rename VA_START to PAGE_END")
-
-... keeping the erroneous condition as:
-
-	if ((virt >= PAGE_END) && (virt < VMALLOC_START)) {
-		[ ... warning here ... ]
-		return;
-	}
-
-Correct the condition to check against the start of the TTBR1 address
-space, which is currently PAGE_OFFSET. This simplifies the logic, and
-more clearly matches the "outside kernel range" message in the warning.
-
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: Russell King <linux@armlinux.org.uk>
-Cc: Steve Capper <steve.capper@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Link: https://lore.kernel.org/r/20230615102628.1052103-1-mark.rutland@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Alva Lan <alvalan9@foxmail.com>
----
-The fix has been backported to the Linux 5.10 and 5.15 stable trees:
-  - 5.10.188: commit 32020fc2a837 ("arm64: mm: fix VA-range sanity check")
-  - 5.15.150: commit 621619f626cb ("arm64: mm: fix VA-range sanity check")
-
-This patch is backported to the Linux 6.1 stable tree.
----
- arch/arm64/mm/mmu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-index e9288b28cb1e..1200527a02d6 100644
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -451,7 +451,7 @@ static phys_addr_t pgd_pgtable_alloc(int shift)
- static void __init create_mapping_noalloc(phys_addr_t phys, unsigned long virt,
- 				  phys_addr_t size, pgprot_t prot)
- {
--	if ((virt >= PAGE_END) && (virt < VMALLOC_START)) {
-+	if (virt < PAGE_OFFSET) {
- 		pr_warn("BUG: not creating mapping for %pa at 0x%016lx - outside kernel range\n",
- 			&phys, virt);
- 		return;
-@@ -478,7 +478,7 @@ void __init create_pgd_mapping(struct mm_struct *mm, phys_addr_t phys,
- static void update_mapping_prot(phys_addr_t phys, unsigned long virt,
- 				phys_addr_t size, pgprot_t prot)
- {
--	if ((virt >= PAGE_END) && (virt < VMALLOC_START)) {
-+	if (virt < PAGE_OFFSET) {
- 		pr_warn("BUG: not updating mapping for %pa at 0x%016lx - outside kernel range\n",
- 			&phys, virt);
- 		return;
 -- 
-2.43.0
-
+Damien Le Moal
+Western Digital Research
 
