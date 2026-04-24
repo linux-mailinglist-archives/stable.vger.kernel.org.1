@@ -1,163 +1,213 @@
-Return-Path: <stable+bounces-240557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240558-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mMMhD+/h6mnJFAAAu9opvQ
-	(envelope-from <stable+bounces-240557-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 05:22:23 +0200
+	id yO0dMWXs6mnCFgAAu9opvQ
+	(envelope-from <stable+bounces-240558-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 06:07:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 926034596E4
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 05:22:22 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ED4D459A55
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 06:07:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C3A6B3025295
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 03:21:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AEC59300B746
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 04:06:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BB1131AAA8;
-	Fri, 24 Apr 2026 03:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1794331AF31;
+	Fri, 24 Apr 2026 04:06:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G5x10gU7"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M9RbQ45/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1AF4224FA
-	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 03:20:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66265303A04
+	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 04:06:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.43
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777000861; cv=pass; b=LsYBWoI/jr3V2PxvCdW4Tp+Y0M9PhnyPJkb6nojUXzPufYiuLdo0E8S9QNETciFSCn4IGtkqX57eWXC+3qAiD1r/oRdUvNfdCC9VHBX4fSFUQg1aaAABJGzM4emtm9VhgZuqCJ7yldDnIHDSiScNhKd/VaauURjHAir6wK5BmRM=
+	t=1777003618; cv=pass; b=SapwLyYq/RXavK+l243rTluVbi9KrasYeiKaaCmQdVkTkhY0JmtDMyPr2EmnbqenLpe5/vyygNNKxOKJPrOsiCut6f1pWmiFh965pA6nuRTaP7TWISTffdX9QgO3t2yPHemc8Y5fWFohw47zMqpgk0HhcOwd5AKv917MSYuobHk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777000861; c=relaxed/simple;
-	bh=O4+xU8YH2F4OtxUaggPxhN/iV0XySXeHrQmwltY4a64=;
+	s=arc-20240116; t=1777003618; c=relaxed/simple;
+	bh=ZeMSoxm5J56pCcvQzGBEzz5ZDcItPYQcH5DkOuSS+uM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=M1H28ylDPaUgOQaPQMoBWhT1td8k8ftWATQRWUHtfYaRvIqq76+yS01tULZL1jdOvWwDO4Qn/2N40bFM2Ic3MLqHFs/yUjp59dcO9Vt3F0cDZweYj6HN1HuPdPyk5pNG5SGjG4Df/r/ZotFKJT13tv5emxfF8N/rp74Oe3cOloM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G5x10gU7; arc=pass smtp.client-ip=209.85.218.47
+	 To:Cc:Content-Type; b=KSjT8OxLhHKpe4302XrJJb20U9sOmH9pmT5bKMZwstgLCOSfkkK8wJKBtOXFsNWwryqOUvHgfPqedUoI3PCAtTLsYNdvOE6NG27X9i0+h0fVl8Fahw8vPEWOFlgOxa/wtGLFvBB4wMowMem4AgUcr2k30sPQDOa1xt/XHj6qJq0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M9RbQ45/; arc=pass smtp.client-ip=209.85.208.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-ba92146cc86so653966366b.1
-        for <stable@vger.kernel.org>; Thu, 23 Apr 2026 20:20:59 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777000858; cv=none;
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-676d8582a13so5702671a12.0
+        for <stable@vger.kernel.org>; Thu, 23 Apr 2026 21:06:57 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777003616; cv=none;
         d=google.com; s=arc-20240605;
-        b=glBI8MstgN5GBUKN7MgmCS1rOIDcrh1qWtkD/dPljmZmrz0Yb2/VDj6LlMYpR46EpF
-         o73m+qJzkKTGtWKfRZtsLk/47s+8+PkLU98zuLNDSWw4gZ+vNox+vrf/oa+DzTciU8gh
-         vfBhA7pQKzEc2ske0BtfAeHGlrOIn55z9qeerNErPIvPTzB+VAwXdFFL4RjDc7uAWm69
-         4X1/imD/YYt7nREzGCNrwer3AAODdEmRQvo1e1znozuNEkHRh8EdfDxNYdgSxUCHTYRU
-         0xPNPSf8wtUC8GCw6U26qgV1B5rvZlbg7JQOxDHZ3xZr14VRURROxRJ9nj2ny0SqHwMO
-         Ysxw==
+        b=jic3qLxoCwvijFzXNjOwhP3fLlTvDQYkRqb0qEsx6incDsSb2/QyqLfvYqlypEgV6r
+         JScW1puNFg4PotLXlQ+s8wMdvyQs2w5VqvDtIzTtSHiEWZna1Y/HOdiSKXC92kOMnxGH
+         vTGJEzWgMUdVBvI7XHHdu9FwiurxacmdsSh3h5H4ZMTmjvIZnehwmy6wh0+inl8Sq/pU
+         mTd/13CmS4pd7YYKeMG7wi6csREC4FrwsQlLsGOHDGydqQUQVGxuCDGCNWboH13Wrar8
+         Adp3wfkJsTCROpFwgXVnrym07w5cqqj+IZ1KZ2Ypzgj5fi+Oh0PUHVtxna/bI9OrBq1E
+         uvdg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=O4+xU8YH2F4OtxUaggPxhN/iV0XySXeHrQmwltY4a64=;
-        fh=c22SORguFTcQhfCKXyHL1ZSnpZBc0wmpXoWZkGzfY4A=;
-        b=JDkBhdYQwgHFMeWmEpcsNBdnSwcJSPZCCw3HWtRx7wbiU6r0udlVBLEnFsbBQUPlM2
-         299PYAVNMKBG2dBhgpQJp2KZtdMc8VqaORnKFGZddlPWjSw93aQNOkYTMM/wGE2xiQ1f
-         Zj3bmUsSibg/PmlQCN1ZWJvvrGkirqb2Yv6ByFINPr7v7hOmFQwFbjFJJSAjq65xyvMT
-         tJa1BNTvCJNe+67Yn0eUQDRQqPZLWsfvsws+c91h3yWF0Rka+OXN0QV63PnWbjUKulJz
-         ICPNvT+VdUotZva/GabDQYvqzjludX5u4aUGg9uPd0ow8ArXqzNo8O/C+IARe8uvqKmr
-         BBng==;
+        bh=u1qEV7FDucr2Oma7YgmbpI0eIOoUHkUaFY9SQRTBH3U=;
+        fh=1BS/HHx3P/UgmSlKGfaPVz1Rag7aKxam6/XnClsizhU=;
+        b=LAeRtNtgWdvwfSzuuG7HjCmVovs6oZakVjLUZiNZ1upn57U+/Ya2Cvnx7nGwyYHFX5
+         yoyr83jcku4WsuaXzCwdGT1JkPyQYnl1MqCDexi6kGQ+jch6JgsRiEhQE1GEqIJ9WrgL
+         VVXREH4VpdE8gu4op+xQizhqwvlfpMsjF49yttaRcwjCcOiR6/VvuuGbX3ANB0stXYJO
+         Pbqrb8f2b7wi2QigzkLH7+686/+i1Lhb02JIneqk0Ar3SC5ENrkXQkg/gXf7gwbLt7Wl
+         jM5Oe7z6+mxv7U0f0evVa1GIwFVYUuNpijLCjeBUY4G1wbjmjdlzVLQwBQRxjxTaRr3T
+         x7Mg==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777000858; x=1777605658; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1777003616; x=1777608416; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=O4+xU8YH2F4OtxUaggPxhN/iV0XySXeHrQmwltY4a64=;
-        b=G5x10gU7MgsMIfl4Qy+tf/GjH1kGSs4II9QcEK1l4sta5sXjgN4FZzgoSgN4wESIHm
-         VSkUYVBdS7Y+CcvCvpKJSIHMkaQVgW7lOXKho7p9ndfFrLeFVHZUWIZjX+wKyyO2kdlZ
-         kTeP3qvkVEnfQWce98VIrqE/9EyG6fZy+87THQSkvN4W7aH6AOJPCJAUuovQa8xQRlL4
-         7UUp6bbRnSKTjSJG5GEJPeh0ORKy74UA/wsLsfd+yZdQdk52e9hanUqFtd8hRvP10zin
-         4SES1tLx+uSHePYN8sOAbT4A5CSSZtnvGYQUu5PzzRcOUsHhxsNYFRe5Im8/sv1PO4C6
-         omeA==
+        bh=u1qEV7FDucr2Oma7YgmbpI0eIOoUHkUaFY9SQRTBH3U=;
+        b=M9RbQ45/sv5qLxDA1Pos04z/gwcCipJEQvCzpcLXFFDuWeHC7cy3s4ZTvX7RBs5UkT
+         APpMILWsMp0+x1WrQgEdWfCTVhqXHQe4uEJumstRW8U3hvKkq+AGGMjJa8nKgi2hV0x2
+         WIU1poisXsBJZVzZnfOWVcxWI9N0GEuaQHd6AKbUcJQatAWn1poAgxCTQZW9Swdvxt31
+         YOPvQ8FcYn9Z4+xcJvqmYPL1ROhQynSWogOooSYjDSDl0axYyq9VEKtBfpCBjuOMJ3M1
+         6yO5UaBOwEtdOUhYomQir0u9rakQGbvDh/qef0lETKgfT64/czMPHFmGKnGnjAK7JIfE
+         ZK0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777000858; x=1777605658;
+        d=1e100.net; s=20251104; t=1777003616; x=1777608416;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=O4+xU8YH2F4OtxUaggPxhN/iV0XySXeHrQmwltY4a64=;
-        b=NFUBOW+TV7GSfhh1aNAwAfLfGBLqEt94oPKH7+nMrmy4AaXqtFxNzaWk+8pH8ZFuKc
-         KRJZcmdGe2fpvK8MCUhoUI3pqTT8TBF8/Evo5pCXMgvvmwWjCtTvvTMp68Laq6ZLaWTU
-         ULIfsa8IfwWZyUOOB5PX5DxABPNPmh/lolzcXA+IWrc2f2fF7nQ70hYtJHM1sszwssNZ
-         6zOzLI1J1xtkuWcC2V88L6/eALZ7b1kDYpIgBCDCnTBvu9FAgEeWFq5oKq7vMvIfjkze
-         Qps3ZrnNU/yKLsv4W6nGwVDIuw0xLm81Q2sSQM2u7MRaeUJo0zPYok5qWtpb7vtjo+Sr
-         DEmg==
-X-Forwarded-Encrypted: i=1; AFNElJ+I5XFXgxDQgg0UE5+471eGLghJ1LX14YFICz59hDJAj/mqDRwtKNNkrEcdWCgr3rSI4rMoD0c=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy/UKbg8DpRtIrCYmWIB0/DWHgTX1zPNpm4hTRWy2a1q2bKtEBc
-	hjmpKX05IE5QcPn0tiS5yo1ba90tGfP7nd+DQuCGm7dtziZRkCoaUjB3ck015Bi8aGAlbgT/7AH
-	+cX4mXH36mLpufwZJ8UAMoME2NWZbMVk=
-X-Gm-Gg: AeBDieu4DXnxcpUIR3yCXPRZw2Ec4g0Qx6JbZ73yyYrMRaTzNMuH0Rjm/KhAEbuSrkE
-	CcVSfa52e8HaDKCOMfWa8imnDDKnZ95qNbhcWoi3IK2QcdjiQzu/x0IDiUJlISkRowQxrjYpXfi
-	Uf9YYIKwygSYFlNKKp7Yr+yqINJk9YhT5jRrEQlf8cXdJP27DmvCaudY8r0tICkdxMyPZM6at51
-	oZLuoweUFP11JOhgf0VqLO1iwLsBfjOPh5xo1ZHcu+1Xn615pfyjPLbiOPo8E7M5R7bqxL/Q6FG
-	e/wdZ4MhdxeJVNiXoQw=
-X-Received: by 2002:a17:907:cd09:b0:b9e:f58:c581 with SMTP id
- a640c23a62f3a-ba41b3dff09mr1772258466b.45.1777000857919; Thu, 23 Apr 2026
- 20:20:57 -0700 (PDT)
+        bh=u1qEV7FDucr2Oma7YgmbpI0eIOoUHkUaFY9SQRTBH3U=;
+        b=m2mR7/M5ZyBCjlS/inA6KTJmIQE3UbVoYsooFSHymMvfggD+8jNCjDoFOQT2DZD2lw
+         ANMB1QjSJKjECJSqtYFynt9cpoABUHmpxRk3aow1k7gQX1jsbY6DtVZSDfwfiPpjncfM
+         79l9W/OHBmad+EabMA+5ZmiYjhCo6NLaoapYzVB6WzKOvIPcVfoOOkDezldMYqkcxvQA
+         eg4nVP9mPwlSPEg7ZllOjS4osguNJqhGd7wgzHHQZ5dTGxeO2fs0yOvQ5+gKo/zNyqxr
+         oegVsBT5PGe9opQb1sJ0W0bUy0GvNF4X1pJTZqB8lonwFX/TK+fx5RvXBejSDVqUfq0B
+         s1gA==
+X-Forwarded-Encrypted: i=1; AFNElJ8gFpGR/qUWcSVvHM5VdeHMpAACFedAOjpo09WPrClGmOczN7MeeO6/4U+pm8QB9MdGsS75Rt0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzoA70pIZNCwtG2fTZZE9q1aafAicYlf6zK/xHIT3gtWUplRT1g
+	wbFU02KqMyCse+a4asZnI5uyM9J3/rWDzCp0PvoF4JLuES9dNEmKwWrJYppUQyuK/FnghJJZd3m
+	XzsoDB6itvdVFI1hifJsJPL/HEYITlijKIA==
+X-Gm-Gg: AeBDiev6cg4c7RQGbRt6x+jw/dS+p/9NkbG4m3iWvX+JNHa6bj1dU4tceIVcnePBetT
+	ATyo7ebD6hJ3qNRt4Mb1Mu10XstgT3kVwYTqOcurLtel0MmySFMy4C1aJ4y3KHxET9Wk21GXOnp
+	z2MRa0J/6YPzxjUqcbUFTN7ObAVB9uHmzkDsDjV6GWEET1TYFiWgjdVk/owWHiYpX+46MNg6fO4
+	7/qy0MqcFP86480ftaotsxxn/T/DypWcne2Q6S3DGjnpu03/7hR2mZjODBB7amT6WlfRhOK8FeD
+	GtGv0tdGJjoRDlxu
+X-Received: by 2002:a17:907:3f0f:b0:bab:7930:db48 with SMTP id
+ a640c23a62f3a-bab79401ea6mr498302066b.46.1777003615416; Thu, 23 Apr 2026
+ 21:06:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1776094300.git.cyyzero16@gmail.com>
-In-Reply-To: <cover.1776094300.git.cyyzero16@gmail.com>
-From: Yiyang Chen <cyyzero16@gmail.com>
-Date: Fri, 24 Apr 2026 11:20:46 +0800
-X-Gm-Features: AQROBzBBnk_YvFCEfz_lFuAXWvexpq1ySeRqzLcj4iJd1txSatLuwGNuWuWkmTo
-Message-ID: <CAD_b0500_rzz1M3CjnNNunnhiWgaBchSbhNSD6fmCNL4m3OZCQ@mail.gmail.com>
-Subject: Re: [PATCH v3 0/2] taskstats: fix TGID dead-thread stat retention
-To: Balbir Singh <balbirs@nvidia.com>, Yang Yang <yang.yang29@zte.com.cn>, 
-	Wang Yaxin <wang.yaxin@zte.com.cn>
-Cc: linux-kernel@vger.kernel.org, Oleg Nesterov <oleg@redhat.com>, 
-	"Dr . Thomas Orgis" <thomas.orgis@uni-hamburg.de>, Andrew Morton <akpm@linux-foundation.org>, 
-	stable@vger.kernel.org
+References: <20260421063955.99164-1-sprasad@microsoft.com> <20260421063955.99164-2-sprasad@microsoft.com>
+ <CAGypqWzrOmR6rUimbBJa9qJ-=+KJFzccMjere9dX=KwWeDFe+A@mail.gmail.com>
+In-Reply-To: <CAGypqWzrOmR6rUimbBJa9qJ-=+KJFzccMjere9dX=KwWeDFe+A@mail.gmail.com>
+From: Shyam Prasad N <nspmangalore@gmail.com>
+Date: Fri, 24 Apr 2026 09:36:43 +0530
+X-Gm-Features: AQROBzAJ-73VnnQjn9jxamNohqWFvDhzqHJpUDI2Ld9Tk85kL8Hk85ywSY7ptQk
+Message-ID: <CANT5p=rJ28LCOT1qcn9Xtcutq4mJB9t+jX9e79fDOXg0cHh0Ow@mail.gmail.com>
+Subject: Re: [PATCH v2 2/7] cifs: abort open_cached_dir if we don't request leases
+To: Bharath SM <bharathsm.hsk@gmail.com>
+Cc: linux-cifs@vger.kernel.org, smfrench@gmail.com, pc@manguebit.org, 
+	bharathsm@microsoft.com, dhowells@redhat.com, henrique.carvalho@suse.com, 
+	ematsumiya@suse.de, Shyam Prasad N <sprasad@microsoft.com>, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 926034596E4
+X-Rspamd-Queue-Id: 1ED4D459A55
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240557-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240558-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,manguebit.org,microsoft.com,redhat.com,suse.com,suse.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[cyyzero16@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nspmangalore@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid]
 
-Hi Andrew,
+On Tue, Apr 21, 2026 at 8:56=E2=80=AFPM Bharath SM <bharathsm.hsk@gmail.com=
+> wrote:
+>
+> On Mon, Apr 20, 2026 at 11:40=E2=80=AFPM <nspmangalore@gmail.com> wrote:
+> >
+> > From: Shyam Prasad N <sprasad@microsoft.com>
+> >
+> > It is possible that SMB2_open_init may not set lease context based
+> > on the requested oplock level. This can happen when leases have been
+> > temporarily or permanently disabled. When this happens, we will have
+> > open_cached_dir making an open without lease context and the response
+> > will anyway be rejected by open_cached_dir (thereby forcing a close to
+> > discard this open). That's unnecessary two round-trips to the server.
+> >
+> > This change adds a check before making the open request to the server
+> > to make sure that SMB2_open_init did add the expected lease context
+> > to the open in open_cached_dir.
+> >
+> > Cc: <stable@vger.kernel.org>
+> > Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+> > ---
+> >  fs/smb/client/cached_dir.c | 7 +++++++
+> >  1 file changed, 7 insertions(+)
+> >
+> > diff --git a/fs/smb/client/cached_dir.c b/fs/smb/client/cached_dir.c
+> > index 04bb95091f498..e9917e5204b00 100644
+> > --- a/fs/smb/client/cached_dir.c
+> > +++ b/fs/smb/client/cached_dir.c
+> > @@ -286,6 +286,13 @@ int open_cached_dir(unsigned int xid, struct cifs_=
+tcon *tcon,
+> >                             &rqst[0], &oplock, &oparms, utf16_path);
+> >         if (rc)
+> >                 goto oshr_free;
+> > +
+> > +       if (oplock !=3D SMB2_OPLOCK_LEVEL_II) {
+> > +               rc =3D -EINVAL;
+> > +               cifs_dbg(FYI, "unexpected oplock level %d for cached di=
+rectory\n", oplock);
+> Should we reword the log from "'unexpected' oplock level for cached
+> directory" to something like
+> lease not available for cached dir.? Considering  the client itself
+> might be disabling oplock temporarily.
+> "unexpected" might look misleading.
 
-Just a gentle ping on this taskstats fix series [1], which fixes a TGID
-aggregation bug and adds a kselftest.
+Hi Bharath,
+Thanks for the review. Will make the change.
 
-The series already has an Ack from Balbir [2], so I wanted to check if
-there=E2=80=99s anything else needed from my side, or if it looks suitable =
-for
-you to pick up into nonmm-unstable?
+>
+> > +               goto oshr_free;
+> > +       }
+> > +
+> >         smb2_set_next_command(tcon, &rqst[0]);
+> >
+> >         memset(&qi_iov, 0, sizeof(qi_iov));
+>
+> Other than the above minor comment, Changes look good to me.
+> Reviewed-by: Bharath SM <bharathsm@microsoft.com>
 
-Thanks,
-Yiyang
 
-[1] https://lore.kernel.org/all/cover.1776094300.git.cyyzero16@gmail.com/
-[2] https://lore.kernel.org/all/d530ffd7-ebfa-46e1-afd3-2599a3ffaa55@nvidia=
-.com/
+
+--=20
+Regards,
+Shyam
 
