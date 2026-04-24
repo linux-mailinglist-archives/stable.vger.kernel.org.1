@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-240906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240692-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CB23HqBz62kQNAAAu9opvQ
-	(envelope-from <stable+bounces-240906-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:44:00 +0200
+	id 6Ap9Jily62nCMwAAu9opvQ
+	(envelope-from <stable+bounces-240692-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:37:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0080A45F81D
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:43:59 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECE9845F42A
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:37:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 90C3D301BEE5
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:42:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0737A3069604
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:33:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 283B53B38AE;
-	Fri, 24 Apr 2026 13:42:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E8473D6CB3;
+	Fri, 24 Apr 2026 13:33:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bLufOlUY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dt9siUeb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFE85221DB6;
-	Fri, 24 Apr 2026 13:42:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A5F13D6CAC;
+	Fri, 24 Apr 2026 13:33:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777038145; cv=none; b=hMG45ljIfU0+lw/V5LmcWbDOtIVoFIH1a/ZiLNyU/6L78Zb4M9s+rkYJWkAXrOnsHmMivRv9EhPqkt44YHs6x64z5u3zvB46r7d9OvXifvO+sdVp2uGA6jfeMvKeZeR+HfTmSMjoSK3M7m3Yb7HLkpA3twSf8BSTuaYcQjeEQo0=
+	t=1777037593; cv=none; b=W0rrkAuC2DWL3Yca9gMRL2cYz1kACfFII/tMWZ+o641MFtx14H9tDE++x0iIEXDkg7UfmJlPBtPrsVNcNG87ZRZEPo6V1/wX4bAFgVNnFMwC/8Ljs4ISwv39Lbr5c+aAt5z28xA1xISODoiDEy7azPnle6hkfNkFDRrqdIWeaM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777038145; c=relaxed/simple;
-	bh=yXWHzGjS4FwSRU11zEyNnNABdYZ8e/jAlVn30kYaS28=;
+	s=arc-20240116; t=1777037593; c=relaxed/simple;
+	bh=CmwVRC6tbmY7Ksff8CFDGRRyREGwDP8QZdSGRzrrN5g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LaoFEc2yfJwcXHo94ji0ooBv34i4P6+x5MNgWGIqQgnIXbGH55p24hjAgHzzvwCo8iFmm3zVLeoIXRor+PmN69cifPwWhWQf64J20cRKiYDISs0t9Gtqiw4XrEtOloAVvbeN6CwqzZAKeIjD/HfsGkfc4ctF1xGWIa3VR39hJ04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bLufOlUY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74309C19425;
-	Fri, 24 Apr 2026 13:42:25 +0000 (UTC)
+	 MIME-Version; b=P+7KEBEGXFPLyjZIiVOr5HzyTzu2qX9vOn78DUKF/Ic7EtVkvwBj1zbyurOaz/GVXglU3TiwE3+Aj/mO0CmUWL6UdpLKzxucXOTuTVW8RR6RlsNwmAhIhHCnZvTWUm+FQMhB+44x+QgnH1BuLX/D8WHBNbsAy2wEKkMRIqjQ0sA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dt9siUeb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 782CFC2BCB2;
+	Fri, 24 Apr 2026 13:33:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777038145;
-	bh=yXWHzGjS4FwSRU11zEyNnNABdYZ8e/jAlVn30kYaS28=;
+	s=korg; t=1777037592;
+	bh=CmwVRC6tbmY7Ksff8CFDGRRyREGwDP8QZdSGRzrrN5g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bLufOlUYg5u3PH/oXtGZt7Q8/bUj62LGFcAl2HS4SR3OXAK1R7atlZhdme7avGJtL
-	 oeLXvxUGINrnFT1amrsmA08VWBwaq8im4wqWUwlLNtG2+bKNld9nd+QlISLcNXvDDd
-	 cVGzka5bS388UcK8cXjtM82w8d+FQw5fy5evpSNs=
+	b=Dt9siUeb8dXJMBb+RjnJ4ZTrz5wSXz6nvk3xEjMu3v/YM2caoWJqtv50RmRqSz50w
+	 bbfRHGskOCLeNb9ChoH7zqdV2YIt33Y80SkdJTviRF3IIRAUA/TxhtdAdYSV9bWfSs
+	 2w35GV5ije4jJOyWKD8If9dzg6Qo5oXyw0A+kN3A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH 6.18 24/55] lib/crypto: tests: Drop the default to CRYPTO_SELFTESTS
+	Alexander Potapenko <glider@google.com>,
+	Sebastian Alba Vives <sebasjosue84@gmail.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 7.0 38/42] crypto: ccp: Dont attempt to copy CSR to userspace if PSP command failed
 Date: Fri, 24 Apr 2026 15:31:03 +0200
-Message-ID: <20260424132435.056190824@linuxfoundation.org>
+Message-ID: <20260424132428.540872494@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132430.006424517@linuxfoundation.org>
-References: <20260424132430.006424517@linuxfoundation.org>
+In-Reply-To: <20260424132420.410310336@linuxfoundation.org>
+References: <20260424132420.410310336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,130 +65,121 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0080A45F81D
+X-Rspamd-Queue-Id: ECE9845F42A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,gondor.apana.org.au];
+	TAGGED_FROM(0.00)[bounces-240692-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-240906-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@kernel.org>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 6d80749becf8fc5ffa004194e578f79b558235ef upstream.
+commit abe4a6d6f606113251868c2c4a06ba904bb41eed upstream.
 
-Defaulting the crypto KUnit tests to KUNIT_ALL_TESTS || CRYPTO_SELFTESTS
-instead of simply KUNIT_ALL_TESTS was originally intended to make it
-easy to enable all the crypto KUnit tests.  This additional default is
-nonstandard for KUnit tests, though, and it can cause all the KUnit
-tests to be built-in unexpectedly if CRYPTO_SELFTESTS is set.  It also
-constitutes a back-reference to crypto/ from lib/crypto/, which is
-something that we should be avoiding in order to get clean layering.
+When retrieving the PEK CSR, don't attempt to copy the blob to userspace
+if the firmware command failed.  If the failure was due to an invalid
+length, i.e. the userspace buffer+length was too small, copying the number
+of bytes _firmware_ requires will overflow the kernel-allocated buffer and
+leak data to userspace.
 
-Now that we provide a lib/crypto/.kunitconfig file that enables all
-crypto KUnit tests, let's consider that to be the supported way to
-enable all these tests, and drop the default of CRYPTO_SELFTESTS.
+  BUG: KASAN: slab-out-of-bounds in instrument_copy_to_user ../include/linux/instrumented.h:129 [inline]
+  BUG: KASAN: slab-out-of-bounds in _inline_copy_to_user ../include/linux/uaccess.h:205 [inline]
+  BUG: KASAN: slab-out-of-bounds in _copy_to_user+0x66/0xa0 ../lib/usercopy.c:26
+  Read of size 2084 at addr ffff898144612e20 by task syz.9.219/21405
 
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Link: https://lore.kernel.org/r/20260317040626.5697-1-ebiggers@kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+  CPU: 14 UID: 0 PID: 21405 Comm: syz.9.219 Tainted: G     U     O        7.0.0-smp-DEV #28 PREEMPTLAZY
+  Tainted: [U]=USER, [O]=OOT_MODULE
+  Hardware name: Google, Inc. Arcadia_IT_80/Arcadia_IT_80, BIOS 12.62.0-0 11/19/2025
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0xc5/0x110 ../lib/dump_stack.c:120
+   print_address_description ../mm/kasan/report.c:378 [inline]
+   print_report+0xbc/0x260 ../mm/kasan/report.c:482
+   kasan_report+0xa2/0xe0 ../mm/kasan/report.c:595
+   check_region_inline ../mm/kasan/generic.c:-1 [inline]
+   kasan_check_range+0x264/0x2c0 ../mm/kasan/generic.c:200
+   instrument_copy_to_user ../include/linux/instrumented.h:129 [inline]
+   _inline_copy_to_user ../include/linux/uaccess.h:205 [inline]
+   _copy_to_user+0x66/0xa0 ../lib/usercopy.c:26
+   copy_to_user ../include/linux/uaccess.h:236 [inline]
+   sev_ioctl_do_pek_csr+0x31f/0x590 ../drivers/crypto/ccp/sev-dev.c:1872
+   sev_ioctl+0x3a4/0x490 ../drivers/crypto/ccp/sev-dev.c:2562
+   vfs_ioctl ../fs/ioctl.c:51 [inline]
+   __do_sys_ioctl ../fs/ioctl.c:597 [inline]
+   __se_sys_ioctl+0x11d/0x1b0 ../fs/ioctl.c:583
+   do_syscall_x64 ../arch/x86/entry/syscall_64.c:63 [inline]
+   do_syscall_64+0xe0/0x800 ../arch/x86/entry/syscall_64.c:94
+   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+   </TASK>
+
+WARN if the driver says the command succeeded, but the firmware error code
+says otherwise, as __sev_do_cmd_locked() is expected to return -EIO on any
+firwmware error.
+
+Reported-by: Alexander Potapenko <glider@google.com>
+Reported-by: Sebastian Alba Vives <sebasjosue84@gmail.com>
+Fixes: e799035609e1 ("crypto: ccp: Implement SEV_PEK_CSR ioctl command")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/crypto/tests/Kconfig |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/crypto/ccp/sev-dev.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/lib/crypto/tests/Kconfig
-+++ b/lib/crypto/tests/Kconfig
-@@ -3,7 +3,7 @@
- config CRYPTO_LIB_BLAKE2S_KUNIT_TEST
- 	tristate "KUnit tests for BLAKE2s" if !KUNIT_ALL_TESTS
- 	depends on KUNIT
--	default KUNIT_ALL_TESTS || CRYPTO_SELFTESTS
-+	default KUNIT_ALL_TESTS
- 	select CRYPTO_LIB_BENCHMARK_VISIBLE
- 	# No need to depend on CRYPTO_LIB_BLAKE2S here, as that option doesn't
- 	# exist; the BLAKE2s code is always built-in for the /dev/random driver.
-@@ -13,7 +13,7 @@ config CRYPTO_LIB_BLAKE2S_KUNIT_TEST
- config CRYPTO_LIB_CURVE25519_KUNIT_TEST
- 	tristate "KUnit tests for Curve25519" if !KUNIT_ALL_TESTS
- 	depends on KUNIT && CRYPTO_LIB_CURVE25519
--	default KUNIT_ALL_TESTS || CRYPTO_SELFTESTS
-+	default KUNIT_ALL_TESTS
- 	select CRYPTO_LIB_BENCHMARK_VISIBLE
- 	help
- 	  KUnit tests for the Curve25519 Diffie-Hellman function.
-@@ -21,7 +21,7 @@ config CRYPTO_LIB_CURVE25519_KUNIT_TEST
- config CRYPTO_LIB_MD5_KUNIT_TEST
- 	tristate "KUnit tests for MD5" if !KUNIT_ALL_TESTS
- 	depends on KUNIT && CRYPTO_LIB_MD5
--	default KUNIT_ALL_TESTS || CRYPTO_SELFTESTS
-+	default KUNIT_ALL_TESTS
- 	select CRYPTO_LIB_BENCHMARK_VISIBLE
- 	help
- 	  KUnit tests for the MD5 cryptographic hash function and its
-@@ -30,7 +30,7 @@ config CRYPTO_LIB_MD5_KUNIT_TEST
- config CRYPTO_LIB_POLY1305_KUNIT_TEST
- 	tristate "KUnit tests for Poly1305" if !KUNIT_ALL_TESTS
- 	depends on KUNIT && CRYPTO_LIB_POLY1305
--	default KUNIT_ALL_TESTS || CRYPTO_SELFTESTS
-+	default KUNIT_ALL_TESTS
- 	select CRYPTO_LIB_BENCHMARK_VISIBLE
- 	help
- 	  KUnit tests for the Poly1305 library functions.
-@@ -38,7 +38,7 @@ config CRYPTO_LIB_POLY1305_KUNIT_TEST
- config CRYPTO_LIB_SHA1_KUNIT_TEST
- 	tristate "KUnit tests for SHA-1" if !KUNIT_ALL_TESTS
- 	depends on KUNIT && CRYPTO_LIB_SHA1
--	default KUNIT_ALL_TESTS || CRYPTO_SELFTESTS
-+	default KUNIT_ALL_TESTS
- 	select CRYPTO_LIB_BENCHMARK_VISIBLE
- 	help
- 	  KUnit tests for the SHA-1 cryptographic hash function and its
-@@ -49,7 +49,7 @@ config CRYPTO_LIB_SHA1_KUNIT_TEST
- config CRYPTO_LIB_SHA256_KUNIT_TEST
- 	tristate "KUnit tests for SHA-224 and SHA-256" if !KUNIT_ALL_TESTS
- 	depends on KUNIT && CRYPTO_LIB_SHA256
--	default KUNIT_ALL_TESTS || CRYPTO_SELFTESTS
-+	default KUNIT_ALL_TESTS
- 	select CRYPTO_LIB_BENCHMARK_VISIBLE
- 	help
- 	  KUnit tests for the SHA-224 and SHA-256 cryptographic hash functions
-@@ -60,7 +60,7 @@ config CRYPTO_LIB_SHA256_KUNIT_TEST
- config CRYPTO_LIB_SHA512_KUNIT_TEST
- 	tristate "KUnit tests for SHA-384 and SHA-512" if !KUNIT_ALL_TESTS
- 	depends on KUNIT && CRYPTO_LIB_SHA512
--	default KUNIT_ALL_TESTS || CRYPTO_SELFTESTS
-+	default KUNIT_ALL_TESTS
- 	select CRYPTO_LIB_BENCHMARK_VISIBLE
- 	help
- 	  KUnit tests for the SHA-384 and SHA-512 cryptographic hash functions
+--- a/drivers/crypto/ccp/sev-dev.c
++++ b/drivers/crypto/ccp/sev-dev.c
+@@ -1860,7 +1860,10 @@ cmd:
+ 
+ 	ret = __sev_do_cmd_locked(SEV_CMD_PEK_CSR, &data, &argp->error);
+ 
+-	 /* If we query the CSR length, FW responded with expected data. */
++	/*
++	 * Firmware will returns the length of the CSR blob (either the minimum
++	 * required length or the actual length written), return it to the user.
++	 */
+ 	input.length = data.len;
+ 
+ 	if (copy_to_user((void __user *)argp->data, &input, sizeof(input))) {
+@@ -1868,6 +1871,9 @@ cmd:
+ 		goto e_free_blob;
+ 	}
+ 
++	if (ret || WARN_ON_ONCE(argp->error))
++		goto e_free_blob;
++
+ 	if (blob) {
+ 		if (copy_to_user(input_address, blob, input.length))
+ 			ret = -EFAULT;
 
 
 
