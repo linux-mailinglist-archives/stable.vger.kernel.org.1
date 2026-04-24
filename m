@@ -1,61 +1,64 @@
-Return-Path: <stable+bounces-240960-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240862-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qO1vNsJ062kQNAAAu9opvQ
-	(envelope-from <stable+bounces-240960-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:48:50 +0200
+	id MAqhONt062kQNAAAu9opvQ
+	(envelope-from <stable+bounces-240862-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:49:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7042F45FAF8
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:48:50 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7284445FB35
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:49:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A43FA305D709
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:44:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D7F61303DD40
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:40:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8156A3563D4;
-	Fri, 24 Apr 2026 13:44:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDC913D5236;
+	Fri, 24 Apr 2026 13:40:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CLI5WpaP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oT578Oxd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3532D3D75C4;
-	Fri, 24 Apr 2026 13:44:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9125419A288;
+	Fri, 24 Apr 2026 13:40:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777038282; cv=none; b=AhqQzLF0U5OeT7L0LJBZ20DChoeFVmOs1OQs+7DJRhZVWKlKfvCC/Ia76pD0lWFAtVCEDSMtT935ZWMRiHvQtaWV1saWK1WeWww475soV2vhzjhD5DZQChQqoLxNoYOd6HKmMgkG7gr16Qtl/ALaykoXeygZ06Cay2SsO78IdDM=
+	t=1777038032; cv=none; b=lbKho3POCUt3bOLL3OAK4zZf0Pb6jY1+AkEG233Wgv32FZaXSxs4uqUhMJwlyCms/HUcRFb34Yi4Dpl6NNBK+izigbIEMMn/BvI59a8eClohZoUzRKXeAU2t9VS27txv+eshscDkR5/1Kux4cUoGIWDr2rNkP4FYqGghRr/NS8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777038282; c=relaxed/simple;
-	bh=K5QVxvhKDVGza16l2GgGnmXEvqp+eA7l6YDmUl1F6qs=;
+	s=arc-20240116; t=1777038032; c=relaxed/simple;
+	bh=YBhw0Xu6MQED94xu0Ejsc1Q6KpfE+ZrQf1ZUPSkJzo8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Se/1rur9osNT/SgPa9IkenIGy19OPLRB2IdSIQi9ZTuPvb9m/he29pxPpakZkcKKquYG3o2NeL29klD6eZjCP3/E/FjLjar7+279xbkfAlSfv+vYTBrHnBtGWWyKCykpve0kPcDYwJSoVDz97dFLMIQpg15hoeUDjsrgS0R5+RY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CLI5WpaP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF001C19425;
-	Fri, 24 Apr 2026 13:44:41 +0000 (UTC)
+	 MIME-Version; b=YV6yr3t+pyUavvQV7K/4jNWMPFFBJyZmQ2MXBRksdf26v68HayOmzw/tV3gNh7DXKnbWbg76vMZKJezt0nt7Ly+nTKmex7sqdhylTex3bWkX7LmA7W2hHmTMOxTeILgx29bA+dEVPmUGSRAylbLjzTk3i43RGI7zn+aM6awtvj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oT578Oxd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CE84C19425;
+	Fri, 24 Apr 2026 13:40:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777038282;
-	bh=K5QVxvhKDVGza16l2GgGnmXEvqp+eA7l6YDmUl1F6qs=;
+	s=korg; t=1777038032;
+	bh=YBhw0Xu6MQED94xu0Ejsc1Q6KpfE+ZrQf1ZUPSkJzo8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CLI5WpaPXqIiUxSAwOxQnjypFjc6F0OFBZrrfpV+EeIliHeiqAu1jfRPq2ELUgAKs
-	 KICzSENN+mOfWlhbuCW2UtIroCzaRASA4OYWyQzh+DXRv+r1lUf+MdHxRAWeNBJ5fb
-	 KENhRiYYEBIKfXO8+YXovJGrIF6wbgsrFK52iR6M=
+	b=oT578OxdQ+x2846RitZCYCTbTo2T6M/N7z1h9AdrjpFXaUJbVD8cl7Ys8bVR3/wpq
+	 aHdCdTR+zXOzpv674M/FByzv382SNLnY8mP6wrcXdUkySoBfgE6HbcqZrjYPUTA3+/
+	 1H5mM7AWk9B86vIVStUj4ZxTz/BWtfEzSNYvDYXQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	munan Huang <munanevil@gmail.com>,
-	ChenXiaoSong <chenxiaosong@kylinos.cn>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 11/35] ksmbd: fix use-after-free in __ksmbd_close_fd() via durable scavenger
-Date: Fri, 24 Apr 2026 15:31:18 +0200
-Message-ID: <20260424132414.001061703@linuxfoundation.org>
+	Anderson Nascimento <anderson@allelesecurity.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Jeffrey Altman <jaltman@auristor.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-afs@lists.infradead.org,
+	stable@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 165/166] rxrpc: Fix missing validation of ticket length in non-XDR key preparsing
+Date: Fri, 24 Apr 2026 15:31:19 +0200
+Message-ID: <20260424132607.605269735@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132411.427029259@linuxfoundation.org>
-References: <20260424132411.427029259@linuxfoundation.org>
+In-Reply-To: <20260424132532.812258529@linuxfoundation.org>
+References: <20260424132532.812258529@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,169 +69,91 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7042F45FAF8
+X-Rspamd-Queue-Id: 7284445FB35
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kylinos.cn,kernel.org,microsoft.com];
-	TAGGED_FROM(0.00)[bounces-240960-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240862-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,kylinos.cn:email]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[allelesecurity.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,infradead.org:email,auristor.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Anderson Nascimento <anderson@allelesecurity.com>
 
-[ Upstream commit 235e32320a470fcd3998fb3774f2290a0eb302a1 ]
+commit ac33733b10b484d666f97688561670afd5861383 upstream.
 
-When a durable file handle survives session disconnect (TCP close without
-SMB2_LOGOFF), session_fd_check() sets fp->conn = NULL to preserve the
-handle for later reconnection. However, it did not clean up the byte-range
-locks on fp->lock_list.
+In rxrpc_preparse(), there are two paths for parsing key payloads: the
+XDR path (for large payloads) and the non-XDR path (for payloads <= 28
+bytes). While the XDR path (rxrpc_preparse_xdr_rxkad()) correctly
+validates the ticket length against AFSTOKEN_RK_TIX_MAX, the non-XDR
+path fails to do so.
 
-Later, when the durable scavenger thread times out and calls
-__ksmbd_close_fd(NULL, fp), the lock cleanup loop did:
+This allows an unprivileged user to provide a very large ticket length.
+When this key is later read via rxrpc_read(), the total
+token size (toksize) calculation results in a value that exceeds
+AFSTOKEN_LENGTH_MAX, triggering a WARN_ON().
 
-    spin_lock(&fp->conn->llist_lock);
+[ 2001.302904] WARNING: CPU: 2 PID: 2108 at net/rxrpc/key.c:778 rxrpc_read+0x109/0x5c0 [rxrpc]
 
-This caused a slab use-after-free because fp->conn was NULL and the
-original connection object had already been freed by
-ksmbd_tcp_disconnect().
+Fix this by adding a check in the non-XDR parsing path of rxrpc_preparse()
+to ensure the ticket length does not exceed AFSTOKEN_RK_TIX_MAX,
+bringing it into parity with the XDR parsing logic.
 
-The root cause is asymmetric cleanup: lock entries (smb_lock->clist) were
-left dangling on the freed conn->lock_list while fp->conn was nulled out.
-
-To fix this issue properly, we need to handle the lifetime of
-smb_lock->clist across three paths:
- - Safely skip clist deletion when list is empty and fp->conn is NULL.
- - Remove the lock from the old connection's lock_list in
-   session_fd_check()
- - Re-add the lock to the new connection's lock_list in
-   ksmbd_reopen_durable_fd().
-
-Fixes: c8efcc786146 ("ksmbd: add support for durable handles v1/v2")
-Co-developed-by: munan Huang <munanevil@gmail.com>
-Signed-off-by: munan Huang <munanevil@gmail.com>
-Reviewed-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8a7a3eb4ddbe ("KEYS: RxRPC: Use key preparsing")
+Fixes: 84924aac08a4 ("rxrpc: Fix checker warning")
+Reported-by: Anderson Nascimento <anderson@allelesecurity.com>
+Signed-off-by: Anderson Nascimento <anderson@allelesecurity.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Jeffrey Altman <jaltman@auristor.com>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+cc: stable@kernel.org
+Link: https://patch.msgid.link/20260422161438.2593376-7-dhowells@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/vfs_cache.c |   41 ++++++++++++++++++++++++++++++-----------
- 1 file changed, 30 insertions(+), 11 deletions(-)
+ net/rxrpc/key.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/fs/smb/server/vfs_cache.c
-+++ b/fs/smb/server/vfs_cache.c
-@@ -370,9 +370,11 @@ static void __ksmbd_close_fd(struct ksmb
- 	 * there are not accesses to fp->lock_list.
- 	 */
- 	list_for_each_entry_safe(smb_lock, tmp_lock, &fp->lock_list, flist) {
--		spin_lock(&fp->conn->llist_lock);
--		list_del(&smb_lock->clist);
--		spin_unlock(&fp->conn->llist_lock);
-+		if (!list_empty(&smb_lock->clist) && fp->conn) {
-+			spin_lock(&fp->conn->llist_lock);
-+			list_del(&smb_lock->clist);
-+			spin_unlock(&fp->conn->llist_lock);
-+		}
+--- a/net/rxrpc/key.c
++++ b/net/rxrpc/key.c
+@@ -340,6 +340,10 @@ static int rxrpc_preparse(struct key_pre
+ 	if (v1->security_index != RXRPC_SECURITY_RXKAD)
+ 		goto error;
  
- 		list_del(&smb_lock->flist);
- 		locks_free_lock(smb_lock->fl);
-@@ -902,6 +904,7 @@ static bool session_fd_check(struct ksmb
- 	struct ksmbd_inode *ci;
- 	struct oplock_info *op;
- 	struct ksmbd_conn *conn;
-+	struct ksmbd_lock *smb_lock, *tmp_lock;
- 
- 	if (!is_reconnectable(fp))
- 		return false;
-@@ -918,6 +921,12 @@ static bool session_fd_check(struct ksmb
- 	}
- 	up_write(&ci->m_lock);
- 
-+	list_for_each_entry_safe(smb_lock, tmp_lock, &fp->lock_list, flist) {
-+		spin_lock(&fp->conn->llist_lock);
-+		list_del_init(&smb_lock->clist);
-+		spin_unlock(&fp->conn->llist_lock);
-+	}
++	ret = -EKEYREJECTED;
++	if (v1->ticket_length > AFSTOKEN_RK_TIX_MAX)
++		goto error;
 +
- 	fp->conn = NULL;
- 	fp->tcon = NULL;
- 	fp->volatile_id = KSMBD_NO_FID;
-@@ -996,6 +1005,9 @@ int ksmbd_reopen_durable_fd(struct ksmbd
- {
- 	struct ksmbd_inode *ci;
- 	struct oplock_info *op;
-+	struct ksmbd_conn *conn = work->conn;
-+	struct ksmbd_lock *smb_lock;
-+	unsigned int old_f_state;
- 
- 	if (!fp->is_durable || fp->conn || fp->tcon) {
- 		pr_err("Invalid durable fd [%p:%p]\n", fp->conn, fp->tcon);
-@@ -1007,9 +1019,23 @@ int ksmbd_reopen_durable_fd(struct ksmbd
- 		return -EBADF;
- 	}
- 
--	fp->conn = work->conn;
-+	old_f_state = fp->f_state;
-+	fp->f_state = FP_NEW;
-+	__open_id(&work->sess->file_table, fp, OPEN_ID_TYPE_VOLATILE_ID);
-+	if (!has_file_id(fp->volatile_id)) {
-+		fp->f_state = old_f_state;
-+		return -EBADF;
-+	}
-+
-+	fp->conn = conn;
- 	fp->tcon = work->tcon;
- 
-+	list_for_each_entry(smb_lock, &fp->lock_list, flist) {
-+		spin_lock(&conn->llist_lock);
-+		list_add_tail(&smb_lock->clist, &conn->lock_list);
-+		spin_unlock(&conn->llist_lock);
-+	}
-+
- 	ci = fp->f_ci;
- 	down_write(&ci->m_lock);
- 	list_for_each_entry_rcu(op, &ci->m_op_list, op_entry) {
-@@ -1020,13 +1046,6 @@ int ksmbd_reopen_durable_fd(struct ksmbd
- 	}
- 	up_write(&ci->m_lock);
- 
--	fp->f_state = FP_NEW;
--	__open_id(&work->sess->file_table, fp, OPEN_ID_TYPE_VOLATILE_ID);
--	if (!has_file_id(fp->volatile_id)) {
--		fp->conn = NULL;
--		fp->tcon = NULL;
--		return -EBADF;
--	}
- 	return 0;
- }
+ 	plen = sizeof(*token->kad) + v1->ticket_length;
+ 	prep->quotalen += plen + sizeof(*token);
  
 
 
