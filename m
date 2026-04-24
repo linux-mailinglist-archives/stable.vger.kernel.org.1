@@ -1,140 +1,161 @@
-Return-Path: <stable+bounces-241030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241031-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2EZvMLfG62kmRQAAu9opvQ
-	(envelope-from <stable+bounces-241030-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 21:38:31 +0200
+	id AOZaN+7P62nfRgAAu9opvQ
+	(envelope-from <stable+bounces-241031-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 22:17:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D069462F79
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 21:38:31 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A13CA463299
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 22:17:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CA938300D6BF
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 19:37:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A148930074BF
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 20:17:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62361329E4B;
-	Fri, 24 Apr 2026 19:36:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6349937C911;
+	Fri, 24 Apr 2026 20:17:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="cI2d7/8U"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pTyyk1Jn"
 X-Original-To: stable@vger.kernel.org
-Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02629346AF8;
-	Fri, 24 Apr 2026 19:36:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CAC437AA70
+	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 20:17:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777059419; cv=none; b=jGWSPF7uW87xSq4+2xp8V2WEsoqteP7DX4Ydmx8c781QBCm96e2PXYiwwT4vwFRG7ncmp+21DIcL3NBxMB/ZDfn+oPEH5+hz3Q7hTCh45oY1DMpZZESu1k+bSUSqKGRrHrU+SszIj+h54ZGlSCeDMgAp2yACOmFgw9P8LcDOXuI=
+	t=1777061867; cv=none; b=RlcIENSan0yCuNw10EpSRyoizD/ZbpkztJUH5TZvjqqCakyrjUtMpL1r2toNVSpkyUuWx9MYTXwCqBOjTP4YfydHCF37ELBssNi19G65kgErVEtezeUdvGMmkLLieC7NZpqiT3Debp4BVLgOmBzHtrCpSzVGzZ+2CL9UGdys0m8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777059419; c=relaxed/simple;
-	bh=ZArQKKOO/jpjwDTszCNGO7m2Q57PSNA8DRKGJguyw6c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=d+iCVIDuUl9gvVxKUteLPGF4gmA91CIwJoBwM2Pbe5bAGxPeogo1VctEW7j9p+6jO03yHN7w65Z5mPALZhpkSaYuQrbZ9Zm8evciTKbAp8o000ZeT033J536kz1BXweRnKmCltYynvU06EQnP9U+mlIVqEEegU7BsCG3FN6jR/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=cI2d7/8U; arc=none smtp.client-ip=178.251.229.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 305D71140E2;
-	Fri, 24 Apr 2026 21:36:53 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1777059416;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=3Qbj0n8CM1rkoryXZaXj8YuyhC4vOWvB7H8uGLYWpWU=;
-	b=cI2d7/8UiHq78lp2u2BQ1M6KsKAB1Al/NbIsKQqvaDQHby2RxvYw76pLJZBQOslqFxeyyb
-	IBRFswy2CiMuX5XDAhrkK72WpsI0VjvmIWSsgoCf9VAYIhDpKb355WurfkZ42j4pNZhCSA
-	MQBBFqAV/Ak7ofnb8t5dEn4Nj2AhIm+MskqHMeHtVQEUxF9XXRvjKDeYbxXakDfAyJbeq4
-	ovvJDijYiIxoKSDH+MjlYp8MhyRq8UtReAkzxbk1slhzrVmRDGPsqlEg/HtaVTMDOt98lr
-	9QJ++wVzPxTM4CVP8uWCvz8SR9izcOd7Cft6lFoigp+isq3XWoTtzYyBF3mqlg==
-Date: Fri, 24 Apr 2026 21:36:51 +0200
-From: Pavel Machek <pavel@nabladev.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org,
-	pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
-	sr@sladewatkins.com
-Subject: Re: [PATCH 6.12 00/35] 6.12.84-rc1 review
-Message-ID: <aevGU7OtAOXivj1n@duo.ucw.cz>
-References: <20260424132411.427029259@linuxfoundation.org>
+	s=arc-20240116; t=1777061867; c=relaxed/simple;
+	bh=Gkl1QzrZ7N4bDfiIdKK+4iFDj1dRTnHohqu0nRIJo0E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JluMQ0e4ecvwLziQLPOcYCk31Qc/AXX/QeetX1vBpfWO1KGOPP8fwHYdLZn4C1g9EL5BNREMRQ54uVHhothY0JwtaM1puTryW5Jlm1yisiQ+sAZ0nXKgzjApL73PM1/4poqR3t7RKu9bX0nUVVuKsblKhO2JMrePT+VGmtMByjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pTyyk1Jn; arc=none smtp.client-ip=209.85.219.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-8acb3dab8dfso53029676d6.1
+        for <stable@vger.kernel.org>; Fri, 24 Apr 2026 13:17:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777061863; x=1777666663; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=7c2lMMSx8lhoxtQP1VdjluOjQF1ubaN8Vricctt/Pq0=;
+        b=pTyyk1JnuhaeJ6qXxHmSlSfQE1SKbh2Uo9hQqFbt+4ABVEhbME3RQyDwsF7B3lS7QJ
+         ZmbKpAlU+go+SXwyp940X8f/s+ob0P17nmzdyGqooLrdGwLqH2XCGu3RKnZTgSaJXNlm
+         5YgnUIsymSBiTRjX2lQqv2s+e8P+NVa2Nb036sU57VIB7VE/bysELsH6396j2nyHt6QN
+         5PchUMwKKahK/o8fLkv1E3YjPP7HUkBY76qQ3Vw0jS0NANy+FR64ibo4yWBSgx5WEZp9
+         5ylMAKCfJUxYO10tkuTjNPvE4DGDW8r7QNJ7njYNQBbYoT/VjkgVWUCEIA7VZ7/d9XFw
+         x3ag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777061863; x=1777666663;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7c2lMMSx8lhoxtQP1VdjluOjQF1ubaN8Vricctt/Pq0=;
+        b=mMcsGx1PUp3sMfc+5u4et3eI5JPUQaizBsSI36NXabTHc+gFcuPAFAe4WDWNbUTspq
+         zs8mC7UrflmeRV0fP/xepYBrdm1pA/c+ihD2g3jshc8WYd0A5Cnx0zZO65nStlAqI8Oj
+         6rz+J6inVdch1MHbZ+RQ+IF3pz/1yeBCM/imgmceWCv2s5WSxlJRr3pnat/2urukK9zN
+         QVGBOKnBivc0LCg6WgIdcPm2OtjSXvgZ6woA0vYustvbHRkyooJrDdRJ212FTC4SvVOE
+         +uBQRUNP7afDzvzT+OCMZfq63EP8uLjOWHh7SH3eJ37jbeVts55qSAL1NhbCq1PBhXpL
+         4SoQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8x7o5cKVijD3Z9hM14YnBW/iK2g7EJrposwjT78xwqO2yYgcW6ZNry4X+2Npmlw92UD5z0Tow=@vger.kernel.org
+X-Gm-Message-State: AOJu0YypK6wfehg7Rab+mw8A+joeX2NfUBFun6fJyUaHHlwa1K7dnkMt
+	MY1q3kauWeX5SHYiTg1pmyhiVd7oX2MGSmywBDbb6GhXev/X0fgWWxvq
+X-Gm-Gg: AeBDietdyonhw9nTQXaFin0qm1GjdDlz9xS/eVAAPStEze+Dn7rBX6YcQntA4vWs7dk
+	00a7CYSoBwvStdswsyyU7H73KcF2mt+FThMx9fhOz1Qhm/c9NTQtwflBaC5UkYvKuOL0nv8F/i4
+	x2b/yeYdVO1Z/a8tGfq15kVdh9ehQZlUGmHy7k6vLp64CKPLcUh9OqG1DKBmCNUQb/UV+koutzx
+	6cGNykUWl+QwxoFbBu+fpwkEZmbjci7YzieYNZpPqTDGD4iHL7eqiCPA1kS3//FXZhO/H8AHI4P
+	PmeVf+FKpzHRN+JbqwSOhrrQTB4k/wNTMOVz0w4VnntcvRn1X1diZfOZdN95PJr+j4mudX7KQGF
+	uZXrBeyZUt/AAiJreWtGKrMz3ar7r5lForpJsWX3uKk4D1MsFPkhvFBG0XIY0FOvQB+Yrg86QCK
+	A9tgN+/DrOp2tXzvHFkOrJSgENnVqQdJdmAYnBPO4oxSIGeNmFvGVpiQEFbHrK
+X-Received: by 2002:a05:6214:5912:b0:8a4:db54:b3a4 with SMTP id 6a1803df08f44-8b028013decmr531322466d6.7.1777061863457;
+        Fri, 24 Apr 2026 13:17:43 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b02ae5c4b9sm264466736d6.28.2026.04.24.13.17.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 24 Apr 2026 13:17:42 -0700 (PDT)
+Message-ID: <7589e56f-cb44-42bb-9427-cf0ec65051e3@gmail.com>
+Date: Fri, 24 Apr 2026 13:17:39 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="LICLsT4C/wie6Kmk"
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.12 00/35] 6.12.84-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+ hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+ sr@sladewatkins.com
+References: <20260424132411.427029259@linuxfoundation.org>
+Content-Language: en-US, fr-FR
+From: Florian Fainelli <f.fainelli@gmail.com>
 In-Reply-To: <20260424132411.427029259@linuxfoundation.org>
-X-Last-TLS-Session-Version: TLSv1.3
-X-Rspamd-Queue-Id: 3D069462F79
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: A13CA463299
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.76 / 15.00];
-	SIGNED_PGP(-2.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[nabladev.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_DKIM_ALLOW(-0.20)[nabladev.com:s=dkim];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241030-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	TAGGED_FROM(0.00)[bounces-241031-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ffainelli@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pavel@nabladev.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[nabladev.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
 	TO_DN_SOME(0.00)[]
 
-
---LICLsT4C/wie6Kmk
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-Hi!
-
+On 4/24/26 06:31, Greg Kroah-Hartman wrote:
 > This is the start of the stable review cycle for the 6.12.84 release.
 > There are 35 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
+> 
+> Responses should be made by Sun, 26 Apr 2026 13:23:21 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.84-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-CIP testing did not find any problems here:
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
-6.12.y                =20
-
-Tested-by: Pavel Machek (CIP) <pavel@nabladev.com>
-
-Best regards,
-                                                                Pavel
-
---LICLsT4C/wie6Kmk
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCaevGUwAKCRAw5/Bqldv6
-8gQ3AJ9UknfFVqcu1DXTrK/Utr3BgyPZuQCfb1jm/iEbKTSEde2kd/eXXlCN6zM=
-=Cy2e
------END PGP SIGNATURE-----
-
---LICLsT4C/wie6Kmk--
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
 
