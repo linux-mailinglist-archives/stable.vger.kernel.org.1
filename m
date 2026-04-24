@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-240704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240930-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4NZPA5By62nCMwAAu9opvQ
-	(envelope-from <stable+bounces-240704-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:39:28 +0200
+	id ALTVFoFz62kQNAAAu9opvQ
+	(envelope-from <stable+bounces-240930-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:43:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EB4645F543
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:39:27 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DDA845F7B4
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:43:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 28FC53034DC8
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:33:43 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 88859300750A
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:43:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 974783D5241;
-	Fri, 24 Apr 2026 13:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C07703D6CC7;
+	Fri, 24 Apr 2026 13:43:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nyHuqq4J"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U40K9pYT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56AED3563D4
-	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 13:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 852D13D6494
+	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 13:43:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777037621; cv=none; b=Ds3ZTAUAI+JDGkKDucVhmj7riSh/8hCgGuGv6Qnc2qXJP5HLU5yW1142+R9fZ57JnjltufXxag+lBgXP3ta9wWKfMd9SZo8mr2SwYEGHT9otK9PTcXjKwCwxe9DDG+dwcFgZtL5+elBzdCfYmSByzyp+8gub7j5PsRUV6FChhMg=
+	t=1777038205; cv=none; b=XlXEK6D1mPNGAwf2mT63lFpPOSQuXkQXia3QmR6A7KoUzrYrvEsPzmYr2hNRMTmY1z5QFh7u5IFr7Q2oBoUznpi2U3ePGIyH9MGhYEht1E1wL0354aJO8h8Aij1zuAoNCuA9oKzzXe/u3eCBSKemPfecqbVJfgFcJceZ5Mxwhi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777037621; c=relaxed/simple;
-	bh=WYPrjfBFRuZgh65mblX6Gmf/yc+CRxJaBTdjAvXEC+o=;
+	s=arc-20240116; t=1777038205; c=relaxed/simple;
+	bh=hznFsPXdYJbAkVQWEfKTgW3uBmIv9yDPKd56jHsdk58=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KnMmT8eGaplF/fN9z/DctzbN2iz9DpkqvDSjfPEnZ6HT422xvKmlZZIcBn7Ga7mzbVPtKQXVKbTk1PVvBR+iTqwnswH1jqwID6Fr+eEVe7YbOFaz4nY/oCJuYr44SSc/D4kbKKnbLrbcET3jtlIw5/Q8UH/2esvJnxaXNfYoAm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nyHuqq4J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43313C19425;
-	Fri, 24 Apr 2026 13:33:40 +0000 (UTC)
+	 MIME-Version; b=OhbdRpXmkMu9NWUMyU6SFbWM45wt5NvMWpUPdoqzwrKNbfvPXrMBFMKRDn78LnGOmkFlFjP8jSpVVKdotUa24V0swlRwGqofJcPKS7+GdqN7StGInHSgIzyYfpg8mPT9DlNUz6OAcy2xIU5U/dScV+YPwSwsV/cpatXcM2t5woU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U40K9pYT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9473DC2BCB2;
+	Fri, 24 Apr 2026 13:43:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777037621;
-	bh=WYPrjfBFRuZgh65mblX6Gmf/yc+CRxJaBTdjAvXEC+o=;
+	s=k20201202; t=1777038205;
+	bh=hznFsPXdYJbAkVQWEfKTgW3uBmIv9yDPKd56jHsdk58=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nyHuqq4J61/tBS7qmFyK82TDNllRMBfz8T3tyFUtFPWJsq38fkkYuX4pt0CDgMnW0
-	 rRw809ei538uYios0YyiV8ot6Ja90X8mxpATK7aFO41ICbip+WUBWmSF0xzesEGH28
-	 FKBWqwWdfXStFlVAyhp8uSv6r6PEhDeib2ULhs1efLdQ9B4oHTAK11D2ipWvbDxx/u
-	 d4N7nRIqin1k/U99R5GnaRn5IWaq3LqJliOJEHj0A3/xmDgK1gvb+espYoCOUsgzLt
-	 v5M8WRvm5qw7nAiIKoUI9PApfGAKcP3+R2oJrba9PzFnIViu/1nTK476AipMiIxmYG
-	 nk6y/lzuUPCnA==
+	b=U40K9pYTrmfAb4EsVxhtZvJFCTBWmadBu8TIEIj0INPcYHoP4mKXMSji7TFfmSpJF
+	 KTSlWWactooNGjFnfAXd8Ito6/QHpmOugxM8rOoZzHkEFppII2s3y28cAxqHL1ggX+
+	 Lc4NwGYKewnFvCAsgWYjDn2li1SjdCxwWWHW2NuhqYeisp9TzHaV41XYl0J5OAWIs6
+	 rZnvuN+pY/Z1IxgOX3km0Noh/wHq/4QgTJ24nOVJyp5vZmvLCaNOgczvE739fexRIH
+	 vd3qerVPfjnR7Vk0o+pX8HQXe4H0Cx0ijU6kUo91BpruHtneD9JxkFPVFvQwmATy20
+	 EKVrLcyQve4Qg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Yongpeng Yang <yangyongpeng@xiaomi.com>,
@@ -52,12 +52,12 @@ Cc: Yongpeng Yang <yangyongpeng@xiaomi.com>,
 	Chao Yu <chao@kernel.org>,
 	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] f2fs: fix UAF caused by decrementing sbi->nr_pages[] in f2fs_write_end_io()
-Date: Fri, 24 Apr 2026 09:33:38 -0400
-Message-ID: <20260424133338.1965493-1-sashal@kernel.org>
+Subject: [PATCH 5.15.y] f2fs: fix UAF caused by decrementing sbi->nr_pages[] in f2fs_write_end_io()
+Date: Fri, 24 Apr 2026 09:43:22 -0400
+Message-ID: <20260424134323.2017162-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026042434-ultra-craving-a7e9@gregkh>
-References: <2026042434-ultra-craving-a7e9@gregkh>
+In-Reply-To: <2026042434-undead-bronzing-dd24@gregkh>
+References: <2026042434-undead-bronzing-dd24@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,7 +65,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6EB4645F543
+X-Rspamd-Queue-Id: 2DDA845F7B4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [0.84 / 15.00];
@@ -74,7 +74,7 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -83,9 +83,9 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240704-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-240930-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
@@ -95,7 +95,7 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	TAGGED_RCPT(0.00)[stable,6e4cb1cac5efc96ea0ca];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[xiaomi.com:email,appspotmail.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[xiaomi.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,appspotmail.com:email]
 
 From: Yongpeng Yang <yangyongpeng@xiaomi.com>
 
@@ -145,10 +145,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
-index 9bc66ead42d02..5afa634cda645 100644
+index 887e286d2c329..9b4112177168d 100644
 --- a/fs/f2fs/data.c
 +++ b/fs/f2fs/data.c
-@@ -356,6 +356,8 @@ static void f2fs_write_end_io(struct bio *bio)
+@@ -339,6 +339,8 @@ static void f2fs_write_end_io(struct bio *bio)
  
  		f2fs_bug_on(sbi, page->mapping == NODE_MAPPING(sbi) &&
  					page->index != nid_of_node(page));
@@ -157,7 +157,7 @@ index 9bc66ead42d02..5afa634cda645 100644
  
  		dec_page_count(sbi, type);
  
-@@ -367,8 +369,6 @@ static void f2fs_write_end_io(struct bio *bio)
+@@ -350,8 +352,6 @@ static void f2fs_write_end_io(struct bio *bio)
  				wq_has_sleeper(&sbi->cp_wait))
  			wake_up(&sbi->cp_wait);
  
