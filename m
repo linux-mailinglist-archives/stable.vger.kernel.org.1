@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-240787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240753-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qIjdIyFy62ndMwAAu9opvQ
-	(envelope-from <stable+bounces-240787-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:37:37 +0200
+	id mB2DJtdy62nCMwAAu9opvQ
+	(envelope-from <stable+bounces-240753-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:40:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8653245F413
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:37:36 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8A0345F5DA
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:40:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 86AAB3003815
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:37:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D4991303FAF2
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:35:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2FCA3D5241;
-	Fri, 24 Apr 2026 13:37:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 626C53D5251;
+	Fri, 24 Apr 2026 13:35:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="viGbsqw6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jeSseSQy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61D633563D4;
-	Fri, 24 Apr 2026 13:37:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7C5023E356;
+	Fri, 24 Apr 2026 13:35:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777037839; cv=none; b=hJMXF/GTJjZTjJ+0q2uy6dWgcjKcd9ngxHy0ktO8nnqp6zXw08+UE49yd4BDPaoou1/gE7mWvowyeCWAPkrDVwRrHTUz+OfIO4u1EaveTF3MSDNIkmTV3jcP/JvM7oxzRXRm0X6+IU+nCJYFO0bbbo3fKjhsARxYQX6DDf9xceg=
+	t=1777037752; cv=none; b=BDmfhhu4s32WLhDuzV/mmGpnTKGTnRbRA/8c70mbwG03T7zd/aMGjdJ6Rt1g6O4SOVsvo9Hr4pk3WzHA1yZm7JS506CodBLtcCOkVBF91Dt9kuC5vXQAta8HEgWxVUeCux3bsivZc4ElPmleoczL21AxwO1SLX1RAs8Z8OJ0F8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777037839; c=relaxed/simple;
-	bh=otUiT2AahbuXJo6T4aqBi3fKjRR48JOLvgFzBZ1O/Z8=;
+	s=arc-20240116; t=1777037752; c=relaxed/simple;
+	bh=UzuUsf7cdqZYc4R16imisgCz3ml362Z9NVnoiVnD0O0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=g/VI2m0PCJfYhjDcnKMXFVzax+gqkT71ECSyPUomVluUygaML/DTynPesL0cbrt39RSItjzCcC7m6b9nSWRvEUJIfEjprkuSbdSQpHVXysiePyKq+DnCD2ysKQnTUzHmIHHQUkSZz/uXKwcr5BFh4GWdSP2HDV4HffZzQe/xVDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=viGbsqw6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB0D9C2BCB5;
-	Fri, 24 Apr 2026 13:37:18 +0000 (UTC)
+	 MIME-Version; b=AYfh1YlvYJ9qt6mwNfKnPXiNXxmMzMKAl1Ti9wUWGi3yx/5ke2o93Gv4dPfVfkRDSQrcCbu8IX+ALG0ICq87Q+BfcPDdsLMRtk1mcPi9gWhi78R5VPcpw+BLbBjmzwPRb7Aw+UuiTWNBqY78Guiih3KQEDHC9mzCocYAvIZV4GA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jeSseSQy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 673D8C19425;
+	Fri, 24 Apr 2026 13:35:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777037839;
-	bh=otUiT2AahbuXJo6T4aqBi3fKjRR48JOLvgFzBZ1O/Z8=;
+	s=korg; t=1777037751;
+	bh=UzuUsf7cdqZYc4R16imisgCz3ml362Z9NVnoiVnD0O0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=viGbsqw6NnqWzzmufgOmLPMMIkYZ53Ev+7dtjcqLntjCQKiyTaCJQZ5bcHRfN3fOT
-	 jHrrsBXy6HUHB1ZwiJ+d40qi+KGw6msI8rc3avUzfXqmMbYolwyP6nhP2jXY++CD8U
-	 BLUuBkfXuv4AWyWp7CB7YYUz7H1o3dkP6Vjza+JU=
+	b=jeSseSQyWvZ68aM5DoPby9yoHgv0rhJvlUvnwuK+Xz5EWDX8FOTsccZMNyuj1jtKB
+	 GEn4gMdhlUJg9Me9V49gsWlZ6fK4RaCrXkR2yipW/mss9ze1eBJXuWo0A6SJeiuJ3c
+	 P27BjRavxy6hBFLtTzeGSf1IiL+XyKnV6IoQeJh4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 047/166] xsk: validate MTU against usable frame size on bind
-Date: Fri, 24 Apr 2026 15:29:21 +0200
-Message-ID: <20260424132542.652138453@linuxfoundation.org>
+Subject: [PATCH 6.6 048/166] xfrm: Wait for RCU readers during policy netns exit
+Date: Fri, 24 Apr 2026 15:29:22 +0200
+Message-ID: <20260424132542.886327661@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260424132532.812258529@linuxfoundation.org>
 References: <20260424132532.812258529@linuxfoundation.org>
@@ -64,130 +63,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8653245F413
+X-Rspamd-Queue-Id: D8A0345F5DA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-240787-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-240753-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,secunet.com:email]
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+From: Steffen Klassert <steffen.klassert@secunet.com>
 
-[ Upstream commit 36ee60b569ba0dfb6f961333b90d19ab5b323fa9 ]
+[ Upstream commit 069daad4f2ae9c5c108131995529d5f02392c446 ]
 
-AF_XDP bind currently accepts zero-copy pool configurations without
-verifying that the device MTU fits into the usable frame space provided
-by the UMEM chunk.
+xfrm_policy_fini() frees the policy_bydst hash tables after flushing the
+policy work items and deleting all policies, but it does not wait for
+concurrent RCU readers to leave their read-side critical sections first.
 
-This becomes a problem since we started to respect tailroom which is
-subtracted from chunk_size (among with headroom). 2k chunk size might
-not provide enough space for standard 1500 MTU, so let us catch such
-settings at bind time. Furthermore, validate whether underlying HW will
-be able to satisfy configured MTU wrt XSK's frame size multiplied by
-supported Rx buffer chain length (that is exposed via
-net_device::xdp_zc_max_segs).
+The policy_bydst tables are published via rcu_assign_pointer() and are
+looked up through rcu_dereference_check(), so netns teardown must also
+wait for an RCU grace period before freeing the table memory.
 
-Fixes: 24ea50127ecf ("xsk: support mbuf on ZC RX")
-Reviewed-by: Björn Töpel <bjorn@kernel.org>
-Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Link: https://patch.msgid.link/20260402154958.562179-5-maciej.fijalkowski@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fix this by adding synchronize_rcu() before freeing the policy hash tables.
+
+Fixes: e1e551bc5630 ("xfrm: policy: prepare policy_bydst hash for rcu lookups")
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Reviewed-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/xdp/xsk_buff_pool.c | 28 +++++++++++++++++++++++++---
- 1 file changed, 25 insertions(+), 3 deletions(-)
+ net/xfrm/xfrm_policy.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/xdp/xsk_buff_pool.c b/net/xdp/xsk_buff_pool.c
-index 52c4204bc224e..bb9dfbe419e7c 100644
---- a/net/xdp/xsk_buff_pool.c
-+++ b/net/xdp/xsk_buff_pool.c
-@@ -8,6 +8,8 @@
- #include "xdp_umem.h"
- #include "xsk.h"
+diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
+index 45851f822ec4a..82854aa258ea6 100644
+--- a/net/xfrm/xfrm_policy.c
++++ b/net/xfrm/xfrm_policy.c
+@@ -4215,6 +4215,8 @@ static void xfrm_policy_fini(struct net *net)
+ #endif
+ 	xfrm_policy_flush(net, XFRM_POLICY_TYPE_MAIN, false);
  
-+#define ETH_PAD_LEN (ETH_HLEN + 2 * VLAN_HLEN  + ETH_FCS_LEN)
++	synchronize_rcu();
 +
- void xp_add_xsk(struct xsk_buff_pool *pool, struct xdp_sock *xs)
- {
- 	unsigned long flags;
-@@ -149,8 +151,12 @@ static void xp_disable_drv_zc(struct xsk_buff_pool *pool)
- int xp_assign_dev(struct xsk_buff_pool *pool,
- 		  struct net_device *netdev, u16 queue_id, u16 flags)
- {
-+	u32 needed = netdev->mtu + ETH_PAD_LEN;
-+	u32 segs = netdev->xdp_zc_max_segs;
-+	bool mbuf = flags & XDP_USE_SG;
- 	bool force_zc, force_copy;
- 	struct netdev_bpf bpf;
-+	u32 frame_size;
- 	int err = 0;
+ 	WARN_ON(!list_empty(&net->xfrm.policy_all));
  
- 	ASSERT_RTNL();
-@@ -170,7 +176,7 @@ int xp_assign_dev(struct xsk_buff_pool *pool,
- 	if (err)
- 		return err;
- 
--	if (flags & XDP_USE_SG)
-+	if (mbuf)
- 		pool->umem->flags |= XDP_UMEM_SG_FLAG;
- 
- 	if (flags & XDP_USE_NEED_WAKEUP)
-@@ -192,8 +198,24 @@ int xp_assign_dev(struct xsk_buff_pool *pool,
- 		goto err_unreg_pool;
- 	}
- 
--	if (netdev->xdp_zc_max_segs == 1 && (flags & XDP_USE_SG)) {
--		err = -EOPNOTSUPP;
-+	if (mbuf) {
-+		if (segs == 1) {
-+			err = -EOPNOTSUPP;
-+			goto err_unreg_pool;
-+		}
-+	} else {
-+		segs = 1;
-+	}
-+
-+	/* open-code xsk_pool_get_rx_frame_size() as pool->dev is not
-+	 * set yet at this point; we are before getting down to driver
-+	 */
-+	frame_size = __xsk_pool_get_rx_frame_size(pool) -
-+		     xsk_pool_get_tailroom(mbuf);
-+	frame_size = ALIGN_DOWN(frame_size, 128);
-+
-+	if (needed > frame_size * segs) {
-+		err = -EINVAL;
- 		goto err_unreg_pool;
- 	}
- 
+ 	for (dir = 0; dir < XFRM_POLICY_MAX; dir++) {
 -- 
 2.53.0
 
