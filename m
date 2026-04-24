@@ -1,61 +1,66 @@
-Return-Path: <stable+bounces-240892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240830-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +J+OLnVz62kLNAAAu9opvQ
-	(envelope-from <stable+bounces-240892-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:43:17 +0200
+	id 0IG7FYl062koNAAAu9opvQ
+	(envelope-from <stable+bounces-240830-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:47:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D5E045F797
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:43:17 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1E4445FA5B
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:47:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C220D303338F
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:41:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C141A3033ABF
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:39:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11F1C3D6CBD;
-	Fri, 24 Apr 2026 13:41:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F7073D5643;
+	Fri, 24 Apr 2026 13:39:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HAiVhod0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sPrPs8I8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8F5519A288;
-	Fri, 24 Apr 2026 13:41:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 211413D6CC8;
+	Fri, 24 Apr 2026 13:39:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777038109; cv=none; b=c0CTCoKKo+kvPLMX/dfdCNV+mmhlZm6gewdM3m5hMjKEUVclOxU34/bDlpsGrmuFhmqaIX4NoorKIsSB06DZE3yNwZH35Rq9EEt5VxATtS5ZDBefe/KX7GDBr1MGxD9+0gxcQ1Eldz9r7y5nKO0CbCvrHJp4byAvYLG+r0AUcD0=
+	t=1777037950; cv=none; b=ZVGu9LoFXZISjBopxSqLoLZnc6/m2c4osQRbDhNSjl/Yo1ztFFCBBQFRClTKwFkcj6mHV+1+D4ECZmQy4VoLklfkfAj7xzMozp+fwCGLCn+1KKijCx4L/jyhmmVBFCO4n1cqaiXNZ9heNX73p1RmT36pHWBmbGOOlTFSlEks7wQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777038109; c=relaxed/simple;
-	bh=v3sGPDG3byw5YJRQBAC3NY1ApORNJ8Wn5sPZyvPuqFI=;
+	s=arc-20240116; t=1777037950; c=relaxed/simple;
+	bh=QT85TAwTZWbgE6UGvSytyxuWUIHqrZvt4XP+CdYbRuU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rzu3V1+iuF0YqxRw6peE4Ye5/5DyE3kteNEJ3qP/BDyEfTEwBudBfGN7ZmuasGdYICeFGwx4XXGWYxQFwTr8M7qGKisBPNFoIil2pYPpirFu+AO9TaRBelJDGoVRw8BYv5671GvvsZhfQ4utEqlE5+4RESTHl4U2wuCvbEg1kAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HAiVhod0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EB24C19425;
-	Fri, 24 Apr 2026 13:41:49 +0000 (UTC)
+	 MIME-Version; b=LItCMFi+641PIDI+9fsiZ09l4lMiPqmUfP7pnd6/wRZRmRmtIgtT9OGR1Lh80O8HlDjvqiSoQ4eKfsaB9VnOgEOlFkhgviSBjCBCfbRNr1SvAvYmu+V0Jw2V6tShrNE9m6h4dgX5/Uhao2Q+oGCFz+0DECG60QkS5zyXvuhcOWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sPrPs8I8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82AF9C19425;
+	Fri, 24 Apr 2026 13:39:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777038109;
-	bh=v3sGPDG3byw5YJRQBAC3NY1ApORNJ8Wn5sPZyvPuqFI=;
+	s=korg; t=1777037950;
+	bh=QT85TAwTZWbgE6UGvSytyxuWUIHqrZvt4XP+CdYbRuU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HAiVhod0t4zlTG0hsj7B1je6WlU2rM13YCFX1a4wFzvy87rjvXEwvdmH43ttE5R6t
-	 WybF67ViHCV4ks/bBk95HQ1KSh83+hlnyjKt9hpnJQAVmZDKUAEk6WDNI5TQbPLltH
-	 7h2xPpsnJjK0aw2Lfjf12jGQ1ZaPhTmxwHxiW6Zo=
+	b=sPrPs8I8UfTcN6uR9zvToOU4szxr5yLGzKEUhdTXHwxdHwO0TCOe6ZbrmAukKOf4A
+	 lYTfHy6dgyX6N0lDvXMnL3oYLU6rGLIQkfwTWjWWQSKnJTSOjPaSoTT+JNKTiH1vYV
+	 1OFYDaHn5EGSzmlADLt5L57bCex0k5b/TKJbWsPA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	munan Huang <munanevil@gmail.com>,
-	ChenXiaoSong <chenxiaosong@kylinos.cn>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	syzbot+87f770387a9e5dc6b79b@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Jakub Sitnicki <jakub@cloudflare.com>,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Leon Chen <leonchen.oss@139.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 08/55] ksmbd: fix use-after-free in __ksmbd_close_fd() via durable scavenger
+Subject: [PATCH 6.6 133/166] net: annotate data-races around sk->sk_{data_ready,write_space}
 Date: Fri, 24 Apr 2026 15:30:47 +0200
-Message-ID: <20260424132431.770102631@linuxfoundation.org>
+Message-ID: <20260424132600.743840582@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132430.006424517@linuxfoundation.org>
-References: <20260424132430.006424517@linuxfoundation.org>
+In-Reply-To: <20260424132532.812258529@linuxfoundation.org>
+References: <20260424132532.812258529@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,171 +71,300 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2D5E045F797
+X-Rspamd-Queue-Id: B1E4445FA5B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kylinos.cn,kernel.org,microsoft.com];
-	TAGGED_FROM(0.00)[bounces-240892-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	TAGGED_FROM(0.00)[bounces-240830-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,google.com,iogearbox.net,gmail.com,cloudflare.com,kernel.org,139.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable,87f770387a9e5dc6b79b];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,kylinos.cn:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,appspotmail.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 235e32320a470fcd3998fb3774f2290a0eb302a1 ]
+[ Upstream commit 2ef2b20cf4e04ac8a6ba68493f8780776ff84300 ]
 
-When a durable file handle survives session disconnect (TCP close without
-SMB2_LOGOFF), session_fd_check() sets fp->conn = NULL to preserve the
-handle for later reconnection. However, it did not clean up the byte-range
-locks on fp->lock_list.
+skmsg (and probably other layers) are changing these pointers
+while other cpus might read them concurrently.
 
-Later, when the durable scavenger thread times out and calls
-__ksmbd_close_fd(NULL, fp), the lock cleanup loop did:
+Add corresponding READ_ONCE()/WRITE_ONCE() annotations
+for UDP, TCP and AF_UNIX.
 
-    spin_lock(&fp->conn->llist_lock);
-
-This caused a slab use-after-free because fp->conn was NULL and the
-original connection object had already been freed by
-ksmbd_tcp_disconnect().
-
-The root cause is asymmetric cleanup: lock entries (smb_lock->clist) were
-left dangling on the freed conn->lock_list while fp->conn was nulled out.
-
-To fix this issue properly, we need to handle the lifetime of
-smb_lock->clist across three paths:
- - Safely skip clist deletion when list is empty and fp->conn is NULL.
- - Remove the lock from the old connection's lock_list in
-   session_fd_check()
- - Re-add the lock to the new connection's lock_list in
-   ksmbd_reopen_durable_fd().
-
-Fixes: c8efcc786146 ("ksmbd: add support for durable handles v1/v2")
-Co-developed-by: munan Huang <munanevil@gmail.com>
-Signed-off-by: munan Huang <munanevil@gmail.com>
-Reviewed-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Stable-dep-of: 49110a8ce654 ("ksmbd: validate owner of durable handle on reconnect")
+Fixes: 604326b41a6f ("bpf, sockmap: convert to generic sk_msg interface")
+Reported-by: syzbot+87f770387a9e5dc6b79b@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/699ee9fc.050a0220.1cd54b.0009.GAE@google.com/
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Daniel Borkmann <daniel@iogearbox.net>
+Cc: John Fastabend <john.fastabend@gmail.com>
+Cc: Jakub Sitnicki <jakub@cloudflare.com>
+Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20260225131547.1085509-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Leon Chen <leonchen.oss@139.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/vfs_cache.c |   41 ++++++++++++++++++++++++++++++-----------
- 1 file changed, 30 insertions(+), 11 deletions(-)
+ net/core/skmsg.c         | 14 +++++++-------
+ net/ipv4/tcp.c           |  4 ++--
+ net/ipv4/tcp_bpf.c       |  2 +-
+ net/ipv4/tcp_input.c     | 14 ++++++++------
+ net/ipv4/tcp_minisocks.c |  2 +-
+ net/ipv4/udp.c           |  3 ++-
+ net/ipv4/udp_bpf.c       |  2 +-
+ net/unix/af_unix.c       |  8 ++++----
+ 8 files changed, 26 insertions(+), 23 deletions(-)
 
---- a/fs/smb/server/vfs_cache.c
-+++ b/fs/smb/server/vfs_cache.c
-@@ -370,9 +370,11 @@ static void __ksmbd_close_fd(struct ksmb
- 	 * there are not accesses to fp->lock_list.
- 	 */
- 	list_for_each_entry_safe(smb_lock, tmp_lock, &fp->lock_list, flist) {
--		spin_lock(&fp->conn->llist_lock);
--		list_del(&smb_lock->clist);
--		spin_unlock(&fp->conn->llist_lock);
-+		if (!list_empty(&smb_lock->clist) && fp->conn) {
-+			spin_lock(&fp->conn->llist_lock);
-+			list_del(&smb_lock->clist);
-+			spin_unlock(&fp->conn->llist_lock);
-+		}
+diff --git a/net/core/skmsg.c b/net/core/skmsg.c
+index e2bba1e86752e..14208d32eeaf3 100644
+--- a/net/core/skmsg.c
++++ b/net/core/skmsg.c
+@@ -1204,8 +1204,8 @@ void sk_psock_start_strp(struct sock *sk, struct sk_psock *psock)
+ 		return;
  
- 		list_del(&smb_lock->flist);
- 		locks_free_lock(smb_lock->fl);
-@@ -902,6 +904,7 @@ static bool session_fd_check(struct ksmb
- 	struct ksmbd_inode *ci;
- 	struct oplock_info *op;
- 	struct ksmbd_conn *conn;
-+	struct ksmbd_lock *smb_lock, *tmp_lock;
- 
- 	if (!is_reconnectable(fp))
- 		return false;
-@@ -918,6 +921,12 @@ static bool session_fd_check(struct ksmb
- 	}
- 	up_write(&ci->m_lock);
- 
-+	list_for_each_entry_safe(smb_lock, tmp_lock, &fp->lock_list, flist) {
-+		spin_lock(&fp->conn->llist_lock);
-+		list_del_init(&smb_lock->clist);
-+		spin_unlock(&fp->conn->llist_lock);
-+	}
-+
- 	fp->conn = NULL;
- 	fp->tcon = NULL;
- 	fp->volatile_id = KSMBD_NO_FID;
-@@ -996,6 +1005,9 @@ int ksmbd_reopen_durable_fd(struct ksmbd
- {
- 	struct ksmbd_inode *ci;
- 	struct oplock_info *op;
-+	struct ksmbd_conn *conn = work->conn;
-+	struct ksmbd_lock *smb_lock;
-+	unsigned int old_f_state;
- 
- 	if (!fp->is_durable || fp->conn || fp->tcon) {
- 		pr_err("Invalid durable fd [%p:%p]\n", fp->conn, fp->tcon);
-@@ -1007,9 +1019,23 @@ int ksmbd_reopen_durable_fd(struct ksmbd
- 		return -EBADF;
- 	}
- 
--	fp->conn = work->conn;
-+	old_f_state = fp->f_state;
-+	fp->f_state = FP_NEW;
-+	__open_id(&work->sess->file_table, fp, OPEN_ID_TYPE_VOLATILE_ID);
-+	if (!has_file_id(fp->volatile_id)) {
-+		fp->f_state = old_f_state;
-+		return -EBADF;
-+	}
-+
-+	fp->conn = conn;
- 	fp->tcon = work->tcon;
- 
-+	list_for_each_entry(smb_lock, &fp->lock_list, flist) {
-+		spin_lock(&conn->llist_lock);
-+		list_add_tail(&smb_lock->clist, &conn->lock_list);
-+		spin_unlock(&conn->llist_lock);
-+	}
-+
- 	ci = fp->f_ci;
- 	down_write(&ci->m_lock);
- 	list_for_each_entry_rcu(op, &ci->m_op_list, op_entry) {
-@@ -1020,13 +1046,6 @@ int ksmbd_reopen_durable_fd(struct ksmbd
- 	}
- 	up_write(&ci->m_lock);
- 
--	fp->f_state = FP_NEW;
--	__open_id(&work->sess->file_table, fp, OPEN_ID_TYPE_VOLATILE_ID);
--	if (!has_file_id(fp->volatile_id)) {
--		fp->conn = NULL;
--		fp->tcon = NULL;
--		return -EBADF;
--	}
- 	return 0;
+ 	psock->saved_data_ready = sk->sk_data_ready;
+-	sk->sk_data_ready = sk_psock_strp_data_ready;
+-	sk->sk_write_space = sk_psock_write_space;
++	WRITE_ONCE(sk->sk_data_ready, sk_psock_strp_data_ready);
++	WRITE_ONCE(sk->sk_write_space, sk_psock_write_space);
  }
  
+ void sk_psock_stop_strp(struct sock *sk, struct sk_psock *psock)
+@@ -1215,8 +1215,8 @@ void sk_psock_stop_strp(struct sock *sk, struct sk_psock *psock)
+ 	if (!psock->saved_data_ready)
+ 		return;
+ 
+-	sk->sk_data_ready = psock->saved_data_ready;
+-	psock->saved_data_ready = NULL;
++	WRITE_ONCE(sk->sk_data_ready, psock->saved_data_ready);
++	WRITE_ONCE(psock->saved_data_ready, NULL);
+ 	strp_stop(&psock->strp);
+ }
+ 
+@@ -1298,8 +1298,8 @@ void sk_psock_start_verdict(struct sock *sk, struct sk_psock *psock)
+ 		return;
+ 
+ 	psock->saved_data_ready = sk->sk_data_ready;
+-	sk->sk_data_ready = sk_psock_verdict_data_ready;
+-	sk->sk_write_space = sk_psock_write_space;
++	WRITE_ONCE(sk->sk_data_ready, sk_psock_verdict_data_ready);
++	WRITE_ONCE(sk->sk_write_space, sk_psock_write_space);
+ }
+ 
+ void sk_psock_stop_verdict(struct sock *sk, struct sk_psock *psock)
+@@ -1310,6 +1310,6 @@ void sk_psock_stop_verdict(struct sock *sk, struct sk_psock *psock)
+ 	if (!psock->saved_data_ready)
+ 		return;
+ 
+-	sk->sk_data_ready = psock->saved_data_ready;
++	WRITE_ONCE(sk->sk_data_ready, psock->saved_data_ready);
+ 	psock->saved_data_ready = NULL;
+ }
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 021e1bdbddcb8..33b724dcde6ed 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -1333,7 +1333,7 @@ int tcp_sendmsg_locked(struct sock *sk, struct msghdr *msg, size_t size)
+ 	err = sk_stream_error(sk, flags, err);
+ 	/* make sure we wake any epoll edge trigger waiter */
+ 	if (unlikely(tcp_rtx_and_write_queues_empty(sk) && err == -EAGAIN)) {
+-		sk->sk_write_space(sk);
++		READ_ONCE(sk->sk_write_space)(sk);
+ 		tcp_chrono_stop(sk, TCP_CHRONO_SNDBUF_LIMITED);
+ 	}
+ 	return err;
+@@ -3709,7 +3709,7 @@ int do_tcp_setsockopt(struct sock *sk, int level, int optname,
+ 		break;
+ 	case TCP_NOTSENT_LOWAT:
+ 		WRITE_ONCE(tp->notsent_lowat, val);
+-		sk->sk_write_space(sk);
++		READ_ONCE(sk->sk_write_space)(sk);
+ 		break;
+ 	case TCP_INQ:
+ 		if (val > 1 || val < 0)
+diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
+index 06a185bb1e35c..da5e14ec8ed6d 100644
+--- a/net/ipv4/tcp_bpf.c
++++ b/net/ipv4/tcp_bpf.c
+@@ -725,7 +725,7 @@ int tcp_bpf_update_proto(struct sock *sk, struct sk_psock *psock, bool restore)
+ 			WRITE_ONCE(sk->sk_prot->unhash, psock->saved_unhash);
+ 			tcp_update_ulp(sk, psock->sk_proto, psock->saved_write_space);
+ 		} else {
+-			sk->sk_write_space = psock->saved_write_space;
++			WRITE_ONCE(sk->sk_write_space, psock->saved_write_space);
+ 			/* Pairs with lockless read in sk_clone_lock() */
+ 			sock_replace_proto(sk, psock->sk_proto);
+ 		}
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index bec3bbf57a4f1..359d36be04829 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -4936,7 +4936,7 @@ static void tcp_data_queue_ofo(struct sock *sk, struct sk_buff *skb)
+ 
+ 	if (unlikely(tcp_try_rmem_schedule(sk, skb, skb->truesize))) {
+ 		NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPOFODROP);
+-		sk->sk_data_ready(sk);
++		READ_ONCE(sk->sk_data_ready)(sk);
+ 		tcp_drop_reason(sk, skb, SKB_DROP_REASON_PROTO_MEM);
+ 		return;
+ 	}
+@@ -5143,7 +5143,7 @@ int tcp_send_rcvq(struct sock *sk, struct msghdr *msg, size_t size)
+ void tcp_data_ready(struct sock *sk)
+ {
+ 	if (tcp_epollin_ready(sk, sk->sk_rcvlowat) || sock_flag(sk, SOCK_DONE))
+-		sk->sk_data_ready(sk);
++		READ_ONCE(sk->sk_data_ready)(sk);
+ }
+ 
+ static void tcp_data_queue(struct sock *sk, struct sk_buff *skb)
+@@ -5189,7 +5189,7 @@ static void tcp_data_queue(struct sock *sk, struct sk_buff *skb)
+ 			inet_csk(sk)->icsk_ack.pending |=
+ 					(ICSK_ACK_NOMEM | ICSK_ACK_NOW);
+ 			inet_csk_schedule_ack(sk);
+-			sk->sk_data_ready(sk);
++			READ_ONCE(sk->sk_data_ready)(sk);
+ 
+ 			if (skb_queue_len(&sk->sk_receive_queue)) {
+ 				reason = SKB_DROP_REASON_PROTO_MEM;
+@@ -5626,7 +5626,9 @@ static void tcp_new_space(struct sock *sk)
+ 		tp->snd_cwnd_stamp = tcp_jiffies32;
+ 	}
+ 
+-	INDIRECT_CALL_1(sk->sk_write_space, sk_stream_write_space, sk);
++	INDIRECT_CALL_1(READ_ONCE(sk->sk_write_space),
++			sk_stream_write_space,
++			sk);
+ }
+ 
+ /* Caller made space either from:
+@@ -5832,7 +5834,7 @@ static void tcp_urg(struct sock *sk, struct sk_buff *skb, const struct tcphdr *t
+ 				BUG();
+ 			WRITE_ONCE(tp->urg_data, TCP_URG_VALID | tmp);
+ 			if (!sock_flag(sk, SOCK_DEAD))
+-				sk->sk_data_ready(sk);
++				READ_ONCE(sk->sk_data_ready)(sk);
+ 		}
+ 	}
+ }
+@@ -7216,7 +7218,7 @@ int tcp_conn_request(struct request_sock_ops *rsk_ops,
+ 			sock_put(fastopen_sk);
+ 			goto drop_and_free;
+ 		}
+-		sk->sk_data_ready(sk);
++		READ_ONCE(sk->sk_data_ready)(sk);
+ 		bh_unlock_sock(fastopen_sk);
+ 		sock_put(fastopen_sk);
+ 	} else {
+diff --git a/net/ipv4/tcp_minisocks.c b/net/ipv4/tcp_minisocks.c
+index ddb90b9057e75..2eea9672ca01e 100644
+--- a/net/ipv4/tcp_minisocks.c
++++ b/net/ipv4/tcp_minisocks.c
+@@ -876,7 +876,7 @@ int tcp_child_process(struct sock *parent, struct sock *child,
+ 		ret = tcp_rcv_state_process(child, skb);
+ 		/* Wakeup parent, send SIGIO */
+ 		if (state == TCP_SYN_RECV && child->sk_state != state)
+-			parent->sk_data_ready(parent);
++			READ_ONCE(parent->sk_data_ready)(parent);
+ 	} else {
+ 		/* Alas, it is possible again, because we do lookup
+ 		 * in main socket hash table and lock on listening
+diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+index f301871fa2b1a..3bc1ba937a212 100644
+--- a/net/ipv4/udp.c
++++ b/net/ipv4/udp.c
+@@ -1560,7 +1560,8 @@ int __udp_enqueue_schedule_skb(struct sock *sk, struct sk_buff *skb)
+ 	spin_unlock(&list->lock);
+ 
+ 	if (!sock_flag(sk, SOCK_DEAD))
+-		INDIRECT_CALL_1(sk->sk_data_ready, sock_def_readable, sk);
++		INDIRECT_CALL_1(READ_ONCE(sk->sk_data_ready),
++				sock_def_readable, sk);
+ 
+ 	busylock_release(busy);
+ 	return 0;
+diff --git a/net/ipv4/udp_bpf.c b/net/ipv4/udp_bpf.c
+index 91233e37cd97a..779a3a03762f1 100644
+--- a/net/ipv4/udp_bpf.c
++++ b/net/ipv4/udp_bpf.c
+@@ -158,7 +158,7 @@ int udp_bpf_update_proto(struct sock *sk, struct sk_psock *psock, bool restore)
+ 	int family = sk->sk_family == AF_INET ? UDP_BPF_IPV4 : UDP_BPF_IPV6;
+ 
+ 	if (restore) {
+-		sk->sk_write_space = psock->saved_write_space;
++		WRITE_ONCE(sk->sk_write_space, psock->saved_write_space);
+ 		sock_replace_proto(sk, psock->sk_proto);
+ 		return 0;
+ 	}
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index f89cd01247f6b..6bc7aef06a5be 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -1678,7 +1678,7 @@ static int unix_stream_connect(struct socket *sock, struct sockaddr *uaddr,
+ 	__skb_queue_tail(&other->sk_receive_queue, skb);
+ 	spin_unlock(&other->sk_receive_queue.lock);
+ 	unix_state_unlock(other);
+-	other->sk_data_ready(other);
++	READ_ONCE(other->sk_data_ready)(other);
+ 	sock_put(other);
+ 	return 0;
+ 
+@@ -2138,7 +2138,7 @@ static int unix_dgram_sendmsg(struct socket *sock, struct msghdr *msg,
+ 	scm_stat_add(other, skb);
+ 	skb_queue_tail(&other->sk_receive_queue, skb);
+ 	unix_state_unlock(other);
+-	other->sk_data_ready(other);
++	READ_ONCE(other->sk_data_ready)(other);
+ 	sock_put(other);
+ 	scm_destroy(&scm);
+ 	return len;
+@@ -2206,7 +2206,7 @@ static int queue_oob(struct socket *sock, struct msghdr *msg, struct sock *other
+ 
+ 	sk_send_sigurg(other);
+ 	unix_state_unlock(other);
+-	other->sk_data_ready(other);
++	READ_ONCE(other->sk_data_ready)(other);
+ 
+ 	return err;
+ }
+@@ -2317,7 +2317,7 @@ static int unix_stream_sendmsg(struct socket *sock, struct msghdr *msg,
+ 		scm_stat_add(other, skb);
+ 		skb_queue_tail(&other->sk_receive_queue, skb);
+ 		unix_state_unlock(other);
+-		other->sk_data_ready(other);
++		READ_ONCE(other->sk_data_ready)(other);
+ 		sent += size;
+ 	}
+ 
+-- 
+2.53.0
+
 
 
 
