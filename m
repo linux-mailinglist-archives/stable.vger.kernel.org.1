@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-240746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240787-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0CzjKe9x62ndMwAAu9opvQ
-	(envelope-from <stable+bounces-240746-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:36:47 +0200
+	id qIjdIyFy62ndMwAAu9opvQ
+	(envelope-from <stable+bounces-240787-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:37:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38EE045F38F
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:36:47 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8653245F413
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:37:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E9847302DE31
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:35:30 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 86AAB3003815
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:37:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D0093D5241;
-	Fri, 24 Apr 2026 13:35:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2FCA3D5241;
+	Fri, 24 Apr 2026 13:37:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cf/2gZqz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="viGbsqw6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4FA519A288;
-	Fri, 24 Apr 2026 13:35:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61D633563D4;
+	Fri, 24 Apr 2026 13:37:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777037729; cv=none; b=YdGUo9g2taMkJO8lolddz7J1ylF8F+65uyB55Pu5CuhGVKOBfHOTh9qz7hVVL5PcpEd/EhGzgGM1O9UiWAobQ7tpj8fJ9TloBobE99QTGlMT21//5Fx+K2VNkhuDC4v6OysvKMxhYRjbdhHET34q3mlCN3rUd/yHIYO/KRm8Yqk=
+	t=1777037839; cv=none; b=hJMXF/GTJjZTjJ+0q2uy6dWgcjKcd9ngxHy0ktO8nnqp6zXw08+UE49yd4BDPaoou1/gE7mWvowyeCWAPkrDVwRrHTUz+OfIO4u1EaveTF3MSDNIkmTV3jcP/JvM7oxzRXRm0X6+IU+nCJYFO0bbbo3fKjhsARxYQX6DDf9xceg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777037729; c=relaxed/simple;
-	bh=GwvDlUz5wphDsEvEK0UBhl82wlVlHBxkXG7Tmgu4nek=;
+	s=arc-20240116; t=1777037839; c=relaxed/simple;
+	bh=otUiT2AahbuXJo6T4aqBi3fKjRR48JOLvgFzBZ1O/Z8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rJuZ2tNg97HB2D1ordvzG/xbdjPxgIuxxifb5qBWnniiKl22g1QLggB39QlUnKqlKbP33GbtDGoUDFG0R5fbGJ+FiT0cENBZUs4dbBHha7h+Xn5mYU5hSflmnfuZPANcWFMRgr9TdZBTgqglIEWOKgk7iBMH2RXu1TUfBUvWcec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cf/2gZqz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3257BC19425;
-	Fri, 24 Apr 2026 13:35:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=g/VI2m0PCJfYhjDcnKMXFVzax+gqkT71ECSyPUomVluUygaML/DTynPesL0cbrt39RSItjzCcC7m6b9nSWRvEUJIfEjprkuSbdSQpHVXysiePyKq+DnCD2ysKQnTUzHmIHHQUkSZz/uXKwcr5BFh4GWdSP2HDV4HffZzQe/xVDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=viGbsqw6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB0D9C2BCB5;
+	Fri, 24 Apr 2026 13:37:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777037729;
-	bh=GwvDlUz5wphDsEvEK0UBhl82wlVlHBxkXG7Tmgu4nek=;
+	s=korg; t=1777037839;
+	bh=otUiT2AahbuXJo6T4aqBi3fKjRR48JOLvgFzBZ1O/Z8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cf/2gZqzAayOJyyOSY/7FYmEbDpcTyAe0T+Aq0HzqZqGgk9pCtY6km811ucT90PuC
-	 hSRsWvT3Oh7MUelFqJChk0btLrXmKZ6+pQhK7xhi2Hsvz8tzOFG7jfYi4W5gdNnPIs
-	 oOmHU1Ci7oZRfW8Oey7pjdLS+1TnGvFuDtkzoQrg=
+	b=viGbsqw6NnqWzzmufgOmLPMMIkYZ53Ev+7dtjcqLntjCQKiyTaCJQZ5bcHRfN3fOT
+	 jHrrsBXy6HUHB1ZwiJ+d40qi+KGw6msI8rc3avUzfXqmMbYolwyP6nhP2jXY++CD8U
+	 BLUuBkfXuv4AWyWp7CB7YYUz7H1o3dkP6Vjza+JU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -49,9 +49,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 046/166] xsk: fix XDP_UMEM_SG_FLAG issues
-Date: Fri, 24 Apr 2026 15:29:20 +0200
-Message-ID: <20260424132542.450783298@linuxfoundation.org>
+Subject: [PATCH 6.6 047/166] xsk: validate MTU against usable frame size on bind
+Date: Fri, 24 Apr 2026 15:29:21 +0200
+Message-ID: <20260424132542.652138453@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260424132532.812258529@linuxfoundation.org>
 References: <20260424132532.812258529@linuxfoundation.org>
@@ -66,18 +66,18 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 38EE045F38F
+X-Rspamd-Queue-Id: 8653245F413
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-240746-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-240787-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -89,12 +89,12 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
@@ -102,54 +102,91 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 
 From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 
-[ Upstream commit 93e84fe45b752d17a5a46b306ed78f0133bbc719 ]
+[ Upstream commit 36ee60b569ba0dfb6f961333b90d19ab5b323fa9 ]
 
-Currently xp_assign_dev_shared() is missing XDP_USE_SG being propagated
-to flags so set it in order to preserve mtu check that is supposed to be
-done only when no multi-buffer setup is in picture.
+AF_XDP bind currently accepts zero-copy pool configurations without
+verifying that the device MTU fits into the usable frame space provided
+by the UMEM chunk.
 
-Also, this flag has the same value as XDP_UMEM_TX_SW_CSUM so we could
-get unexpected SG setups for software Tx checksums. Since csum flag is
-UAPI, modify value of XDP_UMEM_SG_FLAG.
+This becomes a problem since we started to respect tailroom which is
+subtracted from chunk_size (among with headroom). 2k chunk size might
+not provide enough space for standard 1500 MTU, so let us catch such
+settings at bind time. Furthermore, validate whether underlying HW will
+be able to satisfy configured MTU wrt XSK's frame size multiplied by
+supported Rx buffer chain length (that is exposed via
+net_device::xdp_zc_max_segs).
 
-Fixes: d609f3d228a8 ("xsk: add multi-buffer support for sockets sharing umem")
+Fixes: 24ea50127ecf ("xsk: support mbuf on ZC RX")
 Reviewed-by: Björn Töpel <bjorn@kernel.org>
 Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Link: https://patch.msgid.link/20260402154958.562179-4-maciej.fijalkowski@intel.com
+Link: https://patch.msgid.link/20260402154958.562179-5-maciej.fijalkowski@intel.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/xdp_sock.h  | 2 +-
- net/xdp/xsk_buff_pool.c | 4 ++++
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ net/xdp/xsk_buff_pool.c | 28 +++++++++++++++++++++++++---
+ 1 file changed, 25 insertions(+), 3 deletions(-)
 
-diff --git a/include/net/xdp_sock.h b/include/net/xdp_sock.h
-index 660c22521a292..84ff9bb4bfae4 100644
---- a/include/net/xdp_sock.h
-+++ b/include/net/xdp_sock.h
-@@ -14,7 +14,7 @@
- #include <linux/mm.h>
- #include <net/sock.h>
- 
--#define XDP_UMEM_SG_FLAG (1 << 1)
-+#define XDP_UMEM_SG_FLAG BIT(3)
- 
- struct net_device;
- struct xsk_queue;
 diff --git a/net/xdp/xsk_buff_pool.c b/net/xdp/xsk_buff_pool.c
-index 6789d99fd99e0..52c4204bc224e 100644
+index 52c4204bc224e..bb9dfbe419e7c 100644
 --- a/net/xdp/xsk_buff_pool.c
 +++ b/net/xdp/xsk_buff_pool.c
-@@ -236,6 +236,10 @@ int xp_assign_dev_shared(struct xsk_buff_pool *pool, struct xdp_sock *umem_xs,
- 		return -EINVAL;
+@@ -8,6 +8,8 @@
+ #include "xdp_umem.h"
+ #include "xsk.h"
  
- 	flags = umem->zc ? XDP_ZEROCOPY : XDP_COPY;
++#define ETH_PAD_LEN (ETH_HLEN + 2 * VLAN_HLEN  + ETH_FCS_LEN)
 +
-+	if (umem->flags & XDP_UMEM_SG_FLAG)
-+		flags |= XDP_USE_SG;
+ void xp_add_xsk(struct xsk_buff_pool *pool, struct xdp_sock *xs)
+ {
+ 	unsigned long flags;
+@@ -149,8 +151,12 @@ static void xp_disable_drv_zc(struct xsk_buff_pool *pool)
+ int xp_assign_dev(struct xsk_buff_pool *pool,
+ 		  struct net_device *netdev, u16 queue_id, u16 flags)
+ {
++	u32 needed = netdev->mtu + ETH_PAD_LEN;
++	u32 segs = netdev->xdp_zc_max_segs;
++	bool mbuf = flags & XDP_USE_SG;
+ 	bool force_zc, force_copy;
+ 	struct netdev_bpf bpf;
++	u32 frame_size;
+ 	int err = 0;
+ 
+ 	ASSERT_RTNL();
+@@ -170,7 +176,7 @@ int xp_assign_dev(struct xsk_buff_pool *pool,
+ 	if (err)
+ 		return err;
+ 
+-	if (flags & XDP_USE_SG)
++	if (mbuf)
+ 		pool->umem->flags |= XDP_UMEM_SG_FLAG;
+ 
+ 	if (flags & XDP_USE_NEED_WAKEUP)
+@@ -192,8 +198,24 @@ int xp_assign_dev(struct xsk_buff_pool *pool,
+ 		goto err_unreg_pool;
+ 	}
+ 
+-	if (netdev->xdp_zc_max_segs == 1 && (flags & XDP_USE_SG)) {
+-		err = -EOPNOTSUPP;
++	if (mbuf) {
++		if (segs == 1) {
++			err = -EOPNOTSUPP;
++			goto err_unreg_pool;
++		}
++	} else {
++		segs = 1;
++	}
 +
- 	if (umem_xs->pool->uses_need_wakeup)
- 		flags |= XDP_USE_NEED_WAKEUP;
++	/* open-code xsk_pool_get_rx_frame_size() as pool->dev is not
++	 * set yet at this point; we are before getting down to driver
++	 */
++	frame_size = __xsk_pool_get_rx_frame_size(pool) -
++		     xsk_pool_get_tailroom(mbuf);
++	frame_size = ALIGN_DOWN(frame_size, 128);
++
++	if (needed > frame_size * segs) {
++		err = -EINVAL;
+ 		goto err_unreg_pool;
+ 	}
  
 -- 
 2.53.0
