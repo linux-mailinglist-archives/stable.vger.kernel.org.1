@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-240890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240828-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QDQKHS1z62nCMwAAu9opvQ
-	(envelope-from <stable+bounces-240890-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:42:05 +0200
+	id MLbsBHxy62nmMwAAu9opvQ
+	(envelope-from <stable+bounces-240828-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:39:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A637B45F6AE
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:42:04 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2B1945F4FF
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:39:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C03BD3006218
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:41:47 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6A62130071E1
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:39:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E933B3D6CBD;
-	Fri, 24 Apr 2026 13:41:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7072B3D6CD6;
+	Fri, 24 Apr 2026 13:39:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZtyeWIus"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="serdd83I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5AFB3D5241;
-	Fri, 24 Apr 2026 13:41:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 331713D47B0;
+	Fri, 24 Apr 2026 13:39:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777038104; cv=none; b=SnPCMmyribVF1rwzbncCMU9dQMUGxL4oMybriOfXETyo146b6eyjBq3xlXzCaN4LHJJEb2hIJ94yxlP50FABjis3FggRsrM3uHkwOVQfNLC8YZLwtcK2IxBBsRVh3cIWzLaSZoYDX5Vr5KUdh5wOxwg3ksJ94HIY4CKNHK1g2nI=
+	t=1777037945; cv=none; b=X5Djt+fEVV7HR1/lI10ZFKlEW6u+p2LHHZnvWxynSj0kb2NZHxRrdwNThhhcTKcQlyxOimR+ageH5q7DsAHhT68YTmi6mBkMY98FuNrU92Sy21yQ4yg1RAN6BjsdscCPHxuZq3OBCgOzshARLtQmhxP066LQN5rcmlBQAD2N7JQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777038104; c=relaxed/simple;
-	bh=Lr+OATWeFRSb8My23oPOw/pzPPi14kJAaMDIXygqvKE=;
+	s=arc-20240116; t=1777037945; c=relaxed/simple;
+	bh=7bV7oExWtZalEKrFDlVHsqtTMOTMu03CRgsmygFrNAE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rKrUPKtRCaSRMR1E7aWqChSc3mePhf1Z+sLJGV7gdKqwTOwb1ZGINQzZ4m4CtGjL6g4ywrKRHqjOEKAm1fJFquulDaxxQ60yL7fSCzJUG/CcX2AvHvUUjuYs2KK6P4Vg/kdY4lxzjSltjE/sPEjZ59OhFO0fx1KVe6DuFoH7Mf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZtyeWIus; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ACC3C19425;
-	Fri, 24 Apr 2026 13:41:44 +0000 (UTC)
+	 MIME-Version; b=U2ry4hXc5N9NlgTwYMvh8eAMWZWdItGbdIFCZco2ZYNUQacmx3GLg8HxQbC63EP01iCGgJyiDs4Q8HsWYELh/PaHuj/Kf68W8OrnQ5bqlJp1hO9eQeJbdgQ606mPSNPTh6YDfmOph2uUKr5wzn4Xpbru2SHbzLwk33rlGnIH20s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=serdd83I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87A16C19425;
+	Fri, 24 Apr 2026 13:39:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777038104;
-	bh=Lr+OATWeFRSb8My23oPOw/pzPPi14kJAaMDIXygqvKE=;
+	s=korg; t=1777037944;
+	bh=7bV7oExWtZalEKrFDlVHsqtTMOTMu03CRgsmygFrNAE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZtyeWIusvnoDXE++ImcJX+qq6SKbJ47BkZtmgmRlDTGLj9EoUqjVAOuuHfAwl9une
-	 mZzesP+OBinxmgDVxTgOePKgdrLlJHaGUwAhdAeeQJr9g0ukrSJjMWwTdGhkxmC2b9
-	 JFvZHdV829BfCDfCJQsOf9Nwj1OrwUjU1Osj1a5I=
+	b=serdd83IG6Qo1M7LmTlV6cA209aKJsgNHE4TlBDjLv/xbYIZJOGz9PllLj4r1havc
+	 94Z0fk6Q0fxGMshQxOUp4/QOxObtRpBQpllaX0MZ3U/qNULf+nNudtrfysoeF7TlsD
+	 Ds60q/L8RXzVqg/q9h+hMYR7d1iisdMf2aXlesWs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dudu Lu <phx0fer@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.18 06/55] crypto: krb5enc - fix async decrypt skipping hash verification
+	Daniel Golle <daniel@makrotopia.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 131/166] net: ethernet: mtk_eth_soc: initialize PPE per-tag-layer MTU registers
 Date: Fri, 24 Apr 2026 15:30:45 +0200
-Message-ID: <20260424132431.360107783@linuxfoundation.org>
+Message-ID: <20260424132600.336933910@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132430.006424517@linuxfoundation.org>
-References: <20260424132430.006424517@linuxfoundation.org>
+In-Reply-To: <20260424132532.812258529@linuxfoundation.org>
+References: <20260424132532.812258529@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,196 +64,180 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A637B45F6AE
+X-Rspamd-Queue-Id: B2B1945F4FF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-240890-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,gondor.apana.org.au];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-240828-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,makrotopia.org:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dudu Lu <phx0fer@gmail.com>
+From: Daniel Golle <daniel@makrotopia.org>
 
-commit 3bfbf5f0a99c991769ec562721285df7ab69240b upstream.
+commit 2dddb34dd0d07b01fa770eca89480a4da4f13153 upstream.
 
-krb5enc_dispatch_decrypt() sets req->base.complete as the skcipher
-callback, which is the caller's own completion handler. When the
-skcipher completes asynchronously, this signals "done" to the caller
-without executing krb5enc_dispatch_decrypt_hash(), completely bypassing
-the integrity verification (hash check).
+The PPE enforces output frame size limits via per-tag-layer VLAN_MTU
+registers that the driver never initializes. The hardware defaults do
+not account for PPPoE overhead, causing the PPE to punt encapsulated
+frames back to the CPU instead of forwarding them.
 
-Compare with the encrypt path which correctly uses
-krb5enc_encrypt_done as an intermediate callback to chain into the
-hash computation on async completion.
+Initialize the registers at PPE start and on MTU changes using the
+maximum GMAC MTU. This is a conservative approximation -- the actual
+per-PPE requirement depends on egress path, but using the global
+maximum ensures the limits are never too small.
 
-Fix by adding krb5enc_decrypt_done as an intermediate callback that
-chains into krb5enc_dispatch_decrypt_hash() upon async skcipher
-completion, matching the encrypt path's callback pattern.
-
-Also fix EBUSY/EINPROGRESS handling throughout: remove
-krb5enc_request_complete() which incorrectly swallowed EINPROGRESS
-notifications that must be passed up to callers waiting on backlogged
-requests, and add missing EBUSY checks in krb5enc_encrypt_ahash_done
-for the dispatch_encrypt return value.
-
-Fixes: d1775a177f7f ("crypto: Add 'krb5enc' hash and cipher AEAD algorithm")
-Signed-off-by: Dudu Lu <phx0fer@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
-Unset MAY_BACKLOG on the async completion path so the user won't
-see back-to-back EINPROGRESS notifications.
-
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: ba37b7caf1ed ("net: ethernet: mtk_eth_soc: add support for initializing the PPE")
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+Link: https://patch.msgid.link/ec995ab8ce8be423267a1cc093147a74d2eb9d82.1775789829.git.daniel@makrotopia.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/krb5enc.c |   52 +++++++++++++++++++++++++++++++---------------------
- 1 file changed, 31 insertions(+), 21 deletions(-)
+ drivers/net/ethernet/mediatek/mtk_eth_soc.c | 22 ++++++++++++++-
+ drivers/net/ethernet/mediatek/mtk_ppe.c     | 30 +++++++++++++++++++++
+ drivers/net/ethernet/mediatek/mtk_ppe.h     |  1 +
+ 3 files changed, 52 insertions(+), 1 deletion(-)
 
---- a/crypto/krb5enc.c
-+++ b/crypto/krb5enc.c
-@@ -39,12 +39,6 @@ struct krb5enc_request_ctx {
- 	char tail[];
- };
- 
--static void krb5enc_request_complete(struct aead_request *req, int err)
--{
--	if (err != -EINPROGRESS)
--		aead_request_complete(req, err);
--}
--
- /**
-  * crypto_krb5enc_extractkeys - Extract Ke and Ki keys from the key blob.
-  * @keys: Where to put the key sizes and pointers
-@@ -127,7 +121,7 @@ static void krb5enc_encrypt_done(void *d
- {
- 	struct aead_request *req = data;
- 
--	krb5enc_request_complete(req, err);
-+	aead_request_complete(req, err);
+diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+index e2d3bda1dc923..74cb96dbff9ee 100644
+--- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
++++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+@@ -3368,11 +3368,22 @@ static int mtk_device_event(struct notifier_block *n, unsigned long event, void
+ 	return NOTIFY_DONE;
  }
  
- /*
-@@ -188,14 +182,16 @@ static void krb5enc_encrypt_ahash_done(v
- 	struct ahash_request *ahreq = (void *)(areq_ctx->tail + ictx->reqoff);
- 
- 	if (err)
--		return krb5enc_request_complete(req, err);
-+		goto out;
- 
- 	krb5enc_insert_checksum(req, ahreq->result);
- 
--	err = krb5enc_dispatch_encrypt(req,
--				       aead_request_flags(req) & ~CRYPTO_TFM_REQ_MAY_SLEEP);
--	if (err != -EINPROGRESS)
--		aead_request_complete(req, err);
-+	err = krb5enc_dispatch_encrypt(req, 0);
-+	if (err == -EINPROGRESS)
-+		return;
-+
-+out:
-+	aead_request_complete(req, err);
- }
- 
- /*
-@@ -265,17 +261,16 @@ static void krb5enc_decrypt_hash_done(vo
- {
- 	struct aead_request *req = data;
- 
--	if (err)
--		return krb5enc_request_complete(req, err);
--
--	err = krb5enc_verify_hash(req);
--	krb5enc_request_complete(req, err);
-+	if (!err)
-+		err = krb5enc_verify_hash(req);
-+	aead_request_complete(req, err);
- }
- 
- /*
-  * Dispatch the hashing of the plaintext after we've done the decryption.
-  */
--static int krb5enc_dispatch_decrypt_hash(struct aead_request *req)
-+static int krb5enc_dispatch_decrypt_hash(struct aead_request *req,
-+					 unsigned int flags)
- {
- 	struct crypto_aead *krb5enc = crypto_aead_reqtfm(req);
- 	struct aead_instance *inst = aead_alg_instance(krb5enc);
-@@ -291,7 +286,7 @@ static int krb5enc_dispatch_decrypt_hash
- 	ahash_request_set_tfm(ahreq, auth);
- 	ahash_request_set_crypt(ahreq, req->dst, hash,
- 				req->assoclen + req->cryptlen - authsize);
--	ahash_request_set_callback(ahreq, aead_request_flags(req),
-+	ahash_request_set_callback(ahreq, flags,
- 				   krb5enc_decrypt_hash_done, req);
- 
- 	err = crypto_ahash_digest(ahreq);
-@@ -301,6 +296,21 @@ static int krb5enc_dispatch_decrypt_hash
- 	return krb5enc_verify_hash(req);
- }
- 
-+static void krb5enc_decrypt_done(void *data, int err)
++static int mtk_max_gmac_mtu(struct mtk_eth *eth)
 +{
-+	struct aead_request *req = data;
++	int i, max_mtu = ETH_DATA_LEN;
 +
-+	if (err)
-+		goto out;
++	for (i = 0; i < ARRAY_SIZE(eth->netdev); i++)
++		if (eth->netdev[i] && eth->netdev[i]->mtu > max_mtu)
++			max_mtu = eth->netdev[i]->mtu;
 +
-+	err = krb5enc_dispatch_decrypt_hash(req, 0);
-+	if (err == -EINPROGRESS)
-+		return;
-+
-+out:
-+	aead_request_complete(req, err);
++	return max_mtu;
 +}
 +
- /*
-  * Dispatch the decryption of the ciphertext.
-  */
-@@ -324,7 +334,7 @@ static int krb5enc_dispatch_decrypt(stru
+ static int mtk_open(struct net_device *dev)
+ {
+ 	struct mtk_mac *mac = netdev_priv(dev);
+ 	struct mtk_eth *eth = mac->hw;
+-	int i, err;
++	int i, err, mtu;
  
- 	skcipher_request_set_tfm(skreq, ctx->enc);
- 	skcipher_request_set_callback(skreq, aead_request_flags(req),
--				      req->base.complete, req->base.data);
-+				      krb5enc_decrypt_done, req);
- 	skcipher_request_set_crypt(skreq, src, dst,
- 				   req->cryptlen - authsize, req->iv);
+ 	err = phylink_of_phy_connect(mac->phylink, mac->of_node, 0);
+ 	if (err) {
+@@ -3400,6 +3411,10 @@ static int mtk_open(struct net_device *dev)
+ 						  : MTK_GDMA_TO_PDMA;
+ 		mtk_gdm_config(eth, gdm_config);
  
-@@ -339,7 +349,7 @@ static int krb5enc_decrypt(struct aead_r
- 	if (err < 0)
- 		return err;
++		mtu = mtk_max_gmac_mtu(eth);
++		for (i = 0; i < ARRAY_SIZE(eth->ppe); i++)
++			mtk_ppe_update_mtu(eth->ppe[i], mtu);
++
+ 		napi_enable(&eth->tx_napi);
+ 		napi_enable(&eth->rx_napi);
+ 		mtk_tx_irq_enable(eth, MTK_TX_DONE_INT);
+@@ -4088,6 +4103,7 @@ static int mtk_change_mtu(struct net_device *dev, int new_mtu)
+ 	int length = new_mtu + MTK_RX_ETH_HLEN;
+ 	struct mtk_mac *mac = netdev_priv(dev);
+ 	struct mtk_eth *eth = mac->hw;
++	int max_mtu, i;
  
--	return krb5enc_dispatch_decrypt_hash(req);
-+	return krb5enc_dispatch_decrypt_hash(req, aead_request_flags(req));
+ 	if (rcu_access_pointer(eth->prog) &&
+ 	    length > MTK_PP_MAX_BUF_SIZE) {
+@@ -4098,6 +4114,10 @@ static int mtk_change_mtu(struct net_device *dev, int new_mtu)
+ 	mtk_set_mcr_max_rx(mac, length);
+ 	dev->mtu = new_mtu;
+ 
++	max_mtu = mtk_max_gmac_mtu(eth);
++	for (i = 0; i < ARRAY_SIZE(eth->ppe); i++)
++		mtk_ppe_update_mtu(eth->ppe[i], max_mtu);
++
+ 	return 0;
  }
  
- static int krb5enc_init_tfm(struct crypto_aead *tfm)
+diff --git a/drivers/net/ethernet/mediatek/mtk_ppe.c b/drivers/net/ethernet/mediatek/mtk_ppe.c
+index 6e222a000bf7e..1e033d63b4510 100644
+--- a/drivers/net/ethernet/mediatek/mtk_ppe.c
++++ b/drivers/net/ethernet/mediatek/mtk_ppe.c
+@@ -971,6 +971,36 @@ static void mtk_ppe_init_foe_table(struct mtk_ppe *ppe)
+ 	}
+ }
+ 
++void mtk_ppe_update_mtu(struct mtk_ppe *ppe, int mtu)
++{
++	int base;
++	u32 val;
++
++	if (!ppe)
++		return;
++
++	/* The PPE checks output frame size against per-tag-layer MTU limits,
++	 * treating PPPoE and DSA tags just like 802.1Q VLAN tags. The Linux
++	 * device MTU already accounts for PPPoE (PPPOE_SES_HLEN) and DSA tag
++	 * overhead, but 802.1Q VLAN tags are handled transparently without
++	 * being reflected by the lower device MTU being increased by 4.
++	 * Use the maximum MTU across all GMAC interfaces so that PPE output
++	 * frame limits are sufficiently high regardless of which port a flow
++	 * egresses through.
++	 */
++	base = ETH_HLEN + mtu;
++
++	val = FIELD_PREP(MTK_PPE_VLAN_MTU0_NONE, base) |
++	      FIELD_PREP(MTK_PPE_VLAN_MTU0_1TAG, base + VLAN_HLEN);
++	ppe_w32(ppe, MTK_PPE_VLAN_MTU0, val);
++
++	val = FIELD_PREP(MTK_PPE_VLAN_MTU1_2TAG,
++			 base + 2 * VLAN_HLEN) |
++	      FIELD_PREP(MTK_PPE_VLAN_MTU1_3TAG,
++			 base + 3 * VLAN_HLEN);
++	ppe_w32(ppe, MTK_PPE_VLAN_MTU1, val);
++}
++
+ void mtk_ppe_start(struct mtk_ppe *ppe)
+ {
+ 	u32 val;
+diff --git a/drivers/net/ethernet/mediatek/mtk_ppe.h b/drivers/net/ethernet/mediatek/mtk_ppe.h
+index e3d0ec72bc699..11c76fb8289ac 100644
+--- a/drivers/net/ethernet/mediatek/mtk_ppe.h
++++ b/drivers/net/ethernet/mediatek/mtk_ppe.h
+@@ -346,6 +346,7 @@ struct mtk_ppe {
+ struct mtk_ppe *mtk_ppe_init(struct mtk_eth *eth, void __iomem *base, int index);
+ 
+ void mtk_ppe_deinit(struct mtk_eth *eth);
++void mtk_ppe_update_mtu(struct mtk_ppe *ppe, int mtu);
+ void mtk_ppe_start(struct mtk_ppe *ppe);
+ int mtk_ppe_stop(struct mtk_ppe *ppe);
+ int mtk_ppe_prepare_reset(struct mtk_ppe *ppe);
+-- 
+2.53.0
+
 
 
 
