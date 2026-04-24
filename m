@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-240864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240931-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WKDfJ+B062kQNAAAu9opvQ
-	(envelope-from <stable+bounces-240864-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:49:20 +0200
+	id sOF6G4Jz62kQNAAAu9opvQ
+	(envelope-from <stable+bounces-240931-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:43:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 426DB45FB4E
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:49:20 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0546645F7BD
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:43:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DAFC4303FF25
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:40:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 56C5F300753D
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:43:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8EA93D3D04;
-	Fri, 24 Apr 2026 13:40:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F28DC3C061E;
+	Fri, 24 Apr 2026 13:43:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qJJ/WZEH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CoFwO+ta"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC64F3B38AE;
-	Fri, 24 Apr 2026 13:40:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B600319A288;
+	Fri, 24 Apr 2026 13:43:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777038037; cv=none; b=EsMvKhs3zr29/f6422o+XDVrAvX74AUS28X3Z9RWk9p8lpiDpP6obOWl9JmPCCzL/edQtPCTh7q/TXIE4wnT2kcU1+s0wTjeVUoDGFQbGIZZVoGXjsdIbqcwL1H5/ZDk/iGeOooIfwZBgsjfV0yZL0ve3jlcgWLA5Rqi4ryepTY=
+	t=1777038207; cv=none; b=TE40/dqggp+wykaGg5bckefRKj2DgZLuQlOonD5oWcCdmv8W2uop1nAZw8pMB9BvyBNcWWjBz454aT30dG6GXWY5z2TqCPZczWueyp61f3eVYmzmP5YYdekV7u0vdyMRn/OJO0/vuByEiOBH89dl5ehsU//JuHS1fMs2xljRH5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777038037; c=relaxed/simple;
-	bh=ODi3MGJDOkl4+GIOtGTP2SknFoZ3azUekFmU9NiTatM=;
+	s=arc-20240116; t=1777038207; c=relaxed/simple;
+	bh=47U5xOtZUzLAvBDMFoYMDf9GDhcvK8foX9HeHwT1mo4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mj3PUwGnphYRR1L0AicQLWd8VY89/T8sCr8HFlVXqz//GF6n3WoEb56om1eXpq4DYkTgumqaEGQBtTpHF9zutJ0JOTuQRNxSQgVjGUde+oaZC3SmKxMscCSpSxR4EeTG3hRU+Eqc/N9uNKDG+KzemI0uxDO4yqgJfuoN0g6MuC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qJJ/WZEH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42605C19425;
-	Fri, 24 Apr 2026 13:40:37 +0000 (UTC)
+	 MIME-Version; b=RaxYpxTjPk3LgjPmhJ2Pi9/myB5lCaCp73ALiL9kAfifiUL+Q2iRAmZ9zuGcappZWF4qeEGHP2fOwoFL7cyl48l7xA47k5uHIRKyvXsWjcl3RF+ZhJT0I5lwtATqlrmsIUgGF9kEiP0icvtgJ9yLejSx+x223icK00YKvax502E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CoFwO+ta; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C0E8C19425;
+	Fri, 24 Apr 2026 13:43:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777038037;
-	bh=ODi3MGJDOkl4+GIOtGTP2SknFoZ3azUekFmU9NiTatM=;
+	s=korg; t=1777038207;
+	bh=47U5xOtZUzLAvBDMFoYMDf9GDhcvK8foX9HeHwT1mo4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qJJ/WZEHFP14548z9SF3cjsRzdTLeFS/NpD5/SIsnOjHdS7Rpza51qgIgiHS0Rce+
-	 0z90Hl+BvZZurZakuhFpc5uzsS3jItk5JZcl+G30gQxHvWvXeNm0H3qsdfRsHmn0ZF
-	 SapF4Xr+e4+5DxQ2DcU4LC2XZRuW0GxbYd1ykf3Q=
+	b=CoFwO+taPHlznAg18MKKUaENi137BGFhusYB99byjKhftfyeWPzuB8TrLQUFQAAIz
+	 wERh9nfIMtVzdeoyckDXTFQ++OLXgECiMkLWpDjFZdoh3pMKswYj+6KE29MDOcSyb6
+	 Aj3wU0igeTqXtKEk7qmLDqeGp+19hWOx5cmAssCQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tristan Madani <tristan@talencesecurity.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 155/166] ksmbd: use check_add_overflow() to prevent u16 DACL size overflow
+	Koichiro Den <den@valinux.co.jp>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 02/35] PCI: endpoint: pci-epf-vntb: Remove duplicate resource teardown
 Date: Fri, 24 Apr 2026 15:31:09 +0200
-Message-ID: <20260424132605.587102818@linuxfoundation.org>
+Message-ID: <20260424132412.012070561@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132532.812258529@linuxfoundation.org>
-References: <20260424132532.812258529@linuxfoundation.org>
+In-Reply-To: <20260424132411.427029259@linuxfoundation.org>
+References: <20260424132411.427029259@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,122 +65,133 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 426DB45FB4E
+X-Rspamd-Queue-Id: 0546645F7BD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240931-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-240864-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[talencesecurity.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,nxp.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tristan Madani <tristan@talencesecurity.com>
+From: Koichiro Den <den@valinux.co.jp>
 
-commit 299f962c0b02d048fb45d248b4da493d03f3175d upstream.
+[ Upstream commit 0da63230d3ec1ec5fcc443a2314233e95bfece54 ]
 
-set_posix_acl_entries_dacl() and set_ntacl_dacl() accumulate ACE sizes
-in u16 variables. When a file has many POSIX ACL entries, the
-accumulated size can wrap past 65535, causing the pointer arithmetic
-(char *)pndace + *size to land within already-written ACEs. Subsequent
-writes then overwrite earlier entries, and pndacl->size gets a
-truncated value.
+epf_ntb_epc_destroy() duplicates the teardown that the caller is
+supposed to perform later. This leads to an oops when .allow_link fails
+or when .drop_link is performed. The following is an example oops of the
+former case:
 
-Use check_add_overflow() at each accumulation point to detect the
-wrap before it corrupts the buffer, consistent with existing
-check_mul_overflow() usage elsewhere in smbacl.c.
+  Unable to handle kernel paging request at virtual address dead000000000108
+  [...]
+  [dead000000000108] address between user and kernel address ranges
+  Internal error: Oops: 0000000096000044 [#1]  SMP
+  [...]
+  Call trace:
+   pci_epc_remove_epf+0x78/0xe0 (P)
+   pci_primary_epc_epf_link+0x88/0xa8
+   configfs_symlink+0x1f4/0x5a0
+   vfs_symlink+0x134/0x1d8
+   do_symlinkat+0x88/0x138
+   __arm64_sys_symlinkat+0x74/0xe0
+  [...]
 
+Remove the helper, and drop pci_epc_put(). EPC device refcounting is
+tied to the configfs EPC group lifetime, and pci_epc_put() in the
+.drop_link path is sufficient.
+
+Fixes: e35f56bb0330 ("PCI: endpoint: Support NTB transfer between RC and EP")
+Signed-off-by: Koichiro Den <den@valinux.co.jp>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 Cc: stable@vger.kernel.org
-Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
-Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/20260226084142.2226875-2-den@valinux.co.jp
+[ adjusted context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smbacl.c |   16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ drivers/pci/endpoint/functions/pci-epf-vntb.c | 18 +-----------------
+ 1 file changed, 1 insertion(+), 17 deletions(-)
 
---- a/fs/smb/server/smbacl.c
-+++ b/fs/smb/server/smbacl.c
-@@ -596,6 +596,7 @@ static void set_posix_acl_entries_dacl(s
- 	struct smb_sid *sid;
- 	struct smb_ace *ntace;
- 	int i, j;
-+	u16 ace_sz;
+diff --git a/drivers/pci/endpoint/functions/pci-epf-vntb.c b/drivers/pci/endpoint/functions/pci-epf-vntb.c
+index be2277cb9b637..6875af691b2de 100644
+--- a/drivers/pci/endpoint/functions/pci-epf-vntb.c
++++ b/drivers/pci/endpoint/functions/pci-epf-vntb.c
+@@ -662,18 +662,6 @@ static void epf_ntb_mw_bar_clear(struct epf_ntb *ntb, int num_mws)
+ 	}
+ }
  
- 	if (!fattr->cf_acls)
- 		goto posix_default_acl;
-@@ -640,8 +641,10 @@ static void set_posix_acl_entries_dacl(s
- 			flags = 0x03;
+-/**
+- * epf_ntb_epc_destroy() - Cleanup NTB EPC interface
+- * @ntb: NTB device that facilitates communication between HOST and VHOST
+- *
+- * Wrapper for epf_ntb_epc_destroy_interface() to cleanup all the NTB interfaces
+- */
+-static void epf_ntb_epc_destroy(struct epf_ntb *ntb)
+-{
+-	pci_epc_remove_epf(ntb->epf->epc, ntb->epf, 0);
+-	pci_epc_put(ntb->epf->epc);
+-}
+-
+ /**
+  * epf_ntb_init_epc_bar() - Identify BARs to be used for each of the NTB
+  * constructs (scratchpad region, doorbell, memorywindow)
+@@ -1315,7 +1303,7 @@ static int epf_ntb_bind(struct pci_epf *epf)
+ 	ret = epf_ntb_init_epc_bar(ntb);
+ 	if (ret) {
+ 		dev_err(dev, "Failed to create NTB EPC\n");
+-		goto err_bar_init;
++		return ret;
+ 	}
  
- 		ntace = (struct smb_ace *)((char *)pndace + *size);
--		*size += fill_ace_for_sid(ntace, sid, ACCESS_ALLOWED, flags,
-+		ace_sz = fill_ace_for_sid(ntace, sid, ACCESS_ALLOWED, flags,
- 				pace->e_perm, 0777);
-+		if (check_add_overflow(*size, ace_sz, size))
-+			break;
- 		(*num_aces)++;
- 		if (pace->e_tag == ACL_USER)
- 			ntace->access_req |=
-@@ -650,8 +653,10 @@ static void set_posix_acl_entries_dacl(s
- 		if (S_ISDIR(fattr->cf_mode) &&
- 		    (pace->e_tag == ACL_USER || pace->e_tag == ACL_GROUP)) {
- 			ntace = (struct smb_ace *)((char *)pndace + *size);
--			*size += fill_ace_for_sid(ntace, sid, ACCESS_ALLOWED,
-+			ace_sz = fill_ace_for_sid(ntace, sid, ACCESS_ALLOWED,
- 					0x03, pace->e_perm, 0777);
-+			if (check_add_overflow(*size, ace_sz, size))
-+				break;
- 			(*num_aces)++;
- 			if (pace->e_tag == ACL_USER)
- 				ntace->access_req |=
-@@ -691,8 +696,10 @@ posix_default_acl:
- 		}
+ 	ret = epf_ntb_config_spad_bar_alloc(ntb);
+@@ -1355,9 +1343,6 @@ static int epf_ntb_bind(struct pci_epf *epf)
+ err_bar_alloc:
+ 	epf_ntb_config_spad_bar_free(ntb);
  
- 		ntace = (struct smb_ace *)((char *)pndace + *size);
--		*size += fill_ace_for_sid(ntace, sid, ACCESS_ALLOWED, 0x0b,
-+		ace_sz = fill_ace_for_sid(ntace, sid, ACCESS_ALLOWED, 0x0b,
- 				pace->e_perm, 0777);
-+		if (check_add_overflow(*size, ace_sz, size))
-+			break;
- 		(*num_aces)++;
- 		if (pace->e_tag == ACL_USER)
- 			ntace->access_req |=
-@@ -728,7 +735,8 @@ static void set_ntacl_dacl(struct mnt_id
- 				break;
+-err_bar_init:
+-	epf_ntb_epc_destroy(ntb);
+-
+ 	return ret;
+ }
  
- 			memcpy((char *)pndace + size, ntace, nt_ace_size);
--			size += nt_ace_size;
-+			if (check_add_overflow(size, nt_ace_size, &size))
-+				break;
- 			aces_size -= nt_ace_size;
- 			ntace = (struct smb_ace *)((char *)ntace + nt_ace_size);
- 			num_aces++;
+@@ -1373,7 +1358,6 @@ static void epf_ntb_unbind(struct pci_epf *epf)
+ 
+ 	epf_ntb_epc_cleanup(ntb);
+ 	epf_ntb_config_spad_bar_free(ntb);
+-	epf_ntb_epc_destroy(ntb);
+ 
+ 	pci_unregister_driver(&vntb_pci_driver);
+ }
+-- 
+2.53.0
+
 
 
 
