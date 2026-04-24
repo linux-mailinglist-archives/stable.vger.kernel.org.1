@@ -1,173 +1,162 @@
-Return-Path: <stable+bounces-241064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241065-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QLNuL6Xq62nhSwAAu9opvQ
-	(envelope-from <stable+bounces-241064-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 00:11:49 +0200
+	id UNbiAOjr62k+TAAAu9opvQ
+	(envelope-from <stable+bounces-241065-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 00:17:12 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA657463BC6
-	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 00:11:48 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6347B463C3C
+	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 00:17:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id ECE183009824
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 22:11:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3468C300E704
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 22:16:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAF68388E62;
-	Fri, 24 Apr 2026 22:11:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E510F248F57;
+	Fri, 24 Apr 2026 22:16:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ddsQsxOI"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="htEwJYQW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40ADE349B1C
-	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 22:11:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61D4A1DFFD
+	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 22:16:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777068702; cv=none; b=YK60FrqoA7EqGgDZT750sA+ya5uyTzblHfD5C5dxWgyH76P5sWKo+x+Tylae/8WyqtttyD3ZAdL3mtf2WeK73LuWhRitDeVohPutQVgaYVtaZ3MMFWSbwhaUmcoOmY9VjjBqlhEot/eZ6jZBEcTa2lohezB8OBqryAlj1PwRGBo=
+	t=1777069007; cv=none; b=KCoougefiIptB7Yfq+yRIDwI8ZPY1SAQBuZ5tTJGJOls4uQytFl3JQDrM8L2qp49It1YK1tj9KA2kKPXJ4KQfXZHfOZK7qhfGclT4CUVoxrWTZtfE8NFkNjrq+HmGANrXLFw/GOCydpi0FPt8BBpWa1PacVFCynCUleh+aFM46U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777068702; c=relaxed/simple;
-	bh=spRVtmAYiefRKYjZgKaSJagyZkUSAPPDVPs4Nv0bgp8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e4H/2wC23s5NZTu+FUW6vqY89YVPnYcrGA0t89KE+GghxjVcMjzrMn7acucCzUK0UgUWKBkTJLKPrftuTsVhr46ty+N5Hm1Y91l2WGfdXgaWtS9Y+XrXK33h7tKB2xg+3reRpX6DwZNoJFQ9dWCmh2ZHZA7MC6GMG6U1HYZwSMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ddsQsxOI; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4891c0620bcso53890355e9.1
-        for <stable@vger.kernel.org>; Fri, 24 Apr 2026 15:11:41 -0700 (PDT)
+	s=arc-20240116; t=1777069007; c=relaxed/simple;
+	bh=FgQNl90BZ0fIkgQbd6eIgd41f/uNSpGEZfaclUBgIWs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cnZjxVwrRFPhvJ0tmn33+DZ0uKl8hReQMGAxvKa7MuunRfIqfH9HYvalliVtGaGr+pVnss7Mc3P8AADPE4GtY2oXZ+4eD4qa6MLPjfa6M1TjTrFkfmlcUuuSCBTJw82dVtMZYfQBETRoJXrDT6Iwtit6hRkkQsFH33lsbNFh3uo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=htEwJYQW; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-48a563e4ef7so48431455e9.0
+        for <stable@vger.kernel.org>; Fri, 24 Apr 2026 15:16:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777068699; x=1777673499; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=f4MGhHC+NydhWG8P1j8ird1HDHK/LUJ2nl+eW8auQlY=;
-        b=ddsQsxOI/H+tQcFPSP277Qi+5nEWUjzsgAEq+QiLozZAD4i0gc+IHyjkzZeyJ47yK1
-         CK8eAPqsRxw6OJHGAclWbZD/LZkfWArHtdJxHkz0KvCV2Loof9gNmKiE25myrxel5TPl
-         QlohlaVahMSzVJtxKd66HHwsnOTKLTANxFkdYONYRbXIVvAvEieUyRklOeIJy5u2pvnP
-         v1HD4cqv6hU3PF2YLPprW48nWn97r2gGbaUJ7g9+yPMKtbs094eN5r2EdqNshcg7vXOR
-         TSgYunBBiJy3F49RQcgFlIvF9skiEUCvB63W21aTinrHhZfwyAeG5IHmtxSrZNXtaamx
-         roRg==
+        d=googlemail.com; s=20251104; t=1777069005; x=1777673805; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=pTBHxscSUbuTHgt2EwkR8Brb8rC3RTP/i8kdYc/Dde0=;
+        b=htEwJYQWvMc/GVmRFpSI9jA+1R/73649YCEJcs2qDaKiI35sSdIo6w6X2CaA4el+JJ
+         B3c6eK8izaB0LxMA3yONIs2xmkZf6q1GAgQz3e0tMIHkbJwhUEm0J/yjK3paI48G3iMz
+         +5SAmlZ8KU3ksnkYLKhIgSY8tCJUC+fbAKlHYIPtIynOpU2lFzAxwOEYZzYLCZsKldof
+         1V3beNcKBluV9q10bKGZ3KuexdCIqrbOT1LN2Hvn3qnJJdHMOJP1plVPV6c/cUnsYK9H
+         qmRGGWUn6H815SWOLvVqYXI3reiiGFWflsFKUx7gsbZQtLHDNa/vMUbAeBfFc0LgojO6
+         brTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777068699; x=1777673499;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=f4MGhHC+NydhWG8P1j8ird1HDHK/LUJ2nl+eW8auQlY=;
-        b=JIN2CDjKouq+Ab3ZBuXrH0RPtuDvtdfKSdNZSzFE7ESxH/xZg0fAcsFWOc7UYQ4LX9
-         R7e7xcdrf0wSvTIMU9KxgYGG8FouHSiZwsJXBEnZFQomPR7Off1bfNxEC+T1nFQ6i1hY
-         /6YGmzxfazAUZwDra6V00ZR4ebF0cVdQxr7xxTT97X7f5C6ATSAim3ln8o5mu2cOYWSW
-         Q4i6PsEsnVyQ9LNv+KBGbVqFU1IU+geIEPd330ExPf8nFcKMKNxYi6LiZFYajnsABTzR
-         HtE649PXKKmYySeiybbmsE84Q9vR0FU01EtHMayPNNyt+89jyab8dD9Oh6ZHa+yBqsLm
-         P8Gg==
-X-Gm-Message-State: AOJu0YzsV6R5aVpi43uACbdkMEx3UKxGDEIQPgpZFCDk38d7T+I9CmgT
-	mbwXV8UdvdGSGN3fZkvImL88QRS7/oTS+PS5G9ArvXsZ2TQCv3mRvzc6CC+xD1y5
-X-Gm-Gg: AeBDies6M3vT1zKznjDNXWkzD7MCNqeTAehl2L51szDYToESkWsu1uVy6BlteCeNMBr
-	3NUktBqvgIIqyS+9KyvQ7hNJ/GjU5zZQQyEA0r04WP1cNnfEgZ+di/75lUEQtBo1Vb2c4Q+/Rv7
-	mrvt5pl/3hF7D9fPRXZdFurf98ck21E39g0PTDwOJFxwH4RlMbcSLrx3UnIHB+RafvNJPp7Mpk8
-	ulRJFurHqeqBi8sjOTvS9i0tlAdhMtLo5Pv6dKmMdSkXsDfUP/YHVslIpnlMTWJb33ai+BG2CLq
-	ix4GsyCRPQVgFlPsVOQ+yH71OKTO8tanz1GRd//r8Eo++OawH1eFQ2nEFfTthjjHIwcbznMryJ3
-	zXUNdkpyyNhDE35ynz+RBDDOd4wZyu1RPHQDnaHaR8f55onRglX8xRrTUWWsHM9geTaUfw0kXps
-	Y1IehuQyZoYhhvw1Q9whrJBfqiEZYzAogHyoG7jf5w
-X-Received: by 2002:a05:600c:a31a:b0:488:b239:77ec with SMTP id 5b1f17b1804b1-488fb778db4mr371652795e9.17.1777068699319;
-        Fri, 24 Apr 2026 15:11:39 -0700 (PDT)
-Received: from fedora ([156.207.128.125])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488fb75a913sm188157105e9.12.2026.04.24.15.11.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Apr 2026 15:11:38 -0700 (PDT)
-From: Ahmed Elaidy <elaidya225@gmail.com>
-To: stable@vger.kernel.org
-Cc: avagin@gmail.com,
-	lorenzo.stoakes@oracle.com,
-	linux-mm@kvack.org,
-	akpm@linux-foundation.org,
-	Ahmed Elaidy <elaidya225@gmail.com>
-Subject: [PATCH v2] mm: fix VM_SOFTDIRTY propagation on VMA merge
-Date: Sat, 25 Apr 2026 01:11:26 +0300
-Message-ID: <20260424221126.1238744-1-elaidya225@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <CANaxB-y=SD7V7dcBXuAqq8=p2R46SAr1uKZtMACynvk1=Cftqg@mail.gmail.com>
-References: <CANaxB-y=SD7V7dcBXuAqq8=p2R46SAr1uKZtMACynvk1=Cftqg@mail.gmail.com>
+        d=1e100.net; s=20251104; t=1777069005; x=1777673805;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=pTBHxscSUbuTHgt2EwkR8Brb8rC3RTP/i8kdYc/Dde0=;
+        b=V0piil+U6nlEUO3IQ8O5oIa6V7jSHgUp70RM+F3xuQZx/DT0/vwswSi+l4VzANRxfA
+         SUThnIX4NmA4oC29OV7cPe+YMGrSHS0Qw3sRDmZAxXwCNvkYVhn+UTAh5mvcUX27T+ly
+         +WudhaVnE8gYp+YcOS0OQke/nwj0VFmeWI/85+RIMMTc2lzSTtHHLWGTrHOFFBM/GOME
+         QMGZzQ0cw/xBy0k+KQ+PZl/WRX9IAyI1sPRrZXFC8tYCwJQaAOzQNR/A1xjsp9eV03t7
+         3+AyHA73DdPvfxT2rlu7GMGc/dWksmP54AZ0D34RwV6USkeCubHDrWi6lgV5Kj0MWgFU
+         F0Ug==
+X-Forwarded-Encrypted: i=1; AFNElJ/xlEjihl+Q/WW0T3UIuWd7EUbO+Ey9eY5j7UJJnhUeQgs8RcAzZvQ4nmijl7i8AVYDu7DR/fE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxr6p+AMQUhN6YPDt8bxbUXZU8h0ybOrU73ffn1Vfe90ORdBFTt
+	LuftEkZVRHjVwsVE7JJmYKuI59GrrdnLvcFqXx1F0sznEg3iOzgu17U=
+X-Gm-Gg: AeBDiesHrVoaMBV0QCvkvlOiZ5zL1sDxw5Pq5tUvgg7VijlO/6zy+jAGE/DUqJidTQB
+	DpF5CvZCMBTU4/LNY8V1nAG5mNZC1kgNSOrPxBc9qKxY8/3IY1v7NvLp0ZAc/mK4JqdouYnotSh
+	BIXK/K37vy+EhLJoV8by4n4JkqABTX9N+3V121VlKppwJjHLib9Z4BFA3J7Gqlk3YiOeqhGyclF
+	D2euQb/ESEUMxzEkGUjA89M+mOVWS3Bn54W/IHcn4gGzOuNLuqlf+W1AX+BMqVtah9EYP3zUIbA
+	/wlx1jRgjjK83C+elCGR0JhAEwYO+W4mMpTLcWm0uWuC8dEIg1dAymV5DOwss+b3ph+FPsETlFI
+	xYgmWMLi4kEgTmoL5lIkgGbidMV67TrXXL7R/bKzSDuWc/C6L7LzGtNBxj7pkNQ+zjomz1hIESO
+	sduBX9U367cTIzqGB99QiFxzX2gbzN8N/f69wSG+HME6m9ij5kodWjJ0Pz9HU4q2Lkp3WMN3lXZ
+	5BeRcBVnAy4
+X-Received: by 2002:a05:600c:3e8f:b0:48a:65a5:751f with SMTP id 5b1f17b1804b1-48a65a57799mr65252065e9.31.1777069004787;
+        Fri, 24 Apr 2026 15:16:44 -0700 (PDT)
+Received: from [192.168.1.3] (p5b2b4e21.dip0.t-ipconnect.de. [91.43.78.33])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488fc1c773fsm699136155e9.12.2026.04.24.15.16.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 24 Apr 2026 15:16:44 -0700 (PDT)
+Message-ID: <d88e43c9-59d4-45f2-b9e4-873d4486c9c5@googlemail.com>
+Date: Sat, 25 Apr 2026 00:16:43 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 7.0 00/42] 7.0.2-rc1 review
+Content-Language: de-DE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20260424132420.410310336@linuxfoundation.org>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20260424132420.410310336@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: CA657463BC6
+X-Rspamd-Queue-Id: 6347B463C3C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.65 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[googlemail.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[googlemail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	XM_UA_NO_VERSION(0.01)[];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-241065-lists,stable=lfdr.de];
+	FREEMAIL_FROM(0.00)[googlemail.com];
+	RCPT_COUNT_TWELVE(0.00)[20];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmail.com,oracle.com,kvack.org,linux-foundation.org];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241064-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[elaidya225@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FROM_NEQ_ENVFROM(0.00)[pschneider1968@googlemail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[googlemail.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FROM_HAS_DN(0.00)[]
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[peters-netzplatz.de:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,googlemail.com:dkim,googlemail.com:mid,mailvelope.com:url]
 
-During VMA merging, such as through mprotect(), VM_SOFTDIRTY flags could be
-lost. This breaks tools relying on soft-dirty tracking, such as CRIU
-incremental dump/restore.
+Am 24.04.2026 um 15:30 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 7.0.2 release.
+> There are 42 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Upstream resolved this using a broader VM_STICKY infrastructure (commit
-bf14d4a05387 "mm: propagate VM_SOFTDIRTY on merge"). To minimize churn and
-risk in the stable 6.18.y tree, this patch skips backporting the entire
-VM_STICKY series (9 patches). Instead, it introduces a minimal standalone fix.
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg oddities or regressions found.
 
-VM_SOFTDIRTY is intentionally excluded from normal flag comparison to allow
-merging in mprotect. This patch ensures the resulting merged VMA retains
-the VM_SOFTDIRTY flag if either of the original VMAs had it.
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
-Suggested-by: Andrei Vagin <avagin@gmail.com>
-Cc: stable@vger.kernel.org
-Cc: lorenzo.stoakes@oracle.com
-Signed-off-by: Ahmed Khalid Elaidy <elaidya225@gmail.com>
----
- mm/vma.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
 
-diff --git a/mm/vma.c b/mm/vma.c
-index 5815ae9e5770..03728d855684 100644
---- a/mm/vma.c
-+++ b/mm/vma.c
-@@ -978,6 +978,14 @@ static __must_check struct vm_area_struct *vma_merge_existing_range(
- 	if (err || commit_merge(vmg))
- 		goto abort;
- 
-+	/*
-+	 * VM_SOFTDIRTY is excluded from normal flag comparison to allow
-+	 * merging in mprotect, but we have to ensure the result is correctly
-+	 * marked with it if either side had it.
-+	 */
-+	if ((vmg->target->vm_flags ^ vmg->vm_flags) & VM_SOFTDIRTY)
-+		vm_flags_set(vmg->target, VM_SOFTDIRTY);
-+
- 	khugepaged_enter_vma(vmg->target, vmg->vm_flags);
- 	vmg->state = VMA_MERGE_SUCCESS;
- 	return vmg->target;
+Beste Grüße,
+Peter Schneider
+
 -- 
-2.53.0
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
 
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
