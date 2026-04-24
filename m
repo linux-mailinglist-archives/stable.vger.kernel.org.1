@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-240672-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240888-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EERFDOtw62nCMwAAu9opvQ
-	(envelope-from <stable+bounces-240672-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:32:27 +0200
+	id sDiNIGpz62kLNAAAu9opvQ
+	(envelope-from <stable+bounces-240888-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:43:06 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DFE545F111
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:32:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0482345F753
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:43:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7A4383006F18
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:32:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 66FA7302FE99
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:41:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 277DE3D6CD6;
-	Fri, 24 Apr 2026 13:32:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAD0D3D5236;
+	Fri, 24 Apr 2026 13:41:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P+I/O6KI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nmi2wnya"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23C6078F4A;
-	Fri, 24 Apr 2026 13:32:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8358C3537DF;
+	Fri, 24 Apr 2026 13:41:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777037542; cv=none; b=RdLr797COMOiHI4xbVAEcTBPshxv4Rv2k7VYq1K0jahd9XeOe6sJWLrWa4p+qSR7Ir9NN8v0LTjct20E/rhM9ueVITCYmnDLTEj/hEZyriFIsnKDNqjcUCfjbVtoQa6ftIDgcYb3+g0hVvihtrJ59/rnKn14st/GGXjj0Tk0PIs=
+	t=1777038099; cv=none; b=SdWuzjRQ/oIQiOue0NhV9PksBi76fQSxXFWbH3wLQFDt9bj28VYDRfd7pIKJn7WOX8ut2kSxnX5zHxGqACc8zM51NBQJZt2sCrHkZFKeqQ3Ury7yBd6uIs/LdjYI2O6iCtcz9XAdRudl33faMwocnWv/PSp0qJc6XN4zMFJAzcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777037542; c=relaxed/simple;
-	bh=lTInEuymmatMXBluZhKxvubHEqwF+a9DmWcwWRt0xrc=;
+	s=arc-20240116; t=1777038099; c=relaxed/simple;
+	bh=5tI1I6KH4peweSGSBdvL+dRfiuDuei3tGtjik4HFSu4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qyS409UU2vfGOQa7PtbxyWC7NSVOg++SJ1wzWFgeXLalzNADgrA9ueplA5f+6MTk/4GUjEcvK3Y3IA9Ac1jCz5xBy0LHRfijvkTgzbcpi6G5O2amCRoZH1PkIJkOJw3JyQSmYspV0/gqZVIrUjMmwCdCVov7DLuSYXOM8IUq6zs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P+I/O6KI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3CB2C19425;
-	Fri, 24 Apr 2026 13:32:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Or9/gNqtYYwRAZS1pbpnhDLr8/guSbrfjYC7kF+MhsHN7xXiWYBf9tQSqqF9SamqisQa/wAeV77U8UsvQWqaKXmjZX0+kkf1bU0lHSrrq2kdlKeQyy2lpwAjXDkNeohHcLc47/sLfZdlzXZS8EKjP+5J2U/otDT/Ghrre28knyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nmi2wnya; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19AB4C19425;
+	Fri, 24 Apr 2026 13:41:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777037541;
-	bh=lTInEuymmatMXBluZhKxvubHEqwF+a9DmWcwWRt0xrc=;
+	s=korg; t=1777038099;
+	bh=5tI1I6KH4peweSGSBdvL+dRfiuDuei3tGtjik4HFSu4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P+I/O6KIEY5+FWe2V2iYaaxx0HLwxBGIe+rIGruFF7onV9cVPDbJJbZwHDRsfB490
-	 YmsnbJjieDKTbAkXV3PiR1YnE50N9SJgvD59FY4lwQochEb9nmAl6gu9sFXrwa4QZY
-	 oEBkmIPkXCyxrbT/blpZWQNbGkILqQRtsq5DCFoQ=
+	b=nmi2wnyatYxa/rURbFa/OfMujTqdn9IcrHvF2gw+PKvFLpwZ2MS7nP1GZjbeLkhiY
+	 xgsvuA/4AIGay9W1U8+2GP5dNtEtof2CsxeqTj7yKgp2hviKvJ43CVM6S2NOZXQxS9
+	 Q+c2cmXUa2syfXyDKq2vAeFqjqyjBEd0DUm1gARQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Miklos Szeredi <mszeredi@redhat.com>
-Subject: [PATCH 7.0 18/42] fuse: quiet down complaints in fuse_conn_limit_write
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Thomas Sowell <tom@ldtlb.com>
+Subject: [PATCH 6.18 04/55] drm/amdgpu: replace PASID IDR with XArray
 Date: Fri, 24 Apr 2026 15:30:43 +0200
-Message-ID: <20260424132424.320063053@linuxfoundation.org>
+Message-ID: <20260424132430.919486258@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132420.410310336@linuxfoundation.org>
-References: <20260424132420.410310336@linuxfoundation.org>
+In-Reply-To: <20260424132430.006424517@linuxfoundation.org>
+References: <20260424132430.006424517@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,99 +67,174 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8DFE545F111
+X-Rspamd-Queue-Id: 0482345F753
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240672-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,amd.com,gmail.com,ldtlb.com];
+	TAGGED_FROM(0.00)[bounces-240888-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ldtlb.com:email,amd.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
 
-commit 129a45f9755a89f573c6a513a6b9e3d234ce89b0 upstream.
+commit 3c863ff920b45fa7a9b7d4cb932f466488a87a58 upstream.
 
-gcc 15 complains about an uninitialized variable val that is passed by
-reference into fuse_conn_limit_write:
+Replace the PASID IDR + spinlock with XArray as noted in the TODO
+left by commit ea56aa262570 ("drm/amdgpu: fix the idr allocation
+flags").
 
- control.c: In function ‘fuse_conn_congestion_threshold_write’:
- include/asm-generic/rwonce.h:55:37: warning: ‘val’ may be used uninitialized [-Wmaybe-uninitialized]
-    55 |         *(volatile typeof(x) *)&(x) = (val);                            \
-       |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~
- include/asm-generic/rwonce.h:61:9: note: in expansion of macro ‘__WRITE_ONCE’
-    61 |         __WRITE_ONCE(x, val);                                           \
-       |         ^~~~~~~~~~~~
- control.c:178:9: note: in expansion of macro ‘WRITE_ONCE’
-   178 |         WRITE_ONCE(fc->congestion_threshold, val);
-       |         ^~~~~~~~~~
- control.c:166:18: note: ‘val’ was declared here
-   166 |         unsigned val;
-       |                  ^~~
+The IDR conversion still has an IRQ safety issue:
+amdgpu_pasid_free() can be called from hardirq context via the fence
+signal path, but amdgpu_pasid_idr_lock is taken with plain spin_lock()
+in process context, creating a potential deadlock:
 
-Unfortunately there's enough macro spew involved in kstrtoul_from_user
-that I think gcc gives up on its analysis and sprays the above warning.
-AFAICT it's not actually a bug, but we could just zero-initialize the
-variable to enable using -Wmaybe-uninitialized to find real problems.
+     CPU0
+     ----
+     spin_lock(&amdgpu_pasid_idr_lock)   // process context, IRQs on
+     <Interrupt>
+       spin_lock(&amdgpu_pasid_idr_lock) // deadlock
 
-Previously we would use some weird uninitialized_var annotation to quiet
-down the warnings, so clearly this code has been like this for quite
-some time.
+   The hardirq call chain is:
 
-Cc: stable@vger.kernel.org # v5.9
-Fixes: 3f649ab728cda8 ("treewide: Remove uninitialized_var() usage")
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+     sdma_v6_0_process_trap_irq
+      -> amdgpu_fence_process
+       -> dma_fence_signal
+        -> drm_sched_job_done
+         -> dma_fence_signal
+          -> amdgpu_pasid_free_cb
+           -> amdgpu_pasid_free
+
+Use XArray with XA_FLAGS_LOCK_IRQ (all xa operations use IRQ-safe
+locking internally) and XA_FLAGS_ALLOC1 (zero is not a valid PASID).
+Both xa_alloc_cyclic() and xa_erase() then handle locking
+consistently, fixing the IRQ safety issue and removing the need for
+an explicit spinlock.
+
+v8: squash in irq safe fix
+
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Suggested-by: Lijo Lazar <lijo.lazar@amd.com>
+Fixes: ea56aa262570 ("drm/amdgpu: fix the idr allocation flags")
+Fixes: 8f1de51f49be ("drm/amdgpu: prevent immediate PASID reuse case")
+Signed-off-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: Thomas Sowell <tom@ldtlb.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/fuse/control.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c |   39 +++++++++++++++-----------------
+ 1 file changed, 19 insertions(+), 20 deletions(-)
 
---- a/fs/fuse/control.c
-+++ b/fs/fuse/control.c
-@@ -121,7 +121,7 @@ static ssize_t fuse_conn_max_background_
- 					      const char __user *buf,
- 					      size_t count, loff_t *ppos)
- {
--	unsigned val;
-+	unsigned int val = 0;
- 	ssize_t ret;
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c
+@@ -22,7 +22,7 @@
+  */
+ #include "amdgpu_ids.h"
  
- 	ret = fuse_conn_limit_write(file, buf, count, ppos, &val,
-@@ -163,7 +163,7 @@ static ssize_t fuse_conn_congestion_thre
- 						    const char __user *buf,
- 						    size_t count, loff_t *ppos)
- {
--	unsigned val;
-+	unsigned int val = 0;
- 	struct fuse_conn *fc;
- 	ssize_t ret;
+-#include <linux/idr.h>
++#include <linux/xarray.h>
+ #include <linux/dma-fence-array.h>
  
+ 
+@@ -40,8 +40,8 @@
+  * VMs are looked up from the PASID per amdgpu_device.
+  */
+ 
+-static DEFINE_IDR(amdgpu_pasid_idr);
+-static DEFINE_SPINLOCK(amdgpu_pasid_idr_lock);
++static DEFINE_XARRAY_FLAGS(amdgpu_pasid_xa, XA_FLAGS_LOCK_IRQ | XA_FLAGS_ALLOC1);
++static u32 amdgpu_pasid_xa_next;
+ 
+ /* Helper to free pasid from a fence callback */
+ struct amdgpu_pasid_cb {
+@@ -62,36 +62,37 @@ struct amdgpu_pasid_cb {
+  */
+ int amdgpu_pasid_alloc(unsigned int bits)
+ {
+-	int pasid;
++	u32 pasid;
++	int r;
+ 
+ 	if (bits == 0)
+ 		return -EINVAL;
+ 
+-	spin_lock(&amdgpu_pasid_idr_lock);
+-	/* TODO: Need to replace the idr with an xarry, and then
+-	 * handle the internal locking with ATOMIC safe paths.
+-	 */
+-	pasid = idr_alloc_cyclic(&amdgpu_pasid_idr, NULL, 1,
+-				 1U << bits, GFP_ATOMIC);
+-	spin_unlock(&amdgpu_pasid_idr_lock);
+-
+-	if (pasid >= 0)
+-		trace_amdgpu_pasid_allocated(pasid);
++	r = xa_alloc_cyclic_irq(&amdgpu_pasid_xa, &pasid, xa_mk_value(0),
++			    XA_LIMIT(1, (1U << bits) - 1),
++			    &amdgpu_pasid_xa_next, GFP_KERNEL);
++	if (r < 0)
++		return r;
+ 
++	trace_amdgpu_pasid_allocated(pasid);
+ 	return pasid;
+ }
+ 
+ /**
+  * amdgpu_pasid_free - Free a PASID
+  * @pasid: PASID to free
++ *
++ * Called in IRQ context.
+  */
+ void amdgpu_pasid_free(u32 pasid)
+ {
++	unsigned long flags;
++
+ 	trace_amdgpu_pasid_freed(pasid);
+ 
+-	spin_lock(&amdgpu_pasid_idr_lock);
+-	idr_remove(&amdgpu_pasid_idr, pasid);
+-	spin_unlock(&amdgpu_pasid_idr_lock);
++	xa_lock_irqsave(&amdgpu_pasid_xa, flags);
++	__xa_erase(&amdgpu_pasid_xa, pasid);
++	xa_unlock_irqrestore(&amdgpu_pasid_xa, flags);
+ }
+ 
+ static void amdgpu_pasid_free_cb(struct dma_fence *fence,
+@@ -658,7 +659,5 @@ void amdgpu_vmid_mgr_fini(struct amdgpu_
+  */
+ void amdgpu_pasid_mgr_cleanup(void)
+ {
+-	spin_lock(&amdgpu_pasid_idr_lock);
+-	idr_destroy(&amdgpu_pasid_idr);
+-	spin_unlock(&amdgpu_pasid_idr_lock);
++	xa_destroy(&amdgpu_pasid_xa);
+ }
 
 
 
