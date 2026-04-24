@@ -1,167 +1,185 @@
-Return-Path: <stable+bounces-240967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240968-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aDOICZd162kQNAAAu9opvQ
-	(envelope-from <stable+bounces-240967-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:52:23 +0200
+	id kIdjNLV162kQNAAAu9opvQ
+	(envelope-from <stable+bounces-240968-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:52:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3518045FCA2
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:52:22 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1ACC45FCE5
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:52:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E713C300A663
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:51:39 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 44C3D3007A7C
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:52:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF50323370F;
-	Fri, 24 Apr 2026 13:51:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E18F03D903C;
+	Fri, 24 Apr 2026 13:52:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SssMPKqc"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pkNjGAb4"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FBC0260566
-	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 13:51:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777038698; cv=none; b=rWCDQ3EonT7PuY997lTt54gggNTqHg6PaUrM8bjDrwHfhh24CEd7L9qB0OuJE8wn/6b1vhhbCwHRi1hXv9oSHZdQJL+LDpQ3xwX1iOEPBp8hU53FhBDoFAg0ZZJJ2Iy6QbHQVkE5zLJ6LfuztGuFi2GC+4HgbYe2322C2NlGsCo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777038698; c=relaxed/simple;
-	bh=yzINWC19jxPLkfn8qZZapo/RqhMspLiP/J0J4Xx0n24=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K0Qxtf826TZM8OWBE0WNIg+3kVmvJivDuO1UO3z6u1ufcEULvrN+nv8Cmq/HuRa6C0W/EFvuz1GajFnj8Qg8N5Ketb02W/mBWxKHU0o9IkJhdx22pd0CwJhgXbRCeGFHf3PlPSq0gdEK2yFEXSrd5TlstKB/ub0QvLkx4h2zlD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SssMPKqc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5E5FC19425;
-	Fri, 24 Apr 2026 13:51:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777038698;
-	bh=yzINWC19jxPLkfn8qZZapo/RqhMspLiP/J0J4Xx0n24=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SssMPKqc5oVy2QgVoHd0eY751NeVgf33ffZUoeMhe7t7GqC2qmhmjD7cgo8XZ190+
-	 4RHpTSqS2xEzOqP3Oq3XX7NAJgCmRYSdurbYkylQrLgB+6pB6//1xsXm/QSZ1Y29Os
-	 /G1Su3WgApGCe9M6AXHAPJkhH+57WGNXwKvpiAGta8DAH2UgT/Yw4C5bHao0zqCGGV
-	 Eh6njLvfXIQud4WXtZ21aBSqRZkmdNhYGoPJay8tYoD+7n1ag3z8F0/QamoFK8itUO
-	 A01huOjVbGITf2dCpRy87CKvWMEnI7gB1JhYvYiullLVld5UWqAF3DBDnFqNO+G/KB
-	 BPFBsM25NzKLQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Michael Bommarito <michael.bommarito@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] smb: server: fix active_num_conn leak on transport allocation failure
-Date: Fri, 24 Apr 2026 09:51:35 -0400
-Message-ID: <20260424135135.2085884-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026042442-saggy-bucktooth-2b96@gregkh>
-References: <2026042442-saggy-bucktooth-2b96@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 373543C3440
+	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 13:52:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777038758; cv=pass; b=Qv4LRZxGrLmWx/GFFOuuTULJlnVSjpC9D7IRfipklBpzw76WVbCF8R7Uwhk3cKy81lN/HXHJoAQyV7llX7MyYhu7v/TdBJ9Z0uxgE1ZFuzzXjoPbzuYx6gjhhN6fcoBYJOmUW3SrTslylym1H+GIbnT1JTaEilHbsQtbq/LIO4U=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777038758; c=relaxed/simple;
+	bh=/kNEUq4+vMrJehBhGv0WTeFng4QIMYLHowGQS7Rn/Og=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=laC7jlVPvb1SKnrZ2bZubjVbKmlzw0CnZxJJUxmXTH39NDKfznhd8Hgu5WrX8WmMBHhcDayWnHShA2AB/3WlbFXIDSPS/xXp8LPjqI5It5bKHWoBYNVSgaEYDdAMnCY7HfWv3cpZDAVOkjgpc9umkrGhn3UygiyK1tQ75sQzYlw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pkNjGAb4; arc=pass smtp.client-ip=209.85.208.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-678a526f374so1935954a12.0
+        for <stable@vger.kernel.org>; Fri, 24 Apr 2026 06:52:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777038755; cv=none;
+        d=google.com; s=arc-20240605;
+        b=a79jsYI5dK8VdoQ/ItSn/XrfeluFernbAvLLI163dJI9yEBbCr5KsvchA2ubMdqgvZ
+         9Ys2jI2mFnV3tHnbTJXtpZ2/QdNEb5bB0V1TwacJ9yo9Xns9RoX6ZGb1yoriG5pQf/Co
+         RSqkf4sl9743tC3jCTCVUt4mGm0TniulA7Sgecotu6rNGjV6QYFKXyOxT1DJ1DXVucRU
+         2XGsYtXC3U6gXxIa+N083d95b42+m2IeRUxkR1h3ml1r0MvNZJdGl5SvNvcGA9kWrOCU
+         i68h6eoE+jRQBuG4GhsF9Sbv/Iwd+qojw5yC5ZcyB53Ng66inPbDWwLTnc4Q94fudORy
+         ep8w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=wJJT0JoPIZZHN/QqfMLvwfSqlNJF6a+bk91astgGZbs=;
+        fh=auQ7KU1h/rwn46mlxXE1QvV0rSXj9N9PtRErziEmyiE=;
+        b=avv8Yw0qHgBrohMLJERAHZS9E+goakKUDyrwaCVr8X0vuXwxLXwSRUcWVnh+aljD/J
+         iAJAlQ2g+XicfkAWiRaRpBoIqmyZkB9CXk7WQp1d85aWDL/5hvXzrWyEGwg0G4HJSBgm
+         9TJUPtOIe+iOwCHW0N34GJdl15o76sdqB2UKqeV/iyR2fMgnGrabPE4It1krAcT8s6YC
+         l3Iu+G/wvXorw9C/9Yd/7UHIiyOrDOiZ4sx+PPAtHe2/1jcHHgSAgUM4GVUD+A1E4vZR
+         q58Jyie5uyyy5csW49OHcnN6yaRFARhSezX3FRHbRv8NN0wOaDd1Cdql9zE9/pBN4lI4
+         +1Gg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1777038755; x=1777643555; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wJJT0JoPIZZHN/QqfMLvwfSqlNJF6a+bk91astgGZbs=;
+        b=pkNjGAb4njl3opb7rr8ARVz2X/cGMJozafUsICGruDsy2zTufNLdhMP0bpe3pS4AQc
+         hpZUOYey0sij5zjb2rbqscZ4KWHI9bmd6kjnwL96ZQLoDxuylcG1VpQ8VJxGZg422HxU
+         VjtoIDPoMB5fTEOj7WmokQFx7Yoo2HY9T1V2HsEEmWemLi6+HJNU/xMA6nIAATPsdYxB
+         Cyti+wftXiNnoeuksRg8b080LWymj7CY+3KIfYLJUxHRA+OfXkSwea3tw1bSjkcCu8tn
+         QY1K9TK7aaZHriVKtAfbTv7UoEerHbHC59yuFfFOyRAAhP28rQVHtucdT23vj6J3jpKT
+         iGEA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777038755; x=1777643555;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=wJJT0JoPIZZHN/QqfMLvwfSqlNJF6a+bk91astgGZbs=;
+        b=gkvWu2b5eETxqqz8xySXmiUnDR9+wg15YFGQk7dWIich9prp7Hr592gxYSgnt+9541
+         tI4iedpPohIg3s94RuLko+BYFG6A+FiB8p4YkD5443u7gyFQHD7RExU3nlbrNdQZFzgb
+         T8ZYtMZMZ2xf7DNvVnS63kG6ga4wFG1Di7T9EP8z2xCJV/yvWFIvkqmHI9b+3Hs/ueSE
+         9Djg/xT4NoKSqiGPz4C8B5l8sLTg148PHtSbLymbxf9QmSqlyrz7pnWUqW8T+bev5H/h
+         2HOIP++OFrlsYs+hITE+l/kSecaiX1PuutTfNKaIbHr5qD99fPK6vryFUnBgB4562wWb
+         7Xjw==
+X-Forwarded-Encrypted: i=1; AFNElJ+wRf1d46tyaZoqY4YiNEOrD9aSfZXfFvNFETbcICfX51QiBivl8vvzk9W6IiZNsRF+Lw8rA6w=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzjck2UJygXoG8I3OXnfL0vzQvTaqdFnp+PAzlESmcNdlv01HpN
+	bCKu+f52isWJmqEWXIvCadXoGya6mpRlcM673IokvFDKcmP7nzePZ7Fk9qM8Mk+OMVekCPXr4Ce
+	sYePEWpadY9iXO46pml82aPO2UscL7VeMU/AwB0Yg
+X-Gm-Gg: AeBDiev+y1SmfC3BqQWA/GR2AN9LQpD99/rjyT1u6O6tPYj24vqrhfC0iLEGnF9hm6E
+	BTEtm+hNVVn+eWjTIdK3xqzuctJeJYaQGIcv6ATdXZwS84ypME4/b4ubTmOQqORLXCpF1gbsZ2t
+	FLt/UOhNX0rmwdF0PRB5zUMkMeuiG4cdMv5u1L7bogjFaC7z1fWs3yC7ZvE0lLTw4UUl49Xwt5B
+	MjGuNC/ie1lOXIytqYJ1nL3RNyK9N/Zf3n2yw+zS3IcH88UM6dFW7hM08+ukhvbID+VGt8c16zO
+	wwhSt84qAOgWxMLvOHu3ZtIohthB68Udv9LKoOy6Jr6C2rDgPnzlya2MGLA1BgGj1mXdqg1mI0L
+	t+kBZSKCWDiOmIFJw7Is=
+X-Received: by 2002:a05:6402:312d:b0:670:8b38:5717 with SMTP id
+ 4fb4d7f45d1cf-672bfde2984mr8860876a12.24.1777038755002; Fri, 24 Apr 2026
+ 06:52:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3518045FCA2
+References: <2026042433-outwit-cognitive-f970@gregkh>
+In-Reply-To: <2026042433-outwit-cognitive-f970@gregkh>
+From: Willem de Bruijn <willemb@google.com>
+Date: Fri, 24 Apr 2026 09:51:56 -0400
+X-Gm-Features: AQROBzDJC9eu_b2xQIeP4q9m7u4xd26yz65cE70L66aUTsOtNmQZXfuDaxpbOmg
+Message-ID: <CA+FuTScyXkgugNyRoyHUTSt98CQEzGv=2kGH5Zwq8ho1Q4_+Bw@mail.gmail.com>
+Subject: Re: FAILED: patch "[PATCH] net/packet: fix TOCTOU race on mmap'd
+ vnet_hdr in" failed to apply to 6.1-stable tree
+To: gregkh@linuxfoundation.org, patzilla007@gmail.com
+Cc: kuba@kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: D1ACC45FCE5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,microsoft.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240967-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-240968-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[google.com:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[linuxfoundation.org,gmail.com];
+	RCPT_COUNT_THREE(0.00)[4];
+	MISSING_XM_UA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[willemb@google.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email]
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+On Fri, Apr 24, 2026 at 5:50=E2=80=AFAM <gregkh@linuxfoundation.org> wrote:
+>
+>
+> The patch below does not apply to the 6.1-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
+>
+> To reproduce the conflict and resubmit, you may use the following command=
+s:
+>
+> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.gi=
+t/ linux-6.1.y
+> git checkout FETCH_HEAD
+> git cherry-pick -x 2c054e17d9d41f1020376806c7f750834ced4dc5
+> # <resolve conflicts, build, test, etc.>
+> git commit -s
+> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026042433-=
+outwit-cognitive-f970@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+>
+> Possible dependencies:
 
-[ Upstream commit 6551300dc452ac16a855a83dbd1e74899542d3b3 ]
+This appears to be due to feature commit dfc39d4026fb ("net/packet:
+support mergeable feature of virtio"). Backporting that is not
+practical, or wanted.
 
-Commit 77ffbcac4e56 ("smb: server: fix leak of active_num_conn in
-ksmbd_tcp_new_connection()") addressed the kthread_run() failure
-path.  The earlier alloc_transport() == NULL path in the same
-function has the same leak, is reachable pre-authentication via any
-TCP connect to port 445, and was empirically reproduced on UML
-(ARCH=um, v7.0-rc7): a small number of forced allocation failures
-were sufficient to put ksmbd into a state where every subsequent
-connection attempt was rejected for the remainder of the boot.
+The actual conflict is small, on conversion of direct read
 
-ksmbd_kthread_fn() increments active_num_conn before calling
-ksmbd_tcp_new_connection() and discards the return value, so when
-alloc_transport() returns NULL the socket is released and -ENOMEM
-returned without decrementing the counter.  Each such failure
-permanently consumes one slot from the max_connections pool; once
-cumulative failures reach the cap, atomic_inc_return() hits the
-threshold on every subsequent accept and every new connection is
-rejected.  The counter is only reset by module reload.
+  +              if (po->has_vnet_hdr) {
 
-An unauthenticated remote attacker can drive the server toward the
-memory pressure that makes alloc_transport() fail by holding open
-connections with large RFC1002 lengths up to MAX_STREAM_PROT_LEN
-(0x00FFFFFF); natural transient allocation failures on a loaded
-host produce the same drift more slowly.
+with cached function variable
 
-Mirror the existing rollback pattern in ksmbd_kthread_fn(): on the
-alloc_transport() failure path, decrement active_num_conn gated on
-server_conf.max_connections.
++               if (vnet_hdr_sz) {
 
-Repro details: with the patch reverted, forced alloc_transport()
-NULL returns leaked counter slots and subsequent connection
-attempts -- including legitimate connects issued after the
-forced-fail window had closed -- were all rejected with "Limit the
-maximum number of connections".  With this patch applied, the same
-connect sequence produces no rejections and the counter cycles
-cleanly between zero and one on every accept.
+I think we can fix that up in a backport fix. From quick check the
+conflict is the same for 6.1 and 5.10 (i.e., no additional issues with
+older branches).
 
-Fixes: 0d0d4680db22 ("ksmbd: add max connections parameter")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-6
-Assisted-by: Codex:gpt-5-4
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/ksmbd/transport_tcp.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/fs/ksmbd/transport_tcp.c b/fs/ksmbd/transport_tcp.c
-index 7ef201b7ddb57..b9ff22e6f4db4 100644
---- a/fs/ksmbd/transport_tcp.c
-+++ b/fs/ksmbd/transport_tcp.c
-@@ -191,6 +191,8 @@ static int ksmbd_tcp_new_connection(struct socket *client_sk)
- 	t = alloc_transport(client_sk);
- 	if (!t) {
- 		sock_release(client_sk);
-+		if (server_conf.max_connections)
-+			atomic_dec(&active_num_conn);
- 		return -ENOMEM;
- 	}
- 
--- 
-2.53.0
-
+Bingquan, do you want to send patches to these three stable branches
+5.10, 5.15 and 6.1? Else I can take a stab.
 
