@@ -1,62 +1,90 @@
-Return-Path: <stable+bounces-240658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240659-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uB6AOk9q62kcMwAAu9opvQ
-	(envelope-from <stable+bounces-240658-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:04:15 +0200
+	id seYMGdhs62lwMwAAu9opvQ
+	(envelope-from <stable+bounces-240659-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:15:04 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 228C345ED12
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:04:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76C7645EE14
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:14:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1D76D3007A78
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:04:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5F7F830028D1
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:14:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BA793BED75;
-	Fri, 24 Apr 2026 13:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C52E3D5251;
+	Fri, 24 Apr 2026 13:14:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jNVcMEBq"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eoZ1RMko"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D5571A682E
-	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 13:04:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B52EA29D267
+	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 13:14:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777035846; cv=none; b=NROSbuNdq4Zs6EuKm110Ccop3atFt1+gq5VAUAUw/uV2LH6Gnu5NKGasrknz/Iasjl9ARGC0StF+fG6LyBVtFAGSyYtxiczS5lzXlqaascCBkFyBzdAXBD1X+53t+/joPGbvi7jXG4FuAfNJ0G18ntksdNFnAXndr8HZghFLW3M=
+	t=1777036486; cv=none; b=NPtA534oN+8r7InA+tHx1fIf2YI6gKQ0zgk3wHW8XYrZqNBW0rv9trE2Z9CQC+8PRfOxDdEZBH7U+kh8UGrzSjzRiS/ohByIntOsTeg8xKDzaM4G42E9lSeLxuLLXdTcPlvrk6g8PDYE4Wrd1MtddRbErxpdpdJTtkJNkuIkY8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777035846; c=relaxed/simple;
-	bh=Flr0gq+o36P1bwo6nFPjP/1G5zmHhSlJa+6ivBb8FVM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=noSrrVdAJr3jemeOwLQcGzZZXlx0uLGmWgll9sc7mm7+fjaX+EiY28CJARhUDVdr6kQaojRPMto9opi+xf7+sHJdSzDNaPEoRe8ITzHDhMBxd48fOZoJL/+4DtN0firOVgYv10xXqP+TDP1KXT3icBISHr5bPwslP14uCoBeOB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jNVcMEBq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E291C2BCB2;
-	Fri, 24 Apr 2026 13:04:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777035846;
-	bh=Flr0gq+o36P1bwo6nFPjP/1G5zmHhSlJa+6ivBb8FVM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jNVcMEBqvQwRlAIw0wsMdvnbYEirVC6oIYBzwjnje/zjHEennzKz0cQrUgE/aRxvo
-	 5kkUiBLmc2Qgq9ue5hMT1RFX33r6cYfBSxivQsIUplN200mXhK+Yw+A7MnsaquvKxM
-	 MiwuUkGbtPaePlISenhbOBsVWmwz8JI7T/clCQflZIMBISze6OfhdiFER5C+a9Cgt3
-	 PlMaVvcw/kT0fIKi42wIslhd/65ru/uFWHm1UgC8PBgvOECiYSy29t90i2RuWmjai7
-	 2oziBgl+VYAai2jCH8oYhUhMbO5VSIJ0BZeJcV6Vaydqi33luALHsyWZsf0Je0o8fD
-	 5Oe1njus4bn4g==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Michael Bommarito <michael.bommarito@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y 3/3] ksmbd: require minimum ACE size in smb_check_perm_dacl()
-Date: Fri, 24 Apr 2026 09:04:01 -0400
-Message-ID: <20260424130401.1917926-3-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424130401.1917926-1-sashal@kernel.org>
-References: <2026042426-growing-dime-ce6e@gregkh>
- <20260424130401.1917926-1-sashal@kernel.org>
+	s=arc-20240116; t=1777036486; c=relaxed/simple;
+	bh=dyavU3qXI2tJ3+ju0VcHYmrHuUmrqrQ9qdsQmT3swxQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NN4v1OHxAzj3kndxlsK3u5TtgzpIUJfj5eHOXJOWn07sn4fvT5L/931vekYeM0rgcekT4SbajMvfOCjxdPRIsb0y6wzD2yv8FpJkudxsaOZbzoRTOOa9HxgfIn4PCOpIY2dFIdFF4pZKWp/vXiH+V45Xa4B3ZENKxD58ZjXyua8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eoZ1RMko; arc=none smtp.client-ip=209.85.215.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-c795f096fa5so3133209a12.3
+        for <stable@vger.kernel.org>; Fri, 24 Apr 2026 06:14:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777036485; x=1777641285; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=qFdJIR9/b2UzOLN3bbr2cSRO1rNz516MTroGF1ZNF3I=;
+        b=eoZ1RMko1lJucL7RZYAaGNBP8i9OsfJ2HULrGLjuN3A/M2ybRjw6av3+pbKJKaJM1M
+         rx5n98PRhR3X9vcarXO00YmB0gfqAFdrob7YECoQLem2zsnn/m9d4Yu4zNprjvAWpUl1
+         2G8uc8LLDJoTbx9+t9/SPoysav1Y0U4KEWG2OvP2e+qqTJxifpufe4UWvOB9IaISA7tk
+         L3+bXqcxSjnP0TFYT+iKnTdr6aWRJmAdRGSzffbSkVNC2LX+P2wtUBryVJE9fIWV06DW
+         O2kNoN6bnw1neDJFo4tXw2CUj32Ngua8ntaSY4YOvTrRaWaXeGdcL1kj2ai93Rc+mWup
+         y8qw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777036485; x=1777641285;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qFdJIR9/b2UzOLN3bbr2cSRO1rNz516MTroGF1ZNF3I=;
+        b=nNMYJJUMA+ovJitGqqjmFP4bdzKvhZ3D3l4pqzVleqgDCN17hf87A5VgA1pxbR1zrD
+         j1F6+6XtkZoLovERcgwdHuHWd3mQxGJ3ShRFLNt69VIAqwc0vy+Mb6OU3ZdwCO7TqY/y
+         6xWfB0RaeESe96vHp7hvfnEc+j5AJ2Vk7w9oeGuf1+3Aie5Lu5RGvYz7oBoe3Q8t7O+o
+         zhvVV3qxdqOK8iomaEEW1//UVFKS9FKOyAiCz4gMp/xwJ5ZxshEhy6HLQMAOKcCQ9ZK2
+         Lq8c6WjXgnFA1Jqb9BFIBhq+2xJBCBxKFy9YNPc01wvRsxW5duXs9FJ/uAnJfeYCkSQy
+         opQw==
+X-Forwarded-Encrypted: i=1; AFNElJ8US5e0oVKKitCilvNNB1EkSJIw0Pe24YV1OrkysW71XC66W7DNf6BevaJETJu/1LVBAuY2j/k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwZMYiU0MzQBIID2djF72A4aO+NzuT6HrM4xjoOgbKa8/krMpOo
+	ImDZbLjzh3Lm6Gep8HO9YukWK37k/TvTF+mBZwUjZQq4edv/p7GdLjq7
+X-Gm-Gg: AeBDietWNoDUxoHQrtvQ3PpUww/Meo0tJfHtiQ/de9M8+W4W9FJh6wDe0fLbhhxYgnk
+	UkhypC28EPBpI9CLgw+BVcUZhK4GW1zqzbTt2q4fIp2fMLLXGmH1UwlYsQ2XNg75x506TC768iY
+	yWSKMhU/gzVccRckEgowwKlNmG7VtMnC1rfxnzZdUtuEfQZcf2/7eUQlBAqVvjcCo6XTDGYw9yh
+	4Q+f7W9DBxIVkunGa+DuoWso1VcnOu5qWXcmj45OSYnHtOfYbkHJtTjFFTvXGFfppHNC+qL3SWP
+	Lmc008evjG7SS9h5b83LZDzmCwe5cCKXmiY1nzhQMdaA46G4Bmyrkl9MAXLwWdle7h9ydh3EA8Z
+	ro58zk3r4BHhiz1h+GTnaczJZh3HLPU8pK6NmZrIHyLO2Tq3FnPFg7iqX12NiA76eCZExfkXfjH
+	DcN2cmN/UtK1JF25EB/eIKrE3GpDHtXJTzqhKmnHKq4y/BPuwLvyMjDyrplBYTdSsM0vOlFfq2r
+	d4SH78BPg==
+X-Received: by 2002:a05:6a20:2583:b0:39b:98e3:6a11 with SMTP id adf61e73a8af0-3a08d8faa9amr37311860637.50.1777036485068;
+        Fri, 24 Apr 2026 06:14:45 -0700 (PDT)
+Received: from KRHW1CJW23.bytedance.net ([203.208.189.6])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c7976f9cacasm20324116a12.8.2026.04.24.06.14.42
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Fri, 24 Apr 2026 06:14:44 -0700 (PDT)
+From: Catherine <enderaoelyther@gmail.com>
+To: linux-wireless@vger.kernel.org
+Cc: johannes@sipsolutions.net,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Catherine <enderaoelyther@gmail.com>
+Subject: [PATCH] wifi: mac80211: drop stray 'static' from fast-RX rx_result
+Date: Fri, 24 Apr 2026 21:14:36 +0800
+Message-ID: <20260424131435.83212-2-enderaoelyther@gmail.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,139 +92,71 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 228C345ED12
+X-Rspamd-Queue-Id: 76C7645EE14
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,microsoft.com];
-	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[sipsolutions.net,vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-240659-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240658-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[enderaoelyther@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+ieee80211_invoke_fast_rx() is documented as safe for parallel RX, but
+its per-invocation rx_result is declared static. Concurrent callers then
+share one instance and can overwrite each other's result between
+ieee80211_rx_mesh_data() and the switch on res.
 
-[ Upstream commit d07b26f39246a82399661936dd0c853983cfade7 ]
+That can make a packet that was queued or consumed by
+ieee80211_rx_mesh_data() fall through into ieee80211_rx_8023(), or make
+a packet that should continue return as queued.
 
-Both ACE-walk loops in smb_check_perm_dacl() only guard against an
-under-sized remaining buffer, not against an ACE whose declared
-`ace->size` is smaller than the struct it claims to describe:
+Make res an automatic variable so each invocation keeps its own result.
 
-  if (offsetof(struct smb_ace, access_req) > aces_size)
-      break;
-  ace_size = le16_to_cpu(ace->size);
-  if (ace_size > aces_size)
-      break;
-
-The first check only requires the 4-byte ACE header to be in bounds;
-it does not require access_req (4 bytes at offset 4) to be readable.
-An attacker who has set a crafted DACL on a file they own can declare
-ace->size == 4 with aces_size == 4, pass both checks, and then
-
-  granted |= le32_to_cpu(ace->access_req);               /* upper loop */
-  compare_sids(&sid, &ace->sid);                         /* lower loop */
-
-reads access_req at offset 4 (OOB by up to 4 bytes) and ace->sid at
-offset 8 (OOB by up to CIFS_SID_BASE_SIZE + SID_MAX_SUB_AUTHORITIES
-* 4 bytes).
-
-Tighten both loops to require
-
-  ace_size >= offsetof(struct smb_ace, sid) + CIFS_SID_BASE_SIZE
-
-which is the smallest valid on-wire ACE layout (4-byte header +
-4-byte access_req + 8-byte sid base with zero sub-auths).  Also
-reject ACEs whose sid.num_subauth exceeds SID_MAX_SUB_AUTHORITIES
-before letting compare_sids() dereference sub_auth[] entries.
-
-parse_sec_desc() already enforces an equivalent check (lines 441-448);
-smb_check_perm_dacl() simply grew weaker validation over time.
-
-Reachability: authenticated SMB client with permission to set an ACL
-on a file.  On a subsequent CREATE against that file, the kernel
-walks the stored DACL via smb_check_perm_dacl() and triggers the
-OOB read.  Not pre-auth, and the OOB read is not reflected to the
-attacker, but KASAN reports and kernel state corruption are
-possible.
-
-Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
+Fixes: 3468e1e0c639 ("wifi: mac80211: add mesh fast-rx support")
 Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-6
-Assisted-by: Codex:gpt-5-4
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Catherine <enderaoelyther@gmail.com>
 ---
- fs/smb/server/smbacl.c | 17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
+ net/mac80211/rx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/smb/server/smbacl.c b/fs/smb/server/smbacl.c
-index 10fdbaef1d37f..77662612b61d1 100644
---- a/fs/smb/server/smbacl.c
-+++ b/fs/smb/server/smbacl.c
-@@ -1289,10 +1289,13 @@ int smb_check_perm_dacl(struct ksmbd_conn *conn, const struct path *path,
- 		ace = (struct smb_ace *)((char *)pdacl + sizeof(struct smb_acl));
- 		aces_size = acl_size - sizeof(struct smb_acl);
- 		for (i = 0; i < le16_to_cpu(pdacl->num_aces); i++) {
--			if (offsetof(struct smb_ace, access_req) > aces_size)
-+			if (offsetof(struct smb_ace, sid) +
-+			    aces_size < CIFS_SID_BASE_SIZE)
- 				break;
- 			ace_size = le16_to_cpu(ace->size);
--			if (ace_size > aces_size)
-+			if (ace_size > aces_size ||
-+			    ace_size < offsetof(struct smb_ace, sid) +
-+				       CIFS_SID_BASE_SIZE)
- 				break;
- 			aces_size -= ace_size;
- 			granted |= le32_to_cpu(ace->access_req);
-@@ -1310,13 +1313,19 @@ int smb_check_perm_dacl(struct ksmbd_conn *conn, const struct path *path,
- 	ace = (struct smb_ace *)((char *)pdacl + sizeof(struct smb_acl));
- 	aces_size = acl_size - sizeof(struct smb_acl);
- 	for (i = 0; i < le16_to_cpu(pdacl->num_aces); i++) {
--		if (offsetof(struct smb_ace, access_req) > aces_size)
-+		if (offsetof(struct smb_ace, sid) +
-+		    aces_size < CIFS_SID_BASE_SIZE)
- 			break;
- 		ace_size = le16_to_cpu(ace->size);
--		if (ace_size > aces_size)
-+		if (ace_size > aces_size ||
-+		    ace_size < offsetof(struct smb_ace, sid) +
-+			       CIFS_SID_BASE_SIZE)
- 			break;
- 		aces_size -= ace_size;
- 
-+		if (ace->sid.num_subauth > SID_MAX_SUB_AUTHORITIES)
-+			break;
-+
- 		if (!compare_sids(&sid, &ace->sid) ||
- 		    !compare_sids(&sid_unix_NFS_mode, &ace->sid)) {
- 			found = 1;
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index 3e5d1c47a..8719db8f3 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -4971,7 +4971,7 @@ static bool ieee80211_invoke_fast_rx(struct ieee80211_rx_data *rx,
+ 	struct sk_buff *skb = rx->skb;
+ 	struct ieee80211_hdr *hdr = (void *)skb->data;
+ 	struct ieee80211_rx_status *status = IEEE80211_SKB_RXCB(skb);
+-	static ieee80211_rx_result res;
++	ieee80211_rx_result res;
+ 	int orig_len = skb->len;
+ 	int hdrlen = ieee80211_hdrlen(hdr->frame_control);
+ 	int snap_offs = hdrlen;
 -- 
-2.53.0
+2.50.1 (Apple Git-155)
 
 
