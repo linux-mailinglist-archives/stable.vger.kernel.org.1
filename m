@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-240875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240680-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eDk3DXd062koNAAAu9opvQ
-	(envelope-from <stable+bounces-240875-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:47:35 +0200
+	id SA0yMv9w62nCMwAAu9opvQ
+	(envelope-from <stable+bounces-240680-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:32:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97AD445FA1C
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:47:34 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CF4B45F136
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:32:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ACFF430BA386
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:41:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1ADC330073FB
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:32:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1BB53D5645;
-	Fri, 24 Apr 2026 13:41:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3447C3AC00;
+	Fri, 24 Apr 2026 13:32:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q35O8KnN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Feqb+Bow"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6405019A288;
-	Fri, 24 Apr 2026 13:41:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E94C32DCF52;
+	Fri, 24 Apr 2026 13:32:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777038066; cv=none; b=nRV9nvrQrMx1uQfzHSAxRrAiHfVBuZvabFz5caWuTFmbJ1Zf38UGgtffoV5YftrBhOZQm8yrhyhi4DarBFKxrS0hEx5tlOmpRplbhRNFrS8rDstUmINgJzxr/7OK4amfNTEy2ys589MRfjQupP28NwEpqDdZ+EoIZ961oHRp94k=
+	t=1777037562; cv=none; b=ICxZ97WlV14YTygaEppGLBu57VYB9LInJkke7fRGRrYKf1nvET8oHmv2QslOr9mQAYV7u5BXLtvc37xOd6z1HaqB8rWpJw+JsyIK9CAMF0n1/0SCuqO/jn7W1HI28tWnlxObSFyQHlXhYxoyTGgyhN8Hf7d3aykslj1AL8NgICg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777038066; c=relaxed/simple;
-	bh=5k1wGrCUu3XFsRvrVukkfI2O9a0CyjcZ7+4M/+dPhgg=;
+	s=arc-20240116; t=1777037562; c=relaxed/simple;
+	bh=/eZP4GDWrtYWn3tdUoHPBmNZ/DdKlzPnk2q/f68uIdU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lq/L9mqgZIaiEb1yScxcT8oGZsPuLLmYiUp8BzZVFvyGU+1AaU+cQbURijnW9D35AzuAEWcesJATAMKB3ny/eymLrMVgCPTBXQoY8RCmZJVMngRGX4mv8joZ9RwxsWI7V53iT4CPMc+ZE6a/n2qEA7mCqzBNzHMJs8AmyNt5eFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q35O8KnN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A332EC19425;
-	Fri, 24 Apr 2026 13:41:05 +0000 (UTC)
+	 MIME-Version; b=MpDh9fu98/shC4hNasF5ZsPrUW6CfuTEhsckobvKognWDo0xdJf6YqI+PkRkaS8q83+XjIAFYlpzWUbWlrfM+7vZSu7S59cqBdZyi6DhKb59UDUuwiQuvD6N3u3L8CDYV9kEXNnDT01y3MUJNJOjqIO5wvNiwyOwhmQhF90nyD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Feqb+Bow; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81122C2BCB2;
+	Fri, 24 Apr 2026 13:32:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777038066;
-	bh=5k1wGrCUu3XFsRvrVukkfI2O9a0CyjcZ7+4M/+dPhgg=;
+	s=korg; t=1777037561;
+	bh=/eZP4GDWrtYWn3tdUoHPBmNZ/DdKlzPnk2q/f68uIdU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q35O8KnNk99gZqxqDIF/tMQ0GEsiCEZYMAhUYxPCuPUgSKNnJVH38TzrVFYjCJgbc
-	 CZb4fP2F6Ug/bYdE1OmZdQZesIcxqX7R5QdJrffMzriW03EMNqpscH+hkINo8TCHfE
-	 sESv+PLgRS9aXpG1GE0a2q3MvXCu/rDHJ4qXi7eQ=
+	b=Feqb+BowUw+VXCicBSOgsJWWjP0df1llowTxceunyN5ZCH9IXeIIgFZ/s+VCTAY4J
+	 beSTIymtdXfwckNMzH/7DfLDXtsCCZ7FUij0N1/RwmplC5PerZ49aKGzzzZ91iGCpE
+	 73pj/WOy/eWInTESDhXyjrRr/kW1OoyDVNqOMvug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oupton@kernel.org>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.18 11/55] arm64: tlb: Optimize ARM64_WORKAROUND_REPEAT_TLBI
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 7.0 25/42] smb: client: validate the whole DACL before rewriting it in cifsacl
 Date: Fri, 24 Apr 2026 15:30:50 +0200
-Message-ID: <20260424132432.470173462@linuxfoundation.org>
+Message-ID: <20260424132425.661095423@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132430.006424517@linuxfoundation.org>
-References: <20260424132430.006424517@linuxfoundation.org>
+In-Reply-To: <20260424132420.410310336@linuxfoundation.org>
+References: <20260424132420.410310336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,474 +63,261 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 97AD445FA1C
+X-Rspamd-Queue-Id: 3CF4B45F136
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240875-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240680-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,microsoft.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,arm.com:url,arm.com:email,lakrids:email]
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-commit a8f78680ee6bf795086384e8aea159a52814f827 upstream.
+commit 0a8cf165566ba55a39fd0f4de172119dd646d39a upstream.
 
-The ARM64_WORKAROUND_REPEAT_TLBI workaround is used to mitigate several
-errata where broadcast TLBI;DSB sequences don't provide all the
-architecturally required synchronization. The workaround performs more
-work than necessary, and can have significant overhead. This patch
-optimizes the workaround, as explained below.
+build_sec_desc() and id_mode_to_cifs_acl() derive a DACL pointer from a
+server-supplied dacloffset and then use the incoming ACL to rebuild the
+chmod/chown security descriptor.
 
-The workaround was originally added for Qualcomm Falkor erratum 1009 in
-commit:
+The original fix only checked that the struct smb_acl header fits before
+reading dacl_ptr->size or dacl_ptr->num_aces.  That avoids the immediate
+header-field OOB read, but the rewrite helpers still walk ACEs based on
+pdacl->num_aces with no structural validation of the incoming DACL body.
 
-  d9ff80f83ecb ("arm64: Work around Falkor erratum 1009")
+A malicious server can return a truncated DACL that still contains a
+header, claims one or more ACEs, and then drive
+replace_sids_and_copy_aces() or set_chmod_dacl() past the validated
+extent while they compare or copy attacker-controlled ACEs.
 
-As noted in the message for that commit, the workaround is applied even
-in cases where it is not strictly necessary.
+Factor the DACL structural checks into validate_dacl(), extend them to
+validate each ACE against the DACL bounds, and use the shared validator
+before the chmod/chown rebuild paths.  parse_dacl() reuses the same
+validator so the read-side parser and write-side rewrite paths agree on
+what constitutes a well-formed incoming DACL.
 
-The workaround was later reused without changes for:
-
-* Arm Cortex-A76 erratum #1286807
-  SDEN v33: https://developer.arm.com/documentation/SDEN-885749/33-0/
-
-* Arm Cortex-A55 erratum #2441007
-  SDEN v16: https://developer.arm.com/documentation/SDEN-859338/1600/
-
-* Arm Cortex-A510 erratum #2441009
-  SDEN v19: https://developer.arm.com/documentation/SDEN-1873351/1900/
-
-The important details to note are as follows:
-
-1. All relevant errata only affect the ordering and/or completion of
-   memory accesses which have been translated by an invalidated TLB
-   entry. The actual invalidation of TLB entries is unaffected.
-
-2. The existing workaround is applied to both broadcast and local TLB
-   invalidation, whereas for all relevant errata it is only necessary to
-   apply a workaround for broadcast invalidation.
-
-3. The existing workaround replaces every TLBI with a TLBI;DSB;TLBI
-   sequence, whereas for all relevant errata it is only necessary to
-   execute a single additional TLBI;DSB sequence after any number of
-   TLBIs are completed by a DSB.
-
-   For example, for a sequence of batched TLBIs:
-
-       TLBI <op1>[, <arg1>]
-       TLBI <op2>[, <arg2>]
-       TLBI <op3>[, <arg3>]
-       DSB ISH
-
-   ... the existing workaround will expand this to:
-
-       TLBI <op1>[, <arg1>]
-       DSB ISH                  // additional
-       TLBI <op1>[, <arg1>]     // additional
-       TLBI <op2>[, <arg2>]
-       DSB ISH                  // additional
-       TLBI <op2>[, <arg2>]     // additional
-       TLBI <op3>[, <arg3>]
-       DSB ISH                  // additional
-       TLBI <op3>[, <arg3>]     // additional
-       DSB ISH
-
-   ... whereas it is sufficient to have:
-
-       TLBI <op1>[, <arg1>]
-       TLBI <op2>[, <arg2>]
-       TLBI <op3>[, <arg3>]
-       DSB ISH
-       TLBI <opX>[, <argX>]     // additional
-       DSB ISH                  // additional
-
-   Using a single additional TBLI and DSB at the end of the sequence can
-   have significantly lower overhead as each DSB which completes a TLBI
-   must synchronize with other PEs in the system, with potential
-   performance effects both locally and system-wide.
-
-4. The existing workaround repeats each specific TLBI operation, whereas
-   for all relevant errata it is sufficient for the additional TLBI to
-   use *any* operation which will be broadcast, regardless of which
-   translation regime or stage of translation the operation applies to.
-
-   For example, for a single TLBI:
-
-       TLBI ALLE2IS
-       DSB ISH
-
-   ... the existing workaround will expand this to:
-
-       TLBI ALLE2IS
-       DSB ISH
-       TLBI ALLE2IS             // additional
-       DSB ISH                  // additional
-
-   ... whereas it is sufficient to have:
-
-       TLBI ALLE2IS
-       DSB ISH
-       TLBI VALE1IS, XZR        // additional
-       DSB ISH                  // additional
-
-   As the additional TLBI doesn't have to match a specific earlier TLBI,
-   the additional TLBI can be implemented in separate code, with no
-   memory of the earlier TLBIs. The additional TLBI can also use a
-   cheaper TLBI operation.
-
-5. The existing workaround is applied to both Stage-1 and Stage-2 TLB
-   invalidation, whereas for all relevant errata it is only necessary to
-   apply a workaround for Stage-1 invalidation.
-
-   Architecturally, TLBI operations which invalidate only Stage-2
-   information (e.g. IPAS2E1IS) are not required to invalidate TLB
-   entries which combine information from Stage-1 and Stage-2
-   translation table entries, and consequently may not complete memory
-   accesses translated by those combined entries. In these cases,
-   completion of memory accesses is only guaranteed after subsequent
-   invalidation of Stage-1 information (e.g. VMALLE1IS).
-
-Taking the above points into account, this patch reworks the workaround
-logic to reduce overhead:
-
-* New __tlbi_sync_s1ish() and __tlbi_sync_s1ish_hyp() functions are
-  added and used in place of any dsb(ish) which is used to complete
-  broadcast Stage-1 TLB maintenance. When the
-  ARM64_WORKAROUND_REPEAT_TLBI workaround is enabled, these helpers will
-  execute an additional TLBI;DSB sequence.
-
-  For consistency, it might make sense to add __tlbi_sync_*() helpers
-  for local and stage 2 maintenance. For now I've left those with
-  open-coded dsb() to keep the diff small.
-
-* The duplication of TLBIs in __TLBI_0() and __TLBI_1() is removed. This
-  is no longer needed as the necessary synchronization will happen in
-  __tlbi_sync_s1ish() or __tlbi_sync_s1ish_hyp().
-
-* The additional TLBI operation is chosen to have minimal impact:
-
-  - __tlbi_sync_s1ish() uses "TLBI VALE1IS, XZR". This is only used at
-    EL1 or at EL2 with {E2H,TGE}=={1,1}, where it will target an unused
-    entry for the reserved ASID in the kernel's own translation regime,
-    and have no adverse affect.
-
-  - __tlbi_sync_s1ish_hyp() uses "TLBI VALE2IS, XZR". This is only used
-    in hyp code, where it will target an unused entry in the hyp code's
-    TTBR0 mapping, and should have no adverse effect.
-
-* As __TLBI_0() and __TLBI_1() no longer replace each TLBI with a
-  TLBI;DSB;TLBI sequence, batching TLBIs is worthwhile, and there's no
-  need for arch_tlbbatch_should_defer() to consider
-  ARM64_WORKAROUND_REPEAT_TLBI.
-
-When building defconfig with GCC 15.1.0, compared to v6.19-rc1, this
-patch saves ~1KiB of text, makes the vmlinux ~42KiB smaller, and makes
-the resulting Image 64KiB smaller:
-
-| [mark@lakrids:~/src/linux]% size vmlinux-*
-|    text    data     bss     dec     hex filename
-| 21179831        19660919         708216 41548966        279fca6 vmlinux-after
-| 21181075        19660903         708216 41550194        27a0172 vmlinux-before
-| [mark@lakrids:~/src/linux]% ls -l vmlinux-*
-| -rwxr-xr-x 1 mark mark 157771472 Feb  4 12:05 vmlinux-after
-| -rwxr-xr-x 1 mark mark 157815432 Feb  4 12:05 vmlinux-before
-| [mark@lakrids:~/src/linux]% ls -l Image-*
-| -rw-r--r-- 1 mark mark 41007616 Feb  4 12:05 Image-after
-| -rw-r--r-- 1 mark mark 41073152 Feb  4 12:05 Image-before
-
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Marc Zyngier <maz@kernel.org>
-Cc: Oliver Upton <oupton@kernel.org>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Fixes: bc3e9dd9d104 ("cifs: Change SIDs in ACEs while transferring file ownership.")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-6
+Assisted-by: Codex:gpt-5-4
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/tlbflush.h |   59 ++++++++++++++++++++++----------------
- arch/arm64/kernel/sys_compat.c    |    2 -
- arch/arm64/kvm/hyp/nvhe/mm.c      |    2 -
- arch/arm64/kvm/hyp/nvhe/tlb.c     |    8 ++---
- arch/arm64/kvm/hyp/pgtable.c      |    2 -
- arch/arm64/kvm/hyp/vhe/tlb.c      |   10 +++---
- 6 files changed, 47 insertions(+), 36 deletions(-)
+ fs/smb/client/cifsacl.c |  116 +++++++++++++++++++++++++++++++++++-------------
+ 1 file changed, 85 insertions(+), 31 deletions(-)
 
---- a/arch/arm64/include/asm/tlbflush.h
-+++ b/arch/arm64/include/asm/tlbflush.h
-@@ -31,18 +31,10 @@
-  */
- #define __TLBI_0(op, arg) asm (ARM64_ASM_PREAMBLE			       \
- 			       "tlbi " #op "\n"				       \
--		   ALTERNATIVE("nop\n			nop",		       \
--			       "dsb ish\n		tlbi " #op,	       \
--			       ARM64_WORKAROUND_REPEAT_TLBI,		       \
--			       CONFIG_ARM64_WORKAROUND_REPEAT_TLBI)	       \
- 			    : : )
+--- a/fs/smb/client/cifsacl.c
++++ b/fs/smb/client/cifsacl.c
+@@ -758,6 +758,77 @@ static void dump_ace(struct smb_ace *pac
+ }
+ #endif
  
- #define __TLBI_1(op, arg) asm (ARM64_ASM_PREAMBLE			       \
- 			       "tlbi " #op ", %x0\n"			       \
--		   ALTERNATIVE("nop\n			nop",		       \
--			       "dsb ish\n		tlbi " #op ", %x0",    \
--			       ARM64_WORKAROUND_REPEAT_TLBI,		       \
--			       CONFIG_ARM64_WORKAROUND_REPEAT_TLBI)	       \
- 			    : : "rZ" (arg))
- 
- #define __TLBI_N(op, arg, n, ...) __TLBI_##n(op, arg)
-@@ -181,6 +173,34 @@ static inline unsigned long get_trans_gr
- 		(__pages >> (5 * (scale) + 1)) - 1;			\
- 	})
- 
-+#define __repeat_tlbi_sync(op, arg...)						\
-+do {										\
-+	if (!alternative_has_cap_unlikely(ARM64_WORKAROUND_REPEAT_TLBI))	\
-+		break;								\
-+	__tlbi(op, ##arg);							\
-+	dsb(ish);								\
-+} while (0)
-+
-+/*
-+ * Complete broadcast TLB maintenance issued by the host which invalidates
-+ * stage 1 information in the host's own translation regime.
-+ */
-+static inline void __tlbi_sync_s1ish(void)
++static int validate_dacl(struct smb_acl *pdacl, char *end_of_acl)
 +{
-+	dsb(ish);
-+	__repeat_tlbi_sync(vale1is, 0);
++	int i, ace_hdr_size, ace_size, min_ace_size;
++	u16 dacl_size, num_aces;
++	char *acl_base, *end_of_dacl;
++	struct smb_ace *pace;
++
++	if (!pdacl)
++		return 0;
++
++	if (end_of_acl < (char *)pdacl + sizeof(struct smb_acl)) {
++		cifs_dbg(VFS, "ACL too small to parse DACL\n");
++		return -EINVAL;
++	}
++
++	dacl_size = le16_to_cpu(pdacl->size);
++	if (dacl_size < sizeof(struct smb_acl) ||
++	    end_of_acl < (char *)pdacl + dacl_size) {
++		cifs_dbg(VFS, "ACL too small to parse DACL\n");
++		return -EINVAL;
++	}
++
++	num_aces = le16_to_cpu(pdacl->num_aces);
++	if (!num_aces)
++		return 0;
++
++	ace_hdr_size = offsetof(struct smb_ace, sid) +
++		offsetof(struct smb_sid, sub_auth);
++	min_ace_size = ace_hdr_size + sizeof(__le32);
++	if (num_aces > (dacl_size - sizeof(struct smb_acl)) / min_ace_size) {
++		cifs_dbg(VFS, "ACL too small to parse DACL\n");
++		return -EINVAL;
++	}
++
++	end_of_dacl = (char *)pdacl + dacl_size;
++	acl_base = (char *)pdacl;
++	ace_size = sizeof(struct smb_acl);
++
++	for (i = 0; i < num_aces; ++i) {
++		if (end_of_dacl - acl_base < ace_size) {
++			cifs_dbg(VFS, "ACL too small to parse ACE\n");
++			return -EINVAL;
++		}
++
++		pace = (struct smb_ace *)(acl_base + ace_size);
++		acl_base = (char *)pace;
++
++		if (end_of_dacl - acl_base < ace_hdr_size ||
++		    pace->sid.num_subauth == 0 ||
++		    pace->sid.num_subauth > SID_MAX_SUB_AUTHORITIES) {
++			cifs_dbg(VFS, "ACL too small to parse ACE\n");
++			return -EINVAL;
++		}
++
++		ace_size = ace_hdr_size + sizeof(__le32) * pace->sid.num_subauth;
++		if (end_of_dacl - acl_base < ace_size ||
++		    le16_to_cpu(pace->size) < ace_size) {
++			cifs_dbg(VFS, "ACL too small to parse ACE\n");
++			return -EINVAL;
++		}
++
++		ace_size = le16_to_cpu(pace->size);
++		if (end_of_dacl - acl_base < ace_size) {
++			cifs_dbg(VFS, "ACL too small to parse ACE\n");
++			return -EINVAL;
++		}
++	}
++
++	return 0;
 +}
 +
-+/*
-+ * Complete broadcast TLB maintenance issued by hyp code which invalidates
-+ * stage 1 translation information in any translation regime.
-+ */
-+static inline void __tlbi_sync_s1ish_hyp(void)
-+{
-+	dsb(ish);
-+	__repeat_tlbi_sync(vale2is, 0);
-+}
-+
- /*
-  *	TLB Invalidation
-  *	================
-@@ -266,7 +286,7 @@ static inline void flush_tlb_all(void)
- {
- 	dsb(ishst);
- 	__tlbi(vmalle1is);
--	dsb(ish);
-+	__tlbi_sync_s1ish();
- 	isb();
- }
+ static void parse_dacl(struct smb_acl *pdacl, char *end_of_acl,
+ 		       struct smb_sid *pownersid, struct smb_sid *pgrpsid,
+ 		       struct cifs_fattr *fattr, bool mode_from_special_sid)
+@@ -765,7 +836,7 @@ static void parse_dacl(struct smb_acl *p
+ 	int i;
+ 	u16 num_aces = 0;
+ 	int acl_size;
+-	char *acl_base;
++	char *acl_base, *end_of_dacl;
+ 	struct smb_ace **ppace;
  
-@@ -278,7 +298,7 @@ static inline void flush_tlb_mm(struct m
- 	asid = __TLBI_VADDR(0, ASID(mm));
- 	__tlbi(aside1is, asid);
- 	__tlbi_user(aside1is, asid);
--	dsb(ish);
-+	__tlbi_sync_s1ish();
- 	mmu_notifier_arch_invalidate_secondary_tlbs(mm, 0, -1UL);
- }
+ 	/* BB need to add parm so we can store the SID BB */
+@@ -777,12 +848,8 @@ static void parse_dacl(struct smb_acl *p
+ 		return;
+ 	}
  
-@@ -305,20 +325,11 @@ static inline void flush_tlb_page(struct
- 				  unsigned long uaddr)
- {
- 	flush_tlb_page_nosync(vma, uaddr);
--	dsb(ish);
-+	__tlbi_sync_s1ish();
- }
+-	/* validate that we do not go past end of acl */
+-	if (end_of_acl < (char *)pdacl + sizeof(struct smb_acl) ||
+-	    end_of_acl < (char *)pdacl + le16_to_cpu(pdacl->size)) {
+-		cifs_dbg(VFS, "ACL too small to parse DACL\n");
++	if (validate_dacl(pdacl, end_of_acl))
+ 		return;
+-	}
  
- static inline bool arch_tlbbatch_should_defer(struct mm_struct *mm)
- {
--	/*
--	 * TLB flush deferral is not required on systems which are affected by
--	 * ARM64_WORKAROUND_REPEAT_TLBI, as __tlbi()/__tlbi_user() implementation
--	 * will have two consecutive TLBI instructions with a dsb(ish) in between
--	 * defeating the purpose (i.e save overall 'dsb ish' cost).
--	 */
--	if (alternative_has_cap_unlikely(ARM64_WORKAROUND_REPEAT_TLBI))
--		return false;
+ 	cifs_dbg(NOISY, "DACL revision %d size %d num aces %d\n",
+ 		 le16_to_cpu(pdacl->revision), le16_to_cpu(pdacl->size),
+@@ -793,6 +860,7 @@ static void parse_dacl(struct smb_acl *p
+ 	   user/group/other have no permissions */
+ 	fattr->cf_mode &= ~(0777);
+ 
++	end_of_dacl = (char *)pdacl + le16_to_cpu(pdacl->size);
+ 	acl_base = (char *)pdacl;
+ 	acl_size = sizeof(struct smb_acl);
+ 
+@@ -800,35 +868,15 @@ static void parse_dacl(struct smb_acl *p
+ 	if (num_aces > 0) {
+ 		umode_t denied_mode = 0;
+ 
+-		if (num_aces > (le16_to_cpu(pdacl->size) - sizeof(struct smb_acl)) /
+-				(offsetof(struct smb_ace, sid) +
+-				 offsetof(struct smb_sid, sub_auth) + sizeof(__le16)))
+-			return;
 -
- 	return true;
- }
+ 		ppace = kmalloc_objs(struct smb_ace *, num_aces);
+ 		if (!ppace)
+ 			return;
  
-@@ -334,7 +345,7 @@ static inline bool arch_tlbbatch_should_
-  */
- static inline void arch_tlbbatch_flush(struct arch_tlbflush_unmap_batch *batch)
- {
--	dsb(ish);
-+	__tlbi_sync_s1ish();
- }
+ 		for (i = 0; i < num_aces; ++i) {
+-			if (end_of_acl - acl_base < acl_size)
+-				break;
+-
+ 			ppace[i] = (struct smb_ace *) (acl_base + acl_size);
+-			acl_base = (char *)ppace[i];
+-			acl_size = offsetof(struct smb_ace, sid) +
+-				offsetof(struct smb_sid, sub_auth);
+-
+-			if (end_of_acl - acl_base < acl_size ||
+-			    ppace[i]->sid.num_subauth == 0 ||
+-			    ppace[i]->sid.num_subauth > SID_MAX_SUB_AUTHORITIES ||
+-			    (end_of_acl - acl_base <
+-			     acl_size + sizeof(__le32) * ppace[i]->sid.num_subauth) ||
+-			    (le16_to_cpu(ppace[i]->size) <
+-			     acl_size + sizeof(__le32) * ppace[i]->sid.num_subauth))
+-				break;
  
- /*
-@@ -469,7 +480,7 @@ static inline void __flush_tlb_range(str
- {
- 	__flush_tlb_range_nosync(vma->vm_mm, start, end, stride,
- 				 last_level, tlb_level);
--	dsb(ish);
-+	__tlbi_sync_s1ish();
- }
+ #ifdef CONFIG_CIFS_DEBUG2
+-			dump_ace(ppace[i], end_of_acl);
++			dump_ace(ppace[i], end_of_dacl);
+ #endif
+ 			if (mode_from_special_sid &&
+ 			    ppace[i]->sid.num_subauth >= 3 &&
+@@ -871,6 +919,7 @@ static void parse_dacl(struct smb_acl *p
+ 				(void *)ppace[i],
+ 				sizeof(struct smb_ace)); */
  
- static inline void flush_tlb_range(struct vm_area_struct *vma,
-@@ -501,7 +512,7 @@ static inline void flush_tlb_kernel_rang
- 	dsb(ishst);
- 	__flush_tlb_range_op(vaale1is, start, pages, stride, 0,
- 			     TLBI_TTL_UNKNOWN, false, lpa2_is_enabled());
--	dsb(ish);
-+	__tlbi_sync_s1ish();
- 	isb();
- }
- 
-@@ -515,7 +526,7 @@ static inline void __flush_tlb_kernel_pg
- 
- 	dsb(ishst);
- 	__tlbi(vaae1is, addr);
--	dsb(ish);
-+	__tlbi_sync_s1ish();
- 	isb();
- }
- 
---- a/arch/arm64/kernel/sys_compat.c
-+++ b/arch/arm64/kernel/sys_compat.c
-@@ -37,7 +37,7 @@ __do_compat_cache_op(unsigned long start
- 			 * We pick the reserved-ASID to minimise the impact.
- 			 */
- 			__tlbi(aside1is, __TLBI_VADDR(0, 0));
--			dsb(ish);
-+			__tlbi_sync_s1ish();
++			acl_base = (char *)ppace[i];
+ 			acl_size = le16_to_cpu(ppace[i]->size);
  		}
  
- 		ret = caches_clean_inval_user_pou(start, start + chunk);
---- a/arch/arm64/kvm/hyp/nvhe/mm.c
-+++ b/arch/arm64/kvm/hyp/nvhe/mm.c
-@@ -271,7 +271,7 @@ static void fixmap_clear_slot(struct hyp
- 	 */
- 	dsb(ishst);
- 	__tlbi_level(vale2is, __TLBI_VADDR(addr, 0), level);
--	dsb(ish);
-+	__tlbi_sync_s1ish_hyp();
- 	isb();
- }
- 
---- a/arch/arm64/kvm/hyp/nvhe/tlb.c
-+++ b/arch/arm64/kvm/hyp/nvhe/tlb.c
-@@ -169,7 +169,7 @@ void __kvm_tlb_flush_vmid_ipa(struct kvm
- 	 */
- 	dsb(ish);
- 	__tlbi(vmalle1is);
--	dsb(ish);
-+	__tlbi_sync_s1ish_hyp();
- 	isb();
- 
- 	exit_vmid_context(&cxt);
-@@ -226,7 +226,7 @@ void __kvm_tlb_flush_vmid_range(struct k
- 
- 	dsb(ish);
- 	__tlbi(vmalle1is);
--	dsb(ish);
-+	__tlbi_sync_s1ish_hyp();
- 	isb();
- 
- 	exit_vmid_context(&cxt);
-@@ -240,7 +240,7 @@ void __kvm_tlb_flush_vmid(struct kvm_s2_
- 	enter_vmid_context(mmu, &cxt, false);
- 
- 	__tlbi(vmalls12e1is);
--	dsb(ish);
-+	__tlbi_sync_s1ish_hyp();
- 	isb();
- 
- 	exit_vmid_context(&cxt);
-@@ -266,5 +266,5 @@ void __kvm_flush_vm_context(void)
- 	/* Same remark as in enter_vmid_context() */
- 	dsb(ish);
- 	__tlbi(alle1is);
--	dsb(ish);
-+	__tlbi_sync_s1ish_hyp();
- }
---- a/arch/arm64/kvm/hyp/pgtable.c
-+++ b/arch/arm64/kvm/hyp/pgtable.c
-@@ -483,7 +483,7 @@ static int hyp_unmap_walker(const struct
- 		*unmapped += granule;
+@@ -1294,10 +1343,9 @@ static int build_sec_desc(struct smb_nts
+ 	dacloffset = le32_to_cpu(pntsd->dacloffset);
+ 	if (dacloffset) {
+ 		dacl_ptr = (struct smb_acl *)((char *)pntsd + dacloffset);
+-		if (end_of_acl < (char *)dacl_ptr + le16_to_cpu(dacl_ptr->size)) {
+-			cifs_dbg(VFS, "Server returned illegal ACL size\n");
+-			return -EINVAL;
+-		}
++		rc = validate_dacl(dacl_ptr, end_of_acl);
++		if (rc)
++			return rc;
  	}
  
--	dsb(ish);
-+	__tlbi_sync_s1ish_hyp();
- 	isb();
- 	mm_ops->put_page(ctx->ptep);
- 
---- a/arch/arm64/kvm/hyp/vhe/tlb.c
-+++ b/arch/arm64/kvm/hyp/vhe/tlb.c
-@@ -115,7 +115,7 @@ void __kvm_tlb_flush_vmid_ipa(struct kvm
- 	 */
- 	dsb(ish);
- 	__tlbi(vmalle1is);
--	dsb(ish);
-+	__tlbi_sync_s1ish_hyp();
- 	isb();
- 
- 	exit_vmid_context(&cxt);
-@@ -176,7 +176,7 @@ void __kvm_tlb_flush_vmid_range(struct k
- 
- 	dsb(ish);
- 	__tlbi(vmalle1is);
--	dsb(ish);
-+	__tlbi_sync_s1ish_hyp();
- 	isb();
- 
- 	exit_vmid_context(&cxt);
-@@ -192,7 +192,7 @@ void __kvm_tlb_flush_vmid(struct kvm_s2_
- 	enter_vmid_context(mmu, &cxt);
- 
- 	__tlbi(vmalls12e1is);
--	dsb(ish);
-+	__tlbi_sync_s1ish_hyp();
- 	isb();
- 
- 	exit_vmid_context(&cxt);
-@@ -217,7 +217,7 @@ void __kvm_flush_vm_context(void)
- {
- 	dsb(ishst);
- 	__tlbi(alle1is);
--	dsb(ish);
-+	__tlbi_sync_s1ish_hyp();
- }
- 
- /*
-@@ -358,7 +358,7 @@ int __kvm_tlbi_s1e2(struct kvm_s2_mmu *m
- 	default:
- 		ret = -EINVAL;
- 	}
--	dsb(ish);
-+	__tlbi_sync_s1ish_hyp();
- 	isb();
- 
- 	if (mmu)
+ 	owner_sid_ptr = (struct smb_sid *)((char *)pntsd +
+@@ -1663,6 +1711,12 @@ id_mode_to_cifs_acl(struct inode *inode,
+ 		dacloffset = le32_to_cpu(pntsd->dacloffset);
+ 		if (dacloffset) {
+ 			dacl_ptr = (struct smb_acl *)((char *)pntsd + dacloffset);
++			rc = validate_dacl(dacl_ptr, (char *)pntsd + secdesclen);
++			if (rc) {
++				kfree(pntsd);
++				cifs_put_tlink(tlink);
++				return rc;
++			}
+ 			if (mode_from_sid)
+ 				nsecdesclen +=
+ 					le16_to_cpu(dacl_ptr->num_aces) * sizeof(struct smb_ace);
 
 
 
