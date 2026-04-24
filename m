@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-240784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240785-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kMRAC3Zz62kLNAAAu9opvQ
-	(envelope-from <stable+bounces-240784-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:43:18 +0200
+	id iPKPHR1y62ndMwAAu9opvQ
+	(envelope-from <stable+bounces-240785-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:37:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F63D45F798
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:43:17 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BDD445F3FE
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:37:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F1D3030649CF
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:37:15 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 03F01300533B
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:37:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E28C43D6CD6;
-	Fri, 24 Apr 2026 13:37:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D3A83D6494;
+	Fri, 24 Apr 2026 13:37:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GCAeuxxu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jHPedUHJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A554D3D6CA9;
-	Fri, 24 Apr 2026 13:37:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F9A523645D;
+	Fri, 24 Apr 2026 13:37:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777037831; cv=none; b=TrzmJG7VtTsltSPMefMGalev0giJCPCRCWSo8GN41x6eChhCKgOV5XUFieBDIYtjWLXbOW7rdEMC3jBAKPk2phiL/8/fliRnjvEuecIjHsQT5buv2GWYve6DmxEkgLX70/M8RQbWBFhygRi0MQ+MA1LjXXGCqcFP6BtG/veSng8=
+	t=1777037834; cv=none; b=DkWRG7v2+QPVODdmrs34RLGZlC7VXVCV30QouDQGSoRsDGzsqdhz8LK7YP4lZksKQq9mZcJFjHVXv6baIPGTUxBD2C0AMSYJKvYa/1YabFpsvDGZvywlaJmksJYNjHNa9EE2uOdbPmdFL+uYQqASixs/eoH2SNDtnovjwLz27gs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777037831; c=relaxed/simple;
-	bh=oxMuBjiYTEVe496KLRQd4fs0CTmhx+88MMVp0zLYPHU=;
+	s=arc-20240116; t=1777037834; c=relaxed/simple;
+	bh=0zI5gsNyUcSV0TZ0aueWgUgQBh9cdb7qtzh75c344Fo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y6HthAhqLBlUbhCTX2CnuT5Pjs+f1a4Z9bF0BoVqdYXBTNdsfypU1nLuQscWVP6aQmiPN6MHKmpXyGr6rjT7BRoTxbMZpT5LLyqpc7gFYr46u5d7Hexspxo0ZCD4yCttHqxDeTPC2w0IGNMx4KeO53wc1AEoUhn+XCCOcqMGv7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GCAeuxxu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A7C8C19425;
-	Fri, 24 Apr 2026 13:37:11 +0000 (UTC)
+	 MIME-Version; b=X5JAIBammXUE3f5C1o4pKYZglk+ml7BmSxCOtD5u/Ie74ojFLjHaTZwax/lEFZQTE407NAymyyfOWoURTsbWm/b6fqwegzxv5uosn+li1+6MUQkS489ea86M2nd7ifbfcitPWWYYuuxAEb1R4YwJ8phD2eTEyMCvDuQmI8qLgiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jHPedUHJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA5E2C2BCB2;
+	Fri, 24 Apr 2026 13:37:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777037831;
-	bh=oxMuBjiYTEVe496KLRQd4fs0CTmhx+88MMVp0zLYPHU=;
+	s=korg; t=1777037834;
+	bh=0zI5gsNyUcSV0TZ0aueWgUgQBh9cdb7qtzh75c344Fo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GCAeuxxu3SmNmGWByIg9LIxUcyGADlAz42fZzfPROV4XJeOcLe3nAZcuLpMP1iui2
-	 Uk25q3Vut4x6bAqg+PaBatBSii0ye54qD2tbDJD+272rvXL3TQ+eC32x5PFJVmFezu
-	 1dFuE++UFKCsO9Xh+8vc3fue6aPOhZ8bzOMQqVCQ=
+	b=jHPedUHJYc42/K+sq9wC8YhEqlk1yEI+b5zvw2nqQheH7yHgWopOa74QpAWAxbSuz
+	 GPjbc+XA6b8hFRgIPfBR85vF0MkWAal2FALqLDhcMS8YqTC/LzSR3aMbzjzMG4U8SC
+	 X5G7vHfSZGc4hHhqN3kxWaZAHgXUM3PTMMyC/grQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ren Wei <enjou1224z@gmail.com>,
-	Zhengchuan Liang <zcliangcn@gmail.com>,
-	Ren Wei <n05ec@lzu.edu.cn>,
-	Florian Westphal <fw@strlen.de>,
+	Fabio Baltieri <fabio.baltieri@gmail.com>,
+	Jiawen Wu <jiawenwu@trustnetic.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 054/166] netfilter: ip6t_eui64: reject invalid MAC header for all packets
-Date: Fri, 24 Apr 2026 15:29:28 +0200
-Message-ID: <20260424132544.152867945@linuxfoundation.org>
+Subject: [PATCH 6.6 055/166] net: txgbe: leave space for null terminators on property_entry
+Date: Fri, 24 Apr 2026 15:29:29 +0200
+Message-ID: <20260424132544.352665470@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260424132532.812258529@linuxfoundation.org>
 References: <20260424132532.812258529@linuxfoundation.org>
@@ -70,85 +65,83 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7F63D45F798
+X-Rspamd-Queue-Id: 6BDD445F3FE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-240784-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,strlen.de,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-240785-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,trustnetic.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,lzu.edu.cn:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhengchuan Liang <zcliangcn@gmail.com>
+From: Fabio Baltieri <fabio.baltieri@gmail.com>
 
-[ Upstream commit fdce0b3590f724540795b874b4c8850c90e6b0a8 ]
+[ Upstream commit 5a37d228799b0ec2c277459c83c814a59d310bc3 ]
 
-`eui64_mt6()` derives a modified EUI-64 from the Ethernet source address
-and compares it with the low 64 bits of the IPv6 source address.
+Lists of struct property_entry are supposed to be terminated with an
+empty property, this driver currently seems to be allocating exactly the
+amount of entry used.
 
-The existing guard only rejects an invalid MAC header when
-`par->fragoff != 0`. For packets with `par->fragoff == 0`, `eui64_mt6()`
-can still reach `eth_hdr(skb)` even when the MAC header is not valid.
+Change the struct definition to leave an extra element for all
+property_entry.
 
-Fix this by removing the `par->fragoff != 0` condition so that packets
-with an invalid MAC header are rejected before accessing `eth_hdr(skb)`.
-
-Fixes: 1da177e4c3f41 ("Linux-2.6.12-rc2")
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Co-developed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Yuan Tan <yuantan098@gmail.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Tested-by: Ren Wei <enjou1224z@gmail.com>
-Signed-off-by: Zhengchuan Liang <zcliangcn@gmail.com>
-Signed-off-by: Ren Wei <n05ec@lzu.edu.cn>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: c3e382ad6d15 ("net: txgbe: Add software nodes to support phylink")
+Signed-off-by: Fabio Baltieri <fabio.baltieri@gmail.com>
+Tested-by: Jiawen Wu <jiawenwu@trustnetic.com>
+Link: https://patch.msgid.link/20260405222013.5347-1-fabio.baltieri@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/netfilter/ip6t_eui64.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/ethernet/wangxun/txgbe/txgbe_type.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/ipv6/netfilter/ip6t_eui64.c b/net/ipv6/netfilter/ip6t_eui64.c
-index d704f7ed300c2..da69a27e8332c 100644
---- a/net/ipv6/netfilter/ip6t_eui64.c
-+++ b/net/ipv6/netfilter/ip6t_eui64.c
-@@ -22,8 +22,7 @@ eui64_mt6(const struct sk_buff *skb, struct xt_action_param *par)
- 	unsigned char eui64[8];
- 
- 	if (!(skb_mac_header(skb) >= skb->head &&
--	      skb_mac_header(skb) + ETH_HLEN <= skb->data) &&
--	    par->fragoff != 0) {
-+	      skb_mac_header(skb) + ETH_HLEN <= skb->data)) {
- 		par->hotdrop = true;
- 		return false;
- 	}
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
+index 51199c355f95c..b0554c8f25213 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_type.h
+@@ -161,10 +161,10 @@ struct txgbe_nodes {
+ 	char i2c_name[32];
+ 	char sfp_name[32];
+ 	char phylink_name[32];
+-	struct property_entry gpio_props[1];
+-	struct property_entry i2c_props[3];
+-	struct property_entry sfp_props[8];
+-	struct property_entry phylink_props[2];
++	struct property_entry gpio_props[2];
++	struct property_entry i2c_props[4];
++	struct property_entry sfp_props[9];
++	struct property_entry phylink_props[3];
+ 	struct software_node_ref_args i2c_ref[1];
+ 	struct software_node_ref_args gpio0_ref[1];
+ 	struct software_node_ref_args gpio1_ref[1];
 -- 
 2.53.0
 
