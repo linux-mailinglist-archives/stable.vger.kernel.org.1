@@ -1,64 +1,59 @@
-Return-Path: <stable+bounces-240841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240702-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wJgzI5xy62nCMwAAu9opvQ
-	(envelope-from <stable+bounces-240841-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:39:40 +0200
+	id wMjeGjRx62nCMwAAu9opvQ
+	(envelope-from <stable+bounces-240702-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:33:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 592E245F57C
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:39:40 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53D7445F19B
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:33:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9FB273005AA4
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:39:39 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A59FC30059A2
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:33:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B55483D6494;
-	Fri, 24 Apr 2026 13:39:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B9CA3D5251;
+	Fri, 24 Apr 2026 13:33:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eur8WDoV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ftD6ZId5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 763E43D5643;
-	Fri, 24 Apr 2026 13:39:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C02A523645D;
+	Fri, 24 Apr 2026 13:33:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777037978; cv=none; b=Fee7DwXAID6pusv2anDVS4qzswu7hzUtVV51grMzVzmPVSmLsxJ4Iw/hCpj5ehFi9NcbDBnhGneXNT1bpHJh8S518GoLl6IZvRxzQ/b6xLmEKl0htpOf/vH/pQqyq7ofoFzqqJle0mgwMam1lJTmUKqwnpV8RcFrAiHhNuR7p0M=
+	t=1777037618; cv=none; b=SjVzqdOaibXadpwg/wKRxyYpdgZ7orIR9bt91fb1MVuBqhrjgSi9ZPq4/FHTzw+1PtwxLx9DZdm28Y5051r50bYVS+K4MJfIYGPNnIxwiV3SH3v9L7iTJ/3NoMT/XjcWC4/1L0oKT1j7R9OG4pQPnUuc0+fyY+4H6OXeCnTPyJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777037978; c=relaxed/simple;
-	bh=VmW6Vn6rFZywdZ+8fcPzEmfwf5e+9mMV71E0uaBEFr8=;
+	s=arc-20240116; t=1777037618; c=relaxed/simple;
+	bh=m4bDnZOFTIiUNZRQ7gSfCW2a29M6CeP8nAWKjD59vlY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sKcMf0y89bCf1BPf1nhRV7vLDzEW1LKTCYWr9B06F6065Igz7xMGKHkUCZxCtBgLxGu5rYOJ9f/5d1dgbVY3KP47xtK9/WrIb67z8wQpJnRZMs2O2XoJQXarbSAWTa3SZkyX/4+kJN5rv0qWL5Ksmu+RSp90e2crC14BrsCp+iA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eur8WDoV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 035ABC19425;
-	Fri, 24 Apr 2026 13:39:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=E7KFjc14TCzKt2TqRUPsPSaQNBPylIBjaD8T6sudzXbPjbjQzTifNdQW9N2+nDFAS7uAYx6iZoFS2n7ejd5rDwiLjRHPKKMMedKqnSix8LeNHMlAulJ7Bs7BHTDu4w+RcQHPsWTIhAQGDrkq3K7Ib4uHjRaxCs8DTb6rFkVrwJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ftD6ZId5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57821C19425;
+	Fri, 24 Apr 2026 13:33:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777037978;
-	bh=VmW6Vn6rFZywdZ+8fcPzEmfwf5e+9mMV71E0uaBEFr8=;
+	s=korg; t=1777037618;
+	bh=m4bDnZOFTIiUNZRQ7gSfCW2a29M6CeP8nAWKjD59vlY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eur8WDoVenji+3Gng3XPVHoZvfXepPIsS318FkI2eyEYgA5MtILTWTjk+eZaxaW1w
-	 w5HZHI85nYikhrvfsyJ2CBenRdwX/Rmfd2DmR/pS762FS6sFg+1zvyGLyBL83i+ZsR
-	 IA0BPI7rQPOQypAHxm1NbP/wphdDInSuB9VQj7II=
+	b=ftD6ZId5E3RT0HHRYOBf6Xgc1c6rvevxodbvYB161mfZGRRCgPJ2T7ZJJG08C6ZW/
+	 PDqLZ9F4kg6o8gAgymX/tH9geYeVLdaWIO/hxbe2bCxQBArZHkvE+1pk9jUtLMPe/+
+	 bv5FnC139oLUnmIjRmqTvviqARdwF052SJ3BzTkA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	stable@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 143/166] rxrpc: Fix anonymous key handling
-Date: Fri, 24 Apr 2026 15:30:57 +0200
-Message-ID: <20260424132602.967081354@linuxfoundation.org>
+	George Saad <geoo115@gmail.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 7.0 33/42] f2fs: fix use-after-free of sbi in f2fs_compress_write_end_io()
+Date: Fri, 24 Apr 2026 15:30:58 +0200
+Message-ID: <20260424132427.350024901@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132532.812258529@linuxfoundation.org>
-References: <20260424132532.812258529@linuxfoundation.org>
+In-Reply-To: <20260424132420.410310336@linuxfoundation.org>
+References: <20260424132420.410310336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,88 +63,113 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 592E245F57C
+X-Rspamd-Queue-Id: 53D7445F19B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240841-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240702-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,infradead.org:email,sashiko.dev:url,auristor.com:email]
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: George Saad <geoo115@gmail.com>
 
-[ Upstream commit 6a59d84b4fc2f27f7b40e348506cc686712e260b ]
+commit 39d4ee19c1e7d753dd655aebee632271b171f43a upstream.
 
-In rxrpc_new_client_call_for_sendmsg(), a key with no payload is meant to
-be substituted for a NULL key pointer, but the variable this is done with
-is subsequently not used.
+In f2fs_compress_write_end_io(), dec_page_count(sbi, type) can bring
+the F2FS_WB_CP_DATA counter to zero, unblocking
+f2fs_wait_on_all_pages() in f2fs_put_super() on a concurrent unmount
+CPU. The unmount path then proceeds to call
+f2fs_destroy_page_array_cache(sbi), which destroys
+sbi->page_array_slab via kmem_cache_destroy(), and eventually
+kfree(sbi). Meanwhile, the bio completion callback is still executing:
+when it reaches page_array_free(sbi, ...), it dereferences
+sbi->page_array_slab — a destroyed slab cache — to call
+kmem_cache_free(), causing a use-after-free.
 
-Fix this by using "key" rather than "rx->key" when filling in the
-connection parameters.
+This is the same class of bug as CVE-2026-23234 (which fixed the
+equivalent race in f2fs_write_end_io() in data.c), but in the
+compressed writeback completion path that was not covered by that fix.
 
-Note that this only affects direct use of AF_RXRPC; the kAFS filesystem
-doesn't use sendmsg() directly and so bypasses the issue.  Further,
-AF_RXRPC passes a NULL key in if no key is set, so using an anonymous key
-in that manner works.  Since this hasn't been noticed to this point, it
-might be better just to remove the "key" variable and the code that sets it
-- and, arguably, rxrpc_init_client_call_security() would be a better place
-to handle it.
+Fix this by moving dec_page_count() to after page_array_free(), so
+that all sbi accesses complete before the counter decrement that can
+unblock unmount. For non-last folios (where atomic_dec_return on
+cic->pending_pages is nonzero), dec_page_count is called immediately
+before returning — page_array_free is not reached on this path, so
+there is no post-decrement sbi access. For the last folio,
+page_array_free runs while the F2FS_WB_CP_DATA counter is still
+nonzero (this folio has not yet decremented it), keeping sbi alive,
+and dec_page_count runs as the final operation.
 
-Fixes: 19ffa01c9c45 ("rxrpc: Use structs to hold connection params and protocol info")
-Closes: https://sashiko.dev/#/patchset/20260319150150.4189381-1-dhowells%40redhat.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jeffrey Altman <jaltman@auristor.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/20260408121252.2249051-4-dhowells@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4c8ff7095bef ("f2fs: support data compression")
+Cc: stable@vger.kernel.org
+Signed-off-by: George Saad <geoo115@gmail.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rxrpc/sendmsg.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/f2fs/compress.c |   14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
---- a/net/rxrpc/sendmsg.c
-+++ b/net/rxrpc/sendmsg.c
-@@ -590,7 +590,7 @@ rxrpc_new_client_call_for_sendmsg(struct
+--- a/fs/f2fs/compress.c
++++ b/fs/f2fs/compress.c
+@@ -1491,10 +1491,10 @@ void f2fs_compress_write_end_io(struct b
  
- 	memset(&cp, 0, sizeof(cp));
- 	cp.local		= rx->local;
--	cp.key			= rx->key;
-+	cp.key			= key;
- 	cp.security_level	= rx->min_sec_level;
- 	cp.exclusive		= rx->exclusive | p->exclusive;
- 	cp.upgrade		= p->upgrade;
+ 	f2fs_compress_free_page(page);
+ 
+-	dec_page_count(sbi, type);
+-
+-	if (atomic_dec_return(&cic->pending_pages))
++	if (atomic_dec_return(&cic->pending_pages)) {
++		dec_page_count(sbi, type);
+ 		return;
++	}
+ 
+ 	for (i = 0; i < cic->nr_rpages; i++) {
+ 		WARN_ON(!cic->rpages[i]);
+@@ -1504,6 +1504,14 @@ void f2fs_compress_write_end_io(struct b
+ 
+ 	page_array_free(sbi, cic->rpages, cic->nr_rpages);
+ 	kmem_cache_free(cic_entry_slab, cic);
++
++	/*
++	 * Make sure dec_page_count() is the last access to sbi.
++	 * Once it drops the F2FS_WB_CP_DATA counter to zero, the
++	 * unmount thread can proceed to destroy sbi and
++	 * sbi->page_array_slab.
++	 */
++	dec_page_count(sbi, type);
+ }
+ 
+ static int f2fs_write_raw_pages(struct compress_ctx *cc,
 
 
 
