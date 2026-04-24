@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-240831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240678-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WK2xFoZy62nCMwAAu9opvQ
-	(envelope-from <stable+bounces-240831-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:39:18 +0200
+	id UJvEGM9x62nCMwAAu9opvQ
+	(envelope-from <stable+bounces-240678-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:36:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0041845F524
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:39:17 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C796145F309
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:36:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C3E103006781
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:39:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4FC02305D6FD
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:32:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E85B3563D4;
-	Fri, 24 Apr 2026 13:39:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BA333B19DE;
+	Fri, 24 Apr 2026 13:32:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qB/Q2sD1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mdF37OAx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE23419A288;
-	Fri, 24 Apr 2026 13:39:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB3163AC00;
+	Fri, 24 Apr 2026 13:32:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777037952; cv=none; b=GuuE+mTc+rmKNNd83XEEHbxlqa8bmLS8DTItPYRGaJRyR0jXT08WNpsk30jF0v48E/P0Cl0vOyNk+yVbpo/XU4HZi/REue5r4gOq4dBBruBaReqqwR5geqxChbQbKIwydzEUeuplThcZRaV5gOZLN07iuwulVaPMfF0zVC11UE8=
+	t=1777037556; cv=none; b=DtkRue1E8pfNy9/xu2xowDd26WImprRBIm2kkgkiPQP7187up2daFB2iCI6RFGt5G02/K2U41aE5DuJ4Ed2clUhpznEDLmoxzPnR2E0YlqlVZzTrkGE9zLpykeiM0KlY8IHeInuLkRfR227p6WdmZIqRuHdRy/l7W7wRkuS7xrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777037952; c=relaxed/simple;
-	bh=05YhkXgY3jh6VdFmobzNFIIir2ICzxA8au+zXRNhczc=;
+	s=arc-20240116; t=1777037556; c=relaxed/simple;
+	bh=DIX8V0UyzkN1b0/ZDjch99ctXQTP/VokOK73tY9dCQU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KUa3Smq/DDx/8bVvzh+dgcx9TV0gHxcFaiVk4qF3IK8YttpRQCkjqixgAyM+RvM42AGfxc5B0n/vBmIeo9J1+MuBkEW4LMhVgsbZdD92jhnyC/i6WEIW4Ke1UYNRjUOQW27ZHciLhELwtxvFoEHSJdOFZTJFg1ZP9PzQHTDmbow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qB/Q2sD1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FB0CC19425;
-	Fri, 24 Apr 2026 13:39:12 +0000 (UTC)
+	 MIME-Version; b=Y7YWLDJv5Rpbosb6ArFuq7MPEsXx2k/zPs8b1Tv666ukhrBy7ZNN+EAlEoSmXyQTPF9FBSN1ZL/h+zIvju+FDHTJPUpcPJimJVlO/ZYwLLQROfYu4xUDua/7v/fok4pv5mdKXfmMxTBYc+L3JHx8urb1eX7QP0aNAhdoMN0Ch1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mdF37OAx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68391C19425;
+	Fri, 24 Apr 2026 13:32:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777037952;
-	bh=05YhkXgY3jh6VdFmobzNFIIir2ICzxA8au+zXRNhczc=;
+	s=korg; t=1777037556;
+	bh=DIX8V0UyzkN1b0/ZDjch99ctXQTP/VokOK73tY9dCQU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qB/Q2sD1+qvRRm1WACc5EJvX8atXty8qui2pZssKgf7BX97fiklgf/FZGwjofuUj5
-	 Mz1u/ZXjqAcYIulZodxpX5p4CFkTDG/WzQeeYAvUuDoQKTo/bSbITbT38YaWkNEPq5
-	 Mkwt3/KhU8z0Bb3LSx2ZyEspDo6g4Op23xXzXiI8=
+	b=mdF37OAxtjI9owrY8G4eEjUZgJIq5C1MhkDKVv8FlcR1vFCDvEbwP55DDEKLCG1sL
+	 iP66ThOAA7VSjLArjT9Y59qPvZWofSsZxddGm+D83CA3ve0JaffKrN0gO/OPCtcwiY
+	 9Jzs6o0UxWQyu7sbPhlTpBuP4pLFfIPNWCXngSto=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Koichiro Den <den@valinux.co.jp>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 134/166] PCI: endpoint: pci-epf-vntb: Stop cmd_handler work in epf_ntb_epc_cleanup
+	DaeMyung Kang <charsyam@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 7.0 23/42] smb: server: fix max_connections off-by-one in tcp accept path
 Date: Fri, 24 Apr 2026 15:30:48 +0200
-Message-ID: <20260424132600.936800589@linuxfoundation.org>
+Message-ID: <20260424132425.263660044@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132532.812258529@linuxfoundation.org>
-References: <20260424132532.812258529@linuxfoundation.org>
+In-Reply-To: <20260424132420.410310336@linuxfoundation.org>
+References: <20260424132420.410310336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,82 +64,89 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0041845F524
+X-Rspamd-Queue-Id: C796145F309
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-240678-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240831-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,nxp.com:email,msgid.link:url]
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Koichiro Den <den@valinux.co.jp>
+From: DaeMyung Kang <charsyam@gmail.com>
 
-[ Upstream commit d799984233a50abd2667a7d17a9a710a3f10ebe2 ]
+commit ce23158bfe584bd90d1918f279fdf9de57802012 upstream.
 
-Disable the delayed work before clearing BAR mappings and doorbells to
-avoid running the handler after resources have been torn down.
+The global max_connections check in ksmbd's TCP accept path counts
+the newly accepted connection with atomic_inc_return(), but then
+rejects the connection when the result is greater than or equal to
+server_conf.max_connections.
 
-  Unable to handle kernel paging request at virtual address ffff800083f46004
-  [...]
-  Internal error: Oops: 0000000096000007 [#1]  SMP
-  [...]
-  Call trace:
-   epf_ntb_cmd_handler+0x54/0x200 [pci_epf_vntb] (P)
-   process_one_work+0x154/0x3b0
-   worker_thread+0x2c8/0x400
-   kthread+0x148/0x210
-   ret_from_fork+0x10/0x20
+That makes the effective limit one smaller than configured. For
+example:
 
-Fixes: e35f56bb0330 ("PCI: endpoint: Support NTB transfer between RC and EP")
-Signed-off-by: Koichiro Den <den@valinux.co.jp>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
+- max_connections=1 rejects the first connection
+- max_connections=2 allows only one connection
+
+The per-IP limit in the same function uses <= correctly because it
+counts only pre-existing connections. The global limit instead checks
+the post-increment total, so it should reject only when that total
+exceeds the configured maximum.
+
+Fix this by changing the comparison from >= to >, so exactly
+max_connections simultaneous connections are allowed and the next one
+is rejected. This matches the documented meaning of max_connections
+in fs/smb/server/ksmbd_netlink.h as the "Number of maximum simultaneous
+connections".
+
+Fixes: 0d0d4680db22 ("ksmbd: add max connections parameter")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260226084142.2226875-4-den@valinux.co.jp
-[ replaced disable_delayed_work_sync() with cancel_delayed_work_sync() ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: DaeMyung Kang <charsyam@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/endpoint/functions/pci-epf-vntb.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/smb/server/transport_tcp.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/pci/endpoint/functions/pci-epf-vntb.c
-+++ b/drivers/pci/endpoint/functions/pci-epf-vntb.c
-@@ -798,6 +798,7 @@ err_config_interrupt:
-  */
- static void epf_ntb_epc_cleanup(struct epf_ntb *ntb)
- {
-+	cancel_delayed_work_sync(&ntb->cmd_handler);
- 	epf_ntb_mw_bar_clear(ntb, ntb->num_mws);
- 	epf_ntb_db_bar_clear(ntb);
- 	epf_ntb_config_sspad_bar_clear(ntb);
+--- a/fs/smb/server/transport_tcp.c
++++ b/fs/smb/server/transport_tcp.c
+@@ -281,7 +281,7 @@ static int ksmbd_kthread_fn(void *p)
+ 
+ skip_max_ip_conns_limit:
+ 		if (server_conf.max_connections &&
+-		    atomic_inc_return(&active_num_conn) >= server_conf.max_connections) {
++		    atomic_inc_return(&active_num_conn) > server_conf.max_connections) {
+ 			pr_info_ratelimited("Limit the maximum number of connections(%u)\n",
+ 					    atomic_read(&active_num_conn));
+ 			atomic_dec(&active_num_conn);
 
 
 
