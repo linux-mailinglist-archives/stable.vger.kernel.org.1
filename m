@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-240849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240693-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EITrNBVz62nCMwAAu9opvQ
-	(envelope-from <stable+bounces-240849-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:41:41 +0200
+	id +N1tFj1y62nCMwAAu9opvQ
+	(envelope-from <stable+bounces-240693-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:38:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CB2345F66E
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:41:41 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95B4845F432
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:38:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 892893030CBE
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:40:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0FF5A306D2AE
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:33:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 669873D7D80;
-	Fri, 24 Apr 2026 13:39:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD30919A288;
+	Fri, 24 Apr 2026 13:33:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TAt0bneU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FWjyTb1Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 299663D6494;
-	Fri, 24 Apr 2026 13:39:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A066878F4A;
+	Fri, 24 Apr 2026 13:33:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777037999; cv=none; b=CfIafziasD5C7TYM3WSdDTQ4a9U4DU5Rk+Q4+xrxKylsflKY2IEIawUCAMpfUql3D64dggkiaw44a8l3vak7nzLYYmBBiN86iNwJ4LDF+DeFTtAC0jKbhV+xUtsJ3p1gwu85SQKcjLHUYjfLgQZXskrRXcHPRT7ox3caoFAocM8=
+	t=1777037595; cv=none; b=HjdM88d0mkM3nogXGMgh+rhJpxlnKetIdyJ9K/oVoW67qAwDeAbXvuVLS7dRvbmM6jKPaXpd+8Om5BqnG8a2ptnmws7kS9etFd5m0QNjySl0ibDPBgHlTLVUO+JXZ/OrDSzpsvlTpeIEQk0O6t09vJ5pXi1ll2fieCk1WEuAgBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777037999; c=relaxed/simple;
-	bh=olQkeSaDlokFLybIP9AR0d5AQemlLVoNeg3Go9aklos=;
+	s=arc-20240116; t=1777037595; c=relaxed/simple;
+	bh=8d+FweySo1RjfGL45XxYXMdqtEV+79tTGAoW67IfoYw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nO3Rs0itn6DJ9dJf6vBQIe/tZvQB01rnUoKxqL1myfuEDBXkbdqw6V7oU+SPFReS0R5aRHY1aGi/F6viNiT5DA6C/aPy5RRecOdogOu/1P8ZN9xOl2VezkXaXdseaKBRA1H1+dii3b+x3S4IzLOrGQ60npp83+9ADSZUMJU6OrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TAt0bneU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3811C2BCB5;
-	Fri, 24 Apr 2026 13:39:58 +0000 (UTC)
+	 MIME-Version; b=SOVgj1TE5I8osvaAso3MNkkn03Jr6JO/lKyw6fXATuHFmrHIsQadzmoHCRd+Lslbk/0B1Kh1IhxQT29q3koXmpmAcKLevu+4GQ0k3w7anoeQArZoo/dgQ3HyOyg9BFkUeE2/OjDRvoog0kCBKtf3JFiI2PHS8xSjnWbgjT3qMus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FWjyTb1Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BB63C19425;
+	Fri, 24 Apr 2026 13:33:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777037999;
-	bh=olQkeSaDlokFLybIP9AR0d5AQemlLVoNeg3Go9aklos=;
+	s=korg; t=1777037595;
+	bh=8d+FweySo1RjfGL45XxYXMdqtEV+79tTGAoW67IfoYw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TAt0bneU45UT6qrmfQzms7XypvX6GnbVhl9SBmdQPVDU+9NdBWVORxUYdEGTfXea6
-	 8hTBs/351DOXh1UsZuNppH+2TOa8TX6JOGMpc+LYXymFxgIg9MbGFHM4ZHu1KbprSI
-	 yyO/h0lUgB8rceEfWkNlSCwquC/Wr8/Egl0sXZUU=
+	b=FWjyTb1Qutti9akOQNdPR5l8L5DqfLtQdf3Ce3dmw+0xSHb2+PeMXjeQlIL4YX1pg
+	 5YFNesOMl+HmOpJdiiVuN7wctPIRtoNtOLXJv98uCM0ZFt+dMVDKA9cym8YlY5ZaQr
+	 AEiDgBmOzPeoe6mOfUKF1XOc8eDHlh9bqw8ANSa0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 150/166] smb: server: fix active_num_conn leak on transport allocation failure
+	Alexander Potapenko <glider@google.com>,
+	Sebastian Alba Vives <sebasjosue84@gmail.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 7.0 39/42] crypto: ccp: Dont attempt to copy PDH cert to userspace if PSP command failed
 Date: Fri, 24 Apr 2026 15:31:04 +0200
-Message-ID: <20260424132604.583550568@linuxfoundation.org>
+Message-ID: <20260424132428.737004649@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132532.812258529@linuxfoundation.org>
-References: <20260424132532.812258529@linuxfoundation.org>
+In-Reply-To: <20260424132420.410310336@linuxfoundation.org>
+References: <20260424132420.410310336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,106 +65,121 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4CB2345F66E
+X-Rspamd-Queue-Id: 95B4845F432
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240849-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,gondor.apana.org.au];
+	TAGGED_FROM(0.00)[bounces-240693-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 6551300dc452ac16a855a83dbd1e74899542d3b3 upstream.
+commit e76239fed3cffd6d304d8ca3ce23984fd24f57d3 upstream.
 
-Commit 77ffbcac4e56 ("smb: server: fix leak of active_num_conn in
-ksmbd_tcp_new_connection()") addressed the kthread_run() failure
-path.  The earlier alloc_transport() == NULL path in the same
-function has the same leak, is reachable pre-authentication via any
-TCP connect to port 445, and was empirically reproduced on UML
-(ARCH=um, v7.0-rc7): a small number of forced allocation failures
-were sufficient to put ksmbd into a state where every subsequent
-connection attempt was rejected for the remainder of the boot.
+When retrieving the PDH cert, don't attempt to copy the blobs to userspace
+if the firmware command failed.  If the failure was due to an invalid
+length, i.e. the userspace buffer+length was too small, copying the number
+of bytes _firmware_ requires will overflow the kernel-allocated buffer and
+leak data to userspace.
 
-ksmbd_kthread_fn() increments active_num_conn before calling
-ksmbd_tcp_new_connection() and discards the return value, so when
-alloc_transport() returns NULL the socket is released and -ENOMEM
-returned without decrementing the counter.  Each such failure
-permanently consumes one slot from the max_connections pool; once
-cumulative failures reach the cap, atomic_inc_return() hits the
-threshold on every subsequent accept and every new connection is
-rejected.  The counter is only reset by module reload.
+  BUG: KASAN: slab-out-of-bounds in instrument_copy_to_user ../include/linux/instrumented.h:129 [inline]
+  BUG: KASAN: slab-out-of-bounds in _inline_copy_to_user ../include/linux/uaccess.h:205 [inline]
+  BUG: KASAN: slab-out-of-bounds in _copy_to_user+0x66/0xa0 ../lib/usercopy.c:26
+  Read of size 2084 at addr ffff8885c4ab8aa0 by task syz.0.186/21033
 
-An unauthenticated remote attacker can drive the server toward the
-memory pressure that makes alloc_transport() fail by holding open
-connections with large RFC1002 lengths up to MAX_STREAM_PROT_LEN
-(0x00FFFFFF); natural transient allocation failures on a loaded
-host produce the same drift more slowly.
+  CPU: 51 UID: 0 PID: 21033 Comm: syz.0.186 Tainted: G     U     O        7.0.0-smp-DEV #28 PREEMPTLAZY
+  Tainted: [U]=USER, [O]=OOT_MODULE
+  Hardware name: Google, Inc.                                                       Arcadia_IT_80/Arcadia_IT_80, BIOS 34.84.12-0 11/17/2025
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0xc5/0x110 ../lib/dump_stack.c:120
+   print_address_description ../mm/kasan/report.c:378 [inline]
+   print_report+0xbc/0x260 ../mm/kasan/report.c:482
+   kasan_report+0xa2/0xe0 ../mm/kasan/report.c:595
+   check_region_inline ../mm/kasan/generic.c:-1 [inline]
+   kasan_check_range+0x264/0x2c0 ../mm/kasan/generic.c:200
+   instrument_copy_to_user ../include/linux/instrumented.h:129 [inline]
+   _inline_copy_to_user ../include/linux/uaccess.h:205 [inline]
+   _copy_to_user+0x66/0xa0 ../lib/usercopy.c:26
+   copy_to_user ../include/linux/uaccess.h:236 [inline]
+   sev_ioctl_do_pdh_export+0x3d3/0x7c0 ../drivers/crypto/ccp/sev-dev.c:2347
+   sev_ioctl+0x2a2/0x490 ../drivers/crypto/ccp/sev-dev.c:2568
+   vfs_ioctl ../fs/ioctl.c:51 [inline]
+   __do_sys_ioctl ../fs/ioctl.c:597 [inline]
+   __se_sys_ioctl+0x11d/0x1b0 ../fs/ioctl.c:583
+   do_syscall_x64 ../arch/x86/entry/syscall_64.c:63 [inline]
+   do_syscall_64+0xe0/0x800 ../arch/x86/entry/syscall_64.c:94
+   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+   </TASK>
 
-Mirror the existing rollback pattern in ksmbd_kthread_fn(): on the
-alloc_transport() failure path, decrement active_num_conn gated on
-server_conf.max_connections.
+WARN if the driver says the command succeeded, but the firmware error code
+says otherwise, as __sev_do_cmd_locked() is expected to return -EIO on any
+firwmware error.
 
-Repro details: with the patch reverted, forced alloc_transport()
-NULL returns leaked counter slots and subsequent connection
-attempts -- including legitimate connects issued after the
-forced-fail window had closed -- were all rejected with "Limit the
-maximum number of connections".  With this patch applied, the same
-connect sequence produces no rejections and the counter cycles
-cleanly between zero and one on every accept.
-
-Fixes: 0d0d4680db22 ("ksmbd: add max connections parameter")
+Reported-by: Alexander Potapenko <glider@google.com>
+Reported-by: Sebastian Alba Vives <sebasjosue84@gmail.com>
+Fixes: 76a2b524a4b1 ("crypto: ccp: Implement SEV_PDH_CERT_EXPORT ioctl command")
 Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-6
-Assisted-by: Codex:gpt-5-4
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/transport_tcp.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/crypto/ccp/sev-dev.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/fs/smb/server/transport_tcp.c
-+++ b/fs/smb/server/transport_tcp.c
-@@ -203,6 +203,8 @@ static int ksmbd_tcp_new_connection(stru
- 	t = alloc_transport(client_sk);
- 	if (!t) {
- 		sock_release(client_sk);
-+		if (server_conf.max_connections)
-+			atomic_dec(&active_num_conn);
- 		return -ENOMEM;
+--- a/drivers/crypto/ccp/sev-dev.c
++++ b/drivers/crypto/ccp/sev-dev.c
+@@ -2340,7 +2340,10 @@ cmd:
+ 
+ 	ret = __sev_do_cmd_locked(SEV_CMD_PDH_CERT_EXPORT, &data, &argp->error);
+ 
+-	/* If we query the length, FW responded with expected data. */
++	/*
++	 * Firmware will return the length of the blobs (either the minimum
++	 * required length or the actual length written), return 'em to the user.
++	 */
+ 	input.cert_chain_len = data.cert_chain_len;
+ 	input.pdh_cert_len = data.pdh_cert_len;
+ 
+@@ -2349,6 +2352,9 @@ cmd:
+ 		goto e_free_cert;
  	}
  
++	if (ret || WARN_ON_ONCE(argp->error))
++		goto e_free_cert;
++
+ 	if (pdh_blob) {
+ 		if (copy_to_user(input_pdh_cert_address,
+ 				 pdh_blob, input.pdh_cert_len)) {
 
 
 
