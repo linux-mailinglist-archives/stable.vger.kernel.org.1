@@ -1,64 +1,59 @@
-Return-Path: <stable+bounces-240921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240949-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uL6hN2tz62kLNAAAu9opvQ
-	(envelope-from <stable+bounces-240921-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:43:07 +0200
+	id WGK/NT1162kQNAAAu9opvQ
+	(envelope-from <stable+bounces-240949-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:50:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34F8045F75B
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:43:07 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 587F645FBF4
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:50:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C30BA3007480
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:43:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CF0EB30649DA
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:44:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFEA219A288;
-	Fri, 24 Apr 2026 13:43:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 294873D6CC1;
+	Fri, 24 Apr 2026 13:44:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jJo3gnEn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AXVNG9f1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80637386C0A;
-	Fri, 24 Apr 2026 13:43:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E03BD3563D4;
+	Fri, 24 Apr 2026 13:44:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777038184; cv=none; b=P67FyClMM+8EZ05x/pQ3NhC3ZpRkUHS+I6XqgER0XAdjC6hRr80idOeMxp5GFa0xFC6VhT7OcwNdAkQ+Y8kJcYtCz8jwS/vvcCYODcRF39ZaeedIG9cRpuWsdk1Kl92lZyxrCVYVMsMtSt/1Tfy6+I0WJ7g8twhHgTbryntVhVc=
+	t=1777038254; cv=none; b=KM8vHQP1eY+WCx0Xvl8Pg82V27Z79uru1SIu5yckZXvdlrl3SNPQULuTl8UiLk+AOnBzdoQfIab7tHicHoNUNtPhIg/Uc5+EC+AA/doja1ZBSzSZUgMp+l6g8YdbXNBO+wfObAzXZvEb2By3VTsjtGuvIwwvZCaskzS4cU30Cng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777038184; c=relaxed/simple;
-	bh=gosEfxKv7AOmqWcO8PtA2q5T0+5otDxGQPFxXw8d95w=;
+	s=arc-20240116; t=1777038254; c=relaxed/simple;
+	bh=qpG9PvnepE1dqUArXP+a9fP3tLZkF9CXFSgL2WPnJxw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZgXcezbJVNaRFw9n9zZ+O5MHTSxXw4TRH/y0yemCvt48xTBr9m+cy+JTZpRN7iJflQ9Fe3WUZhPKfF1IARwkohlG8fEJCLODd4rXNfrcp4EVXD8ZBD/EKkdL/Tb4Fzr/xrsP3LtOZYfmbqyhMytowBmjr3BX/uq+yZtw7wSlhHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jJo3gnEn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15C0EC19425;
-	Fri, 24 Apr 2026 13:43:03 +0000 (UTC)
+	 MIME-Version; b=eBVhZ56D5xQSjYpGk0I1d2hzyyN07L8ZbpFoppF+vZ36Yp1IPDu+Rw21sba6lj14M6+wu/zAHqG2jIakoIe/6hrnqG09dVbnZmp1se0m2Ng1i7XlMPtsI9VfxzGxbmy1AufyaWErPbPlAm+plsQmhVPaRVoVPBnrTqWwTSewnC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AXVNG9f1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77C07C19425;
+	Fri, 24 Apr 2026 13:44:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777038184;
-	bh=gosEfxKv7AOmqWcO8PtA2q5T0+5otDxGQPFxXw8d95w=;
+	s=korg; t=1777038253;
+	bh=qpG9PvnepE1dqUArXP+a9fP3tLZkF9CXFSgL2WPnJxw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jJo3gnEnoa3wICLQz2mupr/rf1o9rseYLtTVBBQFWG3BBXrIPkkSkIwmPn5LfBds6
-	 0i7h3w1ecNUWx2aDbdWkvMDw/HJKUvrhjdDPORvHyMVjOkPeimybymylwBU0US7ua+
-	 /AUmX8f3RUbdTAap+c6qpd1cANm8BSpnTqY8dGZM=
+	b=AXVNG9f1GQ3GdQvSKgIaQ3srH6qaOqzljW7opDBXHf9HEdA6n31k6V1bRcK1SOgkx
+	 tcZZ81Rh9+6dhSe9P1slDH6pNKew9Jj23pMdU6A9usIZ78mxtCYTHQB8ibiyrUuq+s
+	 QzJ03SmMSf4AtugWmR/MuqDQkdadKoemGSD/3Qz4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anderson Nascimento <anderson@allelesecurity.com>,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	stable@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.18 55/55] rxrpc: Fix missing validation of ticket length in non-XDR key preparsing
+	Tristan Madani <tristan@talencesecurity.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 27/35] ksmbd: use check_add_overflow() to prevent u16 DACL size overflow
 Date: Fri, 24 Apr 2026 15:31:34 +0200
-Message-ID: <20260424132441.513432271@linuxfoundation.org>
+Message-ID: <20260424132417.450754766@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132430.006424517@linuxfoundation.org>
-References: <20260424132430.006424517@linuxfoundation.org>
+In-Reply-To: <20260424132411.427029259@linuxfoundation.org>
+References: <20260424132411.427029259@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,92 +64,122 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 34F8045F75B
+X-Rspamd-Queue-Id: 587F645FBF4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240921-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-240949-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:email,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,allelesecurity.com:email,auristor.com:email]
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[talencesecurity.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anderson Nascimento <anderson@allelesecurity.com>
+From: Tristan Madani <tristan@talencesecurity.com>
 
-commit ac33733b10b484d666f97688561670afd5861383 upstream.
+commit 299f962c0b02d048fb45d248b4da493d03f3175d upstream.
 
-In rxrpc_preparse(), there are two paths for parsing key payloads: the
-XDR path (for large payloads) and the non-XDR path (for payloads <= 28
-bytes). While the XDR path (rxrpc_preparse_xdr_rxkad()) correctly
-validates the ticket length against AFSTOKEN_RK_TIX_MAX, the non-XDR
-path fails to do so.
+set_posix_acl_entries_dacl() and set_ntacl_dacl() accumulate ACE sizes
+in u16 variables. When a file has many POSIX ACL entries, the
+accumulated size can wrap past 65535, causing the pointer arithmetic
+(char *)pndace + *size to land within already-written ACEs. Subsequent
+writes then overwrite earlier entries, and pndacl->size gets a
+truncated value.
 
-This allows an unprivileged user to provide a very large ticket length.
-When this key is later read via rxrpc_read(), the total
-token size (toksize) calculation results in a value that exceeds
-AFSTOKEN_LENGTH_MAX, triggering a WARN_ON().
+Use check_add_overflow() at each accumulation point to detect the
+wrap before it corrupts the buffer, consistent with existing
+check_mul_overflow() usage elsewhere in smbacl.c.
 
-[ 2001.302904] WARNING: CPU: 2 PID: 2108 at net/rxrpc/key.c:778 rxrpc_read+0x109/0x5c0 [rxrpc]
-
-Fix this by adding a check in the non-XDR parsing path of rxrpc_preparse()
-to ensure the ticket length does not exceed AFSTOKEN_RK_TIX_MAX,
-bringing it into parity with the XDR parsing logic.
-
-Fixes: 8a7a3eb4ddbe ("KEYS: RxRPC: Use key preparsing")
-Fixes: 84924aac08a4 ("rxrpc: Fix checker warning")
-Reported-by: Anderson Nascimento <anderson@allelesecurity.com>
-Signed-off-by: Anderson Nascimento <anderson@allelesecurity.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jeffrey Altman <jaltman@auristor.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/20260422161438.2593376-7-dhowells@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
+Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rxrpc/key.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ fs/smb/server/smbacl.c |   16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
---- a/net/rxrpc/key.c
-+++ b/net/rxrpc/key.c
-@@ -502,6 +502,10 @@ static int rxrpc_preparse(struct key_pre
- 	if (v1->security_index != RXRPC_SECURITY_RXKAD)
- 		goto error;
+--- a/fs/smb/server/smbacl.c
++++ b/fs/smb/server/smbacl.c
+@@ -596,6 +596,7 @@ static void set_posix_acl_entries_dacl(s
+ 	struct smb_sid *sid;
+ 	struct smb_ace *ntace;
+ 	int i, j;
++	u16 ace_sz;
  
-+	ret = -EKEYREJECTED;
-+	if (v1->ticket_length > AFSTOKEN_RK_TIX_MAX)
-+		goto error;
-+
- 	plen = sizeof(*token->kad) + v1->ticket_length;
- 	prep->quotalen += plen + sizeof(*token);
+ 	if (!fattr->cf_acls)
+ 		goto posix_default_acl;
+@@ -640,8 +641,10 @@ static void set_posix_acl_entries_dacl(s
+ 			flags = 0x03;
  
+ 		ntace = (struct smb_ace *)((char *)pndace + *size);
+-		*size += fill_ace_for_sid(ntace, sid, ACCESS_ALLOWED, flags,
++		ace_sz = fill_ace_for_sid(ntace, sid, ACCESS_ALLOWED, flags,
+ 				pace->e_perm, 0777);
++		if (check_add_overflow(*size, ace_sz, size))
++			break;
+ 		(*num_aces)++;
+ 		if (pace->e_tag == ACL_USER)
+ 			ntace->access_req |=
+@@ -650,8 +653,10 @@ static void set_posix_acl_entries_dacl(s
+ 		if (S_ISDIR(fattr->cf_mode) &&
+ 		    (pace->e_tag == ACL_USER || pace->e_tag == ACL_GROUP)) {
+ 			ntace = (struct smb_ace *)((char *)pndace + *size);
+-			*size += fill_ace_for_sid(ntace, sid, ACCESS_ALLOWED,
++			ace_sz = fill_ace_for_sid(ntace, sid, ACCESS_ALLOWED,
+ 					0x03, pace->e_perm, 0777);
++			if (check_add_overflow(*size, ace_sz, size))
++				break;
+ 			(*num_aces)++;
+ 			if (pace->e_tag == ACL_USER)
+ 				ntace->access_req |=
+@@ -691,8 +696,10 @@ posix_default_acl:
+ 		}
+ 
+ 		ntace = (struct smb_ace *)((char *)pndace + *size);
+-		*size += fill_ace_for_sid(ntace, sid, ACCESS_ALLOWED, 0x0b,
++		ace_sz = fill_ace_for_sid(ntace, sid, ACCESS_ALLOWED, 0x0b,
+ 				pace->e_perm, 0777);
++		if (check_add_overflow(*size, ace_sz, size))
++			break;
+ 		(*num_aces)++;
+ 		if (pace->e_tag == ACL_USER)
+ 			ntace->access_req |=
+@@ -728,7 +735,8 @@ static void set_ntacl_dacl(struct mnt_id
+ 				break;
+ 
+ 			memcpy((char *)pndace + size, ntace, nt_ace_size);
+-			size += nt_ace_size;
++			if (check_add_overflow(size, nt_ace_size, &size))
++				break;
+ 			aces_size -= nt_ace_size;
+ 			ntace = (struct smb_ace *)((char *)ntace + nt_ace_size);
+ 			num_aces++;
 
 
 
