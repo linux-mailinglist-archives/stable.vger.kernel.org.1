@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-240867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240934-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eNB5JCpz62nCMwAAu9opvQ
-	(envelope-from <stable+bounces-240867-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:42:02 +0200
+	id wNNbM5Rz62kLNAAAu9opvQ
+	(envelope-from <stable+bounces-240934-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:43:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D278C45F6A7
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:42:01 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB56545F7F4
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:43:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 04DE53015867
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:40:47 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1268A30093B6
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:43:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F34DA19A288;
-	Fri, 24 Apr 2026 13:40:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A94583D6494;
+	Fri, 24 Apr 2026 13:43:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Id3EAtiX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TqrEA9Ck"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B75A23290A5;
-	Fri, 24 Apr 2026 13:40:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D8D23537DF;
+	Fri, 24 Apr 2026 13:43:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777038045; cv=none; b=W25gZnMzM+wwaHQrnX0TQpLbZL9iMK9x1F9fSnB2nDFkh4HWAwSlMLKmP0GM/qFpNZ37kJUGHQaWsN2yX9o0fvdHUtE+Xk03uowntbmjYFaJGTaRa4t6IEn0ExwnKHJxHzh2uZ+H/6hNzTsA/2Flk9m8dq+KXABivMHcPAQYaic=
+	t=1777038215; cv=none; b=K5Ovj9TGdSbREfKEjoQ9wk3/c2ab5kqAI9pcfsEzAuS382WvM7milo64OwIIwPBQh4t49P/mYZwoVkLE3vN+LzYpbVtmDC97PAmOUDPAI70W/hGjxwSsZGsf5R1SX1YElGbeDVVotgIFfBmmU6tgInsHMpSq9ADOBzxc8zbi5Z4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777038045; c=relaxed/simple;
-	bh=alJDQ/T3ghPjNNkE8xR6G9UgQfDQxIVxi01TUX8qPW0=;
+	s=arc-20240116; t=1777038215; c=relaxed/simple;
+	bh=Gw2PkFvtH8WXIw3/cPGGrFBAtZeZU+7KR6MwI2gbQ4E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M2+iMRDtP8c9Ksb7doXi3y/F0xclR+7ItqCwinIeK0jGuoQ8QkZlidbo0B4FoMvGrR3vn6VM7JO/gXfjZXJEptswqPdu1ArL19wktb6kOrW6jfvioOjpZ50PlHLimwAXMLN1LW/oYvJgXKGk5mNT4HEKnd2INcs3E98xd/thaHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Id3EAtiX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07E20C19425;
-	Fri, 24 Apr 2026 13:40:44 +0000 (UTC)
+	 MIME-Version; b=FWweL1mMO37qP8AEAcC6V6XhyGnFRKuS8eqU9t7RfjpODFY9L0UD98Zf848K5wsTSZDMpZ4KLNBEwj5C37Z+jlotrdVxLdNzcwbia922cnucCIFF3hWHASQ3dSoEfkyIx/4T4Kq2YwFpwjhnW9As1xH4gaE52CFmw6GqGSxQJ2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TqrEA9Ck; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06252C19425;
+	Fri, 24 Apr 2026 13:43:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777038045;
-	bh=alJDQ/T3ghPjNNkE8xR6G9UgQfDQxIVxi01TUX8qPW0=;
+	s=korg; t=1777038215;
+	bh=Gw2PkFvtH8WXIw3/cPGGrFBAtZeZU+7KR6MwI2gbQ4E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Id3EAtiXlD6BXbjLYG//BBQAqPdyaaKMkav2MB1XNDnGv74A+8erOqGn4c+O1XJS0
-	 +AG8GSUAwxsLa99m52ghW0TEX8+uhcK+okcbwGW6GzC+9QInPf8raxe3XdRj63h8Tj
-	 GenTguibK83MKlpHbjNWZiUYs70VfF1eglvO4Tuw=
+	b=TqrEA9CkXlxmtJhrx8wKrS7Pzmbb5ymKFazofqSd+tni8yCLi3uRP/mezgP/PgB9k
+	 P/0Mm7SzFB13WOdt+oJw1fsg8ATbMJcr1PDXLw69dFf579dG69ceomrLVREeGJh5sk
+	 o8Psamw0FPBgTRifVioPnofN4GGn9ey+U5uQOFis=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Berk Cem Goksel <berkcgoksel@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 158/166] ALSA: caiaq: take a reference on the USB device in create_card()
+	Felix Fietkau <nbd@nbd.name>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Li hongliang <1468888505@139.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 05/35] wifi: mac80211: always free skb on ieee80211_tx_prepare_skb() failure
 Date: Fri, 24 Apr 2026 15:31:12 +0200
-Message-ID: <20260424132606.132598371@linuxfoundation.org>
+Message-ID: <20260424132412.686395810@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132532.812258529@linuxfoundation.org>
-References: <20260424132532.812258529@linuxfoundation.org>
+In-Reply-To: <20260424132411.427029259@linuxfoundation.org>
+References: <20260424132411.427029259@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,94 +65,144 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D278C45F6A7
+X-Rspamd-Queue-Id: CB56545F7F4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-240867-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,nbd.name,intel.com,139.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-240934-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,suse.de:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[139.com:email,msgid.link:url,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,nbd.name:email]
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Berk Cem Goksel <berkcgoksel@gmail.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-commit 80bb50e2d459213cccff3111d5ef98ed4238c0d5 upstream.
+[ Upstream commit d5ad6ab61cbd89afdb60881f6274f74328af3ee9 ]
 
-The caiaq driver stores a pointer to the parent USB device in
-cdev->chip.dev but never takes a reference on it. The card's
-private_free callback, snd_usb_caiaq_card_free(), can run
-asynchronously via snd_card_free_when_closed() after the USB
-device has already been disconnected and freed, so any access to
-cdev->chip.dev in that path dereferences a freed usb_device.
+ieee80211_tx_prepare_skb() has three error paths, but only two of them
+free the skb. The first error path (ieee80211_tx_prepare() returning
+TX_DROP) does not free it, while invoke_tx_handlers() failure and the
+fragmentation check both do.
 
-On top of the refcounting issue, the current card_free implementation
-calls usb_reset_device(cdev->chip.dev). A reset in a free callback
-is inappropriate: the device is going away, the call takes the
-device lock in a teardown context, and the reset races with the
-disconnect path that the callback is already cleaning up after.
+Add kfree_skb() to the first error path so all three are consistent,
+and remove the now-redundant frees in callers (ath9k, mt76,
+mac80211_hwsim) to avoid double-free.
 
-Take a reference on the USB device in create_card() with
-usb_get_dev(), drop it with usb_put_dev() in the free callback,
-and remove the usb_reset_device() call.
+Document the skb ownership guarantee in the function's kdoc.
 
-Fixes: b04dcbb7f7b1 ("ALSA: caiaq: Use snd_card_free_when_closed() at disconnection")
-Cc: stable@vger.kernel.org
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Signed-off-by: Berk Cem Goksel <berkcgoksel@gmail.com>
-Link: https://patch.msgid.link/20260413034941.1131465-3-berkcgoksel@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Link: https://patch.msgid.link/20260314065455.2462900-1-nbd@nbd.name
+Fixes: 06be6b149f7e ("mac80211: add ieee80211_tx_prepare_skb() helper function")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+[ Exclude changes to drivers/net/wireless/mediatek/mt76/scan.c as this file is first
+ introduced by commit 31083e38548f("wifi: mt76: add code for emulating hardware scanning")
+ after linux-6.14.]
+Signed-off-by: Li hongliang <1468888505@139.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/caiaq/device.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath9k/channel.c      | 6 ++----
+ drivers/net/wireless/virtual/mac80211_hwsim.c | 1 -
+ include/net/mac80211.h                        | 4 +++-
+ net/mac80211/tx.c                             | 4 +++-
+ 4 files changed, 8 insertions(+), 7 deletions(-)
 
---- a/sound/usb/caiaq/device.c
-+++ b/sound/usb/caiaq/device.c
-@@ -384,7 +384,7 @@ static void card_free(struct snd_card *c
- 	snd_usb_caiaq_input_free(cdev);
- #endif
- 	snd_usb_caiaq_audio_free(cdev);
--	usb_reset_device(cdev->chip.dev);
-+	usb_put_dev(cdev->chip.dev);
- }
+diff --git a/drivers/net/wireless/ath/ath9k/channel.c b/drivers/net/wireless/ath/ath9k/channel.c
+index 571062f2e82a7..ba8ec5112afe8 100644
+--- a/drivers/net/wireless/ath/ath9k/channel.c
++++ b/drivers/net/wireless/ath/ath9k/channel.c
+@@ -1011,7 +1011,7 @@ static void ath_scan_send_probe(struct ath_softc *sc,
+ 	skb_set_queue_mapping(skb, IEEE80211_AC_VO);
  
- static int create_card(struct usb_device *usb_dev,
-@@ -410,7 +410,7 @@ static int create_card(struct usb_device
- 		return err;
+ 	if (!ieee80211_tx_prepare_skb(sc->hw, vif, skb, band, NULL))
+-		goto error;
++		return;
  
- 	cdev = caiaqdev(card);
--	cdev->chip.dev = usb_dev;
-+	cdev->chip.dev = usb_get_dev(usb_dev);
- 	cdev->chip.card = card;
- 	cdev->chip.usb_id = USB_ID(le16_to_cpu(usb_dev->descriptor.idVendor),
- 				  le16_to_cpu(usb_dev->descriptor.idProduct));
+ 	txctl.txq = sc->tx.txq_map[IEEE80211_AC_VO];
+ 	if (ath_tx_start(sc->hw, skb, &txctl))
+@@ -1124,10 +1124,8 @@ ath_chanctx_send_vif_ps_frame(struct ath_softc *sc, struct ath_vif *avp,
+ 
+ 		skb->priority = 7;
+ 		skb_set_queue_mapping(skb, IEEE80211_AC_VO);
+-		if (!ieee80211_tx_prepare_skb(sc->hw, vif, skb, band, &sta)) {
+-			dev_kfree_skb_any(skb);
++		if (!ieee80211_tx_prepare_skb(sc->hw, vif, skb, band, &sta))
+ 			return false;
+-		}
+ 		break;
+ 	default:
+ 		return false;
+diff --git a/drivers/net/wireless/virtual/mac80211_hwsim.c b/drivers/net/wireless/virtual/mac80211_hwsim.c
+index 8b4fd5fd11b0e..e992e59b59189 100644
+--- a/drivers/net/wireless/virtual/mac80211_hwsim.c
++++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
+@@ -2977,7 +2977,6 @@ static void hw_scan_work(struct work_struct *work)
+ 						      hwsim->tmp_chan->band,
+ 						      NULL)) {
+ 				rcu_read_unlock();
+-				kfree_skb(probe);
+ 				continue;
+ 			}
+ 
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index 80259a37e7247..7d71a4149cdf9 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -7208,7 +7208,9 @@ void ieee80211_report_wowlan_wakeup(struct ieee80211_vif *vif,
+  * @band: the band to transmit on
+  * @sta: optional pointer to get the station to send the frame to
+  *
+- * Return: %true if the skb was prepared, %false otherwise
++ * Return: %true if the skb was prepared, %false otherwise.
++ * On failure, the skb is freed by this function; callers must not
++ * free it again.
+  *
+  * Note: must be called under RCU lock
+  */
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 9142d748a6a70..0458cbba232e2 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -1897,8 +1897,10 @@ bool ieee80211_tx_prepare_skb(struct ieee80211_hw *hw,
+ 	struct ieee80211_tx_data tx;
+ 	struct sk_buff *skb2;
+ 
+-	if (ieee80211_tx_prepare(sdata, &tx, NULL, skb) == TX_DROP)
++	if (ieee80211_tx_prepare(sdata, &tx, NULL, skb) == TX_DROP) {
++		kfree_skb(skb);
+ 		return false;
++	}
+ 
+ 	info->band = band;
+ 	info->control.vif = vif;
+-- 
+2.53.0
+
 
 
 
