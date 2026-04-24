@@ -1,161 +1,248 @@
-Return-Path: <stable+bounces-241003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241004-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4AUUJFea62nAPAAAu9opvQ
-	(envelope-from <stable+bounces-241003-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 18:29:11 +0200
+	id wLTbInya62nAPAAAu9opvQ
+	(envelope-from <stable+bounces-241004-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 18:29:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF23A4614E4
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 18:29:10 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31086461501
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 18:29:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7B64F300DE05
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 16:29:05 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4F97630066B4
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 16:29:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 712C13CF68E;
-	Fri, 24 Apr 2026 16:29:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F9F23DBD48;
+	Fri, 24 Apr 2026 16:29:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="ciRuU0Yu"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ZMEyTdGE"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AACFF2F069D
-	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 16:29:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B44123DF00B;
+	Fri, 24 Apr 2026 16:29:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777048144; cv=none; b=Zr2z18AyQRg6VkrZ5h1aINL0GIw23RAaWDsvCHWr/1wRxeFourNiTyzb0i2iWwrXdlI82lv4VpN20BC/f8L5Qc/YrqtMCujbnn0WEf/2uBL62iB3g/B12tC8xq6LgPoExxha68JO3Jm60skL7ddFsb3AC8Ql+UzXeTIq/m1N13c=
+	t=1777048183; cv=none; b=qBuM60OWxKE0QZMshlX+U/YlyhzNJavpYXQb0QUd02hTJWlsDwKIFckcxsFQX3IbIPU8XpPYJSPbA9tP7VDUM29PZxHr8Qf0QkhPIcxSHYpuDSKoXovM1z4fYRvJuJfItqOVQzPDcYMXhz2E7SYKR0xdrtVp4TooXp7DUCoPN9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777048144; c=relaxed/simple;
-	bh=1nKL2oUmGdFElAVXOdfIRhy2LrbQY9k/pqlm6N4/zcE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kDCKPlo7bvZ5qInFMLtV3U9AMhyZeQbi6hSIyP5gco+JIUvyz7HHZqTP/pHqutCSjRQmI3RxhDmJEW+b4o9NPTlZMmM1/e/1Mjgw+h/zh4oRsZoPpZnBw3wEY+QYip/OjxQFN7GRfAeYKRzDxc8cGwFDRVDIZVzl9cNul5h1G88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=ciRuU0Yu; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-488ba840146so72282685e9.1
-        for <stable@vger.kernel.org>; Fri, 24 Apr 2026 09:29:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20251104; t=1777048141; x=1777652941; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=tOpTivbmVnXoG3/nyUEuEllGt1YnW5sq2zo7Y2LrDJM=;
-        b=ciRuU0YuzDxJCo8t1kVfGL+pWpg+v+bsfPB4+Dc0s4/ElwnCYqNc6nt65t4Lng3iBS
-         +phnGYoI7fmm+PsmnCIXIIDCoV80gbLXT+uH6vJVTL3fGMzGJJDaZQGKU5gu6ThLmqrl
-         gCXzzDo3xsldb4a8NB/Q8tNOA2T0yScjadZY/0jUVANWZp86Ny1EUXuxaZJ93Q4qY8Id
-         2i/OdD57CDIGA3UwzLsGlvjVFT3H1M3zUxN64HtP1qnikJkIerCxtuNRtbsTBDWqCRG5
-         2SiujityFFTd5ri2lNKaLhqY7c9Kzz9J2thkUV2IzcNn92HUsCbEZmxuPNMnFWVw+Gfn
-         apEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777048141; x=1777652941;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=tOpTivbmVnXoG3/nyUEuEllGt1YnW5sq2zo7Y2LrDJM=;
-        b=YJOJxmzSL+wo9LgVFHRfkE/fojlm9DCTHaoeqEEsVL9eL/auhUGloEZ4au43NLYrGs
-         OVw/2/mzQ4wkY7+77ey2ySwldeORl20cgY6ohhLTl4plaDtZOt2EBqD7kwW1AZDEvS5S
-         1av6SBabVdbE7jvIAfH4FLeOu29l6nwHx0/A+6T/xlhEVor1zLc2VXMVIW4Kb9EyQ+dY
-         0xJXXoE2eFG8nybORLm8GF+4UIkM2iZa/l6YnRjfRmv0BE8evNmttyuFMcOFqbT6GkKr
-         dwmnlUH2WHu5FyrRJGQ6e2zf2GZ21+48fc8OrZgz7qMn10aYAK59NUQZMyyhYVRgG8wD
-         mFeg==
-X-Forwarded-Encrypted: i=1; AFNElJ+0bEfAVNrJfxshK9CyHW3lzLE/XIzvXPJEyiJh5+hWfHUR60Y9+wRukF4bbcqN7N0lEzlJ3hk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzWxWtGVOh6YxP/uionN6SRnmOFINdsY2EiGXgGjyAVNORxdc+0
-	N/lGzaZjVd9JmAhOjIKoeXG70DNlDYo43Z0axxTLJY7jzeTr+1eREus=
-X-Gm-Gg: AeBDiesYOo//SzztPNewLlMeYSS1D1TbsUUrqUdQcBeZM6AcUjXbygdS1R1bzX0gtmH
-	sBQu7hbtXkmY8O6yf9V41/nZFgK3EMeURCoCxWWoS895AtK/ZSnuew5cGlIESHNRyJSjoHynNZM
-	Y838dZ/vL0e0sqe/xoE9m71km2XSRG4DcgcRYWVTLE7abKgaaiqVaz9Szs+g3At68LJqFVnqCA+
-	qOY40Kmjy+b/IAEgdurqnNli31IoyeNBDav+P1CT7BD+pG9mDVKmmMtgK5feCwxxgunUpkse70Y
-	v5tbV9U1v3ojHpuE10VIvClB23+Db/GySDs0IdWA/pu2jOHbOyoVrvdC/3SGh5vmOM426IpN7Q4
-	8JVEaFk+7ztd1ol4Clo+RMwo5MMB+3nHgTSWYzzqmfGEqCVKq8h72y35yVWlGpNl32Uorao0W0m
-	z+LtSCdL45srW0CWAfcluMtQs6jkhL1xWNq50eEHYzpG/fYphVo6f+Oj69s+UulJEbVYiEFlZjl
-	0k9t8ue8YT0
-X-Received: by 2002:a05:600c:c085:b0:488:c530:48a0 with SMTP id 5b1f17b1804b1-488fb784843mr368224975e9.24.1777048140999;
-        Fri, 24 Apr 2026 09:29:00 -0700 (PDT)
-Received: from [192.168.1.3] (p5b2b4e21.dip0.t-ipconnect.de. [91.43.78.33])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488fc0f8188sm636115995e9.2.2026.04.24.09.29.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 24 Apr 2026 09:29:00 -0700 (PDT)
-Message-ID: <c9aa22f3-addd-49c5-acc9-309c24fd6677@googlemail.com>
-Date: Fri, 24 Apr 2026 18:29:00 +0200
+	s=arc-20240116; t=1777048183; c=relaxed/simple;
+	bh=XDZUFB8kr3dFYOphD8u88HxzUJXW5VyTqkHnu3N12ss=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rC5n9mzGiSUetFVGlDyDbeadpVuEPiplTVOpX70Z5vgAsd80+jetn2w1aVmMDuPoZEhtmUVoaA5LiKkzIEtb6yjbQaYCLxJSoGnlmtlZhgkpcwng0rKd0FTVFgmaF64XBiW2BCXGOuFOIFhNEZrXIXo6ZkbBhtjKZ2tDg3Hv0Tc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ZMEyTdGE; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63OAqZpa3292244;
+	Fri, 24 Apr 2026 16:29:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=ckwhgSUaP7LH9m/h4L7W5HcS4Chg6ISwqU+JO7cot
+	Mo=; b=ZMEyTdGExiivj2XALhSOiS3lnICOjFyO+ZrsLHKWvX3v+EYgYFlRXGiJp
+	ZIIIQLChwfEnbAHTUTsbOW32baOrQBSPebbqfbQRGT89/31fYZ1LN3JQccxt5zqo
+	ilsO+IPRZRqNw82T28peHBmDMRkLOIVY4HCj9lZD3gwdpemOIyGRNwfWpav54Ve2
+	bXTVBVEd6JPrWtC0w0gsOgT6zSbf+h5gaUC6BQ6etyz4HJt3qVL8fmShx3ayNsDt
+	jn2HM8+Wky5VGGUXcP07jzW08I9D61OjJYJXvSlqInULUd0+T6Fw7lR9LuUe28Xe
+	76A+lwg4mc9yvaN2F2cNswy7IVoIQ==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dphfrp659-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 Apr 2026 16:29:27 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63OGKLYv032021;
+	Fri, 24 Apr 2026 16:29:26 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dpjkybjad-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 Apr 2026 16:29:26 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
+	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63OGSufB28377822
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 24 Apr 2026 16:28:56 GMT
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 99CAF5805C;
+	Fri, 24 Apr 2026 16:29:22 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 86A7058058;
+	Fri, 24 Apr 2026 16:29:20 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.67.24.140])
+	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 24 Apr 2026 16:29:20 +0000 (GMT)
+From: Mingming Cao <mmc@linux.ibm.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net, kuba@kernel.org, edumazet@google.com,
+        pabeni@redhat.com, horms@kernel.org, bjking1@linux.ibm.com,
+        maddy@linux.ibm.com, mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org,
+        stable@vger.kernel.org, Mingming Cao <mmc@linux.ibm.com>,
+        Shaik Abdulla <shaik.abdulla1@ibm.com>,
+        Naveed Ahmed <naveedaus@in.ibm.com>
+Subject: [PATCH v3] ibmveth: Disable GSO for packets with small MSS
+Date: Fri, 24 Apr 2026 09:29:17 -0700
+Message-Id: <20260424162917.65725-1-mmc@linux.ibm.com>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.12 00/35] 6.12.84-rc1 review
-Content-Language: de-DE
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com
-References: <20260424132411.427029259@linuxfoundation.org>
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20260424132411.427029259@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: EF23A4614E4
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: Ezjy5Ob4oUAQdfX0fVUxoRkGAaFCfE-r
+X-Proofpoint-ORIG-GUID: VHY8sa6bnoQIzbYQJcpzf9tct2Oza9zB
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDI0MDE1OCBTYWx0ZWRfX2UAHSO8Otbyd
+ vFiSyn9IcJegoYyPSC7QQKDHdc5MawBeuaO1AjvEGHDrCGoZknvMKba6e+rgpJUIoBNttAmiJ4b
+ AlUsVxHTV6Yk3BnmDAKF4WozMd3H+mobd1QQiEBMg/mN0pqQC3BAGxqOPpxRp2lFsLdcK2Si5+3
+ fRnTR/OLSQPBYPv42546i6NQFQp8cI1bI9OL1jG410Hf1RlzncxdBD1UtXe9cbLnrsR+YchZYC+
+ xDTkuDvad3DgWsA2yi0Jj6T56PmAiXaj1lSxohz9aarjJ1QnIDK9EkKnO0EiJ4bqRTQRxJH1POt
+ ZfE0RmMeR8Q7vQaVStVqf8et8YpKL8sGn9Tg3OpiM+RXRdU17Ptzsvf/OglBGINwQoj7v/EiEO0
+ lWt6W3Mx0UvcfUuJ/Wrvrfb+nnAMPpEmhXoGD34U50pJ+zzeqt+dOYAyyp/hBEb5Owh+DBgHeiP
+ zRFvDuA0VGAEQ81Sxtg==
+X-Authority-Analysis: v=2.4 cv=SJxykuvH c=1 sm=1 tr=0 ts=69eb9a68 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=pS6RR9H1IJa285FGuL8A:9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-24_02,2026-04-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 suspectscore=0 malwarescore=0 impostorscore=0 bulkscore=0
+ lowpriorityscore=0 phishscore=0 clxscore=1015 adultscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2604240158
+X-Rspamd-Queue-Id: 31086461501
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.65 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[googlemail.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[googlemail.com:s=20251104];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	XM_UA_NO_VERSION(0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	TAGGED_FROM(0.00)[bounces-241003-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	TAGGED_FROM(0.00)[bounces-241004-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[mmc@linux.ibm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[ibm.com:+];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pschneider1968@googlemail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[googlemail.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FREEMAIL_FROM(0.00)[googlemail.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[]
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[11]
 
-Am 24.04.2026 um 15:31 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.12.84 release.
-> There are 35 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Some physical adapters on Power systems do not support segmentation
+offload when the MSS is less than 224 bytes. Attempting to send such
+packets causes the adapter to freeze, stopping all traffic until
+manually reset.
 
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg oddities or regressions found.
+Implement ndo_features_check to disable GSO for packets with small MSS
+values. The network stack will perform software segmentation instead.
 
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+The 224-byte minimum matches ibmvnic
+commit <f10b09ef687f> ("ibmvnic: Enforce stronger sanity checks
+on GSO packets")
+which uses the same physical adapters in SEA configurations.
 
+The issue occurs specifically when the hardware attempts to perform
+segmentation (gso_segs > 1) with a small MSS. Single-segment GSO packets
+(gso_segs == 1) do not trigger the problematic LSO code path and are
+transmitted normally without segmentation.
 
-Beste Grüße,
-Peter Schneider
+Add an ndo_features_check callback to disable GSO when MSS < 224 bytes.
+Also call vlan_features_check() to ensure proper handling of VLAN packets,
+particularly QinQ (802.1ad) configurations where the hardware parser may
+not support certain offload features.
 
+Validated using iptables to force small MSS values. Without the fix,
+the adapter freezes. With the fix, packets are segmented in software
+and transmission succeeds. Comprehensive regression testing completedd 
+(MSS tests, performance, stability).
+
+Fixes: 8641dd85799f ("ibmveth: Add support for TSO")
+Cc: stable@vger.kernel.org
+Reviewed-by: Brian King <bjking1@linux.ibm.com>
+Tested-by: Shaik Abdulla <shaik.abdulla1@ibm.com>
+Tested-by: Naveed Ahmed <naveedaus@in.ibm.com>
+Signed-off-by: Mingming Cao <mmc@linux.ibm.com>
+---
+Changes in v3:
+- Call vlan_features_check() to handle VLAN packets correctly
+- Clarified that gso_segs == 1 check is not needed for ibmveth
+  (unlike ibmvnic, single-segment packets don't enter LSO path)
+- Updated commit message to explain the difference
+
+Changes in v2:
+- Add Fixes tag as requested by automated checks
+---
+ drivers/net/ethernet/ibm/ibmveth.c | 22 ++++++++++++++++++++++
+ drivers/net/ethernet/ibm/ibmveth.h |  1 +
+ 2 files changed, 23 insertions(+)
+
+diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
+index 58cc3147afe2..73e051d26b9d 100644
+--- a/drivers/net/ethernet/ibm/ibmveth.c
++++ b/drivers/net/ethernet/ibm/ibmveth.c
+@@ -1756,6 +1756,27 @@ static int ibmveth_set_mac_addr(struct net_device *dev, void *p)
+ 	return 0;
+ }
+ 
++static netdev_features_t ibmveth_features_check(struct sk_buff *skb,
++						struct net_device *dev,
++						netdev_features_t features)
++{
++	/* Some physical adapters do not support segmentation offload with
++	 * MSS < 224. Disable GSO for such packets to avoid adapter freeze.
++	 * Note: Single-segment packets (gso_segs == 1) don't need this check
++	 * as they bypass the LSO path and are transmitted without segmentation.
++	 */
++	if (skb_is_gso(skb)) {
++		if (skb_shinfo(skb)->gso_size < IBMVETH_MIN_LSO_MSS) {
++			netdev_warn_once(dev,
++					 "MSS %u too small for LSO, disabling GSO\n",
++					 skb_shinfo(skb)->gso_size);
++			features &= ~NETIF_F_GSO_MASK;
++		}
++	}
++
++	return vlan_features_check(skb, features);
++}
++
+ static const struct net_device_ops ibmveth_netdev_ops = {
+ 	.ndo_open		= ibmveth_open,
+ 	.ndo_stop		= ibmveth_close,
+@@ -1767,6 +1788,7 @@ static const struct net_device_ops ibmveth_netdev_ops = {
+ 	.ndo_set_features	= ibmveth_set_features,
+ 	.ndo_validate_addr	= eth_validate_addr,
+ 	.ndo_set_mac_address    = ibmveth_set_mac_addr,
++	.ndo_features_check	= ibmveth_features_check,
+ #ifdef CONFIG_NET_POLL_CONTROLLER
+ 	.ndo_poll_controller	= ibmveth_poll_controller,
+ #endif
+diff --git a/drivers/net/ethernet/ibm/ibmveth.h b/drivers/net/ethernet/ibm/ibmveth.h
+index 068f99df133e..d87713668ed3 100644
+--- a/drivers/net/ethernet/ibm/ibmveth.h
++++ b/drivers/net/ethernet/ibm/ibmveth.h
+@@ -37,6 +37,7 @@
+ #define IBMVETH_ILLAN_IPV4_TCP_CSUM		0x0000000000000002UL
+ #define IBMVETH_ILLAN_ACTIVE_TRUNK		0x0000000000000001UL
+ 
++#define IBMVETH_MIN_LSO_MSS		224	/* Minimum MSS for LSO */
+ /* hcall macros */
+ #define h_register_logical_lan(ua, buflst, rxq, fltlst, mac) \
+   plpar_hcall_norets(H_REGISTER_LOGICAL_LAN, ua, buflst, rxq, fltlst, mac)
 -- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
+2.39.3 (Apple Git-146)
 
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
