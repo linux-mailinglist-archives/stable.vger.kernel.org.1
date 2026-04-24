@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-241034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241035-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oFJRAkLW62lISAAAu9opvQ
-	(envelope-from <stable+bounces-241034-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 22:44:50 +0200
+	id WOiNCYbW62lISAAAu9opvQ
+	(envelope-from <stable+bounces-241035-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 22:45:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3FE246342A
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 22:44:49 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B4A646346B
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 22:45:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2EC96301223F
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 20:44:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0A06A304F209
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 20:44:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A75113FE35F;
-	Fri, 24 Apr 2026 20:44:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 885523FE66B;
+	Fri, 24 Apr 2026 20:44:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ewKkUAf3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HLtdM9Q7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69AD83FD14E;
-	Fri, 24 Apr 2026 20:44:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B2F33FE660;
+	Fri, 24 Apr 2026 20:44:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777063463; cv=none; b=fpu6bvtzbwkKle371r/Mnidh/DjuBKhNBZrSHp5qoRIUDfHXrPomSYMM0Mk4p03C7ZGXTx4vEwGk4hOAM6OkHTSbtBpkoOVCLbqZlZBKlav6amy7NKAzGP/PXNO6XB46lc8tcs92lNYurzq6N6ZprXhqqu72vqaloD+QMNefvr4=
+	t=1777063465; cv=none; b=LS+vXJJfTDFMq0nJ4ObdM8MYNDNzNRNWtj+3tomX2feo33jgcuYDnO3sAHWiou02F4ArHF60VzWJe0Y5OBAcQz4VkaFSHe+FIIeGQ2PWI9yA7UAMr1u90VEfs8bO9J9DUQxFDsKmU6KAlpMKiHbWtMZI8vG7ca3WbHVDr73qYeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777063463; c=relaxed/simple;
-	bh=BqAdOCk1D5oAloLZseRfFomUyN6bCfzFNQZ2SgsjhEc=;
+	s=arc-20240116; t=1777063465; c=relaxed/simple;
+	bh=KJ4CKn2MyyiRwxId/cMnVNO22IZ0MhoY7pvjuAPS3Pw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cSGpBEQhuyDanj+fG4p+D8u1B9i4BygP360lxwUvE0Nq7ngjYaUVtVxZcOcxs5v2FvUcwrPlESaurxX0rMk31yMQSyN9MseD2PksuAzQykp+8bn0r4Bcrkb56fa7WqijUc/A04aS3wEBEBVA3f8BD2ipQAxJeD4qnIN2xkVzZc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ewKkUAf3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF824C19425;
-	Fri, 24 Apr 2026 20:44:22 +0000 (UTC)
+	 MIME-Version; b=HP3PF7QyeNylwPTWDDh8OLvc2dHCb9CSbpb5Mgwztj2B2GgjjTnt5BsmTa/E6dGOl+oUq2zKSvRR34T0Q7ugB5jIxY1H5+7ZsuKTzWArhISuWmJpazLEEfCBj0sTRlSKiaE4xbzgAto7rH2tpYsfbN9ZW8jm1Xe05t1/61Aunsw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HLtdM9Q7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 023E5C19425;
+	Fri, 24 Apr 2026 20:44:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777063463;
-	bh=BqAdOCk1D5oAloLZseRfFomUyN6bCfzFNQZ2SgsjhEc=;
+	s=k20201202; t=1777063465;
+	bh=KJ4CKn2MyyiRwxId/cMnVNO22IZ0MhoY7pvjuAPS3Pw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ewKkUAf3IHrJNAL27VGyLyuWXOcrND32jt49Lcg1Z1QC/uDBnVYyHBUlgMX+TKVkY
-	 wwID+LFuVdAzWMWv7RqDkz/57oaZ/EaDWK6Ktwj8lV13nHlOcX8JLalbfh//GIV/W6
-	 +QI7CDjzo4fDLWpWvYVNUPpUsfDv34MkDobmA4gBPj4GTdGzlVEH0O7mtPcUsSjBym
-	 EMLB0ihNEb/DvtfmHXdCzoWau/fAPW5kVDbysafpZ9uM6SJ8tJkerJqVCqTvpZWW2A
-	 RFQXZUkoZQH8qOYJWA06llkypxmSm2fmepCUodHVnJhbctVZsrCj7ZNrdOdb4wUnO3
-	 XP1op+NqjGsBg==
+	b=HLtdM9Q7uTQgfsKIU4IeCtWi55qEZVmWK3xIH1UDSQSP+0+OKps3j59Xn6B1fGspX
+	 Y7ynuH8G5dphI1XsKKubxUfy6lRMrIPIjJkDp+U/2Y8KyJ8jDzKBEVypHQSvRKkQ9y
+	 OboxrWfuO5mS5g5knL0vxQf8ynb/hzD5eVBDxiI1P7iycrQPUKr+sstjdJ9ADhDrZM
+	 2ccsVqlvpomgnMLYJXEm1ogXpvVxLV7jC2Va2fb/Dg2HiKDGsB+c6Go9HP9caI3gn/
+	 wJkLgKeTs7zPd11eySOomPzcgZsEZXLxSoLqU7+mgMvSd04sidntuYj59roH3cPQcM
+	 QwFc7szIwE+Qw==
 From: Tejun Heo <tj@kernel.org>
 To: David Vernet <void@manifault.com>,
 	Andrea Righi <arighi@nvidia.com>,
@@ -55,9 +55,9 @@ Cc: sched-ext@lists.linux.dev,
 	Ryan Newton <newton@meta.com>,
 	Tejun Heo <tj@kernel.org>,
 	stable@vger.kernel.org
-Subject: [PATCH 03/13] sched_ext: Skip tasks with stale task_rq in bypass_lb_cpu()
-Date: Fri, 24 Apr 2026 10:44:08 -1000
-Message-ID: <20260424204418.3809733-4-tj@kernel.org>
+Subject: [PATCH 05/13] sched_ext: Read scx_root under scx_cgroup_ops_rwsem in cgroup setters
+Date: Fri, 24 Apr 2026 10:44:10 -1000
+Message-ID: <20260424204418.3809733-6-tj@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260424204418.3809733-1-tj@kernel.org>
 References: <20260424204418.3809733-1-tj@kernel.org>
@@ -68,7 +68,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C3FE246342A
+X-Rspamd-Queue-Id: 9B4A646346B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
@@ -76,7 +76,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -84,10 +84,10 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241034-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-241035-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[tj@kernel.org,stable@vger.kernel.org];
@@ -98,42 +98,65 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
 
-bypass_lb_cpu() transfers tasks between per-CPU bypass DSQs without
-migrating them - task_cpu() only updates when the donee later consumes the
-task via move_remote_task_to_local_dsq(). If the LB timer fires again before
-consumption and the new DSQ becomes a donor, @p is still on the previous CPU
-and task_rq(@p) != donor_rq. @p can't be moved without its own rq locked.
+scx_group_set_{weight,idle,bandwidth}() cache scx_root before acquiring
+scx_cgroup_ops_rwsem, so the pointer can be stale by the time the op runs.
+If the loaded scheduler is disabled and freed (via RCU work) and another is
+enabled between the naked load and the rwsem acquire, the reader sees
+scx_cgroup_enabled=true (the new scheduler's) but dereferences the freed one
+- UAF on SCX_HAS_OP(sch, ...) / SCX_CALL_OP(sch, ...).
 
-Skip such tasks.
+scx_cgroup_enabled is toggled only under scx_cgroup_ops_rwsem write
+(scx_cgroup_{init,exit}), so reading scx_root inside the rwsem read section
+correlates @sch with the enabled snapshot.
 
-Fixes: 95d1df610cdc ("sched_ext: Implement load balancer for bypass mode")
-Cc: stable@vger.kernel.org # v6.19+
+Fixes: a5bd6ba30b33 ("sched_ext: Use cgroup_lock/unlock() to synchronize against cgroup operations")
+Cc: stable@vger.kernel.org # v6.18+
 Reported-by: Chris Mason <clm@meta.com>
 Signed-off-by: Tejun Heo <tj@kernel.org>
 ---
- kernel/sched/ext.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ kernel/sched/ext.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
 diff --git a/kernel/sched/ext.c b/kernel/sched/ext.c
-index 89170a0e5779..62b4139a4cc8 100644
+index f7cca6f07a58..59445e95d2f2 100644
 --- a/kernel/sched/ext.c
 +++ b/kernel/sched/ext.c
-@@ -5002,6 +5002,15 @@ static u32 bypass_lb_cpu(struct scx_sched *sch, s32 donor,
- 		if (cpumask_empty(donee_mask))
- 			break;
+@@ -4343,9 +4343,10 @@ void scx_cgroup_cancel_attach(struct cgroup_taskset *tset)
  
-+		/*
-+		 * If an earlier pass placed @p on @donor_dsq from a different
-+		 * CPU and the donee hasn't consumed it yet, @p is still on the
-+		 * previous CPU and task_rq(@p) != @donor_rq. @p can't be moved
-+		 * without its rq locked. Skip.
-+		 */
-+		if (task_rq(p) != donor_rq)
-+			continue;
-+
- 		donee = cpumask_any_and_distribute(donee_mask, p->cpus_ptr);
- 		if (donee >= nr_cpu_ids)
- 			continue;
+ void scx_group_set_weight(struct task_group *tg, unsigned long weight)
+ {
+-	struct scx_sched *sch = scx_root;
++	struct scx_sched *sch;
+ 
+ 	percpu_down_read(&scx_cgroup_ops_rwsem);
++	sch = scx_root;
+ 
+ 	if (scx_cgroup_enabled && SCX_HAS_OP(sch, cgroup_set_weight) &&
+ 	    tg->scx.weight != weight)
+@@ -4358,9 +4359,10 @@ void scx_group_set_weight(struct task_group *tg, unsigned long weight)
+ 
+ void scx_group_set_idle(struct task_group *tg, bool idle)
+ {
+-	struct scx_sched *sch = scx_root;
++	struct scx_sched *sch;
+ 
+ 	percpu_down_read(&scx_cgroup_ops_rwsem);
++	sch = scx_root;
+ 
+ 	if (scx_cgroup_enabled && SCX_HAS_OP(sch, cgroup_set_idle))
+ 		SCX_CALL_OP(sch, cgroup_set_idle, NULL, tg_cgrp(tg), idle);
+@@ -4374,9 +4376,10 @@ void scx_group_set_idle(struct task_group *tg, bool idle)
+ void scx_group_set_bandwidth(struct task_group *tg,
+ 			     u64 period_us, u64 quota_us, u64 burst_us)
+ {
+-	struct scx_sched *sch = scx_root;
++	struct scx_sched *sch;
+ 
+ 	percpu_down_read(&scx_cgroup_ops_rwsem);
++	sch = scx_root;
+ 
+ 	if (scx_cgroup_enabled && SCX_HAS_OP(sch, cgroup_set_bandwidth) &&
+ 	    (tg->scx.bw_period_us != period_us ||
 -- 
 2.53.0
 
