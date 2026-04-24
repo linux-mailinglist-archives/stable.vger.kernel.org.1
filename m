@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-240799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240810-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id p995OERy62nmMwAAu9opvQ
-	(envelope-from <stable+bounces-240799-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:38:12 +0200
+	id YMGGEWdy62nmMwAAu9opvQ
+	(envelope-from <stable+bounces-240810-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:38:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6375545F448
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:38:12 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0A2045F4D3
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:38:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0DE023006F18
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:37:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D425530162B0
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:38:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F14A3D5643;
-	Fri, 24 Apr 2026 13:37:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F27603D6CC7;
+	Fri, 24 Apr 2026 13:38:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uv2fRNSX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wlWMs8es"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FB1D179A3;
-	Fri, 24 Apr 2026 13:37:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B62173D47B0;
+	Fri, 24 Apr 2026 13:38:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777037870; cv=none; b=PdMgqyktIgLKxS/uBsE2UJ7vc4kOtcBh0cr6YAOWIT1iUKmi8XSBWDpwOrufgXxbxlLrCLqe8JipByp7wPi5NUnktAiRDC9JNgkfoqZDj0n7qjQUPHqUNfe7jcYXG+9xhXiT8iBQ+KE3Vo0oW2hY6U5q4HWpcNSkOPum3bn+E5Q=
+	t=1777037898; cv=none; b=lSujlmJjSuunVxl7d2R8ZL6TVPPdculsjfdhoS7wMLp5MTimHZGVLlsMPUyBOXJun5uFy9oAyZnjfi4hxFgIQT3DmJEPwslY35mBpu+Y3FEn/FVyITtsk0QdfhEmaHa1mdRmnstF8zeeTdwxuLATy1HrZSoLmMk3lfc34m9iiI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777037870; c=relaxed/simple;
-	bh=w/OFTXUJilIgJcRaNDr644fBhgBZRYR//M3uJji6EnI=;
+	s=arc-20240116; t=1777037898; c=relaxed/simple;
+	bh=EV5bf75tUmDM6QqB46OGhnhT5C7WQVNizlEJKAO2DoQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KF6yl6kDBdGP6g69woPiIZfNrnu5BEcOKnj67ADQVdcQ005uagLNqAWkA145REd8hJ9x4q1AQ3WyidMabyRn7NxkDhaEnXpfZoTwRWOibV84lPoTKslEYmCV/8Qsyu7XAWLOVApLb7qoAElTyXhAKE8vb541zN6BKU1TdxO4tSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uv2fRNSX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8FA3C19425;
-	Fri, 24 Apr 2026 13:37:49 +0000 (UTC)
+	 MIME-Version; b=MOPXu59D2op+bRRugYAKIpLzcfyZAArnY7waO6ZlSbrYTgeshbBTmRo/b/d5gM9ObcTB5fgLHGLgc8QsqqkPOgYD2VsvUKES2HXGfFkKz1xEUabGD5GgX5rv7RJPJbPg0S64Gu10VAHzbkwI91btKw99MWgjIJwATOAx3WDWFVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wlWMs8es; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35DF8C2BCB2;
+	Fri, 24 Apr 2026 13:38:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777037870;
-	bh=w/OFTXUJilIgJcRaNDr644fBhgBZRYR//M3uJji6EnI=;
+	s=korg; t=1777037898;
+	bh=EV5bf75tUmDM6QqB46OGhnhT5C7WQVNizlEJKAO2DoQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Uv2fRNSXfCftczu+J0TDZ9loACvOhKp9ak6qROylONamYolqvu24HmcMYrlJdgC48
-	 RAmO/umABhzj2WsSxRf3WYDIrAPsaEmpfdioyY8EJlBdf+TRhAz0yftShrKGjw6Ugm
-	 jrwtWQOln6VTfSsQvfdY8+Wjsg2r3LAzJi0PFu0M=
+	b=wlWMs8esmR0+1YaDr9IGSC1DSfL1Oei71CD300zXN0peUd+fgUhLREex2APq2Q5dG
+	 hfn/PP1Iz3gj6EHAlAf3uIFSg7JJ5PHGb/EApi66TTD+5ZOaVWS8RxYeZs9wxzxFqD
+	 FLsOauOYiQOSOx0/3O/ft2rPw/fty2JZyFDJfctw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <smfrench@gmail.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Tom Talpey <tom@talpey.com>,
-	linux-cifs@vger.kernel.org,
-	stable@kernel.org,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 084/166] ksmbd: fix mechToken leak when SPNEGO decode fails after token alloc
-Date: Fri, 24 Apr 2026 15:29:58 +0200
-Message-ID: <20260424132550.343994907@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Nathan Rebello <nathan.c.rebello@gmail.com>
+Subject: [PATCH 6.6 085/166] usbip: validate number_of_packets in usbip_pack_ret_submit()
+Date: Fri, 24 Apr 2026 15:29:59 +0200
+Message-ID: <20260424132550.545549331@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260424132532.812258529@linuxfoundation.org>
 References: <20260424132532.812258529@linuxfoundation.org>
@@ -68,110 +64,123 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6375545F448
+X-Rspamd-Queue-Id: D0A2045F4D3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,chromium.org,talpey.com,vger.kernel.org,microsoft.com];
-	TAGGED_FROM(0.00)[bounces-240799-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[talpey.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+	TAGGED_FROM(0.00)[bounces-240810-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Nathan Rebello <nathan.c.rebello@gmail.com>
 
-commit ad0057fb91218914d6c98268718ceb9d59b388e1 upstream.
+commit 2ab833a16a825373aad2ba7d54b572b277e95b71 upstream.
 
-The kernel ASN.1 BER decoder calls action callbacks incrementally as it
-walks the input.  When ksmbd_decode_negTokenInit() reaches the mechToken
-[2] OCTET STRING element, ksmbd_neg_token_alloc() allocates
-conn->mechToken immediately via kmemdup_nul().  If a later element in
-the same blob is malformed, then the decoder will return nonzero after
-the allocation is already live.  This could happen if mechListMIC [3]
-overrunse the enclosing SEQUENCE.
+When a USB/IP client receives a RET_SUBMIT response,
+usbip_pack_ret_submit() unconditionally overwrites
+urb->number_of_packets from the network PDU. This value is
+subsequently used as the loop bound in usbip_recv_iso() and
+usbip_pad_iso() to iterate over urb->iso_frame_desc[], a flexible
+array whose size was fixed at URB allocation time based on the
+*original* number_of_packets from the CMD_SUBMIT.
 
-decode_negotiation_token() then sets conn->use_spnego = false because
-both the negTokenInit and negTokenTarg grammars failed.  The cleanup at
-the bottom of smb2_sess_setup() is gated on use_spnego:
+A malicious USB/IP server can set number_of_packets in the response
+to a value larger than what was originally submitted, causing a heap
+out-of-bounds write when usbip_recv_iso() writes to
+urb->iso_frame_desc[i] beyond the allocated region.
 
-	if (conn->use_spnego && conn->mechToken) {
-		kfree(conn->mechToken);
-		conn->mechToken = NULL;
-	}
+KASAN confirmed this with kernel 7.0.0-rc5:
 
-so the kfree is skipped, causing the mechToken to never be freed.
+  BUG: KASAN: slab-out-of-bounds in usbip_recv_iso+0x46a/0x640
+  Write of size 4 at addr ffff888106351d40 by task vhci_rx/69
 
-This codepath is reachable pre-authentication, so untrusted clients can
-cause slow memory leaks on a server without even being properly
-authenticated.
+  The buggy address is located 0 bytes to the right of
+   allocated 320-byte region [ffff888106351c00, ffff888106351d40)
 
-Fix this up by not checking check for use_spnego, as it's not required,
-so the memory will always be properly freed.  At the same time, always
-free the memory in ksmbd_conn_free() incase some other failure path
-forgot to free it.
+The server side (stub_rx.c) and gadget side (vudc_rx.c) already
+validate number_of_packets in the CMD_SUBMIT path since commits
+c6688ef9f297 ("usbip: fix stub_rx: harden CMD_SUBMIT path to handle
+malicious input") and b78d830f0049 ("usbip: fix vudc_rx: harden
+CMD_SUBMIT path to handle malicious input"). The server side validates
+against USBIP_MAX_ISO_PACKETS because no URB exists yet at that point.
+On the client side we have the original URB, so we can use the tighter
+bound: the response must not exceed the original number_of_packets.
 
-Cc: Namjae Jeon <linkinjeon@kernel.org>
-Cc: Steve French <smfrench@gmail.com>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: <stable@kernel.org>
-Assisted-by: gregkh_clanker_t1000
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+This mirrors the existing validation of actual_length against
+transfer_buffer_length in usbip_recv_xbuff(), which checks the
+response value against the original allocation size.
+
+Kelvin Mbogo's series ("usb: usbip: fix integer overflow in
+usbip_recv_iso()", v2) hardens the receive-side functions themselves;
+this patch complements that work by catching the bad value at its
+source -- in usbip_pack_ret_submit() before the overwrite -- and
+using the tighter per-URB allocation bound rather than the global
+USBIP_MAX_ISO_PACKETS limit.
+
+Fix this by checking rpdu->number_of_packets against
+urb->number_of_packets in usbip_pack_ret_submit() before the
+overwrite. On violation, clamp to zero so that usbip_recv_iso() and
+usbip_pad_iso() safely return early.
+
+Fixes: 1325f85fa49f ("staging: usbip: bugfix add number of packets for isochronous frames")
+Cc: stable <stable@kernel.org>
+Acked-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Nathan Rebello <nathan.c.rebello@gmail.com>
+Link: https://patch.msgid.link/20260402085259.234-1-nathan.c.rebello@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/connection.c |    1 +
- fs/smb/server/smb2pdu.c    |    2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/usbip/usbip_common.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/fs/smb/server/connection.c
-+++ b/fs/smb/server/connection.c
-@@ -39,6 +39,7 @@ void ksmbd_conn_free(struct ksmbd_conn *
- 	xa_destroy(&conn->sessions);
- 	kvfree(conn->request_buf);
- 	kfree(conn->preauth_info);
-+	kfree(conn->mechToken);
- 	if (atomic_dec_and_test(&conn->refcnt)) {
- 		conn->transport->ops->free_transport(conn->transport);
- 		kfree(conn);
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -1901,7 +1901,7 @@ out_err:
- 	else if (rc)
- 		rsp->hdr.Status = STATUS_LOGON_FAILURE;
- 
--	if (conn->use_spnego && conn->mechToken) {
-+	if (conn->mechToken) {
- 		kfree(conn->mechToken);
- 		conn->mechToken = NULL;
+--- a/drivers/usb/usbip/usbip_common.c
++++ b/drivers/usb/usbip/usbip_common.c
+@@ -470,6 +470,18 @@ static void usbip_pack_ret_submit(struct
+ 		urb->status		= rpdu->status;
+ 		urb->actual_length	= rpdu->actual_length;
+ 		urb->start_frame	= rpdu->start_frame;
++		/*
++		 * The number_of_packets field determines the length of
++		 * iso_frame_desc[], which is a flexible array allocated
++		 * at URB creation time. A response must never claim more
++		 * packets than originally submitted; doing so would cause
++		 * an out-of-bounds write in usbip_recv_iso() and
++		 * usbip_pad_iso(). Clamp to zero on violation so both
++		 * functions safely return early.
++		 */
++		if (rpdu->number_of_packets < 0 ||
++		    rpdu->number_of_packets > urb->number_of_packets)
++			rpdu->number_of_packets = 0;
+ 		urb->number_of_packets = rpdu->number_of_packets;
+ 		urb->error_count	= rpdu->error_count;
  	}
 
 
