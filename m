@@ -1,240 +1,185 @@
-Return-Path: <stable+bounces-240646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240647-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GBBnEbBe62lGLwAAu9opvQ
-	(envelope-from <stable+bounces-240646-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 14:14:40 +0200
+	id +BFTIEtf62lGLwAAu9opvQ
+	(envelope-from <stable+bounces-240647-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 14:17:15 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFE5845E42E
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 14:14:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C974F45E4A4
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 14:17:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A8BC8300F9CD
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 12:14:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 935403012C70
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 12:17:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C391363C75;
-	Fri, 24 Apr 2026 12:14:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6961D3BFE4D;
+	Fri, 24 Apr 2026 12:17:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WqtOIbWI"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="jjW6slul";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="SSmERdS0"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f54.google.com (mail-dl1-f54.google.com [74.125.82.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-a8-smtp.messagingengine.com (fout-a8-smtp.messagingengine.com [103.168.172.151])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7F853921CD
-	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 12:14:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1523A3C5DC3;
+	Fri, 24 Apr 2026 12:17:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777032848; cv=none; b=l0TND4F2jLshKBwx9xriWYHUMoLUt/JGxJKfsdG060YYanUmgugBtIX3tNWV1kQz61sXqd6KO20SqwO19uWytupQK6hjI9y6nqAUpqlVaPxKmpfjXqKuZaq0fVC92pPQexZYL17FADi8XMBpqEhYSLXEvPhn60rd2CIP+KIV5as=
+	t=1777033026; cv=none; b=ZsrWTBjOjw5mPoBp1ldnwhz1ua7rIULKKfywupm6Kk8wKMprr4joIoICNzmRwnMm/PMN+IwdUnVbq2yUgvS19fCZlSfvnrZA26vd5q0D7yGgCf5ZmA0FKASuvqWwO+SmkApd3Uv0lfUvTo3kx4qbcGvLZoJcqmXbAVyGxVvn44I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777032848; c=relaxed/simple;
-	bh=8/QJJryqSynahyRQJJbCZN0D78VrKq8FeMiVcDhoi+c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gJmLbMXIyCwr8xuCuoIhh9DAJ7OtFZe0talBsu571iO5fGolgDfS/M5Qh89tPqKX5lQybPTP7/n1VRdEpviylEG3FKzqpGVDRKmIPcst0k13a8jDmHvCI516N+IQ6bWBHjtGq5WJrVvyt7va0Lxjx3uS1qgLZOqtjVdEn9pFnwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WqtOIbWI; arc=none smtp.client-ip=74.125.82.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dl1-f54.google.com with SMTP id a92af1059eb24-12dbd0f8063so351034c88.0
-        for <stable@vger.kernel.org>; Fri, 24 Apr 2026 05:14:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777032847; x=1777637647; darn=vger.kernel.org;
-        h=in-reply-to:content-language:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LfoLqhKpXj85wR6vWN9s9RLklGMx26Zw0qrL+AcJXdY=;
-        b=WqtOIbWIR6nvm2m+csWXFF7IhWMdV2rnij0CU4w03Xlnyfh6PM3a5N1NPV/kYbKDHO
-         f08E+GjecpJ19+R7GeXP1KDfcsqZgo9hRFUz8Up0oxLV38fvmkcCQGCOk1eemJku4Z50
-         NCcR611QjCOcd4Gt4QadIAPzRhqJ8LoKKKNyUt7HMqpc5Fajtc6eG0ejfuWfWcEnkc4x
-         Mqxw8fgD0lw/jpo9MtQgS17dbpEYKH7GyZOFHZx1gceM+Ep3NP9qGDzQZJmMQihgyExL
-         BQhEdiYqyAePb/l82X85s/3ZD61BMRreZMknvaHbCU+jUdAK7z21FE/0q4+Tr/1NOwa/
-         qNpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777032847; x=1777637647;
-        h=in-reply-to:content-language:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=LfoLqhKpXj85wR6vWN9s9RLklGMx26Zw0qrL+AcJXdY=;
-        b=gu7Phh7tVgCeVECINGEdJmiEqHrVb3lov2jo79nm57nZvAsQEeiTCKh2h14DTvRqyM
-         9HmiDAb1RqHVE8dF4nKmi8e7msXzn4JIlc9+BLO3mXgTctGzVT4S7lh8Qf01+XUqydVy
-         fLRmwswoe3SfnWrIM436jpKrsfROWP324FwNJYWlh54+XRNbFMJXGMJ6FojxudXUCP3a
-         k1/tVXAMjfaBQU0hQLCiR0zJnitW4reHV2/amKRB7ogNPNn6ZYznXim74vFqV+rcq8Xa
-         Da0J5xEnuEdsQ/OxicPbwHHj7pYj/tIBNmwHODwwR1t09iTgQsPe9GkciuEHk5C3byUt
-         jV5g==
-X-Forwarded-Encrypted: i=1; AFNElJ/XS72sF1kaBIlSHv9Se/RSwe4oDH5+dH7rMeq0+3hTw1tnLjbaS+isQ8eznmNaZujUhjZE5fA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YySsoVVd2ZsJNojcVFHe/H53LeHQcXt9VKp7NdzmwrhfMhX2T9T
-	qdko9n+yhslk3QxfnUmcIOcjuZZMvh3pHPQfnekt6qMRSm51J/SEZQL7
-X-Gm-Gg: AeBDiettPv35j1yOly1fMkwYhaNMCFgeIy9XFgVC0VMY0doyB+Lk6Og2qt+D9PTP563
-	FZKfvHpNjh/oR3qhiBQgc0IJuXLLY2VtERBprrQwSINrogH1WTmxjtjHZMRamKgUAmPwXgRr8Ak
-	y8g4K3RbwsAVi827kb65xK9gbkAxrhAavq9J9swbf2DFCBlnwu+LGb0SYEK+YNIgmhTbnku93gf
-	fEqlZCtmDUGwMrntQiceCoOpulsgi3btrIZ70gbAjzcJYtfGZdhw/yy6O1+g1WBWalDLxtZnrmt
-	/5rzM8DKbA0JuX0nRg0p1o1DFYV/51k3wWKjod6lM+Z4+wyCUtLT64GV8TFzAukx9yySmCulS90
-	QJ8852kzB/y5rEDpcwf50qfPff0M3PLJhZIhxED54d+x3Ke9SCKOTWyW65fd8wABfbStAYYnnwc
-	6RnXbGuPwNOhvu0gbE5sOkUsR5re754z0XzXvOhH93JFuit1ljlQjVCYZbrwkVSOvn2/Ofi8xts
-	kHfRAa4WJ3f+DnKtIJJeWo=
-X-Received: by 2002:a05:7022:388f:b0:12c:f77:f0a0 with SMTP id a92af1059eb24-12c73f73440mr19370421c88.13.1777032846310;
-        Fri, 24 Apr 2026 05:14:06 -0700 (PDT)
-Received: from [192.168.1.18] (177-4-161-87.user3p.v-tal.net.br. [177.4.161.87])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12c8e837beasm24410043c88.11.2026.04.24.05.14.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 24 Apr 2026 05:14:05 -0700 (PDT)
-Message-ID: <87797cae-2716-48e2-b0ba-47cdfb34645f@gmail.com>
-Date: Fri, 24 Apr 2026 09:14:00 -0300
+	s=arc-20240116; t=1777033026; c=relaxed/simple;
+	bh=p3waIAl630iRszEnJiKjXUzSHcUGwn9r0UxnN/sOVNg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=adrUomS02MosRS/atOev+EYG1cCQrm90dlKYeDDKCjhU+tYC2DnfvUH5oPMbIqNArSPH6Vi0UQuttr6RQOke6k2cDhbe2EPx+11W2fsfFW8jQZ/5oQI9w14jV5mFL+ALHYxAaR1hSfKy1UtxU2kp6d2Gzaila9UBk46ou6aw6a8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=jjW6slul; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=SSmERdS0; arc=none smtp.client-ip=103.168.172.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfout.phl.internal (Postfix) with ESMTP id CA057EC0534;
+	Fri, 24 Apr 2026 08:17:01 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-10.internal (MEProxy); Fri, 24 Apr 2026 08:17:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm2; t=1777033021; x=1777119421; bh=ux5cqlt4IM
+	80vxhXkNBd6OQ3EP72rkh1zYIAaIFNIkU=; b=jjW6slullV9r/3hYNmf9Xjoi+7
+	c+rSkX+wUDNRIGDUjKLnRt1iDKERhOiUttYgSd+F7q4SUfS0pBm6vGgVjCnNAFlU
+	S9XFlki9qlDAoF2sL1cFezMOm9wZ4tZliYDogbdpy/b2EyTKdqZOVfNHSKuCzAoU
+	vWYMDtUrwLNHaxfCJFkINAHAgJN62MhJquZeJkUzio6wr4JowHhj6yxA9aiB4mHt
+	7KTKqlXF9C2j9MYKIeTr7k6u9MfSuU8xOdbFksfgDs3kgSKPbPkUgUJRSNoDhYcU
+	8x5nQ2yBxHFBIh0tEdnxUhPJoboD7Ldpw9AjM5Fs691US5z2OfPDDnpc8sag==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1777033021; x=1777119421; bh=ux5cqlt4IM80vxhXkNBd6OQ3EP72rkh1zYI
+	AaIFNIkU=; b=SSmERdS0QpAIXWKHxjOapRlf/85qFBj+AOoV461Lp0UJfOPfGB1
+	zIQ0a763AcCEHfNFcb5J1BdaE+VQZjgiF/Bpn97IQc+48NL2AnysMk7VHNElUROW
+	qaLfDId2LPRjOrhIKjVu/wbSCX2FNNC3hZ0GtC31FKwv/co9Yizxc3fsOo9aYZMx
+	Z505pcFYBu3KlCuY2zLjzg7s1bvAB+OH6RNLX3NQdFG7tLcRFSly80SG8FezmhT8
+	ZvdJVqyo0xuIvNQimzVDTNzTT3fiDlZ+GTOcuuYhRNCOMu0XGOSvBNP+MbAV83pS
+	42UbRFQiEf2hEwzF4kdvXRKX2zAv3YvFWyw==
+X-ME-Sender: <xms:PV_rabVJx7Ci6-KR5YD1v3_0aIk-sSee-322LAWY0epGEOUwZ90CPQ>
+    <xme:PV_raTAkVlXXaLdQuzA_TGenR-GEH6wgodunWSYyo_yam3Qx_srrcLTQDrydXNQQL
+    3t4xzpW5YGz7MpUUdSqnw0Qm8FOYjpAJyLAylEZv-Vt74elcw>
+X-ME-Received: <xmr:PV_raYeNm0pWV5qqcAo2tFJKamog6mpPPdan8s_PKlD_i-waW1opnENDncLYQfrd1ljisxOggh7NqVimDSwpxKXiLQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdejtddttdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgvghcumffj
+    uceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeehgedvvedvle
+    ejuefgtdduudfhkeeltdeihfevjeekjeeuhfdtueefhffgheekteenucevlhhushhtvghr
+    ufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtg
+    homhdpnhgspghrtghpthhtohepudegpdhmohguvgepshhmthhpohhuthdprhgtphhtthho
+    pegsrhhithgvrdgrihhrghgvugguohhnsehgmhgrihhlrdgtohhmpdhrtghpthhtohepjh
+    hohhgrnhhnvghssehsihhpshholhhuthhiohhnshdrnhgvthdprhgtphhtthhopehlihhn
+    uhigqdifihhrvghlvghsshesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhope
+    hlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthho
+    pehsthgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehfjhhhhh
+    iiudelleejsehgmhgrihhlrdgtohhmpdhrtghpthhtohepohhstggrrhdrrghlfhhonhhs
+    ohdrughirgiisehgmhgrihhlrdgtohhm
+X-ME-Proxy: <xmx:PV_raar_gEN8AGqyd5uLVEHKR8s47PGZbANY5Bzv9CN9My_6oI54dw>
+    <xmx:PV_raZQHOyFYIMdQlV4zeg_3oek81NqUHVAW1Kh8SL1mig8F-CCH4Q>
+    <xmx:PV_raaUB89l3Fl_66fS4DKA4n5d8fR3gIOCEArRQxTFFTiM-ma6S8A>
+    <xmx:PV_raef7uNSgGPfAYf_NGZrS5q40MLa68R6AF7jb4I38NTikY8lprQ>
+    <xmx:PV_raTDPwFIgzoCkX-gmWuNX4cTuRWV0gH4KFsknqQNrHxhSyBFyk7Dn>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 24 Apr 2026 08:17:01 -0400 (EDT)
+Date: Fri, 24 Apr 2026 14:17:00 +0200
+From: Greg KH <greg@kroah.com>
+To: Brite <brite.airgeddon@gmail.com>
+Cc: Johannes Berg <johannes@sipsolutions.net>,
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, fjhhz1997@gmail.com,
+	oscar.alfonso.diaz@gmail.com
+Subject: Re: [PATCH] wifi: mac80211: restore monitor injection when
+ coexisting with another VIF
+Message-ID: <2026042441-destitute-swagger-0ca9@gregkh>
+References: <CA+bbHrVWmSpWZ9GBVJ5vffh1qYEye=EWMq9tKA-_uzfW+raC8A@mail.gmail.com>
+ <20260424120807.25005-1-brite.airgeddon@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ALSA: aloop: Fix peer runtime UAF during format-change
- stop
-To: Takashi Iwai <tiwai@suse.de>
-Cc: Takashi Iwai <tiwai@suse.com>, Jaroslav Kysela <perex@perex.cz>,
- linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
- syzbot+8fa95c41eafbc9d2ff6f@syzkaller.appspotmail.com, stable@vger.kernel.org
-References: <20260423-alsa-aloop-peer-stop-uaf-v1-1-25d8a9745f6c@gmail.com>
- <87se8k1ugc.wl-tiwai@suse.de>
-From: =?UTF-8?Q?C=C3=A1ssio_Gabriel_Monteiro_Pires?=
- <cassiogabrielcontato@gmail.com>
-Content-Language: en-US
-In-Reply-To: <87se8k1ugc.wl-tiwai@suse.de>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------bzN3VwiHVvH0SN3pB5H2yyYv"
-X-Rspamd-Queue-Id: BFE5845E42E
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260424120807.25005-1-brite.airgeddon@gmail.com>
+X-Rspamd-Queue-Id: C974F45E4A4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.76 / 15.00];
-	SIGNED_PGP(-2.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	MIME_GOOD(-0.20)[multipart/signed,multipart/mixed,text/plain];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kroah.com,none];
+	R_DKIM_ALLOW(-0.20)[kroah.com:s=fm2,messagingengine.com:s=fm2];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+,1:+,2:+,3:~];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240646-lists,stable=lfdr.de];
-	HAS_ATTACHMENT(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240647-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[sipsolutions.net,vger.kernel.org,gmail.com];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[cassiogabrielcontato@gmail.com,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[gmail.com];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kroah.com:+,messagingengine.com:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[greg@kroah.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,8fa95c41eafbc9d2ff6f];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,messagingengine.com:dkim]
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------bzN3VwiHVvH0SN3pB5H2yyYv
-Content-Type: multipart/mixed; boundary="------------10n2GPumHEzMlOIESxT5WexW";
- protected-headers="v1"
-From: =?UTF-8?Q?C=C3=A1ssio_Gabriel_Monteiro_Pires?=
- <cassiogabrielcontato@gmail.com>
-To: Takashi Iwai <tiwai@suse.de>
-Cc: Takashi Iwai <tiwai@suse.com>, Jaroslav Kysela <perex@perex.cz>,
- linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
- syzbot+8fa95c41eafbc9d2ff6f@syzkaller.appspotmail.com, stable@vger.kernel.org
-Message-ID: <87797cae-2716-48e2-b0ba-47cdfb34645f@gmail.com>
-Subject: Re: [PATCH] ALSA: aloop: Fix peer runtime UAF during format-change
- stop
-References: <20260423-alsa-aloop-peer-stop-uaf-v1-1-25d8a9745f6c@gmail.com>
- <87se8k1ugc.wl-tiwai@suse.de>
-In-Reply-To: <87se8k1ugc.wl-tiwai@suse.de>
-Autocrypt-Gossip: addr=perex@perex.cz; keydata=
- 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
+On Sat, Apr 25, 2026 at 12:08:07AM +1200, Brite wrote:
+> Monitor-mode packet injection is broken on drivers that implement
+> real channel context ops (mt76 and others) when the
+> monitor interface runs alongside another interface (typically AP).
+> The monitor VIF never gets a chanctx of its own in this case, so
+> ieee80211_monitor_start_xmit() finds vif.bss_conf.chanctx_conf ==
+> NULL and takes the fail_rcu path, silently dropping the skb. In
+> practice this breaks tooling like mdk4 and aireplay-ng on mt76
+> hardware, including airgeddon's evil-twin deauth flow, which runs
+> hostapd on an AP VIF and injects deauth frames from a coexisting
+> monitor VIF.
 
---------------10n2GPumHEzMlOIESxT5WexW
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Hi,
 
-On 4/24/26 08:14, Takashi Iwai wrote:=20
-> Do we need to complicate this handling?  IOW, can it be simply be like
-> below?
->=20
-> 	if (stop_capture) {
-> 		snd_pcm_stop(dpcm_capt->substream, SNDRV_PCM_STATE_DRAINING);
-> 		if (atomic_dec_and_test(&cable->stop_count))
-> 			wake_up(&cable->stop_wait);
-> 	}
+This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
+a patch that has triggered this response.  He used to manually respond
+to these common problems, but in order to save his sanity (he kept
+writing the same thing over and over, yet to different people), I was
+created.  Hopefully you will not take offence and will fix the problem
+in your patch and resubmit it so that it can be accepted into the Linux
+kernel tree.
 
-That makes sense.
+You are receiving this message because of the following common error(s)
+as indicated below:
 
-The lifetime fix only needs the stop_count/stop_wait
-serialization, so I can simplify the stop path as you suggested.
+- It looks like you did not use your "real" name for the patch on either
+  the Signed-off-by: line, or the From: line (both of which have to
+  match).  Please read the kernel file,
+  Documentation/process/submitting-patches.rst for how to do this
+  correctly.
 
-I'll respin and send a v2 patch.=20
+If you wish to discuss this problem further, or you have questions about
+how to resolve this issue, please feel free to respond to this email and
+Greg will reply once he has dug out from the pending patches received
+from other developers.
 
---=20
-Thanks,
-C=C3=A1ssio
+thanks,
 
-
---------------10n2GPumHEzMlOIESxT5WexW--
-
---------------bzN3VwiHVvH0SN3pB5H2yyYv
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-wnsEABYIACMWIQSrYqI5vIrg1X9eqEjQXT8aWv/ugwUCaeteiAUDAAAAAAAKCRDQXT8aWv/ug2iT
-AP0X/ZNOWh5f2N2Fmo23q2Y88xT52Ml+kNwydxlmScVMoAEA/W23y48fC9MVXJEcBMn/i3U5Lkc1
-4wiaC5RJSFk+0AM=
-=+C0T
------END PGP SIGNATURE-----
-
---------------bzN3VwiHVvH0SN3pB5H2yyYv--
+greg k-h's patch email bot
 
