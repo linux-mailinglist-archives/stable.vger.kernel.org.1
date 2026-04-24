@@ -1,253 +1,259 @@
-Return-Path: <stable+bounces-240564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240565-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YKsAIfAK62lJHwAAu9opvQ
-	(envelope-from <stable+bounces-240564-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 08:17:20 +0200
+	id wHSkJi4S62lsIAAAu9opvQ
+	(envelope-from <stable+bounces-240565-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 08:48:14 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25D0245A2E3
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 08:17:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B14545A51A
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 08:48:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 360903014C1E
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 06:17:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 202F83014579
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 06:48:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34F8134DB77;
-	Fri, 24 Apr 2026 06:17:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DE9D282F3A;
+	Fri, 24 Apr 2026 06:48:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="pW5s0dH0"
+	dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b="wIAbiLAT"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC8FF19E7F7;
-	Fri, 24 Apr 2026 06:17:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777011428; cv=none; b=gBZXm+KeTLSyQvnLMa99lx5yPy8ErwM6mOBaVJsCd7aRIVBNi301KDZ7TLXc7pv1zw7f8dFaeYhnKZxoEFkvydWngFeMLaxlvObOD+BDnsbQ50cUzo1YqPlehwJVWzqWtVCvitWUFspIMIOKtIEuZi7r4n8PI4K8ZFT2+DszLhk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777011428; c=relaxed/simple;
-	bh=vJCZbmCN9ikb6EAz9PzXqsYAY2hNnM/b8swTEOTbwdA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cnc7C3DlVKeOiwNdQM3sPa5Q7/0EI9eZ0bSIi6214im5q604ah1sJNQ3ma5z5+X0BMGUQAef+px8dIc3er7mWB2DgStZvGAS+Pm3VfGdwteRAmeEnjgue35lRchI+FQajFmJJugI1JiPnBOV8WvMHs+n7vGNIVfz2nfEWa4g98E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=pW5s0dH0; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: by linux.microsoft.com (Postfix, from userid 1134)
-	id C741920B7165; Thu, 23 Apr 2026 23:17:06 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com C741920B7165
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1777011426;
-	bh=9HBq+z9XRcq8ufOpr4qgjO+oq4+Q+22OPqnEnhpd96I=;
-	h=From:To:Cc:Subject:Date:From;
-	b=pW5s0dH0RzCxOfvuJdm7FZa8ekzh1+hE/qSsjZgzV+5ypgl1JQqgMdoGJDQ58cXBN
-	 cYIxr7a1GYSTpQMiDTaKRmySRwKv5HcJMsWWthg11e0zMsMP4yzh2Js8c3HbcbEE2U
-	 VjtAphlhSkzBj8BxErQEwPVa5X/Q/IM26biiV5Ik=
-From: Shradha Gupta <shradhagupta@linux.microsoft.com>
-To: Dexuan Cui <decui@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Konstantin Taranov <kotaranov@microsoft.com>,
-	Simon Horman <horms@kernel.org>,
-	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
-	Dipayaan Roy <dipayanroy@linux.microsoft.com>,
-	Shiraz Saleem <shirazsaleem@microsoft.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Long Li <longli@microsoft.com>,
-	Yury Norov <yury.norov@gmail.com>
-Cc: Shradha Gupta <shradhagupta@linux.microsoft.com>,
-	linux-hyperv@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Paul Rosswurm <paulros@microsoft.com>,
-	Shradha Gupta <shradhagupta@microsoft.com>,
-	Saurabh Singh Sengar <ssengar@microsoft.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net] net: mana: Optimize irq affinity for low vcpu configs
-Date: Thu, 23 Apr 2026 23:17:00 -0700
-Message-ID: <20260424061702.1442618-1-shradhagupta@linux.microsoft.com>
-X-Mailer: git-send-email 2.43.7
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013027.outbound.protection.outlook.com [52.101.83.27])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B79421DDC2B;
+	Fri, 24 Apr 2026 06:48:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.27
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777013288; cv=fail; b=puAOZOvSNp2QU2nMV8luy+GQNuBABajRo7c+9iz/HHMWccVry5NISmxbeu8b1BzkAAvX8ngc5FDTT4h/OsvkEs+B4UVwYC3FrdkqKezzdrRAExJGznhwra4PaLdTcrNftk38MkKppv6ecm3O3RNccakoN78Ddsc6P2UsEkF53IU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777013288; c=relaxed/simple;
+	bh=pwEkce4XM8PYyYN3+Sut3Seajm4enQZ8Kkbnib9GgD4=;
+	h=From:Subject:Date:Message-Id:Content-Type:To:Cc:MIME-Version; b=o6w6AnwwZ478sLPuhD9DeDwO8y4grdAp617MHjAR7DlMS6fen7uuRCw6T157/BDPtySoQ5Iau5SHQea1oFfzqQfL1EADbq+jnXuYP1H5NO9wfZPbIiWyJtrFoZ6Eolup95LZohJ84Nd42mRajDfcpzadmiMgxcpoFGgt4uKGJ78=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; dkim=pass (2048-bit key) header.d=NXP1.onmicrosoft.com header.i=@NXP1.onmicrosoft.com header.b=wIAbiLAT; arc=fail smtp.client-ip=52.101.83.27
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Y06wF7FM2qVvkCTKWMrlFxmLAKl/6aAxJ1ZhdRIFd7yuzKZx5kowsVR4kXbJEIlQKqbJMtAbCH/DPR5KX2Y0KoPDDbTT5ZnPjJc2RKdjsP4mWFCPYd3m90+gEKOH8rQi8auNxGRPQEtjc1svqFEkU3fVpF94gEn8E550DiFqeQdxOGdB9Tb4JNRArq2O8YCRFRoUWhl10uCAcAqG2S4dw7j+5Pp0G39Zp0PYXfTw9x5a+n8M1kV7wVBN4iUSaDFG5haB+g9LZ8euGeMnfOBOXNNyyXsBZyc69UZBN9weDHpFssHXadYwpjJw3FGtn1891MIzaPI9u618Bm5Vyq87gA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ugtIIw3a3Rrt7NM/Ow3hm9sQ97KPTEleeHCrULCoBLY=;
+ b=Qhya0rRhdc5Xb+xRbikxqZjQrguf5PAhTlEHIGizfmMpvMnChF7oXOvqsLHDN8T09fYeoYog0jnTwwgm1Ow+5YqoGBFI6wLpwLOGbjz7Yo3F4jQFeRxlxkFhEsdrRs9Nvk1gC3p/ujQFAQr7kLS1S9wkPcm/F8Td7EzH03g2LpUGm5fS9J38PB6BEyobR9ZF2kFe8HRN5DTiYIi8lSxCyKLbgWhRPendgDV9SVFCYHRtWhlZMe2Plk59NOmPG5jtRElO4rIk+iHm60C8tErPQ4v6Yiu2jinDjSp5eXcdnJ/avChpgvBBhLGm/NvpoMDkWU5EQ4/JNTghldvY7r1ULw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oss.nxp.com; dmarc=pass action=none header.from=oss.nxp.com;
+ dkim=pass header.d=oss.nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=NXP1.onmicrosoft.com;
+ s=selector1-NXP1-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ugtIIw3a3Rrt7NM/Ow3hm9sQ97KPTEleeHCrULCoBLY=;
+ b=wIAbiLATU7qg5UcOMTIWIRwguUoqlyNUNte2TnXMROVNeFKruxgHJ3NXJ4unvsipX35O+/+VLgC0/xiWiYYurbAk+UcIh8ff2L0myBfZDLhd2Dv+5d5MbeX/ZY+bOcrotTnk5kw4ODg+QgR3tnilBGSA0Dy947AxWY0RiAwGF8akQpcDkZVETvXHVw3TzPFz4dFn00/biblVyxSvR35MMWLS6Lhi/9ewVeJex5w88nFKrSjK9PL3MTdrzv3BkmbkdqHNwhVD7Wm9D/mH4R8RdMlJm2A8cxDOMcncWpDCOu+Oz7XDCVSjHZwEfPdDBNX+rzsq/l+J7d75nrKesdPDbQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=oss.nxp.com;
+Received: from AS8PR04MB9080.eurprd04.prod.outlook.com (2603:10a6:20b:447::16)
+ by PA4PR04MB7903.eurprd04.prod.outlook.com (2603:10a6:102:b9::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.18; Fri, 24 Apr
+ 2026 06:48:02 +0000
+Received: from AS8PR04MB9080.eurprd04.prod.outlook.com
+ ([fe80::92c2:2e03:bf99:68eb]) by AS8PR04MB9080.eurprd04.prod.outlook.com
+ ([fe80::92c2:2e03:bf99:68eb%6]) with mapi id 15.20.9846.021; Fri, 24 Apr 2026
+ 06:48:02 +0000
+From: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
+Subject: [PATCH v12 0/2] Add i.MX8ULP ISI and CSI-2 support
+Date: Fri, 24 Apr 2026 14:49:49 +0800
+Message-Id: <20260424-csi2_imx8ulp-v12-0-da148eabc035@oss.nxp.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAI0S62kC/13RS27DIBAG4KtEXheLGd5d5R5VVYGBBKmxIzu20
+ ka5e3HUNoblgL6fGebWTGFMYWped7dmDEua0tDnAvBl13RH2x8CST4fNEhRUA2GdFPCj3S66vn
+ zTIx3TEvvpfOxyeQ8hpiuj7y391zHcTiRy3EMdhuCaxCyFigYxgUBcpiHPs3t93GY98M0tf313
+ HbDaY08pukyjF+PDhdcg39jEMteFiSUoLScc2a4kWL/l7J2srAtFRVlmTKhtbDOSnRdSfmW6or
+ yTC1GoxwI54wuqXhSQ6GiIlOpjOQeuILISio3FFRF5Tors0wIozHEWFL1T4Eiq6jKVITO5SV0Q
+ RlXUv2kADXV66vBBaZ0VPm+pGZDsZ7VZEqF4+C0UUHQkgJ9WqT1diBTAoZ23nqH1G4+6n6//wB
+ wY4+0xAIAAA==
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
+ Fabio Estevam <festevam@gmail.com>, Philipp Zabel <p.zabel@pengutronix.de>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Hans Verkuil <hverkuil@kernel.org>
+Cc: devicetree@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ linux-media@vger.kernel.org, Guoniu Zhou <guoniu.zhou@oss.nxp.com>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1777013438; l=2222;
+ i=guoniu.zhou@oss.nxp.com; s=20250815; h=from:subject:message-id;
+ bh=pwEkce4XM8PYyYN3+Sut3Seajm4enQZ8Kkbnib9GgD4=;
+ b=HGtdha5MiGAy8L4co1mxR4XB7zFnWL0DTc8xmRcxgfGzgL75b10mlxiGr3VDxdN3rrb1Dd/Sh
+ HtzRJyMVb/mCdRT/sI65nEsjZABQmYxvhgBrkc7no8eGWKIoUDVS0qJ
+X-Developer-Key: i=guoniu.zhou@oss.nxp.com; a=ed25519;
+ pk=MM+/XICg5S78/gs+f9wtGP6yIvkyjTdZwfaxXeu5rlo=
+X-ClientProxiedBy: MA5PR01CA0100.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:1d1::8) To AS8PR04MB9080.eurprd04.prod.outlook.com
+ (2603:10a6:20b:447::16)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 25D0245A2E3
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8PR04MB9080:EE_|PA4PR04MB7903:EE_
+X-MS-Office365-Filtering-Correlation-Id: cb5b98f6-4084-4394-0af8-08dea1cd6e27
+X-MS-Exchange-SharedMailbox-RoutingAgent-Processed: True
+X-LD-Processed: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+ BCL:0;ARA:13230040|376014|366016|7416014|52116014|19092799006|1800799024|56012099003|18002099003|38350700014|921020;
+X-Microsoft-Antispam-Message-Info:
+ 8NAnwpcjoFYB9Zs1scmiGuokwUYbLCSQX0ElKmXoaIwPC2Mg2zc50MWdysGfdhPAgJFGSdcdT/v7hvTxvOoAEk7oXzLf5JZN52EtiaFQsf8m9fv8QLZVleou4LiGOGrCOWDHQdziC/S2Qaf7yGkQLu3qP3JS6Jv6HVrbs9vliqglIi7fZDpDNkPsEoROu57HMKIqkqyoZAW/5aGFS8SqZ5A75uqu0Y0SvD8RghpTG8eHPsOMEE7HxUjg3xHIe2Y4J1cU1qX6iMqdzd7tVBfOMiQ8ry6KwfVAnAOIZohycxCWZm262jlHd6k4r6qOp+XRpfyzI9eLS6iezSJl4vVK2TUOjBIZ4miAM+c61+EO7MNCnPxY+2BilllXHUEu8E81yDXNnzemsApHxtgdYqPmGK1nvXRx1UGygzjY/tGjiScTPDAsnn9YmOySI4GvOwGSUy9yppdoszbtr7hfrFFwQFp1Moo7F9j0NaDgy2qI8bybqHNgG7naHqB41GJLnROPtSXl7Dyx8SYxVfwEj0O9Zh8bwSCKhBTMrp2rbgd7Lx9JkSAhNXTPHCgC7RNXZaD4WxI1Y2TQOa1yrs6k+rzVlSHJjZEjNa6atBzRff2eNqZz8CWDi6+oDrPAsyTOhTENrgmGxkjAYk97ipIj5hnA6lvZGJrtGWzYG1oh8JALOYHy5dOWzf8pHoRGcrPCiBuscC34cJNky46V4H8Mtnbvnjdzaco3igbjOLP+fTSbXuk3kjgUsokREJHNUJauJExKwH5Gcpo4ulT89VoEbKy3vEsFigPevObXRlB2xjtLJ2ZkE6QZkdM/BKRl2gYJdXcJ
+X-Forefront-Antispam-Report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB9080.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(7416014)(52116014)(19092799006)(1800799024)(56012099003)(18002099003)(38350700014)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+ =?utf-8?B?UnpVL04wWkVKYkhaRlBSYUtMcjhPNTVIRnFBYkVHQ2pnSVp4NkRFSUI5aGNY?=
+ =?utf-8?B?R3JWb2hPZkFkMU83UWZyNEs5K21NVUhqSGUrOUFpMjVrY3lBZGkwSnREVFdS?=
+ =?utf-8?B?Y3AwbGdiOXpZZnJRRGhDSE9iK3JYcy9HcHVoTTl5Nk1LbEtSRlV2Uy9RM0hU?=
+ =?utf-8?B?cXo3VFU0SWx5YnBwd25XUGtFRUpQcXdPMXNvZ0pUMVM2Qyt2dEE5TWN3Qm90?=
+ =?utf-8?B?Y1N2M0Y1dzBKYUczU2pacFAwcHFTanBBZlFVa3Aya0J5UWxsRWZXSVhXWHVS?=
+ =?utf-8?B?SFdiaE40QWh2a2k4UGhCajB0OVltVyszSGVGQlJCVnhSRjJRNExmTUdmTVZ1?=
+ =?utf-8?B?QjYrYzBFb0gxS1FLRFlOb05PRy9EbU5OR2t4U2lIWHpRd1EyaGxkdSs2c2Fv?=
+ =?utf-8?B?NUN0WEg1YVNjOEpCK1Q1WCsvMUNzMkZ3Q2Y0SFAvYUZ0YTk4cmsxWGx1MkZ4?=
+ =?utf-8?B?UVRzdVN3SWhTb0U2TFliQk9TVlBrQm1ma3dRQmF3YkJraUlYL21FNjk4aEx6?=
+ =?utf-8?B?UEJlQTNJQlB6ajMrdlgxbFpmNS9KY0w2cHdteWJNazVhV0NoSktmYWlSUVZX?=
+ =?utf-8?B?R1RnZGpNNUNDK3FvNHZlTVhiNmk1MGUrWkdIaWhHZmF4Sm9hTWZpRW9nVmpo?=
+ =?utf-8?B?SUxjQllzNitrRUF4U0J5ZHdEMlkzSTBtV1VsZWY5UXVuYWo1SHJ4RVNUOVh0?=
+ =?utf-8?B?S0dhVUNkNmlndWlpeEtNenZDSWFBU1pkcXJla09Eb2Z6NFBlYUZZdEVzS3Zn?=
+ =?utf-8?B?ZTgrbFpUQTdZLzdsS21YZllvK0NORDFwaEVGdW9CcGl4VUxoSDZvR2FJZnVi?=
+ =?utf-8?B?V05QeGRydkVBWUo5RUhYVWx0Sld3RGJmUCtRY1RaWHkvdU1pcXJSY1VNWlBD?=
+ =?utf-8?B?REVzRzhZMVE0b3V3L3daajc1RmNwTXRrNFZwSG8rblJUajNWRFpYb29XMkhk?=
+ =?utf-8?B?U3ZyUTdGVHlzQWluYXBXQk9URzdJVTNucWdyaUZRU2hodmNSNHhpQTRxZVdv?=
+ =?utf-8?B?MVorcFNhMkhObDZmaW5zTEZUR29hamdTQXVTeThsOWFhSm1FK0cydGxZdTVF?=
+ =?utf-8?B?M2huMnA4NTNGOFJ6d3hmSUVyaHU2RHNkVENwRVJLWU0ya3drb1RGWTdIUENh?=
+ =?utf-8?B?aGlVUmtVVnczbmUxeVIvQkcxU1BlaEVRYldxN0VMZVZsTU1obEYxdkgrd0xj?=
+ =?utf-8?B?VjFmRll6b2ZYMzlDbzR1ZkxZV3phcEpOa3B1Sm0zS2ZaYUpMdmFIYkR1Tk51?=
+ =?utf-8?B?WUdkcm5iL21BcG5peExWWm5mYU40WXVOa2x3VHpwVGJaNWREaldMZm4yL21j?=
+ =?utf-8?B?YUo0TzFaRGZsdUdReXZueVRWMHUveFZMMWd4d3dCcDZjMmlxSnk0NDU0eXZR?=
+ =?utf-8?B?SmxCeWJ4aEJqUVdIN1p6bmo0ZTVYWk9KR1Q5NUFnalNZOFV1U05wVy9sYXpp?=
+ =?utf-8?B?ZGVJb25kZEIxRms4OXc0cXFiY3FEdGpvaVJMSjdTemVjcCtNT000M1BqdmtU?=
+ =?utf-8?B?bjdtdTBHTkIzYkJ0bFhYUmFKNGs0UUZtaCtzcDJubnhMbmdPUnpBVmpMa1VQ?=
+ =?utf-8?B?aDNDOGlTQlFMUDZ0L2FobFk1MjB5NFFneVd2dnRvajhLVUlLTnN1ek11STgr?=
+ =?utf-8?B?c3YwMXpVVVZuTUQ3RzBWMDFlL0gvbWI0R1ZJeDI3MVhiOG05dTQ2NDVEbzZa?=
+ =?utf-8?B?N2VjMkhmWG5OVnlhVkVOc3puWkM2NkhUcnF4OG1pV1JMTVFOaVNkaVRuMWJs?=
+ =?utf-8?B?TDZneWlRWUszMkZnOXUrb045cE5PYmNQdnhZSFAyWlZ6N0RtS0FpYmptRUNk?=
+ =?utf-8?B?elpna05WS2k2V283dXowRDNyYkJ0a2RYdmQxZnc0TmVEMjlNZmlFNkEvQkhl?=
+ =?utf-8?B?TTl0d2piN0I5ZGI1THdxbXJidng3VjVIV0wrM00vNkFFekhLQlpVb21DWEdZ?=
+ =?utf-8?B?MVBRMnF6M2x4WlRsVk45eWMzalIrZGNKRTd6L29UY0FCcHdlb2luVUVHc0xr?=
+ =?utf-8?B?Mm5xem1iVWlsZi9vS0IxQ3VaVFNkSTVEZGJYb1FhcXdIeUlERFJuNUJpbzdN?=
+ =?utf-8?B?cWpnblJnN0RCWUZtNndlM0NxaWJUU0hlcGJsRzIvRDc4WFNvc1h2bXRTNC9Z?=
+ =?utf-8?B?STA3N2hQR1pSRU1DT2hKREorYkFUSlZ0bDMxSGc4dzZoNzBlMndXb2JOKzQr?=
+ =?utf-8?B?MHhsd05LaGJtUG9TQlo2c2h0bUwrS1ZuUjcyZFJMQWR1d0tIMmNYMHh0d2lh?=
+ =?utf-8?B?TjdyWUR1RU12UU5BR05iMjlreU5DTUdlVktXUVRmOUZnRW42RkZBSlBRdit1?=
+ =?utf-8?B?akhheCtWY2VuSTIwWkJuVk03U0RZYmNuWEVHdWJ3b1NYSCtrci8vdz09?=
+X-OriginatorOrg: oss.nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: cb5b98f6-4084-4394-0af8-08dea1cd6e27
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB9080.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Apr 2026 06:48:02.3090
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: lwhQHT/4fsedevou6dKoW/ad53He+f07S2suOKyw1He7buDpGm2O3B4tKW7yuGXp9OPBeCVpjXFKucWokjxojw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB7903
+X-Rspamd-Queue-Id: 0B14545A51A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
+X-Spamd-Result: default: False [1.94 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.microsoft.com,none];
-	R_MISSING_CHARSET(0.50)[];
+	ARC_REJECT(1.00)[cv is fail on i=2];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[linux.microsoft.com:s=default];
+	R_DKIM_ALLOW(-0.20)[NXP1.onmicrosoft.com:s=selector1-NXP1-onmicrosoft-com];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[nxp.com : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-240564-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[25];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240565-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[kernel.org,nxp.com,pengutronix.de,ideasonboard.com,gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[microsoft.com,kernel.org,lunn.ch,davemloft.net,google.com,redhat.com,linux.microsoft.com,outlook.com,gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linux.microsoft.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[shradhagupta@linux.microsoft.com,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[18];
 	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	NEURAL_HAM(-0.00)[-0.997];
+	FROM_NEQ_ENVFROM(0.00)[guoniu.zhou@oss.nxp.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[NXP1.onmicrosoft.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable,dt];
+	MID_RHS_MATCH_FROM(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.microsoft.com:dkim,linux.microsoft.com:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oss.nxp.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-In mana driver, the number of IRQs allocated are capped by the
-min(num_cpu + 1, queue count). In cases, where the IRQ count is greater
-than the vcpu count, we want to utilize all the vcpus, irrespective of
-their NUMA/core bindings.
+Add support for the Image Sensing Interface (ISI) and MIPI CSI-2 receiver
+on i.MX8ULP.
 
-This is important, especially in the envs where number of vcpus are so
-few that the softIRQ handling overhead on two IRQs on the same vcpu is
-much more than their overheads if they were spread across sibling vcpus
-
-This behaviour is more evident with dynamic IRQ allocation. Since MANA
-IRQs are assigned at a later stage compared to static allocation, other
-device IRQs may already be affinitized to the vCPUs. As a result, IRQ
-weights become imbalanced, causing multiple MANA IRQs to land on the
-same vCPU.
-
-In such cases when many parallel TCP connections are tested, the
-throughput drops significantly
-
-Test envs:
-=======================================================
-Case 1: without this patch
-=======================================================
-4 vcpu(2 cores), 5 MANA IRQs (1 HWC + 4 Queue)
-
-	TYPE		effective vCPU aff
-=======================================================
-IRQ0:	HWC		0
-IRQ1:	mana_q1		0
-IRQ2:	mana_q2		2
-IRQ3:	mana_q3		0
-IRQ4:	mana_q4		3
-
-%soft on each vCPU(mpstat -P ALL 1) on receiver
-vCPU		0	1	2	3
-=======================================================
-pass 1:		38.85	0.03	24.89	24.65
-pass 2:		39.15	0.03	24.57	25.28
-pass 3:		40.36	0.03	23.20	23.17
-
-=======================================================
-Case 2: with this patch
-=======================================================
-4 vcpu(2 cores), 5 MANA IRQs (1 HWC + 4 Queue)
-
-        TYPE            effective vCPU aff
-=======================================================
-IRQ0:   HWC             0
-IRQ1:   mana_q1         0
-IRQ2:   mana_q2         1
-IRQ3:   mana_q3         2
-IRQ4:   mana_q4         3
-
-%soft on each vCPU(mpstat -P ALL 1) on receiver
-vCPU            0       1       2       3
-=======================================================
-pass 1:         15.42	15.85	14.99	14.51
-pass 2:         15.53	15.94	15.81	15.93
-pass 3:         16.41	16.35	16.40	16.36
-
-=======================================================
-Throughput Impact(in Gbps, same env)
-=======================================================
-TCP conn	with patch	w/o patch
-20480		15.65		7.73
-10240		15.63		8.93
-8192		15.64		9.69
-6144		15.64		13.16
-4096		15.69		15.75
-2048		15.69		15.83
-1024		15.71		15.28
-
-Fixes: 755391121038 ("net: mana: Allocate MSI-X vectors dynamically")
-Cc: stable@vger.kernel.org
-Signed-off-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
-Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
-Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
+Signed-off-by: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
 ---
- .../net/ethernet/microsoft/mana/gdma_main.c   | 35 +++++++++++++++++--
- 1 file changed, 33 insertions(+), 2 deletions(-)
+This was previously sent as patch 5/5 in the v10 series based on media
+tree [1]. Patches 1-4 have already been applied to linux-next tree.
 
-diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-index 098fbda0d128..433c044d53c6 100644
---- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
-+++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-@@ -1672,6 +1672,23 @@ static int irq_setup(unsigned int *irqs, unsigned int len, int node,
- 	return 0;
- }
- 
-+static int irq_setup_linear(unsigned int *irqs, unsigned int len)
-+{
-+	int cpu;
-+
-+	rcu_read_lock();
-+	for_each_online_cpu(cpu) {
-+		if (len <= 0)
-+			break;
-+
-+		irq_set_affinity_and_hint(*irqs++, cpumask_of(cpu));
-+		len--;
-+	}
-+	rcu_read_unlock();
-+
-+	return 0;
-+}
-+
- static int mana_gd_setup_dyn_irqs(struct pci_dev *pdev, int nvec)
- {
- 	struct gdma_context *gc = pci_get_drvdata(pdev);
-@@ -1722,10 +1739,24 @@ static int mana_gd_setup_dyn_irqs(struct pci_dev *pdev, int nvec)
- 	 * first CPU sibling group since they are already affinitized to HWC IRQ
- 	 */
- 	cpus_read_lock();
--	if (gc->num_msix_usable <= num_online_cpus())
-+	if (gc->num_msix_usable <= num_online_cpus()) {
- 		skip_first_cpu = true;
-+		err = irq_setup(irqs, nvec, gc->numa_node, skip_first_cpu);
-+	} else {
-+		/*
-+		 * In case our IRQs are more than num_online_cpus, we try to
-+		 * make sure we are using all vcpus. In such a case NUMA or
-+		 * CPU core affinity does not matter.
-+		 * Note that in this case the total mana IRQ should always be
-+		 * num_online_cpu + 1. The first HWC IRQ is already handled
-+		 * in HWC setup calls
-+		 * So, the nvec value in this path should always be equal to
-+		 * num_online_cpu
-+		 */
-+		WARN_ON(nvec > num_online_cpus());
-+		err = irq_setup_linear(irqs, nvec);
-+	}
- 
--	err = irq_setup(irqs, nvec, gc->numa_node, skip_first_cpu);
- 	if (err) {
- 		cpus_read_unlock();
- 		goto free_irq;
+Changes in v12:
+- Add one new patch
+- Swap ISI axi and apb clocks to align with dt-binding requirements 
+- Update commit message
+- See each patch's changelog for details.
 
-base-commit: e728258debd553c95d2e70f9cd97c9fde27c7130
+Changes in v11:
+- Rebased on latest media/next
+- Removed #include <dt-bindings/reset/imx8ulp-pcc-reset.h> which was
+  deleted by Rob's dt-bindings cleanup series [2]
+- Replaced reset macros with numeric values and added comments to
+  document the reset indices
+- Link to v10: https://lore.kernel.org/r/20251205-csi2_imx8ulp-v10-5-190cdadb20a3@nxp.com
+
+Changes in v6:
+- Update compatible string in dts for csi node.
+- Link to v5: https://lore.kernel.org/r/20250901-csi2_imx8ulp-v5-4-67964d1471f3@nxp.com
+
+Changes in v4:
+- Change csr clock name to pclk which is more readability.
+- Link to v3: https://lore.kernel.org/all/20250825-csi2_imx8ulp-v3-4-35885aba62bc@nxp.com
+
+Changes in v3:
+- Change pclk clock name to csr to match IP port name.
+- Link to v2: https://lore.kernel.org/all/20250822-csi2_imx8ulp-v2-4-26a444394965@nxp.com
+
+Changes in v2:
+- Move dts patch as the last one.
+- Add "fsl,imx8qxp-mipi-csi2" to compatible string list of csi node.
+- Link to v1: https://lore.kernel.org/all/20250812081923.1019345-3-guoniu.zhou@oss.nxp.com
+
+[1] https://lore.kernel.org/all/20251205-csi2_imx8ulp-v10-0-190cdadb20a3@nxp.com/
+[2] https://lore.kernel.org/all/20251212231203.727227-1-robh@kernel.org/
+
+---
+Guoniu Zhou (2):
+      media: dt-bindings: nxp,imx8-isi: Drop fsl,blk-ctrl requirement for i.MX8ULP
+      arm64: dts: imx8ulp: Add MIPI CSI-2 and ISI nodes
+
+ .../devicetree/bindings/media/nxp,imx8-isi.yaml    |  4 +-
+ arch/arm64/boot/dts/freescale/imx8ulp.dtsi         | 66 ++++++++++++++++++++++
+ 2 files changed, 69 insertions(+), 1 deletion(-)
+---
+base-commit: 4fbeef21f5387234111b5d52924e77757626faa5
+change-id: 20250819-csi2_imx8ulp-9db386dd6bdf
+
+Best regards,
 -- 
-2.34.1
+Guoniu Zhou <guoniu.zhou@oss.nxp.com>
 
 
