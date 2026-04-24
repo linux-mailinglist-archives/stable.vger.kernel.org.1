@@ -1,216 +1,205 @@
-Return-Path: <stable+bounces-240584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240585-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gJ4pNd0u62mBJgAAu9opvQ
-	(envelope-from <stable+bounces-240584-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 10:50:37 +0200
+	id EA3lIKUw62lfJwAAu9opvQ
+	(envelope-from <stable+bounces-240585-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 10:58:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6708145BB76
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 10:50:37 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D686645BC87
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 10:58:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B461830185A3
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 08:49:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A8A27300D97D
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 08:57:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0295D35B658;
-	Fri, 24 Apr 2026 08:49:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CAEB36E484;
+	Fri, 24 Apr 2026 08:57:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TSReVLai"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j6+/tIhu"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yx1-f41.google.com (mail-yx1-f41.google.com [74.125.224.41])
+Received: from mail-yx1-f48.google.com (mail-yx1-f48.google.com [74.125.224.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D76F33A9F8
-	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 08:49:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB0C33644A3
+	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 08:57:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.48
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777020588; cv=pass; b=gekzqjH2oF+WEvNkLYBtlGWGatAdU5/gaDxDVmPuYdhwK2J8CaPbAnAz8T1FY24umgbW4tV4MqAobWvMPfo3gt5A2id9F4DbP6DzEOXV+cCLx6zDPbXP+dNancEhlvj5dzRujwJVt4CsLUdlpKoxiI2375GttZv+2pq3zMgLClg=
+	t=1777021070; cv=pass; b=mud5eI6DATk3llyrtXh3ZDQpocJdDR5hWf2IvZeMm26H0drqxZJOwO2ATQvyv3E17pKLcRY/1Eo6NZJ8nqYF0Ze3LKlNwjwpfd8aXXfK/hOxt1ytmShyhintg3wIHe9SOPVeM/3wkYyfox/LAKpWUuD/oFgFkmJYQgxGXDuQbpc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777020588; c=relaxed/simple;
-	bh=bp4CHkwtHm/yNe5ftwnGy+F9/hm5CgtWKfBVgAu3/Hc=;
+	s=arc-20240116; t=1777021070; c=relaxed/simple;
+	bh=mJycpKriTio44XHdChcIwU/V772ZEJHE3GawlsKrjHw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qDgDMw8D1W0VUUlBb/ETHLvLYuWmG8yhGiEG59daOBXp4U6IkG7tndjT6xbonjY1MXf2S4s2wcAWirkPnfgk1YFQklKZMRRLMB74Mv9G1u4Ln2+IujZVFa+wmRZ+hBbbxNVRn/09ra5Mgo6a8B9m8zfcuzsxBaJ9l7QuwqlXreg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TSReVLai; arc=pass smtp.client-ip=74.125.224.41
+	 To:Cc:Content-Type; b=a828i9hzYWoswU1Dv3F5WakY3Gmwn1+CTPbUJMt0RNruvaI9GuF2NyP3jia1QjhopAD+hXFfbGsryGJQvUXqz/TX/nLS+U7MCKEEK9QD6GQct314/RrFuH1enbNLKSACmtQETGvuAOSoemXblnYwZXThcXbyp8CwRiYFAdH1kZI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j6+/tIhu; arc=pass smtp.client-ip=74.125.224.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yx1-f41.google.com with SMTP id 956f58d0204a3-65427236e94so4819952d50.1
-        for <stable@vger.kernel.org>; Fri, 24 Apr 2026 01:49:47 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777020586; cv=none;
+Received: by mail-yx1-f48.google.com with SMTP id 956f58d0204a3-654672a6d68so1879385d50.0
+        for <stable@vger.kernel.org>; Fri, 24 Apr 2026 01:57:48 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777021068; cv=none;
         d=google.com; s=arc-20240605;
-        b=QR5zxKal/40Lfq0N3sOFVKP+26DvacjV7BmtGsUqFI4gvmOH1KoBtRxv9auSc/+xRj
-         ZJ5YcrK+8BS5eiMU80pdFeFkrku/X3Td7INbiQJoh3/NcwuNheTOvwEg9SkrFqCow9in
-         On+JSqwxhJYJ35I8cxATrC4BcH2k/h/GqzC82okWaJVby02dllYum3Tn43o4cruUCcxn
-         PBP15kBBnteyI8keYEa7f0lFKMUOzGpYJy9IViG7glS9GjQKfgSpEHxbi+6cvdL6r4BV
-         2by77qzWCAzNaAFSorbX0fouEN0Y5u2gnhuRtWeFWelyig6TFQ7x0Q43eh+uhSPMvEmc
-         DrUw==
+        b=RX7gxr8ImMr6YZbUwMOD/h6AT2vNa7nJaaLjk1I0Ke0RGCY8yGhOr3ltfHbXE/Xxlb
+         OYZXoiVfRHcN0WWtLLDLi+ApVeC0nmcDuz6XmG+Fr5MV/51hJMo1HVVkPtQwuDp1YhQ3
+         5bWno5N6Y+T9h9Nr7BwG+MilajHOYWnRg5iZ89h4cmR5DcJ8O/+E+aEvM/cRLlAhfeNO
+         ExZa51BU/x5tDLXphSK1Ed3kyrPf8bvKOcimUzFuOBDQZdcwgPNfaF8osgFwX1kNlwhg
+         gUIToAhePZs5mv6GLH2StqYBLlH7YqR2bLzUCi7Oo7/P/D4SZlnzYdP3zfd0bGOtKzTO
+         B3Ug==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:dkim-signature;
-        bh=GQehjiJmR0uqm/keJWoGWadsPstIT7+2ouE9/A7a4oo=;
-        fh=Xl+MZLeLMDC+uNVAwUx4bsLSeN3W4H682irRABuXBnw=;
-        b=gKP5aVKrRNMFqH4lIOGQG+a6Hs+jqrfg2tQUD175zk/ErSik44d9zXBTvS5q32KDer
-         zmqN+xO2Ho7ErxKi7pHLaLloWrz5uHYH9IhmXmNLCKq6RAZDX49jmyZ9jZQnPx60W7/w
-         Il/DhOtvEzN3uKG7H+nSkJRFNrXxYao3FTr6UJcOPdHXuAvMtnoh+4PpdriTaFj7z/Ra
-         LPr9cVlZaT/3WHlj+feWHA4SAJVEMPlHXO/1xoHoSFhGGnCm4M0KY3zpBDb7zMNwUDKp
-         7tu/gf4jqhW66F0t04Hi64aMivHxwtj0GxQIfA2PFKE9igqvSRd+GF7m/4XvVZYRAIqu
-         r4+g==;
+        bh=QMYh0A8RcacPfWSI+Rx9v4WksGDRAZdmkQHIl/OIKzs=;
+        fh=GLcjqu8CwCdy7Qp3BGavHt0T+BqAGZp+d0E/ww+rwI0=;
+        b=GFPBDcwmOgh3F/QVlZcqROKdFzhwDmuN/BtmBDRKZNozV7ZVyAF+flRAQ0W0MQVL5p
+         h458ZCs29H/8HaacjOaLuCIBTuJ3N+YVN1XKVZfgkWtAO+AB1OhOolGwybbbOyijpVyV
+         OpE4TuOLgXr9hF1DKZ0Ybsiz2hAYyWf5gcEDAioro25ff/ptglucwrfup8XL60CNPgo4
+         J/eTmKTgkcvNzyZkiAZcHYNXp8gfRbUKkudi2KyP9Mdcsj8DNaE/Dw7V13I5pTgyRt6V
+         amem3IgDoxiabW5EC76UEOcddmk2YHlpSjnG4h0+iWUBV6Dd325CujoNdojpfEbEh3bl
+         PR0g==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777020586; x=1777625386; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1777021068; x=1777625868; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=GQehjiJmR0uqm/keJWoGWadsPstIT7+2ouE9/A7a4oo=;
-        b=TSReVLaifvHXCBtS0r8EF1jVDnwKsC+mPkgaJi92LkvXmpxexxTFJkc/Lz6jxkoupZ
-         wBF+R/BQwxxqEENUVWXs1PRt4dYTwLxhuy+4G345xvZVkKPTd2Z3kysErrU6+HfFydp8
-         MKC38T0KAEHnqebkHyQ/wA0H/lCyoE8J0ti/39EkV10qNftsNa9xtXf1oMreaR6bmsH+
-         3SGBNj4rrTVcUU3o0TrSiExl5fkNp7eyZuS/KSD2KTgywJwZDWiO9bdZZkwwNqmXdohN
-         AGmEK2XOvAJuYAVjY64o4P+jmp+BtHXdu6IKhzc3rXSisgw82IXCP39Gd4k0f1Wzgjv7
-         WEmg==
+        bh=QMYh0A8RcacPfWSI+Rx9v4WksGDRAZdmkQHIl/OIKzs=;
+        b=j6+/tIhukzxZmK0pAb/20Lt3g+pUgsXuFs/Kr5fwM+/79i6oDwTP8KIS8F0k+DzGPW
+         2O4baIxPIB53jQBYi+gmWyN6dSZ40Kw5+2UZT6YREUFo6lsAqQZRMAFIFiZSMT8L0UjD
+         wqAQf7l3mrt8xbyvMB1aZlyWXd8yNtjijI8byjXZI71/o1rdSJxa8YHv4fy4z06n/vmo
+         msSjantIQMKPaDfufNGsBlEcw67OXC4uVnbFEUZWzC68x1amTAg11vLnZ/iwiMoHCEi7
+         s7v2w3+E+wlEqqqE27eNmzRCOjw4eoMDEE8j1LMZrrgYTmI6JDM7tZnbdjDRH3S0QMlY
+         aa6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777020586; x=1777625386;
+        d=1e100.net; s=20251104; t=1777021068; x=1777625868;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=GQehjiJmR0uqm/keJWoGWadsPstIT7+2ouE9/A7a4oo=;
-        b=I9HFVVdJS1U9M3vqipXs1THuWtwGOSfFcAPt5Q3jJ+qn/wq0Qtaw7zS43gheRdI36p
-         ZtpgHYKkrYM0OdYnoYqxu58oGWzjbnaVr151isFbgYaO5NuQmCFvaJsqBKg5V1rbcfNT
-         JJ9Z+yMBltsD0TthgPcyTDOJ88HHZxsFZrar32tUIcZFZEMmAEYmVuzQJNuzEs0wXCAS
-         ayKiY3jZmIN6+fzy6u16FJSDLZqoJa60S2wlYTO64rs0fASLlryCXbJWkrfL2WXXwZtV
-         bpT6BLEfkPRaqV9GCsbrTtvQ8KdIxdI3MkDd6AsDCxnj/13rAXA0QwbCEatpP0O5rRHc
-         aULQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+88dRAVeIafmIEZIwRUsgsOkPO7bqQMurkN/Nv5fKnokZYb6DaDye+IM715qpM0cUgTlLD0Zc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YykqyGLUtO3z9nuP7PsucXqVHNoSJE9m47exq3tMoFbb2rPre5S
-	HXCvFUPiyaTg73mcIUXM/hMPEbf4mC24ND/6sYmBv1mxjxyX9kZhQsaDJJSt7D3P7cq6j+ctRL8
-	TORFVXQPIWIuSJjzVBqMF3UTZ02VxgFY=
-X-Gm-Gg: AeBDietLRuob70NT5tkWkCRPqRkqmbiyrIAwNizA6DxPerbuhyPwg7onlrcyZCQsgLy
-	rKBC1n2cI+pXVWXC3lUXYmC2FIeZ5OFLaD6b/Ix8NZaawKlfP1M+PC2T1ad6eAPI9V9bs2oLWpg
-	O2zNbAFNENMIC8/BMJgiEi76d95hYNPaCVkREgBJjhC1xldVP6cvG+Ze51cpF/Lyv1fV3niCaaQ
-	nONz8IZOzSUD0mfWbZ0WG7SQyTvwkLhGlr0jCHgTjvkuQoCW5af8kja/DXRtzTHSrJQEhlRdr4o
-	8H2I24IujNjH45jMQvr6
-X-Received: by 2002:a05:690e:b46:b0:654:5d65:9fe1 with SMTP id
- 956f58d0204a3-6545d65a50emr8674290d50.8.1777020586306; Fri, 24 Apr 2026
- 01:49:46 -0700 (PDT)
+        bh=QMYh0A8RcacPfWSI+Rx9v4WksGDRAZdmkQHIl/OIKzs=;
+        b=MzkPxFsU/d8whPDNXHTcPtwghLo2uHe2v8l0PSSxu5kpOydpTJzXYeyW+EaxrWHg2b
+         eDAZGfu9bwX7KjJxdyu82OmAyec12Ii0kyCRQEy7kZ6tRElXH0CnnaGiVBhqwwzcOfWz
+         ayECCdWRFd4BPSeBYS+I4fkVyYXFF+4a0xs2Xi2UVPwmvf/JqPy4G1Zdwgta6q+W3K4V
+         QqPIsazHVXkbl1sWFRjlJIVzJDBUTudXc32ZELntEkf++1IcfeyTijtmKOickp3qD0Ok
+         yOUML8DxCM34CwVYHPsUHQ6srWAjlrBZINSE/hChZlUaCOpwW965W9BcxqqGJdObIOef
+         SKsA==
+X-Gm-Message-State: AOJu0YwDPLPtYCwFjGipManuYruvMTozJ3aPRSIjcRtHljlUNCgH+ZFJ
+	xTIrWdnUflGNV0zEXxdOYTeSZTmFWb2ARah/O5w8u39PoPLqG1uc98hcaeMsxaiYqsG4+zBdaH4
+	kWCX55qhhoOJKgeiTLmSv90rkhrBAanA=
+X-Gm-Gg: AeBDietrW6xhCm4OlAf5limFjTDKe1XVWThTjPJIRG7NlOz6lDe82Pa+JIVBUUChLbw
+	4BjP/T6x3q+j8a2I2Y81LcX+a9MWAi4DTlL6FjU+yNfP8RXHAGGEeRxSl1LrspVOIgG5NfhjOrk
+	qG7wpoh3/Mmjqp+bLQpCi8rX9YlHPxAWCM0JX11NCCyJeMRow9PIXTIKjv1W+4lQCw9XfYSZrcV
+	lfGMXxts7MGw3DdNZ+IuG54sTwXJ64ummchWQVtbn+WfF6l/RaFDnRHJcZ+5d+Hdrx9xgthhg/J
+	hvmgBk/fpRullANnEpFg
+X-Received: by 2002:a53:d748:0:b0:64c:9ec3:d71a with SMTP id
+ 956f58d0204a3-65310a737b1mr21220612d50.48.1777021067703; Fri, 24 Apr 2026
+ 01:57:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260415183436.3763871-1-lgs201920130244@gmail.com> <463cec4f-a038-4bd0-90df-76e0ef48381c@kernel.org>
-In-Reply-To: <463cec4f-a038-4bd0-90df-76e0ef48381c@kernel.org>
+References: <20260415190738.3821974-1-lgs201920130244@gmail.com>
+In-Reply-To: <20260415190738.3821974-1-lgs201920130244@gmail.com>
 From: Guangshuo Li <lgs201920130244@gmail.com>
-Date: Fri, 24 Apr 2026 16:49:32 +0800
-X-Gm-Features: AQROBzDc9asseH5Q--_xHnSI-mK1kVwpFsYPD_rv0VNAvdsqutw3hyErl1PRuZo
-Message-ID: <CANUHTR-Oe3ztfvn-jUEarCKZa-74kmOQiNMQKtoiT58pCneaYg@mail.gmail.com>
-Subject: Re: [PATCH] serial: 8250_accent: fix reference leak on failed device registration
-To: Jiri Slaby <jirislaby@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Russell King <rmk@dyn-67.arm.linux.org.uk>, 
-	linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org, 
-	stable@vger.kernel.org
+Date: Fri, 24 Apr 2026 16:57:33 +0800
+X-Gm-Features: AQROBzCmQJ1EX2ApfnpwOngh9p6OkQ-4OwvW-Db64LtyYbRXyvs5_5WPx0t6Mt8
+Message-ID: <CANUHTR-JSL0rkw1VbAa1AYFsp0NGF2Dz3X2AWmQFcJ=mm-nsxw@mail.gmail.com>
+Subject: Re: [PATCH] fbdev: dnfb: fix reference leak on failed device registration
+To: Helge Deller <deller@gmx.de>, Guangshuo Li <lgs201920130244@gmail.com>, 
+	linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 6708145BB76
+X-Rspamd-Queue-Id: D686645BC87
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-240584-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-240585-lists,stable=lfdr.de];
 	FREEMAIL_FROM(0.00)[gmail.com];
+	FREEMAIL_TO(0.00)[gmx.de,gmail.com,vger.kernel.org,lists.freedesktop.org];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[gmail.com:+];
 	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-Hi Jiri,
+Hi,
 
 Please disregard this patch.
 
-On Thu, 16 Apr 2026 at 14:14, Jiri Slaby <jirislaby@kernel.org> wrote:
+On Thu, 16 Apr 2026 at 03:07, Guangshuo Li <lgs201920130244@gmail.com> wrote:
 >
-> Hi,
+> When platform_device_register() fails in dnfb_init(), the embedded
+> struct device in dnfb_device has already been initialized by
+> device_initialize(), but the failure path only unregisters the platform
+> driver and does not drop the device reference for the current platform
+> device:
 >
-> On 15. 04. 26, 20:34, Guangshuo Li wrote:
-> > When platform_device_register() fails in accent_init(), the embedded
-> > struct device in accent_device has already been initialized by
-> > device_initialize(), but the failure path returns the error without
-> > dropping the device reference for the current platform device:
-> >
-> >    accent_init()
-> >      -> platform_device_register(&accent_device)
-> >         -> device_initialize(&accent_device.dev)
-> >         -> setup_pdev_dma_masks(&accent_device)
-> >         -> platform_device_add(&accent_device)
-> >
-> > This leads to a reference leak when platform_device_register() fails.
+>   dnfb_init()
+>     -> platform_device_register(&dnfb_device)
+>        -> device_initialize(&dnfb_device.dev)
+>        -> setup_pdev_dma_masks(&dnfb_device)
+>        -> platform_device_add(&dnfb_device)
 >
-> What reference exactly?
+> This leads to a reference leak when platform_device_register() fails.
+> Fix this by calling platform_device_put() before unregistering the
+> platform driver.
 >
-> > Fix this by calling platform_device_put() before returning the error.
-> >
-> > The issue was identified by a static analysis tool I developed and
-> > confirmed by manual review.
+> The issue was identified by a static analysis tool I developed and
+> confirmed by manual review.
 >
-> How did you verify you did the right change?
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+> ---
+>  drivers/video/fbdev/dnfb.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 >
-> > Fixes: ec9f47cd6a14c ("[PATCH] Serial: Split 8250 port table")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-> > ---
-> >   drivers/tty/serial/8250/8250_accent.c | 8 +++++++-
-> >   1 file changed, 7 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/tty/serial/8250/8250_accent.c b/drivers/tty/serial/8250/8250_accent.c
-> > index 1691f1a57f89..e9cf40268c0e 100644
-> > --- a/drivers/tty/serial/8250/8250_accent.c
-> > +++ b/drivers/tty/serial/8250/8250_accent.c
-> > @@ -25,7 +25,13 @@ static struct platform_device accent_device = {
-> >
-> >   static int __init accent_init(void)
-> >   {
-> > -     return platform_device_register(&accent_device);
-> > +     int ret;
-> > +
-> > +     ret = platform_device_register(&accent_device);
-> > +     if (ret)
-> > +             platform_device_put(&accent_device);
+> diff --git a/drivers/video/fbdev/dnfb.c b/drivers/video/fbdev/dnfb.c
+> index c4d24540d9ef..72a9c47418f8 100644
+> --- a/drivers/video/fbdev/dnfb.c
+> +++ b/drivers/video/fbdev/dnfb.c
+> @@ -296,8 +296,10 @@ static int __init dnfb_init(void)
 >
-> In particular, what does put_device() do on a static device, even
-> initialized, ie. with no device::release? Try it...
->
-> IMO, all the patches are bogus.
->
-> thanks,
+>         if (!ret) {
+>                 ret = platform_device_register(&dnfb_device);
+> -               if (ret)
+> +               if (ret) {
+> +                       platform_device_put(&dnfb_device);
+>                         platform_driver_unregister(&dnfb_driver);
+> +               }
+>         }
+>         return ret;
+>  }
 > --
-> js
-> suse labs
+> 2.43.0
+>
 
-After re-checking it, accent_device is a static platform_device and it
-does not provide a dev.release callback, so calling platform_device_put()
-on the platform_device_register() failure path is not appropriate and can
-trigger the missing release callback warning.
+After re-checking it, dnfb_device is a static platform_device and it does
+not provide a dev.release callback. Therefore calling
+platform_device_put() on the platform_device_register() failure path is
+not appropriate here and can trigger the missing release callback
+warning.
 
-This falls into the same static platform_device pattern as the other
-patches, so I will drop it.
+This falls into the same static platform_device pattern pointed out in
+the other reviews, so I will drop this patch.
 
 Sorry for the noise.
 
