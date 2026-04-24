@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-240988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240989-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iP4tLWGE62lBNwAAu9opvQ
-	(envelope-from <stable+bounces-240988-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 16:55:29 +0200
+	id gEkNAXeH62lBNwAAu9opvQ
+	(envelope-from <stable+bounces-240989-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 17:08:39 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04921460684
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 16:55:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5401B460854
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 17:08:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 779DD300BD84
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 14:55:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 53390300B454
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:08:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CBF53DB65D;
-	Fri, 24 Apr 2026 14:55:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5874629C35A;
+	Fri, 24 Apr 2026 15:08:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BjVLHaMt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PqmYhDdJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C47963CF66B
-	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 14:55:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B572149C6F
+	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 15:08:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777042516; cv=none; b=i+mJ4LR3qiUl3AbzoT+TzO05+P2nYIctA/5qFWzvUEyFWnUz/HSbXKwKV2zhg5bhJzvbJs+MWwODFAkv0G1Zv4LRge/n1aTHkn2gmf5GuzhJdc0lqzTbdtieYtvv6T+AFI2CnIipap+/3bjNfBW5MzA/5gpfNzkIA0aR7zZVhDo=
+	t=1777043310; cv=none; b=GTy8W0G9ZS8M2A6OaKxgnxsGMY/TfCWpEbV+zUSsiAUJDgwDQyRRtYVP+wo4dml9p2pui3g3bIZjqh6HQtRl1zVLpC/GMaxiPloJhEDwu3+ywyL4Yhh4+rqwtDGZOP1PAhJCyAC2XH5GdNM5wbObGFlevS2VnnecykmLnKfz57Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777042516; c=relaxed/simple;
-	bh=pyyU8tx5Dxp83YTy75+smKQ7YOsRrxjNDFGJgyciGMs=;
+	s=arc-20240116; t=1777043310; c=relaxed/simple;
+	bh=TzlYDStvyu7tW+Vj7fWn03GB/P130J4cNGbrSOS5Zso=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uV3DOolQXcluxzeViRO6JbOC7tACCqmizxObN3q2KOokVMOlFUKp7jeEtSjZblCUZzsolEx91Oo11dgrfP7gSLKhZ/vJHxqlZ+nke2e9kjIaIIWiL3cqSGOZLqjFx30VDrs2jfjv/baOn4EUou1bvRD7b/MuEn/XkNXBLgvaXoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BjVLHaMt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 034EBC19425;
-	Fri, 24 Apr 2026 14:55:15 +0000 (UTC)
+	 MIME-Version; b=uv6CXcJxmbd4Mv0/aaYbfWS0S/TTIiS5XGZsLdnjnTVyQVf7Hk6ywyj2z+k9bD/GdOlFKU4ECDLnOJZgvbKaVbVMkgAM5lUlFgVAi4CAGzVgy3tGSlkRLT6XYMCFQOhtd4P/T3Eqs7izI4XU12jMhDbbBRup9+CqzsRSO5N7vvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PqmYhDdJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EFBBC19425;
+	Fri, 24 Apr 2026 15:08:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777042516;
-	bh=pyyU8tx5Dxp83YTy75+smKQ7YOsRrxjNDFGJgyciGMs=;
+	s=k20201202; t=1777043309;
+	bh=TzlYDStvyu7tW+Vj7fWn03GB/P130J4cNGbrSOS5Zso=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BjVLHaMtpgoQz0iotx+u4Eh8sYI4ymTcLsOJNso37dDRi5PoCJEL1qEIzQPaqvHqQ
-	 adljndlT8TdDCHVSHz1zwzrsWEvklUlhECBWk54enl4HBy7Gfp+dbnXhcAMObP3PNn
-	 qX1h+WxLmcTsauLbsfvIDbTWbbLB7v3QZUqyAeLjSQelO8fF1GfkN+Uu8YiFgQ5TI4
-	 glP0Cg91XHRtd1wN/1snIOT4XSonsBPPSkAn9g9CieOlzEkH292JHYnsqHm3uj+giV
-	 6Ocoza1du6fT8dzo6HDdmKWom52QA6roX5rUtdH9KIzXzm0iMKjKsj0kZXgYxhliTD
-	 jo1dFfkq+RMZg==
+	b=PqmYhDdJjAZTSHezETZRLLTUXifIAE5XQbElVq7Gq0Zc6jA7i9Cg5BHy6NX39a1ae
+	 /w/MxUkPek8zLEaUjwpjZcHvX1ymmKXK6y/RUByQCgP4J9teee2EsPZqHJ7A60o59D
+	 mBiJ+Tda7DtQDBp6DAFuWXnW6s8IEa6JUC0D8UJKfJN1KkMRoVXdIgi59ExEkW7oEf
+	 ryto0MkU0oBd5Ay0qYFpLcpQByAnxqpxDJHU3gxl+hAV1FNm3dyJxHmtaqwZx7FPWF
+	 55lgjqRUvG1u9aPY7243SN40kqZ85NjcXkmxkI9pE/4kEBoOm+7uqjPTjLHRMAWm0r
+	 0m6UE36gTiq+Q==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Michael Bommarito <michael.bommarito@gmail.com>,
 	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] smb: client: validate the whole DACL before rewriting it in cifsacl
-Date: Fri, 24 Apr 2026 10:55:13 -0400
-Message-ID: <20260424145513.2190638-1-sashal@kernel.org>
+Subject: [PATCH 5.15.y] smb: client: fix OOB read in smb2_ioctl_query_info QUERY_INFO path
+Date: Fri, 24 Apr 2026 11:08:27 -0400
+Message-ID: <20260424150827.2204387-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026042445-rockslide-goofiness-5113@gregkh>
-References: <2026042445-rockslide-goofiness-5113@gregkh>
+In-Reply-To: <2026042458-crazily-gating-116d@gregkh>
+References: <2026042458-crazily-gating-116d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,7 +62,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 04921460684
+X-Rspamd-Queue-Id: 5401B460854
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [0.84 / 15.00];
@@ -78,7 +78,7 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	FREEMAIL_CC(0.00)[gmail.com,microsoft.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-240988-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-240989-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -97,226 +97,52 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 
 From: Michael Bommarito <michael.bommarito@gmail.com>
 
-[ Upstream commit 0a8cf165566ba55a39fd0f4de172119dd646d39a ]
+[ Upstream commit a58c5af19ff0d6f44f6e9fe31e33a2c92223f77e ]
 
-build_sec_desc() and id_mode_to_cifs_acl() derive a DACL pointer from a
-server-supplied dacloffset and then use the incoming ACL to rebuild the
-chmod/chown security descriptor.
+smb2_ioctl_query_info() has two response-copy branches: PASSTHRU_FSCTL
+and the default QUERY_INFO path.  The QUERY_INFO branch clamps
+qi.input_buffer_length to the server-reported OutputBufferLength and then
+copies qi.input_buffer_length bytes from qi_rsp->Buffer to userspace, but
+it never verifies that the flexible-array payload actually fits within
+rsp_iov[1].iov_len.
 
-The original fix only checked that the struct smb_acl header fits before
-reading dacl_ptr->size or dacl_ptr->num_aces.  That avoids the immediate
-header-field OOB read, but the rewrite helpers still walk ACEs based on
-pdacl->num_aces with no structural validation of the incoming DACL body.
+A malicious server can return OutputBufferLength larger than the actual
+QUERY_INFO response, causing copy_to_user() to walk past the response
+buffer and expose adjacent kernel heap to userspace.
 
-A malicious server can return a truncated DACL that still contains a
-header, claims one or more ACEs, and then drive
-replace_sids_and_copy_aces() or set_chmod_dacl() past the validated
-extent while they compare or copy attacker-controlled ACEs.
+Guard the QUERY_INFO copy with a bounds check on the actual Buffer
+payload.  Use struct_size(qi_rsp, Buffer, qi.input_buffer_length)
+rather than an open-coded addition so the guard cannot overflow on
+32-bit builds.
 
-Factor the DACL structural checks into validate_dacl(), extend them to
-validate each ACE against the DACL bounds, and use the shared validator
-before the chmod/chown rebuild paths.  parse_dacl() reuses the same
-validator so the read-side parser and write-side rewrite paths agree on
-what constitutes a well-formed incoming DACL.
-
-Fixes: bc3e9dd9d104 ("cifs: Change SIDs in ACEs while transferring file ownership.")
+Fixes: f5778c398713 ("SMB3: Allow SMB3 FSCTL queries to be sent to server from tools")
 Cc: stable@vger.kernel.org
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
 Assisted-by: Claude:claude-opus-4-6
 Assisted-by: Codex:gpt-5-4
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
 Signed-off-by: Steve French <stfrench@microsoft.com>
-[ no kmalloc_objs ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifsacl.c | 116 +++++++++++++++++++++++++++++-----------
- 1 file changed, 85 insertions(+), 31 deletions(-)
+ fs/cifs/smb2ops.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/fs/smb/client/cifsacl.c b/fs/smb/client/cifsacl.c
-index 7bd29e827c8f1..d53923fe33a50 100644
---- a/fs/smb/client/cifsacl.c
-+++ b/fs/smb/client/cifsacl.c
-@@ -758,6 +758,77 @@ static void dump_ace(struct smb_ace *pace, char *end_of_acl)
- }
- #endif
- 
-+static int validate_dacl(struct smb_acl *pdacl, char *end_of_acl)
-+{
-+	int i, ace_hdr_size, ace_size, min_ace_size;
-+	u16 dacl_size, num_aces;
-+	char *acl_base, *end_of_dacl;
-+	struct smb_ace *pace;
-+
-+	if (!pdacl)
-+		return 0;
-+
-+	if (end_of_acl < (char *)pdacl + sizeof(struct smb_acl)) {
-+		cifs_dbg(VFS, "ACL too small to parse DACL\n");
-+		return -EINVAL;
-+	}
-+
-+	dacl_size = le16_to_cpu(pdacl->size);
-+	if (dacl_size < sizeof(struct smb_acl) ||
-+	    end_of_acl < (char *)pdacl + dacl_size) {
-+		cifs_dbg(VFS, "ACL too small to parse DACL\n");
-+		return -EINVAL;
-+	}
-+
-+	num_aces = le16_to_cpu(pdacl->num_aces);
-+	if (!num_aces)
-+		return 0;
-+
-+	ace_hdr_size = offsetof(struct smb_ace, sid) +
-+		offsetof(struct smb_sid, sub_auth);
-+	min_ace_size = ace_hdr_size + sizeof(__le32);
-+	if (num_aces > (dacl_size - sizeof(struct smb_acl)) / min_ace_size) {
-+		cifs_dbg(VFS, "ACL too small to parse DACL\n");
-+		return -EINVAL;
-+	}
-+
-+	end_of_dacl = (char *)pdacl + dacl_size;
-+	acl_base = (char *)pdacl;
-+	ace_size = sizeof(struct smb_acl);
-+
-+	for (i = 0; i < num_aces; ++i) {
-+		if (end_of_dacl - acl_base < ace_size) {
-+			cifs_dbg(VFS, "ACL too small to parse ACE\n");
-+			return -EINVAL;
+diff --git a/fs/cifs/smb2ops.c b/fs/cifs/smb2ops.c
+index 0a62720590daf..2ad2ffd41a334 100644
+--- a/fs/cifs/smb2ops.c
++++ b/fs/cifs/smb2ops.c
+@@ -1826,6 +1826,12 @@ smb2_ioctl_query_info(const unsigned int xid,
+ 		qi_rsp = (struct smb2_query_info_rsp *)rsp_iov[1].iov_base;
+ 		if (le32_to_cpu(qi_rsp->OutputBufferLength) < qi.input_buffer_length)
+ 			qi.input_buffer_length = le32_to_cpu(qi_rsp->OutputBufferLength);
++		if (qi.input_buffer_length > 0 &&
++		    struct_size(qi_rsp, Buffer, qi.input_buffer_length) >
++		    rsp_iov[1].iov_len) {
++			rc = -EFAULT;
++			goto out;
 +		}
-+
-+		pace = (struct smb_ace *)(acl_base + ace_size);
-+		acl_base = (char *)pace;
-+
-+		if (end_of_dacl - acl_base < ace_hdr_size ||
-+		    pace->sid.num_subauth == 0 ||
-+		    pace->sid.num_subauth > SID_MAX_SUB_AUTHORITIES) {
-+			cifs_dbg(VFS, "ACL too small to parse ACE\n");
-+			return -EINVAL;
-+		}
-+
-+		ace_size = ace_hdr_size + sizeof(__le32) * pace->sid.num_subauth;
-+		if (end_of_dacl - acl_base < ace_size ||
-+		    le16_to_cpu(pace->size) < ace_size) {
-+			cifs_dbg(VFS, "ACL too small to parse ACE\n");
-+			return -EINVAL;
-+		}
-+
-+		ace_size = le16_to_cpu(pace->size);
-+		if (end_of_dacl - acl_base < ace_size) {
-+			cifs_dbg(VFS, "ACL too small to parse ACE\n");
-+			return -EINVAL;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
- static void parse_dacl(struct smb_acl *pdacl, char *end_of_acl,
- 		       struct smb_sid *pownersid, struct smb_sid *pgrpsid,
- 		       struct cifs_fattr *fattr, bool mode_from_special_sid)
-@@ -765,7 +836,7 @@ static void parse_dacl(struct smb_acl *pdacl, char *end_of_acl,
- 	int i;
- 	int num_aces = 0;
- 	int acl_size;
--	char *acl_base;
-+	char *acl_base, *end_of_dacl;
- 	struct smb_ace **ppace;
- 
- 	/* BB need to add parm so we can store the SID BB */
-@@ -777,12 +848,8 @@ static void parse_dacl(struct smb_acl *pdacl, char *end_of_acl,
- 		return;
- 	}
- 
--	/* validate that we do not go past end of acl */
--	if (end_of_acl < (char *)pdacl + sizeof(struct smb_acl) ||
--	    end_of_acl < (char *)pdacl + le16_to_cpu(pdacl->size)) {
--		cifs_dbg(VFS, "ACL too small to parse DACL\n");
-+	if (validate_dacl(pdacl, end_of_acl))
- 		return;
--	}
- 
- 	cifs_dbg(NOISY, "DACL revision %d size %d num aces %d\n",
- 		 le16_to_cpu(pdacl->revision), le16_to_cpu(pdacl->size),
-@@ -793,6 +860,7 @@ static void parse_dacl(struct smb_acl *pdacl, char *end_of_acl,
- 	   user/group/other have no permissions */
- 	fattr->cf_mode &= ~(0777);
- 
-+	end_of_dacl = (char *)pdacl + le16_to_cpu(pdacl->size);
- 	acl_base = (char *)pdacl;
- 	acl_size = sizeof(struct smb_acl);
- 
-@@ -800,36 +868,16 @@ static void parse_dacl(struct smb_acl *pdacl, char *end_of_acl,
- 	if (num_aces > 0) {
- 		umode_t denied_mode = 0;
- 
--		if (num_aces > (le16_to_cpu(pdacl->size) - sizeof(struct smb_acl)) /
--				(offsetof(struct smb_ace, sid) +
--				 offsetof(struct smb_sid, sub_auth) + sizeof(__le16)))
--			return;
--
- 		ppace = kmalloc_array(num_aces, sizeof(struct smb_ace *),
- 				      GFP_KERNEL);
- 		if (!ppace)
- 			return;
- 
- 		for (i = 0; i < num_aces; ++i) {
--			if (end_of_acl - acl_base < acl_size)
--				break;
--
- 			ppace[i] = (struct smb_ace *) (acl_base + acl_size);
--			acl_base = (char *)ppace[i];
--			acl_size = offsetof(struct smb_ace, sid) +
--				offsetof(struct smb_sid, sub_auth);
--
--			if (end_of_acl - acl_base < acl_size ||
--			    ppace[i]->sid.num_subauth == 0 ||
--			    ppace[i]->sid.num_subauth > SID_MAX_SUB_AUTHORITIES ||
--			    (end_of_acl - acl_base <
--			     acl_size + sizeof(__le32) * ppace[i]->sid.num_subauth) ||
--			    (le16_to_cpu(ppace[i]->size) <
--			     acl_size + sizeof(__le32) * ppace[i]->sid.num_subauth))
--				break;
- 
- #ifdef CONFIG_CIFS_DEBUG2
--			dump_ace(ppace[i], end_of_acl);
-+			dump_ace(ppace[i], end_of_dacl);
- #endif
- 			if (mode_from_special_sid &&
- 			    (compare_sids(&(ppace[i]->sid),
-@@ -871,6 +919,7 @@ static void parse_dacl(struct smb_acl *pdacl, char *end_of_acl,
- 				(void *)ppace[i],
- 				sizeof(struct smb_ace)); */
- 
-+			acl_base = (char *)ppace[i];
- 			acl_size = le16_to_cpu(ppace[i]->size);
- 		}
- 
-@@ -1294,10 +1343,9 @@ static int build_sec_desc(struct smb_ntsd *pntsd, struct smb_ntsd *pnntsd,
- 	dacloffset = le32_to_cpu(pntsd->dacloffset);
- 	if (dacloffset) {
- 		dacl_ptr = (struct smb_acl *)((char *)pntsd + dacloffset);
--		if (end_of_acl < (char *)dacl_ptr + le16_to_cpu(dacl_ptr->size)) {
--			cifs_dbg(VFS, "Server returned illegal ACL size\n");
--			return -EINVAL;
--		}
-+		rc = validate_dacl(dacl_ptr, end_of_acl);
-+		if (rc)
-+			return rc;
- 	}
- 
- 	owner_sid_ptr = (struct smb_sid *)((char *)pntsd +
-@@ -1668,6 +1716,12 @@ id_mode_to_cifs_acl(struct inode *inode, const char *path, __u64 *pnmode,
- 		dacloffset = le32_to_cpu(pntsd->dacloffset);
- 		if (dacloffset) {
- 			dacl_ptr = (struct smb_acl *)((char *)pntsd + dacloffset);
-+			rc = validate_dacl(dacl_ptr, (char *)pntsd + secdesclen);
-+			if (rc) {
-+				kfree(pntsd);
-+				cifs_put_tlink(tlink);
-+				return rc;
-+			}
- 			if (mode_from_sid)
- 				nsecdesclen +=
- 					le32_to_cpu(dacl_ptr->num_aces) * sizeof(struct smb_ace);
+ 		if (copy_to_user(&pqi->input_buffer_length,
+ 				 &qi.input_buffer_length,
+ 				 sizeof(qi.input_buffer_length))) {
 -- 
 2.53.0
 
