@@ -1,137 +1,165 @@
-Return-Path: <stable+bounces-240624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240625-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8FweIcM/62nvKAAAu9opvQ
-	(envelope-from <stable+bounces-240624-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 12:02:43 +0200
+	id sFIAG8dF62m4KQAAu9opvQ
+	(envelope-from <stable+bounces-240625-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 12:28:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67B6E45CAF0
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 12:02:43 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD42B45D0AD
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 12:28:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D0F113004D1A
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 10:02:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E4855301DCE8
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 10:23:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 438B8362149;
-	Fri, 24 Apr 2026 10:02:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D8783630BF;
+	Fri, 24 Apr 2026 10:23:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a+fqX52Q"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j8JbPdiE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDEC735F8B7;
-	Fri, 24 Apr 2026 10:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50A9D342523;
+	Fri, 24 Apr 2026 10:23:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777024958; cv=none; b=aj2mDyR6poUgeyJ4P7TZcyDvmrSoRJV6LY956QANOaMc0HkXYmF2S691V9Sd0sG04Elf7TQOo24c6s+2EcDImyKwL+r8NB07rFOboWfHxZfMPMqeAIRV4a1OvEwjf/GJ2OgJmuQlHGFaLIt3QofhuhoLy+/rBrM+1v5+RfUpW2s=
+	t=1777026185; cv=none; b=DT2UOInOV5lM8/AZiyEPT8X5NuhkNUAQaGe24Y7qVCFsoHmnBTyCyafeGDTJ4bp2zIfxHao5jLWG5I5j/WDXJr7qNC1rHFKF9yCtCMfQUdk+cK2sdeeGOuWwTlBHsWLHUNVvowPt86ht6ln1pqoRP3Qelbl+ZqzCAdMb9Gt4tTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777024958; c=relaxed/simple;
-	bh=CjUeLPA3EenRqh7MNr2AcUzrVFrPzT99dnMj15b6S4k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H/3hWbjGaSxvbe55eXxdnOlob1Ck+KsKuafF8EbdOj5ychRytUREKSDDp/50fs/dQDyMTJ9GLImxYvr/Gny8fUg6vQP5TL7RvFVE3KG3647/FFGqqH8WLMS5hmyYxkNuhoumFsG8wLX+6J2C9eJ1xOAPxo8iTOgWTio4c8StBFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a+fqX52Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D3EBC19425;
-	Fri, 24 Apr 2026 10:02:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777024957;
-	bh=CjUeLPA3EenRqh7MNr2AcUzrVFrPzT99dnMj15b6S4k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=a+fqX52Qv6brwSH8UrA5Xs8BwlGCjAQCp/Ph0sJdbtx+Mu7MuFOJGvIYrEs4CXXMS
-	 +Hrcj6NOgJJy7cc4VncAzD9VDBT+k0TtmQE65bbIZLluus73MZHN2n28vBqnVv08+a
-	 i7hPRM7FFqji0HXu4oqpUxdzKbk8l1xPP+qwCeP0=
-Date: Fri, 24 Apr 2026 12:02:35 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: David Howells <dhowells@redhat.com>
-Cc: Steve French <sfrench@samba.org>, Stefan Metzmacher <metze@samba.org>,
-	Paulo Alcantara <pc@manguebit.org>, Tom Talpey <tom@talpey.com>,
-	linux-cifs@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] smb: client: Fix error cleanup in
- smb_extract_iter_to_rdma()
-Message-ID: <2026042426-prance-each-273d@gregkh>
-References: <3418418.1777024571@warthog.procyon.org.uk>
+	s=arc-20240116; t=1777026185; c=relaxed/simple;
+	bh=dC3ckZECbhAz6juu3DYHArE+BCjaT07k48OesiNagpQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jGGhYWQED7R9XhBiMYLtrMwc2LjwD323rWoTVOUJ0hnahJkreNhMIzHwpG0br6HNEmEXAc2ZmGiyFwGj+KnZjh4oSAvwrb+GjMMmixQm5AhXiSiHUS+gSI4RBArwVjSRbzEfhqYmIWz7fc0/o2Deij/gUH1zGMYo3ATknnkuhsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j8JbPdiE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8310C19425;
+	Fri, 24 Apr 2026 10:23:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777026184;
+	bh=dC3ckZECbhAz6juu3DYHArE+BCjaT07k48OesiNagpQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=j8JbPdiEYTlwVNYKlihkpDqT7ALrXz8NYbEGxVdIaZ//1VOlEzRWpaN2s5ZpNOVq8
+	 9qpq9t33dUuFmLMJivXRIRxipdzbLhwJAi7c7wA7MNApJ9FNPk3owpVjrxCJtQGYbl
+	 yis/pIJhr2x0Tdi5OyC5/pT4peYU2FwER1Hps96dcp4i/WLorriAFKL53k8fqCU13v
+	 Kho+cGU2KDI7TlZbesqaOCJOs6YA6neL7TPMyyG2IjjoOnCU+JQR6ZiVBK7Wdt62pQ
+	 b/YTIoXfN55pY7kzwo7Ew/GpnK5siQLHknIeL0PQReQF9Ea5yVOhYu84AH7OGqyzb/
+	 CmkLHdfy+jByg==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1wGDgc-0000000AyRC-1UqB;
+	Fri, 24 Apr 2026 12:23:02 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	driver-core@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Johan Hovold <johan@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH] driver core: faux: fix root device registration
+Date: Fri, 24 Apr 2026 12:22:31 +0200
+Message-ID: <20260424102231.2615557-1-johan@kernel.org>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3418418.1777024571@warthog.procyon.org.uk>
-X-Rspamd-Queue-Id: 67B6E45CAF0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: BD42B45D0AD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240624-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-240625-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,manguebit.org:email,sashiko.dev:url,samba.org:email,linuxfoundation.org:dkim]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email]
 
-On Fri, Apr 24, 2026 at 10:56:11AM +0100, David Howells wrote:
->     
-> Fix smb_extract_iter_to_rdma() to use pre-decrement, not post-decrement, so
-> that it cleans up the correct slots.
-> 
-> Fixes: e5fbdde43017 ("cifs: Add a function to build an RDMA SGE list from an iterator")
-> Closes: https://sashiko.dev/#/patchset/20260326104544.509518-1-dhowells%40redhat.com
-> Signed-off-by: David Howells <dhowells@redhat.com>
-> cc: Steve French <sfrench@samba.org>
-> cc: Stefan Metzmacher <metze@samba.org>
-> cc: Paulo Alcantara <pc@manguebit.org>
-> cc: Tom Talpey <tom@talpey.com>
-> cc: linux-cifs@vger.kernel.org
-> cc: linux-fsdevel@vger.kernel.org
-> ---
->  fs/smb/client/smbdirect.c |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
-> index 7d5f66bdbb30..4978755c035c 100644
-> --- a/fs/smb/client/smbdirect.c
-> +++ b/fs/smb/client/smbdirect.c
-> @@ -3394,7 +3394,7 @@ static ssize_t smb_extract_iter_to_rdma(struct iov_iter *iter, size_t len,
->  
->  	if (ret < 0) {
->  		while (rdma->nr_sge > before) {
-> -			struct ib_sge *sge = &rdma->sge[rdma->nr_sge--];
-> +			struct ib_sge *sge = &rdma->sge[--rdma->nr_sge];
->  
->  			ib_dma_unmap_single(rdma->device, sge->addr, sge->length,
->  					    rdma->direction);
-> 
-> 
-<formletter>
+A recent change made the faux bus root device be allocated dynamically
+but failed to provide a release function to free the memory when the
+last reference is dropped (on theoretical failure to register the device
+or bus).
 
-This is not the correct way to submit patches for inclusion in the
-stable kernel tree.  Please read:
-    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-for how to do this properly.
+Fix this by using root_device_register() instead of open coding.
 
-</formletter>
+Also add the missing sanity check when registering faux devices to avoid
+a NULL-pointer dereference if the bus failed to register (which would
+previously have triggered a bunch of use-after-free warnings).
+
+Fixes: 61b76d07d2b4 ("driver core: faux: stop using static struct device")
+Cc: stable@vger.kernel.org	# 7.0
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+---
+ drivers/base/faux.c | 19 +++++++------------
+ 1 file changed, 7 insertions(+), 12 deletions(-)
+
+diff --git a/drivers/base/faux.c b/drivers/base/faux.c
+index fb3e42f21362..402ed119dfdf 100644
+--- a/drivers/base/faux.c
++++ b/drivers/base/faux.c
+@@ -133,6 +133,9 @@ struct faux_device *faux_device_create_with_groups(const char *name,
+ 	struct device *dev;
+ 	int ret;
+ 
++	if (IS_ERR_OR_NULL(faux_bus_root))
++		return NULL;
++
+ 	faux_obj = kzalloc_obj(*faux_obj);
+ 	if (!faux_obj)
+ 		return NULL;
+@@ -234,17 +237,9 @@ int __init faux_bus_init(void)
+ {
+ 	int ret;
+ 
+-	faux_bus_root = kzalloc_obj(*faux_bus_root);
+-	if (!faux_bus_root)
+-		return -ENOMEM;
+-
+-	dev_set_name(faux_bus_root, "faux");
+-
+-	ret = device_register(faux_bus_root);
+-	if (ret) {
+-		put_device(faux_bus_root);
+-		return ret;
+-	}
++	faux_bus_root = root_device_register("faux");
++	if (IS_ERR(faux_bus_root))
++		return PTR_ERR(faux_bus_root);
+ 
+ 	ret = bus_register(&faux_bus_type);
+ 	if (ret)
+@@ -260,6 +255,6 @@ int __init faux_bus_init(void)
+ 	bus_unregister(&faux_bus_type);
+ 
+ error_bus:
+-	device_unregister(faux_bus_root);
++	root_device_unregister(faux_bus_root);
+ 	return ret;
+ }
+-- 
+2.53.0
+
 
