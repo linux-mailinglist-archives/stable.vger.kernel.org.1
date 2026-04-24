@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-240832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240875-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AHzMIIp062koNAAAu9opvQ
-	(envelope-from <stable+bounces-240832-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:47:54 +0200
+	id eDk3DXd062koNAAAu9opvQ
+	(envelope-from <stable+bounces-240875-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:47:35 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E789245FA64
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:47:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97AD445FA1C
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:47:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A95BC309EFE7
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:39:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ACFF430BA386
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:41:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 824003D6CC1;
-	Fri, 24 Apr 2026 13:39:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1BB53D5645;
+	Fri, 24 Apr 2026 13:41:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EcBDK/3r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q35O8KnN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 459EE19A288;
-	Fri, 24 Apr 2026 13:39:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6405019A288;
+	Fri, 24 Apr 2026 13:41:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777037955; cv=none; b=eVp7mQqgWd7y66dnueNnCNOQ4C3RWgJ++zuOiwDdR8N5toobSi4gcYCqkOjvEdSHRUvwZLpNJHP1sH8SsYt9kLvS7vIHDEzcn25njOVSUckIhTQu4iJABrMQoFRf6/H1SGY4VlKTWmiIXeip5PkBEUHPqGA8O1wAyJuGiuCjJMQ=
+	t=1777038066; cv=none; b=nRV9nvrQrMx1uQfzHSAxRrAiHfVBuZvabFz5caWuTFmbJ1Zf38UGgtffoV5YftrBhOZQm8yrhyhi4DarBFKxrS0hEx5tlOmpRplbhRNFrS8rDstUmINgJzxr/7OK4amfNTEy2ys589MRfjQupP28NwEpqDdZ+EoIZ961oHRp94k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777037955; c=relaxed/simple;
-	bh=Ns5GIZe5MwnM0QaHF7B7gXBHBLpR1i00HGryUQykLy8=;
+	s=arc-20240116; t=1777038066; c=relaxed/simple;
+	bh=5k1wGrCUu3XFsRvrVukkfI2O9a0CyjcZ7+4M/+dPhgg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nQ0Mls35jCZVzUAnDKoURg7P9MzZCKbmIzyFR+dK2h1yCgMNa7iZU5wdGdNFotX56rGNEGhJUiZHuytj8BZ4EnU9atgzICcB/2jY7FQFFImaBoJfqKOLAtbubd8z2Vs36yT7SgmJcWuccSAe3YxV4wIyIJje3nKoxknlV9ZeLpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EcBDK/3r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC491C2BCB5;
-	Fri, 24 Apr 2026 13:39:14 +0000 (UTC)
+	 MIME-Version; b=lq/L9mqgZIaiEb1yScxcT8oGZsPuLLmYiUp8BzZVFvyGU+1AaU+cQbURijnW9D35AzuAEWcesJATAMKB3ny/eymLrMVgCPTBXQoY8RCmZJVMngRGX4mv8joZ9RwxsWI7V53iT4CPMc+ZE6a/n2qEA7mCqzBNzHMJs8AmyNt5eFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q35O8KnN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A332EC19425;
+	Fri, 24 Apr 2026 13:41:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777037955;
-	bh=Ns5GIZe5MwnM0QaHF7B7gXBHBLpR1i00HGryUQykLy8=;
+	s=korg; t=1777038066;
+	bh=5k1wGrCUu3XFsRvrVukkfI2O9a0CyjcZ7+4M/+dPhgg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EcBDK/3r95a1Sj8Tw905dTN+X724fU+mmToOXZgGVUOTz+uLFSJh9FTops3AYma4Z
-	 EWxSumZfVesgRPVoxdEUASs9x+yVDIymhSJNEuon4VAYCCsFu11XxJoo3RvZnf1uWf
-	 uFu0WCzl9B+nlvBVXbUoPyTdw3xjk14Tr3dRNyRc=
+	b=q35O8KnNk99gZqxqDIF/tMQ0GEsiCEZYMAhUYxPCuPUgSKNnJVH38TzrVFYjCJgbc
+	 CZb4fP2F6Ug/bYdE1OmZdQZesIcxqX7R5QdJrffMzriW03EMNqpscH+hkINo8TCHfE
+	 sESv+PLgRS9aXpG1GE0a2q3MvXCu/rDHJ4qXi7eQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Fiona Behrens <me@kloenk.dev>,
-	Trevor Gross <tmgross@umich.edu>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 135/166] scripts: generate_rust_analyzer.py: define scripts
-Date: Fri, 24 Apr 2026 15:30:49 +0200
-Message-ID: <20260424132601.140346669@linuxfoundation.org>
+	Mark Rutland <mark.rutland@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oupton@kernel.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 6.18 11/55] arm64: tlb: Optimize ARM64_WORKAROUND_REPEAT_TLBI
+Date: Fri, 24 Apr 2026 15:30:50 +0200
+Message-ID: <20260424132432.470173462@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132532.812258529@linuxfoundation.org>
-References: <20260424132532.812258529@linuxfoundation.org>
+In-Reply-To: <20260424132430.006424517@linuxfoundation.org>
+References: <20260424132430.006424517@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,7 +67,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E789245FA64
+X-Rspamd-Queue-Id: 97AD445FA1C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
@@ -81,7 +82,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240832-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-240875-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -92,70 +93,448 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,kloenk.dev:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,collabora.com:email,umich.edu:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,arm.com:url,arm.com:email,lakrids:email]
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tamir Duberstein <tamird@kernel.org>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit 36c619f6bd793493294becb10a02fea370b67a91 ]
+commit a8f78680ee6bf795086384e8aea159a52814f827 upstream.
 
-Add IDE support for host-side scripts written in Rust. This support has
-been missing since these scripts were initially added in commit
-9a8ff24ce584 ("scripts: add `generate_rust_target.rs`"), thus add it.
+The ARM64_WORKAROUND_REPEAT_TLBI workaround is used to mitigate several
+errata where broadcast TLBI;DSB sequences don't provide all the
+architecturally required synchronization. The workaround performs more
+work than necessary, and can have significant overhead. This patch
+optimizes the workaround, as explained below.
 
-Change the existing instance of extension stripping to
-`pathlib.Path.stem` to maintain code consistency.
+The workaround was originally added for Qualcomm Falkor erratum 1009 in
+commit:
 
-Fixes: 9a8ff24ce584 ("scripts: add `generate_rust_target.rs`")
-Cc: stable@vger.kernel.org
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-Reviewed-by: Fiona Behrens <me@kloenk.dev>
-Reviewed-by: Trevor Gross <tmgross@umich.edu>
-Link: https://patch.msgid.link/20260122-rust-analyzer-scripts-v1-1-ff6ba278170e@kernel.org
-Signed-off-by: Tamir Duberstein <tamird@kernel.org>
-[ changed `[std]` dep to `["std"]` and kept untyped `is_root_crate()` ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  d9ff80f83ecb ("arm64: Work around Falkor erratum 1009")
+
+As noted in the message for that commit, the workaround is applied even
+in cases where it is not strictly necessary.
+
+The workaround was later reused without changes for:
+
+* Arm Cortex-A76 erratum #1286807
+  SDEN v33: https://developer.arm.com/documentation/SDEN-885749/33-0/
+
+* Arm Cortex-A55 erratum #2441007
+  SDEN v16: https://developer.arm.com/documentation/SDEN-859338/1600/
+
+* Arm Cortex-A510 erratum #2441009
+  SDEN v19: https://developer.arm.com/documentation/SDEN-1873351/1900/
+
+The important details to note are as follows:
+
+1. All relevant errata only affect the ordering and/or completion of
+   memory accesses which have been translated by an invalidated TLB
+   entry. The actual invalidation of TLB entries is unaffected.
+
+2. The existing workaround is applied to both broadcast and local TLB
+   invalidation, whereas for all relevant errata it is only necessary to
+   apply a workaround for broadcast invalidation.
+
+3. The existing workaround replaces every TLBI with a TLBI;DSB;TLBI
+   sequence, whereas for all relevant errata it is only necessary to
+   execute a single additional TLBI;DSB sequence after any number of
+   TLBIs are completed by a DSB.
+
+   For example, for a sequence of batched TLBIs:
+
+       TLBI <op1>[, <arg1>]
+       TLBI <op2>[, <arg2>]
+       TLBI <op3>[, <arg3>]
+       DSB ISH
+
+   ... the existing workaround will expand this to:
+
+       TLBI <op1>[, <arg1>]
+       DSB ISH                  // additional
+       TLBI <op1>[, <arg1>]     // additional
+       TLBI <op2>[, <arg2>]
+       DSB ISH                  // additional
+       TLBI <op2>[, <arg2>]     // additional
+       TLBI <op3>[, <arg3>]
+       DSB ISH                  // additional
+       TLBI <op3>[, <arg3>]     // additional
+       DSB ISH
+
+   ... whereas it is sufficient to have:
+
+       TLBI <op1>[, <arg1>]
+       TLBI <op2>[, <arg2>]
+       TLBI <op3>[, <arg3>]
+       DSB ISH
+       TLBI <opX>[, <argX>]     // additional
+       DSB ISH                  // additional
+
+   Using a single additional TBLI and DSB at the end of the sequence can
+   have significantly lower overhead as each DSB which completes a TLBI
+   must synchronize with other PEs in the system, with potential
+   performance effects both locally and system-wide.
+
+4. The existing workaround repeats each specific TLBI operation, whereas
+   for all relevant errata it is sufficient for the additional TLBI to
+   use *any* operation which will be broadcast, regardless of which
+   translation regime or stage of translation the operation applies to.
+
+   For example, for a single TLBI:
+
+       TLBI ALLE2IS
+       DSB ISH
+
+   ... the existing workaround will expand this to:
+
+       TLBI ALLE2IS
+       DSB ISH
+       TLBI ALLE2IS             // additional
+       DSB ISH                  // additional
+
+   ... whereas it is sufficient to have:
+
+       TLBI ALLE2IS
+       DSB ISH
+       TLBI VALE1IS, XZR        // additional
+       DSB ISH                  // additional
+
+   As the additional TLBI doesn't have to match a specific earlier TLBI,
+   the additional TLBI can be implemented in separate code, with no
+   memory of the earlier TLBIs. The additional TLBI can also use a
+   cheaper TLBI operation.
+
+5. The existing workaround is applied to both Stage-1 and Stage-2 TLB
+   invalidation, whereas for all relevant errata it is only necessary to
+   apply a workaround for Stage-1 invalidation.
+
+   Architecturally, TLBI operations which invalidate only Stage-2
+   information (e.g. IPAS2E1IS) are not required to invalidate TLB
+   entries which combine information from Stage-1 and Stage-2
+   translation table entries, and consequently may not complete memory
+   accesses translated by those combined entries. In these cases,
+   completion of memory accesses is only guaranteed after subsequent
+   invalidation of Stage-1 information (e.g. VMALLE1IS).
+
+Taking the above points into account, this patch reworks the workaround
+logic to reduce overhead:
+
+* New __tlbi_sync_s1ish() and __tlbi_sync_s1ish_hyp() functions are
+  added and used in place of any dsb(ish) which is used to complete
+  broadcast Stage-1 TLB maintenance. When the
+  ARM64_WORKAROUND_REPEAT_TLBI workaround is enabled, these helpers will
+  execute an additional TLBI;DSB sequence.
+
+  For consistency, it might make sense to add __tlbi_sync_*() helpers
+  for local and stage 2 maintenance. For now I've left those with
+  open-coded dsb() to keep the diff small.
+
+* The duplication of TLBIs in __TLBI_0() and __TLBI_1() is removed. This
+  is no longer needed as the necessary synchronization will happen in
+  __tlbi_sync_s1ish() or __tlbi_sync_s1ish_hyp().
+
+* The additional TLBI operation is chosen to have minimal impact:
+
+  - __tlbi_sync_s1ish() uses "TLBI VALE1IS, XZR". This is only used at
+    EL1 or at EL2 with {E2H,TGE}=={1,1}, where it will target an unused
+    entry for the reserved ASID in the kernel's own translation regime,
+    and have no adverse affect.
+
+  - __tlbi_sync_s1ish_hyp() uses "TLBI VALE2IS, XZR". This is only used
+    in hyp code, where it will target an unused entry in the hyp code's
+    TTBR0 mapping, and should have no adverse effect.
+
+* As __TLBI_0() and __TLBI_1() no longer replace each TLBI with a
+  TLBI;DSB;TLBI sequence, batching TLBIs is worthwhile, and there's no
+  need for arch_tlbbatch_should_defer() to consider
+  ARM64_WORKAROUND_REPEAT_TLBI.
+
+When building defconfig with GCC 15.1.0, compared to v6.19-rc1, this
+patch saves ~1KiB of text, makes the vmlinux ~42KiB smaller, and makes
+the resulting Image 64KiB smaller:
+
+| [mark@lakrids:~/src/linux]% size vmlinux-*
+|    text    data     bss     dec     hex filename
+| 21179831        19660919         708216 41548966        279fca6 vmlinux-after
+| 21181075        19660903         708216 41550194        27a0172 vmlinux-before
+| [mark@lakrids:~/src/linux]% ls -l vmlinux-*
+| -rwxr-xr-x 1 mark mark 157771472 Feb  4 12:05 vmlinux-after
+| -rwxr-xr-x 1 mark mark 157815432 Feb  4 12:05 vmlinux-before
+| [mark@lakrids:~/src/linux]% ls -l Image-*
+| -rw-r--r-- 1 mark mark 41007616 Feb  4 12:05 Image-after
+| -rw-r--r-- 1 mark mark 41073152 Feb  4 12:05 Image-before
+
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Marc Zyngier <maz@kernel.org>
+Cc: Oliver Upton <oupton@kernel.org>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/generate_rust_analyzer.py |   14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ arch/arm64/include/asm/tlbflush.h |   59 ++++++++++++++++++++++----------------
+ arch/arm64/kernel/sys_compat.c    |    2 -
+ arch/arm64/kvm/hyp/nvhe/mm.c      |    2 -
+ arch/arm64/kvm/hyp/nvhe/tlb.c     |    8 ++---
+ arch/arm64/kvm/hyp/pgtable.c      |    2 -
+ arch/arm64/kvm/hyp/vhe/tlb.c      |   10 +++---
+ 6 files changed, 47 insertions(+), 36 deletions(-)
 
---- a/scripts/generate_rust_analyzer.py
-+++ b/scripts/generate_rust_analyzer.py
-@@ -119,6 +119,18 @@ def generate_crates(srctree, objtree, sy
-         "exclude_dirs": [],
-     }
+--- a/arch/arm64/include/asm/tlbflush.h
++++ b/arch/arm64/include/asm/tlbflush.h
+@@ -31,18 +31,10 @@
+  */
+ #define __TLBI_0(op, arg) asm (ARM64_ASM_PREAMBLE			       \
+ 			       "tlbi " #op "\n"				       \
+-		   ALTERNATIVE("nop\n			nop",		       \
+-			       "dsb ish\n		tlbi " #op,	       \
+-			       ARM64_WORKAROUND_REPEAT_TLBI,		       \
+-			       CONFIG_ARM64_WORKAROUND_REPEAT_TLBI)	       \
+ 			    : : )
  
-+    scripts = srctree / "scripts"
-+    makefile = (scripts / "Makefile").read_text()
-+    for path in scripts.glob("*.rs"):
-+        name = path.stem
-+        if f"{name}-rust" not in makefile:
-+            continue
-+        append_crate(
-+            name,
-+            path,
-+            ["std"],
-+        )
+ #define __TLBI_1(op, arg) asm (ARM64_ASM_PREAMBLE			       \
+ 			       "tlbi " #op ", %x0\n"			       \
+-		   ALTERNATIVE("nop\n			nop",		       \
+-			       "dsb ish\n		tlbi " #op ", %x0",    \
+-			       ARM64_WORKAROUND_REPEAT_TLBI,		       \
+-			       CONFIG_ARM64_WORKAROUND_REPEAT_TLBI)	       \
+ 			    : : "rZ" (arg))
+ 
+ #define __TLBI_N(op, arg, n, ...) __TLBI_##n(op, arg)
+@@ -181,6 +173,34 @@ static inline unsigned long get_trans_gr
+ 		(__pages >> (5 * (scale) + 1)) - 1;			\
+ 	})
+ 
++#define __repeat_tlbi_sync(op, arg...)						\
++do {										\
++	if (!alternative_has_cap_unlikely(ARM64_WORKAROUND_REPEAT_TLBI))	\
++		break;								\
++	__tlbi(op, ##arg);							\
++	dsb(ish);								\
++} while (0)
 +
-     def is_root_crate(build_file, target):
-         try:
-             contents = build_file.read_text()
-@@ -135,7 +147,7 @@ def generate_crates(srctree, objtree, sy
-     for folder in extra_dirs:
-         for path in folder.rglob("*.rs"):
-             logging.info("Checking %s", path)
--            name = path.name.replace(".rs", "")
-+            name = path.stem
++/*
++ * Complete broadcast TLB maintenance issued by the host which invalidates
++ * stage 1 information in the host's own translation regime.
++ */
++static inline void __tlbi_sync_s1ish(void)
++{
++	dsb(ish);
++	__repeat_tlbi_sync(vale1is, 0);
++}
++
++/*
++ * Complete broadcast TLB maintenance issued by hyp code which invalidates
++ * stage 1 translation information in any translation regime.
++ */
++static inline void __tlbi_sync_s1ish_hyp(void)
++{
++	dsb(ish);
++	__repeat_tlbi_sync(vale2is, 0);
++}
++
+ /*
+  *	TLB Invalidation
+  *	================
+@@ -266,7 +286,7 @@ static inline void flush_tlb_all(void)
+ {
+ 	dsb(ishst);
+ 	__tlbi(vmalle1is);
+-	dsb(ish);
++	__tlbi_sync_s1ish();
+ 	isb();
+ }
  
-             # Skip those that are not crate roots.
-             if not is_root_crate(path.parent / "Makefile", name) and \
+@@ -278,7 +298,7 @@ static inline void flush_tlb_mm(struct m
+ 	asid = __TLBI_VADDR(0, ASID(mm));
+ 	__tlbi(aside1is, asid);
+ 	__tlbi_user(aside1is, asid);
+-	dsb(ish);
++	__tlbi_sync_s1ish();
+ 	mmu_notifier_arch_invalidate_secondary_tlbs(mm, 0, -1UL);
+ }
+ 
+@@ -305,20 +325,11 @@ static inline void flush_tlb_page(struct
+ 				  unsigned long uaddr)
+ {
+ 	flush_tlb_page_nosync(vma, uaddr);
+-	dsb(ish);
++	__tlbi_sync_s1ish();
+ }
+ 
+ static inline bool arch_tlbbatch_should_defer(struct mm_struct *mm)
+ {
+-	/*
+-	 * TLB flush deferral is not required on systems which are affected by
+-	 * ARM64_WORKAROUND_REPEAT_TLBI, as __tlbi()/__tlbi_user() implementation
+-	 * will have two consecutive TLBI instructions with a dsb(ish) in between
+-	 * defeating the purpose (i.e save overall 'dsb ish' cost).
+-	 */
+-	if (alternative_has_cap_unlikely(ARM64_WORKAROUND_REPEAT_TLBI))
+-		return false;
+-
+ 	return true;
+ }
+ 
+@@ -334,7 +345,7 @@ static inline bool arch_tlbbatch_should_
+  */
+ static inline void arch_tlbbatch_flush(struct arch_tlbflush_unmap_batch *batch)
+ {
+-	dsb(ish);
++	__tlbi_sync_s1ish();
+ }
+ 
+ /*
+@@ -469,7 +480,7 @@ static inline void __flush_tlb_range(str
+ {
+ 	__flush_tlb_range_nosync(vma->vm_mm, start, end, stride,
+ 				 last_level, tlb_level);
+-	dsb(ish);
++	__tlbi_sync_s1ish();
+ }
+ 
+ static inline void flush_tlb_range(struct vm_area_struct *vma,
+@@ -501,7 +512,7 @@ static inline void flush_tlb_kernel_rang
+ 	dsb(ishst);
+ 	__flush_tlb_range_op(vaale1is, start, pages, stride, 0,
+ 			     TLBI_TTL_UNKNOWN, false, lpa2_is_enabled());
+-	dsb(ish);
++	__tlbi_sync_s1ish();
+ 	isb();
+ }
+ 
+@@ -515,7 +526,7 @@ static inline void __flush_tlb_kernel_pg
+ 
+ 	dsb(ishst);
+ 	__tlbi(vaae1is, addr);
+-	dsb(ish);
++	__tlbi_sync_s1ish();
+ 	isb();
+ }
+ 
+--- a/arch/arm64/kernel/sys_compat.c
++++ b/arch/arm64/kernel/sys_compat.c
+@@ -37,7 +37,7 @@ __do_compat_cache_op(unsigned long start
+ 			 * We pick the reserved-ASID to minimise the impact.
+ 			 */
+ 			__tlbi(aside1is, __TLBI_VADDR(0, 0));
+-			dsb(ish);
++			__tlbi_sync_s1ish();
+ 		}
+ 
+ 		ret = caches_clean_inval_user_pou(start, start + chunk);
+--- a/arch/arm64/kvm/hyp/nvhe/mm.c
++++ b/arch/arm64/kvm/hyp/nvhe/mm.c
+@@ -271,7 +271,7 @@ static void fixmap_clear_slot(struct hyp
+ 	 */
+ 	dsb(ishst);
+ 	__tlbi_level(vale2is, __TLBI_VADDR(addr, 0), level);
+-	dsb(ish);
++	__tlbi_sync_s1ish_hyp();
+ 	isb();
+ }
+ 
+--- a/arch/arm64/kvm/hyp/nvhe/tlb.c
++++ b/arch/arm64/kvm/hyp/nvhe/tlb.c
+@@ -169,7 +169,7 @@ void __kvm_tlb_flush_vmid_ipa(struct kvm
+ 	 */
+ 	dsb(ish);
+ 	__tlbi(vmalle1is);
+-	dsb(ish);
++	__tlbi_sync_s1ish_hyp();
+ 	isb();
+ 
+ 	exit_vmid_context(&cxt);
+@@ -226,7 +226,7 @@ void __kvm_tlb_flush_vmid_range(struct k
+ 
+ 	dsb(ish);
+ 	__tlbi(vmalle1is);
+-	dsb(ish);
++	__tlbi_sync_s1ish_hyp();
+ 	isb();
+ 
+ 	exit_vmid_context(&cxt);
+@@ -240,7 +240,7 @@ void __kvm_tlb_flush_vmid(struct kvm_s2_
+ 	enter_vmid_context(mmu, &cxt, false);
+ 
+ 	__tlbi(vmalls12e1is);
+-	dsb(ish);
++	__tlbi_sync_s1ish_hyp();
+ 	isb();
+ 
+ 	exit_vmid_context(&cxt);
+@@ -266,5 +266,5 @@ void __kvm_flush_vm_context(void)
+ 	/* Same remark as in enter_vmid_context() */
+ 	dsb(ish);
+ 	__tlbi(alle1is);
+-	dsb(ish);
++	__tlbi_sync_s1ish_hyp();
+ }
+--- a/arch/arm64/kvm/hyp/pgtable.c
++++ b/arch/arm64/kvm/hyp/pgtable.c
+@@ -483,7 +483,7 @@ static int hyp_unmap_walker(const struct
+ 		*unmapped += granule;
+ 	}
+ 
+-	dsb(ish);
++	__tlbi_sync_s1ish_hyp();
+ 	isb();
+ 	mm_ops->put_page(ctx->ptep);
+ 
+--- a/arch/arm64/kvm/hyp/vhe/tlb.c
++++ b/arch/arm64/kvm/hyp/vhe/tlb.c
+@@ -115,7 +115,7 @@ void __kvm_tlb_flush_vmid_ipa(struct kvm
+ 	 */
+ 	dsb(ish);
+ 	__tlbi(vmalle1is);
+-	dsb(ish);
++	__tlbi_sync_s1ish_hyp();
+ 	isb();
+ 
+ 	exit_vmid_context(&cxt);
+@@ -176,7 +176,7 @@ void __kvm_tlb_flush_vmid_range(struct k
+ 
+ 	dsb(ish);
+ 	__tlbi(vmalle1is);
+-	dsb(ish);
++	__tlbi_sync_s1ish_hyp();
+ 	isb();
+ 
+ 	exit_vmid_context(&cxt);
+@@ -192,7 +192,7 @@ void __kvm_tlb_flush_vmid(struct kvm_s2_
+ 	enter_vmid_context(mmu, &cxt);
+ 
+ 	__tlbi(vmalls12e1is);
+-	dsb(ish);
++	__tlbi_sync_s1ish_hyp();
+ 	isb();
+ 
+ 	exit_vmid_context(&cxt);
+@@ -217,7 +217,7 @@ void __kvm_flush_vm_context(void)
+ {
+ 	dsb(ishst);
+ 	__tlbi(alle1is);
+-	dsb(ish);
++	__tlbi_sync_s1ish_hyp();
+ }
+ 
+ /*
+@@ -358,7 +358,7 @@ int __kvm_tlbi_s1e2(struct kvm_s2_mmu *m
+ 	default:
+ 		ret = -EINVAL;
+ 	}
+-	dsb(ish);
++	__tlbi_sync_s1ish_hyp();
+ 	isb();
+ 
+ 	if (mmu)
 
 
 
