@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-240825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240887-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AOmxHpty62nmMwAAu9opvQ
-	(envelope-from <stable+bounces-240825-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:39:39 +0200
+	id uOQwLRtz62nCMwAAu9opvQ
+	(envelope-from <stable+bounces-240887-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:41:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDF1545F56E
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:39:38 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F49E45F67D
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:41:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8B1A03017FBC
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:38:58 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D3E3B3007B9A
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:41:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78F383D6494;
-	Fri, 24 Apr 2026 13:38:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C2263C061E;
+	Fri, 24 Apr 2026 13:41:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XQl9Mgoa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lni0FTUZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AF643D5643;
-	Fri, 24 Apr 2026 13:38:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F89B19A288;
+	Fri, 24 Apr 2026 13:41:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777037937; cv=none; b=gC88zKi8F6DRI+ccHD1+/KOgipg4tIGvodq60QKVVioP7tTfzHf3UdV4FJOXX4ao6Fd/jZxyjjevJYo1NQhz6WAExxDjFojlzcQR0J3ZiFyX1WoAn8ZxU5SpZOcnkpVpTGRfoBEMatRGYEvc4OsizkP1/b2u2Upzy9ZAJdCJA2A=
+	t=1777038097; cv=none; b=qU7LfMspkVAWiZXPJCrw/RGAt8sLjJ3AmD9WUjh7rcrTXas4hrCer4xZGx2/4gO8jHwT6CiZ2BVf5XIh2PGCgE130DlnQtCrWa02zsWvtCKxUujcyKunLL3YWZVEFSqYxXCJj/1Us8L4puoMbw0Q/Tb98lLkn/PHDF6cNb1hDrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777037937; c=relaxed/simple;
-	bh=p62pu+zVV5r+pjF16YzHdwa7CoM2udSjJorQdKccVzM=;
+	s=arc-20240116; t=1777038097; c=relaxed/simple;
+	bh=dRXharPkYjbXZZ5yH3yOECx5BNqm6Pam51tyINILerM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n0IrOjJKH7lbSeul6KEPK9V2A17XOizzhBSMCHe0kHER39S7gJQ0gGvVmXpp5sTv4i/XDJfjAzrzoWS8KMjDRxe5b0QnTLTi3minYYXmn1qCMBPQTsEYd+gOAc56S1vyvTZm64w3EZhgTJTmLIsBLVrP6zIb4Xhcb1qUWvqA3D0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XQl9Mgoa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3EEAC19425;
-	Fri, 24 Apr 2026 13:38:56 +0000 (UTC)
+	 MIME-Version; b=EaIkedPOMBNC4OysmoHd+Pg/ULoFTEcenaj52ElBVRfRzjH5czeEJ3Lmt+/hYU4EmuICDqtVaK1wnQzfPbuA30htKJc2LxxhD8S/IXL200ZqbYnbavet2REfqYp2Rc7/0rb8ws2eH+fp6mB/jNQT7Yie9LZs1hFJPRIyL/s0EI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lni0FTUZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80E48C19425;
+	Fri, 24 Apr 2026 13:41:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777037937;
-	bh=p62pu+zVV5r+pjF16YzHdwa7CoM2udSjJorQdKccVzM=;
+	s=korg; t=1777038096;
+	bh=dRXharPkYjbXZZ5yH3yOECx5BNqm6Pam51tyINILerM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XQl9Mgoab6wZYeQnBPiOHOFKW0PNZ2ICoaBgUS+AJmasjUGklgijHgC/GzU2aE9F8
-	 QM9JCLL+Lvi9GUOfCRSVlZNXFRHOwXMYh8OPu/HkvudXSPqdz0PN9+mcuY75ikd1VE
-	 i0py6KaxehKieYr9hXGY98EkeYV4v6vdG0xYqBv4=
+	b=lni0FTUZwWvMrU2VnoAv/C3un0zubOiLisk+mnlFft7tVTQDf4hlTZoajdHGNuhHA
+	 ircurntiyM3vOBfv6aR41Utyt1zBDQ18rf/rvhVSIWBmDxJb7M12Rr4RtF06VlPP7v
+	 zBu5RuUb4DbWfr+czA0xj64LFFD8lAfBBm8gh9DU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Minhong He <heminhong@kylinos.cn>,
-	Andrea Mayer <andrea.mayer@uniroma2.it>,
+	Daniel Golle <daniel@makrotopia.org>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Li hongliang <1468888505@139.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 128/166] ipv6: add NULL checks for idev in SRv6 paths
+Subject: [PATCH 6.18 03/55] net: ethernet: mtk_eth_soc: initialize PPE per-tag-layer MTU registers
 Date: Fri, 24 Apr 2026 15:30:42 +0200
-Message-ID: <20260424132559.719708310@linuxfoundation.org>
+Message-ID: <20260424132430.706869636@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132532.812258529@linuxfoundation.org>
-References: <20260424132532.812258529@linuxfoundation.org>
+In-Reply-To: <20260424132430.006424517@linuxfoundation.org>
+References: <20260424132430.006424517@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,94 +64,178 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: CDF1545F56E
+X-Rspamd-Queue-Id: 6F49E45F67D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kylinos.cn,uniroma2.it,kernel.org,139.com];
-	TAGGED_FROM(0.00)[bounces-240825-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-240887-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,139.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,makrotopia.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Minhong He <heminhong@kylinos.cn>
+From: Daniel Golle <daniel@makrotopia.org>
 
-[ Upstream commit 06413793526251870e20402c39930804f14d59c0 ]
+commit 2dddb34dd0d07b01fa770eca89480a4da4f13153 upstream.
 
-__in6_dev_get() can return NULL when the device has no IPv6 configuration
-(e.g. MTU < IPV6_MIN_MTU or after NETDEV_UNREGISTER).
+The PPE enforces output frame size limits via per-tag-layer VLAN_MTU
+registers that the driver never initializes. The hardware defaults do
+not account for PPPoE overhead, causing the PPE to punt encapsulated
+frames back to the CPU instead of forwarding them.
 
-Add NULL checks for idev returned by __in6_dev_get() in both
-seg6_hmac_validate_skb() and ipv6_srh_rcv() to prevent potential NULL
-pointer dereferences.
+Initialize the registers at PPE start and on MTU changes using the
+maximum GMAC MTU. This is a conservative approximation -- the actual
+per-PPE requirement depends on egress path, but using the global
+maximum ensures the limits are never too small.
 
-Fixes: 1ababeba4a21 ("ipv6: implement dataplane support for rthdr type 4 (Segment Routing Header)")
-Fixes: bf355b8d2c30 ("ipv6: sr: add core files for SR HMAC support")
-Signed-off-by: Minhong He <heminhong@kylinos.cn>
-Reviewed-by: Andrea Mayer <andrea.mayer@uniroma2.it>
-Link: https://patch.msgid.link/20260316073301.106643-1-heminhong@kylinos.cn
+Fixes: ba37b7caf1ed2 ("net: ethernet: mtk_eth_soc: add support for initializing the PPE")
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+Link: https://patch.msgid.link/ec995ab8ce8be423267a1cc093147a74d2eb9d82.1775789829.git.daniel@makrotopia.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Li hongliang <1468888505@139.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/exthdrs.c   | 4 ++++
- net/ipv6/seg6_hmac.c | 2 ++
- 2 files changed, 6 insertions(+)
+ drivers/net/ethernet/mediatek/mtk_eth_soc.c | 22 ++++++++++++++-
+ drivers/net/ethernet/mediatek/mtk_ppe.c     | 30 +++++++++++++++++++++
+ drivers/net/ethernet/mediatek/mtk_ppe.h     |  1 +
+ 3 files changed, 52 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv6/exthdrs.c b/net/ipv6/exthdrs.c
-index 676284b6efe8b..a8790163e8b6d 100644
---- a/net/ipv6/exthdrs.c
-+++ b/net/ipv6/exthdrs.c
-@@ -378,6 +378,10 @@ static int ipv6_srh_rcv(struct sk_buff *skb)
- 	hdr = (struct ipv6_sr_hdr *)skb_transport_header(skb);
+diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+index 8d3e15bc867d2..0f676bd72832b 100644
+--- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
++++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+@@ -3567,12 +3567,23 @@ static int mtk_device_event(struct notifier_block *n, unsigned long event, void
+ 	return NOTIFY_DONE;
+ }
  
- 	idev = __in6_dev_get(skb->dev);
-+	if (!idev) {
-+		kfree_skb(skb);
-+		return -1;
-+	}
++static int mtk_max_gmac_mtu(struct mtk_eth *eth)
++{
++	int i, max_mtu = ETH_DATA_LEN;
++
++	for (i = 0; i < ARRAY_SIZE(eth->netdev); i++)
++		if (eth->netdev[i] && eth->netdev[i]->mtu > max_mtu)
++			max_mtu = eth->netdev[i]->mtu;
++
++	return max_mtu;
++}
++
+ static int mtk_open(struct net_device *dev)
+ {
+ 	struct mtk_mac *mac = netdev_priv(dev);
+ 	struct mtk_eth *eth = mac->hw;
+ 	struct mtk_mac *target_mac;
+-	int i, err, ppe_num;
++	int i, err, ppe_num, mtu;
  
- 	accept_seg6 = net->ipv6.devconf_all->seg6_enabled;
- 	if (accept_seg6 > idev->cnf.seg6_enabled)
-diff --git a/net/ipv6/seg6_hmac.c b/net/ipv6/seg6_hmac.c
-index 6e15a65faeccd..bf97bf5ac1387 100644
---- a/net/ipv6/seg6_hmac.c
-+++ b/net/ipv6/seg6_hmac.c
-@@ -244,6 +244,8 @@ bool seg6_hmac_validate_skb(struct sk_buff *skb)
- 	struct inet6_dev *idev;
+ 	ppe_num = eth->soc->ppe_num;
  
- 	idev = __in6_dev_get(skb->dev);
-+	if (!idev)
-+		return false;
+@@ -3619,6 +3630,10 @@ static int mtk_open(struct net_device *dev)
+ 			mtk_gdm_config(eth, target_mac->id, gdm_config);
+ 		}
  
- 	srh = (struct ipv6_sr_hdr *)skb_transport_header(skb);
++		mtu = mtk_max_gmac_mtu(eth);
++		for (i = 0; i < ARRAY_SIZE(eth->ppe); i++)
++			mtk_ppe_update_mtu(eth->ppe[i], mtu);
++
+ 		napi_enable(&eth->tx_napi);
+ 		napi_enable(&eth->rx_napi);
+ 		mtk_tx_irq_enable(eth, MTK_TX_DONE_INT);
+@@ -4312,6 +4327,7 @@ static int mtk_change_mtu(struct net_device *dev, int new_mtu)
+ 	int length = new_mtu + MTK_RX_ETH_HLEN;
+ 	struct mtk_mac *mac = netdev_priv(dev);
+ 	struct mtk_eth *eth = mac->hw;
++	int max_mtu, i;
  
+ 	if (rcu_access_pointer(eth->prog) &&
+ 	    length > MTK_PP_MAX_BUF_SIZE) {
+@@ -4322,6 +4338,10 @@ static int mtk_change_mtu(struct net_device *dev, int new_mtu)
+ 	mtk_set_mcr_max_rx(mac, length);
+ 	WRITE_ONCE(dev->mtu, new_mtu);
+ 
++	max_mtu = mtk_max_gmac_mtu(eth);
++	for (i = 0; i < ARRAY_SIZE(eth->ppe); i++)
++		mtk_ppe_update_mtu(eth->ppe[i], max_mtu);
++
+ 	return 0;
+ }
+ 
+diff --git a/drivers/net/ethernet/mediatek/mtk_ppe.c b/drivers/net/ethernet/mediatek/mtk_ppe.c
+index ada852adc5f70..fa688a42a22f5 100644
+--- a/drivers/net/ethernet/mediatek/mtk_ppe.c
++++ b/drivers/net/ethernet/mediatek/mtk_ppe.c
+@@ -973,6 +973,36 @@ static void mtk_ppe_init_foe_table(struct mtk_ppe *ppe)
+ 	}
+ }
+ 
++void mtk_ppe_update_mtu(struct mtk_ppe *ppe, int mtu)
++{
++	int base;
++	u32 val;
++
++	if (!ppe)
++		return;
++
++	/* The PPE checks output frame size against per-tag-layer MTU limits,
++	 * treating PPPoE and DSA tags just like 802.1Q VLAN tags. The Linux
++	 * device MTU already accounts for PPPoE (PPPOE_SES_HLEN) and DSA tag
++	 * overhead, but 802.1Q VLAN tags are handled transparently without
++	 * being reflected by the lower device MTU being increased by 4.
++	 * Use the maximum MTU across all GMAC interfaces so that PPE output
++	 * frame limits are sufficiently high regardless of which port a flow
++	 * egresses through.
++	 */
++	base = ETH_HLEN + mtu;
++
++	val = FIELD_PREP(MTK_PPE_VLAN_MTU0_NONE, base) |
++	      FIELD_PREP(MTK_PPE_VLAN_MTU0_1TAG, base + VLAN_HLEN);
++	ppe_w32(ppe, MTK_PPE_VLAN_MTU0, val);
++
++	val = FIELD_PREP(MTK_PPE_VLAN_MTU1_2TAG,
++			 base + 2 * VLAN_HLEN) |
++	      FIELD_PREP(MTK_PPE_VLAN_MTU1_3TAG,
++			 base + 3 * VLAN_HLEN);
++	ppe_w32(ppe, MTK_PPE_VLAN_MTU1, val);
++}
++
+ void mtk_ppe_start(struct mtk_ppe *ppe)
+ {
+ 	u32 val;
+diff --git a/drivers/net/ethernet/mediatek/mtk_ppe.h b/drivers/net/ethernet/mediatek/mtk_ppe.h
+index 223f709e2704f..ba85e39a155bf 100644
+--- a/drivers/net/ethernet/mediatek/mtk_ppe.h
++++ b/drivers/net/ethernet/mediatek/mtk_ppe.h
+@@ -346,6 +346,7 @@ struct mtk_ppe {
+ struct mtk_ppe *mtk_ppe_init(struct mtk_eth *eth, void __iomem *base, int index);
+ 
+ void mtk_ppe_deinit(struct mtk_eth *eth);
++void mtk_ppe_update_mtu(struct mtk_ppe *ppe, int mtu);
+ void mtk_ppe_start(struct mtk_ppe *ppe);
+ int mtk_ppe_stop(struct mtk_ppe *ppe);
+ int mtk_ppe_prepare_reset(struct mtk_ppe *ppe);
 -- 
 2.53.0
 
