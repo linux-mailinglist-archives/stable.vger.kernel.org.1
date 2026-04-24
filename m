@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-240798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240800-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kG3DAlxy62nmMwAAu9opvQ
-	(envelope-from <stable+bounces-240798-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:38:36 +0200
+	id gLQ+I0Zy62nmMwAAu9opvQ
+	(envelope-from <stable+bounces-240800-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:38:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E59A45F4A5
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:38:35 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 144EF45F44F
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:38:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 52E703006017
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:37:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 400333008E2A
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:37:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D948F3D5643;
-	Fri, 24 Apr 2026 13:37:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 076DE3563D4;
+	Fri, 24 Apr 2026 13:37:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WPsi3JcN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RV/hhrAj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 993A123E356;
-	Fri, 24 Apr 2026 13:37:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEDA3179A3;
+	Fri, 24 Apr 2026 13:37:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777037867; cv=none; b=IEXRDxOuAqdp+bQwh8QfdNf8jwE/5vB8TwlGv9SPkJebalKwJwAiyHtKy3Spw8ZeQDjaHTzabnhPwHzUe+iGUC3WIXG6IwKGcG+XHv1GpvJ3bC9RBWWZS86EKz6ctFtfS26NY5scLBlBnNh90+IAWT6eB1cg0CLLL01A825cgmk=
+	t=1777037872; cv=none; b=YDpuMA6qxj9uig480f8F1gJl9CmJppEz0T3EmnkYhB2dnO3HD/YuU5du3IkLHGkze6viDSKe/ayVt2WbDkoWyv4kWDwS39duaNVV30kiDwNyL+x6JiiBnVbjreKUyOsJxaINWJOaeMFL1iYZ9mqCbTAe4hQfFSR+g7MaWGL07uw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777037867; c=relaxed/simple;
-	bh=NciLK6LDSBTsoREjyxPxtKZPzAGesLom2ProovyqbQI=;
+	s=arc-20240116; t=1777037872; c=relaxed/simple;
+	bh=B2WnzFakAgfklwZ3th8PIGbs8h54MSptbyKuy7mPrI4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RIcjymUEcUUqnBT+ycNc5etYhenut9B+ohyk0sKzccLAsN7XnzWJzMeysl+VByJRRaZs03OJQ9SrZe1fgxjpn8RBKvBqrWlRdbSF6UX1787pAoZACFZFyDIRqfMZcOTm8NnTZYyoJKPsn+d3bonZg6Pke0tz1VAtEpO1amtPvck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WPsi3JcN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F850C19425;
-	Fri, 24 Apr 2026 13:37:47 +0000 (UTC)
+	 MIME-Version; b=AiUz8murdqf229+hx6fZIPCKn3Zb9a2AAQfg2WnMD70TK2RH5WRF6sKz4uIUdopVkREEgPryJUV4WS7/LLl74rkfjjkJc9eaCuyQ7XoaqkQAa8hmUTnhx+ioV4jdldRfW9l2IVBmSX7svk6L/lHcXKtbApKsWcpR/HyRnKG+jYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RV/hhrAj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53924C19425;
+	Fri, 24 Apr 2026 13:37:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777037867;
-	bh=NciLK6LDSBTsoREjyxPxtKZPzAGesLom2ProovyqbQI=;
+	s=korg; t=1777037872;
+	bh=B2WnzFakAgfklwZ3th8PIGbs8h54MSptbyKuy7mPrI4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WPsi3JcN+l4Uc7jbM/6KcD2D/ukHBEuOO9/WBWvr40SMo+MwJJ7798yrr+uEta3Hz
-	 Gcy4nEapTdIruQWH1MNAKiAZ05UKm1EwrCCGN9qLhdoRIW/HhuSgVGSaoImbBrm0Mn
-	 gaeFLpkShSmo7evSX/lddmrEngoFq6fC37P0Vzqc=
+	b=RV/hhrAj7i3WBgB4YktTYVcRB1Y0ZS4oXW/s++2xhGGIBk/w1V340c1vZwFhYk9DO
+	 dkKDQ8vxcRdfP0ftEC5/mY7LjHpn7hW8yUkEyp9xFYe/2v+Q3dDH+eSTW54Qo7GIVs
+	 Lo4yz0CzjTH2toyO+Gd4tZm0UNV6SltsvMRM+2b0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liam Merwick <liam.merwick@oracle.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.6 101/166] KVM: SEV: Drop WARN on large size for KVM_MEMORY_ENCRYPT_REG_REGION
-Date: Fri, 24 Apr 2026 15:30:15 +0200
-Message-ID: <20260424132553.826675491@linuxfoundation.org>
+	Antonius <antonius@bluedragonsec.com>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 102/166] net: skb: fix cross-cache free of KFENCE-allocated skb head
+Date: Fri, 24 Apr 2026 15:30:16 +0200
+Message-ID: <20260424132554.073750137@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260424132532.812258529@linuxfoundation.org>
 References: <20260424132532.812258529@linuxfoundation.org>
@@ -63,107 +66,100 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3E59A45F4A5
+X-Rspamd-Queue-Id: 144EF45F44F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240800-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-240798-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,linux.dev:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,bluedragonsec.com:email]
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-commit 8acffeef5ef720c35e513e322ab08e32683f32f2 upstream.
+[ Upstream commit 0f42e3f4fe2a58394e37241d02d9ca6ab7b7d516 ]
 
-Drop the WARN in sev_pin_memory() on npages overflowing an int, as the
-WARN is comically trivially to trigger from userspace, e.g. by doing:
+SKB_SMALL_HEAD_CACHE_SIZE is intentionally set to a non-power-of-2
+value (e.g. 704 on x86_64) to avoid collisions with generic kmalloc
+bucket sizes. This ensures that skb_kfree_head() can reliably use
+skb_end_offset to distinguish skb heads allocated from
+skb_small_head_cache vs. generic kmalloc caches.
 
-  struct kvm_enc_region range = {
-          .addr = 0,
-          .size = -1ul,
-  };
+However, when KFENCE is enabled, kfence_ksize() returns the exact
+requested allocation size instead of the slab bucket size. If a caller
+(e.g. bpf_test_init) allocates skb head data via kzalloc() and the
+requested size happens to equal SKB_SMALL_HEAD_CACHE_SIZE, then
+slab_build_skb() -> ksize() returns that exact value. After subtracting
+skb_shared_info overhead, skb_end_offset ends up matching
+SKB_SMALL_HEAD_HEADROOM, causing skb_kfree_head() to incorrectly free
+the object to skb_small_head_cache instead of back to the original
+kmalloc cache, resulting in a slab cross-cache free:
 
-  __vm_ioctl(vm, KVM_MEMORY_ENCRYPT_REG_REGION, &range);
+  kmem_cache_free(skbuff_small_head): Wrong slab cache. Expected
+  skbuff_small_head but got kmalloc-1k
 
-Note, the checks in sev_mem_enc_register_region() that presumably exist to
-verify the incoming address+size are completely worthless, as both "addr"
-and "size" are u64s and SEV is 64-bit only, i.e. they _can't_ be greater
-than ULONG_MAX.  That wart will be cleaned up in the near future.
+Fix this by always calling kfree(head) in skb_kfree_head(). This keeps
+the free path generic and avoids allocator-specific misclassification
+for KFENCE objects.
 
-	if (range->addr > ULONG_MAX || range->size > ULONG_MAX)
-		return -EINVAL;
-
-Opportunistically add a comment to explain why the code calculates the
-number of pages the "hard" way, e.g. instead of just shifting @ulen.
-
-Fixes: 78824fabc72e ("KVM: SVM: fix svn_pin_memory()'s use of get_user_pages_fast()")
-Cc: stable@vger.kernel.org
-Reviewed-by: Liam Merwick <liam.merwick@oracle.com>
-Tested-by: Liam Merwick <liam.merwick@oracle.com>
-Link: https://patch.msgid.link/20260313003302.3136111-2-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: bf9f1baa279f ("net: add dedicated kmem_cache for typical/small skb->head")
+Reported-by: Antonius <antonius@bluedragonsec.com>
+Closes: https://lore.kernel.org/netdev/CAK8a0jxC5L5N7hq-DT2_NhUyjBxrPocoiDazzsBk4TGgT1r4-A@mail.gmail.com/
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260403014517.142550-1-jiayuan.chen@linux.dev
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ adapted variable names ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/svm/sev.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ net/core/skbuff.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -414,10 +414,16 @@ static struct page **sev_pin_memory(stru
- 	if (ulen == 0 || uaddr + ulen < uaddr)
- 		return ERR_PTR(-EINVAL);
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index 4c28954f915fa..c81ef99d39b04 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -943,10 +943,7 @@ static bool skb_pp_recycle(struct sk_buff *skb, void *data, bool napi_safe)
  
--	/* Calculate number of pages. */
-+	/*
-+	 * Calculate the number of pages that need to be pinned to cover the
-+	 * entire range.  Note!  This isn't simply ulen >> PAGE_SHIFT, as KVM
-+	 * doesn't require the incoming address+size to be page aligned!
-+	 */
- 	first = (uaddr & PAGE_MASK) >> PAGE_SHIFT;
- 	last = ((uaddr + ulen - 1) & PAGE_MASK) >> PAGE_SHIFT;
- 	npages = (last - first + 1);
-+	if (npages > INT_MAX)
-+		return ERR_PTR(-EINVAL);
+ static void skb_kfree_head(void *head, unsigned int end_offset)
+ {
+-	if (end_offset == SKB_SMALL_HEAD_HEADROOM)
+-		kmem_cache_free(skb_small_head_cache, head);
+-	else
+-		kfree(head);
++	kfree(head);
+ }
  
- 	locked = sev->pages_locked + npages;
- 	lock_limit = rlimit(RLIMIT_MEMLOCK) >> PAGE_SHIFT;
-@@ -426,9 +432,6 @@ static struct page **sev_pin_memory(stru
- 		return ERR_PTR(-ENOMEM);
- 	}
- 
--	if (WARN_ON_ONCE(npages > INT_MAX))
--		return ERR_PTR(-EINVAL);
--
- 	/* Avoid using vmalloc for smaller buffers. */
- 	size = npages * sizeof(struct page *);
- 	if (size > PAGE_SIZE)
+ static void skb_free_head(struct sk_buff *skb, bool napi_safe)
+-- 
+2.53.0
+
 
 
 
