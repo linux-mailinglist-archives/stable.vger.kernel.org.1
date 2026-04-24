@@ -1,248 +1,274 @@
-Return-Path: <stable+bounces-240651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240652-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OEXaAv1j62mtMAAAu9opvQ
-	(envelope-from <stable+bounces-240651-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 14:37:17 +0200
+	id eAeYGjFn62mtMAAAu9opvQ
+	(envelope-from <stable+bounces-240652-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 14:50:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D69E45E84D
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 14:37:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A535045EA9F
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 14:50:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9C3F630209C3
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 12:36:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C19263012C52
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 12:49:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35D723CE480;
-	Fri, 24 Apr 2026 12:36:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 081A73CF696;
+	Fri, 24 Apr 2026 12:49:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ul5j2fWd"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GrIJ/z3Q"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f52.google.com (mail-dl1-f52.google.com [74.125.82.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDBA43CE4B2
-	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 12:36:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A7A5321F5F
+	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 12:49:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777034199; cv=none; b=ieJIpFHbbIDQFg+RXbtKJi2MxfnRz/ao7YjfPaZDAxNFIO+kFZPrdrwU5i+pT/oct+LPhgJTAlyyUu6sdp2ijSu0Eq5v2Frr13NHP/ImkSJVB9ESRvFpQ1BKm7OUq0dYT5IrgSuHGBZGMLKUJNABCCHW+9l9hWQRdyjhglWH88U=
+	t=1777034976; cv=none; b=hgmNVEcCxdgtbaccW17zNUbkTQ3BBNKO3JdbjIAOjjwPLijxrsfZqvVN3vwAwn3hSdXBPvfWC18iqV65C0OUeO+5rTatwuozw8/QULhEA9L/0yCpIf7TPcntkfp049mCQDEGqXI0j9oPne7RxYXuu3XZSycRncpRUriMTGCHWbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777034199; c=relaxed/simple;
-	bh=QuGOGzEl2zKSjdMEscGE1XyfHnKJW16637J7RxEz44U=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=sddetWfPoo9vbDQp39BkhrPrbBAVCLFOBmJK0FVnAEf9KWJie1Qt/i+NEQdgLqqcjZRsIJ9k3Cf6qr0YiGm5p3HYIfzMsElKsQfRlSLXXBcnKAXdEXWo06SWTFLVUmYlssyd6GoAoiyCvdLT6PrK6R0J4bCMzPC2eUeeT7zBUsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ul5j2fWd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8633EC19425;
-	Fri, 24 Apr 2026 12:36:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777034198;
-	bh=QuGOGzEl2zKSjdMEscGE1XyfHnKJW16637J7RxEz44U=;
-	h=Subject:To:Cc:From:Date:From;
-	b=ul5j2fWdUBoVE0M3YFk38Bd4n/WmxjVDNfE9jF+OxBal4uavSiKQcCndwKX27koGa
-	 DpWKN5oPU7TElAI78qu4Wt8SRstzhHdb9ZwfmEa/QSjD2ItPSuTkq43qaAcdHa0RiP
-	 PW8Pd/knoeSGobc9hsn+Pdg0Il9oe36KKBmUrdS4=
-Subject: FAILED: patch "[PATCH] md/raid1,raid10: don't handle IO error for REQ_RAHEAD and" failed to apply to 6.6-stable tree
-To: yukuai3@huawei.com,mpatocka@redhat.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Fri, 24 Apr 2026 14:34:26 +0200
-Message-ID: <2026042426-unpledged-outgoing-5f58@gregkh>
+	s=arc-20240116; t=1777034976; c=relaxed/simple;
+	bh=8DfXZXq4mVPMtrbEJ3azRH0nkf22Z7tVppnYqNc9f54=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=csGwVzb37t0ERTvseo53H5wBKGF5tPugl/K9WUeOaonVztLsH5VxPEK1f6P8faoYc+vD6iRYYCD9ynbqhD6TkQ6zetUgXIoE6MKn/eix83RHgL3hcApduirma66dYdTPyM4gxvg5POH6bdAQJ/SdV+coqDNndDanvIN2WiqnIFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GrIJ/z3Q; arc=none smtp.client-ip=74.125.82.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dl1-f52.google.com with SMTP id a92af1059eb24-12db7bf1541so4533386c88.0
+        for <stable@vger.kernel.org>; Fri, 24 Apr 2026 05:49:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777034974; x=1777639774; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=5sDFo3WV98TxsiaFURx28Dc3liN7VLrYqdD8rKeIweI=;
+        b=GrIJ/z3QWD7AZozMM+bPkLhs5omgGnw0D8xtOEkzBpycKwapo/xGLEjALMOLD9qlAk
+         i1ahj/lZwRiF+yN54vy7//WxdEffYFcnRGf03xjvMujrT2rRvqXU5KpcB59X8UowlsbG
+         yHfV+RmUOH15A2HNzboPUnEwqOWw/QiM8i3bOQ3dON5BK5xcg2so8hp10Q34wYLNsjbs
+         Kfvrvu1WSpLPSg0oxY9WMr/TjydI6zfI5FdyYO4NTtaUgf5B1U1X4uCStgBMr6o39zrv
+         JgSiZ0GBWQ4pN75XhOQRT9qGqQ4sqov9xrrNQPYSFH7y2IqFg4FpzraUJ6zKWua2wR5N
+         mBvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777034974; x=1777639774;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5sDFo3WV98TxsiaFURx28Dc3liN7VLrYqdD8rKeIweI=;
+        b=DI+noQpItyeoItbbkH8wxv5WsXwIvMKYeg/vebwO7Ef46Z9Po3EbRN98xua9Kp2H5x
+         dSpoj4rfYZI6nWXlZY2HcDmQfFaXvWf3Xq8jFryHbP2XVsbDJB2i1oQarTYgJmhZXrHJ
+         Jy/3c/xAb3ZKbFyLJi9Z4E1IqOKT9jIU6pF+oJHjwvuQBjdzGybiTJnrU+GguHUozR7r
+         InZP0mH4GFubHKNsjO4s7rMqGE47J3LY5+74V2lGY61XIdjvrHiwBTOLxyet25KER6Ck
+         kcCd8dpr5HnaGlqnL0MkG903o35dbL1wI3NMlTvlhoCXOXAUEouiASVlcqC+cCRfk+CU
+         6cLA==
+X-Forwarded-Encrypted: i=1; AFNElJ+1Dc5aAU9RsAfy2+0k3bbco65//UJ0cPLyKYy7giJHaSdiJGChvrx+yeV9l4Sr5gVLsYErmDA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxfMmI4zXf9CFhEd2IRn81UCl7mDhJAWiQADTSA4ks+9wu7uE7B
+	0CbXsqSDeThT9ZhkPOFuZtTz8BHvZZ6u4kfyQCbwyG0gVWk7Qn9/fYWM+NeWdqJW
+X-Gm-Gg: AeBDietO5v/UrAVarFjl3ATfW8xS4OMwfoyRtBAFXNsfPXuPAnzK1NP5Dj1AlmXf3hB
+	kQzNi7aJXIwDpp6yZ5H99aoIRsSZZP5wgRzDyapcNPIWpZbhdEc1iG862rFFeSHDb1b1s2e8XQm
+	/VVR5rpnOO1ix6ObEWbwk2EyRxzQ1SfzAg5sigaDoqb5VoCyRwCyUyrVrb0NXGqfvniFO5/SluG
+	gofY8Mj25e/QTsGo9hvJYDMuv+kpDprKGa2J4PgEQAJH6Vb+NozcFmYAnbc6h0QmzdQPvLZo2P3
+	4PhMdR7/RxUIo8tFf3rm8J3pGCzopyWM2jSWUHlJpmN7sf+wHWeDZC3zDqyfu0gJrKaRtWTdtWf
+	o+LESx41EosdfQ0aDlFb+k8HqFX6XIkEkaRXjZ+EgjWIQzYqV4D0oweazv1rOMHvghw0NJWs/N/
+	B5h5HyQLAYx1Lg+I2S78ok1HX2KZiGHkSg3Qy7e1gRuZtiBiqxVLoX4QAqMFz43CkemmIjD6KFJ
+	0oYzaf+c5K8
+X-Received: by 2002:a05:7022:418e:b0:12c:87f1:f41a with SMTP id a92af1059eb24-12c87f1f772mr14051063c88.21.1777034974262;
+        Fri, 24 Apr 2026 05:49:34 -0700 (PDT)
+Received: from [192.168.1.18] (177-4-161-87.user3p.v-tal.net.br. [177.4.161.87])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12c74a20eb5sm40524524c88.14.2026.04.24.05.49.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Apr 2026 05:49:33 -0700 (PDT)
+From: =?utf-8?q?C=C3=A1ssio_Gabriel?= <cassiogabrielcontato@gmail.com>
+Date: Fri, 24 Apr 2026 09:48:41 -0300
+Subject: [PATCH v2] ALSA: aloop: Fix peer runtime UAF during format-change
+ stop
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6D69E45E84D
+Message-Id: <20260424-alsa-aloop-peer-stop-uaf-v2-1-94e68101db8a@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3WNyw6CMBBFf4XM2jHtCPhY+R+GRSkD1ABtWiAaw
+ r9bMC7dTOYk996zQGBvOMAtWcDzbIKxQwQ6JKBbNTSMpooMJCgXKRGqLqh4rHXomD2GMX6TqlG
+ ItGKSJMqMINad59q89ulH8eUwlU/W47a3JVoTy/69u2e55X6a03/NLFEiZdVFXc9pVuf63vTKd
+ EdteyjWdf0ANcApM9IAAAA=
+X-Change-ID: 20260422-alsa-aloop-peer-stop-uaf-004de2120b52
+To: Takashi Iwai <tiwai@suse.com>, Jaroslav Kysela <perex@perex.cz>
+Cc: linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ syzbot+8fa95c41eafbc9d2ff6f@syzkaller.appspotmail.com, 
+ stable@vger.kernel.org, 
+ =?utf-8?q?C=C3=A1ssio_Gabriel?= <cassiogabrielcontato@gmail.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4746;
+ i=cassiogabrielcontato@gmail.com; h=from:subject:message-id;
+ bh=8DfXZXq4mVPMtrbEJ3azRH0nkf22Z7tVppnYqNc9f54=;
+ b=owGbwMvMwCV2IdZeKur/u2bG02pJDJmv026ZFe6/UGn8a6p9X3f5tG1dvM9r7hm6BPryTr3Hk
+ r6J/VJTRykLgxgXg6yYIsvqpEWWe7oeXK2PW+EBM4eVCWQIAxenAExEYTPD/+wjbo4NDyKuGDFG
+ 3VtTtWxbNEcn41Rxy5tzfX05g5bbKjMyvCmsbtx3t//9Be55giv2/5ptlyTwINf9jN2Pre7hEi8
+ TGQA=
+X-Developer-Key: i=cassiogabrielcontato@gmail.com; a=openpgp;
+ fpr=AB62A239BC8AE0D57F5EA848D05D3F1A5AFFEE83
+X-Rspamd-Queue-Id: A535045EA9F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240651-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_THREE(0.00)[3];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NO_DN(0.00)[];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FREEMAIL_CC(0.00)[vger.kernel.org,syzkaller.appspotmail.com,gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+]
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240652-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[cassiogabrielcontato@gmail.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,8fa95c41eafbc9d2ff6f];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,syzkaller.appspot.com:url,suse.com:email,msgid.link:url,appspotmail.com:email]
 
+loopback_check_format() may stop the capture side when playback starts
+with parameters that no longer match a running capture stream. Commit
+826af7fa62e3 ("ALSA: aloop: Fix racy access at PCM trigger") moved
+the peer lookup under cable->lock, but the actual snd_pcm_stop() still
+runs after dropping that lock.
 
-The patch below does not apply to the 6.6-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+A concurrent close can clear the capture entry from cable->streams[] and
+detach or free its runtime while the playback trigger path still holds a
+stale peer substream pointer.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Keep a per-cable count of in-flight peer stops before dropping
+cable->lock, and make free_cable() wait for those stops before
+detaching the runtime. This preserves the existing behavior while
+making the peer runtime lifetime explicit.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
-git checkout FETCH_HEAD
-git cherry-pick -x 9f346f7d4ea73692b82f5102ca8698e4040469ea
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026042426-unpledged-outgoing-5f58@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+Reported-by: syzbot+8fa95c41eafbc9d2ff6f@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=8fa95c41eafbc9d2ff6f
+Fixes: 597603d615d2 ("ALSA: introduce the snd-aloop module for the PCM loopback")
+Cc: stable@vger.kernel.org
+Suggested-by: Takashi Iwai <tiwai@suse.com>
+Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
+---
+Changes in v2:
+- simplify the peer-stop path in loopback_check_format()
+- drop the extra stop_dpcm indirection and runtime/running recheck
+- keep only the stop_count/stop_wait lifetime serialization
+- Link to v1: https://patch.msgid.link/20260423-alsa-aloop-peer-stop-uaf-v1-1-25d8a9745f6c@gmail.com
+---
+ sound/drivers/aloop.c | 43 ++++++++++++++++++++++++++++++-------------
+ 1 file changed, 30 insertions(+), 13 deletions(-)
 
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 9f346f7d4ea73692b82f5102ca8698e4040469ea Mon Sep 17 00:00:00 2001
-From: Yu Kuai <yukuai3@huawei.com>
-Date: Tue, 27 May 2025 16:14:07 +0800
-Subject: [PATCH] md/raid1,raid10: don't handle IO error for REQ_RAHEAD and
- REQ_NOWAIT
-
-IO with REQ_RAHEAD or REQ_NOWAIT can fail early, even if the storage medium
-is fine, hence record badblocks or remove the disk from array does not
-make sense.
-
-This problem if found by lvm2 test lvcreate-large-raid, where dm-zero
-will fail read ahead IO directly.
-
-Fixes: e879a0d9cb08 ("md/raid1,raid10: don't ignore IO flags")
-Reported-and-tested-by: Mikulas Patocka <mpatocka@redhat.com>
-Closes: https://lore.kernel.org/all/34fa755d-62c8-4588-8ee1-33cb1249bdf2@redhat.com/
-Link: https://lore.kernel.org/linux-raid/20250527081407.3004055-1-yukuai1@huaweicloud.com
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-
-diff --git a/drivers/md/raid1-10.c b/drivers/md/raid1-10.c
-index c7efd8aab675..b8b3a9069701 100644
---- a/drivers/md/raid1-10.c
-+++ b/drivers/md/raid1-10.c
-@@ -293,3 +293,13 @@ static inline bool raid1_should_read_first(struct mddev *mddev,
- 
- 	return false;
- }
-+
-+/*
-+ * bio with REQ_RAHEAD or REQ_NOWAIT can fail at anytime, before such IO is
-+ * submitted to the underlying disks, hence don't record badblocks or retry
-+ * in this case.
-+ */
-+static inline bool raid1_should_handle_error(struct bio *bio)
-+{
-+	return !(bio->bi_opf & (REQ_RAHEAD | REQ_NOWAIT));
-+}
-diff --git a/drivers/md/raid1.c b/drivers/md/raid1.c
-index 657d481525be..19c5a0ce5a40 100644
---- a/drivers/md/raid1.c
-+++ b/drivers/md/raid1.c
-@@ -373,14 +373,16 @@ static void raid1_end_read_request(struct bio *bio)
- 	 */
- 	update_head_pos(r1_bio->read_disk, r1_bio);
- 
--	if (uptodate)
-+	if (uptodate) {
- 		set_bit(R1BIO_Uptodate, &r1_bio->state);
--	else if (test_bit(FailFast, &rdev->flags) &&
--		 test_bit(R1BIO_FailFast, &r1_bio->state))
-+	} else if (test_bit(FailFast, &rdev->flags) &&
-+		 test_bit(R1BIO_FailFast, &r1_bio->state)) {
- 		/* This was a fail-fast read so we definitely
- 		 * want to retry */
- 		;
--	else {
-+	} else if (!raid1_should_handle_error(bio)) {
-+		uptodate = 1;
-+	} else {
- 		/* If all other devices have failed, we want to return
- 		 * the error upwards rather than fail the last device.
- 		 * Here we redefine "uptodate" to mean "Don't want to retry"
-@@ -451,16 +453,15 @@ static void raid1_end_write_request(struct bio *bio)
- 	struct bio *to_put = NULL;
- 	int mirror = find_bio_disk(r1_bio, bio);
- 	struct md_rdev *rdev = conf->mirrors[mirror].rdev;
--	bool discard_error;
- 	sector_t lo = r1_bio->sector;
- 	sector_t hi = r1_bio->sector + r1_bio->sectors;
--
--	discard_error = bio->bi_status && bio_op(bio) == REQ_OP_DISCARD;
-+	bool ignore_error = !raid1_should_handle_error(bio) ||
-+		(bio->bi_status && bio_op(bio) == REQ_OP_DISCARD);
- 
- 	/*
- 	 * 'one mirror IO has finished' event handler:
- 	 */
--	if (bio->bi_status && !discard_error) {
-+	if (bio->bi_status && !ignore_error) {
- 		set_bit(WriteErrorSeen,	&rdev->flags);
- 		if (!test_and_set_bit(WantReplacement, &rdev->flags))
- 			set_bit(MD_RECOVERY_NEEDED, &
-@@ -511,7 +512,7 @@ static void raid1_end_write_request(struct bio *bio)
- 
- 		/* Maybe we can clear some bad blocks. */
- 		if (rdev_has_badblock(rdev, r1_bio->sector, r1_bio->sectors) &&
--		    !discard_error) {
-+		    !ignore_error) {
- 			r1_bio->bios[mirror] = IO_MADE_GOOD;
- 			set_bit(R1BIO_MadeGood, &r1_bio->state);
+diff --git a/sound/drivers/aloop.c b/sound/drivers/aloop.c
+index aa0d2fcb1a18..a37a1695f51c 100644
+--- a/sound/drivers/aloop.c
++++ b/sound/drivers/aloop.c
+@@ -99,6 +99,9 @@ struct loopback_ops {
+ struct loopback_cable {
+ 	spinlock_t lock;
+ 	struct loopback_pcm *streams[2];
++	/* in-flight peer stops running outside cable->lock */
++	atomic_t stop_count;
++	wait_queue_head_t stop_wait;
+ 	struct snd_pcm_hardware hw;
+ 	/* flags */
+ 	unsigned int valid;
+@@ -366,8 +369,11 @@ static int loopback_check_format(struct loopback_cable *cable, int stream)
+ 				return 0;
+ 			if (stream == SNDRV_PCM_STREAM_CAPTURE)
+ 				return -EIO;
+-			else if (cruntime->state == SNDRV_PCM_STATE_RUNNING)
++			else if (cruntime->state == SNDRV_PCM_STATE_RUNNING) {
++				/* close must not free the peer runtime below */
++				atomic_inc(&cable->stop_count);
+ 				stop_capture = true;
++			}
  		}
-diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
-index dce06bf65016..b74780af4c22 100644
---- a/drivers/md/raid10.c
-+++ b/drivers/md/raid10.c
-@@ -399,6 +399,8 @@ static void raid10_end_read_request(struct bio *bio)
- 		 * wait for the 'master' bio.
- 		 */
- 		set_bit(R10BIO_Uptodate, &r10_bio->state);
-+	} else if (!raid1_should_handle_error(bio)) {
-+		uptodate = 1;
- 	} else {
- 		/* If all other devices that store this block have
- 		 * failed, we want to return the error upwards rather
-@@ -456,9 +458,8 @@ static void raid10_end_write_request(struct bio *bio)
- 	int slot, repl;
- 	struct md_rdev *rdev = NULL;
- 	struct bio *to_put = NULL;
--	bool discard_error;
--
--	discard_error = bio->bi_status && bio_op(bio) == REQ_OP_DISCARD;
-+	bool ignore_error = !raid1_should_handle_error(bio) ||
-+		(bio->bi_status && bio_op(bio) == REQ_OP_DISCARD);
  
- 	dev = find_bio_disk(conf, r10_bio, bio, &slot, &repl);
+ 		setup = get_setup(dpcm_play);
+@@ -396,8 +402,11 @@ static int loopback_check_format(struct loopback_cable *cable, int stream)
+ 		}
+ 	}
  
-@@ -472,7 +473,7 @@ static void raid10_end_write_request(struct bio *bio)
- 	/*
- 	 * this branch is our 'one mirror IO has finished' event handler:
- 	 */
--	if (bio->bi_status && !discard_error) {
-+	if (bio->bi_status && !ignore_error) {
- 		if (repl)
- 			/* Never record new bad blocks to replacement,
- 			 * just fail it.
-@@ -527,7 +528,7 @@ static void raid10_end_write_request(struct bio *bio)
- 		/* Maybe we can clear some bad blocks. */
- 		if (rdev_has_badblock(rdev, r10_bio->devs[slot].addr,
- 				      r10_bio->sectors) &&
--		    !discard_error) {
-+		    !ignore_error) {
- 			bio_put(bio);
- 			if (repl)
- 				r10_bio->devs[slot].repl_bio = IO_MADE_GOOD;
+-	if (stop_capture)
++	if (stop_capture) {
+ 		snd_pcm_stop(dpcm_capt->substream, SNDRV_PCM_STATE_DRAINING);
++		if (atomic_dec_and_test(&cable->stop_count))
++			wake_up(&cable->stop_wait);
++	}
+ 
+ 	return 0;
+ }
+@@ -1049,23 +1058,29 @@ static void free_cable(struct snd_pcm_substream *substream)
+ 	struct loopback *loopback = substream->private_data;
+ 	int dev = get_cable_index(substream);
+ 	struct loopback_cable *cable;
++	struct loopback_pcm *dpcm;
++	bool other_alive;
+ 
+ 	cable = loopback->cables[substream->number][dev];
+ 	if (!cable)
+ 		return;
+-	if (cable->streams[!substream->stream]) {
+-		/* other stream is still alive */
+-		guard(spinlock_irq)(&cable->lock);
+-		cable->streams[substream->stream] = NULL;
+-	} else {
+-		struct loopback_pcm *dpcm = substream->runtime->private_data;
+ 
+-		if (cable->ops && cable->ops->close_cable && dpcm)
+-			cable->ops->close_cable(dpcm);
+-		/* free the cable */
+-		loopback->cables[substream->number][dev] = NULL;
+-		kfree(cable);
++	scoped_guard(spinlock_irq, &cable->lock) {
++		cable->streams[substream->stream] = NULL;
++		other_alive = cable->streams[!substream->stream];
+ 	}
++
++	/* Pair with the stop_count increment in loopback_check_format(). */
++	wait_event(cable->stop_wait, !atomic_read(&cable->stop_count));
++	if (other_alive)
++		return;
++
++	dpcm = substream->runtime->private_data;
++	if (cable->ops && cable->ops->close_cable && dpcm)
++		cable->ops->close_cable(dpcm);
++	/* free the cable */
++	loopback->cables[substream->number][dev] = NULL;
++	kfree(cable);
+ }
+ 
+ static int loopback_jiffies_timer_open(struct loopback_pcm *dpcm)
+@@ -1260,6 +1275,8 @@ static int loopback_open(struct snd_pcm_substream *substream)
+ 			goto unlock;
+ 		}
+ 		spin_lock_init(&cable->lock);
++		atomic_set(&cable->stop_count, 0);
++		init_waitqueue_head(&cable->stop_wait);
+ 		cable->hw = loopback_pcm_hardware;
+ 		if (loopback->timer_source)
+ 			cable->ops = &loopback_snd_timer_ops;
+
+---
+base-commit: 876c495d412ef67bd4d0bdc4b74b0bd3d9f4e890
+change-id: 20260422-alsa-aloop-peer-stop-uaf-004de2120b52
+
+Best regards,
+--  
+Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
 
