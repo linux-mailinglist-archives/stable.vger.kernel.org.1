@@ -1,140 +1,160 @@
-Return-Path: <stable+bounces-241010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241011-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kDZLG6Wi62kbPgAAu9opvQ
-	(envelope-from <stable+bounces-241010-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 19:04:37 +0200
+	id UA72Hkem62mrPwAAu9opvQ
+	(envelope-from <stable+bounces-241011-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 19:20:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10929461909
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 19:04:36 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EF19461D3A
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 19:20:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 22602300B475
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 17:04:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3034A30581A5
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 17:07:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E247D35DA6F;
-	Fri, 24 Apr 2026 17:04:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3316C3D170D;
+	Fri, 24 Apr 2026 17:07:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P3ttbWSV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UHduZfUT"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A19443264E6;
-	Fri, 24 Apr 2026 17:04:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F96F3D647C
+	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 17:07:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777050265; cv=none; b=UNlaRgwHy3njBe+myjUAz4wkeZuU3pK9F0ecW6x8pexXuAhUE3XNwziG8o0mMaKb2BQHPTdDuao0Xl4qvubfJI4LZaPOpPQ/LKWy/9YmP8B82DM4W4t5SoOizxVuKqd/aoPCUtMazMnVzx63eUWMgnIiN9mhF/h2Ut34fXjvprg=
+	t=1777050457; cv=none; b=ZJdWgL9JUXOnaUS146RLtJofW6GVdhN2KRFHBmPtjdw2s431o7hIxnqTbXa2i1U8I267atOOEYFlbaNAJVP0Br03hTwKH76wC5Wgqo/SPV9IZiq/U5Y3CGFb0qnCKg52aEcTpdsjWmkMp6kJA/4gCpbTHH3De5nnmO4tiL+4/SI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777050265; c=relaxed/simple;
-	bh=fgDUC+a18hY1qJbTl0Ow07f99fugS8GWyc5w2OTuH6M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Jdz4JE9Lw9bKxaWNncVbk+Q4UtYrmX9ZrrI/6K5rcKb0spVwrRvEUGdk0N7nSIHKabXRgWXLAiGBAOupaT+tqcbxNdu1f1e8sWlRbS8ioV+uFN2kAKmvxI7kUWH1t0huCKBfJt/hY2CMbjwYbwqUY06meD8bZijZRwmxvHBr3Qo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P3ttbWSV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE5A1C19425;
-	Fri, 24 Apr 2026 17:04:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777050265;
-	bh=fgDUC+a18hY1qJbTl0Ow07f99fugS8GWyc5w2OTuH6M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=P3ttbWSVSBRruP5aod7T5/0aJTlIipUtHXg8nH86dDFW8AvCzG3Pa9nWqQUCInyl1
-	 6aUKNmK4DmauNS+7pyGdQehssKKnx1mvHinLp6M6Wx8dxD1JlA5inbls25jFaHxYSZ
-	 KJUzotqWzJPxPShlaE2DBVFKNqW0ZwBM16xJUKbK0PDc0g7sGV62gZx26E6v9pdwlQ
-	 A22WXlah2xkEx9FUWNsQVqSV5buynp5lsrKcCi1XG+1IWjoBEq5ZqPvpu0tj1MxIHW
-	 ZTF/UL3mSYbHyHfqccfAvzrDiVJtUftfrXs/geNdANgIbCFu24KcQjj6jL7XkUlJud
-	 NJ4ZNtmG+Cd4w==
-Date: Fri, 24 Apr 2026 18:04:19 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Hans Verkuil <hverkuil@kernel.org>, devicetree@vger.kernel.org,
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+	s=arc-20240116; t=1777050457; c=relaxed/simple;
+	bh=pRhvZ9KCVux5KCVBEBzksHbQIt+uSWHypEMOvqUP0FY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=K0WTZabOybQjtTzM9Ef4BUWExNIwF9tfjWxP1uqV2s1ajYvPHsW/7GglZR+at+4cPWDAlmpeXceL2+qU1eVpjVrkX0J6FQ5s4oIZIztDn/6c3kp1jaXrZw/zD/1tsEOs/iP9nXh4vmcvc33gIkuMcwsD338ZoRk+Kh+zeaYveco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UHduZfUT; arc=none smtp.client-ip=209.85.210.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-82f1bfc9b8fso3744403b3a.1
+        for <stable@vger.kernel.org>; Fri, 24 Apr 2026 10:07:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777050456; x=1777655256; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=m2tyqV7NYkcIHpynPQ745IDJ+MBrRCWvGF7hfjz6lJY=;
+        b=UHduZfUTqRYktk12j7/s37RHPJXmK2V1sq/Zi5HfYNU+uNf7heVyvogmQs9LOBzWp3
+         j25lZfPd4H1MlHFrw5i4c1PfiWHld4CaIoJYxw91D2yWF360UsArTslN9uk2MfEq5NK5
+         qkLiv8wH3u+tHAj2/FcFbqVcIgE/Z6vk3qt+MTDLE44mEhrKnfe4nlPOt8psR+TGFkNP
+         k+QOIQGqhv6dFFb+AQavt47PJiuAXg2ue02oVPbMWXiYbUnANwCsp6GMntcZ5Jx3XSbX
+         ZtVSFrdEo7SnvSYx32Q7KAVOGspvt4T0H3rtuB81TEVBbo9T1UpxM3mn6LNLafAFoCuN
+         6x3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777050456; x=1777655256;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=m2tyqV7NYkcIHpynPQ745IDJ+MBrRCWvGF7hfjz6lJY=;
+        b=PsUK/fmpkn/xK7VU2645cPqWdz68L5PnGkd4Eg6V0ite9tVAYVDMtw9UeGBhZ03lYD
+         F7CcpGcGvrJgUIiQE3vwrtfRP70/f8BDC3NnG31m3/5LP9/zQ08aWSWF7DNLTkeQ2piy
+         Y0zg6pqK2RP0LGQz5nJcVhVWRIR2dc69GGge6fs7L3YqBL3xAaZGVAvgKHdxxn/nb5dT
+         CUfkqQjYX6jS+P9dUNdNb9cjHZqV96pjBEXyQxfyZsJiuOw59It2EobYfLDXIwyaPbs1
+         9KhigIx75zl6um6dN0+Pv0nfJsdTR1bMxnvv8zZNvFcM3l5IWgsZUedAeXvC8jFcwrBq
+         lsCQ==
+X-Forwarded-Encrypted: i=1; AFNElJ982+LmiCpxaJMzpEsavtLY+YSorY2rjmw6PEfOFEV8SQRyNd2+9auuvQBC0HWGD8chww1Gylg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyvEWxTL/lTTnHPnqzzMngkVVgT2wc2fJX016pN0VqBfD9shHjb
+	Fyq37NwoRaNtIO7DJAGeuNLY2JMExhC9kZ/C9jnFcUqXY+aZIcIYkr8=
+X-Gm-Gg: AeBDietL/R3XMwTbwFBb5WSsIOgqOCOTAhbYZQkWRvz1UG4iW9RPa7T4sndfkKKAaMo
+	gQI3JDAoMmZZaBtWXCt6+j/d1Tnj3I0K9zSHol820U8v931SvghTATrv0jAO1T00k0IGRCqS5d2
+	janiP1QZ0ueRGPXFnahuU9DYmdI8KQ+Bb48LgHtCO0ktNLXMz821Bc9at06zFGOJEN7rMVvvOfm
+	4hdQCf2w5VpIs0ovVEdEwGnS4IeIbgtPTdBBje86P0HA9Fa7h0aD50b6ILQGg96DX/5KsZ+TnL1
+	3EsQobjOFs98ZBGD1F4PwByn2L/S8mxTcg6a123RpWxeSNxjRaX6yDfpGP9f3l6KytsjH1roziw
+	XG2KOFpM9guh0iwYFLV5J1JCzfwroMCBvu2GiBvRt+mbtZkCVxrU0ZII0id9ybbKW4bTxA5LH/0
+	hlDlyO95SECCkYyWCx/geFiBr2aly/OeDANtEHwbKC9BOuAYVjJE7NKRMN0fYIDpQXT2D7324aS
+	/hFWFSS79FvSIsOIhMVlzBh/ZCkUKQJT0cSMlxZPMg96ng=
+X-Received: by 2002:a05:6a00:1bc4:b0:81f:4a36:1c7c with SMTP id d2e1a72fcca58-82f8c8c5b5fmr33371276b3a.23.1777050455735;
+        Fri, 24 Apr 2026 10:07:35 -0700 (PDT)
+Received: from localhost.localdomain ([1.226.165.54])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f8ebb3829sm25096419b3a.31.2026.04.24.10.07.33
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Fri, 24 Apr 2026 10:07:35 -0700 (PDT)
+From: "=?UTF-8?q?=EB=B0=95=EB=AA=85=ED=9B=88?=" <mhun512@gmail.com>
+X-Google-Original-From: =?UTF-8?q?=EB=B0=95=EB=AA=85=ED=9B=88?= <pakmyeonghun@bagmyeonghun-ui-MacBookPro.local>
+To: Eugen Hristev <eugen.hristev@linaro.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Myeonghun Pak <mhun512@gmail.com>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH v12 1/2] media: dt-bindings: nxp,imx8-isi: Drop
- fsl,blk-ctrl requirement for i.MX8ULP
-Message-ID: <20260424-crushing-synthesis-46c5c423fa9d@spud>
-References: <20260424-csi2_imx8ulp-v12-0-da148eabc035@oss.nxp.com>
- <20260424-csi2_imx8ulp-v12-1-da148eabc035@oss.nxp.com>
+Subject: [PATCH] media: microchip: csi2dc: unregister notifier on probe failure
+Date: Sat, 25 Apr 2026 02:07:16 +0900
+Message-ID: <20260424-csi2dc-notifier-probe-unwind-v1-1-mhun512@gmail.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Cz7yp52ESwv+fNtV"
-Content-Disposition: inline
-In-Reply-To: <20260424-csi2_imx8ulp-v12-1-da148eabc035@oss.nxp.com>
-X-Rspamd-Queue-Id: 10929461909
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 1EF19461D3A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.26 / 15.00];
-	SIGNED_PGP(-2.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	TAGGED_FROM(0.00)[bounces-241010-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-241011-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,nxp.com,pengutronix.de,ideasonboard.com,gmail.com,vger.kernel.org,lists.linux.dev,lists.infradead.org];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[conor@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable,dt];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[mhun512@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	TO_DN_SOME(0.00)[]
+	TAGGED_RCPT(0.00)[stable];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_FIVE(0.00)[6]
 
+From: Myeonghun Pak <mhun512@gmail.com>
 
---Cz7yp52ESwv+fNtV
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+csi2dc_of_parse() registers the async notifier before later probe setup
+steps can fail. Those probe error paths currently only clean up notifier
+resources, leaving the registered notifier on the V4L2 async notifier list
+because .remove() is not called after a failed probe.
 
-On Fri, Apr 24, 2026 at 02:49:50PM +0800, Guoniu Zhou wrote:
-> The i.MX8ULP variant does not require the fsl,blk-ctrl property. Add
-> fsl,imx8ulp-isi to the exception list alongside fsl,imx91-isi.
->=20
-> Fixes: 288517a3c6c9 ("dt-bindings: media: nxp,imx8-isi: Add i.MX8ULP ISI =
-compatible string")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
+Unregister the notifier before cleaning it up on probe failure, mirroring
+the successful remove path.
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-pw-bot: not-applicable
+Fixes: 2de0b3c0f678 ("media: atmel: introduce microchip csi2dc driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
+---
+ drivers/media/platform/microchip/microchip-csi2dc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---Cz7yp52ESwv+fNtV
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaeuikwAKCRB4tDGHoIJi
-0ls9AQC6Gvq6+BRlx+Okq2Qt/M1Gp1lBdnB7GKqtHiJVu6E5sgD+NW0d7/6n4ySn
-ApgOHeb+OcQPSagNXpd6UIKjKXMuQAo=
-=GRqU
------END PGP SIGNATURE-----
-
---Cz7yp52ESwv+fNtV--
+diff --git a/drivers/media/platform/microchip/microchip-csi2dc.c b/drivers/media/platform/microchip/microchip-csi2dc.c
+index 70303a0b69..59574258ab 100644
+--- a/drivers/media/platform/microchip/microchip-csi2dc.c
++++ b/drivers/media/platform/microchip/microchip-csi2dc.c
+@@ -736,6 +736,7 @@ static int csi2dc_probe(struct platform_device *pdev)
+ 	return 0;
+ 
+ csi2dc_probe_cleanup_notifier:
++	v4l2_async_nf_unregister(&csi2dc->notifier);
+ 	v4l2_async_nf_cleanup(&csi2dc->notifier);
+ csi2dc_probe_cleanup_entity:
+ 	media_entity_cleanup(&csi2dc->csi2dc_sd.entity);
+-- 
+2.50.1
 
