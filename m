@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-240847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240691-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uCfbNbp062koNAAAu9opvQ
-	(envelope-from <stable+bounces-240847-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:48:42 +0200
+	id 2PeRGxpx62nCMwAAu9opvQ
+	(envelope-from <stable+bounces-240691-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:33:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A47045FAF1
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:48:41 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 237F345F177
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:33:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C96B030AB44E
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:40:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 01D56300809D
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:33:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 735EB3D75C2;
-	Fri, 24 Apr 2026 13:39:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C565723E356;
+	Fri, 24 Apr 2026 13:33:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tnCETz3o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bjhaFtwh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 378B73D75C1;
-	Fri, 24 Apr 2026 13:39:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89DBB3AC00;
+	Fri, 24 Apr 2026 13:33:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777037994; cv=none; b=GFZMeGTPOmX27XPx5D3YdBtyihEy/Gd+atV+xqDfNQaC/GaDH3uAZqJ5XKlNcsPKzYH1G28BFnjAc5Do6BcvT0pQeVvZJ/ce5AqLAqzHqxrTsu9Q3IiHqSORwxMNVvptOk/EcpN18rkdXoSiav1M35CwhPi0w5ADdAkGo/nXQiU=
+	t=1777037590; cv=none; b=Twtdzj6tifi649J4ZtMDFfGtW8KRfRzFM6Nm+1QBxRtlYTceBwCabnULWBEjddzrQy+pVmi24UrRFI1k6Q5xOFJ3TSpkhUq5KJD+FlVVo6F7V/mCfa7mCcOrriznUol4KQ9dIQRgDg01zS+hoUw3Ts4Ids1G+2Ikuy38MBdbz2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777037994; c=relaxed/simple;
-	bh=Tf3xFCkTaVlSBAG8MYtOn+FGgNTU2OHT6GzLUC7419U=;
+	s=arc-20240116; t=1777037590; c=relaxed/simple;
+	bh=LD5MujiVBRD+nghyXFEALmfNTKmzlXp1f6S1efyPA9Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F/lsxaW4Z6/1dCKjV3D6ufqcmiKRowZ1ZbSXVOhVsxVasl1fmw4A6PLfcGdDX6rpGhay07P7I/JJVKY/s3hG6ih9DShTTHdjMCE/7dyWR/vLGyIeDgLbh8tDuYYGDl+sT10mqO9uIwi1Lw+9Z98OtdycT1C2eT/jXeDdVMYrwDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tnCETz3o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A99EC2BCB6;
-	Fri, 24 Apr 2026 13:39:53 +0000 (UTC)
+	 MIME-Version; b=cytuGwtGof6+kVNkAa3yqPya4xJoYnVYqc1Jxj5nAdjOp1RAaJ3WpXyDAxjCrCY5SpfrBadzNJ5RnqwpiWlj9ZRxvynDrIWv9VU4av8w3CV6+GFxwAZ7DYw3/y67q93hbE8SXCMvuDapyo2u7wyP3srqSxQn/IRDEyTtx7PHIU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bjhaFtwh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE972C2BCB2;
+	Fri, 24 Apr 2026 13:33:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777037993;
-	bh=Tf3xFCkTaVlSBAG8MYtOn+FGgNTU2OHT6GzLUC7419U=;
+	s=korg; t=1777037590;
+	bh=LD5MujiVBRD+nghyXFEALmfNTKmzlXp1f6S1efyPA9Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tnCETz3oLjHbQ9BpagEXsOcB32KJx9JpVZqrEQPK/T0hjjBxnp/IFFFokcrY6lPN7
-	 q7U21lVY1VpNwqQPs+Bw2aBC4j4r+340FbIwq+dDGndKC33c29/ALA9l13XvDcAU4s
-	 LxBSfu5hZZ9El2ShnvH2ctZ/r7ZdgFnwxHN4Fj5o=
+	b=bjhaFtwh9+JkBAsz7lvQ1MMwTlnvVGNBmRq3WFhays5DwQmTkE/ONK+QArWtduSmV
+	 Y4DuKEnTK7dRM+dFBbJgG78iBzcUva1MfvSd/RoEwb7dgLupvWuPtTnjAw4I6IQgHx
+	 neanjPeuXVHd66JXUXk+n/uYMpqjNPWDaBgpMz+g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bernd Schubert <bschubert@ddn.com>,
-	Horst Birthelmer <hbirthelmer@ddn.com>,
-	Miklos Szeredi <mszeredi@redhat.com>
-Subject: [PATCH 6.6 148/166] fuse: Check for large folio with SPLICE_F_MOVE
+	Bingquan Chen <patzilla007@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 7.0 37/42] net/packet: fix TOCTOU race on mmapd vnet_hdr in tpacket_snd()
 Date: Fri, 24 Apr 2026 15:31:02 +0200
-Message-ID: <20260424132604.130673069@linuxfoundation.org>
+Message-ID: <20260424132428.321641994@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132532.812258529@linuxfoundation.org>
-References: <20260424132532.812258529@linuxfoundation.org>
+In-Reply-To: <20260424132420.410310336@linuxfoundation.org>
+References: <20260424132420.410310336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,76 +64,126 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3A47045FAF1
+X-Rspamd-Queue-Id: 237F345F177
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-240691-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-240847-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,ddn.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bernd Schubert <bschubert@ddn.com>
+From: Bingquan Chen <patzilla007@gmail.com>
 
-commit 59ba47b6be9cd0146ef9a55c6e32e337e11e7625 upstream.
+commit 2c054e17d9d41f1020376806c7f750834ced4dc5 upstream.
 
-xfstest generic/074 and generic/075 complain result in kernel
-warning messages / page dumps.
-This is easily reproducible (on 6.19) with
-CONFIG_TRANSPARENT_HUGEPAGE_SHMEM_HUGE_ALWAYS=y
-CONFIG_TRANSPARENT_HUGEPAGE_TMPFS_HUGE_ALWAYS=y
+In tpacket_snd(), when PACKET_VNET_HDR is enabled, vnet_hdr points
+directly into the mmap'd TX ring buffer shared with userspace. The
+kernel validates the header via __packet_snd_vnet_parse() but then
+re-reads all fields later in virtio_net_hdr_to_skb(). A concurrent
+userspace thread can modify the vnet_hdr fields between validation
+and use, bypassing all safety checks.
 
-This just adds a test for large folios fuse_try_move_folio
-with the same page copy fallback, but to avoid the warnings
-from fuse_check_folio().
+The non-TPACKET path (packet_snd()) already correctly copies vnet_hdr
+to a stack-local variable. All other vnet_hdr consumers in the kernel
+(tun.c, tap.c, virtio_net.c) also use stack copies. The TPACKET TX
+path is the only caller of virtio_net_hdr_to_skb() that reads directly
+from user-controlled shared memory.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Bernd Schubert <bschubert@ddn.com>
-Signed-off-by: Horst Birthelmer <hbirthelmer@ddn.com>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Fix this by copying vnet_hdr from the mmap'd ring buffer to a
+stack-local variable before validation and use, consistent with the
+approach used in packet_snd() and all other callers.
+
+Fixes: 1d036d25e560 ("packet: tpacket_snd gso and checksum offload")
+Signed-off-by: Bingquan Chen <patzilla007@gmail.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20260418112006.78823-1-patzilla007@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/fuse/dev.c |    3 +++
- 1 file changed, 3 insertions(+)
+ net/packet/af_packet.c |   21 +++++++++++++--------
+ 1 file changed, 13 insertions(+), 8 deletions(-)
 
---- a/fs/fuse/dev.c
-+++ b/fs/fuse/dev.c
-@@ -823,6 +823,9 @@ static int fuse_try_move_page(struct fus
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -2717,7 +2717,8 @@ static int tpacket_snd(struct packet_soc
+ {
+ 	struct sk_buff *skb = NULL;
+ 	struct net_device *dev;
+-	struct virtio_net_hdr *vnet_hdr = NULL;
++	struct virtio_net_hdr vnet_hdr;
++	bool has_vnet_hdr = false;
+ 	struct sockcm_cookie sockc;
+ 	__be16 proto;
+ 	int err, reserve = 0;
+@@ -2818,16 +2819,20 @@ static int tpacket_snd(struct packet_soc
+ 		hlen = LL_RESERVED_SPACE(dev);
+ 		tlen = dev->needed_tailroom;
+ 		if (vnet_hdr_sz) {
+-			vnet_hdr = data;
+ 			data += vnet_hdr_sz;
+ 			tp_len -= vnet_hdr_sz;
+-			if (tp_len < 0 ||
+-			    __packet_snd_vnet_parse(vnet_hdr, tp_len)) {
++			if (tp_len < 0) {
++				tp_len = -EINVAL;
++				goto tpacket_error;
++			}
++			memcpy(&vnet_hdr, data - vnet_hdr_sz, sizeof(vnet_hdr));
++			if (__packet_snd_vnet_parse(&vnet_hdr, tp_len)) {
+ 				tp_len = -EINVAL;
+ 				goto tpacket_error;
+ 			}
+ 			copylen = __virtio16_to_cpu(vio_le(),
+-						    vnet_hdr->hdr_len);
++						    vnet_hdr.hdr_len);
++			has_vnet_hdr = true;
+ 		}
+ 		copylen = max_t(int, copylen, dev->hard_header_len);
+ 		skb = sock_alloc_send_skb(&po->sk,
+@@ -2864,12 +2869,12 @@ tpacket_error:
+ 			}
+ 		}
  
- 	folio_clear_mappedtodisk(newfolio);
+-		if (vnet_hdr_sz) {
+-			if (virtio_net_hdr_to_skb(skb, vnet_hdr, vio_le())) {
++		if (has_vnet_hdr) {
++			if (virtio_net_hdr_to_skb(skb, &vnet_hdr, vio_le())) {
+ 				tp_len = -EINVAL;
+ 				goto tpacket_error;
+ 			}
+-			virtio_net_hdr_set_proto(skb, vnet_hdr);
++			virtio_net_hdr_set_proto(skb, &vnet_hdr);
+ 		}
  
-+	if (folio_test_large(newfolio))
-+		goto out_fallback_unlock;
-+
- 	if (fuse_check_folio(newfolio) != 0)
- 		goto out_fallback_unlock;
- 
+ 		skb->destructor = tpacket_destruct_skb;
 
 
 
