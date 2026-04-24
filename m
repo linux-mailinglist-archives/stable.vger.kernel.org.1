@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-240934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240868-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wNNbM5Rz62kLNAAAu9opvQ
-	(envelope-from <stable+bounces-240934-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:43:48 +0200
+	id UKWCAOx062kQNAAAu9opvQ
+	(envelope-from <stable+bounces-240868-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:49:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB56545F7F4
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:43:47 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EEB545FB57
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:49:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1268A30093B6
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:43:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 735F23041496
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:40:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A94583D6494;
-	Fri, 24 Apr 2026 13:43:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4731519A288;
+	Fri, 24 Apr 2026 13:40:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TqrEA9Ck"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tKPuwQjt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D8D23537DF;
-	Fri, 24 Apr 2026 13:43:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AE823D3D04;
+	Fri, 24 Apr 2026 13:40:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777038215; cv=none; b=K5Ovj9TGdSbREfKEjoQ9wk3/c2ab5kqAI9pcfsEzAuS382WvM7milo64OwIIwPBQh4t49P/mYZwoVkLE3vN+LzYpbVtmDC97PAmOUDPAI70W/hGjxwSsZGsf5R1SX1YElGbeDVVotgIFfBmmU6tgInsHMpSq9ADOBzxc8zbi5Z4=
+	t=1777038048; cv=none; b=X78N+VYny1mDdsr1Ruq6+EbQn8VllCOgwiFnqrxiF4h6exZvXNv84ZFxZipJy7ZSZrVg9fA/QspIXm9IVNx/WSb9LKJ/bZ6wZgrdsz0o87W9tOImjgMcAKvfDLGgbeINpu2wzZe6OEpLYi7xCxsSxzSt9IwpT0wWBzKT2IWZREw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777038215; c=relaxed/simple;
-	bh=Gw2PkFvtH8WXIw3/cPGGrFBAtZeZU+7KR6MwI2gbQ4E=;
+	s=arc-20240116; t=1777038048; c=relaxed/simple;
+	bh=HbnkUhdA1gFf/c7TvzPb/BJElqX3GPCKPjJEAb6QN3s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FWweL1mMO37qP8AEAcC6V6XhyGnFRKuS8eqU9t7RfjpODFY9L0UD98Zf848K5wsTSZDMpZ4KLNBEwj5C37Z+jlotrdVxLdNzcwbia922cnucCIFF3hWHASQ3dSoEfkyIx/4T4Kq2YwFpwjhnW9As1xH4gaE52CFmw6GqGSxQJ2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TqrEA9Ck; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06252C19425;
-	Fri, 24 Apr 2026 13:43:34 +0000 (UTC)
+	 MIME-Version; b=shq/IXb/QDpGp5puYRQxp/bJu3Kn+K6W57iwXpPmtGrHJLGiwQzmalogKJsGIpkZ0sM/OoKxTXBYOUa3wzxb1sPRghJspVyoYT8FUV3K6mQOJQuLOj32SK61a88pxp3nCfJ3maDMErbEerpPbgZ8QZzScOkfESYDlFRg9EfQMik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tKPuwQjt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95F17C2BCB5;
+	Fri, 24 Apr 2026 13:40:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777038215;
-	bh=Gw2PkFvtH8WXIw3/cPGGrFBAtZeZU+7KR6MwI2gbQ4E=;
+	s=korg; t=1777038047;
+	bh=HbnkUhdA1gFf/c7TvzPb/BJElqX3GPCKPjJEAb6QN3s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TqrEA9CkXlxmtJhrx8wKrS7Pzmbb5ymKFazofqSd+tni8yCLi3uRP/mezgP/PgB9k
-	 P/0Mm7SzFB13WOdt+oJw1fsg8ATbMJcr1PDXLw69dFf579dG69ceomrLVREeGJh5sk
-	 o8Psamw0FPBgTRifVioPnofN4GGn9ey+U5uQOFis=
+	b=tKPuwQjteiW/7l/YjsRgf3hF5ah1mgkmPGse/cNqFnMv4KlQLO1LvH2DDrwiMJ1Qh
+	 wigsa8uGLfhEehVIIVMEcfVRvk31+IFJ5bLuiQ7sii7xR6H0W/FwDZUS8GD+QzWDfp
+	 stSlO+0o4eP3HRvjcygWys/WcLL77V8A+ggHoZPM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Li hongliang <1468888505@139.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 05/35] wifi: mac80211: always free skb on ieee80211_tx_prepare_skb() failure
-Date: Fri, 24 Apr 2026 15:31:12 +0200
-Message-ID: <20260424132412.686395810@linuxfoundation.org>
+	Bingquan Chen <patzilla007@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 159/166] net/packet: fix TOCTOU race on mmapd vnet_hdr in tpacket_snd()
+Date: Fri, 24 Apr 2026 15:31:13 +0200
+Message-ID: <20260424132606.306965345@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132411.427029259@linuxfoundation.org>
-References: <20260424132411.427029259@linuxfoundation.org>
+In-Reply-To: <20260424132532.812258529@linuxfoundation.org>
+References: <20260424132532.812258529@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,144 +64,126 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: CB56545F7F4
+X-Rspamd-Queue-Id: 5EEB545FB57
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,nbd.name,intel.com,139.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-240934-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240868-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[139.com:email,msgid.link:url,intel.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,nbd.name:email]
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Bingquan Chen <patzilla007@gmail.com>
 
-[ Upstream commit d5ad6ab61cbd89afdb60881f6274f74328af3ee9 ]
+commit 2c054e17d9d41f1020376806c7f750834ced4dc5 upstream.
 
-ieee80211_tx_prepare_skb() has three error paths, but only two of them
-free the skb. The first error path (ieee80211_tx_prepare() returning
-TX_DROP) does not free it, while invoke_tx_handlers() failure and the
-fragmentation check both do.
+In tpacket_snd(), when PACKET_VNET_HDR is enabled, vnet_hdr points
+directly into the mmap'd TX ring buffer shared with userspace. The
+kernel validates the header via __packet_snd_vnet_parse() but then
+re-reads all fields later in virtio_net_hdr_to_skb(). A concurrent
+userspace thread can modify the vnet_hdr fields between validation
+and use, bypassing all safety checks.
 
-Add kfree_skb() to the first error path so all three are consistent,
-and remove the now-redundant frees in callers (ath9k, mt76,
-mac80211_hwsim) to avoid double-free.
+The non-TPACKET path (packet_snd()) already correctly copies vnet_hdr
+to a stack-local variable. All other vnet_hdr consumers in the kernel
+(tun.c, tap.c, virtio_net.c) also use stack copies. The TPACKET TX
+path is the only caller of virtio_net_hdr_to_skb() that reads directly
+from user-controlled shared memory.
 
-Document the skb ownership guarantee in the function's kdoc.
+Fix this by copying vnet_hdr from the mmap'd ring buffer to a
+stack-local variable before validation and use, consistent with the
+approach used in packet_snd() and all other callers.
 
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Link: https://patch.msgid.link/20260314065455.2462900-1-nbd@nbd.name
-Fixes: 06be6b149f7e ("mac80211: add ieee80211_tx_prepare_skb() helper function")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-[ Exclude changes to drivers/net/wireless/mediatek/mt76/scan.c as this file is first
- introduced by commit 31083e38548f("wifi: mt76: add code for emulating hardware scanning")
- after linux-6.14.]
-Signed-off-by: Li hongliang <1468888505@139.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1d036d25e560 ("packet: tpacket_snd gso and checksum offload")
+Signed-off-by: Bingquan Chen <patzilla007@gmail.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20260418112006.78823-1-patzilla007@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath9k/channel.c      | 6 ++----
- drivers/net/wireless/virtual/mac80211_hwsim.c | 1 -
- include/net/mac80211.h                        | 4 +++-
- net/mac80211/tx.c                             | 4 +++-
- 4 files changed, 8 insertions(+), 7 deletions(-)
+ net/packet/af_packet.c |   21 +++++++++++++--------
+ 1 file changed, 13 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/channel.c b/drivers/net/wireless/ath/ath9k/channel.c
-index 571062f2e82a7..ba8ec5112afe8 100644
---- a/drivers/net/wireless/ath/ath9k/channel.c
-+++ b/drivers/net/wireless/ath/ath9k/channel.c
-@@ -1011,7 +1011,7 @@ static void ath_scan_send_probe(struct ath_softc *sc,
- 	skb_set_queue_mapping(skb, IEEE80211_AC_VO);
- 
- 	if (!ieee80211_tx_prepare_skb(sc->hw, vif, skb, band, NULL))
--		goto error;
-+		return;
- 
- 	txctl.txq = sc->tx.txq_map[IEEE80211_AC_VO];
- 	if (ath_tx_start(sc->hw, skb, &txctl))
-@@ -1124,10 +1124,8 @@ ath_chanctx_send_vif_ps_frame(struct ath_softc *sc, struct ath_vif *avp,
- 
- 		skb->priority = 7;
- 		skb_set_queue_mapping(skb, IEEE80211_AC_VO);
--		if (!ieee80211_tx_prepare_skb(sc->hw, vif, skb, band, &sta)) {
--			dev_kfree_skb_any(skb);
-+		if (!ieee80211_tx_prepare_skb(sc->hw, vif, skb, band, &sta))
- 			return false;
--		}
- 		break;
- 	default:
- 		return false;
-diff --git a/drivers/net/wireless/virtual/mac80211_hwsim.c b/drivers/net/wireless/virtual/mac80211_hwsim.c
-index 8b4fd5fd11b0e..e992e59b59189 100644
---- a/drivers/net/wireless/virtual/mac80211_hwsim.c
-+++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
-@@ -2977,7 +2977,6 @@ static void hw_scan_work(struct work_struct *work)
- 						      hwsim->tmp_chan->band,
- 						      NULL)) {
- 				rcu_read_unlock();
--				kfree_skb(probe);
- 				continue;
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -2777,7 +2777,8 @@ static int tpacket_snd(struct packet_soc
+ {
+ 	struct sk_buff *skb = NULL;
+ 	struct net_device *dev;
+-	struct virtio_net_hdr *vnet_hdr = NULL;
++	struct virtio_net_hdr vnet_hdr;
++	bool has_vnet_hdr = false;
+ 	struct sockcm_cookie sockc;
+ 	__be16 proto;
+ 	int err, reserve = 0;
+@@ -2878,16 +2879,20 @@ static int tpacket_snd(struct packet_soc
+ 		hlen = LL_RESERVED_SPACE(dev);
+ 		tlen = dev->needed_tailroom;
+ 		if (vnet_hdr_sz) {
+-			vnet_hdr = data;
+ 			data += vnet_hdr_sz;
+ 			tp_len -= vnet_hdr_sz;
+-			if (tp_len < 0 ||
+-			    __packet_snd_vnet_parse(vnet_hdr, tp_len)) {
++			if (tp_len < 0) {
++				tp_len = -EINVAL;
++				goto tpacket_error;
++			}
++			memcpy(&vnet_hdr, data - vnet_hdr_sz, sizeof(vnet_hdr));
++			if (__packet_snd_vnet_parse(&vnet_hdr, tp_len)) {
+ 				tp_len = -EINVAL;
+ 				goto tpacket_error;
  			}
+ 			copylen = __virtio16_to_cpu(vio_le(),
+-						    vnet_hdr->hdr_len);
++						    vnet_hdr.hdr_len);
++			has_vnet_hdr = true;
+ 		}
+ 		copylen = max_t(int, copylen, dev->hard_header_len);
+ 		skb = sock_alloc_send_skb(&po->sk,
+@@ -2924,12 +2929,12 @@ tpacket_error:
+ 			}
+ 		}
  
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index 80259a37e7247..7d71a4149cdf9 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -7208,7 +7208,9 @@ void ieee80211_report_wowlan_wakeup(struct ieee80211_vif *vif,
-  * @band: the band to transmit on
-  * @sta: optional pointer to get the station to send the frame to
-  *
-- * Return: %true if the skb was prepared, %false otherwise
-+ * Return: %true if the skb was prepared, %false otherwise.
-+ * On failure, the skb is freed by this function; callers must not
-+ * free it again.
-  *
-  * Note: must be called under RCU lock
-  */
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 9142d748a6a70..0458cbba232e2 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -1897,8 +1897,10 @@ bool ieee80211_tx_prepare_skb(struct ieee80211_hw *hw,
- 	struct ieee80211_tx_data tx;
- 	struct sk_buff *skb2;
+-		if (vnet_hdr_sz) {
+-			if (virtio_net_hdr_to_skb(skb, vnet_hdr, vio_le())) {
++		if (has_vnet_hdr) {
++			if (virtio_net_hdr_to_skb(skb, &vnet_hdr, vio_le())) {
+ 				tp_len = -EINVAL;
+ 				goto tpacket_error;
+ 			}
+-			virtio_net_hdr_set_proto(skb, vnet_hdr);
++			virtio_net_hdr_set_proto(skb, &vnet_hdr);
+ 		}
  
--	if (ieee80211_tx_prepare(sdata, &tx, NULL, skb) == TX_DROP)
-+	if (ieee80211_tx_prepare(sdata, &tx, NULL, skb) == TX_DROP) {
-+		kfree_skb(skb);
- 		return false;
-+	}
- 
- 	info->band = band;
- 	info->control.vif = vif;
--- 
-2.53.0
-
+ 		skb->destructor = tpacket_destruct_skb;
 
 
 
