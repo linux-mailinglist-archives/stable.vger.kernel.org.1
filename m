@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-240913-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240941-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yN9pAlhz62kLNAAAu9opvQ
-	(envelope-from <stable+bounces-240913-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:42:48 +0200
+	id 0JsmO0Z062koNAAAu9opvQ
+	(envelope-from <stable+bounces-240941-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:46:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9234145F728
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:42:47 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 719B345F9AF
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:46:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E32F03006475
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:42:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D099B304D1CE
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:43:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3172E3D47B8;
-	Fri, 24 Apr 2026 13:42:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96EB13D75D1;
+	Fri, 24 Apr 2026 13:43:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DbW3z8te"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QHLyOGLu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9476386C0A;
-	Fri, 24 Apr 2026 13:42:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A8843D75C3;
+	Fri, 24 Apr 2026 13:43:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777038164; cv=none; b=YwbMWU6r5AnjSWiseWyF7vXbGJrLnpXDqpgeL/2cs9p4Gr60wWLD2CYA17g/Qj2jfqPCHNq6jZb1h/XyQJrwqFQV00nqwFXDhr+b+DlR3WxWTo6QyLVoP2x2i+9B7qaa3lW/2y5zKpQgIvW+nLNWxRyiFoqLVl/O9+F90qcoNHE=
+	t=1777038233; cv=none; b=Qxh1z6wD6TnX0wn8DLcbeAzRa/iAw6NQu1VJVpkLKAxhMQcCfTAXjKFT/akTwNCQ70/FoALSdPw8nCvbp3H7eInm+ouykdzuCyrmvSpiw6nouEhWeJBbBSPcTHFiSPWwfDAyJxzVjD45YOQ3k+KkqGyVvhn7TTJGz8kQ8xjxNH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777038164; c=relaxed/simple;
-	bh=vVuHF5xNjqHI1bnwMwwlE+Jj8oKWubcKz5cdm+3DgvQ=;
+	s=arc-20240116; t=1777038233; c=relaxed/simple;
+	bh=zI8WWnMlT+hTqvtHb/1BwS+5vm/6uQ02ScS7KjUjGtc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mmxSGIUGG3CkgDlDJWt+CKz0rC1YF+HhvUyHKyVABLjCxOJ8SrYiyBkY82+0nzCOkQLtUGu6RqVWbm8u1wkkdQX1834VBT0Z/Bzkgpa4HFDazBDtZRJjMQP/jxHRTK7yHUeOwFAwQkx+hoKPYJxSpHn/LEgeXyWajdr2KMhXFtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DbW3z8te; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8083AC19425;
-	Fri, 24 Apr 2026 13:42:43 +0000 (UTC)
+	 MIME-Version; b=ZNNaLenQGB55ZhX9Lg5fGesxPWfor2githxjLQtspNHkrL81X4demh1yLVL5l5ziXBpoTQooH3DJgA46Do3pOeS2wmE7nN5FFet8nO70Nq902x8c9PyZP3G6CogYtaUUVC/KuaIGPj0Vk/LhfS+PWKtGlxKxKYRNJGK6cGc4AWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QHLyOGLu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7A3BC2BCB5;
+	Fri, 24 Apr 2026 13:43:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777038163;
-	bh=vVuHF5xNjqHI1bnwMwwlE+Jj8oKWubcKz5cdm+3DgvQ=;
+	s=korg; t=1777038233;
+	bh=zI8WWnMlT+hTqvtHb/1BwS+5vm/6uQ02ScS7KjUjGtc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DbW3z8te0PYUCJDs7GLh5eNKG41EF3kemqiJnBanQcRkjdneWlbWcTAmIjaaAA8GM
-	 u8ydVfh56jnIbPkmXQfbBjPOH4ZYdOmWZeRZDYxexfFCe1fB3T1zFzcCN8VSRl1deO
-	 dyn/B6NmtpOFumnWF1LTFPuZFLempDf0nTzK+nM8=
+	b=QHLyOGLuvsa8KxFA4ko7wj1BX5bPtmlRV7ljXocpqPMgCil9YbBm3mdHlpe226Usv
+	 MT3I+AohTLo1upWjgXcAS0lAXJEpXr8COiQMgHN0KspH44Xkhc5SzOVaH6zAguGrbL
+	 FV5yiLvRyODN0X4cNGJO20jaBO4jUtc+gLwbBiLo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kagura <me@mail.kagurach.uk>,
-	Cryolitia PukNgae <cryolitia.pukngae@linux.dev>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.18 48/55] ALSA: usb-audio: apply quirk for MOONDROP JU Jiu
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 20/35] smb: server: fix active_num_conn leak on transport allocation failure
 Date: Fri, 24 Apr 2026 15:31:27 +0200
-Message-ID: <20260424132440.044390109@linuxfoundation.org>
+Message-ID: <20260424132415.943689485@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132430.006424517@linuxfoundation.org>
-References: <20260424132430.006424517@linuxfoundation.org>
+In-Reply-To: <20260424132411.427029259@linuxfoundation.org>
+References: <20260424132411.427029259@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +64,105 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9234145F728
+X-Rspamd-Queue-Id: 719B345F9AF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-240913-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240941-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,kagurach.uk:email,linux.dev:email,msgid.link:url]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cryolitia PukNgae <cryolitia.pukngae@linux.dev>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-commit 4513d3e0bbc0585b86ccf2631902593ff97e88f5 upstream.
+commit 6551300dc452ac16a855a83dbd1e74899542d3b3 upstream.
 
-It(ID 31b2:0111 JU Jiu) reports a MIN value -12800 for volume control, but
-will mute when setting it less than -10880.
+Commit 77ffbcac4e56 ("smb: server: fix leak of active_num_conn in
+ksmbd_tcp_new_connection()") addressed the kthread_run() failure
+path.  The earlier alloc_transport() == NULL path in the same
+function has the same leak, is reachable pre-authentication via any
+TCP connect to port 445, and was empirically reproduced on UML
+(ARCH=um, v7.0-rc7): a small number of forced allocation failures
+were sufficient to put ksmbd into a state where every subsequent
+connection attempt was rejected for the remainder of the boot.
 
-Thanks to my girlfriend Kagura for reporting this issue.
+ksmbd_kthread_fn() increments active_num_conn before calling
+ksmbd_tcp_new_connection() and discards the return value, so when
+alloc_transport() returns NULL the socket is released and -ENOMEM
+returned without decrementing the counter.  Each such failure
+permanently consumes one slot from the max_connections pool; once
+cumulative failures reach the cap, atomic_inc_return() hits the
+threshold on every subsequent accept and every new connection is
+rejected.  The counter is only reset by module reload.
 
-Cc: Kagura <me@mail.kagurach.uk>
+An unauthenticated remote attacker can drive the server toward the
+memory pressure that makes alloc_transport() fail by holding open
+connections with large RFC1002 lengths up to MAX_STREAM_PROT_LEN
+(0x00FFFFFF); natural transient allocation failures on a loaded
+host produce the same drift more slowly.
+
+Mirror the existing rollback pattern in ksmbd_kthread_fn(): on the
+alloc_transport() failure path, decrement active_num_conn gated on
+server_conf.max_connections.
+
+Repro details: with the patch reverted, forced alloc_transport()
+NULL returns leaked counter slots and subsequent connection
+attempts -- including legitimate connects issued after the
+forced-fail window had closed -- were all rejected with "Limit the
+maximum number of connections".  With this patch applied, the same
+connect sequence produces no rejections and the counter cycles
+cleanly between zero and one on every accept.
+
+Fixes: 0d0d4680db22 ("ksmbd: add max connections parameter")
 Cc: stable@vger.kernel.org
-Signed-off-by: Cryolitia PukNgae <cryolitia.pukngae@linux.dev>
-Link: https://patch.msgid.link/20260402-syy-v1-1-068d3bc30ddc@linux.dev
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Assisted-by: Claude:claude-opus-4-6
+Assisted-by: Codex:gpt-5-4
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/mixer.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ fs/smb/server/transport_tcp.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/sound/usb/mixer.c
-+++ b/sound/usb/mixer.c
-@@ -1204,6 +1204,13 @@ static void volume_control_quirks(struct
- 			cval->min = -11264; /* Mute under it */
- 		}
- 		break;
-+	case USB_ID(0x31b2, 0x0111): /* MOONDROP JU Jiu */
-+		if (!strcmp(kctl->id.name, "PCM Playback Volume")) {
-+			usb_audio_info(chip,
-+				       "set volume quirk for MOONDROP JU Jiu\n");
-+			cval->min = -10880; /* Mute under it */
-+		}
-+		break;
+--- a/fs/smb/server/transport_tcp.c
++++ b/fs/smb/server/transport_tcp.c
+@@ -203,6 +203,8 @@ static int ksmbd_tcp_new_connection(stru
+ 	t = alloc_transport(client_sk);
+ 	if (!t) {
+ 		sock_release(client_sk);
++		if (server_conf.max_connections)
++			atomic_dec(&active_num_conn);
+ 		return -ENOMEM;
  	}
- }
  
 
 
