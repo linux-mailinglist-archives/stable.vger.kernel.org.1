@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-240665-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240853-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cBIhDNpw62nCMwAAu9opvQ
-	(envelope-from <stable+bounces-240665-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:32:10 +0200
+	id AKByLsZ062kQNAAAu9opvQ
+	(envelope-from <stable+bounces-240853-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:48:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 515CD45F0FB
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:32:09 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40E9945FB00
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:48:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5B1E93002B66
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:32:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E1FF73037EEB
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:40:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8227F3D6494;
-	Fri, 24 Apr 2026 13:32:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9E723D6CC8;
+	Fri, 24 Apr 2026 13:40:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qHbuZsQ4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DNlVW00J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A55EB3D4123;
-	Fri, 24 Apr 2026 13:32:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 690333D5236;
+	Fri, 24 Apr 2026 13:40:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777037523; cv=none; b=TyW4c6R1IhgpLVHvXlFF0ewr/LDwS4vsbqHN8iA2+1GMhWk1x6VT7a5QDJtrj0iSbYpMklov6anL5rBKVlMQHmEZ/d6ClOe4X3qjrDj6MlwSecRHGw0XNs/DwazusQkZFcTeWQZp4A6gj7aVNoGkqdwvpVi7u900pHiat9nMmqY=
+	t=1777038009; cv=none; b=Qo+/OlITdAIppgTfpratahnMNkH7/5deUf9U7d6vZI7FR5FwpXSJL3Tkx/uRg40iaMw3cMdTcztPX9eIT6pvckoF4IXprlnNur9rj68xe4lefxGBG6FT1Yn0GCLkQSb2ui0t4fvStqTATrhnBwvUG6exWqdSTGVmxM5nQJnX0k8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777037523; c=relaxed/simple;
-	bh=lohpCUkqcbTaKosPI0AqBVY7Jpb4MvVXO2WTv+prCJw=;
+	s=arc-20240116; t=1777038009; c=relaxed/simple;
+	bh=eqHJXHiR4HY96dxa3kaoBnwwXNimPhP7ryD1NZWe8lg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AbFJ1nfTdwF3hKHm34d/pWbic0FkCdqB2OPxpwwxzD6NZo4xnyXO3mZn8HCBOg+mzYnSsc2F7AkgiLYB/EsWPAIDvu1C9aAYcKBmPD6sDu0MB7MFaKdjSAdCfeKqEZfwJfEs5HPpjsBgfTNN5hagXUehHzyqPwifV6Yzx6CvRDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qHbuZsQ4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BEA1C2BCB2;
-	Fri, 24 Apr 2026 13:32:02 +0000 (UTC)
+	 MIME-Version; b=Kt5ijPBVx40OYMjxOQPeB+jWAcDFKwMPCsvj23HAgNov5ToQNE+U4dSy2aXSXTnDMD+DjobMO/vycyBG0Ty/uiPTzFIQfOdqPoYMu3IDFbiG/5r1Ez8B8Z5DuVyW/PLQDjbZ3S0R4+RhTXrA76GNe4MdAOpxq1uuhzx4vO3FmPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DNlVW00J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F28A1C19425;
+	Fri, 24 Apr 2026 13:40:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777037522;
-	bh=lohpCUkqcbTaKosPI0AqBVY7Jpb4MvVXO2WTv+prCJw=;
+	s=korg; t=1777038009;
+	bh=eqHJXHiR4HY96dxa3kaoBnwwXNimPhP7ryD1NZWe8lg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qHbuZsQ4HSQrtPe5qBEAaps7fkwE5lb1+RMiPEpbdxrP71Iur0eqk+9n6fU8zeg54
-	 T1DairlAVgef6HJoGWoyeh46fPweGm1kM7M6Gzw6ErAyEG2urWXXb0XC0QDxbxG7Mn
-	 bLtHIeqkN0idWv/Bwi54Yt9n5k4zrV/UMbm1rJoM=
+	b=DNlVW00Jqe3zuwJ26Rb+30RuFJWNrzB4AQBybVeqk1joRnVwCBlrZ42nrowvTCAbm
+	 ZnHK62F37pHOP83aDv6UkTpYvbutYb1aWsZp/oas3YrdLHIMPbsqz8fhu5mZ/d9XOS
+	 PlW5pKN3BvxZ347WRv/MRQ3JS1reBBF3m1bYAP0M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	syzbot+62538b67389ee582837a@syzkaller.appspotmail.com,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 7.0 11/42] f2fs: fix to do sanity check on dcc->discard_cmd_cnt conditionally
+	syzbot+47321e8fd5a4c84088db@syzkaller.appspotmail.com,
+	Jeongjun Park <aha310510@gmail.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.6 122/166] media: as102: fix to not free memory after the device is registered in as102_usb_probe()
 Date: Fri, 24 Apr 2026 15:30:36 +0200
-Message-ID: <20260424132422.809839618@linuxfoundation.org>
+Message-ID: <20260424132558.379230934@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132420.410310336@linuxfoundation.org>
-References: <20260424132420.410310336@linuxfoundation.org>
+In-Reply-To: <20260424132532.812258529@linuxfoundation.org>
+References: <20260424132532.812258529@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,190 +64,108 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 515CD45F0FB
+X-Rspamd-Queue-Id: 40E9945FB00
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-240665-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,62538b67389ee582837a];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,appspotmail.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	TAGGED_FROM(0.00)[bounces-240853-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable,47321e8fd5a4c84088db,cisco];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,appspotmail.com:email,syzkaller.appspot.com:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Jeongjun Park <aha310510@gmail.com>
 
-commit 6af249c996f7d73a3435f9e577956fa259347d18 upstream.
+commit 8bd29dbe03fc5b0f039ab2395ff37b64236d2f0c upstream.
 
-Syzbot reported a f2fs bug as below:
+In as102_usb driver, the following race condition occurs:
+```
+		CPU0						CPU1
+as102_usb_probe()
+  kzalloc(); // alloc as102_dev_t
+  ....
+  usb_register_dev();
+						fd = sys_open("/path/to/dev"); // open as102 fd
+						....
+  usb_deregister_dev();
+  ....
+  kfree(); // free as102_dev_t
+  ....
+						sys_close(fd);
+						  as102_release() // UAF!!
+						    as102_usb_release()
+						      kfree(); // DFB!!
+```
 
-------------[ cut here ]------------
-kernel BUG at fs/f2fs/segment.c:1900!
-Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
-CPU: 1 UID: 0 PID: 6527 Comm: syz.5.110 Not tainted syzkaller #0 PREEMPT_{RT,(full)}
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2026
-RIP: 0010:f2fs_issue_discard_timeout+0x59b/0x5a0 fs/f2fs/segment.c:1900
-Code: d9 80 e1 07 80 c1 03 38 c1 0f 8c d6 fe ff ff 48 89 df e8 a8 5e fa fd e9 c9 fe ff ff e8 4e 46 94 fd 90 0f 0b e8 46 46 94 fd 90 <0f> 0b 0f 1f 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3
-RSP: 0018:ffffc9000494f940 EFLAGS: 00010283
-RAX: ffffffff843009ca RBX: 0000000000000001 RCX: 0000000000080000
-RDX: ffffc9001ca78000 RSI: 00000000000029f3 RDI: 00000000000029f4
-RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
-R10: dffffc0000000000 R11: ffffed100893a431 R12: 1ffff1100893a430
-R13: 1ffff1100c2b702c R14: dffffc0000000000 R15: ffff8880449d2160
-FS:  00007ffa35fed6c0(0000) GS:ffff88812643d000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f2b68634000 CR3: 0000000039f62000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- __f2fs_remount fs/f2fs/super.c:2960 [inline]
- f2fs_reconfigure+0x108a/0x1710 fs/f2fs/super.c:5443
- reconfigure_super+0x227/0x8a0 fs/super.c:1080
- do_remount fs/namespace.c:3391 [inline]
- path_mount+0xdc5/0x10e0 fs/namespace.c:4151
- do_mount fs/namespace.c:4172 [inline]
- __do_sys_mount fs/namespace.c:4361 [inline]
- __se_sys_mount+0x31d/0x420 fs/namespace.c:4338
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7ffa37dbda0a
+When a USB character device registered with usb_register_dev() is later
+unregistered (via usb_deregister_dev() or disconnect), the device node is
+removed so new open() calls fail. However, file descriptors that are
+already open do not go away immediately: they remain valid until the last
+reference is dropped and the driver's .release() is invoked.
 
-The root cause is there will be race condition in between f2fs_ioc_fitrim()
-and f2fs_remount():
+In as102, as102_usb_probe() calls usb_register_dev() and then, on an
+error path, does usb_deregister_dev() and frees as102_dev_t right away.
+If userspace raced a successful open() before the deregistration, that
+open FD will later hit as102_release() --> as102_usb_release() and access
+or free as102_dev_t again, occur a race to use-after-free and
+double-free vuln.
 
-- f2fs_remount			- f2fs_ioc_fitrim
- - f2fs_issue_discard_timeout
-  - __issue_discard_cmd
-  - __drop_discard_cmd
-  - __wait_all_discard_cmd
-				 - f2fs_trim_fs
-				  - f2fs_write_checkpoint
-				   - f2fs_clear_prefree_segments
-				    - f2fs_issue_discard
-				     - __issue_discard_async
-				      - __queue_discard_cmd
-				       - __update_discard_tree_range
-				        - __insert_discard_cmd
-				         - __create_discard_cmd
-				         : atomic_inc(&dcc->discard_cmd_cnt);
-  - sanity check on dcc->discard_cmd_cnt (expect discard_cmd_cnt to be zero)
+The fix is to never kfree(as102_dev_t) directly once usb_register_dev()
+has succeeded. After deregistration, defer freeing memory to .release().
 
-This will only happen when fitrim races w/ remount rw, if we remount to
-readonly filesystem, remount will wait until mnt_pcp.mnt_writers to zero,
-that means fitrim is not in process at that time.
+In other words, let release() perform the last kfree when the final open
+FD is closed.
 
-Cc: stable@kernel.org
-Fixes: 2482c4325dfe ("f2fs: detect bug_on in f2fs_wait_discard_bios")
-Reported-by: syzbot+62538b67389ee582837a@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-f2fs-devel/69b07d7c.050a0220.8df7.09a1.GAE@google.com
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Cc: <stable@vger.kernel.org>
+Reported-by: syzbot+47321e8fd5a4c84088db@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=47321e8fd5a4c84088db
+Fixes: cd19f7d3e39b ("[media] as102: fix leaks at failure paths in as102_usb_probe()")
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/f2fs.h    |    2 +-
- fs/f2fs/segment.c |    6 +++---
- fs/f2fs/super.c   |   11 ++++++++---
- 3 files changed, 12 insertions(+), 7 deletions(-)
+ drivers/media/usb/as102/as102_usb_drv.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -3989,7 +3989,7 @@ bool f2fs_is_checkpointed_data(struct f2
- int f2fs_start_discard_thread(struct f2fs_sb_info *sbi);
- void f2fs_drop_discard_cmd(struct f2fs_sb_info *sbi);
- void f2fs_stop_discard_thread(struct f2fs_sb_info *sbi);
--bool f2fs_issue_discard_timeout(struct f2fs_sb_info *sbi);
-+bool f2fs_issue_discard_timeout(struct f2fs_sb_info *sbi, bool need_check);
- void f2fs_clear_prefree_segments(struct f2fs_sb_info *sbi,
- 					struct cp_control *cpc);
- void f2fs_dirty_to_prefree(struct f2fs_sb_info *sbi);
---- a/fs/f2fs/segment.c
-+++ b/fs/f2fs/segment.c
-@@ -1880,7 +1880,7 @@ void f2fs_stop_discard_thread(struct f2f
-  *
-  * Return true if issued all discard cmd or no discard cmd need issue, otherwise return false.
-  */
--bool f2fs_issue_discard_timeout(struct f2fs_sb_info *sbi)
-+bool f2fs_issue_discard_timeout(struct f2fs_sb_info *sbi, bool need_check)
- {
- 	struct discard_cmd_control *dcc = SM_I(sbi)->dcc_info;
- 	struct discard_policy dpolicy;
-@@ -1897,7 +1897,7 @@ bool f2fs_issue_discard_timeout(struct f
- 	/* just to make sure there is no pending discard commands */
- 	__wait_all_discard_cmd(sbi, NULL);
- 
--	f2fs_bug_on(sbi, atomic_read(&dcc->discard_cmd_cnt));
-+	f2fs_bug_on(sbi, need_check && atomic_read(&dcc->discard_cmd_cnt));
- 	return !dropped;
- }
- 
-@@ -2367,7 +2367,7 @@ static void destroy_discard_cmd_control(
- 	 * Recovery can cache discard commands, so in error path of
- 	 * fill_super(), it needs to give a chance to handle them.
- 	 */
--	f2fs_issue_discard_timeout(sbi);
-+	f2fs_issue_discard_timeout(sbi, true);
- 
- 	kfree(dcc);
- 	SM_I(sbi)->dcc_info = NULL;
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -2009,7 +2009,7 @@ static void f2fs_put_super(struct super_
- 	}
- 
- 	/* be sure to wait for any on-going discard commands */
--	done = f2fs_issue_discard_timeout(sbi);
-+	done = f2fs_issue_discard_timeout(sbi, true);
- 	if (f2fs_realtime_discard_enable(sbi) && !sbi->discard_blks && done) {
- 		struct cp_control cpc = {
- 			.reason = CP_UMOUNT | CP_TRIMMED,
-@@ -2152,7 +2152,7 @@ static int f2fs_unfreeze(struct super_bl
- 	 * will recover after removal of snapshot.
- 	 */
- 	if (test_opt(sbi, DISCARD) && !f2fs_hw_support_discard(sbi))
--		f2fs_issue_discard_timeout(sbi);
-+		f2fs_issue_discard_timeout(sbi, true);
- 
- 	clear_sbi_flag(F2FS_SB(sb), SBI_IS_FREEZING);
- 	return 0;
-@@ -2957,7 +2957,12 @@ static int __f2fs_remount(struct fs_cont
- 			need_stop_discard = true;
- 		} else {
- 			f2fs_stop_discard_thread(sbi);
--			f2fs_issue_discard_timeout(sbi);
-+			/*
-+			 * f2fs_ioc_fitrim() won't race w/ "remount ro"
-+			 * so it's safe to check discard_cmd_cnt in
-+			 * f2fs_issue_discard_timeout().
-+			 */
-+			f2fs_issue_discard_timeout(sbi, flags & SB_RDONLY);
- 			need_restart_discard = true;
- 		}
- 	}
+--- a/drivers/media/usb/as102/as102_usb_drv.c
++++ b/drivers/media/usb/as102/as102_usb_drv.c
+@@ -403,7 +403,9 @@ static int as102_usb_probe(struct usb_in
+ failed_dvb:
+ 	as102_free_usb_stream_buffer(as102_dev);
+ failed_stream:
++	usb_set_intfdata(intf, NULL);
+ 	usb_deregister_dev(intf, &as102_usb_class_driver);
++	return ret;
+ failed:
+ 	usb_put_dev(as102_dev->bus_adap.usb_dev);
+ 	usb_set_intfdata(intf, NULL);
 
 
 
