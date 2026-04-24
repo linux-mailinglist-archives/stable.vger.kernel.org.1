@@ -1,161 +1,201 @@
-Return-Path: <stable+bounces-241012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241013-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SHojLsam62mrPwAAu9opvQ
-	(envelope-from <stable+bounces-241012-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 19:22:14 +0200
+	id wGGZF5mn62mrPwAAu9opvQ
+	(envelope-from <stable+bounces-241013-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 19:25:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5637461E05
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 19:22:14 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0842461EA2
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 19:25:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A39B73006B4C
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 17:22:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9A5AC3064345
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 17:22:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D5883E5581;
-	Fri, 24 Apr 2026 17:22:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98AE333F583;
+	Fri, 24 Apr 2026 17:22:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CRxOgde6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U0yTe/+o"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C823233F583
-	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 17:22:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B4B433C195
+	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 17:22:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777051330; cv=none; b=Z1fd6I4Cu6rvIRPLCBf//WltfHmRSHM2m6DALUg9E35XyDaeq1V+GE70XFe2GmYUTkMT4RBb5VYe6Vo+095sXgZiObdJ/pAAcD3X/Hk9s8w3eVOdDCgoIzlVtV+s8hhWsrUWyPMYfqM2U+hqMv2KfTelSuVOh4SSYOGyUmYEhcA=
+	t=1777051335; cv=none; b=AGgfN5VaoIJpv3KnUQnK1JjmRiAHJsnBuKLw5eCpsy0SBgzqbPP+E6LOfrXjCVv/Mw2lPAu9iA/sf1rnjwi5lZn+Rq3VhCleqQt8fT2UsI0v3XWsVdqEnh1MgIhllrUDPWLX55S92nm6vQboCErp2DZrng5EUmnZ0G9TBUJR2ys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777051330; c=relaxed/simple;
-	bh=gbZR0raCNNQWWjT/pqfd6zc8qXW6+7hq0+g4RyM+qj4=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=k32Ky9Mfd+p9lG9eWC9N17i7WZu0BaMfz/Lm+QO70YSEr2CJjmj4728tL4f1ra1L0yNtl1z2WGiJw29Sltt1p6taercolDczHT3xggEJ7FmwZTlghLzgkOCu5YgMLKrbJIPaVOiwv8s391K2NekjB1iwFH3zHO2BZ74e7+S7EBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CRxOgde6; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2ab232cc803so39948535ad.3
-        for <stable@vger.kernel.org>; Fri, 24 Apr 2026 10:22:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777051328; x=1777656128; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:references
-         :in-reply-to:user-agent:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=gbZR0raCNNQWWjT/pqfd6zc8qXW6+7hq0+g4RyM+qj4=;
-        b=CRxOgde6zdw+9UnUQ+O7zmcHuGyyfLBRLvGYt4AAcmEH3HcLUrHo+v8R8Wtoxa/YuL
-         Mf7OsVlVqzSKPNrkLB3nyadS958MN0F9WAVuaKmBclNDxwohBnIOgqFVM2ALYXS71xPh
-         tr2CFdktVKixsqxmITz+35Dyg/eHwbyTfajmof+9qBZjoOcqoBUu7NLDMp4BNztaVeFY
-         /mVmia8ZY+4UmM+7rJ6DbHUBVtL0dAFBKYjbXX6Xs0B+mVVs+P8nUJtq97pRqcNpR9Uw
-         /7Qs6EMmpZqg+yDJTvPSgtDVmOTTplkyZyMk5rn4MR3KcNeO4tA4Yibj157wBNBIhNl9
-         wsBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777051328; x=1777656128;
-        h=content-transfer-encoding:mime-version:message-id:references
-         :in-reply-to:user-agent:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gbZR0raCNNQWWjT/pqfd6zc8qXW6+7hq0+g4RyM+qj4=;
-        b=SHKh3nVg6PIW34TvdX/ugYgO33Do0UwSwSSAq8PFi8xsP1bsAJVjexd2AAUsCatTcQ
-         aZaCOXkHTgbHwiowThZdeXMAeiV/7bw3ysuClN4LN1W3yKmv4scaM8biB0N5Nbs5OJIB
-         yqSGQ6M7PaPcylY0fy3/GzNmeBwpVmCKpZmhn2ow+7w/GYX/3HghwIBvJasbvJh/ai1d
-         JuuL/tB+08d47hk+/+kl9J6IaZEzdkE5i6kxUemUXXXLR6giS6Ttj4fPxCxa5QxL4+Wa
-         BLtxqYI4Nqb5GjG+2Ld+GTqxWS8AJKweIX+lXMVtUrRA5upPYMe8Fe1MntNyqeU6ettf
-         eKFw==
-X-Forwarded-Encrypted: i=1; AFNElJ945l2WBNJIR0jMXrPeYwbE4LlVpG/5IB4ctogqy3k07InTYywAVKB2hESOb68EoMT23tW3rTE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwqsDwjUJ2HvTECR+5//uKyL7GSBgavPH2q2rC6L20JDAPr4j2+
-	Xa03VLeNOTqZOVH20O524qy7c9toJcYr/+GzlI6UnSUHkt/bXpibOhiK
-X-Gm-Gg: AeBDiesxb00DzZgBJ1t2u1K3LqSf9YtPlwlRmnvui8B4Zgf+Qwt93zEriPoZGxuj7JU
-	oTjbDUVV4n62nAjOXMw7pKWaN6z2l5juDQmE0Uhy6kf4O4ywMLugsrppWe/tKjp+eZqyW5ZtXQR
-	gx+VYhXxklMiSO2r1h8vAesZEK0xYlcDyHn+vrvBPcQLfIA+ryGSjcFOxKeS+Hl3qxEX6xcoSPc
-	84cgrSZcFKEzGAzoWk+cBq/S1uMHjSqatDgx/Kmw9e6kIhuNiFJzIcc/SfIZ6a7yASGwms7K5IR
-	lkDk9Jnplp5EfQLbreeRUEfHvPSiRzbw0BB0r3fFYKIDSvkTvidxQEmrWelP4o1WDG4PZEcVfTE
-	hbT2lf1tfH1FEpnPuGimIczpmCvi6FDBoO3DucAa4PsKuQrRGU7VlTuG+80nek+oi4xQDp99SQo
-	ekz6ZesiEgycr7dhKu6FYaXJc/Lo7y01nR+LgOyX+HbK/3yu2fGg==
-X-Received: by 2002:a17:903:2ec5:b0:2b2:5503:1b8c with SMTP id d9443c01a7336-2b5f9eebb7amr357448075ad.11.1777051328152;
-        Fri, 24 Apr 2026 10:22:08 -0700 (PDT)
-Received: from ehlo.thunderbird.net ([49.224.127.68])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b5faa14487sm243627485ad.18.2026.04.24.10.22.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 24 Apr 2026 10:22:07 -0700 (PDT)
-Date: Sat, 25 Apr 2026 05:22:01 +1200
-From: Brite <brite.airgeddon@gmail.com>
-To: Johannes Berg <johannes@sipsolutions.net>
-CC: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, fjhhz1997@gmail.com, oscar.alfonso.diaz@gmail.com
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH=5D_wifi=3A_mac80211=3A_restore_monitor?=
- =?US-ASCII?Q?_injection_when_coexisting_with_another_VIF?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <9f7df38831598001ac6cd79ab4fb95b4b6e042fd.camel@sipsolutions.net>
-References: <CA+bbHrVWmSpWZ9GBVJ5vffh1qYEye=EWMq9tKA-_uzfW+raC8A@mail.gmail.com> <20260424120807.25005-1-brite.airgeddon@gmail.com> (sfid-20260424_140854_559281_CA03D57D) <9f7df38831598001ac6cd79ab4fb95b4b6e042fd.camel@sipsolutions.net>
-Message-ID: <F76D3DCE-DF44-47E6-B12C-B8972C29EB8D@gmail.com>
+	s=arc-20240116; t=1777051335; c=relaxed/simple;
+	bh=ycYgC4/P5yXsgcUFLBSFdzs8D5Fp4OGiSrfRcEDtf44=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=rnsRne8x+9lD7nb0BgM/D8z9xaDRhbzg97KLr/udgBhdGGhW1ZIVTJh0GH9/AC1MQ/Z+wFg0IRj/ae1Err98+X9QKhfHu6/IQOqTw07GmlPPNDsRk/+ccWdnnT2wGwNjhxVcjvABpZhecNsfCTgcN9lE3Op4nTd25wbwiukVSR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U0yTe/+o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A167C19425;
+	Fri, 24 Apr 2026 17:22:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777051335;
+	bh=ycYgC4/P5yXsgcUFLBSFdzs8D5Fp4OGiSrfRcEDtf44=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=U0yTe/+oMRq3U5uWZF/kyndCjEdFWR8mj4yDx1Jx5ylvMmNHWcJ4ukNQBFyE2UKH+
+	 L1a6AodVoLR0/DGsei78oWpAwJSjgBAi5oPMQML1sF490lcXx9igy/HQx6PYFy9vXQ
+	 7exLKycg9jVdQC8R99ypGgObfIjPSb9jTXzJDAEd0RVoN7hfwUG8AqxMamoMQSoYKj
+	 4h+oi4OpEJk/tx1f649ZQ3eQSveYKmQWq3T+Xape0U5LLXRTl2yev1/WbxoDP65MxI
+	 9FjnpQszAmbjtLqNVQc5Maq8ssMEp8Gd2LDr0mzop/6LuDsZbhKC9hs1taY9fL5aKJ
+	 gScb4/bvFctfQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Michael Bommarito <michael.bommarito@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y] ksmbd: require minimum ACE size in smb_check_perm_dacl()
+Date: Fri, 24 Apr 2026 13:22:12 -0400
+Message-ID: <20260424172212.2366923-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026042427-lunchtime-paramount-5994@gregkh>
+References: <2026042427-lunchtime-paramount-5994@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: A5637461E05
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: F0842461EA2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.96 / 15.00];
-	SUBJ_EXCESS_QP(1.20)[];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-241012-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[briteairgeddon@gmail.com,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-241013-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org,microsoft.com];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	RCPT_COUNT_FIVE(0.00)[5];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6]
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_HAS_DN(0.00)[]
 
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
+[ Upstream commit d07b26f39246a82399661936dd0c853983cfade7 ]
 
-On April 25, 2026 1:55:46 AM GMT+12:00, Johannes Berg <johannes@sipsolutio=
-ns=2Enet> wrote:
->
->I don't believe that all this complexity is necessary, and the code
->changes have are fairly clearly LLM-created w/o such disclosures=2E
->Dropping=2E
->
-Are you saying that the patch itself is created by llm? If yes, is that ev=
-en possible? I do accept that yourself or experienced devs could come up wi=
-th the simplest of a solution=2E My initial patch was spread across 6 or 7 =
-files with a lot of debug lines added to find out the location of vm freeze=
-=2E It has taken a lot of time to narrow it down to this patch=2E It's tota=
-lly ok if you're dropping this but if you could at least see what this code=
- does and do a proper minimal fix yourself, that would help out a lot of pe=
-ople in the community=2E=20
+Both ACE-walk loops in smb_check_perm_dacl() only guard against an
+under-sized remaining buffer, not against an ACE whose declared
+`ace->size` is smaller than the struct it claims to describe:
 
-The only time I used the help of ai and google was during the initial stag=
-e trying to understand the different variables, structures, pointers etc=2E=
- After that it was just me adding a lot of debug lines to all suspected fun=
-ctions but the vm froze even before anything got printed in dmesg=2E Then i=
- added delay between the debugs and was finally able to see where the freez=
-e happened=2E This might be totally unnecessary for an experienced dev like=
- you but since I'm new, I found this the easiest way to get to the root of =
-the issue=2E=20
-I also took help from ai and google to help me prepare the patch file in t=
-he required format to be sent=2E=20
-I don't understand why you think the whole patch is generated by llm=2E I =
-wonder if it was that easy to be done=2E
+  if (offsetof(struct smb_ace, access_req) > aces_size)
+      break;
+  ace_size = le16_to_cpu(ace->size);
+  if (ace_size > aces_size)
+      break;
+
+The first check only requires the 4-byte ACE header to be in bounds;
+it does not require access_req (4 bytes at offset 4) to be readable.
+An attacker who has set a crafted DACL on a file they own can declare
+ace->size == 4 with aces_size == 4, pass both checks, and then
+
+  granted |= le32_to_cpu(ace->access_req);               /* upper loop */
+  compare_sids(&sid, &ace->sid);                         /* lower loop */
+
+reads access_req at offset 4 (OOB by up to 4 bytes) and ace->sid at
+offset 8 (OOB by up to CIFS_SID_BASE_SIZE + SID_MAX_SUB_AUTHORITIES
+* 4 bytes).
+
+Tighten both loops to require
+
+  ace_size >= offsetof(struct smb_ace, sid) + CIFS_SID_BASE_SIZE
+
+which is the smallest valid on-wire ACE layout (4-byte header +
+4-byte access_req + 8-byte sid base with zero sub-auths).  Also
+reject ACEs whose sid.num_subauth exceeds SID_MAX_SUB_AUTHORITIES
+before letting compare_sids() dereference sub_auth[] entries.
+
+parse_sec_desc() already enforces an equivalent check (lines 441-448);
+smb_check_perm_dacl() simply grew weaker validation over time.
+
+Reachability: authenticated SMB client with permission to set an ACL
+on a file.  On a subsequent CREATE against that file, the kernel
+walks the stored DACL via smb_check_perm_dacl() and triggers the
+OOB read.  Not pre-auth, and the OOB read is not reflected to the
+attacker, but KASAN reports and kernel state corruption are
+possible.
+
+Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-6
+Assisted-by: Codex:gpt-5-4
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[ changed le16_to_cpu to le32_to_cpu for num_aces field which is __le32 ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/smb/server/smbacl.c | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
+
+diff --git a/fs/smb/server/smbacl.c b/fs/smb/server/smbacl.c
+index 5c05f0e8b6ea8..e11868da233cc 100644
+--- a/fs/smb/server/smbacl.c
++++ b/fs/smb/server/smbacl.c
+@@ -1288,10 +1288,13 @@ int smb_check_perm_dacl(struct ksmbd_conn *conn, const struct path *path,
+ 		ace = (struct smb_ace *)((char *)pdacl + sizeof(struct smb_acl));
+ 		aces_size = acl_size - sizeof(struct smb_acl);
+ 		for (i = 0; i < le32_to_cpu(pdacl->num_aces); i++) {
+-			if (offsetof(struct smb_ace, access_req) > aces_size)
++			if (offsetof(struct smb_ace, sid) +
++			    aces_size < CIFS_SID_BASE_SIZE)
+ 				break;
+ 			ace_size = le16_to_cpu(ace->size);
+-			if (ace_size > aces_size)
++			if (ace_size > aces_size ||
++			    ace_size < offsetof(struct smb_ace, sid) +
++				       CIFS_SID_BASE_SIZE)
+ 				break;
+ 			aces_size -= ace_size;
+ 			granted |= le32_to_cpu(ace->access_req);
+@@ -1309,13 +1312,19 @@ int smb_check_perm_dacl(struct ksmbd_conn *conn, const struct path *path,
+ 	ace = (struct smb_ace *)((char *)pdacl + sizeof(struct smb_acl));
+ 	aces_size = acl_size - sizeof(struct smb_acl);
+ 	for (i = 0; i < le32_to_cpu(pdacl->num_aces); i++) {
+-		if (offsetof(struct smb_ace, access_req) > aces_size)
++		if (offsetof(struct smb_ace, sid) +
++		    aces_size < CIFS_SID_BASE_SIZE)
+ 			break;
+ 		ace_size = le16_to_cpu(ace->size);
+-		if (ace_size > aces_size)
++		if (ace_size > aces_size ||
++		    ace_size < offsetof(struct smb_ace, sid) +
++			       CIFS_SID_BASE_SIZE)
+ 			break;
+ 		aces_size -= ace_size;
+ 
++		if (ace->sid.num_subauth > SID_MAX_SUB_AUTHORITIES)
++			break;
++
+ 		if (!compare_sids(&sid, &ace->sid) ||
+ 		    !compare_sids(&sid_unix_NFS_mode, &ace->sid)) {
+ 			found = 1;
+-- 
+2.53.0
+
 
