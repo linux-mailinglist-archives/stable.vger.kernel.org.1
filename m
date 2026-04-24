@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-240920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240948-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gE+9Im1z62kQNAAAu9opvQ
-	(envelope-from <stable+bounces-240920-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:43:09 +0200
+	id GKpGLn1062kQNAAAu9opvQ
+	(envelope-from <stable+bounces-240948-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:47:41 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9FCD45F76B
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:43:08 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 331E045FA44
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:47:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5468930034B1
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:43:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0206B3021D3E
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:44:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 313F33C061E;
-	Fri, 24 Apr 2026 13:43:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D22A63D6CC7;
+	Fri, 24 Apr 2026 13:44:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KqI37TxS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xVJHKJ4z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E317F386C0A;
-	Fri, 24 Apr 2026 13:43:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 955BF3563D4;
+	Fri, 24 Apr 2026 13:44:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777038182; cv=none; b=KykMlyktm9lqVH/woC+IZ0s/rpzu51UnIH6YKVFbfL0Mo6YZoLelsP+OmGfIX06g96ap7X5JlGN9L57Xd6Hqo3RUQR1fdwbIaNV/2DXzKelXO9MawbOS1Kzgyrdd6zKcFEyzlMiKylSBt+ln8WwclNkJ8QTz5oDrdkcDDN+TWjI=
+	t=1777038251; cv=none; b=k2W4f77Z4f9ZInQ94iVX2RIiTxRYt2KTCSok0pR5+0iUUZzaslpNkKjoTOZFGkkF4LqOu2kNgouPzjf3F3+4T8nWzu2oTyLC8tdP9qttRdA181HLX56sBUYpoxWHB9fUaMl8Q9Von0aB8Bc0fXatKszXNOb9Qk4/Y7Q2O0uC1VY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777038182; c=relaxed/simple;
-	bh=ruEzRt9GoRU3PQaZEmkLAZvaJNRvBXfk1npPi2Xb5Oo=;
+	s=arc-20240116; t=1777038251; c=relaxed/simple;
+	bh=TJcQR2KYc3oF/JPhnWVECkHtiw0P4pwAG+XhrLr05MQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h/SdJvFrTuC/ehKSMC1Z3ZDyG+Ux12LG+V2z8QlMOGW++8q3keWyYgWVLOnRmPzCTKJoZ2VRYOdw8AZ3oYJFjSxKI8fFHIRfyy24LPwASjBYTFje4OGrpgtOllREyFCT+ir0EALH+IzASnhpfAplIK647Edtb1e+tr3OPtPurJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KqI37TxS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75669C19425;
-	Fri, 24 Apr 2026 13:43:01 +0000 (UTC)
+	 MIME-Version; b=Pa9QHCnA7c+zUl6GxopAreL3vb5e1l7IW/HHhEnoQyUWb+UmmlLrSkjEtiWhbHCnXSrwpZX3YT4tkYXoOxoPaTIR3nHi87+jw1VCVcdk0361u4mhpKNetxOitfcIb1SYwFvqZ0Uoui1vPYFRTxepei/4mYuXfFIGKHcarurlno8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xVJHKJ4z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3C65C19425;
+	Fri, 24 Apr 2026 13:44:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777038181;
-	bh=ruEzRt9GoRU3PQaZEmkLAZvaJNRvBXfk1npPi2Xb5Oo=;
+	s=korg; t=1777038251;
+	bh=TJcQR2KYc3oF/JPhnWVECkHtiw0P4pwAG+XhrLr05MQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KqI37TxSjC1jr2Sy8xfq+wEXI18Hw5nc8tgL27Ixq0pnYmYDT/mI5R0ZxafqjRf8V
-	 CGisIQKR8GdTxTg16s+VAuq4K4nDO1srJVWLBIQ978wlTrKcSs1CigFTsOMjn3HEwy
-	 mIVYwyw0oN4AJw7n93jH47YW+D+Tlkcd4Mpx5wGc=
+	b=xVJHKJ4zlzz6tQvBnHlSNlrKwO5vs15CU0GMVKpAF1xkmyRN4DRv/dOgc+ONq4KLH
+	 SkVd4UD3dgU+rqpwnAnCKUAOcgPvqTIEXwE97jZHQQigp+sjn8fKj1KctnjnpaTmqS
+	 fjd/XMpyS/8DQmxtLvEl4/r/V+5uU4RkdJ8XrOFw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Potapenko <glider@google.com>,
-	Sebastian Alba Vives <sebasjosue84@gmail.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.18 54/55] crypto: ccp: Dont attempt to copy ID to userspace if PSP command failed
+	Tristan Madani <tristan@talencesecurity.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 26/35] ksmbd: fix out-of-bounds write in smb2_get_ea() EA alignment
 Date: Fri, 24 Apr 2026 15:31:33 +0200
-Message-ID: <20260424132441.333591215@linuxfoundation.org>
+Message-ID: <20260424132417.223622735@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132430.006424517@linuxfoundation.org>
-References: <20260424132430.006424517@linuxfoundation.org>
+In-Reply-To: <20260424132411.427029259@linuxfoundation.org>
+References: <20260424132411.427029259@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,109 +64,88 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C9FCD45F76B
+X-Rspamd-Queue-Id: 331E045FA44
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,gondor.apana.org.au];
-	TAGGED_FROM(0.00)[bounces-240920-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-240948-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,talencesecurity.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Tristan Madani <tristan@talencesecurity.com>
 
-commit 4f685dbfa87c546e51d9dc6cab379d20f275e114 upstream.
+commit 30010c952077a1c89ecdd71fc4d574c75a8f5617 upstream.
 
-When retrieving the ID for the CPU, don't attempt to copy the ID blob to
-userspace if the firmware command failed.  If the failure was due to an
-invalid length, i.e. the userspace buffer+length was too small, copying
-the number of bytes _firmware_ requires will overflow the kernel-allocated
-buffer and leak data to userspace.
+smb2_get_ea() applies 4-byte alignment padding via memset() after
+writing each EA entry. The bounds check on buf_free_len is performed
+before the value memcpy, but the alignment memset fires unconditionally
+afterward with no check on remaining space.
 
-  BUG: KASAN: slab-out-of-bounds in instrument_copy_to_user ../include/linux/instrumented.h:129 [inline]
-  BUG: KASAN: slab-out-of-bounds in _inline_copy_to_user ../include/linux/uaccess.h:205 [inline]
-  BUG: KASAN: slab-out-of-bounds in _copy_to_user+0x66/0xa0 ../lib/usercopy.c:26
-  Read of size 64 at addr ffff8881867f5960 by task syz.0.906/24388
+When the EA value exactly fills the remaining buffer (buf_free_len == 0
+after value subtraction), the alignment memset writes 1-3 NUL bytes
+past the buf_free_len boundary. In compound requests where the response
+buffer is shared across commands, the first command (e.g., READ) can
+consume most of the buffer, leaving a tight remainder for the QUERY_INFO
+EA response. The alignment memset then overwrites past the physical
+kvmalloc allocation into adjacent kernel heap memory.
 
-  CPU: 130 UID: 0 PID: 24388 Comm: syz.0.906 Tainted: G     U     O        7.0.0-smp-DEV #28 PREEMPTLAZY
-  Tainted: [U]=USER, [O]=OOT_MODULE
-  Hardware name: Google, Inc. Arcadia_IT_80/Arcadia_IT_80, BIOS 12.62.0-0 11/19/2025
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0xc5/0x110 ../lib/dump_stack.c:120
-   print_address_description ../mm/kasan/report.c:378 [inline]
-   print_report+0xbc/0x260 ../mm/kasan/report.c:482
-   kasan_report+0xa2/0xe0 ../mm/kasan/report.c:595
-   check_region_inline ../mm/kasan/generic.c:-1 [inline]
-   kasan_check_range+0x264/0x2c0 ../mm/kasan/generic.c:200
-   instrument_copy_to_user ../include/linux/instrumented.h:129 [inline]
-   _inline_copy_to_user ../include/linux/uaccess.h:205 [inline]
-   _copy_to_user+0x66/0xa0 ../lib/usercopy.c:26
-   copy_to_user ../include/linux/uaccess.h:236 [inline]
-   sev_ioctl_do_get_id2+0x361/0x490 ../drivers/crypto/ccp/sev-dev.c:2222
-   sev_ioctl+0x25f/0x490 ../drivers/crypto/ccp/sev-dev.c:2575
-   vfs_ioctl ../fs/ioctl.c:51 [inline]
-   __do_sys_ioctl ../fs/ioctl.c:597 [inline]
-   __se_sys_ioctl+0x11d/0x1b0 ../fs/ioctl.c:583
-   do_syscall_x64 ../arch/x86/entry/syscall_64.c:63 [inline]
-   do_syscall_64+0xe0/0x800 ../arch/x86/entry/syscall_64.c:94
-   entry_SYSCALL_64_after_hwframe+0x76/0x7e
-   </TASK>
+Add a bounds check before the alignment memset to ensure buf_free_len
+can accommodate the padding bytes.
 
-WARN if the driver says the command succeeded, but the firmware error code
-says otherwise, as __sev_do_cmd_locked() is expected to return -EIO on any
-firwmware error.
+This is the same bug pattern fixed by commit beef2634f81f ("ksmbd: fix
+potencial OOB in get_file_all_info() for compound requests") and
+commit fda9522ed6af ("ksmbd: fix OOB write in QUERY_INFO for compound
+requests"), both of which added bounds checks before unconditional
+writes in QUERY_INFO response handlers.
 
-Reported-by: Alexander Potapenko <glider@google.com>
-Reported-by: Sebastian Alba Vives <sebasjosue84@gmail.com>
-Fixes: d6112ea0cb34 ("crypto: ccp - introduce SEV_GET_ID2 command")
 Cc: stable@vger.kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: e2b76ab8b5c9 ("ksmbd: add support for read compound")
+Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/ccp/sev-dev.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/smb/server/smb2pdu.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/crypto/ccp/sev-dev.c
-+++ b/drivers/crypto/ccp/sev-dev.c
-@@ -2197,6 +2197,9 @@ static int sev_ioctl_do_get_id2(struct s
- 		goto e_free;
- 	}
- 
-+	if (ret || WARN_ON_ONCE(argp->error))
-+		goto e_free;
-+
- 	if (id_blob) {
- 		if (copy_to_user(input_address, id_blob, data.len)) {
- 			ret = -EFAULT;
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -4833,6 +4833,8 @@ static int smb2_get_ea(struct ksmbd_work
+ 		/* align next xattr entry at 4 byte bundary */
+ 		alignment_bytes = ((next_offset + 3) & ~3) - next_offset;
+ 		if (alignment_bytes) {
++			if (buf_free_len < alignment_bytes)
++				break;
+ 			memset(ptr, '\0', alignment_bytes);
+ 			ptr += alignment_bytes;
+ 			next_offset += alignment_bytes;
 
 
 
