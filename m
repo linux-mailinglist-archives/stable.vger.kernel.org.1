@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-240705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240846-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +OWVHUxx62nCMwAAu9opvQ
-	(envelope-from <stable+bounces-240705-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:34:04 +0200
+	id 8OiQGOly62nCMwAAu9opvQ
+	(envelope-from <stable+bounces-240846-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:40:57 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8B1845F1C8
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:34:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C861745F612
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:40:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BDE9830173B8
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:33:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 868413023E32
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:39:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29E373D47B0;
-	Fri, 24 Apr 2026 13:33:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E88663B38AE;
+	Fri, 24 Apr 2026 13:39:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TbMYqZ+c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Q1Ne0mS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1F3A23E356;
-	Fri, 24 Apr 2026 13:33:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F4563D3D04;
+	Fri, 24 Apr 2026 13:39:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777037624; cv=none; b=GOsBOreVFlkRoKGqZozVWxXaqXel1KhKxk1QJwjo087QdKRfS6zmyFSXSIXAOEKhvUrSzv2XbgoGHJlB5AUyuq4sEy35CqDfD41bUU0hrjF2csdJ7GEFGZDFBfaZsFHIMmMgTkmpcmsHBHLL0ocR74bJMCJ5QcWKzR6m2j+Qatw=
+	t=1777037991; cv=none; b=fCu3kWbLNC4AXDC6u2pq5eywsRMbIJYCvB9StpwQqYQ1YascRkIogHdQx93HcWvxbz+tgOdpI37jaXw4p9F3/QGdO1Pl3QwSuSbWXuNMbOY1DJz96g2zVe/hD6F06gQ6cyw0dyvgByKUQTz6M26CNifgNRtuEaKqbEKWolC5fhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777037624; c=relaxed/simple;
-	bh=6N5GuEd+X0HneLfGG2BYi5i2fDn3XscjbMTA1V2+aNQ=;
+	s=arc-20240116; t=1777037991; c=relaxed/simple;
+	bh=l//CQKOaBjmfxjumba+U0HijTfvrLM4OOUVuAQRYScI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kHO1QzA2gbh9CEA2CqpQzZ3NfvVGf6Uaw+42RCHLBjo2LYOH7gDjl9I24mcG/Zf2ysgoVc4/VihgiWccmbAh2EuMo8/o7r3uPZevEFkOAeb7n/hQc3v7qJ07gjqQmfS4lwEMT1XjeDkfpipzepSaI+xuNIq/0oTWCgo20CT0z1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TbMYqZ+c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 769D9C19425;
-	Fri, 24 Apr 2026 13:33:43 +0000 (UTC)
+	 MIME-Version; b=HdVIpvj65rM+f8wp81+nDSrA0PoMMHP/IVvJxXTN4mCVNV6V/6l8dHWfnEnIdmImueKMzM/9bIuKqr4aQghiC+Bme6CKvFiwCBmFQghChwhx+wzkOTke4FUdGaOhnKQK5WuEAPQlukwl9nv2OFjJ8HqiF82BaagBwWlTLkTpXdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Q1Ne0mS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAAF3C19425;
+	Fri, 24 Apr 2026 13:39:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777037623;
-	bh=6N5GuEd+X0HneLfGG2BYi5i2fDn3XscjbMTA1V2+aNQ=;
+	s=korg; t=1777037991;
+	bh=l//CQKOaBjmfxjumba+U0HijTfvrLM4OOUVuAQRYScI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TbMYqZ+cSxEd+7l1CICgizsBavGbkrDslydDudGnFxGZd/wv+hmAyUeKp6zIi8qJx
-	 +NLFiwvy4rLnWqEeJ0YSJuI9I8TkdxTYgD/IMIXOBdz9oqCKVPAbFHmv5/JTtMyKcQ
-	 Eq4dncq9mVlSxdDe4mZWop+sMqTpGOtxeECRTtMM=
+	b=0Q1Ne0mSPnhj/1u6dbNUN9vAEvNqQJLTQ21fCLH3Ggi3UuZMhFSgsBHsVX8eDzySW
+	 EQ5hh+9vMCdj+kXzTKRq/VUTvlw+SLqhYMR/IY03ygThOi8VIeMc1TuKxuwAQ+hKxB
+	 8uMPvuumS5QhJuQt86/b7u0nmMptdYIEm2qf5zsg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Naim <dnaim@cachyos.org>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 7.0 35/42] ALSA: hda/realtek: Add quirk for Legion S7 15IMH
-Date: Fri, 24 Apr 2026 15:31:00 +0200
-Message-ID: <20260424132427.786241385@linuxfoundation.org>
+	Samuel Page <sam@bynar.io>,
+	Qi Tang <tpluszz77@gmail.com>,
+	Zijun Hu <nightu@northwestern.edu>,
+	Miklos Szeredi <mszeredi@redhat.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.6 147/166] fuse: reject oversized dirents in page cache
+Date: Fri, 24 Apr 2026 15:31:01 +0200
+Message-ID: <20260424132603.883061538@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132420.410310336@linuxfoundation.org>
-References: <20260424132420.410310336@linuxfoundation.org>
+In-Reply-To: <20260424132532.812258529@linuxfoundation.org>
+References: <20260424132532.812258529@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +66,89 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E8B1845F1C8
+X-Rspamd-Queue-Id: C861745F612
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+X-Spamd-Result: default: False [3.84 / 15.00];
+	SEM_URIBL(3.50)[northwestern.edu:email];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
+	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-240705-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,bynar.io,gmail.com,northwestern.edu,redhat.com,kernel.org];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-240846-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,suse.de:email]
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	PRECEDENCE_BULK(0.00)[];
+	NEURAL_HAM(-0.00)[-0.893];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	R_SPF_ALLOW(0.00)[+ip4:172.105.105.114:c];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[northwestern.edu:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,bynar.io:email]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Naim <dnaim@cachyos.org>
+From: Samuel Page <sam@bynar.io>
 
-commit 67f4c61a73e9b17dc9593bf27badc6785ecadd78 upstream.
+commit 51a8de6c50bf947c8f534cd73da4c8f0a13e7bed upstream.
 
-Fix speaker output on the Lenovo Legion S7 15IMH05.
+fuse_add_dirent_to_cache() computes a serialized dirent size from the
+server-controlled namelen field and copies the dirent into a single
+page-cache page. The existing logic only checks whether the dirent fits
+in the remaining space of the current page and advances to a fresh page
+if not. It never checks whether the dirent itself exceeds PAGE_SIZE.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Eric Naim <dnaim@cachyos.org>
-Link: https://patch.msgid.link/20260413154818.351597-1-dnaim@cachyos.org
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+As a result, a malicious FUSE server can return a dirent with
+namelen=4095, producing a serialized record size of 4120 bytes. On 4 KiB
+page systems this causes memcpy() to overflow the cache page by 24 bytes
+into the following kernel page.
+
+Reject dirents that cannot fit in a single page before copying them into
+the readdir cache.
+
+Fixes: 69e34551152a ("fuse: allow caching readdir")
+Cc: stable@vger.kernel.org # v6.16+
+Assisted-by: Bynario AI
+Signed-off-by: Samuel Page <sam@bynar.io>
+Reported-by: Qi Tang <tpluszz77@gmail.com>
+Reported-by: Zijun Hu <nightu@northwestern.edu>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Link: https://patch.msgid.link/20260420090139.662772-1-mszeredi@redhat.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/hda/codecs/realtek/alc269.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/fuse/readdir.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/sound/hda/codecs/realtek/alc269.c
-+++ b/sound/hda/codecs/realtek/alc269.c
-@@ -7605,6 +7605,7 @@ static const struct hda_quirk alc269_fix
- 	SND_PCI_QUIRK(0x17aa, 0x3801, "Lenovo Yoga9 14IAP7", ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN),
- 	HDA_CODEC_QUIRK(0x17aa, 0x3802, "DuetITL 2021", ALC287_FIXUP_YOGA7_14ITL_SPEAKERS),
- 	SND_PCI_QUIRK(0x17aa, 0x3802, "Lenovo Yoga Pro 9 14IRP8", ALC287_FIXUP_TAS2781_I2C),
-+	SND_PCI_QUIRK(0x17aa, 0x3811, "Legion S7 15IMH05", ALC287_FIXUP_LEGION_15IMHG05_SPEAKERS),
- 	SND_PCI_QUIRK(0x17aa, 0x3813, "Legion 7i 15IMHG05", ALC287_FIXUP_LEGION_15IMHG05_SPEAKERS),
- 	SND_PCI_QUIRK(0x17aa, 0x3818, "Lenovo C940 / Yoga Duet 7", ALC298_FIXUP_LENOVO_C940_DUET7),
- 	SND_PCI_QUIRK(0x17aa, 0x3819, "Lenovo 13s Gen2 ITL", ALC287_FIXUP_13S_GEN2_SPEAKERS),
+--- a/fs/fuse/readdir.c
++++ b/fs/fuse/readdir.c
+@@ -41,6 +41,10 @@ static void fuse_add_dirent_to_cache(str
+ 	unsigned int offset;
+ 	void *addr;
+ 
++	/* Dirent doesn't fit in readdir cache page?  Skip caching. */
++	if (reclen > PAGE_SIZE)
++		return;
++
+ 	spin_lock(&fi->rdc.lock);
+ 	/*
+ 	 * Is cache already completed?  Or this entry does not go at the end of
 
 
 
