@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-240669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240857-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8HeDBeNw62nCMwAAu9opvQ
-	(envelope-from <stable+bounces-240669-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:32:19 +0200
+	id sO7bB9F062kQNAAAu9opvQ
+	(envelope-from <stable+bounces-240857-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:49:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDADC45F102
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:32:17 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79EC245FB09
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:49:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D3124300348B
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:32:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5BF9C303AB60
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:40:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 595E63D6CB7;
-	Fri, 24 Apr 2026 13:32:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF7043C1976;
+	Fri, 24 Apr 2026 13:40:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AGrYw8t5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ADV5zAlS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 988BB260566;
-	Fri, 24 Apr 2026 13:32:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B343C19A288;
+	Fri, 24 Apr 2026 13:40:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777037533; cv=none; b=Orw04MIaxrL7kZCjF+Du0ZIapLuOg6QkIY0ZwNmBbhqGSLK9/fU+AwIe3JV1K2DKyW5gve6n8SYezeU9lUVs/CKmJCmM6XdNSuN74ZWXoYV+2Q7q/p7oQ5lygOu9Ki9dsgNgWh2Vk9RWiEUewarn9MrhT5L6Vv/tQV/SZyjYbjw=
+	t=1777038019; cv=none; b=j/oTu9HzeIk4SADEkeUlBGGDYw8s3u0/RXf/qwda+FYsWwSZxEWSr6erq9Hg0Epf9mw76R8yxJ90pvYKAJu8vr/EG0OuhSVrcLxPMGPknjKKMCux7jbWGRSzivWXUfOwvQQL+4XolxHSoTNtSv7BFQLSMYkQp8i0lKDB5C8okz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777037533; c=relaxed/simple;
-	bh=U8BBvqFUS6b4wDGNZF2MA7tfrVQBlGinmFxtWMvHtM8=;
+	s=arc-20240116; t=1777038019; c=relaxed/simple;
+	bh=XoKqkzOac3r4jNc5W+hMyJ8IbSeBPGtmxYS9eXO4LiY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=phOI2nnH3mQTE2rAH5xZAF+vuNh4EAaWSf9T4CaS/qjjGFhaGNGMiKVjepWZZtMqb1sViint6jcvMntvcQ5web6qbZe59lCe09mysvvyoWhNsnnJFmV5PU5RdXFJ5DfxoglKe/Z4/9v9dL5GDonOoqcYxG+E+Gn+ZCievceifkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AGrYw8t5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0955BC19425;
-	Fri, 24 Apr 2026 13:32:12 +0000 (UTC)
+	 MIME-Version; b=a0NtwZkyD98+BvD9NMxDlMMWQPtB4XwZ0URYpBz43UKhLQ6l7eca+if139IyMAVZ6lBb6d1dsvFabSjSMRrFq6MN9lU5U1XFjFaVY0WvD25NI/Vc13Zrp0Qonf5Jim626lILk55zUhM518KabyGG5h+nnrWAwtVakMW3kly7yj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ADV5zAlS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A6C1C19425;
+	Fri, 24 Apr 2026 13:40:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777037533;
-	bh=U8BBvqFUS6b4wDGNZF2MA7tfrVQBlGinmFxtWMvHtM8=;
+	s=korg; t=1777038019;
+	bh=XoKqkzOac3r4jNc5W+hMyJ8IbSeBPGtmxYS9eXO4LiY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AGrYw8t5Yr+GSMrmrqvkEvahPUXuCJYrnsg1DL0xFvBt7MosQo4SV3g3WQjSaThPS
-	 G2aiiQQfyryzF01aiCmsouBSWHZbgeYGUn5+gOZ03XXcpUITsMSJnWSyccXwC8IB5y
-	 zM0We8gj8SZv1pjdCzYAhEl1WQZFf5vpovb2UNGo=
+	b=ADV5zAlSLHLtIh9XtVFVlz6J65eTnI2xxVi4jC5XFciIXf7tL2tB/tIyVx9dL9QWT
+	 zVhBXFXgCbozYW6Ye9RV7j+mjN1YmxHteTr1DXLVpNM36g6M1/ZDM30QPD8VFrhLV+
+	 VLBrlEfJA3HQ33erdc62WuJPXU0mKmc46k50nI0k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samuel Page <sam@bynar.io>,
-	Qi Tang <tpluszz77@gmail.com>,
-	Zijun Hu <nightu@northwestern.edu>,
-	Miklos Szeredi <mszeredi@redhat.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 7.0 15/42] fuse: reject oversized dirents in page cache
+	Kenta Akagi <k@mgml.me>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 126/166] Revert "perf unwind-libdw: Fix invalid reference counts"
 Date: Fri, 24 Apr 2026 15:30:40 +0200
-Message-ID: <20260424132423.696405299@linuxfoundation.org>
+Message-ID: <20260424132559.270836745@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132420.410310336@linuxfoundation.org>
-References: <20260424132420.410310336@linuxfoundation.org>
+In-Reply-To: <20260424132532.812258529@linuxfoundation.org>
+References: <20260424132532.812258529@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,89 +63,89 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: EDADC45F102
+X-Rspamd-Queue-Id: 79EC245FB09
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [3.84 / 15.00];
-	SEM_URIBL(3.50)[northwestern.edu:email];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
-	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,bynar.io,gmail.com,northwestern.edu,redhat.com,kernel.org];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-240669-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	NEURAL_HAM(-0.00)[-0.915];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-240857-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	R_SPF_ALLOW(0.00)[+ip4:104.64.211.4:c];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,northwestern.edu:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mgml.me:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,al.map:url]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Samuel Page <sam@bynar.io>
+From: Kenta Akagi <k@mgml.me>
 
-commit 51a8de6c50bf947c8f534cd73da4c8f0a13e7bed upstream.
+This reverts commit eddddf4ed7f69697cb54e714e773f764c8d3b67e.
 
-fuse_add_dirent_to_cache() computes a serialized dirent size from the
-server-controlled namelen field and copies the dirent into a single
-page-cache page. The existing logic only checks whether the dirent fits
-in the remaining space of the current page and advances to a fresh page
-if not. It never checks whether the dirent itself exceeds PAGE_SIZE.
+Upstream commit f815fc0c66e7 ("perf unwind-libdw: Fix invalid reference counts"),
+was backported to v6.6.128 as eddddf4ed7f6.
 
-As a result, a malicious FUSE server can return a dirent with
-namelen=4095, producing a serialized record size of 4120 bytes. On 4 KiB
-page systems this causes memcpy() to overflow the cache page by 24 bytes
-into the following kernel page.
+However, this commit depends on map_symbol__exit, which was introduced
+in v6.7 as commit 56e144fe9826 ("perf mem_info: Add and use
+map_symbol__exit and addr_map_symbol__exit") and is absent in v6.6.y.
+This results in a build failure.
 
-Reject dirents that cannot fit in a single page before copying them into
-the readdir cache.
+This is a revert of a backport, so there is no upstream commit.
 
-Fixes: 69e34551152a ("fuse: allow caching readdir")
-Cc: stable@vger.kernel.org # v6.16+
-Assisted-by: Bynario AI
-Signed-off-by: Samuel Page <sam@bynar.io>
-Reported-by: Qi Tang <tpluszz77@gmail.com>
-Reported-by: Zijun Hu <nightu@northwestern.edu>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
-Link: https://patch.msgid.link/20260420090139.662772-1-mszeredi@redhat.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Kenta Akagi <k@mgml.me>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fuse/readdir.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ tools/perf/util/unwind-libdw.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
---- a/fs/fuse/readdir.c
-+++ b/fs/fuse/readdir.c
-@@ -41,6 +41,10 @@ static void fuse_add_dirent_to_cache(str
- 	unsigned int offset;
- 	void *addr;
+diff --git a/tools/perf/util/unwind-libdw.c b/tools/perf/util/unwind-libdw.c
+index bd027fdf6af17..6013335a8daea 100644
+--- a/tools/perf/util/unwind-libdw.c
++++ b/tools/perf/util/unwind-libdw.c
+@@ -133,8 +133,8 @@ static int entry(u64 ip, struct unwind_info *ui)
+ 	}
  
-+	/* Dirent doesn't fit in readdir cache page?  Skip caching. */
-+	if (reclen > PAGE_SIZE)
-+		return;
-+
- 	spin_lock(&fi->rdc.lock);
- 	/*
- 	 * Is cache already completed?  Or this entry does not go at the end of
+ 	e->ip	  = ip;
+-	e->ms.maps = maps__get(al.maps);
+-	e->ms.map = map__get(al.map);
++	e->ms.maps = al.maps;
++	e->ms.map = al.map;
+ 	e->ms.sym = al.sym;
+ 
+ 	pr_debug("unwind: %s:ip = 0x%" PRIx64 " (0x%" PRIx64 ")\n",
+@@ -319,9 +319,6 @@ int unwind__get_entries(unwind_entry_cb_t cb, void *arg,
+ 	if (err)
+ 		pr_debug("unwind: failed with '%s'\n", dwfl_errmsg(-1));
+ 
+-	for (i = 0; i < ui->idx; i++)
+-		map_symbol__exit(&ui->entries[i].ms);
+-
+ 	dwfl_end(ui->dwfl);
+ 	free(ui);
+ 	return 0;
+-- 
+2.53.0
+
 
 
 
