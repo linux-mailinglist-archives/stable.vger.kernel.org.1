@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-240852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240664-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ABf5Axxz62nCMwAAu9opvQ
-	(envelope-from <stable+bounces-240852-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:41:48 +0200
+	id QIcwA3tx62ndMwAAu9opvQ
+	(envelope-from <stable+bounces-240664-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:34:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A7AB45F67E
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:41:47 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 778C445F238
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:34:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6F30F3032DD0
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:40:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 253BB3024C9C
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:32:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A4723290A5;
-	Fri, 24 Apr 2026 13:40:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C27993D6CA6;
+	Fri, 24 Apr 2026 13:32:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lsoyka37"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZHdX/53t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B30C3C1976;
-	Fri, 24 Apr 2026 13:40:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D73A23D3CEE;
+	Fri, 24 Apr 2026 13:32:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777038007; cv=none; b=acnq9otI2Scod27I6i5Zq5rG4rVRhCFhs3jjiTyvtBmzJkVh0vaPHXz0QhSXS6Vb6ctIaqtGn62zuHp0y90oImai0rItxhmoCXycI5+IeOlb/t9tO9Z6XOmmOJNmFXbX0bqN1c6ZRCimrReL4U/qp0Nq26n8Dyn8bqBQJLI+NrY=
+	t=1777037521; cv=none; b=VKM+TiZ0HEJbUh0JYQX3KmTAn8yHSOGRmGhXdzyaLJ+xGzJlQGlp6KOHV2RTHcnl5AFLtPEYPOD+h78i6JEt6G/7BUahOUg//lCgVTyr6S/yP/8p87CvX+XoWhg58iq6YPEjQja4xpuOfx5NdhXgqjj+4AyBjOjxEA11mvYVQdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777038007; c=relaxed/simple;
-	bh=QRrgYW9vx81BgQKxj8rMk3Ltmrpy4BYZwF371BJWSAQ=;
+	s=arc-20240116; t=1777037521; c=relaxed/simple;
+	bh=lUOKdkBzArG51/WyNkYBrcP2zIiJ1jF3ySmsXZob7Fk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NfBJzWs0b5IZIA3QrwGK3t4to3iyUqPHpruUCAXPrXUcDhe/GvCmiS90lH6nlCfADbzNrzH/O0xXz8w1BMdr6UMN81T452Bllk7Yd5KiegLYUVjtkLbTtUHhylugm+GqxqiKNaone6+87AySYNy/CeMtvmNg1tM6O+0XF824X64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lsoyka37; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7214CC19425;
-	Fri, 24 Apr 2026 13:40:06 +0000 (UTC)
+	 MIME-Version; b=u+PISaZDzcfl8sekzau9/33wIaARLY4552E90gof16LvkE3Gq/fozaWpC4AZ3pBs1rIu+K1Hw3tGVsYtw55zf9lqY8/b+Qw7L5sQhl4zHYNrZJsWs97yIQMpok+KlhLP0MyuQOaz1GmEnKqQASFAWjhE3TDlbHReM9UD6iUOA1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZHdX/53t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0C32C2BCB2;
+	Fri, 24 Apr 2026 13:31:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777038006;
-	bh=QRrgYW9vx81BgQKxj8rMk3Ltmrpy4BYZwF371BJWSAQ=;
+	s=korg; t=1777037520;
+	bh=lUOKdkBzArG51/WyNkYBrcP2zIiJ1jF3ySmsXZob7Fk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lsoyka37z1M/C/vMgWOpKOGjXFmm9Lz6/hod/a5ao6ZPZEIGLaoPRto0woiqB2iZR
-	 M7lHgmgzFmY+whVaDL+Q9qOkeqz1eMV4/EZ4yayusZe6vhNWDScq+n0mDgIXsaHLto
-	 P6MBkHqljc3r1/Jw3lNniv/tC9ETcXpWDuMAsDFo=
+	b=ZHdX/53t0MsV86AmzS5/1plDbmcKkiJNXylPZiC6kgjHHZnzrzIYAh4N0oY2v4nWP
+	 Awk6Fef7nJL6M/eb3/wkcEvAyPJifdPuCEDBfGaup+rs+UznqnG8b+ju/1RH8YaRGh
+	 6nt1PJjewe5Q/bGGvXOvUOm+vXYwrCjtNhThQ5eo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mingzhe Zou <mingzhe.zou@easystack.cn>,
-	Coly Li <colyli@fnnas.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.6 121/166] bcache: fix cached_dev.sb_bio use-after-free and crash
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 7.0 10/42] fs/ntfs3: validate rec->used in journal-replay file record check
 Date: Fri, 24 Apr 2026 15:30:35 +0200
-Message-ID: <20260424132558.107018879@linuxfoundation.org>
+Message-ID: <20260424132422.610163655@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132532.812258529@linuxfoundation.org>
-References: <20260424132532.812258529@linuxfoundation.org>
+In-Reply-To: <20260424132420.410310336@linuxfoundation.org>
+References: <20260424132420.410310336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,14 +63,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7A7AB45F67E
+X-Rspamd-Queue-Id: 778C445F238
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -81,7 +80,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-240852-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-240664-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,76 +89,87 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,kernel.dk:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mingzhe Zou <mingzhe.zou@easystack.cn>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit fec114a98b8735ee89c75216c45a78e28be0f128 upstream.
+commit 0ca0485e4b2e837ebb6cbd4f2451aba665a03e4b upstream.
 
-In our production environment, we have received multiple crash reports
-regarding libceph, which have caught our attention:
+check_file_record() validates rec->total against the record size but
+never validates rec->used.  The do_action() journal-replay handlers read
+rec->used from disk and use it to compute memmove lengths:
 
-```
-[6888366.280350] Call Trace:
-[6888366.280452]  blk_update_request+0x14e/0x370
-[6888366.280561]  blk_mq_end_request+0x1a/0x130
-[6888366.280671]  rbd_img_handle_request+0x1a0/0x1b0 [rbd]
-[6888366.280792]  rbd_obj_handle_request+0x32/0x40 [rbd]
-[6888366.280903]  __complete_request+0x22/0x70 [libceph]
-[6888366.281032]  osd_dispatch+0x15e/0xb40 [libceph]
-[6888366.281164]  ? inet_recvmsg+0x5b/0xd0
-[6888366.281272]  ? ceph_tcp_recvmsg+0x6f/0xa0 [libceph]
-[6888366.281405]  ceph_con_process_message+0x79/0x140 [libceph]
-[6888366.281534]  ceph_con_v1_try_read+0x5d7/0xf30 [libceph]
-[6888366.281661]  ceph_con_workfn+0x329/0x680 [libceph]
-```
+  DeleteAttribute:    memmove(attr, ..., used - asize - roff)
+  CreateAttribute:    memmove(..., attr, used - roff)
+  change_attr_size:   memmove(..., used - PtrOffset(rec, next))
 
-After analyzing the coredump file, we found that the address of
-dc->sb_bio has been freed. We know that cached_dev is only freed when it
-is stopped.
+When rec->used is smaller than the offset of a validated attribute, or
+larger than the record size, these subtractions can underflow allowing
+us to copy huge amounts of memory in to a 4kb buffer, generally
+considered a bad idea overall.
 
-Since sb_bio is a part of struct cached_dev, rather than an alloc every
-time.  If the device is stopped while writing to the superblock, the
-released address will be accessed at endio.
+This requires a corrupted filesystem, which isn't a threat model the
+kernel really needs to worry about, but checking for such an obvious
+out-of-bounds value is good to keep things robust, especially on journal
+replay
 
-This patch hopes to wait for sb_write to complete in cached_dev_free.
+Fix this up by bounding rec->used correctly.
 
-It should be noted that we analyzed the cause of the problem, then tell
-all details to the QWEN and adopted the modifications it made.
+This is much like commit b2bc7c44ed17 ("fs/ntfs3: Fix slab-out-of-bounds
+read in DeleteIndexEntryRoot") which checked different values in this
+same switch statement.
 
-Signed-off-by: Mingzhe Zou <mingzhe.zou@easystack.cn>
-Fixes: cafe563591446 ("bcache: A block layer cache")
-Cc: stable@vger.kernel.org # 3.10+
-Signed-off-by: Coly Li <colyli@fnnas.com>
-Link: https://patch.msgid.link/20260322134102.480107-1-colyli@fnnas.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Cc: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Fixes: b46acd6a6a62 ("fs/ntfs3: Add NTFS journal")
+Cc: stable <stable@kernel.org>
+Assisted-by: gregkh_clanker_t1000
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/bcache/super.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ fs/ntfs3/fslog.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
---- a/drivers/md/bcache/super.c
-+++ b/drivers/md/bcache/super.c
-@@ -1367,6 +1367,13 @@ static void cached_dev_free(struct closu
+--- a/fs/ntfs3/fslog.c
++++ b/fs/ntfs3/fslog.c
+@@ -2791,13 +2791,14 @@ static inline bool check_file_record(con
+ 	u16 fn = le16_to_cpu(rec->rhdr.fix_num);
+ 	u16 ao = le16_to_cpu(rec->attr_off);
+ 	u32 rs = sbi->record_size;
++	u32 used = le32_to_cpu(rec->used);
  
- 	mutex_unlock(&bch_register_lock);
+ 	/* Check the file record header for consistency. */
+ 	if (rec->rhdr.sign != NTFS_FILE_SIGNATURE ||
+ 	    fo > (SECTOR_SIZE - ((rs >> SECTOR_SHIFT) + 1) * sizeof(short)) ||
+ 	    (fn - 1) * SECTOR_SIZE != rs || ao < MFTRECORD_FIXUP_OFFSET_1 ||
+ 	    ao > sbi->record_size - SIZEOF_RESIDENT || !is_rec_inuse(rec) ||
+-	    le32_to_cpu(rec->total) != rs) {
++	    le32_to_cpu(rec->total) != rs || used > rs || used < ao) {
+ 		return false;
+ 	}
+ 
+@@ -2809,6 +2810,15 @@ static inline bool check_file_record(con
+ 		return false;
+ 	}
  
 +	/*
-+	 * Wait for any pending sb_write to complete before free.
-+	 * The sb_bio is embedded in struct cached_dev, so we must
-+	 * ensure no I/O is in progress.
++	 * The do_action() handlers compute memmove lengths as
++	 * "rec->used - <offset of validated attr>", which underflows when
++	 * rec->used is smaller than the attribute walk reached.  At this
++	 * point attr is the ATTR_END marker; rec->used must cover it.
 +	 */
-+	closure_sync(&dc->sb_write);
++	if (used < PtrOffset(rec, attr) + sizeof(attr->type))
++		return false;
 +
- 	if (dc->sb_disk)
- 		put_page(virt_to_page(dc->sb_disk));
+ 	return true;
+ }
  
 
 
