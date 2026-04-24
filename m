@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-240707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240709-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GGlaKZhy62nmMwAAu9opvQ
-	(envelope-from <stable+bounces-240707-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:39:36 +0200
+	id wJQ/L5xy62nmMwAAu9opvQ
+	(envelope-from <stable+bounces-240709-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:39:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7A3F45F566
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:39:35 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 590E145F57B
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:39:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 961CB3019826
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:33:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CDE733034E28
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:33:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 844243D47B0;
-	Fri, 24 Apr 2026 13:33:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA89D3D6494;
+	Fri, 24 Apr 2026 13:33:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VhvlYUqG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d6AaUoP3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 485113AC00;
-	Fri, 24 Apr 2026 13:33:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B65C38837E;
+	Fri, 24 Apr 2026 13:33:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777037629; cv=none; b=hpaGyYXunw4vNfy9nyLIGfyzpWg5gq3dHfyZApNY6uN4VtuH7Sf/VrF0kx5FOi4fZ/z4MntUqB+x4qnCDIP6MXlNhEup1Sag2XJzN+EHxTosl7ptL5jdGsro5a4+mH5/fs3Ml6sgOlPNLhHqizRRuIMe9y7nMrfB4JMM8MGKd8U=
+	t=1777037634; cv=none; b=i3oTQhdCWSgf1mgSg8bXOu97wPawez0yLnrW7ShXFuXYvrRll4GuIK6KXgRWwzv86ri3mAat65NLXczaFCsWFMdio6pqHwXtdNA5NjMK4NT36PMUOP7MExmT9VrlYoPpc1ymmYISn3WmsUZY+RYh/RE612EPfzCZEBoUClYEDFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777037629; c=relaxed/simple;
-	bh=uN9wkP2NMTZl8dUJeVkmNzAKqmoFUjJMg5aVe7kZURo=;
+	s=arc-20240116; t=1777037634; c=relaxed/simple;
+	bh=gCIvdFhD5YzdQ4FNy2Qijg/SUiySjV2vKc+0ORQb8e4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UNdYpOMs7zsMSRtT4OC1RWgzFdBwpwEAX+vHuaR4RKZ8p8FaKFktIrryR1OYRlbaB1eK3810AC21ep5+QAtWtKkSfMGKzGH3diQMVTJe+I8oJ1bQUIE0a0i9Ko5HNGNH/AXTPntLLjyN8Au83w/YwwmjJJg7GAqcnG1Dcq/cRns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VhvlYUqG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BFF6C19425;
-	Fri, 24 Apr 2026 13:33:48 +0000 (UTC)
+	 MIME-Version; b=qZu84F6diM9n8jvJO8nasipruHbMlPV2JU5WsAxDEUgrWo5Vycgb3AEar6nigMvxMdGyh/G83AhKVnBZ0hOIjTBobmc1FWrwNJLpouOfSkJoawUDSz9KZHVIQbuBUBd2fmBZMsh7fCQtOgdHktwuqnOqDbB8G8bWAl+BeAtinxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d6AaUoP3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C432CC19425;
+	Fri, 24 Apr 2026 13:33:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777037629;
-	bh=uN9wkP2NMTZl8dUJeVkmNzAKqmoFUjJMg5aVe7kZURo=;
+	s=korg; t=1777037634;
+	bh=gCIvdFhD5YzdQ4FNy2Qijg/SUiySjV2vKc+0ORQb8e4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VhvlYUqGs88CGPRszW5LiIB/jnhChw2FnK7ItqdrlFCHlGTG4yx6Tw36P5WALqLmr
-	 yFvxtDXnZLPPsqfz9FmRyIcXVrwpQw22phaXJnMdgCIf6MMNd9/XvCZBFnCahiYMaO
-	 6ELfqqkzWX2Py2kyrh1yoUlI7R/yQ25LSM9zofPE=
+	b=d6AaUoP3//uGWVkJ+bHpyGrK8fPd4n9oqy+6mn77mh8aRNyiKxdc8VGxh++Y3UIOy
+	 XP9ackXxBymrzLjD7NasflztETRty8rAvDh2+KNqqgPZ7+xmqGjlkPlsGwk9Qhb3d5
+	 81rw9HZrr9AAmVCPaz75/4nZk3rDYtlkXP44WQ9U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Moroni <jmoroni@google.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Vee Satayamas <vsatayamas@gmail.com>,
+	Zhang Heng <zhangheng@kylinos.cn>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 001/166] RDMA/irdma: Fix double free related to rereg_user_mr
-Date: Fri, 24 Apr 2026 15:28:35 +0200
-Message-ID: <20260424132533.100238278@linuxfoundation.org>
+Subject: [PATCH 6.6 002/166] ASoC: amd: yc: Add DMI quirk for ASUS EXPERTBOOK BM1403CDA
+Date: Fri, 24 Apr 2026 15:28:36 +0200
+Message-ID: <20260424132533.297962517@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260424132532.812258529@linuxfoundation.org>
 References: <20260424132532.812258529@linuxfoundation.org>
@@ -64,76 +65,76 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E7A3F45F566
+X-Rspamd-Queue-Id: 590E145F57B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kylinos.cn,kernel.org];
+	TAGGED_FROM(0.00)[bounces-240709-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-240707-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacob Moroni <jmoroni@google.com>
+From: Vee Satayamas <vsatayamas@gmail.com>
 
-[ Upstream commit 29a3edd7004bb635d299fb9bc6f0ea4ef13ed5a2 ]
+[ Upstream commit f200b2f9a810c440c6750b56fc647b73337749a1 ]
 
-If IB_MR_REREG_TRANS is set during rereg_user_mr, the
-umem will be released and a new one will be allocated
-in irdma_rereg_mr_trans. If any step of irdma_rereg_mr_trans
-fails after the new umem is allocated, it releases the umem,
-but does not set iwmr->region to NULL. The problem is that
-this failure is propagated to the user, who will then call
-ibv_dereg_mr (as they should). Then, the dereg_mr path will
-see a non-NULL umem and attempt to call ib_umem_release again.
+Add a DMI quirk for the Asus Expertbook BM1403CDA to resolve the issue of the
+internal microphone not being detected.
 
-Fix this by setting iwmr->region to NULL after ib_umem_release.
-
-Fixed: 5ac388db27c4 ("RDMA/irdma: Add support to re-register a memory region")
-Signed-off-by: Jacob Moroni <jmoroni@google.com>
-Link: https://patch.msgid.link/20260227152743.1183388-1-jmoroni@google.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=221236
+Signed-off-by: Vee Satayamas <vsatayamas@gmail.com>
+Reviewed-by: Zhang Heng <zhangheng@kylinos.cn>
+Link: https://patch.msgid.link/20260315142511.66029-2-vsatayamas@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/irdma/verbs.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/infiniband/hw/irdma/verbs.c b/drivers/infiniband/hw/irdma/verbs.c
-index 532b36b25e919..a18b249fe550e 100644
---- a/drivers/infiniband/hw/irdma/verbs.c
-+++ b/drivers/infiniband/hw/irdma/verbs.c
-@@ -3209,6 +3209,7 @@ static int irdma_rereg_mr_trans(struct irdma_mr *iwmr, u64 start, u64 len,
- 
- err:
- 	ib_umem_release(region);
-+	iwmr->region = NULL;
- 	return err;
- }
+diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
+index ab75349d1063d..8a666989a8f3d 100644
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -710,6 +710,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "PM1503CDA"),
+ 		}
+ 	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_BOARD_NAME, "BM1403CDA"),
++		}
++	},
+ 	{}
+ };
  
 -- 
 2.53.0
