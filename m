@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-240826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240672-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wFZ/LR5062kQNAAAu9opvQ
-	(envelope-from <stable+bounces-240826-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:46:06 +0200
+	id EERFDOtw62nCMwAAu9opvQ
+	(envelope-from <stable+bounces-240672-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:32:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19C4745F94B
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:46:05 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DFE545F111
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:32:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A72263073D4B
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:39:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7A4383006F18
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:32:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4223233E347;
-	Fri, 24 Apr 2026 13:39:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 277DE3D6CD6;
+	Fri, 24 Apr 2026 13:32:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="arwYmMJP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P+I/O6KI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0531D3D47B0;
-	Fri, 24 Apr 2026 13:38:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23C6078F4A;
+	Fri, 24 Apr 2026 13:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777037940; cv=none; b=fHpHXvpwALOe2fz1x6INqBBuGZH0xqxWAA7IvFEgrfUwugqK1IxF7QI3p8tZ6m1hnsJ/qD/RKBxR/Wlf3qGUnFJoA7M/ulgpPQikASfvhjb0lA8HGg94m927H9K6Eu/MiP33CdIOmiOdYj074NYqROMuS1weCL6wG3lQ0GDLAeE=
+	t=1777037542; cv=none; b=RdLr797COMOiHI4xbVAEcTBPshxv4Rv2k7VYq1K0jahd9XeOe6sJWLrWa4p+qSR7Ir9NN8v0LTjct20E/rhM9ueVITCYmnDLTEj/hEZyriFIsnKDNqjcUCfjbVtoQa6ftIDgcYb3+g0hVvihtrJ59/rnKn14st/GGXjj0Tk0PIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777037940; c=relaxed/simple;
-	bh=gl8ium2TS9En5dmXUvAAiNRUeAMv3DN/bF5djcZcZEA=;
+	s=arc-20240116; t=1777037542; c=relaxed/simple;
+	bh=lTInEuymmatMXBluZhKxvubHEqwF+a9DmWcwWRt0xrc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oEeHyMaeQBmhlhEMiLQwMzh3cmXw+uB0LjglrSg7ZcFi2BSM+P3T/eJB5uLBYzMCqnmDMQ4XSq/8fp1E045CdUfZBMtur0ekziqAfukcxMYYO7aEYcJ2NBGHaI2JvXEeH37/6kZVfiaEiX4Kh+SakMpckXMwIeWWZNm4TCKDuyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=arwYmMJP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D9D4C2BCB2;
-	Fri, 24 Apr 2026 13:38:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qyS409UU2vfGOQa7PtbxyWC7NSVOg++SJ1wzWFgeXLalzNADgrA9ueplA5f+6MTk/4GUjEcvK3Y3IA9Ac1jCz5xBy0LHRfijvkTgzbcpi6G5O2amCRoZH1PkIJkOJw3JyQSmYspV0/gqZVIrUjMmwCdCVov7DLuSYXOM8IUq6zs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P+I/O6KI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3CB2C19425;
+	Fri, 24 Apr 2026 13:32:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777037939;
-	bh=gl8ium2TS9En5dmXUvAAiNRUeAMv3DN/bF5djcZcZEA=;
+	s=korg; t=1777037541;
+	bh=lTInEuymmatMXBluZhKxvubHEqwF+a9DmWcwWRt0xrc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=arwYmMJPr6RjNp8iSabnMhEPx3Y8+67+LPmPbHPHeDN2Rz0ceI5Hsg4rh893qw1VD
-	 HOBZYIgEx66786C43AmmOC8jWs8ixK/1MBQz+2VpElScvFD91upHcj56aZwTVY974e
-	 OrppI+BT3QstylDSxP6jZCrT7Z3CpJwu4fYPhapE=
+	b=P+I/O6KIEY5+FWe2V2iYaaxx0HLwxBGIe+rIGruFF7onV9cVPDbJJbZwHDRsfB490
+	 YmsnbJjieDKTbAkXV3PiR1YnE50N9SJgvD59FY4lwQochEb9nmAl6gu9sFXrwa4QZY
+	 oEBkmIPkXCyxrbT/blpZWQNbGkILqQRtsq5DCFoQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
-	Charles Xu <charles_xu@189.cn>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 129/166] md/raid1,raid10: dont ignore IO flags
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Miklos Szeredi <mszeredi@redhat.com>
+Subject: [PATCH 7.0 18/42] fuse: quiet down complaints in fuse_conn_limit_write
 Date: Fri, 24 Apr 2026 15:30:43 +0200
-Message-ID: <20260424132559.926975788@linuxfoundation.org>
+Message-ID: <20260424132424.320063053@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132532.812258529@linuxfoundation.org>
-References: <20260424132532.812258529@linuxfoundation.org>
+In-Reply-To: <20260424132420.410310336@linuxfoundation.org>
+References: <20260424132420.410310336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,149 +62,101 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 19C4745F94B
+X-Rspamd-Queue-Id: 8DFE545F111
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,huawei.com,oracle.com,189.cn,kernel.org];
-	TAGGED_FROM(0.00)[bounces-240826-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240672-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,189.cn:email,oracle.com:email]
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Darrick J. Wong <djwong@kernel.org>
 
-commit e879a0d9cb086c8e52ce6c04e5bfa63825a6213c upstream.
+commit 129a45f9755a89f573c6a513a6b9e3d234ce89b0 upstream.
 
-If blk-wbt is enabled by default, it's found that raid write performance
-is quite bad because all IO are throttled by wbt of underlying disks,
-due to flag REQ_IDLE is ignored. And turns out this behaviour exist since
-blk-wbt is introduced.
+gcc 15 complains about an uninitialized variable val that is passed by
+reference into fuse_conn_limit_write:
 
-Other than REQ_IDLE, other flags should not be ignored as well, for
-example REQ_META can be set for filesystems, clearing it can cause priority
-reverse problems; And REQ_NOWAIT should not be cleared as well, because
-io will wait instead of failing directly in underlying disks.
+ control.c: In function ‘fuse_conn_congestion_threshold_write’:
+ include/asm-generic/rwonce.h:55:37: warning: ‘val’ may be used uninitialized [-Wmaybe-uninitialized]
+    55 |         *(volatile typeof(x) *)&(x) = (val);                            \
+       |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~
+ include/asm-generic/rwonce.h:61:9: note: in expansion of macro ‘__WRITE_ONCE’
+    61 |         __WRITE_ONCE(x, val);                                           \
+       |         ^~~~~~~~~~~~
+ control.c:178:9: note: in expansion of macro ‘WRITE_ONCE’
+   178 |         WRITE_ONCE(fc->congestion_threshold, val);
+       |         ^~~~~~~~~~
+ control.c:166:18: note: ‘val’ was declared here
+   166 |         unsigned val;
+       |                  ^~~
 
-Fix those problems by keep IO flags from master bio.
+Unfortunately there's enough macro spew involved in kstrtoul_from_user
+that I think gcc gives up on its analysis and sprays the above warning.
+AFAICT it's not actually a bug, but we could just zero-initialize the
+variable to enable using -Wmaybe-uninitialized to find real problems.
 
-Fises: f51d46d0e7cb ("md: add support for REQ_NOWAIT")
-Fixes: e34cbd307477 ("blk-wbt: add general throttling mechanism")
-Fixes: 5404bc7a87b9 ("[PATCH] Allow file systems to differentiate between data and meta reads")
-Link: https://lore.kernel.org/linux-raid/20250227121657.832356-1-yukuai1@huaweicloud.com
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-[ Harshit: Resolve conflicts due to missing commit: f2a38abf5f1c
-  ("md/raid1: Atomic write support") and  commit: a1d9b4fd42d9
-  ("md/raid10: Atomic write support") in 6.12.y, we don't have Atomic
-  writes feature in 6.12.y ]
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Previously we would use some weird uninitialized_var annotation to quiet
+down the warnings, so clearly this code has been like this for quite
+some time.
+
+Cc: stable@vger.kernel.org # v5.9
+Fixes: 3f649ab728cda8 ("treewide: Remove uninitialized_var() usage")
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[ Based on Harshit's backport for 6.12, fixed minor conflicts for 6.6. ]
-Signed-off-by: Charles Xu <charles_xu@189.cn>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid1.c  | 4 ----
- drivers/md/raid10.c | 7 -------
- 2 files changed, 11 deletions(-)
+ fs/fuse/control.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/md/raid1.c b/drivers/md/raid1.c
-index 4c1f86ca55208..d313e9834d447 100644
---- a/drivers/md/raid1.c
-+++ b/drivers/md/raid1.c
-@@ -1214,8 +1214,6 @@ static void raid1_read_request(struct mddev *mddev, struct bio *bio,
- 	struct raid1_info *mirror;
- 	struct bio *read_bio;
- 	struct bitmap *bitmap = mddev->bitmap;
--	const enum req_op op = bio_op(bio);
--	const blk_opf_t do_sync = bio->bi_opf & REQ_SYNC;
- 	int max_sectors;
- 	int rdisk;
- 	bool r1bio_existed = !!r1_bio;
-@@ -1315,7 +1313,6 @@ static void raid1_read_request(struct mddev *mddev, struct bio *bio,
- 	read_bio->bi_iter.bi_sector = r1_bio->sector +
- 		mirror->rdev->data_offset;
- 	read_bio->bi_end_io = raid1_end_read_request;
--	read_bio->bi_opf = op | do_sync;
- 	if (test_bit(FailFast, &mirror->rdev->flags) &&
- 	    test_bit(R1BIO_FailFast, &r1_bio->state))
- 	        read_bio->bi_opf |= MD_FAILFAST;
-@@ -1537,7 +1534,6 @@ static void raid1_write_request(struct mddev *mddev, struct bio *bio,
+--- a/fs/fuse/control.c
++++ b/fs/fuse/control.c
+@@ -121,7 +121,7 @@ static ssize_t fuse_conn_max_background_
+ 					      const char __user *buf,
+ 					      size_t count, loff_t *ppos)
+ {
+-	unsigned val;
++	unsigned int val = 0;
+ 	ssize_t ret;
  
- 		mbio->bi_iter.bi_sector	= (r1_bio->sector + rdev->data_offset);
- 		mbio->bi_end_io	= raid1_end_write_request;
--		mbio->bi_opf = bio_op(bio) | (bio->bi_opf & (REQ_SYNC | REQ_FUA));
- 		if (test_bit(FailFast, &rdev->flags) &&
- 		    !test_bit(WriteMostly, &rdev->flags) &&
- 		    conf->raid_disks - mddev->degraded > 1)
-diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
-index 8546ef98bfa7e..6bcf6852c2000 100644
---- a/drivers/md/raid10.c
-+++ b/drivers/md/raid10.c
-@@ -1168,8 +1168,6 @@ static void raid10_read_request(struct mddev *mddev, struct bio *bio,
+ 	ret = fuse_conn_limit_write(file, buf, count, ppos, &val,
+@@ -163,7 +163,7 @@ static ssize_t fuse_conn_congestion_thre
+ 						    const char __user *buf,
+ 						    size_t count, loff_t *ppos)
  {
- 	struct r10conf *conf = mddev->private;
- 	struct bio *read_bio;
--	const enum req_op op = bio_op(bio);
--	const blk_opf_t do_sync = bio->bi_opf & REQ_SYNC;
- 	int max_sectors;
- 	struct md_rdev *rdev;
- 	char b[BDEVNAME_SIZE];
-@@ -1250,7 +1248,6 @@ static void raid10_read_request(struct mddev *mddev, struct bio *bio,
- 	read_bio->bi_iter.bi_sector = r10_bio->devs[slot].addr +
- 		choose_data_offset(r10_bio, rdev);
- 	read_bio->bi_end_io = raid10_end_read_request;
--	read_bio->bi_opf = op | do_sync;
- 	if (test_bit(FailFast, &rdev->flags) &&
- 	    test_bit(R10BIO_FailFast, &r10_bio->state))
- 	        read_bio->bi_opf |= MD_FAILFAST;
-@@ -1267,9 +1264,6 @@ static void raid10_write_one_disk(struct mddev *mddev, struct r10bio *r10_bio,
- 				  struct bio *bio, bool replacement,
- 				  int n_copy)
- {
--	const enum req_op op = bio_op(bio);
--	const blk_opf_t do_sync = bio->bi_opf & REQ_SYNC;
--	const blk_opf_t do_fua = bio->bi_opf & REQ_FUA;
- 	unsigned long flags;
- 	struct r10conf *conf = mddev->private;
- 	struct md_rdev *rdev;
-@@ -1295,7 +1289,6 @@ static void raid10_write_one_disk(struct mddev *mddev, struct r10bio *r10_bio,
- 	mbio->bi_iter.bi_sector	= (r10_bio->devs[n_copy].addr +
- 				   choose_data_offset(r10_bio, rdev));
- 	mbio->bi_end_io	= raid10_end_write_request;
--	mbio->bi_opf = op | do_sync | do_fua;
- 	if (!replacement && test_bit(FailFast,
- 				     &conf->mirrors[devnum].rdev->flags)
- 			 && enough(conf, devnum))
--- 
-2.53.0
-
+-	unsigned val;
++	unsigned int val = 0;
+ 	struct fuse_conn *fc;
+ 	ssize_t ret;
+ 
 
 
 
