@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-240777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240778-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wE6HHkJz62kLNAAAu9opvQ
-	(envelope-from <stable+bounces-240777-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:42:26 +0200
+	id cBYCGEVz62nCMwAAu9opvQ
+	(envelope-from <stable+bounces-240778-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:42:29 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDA3945F6D9
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:42:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F188945F6EF
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:42:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CB916305E9F2
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:36:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BA91D307D5A6
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:36:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EB863D5241;
-	Fri, 24 Apr 2026 13:36:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B4B73D3D04;
+	Fri, 24 Apr 2026 13:36:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XeAUDj9R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FXx0J4dU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0D0619A288;
-	Fri, 24 Apr 2026 13:36:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE2A179A3;
+	Fri, 24 Apr 2026 13:36:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777037813; cv=none; b=CHX6+NgntyHPNLNARaERgM7c9m8CNqzgWxoEoNnBRzdkSsg96TmnT+ZvawUbosm7gs7mSkZ1qQlKsfnprOgKNSloh+U9k2lJHU0wsWTDwLZGQoTK6p6ULdPrstldTGCvQ69IILUIo9ABjcaT/TKYeGEwZ1VCOTI5jHZUx5q6C9k=
+	t=1777037816; cv=none; b=cC0PJZg0zqd9FwT1cCgY1im8bXrkGVF5ib437qIKkWw/WhhP2kg1u4jg6q7SWqK5Ofo/JIu9wxu8X3yny7oCbvAbXfgRxGs/m3c6JWMI4xnFNi7v+HCDrJo8vXixmq0pvAHBXvOSFt9hQ6TiI0bEoNouKPB4l/XVydcXjv3wgvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777037813; c=relaxed/simple;
-	bh=zbXA3UNKelyDzTecCvLqjGmp24Gwk2UZjohmOnSQMPY=;
+	s=arc-20240116; t=1777037816; c=relaxed/simple;
+	bh=zACIHG6S04H8zzpEnY7dysic2W6qY1vq88oqlbHpobc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a5i40mY0klDUyLt2b63XAv+5Rs6WTMoHiUR8Jni1tw2+ZNIH0HRcp9gztDQd8yDC++PvrdaEpVdpNRCuz3Q9oFcATkv1rC1SnW/oACRezLW2iZnFGzxHJFj3zhMRmYFJ1pDhtyzG/cgVp0Go+Kqpy2/ht1hhhq+Mofi/UBHjCwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XeAUDj9R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AA38C19425;
-	Fri, 24 Apr 2026 13:36:53 +0000 (UTC)
+	 MIME-Version; b=j7hF0SAL/y0NrgCoI+Yv1ir/OWgqGESK3MX/mAIrbs+AuUKWwVYd4FoP8Yz8Nc9dHIHqdViuZ25GrrBkuUFuPZNg5u0C/1z28gqeHpEAUrvjbGGR5de8Osig+knWEz1QCZ0J9MShfKVRTx4vcHcs6W0IuXsRNM/qaXaejtD0yMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FXx0J4dU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7FC0C19425;
+	Fri, 24 Apr 2026 13:36:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777037813;
-	bh=zbXA3UNKelyDzTecCvLqjGmp24Gwk2UZjohmOnSQMPY=;
+	s=korg; t=1777037816;
+	bh=zACIHG6S04H8zzpEnY7dysic2W6qY1vq88oqlbHpobc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XeAUDj9RZcJHbvIXmQhQ0VLPx9wwrDDhzoMefZ/2AuMIoBMs6I3JXHTCFtWMEMAmx
-	 cMPUf3qoyGzyKEKQtBDm0jCEP9khdVRhIyDt9eMu6lmroxGIEonqJFKvUV21lRiLEJ
-	 LydIwGpaxUEzA80e6jkKsVF6vY9Oc3rTPW4+BS8E=
+	b=FXx0J4dUXISlJHGYyHDhanBdgqOIBJ5IgBz+Ti5Gk4KCuNw3xNzK9raoeC6uvZ5lB
+	 E7beq40KHGuakfbm/qk0Ym9HA0Lo6HIGQNoVd/hmNsR5xNpTR0U5ym2wPpMuz5iBKK
+	 tA5tNL61EiYIAT8HtchAdx6sfONiHVI3W9uZ9/zA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable <stable@kernel.org>
-Subject: [PATCH 6.6 078/166] usb: gadget: f_ncm: validate minimum block_len in ncm_unwrap_ntb()
-Date: Fri, 24 Apr 2026 15:29:52 +0200
-Message-ID: <20260424132549.160058985@linuxfoundation.org>
+Subject: [PATCH 6.6 079/166] usb: gadget: f_phonet: fix skb frags[] overflow in pn_rx_complete()
+Date: Fri, 24 Apr 2026 15:29:53 +0200
+Message-ID: <20260424132549.349418444@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260424132532.812258529@linuxfoundation.org>
 References: <20260424132532.812258529@linuxfoundation.org>
@@ -62,7 +62,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: BDA3945F6D9
+X-Rspamd-Queue-Id: F188945F6EF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
@@ -75,7 +75,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240777-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-240778-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -91,7 +91,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
@@ -99,50 +99,50 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit 8f993d30b95dc9557a8a96ceca11abed674c8acb upstream.
+commit c088d5dd2fffb4de1fb8e7f57751c8b82942180a upstream.
 
-The block_len read from the host-supplied NTB header is checked against
-ntb_max but has no lower bound. When block_len is smaller than
-opts->ndp_size, the bounds check of:
-	ndp_index > (block_len - opts->ndp_size)
-will underflow producing a huge unsigned value that ndp_index can never
-exceed, defeating the check entirely.
+A broken/bored/mean USB host can overflow the skb_shared_info->frags[]
+array on a Linux gadget exposing a Phonet function by sending an
+unbounded sequence of full-page OUT transfers.
 
-The same underflow occurs in the datagram index checks against block_len
-- opts->dpe_size.  With those checks neutered, a malicious USB host can
-choose ndp_index and datagram offsets that point past the actual
-transfer, and the skb_put_data() copies adjacent kernel memory into the
-network skb.
+pn_rx_complete() finalizes the skb only when req->actual < req->length,
+where req->length is set to PAGE_SIZE by the gadget.  If the host always
+sends exactly PAGE_SIZE bytes per transfer, fp->rx.skb will never be
+reset and each completion will add another fragment via
+skb_add_rx_frag().  Once nr_frags exceeds MAX_SKB_FRAGS (default 17),
+subsequent frag stores overwrite memory adjacent to the shinfo on the
+heap.
 
-Fix this by rejecting block lengths that cannot hold at least the NTB
-header plus one NDP.  This will make block_len - opts->ndp_size and
-block_len - opts->dpe_size both well-defined.
+Drop the skb and account a length error when the frag limit is reached,
+matching the fix applied in t7xx by commit f0813bcd2d9d ("net: wwan:
+t7xx: fix potential skb->frags overflow in RX path").
 
-Commit 8d2b1a1ec9f5 ("CDC-NCM: avoid overflow in sanity checking") fixed
-a related class of issues on the host side of NCM.
-
-Fixes: 2b74b0a04d3e ("USB: gadget: f_ncm: add bounds checks to ncm_unwrap_ntb()")
 Cc: stable <stable@kernel.org>
 Assisted-by: gregkh_clanker_t1000
-Link: https://patch.msgid.link/2026040753-baffle-handheld-624d@gregkh
+Link: https://patch.msgid.link/2026040705-fruit-unloved-0701@gregkh
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/f_ncm.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/gadget/function/f_phonet.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/usb/gadget/function/f_ncm.c
-+++ b/drivers/usb/gadget/function/f_ncm.c
-@@ -1196,8 +1196,8 @@ parse_ntb:
+--- a/drivers/usb/gadget/function/f_phonet.c
++++ b/drivers/usb/gadget/function/f_phonet.c
+@@ -333,6 +333,15 @@ static void pn_rx_complete(struct usb_ep
+ 		if (unlikely(!skb))
+ 			break;
  
- 	block_len = get_ncm(&tmp, opts->block_length);
- 	/* (d)wBlockLength */
--	if (block_len > ntb_max) {
--		INFO(port->func.config->cdev, "OUT size exceeded\n");
-+	if ((block_len < opts->nth_size + opts->ndp_size) || (block_len > ntb_max)) {
-+		INFO(port->func.config->cdev, "Bad block length: %#X\n", block_len);
- 		goto err;
- 	}
- 
++		if (unlikely(skb_shinfo(skb)->nr_frags >= MAX_SKB_FRAGS)) {
++			/* Frame count from host exceeds frags[] capacity */
++			dev_kfree_skb_any(skb);
++			if (fp->rx.skb == skb)
++				fp->rx.skb = NULL;
++			dev->stats.rx_length_errors++;
++			break;
++		}
++
+ 		if (skb->len == 0) { /* First fragment */
+ 			skb->protocol = htons(ETH_P_PHONET);
+ 			skb_reset_mac_header(skb);
 
 
 
