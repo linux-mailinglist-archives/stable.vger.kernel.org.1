@@ -1,59 +1,67 @@
-Return-Path: <stable+bounces-240697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240837-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oK7uCHdy62nCMwAAu9opvQ
-	(envelope-from <stable+bounces-240697-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:39:03 +0200
+	id aFmpOr9y62nCMwAAu9opvQ
+	(envelope-from <stable+bounces-240837-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:40:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A625945F4EF
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:39:02 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5659345F5BD
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:40:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 96D043074AF7
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:33:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B8CDC3004C3A
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:39:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 581FA3D75AB;
-	Fri, 24 Apr 2026 13:33:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 631823290A5;
+	Fri, 24 Apr 2026 13:39:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cQ7SX0sf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YISZOU51"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1456D3D6CCE;
-	Fri, 24 Apr 2026 13:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 258AA3563D4;
+	Fri, 24 Apr 2026 13:39:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777037606; cv=none; b=PgRjAr03O4iym3umv+JuRnz1jKlIh0ya3yJ+W91zy/CtYUDmM+AG2n/wKPiO2hjCi1uIg8wHUhF37+oHCpjRE4i5jCOB3gLR5R26OTJIFEyeKJMwKbwAjM9Nz4GTPe7iHvEmidknCTB/yPPVZQe/bP83U8nm/RDLYVXDfinA8NI=
+	t=1777037968; cv=none; b=nvTI2JxM8myR6gMLp12TDENQ2smG3hBN43V73PgYVEvk85U+stoeB7wOkBMf2TlWWn1GqW93k3TG2+x7W0UfPcO5OA1nWAHfoye4bSZ37AAj0Z60AxWKIRL+7LWpLDc9DMuFT9k4XPxnuCDBPlPHJe0omEltvlZMmNpemdoazlY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777037606; c=relaxed/simple;
-	bh=EFvSPkaPGY4Z7bsIoKqBmNgwaXefVKHzdhy4ZvBT2vg=;
+	s=arc-20240116; t=1777037968; c=relaxed/simple;
+	bh=Q5q2ek22QfVEouU29NOh0Qf/00WCtSqbrqvuDDii2KY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HGcrJ5GtbXvKNBvsQz9449DqT+xkPwdIySoGG5qrT2ryBvT6J3raLbMw/IWFQQRU7QWvd2RDtGFG83qAluvKXucvRcQ2NDsnkxL8qabo94ELqRgIkaw3qjSw0l4rxfjvy2J8ckh1G0ZoFvCPR4Y847ujTM8XEgwAdxMePzXg10E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cQ7SX0sf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77673C2BCB5;
-	Fri, 24 Apr 2026 13:33:25 +0000 (UTC)
+	 MIME-Version; b=Wrg7H6u3hxI5juK2ztIJvnDMFSWs1LYpfsXj7XQhrNTr3mBX0qLl5WbeScfAQNac6Szk8mCiNMMRsdpT6koABNlExhN2i0LOF5YOUTbgvVb0wvWiTzme8S5E910yfhPETx+liJFhM9h196MjRCn+DhzthojjytY/ebrGqKMDmEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YISZOU51; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85DB1C19425;
+	Fri, 24 Apr 2026 13:39:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777037605;
-	bh=EFvSPkaPGY4Z7bsIoKqBmNgwaXefVKHzdhy4ZvBT2vg=;
+	s=korg; t=1777037968;
+	bh=Q5q2ek22QfVEouU29NOh0Qf/00WCtSqbrqvuDDii2KY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cQ7SX0sfni8Z6icGyk80bJVmKdGxQGnFgqI9cupihLPB1795t36U589HOb0XGD4w1
-	 u5lnhiOwnrhiFYfK+HyWLaTfKsOTCcHx0uBVm5AbH8u+MXaRWf4IyqKzeuOB7p9Nbo
-	 Bj2EpvjhpX4HhFkcI+znr38P3DGHnHF68mFScoGM=
+	b=YISZOU51MzbdQGvAoF0lbc4/RFfDJwxdyU3t9g3H7Dz5H/BcrYFAqRVQRt9OE+uqw
+	 T8y8smJcb4/P364f5i3MusN8M6GNweGA69FA79Onq8Id76YooXfxx2vUG3hWhgWOCU
+	 zm7gFeULFGK2STkbNMf5BnLY2ztsKhOeS1o62Jp4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 7.0 28/42] ksmbd: validate num_aces and harden ACE walk in smb_inherit_dacl()
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	syzbot+c897823f699449cc3eb4@syzkaller.appspotmail.com,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Heming Zhao <heming.zhao@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 139/166] ocfs2: validate inline data i_size during inode read
 Date: Fri, 24 Apr 2026 15:30:53 +0200
-Message-ID: <20260424132426.245133806@linuxfoundation.org>
+Message-ID: <20260424132602.103393297@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132420.410310336@linuxfoundation.org>
-References: <20260424132420.410310336@linuxfoundation.org>
+In-Reply-To: <20260424132532.812258529@linuxfoundation.org>
+References: <20260424132532.812258529@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +72,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A625945F4EF
+X-Rspamd-Queue-Id: 5659345F5BD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.16 / 15.00];
@@ -72,169 +80,115 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240697-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	TAGGED_FROM(0.00)[bounces-240837-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,syzkaller.appspotmail.com,linux.alibaba.com,fasheh.com,evilplan.org,oracle.com,live.cn,huawei.com,suse.com,linux-foundation.org,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_RCPT(0.00)[stable,c897823f699449cc3eb4];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-commit 3e4e2ea2a781018ed5d75f969e3e5606beb66e48 upstream.
+[ Upstream commit 1524af3685b35feac76662cc551cbc37bd14775f ]
 
-smb_inherit_dacl() trusts the on-disk num_aces value from the parent
-directory's DACL xattr and uses it to size a heap allocation:
+When reading an inode from disk, ocfs2_validate_inode_block() performs
+various sanity checks but does not validate the size of inline data.  If
+the filesystem is corrupted, an inode's i_size can exceed the actual
+inline data capacity (id_count).
 
-  aces_base = kmalloc(sizeof(struct smb_ace) * num_aces * 2, ...);
+This causes ocfs2_dir_foreach_blk_id() to iterate beyond the inline data
+buffer, triggering a use-after-free when accessing directory entries from
+freed memory.
 
-num_aces is a u16 read from le16_to_cpu(parent_pdacl->num_aces)
-without checking that it is consistent with the declared pdacl_size.
-An authenticated client whose parent directory's security.NTACL is
-tampered (e.g. via offline xattr corruption or a concurrent path that
-bypasses parse_dacl()) can present num_aces = 65535 with minimal
-actual ACE data.  This causes a ~8 MB allocation (not kzalloc, so
-uninitialized) that the subsequent loop only partially populates, and
-may also overflow the three-way size_t multiply on 32-bit kernels.
+In the syzbot report:
+  - i_size was 1099511627576 bytes (~1TB)
+  - Actual inline data capacity (id_count) is typically <256 bytes
+  - A garbage rec_len (54648) caused ctx->pos to jump out of bounds
+  - This triggered a UAF in ocfs2_check_dir_entry()
 
-Additionally, the ACE walk loop uses the weaker
-offsetof(struct smb_ace, access_req) minimum size check rather than
-the minimum valid on-wire ACE size, and does not reject ACEs whose
-declared size is below the minimum.
+Fix by adding a validation check in ocfs2_validate_inode_block() to ensure
+inodes with inline data have i_size <= id_count.  This catches the
+corruption early during inode read and prevents all downstream code from
+operating on invalid data.
 
-Reproduced on UML + KASAN + LOCKDEP against the real ksmbd code path.
-A legitimate mount.cifs client creates a parent directory over SMB
-(ksmbd writes a valid security.NTACL xattr), then the NTACL blob on
-the backing filesystem is rewritten to set num_aces = 0xFFFF while
-keeping the posix_acl_hash bytes intact so ksmbd_vfs_get_sd_xattr()'s
-hash check still passes.  A subsequent SMB2 CREATE of a child under
-that parent drives smb2_open() into smb_inherit_dacl() (share has
-"vfs objects = acl_xattr" set), which fails the page allocator:
-
-  WARNING: mm/page_alloc.c:5226 at __alloc_frozen_pages_noprof+0x46c/0x9c0
-  Workqueue: ksmbd-io handle_ksmbd_work
-   __alloc_frozen_pages_noprof+0x46c/0x9c0
-   ___kmalloc_large_node+0x68/0x130
-   __kmalloc_large_node_noprof+0x24/0x70
-   __kmalloc_noprof+0x4c9/0x690
-   smb_inherit_dacl+0x394/0x2430
-   smb2_open+0x595d/0xabe0
-   handle_ksmbd_work+0x3d3/0x1140
-
-With the patch applied the added guard rejects the tampered value
-with -EINVAL before any large allocation runs, smb2_open() falls back
-to smb2_create_sd_buffer(), and the child is created with a default
-SD.  No warning, no splat.
-
-Fix by:
-
-  1. Validating num_aces against pdacl_size using the same formula
-     applied in parse_dacl().
-
-  2. Replacing the raw kmalloc(sizeof * num_aces * 2) with
-     kmalloc_array(num_aces * 2, sizeof(...)) for overflow-safe
-     allocation.
-
-  3. Tightening the per-ACE loop guard to require the minimum valid
-     ACE size (offsetof(smb_ace, sid) + CIFS_SID_BASE_SIZE) and
-     rejecting under-sized ACEs, matching the hardening in
-     smb_check_perm_dacl() and parse_dacl().
-
-v1 -> v2:
-  - Replace the synthetic test-module splat in the changelog with a
-    real-path UML + KASAN reproduction driven through mount.cifs and
-    SMB2 CREATE; Namjae flagged the kcifs3_test_inherit_dacl_old name
-    in v1 since it does not exist in ksmbd.
-  - Drop the commit-hash citation from the code comment per Namjae's
-    review; keep the parse_dacl() pointer.
-
-Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-6
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Link: https://lkml.kernel.org/r/20251212052132.16750-1-kartikey406@gmail.com
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Reported-by: syzbot+c897823f699449cc3eb4@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=c897823f699449cc3eb4
+Tested-by: syzbot+c897823f699449cc3eb4@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/all/20251211115231.3560028-1-kartikey406@gmail.com/T/ [v1]
+Link: https://lore.kernel.org/all/20251212040400.6377-1-kartikey406@gmail.com/T/ [v2]
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Heming Zhao <heming.zhao@suse.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 7bc5da4842be ("ocfs2: fix out-of-bounds write in ocfs2_write_end_inline")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/smbacl.c |   28 +++++++++++++++++++++++-----
- 1 file changed, 23 insertions(+), 5 deletions(-)
+ fs/ocfs2/inode.c |   25 +++++++++++++++++++------
+ 1 file changed, 19 insertions(+), 6 deletions(-)
 
---- a/fs/smb/server/smbacl.c
-+++ b/fs/smb/server/smbacl.c
-@@ -1106,8 +1106,24 @@ int smb_inherit_dacl(struct ksmbd_conn *
- 		goto free_parent_pntsd;
+--- a/fs/ocfs2/inode.c
++++ b/fs/ocfs2/inode.c
+@@ -1419,12 +1419,25 @@ int ocfs2_validate_inode_block(struct su
+ 		goto bail;
  	}
  
--	aces_base = kmalloc(sizeof(struct smb_ace) * num_aces * 2,
--			    KSMBD_DEFAULT_GFP);
-+	aces_size = pdacl_size - sizeof(struct smb_acl);
+-	if ((le16_to_cpu(di->i_dyn_features) & OCFS2_INLINE_DATA_FL) &&
+-	    le32_to_cpu(di->i_clusters)) {
+-		rc = ocfs2_error(sb, "Invalid dinode %llu: %u clusters\n",
+-				 (unsigned long long)bh->b_blocknr,
+-				 le32_to_cpu(di->i_clusters));
+-		goto bail;
++	if (le16_to_cpu(di->i_dyn_features) & OCFS2_INLINE_DATA_FL) {
++		struct ocfs2_inline_data *data = &di->id2.i_data;
 +
-+	/*
-+	 * Validate num_aces against the DACL payload before allocating.
-+	 * Each ACE must be at least as large as its fixed-size header
-+	 * (up to the SID base), so num_aces cannot exceed the payload
-+	 * divided by the minimum ACE size.  This mirrors the existing
-+	 * check in parse_dacl().
-+	 */
-+	if (num_aces > aces_size / (offsetof(struct smb_ace, sid) +
-+				    offsetof(struct smb_sid, sub_auth) +
-+				    sizeof(__le16))) {
-+		rc = -EINVAL;
-+		goto free_parent_pntsd;
-+	}
++		if (le32_to_cpu(di->i_clusters)) {
++			rc = ocfs2_error(sb,
++					 "Invalid dinode %llu: %u clusters\n",
++					 (unsigned long long)bh->b_blocknr,
++					 le32_to_cpu(di->i_clusters));
++			goto bail;
++		}
 +
-+	aces_base = kmalloc_array(num_aces * 2, sizeof(struct smb_ace),
-+				  KSMBD_DEFAULT_GFP);
- 	if (!aces_base) {
- 		rc = -ENOMEM;
- 		goto free_parent_pntsd;
-@@ -1116,7 +1132,6 @@ int smb_inherit_dacl(struct ksmbd_conn *
- 	aces = (struct smb_ace *)aces_base;
- 	parent_aces = (struct smb_ace *)((char *)parent_pdacl +
- 			sizeof(struct smb_acl));
--	aces_size = acl_len - sizeof(struct smb_acl);
++		if (le64_to_cpu(di->i_size) > le16_to_cpu(data->id_count)) {
++			rc = ocfs2_error(sb,
++					 "Invalid dinode #%llu: inline data i_size %llu exceeds id_count %u\n",
++					 (unsigned long long)bh->b_blocknr,
++					 (unsigned long long)le64_to_cpu(di->i_size),
++					 le16_to_cpu(data->id_count));
++			goto bail;
++		}
+ 	}
  
- 	if (pntsd_type & DACL_AUTO_INHERITED)
- 		inherited_flags = INHERITED_ACE;
-@@ -1124,11 +1139,14 @@ int smb_inherit_dacl(struct ksmbd_conn *
- 	for (i = 0; i < num_aces; i++) {
- 		int pace_size;
- 
--		if (offsetof(struct smb_ace, access_req) > aces_size)
-+		if (aces_size < offsetof(struct smb_ace, sid) +
-+		    CIFS_SID_BASE_SIZE)
- 			break;
- 
- 		pace_size = le16_to_cpu(parent_aces->size);
--		if (pace_size > aces_size)
-+		if (pace_size > aces_size ||
-+		    pace_size < offsetof(struct smb_ace, sid) +
-+				CIFS_SID_BASE_SIZE)
- 			break;
- 
- 		aces_size -= pace_size;
+ 	rc = 0;
 
 
 
