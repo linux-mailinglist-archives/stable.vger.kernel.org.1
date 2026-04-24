@@ -1,187 +1,181 @@
-Return-Path: <stable+bounces-241021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241022-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +ADPMlCz62kJQgAAu9opvQ
-	(envelope-from <stable+bounces-241021-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 20:15:44 +0200
+	id zW40N6+362nfQgAAu9opvQ
+	(envelope-from <stable+bounces-241022-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 20:34:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DF2B462534
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 20:15:43 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBC334627BA
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 20:34:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 055A4303207F
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 18:13:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1AE22300A587
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 18:33:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 275A23EDAC6;
-	Fri, 24 Apr 2026 18:13:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD4403F0AA7;
+	Fri, 24 Apr 2026 18:33:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="icSrAtwl"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="mHogqlyj"
 X-Original-To: stable@vger.kernel.org
-Received: from outbound.ms.icloud.com (p-west3-cluster2-host8-snip4-10.eps.apple.com [57.103.74.43])
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013067.outbound.protection.outlook.com [40.107.201.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4B953ED5D5
-	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 18:13:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.74.43
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777054422; cv=none; b=JqzsEoXJt7dgXVdoCrCYRRbefec4M7kPUgsCbIcbOiSLcW4ZVgmZFJU1W1CqabMVeuuqVuLaeHgzTzhmS2Nu1gZKZojqPC8zJ5bwapmSUSMyjaTz5ZYDPGwyVyATSGy2+vn0vofjQb8MlaR9cowwTSb/H1St5JfeEBGa5Z17X1o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777054422; c=relaxed/simple;
-	bh=LYDREB4Bqps9FC+aFIm1KtvUspKg1EblFTB8f6AIayI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EoSdxn8uo45xxGXU9XdEgM8QG/hjIZIw9AXuUyZvjQLKXacqctjud01epSnapos+uIpJMy+66rAQvYwjy2ZYOQ07a0eoPB/FwyzWeC1BKPrD/bbnqOVAOvyHC08PunUdHt5RN/4pPgqhbX6BlBRbNRCffgsF4Iav+L8nhBNVnmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=icSrAtwl; arc=none smtp.client-ip=57.103.74.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
-Received: from outbound.ms.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-west-3a-60-percent-9 (Postfix) with ESMTPS id 026DD180010C;
-	Fri, 24 Apr 2026 18:13:39 +0000 (UTC)
-X-ICL-Out-Info: HUtFAUMEWwJACUgBTUQeDx5WFlZNRAJCTQ1OHVQORQNFF0sCTVIPDwNXF0QaWwpZFXkRUAFYHlZeWhdeTVEPDwNXF0QaWwpZFXkRUAFYHlZeWhdeTUUID0EJWFsIWwQPH0wMUQJCBVZeVAsdBFQHXQVdVlACWktCBEtFaFwFXBxAF0gdX2pLVhQEEVABWB5WXloXXk1aAlZNBUoDXwFbBkINSQtcBFsFXgpAAl0AWQVdClVAA1gcRRxYE1YtXgheH0wcHQ5YBgxQTQFDCAoCURxWDVc=
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; t=1777054421; x=1779646421; bh=v030gjjOMNdPgby97TC8nj4zkzBFhagiFjfmyAJggcY=; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:x-icloud-hme; b=icSrAtwllG94XuTiVeds4KgLS8Ei5mJqNDFNSNNSFd605TuHH8t5X0TniVZ6GTxc5lhlqmYK1GPKM+adChYqC0WfvmZxesVsiVIkbeU0Xp93+vZ+CBbFW0HgDwueXky3wOC84P2zdrnghn8WnwQH1Dm22zh0iyY1O2mFt00LG1F3nKr5WprzUrw7N9C54vDjhh43IQBNC7DC5u6j8Z57kAJ4Hw9l04WHcYbzExu5+SSR/qdXYDBRPVfAcM81ydpOkdmgHK1VGa03fok/qjz/nLWEhGIqmSfzAiOgr3rPYT57t31d4tpd1rnO9tXPQt+7y+IoLeNxh/apY9Zrk3gV0g==
-Received: from mainframe.tailfb0f7b.ts.net (unknown [17.57.154.37])
-	by p00-icloudmta-asmtp-us-west-3a-60-percent-9 (Postfix) with ESMTPSA id 9869E1800139;
-	Fri, 24 Apr 2026 18:13:37 +0000 (UTC)
-From: =?UTF-8?q?Lek=C3=AB=20Hap=C3=A7iu?= <snowwlake@icloud.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	krzk@kernel.org,
-	horms@kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	=?UTF-8?q?Lek=C3=AB=20Hap=C3=A7iu?= <snowwlake@icloud.com>
-Subject: [PATCH net v4 5/5] nfc: llcp: fix TLV parsing OOB in nfc_llcp_connect_sn
-Date: Fri, 24 Apr 2026 20:13:07 +0200
-Message-ID: <20260424181307.3810727-3-snowwlake@icloud.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260424181307.3810727-1-snowwlake@icloud.com>
-References: <20260424180151.3808557-1-snowwlake@icloud.com>
- <20260424181307.3810727-1-snowwlake@icloud.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 564662DD60E;
+	Fri, 24 Apr 2026 18:33:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.67
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777055613; cv=fail; b=byv7ehkbHIFhIBVRsLmWlCIDQU9NarXubVimUcrsLnv8eR7nEegloUjKNwcOzQ7LIAWijF4NUSNE/NuXh7AWmWH+S0YMdaFTVg4FBxohka5FBN0TKIyWGpbUrwnSk7fT2mvCHtBO2UyfMJvgShziCcUBGy0lLCn5JS/VvEsWA7U=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777055613; c=relaxed/simple;
+	bh=pyCWTSLPKQwiX1xxCaKDsnCXoC+Cq1asyjgfG8JJYF4=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LS7K/LmRxFZwTpM59F2yx3ShDxXZ5D5lsZHLhS9sewirkQIOsDqFCgUIJ2JkYbpDeQMU7IaPD4BsQGKFpHZPO9DmS29Ce494kscJGWyAETJVbr8wfNGY7jKx/MqpgJMzS5cx06XSXQHZx0V+wT/iN0VdYwpDT+7Kbk9sjzeSkYA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=mHogqlyj; arc=fail smtp.client-ip=40.107.201.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=mpDrD7PGI2RDgvm0myjkIpsxD76U7dATgTIOkG4zmHAZaktttgbmnK1SzakeGyQlC4a5lPUDbHwTBtRfoHp4XgfC/YyHOj+1qXCK0OorbnjhXsDEZAof/+xEGH/cfAgXWdXo2fnT+eeknk7/FljbO1GEvSEmTT879ngU3oOQehLfs7VK7sNAwDehafUGTuFevmogvrAy55d32h/ns92Nz9np7MtB5WsxdMwQx61sQxnYUVvzDrx3TDyWekKm5dy88Zwo0jOXlxrMl3ViSCfouwOiiKO38tF5x8ZkT4Sk5I7dT79XgmSkepj3bT6BZ3TrZ1i8kaAcCrv0yyqJkA1kiQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=p5EpQwZhAJjdbm3QzuvXtwgjsIJmE75H3o2MtIcAqFI=;
+ b=eJHO70hM/Uvm7hAfRk2wu4v8CH/8UacT/fmpGZDMHciXR2zR3v2tMwWY6U8gEzLao6qgJsyCkz5a844/H1/Dg+qHYK34KXAkt+NrtAkfYgBi4nhx5YMFwobDTq2IaYL4EAewCskTuoJ2YZQzghggNxe9631nOx5nL5bj/ZfmyeCK9haYtchc/6K+9MIiuc8c+46gginCtH03sEadSCrxsGPBnYoUYesA/rSGdDmJAe9VKnAXuGfMOWVcpUEB0Hw5mnrviZvqpq/lE8J0HF//E463y5gQkbP5uGlFusIkL4fGc3wdz/0MpHeLV5OKFEPCmn1p1Dz8/VaEACc48DrNmw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.233) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=p5EpQwZhAJjdbm3QzuvXtwgjsIJmE75H3o2MtIcAqFI=;
+ b=mHogqlyjRA1JdPyZUx/QARYe2Zwh0lVbUkbhmDuIgGf/S/nGCQ4BnqGtqpjHCRCOBis23xro1R8LhZF/mHkYxDJeWJObz4GpToZ/mIRTaW1XDmbWUBi/rmRf6fXQMY62bpGBpw21r0YipmQhgNJg97kb9TJqte0IWBwqBYpGJkfGdDB4LskGdtBMoRk347vxcxXGLCmmjSAiKObaZWiCwqbex027BuBdTh2Ko4u4vcQalfN/zE6hchRadlvcR3qG0ax7SPvmZMCj9eZnvq4dv8mpnzclfrQw7Q/2KzwaMU3KnwW3/I/tYvcH6WUog65wpCRDifit4HRSTN+8uthZ1w==
+Received: from BN9PR03CA0381.namprd03.prod.outlook.com (2603:10b6:408:f7::26)
+ by MW4PR12MB6852.namprd12.prod.outlook.com (2603:10b6:303:207::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.16; Fri, 24 Apr
+ 2026 18:33:27 +0000
+Received: from BN2PEPF000044A4.namprd02.prod.outlook.com
+ (2603:10b6:408:f7:cafe::52) by BN9PR03CA0381.outlook.office365.com
+ (2603:10b6:408:f7::26) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9846.22 via Frontend Transport; Fri,
+ 24 Apr 2026 18:33:26 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.233) by
+ BN2PEPF000044A4.mail.protection.outlook.com (10.167.243.155) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9846.18 via Frontend Transport; Fri, 24 Apr 2026 18:33:26 +0000
+Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
+ (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 24 Apr
+ 2026 11:33:18 -0700
+Received: from drhqmail203.nvidia.com (10.126.190.182) by
+ drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.20; Fri, 24 Apr 2026 11:33:18 -0700
+Received: from Asurada-Nvidia (10.127.8.12) by mail.nvidia.com
+ (10.126.190.182) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
+ Transport; Fri, 24 Apr 2026 11:33:17 -0700
+Date: Fri, 24 Apr 2026 11:33:16 -0700
+From: Nicolin Chen <nicolinc@nvidia.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+CC: <will@kernel.org>, <robin.murphy@arm.com>, <kevin.tian@intel.com>,
+	<joro@8bytes.org>, <praan@google.com>, <baolu.lu@linux.intel.com>,
+	<miko.lenczewski@arm.com>, <smostafa@google.com>,
+	<linux-arm-kernel@lists.infradead.org>, <iommu@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>, <jamien@nvidia.com>
+Subject: Re: [PATCH rc v2 1/5] iommu/arm-smmu-v3: Add arm_smmu_adopt_strtab()
+ for kdump
+Message-ID: <aeu3bNxCsy8azLOO@Asurada-Nvidia>
+References: <cover.1776286352.git.nicolinc@nvidia.com>
+ <af5fb880e771bc31ba42644ae5570e1fa208217a.1776286352.git.nicolinc@nvidia.com>
+ <20260424165613.GC3444440@nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDI0MDE3NyBTYWx0ZWRfXxCRZcrhPZuVN
- CQsEMSMWQfqY9TWtGuwUBuiV/oI7+5roEXa6uNCvw1qrqfDVCIi913HLrEvYqPTizFHbnbi43xo
- Jp18yjOMCWRdhBERIMiMAM1lyXo9/oj6vofLg9xHLrhXMX2I7FmoSf5yegd9bDYkNLa+cityVTx
- wXTPNq2Z1hXCMxs0JG5W1EMya6NuD1csXo1BVUlOSNw6mgkoWi4jWQyFxYZYJ1iyOi9BbiNwJkG
- a7A+teS2KWvekNEjdL3+SgS7da1t4bRFTqlScXW/NP2aNnUqEKf8bji/b00sBuY0uq6Gh64lU2n
- 2B9Rz4DlocUuNH36xHqxDL1OcwjeicEV2n8Gnwd4DGze3BakfD5Z8RLsKTXKC8=
-X-Proofpoint-GUID: EcR2TPKI8emhvf9-ySeavq2QvEzc48iT
-X-Authority-Info-Out: v=2.4 cv=QdNrf8bv c=1 sm=1 tr=0 ts=69ebb2d4
- cx=c_apl:c_pps:t_out a=qkKslKyYc0ctBTeLUVfTFg==:117 a=IkcTkHD0fZMA:10
- a=A5OVakUREuEA:10 a=M51BFTxLslgA:10 a=x7bEGLp0ZPQA:10 a=LbuW6tbUWPcA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=v3ZZPjhaAAAA:8
- a=MCyzZkT_QOhwK6_fNwUA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: EcR2TPKI8emhvf9-ySeavq2QvEzc48iT
-X-Rspamd-Queue-Id: 3DF2B462534
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260424165613.GC3444440@nvidia.com>
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN2PEPF000044A4:EE_|MW4PR12MB6852:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1c26bb8e-7044-4080-2d29-08dea22ff9ad
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|36860700016|376014|82310400026|1800799024|22082099003|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	ztH/kNvrZf5sZne0iqMNF/yv79hnVXbgBOMEDaJZ4Yp+0WgU1oatW+n2Ob3kfSIUPayLJ8JuQ6pyUz5DmCJttsqjwK3U6hNpBkaIRD7BpGWFCpzkMCf0fWckKUgR9+P5usyCKG64lLiBBh1bpFbxsnZkkgoIiy9r4m/ZYDM3JZ1XlmLRmu+M86OJOz+nM8CHz8PCALa+nPYnYmXVxhOvlGweJKUOvCdc8/oQxKDP/IpehaXfJJxM43dpdXTWZja5l2oWy+OQvhK/wTxioIih1DlRSuzJMDXYEx4Ew1kyDKZbKYU0FSv28zZjaBxOCe/qPL+8M/sxM/L8Sidx6lj2F1zx6d3NL2uem+Di7yWI5lPBaJS2FNNFtFg8RNKqhRD4KxhuHDkN/b0zZwdcisIfrMRUaGGtOhuQHXTki7EnyKuphDbe7PdQaGzMpaLoROqI+4hk8KyfMC4Hz5x7rPtLHigo3AB3cQw32dUe/VwmnBcZpKmgHYh+9XdoXelH8De2q07oR6OOR4CxAVe4xpS4f8HnOA84ECecYRdhmCN6bIDbYtcPChTrBav8jOYzDtitTGov7dvzDVgRziWjAIvhn7OzM+739b8WCixznMvwwdEVpaCEXT05NP1CjLAvW1tSrJpkR5TwG90wcCU0KJin36KnJxLrm/LwyXvvfKDGZ0tQfHKPQ+0fG8kqvzwXrnd/65BD8feaZWrHVpNicV4SmGsa4DR0y7IfXUFTq8LnaXO7ba6wF6fQ49ED9F6qHHpZcfxM3THC7DQjvjP3uiNvnA==
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.233;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge2.nvidia.com;CAT:NONE;SFS:(13230040)(7416014)(36860700016)(376014)(82310400026)(1800799024)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	bmDuVLcu0KGkkpqaXPnSZI7dCrbfpBJVwitrRVg/pgDC13O+fzID+JLu6j7SYzl6qVVdkL3N7nmVHheSYEOT7Azhd59EpMhUUmdBvIo3U6dfB1U8DAfKOTp4fjAcB0UYphFqVpQR/YTj9rpdRUyXxNJDDbOwyB9TQfNhgTOedlPjDRzCn07dhyHcn25m0soSbpx+zjdVgmDFQsmHXvRGOSCS1CHgjBcVDZRYczp1xQwyJIpEog6JOn7KffJKhC8GEv80s5s4k7BC5Crqt6QtGWyYuZPA0iYVwFPT5iin/L3QtluhPsP6OhUNHYn282PpF7tuVL8Ry0dvv4V3bGPz9HgGHlPp07C08OdRLV4SrdqGQKine5/5xiTldoZWAkcjTB2U8ftRoXAxCPffSdJSUtBUAcOg6U3UMEEwgTq5Ua+OFzs3T5tRSXz7zL5X192+
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Apr 2026 18:33:26.7763
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1c26bb8e-7044-4080-2d29-08dea22ff9ad
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.233];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN2PEPF000044A4.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6852
+X-Rspamd-Queue-Id: EBC334627BA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.53 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MIXED_CHARSET(0.63)[subject];
-	DMARC_POLICY_ALLOW(-0.50)[icloud.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[icloud.com:s=1a1hai];
+X-Spamd-Result: default: False [0.34 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[icloud.com:+];
-	TAGGED_FROM(0.00)[bounces-241021-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[davemloft.net,google.com,kernel.org,redhat.com,vger.kernel.org,icloud.com];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-241022-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[snowwlake@icloud.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[nicolinc@nvidia.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[Nvidia.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FREEMAIL_FROM(0.00)[icloud.com]
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[9]
 
-nfc_llcp_connect_sn() walks the TLV array of an LLCP CONNECT PDU
-looking for the Service Name TLV, but shares the same class of bugs
-as nfc_llcp_recv_snl() / nfc_llcp_parse_gb_tlv():
+On Fri, Apr 24, 2026 at 01:56:13PM -0300, Jason Gunthorpe wrote:
+> On Wed, Apr 15, 2026 at 02:17:36PM -0700, Nicolin Chen wrote:
+> > +static int arm_smmu_adopt_strtab_2lvl(struct arm_smmu_device *smmu, u32 cfg_reg,
+[..]
+> > +	cfg->l2.l1tab = devm_memremap(
+> > +		smmu->dev, dma, num_l1_ents * sizeof(struct arm_smmu_strtab_l1),
+> > +		MEMREMAP_WB);
+> 
+> WB shouldn't be unconditional? If the SMMU is working non-coherently
+> we need to map it NC. Same remark everwhere
 
- 1. tlv_array_len = skb->len - LLCP_HEADER_SIZE wraps when skb->len
-    is 0 or 1.  The subsequent loop then runs far past the buffer.
+Hmm, I am trying to add a coherent-only gate for the series.
 
- 2. The per-iteration guard `offset < tlv_array_len` only proves one
-    byte is available, but the body reads both tlv[0] (type) and
-    tlv[1] (length).
+MEMREMAP_WC might work. But we cannot verify that on a coherent
+SMMU, right?
 
- 3. The peer-supplied `length` field is used to advance `tlv` without
-    being checked against the remaining array space, so a crafted
-    length walks `tlv` past the buffer.  On the following iteration
-    tlv[0]/tlv[1] are read from adjacent memory.
-
- 4. When an LLCP_TLV_SN is found, the function returns &tlv[2] with
-    *sn_len = length but without verifying that `length` bytes at
-    tlv[2..] are still inside the TLV array.  The caller in
-    nfc_llcp_recv_connect() then uses this (pointer, length) pair as
-    a service name, so it may read past the PDU.
-
-Fix: reject frames smaller than LLCP_HEADER_SIZE up front; add TLV
-header and TLV value guards at the top of each iteration.  The value
-guard also ensures that the (&tlv[2], length) pair returned on
-LLCP_TLV_SN lies fully inside the TLV array.
-
-Also use LLCP_HEADER_SIZE instead of the magic literal `2` to match
-the style of neighbouring LLCP receive paths.
-
-Reported-by: Simon Horman <horms@kernel.org>
-Closes: https://lore.kernel.org/netdev/20260417160438.GH31784@horms.kernel.org/
-Fixes: d646960f7986 ("NFC: Initial LLCP support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Lekë Hapçiu <snowwlake@icloud.com>
----
- net/nfc/llcp_core.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
-
-diff --git a/net/nfc/llcp_core.c b/net/nfc/llcp_core.c
-index ca0abfd329e5..df5567ca7fa8 100644
---- a/net/nfc/llcp_core.c
-+++ b/net/nfc/llcp_core.c
-@@ -849,12 +849,22 @@ static struct nfc_llcp_sock *nfc_llcp_sock_get_sn(struct nfc_llcp_local *local,
- static const u8 *nfc_llcp_connect_sn(const struct sk_buff *skb, size_t *sn_len)
- {
- 	u8 type, length;
--	const u8 *tlv = &skb->data[2];
--	size_t tlv_array_len = skb->len - LLCP_HEADER_SIZE, offset = 0;
-+	const u8 *tlv;
-+	size_t tlv_array_len, offset = 0;
-+
-+	if (skb->len < LLCP_HEADER_SIZE)
-+		return NULL;
-+
-+	tlv = &skb->data[LLCP_HEADER_SIZE];
-+	tlv_array_len = skb->len - LLCP_HEADER_SIZE;
- 
- 	while (offset < tlv_array_len) {
-+		if (tlv_array_len - offset < 2)
-+			break;
- 		type = tlv[0];
- 		length = tlv[1];
-+		if (tlv_array_len - offset - 2 < length)
-+			break;
- 
- 		pr_debug("type 0x%x length %d\n", type, length);
- 
--- 
-2.51.0
-
+Nicolin
 
