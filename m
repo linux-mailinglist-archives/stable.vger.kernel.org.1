@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-240773-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240774-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8EH1Mvhx62ndMwAAu9opvQ
-	(envelope-from <stable+bounces-240773-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:36:56 +0200
+	id 2FZ6Cztz62kLNAAAu9opvQ
+	(envelope-from <stable+bounces-240774-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:42:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBBB745F396
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:36:55 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72A5345F6CA
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:42:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7FE233003497
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:36:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E2F3E304DC88
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:36:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE0B823E356;
-	Fri, 24 Apr 2026 13:36:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ADA623645D;
+	Fri, 24 Apr 2026 13:36:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KVj2VKM0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MoDBQB7l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0CF43563D4;
-	Fri, 24 Apr 2026 13:36:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2BC223E356;
+	Fri, 24 Apr 2026 13:36:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777037803; cv=none; b=u0ai9TOEV7O6Sjg7PB5sQVQesHjG8TKZzCUZ140hIMcsfJwkYrRrLMDcAnWBp2XeFj+RAgiAA7JONRbxhiy/iSNKbERKsu9syLvvpFrWMQzZd9Uu67JgonVZtFz2eQtPW50lo7JarTojXtx9xjaN+iqEv84SD1RZo+jJqV92a0w=
+	t=1777037806; cv=none; b=iR6MyJ5DooNOW/zWenrx3hwTqQLiFq0Y/456gcguDLHC4wB844hGa9CFERykJ0/iUbFsFrWCB0MX9fBUX5A+eXOMuzKMSirLmFQIGwWe/oU6KpH6rn52/+GfG0zHe1vhEba8MRubk30LCPfPXssTp0GMCJBJlp0m1C7rsVA38h8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777037803; c=relaxed/simple;
-	bh=4/92GN0InffHYfIrF7asm8zJvJp0HtEuOSpuRHSWNzE=;
+	s=arc-20240116; t=1777037806; c=relaxed/simple;
+	bh=W/DIn1G3lN4FeCsbrh0NiRUSGSJoLU0UB+W6qZVKdW0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=b/JVL8r6XBFkmWENm++FRl9qj0McTEFmnrMwsXePc+VIiLNsJtoOsWW4k8RnnN5pxbmcdz4Bj0bw+H4answUskGkKPtKvvgNoakqRu2i8USqz0y6VBPxsHaEOl/35oENkxqqpkGi5YsbOHy/le/1vHmcBvyqcMC6+rDnR4Whpt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KVj2VKM0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC1AC2BCB5;
-	Fri, 24 Apr 2026 13:36:42 +0000 (UTC)
+	 MIME-Version; b=k8cpbSqSG3XTB6SXpufF9N8tXHxyRd5jkNenp0NdPx/Twr/rPc9S38+Y1THh5q32q6Eau9Rli+s23IRVkU7b0mSq5g16xLYO0ZLTW075/+8ZZapxrgZCPhQm9U2iJo2npaELIAml2VtOltSikqP0wns3spmCRecKEQUURPULPlY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MoDBQB7l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8819EC19425;
+	Fri, 24 Apr 2026 13:36:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777037803;
-	bh=4/92GN0InffHYfIrF7asm8zJvJp0HtEuOSpuRHSWNzE=;
+	s=korg; t=1777037805;
+	bh=W/DIn1G3lN4FeCsbrh0NiRUSGSJoLU0UB+W6qZVKdW0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KVj2VKM0ksIiD8mX/J0P0UP2O7KF/E6xYJEtfJ8crLBYeB69MQ01pjwV6fcQIsi4I
-	 t9KJNORyVLVPeYxlkh3VOyR7VSqhX5glxCr+dwzD+6oiIC99KHpGIiRjkw7U/jHBcZ
-	 IhYhckRLXPUwzVslUgsJ8gm6jK2/Q0q4EA+0xjI8=
+	b=MoDBQB7lezgU1xHZJoHfKOzGDTIcZJ6e3+AM9JCc2wNhsIvp+rW5d/hg1yKBZ2SYj
+	 6A0V3dH0lQfxDaYLjPy9sxXIse7jaQ7DJJnoPVeVkVYSewjMSHUGUKus7BnKbsVHtX
+	 zLkvBPu6yvZ9m6X2Cq5er/97KH8WY7Us4NUP+sdw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Ripard <mripard@kernel.org>,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
-	Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.6 075/166] drm/vc4: platform_get_irq_byname() returns an int
-Date: Fri, 24 Apr 2026 15:29:49 +0200
-Message-ID: <20260424132548.493620323@linuxfoundation.org>
+	Clemens Ladisch <clemens@ladisch.de>,
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	stable <stable@kernel.org>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 076/166] ALSA: fireworks: bound device-supplied status before string array lookup
+Date: Fri, 24 Apr 2026 15:29:50 +0200
+Message-ID: <20260424132548.713305672@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260424132532.812258529@linuxfoundation.org>
 References: <20260424132532.812258529@linuxfoundation.org>
@@ -69,38 +66,37 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: CBBB745F396
+X-Rspamd-Queue-Id: 72A5345F6CA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240773-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,raspberrypi.com,igalia.com,linux.intel.com,suse.de,gmail.com,ffwll.ch];
-	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240774-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.com:email,perex.cz:email,suse.de:email,ladisch.de:email,sakamocchi.jp:email]
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
@@ -108,60 +104,51 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit e597a809a2b97e927060ba182f58eb3e6101bc70 upstream.
+commit 07704bbf36f57e4379e4cadf96410dab14621e3b upstream.
 
-platform_get_irq_byname() will return a negative value if an error
-happens, so it should be checked and not just passed directly into
-devm_request_threaded_irq() hoping all will be ok.
+The status field in an EFW response is a 32-bit value supplied by the
+firewire device.  efr_status_names[] has 17 entries so a status value
+outside that range goes off into the weeds when looking at the %s value.
 
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Cc: Maíra Canal <mcanal@igalia.com>
-Cc: Raspberry Pi Kernel Maintenance <kernel-list@raspberrypi.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: David Airlie <airlied@gmail.com>
-Cc: Simona Vetter <simona@ffwll.ch>
+Even worse, the status could return EFR_STATUS_INCOMPLETE which is
+0x80000000, and is obviously not in that array of potential strings.
+
+Fix this up by properly bounding the index against the array size and
+printing "unknown" if it's not recognized.
+
+Cc: Clemens Ladisch <clemens@ladisch.de>
+Cc: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Cc: Jaroslav Kysela <perex@perex.cz>
+Cc: Takashi Iwai <tiwai@suse.com>
+Fixes: bde8a8f23bbe ("ALSA: fireworks: Add transaction and some commands")
 Cc: stable <stable@kernel.org>
-Assisted-by: gkh_clanker_2000
+Assisted-by: gregkh_clanker_t1000
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://patch.msgid.link/2026022339-cornflake-t-shirt-2471@gregkh
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Link: https://patch.msgid.link/2026040953-astute-camera-1aa1@gregkh
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/vc4/vc4_hdmi.c |   14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ sound/firewire/fireworks/fireworks_command.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/vc4/vc4_hdmi.c
-+++ b/drivers/gpu/drm/vc4/vc4_hdmi.c
-@@ -2854,17 +2854,23 @@ static int vc4_hdmi_hotplug_init(struct
- 	int ret;
- 
- 	if (vc4_hdmi->variant->external_irq_controller) {
--		unsigned int hpd_con = platform_get_irq_byname(pdev, "hpd-connected");
--		unsigned int hpd_rm = platform_get_irq_byname(pdev, "hpd-removed");
-+		int hpd = platform_get_irq_byname(pdev, "hpd-connected");
- 
--		ret = devm_request_threaded_irq(&pdev->dev, hpd_con,
-+		if (hpd < 0)
-+			return hpd;
+--- a/sound/firewire/fireworks/fireworks_command.c
++++ b/sound/firewire/fireworks/fireworks_command.c
+@@ -151,10 +151,13 @@ efw_transaction(struct snd_efw *efw, uns
+ 	    (be32_to_cpu(header->category) != category) ||
+ 	    (be32_to_cpu(header->command) != command) ||
+ 	    (be32_to_cpu(header->status) != EFR_STATUS_OK)) {
++		u32 st = be32_to_cpu(header->status);
 +
-+		ret = devm_request_threaded_irq(&pdev->dev, hpd,
- 						NULL,
- 						vc4_hdmi_hpd_irq_thread, IRQF_ONESHOT,
- 						"vc4 hdmi hpd connected", vc4_hdmi);
- 		if (ret)
- 			return ret;
- 
--		ret = devm_request_threaded_irq(&pdev->dev, hpd_rm,
-+		hpd = platform_get_irq_byname(pdev, "hpd-removed");
-+		if (hpd < 0)
-+			return hpd;
-+
-+		ret = devm_request_threaded_irq(&pdev->dev, hpd,
- 						NULL,
- 						vc4_hdmi_hpd_irq_thread, IRQF_ONESHOT,
- 						"vc4 hdmi hpd disconnected", vc4_hdmi);
+ 		dev_err(&efw->unit->device, "EFW command failed [%u/%u]: %s\n",
+ 			be32_to_cpu(header->category),
+ 			be32_to_cpu(header->command),
+-			efr_status_names[be32_to_cpu(header->status)]);
++			st < ARRAY_SIZE(efr_status_names) ?
++				efr_status_names[st] : "unknown");
+ 		err = -EIO;
+ 		goto end;
+ 	}
 
 
 
