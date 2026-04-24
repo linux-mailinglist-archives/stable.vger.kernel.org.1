@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-240927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240866-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uHKADudz62kQNAAAu9opvQ
-	(envelope-from <stable+bounces-240927-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:45:11 +0200
+	id 8EviJ2h062kQNAAAu9opvQ
+	(envelope-from <stable+bounces-240866-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:47:20 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF23145F8D8
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:45:10 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AC8F45FA06
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:47:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6D9A030333B7
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:43:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 249C43040747
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:40:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE8873D6494;
-	Fri, 24 Apr 2026 13:43:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 244A33D5236;
+	Fri, 24 Apr 2026 13:40:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fViYxq10"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZzbNPVF+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F3C43D6CC1;
-	Fri, 24 Apr 2026 13:43:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F473B38AE;
+	Fri, 24 Apr 2026 13:40:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777038200; cv=none; b=OejSWvaVssN8fijp+TZf4KIoOQAD1RO2cj5IC7X8tmYqzeFgUJbncY7tGAxL0DtcUI5vm6znVOdd1Bkh8Y4npsnNBeL0YCv08KZHryunSq3ck+tPZvjSn9nxQv/SSa0JauHTyTtoR9oIzvcEUSOuCUga2jZ9HjkR7zIfTs+2wQ8=
+	t=1777038042; cv=none; b=r5bvqCSSWFp/OlP1GrvJvJ+ZRqlr36BNRw1gTPTKctow5/0LKcBy1YqQ56SOcxDGF87/ssfRmgHx4Nt4BmqnqjH6TLHqk2y5kFpkNybMEN7WMEL3tLTnkXFZ+ZbabVplamjQ/7/Ybn+4boEk8X+nO/pt0DuWv7qAiPQ93G9vTdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777038200; c=relaxed/simple;
-	bh=FLm91U4pb2xS4bgCVVUA9suaQiwQqd4Ew5fAarn2+3Q=;
+	s=arc-20240116; t=1777038042; c=relaxed/simple;
+	bh=t6iLwhWBfjxh3Eqw0pACchc6yvbk0e8l7eBtHEaIzfo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CAjqV7iWZNAr82TphCtL3jpVlgbfV1JFK33zU8FEkDU2bEph4quhtC39IQUKo03Auoo98UEfSXITLdjkeGDTdY0ZyUXmiz4mw/Eb06JcKD9jgabInqb9bKo/p/IX05grpotw9zBLZlhF9VB/irjV1lh0aDw5N27KMRT8evL5Vn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fViYxq10; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA08BC19425;
-	Fri, 24 Apr 2026 13:43:19 +0000 (UTC)
+	 MIME-Version; b=nKIS+Z9F/puMLaPHkuX0L4s+agVRNEBeiJu0+QnGD/pmJQcmSbYiJZ2V6ysg93Z7KVLDUvVHG/uW6EBZeicgXNLPZzLMsTs1iACXGuCo20/qQu8dUkDIz+ioloWOlb1BlP4wBzte3u2ZC2Sqv8V+VnDFqQaCRLpMXSq9qC8fxbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZzbNPVF+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F517C19425;
+	Fri, 24 Apr 2026 13:40:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777038200;
-	bh=FLm91U4pb2xS4bgCVVUA9suaQiwQqd4Ew5fAarn2+3Q=;
+	s=korg; t=1777038042;
+	bh=t6iLwhWBfjxh3Eqw0pACchc6yvbk0e8l7eBtHEaIzfo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fViYxq10XEx8B02s7kcdYbgjn5x6DnUFdKwSwDDKJ4LwDihWfw74BJGaNA86UOBkO
-	 Zw9uX7Ryw+NNZCgaXOL/D1Tmdi6xbqGVHdo4HG1V4uqb63y3agLDy43Jsk6CGLtzbj
-	 nQFP/MUHovH+6Ip1ByeyAIDqyRNx7fyGm9aftTbE=
+	b=ZzbNPVF+RIK3QD1cXfyxpgpmvHXW9ycq9TyUUTwBKKpx3aWdjom8EBbjXpkA7gB64
+	 UucvjKde6uJJh1DhaZcPAwg/Ub0wkR6ElwP962AqGxp5sIamdqgudNsAmkBAwqNUYL
+	 mUehFNAoIYBP2k/phOqPgYi8zpYkBHwN+/x+o0iI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samuel Page <sam@bynar.io>,
-	Qi Tang <tpluszz77@gmail.com>,
-	Zijun Hu <nightu@northwestern.edu>,
-	Miklos Szeredi <mszeredi@redhat.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.18 31/55] fuse: reject oversized dirents in page cache
-Date: Fri, 24 Apr 2026 15:31:10 +0200
-Message-ID: <20260424132436.501242431@linuxfoundation.org>
+	Kagura <me@mail.kagurach.uk>,
+	Cryolitia PukNgae <cryolitia.pukngae@linux.dev>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 157/166] ALSA: usb-audio: apply quirk for MOONDROP JU Jiu
+Date: Fri, 24 Apr 2026 15:31:11 +0200
+Message-ID: <20260424132605.990922819@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132430.006424517@linuxfoundation.org>
-References: <20260424132430.006424517@linuxfoundation.org>
+In-Reply-To: <20260424132532.812258529@linuxfoundation.org>
+References: <20260424132532.812258529@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,89 +64,76 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: AF23145F8D8
+X-Rspamd-Queue-Id: 1AC8F45FA06
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [3.84 / 15.00];
-	SEM_URIBL(3.50)[northwestern.edu:email];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
-	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,bynar.io,gmail.com,northwestern.edu,redhat.com,kernel.org];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-240927-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	NEURAL_HAM(-0.00)[-0.915];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-240866-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	R_SPF_ALLOW(0.00)[+ip6:2600:3c04:e001:36c::/64:c];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bynar.io:email,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,northwestern.edu:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linux.dev:email,msgid.link:url,suse.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Samuel Page <sam@bynar.io>
+From: Cryolitia PukNgae <cryolitia.pukngae@linux.dev>
 
-commit 51a8de6c50bf947c8f534cd73da4c8f0a13e7bed upstream.
+commit 4513d3e0bbc0585b86ccf2631902593ff97e88f5 upstream.
 
-fuse_add_dirent_to_cache() computes a serialized dirent size from the
-server-controlled namelen field and copies the dirent into a single
-page-cache page. The existing logic only checks whether the dirent fits
-in the remaining space of the current page and advances to a fresh page
-if not. It never checks whether the dirent itself exceeds PAGE_SIZE.
+It(ID 31b2:0111 JU Jiu) reports a MIN value -12800 for volume control, but
+will mute when setting it less than -10880.
 
-As a result, a malicious FUSE server can return a dirent with
-namelen=4095, producing a serialized record size of 4120 bytes. On 4 KiB
-page systems this causes memcpy() to overflow the cache page by 24 bytes
-into the following kernel page.
+Thanks to my girlfriend Kagura for reporting this issue.
 
-Reject dirents that cannot fit in a single page before copying them into
-the readdir cache.
-
-Fixes: 69e34551152a ("fuse: allow caching readdir")
-Cc: stable@vger.kernel.org # v6.16+
-Assisted-by: Bynario AI
-Signed-off-by: Samuel Page <sam@bynar.io>
-Reported-by: Qi Tang <tpluszz77@gmail.com>
-Reported-by: Zijun Hu <nightu@northwestern.edu>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
-Link: https://patch.msgid.link/20260420090139.662772-1-mszeredi@redhat.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Cc: Kagura <me@mail.kagurach.uk>
+Cc: stable@vger.kernel.org
+Signed-off-by: Cryolitia PukNgae <cryolitia.pukngae@linux.dev>
+Link: https://patch.msgid.link/20260402-syy-v1-1-068d3bc30ddc@linux.dev
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/fuse/readdir.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ sound/usb/mixer.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/fs/fuse/readdir.c
-+++ b/fs/fuse/readdir.c
-@@ -41,6 +41,10 @@ static void fuse_add_dirent_to_cache(str
- 	unsigned int offset;
- 	void *addr;
+--- a/sound/usb/mixer.c
++++ b/sound/usb/mixer.c
+@@ -1198,6 +1198,13 @@ static void volume_control_quirks(struct
+ 			cval->min = -14208; /* Mute under it */
+ 		}
+ 		break;
++	case USB_ID(0x31b2, 0x0111): /* MOONDROP JU Jiu */
++		if (!strcmp(kctl->id.name, "PCM Playback Volume")) {
++			usb_audio_info(chip,
++				       "set volume quirk for MOONDROP JU Jiu\n");
++			cval->min = -10880; /* Mute under it */
++		}
++		break;
+ 	}
+ }
  
-+	/* Dirent doesn't fit in readdir cache page?  Skip caching. */
-+	if (reclen > PAGE_SIZE)
-+		return;
-+
- 	spin_lock(&fi->rdc.lock);
- 	/*
- 	 * Is cache already completed?  Or this entry does not go at the end of
 
 
 
