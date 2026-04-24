@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-241013-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241014-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wGGZF5mn62mrPwAAu9opvQ
-	(envelope-from <stable+bounces-241013-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 19:25:45 +0200
+	id gDFvG+in62mrPwAAu9opvQ
+	(envelope-from <stable+bounces-241014-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 19:27:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0842461EA2
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 19:25:44 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D734C461EB8
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 19:27:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9A5AC3064345
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 17:22:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CCA45300C9AF
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 17:25:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98AE333F583;
-	Fri, 24 Apr 2026 17:22:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 397F033C195;
+	Fri, 24 Apr 2026 17:25:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U0yTe/+o"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VHM3bIyy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B4B433C195
-	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 17:22:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F161C19D89E
+	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 17:25:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777051335; cv=none; b=AGgfN5VaoIJpv3KnUQnK1JjmRiAHJsnBuKLw5eCpsy0SBgzqbPP+E6LOfrXjCVv/Mw2lPAu9iA/sf1rnjwi5lZn+Rq3VhCleqQt8fT2UsI0v3XWsVdqEnh1MgIhllrUDPWLX55S92nm6vQboCErp2DZrng5EUmnZ0G9TBUJR2ys=
+	t=1777051515; cv=none; b=E+ju6bLbqYQobBm7X0oZCdXyBGwNt/175l9Jnhanw4rPQTGDpgT5gLPWHCP4yI65/TIRbd6ZxNNtd8hvopxQidzBSAgbWXqkB92XqgLHC6hkVSdlVMn5fu1NPRNzQ6pla6KBDglOlKi7/6knRinSVV3czhGHrScBo9VPWACpvAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777051335; c=relaxed/simple;
-	bh=ycYgC4/P5yXsgcUFLBSFdzs8D5Fp4OGiSrfRcEDtf44=;
+	s=arc-20240116; t=1777051515; c=relaxed/simple;
+	bh=dMLA+2B0tNgwHHRcPOX3qA7yR+LVQuj7tajUVpjDaBc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rnsRne8x+9lD7nb0BgM/D8z9xaDRhbzg97KLr/udgBhdGGhW1ZIVTJh0GH9/AC1MQ/Z+wFg0IRj/ae1Err98+X9QKhfHu6/IQOqTw07GmlPPNDsRk/+ccWdnnT2wGwNjhxVcjvABpZhecNsfCTgcN9lE3Op4nTd25wbwiukVSR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U0yTe/+o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A167C19425;
-	Fri, 24 Apr 2026 17:22:14 +0000 (UTC)
+	 MIME-Version; b=Y1eUlNjeqfecdKXs941Cdr89dnrc+L5490Gr4IJFMHZY0ireUV946sr2ZK2NMZQ44BAqZvhmZ3XslC+xoypbRxvWW2FvmX/Fgrz2aSRz0M4/lLzq2U8qcQz2rp2Oa9jU1TIwt2kFxPtrYtvPzh//Xvbs6D+unI7nnC07dE3xGhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VHM3bIyy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47F15C19425;
+	Fri, 24 Apr 2026 17:25:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777051335;
-	bh=ycYgC4/P5yXsgcUFLBSFdzs8D5Fp4OGiSrfRcEDtf44=;
+	s=k20201202; t=1777051514;
+	bh=dMLA+2B0tNgwHHRcPOX3qA7yR+LVQuj7tajUVpjDaBc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U0yTe/+oMRq3U5uWZF/kyndCjEdFWR8mj4yDx1Jx5ylvMmNHWcJ4ukNQBFyE2UKH+
-	 L1a6AodVoLR0/DGsei78oWpAwJSjgBAi5oPMQML1sF490lcXx9igy/HQx6PYFy9vXQ
-	 7exLKycg9jVdQC8R99ypGgObfIjPSb9jTXzJDAEd0RVoN7hfwUG8AqxMamoMQSoYKj
-	 4h+oi4OpEJk/tx1f649ZQ3eQSveYKmQWq3T+Xape0U5LLXRTl2yev1/WbxoDP65MxI
-	 9FjnpQszAmbjtLqNVQc5Maq8ssMEp8Gd2LDr0mzop/6LuDsZbhKC9hs1taY9fL5aKJ
-	 gScb4/bvFctfQ==
+	b=VHM3bIyyKdZRUAywb5n6y+ZTvvUXOh5opmtBB7+dicCK3gCaf2ekbDVMC4cK1S8Ue
+	 PEhgdaMXC0z5hYWaaOu9TfBfgwDDul0xkc9LX74/riYThSUCGfkRhxfxBhWXju7oTv
+	 Yxc6+iJYKtl6ZgyagAKvkRlsHPzw9awOA105ehu/gTmwUOGFopyvHvFa/QqtPMQ/UB
+	 +O/bjY4pMU6Q5VSjUrionAgvtEmTy24V3Qi8JA2hA4DAlQVbxHvlOa3ILJGl+3Qzkt
+	 q6gjLZFg5z1nexHZSKznUkRFtNj/R7uQ5UheJDUJxTCNjjkFuNYudMs9wRaGHxijD/
+	 LGouKSWdy52BA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Michael Bommarito <michael.bommarito@gmail.com>,
 	Namjae Jeon <linkinjeon@kernel.org>,
 	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] ksmbd: require minimum ACE size in smb_check_perm_dacl()
-Date: Fri, 24 Apr 2026 13:22:12 -0400
-Message-ID: <20260424172212.2366923-1-sashal@kernel.org>
+Subject: [PATCH 5.15.y] ksmbd: require minimum ACE size in smb_check_perm_dacl()
+Date: Fri, 24 Apr 2026 13:25:12 -0400
+Message-ID: <20260424172512.2372287-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026042427-lunchtime-paramount-5994@gregkh>
-References: <2026042427-lunchtime-paramount-5994@gregkh>
+In-Reply-To: <2026042429-think-provoking-8c8b@gregkh>
+References: <2026042429-think-provoking-8c8b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,7 +63,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: F0842461EA2
+X-Rspamd-Queue-Id: D734C461EB8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [0.84 / 15.00];
@@ -73,7 +73,7 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -82,7 +82,7 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241013-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-241014-lists,stable=lfdr.de];
 	FREEMAIL_CC(0.00)[gmail.com,kernel.org,microsoft.com];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -92,7 +92,7 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_HAS_DN(0.00)[]
 
 From: Michael Bommarito <michael.bommarito@gmail.com>
@@ -150,14 +150,14 @@ Signed-off-by: Steve French <stfrench@microsoft.com>
 [ changed le16_to_cpu to le32_to_cpu for num_aces field which is __le32 ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smbacl.c | 17 +++++++++++++----
+ fs/ksmbd/smbacl.c | 17 +++++++++++++----
  1 file changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/fs/smb/server/smbacl.c b/fs/smb/server/smbacl.c
-index 5c05f0e8b6ea8..e11868da233cc 100644
---- a/fs/smb/server/smbacl.c
-+++ b/fs/smb/server/smbacl.c
-@@ -1288,10 +1288,13 @@ int smb_check_perm_dacl(struct ksmbd_conn *conn, const struct path *path,
+diff --git a/fs/ksmbd/smbacl.c b/fs/ksmbd/smbacl.c
+index ecf9db3d69c38..8d0e1b1c3cdc6 100644
+--- a/fs/ksmbd/smbacl.c
++++ b/fs/ksmbd/smbacl.c
+@@ -1265,10 +1265,13 @@ int smb_check_perm_dacl(struct ksmbd_conn *conn, const struct path *path,
  		ace = (struct smb_ace *)((char *)pdacl + sizeof(struct smb_acl));
  		aces_size = acl_size - sizeof(struct smb_acl);
  		for (i = 0; i < le32_to_cpu(pdacl->num_aces); i++) {
@@ -173,7 +173,7 @@ index 5c05f0e8b6ea8..e11868da233cc 100644
  				break;
  			aces_size -= ace_size;
  			granted |= le32_to_cpu(ace->access_req);
-@@ -1309,13 +1312,19 @@ int smb_check_perm_dacl(struct ksmbd_conn *conn, const struct path *path,
+@@ -1286,13 +1289,19 @@ int smb_check_perm_dacl(struct ksmbd_conn *conn, const struct path *path,
  	ace = (struct smb_ace *)((char *)pdacl + sizeof(struct smb_acl));
  	aces_size = acl_size - sizeof(struct smb_acl);
  	for (i = 0; i < le32_to_cpu(pdacl->num_aces); i++) {
