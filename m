@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-240848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240906-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sBpWKgFz62nCMwAAu9opvQ
-	(envelope-from <stable+bounces-240848-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:41:21 +0200
+	id CB23HqBz62kQNAAAu9opvQ
+	(envelope-from <stable+bounces-240906-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:44:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43AB845F638
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:41:21 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0080A45F81D
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:43:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1FAA3301A2A9
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:40:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 90C3D301BEE5
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:42:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEBB23D75D3;
-	Fri, 24 Apr 2026 13:39:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 283B53B38AE;
+	Fri, 24 Apr 2026 13:42:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lIzlc8P/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bLufOlUY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2AAC3563D4;
-	Fri, 24 Apr 2026 13:39:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFE85221DB6;
+	Fri, 24 Apr 2026 13:42:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777037996; cv=none; b=EiAFBa1WA17nQDzVxCKnJms/bGhaSEoBkDp7cNY7FRva44lcFul96GifossaxzimPbiYjMxBO27Qdo9az26nn+ZyCtM8t+tzV+ZSZQe9dPuBB/84KDoo2P0GBzlj1+8q6lkeFN4vxFx9IthMzaKRZF9CBVg7HaISnHneiAKQ2eM=
+	t=1777038145; cv=none; b=hMG45ljIfU0+lw/V5LmcWbDOtIVoFIH1a/ZiLNyU/6L78Zb4M9s+rkYJWkAXrOnsHmMivRv9EhPqkt44YHs6x64z5u3zvB46r7d9OvXifvO+sdVp2uGA6jfeMvKeZeR+HfTmSMjoSK3M7m3Yb7HLkpA3twSf8BSTuaYcQjeEQo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777037996; c=relaxed/simple;
-	bh=t61bCouD3zE7Nfp/g0tB9B0uHp0j3oN9nbXDIygSkvU=;
+	s=arc-20240116; t=1777038145; c=relaxed/simple;
+	bh=yXWHzGjS4FwSRU11zEyNnNABdYZ8e/jAlVn30kYaS28=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AsPE3maR/mM/YYhDSw0OKcziku3Gx+22qpFK5aDiuyYL7ys2prmwPj7Zvt7LbWjssTMIbb+ylDvjW0NMXCZADP3xquVQ5gDpAIgiTqLuYYTd3D4oVj+4JKB4Hbi2N0CFwe4+Ypd8Oc4W+ZcppdYbRFAtQVYoCAe2/fLzfNcJkO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lIzlc8P/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BC25C2BCB6;
-	Fri, 24 Apr 2026 13:39:55 +0000 (UTC)
+	 MIME-Version; b=LaoFEc2yfJwcXHo94ji0ooBv34i4P6+x5MNgWGIqQgnIXbGH55p24hjAgHzzvwCo8iFmm3zVLeoIXRor+PmN69cifPwWhWQf64J20cRKiYDISs0t9Gtqiw4XrEtOloAVvbeN6CwqzZAKeIjD/HfsGkfc4ctF1xGWIa3VR39hJ04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bLufOlUY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74309C19425;
+	Fri, 24 Apr 2026 13:42:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777037996;
-	bh=t61bCouD3zE7Nfp/g0tB9B0uHp0j3oN9nbXDIygSkvU=;
+	s=korg; t=1777038145;
+	bh=yXWHzGjS4FwSRU11zEyNnNABdYZ8e/jAlVn30kYaS28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lIzlc8P/6zZI5ReMJX+gKRBs44nv5S09CPhMFTjU5gkohsYsFcFjm7xQMj8xZnezB
-	 jmVUOK0gSsfz6hlAKFLP9WvJGkfEqYmBWEiC8TnSF0dYk3bx7Af3Lqht9boKm6bNHN
-	 jOqpMpo2NzBxV3YkU/lADMnvKu9//cT52xDlywVY=
+	b=bLufOlUYg5u3PH/oXtGZt7Q8/bUj62LGFcAl2HS4SR3OXAK1R7atlZhdme7avGJtL
+	 oeLXvxUGINrnFT1amrsmA08VWBwaq8im4wqWUwlLNtG2+bKNld9nd+QlISLcNXvDDd
+	 cVGzka5bS388UcK8cXjtM82w8d+FQw5fy5evpSNs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Miklos Szeredi <mszeredi@redhat.com>
-Subject: [PATCH 6.6 149/166] fuse: quiet down complaints in fuse_conn_limit_write
+	Ard Biesheuvel <ardb@kernel.org>,
+	Eric Biggers <ebiggers@kernel.org>
+Subject: [PATCH 6.18 24/55] lib/crypto: tests: Drop the default to CRYPTO_SELFTESTS
 Date: Fri, 24 Apr 2026 15:31:03 +0200
-Message-ID: <20260424132604.360304624@linuxfoundation.org>
+Message-ID: <20260424132435.056190824@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132532.812258529@linuxfoundation.org>
-References: <20260424132532.812258529@linuxfoundation.org>
+In-Reply-To: <20260424132430.006424517@linuxfoundation.org>
+References: <20260424132430.006424517@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,101 +62,131 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 43AB845F638
+X-Rspamd-Queue-Id: 0080A45F81D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240848-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-240906-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Eric Biggers <ebiggers@kernel.org>
 
-commit 129a45f9755a89f573c6a513a6b9e3d234ce89b0 upstream.
+commit 6d80749becf8fc5ffa004194e578f79b558235ef upstream.
 
-gcc 15 complains about an uninitialized variable val that is passed by
-reference into fuse_conn_limit_write:
+Defaulting the crypto KUnit tests to KUNIT_ALL_TESTS || CRYPTO_SELFTESTS
+instead of simply KUNIT_ALL_TESTS was originally intended to make it
+easy to enable all the crypto KUnit tests.  This additional default is
+nonstandard for KUnit tests, though, and it can cause all the KUnit
+tests to be built-in unexpectedly if CRYPTO_SELFTESTS is set.  It also
+constitutes a back-reference to crypto/ from lib/crypto/, which is
+something that we should be avoiding in order to get clean layering.
 
- control.c: In function ‘fuse_conn_congestion_threshold_write’:
- include/asm-generic/rwonce.h:55:37: warning: ‘val’ may be used uninitialized [-Wmaybe-uninitialized]
-    55 |         *(volatile typeof(x) *)&(x) = (val);                            \
-       |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~
- include/asm-generic/rwonce.h:61:9: note: in expansion of macro ‘__WRITE_ONCE’
-    61 |         __WRITE_ONCE(x, val);                                           \
-       |         ^~~~~~~~~~~~
- control.c:178:9: note: in expansion of macro ‘WRITE_ONCE’
-   178 |         WRITE_ONCE(fc->congestion_threshold, val);
-       |         ^~~~~~~~~~
- control.c:166:18: note: ‘val’ was declared here
-   166 |         unsigned val;
-       |                  ^~~
+Now that we provide a lib/crypto/.kunitconfig file that enables all
+crypto KUnit tests, let's consider that to be the supported way to
+enable all these tests, and drop the default of CRYPTO_SELFTESTS.
 
-Unfortunately there's enough macro spew involved in kstrtoul_from_user
-that I think gcc gives up on its analysis and sprays the above warning.
-AFAICT it's not actually a bug, but we could just zero-initialize the
-variable to enable using -Wmaybe-uninitialized to find real problems.
-
-Previously we would use some weird uninitialized_var annotation to quiet
-down the warnings, so clearly this code has been like this for quite
-some time.
-
-Cc: stable@vger.kernel.org # v5.9
-Fixes: 3f649ab728cda8 ("treewide: Remove uninitialized_var() usage")
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://lore.kernel.org/r/20260317040626.5697-1-ebiggers@kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/fuse/control.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ lib/crypto/tests/Kconfig |   14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
---- a/fs/fuse/control.c
-+++ b/fs/fuse/control.c
-@@ -120,7 +120,7 @@ static ssize_t fuse_conn_max_background_
- 					      const char __user *buf,
- 					      size_t count, loff_t *ppos)
- {
--	unsigned val;
-+	unsigned int val = 0;
- 	ssize_t ret;
- 
- 	ret = fuse_conn_limit_write(file, buf, count, ppos, &val,
-@@ -162,7 +162,7 @@ static ssize_t fuse_conn_congestion_thre
- 						    const char __user *buf,
- 						    size_t count, loff_t *ppos)
- {
--	unsigned val;
-+	unsigned int val = 0;
- 	struct fuse_conn *fc;
- 	ssize_t ret;
- 
+--- a/lib/crypto/tests/Kconfig
++++ b/lib/crypto/tests/Kconfig
+@@ -3,7 +3,7 @@
+ config CRYPTO_LIB_BLAKE2S_KUNIT_TEST
+ 	tristate "KUnit tests for BLAKE2s" if !KUNIT_ALL_TESTS
+ 	depends on KUNIT
+-	default KUNIT_ALL_TESTS || CRYPTO_SELFTESTS
++	default KUNIT_ALL_TESTS
+ 	select CRYPTO_LIB_BENCHMARK_VISIBLE
+ 	# No need to depend on CRYPTO_LIB_BLAKE2S here, as that option doesn't
+ 	# exist; the BLAKE2s code is always built-in for the /dev/random driver.
+@@ -13,7 +13,7 @@ config CRYPTO_LIB_BLAKE2S_KUNIT_TEST
+ config CRYPTO_LIB_CURVE25519_KUNIT_TEST
+ 	tristate "KUnit tests for Curve25519" if !KUNIT_ALL_TESTS
+ 	depends on KUNIT && CRYPTO_LIB_CURVE25519
+-	default KUNIT_ALL_TESTS || CRYPTO_SELFTESTS
++	default KUNIT_ALL_TESTS
+ 	select CRYPTO_LIB_BENCHMARK_VISIBLE
+ 	help
+ 	  KUnit tests for the Curve25519 Diffie-Hellman function.
+@@ -21,7 +21,7 @@ config CRYPTO_LIB_CURVE25519_KUNIT_TEST
+ config CRYPTO_LIB_MD5_KUNIT_TEST
+ 	tristate "KUnit tests for MD5" if !KUNIT_ALL_TESTS
+ 	depends on KUNIT && CRYPTO_LIB_MD5
+-	default KUNIT_ALL_TESTS || CRYPTO_SELFTESTS
++	default KUNIT_ALL_TESTS
+ 	select CRYPTO_LIB_BENCHMARK_VISIBLE
+ 	help
+ 	  KUnit tests for the MD5 cryptographic hash function and its
+@@ -30,7 +30,7 @@ config CRYPTO_LIB_MD5_KUNIT_TEST
+ config CRYPTO_LIB_POLY1305_KUNIT_TEST
+ 	tristate "KUnit tests for Poly1305" if !KUNIT_ALL_TESTS
+ 	depends on KUNIT && CRYPTO_LIB_POLY1305
+-	default KUNIT_ALL_TESTS || CRYPTO_SELFTESTS
++	default KUNIT_ALL_TESTS
+ 	select CRYPTO_LIB_BENCHMARK_VISIBLE
+ 	help
+ 	  KUnit tests for the Poly1305 library functions.
+@@ -38,7 +38,7 @@ config CRYPTO_LIB_POLY1305_KUNIT_TEST
+ config CRYPTO_LIB_SHA1_KUNIT_TEST
+ 	tristate "KUnit tests for SHA-1" if !KUNIT_ALL_TESTS
+ 	depends on KUNIT && CRYPTO_LIB_SHA1
+-	default KUNIT_ALL_TESTS || CRYPTO_SELFTESTS
++	default KUNIT_ALL_TESTS
+ 	select CRYPTO_LIB_BENCHMARK_VISIBLE
+ 	help
+ 	  KUnit tests for the SHA-1 cryptographic hash function and its
+@@ -49,7 +49,7 @@ config CRYPTO_LIB_SHA1_KUNIT_TEST
+ config CRYPTO_LIB_SHA256_KUNIT_TEST
+ 	tristate "KUnit tests for SHA-224 and SHA-256" if !KUNIT_ALL_TESTS
+ 	depends on KUNIT && CRYPTO_LIB_SHA256
+-	default KUNIT_ALL_TESTS || CRYPTO_SELFTESTS
++	default KUNIT_ALL_TESTS
+ 	select CRYPTO_LIB_BENCHMARK_VISIBLE
+ 	help
+ 	  KUnit tests for the SHA-224 and SHA-256 cryptographic hash functions
+@@ -60,7 +60,7 @@ config CRYPTO_LIB_SHA256_KUNIT_TEST
+ config CRYPTO_LIB_SHA512_KUNIT_TEST
+ 	tristate "KUnit tests for SHA-384 and SHA-512" if !KUNIT_ALL_TESTS
+ 	depends on KUNIT && CRYPTO_LIB_SHA512
+-	default KUNIT_ALL_TESTS || CRYPTO_SELFTESTS
++	default KUNIT_ALL_TESTS
+ 	select CRYPTO_LIB_BENCHMARK_VISIBLE
+ 	help
+ 	  KUnit tests for the SHA-384 and SHA-512 cryptographic hash functions
 
 
 
