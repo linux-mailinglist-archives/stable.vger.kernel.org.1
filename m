@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-240637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240638-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SCbBFnVT62nkKwAAu9opvQ
-	(envelope-from <stable+bounces-240637-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:26:45 +0200
+	id yOwhH/RV62nkKwAAu9opvQ
+	(envelope-from <stable+bounces-240638-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:37:24 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1177145DAF9
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:26:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2792845DD44
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:37:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DE6AE301112E
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 11:23:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 095B63037EC6
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 11:35:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B244E3B0AE5;
-	Fri, 24 Apr 2026 11:23:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B174A3AB272;
+	Fri, 24 Apr 2026 11:35:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JbCHr5ps"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="LliVyQzJ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B8A53B0AC2;
-	Fri, 24 Apr 2026 11:23:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 508683BD642
+	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 11:35:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777029801; cv=none; b=lnFKFPmkCRR73Ksy0pHCrbw2pTgc0Hm99L3PAdDQu5G2/7S5ZF7OcoYTmWVT4A0ZBYy8Ga2p/IwGdWDTt7ChVfnwO5T3VII4DWEa/+jJ3/pPXCjFOVGe/jfFLoaio6TqSVdAn7kmlLuK3b2CPxd/IE7MHTfwatK0b0SdEVXeQmg=
+	t=1777030516; cv=none; b=HanyJ0TmIxQ7dJJA1sYJUE1oPD3O2hJQsOs+vk4VQAqnaBpvYENvAx3QgoyoOJ0QgNO/sC5J6VU49Aes1owCMQcGOM69AToeTGU9XNF2W5CSzvAFr1MCBgN1+DKhiu5OGelNej5UINdMM22ShPs4V1YCQqVAYWrMJk/Fsa3uu5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777029801; c=relaxed/simple;
-	bh=GDKxQDD2uzrWcvo0rf7Ox4o00oq3jpy4JnR3vM9P3ps=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aZGfPc5HIfKAWS0XBKB50hwlz4+2E6Iqca93igCu2ML7fcV4keqTtJEx+Zw3q531Te6TqQfy5dPPWNXrg7NvKdLZ/ieJS/Aoujfq+pExkmfOciitE6nvTJqzn7Uzw/FYmmdOM5SKf9HCbl8RQfC/GP6nNIrNq9mKmQwARvMjZIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JbCHr5ps; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 336B4C2BCB4;
-	Fri, 24 Apr 2026 11:23:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777029800;
-	bh=GDKxQDD2uzrWcvo0rf7Ox4o00oq3jpy4JnR3vM9P3ps=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JbCHr5psXcKdOm+Bdk5oRHUjBjs0H0hK3D5VPgbvLW+z5BorAuX0Vohbt4QeYFSTB
-	 xV7Y5q6xgpGptF34s71xOXxrezGiOYs4OjQFXJMlIhDdhb62Gd9Cvb0sOPTSeGTrXb
-	 tvrXI9nwaHRl9K/SigwY8RoaTa5K7N+ZrVFDAHZw=
-Date: Fri, 24 Apr 2026 13:23:18 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Johan Hovold <johan@kernel.org>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, driver-core@lists.linux.dev,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] driver core: faux: fix root device registration
-Message-ID: <2026042438-mousiness-preorder-b1b9@gregkh>
-References: <20260424102231.2615557-1-johan@kernel.org>
+	s=arc-20240116; t=1777030516; c=relaxed/simple;
+	bh=ZCCtA1mcKjUMKaDhy47sGrs8WL6RjiWw6Rh/Z1tn+JU=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=j5EnsOXUNrw8loDedlgTR6FShFloiLsIqkSvrUPXIRk4NeBxE8D3XiWviWRpKsxHiQO5j2W+YQTnCyWfT7wqP+rt1+4R2O9zZQSMA+kb0IU3juV7emINg9lJ6m1IGm4F7Lb8N1zqq4RDshFAjFjqEyBOFymshZJEpRF8pJsR1Fk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=LliVyQzJ; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1216)
+	id 12C0B20B7167; Fri, 24 Apr 2026 04:35:13 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 12C0B20B7167
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1777030513;
+	bh=ZCCtA1mcKjUMKaDhy47sGrs8WL6RjiWw6Rh/Z1tn+JU=;
+	h=Date:From:To:Cc:Subject:From;
+	b=LliVyQzJqRm/fF1doJAX0osrfdjY0zwPCRb19kdp1ULC0b+Sp3Z/q+H9PG58cWRtV
+	 LaUbVmTHdK6VRu6eCGkBrbhiCon2JQc7fRvnPmMwZQNZKhEPl6s4ohpyOpYODqzZJy
+	 SBn8qkujIGIrpLlzjKQTrQ3DFg5XW3aNqX0EmSFU=
+Date: Fri, 24 Apr 2026 04:35:13 -0700
+From: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Jeff Barnes <jeffbarnes@linux.microsoft.com>
+Subject: [REQUEST] crypto backport for 6.6
+Message-ID: <aetVcb8pSITaiGg7@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,57 +58,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260424102231.2615557-1-johan@kernel.org>
-X-Rspamd-Queue-Id: 1177145DAF9
+X-Rspamd-Queue-Id: 2792845DD44
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[linux.microsoft.com,none];
+	R_DKIM_ALLOW(-0.20)[linux.microsoft.com:s=default];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-240638-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240637-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linux.microsoft.com:+];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[hamzamahfooz@linux.microsoft.com,stable@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[4];
+	NEURAL_HAM(-0.00)[-1.000];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net:mid,linux.microsoft.com:dkim]
 
-On Fri, Apr 24, 2026 at 12:22:31PM +0200, Johan Hovold wrote:
-> A recent change made the faux bus root device be allocated dynamically
-> but failed to provide a release function to free the memory when the
-> last reference is dropped (on theoretical failure to register the device
-> or bus).
-> 
-> Fix this by using root_device_register() instead of open coding.
+Hi,
 
-Ah, good catch, I missed that, thanks!
+Please include commit 35e13e0eacf4 ("crypto: testmgr - Hide ENOENT
+errors better") in kernel 6.6, as it resolves a kernel panic.
+(you will also need commit fc0f08317135 ("crypto: testmgr - Hide ENOENT
+errors") to have it apply cleanly).
 
-> Also add the missing sanity check when registering faux devices to avoid
-> a NULL-pointer dereference if the bus failed to register (which would
-> previously have triggered a bunch of use-after-free warnings).
-
-If the bus fails to register at boot time, we have bigger problems than
-those types of warnings :)
-
-I'll queue this up after -rc1 is out, thanks.
-
-greg k-h
+Link: https://lore.kernel.org/r/20260407192859.270745-1-hamzamahfooz@linux.microsoft.com/
 
