@@ -1,65 +1,61 @@
-Return-Path: <stable+bounces-240829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240891-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6ChULH5y62nmMwAAu9opvQ
-	(envelope-from <stable+bounces-240829-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:39:10 +0200
+	id KGMjKXJz62kQNAAAu9opvQ
+	(envelope-from <stable+bounces-240891-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:43:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60BCD45F507
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:39:10 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25E5D45F781
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:43:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B6E2330028A9
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:39:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 21A5A3031B22
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:41:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB1463D5643;
-	Fri, 24 Apr 2026 13:39:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B58A43C061E;
+	Fri, 24 Apr 2026 13:41:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XqRnp5ve"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BSoT/cKa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D2AF3563D4;
-	Fri, 24 Apr 2026 13:39:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 798E53563D4;
+	Fri, 24 Apr 2026 13:41:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777037947; cv=none; b=SoanF1KYU6Pa9r+BmoKaeR8jLMBRnZUVpgj4NyiWMRNGn/yV6xEbOzLB0NG2vWkNJ7ZIvAEJYNTFBg+L+pCFRLn7vFqtEHi2hVh80vBtXNMrvnZI1d4eSCjH1wLbWcMh1abbMJ+S2zfijiXgowDqzUCSsemUudw2vw0IMPVWqCE=
+	t=1777038107; cv=none; b=f6ZP9vNE6a10p0hqlFi5FTMpbx3kxExjHTnfF4K6lXGYEwKNQp3FONnUghkHNGckksAt6Ti8j/IW/df4iK0GCS9Mpb+MJrZzMD4xYfBMeTGryUsGOSyPuXca28lRv/XSOqDUDCXrmIETcIqiMHBtGSM0EVfO1yhgshIIwAI3XVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777037947; c=relaxed/simple;
-	bh=xrZplwLbjp7afcyNpDD7g/vbLyWCaDs2S6yjbQdjRKQ=;
+	s=arc-20240116; t=1777038107; c=relaxed/simple;
+	bh=/3D31wH6lW7M4kRR+JzNDRmzZDiGHgtm0dtRZSn+GmA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uhj9SabCFdilsk2KU7efsuocTjZ4eXinCRhzprgZZM1yyKxqkKooTr0QqlrJ1IimTnVT0386PJimE9NW2YzS6W0OQvVBNYEQC31rxRWdgAmDWGq8+KvE2GUYVyrxrIHWTVYIXoeNMwzISZJo93nnBTgJITE4GNLUJs30QWQU1Tc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XqRnp5ve; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19104C2BCB2;
-	Fri, 24 Apr 2026 13:39:06 +0000 (UTC)
+	 MIME-Version; b=ZG+vNzyxgseiwBj8gW7F83YDLn92tiBvZUyZOEfLGb1oOzuYsHW+8HqL2BcmeWdl+yLScyTi/oYfsQ3tS0opGCjIYhaZI3Edxcprftwgs+RquBRbG4/vSnXtLyOHvz7GT+1sFDDnwKLdKMLskMg69kW3/OscqIbsvz09IydtI3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BSoT/cKa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB3BBC19425;
+	Fri, 24 Apr 2026 13:41:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777037947;
-	bh=xrZplwLbjp7afcyNpDD7g/vbLyWCaDs2S6yjbQdjRKQ=;
+	s=korg; t=1777038107;
+	bh=/3D31wH6lW7M4kRR+JzNDRmzZDiGHgtm0dtRZSn+GmA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XqRnp5vewbueWqH6DFyYBpvIw78+LzJUSW2FUes8/W7W9600TIgIPcrXkHG+DsY7R
-	 Zo5UjzR2U5vOUjIx8Y0qG0C9mDSh660otc2bqw2GOigcBusHvmIlMy65XXzPPZwNtv
-	 VjnYE8R/5lxCRVq1uW+hBwUgp8tpXhpL2J7Ir9wo=
+	b=BSoT/cKawnhRkDgrlyGQ6D9pO9LEQ55NsXbd9DYgqFtz+VA8s89jrKqWjZRQbeeSn
+	 Fqjq8XlGBJYeUL4raeyzhYYf0r7qsc3VwgR8L6HUwsYfmtrYesSGjWo/R3Uo3HZkL2
+	 1sVvl6TgMY7bDKBiifYh6Gaja4CT/SQKsrNYPCow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@kernel.org>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org,
-	Joe Damato <joe@dama.to>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Charles Xu <charles_xu@189.cn>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Fiona Behrens <me@kloenk.dev>,
+	Trevor Gross <tmgross@umich.edu>,
+	Tamir Duberstein <tamird@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 132/166] i40e: Fix preempt count leak in napi poll tracepoint
+Subject: [PATCH 6.18 07/55] scripts: generate_rust_analyzer.py: define scripts
 Date: Fri, 24 Apr 2026 15:30:46 +0200
-Message-ID: <20260424132600.532894958@linuxfoundation.org>
+Message-ID: <20260424132431.545594575@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132532.812258529@linuxfoundation.org>
-References: <20260424132532.812258529@linuxfoundation.org>
+In-Reply-To: <20260424132430.006424517@linuxfoundation.org>
+References: <20260424132430.006424517@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,86 +66,96 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 60BCD45F507
+X-Rspamd-Queue-Id: 25E5D45F781
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-240829-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,intel.com,lists.osuosl.org,vger.kernel.org,dama.to,189.cn];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240891-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,189.cn:email,osuosl.org:email]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,collabora.com:email,umich.edu:email,msgid.link:url,kloenk.dev:email]
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@kernel.org>
+From: Tamir Duberstein <tamird@kernel.org>
 
-[ Upstream commit 4b3d54a85bd37ebf2d9836f0d0de775c0ff21af9 ]
+[ Upstream commit 36c619f6bd793493294becb10a02fea370b67a91 ]
 
-Using get_cpu() in the tracepoint assignment causes an obvious preempt
-count leak because nothing invokes put_cpu() to undo it:
+Add IDE support for host-side scripts written in Rust. This support has
+been missing since these scripts were initially added in commit
+9a8ff24ce584 ("scripts: add `generate_rust_target.rs`"), thus add it.
 
-  softirq: huh, entered softirq 3 NET_RX with preempt_count 00000100, exited with 00000101?
+Change the existing instance of extension stripping to
+`pathlib.Path.stem` to maintain code consistency.
 
-This clearly has seen a lot of testing in the last 3+ years...
-
-Use smp_processor_id() instead.
-
-Fixes: 6d4d584a7ea8 ("i40e: Add i40e_napi_poll tracepoint")
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>
-Cc: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Cc: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org
-Reviewed-by: Joe Damato <joe@dama.to>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Charles Xu <charles_xu@189.cn>
+Fixes: 9a8ff24ce584 ("scripts: add `generate_rust_target.rs`")
+Cc: stable@vger.kernel.org
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Reviewed-by: Fiona Behrens <me@kloenk.dev>
+Reviewed-by: Trevor Gross <tmgross@umich.edu>
+Link: https://patch.msgid.link/20260122-rust-analyzer-scripts-v1-1-ff6ba278170e@kernel.org
+Signed-off-by: Tamir Duberstein <tamird@kernel.org>
+[ changed `[std]` dep to `["std"]` and kept untyped `is_root_crate()` ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_trace.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/generate_rust_analyzer.py |   14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_trace.h b/drivers/net/ethernet/intel/i40e/i40e_trace.h
-index 33b4e30f5e004..9b735a9e21140 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_trace.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e_trace.h
-@@ -88,7 +88,7 @@ TRACE_EVENT(i40e_napi_poll,
- 		__entry->rx_clean_complete = rx_clean_complete;
- 		__entry->tx_clean_complete = tx_clean_complete;
- 		__entry->irq_num = q->irq_num;
--		__entry->curr_cpu = get_cpu();
-+		__entry->curr_cpu = smp_processor_id();
- 		__assign_str(qname, q->name);
- 		__assign_str(dev_name, napi->dev ? napi->dev->name : NO_DEV);
- 		__assign_bitmask(irq_affinity, cpumask_bits(&q->affinity_mask),
--- 
-2.53.0
-
+--- a/scripts/generate_rust_analyzer.py
++++ b/scripts/generate_rust_analyzer.py
+@@ -166,6 +166,18 @@ def generate_crates(srctree, objtree, sy
+     append_crate_with_generated("uapi", ["core", "ffi", "pin_init"])
+     append_crate_with_generated("kernel", ["core", "macros", "build_error", "pin_init", "ffi", "bindings", "uapi"])
+ 
++    scripts = srctree / "scripts"
++    makefile = (scripts / "Makefile").read_text()
++    for path in scripts.glob("*.rs"):
++        name = path.stem
++        if f"{name}-rust" not in makefile:
++            continue
++        append_crate(
++            name,
++            path,
++            ["std"],
++        )
++
+     def is_root_crate(build_file, target):
+         try:
+             contents = build_file.read_text()
+@@ -182,7 +194,7 @@ def generate_crates(srctree, objtree, sy
+     for folder in extra_dirs:
+         for path in folder.rglob("*.rs"):
+             logging.info("Checking %s", path)
+-            name = path.name.replace(".rs", "")
++            name = path.stem
+ 
+             # Skip those that are not crate roots.
+             if not is_root_crate(path.parent / "Makefile", name) and \
 
 
 
