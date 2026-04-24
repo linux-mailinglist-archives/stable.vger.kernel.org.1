@@ -1,150 +1,216 @@
-Return-Path: <stable+bounces-240578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240579-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gIv7FjAr62keJgAAu9opvQ
-	(envelope-from <stable+bounces-240578-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 10:34:56 +0200
+	id aMTGDOsq62k8JgAAu9opvQ
+	(envelope-from <stable+bounces-240579-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 10:33:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF9B245B8D1
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 10:34:55 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B178A45B89C
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 10:33:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6EEAF30214FF
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 08:32:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C251A3013866
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 08:33:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21D4233F8B4;
-	Fri, 24 Apr 2026 08:32:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A15731F9A0;
+	Fri, 24 Apr 2026 08:33:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cijdMRBm"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ey3CCYek"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f52.google.com (mail-yx1-f52.google.com [74.125.224.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ED4E33B6C4
-	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 08:32:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777019546; cv=none; b=gVMBsGSDm4AFxXURcEvno+CvG9g/bdaHtpgahIH1HsOh+LJduMn7H+7qo0W1dmB11V1iYJHXZpIsKbURg4GccSrEjlD9rJ3IE6GIKM3SKdXXvIrPnQCQ66YVLoJtBVWRgMUHa8P4piNgC5e/pZ+6D31ZZ5/zOArgOVA3mQzEP/g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777019546; c=relaxed/simple;
-	bh=pJkzSL/k+5TGVlKtzz3sl7/5vEzJQCMbHMekVJ4welw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FLiE3N3ezePJ5MuwF+OqTSgFsr5mLA1C5AY+FUSLxZej/3nJteYXxGnE0SHlj1jGvXHSb0KRYtFx4IodIj5Htb/u3soN8rJ/srynwk9y7ksXRnCZmreJsWDg7nts/dE4b3SMIWA0spGHmnpK4odYuZKV0Obiqwq+lH9IHV3K1JI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cijdMRBm; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777019542;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VJsfL0ZYr6ksiH6VKINKLh9cflWXlJdEnCTwwmMW534=;
-	b=cijdMRBmY62jxMxlWJ39bAtadDmv7b7OsxT7WwuruEvf9Cz+tt0ZDzx6CVBOwE/MYEe7/h
-	TxuztRWkf7s6r/ekx5sU0h7tVnQbN74dspnNA02iNEcbBosPX67xpSysnlJ7ljdY3wgKpL
-	SMjOjn6vWMF4OP5Kprkbl6UPJYoWuMM=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-192-ewUZX9sePIKYDg19RBQe5A-1; Fri,
- 24 Apr 2026 04:32:19 -0400
-X-MC-Unique: ewUZX9sePIKYDg19RBQe5A-1
-X-Mimecast-MFC-AGG-ID: ewUZX9sePIKYDg19RBQe5A_1777019538
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id EB87E1800578;
-	Fri, 24 Apr 2026 08:32:17 +0000 (UTC)
-Received: from calimero.vinschen.de (unknown [10.44.32.45])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 68CDB19560AB;
-	Fri, 24 Apr 2026 08:32:17 +0000 (UTC)
-Received: by calimero.vinschen.de (Postfix, from userid 500)
-	id C0469A80BFD; Fri, 24 Apr 2026 10:32:14 +0200 (CEST)
-Date: Fri, 24 Apr 2026 10:32:14 +0200
-From: Corinna Vinschen <vinschen@redhat.com>
-To: Simon Horman <horms@kernel.org>
-Cc: intel-wired-lan@osuosl.org, stable@vger.kernel.org,
-	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
-	netdev@vger.kernel.org, Corinna Vinschen <vinschen@redhat.com>
-Subject: Re: [Intel-wired-lan] [PATCH net] iavf: iavf_virtchnl_completion:
- drop duplicate ether_addr_equal() test
-Message-ID: <aesqjovwYNeLlfX4@calimero.vinschen.de>
-Mail-Followup-To: Simon Horman <horms@kernel.org>,
-	intel-wired-lan@osuosl.org, stable@vger.kernel.org,
-	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
-	netdev@vger.kernel.org
-References: <IA3PR11MB898664A49E614F197D4FED6EE52C2@IA3PR11MB8986.namprd11.prod.outlook.com>
- <20260421111236.875379-1-vinschen@redhat.com>
- <20260423185530.GI900403@horms.kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC9B229ACF6
+	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 08:33:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777019620; cv=pass; b=hN+C1PCUOM/VS/zS/42xzgnfpOpGJ2rPufhfEFM3f4RFfpOE+kfnohtZelvUN7itvfMG8i7m3FQ6pAKjmmUkn7rsAoMwCvPIGzMZIr0T/moy+HzOqGEHtiLvUdPFMl8uhNqMtY175b/gxX5BttB0EFU4CYpzE2PcBkKDygPDdzE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777019620; c=relaxed/simple;
+	bh=o9Tc+LE2N3K3qGHeG1DTzY+Vz60zfABeiP7uGBhtwqU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=tpmBMNYVz3g4IuY8bDYSAf/JkschnhCEFCKwNdeDvsEjezItWa7MLUzhyL8t9d1QYaJcosMEofEguViVL63DQaxKp1W57Czo9+CAS9wqGwLByzhTrgOzUPdpHejWupcr4rNqajZRHPzP4tzdUtBtvBmifuRiHnQniZaLEvKe6C0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ey3CCYek; arc=pass smtp.client-ip=74.125.224.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yx1-f52.google.com with SMTP id 956f58d0204a3-6501c9903edso7780643d50.1
+        for <stable@vger.kernel.org>; Fri, 24 Apr 2026 01:33:38 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777019618; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Lyq+SumBMdQyOpHffe2S1soTr98Kps7wsfXj6Yp9fMBJWGQRodDGDpHokAwVrvYKkm
+         D/eDeokvQlH6vuAnD7eCA7waZiPM/SI5SrFtgSknvwh89HEb9855UWVsvPA7XJ1Dflnb
+         dW0byvfzKqxNo7NO1RqsTGxvSXo/ptoztV1cIoU2jQ/jxDh8HJMMWnLG4O6kPeBz8VoM
+         sprzJmYIZOhfHFmTNy0YUSf4jzbtOutC4OUY+KLJ5dvubP28mFsItiX2ohaNcI2H7sjZ
+         54ojdJqBTZIDfKR56c4BExxKY13zDOykGNCNZXoLnlwlsCXtZPzN9TpWaKhU6D0Dbxxm
+         tndA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=o9Tc+LE2N3K3qGHeG1DTzY+Vz60zfABeiP7uGBhtwqU=;
+        fh=ks0HhFyUAK/U1QqvFbcWPbTDC7C/9uNX52Sj7hgD9Cw=;
+        b=B9qrHzGoUEGoxKEKcepthfiTY87ytuqu5oeb8IbRQ3+/D8nvU3CjVBgmCKaLlaHtyg
+         YJQjD2fxkXNXw3XGELJfVTxqbz3+4SdcJ3z9gAc1TRDMR2uYG1sgxPt8JUXRyJgXSfNR
+         PwmbfB4+NWAloTbgF6AW+AfmCi2BrwdgQ1cuFcIzDpD9oneVkSAsUHnqxzZnOyH3tp8r
+         f0m9+IzDLCxl38gYfJQrM8gYi0ysAV3YEOZHRh5tTN5HUsmU3UVbedt+41kFa3d5Ya3e
+         eNXzeFPKqJaEqV3ewkU/S3rYrvbgg5XthcVqcHHM5s+Lcer2apHKG0EqxBLhqUlzIbXF
+         D88A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777019618; x=1777624418; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=o9Tc+LE2N3K3qGHeG1DTzY+Vz60zfABeiP7uGBhtwqU=;
+        b=ey3CCYekRpH5bjjgRGX8YooCu34ctgdZAgUSabkdNcSL+46TDBU6zVHsmX+6tqZR7p
+         OaPYDJI6pD1XGctcqRScgyJWARzg1AsiOPgIph40yuxeGHI51Qm1iByKBHVmmvhVO/lU
+         iAcu5yZhTqdCQEx2G5wAp2Kq1sj1iCRlgHdzOEN+tQwPLbknk9daksH36Ox+whP9wbgF
+         y3j8vjPR2uvi6TOvtwuonCeo+tLMka7A90zEdQXUSzl0Ir2KTo045EXJh97W9dJx8/BZ
+         T0A8HOr2OayS64eKMiIjTs8JCq59L1USFQKg6IAvA1LxOOJcC4X7cKLU5fBoJQBuHdJ3
+         AgJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777019618; x=1777624418;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=o9Tc+LE2N3K3qGHeG1DTzY+Vz60zfABeiP7uGBhtwqU=;
+        b=o6mtWdzD9/zPQ5AmC2A3NdNoYTInM5Pt4uwBmR6lQClqhU1j4R2tuD4pRdOUO3CWAb
+         ilyboYs7xhvw2v8P9iJdfyUmQW61MRXPfrCrZFUvvKUZAJrNmr0jAa2NhwvsTyOb/Bva
+         1990D2MOUGzDNiSjKE16dyec2Q5j7yMWw3/dHFPx+P4icCaZOgi0KRtb+WeDJxEeTSeB
+         jUR+Kpmsxy1TP4AtsuxXbIfM+SyN+DOAKb3omwXxrZ7K7+HwfGNq0laP79+L1hVqbje/
+         jlSELJN7cv9QG77UMnA8W3YF04dgh2++CQcQL3hDZOxaMFF4Tcd1tePT+eptxlgBcr0N
+         0mmg==
+X-Forwarded-Encrypted: i=1; AFNElJ9aq+vK1ie5B4iAK5BSRQHK2bmgDEfIUse8xbpeBD8y3+xqUGuuD/n+uFk4cY+mwobcpUNxtg4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzS245HsPdNxUA1Zi0vzVfkXi/3A/lRrFyx1kt+PrBThpPbmvc7
+	TDP+XUoL5sWjMERTDd5AM19ulB/bY89wWxjoz2+0Ut+WEUyW/KB2YYzhIqakTemiRhN73esTZ+5
+	kq4y1Gq6ncp8YEWRhRzeh2GI2cuqa2jw=
+X-Gm-Gg: AeBDiev/Y8jbdqL1E+rgs2j1q9PdyMaCE7+3Rhxs6BYyzVLUCLN1/vNF8s5Op55S3Gn
+	h5USt/Gy75jf6P9p+Tob8r7AHvOejzP4gO4/ILY7eRYaF6f4uj7tq+6k1RocG5Xc6tHMW+A884d
+	QW541bAwtWBE1WJ2LE/u0v77juvHPE+PcYEN0DxqLpGK2qaifpvG8EWjmwOmgucIzy9/O615wqr
+	MuBa/PuTL82+y7lKldu+0cRZzslfRzifmAKe1Vt6kTCwMB4ngMsrX1FEY/jeowefknvL2pgjcHj
+	+IOlRed/4MP0FKanZ8xv
+X-Received: by 2002:a53:bf0b:0:b0:653:9e2:105b with SMTP id
+ 956f58d0204a3-65310863b78mr21753136d50.25.1777019617832; Fri, 24 Apr 2026
+ 01:33:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260423185530.GI900403@horms.kernel.org>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Rspamd-Queue-Id: AF9B245B8D1
+References: <20260415175038.3633384-1-lgs201920130244@gmail.com>
+ <CAOesGMghHi5bEcec9L6d1YUec0Cn5uEs8MrjdoT-zHSr-FJ8pQ@mail.gmail.com>
+ <CANUHTR-XcTO4jy_TNe7tHcPPpVh_o_+-hgJtLBxN5MWupcvQ3A@mail.gmail.com> <CANUHTR-U+DDaWCKNUcNE2yScPkk6vVfnZ=GXpGtRt6SFYph_Ew@mail.gmail.com>
+In-Reply-To: <CANUHTR-U+DDaWCKNUcNE2yScPkk6vVfnZ=GXpGtRt6SFYph_Ew@mail.gmail.com>
+From: Guangshuo Li <lgs201920130244@gmail.com>
+Date: Fri, 24 Apr 2026 16:33:23 +0800
+X-Gm-Features: AQROBzAGvtdaL5hCS8cZfjfvqw_W2IJgQzt_3ZfVldCokq1dpuv5P3O6ftcEQ-M
+Message-ID: <CANUHTR-agWsWdZbjYUesvyp5OMqRrjbhg0zEbEgU67q8Br7b2w@mail.gmail.com>
+Subject: Re: [PATCH] platform/chrome: fix reference leak on failed device registration
+To: Olof Johansson <olof@lixom.net>
+Cc: Benson Leung <bleung@chromium.org>, Tzung-Bi Shih <tzungbi@kernel.org>, 
+	chrome-platform@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: B178A45B89C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-240578-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,calimero.vinschen.de:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-240579-lists,stable=lfdr.de];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[redhat.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vinschen@redhat.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[patchew.org:url,mail.gmail.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,lixom.net:email]
 
-On Apr 23 19:55, Simon Horman wrote:
-> On Tue, Apr 21, 2026 at 01:12:36PM +0200, Corinna Vinschen wrote:
-> > This is just a simple cleanup fix.  Commit 35a2443d0910f ("iavf: Add
-> > waiting for response from PF in set mac") introduced a duplicate
-> > ether_addr_equal() check, so the current code tests the new MAC twice
-> > against the former MAC.
-> > 
-> > Remove the outer ether_addr_equal() test, remnant of commit c5c922b3e09b
-> > ("iavf: fix MAC address setting for VFs when filter is rejected")
-> > 
-> > Signed-off-by: Corinna Vinschen <vinschen@redhat.com>
-> > Fixes: 35a2443d0910f ("iavf: Add waiting for response from PF in set mac")
-> > Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-> > ---
-> > Added CC: stable@vger.kernel.org
-> 
-> Hi,
-> 
-> This feels more like a cleanup for net-next (without a Fixes tag)
-> than a fix for net. I'm missing where the bug is here.
+Hi Olof, all,
 
-Yeah, it's not a bug, the "Fixes" tag was just supposed to point out the
-patch introducing the duplicate test.
+Just to follow up: please disregard this patch.
 
-Shall I create a v3 or is it ok as is and just goes to net-next instead
-of net?
+On Thu, 16 Apr 2026 at 18:21, Guangshuo Li <lgs201920130244@gmail.com> wrote:
+>
+> Hi Olof,
+>
+> Thanks.
+>
+> On Thu, 16 Apr 2026 at 17:26, Guangshuo Li <lgs201920130244@gmail.com> wrote:
+> >
+> > Hi Olof,
+> >
+> > Thanks for the review.
+> >
+> > On Thu, 16 Apr 2026 at 05:47, Olof Johansson <olof@lixom.net> wrote:
+> > >
+> > >
+> > > This looks like slop to me. It doesn't even compile (there's no local
+> > > 'ret' variable in the function already).
+> >
+> > You're right, I missed declaring the local ret variable in this
+> > version, so it does not compile. Sorry for that mistake.
+> >
+> > > This is also a no-value fix, the chromeos_ramoops structure is static
+> > > data and not dynamically allocated. Please don't burden maintainers
+> > > with these kinds of "fixes".
+> > >
+> > >
+> > > -Olof
+> >
+> > My reasoning was based on the implementation of
+> > platform_device_register(): it calls device_initialize(), but if
+> > platform_device_add() fails, platform_device_register() returns the
+> > error directly without dropping the device reference initialized there.
+> > Based on that, I thought the caller might need to release that
+> > reference.
+> >
+> > That said, I understand your point that for this statically defined
+> > chromeos_ramoops device this is not a useful fix.
+> >
+> > Thanks,
+> > Guangshuo
+>
+> We are also discussing in another similar patch whether the
+> better fix, if any, should be in the API/core code rather than in
+> individual callers:
+>
+> https://patchew.org/linux/20260415174159.3625777-1-lgs201920130244@gmail.com/
+>
+> Thanks,
+> Guangshuo
 
+After re-checking it, chromeos_ramoops is a static platform_device and it
+does not provide a dev.release callback. Therefore calling
+platform_device_put() on the platform_device_register() failure path is
+not appropriate here and can trigger the missing release callback
+warning.
 
-Thanks,
-Corinna
+This falls into the same static platform_device pattern pointed out in
+the other reviews. Also, as Olof noted, this version does not compile due
+to the missing ret declaration.
 
+I will drop this patch.
+
+Sorry for the noise.
+
+Best regards,
+Guangshuo Li
 
