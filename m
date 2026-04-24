@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-240866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240896-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8EviJ2h062kQNAAAu9opvQ
-	(envelope-from <stable+bounces-240866-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:47:20 +0200
+	id UCX6NTNz62kLNAAAu9opvQ
+	(envelope-from <stable+bounces-240896-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:42:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AC8F45FA06
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:47:20 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8309A45F6BD
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:42:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 249C43040747
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:40:44 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 585CE300750C
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:42:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 244A33D5236;
-	Fri, 24 Apr 2026 13:40:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79BA03D75C1;
+	Fri, 24 Apr 2026 13:42:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZzbNPVF+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PcbPS6xH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F473B38AE;
-	Fri, 24 Apr 2026 13:40:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 262EC3D75A5;
+	Fri, 24 Apr 2026 13:42:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777038042; cv=none; b=r5bvqCSSWFp/OlP1GrvJvJ+ZRqlr36BNRw1gTPTKctow5/0LKcBy1YqQ56SOcxDGF87/ssfRmgHx4Nt4BmqnqjH6TLHqk2y5kFpkNybMEN7WMEL3tLTnkXFZ+ZbabVplamjQ/7/Ybn+4boEk8X+nO/pt0DuWv7qAiPQ93G9vTdw=
+	t=1777038120; cv=none; b=VPPQaNMHEl/oNESg3Y6r662fQMAhbohasCWcVwf6+uHPWx2Hg7sSvHMPNwB6woaNk01h3BNyJ2Pp2XAxG23Tlz1VhzdQnlIuHiN9mpxqYMVECGDBD1d8VRQfqI3eb2xZ8IU8IPKEu0Hwy4tqdN1vgMOvrCA27Chw2CUJJmfwCfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777038042; c=relaxed/simple;
-	bh=t6iLwhWBfjxh3Eqw0pACchc6yvbk0e8l7eBtHEaIzfo=;
+	s=arc-20240116; t=1777038120; c=relaxed/simple;
+	bh=DRXe4mKAeP/BGxr5PKD4VPlPEkh/AqJQqoHom4NGan8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nKIS+Z9F/puMLaPHkuX0L4s+agVRNEBeiJu0+QnGD/pmJQcmSbYiJZ2V6ysg93Z7KVLDUvVHG/uW6EBZeicgXNLPZzLMsTs1iACXGuCo20/qQu8dUkDIz+ioloWOlb1BlP4wBzte3u2ZC2Sqv8V+VnDFqQaCRLpMXSq9qC8fxbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZzbNPVF+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F517C19425;
-	Fri, 24 Apr 2026 13:40:42 +0000 (UTC)
+	 MIME-Version; b=uUsoCoUYjaByJmZB92Ypy4Y9gEDBbLMATuQnMlY7lGheoJtSwtuVduQ5PsCpoehEYihzYacBvPvYgLxtrMJIebhR0tLcDCWUFxv1vJ1UGybeHCOWNh8p5z7sJHTzQw4pcoAwgWBTKIRTpg3hLAN+A6E2eEt15xxnYWRAFrZcYWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PcbPS6xH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A63D7C2BCB2;
+	Fri, 24 Apr 2026 13:41:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777038042;
-	bh=t6iLwhWBfjxh3Eqw0pACchc6yvbk0e8l7eBtHEaIzfo=;
+	s=korg; t=1777038120;
+	bh=DRXe4mKAeP/BGxr5PKD4VPlPEkh/AqJQqoHom4NGan8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZzbNPVF+RIK3QD1cXfyxpgpmvHXW9ycq9TyUUTwBKKpx3aWdjom8EBbjXpkA7gB64
-	 UucvjKde6uJJh1DhaZcPAwg/Ub0wkR6ElwP962AqGxp5sIamdqgudNsAmkBAwqNUYL
-	 mUehFNAoIYBP2k/phOqPgYi8zpYkBHwN+/x+o0iI=
+	b=PcbPS6xHLkaFWhMbLvGP5pcXzrYyfhZAfcwqF82KbfuYi4rVDmtm5PuuzgV+UkC1K
+	 KVnAGu0/fayy9QbGDS/9jOOCMuM/loaZD1O2CKyLvSsyZHXj9kCvAaCXKTdYaUTRtS
+	 necuJJ6cpfa7/kufIMAog5LymENE53LBr1hFjJW0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kagura <me@mail.kagurach.uk>,
-	Cryolitia PukNgae <cryolitia.pukngae@linux.dev>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 157/166] ALSA: usb-audio: apply quirk for MOONDROP JU Jiu
+	Joanne Koong <joannelkoong@gmail.com>,
+	Bernd Schubert <bernd@bsbernd.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Miklos Szeredi <mszeredi@redhat.com>
+Subject: [PATCH 6.18 32/55] fuse: abort on fatal signal during sync init
 Date: Fri, 24 Apr 2026 15:31:11 +0200
-Message-ID: <20260424132605.990922819@linuxfoundation.org>
+Message-ID: <20260424132436.693789698@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132532.812258529@linuxfoundation.org>
-References: <20260424132532.812258529@linuxfoundation.org>
+In-Reply-To: <20260424132430.006424517@linuxfoundation.org>
+References: <20260424132430.006424517@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,76 +65,112 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1AC8F45FA06
+X-Rspamd-Queue-Id: 8309A45F6BD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bsbernd.com,kernel.org,redhat.com];
+	TAGGED_FROM(0.00)[bounces-240896-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-240866-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linux.dev:email,msgid.link:url,suse.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,bsbernd.com:email]
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cryolitia PukNgae <cryolitia.pukngae@linux.dev>
+From: Miklos Szeredi <mszeredi@redhat.com>
 
-commit 4513d3e0bbc0585b86ccf2631902593ff97e88f5 upstream.
+commit 204aa22a686bfee48daca7db620c1e017615f2ff upstream.
 
-It(ID 31b2:0111 JU Jiu) reports a MIN value -12800 for volume control, but
-will mute when setting it less than -10880.
+When sync init is used and the server exits for some reason (error, crash)
+while processing FUSE_INIT, the filesystem creation will hang.  The reason
+is that while all other threads will exit, the mounting thread (or process)
+will keep the device fd open, which will prevent an abort from happening.
 
-Thanks to my girlfriend Kagura for reporting this issue.
+This is a regression from the async mount case, where the mount was done
+first, and the FUSE_INIT processing afterwards, in which case there's no
+such recursive syscall keeping the fd open.
 
-Cc: Kagura <me@mail.kagurach.uk>
-Cc: stable@vger.kernel.org
-Signed-off-by: Cryolitia PukNgae <cryolitia.pukngae@linux.dev>
-Link: https://patch.msgid.link/20260402-syy-v1-1-068d3bc30ddc@linux.dev
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: dfb84c330794 ("fuse: allow synchronous FUSE_INIT")
+Cc: stable@vger.kernel.org # v6.18
+Reviewed-by: Joanne Koong <joannelkoong@gmail.com>
+Reviewed-by: Bernd Schubert <bernd@bsbernd.com>
+Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/mixer.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ fs/fuse/dev.c    |    8 +++++++-
+ fs/fuse/fuse_i.h |    1 +
+ fs/fuse/inode.c  |    1 +
+ 3 files changed, 9 insertions(+), 1 deletion(-)
 
---- a/sound/usb/mixer.c
-+++ b/sound/usb/mixer.c
-@@ -1198,6 +1198,13 @@ static void volume_control_quirks(struct
- 			cval->min = -14208; /* Mute under it */
- 		}
- 		break;
-+	case USB_ID(0x31b2, 0x0111): /* MOONDROP JU Jiu */
-+		if (!strcmp(kctl->id.name, "PCM Playback Volume")) {
-+			usb_audio_info(chip,
-+				       "set volume quirk for MOONDROP JU Jiu\n");
-+			cval->min = -10880; /* Mute under it */
-+		}
-+		break;
- 	}
- }
+--- a/fs/fuse/dev.c
++++ b/fs/fuse/dev.c
+@@ -570,6 +570,11 @@ static void request_wait_answer(struct f
+ 		if (!err)
+ 			return;
  
++		if (req->args->abort_on_kill) {
++			fuse_abort_conn(fc);
++			return;
++		}
++
+ 		if (test_bit(FR_URING, &req->flags))
+ 			removed = fuse_uring_remove_pending_req(req);
+ 		else
+@@ -676,7 +681,8 @@ ssize_t __fuse_simple_request(struct mnt
+ 			fuse_force_creds(req);
+ 
+ 		__set_bit(FR_WAITING, &req->flags);
+-		__set_bit(FR_FORCE, &req->flags);
++		if (!args->abort_on_kill)
++			__set_bit(FR_FORCE, &req->flags);
+ 	} else {
+ 		WARN_ON(args->nocreds);
+ 		req = fuse_get_req(idmap, fm, false);
+--- a/fs/fuse/fuse_i.h
++++ b/fs/fuse/fuse_i.h
+@@ -333,6 +333,7 @@ struct fuse_args {
+ 	bool is_ext:1;
+ 	bool is_pinned:1;
+ 	bool invalidate_vmap:1;
++	bool abort_on_kill:1;
+ 	struct fuse_in_arg in_args[4];
+ 	struct fuse_arg out_args[2];
+ 	void (*end)(struct fuse_mount *fm, struct fuse_args *args, int error);
+--- a/fs/fuse/inode.c
++++ b/fs/fuse/inode.c
+@@ -1548,6 +1548,7 @@ int fuse_send_init(struct fuse_mount *fm
+ 	int err;
+ 
+ 	if (fm->fc->sync_init) {
++		ia->args.abort_on_kill = true;
+ 		err = fuse_simple_request(fm, &ia->args);
+ 		/* Ignore size of init reply */
+ 		if (err > 0)
 
 
 
