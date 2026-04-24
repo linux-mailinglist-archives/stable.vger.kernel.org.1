@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-240938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240911-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4GSuIJxz62kQNAAAu9opvQ
-	(envelope-from <stable+bounces-240938-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:43:56 +0200
+	id oNISAlZz62nCMwAAu9opvQ
+	(envelope-from <stable+bounces-240911-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:42:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DDAD45F80F
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:43:56 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C4D145F721
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:42:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CAECA3008266
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:43:47 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 13D513002D22
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:42:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3ACE3537DF;
-	Fri, 24 Apr 2026 13:43:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D99E386C0A;
+	Fri, 24 Apr 2026 13:42:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ROxtj1dI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ko4zT96B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6FE03563D4;
-	Fri, 24 Apr 2026 13:43:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5AD4221DB6;
+	Fri, 24 Apr 2026 13:42:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777038225; cv=none; b=NSYhMAQV28G6T2giv3u7pNVmYOsbqU4juxVJE0e5rtbQxMFrtLA76oPqe39qowEoQUYxItG8jeOyG9VKe1v93MkB1/ZZRSKaVQpqKaoH65TaXzjmA1JDPX6fcrZm1WtfPPgZLnczsDo6N/KUtN+D4DEzVVzPvGHjzBt0DJDVhLw=
+	t=1777038158; cv=none; b=TgV1/BNH2PFNjlovRB6Lx/quLq0mJtbvAsacVs0wch8IzY6spdOJZhw3nUjeqmV6anc7tYUM0ACXiicFbigguhoxgZljQ+dCBLEd35JyI1yF+dUkBh7yqF93DwPETQl5WAYWGiIzSXUtvM1vjTAs58DmDoBDazobQTC0NW7MxAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777038225; c=relaxed/simple;
-	bh=6ICwo3dYVBwbPwKHWNuqsx3TizMxnoKeZZaecBVUt1o=;
+	s=arc-20240116; t=1777038158; c=relaxed/simple;
+	bh=QgL6JtZFyFNzw2H+Tr3ShFZcwUFvIZD9vnSJNDJhIOI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o+/ugDiHkcN+xOlctqb4J9kF3v7I5WhLM5vo5BwEj++Wp5V4bIoUKCcKA5Hrw7lIbjsolDs1ge6TAsJREQlzpzX4wX4zbjBExPn8IDVhsg/NxwNiDO2XdI3aztVgIsi8HK4wMRjR9NpB9ry9YJotq5ijkd8R0/ER31etyNMf214=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ROxtj1dI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E8DCC19425;
-	Fri, 24 Apr 2026 13:43:45 +0000 (UTC)
+	 MIME-Version; b=ub8moxCOsPlsB/6/4740snhHgl080pfBvb/UMnMcFzho1/HNe6Mc7B2FytHNEf48pJ11G7oAcQzAtdzoFYYMCxpBSoC17dkkMfMT6yxzTE/KYLdJYLO4mzXYdihHQCLP1jcHCYoBWxHhLlrUYJojBzZNF0RBUWMXISkYu9BLuh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ko4zT96B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CD33C19425;
+	Fri, 24 Apr 2026 13:42:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777038225;
-	bh=6ICwo3dYVBwbPwKHWNuqsx3TizMxnoKeZZaecBVUt1o=;
+	s=korg; t=1777038158;
+	bh=QgL6JtZFyFNzw2H+Tr3ShFZcwUFvIZD9vnSJNDJhIOI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ROxtj1dIlwS98eqWC51il/9ieWs+iaPchMLW/GiSKGLXucwuyRmo+o7IQPiBb0z3l
-	 5LaOhLkuva9J9JAnYt8dogSlP6IUlsGek3aWcCcS/6dmgWBd1eZrWoi89oO+2ZCM88
-	 /qQvCus2HpJkV8x3aLBkxJPV2HwBepsQhbtdPdSs=
+	b=ko4zT96BS47qDlQxP0jcK5Pyc37ItWyn6mAwqyHmbJ1XeZo2u7duxkg91l89Db0Tr
+	 iDE7ZYOX66qoSNgirSNNCewuU+X+r4AXAR6cXSm7R2Mibiv71gQhbHAI6lldppOP1c
+	 v5874XpgljRk2suygjDaOLYJjSY8gxztuCF20ghw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bernd Schubert <bschubert@ddn.com>,
-	Horst Birthelmer <hbirthelmer@ddn.com>,
-	Miklos Szeredi <mszeredi@redhat.com>
-Subject: [PATCH 6.12 17/35] fuse: Check for large folio with SPLICE_F_MOVE
-Date: Fri, 24 Apr 2026 15:31:24 +0200
-Message-ID: <20260424132415.293575004@linuxfoundation.org>
+	Jan Kara <jack@suse.cz>,
+	Tejun Heo <tj@kernel.org>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.18 46/55] writeback: Fix use after free in inode_switch_wbs_work_fn()
+Date: Fri, 24 Apr 2026 15:31:25 +0200
+Message-ID: <20260424132439.600334826@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132411.427029259@linuxfoundation.org>
-References: <20260424132411.427029259@linuxfoundation.org>
+In-Reply-To: <20260424132430.006424517@linuxfoundation.org>
+References: <20260424132430.006424517@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,14 +64,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1DDAD45F80F
+X-Rspamd-Queue-Id: 0C4D145F721
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -81,7 +81,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-240938-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-240911-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -92,47 +92,111 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,ddn.com:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,suse.cz:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bernd Schubert <bschubert@ddn.com>
+From: Jan Kara <jack@suse.cz>
 
-commit 59ba47b6be9cd0146ef9a55c6e32e337e11e7625 upstream.
+commit 6689f01d6740cf358932b3e97ee968c6099800d9 upstream.
 
-xfstest generic/074 and generic/075 complain result in kernel
-warning messages / page dumps.
-This is easily reproducible (on 6.19) with
-CONFIG_TRANSPARENT_HUGEPAGE_SHMEM_HUGE_ALWAYS=y
-CONFIG_TRANSPARENT_HUGEPAGE_TMPFS_HUGE_ALWAYS=y
+inode_switch_wbs_work_fn() has a loop like:
 
-This just adds a test for large folios fuse_try_move_folio
-with the same page copy fallback, but to avoid the warnings
-from fuse_check_folio().
+  wb_get(new_wb);
+  while (1) {
+    list = llist_del_all(&new_wb->switch_wbs_ctxs);
+    /* Nothing to do? */
+    if (!list)
+      break;
+    ... process the items ...
+  }
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Bernd Schubert <bschubert@ddn.com>
-Signed-off-by: Horst Birthelmer <hbirthelmer@ddn.com>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Now adding of items to the list looks like:
+
+wb_queue_isw()
+  if (llist_add(&isw->list, &wb->switch_wbs_ctxs))
+    queue_work(isw_wq, &wb->switch_work);
+
+Because inode_switch_wbs_work_fn() loops when processing isw items, it
+can happen that wb->switch_work is pending while wb->switch_wbs_ctxs is
+empty. This is a problem because in that case wb can get freed (no isw
+items -> no wb reference) while the work is still pending causing
+use-after-free issues.
+
+We cannot just fix this by cancelling work when freeing wb because that
+could still trigger problematic 0 -> 1 transitions on wb refcount due to
+wb_get() in inode_switch_wbs_work_fn(). It could be all handled with
+more careful code but that seems unnecessarily complex so let's avoid
+that until it is proven that the looping actually brings practical
+benefit. Just remove the loop from inode_switch_wbs_work_fn() instead.
+That way when wb_queue_isw() queues work, we are guaranteed we have
+added the first item to wb->switch_wbs_ctxs and nobody is going to
+remove it (and drop the wb reference it holds) until the queued work
+runs.
+
+Fixes: e1b849cfa6b6 ("writeback: Avoid contention on wb->list_lock when switching inodes")
+CC: stable@vger.kernel.org
+Signed-off-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20260413093618.17244-2-jack@suse.cz
+Acked-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/fuse/dev.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/fs-writeback.c |   36 +++++++++++++++++++-----------------
+ 1 file changed, 19 insertions(+), 17 deletions(-)
 
---- a/fs/fuse/dev.c
-+++ b/fs/fuse/dev.c
-@@ -871,6 +871,9 @@ static int fuse_try_move_page(struct fus
- 	folio_clear_uptodate(newfolio);
- 	folio_clear_mappedtodisk(newfolio);
+--- a/fs/fs-writeback.c
++++ b/fs/fs-writeback.c
+@@ -558,28 +558,30 @@ void inode_switch_wbs_work_fn(struct wor
+ 	struct inode_switch_wbs_context *isw, *next_isw;
+ 	struct llist_node *list;
  
-+	if (folio_test_large(newfolio))
-+		goto out_fallback_unlock;
++	list = llist_del_all(&new_wb->switch_wbs_ctxs);
+ 	/*
+-	 * Grab out reference to wb so that it cannot get freed under us
++	 * Nothing to do? That would be a problem as references held by isw
++	 * items protect wb from freeing...
++	 */
++	if (WARN_ON_ONCE(!list))
++		return;
 +
- 	if (fuse_check_folio(newfolio) != 0)
- 		goto out_fallback_unlock;
++	/*
++	 * Grab our reference to wb so that it cannot get freed under us
+ 	 * after we process all the isw items.
+ 	 */
+ 	wb_get(new_wb);
+-	while (1) {
+-		list = llist_del_all(&new_wb->switch_wbs_ctxs);
+-		/* Nothing to do? */
+-		if (!list)
+-			break;
+-		/*
+-		 * In addition to synchronizing among switchers, I_WB_SWITCH
+-		 * tells the RCU protected stat update paths to grab the i_page
+-		 * lock so that stat transfer can synchronize against them.
+-		 * Let's continue after I_WB_SWITCH is guaranteed to be
+-		 * visible.
+-		 */
+-		synchronize_rcu();
++	/*
++	 * In addition to synchronizing among switchers, I_WB_SWITCH
++	 * tells the RCU protected stat update paths to grab the i_page
++	 * lock so that stat transfer can synchronize against them.
++	 * Let's continue after I_WB_SWITCH is guaranteed to be
++	 * visible.
++	 */
++	synchronize_rcu();
+ 
+-		llist_for_each_entry_safe(isw, next_isw, list, list)
+-			process_inode_switch_wbs(new_wb, isw);
+-	}
++	llist_for_each_entry_safe(isw, next_isw, list, list)
++		process_inode_switch_wbs(new_wb, isw);
+ 	wb_put(new_wb);
+ }
  
 
 
