@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-240612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240613-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iBHUN20762mMKAAAu9opvQ
-	(envelope-from <stable+bounces-240612-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 11:44:13 +0200
+	id sJqCLXI762mMKAAAu9opvQ
+	(envelope-from <stable+bounces-240613-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 11:44:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD22545C687
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 11:44:12 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2138745C69C
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 11:44:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2113E3007214
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 09:43:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E3A183016817
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 09:43:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08C2B38B142;
-	Fri, 24 Apr 2026 09:43:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 341FD38B131;
+	Fri, 24 Apr 2026 09:43:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kgaoi71T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mYxJcsLC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0CA438AC7C
-	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 09:43:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC45638AC78
+	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 09:43:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777023820; cv=none; b=FSXZISCepGjMDV8k8m2zu9ChjmBaYytrI0FUGUhGszzqIBwR6wgSQaEoV9UmuDrzl1EFWTshKakRgHj+I1/f4X6Jv4s6xv1Bkj5z8TXfGnWOTLUOles4McOm0R5e2UppmPQjV9Sgk4FkNyW6b0jInPFw9HFHJi0QzwAdFVv4v+s=
+	t=1777023828; cv=none; b=a7JJC8j//JgoErQ5T2b7ncx/iRzzAOPLGHnoc0jvc0Vb9lnNKGUcKSempQ6s2ua7+i5ly7hBg5P9DA4+tplEoITD6RYIKjc69g8n6fplMFjJ9wmF+JbvwbAu9rW289rHjJb9Q7zYuKV/GmrS0FykjKNoAdG0MAvjKw/uaqW9QoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777023820; c=relaxed/simple;
-	bh=eiHcmoQUHZGo8rj7k4zl6HcRhC0MRlftwec+NTCphRY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=bAK/IjBQhftSr8p68eAshMfqCV1F6Q6kDD4ec1m3MWVu3+R48/g79TWDd4uo+OUfiJJ0fMhxlMn29faOlTcGeD7KlNpCYlWICFLDdWFrOlVcrXfiDsmBCDHgzlHXvwrGJCOK722zxPFAG7c2pk/zOVXMJiwke14lfwT1Zc65pHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kgaoi71T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BB4AC19425;
-	Fri, 24 Apr 2026 09:43:39 +0000 (UTC)
+	s=arc-20240116; t=1777023828; c=relaxed/simple;
+	bh=8ijfs4JrcQUm7sL313cmniq1HKSyJv9mFRWV23iH3l8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Oj1lpZpD+c+JWklgZc5aVztnf2ke+khmCR0cl2Dr98lOoBPIHxeqxUgWL5ag6FngdKdUMHfLxkoghMZCLsBryc2B9/zP95VivcM7umbtiB0P9FRVViaM72kI7Wv4DUqEXJk0lD5IAh9QjNVlrMak8UMya8+C3YRlGL/hz1MtkaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mYxJcsLC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8204BC19425;
+	Fri, 24 Apr 2026 09:43:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777023820;
-	bh=eiHcmoQUHZGo8rj7k4zl6HcRhC0MRlftwec+NTCphRY=;
+	s=korg; t=1777023827;
+	bh=8ijfs4JrcQUm7sL313cmniq1HKSyJv9mFRWV23iH3l8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=kgaoi71Tk+ma5PyTwkbqtRhW5AiJZQTVX5wAvq7w1Hh7N7flYptKQ3zPdMf672qjK
-	 bR3ZodDDhGhl8az3XaGFR8KHksjoVCl6D6UFgtQe+X0PEPtY+fjQB1C4tKcQtmMI0p
-	 zQ6xQwq5rT6Vm50Htcp5avBVBHfaxSY6m0DzataA=
-Subject: FAILED: patch "[PATCH] ksmbd: validate num_aces and harden ACE walk in" failed to apply to 5.15-stable tree
-To: michael.bommarito@gmail.com,linkinjeon@kernel.org,stfrench@microsoft.com
+	b=mYxJcsLCnZQMwyuQQ46ki3d7d5zRHfsGArmIFowaOjrZBuVquaiJCYBYYmp6464Du
+	 9cigtUc6ctyqlb3o8uBOfPe0jWl/CWK4fX9JwlOosXoJIO+I2tw5HT5itx2dL7pqn+
+	 tGFAZIYnp/M1f8dfRzre4STVr5nSsPeHd74oh4K8=
+Subject: FAILED: patch "[PATCH] ksmbd: fix out-of-bounds write in smb2_get_ea() EA alignment" failed to apply to 5.15-stable tree
+To: tristan@talencesecurity.com,linkinjeon@kernel.org,stfrench@microsoft.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 24 Apr 2026 11:43:35 +0200
-Message-ID: <2026042435-chevron-unpainted-de89@gregkh>
+Date: Fri, 24 Apr 2026 11:43:45 +0200
+Message-ID: <2026042445-graduate-unvaried-2a31@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,39 +54,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: DD22545C687
+X-Rspamd-Queue-Id: 2138745C69C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [3.84 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240612-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com,kernel.org,microsoft.com];
+	TAGGED_FROM(0.00)[bounces-240613-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	NEURAL_HAM(-0.00)[-0.997];
+	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NO_DN(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,gregkh:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,talencesecurity.com:email,gregkh:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 
 
 The patch below does not apply to the 5.15-stable tree.
@@ -98,10 +96,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 3e4e2ea2a781018ed5d75f969e3e5606beb66e48
+git cherry-pick -x 30010c952077a1c89ecdd71fc4d574c75a8f5617
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026042435-chevron-unpainted-de89@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026042445-graduate-unvaried-2a31@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -113,139 +111,51 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 3e4e2ea2a781018ed5d75f969e3e5606beb66e48 Mon Sep 17 00:00:00 2001
-From: Michael Bommarito <michael.bommarito@gmail.com>
-Date: Fri, 17 Apr 2026 14:45:57 -0400
-Subject: [PATCH] ksmbd: validate num_aces and harden ACE walk in
- smb_inherit_dacl()
+From 30010c952077a1c89ecdd71fc4d574c75a8f5617 Mon Sep 17 00:00:00 2001
+From: Tristan Madani <tristan@talencesecurity.com>
+Date: Fri, 17 Apr 2026 19:33:17 +0000
+Subject: [PATCH] ksmbd: fix out-of-bounds write in smb2_get_ea() EA alignment
 
-smb_inherit_dacl() trusts the on-disk num_aces value from the parent
-directory's DACL xattr and uses it to size a heap allocation:
+smb2_get_ea() applies 4-byte alignment padding via memset() after
+writing each EA entry. The bounds check on buf_free_len is performed
+before the value memcpy, but the alignment memset fires unconditionally
+afterward with no check on remaining space.
 
-  aces_base = kmalloc(sizeof(struct smb_ace) * num_aces * 2, ...);
+When the EA value exactly fills the remaining buffer (buf_free_len == 0
+after value subtraction), the alignment memset writes 1-3 NUL bytes
+past the buf_free_len boundary. In compound requests where the response
+buffer is shared across commands, the first command (e.g., READ) can
+consume most of the buffer, leaving a tight remainder for the QUERY_INFO
+EA response. The alignment memset then overwrites past the physical
+kvmalloc allocation into adjacent kernel heap memory.
 
-num_aces is a u16 read from le16_to_cpu(parent_pdacl->num_aces)
-without checking that it is consistent with the declared pdacl_size.
-An authenticated client whose parent directory's security.NTACL is
-tampered (e.g. via offline xattr corruption or a concurrent path that
-bypasses parse_dacl()) can present num_aces = 65535 with minimal
-actual ACE data.  This causes a ~8 MB allocation (not kzalloc, so
-uninitialized) that the subsequent loop only partially populates, and
-may also overflow the three-way size_t multiply on 32-bit kernels.
+Add a bounds check before the alignment memset to ensure buf_free_len
+can accommodate the padding bytes.
 
-Additionally, the ACE walk loop uses the weaker
-offsetof(struct smb_ace, access_req) minimum size check rather than
-the minimum valid on-wire ACE size, and does not reject ACEs whose
-declared size is below the minimum.
+This is the same bug pattern fixed by commit beef2634f81f ("ksmbd: fix
+potencial OOB in get_file_all_info() for compound requests") and
+commit fda9522ed6af ("ksmbd: fix OOB write in QUERY_INFO for compound
+requests"), both of which added bounds checks before unconditional
+writes in QUERY_INFO response handlers.
 
-Reproduced on UML + KASAN + LOCKDEP against the real ksmbd code path.
-A legitimate mount.cifs client creates a parent directory over SMB
-(ksmbd writes a valid security.NTACL xattr), then the NTACL blob on
-the backing filesystem is rewritten to set num_aces = 0xFFFF while
-keeping the posix_acl_hash bytes intact so ksmbd_vfs_get_sd_xattr()'s
-hash check still passes.  A subsequent SMB2 CREATE of a child under
-that parent drives smb2_open() into smb_inherit_dacl() (share has
-"vfs objects = acl_xattr" set), which fails the page allocator:
-
-  WARNING: mm/page_alloc.c:5226 at __alloc_frozen_pages_noprof+0x46c/0x9c0
-  Workqueue: ksmbd-io handle_ksmbd_work
-   __alloc_frozen_pages_noprof+0x46c/0x9c0
-   ___kmalloc_large_node+0x68/0x130
-   __kmalloc_large_node_noprof+0x24/0x70
-   __kmalloc_noprof+0x4c9/0x690
-   smb_inherit_dacl+0x394/0x2430
-   smb2_open+0x595d/0xabe0
-   handle_ksmbd_work+0x3d3/0x1140
-
-With the patch applied the added guard rejects the tampered value
-with -EINVAL before any large allocation runs, smb2_open() falls back
-to smb2_create_sd_buffer(), and the child is created with a default
-SD.  No warning, no splat.
-
-Fix by:
-
-  1. Validating num_aces against pdacl_size using the same formula
-     applied in parse_dacl().
-
-  2. Replacing the raw kmalloc(sizeof * num_aces * 2) with
-     kmalloc_array(num_aces * 2, sizeof(...)) for overflow-safe
-     allocation.
-
-  3. Tightening the per-ACE loop guard to require the minimum valid
-     ACE size (offsetof(smb_ace, sid) + CIFS_SID_BASE_SIZE) and
-     rejecting under-sized ACEs, matching the hardening in
-     smb_check_perm_dacl() and parse_dacl().
-
-v1 -> v2:
-  - Replace the synthetic test-module splat in the changelog with a
-    real-path UML + KASAN reproduction driven through mount.cifs and
-    SMB2 CREATE; Namjae flagged the kcifs3_test_inherit_dacl_old name
-    in v1 since it does not exist in ksmbd.
-  - Drop the commit-hash citation from the code comment per Namjae's
-    review; keep the parse_dacl() pointer.
-
-Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
 Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-6
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Fixes: e2b76ab8b5c9 ("ksmbd: add support for read compound")
+Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
 Acked-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 
-diff --git a/fs/smb/server/smbacl.c b/fs/smb/server/smbacl.c
-index bba26a0355bb..a1de89cc09be 100644
---- a/fs/smb/server/smbacl.c
-+++ b/fs/smb/server/smbacl.c
-@@ -1106,8 +1106,24 @@ int smb_inherit_dacl(struct ksmbd_conn *conn,
- 		goto free_parent_pntsd;
- 	}
- 
--	aces_base = kmalloc(sizeof(struct smb_ace) * num_aces * 2,
--			    KSMBD_DEFAULT_GFP);
-+	aces_size = pdacl_size - sizeof(struct smb_acl);
-+
-+	/*
-+	 * Validate num_aces against the DACL payload before allocating.
-+	 * Each ACE must be at least as large as its fixed-size header
-+	 * (up to the SID base), so num_aces cannot exceed the payload
-+	 * divided by the minimum ACE size.  This mirrors the existing
-+	 * check in parse_dacl().
-+	 */
-+	if (num_aces > aces_size / (offsetof(struct smb_ace, sid) +
-+				    offsetof(struct smb_sid, sub_auth) +
-+				    sizeof(__le16))) {
-+		rc = -EINVAL;
-+		goto free_parent_pntsd;
-+	}
-+
-+	aces_base = kmalloc_array(num_aces * 2, sizeof(struct smb_ace),
-+				  KSMBD_DEFAULT_GFP);
- 	if (!aces_base) {
- 		rc = -ENOMEM;
- 		goto free_parent_pntsd;
-@@ -1116,7 +1132,6 @@ int smb_inherit_dacl(struct ksmbd_conn *conn,
- 	aces = (struct smb_ace *)aces_base;
- 	parent_aces = (struct smb_ace *)((char *)parent_pdacl +
- 			sizeof(struct smb_acl));
--	aces_size = acl_len - sizeof(struct smb_acl);
- 
- 	if (pntsd_type & DACL_AUTO_INHERITED)
- 		inherited_flags = INHERITED_ACE;
-@@ -1124,11 +1139,14 @@ int smb_inherit_dacl(struct ksmbd_conn *conn,
- 	for (i = 0; i < num_aces; i++) {
- 		int pace_size;
- 
--		if (offsetof(struct smb_ace, access_req) > aces_size)
-+		if (aces_size < offsetof(struct smb_ace, sid) +
-+		    CIFS_SID_BASE_SIZE)
- 			break;
- 
- 		pace_size = le16_to_cpu(parent_aces->size);
--		if (pace_size > aces_size)
-+		if (pace_size > aces_size ||
-+		    pace_size < offsetof(struct smb_ace, sid) +
-+				CIFS_SID_BASE_SIZE)
- 			break;
- 
- 		aces_size -= pace_size;
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index 395007c82831..652b6771ccaf 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -4818,6 +4818,8 @@ static int smb2_get_ea(struct ksmbd_work *work, struct ksmbd_file *fp,
+ 		/* align next xattr entry at 4 byte bundary */
+ 		alignment_bytes = ((next_offset + 3) & ~3) - next_offset;
+ 		if (alignment_bytes) {
++			if (buf_free_len < alignment_bytes)
++				break;
+ 			memset(ptr, '\0', alignment_bytes);
+ 			ptr += alignment_bytes;
+ 			next_offset += alignment_bytes;
 
 
