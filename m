@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-240703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240844-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ICJwNI9y62nCMwAAu9opvQ
-	(envelope-from <stable+bounces-240703-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:39:27 +0200
+	id eB2+GqRy62nmMwAAu9opvQ
+	(envelope-from <stable+bounces-240844-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:39:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2016945F542
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:39:27 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 232ED45F597
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:39:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0D0AC3034DC5
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:33:43 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4CCBF3005AA4
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:39:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 973D43D47B0;
-	Fri, 24 Apr 2026 13:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 659463D6690;
+	Fri, 24 Apr 2026 13:39:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CATvDhZh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1tJ0AOEM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50BB033E347;
-	Fri, 24 Apr 2026 13:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 271F93290A5;
+	Fri, 24 Apr 2026 13:39:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777037621; cv=none; b=Igtv4nhGYxrtW7NoR4cP22Y5raJaUTmgpEgJ0mIDuAuRHw0RVZQrWkDFV8kvhXrOLURqBpf0P3ntOK2FnkOvbAW2bN3ZKiLKOwab7HPVUL4DcmQ0qkufbYQCRxVMNOnBPUpLaru9fWlivEIDv+h5cKQOvIUBAW9qGSM5rOXv0YY=
+	t=1777037986; cv=none; b=AO4O53ZsZJl3BW57dZNvBQeS5u/lfH59KAD+WEbsxQvyt5aKWoxX8GoIqndUzkrUqsCW1Dtu51GN/FPDmJl/Zg8iywjMZBhHOuAJIVz3AiJEWW9+RRkelTKaFQvH9LdphG8MU0f0XsM/K7DrLMJySYkcqNg/HEFUIFJpEp6p4RE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777037621; c=relaxed/simple;
-	bh=+unyWY038wpEmidr+khSaqZ5YuiiOXtN5FFhwz+6hbQ=;
+	s=arc-20240116; t=1777037986; c=relaxed/simple;
+	bh=alehJjcUMwfPDhEen7LCqXcZoFlkOfsz6EbvTf/6r5g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lrK7UO1Oc/LWzUrw4x9Y9N040l72MZFR5dyLPvRxJKQamOjmmwbt7APEzoLvN1b4GUedsVbDXrbKWFbLd1yjUEqYfBLu0lGuAkTfl6ksGgy+rHpfJK0xAVb8RQahaWsZ+x7K0UAJyYRyiCEjEbSr8Lm9VrSwfkKyBofTzFfOAwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CATvDhZh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCC38C2BCB2;
-	Fri, 24 Apr 2026 13:33:40 +0000 (UTC)
+	 MIME-Version; b=VpCLow+M6gJ2ulsKDv3pTpHAmz9h5oAwQnTVFh0Ey05Npl2e380VQKFYTk2egCjydUS8H7dU+PCr25NFQBZzTOZnSUmUC0GxexIiD9l3TR72N0zRNKBgB/XPc0QdLVtd3WWlYouvRxQkJqfO9AM9+2KsriD0XLvwvokP33rHBnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1tJ0AOEM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B040FC19425;
+	Fri, 24 Apr 2026 13:39:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777037621;
-	bh=+unyWY038wpEmidr+khSaqZ5YuiiOXtN5FFhwz+6hbQ=;
+	s=korg; t=1777037986;
+	bh=alehJjcUMwfPDhEen7LCqXcZoFlkOfsz6EbvTf/6r5g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CATvDhZhlkLDC6Emb51K11aZ3Qfntv98G2jpthCN9wXmRwMZqU0YCXBHaUycLgByA
-	 9kWtC5jwcISIQTskaqu9hRzbCUmdgsoJL322RlXW1+pWspnmdlMFpsc69yWJ7CCngg
-	 M/eN6I+UYpZmhW8S91FOJZi2R1garnqVAqcG1RDE=
+	b=1tJ0AOEMgfiIRqqpTR/qbz1kEUMQwVMGG0XgWCGFr/Ir0PVlxSeJpjvDc3iOliOxN
+	 N9HyPk6CIloJ9pa7CqClF7R5MjTg0kg2t56KlOmj1KI8Nl8IT7z4ks3P7zUYvg+yo9
+	 xEluumr2e0SRn3oIXKwts1SCEZ732pHt+BTLZ+14=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kagura <me@mail.kagurach.uk>,
-	Cryolitia PukNgae <cryolitia.pukngae@linux.dev>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 7.0 34/42] ALSA: usb-audio: apply quirk for MOONDROP JU Jiu
-Date: Fri, 24 Apr 2026 15:30:59 +0200
-Message-ID: <20260424132427.606794925@linuxfoundation.org>
+	stable@kernel.org,
+	syzbot+cf7946ab25b21abc4b66@syzkaller.appspotmail.com,
+	Eric Biggers <ebiggers@kernel.org>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 6.6 146/166] f2fs: fix to avoid memory leak in f2fs_rename()
+Date: Fri, 24 Apr 2026 15:31:00 +0200
+Message-ID: <20260424132603.637329005@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132420.410310336@linuxfoundation.org>
-References: <20260424132420.410310336@linuxfoundation.org>
+In-Reply-To: <20260424132532.812258529@linuxfoundation.org>
+References: <20260424132532.812258529@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,76 +66,100 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2016945F542
+X-Rspamd-Queue-Id: 232ED45F597
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-240703-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240844-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linux.dev:email,kagurach.uk:email]
+	TAGGED_RCPT(0.00)[stable,cf7946ab25b21abc4b66];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,appspotmail.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cryolitia PukNgae <cryolitia.pukngae@linux.dev>
+From: Chao Yu <chao@kernel.org>
 
-commit 4513d3e0bbc0585b86ccf2631902593ff97e88f5 upstream.
+commit 3cf11e6f36c170050c12171dd6fd3142711478fc upstream.
 
-It(ID 31b2:0111 JU Jiu) reports a MIN value -12800 for volume control, but
-will mute when setting it less than -10880.
+syzbot reported a f2fs bug as below:
 
-Thanks to my girlfriend Kagura for reporting this issue.
+BUG: memory leak
+unreferenced object 0xffff888127f70830 (size 16):
+  comm "syz.0.23", pid 6144, jiffies 4294943712
+  hex dump (first 16 bytes):
+    3c af 57 72 5b e6 8f ad 6e 8e fd 33 42 39 03 ff  <.Wr[...n..3B9..
+  backtrace (crc 925f8a80):
+    kmemleak_alloc_recursive include/linux/kmemleak.h:44 [inline]
+    slab_post_alloc_hook mm/slub.c:4520 [inline]
+    slab_alloc_node mm/slub.c:4844 [inline]
+    __do_kmalloc_node mm/slub.c:5237 [inline]
+    __kmalloc_noprof+0x3bd/0x560 mm/slub.c:5250
+    kmalloc_noprof include/linux/slab.h:954 [inline]
+    fscrypt_setup_filename+0x15e/0x3b0 fs/crypto/fname.c:364
+    f2fs_setup_filename+0x52/0xb0 fs/f2fs/dir.c:143
+    f2fs_rename+0x159/0xca0 fs/f2fs/namei.c:961
+    f2fs_rename2+0xd5/0xf20 fs/f2fs/namei.c:1308
+    vfs_rename+0x7ff/0x1250 fs/namei.c:6026
+    filename_renameat2+0x4f4/0x660 fs/namei.c:6144
+    __do_sys_renameat2 fs/namei.c:6173 [inline]
+    __se_sys_renameat2 fs/namei.c:6168 [inline]
+    __x64_sys_renameat2+0x59/0x80 fs/namei.c:6168
+    do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+    do_syscall_64+0xe2/0xf80 arch/x86/entry/syscall_64.c:94
+    entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Cc: Kagura <me@mail.kagurach.uk>
-Cc: stable@vger.kernel.org
-Signed-off-by: Cryolitia PukNgae <cryolitia.pukngae@linux.dev>
-Link: https://patch.msgid.link/20260402-syy-v1-1-068d3bc30ddc@linux.dev
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+The root cause is in commit 40b2d55e0452 ("f2fs: fix to create selinux
+label during whiteout initialization"), we added a call to
+f2fs_setup_filename() without a matching call to f2fs_free_filename(),
+fix it.
+
+Fixes: 40b2d55e0452 ("f2fs: fix to create selinux label during whiteout initialization")
+Cc: stable@kernel.org
+Reported-by: syzbot+cf7946ab25b21abc4b66@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-f2fs-devel/69a75fe1.a70a0220.b118c.0014.GAE@google.com
+Suggested-by: Eric Biggers <ebiggers@kernel.org>
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/mixer.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ fs/f2fs/namei.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/sound/usb/mixer.c
-+++ b/sound/usb/mixer.c
-@@ -1204,6 +1204,13 @@ static void volume_control_quirks(struct
- 			cval->min = -11264; /* Mute under it */
- 		}
- 		break;
-+	case USB_ID(0x31b2, 0x0111): /* MOONDROP JU Jiu */
-+		if (!strcmp(kctl->id.name, "PCM Playback Volume")) {
-+			usb_audio_info(chip,
-+				       "set volume quirk for MOONDROP JU Jiu\n");
-+			cval->min = -10880; /* Mute under it */
-+		}
-+		break;
- 	}
- }
+--- a/fs/f2fs/namei.c
++++ b/fs/f2fs/namei.c
+@@ -940,6 +940,7 @@ static int f2fs_rename(struct mnt_idmap
+ 			return err;
  
+ 		err = f2fs_create_whiteout(idmap, old_dir, &whiteout, &fname);
++		f2fs_free_filename(&fname);
+ 		if (err)
+ 			return err;
+ 	}
 
 
 
