@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-240594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240596-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8OEYBig662nRJwAAu9opvQ
-	(envelope-from <stable+bounces-240594-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 11:38:48 +0200
+	id 6Iz2Ksw662nRJwAAu9opvQ
+	(envelope-from <stable+bounces-240596-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 11:41:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2369845C504
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 11:38:47 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B32645C5BA
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 11:41:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 37021300106F
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 09:38:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 19D2930117AB
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 09:41:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D10CD38AC71;
-	Fri, 24 Apr 2026 09:38:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B1EB38AC7C;
+	Fri, 24 Apr 2026 09:41:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zzpy7w6P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XlMm9uUT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B31B3890EE
-	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 09:38:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E2453890F3
+	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 09:41:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777023523; cv=none; b=KbvJUkiDEB9f3pYUIzJLYksNM9rqaVXygkfPqQyCM7ZKE8ratQLhFZH7sW9pke2nFDAkQvCBnsnFOWGvtZKBSXmee0xbbWK5Lu5UHWx8rQqW0e1vdobqzrxSiznDv5idOQTbXw/dGtyNU1OoPOa1Ew0ObhQgUDVliyOjhzVHAx8=
+	t=1777023689; cv=none; b=tOwIfUq1f3f+yYgRxcKaYlCv7wfu1fW3+FCEnleEpkoEPhnlSVZuKVF/qs89c+OEA+/rGrPtqW3SOzLDDYWHalN8tRSnfmEE1xxpIj3yXeGSEYoHwlmXh4qlhFTkpAOsKD4dAjAceONuvv9qoA6zLBEn9jQDObskeEn7QwlAw68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777023523; c=relaxed/simple;
-	bh=lhMMqxiZP1omtaNWZwjeDqnvNpofzAxvB/aqfEakHJU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Hog4ouym5CxLB57UhahYjWape8a6LpnYeJwyE2xfN5J5kKYbgSURaSZgWIM4Za08HejKOzT+2cYc8U2lBV96FiQpL76A5gqoBOWKFKrA1OqV5uMbb0hO+GnTvas4w6f9L27XLtrXM46kKVnM6t/OqZwXitn3jam1u146Of/YLBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zzpy7w6P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0F3FC19425;
-	Fri, 24 Apr 2026 09:38:42 +0000 (UTC)
+	s=arc-20240116; t=1777023689; c=relaxed/simple;
+	bh=xtAkP6GH6U9AIXuUTsHcDAjD5wuzECb5Q/FOhv/sjgY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=hPH9j6mvk3IymTbHIAdjNPUZvIdpoCKMYcRajp41zoqvVkOIrNjNfaUVQgfs+d/XA6bnhEaPtD6bOR/QrK7QMbNyyvYuZvUhWNEz6I4FAocvMzMNwiAk8RaNGRvVPqMO209oOF34KvEYnpHted9ymJc6CSh1Y4XX5O7JkzKrfw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XlMm9uUT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC9BEC19425;
+	Fri, 24 Apr 2026 09:41:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777023523;
-	bh=lhMMqxiZP1omtaNWZwjeDqnvNpofzAxvB/aqfEakHJU=;
+	s=korg; t=1777023689;
+	bh=xtAkP6GH6U9AIXuUTsHcDAjD5wuzECb5Q/FOhv/sjgY=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Zzpy7w6PZRq2ZAGuDe/2mIjEsVz4OoRNTiZEtsm6V6lhsVV0ML1CY16PNWBDwxUZY
-	 ocYtpcisfp1ccNuEZv/TNoLJX5c4B+v8hZmYR/8eVpyNDfbq6CqMcZrMD6ZGH9V8CU
-	 QqIPVKo20qmK8ZR+TLGF5wbrDdm5pggpXF0vwalQ=
-Subject: FAILED: patch "[PATCH] f2fs: fix UAF caused by decrementing sbi->nr_pages[] in" failed to apply to 5.10-stable tree
-To: yangyongpeng@xiaomi.com,chao@kernel.org,jaegeuk@kernel.org
+	b=XlMm9uUTEJcQD9CEU7JOZPJnq2qiWI6M+YK0tYHT6jv7uZcUdg3Lq+jAAJe7jrTxt
+	 IismpMi3X2uYbSN/GsoppsA8HWjGsDxWAMOdUaa9Dah4+DXKPZyv4W8hbonuLQUdw9
+	 TwXmD32Xrwz+IPp/cKHYFBpYuKE1oVvfwYWiiiI4=
+Subject: FAILED: patch "[PATCH] ksmbd: require minimum ACE size in smb_check_perm_dacl()" failed to apply to 6.6-stable tree
+To: michael.bommarito@gmail.com,linkinjeon@kernel.org,stfrench@microsoft.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 24 Apr 2026 11:38:35 +0200
-Message-ID: <2026042435-dreary-backshift-e993@gregkh>
+Date: Fri, 24 Apr 2026 11:41:26 +0200
+Message-ID: <2026042426-growing-dime-ce6e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,52 +54,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2369845C504
+X-Rspamd-Queue-Id: 2B32645C5BA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.34 / 15.00];
+X-Spamd-Result: default: False [3.84 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-240594-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240596-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com,kernel.org,microsoft.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_THREE(0.00)[4];
+	NEURAL_HAM(-0.00)[-0.997];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,gregkh:email,linuxfoundation.org:dkim,xiaomi.com:email,appspotmail.com:email]
+	FROM_NO_DN(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,gregkh:email]
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 2d9c4a4ed4eef1f82c5b16b037aee8bad819fd53
+git cherry-pick -x d07b26f39246a82399661936dd0c853983cfade7
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026042435-dreary-backshift-e993@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026042426-growing-dime-ce6e@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,71 +113,101 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 2d9c4a4ed4eef1f82c5b16b037aee8bad819fd53 Mon Sep 17 00:00:00 2001
-From: Yongpeng Yang <yangyongpeng@xiaomi.com>
-Date: Fri, 27 Feb 2026 15:30:52 +0800
-Subject: [PATCH] f2fs: fix UAF caused by decrementing sbi->nr_pages[] in
- f2fs_write_end_io()
+From d07b26f39246a82399661936dd0c853983cfade7 Mon Sep 17 00:00:00 2001
+From: Michael Bommarito <michael.bommarito@gmail.com>
+Date: Tue, 14 Apr 2026 15:15:33 -0400
+Subject: [PATCH] ksmbd: require minimum ACE size in smb_check_perm_dacl()
 
-The xfstests case "generic/107" and syzbot have both reported a NULL
-pointer dereference.
+Both ACE-walk loops in smb_check_perm_dacl() only guard against an
+under-sized remaining buffer, not against an ACE whose declared
+`ace->size` is smaller than the struct it claims to describe:
 
-The concurrent scenario that triggers the panic is as follows:
+  if (offsetof(struct smb_ace, access_req) > aces_size)
+      break;
+  ace_size = le16_to_cpu(ace->size);
+  if (ace_size > aces_size)
+      break;
 
-F2FS_WB_CP_DATA write callback          umount
-                                        - f2fs_write_checkpoint
-                                         - f2fs_wait_on_all_pages(sbi, F2FS_WB_CP_DATA)
-- blk_mq_end_request
- - bio_endio
-  - f2fs_write_end_io
-   : dec_page_count(sbi, F2FS_WB_CP_DATA)
-   : wake_up(&sbi->cp_wait)
-                                        - kill_f2fs_super
-                                         - kill_block_super
-                                          - f2fs_put_super
-                                           : iput(sbi->node_inode)
-                                           : sbi->node_inode = NULL
-   : f2fs_in_warm_node_list
-    - is_node_folio // sbi->node_inode is NULL and panic
+The first check only requires the 4-byte ACE header to be in bounds;
+it does not require access_req (4 bytes at offset 4) to be readable.
+An attacker who has set a crafted DACL on a file they own can declare
+ace->size == 4 with aces_size == 4, pass both checks, and then
 
-The root cause is that f2fs_put_super() calls iput(sbi->node_inode) and
-sets sbi->node_inode to NULL after sbi->nr_pages[F2FS_WB_CP_DATA] is
-decremented to zero. As a result, f2fs_in_warm_node_list() may
-dereference a NULL node_inode when checking whether a folio belongs to
-the node inode, leading to a panic.
+  granted |= le32_to_cpu(ace->access_req);               /* upper loop */
+  compare_sids(&sid, &ace->sid);                         /* lower loop */
 
-This patch fixes the issue by calling f2fs_in_warm_node_list() before
-decrementing sbi->nr_pages[F2FS_WB_CP_DATA], thus preventing the
-use-after-free condition.
+reads access_req at offset 4 (OOB by up to 4 bytes) and ace->sid at
+offset 8 (OOB by up to CIFS_SID_BASE_SIZE + SID_MAX_SUB_AUTHORITIES
+* 4 bytes).
 
-Cc: stable@kernel.org
-Fixes: 50fa53eccf9f ("f2fs: fix to avoid broken of dnode block list")
-Reported-by: syzbot+6e4cb1cac5efc96ea0ca@syzkaller.appspotmail.com
-Signed-off-by: Yongpeng Yang <yangyongpeng@xiaomi.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Tighten both loops to require
 
-diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
-index 400f0400e13d..57fc9bad31bf 100644
---- a/fs/f2fs/data.c
-+++ b/fs/f2fs/data.c
-@@ -386,6 +386,8 @@ static void f2fs_write_end_io(struct bio *bio)
- 				folio->index, NODE_TYPE_REGULAR, true);
- 			f2fs_bug_on(sbi, folio->index != nid_of_node(folio));
- 		}
-+		if (f2fs_in_warm_node_list(sbi, folio))
-+			f2fs_del_fsync_node_entry(sbi, folio);
+  ace_size >= offsetof(struct smb_ace, sid) + CIFS_SID_BASE_SIZE
+
+which is the smallest valid on-wire ACE layout (4-byte header +
+4-byte access_req + 8-byte sid base with zero sub-auths).  Also
+reject ACEs whose sid.num_subauth exceeds SID_MAX_SUB_AUTHORITIES
+before letting compare_sids() dereference sub_auth[] entries.
+
+parse_sec_desc() already enforces an equivalent check (lines 441-448);
+smb_check_perm_dacl() simply grew weaker validation over time.
+
+Reachability: authenticated SMB client with permission to set an ACL
+on a file.  On a subsequent CREATE against that file, the kernel
+walks the stored DACL via smb_check_perm_dacl() and triggers the
+OOB read.  Not pre-auth, and the OOB read is not reflected to the
+attacker, but KASAN reports and kernel state corruption are
+possible.
+
+Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-6
+Assisted-by: Codex:gpt-5-4
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+
+diff --git a/fs/smb/server/smbacl.c b/fs/smb/server/smbacl.c
+index 061a305bf9c8..bba26a0355bb 100644
+--- a/fs/smb/server/smbacl.c
++++ b/fs/smb/server/smbacl.c
+@@ -1342,10 +1342,13 @@ int smb_check_perm_dacl(struct ksmbd_conn *conn, const struct path *path,
+ 		ace = (struct smb_ace *)((char *)pdacl + sizeof(struct smb_acl));
+ 		aces_size = acl_size - sizeof(struct smb_acl);
+ 		for (i = 0; i < le16_to_cpu(pdacl->num_aces); i++) {
+-			if (offsetof(struct smb_ace, access_req) > aces_size)
++			if (offsetof(struct smb_ace, sid) +
++			    aces_size < CIFS_SID_BASE_SIZE)
+ 				break;
+ 			ace_size = le16_to_cpu(ace->size);
+-			if (ace_size > aces_size)
++			if (ace_size > aces_size ||
++			    ace_size < offsetof(struct smb_ace, sid) +
++				       CIFS_SID_BASE_SIZE)
+ 				break;
+ 			aces_size -= ace_size;
+ 			granted |= le32_to_cpu(ace->access_req);
+@@ -1360,13 +1363,19 @@ int smb_check_perm_dacl(struct ksmbd_conn *conn, const struct path *path,
+ 	ace = (struct smb_ace *)((char *)pdacl + sizeof(struct smb_acl));
+ 	aces_size = acl_size - sizeof(struct smb_acl);
+ 	for (i = 0; i < le16_to_cpu(pdacl->num_aces); i++) {
+-		if (offsetof(struct smb_ace, access_req) > aces_size)
++		if (offsetof(struct smb_ace, sid) +
++		    aces_size < CIFS_SID_BASE_SIZE)
+ 			break;
+ 		ace_size = le16_to_cpu(ace->size);
+-		if (ace_size > aces_size)
++		if (ace_size > aces_size ||
++		    ace_size < offsetof(struct smb_ace, sid) +
++			       CIFS_SID_BASE_SIZE)
+ 			break;
+ 		aces_size -= ace_size;
  
- 		dec_page_count(sbi, type);
- 
-@@ -397,8 +399,6 @@ static void f2fs_write_end_io(struct bio *bio)
- 				wq_has_sleeper(&sbi->cp_wait))
- 			wake_up(&sbi->cp_wait);
- 
--		if (f2fs_in_warm_node_list(sbi, folio))
--			f2fs_del_fsync_node_entry(sbi, folio);
- 		folio_clear_f2fs_gcing(folio);
- 		folio_end_writeback(folio);
- 	}
++		if (ace->sid.num_subauth > SID_MAX_SUB_AUTHORITIES)
++			break;
++
+ 		if (!compare_sids(&sid, &ace->sid) ||
+ 		    !compare_sids(&sid_unix_NFS_mode, &ace->sid)) {
+ 			found = 1;
 
 
