@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-240965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240936-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yKQhIYB162kQNAAAu9opvQ
-	(envelope-from <stable+bounces-240965-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:52:00 +0200
+	id SOgvIqVz62kQNAAAu9opvQ
+	(envelope-from <stable+bounces-240936-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:44:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6ED645FC85
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:51:59 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CFCF45F825
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:44:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3307A307B4DB
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:44:56 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0F868300ADA5
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:43:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E1AD3D6CC7;
-	Fri, 24 Apr 2026 13:44:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6E433D75D6;
+	Fri, 24 Apr 2026 13:43:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qCSqQyJP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H1DCDAFM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C5433B8D75;
-	Fri, 24 Apr 2026 13:44:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89C3F3D75C8;
+	Fri, 24 Apr 2026 13:43:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777038295; cv=none; b=ZYyhFPTc2CUcV3OV4fesZKwVliIIAO7vT99V4kTO4KdmoqIN1S4BLuFP+0S3lWTvyfZEUxXbM5D21jFLz/7Q3wh6eHpCTsMXTb52oZR39kwlzUOy8fj3i4dtzRL/7jz4pDvkBluq4nV0lhOluWQgUD4jI7PIX5Rc1nCcA60iEZI=
+	t=1777038220; cv=none; b=Cfl7qS0uYE66QydIJVCxabQKeOrpoh0WTz/iEiwX/8vKlFCjH8tH7BUlxKZpN0JAOmymvz4k7wboPfKVygop8Xxm6IW7cHXM+qZM1C3aEtC3jV8xs0VEPZ2KDToZ2N9L5YNNmYiCjxz/ZpCOuDi89OdzNzlulcsUP+L5haVM0B8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777038295; c=relaxed/simple;
-	bh=OApkhzo6MV6wx5RM73ARnSW/CrS+NWCS1lS2rBHLUoQ=;
+	s=arc-20240116; t=1777038220; c=relaxed/simple;
+	bh=9yaMXBbuLvWtPvUjUsFv6LbGvBWMHElFuzS7ChmcUS8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sPQAnSvgglNkCGYHzj910W3GKj+kOby/qE+54PaVH2cqjfBEHym6OZ17yaelo7jXyvnuyktMYVHZ4R0mMBhf2LYsqUVepLl0kY6kRWpZ6fTsh64SYojH2DLy7+axHFE0C3OvJSrqP0uG6Dl080ep1sEd3j9JKzL3jl6gr9XYO2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qCSqQyJP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9813DC19425;
-	Fri, 24 Apr 2026 13:44:54 +0000 (UTC)
+	 MIME-Version; b=bKzQ9VSPfmTPkhuz4Wpgm3+R3CknnBxY8hWpEATr42TQ766/f0xf/uHETmnavrMkRUc+kCVZZ5MJvkKj6f0M4EW929v8VYNShFL+Fetr7+eMj7P5ToJcxKpFlKKD3iaPICtZk/tqxHKOo5mt8ON237WH65jfZdsGaagCf1l8JEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H1DCDAFM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 215D4C2BCB2;
+	Fri, 24 Apr 2026 13:43:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777038294;
-	bh=OApkhzo6MV6wx5RM73ARnSW/CrS+NWCS1lS2rBHLUoQ=;
+	s=korg; t=1777038220;
+	bh=9yaMXBbuLvWtPvUjUsFv6LbGvBWMHElFuzS7ChmcUS8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qCSqQyJPf/yqX3N/efg8nszV7+gCysu0Zh7KauCOXlrP0iWtuv0wKSSNo067qtmYz
-	 n0tBaah9J/SaVtGEVrdHpl+TBukU1e9ehZ79xLpzCnbjPdyIRwKN1Mk5N/BOQU7DvT
-	 6mCNq4/hOhSCh2TkeF0YjL9NL6nQQ79BxvBsW4qM=
+	b=H1DCDAFMPElbNo1L79CMiXVMGOpC9cKKQyQzWKaiXbb5LsGUUCGLcJpMH5EqerHmD
+	 8vSafby17+z5BJkOcFlGw/qCaJjEgjYg/QAB4Hx1Vk0MBjvAZ0J3i3asi2YKvZHY+P
+	 pb0jPszlIZX7fbNlWiEBVO5IetbB669MglYV3uQw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Beasley <code@musicinmybrain.net>,
-	NoisyCoil <noisycoil@tutanota.com>,
-	Matthias Geiger <werdahias@riseup.net>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 06/35] rust: warn on bindgen < 0.69.5 and libclang >= 19.1
-Date: Fri, 24 Apr 2026 15:31:13 +0200
-Message-ID: <20260424132412.936885445@linuxfoundation.org>
+Subject: [PATCH 6.12 07/35] net: ethernet: mtk_eth_soc: initialize PPE per-tag-layer MTU registers
+Date: Fri, 24 Apr 2026 15:31:14 +0200
+Message-ID: <20260424132413.130423039@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260424132411.427029259@linuxfoundation.org>
 References: <20260424132411.427029259@linuxfoundation.org>
@@ -67,227 +64,178 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E6ED645FC85
+X-Rspamd-Queue-Id: 8CFCF45F825
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240965-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-240936-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,riseup.net:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,launchpad.net:url]
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,makrotopia.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Daniel Golle <daniel@makrotopia.org>
 
-[ Upstream commit b2603f8ac8217bc59f5c7f248ac248423b9b99cb ]
+commit 2dddb34dd0d07b01fa770eca89480a4da4f13153 upstream.
 
-When testing a `clang` upgrade with Rust Binder, Alice encountered [1] a
-build failure caused by `bindgen` not translating some symbols related to
-tracepoints. This was caused by commit 2e770edd8ce1 ("[libclang] Compute
-the right spelling location") changing the behavior of a function exposed
-by `libclang`. `bindgen` fixed the regression in commit 600f63895f73
-("Use clang_getFileLocation instead of clang_getSpellingLocation").
+The PPE enforces output frame size limits via per-tag-layer VLAN_MTU
+registers that the driver never initializes. The hardware defaults do
+not account for PPPoE overhead, causing the PPE to punt encapsulated
+frames back to the CPU instead of forwarding them.
 
-However, the regression fix is only available in `bindgen` versions
-0.69.5 or later (it was backported for 0.69.x). This means that when
-older bindgen versions are used with new versions of `libclang`, `bindgen`
-may do the wrong thing, which could lead to a build failure.
+Initialize the registers at PPE start and on MTU changes using the
+maximum GMAC MTU. This is a conservative approximation -- the actual
+per-PPE requirement depends on egress path, but using the global
+maximum ensures the limits are never too small.
 
-Alice encountered the bug with some header files related to tracepoints,
-but it could also cause build failures in other circumstances. Thus,
-always emit a warning when using an old `bindgen` with a new `libclang`
-so that other people do not have to spend time chasing down the same
-bug.
-
-However, testing just the version is inconvenient, since distributions
-do patch their packages without changing the version, so I reduced the
-issue into the following piece of code that can trigger the issue:
-
-    #define F(x) int x##x
-    F(foo);
-
-In particular, an unpatched `bindgen` will ignore the macro expansion
-and thus not provide a declaration for the exported `int`.
-
-Thus add a build test to `rust_is_available.sh` using the code above
-(that is only triggered if the versions appear to be affected), following
-what we did for the 0.66.x issue.
-
-Moreover, I checked the status in the major distributions we have
-instructions for:
-
-  - Fedora 41 was affected but is now OK, since it now ships `bindgen`
-    0.69.5.
-
-    Thanks Ben for the quick reply on the updates that were ongoing.
-
-    Fedora 40 and earlier are OK (older `libclang`, and they also now
-    carry `bindgen` 0.69.5).
-
-  - Debian Sid was affected but is now OK, since they now ship a patched
-    `bindgen` binary (0.66.1-7+b3). The issue was reported to Debian by
-    email and then as a bug report [2].
-
-    Thanks NoisyCoil and Matthias for the quick replies. NoisyCoil handled
-    the needed updates. Debian may upgrade to `bindgen` 0.70.x, too.
-
-    Debian Testing is OK (older `libclang` so far).
-
-  - Ubuntu non-LTS (oracular) is affected. The issue was reported to Ubuntu
-    by email and then as a bug report [3].
-
-    Ubuntu LTS is not affected (older `libclang` so far).
-
-  - Arch Linux, Gentoo Linux and openSUSE should be OK (newer `bindgen` is
-    provided). Nix as well (older `libclang` so far).
-
-This issue was also added to our "live list" that tracks issues around
-distributions [4].
-
-Cc: Ben Beasley <code@musicinmybrain.net>
-Cc: NoisyCoil <noisycoil@tutanota.com>
-Cc: Matthias Geiger <werdahias@riseup.net>
-Link: https://lore.kernel.org/rust-for-linux/20241030-bindgen-libclang-warn-v1-1-3a7ba9fedcfe@google.com/ [1]
-Link: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1086510 [2]
-Link: https://bugs.launchpad.net/ubuntu/+source/rust-bindgen-cli/+bug/2086639 [3]
-Link: https://github.com/Rust-for-Linux/linux/issues/1127 [4]
-Co-developed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-Link: https://lore.kernel.org/r/20241111201607.653149-1-ojeda@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Fixes: ba37b7caf1ed ("net: ethernet: mtk_eth_soc: add support for initializing the PPE")
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+Link: https://patch.msgid.link/ec995ab8ce8be423267a1cc093147a74d2eb9d82.1775789829.git.daniel@makrotopia.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/rust_is_available.sh                  | 15 ++++++++
- ...ust_is_available_bindgen_libclang_concat.h |  3 ++
- scripts/rust_is_available_test.py             | 34 ++++++++++++++++++-
- 3 files changed, 51 insertions(+), 1 deletion(-)
- create mode 100644 scripts/rust_is_available_bindgen_libclang_concat.h
+ drivers/net/ethernet/mediatek/mtk_eth_soc.c | 22 ++++++++++++++-
+ drivers/net/ethernet/mediatek/mtk_ppe.c     | 30 +++++++++++++++++++++
+ drivers/net/ethernet/mediatek/mtk_ppe.h     |  1 +
+ 3 files changed, 52 insertions(+), 1 deletion(-)
 
-diff --git a/scripts/rust_is_available.sh b/scripts/rust_is_available.sh
-index 5262c56dd674e..93c0ef7fb3fb2 100755
---- a/scripts/rust_is_available.sh
-+++ b/scripts/rust_is_available.sh
-@@ -225,6 +225,21 @@ if [ "$bindgen_libclang_cversion" -lt "$bindgen_libclang_min_cversion" ]; then
- 	exit 1
- fi
+diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+index 45d4bac984a52..7406b706fb753 100644
+--- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
++++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+@@ -3384,12 +3384,23 @@ static int mtk_device_event(struct notifier_block *n, unsigned long event, void
+ 	return NOTIFY_DONE;
+ }
  
-+if [ "$bindgen_libclang_cversion" -ge 1900100 ] &&
-+	[ "$rust_bindings_generator_cversion" -lt 6905 ]; then
-+	# Distributions may have patched the issue (e.g. Debian did).
-+	if ! "$BINDGEN" $(dirname $0)/rust_is_available_bindgen_libclang_concat.h | grep -q foofoo; then
-+		echo >&2 "***"
-+		echo >&2 "*** Rust bindings generator '$BINDGEN' < 0.69.5 together with libclang >= 19.1"
-+		echo >&2 "*** may not work due to a bug (https://github.com/rust-lang/rust-bindgen/pull/2824),"
-+		echo >&2 "*** unless patched (like Debian's)."
-+		echo >&2 "***   Your bindgen version:  $rust_bindings_generator_version"
-+		echo >&2 "***   Your libclang version: $bindgen_libclang_version"
-+		echo >&2 "***"
-+		warning=1
-+	fi
-+fi
++static int mtk_max_gmac_mtu(struct mtk_eth *eth)
++{
++	int i, max_mtu = ETH_DATA_LEN;
 +
- # If the C compiler is Clang, then we can also check whether its version
- # matches the `libclang` version used by the Rust bindings generator.
- #
-diff --git a/scripts/rust_is_available_bindgen_libclang_concat.h b/scripts/rust_is_available_bindgen_libclang_concat.h
-new file mode 100644
-index 0000000000000..efc6e98d0f1d0
---- /dev/null
-+++ b/scripts/rust_is_available_bindgen_libclang_concat.h
-@@ -0,0 +1,3 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#define F(x) int x##x
-+F(foo);
-diff --git a/scripts/rust_is_available_test.py b/scripts/rust_is_available_test.py
-index 413741037fb30..4fcc319dea84e 100755
---- a/scripts/rust_is_available_test.py
-+++ b/scripts/rust_is_available_test.py
-@@ -54,7 +54,7 @@ else:
- """)
++	for (i = 0; i < ARRAY_SIZE(eth->netdev); i++)
++		if (eth->netdev[i] && eth->netdev[i]->mtu > max_mtu)
++			max_mtu = eth->netdev[i]->mtu;
++
++	return max_mtu;
++}
++
+ static int mtk_open(struct net_device *dev)
+ {
+ 	struct mtk_mac *mac = netdev_priv(dev);
+ 	struct mtk_eth *eth = mac->hw;
+ 	struct mtk_mac *target_mac;
+-	int i, err, ppe_num;
++	int i, err, ppe_num, mtu;
  
-     @classmethod
--    def generate_bindgen(cls, version_stdout, libclang_stderr, version_0_66_patched=False):
-+    def generate_bindgen(cls, version_stdout, libclang_stderr, version_0_66_patched=False, libclang_concat_patched=False):
-         if libclang_stderr is None:
-             libclang_case = f"raise SystemExit({cls.bindgen_default_bindgen_libclang_failure_exit_code})"
-         else:
-@@ -65,12 +65,19 @@ else:
-         else:
-             version_0_66_case = "raise SystemExit(1)"
+ 	ppe_num = eth->soc->ppe_num;
  
-+        if libclang_concat_patched:
-+            libclang_concat_case = "print('pub static mut foofoo: ::std::os::raw::c_int;')"
-+        else:
-+            libclang_concat_case = "pass"
-+
-         return cls.generate_executable(f"""#!/usr/bin/env python3
- import sys
- if "rust_is_available_bindgen_libclang.h" in " ".join(sys.argv):
-     {libclang_case}
- elif "rust_is_available_bindgen_0_66.h" in " ".join(sys.argv):
-     {version_0_66_case}
-+elif "rust_is_available_bindgen_libclang_concat.h" in " ".join(sys.argv):
-+    {libclang_concat_case}
- else:
-     print({repr(version_stdout)})
- """)
-@@ -268,6 +275,31 @@ else:
-         result = self.run_script(self.Expected.FAILURE, { "BINDGEN": bindgen })
-         self.assertIn(f"libclang (used by the Rust bindings generator '{bindgen}') is too old.", result.stderr)
+@@ -3436,6 +3447,10 @@ static int mtk_open(struct net_device *dev)
+ 			mtk_gdm_config(eth, target_mac->id, gdm_config);
+ 		}
  
-+    def test_bindgen_bad_libclang_concat(self):
-+        for (bindgen_version, libclang_version, expected_not_patched) in (
-+            ("0.69.4", "18.0.0", self.Expected.SUCCESS),
-+            ("0.69.4", "19.1.0", self.Expected.SUCCESS_WITH_WARNINGS),
-+            ("0.69.4", "19.2.0", self.Expected.SUCCESS_WITH_WARNINGS),
++		mtu = mtk_max_gmac_mtu(eth);
++		for (i = 0; i < ARRAY_SIZE(eth->ppe); i++)
++			mtk_ppe_update_mtu(eth->ppe[i], mtu);
 +
-+            ("0.69.5", "18.0.0", self.Expected.SUCCESS),
-+            ("0.69.5", "19.1.0", self.Expected.SUCCESS),
-+            ("0.69.5", "19.2.0", self.Expected.SUCCESS),
+ 		napi_enable(&eth->tx_napi);
+ 		napi_enable(&eth->rx_napi);
+ 		mtk_tx_irq_enable(eth, MTK_TX_DONE_INT);
+@@ -4129,6 +4144,7 @@ static int mtk_change_mtu(struct net_device *dev, int new_mtu)
+ 	int length = new_mtu + MTK_RX_ETH_HLEN;
+ 	struct mtk_mac *mac = netdev_priv(dev);
+ 	struct mtk_eth *eth = mac->hw;
++	int max_mtu, i;
+ 
+ 	if (rcu_access_pointer(eth->prog) &&
+ 	    length > MTK_PP_MAX_BUF_SIZE) {
+@@ -4139,6 +4155,10 @@ static int mtk_change_mtu(struct net_device *dev, int new_mtu)
+ 	mtk_set_mcr_max_rx(mac, length);
+ 	WRITE_ONCE(dev->mtu, new_mtu);
+ 
++	max_mtu = mtk_max_gmac_mtu(eth);
++	for (i = 0; i < ARRAY_SIZE(eth->ppe); i++)
++		mtk_ppe_update_mtu(eth->ppe[i], max_mtu);
 +
-+            ("0.70.0", "18.0.0", self.Expected.SUCCESS),
-+            ("0.70.0", "19.1.0", self.Expected.SUCCESS),
-+            ("0.70.0", "19.2.0", self.Expected.SUCCESS),
-+        ):
-+            with self.subTest(bindgen_version=bindgen_version, libclang_version=libclang_version):
-+                cc = self.generate_clang(f"clang version {libclang_version}")
-+                libclang_stderr = f"scripts/rust_is_available_bindgen_libclang.h:2:9: warning: clang version {libclang_version} [-W#pragma-messages], err: false"
-+                bindgen = self.generate_bindgen(f"bindgen {bindgen_version}", libclang_stderr)
-+                result = self.run_script(expected_not_patched, { "BINDGEN": bindgen, "CC": cc })
-+                if expected_not_patched == self.Expected.SUCCESS_WITH_WARNINGS:
-+                    self.assertIn(f"Rust bindings generator '{bindgen}' < 0.69.5 together with libclang >= 19.1", result.stderr)
+ 	return 0;
+ }
+ 
+diff --git a/drivers/net/ethernet/mediatek/mtk_ppe.c b/drivers/net/ethernet/mediatek/mtk_ppe.c
+index ada852adc5f70..fa688a42a22f5 100644
+--- a/drivers/net/ethernet/mediatek/mtk_ppe.c
++++ b/drivers/net/ethernet/mediatek/mtk_ppe.c
+@@ -973,6 +973,36 @@ static void mtk_ppe_init_foe_table(struct mtk_ppe *ppe)
+ 	}
+ }
+ 
++void mtk_ppe_update_mtu(struct mtk_ppe *ppe, int mtu)
++{
++	int base;
++	u32 val;
 +
-+                bindgen = self.generate_bindgen(f"bindgen {bindgen_version}", libclang_stderr, libclang_concat_patched=True)
-+                result = self.run_script(self.Expected.SUCCESS, { "BINDGEN": bindgen, "CC": cc })
++	if (!ppe)
++		return;
 +
-     def test_clang_matches_bindgen_libclang_different_bindgen(self):
-         bindgen = self.generate_bindgen_libclang("scripts/rust_is_available_bindgen_libclang.h:2:9: warning: clang version 999.0.0 [-W#pragma-messages], err: false")
-         result = self.run_script(self.Expected.SUCCESS_WITH_WARNINGS, { "BINDGEN": bindgen })
++	/* The PPE checks output frame size against per-tag-layer MTU limits,
++	 * treating PPPoE and DSA tags just like 802.1Q VLAN tags. The Linux
++	 * device MTU already accounts for PPPoE (PPPOE_SES_HLEN) and DSA tag
++	 * overhead, but 802.1Q VLAN tags are handled transparently without
++	 * being reflected by the lower device MTU being increased by 4.
++	 * Use the maximum MTU across all GMAC interfaces so that PPE output
++	 * frame limits are sufficiently high regardless of which port a flow
++	 * egresses through.
++	 */
++	base = ETH_HLEN + mtu;
++
++	val = FIELD_PREP(MTK_PPE_VLAN_MTU0_NONE, base) |
++	      FIELD_PREP(MTK_PPE_VLAN_MTU0_1TAG, base + VLAN_HLEN);
++	ppe_w32(ppe, MTK_PPE_VLAN_MTU0, val);
++
++	val = FIELD_PREP(MTK_PPE_VLAN_MTU1_2TAG,
++			 base + 2 * VLAN_HLEN) |
++	      FIELD_PREP(MTK_PPE_VLAN_MTU1_3TAG,
++			 base + 3 * VLAN_HLEN);
++	ppe_w32(ppe, MTK_PPE_VLAN_MTU1, val);
++}
++
+ void mtk_ppe_start(struct mtk_ppe *ppe)
+ {
+ 	u32 val;
+diff --git a/drivers/net/ethernet/mediatek/mtk_ppe.h b/drivers/net/ethernet/mediatek/mtk_ppe.h
+index 223f709e2704f..ba85e39a155bf 100644
+--- a/drivers/net/ethernet/mediatek/mtk_ppe.h
++++ b/drivers/net/ethernet/mediatek/mtk_ppe.h
+@@ -346,6 +346,7 @@ struct mtk_ppe {
+ struct mtk_ppe *mtk_ppe_init(struct mtk_eth *eth, void __iomem *base, int index);
+ 
+ void mtk_ppe_deinit(struct mtk_eth *eth);
++void mtk_ppe_update_mtu(struct mtk_ppe *ppe, int mtu);
+ void mtk_ppe_start(struct mtk_ppe *ppe);
+ int mtk_ppe_stop(struct mtk_ppe *ppe);
+ int mtk_ppe_prepare_reset(struct mtk_ppe *ppe);
 -- 
 2.53.0
 
