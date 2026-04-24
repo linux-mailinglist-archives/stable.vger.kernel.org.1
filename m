@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-240681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240813-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eEkbLdhx62ndMwAAu9opvQ
-	(envelope-from <stable+bounces-240681-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:36:24 +0200
+	id GL+VAYFy62nCMwAAu9opvQ
+	(envelope-from <stable+bounces-240813-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:39:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3576545F329
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:36:24 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B46345F50E
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:39:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 10072304C100
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:32:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 03C3B3028659
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:38:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4F293563D4;
-	Fri, 24 Apr 2026 13:32:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8785E3D6494;
+	Fri, 24 Apr 2026 13:38:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xs/isXkl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wB0rRm4V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9822878F4A;
-	Fri, 24 Apr 2026 13:32:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4906533E347;
+	Fri, 24 Apr 2026 13:38:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777037564; cv=none; b=bTL2ZXHrUIY+bZOxXVMT5l6G104+I8BK3BhqRQyx7c4cwDvnblZlmBD5gy920p5LqHbjbkrUT4P85mVevfhDiPEabtc9yLl+R3LYQ972LVxvl8XHV3p5lRLVgMGSlOR/I4Lecg8bgZOqK/8t3oA5afkikdl+RhKXxzQn9yXQEZk=
+	t=1777037906; cv=none; b=m5rWKUxBjiBwZwljI6SuSzSu0nHqMAyTAMc8oKeJurBG7Ff1bgwxvEnjM/6YWClJrkeaQVs/RjDhFoooryZtIBJENQ/UhpRYEASilyY5N7sAg2Vtm+oxr8ycdKRMyg61McxuQGFTCcjGw3AGvdOKvGVhtIqnEbtZAvU9kU1OsVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777037564; c=relaxed/simple;
-	bh=5kROmjtvG63ZUZUmudIJfHRpcTb2hX4LSQ0tfRCTxN8=;
+	s=arc-20240116; t=1777037906; c=relaxed/simple;
+	bh=o23iiZ72Tzsb5+PJtjc9exUwLkGWmZPYYwGgoRsLCk0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=e6LsrNqezM1Az08j1WJDbSR1AiuOOfGCHhCElZxi+VMFYScEWszCmRk96k+bgBFPRnyeNEG1hgKEuW+eT3OVvZXGdCPneV3baV5cpqwu8dgrgxjneHd1/isvnAghax3pbCWvAiDbA2Oa3wbIatJvqx8uGlg9N3xGy+eLVSC+ESM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xs/isXkl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25491C2BCB2;
-	Fri, 24 Apr 2026 13:32:43 +0000 (UTC)
+	 MIME-Version; b=jA++N+vP4lelwu79OhRZFlOl2HI//hEPIwNT3gC5Y2svvOd7GjUrICzKDd52qUDseZ6er0tczxjZ2NDasUkHrBvGom191u5OoW0x2ritVqe98C7tttgCL/olQuci7eKRfXUNKZ6cU16IsnctKXGLsvm6IalK5q9ho+Q7RQ6ECh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wB0rRm4V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D326FC19425;
+	Fri, 24 Apr 2026 13:38:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777037564;
-	bh=5kROmjtvG63ZUZUmudIJfHRpcTb2hX4LSQ0tfRCTxN8=;
+	s=korg; t=1777037906;
+	bh=o23iiZ72Tzsb5+PJtjc9exUwLkGWmZPYYwGgoRsLCk0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xs/isXklLWRd6x+4ZuW96Mco5WFSp3WPrgup6s/0pUwG1V5VYfgvpT51Wact+rCYz
-	 X9H0L0xbFxVrSTDkpS0XvOpcruRjqRgOuhV4JZPpiVC7pIBcuNvZxmjqMZ9cDc/ecP
-	 6j0C7mdKP6oVSqPYkAFPiw7FVkOAhkdK6NL3MQnA=
+	b=wB0rRm4VA7vJjPonTSDtfc+/K8VMG2PhGCuThoYmbMWQ6yQx+yjhpelQGdyPMrBkk
+	 NNBxMLhgYnpOF+aA+oyutmPBIC8GiZCQSELjKySw95ie/5POMvZM9bLAJk/sb2D9xr
+	 QWRddcwle4nLa5HnK6jMLAbTLKSmDcBpxsJ2VFgU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Thomas Sowell <tom@ldtlb.com>
-Subject: [PATCH 7.0 03/42] drm/amdgpu: replace PASID IDR with XArray
+	Stable@vger.kernel.org,
+	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.6 114/166] ASoC: qcom: q6apm: move component registration to unmanaged version
 Date: Fri, 24 Apr 2026 15:30:28 +0200
-Message-ID: <20260424132421.100913011@linuxfoundation.org>
+Message-ID: <20260424132556.681568108@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132420.410310336@linuxfoundation.org>
-References: <20260424132420.410310336@linuxfoundation.org>
+In-Reply-To: <20260424132532.812258529@linuxfoundation.org>
+References: <20260424132532.812258529@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,176 +63,186 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3576545F329
+X-Rspamd-Queue-Id: 8B46345F50E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,amd.com,gmail.com,ldtlb.com];
-	TAGGED_FROM(0.00)[bounces-240681-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-240813-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,ldtlb.com:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,qualcomm.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
 
-commit 3c863ff920b45fa7a9b7d4cb932f466488a87a58 upstream.
+commit 6ec1235fc941dac6c011b30ee01d9220ff87e0cd upstream.
 
-Replace the PASID IDR + spinlock with XArray as noted in the TODO
-left by commit ea56aa262570 ("drm/amdgpu: fix the idr allocation
-flags").
+q6apm component registers dais dynamically from ASoC toplology, which
+are allocated using device managed version apis. Allocating both
+component and dynamic dais using managed version could lead to incorrect
+free ordering, dai will be freed while component still holding references
+to it.
 
-The IDR conversion still has an IRQ safety issue:
-amdgpu_pasid_free() can be called from hardirq context via the fence
-signal path, but amdgpu_pasid_idr_lock is taken with plain spin_lock()
-in process context, creating a potential deadlock:
+Fix this issue by moving component to unmanged version so
+that the dai pointers are only freeded after the component is removed.
 
-     CPU0
-     ----
-     spin_lock(&amdgpu_pasid_idr_lock)   // process context, IRQs on
-     <Interrupt>
-       spin_lock(&amdgpu_pasid_idr_lock) // deadlock
+==================================================================
+BUG: KASAN: slab-use-after-free in snd_soc_del_component_unlocked+0x3d4/0x400 [snd_soc_core]
+Read of size 8 at addr ffff00084493a6e8 by task kworker/u48:0/3426
+Tainted: [W]=WARN
+Hardware name: LENOVO 21N2ZC5PUS/21N2ZC5PUS, BIOS N42ET57W (1.31 ) 08/08/2024
+Workqueue: pdr_notifier_wq pdr_notifier_work [pdr_interface]
+Call trace:
+ show_stack+0x28/0x7c (C)
+ dump_stack_lvl+0x60/0x80
+ print_report+0x160/0x4b4
+ kasan_report+0xac/0xfc
+ __asan_report_load8_noabort+0x20/0x34
+ snd_soc_del_component_unlocked+0x3d4/0x400 [snd_soc_core]
+ snd_soc_unregister_component_by_driver+0x50/0x88 [snd_soc_core]
+ devm_component_release+0x30/0x5c [snd_soc_core]
+ devres_release_all+0x13c/0x210
+ device_unbind_cleanup+0x20/0x190
+ device_release_driver_internal+0x350/0x468
+ device_release_driver+0x18/0x30
+ bus_remove_device+0x1a0/0x35c
+ device_del+0x314/0x7f0
+ device_unregister+0x20/0xbc
+ apr_remove_device+0x5c/0x7c [apr]
+ device_for_each_child+0xd8/0x160
+ apr_pd_status+0x7c/0xa8 [apr]
+ pdr_notifier_work+0x114/0x240 [pdr_interface]
+ process_one_work+0x500/0xb70
+ worker_thread+0x630/0xfb0
+ kthread+0x370/0x6c0
+ ret_from_fork+0x10/0x20
 
-   The hardirq call chain is:
+Allocated by task 77:
+ kasan_save_stack+0x40/0x68
+ kasan_save_track+0x20/0x40
+ kasan_save_alloc_info+0x44/0x58
+ __kasan_kmalloc+0xbc/0xdc
+ __kmalloc_node_track_caller_noprof+0x1f4/0x620
+ devm_kmalloc+0x7c/0x1c8
+ snd_soc_register_dai+0x50/0x4f0 [snd_soc_core]
+ soc_tplg_pcm_elems_load+0x55c/0x1eb8 [snd_soc_core]
+ snd_soc_tplg_component_load+0x4f8/0xb60 [snd_soc_core]
+ audioreach_tplg_init+0x124/0x1fc [snd_q6apm]
+ q6apm_audio_probe+0x10/0x1c [snd_q6apm]
+ snd_soc_component_probe+0x5c/0x118 [snd_soc_core]
+ soc_probe_component+0x44c/0xaf0 [snd_soc_core]
+ snd_soc_bind_card+0xad0/0x2370 [snd_soc_core]
+ snd_soc_register_card+0x3b0/0x4c0 [snd_soc_core]
+ devm_snd_soc_register_card+0x50/0xc8 [snd_soc_core]
+ x1e80100_platform_probe+0x208/0x368 [snd_soc_x1e80100]
+ platform_probe+0xc0/0x188
+ really_probe+0x188/0x804
+ __driver_probe_device+0x158/0x358
+ driver_probe_device+0x60/0x190
+ __device_attach_driver+0x16c/0x2a8
+ bus_for_each_drv+0x100/0x194
+ __device_attach+0x174/0x380
+ device_initial_probe+0x14/0x20
+ bus_probe_device+0x124/0x154
+ deferred_probe_work_func+0x140/0x220
+ process_one_work+0x500/0xb70
+ worker_thread+0x630/0xfb0
+ kthread+0x370/0x6c0
+ ret_from_fork+0x10/0x20
 
-     sdma_v6_0_process_trap_irq
-      -> amdgpu_fence_process
-       -> dma_fence_signal
-        -> drm_sched_job_done
-         -> dma_fence_signal
-          -> amdgpu_pasid_free_cb
-           -> amdgpu_pasid_free
+Freed by task 3426:
+ kasan_save_stack+0x40/0x68
+ kasan_save_track+0x20/0x40
+ __kasan_save_free_info+0x4c/0x80
+ __kasan_slab_free+0x78/0xa0
+ kfree+0x100/0x4a4
+ devres_release_all+0x144/0x210
+ device_unbind_cleanup+0x20/0x190
+ device_release_driver_internal+0x350/0x468
+ device_release_driver+0x18/0x30
+ bus_remove_device+0x1a0/0x35c
+ device_del+0x314/0x7f0
+ device_unregister+0x20/0xbc
+ apr_remove_device+0x5c/0x7c [apr]
+ device_for_each_child+0xd8/0x160
+ apr_pd_status+0x7c/0xa8 [apr]
+ pdr_notifier_work+0x114/0x240 [pdr_interface]
+ process_one_work+0x500/0xb70
+ worker_thread+0x630/0xfb0
+ kthread+0x370/0x6c0
+ ret_from_fork+0x10/0x20
 
-Use XArray with XA_FLAGS_LOCK_IRQ (all xa operations use IRQ-safe
-locking internally) and XA_FLAGS_ALLOC1 (zero is not a valid PASID).
-Both xa_alloc_cyclic() and xa_erase() then handle locking
-consistently, fixing the IRQ safety issue and removing the need for
-an explicit spinlock.
-
-v8: squash in irq safe fix
-
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Suggested-by: Lijo Lazar <lijo.lazar@amd.com>
-Fixes: ea56aa262570 ("drm/amdgpu: fix the idr allocation flags")
-Fixes: 8f1de51f49be ("drm/amdgpu: prevent immediate PASID reuse case")
-Signed-off-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: Thomas Sowell <tom@ldtlb.com>
+Fixes: 5477518b8a0e ("ASoC: qdsp6: audioreach: add q6apm support")
+Cc: Stable@vger.kernel.org
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260402081118.348071-2-srinivas.kandagatla@oss.qualcomm.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c |   39 +++++++++++++++-----------------
- 1 file changed, 19 insertions(+), 20 deletions(-)
+ sound/soc/qcom/qdsp6/q6apm.c |   14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c
-@@ -22,7 +22,7 @@
-  */
- #include "amdgpu_ids.h"
+--- a/sound/soc/qcom/qdsp6/q6apm.c
++++ b/sound/soc/qcom/qdsp6/q6apm.c
+@@ -764,13 +764,22 @@ static int apm_probe(gpr_device_t *gdev)
  
--#include <linux/idr.h>
-+#include <linux/xarray.h>
- #include <linux/dma-fence-array.h>
+ 	q6apm_get_apm_state(apm);
  
+-	ret = devm_snd_soc_register_component(dev, &q6apm_audio_component, NULL, 0);
++	ret = snd_soc_register_component(dev, &q6apm_audio_component, NULL, 0);
+ 	if (ret < 0) {
+ 		dev_err(dev, "failed to register q6apm: %d\n", ret);
+ 		return ret;
+ 	}
  
-@@ -40,8 +40,8 @@
-  * VMs are looked up from the PASID per amdgpu_device.
-  */
- 
--static DEFINE_IDR(amdgpu_pasid_idr);
--static DEFINE_SPINLOCK(amdgpu_pasid_idr_lock);
-+static DEFINE_XARRAY_FLAGS(amdgpu_pasid_xa, XA_FLAGS_LOCK_IRQ | XA_FLAGS_ALLOC1);
-+static u32 amdgpu_pasid_xa_next;
- 
- /* Helper to free pasid from a fence callback */
- struct amdgpu_pasid_cb {
-@@ -62,36 +62,37 @@ struct amdgpu_pasid_cb {
-  */
- int amdgpu_pasid_alloc(unsigned int bits)
- {
--	int pasid;
-+	u32 pasid;
-+	int r;
- 
- 	if (bits == 0)
- 		return -EINVAL;
- 
--	spin_lock(&amdgpu_pasid_idr_lock);
--	/* TODO: Need to replace the idr with an xarry, and then
--	 * handle the internal locking with ATOMIC safe paths.
--	 */
--	pasid = idr_alloc_cyclic(&amdgpu_pasid_idr, NULL, 1,
--				 1U << bits, GFP_ATOMIC);
--	spin_unlock(&amdgpu_pasid_idr_lock);
--
--	if (pasid >= 0)
--		trace_amdgpu_pasid_allocated(pasid);
-+	r = xa_alloc_cyclic_irq(&amdgpu_pasid_xa, &pasid, xa_mk_value(0),
-+			    XA_LIMIT(1, (1U << bits) - 1),
-+			    &amdgpu_pasid_xa_next, GFP_KERNEL);
-+	if (r < 0)
-+		return r;
- 
-+	trace_amdgpu_pasid_allocated(pasid);
- 	return pasid;
- }
- 
- /**
-  * amdgpu_pasid_free - Free a PASID
-  * @pasid: PASID to free
-+ *
-+ * Called in IRQ context.
-  */
- void amdgpu_pasid_free(u32 pasid)
- {
-+	unsigned long flags;
+-	return of_platform_populate(dev->of_node, NULL, NULL, dev);
++	ret = of_platform_populate(dev->of_node, NULL, NULL, dev);
++	if (ret)
++		snd_soc_unregister_component(dev);
 +
- 	trace_amdgpu_pasid_freed(pasid);
- 
--	spin_lock(&amdgpu_pasid_idr_lock);
--	idr_remove(&amdgpu_pasid_idr, pasid);
--	spin_unlock(&amdgpu_pasid_idr_lock);
-+	xa_lock_irqsave(&amdgpu_pasid_xa, flags);
-+	__xa_erase(&amdgpu_pasid_xa, pasid);
-+	xa_unlock_irqrestore(&amdgpu_pasid_xa, flags);
++	return ret;
++}
++
++static void apm_remove(gpr_device_t *gdev)
++{
++	snd_soc_unregister_component(&gdev->dev);
  }
  
- static void amdgpu_pasid_free_cb(struct dma_fence *fence,
-@@ -634,7 +635,5 @@ void amdgpu_vmid_mgr_fini(struct amdgpu_
-  */
- void amdgpu_pasid_mgr_cleanup(void)
- {
--	spin_lock(&amdgpu_pasid_idr_lock);
--	idr_destroy(&amdgpu_pasid_idr);
--	spin_unlock(&amdgpu_pasid_idr_lock);
-+	xa_destroy(&amdgpu_pasid_xa);
- }
+ struct audioreach_module *q6apm_find_module_by_mid(struct q6apm_graph *graph, uint32_t mid)
+@@ -837,6 +846,7 @@ MODULE_DEVICE_TABLE(of, apm_device_id);
+ 
+ static gpr_driver_t apm_driver = {
+ 	.probe = apm_probe,
++	.remove = apm_remove,
+ 	.gpr_callback = apm_callback,
+ 	.driver = {
+ 		.name = "qcom-apm",
 
 
 
