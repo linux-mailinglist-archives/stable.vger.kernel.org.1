@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-240933-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240897-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QG+YHPpz62kQNAAAu9opvQ
-	(envelope-from <stable+bounces-240933-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:45:30 +0200
+	id aD3OBBp162kQNAAAu9opvQ
+	(envelope-from <stable+bounces-240897-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:50:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE05345F913
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:45:29 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84AB045FBA9
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:50:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 961A9303791B
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:43:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1121E3059E39
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:42:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C5A33D6CCE;
-	Fri, 24 Apr 2026 13:43:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF6EE3D6494;
+	Fri, 24 Apr 2026 13:42:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ilv5U1VT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HUn/WDlm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E44CC3D6CA9;
-	Fri, 24 Apr 2026 13:43:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2F383290A5;
+	Fri, 24 Apr 2026 13:42:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777038213; cv=none; b=uEkocBEym4LrAOepYbO42X5om+W9OojMEDDbLgkc9Foq1TBLLaQ/UeNCt9ZbkJ5mgDQ7//9evYTudPhc8LgXQUnlJgqlHUR/NsF5+aVpWBPZEqEAQy7b+2oJZKt7R3WtLGc4dkqfD/Z7x7qaMGbwPl9k+bvjqxZRIMCfviFomyk=
+	t=1777038122; cv=none; b=GBY4WZ+D0FuK3md3bN/afTTTDf3KS9eStpQa3WjA88dhApo7QIYWO0961aPnkKfFNLHkwXLUezSnU3jCQ1EqPNrbOD6vbo3d1/VaOEeJ39IDDp1GV0r0nazoj9kAYdqnd9UcPs7G3zkm1coQxjo9THxKg7Xv+Eg3F4w+3ltDo/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777038213; c=relaxed/simple;
-	bh=4FXg+BY0MuCXVTTaWdbK9CZD+6osLPreTXIKwNkJLkI=;
+	s=arc-20240116; t=1777038122; c=relaxed/simple;
+	bh=4XNgBZMtRgy7nRUqR2fU4fpeIiTGM9TRLNmi84nyOV0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jo69PV5H4OH0oTHdJqFJlm5ALCTxGFqvmUbMRyulnVjLJNWLji5G1MnA+yGk5EscMrg1UXcw1sedlV3Dft4uRJCGQBC+r7YXFJMkqlpp4IinVS2NI7OHAbIpl+/UBzhjSeIY/ZJ9I3TmHKxrqFC88l88RtTA2OfglVxbAjj0Gt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ilv5U1VT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70E45C19425;
-	Fri, 24 Apr 2026 13:43:32 +0000 (UTC)
+	 MIME-Version; b=mgPJ5P35TGWYTg0ap94QX+zi2lDecWu+E0L0bv+NBDsw/jbjjz04lQzU3xXQvh/RbWxxX2bkDQKS0DldOlBmKlVsnEDa54O0Ssi2CSIZn/Skms6CbgSbgqzqRTRWw+SdmRm0jdxgcXmQisvzqAM49uke8biWuIyTIvYHkDEDTuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HUn/WDlm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39C04C19425;
+	Fri, 24 Apr 2026 13:42:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777038212;
-	bh=4FXg+BY0MuCXVTTaWdbK9CZD+6osLPreTXIKwNkJLkI=;
+	s=korg; t=1777038122;
+	bh=4XNgBZMtRgy7nRUqR2fU4fpeIiTGM9TRLNmi84nyOV0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ilv5U1VT2H4N+0JhL7VcVDjrTBBtbnjRVylRqiGK79ZTgCMWMUVx9Uk4zxz+eMQDo
-	 33uDlm61bE2+mRB/ZNqFyI3RpclJNIF+ePsxFZ5Zgv37ey4/ckQIv8+EWkHsvOcYeF
-	 DF5K+a2spuu2QHns3y2/O9CTMuOLIijJ1dfcnYms=
+	b=HUn/WDlmJ5E65HnSxzPp+Pz1kunW8UHyCrD2HnCn2d2TDWzD7rypbWFQRMdWnOjrF
+	 xPiKn/zEcI79iHk6cYQU1ChDyIljXDSE0RL3q5udhATB5QpXzatSHLK58IFLlyRIgL
+	 fBB5vGZMVpejiRUXIZfy0ksvwsspdH+6bh7EjdJ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steven Chen <chenste@linux.microsoft.com>,
-	Baoquan He <bhe@redhat.com>,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 04/35] ima: do not copy measurement list to kdump kernel
-Date: Fri, 24 Apr 2026 15:31:11 +0200
-Message-ID: <20260424132412.432475277@linuxfoundation.org>
+	Bernd Schubert <bschubert@ddn.com>,
+	Horst Birthelmer <hbirthelmer@ddn.com>,
+	Miklos Szeredi <mszeredi@redhat.com>
+Subject: [PATCH 6.18 33/55] fuse: Check for large folio with SPLICE_F_MOVE
+Date: Fri, 24 Apr 2026 15:31:12 +0200
+Message-ID: <20260424132436.893746180@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132411.427029259@linuxfoundation.org>
-References: <20260424132411.427029259@linuxfoundation.org>
+In-Reply-To: <20260424132430.006424517@linuxfoundation.org>
+References: <20260424132430.006424517@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,79 +64,76 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: EE05345F913
+X-Rspamd-Queue-Id: 84AB045FBA9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240933-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-240897-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ddn.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Chen <chenste@linux.microsoft.com>
+From: Bernd Schubert <bschubert@ddn.com>
 
-[ Upstream commit fe3aebf27dc1875b2a0d13431e2e8cf3cf350cca ]
+commit 59ba47b6be9cd0146ef9a55c6e32e337e11e7625 upstream.
 
-Kdump kernel doesn't need IMA to do integrity measurement.
-Hence the measurement list in 1st kernel doesn't need to be copied to
-kdump kernel.
+xfstest generic/074 and generic/075 complain result in kernel
+warning messages / page dumps.
+This is easily reproducible (on 6.19) with
+CONFIG_TRANSPARENT_HUGEPAGE_SHMEM_HUGE_ALWAYS=y
+CONFIG_TRANSPARENT_HUGEPAGE_TMPFS_HUGE_ALWAYS=y
 
-Here skip allocating buffer for measurement list copying if loading
-kdump kernel. Then there won't be the later handling related to
-ima_kexec_buffer.
+This just adds a test for large folios fuse_try_move_folio
+with the same page copy fallback, but to avoid the warnings
+from fuse_check_folio().
 
-Signed-off-by: Steven Chen <chenste@linux.microsoft.com>
-Tested-by: Baoquan He <bhe@redhat.com>
-Acked-by: Baoquan He <bhe@redhat.com>
-Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Bernd Schubert <bschubert@ddn.com>
+Signed-off-by: Horst Birthelmer <hbirthelmer@ddn.com>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/integrity/ima/ima_kexec.c | 3 +++
+ fs/fuse/dev.c |    3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/security/integrity/ima/ima_kexec.c b/security/integrity/ima/ima_kexec.c
-index cc418a7e27f20..501b952b36981 100644
---- a/security/integrity/ima/ima_kexec.c
-+++ b/security/integrity/ima/ima_kexec.c
-@@ -129,6 +129,9 @@ void ima_add_kexec_buffer(struct kimage *image)
- 	size_t kexec_segment_size;
- 	int ret;
+--- a/fs/fuse/dev.c
++++ b/fs/fuse/dev.c
+@@ -1017,6 +1017,9 @@ static int fuse_try_move_folio(struct fu
+ 	folio_clear_uptodate(newfolio);
+ 	folio_clear_mappedtodisk(newfolio);
  
-+	if (image->type == KEXEC_TYPE_CRASH)
-+		return;
++	if (folio_test_large(newfolio))
++		goto out_fallback_unlock;
 +
- 	/*
- 	 * Reserve an extra half page of memory for additional measurements
- 	 * added during the kexec load.
--- 
-2.53.0
-
+ 	if (fuse_check_folio(newfolio) != 0)
+ 		goto out_fallback_unlock;
+ 
 
 
 
