@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-240692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240917-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6Ap9Jily62nCMwAAu9opvQ
-	(envelope-from <stable+bounces-240692-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:37:45 +0200
+	id yL6aGmVz62kLNAAAu9opvQ
+	(envelope-from <stable+bounces-240917-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:43:01 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECE9845F42A
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:37:44 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05B2745F73D
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:43:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0737A3069604
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:33:14 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2DB4330087D3
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:42:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E8473D6CB3;
-	Fri, 24 Apr 2026 13:33:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E1023D5645;
+	Fri, 24 Apr 2026 13:42:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dt9siUeb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RTcaWbdA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A5F13D6CAC;
-	Fri, 24 Apr 2026 13:33:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F38C19A288;
+	Fri, 24 Apr 2026 13:42:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777037593; cv=none; b=W0rrkAuC2DWL3Yca9gMRL2cYz1kACfFII/tMWZ+o641MFtx14H9tDE++x0iIEXDkg7UfmJlPBtPrsVNcNG87ZRZEPo6V1/wX4bAFgVNnFMwC/8Ljs4ISwv39Lbr5c+aAt5z28xA1xISODoiDEy7azPnle6hkfNkFDRrqdIWeaM0=
+	t=1777038174; cv=none; b=Isp86wfyX/wDq8iAaU4/p62bK//w28W2vkUGevfx2TxVNE8eCshb7xp5xtLSYPzonJkvWWYKtZqtf8mA2a/4fLU5l9ImN+ergl2IOKuidrFn/GfJjN3owUHZPm+twQjOMs6RslIf+LFfJ7FrB4bYEwxg2eGzWgVkcXxfAWTwa5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777037593; c=relaxed/simple;
-	bh=CmwVRC6tbmY7Ksff8CFDGRRyREGwDP8QZdSGRzrrN5g=;
+	s=arc-20240116; t=1777038174; c=relaxed/simple;
+	bh=j4OmY/NPQ2ArpfLgSgUw6+X0knavZVQuBmLXPkPXjGk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P+7KEBEGXFPLyjZIiVOr5HzyTzu2qX9vOn78DUKF/Ic7EtVkvwBj1zbyurOaz/GVXglU3TiwE3+Aj/mO0CmUWL6UdpLKzxucXOTuTVW8RR6RlsNwmAhIhHCnZvTWUm+FQMhB+44x+QgnH1BuLX/D8WHBNbsAy2wEKkMRIqjQ0sA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dt9siUeb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 782CFC2BCB2;
-	Fri, 24 Apr 2026 13:33:12 +0000 (UTC)
+	 MIME-Version; b=DfKlGnRMrXwxGWJrgkTgnNXByLetnbHo4U8F+07rhuWrH1d8ZY98hPy0IBgE+hIKzX4f5iTLXidbODkx7B1gI2x0hBiFVpLTkiSKg3cFbQWCLoZ8kA31WoJKUBmEmQxvzvXwGM+zO1a1RvuY011SoWPE9OGkYA+ZQqzlL7k28Wg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RTcaWbdA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9085C19425;
+	Fri, 24 Apr 2026 13:42:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777037592;
-	bh=CmwVRC6tbmY7Ksff8CFDGRRyREGwDP8QZdSGRzrrN5g=;
+	s=korg; t=1777038174;
+	bh=j4OmY/NPQ2ArpfLgSgUw6+X0knavZVQuBmLXPkPXjGk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dt9siUeb8dXJMBb+RjnJ4ZTrz5wSXz6nvk3xEjMu3v/YM2caoWJqtv50RmRqSz50w
-	 bbfRHGskOCLeNb9ChoH7zqdV2YIt33Y80SkdJTviRF3IIRAUA/TxhtdAdYSV9bWfSs
-	 2w35GV5ije4jJOyWKD8If9dzg6Qo5oXyw0A+kN3A=
+	b=RTcaWbdA95KkRuLIsutMNo+3hWIQpRoChvwahpfxfn3huY5hUgWXEamk9gsMxb62y
+	 niuO+gER84T9wEbgIFSj6ff14z+rIIeoA77sxDVdD6VfvIs3/fbc9bhxpxdQAupa59
+	 wCkaslVNl+AtE3qlNNADriSO01hjhKf01dKceCvk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Potapenko <glider@google.com>,
-	Sebastian Alba Vives <sebasjosue84@gmail.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 7.0 38/42] crypto: ccp: Dont attempt to copy CSR to userspace if PSP command failed
-Date: Fri, 24 Apr 2026 15:31:03 +0200
-Message-ID: <20260424132428.540872494@linuxfoundation.org>
+	"stable@vger.kernel.org, devicetree@vger.kernel.org,  Nathan Chancellor" <nathan@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>
+Subject: [PATCH 6.18 25/55] scripts/dtc: Remove unused dts_version in dtc-lexer.l
+Date: Fri, 24 Apr 2026 15:31:04 +0200
+Message-ID: <20260424132435.250369801@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132420.410310336@linuxfoundation.org>
-References: <20260424132420.410310336@linuxfoundation.org>
+In-Reply-To: <20260424132430.006424517@linuxfoundation.org>
+References: <20260424132430.006424517@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,121 +63,88 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: ECE9845F42A
+X-Rspamd-Queue-Id: 05B2745F73D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,gondor.apana.org.au];
-	TAGGED_FROM(0.00)[bounces-240692-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-240917-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit abe4a6d6f606113251868c2c4a06ba904bb41eed upstream.
+This patch is for stable only. Commit 5a09df20872c ("scripts/dtc: Update
+to upstream version v1.7.2-69-g53373d135579") upstream applied it as
+part of a regular scripts/dtc sync, which may be unsuitable for older
+versions of stable where the warning it fixes is present.
 
-When retrieving the PEK CSR, don't attempt to copy the blob to userspace
-if the firmware command failed.  If the failure was due to an invalid
-length, i.e. the userspace buffer+length was too small, copying the number
-of bytes _firmware_ requires will overflow the kernel-allocated buffer and
-leak data to userspace.
+A recent strengthening of -Wunused-but-set-variable (enabled with -Wall)
+in clang under a new subwarning, -Wunused-but-set-global, points out an
+unused static global variable in dtc-lexer.lex.c (compiled from
+dtc-lexer.l):
 
-  BUG: KASAN: slab-out-of-bounds in instrument_copy_to_user ../include/linux/instrumented.h:129 [inline]
-  BUG: KASAN: slab-out-of-bounds in _inline_copy_to_user ../include/linux/uaccess.h:205 [inline]
-  BUG: KASAN: slab-out-of-bounds in _copy_to_user+0x66/0xa0 ../lib/usercopy.c:26
-  Read of size 2084 at addr ffff898144612e20 by task syz.9.219/21405
+  scripts/dtc/dtc-lexer.lex.c:641:12: warning: variable 'dts_version' set but not used [-Wunused-but-set-global]
+    641 | static int dts_version = 1;
+        |            ^
 
-  CPU: 14 UID: 0 PID: 21405 Comm: syz.9.219 Tainted: G     U     O        7.0.0-smp-DEV #28 PREEMPTLAZY
-  Tainted: [U]=USER, [O]=OOT_MODULE
-  Hardware name: Google, Inc. Arcadia_IT_80/Arcadia_IT_80, BIOS 12.62.0-0 11/19/2025
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0xc5/0x110 ../lib/dump_stack.c:120
-   print_address_description ../mm/kasan/report.c:378 [inline]
-   print_report+0xbc/0x260 ../mm/kasan/report.c:482
-   kasan_report+0xa2/0xe0 ../mm/kasan/report.c:595
-   check_region_inline ../mm/kasan/generic.c:-1 [inline]
-   kasan_check_range+0x264/0x2c0 ../mm/kasan/generic.c:200
-   instrument_copy_to_user ../include/linux/instrumented.h:129 [inline]
-   _inline_copy_to_user ../include/linux/uaccess.h:205 [inline]
-   _copy_to_user+0x66/0xa0 ../lib/usercopy.c:26
-   copy_to_user ../include/linux/uaccess.h:236 [inline]
-   sev_ioctl_do_pek_csr+0x31f/0x590 ../drivers/crypto/ccp/sev-dev.c:1872
-   sev_ioctl+0x3a4/0x490 ../drivers/crypto/ccp/sev-dev.c:2562
-   vfs_ioctl ../fs/ioctl.c:51 [inline]
-   __do_sys_ioctl ../fs/ioctl.c:597 [inline]
-   __se_sys_ioctl+0x11d/0x1b0 ../fs/ioctl.c:583
-   do_syscall_x64 ../arch/x86/entry/syscall_64.c:63 [inline]
-   do_syscall_64+0xe0/0x800 ../arch/x86/entry/syscall_64.c:94
-   entry_SYSCALL_64_after_hwframe+0x76/0x7e
-   </TASK>
+Remove it to clear up the warning, as it is truly unused.
 
-WARN if the driver says the command succeeded, but the firmware error code
-says otherwise, as __sev_do_cmd_locked() is expected to return -EIO on any
-firwmware error.
-
-Reported-by: Alexander Potapenko <glider@google.com>
-Reported-by: Sebastian Alba Vives <sebasjosue84@gmail.com>
-Fixes: e799035609e1 ("crypto: ccp: Implement SEV_PEK_CSR ioctl command")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 658f29a51e98 ("of/flattree: Update dtc to current mainline.")
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/ccp/sev-dev.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+This should apply cleanly to all supported stable branches.
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ scripts/dtc/dtc-lexer.l |    3 ---
+ 1 file changed, 3 deletions(-)
 
---- a/drivers/crypto/ccp/sev-dev.c
-+++ b/drivers/crypto/ccp/sev-dev.c
-@@ -1860,7 +1860,10 @@ cmd:
+--- a/scripts/dtc/dtc-lexer.l
++++ b/scripts/dtc/dtc-lexer.l
+@@ -39,8 +39,6 @@ extern bool treesource_error;
+ #define DPRINT(fmt, ...)	do { } while (0)
+ #endif
  
- 	ret = __sev_do_cmd_locked(SEV_CMD_PEK_CSR, &data, &argp->error);
+-static int dts_version = 1;
+-
+ #define BEGIN_DEFAULT()		DPRINT("<V1>\n"); \
+ 				BEGIN(V1); \
  
--	 /* If we query the CSR length, FW responded with expected data. */
-+	/*
-+	 * Firmware will returns the length of the CSR blob (either the minimum
-+	 * required length or the actual length written), return it to the user.
-+	 */
- 	input.length = data.len;
+@@ -101,7 +99,6 @@ static void PRINTF(1, 2) lexical_error(c
  
- 	if (copy_to_user((void __user *)argp->data, &input, sizeof(input))) {
-@@ -1868,6 +1871,9 @@ cmd:
- 		goto e_free_blob;
- 	}
- 
-+	if (ret || WARN_ON_ONCE(argp->error))
-+		goto e_free_blob;
-+
- 	if (blob) {
- 		if (copy_to_user(input_address, blob, input.length))
- 			ret = -EFAULT;
+ <*>"/dts-v1/"	{
+ 			DPRINT("Keyword: /dts-v1/\n");
+-			dts_version = 1;
+ 			BEGIN_DEFAULT();
+ 			return DT_V1;
+ 		}
 
 
 
