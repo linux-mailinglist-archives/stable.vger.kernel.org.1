@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-240857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240670-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sO7bB9F062kQNAAAu9opvQ
-	(envelope-from <stable+bounces-240857-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:49:05 +0200
+	id qJuWFpNx62ndMwAAu9opvQ
+	(envelope-from <stable+bounces-240670-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:35:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79EC245FB09
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:49:04 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8914D45F253
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:35:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5BF9C303AB60
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:40:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9517D303E49E
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:32:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF7043C1976;
-	Fri, 24 Apr 2026 13:40:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3F523D6CA6;
+	Fri, 24 Apr 2026 13:32:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ADV5zAlS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R6SHkzAL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B343C19A288;
-	Fri, 24 Apr 2026 13:40:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 280A278F4A;
+	Fri, 24 Apr 2026 13:32:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777038019; cv=none; b=j/oTu9HzeIk4SADEkeUlBGGDYw8s3u0/RXf/qwda+FYsWwSZxEWSr6erq9Hg0Epf9mw76R8yxJ90pvYKAJu8vr/EG0OuhSVrcLxPMGPknjKKMCux7jbWGRSzivWXUfOwvQQL+4XolxHSoTNtSv7BFQLSMYkQp8i0lKDB5C8okz4=
+	t=1777037536; cv=none; b=BxfjkZ/A8CT7UFta8NN8KaxsjD3OFzM9hBBXMDhbTUkwQFvivz4NHOz3dd4PRFiUSdUkBLN20tTzcm4y6WcGM9oBXOIDRFgxUQ6hgyz9QeHSXJYNBU0gDZM1z8HGUPiErvUK8v/VxlglWsO5xWazjgcWZ+eGVEw0OdIDowPhwd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777038019; c=relaxed/simple;
-	bh=XoKqkzOac3r4jNc5W+hMyJ8IbSeBPGtmxYS9eXO4LiY=;
+	s=arc-20240116; t=1777037536; c=relaxed/simple;
+	bh=uzvo215ifA5yqH1rkgOix5sNjyKTe9JmQbivE5O3+nQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a0NtwZkyD98+BvD9NMxDlMMWQPtB4XwZ0URYpBz43UKhLQ6l7eca+if139IyMAVZ6lBb6d1dsvFabSjSMRrFq6MN9lU5U1XFjFaVY0WvD25NI/Vc13Zrp0Qonf5Jim626lILk55zUhM518KabyGG5h+nnrWAwtVakMW3kly7yj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ADV5zAlS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A6C1C19425;
-	Fri, 24 Apr 2026 13:40:19 +0000 (UTC)
+	 MIME-Version; b=GscupQrsOBjHCoTIY3BKaeiijOAB5mipvXc79EdMVKt+h05WEwrtixhTy+K/oICByaGfSxB3Udgj3wAJmCit8cuR3bA6235DE3iZ3s+wYHOf41mTNC7ulq8KzcK6W3rEFYxPwBi9aTbFFlYao7NEYnge8mRRae+99ubdQcxJ6qI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R6SHkzAL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F0F8C19425;
+	Fri, 24 Apr 2026 13:32:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777038019;
-	bh=XoKqkzOac3r4jNc5W+hMyJ8IbSeBPGtmxYS9eXO4LiY=;
+	s=korg; t=1777037536;
+	bh=uzvo215ifA5yqH1rkgOix5sNjyKTe9JmQbivE5O3+nQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ADV5zAlSLHLtIh9XtVFVlz6J65eTnI2xxVi4jC5XFciIXf7tL2tB/tIyVx9dL9QWT
-	 zVhBXFXgCbozYW6Ye9RV7j+mjN1YmxHteTr1DXLVpNM36g6M1/ZDM30QPD8VFrhLV+
-	 VLBrlEfJA3HQ33erdc62WuJPXU0mKmc46k50nI0k=
+	b=R6SHkzALCOVtAtz6F4QweG9MskBQt1PDxspNuHL/yBEmP5JNY75J4pzeQ//UsJKTw
+	 1KdjTc+qjs0JWY1jU6itwqTQgaSVSD3DGdPoji34jkEY4db38+8WUq2FQDhZBCEOAG
+	 t4AeOinYbL1/gdcE6l33MmIMYnt/eaMnib8uruUk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kenta Akagi <k@mgml.me>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 126/166] Revert "perf unwind-libdw: Fix invalid reference counts"
-Date: Fri, 24 Apr 2026 15:30:40 +0200
-Message-ID: <20260424132559.270836745@linuxfoundation.org>
+	Joanne Koong <joannelkoong@gmail.com>,
+	Bernd Schubert <bernd@bsbernd.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Miklos Szeredi <mszeredi@redhat.com>
+Subject: [PATCH 7.0 16/42] fuse: abort on fatal signal during sync init
+Date: Fri, 24 Apr 2026 15:30:41 +0200
+Message-ID: <20260424132423.900357915@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132532.812258529@linuxfoundation.org>
-References: <20260424132532.812258529@linuxfoundation.org>
+In-Reply-To: <20260424132420.410310336@linuxfoundation.org>
+References: <20260424132420.410310336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,89 +65,112 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 79EC245FB09
+X-Rspamd-Queue-Id: 8914D45F253
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bsbernd.com,kernel.org,redhat.com];
+	TAGGED_FROM(0.00)[bounces-240670-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-240857-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mgml.me:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,al.map:url]
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kenta Akagi <k@mgml.me>
+From: Miklos Szeredi <mszeredi@redhat.com>
 
-This reverts commit eddddf4ed7f69697cb54e714e773f764c8d3b67e.
+commit 204aa22a686bfee48daca7db620c1e017615f2ff upstream.
 
-Upstream commit f815fc0c66e7 ("perf unwind-libdw: Fix invalid reference counts"),
-was backported to v6.6.128 as eddddf4ed7f6.
+When sync init is used and the server exits for some reason (error, crash)
+while processing FUSE_INIT, the filesystem creation will hang.  The reason
+is that while all other threads will exit, the mounting thread (or process)
+will keep the device fd open, which will prevent an abort from happening.
 
-However, this commit depends on map_symbol__exit, which was introduced
-in v6.7 as commit 56e144fe9826 ("perf mem_info: Add and use
-map_symbol__exit and addr_map_symbol__exit") and is absent in v6.6.y.
-This results in a build failure.
+This is a regression from the async mount case, where the mount was done
+first, and the FUSE_INIT processing afterwards, in which case there's no
+such recursive syscall keeping the fd open.
 
-This is a revert of a backport, so there is no upstream commit.
-
-Signed-off-by: Kenta Akagi <k@mgml.me>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: dfb84c330794 ("fuse: allow synchronous FUSE_INIT")
+Cc: stable@vger.kernel.org # v6.18
+Reviewed-by: Joanne Koong <joannelkoong@gmail.com>
+Reviewed-by: Bernd Schubert <bernd@bsbernd.com>
+Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/util/unwind-libdw.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ fs/fuse/dev.c    |    8 +++++++-
+ fs/fuse/fuse_i.h |    1 +
+ fs/fuse/inode.c  |    1 +
+ 3 files changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/unwind-libdw.c b/tools/perf/util/unwind-libdw.c
-index bd027fdf6af17..6013335a8daea 100644
---- a/tools/perf/util/unwind-libdw.c
-+++ b/tools/perf/util/unwind-libdw.c
-@@ -133,8 +133,8 @@ static int entry(u64 ip, struct unwind_info *ui)
- 	}
+--- a/fs/fuse/dev.c
++++ b/fs/fuse/dev.c
+@@ -570,6 +570,11 @@ static void request_wait_answer(struct f
+ 		if (!err)
+ 			return;
  
- 	e->ip	  = ip;
--	e->ms.maps = maps__get(al.maps);
--	e->ms.map = map__get(al.map);
-+	e->ms.maps = al.maps;
-+	e->ms.map = al.map;
- 	e->ms.sym = al.sym;
++		if (req->args->abort_on_kill) {
++			fuse_abort_conn(fc);
++			return;
++		}
++
+ 		if (test_bit(FR_URING, &req->flags))
+ 			removed = fuse_uring_remove_pending_req(req);
+ 		else
+@@ -676,7 +681,8 @@ ssize_t __fuse_simple_request(struct mnt
+ 			fuse_force_creds(req);
  
- 	pr_debug("unwind: %s:ip = 0x%" PRIx64 " (0x%" PRIx64 ")\n",
-@@ -319,9 +319,6 @@ int unwind__get_entries(unwind_entry_cb_t cb, void *arg,
- 	if (err)
- 		pr_debug("unwind: failed with '%s'\n", dwfl_errmsg(-1));
+ 		__set_bit(FR_WAITING, &req->flags);
+-		__set_bit(FR_FORCE, &req->flags);
++		if (!args->abort_on_kill)
++			__set_bit(FR_FORCE, &req->flags);
+ 	} else {
+ 		WARN_ON(args->nocreds);
+ 		req = fuse_get_req(idmap, fm, false);
+--- a/fs/fuse/fuse_i.h
++++ b/fs/fuse/fuse_i.h
+@@ -345,6 +345,7 @@ struct fuse_args {
+ 	bool is_ext:1;
+ 	bool is_pinned:1;
+ 	bool invalidate_vmap:1;
++	bool abort_on_kill:1;
+ 	struct fuse_in_arg in_args[4];
+ 	struct fuse_arg out_args[2];
+ 	void (*end)(struct fuse_mount *fm, struct fuse_args *args, int error);
+--- a/fs/fuse/inode.c
++++ b/fs/fuse/inode.c
+@@ -1551,6 +1551,7 @@ int fuse_send_init(struct fuse_mount *fm
+ 	int err;
  
--	for (i = 0; i < ui->idx; i++)
--		map_symbol__exit(&ui->entries[i].ms);
--
- 	dwfl_end(ui->dwfl);
- 	free(ui);
- 	return 0;
--- 
-2.53.0
-
+ 	if (fm->fc->sync_init) {
++		ia->args.abort_on_kill = true;
+ 		err = fuse_simple_request(fm, &ia->args);
+ 		/* Ignore size of init reply */
+ 		if (err > 0)
 
 
 
