@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-240769-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240770-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6ExOLAxz62nCMwAAu9opvQ
-	(envelope-from <stable+bounces-240769-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:41:32 +0200
+	id eChPBhRz62nCMwAAu9opvQ
+	(envelope-from <stable+bounces-240770-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:41:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C08045F657
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:41:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 942F145F666
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:41:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 14EBA3059E36
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:36:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DFD03305AAA6
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:36:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 742DE3563D4;
-	Fri, 24 Apr 2026 13:36:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F298D23645D;
+	Fri, 24 Apr 2026 13:36:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zmQ86qh2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NAXoPMiQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35D13179A3;
-	Fri, 24 Apr 2026 13:36:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B45D919A288;
+	Fri, 24 Apr 2026 13:36:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777037793; cv=none; b=jhmISSohKj1l+WoB4IBJ+Hrlss2sMV1eEhRlglSxcWsv2d4UdGMsEHWIfFgck/736sREuqNddXkDZHIi1ZUXG4sRi8l6RNBdd/f0xCzsfLqBj62AWaIRJa90AYz1UbmnHJc7S3rh+OaT2CYM5/Ow9SVhBs5awqApg7BnreQBQD8=
+	t=1777037795; cv=none; b=U3091kPl7HSU2kHKeZrt0dqoNHuqn2tzgln8qtid16CFiKZYn1NFq5h823icBfVfIG0Nnm4YV90IDGCfQkuSc7HAb6jsPBpX0UQJsQeJfRr518VmCFSe7+KYnNnpWJfw+PIUnaQLbfJlMNJbfoGwzUi3EVR9aZ0LxzWz3AUsGGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777037793; c=relaxed/simple;
-	bh=6rWWcA2PdXPZvDE6fNano6XkxTPEAHGpcFn2xrjGsCo=;
+	s=arc-20240116; t=1777037795; c=relaxed/simple;
+	bh=HwZ7wianMZTjRLIao9yJoni5cxCT729aeYoj7F58Fsg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AO45EOGNJBtkfvh0POKE1VlPMlIcTEDLLXZnHHcnITuSP4FVe6FwfDQgRJCOqf1OVl73bZZSG+QKI+994A4oAcTGg6mMBQNRDY19JgvWW+8uTNcvmO922v0yFOHuKfIbNBpV2h8CG2+syoRJtgcSH/V39gMxVQ110D4CWRC5xJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zmQ86qh2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7612C19425;
-	Fri, 24 Apr 2026 13:36:32 +0000 (UTC)
+	 MIME-Version; b=nCKuI24lCeVZyTMfwAi9qfqFhZt3UTwxcr0qidSCOK1eS2WvMXiURvZ08bMuB4gdfPxQcsNit6eR8lf35vU9cH3e+iRxoZ5u3l7waB0AOSOOQjMdnzyoyIIMpjDlQ0hOxpw7ipDZMmNSem+tMD8/HXRKOdqIC+YB9EOuBu2KA2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NAXoPMiQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4449DC19425;
+	Fri, 24 Apr 2026 13:36:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777037793;
-	bh=6rWWcA2PdXPZvDE6fNano6XkxTPEAHGpcFn2xrjGsCo=;
+	s=korg; t=1777037795;
+	bh=HwZ7wianMZTjRLIao9yJoni5cxCT729aeYoj7F58Fsg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zmQ86qh2xcutTsERkaJJEsGu+CKh66Yyb9MBBsIXbLtu3iY0XX7zJpZim+H9HboV5
-	 ic6T5RypB4f9NvL8w+qtgh/Cb0CooIga47Dxwp5iBgUczKWobksItUGKO4hCg+yYdG
-	 ApSrO/zrkPkOyHPJg127SW0HBan/mWdnZndtk5qY=
+	b=NAXoPMiQUkyjOj6hqC5Eigdplsb9Plw4QnrprAvG8Td6hXmVWY0Tf3++pIlLPscFd
+	 VCpSau/YPZ77xqmm72xXTDvuji4d38p8Tah44/EQcFFlh/0hFJKJ+xxG/A48hrFW4x
+	 B1i6Sqi13mpDVSwtgX6HPrWvVrTEb54z4aNhgOn4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,12 +48,11 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	stable <stable@kernel.org>,
 	Jiri Kosina <jikos@kernel.org>,
 	Benjamin Tissoires <bentiss@kernel.org>,
-	Masaki Ota <masaki.ota@jp.alps.com>,
 	linux-input@vger.kernel.org,
 	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 6.6 071/166] HID: alps: fix NULL pointer dereference in alps_raw_event()
-Date: Fri, 24 Apr 2026 15:29:45 +0200
-Message-ID: <20260424132547.622435389@linuxfoundation.org>
+Subject: [PATCH 6.6 072/166] HID: core: clamp report_size in s32ton() to avoid undefined shift
+Date: Fri, 24 Apr 2026 15:29:46 +0200
+Message-ID: <20260424132547.853081259@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260424132532.812258529@linuxfoundation.org>
 References: <20260424132532.812258529@linuxfoundation.org>
@@ -67,14 +66,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4C08045F657
+X-Rspamd-Queue-Id: 942F145F666
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -82,7 +81,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240769-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-240770-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -91,12 +90,12 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,alps.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
@@ -104,43 +103,47 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit 1badfc4319224820d5d890f8eab6aa52e4e83339 upstream.
+commit 69c02ffde6ed4d535fa4e693a9e572729cad3d0d upstream.
 
-Commit ecfa6f34492c ("HID: Add HID_CLAIMED_INPUT guards in raw_event
-callbacks missing them") attempted to fix up the HID drivers that had
-missed the previous fix that was done in 2ff5baa9b527 ("HID: appleir:
-Fix potential NULL dereference at raw event handle"), but the alps
-driver was missed.
+s32ton() shifts by n-1 where n is the field's report_size, a value that
+comes directly from a HID device.  The HID parser bounds report_size
+only to <= 256, so a broken HID device can supply a report descriptor
+with a wide field that triggers shift exponents up to 256 on a 32-bit
+type when an output report is built via hid_output_field() or
+hid_set_field().
 
-Fix this up by properly checking in the hid-alps driver that it had been
-claimed correctly before attempting to process the raw event.
+Commit ec61b41918587 ("HID: core: fix shift-out-of-bounds in
+hid_report_raw_event") added the same n > 32 clamp to the function
+snto32(), but s32ton() was never given the same fix as I guess syzbot
+hadn't figured out how to fuzz a device the same way.
 
-Fixes: 73196ebe134d ("HID: alps: add support for Alps T4 Touchpad device")
+Fix this up by just clamping the max value of n, just like snto32()
+does.
+
 Cc: stable <stable@kernel.org>
 Cc: Jiri Kosina <jikos@kernel.org>
 Cc: Benjamin Tissoires <bentiss@kernel.org>
-Cc: Masaki Ota <masaki.ota@jp.alps.com>
 Cc: linux-input@vger.kernel.org
 Assisted-by: gregkh_clanker_t1000
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-alps.c |    3 +++
+ drivers/hid/hid-core.c |    3 +++
  1 file changed, 3 insertions(+)
 
---- a/drivers/hid/hid-alps.c
-+++ b/drivers/hid/hid-alps.c
-@@ -437,6 +437,9 @@ static int alps_raw_event(struct hid_dev
- 	int ret = 0;
- 	struct alps_dev *hdata = hid_get_drvdata(hdev);
+--- a/drivers/hid/hid-core.c
++++ b/drivers/hid/hid-core.c
+@@ -1356,6 +1356,9 @@ static u32 s32ton(__s32 value, unsigned
+ 	if (!value || !n)
+ 		return 0;
  
-+	if (!(hdev->claimed & HID_CLAIMED_INPUT) || !hdata->input)
-+		return 0;
++	if (n > 32)
++		n = 32;
 +
- 	switch (hdev->product) {
- 	case HID_PRODUCT_ID_T4_BTNLESS:
- 		ret = t4_raw_event(hdata, data, size);
+ 	a = value >> (n - 1);
+ 	if (a && a != -1)
+ 		return value < 0 ? 1 << (n - 1) : (1 << (n - 1)) - 1;
 
 
 
