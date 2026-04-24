@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-240668-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240873-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yMmWCYtx62ndMwAAu9opvQ
-	(envelope-from <stable+bounces-240668-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:35:07 +0200
+	id iGVpCC9z62nCMwAAu9opvQ
+	(envelope-from <stable+bounces-240873-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:42:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88A4445F24C
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:35:06 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4F0545F6B5
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:42:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9651B303D334
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:32:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3F6E2301913F
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:41:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A60B3B19DE;
-	Fri, 24 Apr 2026 13:32:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E8DE3D5643;
+	Fri, 24 Apr 2026 13:41:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oO++rL+3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bKHiEyrZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EFBC3D6696;
-	Fri, 24 Apr 2026 13:32:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01A453D5645;
+	Fri, 24 Apr 2026 13:41:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777037531; cv=none; b=GOUqTRhieSDNHh1P49v8yVKYrR0zmcfFFFhYZKuiQ60lmkNrwRkJy+eHnLIoz/5wnYQ1xe/g2obvf7R/ATWg0EB9+xlDLaFVIR46D9MWNPbPM+t6OMs78rsvqzC/VQHhvFq8Jkhnrmft29nVDPDkufLflc4BBgJX+2c43zcWChU=
+	t=1777038061; cv=none; b=q9kOpoxEUDGIWqZxGBF0IpLk9JcDYRMDNYvE7GWmRR0CBfXRZDEwlrbu2buVMEKNu48nJ58jRmXo4AoSm1Oh0BpaguCaid0bsecSRX9pokr0AsmwSHZn3nhpDl9wtMfHGQrnDJKv8eiuosA4MHLi9/Gx1XfXf/y04YCaivehBpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777037531; c=relaxed/simple;
-	bh=80Ulyeu9gpgLqcpZILyTdpAWbgn9sXPGQbZIR3HE2fY=;
+	s=arc-20240116; t=1777038061; c=relaxed/simple;
+	bh=oe38wSUhMoWOUkSNbM/mSyin2l6g/C3XBxCsS52Nd2o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iYQu+n9ZbORLErRanUzqcT11x20WJejxSoTk67VqP/7OQa4Mmn43+bFmawrAT2A5IjRapWXpFnOoOkUD5mEIQGdYOB6HHynWOCsnxzFPjrf00/CKKE4Vmz/oim5JLVF8NhRVmkKEkaoPCRdcoPtec43EIm6S/YOYjCzxPYOel8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oO++rL+3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6687BC2BCB2;
-	Fri, 24 Apr 2026 13:32:10 +0000 (UTC)
+	 MIME-Version; b=ESL+jo4xO/aRQstqMSFhSBNLYXQ6bm5GCy0vXOYfN4tvkKvanJSYW1SdPZBdN6zK8Rltjxn6BulE1ChEpmowcnQrkpHVjUxBLaqrvd0Zk7KKzP8XB39D8mRbcNHvwFa5J9qc6XLHzGAOwNLsj9pKse3pKw6qQ0CuSau43MXyw5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bKHiEyrZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89F44C19425;
+	Fri, 24 Apr 2026 13:41:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777037530;
-	bh=80Ulyeu9gpgLqcpZILyTdpAWbgn9sXPGQbZIR3HE2fY=;
+	s=korg; t=1777038060;
+	bh=oe38wSUhMoWOUkSNbM/mSyin2l6g/C3XBxCsS52Nd2o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oO++rL+3prWtFBhRTS3qR8yfp+wsK7MtlCWNQTSHORWcStpp0GpkR+ln07VmakW2T
-	 2un7nC5fnMgu4PyYX63h7RQw6/tzwd4gw7Dn1YnH2T4cD4ca9Z/9ThIrN5XMIZIjn+
-	 eSU2pbI5flhFbdxLqXyZYKQGzZVylBUkOc/wATY4=
+	b=bKHiEyrZoqZHmORH2GRqMWL+7NNcLeiCgFdFHffyQ6HvK28hJwOMpNa7GCwG6y/8P
+	 8XvawoRVWm2Mlcbdsfp8TgAyN6SNw35825ChQXFkhkrLx1nKjtRHy+1bBYU7Z+dqiU
+	 kwUNa7BtNvn2B+DgdV2CFkxG4DmAEGsPfYLHK990=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	syzbot+9aac813cdc456cdd49f8@syzkaller.appspotmail.com,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 7.0 14/42] f2fs: fix to avoid uninit-value access in f2fs_sanity_check_node_footer
-Date: Fri, 24 Apr 2026 15:30:39 +0200
-Message-ID: <20260424132423.463448734@linuxfoundation.org>
+	Wolfgang Walter <linux@stwm.de>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.18 01/55] crypto: authencesn - Fix src offset when decrypting in-place
+Date: Fri, 24 Apr 2026 15:30:40 +0200
+Message-ID: <20260424132430.305557573@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132420.410310336@linuxfoundation.org>
-References: <20260424132420.410310336@linuxfoundation.org>
+In-Reply-To: <20260424132430.006424517@linuxfoundation.org>
+References: <20260424132430.006424517@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,108 +63,72 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 88A4445F24C
+X-Rspamd-Queue-Id: B4F0545F6B5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-240668-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-240873-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,9aac813cdc456cdd49f8];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,apana.org.au:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-commit 7b9161a605e91d0987e2596a245dc1f21621b23f upstream.
+commit 1f48ad3b19a9dfc947868edda0bb8e48e5b5a8fa upstream.
 
-syzbot reported a f2fs bug as below:
+The src SG list offset wasn't set properly when decrypting in-place,
+fix it.
 
-BUG: KMSAN: uninit-value in f2fs_sanity_check_node_footer+0x374/0xa20 fs/f2fs/node.c:1520
- f2fs_sanity_check_node_footer+0x374/0xa20 fs/f2fs/node.c:1520
- f2fs_finish_read_bio+0xe1e/0x1d60 fs/f2fs/data.c:177
- f2fs_read_end_io+0x6ab/0x2220 fs/f2fs/data.c:-1
- bio_endio+0x1006/0x1160 block/bio.c:1792
- submit_bio_noacct+0x533/0x2960 block/blk-core.c:891
- submit_bio+0x57a/0x620 block/blk-core.c:926
- blk_crypto_submit_bio include/linux/blk-crypto.h:203 [inline]
- f2fs_submit_read_bio+0x12c/0x360 fs/f2fs/data.c:557
- f2fs_submit_page_bio+0xee2/0x1450 fs/f2fs/data.c:775
- read_node_folio+0x384/0x4b0 fs/f2fs/node.c:1481
- __get_node_folio+0x5db/0x15d0 fs/f2fs/node.c:1576
- f2fs_get_inode_folio+0x40/0x50 fs/f2fs/node.c:1623
- do_read_inode fs/f2fs/inode.c:425 [inline]
- f2fs_iget+0x1209/0x9380 fs/f2fs/inode.c:596
- f2fs_fill_super+0x8f5a/0xb2e0 fs/f2fs/super.c:5184
- get_tree_bdev_flags+0x6e6/0x920 fs/super.c:1694
- get_tree_bdev+0x38/0x50 fs/super.c:1717
- f2fs_get_tree+0x35/0x40 fs/f2fs/super.c:5436
- vfs_get_tree+0xb3/0x5d0 fs/super.c:1754
- fc_mount fs/namespace.c:1193 [inline]
- do_new_mount_fc fs/namespace.c:3763 [inline]
- do_new_mount+0x885/0x1dd0 fs/namespace.c:3839
- path_mount+0x7a2/0x20b0 fs/namespace.c:4159
- do_mount fs/namespace.c:4172 [inline]
- __do_sys_mount fs/namespace.c:4361 [inline]
- __se_sys_mount+0x704/0x7f0 fs/namespace.c:4338
- __x64_sys_mount+0xe4/0x150 fs/namespace.c:4338
- x64_sys_call+0x39f0/0x3ea0 arch/x86/include/generated/asm/syscalls_64.h:166
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x134/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-The root cause is: in f2fs_finish_read_bio(), we may access uninit data
-in folio if we failed to read the data from device into folio, let's add
-a check condition to avoid such issue.
-
-Cc: stable@kernel.org
-Fixes: 50ac3ecd8e05 ("f2fs: fix to do sanity check on node footer in {read,write}_end_io")
-Reported-by: syzbot+9aac813cdc456cdd49f8@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-f2fs-devel/69a9ca26.a70a0220.305d9a.0000.GAE@google.com
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Reported-by: Wolfgang Walter <linux@stwm.de>
+Fixes: e02494114ebf ("crypto: authencesn - Do not place hiseq at end of dst for out-of-place decryption")
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/data.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ crypto/authencesn.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/fs/f2fs/data.c
-+++ b/fs/f2fs/data.c
-@@ -173,7 +173,8 @@ static void f2fs_finish_read_bio(struct
- 		while (nr_pages--)
- 			dec_page_count(F2FS_F_SB(folio), __read_io_type(folio));
+--- a/crypto/authencesn.c
++++ b/crypto/authencesn.c
+@@ -228,9 +228,11 @@ static int crypto_authenc_esn_decrypt_ta
  
--		if (F2FS_F_SB(folio)->node_inode && is_node_folio(folio) &&
-+		if (bio->bi_status == BLK_STS_OK &&
-+			F2FS_F_SB(folio)->node_inode && is_node_folio(folio) &&
- 			f2fs_sanity_check_node_footer(F2FS_F_SB(folio),
- 				folio, folio->index, NODE_TYPE_REGULAR, true))
- 			bio->bi_status = BLK_STS_IOERR;
+ decrypt:
+ 
+-	if (src != dst)
+-		src = scatterwalk_ffwd(areq_ctx->src, src, assoclen);
+ 	dst = scatterwalk_ffwd(areq_ctx->dst, dst, assoclen);
++	if (req->src == req->dst)
++		src = dst;
++	else
++		src = scatterwalk_ffwd(areq_ctx->src, src, assoclen);
+ 
+ 	skcipher_request_set_tfm(skreq, ctx->enc);
+ 	skcipher_request_set_callback(skreq, flags,
 
 
 
