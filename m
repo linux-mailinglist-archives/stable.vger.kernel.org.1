@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-240947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240871-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OHT4FEV162kQNAAAu9opvQ
-	(envelope-from <stable+bounces-240947-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:51:01 +0200
+	id qBnmL/R062kQNAAAu9opvQ
+	(envelope-from <stable+bounces-240871-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:49:40 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D93B445FC02
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:51:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62DDA45FB66
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:49:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8B5033063D66
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:44:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1C6E2302C907
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:40:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E71B3D75D7;
-	Fri, 24 Apr 2026 13:44:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 429913D5236;
+	Fri, 24 Apr 2026 13:40:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JxNJ7lj4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2WgvMLzR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDC803D75D2;
-	Fri, 24 Apr 2026 13:44:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06BD53290A5;
+	Fri, 24 Apr 2026 13:40:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777038248; cv=none; b=qx6AIrctWW2dCV3ASC7QHjxepBI0Vp/GJMu1WJckk2XR2QvLr/DbaFl1NiJ1cJgMFId9MKDjDVenC77pxltwYwk6aBSxc3rBfStf5nLlZKa6Vlhj1dbLpwzR8rvlVY7569l7toCAdmXWYgn9NxoszfA58RLrq5p2qlX/hvGab2o=
+	t=1777038056; cv=none; b=eEFWqBX9HUQ62BEhTR4swu4JVbjSg53LKJuEgEBM1gPABEaUhA2UC4mBf403jmY+yf6FFtb3i5q9IvdO+P9C6fCxamvxq+od/rtyzbvZrpZ/nc/Au4w0nW1aZuFFTrlvztOW1gHsDQKc3NJI8HGHfqp63ZkAdnkPi2hTrgT5QQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777038248; c=relaxed/simple;
-	bh=Ajrt9kDRSFnLLW0CYy1SSA+lyrPY8NFLM+pgnNha7EU=;
+	s=arc-20240116; t=1777038056; c=relaxed/simple;
+	bh=5ziXFRuq4KWUoBfixT5OEjRUhIeHiRv5OYOoiZBYdWU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=beflXHSUmFdSJL+2HwFlcloLczybej0SFYWbb5BIsfnLxF4QpqhkIR7L4WyrVKIErtOufTTyx8907Ws9Ii+tK0UqBMj0icZVfQiJCn9qyYTuEkXGYc6rijbm6FSg1Ccko+XEJyvXaHumOQ2Cd+Sj+7Z2zyf8BfNhv6TL+qekAks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JxNJ7lj4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55198C19425;
-	Fri, 24 Apr 2026 13:44:08 +0000 (UTC)
+	 MIME-Version; b=FbEPjfUJjMdKioBVweXNFjnZYtffYUrzIu/kpNrK0D7+exjqT1vsjJ7wZcZuvuZk+2EHmEPJPa54WE9Dw1o2G6dfDS8nyYZcQWYGuQL4tER1uBDdRquENvGg/rKqgLok2lwE4wr+utjYq5ZQx8yXV5Lpy9i4zfW0u9fWom6f/7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2WgvMLzR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56F18C19425;
+	Fri, 24 Apr 2026 13:40:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777038248;
-	bh=Ajrt9kDRSFnLLW0CYy1SSA+lyrPY8NFLM+pgnNha7EU=;
+	s=korg; t=1777038055;
+	bh=5ziXFRuq4KWUoBfixT5OEjRUhIeHiRv5OYOoiZBYdWU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JxNJ7lj4SfgwPkVOHKj9V3XRDZrWp/zw2hW2GO0ViOgUZxpVwFyUoT3GSCtVIUc+2
-	 NHuQOc1Vde6Bva7SRpIAX3N0vYzdSyUKByxkD7wLltQYL60lHIHF67em4a+LgxaD2X
-	 b/dzF/EjYHg4YfBOvcYXbe/Y02gvqsdt6nQdr2Mk=
+	b=2WgvMLzRV+PuAJbAT/G4KO6ktujjMi36sWuoaqjr6VflJ+HuChoki5MVGh/Ja2QAH
+	 msKB24CbzD1M6PfnZoPTn6m0IkYkITqPHcgKvHOzvTp6s0/hLzEHmjS7D4zj/fhYFF
+	 o+HRTYFfiPCV3RgLiI7uaoGfFW+Y4Niv02UtWE4Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 08/35] drm/amdgpu: replace PASID IDR with XArray
-Date: Fri, 24 Apr 2026 15:31:15 +0200
-Message-ID: <20260424132413.380139638@linuxfoundation.org>
+	Alexander Potapenko <glider@google.com>,
+	Sebastian Alba Vives <sebasjosue84@gmail.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.6 162/166] crypto: ccp: Dont attempt to copy CSR to userspace if PSP command failed
+Date: Fri, 24 Apr 2026 15:31:16 +0200
+Message-ID: <20260424132606.936761393@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132411.427029259@linuxfoundation.org>
-References: <20260424132411.427029259@linuxfoundation.org>
+In-Reply-To: <20260424132532.812258529@linuxfoundation.org>
+References: <20260424132532.812258529@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,175 +64,122 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D93B445FC02
+X-Rspamd-Queue-Id: 62DDA45FB66
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,amd.com,gmail.com];
-	TAGGED_FROM(0.00)[bounces-240947-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,gondor.apana.org.au];
+	TAGGED_FROM(0.00)[bounces-240871-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,apana.org.au:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 3c863ff920b45fa7a9b7d4cb932f466488a87a58 upstream.
+commit abe4a6d6f606113251868c2c4a06ba904bb41eed upstream.
 
-Replace the PASID IDR + spinlock with XArray as noted in the TODO
-left by commit ea56aa262570 ("drm/amdgpu: fix the idr allocation
-flags").
+When retrieving the PEK CSR, don't attempt to copy the blob to userspace
+if the firmware command failed.  If the failure was due to an invalid
+length, i.e. the userspace buffer+length was too small, copying the number
+of bytes _firmware_ requires will overflow the kernel-allocated buffer and
+leak data to userspace.
 
-The IDR conversion still has an IRQ safety issue:
-amdgpu_pasid_free() can be called from hardirq context via the fence
-signal path, but amdgpu_pasid_idr_lock is taken with plain spin_lock()
-in process context, creating a potential deadlock:
+  BUG: KASAN: slab-out-of-bounds in instrument_copy_to_user ../include/linux/instrumented.h:129 [inline]
+  BUG: KASAN: slab-out-of-bounds in _inline_copy_to_user ../include/linux/uaccess.h:205 [inline]
+  BUG: KASAN: slab-out-of-bounds in _copy_to_user+0x66/0xa0 ../lib/usercopy.c:26
+  Read of size 2084 at addr ffff898144612e20 by task syz.9.219/21405
 
-     CPU0
-     ----
-     spin_lock(&amdgpu_pasid_idr_lock)   // process context, IRQs on
-     <Interrupt>
-       spin_lock(&amdgpu_pasid_idr_lock) // deadlock
+  CPU: 14 UID: 0 PID: 21405 Comm: syz.9.219 Tainted: G     U     O        7.0.0-smp-DEV #28 PREEMPTLAZY
+  Tainted: [U]=USER, [O]=OOT_MODULE
+  Hardware name: Google, Inc. Arcadia_IT_80/Arcadia_IT_80, BIOS 12.62.0-0 11/19/2025
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0xc5/0x110 ../lib/dump_stack.c:120
+   print_address_description ../mm/kasan/report.c:378 [inline]
+   print_report+0xbc/0x260 ../mm/kasan/report.c:482
+   kasan_report+0xa2/0xe0 ../mm/kasan/report.c:595
+   check_region_inline ../mm/kasan/generic.c:-1 [inline]
+   kasan_check_range+0x264/0x2c0 ../mm/kasan/generic.c:200
+   instrument_copy_to_user ../include/linux/instrumented.h:129 [inline]
+   _inline_copy_to_user ../include/linux/uaccess.h:205 [inline]
+   _copy_to_user+0x66/0xa0 ../lib/usercopy.c:26
+   copy_to_user ../include/linux/uaccess.h:236 [inline]
+   sev_ioctl_do_pek_csr+0x31f/0x590 ../drivers/crypto/ccp/sev-dev.c:1872
+   sev_ioctl+0x3a4/0x490 ../drivers/crypto/ccp/sev-dev.c:2562
+   vfs_ioctl ../fs/ioctl.c:51 [inline]
+   __do_sys_ioctl ../fs/ioctl.c:597 [inline]
+   __se_sys_ioctl+0x11d/0x1b0 ../fs/ioctl.c:583
+   do_syscall_x64 ../arch/x86/entry/syscall_64.c:63 [inline]
+   do_syscall_64+0xe0/0x800 ../arch/x86/entry/syscall_64.c:94
+   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+   </TASK>
 
-   The hardirq call chain is:
+WARN if the driver says the command succeeded, but the firmware error code
+says otherwise, as __sev_do_cmd_locked() is expected to return -EIO on any
+firwmware error.
 
-     sdma_v6_0_process_trap_irq
-      -> amdgpu_fence_process
-       -> dma_fence_signal
-        -> drm_sched_job_done
-         -> dma_fence_signal
-          -> amdgpu_pasid_free_cb
-           -> amdgpu_pasid_free
-
-Use XArray with XA_FLAGS_LOCK_IRQ (all xa operations use IRQ-safe
-locking internally) and XA_FLAGS_ALLOC1 (zero is not a valid PASID).
-Both xa_alloc_cyclic() and xa_erase() then handle locking
-consistently, fixing the IRQ safety issue and removing the need for
-an explicit spinlock.
-
-v8: squash in irq safe fix
-
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Suggested-by: Lijo Lazar <lijo.lazar@amd.com>
-Fixes: ea56aa262570 ("drm/amdgpu: fix the idr allocation flags")
-Fixes: 8f1de51f49be ("drm/amdgpu: prevent immediate PASID reuse case")
-Signed-off-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Reported-by: Alexander Potapenko <glider@google.com>
+Reported-by: Sebastian Alba Vives <sebasjosue84@gmail.com>
+Fixes: e799035609e1 ("crypto: ccp: Implement SEV_PEK_CSR ioctl command")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c |   39 +++++++++++++++-----------------
- 1 file changed, 19 insertions(+), 20 deletions(-)
+ drivers/crypto/ccp/sev-dev.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c
-@@ -22,7 +22,7 @@
-  */
- #include "amdgpu_ids.h"
+--- a/drivers/crypto/ccp/sev-dev.c
++++ b/drivers/crypto/ccp/sev-dev.c
+@@ -674,7 +674,10 @@ cmd:
  
--#include <linux/idr.h>
-+#include <linux/xarray.h>
- #include <linux/dma-fence-array.h>
+ 	ret = __sev_do_cmd_locked(SEV_CMD_PEK_CSR, &data, &argp->error);
  
+-	 /* If we query the CSR length, FW responded with expected data. */
++	/*
++	 * Firmware will returns the length of the CSR blob (either the minimum
++	 * required length or the actual length written), return it to the user.
++	 */
+ 	input.length = data.len;
  
-@@ -40,8 +40,8 @@
-  * VMs are looked up from the PASID per amdgpu_device.
-  */
+ 	if (copy_to_user((void __user *)argp->data, &input, sizeof(input))) {
+@@ -682,6 +685,9 @@ cmd:
+ 		goto e_free_blob;
+ 	}
  
--static DEFINE_IDR(amdgpu_pasid_idr);
--static DEFINE_SPINLOCK(amdgpu_pasid_idr_lock);
-+static DEFINE_XARRAY_FLAGS(amdgpu_pasid_xa, XA_FLAGS_LOCK_IRQ | XA_FLAGS_ALLOC1);
-+static u32 amdgpu_pasid_xa_next;
- 
- /* Helper to free pasid from a fence callback */
- struct amdgpu_pasid_cb {
-@@ -62,36 +62,37 @@ struct amdgpu_pasid_cb {
-  */
- int amdgpu_pasid_alloc(unsigned int bits)
- {
--	int pasid;
-+	u32 pasid;
-+	int r;
- 
- 	if (bits == 0)
- 		return -EINVAL;
- 
--	spin_lock(&amdgpu_pasid_idr_lock);
--	/* TODO: Need to replace the idr with an xarry, and then
--	 * handle the internal locking with ATOMIC safe paths.
--	 */
--	pasid = idr_alloc_cyclic(&amdgpu_pasid_idr, NULL, 1,
--				 1U << bits, GFP_ATOMIC);
--	spin_unlock(&amdgpu_pasid_idr_lock);
--
--	if (pasid >= 0)
--		trace_amdgpu_pasid_allocated(pasid);
-+	r = xa_alloc_cyclic_irq(&amdgpu_pasid_xa, &pasid, xa_mk_value(0),
-+			    XA_LIMIT(1, (1U << bits) - 1),
-+			    &amdgpu_pasid_xa_next, GFP_KERNEL);
-+	if (r < 0)
-+		return r;
- 
-+	trace_amdgpu_pasid_allocated(pasid);
- 	return pasid;
- }
- 
- /**
-  * amdgpu_pasid_free - Free a PASID
-  * @pasid: PASID to free
-+ *
-+ * Called in IRQ context.
-  */
- void amdgpu_pasid_free(u32 pasid)
- {
-+	unsigned long flags;
++	if (ret || WARN_ON_ONCE(argp->error))
++		goto e_free_blob;
 +
- 	trace_amdgpu_pasid_freed(pasid);
- 
--	spin_lock(&amdgpu_pasid_idr_lock);
--	idr_remove(&amdgpu_pasid_idr, pasid);
--	spin_unlock(&amdgpu_pasid_idr_lock);
-+	xa_lock_irqsave(&amdgpu_pasid_xa, flags);
-+	__xa_erase(&amdgpu_pasid_xa, pasid);
-+	xa_unlock_irqrestore(&amdgpu_pasid_xa, flags);
- }
- 
- static void amdgpu_pasid_free_cb(struct dma_fence *fence,
-@@ -653,7 +654,5 @@ void amdgpu_vmid_mgr_fini(struct amdgpu_
-  */
- void amdgpu_pasid_mgr_cleanup(void)
- {
--	spin_lock(&amdgpu_pasid_idr_lock);
--	idr_destroy(&amdgpu_pasid_idr);
--	spin_unlock(&amdgpu_pasid_idr_lock);
-+	xa_destroy(&amdgpu_pasid_xa);
- }
+ 	if (blob) {
+ 		if (copy_to_user(input_address, blob, input.length))
+ 			ret = -EFAULT;
 
 
 
