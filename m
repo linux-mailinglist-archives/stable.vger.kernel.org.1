@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-240650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240651-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mCtcOqxj62mtMAAAu9opvQ
-	(envelope-from <stable+bounces-240650-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 14:35:56 +0200
+	id OEXaAv1j62mtMAAAu9opvQ
+	(envelope-from <stable+bounces-240651-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 14:37:17 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68C3845E7C9
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 14:35:56 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D69E45E84D
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 14:37:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 193E330312D9
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 12:34:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9C3F630209C3
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 12:36:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D78813CE48A;
-	Fri, 24 Apr 2026 12:34:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35D723CE480;
+	Fri, 24 Apr 2026 12:36:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OYnmZeZo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ul5j2fWd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 966E73CE492
-	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 12:34:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDBA43CE4B2
+	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 12:36:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777034085; cv=none; b=g11kS7IN77TuJb5rZaVmy90WTigqPdu2af65icCHRnodqKX/vxb9IGsjsy9mdh2ZtyO+qbeAjiB0eZl4zPSmOfmFHQxK/7mTei5vBhfzKGE7erbCJBn/Au+PpwICyF/MH81lpfj5U60uh4ZRthRGG60fv9vXJhxT1tdEthKL1rk=
+	t=1777034199; cv=none; b=ieJIpFHbbIDQFg+RXbtKJi2MxfnRz/ao7YjfPaZDAxNFIO+kFZPrdrwU5i+pT/oct+LPhgJTAlyyUu6sdp2ijSu0Eq5v2Frr13NHP/ImkSJVB9ESRvFpQ1BKm7OUq0dYT5IrgSuHGBZGMLKUJNABCCHW+9l9hWQRdyjhglWH88U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777034085; c=relaxed/simple;
-	bh=mH/ZwyZrxRvad4Ph+9puh3VETEnWERsHIYKik2i3NhM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=OGsrSk+SPI3N268wEBqwzGVksVpn/AAGX59tOHF9QU8LDokk+7+OEyx+NWS1Zh66Skcr7rEldYFFtGynkHImyGHF8+mUL92PQ6DuibZsrFTyLRpubkpxpH//LgsOZga+fh/FxXl1/F9jtr2peYBd9m42gbhMVTYI7pfVmwHJrlU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OYnmZeZo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 255C0C19425;
-	Fri, 24 Apr 2026 12:34:44 +0000 (UTC)
+	s=arc-20240116; t=1777034199; c=relaxed/simple;
+	bh=QuGOGzEl2zKSjdMEscGE1XyfHnKJW16637J7RxEz44U=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=sddetWfPoo9vbDQp39BkhrPrbBAVCLFOBmJK0FVnAEf9KWJie1Qt/i+NEQdgLqqcjZRsIJ9k3Cf6qr0YiGm5p3HYIfzMsElKsQfRlSLXXBcnKAXdEXWo06SWTFLVUmYlssyd6GoAoiyCvdLT6PrK6R0J4bCMzPC2eUeeT7zBUsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ul5j2fWd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8633EC19425;
+	Fri, 24 Apr 2026 12:36:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777034085;
-	bh=mH/ZwyZrxRvad4Ph+9puh3VETEnWERsHIYKik2i3NhM=;
+	s=korg; t=1777034198;
+	bh=QuGOGzEl2zKSjdMEscGE1XyfHnKJW16637J7RxEz44U=;
 	h=Subject:To:Cc:From:Date:From;
-	b=OYnmZeZoYDJMkRMo57IS8dxSGdbcqk/pyDv923X0IrxZ8UMftrgr2xSXHsPfCQaSb
-	 t1hkh79zbtVGVMLT+ThqQ69OrnbqZCa8FXkHHdl+t9IjHYGffR/OmngRRcQlYTEdcr
-	 26g/mrr9Nr3WgnL133bzseScfyDHB6zoLlpa18zg=
-Subject: FAILED: patch "[PATCH] f2fs: fix to do sanity check on dcc->discard_cmd_cnt" failed to apply to 6.6-stable tree
-To: chao@kernel.org,jaegeuk@kernel.org
+	b=ul5j2fWdUBoVE0M3YFk38Bd4n/WmxjVDNfE9jF+OxBal4uavSiKQcCndwKX27koGa
+	 DpWKN5oPU7TElAI78qu4Wt8SRstzhHdb9ZwfmEa/QSjD2ItPSuTkq43qaAcdHa0RiP
+	 PW8Pd/knoeSGobc9hsn+Pdg0Il9oe36KKBmUrdS4=
+Subject: FAILED: patch "[PATCH] md/raid1,raid10: don't handle IO error for REQ_RAHEAD and" failed to apply to 6.6-stable tree
+To: yukuai3@huawei.com,mpatocka@redhat.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 24 Apr 2026 14:32:33 +0200
-Message-ID: <2026042433-boaster-matador-f172@gregkh>
+Date: Fri, 24 Apr 2026 14:34:26 +0200
+Message-ID: <2026042426-unpledged-outgoing-5f58@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,7 +54,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 68C3845E7C9
+X-Rspamd-Queue-Id: 6D69E45E84D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
@@ -63,18 +63,18 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240650-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-240651-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCPT_COUNT_THREE(0.00)[3];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NO_DN(0.00)[];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
@@ -95,10 +95,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 6af249c996f7d73a3435f9e577956fa259347d18
+git cherry-pick -x 9f346f7d4ea73692b82f5102ca8698e4040469ea
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026042433-boaster-matador-f172@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026042426-unpledged-outgoing-5f58@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -110,155 +110,139 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 6af249c996f7d73a3435f9e577956fa259347d18 Mon Sep 17 00:00:00 2001
-From: Chao Yu <chao@kernel.org>
-Date: Wed, 11 Mar 2026 21:35:42 +0800
-Subject: [PATCH] f2fs: fix to do sanity check on dcc->discard_cmd_cnt
- conditionally
+From 9f346f7d4ea73692b82f5102ca8698e4040469ea Mon Sep 17 00:00:00 2001
+From: Yu Kuai <yukuai3@huawei.com>
+Date: Tue, 27 May 2025 16:14:07 +0800
+Subject: [PATCH] md/raid1,raid10: don't handle IO error for REQ_RAHEAD and
+ REQ_NOWAIT
 
-Syzbot reported a f2fs bug as below:
+IO with REQ_RAHEAD or REQ_NOWAIT can fail early, even if the storage medium
+is fine, hence record badblocks or remove the disk from array does not
+make sense.
 
-------------[ cut here ]------------
-kernel BUG at fs/f2fs/segment.c:1900!
-Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
-CPU: 1 UID: 0 PID: 6527 Comm: syz.5.110 Not tainted syzkaller #0 PREEMPT_{RT,(full)}
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2026
-RIP: 0010:f2fs_issue_discard_timeout+0x59b/0x5a0 fs/f2fs/segment.c:1900
-Code: d9 80 e1 07 80 c1 03 38 c1 0f 8c d6 fe ff ff 48 89 df e8 a8 5e fa fd e9 c9 fe ff ff e8 4e 46 94 fd 90 0f 0b e8 46 46 94 fd 90 <0f> 0b 0f 1f 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3
-RSP: 0018:ffffc9000494f940 EFLAGS: 00010283
-RAX: ffffffff843009ca RBX: 0000000000000001 RCX: 0000000000080000
-RDX: ffffc9001ca78000 RSI: 00000000000029f3 RDI: 00000000000029f4
-RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
-R10: dffffc0000000000 R11: ffffed100893a431 R12: 1ffff1100893a430
-R13: 1ffff1100c2b702c R14: dffffc0000000000 R15: ffff8880449d2160
-FS:  00007ffa35fed6c0(0000) GS:ffff88812643d000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f2b68634000 CR3: 0000000039f62000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- __f2fs_remount fs/f2fs/super.c:2960 [inline]
- f2fs_reconfigure+0x108a/0x1710 fs/f2fs/super.c:5443
- reconfigure_super+0x227/0x8a0 fs/super.c:1080
- do_remount fs/namespace.c:3391 [inline]
- path_mount+0xdc5/0x10e0 fs/namespace.c:4151
- do_mount fs/namespace.c:4172 [inline]
- __do_sys_mount fs/namespace.c:4361 [inline]
- __se_sys_mount+0x31d/0x420 fs/namespace.c:4338
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7ffa37dbda0a
+This problem if found by lvm2 test lvcreate-large-raid, where dm-zero
+will fail read ahead IO directly.
 
-The root cause is there will be race condition in between f2fs_ioc_fitrim()
-and f2fs_remount():
+Fixes: e879a0d9cb08 ("md/raid1,raid10: don't ignore IO flags")
+Reported-and-tested-by: Mikulas Patocka <mpatocka@redhat.com>
+Closes: https://lore.kernel.org/all/34fa755d-62c8-4588-8ee1-33cb1249bdf2@redhat.com/
+Link: https://lore.kernel.org/linux-raid/20250527081407.3004055-1-yukuai1@huaweicloud.com
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
 
-- f2fs_remount			- f2fs_ioc_fitrim
- - f2fs_issue_discard_timeout
-  - __issue_discard_cmd
-  - __drop_discard_cmd
-  - __wait_all_discard_cmd
-				 - f2fs_trim_fs
-				  - f2fs_write_checkpoint
-				   - f2fs_clear_prefree_segments
-				    - f2fs_issue_discard
-				     - __issue_discard_async
-				      - __queue_discard_cmd
-				       - __update_discard_tree_range
-				        - __insert_discard_cmd
-				         - __create_discard_cmd
-				         : atomic_inc(&dcc->discard_cmd_cnt);
-  - sanity check on dcc->discard_cmd_cnt (expect discard_cmd_cnt to be zero)
-
-This will only happen when fitrim races w/ remount rw, if we remount to
-readonly filesystem, remount will wait until mnt_pcp.mnt_writers to zero,
-that means fitrim is not in process at that time.
-
-Cc: stable@kernel.org
-Fixes: 2482c4325dfe ("f2fs: detect bug_on in f2fs_wait_discard_bios")
-Reported-by: syzbot+62538b67389ee582837a@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-f2fs-devel/69b07d7c.050a0220.8df7.09a1.GAE@google.com
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-
-diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
-index 04891aaf476f..df4cdf804376 100644
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -3988,7 +3988,7 @@ bool f2fs_is_checkpointed_data(struct f2fs_sb_info *sbi, block_t blkaddr);
- int f2fs_start_discard_thread(struct f2fs_sb_info *sbi);
- void f2fs_drop_discard_cmd(struct f2fs_sb_info *sbi);
- void f2fs_stop_discard_thread(struct f2fs_sb_info *sbi);
--bool f2fs_issue_discard_timeout(struct f2fs_sb_info *sbi);
-+bool f2fs_issue_discard_timeout(struct f2fs_sb_info *sbi, bool need_check);
- void f2fs_clear_prefree_segments(struct f2fs_sb_info *sbi,
- 					struct cp_control *cpc);
- void f2fs_dirty_to_prefree(struct f2fs_sb_info *sbi);
-diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
-index 23faf6725632..0bf25786667f 100644
---- a/fs/f2fs/segment.c
-+++ b/fs/f2fs/segment.c
-@@ -1880,7 +1880,7 @@ void f2fs_stop_discard_thread(struct f2fs_sb_info *sbi)
-  *
-  * Return true if issued all discard cmd or no discard cmd need issue, otherwise return false.
-  */
--bool f2fs_issue_discard_timeout(struct f2fs_sb_info *sbi)
-+bool f2fs_issue_discard_timeout(struct f2fs_sb_info *sbi, bool need_check)
- {
- 	struct discard_cmd_control *dcc = SM_I(sbi)->dcc_info;
- 	struct discard_policy dpolicy;
-@@ -1897,7 +1897,7 @@ bool f2fs_issue_discard_timeout(struct f2fs_sb_info *sbi)
- 	/* just to make sure there is no pending discard commands */
- 	__wait_all_discard_cmd(sbi, NULL);
+diff --git a/drivers/md/raid1-10.c b/drivers/md/raid1-10.c
+index c7efd8aab675..b8b3a9069701 100644
+--- a/drivers/md/raid1-10.c
++++ b/drivers/md/raid1-10.c
+@@ -293,3 +293,13 @@ static inline bool raid1_should_read_first(struct mddev *mddev,
  
--	f2fs_bug_on(sbi, atomic_read(&dcc->discard_cmd_cnt));
-+	f2fs_bug_on(sbi, need_check && atomic_read(&dcc->discard_cmd_cnt));
- 	return !dropped;
+ 	return false;
  }
- 
-@@ -2367,7 +2367,7 @@ static void destroy_discard_cmd_control(struct f2fs_sb_info *sbi)
- 	 * Recovery can cache discard commands, so in error path of
- 	 * fill_super(), it needs to give a chance to handle them.
++
++/*
++ * bio with REQ_RAHEAD or REQ_NOWAIT can fail at anytime, before such IO is
++ * submitted to the underlying disks, hence don't record badblocks or retry
++ * in this case.
++ */
++static inline bool raid1_should_handle_error(struct bio *bio)
++{
++	return !(bio->bi_opf & (REQ_RAHEAD | REQ_NOWAIT));
++}
+diff --git a/drivers/md/raid1.c b/drivers/md/raid1.c
+index 657d481525be..19c5a0ce5a40 100644
+--- a/drivers/md/raid1.c
++++ b/drivers/md/raid1.c
+@@ -373,14 +373,16 @@ static void raid1_end_read_request(struct bio *bio)
  	 */
--	f2fs_issue_discard_timeout(sbi);
-+	f2fs_issue_discard_timeout(sbi, true);
+ 	update_head_pos(r1_bio->read_disk, r1_bio);
  
- 	kfree(dcc);
- 	SM_I(sbi)->dcc_info = NULL;
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index a9adb6198184..f626e5ca089d 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -2009,7 +2009,7 @@ static void f2fs_put_super(struct super_block *sb)
- 	}
+-	if (uptodate)
++	if (uptodate) {
+ 		set_bit(R1BIO_Uptodate, &r1_bio->state);
+-	else if (test_bit(FailFast, &rdev->flags) &&
+-		 test_bit(R1BIO_FailFast, &r1_bio->state))
++	} else if (test_bit(FailFast, &rdev->flags) &&
++		 test_bit(R1BIO_FailFast, &r1_bio->state)) {
+ 		/* This was a fail-fast read so we definitely
+ 		 * want to retry */
+ 		;
+-	else {
++	} else if (!raid1_should_handle_error(bio)) {
++		uptodate = 1;
++	} else {
+ 		/* If all other devices have failed, we want to return
+ 		 * the error upwards rather than fail the last device.
+ 		 * Here we redefine "uptodate" to mean "Don't want to retry"
+@@ -451,16 +453,15 @@ static void raid1_end_write_request(struct bio *bio)
+ 	struct bio *to_put = NULL;
+ 	int mirror = find_bio_disk(r1_bio, bio);
+ 	struct md_rdev *rdev = conf->mirrors[mirror].rdev;
+-	bool discard_error;
+ 	sector_t lo = r1_bio->sector;
+ 	sector_t hi = r1_bio->sector + r1_bio->sectors;
+-
+-	discard_error = bio->bi_status && bio_op(bio) == REQ_OP_DISCARD;
++	bool ignore_error = !raid1_should_handle_error(bio) ||
++		(bio->bi_status && bio_op(bio) == REQ_OP_DISCARD);
  
- 	/* be sure to wait for any on-going discard commands */
--	done = f2fs_issue_discard_timeout(sbi);
-+	done = f2fs_issue_discard_timeout(sbi, true);
- 	if (f2fs_realtime_discard_enable(sbi) && !sbi->discard_blks && done) {
- 		struct cp_control cpc = {
- 			.reason = CP_UMOUNT | CP_TRIMMED,
-@@ -2152,7 +2152,7 @@ static int f2fs_unfreeze(struct super_block *sb)
- 	 * will recover after removal of snapshot.
+ 	/*
+ 	 * 'one mirror IO has finished' event handler:
  	 */
- 	if (test_opt(sbi, DISCARD) && !f2fs_hw_support_discard(sbi))
--		f2fs_issue_discard_timeout(sbi);
-+		f2fs_issue_discard_timeout(sbi, true);
+-	if (bio->bi_status && !discard_error) {
++	if (bio->bi_status && !ignore_error) {
+ 		set_bit(WriteErrorSeen,	&rdev->flags);
+ 		if (!test_and_set_bit(WantReplacement, &rdev->flags))
+ 			set_bit(MD_RECOVERY_NEEDED, &
+@@ -511,7 +512,7 @@ static void raid1_end_write_request(struct bio *bio)
  
- 	clear_sbi_flag(F2FS_SB(sb), SBI_IS_FREEZING);
- 	return 0;
-@@ -2957,7 +2957,12 @@ static int __f2fs_remount(struct fs_context *fc, struct super_block *sb)
- 			need_stop_discard = true;
- 		} else {
- 			f2fs_stop_discard_thread(sbi);
--			f2fs_issue_discard_timeout(sbi);
-+			/*
-+			 * f2fs_ioc_fitrim() won't race w/ "remount ro"
-+			 * so it's safe to check discard_cmd_cnt in
-+			 * f2fs_issue_discard_timeout().
-+			 */
-+			f2fs_issue_discard_timeout(sbi, flags & SB_RDONLY);
- 			need_restart_discard = true;
+ 		/* Maybe we can clear some bad blocks. */
+ 		if (rdev_has_badblock(rdev, r1_bio->sector, r1_bio->sectors) &&
+-		    !discard_error) {
++		    !ignore_error) {
+ 			r1_bio->bios[mirror] = IO_MADE_GOOD;
+ 			set_bit(R1BIO_MadeGood, &r1_bio->state);
  		}
- 	}
+diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
+index dce06bf65016..b74780af4c22 100644
+--- a/drivers/md/raid10.c
++++ b/drivers/md/raid10.c
+@@ -399,6 +399,8 @@ static void raid10_end_read_request(struct bio *bio)
+ 		 * wait for the 'master' bio.
+ 		 */
+ 		set_bit(R10BIO_Uptodate, &r10_bio->state);
++	} else if (!raid1_should_handle_error(bio)) {
++		uptodate = 1;
+ 	} else {
+ 		/* If all other devices that store this block have
+ 		 * failed, we want to return the error upwards rather
+@@ -456,9 +458,8 @@ static void raid10_end_write_request(struct bio *bio)
+ 	int slot, repl;
+ 	struct md_rdev *rdev = NULL;
+ 	struct bio *to_put = NULL;
+-	bool discard_error;
+-
+-	discard_error = bio->bi_status && bio_op(bio) == REQ_OP_DISCARD;
++	bool ignore_error = !raid1_should_handle_error(bio) ||
++		(bio->bi_status && bio_op(bio) == REQ_OP_DISCARD);
+ 
+ 	dev = find_bio_disk(conf, r10_bio, bio, &slot, &repl);
+ 
+@@ -472,7 +473,7 @@ static void raid10_end_write_request(struct bio *bio)
+ 	/*
+ 	 * this branch is our 'one mirror IO has finished' event handler:
+ 	 */
+-	if (bio->bi_status && !discard_error) {
++	if (bio->bi_status && !ignore_error) {
+ 		if (repl)
+ 			/* Never record new bad blocks to replacement,
+ 			 * just fail it.
+@@ -527,7 +528,7 @@ static void raid10_end_write_request(struct bio *bio)
+ 		/* Maybe we can clear some bad blocks. */
+ 		if (rdev_has_badblock(rdev, r10_bio->devs[slot].addr,
+ 				      r10_bio->sectors) &&
+-		    !discard_error) {
++		    !ignore_error) {
+ 			bio_put(bio);
+ 			if (repl)
+ 				r10_bio->devs[slot].repl_bio = IO_MADE_GOOD;
 
 
