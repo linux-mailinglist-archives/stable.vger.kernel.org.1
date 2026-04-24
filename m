@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-240878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240698-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SASdFoJ062koNAAAu9opvQ
-	(envelope-from <stable+bounces-240878-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:47:46 +0200
+	id SH2YEC1x62nCMwAAu9opvQ
+	(envelope-from <stable+bounces-240698-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:33:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5E0945FA4B
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:47:45 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id D642945F186
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:33:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6C9B430BD176
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:41:14 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 51EF53007886
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:33:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1715F3D6494;
-	Fri, 24 Apr 2026 13:41:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D135B3D5241;
+	Fri, 24 Apr 2026 13:33:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BwFLUtGR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GyOaIN2a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEC8D3537DF;
-	Fri, 24 Apr 2026 13:41:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80FB038837E;
+	Fri, 24 Apr 2026 13:33:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777038073; cv=none; b=RaF+qmzw2MzWTdTmmyNtJ3/ea43w/rES+dtCp/eg5cBA8Ji2A5oxdy+//I58rXjiG06p1iPEb8LJDr5A3TU+WlL0js6A+6ITNtcVYEqol1PmDIl71WZBsh8URt5jVcwwTAhe4V9FH9Jo8Axy20nUxnHrwl2ZDaz+gLZccXDCh98=
+	t=1777037608; cv=none; b=nLc/yiYCog+0lvqLKP4Y8pX0WfA2PNEBSjvAFXkyCUFdiaSuY+ovaRHiKdH8i+yHtuffbp6c5kgtK4HOZisfsqEWS1qyCIDVch+pMzcCcit2I8euMtzPyX+gbHW9GcIuZyDfyIf3/+fkTNxe+IXvggVMlMT1/vu3krmaOpfrSWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777038073; c=relaxed/simple;
-	bh=+e+rCfvTskKmhyik1+FdSc7sIK8jAklnHLxBH30/jmc=;
+	s=arc-20240116; t=1777037608; c=relaxed/simple;
+	bh=3/9tQA0QgUFYU4UXkAOIdico/EqR0yrwck/TYH8WBao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MJjjEtRqAI7ggmkcmzLojX8k3Lz/YwfuNvBER/jnoesuANe2uPRdoki+G+MGsZI/2qv7lTT2TvRBh4SM7V0N2pzmdCx7VFA0VB/pQYKwSNs5pzG0wwy2MmYcB/uJpaPft67lgbqznT8vCH8yZtMm0E2nGugdowAOp+prbJN1ZPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BwFLUtGR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63563C19425;
-	Fri, 24 Apr 2026 13:41:13 +0000 (UTC)
+	 MIME-Version; b=dCqWaFNLZkKXZX/m9SLg5w+/LG5uR65k/sZ9gxfa4p7emonhIzyw8eYldAvolM9OeRDqffsZKtcdgjYBvm5GHz/4hT1/KKdKuPfvTBdxatvq9A3G8oaTmaLKVET3eEAaAEVi/CoQyDD96uBlEKeXWTY36myZYnryVkf+X99hZz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GyOaIN2a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 169A7C19425;
+	Fri, 24 Apr 2026 13:33:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777038073;
-	bh=+e+rCfvTskKmhyik1+FdSc7sIK8jAklnHLxBH30/jmc=;
+	s=korg; t=1777037608;
+	bh=3/9tQA0QgUFYU4UXkAOIdico/EqR0yrwck/TYH8WBao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BwFLUtGRMcxPOP0a1PU6PpGtX+YllER5oylvrcEzN0yOU8G4S1aX1smOHgU4/gsP6
-	 pZ390W+bcrV1+icgjQrxKplI9bn6zDi2orQ7joaerE5qY8de6PYRZvxHS1G8N93yKr
-	 Np+Nf56BA8LtrLI3qHNdmT5tMt5ZB7i14AKHlfEQ=
+	b=GyOaIN2aNsHjzrn6rHzdJsPCwVTnCfrVcovzsKjb1vtyn8MoJeLuwtjfzN7wb392k
+	 bngvEUp8cn3Qofy1fPXUfvMUm4e+fGGoLTOY5KaFiDgiQ5o/RMhU/j9eMTldYQtlzM
+	 nSNVeJ8CMrSLYjsoi691985ypQGqG5kE0xqeSCjk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Will Deacon <will@kernel.org>,
-	James Morse <james.morse@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 6.18 14/55] arm64: cputype: Add C1-Pro definitions
-Date: Fri, 24 Apr 2026 15:30:53 +0200
-Message-ID: <20260424132433.120125660@linuxfoundation.org>
+	Tristan Madani <tristan@talencesecurity.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 7.0 29/42] ksmbd: fix out-of-bounds write in smb2_get_ea() EA alignment
+Date: Fri, 24 Apr 2026 15:30:54 +0200
+Message-ID: <20260424132426.480426506@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132430.006424517@linuxfoundation.org>
-References: <20260424132430.006424517@linuxfoundation.org>
+In-Reply-To: <20260424132420.410310336@linuxfoundation.org>
+References: <20260424132420.410310336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,81 +64,88 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C5E0945FA4B
+X-Rspamd-Queue-Id: D642945F186
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240878-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-240698-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,arm.com:url,arm.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,talencesecurity.com:email]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Catalin Marinas <catalin.marinas@arm.com>
+From: Tristan Madani <tristan@talencesecurity.com>
 
-commit 2c99561016c591f4c3d5ad7d22a61b8726e79735 upstream.
+commit 30010c952077a1c89ecdd71fc4d574c75a8f5617 upstream.
 
-Add cputype definitions for C1-Pro. These will be used for errata
-detection in subsequent patches.
+smb2_get_ea() applies 4-byte alignment padding via memset() after
+writing each EA entry. The bounds check on buf_free_len is performed
+before the value memcpy, but the alignment memset fires unconditionally
+afterward with no check on remaining space.
 
-These values can be found in "Table A-303: MIDR_EL1 bit descriptions" in
-issue 07 of the C1-Pro TRM:
+When the EA value exactly fills the remaining buffer (buf_free_len == 0
+after value subtraction), the alignment memset writes 1-3 NUL bytes
+past the buf_free_len boundary. In compound requests where the response
+buffer is shared across commands, the first command (e.g., READ) can
+consume most of the buffer, leaving a tight remainder for the QUERY_INFO
+EA response. The alignment memset then overwrites past the physical
+kvmalloc allocation into adjacent kernel heap memory.
 
-  https://documentation-service.arm.com/static/6930126730f8f55a656570af
+Add a bounds check before the alignment memset to ensure buf_free_len
+can accommodate the padding bytes.
 
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: James Morse <james.morse@arm.com>
-Reviewed-by: Will Deacon <will@kernel.org>
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+This is the same bug pattern fixed by commit beef2634f81f ("ksmbd: fix
+potencial OOB in get_file_all_info() for compound requests") and
+commit fda9522ed6af ("ksmbd: fix OOB write in QUERY_INFO for compound
+requests"), both of which added bounds checks before unconditional
+writes in QUERY_INFO response handlers.
+
+Cc: stable@vger.kernel.org
+Fixes: e2b76ab8b5c9 ("ksmbd: add support for read compound")
+Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/cputype.h |    2 ++
+ fs/smb/server/smb2pdu.c |    2 ++
  1 file changed, 2 insertions(+)
 
---- a/arch/arm64/include/asm/cputype.h
-+++ b/arch/arm64/include/asm/cputype.h
-@@ -98,6 +98,7 @@
- #define ARM_CPU_PART_CORTEX_A725	0xD87
- #define ARM_CPU_PART_CORTEX_A720AE	0xD89
- #define ARM_CPU_PART_NEOVERSE_N3	0xD8E
-+#define ARM_CPU_PART_C1_PRO		0xD8B
- 
- #define APM_CPU_PART_XGENE		0x000
- #define APM_CPU_VAR_POTENZA		0x00
-@@ -189,6 +190,7 @@
- #define MIDR_CORTEX_A725 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A725)
- #define MIDR_CORTEX_A720AE MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A720AE)
- #define MIDR_NEOVERSE_N3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_N3)
-+#define MIDR_C1_PRO MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_C1_PRO)
- #define MIDR_THUNDERX	MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX)
- #define MIDR_THUNDERX_81XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_81XX)
- #define MIDR_THUNDERX_83XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_83XX)
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -4822,6 +4822,8 @@ static int smb2_get_ea(struct ksmbd_work
+ 		/* align next xattr entry at 4 byte bundary */
+ 		alignment_bytes = ((next_offset + 3) & ~3) - next_offset;
+ 		if (alignment_bytes) {
++			if (buf_free_len < alignment_bytes)
++				break;
+ 			memset(ptr, '\0', alignment_bytes);
+ 			ptr += alignment_bytes;
+ 			next_offset += alignment_bytes;
 
 
 
