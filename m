@@ -1,447 +1,240 @@
-Return-Path: <stable+bounces-240645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240646-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eHHTA11d62mzLwAAu9opvQ
-	(envelope-from <stable+bounces-240645-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 14:09:01 +0200
+	id GBBnEbBe62lGLwAAu9opvQ
+	(envelope-from <stable+bounces-240646-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 14:14:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B06545E316
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 14:09:00 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFE5845E42E
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 14:14:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2EAD430058C2
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 12:08:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A8BC8300F9CD
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 12:14:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B11C23C3433;
-	Fri, 24 Apr 2026 12:08:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C391363C75;
+	Fri, 24 Apr 2026 12:14:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UY1U2nHC"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WqtOIbWI"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+Received: from mail-dl1-f54.google.com (mail-dl1-f54.google.com [74.125.82.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 373B43BADBD
-	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 12:08:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7F853921CD
+	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 12:14:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777032534; cv=none; b=tcuNIG7E5wvfkyOgotqgTgcddOx7+9bQY5ndYkSxTJ6TgV12NJxzbCj61eqjV4ylmEcSvZiHdOvbcTE0MTuNm0641aE9mtZgWLeoqpLxa7XsMaW2NdycotFSdbfYDV/LH815KGi5c8OS+eJ3dLt8HOP/iG4hQBDK5o+s0uN20Ck=
+	t=1777032848; cv=none; b=l0TND4F2jLshKBwx9xriWYHUMoLUt/JGxJKfsdG060YYanUmgugBtIX3tNWV1kQz61sXqd6KO20SqwO19uWytupQK6hjI9y6nqAUpqlVaPxKmpfjXqKuZaq0fVC92pPQexZYL17FADi8XMBpqEhYSLXEvPhn60rd2CIP+KIV5as=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777032534; c=relaxed/simple;
-	bh=9tHrEWGdqU18BiORk7EDQHeASQCvb7/XtMslK0fwWng=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Jc+HtylPblOugB3yPDI2nFfM/Efu1JbssTbxQN6MTRo7I1kPLHJb7ZXfwngDnKL+Ro8n++rEhtXdpBiK+JmaXZxQMwltCQ9ZTCW2CRHfETnz7wAGeAWpF8aq1TKVY9tXT/Gmc9RnCwb34vbiATQisPg6Kg2a5DJUbwxUsv7Ne5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UY1U2nHC; arc=none smtp.client-ip=209.85.214.172
+	s=arc-20240116; t=1777032848; c=relaxed/simple;
+	bh=8/QJJryqSynahyRQJJbCZN0D78VrKq8FeMiVcDhoi+c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gJmLbMXIyCwr8xuCuoIhh9DAJ7OtFZe0talBsu571iO5fGolgDfS/M5Qh89tPqKX5lQybPTP7/n1VRdEpviylEG3FKzqpGVDRKmIPcst0k13a8jDmHvCI516N+IQ6bWBHjtGq5WJrVvyt7va0Lxjx3uS1qgLZOqtjVdEn9pFnwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WqtOIbWI; arc=none smtp.client-ip=74.125.82.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2ab39b111b9so32394415ad.1
-        for <stable@vger.kernel.org>; Fri, 24 Apr 2026 05:08:52 -0700 (PDT)
+Received: by mail-dl1-f54.google.com with SMTP id a92af1059eb24-12dbd0f8063so351034c88.0
+        for <stable@vger.kernel.org>; Fri, 24 Apr 2026 05:14:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777032531; x=1777637331; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1777032847; x=1777637647; darn=vger.kernel.org;
+        h=in-reply-to:content-language:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=E/Os3Uyzuv6K1kurOhm0rJphJVfq9iEefpjasR3TfPM=;
-        b=UY1U2nHCF3MdNUF20o/oz4J77LFQscqiB+RU/Z2alZ71zCJ4oj3M1mrWBAnpzn4au7
-         4grAaq12irb1XpOKw6hljYhnxXVqWwya6JAXxrp/LeYetirp6yiwhmGHSRzimm4ZtVME
-         qPjxErMxvminvpejfh3FAvqBq+x2s/+CDa4BotNNOnW2WTaJsZbsqZN3YwvPsBGBWH1S
-         qdJYeiRrT+ZA1L9yHP4uidYA1TOu0rmTTYJ8f9+Q5N+VVOGEkIfuwWDeGjB5TlZZ6G9E
-         nfWXn3UDV/fGh7Lixkb4v5MaAPmpSW6QByM8wZv0veUIKhxdWp8diNnaczuRZeEskYzb
-         DBQQ==
+        bh=LfoLqhKpXj85wR6vWN9s9RLklGMx26Zw0qrL+AcJXdY=;
+        b=WqtOIbWIR6nvm2m+csWXFF7IhWMdV2rnij0CU4w03Xlnyfh6PM3a5N1NPV/kYbKDHO
+         f08E+GjecpJ19+R7GeXP1KDfcsqZgo9hRFUz8Up0oxLV38fvmkcCQGCOk1eemJku4Z50
+         NCcR611QjCOcd4Gt4QadIAPzRhqJ8LoKKKNyUt7HMqpc5Fajtc6eG0ejfuWfWcEnkc4x
+         Mqxw8fgD0lw/jpo9MtQgS17dbpEYKH7GyZOFHZx1gceM+Ep3NP9qGDzQZJmMQihgyExL
+         BQhEdiYqyAePb/l82X85s/3ZD61BMRreZMknvaHbCU+jUdAK7z21FE/0q4+Tr/1NOwa/
+         qNpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777032531; x=1777637331;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=E/Os3Uyzuv6K1kurOhm0rJphJVfq9iEefpjasR3TfPM=;
-        b=AczPPQmy72NHSmWDMXlq3st24b6SC44uIRoRFf8f9VHlKY2oSG4jY6WJlcULkbjxSe
-         CTo1jN5rAhIJLSS/9Q665Ii7oB4PI6rWfl195g58fOo4EHo9lgZh5X9glU+HMLMxXaYg
-         EByLHySBEJ3GPB4c/i4ZQLu1CfrHy0sHZLeaqlaXeO+Z1oBHYw72qsl4nLwWcKgZVURM
-         GHaF/fdmqAPqn5Wyh7jnViorjiu2NDzq/Fs/0PfMg/ReRUXbZyYrrphMEE28a/sP/WNB
-         rEMDUQ6LdrbRjsH145D+OGbn1FNV5a9Qu4IyeDDZS3haNWzIGwh+MgIXqR6th0Gyg4PR
-         Rm4A==
-X-Forwarded-Encrypted: i=1; AFNElJ9NeLD3Ker/699Bsqy9Ry30glMdvQleeogOUfOuzbSQFUvaeaaTg2P5NGHsEmvTe8SdU7W3uQM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxCit2sBsx8yOediR1osrYQRnMViMKVVsPSh2SdZbFp45iLrcAb
-	mo/tvcEMu/nmA03urWJCuDE3cGKAVOODjiov2aLnmdLTyau8sy1xylhK
-X-Gm-Gg: AeBDiev0BoxEP7mwBfWC+8MfsaXgvpdt9TUp76/3KMir0qGOkh7ZQ9l91ePxtr0DM/g
-	oLFsuSRmG5rJPT2RzVN7yb9gZ+kC1C+klsCHWcDLug1YdEIw8ZnxniCPdMkllkpPcKTPpKd0nLA
-	34/lFfdThkAbuESzHx7hIvhgRC66cnLdbyQBJutAEzJaQnXqaGZNgRgsGJKhIjVW4ELAWikdsRh
-	9RsSh0or1T+ew+OjeCmB0efbRCnVn+/8x6PnM06NhAwvBP7NU8v+T4fcD8cbiXc8JY+fyh5lPEM
-	l6NKaGkeOyd7uRP/L2gIRv43l9Nl/phRON549RoOtayBeNg8Vii+IwyUQTr97lcR5SnIuW/+8L6
-	qH7jYmmll6w9+NxKUEoNGtLYjNZl7fBmKzktlPoEihDgL4kplvuPmAXRbNsBXed4YWITT7nWsQg
-	8xyLTiTHGGzmk9Sy/RKkbBPA1qJpRTJAFVtOFTeW38NQ==
-X-Received: by 2002:a17:903:17c5:b0:2b7:a08d:9e42 with SMTP id d9443c01a7336-2b7a08d9f73mr84877695ad.32.1777032531227;
-        Fri, 24 Apr 2026 05:08:51 -0700 (PDT)
-Received: from kali ([203.184.33.250])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b5fa9ff39csm228701225ad.4.2026.04.24.05.08.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Apr 2026 05:08:50 -0700 (PDT)
-From: Brite <brite.airgeddon@gmail.com>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	fjhhz1997@gmail.com,
-	oscar.alfonso.diaz@gmail.com,
-	Brite <brite.airgeddon@gmail.com>
-Subject: [PATCH] wifi: mac80211: restore monitor injection when coexisting with another VIF
-Date: Sat, 25 Apr 2026 00:08:07 +1200
-Message-ID: <20260424120807.25005-1-brite.airgeddon@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <CA+bbHrVWmSpWZ9GBVJ5vffh1qYEye=EWMq9tKA-_uzfW+raC8A@mail.gmail.com>
-References: <CA+bbHrVWmSpWZ9GBVJ5vffh1qYEye=EWMq9tKA-_uzfW+raC8A@mail.gmail.com>
+        d=1e100.net; s=20251104; t=1777032847; x=1777637647;
+        h=in-reply-to:content-language:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=LfoLqhKpXj85wR6vWN9s9RLklGMx26Zw0qrL+AcJXdY=;
+        b=gu7Phh7tVgCeVECINGEdJmiEqHrVb3lov2jo79nm57nZvAsQEeiTCKh2h14DTvRqyM
+         9HmiDAb1RqHVE8dF4nKmi8e7msXzn4JIlc9+BLO3mXgTctGzVT4S7lh8Qf01+XUqydVy
+         fLRmwswoe3SfnWrIM436jpKrsfROWP324FwNJYWlh54+XRNbFMJXGMJ6FojxudXUCP3a
+         k1/tVXAMjfaBQU0hQLCiR0zJnitW4reHV2/amKRB7ogNPNn6ZYznXim74vFqV+rcq8Xa
+         Da0J5xEnuEdsQ/OxicPbwHHj7pYj/tIBNmwHODwwR1t09iTgQsPe9GkciuEHk5C3byUt
+         jV5g==
+X-Forwarded-Encrypted: i=1; AFNElJ/XS72sF1kaBIlSHv9Se/RSwe4oDH5+dH7rMeq0+3hTw1tnLjbaS+isQ8eznmNaZujUhjZE5fA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YySsoVVd2ZsJNojcVFHe/H53LeHQcXt9VKp7NdzmwrhfMhX2T9T
+	qdko9n+yhslk3QxfnUmcIOcjuZZMvh3pHPQfnekt6qMRSm51J/SEZQL7
+X-Gm-Gg: AeBDiettPv35j1yOly1fMkwYhaNMCFgeIy9XFgVC0VMY0doyB+Lk6Og2qt+D9PTP563
+	FZKfvHpNjh/oR3qhiBQgc0IJuXLLY2VtERBprrQwSINrogH1WTmxjtjHZMRamKgUAmPwXgRr8Ak
+	y8g4K3RbwsAVi827kb65xK9gbkAxrhAavq9J9swbf2DFCBlnwu+LGb0SYEK+YNIgmhTbnku93gf
+	fEqlZCtmDUGwMrntQiceCoOpulsgi3btrIZ70gbAjzcJYtfGZdhw/yy6O1+g1WBWalDLxtZnrmt
+	/5rzM8DKbA0JuX0nRg0p1o1DFYV/51k3wWKjod6lM+Z4+wyCUtLT64GV8TFzAukx9yySmCulS90
+	QJ8852kzB/y5rEDpcwf50qfPff0M3PLJhZIhxED54d+x3Ke9SCKOTWyW65fd8wABfbStAYYnnwc
+	6RnXbGuPwNOhvu0gbE5sOkUsR5re754z0XzXvOhH93JFuit1ljlQjVCYZbrwkVSOvn2/Ofi8xts
+	kHfRAa4WJ3f+DnKtIJJeWo=
+X-Received: by 2002:a05:7022:388f:b0:12c:f77:f0a0 with SMTP id a92af1059eb24-12c73f73440mr19370421c88.13.1777032846310;
+        Fri, 24 Apr 2026 05:14:06 -0700 (PDT)
+Received: from [192.168.1.18] (177-4-161-87.user3p.v-tal.net.br. [177.4.161.87])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12c8e837beasm24410043c88.11.2026.04.24.05.14.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 24 Apr 2026 05:14:05 -0700 (PDT)
+Message-ID: <87797cae-2716-48e2-b0ba-47cdfb34645f@gmail.com>
+Date: Fri, 24 Apr 2026 09:14:00 -0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 8B06545E316
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ALSA: aloop: Fix peer runtime UAF during format-change
+ stop
+To: Takashi Iwai <tiwai@suse.de>
+Cc: Takashi Iwai <tiwai@suse.com>, Jaroslav Kysela <perex@perex.cz>,
+ linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
+ syzbot+8fa95c41eafbc9d2ff6f@syzkaller.appspotmail.com, stable@vger.kernel.org
+References: <20260423-alsa-aloop-peer-stop-uaf-v1-1-25d8a9745f6c@gmail.com>
+ <87se8k1ugc.wl-tiwai@suse.de>
+From: =?UTF-8?Q?C=C3=A1ssio_Gabriel_Monteiro_Pires?=
+ <cassiogabrielcontato@gmail.com>
+Content-Language: en-US
+In-Reply-To: <87se8k1ugc.wl-tiwai@suse.de>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------bzN3VwiHVvH0SN3pB5H2yyYv"
+X-Rspamd-Queue-Id: BFE5845E42E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-2.76 / 15.00];
+	SIGNED_PGP(-2.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	MIME_GOOD(-0.20)[multipart/signed,multipart/mixed,text/plain];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-240645-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+,1:+,2:+,3:~];
 	DKIM_TRACE(0.00)[gmail.com:+];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240646-lists,stable=lfdr.de];
+	HAS_ATTACHMENT(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[briteairgeddon@gmail.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[cassiogabrielcontato@gmail.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable,8fa95c41eafbc9d2ff6f];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-Monitor-mode packet injection is broken on drivers that implement
-real channel context ops (mt76 and others) when the
-monitor interface runs alongside another interface (typically AP).
-The monitor VIF never gets a chanctx of its own in this case, so
-ieee80211_monitor_start_xmit() finds vif.bss_conf.chanctx_conf ==
-NULL and takes the fail_rcu path, silently dropping the skb. In
-practice this breaks tooling like mdk4 and aireplay-ng on mt76
-hardware, including airgeddon's evil-twin deauth flow, which runs
-hostapd on an AP VIF and injects deauth frames from a coexisting
-monitor VIF.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------bzN3VwiHVvH0SN3pB5H2yyYv
+Content-Type: multipart/mixed; boundary="------------10n2GPumHEzMlOIESxT5WexW";
+ protected-headers="v1"
+From: =?UTF-8?Q?C=C3=A1ssio_Gabriel_Monteiro_Pires?=
+ <cassiogabrielcontato@gmail.com>
+To: Takashi Iwai <tiwai@suse.de>
+Cc: Takashi Iwai <tiwai@suse.com>, Jaroslav Kysela <perex@perex.cz>,
+ linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
+ syzbot+8fa95c41eafbc9d2ff6f@syzkaller.appspotmail.com, stable@vger.kernel.org
+Message-ID: <87797cae-2716-48e2-b0ba-47cdfb34645f@gmail.com>
+Subject: Re: [PATCH] ALSA: aloop: Fix peer runtime UAF during format-change
+ stop
+References: <20260423-alsa-aloop-peer-stop-uaf-v1-1-25d8a9745f6c@gmail.com>
+ <87se8k1ugc.wl-tiwai@suse.de>
+In-Reply-To: <87se8k1ugc.wl-tiwai@suse.de>
+Autocrypt-Gossip: addr=perex@perex.cz; keydata=
+ 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
 
-Earlier attempts on this thread addressed the same bug but had side
-effects - notably full VM freezes during the airgeddon evil-twin flow,
-reported by Óscar in the thread. This patch takes a different approach
-and has not exhibited those side effects across the tested configurations.
+--------------10n2GPumHEzMlOIESxT5WexW
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Fix in two independent pieces:
+On 4/24/26 08:14, Takashi Iwai wrote:=20
+> Do we need to complicate this handling?  IOW, can it be simply be like
+> below?
+>=20
+> 	if (stop_capture) {
+> 		snd_pcm_stop(dpcm_capt->substream, SNDRV_PCM_STATE_DRAINING);
+> 		if (atomic_dec_and_test(&cable->stop_count))
+> 			wake_up(&cable->stop_wait);
+> 	}
 
-1) Snapshot-based fallback. Maintain an RCU-published snapshot,
-   local->sole_chandef, of the single active cfg80211_chan_def
-   when exactly one non-transitional chanctx exists on the device,
-   and NULL otherwise (MCC, mid-swap, idle, allocation failure).
-   The snapshot is refreshed from four chanctx call sites
-   (new/free/assign/change) under wiphy->mtx, and consumed
-   lock-free by ieee80211_monitor_start_xmit() under rcu_read_lock().
-   The wrapper struct carries an rcu_head so stale snapshots retire
-   via kfree_rcu(). Fail-closed on ambiguous channel state rather
-   than injecting on a guess.
+That makes sense.
 
-   This restores AP+monitor coexistence injection on 2.4 GHz.
+The lifetime fix only needs the stop_count/stop_wait
+serialization, so I can simplify the stop path as you suggested.
 
-2) Surrogate sdata for the regulatory check on 5 GHz. Once the
-   snapshot supplies a chandef, sdata is still the monitor
-   interface (injection tools usually spoof the source MAC so the
-   earlier addr2 match does not reassign sdata). On 5 GHz channels
-   cfg80211_reg_can_beacon() then rejects the frame because
-   NL80211_IFTYPE_MONITOR cannot satisfy the regulatory requirements
-   for that band. In the coexistence scenario there is already a
-   non-monitor VIF on the same channel that is authorised to operate
-   there; locate a running non-monitor sdata with a matching chandef
-   (cfg80211_chandef_identical: band, width, both center freqs) and
-   use it for the regulatory check. An AP sdata satisfies the check,
-   so the frame goes out on the correct channel instead of being
-   dropped. If no such sdata exists the monitor interface is left in
-   place and the existing code paths apply.
+I'll respin and send a v2 patch.=20
 
-Tested on mt7921u (mt76) usb with mdk4 and aireplay-ng deauth on
-2.4 GHz and 5 GHz while co-running an AP on the same channel.
-Tested on 6.18.12, 6.19.12 and 7.0.0-rc5
+--=20
+Thanks,
+C=C3=A1ssio
 
-Cc: stable@vger.kernel.org
-Fixes: 0a44dfc07074 ("wifi: mac80211: simplify non-chanctx drivers")
-Reported-by: Óscar Alfonso Díaz <oscar.alfonso.diaz@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218763
-Link: https://github.com/morrownr/USB-WiFi/issues/682
-Signed-off-by: Brite <brite.airgeddon@gmail.com>
----
- net/mac80211/chan.c        | 75 ++++++++++++++++++++++++++++++++++++++
- net/mac80211/ieee80211_i.h | 17 +++++++++
- net/mac80211/main.c        |  7 ++++
- net/mac80211/tx.c          | 69 +++++++++++++++++++++++++++++++++--
- 4 files changed, 165 insertions(+), 3 deletions(-)
 
-diff --git a/net/mac80211/chan.c b/net/mac80211/chan.c
-index 05f45e66999b..9efab86f57d0 100644
---- a/net/mac80211/chan.c
-+++ b/net/mac80211/chan.c
-@@ -12,6 +12,61 @@
- #include "driver-ops.h"
- #include "rate.h"
- 
-+/**
-+ * ieee80211_update_sole_chandef - refresh the sole-chanctx snapshot
-+ * @local: the mac80211 device
-+ *
-+ * Walk chanctx_list.  If exactly one non-transitional, valid chanctx
-+ * is present, kmalloc a snapshot of its chandef and RCU-publish it on
-+ * local->sole_chandef.  If zero or more than one chanctx are active,
-+ * publish NULL (fail-closed; injection disabled for MCC or idle).
-+ *
-+ * The prior snapshot is freed via kfree_rcu after all RCU readers that
-+ * hold a reference to it complete.
-+ *
-+ * Context: Must be called with wiphy->mtx held.
-+ *          Always process context - GFP_KERNEL is safe and appropriate.
-+ */
-+void ieee80211_update_sole_chandef(struct ieee80211_local *local)
-+{
-+	struct ieee80211_chanctx      *ctx, *found = NULL;
-+	struct ieee80211_sole_chandef *snap = NULL;
-+	struct ieee80211_sole_chandef *old;
-+
-+	lockdep_assert_wiphy(local->hw.wiphy);
-+
-+	list_for_each_entry(ctx, &local->chanctx_list, list) {
-+		/*
-+		 * REPLACES_OTHER: this entry is the incoming side of a
-+		 * swap; the outgoing context is still live.  Skip it to
-+		 * avoid counting a context that is not yet active.
-+		 */
-+		if (ctx->replace_state == IEEE80211_CHANCTX_REPLACES_OTHER)
-+			continue;
-+		if (!cfg80211_chandef_valid(&ctx->conf.def))
-+			continue;
-+
-+		if (found) {
-+			/* MCC or unexpected multi-channel state. */
-+			found = NULL;
-+			break;
-+		}
-+		found = ctx;
-+	}
-+
-+	if (found) {
-+		snap = kmalloc(sizeof(*snap), GFP_KERNEL);
-+		if (snap)
-+			snap->def = found->conf.def;
-+		/* alloc failure -> snap == NULL -> publish NULL below */
-+	}
-+
-+	old = rcu_replace_pointer(local->sole_chandef, snap,
-+				  lockdep_is_held(&local->hw.wiphy->mtx));
-+	if (old)
-+		kfree_rcu(old, rcu_head);
-+}
-+
- struct ieee80211_chanctx_user_iter {
- 	struct ieee80211_chan_req *chanreq;
- 	struct ieee80211_sub_if_data *sdata;
-@@ -729,6 +784,9 @@ static void ieee80211_change_chanctx(struct ieee80211_local *local,
- 				     const struct ieee80211_chan_req *chanreq)
- {
- 	_ieee80211_change_chanctx(local, ctx, old_ctx, chanreq, NULL);
-+
-+	/* Hook 4/4: channel parameters changed; refresh snapshot */
-+	ieee80211_update_sole_chandef(local);
- }
- 
- /* Note: if successful, the returned chanctx is reserved for the link */
-@@ -902,6 +960,13 @@ ieee80211_new_chanctx(struct ieee80211_local *local,
- 	WARN_ON_ONCE(err && !local->in_reconfig);
- 
- 	list_add_rcu(&ctx->list, &local->chanctx_list);
-+	/*
-+	 * Hook 1/4: new context is now on the list.
-+	 * Publish a fresh snapshot so monitor injection can use this
-+	 * channel immediately.
-+	 */
-+	ieee80211_update_sole_chandef(local);
-+
- 	return ctx;
- }
- 
-@@ -928,6 +993,13 @@ static void ieee80211_free_chanctx(struct ieee80211_local *local,
- 	WARN_ON_ONCE(ieee80211_chanctx_refcount(local, ctx) != 0);
- 
- 	list_del_rcu(&ctx->list);
-+	/*
-+	 * Hook 2/4: context is now off the list.
-+	 * Republish so that a context removed during AP teardown is no
-+	 * longer visible to the monitor injection fallback.
-+	 */
-+	ieee80211_update_sole_chandef(local);
-+
- 	ieee80211_del_chanctx(local, ctx, skip_idle_recalc);
- 	kfree_rcu(ctx, rcu_head);
- }
-@@ -1061,6 +1133,9 @@ static int ieee80211_assign_link_chanctx(struct ieee80211_link_data *link,
- 		ieee80211_recalc_chanctx_min_def(local, new_ctx);
- 	}
- 
-+	/* Hook 3/4: VIF assigned or unassigned; refresh snapshot */
-+	ieee80211_update_sole_chandef(local);
-+
- 	if (conf) {
- 		new_idle = false;
- 	} else {
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index e60b814dd89e..14c412a18868 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -40,6 +40,22 @@ extern const struct cfg80211_ops mac80211_config_ops;
- 
- struct ieee80211_local;
- struct ieee80211_mesh_fast_tx;
-+/**
-+ * struct ieee80211_sole_chandef - kfree_rcu-capable chandef snapshot
-+ *
-+ * cfg80211_chan_def has no embedded rcu_head so it cannot be freed
-+ * with kfree_rcu() directly.  This wrapper adds one.
-+ *
-+ * @rcu_head: for kfree_rcu() deferred freeing
-+ * @def:      point-in-time copy of the active cfg80211_chan_def
-+ */
-+struct ieee80211_sole_chandef {
-+	struct rcu_head          rcu_head;
-+	struct cfg80211_chan_def def;
-+};
-+
-+/* Defined in chan.c */
-+void ieee80211_update_sole_chandef(struct ieee80211_local *local);
- 
- /* Maximum number of broadcast/multicast frames to buffer when some of the
-  * associated stations are using power saving. */
-@@ -1586,6 +1602,7 @@ struct ieee80211_local {
- 
- 	/* channel contexts */
- 	struct list_head chanctx_list;
-+	struct ieee80211_sole_chandef __rcu *sole_chandef;
- 
- #ifdef CONFIG_MAC80211_LEDS
- 	struct led_trigger tx_led, rx_led, assoc_led, radio_led;
-diff --git a/net/mac80211/main.c b/net/mac80211/main.c
-index 616f86b1a7e4..387ed2786b32 100644
---- a/net/mac80211/main.c
-+++ b/net/mac80211/main.c
-@@ -1745,6 +1745,13 @@ void ieee80211_free_hw(struct ieee80211_hw *hw)
- 		kfree(local->hw.wiphy->bands[band]);
- 	}
- 
-+	/*
-+	 * All interfaces are gone by this point, so every chanctx has been
-+	 * freed and ieee80211_update_sole_chandef() has already published
-+	 * NULL. Assert the invariant.
-+	 */
-+	WARN_ON_ONCE(rcu_access_pointer(local->sole_chandef));
-+
- 	wiphy_free(local->hw.wiphy);
- }
- EXPORT_SYMBOL(ieee80211_free_hw);
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index b90c0537d0c5..54d06cfb670c 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -2398,10 +2398,73 @@ netdev_tx_t ieee80211_monitor_start_xmit(struct sk_buff *skb,
- 				rcu_dereference(tmp_sdata->vif.bss_conf.chanctx_conf);
- 	}
- 
--	if (chanctx_conf)
-+	if (chanctx_conf) {
- 		chandef = &chanctx_conf->def;
--	else
--		goto fail_rcu;
-+	} else {
-+		/*
-+		 * Real-chanctx drivers (e.g. mt76) do not assign a chanctx to
-+		 * the monitor VIF, so vif.bss_conf.chanctx_conf is NULL here.
-+		 * Fall back to the sole_chandef snapshot maintained by
-+		 * ieee80211_update_sole_chandef(). NULL means MCC or no active
-+		 * channel - drop the frame.
-+		 *
-+		 * The snapshot is valid for this whole function: it is freed
-+		 * via kfree_rcu() after a full grace period, and we are inside
-+		 * rcu_read_lock() throughout.
-+		 */
-+		struct ieee80211_sole_chandef *sole =
-+			rcu_dereference(local->sole_chandef);
-+		chandef = sole ? &sole->def : NULL;
-+		if (!chandef)
-+			goto fail_rcu;
-+	}
-+
-+	/*
-+	 * If sdata is still the monitor interface, addr2 did not match any
-+	 * local non-monitor interface - the normal case for injection tools
-+	 * (mdk4, aireplay-ng) that spoof the source MAC.
-+	 *
-+	 * On 5 GHz, cfg80211_reg_can_beacon() below commonly rejects
-+	 * NL80211_IFTYPE_MONITOR because a monitor interface cannot
-+	 * satisfy the regulatory requirements for the band (NO_IR on
-+	 * many channels; radar-detection responsibility on DFS channels).
-+	 * Pick a running non-monitor sdata operating on the same channel
-+	 * (identical band, width and both center frequencies) and use
-+	 * that for the check: an AP sdata is already authorised for the
-+	 * channel, so the check passes and the frame goes out on the
-+	 * correct channel instead of being dropped.
-+	 *
-+	 * If no such sdata exists, leave sdata as the monitor interface and
-+	 * let the existing code paths handle the MONITOR case (CHAN_CAN_MONITOR
-+	 * branch, or fail_rcu if regulatory does not permit).
-+	 */
-+	if (sdata->vif.type == NL80211_IFTYPE_MONITOR) {
-+		struct ieee80211_sub_if_data *picked = NULL;
-+
-+		list_for_each_entry_rcu(tmp_sdata, &local->interfaces, list) {
-+			struct ieee80211_chanctx_conf *tx_conf;
-+
-+			if (!ieee80211_sdata_running(tmp_sdata))
-+				continue;
-+			if (tmp_sdata->vif.type == NL80211_IFTYPE_MONITOR ||
-+			    tmp_sdata->vif.type == NL80211_IFTYPE_AP_VLAN)
-+				continue;
-+
-+			tx_conf = rcu_dereference(tmp_sdata->vif.bss_conf.chanctx_conf);
-+
-+			if (!tx_conf)
-+				continue;
-+
-+			if (!cfg80211_chandef_identical(&tx_conf->def, chandef))
-+				continue;
-+
-+			picked = tmp_sdata;
-+			break;
-+		}
-+
-+		if (picked)
-+			sdata = picked;
-+	}
- 
- 	/*
- 	 * If driver/HW supports IEEE80211_CHAN_CAN_MONITOR we still
--- 
-2.53.0
+--------------10n2GPumHEzMlOIESxT5WexW--
 
+--------------bzN3VwiHVvH0SN3pB5H2yyYv
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+wnsEABYIACMWIQSrYqI5vIrg1X9eqEjQXT8aWv/ugwUCaeteiAUDAAAAAAAKCRDQXT8aWv/ug2iT
+AP0X/ZNOWh5f2N2Fmo23q2Y88xT52Ml+kNwydxlmScVMoAEA/W23y48fC9MVXJEcBMn/i3U5Lkc1
+4wiaC5RJSFk+0AM=
+=+C0T
+-----END PGP SIGNATURE-----
+
+--------------bzN3VwiHVvH0SN3pB5H2yyYv--
 
