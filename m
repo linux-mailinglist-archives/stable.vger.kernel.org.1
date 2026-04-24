@@ -1,166 +1,155 @@
-Return-Path: <stable+bounces-240639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240640-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oDuwGXRW62n2LQAAu9opvQ
-	(envelope-from <stable+bounces-240639-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:39:32 +0200
+	id sGT3Gx9X62nkKwAAu9opvQ
+	(envelope-from <stable+bounces-240640-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:42:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 294B845DE00
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:39:28 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A08F845DEB4
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:42:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C4116300749B
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 11:39:21 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 653CB3003722
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 11:42:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87E4B3BE63F;
-	Fri, 24 Apr 2026 11:39:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E11033BE644;
+	Fri, 24 Apr 2026 11:42:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (3072-bit key) header.d=samba.org header.i=@samba.org header.b="M+117sDc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WpFXVTpw"
 X-Original-To: stable@vger.kernel.org
-Received: from hr2.samba.org (hr2.samba.org [144.76.82.148])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A28543BED59;
-	Fri, 24 Apr 2026 11:39:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.76.82.148
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A239A3ACA4B;
+	Fri, 24 Apr 2026 11:42:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777030757; cv=none; b=GbOBf02PNtrlf6snmHX+qGQYNGZjbRWXNdpcIS0q2WUDve04BKLdD6KeFlDnF7vEqWy5/K6FL1yNXhQPhyFtN3AySO0dZZIMLKhwmRZIFixnh2eZ7eYrdSAFrUScE/qfCKv66JbbdxyQnKeHMgvwIUYKE1CK9Gkz4oGJa3J5uw4=
+	t=1777030935; cv=none; b=L1m1wcBd6i3afJqthFprMxOHKj/zLchVZPLQ4I/ZKlVPja9d0WKcC3FT2QIW0NLXRW9OIAfJf/EbCI8qrw9j2Hj+XgD1WnZeVzX0Jlzooo4vxEltNt4uJvhvJxa5PyoCOlSJZwLS0qEhFrlHoFg7gnDLxk/JoT/CnMHR1u9KOaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777030757; c=relaxed/simple;
-	bh=Vbw15iUuGReYoDg74B4jVuwCsAm3eNad5N4/DaDRt24=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=smnQL6OqJrpLbg1a/3qUKIcBN5l15rIC86KrFO5MyivrsQWn6/kiYQZpNiUF46iWEB/GBzVa2M8budP4Gmc2uEApqAS2QtUeqC9foUPJPo8j+PeQFyxGPLEx0MnyHb7nrUMkmQ2XBCwugP04eYOV09OlKjDNvzr6+hExietqMg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=samba.org; spf=pass smtp.mailfrom=samba.org; dkim=pass (3072-bit key) header.d=samba.org header.i=@samba.org header.b=M+117sDc; arc=none smtp.client-ip=144.76.82.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=samba.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samba.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=samba.org;
-	s=42; h=From:Cc:To:Date:Message-ID;
-	bh=vqWcSThc8pjY0oM9PCXkI0BSkRYzt+6om4JQ2IRTrkM=; b=M+117sDce9Z9GeWcvjlIK7G646
-	AFw6i7n4qtNKPYbT7vf0dZsmj68sxKBqeTTIpzxCXPeXQilmWw+aEi8YVSvkrVTTyufHZIvf7kfRz
-	U3i4aBqEeFs/aMCaErfktfPQGpWx7TaZMVnwMVaR1+sG0wRzXrbEFMVjIRYaWfpNasHn47JXLDKhf
-	G9SWpwBI/neGk4zS4CDmm5SaOMxae17LwBXmhIJ41OMiyo+c1+hpemO8MbP7+2NXz7pAxTK1O77dq
-	mrh7dzOzWU3xTN9JmQFMO56J1WCiNsJ+MM0qwRi+lGhBO+lXvADTHuPmv27eGAbJl0fOfTWKN/Zrc
-	ZqOwGgYlHYa06QrleGc17rClshzzuljGAilOCJdPUClfypeKeKuLlayyBgs5x2JYRZ75Ey0Aj2lJe
-	+M6k7Re1sqZ1c7oSvO10fGh9oWOczCac+857VtdnmPYhrxnrXcVHJfevl0LEW6m4k3zcp6UMcB8hm
-	+S8KcGP4Vcmu7G1L7So0g91y;
-Received: from [127.0.0.2] (localhost [127.0.0.1])
-	by hr2.samba.org with esmtpsa (TLS1.3:ECDHE_SECP256R1__ECDSA_SECP256R1_SHA256__CHACHA20_POLY1305:256)
-	(Exim)
-	id 1wGEsG-00000003nNq-2SmM;
-	Fri, 24 Apr 2026 11:39:11 +0000
-Message-ID: <966208b7-b77a-45b9-9dcb-3c8823429318@samba.org>
-Date: Fri, 24 Apr 2026 13:39:06 +0200
+	s=arc-20240116; t=1777030935; c=relaxed/simple;
+	bh=4W6W28oQ9tYxBvQu92r59YpXTkIqDtFU5bKJl2RfmB4=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
+	 References:In-Reply-To; b=OjcF+12HLxJ4//s//7h0OhBNmD4taRtEi2bpIqLCB0d/NyR4K0uTbpk24TJK+cUHW3tpxFOSLkfJKIVIQCS9p8uYWWsBb5ZW0KbNLjaa+tisuMYlzp7AMnz1abZHaLU/XOywZ6NK0rHj1YBjdjikS7pduQh/ybd8PF8G0ZO2cOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WpFXVTpw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 283B9C19425;
+	Fri, 24 Apr 2026 11:42:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777030935;
+	bh=4W6W28oQ9tYxBvQu92r59YpXTkIqDtFU5bKJl2RfmB4=;
+	h=Date:From:Subject:Cc:To:References:In-Reply-To:From;
+	b=WpFXVTpwYsAilpyRKcB2OkVSf3DerhzvCj9yDZIgXGtVye6lKjhyDQy3FdRT23OJw
+	 lxatoqec78Y0gYvbmaOHS7D7sBep9TnJvQkMQQ2Mkt70+UpWrUtEOD1EM1WcjY6TjB
+	 XS281/sZ63iVaVKiGPJKc7njUBqtueH5rf/FG3Cl7UEZVfqiB1xwlG7GglRPzyW4ru
+	 vYSN0vyaidYANRP7FzWSiHMkaebS7tIzpo2LFToWlRlYnKqwbQ1F4dtx+GxoBDunHP
+	 em1qYoELYpKOkCmuGbEnmglfg47fanVaxBpgE34rFnRVWZD3xCHNvgParchSYThJAh
+	 INwIaDkvOxdyg==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] smb: client: Fix error cleanup in
- smb_extract_iter_to_rdma()
-To: Greg KH <gregkh@linuxfoundation.org>, David Howells <dhowells@redhat.com>
-Cc: Steve French <sfrench@samba.org>, Paulo Alcantara <pc@manguebit.org>,
- Tom Talpey <tom@talpey.com>, linux-cifs@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <3418418.1777024571@warthog.procyon.org.uk>
- <2026042426-prance-each-273d@gregkh>
-Content-Language: en-US
-From: Stefan Metzmacher <metze@samba.org>
-In-Reply-To: <2026042426-prance-each-273d@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 294B845DE00
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 24 Apr 2026 13:42:12 +0200
+Message-Id: <DI1CW4GWGUD6.2K7VZG165WJP8@kernel.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH] driver core: faux: fix root device registration
+Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J . Wysocki"
+ <rafael@kernel.org>, <driver-core@lists.linux.dev>,
+ <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+To: "Johan Hovold" <johan@kernel.org>
+References: <20260424102231.2615557-1-johan@kernel.org>
+In-Reply-To: <20260424102231.2615557-1-johan@kernel.org>
+X-Rspamd-Queue-Id: A08F845DEB4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[samba.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[samba.org:s=42];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-240639-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[samba.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240640-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[metze@samba.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dakr@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,sashiko.dev:url,samba.org:email,samba.org:dkim,samba.org:mid]
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 
-Hi David,
+On Fri Apr 24, 2026 at 12:22 PM CEST, Johan Hovold wrote:
+> diff --git a/drivers/base/faux.c b/drivers/base/faux.c
+> index fb3e42f21362..402ed119dfdf 100644
+> --- a/drivers/base/faux.c
+> +++ b/drivers/base/faux.c
+> @@ -133,6 +133,9 @@ struct faux_device *faux_device_create_with_groups(co=
+nst char *name,
+>  	struct device *dev;
+>  	int ret;
+> =20
+> +	if (IS_ERR_OR_NULL(faux_bus_root))
+> +		return NULL;
 
->> Fix smb_extract_iter_to_rdma() to use pre-decrement, not post-decrement, so
->> that it cleans up the correct slots.
->>
->> Fixes: e5fbdde43017 ("cifs: Add a function to build an RDMA SGE list from an iterator")
->> Closes: https://sashiko.dev/#/patchset/20260326104544.509518-1-dhowells%40redhat.com
->> Signed-off-by: David Howells <dhowells@redhat.com>
->> cc: Steve French <sfrench@samba.org>
->> cc: Stefan Metzmacher <metze@samba.org>
->> cc: Paulo Alcantara <pc@manguebit.org>
->> cc: Tom Talpey <tom@talpey.com>
->> cc: linux-cifs@vger.kernel.org
->> cc: linux-fsdevel@vger.kernel.org
->> ---
->>   fs/smb/client/smbdirect.c |    2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
->> index 7d5f66bdbb30..4978755c035c 100644
->> --- a/fs/smb/client/smbdirect.c
->> +++ b/fs/smb/client/smbdirect.c
->> @@ -3394,7 +3394,7 @@ static ssize_t smb_extract_iter_to_rdma(struct iov_iter *iter, size_t len,
->>   
->>   	if (ret < 0) {
->>   		while (rdma->nr_sge > before) {
->> -			struct ib_sge *sge = &rdma->sge[rdma->nr_sge--];
->> +			struct ib_sge *sge = &rdma->sge[--rdma->nr_sge];
+As Greg mentioned, if this happens we already have a much bigger fundamenta=
+l
+problem earlier in the boot process.
 
-Can you please use logic like this?
+Anyway, I think this check only catches when root_device_register() fails, =
+but
+everything that comes after root_device_register() in faux_bus_init() still
+leaves us with a dangling pointer.
 
--               while (state->num_sge > before) {
--                       struct ib_sge *sge = &state->sge[state->num_sge--];
-+               for (size_t i = before; i < state->num_sge; i++) {
-+                       struct ib_sge *sge = &state->sge[i];
+> +
+>  	faux_obj =3D kzalloc_obj(*faux_obj);
+>  	if (!faux_obj)
+>  		return NULL;
+> @@ -234,17 +237,9 @@ int __init faux_bus_init(void)
+>  {
+>  	int ret;
+> =20
+> -	faux_bus_root =3D kzalloc_obj(*faux_bus_root);
+> -	if (!faux_bus_root)
+> -		return -ENOMEM;
+> -
+> -	dev_set_name(faux_bus_root, "faux");
+> -
+> -	ret =3D device_register(faux_bus_root);
+> -	if (ret) {
+> -		put_device(faux_bus_root);
+> -		return ret;
+> -	}
+> +	faux_bus_root =3D root_device_register("faux");
+> +	if (IS_ERR(faux_bus_root))
+> +		return PTR_ERR(faux_bus_root);
+> =20
+>  	ret =3D bus_register(&faux_bus_type);
+>  	if (ret)
+> @@ -260,6 +255,6 @@ int __init faux_bus_init(void)
+>  	bus_unregister(&faux_bus_type);
+> =20
+>  error_bus:
+> -	device_unregister(faux_bus_root);
+> +	root_device_unregister(faux_bus_root);
+>  	return ret;
+>  }
+> --=20
+> 2.53.0
 
-At least for me that is much easier to understand.
-
-And as Greg pointed out we first need a fix for upstream, there
-the function is smbdirect_map_sges_from_iter in fs/smb/smbdirect/connection.c
-
-Also the commit message needs to be adjusted for the new name.
-
-Then we need a backportable fix for smb_extract_iter_to_rdma in
-fs/smb/client/smbdirect.c with the same logic.
-
-Thanks!
-metze
-
->>   			ib_dma_unmap_single(rdma->device, sge->addr, sge->length,
->>   					    rdma->direction);
->>
->>
-> <formletter>
-> 
-> This is not the correct way to submit patches for inclusion in the
-> stable kernel tree.  Please read:
->      https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-> for how to do this properly.
-> 
-> </formletter>
 
