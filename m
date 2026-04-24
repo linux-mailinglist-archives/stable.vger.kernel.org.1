@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-240932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240865-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gD6UEYZz62kLNAAAu9opvQ
-	(envelope-from <stable+bounces-240932-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:43:34 +0200
+	id QJxLMtpy62nCMwAAu9opvQ
+	(envelope-from <stable+bounces-240865-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:40:42 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03C4B45F7CF
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:43:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6877545F5E2
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:40:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 584E330067BA
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:43:33 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CE7D030055A1
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:40:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FF05386C0A;
-	Fri, 24 Apr 2026 13:43:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 899903D3D04;
+	Fri, 24 Apr 2026 13:40:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h7L7O3BU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ugSdV8kN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5365C19A288;
-	Fri, 24 Apr 2026 13:43:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D5D43290A5;
+	Fri, 24 Apr 2026 13:40:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777038210; cv=none; b=G/gc1+M8BUYM/WywifZNvKReQosdtMIyY1eJF6T2UzeQlZewj9Dgj6moz1Ycko1poAD/XLFCCbbnQDAEtkVGWH8JnSfq093tjNv006Or7wWmT6atlflNSJPH7XGKqjaQtbCywiamumHCh7oZw1krfHI34rD/n6js6SJ08JMGVu0=
+	t=1777038040; cv=none; b=s1xM7H1hIb4KzCGOB7SOwuPi7ji0H6By9mPk0pub1FI6zitlfIABz6WlmYhsYCYbeSZsMkgKYi0ZPrjdBrRHnvlxFe7jTi1n7YEZ3imMHGADhRHte7Ch09ZqaiHMWiqpTpvhA/p83kVKI8iNnzbiuE1opObAPSp0ffJZh+jMJZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777038210; c=relaxed/simple;
-	bh=KGbeaPzcsxf77mDFr72ZeVSqy+Kxrb5X0TWtUxejTPg=;
+	s=arc-20240116; t=1777038040; c=relaxed/simple;
+	bh=YgtnnngoY19LRt/mRAs/q1RLe148VA2VWbMbdjTj2LQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D40/RdwZehJ85YETLlRel+nW5/hEWOjPz8ddQBn/jZXcINW3KUOgmNMkU866ZEPD48+h66g2yQUzHu+Ncaw1zotmjt2ErKHnA2c8YUZHPB836YcmYQYStU1Er3FbEA8tlbdt0Imi8sGCyKxkSawSYrUFm6wtZtf9V3GBz0gGRRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h7L7O3BU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCE8AC19425;
-	Fri, 24 Apr 2026 13:43:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=h/sWqqtjJOsd5c7EPpOxdR37jqqGowWf1gAjPZ77HNh178687RZHhuTC/5TyD5GU9eneNu1AMSPOnFuA1pbROaE0wefSe9CDodTLvyiR64CRnEfW9XWn+R6Y2bYeP3MhOQMuiYrjEwepXYiv0eu3oDXClxjETmzgiEf4YV+F0Bs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ugSdV8kN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7564C19425;
+	Fri, 24 Apr 2026 13:40:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777038210;
-	bh=KGbeaPzcsxf77mDFr72ZeVSqy+Kxrb5X0TWtUxejTPg=;
+	s=korg; t=1777038040;
+	bh=YgtnnngoY19LRt/mRAs/q1RLe148VA2VWbMbdjTj2LQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h7L7O3BUhcpEOw/p4S1ndte/562oj7V5xiOS3DbtrtQJ08RlaEQr1kTk+PPQkUwAC
-	 GTgCehkXpyx2qnw+BTQ5BhN7ig0fD41gRR4u7cN2YWSZ4CPWIw7Hxay0N1iqwVMbHU
-	 6M/QuW5jN+9YOk7vaW/FTNhZfSQQAH7F0auihXJg=
+	b=ugSdV8kNzHZP6ICSuSAV5etwICccUYypOQtsO9hSvpvOOAZ+a2YvoWI5+0i2Ymlg6
+	 2VCPtQF/yZAdVdpeK7u1wUFJtjzvoH50ImDtWwStXpRFrZy+BPf/4JrZsjUTfn+mYo
+	 Va31y4+qXmqKNFmwKfeDz7csaFaQzNWZhi4UGvxY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steven Chen <chenste@linux.microsoft.com>,
-	Stefan Berger <stefanb@linux.ibm.com>,
-	Baoquan He <bhe@redhat.com>,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 03/35] ima: verify if the segment size has changed
+	George Saad <geoo115@gmail.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 6.6 156/166] f2fs: fix use-after-free of sbi in f2fs_compress_write_end_io()
 Date: Fri, 24 Apr 2026 15:31:10 +0200
-Message-ID: <20260424132412.209699927@linuxfoundation.org>
+Message-ID: <20260424132605.833794255@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132411.427029259@linuxfoundation.org>
-References: <20260424132411.427029259@linuxfoundation.org>
+In-Reply-To: <20260424132532.812258529@linuxfoundation.org>
+References: <20260424132532.812258529@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,90 +63,113 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 03C4B45F7CF
+X-Rspamd-Queue-Id: 6877545F5E2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240932-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240865-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Chen <chenste@linux.microsoft.com>
+From: George Saad <geoo115@gmail.com>
 
-[ Upstream commit d0a00ce470e3ea19ba3b9f1c390aee739570a44a ]
+commit 39d4ee19c1e7d753dd655aebee632271b171f43a upstream.
 
-kexec 'load' may be called multiple times. Free and realloc the buffer
-only if the segment_size is changed from the previous kexec 'load' call.
+In f2fs_compress_write_end_io(), dec_page_count(sbi, type) can bring
+the F2FS_WB_CP_DATA counter to zero, unblocking
+f2fs_wait_on_all_pages() in f2fs_put_super() on a concurrent unmount
+CPU. The unmount path then proceeds to call
+f2fs_destroy_page_array_cache(sbi), which destroys
+sbi->page_array_slab via kmem_cache_destroy(), and eventually
+kfree(sbi). Meanwhile, the bio completion callback is still executing:
+when it reaches page_array_free(sbi, ...), it dereferences
+sbi->page_array_slab — a destroyed slab cache — to call
+kmem_cache_free(), causing a use-after-free.
 
-Signed-off-by: Steven Chen <chenste@linux.microsoft.com>
-Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
-Acked-by: Baoquan He <bhe@redhat.com>
-Tested-by: Stefan Berger <stefanb@linux.ibm.com> # ppc64/kvm
-Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This is the same class of bug as CVE-2026-23234 (which fixed the
+equivalent race in f2fs_write_end_io() in data.c), but in the
+compressed writeback completion path that was not covered by that fix.
+
+Fix this by moving dec_page_count() to after page_array_free(), so
+that all sbi accesses complete before the counter decrement that can
+unblock unmount. For non-last folios (where atomic_dec_return on
+cic->pending_pages is nonzero), dec_page_count is called immediately
+before returning — page_array_free is not reached on this path, so
+there is no post-decrement sbi access. For the last folio,
+page_array_free runs while the F2FS_WB_CP_DATA counter is still
+nonzero (this folio has not yet decremented it), keeping sbi alive,
+and dec_page_count runs as the final operation.
+
+Fixes: 4c8ff7095bef ("f2fs: support data compression")
+Cc: stable@vger.kernel.org
+Signed-off-by: George Saad <geoo115@gmail.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/integrity/ima/ima_kexec.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ fs/f2fs/compress.c |   14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/security/integrity/ima/ima_kexec.c b/security/integrity/ima/ima_kexec.c
-index c9e5b1d6b0ab8..cc418a7e27f20 100644
---- a/security/integrity/ima/ima_kexec.c
-+++ b/security/integrity/ima/ima_kexec.c
-@@ -34,6 +34,14 @@ static void ima_free_kexec_file_buf(struct seq_file *sf)
+--- a/fs/f2fs/compress.c
++++ b/fs/f2fs/compress.c
+@@ -1434,10 +1434,10 @@ void f2fs_compress_write_end_io(struct b
  
- static int ima_alloc_kexec_file_buf(size_t segment_size)
- {
+ 	f2fs_compress_free_page(page);
+ 
+-	dec_page_count(sbi, type);
+-
+-	if (atomic_dec_return(&cic->pending_pages))
++	if (atomic_dec_return(&cic->pending_pages)) {
++		dec_page_count(sbi, type);
+ 		return;
++	}
+ 
+ 	for (i = 0; i < cic->nr_rpages; i++) {
+ 		WARN_ON(!cic->rpages[i]);
+@@ -1447,6 +1447,14 @@ void f2fs_compress_write_end_io(struct b
+ 
+ 	page_array_free(sbi, cic->rpages, cic->nr_rpages);
+ 	kmem_cache_free(cic_entry_slab, cic);
++
 +	/*
-+	 * kexec 'load' may be called multiple times.
-+	 * Free and realloc the buffer only if the segment_size is
-+	 * changed from the previous kexec 'load' call.
++	 * Make sure dec_page_count() is the last access to sbi.
++	 * Once it drops the F2FS_WB_CP_DATA counter to zero, the
++	 * unmount thread can proceed to destroy sbi and
++	 * sbi->page_array_slab.
 +	 */
-+	if (ima_kexec_file.buf && ima_kexec_file.size == segment_size)
-+		goto out;
-+
- 	ima_free_kexec_file_buf(&ima_kexec_file);
++	dec_page_count(sbi, type);
+ }
  
- 	/* segment size can't change between kexec load and execute */
-@@ -42,6 +50,8 @@ static int ima_alloc_kexec_file_buf(size_t segment_size)
- 		return -ENOMEM;
- 
- 	ima_kexec_file.size = segment_size;
-+
-+out:
- 	ima_kexec_file.read_pos = 0;
- 	ima_kexec_file.count = sizeof(struct ima_kexec_hdr);	/* reserved space */
- 
--- 
-2.53.0
-
+ static int f2fs_write_raw_pages(struct compress_ctx *cc,
 
 
 
