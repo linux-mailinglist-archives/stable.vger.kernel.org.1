@@ -1,257 +1,264 @@
-Return-Path: <stable+bounces-240648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240649-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kMHFKVxg62kCMAAAu9opvQ
-	(envelope-from <stable+bounces-240648-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 14:21:48 +0200
+	id yHkkOpJj62mtMAAAu9opvQ
+	(envelope-from <stable+bounces-240649-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 14:35:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 150D045E58D
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 14:21:48 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BBDC45E7C2
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 14:35:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3D217302659D
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 12:21:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DE4B6302A1A6
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 12:34:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7057C3C5DB6;
-	Fri, 24 Apr 2026 12:21:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 505223CE484;
+	Fri, 24 Apr 2026 12:34:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="a7e1g3P4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OsDUQ9Pe"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 682463C343E;
-	Fri, 24 Apr 2026 12:21:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1182B3CE499
+	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 12:34:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777033285; cv=none; b=bvm8c0NLUUapjed/M5UvHOoJsFTiRG+bgEiOXbdwXKKfF4WLVMlp1BudCFuIu51r6hbDw3gsJ0NDK8EfElhetb1q2xKdNiyulfyRmvVLoikkC395jIXrQvg1Xz73PlwtLh+vbIdhjg4z8WHQN8HekbYgxdOyY7LfFt+Rzp/8/Es=
+	t=1777034083; cv=none; b=LuKIi2Schux5FVCNLwDuBZhlm/EaiOtOyr6hsaCtuNNGIWPgLRxJYV9NHDedhqRJ+hCKXDZn9J1hs5uFh4fBFA2JYYCpkVllwXBMiKvamonfJk4nPIGZZHhCDko4nEJ8vfR+ycK6YmIN3L9FVgkbbw4K4IZm85q0PfnL15em8ng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777033285; c=relaxed/simple;
-	bh=7of1kJsvzdpEsSZJeO17x5YeTfnIvMKbWpeoSZwJixs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VCBWmrS2rN0a/AvdZhfnu0p3r85Dpu/tD/EHkeE2YXUoNidjUl2rZtp2E8GhRLX63xad/t3/AgHBpJW9sxI38O9NOUHMv7nmuDV3fO1HgEwbL3Jw9bDuLAIlDuPmtJmLp6UB27/jEN8zLIDzrHepApg5agAazME+4R26Jbs/r6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=a7e1g3P4; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: by linux.microsoft.com (Postfix, from userid 1204)
-	id 8B05620B7165; Fri, 24 Apr 2026 05:21:23 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 8B05620B7165
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1777033283;
-	bh=b7zfRNW0UNlPkhYc2JrkSF24b0gzNF9MAngEWRuE3dE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=a7e1g3P45gfCXvk9AzIi/j9ubyrUUDJKWp+9SZSKsZtb2WJTQ0ZAQQCFDdOcQ9xb3
-	 JTS0nzgcWMyk7Jaxu6i5b+TqLH5i6NetoqVsLogT6iHWcJTyu+uUhhw3KoxCxE4SS8
-	 MUKfVxEeqKVtgY807cb95moUdjTRrpJW4UFyU99k=
-Date: Fri, 24 Apr 2026 05:21:23 -0700
-From: Dipayaan Roy <dipayanroy@linux.microsoft.com>
-To: Shradha Gupta <shradhagupta@linux.microsoft.com>
-Cc: Dexuan Cui <decui@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Konstantin Taranov <kotaranov@microsoft.com>,
-	Simon Horman <horms@kernel.org>,
-	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
-	Shiraz Saleem <shirazsaleem@microsoft.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Long Li <longli@microsoft.com>, Yury Norov <yury.norov@gmail.com>,
-	linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, Paul Rosswurm <paulros@microsoft.com>,
-	Shradha Gupta <shradhagupta@microsoft.com>,
-	Saurabh Singh Sengar <ssengar@microsoft.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net] net: mana: Optimize irq affinity for low vcpu configs
-Message-ID: <aetgQ1gCYlGJjiKk@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
-References: <20260424061702.1442618-1-shradhagupta@linux.microsoft.com>
+	s=arc-20240116; t=1777034083; c=relaxed/simple;
+	bh=Uyz22aR0FFY2jUwNUYVwNvG9gVLUZRYi1XNc/xm/Sgg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=l5VD+Zu79aacxvr3sLclOckZxYP+PFtA/AEZF6P+QtRfWrM9xg/AWOGIJCCl/cR9hXaNDJotyPmqAn5J2yphf/ie2WmnSfLdbM8dVhp2ZAOrgkXEh4DvfAtARgCLGjJfMzkYhMlvd0t5vj8bCn/Mw8EBBTJoj9el2yuPs1dVdws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OsDUQ9Pe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 946F2C19425;
+	Fri, 24 Apr 2026 12:34:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1777034082;
+	bh=Uyz22aR0FFY2jUwNUYVwNvG9gVLUZRYi1XNc/xm/Sgg=;
+	h=Subject:To:Cc:From:Date:From;
+	b=OsDUQ9Pekng7H66YUtD9t9KyZ8GJk6GVQxv8gwX5mwu+JfMSNmQEE+rXg5g0RVsjc
+	 Usmifq1vaaKQ4i3CY7L9Eoo4fy/K8rmYvIQZmOMnhENvO8KjHnd+IpyaTCIVn2hzWU
+	 BumuCsGdgZKlhZpOvqR42r14icK4NAREATjW/CYw=
+Subject: FAILED: patch "[PATCH] f2fs: fix to do sanity check on dcc->discard_cmd_cnt" failed to apply to 6.12-stable tree
+To: chao@kernel.org,jaegeuk@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Fri, 24 Apr 2026 14:32:32 +0200
+Message-ID: <2026042432-saggy-streak-1365@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260424061702.1442618-1-shradhagupta@linux.microsoft.com>
-X-Rspamd-Queue-Id: 150D045E58D
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 7BBDC45E7C2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.microsoft.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[linux.microsoft.com:s=default];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240648-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[24];
-	FREEMAIL_CC(0.00)[microsoft.com,kernel.org,lunn.ch,davemloft.net,google.com,redhat.com,linux.microsoft.com,outlook.com,gmail.com,vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240649-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_THREE(0.00)[3];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_NO_DN(0.00)[];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dipayanroy@linux.microsoft.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linux.microsoft.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable,netdev];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+]
 
-On Thu, Apr 23, 2026 at 11:17:00PM -0700, Shradha Gupta wrote:
-> In mana driver, the number of IRQs allocated are capped by the
-> min(num_cpu + 1, queue count). In cases, where the IRQ count is greater
-> than the vcpu count, we want to utilize all the vcpus, irrespective of
-> their NUMA/core bindings.
-> 
-> This is important, especially in the envs where number of vcpus are so
-> few that the softIRQ handling overhead on two IRQs on the same vcpu is
-> much more than their overheads if they were spread across sibling vcpus
-> 
-> This behaviour is more evident with dynamic IRQ allocation. Since MANA
-> IRQs are assigned at a later stage compared to static allocation, other
-> device IRQs may already be affinitized to the vCPUs. As a result, IRQ
-> weights become imbalanced, causing multiple MANA IRQs to land on the
-> same vCPU.
-> 
-> In such cases when many parallel TCP connections are tested, the
-> throughput drops significantly
-> 
-> Test envs:
-> =======================================================
-> Case 1: without this patch
-> =======================================================
-> 4 vcpu(2 cores), 5 MANA IRQs (1 HWC + 4 Queue)
-> 
-> 	TYPE		effective vCPU aff
-> =======================================================
-> IRQ0:	HWC		0
-> IRQ1:	mana_q1		0
-> IRQ2:	mana_q2		2
-> IRQ3:	mana_q3		0
-> IRQ4:	mana_q4		3
-> 
-> %soft on each vCPU(mpstat -P ALL 1) on receiver
-> vCPU		0	1	2	3
-> =======================================================
-> pass 1:		38.85	0.03	24.89	24.65
-> pass 2:		39.15	0.03	24.57	25.28
-> pass 3:		40.36	0.03	23.20	23.17
-> 
-> =======================================================
-> Case 2: with this patch
-> =======================================================
-> 4 vcpu(2 cores), 5 MANA IRQs (1 HWC + 4 Queue)
-> 
->         TYPE            effective vCPU aff
-> =======================================================
-> IRQ0:   HWC             0
-> IRQ1:   mana_q1         0
-> IRQ2:   mana_q2         1
-> IRQ3:   mana_q3         2
-> IRQ4:   mana_q4         3
-> 
-> %soft on each vCPU(mpstat -P ALL 1) on receiver
-> vCPU            0       1       2       3
-> =======================================================
-> pass 1:         15.42	15.85	14.99	14.51
-> pass 2:         15.53	15.94	15.81	15.93
-> pass 3:         16.41	16.35	16.40	16.36
-> 
-> =======================================================
-> Throughput Impact(in Gbps, same env)
-> =======================================================
-> TCP conn	with patch	w/o patch
-> 20480		15.65		7.73
-> 10240		15.63		8.93
-> 8192		15.64		9.69
-> 6144		15.64		13.16
-> 4096		15.69		15.75
-> 2048		15.69		15.83
-> 1024		15.71		15.28
-> 
-> Fixes: 755391121038 ("net: mana: Allocate MSI-X vectors dynamically")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
-> Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
-> Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
-> ---
->  .../net/ethernet/microsoft/mana/gdma_main.c   | 35 +++++++++++++++++--
->  1 file changed, 33 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-> index 098fbda0d128..433c044d53c6 100644
-> --- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
-> +++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-> @@ -1672,6 +1672,23 @@ static int irq_setup(unsigned int *irqs, unsigned int len, int node,
->  	return 0;
->  }
->  
-> +static int irq_setup_linear(unsigned int *irqs, unsigned int len)
-> +{
-> +	int cpu;
-> +
-> +	rcu_read_lock();
-We do not need to call rcu_read_lock here, as the caller of this
-function has already acquired cpus_read_lock.
-> +	for_each_online_cpu(cpu) {
-> +		if (len <= 0)
-len is unsigned here so <= doesnot makes sense. PLease change it to int
-or better use if(!len)
-> +			break;
-> +
-> +		irq_set_affinity_and_hint(*irqs++, cpumask_of(cpu));
-> +		len--;
-> +	}
-> +	rcu_read_unlock();
-> +
-> +	return 0;
-> +}
-> +
->  static int mana_gd_setup_dyn_irqs(struct pci_dev *pdev, int nvec)
->  {
->  	struct gdma_context *gc = pci_get_drvdata(pdev);
-> @@ -1722,10 +1739,24 @@ static int mana_gd_setup_dyn_irqs(struct pci_dev *pdev, int nvec)
->  	 * first CPU sibling group since they are already affinitized to HWC IRQ
->  	 */
->  	cpus_read_lock();
-> -	if (gc->num_msix_usable <= num_online_cpus())
-> +	if (gc->num_msix_usable <= num_online_cpus()) {
->  		skip_first_cpu = true;
-> +		err = irq_setup(irqs, nvec, gc->numa_node, skip_first_cpu);
-> +	} else {
-> +		/*
-> +		 * In case our IRQs are more than num_online_cpus, we try to
-> +		 * make sure we are using all vcpus. In such a case NUMA or
-> +		 * CPU core affinity does not matter.
-> +		 * Note that in this case the total mana IRQ should always be
-> +		 * num_online_cpu + 1. The first HWC IRQ is already handled
-> +		 * in HWC setup calls
-> +		 * So, the nvec value in this path should always be equal to
-> +		 * num_online_cpu
-nit: typo: should be num_online_cpus
-> +		 */
-> +		WARN_ON(nvec > num_online_cpus());
-> +		err = irq_setup_linear(irqs, nvec);
-> +	}
->  
-> -	err = irq_setup(irqs, nvec, gc->numa_node, skip_first_cpu);
->  	if (err) {
->  		cpus_read_unlock();
->  		goto free_irq;
-> 
-> base-commit: e728258debd553c95d2e70f9cd97c9fde27c7130
-> -- 
-> 2.34.1
-> 
-Regards
-Dipayaan Roy
+
+The patch below does not apply to the 6.12-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git checkout FETCH_HEAD
+git cherry-pick -x 6af249c996f7d73a3435f9e577956fa259347d18
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026042432-saggy-streak-1365@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 6af249c996f7d73a3435f9e577956fa259347d18 Mon Sep 17 00:00:00 2001
+From: Chao Yu <chao@kernel.org>
+Date: Wed, 11 Mar 2026 21:35:42 +0800
+Subject: [PATCH] f2fs: fix to do sanity check on dcc->discard_cmd_cnt
+ conditionally
+
+Syzbot reported a f2fs bug as below:
+
+------------[ cut here ]------------
+kernel BUG at fs/f2fs/segment.c:1900!
+Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
+CPU: 1 UID: 0 PID: 6527 Comm: syz.5.110 Not tainted syzkaller #0 PREEMPT_{RT,(full)}
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2026
+RIP: 0010:f2fs_issue_discard_timeout+0x59b/0x5a0 fs/f2fs/segment.c:1900
+Code: d9 80 e1 07 80 c1 03 38 c1 0f 8c d6 fe ff ff 48 89 df e8 a8 5e fa fd e9 c9 fe ff ff e8 4e 46 94 fd 90 0f 0b e8 46 46 94 fd 90 <0f> 0b 0f 1f 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3
+RSP: 0018:ffffc9000494f940 EFLAGS: 00010283
+RAX: ffffffff843009ca RBX: 0000000000000001 RCX: 0000000000080000
+RDX: ffffc9001ca78000 RSI: 00000000000029f3 RDI: 00000000000029f4
+RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
+R10: dffffc0000000000 R11: ffffed100893a431 R12: 1ffff1100893a430
+R13: 1ffff1100c2b702c R14: dffffc0000000000 R15: ffff8880449d2160
+FS:  00007ffa35fed6c0(0000) GS:ffff88812643d000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f2b68634000 CR3: 0000000039f62000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ __f2fs_remount fs/f2fs/super.c:2960 [inline]
+ f2fs_reconfigure+0x108a/0x1710 fs/f2fs/super.c:5443
+ reconfigure_super+0x227/0x8a0 fs/super.c:1080
+ do_remount fs/namespace.c:3391 [inline]
+ path_mount+0xdc5/0x10e0 fs/namespace.c:4151
+ do_mount fs/namespace.c:4172 [inline]
+ __do_sys_mount fs/namespace.c:4361 [inline]
+ __se_sys_mount+0x31d/0x420 fs/namespace.c:4338
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7ffa37dbda0a
+
+The root cause is there will be race condition in between f2fs_ioc_fitrim()
+and f2fs_remount():
+
+- f2fs_remount			- f2fs_ioc_fitrim
+ - f2fs_issue_discard_timeout
+  - __issue_discard_cmd
+  - __drop_discard_cmd
+  - __wait_all_discard_cmd
+				 - f2fs_trim_fs
+				  - f2fs_write_checkpoint
+				   - f2fs_clear_prefree_segments
+				    - f2fs_issue_discard
+				     - __issue_discard_async
+				      - __queue_discard_cmd
+				       - __update_discard_tree_range
+				        - __insert_discard_cmd
+				         - __create_discard_cmd
+				         : atomic_inc(&dcc->discard_cmd_cnt);
+  - sanity check on dcc->discard_cmd_cnt (expect discard_cmd_cnt to be zero)
+
+This will only happen when fitrim races w/ remount rw, if we remount to
+readonly filesystem, remount will wait until mnt_pcp.mnt_writers to zero,
+that means fitrim is not in process at that time.
+
+Cc: stable@kernel.org
+Fixes: 2482c4325dfe ("f2fs: detect bug_on in f2fs_wait_discard_bios")
+Reported-by: syzbot+62538b67389ee582837a@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-f2fs-devel/69b07d7c.050a0220.8df7.09a1.GAE@google.com
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+
+diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+index 04891aaf476f..df4cdf804376 100644
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -3988,7 +3988,7 @@ bool f2fs_is_checkpointed_data(struct f2fs_sb_info *sbi, block_t blkaddr);
+ int f2fs_start_discard_thread(struct f2fs_sb_info *sbi);
+ void f2fs_drop_discard_cmd(struct f2fs_sb_info *sbi);
+ void f2fs_stop_discard_thread(struct f2fs_sb_info *sbi);
+-bool f2fs_issue_discard_timeout(struct f2fs_sb_info *sbi);
++bool f2fs_issue_discard_timeout(struct f2fs_sb_info *sbi, bool need_check);
+ void f2fs_clear_prefree_segments(struct f2fs_sb_info *sbi,
+ 					struct cp_control *cpc);
+ void f2fs_dirty_to_prefree(struct f2fs_sb_info *sbi);
+diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
+index 23faf6725632..0bf25786667f 100644
+--- a/fs/f2fs/segment.c
++++ b/fs/f2fs/segment.c
+@@ -1880,7 +1880,7 @@ void f2fs_stop_discard_thread(struct f2fs_sb_info *sbi)
+  *
+  * Return true if issued all discard cmd or no discard cmd need issue, otherwise return false.
+  */
+-bool f2fs_issue_discard_timeout(struct f2fs_sb_info *sbi)
++bool f2fs_issue_discard_timeout(struct f2fs_sb_info *sbi, bool need_check)
+ {
+ 	struct discard_cmd_control *dcc = SM_I(sbi)->dcc_info;
+ 	struct discard_policy dpolicy;
+@@ -1897,7 +1897,7 @@ bool f2fs_issue_discard_timeout(struct f2fs_sb_info *sbi)
+ 	/* just to make sure there is no pending discard commands */
+ 	__wait_all_discard_cmd(sbi, NULL);
+ 
+-	f2fs_bug_on(sbi, atomic_read(&dcc->discard_cmd_cnt));
++	f2fs_bug_on(sbi, need_check && atomic_read(&dcc->discard_cmd_cnt));
+ 	return !dropped;
+ }
+ 
+@@ -2367,7 +2367,7 @@ static void destroy_discard_cmd_control(struct f2fs_sb_info *sbi)
+ 	 * Recovery can cache discard commands, so in error path of
+ 	 * fill_super(), it needs to give a chance to handle them.
+ 	 */
+-	f2fs_issue_discard_timeout(sbi);
++	f2fs_issue_discard_timeout(sbi, true);
+ 
+ 	kfree(dcc);
+ 	SM_I(sbi)->dcc_info = NULL;
+diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+index a9adb6198184..f626e5ca089d 100644
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -2009,7 +2009,7 @@ static void f2fs_put_super(struct super_block *sb)
+ 	}
+ 
+ 	/* be sure to wait for any on-going discard commands */
+-	done = f2fs_issue_discard_timeout(sbi);
++	done = f2fs_issue_discard_timeout(sbi, true);
+ 	if (f2fs_realtime_discard_enable(sbi) && !sbi->discard_blks && done) {
+ 		struct cp_control cpc = {
+ 			.reason = CP_UMOUNT | CP_TRIMMED,
+@@ -2152,7 +2152,7 @@ static int f2fs_unfreeze(struct super_block *sb)
+ 	 * will recover after removal of snapshot.
+ 	 */
+ 	if (test_opt(sbi, DISCARD) && !f2fs_hw_support_discard(sbi))
+-		f2fs_issue_discard_timeout(sbi);
++		f2fs_issue_discard_timeout(sbi, true);
+ 
+ 	clear_sbi_flag(F2FS_SB(sb), SBI_IS_FREEZING);
+ 	return 0;
+@@ -2957,7 +2957,12 @@ static int __f2fs_remount(struct fs_context *fc, struct super_block *sb)
+ 			need_stop_discard = true;
+ 		} else {
+ 			f2fs_stop_discard_thread(sbi);
+-			f2fs_issue_discard_timeout(sbi);
++			/*
++			 * f2fs_ioc_fitrim() won't race w/ "remount ro"
++			 * so it's safe to check discard_cmd_cnt in
++			 * f2fs_issue_discard_timeout().
++			 */
++			f2fs_issue_discard_timeout(sbi, flags & SB_RDONLY);
+ 			need_restart_discard = true;
+ 		}
+ 	}
+
 
