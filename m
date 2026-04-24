@@ -1,200 +1,153 @@
-Return-Path: <stable+bounces-240622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240623-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gABKJvo862mfKAAAu9opvQ
-	(envelope-from <stable+bounces-240622-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 11:50:50 +0200
+	id +MkLGU4+62nFKAAAu9opvQ
+	(envelope-from <stable+bounces-240623-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 11:56:30 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4704D45C832
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 11:50:50 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6909645C97F
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 11:56:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 08BB73011A6B
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 09:50:48 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 80D6F3006207
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 09:56:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7163E342CA2;
-	Fri, 24 Apr 2026 09:50:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 205BB35A3A5;
+	Fri, 24 Apr 2026 09:56:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ptip3MmV"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Y4BXNqlq"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34CED3321DE
-	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 09:50:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F15A3359A8C
+	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 09:56:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777024247; cv=none; b=j46LKUu4qDqa6ie2ET3RBG0LbGifqvCFpD49p3dfx9F5YWjym209BSNFaimqTKEsKSSJK416MYgG8bZBBoDVTSsOyDLjAl67UU7PZyz1rJ1k1fEBplmHSEliIe6a3HlVNU08ZymmGfLqLHtlkS9o2p/gD64cZAoyoLfgSUjCso8=
+	t=1777024582; cv=none; b=Vje95XADGIFIwYls/M9a86VpEPmi65OpzoeuPaMjj6k++oVUIB7NGujgbUYHWK2WSpFRRYO0m7E/VJH5MPmikJ/xQCuDSbtixBteow3k7BjB2cA+dfWe93Y5aPz+5rhEJzEsyfktyIxIMd/Y3TMSA9Ig1/49LSJPbsQb+5K2yeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777024247; c=relaxed/simple;
-	bh=k+7JZ/H63efJd7aL7eLdS+9JCMNozZleyZPDV3Gue6Q=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=QjEaz9nfdf3QMh5Wr4JEu8P2t5FTwck+/ys7eyKJDD4+cvzTysfYaIi5wUrKZdCoFzKS3ecFvio5dF3rAroN9Eujy1yAXEjr4dUMVcMsRmp8nfaaiegSJ6/tQtv42Qt6Yl+XsHrxwY5JX5+uFu8Db8dc/MPULi0rqmaf0nLjrco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ptip3MmV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A5D3C19425;
-	Fri, 24 Apr 2026 09:50:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777024246;
-	bh=k+7JZ/H63efJd7aL7eLdS+9JCMNozZleyZPDV3Gue6Q=;
-	h=Subject:To:Cc:From:Date:From;
-	b=Ptip3MmVetxQh00CWRfiPuGr5kbv6G/asco6VeOxRZOlSWcnrsShzon8AFV3YL0Rn
-	 r6g4T/VZAM7epggpj0nNPI2rfSXQXoXkj0DF9AF/pomTiBSuNyFxnK0SYRejuCW4F2
-	 batlsXnJJBtIZdngp+gVOAZerQarsbeAIjJ78b+I=
-Subject: FAILED: patch "[PATCH] net/packet: fix TOCTOU race on mmap'd vnet_hdr in" failed to apply to 5.10-stable tree
-To: patzilla007@gmail.com,kuba@kernel.org,willemb@google.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Fri, 24 Apr 2026 11:50:34 +0200
-Message-ID: <2026042434-salad-scope-84d1@gregkh>
+	s=arc-20240116; t=1777024582; c=relaxed/simple;
+	bh=vDVy4HSCuAzyuVuqYNYZG/345V3jt15pH76kXLi/aj8=;
+	h=From:To:cc:Subject:MIME-Version:Content-Type:Date:Message-ID; b=GzibML7Wir6L79FIeRDgcAg+wdOeYqfROzDi5QLaVEwatXYAimKY0LUZdnNZzH8cZ+dddy5//jCfOW1PdTcFT9tiEskqb1JAliRrvxMs5akMKRSZXleD4i9hJCziEU4EB7bAggxxvYAhB8iVM0ghFwM381V1leHTPlTChRaDwS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Y4BXNqlq; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1777024580;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=6oe4iP+qDM4VqrJwNPRfPMrmTeINxzNdTw84PQgwZL8=;
+	b=Y4BXNqlqnXhR+6OZMlwe9eUK2qQPAtmXJ8okEaba8OF9MgZZcEfi3cFu2uIR+ZyKisSGkJ
+	xTGWfBjAMBXOC/tIJvogKrDiqcR2FNI9In7bqrMRhSSF3xAr/+JKUG0BUpv+krBwSPTZrL
+	vPsauTxnhbCVc45dWK6+NaRzY4Z3+DA=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-634-wbknyXtUNnC4Ju8FXtvWGQ-1; Fri,
+ 24 Apr 2026 05:56:16 -0400
+X-MC-Unique: wbknyXtUNnC4Ju8FXtvWGQ-1
+X-Mimecast-MFC-AGG-ID: wbknyXtUNnC4Ju8FXtvWGQ_1777024575
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1C49219540D1;
+	Fri, 24 Apr 2026 09:56:15 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.44.48.17])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 606561944CED;
+	Fri, 24 Apr 2026 09:56:12 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+To: Steve French <sfrench@samba.org>,
+    Stefan Metzmacher <metze@samba.org>
+cc: dhowells@redhat.com, Paulo Alcantara <pc@manguebit.org>,
+    Tom Talpey <tom@talpey.com>, linux-cifs@vger.kernel.org,
+    linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+    stable@vger.kernel.org
+Subject: [PATCH] smb: client: Fix error cleanup in smb_extract_iter_to_rdma()
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4704D45C832
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <3418417.1777024571.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 24 Apr 2026 10:56:11 +0100
+Message-ID: <3418418.1777024571@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Rspamd-Queue-Id: 6909645C97F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-240623-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240622-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FREEMAIL_TO(0.00)[gmail.com,kernel.org,google.com];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	HAS_ORG_HEADER(0.00)[];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,gregkh:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dhowells@redhat.com,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[samba.org:email,manguebit.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,warthog.procyon.org.uk:mid]
 
+    =
 
-The patch below does not apply to the 5.10-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Fix smb_extract_iter_to_rdma() to use pre-decrement, not post-decrement, s=
+o
+that it cleans up the correct slots.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Fixes: e5fbdde43017 ("cifs: Add a function to build an RDMA SGE list from =
+an iterator")
+Closes: https://sashiko.dev/#/patchset/20260326104544.509518-1-dhowells%40=
+redhat.com
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Steve French <sfrench@samba.org>
+cc: Stefan Metzmacher <metze@samba.org>
+cc: Paulo Alcantara <pc@manguebit.org>
+cc: Tom Talpey <tom@talpey.com>
+cc: linux-cifs@vger.kernel.org
+cc: linux-fsdevel@vger.kernel.org
+---
+ fs/smb/client/smbdirect.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
-git checkout FETCH_HEAD
-git cherry-pick -x 2c054e17d9d41f1020376806c7f750834ced4dc5
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026042434-salad-scope-84d1@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+diff --git a/fs/smb/client/smbdirect.c b/fs/smb/client/smbdirect.c
+index 7d5f66bdbb30..4978755c035c 100644
+--- a/fs/smb/client/smbdirect.c
++++ b/fs/smb/client/smbdirect.c
+@@ -3394,7 +3394,7 @@ static ssize_t smb_extract_iter_to_rdma(struct iov_i=
+ter *iter, size_t len,
+ =
 
-Possible dependencies:
+ 	if (ret < 0) {
+ 		while (rdma->nr_sge > before) {
+-			struct ib_sge *sge =3D &rdma->sge[rdma->nr_sge--];
++			struct ib_sge *sge =3D &rdma->sge[--rdma->nr_sge];
+ =
 
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 2c054e17d9d41f1020376806c7f750834ced4dc5 Mon Sep 17 00:00:00 2001
-From: Bingquan Chen <patzilla007@gmail.com>
-Date: Sat, 18 Apr 2026 19:20:06 +0800
-Subject: [PATCH] net/packet: fix TOCTOU race on mmap'd vnet_hdr in
- tpacket_snd()
-
-In tpacket_snd(), when PACKET_VNET_HDR is enabled, vnet_hdr points
-directly into the mmap'd TX ring buffer shared with userspace. The
-kernel validates the header via __packet_snd_vnet_parse() but then
-re-reads all fields later in virtio_net_hdr_to_skb(). A concurrent
-userspace thread can modify the vnet_hdr fields between validation
-and use, bypassing all safety checks.
-
-The non-TPACKET path (packet_snd()) already correctly copies vnet_hdr
-to a stack-local variable. All other vnet_hdr consumers in the kernel
-(tun.c, tap.c, virtio_net.c) also use stack copies. The TPACKET TX
-path is the only caller of virtio_net_hdr_to_skb() that reads directly
-from user-controlled shared memory.
-
-Fix this by copying vnet_hdr from the mmap'd ring buffer to a
-stack-local variable before validation and use, consistent with the
-approach used in packet_snd() and all other callers.
-
-Fixes: 1d036d25e560 ("packet: tpacket_snd gso and checksum offload")
-Signed-off-by: Bingquan Chen <patzilla007@gmail.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20260418112006.78823-1-patzilla007@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index 4b043241fd56..8e6f3a734ba0 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -2718,7 +2718,8 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
- {
- 	struct sk_buff *skb = NULL;
- 	struct net_device *dev;
--	struct virtio_net_hdr *vnet_hdr = NULL;
-+	struct virtio_net_hdr vnet_hdr;
-+	bool has_vnet_hdr = false;
- 	struct sockcm_cookie sockc;
- 	__be16 proto;
- 	int err, reserve = 0;
-@@ -2819,16 +2820,20 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
- 		hlen = LL_RESERVED_SPACE(dev);
- 		tlen = dev->needed_tailroom;
- 		if (vnet_hdr_sz) {
--			vnet_hdr = data;
- 			data += vnet_hdr_sz;
- 			tp_len -= vnet_hdr_sz;
--			if (tp_len < 0 ||
--			    __packet_snd_vnet_parse(vnet_hdr, tp_len)) {
-+			if (tp_len < 0) {
-+				tp_len = -EINVAL;
-+				goto tpacket_error;
-+			}
-+			memcpy(&vnet_hdr, data - vnet_hdr_sz, sizeof(vnet_hdr));
-+			if (__packet_snd_vnet_parse(&vnet_hdr, tp_len)) {
- 				tp_len = -EINVAL;
- 				goto tpacket_error;
- 			}
- 			copylen = __virtio16_to_cpu(vio_le(),
--						    vnet_hdr->hdr_len);
-+						    vnet_hdr.hdr_len);
-+			has_vnet_hdr = true;
- 		}
- 		copylen = max_t(int, copylen, dev->hard_header_len);
- 		skb = sock_alloc_send_skb(&po->sk,
-@@ -2865,12 +2870,12 @@ tpacket_error:
- 			}
- 		}
- 
--		if (vnet_hdr_sz) {
--			if (virtio_net_hdr_to_skb(skb, vnet_hdr, vio_le())) {
-+		if (has_vnet_hdr) {
-+			if (virtio_net_hdr_to_skb(skb, &vnet_hdr, vio_le())) {
- 				tp_len = -EINVAL;
- 				goto tpacket_error;
- 			}
--			virtio_net_hdr_set_proto(skb, vnet_hdr);
-+			virtio_net_hdr_set_proto(skb, &vnet_hdr);
- 		}
- 
- 		skb->destructor = tpacket_destruct_skb;
+ 			ib_dma_unmap_single(rdma->device, sge->addr, sge->length,
+ 					    rdma->direction);
 
 
