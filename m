@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-240693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240694-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +N1tFj1y62nCMwAAu9opvQ
-	(envelope-from <stable+bounces-240693-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:38:05 +0200
+	id QBOPJyxx62nCMwAAu9opvQ
+	(envelope-from <stable+bounces-240694-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:33:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95B4845F432
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:38:04 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A55145F17F
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:33:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0FF5A306D2AE
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:33:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 342133009560
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:33:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD30919A288;
-	Fri, 24 Apr 2026 13:33:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 453EB23E356;
+	Fri, 24 Apr 2026 13:33:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FWjyTb1Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1+udow5B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A066878F4A;
-	Fri, 24 Apr 2026 13:33:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 098D53AC00;
+	Fri, 24 Apr 2026 13:33:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777037595; cv=none; b=HjdM88d0mkM3nogXGMgh+rhJpxlnKetIdyJ9K/oVoW67qAwDeAbXvuVLS7dRvbmM6jKPaXpd+8Om5BqnG8a2ptnmws7kS9etFd5m0QNjySl0ibDPBgHlTLVUO+JXZ/OrDSzpsvlTpeIEQk0O6t09vJ5pXi1ll2fieCk1WEuAgBQ=
+	t=1777037598; cv=none; b=RCTICJUjCdTSt8FG61emauLFqkzGW1duk9JGbaG+xKzwuyrUKy/a6EA/JqCQi0t9vd6lWxfycmRzrBbuQnWVBB5RO2HbETGVLrmWEv3gzLc/+6244ey6FHiv2ipQbVOmu9mZlSPly/+TbeVS/URXwz0jR1CLsmfPV1ClzJY29+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777037595; c=relaxed/simple;
-	bh=8d+FweySo1RjfGL45XxYXMdqtEV+79tTGAoW67IfoYw=;
+	s=arc-20240116; t=1777037598; c=relaxed/simple;
+	bh=66iZvgiv9iLrzTiJR9anaYXxWS+ozclk+bQjde9GlpQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SOVgj1TE5I8osvaAso3MNkkn03Jr6JO/lKyw6fXATuHFmrHIsQadzmoHCRd+Lslbk/0B1Kh1IhxQT29q3koXmpmAcKLevu+4GQ0k3w7anoeQArZoo/dgQ3HyOyg9BFkUeE2/OjDRvoog0kCBKtf3JFiI2PHS8xSjnWbgjT3qMus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FWjyTb1Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BB63C19425;
-	Fri, 24 Apr 2026 13:33:14 +0000 (UTC)
+	 MIME-Version; b=Y0uvb28ZaH6VPU7UCkxbJbIebZoAzH7LPBI+/3I7RCHwazCVnOGd/sBk/CLWKxjt920aV63uxPdZp5LkFh0ZsKSVeh9BBNxrQ2QnB/SPGNF3J3r6CPPmH7WFds3QxQtH0oZIaQHy27H1Zx+g06QC7t9rm3NbjI6deUG9RWvE4qI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1+udow5B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 945DCC2BCB2;
+	Fri, 24 Apr 2026 13:33:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777037595;
-	bh=8d+FweySo1RjfGL45XxYXMdqtEV+79tTGAoW67IfoYw=;
+	s=korg; t=1777037597;
+	bh=66iZvgiv9iLrzTiJR9anaYXxWS+ozclk+bQjde9GlpQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FWjyTb1Qutti9akOQNdPR5l8L5DqfLtQdf3Ce3dmw+0xSHb2+PeMXjeQlIL4YX1pg
-	 5YFNesOMl+HmOpJdiiVuN7wctPIRtoNtOLXJv98uCM0ZFt+dMVDKA9cym8YlY5ZaQr
-	 AEiDgBmOzPeoe6mOfUKF1XOc8eDHlh9bqw8ANSa0=
+	b=1+udow5BVUzde6o+rNNU9IXgkmsn/kGMdygNlZQNPqU7lxnyF/UCQcuBEdkrxknWO
+	 +gc7cocPilG4xQJlkCJ9Sj1qtSX9lA/Pzbagd5X2FsZrgCQ3ejlxsgkloF7YGz9WnI
+	 ttaRlBVpRpcn+0rT7md8yc1K+LfmZITKR7p91p9o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -49,9 +49,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sebastian Alba Vives <sebasjosue84@gmail.com>,
 	Sean Christopherson <seanjc@google.com>,
 	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 7.0 39/42] crypto: ccp: Dont attempt to copy PDH cert to userspace if PSP command failed
-Date: Fri, 24 Apr 2026 15:31:04 +0200
-Message-ID: <20260424132428.737004649@linuxfoundation.org>
+Subject: [PATCH 7.0 40/42] crypto: ccp: Dont attempt to copy ID to userspace if PSP command failed
+Date: Fri, 24 Apr 2026 15:31:05 +0200
+Message-ID: <20260424132428.920730142@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260424132420.410310336@linuxfoundation.org>
 References: <20260424132420.410310336@linuxfoundation.org>
@@ -65,28 +65,28 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 95B4845F432
+X-Rspamd-Queue-Id: 1A55145F17F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,gondor.apana.org.au];
-	TAGGED_FROM(0.00)[bounces-240693-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-240694-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
@@ -95,7 +95,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,apana.org.au:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
 7.0-stable review patch.  If anyone has any objections, please let me know.
 
@@ -103,22 +103,22 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 
 From: Sean Christopherson <seanjc@google.com>
 
-commit e76239fed3cffd6d304d8ca3ce23984fd24f57d3 upstream.
+commit 4f685dbfa87c546e51d9dc6cab379d20f275e114 upstream.
 
-When retrieving the PDH cert, don't attempt to copy the blobs to userspace
-if the firmware command failed.  If the failure was due to an invalid
-length, i.e. the userspace buffer+length was too small, copying the number
-of bytes _firmware_ requires will overflow the kernel-allocated buffer and
-leak data to userspace.
+When retrieving the ID for the CPU, don't attempt to copy the ID blob to
+userspace if the firmware command failed.  If the failure was due to an
+invalid length, i.e. the userspace buffer+length was too small, copying
+the number of bytes _firmware_ requires will overflow the kernel-allocated
+buffer and leak data to userspace.
 
   BUG: KASAN: slab-out-of-bounds in instrument_copy_to_user ../include/linux/instrumented.h:129 [inline]
   BUG: KASAN: slab-out-of-bounds in _inline_copy_to_user ../include/linux/uaccess.h:205 [inline]
   BUG: KASAN: slab-out-of-bounds in _copy_to_user+0x66/0xa0 ../lib/usercopy.c:26
-  Read of size 2084 at addr ffff8885c4ab8aa0 by task syz.0.186/21033
+  Read of size 64 at addr ffff8881867f5960 by task syz.0.906/24388
 
-  CPU: 51 UID: 0 PID: 21033 Comm: syz.0.186 Tainted: G     U     O        7.0.0-smp-DEV #28 PREEMPTLAZY
+  CPU: 130 UID: 0 PID: 24388 Comm: syz.0.906 Tainted: G     U     O        7.0.0-smp-DEV #28 PREEMPTLAZY
   Tainted: [U]=USER, [O]=OOT_MODULE
-  Hardware name: Google, Inc.                                                       Arcadia_IT_80/Arcadia_IT_80, BIOS 34.84.12-0 11/17/2025
+  Hardware name: Google, Inc. Arcadia_IT_80/Arcadia_IT_80, BIOS 12.62.0-0 11/19/2025
   Call Trace:
    <TASK>
    dump_stack_lvl+0xc5/0x110 ../lib/dump_stack.c:120
@@ -131,8 +131,8 @@ leak data to userspace.
    _inline_copy_to_user ../include/linux/uaccess.h:205 [inline]
    _copy_to_user+0x66/0xa0 ../lib/usercopy.c:26
    copy_to_user ../include/linux/uaccess.h:236 [inline]
-   sev_ioctl_do_pdh_export+0x3d3/0x7c0 ../drivers/crypto/ccp/sev-dev.c:2347
-   sev_ioctl+0x2a2/0x490 ../drivers/crypto/ccp/sev-dev.c:2568
+   sev_ioctl_do_get_id2+0x361/0x490 ../drivers/crypto/ccp/sev-dev.c:2222
+   sev_ioctl+0x25f/0x490 ../drivers/crypto/ccp/sev-dev.c:2575
    vfs_ioctl ../fs/ioctl.c:51 [inline]
    __do_sys_ioctl ../fs/ioctl.c:597 [inline]
    __se_sys_ioctl+0x11d/0x1b0 ../fs/ioctl.c:583
@@ -147,39 +147,27 @@ firwmware error.
 
 Reported-by: Alexander Potapenko <glider@google.com>
 Reported-by: Sebastian Alba Vives <sebasjosue84@gmail.com>
-Fixes: 76a2b524a4b1 ("crypto: ccp: Implement SEV_PDH_CERT_EXPORT ioctl command")
+Fixes: d6112ea0cb34 ("crypto: ccp - introduce SEV_GET_ID2 command")
 Cc: stable@vger.kernel.org
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/ccp/sev-dev.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/crypto/ccp/sev-dev.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
 --- a/drivers/crypto/ccp/sev-dev.c
 +++ b/drivers/crypto/ccp/sev-dev.c
-@@ -2340,7 +2340,10 @@ cmd:
- 
- 	ret = __sev_do_cmd_locked(SEV_CMD_PDH_CERT_EXPORT, &data, &argp->error);
- 
--	/* If we query the length, FW responded with expected data. */
-+	/*
-+	 * Firmware will return the length of the blobs (either the minimum
-+	 * required length or the actual length written), return 'em to the user.
-+	 */
- 	input.cert_chain_len = data.cert_chain_len;
- 	input.pdh_cert_len = data.pdh_cert_len;
- 
-@@ -2349,6 +2352,9 @@ cmd:
- 		goto e_free_cert;
+@@ -2224,6 +2224,9 @@ static int sev_ioctl_do_get_id2(struct s
+ 		goto e_free;
  	}
  
 +	if (ret || WARN_ON_ONCE(argp->error))
-+		goto e_free_cert;
++		goto e_free;
 +
- 	if (pdh_blob) {
- 		if (copy_to_user(input_pdh_cert_address,
- 				 pdh_blob, input.pdh_cert_len)) {
+ 	if (id_blob) {
+ 		if (copy_to_user(input_address, id_blob, data.len)) {
+ 			ret = -EFAULT;
 
 
 
