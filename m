@@ -1,215 +1,171 @@
-Return-Path: <stable+bounces-240567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240568-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QCLdJPEc62mRIgAAu9opvQ
-	(envelope-from <stable+bounces-240567-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 09:34:09 +0200
+	id wFf1AZUe62mRIgAAu9opvQ
+	(envelope-from <stable+bounces-240568-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 09:41:09 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65B7845ABDC
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 09:34:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6203E45ACAC
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 09:41:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0E4BC3012256
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 07:33:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 60D133014C0A
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 07:41:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54D7B30C34A;
-	Fri, 24 Apr 2026 07:33:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9DF3332913;
+	Fri, 24 Apr 2026 07:41:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ET2IVhVP"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d4vQcc1/"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17A3254763;
-	Fri, 24 Apr 2026 07:33:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777016033; cv=none; b=VEBgnb1aIPteGLmysly/tjT0C3sDvuDKACIFlZ5Ky3VlKZtcnzaUyHRa/QPBAO7TXWwanh5dCev5Zxv7XevMHngHvpIP7scU53C6CaxXDOyH1v6ZA9Caz/uLlTID52EPo3Czwo17ziwXkNZLE/cInsqELSD4kjcZdyp6rjFqmVA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777016033; c=relaxed/simple;
-	bh=FWUCIjlRnfU0ETPJAkdUekHGrm29nbNvT4ou3u2ZJrI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BR0q2NzFxPmEA1QB0DjoEstx2uOMOS3mta60wSRehveMbmcChycL77p/fNzINAs3oghyshqY58f+glPtgfddAmwpBzUIkLU4W2R8/25HBoTtTiB5ddhz3oqy/6b/u2xN/EBdA2EkCtHVvKkto7QeNJLXfdJhPwvboieWa0J+6LM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ET2IVhVP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E265C19425;
-	Fri, 24 Apr 2026 07:33:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777016032;
-	bh=FWUCIjlRnfU0ETPJAkdUekHGrm29nbNvT4ou3u2ZJrI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ET2IVhVPW1Je/rflovdV0szP2Nft7DLDtK4Cjt8gOa3tlrF0PYvVAsdr0AtKcI2nw
-	 Nq+tRJktHRoOnrRgLjk5Kv3ysZ2GmBvgxsuvvvVS0TTGEE7lrAaIzb149j1fee4kf4
-	 suHj+w2LF9Z9O8b/zefIcUsWF1YP8BPRUf94MHKp5vYpn5HZl+5iwfqHVhO9BKX13G
-	 TokYxhGt++juL6hzDh2Tme7OW4r63MYtWKGLTq0MG3pu3l2XBFHr7Tbi8btjUy7Nuu
-	 Gn8N/LHbYUCbRCqqvn8DuTdr5+LOL4DK+dRWxwDt3pTs3GTdLY10KD3DuG7COGtHP1
-	 QTWokFnUqoNtw==
-Message-ID: <0fe62163-cdfd-47e4-bc88-df7a69dc5a6d@kernel.org>
-Date: Fri, 24 Apr 2026 09:33:45 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E2FE2DF138
+	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 07:41:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777016463; cv=pass; b=GzkxRovFaqZqPIS47751UD/5AjPIGBjK1r+w2k60Q8td2lkMBnIF4n/kEqkOPppvGNYL4PsUIKT+HyhTJGflwDeo+y8gi6wGluoLC+86Sx5PyDqLocsSwVHiLaQwAO6Wi4JnoZa+LfLmol4v2/S6ptVgBoxQXo1/tyXXeRRCUfU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777016463; c=relaxed/simple;
+	bh=1rwbJM462mkcs2a4PZtcLRIS3iii9rEHHa3eCFevBXM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=R8D3GSZic9LIsrsLzh0u5+fRjE20wWuPRHpS1OUyTv+0br0wb1y2Lu2CrwCicdU1+uES7cYwta0u6rJunhIDOqUtMF7hy+HvWsYljiOcy2uEecoYthk8GXaqntpThcEEmLBMmugws78MW8ljEfjbQuJEBPpGYWQUFx4djCusNS0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d4vQcc1/; arc=pass smtp.client-ip=74.125.224.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-651b4d09141so10170076d50.1
+        for <stable@vger.kernel.org>; Fri, 24 Apr 2026 00:41:02 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777016461; cv=none;
+        d=google.com; s=arc-20240605;
+        b=hINie5vVCfAkBm3YQBNeGnYqo+vJC1s6utSW51DAsUZKwBUdx54Jn/0Yy/Q5B9napk
+         9cXXT3M+sVmNnuY7zuMjmPa9NSZJEdUy2q2lOTqunEqXvMUYlw0cr1gsa0JmHn2uQyjH
+         W8elv9FIyj2miEDo9TOdgoYmztmy+eGwtyn67qsWh3tbAS/Bbw7BvjS0jm0UQpUQK1Lp
+         UvApPuXfvJGUIQo7Zzymsf54Kt5xAxZndQx1kokP8icBtKiIQp+Gr06/LiP4cT8cN4JF
+         eik6F8DjqxPlc6Qn/hHda2e17+lrIYWSVpB2OkpeaIVmR0RpCpILgl0jsAA6diIVwkTy
+         MZjw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=1rwbJM462mkcs2a4PZtcLRIS3iii9rEHHa3eCFevBXM=;
+        fh=H5di6mawoscuKC3SHtcyBh/mOBMLLWEXGWh/uqO7Qcg=;
+        b=Soqg49JZFQ7rc+LzCwcBuRQ3smcBcX4SPM/yVSEIMoZGLVseskt7Qny8D7MSMO7F/j
+         UIYRn5sfKG633v1z4f+IEJFMfy6Qm9T4yglecB8hX5ewr/iHYWNBwR1EoLv1TTxGu2k5
+         Mey5T57xSZTjoc/4n0bS2J38UvLGOoeJNp9DWxuIvyGagKKDJJalB6WzoElcyDsv7enl
+         6u2nfL3H0aCKym+hBqoMxR32K1Gw+KAkcM6tpivU+5DLqJ54QZoRd7u9nid2R0PFB7RJ
+         Fcrduf0Ox6F9ElGZ9O4cmZBGplD3C9/6h53G8leaJC5OE+9wvuJEnWgu965NosO99pzt
+         UMPQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777016461; x=1777621261; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=1rwbJM462mkcs2a4PZtcLRIS3iii9rEHHa3eCFevBXM=;
+        b=d4vQcc1/uuAq0HuzOYiCC6ADh5RnLzKSe8EYVhn1CQ2Qq6rZGXQk2RrEqDmJyLR7Rg
+         5DwQOnOK/OnpIQj21ar01SF1V8gQtmWzzW1TWNHBANCwjUuMfdbB6A9KdTUUXQAedL5c
+         BodLu9Wll8nh68u6NqUfDNx62TmKR4kB2yXf0NAu2EgWznfuCWM8fdtg+SYaxM5hjSGi
+         PbIAAUKEeZg+7EVl0oFPSsdSAvso8VGyHqaHjtVD4VGatea0srhtIDsUb9cQtyE40CEH
+         jd5AMTa+ByHa+wSM2Wz0p8BFjPIvG39kAfiSlBYxhQfIfF8bYCxyKZ1FLubmkAKoXre1
+         F4KQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777016461; x=1777621261;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1rwbJM462mkcs2a4PZtcLRIS3iii9rEHHa3eCFevBXM=;
+        b=aHh+B/XJBAJtzKXlnnm2jY1Q7v/H4/3goKEsygf7XUTUh8UBya+2G/FQKAisM85U9k
+         fyjK6zZOr31ua2dm6PM+knOw7XPWO20C72q3Zpb5qfuP9jn1xRFMzKzdHHzDeD4FGkt0
+         spradCHNmd2eU6oYALCEr5+RKtGEjLeIZowJjUUe3107evEUsaMN3mqdNqmBqEyJZvwu
+         NH58KiPAcHQB1nuivC50Rb+0SO4/5l/E/xPa2LqmVRto2XFLNq2kHWe0h6kFun5EjGUS
+         hrjwIrPQ2zxPT4XK4q3RvmAwnQE0HCdHq/02XyH71RofsDSCZKkhjv5MJGXIRxjUhSzX
+         rGXA==
+X-Forwarded-Encrypted: i=1; AFNElJ9vdoG6Q8H9wZxQyhCzFbln2Vf4e99Tu0pKKmVUY0+6qDflGXRZx0UiDLW14GOuxz/Qy9Wbv0I=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yya966r1uVKkTFQm0iDEFJ5kuo2mcAWYagN8AP5R9BzmjB3pxty
+	VVlwQa0DVd118G6GA8xb2IMi9a+nAYj9TFp/40CMuNkdTiJL4c2iCRuNGT/LSYk4dvIWXuugSZN
+	TfmbhNRDSGZ1fA+WOm6LMNougABsRdtI=
+X-Gm-Gg: AeBDievIbSGuTAUYHbqKsO4lCmUIf3OyZMa1r0oPU6QjO/Dos/YiJdWeshJhUn4L62n
+	4p8InzEK06jKfEanm1E0luFuR0nCXJd2I0wwH+9/wWyLsUdd/Keqg062ZIq3Hb3LYdUjgT/Zmyn
+	v84uUrfVz3iCwhH6rDkoPrzUb+sSMfZIzUJTdk4mWG18HUtX/HP+5m4bg8s6z/FyMa61Q7G6Aoh
+	oNCcEJ0bzji+jvjfALMXpZbSZFWgelzah3U6fJ7Rv+RBSghs2CRcs4CTUwZBZXaMJG8KWXW5Np4
+	MxaPCpguW1nyg32IfLfj
+X-Received: by 2002:a53:ac93:0:b0:651:bd7e:c04c with SMTP id
+ 956f58d0204a3-653119c494cmr20614638d50.21.1777016461293; Fri, 24 Apr 2026
+ 00:41:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 4/7] mm/sparse-vmemmap: Fix DAX vmemmap accounting with
- optimization
-To: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>,
- aneesh.kumar@linux.ibm.com, joao.m.martins@oracle.com, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260424025547.3806072-1-songmuchun@bytedance.com>
- <20260424025547.3806072-5-songmuchun@bytedance.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
- ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
- AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
- 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
- g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
- ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
- 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
- /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
- jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
- DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
- HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
- 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
- LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
- 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
- VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
- /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
- iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
- 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
- zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
- azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
- FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
- sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
- 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
- EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
- IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
- 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
- Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
- sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
- yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
- 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
- r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
- 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
- CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
- qIws/H2t
-In-Reply-To: <20260424025547.3806072-5-songmuchun@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 65B7845ABDC
+References: <20260415145708.3331818-1-lgs201920130244@gmail.com>
+ <177645836617.906013.5675762942401997007.b4-ty@b4> <897f442d-4e04-4b70-b716-38fd10b8af36@kernel.org>
+ <f661cf47-18bb-44f2-8764-c9f0b4fb68b1@kernel.dk> <CANUHTR8W7tz0me90GDci97ee6N+3MpB7uVYYFN0dtTf9u_Ui2g@mail.gmail.com>
+ <2026042411-repressed-manliness-4ee9@gregkh>
+In-Reply-To: <2026042411-repressed-manliness-4ee9@gregkh>
+From: Guangshuo Li <lgs201920130244@gmail.com>
+Date: Fri, 24 Apr 2026 15:40:46 +0800
+X-Gm-Features: AQROBzD7oP01iGJO03f9pinRfdfCsBQH9AjYJ8PiauZIUw4gABPVYWeiSnqKu4A
+Message-ID: <CANUHTR_JwTXpmE_Y6FbDfgqbJgBOjJyjR75ycW7WfLDuTbEdQw@mail.gmail.com>
+Subject: Re: [PATCH v2] floppy: fix reference leak on platform_device_register()
+ failure
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Jens Axboe <axboe@kernel.dk>, Jiri Slaby <jirislaby@kernel.org>, 
+	Denis Efremov <efremov@linux.com>, Greg Kroah-Hartman <gregkh@suse.de>, linux-block@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 6203E45ACAC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240567-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[kernel.org,oracle.com,google.com,suse.com,gmail.com,linux.ibm.com,kvack.org,lists.ozlabs.org,vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240568-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[david@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bytedance.com:email,suse.de:email]
+	RCPT_COUNT_SEVEN(0.00)[8];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-On 4/24/26 04:55, Muchun Song wrote:
-> When vmemmap optimization is enabled for DAX, the nr_memmap_pages
-> counter in /proc/vmstat is incorrect. The current code always accounts
-> for the full, non-optimized vmemmap size, but vmemmap optimization
-> reduces the actual number of vmemmap pages by reusing tail pages. This
-> causes the system to overcount vmemmap usage, leading to inaccurate
-> page statistics in /proc/vmstat.
-> 
-> Fix this by introducing section_vmemmap_pages(), which returns the exact
-> vmemmap page count for a given pfn range based on whether optimization
-> is in effect.
-> 
-> Fixes: 15995a352474 ("mm: report per-page metadata information")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> Acked-by: Oscar Salvador <osalvador@suse.de>
-> ---
->  mm/sparse-vmemmap.c | 31 +++++++++++++++++++++++++++----
->  1 file changed, 27 insertions(+), 4 deletions(-)
-> 
-> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
-> index 3340f6d30b01..2e642c5ff3f2 100644
-> --- a/mm/sparse-vmemmap.c
-> +++ b/mm/sparse-vmemmap.c
-> @@ -652,6 +652,28 @@ void offline_mem_sections(unsigned long start_pfn, unsigned long end_pfn)
->  	}
->  }
->  
-> +static int __meminit section_nr_vmemmap_pages(unsigned long pfn, unsigned long nr_pages,
-> +		struct vmem_altmap *altmap, struct dev_pagemap *pgmap)
-> +{
-> +	const unsigned int order = pgmap ? pgmap->vmemmap_shift : 0;
-> +	const unsigned long pages_per_compound = 1UL << order;
-> +
-> +	VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages,
-> +				    min(pages_per_compound, PAGES_PER_SECTION)));
+Hi Greg,
 
-FWIW, I though the right thing to do here would be:
+Thanks for reviewing and pointing this out.
 
-	VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages, pages_per_compound);
-	VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages, PAGES_PER_SUBSECTION);
+On Fri, 24 Apr 2026 at 12:15, Greg KH <gregkh@linuxfoundation.org> wrote:
+>
+>
+> Can you go back and verify that all of the other patches you sent out
+> for this same pattern are also either ignored, or reverted?
+>
+> thanks,
+>
+> greg k-h
 
-I don't really see how PAGES_PER_SECTION make sense given that
-PAGES_PER_SUBSECTION are the smallest granularity we allow adding/removing.
+Yes, I will go back and check all the other patches I sent for this same
+pattern. For any cases involving static platform devices or similar static
+objects where this fix is not appropriate, I will follow up by email to
+make sure they are either ignored or reverted as needed.
 
-Also, the "min()" implies that there is a connection between both properties,
-but there isn't to that degree.
+Thanks again for the guidance.
 
-If order == 0, then you'd only ever check alignment for ... 1, not
-PAGES_PER_SUBSECTION, which already looks weird.
-
-So you really want to check "max(pages_per_compound, PAGES_PER_SUBSECTION)", but
-just having two statements is clearer.
-
-Or am I getting something very wrong here? :)
-
-
--- 
-Cheers,
-
-David
+Best regards,
+Guangshuo Li
 
