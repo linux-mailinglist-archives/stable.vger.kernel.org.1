@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-240591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240593-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4AslIVU662nRJwAAu9opvQ
-	(envelope-from <stable+bounces-240591-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 11:39:33 +0200
+	id uHIhCV4662nRJwAAu9opvQ
+	(envelope-from <stable+bounces-240593-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 11:39:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4C3C45C52A
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 11:39:32 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF59145C538
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 11:39:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7CC8C3013D57
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 09:38:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D4A5E3019F1C
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 09:38:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB09138AC78;
-	Fri, 24 Apr 2026 09:38:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B1CC38AC75;
+	Fri, 24 Apr 2026 09:38:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bgWOleVG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="efZiEvKV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF69B3890F3
-	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 09:38:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3DE53890F3
+	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 09:38:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777023515; cv=none; b=Sa80eLkXbv0GrTRIUtCQQqxzumZ+gO4syEiD9MLYJmEhhEVL9wLoTHnblsMAvH2tKf1mV4xGwg91T+Z4jZKQEk9bBqfnmOCo7wTa55FUCPIxIKtDsSJERGmx4f/9QKbqtUagvY6AJkO5B9NuQnenvg3yX5FOdcnMEctbDTKDOUc=
+	t=1777023521; cv=none; b=QJ61qL/UGZYh4MtuWeq3RHclo9AhbKz0BOm/xEvN4eVBsjLOaST5rAaOJBCQ307ELFg6CEB6fsH8d1moJYM/h16P3kS7E7Xf1Z+joep/6tn9aMWPpWRN8L9VtxsuDwU/rUKFrEpgt9GAjY+l+99M5dBkgy/94btCCar50gEtIR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777023515; c=relaxed/simple;
-	bh=bd7w/tPzL5W8rqJEpyIUfON+YVllUiDt3XcG6DQFbL4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=VjyPE2/b5/Bz26RjbP9cMJyCDoRSmVSB1p/P9Vu7OqYljOBfbxZR+SKa1aNQAmHW/ghTIc/a5M411BxE5y6BeYCAcjtsyBrONSl7PLaCC/7J1XGe+cHSwLD3poZeIaJw2sz4aG4P+/z3l90tr6coWvIBnvfF85WrGB2xc8dpbBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bgWOleVG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BC1EC19425;
-	Fri, 24 Apr 2026 09:38:34 +0000 (UTC)
+	s=arc-20240116; t=1777023521; c=relaxed/simple;
+	bh=OZSHjjtZE3U6NeJjBIhrHvRJh/+3vd0x7Ex9zqwef4E=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Htpn3USz6SJ9VzhvtuLIRmsP1tqdTrIqtEoBA5yCMaQXwjn+R7hNEiRFjrDA2nYdHNEjbMg2RUEo9A0RpZWpUdjWZ/TxotPJzdAFx/pxN0a2sgIK849wCY9yGkE+bHv+fAnAxxSeFZFQomQXUL0Rq7C4nM4YJ4LTFmQGrquvakI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=efZiEvKV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4858EC19425;
+	Fri, 24 Apr 2026 09:38:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777023515;
-	bh=bd7w/tPzL5W8rqJEpyIUfON+YVllUiDt3XcG6DQFbL4=;
+	s=korg; t=1777023520;
+	bh=OZSHjjtZE3U6NeJjBIhrHvRJh/+3vd0x7Ex9zqwef4E=;
 	h=Subject:To:Cc:From:Date:From;
-	b=bgWOleVGctbpIKnN8+GMqbitph/An/uSeEMYse8D03jHTAipAHxEgjdopDLFCLdAG
-	 Mf6JNEWuh4eXPpJjmWyF4xZvsWCdhSLOzDlqZx3DWUi4mt3McTaBMv72u8SU7oyb9B
-	 4GWNoceXU3o2OZLLz9FJL6CCEEplQN+elJAe2Eps=
-Subject: FAILED: patch "[PATCH] f2fs: fix UAF caused by decrementing sbi->nr_pages[] in" failed to apply to 6.12-stable tree
+	b=efZiEvKVT98pvtZfnGLiMzh1CpAOi1/lrY2Et4yCD1oeJJ4Fga2S5DFcoH4YvIn5D
+	 3+SrazOFZA4bB2EmYfplHnIzjSNet4QoelsMgUWgG0BW5fd2CyJLaPCTj+4lnT3n+5
+	 48Qf+rDCS5I6DVvVEB4Goop0dswAsB/g6H7pRFSk=
+Subject: FAILED: patch "[PATCH] f2fs: fix UAF caused by decrementing sbi->nr_pages[] in" failed to apply to 6.1-stable tree
 To: yangyongpeng@xiaomi.com,chao@kernel.org,jaegeuk@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 24 Apr 2026 11:38:33 +0200
-Message-ID: <2026042432-donator-catalyze-5a9f@gregkh>
+Date: Fri, 24 Apr 2026 11:38:34 +0200
+Message-ID: <2026042434-ultra-craving-a7e9@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,7 +54,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E4C3C45C52A
+X-Rspamd-Queue-Id: BF59145C538
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
@@ -62,12 +62,12 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-240591-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-240593-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -81,25 +81,25 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,gregkh:email,appspotmail.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,xiaomi.com:email]
 
 
-The patch below does not apply to the 6.12-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 2d9c4a4ed4eef1f82c5b16b037aee8bad819fd53
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026042432-donator-catalyze-5a9f@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026042434-ultra-craving-a7e9@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
