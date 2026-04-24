@@ -1,194 +1,196 @@
-Return-Path: <stable+bounces-241008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241009-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GGI0M7qj62lpPgAAu9opvQ
-	(envelope-from <stable+bounces-241008-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 19:09:14 +0200
+	id +H9TFv6k62nIPgAAu9opvQ
+	(envelope-from <stable+bounces-241009-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 19:14:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70034461A38
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 19:09:14 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D79D9461B71
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 19:14:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C3B64302F6BA
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 16:58:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 595683021E95
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 16:59:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD0D433C198;
-	Fri, 24 Apr 2026 16:58:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A669A33C195;
+	Fri, 24 Apr 2026 16:59:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J/nnZDXa"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="a4z5HDBX"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010067.outbound.protection.outlook.com [40.93.198.67])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B5ED33BBCD
-	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 16:58:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777049937; cv=none; b=oOMcczTyhmieSk+syTl2ep8Et/KOVasbfyI1bG2I8bbmURfIw/XTKP7A0ux9h2l6ycvwErSC3G5FdQGhyzKeiSZO1svLwztFUVqkA+VGYcrnamZAW+jepeBmnLr7u+wD/dIjCh/oOfm9We0bNqN2cpzSVhCDz2ExcuOnzYlEiJg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777049937; c=relaxed/simple;
-	bh=AzOjxNZrv+J9Fly0aItH1+BiGcAPcSLRn572rDJv24g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=aDsXrLQH2etCALVKEQSrDIexD6gz8euOzFf01mG7XXvlRgVor+5XXI5E3JD70u+vwDVW/Kiz24KzS4ydRlPw/XLSmHs5YFmxrVbD/RO1W8CucYKVKe4Ga8U2Z1WFzcDI+CPmsr8hS6vOwv1zJWaVbED8jrCqzKCuL4oFqeMgdNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J/nnZDXa; arc=none smtp.client-ip=209.85.210.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-824c9da9928so4111940b3a.3
-        for <stable@vger.kernel.org>; Fri, 24 Apr 2026 09:58:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777049935; x=1777654735; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=2RXCXJGDvOh2rTTR70eKdmZmyxI9wZ3/3Yn4C43EO+c=;
-        b=J/nnZDXafChGaX9sdDegZJufznr5oB934qAOeMq6p6GOYfc3W2I/nVk60kBL+DM+6X
-         mIesI5psoxFv1DPECRDcFbxN6dTSyTIB4RU8OxGlST2Nwqno3Lkgc8dYb+Gncp9qOEFF
-         BiUHraC7kk6UgKiiliUh3VWnDOiLUTbZyC/yTIAbcBwMPoEUEXn/QPenIa0fm2uaGPZI
-         69VyphUJXCXUfR5k5bsoYkaEuEP01qPfY8lpY6uCsHFz2T5qlG2woA0x2SJiyGdpd9Dn
-         AmsiSdCvxRGy2r7sTBpoKX6egmN/udaQlXTX8ga3GyYmikRBONV3xeOmVPlNgrElAkB/
-         P+dQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777049935; x=1777654735;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2RXCXJGDvOh2rTTR70eKdmZmyxI9wZ3/3Yn4C43EO+c=;
-        b=ExYhNwOR+cBGPg2RmjwLkTwAyOUUald5nFjnMNq26TSvDWyrBUXlHGPWrko4qmFvNe
-         A+grAc2J+7wnyRZyvkTOF5FuwA/BaesMP4dP9nkHGJ0poXx6xsLyjCg3A30LKSqNWu69
-         +bUCzcqr0oGZ/jUZHOrzLx9Pkkf5ZuamVnk6pmE942TDKCGdxL/fRiXpHg2i6vY6q121
-         v+9/joSBg5tILV4ciF13lPk6gQOGASpxFy7VkveNAObton3wk14tHJCCQyJl9vfQGQ65
-         CLjD9uhahIjGcoWzUUpDHou5T8IdYw4a8+6k/lpI0Dk8lCf9Wuaz9JOfbkb2dJkt7nS5
-         SXHw==
-X-Forwarded-Encrypted: i=1; AFNElJ8Fkq1zZYNHVDh2D+7hUvi4XSBK5dFyBDgw4X4zALYH7H/7S0rUCaCvl71ChnyzyYWMlBp6vaE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwKNprn/ADGIuO6PNmsF8BJtAqfAbR5SAZwgJSc9V/9KIjZGEtM
-	0ysPxJeCSnXY3VF+Crn0JDYfP23bwWwtiBvVRtuAPpr3wR/AtvNFxaA=
-X-Gm-Gg: AeBDieshcL600yfioy4F75hwKqbCY+NDW2Y1z05RnDBzf9vTozwnnFPQacnluzu222j
-	RGahZXsWKmRKxg/3dXHIckNf2gLy22zkKiHki4URdq1ludC37zddAdP6Zwn28V64vtUaj5h0Z6A
-	xw4GHDuamABU4sDL4waLvJi3UDI4yTtW9CCB3ztKL80EBconVG27usjQlRJFwn8j8UId/dEcUE2
-	ZfTRd8JwQgOGf7RWKKtz9pLNpb623ypad0gWzi58yOEL25EF2R8WeGkGEdMJQ9vuZRwZ2voPLFI
-	dmmgkZDD2GqC+osFzVQq//60SjySH8b1j3xBTfyZ/GkOb7jCCkJQKXHVb73Mh4038YhYAis4vYZ
-	4/VNNI9YGI6Sis9Px4j8Iy19nJrRDmInbGFTbAnq37fCDjiamp8u+g0N8jKmd6MNN7tfCJfiiBj
-	roqf7ASgFd5Z5PFag5eX8AsDpaeok8uoTXql77yx0gkUeP3FXTC7ESR3DLruOzib56buZOTN3ta
-	BHRzCGQfzmiN8OGYLgcXhRrqeupDicgrCfDiQUJISlii3Q=
-X-Received: by 2002:a05:6a00:c8f:b0:82c:26a4:df02 with SMTP id d2e1a72fcca58-82f8c9bad60mr35494584b3a.42.1777049935465;
-        Fri, 24 Apr 2026 09:58:55 -0700 (PDT)
-Received: from localhost.localdomain ([1.226.165.54])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f8e9d6adbsm30739984b3a.18.2026.04.24.09.58.53
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 24 Apr 2026 09:58:54 -0700 (PDT)
-From: "=?UTF-8?q?=EB=B0=95=EB=AA=85=ED=9B=88?=" <mhun512@gmail.com>
-X-Google-Original-From: =?UTF-8?q?=EB=B0=95=EB=AA=85=ED=9B=88?= <pakmyeonghun@bagmyeonghun-ui-MacBookPro.local>
-To: Devarsh Thakkar <devarsht@ti.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Myeonghun Pak <mhun512@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] media: imagination: e5010: release m2m device on probe failure
-Date: Sat, 25 Apr 2026 01:58:43 +0900
-Message-ID: <20260424-e5010-m2m-probe-unwind-v1-1-mhun512@gmail.com>
-X-Mailer: git-send-email 2.47.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5300B33BBCD;
+	Fri, 24 Apr 2026 16:59:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.67
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777049973; cv=fail; b=NvHIISL+O4v93xFAI5JyPIpzFUqziDiGv6I+TwFDrwHAxXXH5aGN3jP0CVHy9u5b4cTCRA/ZVq2mrYZcYOs7gYJHBvMgDTDpUHwxk6G+K5LdGrJghrT2Ee0Sz7GUIFq9aAV0V4ObdmxV9rfcnwMGwa0n4E8m6LktLrp5kPOy0Xc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777049973; c=relaxed/simple;
+	bh=+qAVxxQby5elM5dUVCoDwg1ypCVobMx38b8f8ziPB90=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=PGzZLYx8AhFxsMEwhDUvdE3oqpznHws57p7MzLPzu4O2iB0PyjHmUlMB7cFjqqOo6y/bZsfK5N4yTZin2YYh1ygLNdkAR2l3l3xOIvb74HzWYaWl2AvMSfl7gXpRLV6cDBIKNQjc1+vPXiumO/KUvTndmGrXyWo6FddFaIwPnD8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=a4z5HDBX; arc=fail smtp.client-ip=40.93.198.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=wFgZ+n+Pw7ecEGOZs8YOZpKE91rxVW/HXBCIooKABDw85tBy2lbJQoT20E/eQBGjPY47ExOJEdNhf2coiinFxsKO4xVdpIDBTq2eibYlY1uY6kXLZNXi83wsdlxLu12L+4pMuto6dKMalQjnieaOPsXQJgwZkg2N0IJxeyjNVj1qMvFYotfWZZAmFEeIkUfoBeUt8nxaq6r5to+hKc0IPtnjTjUdH4M7l+2JZCVz8VOqBfrUFU8cpnpdIoVq6+ceFtc4cmhB4H+gnVDUsbaTIr2Ekef2MSW1rNaGdmGB4WC4q4GPhUUFOsLXR0kTF6AxC+tJ79Tr5bepWdGsFAXr4g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0OSshV25VRuxTYhlhQfnNq227Z5gMoiSkhRFHnQ3BE8=;
+ b=FqIx4/J3jeH8ro+J5roJ4WikaoWgQgduyutxDVae4+TfCT89P4TdcUrjxlGKLscucYNk0fCgqj1SnW9JpWZAYX1hIFiUTj6pak+q+dQZRIdBsor4Lb8IDh1FAgyfggkXApbr4MDevPpmxpInipMDqlK+Dt8oPMSi4KPCKnacupYK16G409cQ77HpEWmcxI+PE4Ul/QMsW/yk+SIH5up7WNopLa4d8/OI4R19U/6/sN3Wz2EYbLujJ3vF8ymdUUpyfAp6bQTT/lenB7og+kNI9onTK49X2JBL14Z9FWHw0W8c6NlJwY4AeBA03eOFHRUaOgZNy/ZTmqySKjYP5/HrNg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0OSshV25VRuxTYhlhQfnNq227Z5gMoiSkhRFHnQ3BE8=;
+ b=a4z5HDBXOKwI+Zfc7ZJu3fA33o4vcrcuSCzi0Wb516OQEQ3yNsX6489eUsiabputG8cVYkg0nFvlylbUn0Y+Z0y4z1kTW3c+o6j2s2pFDGIxcshVe4P6J6J9I7nw+Mtfr6j5i7rA2eJ0zzQsWH931Dgk7dWDmObV2QSh9k3bmSPNlGk2178XFLKj/c6Jk1oibzO/LGHBnkfm62P2GnN0tCvcuRpDS8yQdOLRjgRwwu0IDt25YQqMWSZm+/6xJIkNButOQ1L5wLxr0rsiuIiUtzq6EGBMAhH7zBtTNKXJRsFe1lFyCjdl7kjrQ2M20hkUfZh+6MZo9/4WDQlnhP0IKw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
+ by CY8PR12MB8243.namprd12.prod.outlook.com (2603:10b6:930:78::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.21; Fri, 24 Apr
+ 2026 16:59:29 +0000
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528%5]) with mapi id 15.20.9846.019; Fri, 24 Apr 2026
+ 16:59:29 +0000
+Date: Fri, 24 Apr 2026 13:59:27 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Nicolin Chen <nicolinc@nvidia.com>
+Cc: will@kernel.org, robin.murphy@arm.com, kevin.tian@intel.com,
+	joro@8bytes.org, praan@google.com, baolu.lu@linux.intel.com,
+	miko.lenczewski@arm.com, smostafa@google.com,
+	linux-arm-kernel@lists.infradead.org, iommu@lists.linux.dev,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	jamien@nvidia.com
+Subject: Re: [PATCH rc v2 2/5] iommu/arm-smmu-v3: Implement
+ is_attach_deferred() for kdump
+Message-ID: <20260424165927.GD3444440@nvidia.com>
+References: <cover.1776286352.git.nicolinc@nvidia.com>
+ <7637d66c0f6c1fb16da4b5c9c4cec71752cf4d23.1776286352.git.nicolinc@nvidia.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7637d66c0f6c1fb16da4b5c9c4cec71752cf4d23.1776286352.git.nicolinc@nvidia.com>
+X-ClientProxiedBy: YT4PR01CA0285.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:109::23) To LV8PR12MB9620.namprd12.prod.outlook.com
+ (2603:10b6:408:2a1::19)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 70034461A38
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|CY8PR12MB8243:EE_
+X-MS-Office365-Filtering-Correlation-Id: 050e695f-6e53-42b4-a791-08dea222d924
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|366016|1800799024|56012099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	uiW54GpT7lK/zsTN/bcb/1u1dnj70i3bWZgUu1aUMBe3MQ5WHqnHFqDcW1aQFiRL1IW9gZU4T/BdeRw72PyIIPl5SvZeouWAR+NtXKJfc3t+BjpDVqWEW0OBdVezYNyc4GAy6dv6fYjoXET1cfpRgwjLtOCptxuMVFmS3JqSgyJdnX53/gpKhZ1FRqV0E8CEzDg4utiVJSmUjvECHuOa/a42qs9cso0kezjoAe79KkhNaFjtNmgj+bFbmFTVqzL+/VrwZ2xT2lQt6T/+o2W3e7TQXJkBdAP0ulwAwithy5wr1w+uXtZZA8rwlHY7xoY8fxMWUVKoa4BIIB/tsEQhAs2OEuZd9hnw4d9NmV+2USZIS6Clez1UYWRlohhrcuZbehPwH2OwpJ+N9XRWyDThNhCE9JTNKgG2rNgqksQK0QktdiX1iWOiwE0ylr6p/yF4n3b0/+dNnIm+GBaR6JLW074oRyfPn5k4+p4QVjsUXxFRyoxpkzgB0uaMMilZSe6/Rr0BdppiXI6dKdCnKKj1/QG6hGmRXFDmPH+ckYb0Iu+pGn0ftvcYEIJm1mvStgI28ZezPyXTMqB7flr/ooUMYXGbQVagkHTC6ENBdx7sTgw+1I9zPiSHqf5rCfbtGeIJyoqCih4edRHGAZ4/HEeEd2B7g5Iq9xXFzVRRHycnXPgUM4wt1AMTqg7AOrFQr5Xe45JStBprhDbBLdT1DpjXXRaYW++ieCDEkSor3/yk/2U=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?061LsEciZjaqKkNSSpHwL/kQklUTazjLq6FxnTZOtVIeINlcg0fdTv67/DMw?=
+ =?us-ascii?Q?IWae3OyCuW/WuQwhGAFots/V+5TxmLa22QqO2li2Jtwv/sNBYk+S95BeL6/g?=
+ =?us-ascii?Q?FKhoVt7U7zpj3sN2oV0Kl/ni8neHhsqVt5mg1NtpvIUbP46rp5BXMIieqHSh?=
+ =?us-ascii?Q?CCakS8nvNZi3/ECcb1W7gsAa/bxRze1IFs8fP0dKexe0ZZ9ScBTN2YbEYc2H?=
+ =?us-ascii?Q?e3o0Z2bdZVuOn5v9obI/i/rjfS5JBqk3QmVbSuyTOtAAYrYFcLTORkWYF0Fy?=
+ =?us-ascii?Q?1c7xL1mWtSFzYRIEuY+h8TkZbIT00BA00kLV2a/rYMDxMrnMlHDHO/LBgWZz?=
+ =?us-ascii?Q?gWHhN40mzvh8Ibmgc1eLPFLOaLR8VbIdHmtkZ50n86nTzC6fTe3ra+pvYIW+?=
+ =?us-ascii?Q?p32A64TRuELjKFkSDJPJqQspu3rZCmuHQEhZEDy5Efy7Tbf3hRjXMNXRQU+r?=
+ =?us-ascii?Q?XwHHcrcpiy4DXp9GDos9NzVQ06Z4opiFax1GCxY9b6W1Vc4rIpyr/84iz/ya?=
+ =?us-ascii?Q?dyw3NMmhlzgtNe19zdrBGcXwEC/Rsv+A6seIq/WMw6D7lJW6owSOXfkGid7E?=
+ =?us-ascii?Q?dBn1dZ83HFuxmbdHa4s0Zo0u5CfbeRqXwwsa1XX1SjW7E4sTz1AmxZZv7scH?=
+ =?us-ascii?Q?BgeXyDLp8b5c2/DyD1fsP5aQRxz0w4tTWlu2EYyKvGW598NNrYPskkIDdAxp?=
+ =?us-ascii?Q?QpGKJNFWb50w76q+2V4dvjLZfMyopxPb9LbyHpkD2iyGRFmhHzJGwGuX5aaS?=
+ =?us-ascii?Q?UBxjNU3QlZRtK5VYnngme5ciqthGfyMjTe9CSUyI2OcBY6Qjl34SMR5Vyn9O?=
+ =?us-ascii?Q?I4QJENFhZaw7PrBbVZtl+Jdk6vhd18GUlQnr3lKgdP4HtnKtaQ0XSruorVQp?=
+ =?us-ascii?Q?FFqBQ8dLIZ294FZvgawYTkp/rUbP/Bffy6PEyGcdQd+BDan1N+q+XP7CgiIt?=
+ =?us-ascii?Q?C6d2YfCoET1vfJALOUbrmom0d800nVZJDdNLJLkVQMW9RdBnIDhqN+OrI4Zh?=
+ =?us-ascii?Q?M7IcZA4u8RSwEjY6ISX1aMN3b/oFh2ZlrKKeKh+AYKk6QW3cGQToDhrDJPku?=
+ =?us-ascii?Q?f9WBF5yU/pNKYuEvECf/N8MIXuiRlH6ZiLXXU6u/8CDY/nnWt7PrwqHrcKQ/?=
+ =?us-ascii?Q?UfFteAxTC7+Wste6ZDsK+NMUvorGQY+oxwwEACIpB+3H3P4x28tBu8FbxUPX?=
+ =?us-ascii?Q?F51aKGS1qgfnI9sULVulDcUosg54zymFCF9tQF40VMu8AAqINpw7newb//1+?=
+ =?us-ascii?Q?Sa+La7IS+ivFV6Eqm6mx2SV9gPYsHlWIi7QxT736u59NxGTyhqaW8WePvk9I?=
+ =?us-ascii?Q?KYy4JWoW+xUSHQ54xhfSNfi+Khn4AC6qqI1tLm9QR6JnLtH8+sJNt/lVb+BI?=
+ =?us-ascii?Q?46aRlrU/hySkMpwGtvTSMHTG6Tru9RFdlFobwj1lv1dZ9FfQHcIsJXOmdOQ3?=
+ =?us-ascii?Q?bbkv/sQp2SKS8WgJ9Vx9tP9ke+PCItVho7LIXlLnJ8IEAV4HjV/Ea3GWTYgK?=
+ =?us-ascii?Q?AW+PmNMHC8LmaszG3B1LT+2O8+94HXQShOn/R2uGSIqsOkQ5xEg12+wkeRp8?=
+ =?us-ascii?Q?ObhpLuEjb1bSqjQkodPsnZ92dfAUS+RkbSGfog3vulXzFEjhCCM8zTip7zfO?=
+ =?us-ascii?Q?88fQ1+Ryq+6MwkE3STj093S7fPuIqxSSHtJ2mWTbr/BpRsq9jT21Q5X0S7nw?=
+ =?us-ascii?Q?AaX8Ys5hpkFnHbIoqlZERhcK4qeETBq1RA6ToOjZLjExz5Ke?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 050e695f-6e53-42b4-a791-08dea222d924
+X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Apr 2026 16:59:29.1421
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: jPv7ZgzuvnGFKcnZ0FlyOlqSYt9D+DTcx2/wAkxQ00L1/fCgHC+9OHfWaB3hou4S
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB8243
+X-Rspamd-Queue-Id: D79D9461B71
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-241008-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-241009-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[Nvidia.com:+];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mhun512@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FROM_NEQ_ENVFROM(0.00)[jgg@nvidia.com,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_FIVE(0.00)[6]
+	TO_DN_SOME(0.00)[]
 
-From: Myeonghun Pak <mhun512@gmail.com>
+On Wed, Apr 15, 2026 at 02:17:37PM -0700, Nicolin Chen wrote:
+> +static bool arm_smmu_is_attach_deferred(struct device *dev)
+> +{
+> +	struct arm_smmu_master *master = dev_iommu_priv_get(dev);
+> +	struct arm_smmu_device *smmu = master->smmu;
+> +	int i;
+> +
+> +	if (!(smmu->options & ARM_SMMU_OPT_KDUMP))
+> +		return false;
+> +
+> +	for (i = 0; i < master->num_streams; i++) {
+> +		u32 sid = master->streams[i].id;
+> +		struct arm_smmu_ste *step;
+> +
+> +		/* Guard against unpopulated L2 entries in the adopted table */
+> +		if ((smmu->features & ARM_SMMU_FEAT_2_LVL_STRTAB) &&
+> +		    !smmu->strtab_cfg.l2.l2ptrs[arm_smmu_strtab_l1_idx(sid)])
+> +			continue;
 
-The probe path allocates the mem2mem device with v4l2_m2m_init(),
-but several later failures jump directly to the v4l2_device_unregister()
-unwind path. Since the driver core does not call .remove() after a failed
-probe, those paths leak the m2m device.
+This can probably just call arm_smmu_init_sid_strtab()
 
-Route post-v4l2_m2m_init() failures through the existing m2m release step
-before unregistering the v4l2 device.
+I think it is OK to allocate another level 2 here and it also has
+protections for SID out of range..
 
-Fixes: a1e294045885 ("media: imagination: Add E5010 JPEG Encoder driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
----
- drivers/media/platform/imagination/e5010-jpeg-enc.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/media/platform/imagination/e5010-jpeg-enc.c b/drivers/media/platform/imagination/e5010-jpeg-enc.c
-index 42ad9ee399..4c250e2275 100644
---- a/drivers/media/platform/imagination/e5010-jpeg-enc.c
-+++ b/drivers/media/platform/imagination/e5010-jpeg-enc.c
-@@ -1072,14 +1072,14 @@ static int e5010_probe(struct platform_device *pdev)
- 	if (IS_ERR(e5010->core_base)) {
- 		ret = PTR_ERR(e5010->core_base);
- 		dev_err_probe(dev, ret, "Missing 'core' resources area\n");
--		goto fail_after_v4l2_register;
-+		goto fail_after_m2m_init;
- 	}
- 
- 	e5010->mmu_base = devm_platform_ioremap_resource_byname(pdev, "mmu");
- 	if (IS_ERR(e5010->mmu_base)) {
- 		ret = PTR_ERR(e5010->mmu_base);
- 		dev_err_probe(dev, ret, "Missing 'mmu' resources area\n");
--		goto fail_after_v4l2_register;
-+		goto fail_after_m2m_init;
- 	}
- 
- 	e5010->last_context_run = NULL;
-@@ -1089,14 +1089,14 @@ static int e5010_probe(struct platform_device *pdev)
- 			       E5010_MODULE_NAME, e5010);
- 	if (ret) {
- 		dev_err_probe(dev, ret, "failed to register IRQ %d\n", irq);
--		goto fail_after_v4l2_register;
-+		goto fail_after_m2m_init;
- 	}
- 
- 	e5010->clk = devm_clk_get(dev, NULL);
- 	if (IS_ERR(e5010->clk)) {
- 		ret = PTR_ERR(e5010->clk);
- 		dev_err_probe(dev, ret, "failed to get clock\n");
--		goto fail_after_v4l2_register;
-+		goto fail_after_m2m_init;
- 	}
- 
- 	pm_runtime_enable(dev);
-@@ -1113,6 +1113,7 @@ static int e5010_probe(struct platform_device *pdev)
- 	return 0;
- 
- fail_after_video_register_device:
-+fail_after_m2m_init:
- 	v4l2_m2m_release(e5010->m2m_dev);
- fail_after_v4l2_register:
- 	v4l2_device_unregister(&e5010->v4l2_dev);
--- 
-2.50.0
+Jason
 
