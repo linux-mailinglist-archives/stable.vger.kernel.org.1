@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-240918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240945-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4H6kGmlz62kLNAAAu9opvQ
-	(envelope-from <stable+bounces-240918-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:43:05 +0200
+	id YOSgJFJ162lRNAAAu9opvQ
+	(envelope-from <stable+bounces-240945-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:51:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F67945F74C
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:43:04 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1EFF45FC20
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:51:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 59299300349D
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:43:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EBE1F304EABE
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:44:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BDB1386C0A;
-	Fri, 24 Apr 2026 13:42:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 202183D6CC7;
+	Fri, 24 Apr 2026 13:44:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VqwvnZn3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u7QJx7oJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C30D2221DB6;
-	Fri, 24 Apr 2026 13:42:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D82B43537DF;
+	Fri, 24 Apr 2026 13:44:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777038176; cv=none; b=s7psCjwSsBkGv7Q009l6ja5lr94vtK10CfauBwIZWlbKoDutR3oK5Ju1R77E4xmDA7lXnE2vnDxWYpIMHO2M7Q4kGuP54nHDhNGcmjUiMFPPbaMINGt/00Vb9gqf2/5VhzXVoRYVllSVia7v3+W7yKE5WzsB7igr1WmVw1rvJYY=
+	t=1777038243; cv=none; b=JpL2YXFSHC3GPQ9AjoemSvex6s7oCW8sYV6MyHprmtJtHwQyGnoYbfBG47VSPa7PxDZiA3Lj3sfcgHuBTL9yQ/driA+i+F4WGJnQuxUtqMnOpMSjU91X8+va1mvHPMI8SNQ400Up8z+oC50hqNUENJcSctLKjxo8zWfKnZFmDCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777038176; c=relaxed/simple;
-	bh=XPmEvXaAmA1Su4e/Ik6OB7vGhkyoe4LWVnMMnfJHfNQ=;
+	s=arc-20240116; t=1777038243; c=relaxed/simple;
+	bh=OGlFK7tI9ckvhK1CGOc5ZDWVgfo7ePpiM4/W1RVQJ6o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NGGlFb/4dpzY8u55wk1rFqXg5YCNtJYNpSG0S9JBQ2Py2kd5A/0YExO8+0Ahq5Ru3lLEId9iPdsdkPYPsj338xbWIcmq0QkUaudh58u8VspF+60d2IUpNy1QpGsXK6k+09++ZGiAh5ynP54Wuf3NIeeYJPgvJP6D8ROjfOI0m4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VqwvnZn3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58E8DC19425;
-	Fri, 24 Apr 2026 13:42:56 +0000 (UTC)
+	 MIME-Version; b=RCSepDLZ7Zc1WFgiVgWLBWGZGqiubDMehAn6eXaIoGw+YJNNI0MXE8ry/rSwhRF9GALgsRxdX4Uvogro6tarvdH/8dmuy2dvZsvNoJZO7teEZ0c7FsH33ajvkPe79+p+iqi69JjE5j8NTW2mSSTT8U5BWlCvrvkhqZmWP7oTNSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u7QJx7oJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E350C19425;
+	Fri, 24 Apr 2026 13:44:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777038176;
-	bh=XPmEvXaAmA1Su4e/Ik6OB7vGhkyoe4LWVnMMnfJHfNQ=;
+	s=korg; t=1777038243;
+	bh=OGlFK7tI9ckvhK1CGOc5ZDWVgfo7ePpiM4/W1RVQJ6o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VqwvnZn3VHBdSS3Qiezs9Yv37FArfHBuraBMyakz8agmPc+dK5/RlErTaa7qJQR9D
-	 V15ijtr3g9aVbNMaVN0wD6qUJirCwRSUl80wkh1oV0k/LcMDb3tCwjeMNA3ZW4isfV
-	 sH8FGtDdQqN+UU5bM0BleyGtOqCcnwLEfHna4lvg=
+	b=u7QJx7oJM9SiNrdm7e7xXWpuqwYx5XAeKjt0xJSDpP0xghXdJ9FFh4RKzw6kaeU3L
+	 c1KIS3gEIdOKKnDv0IYPOyIbLN9KMe2qqRnk35i7cewrry3MXRF7VVtJjHCbim+Y0O
+	 ZbkOCjCBtoWrVQmJEKM7JmOPf70gEjLWRZr+JNnw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Potapenko <glider@google.com>,
-	Sebastian Alba Vives <sebasjosue84@gmail.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.18 52/55] crypto: ccp: Dont attempt to copy CSR to userspace if PSP command failed
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 24/35] ksmbd: validate response sizes in ipc_validate_msg()
 Date: Fri, 24 Apr 2026 15:31:31 +0200
-Message-ID: <20260424132440.924147855@linuxfoundation.org>
+Message-ID: <20260424132416.806358220@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132430.006424517@linuxfoundation.org>
-References: <20260424132430.006424517@linuxfoundation.org>
+In-Reply-To: <20260424132411.427029259@linuxfoundation.org>
+References: <20260424132411.427029259@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,121 +64,160 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6F67945F74C
+X-Rspamd-Queue-Id: D1EFF45FC20
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,gondor.apana.org.au];
-	TAGGED_FROM(0.00)[bounces-240918-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+	TAGGED_FROM(0.00)[bounces-240945-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-commit abe4a6d6f606113251868c2c4a06ba904bb41eed upstream.
+commit d6a6aa81eac2c9bff66dc6e191179cb69a14426b upstream.
 
-When retrieving the PEK CSR, don't attempt to copy the blob to userspace
-if the firmware command failed.  If the failure was due to an invalid
-length, i.e. the userspace buffer+length was too small, copying the number
-of bytes _firmware_ requires will overflow the kernel-allocated buffer and
-leak data to userspace.
+ipc_validate_msg() computes the expected message size for each
+response type by adding (or multiplying) attacker-controlled fields
+from the daemon response to a fixed struct size in unsigned int
+arithmetic.  Three cases can overflow:
 
-  BUG: KASAN: slab-out-of-bounds in instrument_copy_to_user ../include/linux/instrumented.h:129 [inline]
-  BUG: KASAN: slab-out-of-bounds in _inline_copy_to_user ../include/linux/uaccess.h:205 [inline]
-  BUG: KASAN: slab-out-of-bounds in _copy_to_user+0x66/0xa0 ../lib/usercopy.c:26
-  Read of size 2084 at addr ffff898144612e20 by task syz.9.219/21405
+  KSMBD_EVENT_RPC_REQUEST:
+      msg_sz = sizeof(struct ksmbd_rpc_command) + resp->payload_sz;
+  KSMBD_EVENT_SHARE_CONFIG_REQUEST:
+      msg_sz = sizeof(struct ksmbd_share_config_response) +
+               resp->payload_sz;
+  KSMBD_EVENT_LOGIN_REQUEST_EXT:
+      msg_sz = sizeof(struct ksmbd_login_response_ext) +
+               resp->ngroups * sizeof(gid_t);
 
-  CPU: 14 UID: 0 PID: 21405 Comm: syz.9.219 Tainted: G     U     O        7.0.0-smp-DEV #28 PREEMPTLAZY
-  Tainted: [U]=USER, [O]=OOT_MODULE
-  Hardware name: Google, Inc. Arcadia_IT_80/Arcadia_IT_80, BIOS 12.62.0-0 11/19/2025
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0xc5/0x110 ../lib/dump_stack.c:120
-   print_address_description ../mm/kasan/report.c:378 [inline]
-   print_report+0xbc/0x260 ../mm/kasan/report.c:482
-   kasan_report+0xa2/0xe0 ../mm/kasan/report.c:595
-   check_region_inline ../mm/kasan/generic.c:-1 [inline]
-   kasan_check_range+0x264/0x2c0 ../mm/kasan/generic.c:200
-   instrument_copy_to_user ../include/linux/instrumented.h:129 [inline]
-   _inline_copy_to_user ../include/linux/uaccess.h:205 [inline]
-   _copy_to_user+0x66/0xa0 ../lib/usercopy.c:26
-   copy_to_user ../include/linux/uaccess.h:236 [inline]
-   sev_ioctl_do_pek_csr+0x31f/0x590 ../drivers/crypto/ccp/sev-dev.c:1872
-   sev_ioctl+0x3a4/0x490 ../drivers/crypto/ccp/sev-dev.c:2562
-   vfs_ioctl ../fs/ioctl.c:51 [inline]
-   __do_sys_ioctl ../fs/ioctl.c:597 [inline]
-   __se_sys_ioctl+0x11d/0x1b0 ../fs/ioctl.c:583
-   do_syscall_x64 ../arch/x86/entry/syscall_64.c:63 [inline]
-   do_syscall_64+0xe0/0x800 ../arch/x86/entry/syscall_64.c:94
-   entry_SYSCALL_64_after_hwframe+0x76/0x7e
-   </TASK>
+resp->payload_sz is __u32 and resp->ngroups is __s32.  Each addition
+can wrap in unsigned int; the multiplication by sizeof(gid_t) mixes
+signed and size_t, so a negative ngroups is converted to SIZE_MAX
+before the multiply.  A wrapped value of msg_sz that happens to
+equal entry->msg_sz bypasses the size check on the next line, and
+downstream consumers (smb2pdu.c:6742 memcpy using rpc_resp->payload_sz,
+kmemdup in ksmbd_alloc_user using resp_ext->ngroups) then trust the
+unverified length.
 
-WARN if the driver says the command succeeded, but the firmware error code
-says otherwise, as __sev_do_cmd_locked() is expected to return -EIO on any
-firwmware error.
+Use check_add_overflow() on the RPC_REQUEST and SHARE_CONFIG_REQUEST
+paths to detect integer overflow without constraining functional
+payload size; userspace ksmbd-tools grows NDR responses in 4096-byte
+chunks for calls like NetShareEnumAll, so a hard transport cap is
+unworkable on the response side.  For LOGIN_REQUEST_EXT, reject
+resp->ngroups outside the signed [0, NGROUPS_MAX] range up front and
+report the error from ipc_validate_msg() so it fires at the IPC
+boundary; with that bound the subsequent multiplication and addition
+stay well below UINT_MAX.  The now-redundant ngroups check and
+pr_err in ksmbd_alloc_user() are removed.
 
-Reported-by: Alexander Potapenko <glider@google.com>
-Reported-by: Sebastian Alba Vives <sebasjosue84@gmail.com>
-Fixes: e799035609e1 ("crypto: ccp: Implement SEV_PEK_CSR ioctl command")
+This is the response-side analogue of aab98e2dbd64 ("ksmbd: fix
+integer overflows on 32 bit systems"), which hardened the request
+side.
+
+Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
+Fixes: a77e0e02af1c ("ksmbd: add support for supplementary groups")
 Cc: stable@vger.kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Assisted-by: Claude:claude-opus-4-6
+Assisted-by: Codex:gpt-5-4
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/ccp/sev-dev.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ fs/smb/server/mgmt/user_config.c |    6 ------
+ fs/smb/server/transport_ipc.c    |   16 +++++++++++++---
+ 2 files changed, 13 insertions(+), 9 deletions(-)
 
---- a/drivers/crypto/ccp/sev-dev.c
-+++ b/drivers/crypto/ccp/sev-dev.c
-@@ -1833,7 +1833,10 @@ cmd:
+--- a/fs/smb/server/mgmt/user_config.c
++++ b/fs/smb/server/mgmt/user_config.c
+@@ -56,12 +56,6 @@ struct ksmbd_user *ksmbd_alloc_user(stru
+ 		goto err_free;
  
- 	ret = __sev_do_cmd_locked(SEV_CMD_PEK_CSR, &data, &argp->error);
+ 	if (resp_ext) {
+-		if (resp_ext->ngroups > NGROUPS_MAX) {
+-			pr_err("ngroups(%u) from login response exceeds max groups(%d)\n",
+-					resp_ext->ngroups, NGROUPS_MAX);
+-			goto err_free;
+-		}
+-
+ 		user->sgid = kmemdup(resp_ext->____payload,
+ 				     resp_ext->ngroups * sizeof(gid_t),
+ 				     KSMBD_DEFAULT_GFP);
+--- a/fs/smb/server/transport_ipc.c
++++ b/fs/smb/server/transport_ipc.c
+@@ -13,6 +13,7 @@
+ #include <net/genetlink.h>
+ #include <linux/socket.h>
+ #include <linux/workqueue.h>
++#include <linux/overflow.h>
  
--	 /* If we query the CSR length, FW responded with expected data. */
-+	/*
-+	 * Firmware will returns the length of the CSR blob (either the minimum
-+	 * required length or the actual length written), return it to the user.
-+	 */
- 	input.length = data.len;
+ #include "vfs_cache.h"
+ #include "transport_ipc.h"
+@@ -497,7 +498,9 @@ static int ipc_validate_msg(struct ipc_m
+ 	{
+ 		struct ksmbd_rpc_command *resp = entry->response;
  
- 	if (copy_to_user((void __user *)argp->data, &input, sizeof(input))) {
-@@ -1841,6 +1844,9 @@ cmd:
- 		goto e_free_blob;
+-		msg_sz = sizeof(struct ksmbd_rpc_command) + resp->payload_sz;
++		if (check_add_overflow(sizeof(struct ksmbd_rpc_command),
++				       resp->payload_sz, &msg_sz))
++			return -EINVAL;
+ 		break;
  	}
+ 	case KSMBD_EVENT_SPNEGO_AUTHEN_REQUEST:
+@@ -516,8 +519,9 @@ static int ipc_validate_msg(struct ipc_m
+ 			if (resp->payload_sz < resp->veto_list_sz)
+ 				return -EINVAL;
  
-+	if (ret || WARN_ON_ONCE(argp->error))
-+		goto e_free_blob;
-+
- 	if (blob) {
- 		if (copy_to_user(input_address, blob, input.length))
- 			ret = -EFAULT;
+-			msg_sz = sizeof(struct ksmbd_share_config_response) +
+-					resp->payload_sz;
++			if (check_add_overflow(sizeof(struct ksmbd_share_config_response),
++					       resp->payload_sz, &msg_sz))
++				return -EINVAL;
+ 		}
+ 		break;
+ 	}
+@@ -526,6 +530,12 @@ static int ipc_validate_msg(struct ipc_m
+ 		struct ksmbd_login_response_ext *resp = entry->response;
+ 
+ 		if (resp->ngroups) {
++			if (resp->ngroups < 0 ||
++			    resp->ngroups > NGROUPS_MAX) {
++				pr_err("ngroups(%d) from login response exceeds max groups(%d)\n",
++				       resp->ngroups, NGROUPS_MAX);
++				return -EINVAL;
++			}
+ 			msg_sz = sizeof(struct ksmbd_login_response_ext) +
+ 					resp->ngroups * sizeof(gid_t);
+ 		}
 
 
 
