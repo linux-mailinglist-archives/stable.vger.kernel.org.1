@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-240887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240671-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uOQwLRtz62nCMwAAu9opvQ
-	(envelope-from <stable+bounces-240887-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:41:47 +0200
+	id KEFUBpdx62nCMwAAu9opvQ
+	(envelope-from <stable+bounces-240671-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:35:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F49E45F67D
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:41:47 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81A1345F25A
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:35:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D3E3B3007B9A
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:41:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D2F68301BCE4
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:32:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C2263C061E;
-	Fri, 24 Apr 2026 13:41:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 838FE260566;
+	Fri, 24 Apr 2026 13:32:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lni0FTUZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gFOenxDR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F89B19A288;
-	Fri, 24 Apr 2026 13:41:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C44833D6CA6;
+	Fri, 24 Apr 2026 13:32:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777038097; cv=none; b=qU7LfMspkVAWiZXPJCrw/RGAt8sLjJ3AmD9WUjh7rcrTXas4hrCer4xZGx2/4gO8jHwT6CiZ2BVf5XIh2PGCgE130DlnQtCrWa02zsWvtCKxUujcyKunLL3YWZVEFSqYxXCJj/1Us8L4puoMbw0Q/Tb98lLkn/PHDF6cNb1hDrI=
+	t=1777037538; cv=none; b=hSByjIR/h0ifbpFk2WaCzlNl44uKGuhaWvk0OOx+T9OJzpqkImjKgn3R0b6l57UjFkXUwMOnog8q47bPGGidKDzSJIAAdb47gzlMudZNFQofrycl3GHUGMmu//7kVOqdfST8nkwx+hRvqt2VQs+oRZKLveeq7z8RBti/9pW2DTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777038097; c=relaxed/simple;
-	bh=dRXharPkYjbXZZ5yH3yOECx5BNqm6Pam51tyINILerM=;
+	s=arc-20240116; t=1777037538; c=relaxed/simple;
+	bh=Nk8kV05uvmowGA+bi33Czm49JFGfVM9BuvenyfwcM+0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EaIkedPOMBNC4OysmoHd+Pg/ULoFTEcenaj52ElBVRfRzjH5czeEJ3Lmt+/hYU4EmuICDqtVaK1wnQzfPbuA30htKJc2LxxhD8S/IXL200ZqbYnbavet2REfqYp2Rc7/0rb8ws2eH+fp6mB/jNQT7Yie9LZs1hFJPRIyL/s0EI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lni0FTUZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80E48C19425;
-	Fri, 24 Apr 2026 13:41:36 +0000 (UTC)
+	 MIME-Version; b=JKjO5RmkhsgFSxuWDCNEW68fDzaEa0wfsqK8TrIOzNbCkvrae2u3DtXggqz4dkinJXxxH5WIJdnCv32crxtC4Oum6FKw3Nr3DnXb177anxyoDSq2KGC5qY3yZAI61xfPy7w/H5D3yTQtcY+oAs09RVv74k5IeRge0kXKEerCrTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gFOenxDR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37502C19425;
+	Fri, 24 Apr 2026 13:32:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777038096;
-	bh=dRXharPkYjbXZZ5yH3yOECx5BNqm6Pam51tyINILerM=;
+	s=korg; t=1777037538;
+	bh=Nk8kV05uvmowGA+bi33Czm49JFGfVM9BuvenyfwcM+0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lni0FTUZwWvMrU2VnoAv/C3un0zubOiLisk+mnlFft7tVTQDf4hlTZoajdHGNuhHA
-	 ircurntiyM3vOBfv6aR41Utyt1zBDQ18rf/rvhVSIWBmDxJb7M12Rr4RtF06VlPP7v
-	 zBu5RuUb4DbWfr+czA0xj64LFFD8lAfBBm8gh9DU=
+	b=gFOenxDRbAmJTYTHkW351qQj/GUUPGdwEQ1GzankIrmWNgz037iaiz0Fx8txzLvOM
+	 CrtP9LuX9xpLxFyCtuqeKsTOoV4fk+6g6yV02iZnpfwVtNmRI7pGAKb7o9rLA6pSgx
+	 hMvRPKflVTgjUs8EjImm5JRLg+ljzlL3DOCXaMac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Golle <daniel@makrotopia.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 03/55] net: ethernet: mtk_eth_soc: initialize PPE per-tag-layer MTU registers
+	Bernd Schubert <bschubert@ddn.com>,
+	Horst Birthelmer <hbirthelmer@ddn.com>,
+	Miklos Szeredi <mszeredi@redhat.com>
+Subject: [PATCH 7.0 17/42] fuse: Check for large folio with SPLICE_F_MOVE
 Date: Fri, 24 Apr 2026 15:30:42 +0200
-Message-ID: <20260424132430.706869636@linuxfoundation.org>
+Message-ID: <20260424132424.120302930@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132430.006424517@linuxfoundation.org>
-References: <20260424132430.006424517@linuxfoundation.org>
+In-Reply-To: <20260424132420.410310336@linuxfoundation.org>
+References: <20260424132420.410310336@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,14 +64,14 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6F49E45F67D
+X-Rspamd-Queue-Id: 81A1345F25A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -81,7 +81,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-240887-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-240671-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -92,153 +92,48 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,makrotopia.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+7.0-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Golle <daniel@makrotopia.org>
+From: Bernd Schubert <bschubert@ddn.com>
 
-commit 2dddb34dd0d07b01fa770eca89480a4da4f13153 upstream.
+commit 59ba47b6be9cd0146ef9a55c6e32e337e11e7625 upstream.
 
-The PPE enforces output frame size limits via per-tag-layer VLAN_MTU
-registers that the driver never initializes. The hardware defaults do
-not account for PPPoE overhead, causing the PPE to punt encapsulated
-frames back to the CPU instead of forwarding them.
+xfstest generic/074 and generic/075 complain result in kernel
+warning messages / page dumps.
+This is easily reproducible (on 6.19) with
+CONFIG_TRANSPARENT_HUGEPAGE_SHMEM_HUGE_ALWAYS=y
+CONFIG_TRANSPARENT_HUGEPAGE_TMPFS_HUGE_ALWAYS=y
 
-Initialize the registers at PPE start and on MTU changes using the
-maximum GMAC MTU. This is a conservative approximation -- the actual
-per-PPE requirement depends on egress path, but using the global
-maximum ensures the limits are never too small.
+This just adds a test for large folios fuse_try_move_folio
+with the same page copy fallback, but to avoid the warnings
+from fuse_check_folio().
 
-Fixes: ba37b7caf1ed2 ("net: ethernet: mtk_eth_soc: add support for initializing the PPE")
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Link: https://patch.msgid.link/ec995ab8ce8be423267a1cc093147a74d2eb9d82.1775789829.git.daniel@makrotopia.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Bernd Schubert <bschubert@ddn.com>
+Signed-off-by: Horst Birthelmer <hbirthelmer@ddn.com>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mediatek/mtk_eth_soc.c | 22 ++++++++++++++-
- drivers/net/ethernet/mediatek/mtk_ppe.c     | 30 +++++++++++++++++++++
- drivers/net/ethernet/mediatek/mtk_ppe.h     |  1 +
- 3 files changed, 52 insertions(+), 1 deletion(-)
+ fs/fuse/dev.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-index 8d3e15bc867d2..0f676bd72832b 100644
---- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-+++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-@@ -3567,12 +3567,23 @@ static int mtk_device_event(struct notifier_block *n, unsigned long event, void
- 	return NOTIFY_DONE;
- }
+--- a/fs/fuse/dev.c
++++ b/fs/fuse/dev.c
+@@ -1017,6 +1017,9 @@ static int fuse_try_move_folio(struct fu
+ 	folio_clear_uptodate(newfolio);
+ 	folio_clear_mappedtodisk(newfolio);
  
-+static int mtk_max_gmac_mtu(struct mtk_eth *eth)
-+{
-+	int i, max_mtu = ETH_DATA_LEN;
++	if (folio_test_large(newfolio))
++		goto out_fallback_unlock;
 +
-+	for (i = 0; i < ARRAY_SIZE(eth->netdev); i++)
-+		if (eth->netdev[i] && eth->netdev[i]->mtu > max_mtu)
-+			max_mtu = eth->netdev[i]->mtu;
-+
-+	return max_mtu;
-+}
-+
- static int mtk_open(struct net_device *dev)
- {
- 	struct mtk_mac *mac = netdev_priv(dev);
- 	struct mtk_eth *eth = mac->hw;
- 	struct mtk_mac *target_mac;
--	int i, err, ppe_num;
-+	int i, err, ppe_num, mtu;
+ 	if (fuse_check_folio(newfolio) != 0)
+ 		goto out_fallback_unlock;
  
- 	ppe_num = eth->soc->ppe_num;
- 
-@@ -3619,6 +3630,10 @@ static int mtk_open(struct net_device *dev)
- 			mtk_gdm_config(eth, target_mac->id, gdm_config);
- 		}
- 
-+		mtu = mtk_max_gmac_mtu(eth);
-+		for (i = 0; i < ARRAY_SIZE(eth->ppe); i++)
-+			mtk_ppe_update_mtu(eth->ppe[i], mtu);
-+
- 		napi_enable(&eth->tx_napi);
- 		napi_enable(&eth->rx_napi);
- 		mtk_tx_irq_enable(eth, MTK_TX_DONE_INT);
-@@ -4312,6 +4327,7 @@ static int mtk_change_mtu(struct net_device *dev, int new_mtu)
- 	int length = new_mtu + MTK_RX_ETH_HLEN;
- 	struct mtk_mac *mac = netdev_priv(dev);
- 	struct mtk_eth *eth = mac->hw;
-+	int max_mtu, i;
- 
- 	if (rcu_access_pointer(eth->prog) &&
- 	    length > MTK_PP_MAX_BUF_SIZE) {
-@@ -4322,6 +4338,10 @@ static int mtk_change_mtu(struct net_device *dev, int new_mtu)
- 	mtk_set_mcr_max_rx(mac, length);
- 	WRITE_ONCE(dev->mtu, new_mtu);
- 
-+	max_mtu = mtk_max_gmac_mtu(eth);
-+	for (i = 0; i < ARRAY_SIZE(eth->ppe); i++)
-+		mtk_ppe_update_mtu(eth->ppe[i], max_mtu);
-+
- 	return 0;
- }
- 
-diff --git a/drivers/net/ethernet/mediatek/mtk_ppe.c b/drivers/net/ethernet/mediatek/mtk_ppe.c
-index ada852adc5f70..fa688a42a22f5 100644
---- a/drivers/net/ethernet/mediatek/mtk_ppe.c
-+++ b/drivers/net/ethernet/mediatek/mtk_ppe.c
-@@ -973,6 +973,36 @@ static void mtk_ppe_init_foe_table(struct mtk_ppe *ppe)
- 	}
- }
- 
-+void mtk_ppe_update_mtu(struct mtk_ppe *ppe, int mtu)
-+{
-+	int base;
-+	u32 val;
-+
-+	if (!ppe)
-+		return;
-+
-+	/* The PPE checks output frame size against per-tag-layer MTU limits,
-+	 * treating PPPoE and DSA tags just like 802.1Q VLAN tags. The Linux
-+	 * device MTU already accounts for PPPoE (PPPOE_SES_HLEN) and DSA tag
-+	 * overhead, but 802.1Q VLAN tags are handled transparently without
-+	 * being reflected by the lower device MTU being increased by 4.
-+	 * Use the maximum MTU across all GMAC interfaces so that PPE output
-+	 * frame limits are sufficiently high regardless of which port a flow
-+	 * egresses through.
-+	 */
-+	base = ETH_HLEN + mtu;
-+
-+	val = FIELD_PREP(MTK_PPE_VLAN_MTU0_NONE, base) |
-+	      FIELD_PREP(MTK_PPE_VLAN_MTU0_1TAG, base + VLAN_HLEN);
-+	ppe_w32(ppe, MTK_PPE_VLAN_MTU0, val);
-+
-+	val = FIELD_PREP(MTK_PPE_VLAN_MTU1_2TAG,
-+			 base + 2 * VLAN_HLEN) |
-+	      FIELD_PREP(MTK_PPE_VLAN_MTU1_3TAG,
-+			 base + 3 * VLAN_HLEN);
-+	ppe_w32(ppe, MTK_PPE_VLAN_MTU1, val);
-+}
-+
- void mtk_ppe_start(struct mtk_ppe *ppe)
- {
- 	u32 val;
-diff --git a/drivers/net/ethernet/mediatek/mtk_ppe.h b/drivers/net/ethernet/mediatek/mtk_ppe.h
-index 223f709e2704f..ba85e39a155bf 100644
---- a/drivers/net/ethernet/mediatek/mtk_ppe.h
-+++ b/drivers/net/ethernet/mediatek/mtk_ppe.h
-@@ -346,6 +346,7 @@ struct mtk_ppe {
- struct mtk_ppe *mtk_ppe_init(struct mtk_eth *eth, void __iomem *base, int index);
- 
- void mtk_ppe_deinit(struct mtk_eth *eth);
-+void mtk_ppe_update_mtu(struct mtk_ppe *ppe, int mtu);
- void mtk_ppe_start(struct mtk_ppe *ppe);
- int mtk_ppe_stop(struct mtk_ppe *ppe);
- int mtk_ppe_prepare_reset(struct mtk_ppe *ppe);
--- 
-2.53.0
-
 
 
 
