@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-240685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240823-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ICS/C+dx62nCMwAAu9opvQ
-	(envelope-from <stable+bounces-240685-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:36:39 +0200
+	id GFTBDhB262kQNAAAu9opvQ
+	(envelope-from <stable+bounces-240823-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:54:24 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7400245F36B
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:36:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79D3945FD21
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:54:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 36DA7302F9AF
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:32:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 78327309701F
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:38:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1653B23645D;
-	Fri, 24 Apr 2026 13:32:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 527FF3D3D04;
+	Fri, 24 Apr 2026 13:38:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q6AC4feJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VG3SFr66"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2AF3AC00;
-	Fri, 24 Apr 2026 13:32:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1603D19A288;
+	Fri, 24 Apr 2026 13:38:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777037574; cv=none; b=apXGC/AIXN/xFNz0ieFvGPQ1YD5v+1rYjrswa9ZLSb/eFHLXWXRsx7H90tQKOh9qnm3gVYqDCXKM0rgTT1lEjXRQU6C9XZVC1V+yRTguzsnXm7S9oe7fsLSs7LQfjETGc1NLtXFwrqWiAH+ktUGpueOpth+gUbFjG680DK7sPhE=
+	t=1777037932; cv=none; b=DxJDmVsqiOh+ktNmC9AG6kMRFu8WywdZZ+KKKFEkvWJKyA3MP5cXvdlQsarK+4XF61rpJiXwSMeI5E7WJ35RxcWd+GcyM7ObAwa5sRfhNcWdexOiUpMOiONJ9L9fmnwQtnyVL+2bsuOz2spLxmiI94ytYxTMlf7eUq78hxW9fgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777037574; c=relaxed/simple;
-	bh=lQ39TBCf1y4Yn3vafZli6/UIWZA5XbN5rJh003994Io=;
+	s=arc-20240116; t=1777037932; c=relaxed/simple;
+	bh=Cevt5Spy2rrqXMZl3b6R5X3gI23Pp0NGd8IJCN+7BtI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aJdORDa3mq4e/70gKNJqFreMmWuTSIArGkPPyddgrkrICBJRAOPBxDR/Yt9zDbWMZUx0YzwcezMp5E7RuqTQ/tE4YJgUDgREurOekPXDjWhN9SyM24V6pwUvE21VIHnqqN1FUOVHoPUng5jq+bX43H4YxwqP2BpvD8GggFJMSyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q6AC4feJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64B56C19425;
-	Fri, 24 Apr 2026 13:32:54 +0000 (UTC)
+	 MIME-Version; b=lSC0StCLVej3LLE0Gcj3hF1O5l6rWTBDWpwOOtcuraMINm9kXpPsEg68rTGSIF01xEY+rZ67LVsxdCX+/d8WNXyKw1R5vq8Rd+L0XZ7kDOymtwyHQ53Ljt+sEWSNravccIf1Cr6MmjikBbYvVfsIF31kLb0CF5PjSqN1lIVD7Co=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VG3SFr66; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1BB3C19425;
+	Fri, 24 Apr 2026 13:38:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777037574;
-	bh=lQ39TBCf1y4Yn3vafZli6/UIWZA5XbN5rJh003994Io=;
+	s=korg; t=1777037932;
+	bh=Cevt5Spy2rrqXMZl3b6R5X3gI23Pp0NGd8IJCN+7BtI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q6AC4feJZtQ7RL8VWCTAjUmtv52vxg8UrYVLFXiW+VMNZLnw0xYnnC+CydQp8z5Ql
-	 hs5UuYghs852S6BZHQccM1IggFHzk0+YNz6nY8u4fMl0YwovJHE7r6HlH+5E9evmHm
-	 Ws9KsyPzl9QB5hGr2bvWj3oG5dP7z20A6v2syx38=
+	b=VG3SFr66btPG0GvdCP9YR3IYmUpdA8prW7WwBriImfYKxboIJ1ZfQvMvf3wphLg0m
+	 zYE6bS6CFOqO82HedxdIm/165+oitiqnqfkb9P2NEhOAgy6N71BTbRQTH3AY0SosD6
+	 bv0CkT7pqt6Kp5se4BO6LJPTy9nSdTXqKHBP/TyI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Davide Ornaghi <d.ornaghi97@gmail.com>,
-	Navaneeth K <knavaneeth786@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0 07/42] ksmbd: validate owner of durable handle on reconnect
+	Fan Wu <fanwu01@zju.edu.cn>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.6 118/166] media: mediatek: vcodec: fix use-after-free in encoder release path
 Date: Fri, 24 Apr 2026 15:30:32 +0200
-Message-ID: <20260424132421.976987739@linuxfoundation.org>
+Message-ID: <20260424132557.563371082@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132420.410310336@linuxfoundation.org>
-References: <20260424132420.410310336@linuxfoundation.org>
+In-Reply-To: <20260424132532.812258529@linuxfoundation.org>
+References: <20260424132532.812258529@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,362 +64,144 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7400245F36B
+X-Rspamd-Queue-Id: 79D3945FD21
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [5.34 / 15.00];
+	SEM_URIBL(3.50)[zju.edu.cn:email];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
+	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-240685-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240823-lists,stable=lfdr.de];
+	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
+	GREYLIST(0.00)[pass,body];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_RCPT(0.00)[stable,cisco];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.400];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	R_SPF_ALLOW(0.00)[+ip4:172.234.253.10:c];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,collabora.com:email,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,zju.edu.cn:email]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Fan Wu <fanwu01@zju.edu.cn>
 
-[ Upstream commit 49110a8ce654bbe56bef7c5e44cce31f4b102b8a ]
+commit 76e35091ffc722ba39b303e48bc5d08abb59dd56 upstream.
 
-Currently, ksmbd does not verify if the user attempting to reconnect
-to a durable handle is the same user who originally opened the file.
-This allows any authenticated user to hijack an orphaned durable handle
-by predicting or brute-forcing the persistent ID.
+The fops_vcodec_release() function frees the context structure (ctx)
+without first cancelling any pending or running work in ctx->encode_work.
+This creates a race window where the workqueue handler (mtk_venc_worker)
+may still be accessing the context memory after it has been freed.
 
-According to MS-SMB2, the server MUST verify that the SecurityContext
-of the reconnect request matches the SecurityContext associated with
-the existing open.
-Add a durable_owner structure to ksmbd_file to store the original opener's
-UID, GID, and account name. and catpure the owner information when a file
-handle becomes orphaned. and implementing ksmbd_vfs_compare_durable_owner()
-to validate the identity of the requester during SMB2_CREATE (DHnC).
+Race condition:
 
-Fixes: c8efcc786146 ("ksmbd: add support for durable handles v1/v2")
-Reported-by: Davide Ornaghi <d.ornaghi97@gmail.com>
-Reported-by: Navaneeth K <knavaneeth786@gmail.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+    CPU 0 (release path)               CPU 1 (workqueue)
+    ---------------------               ------------------
+    fops_vcodec_release()
+      v4l2_m2m_ctx_release()
+        v4l2_m2m_cancel_job()
+        // waits for m2m job "done"
+                                        mtk_venc_worker()
+                                          v4l2_m2m_job_finish()
+                                          // m2m job "done"
+                                          // BUT worker still running!
+                                          // post-job_finish access:
+                                        other ctx dereferences
+                                          // UAF if ctx already freed
+        // returns (job "done")
+      kfree(ctx)  // ctx freed
+
+Root cause: The v4l2_m2m_ctx_release() only waits for the m2m job
+lifecycle (via TRANS_RUNNING flag), not the workqueue lifecycle.
+After v4l2_m2m_job_finish() is called, the m2m framework considers
+the job complete and v4l2_m2m_ctx_release() returns, but the worker
+function continues executing and may still access ctx.
+
+The work is queued during encode operations via:
+  queue_work(ctx->dev->encode_workqueue, &ctx->encode_work)
+The worker function accesses ctx->m2m_ctx, ctx->dev, and other ctx
+fields even after calling v4l2_m2m_job_finish().
+
+This vulnerability was confirmed with KASAN by running an instrumented
+test module that widens the post-job_finish race window. KASAN detected:
+
+  BUG: KASAN: slab-use-after-free in mtk_venc_worker+0x159/0x180
+  Read of size 4 at addr ffff88800326e000 by task kworker/u8:0/12
+
+  Workqueue: mtk_vcodec_enc_wq mtk_venc_worker
+
+  Allocated by task 47:
+    __kasan_kmalloc+0x7f/0x90
+    fops_vcodec_open+0x85/0x1a0
+
+  Freed by task 47:
+    __kasan_slab_free+0x43/0x70
+    kfree+0xee/0x3a0
+    fops_vcodec_release+0xb7/0x190
+
+Fix this by calling cancel_work_sync(&ctx->encode_work) before kfree(ctx).
+This ensures the workqueue handler is both cancelled (if pending) and
+synchronized (waits for any running handler to complete) before the
+context is freed.
+
+Placement rationale: The fix is placed after v4l2_ctrl_handler_free()
+and before list_del_init(&ctx->list). At this point, all m2m operations
+are done (v4l2_m2m_ctx_release() has returned), and we need to ensure
+the workqueue is synchronized before removing ctx from the list and
+freeing it.
+
+Note: The open error path does NOT need cancel_work_sync() because
+INIT_WORK() only initializes the work structure - it does not schedule
+it. Work is only scheduled later during device_run() operations.
+
+Fixes: 0934d3759615 ("media: mediatek: vcodec: separate decoder and encoder")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fan Wu <fanwu01@zju.edu.cn>
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/mgmt/user_session.c |    8 +--
- fs/smb/server/oplock.c            |    7 +++
- fs/smb/server/oplock.h            |    1 
- fs/smb/server/smb2pdu.c           |    3 -
- fs/smb/server/vfs_cache.c         |   87 ++++++++++++++++++++++++++++++++++----
- fs/smb/server/vfs_cache.h         |   12 ++++-
- 6 files changed, 102 insertions(+), 16 deletions(-)
+ drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_drv.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/fs/smb/server/mgmt/user_session.c
-+++ b/fs/smb/server/mgmt/user_session.c
-@@ -382,12 +382,10 @@ void ksmbd_session_destroy(struct ksmbd_
- 		return;
+--- a/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_drv.c
++++ b/drivers/media/platform/mediatek/vcodec/encoder/mtk_vcodec_enc_drv.c
+@@ -216,6 +216,15 @@ static int fops_vcodec_release(struct fi
+ 	v4l2_fh_exit(&ctx->fh);
+ 	v4l2_ctrl_handler_free(&ctx->ctrl_hdl);
  
- 	delete_proc_session(sess);
--
-+	ksmbd_tree_conn_session_logoff(sess);
-+	ksmbd_destroy_file_table(sess);
- 	if (sess->user)
- 		ksmbd_free_user(sess->user);
--
--	ksmbd_tree_conn_session_logoff(sess);
--	ksmbd_destroy_file_table(&sess->file_table);
- 	ksmbd_launch_ksmbd_durable_scavenger();
- 	ksmbd_session_rpc_clear_list(sess);
- 	free_channel_list(sess);
-@@ -618,7 +616,7 @@ void destroy_previous_session(struct ksm
- 		goto out;
- 	}
- 
--	ksmbd_destroy_file_table(&prev_sess->file_table);
-+	ksmbd_destroy_file_table(prev_sess);
- 	prev_sess->state = SMB2_SESSION_EXPIRED;
- 	ksmbd_all_conn_set_status(id, KSMBD_SESS_NEED_SETUP);
- 	ksmbd_launch_ksmbd_durable_scavenger();
---- a/fs/smb/server/oplock.c
-+++ b/fs/smb/server/oplock.c
-@@ -1841,6 +1841,7 @@ int smb2_check_durable_oplock(struct ksm
- 			      struct ksmbd_share_config *share,
- 			      struct ksmbd_file *fp,
- 			      struct lease_ctx_info *lctx,
-+			      struct ksmbd_user *user,
- 			      char *name)
- {
- 	struct oplock_info *opinfo = opinfo_get(fp);
-@@ -1849,6 +1850,12 @@ int smb2_check_durable_oplock(struct ksm
- 	if (!opinfo)
- 		return 0;
- 
-+	if (ksmbd_vfs_compare_durable_owner(fp, user) == false) {
-+		ksmbd_debug(SMB, "Durable handle reconnect failed: owner mismatch\n");
-+		ret = -EBADF;
-+		goto out;
-+	}
++	/*
++	 * Cancel any pending encode work before freeing the context.
++	 * Although v4l2_m2m_ctx_release() waits for m2m job completion,
++	 * the workqueue handler (mtk_venc_worker) may still be accessing
++	 * the context after v4l2_m2m_job_finish() returns. Without this,
++	 * a use-after-free occurs when the worker accesses ctx after kfree.
++	 */
++	cancel_work_sync(&ctx->encode_work);
 +
- 	if (opinfo->is_lease == false) {
- 		if (lctx) {
- 			pr_err("create context include lease\n");
---- a/fs/smb/server/oplock.h
-+++ b/fs/smb/server/oplock.h
-@@ -126,5 +126,6 @@ int smb2_check_durable_oplock(struct ksm
- 			      struct ksmbd_share_config *share,
- 			      struct ksmbd_file *fp,
- 			      struct lease_ctx_info *lctx,
-+			      struct ksmbd_user *user,
- 			      char *name);
- #endif /* __KSMBD_OPLOCK_H */
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -3013,7 +3013,8 @@ int smb2_open(struct ksmbd_work *work)
- 		}
- 
- 		if (dh_info.reconnected == true) {
--			rc = smb2_check_durable_oplock(conn, share, dh_info.fp, lc, name);
-+			rc = smb2_check_durable_oplock(conn, share, dh_info.fp,
-+					lc, sess->user, name);
- 			if (rc) {
- 				ksmbd_put_durable_fd(dh_info.fp);
- 				goto err_out2;
---- a/fs/smb/server/vfs_cache.c
-+++ b/fs/smb/server/vfs_cache.c
-@@ -19,6 +19,7 @@
- #include "misc.h"
- #include "mgmt/tree_connect.h"
- #include "mgmt/user_session.h"
-+#include "mgmt/user_config.h"
- #include "smb_common.h"
- #include "server.h"
- #include "smb2pdu.h"
-@@ -476,6 +477,8 @@ static void __ksmbd_close_fd(struct ksmb
- 
- 	if (ksmbd_stream_fd(fp))
- 		kfree(fp->stream.name);
-+	kfree(fp->owner.name);
-+
- 	kmem_cache_free(filp_cache, fp);
- }
- 
-@@ -787,11 +790,13 @@ void ksmbd_update_fstate(struct ksmbd_fi
- }
- 
- static int
--__close_file_table_ids(struct ksmbd_file_table *ft,
-+__close_file_table_ids(struct ksmbd_session *sess,
- 		       struct ksmbd_tree_connect *tcon,
- 		       bool (*skip)(struct ksmbd_tree_connect *tcon,
--				    struct ksmbd_file *fp))
-+				    struct ksmbd_file *fp,
-+				    struct ksmbd_user *user))
- {
-+	struct ksmbd_file_table *ft = &sess->file_table;
- 	struct ksmbd_file *fp;
- 	unsigned int id = 0;
- 	int num = 0;
-@@ -804,7 +809,7 @@ __close_file_table_ids(struct ksmbd_file
- 			break;
- 		}
- 
--		if (skip(tcon, fp) ||
-+		if (skip(tcon, fp, sess->user) ||
- 		    !atomic_dec_and_test(&fp->refcount)) {
- 			id++;
- 			write_unlock(&ft->lock);
-@@ -856,7 +861,8 @@ static inline bool is_reconnectable(stru
- }
- 
- static bool tree_conn_fd_check(struct ksmbd_tree_connect *tcon,
--			       struct ksmbd_file *fp)
-+			       struct ksmbd_file *fp,
-+			       struct ksmbd_user *user)
- {
- 	return fp->tcon != tcon;
- }
-@@ -991,8 +997,62 @@ void ksmbd_stop_durable_scavenger(void)
- 	kthread_stop(server_conf.dh_task);
- }
- 
-+/*
-+ * ksmbd_vfs_copy_durable_owner - Copy owner info for durable reconnect
-+ * @fp: ksmbd file pointer to store owner info
-+ * @user: user pointer to copy from
-+ *
-+ * This function binds the current user's identity to the file handle
-+ * to satisfy MS-SMB2 Step 8 (SecurityContext matching) during reconnect.
-+ *
-+ * Return: 0 on success, or negative error code on failure
-+ */
-+static int ksmbd_vfs_copy_durable_owner(struct ksmbd_file *fp,
-+		struct ksmbd_user *user)
-+{
-+	if (!user)
-+		return -EINVAL;
-+
-+	/* Duplicate the user name to ensure identity persistence */
-+	fp->owner.name = kstrdup(user->name, GFP_KERNEL);
-+	if (!fp->owner.name)
-+		return -ENOMEM;
-+
-+	fp->owner.uid = user->uid;
-+	fp->owner.gid = user->gid;
-+
-+	return 0;
-+}
-+
-+/**
-+ * ksmbd_vfs_compare_durable_owner - Verify if the requester is original owner
-+ * @fp: existing ksmbd file pointer
-+ * @user: user pointer of the reconnect requester
-+ *
-+ * Compares the UID, GID, and name of the current requester against the
-+ * original owner stored in the file handle.
-+ *
-+ * Return: true if the user matches, false otherwise
-+ */
-+bool ksmbd_vfs_compare_durable_owner(struct ksmbd_file *fp,
-+		struct ksmbd_user *user)
-+{
-+	if (!user || !fp->owner.name)
-+		return false;
-+
-+	/* Check if the UID and GID match first (fast path) */
-+	if (fp->owner.uid != user->uid || fp->owner.gid != user->gid)
-+		return false;
-+
-+	/* Validate the account name to ensure the same SecurityContext */
-+	if (strcmp(fp->owner.name, user->name))
-+		return false;
-+
-+	return true;
-+}
-+
- static bool session_fd_check(struct ksmbd_tree_connect *tcon,
--			     struct ksmbd_file *fp)
-+			     struct ksmbd_file *fp, struct ksmbd_user *user)
- {
- 	struct ksmbd_inode *ci;
- 	struct oplock_info *op;
-@@ -1002,6 +1062,9 @@ static bool session_fd_check(struct ksmb
- 	if (!is_reconnectable(fp))
- 		return false;
- 
-+	if (ksmbd_vfs_copy_durable_owner(fp, user))
-+		return false;
-+
- 	conn = fp->conn;
- 	ci = fp->f_ci;
- 	down_write(&ci->m_lock);
-@@ -1033,7 +1096,7 @@ static bool session_fd_check(struct ksmb
- 
- void ksmbd_close_tree_conn_fds(struct ksmbd_work *work)
- {
--	int num = __close_file_table_ids(&work->sess->file_table,
-+	int num = __close_file_table_ids(work->sess,
- 					 work->tcon,
- 					 tree_conn_fd_check);
- 
-@@ -1042,7 +1105,7 @@ void ksmbd_close_tree_conn_fds(struct ks
- 
- void ksmbd_close_session_fds(struct ksmbd_work *work)
- {
--	int num = __close_file_table_ids(&work->sess->file_table,
-+	int num = __close_file_table_ids(work->sess,
- 					 work->tcon,
- 					 session_fd_check);
- 
-@@ -1140,6 +1203,10 @@ int ksmbd_reopen_durable_fd(struct ksmbd
- 	}
- 	up_write(&ci->m_lock);
- 
-+	fp->owner.uid = fp->owner.gid = 0;
-+	kfree(fp->owner.name);
-+	fp->owner.name = NULL;
-+
- 	return 0;
- }
- 
-@@ -1154,12 +1221,14 @@ int ksmbd_init_file_table(struct ksmbd_f
- 	return 0;
- }
- 
--void ksmbd_destroy_file_table(struct ksmbd_file_table *ft)
-+void ksmbd_destroy_file_table(struct ksmbd_session *sess)
- {
-+	struct ksmbd_file_table *ft = &sess->file_table;
-+
- 	if (!ft->idr)
- 		return;
- 
--	__close_file_table_ids(ft, NULL, session_fd_check);
-+	__close_file_table_ids(sess, NULL, session_fd_check);
- 	idr_destroy(ft->idr);
- 	kfree(ft->idr);
- 	ft->idr = NULL;
---- a/fs/smb/server/vfs_cache.h
-+++ b/fs/smb/server/vfs_cache.h
-@@ -68,6 +68,13 @@ enum {
- 	FP_CLOSED
- };
- 
-+/* Owner information for durable handle reconnect */
-+struct durable_owner {
-+	unsigned int uid;
-+	unsigned int gid;
-+	char *name;
-+};
-+
- struct ksmbd_file {
- 	struct file			*filp;
- 	u64				persistent_id;
-@@ -114,6 +121,7 @@ struct ksmbd_file {
- 	bool				is_resilient;
- 
- 	bool                            is_posix_ctxt;
-+	struct durable_owner		owner;
- };
- 
- static inline void set_ctx_actor(struct dir_context *ctx,
-@@ -140,7 +148,7 @@ static inline bool ksmbd_stream_fd(struc
- }
- 
- int ksmbd_init_file_table(struct ksmbd_file_table *ft);
--void ksmbd_destroy_file_table(struct ksmbd_file_table *ft);
-+void ksmbd_destroy_file_table(struct ksmbd_session *sess);
- int ksmbd_close_fd(struct ksmbd_work *work, u64 id);
- struct ksmbd_file *ksmbd_lookup_fd_fast(struct ksmbd_work *work, u64 id);
- struct ksmbd_file *ksmbd_lookup_foreign_fd(struct ksmbd_work *work, u64 id);
-@@ -166,6 +174,8 @@ void ksmbd_free_global_file_table(void);
- void ksmbd_set_fd_limit(unsigned long limit);
- void ksmbd_update_fstate(struct ksmbd_file_table *ft, struct ksmbd_file *fp,
- 			 unsigned int state);
-+bool ksmbd_vfs_compare_durable_owner(struct ksmbd_file *fp,
-+		struct ksmbd_user *user);
- 
- /*
-  * INODE hash
+ 	spin_lock_irqsave(&dev->dev_ctx_lock, flags);
+ 	list_del_init(&ctx->list);
+ 	spin_unlock_irqrestore(&dev->dev_ctx_lock, flags);
 
 
 
