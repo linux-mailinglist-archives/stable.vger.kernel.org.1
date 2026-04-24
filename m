@@ -1,208 +1,265 @@
-Return-Path: <stable+bounces-240587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240588-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UDNFN2cy62lfJwAAu9opvQ
-	(envelope-from <stable+bounces-240587-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 11:05:43 +0200
+	id +IFYIw8662nRJwAAu9opvQ
+	(envelope-from <stable+bounces-240588-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 11:38:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8223445BDBE
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 11:05:43 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8872545C4E7
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 11:38:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E22ED3008224
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 09:04:45 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 801E53000B84
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 09:38:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8629221FCD;
-	Fri, 24 Apr 2026 09:04:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC17D38B15B;
+	Fri, 24 Apr 2026 09:38:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NLnNhF1K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yHTXU1xd"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yx1-f50.google.com (mail-yx1-f50.google.com [74.125.224.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 636BF3385A5
-	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 09:04:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777021484; cv=pass; b=Ep2RI9KHrfgQV09OdxYbivNfp83jCa0JrG7cLbYiK0O6bSwTP7B//8xP3oBkqZTO2fHsyHImGIO1wVC+FcGpCa7rRRxx9W0r5x6kPHIcLu46z52nE4uI76RdHjECuVri+rO64oc4T/FAEfjdyQcIaqoSBqitleqBXya9Ohbx3fE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777021484; c=relaxed/simple;
-	bh=A4jH1huI9yFh1il+odDweWEa+S5rrAi0RBYTn1kn1/k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HpaAWv2XM1QgMzVWQW/qDmrmdCtk/u3uoLVO/5c+KCXAnAsBbvfK9+Bo+OfIzTaD6LS7kOR2AvTW5OmUpdEYnsuh3HjPgpXHfbfm/8G4E9ABc9Yg4++yxLWPurC182xxqX2a9pfxLm3jCDKQVVpMz7INIg5hcuQPzscnM9S7EIU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NLnNhF1K; arc=pass smtp.client-ip=74.125.224.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-64d5a7926cfso7603633d50.2
-        for <stable@vger.kernel.org>; Fri, 24 Apr 2026 02:04:43 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777021482; cv=none;
-        d=google.com; s=arc-20240605;
-        b=amOag6EojxsDG9bXVVfUSwbzRsE9tVYthk1AA32s/1Va7f8B9oreejjB79pd3vRLer
-         Mt0EwRbo80ZchWBCV/Cbp524PYBUeGYACWAHoUxt+lTPU+ZPC7D0uc4smFKPjYNP5k0H
-         iBsgOIpO/CZiXAbhBtJ7paWn9iW9DGG2UVRF7g61v/GWIWD7Rfw5niH7mfY04p4EovXq
-         SfjMJaWu4S4zwy/CgRbtw36Gg8sORjLCx01Xc0xp6S/KXifs9IOWNcFPmAQYmgUpmPqA
-         rFNQb9e7ZJayMbAte/XeTC/RcpSm6pbUaAeLmddfLKBUEfFbEtJZ+znoDLJ6BAeMzGVx
-         wG3w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=10qs2iwkS/eyNLtJNpVSp8xONvcrn//8/hAjXSFPo+c=;
-        fh=GLcjqu8CwCdy7Qp3BGavHt0T+BqAGZp+d0E/ww+rwI0=;
-        b=hVkPVN49xhK3Egh5EPM8m9ZwcP7IwbkFxKpinbcYekaHPlnQLBrKsTpewJaV/fKejB
-         b15f8t4dvxBYITVTy+57a21ZdDMOu6uLiFZGkOxqKWm6KimkrLwLuSpRATA+Bzv/vkXk
-         QQ0HoNlOi6kJWX7zNzrbx7hlkz4BcA/k7Tw3NcNNMLgXyraHcMV1Qh6PwWjf8mLP9qUC
-         9rV8O7GuuyZ+Wg86NShzg5PqTPd+TnWK5kuV7YOjtOTMVVR9NwVQjQOWfFTrnQgRWTmF
-         O6qELaiYPkw21yQxatfPfKrUJsoYikEHSoNefRNjSONe6IdEZko0UOEPVaeyJsLAKSDH
-         oRjw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777021482; x=1777626282; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=10qs2iwkS/eyNLtJNpVSp8xONvcrn//8/hAjXSFPo+c=;
-        b=NLnNhF1KDy4LZCUrNLNN1t/m/OZhDExs12BAEYc3vmWsKIscL00TLi4ldWV7Rf0qJz
-         jD0jasGnpLZXX/B6HK0UuT4KwY3In7f1nPu1vzpKdqx9SmC4AWLlESy+U6Hf70oV4G7j
-         CsFEaY7N7HOoEdi77H164Csedcb8P1jcJ+cER33JCCHRye52rZTnefZXpG4sP2C03pqx
-         fmcWFlwtlDdLzyR4a+jIYavs7JqCMmdr05tRRpa+Xijbqc+/7MR9JJ82GaunCpEigYmC
-         GWWPpANBuUcf3CY0XhPL9IxOMJQOVAVi6YjklnmaYfvVQjT5O0CeANn30Xn1ANSusOKM
-         i15g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777021482; x=1777626282;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=10qs2iwkS/eyNLtJNpVSp8xONvcrn//8/hAjXSFPo+c=;
-        b=ct6UqlVfJBcM2XUpseXc0e/LEru0iumHejH46SiE3hJnwQXDfDDTioufDKChEhnNCQ
-         8XsHe+ftKm6rdojfRWp6MrwGXtLiKV0yOR1qLjARGW9LfY63P73R2E+SoWRu855gp95J
-         rpIi6Vq8nRv6Ge8RN31o3o9baeCAp9oMBRMWTlKmLQL5MpZZLOlb7biuN7BA6KH6PaHT
-         W62970H7UQF8OA1OtRr4qHKXs3Ktxxwy9+Fc6e55WJEmktQ0BGAVYtRIojEv+wJS1CxV
-         FW70r15hahz+3DP9R8x89Rnqv8daiX8oRIXVmZ6XX9wYiYAcBfRYJ5EwMdWlvOI1hXCI
-         FdQQ==
-X-Gm-Message-State: AOJu0YzRYNxD20vSJMoHeh6ETZZVK3w5Tex7+bni2UkBm0/hKtIBtpAr
-	f0wRS5EDICDJWgZdeuGUXQ8Ye8CY17TuAEAmw0j0zaInhGjWi7TaEk4OlgXeoa0gxcP44xIMdwz
-	ZugsKNWlb+YgNN8xh0eYgarrNLJZdi/Y=
-X-Gm-Gg: AeBDiesMNfoiAVdot789JmiDjV348AujXW89Rg34FPrzxfF989gncZtICFc+9pt05b1
-	vraf0zFpWi+SUTU+cVj/Ii1tqM5uJImU32IeXOk/llO9ncLNEJ0+koCCo9jPfPs9YA6tFD/UwCg
-	TG0rQvdil52KETx1NxXhZza6LL0PIHEmtf/GLFPMuxfMg9dhbpPqlhTMVeLEclWlns46UUwp9qp
-	hAjg43IatxlHdELBmBNsOc3PHUkMU7K0FksudRhcBO9G0ic5J6HWvg+lg7jy22OroSoqKXhoTDw
-	CMk1TDqfPJdOoAxRDrd9
-X-Received: by 2002:a05:690e:4141:b0:653:3f1a:798d with SMTP id
- 956f58d0204a3-6533f1a7f4bmr26739134d50.23.1777021482431; Fri, 24 Apr 2026
- 02:04:42 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9962738AC88
+	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 09:38:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777023496; cv=none; b=H9zsO72VRKrlVe9ggr1R7CLyI2hf1O+p4UldKjIRcPzEklw3xU1us60VAAQV4aL2t5SjhKVYXP3KmGly4H4TB7VyyXJcDcZAjFmxVdldekWorB3tmq/vj+bYVIwtcNOEioJ9OBzMF/qwl12rrNwEa1ORaoJ/Ko07aI0qbb63RtE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777023496; c=relaxed/simple;
+	bh=9zkIdcWFFH2EmU0NmsNGffotRUb14IOo8oJx/OFCm40=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=E8XkWZHhL0ClxMihd1WFtX1XqOowvdHxb+Cd68dCtWwEz01KDAa+Nss5t2n4hw4kz+XQK5BJOF/KYLI0RQSLzIBLNa09r5UF7xC6vcpuHF0TByDTjjfZ1KlPwOTaUVvqmR8L52QobHz2AqTFZbFXyq5Oz2sekPoU1V7ckW56fU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yHTXU1xd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2761C19425;
+	Fri, 24 Apr 2026 09:38:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1777023496;
+	bh=9zkIdcWFFH2EmU0NmsNGffotRUb14IOo8oJx/OFCm40=;
+	h=Subject:To:Cc:From:Date:From;
+	b=yHTXU1xdbY0HctjrDqCoxScp9U63e6t04en3QdNXZCH0VZctM1tGJGFZJWp/DEvdK
+	 NPvTgJGqTuhuEaG7gITIYekJOGi0CN8BvBiCkzo3MHUJUnQyCck53bfqVirwVKdyik
+	 pEsm1dtKP7LjCBERgdEV/FPMJuQYpR8VmHYEy8wc=
+Subject: FAILED: patch "[PATCH] f2fs: fix to do sanity check on dcc->discard_cmd_cnt" failed to apply to 6.1-stable tree
+To: chao@kernel.org,jaegeuk@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Fri, 24 Apr 2026 11:38:13 +0200
+Message-ID: <2026042413-skirmish-coma-f312@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260415191306.3837839-1-lgs201920130244@gmail.com>
-In-Reply-To: <20260415191306.3837839-1-lgs201920130244@gmail.com>
-From: Guangshuo Li <lgs201920130244@gmail.com>
-Date: Fri, 24 Apr 2026 17:04:28 +0800
-X-Gm-Features: AQROBzD3ciSHDJ4yZ2SN0KweOJ4wwJwZ7CklV1Yarwt6T_p1EdetKVc2Xh8dTK8
-Message-ID: <CANUHTR_zY8f3eGUJwzcq_rAe=XfturfT5N=E3fYLyaYXqGV4Tw@mail.gmail.com>
-Subject: Re: [PATCH] fbdev: q40fb: fix reference leak on failed device registration
-To: Helge Deller <deller@gmx.de>, Guangshuo Li <lgs201920130244@gmail.com>, 
-	linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 8223445BDBE
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 8872545C4E7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-240588-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240587-lists,stable=lfdr.de];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FREEMAIL_TO(0.00)[gmx.de,gmail.com,vger.kernel.org,lists.freedesktop.org];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,gregkh:email]
 
-Hi,
 
-Please disregard this patch.
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-On Thu, 16 Apr 2026 at 03:13, Guangshuo Li <lgs201920130244@gmail.com> wrote:
->
-> When platform_device_register() fails in q40fb_init(), the embedded
-> struct device in q40fb_device has already been initialized by
-> device_initialize(), but the failure path only unregisters the platform
-> driver and does not drop the device reference for the current platform
-> device:
->
->   q40fb_init()
->     -> platform_device_register(&q40fb_device)
->        -> device_initialize(&q40fb_device.dev)
->        -> setup_pdev_dma_masks(&q40fb_device)
->        -> platform_device_add(&q40fb_device)
->
-> This leads to a reference leak when platform_device_register() fails.
-> Fix this by calling platform_device_put() before unregistering the
-> platform driver.
->
-> The issue was identified by a static analysis tool I developed and
-> confirmed by manual review.
->
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-> ---
->  drivers/video/fbdev/q40fb.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/video/fbdev/q40fb.c b/drivers/video/fbdev/q40fb.c
-> index 1ff8fa176124..0151a41267b3 100644
-> --- a/drivers/video/fbdev/q40fb.c
-> +++ b/drivers/video/fbdev/q40fb.c
-> @@ -141,8 +141,10 @@ static int __init q40fb_init(void)
->
->         if (!ret) {
->                 ret = platform_device_register(&q40fb_device);
-> -               if (ret)
-> +               if (ret) {
-> +                       platform_device_put(&q40fb_device);
->                         platform_driver_unregister(&q40fb_driver);
-> +               }
->         }
->         return ret;
->  }
-> --
-> 2.43.0
->
+To reproduce the conflict and resubmit, you may use the following commands:
 
-After re-checking it, q40fb_device is a static platform_device and it does
-not provide a dev.release callback. Therefore calling
-platform_device_put() on the platform_device_register() failure path is
-not appropriate here and can trigger the missing release callback
-warning.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x 6af249c996f7d73a3435f9e577956fa259347d18
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026042413-skirmish-coma-f312@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
-This falls into the same static platform_device pattern pointed out in
-the other reviews, so I will drop this patch.
+Possible dependencies:
 
-Sorry for the noise.
 
-Best regards,
-Guangshuo Li
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 6af249c996f7d73a3435f9e577956fa259347d18 Mon Sep 17 00:00:00 2001
+From: Chao Yu <chao@kernel.org>
+Date: Wed, 11 Mar 2026 21:35:42 +0800
+Subject: [PATCH] f2fs: fix to do sanity check on dcc->discard_cmd_cnt
+ conditionally
+
+Syzbot reported a f2fs bug as below:
+
+------------[ cut here ]------------
+kernel BUG at fs/f2fs/segment.c:1900!
+Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
+CPU: 1 UID: 0 PID: 6527 Comm: syz.5.110 Not tainted syzkaller #0 PREEMPT_{RT,(full)}
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2026
+RIP: 0010:f2fs_issue_discard_timeout+0x59b/0x5a0 fs/f2fs/segment.c:1900
+Code: d9 80 e1 07 80 c1 03 38 c1 0f 8c d6 fe ff ff 48 89 df e8 a8 5e fa fd e9 c9 fe ff ff e8 4e 46 94 fd 90 0f 0b e8 46 46 94 fd 90 <0f> 0b 0f 1f 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3
+RSP: 0018:ffffc9000494f940 EFLAGS: 00010283
+RAX: ffffffff843009ca RBX: 0000000000000001 RCX: 0000000000080000
+RDX: ffffc9001ca78000 RSI: 00000000000029f3 RDI: 00000000000029f4
+RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
+R10: dffffc0000000000 R11: ffffed100893a431 R12: 1ffff1100893a430
+R13: 1ffff1100c2b702c R14: dffffc0000000000 R15: ffff8880449d2160
+FS:  00007ffa35fed6c0(0000) GS:ffff88812643d000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f2b68634000 CR3: 0000000039f62000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ __f2fs_remount fs/f2fs/super.c:2960 [inline]
+ f2fs_reconfigure+0x108a/0x1710 fs/f2fs/super.c:5443
+ reconfigure_super+0x227/0x8a0 fs/super.c:1080
+ do_remount fs/namespace.c:3391 [inline]
+ path_mount+0xdc5/0x10e0 fs/namespace.c:4151
+ do_mount fs/namespace.c:4172 [inline]
+ __do_sys_mount fs/namespace.c:4361 [inline]
+ __se_sys_mount+0x31d/0x420 fs/namespace.c:4338
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7ffa37dbda0a
+
+The root cause is there will be race condition in between f2fs_ioc_fitrim()
+and f2fs_remount():
+
+- f2fs_remount			- f2fs_ioc_fitrim
+ - f2fs_issue_discard_timeout
+  - __issue_discard_cmd
+  - __drop_discard_cmd
+  - __wait_all_discard_cmd
+				 - f2fs_trim_fs
+				  - f2fs_write_checkpoint
+				   - f2fs_clear_prefree_segments
+				    - f2fs_issue_discard
+				     - __issue_discard_async
+				      - __queue_discard_cmd
+				       - __update_discard_tree_range
+				        - __insert_discard_cmd
+				         - __create_discard_cmd
+				         : atomic_inc(&dcc->discard_cmd_cnt);
+  - sanity check on dcc->discard_cmd_cnt (expect discard_cmd_cnt to be zero)
+
+This will only happen when fitrim races w/ remount rw, if we remount to
+readonly filesystem, remount will wait until mnt_pcp.mnt_writers to zero,
+that means fitrim is not in process at that time.
+
+Cc: stable@kernel.org
+Fixes: 2482c4325dfe ("f2fs: detect bug_on in f2fs_wait_discard_bios")
+Reported-by: syzbot+62538b67389ee582837a@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-f2fs-devel/69b07d7c.050a0220.8df7.09a1.GAE@google.com
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+
+diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+index 04891aaf476f..df4cdf804376 100644
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -3988,7 +3988,7 @@ bool f2fs_is_checkpointed_data(struct f2fs_sb_info *sbi, block_t blkaddr);
+ int f2fs_start_discard_thread(struct f2fs_sb_info *sbi);
+ void f2fs_drop_discard_cmd(struct f2fs_sb_info *sbi);
+ void f2fs_stop_discard_thread(struct f2fs_sb_info *sbi);
+-bool f2fs_issue_discard_timeout(struct f2fs_sb_info *sbi);
++bool f2fs_issue_discard_timeout(struct f2fs_sb_info *sbi, bool need_check);
+ void f2fs_clear_prefree_segments(struct f2fs_sb_info *sbi,
+ 					struct cp_control *cpc);
+ void f2fs_dirty_to_prefree(struct f2fs_sb_info *sbi);
+diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
+index 23faf6725632..0bf25786667f 100644
+--- a/fs/f2fs/segment.c
++++ b/fs/f2fs/segment.c
+@@ -1880,7 +1880,7 @@ void f2fs_stop_discard_thread(struct f2fs_sb_info *sbi)
+  *
+  * Return true if issued all discard cmd or no discard cmd need issue, otherwise return false.
+  */
+-bool f2fs_issue_discard_timeout(struct f2fs_sb_info *sbi)
++bool f2fs_issue_discard_timeout(struct f2fs_sb_info *sbi, bool need_check)
+ {
+ 	struct discard_cmd_control *dcc = SM_I(sbi)->dcc_info;
+ 	struct discard_policy dpolicy;
+@@ -1897,7 +1897,7 @@ bool f2fs_issue_discard_timeout(struct f2fs_sb_info *sbi)
+ 	/* just to make sure there is no pending discard commands */
+ 	__wait_all_discard_cmd(sbi, NULL);
+ 
+-	f2fs_bug_on(sbi, atomic_read(&dcc->discard_cmd_cnt));
++	f2fs_bug_on(sbi, need_check && atomic_read(&dcc->discard_cmd_cnt));
+ 	return !dropped;
+ }
+ 
+@@ -2367,7 +2367,7 @@ static void destroy_discard_cmd_control(struct f2fs_sb_info *sbi)
+ 	 * Recovery can cache discard commands, so in error path of
+ 	 * fill_super(), it needs to give a chance to handle them.
+ 	 */
+-	f2fs_issue_discard_timeout(sbi);
++	f2fs_issue_discard_timeout(sbi, true);
+ 
+ 	kfree(dcc);
+ 	SM_I(sbi)->dcc_info = NULL;
+diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+index a9adb6198184..f626e5ca089d 100644
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -2009,7 +2009,7 @@ static void f2fs_put_super(struct super_block *sb)
+ 	}
+ 
+ 	/* be sure to wait for any on-going discard commands */
+-	done = f2fs_issue_discard_timeout(sbi);
++	done = f2fs_issue_discard_timeout(sbi, true);
+ 	if (f2fs_realtime_discard_enable(sbi) && !sbi->discard_blks && done) {
+ 		struct cp_control cpc = {
+ 			.reason = CP_UMOUNT | CP_TRIMMED,
+@@ -2152,7 +2152,7 @@ static int f2fs_unfreeze(struct super_block *sb)
+ 	 * will recover after removal of snapshot.
+ 	 */
+ 	if (test_opt(sbi, DISCARD) && !f2fs_hw_support_discard(sbi))
+-		f2fs_issue_discard_timeout(sbi);
++		f2fs_issue_discard_timeout(sbi, true);
+ 
+ 	clear_sbi_flag(F2FS_SB(sb), SBI_IS_FREEZING);
+ 	return 0;
+@@ -2957,7 +2957,12 @@ static int __f2fs_remount(struct fs_context *fc, struct super_block *sb)
+ 			need_stop_discard = true;
+ 		} else {
+ 			f2fs_stop_discard_thread(sbi);
+-			f2fs_issue_discard_timeout(sbi);
++			/*
++			 * f2fs_ioc_fitrim() won't race w/ "remount ro"
++			 * so it's safe to check discard_cmd_cnt in
++			 * f2fs_issue_discard_timeout().
++			 */
++			f2fs_issue_discard_timeout(sbi, flags & SB_RDONLY);
+ 			need_restart_discard = true;
+ 		}
+ 	}
+
 
