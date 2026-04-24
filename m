@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-240752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240718-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UPXBFtBx62nCMwAAu9opvQ
-	(envelope-from <stable+bounces-240752-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:36:16 +0200
+	id EDy9FF1x62nCMwAAu9opvQ
+	(envelope-from <stable+bounces-240718-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:34:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FD6045F30A
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:36:15 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E06BD45F1F5
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:34:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 38C5F3009388
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:35:50 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E5CC230071D4
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:34:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB69523645D;
-	Fri, 24 Apr 2026 13:35:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD03323E356;
+	Fri, 24 Apr 2026 13:34:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qu7yfcU4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mRDzuDho"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A1803D6CCE;
-	Fri, 24 Apr 2026 13:35:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D9BC33E347;
+	Fri, 24 Apr 2026 13:34:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777037749; cv=none; b=bd6Y0A7XhyycA8ccIiUNZD/1GE/db2VoQPDLYl5rZsCcWuP9mp7YZH5+j/TAYFRs91+NBayCnOm4/BtTe4IukZDDX65ztFW+K/6Ex/37JzpACUEglmC/0WGy5VI6zGE658B8GnFsXWmocDvJJ/1q0XFfbY4YL0XFq6PkMgHJxYo=
+	t=1777037657; cv=none; b=oZh57Hc93JIAEHa8YAk/toQbVu795wpvXMBSGMCvpNiueb9bm7oaFkYIfYGsF2DljKjmLPfyr9WtfBndpunhnN5rl9QM9NcGzA4JPlLTesfq14bzoCfoHOIrBE7V3YTls1fKFfoYmKNN+D82xTIQOgn8Ps62AD9VkBnS+m0irOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777037749; c=relaxed/simple;
-	bh=IEIPgBwZlgHr1Z5YN4Km0n+18HV1JyXpp21FWw2DHT0=;
+	s=arc-20240116; t=1777037657; c=relaxed/simple;
+	bh=TS9C2YC44soQDIewTMaT4c6BveeQV/xCwLs/rjnWR8w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NMEsL9HXxMDDtnaZlNuPO/NE7j3A1Juya9MdOU7W8Hb4TSmSTvaw+kExpwMbqnWdkpAqTrVFiWeH9kjl8Bu0kHwoJeGJi46f/l6W9t+5huZMNL8AAHomHzHePmMkwI75pa8pwQ8PLNhNWh0HAJNxrzhD5+0bjxQOE3oE9dUDv8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qu7yfcU4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE27DC19425;
-	Fri, 24 Apr 2026 13:35:48 +0000 (UTC)
+	 MIME-Version; b=MDqE05zjYn6hFFRvet/3nE/wRLZbR2jpJiyZSXiqn1gyPoJvZIgKl8Ei5D/hxHEIX+DapjncEuQDV8hR3rTvvZywe7ejYaBAQX00XcVHcEPAUyNiee0txuHpaLCfMX7DgvDEEwXj/u7JO7wepmGfpKoNxH6tiCLZhkGIwcuz5UI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mRDzuDho; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 142B7C19425;
+	Fri, 24 Apr 2026 13:34:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777037749;
-	bh=IEIPgBwZlgHr1Z5YN4Km0n+18HV1JyXpp21FWw2DHT0=;
+	s=korg; t=1777037657;
+	bh=TS9C2YC44soQDIewTMaT4c6BveeQV/xCwLs/rjnWR8w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qu7yfcU4IecBrzmqDO5/oySjg4UlknJyt41fdbBUSuCqxf9EOeIB9556FOBw/jURz
-	 QB68wWEI2aRGIRjYEru2h/cyaCBkjNA0qS7QkHfBsI8Yx5sGTBIGDT6k5s0IJUxjpW
-	 AwangLc2o/c6diXJ6e5jgw3LpnhyYj5dmfpR9ZpY=
+	b=mRDzuDhoDBU+yhDgTlBbWsAiQxRINzUifn/ZMCdv9Tgjw3yL3RCkosNrb3PUp+A3t
+	 WkIukwQh3EVg9hzisBG9l8ROrSPpyyRwbVtpmwcH1xPn+0Dy3E9AuhiUNzkchiksuN
+	 O8PKvHnF6y8CAxbajgpYTZztXgoDV/+tmnknxpEU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?C=C3=A9sar=20Montoya?= <sprit152009@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Florian Westphal <fw@strlen.de>,
+	Stefano Brivio <sbrivio@redhat.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 011/166] ALSA: hda/realtek: Add mute LED quirk for HP Pavilion 15-eg0xxx
-Date: Fri, 24 Apr 2026 15:28:45 +0200
-Message-ID: <20260424132535.276314623@linuxfoundation.org>
+Subject: [PATCH 6.6 012/166] netfilter: nft_set_pipapo_avx2: dont return non-matching entry on expiry
+Date: Fri, 24 Apr 2026 15:28:46 +0200
+Message-ID: <20260424132535.483601703@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260424132532.812258529@linuxfoundation.org>
 References: <20260424132532.812258529@linuxfoundation.org>
@@ -63,77 +64,194 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4FD6045F30A
+X-Rspamd-Queue-Id: E06BD45F1F5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240752-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de,kernel.org];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240718-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,suse.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,netfilter.org:email]
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: César Montoya <sprit152009@gmail.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 2f388b4e8fdd6b0f27cafd281658daacfd85807e ]
+[ Upstream commit d3c0037ffe1273fa1961e779ff6906234d6cf53c ]
 
-The HP Pavilion 15-eg0xxx with subsystem ID 0x103c87cb uses a Realtek
-ALC287 codec with a mute LED wired to GPIO pin 4 (mask 0x10). The
-existing ALC287_FIXUP_HP_GPIO_LED fixup already handles this correctly,
-but the subsystem ID was missing from the quirk table.
+New test case fails unexpectedly when avx2 matching functions are used.
 
-GPIO pin confirmed via manual hda-verb testing:
-  hda-verb SET_GPIO_MASK 0x10
-  hda-verb SET_GPIO_DIRECTION 0x10
-  hda-verb SET_GPIO_DATA 0x10
+The test first loads a ranomly generated pipapo set
+with 'ipv4 . port' key, i.e.  nft -f foo.
 
-Signed-off-by: César Montoya <sprit152009@gmail.com>
-Link: https://patch.msgid.link/20260321153603.12771-1-sprit152009@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+This works.  Then, it reloads the set after a flush:
+(echo flush set t s; cat foo) | nft -f -
+
+This is expected to work, because its the same set after all and it was
+already loaded once.
+
+But with avx2, this fails: nft reports a clashing element.
+
+The reported clash is of following form:
+
+    We successfully re-inserted
+      a . b
+      c . d
+
+Then we try to insert a . d
+
+avx2 finds the already existing a . d, which (due to 'flush set') is marked
+as invalid in the new generation.  It skips the element and moves to next.
+
+Due to incorrect masking, the skip-step finds the next matching
+element *only considering the first field*,
+
+i.e. we return the already reinserted "a . b", even though the
+last field is different and the entry should not have been matched.
+
+No such error is reported for the generic c implementation (no avx2) or when
+the last field has to use the 'nft_pipapo_avx2_lookup_slow' fallback.
+
+Bisection points to
+7711f4bb4b36 ("netfilter: nft_set_pipapo: fix range overlap detection")
+but that fix merely uncovers this bug.
+
+Before this commit, the wrong element is returned, but erronously
+reported as a full, identical duplicate.
+
+The root-cause is too early return in the avx2 match functions.
+When we process the last field, we should continue to process data
+until the entire input size has been consumed to make sure no stale
+bits remain in the map.
+
+Link: https://lore.kernel.org/netfilter-devel/20260321152506.037f68c0@elisabeth/
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/netfilter/nft_set_pipapo_avx2.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index cd30f749c79b4..0efc2b8aedb4a 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10108,6 +10108,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x103c, 0x8788, "HP OMEN 15", ALC285_FIXUP_HP_MUTE_LED),
- 	SND_PCI_QUIRK(0x103c, 0x87b7, "HP Laptop 14-fq0xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
- 	SND_PCI_QUIRK(0x103c, 0x87c8, "HP", ALC287_FIXUP_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x87cb, "HP Pavilion 15-eg0xxx", ALC287_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x87cc, "HP Pavilion 15-eg0xxx", ALC287_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x87d3, "HP Laptop 15-gw0xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
- 	SND_PCI_QUIRK(0x103c, 0x87df, "HP ProBook 430 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
+diff --git a/net/netfilter/nft_set_pipapo_avx2.c b/net/netfilter/nft_set_pipapo_avx2.c
+index be7c16c79f711..2a761a644d4da 100644
+--- a/net/netfilter/nft_set_pipapo_avx2.c
++++ b/net/netfilter/nft_set_pipapo_avx2.c
+@@ -242,7 +242,7 @@ static int nft_pipapo_avx2_lookup_4b_2(unsigned long *map, unsigned long *fill,
+ 
+ 		b = nft_pipapo_avx2_refill(i_ul, &map[i_ul], fill, f->mt, last);
+ 		if (last)
+-			return b;
++			ret = b;
+ 
+ 		if (unlikely(ret == -1))
+ 			ret = b / XSAVE_YMM_SIZE;
+@@ -319,7 +319,7 @@ static int nft_pipapo_avx2_lookup_4b_4(unsigned long *map, unsigned long *fill,
+ 
+ 		b = nft_pipapo_avx2_refill(i_ul, &map[i_ul], fill, f->mt, last);
+ 		if (last)
+-			return b;
++			ret = b;
+ 
+ 		if (unlikely(ret == -1))
+ 			ret = b / XSAVE_YMM_SIZE;
+@@ -414,7 +414,7 @@ static int nft_pipapo_avx2_lookup_4b_8(unsigned long *map, unsigned long *fill,
+ 
+ 		b = nft_pipapo_avx2_refill(i_ul, &map[i_ul], fill, f->mt, last);
+ 		if (last)
+-			return b;
++			ret = b;
+ 
+ 		if (unlikely(ret == -1))
+ 			ret = b / XSAVE_YMM_SIZE;
+@@ -505,7 +505,7 @@ static int nft_pipapo_avx2_lookup_4b_12(unsigned long *map, unsigned long *fill,
+ 
+ 		b = nft_pipapo_avx2_refill(i_ul, &map[i_ul], fill, f->mt, last);
+ 		if (last)
+-			return b;
++			ret = b;
+ 
+ 		if (unlikely(ret == -1))
+ 			ret = b / XSAVE_YMM_SIZE;
+@@ -641,7 +641,7 @@ static int nft_pipapo_avx2_lookup_4b_32(unsigned long *map, unsigned long *fill,
+ 
+ 		b = nft_pipapo_avx2_refill(i_ul, &map[i_ul], fill, f->mt, last);
+ 		if (last)
+-			return b;
++			ret = b;
+ 
+ 		if (unlikely(ret == -1))
+ 			ret = b / XSAVE_YMM_SIZE;
+@@ -699,7 +699,7 @@ static int nft_pipapo_avx2_lookup_8b_1(unsigned long *map, unsigned long *fill,
+ 
+ 		b = nft_pipapo_avx2_refill(i_ul, &map[i_ul], fill, f->mt, last);
+ 		if (last)
+-			return b;
++			ret = b;
+ 
+ 		if (unlikely(ret == -1))
+ 			ret = b / XSAVE_YMM_SIZE;
+@@ -764,7 +764,7 @@ static int nft_pipapo_avx2_lookup_8b_2(unsigned long *map, unsigned long *fill,
+ 
+ 		b = nft_pipapo_avx2_refill(i_ul, &map[i_ul], fill, f->mt, last);
+ 		if (last)
+-			return b;
++			ret = b;
+ 
+ 		if (unlikely(ret == -1))
+ 			ret = b / XSAVE_YMM_SIZE;
+@@ -839,7 +839,7 @@ static int nft_pipapo_avx2_lookup_8b_4(unsigned long *map, unsigned long *fill,
+ 
+ 		b = nft_pipapo_avx2_refill(i_ul, &map[i_ul], fill, f->mt, last);
+ 		if (last)
+-			return b;
++			ret = b;
+ 
+ 		if (unlikely(ret == -1))
+ 			ret = b / XSAVE_YMM_SIZE;
+@@ -925,7 +925,7 @@ static int nft_pipapo_avx2_lookup_8b_6(unsigned long *map, unsigned long *fill,
+ 
+ 		b = nft_pipapo_avx2_refill(i_ul, &map[i_ul], fill, f->mt, last);
+ 		if (last)
+-			return b;
++			ret = b;
+ 
+ 		if (unlikely(ret == -1))
+ 			ret = b / XSAVE_YMM_SIZE;
+@@ -1019,7 +1019,7 @@ static int nft_pipapo_avx2_lookup_8b_16(unsigned long *map, unsigned long *fill,
+ 
+ 		b = nft_pipapo_avx2_refill(i_ul, &map[i_ul], fill, f->mt, last);
+ 		if (last)
+-			return b;
++			ret = b;
+ 
+ 		if (unlikely(ret == -1))
+ 			ret = b / XSAVE_YMM_SIZE;
 -- 
 2.53.0
 
