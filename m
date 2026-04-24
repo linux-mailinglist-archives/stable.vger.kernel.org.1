@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-240675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240890-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uIbIOcFx62nCMwAAu9opvQ
-	(envelope-from <stable+bounces-240675-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:36:01 +0200
+	id QDQKHS1z62nCMwAAu9opvQ
+	(envelope-from <stable+bounces-240890-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:42:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5588A45F2E6
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:36:01 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A637B45F6AE
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:42:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D57C1305D1C8
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:32:29 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C03BD3006218
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:41:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98B2723E356;
-	Fri, 24 Apr 2026 13:32:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E933B3D6CBD;
+	Fri, 24 Apr 2026 13:41:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ze+LZwt7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZtyeWIus"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59D773D3CEE;
-	Fri, 24 Apr 2026 13:32:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5AFB3D5241;
+	Fri, 24 Apr 2026 13:41:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777037549; cv=none; b=IQJS/qvXxceqpxNeQ8FnBQKMMKZWXdKf5npooKS53F924+/R1g6M00657IpO3aDbod/BeeJqRBv/e9lRj6mD/XMZFLh8zrg1Yx97J5cTGbRjEx2lC8ae0MADQTr0bE/M9IVCaF/z7RgMIXb2aLJs0zufbkCG9lHjrvMBa28QnxM=
+	t=1777038104; cv=none; b=SnPCMmyribVF1rwzbncCMU9dQMUGxL4oMybriOfXETyo146b6eyjBq3xlXzCaN4LHJJEb2hIJ94yxlP50FABjis3FggRsrM3uHkwOVQfNLC8YZLwtcK2IxBBsRVh3cIWzLaSZoYDX5Vr5KUdh5wOxwg3ksJ94HIY4CKNHK1g2nI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777037549; c=relaxed/simple;
-	bh=wiiAXhgqAzpMBOVBNe5M2yfYGYQVvzYpNc5l4VsrmaM=;
+	s=arc-20240116; t=1777038104; c=relaxed/simple;
+	bh=Lr+OATWeFRSb8My23oPOw/pzPPi14kJAaMDIXygqvKE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lugQjkjJ6Phhg4wUSqejS44CDhjnst+hmzLJ1gNbUw0wFgQpo/Eh1nFyN9j9MlOFqgOkHyYS+1WbC0QzxABO6IRNkXrPNJAcR+sG8KPucQBb4I+axz6wrA3S2CNGBhRXIH3Y3j5bhR7zz1DqcAeO4iSZ6+4fmJFd3sdzchuebuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ze+LZwt7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0F8CC19425;
-	Fri, 24 Apr 2026 13:32:28 +0000 (UTC)
+	 MIME-Version; b=rKrUPKtRCaSRMR1E7aWqChSc3mePhf1Z+sLJGV7gdKqwTOwb1ZGINQzZ4m4CtGjL6g4ywrKRHqjOEKAm1fJFquulDaxxQ60yL7fSCzJUG/CcX2AvHvUUjuYs2KK6P4Vg/kdY4lxzjSltjE/sPEjZ59OhFO0fx1KVe6DuFoH7Mf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZtyeWIus; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ACC3C19425;
+	Fri, 24 Apr 2026 13:41:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777037549;
-	bh=wiiAXhgqAzpMBOVBNe5M2yfYGYQVvzYpNc5l4VsrmaM=;
+	s=korg; t=1777038104;
+	bh=Lr+OATWeFRSb8My23oPOw/pzPPi14kJAaMDIXygqvKE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ze+LZwt7EvCfh9R4ylgowjT81GMs984bp/DnYNeqTlmqWZBZl9HySVeznKE3fBt5x
-	 BqzaLUnHiZ+nOnRdmNhDd7SbUM5bAJEAQu9KPcAubQqUcKEUV0BXmqRWT/0RY9gW2n
-	 mOlodw3txyoN63D/ALAYExMc3c8sEud0sUwZCjdw=
+	b=ZtyeWIusvnoDXE++ImcJX+qq6SKbJ47BkZtmgmRlDTGLj9EoUqjVAOuuHfAwl9une
+	 mZzesP+OBinxmgDVxTgOePKgdrLlJHaGUwAhdAeeQJr9g0ukrSJjMWwTdGhkxmC2b9
+	 JFvZHdV829BfCDfCJQsOf9Nwj1OrwUjU1Osj1a5I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Bommarito <michael.bommarito@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 7.0 20/42] ksmbd: require minimum ACE size in smb_check_perm_dacl()
+	Dudu Lu <phx0fer@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.18 06/55] crypto: krb5enc - fix async decrypt skipping hash verification
 Date: Fri, 24 Apr 2026 15:30:45 +0200
-Message-ID: <20260424132424.707064238@linuxfoundation.org>
+Message-ID: <20260424132431.360107783@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132420.410310336@linuxfoundation.org>
-References: <20260424132420.410310336@linuxfoundation.org>
+In-Reply-To: <20260424132430.006424517@linuxfoundation.org>
+References: <20260424132430.006424517@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,140 +63,196 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5588A45F2E6
+X-Rspamd-Queue-Id: A637B45F6AE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-240675-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240890-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,gondor.apana.org.au];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-7.0-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Bommarito <michael.bommarito@gmail.com>
+From: Dudu Lu <phx0fer@gmail.com>
 
-commit d07b26f39246a82399661936dd0c853983cfade7 upstream.
+commit 3bfbf5f0a99c991769ec562721285df7ab69240b upstream.
 
-Both ACE-walk loops in smb_check_perm_dacl() only guard against an
-under-sized remaining buffer, not against an ACE whose declared
-`ace->size` is smaller than the struct it claims to describe:
+krb5enc_dispatch_decrypt() sets req->base.complete as the skcipher
+callback, which is the caller's own completion handler. When the
+skcipher completes asynchronously, this signals "done" to the caller
+without executing krb5enc_dispatch_decrypt_hash(), completely bypassing
+the integrity verification (hash check).
 
-  if (offsetof(struct smb_ace, access_req) > aces_size)
-      break;
-  ace_size = le16_to_cpu(ace->size);
-  if (ace_size > aces_size)
-      break;
+Compare with the encrypt path which correctly uses
+krb5enc_encrypt_done as an intermediate callback to chain into the
+hash computation on async completion.
 
-The first check only requires the 4-byte ACE header to be in bounds;
-it does not require access_req (4 bytes at offset 4) to be readable.
-An attacker who has set a crafted DACL on a file they own can declare
-ace->size == 4 with aces_size == 4, pass both checks, and then
+Fix by adding krb5enc_decrypt_done as an intermediate callback that
+chains into krb5enc_dispatch_decrypt_hash() upon async skcipher
+completion, matching the encrypt path's callback pattern.
 
-  granted |= le32_to_cpu(ace->access_req);               /* upper loop */
-  compare_sids(&sid, &ace->sid);                         /* lower loop */
+Also fix EBUSY/EINPROGRESS handling throughout: remove
+krb5enc_request_complete() which incorrectly swallowed EINPROGRESS
+notifications that must be passed up to callers waiting on backlogged
+requests, and add missing EBUSY checks in krb5enc_encrypt_ahash_done
+for the dispatch_encrypt return value.
 
-reads access_req at offset 4 (OOB by up to 4 bytes) and ace->sid at
-offset 8 (OOB by up to CIFS_SID_BASE_SIZE + SID_MAX_SUB_AUTHORITIES
-* 4 bytes).
-
-Tighten both loops to require
-
-  ace_size >= offsetof(struct smb_ace, sid) + CIFS_SID_BASE_SIZE
-
-which is the smallest valid on-wire ACE layout (4-byte header +
-4-byte access_req + 8-byte sid base with zero sub-auths).  Also
-reject ACEs whose sid.num_subauth exceeds SID_MAX_SUB_AUTHORITIES
-before letting compare_sids() dereference sub_auth[] entries.
-
-parse_sec_desc() already enforces an equivalent check (lines 441-448);
-smb_check_perm_dacl() simply grew weaker validation over time.
-
-Reachability: authenticated SMB client with permission to set an ACL
-on a file.  On a subsequent CREATE against that file, the kernel
-walks the stored DACL via smb_check_perm_dacl() and triggers the
-OOB read.  Not pre-auth, and the OOB read is not reflected to the
-attacker, but KASAN reports and kernel state corruption are
-possible.
-
-Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-6
-Assisted-by: Codex:gpt-5-4
-Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: d1775a177f7f ("crypto: Add 'krb5enc' hash and cipher AEAD algorithm")
+Signed-off-by: Dudu Lu <phx0fer@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- fs/smb/server/smbacl.c |   17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
 
---- a/fs/smb/server/smbacl.c
-+++ b/fs/smb/server/smbacl.c
-@@ -1342,10 +1342,13 @@ int smb_check_perm_dacl(struct ksmbd_con
- 		ace = (struct smb_ace *)((char *)pdacl + sizeof(struct smb_acl));
- 		aces_size = acl_size - sizeof(struct smb_acl);
- 		for (i = 0; i < le16_to_cpu(pdacl->num_aces); i++) {
--			if (offsetof(struct smb_ace, access_req) > aces_size)
-+			if (offsetof(struct smb_ace, sid) +
-+			    aces_size < CIFS_SID_BASE_SIZE)
- 				break;
- 			ace_size = le16_to_cpu(ace->size);
--			if (ace_size > aces_size)
-+			if (ace_size > aces_size ||
-+			    ace_size < offsetof(struct smb_ace, sid) +
-+				       CIFS_SID_BASE_SIZE)
- 				break;
- 			aces_size -= ace_size;
- 			granted |= le32_to_cpu(ace->access_req);
-@@ -1360,13 +1363,19 @@ int smb_check_perm_dacl(struct ksmbd_con
- 	ace = (struct smb_ace *)((char *)pdacl + sizeof(struct smb_acl));
- 	aces_size = acl_size - sizeof(struct smb_acl);
- 	for (i = 0; i < le16_to_cpu(pdacl->num_aces); i++) {
--		if (offsetof(struct smb_ace, access_req) > aces_size)
-+		if (offsetof(struct smb_ace, sid) +
-+		    aces_size < CIFS_SID_BASE_SIZE)
- 			break;
- 		ace_size = le16_to_cpu(ace->size);
--		if (ace_size > aces_size)
-+		if (ace_size > aces_size ||
-+		    ace_size < offsetof(struct smb_ace, sid) +
-+			       CIFS_SID_BASE_SIZE)
- 			break;
- 		aces_size -= ace_size;
+Unset MAY_BACKLOG on the async completion path so the user won't
+see back-to-back EINPROGRESS notifications.
+
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+---
+ crypto/krb5enc.c |   52 +++++++++++++++++++++++++++++++---------------------
+ 1 file changed, 31 insertions(+), 21 deletions(-)
+
+--- a/crypto/krb5enc.c
++++ b/crypto/krb5enc.c
+@@ -39,12 +39,6 @@ struct krb5enc_request_ctx {
+ 	char tail[];
+ };
  
-+		if (ace->sid.num_subauth > SID_MAX_SUB_AUTHORITIES)
-+			break;
+-static void krb5enc_request_complete(struct aead_request *req, int err)
+-{
+-	if (err != -EINPROGRESS)
+-		aead_request_complete(req, err);
+-}
+-
+ /**
+  * crypto_krb5enc_extractkeys - Extract Ke and Ki keys from the key blob.
+  * @keys: Where to put the key sizes and pointers
+@@ -127,7 +121,7 @@ static void krb5enc_encrypt_done(void *d
+ {
+ 	struct aead_request *req = data;
+ 
+-	krb5enc_request_complete(req, err);
++	aead_request_complete(req, err);
+ }
+ 
+ /*
+@@ -188,14 +182,16 @@ static void krb5enc_encrypt_ahash_done(v
+ 	struct ahash_request *ahreq = (void *)(areq_ctx->tail + ictx->reqoff);
+ 
+ 	if (err)
+-		return krb5enc_request_complete(req, err);
++		goto out;
+ 
+ 	krb5enc_insert_checksum(req, ahreq->result);
+ 
+-	err = krb5enc_dispatch_encrypt(req,
+-				       aead_request_flags(req) & ~CRYPTO_TFM_REQ_MAY_SLEEP);
+-	if (err != -EINPROGRESS)
+-		aead_request_complete(req, err);
++	err = krb5enc_dispatch_encrypt(req, 0);
++	if (err == -EINPROGRESS)
++		return;
 +
- 		if (!compare_sids(&sid, &ace->sid) ||
- 		    !compare_sids(&sid_unix_NFS_mode, &ace->sid)) {
- 			found = 1;
++out:
++	aead_request_complete(req, err);
+ }
+ 
+ /*
+@@ -265,17 +261,16 @@ static void krb5enc_decrypt_hash_done(vo
+ {
+ 	struct aead_request *req = data;
+ 
+-	if (err)
+-		return krb5enc_request_complete(req, err);
+-
+-	err = krb5enc_verify_hash(req);
+-	krb5enc_request_complete(req, err);
++	if (!err)
++		err = krb5enc_verify_hash(req);
++	aead_request_complete(req, err);
+ }
+ 
+ /*
+  * Dispatch the hashing of the plaintext after we've done the decryption.
+  */
+-static int krb5enc_dispatch_decrypt_hash(struct aead_request *req)
++static int krb5enc_dispatch_decrypt_hash(struct aead_request *req,
++					 unsigned int flags)
+ {
+ 	struct crypto_aead *krb5enc = crypto_aead_reqtfm(req);
+ 	struct aead_instance *inst = aead_alg_instance(krb5enc);
+@@ -291,7 +286,7 @@ static int krb5enc_dispatch_decrypt_hash
+ 	ahash_request_set_tfm(ahreq, auth);
+ 	ahash_request_set_crypt(ahreq, req->dst, hash,
+ 				req->assoclen + req->cryptlen - authsize);
+-	ahash_request_set_callback(ahreq, aead_request_flags(req),
++	ahash_request_set_callback(ahreq, flags,
+ 				   krb5enc_decrypt_hash_done, req);
+ 
+ 	err = crypto_ahash_digest(ahreq);
+@@ -301,6 +296,21 @@ static int krb5enc_dispatch_decrypt_hash
+ 	return krb5enc_verify_hash(req);
+ }
+ 
++static void krb5enc_decrypt_done(void *data, int err)
++{
++	struct aead_request *req = data;
++
++	if (err)
++		goto out;
++
++	err = krb5enc_dispatch_decrypt_hash(req, 0);
++	if (err == -EINPROGRESS)
++		return;
++
++out:
++	aead_request_complete(req, err);
++}
++
+ /*
+  * Dispatch the decryption of the ciphertext.
+  */
+@@ -324,7 +334,7 @@ static int krb5enc_dispatch_decrypt(stru
+ 
+ 	skcipher_request_set_tfm(skreq, ctx->enc);
+ 	skcipher_request_set_callback(skreq, aead_request_flags(req),
+-				      req->base.complete, req->base.data);
++				      krb5enc_decrypt_done, req);
+ 	skcipher_request_set_crypt(skreq, src, dst,
+ 				   req->cryptlen - authsize, req->iv);
+ 
+@@ -339,7 +349,7 @@ static int krb5enc_decrypt(struct aead_r
+ 	if (err < 0)
+ 		return err;
+ 
+-	return krb5enc_dispatch_decrypt_hash(req);
++	return krb5enc_dispatch_decrypt_hash(req, aead_request_flags(req));
+ }
+ 
+ static int krb5enc_init_tfm(struct crypto_aead *tfm)
 
 
 
