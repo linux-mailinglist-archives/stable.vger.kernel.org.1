@@ -1,212 +1,162 @@
-Return-Path: <stable+bounces-240998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240999-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4FEBLMiT62m7OgAAu9opvQ
-	(envelope-from <stable+bounces-240998-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 18:01:12 +0200
+	id OEuWIuiT62m7OgAAu9opvQ
+	(envelope-from <stable+bounces-240999-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 18:01:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E69746119A
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 18:01:12 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 122434611C1
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 18:01:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C2B9C300D33E
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 16:01:07 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6980230065ED
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 16:01:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB81D38BF6A;
-	Fri, 24 Apr 2026 16:01:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F28203D6CB6;
+	Fri, 24 Apr 2026 16:01:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nrr1iPsx"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="RRZjQYCk"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDE7D290DBB;
-	Fri, 24 Apr 2026 16:01:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B1353CFF65
+	for <stable@vger.kernel.org>; Fri, 24 Apr 2026 16:01:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777046466; cv=none; b=CTDGRLKOrh7R05C13dEbMBWF90YcgzcKUiUQVCSr9SlQRABrP+aiK9vtX2bGTTsbmj31pQoSkawIwEE0OfXHjN7qdOgMb5WSY9ki02IB/8XdNWueyJZaoz4yZfPwGYL3RB3if5LTBlJ8vsKaqB3zsxDPn4ZZnHnSuW1p8u5SCtQ=
+	t=1777046501; cv=none; b=nGYi3PbIbS688sBRjNPlYEAvANkeNitvvdKE74w+wPckpBHRKLqrxCUA0cSedJtn1MT14SlFKYSxkpamdRFXwecniLoi9aGerO0FhQmnQ0pMM2hEncVshQxmnklIjk6AxVLL8IMOEnPIaLD2MvQlV4oKpHBSfDcwabvh78usQDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777046466; c=relaxed/simple;
-	bh=KBT7vvmv0IVOWGMiLj2J36zsnQ02LrEe5v671QjMNCw=;
+	s=arc-20240116; t=1777046501; c=relaxed/simple;
+	bh=XBrRIOss3UB8Fgcs6nvW4hOYB/mA2XcG3Gnu8tDN7JQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LmW4iQN0G4N0bQGrzQgWlMPP1HCXuIQUKqrdT0fFgt+6Iah7YrRIW0i93fUJrDx/w6hmHe+OodyrTkISip68j2E78wRj7TyJTPjtzZpo1TF4OzeXwJobdeNlcxhou9ifTFmUqbdpyG9WL4VPduVz/8qp7dg3rotcSytrd4VlCtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nrr1iPsx; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777046465; x=1808582465;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=KBT7vvmv0IVOWGMiLj2J36zsnQ02LrEe5v671QjMNCw=;
-  b=nrr1iPsxtkaQlJrNyLSP9Kmi95jG4P9immba5yKMjalze8eXWbd5JCig
-   x+ai28sfHPpIBVXH9pijo2aJj7X3OEfLoUCfx2RfVhrBHzB3Bs+nhHKdm
-   XAMG5Nutb+vk1+O0pDhLviUXIY6RhyhZuRShbbkZDt8HZaNoWYJyvieef
-   lRwpQZ0U0REniIcIGuB5yKaCFqR/mj6A4OokvkoTqPsjSdJbDreiB2ZYL
-   NE6rNFOs3/bAYfWRM9RSwkCQwbZjcBFWeaw+Hp+gOQuOQ0PnQdJMUdY0I
-   BUGpPrfceillq/8FycCKKaBmGNnIUocM8yztUO/EiiUfYihbf/VKNEO4s
-   g==;
-X-CSE-ConnectionGUID: Xjqyp5grQeq+/tdiKvxUeQ==
-X-CSE-MsgGUID: YWZi8dhnRG+kHi0ZX4ndrg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11766"; a="88728726"
-X-IronPort-AV: E=Sophos;i="6.23,196,1770624000"; 
-   d="scan'208";a="88728726"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2026 09:01:04 -0700
-X-CSE-ConnectionGUID: FYfcxKl3R+WAg9B6m7YpQQ==
-X-CSE-MsgGUID: /KJGgbsCS4+oJ7yTlVrFHA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,196,1770624000"; 
-   d="scan'208";a="238048509"
-Received: from unknown (HELO [10.241.240.162]) ([10.241.240.162])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Apr 2026 09:01:04 -0700
-Message-ID: <9248da24-350e-412e-acaa-619356c3ff21@intel.com>
-Date: Fri, 24 Apr 2026 09:01:02 -0700
+	 In-Reply-To:Content-Type; b=J6OAu6h7luJ9KRtLAHS1xeydPuagrRAlxg5neDQBx9poORXf9JknF/4JX4MwVXo3K+GOOO08GoSSnD68kUZlAeqkh7T+DXmWrtNd1vH4dilROdmKpcUJBUBLrX2ZldCs8Df88TPigHXc/ftUz1PFLsBPB+5oPW3bCfnl5iVkDwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=RRZjQYCk; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-488b0e1b870so131532505e9.2
+        for <stable@vger.kernel.org>; Fri, 24 Apr 2026 09:01:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20251104; t=1777046499; x=1777651299; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=x5EePbwPULNZVcoCBgcrmEXYzSzuUctn0Jq6gjLWNAI=;
+        b=RRZjQYCkM5Ed2hOKlWNyef8JPDVAq0iSFP4cqN/vt3S42/EXMpBFRZs4lUllageS76
+         TM7fNTaEjWJYMdCHXLa5/JVVq8PiELmPeuiII1nXj/nOO2YxldK/dl/nM6w0/AY6MG1t
+         dHAwt27wnhiDq2mPvrlMwhACW5wbRwOu4YJndRknhsaPP/Rx7/fG8kM+p5g7acNMtNHw
+         3oeb1Vc+5k0BMHjCISrppsnw1HGMVwolIJeqc/RDtQ54rcC7JG9WQeyNBhqo9NonoP+r
+         v9vm078F7eanTo4n78dd4KIB5ua4sunE/esexYk/Zv62GPYG/eSJPp9DAZlkr4qcquVM
+         UnXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777046499; x=1777651299;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=x5EePbwPULNZVcoCBgcrmEXYzSzuUctn0Jq6gjLWNAI=;
+        b=os8CLssCYY/DkBLEakqFp5tJHJ2hT0axknWpj6ymKq7JuYnZjCspk3fZLsW5Osk5+i
+         v+N8q5FadDz/Ia57+Hpn1Z3Zfly4mALjNaZiQCYzARtEcMbTIDk/E+J36rqE/HvWVygs
+         xLeYTXFW4ftEV7ns1SqpuVfIqhswqlkTASV0hSo5Ts8Xu+v0W6VPyXyORMW6PqG55dig
+         1NKGG/ihmf6USnjhL6FQVMByx75c7e3qlnRM6sp7gEX5HQd/CfdKNsnDt2I6Xp1pvcTz
+         FYraLKrOArCNflIEYCXnzGwhiMwtxJqO+dB5mne1UzIYUno0e0/JsMJ5CtibpjjrzF0A
+         niIA==
+X-Forwarded-Encrypted: i=1; AFNElJ9V7JdZGIJO8fEIm4ULpqFxPWkVFUc4ecIZSisaJ+WDW3+9z6lt9cKdEBHltRjCZPknlINNwU0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxX7053RXwDSeQUojMtJkihg/vP/ajljOB1oLbBAxaEi2TBMxgH
+	hNxbuaOeZsD9I7EwFA9p2k4Bsvm4KTnyr524E+CweHfFHca4OgGiQlY=
+X-Gm-Gg: AeBDieuBF2OsSLUHaKv8ThAKyNNhLY47JoMs12sa9FRPVDYn7s7Gx27NuZlj1HxvUgI
+	Ezzf2MNdBN2wMknkaXZ3KMOJFKAjlAbdir1Am+96rbWLX9TOyKc2Rfb8iaO3haycNQaz1zYXpVh
+	vVWb/Drenmq3xJj0Pj5awcBGteYkSZC9PNeZWlqbJS+6aW5stwxXN5+9E4O6+YXBm06my2k/VUP
+	tYlhoyuQm44WG1jNmib0Y6ud6wMPBhYwH3FoWVyZSvCEA2C3Z6MEEIbhWgyMr56JdVJJrg/sRDl
+	xRb+fulLgltm6raCwngQT0iLd1DRqI8+G/SDH21GtTH49Bj+4AhFdmTxXqNDB5cBATBgCTJXDGe
+	B1Kwv+mk2fIj/MtNsyya9r8ViCJCBL+FL6Zb8hoLic1iE6nJYZukAO4wOCdg541oEG1GmUXukIE
+	O2U4HsAdtxOgIiyOkVt/PjMJ5zDTI0oO/PjNVB31QBYaNS/Tm7O7pvkdFwTAzLnsh7qA12MEdTj
+	l0roqr9m1Tz
+X-Received: by 2002:a5d:64c3:0:b0:43f:e266:4c9c with SMTP id ffacd0b85a97d-43fe3db2e62mr50645337f8f.3.1777046498497;
+        Fri, 24 Apr 2026 09:01:38 -0700 (PDT)
+Received: from [192.168.1.3] (p5b2b4e21.dip0.t-ipconnect.de. [91.43.78.33])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43fe4e3a18csm69596790f8f.20.2026.04.24.09.01.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 24 Apr 2026 09:01:37 -0700 (PDT)
+Message-ID: <3649f35e-b190-4369-a90d-20eee8505e1c@googlemail.com>
+Date: Fri, 24 Apr 2026 18:01:36 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Patch v2] perf/x86/intel: Remove anythread_deprecated bit from
- perf_capabilities
-To: Dapeng Mi <dapeng1.mi@linux.intel.com>,
- Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Ian Rogers <irogers@google.com>,
- Adrian Hunter <adrian.hunter@intel.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org,
- Falcon Thomas <thomas.falcon@intel.com>, Dapeng Mi <dapeng1.mi@intel.com>,
- Xudong Hao <xudong.hao@intel.com>, stable@vger.kernel.org
-References: <20260423053306.3033331-1-dapeng1.mi@linux.intel.com>
-Content-Language: en-US
-From: "Chen, Zide" <zide.chen@intel.com>
-In-Reply-To: <20260423053306.3033331-1-dapeng1.mi@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 1E69746119A
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.6 000/166] 6.6.136-rc1 review
+Content-Language: de-DE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20260424132532.812258529@linuxfoundation.org>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20260424132532.812258529@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 122434611C1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.65 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	DMARC_POLICY_ALLOW(-0.50)[googlemail.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[googlemail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	XM_UA_NO_VERSION(0.01)[];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-240999-lists,stable=lfdr.de];
+	FREEMAIL_FROM(0.00)[googlemail.com];
+	RCPT_COUNT_TWELVE(0.00)[20];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	TAGGED_FROM(0.00)[bounces-240998-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[zide.chen@intel.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pschneider1968@googlemail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[googlemail.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,intel.com:dkim,intel.com:mid]
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,googlemail.com:dkim,googlemail.com:mid,peters-netzplatz.de:url,mailvelope.com:url]
+
+Am 24.04.2026 um 15:28 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.6.136 release.
+> There are 166 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg oddities or regressions found.
+
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
 
+Beste Grüße,
+Peter Schneider
 
-On 4/22/2026 10:33 PM, Dapeng Mi wrote:
-> AnyThread mode deprecation is enumerated by CPUID.0AH:EDX[15] instead of
-> PERF_CAPABILITIES MSR. It's not a good practice to define a bit to
-> represent "anythread deprecation" in perf_capabilities. It leads to the
-> anythread_deprecated bit could be overwritten by the real value of
-> PERF_CAPABILITIES MSR, just like the below code in update_pmu_cap() does.
-> 
-> ```
-> if (!intel_pmu_broken_perf_cap()) {
-> 	/* Perf Metric (Bit 15) and PEBS via PT (Bit 16) are hybrid enumeration */
-> 	rdmsrq(MSR_IA32_PERF_CAPABILITIES, hybrid(pmu, intel_cap).capabilities);
-> }
-> ```
-> 
-> It leads to the anythread_deprecated bit is cleared to 0 and the "any"
-> attribute is incorrectly shown in the /sys/devices/cpu/format/ folder on
-> these support Perfmon v6 platforms, like Clearwater Forest.
-> 
-> ```
-> $grep . /sys/devices/cpu/format/*
-> /sys/devices/cpu/format/acr_mask:config2:0-63
-> /sys/devices/cpu/format/any:config:21
-> /sys/devices/cpu/format/cmask:config:24-31
-> ```
-> 
-> So remove the anythread_deprecated bit from perf_capabilities structure
-> and directly depends on CPUID.0AH:EDX[15] to judge if anythread is
-> deprecated.
-> 
-> Cc: stable@vger.kernel.org
-> Reported-by: Namhyung Kim <namhyung@kernel.org>
-> Fixes: cadbaa039b99 ("perf/x86/intel: Make anythread filter support conditional")
-> Acked-by: Namhyung Kim <namhyung@kernel.org>
-> Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-> ---
+-- 
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
 
-Reviewed-by:  Zide Chen <zide.chen@intel.com>
-
-
-> 
-> V2: Address Namhyung and Zide's comments.
-> 
-> V1: https://lore.kernel.org/all/20260415021010.1248083-1-dapeng1.mi@linux.intel.com/
-> 
->  arch/x86/events/intel/core.c | 10 +++-------
->  arch/x86/events/perf_event.h |  2 +-
->  2 files changed, 4 insertions(+), 8 deletions(-)
-> 
-> diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-> index 793335c3ce78..f57a2903e4d6 100644
-> --- a/arch/x86/events/intel/core.c
-> +++ b/arch/x86/events/intel/core.c
-> @@ -7612,12 +7612,6 @@ __init int intel_pmu_init(void)
->  
->  	x86_add_quirk(intel_arch_events_quirk); /* Install first, so it runs last */
->  
-> -	if (version >= 5) {
-> -		x86_pmu.intel_cap.anythread_deprecated = edx.split.anythread_deprecated;
-> -		if (x86_pmu.intel_cap.anythread_deprecated)
-> -			pr_cont(" AnyThread deprecated, ");
-> -	}
-> -
->  	/* The perf side of core PMU is ready to support the mediated vPMU. */
->  	x86_get_pmu(smp_processor_id())->capabilities |= PERF_PMU_CAP_MEDIATED_VPMU;
->  
-> @@ -8467,8 +8461,10 @@ __init int intel_pmu_init(void)
->  				      &x86_pmu.intel_ctrl);
->  
->  	/* AnyThread may be deprecated on arch perfmon v5 or later */
-> -	if (x86_pmu.intel_cap.anythread_deprecated)
-> +	if (version >= 5 && edx.split.anythread_deprecated) {
->  		x86_pmu.format_attrs = intel_arch_formats_attr;
-> +		pr_cont("AnyThread deprecated, ");
-> +	}
->  
->  	intel_pmu_check_event_constraints_all(NULL);
->  
-> diff --git a/arch/x86/events/perf_event.h b/arch/x86/events/perf_event.h
-> index fad87d3c8b2c..01217c663dff 100644
-> --- a/arch/x86/events/perf_event.h
-> +++ b/arch/x86/events/perf_event.h
-> @@ -660,7 +660,7 @@ union perf_capabilities {
->  		u64	perf_metrics:1;
->  		u64	pebs_output_pt_available:1;
->  		u64	pebs_timing_info:1;
-> -		u64	anythread_deprecated:1;
-> +		u64	__reserved:1;
->  		u64	rdpmc_metrics_clear:1;
->  	};
->  	u64	capabilities;
-
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
