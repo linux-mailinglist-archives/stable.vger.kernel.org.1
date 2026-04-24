@@ -1,70 +1,59 @@
-Return-Path: <stable+bounces-240962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240905-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YEXKF95z62kQNAAAu9opvQ
-	(envelope-from <stable+bounces-240962-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:45:02 +0200
+	id qMqvFENz62kLNAAAu9opvQ
+	(envelope-from <stable+bounces-240905-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:42:27 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E62CE45F8C2
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:45:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E474D45F6E0
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 15:42:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id F042B3007510
-	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:44:47 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4C7D83002B25
+	for <lists+stable@lfdr.de>; Fri, 24 Apr 2026 13:42:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C4453876D0;
-	Fri, 24 Apr 2026 13:44:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 919E93D6494;
+	Fri, 24 Apr 2026 13:42:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d3NNI1AX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yVoceahB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D8093537DF;
-	Fri, 24 Apr 2026 13:44:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 517E3221DB6;
+	Fri, 24 Apr 2026 13:42:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777038287; cv=none; b=qsXc796fXrEyQPmjaMwsY94X+P8c4Ab5w613m8FZ+Y+JPZb945RBiNunKhx9+K6LQaiWjLf3Vint11n/zeYzLKYADA9sl7J1vZtiL1mzd0ehDCZLYMZC+wv0+9rPE5nmyuYX2ADfhVRxeBue8414hd0ZWI6tLvg4bkPEJWzUcVk=
+	t=1777038143; cv=none; b=X2itjzE3+Fm8RkLqYfBd5fW/RnPH6G5gsaCpUxLU99hly83FALs3bRjXheD6IjOHcreMhRVCzGPxfXwauu152OtSfj66CSZCSKM4aYnKQCDSssmeB/v+Yl8Dn5kqvhPZVM/gspo1RHlON/FqAdyMmpYkK8vj8NwPVBMEWh5DzaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777038287; c=relaxed/simple;
-	bh=UVkgQpV0lIwiXcYXNd2iR4m9MQNVpbGKntqfaygxYUI=;
+	s=arc-20240116; t=1777038143; c=relaxed/simple;
+	bh=B4cMRZ0jSiNQuknMvnIWr5nj+SEV6C85/FumwfLDSFQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kdh5IBw5vqq8mx5jrBFdOq0m8ANJ2F7bJl+Dk5rzc97mTYyxUYDXR0Tmkv/vlDvyVhNgv8F2GqUR1QyyYUgPrtCfcnk9srkeV4lCOR9WTfbFNseFUTq3Pqijq7dxtSotb6bbPjVhOJqgR5KX19uTR5YfMEbMajSFT2RgEcpYCV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d3NNI1AX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2BD0C19425;
-	Fri, 24 Apr 2026 13:44:46 +0000 (UTC)
+	 MIME-Version; b=sMs6txFwaPVO1v7tPCKeALI+/ohQw9LmaCJ2QOzvMQ86D4qByySqgaIHMKDtGL6zjpZLuaAOZA3sCO6/RBkumDplTGaR/aLUF7JWzLzKxeb52Mf1LLQ0Ah9YliRIyogJDZB8AUJ5ZZNfsC9DXQVHKgtOmdewaifP08iWHwJTVL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yVoceahB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7B63C2BCB2;
+	Fri, 24 Apr 2026 13:42:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777038287;
-	bh=UVkgQpV0lIwiXcYXNd2iR4m9MQNVpbGKntqfaygxYUI=;
+	s=korg; t=1777038143;
+	bh=B4cMRZ0jSiNQuknMvnIWr5nj+SEV6C85/FumwfLDSFQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d3NNI1AXBweBHw4knbGi7FS8+cjGmijS58Sur+rZ7Ac6ftQ85PUsyKbU3FUR/Hqql
-	 4lhOVqjKalcbdN5g0hY34Ib6zFNnNwt2j95c5ja2KjsqLlDjoXn2f44z11v4qH5Uwa
-	 KonNColIJMb2ilSJA5/Lx1XVU1Eg/ybZdh4HDusE=
+	b=yVoceahBH1SPZdgBuCQBQUS+lqPRgKYNj8aIceJeAKctPMnvRJ9GB+NMySdcVq/3r
+	 6i6HbEi2cGtsUoLYe+k5ssWERgmAeA7Yj7C+hnacgswRR+A/C6KXDr5LZhjX+MbuaJ
+	 0nPFhqA61Tiif2ZQn8z16XpUbqfg2QU3kTHfkznE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Yuan Tan <yuantan098@gmail.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Jie Wang <jiewang2024@lzu.edu.cn>,
-	Yang Yang <n05ec@lzu.edu.cn>,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	stable@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 13/35] rxrpc: only handle RESPONSE during service challenge
+	Michael Bommarito <michael.bommarito@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.18 41/55] ksmbd: validate response sizes in ipc_validate_msg()
 Date: Fri, 24 Apr 2026 15:31:20 +0200
-Message-ID: <20260424132414.436666103@linuxfoundation.org>
+Message-ID: <20260424132438.484553517@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260424132411.427029259@linuxfoundation.org>
-References: <20260424132411.427029259@linuxfoundation.org>
+In-Reply-To: <20260424132430.006424517@linuxfoundation.org>
+References: <20260424132430.006424517@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,117 +64,160 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E62CE45F8C2
+X-Rspamd-Queue-Id: E474D45F6E0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-240962-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lzu.edu.cn,redhat.com,auristor.com,kernel.org,lists.infradead.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[17];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-240905-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Jie <jiewang2024@lzu.edu.cn>
+From: Michael Bommarito <michael.bommarito@gmail.com>
 
-[ Upstream commit c43ffdcfdbb5567b1f143556df8a04b4eeea041c ]
+commit d6a6aa81eac2c9bff66dc6e191179cb69a14426b upstream.
 
-Only process RESPONSE packets while the service connection is still in
-RXRPC_CONN_SERVICE_CHALLENGING. Check that state under state_lock before
-running response verification and security initialization, then use a local
-secured flag to decide whether to queue the secured-connection work after
-the state transition. This keeps duplicate or late RESPONSE packets from
-re-running the setup path and removes the unlocked post-transition state
-test.
+ipc_validate_msg() computes the expected message size for each
+response type by adding (or multiplying) attacker-controlled fields
+from the daemon response to a fixed struct size in unsigned int
+arithmetic.  Three cases can overflow:
 
-Fixes: 17926a79320a ("[AF_RXRPC]: Provide secure RxRPC sockets for use by userspace and kernel both")
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Co-developed-by: Yuan Tan <yuantan098@gmail.com>
-Signed-off-by: Yuan Tan <yuantan098@gmail.com>
-Suggested-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Jie Wang <jiewang2024@lzu.edu.cn>
-Signed-off-by: Yang Yang <n05ec@lzu.edu.cn>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jeffrey Altman <jaltman@auristor.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@kernel.org
-Link: https://patch.msgid.link/20260408121252.2249051-21-dhowells@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ adapted spin_lock_irq/spin_unlock_irq calls to spin_lock/spin_unlock ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  KSMBD_EVENT_RPC_REQUEST:
+      msg_sz = sizeof(struct ksmbd_rpc_command) + resp->payload_sz;
+  KSMBD_EVENT_SHARE_CONFIG_REQUEST:
+      msg_sz = sizeof(struct ksmbd_share_config_response) +
+               resp->payload_sz;
+  KSMBD_EVENT_LOGIN_REQUEST_EXT:
+      msg_sz = sizeof(struct ksmbd_login_response_ext) +
+               resp->ngroups * sizeof(gid_t);
+
+resp->payload_sz is __u32 and resp->ngroups is __s32.  Each addition
+can wrap in unsigned int; the multiplication by sizeof(gid_t) mixes
+signed and size_t, so a negative ngroups is converted to SIZE_MAX
+before the multiply.  A wrapped value of msg_sz that happens to
+equal entry->msg_sz bypasses the size check on the next line, and
+downstream consumers (smb2pdu.c:6742 memcpy using rpc_resp->payload_sz,
+kmemdup in ksmbd_alloc_user using resp_ext->ngroups) then trust the
+unverified length.
+
+Use check_add_overflow() on the RPC_REQUEST and SHARE_CONFIG_REQUEST
+paths to detect integer overflow without constraining functional
+payload size; userspace ksmbd-tools grows NDR responses in 4096-byte
+chunks for calls like NetShareEnumAll, so a hard transport cap is
+unworkable on the response side.  For LOGIN_REQUEST_EXT, reject
+resp->ngroups outside the signed [0, NGROUPS_MAX] range up front and
+report the error from ipc_validate_msg() so it fires at the IPC
+boundary; with that bound the subsequent multiplication and addition
+stay well below UINT_MAX.  The now-redundant ngroups check and
+pr_err in ksmbd_alloc_user() are removed.
+
+This is the response-side analogue of aab98e2dbd64 ("ksmbd: fix
+integer overflows on 32 bit systems"), which hardened the request
+side.
+
+Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
+Fixes: a77e0e02af1c ("ksmbd: add support for supplementary groups")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-4-6
+Assisted-by: Codex:gpt-5-4
+Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rxrpc/conn_event.c |   14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ fs/smb/server/mgmt/user_config.c |    6 ------
+ fs/smb/server/transport_ipc.c    |   16 +++++++++++++---
+ 2 files changed, 13 insertions(+), 9 deletions(-)
 
---- a/net/rxrpc/conn_event.c
-+++ b/net/rxrpc/conn_event.c
-@@ -233,6 +233,7 @@ static int rxrpc_process_event(struct rx
- 			       struct sk_buff *skb)
- {
- 	struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
-+	bool secured = false;
- 	int ret;
+--- a/fs/smb/server/mgmt/user_config.c
++++ b/fs/smb/server/mgmt/user_config.c
+@@ -56,12 +56,6 @@ struct ksmbd_user *ksmbd_alloc_user(stru
+ 		goto err_free;
  
- 	if (conn->state == RXRPC_CONN_ABORTED)
-@@ -245,6 +246,13 @@ static int rxrpc_process_event(struct rx
- 		return conn->security->respond_to_challenge(conn, skb);
+ 	if (resp_ext) {
+-		if (resp_ext->ngroups > NGROUPS_MAX) {
+-			pr_err("ngroups(%u) from login response exceeds max groups(%d)\n",
+-					resp_ext->ngroups, NGROUPS_MAX);
+-			goto err_free;
+-		}
+-
+ 		user->sgid = kmemdup(resp_ext->____payload,
+ 				     resp_ext->ngroups * sizeof(gid_t),
+ 				     KSMBD_DEFAULT_GFP);
+--- a/fs/smb/server/transport_ipc.c
++++ b/fs/smb/server/transport_ipc.c
+@@ -13,6 +13,7 @@
+ #include <net/genetlink.h>
+ #include <linux/socket.h>
+ #include <linux/workqueue.h>
++#include <linux/overflow.h>
  
- 	case RXRPC_PACKET_TYPE_RESPONSE:
-+		spin_lock(&conn->state_lock);
-+		if (conn->state != RXRPC_CONN_SERVICE_CHALLENGING) {
-+			spin_unlock(&conn->state_lock);
-+			return 0;
-+		}
-+		spin_unlock(&conn->state_lock);
-+
- 		ret = conn->security->verify_response(conn, skb);
- 		if (ret < 0)
- 			return ret;
-@@ -255,11 +263,13 @@ static int rxrpc_process_event(struct rx
- 			return ret;
+ #include "vfs_cache.h"
+ #include "transport_ipc.h"
+@@ -497,7 +498,9 @@ static int ipc_validate_msg(struct ipc_m
+ 	{
+ 		struct ksmbd_rpc_command *resp = entry->response;
  
- 		spin_lock(&conn->state_lock);
--		if (conn->state == RXRPC_CONN_SERVICE_CHALLENGING)
-+		if (conn->state == RXRPC_CONN_SERVICE_CHALLENGING) {
- 			conn->state = RXRPC_CONN_SERVICE;
-+			secured = true;
-+		}
- 		spin_unlock(&conn->state_lock);
+-		msg_sz = sizeof(struct ksmbd_rpc_command) + resp->payload_sz;
++		if (check_add_overflow(sizeof(struct ksmbd_rpc_command),
++				       resp->payload_sz, &msg_sz))
++			return -EINVAL;
+ 		break;
+ 	}
+ 	case KSMBD_EVENT_SPNEGO_AUTHEN_REQUEST:
+@@ -516,8 +519,9 @@ static int ipc_validate_msg(struct ipc_m
+ 			if (resp->payload_sz < resp->veto_list_sz)
+ 				return -EINVAL;
  
--		if (conn->state == RXRPC_CONN_SERVICE) {
-+		if (secured) {
- 			/* Offload call state flipping to the I/O thread.  As
- 			 * we've already received the packet, put it on the
- 			 * front of the queue.
+-			msg_sz = sizeof(struct ksmbd_share_config_response) +
+-					resp->payload_sz;
++			if (check_add_overflow(sizeof(struct ksmbd_share_config_response),
++					       resp->payload_sz, &msg_sz))
++				return -EINVAL;
+ 		}
+ 		break;
+ 	}
+@@ -526,6 +530,12 @@ static int ipc_validate_msg(struct ipc_m
+ 		struct ksmbd_login_response_ext *resp = entry->response;
+ 
+ 		if (resp->ngroups) {
++			if (resp->ngroups < 0 ||
++			    resp->ngroups > NGROUPS_MAX) {
++				pr_err("ngroups(%d) from login response exceeds max groups(%d)\n",
++				       resp->ngroups, NGROUPS_MAX);
++				return -EINVAL;
++			}
+ 			msg_sz = sizeof(struct ksmbd_login_response_ext) +
+ 					resp->ngroups * sizeof(gid_t);
+ 		}
 
 
 
