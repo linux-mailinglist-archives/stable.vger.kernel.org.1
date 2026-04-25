@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-241122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241123-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 9M+EDgKZ7GlRaQAAu9opvQ
-	(envelope-from <stable+bounces-241122-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 12:35:46 +0200
+	id ayhYEvWi7GkgbAAAu9opvQ
+	(envelope-from <stable+bounces-241123-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 13:18:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77FB2465EE0
-	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 12:35:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95A17466196
+	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 13:18:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 30050300D96D
-	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 10:35:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8BA033007E01
+	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 11:18:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FFCE2D8379;
-	Sat, 25 Apr 2026 10:35:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD572352C28;
+	Sat, 25 Apr 2026 11:18:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oJUrAnT+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mhrkPcOx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 338881DC9B3
-	for <stable@vger.kernel.org>; Sat, 25 Apr 2026 10:35:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0715225397
+	for <stable@vger.kernel.org>; Sat, 25 Apr 2026 11:18:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777113341; cv=none; b=qNiOGMn3ygMkTCGm9euZSNRcrE3WyD+y8+WkfyhPq1evziV6URwNVaaM4nDYPoJXwPvThGoUmYP42WR2gXbUgsIU51gFU/p0d8GVx9UxImu/q/zmidHXuIO+bblEa9e/tARnFX8V/CYwM7CwUTNgztxJDuRMjbAHpNGFZIqtVMM=
+	t=1777115888; cv=none; b=mCaSKt+BNseq8ce240lPHEzBTHAAv8R1pD605qWtHWEDUmXOkw6ZRl5aCg5FBOI/nvDBvqvu7jTlISky0LmfMB2wpYRSgCmsmUCqRXabAfvYP6D/4WLrgbttmKo5mat6seiyfA21pAY/QbFdIt91A4fU1zJeSMUdeI4NZyqQo34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777113341; c=relaxed/simple;
-	bh=nqSH/vtLU1vq6Lz9haUlxvWfnqr5H+RyU9E+dySZGQs=;
+	s=arc-20240116; t=1777115888; c=relaxed/simple;
+	bh=KQy98BtacN/22lwZqKsVZVi6alN8IVRFy7OIM9uMiiI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RMPAa0QhNDp1c3+VLoEueYh27/QGCp4RtaXn+6UTx4lXH+YRR9Qv+Gwua4E98GnoshRtQhd+hhsOK5X86F8W+ns2csZslwIWHv3jXQWKBo51ORXhN6UL+Hz619U5GuhG1K4SNz1THp0wv+dkBNjjOe/bPu/JRq8pmdWhTIj3uyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oJUrAnT+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B529C2BCB0;
-	Sat, 25 Apr 2026 10:35:39 +0000 (UTC)
+	 MIME-Version; b=R/tff++YonBpXyWqgvVuHHykuCO3DqGaEzGig1e6wKYCiHGYfsb0TfJOiKU8BZBthBeGy9SVynVDj31xft2jTbigeHfT912enVnYdV056SGJoj8PAp8QNUVjRXI5DKO+WvsWwoHXh47YfU5FSR46pOI7mku41NjW115j8PhVo9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mhrkPcOx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99635C2BCB0;
+	Sat, 25 Apr 2026 11:18:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777113340;
-	bh=nqSH/vtLU1vq6Lz9haUlxvWfnqr5H+RyU9E+dySZGQs=;
+	s=k20201202; t=1777115888;
+	bh=KQy98BtacN/22lwZqKsVZVi6alN8IVRFy7OIM9uMiiI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oJUrAnT+gZmNOokRn79w0l0eX03CQ1OVGqwtcY5wQX8/iDNzlcVY+8aNn/4WyT+cS
-	 cF4lyudo70n3DgL0BlVndTtg5wgrYAR2QgkHmKZRGnP+sAdB9vpeAmAnFZJzHrPoxt
-	 9RcwJIjiKyrH0hCx98Q08hYYiRQR8ImiVXS9WVBfjNACOg2giVyfMITyiCgsdmhbcz
-	 BwF2cou0I5ETaPHoEkJ/H6N7iKGyBPKk4/C1pgeWZCkaPy3cBAw2/9JeGiHEBixQRD
-	 t2Wh+IKrgXTb9x6zKLrgeYnWiMRNK4iOEJ0kJitFIKu4pWrwT4ApNpPACGS5/M5Nhm
-	 Ris1pI0H+6oWg==
+	b=mhrkPcOxctSUAKdPQagFCkRselLSwXcYgKvIXXvnez6e/IAzDRiqE3o87FL4HLOXb
+	 +HO3+JpCpfldBzpDg6mBtuO00H5zjzqteU8XdwTMzYPJ42Onuk+aqdn2FrdyGBEFFk
+	 oo/KuBLwYVf7sXW/KTdQuTvLakwjb38xL5iYZrrVUzZ4F89Rb5vYIsVa6tlLrJsOes
+	 D2wPyId6968abQv9EbU4PrmGpa7nlajDvxNiP9RQ3Fy4ScCkTd45PQIL4aVhiu98te
+	 UsQmm5CblcHbrwIXxFRriguUmo7QXqMmdYKDEVhcpro1IZ8aDJb65SyaWX6xnTzd0y
+	 KERNPtKRn59RQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Chao Yu <chao@kernel.org>,
@@ -51,12 +51,12 @@ Cc: Chao Yu <chao@kernel.org>,
 	syzbot+62538b67389ee582837a@syzkaller.appspotmail.com,
 	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] f2fs: fix to do sanity check on dcc->discard_cmd_cnt conditionally
-Date: Sat, 25 Apr 2026 06:35:38 -0400
-Message-ID: <20260425103538.3545481-1-sashal@kernel.org>
+Subject: [PATCH 6.6.y] f2fs: fix to do sanity check on dcc->discard_cmd_cnt conditionally
+Date: Sat, 25 Apr 2026 07:18:05 -0400
+Message-ID: <20260425111805.3708792-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026042432-saggy-streak-1365@gregkh>
-References: <2026042432-saggy-streak-1365@gregkh>
+In-Reply-To: <2026042433-boaster-matador-f172@gregkh>
+References: <2026042433-boaster-matador-f172@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,7 +64,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 77FB2465EE0
+X-Rspamd-Queue-Id: 95A17466196
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
@@ -73,11 +73,11 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-241122-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-241123-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
@@ -91,7 +91,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable,62538b67389ee582837a];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_HAS_DN(0.00)[]
 
 From: Chao Yu <chao@kernel.org>
@@ -170,10 +170,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  3 files changed, 12 insertions(+), 7 deletions(-)
 
 diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
-index a6b06ac2751dc..ab0d9ed02092c 100644
+index d7afa8bc0ff8e..fb35f78e60bb3 100644
 --- a/fs/f2fs/f2fs.h
 +++ b/fs/f2fs/f2fs.h
-@@ -3782,7 +3782,7 @@ bool f2fs_is_checkpointed_data(struct f2fs_sb_info *sbi, block_t blkaddr);
+@@ -3722,7 +3722,7 @@ bool f2fs_is_checkpointed_data(struct f2fs_sb_info *sbi, block_t blkaddr);
  int f2fs_start_discard_thread(struct f2fs_sb_info *sbi);
  void f2fs_drop_discard_cmd(struct f2fs_sb_info *sbi);
  void f2fs_stop_discard_thread(struct f2fs_sb_info *sbi);
@@ -183,10 +183,10 @@ index a6b06ac2751dc..ab0d9ed02092c 100644
  					struct cp_control *cpc);
  void f2fs_dirty_to_prefree(struct f2fs_sb_info *sbi);
 diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
-index 819b92fd94e63..a1561b9ead422 100644
+index 764a3d084e4cf..8791aba087cd5 100644
 --- a/fs/f2fs/segment.c
 +++ b/fs/f2fs/segment.c
-@@ -1885,7 +1885,7 @@ void f2fs_stop_discard_thread(struct f2fs_sb_info *sbi)
+@@ -1873,7 +1873,7 @@ void f2fs_stop_discard_thread(struct f2fs_sb_info *sbi)
   *
   * Return true if issued all discard cmd or no discard cmd need issue, otherwise return false.
   */
@@ -195,7 +195,7 @@ index 819b92fd94e63..a1561b9ead422 100644
  {
  	struct discard_cmd_control *dcc = SM_I(sbi)->dcc_info;
  	struct discard_policy dpolicy;
-@@ -1902,7 +1902,7 @@ bool f2fs_issue_discard_timeout(struct f2fs_sb_info *sbi)
+@@ -1890,7 +1890,7 @@ bool f2fs_issue_discard_timeout(struct f2fs_sb_info *sbi)
  	/* just to make sure there is no pending discard commands */
  	__wait_all_discard_cmd(sbi, NULL);
  
@@ -204,7 +204,7 @@ index 819b92fd94e63..a1561b9ead422 100644
  	return !dropped;
  }
  
-@@ -2371,7 +2371,7 @@ static void destroy_discard_cmd_control(struct f2fs_sb_info *sbi)
+@@ -2349,7 +2349,7 @@ static void destroy_discard_cmd_control(struct f2fs_sb_info *sbi)
  	 * Recovery can cache discard commands, so in error path of
  	 * fill_super(), it needs to give a chance to handle them.
  	 */
@@ -214,10 +214,10 @@ index 819b92fd94e63..a1561b9ead422 100644
  	kfree(dcc);
  	SM_I(sbi)->dcc_info = NULL;
 diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index 3001ad8df5d1b..f25a259f37f12 100644
+index 9bd71d68cd95c..7614d93bd67fb 100644
 --- a/fs/f2fs/super.c
 +++ b/fs/f2fs/super.c
-@@ -1628,7 +1628,7 @@ static void f2fs_put_super(struct super_block *sb)
+@@ -1612,7 +1612,7 @@ static void f2fs_put_super(struct super_block *sb)
  	}
  
  	/* be sure to wait for any on-going discard commands */
@@ -226,7 +226,7 @@ index 3001ad8df5d1b..f25a259f37f12 100644
  	if (f2fs_realtime_discard_enable(sbi) && !sbi->discard_blks && done) {
  		struct cp_control cpc = {
  			.reason = CP_UMOUNT | CP_TRIMMED,
-@@ -1767,7 +1767,7 @@ static int f2fs_unfreeze(struct super_block *sb)
+@@ -1754,7 +1754,7 @@ static int f2fs_unfreeze(struct super_block *sb)
  	 * will recover after removal of snapshot.
  	 */
  	if (test_opt(sbi, DISCARD) && !f2fs_hw_support_discard(sbi))
@@ -235,7 +235,7 @@ index 3001ad8df5d1b..f25a259f37f12 100644
  
  	clear_sbi_flag(F2FS_SB(sb), SBI_IS_FREEZING);
  	return 0;
-@@ -2535,7 +2535,12 @@ static int f2fs_remount(struct super_block *sb, int *flags, char *data)
+@@ -2515,7 +2515,12 @@ static int f2fs_remount(struct super_block *sb, int *flags, char *data)
  			need_stop_discard = true;
  		} else {
  			f2fs_stop_discard_thread(sbi);
