@@ -1,207 +1,145 @@
-Return-Path: <stable+bounces-241132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241133-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8B+vDp/W7GkAdAAAu9opvQ
-	(envelope-from <stable+bounces-241132-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 16:58:39 +0200
+	id iJVDDa7y7GmddwAAu9opvQ
+	(envelope-from <stable+bounces-241133-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 18:58:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8255D466A87
-	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 16:58:38 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90399466F68
+	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 18:58:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5DD7B301ECE8
-	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 14:57:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3D54A300C585
+	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 16:58:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1688635A397;
-	Sat, 25 Apr 2026 14:57:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="FPgMLjUe"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48E41314B9D;
+	Sat, 25 Apr 2026 16:58:17 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB8B737AA98;
-	Sat, 25 Apr 2026 14:57:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29FB440DFDC;
+	Sat, 25 Apr 2026 16:58:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777129076; cv=none; b=mGKxrZqGnQ68k1tXDLoRifNclrzHdEr0NoJlg4JOBjfNfttEcaM0DYDrykFT/yRRzJF8dwMcfIc3d7UQUHAk0oF5uSw+TBhQK96/PaEGbHXmPUpmN8x6EVr4FlH7Xrzi502oZDmobF5kMedIrCZoMiKRP4vTMI0MkrqN6I5U2c4=
+	t=1777136297; cv=none; b=GaUnNnzObbMJGuB3nISGb67gdZnVYWYQ9Sd6xABPlyIFDaJYt3kiBysFbNkdNaSz1i58wk3fzgKTaeIX5SYetV1isRyGHrgV9LlT+a9ffGTsy1dtDp7Bxq3oRzKtrKLWLNV4Pz+z8O5wgHh6amGh7Zm/3OWerDOuOPRDnbmX7uo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777129076; c=relaxed/simple;
-	bh=67hmXrViKvKry/8B7QltivmfAtZgEBeYOC93U5ulNcs=;
-	h=Date:To:From:Subject:Message-Id; b=tZ6tFGaHgkrsD1N7nD0hRGGzwc+GW/+SsXFrVMl7BxWj1N3FM/H7pDe7W1tOPxyhAV9MbFjlc4AmtRiDj576U0GKre/38fLQyzTLoS8EjaEuHh7KCZYHte3ZUyZ05MdJHDSahkFsp7O2fSrpZBYrvIZhelXmuxS1iMP/n5txXW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=FPgMLjUe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63ED5C2BCB5;
-	Sat, 25 Apr 2026 14:57:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1777129076;
-	bh=67hmXrViKvKry/8B7QltivmfAtZgEBeYOC93U5ulNcs=;
-	h=Date:To:From:Subject:From;
-	b=FPgMLjUedZ8+HjE2hQ8YOjnK3j0+PspqWCpjrCi1y2mIoQdcfE5QxCgu9N9lruAoI
-	 z5MtSVAu3pEKM4r2yitUobfEftdxoK5AD7IIl+mldhfF6BO/FaCAAGcNcxJAbeeveL
-	 3El9bm7Kz0xo8Sw65L1O3K/DbIB/B7Yf/ryUWerE=
-Date: Sat, 25 Apr 2026 07:57:55 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,osalvador@suse.de,muchun.song@linux.dev,david@kernel.org,almasrymina@google.com,kartikey406@gmail.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-hugetlb-fix-hugetlb-cgroup-rsvd-charge-uncharge-mismatch.patch added to mm-new branch
-Message-Id: <20260425145756.63ED5C2BCB5@smtp.kernel.org>
+	s=arc-20240116; t=1777136297; c=relaxed/simple;
+	bh=O/pTHRQlfg9cEgABn9fpBKB7JVcHf2YTVNJHLKfdg8M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=redMUssegfZkzdq6zSdy9B3nLe1ajSIXx3QM/aZWLFqWnDLKBt6RU3z/5Peu3CiE7Dxm8idwjZHwbTvdroqqydGvDlyJFAOkKCL5w5Jb4xJ9iNhtWPhhBnDQYdU5eiqBx0Dhpi/eZr3tCGZ6Op3zqFBe39BCynT2isx7I3Ebado=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from edelgard.fodlan.icenowy.me (unknown [112.94.102.10])
+	by APP-01 (Coremail) with SMTP id qwCowADnjGiR8uxpxvNZDg--.9339S2;
+	Sun, 26 Apr 2026 00:57:54 +0800 (CST)
+From: Icenowy Zheng <zhengxingda@iscas.ac.cn>
+To: Neil Armstrong <neil.armstrong@linaro.org>,
+	Jessica Zhang <jesszhan0024@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Cong Yang <yangcong5@huaqin.corp-partner.google.com>
+Cc: David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Douglas Anderson <dianders@chromium.org>,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	Icenowy Zheng <zhengxingda@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] drm/panel: himax-hx83102: restore MODE_LPM after sending disable cmds
+Date: Sun, 26 Apr 2026 00:57:51 +0800
+Message-ID: <20260425165751.1716569-1-zhengxingda@iscas.ac.cn>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Rspamd-Queue-Id: 8255D466A87
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowADnjGiR8uxpxvNZDg--.9339S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7CFWkuw47GFW5uw4UCr15Arb_yoW8GrWUpr
+	srJ34ayFykJFn2yFW5Aa93ZFy3AwsavFWIkFn7WasrCa1jvayUZryktr1xXFyUXw4kG3WS
+	qFnrtF9rXa97AF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9Y14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVCY1x0267AKxVW8JV
+	W8Jr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+	2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
+	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2
+	Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x
+	0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2
+	zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF
+	4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWU
+	CwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCT
+	nIWIevJa73UjIFyTuYvjfUonmRUUUUU
+X-CM-SenderInfo: x2kh0wp0lqwv3d6l2u1dvotugofq/
+X-Rspamd-Queue-Id: 90399466F68
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-241132-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-241133-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	DMARC_NA(0.00)[linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	RCVD_COUNT_THREE(0.00)[4];
+	DMARC_NA(0.00)[iscas.ac.cn];
+	FREEMAIL_TO(0.00)[linaro.org,gmail.com,linux.intel.com,kernel.org,suse.de,huaqin.corp-partner.google.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,suse.de,linux.dev,kernel.org,google.com,gmail.com,linux-foundation.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_HAS_DN(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:dkim,linux-foundation.org:email,suse.de:email,linux.dev:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,syzkaller.appspot.com:url,appspotmail.com:email]
+	FREEMAIL_CC(0.00)[gmail.com,ffwll.ch,chromium.org,lists.freedesktop.org,vger.kernel.org,iscas.ac.cn];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[zhengxingda@iscas.ac.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.988];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
+When preparing the panel, it seems that it always expects commands to be
+transferred in LP mode. However, the disable function removes the
+MIPI_DSI_MODE_LPM flag, and no other function re-adds it.
 
-The patch titled
-     Subject: mm/hugetlb: fix hugetlb cgroup rsvd charge/uncharge mismatch
-has been added to the -mm mm-new branch.  Its filename is
-     mm-hugetlb-fix-hugetlb-cgroup-rsvd-charge-uncharge-mismatch.patch
+As the unprepare function contains no DSI commands, re-adding the flag
+just after disabling the panel should be safe. Add the code re-adding
+the flag after the two commands for disabling the panel are sent.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-hugetlb-fix-hugetlb-cgroup-rsvd-charge-uncharge-mismatch.patch
+This fixes screen unblanking (after blanking once) on
+mt8188-geralt-ciri-sku1 device.
 
-This patch will later appear in the mm-new branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Note, mm-new is a provisional staging ground for work-in-progress
-patches, and acceptance into mm-new is a notification for others take
-notice and to finish up reviews.  Please do not hesitate to respond to
-review feedback and post updated versions to replace or incrementally
-fixup patches in mm-new.
-
-The mm-new branch of mm.git is not included in linux-next
-
-If a few days of testing in mm-new is successful, the patch will me moved
-into mm.git's mm-unstable branch, which is included in linux-next
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: Deepanshu Kartikey <kartikey406@gmail.com>
-Subject: mm/hugetlb: fix hugetlb cgroup rsvd charge/uncharge mismatch
-Date: Sat, 28 Mar 2026 12:25:34 +0530
-
-In alloc_hugetlb_folio(), a single h_cg pointer is used for both the rsvd
-and non-rsvd hugetlb cgroup charges.  When map_chg is set,
-hugetlb_cgroup_charge_cgroup_rsvd() stores the charged cgroup in h_cg, but
-the immediately following hugetlb_cgroup_charge_cgroup() overwrites h_cg
-with the non-rsvd cgroup pointer.
-
-As a result, hugetlb_cgroup_commit_charge_rsvd() stores the wrong
-(non-rsvd) cgroup pointer into the folio's rsvd slot.
-
-When the folio is later freed, free_huge_folio() unconditionally calls
-both hugetlb_cgroup_uncharge_folio() and
-hugetlb_cgroup_uncharge_folio_rsvd().  The rsvd uncharge reads back the
-wrong cgroup from the folio and decrements a counter that was never
-charged for that cgroup, causing a page_counter underflow:
-
-  page_counter underflow: -512 nr_pages=512
-  WARNING: mm/page_counter.c:61 at page_counter_cancel
-
-Fix this by introducing a separate h_cg_rsvd pointer exclusively for the
-rsvd charge path, keeping the rsvd and non-rsvd charges fully independent
-through their charge, commit, and error uncharge paths.
-
-Link: https://lore.kernel.org/20260328065534.346053-1-kartikey406@gmail.com
-Fixes: 08cf9faf7558 ("hugetlb_cgroup: support noreserve mappings")
-Reported-by: syzbot+226c1f947186f8fef796@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=226c1f947186f8fef796
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Mina Almasry <almasrymina@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org # 6.11+
+Fixes: 0ef94554dc40 ("drm/panel: himax-hx83102: Break out as separate driver")
+Signed-off-by: Icenowy Zheng <zhengxingda@iscas.ac.cn>
 ---
+ drivers/gpu/drm/panel/panel-himax-hx83102.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
- mm/hugetlb.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
-
---- a/mm/hugetlb.c~mm-hugetlb-fix-hugetlb-cgroup-rsvd-charge-uncharge-mismatch
-+++ a/mm/hugetlb.c
-@@ -2879,6 +2879,7 @@ struct folio *alloc_hugetlb_folio(struct
- 	map_chg_state map_chg;
- 	int ret, idx;
- 	struct hugetlb_cgroup *h_cg = NULL;
-+	struct hugetlb_cgroup *h_cg_rsvd = NULL;
- 	gfp_t gfp = htlb_alloc_mask(h) | __GFP_RETRY_MAYFAIL;
+diff --git a/drivers/gpu/drm/panel/panel-himax-hx83102.c b/drivers/gpu/drm/panel/panel-himax-hx83102.c
+index 8b2a68ee851e3..a5e5c9ea7a73f 100644
+--- a/drivers/gpu/drm/panel/panel-himax-hx83102.c
++++ b/drivers/gpu/drm/panel/panel-himax-hx83102.c
+@@ -937,6 +937,8 @@ static int hx83102_disable(struct drm_panel *panel)
+ 	mipi_dsi_dcs_set_display_off_multi(&dsi_ctx);
+ 	mipi_dsi_dcs_enter_sleep_mode_multi(&dsi_ctx);
  
- 	idx = hstate_index(h);
-@@ -2929,7 +2930,7 @@ struct folio *alloc_hugetlb_folio(struct
- 	 */
- 	if (map_chg) {
- 		ret = hugetlb_cgroup_charge_cgroup_rsvd(
--			idx, pages_per_huge_page(h), &h_cg);
-+			idx, pages_per_huge_page(h), &h_cg_rsvd);
- 		if (ret)
- 			goto out_subpool_put;
- 	}
-@@ -2971,7 +2972,7 @@ struct folio *alloc_hugetlb_folio(struct
- 	 */
- 	if (map_chg) {
- 		hugetlb_cgroup_commit_charge_rsvd(idx, pages_per_huge_page(h),
--						  h_cg, folio);
-+						  h_cg_rsvd, folio);
- 	}
++	dsi->mode_flags |= MIPI_DSI_MODE_LPM;
++
+ 	mipi_dsi_msleep(&dsi_ctx, 150);
  
- 	spin_unlock_irq(&hugetlb_lock);
-@@ -3023,7 +3024,7 @@ out_uncharge_cgroup:
- out_uncharge_cgroup_reservation:
- 	if (map_chg)
- 		hugetlb_cgroup_uncharge_cgroup_rsvd(idx, pages_per_huge_page(h),
--						    h_cg);
-+						    h_cg_rsvd);
- out_subpool_put:
- 	/*
- 	 * put page to subpool iff the quota of subpool's rsv_hpages is used
-_
-
-Patches currently in -mm which might be from kartikey406@gmail.com are
-
-mm-hugetlb-fix-hugetlb-cgroup-rsvd-charge-uncharge-mismatch.patch
-kernel-fork-validate-exit_signal-in-kernel_clone.patch
+ 	return dsi_ctx.accum_err;
+-- 
+2.52.0
 
 
