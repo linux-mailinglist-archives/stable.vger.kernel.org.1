@@ -1,57 +1,83 @@
-Return-Path: <stable+bounces-241133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241134-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iJVDDa7y7GmddwAAu9opvQ
-	(envelope-from <stable+bounces-241133-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 18:58:22 +0200
+	id +D81AWQB7WnmeAAAu9opvQ
+	(envelope-from <stable+bounces-241134-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 20:01:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90399466F68
-	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 18:58:21 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80AB44672C3
+	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 20:01:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3D54A300C585
-	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 16:58:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F092E306C3F9
+	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 17:55:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48E41314B9D;
-	Sat, 25 Apr 2026 16:58:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F044373C00;
+	Sat, 25 Apr 2026 17:52:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="khDJnS3g"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from bg1.exmail.qq.com (bg1.exmail.qq.com [114.132.77.159])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29FB440DFDC;
-	Sat, 25 Apr 2026 16:58:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5EE0372B2F;
+	Sat, 25 Apr 2026 17:51:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.132.77.159
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777136297; cv=none; b=GaUnNnzObbMJGuB3nISGb67gdZnVYWYQ9Sd6xABPlyIFDaJYt3kiBysFbNkdNaSz1i58wk3fzgKTaeIX5SYetV1isRyGHrgV9LlT+a9ffGTsy1dtDp7Bxq3oRzKtrKLWLNV4Pz+z8O5wgHh6amGh7Zm/3OWerDOuOPRDnbmX7uo=
+	t=1777139522; cv=none; b=m5Pv5c0rPjBcjcNtgAs7L6Sk+V0C+HRX2/P9FJh6QX491QXrERmtzLJkq5uAIB4C/cAYMhP2BpTT6NGoq+JCwTihfqWY1kjDyZGxQWzEZiGdOlYUU0FSzsfPWvAOsrHkFADY+gOZYJwd9kwczBTPcXOBrKikXSX1cj+AHa2TRV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777136297; c=relaxed/simple;
-	bh=O/pTHRQlfg9cEgABn9fpBKB7JVcHf2YTVNJHLKfdg8M=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=redMUssegfZkzdq6zSdy9B3nLe1ajSIXx3QM/aZWLFqWnDLKBt6RU3z/5Peu3CiE7Dxm8idwjZHwbTvdroqqydGvDlyJFAOkKCL5w5Jb4xJ9iNhtWPhhBnDQYdU5eiqBx0Dhpi/eZr3tCGZ6Op3zqFBe39BCynT2isx7I3Ebado=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from edelgard.fodlan.icenowy.me (unknown [112.94.102.10])
-	by APP-01 (Coremail) with SMTP id qwCowADnjGiR8uxpxvNZDg--.9339S2;
-	Sun, 26 Apr 2026 00:57:54 +0800 (CST)
-From: Icenowy Zheng <zhengxingda@iscas.ac.cn>
-To: Neil Armstrong <neil.armstrong@linaro.org>,
-	Jessica Zhang <jesszhan0024@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Cong Yang <yangcong5@huaqin.corp-partner.google.com>
-Cc: David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Douglas Anderson <dianders@chromium.org>,
-	dri-devel@lists.freedesktop.org,
+	s=arc-20240116; t=1777139522; c=relaxed/simple;
+	bh=Y7SQkTAZLMynaavXYwMgPgPHJMZHPBxRzxWN4ZHRs38=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=gR9DDSLowFooa0otGlagJjuTLpOT5BOsM1o3ps2AV6FBj9Tzdam2UtSz21dbhOS7XNDfGM0VHVgYypR45NsyxMGp2WKQGh88GTpok1yJEb5cjRzjHcgqQkf7UpGIeIfAlmRKtSNpVF0a8F9MoIsUv2fmofMY6ssIR/KK78EBoG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=khDJnS3g; arc=none smtp.client-ip=114.132.77.159
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1777139427;
+	bh=Y7SQkTAZLMynaavXYwMgPgPHJMZHPBxRzxWN4ZHRs38=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version;
+	b=khDJnS3grutZ1VRicPIiNIAp1Ldwj9HM7SM1CufjeXEhINSRi5zsniOGqmDqoiPWW
+	 cLc7BC76YgcwWR2ecElHkJQ4OACQJiuxR2ju5ISzd60brDesjG6JJcyC2fSb6SzYzT
+	 HCDeY9Hxbkg7pGFXxklvQzM9BFDBdb01q74vd2sg=
+X-QQ-mid: zesmtpgz3t1777139420t31e62bf2
+X-QQ-Originating-IP: lKSNzZeE38H2mEI/gO6dOmC/rJBq2OzSqLrEtcw9aQg=
+Received: from localhost.localdomain ( [113.57.152.160])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Sun, 26 Apr 2026 01:50:18 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 2746875523663630047
+EX-QQ-RecipientCnt: 21
+From: Wentao Guan <guanwentao@uniontech.com>
+To: gregkh@linuxfoundation.org
+Cc: achill@achill.org,
+	akpm@linux-foundation.org,
+	broonie@kernel.org,
+	conor@kernel.org,
+	f.fainelli@gmail.com,
+	hargar@microsoft.com,
+	jonathanh@nvidia.com,
 	linux-kernel@vger.kernel.org,
-	Icenowy Zheng <zhengxingda@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] drm/panel: himax-hx83102: restore MODE_LPM after sending disable cmds
-Date: Sun, 26 Apr 2026 00:57:51 +0800
-Message-ID: <20260425165751.1716569-1-zhengxingda@iscas.ac.cn>
-X-Mailer: git-send-email 2.52.0
+	linux@roeck-us.net,
+	lkft-triage@lists.linaro.org,
+	patches@kernelci.org,
+	patches@lists.linux.dev,
+	pavel@nabladev.com,
+	rwarsow@gmx.de,
+	shuah@kernel.org,
+	sr@sladewatkins.com,
+	stable@vger.kernel.org,
+	sudipm.mukherjee@gmail.com,
+	torvalds@linux-foundation.org,
+	Wentao Guan <guanwentao@uniontech.com>
+Subject: Re: [PATCH 6.18 00/55] 6.18.25-rc1 review
+Date: Sun, 26 Apr 2026 01:49:03 +0800
+Message-Id: <20260425174903.480962-1-guanwentao@uniontech.com>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20260424132430.006424517@linuxfoundation.org>
+References: <20260424132430.006424517@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,87 +85,77 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowADnjGiR8uxpxvNZDg--.9339S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7CFWkuw47GFW5uw4UCr15Arb_yoW8GrWUpr
-	srJ34ayFykJFn2yFW5Aa93ZFy3AwsavFWIkFn7WasrCa1jvayUZryktr1xXFyUXw4kG3WS
-	qFnrtF9rXa97AF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9Y14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVCY1x0267AKxVW8JV
-	W8Jr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
-	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2
-	Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x
-	0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2
-	zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF
-	4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWU
-	CwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCT
-	nIWIevJa73UjIFyTuYvjfUonmRUUUUU
-X-CM-SenderInfo: x2kh0wp0lqwv3d6l2u1dvotugofq/
-X-Rspamd-Queue-Id: 90399466F68
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpgz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
+X-QQ-XMAILINFO: MdTuaOGnZwiP5TN6UfJgyajXwLK6PFP3psiyIhpaKkEMhLhI4d421VwV
+	MYpQ4a6eRATfuTYqzGcZb6PuhA1UM96P3I5qgNE0EHo8f9198vZ9EjiVUX2uARCh0eAcSVb
+	MJSpldy8WlC+V7tEl8Ytg+kUnEB8krnyEwYMz2RGhj0iUlf1mmlNekIzB706RwSrzQk6mqu
+	o5KaFF5Mg8MoqxEA+7D8w62NN1rG4f7y8mNS4C/wMaNmGUDigEO96xe8a0fa9GDaXvRIEvC
+	7Gcd+++z4zzr0Tu4HfV7HIrKXZ5G4m/+fWIALFnXx55p1mHKG+bxt/8pWpvh2jp7Dz6Xh7G
+	hKERJSrEECTYNziUqUF82iHdJ70W+nzjTIXYE/nqUjSOZBxPK++lQTNDpUK9Cfs2OzF36Eg
+	D4mfi5N+M8bTcuqRLO1mmpblF30vJtJWK/UQ6aCKMns9pk++g0vz75id3wI+XsdTD3UohW6
+	asXraGNTQKYh8mbkuipmkinjtNq2t4RxeOSa03ckVgLMCywQ6Vv9bTYPtSS63SUOU+ITf4q
+	Wap1P+w+PccFVyWANQYFpffUu0/SESATGq+vCV/kbyAv1X2jMSl0tw+wJN+61zCm3WVgQmi
+	bexxrlceerxs/ZZ1NbJQG34qmQOXoEyw49vMMS/dnAzGK9PXud7phgnyQyd3RgGYe0frzuh
+	OZtrNn0Z+NmZooKPZGHWk02bcOMyVc6nTh81IRUektbqjxwnWqpRpfALiruqsk2vXXykt7o
+	pSihNz/KiP+P/v983jhAVfUHBFpPFDrT/Zg2zgJqLGhEC2yKiXry7AMo1epoRbnggMxdcN7
+	3rbO7Ui9Hsa8uDdHomVKO5A7n7E/8L7cEaVpjQVKEAZQNsjJ5pmQmNWAj/1ic/Ttkjn6G2b
+	FM2V8nddKmMfYjrFXuMhCTtcwgnnlq91p/BpZJqsgh5gWHOEQc2cuFju4oSxjJ6UOV8li5F
+	JG7MKJ9tqNoCalgdDsZK+laqC7KBW3hGzVC3ahEgZ0U+5tKq/FJ+UYR0f32UYYKZQrxAkI/
+	IUKOFQvRfdFs5eAv5eYwHxN4V8qVwWOAMFXASBuHJp+tOP8N366SphXECijtF3CLh6cq7yI
+	JAeUe8c0uVL
+X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
+X-QQ-RECHKSPAM: 0
+X-Rspamd-Queue-Id: 80AB44672C3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.04 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[uniontech.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[uniontech.com:s=onoh2408];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-241133-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	FREEMAIL_TO(0.00)[linaro.org,gmail.com,linux.intel.com,kernel.org,suse.de,huaqin.corp-partner.google.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[21];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[13];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmail.com,ffwll.ch,chromium.org,lists.freedesktop.org,vger.kernel.org,iscas.ac.cn];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[zhengxingda@iscas.ac.cn,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-241134-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[achill.org,linux-foundation.org,kernel.org,gmail.com,microsoft.com,nvidia.com,vger.kernel.org,roeck-us.net,lists.linaro.org,kernelci.org,lists.linux.dev,nabladev.com,gmx.de,sladewatkins.com,uniontech.com];
+	DKIM_TRACE(0.00)[uniontech.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.988];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,uniontech.com:email,uniontech.com:dkim,uniontech.com:mid,uos-pc:email]
 
-When preparing the panel, it seems that it always expects commands to be
-transferred in LP mode. However, the disable function removes the
-MIPI_DSI_MODE_LPM flag, and no other function re-adds it.
+Build tested in our x86,arm64,loongarch,riscv config successfully without error.
 
-As the unprepare function contains no DSI commands, re-adding the flag
-just after disabling the panel should be safe. Add the code re-adding
-the flag after the two commands for disabling the panel are sent.
+Tested-by: Wentao Guan <guanwentao@uniontech.com>
 
-This fixes screen unblanking (after blanking once) on
-mt8188-geralt-ciri-sku1 device.
+BRs
+Wentao Guan
 
-Cc: stable@vger.kernel.org # 6.11+
-Fixes: 0ef94554dc40 ("drm/panel: himax-hx83102: Break out as separate driver")
-Signed-off-by: Icenowy Zheng <zhengxingda@iscas.ac.cn>
----
- drivers/gpu/drm/panel/panel-himax-hx83102.c | 2 ++
- 1 file changed, 2 insertions(+)
+defconfigs:
+https://gist.github.com/opsiff/a840ae9e3d6857f5b7bacb9cdc49f8e9
 
-diff --git a/drivers/gpu/drm/panel/panel-himax-hx83102.c b/drivers/gpu/drm/panel/panel-himax-hx83102.c
-index 8b2a68ee851e3..a5e5c9ea7a73f 100644
---- a/drivers/gpu/drm/panel/panel-himax-hx83102.c
-+++ b/drivers/gpu/drm/panel/panel-himax-hx83102.c
-@@ -937,6 +937,8 @@ static int hx83102_disable(struct drm_panel *panel)
- 	mipi_dsi_dcs_set_display_off_multi(&dsi_ctx);
- 	mipi_dsi_dcs_enter_sleep_mode_multi(&dsi_ctx);
- 
-+	dsi->mode_flags |= MIPI_DSI_MODE_LPM;
-+
- 	mipi_dsi_msleep(&dsi_ctx, 150);
- 
- 	return dsi_ctx.accum_err;
--- 
-2.52.0
-
+Log:
+strings vmlinux-* | grep "Linux version 6.18.25-rc1"
+Linux version 6.18.25-rc1-g2bba374400df (guanwentao@uos-PC) (aarch64-linux-gnu-gcc-12 (Deepin 12.3.0-17deepin8) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) # SMP PREEMPT_DYNAMIC
+Linux version 6.18.25-rc1-g2bba374400df (guanwentao@uos-PC) (aarch64-linux-gnu-gcc-12 (Deepin 12.3.0-17deepin8) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) #2 SMP PREEMPT_DYNAMIC Sun Apr 26 00:40:28 CST 2026
+Linux version 6.18.25-rc1-g2bba374400df (guanwentao@uos-PC) (loongarch64-linux-gnu-gcc-12 (Deepin 12.3.0-17deepin8) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) # SMP PREEMPT_DYNAMIC
+Linux version 6.18.25-rc1-g2bba374400df (guanwentao@uos-PC) (loongarch64-linux-gnu-gcc-12 (Deepin 12.3.0-17deepin8) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) #3 SMP PREEMPT_DYNAMIC Sun Apr 26 01:03:19 CST 2026
+Linux version 6.18.25-rc1+ (guanwentao@uos-PC) (riscv64-linux-gnu-gcc-12 (Deepin 12.3.0-17deepin8) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) # SMP PREEMPT
+Linux version 6.18.25-rc1+ (guanwentao@uos-PC) (riscv64-linux-gnu-gcc-12 (Deepin 12.3.0-17deepin8) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) #4 SMP PREEMPT Sun Apr 26 01:28:01 CST 2026
+Linux version 6.18.25-rc1-g2bba374400df (guanwentao@uos-PC) (gcc (Deepin 12.3.0-17deepin15) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) # SMP PREEMPT_DYNAMIC
+Linux version 6.18.25-rc1-g2bba374400df (guanwentao@uos-PC) (gcc (Deepin 12.3.0-17deepin15) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) #1 SMP PREEMPT_DYNAMIC Sun Apr 26 00:14:25 CST 2026
 
