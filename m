@@ -1,271 +1,198 @@
-Return-Path: <stable+bounces-241094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241095-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OK89NTdc7GmKXwAAu9opvQ
-	(envelope-from <stable+bounces-241094-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 08:16:23 +0200
+	id KNacI2xd7GnYXwAAu9opvQ
+	(envelope-from <stable+bounces-241095-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 08:21:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 371E346521C
-	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 08:16:23 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F247D46523F
+	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 08:21:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 027A3301919E
-	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 06:15:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A931F3017382
+	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 06:21:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB5FF2C21F4;
-	Sat, 25 Apr 2026 06:15:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 161EF13FEE;
+	Sat, 25 Apr 2026 06:21:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="LOyYK/DD"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ZCQSa0xM"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DE9E40DFCF;
-	Sat, 25 Apr 2026 06:15:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63A282BDC23
+	for <stable@vger.kernel.org>; Sat, 25 Apr 2026 06:21:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777097749; cv=none; b=QPNpwUzFCevqrfg0TE0Il4euHtQl2G+3gYcbzLEf9AdwarsaF80KUA+EIEA4oB8/ij0//vYtNDPPe4I4/T2x+qkEqD/DwyvdRGDwfpK05VlA+BiyGnMeoBIQEUxWiJoAV3awGOnJ/HemH9QC3aarwgZ90XSl5e9nzeaorzEWAI0=
+	t=1777098089; cv=none; b=RSrxx40H/U6+tMXyn5cle+xUIuu/refkecZcCd0gmkv8ErcJ1uJHYzjxPyTzVrlifZ7LLE+InBD7uLA5ZyzosGTyu2Ba/1o1yiNn/kGJt/k/GxOB4w9Cqy22xEjdFjDSJ7I6pBkKzgQzUEm6Wv3Fq5CxywUHqp3qpbFY+jmcdow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777097749; c=relaxed/simple;
-	bh=t8AVmWhazPRwKRYBJnFLQ5l+BR+Emjnqa7ltlcaQdeY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=n08KMH+OsbQ59MsxZDUu6hjiVbSa4j8CwzKRBuW9LtNpADL31zmy5NgeNZhTdhlKJK8WvnrI/uGNFmLDuYvKA1J0e0DKPGNky45jBzcum1AxmNmwGrgr4Mkg4uvlrzqsY29tO0juHq2rs7yuRfZY7dDE6CzUNnxXFgzGqL80EXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=LOyYK/DD; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: by linux.microsoft.com (Postfix, from userid 1134)
-	id A850520B7165; Fri, 24 Apr 2026 23:15:42 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com A850520B7165
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1777097742;
-	bh=wQ46fqky+LLKk3MSG2clbFaEZu89bVx3tE7TB8o/Q7g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LOyYK/DDXqFkeigh+Ee1eFdaA97IT4bDA9WYi9nyVWXQPya8uxlGDtbzZwE5tCgpV
-	 FEcl1XrIvXcvShyWNcp/dumJrqPJMtJtWxLleH+SY2UvvXAJR+ddRQ2zquE7kpOJq7
-	 emI0v6hPjFUnRzAy/praLLSgU1uh8qdXDqMEQwU8=
-Date: Fri, 24 Apr 2026 23:15:42 -0700
-From: Shradha Gupta <shradhagupta@linux.microsoft.com>
-To: Dipayaan Roy <dipayanroy@linux.microsoft.com>
-Cc: Dexuan Cui <decui@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Konstantin Taranov <kotaranov@microsoft.com>,
-	Simon Horman <horms@kernel.org>,
-	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
-	Shiraz Saleem <shirazsaleem@microsoft.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Long Li <longli@microsoft.com>, Yury Norov <yury.norov@gmail.com>,
-	linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, Paul Rosswurm <paulros@microsoft.com>,
-	Shradha Gupta <shradhagupta@microsoft.com>,
-	Saurabh Singh Sengar <ssengar@microsoft.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net] net: mana: Optimize irq affinity for low vcpu configs
-Message-ID: <aexcDgNJw4Nr/uMU@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
-References: <20260424061702.1442618-1-shradhagupta@linux.microsoft.com>
- <aetgQ1gCYlGJjiKk@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+	s=arc-20240116; t=1777098089; c=relaxed/simple;
+	bh=4ZN3457nASgHm4tfC11PRBzk9FsN/Ns8nfhU1IFzn84=;
+	h=Content-Type:From:Mime-Version:Subject:Date:Message-Id:References:
+	 Cc:In-Reply-To:To; b=foFYD+rvYjOvCe49NQ5RLNT2EcBMkZdMz7gui65KQA1wR5ZqCIeogA7EXP8NeZmGCp0HS9bviElG2uICWSIV4K/sFEefRoJjtiCC1lXHoqQcAOGKrNlz/hfc9twrPE3KuzcZqIgL+3t6/XNx0u4XKyVgRF9sUrqp15zi2OY/jVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ZCQSa0xM; arc=none smtp.client-ip=91.218.175.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Content-Type: text/plain; charset=utf-8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1777098076;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DHZLJC5B5fmgRAOtQknXGM+s5bBWV7trEmZX8TH0Pyk=;
+	b=ZCQSa0xMAWeLz4zqajISETfXw0jpqKglaKesdUOywfIFOqHdjirtt+ma6LodskeBqPJfos
+	2sHx8WiBaja3NZLDcHxvFAt1HvSgu28BujosBA5ALe9pIqvU8pMspNe8EEj4HliRx0V/0y
+	I+S/2Px5CbIdsYh0eu/l0FH2uqJGXlQ=
+Content-Transfer-Encoding: quoted-printable
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aetgQ1gCYlGJjiKk@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
-X-Rspamd-Queue-Id: 371E346521C
+Mime-Version: 1.0 (1.0)
+Subject: Re: [PATCH v6 4/7] mm/sparse-vmemmap: Fix DAX vmemmap accounting with optimization
+Date: Sat, 25 Apr 2026 14:20:39 +0800
+Message-Id: <17902B08-7487-4FC8-8EBC-268CE5F3E1B9@linux.dev>
+References: <02e35414-8c30-4753-9403-432d90263f39@kernel.org>
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Oscar Salvador <osalvador@suse.de>, Michael Ellerman <mpe@ellerman.id.au>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Lorenzo Stoakes <ljs@kernel.org>, Liam R Howlett <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>,
+ aneesh.kumar@linux.ibm.com, joao.m.martins@oracle.com, linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+In-Reply-To: <02e35414-8c30-4753-9403-432d90263f39@kernel.org>
+To: David Hildenbrand <david@kernel.org>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: F247D46523F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.microsoft.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[linux.microsoft.com:s=default];
+	MV_CASE(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-241094-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[microsoft.com,kernel.org,lunn.ch,davemloft.net,google.com,redhat.com,linux.microsoft.com,outlook.com,gmail.com,vger.kernel.org];
+	FREEMAIL_CC(0.00)[bytedance.com,linux-foundation.org,suse.de,ellerman.id.au,linux.ibm.com,kernel.org,oracle.com,google.com,suse.com,gmail.com,kvack.org,lists.ozlabs.org,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-241095-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[24];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[shradhagupta@linux.microsoft.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linux.microsoft.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable,netdev];
+	RCVD_COUNT_THREE(0.00)[3];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linux.dev:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MISSING_XM_UA(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[muchun.song@linux.dev,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_TWELVE(0.00)[20];
 	TO_DN_SOME(0.00)[]
 
-On Fri, Apr 24, 2026 at 05:21:23AM -0700, Dipayaan Roy wrote:
-> On Thu, Apr 23, 2026 at 11:17:00PM -0700, Shradha Gupta wrote:
-> > In mana driver, the number of IRQs allocated are capped by the
-> > min(num_cpu + 1, queue count). In cases, where the IRQ count is greater
-> > than the vcpu count, we want to utilize all the vcpus, irrespective of
-> > their NUMA/core bindings.
-> > 
-> > This is important, especially in the envs where number of vcpus are so
-> > few that the softIRQ handling overhead on two IRQs on the same vcpu is
-> > much more than their overheads if they were spread across sibling vcpus
-> > 
-> > This behaviour is more evident with dynamic IRQ allocation. Since MANA
-> > IRQs are assigned at a later stage compared to static allocation, other
-> > device IRQs may already be affinitized to the vCPUs. As a result, IRQ
-> > weights become imbalanced, causing multiple MANA IRQs to land on the
-> > same vCPU.
-> > 
-> > In such cases when many parallel TCP connections are tested, the
-> > throughput drops significantly
-> > 
-> > Test envs:
-> > =======================================================
-> > Case 1: without this patch
-> > =======================================================
-> > 4 vcpu(2 cores), 5 MANA IRQs (1 HWC + 4 Queue)
-> > 
-> > 	TYPE		effective vCPU aff
-> > =======================================================
-> > IRQ0:	HWC		0
-> > IRQ1:	mana_q1		0
-> > IRQ2:	mana_q2		2
-> > IRQ3:	mana_q3		0
-> > IRQ4:	mana_q4		3
-> > 
-> > %soft on each vCPU(mpstat -P ALL 1) on receiver
-> > vCPU		0	1	2	3
-> > =======================================================
-> > pass 1:		38.85	0.03	24.89	24.65
-> > pass 2:		39.15	0.03	24.57	25.28
-> > pass 3:		40.36	0.03	23.20	23.17
-> > 
-> > =======================================================
-> > Case 2: with this patch
-> > =======================================================
-> > 4 vcpu(2 cores), 5 MANA IRQs (1 HWC + 4 Queue)
-> > 
-> >         TYPE            effective vCPU aff
-> > =======================================================
-> > IRQ0:   HWC             0
-> > IRQ1:   mana_q1         0
-> > IRQ2:   mana_q2         1
-> > IRQ3:   mana_q3         2
-> > IRQ4:   mana_q4         3
-> > 
-> > %soft on each vCPU(mpstat -P ALL 1) on receiver
-> > vCPU            0       1       2       3
-> > =======================================================
-> > pass 1:         15.42	15.85	14.99	14.51
-> > pass 2:         15.53	15.94	15.81	15.93
-> > pass 3:         16.41	16.35	16.40	16.36
-> > 
-> > =======================================================
-> > Throughput Impact(in Gbps, same env)
-> > =======================================================
-> > TCP conn	with patch	w/o patch
-> > 20480		15.65		7.73
-> > 10240		15.63		8.93
-> > 8192		15.64		9.69
-> > 6144		15.64		13.16
-> > 4096		15.69		15.75
-> > 2048		15.69		15.83
-> > 1024		15.71		15.28
-> > 
-> > Fixes: 755391121038 ("net: mana: Allocate MSI-X vectors dynamically")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
-> > Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
-> > Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
-> > ---
-> >  .../net/ethernet/microsoft/mana/gdma_main.c   | 35 +++++++++++++++++--
-> >  1 file changed, 33 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-> > index 098fbda0d128..433c044d53c6 100644
-> > --- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
-> > +++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-> > @@ -1672,6 +1672,23 @@ static int irq_setup(unsigned int *irqs, unsigned int len, int node,
-> >  	return 0;
-> >  }
-> >  
-> > +static int irq_setup_linear(unsigned int *irqs, unsigned int len)
-> > +{
-> > +	int cpu;
-> > +
-> > +	rcu_read_lock();
-> We do not need to call rcu_read_lock here, as the caller of this
-> function has already acquired cpus_read_lock.
 
-Thanks for your comments Dipayaan, I think this is still needed for the
-irq_set_affinity_and_hint(), to protect the pointer returned by
-irq_to_desc(). You can also see the same in the original function
-irq_setup() for the same reason.
 
-> > +	for_each_online_cpu(cpu) {
-> > +		if (len <= 0)
-> len is unsigned here so <= doesnot makes sense. PLease change it to int
-> or better use if(!len)
+> On Apr 25, 2026, at 13:48, David Hildenbrand (Arm) <david@kernel.org> wrot=
+e:
+>=20
+> =EF=BB=BF
+>>=20
+>>=20
+>> Hi David,
+>>=20
+>> Sorry, I missed the 1GB hugepage scenario earlier. Given that sparse_add_=
+section()
+>> operates on a scale between PAGES_PER_SUBSECTION and PAGES_PER_SECTION, t=
+he pfn and
+>> nr_pages parameters wouldn't be aligned with the hugepage size (pages_per=
+_compound),
+>> but rather with the PAGES_PER_SECTION boundary. Do you think this explana=
+tion makes
+>> it clearer? In the interest of code clarity, do you think the modificatio=
+n below
+>> makes it easier to follow?
+>>=20
+>> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
+>> index 2e642c5ff3f2..ce675c5fb94d 100644
+>> --- a/mm/sparse-vmemmap.c
+>> +++ b/mm/sparse-vmemmap.c
+>> @@ -658,15 +658,18 @@ static int __meminit section_nr_vmemmap_pages(unsig=
+ned long pfn, unsigned long n
+>>        const unsigned int order =3D pgmap ? pgmap->vmemmap_shift : 0;
+>>        const unsigned long pages_per_compound =3D 1UL << order;
+>>=20
+>> -       VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages,
+>> -                                   min(pages_per_compound, PAGES_PER_SEC=
+TION)));
+>> +       VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages, PAGES_PER_SUBSECTION)=
+);
+>=20
+> That here makes sense. We can only add/remove in multiples of PAGES_PER_SE=
+CTION.
+> I think what we are saying is that we want that check in addition to the
+> existing min() check.
 
-sure, I think I will change it to explicitly exit when len == 0
+Right.
+
+>=20
+>>        VM_WARN_ON_ONCE(pfn_to_section_nr(pfn) !=3D pfn_to_section_nr(pfn +=
+ nr_pages - 1));
+>>=20
+>>        if (!vmemmap_can_optimize(altmap, pgmap))
+>>                return DIV_ROUND_UP(nr_pages * sizeof(struct page), PAGE_S=
+IZE);
+>>=20
+>> -       if (order < PFN_SECTION_SHIFT)
+>> +       if (order < PFN_SECTION_SHIFT) {
+>> +               VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages, pages_per_com=
+pound));
+>>                return VMEMMAP_RESERVE_NR * nr_pages / pages_per_compound;=
+
+>=20
+> That makes sense as well, within a section, we expect that we always add/r=
+emove
+> entire "compound"-managed chunks.
+>=20
+>> +       }
+>> +
+>> +       VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages, PAGES_PER_SECTION));
+>=20
+> And this is then for the case where a 1G page spans multiple sections, whe=
+re we
+> expect to add/remove an entire section.
+>=20
+> So here, indeed the "min" makes sense. I guess we also assume:
+>=20
+>    VM_WARN_ON_ONCE(nr_pages > PAGES_PER_SECTION);
+
+Yes. But this one we do not need to explicit it to
+assert it since at the front of this function we have
+
+VM_WARN_ON_ONCE(pfn_to_section_nr(pfn) !=3D pfn_to_section_nr(pfn + nr_pages=
+ - 1));
+
+to make sure the passing range belongs to one section.
+
 Thanks.
 
-> > +			break;
-> > +
-> > +		irq_set_affinity_and_hint(*irqs++, cpumask_of(cpu));
-> > +		len--;
-> > +	}
-> > +	rcu_read_unlock();
-> > +
-> > +	return 0;
-> > +}
-> > +
-> >  static int mana_gd_setup_dyn_irqs(struct pci_dev *pdev, int nvec)
-> >  {
-> >  	struct gdma_context *gc = pci_get_drvdata(pdev);
-> > @@ -1722,10 +1739,24 @@ static int mana_gd_setup_dyn_irqs(struct pci_dev *pdev, int nvec)
-> >  	 * first CPU sibling group since they are already affinitized to HWC IRQ
-> >  	 */
-> >  	cpus_read_lock();
-> > -	if (gc->num_msix_usable <= num_online_cpus())
-> > +	if (gc->num_msix_usable <= num_online_cpus()) {
-> >  		skip_first_cpu = true;
-> > +		err = irq_setup(irqs, nvec, gc->numa_node, skip_first_cpu);
-> > +	} else {
-> > +		/*
-> > +		 * In case our IRQs are more than num_online_cpus, we try to
-> > +		 * make sure we are using all vcpus. In such a case NUMA or
-> > +		 * CPU core affinity does not matter.
-> > +		 * Note that in this case the total mana IRQ should always be
-> > +		 * num_online_cpu + 1. The first HWC IRQ is already handled
-> > +		 * in HWC setup calls
-> > +		 * So, the nvec value in this path should always be equal to
-> > +		 * num_online_cpu
-> nit: typo: should be num_online_cpus
-
-noted
-
-> > +		 */
-> > +		WARN_ON(nvec > num_online_cpus());
-> > +		err = irq_setup_linear(irqs, nvec);
-> > +	}
-> >  
-> > -	err = irq_setup(irqs, nvec, gc->numa_node, skip_first_cpu);
-> >  	if (err) {
-> >  		cpus_read_unlock();
-> >  		goto free_irq;
-> > 
-> > base-commit: e728258debd553c95d2e70f9cd97c9fde27c7130
-> > -- 
-> > 2.34.1
-> > 
-> Regards
-> Dipayaan Roy
+>=20
+> Looks better to me!
+>=20
+> --
+> Cheers,
+>=20
+> David
 
