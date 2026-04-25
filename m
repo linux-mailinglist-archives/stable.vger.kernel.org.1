@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-241121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241122-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gGsHCFaS7GkvaAAAu9opvQ
-	(envelope-from <stable+bounces-241121-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 12:07:18 +0200
+	id 9M+EDgKZ7GlRaQAAu9opvQ
+	(envelope-from <stable+bounces-241122-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 12:35:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E50E465D71
-	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 12:07:17 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77FB2465EE0
+	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 12:35:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 15BA2300DF69
-	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 10:07:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 30050300D96D
+	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 10:35:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A71C030DD1B;
-	Sat, 25 Apr 2026 10:07:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FFCE2D8379;
+	Sat, 25 Apr 2026 10:35:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kvTASLTx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oJUrAnT+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B04381724
-	for <stable@vger.kernel.org>; Sat, 25 Apr 2026 10:07:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 338881DC9B3
+	for <stable@vger.kernel.org>; Sat, 25 Apr 2026 10:35:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777111634; cv=none; b=pFHk6vVPzXyD3SdXOvm6DAPXe/C6P287maR68BgO4m7H7YZjGEtV0skRpxCQkT051oioEfTTLR6r37QF38HfeJuxYGCKA9SKutNy7dAlYNYj39BW49shkrtoRJvOr1+I07vTSDZm2FDtgKeo6VFL28VmGqCNiNgRzFPcLR8bu/s=
+	t=1777113341; cv=none; b=qNiOGMn3ygMkTCGm9euZSNRcrE3WyD+y8+WkfyhPq1evziV6URwNVaaM4nDYPoJXwPvThGoUmYP42WR2gXbUgsIU51gFU/p0d8GVx9UxImu/q/zmidHXuIO+bblEa9e/tARnFX8V/CYwM7CwUTNgztxJDuRMjbAHpNGFZIqtVMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777111634; c=relaxed/simple;
-	bh=lTA+5PkLtisENRFGqOh/QZ55BpZVtqVKphv7zSYSevI=;
+	s=arc-20240116; t=1777113341; c=relaxed/simple;
+	bh=nqSH/vtLU1vq6Lz9haUlxvWfnqr5H+RyU9E+dySZGQs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lcqk2QSV5XBcQf+xWett+LiflPYTc7bizYksVwpIO//vpL2QJLW+5loxOQHG4vAy9/LNZeAcVuKSKyMcShDN1h2Fr844I+GYNfvb1EpTNKQbPSm4ji/auP6Pj5PL6r/02OgIO7izg39E8vMGVGFm06Gx8SJPxyicZ3cRDegB3wI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kvTASLTx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DAB8C2BCB0;
-	Sat, 25 Apr 2026 10:07:13 +0000 (UTC)
+	 MIME-Version; b=RMPAa0QhNDp1c3+VLoEueYh27/QGCp4RtaXn+6UTx4lXH+YRR9Qv+Gwua4E98GnoshRtQhd+hhsOK5X86F8W+ns2csZslwIWHv3jXQWKBo51ORXhN6UL+Hz619U5GuhG1K4SNz1THp0wv+dkBNjjOe/bPu/JRq8pmdWhTIj3uyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oJUrAnT+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B529C2BCB0;
+	Sat, 25 Apr 2026 10:35:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777111634;
-	bh=lTA+5PkLtisENRFGqOh/QZ55BpZVtqVKphv7zSYSevI=;
+	s=k20201202; t=1777113340;
+	bh=nqSH/vtLU1vq6Lz9haUlxvWfnqr5H+RyU9E+dySZGQs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kvTASLTxkCsBUUrJ0/iztVjbXkBVi6J+08rwkkPO6by9uQO67lRFam+etxQqCmf6H
-	 zN3NaTdeOeg4GCpc/gActI/rM8vJyQIZzLN/sJqjmbSR8WKxS9+kOUgYAxgepXx2iF
-	 4XsUogbkM9mRlWGPIZPEBX7/VqVDOrpnEF++5osxrbnULRKScy0e9XhD9qYIHP06Np
-	 i/9sM3YUTgb7uVKGFYAG3vQgcuisCHQ2rHdF2ZCDPc091vi/jQJpjV9A4+4OvM2gVW
-	 zjL1nGOlW44CTjiEKXdID5A7VKnf6Mu+uI9zi7Jdw+YbqJH6vkZHlTBkLQd4LA5NQd
-	 AaANb3KebpLOQ==
+	b=oJUrAnT+gZmNOokRn79w0l0eX03CQ1OVGqwtcY5wQX8/iDNzlcVY+8aNn/4WyT+cS
+	 cF4lyudo70n3DgL0BlVndTtg5wgrYAR2QgkHmKZRGnP+sAdB9vpeAmAnFZJzHrPoxt
+	 9RcwJIjiKyrH0hCx98Q08hYYiRQR8ImiVXS9WVBfjNACOg2giVyfMITyiCgsdmhbcz
+	 BwF2cou0I5ETaPHoEkJ/H6N7iKGyBPKk4/C1pgeWZCkaPy3cBAw2/9JeGiHEBixQRD
+	 t2Wh+IKrgXTb9x6zKLrgeYnWiMRNK4iOEJ0kJitFIKu4pWrwT4ApNpPACGS5/M5Nhm
+	 Ris1pI0H+6oWg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Bingquan Chen <patzilla007@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Chao Yu <chao@kernel.org>,
+	stable@kernel.org,
+	syzbot+62538b67389ee582837a@syzkaller.appspotmail.com,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] net/packet: fix TOCTOU race on mmap'd vnet_hdr in tpacket_snd()
-Date: Sat, 25 Apr 2026 06:07:11 -0400
-Message-ID: <20260425100711.3493958-1-sashal@kernel.org>
+Subject: [PATCH 6.12.y] f2fs: fix to do sanity check on dcc->discard_cmd_cnt conditionally
+Date: Sat, 25 Apr 2026 06:35:38 -0400
+Message-ID: <20260425103538.3545481-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026042434-salad-scope-84d1@gregkh>
-References: <2026042434-salad-scope-84d1@gregkh>
+In-Reply-To: <2026042432-saggy-streak-1365@gregkh>
+References: <2026042432-saggy-streak-1365@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,126 +64,191 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7E50E465D71
+X-Rspamd-Queue-Id: 77FB2465EE0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,google.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-241122-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241121-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable,62538b67389ee582837a];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_HAS_DN(0.00)[]
 
-From: Bingquan Chen <patzilla007@gmail.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 2c054e17d9d41f1020376806c7f750834ced4dc5 ]
+[ Upstream commit 6af249c996f7d73a3435f9e577956fa259347d18 ]
 
-In tpacket_snd(), when PACKET_VNET_HDR is enabled, vnet_hdr points
-directly into the mmap'd TX ring buffer shared with userspace. The
-kernel validates the header via __packet_snd_vnet_parse() but then
-re-reads all fields later in virtio_net_hdr_to_skb(). A concurrent
-userspace thread can modify the vnet_hdr fields between validation
-and use, bypassing all safety checks.
+Syzbot reported a f2fs bug as below:
 
-The non-TPACKET path (packet_snd()) already correctly copies vnet_hdr
-to a stack-local variable. All other vnet_hdr consumers in the kernel
-(tun.c, tap.c, virtio_net.c) also use stack copies. The TPACKET TX
-path is the only caller of virtio_net_hdr_to_skb() that reads directly
-from user-controlled shared memory.
+------------[ cut here ]------------
+kernel BUG at fs/f2fs/segment.c:1900!
+Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
+CPU: 1 UID: 0 PID: 6527 Comm: syz.5.110 Not tainted syzkaller #0 PREEMPT_{RT,(full)}
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2026
+RIP: 0010:f2fs_issue_discard_timeout+0x59b/0x5a0 fs/f2fs/segment.c:1900
+Code: d9 80 e1 07 80 c1 03 38 c1 0f 8c d6 fe ff ff 48 89 df e8 a8 5e fa fd e9 c9 fe ff ff e8 4e 46 94 fd 90 0f 0b e8 46 46 94 fd 90 <0f> 0b 0f 1f 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3
+RSP: 0018:ffffc9000494f940 EFLAGS: 00010283
+RAX: ffffffff843009ca RBX: 0000000000000001 RCX: 0000000000080000
+RDX: ffffc9001ca78000 RSI: 00000000000029f3 RDI: 00000000000029f4
+RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
+R10: dffffc0000000000 R11: ffffed100893a431 R12: 1ffff1100893a430
+R13: 1ffff1100c2b702c R14: dffffc0000000000 R15: ffff8880449d2160
+FS:  00007ffa35fed6c0(0000) GS:ffff88812643d000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f2b68634000 CR3: 0000000039f62000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ __f2fs_remount fs/f2fs/super.c:2960 [inline]
+ f2fs_reconfigure+0x108a/0x1710 fs/f2fs/super.c:5443
+ reconfigure_super+0x227/0x8a0 fs/super.c:1080
+ do_remount fs/namespace.c:3391 [inline]
+ path_mount+0xdc5/0x10e0 fs/namespace.c:4151
+ do_mount fs/namespace.c:4172 [inline]
+ __do_sys_mount fs/namespace.c:4361 [inline]
+ __se_sys_mount+0x31d/0x420 fs/namespace.c:4338
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7ffa37dbda0a
 
-Fix this by copying vnet_hdr from the mmap'd ring buffer to a
-stack-local variable before validation and use, consistent with the
-approach used in packet_snd() and all other callers.
+The root cause is there will be race condition in between f2fs_ioc_fitrim()
+and f2fs_remount():
 
-Fixes: 1d036d25e560 ("packet: tpacket_snd gso and checksum offload")
-Signed-off-by: Bingquan Chen <patzilla007@gmail.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20260418112006.78823-1-patzilla007@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ replaced `vnet_hdr_sz` with `sizeof(vnet_hdr)` and `if (vnet_hdr_sz)` with `if (po->has_vnet_hdr)` ]
+- f2fs_remount			- f2fs_ioc_fitrim
+ - f2fs_issue_discard_timeout
+  - __issue_discard_cmd
+  - __drop_discard_cmd
+  - __wait_all_discard_cmd
+				 - f2fs_trim_fs
+				  - f2fs_write_checkpoint
+				   - f2fs_clear_prefree_segments
+				    - f2fs_issue_discard
+				     - __issue_discard_async
+				      - __queue_discard_cmd
+				       - __update_discard_tree_range
+				        - __insert_discard_cmd
+				         - __create_discard_cmd
+				         : atomic_inc(&dcc->discard_cmd_cnt);
+  - sanity check on dcc->discard_cmd_cnt (expect discard_cmd_cnt to be zero)
+
+This will only happen when fitrim races w/ remount rw, if we remount to
+readonly filesystem, remount will wait until mnt_pcp.mnt_writers to zero,
+that means fitrim is not in process at that time.
+
+Cc: stable@kernel.org
+Fixes: 2482c4325dfe ("f2fs: detect bug_on in f2fs_wait_discard_bios")
+Reported-by: syzbot+62538b67389ee582837a@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-f2fs-devel/69b07d7c.050a0220.8df7.09a1.GAE@google.com
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+[ dereferenced flags pointer (`*flags & SB_RDONLY`) to match `int *flags` remount signature ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/packet/af_packet.c | 25 +++++++++++++++----------
- 1 file changed, 15 insertions(+), 10 deletions(-)
+ fs/f2fs/f2fs.h    |  2 +-
+ fs/f2fs/segment.c |  6 +++---
+ fs/f2fs/super.c   | 11 ++++++++---
+ 3 files changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index 1c9b2d67c3ed4..1babbe7819e64 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -2726,7 +2726,8 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
+diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+index a6b06ac2751dc..ab0d9ed02092c 100644
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -3782,7 +3782,7 @@ bool f2fs_is_checkpointed_data(struct f2fs_sb_info *sbi, block_t blkaddr);
+ int f2fs_start_discard_thread(struct f2fs_sb_info *sbi);
+ void f2fs_drop_discard_cmd(struct f2fs_sb_info *sbi);
+ void f2fs_stop_discard_thread(struct f2fs_sb_info *sbi);
+-bool f2fs_issue_discard_timeout(struct f2fs_sb_info *sbi);
++bool f2fs_issue_discard_timeout(struct f2fs_sb_info *sbi, bool need_check);
+ void f2fs_clear_prefree_segments(struct f2fs_sb_info *sbi,
+ 					struct cp_control *cpc);
+ void f2fs_dirty_to_prefree(struct f2fs_sb_info *sbi);
+diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
+index 819b92fd94e63..a1561b9ead422 100644
+--- a/fs/f2fs/segment.c
++++ b/fs/f2fs/segment.c
+@@ -1885,7 +1885,7 @@ void f2fs_stop_discard_thread(struct f2fs_sb_info *sbi)
+  *
+  * Return true if issued all discard cmd or no discard cmd need issue, otherwise return false.
+  */
+-bool f2fs_issue_discard_timeout(struct f2fs_sb_info *sbi)
++bool f2fs_issue_discard_timeout(struct f2fs_sb_info *sbi, bool need_check)
  {
- 	struct sk_buff *skb = NULL;
- 	struct net_device *dev;
--	struct virtio_net_hdr *vnet_hdr = NULL;
-+	struct virtio_net_hdr vnet_hdr;
-+	bool has_vnet_hdr = false;
- 	struct sockcm_cookie sockc;
- 	__be16 proto;
- 	int err, reserve = 0;
-@@ -2826,16 +2827,20 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
- 		hlen = LL_RESERVED_SPACE(dev);
- 		tlen = dev->needed_tailroom;
- 		if (po->has_vnet_hdr) {
--			vnet_hdr = data;
--			data += sizeof(*vnet_hdr);
--			tp_len -= sizeof(*vnet_hdr);
--			if (tp_len < 0 ||
--			    __packet_snd_vnet_parse(vnet_hdr, tp_len)) {
-+			data += sizeof(vnet_hdr);
-+			tp_len -= sizeof(vnet_hdr);
-+			if (tp_len < 0) {
-+				tp_len = -EINVAL;
-+				goto tpacket_error;
-+			}
-+			memcpy(&vnet_hdr, data - sizeof(vnet_hdr), sizeof(vnet_hdr));
-+			if (__packet_snd_vnet_parse(&vnet_hdr, tp_len)) {
- 				tp_len = -EINVAL;
- 				goto tpacket_error;
- 			}
- 			copylen = __virtio16_to_cpu(vio_le(),
--						    vnet_hdr->hdr_len);
-+						    vnet_hdr.hdr_len);
-+			has_vnet_hdr = true;
- 		}
- 		copylen = max_t(int, copylen, dev->hard_header_len);
- 		skb = sock_alloc_send_skb(&po->sk,
-@@ -2872,12 +2877,12 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
- 			}
- 		}
+ 	struct discard_cmd_control *dcc = SM_I(sbi)->dcc_info;
+ 	struct discard_policy dpolicy;
+@@ -1902,7 +1902,7 @@ bool f2fs_issue_discard_timeout(struct f2fs_sb_info *sbi)
+ 	/* just to make sure there is no pending discard commands */
+ 	__wait_all_discard_cmd(sbi, NULL);
  
--		if (po->has_vnet_hdr) {
--			if (virtio_net_hdr_to_skb(skb, vnet_hdr, vio_le())) {
-+		if (has_vnet_hdr) {
-+			if (virtio_net_hdr_to_skb(skb, &vnet_hdr, vio_le())) {
- 				tp_len = -EINVAL;
- 				goto tpacket_error;
- 			}
--			virtio_net_hdr_set_proto(skb, vnet_hdr);
-+			virtio_net_hdr_set_proto(skb, &vnet_hdr);
- 		}
+-	f2fs_bug_on(sbi, atomic_read(&dcc->discard_cmd_cnt));
++	f2fs_bug_on(sbi, need_check && atomic_read(&dcc->discard_cmd_cnt));
+ 	return !dropped;
+ }
  
- 		skb->destructor = tpacket_destruct_skb;
+@@ -2371,7 +2371,7 @@ static void destroy_discard_cmd_control(struct f2fs_sb_info *sbi)
+ 	 * Recovery can cache discard commands, so in error path of
+ 	 * fill_super(), it needs to give a chance to handle them.
+ 	 */
+-	f2fs_issue_discard_timeout(sbi);
++	f2fs_issue_discard_timeout(sbi, true);
+ 
+ 	kfree(dcc);
+ 	SM_I(sbi)->dcc_info = NULL;
+diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+index 3001ad8df5d1b..f25a259f37f12 100644
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -1628,7 +1628,7 @@ static void f2fs_put_super(struct super_block *sb)
+ 	}
+ 
+ 	/* be sure to wait for any on-going discard commands */
+-	done = f2fs_issue_discard_timeout(sbi);
++	done = f2fs_issue_discard_timeout(sbi, true);
+ 	if (f2fs_realtime_discard_enable(sbi) && !sbi->discard_blks && done) {
+ 		struct cp_control cpc = {
+ 			.reason = CP_UMOUNT | CP_TRIMMED,
+@@ -1767,7 +1767,7 @@ static int f2fs_unfreeze(struct super_block *sb)
+ 	 * will recover after removal of snapshot.
+ 	 */
+ 	if (test_opt(sbi, DISCARD) && !f2fs_hw_support_discard(sbi))
+-		f2fs_issue_discard_timeout(sbi);
++		f2fs_issue_discard_timeout(sbi, true);
+ 
+ 	clear_sbi_flag(F2FS_SB(sb), SBI_IS_FREEZING);
+ 	return 0;
+@@ -2535,7 +2535,12 @@ static int f2fs_remount(struct super_block *sb, int *flags, char *data)
+ 			need_stop_discard = true;
+ 		} else {
+ 			f2fs_stop_discard_thread(sbi);
+-			f2fs_issue_discard_timeout(sbi);
++			/*
++			 * f2fs_ioc_fitrim() won't race w/ "remount ro"
++			 * so it's safe to check discard_cmd_cnt in
++			 * f2fs_issue_discard_timeout().
++			 */
++			f2fs_issue_discard_timeout(sbi, *flags & SB_RDONLY);
+ 			need_restart_discard = true;
+ 		}
+ 	}
 -- 
 2.53.0
 
