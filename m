@@ -1,178 +1,188 @@
-Return-Path: <stable+bounces-241090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241091-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id /TaJOqM07GkSVgAAu9opvQ
-	(envelope-from <stable+bounces-241090-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 05:27:31 +0200
+	id eCq4LLJA7GlGWQAAu9opvQ
+	(envelope-from <stable+bounces-241091-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 06:18:58 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C673464E55
-	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 05:27:31 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77502464EFE
+	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 06:18:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A5564300916A
-	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 03:27:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D9CA5301D322
+	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 04:18:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBA103451AA;
-	Sat, 25 Apr 2026 03:27:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 388022874F5;
+	Sat, 25 Apr 2026 04:18:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b="OEEfnNV2";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="AjrBP+Mx"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qKY2cuXf"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-b1-smtp.messagingengine.com (fhigh-b1-smtp.messagingengine.com [202.12.124.152])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f65.google.com (mail-dl1-f65.google.com [74.125.82.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 473412D77EE;
-	Sat, 25 Apr 2026 03:27:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFD2E14B08A
+	for <stable@vger.kernel.org>; Sat, 25 Apr 2026 04:18:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777087646; cv=none; b=Eo591UWdEYa40FbrVu28qIOZcHbMDzTBHGS7qFiOq98QPSCZ9s5rv4TUFTSnc0VsAw6oI+vwhSi+c9zdppsF0FhmrnO0WDM3bfRo/51fWztH8r4c05GNNIN2BKeqor13IU0rFm00WXxep7slCKWX8zs4vPdaGgqwONm2y90y+KU=
+	t=1777090735; cv=none; b=ODrj/CtmKGk9RR4pIpLC/+MHtBU25xxqdUXHgG5+uq/cmUXQ2xIJEbZuHYuPRcFRgoh7PFmJCfwMcigtb7JWePuKdXvu0VLv8IHmkSWsGKGOCGRLNX3aOmXAZp7E29DTJTfJr/Rw1IXZT6muHR8hflQCyj8YI844ueUbQsBGDjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777087646; c=relaxed/simple;
-	bh=V2OnXzvd41cigBpxG7Wj4Syadzavm0xzosUMjctWV+A=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=X7T1O2FP63tyTRuYKvoRSeY1Kvftp8YnPGVVJvWjQaFajk/pyHTfmRNm4ETI5Xztm9B9UKLn0NLdMsoopQVcAAqUX2IUharzUqPCh3xTi7MC92BbgaBA0oQIzBAWtb9IxJ7wdn0jsxd5BzKo3n+aZ3OfhhVLEUXC5ed7phIUmn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com; spf=pass smtp.mailfrom=pobox.com; dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b=OEEfnNV2; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=AjrBP+Mx; arc=none smtp.client-ip=202.12.124.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pobox.com
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 9CE887A00D1;
-	Fri, 24 Apr 2026 23:27:22 -0400 (EDT)
-Received: from phl-frontend-01 ([10.202.2.160])
-  by phl-compute-03.internal (MEProxy); Fri, 24 Apr 2026 23:27:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pobox.com; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1777087642;
-	 x=1777174042; bh=37ABmDKMz0lwNwI9b0UL8nIYlbMSYUIjpr+CMz5PGLQ=; b=
-	OEEfnNV2/wv2onQeGTcKk7CuOih66JmsonNDzaggo268eWkF+oCzZyEbpVhQLz1G
-	+4OJduzNwZziFv5NKbbVuKOm6zBAjC3O6AQ+7AQy5Z//gq9hIwBCAltq9N/droYS
-	CblDce+62cKr8ralZabbA9WJwaG3kK1/FcnZ7lqi5ZZBGh0e8gKEqUN4z9s6B/gL
-	4uy6OwJjduZHY22wnbWEPEN93wL7Hj66Wf750TJBSj3P4LWBbdP7ta5yjovnXr45
-	3cL8RukAKN3Hky6O8lvdxlGpoEduUpIUe7mbrcZ7i1s1QXWhIQKl8/7RDbd4qTCK
-	MnYTyGZycYZp5eAVX7Ku2w==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1777087642; x=
-	1777174042; bh=37ABmDKMz0lwNwI9b0UL8nIYlbMSYUIjpr+CMz5PGLQ=; b=A
-	jrBP+Mx009PnMeQ20wHkGGHY9jphExN8THcf4Ch2kBvyRrzj14gGnsV3i0TZfHkM
-	BcqURaMkbsrz+35nmFXU0Y/BnYHVT3q94rtsKDgBWoFNhO3maYHDW5COrQm5nUiO
-	zdLq/csBhRuCNNHoTx36MPmuooJnmqK5aGWHmpsgD9CPDDLzCQ14fMK13U1Vpxhb
-	HNnRrioEohtXJiV1ZipFyE+R1p3tg3co4jDqDe//AiaNT9gC31u4h4DoVfc11/Ju
-	QciFKKRzEcOaxHthahQTHVpUN/LjyqvEW//Pu1iZyjIFBq+8BkHneIZdKV2VtRl8
-	GOqwagc49Pp0yBws2+QSw==
-X-ME-Sender: <xms:mTTsaeGYMYxES1BtkZjERTP7nDsr6dCTkpk_9CbV4dwCmxWKuRhxcA>
-    <xme:mTTsabOM5ykZc4IUdB6p01qNAB1ZFBOuEXn4FJCaIX2i5tIKShi7Nc0V0kZRHX3SR
-    ImutiNA0Q5UcQhNLxZbhRTgBrA6MNsn_r6lKRNwGDF4Bg7CwuF6JnM>
-X-ME-Received: <xmr:mTTsaTqhF9jM1P_Vst9odo7FK42GI-Z4UiyvCoMmZ6Ff2nkE6q9tKWn4BiR0Al1ubEWbUI67i_SGIceq40VXtF5Oar8uxnnQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdejudekfecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpefkffggfgfuvfevfhfhjggtgfesthejredttddvjeenucfhrhhomhepfdeurghrrhih
-    ucfmrdcupfgrthhhrghnfdcuoegsrghrrhihnhesphhosghogidrtghomheqnecuggftrf
-    grthhtvghrnhepfeelheekheelkeejlefffefhvdeljeetheeltdeiudffveetffelteeg
-    gfefhfejnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiii
-    gvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsrghrrhihnhesphhosghogidrtgho
-    mhdpnhgspghrtghpthhtohepvddtpdhmohguvgepshhmthhpohhuthdprhgtphhtthhope
-    hgrhgvghhkhheslhhinhhugihfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehs
-    thgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehprghttghhvg
-    hssehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtoheplhhinhhugidqkhgvrhhn
-    vghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthhorhhvrghlughsse
-    hlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopegrkhhpmheslhhi
-    nhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheplhhinhhugiesrhhovg
-    gtkhdquhhsrdhnvghtpdhrtghpthhtohepshhhuhgrhheskhgvrhhnvghlrdhorhhgpdhr
-    tghpthhtohepphgrthgthhgvsheskhgvrhhnvghltghirdhorhhg
-X-ME-Proxy: <xmx:mTTsacCr1H0MW1cvS_yt1MJv2KoL_s5793eep6CGaMc1mt24RIj2og>
-    <xmx:mTTsacNZR_Y54OuZnpgL2R9c2Fx6k59jNUqO8eo7FMehBOeTouRzvg>
-    <xmx:mTTsaaAAJpGE3hqT3tZaE1h_bs07fBGVyCLENb0kUuUZgBTgQTZZJQ>
-    <xmx:mTTsaa8lCE8yHpf6kYwxYKZON3566I9ODZKIHYXQdbnbuWLctgkPsQ>
-    <xmx:mjTsaebJpf4p2X-NZCOavjCPjXhSVeriU7mjG3uMsXrmBj752x7KKOuY>
-Feedback-ID: i6289494f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 24 Apr 2026 23:27:19 -0400 (EDT)
-Message-ID: <dd775dc6-b76e-486b-8b85-9b94a890fb01@pobox.com>
-Date: Fri, 24 Apr 2026 20:27:18 -0700
+	s=arc-20240116; t=1777090735; c=relaxed/simple;
+	bh=yNpT5Ea2Wr3J9GcxT267OvWgxH4/6nsG8FyfORLoFis=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=prdsM+BW9/DguRWM8lweJGcn1jFN0/bAE2nxuRS/y+AUrl8P17/BPws2PO0qMI80KTFqFgzdTkxuLCdTzzXfbF9kCUi8NdEIvQNau4pSt2K+9h/btWsKkmAozJCDSul7LoaP674gOVymK4Iz5YeISgzUpFvhapW15GSnDv8C2Cs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qKY2cuXf; arc=none smtp.client-ip=74.125.82.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dl1-f65.google.com with SMTP id a92af1059eb24-12c637089ccso9835578c88.1
+        for <stable@vger.kernel.org>; Fri, 24 Apr 2026 21:18:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777090732; x=1777695532; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=gs44N4+hU1RqCbEeT+Y1cdqZ7dnhS0LUOUZ5KW9aaJ4=;
+        b=qKY2cuXf4pXkQJTCi4pY68aJeCqEqVoQzjWR3x3DujQYZW1yRwByWMF6gvBG1R3MC2
+         9M2nE3SUPN/3BaC2nWK053oSVRCSWhnF/BzfG0LZ81ETWshYsWA3/pPosAyQrZSc41UY
+         HkyJGuMP3ZR7+cRtA9wFQjNamJDqQgxwGb8onwnhtAAp3ITd2L4PoRI2LnaP41AG2ntH
+         +uYmrl57WYMoDeL3FWaEMTJmtNpD79EboGAUzmm7zrr1aQcN+f2q2jyfoYYMEhdBGZ/J
+         GU9R+iU1F307qQY6O6KJpcjRnvQB4L3AS9ApqR/SRv9FnDT023miPwVr2Vxs1yK8Bxq4
+         zIUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777090732; x=1777695532;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gs44N4+hU1RqCbEeT+Y1cdqZ7dnhS0LUOUZ5KW9aaJ4=;
+        b=RAeMq6EcbGkSEdSGqFy7jm0RkqqaxZbuAk0mS1i/5UCSlPBy3FvQuNCxRpgcPvFN2w
+         p4rSI+Ov+jUm5rQ6YA18ouy5lt9E/YOgg60oxaPO9CmJglnlTmvKhR+qvnkC8CQgpJ1o
+         x9DTCycX0cdMWjeZsAmF1jVoSizlosBR8ehkgwqPvUCnQ+VXojyiLJX8zNrcHsyul69t
+         Op4S7U/IaTmHu3KiNryulCh0Gqtfixs5V/9NL6e2MJPWocMBh7OrheRLysO2DMWzP4uT
+         P8QoEr/Tu9IfIoeBUxyVjXwjyX823fKOb+pwuocd/H8q5ZqGZBcg3jwjl3kHJsDoKJqm
+         sfJA==
+X-Forwarded-Encrypted: i=1; AFNElJ/+YSWDQJ1vS9Bh5BZZCM/aFjoBKAYbAIiCumPAr41hUtRkegplvmFc1wjSkgRRUT2ffOjEYlQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyO67ZZpAR8avCyO39tUyPJf11fPEzWPD5nzfiHZla8o2YrszQk
+	cP347Jkq8dbeCrZpIdkA3dCSBWmv1npIEzsqV/FiFvIF/BAx1owmMh8k
+X-Gm-Gg: AeBDietBF8Nr+92MSTG17K+//vqPSdaPQ2oRRQydAkuVkjAIZOdNG1bL4vbj2d8KUfn
+	u9BNKSlJW4B+J4s2FmGZ9ENSIHnYlSspCKQ4HEfs0Cpn+KDNVgb9v/FgKvgT3tBfsz2Y9fQQk4U
+	uPG4VQ6oJ2A0+vOdm9s4hOXldzXALUk4qADJJBxtH7tKgBjep0swKW0mCaNGt6lfhYE8UXjUBO6
+	N+IMQmLMTrdbrzKejOsvImMeObNEvljtoaShIQ9Ra6Xx/mIwddENOCufQGzePQrPjavoCD18MBa
+	76tVlWyYDGe5ACPY1a5Lv/zDBT6HFdk9uSM3nY8sDyf2QrjYOXqGz4Mzqcj2tgodA8KAXusvYg4
+	Of/I/ZgUkaXO4ZRcevY5We/z5QEx3W7joSHtfW6WZxczjIJJyzcVIvC+XlFlX8w24jAJUzhXdLr
+	BlHAZm1IF7wlbI46KogIm7aEwo0gWC4SGb9pgEmJtkZyrHGJNs3UeqP+T7XoqWKcGiqOETLrJoC
+	jfCQtUPfD9X0S4BsOjQYU6lD2m5v0FTl6RPxp7iDkD5YDgGf0bk/rizF4zV6TVKMpx0AoGs2k4X
+	Dgz50AO2F65Coex55r3QYNeJPrMw
+X-Received: by 2002:a05:7022:ea2c:b0:128:dbbf:fd35 with SMTP id a92af1059eb24-12c73fa3c01mr19002285c88.28.1777090731805;
+        Fri, 24 Apr 2026 21:18:51 -0700 (PDT)
+Received: from ethan-latitude5420.. (host-127-24.cafrjco.fresno.ca.us.clients.pavlovmedia.net. [68.180.127.24])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12c837f7feasm39678070c88.0.2026.04.24.21.18.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Apr 2026 21:18:51 -0700 (PDT)
+From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Ethan Nelson-Moore <enelsonmoore@gmail.com>,
+	stable@vger.kernel.org,
+	Yibo Dong <dong100@mucse.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	MD Danish Anwar <danishanwar@ti.com>
+Subject: [PATCH] net: ethernet: rnpgbe: mark nonfunctional incomplete driver as BROKEN
+Date: Fri, 24 Apr 2026 21:18:15 -0700
+Message-ID: <20260425041816.19070-1-enelsonmoore@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.12 00/35] 6.12.84-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com
-References: <20260424132411.427029259@linuxfoundation.org>
-Content-Language: en-US
-From: "Barry K. Nathan" <barryn@pobox.com>
-In-Reply-To: <20260424132411.427029259@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 2C673464E55
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 77502464EFE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[pobox.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
-	R_DKIM_ALLOW(-0.20)[pobox.com:s=fm1,messagingengine.com:s=fm2];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	TAGGED_FROM(0.00)[bounces-241090-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[pobox.com:+,messagingengine.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,mucse.com,lunn.ch,davemloft.net,google.com,kernel.org,redhat.com,linux.dev,ti.com];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[barryn@pobox.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-241091-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[enelsonmoore@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,pobox.com:email,pobox.com:dkim,pobox.com:mid]
+	FROM_HAS_DN(0.00)[]
 
-On 4/24/26 06:31, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.12.84 release.
-> There are 35 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Sun, 26 Apr 2026 13:23:21 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.84-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+The rnpgbe driver as currently shipped in the kernel is incomplete and
+has no useful functionality. It will bind to a PCI device and create a
+network device, but that device does not function (its .ndo_start_xmit
+callback, rnpgbe_xmit_frame, just drops all packets). This situation
+means that users could enable this driver and have it load and attach
+to their device but not transfer any data. To remove the potential for
+user confusion, mark the driver as broken until it is completed and
+explain why this was done.
 
-Tested on my Lenovo ThinkPad T14 Gen 1. Working well, no regressions
-observed.
+Fixes: ee61c10cd482 ("net: rnpgbe: Add build support for rnpgbe")
+Cc: stable@vger.kernel.org # 7.0+
+Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+---
+ drivers/net/ethernet/mucse/Kconfig | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-Tested-by: Barry K. Nathan <barryn@pobox.com>
-
+diff --git a/drivers/net/ethernet/mucse/Kconfig b/drivers/net/ethernet/mucse/Kconfig
+index 0b3e853d625f..c37a90a6c808 100644
+--- a/drivers/net/ethernet/mucse/Kconfig
++++ b/drivers/net/ethernet/mucse/Kconfig
+@@ -3,9 +3,12 @@
+ # Mucse network device configuration
+ #
+ 
++# This section depends on BROKEN because its only child item also does;
++# see the explanation below.
+ config NET_VENDOR_MUCSE
+ 	bool "Mucse devices"
+ 	default y
++	depends on BROKEN
+ 	help
+ 	  If you have a network (Ethernet) card from Mucse(R), say Y.
+ 
+@@ -16,12 +19,14 @@ config NET_VENDOR_MUCSE
+ 
+ if NET_VENDOR_MUCSE
+ 
++# This driver is marked as broken because it is incomplete; this avoids users
++# enabling it and expecting it to work.
+ config MGBE
+ 	tristate "Mucse(R) 1GbE PCI Express adapters support"
+-	depends on PCI
++	depends on PCI && BROKEN
+ 	help
+ 	  This driver supports Mucse(R) 1GbE PCI Express family of
+-	  adapters.
++	  adapters. It is incomplete and currently has no useful functionality.
+ 
+ 	  More specific information on configuring the driver is in
+ 	  <file:Documentation/networking/device_drivers/ethernet/mucse/rnpgbe.rst>.
 -- 
--Barry K. Nathan  <barryn@pobox.com>
+2.43.0
+
 
