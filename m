@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-241119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241120-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mGqSEJCP7GnHZwAAu9opvQ
-	(envelope-from <stable+bounces-241119-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 11:55:28 +0200
+	id CEsmJwOR7GnHZwAAu9opvQ
+	(envelope-from <stable+bounces-241120-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 12:01:39 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB03F465CBB
-	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 11:55:27 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFAE6465D5C
+	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 12:01:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 98232300F940
-	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 09:55:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 551B4300C59C
+	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 10:01:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6BF439021B;
-	Sat, 25 Apr 2026 09:55:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 954662D780E;
+	Sat, 25 Apr 2026 10:01:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uEphm3m+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GY5vhlhP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B105208D0
-	for <stable@vger.kernel.org>; Sat, 25 Apr 2026 09:55:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5947322126C
+	for <stable@vger.kernel.org>; Sat, 25 Apr 2026 10:01:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777110923; cv=none; b=WJV+k8yFDGggapmjIAiPzqMB7tMMEp+QSojjtD2Fhf6LTJlCemdCZX7BLKcNm4Zu+1MyUUEbFz+WN+5jWLkTkzRsAWO1gUC9zkR4NW3FgyVxqqu1jYOaFtOgVbreSRQ197+bDaReqIaHvOy7zltsf/cKSoJQjFoBt9XOQjLzd9Q=
+	t=1777111296; cv=none; b=VLCe8JPAxE/EpvoCBtDecIloelrk+3OnCW/DeKWwcSooW5sBny7gl7zQJaYIwHDmgOTw31BYUUN/PHOoD5ZncvXnW2gHIc35RwSBhTJQlZoWk9gAzfYwMjNyJWEj6v/KM9bIE7V21r7n0w268VIYXb+qK3QtqF3QV56cMV2xMZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777110923; c=relaxed/simple;
-	bh=4TrX8vk8tUYRr9EbF+BxcIX8keOhs/weAsthG6wU644=;
+	s=arc-20240116; t=1777111296; c=relaxed/simple;
+	bh=xDvncqueSXlrWLjio4ExuiW5EsBRBh3LV7VDWxaTmFY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=toRwW9ifGamr8P3b4p6XUYQJHbLlC9p6OxBF/rhvD8iWynA/du2y4/NzYEd3ftBFOAMVv1ZSGP0wqD3jsIb0cmRwZNPjulspGdPB/1CIc0TYhKN2Eq6D2/nbZufWi08ZHeiHOcoX9PpMCmweUiG5CKlaGNov7cK3bk5ewrC+/wA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uEphm3m+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9686DC2BCB0;
-	Sat, 25 Apr 2026 09:55:22 +0000 (UTC)
+	 MIME-Version; b=FdaduzqJa2gbBRd0vHdfFh0u+ithfDwlnKb5MGiG8XBuwa+iQGJ/o/COt+LReu7CQGXpnR0fErULgnJwxoOUvdVrY3IJVp7Db8W0xUSppQOpPttTuIi1ruB4OpPSTyFg1d2FjtrE6o6lxDHdk+624+Fp+6RBmG8TX9rAEIqAMSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GY5vhlhP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FEA4C2BCB0;
+	Sat, 25 Apr 2026 10:01:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777110923;
-	bh=4TrX8vk8tUYRr9EbF+BxcIX8keOhs/weAsthG6wU644=;
+	s=k20201202; t=1777111296;
+	bh=xDvncqueSXlrWLjio4ExuiW5EsBRBh3LV7VDWxaTmFY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uEphm3m+DvIvZiwX86lMkfPpHV3Uo+OU+HqHF3QMduXVUfTz1GjcVRAEFZ1h6aMXm
-	 j7vRyDwsR46Wz1WVyN37fVfGS8AEsgVwXt8i1DLqbN67hkSkS1ej0wfa+u8YJlddac
-	 dsykwOJp+jzjI6v6ZO+8OwwrzHHKNalsKErz7EXasv487ObIXTYO05lep1E1BXddZP
-	 E0T49nERhhj+p0hcnSliXNBQwtGKGKKStMEWj6G+gyr/2kf+04dc8SJ6RT4FY2Kklq
-	 2P2uBbcjYd+Lx65JXfYNLSf8RUj62i7NpvSW0Sh4p7S+zokrwsJEy7UQReMf/8JKHa
-	 qc9GErD+SnrhQ==
+	b=GY5vhlhP3xZ1I6v7YAep1jJcWGCrI2/I9B1iD22A7pumi9w7NET5KN1FhcIbGm/dH
+	 Ws/FxsbOC4P5n5tFtrpbD+ZG6jwY92432woaoKriOh6XI1HwuDnzUDuBqa17NzBjm+
+	 CQ2Me3XJjWCjAA7tQpme9EU63YuybzckuPxbPnuFB88hSl4sTFXNXdJ1oXpVhyE0Bt
+	 AXNjFdJNbyo0AmQPo56pYUJZh1IIPB5BHhZT+I89Yf3+ik1uZ/8vstRiTOapo5iPqK
+	 +ys756pfqs1CmBBtbN8ik/uRxxADeFxK6bEgmayoBeUqsAaFy/Y89tSEHk3dILyI66
+	 ZLbPFZpx+FnxQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Bingquan Chen <patzilla007@gmail.com>,
 	Willem de Bruijn <willemb@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] net/packet: fix TOCTOU race on mmap'd vnet_hdr in tpacket_snd()
-Date: Sat, 25 Apr 2026 05:55:19 -0400
-Message-ID: <20260425095519.3477961-1-sashal@kernel.org>
+Subject: [PATCH 5.15.y] net/packet: fix TOCTOU race on mmap'd vnet_hdr in tpacket_snd()
+Date: Sat, 25 Apr 2026 06:01:33 -0400
+Message-ID: <20260425100133.3487288-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026042433-outwit-cognitive-f970@gregkh>
-References: <2026042433-outwit-cognitive-f970@gregkh>
+In-Reply-To: <2026042433-handpick-copy-d2e1@gregkh>
+References: <2026042433-handpick-copy-d2e1@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,7 +63,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: AB03F465CBB
+X-Rspamd-Queue-Id: EFAE6465D5C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
@@ -71,7 +71,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -79,7 +79,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FREEMAIL_CC(0.00)[gmail.com,google.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-241119-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-241120-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -92,8 +92,8 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
 From: Bingquan Chen <patzilla007@gmail.com>
 
@@ -128,10 +128,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 15 insertions(+), 10 deletions(-)
 
 diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index 502d2f6de18a2..23dc4f66d4d13 100644
+index d1ad069271f8b..e0ea02e86b38e 100644
 --- a/net/packet/af_packet.c
 +++ b/net/packet/af_packet.c
-@@ -2767,7 +2767,8 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
+@@ -2729,7 +2729,8 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
  {
  	struct sk_buff *skb = NULL;
  	struct net_device *dev;
@@ -141,7 +141,7 @@ index 502d2f6de18a2..23dc4f66d4d13 100644
  	struct sockcm_cookie sockc;
  	__be16 proto;
  	int err, reserve = 0;
-@@ -2867,16 +2868,20 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
+@@ -2829,16 +2830,20 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
  		hlen = LL_RESERVED_SPACE(dev);
  		tlen = dev->needed_tailroom;
  		if (po->has_vnet_hdr) {
@@ -168,7 +168,7 @@ index 502d2f6de18a2..23dc4f66d4d13 100644
  		}
  		copylen = max_t(int, copylen, dev->hard_header_len);
  		skb = sock_alloc_send_skb(&po->sk,
-@@ -2913,12 +2918,12 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
+@@ -2875,12 +2880,12 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
  			}
  		}
  
