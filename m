@@ -1,210 +1,271 @@
-Return-Path: <stable+bounces-241093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241094-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id k1kFLJ9V7Gl4XgAAu9opvQ
-	(envelope-from <stable+bounces-241093-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 07:48:15 +0200
+	id OK89NTdc7GmKXwAAu9opvQ
+	(envelope-from <stable+bounces-241094-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 08:16:23 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09CBB465121
-	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 07:48:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 371E346521C
+	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 08:16:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 18DC43008207
-	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 05:48:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 027A3301919E
+	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 06:15:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BD352BEC34;
-	Sat, 25 Apr 2026 05:48:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB5FF2C21F4;
+	Sat, 25 Apr 2026 06:15:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="thmNnp1Y"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="LOyYK/DD"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E2BE242D72;
-	Sat, 25 Apr 2026 05:48:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DE9E40DFCF;
+	Sat, 25 Apr 2026 06:15:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777096090; cv=none; b=kO4ZL5oHzpXUc4awm6O8tWNPgnLXl4064V0paNnaNTKDKHuAaF8c6uQkUGd4/e/FKzaId/GtU6aED0hv4qwEmz42bxJXgHbJVANByZ9+pII87gLmRFgFJwPDHKGix3NncFYTLFFYVhiRum4Sg5CDpTIqMnkl9kiwaNO0IDlALCk=
+	t=1777097749; cv=none; b=QPNpwUzFCevqrfg0TE0Il4euHtQl2G+3gYcbzLEf9AdwarsaF80KUA+EIEA4oB8/ij0//vYtNDPPe4I4/T2x+qkEqD/DwyvdRGDwfpK05VlA+BiyGnMeoBIQEUxWiJoAV3awGOnJ/HemH9QC3aarwgZ90XSl5e9nzeaorzEWAI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777096090; c=relaxed/simple;
-	bh=TFZoT4ewW+EPY1kuAmOC4+PMIwzgunDufK7tVV63EtA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gJ2IfBx/cerKfO34/XlSa2TUVGr5bRBfSD+hscI2ZiSNlOCwbazXpnsQ5EP6hfGdIlYBSz5ejCNCI1+eglKsmFg9LT6hsQUV9j6NS4GKLNz7PeNGMsUClZIxsvAWU3cAioTlGc36SlSn0mipDDPrB1R2TRj5JjXJ45El+lSbJ9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=thmNnp1Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0166C2BCB0;
-	Sat, 25 Apr 2026 05:48:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777096090;
-	bh=TFZoT4ewW+EPY1kuAmOC4+PMIwzgunDufK7tVV63EtA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=thmNnp1Yn+JoZRSrZrnw31qyHr0rBUVFdo5m+quhGp2LjGFrYFb4UIPF/Wx07E2aL
-	 azR//5GhR+f9zh4S3NoiamDS6ftW9JO848KW3AR3TNBsbS/jAW2gFooLe0AUAeQPpm
-	 whRl5VUTGjXRQYFrGWS76ZiiuHhZM50Zghz5WrWK86bcZGnVwwdXYWHxn2WiXMVkxQ
-	 cmaSwx8B7u+0WXo1g+SxrNWFU0gYpRsmmjYujpX3BDnRSkJDzMHdfwIPBRpkD1gt/a
-	 wK5WWKU4G1A3OxYbp7L4ZVo6uX0DYE90Xq3DikbapSu94miVg8RWYrkr3LMupRML4e
-	 rg/FpCe4XsDdw==
-Message-ID: <02e35414-8c30-4753-9403-432d90263f39@kernel.org>
-Date: Sat, 25 Apr 2026 07:48:01 +0200
+	s=arc-20240116; t=1777097749; c=relaxed/simple;
+	bh=t8AVmWhazPRwKRYBJnFLQ5l+BR+Emjnqa7ltlcaQdeY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=n08KMH+OsbQ59MsxZDUu6hjiVbSa4j8CwzKRBuW9LtNpADL31zmy5NgeNZhTdhlKJK8WvnrI/uGNFmLDuYvKA1J0e0DKPGNky45jBzcum1AxmNmwGrgr4Mkg4uvlrzqsY29tO0juHq2rs7yuRfZY7dDE6CzUNnxXFgzGqL80EXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=LOyYK/DD; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1134)
+	id A850520B7165; Fri, 24 Apr 2026 23:15:42 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com A850520B7165
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1777097742;
+	bh=wQ46fqky+LLKk3MSG2clbFaEZu89bVx3tE7TB8o/Q7g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LOyYK/DDXqFkeigh+Ee1eFdaA97IT4bDA9WYi9nyVWXQPya8uxlGDtbzZwE5tCgpV
+	 FEcl1XrIvXcvShyWNcp/dumJrqPJMtJtWxLleH+SY2UvvXAJR+ddRQ2zquE7kpOJq7
+	 emI0v6hPjFUnRzAy/praLLSgU1uh8qdXDqMEQwU8=
+Date: Fri, 24 Apr 2026 23:15:42 -0700
+From: Shradha Gupta <shradhagupta@linux.microsoft.com>
+To: Dipayaan Roy <dipayanroy@linux.microsoft.com>
+Cc: Dexuan Cui <decui@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Konstantin Taranov <kotaranov@microsoft.com>,
+	Simon Horman <horms@kernel.org>,
+	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
+	Shiraz Saleem <shirazsaleem@microsoft.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Long Li <longli@microsoft.com>, Yury Norov <yury.norov@gmail.com>,
+	linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, Paul Rosswurm <paulros@microsoft.com>,
+	Shradha Gupta <shradhagupta@microsoft.com>,
+	Saurabh Singh Sengar <ssengar@microsoft.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net] net: mana: Optimize irq affinity for low vcpu configs
+Message-ID: <aexcDgNJw4Nr/uMU@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+References: <20260424061702.1442618-1-shradhagupta@linux.microsoft.com>
+ <aetgQ1gCYlGJjiKk@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 4/7] mm/sparse-vmemmap: Fix DAX vmemmap accounting with
- optimization
-To: Muchun Song <muchun.song@linux.dev>
-Cc: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>, Oscar Salvador
- <osalvador@suse.de>, Michael Ellerman <mpe@ellerman.id.au>,
- Madhavan Srinivasan <maddy@linux.ibm.com>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <chleroy@kernel.org>,
- aneesh.kumar@linux.ibm.com, joao.m.martins@oracle.com, linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260424025547.3806072-1-songmuchun@bytedance.com>
- <20260424025547.3806072-5-songmuchun@bytedance.com>
- <0fe62163-cdfd-47e4-bc88-df7a69dc5a6d@kernel.org>
- <4C6CE53F-918C-4D03-9DBD-1745E28A2D9E@linux.dev>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <4C6CE53F-918C-4D03-9DBD-1745E28A2D9E@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 09CBB465121
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aetgQ1gCYlGJjiKk@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+X-Rspamd-Queue-Id: 371E346521C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	DMARC_POLICY_ALLOW(-0.50)[linux.microsoft.com,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_DKIM_ALLOW(-0.20)[linux.microsoft.com:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241093-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[bytedance.com,linux-foundation.org,suse.de,ellerman.id.au,linux.ibm.com,kernel.org,oracle.com,google.com,suse.com,gmail.com,kvack.org,lists.ozlabs.org,vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[20];
+	TAGGED_FROM(0.00)[bounces-241094-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[microsoft.com,kernel.org,lunn.ch,davemloft.net,google.com,redhat.com,linux.microsoft.com,outlook.com,gmail.com,vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_TWELVE(0.00)[24];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[david@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	FROM_NEQ_ENVFROM(0.00)[shradhagupta@linux.microsoft.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux.microsoft.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[]
 
-> 
-> Hi David,
-> 
-> Sorry, I missed the 1GB hugepage scenario earlier. Given that sparse_add_section()
-> operates on a scale between PAGES_PER_SUBSECTION and PAGES_PER_SECTION, the pfn and
-> nr_pages parameters wouldn't be aligned with the hugepage size (pages_per_compound),
-> but rather with the PAGES_PER_SECTION boundary. Do you think this explanation makes
-> it clearer? In the interest of code clarity, do you think the modification below
-> makes it easier to follow?
-> 
-> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
-> index 2e642c5ff3f2..ce675c5fb94d 100644
-> --- a/mm/sparse-vmemmap.c
-> +++ b/mm/sparse-vmemmap.c
-> @@ -658,15 +658,18 @@ static int __meminit section_nr_vmemmap_pages(unsigned long pfn, unsigned long n
->         const unsigned int order = pgmap ? pgmap->vmemmap_shift : 0;
->         const unsigned long pages_per_compound = 1UL << order;
-> 
-> -       VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages,
-> -                                   min(pages_per_compound, PAGES_PER_SECTION)));
-> +       VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages, PAGES_PER_SUBSECTION));
+On Fri, Apr 24, 2026 at 05:21:23AM -0700, Dipayaan Roy wrote:
+> On Thu, Apr 23, 2026 at 11:17:00PM -0700, Shradha Gupta wrote:
+> > In mana driver, the number of IRQs allocated are capped by the
+> > min(num_cpu + 1, queue count). In cases, where the IRQ count is greater
+> > than the vcpu count, we want to utilize all the vcpus, irrespective of
+> > their NUMA/core bindings.
+> > 
+> > This is important, especially in the envs where number of vcpus are so
+> > few that the softIRQ handling overhead on two IRQs on the same vcpu is
+> > much more than their overheads if they were spread across sibling vcpus
+> > 
+> > This behaviour is more evident with dynamic IRQ allocation. Since MANA
+> > IRQs are assigned at a later stage compared to static allocation, other
+> > device IRQs may already be affinitized to the vCPUs. As a result, IRQ
+> > weights become imbalanced, causing multiple MANA IRQs to land on the
+> > same vCPU.
+> > 
+> > In such cases when many parallel TCP connections are tested, the
+> > throughput drops significantly
+> > 
+> > Test envs:
+> > =======================================================
+> > Case 1: without this patch
+> > =======================================================
+> > 4 vcpu(2 cores), 5 MANA IRQs (1 HWC + 4 Queue)
+> > 
+> > 	TYPE		effective vCPU aff
+> > =======================================================
+> > IRQ0:	HWC		0
+> > IRQ1:	mana_q1		0
+> > IRQ2:	mana_q2		2
+> > IRQ3:	mana_q3		0
+> > IRQ4:	mana_q4		3
+> > 
+> > %soft on each vCPU(mpstat -P ALL 1) on receiver
+> > vCPU		0	1	2	3
+> > =======================================================
+> > pass 1:		38.85	0.03	24.89	24.65
+> > pass 2:		39.15	0.03	24.57	25.28
+> > pass 3:		40.36	0.03	23.20	23.17
+> > 
+> > =======================================================
+> > Case 2: with this patch
+> > =======================================================
+> > 4 vcpu(2 cores), 5 MANA IRQs (1 HWC + 4 Queue)
+> > 
+> >         TYPE            effective vCPU aff
+> > =======================================================
+> > IRQ0:   HWC             0
+> > IRQ1:   mana_q1         0
+> > IRQ2:   mana_q2         1
+> > IRQ3:   mana_q3         2
+> > IRQ4:   mana_q4         3
+> > 
+> > %soft on each vCPU(mpstat -P ALL 1) on receiver
+> > vCPU            0       1       2       3
+> > =======================================================
+> > pass 1:         15.42	15.85	14.99	14.51
+> > pass 2:         15.53	15.94	15.81	15.93
+> > pass 3:         16.41	16.35	16.40	16.36
+> > 
+> > =======================================================
+> > Throughput Impact(in Gbps, same env)
+> > =======================================================
+> > TCP conn	with patch	w/o patch
+> > 20480		15.65		7.73
+> > 10240		15.63		8.93
+> > 8192		15.64		9.69
+> > 6144		15.64		13.16
+> > 4096		15.69		15.75
+> > 2048		15.69		15.83
+> > 1024		15.71		15.28
+> > 
+> > Fixes: 755391121038 ("net: mana: Allocate MSI-X vectors dynamically")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
+> > Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+> > Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
+> > ---
+> >  .../net/ethernet/microsoft/mana/gdma_main.c   | 35 +++++++++++++++++--
+> >  1 file changed, 33 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+> > index 098fbda0d128..433c044d53c6 100644
+> > --- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
+> > +++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+> > @@ -1672,6 +1672,23 @@ static int irq_setup(unsigned int *irqs, unsigned int len, int node,
+> >  	return 0;
+> >  }
+> >  
+> > +static int irq_setup_linear(unsigned int *irqs, unsigned int len)
+> > +{
+> > +	int cpu;
+> > +
+> > +	rcu_read_lock();
+> We do not need to call rcu_read_lock here, as the caller of this
+> function has already acquired cpus_read_lock.
 
-That here makes sense. We can only add/remove in multiples of PAGES_PER_SECTION.
-I think what we are saying is that we want that check in addition to the
-existing min() check.
+Thanks for your comments Dipayaan, I think this is still needed for the
+irq_set_affinity_and_hint(), to protect the pointer returned by
+irq_to_desc(). You can also see the same in the original function
+irq_setup() for the same reason.
 
->         VM_WARN_ON_ONCE(pfn_to_section_nr(pfn) != pfn_to_section_nr(pfn + nr_pages - 1));
-> 
->         if (!vmemmap_can_optimize(altmap, pgmap))
->                 return DIV_ROUND_UP(nr_pages * sizeof(struct page), PAGE_SIZE);
-> 
-> -       if (order < PFN_SECTION_SHIFT)
-> +       if (order < PFN_SECTION_SHIFT) {
-> +               VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages, pages_per_compound));
->                 return VMEMMAP_RESERVE_NR * nr_pages / pages_per_compound;
+> > +	for_each_online_cpu(cpu) {
+> > +		if (len <= 0)
+> len is unsigned here so <= doesnot makes sense. PLease change it to int
+> or better use if(!len)
 
-That makes sense as well, within a section, we expect that we always add/remove
-entire "compound"-managed chunks.
+sure, I think I will change it to explicitly exit when len == 0
+Thanks.
 
-> +       }
-> +
-> +       VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages, PAGES_PER_SECTION));
+> > +			break;
+> > +
+> > +		irq_set_affinity_and_hint(*irqs++, cpumask_of(cpu));
+> > +		len--;
+> > +	}
+> > +	rcu_read_unlock();
+> > +
+> > +	return 0;
+> > +}
+> > +
+> >  static int mana_gd_setup_dyn_irqs(struct pci_dev *pdev, int nvec)
+> >  {
+> >  	struct gdma_context *gc = pci_get_drvdata(pdev);
+> > @@ -1722,10 +1739,24 @@ static int mana_gd_setup_dyn_irqs(struct pci_dev *pdev, int nvec)
+> >  	 * first CPU sibling group since they are already affinitized to HWC IRQ
+> >  	 */
+> >  	cpus_read_lock();
+> > -	if (gc->num_msix_usable <= num_online_cpus())
+> > +	if (gc->num_msix_usable <= num_online_cpus()) {
+> >  		skip_first_cpu = true;
+> > +		err = irq_setup(irqs, nvec, gc->numa_node, skip_first_cpu);
+> > +	} else {
+> > +		/*
+> > +		 * In case our IRQs are more than num_online_cpus, we try to
+> > +		 * make sure we are using all vcpus. In such a case NUMA or
+> > +		 * CPU core affinity does not matter.
+> > +		 * Note that in this case the total mana IRQ should always be
+> > +		 * num_online_cpu + 1. The first HWC IRQ is already handled
+> > +		 * in HWC setup calls
+> > +		 * So, the nvec value in this path should always be equal to
+> > +		 * num_online_cpu
+> nit: typo: should be num_online_cpus
 
-And this is then for the case where a 1G page spans multiple sections, where we
-expect to add/remove an entire section.
+noted
 
-So here, indeed the "min" makes sense. I guess we also assume:
-
-	VM_WARN_ON_ONCE(nr_pages > PAGES_PER_SECTION);
-
-Looks better to me!
-
--- 
-Cheers,
-
-David
+> > +		 */
+> > +		WARN_ON(nvec > num_online_cpus());
+> > +		err = irq_setup_linear(irqs, nvec);
+> > +	}
+> >  
+> > -	err = irq_setup(irqs, nvec, gc->numa_node, skip_first_cpu);
+> >  	if (err) {
+> >  		cpus_read_unlock();
+> >  		goto free_irq;
+> > 
+> > base-commit: e728258debd553c95d2e70f9cd97c9fde27c7130
+> > -- 
+> > 2.34.1
+> > 
+> Regards
+> Dipayaan Roy
 
