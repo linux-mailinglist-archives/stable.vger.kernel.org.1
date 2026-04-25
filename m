@@ -1,235 +1,171 @@
-Return-Path: <stable+bounces-241087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241088-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CGtoKUMd7GloUgAAu9opvQ
-	(envelope-from <stable+bounces-241087-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 03:47:47 +0200
+	id wOHkAHUq7GmVVAAAu9opvQ
+	(envelope-from <stable+bounces-241088-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 04:44:05 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 482D34647A0
-	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 03:47:47 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F941464C71
+	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 04:44:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4A1AD3011C5F
-	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 01:47:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C2EEB300F5DE
+	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 02:43:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1473314A4CC;
-	Sat, 25 Apr 2026 01:47:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31D2C245008;
+	Sat, 25 Apr 2026 02:43:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=morsemicro-com.20251104.gappssmtp.com header.i=@morsemicro-com.20251104.gappssmtp.com header.b="RjF4UNoR"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GtJ02XIc"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9591118AE2
-	for <stable@vger.kernel.org>; Sat, 25 Apr 2026 01:47:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9056221F1F
+	for <stable@vger.kernel.org>; Sat, 25 Apr 2026 02:43:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777081655; cv=none; b=gtpzGDodMUQcP5LFDV16iPO/X3IcNAgsWyaCXRfZ9Yi5JIH2lb08mxc+3BKfsNsqiztJWrafsHjtitQ9nCuatoRIeDs3fmOw445phY5cWtAyQsbR0xpYd9U1axPBt4MJKT3raLX3efn5gMf0yNMi+ujboC8N81VbrUAmwwQN4UE=
+	t=1777085037; cv=none; b=SMngj6YH5gVAtElA1Y/SOIZeuLUDPk5CxFxDx8gEONz8EDxZ2AYBO6yfONC9X66avLtfi7KQ0dd6bZWO1qbzLxNQ7K1X/kgqymwR4onRlu9cDbA3Lero226pejD6UqWhDaXtAF+7soUWcS+Nz/LFDjzMPc5RB6XrzJKF1uFJeUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777081655; c=relaxed/simple;
-	bh=mlxtZc0QH06kZ6tGKSb3kmeh4mki15DGlR4cVtEwRaw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cPle+nIxTUlcYGoLRfg9dmMOgbH5HMhRvccUuDLCDs+JzY/mchMJ5J8zScVO3bw50Y/iMRK0UiQrUHrPYAZ4mheTVR3hSbyKnIfMdZ0W04yCsIZpjNbIFYVmwNG81+0hXbXLAhYqPkuo7vYi1gUifP7lV1p4laVPq3Swlhz6TXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com; spf=pass smtp.mailfrom=morsemicro.com; dkim=pass (2048-bit key) header.d=morsemicro-com.20251104.gappssmtp.com header.i=@morsemicro-com.20251104.gappssmtp.com header.b=RjF4UNoR; arc=none smtp.client-ip=209.85.216.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=morsemicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=morsemicro.com
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-35e576110adso5885875a91.0
-        for <stable@vger.kernel.org>; Fri, 24 Apr 2026 18:47:33 -0700 (PDT)
+	s=arc-20240116; t=1777085037; c=relaxed/simple;
+	bh=/p/S8kUDUJ1olhsEvmLElM8ozexRk8Qir2DHZwWEN5s=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=HgWDol4U31T/XmmAIMmkco5KBlrXYst9nG0EX4jxmk5QeR041qM9+e7UCN+ZCnbghIXGhMndIHmhpCDV/j91Wyi7voROF2dTblkDl84eDpaOzA72VylORoYoqP3FGUWqDlHBm0QV1eKGltYLcFdnxideBZElTZ6HW4zVEzDwark=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GtJ02XIc; arc=none smtp.client-ip=209.85.216.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-35d971fb6f1so6738926a91.0
+        for <stable@vger.kernel.org>; Fri, 24 Apr 2026 19:43:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=morsemicro-com.20251104.gappssmtp.com; s=20251104; t=1777081653; x=1777686453; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=GDbgk3LIrFcNnrvRDCz9fBzhhWNxXTrnYrQ2HVhKUvQ=;
-        b=RjF4UNoR6KPn7wa/BcBrg/ZOMo1QAAlT9hzNtgH+mEOllvO4JG2ghXibBxS6RFusu0
-         ixblfjCdgySWYFn9muujRp9fuk8VhITHanfvhLjvTI/s88TRga8lYUSPulQbSPh2izPl
-         Pm82GWOBzoZLfVuZ/39Xd/e7r08fB5f0f3Pz57rsKUheVnPWccy3JNk2zifcHmGxr/5N
-         m1MnjyHiNfleXA53Zq4t9/xdCxXwG/eP7TEq0GTpOVtaAT+LGJ1m4k2jE2v/c0+uohxN
-         5ik5m739+nmlbc+IgiQJ6lechNiCklfytu9NfshHygmJG9B24MXqOcyhs094djxW8AUi
-         wvMg==
+        d=gmail.com; s=20251104; t=1777085035; x=1777689835; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:references
+         :in-reply-to:user-agent:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=/p/S8kUDUJ1olhsEvmLElM8ozexRk8Qir2DHZwWEN5s=;
+        b=GtJ02XIcMxWufMeBWwfhnmOlxx68ESDO+A9UwiIvCNrO49t/JI63dDYBYVDMlPf/v6
+         z74MtLniIdNalcDIJEH68uwXNAjuz8ZHUw06zWvrF5p0qF1/4W2JZW2uGeJZFGL8lWlj
+         FaNizbvcOTw/Xjl71cQhbLrZ7nlYFSPP/+30l8+srPpLpbTljrPimGeDBINnYAfl5qXx
+         8OiAc/w2qSdQH8paf2Q4+0PRuTjZ8rqQ6L+5+77P6hxTj5ZwmcSzvY3/v0rZW5V6ZEl4
+         sUO1ovcSpgqFii7kiId0HSP6uV6WcUDha3L5uSui4vS/9sukv7dy3Bg++ZLMh///lJik
+         /k3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777081653; x=1777686453;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GDbgk3LIrFcNnrvRDCz9fBzhhWNxXTrnYrQ2HVhKUvQ=;
-        b=tDpxQAXTcG5eCxdik12n4dkzW1wjSddkaubNIvVNXj+LHaG9yNa4ByyhHXkL0Clr+/
-         4cJz12M5LQWWdqDBPT9jOiKzOGHnhx/0wNOYVeovgd9KhEsni3A7Ip5r0P1re/g0ryXR
-         dZb9/w8rASZF2vaXJ4QZUTby0Htococ7BBTTUseW10svTIja76iHbzBv7bMO9j4foSz2
-         3aHSrrnOVDOKeQTM9mnoEFhiMmnQ0GmtnKVwjY2Lqb1F3f1pF3nC0+XMiQwmtf2j7CbX
-         Ha0inzz6O/BAt3DKHlmRPWc/7/YlzCDxcAvbP3YiWUSbsHGhx1PKd23DPmHsfR18g4F3
-         sZNw==
-X-Forwarded-Encrypted: i=1; AFNElJ9QMjEY6N6m6jQQjWnfJAvhAJXpHoLgUV6S3njPaa4GYCP2sZ7frwHCuRwBo9S/iNuhOAml8YA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz+5bNeNPGI65RTKL2hv8UiLU0A5adQnq3anVkLjmd0e1CfuBHK
-	5OJ9wcjoF9zzC31Gy69eowwRv5vpOfe4IzFc0CAXWIqj36CTM7To80RBHzj0QkV3Fm4=
-X-Gm-Gg: AeBDietPyN7KEXpO1B6tdqS/Tz6wCZXwMQm1CI4H+szIZT3sI/CwcLtPs6B5bLL03eE
-	7rdtAqVqwMyOydvCjGz6Zc3JQuiYw6uNedRIjTIcDb7J+lPNg9H+ENdKVOdcLK9v6KqXvdqSkL5
-	6yNiQGETJPymEgIX3Jk/tHrbD8qsZDpY2wNtQ/N0FHxQvJNhSdtbrTTojhdRWDQ6Ygo1HXXviaM
-	5lWlvCnw1DU6X1g0IUFszgLfZUu07iGXyDXnaXTtxh0Sr5bJipwW+UPyd0oB3L0LoDigxxLSG7/
-	t2nZeFD2ms1LhF77OoEYxEC0MBnyUHFA0naMLs3f3wou0sjyOAdnpF8yZA00sTjSI04MOn28SEP
-	NLvZ5UPaTlYi5er/paOBhpPLHI+dr8EmSsoqTRi8w21jwZdSSWcy7sT/0eChRkYzT7Y0fbnaphZ
-	Uv0DH0jYUurZKO5Usccu+5eZ7WgSwp44xrtSB+H0dbMhe1RbaQ2UARE5Zyc0XGUzgwGflx3fIEg
-	HU=
-X-Received: by 2002:a17:90b:4cc2:b0:35d:a31e:6b04 with SMTP id 98e67ed59e1d1-361401bf776mr30877364a91.3.1777081652938;
-        Fri, 24 Apr 2026 18:47:32 -0700 (PDT)
-Received: from localhost ([60.227.167.223])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c79770512afsm19500117a12.31.2026.04.24.18.47.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Apr 2026 18:47:32 -0700 (PDT)
-Date: Sat, 25 Apr 2026 11:47:28 +1000
-From: Lachlan Hodges <lachlan.hodges@morsemicro.com>
-To: Brite <brite.airgeddon@gmail.com>
-Cc: Johannes Berg <johannes@sipsolutions.net>, 
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	fjhhz1997@gmail.com, oscar.alfonso.diaz@gmail.com
-Subject: Re: [PATCH] wifi: mac80211: restore monitor injection when
- coexisting with another VIF
-Message-ID: <4i5nyqdrtpgm575dd3swyp7662wjdxu3hky7ucgwnuwigx5ge4@tc474ip5qxtc>
-References: <CA+bbHrVWmSpWZ9GBVJ5vffh1qYEye=EWMq9tKA-_uzfW+raC8A@mail.gmail.com>
- <20260424120807.25005-1-brite.airgeddon@gmail.com>
+        d=1e100.net; s=20251104; t=1777085035; x=1777689835;
+        h=content-transfer-encoding:mime-version:message-id:references
+         :in-reply-to:user-agent:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/p/S8kUDUJ1olhsEvmLElM8ozexRk8Qir2DHZwWEN5s=;
+        b=anMWKmmP1XQ4W0WiFrBx6dQkUwQ4x5Jm2gTDJzOmi4KW2DFCLK8xjguiHUpnNAMVm1
+         12zkgKf74EaotV+mCLWKIcOTPlKA5AU2E+SsRrYpCqXN4dzH++3Fh3oadoxkCxVlS6u+
+         IRPuW6G2o44kIIvhbOl86MFKepWAMxItVa6Bxc/jK4rH1K3bS7p/6m+cMZWhBbhV9TSL
+         82lLSibK7M21qI9Rl09crgjRLvSHV5q0nUIT+xKdB4lN/AovrN9QOoQXzpHiZnLG0+MX
+         3WA6WKEGDmhBxX+SGazsQ3iDcR5heGif9sN3VkS+fXHTD8RcLAtP6xJyq9uaiGSHLYFU
+         TZ1w==
+X-Forwarded-Encrypted: i=1; AFNElJ81TgVC01cRjKG3yGi1cUQSJySiB2XHAP8K0Pis4AON1tWFUEyXD8AYV+mUbMl5bc52YVkea5A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyOsjcaTPpcwz/zabFlPQDtfZbWb5Jj72Yi9CNYj1hn2znKLm8E
+	By6kcXEx69vjGOs4AWU4eSorFdeXo9YgQ4i1UNh9xrVngqi3/DMANjlB
+X-Gm-Gg: AeBDiessQdU/nFb5wa3GCH+xOJFIpaIffB8mUuCIP+s2+kzhtImsgy0biwRjCxnmjcr
+	dU0hTCFQUaTSG1YpdlOVx/9sG8YivNnCCWpxR0IL4/zr79dMzmCbTpXs2p0a2Ibpu5+uoMenBpQ
+	Ws+qgf2ZAiQGPYuicB1jiDsxlFvS1eO/ffDgoU3+my+lDH6Htxhgx/7U2RepoUNOgDJ9H2EwcR/
+	J7yfS2lJVeFpAiJGODrAJAEkNjRVxGUpoPYXAkUAYge7keQYH32GN6ZG0athXKFZmuZubT+/OKs
+	1Ove0jYzcgNHAgAulNPQqAFItRT5yt1bmkaIE/mCebbu+n43U48efE2bPTRBKchtDdqF3Khylaj
+	VP44hmTTlJ7Mc51Qux8/JhH1x/7G8AEC7hHsR0XqVniYFXOKAkK3pzf0zWn2M8ekQxi0x5bUmZN
+	/yXJj1kUnjzpqyoy/mraV4E6+Rcx58GC8dgmhf/Y3livJ5Umfs/qM=
+X-Received: by 2002:a17:903:1b24:b0:2ae:66c9:494f with SMTP id d9443c01a7336-2b5f9e64bfcmr357108255ad.2.1777085035096;
+        Fri, 24 Apr 2026 19:43:55 -0700 (PDT)
+Received: from ehlo.thunderbird.net ([203.184.33.250])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b5fa9ff390sm234089145ad.9.2026.04.24.19.43.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 24 Apr 2026 19:43:54 -0700 (PDT)
+Date: Sat, 25 Apr 2026 14:43:48 +1200
+From: Brite <brite.airgeddon@gmail.com>
+To: Lachlan Hodges <lachlan.hodges@morsemicro.com>
+CC: Johannes Berg <johannes@sipsolutions.net>, linux-wireless@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, fjhhz1997@gmail.com,
+ oscar.alfonso.diaz@gmail.com
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH=5D_wifi=3A_mac80211=3A_restore_monitor?=
+ =?US-ASCII?Q?_injection_when_coexisting_with_another_VIF?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <4i5nyqdrtpgm575dd3swyp7662wjdxu3hky7ucgwnuwigx5ge4@tc474ip5qxtc>
+References: <CA+bbHrVWmSpWZ9GBVJ5vffh1qYEye=EWMq9tKA-_uzfW+raC8A@mail.gmail.com> <20260424120807.25005-1-brite.airgeddon@gmail.com> <4i5nyqdrtpgm575dd3swyp7662wjdxu3hky7ucgwnuwigx5ge4@tc474ip5qxtc>
+Message-ID: <6EC55EE4-4534-4832-9FB2-393182829B22@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260424120807.25005-1-brite.airgeddon@gmail.com>
-X-Rspamd-Queue-Id: 482D34647A0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 9F941464C71
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.06 / 15.00];
+X-Spamd-Result: default: False [0.54 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	SUBJ_EXCESS_QP(1.20)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[morsemicro-com.20251104.gappssmtp.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[morsemicro.com : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-241087-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
 	FREEMAIL_CC(0.00)[sipsolutions.net,vger.kernel.org,gmail.com];
-	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[morsemicro-com.20251104.gappssmtp.com:+];
-	MISSING_XM_UA(0.00)[];
+	TAGGED_FROM(0.00)[bounces-241088-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lachlan.hodges@morsemicro.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[briteairgeddon@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[7];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,morsemicro-com.20251104.gappssmtp.com:dkim]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[morsemicro.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-Hi,
 
-I will leave implementation discussion to Johannes, but I have some
-generic feedback;
 
-> + * Context: Must be called with wiphy->mtx held.
-> + *          Always process context - GFP_KERNEL is safe and appropriate.
-
-This comment seems redundant given the lockdep assert?
-
-> + */
-> +void ieee80211_update_sole_chandef(struct ieee80211_local *local)
-> +{
-> +	struct ieee80211_chanctx      *ctx, *found = NULL;
-> +	struct ieee80211_sole_chandef *snap = NULL;
-> +	struct ieee80211_sole_chandef *old;
-
-Don't align the local names i.e
-
-	struct ieee80211_chanctx *ctx, *found = NULL;
-	struct ieee80211_sole_chandef *snap = NULL;
-	...
-
-> +	if (found) {
-> +		snap = kmalloc(sizeof(*snap), GFP_KERNEL);
-> +		if (snap)
-> +			snap->def = found->conf.def;
-> +		/* alloc failure -> snap == NULL -> publish NULL below */
-
-Same here - this comment adds no value
-
->  struct ieee80211_chanctx_user_iter {
->  	struct ieee80211_chan_req *chanreq;
->  	struct ieee80211_sub_if_data *sdata;
-> @@ -729,6 +784,9 @@ static void ieee80211_change_chanctx(struct ieee80211_local *local,
->  				     const struct ieee80211_chan_req *chanreq)
->  {
->  	_ieee80211_change_chanctx(local, ctx, old_ctx, chanreq, NULL);
-> +
-> +	/* Hook 4/4: channel parameters changed; refresh snapshot */
-> +	ieee80211_update_sole_chandef(local);
-
-Without the context of this patch, there is no way to understand
-what this is doing (same with 3/4). The comment doesn't help and
-the general idea of a "sole chandef" seems strange. hw.conf.chandef
-is also a sole chandef?
-
-> +/* Defined in chan.c */
-> +void ieee80211_update_sole_chandef(struct ieee80211_local *local);
-
-Another comment not needed
- 
-> +	/*
-> +	 * All interfaces are gone by this point, so every chanctx has been
-> +	 * freed and ieee80211_update_sole_chandef() has already published
-> +	 * NULL. Assert the invariant.
-> +	 */
-> +	WARN_ON_ONCE(rcu_access_pointer(local->sole_chandef));
-
-Seems unnecessary?
- 
-> -	if (chanctx_conf)
-> +	if (chanctx_conf) {
->  		chandef = &chanctx_conf->def;
-> -	else
-> -		goto fail_rcu;
-> +	} else {
-> +		/*
-> +		 * Real-chanctx drivers (e.g. mt76) do not assign a chanctx to
-> +		 * the monitor VIF, so vif.bss_conf.chanctx_conf is NULL here.
-> +		 * Fall back to the sole_chandef snapshot maintained by
-> +		 * ieee80211_update_sole_chandef(). NULL means MCC or no active
-> +		 * channel - drop the frame.
-> +		 *
-> +		 * The snapshot is valid for this whole function: it is freed
-> +		 * via kfree_rcu() after a full grace period, and we are inside
-> +		 * rcu_read_lock() throughout.
-> +		 */
-
-is the bottom half of this comment really needed?
-
-> +		struct ieee80211_sole_chandef *sole =
-> +			rcu_dereference(local->sole_chandef);
-> +		chandef = sole ? &sole->def : NULL;
-
-nit: space after local declaration
-
-> +		list_for_each_entry_rcu(tmp_sdata, &local->interfaces, list) {
-> +			struct ieee80211_chanctx_conf *tx_conf;
-> +
-> +			if (!ieee80211_sdata_running(tmp_sdata))
-> +				continue;
-> +			if (tmp_sdata->vif.type == NL80211_IFTYPE_MONITOR ||
-> +			    tmp_sdata->vif.type == NL80211_IFTYPE_AP_VLAN)
-> +				continue;
-> +
-> +			tx_conf = rcu_dereference(tmp_sdata->vif.bss_conf.chanctx_conf);
-> +
-
-nit: remove this space after tx_conf = ..
-
-lachlan
+On April 25, 2026 1:47:28 PM GMT+12:00, Lachlan Hodges <lachlan=2Ehodges@m=
+orsemicro=2Ecom> wrote:
+>Hi,
+>
+>I will leave implementation discussion to Johannes, but I have some
+>generic feedback;
+>
+Thanks for the feedback and now i know why the code was flagged as llm cre=
+ated=2E My approach to finding the vm freeze issue followed by the 5ghz dea=
+uth not working, was done using debug prints everywhere possible, with adde=
+d delays between function calls(the delay was added because the vm froze ot=
+herwise, without any dmesg logs)=2E Since I didn't have the proper knowledg=
+e, the fixes i tried initially (spread across 6 or 7 files) led to other is=
+sues, intermittent failures etc=2E Everything was done inside a kali VM wit=
+h no comments, full of messy code, not using git commits to revert etc=2E i=
+ had to start from scratch but then i added comments alongside=2E Even thou=
+gh the initial patch fixed every issue, being too invasive, I tried to trim=
+ down as much as I could which landed the sole chandef and then the 5ghz pa=
+tch=2E I didn't pay attention to improving the comments when removing code =
+sections=2E I also had very limited time to spare for this and my intention=
+ as I said in the airgeddon discord channel was to send a cleaned up code t=
+o the kernel devs so that they could get a hint at what the issue is and co=
+me up with a proper fix=2E The commit message is what i summed up from doin=
+g all my research and testing=2E I didn't know the format to submit a patch=
+, so i used information from AI, Google, previous threads/replies etc here =
+to submit an email=2E I didn't check if AI changed any comments=2E=20
+As I mentioned earlier, a community had been waiting for so long to have t=
+his issue fixed=2E My sole intention was to find anything that helps with r=
+esolving this=2E I've also packaged 6=2E18, 6=2E19 and 7=2E0 with the patch=
+ and uploaded it for the users now but as Oscar said the proper way would b=
+e a fix in the upstream and backporting it=2E
+If v2 patch by Johannes(no need for sole_chandef) + 5ghz patch from me fix=
+es the whole issue(I've tested this today) please look into improving it an=
+d providing a fix=2E
+Thanks
 
