@@ -1,97 +1,94 @@
-Return-Path: <stable+bounces-241091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241092-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eCq4LLJA7GlGWQAAu9opvQ
-	(envelope-from <stable+bounces-241091-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 06:18:58 +0200
+	id SGIcG4NO7GnIXAAAu9opvQ
+	(envelope-from <stable+bounces-241092-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 07:17:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77502464EFE
-	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 06:18:58 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C253E465055
+	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 07:17:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D9CA5301D322
-	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 04:18:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EE2493045AA6
+	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 05:14:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 388022874F5;
-	Sat, 25 Apr 2026 04:18:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A11C42874F5;
+	Sat, 25 Apr 2026 05:14:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qKY2cuXf"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RfyitZa/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f65.google.com (mail-dl1-f65.google.com [74.125.82.65])
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFD2E14B08A
-	for <stable@vger.kernel.org>; Sat, 25 Apr 2026 04:18:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31520288C3D
+	for <stable@vger.kernel.org>; Sat, 25 Apr 2026 05:14:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777090735; cv=none; b=ODrj/CtmKGk9RR4pIpLC/+MHtBU25xxqdUXHgG5+uq/cmUXQ2xIJEbZuHYuPRcFRgoh7PFmJCfwMcigtb7JWePuKdXvu0VLv8IHmkSWsGKGOCGRLNX3aOmXAZp7E29DTJTfJr/Rw1IXZT6muHR8hflQCyj8YI844ueUbQsBGDjY=
+	t=1777094069; cv=none; b=KoMLsmNhHq1eKIseUTMZ+kuMApnu2VKRvdns9D9vqW7cnzKUpJyXPMch7Mq49VWrQxGH+u3DP77sHXqL4Zin1U87VREKCxXuhrD/tUDiDFS/mSbj/Gn6+fPLNXZex6l3PKK50/kgmNyWElHkHPPZ+5nptHx8LVsvwOys5sXGkJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777090735; c=relaxed/simple;
-	bh=yNpT5Ea2Wr3J9GcxT267OvWgxH4/6nsG8FyfORLoFis=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=prdsM+BW9/DguRWM8lweJGcn1jFN0/bAE2nxuRS/y+AUrl8P17/BPws2PO0qMI80KTFqFgzdTkxuLCdTzzXfbF9kCUi8NdEIvQNau4pSt2K+9h/btWsKkmAozJCDSul7LoaP674gOVymK4Iz5YeISgzUpFvhapW15GSnDv8C2Cs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qKY2cuXf; arc=none smtp.client-ip=74.125.82.65
+	s=arc-20240116; t=1777094069; c=relaxed/simple;
+	bh=92FoLcX0NIGnA51Acikj09Qm+3lN9YsfDC0DOOi7IrE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=cSiUCDxyXBJSL9ZNP+FCkHmCrMjPmfXwfASNR4NtjgOpcEuqFpHUc/fHWrdSTvx197LCB5c+wCzqblil7UQM/gdklBw3HnoOJLifWAFWVn0W4/Joyj1cSd8RYfOHlaQjs7XLfkFBUY98k5PSQ9X9Aok81OADFk+M1OEx8Il++PA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RfyitZa/; arc=none smtp.client-ip=209.85.222.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dl1-f65.google.com with SMTP id a92af1059eb24-12c637089ccso9835578c88.1
-        for <stable@vger.kernel.org>; Fri, 24 Apr 2026 21:18:52 -0700 (PDT)
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-8d65f4073bfso1185152985a.3
+        for <stable@vger.kernel.org>; Fri, 24 Apr 2026 22:14:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777090732; x=1777695532; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=gs44N4+hU1RqCbEeT+Y1cdqZ7dnhS0LUOUZ5KW9aaJ4=;
-        b=qKY2cuXf4pXkQJTCi4pY68aJeCqEqVoQzjWR3x3DujQYZW1yRwByWMF6gvBG1R3MC2
-         9M2nE3SUPN/3BaC2nWK053oSVRCSWhnF/BzfG0LZ81ETWshYsWA3/pPosAyQrZSc41UY
-         HkyJGuMP3ZR7+cRtA9wFQjNamJDqQgxwGb8onwnhtAAp3ITd2L4PoRI2LnaP41AG2ntH
-         +uYmrl57WYMoDeL3FWaEMTJmtNpD79EboGAUzmm7zrr1aQcN+f2q2jyfoYYMEhdBGZ/J
-         GU9R+iU1F307qQY6O6KJpcjRnvQB4L3AS9ApqR/SRv9FnDT023miPwVr2Vxs1yK8Bxq4
-         zIUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777090732; x=1777695532;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1777094067; x=1777698867; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=gs44N4+hU1RqCbEeT+Y1cdqZ7dnhS0LUOUZ5KW9aaJ4=;
-        b=RAeMq6EcbGkSEdSGqFy7jm0RkqqaxZbuAk0mS1i/5UCSlPBy3FvQuNCxRpgcPvFN2w
-         p4rSI+Ov+jUm5rQ6YA18ouy5lt9E/YOgg60oxaPO9CmJglnlTmvKhR+qvnkC8CQgpJ1o
-         x9DTCycX0cdMWjeZsAmF1jVoSizlosBR8ehkgwqPvUCnQ+VXojyiLJX8zNrcHsyul69t
-         Op4S7U/IaTmHu3KiNryulCh0Gqtfixs5V/9NL6e2MJPWocMBh7OrheRLysO2DMWzP4uT
-         P8QoEr/Tu9IfIoeBUxyVjXwjyX823fKOb+pwuocd/H8q5ZqGZBcg3jwjl3kHJsDoKJqm
-         sfJA==
-X-Forwarded-Encrypted: i=1; AFNElJ/+YSWDQJ1vS9Bh5BZZCM/aFjoBKAYbAIiCumPAr41hUtRkegplvmFc1wjSkgRRUT2ffOjEYlQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyO67ZZpAR8avCyO39tUyPJf11fPEzWPD5nzfiHZla8o2YrszQk
-	cP347Jkq8dbeCrZpIdkA3dCSBWmv1npIEzsqV/FiFvIF/BAx1owmMh8k
-X-Gm-Gg: AeBDietBF8Nr+92MSTG17K+//vqPSdaPQ2oRRQydAkuVkjAIZOdNG1bL4vbj2d8KUfn
-	u9BNKSlJW4B+J4s2FmGZ9ENSIHnYlSspCKQ4HEfs0Cpn+KDNVgb9v/FgKvgT3tBfsz2Y9fQQk4U
-	uPG4VQ6oJ2A0+vOdm9s4hOXldzXALUk4qADJJBxtH7tKgBjep0swKW0mCaNGt6lfhYE8UXjUBO6
-	N+IMQmLMTrdbrzKejOsvImMeObNEvljtoaShIQ9Ra6Xx/mIwddENOCufQGzePQrPjavoCD18MBa
-	76tVlWyYDGe5ACPY1a5Lv/zDBT6HFdk9uSM3nY8sDyf2QrjYOXqGz4Mzqcj2tgodA8KAXusvYg4
-	Of/I/ZgUkaXO4ZRcevY5We/z5QEx3W7joSHtfW6WZxczjIJJyzcVIvC+XlFlX8w24jAJUzhXdLr
-	BlHAZm1IF7wlbI46KogIm7aEwo0gWC4SGb9pgEmJtkZyrHGJNs3UeqP+T7XoqWKcGiqOETLrJoC
-	jfCQtUPfD9X0S4BsOjQYU6lD2m5v0FTl6RPxp7iDkD5YDgGf0bk/rizF4zV6TVKMpx0AoGs2k4X
-	Dgz50AO2F65Coex55r3QYNeJPrMw
-X-Received: by 2002:a05:7022:ea2c:b0:128:dbbf:fd35 with SMTP id a92af1059eb24-12c73fa3c01mr19002285c88.28.1777090731805;
-        Fri, 24 Apr 2026 21:18:51 -0700 (PDT)
-Received: from ethan-latitude5420.. (host-127-24.cafrjco.fresno.ca.us.clients.pavlovmedia.net. [68.180.127.24])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12c837f7feasm39678070c88.0.2026.04.24.21.18.50
+        bh=92FoLcX0NIGnA51Acikj09Qm+3lN9YsfDC0DOOi7IrE=;
+        b=RfyitZa/2LSF/RGu618I5DerfancFy/0YIlhWlsoctDoPqH4L3VPXu3oJbcYIbg2yI
+         eG4IhSIp9Ttef9R2DyMsotuBKESUjjT7P/D6Keb25cFhs58s3JyeoHYN8xk/DY677vhn
+         iKw9DzASadiMca0GhEjrPtWhqzaV/SvWOdp3pQidLsoBLSNyWOZ9VvMcZ/GaGmgXMGNj
+         Cr5qmh0Da8sHsDcBjFh0APUtVJa1J1N6OykjEzY2vyjJ+ALEgjVsO19ddqt57VELE032
+         FOXOzmc4Ei3loLTEuzmECurAOUgID6Ll0MiTRFVid7QJIQiR84DHvK8egaUOE0E9p/AM
+         FG8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777094067; x=1777698867;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=92FoLcX0NIGnA51Acikj09Qm+3lN9YsfDC0DOOi7IrE=;
+        b=S+9jt4GRCXOQDAScVO9jsCCMj26UxCe9w3jMGwJARQuqRiBiXC/2yk8RFdDj034Osf
+         fsO5JvftS/wshJlYzf/zAMYS42bT/6KUTcZ1plXXsQmCWzb4ORQ5Q0M6vJcoTW460+sA
+         2ZF93x5ZJBaQPrtS9w6Z7sOJsAAglvfIoPrA+lvyjMV+/lC4chAHwQP8/ossw/9NPJAN
+         0GDPptv3zx41upnadVwELLdVPnnPZzUgqfXVBEoAOljQXJ+VBv0qVJ2cDRFAzTq7SKSs
+         h7sz2F/mFzvbt1nNv62KAaqyLyzitowip+xaoVHQxBnruPdxgrM3JJP722XVLfSsUTKh
+         LwuA==
+X-Forwarded-Encrypted: i=1; AFNElJ8FYFL8IBaC8EUGLJLd9e7ADqD9oLUupLsddOhOuW1UAL4Y5BCbrSrmHF88lF20Vh/0/V5JKz4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxAQsG7hdjCZeHybHTjwWuqhMVNKdIg0qZbUbyKg+l1I7+yXCD0
+	sKyzoQzRWX0nD0i+LKqwyfkPlEFjj7Mpu+RdFOLWfJ6QBrMIglb5ronn
+X-Gm-Gg: AeBDieuVWzn2ARmO3f6FetfzyNbTppHXFcFkQW2/6lc49s6JqRZrDC2a+jeL9o71DkO
+	UkeCOJ1o7kIx7nYoqFCxqy0EXSKzB5lLWcsShqnpqGioki288rsw4QjJPibD+BFyazsCf21tfBD
+	yjtQMzANO9X41PwAPxqLToTPQeWm+iUJ8USKUdf7EZUsrbBjqsjP9mV5at3hU8XNC8oYzSjGVFN
+	qy7rdTIH7lZgVIt9WaAdnlr5sw/Ld2ymrHuyWwARWTZKdqhzvtyocc0/1Uo24OT684K5Q3y77TZ
+	Xj3Gy3jfkyP8oKxaeq8B1iaWZJiCl98u9q4GR6VI18r4Sh9qekkqQv/5wsofjOEswO8GNTsAQX0
+	WT82MUhqKy1M7LIs4h3N5ADWtDeF8/U0LnoLhpsOh/zf6xVlKLPicuu5pY5xtSyimlbdlm//nE/
+	xAIUIxPT7bio9++S7cdJUn8eXpoaCTFj/3VEGrZy+3J8FrMZ3xoA4OBhQ32w07Ljo2WuVJrvl0U
+	1asMr4zx1hAlHSL19c6UHSXxAnH4nNF2ykjF3oiXRNaDboBidPNRxOpmikcERVn/0ZJkQNMRNbc
+	sh23UVff75AUJbAI1YXds4VLNzY=
+X-Received: by 2002:a05:620a:17a9:b0:8ed:3c1:4bc6 with SMTP id af79cd13be357-8ed03c154ebmr3032484485a.57.1777094067142;
+        Fri, 24 Apr 2026 22:14:27 -0700 (PDT)
+Received: from Christians.localdomain (c-68-55-113-25.hsd1.mi.comcast.net. [68.55.113.25])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8eb1923abc6sm1552004585a.6.2026.04.24.22.14.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Apr 2026 21:18:51 -0700 (PDT)
-From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Ethan Nelson-Moore <enelsonmoore@gmail.com>,
-	stable@vger.kernel.org,
-	Yibo Dong <dong100@mucse.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	MD Danish Anwar <danishanwar@ti.com>
-Subject: [PATCH] net: ethernet: rnpgbe: mark nonfunctional incomplete driver as BROKEN
-Date: Fri, 24 Apr 2026 21:18:15 -0700
-Message-ID: <20260425041816.19070-1-enelsonmoore@gmail.com>
+        Fri, 24 Apr 2026 22:14:26 -0700 (PDT)
+From: Christian Van <cvan20191@gmail.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Christian Van <cvan20191@gmail.com>
+Subject: Re: [PATCH 6.12 00/35] 6.12.84-rc1 review
+Date: Sat, 25 Apr 2026 01:14:12 -0400
+Message-ID: <20260425051412.112958-1-cvan20191@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260424132411.427029259@linuxfoundation.org>
+References: <20260424132411.427029259@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -99,90 +96,51 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 77502464EFE
+X-Rspamd-Queue-Id: C253E465055
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,mucse.com,lunn.ch,davemloft.net,google.com,kernel.org,redhat.com,linux.dev,ti.com];
 	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241091-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-241092-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[enelsonmoore@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[cvan20191@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	RCPT_COUNT_SEVEN(0.00)[11];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-The rnpgbe driver as currently shipped in the kernel is incomplete and
-has no useful functionality. It will bind to a PCI device and create a
-network device, but that device does not function (its .ndo_start_xmit
-callback, rnpgbe_xmit_frame, just drops all packets). This situation
-means that users could enable this driver and have it load and attach
-to their device but not transfer any data. To remove the potential for
-user confusion, mark the driver as broken until it is completed and
-explain why this was done.
+Tested-by: Christian Van <cvan20191@gmail.com>
 
-Fixes: ee61c10cd482 ("net: rnpgbe: Add build support for rnpgbe")
-Cc: stable@vger.kernel.org # 7.0+
-Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
----
- drivers/net/ethernet/mucse/Kconfig | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+Build test summary:
+- Tree: linux-stable-rc.git
+- Branch: linux-6.12.y
+- Head: 59f8529e7 Linux 6.12.84-rc1
+- Arch: arm64
+- Config: defconfig
+- Toolchain: Ubuntu clang version 18.1.3 (1ubuntu1)
+- Kernel release: 6.12.84-rc1-g59f8529e78a2
+- Build target: Image modules dtbs
+- Result: passed
 
-diff --git a/drivers/net/ethernet/mucse/Kconfig b/drivers/net/ethernet/mucse/Kconfig
-index 0b3e853d625f..c37a90a6c808 100644
---- a/drivers/net/ethernet/mucse/Kconfig
-+++ b/drivers/net/ethernet/mucse/Kconfig
-@@ -3,9 +3,12 @@
- # Mucse network device configuration
- #
- 
-+# This section depends on BROKEN because its only child item also does;
-+# see the explanation below.
- config NET_VENDOR_MUCSE
- 	bool "Mucse devices"
- 	default y
-+	depends on BROKEN
- 	help
- 	  If you have a network (Ethernet) card from Mucse(R), say Y.
- 
-@@ -16,12 +19,14 @@ config NET_VENDOR_MUCSE
- 
- if NET_VENDOR_MUCSE
- 
-+# This driver is marked as broken because it is incomplete; this avoids users
-+# enabling it and expecting it to work.
- config MGBE
- 	tristate "Mucse(R) 1GbE PCI Express adapters support"
--	depends on PCI
-+	depends on PCI && BROKEN
- 	help
- 	  This driver supports Mucse(R) 1GbE PCI Express family of
--	  adapters.
-+	  adapters. It is incomplete and currently has no useful functionality.
- 
- 	  More specific information on configuring the driver is in
- 	  <file:Documentation/networking/device_drivers/ethernet/mucse/rnpgbe.rst>.
--- 
-2.43.0
-
+No runtime testing was performed.
 
