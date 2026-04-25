@@ -1,110 +1,130 @@
-Return-Path: <stable+bounces-241104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241106-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +LuXCYZu7GniYgAAu9opvQ
-	(envelope-from <stable+bounces-241104-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 09:34:30 +0200
+	id UGFhOA947Gn9YwAAu9opvQ
+	(envelope-from <stable+bounces-241106-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 10:15:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A0F8465739
-	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 09:34:29 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C73F465823
+	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 10:15:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 08D41300EC40
-	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 07:33:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 38BF0301FA8C
+	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 08:15:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8B1338B15E;
-	Sat, 25 Apr 2026 07:33:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4EBA35A384;
+	Sat, 25 Apr 2026 08:14:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="PCmpbbFb"
 X-Original-To: stable@vger.kernel.org
-Received: from bregans-0.gladserv.net (bregans-0.gladserv.net [185.128.210.58])
+Received: from n169-114.mail.139.com (n169-114.mail.139.com [120.232.169.114])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DEC239446B;
-	Sat, 25 Apr 2026 07:33:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.128.210.58
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BF153148CF;
+	Sat, 25 Apr 2026 08:14:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.114
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777102422; cv=none; b=M2j2KDE4cUWTKE/o2cD0IxZhU+pa8BeQnCQk4m7jftdVLK1mMDBr40iZX4SbGZQfLwh0utt4KnKfaMLJgIntfLlulF+l4Q5Qu02Y/iiEOonSrxVX9l4mpfmHJ21QMSoXoPTDoiMpKlWkvYUKdNB8a/P2I3b+FCVS5oOyNK95gzM=
+	t=1777104897; cv=none; b=UIt+CNWhsMJeRr6ll3NuhFnXC0uxE7S8xKLqWMDNwReLh01rsf0FOcH538jiApj7eT+usX6dvW9dYeuoWqvzXUfBs4yRgsp8emiooj3pXSco2Y8B48XHGsVTJA6XVesCJ3ukDW1kDTxxXuNbW+Tln+C5vFwo9O1odRWNj/hEgAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777102422; c=relaxed/simple;
-	bh=4oEIv9OCLRnb3dUDQLtJ/FwgThrW7uh66NpkXL8aMNo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pkJkGC2Xjprb1lYerKDO+PoSTJc/pcXSdGahQfSgqvaUcIyjaxZW35woIAcc951EmFsTJ3M6D+GNY1MUhANVHZXGV1DM7Yvc0E+LskH/Z2VCr4h23uEN1YI/NmGHoZdZwX+c+a3qr/df/npe/UcdKPIXOuJBmq+kiyeRuLO4BuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net; spf=pass smtp.mailfrom=librecast.net; arc=none smtp.client-ip=185.128.210.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=librecast.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=librecast.net
-From: Brett A C Sheffield <bacs@librecast.net>
-To: gregkh@linuxfoundation.org
-Cc: stable@vger.kernel.org,
-	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@nabladev.com,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	hargar@microsoft.com,
-	broonie@kernel.org,
-	achill@achill.org,
-	sr@sladewatkins.com,
-	Brett A C Sheffield <bacs@librecast.net>
-Subject: Re: [PATCH 7.0 00/42] 7.0.2-rc1 review
-Date: Sat, 25 Apr 2026 07:33:32 +0000
-Message-ID: <20260425073335.17867-1-bacs@librecast.net>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260424132420.410310336@linuxfoundation.org>
-References: <20260424132420.410310336@linuxfoundation.org>
+	s=arc-20240116; t=1777104897; c=relaxed/simple;
+	bh=ddfeOI+R7hDJpAcILUygndbFAujg5lQvECxLgLbVfkg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=CcVlAFdupCK6qQib36nSkYMuceof6IZWnx1K/UIKK1A20f7oIpWGZFhq4hkr2tFKP2AhX09b/Lmdj2Mx+JzW623sZansfXtgj/B78SgKjdSJICWLQM6kEMDyDAF4Klyg3X6e+lGy6W9d1h8D8sGUD2wpuBr/L4Vr7dbyMHTtN/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=PCmpbbFb; arc=none smtp.client-ip=120.232.169.114
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=139.com; s=dkim; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=PCmpbbFbCZbJrq68Zc9F8HZr4M5TPwBZRf9bH5dOzhpz3FnHgFke6gHmzYszoZjp6lW5kwx8WOkxX
+	 T4ByxOFCameBiognjLhTjs2HLnSfp0DLmllfpjcNsvNk3yT6tL9o/uDsIV8Dy5WX+VjS5cy0sg1TSn
+	 VNwr5KMRhAww/nFE=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM:                                                                                        
+X-RM-SPAM-FLAG:00000000
+Received:from China-139-kernel-team (unknown[183.241.55.34])
+	by rmsmtp-lg-appmail-42-12056 (RichMail) with SMTP id 2f1869ec77eaa3d-00a4a;
+	Sat, 25 Apr 2026 16:14:40 +0800 (CST)
+X-RM-TRANSID:2f1869ec77eaa3d-00a4a
+From: Bin Lan <lanbincn@139.com>
+To: gregkh@linuxfoundation.org,
+	sashal@kernel.org,
+	stable@vger.kernel.org
+Cc: steffen.klassert@secunet.com,
+	daniel.m.jordan@oracle.com,
+	linux-crypto@vger.kernel.org,
+	herbert@gondor.apana.org.au,
+	Bin Lan <lanbincn@139.com>
+Subject: [PATCH 6.12.y 0/2] backport to fix a race condition/UAF in padata_reorder
+Date: Sat, 25 Apr 2026 16:14:28 +0800
+Message-ID: <20260425081433.2763-1-lanbincn@139.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7A0F8465739
+X-Rspamd-Queue-Id: 5C73F465823
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.54 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [0.54 / 15.00];
+	R_DKIM_REJECT(1.00)[139.com:s=dkim];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-241104-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[secunet.com,oracle.com,vger.kernel.org,gondor.apana.org.au,139.com];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
+	TAGGED_FROM(0.00)[bounces-241106-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[librecast.net];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com,librecast.net];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DMARC_NA(0.00)[139.com];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bacs@librecast.net,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[139.com];
+	FROM_NEQ_ENVFROM(0.00)[lanbincn@139.com,stable@vger.kernel.org];
 	PRECEDENCE_BULK(0.00)[];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
+	DKIM_TRACE(0.00)[139.com:-];
+	NEURAL_HAM(-0.00)[-0.991];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[librecast.net:mid,librecast.net:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[139.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 
-# Librecast Test Results
+After applying these patches to v6.12.y, the padata.c file matches the upstream 
+version at commit 71203f68c774, with two exceptions:
 
-020/020 [ OK ] liblcrq
-010/010 [ OK ] libmld
-120/120 [ OK ] liblibrecast
+1. cpumask_next_wrap API difference (line 310): The v6.12.y kernel still uses the 
+old 4-argument form cpumask_next_wrap(cpu, pd->cpumask.pcpu, -1, false), 
+whereas upstream uses the newer 2-argument form cpumask_next_wrap(cpu, pd->cpumask.pcpu).
+These are functionally equivalent — upstream simply changed the API signature 
+in a separate commit (dc5bb9b769c9), which is too invasive to backport.
 
-CPU/kernel: Linux auntie 7.0.2-rc1-gce7a64af92ed #2 SMP PREEMPT_DYNAMIC Sat Apr 25 07:30:06 -00 2026 x86_64 AMD Ryzen 9 9950X 16-Core Processor AuthenticAMD GNU/Linux
+2. Divide-by-zero guard in padata_mt_helper (after line 496): The v6.12.y 
+doesn't include an extra check that forces chunk_size to at least 1 when 
+the caller sets min_chunk to 0. This prevents a divide-by-zero panic. 
 
-Tested-by: Brett A C Sheffield <bacs@librecast.net>
+Thanks
+Bin Lan
+
+Herbert Xu (2):
+  padata: Fix pd UAF once and for all
+  padata: Remove comment for reorder_work
+
+ include/linux/padata.h |   4 --
+ kernel/padata.c        | 136 +++++++++++------------------------------
+ 2 files changed, 37 insertions(+), 103 deletions(-)
+
+-- 
+2.43.0
+
+
 
