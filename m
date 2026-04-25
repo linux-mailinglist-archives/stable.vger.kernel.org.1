@@ -1,79 +1,81 @@
-Return-Path: <stable+bounces-241115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241116-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6HldCaSL7GmtZgAAu9opvQ
-	(envelope-from <stable+bounces-241115-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 11:38:44 +0200
+	id KAs4IcuL7GndZgAAu9opvQ
+	(envelope-from <stable+bounces-241116-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 11:39:23 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29505465B89
-	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 11:38:43 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE18F465BA0
+	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 11:39:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 24ABC3006205
-	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 09:38:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 69C693010DB6
+	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 09:38:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD44638B142;
-	Sat, 25 Apr 2026 09:38:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B39B7390CA9;
+	Sat, 25 Apr 2026 09:38:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="n+Rpb6eW"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lPGIoVrG"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4640B3876AC
-	for <stable@vger.kernel.org>; Sat, 25 Apr 2026 09:38:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E4F738B12C
+	for <stable@vger.kernel.org>; Sat, 25 Apr 2026 09:38:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777109917; cv=none; b=haD2oUi7IaEm7ibAe5pOnMbHJ+E+i2vtEdFY+EwLKnjgQRukziXCV4GZuj9ET8l3wpg3V+dbzQqqRX01VO7GBkme4Bxo4Xik+eaVQz/I++YcPa/FX2P40noIrxq1YVEfCa8tKQA5nYg4GslF3WXzUxXK2VC4eO3N8Tprw+aONak=
+	t=1777109927; cv=none; b=Etaoc1XkcaV70y1tNMFkC2qKKkR6kum3wryvBxQUu35M4PK+As4VVyVR19pkwFwt9hgGPhuM84un51jd+4qd7vMBC0lvL/daJWIw8uP1W3G9bOkwwLJgBcafYuqWkZvo9si0wub9pTsH0ZQ1e2S4YrLwvdLpWJxXCqG0o5oKA7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777109917; c=relaxed/simple;
-	bh=aNXbkmBeYe7bkZ0ITtRcL7RZi7xiKD8Vu5jVT74b7mY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fNp1Fy30nRQfWhn4HSSRyBigMu/soditd9WLYhmF5D+IzOlewkYU+PBJgZMwMKmMx+KJimgy19eZcuZHuGWdE0WL+ptNxaBbIzWYKfurxu0edFb0omb4Cljm7Y+/dx64VoculTLCnN5ZlqiTi5ydU6WX4BXAetwEmcFND8DXhmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=n+Rpb6eW; arc=none smtp.client-ip=209.85.214.173
+	s=arc-20240116; t=1777109927; c=relaxed/simple;
+	bh=REzEfWkN6tjWJaQ0H+RiUYIwoU83Xx0WygSxTrhFKbA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Oeu9ScPdXEjlnrrLx+w9Ml7ux9ocHBvOkVo4pNB58JystEtuufO14yk0xUPYdmYuFdV92tuVGiwV/EmZV//3MpXMeWZ8BARmwcnHLh1SHdptBIADlMxTmRhFhH02pOxUMtLw1+Nt1kxlUfMTHnmOLSiwpfSF1SWFS78ZIXwIl48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lPGIoVrG; arc=none smtp.client-ip=209.85.214.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2ae3a007bd1so8657745ad.2
-        for <stable@vger.kernel.org>; Sat, 25 Apr 2026 02:38:36 -0700 (PDT)
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2ab1c8fdc40so5610525ad.1
+        for <stable@vger.kernel.org>; Sat, 25 Apr 2026 02:38:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777109915; x=1777714715; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=mbVqeApfmb1SRG7yXWeR8Jma0vOyucMXXKmHaiUnCs8=;
-        b=n+Rpb6eWA7oIiMaKqYi9Klmkhr+GVy2K6z0CAkncXStNozW1De3Ie7pTAPj8H1tpvt
-         aFgIk3A6nbF8bnyzi4i7uPujmAeSESIWB80dW2fm7qqmy3GBdE1NxAbTk+5hFY2YYX6y
-         KS4AHQwvM3iq80b01B0zjw3Cp/whCs7t2fUHGKQ//7b2mhQKYAI3qiLp5vE8JDCT27NE
-         FtyiGIxmU8WZZa5wtGg/zocV82qfiVL7RTOco9rf4p/+OK2vwylSNSD65lZBzr0amsGr
-         TnV6O4K3PdYnHCrRSuPpF8yJbU1lf0wB7dMAebxNTVsUxTgXnIwuxNa8BzZ+Ni2n5RYJ
-         jsFw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777109915; x=1777714715;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1777109925; x=1777714725; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=mbVqeApfmb1SRG7yXWeR8Jma0vOyucMXXKmHaiUnCs8=;
-        b=DeqLVtSGM1n3rSRiJe0DLarowoZM0q7E2UHHv86ZxYvCo8+zDh4q9/qqJEAuX5Cs6V
-         ztEjZxNI4Ir3GA2TF2cUV4xI5Ekh4HrCVHW+2te7L8kMCD4l4I6RK8R662IAN08rTj5+
-         aSpLibZeRT8Zf2sC3Fq4cfn/Gc3kYiHAiMz8H5VrU6gS9aZDQdnsvRewCe9CeUQO2g97
-         P9xsIqqkiELxgp67IAumiW7a5KALJeP4H3PNmNqh6sfmZteIyGZFYIWJiMFCvimO1eRK
-         pWu/gFbSveuxyb50ODd0C6Rc2trJIaWom5huYlZt2oQq7tf6hr95VduWAoc/4NxkgeWE
-         G28w==
-X-Forwarded-Encrypted: i=1; AFNElJ/wwx72wc6ALAktls2+naiLSGguDM+wmuNma6uOusRDtxqA7aj5yrsbxR8QsPMZE0y8QsUG3nA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwEGkaJTDurpsfKNMinKzD8YtJf5DloU72i54GCWJYnJEeAfAEH
-	AeU7PbOkGSF6y8WjPWMqTovwcvgAoTLQ5Gy9M641WLflQZx5rcXqnlfU
-X-Gm-Gg: AeBDiesAa42Smigvq3iuY8vJNnXjAUUDl1bO+nI6xI+xU51dpiZBnUdVpAF2Rv35EL4
-	mehAMUJJS2McVCwKU6KuDto2GPnEvvWlMqGD8qz8uNoY00P72v0fL09ZyzqI7keMPLgycW/aLaL
-	RrDhwrP0biq6kxj0nLMiqnMlUchMu5noOivNsWfxtQNfXq0LjwsI2vXOvizEYBGpNjA+hDno7mI
-	vxK48QuALEWv6/hDxbei0yMdJbac0hEGxJeGVQo7M5vwzJiT7hJhV94pJHrF4SzTWkx3pKOEvVu
-	BEx9O1ay0lfwak336UjX8t07F4I/h2QRmienMItlVK3mMMEtx9yhd4xxoZ7MIwa1HRRRMQqKjid
-	E7acLwBRZyq4K0EyV4eC0Zq3FZzOS4YQXjs3PxBqTECu5AjdWgGYQXsaZX/LhjQqqjumRVXoS+T
-	+rI1dvNdILAqm2QHJx7u7E/WCEtGX7O7FppGOy2g==
-X-Received: by 2002:a17:903:1b26:b0:2b2:49b9:c063 with SMTP id d9443c01a7336-2b5f9ff619cmr194963735ad.6.1777109915446;
-        Sat, 25 Apr 2026 02:38:35 -0700 (PDT)
+        bh=YB7okcDXB2f9QxPT6JpL0fC68gABv+vXaX5leb6ndF8=;
+        b=lPGIoVrGN7TI1crvVpUmhZ40Qr/CNtZl+2iSetodNgtvJxnDfePjs5n/tqDLq0c9Bc
+         KbRKOOhPUW+mfC/+LhfE1XjYFT1LQK0RVepG6ensH5hMZ+0jSYzKyr1OEpMAEx90lasi
+         L5esQPmMYVDoczahnk5cxX1VEYdDRiqqm3smjPpWxBxQpWb/4RNv6dZzNu8MXF9+q2TZ
+         ++bpqzN44WWwtmLD/VhXrDbmw3uAL2t9I0vYBLL4VDuAf+PAw76RQsmMDUtCXC4SUuEm
+         TK8giTMLD+Cv9Q+NzJkRh/sWz9BeaPAAw8A2mpnTQSdigaksheUq7SgUisaW0IYydyAV
+         PzAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777109925; x=1777714725;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=YB7okcDXB2f9QxPT6JpL0fC68gABv+vXaX5leb6ndF8=;
+        b=PzGZ0WFS8mooiUYQckTnRWwZKXsNcsk5GrJWNMS1DPBpGMnSCmSc1/VKi8W0p/xN1r
+         ZJoU+tiuw4yJkRiy2hHgkCnrqf8zUTtKuQ31tyP0zeKas69M0CZDhIRTzsrnOfmaW2AQ
+         HueI1B9/7PcvDvUmSUCsju2UEnwRhOqKOXDVQnxkgnZZr1Uv9oySacsjVvvNMvjEGbln
+         8Fx/xJnBzled51PD2qmtcEEsxHxliCeMhxlMLJAmhnz8gLj4kmI80iFIdmmIyL6Xeefb
+         uSUlqrg7ufFxGi9SwiH1qtvlbtJhlxFrux+NUJaQKoI1deEPQY8VmLHDvVjlTzqmuQBs
+         HkFg==
+X-Forwarded-Encrypted: i=1; AFNElJ+ZJo746vjcJWry+WxmhF/SMgOEJ4nIHLoj48JoisB62GRBbTPfNWra4j0tpeVXqWem0OoWDjo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YztTza7xZzZ8gLpXHEHegMbPL+nLkzp8OZH8g1VXbuAIZBgPSCv
+	qCO2If7wCH0avjxoVq9CXWklJfvDphaeG+6T1i+t8ELYySmTCAhCx3/M
+X-Gm-Gg: AeBDietO0+c9wpnUNhXqNrH0+rDPV5dgFZFkEalk4GPFZJLqOxkdJsQe3mmmHZZ3DdQ
+	Ckv5Hy8rl6x6Bq2/spgoWg+SV+22EAuwA7PxmLPpqYuvby2wPG8/ZZAfsXUV1T1fL2m/h8hYSMf
+	Rr4zuruqlateAIXH3vLSx7AH74bvwkTiOpYa5em5F1R/K2Aa+T9DJm+bMXu6bKGpZFT4iz7OTQr
+	ghiF9Tl7OjT7v429rOU/BcDzMORARIrzNlRjFq3mdbGcKty6RiWn7OhfSRPiOM4JeZpxoMwEy84
+	xExxW8r2YPr63U53elt9GugF40F2pGEVR80Orez2P0tmre542Qqq4S8NXC93Z/3FuZlkVkN8RsN
+	8McNE/w25+gjU8vJaVvER+NEn71eML7ySqVFw4yTQKwgCm2EbqWBeR0M/7Pdwg7xfozeZGGkJJt
+	0/zpvxzG12M2zoPHqPB8JmEm3TkFo=
+X-Received: by 2002:a17:903:3b88:b0:2b2:ac6f:104b with SMTP id d9443c01a7336-2b5f9e79f5bmr187610395ad.1.1777109925297;
+        Sat, 25 Apr 2026 02:38:45 -0700 (PDT)
 Received: from ser8.. ([221.156.231.192])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b606ce9891sm206791725ad.83.2026.04.25.02.38.33
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b606ce9891sm206791725ad.83.2026.04.25.02.38.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 25 Apr 2026 02:38:35 -0700 (PDT)
+        Sat, 25 Apr 2026 02:38:44 -0700 (PDT)
 From: DaeMyung Kang <charsyam@gmail.com>
 To: Namjae Jeon <linkinjeon@kernel.org>,
 	Steve French <smfrench@gmail.com>
@@ -85,10 +87,12 @@ Cc: Sergey Senozhatsky <senozhatsky@chromium.org>,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org,
 	DaeMyung Kang <charsyam@gmail.com>
-Subject: [PATCH 0/2] ksmbd: fix stop_sessions() iteration and centralize ksmbd_conn release
-Date: Sat, 25 Apr 2026 18:38:27 +0900
-Message-ID: <20260425093829.4004785-1-charsyam@gmail.com>
+Subject: [PATCH 1/2] ksmbd: rewrite stop_sessions() with restartable iteration
+Date: Sat, 25 Apr 2026 18:38:28 +0900
+Message-ID: <20260425093829.4004785-2-charsyam@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260425093829.4004785-1-charsyam@gmail.com>
+References: <20260425093829.4004785-1-charsyam@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -96,7 +100,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 29505465B89
+X-Rspamd-Queue-Id: DE18F465BA0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [0.84 / 15.00];
@@ -106,7 +110,7 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -116,8 +120,8 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-241115-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-241116-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
@@ -129,127 +133,191 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	RCPT_COUNT_SEVEN(0.00)[10];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-Two independent fixes around ksmbd connection teardown.
+stop_sessions() walks conn_list with hash_for_each() and, for every
+entry, drops conn_list_lock across the transport ->shutdown() call
+before re-acquiring the read lock to continue the loop.  The hash
+walk relies on cross-iteration state (the current bucket and the
+hlist position), which is not preserved across unlock/relock: if
+another thread performs a list mutation during the unlocked window,
+the ongoing iteration becomes unreliable and can re-visit
+connections that have already been handled or skip connections that
+have not.  The outer `if (!hash_empty(conn_list)) goto again;` retry
+masks the symptom in the common case but does not address the
+unsafe iteration itself.
 
-Patch 1 ("ksmbd: rewrite stop_sessions() with restartable iteration")
-fixes a stale-iterator bug in stop_sessions().  The current loop drops
-conn_list_lock around transport->shutdown() and re-acquires it to
-continue the same hash_for_each() walk; a concurrent ksmbd_conn_free()
-in the unlocked window can make the iterator revisit or skip
-connections.  The rewrite pins one connection at a time, marks it via
-a new conn->stop_called flag, runs shutdown outside the lock, and
-restarts from the top.  The "is the hash drained?" check is moved
-into the locked walk so it no longer races hash_del() from a handler
-thread.  Patch 1 carries Cc: stable@vger.kernel.org.
+Reframe the loop so it never relies on iterator state across
+unlock/relock.  Under conn_list_lock held for read, pick the first
+connection whose ->shutdown() has not yet been issued by this path,
+pin it by taking an extra reference, record that fact on the
+connection and mark it EXITING while still inside the locked walk,
+then drop the lock.  Then call ->shutdown() outside the lock, drop
+the pin (freeing the connection if the handler already released its
+reference), and restart from the top.
 
-  Teardown wall time, ksmbd.control --shutdown + rmmod ksmbd with
-  N concurrent nosharesock cifs connections (3-run mean):
+Use a new per-connection flag, conn->stop_called, as the "shutdown
+issued from stop_sessions()" marker rather than reusing the status
+state.  ksmbd_conn_set_exiting() is also invoked by
+ksmbd_sessions_deregister() on sibling channels of a multichannel
+session without issuing a transport shutdown, so treating
+KSMBD_SESS_EXITING as "already handled here" would skip connections
+that still need shutdown() to wake their handler out of recv(),
+leaving the outer retry waiting indefinitely for the hash to drain.
+stop_sessions() is serialised by init_lock in
+ksmbd_conn_transport_destroy(), so writing stop_called under the
+read lock has no other writer.
 
-      N        before        after
-      10       4.93s         5.34s
-      30       7.34s         7.03s
-      50       7.25s         7.04s
-      100      6.98s         6.78s
-      200      6.77s         6.89s
+Set EXITING inside the locked walk so the selection, the stop_called
+marker, and the status transition all happen together, and guard
+against regressing a connection that has already advanced to
+KSMBD_SESS_RELEASING on its own (for example, if the handler exited
+its receive loop for an unrelated reason between teardown steps).
 
-  Performance is unchanged; teardown is dominated by the msleep(100)
-  outer retry, not by the iteration.  The number of ->shutdown()
-  calls equals the number of live connections on both paths when the
-  race is not artificially widened.
+When the pin drop is the last put, release the transport and pair
+ida_destroy(&target->async_ida) with the ida_init() done in
+ksmbd_conn_alloc(), so stop_sessions() retiring a connection on its
+own does not leak the xarray backing of the embedded async_ida.
 
-Patch 2 ("ksmbd: centralize ksmbd_conn final release to plug transport
-leak") routes the three bare-kfree final-put sites
-(ksmbd_conn_r_count_dec, __free_opinfo, session_fd_check) through a
-new ksmbd_conn_put() that defers the once-per-struct cleanup
-(ida_destroy, free_transport, kfree) onto a dedicated workqueue.
-Those sites previously skipped transport cleanup whenever they
-happened to be the last putter, leaking struct tcp_transport and the
-iov kvec (TCP) and the embedded async_ida.  The workqueue bounce is
-needed because the centralized release reaches lock_sock_nested()
-through tcp_close(), which sleeps; __free_opinfo() can be a final
-putter from an RCU softirq callback (free_opinfo_rcu).
+The outer retry with msleep() is kept to wait for handler threads to
+reach ksmbd_conn_free() and drain the hash.
 
-  A/B leak validation, QEMU/virtme guest with ksmbd server and CIFS
-  client in the same guest, debug kernel (CONFIG_DEBUG_KMEMLEAK +
-  CONFIG_PROVE_LOCKING + CONFIG_DEBUG_ATOMIC_SLEEP +
-  CONFIG_DEBUG_OBJECTS + CONFIG_FAILSLAB):
+Observed with an instrumented build that logs one line per visit and
+widens the unlocked window before ->shutdown() by 200 ms, under
+five concurrent cifs mounts (nosharesock, one connection each):
 
-  Reproducer per iteration: hold 8 fds open via sleep processes,
-  force-close TCP with `ss -K sport = :445`, kill holders,
-  lazy-umount; 10 iterations, then ksmbd shutdown + kmemleak scan.
-  Pre-patch is HEAD with only patch 1 of this series applied:
+  * Current code: the same connection address is revisited many
+    times during a single stop_sessions() call and ->shutdown() is
+    invoked well beyond the number of live connections before the
+    hash finally drains.
 
-      state         conn_alloc  conn_free  tcp_free  opi_rcu  kmemleak
-      ----------    ----------  ---------  --------  -------  --------
-      pre-patch         20          20        10       160        7
-      with patch        20          20        20       160        0
+  * Rewritten code: each live connection produces exactly one
+    ->shutdown() call; the function returns as soon as the hash is
+    empty.
 
-  Pre-patch conn_free=20 with tcp_free=10 directly demonstrates the
-  bare-kfree paths skipping transport cleanup; kmemleak reports 7
-  unreferenced struct tcp_transport / t->iov objects.  With patch 2
-  tcp_free matches conn_free at 20/20 and kmemleak is clean across
-  two independent post-patch runs.  opi_rcu=160 confirms the RCU
-  opinfo release path that motivates the fix is exercised.
+Functional teardown via `ksmbd.control --shutdown` with the same
+five mounts completes cleanly on the rewritten path.
 
-Patch 2 also addresses two adjacent issues exposed by the new
-debugging context:
+Performance is observably unchanged.  Tearing down N concurrent
+nosharesock cifs connections with `ksmbd.control --shutdown` +
+`rmmod ksmbd` takes essentially the same wall time before and after
+the rewrite:
 
-  * __close_file_table_ids() refactor.  session_fd_check() already
-    sleeps in kstrdup(GFP_KERNEL) and down_write(m_lock) before this
-    patch, but the existing code calls it under write_lock(&ft->lock)
-    (an rwlock_t).  Refactor so skip() runs outside ft->lock with a
-    transient reference on fp; idr_remove(), fp->volatile_id clear
-    and the m_fp_list unlink happen unconditionally so a deferred
-    final putter (atomic_sub_and_test(2) returning false) cannot be
-    left to do them via __ksmbd_remove_fd() with a stale
-    volatile_id.
+    N        before        after
+    10       4.93s         5.34s
+    30       7.34s         7.03s
+    50       7.31s         7.01s     (3-run avg: 7.04s vs 7.25s)
+   100       6.98s         6.78s
+   200       6.77s         6.89s
 
-    Validated on an additional debug kernel built with
-    CONFIG_DEBUG_LIST + CONFIG_DEBUG_OBJECTS_WORK using a
-    same-session two-tcon storm: one tcon drives an open/write
-    storm while the other tcon repeats 50 tree disconnects on the
-    same session.  Trace counts: 52 __close_file_table_ids
-    invocations, 4793 __ksmbd_close_fd, 30337 __put_fd_final, 9578
-    ksmbd_conn_put, 1 __ksmbd_conn_release_work.  No
-    list-corruption, work_struct ODEBUG, sleep-in-atomic, lockdep
-    or kmemleak reports observed.  This stress validates the
-    file-table/id/list rewrite under DEBUG_LIST/DEBUG_OBJECTS_WORK,
-    not the transport leak (which the A/B above already covered).
+and the number of ->shutdown() calls equals the number of live
+connections on both paths when the race is not widened.  The
+teardown is dominated by the msleep(100)-based outer retry waiting
+for handler threads to run ksmbd_conn_free(), not by the iteration
+itself; the restartable loop's worst-case O(N^2) visit cost is in
+the microseconds even at N=200 and sits far below the msleep(100)
+granularity.
 
-  * fp owns a strong reference on fp->conn.  fp used to hold a
-    borrowed pointer to its connection, leaving a window where the
-    conn could be freed while a still-live fp held a stale
-    fp->conn.  Make fp own a refcount on fp->conn from
-    ksmbd_open_fd() / ksmbd_reopen_durable_fd() until __ksmbd_close_fd()
-    or session_fd_check().  ksmbd_reopen_durable_fd() is also
-    reordered so fp->conn / fp->tcon are set before __open_id()
-    publishes fp into the session's file table, so a concurrent
-    teardown cannot observe a valid volatile_id with fp->conn ==
-    NULL.
+Applied alone on top of ksmbd-for-next-next, this patch does not
+introduce a new leak site.  Under the same reproducer (10x
+concurrent-holders + ss -K + ksmbd.control --shutdown + rmmod), the
+tree still shows the pre-existing per-connection transport leak
+count that arises when the last refcount drop lands in one of
+ksmbd_conn_r_count_dec(), __free_opinfo() or session_fd_check() -
+all of which end with a bare kfree() today.  kmemleak backtraces
+for the unreferenced objects point into the TCP accept path
+(sk_clone -> inet_csk_clone_lock, sock_alloc_inode) and none
+involve stop_sessions().  Plugging those bare-kfree sites is the
+responsibility of the follow-up patch.
 
-The two patches are independent.  Either can be reviewed, applied,
-or reverted without pulling the other.  Patch 2 references patch 1
-only to explain why stop_sessions() is left on its open-coded local
-cleanup and not converted to ksmbd_conn_put() in this series; if
-patch 2 is applied alone, stop_sessions() retains its bare-kfree
-leak that patch 1 separately addresses.
+Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
+Cc: stable@vger.kernel.org
+Signed-off-by: DaeMyung Kang <charsyam@gmail.com>
+---
+ fs/smb/server/connection.c | 46 +++++++++++++++++++++++++++++++-------
+ fs/smb/server/connection.h |  1 +
+ 2 files changed, 39 insertions(+), 8 deletions(-)
 
-Based on ksmbd-for-next-next.
-
-DaeMyung Kang (2):
-  ksmbd: rewrite stop_sessions() with restartable iteration
-  ksmbd: centralize ksmbd_conn final release to plug transport leak
-
- fs/smb/server/connection.c | 120 ++++++++++++++++++-----
- fs/smb/server/connection.h |   6 ++
- fs/smb/server/oplock.c     |   4 +-
- fs/smb/server/server.c     |  12 +++
- fs/smb/server/vfs_cache.c  | 189 ++++++++++++++++++++++++++++++++-----
- 5 files changed, 285 insertions(+), 46 deletions(-)
-
---
+diff --git a/fs/smb/server/connection.c b/fs/smb/server/connection.c
+index fbbc0529743f..c5aac4946cbe 100644
+--- a/fs/smb/server/connection.c
++++ b/fs/smb/server/connection.c
+@@ -540,24 +540,54 @@ int ksmbd_conn_transport_init(void)
+ 
+ static void stop_sessions(void)
+ {
+-	struct ksmbd_conn *conn;
++	struct ksmbd_conn *conn, *target;
+ 	struct ksmbd_transport *t;
++	bool any;
+ 	int bkt;
+ 
++	/*
++	 * Serialised via init_lock; no concurrent stop_sessions() can
++	 * touch conn->stop_called, so writing it under the read lock is
++	 * safe.
++	 */
+ again:
++	target = NULL;
++	any = false;
+ 	down_read(&conn_list_lock);
+ 	hash_for_each(conn_list, bkt, conn, hlist) {
+-		t = conn->transport;
+-		ksmbd_conn_set_exiting(conn);
+-		if (t->ops->shutdown) {
+-			up_read(&conn_list_lock);
++		any = true;
++		if (conn->stop_called)
++			continue;
++		atomic_inc(&conn->refcnt);
++		conn->stop_called = true;
++		/*
++		 * Mark the connection EXITING while still holding the
++		 * read lock so the selection and the status transition
++		 * happen together.  Do not regress a connection that has
++		 * already advanced to RELEASING on its own (e.g. the
++		 * handler exited its receive loop for an unrelated
++		 * reason).
++		 */
++		if (READ_ONCE(conn->status) != KSMBD_SESS_RELEASING)
++			ksmbd_conn_set_exiting(conn);
++		target = conn;
++		break;
++	}
++	up_read(&conn_list_lock);
++
++	if (target) {
++		t = target->transport;
++		if (t->ops->shutdown)
+ 			t->ops->shutdown(t);
+-			down_read(&conn_list_lock);
++		if (atomic_dec_and_test(&target->refcnt)) {
++			ida_destroy(&target->async_ida);
++			t->ops->free_transport(t);
++			kfree(target);
+ 		}
++		goto again;
+ 	}
+-	up_read(&conn_list_lock);
+ 
+-	if (!hash_empty(conn_list)) {
++	if (any) {
+ 		msleep(100);
+ 		goto again;
+ 	}
+diff --git a/fs/smb/server/connection.h b/fs/smb/server/connection.h
+index ae21a1bd4c70..de2d46941c93 100644
+--- a/fs/smb/server/connection.h
++++ b/fs/smb/server/connection.h
+@@ -49,6 +49,7 @@ struct ksmbd_conn {
+ 	struct mutex			srv_mutex;
+ 	int				status;
+ 	unsigned int			cli_cap;
++	bool				stop_called;
+ 	union {
+ 		__be32			inet_addr;
+ #if IS_ENABLED(CONFIG_IPV6)
+-- 
 2.43.0
 
 
