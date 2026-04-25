@@ -1,300 +1,190 @@
-Return-Path: <stable+bounces-241118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241119-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0LmfJr6M7GkZZwAAu9opvQ
-	(envelope-from <stable+bounces-241118-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 11:43:26 +0200
+	id mGqSEJCP7GnHZwAAu9opvQ
+	(envelope-from <stable+bounces-241119-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 11:55:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42129465C17
-	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 11:43:26 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB03F465CBB
+	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 11:55:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 42B7F3010D9E
-	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 09:43:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 98232300F940
+	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 09:55:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67786390231;
-	Sat, 25 Apr 2026 09:43:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6BF439021B;
+	Sat, 25 Apr 2026 09:55:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="COQ8Vb4x"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uEphm3m+"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C503B3148CF;
-	Sat, 25 Apr 2026 09:43:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B105208D0
+	for <stable@vger.kernel.org>; Sat, 25 Apr 2026 09:55:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777110199; cv=none; b=Ne3JZIJDNPhB0CSL1buTongU5PnAm/YQ4kASNSyFZEyb3MZtJeBjDBM9kf2g3p8xYWfi3d9pgNjx7kami3doZAj91yJIP7zc651hXbGJsDMEnzer9WbVC3U5OkN/Rf9OEu7Fm3WLt0w25vH25p7arFKW8YtrmnQ+rsvuQ5tvn98=
+	t=1777110923; cv=none; b=WJV+k8yFDGggapmjIAiPzqMB7tMMEp+QSojjtD2Fhf6LTJlCemdCZX7BLKcNm4Zu+1MyUUEbFz+WN+5jWLkTkzRsAWO1gUC9zkR4NW3FgyVxqqu1jYOaFtOgVbreSRQ197+bDaReqIaHvOy7zltsf/cKSoJQjFoBt9XOQjLzd9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777110199; c=relaxed/simple;
-	bh=xWExRBWGiSg89PIoXIzgNVBK5mo8goNenJQu94NqUlI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YQRCeKMxwvmvXYIXya5qIqbwRcIo1VtIB/B1VIuxS37Ho1FWcBTTBJTYJXWkh1/wTPBgDsy6tVW9L0ITivHds/0fMB+nDAqwF+XKYUbAvfLpRfZ0SE0BKMRsZ81N82MlMc6nYvwx0lGJ6iP3Woc2byYLwX8O6yqvu7YkwXPDS2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=COQ8Vb4x; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: by linux.microsoft.com (Postfix, from userid 1204)
-	id D761E20B7165; Sat, 25 Apr 2026 02:43:17 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com D761E20B7165
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1777110197;
-	bh=56kY4zhB2kbTcm49x83ndv/Cjm7dZSaqJXayNMXKDN4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=COQ8Vb4xfzr/ehAVYsqHywIQ9mbpB8y53eUYY5D2R+vXzmK3eESO9qzZfaoi+ekJE
-	 ndENlCZsjFOh/j7G/eEgqWFaGZ5jGU/QBpK0TOjIBlnVeP7nvYu6ZNEtlevVEOHPMt
-	 /FURdOYrK7h4iFgnQjd6BWaa5wABBEYpRDsRvjXw=
-Date: Sat, 25 Apr 2026 02:43:17 -0700
-From: Dipayaan Roy <dipayanroy@linux.microsoft.com>
-To: Shradha Gupta <shradhagupta@linux.microsoft.com>
-Cc: Dexuan Cui <decui@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Konstantin Taranov <kotaranov@microsoft.com>,
-	Simon Horman <horms@kernel.org>,
-	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
-	Shiraz Saleem <shirazsaleem@microsoft.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Long Li <longli@microsoft.com>, Yury Norov <yury.norov@gmail.com>,
-	linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, Paul Rosswurm <paulros@microsoft.com>,
-	Shradha Gupta <shradhagupta@microsoft.com>,
-	Saurabh Singh Sengar <ssengar@microsoft.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net] net: mana: Optimize irq affinity for low vcpu configs
-Message-ID: <aeyMtcAi6B7DfAx+@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
-References: <20260424061702.1442618-1-shradhagupta@linux.microsoft.com>
- <aetgQ1gCYlGJjiKk@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
- <aexcDgNJw4Nr/uMU@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+	s=arc-20240116; t=1777110923; c=relaxed/simple;
+	bh=4TrX8vk8tUYRr9EbF+BxcIX8keOhs/weAsthG6wU644=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=toRwW9ifGamr8P3b4p6XUYQJHbLlC9p6OxBF/rhvD8iWynA/du2y4/NzYEd3ftBFOAMVv1ZSGP0wqD3jsIb0cmRwZNPjulspGdPB/1CIc0TYhKN2Eq6D2/nbZufWi08ZHeiHOcoX9PpMCmweUiG5CKlaGNov7cK3bk5ewrC+/wA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uEphm3m+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9686DC2BCB0;
+	Sat, 25 Apr 2026 09:55:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777110923;
+	bh=4TrX8vk8tUYRr9EbF+BxcIX8keOhs/weAsthG6wU644=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=uEphm3m+DvIvZiwX86lMkfPpHV3Uo+OU+HqHF3QMduXVUfTz1GjcVRAEFZ1h6aMXm
+	 j7vRyDwsR46Wz1WVyN37fVfGS8AEsgVwXt8i1DLqbN67hkSkS1ej0wfa+u8YJlddac
+	 dsykwOJp+jzjI6v6ZO+8OwwrzHHKNalsKErz7EXasv487ObIXTYO05lep1E1BXddZP
+	 E0T49nERhhj+p0hcnSliXNBQwtGKGKKStMEWj6G+gyr/2kf+04dc8SJ6RT4FY2Kklq
+	 2P2uBbcjYd+Lx65JXfYNLSf8RUj62i7NpvSW0Sh4p7S+zokrwsJEy7UQReMf/8JKHa
+	 qc9GErD+SnrhQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Bingquan Chen <patzilla007@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y] net/packet: fix TOCTOU race on mmap'd vnet_hdr in tpacket_snd()
+Date: Sat, 25 Apr 2026 05:55:19 -0400
+Message-ID: <20260425095519.3477961-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026042433-outwit-cognitive-f970@gregkh>
+References: <2026042433-outwit-cognitive-f970@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aexcDgNJw4Nr/uMU@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
-X-Rspamd-Queue-Id: 42129465C17
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: AB03F465CBB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.microsoft.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[linux.microsoft.com:s=default];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241118-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[24];
-	FREEMAIL_CC(0.00)[microsoft.com,kernel.org,lunn.ch,davemloft.net,google.com,redhat.com,linux.microsoft.com,outlook.com,gmail.com,vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,google.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-241119-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dipayanroy@linux.microsoft.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linux.microsoft.com:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.microsoft.com:dkim,bootlin.com:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
 
-On Fri, Apr 24, 2026 at 11:15:42PM -0700, Shradha Gupta wrote:
-> On Fri, Apr 24, 2026 at 05:21:23AM -0700, Dipayaan Roy wrote:
-> > On Thu, Apr 23, 2026 at 11:17:00PM -0700, Shradha Gupta wrote:
-> > > In mana driver, the number of IRQs allocated are capped by the
-> > > min(num_cpu + 1, queue count). In cases, where the IRQ count is greater
-> > > than the vcpu count, we want to utilize all the vcpus, irrespective of
-> > > their NUMA/core bindings.
-> > > 
-> > > This is important, especially in the envs where number of vcpus are so
-> > > few that the softIRQ handling overhead on two IRQs on the same vcpu is
-> > > much more than their overheads if they were spread across sibling vcpus
-> > > 
-> > > This behaviour is more evident with dynamic IRQ allocation. Since MANA
-> > > IRQs are assigned at a later stage compared to static allocation, other
-> > > device IRQs may already be affinitized to the vCPUs. As a result, IRQ
-> > > weights become imbalanced, causing multiple MANA IRQs to land on the
-> > > same vCPU.
-> > > 
-> > > In such cases when many parallel TCP connections are tested, the
-> > > throughput drops significantly
-> > > 
-> > > Test envs:
-> > > =======================================================
-> > > Case 1: without this patch
-> > > =======================================================
-> > > 4 vcpu(2 cores), 5 MANA IRQs (1 HWC + 4 Queue)
-> > > 
-> > > 	TYPE		effective vCPU aff
-> > > =======================================================
-> > > IRQ0:	HWC		0
-> > > IRQ1:	mana_q1		0
-> > > IRQ2:	mana_q2		2
-> > > IRQ3:	mana_q3		0
-> > > IRQ4:	mana_q4		3
-> > > 
-> > > %soft on each vCPU(mpstat -P ALL 1) on receiver
-> > > vCPU		0	1	2	3
-> > > =======================================================
-> > > pass 1:		38.85	0.03	24.89	24.65
-> > > pass 2:		39.15	0.03	24.57	25.28
-> > > pass 3:		40.36	0.03	23.20	23.17
-> > > 
-> > > =======================================================
-> > > Case 2: with this patch
-> > > =======================================================
-> > > 4 vcpu(2 cores), 5 MANA IRQs (1 HWC + 4 Queue)
-> > > 
-> > >         TYPE            effective vCPU aff
-> > > =======================================================
-> > > IRQ0:   HWC             0
-> > > IRQ1:   mana_q1         0
-> > > IRQ2:   mana_q2         1
-> > > IRQ3:   mana_q3         2
-> > > IRQ4:   mana_q4         3
-> > > 
-> > > %soft on each vCPU(mpstat -P ALL 1) on receiver
-> > > vCPU            0       1       2       3
-> > > =======================================================
-> > > pass 1:         15.42	15.85	14.99	14.51
-> > > pass 2:         15.53	15.94	15.81	15.93
-> > > pass 3:         16.41	16.35	16.40	16.36
-> > > 
-> > > =======================================================
-> > > Throughput Impact(in Gbps, same env)
-> > > =======================================================
-> > > TCP conn	with patch	w/o patch
-> > > 20480		15.65		7.73
-> > > 10240		15.63		8.93
-> > > 8192		15.64		9.69
-> > > 6144		15.64		13.16
-> > > 4096		15.69		15.75
-> > > 2048		15.69		15.83
-> > > 1024		15.71		15.28
-> > > 
-> > > Fixes: 755391121038 ("net: mana: Allocate MSI-X vectors dynamically")
-> > > Cc: stable@vger.kernel.org
-> > > Signed-off-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
-> > > Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
-> > > Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
-> > > ---
-> > >  .../net/ethernet/microsoft/mana/gdma_main.c   | 35 +++++++++++++++++--
-> > >  1 file changed, 33 insertions(+), 2 deletions(-)
-> > > 
-> > > diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-> > > index 098fbda0d128..433c044d53c6 100644
-> > > --- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
-> > > +++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-> > > @@ -1672,6 +1672,23 @@ static int irq_setup(unsigned int *irqs, unsigned int len, int node,
-> > >  	return 0;
-> > >  }
-> > >  
-> > > +static int irq_setup_linear(unsigned int *irqs, unsigned int len)
-> > > +{
-> > > +	int cpu;
-> > > +
-> > > +	rcu_read_lock();
-> > We do not need to call rcu_read_lock here, as the caller of this
-> > function has already acquired cpus_read_lock.
-> 
-> Thanks for your comments Dipayaan, I think this is still needed for the
-> irq_set_affinity_and_hint(), to protect the pointer returned by
-> irq_to_desc(). You can also see the same in the original function
-> irq_setup() for the same reason.
-Hi Shradha,
+From: Bingquan Chen <patzilla007@gmail.com>
 
-The original irq_setup() function uses rcu_read_lock() because it relies
-on for_each_numa_hop_mask(), which explicitly mandates that RCU be held.
-You have not used it in irq_setup_linear(), hence the requirement does not apply
-here.
-https://elixir.bootlin.com/linux/v7.0.1/source/include/linux/topology.h#L314
-/**
- * for_each_numa_hop_mask - iterate over cpumasks of increasing NUMA
- * distance
- *                          from a given node.
- * @mask: the iteration variable.
- * @node: the NUMA node to start the search from.
- *
- * Requires rcu_lock to be held.
- *
-.....
-Regarding irq_set_affinity_and_hint it also garbs rcu locks internally:
-irq_set_affinity_and_hint ->__irq_apply_affinity_hint() -> irq_to_desc() -> mtree_load().
-Also see how irq_set_affinity_and_hint is called in mana_gd_setup_irqs.
-IMO we should drop the nesting when not needed, even though it appears
-harmless.
+[ Upstream commit 2c054e17d9d41f1020376806c7f750834ced4dc5 ]
 
-Thanks and Regards
-Dipayaan Roy
+In tpacket_snd(), when PACKET_VNET_HDR is enabled, vnet_hdr points
+directly into the mmap'd TX ring buffer shared with userspace. The
+kernel validates the header via __packet_snd_vnet_parse() but then
+re-reads all fields later in virtio_net_hdr_to_skb(). A concurrent
+userspace thread can modify the vnet_hdr fields between validation
+and use, bypassing all safety checks.
 
-> 
-> > > +	for_each_online_cpu(cpu) {
-> > > +		if (len <= 0)
-> > len is unsigned here so <= doesnot makes sense. PLease change it to int
-> > or better use if(!len)
-> 
-> sure, I think I will change it to explicitly exit when len == 0
-> Thanks.
-> 
-> > > +			break;
-> > > +
-> > > +		irq_set_affinity_and_hint(*irqs++, cpumask_of(cpu));
-> > > +		len--;
-> > > +	}
-> > > +	rcu_read_unlock();
-> > > +
-> > > +	return 0;
-> > > +}
-> > > +
-> > >  static int mana_gd_setup_dyn_irqs(struct pci_dev *pdev, int nvec)
-> > >  {
-> > >  	struct gdma_context *gc = pci_get_drvdata(pdev);
-> > > @@ -1722,10 +1739,24 @@ static int mana_gd_setup_dyn_irqs(struct pci_dev *pdev, int nvec)
-> > >  	 * first CPU sibling group since they are already affinitized to HWC IRQ
-> > >  	 */
-> > >  	cpus_read_lock();
-> > > -	if (gc->num_msix_usable <= num_online_cpus())
-> > > +	if (gc->num_msix_usable <= num_online_cpus()) {
-> > >  		skip_first_cpu = true;
-> > > +		err = irq_setup(irqs, nvec, gc->numa_node, skip_first_cpu);
-> > > +	} else {
-> > > +		/*
-> > > +		 * In case our IRQs are more than num_online_cpus, we try to
-> > > +		 * make sure we are using all vcpus. In such a case NUMA or
-> > > +		 * CPU core affinity does not matter.
-> > > +		 * Note that in this case the total mana IRQ should always be
-> > > +		 * num_online_cpu + 1. The first HWC IRQ is already handled
-> > > +		 * in HWC setup calls
-> > > +		 * So, the nvec value in this path should always be equal to
-> > > +		 * num_online_cpu
-> > nit: typo: should be num_online_cpus
-> 
-> noted
-> 
-> > > +		 */
-> > > +		WARN_ON(nvec > num_online_cpus());
-> > > +		err = irq_setup_linear(irqs, nvec);
-> > > +	}
-> > >  
-> > > -	err = irq_setup(irqs, nvec, gc->numa_node, skip_first_cpu);
-> > >  	if (err) {
-> > >  		cpus_read_unlock();
-> > >  		goto free_irq;
-> > > 
-> > > base-commit: e728258debd553c95d2e70f9cd97c9fde27c7130
-> > > -- 
-> > > 2.34.1
-> > > 
-> > Regards
-> > Dipayaan Roy
+The non-TPACKET path (packet_snd()) already correctly copies vnet_hdr
+to a stack-local variable. All other vnet_hdr consumers in the kernel
+(tun.c, tap.c, virtio_net.c) also use stack copies. The TPACKET TX
+path is the only caller of virtio_net_hdr_to_skb() that reads directly
+from user-controlled shared memory.
+
+Fix this by copying vnet_hdr from the mmap'd ring buffer to a
+stack-local variable before validation and use, consistent with the
+approach used in packet_snd() and all other callers.
+
+Fixes: 1d036d25e560 ("packet: tpacket_snd gso and checksum offload")
+Signed-off-by: Bingquan Chen <patzilla007@gmail.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20260418112006.78823-1-patzilla007@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ replaced `vnet_hdr_sz` with `sizeof(vnet_hdr)` and `if (vnet_hdr_sz)` with `if (po->has_vnet_hdr)` ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ net/packet/af_packet.c | 25 +++++++++++++++----------
+ 1 file changed, 15 insertions(+), 10 deletions(-)
+
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index 502d2f6de18a2..23dc4f66d4d13 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -2767,7 +2767,8 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
+ {
+ 	struct sk_buff *skb = NULL;
+ 	struct net_device *dev;
+-	struct virtio_net_hdr *vnet_hdr = NULL;
++	struct virtio_net_hdr vnet_hdr;
++	bool has_vnet_hdr = false;
+ 	struct sockcm_cookie sockc;
+ 	__be16 proto;
+ 	int err, reserve = 0;
+@@ -2867,16 +2868,20 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
+ 		hlen = LL_RESERVED_SPACE(dev);
+ 		tlen = dev->needed_tailroom;
+ 		if (po->has_vnet_hdr) {
+-			vnet_hdr = data;
+-			data += sizeof(*vnet_hdr);
+-			tp_len -= sizeof(*vnet_hdr);
+-			if (tp_len < 0 ||
+-			    __packet_snd_vnet_parse(vnet_hdr, tp_len)) {
++			data += sizeof(vnet_hdr);
++			tp_len -= sizeof(vnet_hdr);
++			if (tp_len < 0) {
++				tp_len = -EINVAL;
++				goto tpacket_error;
++			}
++			memcpy(&vnet_hdr, data - sizeof(vnet_hdr), sizeof(vnet_hdr));
++			if (__packet_snd_vnet_parse(&vnet_hdr, tp_len)) {
+ 				tp_len = -EINVAL;
+ 				goto tpacket_error;
+ 			}
+ 			copylen = __virtio16_to_cpu(vio_le(),
+-						    vnet_hdr->hdr_len);
++						    vnet_hdr.hdr_len);
++			has_vnet_hdr = true;
+ 		}
+ 		copylen = max_t(int, copylen, dev->hard_header_len);
+ 		skb = sock_alloc_send_skb(&po->sk,
+@@ -2913,12 +2918,12 @@ static int tpacket_snd(struct packet_sock *po, struct msghdr *msg)
+ 			}
+ 		}
+ 
+-		if (po->has_vnet_hdr) {
+-			if (virtio_net_hdr_to_skb(skb, vnet_hdr, vio_le())) {
++		if (has_vnet_hdr) {
++			if (virtio_net_hdr_to_skb(skb, &vnet_hdr, vio_le())) {
+ 				tp_len = -EINVAL;
+ 				goto tpacket_error;
+ 			}
+-			virtio_net_hdr_set_proto(skb, vnet_hdr);
++			virtio_net_hdr_set_proto(skb, &vnet_hdr);
+ 		}
+ 
+ 		skb->destructor = tpacket_destruct_skb;
+-- 
+2.53.0
+
 
