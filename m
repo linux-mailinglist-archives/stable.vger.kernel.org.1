@@ -1,69 +1,60 @@
-Return-Path: <stable+bounces-241105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241108-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id Hca3Mgd47Gn9YwAAu9opvQ
-	(envelope-from <stable+bounces-241105-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 10:15:03 +0200
+	id jON3GVOE7GnGZQAAu9opvQ
+	(envelope-from <stable+bounces-241108-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 11:07:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23992465808
-	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 10:15:02 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C26FB4659B2
+	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 11:07:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 61191300669C
-	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 08:15:01 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 63BD3300599B
+	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 09:07:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A586134A767;
-	Sat, 25 Apr 2026 08:14:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEC4B335555;
+	Sat, 25 Apr 2026 09:07:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="I1rnyyXH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L1/qG30B"
 X-Original-To: stable@vger.kernel.org
-Received: from n169-114.mail.139.com (n169-114.mail.139.com [120.232.169.114])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94F6833688C;
-	Sat, 25 Apr 2026 08:14:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.114
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 825DD2D77EE
+	for <stable@vger.kernel.org>; Sat, 25 Apr 2026 09:07:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777104897; cv=none; b=XoXJcstnjHZ4BnjjjSKQOq2NuK/wwCKwYOu5+F6NkOFF2jxapMDMMQaRF49jsi5I7a3lRKqjkQ1AYVXatDmhbDJpX8B1M+DIW5Kt8JR3557dj5SzNnn/UqcVd1gKlvWUSOGSCtKr7qH3igJsIw8ASRUqIZ0pDTXFkB20j4ouF00=
+	t=1777108045; cv=none; b=t7HA8AcBGxCkSw72Hu/o+0TLsFVjuZx3WeZDL09b4Fthe70b5MtibfjE3hmBCf7cWiiWswY0ie7cq8Yvox4Uu0uBSYMQeZ8EJL9XGuAI2h25B0qKQ3y6TK65CPAPGZsUURAfXArKTBjXVAWnk7/kWGD+rYreeN7FfhpYurJJyt8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777104897; c=relaxed/simple;
-	bh=p6If8zvaJEZ00arRaPhnO4ks1UrHakJnmj9OMKyc9Co=;
+	s=arc-20240116; t=1777108045; c=relaxed/simple;
+	bh=7FUuaQOXary9YkITEB1rV5NBVGTKkpWhFhbMQX3SKEM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QxTUD9R+1Y06yjlz4+p4d+jllGDnSimtqfU9nrnXg055SlEz/PAoFJ49ifqMQf9YJ4lkvIc1sm5rXC3ZhP+XsEXhMsMUbipbKRaq6UZwQx0Wg3Vus6/gEuKcbkJWenfnlLTrTuht4ajfc5UvB/4ZKc38+rS3l00h3aT+Up/VLzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=I1rnyyXH; arc=none smtp.client-ip=120.232.169.114
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=139.com; s=dkim; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=I1rnyyXH14QePae4fs7vnNcUDug8MC402MxK5pBFFdIVow/PO7wKSirWW2b2beY8cyYTdlP4mHFRp
-	 EsaTcYSp7No9pXGSuuCSTgPz/o9X9JKRRnWOWy/5T9xVfia1F9/Q3ImbdMQc1sI3ddvbAd1kIH/plp
-	 hiNhjCDWzx5nfuAw=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM:                                                                                        
-X-RM-SPAM-FLAG:00000000
-Received:from  (unknown[183.241.55.34])
-	by rmsmtp-lg-appmail-42-12056 (RichMail) with SMTP id 2f1869ec77eaa3d-00a52;
-	Sat, 25 Apr 2026 16:14:45 +0800 (CST)
-X-RM-TRANSID:2f1869ec77eaa3d-00a52
-From: Bin Lan <lanbincn@139.com>
-To: gregkh@linuxfoundation.org,
-	sashal@kernel.org,
-	stable@vger.kernel.org
-Cc: steffen.klassert@secunet.com,
-	daniel.m.jordan@oracle.com,
-	linux-crypto@vger.kernel.org,
-	herbert@gondor.apana.org.au,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Bin Lan <lanbincn@139.com>
-Subject: [PATCH 6.12.y 2/2] padata: Remove comment for reorder_work
-Date: Sat, 25 Apr 2026 16:14:30 +0800
-Message-ID: <20260425081433.2763-3-lanbincn@139.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260425081433.2763-1-lanbincn@139.com>
-References: <20260425081433.2763-1-lanbincn@139.com>
+	 MIME-Version; b=rWki2EUD0f3PoWKqt0WpfMfYJ491vLhlFBjLi79CM2nzAdMSPiBZsPg2vF5xSfLVwAp1rIqv1d6lAAu8ZP8Iw+z4Y1/q2UsdJP4DZOp20sQ6HIRG1mNX0M2ikyPdAmU7A+Fy0hAOmmoCQWjm+zmwokm6x53+Ztxwaewg6sLxClw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L1/qG30B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 955E7C2BCB0;
+	Sat, 25 Apr 2026 09:07:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777108045;
+	bh=7FUuaQOXary9YkITEB1rV5NBVGTKkpWhFhbMQX3SKEM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=L1/qG30Bu0WlUq/Y+1UQOykFDMdtvC5rmD/RqAJg9g63X0yQ4ZK61BNigZ4f+hYZt
+	 VMBDgd7gzeTEiwhyuIHiTlO565/T0C9u1Sk0iFuJ9gsJMYE4uATZrPHBBLyB3Z2c9x
+	 my8QktxgUWJdmda0nimKCkZ8kXyjSWRmHALfx5NXhmkc6fug1mPFOT0+Raqs5ACisC
+	 Dk3eB0Bh0uM/lYa+TQHttQPObpqnbziMElWlN+XD1EoXITZwncjYnJR9rnyMU6aMCw
+	 D3n3z2LojukuJKg/aqtD2M/232AG3s2Aljs4ONGoju9Gj977F1EfWjJkb3HALYXSGg
+	 8ubjm/RnubaIQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12.y 1/3] ksmbd: use msleep instaed of schedule_timeout_interruptible()
+Date: Sat, 25 Apr 2026 05:07:20 -0400
+Message-ID: <20260425090722.3316820-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026042410-cinch-frostbite-b760@gregkh>
+References: <2026042410-cinch-frostbite-b760@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -71,66 +62,66 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 23992465808
+X-Rspamd-Queue-Id: C26FB4659B2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.04 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_REJECT(1.00)[139.com:s=dkim];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-241105-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[secunet.com,oracle.com,vger.kernel.org,gondor.apana.org.au,canb.auug.org.au,139.com];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[139.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[139.com];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-241108-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lanbincn@139.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[139.com:-];
-	NEURAL_HAM(-0.00)[-0.937];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,139.com:mid,139.com:email,auug.org.au:email]
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 82a0302e7167d0b7c6cde56613db3748f8dd806d ]
+[ Upstream commit f75f8bdd4ff4830abe31a1b94892eb12b85b9535 ]
 
-Remove comment for reorder_work which no longer exists.
+use msleep instaed of schedule_timeout_interruptible()
+to guarantee the task delays as expected.
 
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Fixes: 71203f68c774 ("padata: Fix pd UAF once and for all")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Bin Lan <lanbincn@139.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Stable-dep-of: def036ef87f8 ("ksmbd: reset rcount per connection in ksmbd_conn_wait_idle_sess_id()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/padata.h | 1 -
- 1 file changed, 1 deletion(-)
+ fs/smb/server/connection.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/padata.h b/include/linux/padata.h
-index b486c7359de2..765f2778e264 100644
---- a/include/linux/padata.h
-+++ b/include/linux/padata.h
-@@ -90,7 +90,6 @@ struct padata_cpumask {
-  * @processed: Number of already processed objects.
-  * @cpu: Next CPU to be processed.
-  * @cpumask: The cpumasks in use for parallel and serial workers.
-- * @reorder_work: work struct for reordering.
-  */
- struct parallel_data {
- 	struct padata_shell		*ps;
+diff --git a/fs/smb/server/connection.c b/fs/smb/server/connection.c
+index 2537b52eea3e6..1b96d58183cdf 100644
+--- a/fs/smb/server/connection.c
++++ b/fs/smb/server/connection.c
+@@ -495,7 +495,7 @@ static void stop_sessions(void)
+ 	up_read(&conn_list_lock);
+ 
+ 	if (!list_empty(&conn_list)) {
+-		schedule_timeout_interruptible(HZ / 10); /* 100ms */
++		msleep(100);
+ 		goto again;
+ 	}
+ }
 -- 
-2.43.0
-
+2.53.0
 
 
