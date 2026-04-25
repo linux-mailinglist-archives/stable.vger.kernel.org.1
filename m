@@ -1,248 +1,178 @@
-Return-Path: <stable+bounces-241089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241090-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gDLLHcMv7GlhVQAAu9opvQ
-	(envelope-from <stable+bounces-241089-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 05:06:43 +0200
+	id /TaJOqM07GkSVgAAu9opvQ
+	(envelope-from <stable+bounces-241090-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 05:27:31 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE184464D62
-	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 05:06:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C673464E55
+	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 05:27:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1126A3008D2D
-	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 03:06:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A5564300916A
+	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 03:27:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CB9B381AEB;
-	Sat, 25 Apr 2026 03:06:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBA103451AA;
+	Sat, 25 Apr 2026 03:27:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="B19j9Sh9"
+	dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b="OEEfnNV2";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="AjrBP+Mx"
 X-Original-To: stable@vger.kernel.org
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+Received: from fhigh-b1-smtp.messagingengine.com (fhigh-b1-smtp.messagingengine.com [202.12.124.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5117C381AE0
-	for <stable@vger.kernel.org>; Sat, 25 Apr 2026 03:06:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 473412D77EE;
+	Sat, 25 Apr 2026 03:27:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777086390; cv=none; b=MQ/K2DbykSYNEwR8MlL/j/3Mdu7jNRiaveZq+FuSFz2QhlT2qSCYJuW+aoO0ahseEw3hAOiilsPQc1cnIK4ihWPwFshkK0wwpVRYslAbtm87T+czqZr//X9sRvLqJILZxqj6zKzMjX2wvFMkO8qzUl9jK8e4lF1SezAfI8TEpTw=
+	t=1777087646; cv=none; b=Eo591UWdEYa40FbrVu28qIOZcHbMDzTBHGS7qFiOq98QPSCZ9s5rv4TUFTSnc0VsAw6oI+vwhSi+c9zdppsF0FhmrnO0WDM3bfRo/51fWztH8r4c05GNNIN2BKeqor13IU0rFm00WXxep7slCKWX8zs4vPdaGgqwONm2y90y+KU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777086390; c=relaxed/simple;
-	bh=GQo5F3MZjkVXeWJWdPuFDka2HrRtj/alAavAKitQ2FY=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=lCxIj+nU+J+LWs9IYRHUGN5xPgZU5+s25fq/D3jEmlnXdgz9WmFaAiJsKwtj5uh1A4J6G4k9ZqFGyCoymyYL/XJegGS8oSeVVucGmhnb2fYAJcd+GLt8BD4HhPKZ6eyGuQT+r8lQTesfEI/JQu09YHLXRiLkciNRAVhTj1W2XRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=B19j9Sh9; arc=none smtp.client-ip=91.218.175.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Content-Type: text/plain;
-	charset=us-ascii
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1777086376;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LS6FCqD8VSXr924Q4YkPV/vRhy4BlRM8EbIWjkTCfxQ=;
-	b=B19j9Sh9uoyXQoT2jp7I4pOlIjQZYabWyU3GKN59qbm6g12VJj3lhVYjDoCrWYP4/xTSij
-	gLNZZdLCkzFGTjkwSlTZuOJUQWEfwwmKiZ0zKs6/nksrzMF/ZYksFvgyyNoBbjTnjk9Q+h
-	W1DXvgmK08TwKJnZu+cKBozIo3rbYpQ=
+	s=arc-20240116; t=1777087646; c=relaxed/simple;
+	bh=V2OnXzvd41cigBpxG7Wj4Syadzavm0xzosUMjctWV+A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=X7T1O2FP63tyTRuYKvoRSeY1Kvftp8YnPGVVJvWjQaFajk/pyHTfmRNm4ETI5Xztm9B9UKLn0NLdMsoopQVcAAqUX2IUharzUqPCh3xTi7MC92BbgaBA0oQIzBAWtb9IxJ7wdn0jsxd5BzKo3n+aZ3OfhhVLEUXC5ed7phIUmn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com; spf=pass smtp.mailfrom=pobox.com; dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b=OEEfnNV2; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=AjrBP+Mx; arc=none smtp.client-ip=202.12.124.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pobox.com
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 9CE887A00D1;
+	Fri, 24 Apr 2026 23:27:22 -0400 (EDT)
+Received: from phl-frontend-01 ([10.202.2.160])
+  by phl-compute-03.internal (MEProxy); Fri, 24 Apr 2026 23:27:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pobox.com; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1777087642;
+	 x=1777174042; bh=37ABmDKMz0lwNwI9b0UL8nIYlbMSYUIjpr+CMz5PGLQ=; b=
+	OEEfnNV2/wv2onQeGTcKk7CuOih66JmsonNDzaggo268eWkF+oCzZyEbpVhQLz1G
+	+4OJduzNwZziFv5NKbbVuKOm6zBAjC3O6AQ+7AQy5Z//gq9hIwBCAltq9N/droYS
+	CblDce+62cKr8ralZabbA9WJwaG3kK1/FcnZ7lqi5ZZBGh0e8gKEqUN4z9s6B/gL
+	4uy6OwJjduZHY22wnbWEPEN93wL7Hj66Wf750TJBSj3P4LWBbdP7ta5yjovnXr45
+	3cL8RukAKN3Hky6O8lvdxlGpoEduUpIUe7mbrcZ7i1s1QXWhIQKl8/7RDbd4qTCK
+	MnYTyGZycYZp5eAVX7Ku2w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1777087642; x=
+	1777174042; bh=37ABmDKMz0lwNwI9b0UL8nIYlbMSYUIjpr+CMz5PGLQ=; b=A
+	jrBP+Mx009PnMeQ20wHkGGHY9jphExN8THcf4Ch2kBvyRrzj14gGnsV3i0TZfHkM
+	BcqURaMkbsrz+35nmFXU0Y/BnYHVT3q94rtsKDgBWoFNhO3maYHDW5COrQm5nUiO
+	zdLq/csBhRuCNNHoTx36MPmuooJnmqK5aGWHmpsgD9CPDDLzCQ14fMK13U1Vpxhb
+	HNnRrioEohtXJiV1ZipFyE+R1p3tg3co4jDqDe//AiaNT9gC31u4h4DoVfc11/Ju
+	QciFKKRzEcOaxHthahQTHVpUN/LjyqvEW//Pu1iZyjIFBq+8BkHneIZdKV2VtRl8
+	GOqwagc49Pp0yBws2+QSw==
+X-ME-Sender: <xms:mTTsaeGYMYxES1BtkZjERTP7nDsr6dCTkpk_9CbV4dwCmxWKuRhxcA>
+    <xme:mTTsabOM5ykZc4IUdB6p01qNAB1ZFBOuEXn4FJCaIX2i5tIKShi7Nc0V0kZRHX3SR
+    ImutiNA0Q5UcQhNLxZbhRTgBrA6MNsn_r6lKRNwGDF4Bg7CwuF6JnM>
+X-ME-Received: <xmr:mTTsaTqhF9jM1P_Vst9odo7FK42GI-Z4UiyvCoMmZ6Ff2nkE6q9tKWn4BiR0Al1ubEWbUI67i_SGIceq40VXtF5Oar8uxnnQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdejudekfecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefkffggfgfuvfevfhfhjggtgfesthejredttddvjeenucfhrhhomhepfdeurghrrhih
+    ucfmrdcupfgrthhhrghnfdcuoegsrghrrhihnhesphhosghogidrtghomheqnecuggftrf
+    grthhtvghrnhepfeelheekheelkeejlefffefhvdeljeetheeltdeiudffveetffelteeg
+    gfefhfejnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiii
+    gvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsrghrrhihnhesphhosghogidrtgho
+    mhdpnhgspghrtghpthhtohepvddtpdhmohguvgepshhmthhpohhuthdprhgtphhtthhope
+    hgrhgvghhkhheslhhinhhugihfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehs
+    thgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehprghttghhvg
+    hssehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtoheplhhinhhugidqkhgvrhhn
+    vghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthhorhhvrghlughsse
+    hlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopegrkhhpmheslhhi
+    nhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheplhhinhhugiesrhhovg
+    gtkhdquhhsrdhnvghtpdhrtghpthhtohepshhhuhgrhheskhgvrhhnvghlrdhorhhgpdhr
+    tghpthhtohepphgrthgthhgvsheskhgvrhhnvghltghirdhorhhg
+X-ME-Proxy: <xmx:mTTsacCr1H0MW1cvS_yt1MJv2KoL_s5793eep6CGaMc1mt24RIj2og>
+    <xmx:mTTsacNZR_Y54OuZnpgL2R9c2Fx6k59jNUqO8eo7FMehBOeTouRzvg>
+    <xmx:mTTsaaAAJpGE3hqT3tZaE1h_bs07fBGVyCLENb0kUuUZgBTgQTZZJQ>
+    <xmx:mTTsaa8lCE8yHpf6kYwxYKZON3566I9ODZKIHYXQdbnbuWLctgkPsQ>
+    <xmx:mjTsaebJpf4p2X-NZCOavjCPjXhSVeriU7mjG3uMsXrmBj752x7KKOuY>
+Feedback-ID: i6289494f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 24 Apr 2026 23:27:19 -0400 (EDT)
+Message-ID: <dd775dc6-b76e-486b-8b85-9b94a890fb01@pobox.com>
+Date: Fri, 24 Apr 2026 20:27:18 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.500.181\))
-Subject: Re: [PATCH v6 4/7] mm/sparse-vmemmap: Fix DAX vmemmap accounting with
- optimization
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <0fe62163-cdfd-47e4-bc88-df7a69dc5a6d@kernel.org>
-Date: Sat, 25 Apr 2026 11:05:38 +0800
-Cc: Muchun Song <songmuchun@bytedance.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Oscar Salvador <osalvador@suse.de>,
- Michael Ellerman <mpe@ellerman.id.au>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>,
- Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <chleroy@kernel.org>,
- aneesh.kumar@linux.ibm.com,
- joao.m.martins@oracle.com,
- linux-mm@kvack.org,
- linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <4C6CE53F-918C-4D03-9DBD-1745E28A2D9E@linux.dev>
-References: <20260424025547.3806072-1-songmuchun@bytedance.com>
- <20260424025547.3806072-5-songmuchun@bytedance.com>
- <0fe62163-cdfd-47e4-bc88-df7a69dc5a6d@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: CE184464D62
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.12 00/35] 6.12.84-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20260424132411.427029259@linuxfoundation.org>
+Content-Language: en-US
+From: "Barry K. Nathan" <barryn@pobox.com>
+In-Reply-To: <20260424132411.427029259@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 2C673464E55
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MV_CASE(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	DMARC_POLICY_ALLOW(-0.50)[pobox.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_DKIM_ALLOW(-0.20)[pobox.com:s=fm1,messagingengine.com:s=fm2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241089-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	TAGGED_FROM(0.00)[bounces-241090-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[bytedance.com,linux-foundation.org,suse.de,ellerman.id.au,linux.ibm.com,kernel.org,oracle.com,google.com,suse.com,gmail.com,kvack.org,lists.ozlabs.org,vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[3];
+	RCVD_TLS_LAST(0.00)[];
 	RCPT_COUNT_TWELVE(0.00)[20];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[muchun.song@linux.dev,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linux.dev:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[pobox.com:+,messagingengine.com:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:dkim,linux.dev:mid,bytedance.com:email,suse.de:email]
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[barryn@pobox.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,pobox.com:email,pobox.com:dkim,pobox.com:mid]
 
+On 4/24/26 06:31, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.12.84 release.
+> There are 35 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Sun, 26 Apr 2026 13:23:21 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.84-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
+Tested on my Lenovo ThinkPad T14 Gen 1. Working well, no regressions
+observed.
 
-> On Apr 24, 2026, at 15:33, David Hildenbrand (Arm) <david@kernel.org> =
-wrote:
->=20
-> On 4/24/26 04:55, Muchun Song wrote:
->> When vmemmap optimization is enabled for DAX, the nr_memmap_pages
->> counter in /proc/vmstat is incorrect. The current code always =
-accounts
->> for the full, non-optimized vmemmap size, but vmemmap optimization
->> reduces the actual number of vmemmap pages by reusing tail pages. =
-This
->> causes the system to overcount vmemmap usage, leading to inaccurate
->> page statistics in /proc/vmstat.
->>=20
->> Fix this by introducing section_vmemmap_pages(), which returns the =
-exact
->> vmemmap page count for a given pfn range based on whether =
-optimization
->> is in effect.
->>=20
->> Fixes: 15995a352474 ("mm: report per-page metadata information")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
->> Acked-by: Oscar Salvador <osalvador@suse.de>
->> ---
->> mm/sparse-vmemmap.c | 31 +++++++++++++++++++++++++++----
->> 1 file changed, 27 insertions(+), 4 deletions(-)
->>=20
->> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
->> index 3340f6d30b01..2e642c5ff3f2 100644
->> --- a/mm/sparse-vmemmap.c
->> +++ b/mm/sparse-vmemmap.c
->> @@ -652,6 +652,28 @@ void offline_mem_sections(unsigned long =
-start_pfn, unsigned long end_pfn)
->> }
->> }
->>=20
->> +static int __meminit section_nr_vmemmap_pages(unsigned long pfn, =
-unsigned long nr_pages,
->> + 		struct vmem_altmap *altmap, struct dev_pagemap *pgmap)
->> +{
->> + 	const unsigned int order =3D pgmap ? pgmap->vmemmap_shift : 0;
->> + 	const unsigned long pages_per_compound =3D 1UL << order;
->> +
->> + 	VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages,
->> +    			min(pages_per_compound, =
-PAGES_PER_SECTION)));
->=20
-> FWIW, I though the right thing to do here would be:
->=20
-> VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages, pages_per_compound);
-> VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages, PAGES_PER_SUBSECTION);
->=20
-> I don't really see how PAGES_PER_SECTION make sense given that
-> PAGES_PER_SUBSECTION are the smallest granularity we allow =
-adding/removing.
->=20
-> Also, the "min()" implies that there is a connection between both =
-properties,
-> but there isn't to that degree.
->=20
-> If order =3D=3D 0, then you'd only ever check alignment for ... 1, not
-> PAGES_PER_SUBSECTION, which already looks weird.
->=20
-> So you really want to check "max(pages_per_compound, =
-PAGES_PER_SUBSECTION)", but
-> just having two statements is clearer.
->=20
-> Or am I getting something very wrong here? :)
+Tested-by: Barry K. Nathan <barryn@pobox.com>
 
-Hi David,
-
-Sorry, I missed the 1GB hugepage scenario earlier. Given that =
-sparse_add_section()
-operates on a scale between PAGES_PER_SUBSECTION and PAGES_PER_SECTION, =
-the pfn and
-nr_pages parameters wouldn't be aligned with the hugepage size =
-(pages_per_compound),
-but rather with the PAGES_PER_SECTION boundary. Do you think this =
-explanation makes
-it clearer? In the interest of code clarity, do you think the =
-modification below
-makes it easier to follow?
-
-diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
-index 2e642c5ff3f2..ce675c5fb94d 100644
---- a/mm/sparse-vmemmap.c
-+++ b/mm/sparse-vmemmap.c
-@@ -658,15 +658,18 @@ static int __meminit =
-section_nr_vmemmap_pages(unsigned long pfn, unsigned long n
-        const unsigned int order =3D pgmap ? pgmap->vmemmap_shift : 0;
-        const unsigned long pages_per_compound =3D 1UL << order;
-
--       VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages,
--                                   min(pages_per_compound, =
-PAGES_PER_SECTION)));
-+       VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages, =
-PAGES_PER_SUBSECTION));
-        VM_WARN_ON_ONCE(pfn_to_section_nr(pfn) !=3D =
-pfn_to_section_nr(pfn + nr_pages - 1));
-
-        if (!vmemmap_can_optimize(altmap, pgmap))
-                return DIV_ROUND_UP(nr_pages * sizeof(struct page), =
-PAGE_SIZE);
-
--       if (order < PFN_SECTION_SHIFT)
-+       if (order < PFN_SECTION_SHIFT) {
-+               VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages, =
-pages_per_compound));
-                return VMEMMAP_RESERVE_NR * nr_pages / =
-pages_per_compound;
-+       }
-+
-+       VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages, PAGES_PER_SECTION));
-
-        if (IS_ALIGNED(pfn, pages_per_compound))
-                return VMEMMAP_RESERVE_NR;
-
-Thanks.
-
->=20
->=20
-> --=20
-> Cheers,
->=20
-> David
-
+-- 
+-Barry K. Nathan  <barryn@pobox.com>
 
