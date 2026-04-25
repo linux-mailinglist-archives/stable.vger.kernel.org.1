@@ -1,72 +1,72 @@
-Return-Path: <stable+bounces-241080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241081-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WNACDDgK7GnDTwAAu9opvQ
-	(envelope-from <stable+bounces-241080-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 02:26:32 +0200
+	id QMQoFE8K7GnDTwAAu9opvQ
+	(envelope-from <stable+bounces-241081-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 02:26:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B56F54643C9
-	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 02:26:31 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C05234643E6
+	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 02:26:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B5E3C302C748
-	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 00:25:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DB492304A9C2
+	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 00:25:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C9281EA7F4;
-	Sat, 25 Apr 2026 00:25:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2412F1A0BE0;
+	Sat, 25 Apr 2026 00:25:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qoPBrxK+"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CBRPuchh"
 X-Original-To: stable@vger.kernel.org
 Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D98E240DFB2
-	for <stable@vger.kernel.org>; Sat, 25 Apr 2026 00:25:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B07041F1304
+	for <stable@vger.kernel.org>; Sat, 25 Apr 2026 00:25:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777076702; cv=none; b=FehPtA8hE00s16fGDmCGXlG8F9LDjeja5AomUNTCTOGSk1oqP3GxjcgstW+1q644YMU7ZszlsXJF7D9TZyv/sV/Am9QjYd46rQWgcjvEmJNPIXpZ6s95GBzBn67kiRt6HVazfj8dbkoUlep3oqyJ89wzvVqARkUo5/R/a+zT9FY=
+	t=1777076703; cv=none; b=AOVv5ijhVCOFZdlm+ha+XymylrSoq+TyOfVqM1YfxTz1zzENkDOnsHCoLoJpdUyvpEh0pbZB3PHpJEeU12ukyoi9wR5zvjW2/Mx5AHTV51huUFPfuA4MRvKqOPtd3mWrzyP3S8XHPx4oMqQuXbVy3M1LynyKJwPHFjnSXWe9n54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777076702; c=relaxed/simple;
-	bh=LEicXDAPI28EFLbCEUUUbtCAmhQDAo7ran0ciTNYXjg=;
+	s=arc-20240116; t=1777076703; c=relaxed/simple;
+	bh=QTNTbvBnSC5EltdyXHhC+I6ndxnglhMXh0Und1seaOc=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=gBEamseEWlO+kLO+/Hy4vfstY2KCxtaNxouoCd2ZJXiS1MvOvMCXxAzeMnl3lyLU7jKoddZYKm4yVRTIISc7+hs0LZTMKrb0AhqlbuDMJdvxmacaiqXWzvAi3wGdHxbLFqXtNJw7CBElQ7E6SYHdbaFxDwiYSRcWGPUQlogtdMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--hramamurthy.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qoPBrxK+; arc=none smtp.client-ip=209.85.216.74
+	 To:Cc:Content-Type; b=Au5X4BH8B3+mL+smR8d/i+hZjKpcTD4Qn/YRjBrYp1UpaJxOoKowVWw5DjrXWUDjrkPRQBHlsEBz5s8cLqdadjRhn0c03oVvw3PSzvzVbbPFGvDyCOgufeNBMNdxE8Pxtku/xUcBArJlSoAYCGqqki0weSFFQ4iXQHYcJHq7sXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--hramamurthy.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CBRPuchh; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--hramamurthy.bounces.google.com
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-35d9278587bso9780076a91.2
-        for <stable@vger.kernel.org>; Fri, 24 Apr 2026 17:25:00 -0700 (PDT)
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-35fb6cd0879so7863891a91.2
+        for <stable@vger.kernel.org>; Fri, 24 Apr 2026 17:25:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777076700; x=1777681500; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1777076702; x=1777681502; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZylLCoEiHYdV/ejnG8Go+DBKtjN8GWujCPj9sYIWSRA=;
-        b=qoPBrxK+27GIQ2x5vdGbcybG3Gwi/Z93eA5xe2e7aIvgX97pyZ8pVK0dMba70f/5LS
-         jX3qkXZPqo1P76Ub8mxiKgxheLLhRt7e0DrjyhkdFKy8aCFNwqW/gKgryRXRhJ1FUIvB
-         AwV4R/36JVxdOFc3ysHjZhS/ylm0OYL4VSKf86NiNtgmDm5G5lxrQ/KV9n+19ZchqNLe
-         k/akoPy/qdXXvAUUyFdS8pLjPXJENjufbu0OYsE+JRCJZIgzGwSZEqgwShYAL+oxioTo
-         OHfbGZ25dV3pTE/eSBwkC7iSXlZqbVFqY5uYF+/rxo4Qmr000JNqDlp9uxmqRTCS9ivc
-         5kqA==
+        bh=7Mr9oFSsC133Mf1hRrHkDLNxZVk8eA36xlUlRpvwFcQ=;
+        b=CBRPuchhYdZYzIvpOG1tcmhpJr0LOe6LO4Y+nWc+j52ZEK2GCg5znzBGIxg6uoFcjW
+         41fl+o5gaExn0reO9/rOKOXIQIXqghV4NfwhqrBz9zEXNSxf2USNeiTXLaefw2OunKql
+         sfmtWTBKsurLmMCS/y+8ey7ECBQQ9y24XvChp11EgUjen1CFFw4JIWFc+53OuspbrgRX
+         VTKX/zF0aWqYFd1BKxH0yqAJ47eTyLtcvGdnsa4Z4/+SRl5FAwCtjLxiGQDwjGQA2nkB
+         OxV3TDR7QWFGWIN+uwj8PhX8VyKEIexQuPm6/j7sVKtPlsIi7WdTKKALX359NHWbVgF4
+         vKZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777076700; x=1777681500;
+        d=1e100.net; s=20251104; t=1777076702; x=1777681502;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZylLCoEiHYdV/ejnG8Go+DBKtjN8GWujCPj9sYIWSRA=;
-        b=F90mnVFI2LRaHiZxDUY8xFpgMOMkKbzb/l+dZPwsed38tSNyKtUddAbaR2weUoptRe
-         SEx4GdvhaWGI/s5oL2YkCTOFLwiUjUMTNOtDq182tU7lPtEbxvK65AkMrZr5p7WFk06d
-         iA3jCzuncTTHcjhRxW5LN/pUuJLkz/+pXpI3cvayHixLs4ljgQkCeAZdFrwZBWuLnlfN
-         kPp58NbgiJ4T/cbEpvbX9H2lu1UaL7S8MjNgeOqPdVawuOLn9XuNQZ7pIiEAAyHO1JlD
-         vXMSHWYk75nQi5CC1jPOA88I6LxNFTlMKKU+LwhSUtr4nBNinl4hMDss38QMGse419GS
-         2sYQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9QRh0VA0HqFDRO66qOTV9acvg7AD092vvaWlOicdV7mMQz7+sFuUiKg6jvJbpWs9Ri2znIn1U=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzRoUaDPhX1umTotJP2MW2Bg43F03oCx42VfVw0Yc89Y5AlbWXL
-	shcJi1r47SQjWTVHhqQYK1p5t6lDB71aw0foSB5E/nKH8o3CZik2QUumHnJm9KfDixITgXtdQC9
-	8d9X2puFbpE5eCC8sRl4p8m+eZg==
-X-Received: from pjbfr11.prod.google.com ([2002:a17:90a:e2cb:b0:35d:a03b:ab5e])
+        bh=7Mr9oFSsC133Mf1hRrHkDLNxZVk8eA36xlUlRpvwFcQ=;
+        b=TiL39MyhxUaQVIdouzJF/OBG+/ImhFskqMV81Tdahi0o/8ECS4hRc7z7TEqHvRnjrm
+         64mhRf+l1i3fsmT0iJOFERWtGGUNaMpjhZBys0/AP7WPN6tSvSToYq1/yUKBVZbWMoDi
+         df36DUkE3kKxu9Hpw6+/DxOXMa+tbqKhayTDrNzecemnAZ4z6DRJuTzOW+n+52TIfL5M
+         ysuJvVSS/EsLmoGLm7viV7C8JqHg3xxGKmlNI4Gv0cYhhuTEe1R/Ij9wLMEKABRZr8mv
+         7w/7W/Zbf/AudGPi4QpxSQXGGDT0NS2vXANV354e9/Fv8vO1U8ngqq/Ba8EgNzhq4j88
+         aJJQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/qeAzfam5SevmwyN5z/7/PPKi7rljHrXwZJ8DyaFMaIsCKQVlbAsPkDW8i6QRzkkESmn09cik=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxknaGXe6q0imYN31CjWj5+zjHwMWCXcLbXuMaPZu6kqfJ/gIO9
+	ZPkm6w4aDRIZnyl1xXx6wDAE0my4+T5AzU+YNbXO+mVsVk+ia4O6tyiw7mSwau+yDVDNiaUCq9R
+	+iNe+VwDlfktyegwZRfv5sl0VVA==
+X-Received: from pjh13.prod.google.com ([2002:a17:90b:3f8d:b0:35f:be31:1a85])
  (user=hramamurthy job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:2e46:b0:359:8dfd:64c8 with SMTP id 98e67ed59e1d1-361404a81e0mr33622651a91.24.1777076700095;
- Fri, 24 Apr 2026 17:25:00 -0700 (PDT)
-Date: Sat, 25 Apr 2026 00:24:49 +0000
+ 2002:a17:90b:2892:b0:35d:a0b7:9608 with SMTP id 98e67ed59e1d1-361403e8a1bmr33217393a91.7.1777076701965;
+ Fri, 24 Apr 2026 17:25:01 -0700 (PDT)
+Date: Sat, 25 Apr 2026 00:24:50 +0000
 In-Reply-To: <20260425002450.163421-1-hramamurthy@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -76,9 +76,8 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260425002450.163421-1-hramamurthy@google.com>
 X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
-Message-ID: <20260425002450.163421-4-hramamurthy@google.com>
-Subject: [PATCH net v2 3/4] gve: Use default min ring size when device option
- values are 0
+Message-ID: <20260425002450.163421-5-hramamurthy@google.com>
+Subject: [PATCH net v2 4/4] gve: Make ethtool config changes synchronous
 From: Harshitha Ramamurthy <hramamurthy@google.com>
 To: netdev@vger.kernel.org
 Cc: joshwash@google.com, hramamurthy@google.com, andrew+netdev@lunn.ch, 
@@ -88,7 +87,7 @@ Cc: joshwash@google.com, hramamurthy@google.com, andrew+netdev@lunn.ch,
 	shailend@google.com, jordanrhee@google.com, stable@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, Pin-yen Lin <treapking@google.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: B56F54643C9
+X-Rspamd-Queue-Id: C05234643E6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [0.84 / 15.00];
@@ -97,12 +96,12 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
 	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-241080-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-241081-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
@@ -115,48 +114,121 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[hramamurthy@google.com,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[google.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable,netdev];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 
 From: Pin-yen Lin <treapking@google.com>
 
-On gvnic devices that support reporting minimum ring sizes, the device
-option always includes the min_(rx|tx)_ring_size fields, and the values
-will be 0 if they are not configured to be exposed. This makes the
-driver allow unexpected small ring size configurations from the
-userspace.
+When modifying device features via ethtool, the driver queues the
+carrier status update to its workqueue (gve_wq). This leads to a
+short link-down state after running the ethtool command.
 
-Use the default ring size in the driver if the min ring sizes from the
-device option are 0.
+Use `gve_turnup_and_check_status()` instead of `gve_turnup()` in
+`gve_queues_start()` to update the carrier status before returning to
+the userspace.
 
-This was discovered by drivers/net/ring_reconfig.py selftest.
+This was discovered by drivers/net/ping.py selftest. The test calls
+ping command right after an ethtool configuration, but the interface
+could be down without this fix.
 
 Cc: stable@vger.kernel.org
-Fixes: ed4fb326947d ("gve: add support to read ring size ranges from the device")
-Reviewed-by: Joshua Washington <joshwash@google.com>
-Reviewed-by: Jordan Rhee <jordanrhee@google.com>
+Fixes: 5f08cd3d6423 ("gve: Alloc before freeing when adjusting queues")
 Signed-off-by: Pin-yen Lin <treapking@google.com>
+Reviewed-by: Joshua Washington <joshwash@google.com>
 Signed-off-by: Harshitha Ramamurthy <hramamurthy@google.com>
 ---
- drivers/net/ethernet/google/gve/gve_adminq.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/google/gve/gve_main.c | 56 +++++++++++-----------
+ 1 file changed, 28 insertions(+), 28 deletions(-)
 
-diff --git a/drivers/net/ethernet/google/gve/gve_adminq.c b/drivers/net/ethernet/google/gve/gve_adminq.c
-index 08587bf40ed4..2cd0dd6ced94 100644
---- a/drivers/net/ethernet/google/gve/gve_adminq.c
-+++ b/drivers/net/ethernet/google/gve/gve_adminq.c
-@@ -189,7 +189,9 @@ void gve_parse_device_option(struct gve_priv *priv,
- 		*dev_op_modify_ring = (void *)(option + 1);
+diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
+index 1fec8e1e4821..2c461be12a75 100644
+--- a/drivers/net/ethernet/google/gve/gve_main.c
++++ b/drivers/net/ethernet/google/gve/gve_main.c
+@@ -1424,6 +1424,33 @@ static void gve_queues_mem_remove(struct gve_priv *priv)
+ 	priv->rx = NULL;
+ }
  
- 		/* device has not provided min ring size */
--		if (option_length == GVE_DEVICE_OPTION_NO_MIN_RING_SIZE)
-+		if (option_length == GVE_DEVICE_OPTION_NO_MIN_RING_SIZE ||
-+		    be16_to_cpu((*dev_op_modify_ring)->min_rx_ring_size) == 0 ||
-+		    be16_to_cpu((*dev_op_modify_ring)->min_tx_ring_size) == 0)
- 			priv->default_min_ring_size = true;
- 		break;
- 	case GVE_DEV_OPT_ID_FLOW_STEERING:
++static void gve_handle_link_status(struct gve_priv *priv, bool link_status)
++{
++	if (!gve_get_napi_enabled(priv))
++		return;
++
++	if (link_status == netif_carrier_ok(priv->dev))
++		return;
++
++	if (link_status) {
++		netdev_info(priv->dev, "Device link is up.\n");
++		netif_carrier_on(priv->dev);
++	} else {
++		netdev_info(priv->dev, "Device link is down.\n");
++		netif_carrier_off(priv->dev);
++	}
++}
++
++static void gve_turnup_and_check_status(struct gve_priv *priv)
++{
++	u32 status;
++
++	gve_turnup(priv);
++	status = ioread32be(&priv->reg_bar0->device_status);
++	gve_handle_link_status(priv,
++			       GVE_DEVICE_STATUS_LINK_STATUS_MASK & status);
++}
++
+ /* The passed-in queue memory is stored into priv and the queues are made live.
+  * No memory is allocated. Passed-in memory is freed on errors.
+  */
+@@ -1486,8 +1513,7 @@ static int gve_queues_start(struct gve_priv *priv,
+ 			  round_jiffies(jiffies +
+ 				msecs_to_jiffies(priv->stats_report_timer_period)));
+ 
+-	gve_turnup(priv);
+-	queue_work(priv->gve_wq, &priv->service_task);
++	gve_turnup_and_check_status(priv);
+ 	priv->interface_up_cnt++;
+ 	return 0;
+ 
+@@ -1608,23 +1634,6 @@ static int gve_close(struct net_device *dev)
+ 	return 0;
+ }
+ 
+-static void gve_handle_link_status(struct gve_priv *priv, bool link_status)
+-{
+-	if (!gve_get_napi_enabled(priv))
+-		return;
+-
+-	if (link_status == netif_carrier_ok(priv->dev))
+-		return;
+-
+-	if (link_status) {
+-		netdev_info(priv->dev, "Device link is up.\n");
+-		netif_carrier_on(priv->dev);
+-	} else {
+-		netdev_info(priv->dev, "Device link is down.\n");
+-		netif_carrier_off(priv->dev);
+-	}
+-}
+-
+ static int gve_configure_rings_xdp(struct gve_priv *priv,
+ 				   u16 num_xdp_rings)
+ {
+@@ -2099,15 +2108,6 @@ static void gve_turnup(struct gve_priv *priv)
+ 	gve_set_napi_enabled(priv);
+ }
+ 
+-static void gve_turnup_and_check_status(struct gve_priv *priv)
+-{
+-	u32 status;
+-
+-	gve_turnup(priv);
+-	status = ioread32be(&priv->reg_bar0->device_status);
+-	gve_handle_link_status(priv, GVE_DEVICE_STATUS_LINK_STATUS_MASK & status);
+-}
+-
+ static struct gve_notify_block *gve_get_tx_notify_block(struct gve_priv *priv,
+ 							unsigned int txqueue)
+ {
 -- 
 2.54.0.545.g6539524ca2-goog
 
