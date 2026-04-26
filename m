@@ -1,154 +1,125 @@
-Return-Path: <stable+bounces-241181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241182-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AG6ICTdX7mnDsQAAu9opvQ
-	(envelope-from <stable+bounces-241181-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 26 Apr 2026 20:19:35 +0200
+	id BBPcDxho7mkPtgAAu9opvQ
+	(envelope-from <stable+bounces-241182-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 26 Apr 2026 21:31:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A84F46ABD1
-	for <lists+stable@lfdr.de>; Sun, 26 Apr 2026 20:19:34 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35ABC46AED5
+	for <lists+stable@lfdr.de>; Sun, 26 Apr 2026 21:31:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D456D3001D6B
-	for <lists+stable@lfdr.de>; Sun, 26 Apr 2026 18:19:33 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2358B3001866
+	for <lists+stable@lfdr.de>; Sun, 26 Apr 2026 19:31:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1570282F13;
-	Sun, 26 Apr 2026 18:19:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E11A938F62A;
+	Sun, 26 Apr 2026 19:31:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b="RGabpgy4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ecgvEWfo"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2375E27AC57
-	for <stable@vger.kernel.org>; Sun, 26 Apr 2026 18:19:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A12E727B357;
+	Sun, 26 Apr 2026 19:31:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777227570; cv=none; b=VKQAAmg7UjrJwrh42cXjK33MgDnkjVQ/x0ONjI+langUhzLqg1ZHHIwvmcd3+MbrMVXatv1LeP/fCHwuLVkpdICXUNfy6ASJaCe8nlL/PXqD0vgIbWDqdIqPLalkhEuMEYOmlwW3aYfssVK1LMqHRghNJpePvKYLhUI3mD/D7yE=
+	t=1777231889; cv=none; b=aefFjSRVwITt8ouHX2sDVyB14AghG4ETk2LR2iGZg5FIGjjGcGa9JnF8fb+DU1I3tY1d0csPYaS9RJ6+qq1cl+4r0IxuWPy8xDCHbcwMIuXBUA4PgB4RfCE9ogA/DtOW/9GVJBnmzD66kWzcjPRSUUPzkJKH3stY72cswZaKrOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777227570; c=relaxed/simple;
-	bh=Sufa3AUzBRL5ViOeMSGiGywtB+U9gCgOODKUTnVXF6Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IbgwZcfUIUXWGHvXZpPJw0d7cog5Zu2ib9xAZt6RQcPCoxSPAqjOSmXoEg+EZ699bev0Es+6afRGfbnb8jPkQ8FKt8e0j/ySTjWkPFxgtCIWraJ5A7CRbVtkEildW5z6Plt6WrqbyAideRiVsJpG/QVyIpTv9W3AwYUjlgCSraU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org; spf=pass smtp.mailfrom=linuxtx.org; dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b=RGabpgy4; arc=none smtp.client-ip=74.125.82.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtx.org
-Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-2c15849aa2cso12435861eec.0
-        for <stable@vger.kernel.org>; Sun, 26 Apr 2026 11:19:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxtx.org; s=google; t=1777227567; x=1777832367; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=d6AlhQMcEATZrtdBECRZUj5Ab+JdiBi4ef57n1ZohOw=;
-        b=RGabpgy4yFUr4V4b/b0V6ArJwEz9xl+QpM/S7h8j22inE8XhAqYnwbIxMG5+QwTZoa
-         8d+my7ngYAeuhazpj4w9TWJSQJEC0RU1iWUtBAHX5n1tFACVWc26C6IeCOyIHBiq4zpj
-         /toJ9nRr6Jj8lQFxW3+neYq4bIV6uQX8QCrMQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777227567; x=1777832367;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=d6AlhQMcEATZrtdBECRZUj5Ab+JdiBi4ef57n1ZohOw=;
-        b=qXXq1ug7ztGE3HOZGwIOognbasPnlkfBO48torRmgEVhcJ665aghDB6LAPzWUL9HHc
-         +wqQH/GDTQND7JXnGzE+SHpNshOADfHYjfsOMG6L5izxIFvSQIQbomnF5tJLP5iwxUHL
-         BzeHT9/J0mEBcS4lchOOHFjYCC/BFx/qKlEg3gacubbkANn/AvFhe95zpvbV/EZsZs/V
-         /nMrH6xCodyobmR9VJAB6fFalZqjVLWEK1eYEaZiu/T6zCAfFOejYMJCyilpUOTl1idl
-         yEOV/lWt4VKALmCjaS9g+qaY4HkwRcgM1FJ/Hx7AQKybCcq1PJZePSI6ZpZKdjf5NVan
-         ezlw==
-X-Gm-Message-State: AOJu0YzB/svdSpuuFyiJrH1oqiQyizfcN8Ge1SEDur65tlWdoeukleXh
-	JZlO3078sTkASmVAqTTDAcfAq+NLQOYYXFnaO+JrIq6E9nPEcaN5ZMEsKPFURpNTYA==
-X-Gm-Gg: AeBDiet0MS36ouunKX0DgO1MUT17/U/+K0lhnwPixJbpOWJUEu/IKLJY9kM9/KJXW/R
-	9AzzuPziZonHxyxLNTVCISlDo1QY0XQOnUGMkg75bz+UKnSya6xtO6RowtpYb7sz/NlEHGfYHmN
-	uoTsViAAsi0/pfKxsJ9W/u4lbRSswD9hDX2r1I8UgNRn2H/4x7Qj1OP0K6MRQ0lfP+sMwHtESGC
-	jI/Hj/7N8T2M8aBsHnwyZN/9zF6qVt+3hHaczmTg+23CHjnqb9Tsn0g3DbcSdQ1bSj2Uy3ZSsqk
-	ydk4yB3JCuQ/HRlZ+wC6DzVAXdGWJgFYdXew/2NHkZErRR+hb9UJ0Q2MRG/DHDpa3A84+kwCRYt
-	No4TvbLTHbpweVKJm9UG3W1d3P4gOo1wZD6SlB1LE2h1AO8OT3vIOMW/az39K0EpfHTQzkuWS7B
-	mKu8/fEyAHfnRQee6eQlE8UNaTh6DAgAWAs7Vm5OldLMRqrXqaZKL8
-X-Received: by 2002:a05:693c:3007:b0:2ea:5057:a2f9 with SMTP id 5a478bee46e88-2ea5057b737mr12408219eec.16.1777227567098;
-        Sun, 26 Apr 2026 11:19:27 -0700 (PDT)
-Received: from fedora64.linuxtx.org ([98.97.107.119])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2e539fa6134sm42213114eec.3.2026.04.26.11.19.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 26 Apr 2026 11:19:26 -0700 (PDT)
-Sender: Justin Forbes <jmforbes@linuxtx.org>
-Date: Sun, 26 Apr 2026 12:19:23 -0600
-From: Justin Forbes <jforbes@fedoraproject.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org,
-	pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
-	sr@sladewatkins.com
-Subject: Re: [PATCH 7.0 00/42] 7.0.2-rc1 review
-Message-ID: <ae5XK38U30GOx1U7@fedora64.linuxtx.org>
-References: <20260424132420.410310336@linuxfoundation.org>
+	s=arc-20240116; t=1777231889; c=relaxed/simple;
+	bh=4tHvdx6TSi/pE4+uHCV/opn0vKxPFOFkJhVFTnizMW0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=r+inEOZLGYVImoZVUgLaVCvEWqqMmn6QZMODaZiVqceedXGEudL7WD6/F3DnZn1wEagZuUeEqQjc6rjtP96sKvkH/IRt43KDTX4JVzzkxB7XXgbS/vf1MWApGM0uxD5uya1Mr4JUTQRA4g/fa9tny1aPvKbxnJwCKdLxMyAgrjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ecgvEWfo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C29F2C2BCAF;
+	Sun, 26 Apr 2026 19:31:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777231889;
+	bh=4tHvdx6TSi/pE4+uHCV/opn0vKxPFOFkJhVFTnizMW0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ecgvEWfoOCQW+9FcinGb/eNNBQ5wVGjaz9PTP/nTxJS8UV1yCIvLTT+ZL8uvWgSK5
+	 IXDpkq3+Lfvvwcy65ImxVZA5awY6MMEDSoektVgQ61cptvIBMHu7SfO1Z+MhoJ/Edo
+	 csVppEq7QzYxM+eoTe5aE/23uhCiuPkz75kbUaCZrI+jf6lD92McFB99sRINzq9JEX
+	 DL+QX/coAOamnQDV4ksTRFrGvQ/knGBdl21litoSY59yBxCAD9zFh3s7efkWwtghBd
+	 J82LDP5pB5c1nUbmiBnTjY/sviZeKKrGmHOkBzTOqiiy5Ru49gLTSErNajqAaoGEZP
+	 wNJUQoE2ezQjA==
+From: SeongJae Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	"# 7 . 0 . x" <stable@vger.kernel.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org
+Subject: [PATCH] mm/damon: fix damos_stat tracepoint format for sz_applied
+Date: Sun, 26 Apr 2026 12:31:17 -0700
+Message-ID: <20260426193119.88095-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260424132420.410310336@linuxfoundation.org>
-X-Rspamd-Queue-Id: 9A84F46ABD1
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 35ABC46AED5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.06 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[linuxtx.org:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[fedoraproject.org : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-241181-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-241182-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	RCPT_COUNT_TWELVE(0.00)[20];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxtx.org:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jforbes@fedoraproject.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 
-On Fri, Apr 24, 2026 at 03:30:25PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 7.0.2 release.
-> There are 42 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Sun, 26 Apr 2026 13:23:22 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v7.x/stable-review/patch-7.0.2-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-7.0.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+The print format is wrongly marking sz_applied as sz_tried.  Fix it.
 
-Tested rc1 against the Fedora build system (aarch64, ppc64le, s390x,
-x86_64), and boot tested x86_64. No regressions noted.
+Fixes: 804c26b961da ("mm/damon/core: add trace point for damos stat per apply interval")
+Cc: <stable@vger.kernel.org> # 7.0.x
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+ include/trace/events/damon.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
+diff --git a/include/trace/events/damon.h b/include/trace/events/damon.h
+index 24fc402ab3c85..7e25f4469b81b 100644
+--- a/include/trace/events/damon.h
++++ b/include/trace/events/damon.h
+@@ -41,7 +41,7 @@ TRACE_EVENT(damos_stat_after_apply_interval,
+ 	),
+ 
+ 	TP_printk("ctx_idx=%u scheme_idx=%u nr_tried=%lu sz_tried=%lu "
+-			"nr_applied=%lu sz_tried=%lu sz_ops_filter_passed=%lu "
++			"nr_applied=%lu sz_applied=%lu sz_ops_filter_passed=%lu "
+ 			"qt_exceeds=%lu nr_snapshots=%lu",
+ 			__entry->context_idx, __entry->scheme_idx,
+ 			__entry->nr_tried, __entry->sz_tried,
+
+base-commit: 2e98f54b5a2b874905c71f3bc40eb8c0e8e757f0
+-- 
+2.47.3
 
