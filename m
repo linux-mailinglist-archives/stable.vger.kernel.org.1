@@ -1,235 +1,188 @@
-Return-Path: <stable+bounces-241168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241169-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oBqQALUW7ml+qgAAu9opvQ
-	(envelope-from <stable+bounces-241168-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 26 Apr 2026 15:44:21 +0200
+	id ECi/MIwc7mkpqwAAu9opvQ
+	(envelope-from <stable+bounces-241169-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 26 Apr 2026 16:09:16 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D58246A082
-	for <lists+stable@lfdr.de>; Sun, 26 Apr 2026 15:44:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E14346A3F5
+	for <lists+stable@lfdr.de>; Sun, 26 Apr 2026 16:09:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A47B8300B461
-	for <lists+stable@lfdr.de>; Sun, 26 Apr 2026 13:44:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9186D3007AC3
+	for <lists+stable@lfdr.de>; Sun, 26 Apr 2026 14:08:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBC253603EA;
-	Sun, 26 Apr 2026 13:44:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8B08364929;
+	Sun, 26 Apr 2026 14:08:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XYY6jPZ7"
 X-Original-To: stable@vger.kernel.org
-Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [65.21.191.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 484A321256C;
-	Sun, 26 Apr 2026 13:44:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.21.191.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92854364925;
+	Sun, 26 Apr 2026 14:08:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777211057; cv=none; b=UCtfq5YGVOD8ll4zXhuFXrh4L2ZgRLtBpGQF7u9f4jVmgP7MTxzGovDZRwoYUkZ34GQcedkpbFWvBxpgUM6bQesI7PwShPr4cs7XIAYW984isZYLUjQJzo3T/TCu0nT5Uq4IGUWJKFM0v+3s8nuHEYDIm2vSb2cgGaAUkQuZvho=
+	t=1777212530; cv=none; b=Cpp8KMGFZia1urGfVwxxhNk3XKbs3DiVBOms6RiS8ioHb5peq5oM4BNwubR2TOjmOD+IQerK2x/iyxHsY4V0ccv66ANEa6WeZ0ip2HHCIeuf6C0dyoAmQ8b1113SAr5WL96jKPNV72dEs+W/NFXwFN3zfNU6EgQbsnwtt+FbqIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777211057; c=relaxed/simple;
-	bh=bDm+/uxPStK/NQbi/eGFHAIX3ZznzOA0ZDXZpddStIE=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=CSvumigEDoOX0fxKU/1VCMmeEolYDhIrgSoe7EIh7hHB7Bqfef94HByZ72NTyv3SjZ6NivQyWT/wjmEyAho33AyjLIpYAQ9HXnMIfod0+yAznotpw1wUNcDJ6jNsC4iMgS0julSZZtk9OdTjEU4It/wIK1XeEQsyRX1JIXSJZOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk; spf=pass smtp.mailfrom=decadent.org.uk; arc=none smtp.client-ip=65.21.191.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=decadent.org.uk
-Received: from [2a02:578:851f:1502:391e:c5f5:10e2:b9a3] (helo=deadeye)
-	by maynard with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ben@decadent.org.uk>)
-	id 1wGzmJ-006ZV0-0j;
-	Sun, 26 Apr 2026 13:44:06 +0000
-Received: from ben by deadeye with local (Exim 4.99.1)
-	(envelope-from <ben@decadent.org.uk>)
-	id 1wGzmH-00000006skC-00xY;
-	Sun, 26 Apr 2026 15:44:05 +0200
-Message-ID: <e0f3860e1994351c8627518bd580b590090d0e5b.camel@decadent.org.uk>
-Subject: Re: [PATCH 5.10 430/491] apparmor: validate DFA start states are in
- bounds in unpack_pdb
-From: Ben Hutchings <ben@decadent.org.uk>
-To: John Johansen <john.johansen@canonical.com>, Greg Kroah-Hartman
-	 <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, Qualys Security Advisory <qsa@qualys.com>, 
- Salvatore Bonaccorso	 <carnil@debian.org>, Georgia Garcia
- <georgia.garcia@canonical.com>, Cengiz Can	 <cengiz.can@canonical.com>,
- Massimiliano Pellizzer	 <massimiliano.pellizzer@canonical.com>
-Date: Sun, 26 Apr 2026 15:43:55 +0200
-In-Reply-To: <5c718a4f-b0fe-4b80-8fdd-200871454320@canonical.com>
-References: <20260413155819.042779211@linuxfoundation.org>
-	 <20260413155835.127014179@linuxfoundation.org>
-	 <0d3747dc57d7bfa3c53efcf4d133021ead5bef9d.camel@decadent.org.uk>
-	 <5c718a4f-b0fe-4b80-8fdd-200871454320@canonical.com>
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-iryIRH0H4TTNncqYv/s4"
-User-Agent: Evolution 3.56.2-9 
+	s=arc-20240116; t=1777212530; c=relaxed/simple;
+	bh=Aqi75IhndrV0ywUutOkCqgNS6SouxMp0XDzJxatZjrY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=l/1vukUg36u4TL5JvuSVmdTCQPF58pwLjIR+dom9Cs6ShNMBWgDgxTHhkltoTcBOZufShxHwdibf5Wr9TFzbVCnUJdV2+hGXY0mMrXYQoR4mFKv5IWgRdUUV5x5/LoYzFrUNbxJEqZRj4ZjkmmjBrzpWPO44XFlIZW+IkXbT7RU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XYY6jPZ7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 3BE8AC2BCB3;
+	Sun, 26 Apr 2026 14:08:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777212530;
+	bh=Aqi75IhndrV0ywUutOkCqgNS6SouxMp0XDzJxatZjrY=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=XYY6jPZ7QSASe7snmeFwrM6pHNhkv0AOZMZfyK1IZeF4b83hT23HfVmanvwmi4Z+a
+	 /rNG8bx4Fyhy4osjwp9yPgblAhg0vDgFxLRMvmVUs3TjWe9PV0UsB0DgrwxLOfVDud
+	 +EqQ8xJNbCENQtbG6/iIeOItrQ/sCTeUVsDIcxJOIqTmeV2Tl5hOwPd/zHSKobXw+i
+	 cO4N5/BL6v4cbgUWVfDEu6NFHloHaw9lfdDHWMpN+rJOUvMIf/e9qBKNt8TQevNe3T
+	 Zd2W1765QXV7FYqPLP3h9FE1a38LS+VnVT73d8CHzBvFG2pLLB5p2ecTbs8P+2jwSZ
+	 XGBK60af56tSw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2DD02FF885E;
+	Sun, 26 Apr 2026 14:08:50 +0000 (UTC)
+From: Shivam Kalra via B4 Relay <devnull+shivamkalra98.zohomail.in@kernel.org>
+Date: Sun, 26 Apr 2026 19:38:41 +0530
+Subject: [PATCH] ACPI: video: force native backlight on HP OMEN 16 (8A44)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a02:578:851f:1502:391e:c5f5:10e2:b9a3
-X-SA-Exim-Mail-From: ben@decadent.org.uk
-X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
-X-Rspamd-Queue-Id: 1D58246A082
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260426-omen-16-backlight-fix-v1-1-62364f268ea6@zohomail.in>
+X-B4-Tracking: v=1; b=H4sIAGgc7mkC/yXM0Q5DQBCF4VeRuTYJS1Gv0rjYWYPRdjW7iES8u
+ y2X30nOv4NnJ+yhjnZwvIqXyQakcQRm0LZnlDYYVKKKJFcPnL5sMS2QtHl/pB9m7GTDMuuoIpN
+ rRU8I35/jMF/dV3PbLzSymf8xOI4TdT+L03kAAAA=
+X-Change-ID: 20260425-omen-16-backlight-fix-73fb8bc4a2b9
+To: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>
+Cc: linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, Shivam Kalra <shivamkalra98@zohomail.in>
+X-Mailer: b4 0.15.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1777212528; l=3008;
+ i=shivamkalra98@zohomail.in; s=20260402; h=from:subject:message-id;
+ bh=Ks75/0yCMSiPZ5NGPSiLdDntV/e7UFJBadOo45wysJA=;
+ b=ImzlN1NF/yjSEwdic/vHSQlDyh2HDbuxm3ilC7wHeE26rJSBVCMfn4V3XByKns2e2Sekc/Yrj
+ AA+AbNfO0kDAJPvHDEDPFsh+D+binV7lvoEReIkEwJGdwwIhdYKWZAB
+X-Developer-Key: i=shivamkalra98@zohomail.in; a=ed25519;
+ pk=U8kQSxcte8P8iZ6zB7phIj+Yl+i/5ntifBGuclgypx8=
+X-Endpoint-Received: by B4 Relay for shivamkalra98@zohomail.in/20260402
+ with auth_id=716
+X-Original-From: Shivam Kalra <shivamkalra98@zohomail.in>
+Reply-To: shivamkalra98@zohomail.in
+X-Rspamd-Queue-Id: 6E14346A3F5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-3.56 / 15.00];
-	SIGNED_PGP(-2.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TAGGED_FROM(0.00)[bounces-241168-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-241169-lists,stable=lfdr.de,shivamkalra98.zohomail.in];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	DMARC_NA(0.00)[decadent.org.uk];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ben@decadent.org.uk,stable@vger.kernel.org];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,stable@vger.kernel.org];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	R_DKIM_NA(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,canonical.com:email,qualys.com:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	HAS_REPLYTO(0.00)[shivamkalra98@zohomail.in]
+
+From: Shivam Kalra <shivamkalra98@zohomail.in>
+
+The HP OMEN 16 Gaming Laptop (board name 8A44) has a mux-less hybrid
+GPU configuration with AMD Rembrandt (Radeon 680M) and NVIDIA GA104
+(RTX 3070 Ti). The internal eDP panel is wired to the AMD iGPU.
+
+When Nouveau loads without GSP firmware, the ACPI video backlight
+device (acpi_video0) gets registered alongside the native AMD
+backlight (amdgpu_bl2). In this state, writes to amdgpu_bl2 update
+the software brightness value but fail to change the physical panel
+brightness.
+
+Force native backlight to prevent acpi_video0 from registering.
+Confirmed that booting with acpi_backlight=native resolves the issue.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Shivam Kalra <shivamkalra98@zohomail.in>
+---
+This patch adds a DMI quirk to force native backlight control on the
+HP OMEN 16 Gaming Laptop (board name 8A44), which has a mux-less
+hybrid GPU configuration with AMD Rembrandt (680M iGPU) and NVIDIA
+GA104 (RTX 3070 Ti).
+On this laptop the internal eDP panel is wired to the AMD iGPU. The
+amdgpu driver registers amdgpu_bl2 as the native backlight device.
+When the Nouveau driver is loaded without GSP firmware (as is the
+case on v6.17 where GSP is not the default for Ampere GPUs), writes
+to amdgpu_bl2 fail silently — the brightness sysfs value updates
+but the physical panel brightness does not change.
+Testing:
+- Tested on HP OMEN 16 with AMD Ryzen 9 6900HX + NVIDIA RTX 3070 Ti.
+- On v6.17, without this quirk, brightness control is broken.
+- On v6.17, booting with acpi_backlight=native restores correct
+  brightness control. This patch applies that workaround
+  automatically via DMI match.
+- On v6.18+, the issue does not reproduce because commit
+  e0ed674acbac ("drm/nouveau: Remove DRM_NOUVEAU_GSP_DEFAULT
+  config") made GSP firmware the default for Ampere, which avoids
+  the ACPI conflict entirely.  
+I have only tested this on v6.17 and v7.0. I am leaving it to the
+stable/LTS maintainers to determine whether this quirk should be
+backported, as I have not verified the stability of the GSP firmware
+path on intermediate releases.
+
+Thanks,
+Shivam Kalra
+---
+ drivers/acpi/video_detect.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
+index 0a3c8232d15d..458efa4fe9d4 100644
+--- a/drivers/acpi/video_detect.c
++++ b/drivers/acpi/video_detect.c
+@@ -916,6 +916,14 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
+ 		DMI_MATCH(DMI_PRODUCT_NAME, "82K8"),
+ 		},
+ 	},
++	{
++	 .callback = video_detect_force_native,
++	 /* HP OMEN Gaming Laptop 16-n0xxx */
++	 .matches = {
++		DMI_MATCH(DMI_SYS_VENDOR, "HP"),
++		DMI_MATCH(DMI_PRODUCT_NAME, "OMEN by HP Gaming Laptop 16-n0xxx"),
++		},
++	},
+ 
+ 	/*
+ 	 * x86 android tablets which directly control the backlight through
+
+---
+base-commit: 27d128c1cff64c3b8012cc56dd5a1391bb4f1821
+change-id: 20260425-omen-16-backlight-fix-73fb8bc4a2b9
+
+Best regards,
+--  
+Shivam Kalra <shivamkalra98@zohomail.in>
 
 
---=-iryIRH0H4TTNncqYv/s4
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Tue, 2026-04-21 at 01:42 -0700, John Johansen wrote:
-> On 4/19/26 03:26, Ben Hutchings wrote:
-> > On Mon, 2026-04-13 at 18:01 +0200, Greg Kroah-Hartman wrote:
-> > > 5.10-stable review patch.  If anyone has any objections, please let m=
-e know.
-> > >=20
-> > > ------------------
-> > >=20
-> > > From: Massimiliano Pellizzer <massimiliano.pellizzer@canonical.com>
-> > >=20
-> > > commit 9063d7e2615f4a7ab321de6b520e23d370e58816 upstream.
-> > >=20
-> > > Backport for conflicts caused by
-> > >    ad596ea74e74 ("apparmor: group dfa policydb unpacking")
-> > >    - rearrange and consolidated the unpack.
-> > >=20
-> > >    b11e51dd7094 ("apparmor: test: make static symbols visible during =
-kunit testing")
-> > >    - rename function and make it visible to kunit tests
-> > >=20
-> > > Start states are read from untrusted data and used as indexes into th=
-e
-> > > DFA state tables. The aa_dfa_next() function call in unpack_pdb() wil=
-l
-> > > access dfa->tables[YYTD_ID_BASE][start], and if the start state excee=
-ds
-> > > the number of states in the DFA, this results in an out-of-bound read=
-.
-> > >=20
-> > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > >   BUG: KASAN: slab-out-of-bounds in aa_dfa_next+0x2a1/0x360
-> > >   Read of size 4 at addr ffff88811956fb90 by task su/1097
-> > >   ...
-> > >=20
-> > > Reject policies with out-of-bounds start states during unpacking
-> > > to prevent the issue.
-> > >=20
-> > > Fixes: ad5ff3db53c6 ("AppArmor: Add ability to load extended policy")
-> > > Reported-by: Qualys Security Advisory <qsa@qualys.com>
-> > > Tested-by: Salvatore Bonaccorso <carnil@debian.org>
-> > > Reviewed-by: Georgia Garcia <georgia.garcia@canonical.com>
-> > > Reviewed-by: Cengiz Can <cengiz.can@canonical.com>
-> > > Signed-off-by: Massimiliano Pellizzer <massimiliano.pellizzer@canonic=
-al.com>
-> > > Signed-off-by: John Johansen <john.johansen@canonical.com>
-> > > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > > ---
-> > >   security/apparmor/policy_unpack.c |   21 +++++++++++++++++++--
-> > >   1 file changed, 19 insertions(+), 2 deletions(-)
-> > >=20
-> > > --- a/security/apparmor/policy_unpack.c
-> > > +++ b/security/apparmor/policy_unpack.c
-> > > @@ -841,9 +841,18 @@ static struct aa_profile *unpack_profile
-> > >   			error =3D -EPROTO;
-> > >   			goto fail;
-> > >   		}
-> > > -		if (!unpack_u32(e, &profile->policy.start[0], "start"))
-> > > +		if (!unpack_u32(e, &profile->policy.start[0], "start")) {
-> > >   			/* default start state */
-> > >   			profile->policy.start[0] =3D DFA_START;
-> > > +		} else {
-> > > +			size_t state_count =3D profile->policy.dfa->tables[YYTD_ID_BASE]-=
->td_lolen;
-> > > +
-> > > +			if (profile->policy.start[0] >=3D state_count) {
-> > > +				info =3D "invalid dfa start state";
-> > > +				goto fail;
-> > > +			}
-> > > +		}
-> > [...]
-> >=20
-> > Isn't this range check needed even if we use the default start state?
-> > unpack_table() only checks that td_tolen > 0, so we could end up with
-> > profile->policy.start[0] =3D DFA_START =3D=3D 1 and
-> > profile->policy.dfa->tables[YYTD_ID_BASE]->td_lolen =3D=3D 1.
-> >=20
-> > (This is specific to the backport as the upstream version didn't put
-> > this check in an else-block.)
-> >=20
->=20
-> Hey Ben,
-> I specifically chose not to make that alteration to the patches sent to
-> stable after reviewing the submission rules. That would be a non-backport
-> related change from what landed upstream and we were referencing as the
-> upstream patch.
-
-But the upstream patch didn't have this problem!  The range check was
-not conditional so it would catch this case.
-
-> Instead I am sending Linus a 2nd patch that addresses
-> the issue by ensure the loaded dfa has at least two states. It will has
-> a fixes tag and will get pulled back.
-
-I think you are talking about adding a check in unpack_table().  I am
-talking about the later check in unpack_profile() (or in unpack_pdb()
-upstream).
-
-Ben.
-
---=20
-Ben Hutchings
-Nothing is ever a complete failure;
-it can always serve as a bad example.
-
---=-iryIRH0H4TTNncqYv/s4
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmnuFpwACgkQ57/I7JWG
-EQk1OBAAm8wwA53ntd81DAn8VqPtxnJesnjJmsgx6Pwllwko9UWE2dYQSk7DoWfl
-7LZiBHyJL90z+mwHYxf597KIp6zNTKpVnmRnuAEdgCL8KyMqJoPo0WS7PEAV3Czy
-WKAoK051pi8TimAgMZSWHRDzHQiarSujKRp3ho/cyuMZ8DhMqYNkb+vXQchOrtZa
-AqZWpSo+pgjAgbdsuzkgiTW06iOXkiYglqPNyr8elA3GpVP3ETdlcG8/qPpNJ2oU
-PBpYqKIUlf12VD9MLAN2601QaIJ4l9Iwf3LlDp+XZglLFAkW/LYxZarVj7a54Nmv
-9GMa/ydKBctOTPnub7PaUnRNwfm10h78zaLJ8jdrNztiwcom14DAM3ejoU2nNJ1/
-sbvD4SCqls1G8YFY+Wo0gIKNq//6o/+nVtdnhjXjUI9qR7QjciHuNliuWErIx4qO
-WNgjRCNRXh7UTgRvZD3hfUocJSI19p5kV0//ho0Z4kQ2rEgTxZ8PMltyfzagh95L
-yPP23BEi2EhkY0SOf+KNbOuBd4DZeq1r2lUP08GoHzXXFNUXF6fHCCbYF+H5oHqf
-3rRUz90dTQOxlx02zQoTMxo3kESsy3M5yYdP+0Y5n/jAKYvXEPrYaYnqXoc3yaBD
-VZi+V81bUNbSc8zVrDxG8VRAncd3z1RA0fBF0piLNQ6jMgBvNOU=
-=ZTqU
------END PGP SIGNATURE-----
-
---=-iryIRH0H4TTNncqYv/s4--
 
