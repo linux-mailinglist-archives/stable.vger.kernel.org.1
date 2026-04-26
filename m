@@ -1,90 +1,74 @@
-Return-Path: <stable+bounces-241153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241154-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ZGD0JcGZ7WnvlQAAu9opvQ
-	(envelope-from <stable+bounces-241153-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 26 Apr 2026 06:51:13 +0200
+	id uOJULqWd7WnjlgAAu9opvQ
+	(envelope-from <stable+bounces-241154-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 26 Apr 2026 07:07:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21393468B9B
-	for <lists+stable@lfdr.de>; Sun, 26 Apr 2026 06:51:13 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 551E4468C0C
+	for <lists+stable@lfdr.de>; Sun, 26 Apr 2026 07:07:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 899C530058D8
-	for <lists+stable@lfdr.de>; Sun, 26 Apr 2026 04:51:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BCC9F302334F
+	for <lists+stable@lfdr.de>; Sun, 26 Apr 2026 05:07:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 665FC2BDC2F;
-	Sun, 26 Apr 2026 04:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82DED2D0C63;
+	Sun, 26 Apr 2026 05:07:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RPR+b6v8"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="TGgBbMPm"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f51.google.com (mail-dl1-f51.google.com [74.125.82.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7F6178F3A
-	for <stable@vger.kernel.org>; Sun, 26 Apr 2026 04:51:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.51
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C964D2C11E7;
+	Sun, 26 Apr 2026 05:07:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777179068; cv=none; b=qVQVBDghn3q/DmTFck1bsuFTG4ckm79kmm8GYSL2nZYVT13ECBbOE3LMse/Stc4h38s05maEBnQgNLLGNerUxA5XHAngKNR0LRFtucUvLqbxaGs4dB76P/7V1Ue+Pe1zqPZ+c01Im538ofAjAO7SRrjM4JkAh9Vz9FBYZFtyKaA=
+	t=1777180034; cv=none; b=YJrxkwb/PA/eHMvCC6BAZxg4l3eFPK50QegRSJddoKIWftLEAcdREhvMDPSp2F/pRs7Mk81K7a+ds6iatLaHk2Hm2CXAzRjOrbsUSWYWf3sQ5rx9ihxmJkTBHKxKOIJ7/N3qZbgn35KvtPdZv22xwc6/9fp0T2GURrmLkev8D+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777179068; c=relaxed/simple;
-	bh=4/1dm9v2x6HqLfmARPOK2LRXOfRfLUHSz+Wlm2pqaJ4=;
+	s=arc-20240116; t=1777180034; c=relaxed/simple;
+	bh=KM517Q3BrOyfm84uDI+7B3RWe7yRmvBoDH0Wv09pxEg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jUwLSQ025lP/JPXkGZhjNe3f0StCebFZPYv6bs9WNCGZTMrGn2Vih82dIrhRSz7LvzULWgpdJ+cWCSpHzCsnunrIwiofhxjZ0nthKle2SFeApZVOB3ai6x8EEB85JJzXGjOQhEjLudFH/NSbo0bzwN0DtneQ3R5k2HznwDoKlY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RPR+b6v8; arc=none smtp.client-ip=74.125.82.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dl1-f51.google.com with SMTP id a92af1059eb24-12c637089ccso11630697c88.1
-        for <stable@vger.kernel.org>; Sat, 25 Apr 2026 21:51:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777179065; x=1777783865; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=+vaOJDGyw3wxp09UGOcbQa5slZ7g91u9irMmTCg27/0=;
-        b=RPR+b6v8QzBK5bG1zRpsnSK5Y3ivVVnBRnXexn1bqRrg9M+x62REsWb9rXm93ArfD0
-         i3rF346hGODFIr2ajhhCx0PR49CWNMM5hhA74+FU+REzNPNLROb2SRcFB3S4Cq0DO0IJ
-         l4J5IdoMy+hIa2eyvrxau3vFqJ+xh+AbehmfEKmLl/wF86zGzsQzOlQ55aGKXdr2cx7r
-         tpG4+dHnxmgY6sEhL+8iTGybqVPQHcxfV+BpZ//NJGnKTM76Bq8gnIX0Y+KU2sINiBdf
-         0miv3y6DGihN2leyxhiCo4ZXTmgFxWxHAlZ6UMffG4eRqBM7RICDdkSxk+iQju2A4unQ
-         zeiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777179065; x=1777783865;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+vaOJDGyw3wxp09UGOcbQa5slZ7g91u9irMmTCg27/0=;
-        b=jczNHnzMuNesANEqDr0Xj3um1oCRuMcFYF5rx7Xpwt/9Fzwiq8JwiKoM5kSE2+nKiP
-         oyTdZY5K6+C7gBteffJHwMR5W7YjT9KW5oN3svvE+X/ZERNuZEadYXCzVgZ5kfSmzBEs
-         0P6Ed9G/gGuFzaiRg3jSy595oj0SCPtvuK9jh77lqZCBB1SZD63q2at79co75fqZzSAw
-         IWkCcLKX1BqgeVRRpPZJD0qFie0Mf5asVGeT9tpA3VFcYFgEDW/ojC0PY6gGW2zC5Li1
-         AOyut4D3Ho8Scp8r3z+Z2KIO/W3jXpDlAcmXaFG/q6djwlm+Qnnbywc1n76vGao46+jX
-         GiZw==
-X-Forwarded-Encrypted: i=1; AFNElJ9bwCe4MeC2Wg8c5Hq6jmyfdVRUU2xQnO0mGu6lBUIO9qTHwZeEjRVLYAnWINatZ2pgxZ4OedI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx+eHnb/oiuuTFl3wwhPl7XlqQLD8BZiL/1yRHwA1676rGDh2Gy
-	gxX6UqUUXSZAFJarM1ccg383rLOEwNhLCD5DqVd2i53AzPOuLm2rkxwF
-X-Gm-Gg: AeBDiesJy6uREiD6Z0bx9T19+91nmnsH5nXFWcCWoqtS3xM+BSmBynkESTeaFRhxXhc
-	LGjco0J6+Ji7Hk6moJzXKybN0pXJoRb551Mhzbtxw/1K4yVNS92CnEUycdzf6uAqqtg/3a2pyeN
-	O1x10KMKulU/b/3WD0jsXOt5bpAqcm8H5lKFSpBE3sBMCukG4sjjGNf/O2Pg5/KVTZ4Uz6smDQm
-	lCZgjna5Uqo1P5w4hXr7qSClAtuXr8DDNGlHLEagZJdSlHHJFZVdjXneoh7K2I4iUujG6NsQe6v
-	+A+NxbIs5eXVjjzz3MlJF0X1Vtr7/F32F4AdZoTRaG3sc7RAiuj+OCDCBqPvNZxHPSXDISBrY1E
-	HWEYoUQPLzJ3JEkqKQ+qGD4Wo9fBLiVonlwztXI2IXJ3Ifc+KuTE92eNmwcj7ZHgf84wCnpGRNR
-	H2zPEHgVbJquB/XqlZFznPh5/8wxYi3xItqQU+iZ6WtWSqXiFwINuqxkdaKyOq2qvjdZADx7sha
-	iE=
-X-Received: by 2002:a05:7022:ea2c:b0:128:dbbf:fd35 with SMTP id a92af1059eb24-12c73fa3c01mr20631223c88.28.1777179064969;
-        Sat, 25 Apr 2026 21:51:04 -0700 (PDT)
-Received: from google.com ([2a00:79e0:2ebe:8:f359:aa0c:530d:9dfd])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12c919266f6sm38343163c88.1.2026.04.25.21.51.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 25 Apr 2026 21:51:04 -0700 (PDT)
-Date: Sat, 25 Apr 2026 21:51:01 -0700
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: Kris Bahnsen <kris@embeddedts.com>
-Cc: Marek Vasut <marex@denx.de>, stable@vger.kernel.org, 
-	Mark Featherston <mark@embeddedts.com>, linux-input@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] Input: ads7846 - don't use scratch for tx_buf when
- clearing register
-Message-ID: <ae2YWxew6M03MFfN@google.com>
-References: <20260424192534.3504976-1-kris@embeddedTS.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=hJwj3gGh+KkuAOR1oFxuCQ+YG/3gnnE6s1uTIlYzKZiJ2it3SAkQLezcjid0UJjGZOAEhyUxziy9VAvXep0iUK59Z7oKGPEaZAiZIJPTE6Nfnuu6uABTasp+wHY/uOqy8c6dONVdCITmfbv9YQYLiN/NRoOuoS7tH3iAXcSbDuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=TGgBbMPm; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1134)
+	id DD1F720B7168; Sat, 25 Apr 2026 22:07:12 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com DD1F720B7168
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1777180032;
+	bh=Wh2WHuHneQyXIcfDixCT2M+yhKhxE8h91BXk5ba0XF8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TGgBbMPmrnxs2uqEd5XDny3P4qs0ic1HLMvrJIl8R814cEDA510KMjrxovKgX/zRC
+	 MkNTI9KmKEcnZSQWwUTpWdGCck32jdyEl3Y/q/WF3Vfuae2WNYwSHwLudqvZtg81xX
+	 kkBy039AdC3c2xURzDh5etpopNQ3Fzxw54KMFTpg=
+Date: Sat, 25 Apr 2026 22:07:12 -0700
+From: Shradha Gupta <shradhagupta@linux.microsoft.com>
+To: Dipayaan Roy <dipayanroy@linux.microsoft.com>
+Cc: Dexuan Cui <decui@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Konstantin Taranov <kotaranov@microsoft.com>,
+	Simon Horman <horms@kernel.org>,
+	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
+	Shiraz Saleem <shirazsaleem@microsoft.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Long Li <longli@microsoft.com>, Yury Norov <yury.norov@gmail.com>,
+	linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, Paul Rosswurm <paulros@microsoft.com>,
+	Shradha Gupta <shradhagupta@microsoft.com>,
+	Saurabh Singh Sengar <ssengar@microsoft.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net] net: mana: Optimize irq affinity for low vcpu configs
+Message-ID: <ae2dgC3aYqQWZ8SJ@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+References: <20260424061702.1442618-1-shradhagupta@linux.microsoft.com>
+ <aetgQ1gCYlGJjiKk@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+ <aexcDgNJw4Nr/uMU@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+ <aeyMtcAi6B7DfAx+@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -93,98 +77,232 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260424192534.3504976-1-kris@embeddedTS.com>
-X-Rspamd-Queue-Id: 21393468B9B
+In-Reply-To: <aeyMtcAi6B7DfAx+@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+X-Rspamd-Queue-Id: 551E4468C0C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[linux.microsoft.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linux.microsoft.com:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-241153-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-241154-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[24];
+	FREEMAIL_CC(0.00)[microsoft.com,kernel.org,lunn.ch,davemloft.net,google.com,redhat.com,linux.microsoft.com,outlook.com,gmail.com,vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dmitrytorokhov@gmail.com,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[shradhagupta@linux.microsoft.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux.microsoft.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable,netdev];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.microsoft.com:dkim,linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net:mid,bootlin.com:url]
 
-Hi Kris,
-
-On Fri, Apr 24, 2026 at 07:25:34PM +0000, Kris Bahnsen wrote:
-> The workaround for XPT2046 clears the command register, giving the
-> touchscreen controller a NOP. The change incorrectly re-uses the
-> req->scratch variable which is used as rx_buf for xfer[5], so by
-> the time xfer[6] occurs, the contents of req->scratch may not be
-> 0. It was found that the touchscreen controller can end up in
-> a completely unresponsive state due to it being given a command
-> the driver does not expect.
+On Sat, Apr 25, 2026 at 02:43:17AM -0700, Dipayaan Roy wrote:
+> On Fri, Apr 24, 2026 at 11:15:42PM -0700, Shradha Gupta wrote:
+> > On Fri, Apr 24, 2026 at 05:21:23AM -0700, Dipayaan Roy wrote:
+> > > On Thu, Apr 23, 2026 at 11:17:00PM -0700, Shradha Gupta wrote:
+> > > > In mana driver, the number of IRQs allocated are capped by the
+> > > > min(num_cpu + 1, queue count). In cases, where the IRQ count is greater
+> > > > than the vcpu count, we want to utilize all the vcpus, irrespective of
+> > > > their NUMA/core bindings.
+> > > > 
+> > > > This is important, especially in the envs where number of vcpus are so
+> > > > few that the softIRQ handling overhead on two IRQs on the same vcpu is
+> > > > much more than their overheads if they were spread across sibling vcpus
+> > > > 
+> > > > This behaviour is more evident with dynamic IRQ allocation. Since MANA
+> > > > IRQs are assigned at a later stage compared to static allocation, other
+> > > > device IRQs may already be affinitized to the vCPUs. As a result, IRQ
+> > > > weights become imbalanced, causing multiple MANA IRQs to land on the
+> > > > same vCPU.
+> > > > 
+> > > > In such cases when many parallel TCP connections are tested, the
+> > > > throughput drops significantly
+> > > > 
+> > > > Test envs:
+> > > > =======================================================
+> > > > Case 1: without this patch
+> > > > =======================================================
+> > > > 4 vcpu(2 cores), 5 MANA IRQs (1 HWC + 4 Queue)
+> > > > 
+> > > > 	TYPE		effective vCPU aff
+> > > > =======================================================
+> > > > IRQ0:	HWC		0
+> > > > IRQ1:	mana_q1		0
+> > > > IRQ2:	mana_q2		2
+> > > > IRQ3:	mana_q3		0
+> > > > IRQ4:	mana_q4		3
+> > > > 
+> > > > %soft on each vCPU(mpstat -P ALL 1) on receiver
+> > > > vCPU		0	1	2	3
+> > > > =======================================================
+> > > > pass 1:		38.85	0.03	24.89	24.65
+> > > > pass 2:		39.15	0.03	24.57	25.28
+> > > > pass 3:		40.36	0.03	23.20	23.17
+> > > > 
+> > > > =======================================================
+> > > > Case 2: with this patch
+> > > > =======================================================
+> > > > 4 vcpu(2 cores), 5 MANA IRQs (1 HWC + 4 Queue)
+> > > > 
+> > > >         TYPE            effective vCPU aff
+> > > > =======================================================
+> > > > IRQ0:   HWC             0
+> > > > IRQ1:   mana_q1         0
+> > > > IRQ2:   mana_q2         1
+> > > > IRQ3:   mana_q3         2
+> > > > IRQ4:   mana_q4         3
+> > > > 
+> > > > %soft on each vCPU(mpstat -P ALL 1) on receiver
+> > > > vCPU            0       1       2       3
+> > > > =======================================================
+> > > > pass 1:         15.42	15.85	14.99	14.51
+> > > > pass 2:         15.53	15.94	15.81	15.93
+> > > > pass 3:         16.41	16.35	16.40	16.36
+> > > > 
+> > > > =======================================================
+> > > > Throughput Impact(in Gbps, same env)
+> > > > =======================================================
+> > > > TCP conn	with patch	w/o patch
+> > > > 20480		15.65		7.73
+> > > > 10240		15.63		8.93
+> > > > 8192		15.64		9.69
+> > > > 6144		15.64		13.16
+> > > > 4096		15.69		15.75
+> > > > 2048		15.69		15.83
+> > > > 1024		15.71		15.28
+> > > > 
+> > > > Fixes: 755391121038 ("net: mana: Allocate MSI-X vectors dynamically")
+> > > > Cc: stable@vger.kernel.org
+> > > > Signed-off-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
+> > > > Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+> > > > Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
+> > > > ---
+> > > >  .../net/ethernet/microsoft/mana/gdma_main.c   | 35 +++++++++++++++++--
+> > > >  1 file changed, 33 insertions(+), 2 deletions(-)
+> > > > 
+> > > > diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+> > > > index 098fbda0d128..433c044d53c6 100644
+> > > > --- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
+> > > > +++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+> > > > @@ -1672,6 +1672,23 @@ static int irq_setup(unsigned int *irqs, unsigned int len, int node,
+> > > >  	return 0;
+> > > >  }
+> > > >  
+> > > > +static int irq_setup_linear(unsigned int *irqs, unsigned int len)
+> > > > +{
+> > > > +	int cpu;
+> > > > +
+> > > > +	rcu_read_lock();
+> > > We do not need to call rcu_read_lock here, as the caller of this
+> > > function has already acquired cpus_read_lock.
+> > 
+> > Thanks for your comments Dipayaan, I think this is still needed for the
+> > irq_set_affinity_and_hint(), to protect the pointer returned by
+> > irq_to_desc(). You can also see the same in the original function
+> > irq_setup() for the same reason.
+> Hi Shradha,
 > 
-> Instead, rely on the spi_transfer behavior of tx_buf being NULL to
-> transmit all 0 bits, moving the 3 bytes to a single message.
+> The original irq_setup() function uses rcu_read_lock() because it relies
+> on for_each_numa_hop_mask(), which explicitly mandates that RCU be held.
+> You have not used it in irq_setup_linear(), hence the requirement does not apply
+> here.
+> https://elixir.bootlin.com/linux/v7.0.1/source/include/linux/topology.h#L314
+> /**
+>  * for_each_numa_hop_mask - iterate over cpumasks of increasing NUMA
+>  * distance
+>  *                          from a given node.
+>  * @mask: the iteration variable.
+>  * @node: the NUMA node to start the search from.
+>  *
+>  * Requires rcu_lock to be held.
+>  *
+> .....
+> Regarding irq_set_affinity_and_hint it also garbs rcu locks internally:
+> irq_set_affinity_and_hint ->__irq_apply_affinity_hint() -> irq_to_desc() -> mtree_load().
+> Also see how irq_set_affinity_and_hint is called in mana_gd_setup_irqs.
+> IMO we should drop the nesting when not needed, even though it appears
+> harmless.
 > 
-> This change was tested on real TSC2046 and ADS7843 controllers,
-> but not the XPT2046 the workaround was originally created for.
-> Confirming that the original modification to clear the command
-> register does not impact either real controller.
-> 
-> Fixes: 781a07da9bb94 ("Input: ads7846 - add dummy command register clearing cycle")
-> Cc: stable@vger.kernel.org
-> Co-developed-by: Mark Featherston <mark@embeddedTS.com>
-> Signed-off-by: Mark Featherston <mark@embeddedTS.com>
-> Signed-off-by: Kris Bahnsen <kris@embeddedTS.com>
-> ---
->  drivers/input/touchscreen/ads7846.c | 13 ++++---------
->  1 file changed, 4 insertions(+), 9 deletions(-)
-> 
-> diff --git a/drivers/input/touchscreen/ads7846.c b/drivers/input/touchscreen/ads7846.c
-> index 4b39f7212d35c..599793d27129e 100644
-> --- a/drivers/input/touchscreen/ads7846.c
-> +++ b/drivers/input/touchscreen/ads7846.c
-> @@ -327,7 +327,7 @@ struct ser_req {
->  	u8			ref_off;
->  	u16			scratch;
->  	struct spi_message	msg;
-> -	struct spi_transfer	xfer[8];
-> +	struct spi_transfer	xfer[7];
->  	/*
->  	 * DMA (thus cache coherency maintenance) requires the
->  	 * transfer buffers to live in their own cache lines.
-> @@ -403,16 +403,11 @@ static int ads7846_read12_ser(struct device *dev, unsigned command)
->  	spi_message_add_tail(&req->xfer[5], &req->msg);
->  
->  	/* clear the command register */
-> -	req->scratch = 0;
-> -	req->xfer[6].tx_buf = &req->scratch;
-> -	req->xfer[6].len = 1;
-> +	req->xfer[6].rx_buf = &req->scratch;
-> +	req->xfer[6].len = 3;
+> Thanks and Regards
+> Dipayaan Roy
+>
 
-Doesn't this overflow "scratch" which is only 2 bytes? I guess there is
-a hole in ser_req between "scratch" and "msg" but I do not think we
-should rely on this.
+There was a small window after mtree_load() returns irq_desc* and
+raw_spin_lock() being taken, where I thought the rcu_read_lock() was
+needed. But on futher investigation, I agree it is not needed there as
+well. Let me drop this in the v2. Thanks
 
-Can we also set rx_buf to NULL to discard incoming data?
-
-[credit to sashiko].
-
-Thanks.
-
--- 
-Dmitry
+> > 
+> > > > +	for_each_online_cpu(cpu) {
+> > > > +		if (len <= 0)
+> > > len is unsigned here so <= doesnot makes sense. PLease change it to int
+> > > or better use if(!len)
+> > 
+> > sure, I think I will change it to explicitly exit when len == 0
+> > Thanks.
+> > 
+> > > > +			break;
+> > > > +
+> > > > +		irq_set_affinity_and_hint(*irqs++, cpumask_of(cpu));
+> > > > +		len--;
+> > > > +	}
+> > > > +	rcu_read_unlock();
+> > > > +
+> > > > +	return 0;
+> > > > +}
+> > > > +
+> > > >  static int mana_gd_setup_dyn_irqs(struct pci_dev *pdev, int nvec)
+> > > >  {
+> > > >  	struct gdma_context *gc = pci_get_drvdata(pdev);
+> > > > @@ -1722,10 +1739,24 @@ static int mana_gd_setup_dyn_irqs(struct pci_dev *pdev, int nvec)
+> > > >  	 * first CPU sibling group since they are already affinitized to HWC IRQ
+> > > >  	 */
+> > > >  	cpus_read_lock();
+> > > > -	if (gc->num_msix_usable <= num_online_cpus())
+> > > > +	if (gc->num_msix_usable <= num_online_cpus()) {
+> > > >  		skip_first_cpu = true;
+> > > > +		err = irq_setup(irqs, nvec, gc->numa_node, skip_first_cpu);
+> > > > +	} else {
+> > > > +		/*
+> > > > +		 * In case our IRQs are more than num_online_cpus, we try to
+> > > > +		 * make sure we are using all vcpus. In such a case NUMA or
+> > > > +		 * CPU core affinity does not matter.
+> > > > +		 * Note that in this case the total mana IRQ should always be
+> > > > +		 * num_online_cpu + 1. The first HWC IRQ is already handled
+> > > > +		 * in HWC setup calls
+> > > > +		 * So, the nvec value in this path should always be equal to
+> > > > +		 * num_online_cpu
+> > > nit: typo: should be num_online_cpus
+> > 
+> > noted
+> > 
+> > > > +		 */
+> > > > +		WARN_ON(nvec > num_online_cpus());
+> > > > +		err = irq_setup_linear(irqs, nvec);
+> > > > +	}
+> > > >  
+> > > > -	err = irq_setup(irqs, nvec, gc->numa_node, skip_first_cpu);
+> > > >  	if (err) {
+> > > >  		cpus_read_unlock();
+> > > >  		goto free_irq;
+> > > > 
+> > > > base-commit: e728258debd553c95d2e70f9cd97c9fde27c7130
+> > > > -- 
+> > > > 2.34.1
+> > > > 
+> > > Regards
+> > > Dipayaan Roy
 
