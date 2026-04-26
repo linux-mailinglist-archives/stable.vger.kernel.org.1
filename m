@@ -1,91 +1,91 @@
-Return-Path: <stable+bounces-241195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241196-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8OmrEGaJ7mlyvAAAu9opvQ
-	(envelope-from <stable+bounces-241195-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 26 Apr 2026 23:53:42 +0200
+	id 2JhjDWmJ7mlyvAAAu9opvQ
+	(envelope-from <stable+bounces-241196-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 26 Apr 2026 23:53:45 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB75746B537
-	for <lists+stable@lfdr.de>; Sun, 26 Apr 2026 23:53:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB51D46B53E
+	for <lists+stable@lfdr.de>; Sun, 26 Apr 2026 23:53:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A4CD23003427
-	for <lists+stable@lfdr.de>; Sun, 26 Apr 2026 21:53:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A2F4E3008089
+	for <lists+stable@lfdr.de>; Sun, 26 Apr 2026 21:53:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFD6A306B31;
-	Sun, 26 Apr 2026 21:53:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1AC230596F;
+	Sun, 26 Apr 2026 21:53:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="tE5g9oe8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K9Bq+wQ7"
 X-Original-To: stable@vger.kernel.org
 Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com [209.85.210.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D1F30499A
-	for <stable@vger.kernel.org>; Sun, 26 Apr 2026 21:53:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B532B2FBE1F
+	for <stable@vger.kernel.org>; Sun, 26 Apr 2026 21:53:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777240411; cv=none; b=jGTaOE0mAVO1DgrzJ+BTw6I2e+O+ga6Q7ukbQkIcuoaGF/OR/BtBrsXMyWCAj9U16tS9WJCi+F/KrzGVQQDwKu3Abu1AN5EJFXr6G2+IEJ3wecWN9fiJ7RA7rfPQj9SNKmailVT6TGKTbH2dIPuDlTmc/JlEQFjAmP+C1Ew1lis=
+	t=1777240412; cv=none; b=hbxkgc3bf9w/lFCs+xqW8d+A1awySllPf5Cj4o21gyHgMnoUf10AlheYBWqC3poFtOZ24vt3lQOzNBHCj66LwJLEcmIhBfxJ/Uufyw/YELaV6VHMWEOaEltHA4NwCreSXIbGroY+pxk3Mw7ivgoKSNcZu9j2kOuGleTU6Gl9uv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777240411; c=relaxed/simple;
-	bh=sA3mx2HWfjIDrHbQQavcX6TV6BrMkyr0y8nWkwRlbHE=;
+	s=arc-20240116; t=1777240412; c=relaxed/simple;
+	bh=Wi4Fv0juR5nS1PAq5xdcIGtRmh6N2GwGB/2Aa4KaFW0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IssX4Eih7mlieOPJ9T0d7eEP2Z3AS/JaJvRbHA98s7y0K32nHTlHdDPISdZPeTEDiM44p7tgvK7x0MoVX991+s5TpfMzH0a2oJdNde8rXSVDRG7J7bfi/ThCrgimtTfn5kZ+OPzezvQLl4YA+91poFpK+Qr3S0dRjrwU1PQrPBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=tE5g9oe8; arc=none smtp.client-ip=209.85.210.52
+	 MIME-Version; b=Bie2nGpVry7Ev8XGGUY6iXzCT/LbfbUecG1hNQlgG28I45mffSYLSB32y7nD2+Zd+oJaW9DBvu1ppIM7b0GOEdBDpzEcBhVMul3U/o+8M8m4OB8Rugi7eMgO7g0VSxop/1OrAaxLo3sUqUdHndNwIq+2Ji9Yri2JBrxZiw5l/p4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K9Bq+wQ7; arc=none smtp.client-ip=209.85.210.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-7de7dc85b74so454836a34.2
-        for <stable@vger.kernel.org>; Sun, 26 Apr 2026 14:53:27 -0700 (PDT)
+Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-7de431da8fbso3818500a34.1
+        for <stable@vger.kernel.org>; Sun, 26 Apr 2026 14:53:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777240406; x=1777845206; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1777240407; x=1777845207; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=SP/YI4HtDk0TtX1V0TKtvjH0atba9by0J0PL+dY5whM=;
-        b=tE5g9oe8oxRe6CG7QGVGeFmoj32UikwNzkKfdGra4TWtcdtbEWeUNzrgajG2tSSQCp
-         I9dT6eRkIebbJhuvGhHKBZzJrPvDoLKmHB5sjV3CBGOOB1wZ8u8KLO2MqBM/hgs5L/Cy
-         dcpcsj6YhX7oRJlhrGEwHkERgE7Qj2BEbzMHbEy9GjGGk56fBnZO13aWf+SxlCABowQl
-         NH//w+T11B4LpQqG3fX9iIyvnm6bGGEB8+VbI0XWDOqAwvkplrOrCEYMXLSBmuq0Uwrm
-         UhjfHcyGK5PWaL8UNsfnQZN88O/uHrN2ZbShupY84IbP3Z6dtxyT3sCFl96T/WJmYsM6
-         DK0w==
+        bh=L2/6bOX3xGdDGZcmRDZLBCFucwqOFV+5pfd4G013dcg=;
+        b=K9Bq+wQ7MlHnEaL5mHvpVtvxG04QTek0VUAnL5N5ttGUDXGgTu2ixJ+tx9kyxZkkNa
+         2RFnasIiGQYtoC+DPoUYBDezUYsElziYRDBIolDRruir7f2ElKtSwO27443z/v0b6RWH
+         u515BrLYvqiLwm3NKtYyYwksoj6tKQgyHLp3NqZ+Ai+iXE9fDXmjbLtZi/W+O2Hi2Ly6
+         bS0T4nibgx4tmkD3fTPgxjhPl8p4d3AWMSXcr1WTfP8aO0uetPdsEI9ef2CA+FwxwgH4
+         pke4iKGbStk5gda6X75jbN9E1b88eXzz2p2V/9cRFgIrqoiic9TwzKmAuEcbxLb3tQ0t
+         UCsw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777240406; x=1777845206;
+        d=1e100.net; s=20251104; t=1777240407; x=1777845207;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=SP/YI4HtDk0TtX1V0TKtvjH0atba9by0J0PL+dY5whM=;
-        b=cbVEAC0Z4dhisibXNYrYjz618K+Xtf0ZSSSURVwTn4XvC9AFL6r5+ExXjiik454vGE
-         j8nvC10gX2+oo3wTmgjeKVNIrqJaTAKBzaRqqV8bB1ybHnlkYVUZjMnh85eqqFlfe+xs
-         yLyj3JRc1JG/c/EBvezNPy0hctHtSF19+f2/vsPgZq7aTAKWrjbGGldcIXkh0pITw1Zq
-         +01wBUUL/zam6TTNQko71NhCRFDSb8v3Pxz1iwQkTOhqSl5jflZqkFkfLNa74opOluXb
-         R6+cFbLeM9wdb2TixpvJezXDCk0xxidNXD7vBZcvwGASqZ+im/Zwt1lMpydiAYrdJ/kY
-         f8JA==
-X-Forwarded-Encrypted: i=1; AFNElJ/ObWfllrP7AmINcSgD8c/m8gR4Fn6SIMHRnYAymje2TW4t8eVlbeIyrhT9mzswkELKZCt/Te0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzYlHZvUy5rhQ0dbV+tFTVFdh8u1XfGGLINBrH+4FHAIJ1uAXEZ
-	IcQs3W6NHm/mEv7vTicxkqdSbVqEdqfOYlHTjChwFqV0Muy926Dk+CbRnuPgrYo=
-X-Gm-Gg: AeBDievhOEG5xxlHsmX8zAkzkpxzEQE7BditzMl/CxfgURGXB61HzEgWhkRpdKFrjtT
-	5o27Suj7ARXFD6bE7DGDy8K+c/jcqT+aYTCgDgE15oxXkQWmomNLJp6UhV55HAEQADaXI34f73k
-	18WkXo7fm3mBl8wBoZV6MNfLWeYuPY02SH2pdwjKKgYw6k4Rvb+8hH6fEOwhHBMQsRRN2NCe5ok
-	g8ZqoaFKamTJ0HTYC6INYkYZ0eALHYoT/Vd3tdVdLbG264KJOWpdosQj+QZE5yYsN9gH1R2d6cX
-	h+W/GUxM2Nre2KVGMTrtWl/DWMCllrVI5BfTNB1X0kD28RsLSGuBn+b9NNmauanBw5W/LH2OGh+
-	TXzqAlOvYVMLWgb49lUTtHA4NI2cuW9P5mizS+XzXZ3/7R7NaJqES2JPAvdqtlh8uvb4jyft8Ke
-	uy+mbDL7fjN9+xFoW2a9mZVqXeQokwJBv9tEZ5wpr8FryJCrMdlnRpaBknwRJOOknBa8EyZxZ2N
-	070lUuONYxVLm8alSO6FdsLiYhLUUQs2YbtVnsTIgc=
-X-Received: by 2002:a05:6820:61b:b0:694:8d83:a344 with SMTP id 006d021491bc7-6948d83a592mr20000952eaf.16.1777240406227;
-        Sun, 26 Apr 2026 14:53:26 -0700 (PDT)
+        bh=L2/6bOX3xGdDGZcmRDZLBCFucwqOFV+5pfd4G013dcg=;
+        b=Szvm5LxFd+gAfLmsuHtYIHwheOR+klIcOLDDQZemkBVDg+IIRpjRii0i12YynTKbBG
+         dEJii6wNkhcw5goJUzEreDunJUkkGMfSCVldlDNXelksw451XEgv3BTK0kCeMvlfZXha
+         ZUsIj8FT65EFClWX7FHmjionF65ZDADK5GgLRho0M8uFFXb9/rSYxzBit/6eo3qrlxB0
+         XTbTGZw5rqfqBNY2XB0GUN/3STNdrlYlhd4+MtF2REY+UZNnq9aqGSD7hNYPnCNUHYaI
+         j8O28mSDXo6a3xgRmyLIwht9v0i8Lu6IVK9j/Z03Qaprs4TYAsP3tpgdJD1BrSO5yo7N
+         MZIg==
+X-Forwarded-Encrypted: i=1; AFNElJ+dP15BsiMS/VS/aJpb/eKFC2PxiMzwTIo7XxnodFcWZIsAPNCHdQXD1dx9vjQkaZlUu6c7DlE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyf20IZnkpo9z91/vwVFA/VrNZqMGL3FetCknmM2Rqx9FGR9f50
+	qfuxGZhbrHLk3s3pyWJW7v9jICqFzU2FoQPpdiLOqWmWS0l8PTAPvpA=
+X-Gm-Gg: AeBDietyI4+JHayn3llWjMClS5l596sM+vV2MOI3EwCZ3hxBVes4n9SSGrKVQUxphOi
+	aocSjTe2w3T0iElIZPbsOlev0x2PzT2wzcgWolxUMvy+fL0UOWdkI05V62CLrsSX2vEmDEzhZKv
+	Bw2vojN61XQ5gYwfG1Pb+g4FbGIs4fcqnvpqAU81DC4E14edNqRC2IyEM8wWTK03wRSU1aM6Qs8
+	vqj9Y0t6aQOtU3snBctVJmMSHBFMcqxMjHiIpEmaHRDAa+1DSs3BFczQr6Zv5Nd6mM027GZPch8
+	dL56gijZ8qeEKbuxgFS42HjYhTs1VR2AzeKFgMqJC4wmzOBP4U4uNahJcca+Hklk4QTUqUG0I3r
+	682+tTB1Ck3tI2cp3gUfsHPwBxSTaJu4ICOgPnW9a586eIKjHDJNqEt69xsUvG3CGTYJN8khYZW
+	3/7N++/VQAc5R12Q0ln+6IU6hvWK5DdI8olCnLF3FuQi6r+cHusDq0k2zK/kPVqEO+i+R+SiNY+
+	nElRNC1sCaMZMRl8u7+gjvJxov9QOex
+X-Received: by 2002:a05:6820:993:b0:696:21ad:a4ef with SMTP id 006d021491bc7-69621adac97mr7155515eaf.30.1777240407141;
+        Sun, 26 Apr 2026 14:53:27 -0700 (PDT)
 Received: from localhost.localdomain ([47.188.191.104])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6962b40d504sm4738997eaf.10.2026.04.26.14.53.25
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6962b40d504sm4738997eaf.10.2026.04.26.14.53.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 26 Apr 2026 14:53:25 -0700 (PDT)
+        Sun, 26 Apr 2026 14:53:26 -0700 (PDT)
 From: jbmoore <jbmoore61@gmail.com>
 X-Google-Original-From: jbmoore <jbmoore@nooks.dev>
 To: alexander.deucher@amd.com,
 	christian.koenig@amd.com
 Cc: "John B. Moore" <jbmoore61@gmail.com>,
 	stable@vger.kernel.org
-Subject: [PATCH 3/4] drm/amdgpu/gfx9: replace BUG_ON with WARN_ON_ONCE for KIQ 64-bit fence flag
-Date: Sun, 26 Apr 2026 16:52:52 -0500
-Message-ID: <20260426215256.50722-4-jbmoore@nooks.dev>
+Subject: [PATCH 4/4] drm/amdgpu/vcn: prevent silent fence drop on 64-bit flag mismatch
+Date: Sun, 26 Apr 2026 16:52:53 -0500
+Message-ID: <20260426215256.50722-5-jbmoore@nooks.dev>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260426215256.50722-1-jbmoore@nooks.dev>
 References: <20260426215256.50722-1-jbmoore@nooks.dev>
@@ -96,7 +96,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: EB75746B537
+X-Rspamd-Queue-Id: EB51D46B53E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
@@ -113,7 +113,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241195-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-241196-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[gmail.com:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
@@ -130,45 +130,106 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 
 From: "John B. Moore" <jbmoore61@gmail.com>
 
-gfx_v9_0_ring_emit_fence_kiq() contains a BUG_ON() that fires when
-the AMDGPU_FENCE_FLAG_64BIT flag is passed.  The KIQ (Kernel
-Interface Queue) ring only allocates 32-bit writeback buffer
-addresses for fence sequence numbers.  A 64-bit fence write would
-overflow the allocated writeback slot, potentially corrupting
-adjacent kernel memory.
+VCN, UVD, and VCE encoder/decoder ring fence emission callbacks only
+support 32-bit fence writes.  When AMDGPU_FENCE_FLAG_64BIT is passed,
+the existing bare WARN_ON() fires but execution continues, emitting
+a truncated fence that causes the VCN hardware unit to issue a
+no-retry UTCL2 page fault at NULL address (0x0).
 
-Replace BUG_ON() with WARN_ON_ONCE() and mask off the unsupported
-flag.  This prevents the kernel panic while still logging the
-unexpected condition and falling back to a safe 32-bit fence write.
+The hardware fault is non-recoverable: the VCNU client is permanently
+stalled, the VCN ring stops processing jobs, and all pending fences
+on the affected ring never signal.
 
-This is separated from the main gfx9 BUG_ON conversion patch
-because it addresses a different security concern (potential buffer
-overflow in kernel-managed writeback memory) rather than the address
-alignment assertions in the ring emission paths.
+Convert WARN_ON() to WARN_ON_ONCE() and add an early return to
+prevent the corrupted fence emission.  The early return is safe
+because the WARN_ON fires before any ring buffer writes in all five
+affected callsites:
+  - vcn_v1_0_dec_ring_emit_fence()
+  - vcn_v1_0_enc_ring_emit_fence()
+  - vcn_v2_0_dec_ring_emit_fence()
+  - vcn_v2_0_enc_ring_emit_fence()
+  - vcn_dec_sw_ring_emit_fence()
+
+The missing fence will be caught by the scheduler timeout mechanism,
+which will clean up the job without hardware damage.
+
+Using WARN_ON_ONCE instead of the bare WARN_ON also prevents kernel
+log flooding if the condition is triggered repeatedly by a fuzzer.
 
 Found by a custom amdgpu DRM ioctl fuzzer.
 
-Fixes: b1023571479020e9 ("drm/amdgpu: implement GFX 9.0 support (v2)")
+Fixes: 8ace845ff0e8 ("drm/amdgpu: add vcn enc ring type and functions")
+Fixes: cca69fe8ff98 ("drm/amdgpu: add vcn decode ring type and functions")
 Signed-off-by: John B. Moore <jbmoore61@gmail.com>
 Cc: stable@vger.kernel.org
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/vcn_sw_ring.c | 3 ++-
+ drivers/gpu/drm/amd/amdgpu/vcn_v1_0.c    | 6 ++++--
+ drivers/gpu/drm/amd/amdgpu/vcn_v2_0.c    | 6 ++++--
+ 3 files changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
-index 47e81c33d..fb2a0f1af 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
-@@ -5679,7 +5679,8 @@ static void gfx_v9_0_ring_emit_fence_kiq(struct amdgpu_ring *ring, u64 addr,
+diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_sw_ring.c b/drivers/gpu/drm/amd/amdgpu/vcn_sw_ring.c
+index 2b9ddb3d2..aa0022deb 100644
+--- a/drivers/gpu/drm/amd/amdgpu/vcn_sw_ring.c
++++ b/drivers/gpu/drm/amd/amdgpu/vcn_sw_ring.c
+@@ -27,7 +27,8 @@
+ void vcn_dec_sw_ring_emit_fence(struct amdgpu_ring *ring, u64 addr,
+ 	u64 seq, uint32_t flags)
+ {
+-	WARN_ON(flags & AMDGPU_FENCE_FLAG_64BIT);
++	if (WARN_ON_ONCE(flags & AMDGPU_FENCE_FLAG_64BIT))
++		return;
+ 
+ 	amdgpu_ring_write(ring, VCN_DEC_SW_CMD_FENCE);
+ 	amdgpu_ring_write(ring, addr);
+diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v1_0.c b/drivers/gpu/drm/amd/amdgpu/vcn_v1_0.c
+index e9d790914..2acf6e621 100644
+--- a/drivers/gpu/drm/amd/amdgpu/vcn_v1_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/vcn_v1_0.c
+@@ -1548,7 +1548,8 @@ static void vcn_v1_0_dec_ring_emit_fence(struct amdgpu_ring *ring, u64 addr, u64
+ {
  	struct amdgpu_device *adev = ring->adev;
  
- 	/* we only allocate 32bit for each seq wb address */
--	BUG_ON(flags & AMDGPU_FENCE_FLAG_64BIT);
+-	WARN_ON(flags & AMDGPU_FENCE_FLAG_64BIT);
 +	if (WARN_ON_ONCE(flags & AMDGPU_FENCE_FLAG_64BIT))
-+		flags &= ~AMDGPU_FENCE_FLAG_64BIT;
++		return;
  
- 	/* write fence seq to the "addr" */
- 	amdgpu_ring_write(ring, PACKET3(PACKET3_WRITE_DATA, 3));
+ 	amdgpu_ring_write(ring,
+ 		PACKET0(SOC15_REG_OFFSET(UVD, 0, mmUVD_CONTEXT_ID), 0));
+@@ -1724,7 +1725,8 @@ static void vcn_v1_0_enc_ring_set_wptr(struct amdgpu_ring *ring)
+ static void vcn_v1_0_enc_ring_emit_fence(struct amdgpu_ring *ring, u64 addr,
+ 			u64 seq, unsigned flags)
+ {
+-	WARN_ON(flags & AMDGPU_FENCE_FLAG_64BIT);
++	if (WARN_ON_ONCE(flags & AMDGPU_FENCE_FLAG_64BIT))
++		return;
+ 
+ 	amdgpu_ring_write(ring, VCN_ENC_CMD_FENCE);
+ 	amdgpu_ring_write(ring, addr);
+diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v2_0.c b/drivers/gpu/drm/amd/amdgpu/vcn_v2_0.c
+index e35fae9cd..6cfb5aedd 100644
+--- a/drivers/gpu/drm/amd/amdgpu/vcn_v2_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/vcn_v2_0.c
+@@ -1537,7 +1537,8 @@ void vcn_v2_0_dec_ring_emit_fence(struct amdgpu_ring *ring, u64 addr, u64 seq,
+ {
+ 	struct amdgpu_device *adev = ring->adev;
+ 
+-	WARN_ON(flags & AMDGPU_FENCE_FLAG_64BIT);
++	if (WARN_ON_ONCE(flags & AMDGPU_FENCE_FLAG_64BIT))
++		return;
+ 	amdgpu_ring_write(ring, PACKET0(adev->vcn.inst[ring->me].internal.context_id, 0));
+ 	amdgpu_ring_write(ring, seq);
+ 
+@@ -1722,7 +1723,8 @@ static void vcn_v2_0_enc_ring_set_wptr(struct amdgpu_ring *ring)
+ void vcn_v2_0_enc_ring_emit_fence(struct amdgpu_ring *ring, u64 addr,
+ 				u64 seq, unsigned flags)
+ {
+-	WARN_ON(flags & AMDGPU_FENCE_FLAG_64BIT);
++	if (WARN_ON_ONCE(flags & AMDGPU_FENCE_FLAG_64BIT))
++		return;
+ 
+ 	amdgpu_ring_write(ring, VCN_ENC_CMD_FENCE);
+ 	amdgpu_ring_write(ring, addr);
 -- 
 2.43.0
 
