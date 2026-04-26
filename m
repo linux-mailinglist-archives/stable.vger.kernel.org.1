@@ -1,171 +1,235 @@
-Return-Path: <stable+bounces-241167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241168-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YPQVGEAQ7mndqQAAu9opvQ
-	(envelope-from <stable+bounces-241167-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 26 Apr 2026 15:16:48 +0200
+	id oBqQALUW7ml+qgAAu9opvQ
+	(envelope-from <stable+bounces-241168-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 26 Apr 2026 15:44:21 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73DA1469EBF
-	for <lists+stable@lfdr.de>; Sun, 26 Apr 2026 15:16:47 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D58246A082
+	for <lists+stable@lfdr.de>; Sun, 26 Apr 2026 15:44:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4684A30028C4
-	for <lists+stable@lfdr.de>; Sun, 26 Apr 2026 13:16:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A47B8300B461
+	for <lists+stable@lfdr.de>; Sun, 26 Apr 2026 13:44:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33E08361678;
-	Sun, 26 Apr 2026 13:16:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OUDRj9N5"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBC253603EA;
+	Sun, 26 Apr 2026 13:44:17 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [65.21.191.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDF4019CD0A
-	for <stable@vger.kernel.org>; Sun, 26 Apr 2026 13:16:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 484A321256C;
+	Sun, 26 Apr 2026 13:44:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.21.191.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777209402; cv=none; b=rM0SzdCTKH119yQojAVdSSGyIlzGz4tkoEG4T+NdvumGDRU6+4/t9f3zx8ukTup/oLHklpQbrLsYzqUC5OQK2DltrFYWIQHzN6ajZKf8vahT0SzFNr6INhjTkHy5IxCdYVNKf0LdZvEfCxj9vEGnzLFga4pwKtbXsUSkjsbKE4Q=
+	t=1777211057; cv=none; b=UCtfq5YGVOD8ll4zXhuFXrh4L2ZgRLtBpGQF7u9f4jVmgP7MTxzGovDZRwoYUkZ34GQcedkpbFWvBxpgUM6bQesI7PwShPr4cs7XIAYW984isZYLUjQJzo3T/TCu0nT5Uq4IGUWJKFM0v+3s8nuHEYDIm2vSb2cgGaAUkQuZvho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777209402; c=relaxed/simple;
-	bh=e7QWtxSkrIHtUdA7OH0NJS72f3PZVhziWa99JGad/Tk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=O1UcEMi+GXTViqpbbfAXAuey4c7bKMTB9PdxuzZZZWA4pBIcUTvGlL/CkGKL/e5Zm5oc35y747fwyZiuspo4HZm4Gj9sy9hMbCW7mmNoh2LG8BcfIFLBKzIj23/igMspxOm6kOIxXJ+nway2bRW+T7MI4go3JlcotBJi/MMBOLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OUDRj9N5; arc=none smtp.client-ip=209.85.210.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-82cebbdbdccso5763452b3a.1
-        for <stable@vger.kernel.org>; Sun, 26 Apr 2026 06:16:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777209400; x=1777814200; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Mfpir1cWg4EgfZHLjfNae2jfgPK4QiC8JAKh+M/m5S8=;
-        b=OUDRj9N5JSklq2oJFKv5HoZuk1dK3FguaS2NjCv1tEvY+jT3bVMj0AoSbH27ccN7Xz
-         6rClED7AGlKUYuqTQwtfNNCEE2H1MYIg4XPlFSZ7yfyAPMBJaZFeVDQvv+GyFA7pHZvn
-         mx0bFQkilfbSSo9QV9jgTlTt1PeMaMBhdgbEAJo/L27v6UcIfzE4fskMsfzEX+n2q58t
-         Mq15gWvRrw262/600gJCX/apIkCTQy+25aXELIP8ByD2++d9wBEOuGhcQTA1v09IT4hR
-         0I0H6yUqBEaro1MIekwNqx9NFGVQw9wS2ytUgTneX4MCWs82vks0gihIMwrFKDE9Xug6
-         slGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777209400; x=1777814200;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Mfpir1cWg4EgfZHLjfNae2jfgPK4QiC8JAKh+M/m5S8=;
-        b=XhrplX2eKbzkH8eUrRsbyNopUpXcM4mWkWLJOLufTg/qZpsj1j/8OPCF0ueZ6cECYS
-         XMXR/ncyWXnQAlVM+oiGGaLsFOykx+5KhJl+1oQZBAczhotjJcMUAgEXlxBQE3yL0tyj
-         SZKdxlsf7lhf5TgwpafjJgkUlto5jTBbDw0AtXBRPCHG0NoSVFsUEMliGod7YqMinljo
-         WQLz4nRlWBz3SyTmgEva0pG+UrJfSDTzO8uTWAsZodO0Las30KKcbizbTTFsRDDBk+xD
-         19oVA3pyLIf0tThXD6YvzoT6O9FSHM7YHY1wTfPU7dpWU1vY1c8KXgP9bWv8YIqa5wEl
-         4T9w==
-X-Forwarded-Encrypted: i=1; AFNElJ9SFqxmnUXxK66v6GhpWwSII9U31vEybMn4J/XK63gNhfR+lEIEcn4HmvI6uVIT3jlL3lQ/Un8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxs4RX2Bf4FHjLWxc6NHiqV0fJlEL8055DgezimOsl5qeqyblTn
-	8rDFhUSgeXV/cdSWzCMmRwRwGFDwZWihQoLXrlpL+r+huRhn9oL9DNE=
-X-Gm-Gg: AeBDietfoPDMxJwNhXQqdaI4C5vL7vX7ncRz/ddjwmngn5GcGuCoGtrhttUcCDxdaZr
-	cxgE0RXbZ75zpCMt6O5B/1Oh3L6GpHNQkYQUY/tJp5Ell46VeH6aWz48BvXGd6tNfbhwjBEV5wc
-	APeARr1+pl6rls9mf9PYsUKtgqYP5ICrw4/Pkikz5oIoY8d6QsO8bESJtiUq9tUS8psoy5Dc8/n
-	E2symVT2zRF3OyotqNMEELcvEnnrJuD2VtVKBVGOX8C7bcxnVnZ6TJuW0yDubOnn1EbpdCAssRO
-	5l/FrvEcERVQxTAx80nfjOcl95TYI3rPGTBs3m+/b5psh6ZHaoFlKUXpdngwh55OpH5yWB63oM5
-	/mOh1TIorgiSATOxScw2FlkQpq7eDVmdPhH9KaJFWAc5DB/5F/Iv/ZBijIEu+WbpgpJjvOAxv2t
-	hDaoKC9coLl9yAI6rfPKFCTookrDM6M/WrUk1BhJvroO6xwhxtM8Rgn61iXc0HvPhovKXI6KIGm
-	izK9Mn6LH0Wgu4DVGmX0GW8iVfQW52wDPzD7TWQ+WB0pBg=
-X-Received: by 2002:a05:6a00:2d88:b0:829:6f7d:3086 with SMTP id d2e1a72fcca58-82f8b3aff42mr34206860b3a.11.1777209400127;
-        Sun, 26 Apr 2026 06:16:40 -0700 (PDT)
-Received: from localhost.localdomain ([1.226.165.54])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f8ebe41cfsm31773801b3a.43.2026.04.26.06.16.37
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 26 Apr 2026 06:16:39 -0700 (PDT)
-From: "=?UTF-8?q?=EB=B0=95=EB=AA=85=ED=9B=88?=" <mhun512@gmail.com>
-X-Google-Original-From: =?UTF-8?q?=EB=B0=95=EB=AA=85=ED=9B=88?= <pakmyeonghun@bagmyeonghun-ui-MacBookPro.local>
-To: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: linux-media@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Ijae Kim <ae878000@gmail.com>,
-	Myeonghun Pak <mhun512@gmail.com>
-Subject: [PATCH] media: ti: vpe: unwind v4l2 device registration on probe error
-Date: Sun, 26 Apr 2026 22:16:31 +0900
-Message-ID: <20260424000000.547-1-mhun512@gmail.com>
-X-Mailer: git-send-email 2.47.1
+	s=arc-20240116; t=1777211057; c=relaxed/simple;
+	bh=bDm+/uxPStK/NQbi/eGFHAIX3ZznzOA0ZDXZpddStIE=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=CSvumigEDoOX0fxKU/1VCMmeEolYDhIrgSoe7EIh7hHB7Bqfef94HByZ72NTyv3SjZ6NivQyWT/wjmEyAho33AyjLIpYAQ9HXnMIfod0+yAznotpw1wUNcDJ6jNsC4iMgS0julSZZtk9OdTjEU4It/wIK1XeEQsyRX1JIXSJZOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk; spf=pass smtp.mailfrom=decadent.org.uk; arc=none smtp.client-ip=65.21.191.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=decadent.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=decadent.org.uk
+Received: from [2a02:578:851f:1502:391e:c5f5:10e2:b9a3] (helo=deadeye)
+	by maynard with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1wGzmJ-006ZV0-0j;
+	Sun, 26 Apr 2026 13:44:06 +0000
+Received: from ben by deadeye with local (Exim 4.99.1)
+	(envelope-from <ben@decadent.org.uk>)
+	id 1wGzmH-00000006skC-00xY;
+	Sun, 26 Apr 2026 15:44:05 +0200
+Message-ID: <e0f3860e1994351c8627518bd580b590090d0e5b.camel@decadent.org.uk>
+Subject: Re: [PATCH 5.10 430/491] apparmor: validate DFA start states are in
+ bounds in unpack_pdb
+From: Ben Hutchings <ben@decadent.org.uk>
+To: John Johansen <john.johansen@canonical.com>, Greg Kroah-Hartman
+	 <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, Qualys Security Advisory <qsa@qualys.com>, 
+ Salvatore Bonaccorso	 <carnil@debian.org>, Georgia Garcia
+ <georgia.garcia@canonical.com>, Cengiz Can	 <cengiz.can@canonical.com>,
+ Massimiliano Pellizzer	 <massimiliano.pellizzer@canonical.com>
+Date: Sun, 26 Apr 2026 15:43:55 +0200
+In-Reply-To: <5c718a4f-b0fe-4b80-8fdd-200871454320@canonical.com>
+References: <20260413155819.042779211@linuxfoundation.org>
+	 <20260413155835.127014179@linuxfoundation.org>
+	 <0d3747dc57d7bfa3c53efcf4d133021ead5bef9d.camel@decadent.org.uk>
+	 <5c718a4f-b0fe-4b80-8fdd-200871454320@canonical.com>
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-iryIRH0H4TTNncqYv/s4"
+User-Agent: Evolution 3.56.2-9 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 73DA1469EBF
+X-SA-Exim-Connect-IP: 2a02:578:851f:1502:391e:c5f5:10e2:b9a3
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
+X-Rspamd-Queue-Id: 1D58246A082
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-3.56 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-241167-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mhun512@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-241168-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	DMARC_NA(0.00)[decadent.org.uk];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ben@decadent.org.uk,stable@vger.kernel.org];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	RCVD_COUNT_FIVE(0.00)[5];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,canonical.com:email,qualys.com:email]
 
-From: Myeonghun Pak <mhun512@gmail.com>
 
-If the vpe_top resource is missing, vpe_probe() returns -ENODEV after
-v4l2_device_register() has succeeded. Probe failures do not call the
-driver's remove callback, so the v4l2 device remains registered on that
-error path.
+--=-iryIRH0H4TTNncqYv/s4
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Route that failure through the existing v4l2_device_unregister() unwind
-label, matching the other errors after v4l2_device_register().
+On Tue, 2026-04-21 at 01:42 -0700, John Johansen wrote:
+> On 4/19/26 03:26, Ben Hutchings wrote:
+> > On Mon, 2026-04-13 at 18:01 +0200, Greg Kroah-Hartman wrote:
+> > > 5.10-stable review patch.  If anyone has any objections, please let m=
+e know.
+> > >=20
+> > > ------------------
+> > >=20
+> > > From: Massimiliano Pellizzer <massimiliano.pellizzer@canonical.com>
+> > >=20
+> > > commit 9063d7e2615f4a7ab321de6b520e23d370e58816 upstream.
+> > >=20
+> > > Backport for conflicts caused by
+> > >    ad596ea74e74 ("apparmor: group dfa policydb unpacking")
+> > >    - rearrange and consolidated the unpack.
+> > >=20
+> > >    b11e51dd7094 ("apparmor: test: make static symbols visible during =
+kunit testing")
+> > >    - rename function and make it visible to kunit tests
+> > >=20
+> > > Start states are read from untrusted data and used as indexes into th=
+e
+> > > DFA state tables. The aa_dfa_next() function call in unpack_pdb() wil=
+l
+> > > access dfa->tables[YYTD_ID_BASE][start], and if the start state excee=
+ds
+> > > the number of states in the DFA, this results in an out-of-bound read=
+.
+> > >=20
+> > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> > >   BUG: KASAN: slab-out-of-bounds in aa_dfa_next+0x2a1/0x360
+> > >   Read of size 4 at addr ffff88811956fb90 by task su/1097
+> > >   ...
+> > >=20
+> > > Reject policies with out-of-bounds start states during unpacking
+> > > to prevent the issue.
+> > >=20
+> > > Fixes: ad5ff3db53c6 ("AppArmor: Add ability to load extended policy")
+> > > Reported-by: Qualys Security Advisory <qsa@qualys.com>
+> > > Tested-by: Salvatore Bonaccorso <carnil@debian.org>
+> > > Reviewed-by: Georgia Garcia <georgia.garcia@canonical.com>
+> > > Reviewed-by: Cengiz Can <cengiz.can@canonical.com>
+> > > Signed-off-by: Massimiliano Pellizzer <massimiliano.pellizzer@canonic=
+al.com>
+> > > Signed-off-by: John Johansen <john.johansen@canonical.com>
+> > > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > > ---
+> > >   security/apparmor/policy_unpack.c |   21 +++++++++++++++++++--
+> > >   1 file changed, 19 insertions(+), 2 deletions(-)
+> > >=20
+> > > --- a/security/apparmor/policy_unpack.c
+> > > +++ b/security/apparmor/policy_unpack.c
+> > > @@ -841,9 +841,18 @@ static struct aa_profile *unpack_profile
+> > >   			error =3D -EPROTO;
+> > >   			goto fail;
+> > >   		}
+> > > -		if (!unpack_u32(e, &profile->policy.start[0], "start"))
+> > > +		if (!unpack_u32(e, &profile->policy.start[0], "start")) {
+> > >   			/* default start state */
+> > >   			profile->policy.start[0] =3D DFA_START;
+> > > +		} else {
+> > > +			size_t state_count =3D profile->policy.dfa->tables[YYTD_ID_BASE]-=
+>td_lolen;
+> > > +
+> > > +			if (profile->policy.start[0] >=3D state_count) {
+> > > +				info =3D "invalid dfa start state";
+> > > +				goto fail;
+> > > +			}
+> > > +		}
+> > [...]
+> >=20
+> > Isn't this range check needed even if we use the default start state?
+> > unpack_table() only checks that td_tolen > 0, so we could end up with
+> > profile->policy.start[0] =3D DFA_START =3D=3D 1 and
+> > profile->policy.dfa->tables[YYTD_ID_BASE]->td_lolen =3D=3D 1.
+> >=20
+> > (This is specific to the backport as the upstream version didn't put
+> > this check in an else-block.)
+> >=20
+>=20
+> Hey Ben,
+> I specifically chose not to make that alteration to the patches sent to
+> stable after reviewing the submission rules. That would be a non-backport
+> related change from what landed upstream and we were referencing as the
+> upstream patch.
 
-Fixes: 4d59c7d45585 ("media: ti-vpe: vpe: Add missing null pointer checks")
-Cc: stable@vger.kernel.org
-Co-developed-by: Ijae Kim <ae878000@gmail.com>
-Signed-off-by: Ijae Kim <ae878000@gmail.com>
-Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
----
-Notes for send preparation:
-- Fixes tag was validated against upstream history; the local row worktree
-  remains shallow/grafted and cannot verify it by itself.
-- Build was not completed because this worktree has no .config.
+But the upstream patch didn't have this problem!  The range check was
+not conditional so it would catch this case.
 
- drivers/media/platform/ti/vpe/vpe.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+> Instead I am sending Linus a 2nd patch that addresses
+> the issue by ensure the loaded dfa has at least two states. It will has
+> a fixes tag and will get pulled back.
 
-diff --git a/drivers/media/platform/ti/vpe/vpe.c b/drivers/media/platform/ti/vpe/vpe.c
-index a7e5a85e72..81bd1f9cee 100644
---- a/drivers/media/platform/ti/vpe/vpe.c
-+++ b/drivers/media/platform/ti/vpe/vpe.c
-@@ -2539,7 +2539,8 @@ static int vpe_probe(struct platform_device *pdev)
- 						"vpe_top");
- 	if (!dev->res) {
- 		dev_err(&pdev->dev, "missing 'vpe_top' resources data\n");
--		return -ENODEV;
-+		ret = -ENODEV;
-+		goto v4l2_dev_unreg;
- 	}
- 
- 	/*
--- 
-2.39.5
+I think you are talking about adding a check in unpack_table().  I am
+talking about the later check in unpack_profile() (or in unpack_pdb()
+upstream).
+
+Ben.
+
+--=20
+Ben Hutchings
+Nothing is ever a complete failure;
+it can always serve as a bad example.
+
+--=-iryIRH0H4TTNncqYv/s4
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmnuFpwACgkQ57/I7JWG
+EQk1OBAAm8wwA53ntd81DAn8VqPtxnJesnjJmsgx6Pwllwko9UWE2dYQSk7DoWfl
+7LZiBHyJL90z+mwHYxf597KIp6zNTKpVnmRnuAEdgCL8KyMqJoPo0WS7PEAV3Czy
+WKAoK051pi8TimAgMZSWHRDzHQiarSujKRp3ho/cyuMZ8DhMqYNkb+vXQchOrtZa
+AqZWpSo+pgjAgbdsuzkgiTW06iOXkiYglqPNyr8elA3GpVP3ETdlcG8/qPpNJ2oU
+PBpYqKIUlf12VD9MLAN2601QaIJ4l9Iwf3LlDp+XZglLFAkW/LYxZarVj7a54Nmv
+9GMa/ydKBctOTPnub7PaUnRNwfm10h78zaLJ8jdrNztiwcom14DAM3ejoU2nNJ1/
+sbvD4SCqls1G8YFY+Wo0gIKNq//6o/+nVtdnhjXjUI9qR7QjciHuNliuWErIx4qO
+WNgjRCNRXh7UTgRvZD3hfUocJSI19p5kV0//ho0Z4kQ2rEgTxZ8PMltyfzagh95L
+yPP23BEi2EhkY0SOf+KNbOuBd4DZeq1r2lUP08GoHzXXFNUXF6fHCCbYF+H5oHqf
+3rRUz90dTQOxlx02zQoTMxo3kESsy3M5yYdP+0Y5n/jAKYvXEPrYaYnqXoc3yaBD
+VZi+V81bUNbSc8zVrDxG8VRAncd3z1RA0fBF0piLNQ6jMgBvNOU=
+=ZTqU
+-----END PGP SIGNATURE-----
+
+--=-iryIRH0H4TTNncqYv/s4--
 
