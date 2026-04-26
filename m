@@ -1,226 +1,188 @@
-Return-Path: <stable+bounces-241150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241151-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id HGt0GElV7Wl9iAAAu9opvQ
-	(envelope-from <stable+bounces-241150-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 26 Apr 2026 01:59:05 +0200
+	id lg8jHyda7WkniQAAu9opvQ
+	(envelope-from <stable+bounces-241151-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 26 Apr 2026 02:19:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6DEA468611
-	for <lists+stable@lfdr.de>; Sun, 26 Apr 2026 01:59:04 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C627B46871F
+	for <lists+stable@lfdr.de>; Sun, 26 Apr 2026 02:19:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CA2BC3011110
-	for <lists+stable@lfdr.de>; Sat, 25 Apr 2026 23:58:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E81A2301A381
+	for <lists+stable@lfdr.de>; Sun, 26 Apr 2026 00:19:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3212A397689;
-	Sat, 25 Apr 2026 23:58:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B7141EB9E3;
+	Sun, 26 Apr 2026 00:19:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=minyard.net header.i=@minyard.net header.b="F0IUGd2u"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P5P7sgqR"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6014C389118
-	for <stable@vger.kernel.org>; Sat, 25 Apr 2026 23:58:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1C61187346
+	for <stable@vger.kernel.org>; Sun, 26 Apr 2026 00:19:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777161538; cv=none; b=K6OkQ1FsUSUFw+3eQEihrq36MvRO74Fz9JT4U1OM2rNEcj7ssvA15OJ4eHUYh8NbdpTv7q+JtRIYk2qA5gifPP0xi2CqC6b6SJcjGUA7a/Gmyk6mMWxlr3f7uxiG6HSyrOqAkNBavE6ieUudErPlFl036Jq2ovdKapHOuFIODJk=
+	t=1777162783; cv=none; b=P9KmmlnlJ8PSlKowxhDbGupcqxeFNp13ljeU0AIAB4Zl+bVKq4SXhjc16ZqtdCMhSyGdAeIMejvOwOmjPzz0t0es0qbJQncwRzX3Ui4sTrLUZRwjKKilq86fq9ojIKWi9GPmIXhcsj7+6quqXbZNuIwaqhpc7kzpHvX5oX6cBwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777161538; c=relaxed/simple;
-	bh=TmFIqwea7P1/3JG6bQ8FE5XxmSvpiyrmnBPxG9ZPJk0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ch1OxXWPacO7tqobcinS4J3KlNX2EH84GrnHUzuPIhxo51ZcT+xB/6kfafRdGIZmwoKDazhTsTyXqigtotBOuE11O7DEVvmZ1e4+skhCrhKPaN0eSs2owKyKbeu0bkWHSF18OTDapV0OfSmF6TJKbmaJFT19tRXsHw3mWb1MTQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=minyard.net; spf=pass smtp.mailfrom=minyard.net; dkim=pass (2048-bit key) header.d=minyard.net header.i=@minyard.net header.b=F0IUGd2u; arc=none smtp.client-ip=209.85.167.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=minyard.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=minyard.net
-Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-479fc1fc048so3245601b6e.1
-        for <stable@vger.kernel.org>; Sat, 25 Apr 2026 16:58:56 -0700 (PDT)
+	s=arc-20240116; t=1777162783; c=relaxed/simple;
+	bh=TBZBNRjL9300EGgXJeR2jH8eTHBcpmzXD9vi8+6FltE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pCamwLI9REeMPxlZhBcXeBTDxiysZByp4a51UTXtR15ndeV2QvDCFxooyf7M6ZZXQsLaKu59NP+PNHcKclrSKnD3u8fuOahXz8mRqphKlIQtqtM6S4KBaJ7m/UuYhu47FNxmFBnrc/XMTNNtCHb/ilXKLo6n2znsJi8FNyZt33U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P5P7sgqR; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2b788a98557so40209285ad.2
+        for <stable@vger.kernel.org>; Sat, 25 Apr 2026 17:19:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=minyard.net; s=google; t=1777161535; x=1777766335; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SKKJCH+5uQ5Lecx+O6GjrzJ1UpPIHJaSU1gVtB7eY38=;
-        b=F0IUGd2uvg+qYP3c3V5Rdv8KDRKnjKd8IvnwJvXjDn2Viw777lX3a1HFEGgEXKxpSl
-         tfm6B5r+m41i5wPGkJ2PgE1FCrxFgXqQkKhLZ25SfZQIqTHOAdopSMAM5++f2yGV01Dk
-         2B1YPQJWooSSMMQtebjdXdU0iCUrVmm/C4lSb8B57MUWi1In2QP19DjOuMvwjTT4bUyY
-         NITlu2XT/e9CT4+dSHeTbQ2eoP+UN2SayAj6MHIV7huF7J7CyNg+QxeulD1eiefnSdnx
-         +jqsrJrevgNCIpmKXurt89G1WpknAe8VnmJoNExQgR5vaLAXMrfm24X548z84u+JbTX7
-         yEpg==
+        d=gmail.com; s=20251104; t=1777162782; x=1777767582; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=YJeUWXBvIXV4hGGcorLW+ig5QZrccjQ1ULdApherGFU=;
+        b=P5P7sgqReIRck1shXjABa0fnDHslNR6Y/tEeHH/PJsGCVAI619MlEHQ8qq/mhFEt0w
+         CVcI/zg2npHFINd1aLphMN+L4H0VAD0rBv5Bg11vhbQ1NhbQoNc14rV1BcojmsAnHdN/
+         DqSdXQQatJkLcxUfRqerSivUdKYCLXP2lwHbYutacwlyRtoKLnGnJQ2bTUCO2QaZ2Tdh
+         HP5zSIK9QHxCgLMRrT4GDdK+rYWNaxMmAt347Qhzbv73pzXsOsXXo2PoBcLHhy25JQYU
+         uydHtXCFPDJ5TCJ2Llgyc4ut7nI6KOanPazgxyIpkzElHi8vCOFIRqx/iPX2AFPVsz/K
+         B+jQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777161535; x=1777766335;
-        h=in-reply-to:content-disposition:mime-version:references:reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=SKKJCH+5uQ5Lecx+O6GjrzJ1UpPIHJaSU1gVtB7eY38=;
-        b=GgMK8fCiJWDX0MqZSLbEP72UMGBb9BtJSnNTfETkMo6LR9NIOnR56ip2UPrVOXJ5Nw
-         tXjAAE7Cfqb+mayqS7z9F0fpjl45JLOgiB+pwdrDsk/pBJc3MGIRukb5OVfRJZ3doo+P
-         iv5J/RlZmXdrGn+I+HgtDpmXO/ZONKvoSViOgZAjW/mgrEuGFjVyQovwND4onk8Et87Z
-         5KLZtaDz3SXE7lbhgkjMM6CZKZ31/GjxQspfgdY9tD+f8CrgNontwQkfjgSe0aaLtXGz
-         8umq8syy84ki27VAUo2gPLJ3jQCGfpDJvUgkZV7/SIDMe3bj4YsfltSXw2vrIW4L9ZMB
-         PyJg==
-X-Forwarded-Encrypted: i=1; AFNElJ9WXE8iOeW0H9ydJbwOc2NlsULhhvdYBdniyF76F8vqDjeQ63DNpgifxQedvnAImNblNrxZRnY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyafeSrKpzbwxbaC1X9zDdrLXPflOxf/bnIHrOIXA8gIxOAKGzc
-	8adkl+N7lnf4Xs6T73ZDDrLF5jXuoc/lVhP75XtKE1hUTazBgedlnIVpYrs7CLswcvc=
-X-Gm-Gg: AeBDieuVh1F3bVvGR2cvV2gkOCQ6L+paXoX3Ms3wCDTOUCJjY045y+G/VUcst92cT41
-	LNZEHdU3Bi2sayKYZqJqxlr8bbAHFIZUJX7B1MoWLjItX9IN6HYkLVjRPoxqh+Px9D9n/ykf88A
-	WzZW+nl8mad/XM/c6ys4hSijNJxrCb49eXRwUaMkKmK+DBfxykXswQWR32b1Dq1rKYQvZAbwQ5n
-	kCRR1TafJDMCpUIfSwI8iYOZwpUKJGLVrcfJe5PxmGXueGDKN16wTGVKA/YbYY7v2Y37Yupvq92
-	DKhUsFReMU+CDUGMzxNZXGDJK6n3kPk0D32ShduuueCZF8qqjQvdy+r5RsNpZbbGkB5HUun04Cy
-	evu/2jexUB7Sq959Rfta7EIKjrFZ0SarTFncZf/cDAiYCg3RbwmYeU4AysSmHGRO5NrVfaTGEtJ
-	qyjPhvXIX7v7egVFFSI3JySmI+kC9cU3fGWFBRYzaQb0/h00GUck39abbJJW/kHDv+mJPBHv1gA
-	BLZ8WWHXeYKjO9c2rVqbvCUbw==
-X-Received: by 2002:a05:6808:4fec:b0:467:112e:4590 with SMTP id 5614622812f47-4799cb31b57mr20806105b6e.46.1777161535251;
-        Sat, 25 Apr 2026 16:58:55 -0700 (PDT)
-Received: from mail.minyard.net ([2001:470:b8f6:1b:6f78:34bd:5e93:9329])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-479a028cab5sm18097578b6e.16.2026.04.25.16.58.52
+        d=1e100.net; s=20251104; t=1777162782; x=1777767582;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YJeUWXBvIXV4hGGcorLW+ig5QZrccjQ1ULdApherGFU=;
+        b=X/Iiyfs2/e/XELdE7ZPFokNrx4DUw0ZlzfAwGmewxckXuiTaDSVDe0Cju+Expf4xfV
+         l0Hjx71IOvJCpsU2vIIY+sgKd0Cy8iOg25/65Nm/w85d0DfXKv2bw8rvGKzzysNLD9Qd
+         DMuuia7ShHGhMHpwl7QOSohmcnSF51UQfbLwT1zKr76yvfPhm/kBlQGM1SqSsHC7oD9c
+         BjbPmiLLcLsTAk+3vi+9yM2x2HKaJJEpS7urzCBvC5fEOo7Fc0vO2/WTOWpencvJDGt4
+         1Ll5ANvDQRDPPQm5KieiXD9IkRsIOhe37G//fQo0r/uxNDr4Ew5wJ37KIRSG4OSwfPK7
+         vodA==
+X-Forwarded-Encrypted: i=1; AFNElJ/292kr/ulnPlQi/LZyYR+yq/q/NUXlWazoidX4z8f0HYAuFtss+8lFImwIxvJcA+taGG7QlVs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwUz+JR5z+giOSH2Au4DNn8S/vdGTQ01ywA+B7C4Ahgk6O5/TiT
+	DNDxP5JXVyboTmQyliRiTiop7VL2m+ufH0zJkewmoILTZH7oTeTG2EU3
+X-Gm-Gg: AeBDiesX+y8Up+hf2yJ+BQc90Xc+A0nr7kUfnneww7yoPqqmemnyo/dxya7mM6KscMy
+	Dz1OtwdUPs6+Yn67lW0LIhD1AwTLNcF/e68ww2PmBVQRg5qdhCLoxppuSHvrlSIq7wrqVwXTXFW
+	wFacqSvfD2OlB1QR8/56fW0rsHUIhxHF2fPyYugCBjnRP1T5aRAtROw8rZeR0OQHu9lyL5+gOKP
+	xoeFJ/fcVxedGD+9D5c+sTCg6XRuVfJiaSTs+Zsd8hAlRzGBzAJx9GY+6DGhMbK0CT6VuOWRjDC
+	b3mI6+n/hG0p+ivEVddpyaiFuMHy+sYSc/KDuIpVgPPxpMDM1XhAqJcUO8jJ6rQGAicIJUOza0I
+	snWSXr4ZMCTxMS4UuLHKXQ2pCXRfWZxbnWLLyvhPP/+bttwBCjEuBBodwyrIm9yVeQMtiseHopL
+	lHX/AKch8o92wzjd7/mjWMhNZySN7q+zxbBlSbvzWnQdXnBoy2g+g5hGwdB4Mj62855X5qnjrTn
+	45JwG1YN925ZNcfBQ==
+X-Received: by 2002:a17:90b:1e0b:b0:35d:a542:2dcb with SMTP id 98e67ed59e1d1-3614048a731mr37189556a91.16.1777162781878;
+        Sat, 25 Apr 2026 17:19:41 -0700 (PDT)
+Received: from deepanshu-kernel-hacker.. ([2405:201:682f:383f:421f:2607:ad77:4337])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3613fae178fsm10212835a91.7.2026.04.25.17.19.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 25 Apr 2026 16:58:53 -0700 (PDT)
-Date: Sat, 25 Apr 2026 18:58:48 -0500
-From: Corey Minyard <corey@minyard.net>
-To: Matt Fleming <matt@readmodwrite.com>
-Cc: Matt Fleming <mfleming@cloudflare.com>,
-	openipmi-developer@lists.sourceforge.net,
-	Tony Camuso <tcamuso@redhat.com>, linux-kernel@vger.kernel.org,
-	kernel-team@cloudflare.com, stable@vger.kernel.org
-Subject: Re: [PATCH 2/2] ipmi: Add limits to event and receive message
- requests
-Message-ID: <ae1VOEhdR0H0rf0a@mail.minyard.net>
-Reply-To: corey@minyard.net
-References: <20260421132544.2666174-1-corey@minyard.net>
- <20260421132544.2666174-3-corey@minyard.net>
- <aeyJ0fClAWI2lBwL@matt-Precision-5490>
+        Sat, 25 Apr 2026 17:19:41 -0700 (PDT)
+From: Deepanshu Kartikey <kartikey406@gmail.com>
+To: zonque@gmail.com,
+	perex@perex.cz,
+	tiwai@suse.com
+Cc: linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	syzbot+2afd7e71155c7e241560@syzkaller.appspotmail.com,
+	stable@vger.kernel.org
+Subject: [PATCH] ALSA: caiaq: fix usb_dev refcount leak on probe failure
+Date: Sun, 26 Apr 2026 05:49:34 +0530
+Message-ID: <20260426001934.70813-1-kartikey406@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aeyJ0fClAWI2lBwL@matt-Precision-5490>
-X-Rspamd-Queue-Id: A6DEA468611
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: C627B46871F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[minyard.net,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
-	R_DKIM_ALLOW(-0.20)[minyard.net:s=google];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_TO(0.00)[gmail.com,perex.cz,suse.com];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,syzkaller.appspotmail.com];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[minyard.net:+];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241150-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-241151-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	HAS_REPLYTO(0.00)[corey@minyard.net];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	REPLYTO_ADDR_EQ_FROM(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[corey@minyard.net,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[kartikey406@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	TAGGED_RCPT(0.00)[stable,2afd7e71155c7e241560];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,minyard.net:email,minyard.net:dkim,minyard.net:replyto,cloudflare.com:email,mail.minyard.net:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-On Sat, Apr 25, 2026 at 10:36:05AM +0100, Matt Fleming wrote:
-> On Tue, Apr 21, 2026 at 07:42:44AM -0500, Corey Minyard wrote:
-> > The driver would just fetch events and receive messages until the
-> > BMC said it was done.  To avoid issues with BMCs that never say they are
-> > done, add a limit of 10 fetches at a time.
-> > 
-> > This is a more general fix than the previous fix for the specific bad
-> > BMC, but should fix the more general issue of a BMC that won't stop
-> > saying it has data.
-> > 
-> > This has been there from the beginning of the driver.
-> > 
-> > Reported-by: Matt Fleming <mfleming@cloudflare.com>
-> > Closes: https://lore.kernel.org/lkml/20260415115930.3428942-1-matt@readmodwrite.com/
-> > Fixes: <1da177e4c3f4> ("Linux-2.6.12-rc2")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Corey Minyard <corey@minyard.net>
-> > ---
-> >  drivers/char/ipmi/ipmi_si_intf.c | 15 +++++++++++++++
-> >  drivers/char/ipmi/ipmi_ssif.c    | 15 +++++++++++++++
-> >  2 files changed, 30 insertions(+)
->  
-> [...]
-> 
-> > @@ -410,6 +413,7 @@ static void start_getting_msg_queue(struct smi_info *smi_info)
-> >  
-> >  	start_new_msg(smi_info, smi_info->curr_msg->data,
-> >  		      smi_info->curr_msg->data_size);
-> > +	smi_info->num_requests_in_a_row = 0;
-> >  	smi_info->si_state = SI_GETTING_MESSAGES;
-> >  }
-> >  
-> > @@ -421,6 +425,7 @@ static void start_getting_events(struct smi_info *smi_info)
-> >  
-> >  	start_new_msg(smi_info, smi_info->curr_msg->data,
-> >  		      smi_info->curr_msg->data_size);
-> > +	smi_info->num_requests_in_a_row = 0;
-> >  	smi_info->si_state = SI_GETTING_EVENTS;
-> >  }
-> >  
-> 
-> Would it be better to move this zeroing to handle_transaction_done()?
-> Otherwise we reset the counter in handle_flags() ->
-> start_getting_events() and the threshold is never reached.
+create_card() takes a reference on the USB device with usb_get_dev()
+and stores the matching usb_put_dev() in card_free(), which is
+installed as the snd_card's ->private_free destructor.
 
-Oh, yeah.
+However, ->private_free is only assigned near the end of init_card(),
+after several failure points (usb_set_interface(), EP type checks,
+usb_submit_urb(), the EP1_CMD_GET_DEVICE_INFO exchange, and its
+timeout). When any of those fail, init_card() returns an error to
+snd_probe(), which calls snd_card_free(card). Because ->private_free
+is still NULL, card_free() never runs, the usb_get_dev() reference
+is not dropped, and the struct usb_device leaks along with its
+descriptor allocations and device_private.
 
-Moving it to handle_transaction_done() is not ideal, though.  If
-something was spewing receive messages, it would never get to events,
-which is why I did it like I did.
+syzbot reproduces this with a malformed UAC3 device whose only valid
+altsetting is 0; init_card()'s usb_set_interface(usb_dev, 0, 1) call
+fails with -EIO and triggers the leak.
 
-The following should fix this.  You could also have different limits for
-receive messages and events, but I think the following is more clear.
+Move the ->private_free assignment into create_card(), immediately
+after usb_get_dev(), so that every error path reaching snd_card_free()
+balances the reference. card_free()'s callees (snd_usb_caiaq_input_free,
+free_urbs, kfree) already tolerate the partially-initialized state
+because the chip private area is zero-initialized by snd_card_new().
 
-diff --git a/drivers/char/ipmi/ipmi_si_intf.c b/drivers/char/ipmi/ipmi_si_intf.c
-index 2a739123270c..e46f4150ceb5 100644
---- a/drivers/char/ipmi/ipmi_si_intf.c
-+++ b/drivers/char/ipmi/ipmi_si_intf.c
-@@ -413,8 +413,10 @@ static void start_getting_msg_queue(struct smi_info *smi_info)
+Reported-by: syzbot+2afd7e71155c7e241560@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=2afd7e71155c7e241560
+Tested-by: syzbot+2afd7e71155c7e241560@syzkaller.appspotmail.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+---
+ sound/usb/caiaq/device.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- 	start_new_msg(smi_info, smi_info->curr_msg->data,
- 		      smi_info->curr_msg->data_size);
--	smi_info->num_requests_in_a_row = 0;
--	smi_info->si_state = SI_GETTING_MESSAGES;
-+	if (smi_info->si_state != SI_GETTING_MESSAGES) {
-+	    smi_info->num_requests_in_a_row = 0;
-+	    smi_info->si_state = SI_GETTING_MESSAGES;
-+	}
- }
+diff --git a/sound/usb/caiaq/device.c b/sound/usb/caiaq/device.c
+index 8af0c04041ee..ad9f744b496b 100644
+--- a/sound/usb/caiaq/device.c
++++ b/sound/usb/caiaq/device.c
+@@ -423,6 +423,7 @@ static int create_card(struct usb_device *usb_dev,
+ 
+ 	cdev = caiaqdev(card);
+ 	cdev->chip.dev = usb_get_dev(usb_dev);
++	card->private_free = card_free;
+ 	cdev->chip.card = card;
+ 	cdev->chip.usb_id = USB_ID(le16_to_cpu(usb_dev->descriptor.idVendor),
+ 				  le16_to_cpu(usb_dev->descriptor.idProduct));
+@@ -511,7 +512,6 @@ static int init_card(struct snd_usb_caiaqdev *cdev)
+ 	scnprintf(card->longname, sizeof(card->longname), "%s %s (%s)",
+ 		       cdev->vendor_name, cdev->product_name, usbpath);
+ 
+-	card->private_free = card_free;
+ 	err = setup_card(cdev);
+ 	if (err < 0)
+ 		return err;
+-- 
+2.43.0
 
- static void start_getting_events(struct smi_info *smi_info)
-@@ -425,8 +427,10 @@ static void start_getting_events(struct smi_info *smi_info)
-
- 	start_new_msg(smi_info, smi_info->curr_msg->data,
- 		      smi_info->curr_msg->data_size);
--	smi_info->num_requests_in_a_row = 0;
--	smi_info->si_state = SI_GETTING_EVENTS;
-+	if (smi_info->si_state != SI_GETTING_EVENTS) {
-+	    smi_info->num_requests_in_a_row = 0;
-+	    smi_info->si_state = SI_GETTING_EVENTS;
-+	}
- }
-
- /*
-
-
-> 
-> Thanks,
-> Matt
 
