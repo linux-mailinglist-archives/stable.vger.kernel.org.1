@@ -1,109 +1,97 @@
-Return-Path: <stable+bounces-241187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241188-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gPLyJqlt7mkItwAAu9opvQ
-	(envelope-from <stable+bounces-241187-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 26 Apr 2026 21:55:21 +0200
+	id mJ4SFm5v7mmBtwAAu9opvQ
+	(envelope-from <stable+bounces-241188-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 26 Apr 2026 22:02:54 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDD2A46AFDE
-	for <lists+stable@lfdr.de>; Sun, 26 Apr 2026 21:55:20 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0AEC46B02B
+	for <lists+stable@lfdr.de>; Sun, 26 Apr 2026 22:02:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8307F301E5AB
-	for <lists+stable@lfdr.de>; Sun, 26 Apr 2026 19:55:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1175B3010D84
+	for <lists+stable@lfdr.de>; Sun, 26 Apr 2026 20:02:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2E0938F953;
-	Sun, 26 Apr 2026 19:54:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75137390218;
+	Sun, 26 Apr 2026 20:02:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="HMT+Om/R"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="m3stEKmN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5FA638F932;
-	Sun, 26 Apr 2026 19:54:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 386D938F929;
+	Sun, 26 Apr 2026 20:02:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777233299; cv=none; b=gnCqB61vDSV+PTwT+wu57T0l+Wg45eFdojm1mPNH2g8TSzU2ep7NKU/ctkgqIqNlZBrF1iXEz8smWEEBDmkpAVPnN95jZ7ZMZSyOLoUDtlnvHtEj3eHAUFISPIsEDSNVxmJcfpMRbXvDLYqLUc/vEZ3VsA0Hln1BdTl55mTlbqw=
+	t=1777233771; cv=none; b=lnk//XjXMHUNErWb/OE/FfdlzDtXSvB3fgID1Mis/tp6OYuzO4JOOzdJRXUoiCNhUxsMfFaovUjU330hTQM9hBfVS0dbatPm6B0ZpRF+ioOg4Ssx2DpyQmkPIJLVizGTDqJB5XT7HHCE0PeVM5SQentyx2dedkcfZ0Ry0cNi1P8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777233299; c=relaxed/simple;
-	bh=JrDlBpO4JPFn7ZhI5PtZjk+0zDivG63bnan5+hRoHX8=;
-	h=Date:To:From:Subject:Message-Id; b=P15J0qsfwtYlR8NQKgdVnYrKtkEBPUfTaBYoskgWIFm6knREJ0wjpMYHbbcTzltOsjKTe1K7R8T6q9YCe5hF/86lRpiBEDRu5aLBWogbcbrovmY/A3mbNR1xf0XHc6KndJbQ2U2x5dSjjFqX1pfyVxT+eMX3I1YS5nZ4xxCKhDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=HMT+Om/R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F416C2BCAF;
-	Sun, 26 Apr 2026 19:54:59 +0000 (UTC)
+	s=arc-20240116; t=1777233771; c=relaxed/simple;
+	bh=bxlyRdvIDp5E3p9LtmZkNrJObZr+A7yxjdnHKgbgr+s=;
+	h=Date:To:From:Subject:Message-Id; b=h0xBOCjyoLnGRjrOv0afcIFcSUEnchqwqTsk1HsDFeeKfXeQ8/C18xg35QyjXAl9wVLtSS5zkkLnLnQt7qBle3QWxM7JP/Aoy6VBzxpuyMVAxWjsx1ZBv/eo7r6kZtDxcM6yBq1BHflCcB0wc3YX3KucbYcU6k6/CRoi50guebk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=m3stEKmN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE164C2BCAF;
+	Sun, 26 Apr 2026 20:02:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1777233299;
-	bh=JrDlBpO4JPFn7ZhI5PtZjk+0zDivG63bnan5+hRoHX8=;
+	s=korg; t=1777233770;
+	bh=bxlyRdvIDp5E3p9LtmZkNrJObZr+A7yxjdnHKgbgr+s=;
 	h=Date:To:From:Subject:From;
-	b=HMT+Om/ROfAp/KS8tWzHM+XxWBtoT1+wCqEEzAsBeop2qb+r0ovh9EUvcSNvo1RrS
-	 Wc7q8nxmUcm4a2io32SnGRvCrhyFHSsiLnHkh9kUZEZKywCYPqvrF7DlpqPmEkQ/A+
-	 pXdJuTRzD3fYhNQsmJASGDj5he/cJFEa7gKfPrSY=
-Date: Sun, 26 Apr 2026 12:54:59 -0700
-To: mm-commits@vger.kernel.org,surenb@google.com,stable@vger.kernel.org,rppt@kernel.org,osalvador@suse.de,npiggin@gmail.com,mpe@ellerman.id.au,mhocko@suse.com,maddy@linux.ibm.com,ljs@kernel.org,liam@infradead.org,joao.m.martins@oracle.com,david@kernel.org,aneesh.kumar@linux.ibm.com,songmuchun@bytedance.com,akpm@linux-foundation.org
+	b=m3stEKmNZDXJEsVRRO9grqOL8FWONVV5H9oY5Yc4qFZQzmMK+eKKf1TzOCjlqvLlh
+	 npYll/jWoMv/drRM50jr3PPJthLXCmWoAGnFrjGoJFsci+TVGoGzJgd7a90Zmcn25M
+	 FLyKkSB23SivFYrtFaPHab+H5o5MJp1VuzWodfuo=
+Date: Sun, 26 Apr 2026 13:02:50 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,rostedt@goodmis.org,mhiramat@kernel.org,mathieu.desnoyers@efficios.com,sj@kernel.org,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-mm_init-fix-uninitialized-struct-pages-for-zone_device.patch added to mm-new branch
-Message-Id: <20260426195459.7F416C2BCAF@smtp.kernel.org>
+Subject: + mm-damon-fix-damos_stat-tracepoint-format-for-sz_applied.patch added to mm-hotfixes-unstable branch
+Message-Id: <20260426200250.BE164C2BCAF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Rspamd-Queue-Id: EDD2A46AFDE
+X-Rspamd-Queue-Id: B0AEC46B02B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-241187-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[linux-foundation.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[vger.kernel.org,google.com,kernel.org,suse.de,gmail.com,ellerman.id.au,suse.com,linux.ibm.com,infradead.org,oracle.com,bytedance.com,linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_TWELVE(0.00)[16];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	TAGGED_FROM(0.00)[bounces-241188-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	DMARC_NA(0.00)[linux-foundation.org];
+	MISSING_XM_UA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,smtp.kernel.org:mid,efficios.com:email]
 
 
 The patch titled
-     Subject: mm/mm_init: fix uninitialized struct pages for ZONE_DEVICE
-has been added to the -mm mm-new branch.  Its filename is
-     mm-mm_init-fix-uninitialized-struct-pages-for-zone_device.patch
+     Subject: mm/damon: fix damos_stat tracepoint format for sz_applied
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-damon-fix-damos_stat-tracepoint-format-for-sz_applied.patch
 
 This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-mm_init-fix-uninitialized-struct-pages-for-zone_device.patch
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-damon-fix-damos_stat-tracepoint-format-for-sz_applied.patch
 
-This patch will later appear in the mm-new branch at
+This patch will later appear in the mm-hotfixes-unstable branch at
     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Note, mm-new is a provisional staging ground for work-in-progress
-patches, and acceptance into mm-new is a notification for others take
-notice and to finish up reviews.  Please do not hesitate to respond to
-review feedback and post updated versions to replace or incrementally
-fixup patches in mm-new.
-
-The mm-new branch of mm.git is not included in linux-next
-
-If a few days of testing in mm-new is successful, the patch will me moved
-into mm.git's mm-unstable branch, which is included in linux-next
 
 Before you just go and hit "reply", please:
    a) Consider who else should be cc'ed
@@ -118,85 +106,47 @@ branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 and is updated there most days
 
 ------------------------------------------------------
-From: Muchun Song <songmuchun@bytedance.com>
-Subject: mm/mm_init: fix uninitialized struct pages for ZONE_DEVICE
-Date: Sun, 26 Apr 2026 17:26:40 +0800
+From: SeongJae Park <sj@kernel.org>
+Subject: mm/damon: fix damos_stat tracepoint format for sz_applied
+Date: Sun, 26 Apr 2026 12:31:17 -0700
 
-If DAX memory is hotplugged into an unoccupied subsection of an early
-section, section_activate() reuses the unoptimized boot memmap.
-However, compound_nr_pages() still assumes that vmemmap optimization is
-in effect and initializes only the reduced number of struct pages. As a
-result, the remaining tail struct pages are left uninitialized, which
-can later lead to unexpected behavior or crashes.
+The print format is wrongly marking sz_applied as sz_tried.  Fix it.
 
-Fix this by treating early sections as unoptimized when calculating how
-many struct pages to initialize.
-
-Link: https://lore.kernel.org/20260426092640.375967-7-songmuchun@bytedance.com
-Fixes: 6fd3620b3428 ("mm/page_alloc: reuse tail struct pages for compound devmaps")
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Cc: Joao Martins <joao.m.martins@oracle.com>
-Cc: Liam Howlett <liam@infradead.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/20260426193119.88095-1-sj@kernel.org
+Fixes: 804c26b961da ("mm/damon/core: add trace point for damos stat per apply interval")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: <stable@vger.kernel.org> # 7.0.x
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/mm_init.c |   13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ include/trace/events/damon.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/mm_init.c~mm-mm_init-fix-uninitialized-struct-pages-for-zone_device
-+++ a/mm/mm_init.c
-@@ -1055,10 +1055,17 @@ static void __ref __init_zone_device_pag
-  * of how the sparse_vmemmap internals handle compound pages in the lack
-  * of an altmap. See vmemmap_populate_compound_pages().
-  */
--static inline unsigned long compound_nr_pages(struct vmem_altmap *altmap,
-+static inline unsigned long compound_nr_pages(unsigned long pfn,
-+					      struct vmem_altmap *altmap,
- 					      struct dev_pagemap *pgmap)
- {
--	if (!vmemmap_can_optimize(altmap, pgmap))
-+	/*
-+	 * If DAX memory is hot-plugged into an unoccupied subsection
-+	 * of an early section, the unoptimized boot memmap is reused.
-+	 * See section_activate().
-+	 */
-+	if (early_section(__pfn_to_section(pfn)) ||
-+	    !vmemmap_can_optimize(altmap, pgmap))
- 		return pgmap_vmemmap_nr(pgmap);
+--- a/include/trace/events/damon.h~mm-damon-fix-damos_stat-tracepoint-format-for-sz_applied
++++ a/include/trace/events/damon.h
+@@ -41,7 +41,7 @@ TRACE_EVENT(damos_stat_after_apply_inter
+ 	),
  
- 	return VMEMMAP_RESERVE_NR * (PAGE_SIZE / sizeof(struct page));
-@@ -1128,7 +1135,7 @@ void __ref memmap_init_zone_device(struc
- 			continue;
- 
- 		memmap_init_compound(page, pfn, zone_idx, nid, pgmap,
--				     compound_nr_pages(altmap, pgmap));
-+				     compound_nr_pages(pfn, altmap, pgmap));
- 	}
- 
- 	pageblock_migratetype_init_range(start_pfn, nr_pages, MIGRATE_MOVABLE);
+ 	TP_printk("ctx_idx=%u scheme_idx=%u nr_tried=%lu sz_tried=%lu "
+-			"nr_applied=%lu sz_tried=%lu sz_ops_filter_passed=%lu "
++			"nr_applied=%lu sz_applied=%lu sz_ops_filter_passed=%lu "
+ 			"qt_exceeds=%lu nr_snapshots=%lu",
+ 			__entry->context_idx, __entry->scheme_idx,
+ 			__entry->nr_tried, __entry->sz_tried,
 _
 
-Patches currently in -mm which might be from songmuchun@bytedance.com are
+Patches currently in -mm which might be from sj@kernel.org are
 
-mm-memory_hotplug-fix-memory-block-reference-leak-on-remove.patch
-drivers-base-memory-fix-memory-block-reference-leak-in-poison-accounting.patch
-mm-sparse-remove-sparse-buffer-pre-allocation-mechanism.patch
-mm-sparse-vmemmap-fix-vmemmap-accounting-underflow.patch
-mm-memory_hotplug-fix-incorrect-altmap-passing-in-error-path.patch
-mm-sparse-vmemmap-pass-pgmap-argument-to-memory-deactivation-paths.patch
-mm-sparse-vmemmap-fix-dax-vmemmap-accounting-with-optimization.patch
-mm-mm_init-fix-pageblock-migratetype-for-zone_device-compound-pages.patch
-mm-mm_init-fix-uninitialized-struct-pages-for-zone_device.patch
+mm-damon-sysfs-schemes-protect-memcg_path-kfree-with-damon_sysfs_lock.patch
+mm-damon-sysfs-schemes-protect-path-kfree-with-damon_sysfs_lock.patch
+mm-damon-reclaim-detect-and-use-fresh-enabled-and-kdamond_pid-values.patch
+mm-damon-lru_sort-detect-and-use-fresh-enabled-and-kdamond_pid-values.patch
+mm-damon-stat-detect-and-use-fresh-enabled-value.patch
+mm-damon-sysfs-schemes-call-missing-mem_cgroup_iter_break.patch
+mm-damon-fix-damos_stat-tracepoint-format-for-sz_applied.patch
+docs-mm-damon-maintainer-profile-add-ai-review-usage-guideline.patch
 
 
