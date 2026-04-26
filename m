@@ -1,68 +1,68 @@
-Return-Path: <stable+bounces-241184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241185-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +LmhOJVt7mkItwAAu9opvQ
-	(envelope-from <stable+bounces-241184-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 26 Apr 2026 21:55:01 +0200
+	id iJdNLp5t7mkItwAAu9opvQ
+	(envelope-from <stable+bounces-241185-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 26 Apr 2026 21:55:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DCD746AFC3
-	for <lists+stable@lfdr.de>; Sun, 26 Apr 2026 21:55:01 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C818046AFD0
+	for <lists+stable@lfdr.de>; Sun, 26 Apr 2026 21:55:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7701030160CB
-	for <lists+stable@lfdr.de>; Sun, 26 Apr 2026 19:54:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 56AF93011BF7
+	for <lists+stable@lfdr.de>; Sun, 26 Apr 2026 19:54:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5174E38F64F;
-	Sun, 26 Apr 2026 19:54:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADB1138F65D;
+	Sun, 26 Apr 2026 19:54:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="U5zreVdc"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="HGAez/X/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14C0F37BE7D;
-	Sun, 26 Apr 2026 19:54:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7138D26159E;
+	Sun, 26 Apr 2026 19:54:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777233287; cv=none; b=T6I9XOvL5Q5n1Q8MeWmZnlBYvtH4uKTBpg8dA0CaLGkD1k5F5lbH8rruxFnJq+j2JeVVq6E2XC5p8+264rxfNRYzr51WGJnhBkZUBGWhGLWMMRzf/Efngd7x/JCtPVp06JNcPx45kp2H/MlcCtW7ZwgrNFkq6VNJbL3dyivNdys=
+	t=1777233295; cv=none; b=T1AkHWqhPqNJ9rZzY4WBdAwFrGmbnNk9XflKo/+U6eikqf4JdU1f8E/BMJ9Wnlp0AEcH+6o5zuP3o5TpX9Pt455h9/J1Gikb7EnDcsJqGvKMeyU5XSEm3I82m2o0/1TJZ4brOLEvtpVjRKL/mrQyoPjL1TKEYEx19oG0NHj04GM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777233287; c=relaxed/simple;
-	bh=3/bt0Nrq1HoyOJ+6zLl4F3BQRUYkONWlF2cbteo/YIU=;
-	h=Date:To:From:Subject:Message-Id; b=lZXGl6xtnEDONAxsC4Z3dsvUJOqt2OzAFYPT+ZfdVZg/pPxOu1B0fExL7ZjbPrXHZKMJG+LGu5KhxdIQ84yfOgrTz6zsj7OOqqmnV3QRgmr6tNtls1bLiT/CRUJ1JKOVG3caL0nibD6IEOd3VXuYNDOmb+WpmHSe1DSI5ILLBjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=U5zreVdc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D613DC2BCAF;
-	Sun, 26 Apr 2026 19:54:46 +0000 (UTC)
+	s=arc-20240116; t=1777233295; c=relaxed/simple;
+	bh=Aiuhl+Q8MuYw7BXDlccuWSaKSusUiXc0YyLKdzfJf18=;
+	h=Date:To:From:Subject:Message-Id; b=KXlzkN5SBwSaJR3xEATXLKIfiFKPVl8obp+aA8tFmlZGg8k96GNBbyvtLkjJk5zyW0giUgiz04+Mv1aQu3tPzja1lDnGhZJg6TguUQJ8fwJ2nLQht9G79+EAc80360iUZaKBLHwNJhv7WJMpNcUk8eChTDPybqtibRsRzDrSJkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=HGAez/X/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18C04C2BCAF;
+	Sun, 26 Apr 2026 19:54:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1777233286;
-	bh=3/bt0Nrq1HoyOJ+6zLl4F3BQRUYkONWlF2cbteo/YIU=;
+	s=korg; t=1777233295;
+	bh=Aiuhl+Q8MuYw7BXDlccuWSaKSusUiXc0YyLKdzfJf18=;
 	h=Date:To:From:Subject:From;
-	b=U5zreVdcjSlrvgOBwUDnXJf/MhRQQ2/pbrOFCFLyfgIJwHBOzV58FkNteTa7wJGGu
-	 cjP6ZNE2XMzk3FBe/AwL8yzqLoqj4TkQFQgd3VC1tUU7XH2ba1OoaMw4ndCYl6YKrT
-	 oQe8W2aD40qNIC58UpoZXyuurGf0ngb5Lq1xGc6M=
-Date: Sun, 26 Apr 2026 12:54:46 -0700
+	b=HGAez/X/KZ9MNbwGs8x0kb57JZ3BVofBaYWaY4LDl40ehjLmtKYMZrI7/5Jf6jR9W
+	 4UDxA6eU2LtWRXTWB45pjqwctK9bWt6ArfUa0xReem5FbLqxHcwg/kgAQ3gf5Sfl8m
+	 nUN/HXDI798pNlRObN4hdyFDT64zeuS2n/STE8/A=
+Date: Sun, 26 Apr 2026 12:54:54 -0700
 To: mm-commits@vger.kernel.org,surenb@google.com,stable@vger.kernel.org,rppt@kernel.org,osalvador@suse.de,npiggin@gmail.com,mpe@ellerman.id.au,mhocko@suse.com,maddy@linux.ibm.com,ljs@kernel.org,liam@infradead.org,joao.m.martins@oracle.com,david@kernel.org,aneesh.kumar@linux.ibm.com,songmuchun@bytedance.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-memory_hotplug-fix-incorrect-altmap-passing-in-error-path.patch added to mm-new branch
-Message-Id: <20260426195446.D613DC2BCAF@smtp.kernel.org>
+Subject: + mm-sparse-vmemmap-fix-dax-vmemmap-accounting-with-optimization.patch added to mm-new branch
+Message-Id: <20260426195455.18C04C2BCAF@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Rspamd-Queue-Id: 2DCD746AFC3
+X-Rspamd-Queue-Id: C818046AFD0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-241184-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-241185-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	DMARC_NA(0.00)[linux-foundation.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -70,7 +70,7 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	FREEMAIL_TO(0.00)[vger.kernel.org,google.com,kernel.org,suse.de,gmail.com,ellerman.id.au,suse.com,linux.ibm.com,infradead.org,oracle.com,bytedance.com,linux-foundation.org];
 	DKIM_TRACE(0.00)[linux-foundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCPT_COUNT_TWELVE(0.00)[16];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
@@ -84,12 +84,12 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 
 
 The patch titled
-     Subject: mm/memory_hotplug: fix incorrect altmap passing in error path
+     Subject: mm/sparse-vmemmap: fix DAX vmemmap accounting with optimization
 has been added to the -mm mm-new branch.  Its filename is
-     mm-memory_hotplug-fix-incorrect-altmap-passing-in-error-path.patch
+     mm-sparse-vmemmap-fix-dax-vmemmap-accounting-with-optimization.patch
 
 This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-memory_hotplug-fix-incorrect-altmap-passing-in-error-path.patch
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-sparse-vmemmap-fix-dax-vmemmap-accounting-with-optimization.patch
 
 This patch will later appear in the mm-new branch at
     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
@@ -119,59 +119,107 @@ and is updated there most days
 
 ------------------------------------------------------
 From: Muchun Song <songmuchun@bytedance.com>
-Subject: mm/memory_hotplug: fix incorrect altmap passing in error path
-Date: Sun, 26 Apr 2026 17:26:36 +0800
+Subject: mm/sparse-vmemmap: fix DAX vmemmap accounting with optimization
+Date: Sun, 26 Apr 2026 17:26:38 +0800
 
-In create_altmaps_and_memory_blocks(), when arch_add_memory() succeeds
-with memmap_on_memory enabled, the vmemmap pages are allocated from
-params.altmap.  If create_memory_block_devices() subsequently fails, the
-error path calls arch_remove_memory() with a NULL altmap instead of
-params.altmap.
+When vmemmap optimization is enabled for DAX, the nr_memmap_pages counter
+in /proc/vmstat is incorrect.  The current code always accounts for the
+full, non-optimized vmemmap size, but vmemmap optimization reduces the
+actual number of vmemmap pages by reusing tail pages.  This causes the
+system to overcount vmemmap usage, leading to inaccurate page statistics
+in /proc/vmstat.
 
-This is a bug that could lead to memory corruption.  Since altmap is NULL,
-vmemmap_free() falls back to freeing the vmemmap pages into the system
-buddy allocator via free_pages() instead of the altmap. 
-arch_remove_memory() then immediately destroys the physical linear mapping
-for this memory.  This injects unowned pages into the buddy allocator,
-causing machine checks or memory corruption if the system later attempts
-to allocate and use those freed pages.
+Fix this by introducing section_nr_vmemmap_pages(), which returns the
+exact vmemmap page count for a given pfn range based on whether
+optimization is in effect.
 
-Fix this by passing params.altmap to arch_remove_memory() in the error
-path.
-
-Link: https://lore.kernel.org/20260426092640.375967-3-songmuchun@bytedance.com
-Fixes: 6b8f0798b85a ("mm/memory_hotplug: split memmap_on_memory requests across memblocks")
+Link: https://lore.kernel.org/20260426092640.375967-5-songmuchun@bytedance.com
+Fixes: 15995a352474 ("mm: report per-page metadata information")
 Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Acked-by: Oscar Salvador <osalvador@suse.de>
 Cc: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Cc: David Hildenbrand (Arm) <david@kernel.org>
 Cc: Joao Martins <joao.m.martins@oracle.com>
 Cc: Liam Howlett <liam@infradead.org>
 Cc: Lorenzo Stoakes <ljs@kernel.org>
 Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
 Cc: Michael Ellerman <mpe@ellerman.id.au>
 Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport (Microsoft) <rppt@kernel.org>
 Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Oscar Salvador <osalvador@suse.de>
 Cc: Suren Baghdasaryan <surenb@google.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/memory_hotplug.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/sparse-vmemmap.c |   34 ++++++++++++++++++++++++++++++----
+ 1 file changed, 30 insertions(+), 4 deletions(-)
 
---- a/mm/memory_hotplug.c~mm-memory_hotplug-fix-incorrect-altmap-passing-in-error-path
-+++ a/mm/memory_hotplug.c
-@@ -1469,7 +1469,7 @@ static int create_altmaps_and_memory_blo
- 		ret = create_memory_block_devices(cur_start, memblock_size, nid,
- 						  params.altmap, group);
- 		if (ret) {
--			arch_remove_memory(cur_start, memblock_size, NULL);
-+			arch_remove_memory(cur_start, memblock_size, params.altmap);
- 			kfree(params.altmap);
- 			goto out;
- 		}
+--- a/mm/sparse-vmemmap.c~mm-sparse-vmemmap-fix-dax-vmemmap-accounting-with-optimization
++++ a/mm/sparse-vmemmap.c
+@@ -647,6 +647,31 @@ void offline_mem_sections(unsigned long
+ 	}
+ }
+ 
++static int __meminit section_nr_vmemmap_pages(unsigned long pfn, unsigned long nr_pages,
++		struct vmem_altmap *altmap, struct dev_pagemap *pgmap)
++{
++	const unsigned int order = pgmap ? pgmap->vmemmap_shift : 0;
++	const unsigned long pages_per_compound = 1UL << order;
++
++	VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages, PAGES_PER_SUBSECTION));
++
++	if (!vmemmap_can_optimize(altmap, pgmap))
++		return DIV_ROUND_UP(nr_pages * sizeof(struct page), PAGE_SIZE);
++
++	if (order < PFN_SECTION_SHIFT) {
++		VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages, pages_per_compound));
++		return VMEMMAP_RESERVE_NR * nr_pages / pages_per_compound;
++	}
++
++	VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages, PAGES_PER_SECTION));
++	VM_WARN_ON_ONCE(nr_pages > PAGES_PER_SECTION);
++
++	if (IS_ALIGNED(pfn, pages_per_compound))
++		return VMEMMAP_RESERVE_NR;
++
++	return 0;
++}
++
+ static struct page * __meminit populate_section_memmap(unsigned long pfn,
+ 		unsigned long nr_pages, int nid, struct vmem_altmap *altmap,
+ 		struct dev_pagemap *pgmap)
+@@ -654,7 +679,7 @@ static struct page * __meminit populate_
+ 	struct page *page = __populate_section_memmap(pfn, nr_pages, nid, altmap,
+ 						      pgmap);
+ 
+-	memmap_pages_add(DIV_ROUND_UP(nr_pages * sizeof(struct page), PAGE_SIZE));
++	memmap_pages_add(section_nr_vmemmap_pages(pfn, nr_pages, altmap, pgmap));
+ 
+ 	return page;
+ }
+@@ -665,7 +690,7 @@ static void depopulate_section_memmap(un
+ 	unsigned long start = (unsigned long) pfn_to_page(pfn);
+ 	unsigned long end = start + nr_pages * sizeof(struct page);
+ 
+-	memmap_pages_add(-1L * (DIV_ROUND_UP(nr_pages * sizeof(struct page), PAGE_SIZE)));
++	memmap_pages_add(-section_nr_vmemmap_pages(pfn, nr_pages, altmap, pgmap));
+ 	vmemmap_free(start, end, altmap);
+ }
+ 
+@@ -673,9 +698,10 @@ static void free_map_bootmem(struct page
+ {
+ 	unsigned long start = (unsigned long)memmap;
+ 	unsigned long end = (unsigned long)(memmap + PAGES_PER_SECTION);
++	unsigned long pfn = page_to_pfn(memmap);
+ 
+-	memmap_boot_pages_add(-1L * (DIV_ROUND_UP(PAGES_PER_SECTION * sizeof(struct page),
+-						  PAGE_SIZE)));
++	memmap_boot_pages_add(-section_nr_vmemmap_pages(pfn, PAGES_PER_SECTION,
++							NULL, NULL));
+ 	vmemmap_free(start, end, NULL);
+ }
+ 
 _
 
 Patches currently in -mm which might be from songmuchun@bytedance.com are
