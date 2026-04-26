@@ -1,173 +1,171 @@
-Return-Path: <stable+bounces-241166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241167-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QJ14J1Pz7Wk7pQAAu9opvQ
-	(envelope-from <stable+bounces-241166-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 26 Apr 2026 13:13:23 +0200
+	id YPQVGEAQ7mndqQAAu9opvQ
+	(envelope-from <stable+bounces-241167-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 26 Apr 2026 15:16:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3D074698AE
-	for <lists+stable@lfdr.de>; Sun, 26 Apr 2026 13:13:22 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73DA1469EBF
+	for <lists+stable@lfdr.de>; Sun, 26 Apr 2026 15:16:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B337C3015E10
-	for <lists+stable@lfdr.de>; Sun, 26 Apr 2026 11:13:16 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4684A30028C4
+	for <lists+stable@lfdr.de>; Sun, 26 Apr 2026 13:16:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C42135AC01;
-	Sun, 26 Apr 2026 11:13:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33E08361678;
+	Sun, 26 Apr 2026 13:16:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Gom058It"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OUDRj9N5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A0C831E849
-	for <stable@vger.kernel.org>; Sun, 26 Apr 2026 11:13:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDF4019CD0A
+	for <stable@vger.kernel.org>; Sun, 26 Apr 2026 13:16:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777201994; cv=none; b=LP7bNxuDSgDdsMivgqBMv+Sx8KnTCpE1IFkJ2uIhuznWWEtTceouiwvjzYCAa7R2WJlwaG+/br85WYXhPovoGLwNqP25PfjODTJWzVnLabnIedmhxvCidgx5cSKV/xl6Juc8XhI+dQxvf25wI71LfALU65LQTRGj7adUBL5azqo=
+	t=1777209402; cv=none; b=rM0SzdCTKH119yQojAVdSSGyIlzGz4tkoEG4T+NdvumGDRU6+4/t9f3zx8ukTup/oLHklpQbrLsYzqUC5OQK2DltrFYWIQHzN6ajZKf8vahT0SzFNr6INhjTkHy5IxCdYVNKf0LdZvEfCxj9vEGnzLFga4pwKtbXsUSkjsbKE4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777201994; c=relaxed/simple;
-	bh=B/9eEE6B2PxEEwz8XP6be4i93RoXNRJ69P6xJrqTv8c=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Dkfprj2hc7A7YHz1lwpZmyhGF8duI8PfhUOlyQp2jzpQT3nmggCJEiZKJfgrmKw8BdJIfUw6Oww44jaHLthNgXoZ3fm2egSUrqgc8zVJVR43SVp3chOFN8qmiiOrNZcQYlmDp3kSkFLo9ZbvY6MyqynbBcKEGKAu4X7jwREA4CM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Gom058It; arc=none smtp.client-ip=209.85.214.178
+	s=arc-20240116; t=1777209402; c=relaxed/simple;
+	bh=e7QWtxSkrIHtUdA7OH0NJS72f3PZVhziWa99JGad/Tk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=O1UcEMi+GXTViqpbbfAXAuey4c7bKMTB9PdxuzZZZWA4pBIcUTvGlL/CkGKL/e5Zm5oc35y747fwyZiuspo4HZm4Gj9sy9hMbCW7mmNoh2LG8BcfIFLBKzIj23/igMspxOm6kOIxXJ+nway2bRW+T7MI4go3JlcotBJi/MMBOLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OUDRj9N5; arc=none smtp.client-ip=209.85.210.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2b7d3ecc10dso14524045ad.2
-        for <stable@vger.kernel.org>; Sun, 26 Apr 2026 04:13:13 -0700 (PDT)
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-82cebbdbdccso5763452b3a.1
+        for <stable@vger.kernel.org>; Sun, 26 Apr 2026 06:16:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777201992; x=1777806792; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1777209400; x=1777814200; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=/9JOiMw/TUHAEKpVZ4imVP6XP0XS06uXgFI4h8oSnkI=;
-        b=Gom058ItaKEUp44LK88/QOzEZ3tBt0+pP947dNm0XyjNSKD4T4PM38sMi2CNydiiG9
-         jGUNISgx2/veeYZY1FL9g3vEwIt2nuIKj+nWvTTj0/4uXpCmpBrn8Kad2EkbcQAGPJPv
-         1zQD9fEaBipUI2+KTxcq0lr6zqkzQLtZi5YnofGcztXEKchiU9vO42O9HCD041yftk6G
-         e6PvnN4XW2bJ223YV84CMk/yHP0GCBCf88PJP370h4OdZngMrFvnfJCf+1+rcHV/7HeC
-         FL3u7guZl4XHS1h2A9zQsyPMMucWTNNx+r2kAztBOVH/EH4+KkrouqKcaOF6L5eokINq
-         VMSQ==
+        bh=Mfpir1cWg4EgfZHLjfNae2jfgPK4QiC8JAKh+M/m5S8=;
+        b=OUDRj9N5JSklq2oJFKv5HoZuk1dK3FguaS2NjCv1tEvY+jT3bVMj0AoSbH27ccN7Xz
+         6rClED7AGlKUYuqTQwtfNNCEE2H1MYIg4XPlFSZ7yfyAPMBJaZFeVDQvv+GyFA7pHZvn
+         mx0bFQkilfbSSo9QV9jgTlTt1PeMaMBhdgbEAJo/L27v6UcIfzE4fskMsfzEX+n2q58t
+         Mq15gWvRrw262/600gJCX/apIkCTQy+25aXELIP8ByD2++d9wBEOuGhcQTA1v09IT4hR
+         0I0H6yUqBEaro1MIekwNqx9NFGVQw9wS2ytUgTneX4MCWs82vks0gihIMwrFKDE9Xug6
+         slGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777201992; x=1777806792;
+        d=1e100.net; s=20251104; t=1777209400; x=1777814200;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/9JOiMw/TUHAEKpVZ4imVP6XP0XS06uXgFI4h8oSnkI=;
-        b=H5dvE4EVzKz5ZYZsYF+7FESjI3vT8T5QhyI52+916bMvhslSWQf8z0j77HCxPm5E4G
-         VGsC+7b2zcrML3EdNKz9ibnZ5ODATUWxDRWxBrmsPUwVOY6/o+hdI+lsU5XdwTQ++Lrg
-         oY5/5V3v0batMe4J328cpOyfL/hSouh1vYMXXaTC5l6vWl0QsCxgLVRZZYYeCWGwBC1c
-         NMRjjnyPufmV6z5tjG7hxfcOvcKnrHA+erS5ZkAPbp/oPqxpfUlYYmJJ6+7FinoGv2CU
-         DHIa+HP2kf0r7KFsXZD61ReBR7XL086vlLRCd0YM4cT6sOD0ZuqUK0SWBNW5/Xnd3AjF
-         foQQ==
-X-Forwarded-Encrypted: i=1; AFNElJ97IfgfF5VJrK3XDime5senMldOobMsD5GnCAemka1Y0b4QXBYeraITnleLArC9ukI9WKg+2Zo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy0FpLI1OIMdj5yNmBO0NJF9Xw9cZnTWlWS3FLfP+eTY9Yo2FrR
-	U5jadwD23wefWbq1CS2zUBz8gBwwxA6E/9YitqBg0HGMg/dasu2STHRi
-X-Gm-Gg: AeBDieuMgygoCcoblVmgRkaNhJrOq9HN/g30oRqKzkLsXKsE7XIIvLL2Cvbm5GPtSlJ
-	Viea9vfkSt5qYr1Ex7GqAagUt3k/YcZNENZ+H6pLo40v0h3ZVpHCI8WY3aclpeWNalqKgKaayZI
-	yTQG7/Vsz0+oXydjb4qdRvZqQEggTYCWyMEcPnu9jJrXHI3ODWUYD9RiwJxsK3hdtbeLqcRBo/W
-	ejGE+rp95AfuZGkJRh5qYo2nPz8xDH4+G1hP826Flhuh8u2yAUpQ8l6r217O+Y5ejhaoQxDKc6R
-	XCHT3/MRjmnfX1vl59IyylEj0WkitK8ieAidTsL03Vzor882HV05sPe+QULVUs8/ooL6+GfZe+8
-	F53RAC8+JrrhdGV1vMF/Lws2ku8ldWeN8he6U+vR4Ajn+hQgwFuS7uP0P4UCFa+/prSth3cPMdM
-	Mi/IBeg9u535Eg8F8YhqPuyvpwN8u+QIMHh6ahmQWscaZuL90SfNyCfyYVFw==
-X-Received: by 2002:a17:903:2654:b0:2b4:5d51:ce96 with SMTP id d9443c01a7336-2b5f9f4e6damr310434855ad.24.1777201992565;
-        Sun, 26 Apr 2026 04:13:12 -0700 (PDT)
-Received: from fedora ([61.74.238.173])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b5fab32cfasm351390385ad.69.2026.04.26.04.13.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 26 Apr 2026 04:13:12 -0700 (PDT)
-From: SeungJu Cheon <suunj1331@gmail.com>
-To: clemens@ladisch.de,
-	perex@perex.cz,
-	tiwai@suse.com
-Cc: linux-sound@vger.kernel.org,
+        bh=Mfpir1cWg4EgfZHLjfNae2jfgPK4QiC8JAKh+M/m5S8=;
+        b=XhrplX2eKbzkH8eUrRsbyNopUpXcM4mWkWLJOLufTg/qZpsj1j/8OPCF0ueZ6cECYS
+         XMXR/ncyWXnQAlVM+oiGGaLsFOykx+5KhJl+1oQZBAczhotjJcMUAgEXlxBQE3yL0tyj
+         SZKdxlsf7lhf5TgwpafjJgkUlto5jTBbDw0AtXBRPCHG0NoSVFsUEMliGod7YqMinljo
+         WQLz4nRlWBz3SyTmgEva0pG+UrJfSDTzO8uTWAsZodO0Las30KKcbizbTTFsRDDBk+xD
+         19oVA3pyLIf0tThXD6YvzoT6O9FSHM7YHY1wTfPU7dpWU1vY1c8KXgP9bWv8YIqa5wEl
+         4T9w==
+X-Forwarded-Encrypted: i=1; AFNElJ9SFqxmnUXxK66v6GhpWwSII9U31vEybMn4J/XK63gNhfR+lEIEcn4HmvI6uVIT3jlL3lQ/Un8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxs4RX2Bf4FHjLWxc6NHiqV0fJlEL8055DgezimOsl5qeqyblTn
+	8rDFhUSgeXV/cdSWzCMmRwRwGFDwZWihQoLXrlpL+r+huRhn9oL9DNE=
+X-Gm-Gg: AeBDietfoPDMxJwNhXQqdaI4C5vL7vX7ncRz/ddjwmngn5GcGuCoGtrhttUcCDxdaZr
+	cxgE0RXbZ75zpCMt6O5B/1Oh3L6GpHNQkYQUY/tJp5Ell46VeH6aWz48BvXGd6tNfbhwjBEV5wc
+	APeARr1+pl6rls9mf9PYsUKtgqYP5ICrw4/Pkikz5oIoY8d6QsO8bESJtiUq9tUS8psoy5Dc8/n
+	E2symVT2zRF3OyotqNMEELcvEnnrJuD2VtVKBVGOX8C7bcxnVnZ6TJuW0yDubOnn1EbpdCAssRO
+	5l/FrvEcERVQxTAx80nfjOcl95TYI3rPGTBs3m+/b5psh6ZHaoFlKUXpdngwh55OpH5yWB63oM5
+	/mOh1TIorgiSATOxScw2FlkQpq7eDVmdPhH9KaJFWAc5DB/5F/Iv/ZBijIEu+WbpgpJjvOAxv2t
+	hDaoKC9coLl9yAI6rfPKFCTookrDM6M/WrUk1BhJvroO6xwhxtM8Rgn61iXc0HvPhovKXI6KIGm
+	izK9Mn6LH0Wgu4DVGmX0GW8iVfQW52wDPzD7TWQ+WB0pBg=
+X-Received: by 2002:a05:6a00:2d88:b0:829:6f7d:3086 with SMTP id d2e1a72fcca58-82f8b3aff42mr34206860b3a.11.1777209400127;
+        Sun, 26 Apr 2026 06:16:40 -0700 (PDT)
+Received: from localhost.localdomain ([1.226.165.54])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f8ebe41cfsm31773801b3a.43.2026.04.26.06.16.37
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sun, 26 Apr 2026 06:16:39 -0700 (PDT)
+From: "=?UTF-8?q?=EB=B0=95=EB=AA=85=ED=9B=88?=" <mhun512@gmail.com>
+X-Google-Original-From: =?UTF-8?q?=EB=B0=95=EB=AA=85=ED=9B=88?= <pakmyeonghun@bagmyeonghun-ui-MacBookPro.local>
+To: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: linux-media@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org,
-	me@brighamcampbell.com,
-	skhan@linuxfoundation.org,
-	linux-kernel-mentees@lists.linux.dev,
-	SeungJu Cheon <suunj1331@gmail.com>
-Subject: [PATCH] sound: ua101: fix division by zero at probe
-Date: Sun, 26 Apr 2026 20:12:39 +0900
-Message-ID: <20260426111239.103296-1-suunj1331@gmail.com>
-X-Mailer: git-send-email 2.52.0
+	Ijae Kim <ae878000@gmail.com>,
+	Myeonghun Pak <mhun512@gmail.com>
+Subject: [PATCH] media: ti: vpe: unwind v4l2 device registration on probe error
+Date: Sun, 26 Apr 2026 22:16:31 +0900
+Message-ID: <20260424000000.547-1-mhun512@gmail.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E3D074698AE
+X-Rspamd-Queue-Id: 73DA1469EBF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,brighamcampbell.com,linuxfoundation.org,lists.linux.dev,gmail.com];
-	TAGGED_FROM(0.00)[bounces-241166-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-241167-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[suunj1331@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[gmail.com:+];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mhun512@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 
-Add a missing sanity check for bNrChannels in detect_usb_format()
-to prevent a division by zero in playback_urb_complete() and
-capture_urb_complete().
+From: Myeonghun Pak <mhun512@gmail.com>
 
-USB core does not validate class-specific descriptor fields such
-as bNrChannels, so drivers must verify them before use. If a
-device provides bNrChannels = 0, frame_bytes becomes zero and is
-later used as a divisor in the URB completion handlers, leading
-to a kernel crash.
+If the vpe_top resource is missing, vpe_probe() returns -ENODEV after
+v4l2_device_register() has succeeded. Probe failures do not call the
+driver's remove callback, so the v4l2 device remains registered on that
+error path.
 
-Fixes: 63978ab3e3e9 ("sound: add Edirol UA-101 support")
+Route that failure through the existing v4l2_device_unregister() unwind
+label, matching the other errors after v4l2_device_register().
+
+Fixes: 4d59c7d45585 ("media: ti-vpe: vpe: Add missing null pointer checks")
 Cc: stable@vger.kernel.org
-Signed-off-by: SeungJu Cheon <suunj1331@gmail.com>
+Co-developed-by: Ijae Kim <ae878000@gmail.com>
+Signed-off-by: Ijae Kim <ae878000@gmail.com>
+Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
 ---
-Testing:
-- dummy_hcd + raw_gadget emulating a UA-101 with bNrChannels=0.
+Notes for send preparation:
+- Fixes tag was validated against upstream history; the local row worktree
+  remains shallow/grafted and cannot verify it by itself.
+- Build was not completed because this worktree has no .config.
 
- sound/usb/misc/ua101.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/media/platform/ti/vpe/vpe.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/usb/misc/ua101.c b/sound/usb/misc/ua101.c
-index 49b3dd8d827d..d129b42eb979 100644
---- a/sound/usb/misc/ua101.c
-+++ b/sound/usb/misc/ua101.c
-@@ -974,6 +974,13 @@ static int detect_usb_format(struct ua101 *ua)
+diff --git a/drivers/media/platform/ti/vpe/vpe.c b/drivers/media/platform/ti/vpe/vpe.c
+index a7e5a85e72..81bd1f9cee 100644
+--- a/drivers/media/platform/ti/vpe/vpe.c
++++ b/drivers/media/platform/ti/vpe/vpe.c
+@@ -2539,7 +2539,8 @@ static int vpe_probe(struct platform_device *pdev)
+ 						"vpe_top");
+ 	if (!dev->res) {
+ 		dev_err(&pdev->dev, "missing 'vpe_top' resources data\n");
+-		return -ENODEV;
++		ret = -ENODEV;
++		goto v4l2_dev_unreg;
+ 	}
  
- 	ua->capture.channels = fmt_capture->bNrChannels;
- 	ua->playback.channels = fmt_playback->bNrChannels;
-+	if (!ua->capture.channels || !ua->playback.channels) {
-+		dev_err(&ua->dev->dev,
-+			"invalid channel count: capture %u, playback %u\n",
-+			ua->capture.channels, ua->playback.channels);
-+		return -EINVAL;
-+	}
-+
- 	ua->capture.frame_bytes =
- 		fmt_capture->bSubframeSize * ua->capture.channels;
- 	ua->playback.frame_bytes =
+ 	/*
 -- 
-2.52.0
-
+2.39.5
 
