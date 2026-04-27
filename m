@@ -1,207 +1,163 @@
-Return-Path: <stable+bounces-241256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241257-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8LeCNPwU72l85wAAu9opvQ
-	(envelope-from <stable+bounces-241256-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 09:49:16 +0200
+	id 4OHRL58X72kQ6AAAu9opvQ
+	(envelope-from <stable+bounces-241257-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 10:00:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 900A546E929
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 09:49:16 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8832A46EB11
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 10:00:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D56F13004F09
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 07:49:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8692A3004623
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 08:00:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCF7E35B653;
-	Mon, 27 Apr 2026 07:49:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA4CD399039;
+	Mon, 27 Apr 2026 08:00:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="0zemnqdL";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="flHFUWs1";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="bdH024rO";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="QmA/N/+b"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vNZsVs5d"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CA933537F8
-	for <stable@vger.kernel.org>; Mon, 27 Apr 2026 07:49:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9881339902B;
+	Mon, 27 Apr 2026 08:00:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777276154; cv=none; b=XHqr2qE7NnHWlqBvturxU2TaQL3xUNfXwPSpNfy2Lb9Ape7OVLwBFxkCQxGFdgnoIeiygDqouO0snz1W8ww3IYu2bMcrdAQVFATnU4gu+9m+hhZiS9W25o6xu6Bs4fEbmUGSTH2LC4Ot+94twDuBASnl7DB5W5kfhY7kYMfTpqg=
+	t=1777276821; cv=none; b=cj6N6ZrvuaI9tSYEwMgeqxbOp4UlzUq/VKh65mJIH4Pysf6KAfIQiCj7qpC82ooFVq0QO/qGKbRGYRkWHIIlD3hAZSLwhMd5Y/vnI5z+q3yeyiHhKmKPDTDHjCgHZWTreLmZpzzkODP+ab/myPxOLEFpZ+s8Es1p3UGNoZ9+VUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777276154; c=relaxed/simple;
-	bh=mKxnLWO8Hs+000xP7Y3fG6/BTTvgqFVWuahY7VFXHbE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LfkyBytyzQSP5qbugjE5R53HQh8ygmTqBh+5RdZL32MxXIy5D+MUo7Cpaz7dib/lwRMmxagLpKV/uNXQ2Sk3CUdIeOVU+fv7oYARpXCOw8oaFIrv5H6vYAoUrFJHZFJ8AQKZWXjuO5oblo2dU8w24vWrffVVgKhwYAkd7IWSO5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=0zemnqdL; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=flHFUWs1; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=bdH024rO; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=QmA/N/+b; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 6AC896A817;
-	Mon, 27 Apr 2026 07:49:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1777276151; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=arplvSPi2JFlECX/+/+1OAM+U1qZByH2H1+6yaAluqQ=;
-	b=0zemnqdLbFzIuiF6POubYzCgnUdYGnENR6z9NkwoYCGp+fkx2UHmXv2x81dag/ZfORCL8i
-	2XrznKWKZ/avFNycDXj+W71too2CV0CW4sTNiTcRob0hkb6s90EZDkxJ7VOKVCWjsJ50Vr
-	ESpukY4GRDk+8UrH85E1P0wQnLT2p7o=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1777276151;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=arplvSPi2JFlECX/+/+1OAM+U1qZByH2H1+6yaAluqQ=;
-	b=flHFUWs1SEZyeXMjuj6GNmcSL9G50Lha6N+QAValj8e1sC8qo4sMedr9dn4MDTURQqoA4a
-	AwdIIrsQY2Ek4gDw==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1777276150; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=arplvSPi2JFlECX/+/+1OAM+U1qZByH2H1+6yaAluqQ=;
-	b=bdH024rOeWnBryCQK53sX6ziBaA1h2RmcW+LhYa9OwCDd5bPDLOZfhceikcf3BGA7SzK+4
-	vMYDEXtgBUqDENyr2s+koaIc1AgiSX9iP/52tdpnCfnwaKY1HpRmqzTpLI4VSXcjtSEfW2
-	Xtcg82Nmm0oFgAD37JaAYypqBRMP1JE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1777276150;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=arplvSPi2JFlECX/+/+1OAM+U1qZByH2H1+6yaAluqQ=;
-	b=QmA/N/+bhu33buru0WCSMhITNsx0qoAHm76iR1WJ6RjitDrfJVENulhibZrVyUIzNhrxrF
-	L/y1t1+xVnoVGQDw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8035A593B0;
-	Mon, 27 Apr 2026 07:49:09 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id UaCCHPUU72nrbAAAD6G6ig
-	(envelope-from <osalvador@suse.de>); Mon, 27 Apr 2026 07:49:09 +0000
-Date: Mon, 27 Apr 2026 09:49:03 +0200
-From: Oscar Salvador <osalvador@suse.de>
-To: Muchun Song <songmuchun@bytedance.com>
-Cc: David Hildenbrand <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, muchun.song@linux.dev,
-	Ying Huang <huang.ying.caritas@gmail.com>,
-	Dan Williams <djbw@kernel.org>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org,
-	linux-cxl@vger.kernel.org, driver-core@lists.linux.dev,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] mm/memory_hotplug: fix memory block reference leak
- on remove
-Message-ID: <ae8U73RyTE2a6bdp@localhost.localdomain>
-References: <20260426144447.817722-1-songmuchun@bytedance.com>
+	s=arc-20240116; t=1777276821; c=relaxed/simple;
+	bh=6lSQYBY2+IuLHDfyeYcIQP7M9ufPZ8ri79+137pQ1+w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZpVpc06IyC4B0XuxhBQ4d93i/wgF6c5PZJn47Gvmme6N+Rb5WQv7VasDNnXswcxApoOpsPw4HWR/YX2Raaul/VVRgvNbIz3pXdavq9l491mDPACc/fon95s8p2jE8vaJusiG3gwp2pQK+rNfRyRAILWw9/yu9SAs+dUhVb+KewU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vNZsVs5d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FDABC19425;
+	Mon, 27 Apr 2026 08:00:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777276821;
+	bh=6lSQYBY2+IuLHDfyeYcIQP7M9ufPZ8ri79+137pQ1+w=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=vNZsVs5dlJ6IIUwPClc7UZHRymQhjIiYtz4kz7lvFmHQK3+4MOCMw8gtFBpQFAy+c
+	 HLiRM0b1nxo6h1KtTqewlfvqG92VW6laNBiW4JdS7lf0apSF9XsJ+6jgf4HGTHsnLB
+	 FV2HKV1iVmhhpvKUPno4SpNZXdAektVWSB3+CntNHeor54MMpLDARIaAHT/ZtYf+6P
+	 /fv4A+8woGTR4scKjC6Gqh+idMLufSrwNEy8xxZRTkBQA2GzO9RVyUt6ZTsYFIv/fe
+	 2rEtyeSGu74o8HZDeVjqdvh3Dyd8AGTmbxAj2QnFT4hlQkZuF7/w4AbYrSR0mryuTH
+	 w1r1neGMuyw7A==
+Message-ID: <c3f7b8e4-85ae-4e80-bb02-a7b205cec88e@kernel.org>
+Date: Mon, 27 Apr 2026 10:00:16 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260426144447.817722-1-songmuchun@bytedance.com>
-X-Spam-Flag: NO
-X-Spam-Score: -2.80
-X-Spam-Level: 
-X-Rspamd-Queue-Id: 900A546E929
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH mm-hotfixes v2 0/2] mm/page_alloc,slab: return NULL early
+ from *_nolock() memory allocation APIs in NMI on UP
+Content-Language: en-US
+To: "Harry Yoo (Oracle)" <harry@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Zi Yan <ziy@nvidia.com>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Alexei Starovoitov <ast@kernel.org>, Hao Li <hao.li@linux.dev>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260427-nolock-api-fix-v2-0-a6b83a92d9a4@kernel.org>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+In-Reply-To: <20260427-nolock-api-fix-v2-0-a6b83a92d9a4@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 8832A46EB11
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-241256-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[kernel.org,linux-foundation.org,linuxfoundation.org,linux.dev,gmail.com,intel.com,huawei.com,kvack.org,vger.kernel.org,lists.linux.dev];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[17];
+	TAGGED_FROM(0.00)[bounces-241257-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[suse.de:+];
-	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[osalvador@suse.de,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[vbabka@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bytedance.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,suse.de:dkim,suse.de:email,localhost.localdomain:mid]
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-On Sun, Apr 26, 2026 at 10:44:46PM +0800, Muchun Song wrote:
-> remove_memory_blocks_and_altmaps() looks up each memory block with
-> find_memory_block(), which acquires a reference to the memory block
-> device.
+On 4/27/26 09:09, Harry Yoo (Oracle) wrote:
+> Due to my mistake, V1 was sent twice w/o proper cover letter and
+> Cc: stable. Please ignore V1. Apologies for the noise. 
 > 
-> That reference is never dropped on this path, resulting in a leaked
-> device reference when removing memory blocks and their altmaps. Drop
-> the reference after retrieving mem->altmap and clearing mem->altmap,
-> before removing the memory block device.
+> Changes since V1:
+> - used b4 to send patch series (w/ a proper cover letter) instead of
+>   my broken git send-email script (Thanks Vlastimil)
+> - added Cc: stable to patches 1 and 2
 > 
-> Fixes: 6b8f0798b85a ("mm/memory_hotplug: split memmap_on_memory requests across memblocks")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> On UP kernels (!CONFIG_SMP), spin_trylock() is a no-op that
+> unconditionally succeeds even when the lock is already held.
+> As a result, alloc_frozen_pages_nolock() and kmalloc_nolock() called
+> from an NMI context can successfully re-acquire the lock that the
+> page/slab allocators are already holding (no deadlock because it's
+> trylock,  but leads to e.g., allocating the same page/object twice and
+> causing use-after-free).
+> 
+> It was discovered while testing the new kmalloc/kfree_nolock() test case
+> in the slub_kunit test module with CONFIG_DEBUG_SPINLOCK=y on a UP
+> kernel.
+> 
+> Patch 1 fixes alloc_frozen_pages_nolock() and
+> patch 2 fixes kmalloc_nolock().
 
-The change looks good but some comments below:
+Thanks. Given the problem exposed is in a slab kunit test I think it's
+better to handle this in the slab tree. The page_alloc change is small and
+should not cause conflicts. So I've merged both in slab/for-next.
 
-Acked-by: Oscar Salvador <osalvador@suse.de>
-
-The outcome of leaking the reference is that the final call to put_device()
-in device_unregister() leaves the memory block device linked in the
-system under /sys/ ? (besides not deleting the struct I guess)
-
+> Note: As pointed out by Vlastimil Babka [1], in theory a kprobe in a
+> locked section could trigger the same issue. However, fixing that
+> involves a non-trivial rework (e.g., inventing a new spinlock type) or
+> introduces unnecessary overhead for all spinlocks on UP (e.g., let all
+> spinlocks check locked status on UP).
+> 
+> Given that BPF tracing on UP is rare, and it's even more unlikely to
+> trace a function called from the memory allocator within the locked
+> section, this patch series addresses the issue only on NMI contexts
+> (which is rare as well but now covered by the new test case).
+> 
+> [1] https://lore.kernel.org/linux-mm/af3a7fa9-b368-4ffd-964d-9e4fcba863a8@kernel.org
+> 
+> Cc: stable.vger.kernel.org
 > ---
->  mm/memory_hotplug.c | 1 +
->  1 file changed, 1 insertion(+)
+> Harry Yoo (Oracle) (2):
+>       mm/page_alloc: return NULL early from alloc_frozen_pages_nolock() in NMI on UP
+>       mm/slab: return NULL early from kmalloc_nolock() in NMI on UP
 > 
-> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-> index 2a943ec57c85..4426abb05655 100644
-> --- a/mm/memory_hotplug.c
-> +++ b/mm/memory_hotplug.c
-> @@ -1422,6 +1422,7 @@ static void remove_memory_blocks_and_altmaps(u64 start, u64 size)
->  
->  		altmap = mem->altmap;
->  		mem->altmap = NULL;
-> +		put_device(&mem->dev);
+>  mm/page_alloc.c | 5 +++++
+>  mm/slub.c       | 4 ++++
+>  2 files changed, 9 insertions(+)
+> ---
+> base-commit: ba24da38a519dfcff8cce3f3f2726d7b159a4d75
+> change-id: 20260427-nolock-api-fix-bd056911e68e
+> 
+> Best regards,
+> --  
+> Cheers,
+> Harry / Hyeonggon
+> 
 
-1) Six months from now we might not remember why we need to call
-   put_device() here.
-
-   I would put a comment like remove_memory_block has:
-
-   "/* drop the ref. we got via find_memory_block() */" or something like
-   that.
-
-2) I kind of dislike having an internal put_device() lingering here in
-   memory-hotplug code, it feels like it does not really belong here.
-   Ideally we should have a high-level function in drivers/base/memory.c
-   that calls put_device itself.
-   Something like "put_memblock_dev", dunno, names are hard.
- 
-
--- 
-Oscar Salvador
-SUSE Labs
 
