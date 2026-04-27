@@ -1,44 +1,45 @@
-Return-Path: <stable+bounces-241207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241208-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sLZtDbLe7mlhywAAu9opvQ
-	(envelope-from <stable+bounces-241207-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 05:57:38 +0200
+	id CCgGFafg7mkdzQAAu9opvQ
+	(envelope-from <stable+bounces-241208-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 06:05:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4380746CB14
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 05:57:37 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55B4B46CCE6
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 06:05:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A3DA530041D5
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 03:57:36 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5D91630015B2
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 04:00:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E000F2D5926;
-	Mon, 27 Apr 2026 03:57:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A24D0366563;
+	Mon, 27 Apr 2026 04:00:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="RU1Hwyse"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="uODj5HGn"
 X-Original-To: stable@vger.kernel.org
 Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E65BC23ABBF
-	for <stable@vger.kernel.org>; Mon, 27 Apr 2026 03:57:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F4239362154;
+	Mon, 27 Apr 2026 03:59:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777262254; cv=none; b=pQIGsPrhDJbwFGV4VeTKpJnqAs2BrRctesq8S3Wgp/afbwkLJ1jZKwNkrcLRex34HpPXCcw+PMOoJ1TePY76zDT31phnLcnfpYQG/91GK6mWfBu9IG4j85/2vTwuwJz8H8iyyRYBcQusppNB6kjGPXmikZ6iYDjiThG0FTWouLk=
+	t=1777262401; cv=none; b=GatUAwoV5O1iq7pYl7CFW7m3TVcH/YGuatasEr9cngMUbjOOVx+FviE2qIvR2ylg7LXcC8ezdirb1qafcvvCUfDECgKXm0+0FTGtSY7n39YSGEFuB4dJ/+OoZjpFc8dPVtmucKxGWyzenvop7fvMnHWm0zm1B6UkJXScq2AMNbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777262254; c=relaxed/simple;
+	s=arc-20240116; t=1777262401; c=relaxed/simple;
 	bh=nNuZPMQoVpPQeuMTX7IqQVkKdKmGKIfoGkiXy1++kJA=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=sGPyHC8GJp1r6MXUZmool+WEJQWniPtJd80KlyG9Z9CgtquXe9aPQzWCwh1YUZDquBF5yPCkJFM0vDh1ha5G3dNy+V+jRqvJrf7KVkadJ0Vh6+7cZIJJSgX2Jt72KghnLCXvwI8iyv4l0WSbzX7RiGKqZFSwQcwfQz4qZg8Yyjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=RU1Hwyse; arc=none smtp.client-ip=210.61.82.184
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=HwblJ3hgrnBfjtlneAyMOqPe5b0d3vEkhP+f8LWTgTyGU8ZKqogM1D7xxx2TIioV+vFQVe72su86nL+Dwc5qPsaWfJQQfCv7NS6RFFrTOBebjCXhW5LjR5vXTM4PXuIBbXBVqCarYcgNHpgWpfKDm8hAWjNIVLTLK3CYNRr/olw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=uODj5HGn; arc=none smtp.client-ip=210.61.82.184
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: 3435323841ed11f19a16598d5ca7f8ec-20260427
+X-UUID: 8c9de93841ed11f19a16598d5ca7f8ec-20260427
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
 	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=HLfP7RQwgpPifnMM74MC5Zii/CVwx7iM9Oh2BZUeh4k=;
-	b=RU1Hwyse9g/nQNXmfvQfTo1y264BUoLLULm29CHGKCglqogPTHWCARYUbI7NBLmMPlQuAbGqiQeegXB8y4y5dpcVe9IPKFQUsAyi57iOFy3sNIX9zpf9JmqWOG+ZfrK3M9mKdhmoJv369pdThUDQFaxCmf+04uIMksu/EEDSCzA=;
+	b=uODj5HGn0m42tVVvtlDYuEQIpMyjh7Ys85E5eQCX9J5wsA3LFeaA2usK6L7h28Q+d8k2xnIPOnj72LZqVFySAjjBQAbQxB0v7OKQMFv4K6HAvtsF52OyK3X4qzyIv9zDhYOkutqMUcJDTtuN9iqizRg0anlG56nE3UNG27w9K6o=;
+X-CID-CACHE: Type:Local,Time:202604271157+08,HitQuantity:2
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.12,REQID:c2a0f4a3-6baa-4600-a409-9d9c015bdd8c,IP:0,U
+X-CID-O-INFO: VERSION:1.3.12,REQID:a768fb8b-e66e-4b00-96c2-fb4a38329217,IP:0,U
 	RL:0,TC:0,Content:-25,EDM:-25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACT
 	ION:release,TS:-50
 X-CID-META: VersionHash:e7bac3a,CLOUDID:7e35a564-469e-4eb6-aeb8-4b21454b0f32,B
@@ -49,24 +50,33 @@ X-CID-BVR: 2,SSN|SDN
 X-CID-BAS: 2,SSN|SDN,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULS
 X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 3435323841ed11f19a16598d5ca7f8ec-20260427
-Received: from mtkmbs13n2.mediatek.inc [(172.21.101.108)] by mailgw02.mediatek.com
+X-UUID: 8c9de93841ed11f19a16598d5ca7f8ec-20260427
+Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by mailgw02.mediatek.com
 	(envelope-from <ed.tsai@mediatek.com>)
 	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 1834257794; Mon, 27 Apr 2026 11:57:26 +0800
+	with ESMTP id 801184413; Mon, 27 Apr 2026 11:59:54 +0800
 Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
+ MTKMBS09N2.mediatek.inc (172.21.101.94) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Mon, 27 Apr 2026 11:57:25 +0800
+ 15.2.2562.29; Mon, 27 Apr 2026 11:59:53 +0800
 Received: from mtksitap99.mediatek.inc (10.233.130.16) by
  mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.2562.29 via Frontend Transport; Mon, 27 Apr 2026 11:57:25 +0800
+ 15.2.2562.29 via Frontend Transport; Mon, 27 Apr 2026 11:59:53 +0800
 From: <ed.tsai@mediatek.com>
-To: <ed.tsai@mediatek.com>
-CC: <stable@vger.kernel.org>
+To: <bvanassche@acm.org>, Alim Akhtar <alim.akhtar@samsung.com>, Avri Altman
+	<avri.altman@wdc.com>, "James E.J. Bottomley"
+	<James.Bottomley@HansenPartnership.com>, "Martin K. Petersen"
+	<martin.petersen@oracle.com>, Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+CC: <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-mediatek@lists.infradead.org>, <wsd_upstream@mediatek.com>,
+	<peter.wang@mediatek.com>, <alice.chao@mediatek.com>,
+	<naomi.chu@mediatek.com>, <chun-hung.wu@mediatek.com>, Ed Tsai
+	<ed.tsai@mediatek.com>, <stable@vger.kernel.org>,
+	<linux-scsi@vger.kernel.org>
 Subject: [PATCH 1/1] scsi: ufs: remove ucd_rsp_dma_addr and ucd_prdt_dma_addr from ufshcd_lrb
-Date: Mon, 27 Apr 2026 11:57:17 +0800
-Message-ID: <20260427035719.1610110-1-ed.tsai@mediatek.com>
+Date: Mon, 27 Apr 2026 11:58:41 +0800
+Message-ID: <20260427035856.1610363-1-ed.tsai@mediatek.com>
 X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -77,35 +87,37 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-MTK: N
-X-Rspamd-Queue-Id: 4380746CB14
+X-Rspamd-Queue-Id: 55B4B46CCE6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[mediatek.com,quarantine];
 	R_DKIM_ALLOW(-0.20)[mediatek.com:s=dk];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[mediatek.com:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241207-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	TAGGED_FROM(0.00)[bounces-241208-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[acm.org,samsung.com,wdc.com,HansenPartnership.com,oracle.com,gmail.com,collabora.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[ed.tsai@mediatek.com,stable@vger.kernel.org];
-	FROM_NO_DN(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-0.997];
-	TO_DN_NONE(0.00)[];
+	DKIM_TRACE(0.00)[mediatek.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	FROM_NO_DN(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 
 From: Ed Tsai <ed.tsai@mediatek.com>
 
