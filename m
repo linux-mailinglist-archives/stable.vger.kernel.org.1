@@ -1,174 +1,325 @@
-Return-Path: <stable+bounces-241389-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241385-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cMU2BzeS72nRCwEAu9opvQ
-	(envelope-from <stable+bounces-241389-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 18:43:35 +0200
+	id eEbYGIWR72nRCwEAu9opvQ
+	(envelope-from <stable+bounces-241385-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 18:40:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A92047698E
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 18:43:34 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09B7D4768DB
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 18:40:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DB8A6301D3A2
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 16:40:41 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 97F74300610B
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 16:40:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 689E234D384;
-	Mon, 27 Apr 2026 16:40:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB2291FFC59;
+	Mon, 27 Apr 2026 16:40:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="aPx3bjIm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HXKHpHn1"
 X-Original-To: stable@vger.kernel.org
-Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B7953A6F04
-	for <stable@vger.kernel.org>; Mon, 27 Apr 2026 16:40:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2D4F3C65E0
+	for <stable@vger.kernel.org>; Mon, 27 Apr 2026 16:40:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777308040; cv=none; b=i2bK5MkZKuJ7MVC56Q1srvCXBxJfbjyFBYsmVWTAIsG67EVATnHC8hCd5O1zBDo/E2Z4StwbUtSZo0guHzqLFQy2m0V3pnumhZowj5wRSFmNm3G15UHg9bK0OGq2I0+RvkITuxf9k1YTotqLj+c9Oo/JHGt8DPOk5vN/r1dnVi0=
+	t=1777308031; cv=none; b=N7yCGqeLH1n1Q7hpnBcN5GXPC45nxHvitXsyJ3AB+osIf9Va8BsFEupgUE6x8/Wh1AGy079IYdSinWdDi3SJQETLQQpbjb/zjA9UXdyQDqwmK2crvcC3iyYonooKCOPw/GntPLdHTjGsmtQ1TYeXiU8mtm394eGbHTZ66eSL3Pg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777308040; c=relaxed/simple;
-	bh=tLfxGfZ8FK6o1WjyY8CrkwQT5BZ1HxjhnlCKtV2r3/Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WTOi+rtRitEZwVGI5lx7vUxjIswZXPrEYHj3FK0X5SyY+gG/6XmtCpofli/oNthqXGZ/MchQMX0uPPfuoh9KGdchgIrJFtwi8oUz1xGXFw6CGYLWpp2lpyZdb6YaCk9xOMaMqR5PdZnQda+m1fZtgXycO7mqn5Gq/kF+iAWDg0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=aPx3bjIm; arc=none smtp.client-ip=95.215.58.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1777308036;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UL1kvB9Ji20YADD2O7j5GE++8RuOFTqcHyAxji8oAys=;
-	b=aPx3bjImo3cA3H6UxscWcOW3PLdy5JIH+u2p6iwAzkK2q7oPWgKLH9fyIPNwSH3vOs8lC3
-	SX/ZDFHugiVdUANi+npTH3fKPavHtTMuVqqhdv+mbTJVe53wvGuc+6jPJ1S4GlrexIn3Uc
-	cyCbfG2lk6jE7jDcC4lS9uag1Q4NnAg=
-From: Thorsten Blum <thorsten.blum@linux.dev>
-To: =?UTF-8?q?Horia=20Geant=C4=83?= <horia.geanta@nxp.com>,
-	Pankaj Gupta <pankaj.gupta@nxp.com>,
-	Gaurav Jain <gaurav.jain@nxp.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>
-Cc: Thorsten Blum <thorsten.blum@linux.dev>,
-	stable@vger.kernel.org,
-	linux-crypto@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] crypto: caam - use print_hex_dump_devel to guard key hex dumps
-Date: Mon, 27 Apr 2026 18:39:39 +0200
-Message-ID: <20260427163937.337966-5-thorsten.blum@linux.dev>
-In-Reply-To: <20260427163937.337966-3-thorsten.blum@linux.dev>
-References: <20260427163937.337966-3-thorsten.blum@linux.dev>
+	s=arc-20240116; t=1777308031; c=relaxed/simple;
+	bh=CqTFDNaIBaFzTGonsF5/NHY1nRe8K7XZ1VgfyAkVQ1Y=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=HFtl9csPk3P1g7OksFndE91JX57om3k4V+6jDCbI+kRWIR1fAG7KFtEwI0ZGtfXxyhRXGz0Yw87tdpGN/hKSSWN/ykzezYu8qHmM/h2qDPNviPmn/1yf0Zvr5CZVXJFozNRf3d9KpPPt+v1mW6aJjDoWCvSYmWV/pmZVkVx/9Uk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HXKHpHn1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A64FC19425;
+	Mon, 27 Apr 2026 16:40:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1777308031;
+	bh=CqTFDNaIBaFzTGonsF5/NHY1nRe8K7XZ1VgfyAkVQ1Y=;
+	h=Subject:To:Cc:From:Date:From;
+	b=HXKHpHn1bUdVm7pXcgQdWPXAuYPqmpgmJh9oNHKEqCwfLykMcxLjcDmbXlvPmy3C2
+	 t3R+7X1YHb9KVk4HBaOpoKD27/TLnskXd7qRXfuUJFVZOt4U8EXQ0/gfY8z5jslioY
+	 /vkcsJy47Ke21cXDLhCYNVP/51+wq1Izm8z+uxig=
+Subject: FAILED: patch "[PATCH] driver core: Don't let a device probe until it's ready" failed to apply to 6.6-stable tree
+To: dianders@chromium.org,dakr@kernel.org,gregkh@linuxfoundation.org,m.szyprowski@samsung.com,rafael@kernel.org,stern@rowland.harvard.edu
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 27 Apr 2026 10:39:55 -0600
+Message-ID: <2026042755-pelican-cage-f353@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2990; i=thorsten.blum@linux.dev; h=from:subject; bh=tLfxGfZ8FK6o1WjyY8CrkwQT5BZ1HxjhnlCKtV2r3/Q=; b=owGbwMvMwCUWt7pQ4caZUj3G02pJDJnvJwY++Lpt07fvtbJJH893fZN49/3X5m+1G8uX23GzN VjGrii41FHKwiDGxSArpsjyYNaPGb6lNZWbTCJ2wsxhZQIZwsDFKQATOfWA4Z/uDsagH6JpmX0T 712Z6xHrmBXxJv1KndWLoocv4p/yFDxiZLh5VnXSh62e33Nffbjt9vTvJnO29UVfJU493Rfesaj hwXZOAA==
-X-Developer-Key: i=thorsten.blum@linux.dev; a=openpgp; fpr=1D60735E8AEF3BE473B69D84733678FD8DFEEAD4
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 1A92047698E
+X-Rspamd-Queue-Id: 09B7D4768DB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[3];
+	TAGGED_FROM(0.00)[bounces-241385-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241389-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linux.dev:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[thorsten.blum@linux.dev,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FROM_NO_DN(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linux.dev:email,linux.dev:dkim,linux.dev:mid]
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 
-Use print_hex_dump_devel() for dumping sensitive key material in
-*_setkey() to avoid leaking secrets at runtime when CONFIG_DYNAMIC_DEBUG
-is enabled.
 
-Fixes: 8d818c105501 ("crypto: caam/qi2 - add DPAA2-CAAM driver")
-Fixes: 226853ac3ebe ("crypto: caam/qi2 - add skcipher algorithms")
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x a2225b6e834a838ae3c93709760edc0a169eb2f2
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026042755-pelican-cage-f353@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From a2225b6e834a838ae3c93709760edc0a169eb2f2 Mon Sep 17 00:00:00 2001
+From: Douglas Anderson <dianders@chromium.org>
+Date: Mon, 6 Apr 2026 16:22:54 -0700
+Subject: [PATCH] driver core: Don't let a device probe until it's ready
+
+The moment we link a "struct device" into the list of devices for the
+bus, it's possible probe can happen. This is because another thread
+can load the driver at any time and that can cause the device to
+probe. This has been seen in practice with a stack crawl that looks
+like this [1]:
+
+  really_probe()
+  __driver_probe_device()
+  driver_probe_device()
+  __driver_attach()
+  bus_for_each_dev()
+  driver_attach()
+  bus_add_driver()
+  driver_register()
+  __platform_driver_register()
+  init_module() [some module]
+  do_one_initcall()
+  do_init_module()
+  load_module()
+  __arm64_sys_finit_module()
+  invoke_syscall()
+
+As a result of the above, it was seen that device_links_driver_bound()
+could be called for the device before "dev->fwnode->dev" was
+assigned. This prevented __fw_devlink_pickup_dangling_consumers() from
+being called which meant that other devices waiting on our driver's
+sub-nodes were stuck deferring forever.
+
+It's believed that this problem is showing up suddenly for two
+reasons:
+1. Android has recently (last ~1 year) implemented an optimization to
+   the order it loads modules [2]. When devices opt-in to this faster
+   loading, modules are loaded one-after-the-other very quickly. This
+   is unlike how other distributions do it. The reproduction of this
+   problem has only been seen on devices that opt-in to Android's
+   "parallel module loading".
+2. Android devices typically opt-in to fw_devlink, and the most
+   noticeable issue is the NULL "dev->fwnode->dev" in
+   device_links_driver_bound(). fw_devlink is somewhat new code and
+   also not in use by all Linux devices.
+
+Even though the specific symptom where "dev->fwnode->dev" wasn't
+assigned could be fixed by moving that assignment higher in
+device_add(), other parts of device_add() (like the call to
+device_pm_add()) are also important to run before probe. Only moving
+the "dev->fwnode->dev" assignment would likely fix the current
+symptoms but lead to difficult-to-debug problems in the future.
+
+Fix the problem by preventing probe until device_add() has run far
+enough that the device is ready to probe. If somehow we end up trying
+to probe before we're allowed, __driver_probe_device() will return
+-EPROBE_DEFER which will make certain the device is noticed.
+
+In the race condition that was seen with Android's faster module
+loading, we will temporarily add the device to the deferred list and
+then take it off immediately when device_add() probes the device.
+
+Instead of adding another flag to the bitfields already in "struct
+device", instead add a new "flags" field and use that. This allows us
+to freely change the bit from different thread without worrying about
+corrupting nearby bits (and means threads changing other bit won't
+corrupt us).
+
+[1] Captured on a machine running a downstream 6.6 kernel
+[2] https://cs.android.com/android/platform/superproject/main/+/main:system/core/libmodprobe/libmodprobe.cpp?q=LoadModulesParallel
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
----
- drivers/crypto/caam/caamalg_qi2.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+Fixes: 2023c610dc54 ("Driver core: add new device to bus's list before probing")
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+Reviewed-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
+Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://patch.msgid.link/20260406162231.v5.1.Id750b0fbcc94f23ed04b7aecabcead688d0d8c17@changeid
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 
-diff --git a/drivers/crypto/caam/caamalg_qi2.c b/drivers/crypto/caam/caamalg_qi2.c
-index bf10c3dda745..6b47bcc16a50 100644
---- a/drivers/crypto/caam/caamalg_qi2.c
-+++ b/drivers/crypto/caam/caamalg_qi2.c
-@@ -301,7 +301,7 @@ static int aead_setkey(struct crypto_aead *aead, const u8 *key,
- 	dev_dbg(dev, "keylen %d enckeylen %d authkeylen %d\n",
- 		keys.authkeylen + keys.enckeylen, keys.enckeylen,
- 		keys.authkeylen);
--	print_hex_dump_debug("key in @" __stringify(__LINE__)": ",
-+	print_hex_dump_devel("key in @" __stringify(__LINE__)": ",
- 			     DUMP_PREFIX_ADDRESS, 16, 4, key, keylen, 1);
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index 09b98f02f559..984d6bfbd6e4 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -3688,6 +3688,21 @@ int device_add(struct device *dev)
+ 		fw_devlink_link_device(dev);
+ 	}
  
- 	ctx->adata.keylen = keys.authkeylen;
-@@ -315,7 +315,7 @@ static int aead_setkey(struct crypto_aead *aead, const u8 *key,
- 	memcpy(ctx->key + ctx->adata.keylen_pad, keys.enckey, keys.enckeylen);
- 	dma_sync_single_for_device(dev, ctx->key_dma, ctx->adata.keylen_pad +
- 				   keys.enckeylen, ctx->dir);
--	print_hex_dump_debug("ctx.key@" __stringify(__LINE__)": ",
-+	print_hex_dump_devel("ctx.key@" __stringify(__LINE__)": ",
- 			     DUMP_PREFIX_ADDRESS, 16, 4, ctx->key,
- 			     ctx->adata.keylen_pad + keys.enckeylen, 1);
++	/*
++	 * The moment the device was linked into the bus's "klist_devices" in
++	 * bus_add_device() then it's possible that probe could have been
++	 * attempted in a different thread via userspace loading a driver
++	 * matching the device. "ready_to_probe" being unset would have
++	 * blocked those attempts. Now that all of the above initialization has
++	 * happened, unblock probe. If probe happens through another thread
++	 * after this point but before bus_probe_device() runs then it's fine.
++	 * bus_probe_device() -> device_initial_probe() -> __device_attach()
++	 * will notice (under device_lock) that the device is already bound.
++	 */
++	device_lock(dev);
++	dev_set_ready_to_probe(dev);
++	device_unlock(dev);
++
+ 	bus_probe_device(dev);
  
-@@ -732,7 +732,7 @@ static int gcm_setkey(struct crypto_aead *aead,
- 	ret = aes_check_keylen(keylen);
- 	if (ret)
- 		return ret;
--	print_hex_dump_debug("key in @" __stringify(__LINE__)": ",
-+	print_hex_dump_devel("key in @" __stringify(__LINE__)": ",
- 			     DUMP_PREFIX_ADDRESS, 16, 4, key, keylen, 1);
+ 	/*
+diff --git a/drivers/base/dd.c b/drivers/base/dd.c
+index 37c7e54e0e4c..ec7ef9c5d62e 100644
+--- a/drivers/base/dd.c
++++ b/drivers/base/dd.c
+@@ -848,6 +848,26 @@ static int __driver_probe_device(const struct device_driver *drv, struct device
+ 	if (dev->driver)
+ 		return -EBUSY;
  
- 	memcpy(ctx->key, key, keylen);
-@@ -828,7 +828,7 @@ static int rfc4106_setkey(struct crypto_aead *aead,
- 	if (ret)
- 		return ret;
++	/*
++	 * In device_add(), the "struct device" gets linked into the subsystem's
++	 * list of devices and broadcast to userspace (via uevent) before we're
++	 * quite ready to probe. Those open pathways to driver probe before
++	 * we've finished enough of device_add() to reliably support probe.
++	 * Detect this and tell other pathways to try again later. device_add()
++	 * itself will also try to probe immediately after setting
++	 * "ready_to_probe".
++	 */
++	if (!dev_ready_to_probe(dev))
++		return dev_err_probe(dev, -EPROBE_DEFER, "Device not ready to probe\n");
++
++	/*
++	 * Set can_match = true after calling dev_ready_to_probe(), so
++	 * driver_deferred_probe_add() won't actually add the device to the
++	 * deferred probe list when dev_ready_to_probe() returns false.
++	 *
++	 * When dev_ready_to_probe() returns false, it means that device_add()
++	 * will do another probe() attempt for us.
++	 */
+ 	dev->can_match = true;
+ 	dev_dbg(dev, "bus: '%s': %s: matched device with driver %s\n",
+ 		drv->bus->name, __func__, drv->name);
+diff --git a/include/linux/device.h b/include/linux/device.h
+index e65d564f01cd..f27ed6eb87a9 100644
+--- a/include/linux/device.h
++++ b/include/linux/device.h
+@@ -458,6 +458,21 @@ struct device_physical_location {
+ 	bool lid;
+ };
  
--	print_hex_dump_debug("key in @" __stringify(__LINE__)": ",
-+	print_hex_dump_devel("key in @" __stringify(__LINE__)": ",
- 			     DUMP_PREFIX_ADDRESS, 16, 4, key, keylen, 1);
++/**
++ * enum struct_device_flags - Flags in struct device
++ *
++ * Each flag should have a set of accessor functions created via
++ * __create_dev_flag_accessors() for each access.
++ *
++ * @DEV_FLAG_READY_TO_PROBE: If set then device_add() has finished enough
++ *		initialization that probe could be called.
++ */
++enum struct_device_flags {
++	DEV_FLAG_READY_TO_PROBE = 0,
++
++	DEV_FLAG_COUNT
++};
++
+ /**
+  * struct device - The basic device structure
+  * @parent:	The device's "parent" device, the device to which it is attached.
+@@ -553,6 +568,7 @@ struct device_physical_location {
+  * @dma_skip_sync: DMA sync operations can be skipped for coherent buffers.
+  * @dma_iommu: Device is using default IOMMU implementation for DMA and
+  *		doesn't rely on dma_ops structure.
++ * @flags:	DEV_FLAG_XXX flags. Use atomic bitfield operations to modify.
+  *
+  * At the lowest level, every device in a Linux system is represented by an
+  * instance of struct device. The device structure contains the information
+@@ -675,8 +691,36 @@ struct device {
+ #ifdef CONFIG_IOMMU_DMA
+ 	bool			dma_iommu:1;
+ #endif
++
++	DECLARE_BITMAP(flags, DEV_FLAG_COUNT);
+ };
  
- 	memcpy(ctx->key, key, keylen);
-@@ -927,7 +927,7 @@ static int rfc4543_setkey(struct crypto_aead *aead,
- 	if (ret)
- 		return ret;
- 
--	print_hex_dump_debug("key in @" __stringify(__LINE__)": ",
-+	print_hex_dump_devel("key in @" __stringify(__LINE__)": ",
- 			     DUMP_PREFIX_ADDRESS, 16, 4, key, keylen, 1);
- 
- 	memcpy(ctx->key, key, keylen);
-@@ -955,7 +955,7 @@ static int skcipher_setkey(struct crypto_skcipher *skcipher, const u8 *key,
- 	u32 *desc;
- 	const bool is_rfc3686 = alg->caam.rfc3686;
- 
--	print_hex_dump_debug("key in @" __stringify(__LINE__)": ",
-+	print_hex_dump_devel("key in @" __stringify(__LINE__)": ",
- 			     DUMP_PREFIX_ADDRESS, 16, 4, key, keylen, 1);
- 
- 	ctx->cdata.keylen = keylen;
++#define __create_dev_flag_accessors(accessor_name, flag_name) \
++static inline bool dev_##accessor_name(const struct device *dev) \
++{ \
++	return test_bit(flag_name, dev->flags); \
++} \
++static inline void dev_set_##accessor_name(struct device *dev) \
++{ \
++	set_bit(flag_name, dev->flags); \
++} \
++static inline void dev_clear_##accessor_name(struct device *dev) \
++{ \
++	clear_bit(flag_name, dev->flags); \
++} \
++static inline void dev_assign_##accessor_name(struct device *dev, bool value) \
++{ \
++	assign_bit(flag_name, dev->flags, value); \
++} \
++static inline bool dev_test_and_set_##accessor_name(struct device *dev) \
++{ \
++	return test_and_set_bit(flag_name, dev->flags); \
++}
++
++__create_dev_flag_accessors(ready_to_probe, DEV_FLAG_READY_TO_PROBE);
++
++#undef __create_dev_flag_accessors
++
+ /**
+  * struct device_link - Device link representation.
+  * @supplier: The device on the supplier end of the link.
+
 
