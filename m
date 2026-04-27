@@ -1,191 +1,282 @@
-Return-Path: <stable+bounces-241309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241310-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WBCBEf9c72npAgEAu9opvQ
-	(envelope-from <stable+bounces-241309-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 14:56:31 +0200
+	id AH5tFK9c72m3AgEAu9opvQ
+	(envelope-from <stable+bounces-241310-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 14:55:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F6D2472EFA
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 14:56:30 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7F34472E74
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 14:55:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id EE0AD3008C88
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 12:55:04 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CD2F23007497
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 12:55:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F41953BAD9C;
-	Mon, 27 Apr 2026 12:55:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F5853BA22E;
+	Mon, 27 Apr 2026 12:55:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="cEu5/Z77"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Zk2RSDW6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8E013B47FF;
-	Mon, 27 Apr 2026 12:55:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 220123BA239;
+	Mon, 27 Apr 2026 12:55:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777294502; cv=none; b=byquajJBTRek+FakpqJxyida6Oq1XpavpHZWj/J6SXkbMcn+VFDoL4M2X1ZjrQ5wmpWAhKX+lhun7Z6ahwPiT+i1IUCha2o5onnyCYFuekGjk5lSIPJw04SzPA+JLL9HNxPmRbKNxSYlHZNHO5MCnIY6pTtpR07eMkrt3QOpKS4=
+	t=1777294506; cv=none; b=m1llPS/QL6PGLKCI7tGC9SZa3TPC7c1bX/LjSSKbOwz/pf5kU8f8DeZRm++kEuhxLz7EEiomNK9baZrNe2ppz5uhwqU6frHtOrVUYCEbAMe/aU7xKXWAT00mMxzKBApUiLWoOY/lfvCM20fov7zJCvQWjLXq66ZwZmzwKiZNrfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777294502; c=relaxed/simple;
-	bh=WE6s5OVMgrHAR+Fi9MS+LkdO9nyPxY1t5mC7idsquuw=;
-	h=Date:To:From:Subject:Message-Id; b=Kc+UUOKy3atl8GyPL0Ljx3WugJ+V6axc0Yscsr5UGRlDM/NmVgf7IEpQlpWoHfEtbm/QhstiisM98Kzkf7Li2rc+gRJup4jSc8LoWBAhoHlPmA5FNLw7cUb6Io1gCMbZCDk5mu/qcHXCEIr/plLTYCyBiRWfnj3PUHlD4XxPv1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=cEu5/Z77; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4495DC19425;
-	Mon, 27 Apr 2026 12:55:02 +0000 (UTC)
+	s=arc-20240116; t=1777294506; c=relaxed/simple;
+	bh=8uk4qge/tfo0DRVSrJQS4w+3wLmSgo1yO6LB7cCEq94=;
+	h=Date:To:From:Subject:Message-Id; b=Hjn2WtGN9St0I8F9rItfeIybKT7Qkp1j3/Dj3hcor+OaJ0ERu9MC1xRA+KbIE+3y9Rbq0SFaHn4m1vpa6BeYytYGfFu95Le7lz7IRELFcWWlwAiXACKvpw1Gm8JGquQSz5atoT2lfWS+y3ywkIqtGC4DXgBsTAUdJdJnmZGUUHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Zk2RSDW6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA8A9C19425;
+	Mon, 27 Apr 2026 12:55:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1777294502;
-	bh=WE6s5OVMgrHAR+Fi9MS+LkdO9nyPxY1t5mC7idsquuw=;
+	s=korg; t=1777294505;
+	bh=8uk4qge/tfo0DRVSrJQS4w+3wLmSgo1yO6LB7cCEq94=;
 	h=Date:To:From:Subject:From;
-	b=cEu5/Z77FSIyHAX/BnyhwG+Afh8VZIbEUGKomsNov5P0+EK/HBNvlaz78Y/36M5Nl
-	 6CN4PeANfzgiiOY9Sd7TpcvtwlXOgMcLuxUgHMrPCvBK/PVibZFQTSow7Qo3Svqxr5
-	 WrKNM62hYUGDC+JpFWOjyHDtuaN64bu/bACzyU5E=
-Date: Mon, 27 Apr 2026 05:55:01 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,rppt@kernel.org,pratyush@kernel.org,pasha.tatashin@soleen.com,graf@amazon.com,leitao@debian.org,akpm@linux-foundation.org
+	b=Zk2RSDW6/WxO3a9FL6nJ/Bu5QAFxF4oxiDL72mG3x5b8OzJ6AunbZ1mk1Wh1BBzLX
+	 ohKwl0W7gyif7rC8Xsl57mSlt/kdfqFPEAkiUCvfjBqG7HLL6929wRWUSCAxWdiGxo
+	 6r0COpyIXowWKRt+P/W88SzWBbRPCEeOQ0NmcH+I=
+Date: Mon, 27 Apr 2026 05:55:05 -0700
+To: mm-commits@vger.kernel.org,surenb@google.com,stable@vger.kernel.org,rppt@kernel.org,pfalcato@suse.de,mhocko@suse.com,liam.howlett@oracle.com,jannh@google.com,david@kernel.org,ljs@kernel.org,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] kho-fix-error-handling-in-kho_add_subtree.patch removed from -mm tree
-Message-Id: <20260427125502.4495DC19425@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] mm-vma-do-not-try-to-unmap-a-vma-if-mmap_prepare-invoked-from-mmap.patch removed from -mm tree
+Message-Id: <20260427125505.BA8A9C19425@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Rspamd-Queue-Id: 3F6D2472EFA
+X-Rspamd-Queue-Id: E7F34472E74
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [3.84 / 15.00];
-	R_BAD_CTE_7BIT(3.50)[unknown];
-	BROKEN_CONTENT_TYPE(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_NONE(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241309-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	TAGGED_FROM(0.00)[bounces-241310-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	DMARC_NA(0.00)[linux-foundation.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	NEURAL_HAM(-0.00)[-0.999];
 	MISSING_XM_UA(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[soleen.com:email]
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TO_DN_NONE(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,suse.de:email,appspotmail.com:email,oracle.com:email]
 
 
 The quilt patch titled
-     Subject: kho: fix error handling in kho_add_subtree()
+     Subject: mm/vma: do not try to unmap a VMA if mmap_prepare() invoked from mmap()
 has been removed from the -mm tree.  Its filename was
-     kho-fix-error-handling-in-kho_add_subtree.patch
+     mm-vma-do-not-try-to-unmap-a-vma-if-mmap_prepare-invoked-from-mmap.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Breno Leitao <leitao@debian.org>
-Subject: kho: fix error handling in kho_add_subtree()
-Date: Fri, 10 Apr 2026 02:03:03 -0700
+From: Lorenzo Stoakes <ljs@kernel.org>
+Subject: mm/vma: do not try to unmap a VMA if mmap_prepare() invoked from mmap()
+Date: Tue, 21 Apr 2026 11:21:50 +0100
 
-Fix two error handling issues in kho_add_subtree(), where it doesn't
-handle the error path correctly.
+The mmap_prepare hook functionality includes the ability to invoke
+mmap_prepare() from the mmap() hook of existing 'stacked' drivers, that is
+ones which are capable of calling the mmap hooks of other drivers/file
+systems (e.g.  overlayfs, shm).
 
-1. If fdt_setprop() fails after the subnode has been created, the
-   subnode is not removed. This leaves an incomplete node in the FDT
-   (missing "preserved-data" or "blob-size" properties).
+As part of the mmap_prepare action functionality, we deal with errors by
+unmapping the VMA should one arise.  This works in the usual mmap_prepare
+case, as we invoke this action at the last moment, when the VMA is
+established in the maple tree.
 
-2. The fdt_setprop() return value (an FDT error code) is stored
-   directly in err and returned to the caller, which expects -errno.
+However, the mmap() hook passes a not-fully-established VMA pointer to the
+caller (which is the motivation behind the mmap_prepare() work), which is
+detached.
 
-Fix both by storing fdt_setprop() results in fdt_err, jumping to a new
-out_del_node label that removes the subnode on failure, and only setting
-err = 0 on the success path, otherwise returning -ENOMEM (instead of
-FDT_ERR_ errors that would come from fdt_setprop).
+So attempting to unmap a VMA in this state will be problematic, with the
+most obvious symptom being a warning in vma_mark_detached(), because the
+VMA is already detached.
 
-No user-visible changes.  This patch fixes error handling in the KHO
-(Kexec HandOver) subsystem, which is used to preserve data across kexec
-reboots.  The fix only affects a rare failure path during kexec
-preparation — specifically when the kernel runs out of space in the
-Flattened Device Tree buffer while registering preserved memory regions.
+It's also unncessary - the mmap() handler will clean up the VMA on error.
 
-In the unlikely event that this error path was triggered, the old code
-would leave a malformed node in the device tree and return an incorrect
-error code to the calling subsystem, which could lead to confusing log
-messages or incorrect recovery decisions.  With this fix, the incomplete
-node is properly cleaned up and the appropriate errno value is propagated,
-this error code is not returned to the user.
+So to fix this issue, this patch propagates whether or not an mmap action
+is being completed via the compatibility layer or directly.
 
-Link: https://lore.kernel.org/20260410-kho_fix_send-v2-1-1b4debf7ee08@debian.org
-Fixes: 3dc92c311498 ("kexec: add Kexec HandOver (KHO) generation helpers")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Suggested-by: Pratyush Yadav <pratyush@kernel.org>
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
-Cc: Alexander Graf <graf@amazon.com>
-Cc: Breno Leitao <leitao@debian.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
+If the former, then we do not attempt VMA cleanup, if the latter, then we
+do.
+
+This patch also updates the userland VMA tests to reflect the change.
+
+Link: https://lore.kernel.org/20260421102150.189982-1-ljs@kernel.org
+Fixes: ac0a3fc9c07d ("mm: add ability to take further action in vm_area_desc")
+Signed-off-by: Lorenzo Stoakes <ljs@kernel.org>
+Reported-by: syzbot+db390288d141a1dccf96@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/69e69734.050a0220.24bfd3.0027.GAE@google.com/
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Jann Horn <jannh@google.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Pedro Falcato <pfalcato@suse.de>
+Cc: Suren Baghdasaryan <surenb@google.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- kernel/liveupdate/kexec_handover.c |   21 +++++++++++++--------
- 1 file changed, 13 insertions(+), 8 deletions(-)
+ include/linux/mm.h                |    2 +-
+ mm/util.c                         |   26 +++++++++++++++++---------
+ mm/vma.c                          |    3 ++-
+ tools/testing/vma/include/dup.h   |    2 +-
+ tools/testing/vma/include/stubs.h |    3 ++-
+ 5 files changed, 23 insertions(+), 13 deletions(-)
 
---- a/kernel/liveupdate/kexec_handover.c~kho-fix-error-handling-in-kho_add_subtree
-+++ a/kernel/liveupdate/kexec_handover.c
-@@ -762,19 +762,24 @@ int kho_add_subtree(const char *name, vo
- 		goto out_pack;
+--- a/include/linux/mm.h~mm-vma-do-not-try-to-unmap-a-vma-if-mmap_prepare-invoked-from-mmap
++++ a/include/linux/mm.h
+@@ -4391,7 +4391,7 @@ static inline void mmap_action_map_kerne
+ 
+ int mmap_action_prepare(struct vm_area_desc *desc);
+ int mmap_action_complete(struct vm_area_struct *vma,
+-			 struct mmap_action *action);
++			 struct mmap_action *action, bool is_compat);
+ 
+ /* Look up the first VMA which exactly match the interval vm_start ... vm_end */
+ static inline struct vm_area_struct *find_exact_vma(struct mm_struct *mm,
+--- a/mm/util.c~mm-vma-do-not-try-to-unmap-a-vma-if-mmap_prepare-invoked-from-mmap
++++ a/mm/util.c
+@@ -1232,7 +1232,7 @@ int __compat_vma_mmap(struct vm_area_des
+ 	/* Update the VMA from the descriptor. */
+ 	compat_set_vma_from_desc(vma, desc);
+ 	/* Complete any specified mmap actions. */
+-	return mmap_action_complete(vma, &desc->action);
++	return mmap_action_complete(vma, &desc->action, /*is_compat=*/true);
+ }
+ EXPORT_SYMBOL(__compat_vma_mmap);
+ 
+@@ -1389,7 +1389,8 @@ static int call_vma_mapped(struct vm_are
+ }
+ 
+ static int mmap_action_finish(struct vm_area_struct *vma,
+-			      struct mmap_action *action, int err)
++			      struct mmap_action *action, int err,
++			      bool is_compat)
+ {
+ 	size_t len;
+ 
+@@ -1400,8 +1401,12 @@ static int mmap_action_finish(struct vm_
+ 
+ 	/* do_munmap() might take rmap lock, so release if held. */
+ 	maybe_rmap_unlock_action(vma, action);
+-	if (!err)
+-		return 0;
++	/*
++	 * If this is invoked from the compatibility layer, post-mmap() hook
++	 * logic will handle cleanup for us.
++	 */
++	if (!err || is_compat)
++		return err;
+ 
+ 	/*
+ 	 * If an error occurs, unmap the VMA altogether and return an error. We
+@@ -1451,13 +1456,15 @@ EXPORT_SYMBOL(mmap_action_prepare);
+  * mmap_action_complete - Execute VMA descriptor action.
+  * @vma: The VMA to perform the action upon.
+  * @action: The action to perform.
++ * @is_compat: Is this being invoked from the compatibility layer?
+  *
+  * Similar to mmap_action_prepare().
+  *
+- * Return: 0 on success, or error, at which point the VMA will be unmapped.
++ * Return: 0 on success, or error, at which point the VMA will be unmapped if
++ * !@is_compat.
+  */
+ int mmap_action_complete(struct vm_area_struct *vma,
+-			 struct mmap_action *action)
++			 struct mmap_action *action, bool is_compat)
+ {
+ 	int err = 0;
+ 
+@@ -1478,7 +1485,7 @@ int mmap_action_complete(struct vm_area_
+ 		break;
  	}
  
--	err = fdt_setprop(root_fdt, off, KHO_SUB_TREE_PROP_NAME,
--			  &phys, sizeof(phys));
--	if (err < 0)
--		goto out_pack;
-+	fdt_err = fdt_setprop(root_fdt, off, KHO_SUB_TREE_PROP_NAME,
-+			      &phys, sizeof(phys));
-+	if (fdt_err < 0)
-+		goto out_del_node;
+-	return mmap_action_finish(vma, action, err);
++	return mmap_action_finish(vma, action, err, is_compat);
+ }
+ EXPORT_SYMBOL(mmap_action_complete);
+ #else
+@@ -1500,7 +1507,8 @@ int mmap_action_prepare(struct vm_area_d
+ EXPORT_SYMBOL(mmap_action_prepare);
  
--	err = fdt_setprop(root_fdt, off, KHO_SUB_TREE_SIZE_PROP_NAME,
--			  &size_u64, sizeof(size_u64));
--	if (err < 0)
--		goto out_pack;
-+	fdt_err = fdt_setprop(root_fdt, off, KHO_SUB_TREE_SIZE_PROP_NAME,
-+			      &size_u64, sizeof(size_u64));
-+	if (fdt_err < 0)
-+		goto out_del_node;
+ int mmap_action_complete(struct vm_area_struct *vma,
+-			 struct mmap_action *action)
++			 struct mmap_action *action,
++			 bool is_compat)
+ {
+ 	int err = 0;
  
- 	WARN_ON_ONCE(kho_debugfs_blob_add(&kho_out.dbg, name, blob,
- 					  size, false));
+@@ -1517,7 +1525,7 @@ int mmap_action_complete(struct vm_area_
+ 		break;
+ 	}
  
-+	err = 0;
-+	goto out_pack;
-+
-+out_del_node:
-+	fdt_del_node(root_fdt, off);
- out_pack:
- 	fdt_pack(root_fdt);
+-	return mmap_action_finish(vma, action, err);
++	return mmap_action_finish(vma, action, err, is_compat);
+ }
+ EXPORT_SYMBOL(mmap_action_complete);
+ #endif
+--- a/mm/vma.c~mm-vma-do-not-try-to-unmap-a-vma-if-mmap_prepare-invoked-from-mmap
++++ a/mm/vma.c
+@@ -2780,7 +2780,8 @@ static unsigned long __mmap_region(struc
+ 	__mmap_complete(&map, vma);
  
+ 	if (have_mmap_prepare && allocated_new) {
+-		error = mmap_action_complete(vma, &desc.action);
++		error = mmap_action_complete(vma, &desc.action,
++					     /*is_compat=*/false);
+ 		if (error)
+ 			return error;
+ 	}
+--- a/tools/testing/vma/include/dup.h~mm-vma-do-not-try-to-unmap-a-vma-if-mmap_prepare-invoked-from-mmap
++++ a/tools/testing/vma/include/dup.h
+@@ -1330,7 +1330,7 @@ static inline int __compat_vma_mmap(stru
+ 	/* Update the VMA from the descriptor. */
+ 	compat_set_vma_from_desc(vma, desc);
+ 	/* Complete any specified mmap actions. */
+-	return mmap_action_complete(vma, &desc->action);
++	return mmap_action_complete(vma, &desc->action, /*is_compat=*/true);
+ }
+ 
+ static inline int compat_vma_mmap(struct file *file, struct vm_area_struct *vma)
+--- a/tools/testing/vma/include/stubs.h~mm-vma-do-not-try-to-unmap-a-vma-if-mmap_prepare-invoked-from-mmap
++++ a/tools/testing/vma/include/stubs.h
+@@ -87,7 +87,8 @@ static inline int mmap_action_prepare(st
+ }
+ 
+ static inline int mmap_action_complete(struct vm_area_struct *vma,
+-				       struct mmap_action *action)
++				       struct mmap_action *action,
++				       bool is_compat)
+ {
+ 	return 0;
+ }
 _
 
-Patches currently in -mm which might be from leitao@debian.org are
+Patches currently in -mm which might be from ljs@kernel.org are
 
-mm-memory-failure-report-mf_msg_kernel-for-reserved-pages.patch
-mm-memory-failure-add-panic-option-for-unrecoverable-pages.patch
-documentation-document-panic_on_unrecoverable_memory_failure-sysctl.patch
-selftests-mm-regression-test-for-panic_on_unrecoverable_memory_failure.patch
-mm-huge_memory-use-sysfs_match_string-in-defrag_store.patch
-mm-huge_memory-refactor-defrag_show-to-use-defrag_flags.patch
-mm-vmstat-spread-vmstat_update-requeue-across-the-stat-interval.patch
 
 
