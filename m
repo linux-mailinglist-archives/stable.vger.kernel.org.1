@@ -1,262 +1,216 @@
-Return-Path: <stable+bounces-241277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241280-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GEhXILIr72mb8wAAu9opvQ
-	(envelope-from <stable+bounces-241277-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 11:26:10 +0200
+	id GIz4JkEs72mb8wAAu9opvQ
+	(envelope-from <stable+bounces-241280-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 11:28:33 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3704246FE42
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 11:26:10 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A94DA46FEAC
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 11:28:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 736DC3004D2B
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 09:26:07 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2C48F3004068
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 09:28:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 030623B27C9;
-	Mon, 27 Apr 2026 09:26:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 052753B19D9;
+	Mon, 27 Apr 2026 09:28:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="Drc7vND6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k9ko+X8h"
 X-Original-To: stable@vger.kernel.org
-Received: from n169-110.mail.139.com (n169-110.mail.139.com [120.232.169.110])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DFEB208D0
-	for <stable@vger.kernel.org>; Mon, 27 Apr 2026 09:26:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.110
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAE9924293C;
+	Mon, 27 Apr 2026 09:28:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777281965; cv=none; b=BX1YsRri7D0ij48FCVkWls1lGXTgME2Ff+tycijVvDkAJKXuSD+hDvVsJZtO43nYrhZteam6Xj0Kojl+FGALahZ4nXx7dJU9BLWCqWU3wffG8Ey+rCZd23ZYQBRYBg74nA/AKbQEw/CEFL5LgeKZFN8iwfGo1t3+wqLu9Ck8U0E=
+	t=1777282103; cv=none; b=ePgGdjefOOMXgbMOrEfgIihRUPHOnKzDazUbXARxV3G61iqOQ30QxIb2T3kNzZ1dNx2ueOnuh/ZIKtSVD06TIGNxp2ZNfTMVTJN3jTQ8j+2GmMNTkmMN9hKLaa79XUY2Ey4yY8udRqzp99ShzciwakWUXSpA61Ueup1rSia+6Us=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777281965; c=relaxed/simple;
-	bh=DJvqIQaNfbJAZhkS2aolG38eAZszLvNpwcaVP1szsCM=;
-	h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=YVoUnob6LbqgBRpK+IolSNbfr4ZQ7JJP+NN+rPv/kLi3S2nVJ68NNHbaBcQToxkPCcSJjdxf/ar8V/PvLh42shvi3NFJpkP1Qk86WOTnCM8P+iTW6UPIfr1GogkkfmBqA+0b+oGlYkG7tnrMjLsvC9X9vjQjsoQ1TOYkqx8B9bs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=Drc7vND6; arc=none smtp.client-ip=120.232.169.110
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=139.com; s=dkim; l=0;
-	h=from:subject:message-id:to:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=Drc7vND6pxrvTDz0mxTtB4yOkgsQqA3LpObXWiFGkwJZ5dnnpKzLcTbV+buo9kx1SmbT3SHAgbGwN
-	 atzbjC1u5HCfYBGuQUNdTr14VQVcDxaEHfcxKK1SIMGmROuzvSiCBEJCoTqfT8aL0mVr9GpYoTMToj
-	 4396Z4OwePNhszfs=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM:                                                                                        
-X-RM-SPAM-FLAG:00000000
-Received:from  (unknown[223.104.40.155])
-	by rmsmtp-lg-appmail-01-12079 (RichMail) with SMTP id 2f2f69ef2ae88d8-783c7;
-	Mon, 27 Apr 2026 17:22:52 +0800 (CST)
-X-RM-TRANSID:2f2f69ef2ae88d8-783c7
-From: Leon Chen <leonchen.oss@139.com>
-To: youngmin.nam@samsung.com,
-	hy50.seo@samsung.com,
-	mark.rutland@arm.com,
-	catalin.marinas@arm.com,
-	gregkh@linuxfoundation.org,
-	stable@vger.kernel.org
-Subject: [PATCH 6.1.y 1/1] arm64: set __exception_irq_entry with __irq_entry as a default
-Date: Mon, 27 Apr 2026 17:22:48 +0800
-Message-Id: <20260427092248.10853-2-leonchen.oss@139.com>
-X-Mailer: git-send-email 2.35.3
-In-Reply-To: <20260427092248.10853-1-leonchen.oss@139.com>
-References: <20260427092248.10853-1-leonchen.oss@139.com>
+	s=arc-20240116; t=1777282103; c=relaxed/simple;
+	bh=38Eg7fzUhEHcKQxPhK//RD3lF1LtVHnHiWyYCaGxWi4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=C0L8FHWOGh7JbpPjdmoCDRtzmPTorEAUh5/ztGOFscgTPLa2hBnTKgErrjdbsPwtnQh4SdNrBgCb7aONsLKIE4fq2crkGljaBsQ90niDEvY7j6jaTYMzS4B0GojJw+l6D2uLFUT5s4q+7gURPYe4djjnQsHMzPPSdPQeoEaUKgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k9ko+X8h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DAD3C2BCB6;
+	Mon, 27 Apr 2026 09:28:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777282103;
+	bh=38Eg7fzUhEHcKQxPhK//RD3lF1LtVHnHiWyYCaGxWi4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=k9ko+X8hteZitT+P7Xd5MkF0CK4/Y98A6IupxRxKrxOYCU4MpLdgdWvbxewgoyW/R
+	 1k09eUdB4tsx0fShHBjfIs+iLz/gFBgGAwso7o6XmdmGHpIMFNphG9JkDCr5LwiRlR
+	 hlZ2xuODo6d6T7TWh2xv1/ibvaJNSp0QzzZgp+CLhK7kD2flIQs8qXkdsB5gfhWJMw
+	 qJYH9lIhhvyMBqTeM71FRS9WBKGg4dam4/jbk+Y6UVYkbZhg6btTPaX+zgQ8zeTEBS
+	 DoHd8WdD6h6ijsbaFKBMFAFIN1DlHULxvWR+h27dR/yRKW7tylMEKmgOQPuh1/MoNW
+	 0BriLFhOJAv1g==
+Message-ID: <572dc427-9598-4982-a015-d19904996dab@kernel.org>
+Date: Mon, 27 Apr 2026 11:28:15 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3704246FE42
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] drivers/base/memory: fix memory block reference leak
+ in poison accounting
+To: Muchun Song <muchun.song@linux.dev>, Miaohe Lin <linmiaohe@huawei.com>
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ Ying Huang <huang.ying.caritas@gmail.com>, Dan Williams <djbw@kernel.org>,
+ Vishal Verma <vishal.l.verma@intel.com>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org,
+ linux-cxl@vger.kernel.org, driver-core@lists.linux.dev,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ Oscar Salvador <osalvador@suse.de>, Andrew Morton
+ <akpm@linux-foundation.org>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Danilo Krummrich <dakr@kernel.org>
+References: <20260426144447.817722-1-songmuchun@bytedance.com>
+ <20260426144447.817722-2-songmuchun@bytedance.com>
+ <7fe73023-1fd1-0c10-107e-5c0f47383453@huawei.com>
+ <D07C436E-E6BF-4E6D-9431-48C496E350CE@linux.dev>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
+ ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
+ AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
+ 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
+ g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
+ ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
+ 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
+ /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
+ jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
+ DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
+ HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
+ 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
+ LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
+ 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
+ VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
+ /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
+ iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
+ 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
+ zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
+ azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
+ FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
+ sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
+ 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
+ EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
+ IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
+ 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
+ Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
+ sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
+ yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
+ 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
+ r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
+ 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
+ CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
+ qIws/H2t
+In-Reply-To: <D07C436E-E6BF-4E6D-9431-48C496E350CE@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: A94DA46FEAC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.04 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_REJECT(1.00)[139.com:s=dkim];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-241277-lists,stable=lfdr.de];
-	FREEMAIL_FROM(0.00)[139.com];
+	TAGGED_FROM(0.00)[bounces-241280-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[139.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[leonchen.oss@139.com,stable@vger.kernel.org];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[bytedance.com,gmail.com,kernel.org,intel.com,kvack.org,vger.kernel.org,lists.linux.dev,suse.de,linux-foundation.org,linuxfoundation.org];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[139.com:-];
-	TO_DN_NONE(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[david@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.078];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,systemp.map:url]
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[bytedance.com:email,huawei.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 
-From: Youngmin Nam <youngmin.nam@samsung.com>
+On 4/27/26 11:16, Muchun Song wrote:
+> 
+> 
+>> On Apr 27, 2026, at 17:13, Miaohe Lin <linmiaohe@huawei.com> wrote:
+>>
+>> On 2026/4/26 22:44, Muchun Song wrote:
+>>> memblk_nr_poison_inc() and memblk_nr_poison_sub() look up a memory
+>>> block via find_memory_block_by_id(), which acquires a reference to the
+>>> memory block device.
+>>>
+>>> Both helpers use the returned memory block without dropping that
+>>> reference, leaking the device reference on each successful lookup. Drop
+>>> the reference after updating nr_hwpoison.
+>>>
+>>> Fixes: 5033091de814 ("mm/hwpoison: introduce per-memory_block hwpoison counter")
+>>> Cc: stable@vger.kernel.org
+>>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>>
+>> This patch looks good to me with one question below:
+>>
+>> Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
+> 
+> Thanks.
+> 
+>>
+>>> ---
+>>> drivers/base/memory.c | 8 ++++++--
+>>> 1 file changed, 6 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/drivers/base/memory.c b/drivers/base/memory.c
+>>> index f806a683b767..6981b55d582a 100644
+>>> --- a/drivers/base/memory.c
+>>> +++ b/drivers/base/memory.c
+>>> @@ -1230,8 +1230,10 @@ void memblk_nr_poison_inc(unsigned long pfn)
+>>> const unsigned long block_id = pfn_to_block_id(pfn);
+>>> struct memory_block *mem = find_memory_block_by_id(block_id);
+>>>
+>>> - 	if (mem)
+>>> + 	if (mem) {
+>>> 		atomic_long_inc(&mem->nr_hwpoison);
+>>> + 		put_device(&mem->dev);
+>>
+>> Comment above find_memory_block_by_id says it's called under device_hotplug_lock.
+>>
+>> /*
+>> * A reference for the returned memory block device is acquired.
+>> *
+>> * Called under device_hotplug_lock.
+>> */
+>> struct memory_block *find_memory_block_by_id(unsigned long block_id)
+>>
+>> But device_hotplug_lock is missing here. Should we add it?
+> 
+> Yes. Otherwise mem can be freed concurrently.
 
-[ Upstream commit f6794950f0e5ba37e3bbedda4d6ab0aad7395dd3 ]
+I guess that is rather unlikely to happen, given that we just worked on online
+memory. But sure, if we can take that lock there easily, then let's do that.
 
-filter_irq_stacks() is supposed to cut entries which are related irq entries
-from its call stack.
-And in_irqentry_text() which is called by filter_irq_stacks()
-uses __irqentry_text_start/end symbol to find irq entries in callstack.
-
-But it doesn't work correctly as without "CONFIG_FUNCTION_GRAPH_TRACER",
-arm64 kernel doesn't include gic_handle_irq which is entry point of arm64 irq
-between __irqentry_text_start and __irqentry_text_end as we discussed in below link.
-https://lore.kernel.org/all/CACT4Y+aReMGLYua2rCLHgFpS9io5cZC04Q8GLs-uNmrn1ezxYQ@mail.gmail.com/#t
-
-This problem can makes unintentional deep call stack entries especially
-in KASAN enabled situation as below.
-
-[ 2479.383395]I[0:launcher-loader: 1719] Stack depot reached limit capacity
-[ 2479.383538]I[0:launcher-loader: 1719] WARNING: CPU: 0 PID: 1719 at lib/stackdepot.c:129 __stack_depot_save+0x464/0x46c
-[ 2479.385693]I[0:launcher-loader: 1719] pstate: 624000c5 (nZCv daIF +PAN -UAO +TCO -DIT -SSBS BTYPE=--)
-[ 2479.385724]I[0:launcher-loader: 1719] pc : __stack_depot_save+0x464/0x46c
-[ 2479.385751]I[0:launcher-loader: 1719] lr : __stack_depot_save+0x460/0x46c
-[ 2479.385774]I[0:launcher-loader: 1719] sp : ffffffc0080073c0
-[ 2479.385793]I[0:launcher-loader: 1719] x29: ffffffc0080073e0 x28: ffffffd00b78a000 x27: 0000000000000000
-[ 2479.385839]I[0:launcher-loader: 1719] x26: 000000000004d1dd x25: ffffff891474f000 x24: 00000000ca64d1dd
-[ 2479.385882]I[0:launcher-loader: 1719] x23: 0000000000000200 x22: 0000000000000220 x21: 0000000000000040
-[ 2479.385925]I[0:launcher-loader: 1719] x20: ffffffc008007440 x19: 0000000000000000 x18: 0000000000000000
-[ 2479.385969]I[0:launcher-loader: 1719] x17: 2065726568207475 x16: 000000000000005e x15: 2d2d2d2d2d2d2d20
-[ 2479.386013]I[0:launcher-loader: 1719] x14: 5d39313731203a72 x13: 00000000002f6b30 x12: 00000000002f6af8
-[ 2479.386057]I[0:launcher-loader: 1719] x11: 00000000ffffffff x10: ffffffb90aacf000 x9 : e8a74a6c16008800
-[ 2479.386101]I[0:launcher-loader: 1719] x8 : e8a74a6c16008800 x7 : 00000000002f6b30 x6 : 00000000002f6af8
-[ 2479.386145]I[0:launcher-loader: 1719] x5 : ffffffc0080070c8 x4 : ffffffd00b192380 x3 : ffffffd0092b313c
-[ 2479.386189]I[0:launcher-loader: 1719] x2 : 0000000000000001 x1 : 0000000000000004 x0 : 0000000000000022
-[ 2479.386231]I[0:launcher-loader: 1719] Call trace:
-[ 2479.386248]I[0:launcher-loader: 1719]  __stack_depot_save+0x464/0x46c
-[ 2479.386273]I[0:launcher-loader: 1719]  kasan_save_stack+0x58/0x70
-[ 2479.386303]I[0:launcher-loader: 1719]  save_stack_info+0x34/0x138
-[ 2479.386331]I[0:launcher-loader: 1719]  kasan_save_free_info+0x18/0x24
-[ 2479.386358]I[0:launcher-loader: 1719]  ____kasan_slab_free+0x16c/0x170
-[ 2479.386385]I[0:launcher-loader: 1719]  __kasan_slab_free+0x10/0x20
-[ 2479.386410]I[0:launcher-loader: 1719]  kmem_cache_free+0x238/0x53c
-[ 2479.386435]I[0:launcher-loader: 1719]  mempool_free_slab+0x1c/0x28
-[ 2479.386460]I[0:launcher-loader: 1719]  mempool_free+0x7c/0x1a0
-[ 2479.386484]I[0:launcher-loader: 1719]  bvec_free+0x34/0x80
-[ 2479.386514]I[0:launcher-loader: 1719]  bio_free+0x60/0x98
-[ 2479.386540]I[0:launcher-loader: 1719]  bio_put+0x50/0x21c
-[ 2479.386567]I[0:launcher-loader: 1719]  f2fs_write_end_io+0x4ac/0x4d0
-[ 2479.386594]I[0:launcher-loader: 1719]  bio_endio+0x2dc/0x300
-[ 2479.386622]I[0:launcher-loader: 1719]  __dm_io_complete+0x324/0x37c
-[ 2479.386650]I[0:launcher-loader: 1719]  dm_io_dec_pending+0x60/0xa4
-[ 2479.386676]I[0:launcher-loader: 1719]  clone_endio+0xf8/0x2f0
-[ 2479.386700]I[0:launcher-loader: 1719]  bio_endio+0x2dc/0x300
-[ 2479.386727]I[0:launcher-loader: 1719]  blk_update_request+0x258/0x63c
-[ 2479.386754]I[0:launcher-loader: 1719]  scsi_end_request+0x50/0x304
-[ 2479.386782]I[0:launcher-loader: 1719]  scsi_io_completion+0x88/0x160
-[ 2479.386808]I[0:launcher-loader: 1719]  scsi_finish_command+0x17c/0x194
-[ 2479.386833]I[0:launcher-loader: 1719]  scsi_complete+0xcc/0x158
-[ 2479.386859]I[0:launcher-loader: 1719]  blk_mq_complete_request+0x4c/0x5c
-[ 2479.386885]I[0:launcher-loader: 1719]  scsi_done_internal+0xf4/0x1e0
-[ 2479.386910]I[0:launcher-loader: 1719]  scsi_done+0x14/0x20
-[ 2479.386935]I[0:launcher-loader: 1719]  ufshcd_compl_one_cqe+0x578/0x71c
-[ 2479.386963]I[0:launcher-loader: 1719]  ufshcd_mcq_poll_cqe_nolock+0xc8/0x150
-[ 2479.386991]I[0:launcher-loader: 1719]  ufshcd_intr+0x868/0xc0c
-[ 2479.387017]I[0:launcher-loader: 1719]  __handle_irq_event_percpu+0xd0/0x348
-[ 2479.387044]I[0:launcher-loader: 1719]  handle_irq_event_percpu+0x24/0x74
-[ 2479.387068]I[0:launcher-loader: 1719]  handle_irq_event+0x74/0xe0
-[ 2479.387091]I[0:launcher-loader: 1719]  handle_fasteoi_irq+0x174/0x240
-[ 2479.387118]I[0:launcher-loader: 1719]  handle_irq_desc+0x7c/0x2c0
-[ 2479.387147]I[0:launcher-loader: 1719]  generic_handle_domain_irq+0x1c/0x28
-[ 2479.387174]I[0:launcher-loader: 1719]  gic_handle_irq+0x64/0x158
-[ 2479.387204]I[0:launcher-loader: 1719]  call_on_irq_stack+0x2c/0x54
-[ 2479.387231]I[0:launcher-loader: 1719]  do_interrupt_handler+0x70/0xa0
-[ 2479.387258]I[0:launcher-loader: 1719]  el1_interrupt+0x34/0x68
-[ 2479.387283]I[0:launcher-loader: 1719]  el1h_64_irq_handler+0x18/0x24
-[ 2479.387308]I[0:launcher-loader: 1719]  el1h_64_irq+0x68/0x6c
-[ 2479.387332]I[0:launcher-loader: 1719]  blk_attempt_bio_merge+0x8/0x170
-[ 2479.387356]I[0:launcher-loader: 1719]  blk_mq_attempt_bio_merge+0x78/0x98
-[ 2479.387383]I[0:launcher-loader: 1719]  blk_mq_submit_bio+0x324/0xa40
-[ 2479.387409]I[0:launcher-loader: 1719]  __submit_bio+0x104/0x138
-[ 2479.387436]I[0:launcher-loader: 1719]  submit_bio_noacct_nocheck+0x1d0/0x4a0
-[ 2479.387462]I[0:launcher-loader: 1719]  submit_bio_noacct+0x618/0x804
-[ 2479.387487]I[0:launcher-loader: 1719]  submit_bio+0x164/0x180
-[ 2479.387511]I[0:launcher-loader: 1719]  f2fs_submit_read_bio+0xe4/0x1c4
-[ 2479.387537]I[0:launcher-loader: 1719]  f2fs_mpage_readpages+0x888/0xa4c
-[ 2479.387563]I[0:launcher-loader: 1719]  f2fs_readahead+0xd4/0x19c
-[ 2479.387587]I[0:launcher-loader: 1719]  read_pages+0xb0/0x4ac
-[ 2479.387614]I[0:launcher-loader: 1719]  page_cache_ra_unbounded+0x238/0x288
-[ 2479.387642]I[0:launcher-loader: 1719]  do_page_cache_ra+0x60/0x6c
-[ 2479.387669]I[0:launcher-loader: 1719]  page_cache_ra_order+0x318/0x364
-[ 2479.387695]I[0:launcher-loader: 1719]  ondemand_readahead+0x30c/0x3d8
-[ 2479.387722]I[0:launcher-loader: 1719]  page_cache_sync_ra+0xb4/0xc8
-[ 2479.387749]I[0:launcher-loader: 1719]  filemap_read+0x268/0xd24
-[ 2479.387777]I[0:launcher-loader: 1719]  f2fs_file_read_iter+0x1a0/0x62c
-[ 2479.387806]I[0:launcher-loader: 1719]  vfs_read+0x258/0x34c
-[ 2479.387831]I[0:launcher-loader: 1719]  ksys_pread64+0x8c/0xd0
-[ 2479.387857]I[0:launcher-loader: 1719]  __arm64_sys_pread64+0x48/0x54
-[ 2479.387881]I[0:launcher-loader: 1719]  invoke_syscall+0x58/0x158
-[ 2479.387909]I[0:launcher-loader: 1719]  el0_svc_common+0xf0/0x134
-[ 2479.387935]I[0:launcher-loader: 1719]  do_el0_svc+0x44/0x114
-[ 2479.387961]I[0:launcher-loader: 1719]  el0_svc+0x2c/0x80
-[ 2479.387985]I[0:launcher-loader: 1719]  el0t_64_sync_handler+0x48/0x114
-[ 2479.388010]I[0:launcher-loader: 1719]  el0t_64_sync+0x190/0x194
-[ 2479.388038]I[0:launcher-loader: 1719] Kernel panic - not syncing: kernel: panic_on_warn set ...
-
-So let's set __exception_irq_entry with __irq_entry as a default.
-Applying this patch, we can see gic_hande_irq is included in Systemp.map as below.
-
-* Before
-ffffffc008010000 T __do_softirq
-ffffffc008010000 T __irqentry_text_end
-ffffffc008010000 T __irqentry_text_start
-ffffffc008010000 T __softirqentry_text_start
-ffffffc008010000 T _stext
-ffffffc00801066c T __softirqentry_text_end
-ffffffc008010670 T __entry_text_start
-
-* After
-ffffffc008010000 T __irqentry_text_start
-ffffffc008010000 T _stext
-ffffffc008010000 t gic_handle_irq
-ffffffc00801013c t gic_handle_irq
-ffffffc008010294 T __irqentry_text_end
-ffffffc008010298 T __do_softirq
-ffffffc008010298 T __softirqentry_text_start
-ffffffc008010904 T __softirqentry_text_end
-ffffffc008010908 T __entry_text_start
-
-Signed-off-by: Youngmin Nam <youngmin.nam@samsung.com>
-Signed-off-by: SEO HOYOUNG <hy50.seo@samsung.com>
-Reviewed-by: Mark Rutland <mark.rutland@arm.com>
-Link: https://lore.kernel.org/r/20230424010436.779733-1-youngmin.nam@samsung.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Leon Chen <leonchen.oss@139.com>
----
- arch/arm64/include/asm/exception.h | 5 -----
- 1 file changed, 5 deletions(-)
-
-diff --git a/arch/arm64/include/asm/exception.h b/arch/arm64/include/asm/exception.h
-index 19713d0f013b..18dbb35a337f 100644
---- a/arch/arm64/include/asm/exception.h
-+++ b/arch/arm64/include/asm/exception.h
-@@ -8,16 +8,11 @@
- #define __ASM_EXCEPTION_H
- 
- #include <asm/esr.h>
--#include <asm/kprobes.h>
- #include <asm/ptrace.h>
- 
- #include <linux/interrupt.h>
- 
--#ifdef CONFIG_FUNCTION_GRAPH_TRACER
- #define __exception_irq_entry	__irq_entry
--#else
--#define __exception_irq_entry	__kprobes
--#endif
- 
- static inline unsigned long disr_to_esr(u64 disr)
- {
 -- 
-2.35.3
+Cheers,
 
-
+David
 
