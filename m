@@ -1,83 +1,137 @@
-Return-Path: <stable+bounces-241201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241202-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4LBZM2K67mnqxAAAu9opvQ
-	(envelope-from <stable+bounces-241201-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 03:22:42 +0200
+	id IEWTB9W87mlQxQAAu9opvQ
+	(envelope-from <stable+bounces-241202-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 03:33:09 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3710E46BE1F
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 03:22:42 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B94A46BF62
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 03:33:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3CDA1300C001
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 01:22:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A1244300D941
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 01:32:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A11AF202F71;
-	Mon, 27 Apr 2026 01:22:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB9EE2594B9;
+	Mon, 27 Apr 2026 01:32:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f0EnkfuD"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HmsTlKp7"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f45.google.com (mail-yx1-f45.google.com [74.125.224.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62AB5175A81;
-	Mon, 27 Apr 2026 01:22:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777252958; cv=none; b=XwEqjfzfa2I+IPaxu+/cmxn7cRGSCGuHqFmXQmZG5NGJ/DmngbtI2z+ADWdTgz4Re2MF6RpMbhc+sYa/bEjaiX8ZdkdekCVV2/5qfFn+4H96YJJfOzf8AkyBQHnztDl+1AmGJ9BKyOEkJ2Dkr3gm+iDk1BkU98MZ3kdYCTfDjR4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777252958; c=relaxed/simple;
-	bh=BX2k3FegiT32JzBDbtax9RMlTkcLecybywnZHE8gaZQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ljakW/5d4lBvll4WIUuFv12j7kN4hFORkdIf+DWccc+PzOxYxAcZCSPzTWYiHhfTgh2//+tDa71O0VXSx2QUji8GOqGqL8dUIMt8Qa6TauINOTmgtx4UsQlpVpTIyDIr6C6IgehzPQUchmc43Y4CuC8hRSVi0tboIDS7WbxWfX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f0EnkfuD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D55B1C2BCAF;
-	Mon, 27 Apr 2026 01:22:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777252958;
-	bh=BX2k3FegiT32JzBDbtax9RMlTkcLecybywnZHE8gaZQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=f0EnkfuDHwk9kVnmr/AtkHvJi+lCHl8Udshb3TzJ784jps1WlWfhmhbKnoLcExi38
-	 VBBnan8jXt0nuoUwCJiO4T/ardJo9M5s2t/XrJ7glnlmfPfna75N15LWsPbVGD5Mzy
-	 SSbzS4XG6IFDI1UyMRmNGafYwy2DCuhZM75ZHcj5p4A2T5K9kjy3vfrllKbrRtP67w
-	 DCnFuOZ1wfGDF27/9fI+Tepjm3YuzBFIvt35daqI24TP4+3nAozdpFhKoE1Iaj7sEb
-	 ADWZfB/Ohcso+uPZGcDkknJk0ZiqrrilMclLDlXa+TEwD2nYo8YrxRYTpdkajqTkC7
-	 bl+uxULiq3a+A==
-Date: Mon, 27 Apr 2026 09:22:34 +0800
-From: "Peter Chen (CIX)" <peter.chen@kernel.org>
-To: Yongchao Wu <yongchao.wu@autochips.com>, pawell@cadence.com
-Cc: rogerq@kernel.org, gregkh@linuxfoundation.org,
-	linux-usb@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] usb: cdns3: gadget: fix request skipping after clearing
- halt
-Message-ID: <ae66WphA+lO6t3rE@nchen-desktop>
-References: <20260423160601.2949010-1-yongchao.wu@autochips.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BFB02236EE
+	for <stable@vger.kernel.org>; Mon, 27 Apr 2026 01:32:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777253551; cv=pass; b=kxTIS5wNhjidOp21MvG4irit9KjUQo4Qa5FLemnJCOgj0VWTKi+UVcm6QyGDLjIm91KdGAIUFzmy4GVRTCn16kZdCy5UU09Ee4kb9im6BrCG4m3PxSyw/eoSzQ+Pg0OrV4uXOU6lpnQU1EL1Nqx0ZgPYlJv8rbfIMgyid7J9Tks=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777253551; c=relaxed/simple;
+	bh=y+G0oWOXlpQW64UlBYANwp3syD6CPAqjbzxnvB9nUxs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=c073DmRVyH4yK3gkQLWpyojQmqxgPgYegUAr5REscxpFIdDHCUTPYhduPlwOA9ALTHj/6GTGT1TpHlb0/dMzWJJEiooiaIRmJMfJ1W8+msJtAePSIEZHheDtMhvp8DENk0+5X+IXNnDIe3Ouxse40dX5caT4xIjZ7LO65wsPHxE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HmsTlKp7; arc=pass smtp.client-ip=74.125.224.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-651b71f5cffso1148779d50.2
+        for <stable@vger.kernel.org>; Sun, 26 Apr 2026 18:32:30 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777253549; cv=none;
+        d=google.com; s=arc-20240605;
+        b=jwjCc3uKZW7T89E5l9wXdCuIy253m6sOgiXnBw78mOKT0gaNmAVcgyj/rdCUkXohaU
+         Yqkxb3ibDU6Lfb9eZ7DN7jEz7Vk256fxrCtFWUeAnXyt14ZpeM4LxWslpvY3/0io59Y9
+         7hCm7l5eWDU2D/lrKeOWhZKEyE7ZE0rVtsMeBoN1wdqCjDIp/l6iuRDDc5uq5l3fN+hj
+         Eh2UOWgcQtJUzqIWwrP8Gibs9XOSjuTc9Wgmv4/QBSrqXlmaCbPbH4bK7tyaA8I/WsUA
+         cR1L6utEyWmtIe+FdJql/zZyyzLqZqUu9X6BxScI+Crz5wQFWqXKeWWYPzk1lVpL1NbQ
+         VxmA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=D3XjL8cqpB+iAJRsk6beyhlYPIlA8zCv1g5vwWdh/Ok=;
+        fh=90k0aRkwqNxtJR1NGXKkTeggvFroN6NO5snHueifh1o=;
+        b=N5OzBJR7l1ltFrUSXhnAaEb88Ag7tC274QS1g3A1j8cEzPBZACDsFuyHBoB6igge2e
+         5TRH7uNFqcW733lSA4wTuCkI75SgVNY/49rOG78tBytQkiNbCAXeNpcs7qMEJcES+tTi
+         RLWJ7bn849XRnxnIKjFbGQ0FQQS5+sGWSCdZrB5Z/VPYR6gcjrcz8EKvIW7XY/KClz3f
+         qjBt1soUIw9hmTRrA53BGUduqeAIYCqXbyfdKPq0H5pc4TO+EcsGABnfDEyd+J9Mwjdx
+         wsTC9qQUZ+g+bXrIpxxDziWBydRSnWOCVuuEcb4ngoyRY96oRtL6y8Bw8tR172APdd67
+         tGkw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777253549; x=1777858349; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=D3XjL8cqpB+iAJRsk6beyhlYPIlA8zCv1g5vwWdh/Ok=;
+        b=HmsTlKp7DRwIsf0ato9z+ApYvEKJZmCNbmGBRaJ3Zyy0DkR63U66h3HAm9g+HZM0JU
+         OElVjf0G5f6QrCmv+ZSWaiGreFP2F6N3vs6kM2OWVblGCUCxMQhLCWADBreR/7tCfbVa
+         gQekqmJgZfV/JcuFeO8bTQsrvfUW67kcBFEYELcBFOzySaQtwhA1/1FIhx8VtTL8JEuM
+         5vyWL2kZg51qXj7FXtazZ+fnjTHXu1/DqIuth2rBmUwV5FqsDcXdKGkOs2XVpJefDa6I
+         vabs53XzaCU9jmRv8J/HrcQb1gfqPjd9LXIFdgLsahfj97VDBM0g71uh1r+t9zW1Ft3U
+         Dthw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777253549; x=1777858349;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=D3XjL8cqpB+iAJRsk6beyhlYPIlA8zCv1g5vwWdh/Ok=;
+        b=beNQzEDo2unA5q9GPaVPVkhZamNy9CTjSafJybv3My6IqwYhpWT4ybKYaAM4oDb9TM
+         f4P1CBA9pqnLXQotE9HogGbgJbnnBjHelMRavw+ELsiMhW1mn8k0GHCJXfk0CXW86z1K
+         9FpKbc2pqDD1mPIyx2AaXeqWxHv8txDycOLSS/7c1u7WOtZPkkdbVdMh9L1ZAXb5qa8Z
+         y6XxyzftT0ndGhwbQBAU3i1PGot5lJpOER5BGa36dHf9iIhNf06doweMCa8cvNc+DdxF
+         sq49NsNFMEOM41Qy5KFDFNSBjkc1w9vt8Pvhfaei121mRA0zNy/VMw/dCpuRZRvQ3tkH
+         N1TQ==
+X-Forwarded-Encrypted: i=1; AFNElJ94Qybc2/CsSUD5J7EX+8v0fpGmmVTPBC1WiPzMzPNwt8gu31YMRbKJkOm6L/6gXXWo9sS7m9U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzEM7VfeQwcnvWe8+N1/S/XxDgDIStWyl/SMwvg2Le44Hpmq6xT
+	AmDZ8zlyld4hmSk7gjIpZiE4y0ki1XGiuqmHkM3QA8xbVQmNv1CXz0TXGHuJUsJDLjqeRv/SSCI
+	JHjnZsNFjqObKHXdmTl9PDfmPrX2ZGpQ=
+X-Gm-Gg: AeBDietEhf2svsuKleO4wpd7kywWT9UetGIzbu6VPxtRjt//3ANOIwqj1Zsf/RFzbab
+	CZNAqRUdhE+6hPuNGmZcfQqr1cbWYVFsWeVWi4k0uVUp/ebtPT8PUFsu9/bKQd/zAq5c3h7SHWU
+	tKi/ufX2TEaUq6HSuIFwxcJOfipE65kBGiX0KWAgYXDxvy+SisY0uILD7T9qi78ihRTeWN7Y1b+
+	k7Z1xSYHv9m6GQUQp8/Ze6EJPn3iuG14ku+fQL+g+VuftLadcxqLKbYmWtqwZxewUsVHzrkdWfK
+	RMY+GcPP781VitaZvMgWhYhkkWY/Xwn0eJaGmIgs8WSbIa+QytA=
+X-Received: by 2002:a53:a844:0:b0:651:e0cd:587a with SMTP id
+ 956f58d0204a3-65310b49bf4mr18006946d50.7.1777253549333; Sun, 26 Apr 2026
+ 18:32:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260423160601.2949010-1-yongchao.wu@autochips.com>
-X-Rspamd-Queue-Id: 3710E46BE1F
+References: <20260425093829.4004785-1-charsyam@gmail.com> <20260425093829.4004785-3-charsyam@gmail.com>
+ <CAKYAXd_1q_6jXT+A17s5Q6JgUFJvYAt4=GJ3vYG7ruz5x3PexA@mail.gmail.com>
+In-Reply-To: <CAKYAXd_1q_6jXT+A17s5Q6JgUFJvYAt4=GJ3vYG7ruz5x3PexA@mail.gmail.com>
+From: CharSyam <charsyam@gmail.com>
+Date: Mon, 27 Apr 2026 10:32:18 +0900
+X-Gm-Features: AQROBzDHhx-e8S0vlMohUSgaGGrKXX3RzxDI0zOAUgI7i495nH5ec52YhQr4nAM
+Message-ID: <CAMrLSE63_CAqUn5JXuSP6RfLMh1r4KArxLet4H56mRudWo4ycQ@mail.gmail.com>
+Subject: Re: [PATCH 2/2] ksmbd: centralize ksmbd_conn final release to plug
+ transport leak
+To: Namjae Jeon <linkinjeon@kernel.org>
+Cc: Steve French <smfrench@gmail.com>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Tom Talpey <tom@talpey.com>, Hyunchul Lee <hyc.lee@gmail.com>, 
+	Ronnie Sahlberg <lsahlber@redhat.com>, linux-cifs@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 8B94A46BF62
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-241202-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241201-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,chromium.org,talpey.com,redhat.com,vger.kernel.org];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
@@ -85,86 +139,40 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[peter.chen@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_NEQ_ENVFROM(0.00)[charsyam@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,autochips.com:email]
+	RCPT_COUNT_SEVEN(0.00)[9];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-On 26-04-24 00:06:01, Yongchao Wu wrote:
-> According to the cdns3 datasheet, the EPRST (Endpoint Reset) command
-> causes the DMA engine to reposition its internal pointer to the next
-> Transfer Descriptor (TD) if it was already processing one.
-> 
-> This issue is consistently observed during the ADB identification
-> process on macOS hosts, where the host issues a Clear_Halt. Although
-> commit 4bf2dd65135a ("usb: cdns3: gadget: toggle cycle bit before reset
-> endpoint") attempted to avoid DMA advance by toggling the cycle bit,
-> trace logs show that on certain hosts like macOS, the DMA pointer
-> (EP_TRADDR) still shifts after EPRST:
-> 
->   cdns3_ctrl_req: Clear Endpoint Feature(Halt ep1out)
->   cdns3_doorbell_epx: ep1out, ep_trbaddr f9c04030  <-- Should be f9c04000
->   cdns3_gadget_giveback: ep1out: req: ... length: 16384/16384
-> 
-> As shown above, the DMA pointer jumped to index 3 (offset 0x30), causing
-> the controller to skip the initial TRBs of the request. This leads to
-> data misalignment and ADB protocol hangs on macOS.
+   The intent was to snapshot the key returned by idr_get_next() so
+that the idr_remove() target was a separate name from the
+  iteration cursor =E2=80=94 the body grew with the two branches and the
+unlock/relock around session_fd_check(), and I wanted "the
+  key we just resolved" to read independently of "the cursor we bump
+at the end of the loop".
 
-Pawel, Is it a hardware issue? The cycle bit has already been toggled
-before the endpoint has been reset, why the DMA pointer still advances?
+  That said, on re-reading the final shape, id is not modified between
+idr_get_next() and either idr_remove() call site, so
+  saved_id is functionally just an alias. I'll drop it in v3 and pass
+id directly.
 
-Peter
 
-> 
-> Fix this by manually restoring the EP_TRADDR register to the starting
-> physical address of the current request after the EPRST operation is
-> complete.
-> 
-> Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
-> Cc: stable@vger.kernel.org
-> Cc: Peter Chen <peter.chen@kernel.org>
-> Signed-off-by: Yongchao Wu <yongchao.wu@autochips.com>
-> ---
->  drivers/usb/cdns3/cdns3-gadget.c | 12 +++++++++++-
->  1 file changed, 11 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/usb/cdns3/cdns3-gadget.c b/drivers/usb/cdns3/cdns3-gadget.c
-> index d59a60a16ec77..96653c7d18f20 100644
-> --- a/drivers/usb/cdns3/cdns3-gadget.c
-> +++ b/drivers/usb/cdns3/cdns3-gadget.c
-> @@ -2814,9 +2814,19 @@ int __cdns3_gadget_ep_clear_halt(struct cdns3_endpoint *priv_ep)
->  	priv_ep->flags &= ~(EP_STALLED | EP_STALL_PENDING);
->  
->  	if (request) {
-> -		if (trb)
-> +		if (trb) {
->  			*trb = trb_tmp;
->  
-> +			/*
-> +			 * Per datasheet, EPRST causes DMA to reposition to the next TD.
-> +			 * Manually reset EP_TRADDR to the current TRB to prevent
-> +			 * the hardware from skipping the interrupted request.
-> +			 */
-> +			writel(EP_TRADDR_TRADDR(priv_ep->trb_pool_dma +
-> +						priv_req->start_trb * TRB_SIZE),
-> +						&priv_dev->regs->ep_traddr);
-> +		}
-> +
->  		cdns3_rearm_transfer(priv_ep, 1);
->  	}
->  
-> 
-> base-commit: 46b513250491a7bfc97d98791dbe6a10bcc8129d
-> -- 
-> 2.43.0
-> 
-> 
-
--- 
-
-Best regards,
-Peter
+2026=EB=85=84 4=EC=9B=94 27=EC=9D=BC (=EC=9B=94) =EC=98=A4=EC=A0=84 10:07, =
+Namjae Jeon <linkinjeon@kernel.org>=EB=8B=98=EC=9D=B4 =EC=9E=91=EC=84=B1:
+>
+> > -
+> > -               if (skip(tcon, fp, sess->user) ||
+> > -                   !atomic_dec_and_test(&fp->refcount)) {
+> > +               saved_id =3D id;
+> What is the reason for backing up the id to saved_id?
+>
+> > +               if (!atomic_inc_not_zero(&fp->refcount)) {
+> >                         id++;
+> >                         write_unlock(&ft->lock);
+> >                         continue;
+> >                 }
 
