@@ -1,121 +1,170 @@
-Return-Path: <stable+bounces-241200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241201-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OBFHFb627mlfxAAAu9opvQ
-	(envelope-from <stable+bounces-241200-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 03:07:10 +0200
+	id 4LBZM2K67mnqxAAAu9opvQ
+	(envelope-from <stable+bounces-241201-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 03:22:42 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9CA646BCD9
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 03:07:09 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3710E46BE1F
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 03:22:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 71B7A300C92C
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 01:07:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3CDA1300C001
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 01:22:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D5132236F7;
-	Mon, 27 Apr 2026 01:07:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A11AF202F71;
+	Mon, 27 Apr 2026 01:22:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bBb5utJ5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f0EnkfuD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F9E11A681E
-	for <stable@vger.kernel.org>; Mon, 27 Apr 2026 01:07:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62AB5175A81;
+	Mon, 27 Apr 2026 01:22:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777252023; cv=none; b=g2w4erHeGs0X2gUYvPkYe89bsZdT+mJlHWsbBUKDcFMwBINS0c1yz6y7tAhjkgA5aGRmNfsGoSazBkZRU/XBEREOSVFvlO/fQTbSFah2320B3CEbjrMMyXOgtZYJ9OZK7w4aqbXCTuqEvNSmmvEMJrfukUuDOxjD5GBhTQOsX2Y=
+	t=1777252958; cv=none; b=XwEqjfzfa2I+IPaxu+/cmxn7cRGSCGuHqFmXQmZG5NGJ/DmngbtI2z+ADWdTgz4Re2MF6RpMbhc+sYa/bEjaiX8ZdkdekCVV2/5qfFn+4H96YJJfOzf8AkyBQHnztDl+1AmGJ9BKyOEkJ2Dkr3gm+iDk1BkU98MZ3kdYCTfDjR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777252023; c=relaxed/simple;
-	bh=SP/GVYPG/eEei7gw40gtFLPAanmcFHffJN39FXiZEWo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UHyhjVdNjMy+aSk+wb/ztrvzZUGH9nhv+doDm9hH58aOPmTVd3iw3Cngj21QmqPdVloGIqMVfKc0pHgMKfIXE8qongGZwaWZd6pr5ZJkKPVPU3PObt1Fyy6o7YIbUcUg4ASvKfe1J0AI13XE7uSro7MnlquvxANnbsNgPdGL2qE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bBb5utJ5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E285DC2BCB8
-	for <stable@vger.kernel.org>; Mon, 27 Apr 2026 01:07:02 +0000 (UTC)
+	s=arc-20240116; t=1777252958; c=relaxed/simple;
+	bh=BX2k3FegiT32JzBDbtax9RMlTkcLecybywnZHE8gaZQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ljakW/5d4lBvll4WIUuFv12j7kN4hFORkdIf+DWccc+PzOxYxAcZCSPzTWYiHhfTgh2//+tDa71O0VXSx2QUji8GOqGqL8dUIMt8Qa6TauINOTmgtx4UsQlpVpTIyDIr6C6IgehzPQUchmc43Y4CuC8hRSVi0tboIDS7WbxWfX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f0EnkfuD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D55B1C2BCAF;
+	Mon, 27 Apr 2026 01:22:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777252022;
-	bh=SP/GVYPG/eEei7gw40gtFLPAanmcFHffJN39FXiZEWo=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=bBb5utJ5xKSXs/U9fmY4ORvprsLSNR4l6M4LvCH+GA0psC9pgfB+7KhLgXi5MPVjv
-	 wliE3L3LsvllX96gPK/qh/oOuWz9EUJbwUK/B6PrnL/QoK6K5JBqKj+LdnWIv8RGMH
-	 /gaFygt3+E+qBssKEfUy/IM2ozWBrODcT2QyldaIXDNKbN62OcdHZaQXXA1B4URNlg
-	 x45TI1rnDJatUO3b9HwyCnrae6/wt6f/CkB08JTaTSKIe+ZJr8U9V0iNeKvK9jk1uO
-	 RsNJ+x5ki+EC8RjnNUwPqHojI37KD6n2ASoYxkcvx4rPRw8TZ1OM15LLS9kPQRgOLF
-	 S/OPMxyhlSWUw==
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6729c6f0ca7so11559279a12.0
-        for <stable@vger.kernel.org>; Sun, 26 Apr 2026 18:07:02 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ8mYpiF0DtEvZCA3S63yD7odfAJ9M8QMi8XJTyqVtxlXkrVYhk6mta6IhdulqmNgJap2GZFvUk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw5bSk9zmwU77KBK3aOGdTJsmkSb8SR00+oFC/YUWw4UMRBgy7e
-	fczyUQtLiyFJT7lwythnzyK/Z2mcxO6lHvRCVC5XOSUPmBthfjOlecd3HlKEu6qY4g3SvEuGDco
-	mHV7WQYvz40/IOmfcrsEQ2qY5g52lqlU=
-X-Received: by 2002:a05:6402:24dc:b0:671:c31a:575a with SMTP id
- 4fb4d7f45d1cf-672bfdd4dbemr13673687a12.23.1777252021463; Sun, 26 Apr 2026
- 18:07:01 -0700 (PDT)
+	s=k20201202; t=1777252958;
+	bh=BX2k3FegiT32JzBDbtax9RMlTkcLecybywnZHE8gaZQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=f0EnkfuDHwk9kVnmr/AtkHvJi+lCHl8Udshb3TzJ784jps1WlWfhmhbKnoLcExi38
+	 VBBnan8jXt0nuoUwCJiO4T/ardJo9M5s2t/XrJ7glnlmfPfna75N15LWsPbVGD5Mzy
+	 SSbzS4XG6IFDI1UyMRmNGafYwy2DCuhZM75ZHcj5p4A2T5K9kjy3vfrllKbrRtP67w
+	 DCnFuOZ1wfGDF27/9fI+Tepjm3YuzBFIvt35daqI24TP4+3nAozdpFhKoE1Iaj7sEb
+	 ADWZfB/Ohcso+uPZGcDkknJk0ZiqrrilMclLDlXa+TEwD2nYo8YrxRYTpdkajqTkC7
+	 bl+uxULiq3a+A==
+Date: Mon, 27 Apr 2026 09:22:34 +0800
+From: "Peter Chen (CIX)" <peter.chen@kernel.org>
+To: Yongchao Wu <yongchao.wu@autochips.com>, pawell@cadence.com
+Cc: rogerq@kernel.org, gregkh@linuxfoundation.org,
+	linux-usb@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] usb: cdns3: gadget: fix request skipping after clearing
+ halt
+Message-ID: <ae66WphA+lO6t3rE@nchen-desktop>
+References: <20260423160601.2949010-1-yongchao.wu@autochips.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260425093829.4004785-1-charsyam@gmail.com> <20260425093829.4004785-3-charsyam@gmail.com>
-In-Reply-To: <20260425093829.4004785-3-charsyam@gmail.com>
-From: Namjae Jeon <linkinjeon@kernel.org>
-Date: Mon, 27 Apr 2026 10:06:48 +0900
-X-Gmail-Original-Message-ID: <CAKYAXd_1q_6jXT+A17s5Q6JgUFJvYAt4=GJ3vYG7ruz5x3PexA@mail.gmail.com>
-X-Gm-Features: AVHnY4JbCsWkwfsFjUWPEBH-HaEq4c8C0MSse37IOOPABIYuuA9JbObwRN3VUoA
-Message-ID: <CAKYAXd_1q_6jXT+A17s5Q6JgUFJvYAt4=GJ3vYG7ruz5x3PexA@mail.gmail.com>
-Subject: Re: [PATCH 2/2] ksmbd: centralize ksmbd_conn final release to plug
- transport leak
-To: DaeMyung Kang <charsyam@gmail.com>
-Cc: Steve French <smfrench@gmail.com>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Tom Talpey <tom@talpey.com>, Hyunchul Lee <hyc.lee@gmail.com>, 
-	Ronnie Sahlberg <lsahlber@redhat.com>, linux-cifs@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: E9CA646BCD9
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260423160601.2949010-1-yongchao.wu@autochips.com>
+X-Rspamd-Queue-Id: 3710E46BE1F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,chromium.org,talpey.com,redhat.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-241200-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-241201-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[linkinjeon@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[peter.chen@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,autochips.com:email]
 
-> -
-> -               if (skip(tcon, fp, sess->user) ||
-> -                   !atomic_dec_and_test(&fp->refcount)) {
-> +               saved_id = id;
-What is the reason for backing up the id to saved_id?
+On 26-04-24 00:06:01, Yongchao Wu wrote:
+> According to the cdns3 datasheet, the EPRST (Endpoint Reset) command
+> causes the DMA engine to reposition its internal pointer to the next
+> Transfer Descriptor (TD) if it was already processing one.
+> 
+> This issue is consistently observed during the ADB identification
+> process on macOS hosts, where the host issues a Clear_Halt. Although
+> commit 4bf2dd65135a ("usb: cdns3: gadget: toggle cycle bit before reset
+> endpoint") attempted to avoid DMA advance by toggling the cycle bit,
+> trace logs show that on certain hosts like macOS, the DMA pointer
+> (EP_TRADDR) still shifts after EPRST:
+> 
+>   cdns3_ctrl_req: Clear Endpoint Feature(Halt ep1out)
+>   cdns3_doorbell_epx: ep1out, ep_trbaddr f9c04030  <-- Should be f9c04000
+>   cdns3_gadget_giveback: ep1out: req: ... length: 16384/16384
+> 
+> As shown above, the DMA pointer jumped to index 3 (offset 0x30), causing
+> the controller to skip the initial TRBs of the request. This leads to
+> data misalignment and ADB protocol hangs on macOS.
 
-> +               if (!atomic_inc_not_zero(&fp->refcount)) {
->                         id++;
->                         write_unlock(&ft->lock);
->                         continue;
->                 }
+Pawel, Is it a hardware issue? The cycle bit has already been toggled
+before the endpoint has been reset, why the DMA pointer still advances?
+
+Peter
+
+> 
+> Fix this by manually restoring the EP_TRADDR register to the starting
+> physical address of the current request after the EPRST operation is
+> complete.
+> 
+> Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
+> Cc: stable@vger.kernel.org
+> Cc: Peter Chen <peter.chen@kernel.org>
+> Signed-off-by: Yongchao Wu <yongchao.wu@autochips.com>
+> ---
+>  drivers/usb/cdns3/cdns3-gadget.c | 12 +++++++++++-
+>  1 file changed, 11 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/usb/cdns3/cdns3-gadget.c b/drivers/usb/cdns3/cdns3-gadget.c
+> index d59a60a16ec77..96653c7d18f20 100644
+> --- a/drivers/usb/cdns3/cdns3-gadget.c
+> +++ b/drivers/usb/cdns3/cdns3-gadget.c
+> @@ -2814,9 +2814,19 @@ int __cdns3_gadget_ep_clear_halt(struct cdns3_endpoint *priv_ep)
+>  	priv_ep->flags &= ~(EP_STALLED | EP_STALL_PENDING);
+>  
+>  	if (request) {
+> -		if (trb)
+> +		if (trb) {
+>  			*trb = trb_tmp;
+>  
+> +			/*
+> +			 * Per datasheet, EPRST causes DMA to reposition to the next TD.
+> +			 * Manually reset EP_TRADDR to the current TRB to prevent
+> +			 * the hardware from skipping the interrupted request.
+> +			 */
+> +			writel(EP_TRADDR_TRADDR(priv_ep->trb_pool_dma +
+> +						priv_req->start_trb * TRB_SIZE),
+> +						&priv_dev->regs->ep_traddr);
+> +		}
+> +
+>  		cdns3_rearm_transfer(priv_ep, 1);
+>  	}
+>  
+> 
+> base-commit: 46b513250491a7bfc97d98791dbe6a10bcc8129d
+> -- 
+> 2.43.0
+> 
+> 
+
+-- 
+
+Best regards,
+Peter
 
