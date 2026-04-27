@@ -1,369 +1,242 @@
-Return-Path: <stable+bounces-241217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241218-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gEq0NaUC72lz3QAAu9opvQ
-	(envelope-from <stable+bounces-241217-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 08:31:01 +0200
+	id VBSOE8QD72kj3wAAu9opvQ
+	(envelope-from <stable+bounces-241218-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 08:35:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76F1F46D912
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 08:31:01 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0FA846D9C5
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 08:35:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BA26630151D0
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 06:30:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 499BF301474A
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 06:35:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40748371063;
-	Mon, 27 Apr 2026 06:30:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 667773793A9;
+	Mon, 27 Apr 2026 06:35:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="NYHMuyhV"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="nSqI36Cv";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Ltxg2JtN"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BE4737107F;
-	Mon, 27 Apr 2026 06:30:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A447F37DE9C
+	for <stable@vger.kernel.org>; Mon, 27 Apr 2026 06:35:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777271415; cv=none; b=pli59E0zT/bG5UugWBXtzR6qAO+7/nWJ8L9NniAHWHc3OcjneHvBW7hek+Cc2vvY7N5/XqkyerOha4FeTdG/al2pnjbtoggguCVk0OuoU/AKr9aEfeW+9IwZxFdiSTZM8bEW1RI1EqzT2Op6sLUzW1v5OVgL3IRVg/hU6RXSylQ=
+	t=1777271731; cv=none; b=WGMm5/FPHCiOsBbUy5HvLZqY6Ksmm5LB289KKftaAKPoyAG4OTKNGCKkia+ptdSqQ+Oij4GknRe/hVhzAHhgsG9HWoKuhNOxvT7RkLTyCtbtDtJulax9Jh17YuLSy+kQk7sqre5b6NlCFiFiMCRLatIZ/o4rta9WLejWiX7H+kM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777271415; c=relaxed/simple;
-	bh=177kbGeM6EeJpfIq+3NWyXjbal0uoklMJOGMVNybWDc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=s2ywCL2y5tDPKd1CDE5h2hpEroiWS6El8sQHWBkXusnvYgDnxMGwnQ56zlttnnQ9p0N377Qu/sT2Zb8wFriTwkC19aRkuNlCdv9+ebIz4b90OG383CrkVDYnWDVifGKsXKHUoOREw/35SKqevRam7qCCodHNWxNVtb/0Mw5059I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=NYHMuyhV; arc=none smtp.client-ip=117.135.210.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version:
-	Content-Type; bh=KTP5ZU+2rp6IFJWA9JeJed0+oeckjBUHCIH8AyI7xDs=;
-	b=NYHMuyhVRK6kq2ReeNxxgKoHS+ggM9mPYcQjhbC0tnAna4LXn1NKQZNh0oBJWG
-	nU47KjU/+tLt8tekY7/6j93gV91P64iL26mSnej4Ev6CSO9MFV/oBhRYKtv2Vv7U
-	dcGyCA4BnevOydIOFUQq+jkr2irCVm68vHcqPU/JOIgno=
-Received: from pek-lpg-core5.wrs.com (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id PSgvCgA3beoJAu9p5KzwBw--.24174S2;
-	Mon, 27 Apr 2026 14:28:27 +0800 (CST)
-From: Robert Garcia <rob_garcia@163.com>
-To: stable@vger.kernel.org,
-	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>
-Cc: "Martin K . Petersen" <martin.petersen@oracle.com>,
-	Robert Garcia <rob_garcia@163.com>,
-	Bean Huo <beanhuo@micron.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Alim Akhtar <alim.akhtar@samsung.com>,
-	Avri Altman <avri.altman@wdc.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"James E . J . Bottomley" <jejb@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Peter Wang <peter.wang@mediatek.com>,
-	Wang Shuaiwei <wangshuaiwei1@xiaomi.com>,
-	Eric Biggers <ebiggers@google.com>,
-	Manish Pandey <quic_mapa@quicinc.com>,
-	Brian Kao <powenkao@google.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Archana Patni <archana.patni@intel.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Jens Axboe <axboe@kernel.dk>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Mike Snitzer <snitzer@redhat.com>,
-	Satya Tangirala <satyat@google.com>,
-	linux-scsi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 5.15.y] scsi: ufs: core: Fix use-after free in init error and remove paths
-Date: Mon, 27 Apr 2026 14:28:25 +0800
-Message-Id: <20260427062825.495779-1-rob_garcia@163.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1777271731; c=relaxed/simple;
+	bh=QStrsG5uTXq5Jp0o7MBHvU1XARjX1OyY/C+EwXYD4pg=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ARuZp2m6qCEu5x30LS+d8uQw3bk6r5GD9nt7X0yew9TgXgQP/KXs9DVQx255rh7Z6WRm/XMv+i/fvIkT65eMrPr3yWwrkd4mlEedg+rb66CqkIFQhZv0JT1IlHxmV69nKUmnzP3AowU+M0aTkLIPz28k/LlqmQ2Ee4Bx2OFb7qI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=nSqI36Cv; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Ltxg2JtN; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63QHIA2A2001781
+	for <stable@vger.kernel.org>; Mon, 27 Apr 2026 06:35:29 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=3Z+8TK87GHCr3otUSfoktY
+	j0HVRbiKfDKrZ+2O6XNvM=; b=nSqI36Cv+nmEWB9LFE/ynWA+HIOO3Umu2ghwmW
+	oIoz5aYJZdhXgWEP/cVUt2I7v9jBGO5gh5ABVWo+p5MsmRlNFZ5xrwAUQK+ilQI1
+	V9E/91ppgT+GDJUjQYK8dRBefGt6H6Pbbpnc7ifhkdb+Yv/AHFy6ofrnMd3/NDGw
+	WL41oiRKyRkQjOz7WQt89zfswX4AKv/unMLto8Nw/Xp6SHGagaZUQCwEvl2EF7qg
+	BEwgT3zsgop4LY+KhcwBMCuBL4HdBrEHgB/C4jt34qt6qpJfvAIIKQ4m7nGobEBw
+	FBrq4K4setR6Wte21VDGw0R1Y10vDpoGhxlu1r56HBjmu8FA==
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com [209.85.219.70])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4drnqtcsee-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Mon, 27 Apr 2026 06:35:28 +0000 (GMT)
+Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-8a0b5478a12so105647036d6.0
+        for <stable@vger.kernel.org>; Sun, 26 Apr 2026 23:35:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1777271727; x=1777876527; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=3Z+8TK87GHCr3otUSfoktYj0HVRbiKfDKrZ+2O6XNvM=;
+        b=Ltxg2JtNwhoCWztd3jqxyqQZwV61GnhDOeQeUt+JuHPrLgrcaG83RgUc8RaJtIYhgK
+         tUfjhp4vYCemdHZunvPQwifTev+l0BsskC5p9pjsWnmv34svnnrV/8sw6NgCmYcNG5AK
+         GifkkSTg6XdOAxTNdJwjqvOlGIEG64Er+n35/M5yjRi0pduYyXhjqZ9Wbpwr/gBNCE0B
+         iy2U/HMbp3Qu7YXG1LyFDhajjhU2xQlmHAfxMu96iRbJ1Q5m13v9luT1iAWAbeDmCSjk
+         o8xW6piIkQYi+jlDZZvjthqaTcDAlpFh3RAEbC0yYOimlbUu/JdGAG5oYP2EAayIfzgh
+         xbyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777271727; x=1777876527;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3Z+8TK87GHCr3otUSfoktYj0HVRbiKfDKrZ+2O6XNvM=;
+        b=rVSut1TavoGrErLxzDUeehj2bqjPKMBK7FJBk+I2kIpbBwuv7zMrKODLfARwYSiOgW
+         EtrXBc8jICnl+Ts3wA2Z7b6ww5i393y7R0KRP3usAqDjHPsAONXNaNRiqHlPFeyekHza
+         xwPEUO3fw0G+G6rMkXvW2tMoDUukPH+kyU0idfGd4KVVevFhHoBmG1sX+uI8rHlkhO6u
+         lGb4Bt1dnALpiYJPyULwoYaFqfq/ZqbxTNKwZ9asJBCULAaF3YpoD4PvXsusSuTihwIZ
+         Hy3HFGM2N15Ssqx64wniZ9ZR8IBHIQtIhPunUTcFbhfItDmUM+598n8L+WFSY7q1IDoT
+         2W1A==
+X-Forwarded-Encrypted: i=1; AFNElJ+FWyjJrqVAv3lI/2gD8emCQ8kAxvRlW9dw/NNUWkRG0WNdhb06mfa4TD9sKK20yel4oFkPW9A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyWw+bvn2bd9oddRNY06RcUnsb6Ur3yayJKw7xTz6WQyEP0osdi
+	g5zvDGmU91gcG8Q96mHYVK1qh0l2d2vIHogweU4kJpzh97B+DGF2DWvtIOmSfD3CsDccjPQtDls
+	PbII7yi1yA1HZnVPAZjNwKO2VednTlSSfrm6TT1i3n5uS/I8YPIkc9qHd2ac=
+X-Gm-Gg: AeBDieuqwc0TgoZCMVe+MnIbrkO2Bj0QOAgIJldYZ0veeQN+2VbH8FIGTXTqbwPVX+8
+	u7CQGNGAqeN7nFScW32C9S3RCFLw6Z0oSxtOOVOuF5fNbhF1VMUbWKCHawYz4t9o+P7KPFRi2fo
+	eIFXcY9io58mtIwsv61q7RKC1hXDqv1eWl4HOHKrXsCgxELnJlPdLzpdezkPsFyo/TfzGXG/RDt
+	xg8sGJ669z1ToSL1EiPPgLo5toSNLCjGk8YHZibVPEZqzqyDgT85xyAJAjDK7HKhxTGyRGHlQsn
+	RJyVGWGDAC+DY7lfJqyupIKu2xu7sK24aSEIs84dWCMHO3V75+A1lCJm/MVf71ShOL5GOzUW5/7
+	pp6FmjeeGxtepv9yNEUJY6NnUMtTIXnNa6N9wjffkHO5IV31Z7Dot60akEgNHlnt7GdRWYZT16A
+	+/LujSgx3c+xTLvLGNGQ==
+X-Received: by 2002:a05:6214:29e1:b0:8ac:adca:231f with SMTP id 6a1803df08f44-8b0286918e2mr566947576d6.14.1777271727420;
+        Sun, 26 Apr 2026 23:35:27 -0700 (PDT)
+X-Received: by 2002:a05:6214:29e1:b0:8ac:adca:231f with SMTP id 6a1803df08f44-8b0286918e2mr566947356d6.14.1777271727012;
+        Sun, 26 Apr 2026 23:35:27 -0700 (PDT)
+Received: from yongmou2.ap.qualcomm.com (Global_NAT1_IAD_FW.qualcomm.com. [129.46.232.65])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b02ac7d4e6sm251899256d6.20.2026.04.26.23.35.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 26 Apr 2026 23:35:26 -0700 (PDT)
+From: Yongxing Mou <yongxing.mou@oss.qualcomm.com>
+Subject: [PATCH v5 0/5] phy: qcom: edp: Add DP/eDP switch for phys
+Date: Mon, 27 Apr 2026 14:35:18 +0800
+Message-Id: <20260427-edp_phy-v5-0-3bb876824475@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PSgvCgA3beoJAu9p5KzwBw--.24174S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxtw13XFWfGw4DWryDKrWkCrg_yoW3tr48pr
-	W0qay5Aw4kGr47Cr1UJw48CFWFkw1xG345G397u34F93WYkF93Wa4vyFy09FyrGFZ5Za1U
-	XF4qyr48u3WjvaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zitEfrUUUUU=
-X-CM-SenderInfo: 5uresw5dufxti6rwjhhfrp/xtbC5QzZRWnvAgz3cgAA34
-X-Rspamd-Queue-Id: 76F1F46D912
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAKYD72kC/3WO3WrDMAxGXyX4ei6y5dZOr/oeYwz/yIthbVI7D
+ Ssl7z4nvchgmy4En9A50oMVyokKOzYPlmlKJfWXGvYvDfOdvXwQT6FmJkEeQMKeUxjeh+7OBXm
+ LFEArD6xuD5li+lpNr2/PnOl6q8LxOWTOFuK+P5/TeGwc0YEsgldGG0PCoDIIbTStoGBsdFFrk
+ NazxdWlMvb5vj45iVX2659JcOAShTHSuYhRnPpSdteb/VxO7mpbVRNuOILccKy4t6ZW0C06+Ad
+ XG67kD1wtOBpHUQaQ2v2Bz/P8DSCO5WxvAQAA
+X-Change-ID: 20260205-edp_phy-1eca3ed074c0
+To: Vinod Koul <vkoul@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Bjorn Andersson <andersson@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org,
+        linux-kernel@vger.kernel.org,
+        Yongxing Mou <yongxing.mou@oss.qualcomm.com>, stable@vger.kernel.org,
+        Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1777271722; l=2308;
+ i=yongxing.mou@oss.qualcomm.com; s=20250910; h=from:subject:message-id;
+ bh=QStrsG5uTXq5Jp0o7MBHvU1XARjX1OyY/C+EwXYD4pg=;
+ b=zgyGuvhWR6ZgTstYfnwyE1cd3qzyUu5zdRlWplmRkg6SigHJ2NpKoicLmjzdU1ur1ukphJE8+
+ c6BMM9MixvmDdX1BAlXoUw3QiVNZQAkb2y5v11kENH1YOXd7Z9hpGQl
+X-Developer-Key: i=yongxing.mou@oss.qualcomm.com; a=ed25519;
+ pk=rAy5J1eP+V7OXqH5FJ7ngMCtUrnHhut30ZTldOj52UM=
+X-Authority-Analysis: v=2.4 cv=J42aKgnS c=1 sm=1 tr=0 ts=69ef03b0 cx=c_pps
+ a=oc9J++0uMp73DTRD5QyR2A==:117 a=C3Dk8TwHQYyIj7nOf9RCJw==:17
+ a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=Um2Pa8k9VHT-vaBCBUpS:22
+ a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=VlNtBrZHsXuFd6lxwUsA:9 a=QEXdDO2ut3YA:10
+ a=iYH6xdkBrDN1Jqds4HTS:22
+X-Proofpoint-ORIG-GUID: b4lbS8jZAILrXVoWOTmSfE7SF6GrkX6D
+X-Proofpoint-GUID: b4lbS8jZAILrXVoWOTmSfE7SF6GrkX6D
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDI3MDA2OCBTYWx0ZWRfXxyq2YoAWLPm1
+ +tfDfCR87pCkCyaFLLw2LRKdJe32PlgRnBlU5ym9wDrzg5HJ3maD1DDgxQtlbj0YljVSZ6PQ3uT
+ jL0l+ZCU8C7Vh4aRLwZF7d8RkU4cYwwWRiuJwYC7K0oN+8YyxroXSpaxVuGy/6voPgUn40sTmtk
+ 7W9h82WZmXiOZsPsgSi/qwvaEEngljiL5IZ0bRjNxo4kkD8DJU2rD8JqgwIi+TYSJUXBURIAiFS
+ zJ9+Swq2qxqZjctuZ4UOHEw5vNn7cuqPpJ9s8uRA/5o3IB/bvL+IkTe+BIkyj8OSKF5fUAXcS1t
+ TlNNRPzGHGG0uJZ3hs3amCwtyupnkCvmV9QTRE3RQg+MOm1Yor7mTOw465V+STHFS52+wvzNEPs
+ qqcMwDkuuUdY8AkI+7BQDwnhZJ2wNqfC5ym1THpZmj3D2OH6RPiENrrunsc9OAjXUHO9IlEy9mv
+ iqyFRJS9Rb9lJux3d8g==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-27_01,2026-04-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 bulkscore=0 spamscore=0 priorityscore=1501 clxscore=1015
+ adultscore=0 lowpriorityscore=0 malwarescore=0 phishscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2604270068
+X-Rspamd-Queue-Id: E0FA846D9C5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
-	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oss.qualcomm.com:dkim,oss.qualcomm.com:mid,qualcomm.com:dkim,qualcomm.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[27];
+	TAGGED_FROM(0.00)[bounces-241218-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_FROM(0.00)[163.com];
-	TAGGED_FROM(0.00)[bounces-241217-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[163.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[yongxing.mou@oss.qualcomm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rob_garcia@163.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[oracle.com,163.com,micron.com,linaro.org,kernel.org,samsung.com,wdc.com,acm.org,linux.ibm.com,mediatek.com,xiaomi.com,google.com,quicinc.com,linuxfoundation.org,intel.com,arndb.de,kernel.dk,redhat.com,vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,oracle.com:email]
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_COUNT_SEVEN(0.00)[7]
 
-From: André Draszik <andre.draszik@linaro.org>
+Currently the PHY selects the DP/eDP configuration tables in a fixed way,
+choosing the table when enable. This driver has known issues:
+1. The selected table does not match the actual platform mode.
+2. It cannot support both modes at the same time.
 
-[ Upstream commit f8fb2403ddebb5eea0033d90d9daae4c88749ada ]
+As discussed here[1], this series:
+1. Cleans up duplicated and incorrect tables based on the HPG.
+2. Fixes the LDO programming error in eDP mode.
+3. Adds DP/eDP mode switching support.
 
-devm_blk_crypto_profile_init() registers a cleanup handler to run when
-the associated (platform-) device is being released. For UFS, the
-crypto private data and pointers are stored as part of the ufs_hba's
-data structure 'struct ufs_hba::crypto_profile'. This structure is
-allocated as part of the underlying ufshcd and therefore Scsi_host
-allocation.
+Note: x1e80100/sa8775p/sc7280/SC8280XP have been tested, while
+glymur/sc8180x have not been tested.
 
-During driver release or during error handling in ufshcd_pltfrm_init(),
-this structure is released as part of ufshcd_dealloc_host() before the
-(platform-) device associated with the crypto call above is released.
-Once this device is released, the crypto cleanup code will run, using
-the just-released 'struct ufs_hba::crypto_profile'. This causes a
-use-after-free situation:
+[1] https://lore.kernel.org/all/20260119-klm_dpphy-v2-1-52252190940b@oss.qualcomm.com/
 
-  Call trace:
-   kfree+0x60/0x2d8 (P)
-   kvfree+0x44/0x60
-   blk_crypto_profile_destroy_callback+0x28/0x70
-   devm_action_release+0x1c/0x30
-   release_nodes+0x6c/0x108
-   devres_release_all+0x98/0x100
-   device_unbind_cleanup+0x20/0x70
-   really_probe+0x218/0x2d0
-
-In other words, the initialisation code flow is:
-
-  platform-device probe
-    ufshcd_pltfrm_init()
-      ufshcd_alloc_host()
-        scsi_host_alloc()
-          allocation of struct ufs_hba
-          creation of scsi-host devices
-    devm_blk_crypto_profile_init()
-      devm registration of cleanup handler using platform-device
-
-and during error handling of ufshcd_pltfrm_init() or during driver
-removal:
-
-  ufshcd_dealloc_host()
-    scsi_host_put()
-      put_device(scsi-host)
-        release of struct ufs_hba
-  put_device(platform-device)
-    crypto cleanup handler
-
-To fix this use-after free, change ufshcd_alloc_host() to register a
-devres action to automatically cleanup the underlying SCSI device on
-ufshcd destruction, without requiring explicit calls to
-ufshcd_dealloc_host(). This way:
-
-    * the crypto profile and all other ufs_hba-owned resources are
-      destroyed before SCSI (as they've been registered after)
-    * a memleak is plugged in tc-dwc-g210-pci.c remove() as a
-      side-effect
-    * EXPORT_SYMBOL_GPL(ufshcd_dealloc_host) can be removed fully as
-      it's not needed anymore
-    * no future drivers using ufshcd_alloc_host() could ever forget
-      adding the cleanup
-
-Fixes: cb77cb5abe1f ("blk-crypto: rename blk_keyslot_manager to blk_crypto_profile")
-Fixes: d76d9d7d1009 ("scsi: ufs: use devm_blk_ksm_init()")
-Cc: stable@vger.kernel.org
-Signed-off-by: André Draszik <andre.draszik@linaro.org>
-Link: https://lore.kernel.org/r/20250124-ufshcd-fix-v4-1-c5d0144aae59@linaro.org
-Reviewed-by: Bean Huo <beanhuo@micron.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Acked-by: Eric Biggers <ebiggers@kernel.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-[ Delete modifications about ufshcd_parse_operating_points() for it's added from
-commit 72208ebe181e3("scsi: ufs: core: Add support for parsing OPP")
-and that in ufshcd_pltfrm_remove() for it's added from commit
-897df60c16d54("scsi: ufs: pltfrm: Dellocate HBA during ufshcd_pltfrm_remove()"). ]
-Signed-off-by: Robert Garcia <rob_garcia@163.com>
+Signed-off-by: Yongxing Mou <yongxing.mou@oss.qualcomm.com>
 ---
- drivers/scsi/ufs/ufshcd-pci.c    |  2 --
- drivers/scsi/ufs/ufshcd-pltfrm.c | 25 ++++++++-----------------
- drivers/scsi/ufs/ufshcd.c        | 31 +++++++++++++++++++++----------
- drivers/scsi/ufs/ufshcd.h        |  1 -
- 4 files changed, 29 insertions(+), 30 deletions(-)
+Changes in v5:
+- Correct the incorrect swing/pre-emphasis table used on SC8180x.[Konard][Dmitry]
+- Fix the commit message and add the missing Fixes tag.[Dmitry]
+- Reuse the HBR3 table for the RBR case on SC8180x.[Konard]
+- Link to v4: https://lore.kernel.org/r/20260422-edp_phy-v4-0-c38bef2d027b@oss.qualcomm.com
 
-diff --git a/drivers/scsi/ufs/ufshcd-pci.c b/drivers/scsi/ufs/ufshcd-pci.c
-index ec483ece09b6..351e6915c33c 100644
---- a/drivers/scsi/ufs/ufshcd-pci.c
-+++ b/drivers/scsi/ufs/ufshcd-pci.c
-@@ -554,7 +554,6 @@ static void ufshcd_pci_remove(struct pci_dev *pdev)
- 	pm_runtime_forbid(&pdev->dev);
- 	pm_runtime_get_noresume(&pdev->dev);
- 	ufshcd_remove(hba);
--	ufshcd_dealloc_host(hba);
- }
- 
- /**
-@@ -599,7 +598,6 @@ ufshcd_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	err = ufshcd_init(hba, mmio_base, pdev->irq);
- 	if (err) {
- 		dev_err(&pdev->dev, "Initialization failed\n");
--		ufshcd_dealloc_host(hba);
- 		return err;
- 	}
- 
-diff --git a/drivers/scsi/ufs/ufshcd-pltfrm.c b/drivers/scsi/ufs/ufshcd-pltfrm.c
-index adc302b1a57a..c254d5f697fc 100644
---- a/drivers/scsi/ufs/ufshcd-pltfrm.c
-+++ b/drivers/scsi/ufs/ufshcd-pltfrm.c
-@@ -339,21 +339,17 @@ int ufshcd_pltfrm_init(struct platform_device *pdev,
- 	struct device *dev = &pdev->dev;
- 
- 	mmio_base = devm_platform_ioremap_resource(pdev, 0);
--	if (IS_ERR(mmio_base)) {
--		err = PTR_ERR(mmio_base);
--		goto out;
--	}
-+	if (IS_ERR(mmio_base))
-+		return PTR_ERR(mmio_base);
- 
- 	irq = platform_get_irq(pdev, 0);
--	if (irq < 0) {
--		err = irq;
--		goto out;
--	}
-+	if (irq < 0)
-+		return irq;
- 
- 	err = ufshcd_alloc_host(dev, &hba);
- 	if (err) {
- 		dev_err(&pdev->dev, "Allocation failed\n");
--		goto out;
-+		return err;
- 	}
- 
- 	hba->vops = vops;
-@@ -362,13 +358,13 @@ int ufshcd_pltfrm_init(struct platform_device *pdev,
- 	if (err) {
- 		dev_err(&pdev->dev, "%s: clock parse failed %d\n",
- 				__func__, err);
--		goto dealloc_host;
-+		return err;
- 	}
- 	err = ufshcd_parse_regulator_info(hba);
- 	if (err) {
- 		dev_err(&pdev->dev, "%s: regulator init failed %d\n",
- 				__func__, err);
--		goto dealloc_host;
-+		return err;
- 	}
- 
- 	ufshcd_init_lanes_per_dir(hba);
-@@ -376,18 +372,13 @@ int ufshcd_pltfrm_init(struct platform_device *pdev,
- 	err = ufshcd_init(hba, mmio_base, irq);
- 	if (err) {
- 		dev_err(dev, "Initialization failed\n");
--		goto dealloc_host;
-+		return err;
- 	}
- 
- 	pm_runtime_set_active(&pdev->dev);
- 	pm_runtime_enable(&pdev->dev);
- 
- 	return 0;
--
--dealloc_host:
--	ufshcd_dealloc_host(hba);
--out:
--	return err;
- }
- EXPORT_SYMBOL_GPL(ufshcd_pltfrm_init);
- 
-diff --git a/drivers/scsi/ufs/ufshcd.c b/drivers/scsi/ufs/ufshcd.c
-index 55eaf04d7593..637607868f55 100644
---- a/drivers/scsi/ufs/ufshcd.c
-+++ b/drivers/scsi/ufs/ufshcd.c
-@@ -9322,16 +9322,6 @@ void ufshcd_remove(struct ufs_hba *hba)
- }
- EXPORT_SYMBOL_GPL(ufshcd_remove);
- 
--/**
-- * ufshcd_dealloc_host - deallocate Host Bus Adapter (HBA)
-- * @hba: pointer to Host Bus Adapter (HBA)
-- */
--void ufshcd_dealloc_host(struct ufs_hba *hba)
--{
--	scsi_host_put(hba->host);
--}
--EXPORT_SYMBOL_GPL(ufshcd_dealloc_host);
--
- /**
-  * ufshcd_set_dma_mask - Set dma mask based on the controller
-  *			 addressing capability
-@@ -9348,11 +9338,25 @@ static int ufshcd_set_dma_mask(struct ufs_hba *hba)
- 	return dma_set_mask_and_coherent(hba->dev, DMA_BIT_MASK(32));
- }
- 
-+/**
-+ * ufshcd_devres_release - devres cleanup handler, invoked during release of
-+ *			   hba->dev
-+ * @host: pointer to SCSI host
-+ */
-+static void ufshcd_devres_release(void *host)
-+{
-+	scsi_host_put(host);
-+}
-+
- /**
-  * ufshcd_alloc_host - allocate Host Bus Adapter (HBA)
-  * @dev: pointer to device handle
-  * @hba_handle: driver private handle
-  * Returns 0 on success, non-zero value on failure
-+ *
-+ * NOTE: There is no corresponding ufshcd_dealloc_host() because this function
-+ * keeps track of its allocations using devres and deallocates everything on
-+ * device removal automatically.
-  */
- int ufshcd_alloc_host(struct device *dev, struct ufs_hba **hba_handle)
- {
-@@ -9374,6 +9378,13 @@ int ufshcd_alloc_host(struct device *dev, struct ufs_hba **hba_handle)
- 		err = -ENOMEM;
- 		goto out_error;
- 	}
-+
-+	err = devm_add_action_or_reset(dev, ufshcd_devres_release,
-+				       host);
-+	if (err)
-+		return dev_err_probe(dev, err,
-+				     "failed to add ufshcd dealloc action\n");
-+
- 	hba = shost_priv(host);
- 	hba->host = host;
- 	hba->dev = dev;
-diff --git a/drivers/scsi/ufs/ufshcd.h b/drivers/scsi/ufs/ufshcd.h
-index c8513cc6c2bd..3ceac158c7f3 100644
---- a/drivers/scsi/ufs/ufshcd.h
-+++ b/drivers/scsi/ufs/ufshcd.h
-@@ -1001,7 +1001,6 @@ static inline void ufshcd_rmwl(struct ufs_hba *hba, u32 mask, u32 val, u32 reg)
- }
- 
- int ufshcd_alloc_host(struct device *, struct ufs_hba **);
--void ufshcd_dealloc_host(struct ufs_hba *);
- int ufshcd_hba_enable(struct ufs_hba *hba);
- int ufshcd_init(struct ufs_hba *, void __iomem *, unsigned int);
- int ufshcd_link_recovery(struct ufs_hba *hba);
+Changes in v4:
+- Splite changes.[Dmitry]
+- Add sc8180x tables in a single chagne.[Dmitry][Konrad]
+- Link to v3: https://lore.kernel.org/r/20260302-edp_phy-v3-0-ca8888d793b0@oss.qualcomm.com
+
+Changes in v3:
+- Rebase to next-20260224.[Dmitry]
+- Only enable TX1 LDO when lane counts > 2.[Konrad]
+- Link to v2: https://lore.kernel.org/all/20260213-edp_phy-v2-0-43c40976435e@oss.qualcomm.com/
+
+Changes in v2:
+- Combine the third patch with the first one.[Dmitry]
+- Fix code formatting issues.[Konrad][Dmitry]
+- Update the commit message description.[Dmitry][Konrad]
+- Fix kodiak swing/pre_emp table values.[Konrad]
+
+---
+Yongxing Mou (5):
+      phy: qcom: edp: Unify generic DP/eDP swing and pre-emphasis tables
+      phy: qcom: edp: Add eDP/DP mode switch support
+      phy: qcom: edp: Add SC7280/SC8180X swing/pre-emphasis tables
+      phy: qcom: edp: Fix AUX_CFG8 programming for DP mode
+      phy: qcom: edp: Add PHY-specific LDO config for eDP low vdiff
+
+ drivers/phy/qualcomm/phy-qcom-edp.c | 224 +++++++++++++++++++++++++++++-------
+ 1 file changed, 181 insertions(+), 43 deletions(-)
+---
+base-commit: bee6ea30c48788e18348309f891ed8afbf7702ac
+change-id: 20260205-edp_phy-1eca3ed074c0
+
+Best regards,
 -- 
-2.34.1
+Yongxing Mou <yongxing.mou@oss.qualcomm.com>
 
 
