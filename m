@@ -1,68 +1,115 @@
-Return-Path: <stable+bounces-241260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241261-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gAClAtMa72lx6gAAu9opvQ
-	(envelope-from <stable+bounces-241260-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 10:14:11 +0200
+	id iNtVD/sa72lx6gAAu9opvQ
+	(envelope-from <stable+bounces-241261-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 10:14:51 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50B5A46EE54
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 10:14:09 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E1BC46EE6B
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 10:14:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1B8793008765
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 08:13:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3613B301877F
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 08:13:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C67829ACC5;
-	Mon, 27 Apr 2026 08:13:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3071139A06D;
+	Mon, 27 Apr 2026 08:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="seMxTGJN"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="0z0jaFwz";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="1mckzUnH";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="0z0jaFwz";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="1mckzUnH"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29169397E86;
-	Mon, 27 Apr 2026 08:13:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9593A274B2B
+	for <stable@vger.kernel.org>; Mon, 27 Apr 2026 08:13:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777277605; cv=none; b=fqjSX8OMnZvxGo2oWenDYwJb90KIKip3VDSSzfeQzUF083Em59G4qblcD7Yne6SGzLU96PTnVS46vcv3C8m3Fvv9X2FCI5Behu3gbmFr8+2cDbWReovLLoHgkFBfOE68jDvCP6hFgN8Fcj+QAuZuDeS6hlcmtiLpEXv7aK6psdM=
+	t=1777277634; cv=none; b=LljthPUeifAGm8k3HVeQdvyveI6mAn14iJSvB45of1WZDfeeefaeQblx4OYcA0cxIYPGMcJezQFAXKgftgoNU42ot5ZVx9ccCKNH6X7EFRhQN7QE5GMbpXLC999CErPLF8cQ0ZWg7km0GC/UdnOUlKRtiipF9n657dWJMwfmJOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777277605; c=relaxed/simple;
-	bh=WmHusDz6RAwttLki4w/qj6U6yTjKSQFS4mC/99h4CTE=;
+	s=arc-20240116; t=1777277634; c=relaxed/simple;
+	bh=kyja/qOn+Gep0NNihkLykCIrfJKYmPZmQ+16pvFk/g8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tQvkzpn02D9A+UuEfMIT/8ZrinWrQOgRJLVNvg1WfYKWNq3/QUGhbMsdAFw9dr0//4oWfsCci9sRwGs3O8D9aJsw27K9RXA4zMXoLcF1tCJA7KewlYTC8MQQKmjDnxQhp96buhgOlTTPPfnMEgwazk+mj1a6cZmJuoOtrrgle38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=seMxTGJN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 980A0C19425;
-	Mon, 27 Apr 2026 08:13:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777277605;
-	bh=WmHusDz6RAwttLki4w/qj6U6yTjKSQFS4mC/99h4CTE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=seMxTGJN4uv6l+RdFXYx1uMxe4oufBuf9DmTpU6mefMKEkq+nUS6OyD2tYH7tZSaL
-	 1vn27hcMwt7dXLXkBuElGqXmIzggyVJ6sdLXMnWiu/H6CE12CIjmUjzrmx0LtbjQmq
-	 jI6yj6Ssost+fkqK/jzHRdUeyG6QZSTsWSohW5PyHVuHQpq0FKcSd41j00KlT+FWcx
-	 7D24Iw8X+d33WTN9Fe0+BYDDpEp6Ouhn65cgeU/Q5uwPqJWAyTZOyvwtNEGazy6MAN
-	 YUhOGaOVGw+W5rh4DGRABMMv/aiCeR4u9gTptrIF/+5l5aKNyptCW21EF6AMac48Yd
-	 6hRJnhdAu3tGQ==
-Date: Mon, 27 Apr 2026 17:13:22 +0900
-From: "Harry Yoo (Oracle)" <harry@kernel.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <jackmanb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>, Hao Li <hao.li@linux.dev>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
+	 Content-Type:Content-Disposition:In-Reply-To; b=uflfTviY3bTquqnURBSDXQICkecvRdCN1/4CggiPjW16bOu9GzS98ufsEk30uMKJYq1O3WDZn7D7mw1230UsG6CwVydgLcGXNE9fE4I1TtY7jsy/bvO7N3iZAnXcJEQHfXGFValniu7VdG2oBo6bwOegIr5NK57l4rICF/PqpdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=0z0jaFwz; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=1mckzUnH; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=0z0jaFwz; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=1mckzUnH; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id D30B65BCF0;
+	Mon, 27 Apr 2026 08:13:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1777277630; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AuQV9jJyH30aDM2Bz1IuN9VTNix0UN5WEuQpT3Fpupc=;
+	b=0z0jaFwzAjjEyKQxnVCt3DilS1qh8AVcUTdjyNX9unVq71cORSUkjbaygEJPik9LIzf4bc
+	Z8SuT053SuJrTslUBIKlc/x+7oM3wj0eXJKPhEN3JNP6wTyYIWhvCfw0Ddfw41EHJHuAif
+	jEHll/97pqpvBeKOeMxbUae/Tdvx3eM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1777277630;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AuQV9jJyH30aDM2Bz1IuN9VTNix0UN5WEuQpT3Fpupc=;
+	b=1mckzUnHukCKa96Ks+LmlW+gcWarB1YUDjcdhkHHVovufNMZltT1GNl9/Yv2OiTSp4b2em
+	cmpT65Wlnu6oQTBQ==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=0z0jaFwz;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=1mckzUnH
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1777277630; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AuQV9jJyH30aDM2Bz1IuN9VTNix0UN5WEuQpT3Fpupc=;
+	b=0z0jaFwzAjjEyKQxnVCt3DilS1qh8AVcUTdjyNX9unVq71cORSUkjbaygEJPik9LIzf4bc
+	Z8SuT053SuJrTslUBIKlc/x+7oM3wj0eXJKPhEN3JNP6wTyYIWhvCfw0Ddfw41EHJHuAif
+	jEHll/97pqpvBeKOeMxbUae/Tdvx3eM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1777277630;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AuQV9jJyH30aDM2Bz1IuN9VTNix0UN5WEuQpT3Fpupc=;
+	b=1mckzUnHukCKa96Ks+LmlW+gcWarB1YUDjcdhkHHVovufNMZltT1GNl9/Yv2OiTSp4b2em
+	cmpT65Wlnu6oQTBQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 25062593B0;
+	Mon, 27 Apr 2026 08:13:50 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id LtDpBr4a72nSCAAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Mon, 27 Apr 2026 08:13:50 +0000
+Date: Mon, 27 Apr 2026 10:13:48 +0200
+From: Oscar Salvador <osalvador@suse.de>
+To: Muchun Song <muchun.song@linux.dev>
+Cc: Muchun Song <songmuchun@bytedance.com>,
+	David Hildenbrand <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Ying Huang <huang.ying.caritas@gmail.com>,
+	Dan Williams <djbw@kernel.org>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org,
+	linux-cxl@vger.kernel.org, driver-core@lists.linux.dev,
 	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH mm-hotfixes v2 0/2] mm/page_alloc,slab: return NULL early
- from *_nolock() memory allocation APIs in NMI on UP
-Message-ID: <ae8aojxbv4PHq_C3@desktop.tail10959e.ts.net>
-References: <20260427-nolock-api-fix-v2-0-a6b83a92d9a4@kernel.org>
- <c3f7b8e4-85ae-4e80-bb02-a7b205cec88e@kernel.org>
+Subject: Re: [PATCH 1/2] mm/memory_hotplug: fix memory block reference leak
+ on remove
+Message-ID: <ae8avFsiMx-45ZOW@localhost.localdomain>
+References: <20260426144447.817722-1-songmuchun@bytedance.com>
+ <ae8U73RyTE2a6bdp@localhost.localdomain>
+ <7887915D-E598-42B3-9AFE-BFFBACE8DE2D@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -71,77 +118,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <c3f7b8e4-85ae-4e80-bb02-a7b205cec88e@kernel.org>
-X-Rspamd-Queue-Id: 50B5A46EE54
+In-Reply-To: <7887915D-E598-42B3-9AFE-BFFBACE8DE2D@linux.dev>
+X-Spam-Flag: NO
+X-Spam-Score: -3.01
+X-Spam-Level: 
+X-Rspamd-Queue-Id: 8E1BC46EE6B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241260-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-241261-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[bytedance.com,kernel.org,linux-foundation.org,linuxfoundation.org,gmail.com,intel.com,huawei.com,kvack.org,vger.kernel.org,lists.linux.dev];
 	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[suse.de:+];
 	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[harry@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[osalvador@suse.de,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[localhost.localdomain:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.de:dkim,suse.de:email]
 
-On Mon, Apr 27, 2026 at 10:00:16AM +0200, Vlastimil Babka (SUSE) wrote:
-> On 4/27/26 09:09, Harry Yoo (Oracle) wrote:
-> > Due to my mistake, V1 was sent twice w/o proper cover letter and
-> > Cc: stable. Please ignore V1. Apologies for the noise. 
-> > 
-> > Changes since V1:
-> > - used b4 to send patch series (w/ a proper cover letter) instead of
-> >   my broken git send-email script (Thanks Vlastimil)
-> > - added Cc: stable to patches 1 and 2
-> > 
-> > On UP kernels (!CONFIG_SMP), spin_trylock() is a no-op that
-> > unconditionally succeeds even when the lock is already held.
-> > As a result, alloc_frozen_pages_nolock() and kmalloc_nolock() called
-> > from an NMI context can successfully re-acquire the lock that the
-> > page/slab allocators are already holding (no deadlock because it's
-> > trylock,  but leads to e.g., allocating the same page/object twice and
-> > causing use-after-free).
-> > 
-> > It was discovered while testing the new kmalloc/kfree_nolock() test case
-> > in the slub_kunit test module with CONFIG_DEBUG_SPINLOCK=y on a UP
-> > kernel.
-> > 
-> > Patch 1 fixes alloc_frozen_pages_nolock() and
-> > patch 2 fixes kmalloc_nolock().
+On Mon, Apr 27, 2026 at 04:02:17PM +0800, Muchun Song wrote:
 > 
-> Thanks. Given the problem exposed is in a slab kunit test I think it's
-> better to handle this in the slab tree.
+> 
+> > On Apr 27, 2026, at 15:49, Oscar Salvador <osalvador@suse.de> wrote:
+> > 2) I kind of dislike having an internal put_device() lingering here in
+> >   memory-hotplug code, it feels like it does not really belong here.
+> >   Ideally we should have a high-level function in drivers/base/memory.c
+> >   that calls put_device itself.
+> >   Something like "put_memblock_dev", dunno, names are hard.
+> > 
+> 
+> I share your perspective. The current naming of find_memory_block_by_id
+> is ambiguous as it fails to signal the internal 'get' operation. To improve
+> clarity and reduce errors, it should be renamed to memory_block_get_by_id.
+> Pairing this with a new memory_block_put function to wrap put_device
+> would ensure a more robust and intuitive API.
 
-Ack, I'm fine either way.
+Even better, yes.
 
-> The page_alloc change is small and
-> should not cause conflicts.
+Thanks!
 
-Right.
-
-> So I've merged both in slab/for-next.
-
-Thanks! (I see it's been added to slab/for-next-fixes)
 
 -- 
-Cheers,
-Harry / Hyeonggon
+Oscar Salvador
+SUSE Labs
 
