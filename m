@@ -1,178 +1,291 @@
-Return-Path: <stable+bounces-241202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241204-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IEWTB9W87mlQxQAAu9opvQ
-	(envelope-from <stable+bounces-241202-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 03:33:09 +0200
+	id cCmdD9bI7mmvxgAAu9opvQ
+	(envelope-from <stable+bounces-241204-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 04:24:22 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B94A46BF62
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 03:33:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB2B846C167
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 04:24:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A1244300D941
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 01:32:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 755E6300C920
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 02:24:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB9EE2594B9;
-	Mon, 27 Apr 2026 01:32:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 801E531A807;
+	Mon, 27 Apr 2026 02:24:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HmsTlKp7"
+	dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b="UTvn1ma1"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yx1-f45.google.com (mail-yx1-f45.google.com [74.125.224.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from xry111.site (xry111.site [89.208.246.23])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BFB02236EE
-	for <stable@vger.kernel.org>; Mon, 27 Apr 2026 01:32:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777253551; cv=pass; b=kxTIS5wNhjidOp21MvG4irit9KjUQo4Qa5FLemnJCOgj0VWTKi+UVcm6QyGDLjIm91KdGAIUFzmy4GVRTCn16kZdCy5UU09Ee4kb9im6BrCG4m3PxSyw/eoSzQ+Pg0OrV4uXOU6lpnQU1EL1Nqx0ZgPYlJv8rbfIMgyid7J9Tks=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777253551; c=relaxed/simple;
-	bh=y+G0oWOXlpQW64UlBYANwp3syD6CPAqjbzxnvB9nUxs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=c073DmRVyH4yK3gkQLWpyojQmqxgPgYegUAr5REscxpFIdDHCUTPYhduPlwOA9ALTHj/6GTGT1TpHlb0/dMzWJJEiooiaIRmJMfJ1W8+msJtAePSIEZHheDtMhvp8DENk0+5X+IXNnDIe3Ouxse40dX5caT4xIjZ7LO65wsPHxE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HmsTlKp7; arc=pass smtp.client-ip=74.125.224.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-651b71f5cffso1148779d50.2
-        for <stable@vger.kernel.org>; Sun, 26 Apr 2026 18:32:30 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777253549; cv=none;
-        d=google.com; s=arc-20240605;
-        b=jwjCc3uKZW7T89E5l9wXdCuIy253m6sOgiXnBw78mOKT0gaNmAVcgyj/rdCUkXohaU
-         Yqkxb3ibDU6Lfb9eZ7DN7jEz7Vk256fxrCtFWUeAnXyt14ZpeM4LxWslpvY3/0io59Y9
-         7hCm7l5eWDU2D/lrKeOWhZKEyE7ZE0rVtsMeBoN1wdqCjDIp/l6iuRDDc5uq5l3fN+hj
-         Eh2UOWgcQtJUzqIWwrP8Gibs9XOSjuTc9Wgmv4/QBSrqXlmaCbPbH4bK7tyaA8I/WsUA
-         cR1L6utEyWmtIe+FdJql/zZyyzLqZqUu9X6BxScI+Crz5wQFWqXKeWWYPzk1lVpL1NbQ
-         VxmA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=D3XjL8cqpB+iAJRsk6beyhlYPIlA8zCv1g5vwWdh/Ok=;
-        fh=90k0aRkwqNxtJR1NGXKkTeggvFroN6NO5snHueifh1o=;
-        b=N5OzBJR7l1ltFrUSXhnAaEb88Ag7tC274QS1g3A1j8cEzPBZACDsFuyHBoB6igge2e
-         5TRH7uNFqcW733lSA4wTuCkI75SgVNY/49rOG78tBytQkiNbCAXeNpcs7qMEJcES+tTi
-         RLWJ7bn849XRnxnIKjFbGQ0FQQS5+sGWSCdZrB5Z/VPYR6gcjrcz8EKvIW7XY/KClz3f
-         qjBt1soUIw9hmTRrA53BGUduqeAIYCqXbyfdKPq0H5pc4TO+EcsGABnfDEyd+J9Mwjdx
-         wsTC9qQUZ+g+bXrIpxxDziWBydRSnWOCVuuEcb4ngoyRY96oRtL6y8Bw8tR172APdd67
-         tGkw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777253549; x=1777858349; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=D3XjL8cqpB+iAJRsk6beyhlYPIlA8zCv1g5vwWdh/Ok=;
-        b=HmsTlKp7DRwIsf0ato9z+ApYvEKJZmCNbmGBRaJ3Zyy0DkR63U66h3HAm9g+HZM0JU
-         OElVjf0G5f6QrCmv+ZSWaiGreFP2F6N3vs6kM2OWVblGCUCxMQhLCWADBreR/7tCfbVa
-         gQekqmJgZfV/JcuFeO8bTQsrvfUW67kcBFEYELcBFOzySaQtwhA1/1FIhx8VtTL8JEuM
-         5vyWL2kZg51qXj7FXtazZ+fnjTHXu1/DqIuth2rBmUwV5FqsDcXdKGkOs2XVpJefDa6I
-         vabs53XzaCU9jmRv8J/HrcQb1gfqPjd9LXIFdgLsahfj97VDBM0g71uh1r+t9zW1Ft3U
-         Dthw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777253549; x=1777858349;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=D3XjL8cqpB+iAJRsk6beyhlYPIlA8zCv1g5vwWdh/Ok=;
-        b=beNQzEDo2unA5q9GPaVPVkhZamNy9CTjSafJybv3My6IqwYhpWT4ybKYaAM4oDb9TM
-         f4P1CBA9pqnLXQotE9HogGbgJbnnBjHelMRavw+ELsiMhW1mn8k0GHCJXfk0CXW86z1K
-         9FpKbc2pqDD1mPIyx2AaXeqWxHv8txDycOLSS/7c1u7WOtZPkkdbVdMh9L1ZAXb5qa8Z
-         y6XxyzftT0ndGhwbQBAU3i1PGot5lJpOER5BGa36dHf9iIhNf06doweMCa8cvNc+DdxF
-         sq49NsNFMEOM41Qy5KFDFNSBjkc1w9vt8Pvhfaei121mRA0zNy/VMw/dCpuRZRvQ3tkH
-         N1TQ==
-X-Forwarded-Encrypted: i=1; AFNElJ94Qybc2/CsSUD5J7EX+8v0fpGmmVTPBC1WiPzMzPNwt8gu31YMRbKJkOm6L/6gXXWo9sS7m9U=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzEM7VfeQwcnvWe8+N1/S/XxDgDIStWyl/SMwvg2Le44Hpmq6xT
-	AmDZ8zlyld4hmSk7gjIpZiE4y0ki1XGiuqmHkM3QA8xbVQmNv1CXz0TXGHuJUsJDLjqeRv/SSCI
-	JHjnZsNFjqObKHXdmTl9PDfmPrX2ZGpQ=
-X-Gm-Gg: AeBDietEhf2svsuKleO4wpd7kywWT9UetGIzbu6VPxtRjt//3ANOIwqj1Zsf/RFzbab
-	CZNAqRUdhE+6hPuNGmZcfQqr1cbWYVFsWeVWi4k0uVUp/ebtPT8PUFsu9/bKQd/zAq5c3h7SHWU
-	tKi/ufX2TEaUq6HSuIFwxcJOfipE65kBGiX0KWAgYXDxvy+SisY0uILD7T9qi78ihRTeWN7Y1b+
-	k7Z1xSYHv9m6GQUQp8/Ze6EJPn3iuG14ku+fQL+g+VuftLadcxqLKbYmWtqwZxewUsVHzrkdWfK
-	RMY+GcPP781VitaZvMgWhYhkkWY/Xwn0eJaGmIgs8WSbIa+QytA=
-X-Received: by 2002:a53:a844:0:b0:651:e0cd:587a with SMTP id
- 956f58d0204a3-65310b49bf4mr18006946d50.7.1777253549333; Sun, 26 Apr 2026
- 18:32:29 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E9A21A316E;
+	Mon, 27 Apr 2026 02:24:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.208.246.23
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777256655; cv=none; b=TStJCDLmusIxhGEFRkRXywquMjzYfH9RRv0p/ID5dCG/Qi7iDEwS0D8YvowuTDDzh8LKYXH6dFvPNur5saF5ZlYZprP1vQPlUtWdF7PvyY8ItyU8jCVIKaOIEpMr/Ff0wbb0jAMOEq2h3N9y+Ivp33SBxzVmY9SmloVIIZxZobk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777256655; c=relaxed/simple;
+	bh=tBvJL95sFLic+Nj5r26PFFmPBTJB6fNdLbQxxKlYB0Y=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=WnImIP09iDCliwjHxlmeBPcJhG6j+XmtP/g61qnp028YSNHkgLchlXQy4r5Xeu8yvHl/jdfgr+0GO+iHwVx8q5EzEJ71ZfuEGmPba+JgkfZNxmP2ehquQeJqaSqoxS/ouY9MI2naqKBvER28DMAcigP6xZ3v+p6LrONm49UPDNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site; spf=pass smtp.mailfrom=xry111.site; dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b=UTvn1ma1; arc=none smtp.client-ip=89.208.246.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xry111.site
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=xry111.site;
+	s=default; t=1777256247;
+	bh=528vr2AkUjMKWg88iUbPWVy7Vntp/tP5Nh4tc1Xl3pE=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=UTvn1ma1ujvwO8jT1rdxBsJNTvq4tecuJr9o7x/hykzuA5Ta4f/PtAPO5zBQG7rKX
+	 TURoB4r+I6Vi2iLlpw9IOe8PwKgvvIeiWVz24CdZslw3B2Uh3yOciEf6m0kLp42Av/
+	 pctL/dZFXZvWSFqt8G0ukUkpOYwAXTvdpTsmTLtk=
+Received: from [127.0.0.1] (2607-8700-5500-e873-0000-0000-0000-1001.16clouds.com [IPv6:2607:8700:5500:e873::1001])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (secp384r1) server-digest SHA384)
+	(Client did not present a certificate)
+	(Authenticated sender: xry111@xry111.site)
+	by xry111.site (Postfix) with ESMTPSA id 04E3F65992;
+	Sun, 26 Apr 2026 22:17:22 -0400 (EDT)
+Message-ID: <6d2f0e3659659bece726a90810e3aacb0a4d75b6.camel@xry111.site>
+Subject: Ping: [PATCH v8] PCI: loongson: Override PCIe bridge supported
+ speeds for Loongson-3C6000 series
+From: Xi Ruoyao <xry111@xry111.site>
+To: Lorenzo Pieralisi <lpieralisi@kernel.org>, Krzysztof
+ =?gb2312?Q?Wilczy=A8=BDski?=	 <kwilczynski@kernel.org>, Manivannan
+ Sadhasivam <mani@kernel.org>, Rob Herring	 <robh@kernel.org>, Bjorn Helgaas
+ <bhelgaas@google.com>, Ziyao Li	 <liziyao@uniontech.com>
+Cc: niecheng1@uniontech.com, zhanjun@uniontech.com,
+ guanwentao@uniontech.com,  Kexy Biscuit <kexybiscuit@aosc.io>,
+ linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	loongarch@lists.linux.dev, kernel@uniontech.com, Ilpo
+ =?ISO-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>, Lain
+ Fearyncess Yang <fsf@live.com>, Ayden Meng <aydenmeng@yeah.net>,  Mingcong
+ Bai <jeffbai@aosc.io>, stable@vger.kernel.org, Huacai Chen
+ <chenhuacai@kernel.org>, Huacai Chen	 <chenhuacai@loongson.cn>
+Date: Mon, 27 Apr 2026 10:17:20 +0800
+In-Reply-To: <20260412101731.107059-1-xry111@xry111.site>
+References: <20260412101731.107059-1-xry111@xry111.site>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.1 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260425093829.4004785-1-charsyam@gmail.com> <20260425093829.4004785-3-charsyam@gmail.com>
- <CAKYAXd_1q_6jXT+A17s5Q6JgUFJvYAt4=GJ3vYG7ruz5x3PexA@mail.gmail.com>
-In-Reply-To: <CAKYAXd_1q_6jXT+A17s5Q6JgUFJvYAt4=GJ3vYG7ruz5x3PexA@mail.gmail.com>
-From: CharSyam <charsyam@gmail.com>
-Date: Mon, 27 Apr 2026 10:32:18 +0900
-X-Gm-Features: AQROBzDHhx-e8S0vlMohUSgaGGrKXX3RzxDI0zOAUgI7i495nH5ec52YhQr4nAM
-Message-ID: <CAMrLSE63_CAqUn5JXuSP6RfLMh1r4KArxLet4H56mRudWo4ycQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2] ksmbd: centralize ksmbd_conn final release to plug
- transport leak
-To: Namjae Jeon <linkinjeon@kernel.org>
-Cc: Steve French <smfrench@gmail.com>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Tom Talpey <tom@talpey.com>, Hyunchul Lee <hyc.lee@gmail.com>, 
-	Ronnie Sahlberg <lsahlber@redhat.com>, linux-cifs@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 8B94A46BF62
+X-Rspamd-Queue-Id: DB2B846C167
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[xry111.site,reject];
+	R_DKIM_ALLOW(-0.20)[xry111.site:s=default];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-241202-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-241204-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FREEMAIL_CC(0.00)[uniontech.com,aosc.io,vger.kernel.org,lists.linux.dev,linux.intel.com,live.com,yeah.net,kernel.org,loongson.cn];
+	RCPT_COUNT_TWELVE(0.00)[21];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,chromium.org,talpey.com,redhat.com,vger.kernel.org];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[charsyam@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[xry111@xry111.site,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[xry111.site:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	FREEMAIL_FROM(0.00)[gmail.com];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-   The intent was to snapshot the key returned by idr_get_next() so
-that the idr_remove() target was a separate name from the
-  iteration cursor =E2=80=94 the body grew with the two branches and the
-unlock/relock around session_fd_check(), and I wanted "the
-  key we just resolved" to read independently of "the cursor we bump
-at the end of the loop".
+Ping.
 
-  That said, on re-reading the final shape, id is not modified between
-idr_get_next() and either idr_remove() call site, so
-  saved_id is functionally just an alias. I'll drop it in v3 and pass
-id directly.
+On Sun, 2026-04-12 at 18:17 +0800, Xi Ruoyao wrote:
+> From: Ziyao Li <liziyao@uniontech.com>
+>=20
+> Older steppings of the Loongson-3C6000 series incorrectly report the
+> supported link speeds on their PCIe bridges (device IDs 0x3c19,
+> 0x3c29)
+> as only 2.5 GT/s, despite the upstream bus supporting speeds from
+> 2.5 GT/s up to 16 GT/s.
+>=20
+> As a result, since commit 774c71c52aa4 ("PCI/bwctrl: Enable only if
+> more
+> than one speed is supported"), bwctrl will be disabled if there's only
+> one 2.5 GT/s value in vector `supported_speeds`.
+>=20
+> Also, the amdgpu driver reads the value by pcie_get_speed_cap() in
+> amdgpu_device_partner_bandwidth(), for its dynamic adjustment of PCIe
+> clocks and lanes in power management. We hope this patch can prevent
+> similar problems in future driver changes (similar checks may be
+> implemented in other GPU, storage controller, NIC, etc. drivers).
+>=20
+> Manually override the `supported_speeds` field for affected PCIe
+> bridges
+> with those found on the upstream bus to correctly reflect the
+> supported
+> link speeds.
+>=20
+> This patch was originally found from AOSC OS[1].
+>=20
+> Link: https://github.com/AOSC-Tracking/linux/pull/2=C2=A0#1
+> Tested-by: Lain Fearyncess Yang <fsf@live.com>
+> Tested-by: Ayden Meng <aydenmeng@yeah.net>
+> Signed-off-by: Ayden Meng <aydenmeng@yeah.net>
+> Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
+> Link:
+> https://github.com/AOSC-Tracking/linux/commit/4392f441363abdf6fa0a0433d73=
+175a17f493454
+> [Ziyao Li: move from drivers/pci/quirks.c to
+> drivers/pci/controller/pci-loongson.c]
+> Signed-off-by: Ziyao Li <liziyao@uniontech.com>
+> Tested-by: Mingcong Bai <jeffbai@aosc.io>
+> Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
+> [Xi Ruoyao: Fix falling through logic and add kernel log output;
+> =C2=A0add Fixes tag and rebase to 7.0-rc7]
+> Cc: stable@vger.kernel.org
+> Fixes: cd89edda4002 ("PCI: loongson: Add ACPI init support")
+> Signed-off-by: Xi Ruoyao <xry111@xry111.site>
+> ---
+>=20
+> Changes in v8:
+> - Add the Fixes tag.
+> - Link to v7:
+> https://lore.kernel.org/all/20260121-loongson-pci1-v7-1-fc79c85a574d@unio=
+ntech.com/
+>=20
+> Ziyao Li's original commentary message follows below:
+>=20
+> The reason of not just copying pdev->bus->self->supported_speeds is
+> that we're concerned that this approach assumes the upstream port
+> reports the same capabilities as bridge, which may not always be the
+> case in future silicon revisions.
+>=20
+> Our current conservative approach ensures we only enable speeds that
+> are physically supported by checking the actual max_bus_speed. For
+> example, if there's a future Loongson-3C9999 where the virtual bridge
+> reports Gen4 support but the physical bridge only supports Gen3.
+>=20
+> In this scenario, directly copying the upstream port's
+> supported_speeds
+> would incorrectly report Gen4 support for the downstream bridge. The
+> current patch ensures we only set speed bits up to what the hardware
+> actually supports, based on the measured max_bus_speed. This seems
+> safer for future silicon.
+>=20
+> Changes in v7:
+> - adjust commit message
+> - Link to v6:
+> https://lore.kernel.org/r/20260114-loongson-pci1-v6-1-ee8a18f5d242@uniont=
+ech.com
+>=20
+> Changes in v6:
+> - adjust commit message
+> - Link to v5:
+> https://lore.kernel.org/r/20260113-loongson-pci1-v5-1-264c9b4a90ab@uniont=
+ech.com
+>=20
+> Changes in v5:
+> - style adjust
+> - Link to v4:
+> https://lore.kernel.org/r/20260113-loongson-pci1-v4-1-1921d6479fe4@uniont=
+ech.com
+>=20
+> Changes in v4:
+> - rename subject
+> - use 0x3c19/0x3c29 instead of 3c19/3c29
+> - Link to v3:
+> https://lore.kernel.org/r/20260109-loongson-pci1-v3-1-5ddc5ae3ba93@uniont=
+ech.com
+>=20
+> Changes in v3:
+> - Adjust commit message
+> - Make the program flow more intuitive
+> - Link to v2:
+> https://lore.kernel.org/r/20260104-loongson-pci1-v2-1-d151e57b6ef8@uniont=
+ech.com
+>=20
+> Changes in v2:
+> - Link to v1:
+> https://lore.kernel.org/r/20250822-loongson-pci1-v1-1-39aabbd11fbd@uniont=
+ech.com
+> - Move from arch/loongarch/pci/pci.c to drivers/pci/controller/pci-
+> loongson.c
+> - Fix falling through logic and add kernel log output by Xi Ruoyao
+>=20
+> =C2=A0drivers/pci/controller/pci-loongson.c | 36
+> +++++++++++++++++++++++++++
+> =C2=A01 file changed, 36 insertions(+)
+>=20
+> diff --git a/drivers/pci/controller/pci-loongson.c
+> b/drivers/pci/controller/pci-loongson.c
+> index bc630ab8a283..a4250d7af1bf 100644
+> --- a/drivers/pci/controller/pci-loongson.c
+> +++ b/drivers/pci/controller/pci-loongson.c
+> @@ -176,6 +176,42 @@ static void loongson_pci_msi_quirk(struct pci_dev
+> *dev)
+> =C2=A0}
+> =C2=A0DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_LOONGSON, DEV_LS7A_PCIE_PORT5=
+,
+> loongson_pci_msi_quirk);
+> =C2=A0
+> +/*
+> + * Older steppings of the Loongson-3C6000 series incorrectly report
+> the
+> + * supported link speeds on their PCIe bridges (device IDs 0x3c19,
+> + * 0x3c29) as only 2.5 GT/s, despite the upstream bus supporting
+> speeds
+> + * from 2.5 GT/s up to 16 GT/s.
+> + */
+> +static void loongson_pci_bridge_speed_quirk(struct pci_dev *pdev)
+> +{
+> +	u8 old_supported_speeds =3D pdev->supported_speeds;
+> +
+> +	switch (pdev->bus->max_bus_speed) {
+> +	case PCIE_SPEED_16_0GT:
+> +		pdev->supported_speeds |=3D PCI_EXP_LNKCAP2_SLS_16_0GB;
+> +		fallthrough;
+> +	case PCIE_SPEED_8_0GT:
+> +		pdev->supported_speeds |=3D PCI_EXP_LNKCAP2_SLS_8_0GB;
+> +		fallthrough;
+> +	case PCIE_SPEED_5_0GT:
+> +		pdev->supported_speeds |=3D PCI_EXP_LNKCAP2_SLS_5_0GB;
+> +		fallthrough;
+> +	case PCIE_SPEED_2_5GT:
+> +		pdev->supported_speeds |=3D PCI_EXP_LNKCAP2_SLS_2_5GB;
+> +		break;
+> +	default:
+> +		pci_warn(pdev, "unexpected max bus speed");
+> +
+> +		return;
+> +	}
+> +
+> +	if (pdev->supported_speeds !=3D old_supported_speeds)
+> +		pci_info(pdev, "fixing up supported link speeds: 0x%x
+> =3D> 0x%x",
+> +			 old_supported_speeds, pdev-
+> >supported_speeds);
+> +}
+> +DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_LOONGSON, 0x3c19,
+> loongson_pci_bridge_speed_quirk);
+> +DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_LOONGSON, 0x3c29,
+> loongson_pci_bridge_speed_quirk);
+> +
+> =C2=A0static struct loongson_pci *pci_bus_to_loongson_pci(struct pci_bus
+> *bus)
+> =C2=A0{
+> =C2=A0	struct pci_config_window *cfg;
 
-
-2026=EB=85=84 4=EC=9B=94 27=EC=9D=BC (=EC=9B=94) =EC=98=A4=EC=A0=84 10:07, =
-Namjae Jeon <linkinjeon@kernel.org>=EB=8B=98=EC=9D=B4 =EC=9E=91=EC=84=B1:
->
-> > -
-> > -               if (skip(tcon, fp, sess->user) ||
-> > -                   !atomic_dec_and_test(&fp->refcount)) {
-> > +               saved_id =3D id;
-> What is the reason for backing up the id to saved_id?
->
-> > +               if (!atomic_inc_not_zero(&fp->refcount)) {
-> >                         id++;
-> >                         write_unlock(&ft->lock);
-> >                         continue;
-> >                 }
+--=20
+Xi Ruoyao <xry111@xry111.site>
 
