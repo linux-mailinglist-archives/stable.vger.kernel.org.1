@@ -1,174 +1,206 @@
-Return-Path: <stable+bounces-241336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241340-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2CFDJ51172mZBgEAu9opvQ
-	(envelope-from <stable+bounces-241336-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 16:41:33 +0200
+	id yI05L69572kmBwEAu9opvQ
+	(envelope-from <stable+bounces-241340-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 16:58:55 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6F36474933
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 16:41:32 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64C37474C9B
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 16:58:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F4029302293A
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 14:36:28 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 53B10300610F
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 14:58:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAE062D1907;
-	Mon, 27 Apr 2026 14:36:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FC853B5837;
+	Mon, 27 Apr 2026 14:58:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="E/OPxEhK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cEKMulDi"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5203E2D9EC4
-	for <stable@vger.kernel.org>; Mon, 27 Apr 2026 14:36:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5FCB37B019;
+	Mon, 27 Apr 2026 14:58:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777300587; cv=none; b=O2RWBRieFK7XX5Ef1RgqDSQoAqRaaFVv/3Wgbn78Kzlkq566GjmTKIAPPBEvy1W8Lmab/Yc0OULuYwko+mLfRaH+y7LR0kRLGpmgbd8bITC1Oj8GjMCOUac+UA5Y7Sk7FV18bsyaY7bdMQ1o8vo1KCURzHxd5bwXbZz6bKDwMgE=
+	t=1777301930; cv=none; b=tDiiqbSepTodxpxVPfOXDqjZEPLD99ReCGh0L9XzHVaSaU8I0CPa+URpdh2/IcXDZgcToOwmGc+++PYQPZa6PO9cMaWsAUXTE+m68mdeskwypow1hjbJweKTHeVanwkvh2i606M9mHNNudrGmeUouTxowDBrZ487cTUsnd6HXxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777300587; c=relaxed/simple;
-	bh=8//6NPFnjh4H4o3zdbbVLkb5+Iunr/ti5Imm7MYh1tg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=emj3JXl+Xrhi8IqSmePbQDfRDSH9fCjuokrHhQPukqjnYP5+KpX/CSQcANIsJgsKpP6Zane2RydVAP+r0rYpqfwsbfvslYAS2qJy3Qus5lXGY+e0hfqsrxyZc+tp38Zg58lpQzm6RoU5psTfQYNTGOYiuVLt0BKtaB4W9AVpix4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=E/OPxEhK; arc=none smtp.client-ip=209.85.160.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-50d6ab4476eso101929061cf.2
-        for <stable@vger.kernel.org>; Mon, 27 Apr 2026 07:36:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rowland.harvard.edu; s=google; t=1777300585; x=1777905385; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=5dLnBOTCAZ7xV404FwbIR9B2+lXb6V426C0j5Ho9Zf4=;
-        b=E/OPxEhKCRN9senT0etJ2+knW5VkivD/W+NcGtm0eUyAam+ERYrEw0l9MaJDFQ22gi
-         PK4QBGJv6JTPjeQXA5WHQNbzVHNacozTzlLJcWXb39dmzuLGovWEmJracu0nJg8zDKP3
-         AKUISGRg7vmyjlqPGk6dWd8QPz2CbEYBLMOSKvj+9P8Pi8NwdUN77jLxa+VZrx+kxU6s
-         KZ3Qx2sYfptxCW3V9D6oRjFS7OgGyrnAkQE07Inr/u+Hmcy9LXOHyBk1gP/THfO3S05N
-         d0dMURIBNVRFTBfxrOAHH5r/Ld3tberk1mMfPpUnzmpPjHUXqRAYEkjdZSS2JeOng4ax
-         UQwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777300585; x=1777905385;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5dLnBOTCAZ7xV404FwbIR9B2+lXb6V426C0j5Ho9Zf4=;
-        b=U+CA2Ul1srZ22jyhkZA1nECLv9jKalcgUA86lIzuch1uRbfW+K0upXXHwi6M6ehgCg
-         0DcK8a7yhUEWzLoVoOVJ+atlt0/QxrtrWSaoD7jPM8PNrXpMcpgsHyHZdrYxA9kDhWXG
-         OCOvxVKlSDLK9dbewaAB24uw+KEDE9ngfoD3Qq7RkrV5M5nHOJ/W3WM6xNV5tJbIux4o
-         Qj+g4kHUOtaaekKVohO6i95Pb2RgZdi5N1ntuv25mDl6g8E6GlYe3Grvp84CTLfNpXvk
-         pfX410yHUK759GOJNYlvbWOB84BZKmrjw1xC5hQlsM4BO46nnL0f2/2fYNn9sRgWfBeP
-         wFAA==
-X-Forwarded-Encrypted: i=1; AFNElJ8/vI+2RjcLlptY9lvmtQjl78waerqzRnUBbEZ4kzsCuWspJqZX1ItN666NzIM9mJrZGW05irI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyLhsCbVEdF6abdRA327Ba493y5V334jZG9cJjC8QU/+T3iU8LY
-	L3x06bDB+qJcQ3vHVxinyRQzsBYY5DjL2xuEL+WM13gS2kdcv158TlxZ9op5exX/AA==
-X-Gm-Gg: AeBDievfh8UTOr4nR+rLl5GvMN80s6nsmoVG/5ph4QaCnA7m1OgJN1xHnEny25QnK/d
-	UUwj11Bf/+jT1T48x9JIHzrc9KVjFabgXiqWrDyczfuc5ZvG32/rDlfBFQWOpA6wHHxPZpwUHjO
-	mlpOojdI1ljaFZ/JZWoaM5nVNmVtUIGkuKs2b/pttMOXSgcS/UfLkx9imbKPoEJO2Om1Kf03b93
-	yyp1YaIZCd5Saxa/Laq0mm/58CPz/GMCxItbiJ7u3CgiX3TkmMkr/VBcwd+t756id8G4OM9Rji/
-	IwfVNu1f1ZmvuIWOoBTW6MqvsIBzSdTk4YJYaQI2rPXvClLGGviL1la+S9AY1oWPpI7MSL+rcoN
-	2kiBs+OK4H1Oc4aDKt6Ukq8D/JwdcU0kUVnMNAy1JIbTWR4t63QTWqkyMLwjzvRV8Ssxwo5LrfT
-	Oui+DRYlGfUFulq0qujK8KWflMFjINh4TlUvKR70qxOFm4jmWPiKMk
-X-Received: by 2002:ac8:5ac8:0:b0:50f:b4c0:6300 with SMTP id d75a77b69052e-50fb4c0694cmr408401941cf.56.1777300585216;
-        Mon, 27 Apr 2026 07:36:25 -0700 (PDT)
-Received: from rowland.harvard.edu ([140.247.181.15])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50e392e4db4sm257870421cf.11.2026.04.27.07.36.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Apr 2026 07:36:24 -0700 (PDT)
-Date: Mon, 27 Apr 2026 10:36:19 -0400
-From: Alan Stern <stern@rowland.harvard.edu>
-To: Guangshuo Li <lgs201920130244@gmail.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Kees Cook <kees@kernel.org>, Chen Ni <nichen@iscas.ac.cn>,
-	Evgeny Novikov <novikov@ispras.ru>, Felipe Balbi <balbi@kernel.org>,
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] usb: gadget: net2280: Fix double free in probe error path
-Message-ID: <982f5452-36be-4401-acac-c9f8ba8ff83a@rowland.harvard.edu>
-References: <20260427133107.334429-1-lgs201920130244@gmail.com>
+	s=arc-20240116; t=1777301930; c=relaxed/simple;
+	bh=+NTQq4xpBbgLkASh7hj0+PrTgY0Wsh0P5ylrq7ek6QE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DEyg/aPbVHDWkcCFNY1baT2iXUPxZ/jirtoTrvoQm94qX6NkCeIVG7bacLz9CRYbryEND26WB8T7lfb2584bsYyPRJj7z6gHTsMro5zn8lOO1SnynVy7/Je5DjUZKgiGhp+R0PSZjqfnuesSRH7scd4db/h+8AQ8RFJocyVFgHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cEKMulDi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FE43C19425;
+	Mon, 27 Apr 2026 14:58:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777301930;
+	bh=+NTQq4xpBbgLkASh7hj0+PrTgY0Wsh0P5ylrq7ek6QE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=cEKMulDiQZCliws/YM9QAmNp7rYUP+JWQu2eTUjvy+gIUl0I6Tc3hUzAmWLsRKvpk
+	 k+bL4HAIM9A5gLnvMWpZOvuJ+cJUCnogzvVG/SLh9EvSBaWhIyWzhfdydiGsaLSNKl
+	 3EyKCM96y+7Pd/ulYaFlDLVslh4XM1LLjzWkldGbo/PYLlKvVHL2RE2UxKC9c+qHmA
+	 HPkdyAwyu0Marikp0xmELBqmVYr62lCEgvTnUH8MJj1Xqkbcje/LvjS/18/azgXOkk
+	 1tPmLcnWKhcv8l08+PKH0od6mVVH29XKNinISa9UZ790ir8dS4QbW50zKw665GFBau
+	 5gy5gVeioMP2w==
+Received: from johan by theta with local (Exim 4.99.1)
+	(envelope-from <johan@kernel.org>)
+	id 1wHNQ6-000000004I4-2589;
+	Mon, 27 Apr 2026 16:58:46 +0200
+From: Johan Hovold <johan@kernel.org>
+To: "Michael S . Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	virtualization@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Cc: Johan Hovold <johan@kernel.org>,
+	stable@vger.kernel.org,
+	Pawel Moll <pawel.moll@arm.com>
+Subject: [PATCH v2] virtio-mmio: fix device release warning on module unload
+Date: Mon, 27 Apr 2026 16:37:10 +0200
+Message-ID: <20260427143710.14702-1-johan@kernel.org>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260427133107.334429-1-lgs201920130244@gmail.com>
-X-Rspamd-Queue-Id: E6F36474933
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 64C37474C9B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[rowland.harvard.edu,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[rowland.harvard.edu:s=google];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[rowland.harvard.edu:+];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241336-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-241340-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[stern@rowland.harvard.edu,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[rowland.harvard.edu:dkim,rowland.harvard.edu:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 
-On Mon, Apr 27, 2026 at 09:31:07PM +0800, Guangshuo Li wrote:
-> usb_initialize_gadget() installs gadget_release() as the release
-> callback for the embedded gadget device.  The struct net2280 instance is
-> therefore released through gadget_release() when the gadget device's last
-> reference is dropped.
-> 
-> The probe error path calls net2280_remove(), which tears down the
-> partially initialized device and drops the gadget reference with
-> usb_put_gadget().  Calling kfree(dev) afterwards can free the same object
-> again.
-> 
-> Drop the explicit kfree() and let the gadget device release callback
-> handle the final free. This issue was found by a static analysis tool
-> I am developing.
-> 
-> Fixes: 2468c877da42 ("usb: gadget: net2280: fix memory leak on probe error handling paths")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-> ---
-> 
->  drivers/usb/gadget/udc/net2280.c | 1 -
->  1 file changed, 1 deletion(-)
-> 
-> diff --git a/drivers/usb/gadget/udc/net2280.c b/drivers/usb/gadget/udc/net2280.c
-> index d02765bd49ce..90d678e6714f 100644
-> --- a/drivers/usb/gadget/udc/net2280.c
-> +++ b/drivers/usb/gadget/udc/net2280.c
-> @@ -3792,7 +3792,6 @@ static int net2280_probe(struct pci_dev *pdev, const struct pci_device_id *id)
->  done:
->  	if (dev) {
->  		net2280_remove(pdev);
-> -		kfree(dev);
->  	}
->  	return retval;
->  }
+Driver core expects devices to be allocated dynamically and complains
+loudly when a device that lacks a release function is freed.
 
-You should remove the braces in the "if" statement as they are now 
-unnecessary.  Also, the Fixes: tag is wrong; it should say:
+Use __root_device_register() to allocate and register the root device
+instead of open coding using a static device.
 
-Fixes: f770fbec4165 ("USB: UDC: net2280: Fix memory leaks")
+Note that root_device_register(), which also creates a link to the
+module, cannot be used as the device is registered when parsing the
+module parameters which happens before the module kobject has been set
+up.
 
-The code before that commit was okay.
+Fixes: 81a054ce0b46 ("virtio-mmio: Devices parameter parsing")
+Cc: stable@vger.kernel.org	# 3.5
+Cc: Pawel Moll <pawel.moll@arm.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+---
 
-Alan Stern
+Changes in v2:
+ - add sanity check to vm_cmdline_get() to prevent root from
+   dereferencing an error pointer when reading back the module parameter
+   through sysfs should root device registration ever fail when the
+   driver is also built-in
+
+
+ drivers/virtio/virtio_mmio.c | 26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
+
+diff --git a/drivers/virtio/virtio_mmio.c b/drivers/virtio/virtio_mmio.c
+index 595c2274fbb5..510b7c4efdff 100644
+--- a/drivers/virtio/virtio_mmio.c
++++ b/drivers/virtio/virtio_mmio.c
+@@ -662,9 +662,7 @@ static void virtio_mmio_remove(struct platform_device *pdev)
+ 
+ #if defined(CONFIG_VIRTIO_MMIO_CMDLINE_DEVICES)
+ 
+-static struct device vm_cmdline_parent = {
+-	.init_name = "virtio-mmio-cmdline",
+-};
++static struct device *vm_cmdline_parent;
+ 
+ static int vm_cmdline_parent_registered;
+ static int vm_cmdline_id;
+@@ -672,7 +670,6 @@ static int vm_cmdline_id;
+ static int vm_cmdline_set(const char *device,
+ 		const struct kernel_param *kp)
+ {
+-	int err;
+ 	struct resource resources[2] = {};
+ 	char *str;
+ 	long long base, size;
+@@ -704,11 +701,10 @@ static int vm_cmdline_set(const char *device,
+ 	resources[1].start = resources[1].end = irq;
+ 
+ 	if (!vm_cmdline_parent_registered) {
+-		err = device_register(&vm_cmdline_parent);
+-		if (err) {
+-			put_device(&vm_cmdline_parent);
++		vm_cmdline_parent = __root_device_register("virtio-mmio-cmdline", NULL);
++		if (IS_ERR(vm_cmdline_parent)) {
+ 			pr_err("Failed to register parent device!\n");
+-			return err;
++			return PTR_ERR(vm_cmdline_parent);
+ 		}
+ 		vm_cmdline_parent_registered = 1;
+ 	}
+@@ -719,7 +715,7 @@ static int vm_cmdline_set(const char *device,
+ 		       (unsigned long long)resources[0].end,
+ 		       (int)resources[1].start);
+ 
+-	pdev = platform_device_register_resndata(&vm_cmdline_parent,
++	pdev = platform_device_register_resndata(vm_cmdline_parent,
+ 			"virtio-mmio", vm_cmdline_id++,
+ 			resources, ARRAY_SIZE(resources), NULL, 0);
+ 
+@@ -743,8 +739,12 @@ static int vm_cmdline_get_device(struct device *dev, void *data)
+ static int vm_cmdline_get(char *buffer, const struct kernel_param *kp)
+ {
+ 	buffer[0] = '\0';
+-	device_for_each_child(&vm_cmdline_parent, buffer,
+-			vm_cmdline_get_device);
++
++	if (vm_cmdline_parent_registered) {
++		device_for_each_child(vm_cmdline_parent, buffer,
++				vm_cmdline_get_device);
++	}
++
+ 	return strlen(buffer) + 1;
+ }
+ 
+@@ -766,9 +766,9 @@ static int vm_unregister_cmdline_device(struct device *dev,
+ static void vm_unregister_cmdline_devices(void)
+ {
+ 	if (vm_cmdline_parent_registered) {
+-		device_for_each_child(&vm_cmdline_parent, NULL,
++		device_for_each_child(vm_cmdline_parent, NULL,
+ 				vm_unregister_cmdline_device);
+-		device_unregister(&vm_cmdline_parent);
++		root_device_unregister(vm_cmdline_parent);
+ 		vm_cmdline_parent_registered = 0;
+ 	}
+ }
+-- 
+2.53.0
+
 
