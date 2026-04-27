@@ -1,121 +1,126 @@
-Return-Path: <stable+bounces-241300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241301-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ICLnNTdR72kLAQEAu9opvQ
-	(envelope-from <stable+bounces-241300-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 14:06:15 +0200
+	id EBtDClZV72nJAQEAu9opvQ
+	(envelope-from <stable+bounces-241301-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 14:23:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B362472405
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 14:06:15 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CAA14726D0
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 14:23:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B82A630297B9
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 12:03:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A9EBE30158B7
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 12:23:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCB823B27D3;
-	Mon, 27 Apr 2026 12:03:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C3B13B95EB;
+	Mon, 27 Apr 2026 12:23:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YvqD47lJ"
+	dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b="UYzELeGy"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7945B30BBAE;
-	Mon, 27 Apr 2026 12:03:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D749F3B894A;
+	Mon, 27 Apr 2026 12:23:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777291405; cv=none; b=RbBFDgQO/LeLliyN5/I0U2qOmuta9+8TwykuMwkNtYzWcBOi6rtTIMH5IhDofZliZnyJY869GpcG27hLoxfUeHiyQbOCA6HWrqvcVDVV2Oi+myVx5VdBnVhAB5dh8R9o8dg6/h/XDEO13Q0L546hh+sFY+85qipSdCyDiC9GatE=
+	t=1777292616; cv=none; b=pO8STWCdhXir8JkdSzIHj0NX1y/Sq96f+jcsQYDj9Winqy2xnReVNc+I48cfrRbSMT8MXbguyC1f0rLrx0csjJS36K3cLeM2zvC0B7hbubOr/S9jTtpkeWDka8mQ38/CRJh/hRuNMWi+RVbmvZDbDyhp2n8tupwJeBEEUPEIElY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777291405; c=relaxed/simple;
-	bh=7p8iCBO5JMzunPBf2N0aodXynUIUu8mlRNHSgTuLrgE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eLqGChKyVAHYkcaVrejPecfRPee3uGykMgt4R6Z3mTFZ3LnJxcOQnFdFCr2UKZhl/XLmwGCV3//XoTRboD3IvO1fiKY5aQkf1mRdR4jG1cfFqobfGjAmlUpZWYij+IHcLH1HyWDarOMP3jcrmb8udOMJ5pHGgJg6kG/rie7VfWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YvqD47lJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05189C19425;
-	Mon, 27 Apr 2026 12:03:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777291405;
-	bh=7p8iCBO5JMzunPBf2N0aodXynUIUu8mlRNHSgTuLrgE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YvqD47lJ437NIOKqm0877gmkscgflBBCmB07NZBAl0VhGaKXrXL+FzpQhSo5cEvvI
-	 r0tpLqUhFtgyQBc8JLjBkaWEi7Ba6W+JF9tSZNyo0YNNvCuDOs2zXQ+vFm6P9uOAoY
-	 9u5zpEqoA5RPWehQbLO+CrUFuzPrDLE7PkdkQUAdQuIvG1fUKQAVwoJ+ncw74BbHdj
-	 ujsq8zayqsxkpdJwrzBc2Yi11JvOWCip5GgTVYTnZ4MBOQhik0teIODU+qnH488OWd
-	 QG/hpoJ6Gxko9mSWhRgOvpEhtuGtjrlqiiU+bWfAmwZ9KKRU8cONP6qcUA/H36oSkb
-	 BmI3uTtMvo6ig==
-Received: from johan by theta with local (Exim 4.99.1)
-	(envelope-from <johan@kernel.org>)
-	id 1wHKgK-000000000mA-40vP;
-	Mon, 27 Apr 2026 14:03:20 +0200
-Date: Mon, 27 Apr 2026 14:03:20 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Heiko Stuebner <heiko@sntech.de>
-Cc: Stephen Boyd <sboyd@kernel.org>,
-	Michael Turquette <mturquette@baylibre.com>,
-	linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Sebastian Reichel <sebastian.reichel@collabora.com>
-Subject: Re: [PATCH] clk: rk808: fix OF node reference imbalance
-Message-ID: <ae9QiGGPB9gJ0HhG@hovoldconsulting.com>
-References: <20260407095027.2625516-1-johan@kernel.org>
- <177714062701.5403.1177541832751457755@lazor>
- <10504733.NyiUUSuA9g@phil>
+	s=arc-20240116; t=1777292616; c=relaxed/simple;
+	bh=wHwgwUHjFL+DaHaQ7+2+TRjloCkt1nTGqE101j5LmC8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=mrvhX/bZisY1KDjXvQ5jmXa9DS5hnS00bDwo1kvCSPl4+yeCisK9VP2gxVvsw+BkrnxN5p1hidOs2YG/GAZAg/7O2DbLbR3wBVEABZOhq2SAJeWz5UOHHNof3C0+HZRxbmzOY5UHcYF0ibYmfLw5bYjdhUgcstrsE20irz8e6Q0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=UYzELeGy; arc=none smtp.client-ip=185.11.138.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sntech.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
+	s=gloria202408; h=Content-Transfer-Encoding:Content-Type:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Reply-To;
+	bh=rSa4DsT5RHn/LdrwfWnRLn67k6i1+NfLB6ROGNloCyo=; b=UYzELeGymE59QPg89eSJu+qECD
+	6mqObrTNGCj4NLoYQNA/Q3HgnAIl1clnfFZiJPFl0oY0nEbUGEhVoLcoN3QunicBTxe++VzPdizGL
+	0x9TFsEhxGeiWwnoUl3FbTezFHK5BmDRCyWeqgHdmHHJ4gD8xgMRHhuO30bLkBPBdA+vhX16dIO5M
+	ZgNcNcrWx4/+1SUMSXKoXD/HgOgGLnbg/wQu5JOw+S61WY673LcD6ykWOahZmccHrKM0/bhEelTxg
+	bhPrABLndzFbmv+jUZD8d/luHby8kKUAev3Bota6q2DGYrVtrFcb9Uks5r25lJopooGZoTGyL+NDM
+	d6OMEPcg==;
+From: Heiko Stuebner <heiko@sntech.de>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Quentin Schulz <foss+kernel@0leil.net>
+Cc: Heiko Stuebner <heiko@sntech.de>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Heiko Stuebner <heiko.stuebner@cherry.de>,
+	devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Quentin Schulz <quentin.schulz@cherry.de>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 0/2] arm64: dts: rockchip: fix Ethernet PHY on Theobroma PX30 devices
+Date: Mon, 27 Apr 2026 14:23:19 +0200
+Message-ID: <177729258224.1866089.13274076466595011566.b4-ty@sntech.de>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260421-px30-eth-phy-v2-0-68c375b120fd@cherry.de>
+References: <20260421-px30-eth-phy-v2-0-68c375b120fd@cherry.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <10504733.NyiUUSuA9g@phil>
-X-Rspamd-Queue-Id: 5B362472405
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 9CAA14726D0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[sntech.de,quarantine];
+	R_DKIM_ALLOW(-0.20)[sntech.de:s=gloria202408];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241300-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	TAGGED_FROM(0.00)[bounces-241301-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[3];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[heiko@sntech.de,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[sntech.de:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[hovoldconsulting.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable,dt,kernel];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,sntech.de:email,sntech.de:dkim,sntech.de:mid]
 
-On Mon, Apr 27, 2026 at 01:17:39PM +0200, Heiko Stuebner wrote:
 
-> Looking at the device_set_of_node_from_dev() function, this is the
-> right move, so
+On Tue, 21 Apr 2026 11:45:04 +0200, Quentin Schulz wrote:
+> This removes the reliance on the bootloader setting up the Ethernet PHY
+> for the Linux kernel to be able to use Ethernet.
 > 
-> Reviewed-by: Heiko Stuebner <heiko@sntech.de>
+> This is due to the HW default of the PHY reset line being active and the
+> MDIO auto-detection mechanism not controlling a PHY's reset line such
+> that we need to hardcode the PHY ID in the compatible property for it to
+> be usable by the kernel, regardless of what the bootloader is doing.
+> 
+> [...]
 
-Thanks for reviewing.
+Applied, thanks!
 
-> It also seems the rk808-regulator.c might be another candidate for
-> this, as it also takes the node without of_node_get and manually
-> setting the of_node_reused flag.
+[1/2] arm64: dts: rockchip: fix Ethernet PHY not found on PX30 Cobra
+      commit: 6598ed3586a4b1cc79423666e66b9861631a6c7e
+[2/2] arm64: dts: rockchip: fix Ethernet PHY not found on PX30 Ringneck
+      commit: ae653cb854f36d1555681ce70ca3d80d0ec73516
 
-That's fixed in 7.1-rc1:
-
-	65290b24d8a5 ("regulator: rk808: fix OF node reference imbalance")
-
-Johan
+Best regards,
+-- 
+Heiko Stuebner <heiko@sntech.de>
 
