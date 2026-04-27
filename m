@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-241377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241378-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eM+zCe+Q72nRCwEAu9opvQ
-	(envelope-from <stable+bounces-241377-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 18:38:07 +0200
+	id WOtCC/6Q72nRCwEAu9opvQ
+	(envelope-from <stable+bounces-241378-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 18:38:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FAE2476839
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 18:38:06 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85AE8476847
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 18:38:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 325E03012BE8
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 16:37:50 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BD73830059B2
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 16:38:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82F1B3A6F04;
-	Mon, 27 Apr 2026 16:37:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99BEA3CF69A;
+	Mon, 27 Apr 2026 16:38:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wstXqnZA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vXkxktWA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 453797083C
-	for <stable@vger.kernel.org>; Mon, 27 Apr 2026 16:37:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D3E3A6F04
+	for <stable@vger.kernel.org>; Mon, 27 Apr 2026 16:38:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777307869; cv=none; b=u+cXHlJ0gRK5/V7h0OPi5sDeKBypWCT/0KnuXtccKyZVsshuWHXLTMDC9nk7nIB9IFRLfw+X7r1zKfov+9DsU6T7/lT+SwohUJyRS1vT6eEEsnGF6o9EEoDqYtI2xmPrDzb86ehfsXJFb0CVAS3h9deyOkXMZjubgYALZeUl+DI=
+	t=1777307899; cv=none; b=MSvwvj0MLFLwi2hSYlm4pNV5tjqfsPbbKVBm81RNmskYf6DqLd5ks9/+lofeYcrsJ8qLazWdYGYsZEmDMIf3f/yvuoMGpG44lkjLLez0jDpyyfz6I8hu7i+ZMiDEw/ZL4SebBJ/46LOQeagiDbM0lQeBcFljDsBGzInmsxmysZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777307869; c=relaxed/simple;
-	bh=1zPHfrVMHA7wFmNJXcsWLC8g9Pa6cpkdfSEI5HoBwl4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=AXjMX60kjdBWImnDF+Vy0Zi5PQYyoiHaBeUpO+ZvLHgaT16bfwELY7TIKSOlKBqH3ZRj3v/R8U6OXL+n33v+A1CZpZqFRZN+Y+qdc5xwzfw5SSm3P8rXkoIu6ZIMzFSqffnp561zm5fHHXYQiPgb0USxCdlM+1GZJgpsGTNSxGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wstXqnZA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F383CC19425;
-	Mon, 27 Apr 2026 16:37:48 +0000 (UTC)
+	s=arc-20240116; t=1777307899; c=relaxed/simple;
+	bh=J8q/nVGcKnX6SWJDqDiZOhRFOp3h2skGf01XmpFPBF8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=OL4QvXjNm5+DZIKHV92Sp65aYXywvuACwDgpDRQDAWwNcEkSgAcjEXKPcpSQTe7WrqfOo6wfsxuvtDdsMkXAQF5JQDlkjoEUvS9q0xd2c/Djyo7Uoejb2JkzszlTc3QzdxkOjLGxcXZb+QAEg3erBkrJe6gtJbGG0X4wUb0Febk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vXkxktWA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94D0DC19425;
+	Mon, 27 Apr 2026 16:38:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777307869;
-	bh=1zPHfrVMHA7wFmNJXcsWLC8g9Pa6cpkdfSEI5HoBwl4=;
+	s=korg; t=1777307898;
+	bh=J8q/nVGcKnX6SWJDqDiZOhRFOp3h2skGf01XmpFPBF8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=wstXqnZACSBf4SUDvelo8jXvHUclpqtdulivdYn6Xcv1DVPQsh+UA3Z6uf27cfdM9
-	 N+6PQEgsOjSwIcJgtO7koOkYEWaaAlm+nUiqAz/p+6l1N1X6r6c7awgZwsZOvwL0ed
-	 ON2gCJavzOfIB1wqYhYaHV9vUWahQ5Hkw9zN04Qk=
-Subject: FAILED: patch "[PATCH] drm/nouveau: fix u32 overflow in pushbuf reloc bounds check" failed to apply to 5.10-stable tree
-To: gregkh@linuxfoundation.org,airlied@gmail.com,dakr@kernel.org,lyude@redhat.com,maarten.lankhorst@linux.intel.com,mripard@kernel.org,simona@ffwll.ch,stable@kernel.org,tzimmermann@suse.de
+	b=vXkxktWAwskuzBW8iNAJlsyFmfFuSg0fD4UqvWGCKWEErgU9jmDEZmLU91uigb+cu
+	 Q7JTWB2MjeqiDKVYMoD99ieZJVqLpAdHy6X8YIROEkMNuRZTJCowY6xzZ0Nv8VvB20
+	 Pgxrc8WIPe0HxgLiacFLy6bErIfL/tv7MBHQLACA=
+Subject: FAILED: patch "[PATCH] leds: qcom-lpg: Check for array overflow when selecting the" failed to apply to 6.1-stable tree
+To: gregkh@linuxfoundation.org,lee@kernel.org,stable@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 27 Apr 2026 10:37:12 -0600
-Message-ID: <2026042712-extrovert-oblong-a615@gregkh>
+Date: Mon, 27 Apr 2026 10:37:42 -0600
+Message-ID: <2026042742-among-oil-412e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,53 +54,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9FAE2476839
+X-Rspamd-Queue-Id: 85AE8476847
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-241377-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-241378-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[linuxfoundation.org,gmail.com,kernel.org,redhat.com,linux.intel.com,ffwll.ch,suse.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,intel.com:email,gregkh:email,linuxfoundation.org:dkim,linuxfoundation.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,gregkh:email,msgid.link:url]
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 2fc87d37be1b730a149b035f9375fdb8cc5333a5
+git cherry-pick -x d45963a93c1495e9f1338fde91d0ebba8fd22474
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026042712-extrovert-oblong-a615@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026042742-among-oil-412e@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -112,48 +111,40 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 2fc87d37be1b730a149b035f9375fdb8cc5333a5 Mon Sep 17 00:00:00 2001
+From d45963a93c1495e9f1338fde91d0ebba8fd22474 Mon Sep 17 00:00:00 2001
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Date: Mon, 20 Apr 2026 21:16:09 +0200
-Subject: [PATCH] drm/nouveau: fix u32 overflow in pushbuf reloc bounds check
+Date: Thu, 19 Feb 2026 15:34:35 +0100
+Subject: [PATCH] leds: qcom-lpg: Check for array overflow when selecting the
+ high resolution
 
-nouveau_gem_pushbuf_reloc_apply() validates each relocation with
+When selecting the high resolution values from the array, FIELD_GET() is
+used to pull from a 3 bit register, yet the array being indexed has only
+5 values in it.  Odds are the hardware is sane, but just to be safe,
+properly check before just overflowing and reading random data and then
+setting up chip values based on that.
 
-    if (r->reloc_bo_offset + 4 > nvbo->bo.base.size)
-
-but reloc_bo_offset is __u32 (uapi/drm/nouveau_drm.h) and the integer
-literal 4 promotes to unsigned int, so the addition is performed in 32
-bits and wraps before the comparison against the size_t bo size.
-
-Cast to u64 so the addition happens in 64-bit arithmetic.
-
-Cc: Lyude Paul <lyude@redhat.com>
-Cc: Danilo Krummrich <dakr@kernel.org>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: David Airlie <airlied@gmail.com>
-Cc: Simona Vetter <simona@ffwll.ch>
-Reported-by: Anthropic
 Cc: stable <stable@kernel.org>
-Assisted-by: gkh_clanker_t1000
-Fixes: a1606a9596e5 ("drm/nouveau: new gem pushbuf interface, bump to 0.0.16")
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[ Add Fixes: tag. - Danilo ]
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Link: https://patch.msgid.link/2026021934-nearby-playroom-036b@gregkh
+Signed-off-by: Lee Jones <lee@kernel.org>
 
-diff --git a/drivers/gpu/drm/nouveau/nouveau_gem.c b/drivers/gpu/drm/nouveau/nouveau_gem.c
-index 82621ede42e1..20dba02d6175 100644
---- a/drivers/gpu/drm/nouveau/nouveau_gem.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_gem.c
-@@ -686,7 +686,7 @@ nouveau_gem_pushbuf_reloc_apply(struct nouveau_cli *cli,
- 		}
- 		nvbo = (void *)(unsigned long)bo[r->reloc_bo_index].user_priv;
+diff --git a/drivers/leds/rgb/leds-qcom-lpg.c b/drivers/leds/rgb/leds-qcom-lpg.c
+index 016bf468e094..f6061c47f863 100644
+--- a/drivers/leds/rgb/leds-qcom-lpg.c
++++ b/drivers/leds/rgb/leds-qcom-lpg.c
+@@ -1273,7 +1273,12 @@ static int lpg_pwm_get_state(struct pwm_chip *chip, struct pwm_device *pwm,
+ 		return ret;
  
--		if (unlikely(r->reloc_bo_offset + 4 >
-+		if (unlikely((u64)r->reloc_bo_offset + 4 >
- 			     nvbo->bo.base.size)) {
- 			NV_PRINTK(err, cli, "reloc outside of bo\n");
- 			ret = -EINVAL;
+ 	if (chan->subtype == LPG_SUBTYPE_HI_RES_PWM) {
+-		refclk = lpg_clk_rates_hi_res[FIELD_GET(PWM_CLK_SELECT_HI_RES_MASK, val)];
++		unsigned int clk_idx = FIELD_GET(PWM_CLK_SELECT_HI_RES_MASK, val);
++
++		if (clk_idx >= ARRAY_SIZE(lpg_clk_rates_hi_res))
++			return -EINVAL;
++
++		refclk = lpg_clk_rates_hi_res[clk_idx];
+ 		resolution = lpg_pwm_resolution_hi_res[FIELD_GET(PWM_SIZE_HI_RES_MASK, val)];
+ 	} else {
+ 		refclk = lpg_clk_rates[FIELD_GET(PWM_CLK_SELECT_MASK, val)];
 
 
