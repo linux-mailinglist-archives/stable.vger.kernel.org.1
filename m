@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-241379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241381-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AEuzKW2S72nRCwEAu9opvQ
-	(envelope-from <stable+bounces-241379-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 18:44:29 +0200
+	id GMS/J4SS72nRCwEAu9opvQ
+	(envelope-from <stable+bounces-241381-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 18:44:52 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14AB04769F7
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 18:44:28 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B8EA476A06
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 18:44:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AC1263040213
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 16:38:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C71D9305FC2A
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 16:38:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13BF33CF042;
-	Mon, 27 Apr 2026 16:38:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E370334D384;
+	Mon, 27 Apr 2026 16:38:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G/v0Od3Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JTvWmqxm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAC142C11E7
-	for <stable@vger.kernel.org>; Mon, 27 Apr 2026 16:38:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7A107083C
+	for <stable@vger.kernel.org>; Mon, 27 Apr 2026 16:38:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777307907; cv=none; b=PkGIgu4ysGdOR1wDPdnZPq7RJsulBm1twkmnvs6BV1snfgAXJ83KgLgSV549ZQ3Pi83zRtOIusdLyW9xb9A3MAIcnQagPSrWuP9TsNUdEGx22pXQSpGzpF+NYGZegp3RiX+/BkLnrH/sDCQn7OKddKYC5QaSwdG652UOGUENBGk=
+	t=1777307917; cv=none; b=f+TzwlSlnGruIw6C8/7tDGxY7qVULbckfP2BsuywDekZVfeF0FaKipIIgPESRrKA8j71133y4JEYfkCzKwwyAeAqLadk34E6Ni0TfL+goiG4CNynUB7Co5y57pTPYK5whfZhmsklBl0sZxKnZZ49JezJ9LNIfjjs8XWlIIWZMJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777307907; c=relaxed/simple;
-	bh=N/4yaUnkAdEOgO9YHe6ihWTyx1jPlKzAPp4vQLAflBU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=mNzWvYrDUs7LQTHlmJHOPnk1QW+TnL51rgo5Ax5ogU3JxOZ9V7nZy5wLkC1hhCBxaiMdO85HKES7kLSuwN3FPyjRaqXGDHv92dZAJCDCgP4uwLu0d17NVeTANHNjfZWbcY5E/5f0PN/uAYRafVNNGxKqfhDQR3CnHm2zLoHKGDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G/v0Od3Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70A39C19425;
-	Mon, 27 Apr 2026 16:38:27 +0000 (UTC)
+	s=arc-20240116; t=1777307917; c=relaxed/simple;
+	bh=CxPF4o5aluk1fliCqiWGcbncBxsIBbik1ellBafnLgA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=E1IU0OGwzXCBYB3wqN1Jj7C6MxKpkz+Y1d3iLiCQUXil47P3rFau4+ZY8ylnntN6MebBvIAfiNsNhDE3Rn6RR2y5rpVuVLHJxTeAMKaIysyy/szWXvnFI5X6mb+m2aRYsXm1FHw45QGzjR1fXB8f+Y38HpLeRWC0qk3ps3bDcic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JTvWmqxm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27C78C19425;
+	Mon, 27 Apr 2026 16:38:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1777307907;
-	bh=N/4yaUnkAdEOgO9YHe6ihWTyx1jPlKzAPp4vQLAflBU=;
+	s=korg; t=1777307917;
+	bh=CxPF4o5aluk1fliCqiWGcbncBxsIBbik1ellBafnLgA=;
 	h=Subject:To:Cc:From:Date:From;
-	b=G/v0Od3ZQILZyODxN/EISbZU16mV5XGJq5JVEN4YNKIF/UOOhVwlIMaj+FXO3ZJyx
-	 H/40zN/e9ypVwfx7sQUQgq1gw7pGL3J0O034JLIU48+AuXIslydkMRvDoOvEnd4a/P
-	 s1t3h2P0d3d+hoy5R1zexDCz7GmHtMup/UdZ/Md8=
-Subject: FAILED: patch "[PATCH] leds: qcom-lpg: Check for array overflow when selecting the" failed to apply to 5.10-stable tree
-To: gregkh@linuxfoundation.org,lee@kernel.org,stable@kernel.org
+	b=JTvWmqxmRYLhLTr29ZNqllmcvRztjc2sp4rMYjWoR5kFTuajRPKdCVUwntNYKsItA
+	 Mv5xmrUObZ5Vw7Bn7qIQ0ANxRNnD49nqgZ+/N8vYZ3Qn5FSYg0HUhby9BdRoV6/CsC
+	 UjdNPtjU5KBdRAdSbJmJW7sP5LrhiUr4lP+epD+0=
+Subject: FAILED: patch "[PATCH] mei: me: add nova lake point H DID" failed to apply to 7.0-stable tree
+To: alexander.usyskin@intel.com,gregkh@linuxfoundation.org,stable@kernel.org,tomasw@gmail.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 27 Apr 2026 10:37:43 -0600
-Message-ID: <2026042743-buckwheat-moaning-6e61@gregkh>
+Date: Mon, 27 Apr 2026 10:38:01 -0600
+Message-ID: <2026042701-alumni-disfigure-b344@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,7 +54,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 14AB04769F7
+X-Rspamd-Queue-Id: 0B8EA476A06
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [2.34 / 15.00];
@@ -62,44 +62,45 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-241379-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-241381-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[intel.com,linuxfoundation.org,kernel.org,gmail.com];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,gregkh:email]
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gregkh:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email]
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 7.0-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-7.0.y
 git checkout FETCH_HEAD
-git cherry-pick -x d45963a93c1495e9f1338fde91d0ebba8fd22474
+git cherry-pick -x a5a1804332afc7035d5c5b880548262e81d796bc
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026042743-buckwheat-moaning-6e61@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026042701-alumni-disfigure-b344@gregkh' --subject-prefix 'PATCH 7.0.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,40 +112,43 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From d45963a93c1495e9f1338fde91d0ebba8fd22474 Mon Sep 17 00:00:00 2001
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Date: Thu, 19 Feb 2026 15:34:35 +0100
-Subject: [PATCH] leds: qcom-lpg: Check for array overflow when selecting the
- high resolution
+From a5a1804332afc7035d5c5b880548262e81d796bc Mon Sep 17 00:00:00 2001
+From: Alexander Usyskin <alexander.usyskin@intel.com>
+Date: Sun, 5 Apr 2026 17:17:58 +0300
+Subject: [PATCH] mei: me: add nova lake point H DID
 
-When selecting the high resolution values from the array, FIELD_GET() is
-used to pull from a 3 bit register, yet the array being indexed has only
-5 values in it.  Odds are the hardware is sane, but just to be safe,
-properly check before just overflowing and reading random data and then
-setting up chip values based on that.
+Add Nova Lake H device id.
 
 Cc: stable <stable@kernel.org>
+Co-developed-by: Tomas Winkler <tomasw@gmail.com>
+Signed-off-by: Tomas Winkler <tomasw@gmail.com>
+Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
+Link: https://patch.msgid.link/20260405141758.1634556-1-alexander.usyskin@intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://patch.msgid.link/2026021934-nearby-playroom-036b@gregkh
-Signed-off-by: Lee Jones <lee@kernel.org>
 
-diff --git a/drivers/leds/rgb/leds-qcom-lpg.c b/drivers/leds/rgb/leds-qcom-lpg.c
-index 016bf468e094..f6061c47f863 100644
---- a/drivers/leds/rgb/leds-qcom-lpg.c
-+++ b/drivers/leds/rgb/leds-qcom-lpg.c
-@@ -1273,7 +1273,12 @@ static int lpg_pwm_get_state(struct pwm_chip *chip, struct pwm_device *pwm,
- 		return ret;
+diff --git a/drivers/misc/mei/hw-me-regs.h b/drivers/misc/mei/hw-me-regs.h
+index 9b1675f98404..f145e8e36cb3 100644
+--- a/drivers/misc/mei/hw-me-regs.h
++++ b/drivers/misc/mei/hw-me-regs.h
+@@ -123,6 +123,7 @@
+ #define PCI_DEVICE_ID_INTEL_MEI_WCL_P      0x4D70  /* Wildcat Lake P */
  
- 	if (chan->subtype == LPG_SUBTYPE_HI_RES_PWM) {
--		refclk = lpg_clk_rates_hi_res[FIELD_GET(PWM_CLK_SELECT_HI_RES_MASK, val)];
-+		unsigned int clk_idx = FIELD_GET(PWM_CLK_SELECT_HI_RES_MASK, val);
-+
-+		if (clk_idx >= ARRAY_SIZE(lpg_clk_rates_hi_res))
-+			return -EINVAL;
-+
-+		refclk = lpg_clk_rates_hi_res[clk_idx];
- 		resolution = lpg_pwm_resolution_hi_res[FIELD_GET(PWM_SIZE_HI_RES_MASK, val)];
- 	} else {
- 		refclk = lpg_clk_rates[FIELD_GET(PWM_CLK_SELECT_MASK, val)];
+ #define PCI_DEVICE_ID_INTEL_MEI_NVL_S      0x6E68  /* Nova Lake Point S */
++#define PCI_DEVICE_ID_INTEL_MEI_NVL_H      0xD370  /* Nova Lake Point H */
+ 
+ #define PCI_DEVICE_ID_INTEL_MEI_CRI        0x6766  /* Crescent Island */
+ 
+diff --git a/drivers/misc/mei/pci-me.c b/drivers/misc/mei/pci-me.c
+index 8d16bfa6027c..9efeafa8f1ca 100644
+--- a/drivers/misc/mei/pci-me.c
++++ b/drivers/misc/mei/pci-me.c
+@@ -131,6 +131,7 @@ static const struct pci_device_id mei_me_pci_tbl[] = {
+ 	{PCI_DEVICE_DATA(INTEL, MEI_WCL_P, MEI_ME_PCH15_CFG)},
+ 
+ 	{PCI_DEVICE_DATA(INTEL, MEI_NVL_S, MEI_ME_PCH15_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_NVL_H, MEI_ME_PCH15_CFG)},
+ 
+ 	/* required last entry */
+ 	{0, }
 
 
