@@ -1,254 +1,159 @@
-Return-Path: <stable+bounces-241223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241224-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oFKMDUIF72ma3wAAu9opvQ
-	(envelope-from <stable+bounces-241223-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 08:42:10 +0200
+	id oKHfOE0G72lJ4AAAu9opvQ
+	(envelope-from <stable+bounces-241224-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 08:46:37 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A16DD46DB98
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 08:42:09 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBCA346DD0E
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 08:46:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C05E3303B7C2
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 06:36:15 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 786F4300C3A4
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 06:44:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEDA7384256;
-	Mon, 27 Apr 2026 06:36:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F18E381AEC;
+	Mon, 27 Apr 2026 06:44:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DCrrnBGQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gni7PRbn"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0722D3815E7
-	for <stable@vger.kernel.org>; Mon, 27 Apr 2026 06:36:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC96024676D;
+	Mon, 27 Apr 2026 06:44:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777271763; cv=none; b=LDWZQxwSE0Tdm8Q1z4M/+B56momNPVWJXZetzRYoqbwGk6xXDq8Bmublbu+ylcrDEyiAa0Bb5K7E2vqi1oJez+Ay3UauKHnQDGzPIlhEEcCfbbcDl0BVjK6nVR2zMGYseIqPcjyVLCzUBaOU4SM0BKufVKXakPDXcH+KX45/dsE=
+	t=1777272283; cv=none; b=rpvzhCjgFg1HPO9zJZuzXeTNcwu+6B2ujzYiQ8lx/s5ypKgnuBaTq7J4cpk8MtHB7z03tWguqPH2fVLhp22yHM8rR8eCh/9EJ0LuBhtoa5OgTJRjKQqAWzQcxk00tl41xMqd/7Md4g+V5x+K8JLc5yYfXZelECOVJht9EAEmXoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777271763; c=relaxed/simple;
-	bh=DoIRs2ewmXmKoxeu+LwDciZNxgzLEyxBy3ROzfHrEhM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kU6AERuDAuo4pcjnRmeoLN45DY6BvZ3JMbGid0k/jIAWRpB7vBLMeVYfLjH0TW6L4yN6EMeavI8XuPoBogIvOpaPRE2f+p9gJ/aik+M+TdAPWFEU6TfNM15JI8nB7b1Fjs5MYaF4tvS4QB7eWllFQ6m6Zw6DbYaAwq0HApDKifY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DCrrnBGQ; arc=none smtp.client-ip=209.85.167.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-5a402dea4a5so9872585e87.2
-        for <stable@vger.kernel.org>; Sun, 26 Apr 2026 23:36:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777271760; x=1777876560; darn=vger.kernel.org;
-        h=mime-version:references:in-reply-to:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ob6hAxn4b2XJbstB2WIYNRqhZDHJqLJB6rp2bFlZgjg=;
-        b=DCrrnBGQZlmqii1jcrhEBQ1AmWiOgMsjDskG4yKdb2+p+TAnpVP8TVJiiOsmdOxZoS
-         VczEHy7xxhZdiUlTZkzGMEkTL7cRbEtGaQadNzn6OozG9k//Ps5xdf51qYxcqOJx717t
-         /q96bkCHL7QdLBwBTnXrJ0Xhn5dXs7tqSMLj2DJIiuUExhwYXVc/1c0UicaJNqXn3gqC
-         yQAhtSWv2spmp4R1o+pOsSAuTV4RuFAXhBehFc/Uai6twFt4msZvXoFFfS5E0lasjksw
-         4eQUHVvIswPgzTdyyWGiNRCWcz08erDSqJbnP0qs2zI53ag1ftceIJmPMnpfuizk8jbc
-         IA9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777271760; x=1777876560;
-        h=mime-version:references:in-reply-to:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Ob6hAxn4b2XJbstB2WIYNRqhZDHJqLJB6rp2bFlZgjg=;
-        b=OVpcH7JoWcmvx+o/REDE/aHjmLcszQLpTWH8rR3GHxr4W/6+cFpr+2M8kYCw18KYIJ
-         +VBdZy9aqt6yenYRXilo0BfYb2LxGXmvGP65kjlr5Bv8at9RCEZHHFYa5zgvq7lcRQ01
-         r5J4mH0a5ZG4tmn0aTJYRmlkbgV1VBzTlmVjOsBkRhvi8KDv6C5x4icHse0g4ohBEWwK
-         D3uursv1frI+LGs4Si0x9XTparVCHSwZfYSCpyunZVInvpoRtBS6eqK8dXbkM9ISdD4H
-         M1VMN7TCl13+b2UJ87WlkNIwP+Of/7P03EhXx8eXRtMOAMMowuuR64g8YB7leg1IC4P8
-         sK+w==
-X-Forwarded-Encrypted: i=1; AFNElJ8IgcLd9noYwqhAcBy0XmhepNaNnare6Ji6OiuSZBvr8MR6RlMngNK7fUXYXbS3+To6CoqAD74=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyjRYrcyX2AcpJa+v3JII/hWwpHuet/r8fY8CVw2xwYpJKcLJpH
-	Sau40JA65c4TTqNAbhuYGLwyqqJegBC/FUHaq1PExLzXU1/yJUQYuisR
-X-Gm-Gg: AeBDietDoGVVsK0hw7PLqlku7gu1b0LSofRqJbNVwPDILpKe7kdU9SLaojBntN85DZZ
-	vD+XwNc8nTL1bJjZjFOr3s0ZvFvSQbi0Q6LuBV1N9k2psxKHfZvzfstOO6T0ziM3FU/DNvwXnjW
-	JFawXSYH9C7RGCEdzQ/hxeDbhQcaea0lFLMAEX2L0xEgAIh/WH5aWyy2wNkgVCEdvU4Qw14sgtL
-	6/Hib7hdr+o6sGN3He1yZKrGq3Te7KvTdJCknG881xoAhfZbN7T/o6iHX2+G44w8GfIhHFOTarH
-	aT2/MefU5lTDx46PB0ja5FSA+Xh7gmNokeWj3H5ubScNeWFmhmTwOJGv7VS2xPNkWjxiv9pgHWb
-	ilb6Lm9qBFnkMcP+CgCX3rXpZ1H8u7SoZwR9nO1x6bzFLfpjnWlbebA+tj5gbPX+toHxB2Bjp+y
-	VeE/rFciGa1hQjHbmFopl05WStkqpmdfQc5qb5e/w28kI=
-X-Received: by 2002:a05:6512:3ca9:b0:5a1:3437:84ac with SMTP id 2adb3069b0e04-5a4172ee6b9mr13124133e87.31.1777271759755;
-        Sun, 26 Apr 2026 23:35:59 -0700 (PDT)
-Received: from foxbook (bfh75.neoplus.adsl.tpnet.pl. [83.28.45.75])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-38ecb5f652asm64457991fa.12.2026.04.26.23.35.57
-        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
-        Sun, 26 Apr 2026 23:35:58 -0700 (PDT)
-Date: Mon, 27 Apr 2026 08:35:53 +0200
-From: Michal Pecio <michal.pecio@gmail.com>
-To: Jeffrey Hein <jp@jphein.com>
-Cc: Mathias Nyman <mathias.nyman@linux.intel.com>, Ricardo Ribalda
- <ribalda@chromium.org>, Alan Stern <stern@rowland.harvard.edu>, Laurent
- Pinchart <laurent.pinchart@ideasonboard.com>, Hans de Goede
- <hansg@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linux-media@vger.kernel.org, linux-usb@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH v5 2/3] media: uvcvideo: add UVC_QUIRK_CTRL_THROTTLE for
- fragile firmware
-Message-ID: <20260427083553.36ff4731.michal.pecio@gmail.com>
-In-Reply-To: <20260413100545.71796c66.michal.pecio@gmail.com>
-References: <20260331003806.212565-1-jp@jphein.com>
-	<20260331003806.212565-3-jp@jphein.com>
-	<CANiDSCvsxP+npQTHUrMTp+Z8XULYKSLTz2AFu+WQnsLbRBGa2w@mail.gmail.com>
-	<20260409100247.7cfb62d1.michal.pecio@gmail.com>
-	<20260409221749.5e6bccab.michal.pecio@gmail.com>
-	<c4275422-a9b4-4519-95f9-1163a7912709@linux.intel.com>
-	<CAD5VvzCEV_XbHc_Gby7mFPBSgSebqKDKJf3VC8HNRrD+xWaTJg@mail.gmail.com>
-	<20260413100545.71796c66.michal.pecio@gmail.com>
+	s=arc-20240116; t=1777272283; c=relaxed/simple;
+	bh=DSG6jbCu4oeRHDhh05kVDO3v1KJAR3GMyHcDQRH5gvw=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=KTvsH8LjXxYg7ucnKEthgCKvuy8bnuUJujlVO8ZIJn/yqGPMLfljiuQ8Y08Ef5sSRqNtBuOTJjfKYkeJoUfv6KHFVsID6IeYu41Kc0b8K6cxb0bGYEaqiHzJ1WvrFJS79iiTyp0tCIKJTl5JM8lQjYdqQO5ZgGld9XYS4vyFapI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gni7PRbn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 6C7F4C2BCB9;
+	Mon, 27 Apr 2026 06:44:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777272283;
+	bh=DSG6jbCu4oeRHDhh05kVDO3v1KJAR3GMyHcDQRH5gvw=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=Gni7PRbnqA8Ioxm1MRLgGSynxxZ3K4dMSGp1jMsYwFlVhd7EOWLtY4CqYanWEzzAF
+	 goSvoh4mdcgdvWMnGJ63vs300p1ZmcNuSTK2DWOniepmOSDmYivc1SsNWh0pWMy2Ry
+	 L36xaYLNqUMvXYyGPFIZ1x4vSTVcygi7BW4hY2QRib1E47s3ye8cthu1T+9f4bM8HD
+	 oqC4DQafcZI3Z+xL7Ayo25Iq5EoL1PwsqYiy0h0aIDXH5/JmCPNwLHbaG4TUhxA9hC
+	 NJVLYYci5pNZXCrp0h3IL7cpT8C4Fp0nTbOlfTSzQ2/FqaQlLwxt03TBXJCHF+ZQnG
+	 26lM5zyRzB52w==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5A8DDFF8865;
+	Mon, 27 Apr 2026 06:44:43 +0000 (UTC)
+From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
+Subject: [PATCH 0/2] ath10k: Enable a devicetree quirk to skip host cap QMI
+ requests
+Date: Mon, 27 Apr 2026 08:44:40 +0200
+Message-Id: <20260427-b4-skip-host-cam-qmi-req-fixup-v1-0-4398e94bde70@ixit.cz>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="MP_/.OkknVOR4gOuo.3Taa06e1K"
-X-Rspamd-Queue-Id: A16DD46DB98
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANgF72kC/x2NwQqDQAwFf0Vy7gMNKthfkR50zWoo6rpREcR/7
+ 9LjMDBzk0lUMXpnN0U51XRdEhSvjNzULaNAh8TEOdd5yYy+hH01YFpth+tmbLMiygav1xHQCw+
+ Vd7WvXEMpEqIk8R+0n+f5AUsdjQ1wAAAA
+X-Change-ID: 20260422-b4-skip-host-cam-qmi-req-fixup-be2d5fc6f5c9
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Amit Pundir <amit.pundir@linaro.org>, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
+ Paul Sajna <sajattack@postmarketos.org>
+Cc: Konrad Dybcio <konradybcio@gmail.com>, linux-arm-msm@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ phone-devel@vger.kernel.org, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
+ David Heidelberg <david@ixit.cz>, stable@vger.kernel.org
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=877; i=david@ixit.cz;
+ h=from:subject:message-id;
+ bh=DSG6jbCu4oeRHDhh05kVDO3v1KJAR3GMyHcDQRH5gvw=;
+ b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBp7wXZB2djAp33JI6nOSwBeBA6nayuUvr0YUotS
+ dYAt6ilGyuJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCae8F2QAKCRBgAj/E00kg
+ cjSUEACYqu4zoysbcjYYSgzNDznlJQxcA5/D6k3YKGrAAQ7qqWSkU987WruefjVuIMMBXAhrHJ9
+ HyHUbsWo8BWUUDRD+oGWykaH2PozeNKWrKRIKmT18VOidbolJUizz1Wy6+3PQY4sXcCUQr4+Jzm
+ 1zWhjFhl2pCNJWCDUk9uWe9tvEmBJyK07ympJCJZgezOXdbEVKtKv1FNOfKXtzQOw+GWjwq5/yZ
+ gqaXUw/nPHefcq3XCw7C80qiMTEw2VJpi9zJ8aQ7emU1dP+7YLWFu4uhrwTizmP1BK+U4dnpG/s
+ lpok6X0P/IP8blfXw2htcRQZFO6WDW73n2+9gs90nG1AwuBr2rWUG0pbBEsyY/rknBWOpFwNQ9S
+ OrQpJF3Z5cubSsEUWX+ksD5Gok6hf74wlPq3yw1ONSIdxeDudBh4YBespv9dtSluAXt0VVtU6rE
+ QzcR30tMj9b3WPnqoOsE79oClxuLR0i7JJMKihswfYKOuS7K4wtOD4D6JAk0FOwsgn5Y9WWMgXu
+ WJKN1OFTNgQlWJFuFegdMCMJ02lyegSRklJKnHyCjn+8tmZrF8DS+uOvgm+qRuchaz14PPNtceO
+ JOVfa5titOPR3zIhfNmHMaOR23cnOtSCIrDvaLxx45ihj3r3RZz17MotvX2Jon3mMczkuu6nOS2
+ 7D+cVZwoAGSYmqQ==
+X-Developer-Key: i=david@ixit.cz; a=openpgp;
+ fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
+X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
+X-Original-From: David Heidelberg <david@ixit.cz>
+Reply-To: david@ixit.cz
+X-Rspamd-Queue-Id: EBCA346DD0E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.56 / 15.00];
-	MIME_BAD_ATTACHMENT(1.60)[c:text/x-c++src];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[multipart/mixed,text/plain,text/x-c++src];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	HAS_ATTACHMENT(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241223-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+,1:+,2:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-241224-lists,stable=lfdr.de,david.ixit.cz];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,oss.qualcomm.com,ixit.cz];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[michalpecio@gmail.com,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,stable@vger.kernel.org];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable,dt];
+	HAS_REPLYTO(0.00)[david@ixit.cz];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ixit.cz:email,ixit.cz:replyto,ixit.cz:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 
---MP_/.OkknVOR4gOuo.3Taa06e1K
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Content-Disposition: inline
+This quirk is used so far used on:
+- LG G7 ThinQ
+- LG V35 ThinQ
+- Xiaomi Poco F1
 
-On Mon, 13 Apr 2026 10:05:45 +0200, Michal Pecio wrote:
-> Question: can you kill it by starting some video application to set
-> the camera up, closing it and then running this loop?
-> 
-> while :; do v4l2-ctl -d /dev/video0 --stream-mmap --stream-count=1; done
+The quirk was accepted into the kernel, but the device-tree part was omitted.
+We need apply the fix to the device-trees, so the affected devices will use
+the quirk and WiFi works.
 
-Hi again,
+Signed-off-by: David Heidelberg <david@ixit.cz>
+---
+Amit Pundir (1):
+      arm64: dts: qcom: sdm845-xiaomi-beryllium: Enable ath10k host-cap skip quirk
 
-Any chance you could try it? And also the attached test program:
+Paul Sajna (1):
+      arm64: dts: qcom: sdm845-lg: Enable qcom,snoc-host-cap-skip-quirk
 
-cc -lusb-1.0 hammerint.c -o hammerint
-sudo ./hammerint 1532 0e05 0 85
+ arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi               | 2 ++
+ arch/arm64/boot/dts/qcom/sdm845-xiaomi-beryllium-common.dtsi | 1 +
+ 2 files changed, 3 insertions(+)
+---
+base-commit: 254f49634ee16a731174d2ae34bc50bd5f45e731
+change-id: 20260422-b4-skip-host-cam-qmi-req-fixup-be2d5fc6f5c9
 
-Initial arguments are VID:PID of the device, next is the number of
-an interface containing some interrupt endpoint and then the endpoint
-address (including 8_ if IN).
+Best regards,
+-- 
+David Heidelberg <david@ixit.cz>
 
-I tried with a variety of SuperSpeed devices (UVC, NICs, hubs) and this
-reliably breaks ASMedia HCs within seconds. If the same is the case on
-Intel then it's a bigger problem than just UVC.
 
-The video streaming loop breaks even more controllers. I have some
-general idea how the streaming case could be dealt with, but not so
-much the interrupt one. Maybe rate limiting. I found that avoiding
-Set TR Dequeue to Link TRBs reduces failure rate, but not to zero.
-
-Long ago I also looked at the issued command sequences and I haven't
-noticed obvious errors or spec violations. Looks like a HW bug.
-
-Regards,
-Michal
-
---MP_/.OkknVOR4gOuo.3Taa06e1K
-Content-Type: text/x-c++src
-Content-Transfer-Encoding: 7bit
-Content-Disposition: attachment; filename=hammerint.c
-
-#include <stdio.h>
-#include <stdlib.h>
-
-#include <libusb-1.0/libusb.h>
-
-void comp(struct libusb_transfer *t) {
-	char c = t->status == LIBUSB_TRANSFER_CANCELLED ? '.' :
-		t->status == LIBUSB_TRANSFER_COMPLETED ? ',' : '-';
-	fputc(c, stdout);
-	fflush(stdout);
-}
-
-int hammer(int vid, int pid, int ifc, int ep) {
-	struct libusb_device_handle *d;
-	struct libusb_transfer *t;
-	char bufi[1024] = {0};
-	char bufc[2];
-	int r;
-
-	r = libusb_init(NULL);
-	t = libusb_alloc_transfer(0);
-	if (r || !t)
-		return 1;
-
-	d = libusb_open_device_with_vid_pid(NULL, vid, pid);
-	if (!d)
-		return 2;
-
-	libusb_detach_kernel_driver(d, ifc);
-	r = libusb_claim_interface(d, ifc);
-	if (r)
-		return 3;
-
-	libusb_fill_interrupt_transfer(t, d, ep, bufi, sizeof(bufi), comp, NULL, 0);
-
-	for (;;) {
-		/* GET_STATUS(DEVICE) */
-		r = libusb_control_transfer(d, 0x80, 0, 0, 0, bufc, sizeof(bufc), 100);
-		if (r != sizeof(bufc))
-			return 4;
-
-		r = libusb_submit_transfer(t);
-		if (r)
-			return 5;
-		r = libusb_cancel_transfer(t);
-		if (r)
-			return 6;
-		r = libusb_handle_events(NULL);
-		if (r)
-			return 7;
-	}
-}
-
-int main (int argc, char **argv) {
-	int vid, pid, ifc, ep;
-	int r;
-
-	if (argc != 5) {
-		fprintf(stderr, "USAGE: %s vid pid ifc ep\n", argv[0]);
-		return 1;
-	}
-
-	vid = strtol(argv[1], NULL, 16);
-	pid = strtol(argv[2], NULL, 16);
-	ifc = strtol(argv[3], NULL, 16);
-	ep = strtol(argv[4], NULL, 16);
-
-	r = hammer(vid, pid, ifc, ep);
-	printf("%d\n", r);
-}
-
---MP_/.OkknVOR4gOuo.3Taa06e1K--
 
