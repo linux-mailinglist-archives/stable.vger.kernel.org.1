@@ -1,79 +1,79 @@
-Return-Path: <stable+bounces-241417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241418-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EMsSMMaZ72npDAEAu9opvQ
-	(envelope-from <stable+bounces-241417-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 19:15:50 +0200
+	id mIrIFNma72kbDQEAu9opvQ
+	(envelope-from <stable+bounces-241418-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 19:20:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6876F476F0D
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 19:15:50 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE4CF477423
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 19:20:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 13BD5301A7FD
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 17:15:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D458F309E285
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 17:17:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 365A33E3153;
-	Mon, 27 Apr 2026 17:15:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4C323E3155;
+	Mon, 27 Apr 2026 17:17:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="cjL8LXDD"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="DzuisDdp"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
+Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FA703E2776
-	for <stable@vger.kernel.org>; Mon, 27 Apr 2026 17:15:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A39C63E3C4E
+	for <stable@vger.kernel.org>; Mon, 27 Apr 2026 17:17:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777310144; cv=none; b=VFMKfRY77b/xsWPIbSs/9HHfrDHkEVKoI5NuXnp0dH1hBvZx0ST4D36lBP/JMj36UPdT6DpTjqvyhqX0Wz0tdVxP1+AeyK5ACnHosSoghotDVPOHmmWsq1csM/keETNhtAg58ETSMxY7OhovGzsk+z8cPU+gloEt+xHVr5sgJUE=
+	t=1777310235; cv=none; b=ldvapAcd1fOkyZNAH5eJ5Ymm6mekMb6Jc8CL4tdwbuLYmLH5FEwZgwIwJbSODlTEwQK+LYhVovSR1lgK+WsafRGG7WciFdKuiJn891OAfJBXLOiXWOImiy4o4tU2Db6En7yHBQ/BUFHYRu76T9y5z9I1L4Ax0tpCzoU63NTTY7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777310144; c=relaxed/simple;
-	bh=j94Sp88wr64RGPjPbs3uAClOhnCjPRRZ99ojrTz95p8=;
+	s=arc-20240116; t=1777310235; c=relaxed/simple;
+	bh=5iofg6BiBerw4YzLBYZg1crYwJrVbXaLylHryjB9P2M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tRELfxfh/UTo94cNPm8JN1P8Xi6bIMS5LOADRySwajTdni7e5zwzJ8z09NHO8IPDeND+ZGr9beaxITu/Q9jTwHA0MuVqAF4i3UEIXrykbPJ/qxIXBbdq7PnUNIbcB4IeK1QD2prJvmIYD4nGr/N/6TxpYVx5309hMZlxV8unfM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=cjL8LXDD; arc=none smtp.client-ip=74.125.82.41
+	 MIME-Version; b=GXuC4byaSb/dUalUuBszVs0mt7Vuut8UgQBaNRycd50Lkldd4uoduXYS2eCPbkS+LbO7pYL16jYx8yBHdNOyb3FhtIUc8be0Sf+l0hwabT8EwQr4WmOKWUHhtg9agJKdtTiUBFRUD33mDPDRsQcJtTkpy94ZwYkWSvpSDe9rG2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=DzuisDdp; arc=none smtp.client-ip=74.125.82.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-12c637089ccso1277651c88.1
-        for <stable@vger.kernel.org>; Mon, 27 Apr 2026 10:15:42 -0700 (PDT)
+Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-2d891442388so19240076eec.0
+        for <stable@vger.kernel.org>; Mon, 27 Apr 2026 10:17:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1777310141; x=1777914941; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1777310232; x=1777915032; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=1DWQJyz5+CC9eucJLahLMGXJL/P0B4vhuS9EqNEho/s=;
-        b=cjL8LXDDzCqu1GE7mrGBkB4tRUsK55W/8Qvr8BZ+KF80t3vTcxxYIuRDuktZsMFj24
-         P+vpjrsdjhZXgYZLgdgOMHgychAjh0tIy01Fe/oaNEMrxyWAS0vydttpFpi7qWCEvBmp
-         O5U74XRxY5EwsC3Gy1UlhTmIQDB4khm19UIbw=
+        bh=1/dyHluDEdWWUMrNbZvpFAaF6IyD8Biihb2PWsOxHWs=;
+        b=DzuisDdpBTjiX3haYe5G+FctHNW4ZMZI+4+Xa+gAktstVCSdt39K8IV5WOizp85PE8
+         xeQ7M0OTpsgspiIzsrbVVIUSp5FSuNJEFOszy+z3qg8kDA+AIitC74io5o3jdhKXhM0Z
+         MAvJLYV10hhfJEt2kDMh2ShsfZZnVaMEJpvA4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777310141; x=1777914941;
+        d=1e100.net; s=20251104; t=1777310232; x=1777915032;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=1DWQJyz5+CC9eucJLahLMGXJL/P0B4vhuS9EqNEho/s=;
-        b=VY9hSHHZ1gfiJY01YmBriGHQgOYMd9TyhrhYmjue8B3Gs62BWuFRdX3Q1iFbsaDe24
-         +0Icsf9KfGuCgD33hC+MNCf9ersUAGigHczQXhD88zwicSoO1RhUaBbpWPb9TaT1bk06
-         fTQG7ThypRQUuF75cSJ9QRcTYB7JZpreXmrL92Yxs402Rnk1XeZtWJgQZzhowsImNV6E
-         b7MdhPScpFbYdDFZiIukzbYGIzeJyVHJDgjL70feJoYShc4CyJUSZpsIOoizzUzZcVLP
-         1VHp8dw3f/IuglwpPTaqeTL5Mawb4gvSd+g4G/0kikEoA2g0i4sIh56j3oropW2/GDlq
-         Q+PQ==
-X-Gm-Message-State: AOJu0YwCW0hCw1vTVyZbfLS3R5WkfnAAjuYkAbIMUZR8TRnRbzs6eCrr
-	E9UjlS0kdtXFytgfS44FV/jBYOHdZRycwMXjWgXy6BQBKV6SYbTDZrQgiwKIHx/i/AGQXuisvcR
-	8sNg=
-X-Gm-Gg: AeBDievy98SMfWzFBa4ao05tZUE1raizzoM04ibPl3q5Q+JhIbVhnJnyBbGn0NZyJxp
-	BWK74ELZl9aFyCtdOtQ8GnJNlOGWagPeu1U7cXYxtxty2OykHPvlIZ1lDnyTnZM49ZYHYKTVR7Z
-	ETle4JAk+KhrAmhIebZKr2jnfJg4kXsH9DLt4kDWxIpgDgL2Srod/6nO5C6aWyUat3egaifg1Fz
-	9pwmfHFJ4g/qvG/USUMfZ/UOsoH20hI6ZoObxLzMy9IdCKKRZ8oG7XSceci59JzksYntn+IMpfU
-	XdRvG+Ec6m1bWx+K8mXO61BtWwYpFLmrTmRXvuvUCio5bXZ7rnOuVjH63uD2YdS53HusjMDTkF2
-	yEWPSjG/uVcFbHUS85OQrRvb8oh0TPKpQBt8FWx2u1qoi5QDOOFCppComVfy+1YRb9C5imgBKwp
-	2sr+eAWfzf4nAhGeL9jmTpNwE8UZ0nhwneGsH/rFNk4EoLCIB368Ccal4LrvoLoJ+Aszzth6DuZ
-	cMDlbVZFOX40XGNFY3row==
-X-Received: by 2002:a05:7022:382:b0:11a:4016:44a5 with SMTP id a92af1059eb24-12ddd54abadmr76264c88.24.1777310141401;
-        Mon, 27 Apr 2026 10:15:41 -0700 (PDT)
+        bh=1/dyHluDEdWWUMrNbZvpFAaF6IyD8Biihb2PWsOxHWs=;
+        b=DjbgJJwkcj2Xk5Ia/3PJ/CujloB09WCqJoktKFLl43TpiK4XBbWXxBUjEvU2hEsxBR
+         rhmoXL8d7931Pmm8AuYXr3dT6VSfTRYMbGyJ9w+WeD1/x2L67Fm6SoHat6VpXjRpH9C3
+         ReHP9vN+bMyVUGIeAgFwxlpoeW5bQDkMbBDeRgq8gp4lXmnFrvQYDs8PmTLmhTwrjPwr
+         D3wZGALSROncoikpubqnGiMjhzPiTPqzx//A6vysUWsiGrJCScm5dXbGMrhDFXk7Z1DL
+         O1RE+4TR1cQH9jgZLc8meaB+lZIFDj8wL4Bk5j1mt1x5bc/tP6h7O2pSG18EPkrgMFTJ
+         sg4Q==
+X-Gm-Message-State: AOJu0YyzsoOHgDXz/K639r16lAM8UPigFKBzDOiHvotxWAKSpNqWDhlz
+	WeFlFtECr7QXONB4LZIrQfG9IziGgs9F6apC2fVllRuVFr6W+QHN+c9guVRTG8+QRhPwzqEt1Y6
+	zVmg=
+X-Gm-Gg: AeBDiesgQPsg4CFVXOASAvmeJ7vOWgiYMcnpLxQnDB6hQkvO8ZWho56861OSVx14c0i
+	rc05WJQcYvCaMVjootpcXLYugmniQlXg/Z0s0Wgib+LpTXpu1d+p9JH6PMw1jtK1LRHrAF+Ase1
+	HNxc/Yhn2c/ANd8OwDC63oQ3zY8rdD5qt4XxiGeLTB/S8L0q+Oy+T3f+xPG2f4ahXS6jOcoBylZ
+	IXJN5hs5+p1gr7nS3MU6cAIiSnKoGBqm5S+7Vd71zC8nabuBDLtET2ILsr7CwIujtRUqSvKQN1X
+	n4GsV/VWjiAYI+GA5vCvWrVPHYu+s22PgqSIDmd86f2qOlGP4+5det77dT2gK3xBdFcx2e9JLzP
+	lJ+9JdOGPNKM9JfclzUsots83Yf8SIeW8k2wvpTF7SQa07a2ScLPRbibsuSrFkoXuOp68TAZrkt
+	QSsXzKblGk4tHfQbcrMDlIPeXO194eVDepyMLkVLqiK1zbdeSHfiWEYst5aP6wzizO7DfzCXY7F
+	2RXRiUZJne/S6KRLC1cbw==
+X-Received: by 2002:a05:7301:1291:b0:2ea:5057:a333 with SMTP id 5a478bee46e88-2ea5057b8dfmr16811433eec.15.1777310231759;
+        Mon, 27 Apr 2026 10:17:11 -0700 (PDT)
 Received: from dianders.sjc.corp.google.com ([2a00:79e0:2e7c:8:389e:b840:2892:97c2])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12dbe78e12fsm24622271c88.15.2026.04.27.10.15.39
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2e53a4a7ff1sm43990493eec.9.2026.04.27.10.17.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Apr 2026 10:15:40 -0700 (PDT)
+        Mon, 27 Apr 2026 10:17:11 -0700 (PDT)
 From: Douglas Anderson <dianders@chromium.org>
 To: stable@vger.kernel.org
 Cc: Douglas Anderson <dianders@chromium.org>,
@@ -82,12 +82,12 @@ Cc: Douglas Anderson <dianders@chromium.org>,
 	Danilo Krummrich <dakr@kernel.org>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Marek Szyprowski <m.szyprowski@samsung.com>
-Subject: [PATCH 5.10.y] driver core: Don't let a device probe until it's ready
-Date: Mon, 27 Apr 2026 10:15:33 -0700
-Message-ID: <20260427171533.495665-1-dianders@chromium.org>
+Subject: [PATCH 6.1.y] driver core: Don't let a device probe until it's ready
+Date: Mon, 27 Apr 2026 10:17:02 -0700
+Message-ID: <20260427171702.496719-1-dianders@chromium.org>
 X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
-In-Reply-To: <2026042758-bloated-spinning-0df5@gregkh>
-References: <2026042758-bloated-spinning-0df5@gregkh>
+In-Reply-To: <2026042756-vendor-speed-aac0@gregkh>
+References: <2026042756-vendor-speed-aac0@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -95,7 +95,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6876F476F0D
+X-Rspamd-Queue-Id: CE4CF477423
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
@@ -103,7 +103,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[chromium.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[chromium.org:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -111,7 +111,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[chromium.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241417-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-241418-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
@@ -119,12 +119,12 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[dianders@chromium.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_COUNT_FIVE(0.00)[5];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,chromium.org:email,chromium.org:dkim,chromium.org:mid,samsung.com:email,harvard.edu:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,samsung.com:email,msgid.link:url,chromium.org:email,chromium.org:dkim,chromium.org:mid,linuxfoundation.org:email]
 
 The moment we link a "struct device" into the list of devices for the
 bus, it's possible probe can happen. This is because another thread
@@ -206,15 +206,15 @@ Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Douglas Anderson <dianders@chromium.org>
 ---
  drivers/base/core.c    | 15 ++++++++++++++
- drivers/base/dd.c      | 12 ++++++++++++
+ drivers/base/dd.c      | 20 +++++++++++++++++++
  include/linux/device.h | 44 ++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 71 insertions(+)
+ 3 files changed, 79 insertions(+)
 
 diff --git a/drivers/base/core.c b/drivers/base/core.c
-index e162c0c49787..149882009eb5 100644
+index d985c4b87de5..112bca602253 100644
 --- a/drivers/base/core.c
 +++ b/drivers/base/core.c
-@@ -3008,6 +3008,21 @@ int device_add(struct device *dev)
+@@ -3694,6 +3694,21 @@ int device_add(struct device *dev)
  		fw_devlink_link_device(dev);
  	}
  
@@ -234,15 +234,15 @@ index e162c0c49787..149882009eb5 100644
 +	device_unlock(dev);
 +
  	bus_probe_device(dev);
- 	if (parent)
- 		klist_add_tail(&dev->p->knode_parent,
+ 
+ 	/*
 diff --git a/drivers/base/dd.c b/drivers/base/dd.c
-index 1e8318acf621..0398f2c985b3 100644
+index dbbe2cebb891..1c6f266f9367 100644
 --- a/drivers/base/dd.c
 +++ b/drivers/base/dd.c
-@@ -738,6 +738,18 @@ int driver_probe_device(struct device_driver *drv, struct device *dev)
- 	if (!device_is_registered(dev))
- 		return -ENODEV;
+@@ -770,6 +770,26 @@ static int __driver_probe_device(struct device_driver *drv, struct device *dev)
+ 	if (dev->driver)
+ 		return -EBUSY;
  
 +	/*
 +	 * In device_add(), the "struct device" gets linked into the subsystem's
@@ -256,15 +256,23 @@ index 1e8318acf621..0398f2c985b3 100644
 +	if (!dev_ready_to_probe(dev))
 +		return dev_err_probe(dev, -EPROBE_DEFER, "Device not ready to probe\n");
 +
++	/*
++	 * Set can_match = true after calling dev_ready_to_probe(), so
++	 * driver_deferred_probe_add() won't actually add the device to the
++	 * deferred probe list when dev_ready_to_probe() returns false.
++	 *
++	 * When dev_ready_to_probe() returns false, it means that device_add()
++	 * will do another probe() attempt for us.
++	 */
+ 	dev->can_match = true;
  	pr_debug("bus: '%s': %s: matched device %s with driver %s\n",
  		 drv->bus->name, __func__, dev_name(dev), drv->name);
- 
 diff --git a/include/linux/device.h b/include/linux/device.h
-index 047a8f1ef8f2..ff7cae0431ab 100644
+index cc84521795b1..528e0dad742e 100644
 --- a/include/linux/device.h
 +++ b/include/linux/device.h
-@@ -385,6 +385,21 @@ struct dev_links_info {
- 	enum dl_dev_state status;
+@@ -457,6 +457,21 @@ struct device_physical_location {
+ 	bool lid;
  };
  
 +/**
@@ -285,7 +293,7 @@ index 047a8f1ef8f2..ff7cae0431ab 100644
  /**
   * struct device - The basic device structure
   * @parent:	The device's "parent" device, the device to which it is attached.
-@@ -470,6 +485,7 @@ struct dev_links_info {
+@@ -545,6 +560,7 @@ struct device_physical_location {
   *		and optionall (if the coherent mask is large enough) also
   *		for dma allocations.  This flag is managed by the dma ops
   *		instance from ->dma_supported.
@@ -293,7 +301,7 @@ index 047a8f1ef8f2..ff7cae0431ab 100644
   *
   * At the lowest level, every device in a Linux system is represented by an
   * instance of struct device. The device structure contains the information
-@@ -580,8 +596,36 @@ struct device {
+@@ -652,8 +668,36 @@ struct device {
  #ifdef CONFIG_DMA_OPS_BYPASS
  	bool			dma_ops_bypass : 1;
  #endif
