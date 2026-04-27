@@ -1,179 +1,168 @@
-Return-Path: <stable+bounces-241359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241358-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GDtVOemD72klCAEAu9opvQ
-	(envelope-from <stable+bounces-241359-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 17:42:33 +0200
+	id sEkWIlOD72kMCAEAu9opvQ
+	(envelope-from <stable+bounces-241358-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 17:40:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93136475674
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 17:42:33 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DCDF4755C3
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 17:40:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 76FA33089B7E
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 15:35:43 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2127B300EDBE
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 15:34:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DFBC3E2751;
-	Mon, 27 Apr 2026 15:30:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AF663DDDD0;
+	Mon, 27 Apr 2026 15:30:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="c1PGAFRE"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KZl7rvb8"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f42.google.com (mail-yx1-f42.google.com [74.125.224.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F35BA34D4D6
-	for <stable@vger.kernel.org>; Mon, 27 Apr 2026 15:30:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777303847; cv=none; b=bD/7Dk+4agh9iotZn/XGzxgqA3WfMOmNk9FpKDvkeSdtpHVZ2HK4lVn7ek5DqL8efMHuwLHDOqjXvV5mvFNcukZVySsFR9JMQIX3ZoyYtXBOL+jMBhtwfu0WfBd4JuOMhOE3drYMwy6IaR7B+URlB/epAx2AtNuE57/OJZRccHo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777303847; c=relaxed/simple;
-	bh=S62t+upgojIYhz1p6dALu+kyrentByS35lQhzLSLXbY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kBvSx3GdJC+zmFuYqhA4/EEhnZ11yKOgs2Uv3dpOMEp3b0ujwGsHE8zXLne0Hif/Fyf6lXl4XqRFP32bL572HEfdGmh5540dkuZvgkSnN49Mhzxqie3Fj4cUb0y94d2Gk/xWDyFwYSQfdt8CbDrB9cRdMhujHtvrBb+BPduykt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=c1PGAFRE; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777303845;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0M8NeyGOtxqcK9n3lFvZBV03uT/fzw4I/4MxBJJ99Zo=;
-	b=c1PGAFRE8ydMRN5jihEE81wzCqJvTVhenq6XxaGc2P5OmjoYA7DRZZXg/2zD92Bo5MAuwr
-	wftlC3favcg17p0QMzjsVc6QObDbH6l0g5JjBb/OhX5+8c1lOIbmfjAk/vmWJInzpUtKf8
-	7tJBsu4O9r+xsyBUG8EKdkdYjs7wpKw=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-161-4SWfnZdyOOmdwlqwJIgzPw-1; Mon,
- 27 Apr 2026 11:30:41 -0400
-X-MC-Unique: 4SWfnZdyOOmdwlqwJIgzPw-1
-X-Mimecast-MFC-AGG-ID: 4SWfnZdyOOmdwlqwJIgzPw_1777303840
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id EE8D119560A6;
-	Mon, 27 Apr 2026 15:30:39 +0000 (UTC)
-Received: from warthog.procyon.org.com (unknown [10.44.32.126])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C294E180045E;
-	Mon, 27 Apr 2026 15:30:36 +0000 (UTC)
-From: David Howells <dhowells@redhat.com>
-To: Christian Brauner <christian@brauner.io>
-Cc: David Howells <dhowells@redhat.com>,
-	Paulo Alcantara <pc@manguebit.org>,
-	netfs@lists.linux.dev,
-	linux-afs@lists.infradead.org,
-	linux-cifs@vger.kernel.org,
-	ceph-devel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Xiaoli Feng <xifeng@redhat.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v4 08/22] netfs: fix error handling in netfs_extract_user_iter()
-Date: Mon, 27 Apr 2026 16:29:35 +0100
-Message-ID: <20260427152953.180038-9-dhowells@redhat.com>
-In-Reply-To: <20260427152953.180038-1-dhowells@redhat.com>
-References: <20260427152953.180038-1-dhowells@redhat.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8919E3DC4C7
+	for <stable@vger.kernel.org>; Mon, 27 Apr 2026 15:30:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777303822; cv=pass; b=fLk5abu5ywVrsuEB9RzU/Cd0uoXRMGcX97GzUbHcJy8dR4KC22xQ/YfUHi8wRCW0n3vYD3j8L2EG5b9rwZxlnJyQbqy8qPQmdoB7rLzxQSiQhhVy0csiYEod6/rAj/gYBb7FDCQK+SnS3ZTTa1/2DfBBA2HcF65tO0YcHOoJ7JY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777303822; c=relaxed/simple;
+	bh=GCwKatNNar+3ytGo3nZKd7tNZGkjdIGeJgU5RLwcvj4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=h+hkiMbx4tyxVmQ8wKf/dcLyB6nIK3/ewLOWwRAOipUX/5HR/EiQE7W/7I1cluRvTublXGq8+6i1Yumeql535TlXe5JGCkOUQNoEILQvhwAgXn/RBDmE8evZgrN7D1KbI/HzAKAYwVHk+KL/W4q45v+g1WRCeN814cuHtuNYF2Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KZl7rvb8; arc=pass smtp.client-ip=74.125.224.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yx1-f42.google.com with SMTP id 956f58d0204a3-64937edbc9eso8918123d50.2
+        for <stable@vger.kernel.org>; Mon, 27 Apr 2026 08:30:20 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777303819; cv=none;
+        d=google.com; s=arc-20240605;
+        b=XwW7MjPmgJ2aH51BckEkr0IPP9Cx7z2i6eDchymKlu4NAM3h9WPExazbJ+rU7aEQvs
+         juiUy5/cCzsNidwh+tUFoUXDb4dSJXSGtQ71lOz5EfKxWK68HA+r68V/fQRsLZJtwcT3
+         iaa1vKFlwxo+p53WrbHTv6587qnLSq9LDbKvcxu2fHtdkXnGkWDwXCeFZNhhfE1P30zJ
+         I+RSAP1Zg/EVBJ0rlc/LvkVzL+fxIcZK0unCY23XcTAdYCZUoX+ZVI3+HrgUk/NpgiEx
+         PyAlZF8UPy7/O0wjHbEN4cdheM5R9NiyRVH4E7usSjdQWTuu538dfUrQ06+hW1bsjy0F
+         zGOA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=wopAs40F+RJFZTUGjaEGMPUBPuNhbGRlaz39GhporOM=;
+        fh=UtkQ2M/Y/l8uBQI0aPJzy7/N4poTUYCJPXEXXOOpRFI=;
+        b=cVIiitNDgoWqf5G9BQ6oZs6GomSHg6Qq/qsowTotIoEPV0wErpsaAFS8kJ8VJg5jeZ
+         n8lB+9GrBpMECLW+5tfMoWXgsjkMqVgi3uO0a8GHX8SI/Rm5icVxCVYoSgvkLULerstO
+         ZkBs2MkN4WRPH90SkRrh/uYXwkyvRJpox+sn68hvQbowCQ2mT/gaeTwXj9na7/9pQoCP
+         95PYrrWgJh/IL/TwZJJNwrjv589pM973S0Xbc9FPYCUU5xAJErkYJfKbkCxwRHda6O06
+         jsvpq/zaPDILsyhLCUBImO5W0TADs1XezCFPaPnMqpS5CvBkeNcM/EOFRgWgLVPWzZrK
+         w0Gw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777303819; x=1777908619; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=wopAs40F+RJFZTUGjaEGMPUBPuNhbGRlaz39GhporOM=;
+        b=KZl7rvb8lf+sBbOnk4jHtaoH1vNRh94P/hVDm7+cs2/FKBCPa46GXQ2tp/jWtyeVI2
+         FA8mxlmk7eKobRckE8qSOokqGx+oGCFY3ZQAvSxaAI1wxA5fvf2mVUexoG/icCVk1TMy
+         KyYUVyzKUXyvrZQF1bs8WZEcGS2g9fDj1tyTPUyPXKHlQRE5Hdp24jNdA2//pZWA96Sb
+         OsIc7ZX4RD/5GAwqiECwwcVmMtsZn2WbENhakwf0Qni0yZvNVabQcI5468V+4ToznKfl
+         QmJW5/DvIuWgVSOcCb0Zib9yKLvE+tsjWJcbrb2yFhHOnjWR/gfSztjZx5lQ7cItr91c
+         eUww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777303819; x=1777908619;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wopAs40F+RJFZTUGjaEGMPUBPuNhbGRlaz39GhporOM=;
+        b=qccT71WbJWBsNG4WIsoacS0H7UpGGDKp9HHgnvPAKwk9NqdbSUMHRgGH6kymqPgR+S
+         YdrUWU7RnWDVXayOmjusqmRN2MA4e7RhAH273rrMB8bJp+WR32FAezPg2TSo3yXPqHXA
+         /IyqUYanCQicm9fat3fP16aunvvXnxkM6nBw1s0hw9ujxq0Q7vOthMkV6fNn1cniscCP
+         g+G5F5C07QovXTqj4BYkm6x46/QXoAyGwNoCGKarloY7aW+8jHs0N8aVbfT6dg9g1yQG
+         7YpRCc8MLBdHOr0jQivKnjtU5qEqx/7yQPwoGMCLopIdFdtNUzVcvxcdb+n93UulSEwB
+         rC/Q==
+X-Forwarded-Encrypted: i=1; AFNElJ89pKVWLtoS2SSmEK7qDf3A27tLna6K5ctse9IuimXDRInHZivh6dj5l7OlCTiUV5nuOWOP7aM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyH9Pc3dP0lFRocVwoj5UTsnCpjLJqF4nFmQPaDJirrwOzLet0Y
+	HSGsD70ip+0hIOvMMp9lI8I8zPGHaoOThKwZJKSxfNJosbJG2aKUp0JlmUqKhMWZ9Ks4lOQzfhz
+	GnOvO8BccMv6MrFvVhoaO5calqfxtB00=
+X-Gm-Gg: AeBDiesyLw7HmwiniMzgIiHa3349mFoISTn6GqMgUgNxANQMN5idqAjxLH1xcaYSzrr
+	S49gCg4EoYZXdoGCHyAP9obtQ0MCkXsrxx2n5r3Ow9sgMWlYZwZGHSvukMGrNRXFn28YHv8C1K4
+	p+dtAiKQK92aPpSzIJv76O16cp2XTNNMH6mmqitx73G8d8hlOh/UeLwpPZsCWJPXgrorojpclyk
+	4w+OZQs7bWOY2/KmkOV+oO5WmmCM3oqqDep1zPyYamw7vXP3EoLi6dZ3cm8MGHuIMiWgouGCLN0
+	BX//KDwvvY3LtpH+SaZG
+X-Received: by 2002:a05:690e:1918:b0:654:9654:f91 with SMTP id
+ 956f58d0204a3-65496541a13mr15482214d50.46.1777303819396; Mon, 27 Apr 2026
+ 08:30:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Rspamd-Queue-Id: 93136475674
+References: <20260427133107.334429-1-lgs201920130244@gmail.com> <982f5452-36be-4401-acac-c9f8ba8ff83a@rowland.harvard.edu>
+In-Reply-To: <982f5452-36be-4401-acac-c9f8ba8ff83a@rowland.harvard.edu>
+From: Guangshuo Li <lgs201920130244@gmail.com>
+Date: Mon, 27 Apr 2026 23:30:12 +0800
+X-Gm-Features: AVHnY4IGM9jn954jisHrVPvAVF-ro04mTTaDdyMTsp7VWKWZEgW3x5qekBjo2Yc
+Message-ID: <CANUHTR9uTfR3CQF3RLxYVWFSoGZ8B7yV=vowOqx4BBWGHk9Srg@mail.gmail.com>
+Subject: Re: [PATCH] usb: gadget: net2280: Fix double free in probe error path
+To: Alan Stern <stern@rowland.harvard.edu>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Kees Cook <kees@kernel.org>, 
+	Chen Ni <nichen@iscas.ac.cn>, Evgeny Novikov <novikov@ispras.ru>, Felipe Balbi <balbi@kernel.org>, 
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: 2DCDF4755C3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241359-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dhowells@redhat.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-241358-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[redhat.com:+];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	NEURAL_HAM(-0.00)[-0.999];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[manguebit.org:email,linux.dev:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,mail.gmail.com:mid,harvard.edu:email]
 
-From: Paulo Alcantara <pc@manguebit.org>
+Hi Alan,
 
-In netfs_extract_user_iter(), if iov_iter_extract_pages() failed to
-extract user pages, bail out on -ENOMEM, otherwise return the error
-code only if @npages == 0, allowing short DIO reads and writes to be
-issued.
+Thank you for the review and correction.
 
-This fixes mmapstress02 from LTP tests against CIFS.
+On Mon, 27 Apr 2026 at 22:36, Alan Stern <stern@rowland.harvard.edu> wrote:
+>
+> You should remove the braces in the "if" statement as they are now
+> unnecessary.  Also, the Fixes: tag is wrong; it should say:
+>
+> Fixes: f770fbec4165 ("USB: UDC: net2280: Fix memory leaks")
+>
+> The code before that commit was okay.
+>
+> Alan Stern
 
-Fixes: 85dd2c8ff368 ("netfs: Add a function to extract a UBUF or IOVEC into a BVEC iterator")
-Reported-by: Xiaoli Feng <xifeng@redhat.com>
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Signed-off-by: David Howells <dhowells@redhat.com>
-Cc: netfs@lists.linux.dev
-Cc: stable@vger.kernel.org
-Cc: linux-cifs@vger.kernel.org
-Cc: linux-fsdevel@vger.kernel.org
----
- fs/netfs/iterator.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+I will remove the now-unnecessary braces and update the Fixes tag to:
 
-diff --git a/fs/netfs/iterator.c b/fs/netfs/iterator.c
-index 154a14bb2d7f..adca78747f23 100644
---- a/fs/netfs/iterator.c
-+++ b/fs/netfs/iterator.c
-@@ -22,7 +22,7 @@
-  *
-  * Extract the page fragments from the given amount of the source iterator and
-  * build up a second iterator that refers to all of those bits.  This allows
-- * the original iterator to disposed of.
-+ * the original iterator to be disposed of.
-  *
-  * @extraction_flags can have ITER_ALLOW_P2PDMA set to request peer-to-peer DMA be
-  * allowed on the pages extracted.
-@@ -67,8 +67,8 @@ ssize_t netfs_extract_user_iter(struct iov_iter *orig, size_t orig_len,
- 		ret = iov_iter_extract_pages(orig, &pages, count,
- 					     max_pages - npages, extraction_flags,
- 					     &offset);
--		if (ret < 0) {
--			pr_err("Couldn't get user pages (rc=%zd)\n", ret);
-+		if (unlikely(ret <= 0)) {
-+			ret = ret ?: -EIO;
- 			break;
- 		}
- 
-@@ -97,6 +97,13 @@ ssize_t netfs_extract_user_iter(struct iov_iter *orig, size_t orig_len,
- 		npages += cur_npages;
- 	}
- 
-+	if (ret < 0 && (ret == -ENOMEM || npages == 0)) {
-+		for (i = 0; i < npages; i++)
-+			unpin_user_page(bv[i].bv_page);
-+		kvfree(bv);
-+		return ret;
-+	}
-+
- 	iov_iter_bvec(new, orig->data_source, bv, npages, orig_len - count);
- 	return npages;
- }
+Fixes: f770fbec4165 ("USB: UDC: net2280: Fix memory leaks")
 
+I will send a v2 shortly.
+
+Best regards,
+Guangshuo
 
