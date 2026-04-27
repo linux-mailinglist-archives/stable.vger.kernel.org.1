@@ -1,228 +1,207 @@
-Return-Path: <stable+bounces-241324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241325-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ILmLE75h72mHAwEAu9opvQ
-	(envelope-from <stable+bounces-241324-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 15:16:46 +0200
+	id aMJDFBRh72mHAwEAu9opvQ
+	(envelope-from <stable+bounces-241325-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 15:13:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1B89473403
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 15:16:45 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id E36D5473383
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 15:13:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3E871304D24F
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 13:13:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4C80C3006B40
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 13:13:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD2E03C198D;
-	Mon, 27 Apr 2026 13:13:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A43A83C3C16;
+	Mon, 27 Apr 2026 13:13:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="fjU22mZF"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="T/UkDcqa"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04BE33C3420
-	for <stable@vger.kernel.org>; Mon, 27 Apr 2026 13:13:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01CDF3C277C
+	for <stable@vger.kernel.org>; Mon, 27 Apr 2026 13:13:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.44
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777295624; cv=pass; b=QX1yi5yewZkMWesykPTNdyocEsMh1MTNf9RMm/3I6c0QJDGHyHcPfX9u/g38m497rztc1mHSorB2Vc714M7QCP4g49j6pP9mMD/ixYTRC4JoLbgr+EfCsV/f2o2qSXZj9q6ax3TiTLie3zQYWzUeX9QQxWi3pxLC51gk1KGu18A=
+	t=1777295632; cv=pass; b=eelhYueaXbu6/grSRn5/TbAwvYmN/UGnaZHflIcul1hKoZ6fp4d5QCOqHlm3lOmO/7qkO3iGpR4H2ivkezxrIHvv3fsAsmrv3aujI4CWHZ/6hNRdi5+OGgKEqGIaVkCTT9uSIlN5+E3dYQUgO3FGhB3YZf+fWiKLQh8n8fe5QsY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777295624; c=relaxed/simple;
-	bh=Zb8vYbMD9IRjw8Jcfa3NNa6YpDZ3/otQveWTR1RGHIw=;
+	s=arc-20240116; t=1777295632; c=relaxed/simple;
+	bh=Bj5yC+8b46RDVgUptaLnu/xG3/FmzZC5vpJJyId/REg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qshGG0dBMratnCG3h/O2qjgJeo/cD3Uf6KvUxjRRLp1/dlsH64SdRLsB9Nt+Asu6qQvJ4/hNye9S8Br0fBABqOd6X3YrZDfIlv6T3gtEo+D79H5dlMiz7LQY9OPjf+6uFrH4cJHPq4HhRQY2XJ1PROLi9uGJWxi7lTcpgJi2+hc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=fjU22mZF; arc=pass smtp.client-ip=209.85.167.50
+	 To:Cc:Content-Type; b=FD/kJFSEfpeUcvPyPnkbzMq98uXsACVl8b3ytLrrf5zetI1CRQ9jLoh7ErvtqhOj+TF530U7G/9pLq5QtNLfImCvukB/oMu7f2pqun2RegtmY9PIOj6hAusxup/mrEeRoYfSlwWA9MXJDJyjQjxyh5UvAuo7ta6cLDYmcycfapk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=T/UkDcqa; arc=pass smtp.client-ip=209.85.167.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5a402b2d102so10806836e87.3
-        for <stable@vger.kernel.org>; Mon, 27 Apr 2026 06:13:42 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777295621; cv=none;
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-5a2b5ea59a1so15433547e87.1
+        for <stable@vger.kernel.org>; Mon, 27 Apr 2026 06:13:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777295629; cv=none;
         d=google.com; s=arc-20240605;
-        b=LyXFM7o6Uj5ynuPnsWszt5MX93U2JQ1xKTtY3RiD8CKt/6+Uxe20PPFiWuPYJ4tC9A
-         GLo84KCxxIRDzbeHlLiSztalLYOXQcIUoYo+rHdjF2/wdjZBNFgxZ87dSs0PAqSuO1at
-         uwfW8KK0b+T56Xf/UlWm1/wIKMGI+lmj0l0vafSMWcv4WxcBbBzQQpolb2cezM9j/V4R
-         O9ue/U/PY5m47GjvPw4w+41oyOGpa5ggeHJfJ5FFELjIscjTHJ5Eu6rjfs0ars8nJYeV
-         zvTe8KW5ynCjGDFFlcMInDZNr4k66YYeAzfiO9jZrRuC8pD9a/sfsYg54J3kvoWmjMc8
-         Gjng==
+        b=kglwQ3oEoAyRoR8hDWwIPQMR0uWzEuW8ADXBA6phBC5KDx9+xDIAVNoaR8vn/Kb5XB
+         5C44gdJA+MKQjPwF7FFUbWJ2GQwciEmQ9b6gSKkWoOol7I4Ev2/rj6B/dw+Q/LzSK5X9
+         ssWTwPZqO45W9li3xU/hB4kmYyLPAxGAhNWsTT9SeqKJ8EvMOIvl9n9X7olCGdggnRLa
+         b+oMTLsw4Df4HQs0KUUSrurJJxN7ki65R3oUKt/LFo5WMgve4NToQ05ompVU0vAhR09k
+         4D7/srWvdyYdsuXa80ZjNLqckdkyVsKLDyjLjY98rO64Y9OSALMN2ok3b6oFRsOQssUc
+         KxgQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:dkim-signature;
-        bh=4zTEZOstYQ1Ndkmbxb0gXIziFqMiC9RX7BP1ekAY2J0=;
-        fh=wUAgXDrSfohIw0n5RavwagZIfYvaHCPk39N6VzPywa4=;
-        b=IIL2sh5ebjru+8rc2Pu5K3FYD/XCPMreg6lSM7kSiijTdJDeqVuc3LYdGq2/dOcw1l
-         1fZlauEm0nyalLdMcoF3uXTEreXFUWwJ9iVAZ04SuN1LLqPNBXGNeZegQ3RZ6Th4NaRj
-         i06nnqqROfi7pIyFbXHnEPYlqE1kk2P8EBUxQXYNfvADYmhspNjwjcYayNrwqCdq1RUY
-         eP2NJEeK+BHzRTVaH3eLsY6EuHmtHNrWhuOdaD24O0M5IUMj2v/oD3DjZ0qoVc8FHgNx
-         bYMHlPTRKHWEUSYnv8VzXi1I3YUsFWNbbCLRhSTtlGZ0vLU/ch5acrbL/bhjEwg8vnL1
-         T5ew==;
+        bh=L7//5ece1DlWDMT1aLpKgGFyRfsm8Y+IqHoNcwNLtWg=;
+        fh=Bo965RiQ4+iVwq4WTZtxEoxlZlB0L15lvdeBuDBp5ow=;
+        b=aBQ6XGgZJgtqnqn8yyMBac9vZBVdrhU2jr0ygGVOW3olnxkJOfhtpuCSUy6tkBAoMR
+         c02Lf9h0CFjwYJz7NR7LXwGPB2epZHDCiZewBGzNTWoAArJZ7+l+jWK+5g3Cii1/w0Qu
+         uAQ6oSVmTjI7EadwTytTS1HiUJQG4tMw9aaqa2y/BJT8VndUy5GyVNFV6K5xqYzAc3nF
+         hikvAjHoweXtwHDdHc15Lw8aM+TyCcA8qIh+w399hxDzu7GdH5tuyW7aiL3cwgz60Znk
+         kwQoQyYlyQ6MdMrMLMDRkqxNa+ksd7pctwpMzQWz7cDBuJpcgwupv58E5wqzJR7dUK1H
+         RsBA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1777295621; x=1777900421; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1777295629; x=1777900429; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=4zTEZOstYQ1Ndkmbxb0gXIziFqMiC9RX7BP1ekAY2J0=;
-        b=fjU22mZFiFH8BPivB4f4hAuRn+Thear+i03qWKC7xdG2unGqshyPFLigZ6bwqTlztL
-         7nEarz1LI7sAqEkMFCYrVZXCmfwppckkOjtLyTVsHgVydsnkpJQwA7znjLbOXQgkuREJ
-         bWPpQXNVHRdkWD7uhasEgqshkkHcPP3GrU/cCFfsvfF4jxgbsQV7mJSejtML2p2Tt/VM
-         4sbCQeFKG8P039G5T49QGy4i5y+axe17ygKxyIEuMHMDzYv8nBWAzgFeMCYV0GawT3HB
-         bmhxFmIJmCsgmB9iurGWww5Z3p6Su8Y9+1Le9DRi9AQB+Z10kbecZX/8ctgcxZYot7Cs
-         UD+Q==
+        bh=L7//5ece1DlWDMT1aLpKgGFyRfsm8Y+IqHoNcwNLtWg=;
+        b=T/UkDcqaD+Vy7Lhtce4drzBtghuLePgTrncmXUFzJBpgX16jvusyijLVWq+AI4Qwm6
+         A5oRJXe2HcYOWtJ6o4evB9QTNAeiA6wvU1Ip2ZlvBVm/vEZqSO+Ln79AQ0QZQx6HYeUC
+         xNTxrj1MjBw+KK9aCxKPzCweXSmgnH2PcTtu7aGCJdPd+jGIRDcpTJLqTtuy8NVy2B2t
+         EJc/EEyspzCiMo1MrFONYwojk2kr6UH5E079NtJ54t0XZUgrF7mdczu8pDddfwQISFYm
+         T+/nwkzFI8BBkSuYse+ZhnK7kGtlkkBV72fIj6cF6V9aE/D0s7cknise5A5+UxFe6e7w
+         0bkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777295621; x=1777900421;
+        d=1e100.net; s=20251104; t=1777295629; x=1777900429;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=4zTEZOstYQ1Ndkmbxb0gXIziFqMiC9RX7BP1ekAY2J0=;
-        b=LVNg7PvK+uCdrDtJ1CZTApa3XRnHUMlhGV7fMSNa7G4MKnjnLNZQGLpkIYI72a7AOY
-         56vF0hGhwCtZ8Y0+iJ/7pttf2eEVswUTRFpbxt0iXIJa6KLU8AXKyVWxLTKA0b8KGFah
-         YN7UAtTK5lZ9dha5chvSp5mNuSYKzN3c71+J+xf4P76zXhUW27sbtLvnXm9dflPpq3oK
-         J3OGqx+005+qVHKbqdW3uS/SC7GjNPSTyDPL5s/nY5UDJTxmEdVLQSMd1AJ02r31rK32
-         imwsbR1vCXOoNFY1zJoD16ZVtkjj2TmfuQ34NU89BO3cfYyQFK+ZEF12qa6b/nS2pXEJ
-         Mfww==
-X-Forwarded-Encrypted: i=1; AFNElJ+Wo3MjfAl/aOYKwfEIX1inm/u8lg480XxZKj1I410GCK7md2CYLC3D0h517SnWrb1wbwpSIRE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx9bhMj6XX0m5jihybJtWdMlpA0jXiswZBW7WCuQTl7GJiPQUay
-	mypMsvLy22cmWeS5sjFXKUhug1C+f5FcgNsZW+4B6GRk9Mj/DwPOePfKvIIC/2LmHekrOnhwo2T
-	13kVnyhfTJIsZzcPEYx+MYRihJj9T+yx5T3Pw7ULNVw==
-X-Gm-Gg: AeBDietRGl8gjO5fSTazgtb/EDHBFaxRfyApGxI6pZPZmBNiaDvG7Bai3Fqqdp0WWIt
-	vgK1PWTSt7xPmqgD0SRNpqeC1oKeaWvvDJHLgn2j8nupoJcnU42wwnmzf94j9fL5ryy6UzTaox8
-	wWuXpG4+p5BaxifPfeMmJmxktO2hpgcbmEFVmc6akizRDtB8mJKIKWqKKfAMc39C50fCP2awU59
-	ofwFW0MRc3Oz7xm6blJX4P6UbZ4D7uSgWoxUH7L8lf/XN792Fll5T54ZSG/KpjzZvzuRyd7ijdb
-	EamNCwOFPqtTNre1ckw=
-X-Received: by 2002:a05:6512:3193:b0:5a4:1310:473a with SMTP id
- 2adb3069b0e04-5a4172ca11dmr12799424e87.10.1777295621120; Mon, 27 Apr 2026
- 06:13:41 -0700 (PDT)
+        bh=L7//5ece1DlWDMT1aLpKgGFyRfsm8Y+IqHoNcwNLtWg=;
+        b=lGLOPV2aU/BNH/JsVgDQSaJVG7yv0FLHbHJRQ57+l+JcawbRVHLijZobYR+fgxCvQR
+         0aHAq0kj0hvwPYWtt1/J9QwLedalxt6MVgHNSkuTU8uPeeLmRFbs7xRz5ceWNdc0+RBZ
+         dZtq37o1S1XR6phbqwohKtTQTbOfklE0PfIJIEizOdyB0nQBjKg/xrp3lvGLAl+s0kJ1
+         uXn3wEyY0fqcZsTMZyRoCOCrWIw9oWylE4plXb86Du1NCAsEvylB/Fd6ZTIzcaU1gl+s
+         +MavhLstqXOwpz1pYXqv75JMcoGlvGHyKWjIHZBbH0/a9KJkZM1xkYLbKsdK2Lj7AekA
+         g57w==
+X-Forwarded-Encrypted: i=1; AFNElJ/tDgIGrgsXHIuGIYHwrX5VleYwDqDxVrbuEezkOgMNst8LYMgH1NcUZNfHYsKbp3VwzNIEIGY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxP4O/svp+y/rRNpzDX0fpR+ZU9lxhXIAZgc5SDmHfwzb3gFD4e
+	64jW80AWNHxX9FgHgEPbiZtqmpxJkPdRFMG7N3lJ5vxXDIxPEYAN4pbM1eFxtnnlUsuzImuLwq0
+	6brN7hzs7w+z497N0l80UvlPiBX9HdR4DW7z5ceBkvg==
+X-Gm-Gg: AeBDiesTOJD3XVqy9VP6QstRgCTWvocRN/StO5UhAcVLVRRzHn6nQ8iES/qOOrNU1Mq
+	loX3KCJJDmecU03+p2HxAJ45Y36OCIWcwedI8t3DKil9kCXKWq7AKGwonC+ZEXHqCLKQzfe9QH2
+	cYuJoFJnFSl9iYaycnAHiOFtOtxz/DEj6jD3ItpYIADjoz+oaCN0rnWhpOkAngn08IcoduUYYeX
+	yqG5HmOGU/bEAsNY+z18Np71ANSDhIJDtB1kt8f6nPY4SEvXQ2wNWteIh0h5TeKgvt16RaS4s2h
+	egZkpx763f3vkiIkWW0=
+X-Received: by 2002:a05:6512:3193:b0:5a4:1672:59e0 with SMTP id
+ 2adb3069b0e04-5a4172cd574mr14121153e87.19.1777295629037; Mon, 27 Apr 2026
+ 06:13:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260417111331.158190-1-ulf.hansson@linaro.org> <CAMuHMdVr-dzRUruue0XEky_6fCt+v3AHp3G+Zv_N7S2_TpC7yg@mail.gmail.com>
-In-Reply-To: <CAMuHMdVr-dzRUruue0XEky_6fCt+v3AHp3G+Zv_N7S2_TpC7yg@mail.gmail.com>
+References: <20260408141121.386522-1-vulab@iscas.ac.cn>
+In-Reply-To: <20260408141121.386522-1-vulab@iscas.ac.cn>
 From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Mon, 27 Apr 2026 15:13:05 +0200
-X-Gm-Features: AVHnY4LaoKv-9zR1nRT5b_JUXnSu76zcBHdPRCqIMP_MLLpQF4ZFC_5gwPwYYIM
-Message-ID: <CAPDyKFrZvNsURsK+jmeorDmaN1icXnC8e4tDTk0A42UmtVSTcA@mail.gmail.com>
-Subject: Re: [PATCH] pmdomain: core: Fix detach procedure for virtual devices
- in genpd
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Ulf Hansson <ulfh@kernel.org>, linux-pm@vger.kernel.org, 
-	Frank Binns <frank.binns@imgtec.com>, Matt Coster <matt.coster@imgtec.com>, 
-	Marek Vasut <marek.vasut@mailbox.org>, "Rafael J . Wysocki" <rafael@kernel.org>, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+Date: Mon, 27 Apr 2026 15:13:12 +0200
+X-Gm-Features: AVHnY4KIw0y71PHOTou49MhZ1vsAm_GUfrl6yfolmci7Zff-_TktbzdbSpL-x1c
+Message-ID: <CAPDyKFrTG6tp9XbuiUYjgMYkHYQwVsyXBuggCc3Lp=J_NcKTyA@mail.gmail.com>
+Subject: Re: [PATCH] pmdomain: mediatek: fix use-after-free in scpsys_get_bus_protection_legacy()
+To: Wentao Liang <vulab@iscas.ac.cn>
+Cc: Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, nfraprado@collabora.com, 
+	Macpaul Lin <macpaul.lin@mediatek.com>, Adam Ford <aford173@gmail.com>, 
+	Chen-Yu Tsai <wenst@chromium.org>, linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
 	stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: E1B89473403
+X-Rspamd-Queue-Id: E36D5473383
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-241324-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-241325-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linaro.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	FREEMAIL_CC(0.00)[gmail.com,collabora.com,mediatek.com,chromium.org,vger.kernel.org,lists.infradead.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[ulf.hansson@linaro.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linaro.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,linaro.org:dkim,linaro.org:email,glider.be:email,linux-m68k.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,linaro.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 
-On Fri, 17 Apr 2026 at 20:36, Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+On Wed, 8 Apr 2026 at 16:11, Wentao Liang <vulab@iscas.ac.cn> wrote:
 >
-> Hi Ulf,
+> In scpsys_get_bus_protection_legacy(), of_find_node_with_property()
+> returns a device node with its reference count incremented. The function
+> then calls of_node_put(node) before checking whether
+> syscon_regmap_lookup_by_phandle() returns an error. If an error occurs,
+> dev_err_probe() dereferences the node pointer to print diagnostic
+> information, but the node memory may have already been freed due to the
+> earlier of_node_put(), leading to a use-after-free vulnerability.
 >
-> On Fri, 17 Apr 2026 at 13:13, Ulf Hansson <ulf.hansson@linaro.org> wrote:
-> > If a device is attached to a PM domain through genpd_dev_pm_attach_by_id(),
-> > genpd calls pm_runtime_enable() for the corresponding virtual device that
-> > it registers. While this avoids boilerplate code in drivers, there is no
-> > corresponding call to pm_runtime_disable() in genpd_dev_pm_detach().
-> >
-> > This means these virtual devices are typically detached from its genpd,
-> > while runtime PM remains enabled for them, which is not how things are
-> > designed to work. In worst cases it may lead to critical errors, like a
-> > NULL pointer dereference bug in genpd_runtime_suspend(), which was recently
-> > reported. For another case, we may end up keeping an unnecessary vote for a
-> > performance state for the device.
-> >
-> > To fix these problems, let's add this missing call to pm_runtime_disable()
-> > in genpd_dev_pm_detach().
-> >
-> > Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
-> > Fixes: 3c095f32a92b ("PM / Domains: Add support for multi PM domains per device to genpd")
-> > Cc: stable@vger.kernel.org
-> > Closes: https://lore.kernel.org/all/CAMuHMdWapT40hV3c+CSBqFOW05aWcV1a6v_NiJYgoYi0i9_PDQ@mail.gmail.com/
-> > Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+> Fix this by moving the of_node_put() call after the error check, ensuring
+> the node is still valid when accessed in the error path.
 >
-> Thanks for your patch!
->
-> This survived more than 160000 bind/unbind attempts[1] on R-Car M3-W
-> and M3-N, so
-> Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> Fixes: c29345fa5f66 ("pmdomain: mediatek: Refactor bus protection regmaps retrieval")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 
-Thanks for testing! I have queued the patch for fixes.
-
->
-> > --- a/drivers/pmdomain/core.c
-> > +++ b/drivers/pmdomain/core.c
-> > @@ -3089,6 +3089,7 @@ static const struct bus_type genpd_bus_type = {
-> >  static void genpd_dev_pm_detach(struct device *dev, bool power_off)
-> >  {
-> >         struct generic_pm_domain *pd;
-> > +       bool is_virt_dev;
-> >         unsigned int i;
-> >         int ret = 0;
-> >
-> > @@ -3098,6 +3099,13 @@ static void genpd_dev_pm_detach(struct device *dev, bool power_off)
-> >
-> >         dev_dbg(dev, "removing from PM domain %s\n", pd->name);
-> >
-> > +       /* Check if the device was created by genpd at attach. */
-> > +       is_virt_dev = dev->bus == &genpd_bus_type;
-> > +
-> > +       /* Disable runtime PM if we enabled it at attach. */
-> > +       if (is_virt_dev)
-> > +               pm_runtime_disable(dev);
-> > +
-> >         /* Drop the default performance state */
-> >         if (dev_gpd_data(dev)->default_pstate) {
-> >                 dev_pm_genpd_set_performance_state(dev, 0);
-> > @@ -3123,7 +3131,7 @@ static void genpd_dev_pm_detach(struct device *dev, bool power_off)
->
-> Above, out of context, there is an error return.
-> Should we call pm_runtime_enable() again, to keep the reference count
-> balanced? Or can we just ignore this? It's probably futile anyway.
-
-Good point. I considered it, but I think it's safer to keep runtime PM
-disabled, if we encounter an error.
-
-If we end up converting genpd_dev_pm_detach() to return an int instead
-of void, then we could revisit this.
-
->
-> >         genpd_queue_power_off_work(pd);
-> >
-> >         /* Unregister the device if it was created by genpd. */
-> > -       if (dev->bus == &genpd_bus_type)
-> > +       if (is_virt_dev)
-> >                 device_unregister(dev);
-> >  }
-> >
+Applied for fixes, thanks!
 
 Kind regards
 Uffe
+
+
+> ---
+>  drivers/pmdomain/mediatek/mtk-pm-domains.c | 10 +++++++---
+>  1 file changed, 7 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/pmdomain/mediatek/mtk-pm-domains.c b/drivers/pmdomain/mediatek/mtk-pm-domains.c
+> index e2800aa1bc59..d3b36f32417c 100644
+> --- a/drivers/pmdomain/mediatek/mtk-pm-domains.c
+> +++ b/drivers/pmdomain/mediatek/mtk-pm-domains.c
+> @@ -993,6 +993,7 @@ static int scpsys_get_bus_protection_legacy(struct device *dev, struct scpsys *s
+>         struct device_node *node, *smi_np;
+>         int num_regmaps = 0, i, j;
+>         struct regmap *regmap[3];
+> +       int ret = 0;
+>
+>         /*
+>          * Legacy code retrieves a maximum of three bus protection handles:
+> @@ -1043,11 +1044,14 @@ static int scpsys_get_bus_protection_legacy(struct device *dev, struct scpsys *s
+>         if (node) {
+>                 regmap[2] = syscon_regmap_lookup_by_phandle(node, "mediatek,infracfg-nao");
+>                 num_regmaps++;
+> -               of_node_put(node);
+> -               if (IS_ERR(regmap[2]))
+> -                       return dev_err_probe(dev, PTR_ERR(regmap[2]),
+> +               if (IS_ERR(regmap[2])) {
+> +                       ret = dev_err_probe(dev, PTR_ERR(regmap[2]),
+>                                              "%pOF: failed to get infracfg regmap\n",
+>                                              node);
+> +                       of_node_put(node);
+> +                       return ret;
+> +               }
+> +               of_node_put(node);
+>         } else {
+>                 regmap[2] = NULL;
+>         }
+> --
+> 2.34.1
+>
 
