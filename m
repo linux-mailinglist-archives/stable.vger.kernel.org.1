@@ -1,174 +1,123 @@
-Return-Path: <stable+bounces-241232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241235-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8Id4NzAJ72n14QAAu9opvQ
-	(envelope-from <stable+bounces-241232-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 08:58:56 +0200
+	id eAH3NPAL72kq4wAAu9opvQ
+	(envelope-from <stable+bounces-241235-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 09:10:40 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4576A46DF22
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 08:58:55 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BFFF46E206
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 09:10:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 270F030038D0
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 06:54:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 262363034EFB
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 07:07:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C13038F648;
-	Mon, 27 Apr 2026 06:54:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D72B1390234;
+	Mon, 27 Apr 2026 07:07:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="Mh7+Ohn4"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="BS13jtl2"
 X-Original-To: stable@vger.kernel.org
-Received: from out203-205-221-205.mail.qq.com (out203-205-221-205.mail.qq.com [203.205.221.205])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D338386C18;
-	Mon, 27 Apr 2026 06:54:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.205
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A562384232;
+	Mon, 27 Apr 2026 07:07:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777272883; cv=none; b=VPhOxtEg7Q7OGwO1lMyb/jIPPA0kq+wfDPAvt4otqY73S3YQNzVwgiqL2wQfb5/Qgwla9ZYdYtznsOyaLCAXzGJ0EPjgeMtL51GUb/toUx6Zp8wOY3k3l8FnTdNV+JwQYygw5ip9tO/gcaD4g0M6OLxmrAMcqNTDhbVGU2P4zaw=
+	t=1777273626; cv=none; b=QknA4qa0onBw+Zk4Z16x9pUXNJhWZ1gwLHmoYykNZAqQKMhzWF/LR7n+ogwektrf4T0DE6qCp/TZtzWOumOIOnbxQ4hbzPkEgKGgHDPNgV+F1Dy7nFcC3sR+vR/rK8E09IQQ+K/gQG0yeXCzsqC+fCHbH1oGVBangyCGCr9LYOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777272883; c=relaxed/simple;
-	bh=L61c8QQkhO8Lxyw8n/0q2qGuuiQUAHeIs5XKKE1zp5Q=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version:Content-Type; b=fsdiWnCCE2ITVPHzEQbIAqrgYqzyTDx1Sifk9dNvhcNZtkIihwS4fS+Gu4CdYHhnOjEdYFKDLi8WRR7j+FC8pXDJzc0G6S6SQ76A0vIod0Fmbu4jV04Z8Ui1WUHRgutpYxWiFGJPeRA7SOU6H9ArKDfh4j9uRIkFSAZIhjkwKog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=Mh7+Ohn4; arc=none smtp.client-ip=203.205.221.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1777272879; bh=YAf/LrZfGLPBHgeXFYTRaJADqAAirwQb1U8glIUJrVQ=;
-	h=From:To:Cc:Subject:Date;
-	b=Mh7+Ohn4coSTVl2TCCqykuYULvxOwZWIwYlF4AhpzPYpmQ/5ZgxKcLqJelbQSu07+
-	 nXJilrGhlWY3nI2QlxZ345SLthEe8/ByhLpml3M1CG685dV3ROFMhYZpFlKprmntsU
-	 Q7VejewWxAhYl7VSo+4+g7JGcK1ktOfi3Ni/ruBU=
-Received: from NTT-kernel-dev ([60.247.85.88])
-	by newxmesmtplogicsvrszb51-1.qq.com (NewEsmtp) with SMTP
-	id DA406ACD; Mon, 27 Apr 2026 14:54:36 +0800
-X-QQ-mid: xmsmtpt1777272876t4whu3acg
-Message-ID: <tencent_899C611CFFBE8DE17F1DE7896C968F47DF0A@qq.com>
-X-QQ-XMAILINFO: OVFdYp27KdlJFxO5Mr92P2c3o2Wm6PFcJfY62DYcKfwndIjHB320O1n8Hq8GXD
-	 eVEo88eEEcagnd6V8Xnnjhj70WKYH4BdFBzC1aZC4D+2mydkE8Gs8QT7MOT6xN9BCCgXUBvO7HPH
-	 +ASCA95OLvJ+KaTqRg6Kfp+bxa+2xDwyc7CovkiRLHAPxTLMK/DPwNtA+lG/qNnenBlx0C5/XCS8
-	 XYOehxeEJ/AeQ9yCev/eQscUdS0vnHnWYoIGO/XDvDxat87ZXi4oEMgA8wt0RiM5Z/6OU1LuWiK3
-	 TmCPqiQQVMzSPFUa2lBeqCU2sFgLPTemsjXpKf7TxyyU6UpwpJUdS7eSg8kr0GUVjAk91HirPL4X
-	 ZOEmgmcHsdwLMQp6e19kyCESM2Q+68ZpLM5WN/EwMJgIa/8HaPAT1FQjrTR1UEqO3Qf4hArQdWQd
-	 t0DTzvBPTqM7D62GhCQJfM7Mdung91Nfa/Leo/+zd/yrxAMclHOta7ZTr2BMNzy498p8RgH/e07Q
-	 JCleUCaG7bAWLb+bjarOPVHyEBrHTVSma/EU/qDggiyJOZL4IQ+fUHi0ORvV+vFJde0FensJLcle
-	 fnTPqRXJCCPlX+rOO61Lz+pI5jiyEufk9zAS0E+hLy6J1AmCNWnUj+aiWuWZBjwdGYcL3tLGH1+e
-	 RIKo5SRsyLCO1M1IudVO+RBqwSJg4drbfkRnnbwk69AlXCUxplgjlV/AmnP0gvwD4gYBC8k2PhEL
-	 oxQ990yJY7ZBVRPKWsD7tp7endP4UHd99Qn/LyvMRD7xLsXfLui49tAcaqnmtRO5bN1EroCM8GVr
-	 9xbd4lYC8XYT+zIQjuUd7QoJFheMFmTEsz8s/0nTJH4k6oLlkhXiN+BcTjdB7uzjQ3+ovCiNJe3Y
-	 IAD1A13qrK2rVpazLVEt6PIOvuNIgxgmvhqx201V+pisAzwd2+i/Vb6j+/ik7HtBghAQ717RCt/u
-	 B1AFxOXe7gv87xLXKl0Y6JI/ueZBOW0Rv+AsRwBQ9Re88GrnOFYNdGcQJwa8nVNCmTl0LMhkUCvL
-	 SDwMIeRvQUw2KYDyTDLMVrGLRxAHM9AU9zEKfe+XJGg3RYOmuZLB6/9c/W/i6QeWfBmunAkLJPo8
-	 xODDYVjtV9kkw8VQU=
-X-QQ-XMRINFO: NI4Ajvh11aEjEMj13RCX7UuhPEoou2bs1g==
-From: Fang Wang <32840572@qq.com>
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org,
-	tvrtko.ursulin@igalia.com
-Cc: patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	alexander.deucher@amd.com,
-	christian.koenig@amd.com,
-	Xinhui.Pan@amd.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	Jesse.Zhang@amd.com,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH 6.1.y 2/2] drm/amdgpu: Limit BO list entry count to prevent resource exhaustion
-Date: Mon, 27 Apr 2026 14:54:35 +0800
-X-OQ-MSGID: <20260427065435.4120232-1-32840572@qq.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1777273626; c=relaxed/simple;
+	bh=DE32e92uHYOIlpoYVLw0H68uGO9loNojkjoUsdSiKI8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Zp0NFvzUDEA3NI72Hd2BgPP7rYkH4StyVNUkJ587uq5saT5o8rPR4lXBRIH2s66p0RnUx700PQN8bepT0XMz4cFL5vbU3Mx6BI0KUO0FJlSiWGpRKnn1+ytYfyvFRIU8krAXMs+bV+ra/vmnuY3AfwNpIzYv1Dkng9SI6w7lXR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=BS13jtl2; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from [192.168.0.11] (unknown [4.194.122.162])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 8AB7B20B7169;
+	Mon, 27 Apr 2026 00:06:57 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 8AB7B20B7169
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1777273619;
+	bh=giftQ86SgZqHyZWw3I0V5U91tZwxylDb3voNzLxgeDo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=BS13jtl2GjrbvZ2/GXt+CpSA+U7hfA+dkZ4jfw6jGA4oYh3copnmIQTqTLVo+AR0A
+	 M0W5D7CsVkKBv/g0Mx7zShBz/R6T0oYAfwyBx4U9rWIy3/bxW/cNyDKpv7VHTeU572
+	 twRMWTpYnPb9rW6Monv0HgVf0HKPwTZJr+hbhgT8=
+Message-ID: <32170102-490f-4eb3-bfe5-faa38848129f@linux.microsoft.com>
+Date: Mon, 27 Apr 2026 12:37:01 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4576A46DF22
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] cdx: Fix double free when sysfs file creation fails
+To: "Gupta, Nipun" <nipun.gupta@amd.com>, nikhil.agarwal@amd.com,
+ abhijit.gangurde@amd.com, puneet.gupta@amd.com, gregkh@linuxfoundation.org,
+ linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+References: <20260320101933.1554416-1-ptsm@linux.microsoft.com>
+ <20260320102117.1554548-1-ptsm@linux.microsoft.com>
+ <c67594eb-7e3a-9fda-858a-a9ffa4e3d190@amd.com>
+Content-Language: en-US
+From: Prasanna Kumar T S M <ptsm@linux.microsoft.com>
+In-Reply-To: <c67594eb-7e3a-9fda-858a-a9ffa4e3d190@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 4BFFF46E206
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qq.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[qq.com:s=s201512];
+	DMARC_POLICY_ALLOW(-0.50)[linux.microsoft.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[linux.microsoft.com:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-241232-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-241235-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,amd.com,gmail.com,ffwll.ch,lists.freedesktop.org];
-	RCPT_COUNT_TWELVE(0.00)[13];
+	DKIM_TRACE(0.00)[linux.microsoft.com:+];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[32840572@qq.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[qq.com:+];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ptsm@linux.microsoft.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	FREEMAIL_FROM(0.00)[qq.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qq.com:email,qq.com:dkim,qq.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email]
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.microsoft.com:dkim,linux.microsoft.com:mid]
 
-From: "Jesse.Zhang" <Jesse.Zhang@amd.com>
+Hi Nipun,
 
-[ Upstream commit 6270b1a5dab94665d7adce3dc78bc9066ed28bdd ]
+On 01-04-2026 15:12, Gupta, Nipun wrote:
+> 
+> 
+> On 20-03-2026 15:51, Prasanna Kumar T S M wrote:
+>> In cdx_create_res_attr(), if sysfs_create_bin_file() fails, the code
+>> frees res_attr but doesn't set cdx_dev->res_attr[num] to NULL. This
+>> leaves a dangling pointer in the array. Then cdx_destroy_res_attr()
+>> frees the already-freed memory. Fix the double free by initializing
+>> cdx_dev->res_attr[num] after sysfs_create_bin_file() completes.
+>>
+>> Fixes: aeda33ab8160 ("cdx: create sysfs bin files for cdx resources")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Prasanna Kumar T S M <ptsm@linux.microsoft.com>
+> 
+> Acked-by: Nipun Gupta <nipun.gupta@amd.com>
 
-Userspace can pass an arbitrary number of BO list entries via the
-bo_number field. Although the previous multiplication overflow check
-prevents out-of-bounds allocation, a large number of entries could still
-cause excessive memory allocation (up to potentially gigabytes) and
-unnecessarily long list processing times.
+I am not able to see this patch in linux-next, although I can see the 
+other patch.
 
-Introduce a hard limit of 128k entries per BO list, which is more than
-sufficient for any realistic use case (e.g., a single list containing all
-buffers in a large scene). This prevents memory exhaustion attacks and
-ensures predictable performance.
+Is this patch still on track for merging?
 
-Return -EINVAL if the requested entry count exceeds the limit
-
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Suggested-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Jesse Zhang <jesse.zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 688b87d39e0aa8135105b40dc167d74b5ada5332)
-Cc: stable@vger.kernel.org
-Signed-off-by: Fang Wang <32840572@qq.com>
----
- drivers/gpu/drm/amd/amdgpu/amdgpu_bo_list.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_bo_list.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_bo_list.c
-index 79e43896eddd..28a5b54a3aae 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_bo_list.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_bo_list.c
-@@ -35,6 +35,7 @@
- 
- #define AMDGPU_BO_LIST_MAX_PRIORITY	32u
- #define AMDGPU_BO_LIST_NUM_BUCKETS	(AMDGPU_BO_LIST_MAX_PRIORITY + 1)
-+#define AMDGPU_BO_LIST_MAX_ENTRIES	(128 * 1024)
- 
- static void amdgpu_bo_list_free_rcu(struct rcu_head *rcu)
- {
-@@ -232,6 +233,9 @@ int amdgpu_bo_create_list_entry_array(struct drm_amdgpu_bo_list_in *in,
- 	const uint32_t bo_number = in->bo_number;
- 	struct drm_amdgpu_bo_list_entry *info;
- 
-+	if (bo_number > AMDGPU_BO_LIST_MAX_ENTRIES)
-+		return -EINVAL;
-+
- 	/* copy the handle array from userspace to a kernel buffer */
- 	if (likely(info_size == bo_info_size)) {
- 		info = vmemdup_array_user(uptr, bo_number, info_size);
--- 
-2.34.1
-
+Thanks,
+Prasanna Kumar
 
