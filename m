@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-241433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241434-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8K2zOiC/72mLFQEAu9opvQ
-	(envelope-from <stable+bounces-241433-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 21:55:12 +0200
+	id 4EUbKHu/72mLFQEAu9opvQ
+	(envelope-from <stable+bounces-241434-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 21:56:43 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E2AC47991A
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 21:55:12 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5F70479984
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 21:56:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D36F6301060C
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 19:55:03 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 31E5F3015820
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 19:55:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE9034219FD;
-	Mon, 27 Apr 2026 19:54:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1AA942189B;
+	Mon, 27 Apr 2026 19:54:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ttam2fPc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z6N0iGij"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0BBF421884;
-	Mon, 27 Apr 2026 19:54:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1BBA42189A;
+	Mon, 27 Apr 2026 19:54:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777319689; cv=none; b=aGevqq5eiFooj7p2BKIscT7+aYATwFGdhZnhvZeGcjPlil4dT6Fn+sSah0lw+IzK/BAc9xtCY7AGqf9ntvzl2FA83ulGWlmLzY7U6efLvOXvS4dPBLmWJ7jNQHiuq2U4r+q6FY/o4cTjcv5CPwfYR/tKRX0rIBQmEgXeySLc1VU=
+	t=1777319691; cv=none; b=ecFgLGxTnvLTTnWm7eu/JfqQXMkrXT4lhYbTHGd2D+EI/+jWaiG3hJpFxi9a8xCVoCjBiUrAYiXmKbyOKHCN00YveC92XTL9Z7kYS0lB9brt0//pbMtCLOnIQl3zxi8x3oBP8fLFx7sr9HTk0cJ+G8aFGRdEggkvBETt3Lpi11U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777319689; c=relaxed/simple;
-	bh=LBn2LgMBcaDvs+3DQCdYAOSmTIOssdPu+zqCDPnZfYU=;
+	s=arc-20240116; t=1777319691; c=relaxed/simple;
+	bh=RSS32AhqrYieijWsPYjck0hKZlEjdH3hTLaQgWU9920=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=oBVHjDby8j2a/6ivaApoRL+DbsVQmLWf+Jb+Nkeha3aerNfG+HOaXWjx41Qm9JtBkfJNjKZ8g2RSjGpJsehbQbcR0J/tGaAznACdtxpADRJZforgMHUHz1kRwlQ5G5ObWmL+PuaknNDuhQLVoYab4MEVWPIqbGfT458xShSOwDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ttam2fPc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC03BC2BCB5;
-	Mon, 27 Apr 2026 19:54:46 +0000 (UTC)
+	 In-Reply-To:To:Cc; b=mu1n36LlDQ8L0neQu8XPFKIJet0QFr9aCvamfbyNJr322J3Yztq4nMi6Q7YThrmmIHmqrXJafQXb0eGTLJeaochJ4RwYvH6moVF6JUXG1Xna/bCmdRjxP6CZoRoh5D8j/69anPxMXftvZPEzOYf3TUpH5kYR4OHPoyzYvi6I20o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z6N0iGij; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A416C19425;
+	Mon, 27 Apr 2026 19:54:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777319689;
-	bh=LBn2LgMBcaDvs+3DQCdYAOSmTIOssdPu+zqCDPnZfYU=;
+	s=k20201202; t=1777319691;
+	bh=RSS32AhqrYieijWsPYjck0hKZlEjdH3hTLaQgWU9920=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=Ttam2fPcoBMOcF7zUTYQEtrxmuuFMgQ+CWINYqTNwWaSSsdLgf19gHimnr9y1XQfx
-	 ccvSC25fyqk3hQzW4nkgeUWC25RPNhv3oevjgr3l2jv+RyEGAAnqyROa1OWO/hZ4O6
-	 eb0IK80HIuNWPiZmoie4SjRoBgtzyx+o3GCxDLmxbJIaruPVMmRqLFMPUctVGyueEp
-	 uyO8OUAlYyqV7Wd9ZnXyh30AVwCVU6uOMPRuot69eLvClHapo0ZdtlXkKplt04DVlR
-	 PrVNOSWsT+E3JBfHRdASHIJBKZrBCmb7oryFC/CsGUFyQqG+R0oqR/XZZr1NoWqrgW
-	 24cgVW630a6vQ==
+	b=Z6N0iGij80AUMpSKSZqQMYC9qbljVvTa06qYGgIx0rnlpyXlaEoXaPIH1cRZ2b91g
+	 b6BAIBEbTL+dzmAa72prJXR5Dz6Pnrmt8mgN4B0Hq+f9u9Aa1LSZeUCSl2jkkB0pt1
+	 ki3cGMHfPqYL0+BDlLnZly+NHhJ6HMUobKWn40FHNW4sv0VqsWVMBU0alGGR0a7BBE
+	 1EqYC+2MSYdaLjwCm2yCi86FNtMWEXWboStfixp9z9B39BMy9qzjTpfzq0bzutrhtJ
+	 OEAvcxbzmIgNO+8urr2Gwbd3XVe2jfXVS28qik7+F9UhN6VY+Ux82NvMRMFU5QWzPK
+	 AHOFqbFEXvJ6Q==
 From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Mon, 27 Apr 2026 21:54:34 +0200
-Subject: [PATCH net 2/4] mptcp: fix scheduling with atomic in timestamp
- sockopt
+Date: Mon, 27 Apr 2026 21:54:35 +0200
+Subject: [PATCH net 3/4] mptcp: fastclose msk when linger time is 0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,7 +55,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260427-net-mptcp-misc-fixes-7-1-rc2-v1-2-7432b7f279fa@kernel.org>
+Message-Id: <20260427-net-mptcp-misc-fixes-7-1-rc2-v1-3-7432b7f279fa@kernel.org>
 References: <20260427-net-mptcp-misc-fixes-7-1-rc2-v1-0-7432b7f279fa@kernel.org>
 In-Reply-To: <20260427-net-mptcp-misc-fixes-7-1-rc2-v1-0-7432b7f279fa@kernel.org>
 To: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, 
@@ -65,24 +64,23 @@ To: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>,
  Simon Horman <horms@kernel.org>, Florian Westphal <fw@strlen.de>
 Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev, 
  linux-kernel@vger.kernel.org, "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, 
- Gang Yan <yangang@kylinos.cn>, stable@vger.kernel.org, 
- Sashiko <sashiko-bot@kernel.org>
+ stable@vger.kernel.org, Lance Tuller <lance@lance0.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1719; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=iBK9QVv4IIxXvqP2wcnH/vp4xvbK4EmPyg+nC3HMa4c=;
- b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDLf7/u/Sd1Hn+HKdYUf73Rcux49N2vQuHJGUnVv0aa3K
- wuuThDV6ShlYRDjYpAVU2SRbovMn/m8irfEy88CZg4rE8gQBi5OAZjIMV6G/0k7Tpk87Du256up
- wq3St2Wha5m6qhvu2GtoikWtmsSc9ZjhfxXD3v2FBw85LfZdxKk2d9neDxqpqxv4Vj5OmdDyYJX
- ZbEYA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1764; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=RSS32AhqrYieijWsPYjck0hKZlEjdH3hTLaQgWU9920=;
+ b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDLf7/vP1uAs5vXWZfXvl3fq7u63MN/8c8mRkL+sJ7Zk5
+ EyXUkpX7yhlYRDjYpAVU2SRbovMn/m8irfEy88CZg4rE8gQBi5OAZjIfVGG/7UTl1mWXHx/1GRH
+ 6v6711d2HXJrZed4dSbpmAXnesuFy28xMrwWf9yq+ayq5dLU33HyhiK7Kk4sWhPzxGwrx9v3l5T
+ 60pgA
 X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
  fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
-X-Rspamd-Queue-Id: 8E2AC47991A
+X-Rspamd-Queue-Id: A5F70479984
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -91,11 +89,11 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	RCVD_COUNT_THREE(0.00)[4];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241433-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[15];
+	TAGGED_FROM(0.00)[bounces-241434-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
@@ -105,57 +103,49 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,lance0.com:email]
 
-From: Gang Yan <yangang@kylinos.cn>
+The SO_LINGER socket option has been supported for a while with MPTCP
+sockets [1], but it didn't cause the equivalent of a TCP reset as
+expected when enabled and its time was set to 0. This was causing some
+behavioural differences with TCP where some connections were not
+promptly stopped as expected.
 
-Using lock_sock_fast() (atomic context) around sock_set_timestamp()
-and sock_set_timestamping() is unsafe, as both helpers can sleep.
+To fix that, an extra condition is checked at close() time before
+sending an MP_FASTCLOSE, the MPTCP equivalent of a TCP reset.
 
-Replace lock_sock_fast() with sleepable lock_sock()/release_sock()
-to avoid scheduling while atomic panic.
+Note that backporting up to [1] will be difficult as more changes are
+needed to be able to send MP_FASTCLOSE. It seems better to stop at [2],
+which was supposed to already imitate TCP.
 
-Fixes: 9061f24bf82e ("mptcp: sockopt: propagate timestamp request to subflows")
+Validated with MPTCP packetdrill tests [3].
+
+Fixes: 268b12387460 ("mptcp: setsockopt: support SO_LINGER") [1]
+Fixes: d21f83485518 ("mptcp: use fastclose on more edge scenarios") [2]
 Cc: stable@vger.kernel.org
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Closes: https://sashiko.dev/#/patchset/20260420093343.16443-1-gang.yan@linux.dev
-Signed-off-by: Gang Yan <yangang@kylinos.cn>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Reported-by: Lance Tuller <lance@lance0.com>
+Closes: https://github.com/lance0/xfr/pull/67
+Link: https://github.com/multipath-tcp/packetdrill/pull/196 [3]
+Reviewed-by: Mat Martineau <martineau@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 ---
- net/mptcp/sockopt.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/mptcp/protocol.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/mptcp/sockopt.c b/net/mptcp/sockopt.c
-index 79db15903e7a..0efe40be2fde 100644
---- a/net/mptcp/sockopt.c
-+++ b/net/mptcp/sockopt.c
-@@ -159,10 +159,10 @@ static int mptcp_setsockopt_sol_socket_tstamp(struct mptcp_sock *msk, int optnam
- 	lock_sock(sk);
- 	mptcp_for_each_subflow(msk, subflow) {
- 		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
--		bool slow = lock_sock_fast(ssk);
- 
-+		lock_sock(ssk);
- 		sock_set_timestamp(ssk, optname, !!val);
--		unlock_sock_fast(ssk, slow);
-+		release_sock(ssk);
+diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+index 718e910ff23f..4546a8b09884 100644
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -3302,7 +3302,8 @@ bool __mptcp_close(struct sock *sk, long timeout)
+ 		goto cleanup;
  	}
  
- 	release_sock(sk);
-@@ -235,10 +235,10 @@ static int mptcp_setsockopt_sol_socket_timestamping(struct mptcp_sock *msk,
- 
- 	mptcp_for_each_subflow(msk, subflow) {
- 		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
--		bool slow = lock_sock_fast(ssk);
- 
-+		lock_sock(ssk);
- 		sock_set_timestamping(ssk, optname, timestamping);
--		unlock_sock_fast(ssk, slow);
-+		release_sock(ssk);
- 	}
- 
- 	release_sock(sk);
+-	if (mptcp_data_avail(msk) || timeout < 0) {
++	if (mptcp_data_avail(msk) || timeout < 0 ||
++	    (sock_flag(sk, SOCK_LINGER) && !sk->sk_lingertime)) {
+ 		/* If the msk has read data, or the caller explicitly ask it,
+ 		 * do the MPTCP equivalent of TCP reset, aka MPTCP fastclose
+ 		 */
 
 -- 
 2.53.0
