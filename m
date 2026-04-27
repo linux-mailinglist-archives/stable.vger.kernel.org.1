@@ -1,91 +1,96 @@
-Return-Path: <stable+bounces-241275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241276-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aLQtH2Aq72n98gAAu9opvQ
-	(envelope-from <stable+bounces-241275-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 11:20:32 +0200
+	id GFw8Hc4r72nt8wAAu9opvQ
+	(envelope-from <stable+bounces-241276-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 11:26:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2806546FC66
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 11:20:31 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77B5E46FE70
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 11:26:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7A696301E677
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 09:18:21 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1B11A300BC70
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 09:22:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E87243B19B4;
-	Mon, 27 Apr 2026 09:18:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E6433B27E7;
+	Mon, 27 Apr 2026 09:22:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JLhb9bUi"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kXOm7Twv"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F3D03ACEF3
-	for <stable@vger.kernel.org>; Mon, 27 Apr 2026 09:18:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFD8439903A
+	for <stable@vger.kernel.org>; Mon, 27 Apr 2026 09:22:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777281488; cv=none; b=p/Jn6JoiPeVQh5qaczEEAl1cM7vcdom1oYaTj3vthXd6vJ1RJpC2FWPQqvAUZCQ75+k5+ngFn2gQDgtsKcueQAi7S0aTilfj+T2DkpG6bbbPZEWWQAOcP2mZjh88WO+EaydbLOmlyzc0MTUlGuzLDO7SHzDGMJyNqM30ECo4ANA=
+	t=1777281750; cv=none; b=VsN84yll2/zLHGmWsaRUKmWowa/PnHCcO4xGH5IwyTffnWxwUjzV+dAM6M4ntzlyrk4nihxYto2ofOd6rz1eXl23TdYNfcFNL6mzUaYxsKMZbEffyB1GexK9JXLNPEpfxS63IYuMMop3dCT7370I7YZigMykt19IO+UhA41Y3C4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777281488; c=relaxed/simple;
-	bh=fnN35qESeOdgi4tF4w09XQRiEb7fMrqlZft8OZ4lmno=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FCcF7RqFAJy+/SnLkYKoyVJptDhrd2Gfu2KXS1qg92N4WEJQIcEQ9ZEl90yXzfohkCnfGYdDMe7Q8sXFn08xtNWAzLoPZOLTGDiUBgTidJRt8wKXtwcLcxJj7bff26lE5/WozTwOT3hXfbeOpN/UvWEby8Euf1WVo7evJOvi3Zo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JLhb9bUi; arc=none smtp.client-ip=209.85.128.51
+	s=arc-20240116; t=1777281750; c=relaxed/simple;
+	bh=BSb64EzeNe+LAdM46kkrVWOCt/FZCzWzgFhyw7921go=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Fx2C8Mlxlca8gSqRitVpQvTo5rrrsbCEhlRWiXeEA+lqSNxa6RpO7gl2CCST2t0qkrVRVYwQJi+akDTzP4ZcRXPpPW0B6JOdN6I7o/D3RsQgoRZJJX/pmb7JuQdqngUepG++jtQ4DtkEKP05DicRD9qGRpUHz7UnmbKZqDZY9zM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kXOm7Twv; arc=none smtp.client-ip=209.85.210.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4890098abbaso78554955e9.0
-        for <stable@vger.kernel.org>; Mon, 27 Apr 2026 02:18:06 -0700 (PDT)
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-82f4a53ae20so7277271b3a.3
+        for <stable@vger.kernel.org>; Mon, 27 Apr 2026 02:22:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777281486; x=1777886286; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1777281747; x=1777886547; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=G5GEpNVWjonWBwD4A06zP9qS6FFrJA5lpTK9sFcNHDE=;
-        b=JLhb9bUi3fM7++ocNF/cyD3hgm5Y7+r8V9qPsL+M6JVBy6RvfN7vTVwQQHhuHa2tyi
-         lkbiCNqPv+2t5tqrpCpJJ0jr9PMxBBt2H9eLadLNZExRnQjGXXSINZC+dRHMnBGTNTOj
-         7Wqc6vsaG7Z45yQbhiUOj88Bpi2VwRSpj1NY8DiZz59NYaIFE4lpST+eXGPzFdlELu5m
-         dxs9i/fuQdOAO1J2hwfubsc4Rp7Vtvf5HtloVwSzSHMVdN9O+zHiRe0kQWaAd4aHuoKE
-         VzBf3dgfZAOPqyyXEfNQe0v27TxcnIV+GpQQn/jeBpzus/uMjUCOnn7JzZ1c4wmDZldr
-         5AmQ==
+        bh=wFZBmc0iscSfAT4VB9ZbI38DRL/+YXPqj1yfGMlW+m4=;
+        b=kXOm7TwvUgOcQHjq2B2ixLP51P7p0GEoG9nOepzjYAMPKFTaXJpLBWPVjoOdaabd4D
+         Qjt+W/K38lTf+9UpFJFrN5SMxAs+wMCg9mkJLKBvVJGoXQPWEkHU8FwqM9/A4TpUxYhT
+         n3aUD5XZq9GnfbP7Gxu1unzqm86jaiJhdHYK5YBYqekZMY8WUEtO0B9H5hA0Ojm/9jzl
+         8pEnXm4+HKCK/u4jf8tUAMNFtFUJ9lE46aKP0hl1SWBvpzBKhbyBwU1lV+1d/wyyzKyd
+         VNPvC4LGxgpU+qzB/GQFLZEBybyDAD50vE7T7/akSCWj4b86rQDtEaC/dKuiWmg1hrwc
+         Eahg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777281486; x=1777886286;
+        d=1e100.net; s=20251104; t=1777281747; x=1777886547;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=G5GEpNVWjonWBwD4A06zP9qS6FFrJA5lpTK9sFcNHDE=;
-        b=HZLP2w9/a+V7C6YnaUGUbP4YekvJ+OKHJ+5/OKD9LqvI9UjYXBq+jdoE3cEw+2f7QH
-         B4Akc+SBsqV7NBiJnhhsAmE1gyXVWNUmV05qwI2PKUoo1mR4ZXr0eaN57rXq5FSAG82J
-         RWFfqojAAJZIoO9Rg1gBBc0VFykrW0E8nzbBn5BqwTuUF21oP913O6i+1OLhCi2yuLOQ
-         A6kRLw7sVSLCp3CJGce3TovY+G7W/xshXOepcQwfo2SqeAIflwfSWTtXU/kSmXvkUveI
-         PdP5xaN8QUcfXCSdiF3rbBc/eFpZtFYYqDVgNU/nEKFz+tu8D6LQQiE7+RK6ihBEXz1Z
-         FsDw==
-X-Forwarded-Encrypted: i=1; AFNElJ93saZf1oKqSimldFJVSK7NoDeCKLkSVttKaziDEHRoewQ8hA419aPjrVDNmO9Yn+JDs8mTNCU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy446F6yMcL6JMuoi7hShXJNxVfQDls8punEiG8ZoULv42a7o3z
-	OAZsJynjNgvHhpXX2D23JaGE0/kFb+c3vVywrRWiUXyn9sVNZW4I7rS1ZjAEdw==
-X-Gm-Gg: AeBDiet5VkH9N4SrPFEuuysy80V4LFkFkW4xm+paeqSN8aV1cD0w+gwWdAKz777+yZU
-	qg8iTW37crf6hL+uQ3dVhTSPWV/B4zB+EwZ3rmRDucA1kjNsU17T6CodQ0xKF5THdGn8kyNxUF3
-	VKleNqHJMbqXvKJJ80ZkkZ+2nfscu6sDf2+onzfm2eDRn/EnqC7sXrjk14qsswHv9epeL8b/+oQ
-	AxRWMIf4iJLHQLJebNj8DqI/MF3HsIJBHKV8YwzZ8b1kAUgH4NlT8KT8r6sDTsEKpeDq/WlgrBy
-	uSji5GHEcPulnRsmTNJxbjdKZ9weov0rWrMEP934Uu4wAhy4Y/XhcnWcmrKM4JkpbztXWq5ugMw
-	KiSzlkDnNFVteK6Pn+jAgid4tSo9HFfgPj9Eeh/NPTVo8seVtLZ62WDs2m2uDpbgwHpd79/JpPZ
-	KvLKy7Geu0BNCXoFJuJpRIVeZtROFrUELG2JbqyIRdDhExfJ3dsmrkc7NJns0EELRYqy+xOGMSg
-	HxEMVNCGuCXEeGf6mdd3POwZ6osyueOVyd/hPqhga7Kn7/3bqb6
-X-Received: by 2002:a05:600c:2d09:b0:489:c57:7836 with SMTP id 5b1f17b1804b1-4890c5778ffmr279466465e9.27.1777281485373;
-        Mon, 27 Apr 2026 02:18:05 -0700 (PDT)
-Received: from labdl-itc-sw01.tmt.telital.com ([2a01:7d0:4800:7:a04:488a:882a:de93])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a525a0b1asm231769375e9.2.2026.04.27.02.18.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Apr 2026 02:18:04 -0700 (PDT)
-From: Fabio Porcedda <fabio.porcedda@gmail.com>
-To: Johan Hovold <johan@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-usb@vger.kernel.org,
-	Daniele Palmas <dnlplm@gmail.com>,
-	Fabio Porcedda <fabio.porcedda@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] USB: serial: option: add Telit Cinterion LE910Cx compositions
-Date: Mon, 27 Apr 2026 11:17:46 +0200
-Message-ID: <20260427091746.592613-1-fabio.porcedda@gmail.com>
-X-Mailer: git-send-email 2.53.0
+        bh=wFZBmc0iscSfAT4VB9ZbI38DRL/+YXPqj1yfGMlW+m4=;
+        b=CDI1uW5xzfpG6K0ol8y8zVG6qD/Q54M/KW2mkmY6rvL8pEg6OGd+td9Oz/6WTcZj8v
+         zYZABRiCfRVGvb4Ua0IHgi4U/QKb+Lwd/QKF/Wd2NUaJWWR2JozhZZYieZ/QnGUExsK4
+         lQxYHxPFDAQl91Fy/4PjPcr+dNEv6Y9WKEO7aYskyTHI5MfAcEd+SCd3aJFcx88mAics
+         PvtZZqClMoWu+UgVRZFAvFRwpOtESuo1+SPlqhoAeOZpV50xEFSl0g4r3NLxacUX5A7N
+         1d2v6nAM/XGMXGExc+Lx5ShR8kDGqZaaCLcs33AQFFX/L7HQOu9nDK9ouUZx2A2eSWGb
+         pHsQ==
+X-Forwarded-Encrypted: i=1; AFNElJ86tFrSFZHIrAEzUHWGy0liT/TzcLHYPVN26Tu0mB8W3wAzvxI2l7GVUugfYy585fO3MTb43e4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzmssycI95TNVNoahAyNYG2t0dJj2TEc7ARMg+jInYMD832Wh43
+	9GF/8zAE72SsZZDBEJV25yi9RsTRLEtKAJH79ippHpoDeMSJd9bdgXI=
+X-Gm-Gg: AeBDieupW8izbkn5RXKiuQuw8QCqjb7SoBFiMd9iOVUQwpeHHKBLw5fY5lvb4WtwmLD
+	bIl26YLzXYLZ6QwdgGVnbq7HbzWZwtT5VnUgs2E2z1ZzyCfDNfJpF52QVdp5vc9EjPfOgJkKflD
+	0dQktJkPc6F84yhAHgim55Tzw53g2gyat0ZttNvmgpMkw01AXsNfRUFuJjvPgIu5SxpOCrT0Ao1
+	VwQKPF6jyaBfTblH33aruTEkw7jMSJm18QewJDOAiIfBUPmzLXUccPO4nmr/DsRQcgetfuyslRR
+	Fvpca0pK09q1AxTeDvpUrJ1p2mOT0KIhsluyjLe2x4Nz3gvXH8/UCy9IOyT/L2q9pPeVdKye/wG
+	6wXHzW7F6eT69ku5wekl44ojFJiZFRP+LU3n3dg+s3mK2RP5yAgJ63u5Fx3MMCFAibrHQEFEjNi
+	N39Wr2R7wf/eQZhEB8HDVc73YZcJTJwIje7uUpINWefHbw+7jvqx5Es1kdUxPJSt33AES/aaPUM
+	0GvFR4adVJpay6bH8vI0NqLcpeIkNflAYrP8YWzP8SvQ9s=
+X-Received: by 2002:a05:6a00:4094:b0:82a:955:50d3 with SMTP id d2e1a72fcca58-82f8c937b36mr43641207b3a.45.1777281747016;
+        Mon, 27 Apr 2026 02:22:27 -0700 (PDT)
+Received: from localhost.localdomain ([1.226.165.54])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f8e9fbb85sm36364449b3a.22.2026.04.27.02.22.24
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 27 Apr 2026 02:22:26 -0700 (PDT)
+From: "=?UTF-8?q?=EB=B0=95=EB=AA=85=ED=9B=88?=" <mhun512@gmail.com>
+X-Google-Original-From: =?UTF-8?q?=EB=B0=95=EB=AA=85=ED=9B=88?= <pakmyeonghun@bagmyeonghun-ui-MacBookPro.local>
+To: Saurav Kashyap <skashyap@marvell.com>,
+	Javed Hasan <jhasan@marvell.com>,
+	GR-QLogic-Storage-Upstream@marvell.com
+Cc: Myeonghun Pak <mhun512@gmail.com>,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	linux-scsi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Ijae Kim <ae878000@gmail.com>
+Subject: [PATCH] scsi: qedf: Free exchange manager on probe failure
+Date: Mon, 27 Apr 2026 18:22:14 +0900
+Message-ID: <20260427092220.58365-1-pakmyeonghun@bagmyeonghun-ui-MacBookPro.local>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -93,173 +98,100 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2806546FC66
+X-Rspamd-Queue-Id: 77B5E46FE70
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,vger.kernel.org,gmail.com];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241275-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-241276-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,HansenPartnership.com,oracle.com,vger.kernel.org];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[fabioporcedda@gmail.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[mhun512@gmail.com,stable@vger.kernel.org];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 
-Add the following Telit Cinterion LE910Cx compositions:
+From: Myeonghun Pak <mhun512@gmail.com>
 
-0x1251: RNDIS + tty (AT/NMEA) + tty (AT) + tty (AT) + tty (SAP)
-T:  Bus=01 Lev=01 Prnt=21 Port=06 Cnt=01 Dev#=108 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=1251 Rev=03.18
-S:  Manufacturer=Android
-S:  Product=LE910C1-EU
-S:  SerialNumber=0123456789ABCDEF
-C:  #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=02 Prot=ff Driver=rndis_host
-E:  Ad=82(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=88(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=8a(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+qedf_lport_setup() allocates a libfc exchange manager that is normally
+released from qedf_remove(). If probe fails after the lport setup has
+completed, the driver core does not call .remove(), so the exchange
+manager and lport stats are left allocated.
 
-0x1253: ECM + tty (AT/NMEA) + tty (AT) + tty (AT) + tty (SAP)
-T:  Bus=01 Lev=01 Prnt=21 Port=06 Cnt=01 Dev#=121 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=1253 Rev=03.18
-S:  Manufacturer=Android
-S:  Product=LE910C1-EU
-S:  SerialNumber=0123456789ABCDEF
-C:  #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=06 Prot=00 Driver=cdc_ether
-E:  Ad=82(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=88(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=89(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=8a(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+Release the lport resources from the probe error path and also drop the
+exchange manager if stats allocation fails inside qedf_lport_setup().
 
-0x1254: tty (AT) + tty (AT)
-T:  Bus=01 Lev=01 Prnt=21 Port=06 Cnt=01 Dev#=122 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=1254 Rev=03.18
-S:  Manufacturer=Android
-S:  Product=LE910C1-EU
-S:  SerialNumber=0123456789ABCDEF
-C:  #Ifs= 2 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-
-0x1255: tty (AT/NMEA) + tty (AT) + tty (AT) + tty (SAP)
-T:  Bus=01 Lev=01 Prnt=21 Port=06 Cnt=01 Dev#=123 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=1255 Rev=03.18
-S:  Manufacturer=Android
-S:  Product=LE910C1-EU
-S:  SerialNumber=0123456789ABCDEF
-C:  #Ifs= 4 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=88(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-
+Fixes: 61d8658b4a43 ("scsi: qedf: Add QLogic FastLinQ offload FCoE driver framework.")
 Cc: stable@vger.kernel.org
-Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
+Co-developed-by: Ijae Kim <ae878000@gmail.com>
+Signed-off-by: Ijae Kim <ae878000@gmail.com>
+Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
 ---
-v2:
-- Add stable tag
+ drivers/scsi/qedf/qedf_main.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-v1:
-- Link: https://lore.kernel.org/linux-usb/20260427090047.582858-1-fabio.porcedda@gmail.com
-
- drivers/usb/serial/option.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/drivers/usb/serial/option.c b/drivers/usb/serial/option.c
-index 0cd65b782488..d2db0005ea24 100644
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -1513,7 +1513,11 @@ static const struct usb_device_id option_ids[] = {
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1231, 0xff),	/* Telit LE910Cx (RNDIS) */
- 	  .driver_info = NCTRL(2) | RSVD(3) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(TELIT_VENDOR_ID, 0x1250, 0xff, 0x00, 0x00) },	/* Telit LE910Cx (rmnet) */
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1251, 0xff) },	/* Telit LE910Cx (RNDIS) */
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1252, 0xff) },	/* Telit LE910Cx (MBIM) */
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1253, 0xff) },	/* Telit LE910Cx (ECM) */
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1254, 0xff) },	/* Telit LE910Cx */
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1255, 0xff) },	/* Telit LE910Cx */
- 	{ USB_DEVICE(TELIT_VENDOR_ID, 0x1260),
- 	  .driver_info = NCTRL(0) | RSVD(1) | RSVD(2) },
- 	{ USB_DEVICE(TELIT_VENDOR_ID, 0x1261),
+diff --git a/drivers/scsi/qedf/qedf_main.c b/drivers/scsi/qedf/qedf_main.c
+index da429b3a42..499d42e46c 100644
+--- a/drivers/scsi/qedf/qedf_main.c
++++ b/drivers/scsi/qedf/qedf_main.c
+@@ -1765,8 +1765,10 @@ static int qedf_lport_setup(struct qedf_ctx *qedf)
+ 	fc_exch_mgr_alloc(lport, FC_CLASS_3, FCOE_PARAMS_NUM_TASKS,
+ 			  0xfffe, NULL);
+ 
+-	if (fc_lport_init_stats(lport))
++	if (fc_lport_init_stats(lport)) {
++		fc_exch_mgr_free(lport);
+ 		return -ENOMEM;
++	}
+ 
+ 	/* Finish lport config */
+ 	fc_lport_config(lport);
+@@ -3306,6 +3308,7 @@ static int __qedf_probe(struct pci_dev *pdev, int mode)
+ 	struct qed_slowpath_params slowpath_params;
+ 	struct qed_probe_params qed_params;
+ 	u16 retry_cnt = 10;
++	bool lport_setup = false;
+ 
+ 	/*
+ 	 * When doing error recovery we didn't reap the lport so don't try
+@@ -3625,6 +3628,7 @@ static int __qedf_probe(struct pci_dev *pdev, int mode)
+ 			    "qedf_lport_setup failed.\n");
+ 			goto err7;
+ 		}
++		lport_setup = true;
+ 	}
+ 
+ 	qedf->timer_work_queue = alloc_workqueue("qedf_%u_timer",
+@@ -3704,6 +3708,10 @@ static int __qedf_probe(struct pci_dev *pdev, int mode)
+ 		destroy_workqueue(qedf->ll2_recv_wq);
+ 	fc_remove_host(qedf->lport->host);
+ 	scsi_remove_host(qedf->lport->host);
++	if (lport_setup) {
++		fc_exch_mgr_free(qedf->lport);
++		fc_lport_free_stats(qedf->lport);
++	}
+ #ifdef CONFIG_DEBUG_FS
+ 	qedf_dbg_host_exit(&(qedf->dbg_ctx));
+ #endif
 -- 
-2.53.0
-
+2.50.1
 
