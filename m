@@ -1,65 +1,73 @@
-Return-Path: <stable+bounces-241206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241207-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SMbcFJHf7ml7ywAAu9opvQ
-	(envelope-from <stable+bounces-241206-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 06:01:21 +0200
+	id sLZtDbLe7mlhywAAu9opvQ
+	(envelope-from <stable+bounces-241207-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 05:57:38 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDC8846CBC6
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 06:01:20 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4380746CB14
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 05:57:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 292C03040A9A
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 03:55:37 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A3DA530041D5
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 03:57:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3AAC36C5BD;
-	Mon, 27 Apr 2026 03:55:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E000F2D5926;
+	Mon, 27 Apr 2026 03:57:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k346bmfD"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="RU1Hwyse"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CE66367F40;
-	Mon, 27 Apr 2026 03:55:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E65BC23ABBF
+	for <stable@vger.kernel.org>; Mon, 27 Apr 2026 03:57:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777262130; cv=none; b=jGcI35vUp4XK0SGMRw3cjddhYGs2nCvmp1+Gc7H+J/IbUW6WZ2lygs+z49dmRRHN6mjACDi9wk1/R4nqvHufbgUFhHjEAY590WmqsH7RanlKgz2+TtXEtnrMMzt+bFQ0QzL+MsYX1S0gw3dj7ZdbC96ettMWuB/a6JVXoD+TPyI=
+	t=1777262254; cv=none; b=pQIGsPrhDJbwFGV4VeTKpJnqAs2BrRctesq8S3Wgp/afbwkLJ1jZKwNkrcLRex34HpPXCcw+PMOoJ1TePY76zDT31phnLcnfpYQG/91GK6mWfBu9IG4j85/2vTwuwJz8H8iyyRYBcQusppNB6kjGPXmikZ6iYDjiThG0FTWouLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777262130; c=relaxed/simple;
-	bh=6Rkyno1by9lAbZqswNfXc0W22A/O1bQRDxeFYUL7/WA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bZoua6GVL+q3mPDqh11JenJJuwKV2Kyzgr+BN3ag2Sq75dNYqE+dVjxaTBIwmEwkqVYB7qqn2SBcAJTXqcWSTMLv75wxEzEPn5Pcr8pwZeOrh/ekjlWJOzoOwL1/JzBOkPyCtttErNd73dBDv4ZAlKwRPSHI0hQlMIl0aYar8ro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k346bmfD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DC1BC2BCB9;
-	Mon, 27 Apr 2026 03:55:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777262130;
-	bh=6Rkyno1by9lAbZqswNfXc0W22A/O1bQRDxeFYUL7/WA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k346bmfD2g927mDoLm09XHxrn843Mn0u4Bw3nDgetrQ1GdTSPYz2nOvHFKwnB0pPh
-	 YaTW9l1/5pgqzGNWjhUzAx43cOAZErMjIZtL68Uj5m4bEIdccN7R+EVxLLfK4c3aN/
-	 aes6BRhQGDbVf96uT1/H1GYxBNJfIgn0KxJ1aTqfepEw11BHZ97X4y18y2S2nXx9V3
-	 4C4w4qsR3Ox+QLFgQgx3dL9DxfVZBixhqztkiuPS/JYsDRSMjjUIW5rbfkxB/Nk4UQ
-	 TQOHcsYJ8d4bwJwg3XfOYYiEzGSkdTk4w5F856WqjfSTTJvezZFXUk2nZBBPQDJGRj
-	 NG8tZh5MW1ZOw==
-From: "Mario Limonciello (AMD)" <superm1@kernel.org>
-To: =?UTF-8?q?Rafael=20J=20=2E=20Wysocki=20=E2=8F=8E?= <rafael@kernel.org>
-Cc: linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-pm@vger.kernel.org,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	x86@kernel.org,
-	Mario Limonciello <superm1@kernel.org>,
-	stable@vger.kernel.org,
-	Kim Phillips <kim.phillips@amd.com>
-Subject: [PATCH 1/6] Revert "ACPI: CPPC: Adjust debug messages in amd_set_max_freq_ratio() to warn"
-Date: Sun, 26 Apr 2026 22:55:15 -0500
-Message-ID: <20260427035520.1427080-2-superm1@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260427035520.1427080-1-superm1@kernel.org>
-References: <20260427035520.1427080-1-superm1@kernel.org>
+	s=arc-20240116; t=1777262254; c=relaxed/simple;
+	bh=nNuZPMQoVpPQeuMTX7IqQVkKdKmGKIfoGkiXy1++kJA=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=sGPyHC8GJp1r6MXUZmool+WEJQWniPtJd80KlyG9Z9CgtquXe9aPQzWCwh1YUZDquBF5yPCkJFM0vDh1ha5G3dNy+V+jRqvJrf7KVkadJ0Vh6+7cZIJJSgX2Jt72KghnLCXvwI8iyv4l0WSbzX7RiGKqZFSwQcwfQz4qZg8Yyjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=RU1Hwyse; arc=none smtp.client-ip=210.61.82.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: 3435323841ed11f19a16598d5ca7f8ec-20260427
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=HLfP7RQwgpPifnMM74MC5Zii/CVwx7iM9Oh2BZUeh4k=;
+	b=RU1Hwyse9g/nQNXmfvQfTo1y264BUoLLULm29CHGKCglqogPTHWCARYUbI7NBLmMPlQuAbGqiQeegXB8y4y5dpcVe9IPKFQUsAyi57iOFy3sNIX9zpf9JmqWOG+ZfrK3M9mKdhmoJv369pdThUDQFaxCmf+04uIMksu/EEDSCzA=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.12,REQID:c2a0f4a3-6baa-4600-a409-9d9c015bdd8c,IP:0,U
+	RL:0,TC:0,Content:-25,EDM:-25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACT
+	ION:release,TS:-50
+X-CID-META: VersionHash:e7bac3a,CLOUDID:7e35a564-469e-4eb6-aeb8-4b21454b0f32,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102|123|836|865|888|898,TC:-5,Conten
+	t:0|15|50,EDM:2,IP:nil,URL:99|1,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,COL:0
+	,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULS
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 3435323841ed11f19a16598d5ca7f8ec-20260427
+Received: from mtkmbs13n2.mediatek.inc [(172.21.101.108)] by mailgw02.mediatek.com
+	(envelope-from <ed.tsai@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 1834257794; Mon, 27 Apr 2026 11:57:26 +0800
+Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
+ mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Mon, 27 Apr 2026 11:57:25 +0800
+Received: from mtksitap99.mediatek.inc (10.233.130.16) by
+ mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.2562.29 via Frontend Transport; Mon, 27 Apr 2026 11:57:25 +0800
+From: <ed.tsai@mediatek.com>
+To: <ed.tsai@mediatek.com>
+CC: <stable@vger.kernel.org>
+Subject: [PATCH 1/1] scsi: ufs: remove ucd_rsp_dma_addr and ucd_prdt_dma_addr from ufshcd_lrb
+Date: Mon, 27 Apr 2026 11:57:17 +0800
+Message-ID: <20260427035719.1610110-1-ed.tsai@mediatek.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,79 +75,124 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: BDC8846CBC6
+Content-Type: text/plain
+X-MTK: N
+X-Rspamd-Queue-Id: 4380746CB14
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[mediatek.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[mediatek.com:s=dk];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241206-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[mediatek.com:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[superm1@kernel.org,stable@vger.kernel.org];
+	RCPT_COUNT_TWO(0.00)[2];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-241207-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_NEQ_ENVFROM(0.00)[ed.tsai@mediatek.com,stable@vger.kernel.org];
+	FROM_NO_DN(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.997];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 
-Some older systems don't support CPPC in the firmware and this just makes
-noise for them when booting.  Drop back to debug.
+From: Ed Tsai <ed.tsai@mediatek.com>
 
-This reverts commit 21fb59ab4b9767085f4fe1edbdbe3177fbb9ec97.
+The offsets stored in utp_transfer_req_desc are in double words on
+hosts without UFSHCD_QUIRK_PRDT_BYTE_GRAN, using them directly to
+compute ucd_rsp_dma_addr and ucd_prdt_dma_addr results in incorrect
+DMA addresses.
 
+Since these fields are only used for error logging, remove them from
+struct ufshcd_lrb and compute directly in ufshcd_print_tr() using
+offsetof(struct utp_transfer_cmd_desc, ...) instead.
+
+Fixes: d5130c5a0932 ("scsi: ufs: Use pre-calculated offsets in ufshcd_init_lrb()")
 Cc: stable@vger.kernel.org
-Fixes: 21fb59ab4b976 ("ACPI: CPPC: Adjust debug messages in amd_set_max_freq_ratio() to warn")
-Reported-by: Kim Phillips <kim.phillips@amd.com>
-Tested-by: Kim Phillips <kim.phillips@amd.com>
-Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Link: https://lore.kernel.org/all/20260424063603.382328-2-ed.tsai@mediatek.com/
+Signed-off-by: Ed Tsai <ed.tsai@mediatek.com>
 ---
- arch/x86/kernel/acpi/cppc.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/ufs/core/ufshcd.c | 10 ++++------
+ include/ufs/ufshcd.h      |  4 ----
+ 2 files changed, 4 insertions(+), 10 deletions(-)
 
-diff --git a/arch/x86/kernel/acpi/cppc.c b/arch/x86/kernel/acpi/cppc.c
-index d7c8ef1e354d3..be4c5e9e5ff6f 100644
---- a/arch/x86/kernel/acpi/cppc.c
-+++ b/arch/x86/kernel/acpi/cppc.c
-@@ -88,19 +88,19 @@ static void amd_set_max_freq_ratio(void)
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index 4805e40ed4d7..02fa61322e77 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -621,7 +621,8 @@ static void ufshcd_print_tr(struct ufs_hba *hba, struct scsi_cmnd *cmd,
+ 	ufshcd_hex_dump("UPIU REQ: ", lrbp->ucd_req_ptr,
+ 			sizeof(struct utp_upiu_req));
+ 	dev_err(hba->dev, "UPIU[%d] - Response UPIU phys@0x%llx\n", tag,
+-		(u64)lrbp->ucd_rsp_dma_addr);
++		(u64)(lrbp->ucd_req_dma_addr +
++		offsetof(struct utp_transfer_cmd_desc, response_upiu)));
+ 	ufshcd_hex_dump("UPIU RSP: ", lrbp->ucd_rsp_ptr,
+ 			sizeof(struct utp_upiu_rsp));
  
- 	rc = cppc_get_perf_caps(0, &perf_caps);
- 	if (rc) {
--		pr_warn("Could not retrieve perf counters (%d)\n", rc);
-+		pr_debug("Could not retrieve perf counters (%d)\n", rc);
- 		return;
- 	}
+@@ -633,7 +634,8 @@ static void ufshcd_print_tr(struct ufs_hba *hba, struct scsi_cmnd *cmd,
+ 	dev_err(hba->dev,
+ 		"UPIU[%d] - PRDT - %d entries  phys@0x%llx\n",
+ 		tag, prdt_length,
+-		(u64)lrbp->ucd_prdt_dma_addr);
++		(u64)(lrbp->ucd_req_dma_addr +
++		offsetof(struct utp_transfer_cmd_desc, prd_table)));
  
- 	rc = amd_get_boost_ratio_numerator(0, &numerator);
- 	if (rc) {
--		pr_warn("Could not retrieve highest performance (%d)\n", rc);
-+		pr_debug("Could not retrieve highest performance (%d)\n", rc);
- 		return;
- 	}
- 	nominal_perf = perf_caps.nominal_perf;
+ 	if (pr_prdt)
+ 		ufshcd_hex_dump("UPIU PRDT: ", lrbp->ucd_prdt_ptr,
+@@ -2971,8 +2973,6 @@ static void ufshcd_init_lrb(struct ufs_hba *hba, struct scsi_cmnd *cmd)
+ 	struct utp_transfer_req_desc *utrdlp = hba->utrdl_base_addr;
+ 	dma_addr_t cmd_desc_element_addr =
+ 		hba->ucdl_dma_addr + i * ufshcd_get_ucd_size(hba);
+-	u16 response_offset = le16_to_cpu(utrdlp[i].response_upiu_offset);
+-	u16 prdt_offset = le16_to_cpu(utrdlp[i].prd_table_offset);
+ 	struct ufshcd_lrb *lrb = scsi_cmd_priv(cmd);
  
- 	if (!nominal_perf) {
--		pr_warn("Could not retrieve nominal performance\n");
-+		pr_debug("Could not retrieve nominal performance\n");
- 		return;
- 	}
+ 	lrb->utr_descriptor_ptr = utrdlp + i;
+@@ -2981,9 +2981,7 @@ static void ufshcd_init_lrb(struct ufs_hba *hba, struct scsi_cmnd *cmd)
+ 	lrb->ucd_req_ptr = (struct utp_upiu_req *)cmd_descp->command_upiu;
+ 	lrb->ucd_req_dma_addr = cmd_desc_element_addr;
+ 	lrb->ucd_rsp_ptr = (struct utp_upiu_rsp *)cmd_descp->response_upiu;
+-	lrb->ucd_rsp_dma_addr = cmd_desc_element_addr + response_offset;
+ 	lrb->ucd_prdt_ptr = (struct ufshcd_sg_entry *)cmd_descp->prd_table;
+-	lrb->ucd_prdt_dma_addr = cmd_desc_element_addr + prdt_offset;
+ }
+ 
+ static void __ufshcd_setup_cmd(struct ufs_hba *hba, struct scsi_cmnd *cmd,
+diff --git a/include/ufs/ufshcd.h b/include/ufs/ufshcd.h
+index cfbc75d8df83..8cb845534e63 100644
+--- a/include/ufs/ufshcd.h
++++ b/include/ufs/ufshcd.h
+@@ -158,8 +158,6 @@ struct ufs_pm_lvl_states {
+  * @ucd_rsp_ptr: Response UPIU address for this command
+  * @ucd_prdt_ptr: PRDT address of the command
+  * @utrd_dma_addr: UTRD dma address for debug
+- * @ucd_prdt_dma_addr: PRDT dma address for debug
+- * @ucd_rsp_dma_addr: UPIU response dma address for debug
+  * @ucd_req_dma_addr: UPIU request dma address for debug
+  * @scsi_status: SCSI status of the command
+  * @command_type: SCSI, UFS, Query.
+@@ -182,8 +180,6 @@ struct ufshcd_lrb {
+ 
+ 	dma_addr_t utrd_dma_addr;
+ 	dma_addr_t ucd_req_dma_addr;
+-	dma_addr_t ucd_rsp_dma_addr;
+-	dma_addr_t ucd_prdt_dma_addr;
+ 
+ 	int scsi_status;
  
 -- 
-2.43.0
+2.45.2
 
 
