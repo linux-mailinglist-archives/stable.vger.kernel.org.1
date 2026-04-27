@@ -1,166 +1,259 @@
-Return-Path: <stable+bounces-241226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241227-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UP3MDRwG72ma3wAAu9opvQ
-	(envelope-from <stable+bounces-241226-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 08:45:48 +0200
+	id eElMEBoH72lJ4AAAu9opvQ
+	(envelope-from <stable+bounces-241227-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 08:50:02 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C836446DCDB
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 08:45:47 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 979D246DD68
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 08:50:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8B21F3011059
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 06:44:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F100B3006971
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 06:49:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E840390218;
-	Mon, 27 Apr 2026 06:44:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11F103264FA;
+	Mon, 27 Apr 2026 06:49:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n8emKuCF"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="tNHSrOle"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C595636F42D;
-	Mon, 27 Apr 2026 06:44:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B89933ADA9
+	for <stable@vger.kernel.org>; Mon, 27 Apr 2026 06:49:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777272283; cv=none; b=EQQkCVR5DTU3B09ajJRYs5yfPXvNd7kvybyzfk4JR6DyxAgGsofZLTBJjx2XVHzgMEp50AAOBt6/bu47ttGOIR9rcNTa+QQjYJ/4r3ybSg7MosXRDPfrQxajzm+JpFeTngNsbm06fgwudAZT90fEy4EHoGwV8VhoIjrUfmjPfeA=
+	t=1777272597; cv=none; b=Yz2cjOZRNbYiSTtRFbbwMsgNrdmaPLgEQgdNjbeb5WegeUmLzrJCBFTc/gM9NWt98Fks6ITXrl7g2Ke1tcJvkqSI4h8Uoa3c5cvqKMstonPYOwTvU16N1bpeFcx0AyVycJVj4e9xwgnBuYxBpOFWtIruDH1YIL1dB93yVoR7Mpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777272283; c=relaxed/simple;
-	bh=8wkSSpByQImqhD/3iayk5DZrcTDZIc1JAUCH4fWwUHs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=e/8PQ1+cnUQAOof31MeqommGcWaezFass/cEeRxyfquYYsSJcLAosudgvsgZBIwOUwTmDnd83CQa8JGVQFtZaxKakC4xqR2JJBSjZBRJhY6AvU0wNeoYoF20G7YlDsVOQDADfa9uH+JqU8YYI4AihOGiVGUWXKeMVL4JdYUCM64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n8emKuCF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 8CFD7C2BCB8;
-	Mon, 27 Apr 2026 06:44:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777272283;
-	bh=8wkSSpByQImqhD/3iayk5DZrcTDZIc1JAUCH4fWwUHs=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=n8emKuCF0lsZxcqVJJ7ICib9Y7O7RJgfceKRIe/be7cHmaB4NpqLwpuJsK3BAF0le
-	 zy1hPW5coxIQl59v8kmCkeFlUcwE0BSwjcJNdJcztZSH6sGDf62tW8vLjBqMJfRRIU
-	 IEwv4BGrgfsL3F6W7ctyUClZYAasp9D0/M7NG3bj6ze5XpLJmbZi9OQkopX4cGUa4W
-	 mFMp+1TFDp1uB6FstpTWmYQfmWszKq2bg5OXwElz8s1ZguYKVLX77Ulf6hKGNRSX6W
-	 98n3TGfIaaA8p+UMWgxNBEUQLmC3xr6ORFYj2gCsO/B9gnxt+Gulj5U1y8sq+CjuVr
-	 RcycQG4ng8dzQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7DB07FF8867;
-	Mon, 27 Apr 2026 06:44:43 +0000 (UTC)
-From: David Heidelberg via B4 Relay <devnull+david.ixit.cz@kernel.org>
-Date: Mon, 27 Apr 2026 08:44:42 +0200
-Subject: [PATCH 2/2] arm64: dts: qcom: sdm845-lg: Enable
- qcom,snoc-host-cap-skip-quirk
+	s=arc-20240116; t=1777272597; c=relaxed/simple;
+	bh=ifmFZuT2yL65hYWXSntFE3Xxo4d0ZlqISyl1YG9tRuA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lW8dyOSRTzev464spPjCnNczaOKmSaX/80lJeTBL+tbSo6UZXdruahLEz7Gj1PCk3HP4YydsjknTbAiFSPifi/yRObPTO9JtaqQV+7F13ZNmDbt61zNOSuVaAXCZtDzcahPia+j5+8KU4LVzSNieD3WUb/TO3Rw9DV1AF2T0Jz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=tNHSrOle; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4891e86fabeso105801405e9.1
+        for <stable@vger.kernel.org>; Sun, 26 Apr 2026 23:49:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777272595; x=1777877395; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=C0XFTVZm6nDhiD0bMo8SDFHEq9ueglfbqYEb/g+IqfE=;
+        b=tNHSrOley5nunccN4wAq0N4ZsSHnQSGu8AtPrF9Q+itkNHFHHWk3u0NUa9zpWT4Ujt
+         FBBIzoDkd/xA5TOU0pxyDNYM09X4yihi5q5v23aLQgSrRLZNmdhIdIyE5HFt4wN4CizW
+         aGvVIbN2SseANos7x+8FDDSkzAaCyGY1tpyBF5wT528mJmDW6yTiS4hJLCj0f2kkX4hI
+         r6t+jUjtQUrX5Foh4Mully8Y3YIqDY1WHJmgjxfed11PtmJF+DtgrITqIEiryqqTVMQ3
+         awgcx5qm1iNRkOMNw61yWZlxCSlpksQ8JLttISblNRMhjqeu9sGgXp2XUNxWo2YD5ar6
+         69Kg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777272595; x=1777877395;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=C0XFTVZm6nDhiD0bMo8SDFHEq9ueglfbqYEb/g+IqfE=;
+        b=RhRmfdD4u2Mq03hCDLJ6WL/0aERQzQy2ID86SqwML+Hfod087/KPyAX+2Or9MpvzHs
+         DSCkEo6VXrUA13TZIAfbSQvMW9scdNJqErfjtFYqWYd01LdMwS76cRBZPXh6TONRqK4a
+         ZUJCAbuXS2IM+rPgtCRhYoPNAeH9Fd/kUX2e1ML3jjlujT9cSsJ86ddcfrAznsvsDkAo
+         NMQnk+HwL0MmBvX1U2ruWZgRvdInuHCryUOEGSy2ucgc2cnUM6lJ5BRc/8ECYcOqp8dG
+         X9D6DKPfgOSQnndOzIxKqpd3mghG1JjGzLeHEweGGavsTKMHlDVmmmFqgwOPFGYgySWx
+         CIQQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8Xcst3lEANlsrQhsGyFgCfK7c0cNO3sm1TnRJQtzWXznRfYWPnyxM7rxdgRRz6AQvGJi2x0/k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxTBF0X8lID5AVGpouvG4ReZcTzpTrQbjbmJn188BORanPG3nvA
+	XZmR81qgNUKRSUJS7S6bgcjP/aR9suEnQKArXkP2DUX2OSKmQbRrUdGj
+X-Gm-Gg: AeBDieuxPW3vF29hsMUDYD/QRP2g6y+Pp1v+lJQMmh8IlZRQeO0NabPEB9jn17b4Dec
+	oG3G1OB5Df5zat/N4ETe/od66n9Hl2FaPXTnI2h6YYpmq+0IsKCOOd935mZBFXlVFprJE5zqFNR
+	uRQrZQfOPSASqC9u9tItoJcrOdU+CvvbKwA5bs99ExO+nsftmKPOcMIzDUs8qmBnM9QXkNKXcfj
+	b0/Y8TVH/g2N/um4DvDTrIe0gH1/adVwKao2jmrCa8AUk9cmVYYy0cG2U0MxnUfsTKFagpJTjtX
+	ZwBpVaWmzO/UgdeyW35/vN1d4o81H+Xwa/ATtf4DFQ/a05bf+w68MqjZK7/6IJltrLofOISICKl
+	Kl9v7mWUVSCc0mYvn4glTUk6aRor8Y0CJB/m1hA0evnC3V6nV2oAOkWjUPQNhpWjDtZym00ODaU
+	R2juZrShXjRUyOUXtrRtSXQGRyywkeWINBqDjZL7rXjP0qeYLk8Q==
+X-Received: by 2002:a05:600c:3515:b0:488:8b99:54a1 with SMTP id 5b1f17b1804b1-488fb78e7c5mr569746115e9.28.1777272594279;
+        Sun, 26 Apr 2026 23:49:54 -0700 (PDT)
+Received: from vitor-nb (dsl-43-224.bl27.telepac.pt. [176.79.43.224])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-488fc1c01cfsm807502655e9.10.2026.04.26.23.49.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 26 Apr 2026 23:49:53 -0700 (PDT)
+From: Vitor Soares <ivitro@gmail.com>
+To: 
+Cc: Vitor Soares <vitor.soares@toradex.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] pmdomain: ti_sci: re-sync TIFS with genpd on resume
+Date: Mon, 27 Apr 2026 07:49:39 +0100
+Message-ID: <20260427064939.3240057-2-ivitro@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260427-b4-skip-host-cam-qmi-req-fixup-v1-2-4398e94bde70@ixit.cz>
-References: <20260427-b4-skip-host-cam-qmi-req-fixup-v1-0-4398e94bde70@ixit.cz>
-In-Reply-To: <20260427-b4-skip-host-cam-qmi-req-fixup-v1-0-4398e94bde70@ixit.cz>
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Amit Pundir <amit.pundir@linaro.org>, 
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
- Paul Sajna <sajattack@postmarketos.org>
-Cc: Konrad Dybcio <konradybcio@gmail.com>, linux-arm-msm@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- phone-devel@vger.kernel.org, Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
- David Heidelberg <david@ixit.cz>, stable@vger.kernel.org
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1150; i=david@ixit.cz;
- h=from:subject:message-id;
- bh=rjReFmShlnTaM2lZx/85DqjUqhkr2W2r+NrmMgLxkjg=;
- b=owEBbQKS/ZANAwAIAWACP8TTSSByAcsmYgBp7wXaphRDQGvH4XoK/VOPxmZ+p4W1VgL/Papcr
- 7665zCi8+WJAjMEAAEIAB0WIQTXegnP7twrvVOnBHRgAj/E00kgcgUCae8F2gAKCRBgAj/E00kg
- cpTQD/439i8fIE09B6ex6xtz9if7DkBu8PuwBU2Taq7vE95PPMAYRaAxfb2HHnj9Exj1hQxiKg6
- Zkr5TgcSzT1jLsXLy/OWrkQt+Tc1m3JY6DTyZaCn0fHJhwx684MhKV1kVXUb0oz+OXyoYpOHUFT
- jfHpb0UlTi7yMh0S8fFLwWNBg7d/TB/bNznOZcM+n0PU6sW1pxzpo7o2hbakWsH0Fxmi1QLRcV3
- 7nT8y/dy/AM7zrzwNtF+EbWM+C71JOL/7thBCjL70snDCRa+MefTjQVThQXfj54t06ZaeuzXA5O
- M/o3kFNYam3hu63t09cagRi35TJZCZgSV+rSCWUwkpevQKjkMcv848t2P9ECb5XMGLnMwqyqAVn
- KbaVgFwB9bXNYgbcrDkO6Te1AvVRwYaD+HBcJqArBmHdFjIkTO/smAbWY3iQ1DHKG+G3H7Bc3E+
- sgTCLwZQ0GpijqeE1oacU8tswlZIYrajT8QiwlTBbKAyk/p9vEH8kaFt2AXiaJIV35GeeVjJIhm
- sdVXtgjnGlWQHAZjMQViJz52rGYd3rdvcIm0JubgTknhSQupMhCgp5uI+s3A3w0M7vdZ4fRAMLB
- yZOyI6VHul6bpKaxJ4K2CKUiVZS5DdTTlyTba+XZFItCvOg8qRoIJj/2Hy0TkRC3EICWVHDL1PT
- wWt8eMFw4yleEjQ==
-X-Developer-Key: i=david@ixit.cz; a=openpgp;
- fpr=D77A09CFEEDC2BBD53A7047460023FC4D3492072
-X-Endpoint-Received: by B4 Relay for david@ixit.cz/default with auth_id=355
-X-Original-From: David Heidelberg <david@ixit.cz>
-Reply-To: david@ixit.cz
-X-Rspamd-Queue-Id: C836446DCDB
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 979D246DD68
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241226-lists,stable=lfdr.de,david.ixit.cz];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,oss.qualcomm.com,ixit.cz];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_FROM(0.00)[bounces-241227-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,stable@vger.kernel.org];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TAGGED_RCPT(0.00)[stable,dt];
-	HAS_REPLYTO(0.00)[david@ixit.cz];
+	FROM_NEQ_ENVFROM(0.00)[ivitro@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[postmarketos.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qualcomm.com:email]
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,toradex.com:email]
 
-From: Paul Sajna <sajattack@postmarketos.org>
+From: Vitor Soares <vitor.soares@toradex.com>
 
-The WCN3990 firmware for judyln does not respond to the request for
-host capabilities. Add the devicetree quirk to skip this request.
+When a device in a TI SCI power domain is on the wakeup path of a
+wakeup-capable child, the suspend path skips genpd_sync_power_off().
+No put_device is sent to TIFS and the domain's genpd status remains
+ON.
 
-Fixes: eb8fa3208526 ("arm64: dts: qcom: sdm845-lg: Add wifi nodes")
-Cc: <stable@vger.kernel.org> # 7.1.x
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Reviewed-by: David Heidelberg <david@ixit.cz>
-Signed-off-by: Paul Sajna <sajattack@postmarketos.org>
-Signed-off-by: David Heidelberg <david@ixit.cz>
+TIFS powers off the hardware during deep sleep regardless, since it
+was never informed to keep the domain active. On resume, because the
+domain's genpd status is ON, no get_device is issued. The driver
+then accesses registers of a powered-off domain, causing a
+synchronous external abort (AXI bus error, ESR 0x96000010).
+
+Commit 0b5fe1c4ab3c ("pmdomain: ti-sci: Set PD on/off state according
+to the HW state") exposed this. Before, domain status was initialized
+to OFF, so get_device was always issued on resume.
+
+Add a .resume hook that queries the domain's state from TIFS and
+re-syncs TIFS with get_device when genpd has it ON but TIFS has it
+OFF. The hook is only registered when the is_on op is available,
+since detection depends on it.
+
+Move ti_sci_pm_pd_is_on() earlier in the file so it is available to
+the resume hook.
+
+Fixes: 0b5fe1c4ab3c ("pmdomain: ti-sci: Set PD on/off state according to the HW state")
+Cc: stable@vger.kernel.org # 6.18+
+Signed-off-by: Vitor Soares <vitor.soares@toradex.com>
 ---
- arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/pmdomain/ti/ti_sci_pm_domains.c | 66 ++++++++++++++++++-------
+ 1 file changed, 49 insertions(+), 17 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
-index 71d070619ad73..2d02d77d35ea7 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845-lg-common.dtsi
-@@ -675,10 +675,12 @@ &venus {
+diff --git a/drivers/pmdomain/ti/ti_sci_pm_domains.c b/drivers/pmdomain/ti/ti_sci_pm_domains.c
+index e5d1934f78d9..ec976d77b818 100644
+--- a/drivers/pmdomain/ti/ti_sci_pm_domains.c
++++ b/drivers/pmdomain/ti/ti_sci_pm_domains.c
+@@ -131,6 +131,23 @@ static int ti_sci_pd_power_on(struct generic_pm_domain *domain)
+ 		return ti_sci->ops.dev_ops.get_device(ti_sci, pd->idx);
+ }
  
- &wifi {
- 	vdd-0.8-cx-mx-supply = <&vreg_l5a_0p8>;
- 	vdd-1.8-xo-supply = <&vreg_l7a_1p8>;
- 	vdd-1.3-rfa-supply = <&vreg_l17a_1p3>;
- 	vdd-3.3-ch0-supply = <&vreg_l25a_3p3>;
- 	vdd-3.3-ch1-supply = <&vreg_l23a_3p3>;
- 
-+	qcom,snoc-host-cap-skip-quirk;
++static bool ti_sci_pm_pd_is_on(struct ti_sci_genpd_provider *pd_provider,
++			       int pd_idx)
++{
++	bool is_on;
++	int ret;
 +
- 	status = "okay";
- };
-
++	if (!pd_provider->ti_sci->ops.dev_ops.is_on)
++		return false;
++
++	ret = pd_provider->ti_sci->ops.dev_ops.is_on(pd_provider->ti_sci,
++						     pd_idx, NULL, &is_on);
++	if (ret)
++		return false;
++
++	return is_on;
++}
++
+ #ifdef CONFIG_PM_SLEEP
+ static int ti_sci_pd_suspend(struct device *dev)
+ {
+@@ -149,8 +166,37 @@ static int ti_sci_pd_suspend(struct device *dev)
+ 
+ 	return 0;
+ }
++
++static int ti_sci_pd_resume(struct device *dev)
++{
++	struct generic_pm_domain *genpd = pd_to_genpd(dev->pm_domain);
++	struct ti_sci_pm_domain *pd = genpd_to_ti_sci_pd(genpd);
++	const struct ti_sci_handle *ti_sci = pd->parent->ti_sci;
++	int ret;
++
++	/*
++	 * If genpd's domain state is ON but TIFS powered it OFF during
++	 * suspend, re-sync by issuing get_device before the driver resumes.
++	 */
++	if (genpd->status == GENPD_STATE_ON &&
++	    !ti_sci_pm_pd_is_on(pd->parent, pd->idx)) {
++		dev_dbg(dev, "ti_sci_pd: ID:%d genpd/TIFS out of sync on resume, re-syncing\n",
++			pd->idx);
++		if (pd->exclusive)
++			ret = ti_sci->ops.dev_ops.get_device_exclusive(ti_sci,
++								       pd->idx);
++		else
++			ret = ti_sci->ops.dev_ops.get_device(ti_sci, pd->idx);
++		if (ret)
++			return ret;
++	}
++
++	return pm_generic_resume(dev);
++}
++
+ #else
+ #define ti_sci_pd_suspend		NULL
++#define ti_sci_pd_resume		NULL
+ #endif
+ 
+ /*
+@@ -200,23 +246,6 @@ static bool ti_sci_pm_idx_exists(struct ti_sci_genpd_provider *pd_provider, u32
+ 	return false;
+ }
+ 
+-static bool ti_sci_pm_pd_is_on(struct ti_sci_genpd_provider *pd_provider,
+-			       int pd_idx)
+-{
+-	bool is_on;
+-	int ret;
+-
+-	if (!pd_provider->ti_sci->ops.dev_ops.is_on)
+-		return false;
+-
+-	ret = pd_provider->ti_sci->ops.dev_ops.is_on(pd_provider->ti_sci,
+-						     pd_idx, NULL, &is_on);
+-	if (ret)
+-		return false;
+-
+-	return is_on;
+-}
+-
+ static int ti_sci_pm_domain_probe(struct platform_device *pdev)
+ {
+ 	struct device *dev = &pdev->dev;
+@@ -283,6 +312,9 @@ static int ti_sci_pm_domain_probe(struct platform_device *pdev)
+ 				    pd_provider->ti_sci->ops.pm_ops.set_latency_constraint)
+ 					pd->pd.domain.ops.suspend = ti_sci_pd_suspend;
+ 
++				if (pd_provider->ti_sci->ops.dev_ops.is_on)
++					pd->pd.domain.ops.resume = ti_sci_pd_resume;
++
+ 				is_on = ti_sci_pm_pd_is_on(pd_provider,
+ 							   pd->idx);
+ 
 -- 
 2.53.0
-
 
 
