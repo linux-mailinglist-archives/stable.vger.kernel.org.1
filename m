@@ -1,217 +1,129 @@
-Return-Path: <stable+bounces-241248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241249-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YEqvCm8S72mU5QAAu9opvQ
-	(envelope-from <stable+bounces-241248-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 09:38:23 +0200
+	id ICLFEccT72mU5QAAu9opvQ
+	(envelope-from <stable+bounces-241249-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 09:44:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90A8246E720
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 09:38:22 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D16D46E86A
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 09:44:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6A87F300AC2B
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 07:38:21 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 942153004D9E
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 07:43:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 889203890EE;
-	Mon, 27 Apr 2026 07:38:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD87C3890E2;
+	Mon, 27 Apr 2026 07:43:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TwEJEVGa"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JihA3WW2"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6B80388E74
-	for <stable@vger.kernel.org>; Mon, 27 Apr 2026 07:38:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26AAF379987
+	for <stable@vger.kernel.org>; Mon, 27 Apr 2026 07:43:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777275497; cv=none; b=PQm5qqawnM1lVP8+g1U+dpF7WwVnK1iN5UeLY/bSue0jwnJkrty6IEysrcYH0GIJTlo9s2WPCbLcAYnzMYuv9Q65HI2X64TC2GIAh2rGGbZxR7EqHkpHHVvxSfgchABN+WVh6iQQKqw+QlzYUM/SzCsvzHXiIg5BnrsDZLBiVws=
+	t=1777275827; cv=none; b=g+4McQpv+5bpx6eVWhEkQu1e15OW2+pU1uXaovKCGF29/PAWyArHBPhlcQ+HUII1e7kA/WQZOTgRcXZdLpVF0fYx8iR3E+COnACkOFYbFlO+5/qKfVrAgZiFin4AfTlqWKHfgtzlSfWW9aTNArxxDGtO0uM2zyQAVIpcft2Si8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777275497; c=relaxed/simple;
-	bh=aGc8FNBDqefHeaRp2lzT5Pr9RmzOIch4aJ8kcMZPXQg=;
-	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=Qrx3C8VPnOjBTOKkzaeZr70wATyDLeWQwKk7fY5Z0xsfzZDv4m233EiIpUXUWVT3b3LEqUVv3ddF2I+LFyQJNA4EJ2LZ9hMBI1oNZZVqWfMlTsbfxLto2Bli+v8Jz6RGO4WXg4B2JqDd6HtwT476w9byu6YdJirZsRLwnrGXjwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TwEJEVGa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEB71C19425;
-	Mon, 27 Apr 2026 07:38:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777275497;
-	bh=aGc8FNBDqefHeaRp2lzT5Pr9RmzOIch4aJ8kcMZPXQg=;
-	h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
-	b=TwEJEVGaZLtSy1HPXGx+tgFmcMqn6wQDdgEa3YGzJ4YZ+6/OuCJZ0JcN6bp90iwy9
-	 oZ54wC0jAu0/B+3zUuqnYeXsT/Gn6HDRYN4RWssZYSqpWwi9lmHYR/6wW9bQc+4/M8
-	 I10XoSoehyMJAT2VGi0VTEeJPO2STFH4UiH6VuySm0Zb4FkwOVPbHlDvjdQ7qZ7BEh
-	 mbD2OY0hI4ponS0CGIj0V26/LO+7Llqs0uaRHkIoMXYGnobOkJdr3Ex33VIqOSlzF9
-	 fpXA23SvUm03TQwETljTAxYB+T2b38bwFMeS34e+2JGbyT5U3XRv9MPem90UfZHfqj
-	 dc0P4UE1no7pQ==
-Message-ID: <3550618a-4a16-4f1d-b8cb-4d7ff96f6ed7@kernel.org>
-Date: Mon, 27 Apr 2026 15:38:13 +0800
+	s=arc-20240116; t=1777275827; c=relaxed/simple;
+	bh=FrIZu2R1KDrbgHqzV82kms2t/+/LtuQRXNfEiYRT6S0=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=U67ArVGg91GIn67g4B/f148K6yAhrrbImOD20gQhPMnbR/HrYBIdcw0/4mUHEmtZ2qslrnsYoXmyZSI47TfL1ZeMjhe/jonJdaUqkRDPunTr4rF8A9Z7+Bs45skPj37QlLYF8XO8Cy7/CieTX2I8DzSWayVO2wvVGM7n/CgjzmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JihA3WW2; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-488be33b7a6so67047095e9.0
+        for <stable@vger.kernel.org>; Mon, 27 Apr 2026 00:43:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1777275824; x=1777880624; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=4b7VOyMdZQukSg5b3dCqDlxQJhNiVZbNyWvcteXyu/4=;
+        b=JihA3WW2nijtr+2UTdTnrs3mcXou46izXwIEEv/UdLH7tq2kpwvw2XjB510LIASHL4
+         UoynqdUvu8dD5Y9rW8OKaWzLnE+hrTf1NiHcO14r1rO1cpHoWotDc5q1zc5IgBrFDznf
+         NIJY6ZNIa/eKW4sPCpjtXcXP2kQ9h7NTzkwPlW04nPlAZNjEWFiGPiuTh3YCqoSpXrre
+         fDCrag/jQg3BPCVImfLiM+IdeprUYAdJROvAB+wy8A3TQxU/mKFdtGTU4yftkgevOxew
+         DKpcYX89VZ7/JeXpE5VViSOMitWqWxbio31wL3pENhL+aC56D7frbWTKyw1Fj++ThzV6
+         KUQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777275824; x=1777880624;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4b7VOyMdZQukSg5b3dCqDlxQJhNiVZbNyWvcteXyu/4=;
+        b=Iz0BhnkJ5yzTJuomF3GFbLkvPlFKf4u2eeAJ7DeS08M3GB6f4DnCi+xwVxXkpR6xAM
+         WOxYdy6gNfO8b1TZ7fpwHlXi+2nclQlqxPDn/sXXbPUk+2AITmZElNqIEN2CSkho6u8x
+         F/aUlJi7zPd4jMonIv3Ql/TcRIZR5RVM2jLysl16GVbWefVLELnmJeeWb3c+Vz+RvY75
+         RB4VV2ZZktXwy0VUNbL28ONv9Zas3CEZsRPYi0Vhu29i7qeep/xL0sqfpJCocL+SdrjF
+         y4+HD83jrRq4WM6gEk3l6oFS2y47es7v7+wKSStX1WPIxob4GJlPV3KuytX9VtKzbRh7
+         dhZA==
+X-Forwarded-Encrypted: i=1; AFNElJ/RVm2SySCDOpZOHFaut7I5icrCNV9A/wJl0yE0brWNT4qoSeDnGiNN6Qv4bRDRmhNi8o1YvlY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyriiN02M2MmSAtiC/sncT1ZcbYtk1qoPZDAb+J4A8I9k7hD9J0
+	g/z8Z2GMq3smgcczsTzgUln2YIKgcYGwwufhki6+KvQrhc9/HiWrgVQP06SLISdHdxrP7Vz3qVT
+	ZNcGoGVTJ8tQGFdiXRA==
+X-Received: from wmf23.prod.google.com ([2002:a05:600c:2297:b0:489:1f67:5a75])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:8592:b0:485:3ec6:e634 with SMTP id 5b1f17b1804b1-488fb779acbmr422779885e9.15.1777275824524;
+ Mon, 27 Apr 2026 00:43:44 -0700 (PDT)
+Date: Mon, 27 Apr 2026 07:43:42 +0000
+In-Reply-To: <20260423-pin-init-fix-v2-1-ee3081093a0e@garyguo.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: chao@kernel.org, Yongpeng Yang <yangyongpeng@xiaomi.com>,
- stable@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net
-Subject: Re: [f2fs-dev] [PATCH] f2fs: fix incorrect FI_NO_EXTENT handling in
- __destroy_extent_node()
-To: Yongpeng Yang <monty_pavel@sina.com>, Jaegeuk Kim <jaegeuk@kernel.org>
-References: <20260422073525.2063784-2-monty_pavel@sina.com>
- <206a897a-2860-40b5-bbb8-829954d7e568@kernel.org>
- <8f3dee76-6094-421f-bb32-a059815b405c@sina.com>
-Content-Language: en-US
-From: Chao Yu <chao@kernel.org>
-In-Reply-To: <8f3dee76-6094-421f-bb32-a059815b405c@sina.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 90A8246E720
+Mime-Version: 1.0
+References: <20260423-pin-init-fix-v2-0-ee3081093a0e@garyguo.net> <20260423-pin-init-fix-v2-1-ee3081093a0e@garyguo.net>
+Message-ID: <ae8Trmjs8Ke5wp-g@google.com>
+Subject: Re: [PATCH v2 1/2] rust: pin-init: internal: move alignment check to `make_field_check`
+From: Alice Ryhl <aliceryhl@google.com>
+To: Gary Guo <gary@garyguo.net>
+Cc: Benno Lossin <lossin@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, 
+	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+X-Rspamd-Queue-Id: 4D16D46E86A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	MV_CASE(0.50)[];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[sina.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241248-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-241249-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[kernel.org,protonmail.com,umich.edu,vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[chao@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[google.com:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[aliceryhl@google.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,xiaomi.com:email]
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[garyguo.net:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 
-On 4/24/26 17:45, Yongpeng Yang wrote:
+On Thu, Apr 23, 2026 at 03:51:49PM +0100, Gary Guo wrote:
+> Instead of having the reference creation serving dual-purpose as both for
+> let bindings and alignment check, detangle them so that the alignment check
+> is done explicitly in `make_field_check`. This is more robust again
+> refactors that may change the way let bindings are created.
 > 
-> On 4/22/26 20:33, Chao Yu via Linux-f2fs-devel wrote:
->> On 4/22/2026 3:35 PM, Yongpeng Yang wrote:
->>> From: yangyongpeng <yangyongpeng@xiaomi.com>
->>>
->>> When __destroy_extent_node() sets the inode flag FI_NO_EXTENT, it does
->>> not reset the length of the largest extent to 0 and update the inode
->>> folio. Since modifications to the extent tree are disallowed afterward,
->>> the cached largest extent may become stale. This can trigger the
->>> following error in xfstests generic/388:
->>>
->>> F2FS-fs (dm-0): sanity_check_extent_cache: inode (ino=1761) extent
->>> info [220057, 57, 6] is incorrect, run fsck to fix
->>>
->>> In the f2fs_drop_inode path, __destroy_extent_node() does not need to
->>> guarantee that et->node_cnt is 0, because concurrency with writeback
->>> is expected in this path, and writeback may update the extent cache.
->>>
->>> This patch updates __destroy_extent_node() to avoid setting the inode
->>> flag FI_NO_EXTENT, and to remove the check zero of et->node_cnt.
->>>
->>> Fixes: ed78aeebef05 ("f2fs: fix node_cnt race between extent node
->>> destroy and writeback")
->>> Cc: stable@vger.kernel.org
->>> Reported-by: Chao Yu <chao@kernel.org>
->>> Suggested-by: Chao Yu <chao@kernel.org>
->>> Signed-off-by: yangyongpeng <yangyongpeng@xiaomi.com>
->>> ---
->>>    fs/f2fs/extent_cache.c | 4 ----
->>>    1 file changed, 4 deletions(-)
->>>
->>> diff --git a/fs/f2fs/extent_cache.c b/fs/f2fs/extent_cache.c
->>> index 87169fd29d89..3adbead27953 100644
->>> --- a/fs/f2fs/extent_cache.c
->>> +++ b/fs/f2fs/extent_cache.c
->>> @@ -645,14 +645,10 @@ static unsigned int __destroy_extent_node(struct
->>> inode *inode,
->>>          while (atomic_read(&et->node_cnt)) {
->>>            write_lock(&et->lock);
->>> -        if (!is_inode_flag_set(inode, FI_NO_EXTENT))
->>> -            set_inode_flag(inode, FI_NO_EXTENT);
->>
->> We'd better revert all change lines in "f2fs: fix node_cnt race between
->> extent node destroy and writeback"?
-> 
-> The others all check whether FI_NO_EXTENT is set. When it is set,
-> inserting an age extent is disallowed, so nothing was removed.
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Gary Guo <gary@garyguo.net>
 
-diff --git a/fs/f2fs/extent_cache.c b/fs/f2fs/extent_cache.c
-index 87169fd29d89..0ed84cc065a7 100644
---- a/fs/f2fs/extent_cache.c
-+++ b/fs/f2fs/extent_cache.c
-@@ -119,10 +119,9 @@ static bool __may_extent_tree(struct inode *inode, enum extent_type type)
-         if (!__init_may_extent_tree(inode, type))
-                 return false;
-
--       if (is_inode_flag_set(inode, FI_NO_EXTENT))
--               return false;
--
-         if (type == EX_READ) {
-+               if (is_inode_flag_set(inode, FI_NO_EXTENT))
-+                       return false;
-                 if (is_inode_flag_set(inode, FI_COMPRESSED_FILE) &&
-                                  !f2fs_sb_has_readonly(F2FS_I_SB(inode)))
-                         return false;
-
-...
-
-@@ -691,12 +688,12 @@ static void __update_extent_tree_range(struct inode *inode,
-
-         write_lock(&et->lock);
-
--       if (is_inode_flag_set(inode, FI_NO_EXTENT)) {
--               write_unlock(&et->lock);
--               return;
--       }
--
-         if (type == EX_READ) {
-+               if (is_inode_flag_set(inode, FI_NO_EXTENT)) {
-+                       write_unlock(&et->lock);
-+                       return;
-+               }
-+
-                 prev = et->largest;
-                 dei.len = 0;
-
-Hmm, I'm not sure I understood you correctly, if you want to keep above codes, what
-about changing in another patch w/ correct commit message?
-
-Thanks,
-
-
-> 
-> Thanks
-> Yongpeng,
-> 
->>
->> Thanks,
->>
->>>            node_cnt += __free_extent_tree(sbi, et, nr_shrink);
->>>            write_unlock(&et->lock);
->>>        }
->>>    -    f2fs_bug_on(sbi, atomic_read(&et->node_cnt));
->>> -
->>>        return node_cnt;
->>>    }
->>>    
->>
->>
->>
->> _______________________________________________
->> Linux-f2fs-devel mailing list
->> Linux-f2fs-devel@lists.sourceforge.net
->> https://lists.sourceforge.net/lists/listinfo/linux-f2fs-devel
-> 
-
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 
