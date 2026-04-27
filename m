@@ -1,207 +1,191 @@
-Return-Path: <stable+bounces-241325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241326-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aMJDFBRh72mHAwEAu9opvQ
-	(envelope-from <stable+bounces-241325-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 15:13:56 +0200
+	id 8Fc1Bfxh72mHAwEAu9opvQ
+	(envelope-from <stable+bounces-241326-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 15:17:48 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E36D5473383
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 15:13:55 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02FB6473445
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 15:17:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4C80C3006B40
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 13:13:54 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id EB5C630028D6
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 13:17:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A43A83C3C16;
-	Mon, 27 Apr 2026 13:13:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D033279792;
+	Mon, 27 Apr 2026 13:17:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="T/UkDcqa"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="QgJ/SVje"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01CDF3C277C
-	for <stable@vger.kernel.org>; Mon, 27 Apr 2026 13:13:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.44
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777295632; cv=pass; b=eelhYueaXbu6/grSRn5/TbAwvYmN/UGnaZHflIcul1hKoZ6fp4d5QCOqHlm3lOmO/7qkO3iGpR4H2ivkezxrIHvv3fsAsmrv3aujI4CWHZ/6hNRdi5+OGgKEqGIaVkCTT9uSIlN5+E3dYQUgO3FGhB3YZf+fWiKLQh8n8fe5QsY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777295632; c=relaxed/simple;
-	bh=Bj5yC+8b46RDVgUptaLnu/xG3/FmzZC5vpJJyId/REg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FD/kJFSEfpeUcvPyPnkbzMq98uXsACVl8b3ytLrrf5zetI1CRQ9jLoh7ErvtqhOj+TF530U7G/9pLq5QtNLfImCvukB/oMu7f2pqun2RegtmY9PIOj6hAusxup/mrEeRoYfSlwWA9MXJDJyjQjxyh5UvAuo7ta6cLDYmcycfapk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=T/UkDcqa; arc=pass smtp.client-ip=209.85.167.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-5a2b5ea59a1so15433547e87.1
-        for <stable@vger.kernel.org>; Mon, 27 Apr 2026 06:13:50 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777295629; cv=none;
-        d=google.com; s=arc-20240605;
-        b=kglwQ3oEoAyRoR8hDWwIPQMR0uWzEuW8ADXBA6phBC5KDx9+xDIAVNoaR8vn/Kb5XB
-         5C44gdJA+MKQjPwF7FFUbWJ2GQwciEmQ9b6gSKkWoOol7I4Ev2/rj6B/dw+Q/LzSK5X9
-         ssWTwPZqO45W9li3xU/hB4kmYyLPAxGAhNWsTT9SeqKJ8EvMOIvl9n9X7olCGdggnRLa
-         b+oMTLsw4Df4HQs0KUUSrurJJxN7ki65R3oUKt/LFo5WMgve4NToQ05ompVU0vAhR09k
-         4D7/srWvdyYdsuXa80ZjNLqckdkyVsKLDyjLjY98rO64Y9OSALMN2ok3b6oFRsOQssUc
-         KxgQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=L7//5ece1DlWDMT1aLpKgGFyRfsm8Y+IqHoNcwNLtWg=;
-        fh=Bo965RiQ4+iVwq4WTZtxEoxlZlB0L15lvdeBuDBp5ow=;
-        b=aBQ6XGgZJgtqnqn8yyMBac9vZBVdrhU2jr0ygGVOW3olnxkJOfhtpuCSUy6tkBAoMR
-         c02Lf9h0CFjwYJz7NR7LXwGPB2epZHDCiZewBGzNTWoAArJZ7+l+jWK+5g3Cii1/w0Qu
-         uAQ6oSVmTjI7EadwTytTS1HiUJQG4tMw9aaqa2y/BJT8VndUy5GyVNFV6K5xqYzAc3nF
-         hikvAjHoweXtwHDdHc15Lw8aM+TyCcA8qIh+w399hxDzu7GdH5tuyW7aiL3cwgz60Znk
-         kwQoQyYlyQ6MdMrMLMDRkqxNa+ksd7pctwpMzQWz7cDBuJpcgwupv58E5wqzJR7dUK1H
-         RsBA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C21313B6C09
+	for <stable@vger.kernel.org>; Mon, 27 Apr 2026 13:17:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777295860; cv=none; b=KkSKWegXksh8CbcR9uE41HTqyGoK6O/kbOp/JHMn/Urj5LlFRJI8A7pQeHRiRdUS8pujA6UUwaXPG7TWZmyseYEwGD3p99y09YGjRf8uG7YuSbltL3d1KAJCx10pO1hYbghh7lMonxVSZ5E/oczNFJAPzK8kd8FOaCHzMxYeTOg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777295860; c=relaxed/simple;
+	bh=0V6gosJdoRQNTFQqh2+bD0+xQoMNzeLU3Tbf4QclE5M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qQS9s2AQVFRfLe4YcmDAKxpTcTdtxKLJLf0RjN1+ND8Ukb+DOEnDaLKPMN/hjLsCQt42cplla1HrMM1eZCQfMGRtuDWTAyg/f9HwZyL48aLDZrNZ0Q1ATkNpbZjxV+IpQfnU1d/h4ikM+eA7ffgR6PqBnU6stoQBz8zPLL1edx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=QgJ/SVje; arc=none smtp.client-ip=209.85.208.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-67929ff6dbfso2095069a12.2
+        for <stable@vger.kernel.org>; Mon, 27 Apr 2026 06:17:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1777295629; x=1777900429; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=L7//5ece1DlWDMT1aLpKgGFyRfsm8Y+IqHoNcwNLtWg=;
-        b=T/UkDcqaD+Vy7Lhtce4drzBtghuLePgTrncmXUFzJBpgX16jvusyijLVWq+AI4Qwm6
-         A5oRJXe2HcYOWtJ6o4evB9QTNAeiA6wvU1Ip2ZlvBVm/vEZqSO+Ln79AQ0QZQx6HYeUC
-         xNTxrj1MjBw+KK9aCxKPzCweXSmgnH2PcTtu7aGCJdPd+jGIRDcpTJLqTtuy8NVy2B2t
-         EJc/EEyspzCiMo1MrFONYwojk2kr6UH5E079NtJ54t0XZUgrF7mdczu8pDddfwQISFYm
-         T+/nwkzFI8BBkSuYse+ZhnK7kGtlkkBV72fIj6cF6V9aE/D0s7cknise5A5+UxFe6e7w
-         0bkw==
+        d=chromium.org; s=google; t=1777295857; x=1777900657; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=UdxTgo2BiNPwM4INja+PgXdaGRXgDFW+qwgof2SUt84=;
+        b=QgJ/SVjehgPUOlAfdij2CluvHIy4ZtjtHsVas/E0gza32/XP1Qs94wVd+MtIz1zIPt
+         tlpbUVGxAnKg5oDXCqzfQsc8KEkw5pfMdqDp+UtsejnBbvNot7H9+iS4hZEnTp2WIIlc
+         H3oU7Bu119lA+iMBFlKZG/GF2ocsrZGrmA7JE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777295629; x=1777900429;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1777295857; x=1777900657;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=L7//5ece1DlWDMT1aLpKgGFyRfsm8Y+IqHoNcwNLtWg=;
-        b=lGLOPV2aU/BNH/JsVgDQSaJVG7yv0FLHbHJRQ57+l+JcawbRVHLijZobYR+fgxCvQR
-         0aHAq0kj0hvwPYWtt1/J9QwLedalxt6MVgHNSkuTU8uPeeLmRFbs7xRz5ceWNdc0+RBZ
-         dZtq37o1S1XR6phbqwohKtTQTbOfklE0PfIJIEizOdyB0nQBjKg/xrp3lvGLAl+s0kJ1
-         uXn3wEyY0fqcZsTMZyRoCOCrWIw9oWylE4plXb86Du1NCAsEvylB/Fd6ZTIzcaU1gl+s
-         +MavhLstqXOwpz1pYXqv75JMcoGlvGHyKWjIHZBbH0/a9KJkZM1xkYLbKsdK2Lj7AekA
-         g57w==
-X-Forwarded-Encrypted: i=1; AFNElJ/tDgIGrgsXHIuGIYHwrX5VleYwDqDxVrbuEezkOgMNst8LYMgH1NcUZNfHYsKbp3VwzNIEIGY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxP4O/svp+y/rRNpzDX0fpR+ZU9lxhXIAZgc5SDmHfwzb3gFD4e
-	64jW80AWNHxX9FgHgEPbiZtqmpxJkPdRFMG7N3lJ5vxXDIxPEYAN4pbM1eFxtnnlUsuzImuLwq0
-	6brN7hzs7w+z497N0l80UvlPiBX9HdR4DW7z5ceBkvg==
-X-Gm-Gg: AeBDiesTOJD3XVqy9VP6QstRgCTWvocRN/StO5UhAcVLVRRzHn6nQ8iES/qOOrNU1Mq
-	loX3KCJJDmecU03+p2HxAJ45Y36OCIWcwedI8t3DKil9kCXKWq7AKGwonC+ZEXHqCLKQzfe9QH2
-	cYuJoFJnFSl9iYaycnAHiOFtOtxz/DEj6jD3ItpYIADjoz+oaCN0rnWhpOkAngn08IcoduUYYeX
-	yqG5HmOGU/bEAsNY+z18Np71ANSDhIJDtB1kt8f6nPY4SEvXQ2wNWteIh0h5TeKgvt16RaS4s2h
-	egZkpx763f3vkiIkWW0=
-X-Received: by 2002:a05:6512:3193:b0:5a4:1672:59e0 with SMTP id
- 2adb3069b0e04-5a4172cd574mr14121153e87.19.1777295629037; Mon, 27 Apr 2026
- 06:13:49 -0700 (PDT)
+        bh=UdxTgo2BiNPwM4INja+PgXdaGRXgDFW+qwgof2SUt84=;
+        b=Uy/0n/NMYraxAa2Wz1JsMjhQ3R3vBn0kAVWbnr1gl+2kedWmgMg/NwWeyJMpKokNa8
+         Rl+izlQjx0+zew+dO96Fc6pcuhx9SgsyKGYLKkgRfsUfd6wT4R2s4q0rSmHaIYLWM9hG
+         C90KPNKgWSxGluUMSrKtPKr+K63+pA8yTAiTQVLOHlmkGDmcaG82KCbE73wkupC535X5
+         K/FT/fsI9bPLHAhy1HTE0e2TqiZB91ZLCOuZ4Uu3B139crquoK/omRfneksTyvMLVG4A
+         nALu8KLTyDRnOvP6sDtWPcKbGgSiHPkklZ1d07BXDBJe65ULbEnDiWP34KTTrDiURju+
+         Th/w==
+X-Forwarded-Encrypted: i=1; AFNElJ8MKO0uFLxH6b8Wz2m/Z/svW7GUAT8+dMZSF+Yrc3AX6cCDoyAN5pvY+8LMEf6H66k563VRMDE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzRYB92wkF+ZNeckmTyPHVkb8t7CFcskPUPk9yuWCAtx8oXXSYF
+	3rcJNjyEYBVBghULMyzk7qwuvJju1vZMpWw87EsZh+MoAKHMQiTeRgk+DKaSjuAxuA==
+X-Gm-Gg: AeBDietynXjcgTVoj+b76oKwsMxxm2tKuMUSTCTVn7u2AnhSGXegFlWAHrL3U8d1UEI
+	iPNfAVs3SoonP+8MsXLkB3VQ9OxwaFkKXmPK7oeIb4mHtjzOHezuzKmFhUjgoGY7g+4VDUv9HrL
+	sh72BkqT0Z4YHrz8mfhQancbKdNn++aFT0ogcPaBHWByyoLkJaQRF8G3Sqtp1AQNmSPZYk9CP3J
+	FjNo7bwpXuxKDGqcB7J+jdNbViDx7SpI9JPVkDbUF1leju0mJOIKMMsKNde6OGD6/8otzc6wfKd
+	2j0/PpWL0aywD6bC3OlwUQYwoLAWfV5KHNcY0dzLMx5N/eg/HZn/mNAg+nr+YhyAUOqlrIKnL+c
+	HTbbCPy9jq3QodH6W8JgYyLNgfX2udtKZU3yV2EPZiC+P51gQ2Y2McM5YnbMLoApRUD4scLizhH
+	bO45sGQ0Lg8hYvZyP1mzgQyEBz5rkyygpCUx4UsfDbPZoB41SQgZE9nyUuK2xKfC/VW2c6wO41z
+	FK5NcN72QjXhRzAPetUMqByaZFQjtsOvA==
+X-Received: by 2002:a17:907:3cca:b0:ba6:a05c:ac2b with SMTP id a640c23a62f3a-ba6a05cb665mr1754584166b.18.1777295856940;
+        Mon, 27 Apr 2026 06:17:36 -0700 (PDT)
+Received: from akuchynski.c.googlers.com.com (124.143.141.34.bc.googleusercontent.com. [34.141.143.124])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ba454d1db07sm1135196166b.30.2026.04.27.06.17.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Apr 2026 06:17:36 -0700 (PDT)
+From: Andrei Kuchynski <akuchynski@chromium.org>
+To: Lee Jones <lee@kernel.org>,
+	Benson Leung <bleung@chromium.org>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Guenter Roeck <groeck@chromium.org>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	chrome-platform@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Andrei Kuchynski <akuchynski@chromium.org>,
+	stable@vger.kernel.org
+Subject: [PATCH] mfd: cros_ec: Delay dev_set_drvdata() until probe success
+Date: Mon, 27 Apr 2026 13:17:21 +0000
+Message-ID: <20260427131721.1165078-1-akuchynski@chromium.org>
+X-Mailer: git-send-email 2.54.0.rc2.544.gc7ae2d5bb8-goog
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260408141121.386522-1-vulab@iscas.ac.cn>
-In-Reply-To: <20260408141121.386522-1-vulab@iscas.ac.cn>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Mon, 27 Apr 2026 15:13:12 +0200
-X-Gm-Features: AVHnY4KIw0y71PHOTou49MhZ1vsAm_GUfrl6yfolmci7Zff-_TktbzdbSpL-x1c
-Message-ID: <CAPDyKFrTG6tp9XbuiUYjgMYkHYQwVsyXBuggCc3Lp=J_NcKTyA@mail.gmail.com>
-Subject: Re: [PATCH] pmdomain: mediatek: fix use-after-free in scpsys_get_bus_protection_legacy()
-To: Wentao Liang <vulab@iscas.ac.cn>
-Cc: Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, nfraprado@collabora.com, 
-	Macpaul Lin <macpaul.lin@mediatek.com>, Adam Ford <aford173@gmail.com>, 
-	Chen-Yu Tsai <wenst@chromium.org>, linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: E36D5473383
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 02FB6473445
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[chromium.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[chromium.org:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241325-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[chromium.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FREEMAIL_CC(0.00)[gmail.com,collabora.com,mediatek.com,chromium.org,vger.kernel.org,lists.infradead.org];
+	TAGGED_FROM(0.00)[bounces-241326-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ulf.hansson@linaro.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linaro.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[akuchynski@chromium.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,linaro.org:dkim,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,chromium.org:email,chromium.org:dkim,chromium.org:mid]
 
-On Wed, 8 Apr 2026 at 16:11, Wentao Liang <vulab@iscas.ac.cn> wrote:
->
-> In scpsys_get_bus_protection_legacy(), of_find_node_with_property()
-> returns a device node with its reference count incremented. The function
-> then calls of_node_put(node) before checking whether
-> syscon_regmap_lookup_by_phandle() returns an error. If an error occurs,
-> dev_err_probe() dereferences the node pointer to print diagnostic
-> information, but the node memory may have already been freed due to the
-> earlier of_node_put(), leading to a use-after-free vulnerability.
->
-> Fix this by moving the of_node_put() call after the error check, ensuring
-> the node is still valid when accessed in the error path.
->
-> Fixes: c29345fa5f66 ("pmdomain: mediatek: Refactor bus protection regmaps retrieval")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+If ec_device_probe() fails, cros_ec_class_release releases memory for the
+cros_ec_dev structure. However, because the drvdata was already set,
+sub-drivers like cros_ec_typec can still retrieve the stale pointer via the
+platform device. This leads to a use-after-free when cros_ec_typec attempts
+to access &typec->ec->ec->dev on a device that has already been released.
+Move dev_set_drvdata() to ensure that the pointer is only made available
+once all initialization steps have succeeded.
 
-Applied for fixes, thanks!
+ sysfs: cannot create duplicate filename '/class/chromeos/cros_ec'
+ Call trace:
+  sysfs_do_create_link_sd+0x94/0xdc
+  sysfs_create_link+0x30/0x44
+  device_add_class_symlinks+0x90/0x13c
+  device_add+0xf0/0x50c
+  ec_device_probe+0x150/0x4f0
+  platform_probe+0xa0/0xe0
+ ...
+ BUG: KASAN: invalid-access in __memcpy+0x44/0x230
+ Write at addr f5ffff809e2d33ac by task kworker/u32:5/125
+ Pointer tag: [f5], memory tag: [fe]
+ Tainted : [W]=WARN, [O]=OOT_MODULE
+ Hardware name: Google Navi unprovisioned 0x7FFFFFFF/sku0 board/sku3
+ Workqueue: events_unbound deferred_probe_work_func
+ Call trace:
+  __memcpy+0x44/0x230
+  cros_ec_check_features+0x60/0xcc [cros_ec_proto]
+  cros_typec_probe+0xe8/0x6e0 [cros_ec_typec]
+  platform_probe+0xa0/0xe0
 
-Kind regards
-Uffe
+Cc: stable@vger.kernel.org
+Fixes: 1c1d152cc5ac ("platform/chrome: cros_ec_dev - utilize new cdev_device_add helper function")
+Co-developed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Signed-off-by: Andrei Kuchynski <akuchynski@chromium.org>
+---
+ drivers/mfd/cros_ec_dev.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
+diff --git a/drivers/mfd/cros_ec_dev.c b/drivers/mfd/cros_ec_dev.c
+index 39430dd44e30c..56fb7cceafc6c 100644
+--- a/drivers/mfd/cros_ec_dev.c
++++ b/drivers/mfd/cros_ec_dev.c
+@@ -195,7 +195,6 @@ static int ec_device_probe(struct platform_device *pdev)
+ 	if (!ec)
+ 		return retval;
+ 
+-	dev_set_drvdata(dev, ec);
+ 	ec->ec_dev = dev_get_drvdata(dev->parent);
+ 	ec->dev = dev;
+ 	ec->cmd_offset = ec_platform->cmd_offset;
+@@ -237,6 +236,8 @@ static int ec_device_probe(struct platform_device *pdev)
+ 	if (retval)
+ 		goto failed;
+ 
++	dev_set_drvdata(dev, ec);
++
+ 	/* check whether this EC is a sensor hub. */
+ 	if (cros_ec_get_sensor_count(ec) > 0) {
+ 		retval = mfd_add_hotplug_devices(ec->dev,
+-- 
+2.54.0.rc2.544.gc7ae2d5bb8-goog
 
-> ---
->  drivers/pmdomain/mediatek/mtk-pm-domains.c | 10 +++++++---
->  1 file changed, 7 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/pmdomain/mediatek/mtk-pm-domains.c b/drivers/pmdomain/mediatek/mtk-pm-domains.c
-> index e2800aa1bc59..d3b36f32417c 100644
-> --- a/drivers/pmdomain/mediatek/mtk-pm-domains.c
-> +++ b/drivers/pmdomain/mediatek/mtk-pm-domains.c
-> @@ -993,6 +993,7 @@ static int scpsys_get_bus_protection_legacy(struct device *dev, struct scpsys *s
->         struct device_node *node, *smi_np;
->         int num_regmaps = 0, i, j;
->         struct regmap *regmap[3];
-> +       int ret = 0;
->
->         /*
->          * Legacy code retrieves a maximum of three bus protection handles:
-> @@ -1043,11 +1044,14 @@ static int scpsys_get_bus_protection_legacy(struct device *dev, struct scpsys *s
->         if (node) {
->                 regmap[2] = syscon_regmap_lookup_by_phandle(node, "mediatek,infracfg-nao");
->                 num_regmaps++;
-> -               of_node_put(node);
-> -               if (IS_ERR(regmap[2]))
-> -                       return dev_err_probe(dev, PTR_ERR(regmap[2]),
-> +               if (IS_ERR(regmap[2])) {
-> +                       ret = dev_err_probe(dev, PTR_ERR(regmap[2]),
->                                              "%pOF: failed to get infracfg regmap\n",
->                                              node);
-> +                       of_node_put(node);
-> +                       return ret;
-> +               }
-> +               of_node_put(node);
->         } else {
->                 regmap[2] = NULL;
->         }
-> --
-> 2.34.1
->
 
