@@ -1,129 +1,189 @@
-Return-Path: <stable+bounces-241341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241342-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oBY7MZd772lKBwEAu9opvQ
-	(envelope-from <stable+bounces-241341-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 17:07:03 +0200
+	id 2D8DHN1772lKBwEAu9opvQ
+	(envelope-from <stable+bounces-241342-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 17:08:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56E3A474E42
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 17:07:02 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB8A0474E7B
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 17:08:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6AC96305FC01
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 15:02:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 52EA3302F253
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 15:04:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CC9F3203B6;
-	Mon, 27 Apr 2026 15:02:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 832CA322527;
+	Mon, 27 Apr 2026 15:04:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TQsBv7/M"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Ub76ZJLN"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E6D22F12AC;
-	Mon, 27 Apr 2026 15:02:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E35CA31F996
+	for <stable@vger.kernel.org>; Mon, 27 Apr 2026 15:04:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777302123; cv=none; b=rYioFoI1Vw3JeFt6fI26YcFxgfOzoYakcUgse2HG8xv38lj2V0rTwVSFJ0GM29+aYoMe03DJq6bxdpqsDdeR5nP8nI2AkSuNaKh88g0qqoisEQwrLoITCJJ/+FWAI2/fEHUZcoh6REFGEaVo+j/v0wnPBaDEONTjNhE58NJCW50=
+	t=1777302253; cv=none; b=DlTqLKoFZxsgPIfGm/p+B+Gkw/vNiQ4QTRU1PqBlUVHWH90I6YN4frkdq7DZ/vFf6TkCKYyBHjHNw5koOhVPOXTmtZGgJslq6tE+Kdf2wxWOYv8QDIECvrXhCNinioz0tvXKMg83GZjE6xpm/KJ/RpWIdyzyFe2L9xi7JsaYjrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777302123; c=relaxed/simple;
-	bh=RmGS7PElg22weDoba6HQeduCjm48+E50PAaNKfbtK7M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Vl4y7RofEuQCbNfoq31M3AiYUnpmH/Fa9e0jM5Lf4ztUzbsdfkTPLcxOBqxHE5EALZbOxFtCzlSLQJ6C4BTOpDdex4lxd/Y8o0piR4wPXEifXporHUVQ2mYtUSP7DrjwcYY36Ld0iJvhhRCD2gK/Yj8dksA6fmjL7CsVdGzcUJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TQsBv7/M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8B50C19425;
-	Mon, 27 Apr 2026 15:02:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777302123;
-	bh=RmGS7PElg22weDoba6HQeduCjm48+E50PAaNKfbtK7M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TQsBv7/MASQ3oMBj7R4dq6IvR8LI8u80pPAcSAeivjNs3OvgO4uoMtGN9Q43vUQUp
-	 QBLyaeOFEFZipX5GEIL9rAZbodnSWhw8e4rHAuE+kuOvdMEJQNweQ9FNoKMC6gBTvN
-	 xbIvLjdje4MZR6YzdUjOVJ/WJ3unheeqFoUyoFafONYGq9BNIq0xEWZOwbMWTX8IUC
-	 BMCnm7pD2mpna58DTLuQr6jzhGDchZWqufqi8RE1uoX14IsyCpZwhw5BxCmhI7GJPo
-	 GnYmcg6Vy6aHsV+iGeLyIvHfF4O11CYE8CwWep+QYJTQWs3ra2L82c/lVa5T+mYnWI
-	 yiJG7Nw0Y9W9g==
-Received: from johan by theta with local (Exim 4.99.1)
-	(envelope-from <johan@kernel.org>)
-	id 1wHNTC-000000004PS-3Tud;
-	Mon, 27 Apr 2026 17:01:58 +0200
-Date: Mon, 27 Apr 2026 17:01:58 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Jason Wang <jasowang@redhat.com>
-Cc: "Michael S . Tsirkin" <mst@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, Pawel Moll <pawel.moll@arm.com>
-Subject: Re: [PATCH] virtio-mmio: fix device release warning on module unload
-Message-ID: <ae96Zsike81dBxTS@hovoldconsulting.com>
-References: <20260424104820.2619227-1-johan@kernel.org>
- <CACGkMEvJ4CZt9mVhn5TRCz5yCYzY_yHNFh8pbT4hOmJoWDiKOA@mail.gmail.com>
+	s=arc-20240116; t=1777302253; c=relaxed/simple;
+	bh=FkIFbqu0c8XIHL6u/4dr6OiK07WQv3wNMNPw/3F+U1Y=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=CDYSNFkQ5pCRN6fbRKavyYOy9nfB4HBgqkTZ/VGERsWRoH9+nfYxX+IhjoSNuE8a4n+u5iG6T+fT5Nz59Q5zY121C9ZBv30WD7IXQ4HZ0HhAk7xftegDTL+4Lo/DDFBsyOkRR1EHZ3g4kX1MxJoSlwu/DENA0844MPYeEhEnO9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Ub76ZJLN; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4891c00e7aeso77728175e9.2
+        for <stable@vger.kernel.org>; Mon, 27 Apr 2026 08:04:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1777302250; x=1777907050; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=/QR1R5o6VCM5Z4T+4o9C/Uwm/kY5zS3IqERo7Ty4MIk=;
+        b=Ub76ZJLN8jCWrfwdPHYwwsJbHLPSwGB9CBg+zM9SN6WYwo0otVneI5IAjB1yMnD7oL
+         LuvGOHOL2eDKqqA8pTMgInnoWiiV1RcPYTDP5IHMdZEQNA4fV6H53Dx1UADRdcp+oddo
+         4HXiMHDPJNV8SDdBqVewBfBMJeMKUInOPk1mNnsBlM8bEo5/jz1//QnIuGmZizNir9PJ
+         VMaWvU7ltk0ulFnNyQmWuKDwI8eaioWPxexQmG2QxvImOOii5DRsYmX0irxJkcyGnBi8
+         1MOFrPKLYVAp3oq/+xMwqLMbIb8S4bKbo3sMfkLYorXSbSFX8RfGNGQXKbRrTJ9PdGe4
+         OzqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777302250; x=1777907050;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/QR1R5o6VCM5Z4T+4o9C/Uwm/kY5zS3IqERo7Ty4MIk=;
+        b=SawoF5zLx4MzXqhhIxnmKAUOHhijk/Zn4BiUYAe+s5VB6Yy4gEnVHdcXdZLYIc2gte
+         zqMCpDQJEX/3JRLmI6UFSBgRcE2DQ1/6EF9aeSym+LSmRWxdIzv6aIipszZCNp+wgvJi
+         RtQQV4aRJ919CN9u+aoZBmCzNtES9CVDRo7eHHiVUxxsKoCT8qUmc/IZYx1GXC1yuGJ/
+         K5gnoDS7JGITolTww4EVVmQ8E1RKosGMx3LiXFyZfO7BVvircjQRtMOupyCq7M7gkqZD
+         uBqy2KPLzpO6iapIJFwDrO0AzQAZXIjFnvazF1L+obA5n/qgVaeKc4ifembbWqQLh+7c
+         f2HA==
+X-Forwarded-Encrypted: i=1; AFNElJ/Ou1X/8aIMdCfI/wL6FIOPydOEwIKz8HAucZB3UEenis5rVowdVQ6h74HsYob+fN0sn7NOb8U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxrtHfLDRAOmZY1fOXFVjphl9/MAqsAzJgqtCPv1gDhYnvw1I/W
+	mqImLAPb0nsUEPRdOP1RLCmWLbVg8z74RCB9qeKe29B9MYSqJMSGgH71Uk7DlSBa84c=
+X-Gm-Gg: AeBDietiVSMQa2gRXlOB769mMO2BTxmHTYhBhty7yZeUn8UTNwaaUIXIl2E/xcpSpDm
+	XxfptuqZfcVWsIVjXRC588ntODwedFJiqXnvhfsDXruo3WwKwkzZwHJXYghyEz3dd8ZSu4UPy6T
+	8SE0Z6fKeJI9MJ/aOsIvR7CSH6x731BO5ij3wRa7rIJ11K6YH5ptPK46aCYr7CtMmq/pxN7Gwwg
+	ftqFYMH7ifSKG+S8CmBI54pC+h1d+StKF1JqnC1kWnu00P2B26/y8vRvMu9ByhihGt81U0MJCqb
+	45IUFIWXfd/9SBMEG79bmwoLqwKvkVsaGWd+EBRgsJVAjjeMr+2lR2WXwvS0Ap66hWJEL83Wb74
+	MX1U0eoagupXyct8hwLG3mTwYmUBVB7aCIFy+ZCe3gBA9xceh4+MncLkSrsFxAolL1NsNVDe81L
+	vdP88bJbgI2c7wU60CxORDZlnjFyYFkP3r5HiYwKkWroFjE4FvS3mQA2PYsYcpCItRPopz3gYH9
+	PZZBQspHSvi1Yleow==
+X-Received: by 2002:a05:600c:c101:b0:48a:54a6:b29f with SMTP id 5b1f17b1804b1-48a54a6b3aemr309871915e9.17.1777302250228;
+        Mon, 27 Apr 2026 08:04:10 -0700 (PDT)
+Received: from ta2.c.googlers.com (17.83.155.104.bc.googleusercontent.com. [104.155.83.17])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48919f54572sm235370215e9.26.2026.04.27.08.04.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Apr 2026 08:04:09 -0700 (PDT)
+From: Tudor Ambarus <tudor.ambarus@linaro.org>
+Subject: [PATCH v2 0/6] firmware: samsung: acpm: Various fixes for sashiko
+ bug reports
+Date: Mon, 27 Apr 2026 15:04:05 +0000
+Message-Id: <20260427-acpm-fixes-sashiko-reports-v2-0-1ff8de94a997@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACGkMEvJ4CZt9mVhn5TRCz5yCYzY_yHNFh8pbT4hOmJoWDiKOA@mail.gmail.com>
-X-Rspamd-Queue-Id: 56E3A474E42
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAOV672kC/42NSw6CQBBEr0JmbZuZVn6uvIdhMUALHXWGdBOiI
+ dzdkRO4fJWqV6tREiY1l2w1Qgsrx5AAD5npRh8GAu4TG7RY2DOewHfTC+78JgX1OvIjgtAUZVb
+ whFVbUJ/nlTNJMAntxbS/NYlH1jnKZ/9a3C/9S7s4sIDoyrasbY05XZ8cvMRjlME027Z9AUguS
+ enFAAAA
+X-Change-ID: 20260423-acpm-fixes-sashiko-reports-ae28b6ed5581
+To: Krzysztof Kozlowski <krzk@kernel.org>, 
+ Alim Akhtar <alim.akhtar@samsung.com>
+Cc: linux-kernel@vger.kernel.org, linux-samsung-soc@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, peter.griffin@linaro.org, 
+ andre.draszik@linaro.org, jyescas@google.com, kernel-team@android.com, 
+ Tudor Ambarus <tudor.ambarus@linaro.org>, stable@vger.kernel.org
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1777302249; l=2292;
+ i=tudor.ambarus@linaro.org; s=20241212; h=from:subject:message-id;
+ bh=FkIFbqu0c8XIHL6u/4dr6OiK07WQv3wNMNPw/3F+U1Y=;
+ b=MixsNd6wkgvvQDOhSDRPyCx4QCoo4FWY2Wr+553OosW0lyVFKYqMz0mugD9UWVPKnlCfr9Yka
+ +reAExTwe1fCmfPhWLr4XOxnRsRzANdmqq9eAyzbaFJK7dBW5ZpAgkX
+X-Developer-Key: i=tudor.ambarus@linaro.org; a=ed25519;
+ pk=uQzE0NXo3dIjeowMTOPCpIiPHEz12IA/MbyzrZVh9WI=
+X-Rspamd-Queue-Id: AB8A0474E7B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
+	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241341-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	DKIM_TRACE(0.00)[linaro.org:+];
 	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-241342-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tudor.ambarus@linaro.org,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	RCPT_COUNT_SEVEN(0.00)[11];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linaro.org:email,linaro.org:dkim,linaro.org:mid]
 
-On Mon, Apr 27, 2026 at 12:16:47PM +0800, Jason Wang wrote:
-> On Fri, Apr 24, 2026 at 6:48 PM Johan Hovold <johan@kernel.org> wrote:
-> >
-> > Driver core expects devices to be allocated dynamically and complains
-> > loudly when a device that lacks a release function is freed.
-> >
-> > Use __root_device_register() to allocate and register the root device
-> > instead of open coding using a static device.
+Fixes for bugs that were identified by sashiko when proposing the
+GS101 ACPM TMU addition.
 
-> > -static struct device vm_cmdline_parent = {
-> > -       .init_name = "virtio-mmio-cmdline",
-> > -};
-> > +static struct device *vm_cmdline_parent;
-> 
-> vm_cmdline_get() is the .get callback for the device module parameter.
-> It is invoked when userspace reads
-> /sys/module/virtio_mmio/parameters/device. This function uses
-> vm_cmdline_parent unconditionally, without checking whether the device
-> has been registered. This would cause NULL pointer dereference.
+While the bugs are sane, we haven't hit them yet, maybe because we
+don't have enough ACPM clients upstreamed. The fixes can go either
+as fixes at -rc phase, or as regular patches for the next merge window.
+If the later, we'll need a dedicated branch, as these patches toghether
+with the other ACPM thermal preparatory patches will be needed by the
+GS101 ACPM thermal driver. I'm thinking a dedicated branch and a tag
+will do. I will respin the GS101 ACPM thermal driver series once this
+fixes set gets in.
 
-Indeed, Sashiko flagged this as well. Just sent a v2 here:
+Thanks,
+ta
 
-	https://lore.kernel.org/r/20260427143710.14702-1-johan@kernel.org
+Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+---
+Changes in v2:
+- drop patch "firmware: samsung: acpm: Fix sequence number leak and infinite loop"
+  The patch freed sequence numbers on mailbox failures or timeouts. Because
+  the message is already in SRAM and tx.front was advanced, a delayed
+  firmware wake-up will process that abandoned message, stealing the
+  sequence number from a new thread and causing silent data corruption.
+- fix mailbox channel leak when `acpm_achan_alloc_cmds()` failed. Did it
+  by  moving the `devm_add_action_or_reset()` call.
+- new patches, last 3 in the set, they fix some more sashiko reports.
+- Link to v1: https://lore.kernel.org/r/20260423-acpm-fixes-sashiko-reports-v1-0-2217b790925e@linaro.org
 
-Johan
+---
+Tudor Ambarus (6):
+      firmware: samsung: acpm: Fix cross-thread RX length corruption
+      firmware: samsung: acpm: Fix mailbox channel leak on probe error
+      firmware: samsung: acpm: Fix dummy stubs to return ERR_PTR
+      firmware: samsung: acpm: Fix memory ordering race in RX path
+      firmware: samsung: acpm: Fix out-of-bounds read and infinite loop in RX path
+      firmware: samsung: acpm: Fix infinite loop on sequence number exhaustion
+
+ drivers/firmware/samsung/exynos-acpm-dvfs.c        |  3 +
+ drivers/firmware/samsung/exynos-acpm.c             | 77 ++++++++++++++--------
+ .../linux/firmware/samsung/exynos-acpm-protocol.h  |  3 +-
+ 3 files changed, 56 insertions(+), 27 deletions(-)
+---
+base-commit: 254f49634ee16a731174d2ae34bc50bd5f45e731
+change-id: 20260423-acpm-fixes-sashiko-reports-ae28b6ed5581
+
+Best regards,
+-- 
+Tudor Ambarus <tudor.ambarus@linaro.org>
+
 
