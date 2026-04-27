@@ -1,387 +1,254 @@
-Return-Path: <stable+bounces-241222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241223-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CK7iORYE72lz3QAAu9opvQ
-	(envelope-from <stable+bounces-241222-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 08:37:10 +0200
+	id oFKMDUIF72ma3wAAu9opvQ
+	(envelope-from <stable+bounces-241223-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 08:42:10 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D382846DA28
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 08:37:10 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A16DD46DB98
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 08:42:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6C62D300B186
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 06:36:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C05E3303B7C2
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 06:36:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4623B375AA1;
-	Mon, 27 Apr 2026 06:35:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEDA7384256;
+	Mon, 27 Apr 2026 06:36:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="nWHbYaTY";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="GUBHb/fq"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DCrrnBGQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 909F7371CE9
-	for <stable@vger.kernel.org>; Mon, 27 Apr 2026 06:35:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0722D3815E7
+	for <stable@vger.kernel.org>; Mon, 27 Apr 2026 06:36:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777271751; cv=none; b=Xwo6tqLu88WQ0qOlSBcwWqSSdn1IcxbBiDTBzCsl+3yjzDN38QkiLQXEnuRrvTAJ5WMM9q33o3a4qPZxGmXE0hCxqr7rzSJDaPpYle70dvWFfx1q+ORdMFh+u7AlytK1OJbMk4Eer4ED3TjKFJfSL7YmppNtVH2AxXoAFXTNKqo=
+	t=1777271763; cv=none; b=LDWZQxwSE0Tdm8Q1z4M/+B56momNPVWJXZetzRYoqbwGk6xXDq8Bmublbu+ylcrDEyiAa0Bb5K7E2vqi1oJez+Ay3UauKHnQDGzPIlhEEcCfbbcDl0BVjK6nVR2zMGYseIqPcjyVLCzUBaOU4SM0BKufVKXakPDXcH+KX45/dsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777271751; c=relaxed/simple;
-	bh=UJfJbat0WxxGDDgc1J6mpbWkCUWZwu5kiHe5HC0OQjI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=NbRrVQsTU+SfGxYNOXDqWdWkWhgMhC/DdBHbz7td7vQ5gYqTnv083Y/xZwkgqI5dmk0IN88TLPqV2an2GVTf52FCPxXNqBJe9hmKtikJPDTQRUjKGq639mGPUjaLcq3P0+OR29QM7MCYELWOOSDQ24Ovp54YjjDGo7TTg+2tNm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=nWHbYaTY; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=GUBHb/fq; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63R1c2Ms3261439
-	for <stable@vger.kernel.org>; Mon, 27 Apr 2026 06:35:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	F/ivyNBjCAffYDhazIIzpEgKd96rMA5tlEiyp0VgCXE=; b=nWHbYaTYsPIiL0Lj
-	GMbIfoYOYOqWVxTl1lRylN3VIhIpG88pFYMWYBA9isyU7fSAN1UWFZLTfC6/uarK
-	xbxdxtvjUGJUAvo0Ys3aB1g6nOpbivqOQuesWmAAN8kTW3NuwuxfigrlntXeHzO6
-	sOI4+ve6FKcLCUYGDLsg+oKrimjhPIwWsUW8H1XCz4oRcdwFV0C+LFzfhy1iphTe
-	SX13vIa18nquLulqmHUKZ6rQkWRQmLh3UW3H181l7Q88VgUA4wOF+PWUSnMhwya0
-	hdCoSpjD84CRRXxnG9OvR5jetgZh98FqKIQELtH0/fMDYeFaMl93EjTsCIEJFutq
-	epQZIw==
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com [209.85.219.69])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4drnu2vq4c-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Mon, 27 Apr 2026 06:35:48 +0000 (GMT)
-Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-8acadca1ac4so274337876d6.0
-        for <stable@vger.kernel.org>; Sun, 26 Apr 2026 23:35:48 -0700 (PDT)
+	s=arc-20240116; t=1777271763; c=relaxed/simple;
+	bh=DoIRs2ewmXmKoxeu+LwDciZNxgzLEyxBy3ROzfHrEhM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=kU6AERuDAuo4pcjnRmeoLN45DY6BvZ3JMbGid0k/jIAWRpB7vBLMeVYfLjH0TW6L4yN6EMeavI8XuPoBogIvOpaPRE2f+p9gJ/aik+M+TdAPWFEU6TfNM15JI8nB7b1Fjs5MYaF4tvS4QB7eWllFQ6m6Zw6DbYaAwq0HApDKifY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DCrrnBGQ; arc=none smtp.client-ip=209.85.167.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-5a402dea4a5so9872585e87.2
+        for <stable@vger.kernel.org>; Sun, 26 Apr 2026 23:36:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1777271748; x=1777876548; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=F/ivyNBjCAffYDhazIIzpEgKd96rMA5tlEiyp0VgCXE=;
-        b=GUBHb/fqYOkOw4eg25NazuNL0Xw2BMrbXcMPbmYje9jrSjOIPsaTrDvvDNm40fJpcv
-         AHUDxQwxu7FKZ0AaZ/04JCX45HvwWgCnQcHsatMHxdBqpl/9Ieiw7y27mNAjqV8uSdri
-         FUjFNYiTmHxqdofV2Lc59kiDlwo1Q9XvhlNNWs8+iERp0iCfjGuNdJ4rmQxrhwqRYIrJ
-         xGPuVBtAKpCALO9PIkC60tW8fFb2GFFDBEYHylYQTdkJSis34omZ+vFigdq0LIqNp3W/
-         l0FkCK8crqkgOeIMMxb8Dc+85Bm+0cZ++1M98oWmJlWgV1KAnh1VStTOI7hXzA/4mUXQ
-         T4sg==
+        d=gmail.com; s=20251104; t=1777271760; x=1777876560; darn=vger.kernel.org;
+        h=mime-version:references:in-reply-to:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ob6hAxn4b2XJbstB2WIYNRqhZDHJqLJB6rp2bFlZgjg=;
+        b=DCrrnBGQZlmqii1jcrhEBQ1AmWiOgMsjDskG4yKdb2+p+TAnpVP8TVJiiOsmdOxZoS
+         VczEHy7xxhZdiUlTZkzGMEkTL7cRbEtGaQadNzn6OozG9k//Ps5xdf51qYxcqOJx717t
+         /q96bkCHL7QdLBwBTnXrJ0Xhn5dXs7tqSMLj2DJIiuUExhwYXVc/1c0UicaJNqXn3gqC
+         yQAhtSWv2spmp4R1o+pOsSAuTV4RuFAXhBehFc/Uai6twFt4msZvXoFFfS5E0lasjksw
+         4eQUHVvIswPgzTdyyWGiNRCWcz08erDSqJbnP0qs2zI53ag1ftceIJmPMnpfuizk8jbc
+         IA9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777271748; x=1777876548;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=F/ivyNBjCAffYDhazIIzpEgKd96rMA5tlEiyp0VgCXE=;
-        b=IIO0gbnm/4gBBJcMbarZzlQt78qkbWCCR3d5q11UEAeQg/l4W0ye1nDelozEL2oNaO
-         PiliXnCjeaeHPqPSa4pSMAWL5Tt7Mrt9W1b4tEOlLLjc2bRaH6P6cCfLFGtcSCYEr+bG
-         j5FR0GF83V1ICYzQlN8tuHQlBv8eQE/lNXWb8XTxzdJpzVhLiCHxiUf0oBfASX8BgwGt
-         CDZyKNtfcCawGOrdcsIzUZIt7wY65VXtRgyg71TVCdZS924zBh+XpAUGKbm+WJg9yRpw
-         khEjr2OvOxsHpdCaP6bRp4p2ntMkkDNCPxbwUed8eG9Fpz8RnyCtprFeyDbZYpIObyB3
-         GiDQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+vSd/u64Z78ezk7txjQZ/cBBXqZ7RhY2XgBuIXc1L1A2QtA7rJSon0nrBHHANEI+xBiL2Fsno=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxvLtu6FdYqq6xuTCNzGmEs16VncXlbE4G/aZREnkWiG9z4j2nm
-	VkhU95rxTu+SvWUSka4FQDxwhfx1cewNgf8GeOe1r0bYoMKz32hback02ZUJJcLWe5jXVbzsuOB
-	yFkHkoXDNNdvWwGsHeSgUkGPcz2YDeIbPCEOdM0Sxm5iZKrH36MH7hGpmcKI=
-X-Gm-Gg: AeBDiesnYGutevlhIcUO3CcEtlr/mRgH6P9y/k8K80gj/PkPiNjeHpFOZEMX1OjOwoL
-	57igxecmrZtJi6gzorc1IxMa6vlp3Eimb1Q8BBmSWEaRzcmeOVfY3qFYPU53O6kFC3uQf3IaPdd
-	KSc7oRY7vANxyXyJBKc3Q09SIUNn89e16CAu+WrakEiRLbY3sbk/WyhiQoDmv35zKAGsxV6mDAN
-	t5xG7HMlz+W/wmbIfjvljrSVA2CtsKRD+wpgSrS/jdEPuiUsPuD6sPGOecf39HrkhWYdzMSXH6X
-	Qv0A7YtVXmCpyku7UnKC/2bI8wwDsckkC3Ooxwe4y89x/omNSKy17YVnJORpUxoBq3atMh9ScHs
-	ANf96+ECoCfbMUKtHEkezz/+5FU6c2BGHuSMsCFTln960SVqdFEBfDsvBA0Z9fjAv2aPGYxayYy
-	BTgEaLFchblyY0CVM1AA==
-X-Received: by 2002:a05:6214:21ca:b0:8ac:b1ad:3a24 with SMTP id 6a1803df08f44-8b0280f1d8amr670800796d6.27.1777271747803;
-        Sun, 26 Apr 2026 23:35:47 -0700 (PDT)
-X-Received: by 2002:a05:6214:21ca:b0:8ac:b1ad:3a24 with SMTP id 6a1803df08f44-8b0280f1d8amr670800476d6.27.1777271747362;
-        Sun, 26 Apr 2026 23:35:47 -0700 (PDT)
-Received: from yongmou2.ap.qualcomm.com (Global_NAT1_IAD_FW.qualcomm.com. [129.46.232.65])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b02ac7d4e6sm251899256d6.20.2026.04.26.23.35.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 26 Apr 2026 23:35:46 -0700 (PDT)
-From: Yongxing Mou <yongxing.mou@oss.qualcomm.com>
-Date: Mon, 27 Apr 2026 14:35:23 +0800
-Subject: [PATCH v5 5/5] phy: qcom: edp: Add PHY-specific LDO config for eDP
- low vdiff
+        d=1e100.net; s=20251104; t=1777271760; x=1777876560;
+        h=mime-version:references:in-reply-to:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Ob6hAxn4b2XJbstB2WIYNRqhZDHJqLJB6rp2bFlZgjg=;
+        b=OVpcH7JoWcmvx+o/REDE/aHjmLcszQLpTWH8rR3GHxr4W/6+cFpr+2M8kYCw18KYIJ
+         +VBdZy9aqt6yenYRXilo0BfYb2LxGXmvGP65kjlr5Bv8at9RCEZHHFYa5zgvq7lcRQ01
+         r5J4mH0a5ZG4tmn0aTJYRmlkbgV1VBzTlmVjOsBkRhvi8KDv6C5x4icHse0g4ohBEWwK
+         D3uursv1frI+LGs4Si0x9XTparVCHSwZfYSCpyunZVInvpoRtBS6eqK8dXbkM9ISdD4H
+         M1VMN7TCl13+b2UJ87WlkNIwP+Of/7P03EhXx8eXRtMOAMMowuuR64g8YB7leg1IC4P8
+         sK+w==
+X-Forwarded-Encrypted: i=1; AFNElJ8IgcLd9noYwqhAcBy0XmhepNaNnare6Ji6OiuSZBvr8MR6RlMngNK7fUXYXbS3+To6CoqAD74=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyjRYrcyX2AcpJa+v3JII/hWwpHuet/r8fY8CVw2xwYpJKcLJpH
+	Sau40JA65c4TTqNAbhuYGLwyqqJegBC/FUHaq1PExLzXU1/yJUQYuisR
+X-Gm-Gg: AeBDietDoGVVsK0hw7PLqlku7gu1b0LSofRqJbNVwPDILpKe7kdU9SLaojBntN85DZZ
+	vD+XwNc8nTL1bJjZjFOr3s0ZvFvSQbi0Q6LuBV1N9k2psxKHfZvzfstOO6T0ziM3FU/DNvwXnjW
+	JFawXSYH9C7RGCEdzQ/hxeDbhQcaea0lFLMAEX2L0xEgAIh/WH5aWyy2wNkgVCEdvU4Qw14sgtL
+	6/Hib7hdr+o6sGN3He1yZKrGq3Te7KvTdJCknG881xoAhfZbN7T/o6iHX2+G44w8GfIhHFOTarH
+	aT2/MefU5lTDx46PB0ja5FSA+Xh7gmNokeWj3H5ubScNeWFmhmTwOJGv7VS2xPNkWjxiv9pgHWb
+	ilb6Lm9qBFnkMcP+CgCX3rXpZ1H8u7SoZwR9nO1x6bzFLfpjnWlbebA+tj5gbPX+toHxB2Bjp+y
+	VeE/rFciGa1hQjHbmFopl05WStkqpmdfQc5qb5e/w28kI=
+X-Received: by 2002:a05:6512:3ca9:b0:5a1:3437:84ac with SMTP id 2adb3069b0e04-5a4172ee6b9mr13124133e87.31.1777271759755;
+        Sun, 26 Apr 2026 23:35:59 -0700 (PDT)
+Received: from foxbook (bfh75.neoplus.adsl.tpnet.pl. [83.28.45.75])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-38ecb5f652asm64457991fa.12.2026.04.26.23.35.57
+        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
+        Sun, 26 Apr 2026 23:35:58 -0700 (PDT)
+Date: Mon, 27 Apr 2026 08:35:53 +0200
+From: Michal Pecio <michal.pecio@gmail.com>
+To: Jeffrey Hein <jp@jphein.com>
+Cc: Mathias Nyman <mathias.nyman@linux.intel.com>, Ricardo Ribalda
+ <ribalda@chromium.org>, Alan Stern <stern@rowland.harvard.edu>, Laurent
+ Pinchart <laurent.pinchart@ideasonboard.com>, Hans de Goede
+ <hansg@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-media@vger.kernel.org, linux-usb@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH v5 2/3] media: uvcvideo: add UVC_QUIRK_CTRL_THROTTLE for
+ fragile firmware
+Message-ID: <20260427083553.36ff4731.michal.pecio@gmail.com>
+In-Reply-To: <20260413100545.71796c66.michal.pecio@gmail.com>
+References: <20260331003806.212565-1-jp@jphein.com>
+	<20260331003806.212565-3-jp@jphein.com>
+	<CANiDSCvsxP+npQTHUrMTp+Z8XULYKSLTz2AFu+WQnsLbRBGa2w@mail.gmail.com>
+	<20260409100247.7cfb62d1.michal.pecio@gmail.com>
+	<20260409221749.5e6bccab.michal.pecio@gmail.com>
+	<c4275422-a9b4-4519-95f9-1163a7912709@linux.intel.com>
+	<CAD5VvzCEV_XbHc_Gby7mFPBSgSebqKDKJf3VC8HNRrD+xWaTJg@mail.gmail.com>
+	<20260413100545.71796c66.michal.pecio@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260427-edp_phy-v5-5-3bb876824475@oss.qualcomm.com>
-References: <20260427-edp_phy-v5-0-3bb876824475@oss.qualcomm.com>
-In-Reply-To: <20260427-edp_phy-v5-0-3bb876824475@oss.qualcomm.com>
-To: Vinod Koul <vkoul@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Bjorn Andersson <andersson@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org,
-        linux-kernel@vger.kernel.org,
-        Yongxing Mou <yongxing.mou@oss.qualcomm.com>, stable@vger.kernel.org,
-        Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-        Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1777271722; l=7072;
- i=yongxing.mou@oss.qualcomm.com; s=20250910; h=from:subject:message-id;
- bh=UJfJbat0WxxGDDgc1J6mpbWkCUWZwu5kiHe5HC0OQjI=;
- b=yjUQR8Ti5SxHbjVW1hz6/RIkc1NgYL5wNokw2H+Is6pSidV1e9W2MzProOxrvWxN1W5R80J8D
- sDkp3K7Xz/ODozi+SKBIC2QAhnKraGBkVbjXMrQ7xNy/vB1or/J9Ghy
-X-Developer-Key: i=yongxing.mou@oss.qualcomm.com; a=ed25519;
- pk=rAy5J1eP+V7OXqH5FJ7ngMCtUrnHhut30ZTldOj52UM=
-X-Proofpoint-GUID: _qv15ZR6Y7C79_5PTCvd8PMguV8OnVZT
-X-Authority-Analysis: v=2.4 cv=cbriaHDM c=1 sm=1 tr=0 ts=69ef03c4 cx=c_pps
- a=wEM5vcRIz55oU/E2lInRtA==:117 a=C3Dk8TwHQYyIj7nOf9RCJw==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22
- a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=Wstf64DO4dhji1mrokQA:9 a=QEXdDO2ut3YA:10
- a=OIgjcC2v60KrkQgK7BGD:22
-X-Proofpoint-ORIG-GUID: _qv15ZR6Y7C79_5PTCvd8PMguV8OnVZT
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDI3MDA2OCBTYWx0ZWRfXzPcRA2cMSEWW
- rnmgsVyisP1pSjKH88mm4Z22H7m3UmXUH331eRtQIBhUiKYXOXpp+xbMAMZz6lI4x8rF9YfsILG
- b3GmTgO+UgaVO6yOHGk+XURuTdOJzVeNVou1/B7hq8+45bW2OxdVjNNMeE9n99bTw8xdwPHM76D
- mdFur0u407O4EyuB70wf+JmdOpzyPU26i6Vi/2ebKakHZa4/QE6+mWnL+pU+P/8KStBWEl2ZHHM
- rVbWvFlBqMJIzjdjFATN7A1t6eLJMK7NOMLlB/mEaFnSNp60rx3GaPlrr8MCTrvut3tAR4EfRL5
- 2KnrBCv4OpEpsmBmXNCSJnB8zPFnv1BhQJzBZqMWLIm14mS5FSnKD6MSFpDswVL0G6YC478I8pE
- Up2SM1k3xSXzt2xrItd87dqECzcAMgmkMGovOI1KfjzOidZCgYmpXCaEXPY0ux/FONNWukIeH/Q
- YDIxuukJoRcAZPf6xgQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-27_01,2026-04-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 phishscore=0 lowpriorityscore=0 clxscore=1015 impostorscore=0
- priorityscore=1501 spamscore=0 malwarescore=0 bulkscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2604270068
-X-Rspamd-Queue-Id: D382846DA28
+Content-Type: multipart/mixed; boundary="MP_/.OkknVOR4gOuo.3Taa06e1K"
+X-Rspamd-Queue-Id: A16DD46DB98
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.56 / 15.00];
+	MIME_BAD_ATTACHMENT(1.60)[c:text/x-c++src];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
-	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
+	MIME_GOOD(-0.10)[multipart/mixed,text/plain,text/x-c++src];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[oss.qualcomm.com:dkim,oss.qualcomm.com:mid,qualcomm.com:dkim,qualcomm.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns];
+	HAS_ATTACHMENT(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-241223-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+,1:+,2:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241222-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[michalpecio@gmail.com,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FROM_NEQ_ENVFROM(0.00)[yongxing.mou@oss.qualcomm.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_COUNT_SEVEN(0.00)[7]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-For eDP low vdiff, the LDO setting depends on the PHY version rather
-than being a simple 0x0 or 0x1 value. Introduce a PHY callback to program
-the correct LDO setting according to the HPG.
+--MP_/.OkknVOR4gOuo.3Taa06e1K
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
 
-Since SC7280/SC8180X uses different LDO settings from SA8775P/SC8280XP,
-introduce qcom_edp_phy_ops_v3 to keep the LDO setting correct.
+On Mon, 13 Apr 2026 10:05:45 +0200, Michal Pecio wrote:
+> Question: can you kill it by starting some video application to set
+> the camera up, closing it and then running this loop?
+> 
+> while :; do v4l2-ctl -d /dev/video0 --stream-mmap --stream-count=1; done
 
-Cc: stable@vger.kernel.org
-Fixes: f199223cb490 ("phy: qcom: Introduce new eDP PHY driver")
-Signed-off-by: Yongxing Mou <yongxing.mou@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Tested-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com> # SC8280XP X13s
----
- drivers/phy/qualcomm/phy-qcom-edp.c | 88 ++++++++++++++++++++++++++++++++-----
- 1 file changed, 77 insertions(+), 11 deletions(-)
+Hi again,
 
-diff --git a/drivers/phy/qualcomm/phy-qcom-edp.c b/drivers/phy/qualcomm/phy-qcom-edp.c
-index 3a848f18a8d6..a3c893f72908 100644
---- a/drivers/phy/qualcomm/phy-qcom-edp.c
-+++ b/drivers/phy/qualcomm/phy-qcom-edp.c
-@@ -81,6 +81,7 @@ struct phy_ver_ops {
- 	int (*com_clk_fwd_cfg)(const struct qcom_edp *edp);
- 	int (*com_configure_pll)(const struct qcom_edp *edp);
- 	int (*com_configure_ssc)(const struct qcom_edp *edp);
-+	int (*com_ldo_config)(const struct qcom_edp *edp);
- };
- 
- struct qcom_edp_phy_cfg {
-@@ -352,7 +353,7 @@ static int qcom_edp_set_voltages(struct qcom_edp *edp, const struct phy_configur
- 	const struct qcom_edp_swing_pre_emph_cfg *cfg;
- 	unsigned int v_level = 0;
- 	unsigned int p_level = 0;
--	u8 ldo_config;
-+	int ret;
- 	u8 swing;
- 	u8 emph;
- 	int i;
-@@ -378,13 +379,13 @@ static int qcom_edp_set_voltages(struct qcom_edp *edp, const struct phy_configur
- 	if (swing == 0xff || emph == 0xff)
- 		return -EINVAL;
- 
--	ldo_config = edp->is_edp ? 0x0 : 0x1;
-+	ret = edp->cfg->ver_ops->com_ldo_config(edp);
-+	if (ret)
-+		return ret;
- 
--	writel(ldo_config, edp->tx0 + TXn_LDO_CONFIG);
- 	writel(swing, edp->tx0 + TXn_TX_DRV_LVL);
- 	writel(emph, edp->tx0 + TXn_TX_EMP_POST1_LVL);
- 
--	writel(ldo_config, edp->tx1 + TXn_LDO_CONFIG);
- 	writel(swing, edp->tx1 + TXn_TX_DRV_LVL);
- 	writel(emph, edp->tx1 + TXn_TX_EMP_POST1_LVL);
- 
-@@ -608,6 +609,52 @@ static int qcom_edp_com_configure_pll_v4(const struct qcom_edp *edp)
- 	return 0;
- }
- 
-+static int qcom_edp_ldo_config_v3(const struct qcom_edp *edp)
-+{
-+	const struct phy_configure_opts_dp *dp_opts = &edp->dp_opts;
-+	u32 ldo_config;
-+
-+	if (!edp->is_edp)
-+		ldo_config = 0x0;
-+	else if (dp_opts->link_rate <= 2700)
-+		ldo_config = 0x81;
-+	else
-+		ldo_config = 0x41;
-+
-+	writel(ldo_config, edp->tx0 + TXn_LDO_CONFIG);
-+	writel(dp_opts->lanes > 2 ? ldo_config : 0x00, edp->tx1 + TXn_LDO_CONFIG);
-+
-+	return 0;
-+}
-+
-+static int qcom_edp_ldo_config_v4(const struct qcom_edp *edp)
-+{
-+	const struct phy_configure_opts_dp *dp_opts = &edp->dp_opts;
-+	u32 ldo_config;
-+
-+	if (!edp->is_edp)
-+		ldo_config = 0x0;
-+	else if (dp_opts->link_rate <= 2700)
-+		ldo_config = 0xc1;
-+	else
-+		ldo_config = 0x81;
-+
-+	writel(ldo_config, edp->tx0 + TXn_LDO_CONFIG);
-+	writel(dp_opts->lanes > 2 ? ldo_config : 0x00, edp->tx1 + TXn_LDO_CONFIG);
-+
-+	return 0;
-+}
-+
-+static const struct phy_ver_ops qcom_edp_phy_ops_v3 = {
-+	.com_power_on		= qcom_edp_phy_power_on_v4,
-+	.com_resetsm_cntrl	= qcom_edp_phy_com_resetsm_cntrl_v4,
-+	.com_bias_en_clkbuflr	= qcom_edp_com_bias_en_clkbuflr_v4,
-+	.com_clk_fwd_cfg	= qcom_edp_com_clk_fwd_cfg_v4,
-+	.com_configure_pll	= qcom_edp_com_configure_pll_v4,
-+	.com_configure_ssc	= qcom_edp_com_configure_ssc_v4,
-+	.com_ldo_config		= qcom_edp_ldo_config_v3,
-+};
-+
- static const struct phy_ver_ops qcom_edp_phy_ops_v4 = {
- 	.com_power_on		= qcom_edp_phy_power_on_v4,
- 	.com_resetsm_cntrl	= qcom_edp_phy_com_resetsm_cntrl_v4,
-@@ -615,6 +662,7 @@ static const struct phy_ver_ops qcom_edp_phy_ops_v4 = {
- 	.com_clk_fwd_cfg	= qcom_edp_com_clk_fwd_cfg_v4,
- 	.com_configure_pll	= qcom_edp_com_configure_pll_v4,
- 	.com_configure_ssc	= qcom_edp_com_configure_ssc_v4,
-+	.com_ldo_config		= qcom_edp_ldo_config_v4,
- };
- 
- static const struct qcom_edp_phy_cfg sa8775p_dp_phy_cfg = {
-@@ -631,7 +679,7 @@ static const struct qcom_edp_phy_cfg sc7280_dp_phy_cfg = {
- 	.vco_div_cfg = edp_phy_vco_div_cfg_v4,
- 	.dp_swing_pre_emph_cfg = &dp_phy_swing_pre_emph_cfg,
- 	.edp_swing_pre_emph_cfg = &edp_phy_swing_pre_emph_cfg_v3,
--	.ver_ops = &qcom_edp_phy_ops_v4,
-+	.ver_ops = &qcom_edp_phy_ops_v3,
- };
- 
- static const struct qcom_edp_phy_cfg sc8180x_dp_phy_cfg = {
-@@ -639,7 +687,7 @@ static const struct qcom_edp_phy_cfg sc8180x_dp_phy_cfg = {
- 	.vco_div_cfg = edp_phy_vco_div_cfg_v4,
- 	.dp_swing_pre_emph_cfg = &dp_phy_swing_pre_emph_cfg_v2,
- 	.edp_swing_pre_emph_cfg = &edp_phy_swing_pre_emph_cfg_v2,
--	.ver_ops = &qcom_edp_phy_ops_v4,
-+	.ver_ops = &qcom_edp_phy_ops_v3,
- };
- 
- static const struct qcom_edp_phy_cfg sc8280xp_dp_phy_cfg = {
-@@ -824,6 +872,24 @@ static int qcom_edp_com_configure_pll_v6(const struct qcom_edp *edp)
- 	return 0;
- }
- 
-+static int qcom_edp_ldo_config_v6(const struct qcom_edp *edp)
-+{
-+	const struct phy_configure_opts_dp *dp_opts = &edp->dp_opts;
-+	u32 ldo_config;
-+
-+	if (!edp->is_edp)
-+		ldo_config = 0x0;
-+	else if (dp_opts->link_rate <= 2700)
-+		ldo_config = 0x51;
-+	else
-+		ldo_config = 0x91;
-+
-+	writel(ldo_config, edp->tx0 + TXn_LDO_CONFIG);
-+	writel(dp_opts->lanes > 2 ? ldo_config : 0x00, edp->tx1 + TXn_LDO_CONFIG);
-+
-+	return 0;
-+}
-+
- static const struct phy_ver_ops qcom_edp_phy_ops_v6 = {
- 	.com_power_on		= qcom_edp_phy_power_on_v6,
- 	.com_resetsm_cntrl	= qcom_edp_phy_com_resetsm_cntrl_v6,
-@@ -831,6 +897,7 @@ static const struct phy_ver_ops qcom_edp_phy_ops_v6 = {
- 	.com_clk_fwd_cfg	= qcom_edp_com_clk_fwd_cfg_v4,
- 	.com_configure_pll	= qcom_edp_com_configure_pll_v6,
- 	.com_configure_ssc	= qcom_edp_com_configure_ssc_v6,
-+	.com_ldo_config		= qcom_edp_ldo_config_v6,
- };
- 
- static struct qcom_edp_phy_cfg x1e80100_phy_cfg = {
-@@ -1011,6 +1078,7 @@ static const struct phy_ver_ops qcom_edp_phy_ops_v8 = {
- 	.com_clk_fwd_cfg	= qcom_edp_com_clk_fwd_cfg_v8,
- 	.com_configure_pll	= qcom_edp_com_configure_pll_v8,
- 	.com_configure_ssc	= qcom_edp_com_configure_ssc_v8,
-+	.com_ldo_config		= qcom_edp_ldo_config_v6,
- };
- 
- static struct qcom_edp_phy_cfg glymur_phy_cfg = {
-@@ -1026,7 +1094,6 @@ static int qcom_edp_phy_power_on(struct phy *phy)
- 	const struct qcom_edp *edp = phy_get_drvdata(phy);
- 	u32 bias0_en, drvr0_en, bias1_en, drvr1_en;
- 	unsigned long pixel_freq;
--	u8 ldo_config = 0x0;
- 	int ret;
- 	u32 val;
- 	u8 cfg1;
-@@ -1035,11 +1102,10 @@ static int qcom_edp_phy_power_on(struct phy *phy)
- 	if (ret)
- 		return ret;
- 
--	if (edp->cfg->edp_swing_pre_emph_cfg && !edp->is_edp)
--		ldo_config = 0x1;
-+	ret = edp->cfg->ver_ops->com_ldo_config(edp);
-+	if (ret)
-+		return ret;
- 
--	writel(ldo_config, edp->tx0 + TXn_LDO_CONFIG);
--	writel(ldo_config, edp->tx1 + TXn_LDO_CONFIG);
- 	writel(0x00, edp->tx0 + TXn_LANE_MODE_1);
- 	writel(0x00, edp->tx1 + TXn_LANE_MODE_1);
- 
+Any chance you could try it? And also the attached test program:
 
--- 
-2.43.0
+cc -lusb-1.0 hammerint.c -o hammerint
+sudo ./hammerint 1532 0e05 0 85
 
+Initial arguments are VID:PID of the device, next is the number of
+an interface containing some interrupt endpoint and then the endpoint
+address (including 8_ if IN).
+
+I tried with a variety of SuperSpeed devices (UVC, NICs, hubs) and this
+reliably breaks ASMedia HCs within seconds. If the same is the case on
+Intel then it's a bigger problem than just UVC.
+
+The video streaming loop breaks even more controllers. I have some
+general idea how the streaming case could be dealt with, but not so
+much the interrupt one. Maybe rate limiting. I found that avoiding
+Set TR Dequeue to Link TRBs reduces failure rate, but not to zero.
+
+Long ago I also looked at the issued command sequences and I haven't
+noticed obvious errors or spec violations. Looks like a HW bug.
+
+Regards,
+Michal
+
+--MP_/.OkknVOR4gOuo.3Taa06e1K
+Content-Type: text/x-c++src
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment; filename=hammerint.c
+
+#include <stdio.h>
+#include <stdlib.h>
+
+#include <libusb-1.0/libusb.h>
+
+void comp(struct libusb_transfer *t) {
+	char c = t->status == LIBUSB_TRANSFER_CANCELLED ? '.' :
+		t->status == LIBUSB_TRANSFER_COMPLETED ? ',' : '-';
+	fputc(c, stdout);
+	fflush(stdout);
+}
+
+int hammer(int vid, int pid, int ifc, int ep) {
+	struct libusb_device_handle *d;
+	struct libusb_transfer *t;
+	char bufi[1024] = {0};
+	char bufc[2];
+	int r;
+
+	r = libusb_init(NULL);
+	t = libusb_alloc_transfer(0);
+	if (r || !t)
+		return 1;
+
+	d = libusb_open_device_with_vid_pid(NULL, vid, pid);
+	if (!d)
+		return 2;
+
+	libusb_detach_kernel_driver(d, ifc);
+	r = libusb_claim_interface(d, ifc);
+	if (r)
+		return 3;
+
+	libusb_fill_interrupt_transfer(t, d, ep, bufi, sizeof(bufi), comp, NULL, 0);
+
+	for (;;) {
+		/* GET_STATUS(DEVICE) */
+		r = libusb_control_transfer(d, 0x80, 0, 0, 0, bufc, sizeof(bufc), 100);
+		if (r != sizeof(bufc))
+			return 4;
+
+		r = libusb_submit_transfer(t);
+		if (r)
+			return 5;
+		r = libusb_cancel_transfer(t);
+		if (r)
+			return 6;
+		r = libusb_handle_events(NULL);
+		if (r)
+			return 7;
+	}
+}
+
+int main (int argc, char **argv) {
+	int vid, pid, ifc, ep;
+	int r;
+
+	if (argc != 5) {
+		fprintf(stderr, "USAGE: %s vid pid ifc ep\n", argv[0]);
+		return 1;
+	}
+
+	vid = strtol(argv[1], NULL, 16);
+	pid = strtol(argv[2], NULL, 16);
+	ifc = strtol(argv[3], NULL, 16);
+	ep = strtol(argv[4], NULL, 16);
+
+	r = hammer(vid, pid, ifc, ep);
+	printf("%d\n", r);
+}
+
+--MP_/.OkknVOR4gOuo.3Taa06e1K--
 
