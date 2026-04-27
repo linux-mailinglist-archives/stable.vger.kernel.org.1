@@ -1,208 +1,253 @@
-Return-Path: <stable+bounces-241370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241371-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iHbSOLiP72nRCwEAu9opvQ
-	(envelope-from <stable+bounces-241370-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 18:32:56 +0200
+	id mLaSAEiP72mhCwEAu9opvQ
+	(envelope-from <stable+bounces-241371-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 18:31:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24C514766FF
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 18:32:56 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 181F3476669
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 18:31:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id EF716306A7CA
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 16:20:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EB8D930015BB
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 16:31:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD37734D915;
-	Mon, 27 Apr 2026 16:20:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D80CF3D6486;
+	Mon, 27 Apr 2026 16:31:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=embeddedts.com header.i=@embeddedts.com header.b="FQs3GDZ5"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UVVxckr7"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+Received: from mail-oa1-f53.google.com (mail-oa1-f53.google.com [209.85.160.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88C2F346E6C
-	for <stable@vger.kernel.org>; Mon, 27 Apr 2026 16:20:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C96D3D6674
+	for <stable@vger.kernel.org>; Mon, 27 Apr 2026 16:30:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777306806; cv=none; b=m/zJSAH5ra2mfOqW4ShMcXp0ylplK+vmanGE3/BXCy3nNtCkNwx8VtWqqq/Q0mK8jiA9qM4GUsCzY4D2U7RxBBZgqdB/x2ME7YPNHNlHqRADMqcW3F3pz2k3+KJL04a9JWkeP/2i7WDsMPJ1IYAGoktRDTl9l2ckBhampdeSJ28=
+	t=1777307459; cv=none; b=te2+mqyR/2x6Lod/PlTdG50N3u4ujHyWoj0ee8nlQaJnvWMyogJjzjkIUXJ/Tse/+1YlYTMA9oBVgJvWgyeDWB2vsGUdwyd9lMAxc9rN5UKHTgIrA1pdaou4QZzkU0UZWavwDZFi4lAeZ53CARTPOq3ttLeXfrg6TtcI26ah1T4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777306806; c=relaxed/simple;
-	bh=xidvJQjpM7yPCqe5PKIOorDtLSAo4K6bgw4e3ytK1qY=;
-	h=From:Message-ID:Date:MIME-Version:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=QZc6iWFJBA1J4NqQAdmYeZQ7A/lv6aoDEZGEbaR1drt1hX4JeUxZbJHaGcr6PNWEay3zlRoSgY6dHGmnuS1s+nZ7P3GIlQO6+Fl4aT96jLLT+c+Bur3wX/v5ZfY1e2eqhGquOYRCd2+Q2pof21pi3wIcF1WlnPc5U6WiTA8D+0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=embeddedts.com; spf=pass smtp.mailfrom=embeddedts.com; dkim=pass (1024-bit key) header.d=embeddedts.com header.i=@embeddedts.com header.b=FQs3GDZ5; arc=none smtp.client-ip=209.85.216.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=embeddedts.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=embeddedts.com
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-35fb7c1a455so3897461a91.3
-        for <stable@vger.kernel.org>; Mon, 27 Apr 2026 09:20:04 -0700 (PDT)
+	s=arc-20240116; t=1777307459; c=relaxed/simple;
+	bh=DW8DoezT0JbQxJL8IEdwyzlR41zUIne1dKlik5SUTxE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cz1aNxuwtpFRBIvwgB30Wz0YfvwR09AKMoqRynazqkxOxDMwbOXg65QzgGefGf/4SQd8dY/E6x7ynXMqDLlEZa7i/3LUqLNxt9l27uUM7mXGxFVxYFA7BaUngOB7d2r0GVoBoZ87DHWO3qGbFnfbScltbcmKj66Qk92jqpWzOO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UVVxckr7; arc=none smtp.client-ip=209.85.160.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-40ea611d1a4so3699782fac.2
+        for <stable@vger.kernel.org>; Mon, 27 Apr 2026 09:30:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=embeddedts.com; s=google; t=1777306804; x=1777911604; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=ot5/VkkpAMcYPEn/1toyTMHXbfWqkhlcoGx5NqyUByo=;
-        b=FQs3GDZ59mCkixfqWKRa0YoBHHPrPBCM6BijDOo3TqYenzhklcdOEaCrj1CAwHLtWy
-         xL1nVWrmkPAF0Ub5UK46RDkBSXx5aY3iVO9/ulYVIMnQu317isIFU9saspWlKqzF1t6Q
-         Jb13N3yS0TOOyXEkJQQlL+o39Iy196Yk4f5+4=
+        d=gmail.com; s=20251104; t=1777307454; x=1777912254; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=XKeSpoaxW3Y4UJQ+GULSPJ7b2Fo0YRA8tP4PPYc/sbo=;
+        b=UVVxckr721fMKSUJUkVazI8UJlCbOHKMGTPRMDhUf58Z+ZbbyzQcA0vFJ2szwTJwyZ
+         U+WHz2zA1VPeAc5eBgy8V+iMl3QV6HyX2a7RkKLvzYHlJ2qWeczNcKbcOSvtgXAgWZsi
+         VaJAMkOCyAyrSk5RBFIgO/5SfUksWh3txxNMqhjtNj1oDTqZyuxOkfp1toO/6NRD8+GP
+         e/35GuOSFX655oKQFXW1vsrahOxFWIzLV8lWGKMcF6eAp/HR7dT5B8rEsEW29mUWQvAI
+         Lho6XTvMDFGCQVZdKehDl+C325jz2nFLldrBCZ481/XWEHXaylLaVDjLq0V8zaDOrpKx
+         w92g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777306804; x=1777911604;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ot5/VkkpAMcYPEn/1toyTMHXbfWqkhlcoGx5NqyUByo=;
-        b=bKk22iisGXb87nCQvck1WKrDvdmRwc+H2+JIvIua6w9334VbzobX9HC8pgbEYrHjR5
-         yuCEOU+KxtSZ2oXbEncwzD5HqcbhywLQi/H3t/pDoCUJ6PB93NlqYHgiT3mA5ku06Y9x
-         47YZwRwvpTGJqgZDlR6lPCSw0gPtLbfjbfVfIeTus1XPLeZqnLnzT/U2vEejQ6Qfb5pu
-         dINni4RyTqswMTLUdRKj5LlclO6qy3+uhuKevLkXLWGBFttt65Bwf1R8g/lTSJVGy00Q
-         s6udR9wO4mDVoHVuHjMgzQVvFLCTUgHFCQQh6gUJAc58HwiMl0K/OJQNLRuGYuiKrDhG
-         bDEQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+bUn1RtbDZd94WKjM7Aq4zwib0qbqRs0IgM6XVy0GFgTiqJZn/jNYzpHp0LuKzqtbQcFslUqk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwYARIKewTpBhFdBuXruX100M9esObTAywBvL3rAtiDO6jS1qtJ
-	ZvKGv8hQn/5I5mDdpKzsDCoyXZsf+CmX91uIscqAFTeHcYY2MDHxkTgo7Wp8+/SMLHY=
-X-Gm-Gg: AeBDiesR02NZb522PgENet164GGCxWCk6AyTfrZZnpG4DvrLFa3U3Wb4xghntuxylrC
-	WcbeZz2e5TlDqteiB2uFwTWZSn3ubSG9x9Vek5/ACu2UI8ssZEzj5Zm2/KkAfkAfcSOKsW+gfAW
-	HLfDTUc9m+p1R7vuCJAsUwoioH0423mZMEZdbp/vJyF2pi3E/xB5uP/y8ZcXR4h6hfeEEQ2Csej
-	1McmYJ1Z9u5VM2WsmrB+sxxcso9C+ExgLiLN3/g2brEu5QxsXiQRz5YItv64qugRsnBJGPgOeUa
-	RFzmgqFdNyRO0Vzo0f2tQ14WDUQ1cMZ7aDhTMb7TYKR9wjv/7gmPxkqIk5PbFHBsl621FcieVdT
-	lSNejn2vUoTUC/5q5+xdkO1fQGweY+UrLNuvv+5xy2bnqEJgCyWrQfGD/Wqthk3rrXORNeAkeu3
-	HGO+wK4mEUB6gznplWDH7S9G/ydCSyzwSjJo6JMKS73S2B23LlJKamc1//uOR4jfAUejINfeNf8
-	nQ74b6/+BsBwp+NEMg75ka3FgfqFwpOexTsnDyU6jAzR/2OQus+6drpL2ytaFB4xQ8GJ11oPgYi
-	n4BGaQ79nq71xcsbEsw7w3uy6touuc5ggbLa
-X-Received: by 2002:a17:90b:3b4a:b0:35d:a4c0:a0ac with SMTP id 98e67ed59e1d1-361403d61camr43690659a91.3.1777306803667;
-        Mon, 27 Apr 2026 09:20:03 -0700 (PDT)
-Received: from [10.10.10.191] (97-120-253-104.ptld.qwest.net. [97.120.253.104])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-361410cc196sm33025839a91.17.2026.04.27.09.20.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Apr 2026 09:20:02 -0700 (PDT)
-From: Kris Bahnsen <kris@embeddedts.com>
-X-Google-Original-From: Kris Bahnsen <kris@embeddedTS.com>
-Message-ID: <12a76d8c-344e-49a3-b168-6cd353d720a0@embeddedTS.com>
-Date: Mon, 27 Apr 2026 09:20:01 -0700
+        d=1e100.net; s=20251104; t=1777307454; x=1777912254;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XKeSpoaxW3Y4UJQ+GULSPJ7b2Fo0YRA8tP4PPYc/sbo=;
+        b=TxlPcBdvZJUAj68TkZ0y0Mki1flnikyyF6hju/H8ndZ7eLVp3IRDGv7qnls4nl1BkW
+         vNy2npQu9awCfXde74caS1x1OsY0vfmJp3I83oHyBjRxPbWmUo14lsP9fKT5ORo3HhsQ
+         3+et6oyY8Y3kLhm0tschN24hoasLG5ShXcuB+PYdQMeExifMeD/0xSXzXWUF0PtxwvxU
+         3z0A6iKtm1TZ3x28uoPzzzTAUKBBfjpmf4RrnAHwYiSFZEhkwbDSedjvWsO+qK8Rc7BG
+         95NxY4sIpSn7IzQU+msNAd0zJ+ovr1prPjvevW6LbeL8kp+FP/mizWOFZa3t/a9SbNX4
+         /sxg==
+X-Gm-Message-State: AOJu0Yx3bKvw7YHtkjye8wkFq027HiXGGKxYT/23CNVm8IIbFcetJNd2
+	oe3ki19LxJTX8gBoBSYFdWT7NeNyo0nZh/p86xQMcVjYckAuU7KfsI9SPRjhM95XNQ==
+X-Gm-Gg: AeBDievYj4g78pQLX/QWOg4F/NcLZqPNfI04w19gaFCz8mNn4RANHnMN2o90jUIFkIB
+	93+W0HpOWw0t6zUBQdgR0x7MyKT3gKCIK8y+nl3YR91nW3kh/cQiDFDZKiDam1SLbEn7GvQMojk
+	DyPzpEeLLWz3BMiVYcah7cyU8PlwAVgQnK1UQWdWD9t8b1cN5TAmNR8HP5RFj9PAYyxZGPp5mP+
+	dLX/9TraQpw/ICpippE4jUYgg+VeBxuJpkyJD1li8SO8VpMmpG2c9RCPtgk5k7QQyWrCEWy7i98
+	Br44J0B8n0zuo7iFkDOijPqhWmflsVH6+j5rP6ceIXqnCstOHHhKrilZoFb5wH1DrtoONbcTxk+
+	1NAdOLMxcIxp/EmV23zeE3eK0yvL03xc8D+8mmZEOVftRjb/osLPoEKpyEhXZs7+vD6wpGxZpUp
+	zWMDhfZlTB37Wn+4apGkq/20+o6mf/B22kcFiC0ZH8xHX2SjcNcBn0JjoZPLte11f+0/AQQ2R+5
+	oRs6neEVkoCY4M6EoS763Yrw4oL5aou
+X-Received: by 2002:a05:6870:c227:b0:42e:49e1:e50d with SMTP id 586e51a60fabf-42e49e1f8f3mr16488309fac.27.1777307453572;
+        Mon, 27 Apr 2026 09:30:53 -0700 (PDT)
+Received: from localhost.localdomain ([47.188.191.104])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-42c054997absm23264873fac.3.2026.04.27.09.30.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Apr 2026 09:30:53 -0700 (PDT)
+From: jbmoore <jbmoore61@gmail.com>
+X-Google-Original-From: jbmoore <jbmoore@nooks.dev>
+To: alexander.deucher@amd.com,
+	christian.koenig@amd.com
+Cc: stable@vger.kernel.org,
+	"John B. Moore" <jbmoore61@gmail.com>
+Subject: [PATCH v4 4/4] drm/amdgpu: do not pass AMDGPU_FENCE_FLAG_64BIT to media rings
+Date: Mon, 27 Apr 2026 11:30:24 -0500
+Message-ID: <20260427163024.13512-1-jbmoore@nooks.dev>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] Input: ads7846 - don't use scratch for tx_buf when
- clearing register
-To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc: Marek Vasut <marex@denx.de>, stable@vger.kernel.org,
- Mark Featherston <mark@embeddedts.com>, linux-input@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260424192534.3504976-1-kris@embeddedTS.com>
- <ae2YWxew6M03MFfN@google.com>
-Content-Language: en-US
-In-Reply-To: <ae2YWxew6M03MFfN@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 24C514766FF
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 181F3476669
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[embeddedts.com,none];
-	R_DKIM_ALLOW(-0.20)[embeddedts.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-241370-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[embeddedts.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-241371-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kris@embeddedts.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[jbmoore61@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[embeddedts.com:dkim,embeddedts.com:email,embeddedTS.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 
+From: "John B. Moore" <jbmoore61@gmail.com>
 
+amdgpu_ib_schedule() unconditionally ORs AMDGPU_FENCE_FLAG_64BIT into
+the flags when emitting the user fence for every ring type:
 
-On 4/25/26 9:51 PM, Dmitry Torokhov wrote:
-> Hi Kris,
-> 
-> On Fri, Apr 24, 2026 at 07:25:34PM +0000, Kris Bahnsen wrote:
->> The workaround for XPT2046 clears the command register, giving the
->> touchscreen controller a NOP. The change incorrectly re-uses the
->> req->scratch variable which is used as rx_buf for xfer[5], so by
->> the time xfer[6] occurs, the contents of req->scratch may not be
->> 0. It was found that the touchscreen controller can end up in
->> a completely unresponsive state due to it being given a command
->> the driver does not expect.
->>
->> Instead, rely on the spi_transfer behavior of tx_buf being NULL to
->> transmit all 0 bits, moving the 3 bytes to a single message.
->>
->> This change was tested on real TSC2046 and ADS7843 controllers,
->> but not the XPT2046 the workaround was originally created for.
->> Confirming that the original modification to clear the command
->> register does not impact either real controller.
->>
->> Fixes: 781a07da9bb94 ("Input: ads7846 - add dummy command register clearing cycle")
->> Cc: stable@vger.kernel.org
->> Co-developed-by: Mark Featherston <mark@embeddedTS.com>
->> Signed-off-by: Mark Featherston <mark@embeddedTS.com>
->> Signed-off-by: Kris Bahnsen <kris@embeddedTS.com>
->> ---
->>  drivers/input/touchscreen/ads7846.c | 13 ++++---------
->>  1 file changed, 4 insertions(+), 9 deletions(-)
->>
->> diff --git a/drivers/input/touchscreen/ads7846.c b/drivers/input/touchscreen/ads7846.c
->> index 4b39f7212d35c..599793d27129e 100644
->> --- a/drivers/input/touchscreen/ads7846.c
->> +++ b/drivers/input/touchscreen/ads7846.c
->> @@ -327,7 +327,7 @@ struct ser_req {
->>  	u8			ref_off;
->>  	u16			scratch;
->>  	struct spi_message	msg;
->> -	struct spi_transfer	xfer[8];
->> +	struct spi_transfer	xfer[7];
->>  	/*
->>  	 * DMA (thus cache coherency maintenance) requires the
->>  	 * transfer buffers to live in their own cache lines.
->> @@ -403,16 +403,11 @@ static int ads7846_read12_ser(struct device *dev, unsigned command)
->>  	spi_message_add_tail(&req->xfer[5], &req->msg);
->>  
->>  	/* clear the command register */
->> -	req->scratch = 0;
->> -	req->xfer[6].tx_buf = &req->scratch;
->> -	req->xfer[6].len = 1;
->> +	req->xfer[6].rx_buf = &req->scratch;
->> +	req->xfer[6].len = 3;
-> 
-> Doesn't this overflow "scratch" which is only 2 bytes? I guess there is
-> a hole in ser_req between "scratch" and "msg" but I do not think we
-> should rely on this.
-> 
-> Can we also set rx_buf to NULL to discard incoming data?
+  amdgpu_ring_emit_fence(ring, job->uf_addr, job->uf_sequence,
+                         fence_flags | AMDGPU_FENCE_FLAG_64BIT);
 
-Well spotted! I'm quite annoyed with myself that I fixed one pointer
-use bug to introduce a buffer overflow.
+VCN, UVD, VCE, and JPEG encoder/decoder rings only support 32-bit
+fence values.  Their emit_fence callbacks contain bare WARN_ON()
+assertions for this flag, but the flag should never reach them in
+the first place.
 
-Will send a v2 patch later today.
+The VCN_ENC_CMD_FENCE hardware packet writes a single 32-bit
+sequence value to a 64-bit GPU address.  There is no 64-bit fence
+variant in the VCN/UVD/VCE/JPEG command sets.
+
+Filter AMDGPU_FENCE_FLAG_64BIT at the call site in
+amdgpu_ib_schedule(), only setting it for ring types whose hardware
+supports 64-bit fence writes: GFX, compute, SDMA, KIQ, MES, and VPE.
+
+Also convert the bare WARN_ON() guards in the five affected VCN
+callbacks to WARN_ON_ONCE() to prevent kernel log flooding if
+the condition is somehow triggered via another path.
+
+Found by a custom amdgpu DRM ioctl fuzzer.
+
+Fixes: c660f40b1ef3 ("drm/amdgpu: fix user fence write race condition")
+Signed-off-by: John B. Moore <jbmoore61@gmail.com>
+Cc: stable@vger.kernel.org
+---
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ib.c   | 18 +++++++++++++++++-
+ drivers/gpu/drm/amd/amdgpu/vcn_sw_ring.c |  2 +-
+ drivers/gpu/drm/amd/amdgpu/vcn_v1_0.c    |  4 ++--
+ drivers/gpu/drm/amd/amdgpu/vcn_v2_0.c    |  4 ++--
+ 4 files changed, 22 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ib.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ib.c
+index f1ed4a436..3c32a6197 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ib.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ib.c
+@@ -297,8 +297,24 @@ int amdgpu_ib_schedule(struct amdgpu_ring *ring, unsigned int num_ibs,
  
-> [credit to sashiko].
-> 
-> Thanks.
-> 
-
+ 	/* wrap the last IB with fence */
+ 	if (job && job->uf_addr) {
++		unsigned int uf_flags = fence_flags;
++
++		/*
++		 * Only request 64-bit fence writes on rings whose hardware
++		 * supports them.  VCN/UVD/VCE/JPEG rings only support 32-bit
++		 * fence values; passing AMDGPU_FENCE_FLAG_64BIT causes their
++		 * emit_fence callbacks to WARN and emit a truncated fence.
++		 */
++		if (ring->funcs->type == AMDGPU_RING_TYPE_GFX ||
++		    ring->funcs->type == AMDGPU_RING_TYPE_COMPUTE ||
++		    ring->funcs->type == AMDGPU_RING_TYPE_SDMA ||
++		    ring->funcs->type == AMDGPU_RING_TYPE_KIQ ||
++		    ring->funcs->type == AMDGPU_RING_TYPE_MES ||
++		    ring->funcs->type == AMDGPU_RING_TYPE_VPE)
++			uf_flags |= AMDGPU_FENCE_FLAG_64BIT;
++
+ 		amdgpu_ring_emit_fence(ring, job->uf_addr, job->uf_sequence,
+-				       fence_flags | AMDGPU_FENCE_FLAG_64BIT);
++				       uf_flags);
+ 	}
+ 
+ 	if (ring->funcs->emit_gfx_shadow && ring->funcs->init_cond_exec &&
+diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_sw_ring.c b/drivers/gpu/drm/amd/amdgpu/vcn_sw_ring.c
+index 2b9ddb3d2..9adc7607c 100644
+--- a/drivers/gpu/drm/amd/amdgpu/vcn_sw_ring.c
++++ b/drivers/gpu/drm/amd/amdgpu/vcn_sw_ring.c
+@@ -27,7 +27,7 @@
+ void vcn_dec_sw_ring_emit_fence(struct amdgpu_ring *ring, u64 addr,
+ 	u64 seq, uint32_t flags)
+ {
+-	WARN_ON(flags & AMDGPU_FENCE_FLAG_64BIT);
++	WARN_ON_ONCE(flags & AMDGPU_FENCE_FLAG_64BIT);
+ 
+ 	amdgpu_ring_write(ring, VCN_DEC_SW_CMD_FENCE);
+ 	amdgpu_ring_write(ring, addr);
+diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v1_0.c b/drivers/gpu/drm/amd/amdgpu/vcn_v1_0.c
+index e9d790914..729c1c378 100644
+--- a/drivers/gpu/drm/amd/amdgpu/vcn_v1_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/vcn_v1_0.c
+@@ -1548,7 +1548,7 @@ static void vcn_v1_0_dec_ring_emit_fence(struct amdgpu_ring *ring, u64 addr, u64
+ {
+ 	struct amdgpu_device *adev = ring->adev;
+ 
+-	WARN_ON(flags & AMDGPU_FENCE_FLAG_64BIT);
++	WARN_ON_ONCE(flags & AMDGPU_FENCE_FLAG_64BIT);
+ 
+ 	amdgpu_ring_write(ring,
+ 		PACKET0(SOC15_REG_OFFSET(UVD, 0, mmUVD_CONTEXT_ID), 0));
+@@ -1724,7 +1724,7 @@ static void vcn_v1_0_enc_ring_set_wptr(struct amdgpu_ring *ring)
+ static void vcn_v1_0_enc_ring_emit_fence(struct amdgpu_ring *ring, u64 addr,
+ 			u64 seq, unsigned flags)
+ {
+-	WARN_ON(flags & AMDGPU_FENCE_FLAG_64BIT);
++	WARN_ON_ONCE(flags & AMDGPU_FENCE_FLAG_64BIT);
+ 
+ 	amdgpu_ring_write(ring, VCN_ENC_CMD_FENCE);
+ 	amdgpu_ring_write(ring, addr);
+diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v2_0.c b/drivers/gpu/drm/amd/amdgpu/vcn_v2_0.c
+index e35fae9cd..a020140fb 100644
+--- a/drivers/gpu/drm/amd/amdgpu/vcn_v2_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/vcn_v2_0.c
+@@ -1537,7 +1537,7 @@ void vcn_v2_0_dec_ring_emit_fence(struct amdgpu_ring *ring, u64 addr, u64 seq,
+ {
+ 	struct amdgpu_device *adev = ring->adev;
+ 
+-	WARN_ON(flags & AMDGPU_FENCE_FLAG_64BIT);
++	WARN_ON_ONCE(flags & AMDGPU_FENCE_FLAG_64BIT);
+ 	amdgpu_ring_write(ring, PACKET0(adev->vcn.inst[ring->me].internal.context_id, 0));
+ 	amdgpu_ring_write(ring, seq);
+ 
+@@ -1722,7 +1722,7 @@ static void vcn_v2_0_enc_ring_set_wptr(struct amdgpu_ring *ring)
+ void vcn_v2_0_enc_ring_emit_fence(struct amdgpu_ring *ring, u64 addr,
+ 				u64 seq, unsigned flags)
+ {
+-	WARN_ON(flags & AMDGPU_FENCE_FLAG_64BIT);
++	WARN_ON_ONCE(flags & AMDGPU_FENCE_FLAG_64BIT);
+ 
+ 	amdgpu_ring_write(ring, VCN_ENC_CMD_FENCE);
+ 	amdgpu_ring_write(ring, addr);
 -- 
-Kris Bahnsen
-Software Engineer
-embeddedTS
+2.43.0
 
 
