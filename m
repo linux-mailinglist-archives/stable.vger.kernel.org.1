@@ -1,167 +1,183 @@
-Return-Path: <stable+bounces-241282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241283-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CPokH0Au72mb8wAAu9opvQ
-	(envelope-from <stable+bounces-241282-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 11:37:04 +0200
+	id 6GIiEJMu72mb8wAAu9opvQ
+	(envelope-from <stable+bounces-241283-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 11:38:27 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1808846FFE7
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 11:37:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9614470025
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 11:38:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6EACE300E702
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 09:36:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D11DD3008782
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 09:37:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B389034C806;
-	Mon, 27 Apr 2026 09:36:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BDD53AF64D;
+	Mon, 27 Apr 2026 09:37:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lzUE9KhO"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Yvrboc/z"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60F383A1D01
-	for <stable@vger.kernel.org>; Mon, 27 Apr 2026 09:36:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777282615; cv=none; b=QF7HXvpZv+Ep2dpG1RMSIXJbbx1DZpkPER1bVnqDKwAhQmyvGk1ILTLBUNfTlDgTNN1tXIJLQaVbbLqDcI0v5NzZ+EMj+SDUGQqAZVR0+3D9djFl78ynlPAlZFOjmYwlne4mmivsGWcioBPb9qr0EJtNLKIltWFdl0Na5snv618=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777282615; c=relaxed/simple;
-	bh=8AsHCJTrp6oTPAWoi4XYz5UZQNzkOr1rry65yDMLIek=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HNyXYpX2A/eb18cOV8jYmDQJtPocAY6+KghNYXNJE3WYhRYesmZ12SlgWs/P4zAhi6Zy0tMgzF1+tboelCNvPHjdikuhhg7eWg85CxZEQJzIOP8c6nU+4P9dy1HAsSbNM+XDK9/mfg/ow+MmA8yS6Mpyztq7gtKDuxX7tieTUTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lzUE9KhO; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05BAE3B2FF4
+	for <stable@vger.kernel.org>; Mon, 27 Apr 2026 09:37:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777282675; cv=pass; b=uXTBn08SWYHqc+Ryvbn4Y94tnLGC67JD0bz2AOetIpbPbHDmXpSZttCZjWIXZXUKNpC/0+z9G1rdZbGgSqy+fxqtJCK1OMzkJi775cBkZrD0ffQwID08aWpSQXCsG+LbUYNES7hUlL/YLuZKvXDjoETgW63Ye9Qyw3YjtWFzfdw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777282675; c=relaxed/simple;
+	bh=khF6or3P7Ssf2kj43vsYhNI8CexRuRIQPUR2p95Zerc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Sepi1CU7A4L4v+0Jxj6mhcY3eTmtZqj4QHr0fvFI5XYDeSyWGaJLZAJGifJvIWL/nwgVxvXrJHAdbzxLSONCvWz6ZlNk4YMzaNiQZ1EGnDuUvMAkno77HDd6GBhstDmnWQQS2iLSgyZWW28WomNIbJRA+VbFivEKKHN9+wmEQ7Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Yvrboc/z; arc=pass smtp.client-ip=209.85.216.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-82f9fdfc965so3924237b3a.1
-        for <stable@vger.kernel.org>; Mon, 27 Apr 2026 02:36:54 -0700 (PDT)
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-35d95017a68so6598822a91.3
+        for <stable@vger.kernel.org>; Mon, 27 Apr 2026 02:37:53 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777282673; cv=none;
+        d=google.com; s=arc-20240605;
+        b=QlnyYHz/IPMB7bve97BUv8qTb/UXrdZlkwMOCG9QxJqiHaDOZFVns+5JFHgkpKNmS7
+         El8X622U0dQi1Bw2xA8peO1a8r/vBNMKXOjIbXq+uW3+ygGpaTBcskc85PdXdND6Vr6P
+         ka+NzOq+ZkTldZYiRJwMPd8lo7EtL86jVPxUqgYtKxnf7HYOfe0lX5GftUWcxLqSS/gq
+         ZyVo85vYTz/4fi3qqgTanBPdgYvIJc5NMILsw8j8iXC5pCsCwUdjXVy2guLF4utyXBcP
+         e6icmV2jtizSdInQ0CCPljds2wOJKypLrCW4QlyuTOev5nCZmLqOpf3cZ4F12We0nzmh
+         Xvvg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=Kn6E9zoHRM2KLY1lbngZyriexLNgWW5A4g5dkFdwTns=;
+        fh=fgiP+ZVJBB6zXuq53J2ST5D+9VMclkkMnBhEWeqD/X8=;
+        b=hOIalrjWIlnVrwwReQnEM0Qdr2Ne1yXP2SXirR+3W8KfZ/B+6JX+nuEu2v1x2JDpgR
+         iqMbdUdiONkV7RHYBJ+x7BucggF9H0I0gVzpdxjragHAPQD0ExmuS74p2wwAz6UrEGyF
+         7NcF5CanjV1EdIktLv9RUVTJFZcvZk2/gy1BIqAUdWMpZbGRJiqcsFr7C+Cy3+b5BufD
+         SHFPEp7F9akyMLmNML2A1zr6K5pUhFBzYhbKEiRVooI8Ocund8kLfg4u13MwTOvgTYJU
+         EgVes/6jWnRhMvEMGh48qTHcd74wgbi7ud6F1ryQ3mOehFeavAIuylWKzi6PYTorDL1/
+         Sc/g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777282614; x=1777887414; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=v7/9M8ts84ru1FYHlgZaneEVjguv4ZNz/ttVD2wMfr4=;
-        b=lzUE9KhOfOxACVxxuOcyG+POrjsSp9OzDu7iNUQOet2+ydqkp6i/+oBcvbCQiTH7BC
-         /NH7NiwoPJ0JlKR9koa26kvTfB7PbUZgGgoZGaQmK39dwwrCFd/WM20C0/MDoUAng736
-         UZdHI1G4RfR1zQamMgkTo3059mwI43M/WvCgY4dXLhoS/E4c2jVg2OPBU8c4uwmgFhHT
-         ky0ovQOCsJhf1PrS/J6dqhiCQTDPF7AzbU/IJ5BtnnLJP5eqWdW3qMpV+DmOkDGtThPN
-         JzNgM8mxczsaynnK4Fsw7aF3ZrfL5gVuNDkRBQbZSe1Ril1BsjWDzleNTcCWBtR/5o5c
-         EmAQ==
+        d=gmail.com; s=20251104; t=1777282673; x=1777887473; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Kn6E9zoHRM2KLY1lbngZyriexLNgWW5A4g5dkFdwTns=;
+        b=Yvrboc/zkxGdplDhmWQRZkXBeVKRlUBeBm8CvRSCAsy5aIi+TYfZPIt0+qvyXr7+YU
+         Rk5x0ZGYImqKqzqI2m6CuXo3YAyGGn0uC9ixTUCj6BmCRU/tWl5qXU5o6HP3xTUaoigs
+         lVva3C34vewMxADKIcEaQFem5woqDuUNVGg0QFW6L6DVlEKlVKOKCq1YokrvLKAFtF+9
+         yG22WZuiCvYakpf/shmOFGHNkmucmgc2DDaE62gE4S+5kOoWeQJYWu9an3syIYtYAjTD
+         /fLCFcVYLebZAj89BwdtiGLM3IVHstyvfAIXB1EFUVQd08FsGXUR2zCvrc3wasOq9Usv
+         8/bQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777282614; x=1777887414;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1777282673; x=1777887473;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=v7/9M8ts84ru1FYHlgZaneEVjguv4ZNz/ttVD2wMfr4=;
-        b=YiYHXIZ9LVFS9hBYDW8ehPduEqDTqs/1Y/tlm2GGVJzLVSMajNyktR7lSb9GlXCC6m
-         cjEKRHA/8QjwCi9B7Y9cArYq1i3jDBejmS5MvA86mfEx6FFGHwUfvvzV5fbXVBMlzqYx
-         8/sXuSTz21XnpwlNmgka8PLqTy1/DdWYap/LIhJ7+8vGto6GPtQhhcI4JzKpGhqWv+rr
-         pJdxFlom/pKEhKcGRkjrhl9Ye42QaVTuU2xt2CEy+eqU72wP8cg183ori6LT0syuj6/Y
-         veHGWcZsS909+HZoccpEkStRP8a9YgVNV1DJGExUJRTuDP2jlo1QjCNAVzwLgp0bd+Td
-         ud5g==
-X-Forwarded-Encrypted: i=1; AFNElJ+SjeoZmcGvH/LXlSdYIiUR6WfW0oOljowJLWtPxMcXdwgx/1rTO8Nkta7szjMtXzlcptv3KsQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw5P6FPBALv/YP3SCb8jyj3bDmzHxz54U4S6dmNuehAtWgj04ia
-	vnY3I59aVMDur+YNRMYAEzopRZJY9BALBHVkkbl+ErqcbL6Ld5AqijYKbf0rJRkYDDQGaw==
-X-Gm-Gg: AeBDieufaaTPR0NyfvnMcB8v2VaoenEClm0ZXla18svXBKNwqdudzwGVepWNxiL0/YT
-	8ynLDQY3vloRG19X//92cXZnRIzMLvHeQabcqGOsGnzroSDUsws/0v2X/Kl5wYlVPDSvNYEts7D
-	zvwsXTB2WQePozfPh7OuBY5HviWpEF03FY0QZZBQFyXDERxLey2RrqPpr2MoaQpbdnpqBsKPjLL
-	UrhmB8N5LllG9iV+OEWm7LvJUYSP3bf89+z/AMIF9fRQvSmnhFeXLeCYsAYKbnJzWaU/ypJuueQ
-	YPyBYWHHjfI4QHBuhsJxfqZ+m3GXgyKnSKTt+uiXqkhx1+n82gO0eH8UW3bgVj2Bp0TNWNUsXRX
-	QJWSJ7+A6AtQuAvVm87zr+H4eFYT/Qsqme7NQwfwOKN8RP5/+dxn0HBIJtDGIxFuuY+EixHQ0hF
-	8PctLfcOVvqTlROPOweWV1gI0tsNJIhiFgeA==
-X-Received: by 2002:a05:6a00:1bc6:b0:82f:1b1b:e166 with SMTP id d2e1a72fcca58-82f8c99159emr44806198b3a.33.1777282613662;
-        Mon, 27 Apr 2026 02:36:53 -0700 (PDT)
-Received: from lgs.. ([112.224.166.245])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82f8ebb3829sm33248160b3a.31.2026.04.27.02.36.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Apr 2026 02:36:53 -0700 (PDT)
-From: Guangshuo Li <lgs201920130244@gmail.com>
-To: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	James Bottomley <James.Bottomley@SteelEye.com>,
-	James Smart <James.Smart@Emulex.Com>,
-	linux-scsi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Guangshuo Li <lgs201920130244@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] scsi: scsi_transport_fc: Use put_device() on vport setup failure
-Date: Mon, 27 Apr 2026 17:36:38 +0800
-Message-ID: <20260427093638.328142-1-lgs201920130244@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        bh=Kn6E9zoHRM2KLY1lbngZyriexLNgWW5A4g5dkFdwTns=;
+        b=OQed/lvH8lvwo5PlBybVi0KuSXP9s8mdpwSyUq0e2t+4G5C/m6vt+I/IAfjfHP5u+/
+         //+UeuHe5fEYL97XBi0VsLDE2OTtMYzBT1NDHp1IEU0dWD6ESkdfKHNQlcHjPGuLsy+4
+         o6MuNwwl/h4FFVO7ysHvgyesEmz0Y2WIOQqkrxMG2/uhrb3F8ijNu3fcmDIc12Kop5he
+         +9CHkuVR7XzqExl621Yub8XLCnXSiyL1It2mp2bCxC2YmCFmUwTGFs+TUDpnc2HTkqG7
+         BgfVMdPpfvghOuZrEUeToBCR+RToOyAxQ1K+lX73GuaB18tfxPp1FbFscy6rJ+4zt4hU
+         TEpw==
+X-Forwarded-Encrypted: i=1; AFNElJ9wvxri8+EXc6nXpw+qVu0k43bMRlAHdUpgcQOreFG5xL0uUZhEJIGfzECmDYxDrsudbty9D+8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwqXfJuHqVldUluzWLVUVkDZamsb8ZhZSzH6ntet5He2YraG/1d
+	WoYt+QUMO/7jgA/loBUeHigwKPgVW0jQHF+LaeZ/GNPZxWQFXlu9eKdXaaTByD7sYH5U51YiHuf
+	Yi18m/xAqDKNqeupHto9PO38HYsnmQqA=
+X-Gm-Gg: AeBDievNiGNnJ35kEe86oHOKwG2pHMywNHHadFR2eMkwJs4XPLoVbczOuHObcMuM+xY
+	EYKs6CuHlaylgssXVXKNbV85tr2vBIj/AV9SAFqQKaUqBw9xrPslY8YaPBNyP3MNzCP6Rcblbcc
+	GWZ4d4kraty7RVsfigihivSDeZaUTKCQXx7dGXQMqXgJHSn9pSzZyYhzubjnj9P3x8NrR9P2z9U
+	ofdbW22cER2ExBdBTjTIdTGXh+e/2qymyVM44iIEu64Lc3DyRcbNexZa4dzP4JcpwNDI2aqY4xp
+	2FLm3YcZDR/wvg==
+X-Received: by 2002:a17:903:883:b0:2b2:9f45:2266 with SMTP id
+ d9443c01a7336-2b5f9f8302dmr320471305ad.21.1777282673433; Mon, 27 Apr 2026
+ 02:37:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1808846FFE7
+References: <20260422173846.37640-1-aha310510@gmail.com> <20260423041500.2020-1-hdanton@sina.com>
+In-Reply-To: <20260423041500.2020-1-hdanton@sina.com>
+From: Jeongjun Park <aha310510@gmail.com>
+Date: Mon, 27 Apr 2026 18:37:44 +0900
+X-Gm-Features: AVHnY4I1UFGxx0A28CvrdAM8FeQdsO0M2pXwCD2tOB76rFmHE8O7ZLuo4xDPRRA
+Message-ID: <CAO9qdTGbB0YzvZYv1a4irM+i+P=GHYYVF=KwbYHKXr=f9rYUPQ@mail.gmail.com>
+Subject: Re: [PATCH] wifi: rsi: fix kthread lifetime race between self-exit
+ and external-stop
+To: Hillf Danton <hdanton@sina.com>
+Cc: Johannes Berg <johannes.berg@intel.com>, Kalle Valo <kvalo@kernel.org>, 
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	syzbot+5de83f57cd8531f55596@syzkaller.appspotmail.com, 
+	syzkaller-bugs@googlegroups.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: A9614470025
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241282-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-241283-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[sina.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[aha310510@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	TAGGED_RCPT(0.00)[stable,5de83f57cd8531f55596];
 	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
+	FREEMAIL_FROM(0.00)[gmail.com];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sina.com:email]
 
-fc_vport_setup() initializes the embedded device with device_initialize().
-After that point, the device is managed by the driver core reference
-counting rules. The initial reference should be dropped with
-put_device().
+Hi Hillf,
 
-The error path currently releases dev->parent and frees the fc_vport
-directly. This bypasses fc_vport_dev_release(), leaving the embedded
-device lifetime outside the driver core release path.
+Hillf Danton <hdanton@sina.com> wrote:
+>
+> On Thu, 23 Apr 2026 02:38:46 +0900 Jeongjun Park wrote:
+> > RSI driver use both self-exit(kthread_complete_and_exit) and external-stop
+> > (kthread_stop) when killing a kthread. Generally, kthread_stop() is called
+> > first, and in this case, no particular issues occur.
+> >
+> > However, in rare instances where kthread_complete_and_exit() is called
+> > first and then kthread_stop() is called, a UAF occurs because the kthread
+> > object, which has already exited and been freed, is accessed again.
+> >
+> Alternatively the race could be described with the regular diagram to better
+> understand the uaf.
+>
+>         rsi_kill_thread()       rsi_tx_scheduler_thread()
+>         ---                     ---
+>         atomic_inc(&handle->thread_done); // set the done flag
+>         rsi_set_event(&handle->event);
+>
+>                                 do {
+>                                         something;
+>                                 } while (atomic_read(&common->tx_thread.thread_done) == 0);
+>                                 // exit after done
+>                                 kthread_complete_and_exit(&common->tx_thread.completion, 0);
+>
+>         kthread_stop(handle->task); // uaf
+>
 
-Keep the existing unwind of the transport and fc_host bookkeeping, but
-drop the device reference with put_device(). The release callback will
-release the parent device reference and free the fc_vport object. This
-issue was found by a static analysis tool I am developing.
+I did not include the race scenario diagram separately to keep the
+description brief. Apart from that, Hillf's diagram itself is accurate.
 
-Fixes: a53eb5e060c0 ("[SCSI] FC Transport support for vports based on NPIV")
-Cc: stable@vger.kernel.org
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
----
- drivers/scsi/scsi_transport_fc.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/drivers/scsi/scsi_transport_fc.c b/drivers/scsi/scsi_transport_fc.c
-index dce95e361daf..04b754907587 100644
---- a/drivers/scsi/scsi_transport_fc.c
-+++ b/drivers/scsi/scsi_transport_fc.c
-@@ -3982,8 +3982,7 @@ fc_vport_setup(struct Scsi_Host *shost, int channel, struct device *pdev,
- 	scsi_host_put(shost);			/* for fc_host->vport list */
- 	fc_host->npiv_vports_inuse--;
- 	spin_unlock_irqrestore(shost->host_lock, flags);
--	put_device(dev->parent);
--	kfree(vport);
-+	put_device(dev);
- 
- 	return error;
- }
--- 
-2.43.0
-
+Regards,
+Jeongjun Park
 
