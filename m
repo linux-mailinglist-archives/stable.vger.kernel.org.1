@@ -1,134 +1,187 @@
-Return-Path: <stable+bounces-241321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241322-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cPQRObFg72mHAwEAu9opvQ
-	(envelope-from <stable+bounces-241321-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 15:12:17 +0200
+	id OIplHohg72mHAwEAu9opvQ
+	(envelope-from <stable+bounces-241322-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 15:11:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A834947333D
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 15:12:16 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94932473319
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 15:11:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 961D1300D85F
-	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 13:09:06 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EA73A3004904
+	for <lists+stable@lfdr.de>; Mon, 27 Apr 2026 13:11:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08AC53C13E0;
-	Mon, 27 Apr 2026 13:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB2C63B388F;
+	Mon, 27 Apr 2026 13:11:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="JB5ppoGw"
+	dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b="WYhD6sYA"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from mail3-164.sinamail.sina.com.cn (mail3-164.sinamail.sina.com.cn [202.108.3.164])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CCF53C198E
-	for <stable@vger.kernel.org>; Mon, 27 Apr 2026 13:09:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4074E2248A3
+	for <stable@vger.kernel.org>; Mon, 27 Apr 2026 13:11:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.108.3.164
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777295344; cv=none; b=mC+dbKtXO6xfDB1KN1ANytxGWIEPXJ5DLVYrA0UbRfABn6NbsY5WMc6qG+Nnap+JFrsUuzAcc8b3T/mc4HypbrykMr+/V59un9/f7RG+4w37cukJ9TDx/YUGGIT8cxLi9YcLkOM9VY58WM3+TT1spjr9vBD9cjnqjAfXylj0eRI=
+	t=1777295493; cv=none; b=JKzLXBgcwQZXzmpRIlLoPPpf3b1wkkw6aIcDls1xXVvd2DkaDIYWvMxWI0nVETprq5GhkMBHQQcSot0YjDLGiebmF/VNQTX8CwVCLtgMdCFK5Xmwd8r6NkYU6aatuzQwx5YDguUVmLYDjd9zSfAL6vnAcFabO4BQJmWYqtmIDA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777295344; c=relaxed/simple;
-	bh=VBWt0kaQnFT4JHolqg/vgM57aj7M7jjkSXwVvcQWg4w=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=eHoIDMO+izucrV5/lgQ6SMDtxu8EmZD5z5oRCDu5vMfMB0U6A0SknaHCcq8FsXARPdaSj+5BBU6myhS915HFXOWO/cK9ZPe1wNi9NSlPXRR8t7Bb/8Z9Ktf+6OfeX18i6C0yRf+6xsbz2GPzK0c4gkpMipJj51isspyRnbfqlgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=JB5ppoGw; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 0A00A4E42B34;
-	Mon, 27 Apr 2026 13:08:59 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id CBC16600D1;
-	Mon, 27 Apr 2026 13:08:58 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5EE9510728039;
-	Mon, 27 Apr 2026 15:08:54 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1777295337; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=O8yxX0gO7nTEAcY/1Dd9O+rvwBL+vwhqZY4uok46s0Y=;
-	b=JB5ppoGws1cWp+TPLhjXB5zGL54fxXQKVnuBVJ+xwaYL/LTsh9W86NI79+k3pKTL4+0rDU
-	D+evLg+uwrklJarNRyhcQ6zlBErM75BWT4B7J8eduTjGV1cTBwvRlUMoD/eaclWTh0Td5J
-	k+OWhNWUqrRAmwL0wht1io4Ayzu87O+26Jd4fY+orcP8PxdCoXyXTjO6wC+zKaSLIEmG+6
-	ZYXZfa5YD8JQdhlxZqFJkQWyrWfXQA2aoNJwEXf9qc/9ONswo3SHB56r848y6uFKLLQ5qY
-	wcYTNjiiFgzXXyg9ZZ1RvDRIgFPSxoHN8isdX/FOOYy7S++7UNxoD/9FhyICOg==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Pratyush Yadav <pratyush@kernel.org>, Michael Walle <mwalle@kernel.org>, 
- Takahiro Kuwano <takahiro.kuwano@infineon.com>, 
- Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, 
- Tudor Ambarus <tudor.ambarus@linaro.org>
-Cc: Pratyush Yadav <p.yadav@ti.com>, Michael Walle <michael@walle.cc>, 
- linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org
-In-Reply-To: <20260417-fix-oob-read-spi-nor-v1-1-2132e61a684a@linaro.org>
-References: <20260417-fix-oob-read-spi-nor-v1-1-2132e61a684a@linaro.org>
-Subject: Re: [PATCH] mtd: spi-nor: debugfs: fix out-of-bounds read in
- spi_nor_params_show()
-Message-Id: <177729533643.179808.1459860787473321982.b4-ty@bootlin.com>
-Date: Mon, 27 Apr 2026 15:08:56 +0200
+	s=arc-20240116; t=1777295493; c=relaxed/simple;
+	bh=Md59SUDwq9l3OZ7Eklvq7jCkq6T3YQgxWmjUTNvfDlA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iw/zikjnkPaDXpbnlh78b7/w9T5UclTtY8Xjbsf4wTkfE5X28mRSzOcMsCX086D9bun+vlqAxz51I+soRI0hl0V5G6y+Qoaap9h3Ym5VZBCnmZfGplwif4UM1gFtLZCg/3GNIH1/t2xiQKJpT/gB4H+BPSQAF0NqlUb5wejlkvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com; spf=pass smtp.mailfrom=sina.com; dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b=WYhD6sYA; arc=none smtp.client-ip=202.108.3.164
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1777295488;
+	bh=WVuuF2jz56tmxYMe69EKoYQDXvB3b59uemRr8IPDXCI=;
+	h=From:Subject:Date:Message-ID;
+	b=WYhD6sYAJGwEw+zG2WZxxi8H9C29KOdnTwyLu+BHnDU4hCC3J9jzbbM6lsJmA8wse
+	 plOAsOZR/pGsZS/ZDamINu1+F1IkPpCFXIN1T6/Rc3jz4LOQxHMX9IEeSgtaDQCaYI
+	 EsjC/XZ2b7mRRlrB5dwXAW/3aztBpA1cs1qi8cb4=
+X-SMAIL-HELO: xiaomi-ThinkCentre-M760t.mioffice.cn
+Received: from unknown (HELO xiaomi-ThinkCentre-M760t.mioffice.cn)([114.247.175.249])
+	by sina.com (10.54.253.32) with ESMTP
+	id 69EF607A000074C0; Mon, 27 Apr 2026 21:11:24 +0800 (CST)
+X-Sender: monty_pavel@sina.com
+X-Auth-ID: monty_pavel@sina.com
+Authentication-Results: sina.com;
+	 spf=none smtp.mailfrom=monty_pavel@sina.com;
+	 dkim=none header.i=none;
+	 dmarc=none action=none header.from=monty_pavel@sina.com
+X-SMAIL-MID: 1614214456648
+X-SMAIL-UIID: 216C67930993494A97DC2758639D7A0E-20260427-211124-1
+From: Yongpeng Yang <monty_pavel@sina.com>
+To: Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Cc: linux-f2fs-devel@lists.sourceforge.net,
+	Yongpeng Yang <yangyongpeng@xiaomi.com>,
+	Yongpeng Yang <monty_pavel@sina.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] f2fs: fix incorrect FI_NO_EXTENT handling in __destroy_extent_node()
+Date: Mon, 27 Apr 2026 21:10:51 +0800
+Message-ID: <20260427131050.1526593-2-monty_pavel@sina.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.14.3
-X-Last-TLS-Session-Version: TLSv1.3
-X-Rspamd-Queue-Id: A834947333D
+X-Rspamd-Queue-Id: 94932473319
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
-	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[sina.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[sina.com:s=201208];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[bootlin.com:+];
-	TAGGED_FROM(0.00)[bounces-241321-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-241322-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_FROM(0.00)[sina.com];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	FREEMAIL_CC(0.00)[lists.sourceforge.net,xiaomi.com,sina.com,vger.kernel.org];
+	DKIM_TRACE(0.00)[sina.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[monty_pavel@sina.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[miquel.raynal@bootlin.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:dkim,bootlin.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	NEURAL_HAM(-0.00)[-0.999];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,sina.com:dkim,sina.com:mid,xiaomi.com:email]
 
-On Fri, 17 Apr 2026 15:24:39 +0000, Tudor Ambarus wrote:
-> Sashiko noticed an out-of-bounds read [1].
-> 
-> In spi_nor_params_show(), the snor_f_names array is passed to
-> spi_nor_print_flags() using sizeof(snor_f_names).
-> 
-> Since snor_f_names is an array of pointers, sizeof() returns the total
-> number of bytes occupied by the pointers
-> 	(element_count * sizeof(void *))
-> rather than the element count itself. On 64-bit systems, this makes the
-> passed length 8x larger than intended.
-> 
-> [...]
+From: Yongpeng Yang <yangyongpeng@xiaomi.com>
 
-Applied to mtd/fixes, thanks!
+When __destroy_extent_node() sets the inode flag FI_NO_EXTENT, it does
+not reset the length of the largest extent to 0 and update the inode
+folio. Since modifications to the extent tree are disallowed afterward,
+the cached largest extent may become stale. This can trigger the
+following error in xfstests generic/388:
 
-[1/1] mtd: spi-nor: debugfs: fix out-of-bounds read in spi_nor_params_show()
-      commit: e47029b977e747cb3a9174308fd55762cce70147
+F2FS-fs (dm-0): sanity_check_extent_cache: inode (ino=1761) extent info [220057, 57, 6] is incorrect, run fsck to fix
 
-Patche(s) should be available on mtd/linux.git and will be
-part of the next PR (provided that no robot complains by then).
+In the f2fs_drop_inode path, __destroy_extent_node() does not need to
+guarantee that et->node_cnt is 0, because concurrency with writeback
+is expected in this path, and writeback may update the extent cache.
 
-Kind regards,
-Miquèl
+This patch reverts commit ed78aeebef05 ("f2fs: fix node_cnt race between
+extent node destroy and writeback"), and remove the unnecessary zero
+check of et->node_cnt.
+
+Fixes: ed78aeebef05 ("f2fs: fix node_cnt race between extent node destroy and writeback")
+Cc: stable@vger.kernel.org
+Reported-by: Chao Yu <chao@kernel.org>
+Suggested-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Yongpeng Yang <yangyongpeng@xiaomi.com>
+---
+v2:
+- Revert all changes of previous commit ed78aeebef05 and fix xfstests bug.
+---
+ fs/f2fs/extent_cache.c | 19 +++++++------------
+ 1 file changed, 7 insertions(+), 12 deletions(-)
+
+diff --git a/fs/f2fs/extent_cache.c b/fs/f2fs/extent_cache.c
+index 87169fd29d89..129eed892a66 100644
+--- a/fs/f2fs/extent_cache.c
++++ b/fs/f2fs/extent_cache.c
+@@ -119,10 +119,9 @@ static bool __may_extent_tree(struct inode *inode, enum extent_type type)
+ 	if (!__init_may_extent_tree(inode, type))
+ 		return false;
+ 
+-	if (is_inode_flag_set(inode, FI_NO_EXTENT))
+-		return false;
+-
+ 	if (type == EX_READ) {
++		if (is_inode_flag_set(inode, FI_NO_EXTENT))
++			return false;
+ 		if (is_inode_flag_set(inode, FI_COMPRESSED_FILE) &&
+ 				 !f2fs_sb_has_readonly(F2FS_I_SB(inode)))
+ 			return false;
+@@ -645,14 +644,10 @@ static unsigned int __destroy_extent_node(struct inode *inode,
+ 
+ 	while (atomic_read(&et->node_cnt)) {
+ 		write_lock(&et->lock);
+-		if (!is_inode_flag_set(inode, FI_NO_EXTENT))
+-			set_inode_flag(inode, FI_NO_EXTENT);
+ 		node_cnt += __free_extent_tree(sbi, et, nr_shrink);
+ 		write_unlock(&et->lock);
+ 	}
+ 
+-	f2fs_bug_on(sbi, atomic_read(&et->node_cnt));
+-
+ 	return node_cnt;
+ }
+ 
+@@ -691,12 +686,12 @@ static void __update_extent_tree_range(struct inode *inode,
+ 
+ 	write_lock(&et->lock);
+ 
+-	if (is_inode_flag_set(inode, FI_NO_EXTENT)) {
+-		write_unlock(&et->lock);
+-		return;
+-	}
+-
+ 	if (type == EX_READ) {
++		if (is_inode_flag_set(inode, FI_NO_EXTENT)) {
++			write_unlock(&et->lock);
++			return;
++		}
++
+ 		prev = et->largest;
+ 		dei.len = 0;
+ 
+-- 
+2.43.0
 
 
