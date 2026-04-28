@@ -1,123 +1,226 @@
-Return-Path: <stable+bounces-241697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241698-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +A01MyXW8GkSZQEAu9opvQ
-	(envelope-from <stable+bounces-241697-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 17:45:41 +0200
+	id YNe3JGrW8GkSZQEAu9opvQ
+	(envelope-from <stable+bounces-241698-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 17:46:50 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40616488259
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 17:45:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E67864882AA
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 17:46:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F09CD30A2DD1
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 15:44:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 897A7305E9DE
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 15:46:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAB0839FCB9;
-	Tue, 28 Apr 2026 15:44:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6344D3C1400;
+	Tue, 28 Apr 2026 15:46:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IVyp8n3r"
+	dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b="UPpl9Rrl"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f47.google.com (mail-oa1-f47.google.com [209.85.160.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A78E138A715;
-	Tue, 28 Apr 2026 15:44:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA4073A9638
+	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 15:46:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777391041; cv=none; b=Uu0DUqe8R6sXbMNOksM+KGaHKBSCNtZL01YvzG9G94iMhrWtf5kGbaEjhCO4E4ILjRg8HoQGi57JoVfRvhvjB13OOdx95vEODcq9V5ofg1q1LI4gHW0n5WXXKj0Djs2pcKBgdothl3IvG/2WuFlcWxLi//omKQA+xoml3pB8Tuw=
+	t=1777391164; cv=none; b=Wv+e++WtFcLj+jFhz4HZdZNXSyOv9s1wyPAtfwvB0alHBhwIj98UaBV/aDoJqLglHspoTehWUkTogns0MXqVxof0QCymLJSAT/X8bHt5gFSqMIQ6C6eECguYBhR3V30pTxxLpSSKLgCCX/cpeI9X1Uzt2buR+i/Q+wU5lBmZYN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777391041; c=relaxed/simple;
-	bh=IsONiDrD2xR5auxYL6/onJP6puh+tp2frOU7zl6ODsY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=romKyaWl5cMuQ0DK8HRv2/z9Ui6GeEMefPcL+CWsMvlO5zHhg8/pGc/I5i8AhBmyKrpg2XOj5o1L5ZIoCooAnoPJLLeqQUNCX8mxY3CqOJsgwgHqfFy6syZGybflwO/Gs9dF37Qnnwwp8vvANSHLUuipbr/n6++nquCXP42GeNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IVyp8n3r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EB57C2BCAF;
-	Tue, 28 Apr 2026 15:44:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777391041;
-	bh=IsONiDrD2xR5auxYL6/onJP6puh+tp2frOU7zl6ODsY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IVyp8n3r1UFhEVDycBbVOpEikxTTOKqjKvWMqXrjiJ3fPQLzAjwMKnYEA0/dUdWxN
-	 T5CMgSnwPA1qaMwiFey8CJJLC7zmlW/A43R+5UKSsQLKHglWhZ7W4SeotwHWYhmR+p
-	 xZc4QzyirHqNanQ/IlC+LMG9rYOq3l1+UVKi8DVi1nbeWbSg/f7X4VdfTClSi51ac5
-	 lNGD69YN9L3qIqxIjB2+VRrZtRc2B5m5ohX712QczulcvDfYGTcSQDG5yoImcbYH/u
-	 3K4pIXZMZ4Qese4NSK1vTrrGC1Y9IlWp+iY37pSn1moh6xpC6lI4JK/7wtxM6Ow/M6
-	 VFOfRsH4UOwvg==
-Date: Tue, 28 Apr 2026 05:44:00 -1000
-From: Tejun Heo <tj@kernel.org>
-To: Waiman Long <longman@redhat.com>
-Cc: Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	Chen Ridong <chenridong@huawei.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>, cgroups@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, Xie Maoyi <maoyi.xie@ntu.edu.sg>
-Subject: Re: [PATCH] cgroup/cpuset: Creating or adding CPUs to partition not
- allowed without privilege
-Message-ID: <afDVwO-j2UOdSpQj@slm.duckdns.org>
-References: <20260428033439.783246-1-longman@redhat.com>
- <7so4b76wg2apwwk3yh76q42jgwnpvlv7sursmsmzeyefhp4pbt@thybpp4litm6>
- <9df75f61-0cbb-42b4-b64d-8e6fd49d50ca@redhat.com>
+	s=arc-20240116; t=1777391164; c=relaxed/simple;
+	bh=lZ8GVIQeyx6FhafZAJBBqfDuAvMKXOY+e5J3qcPq8kw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=FbQv+SdVS1Bk6BC28x0Pc8T5lMC4SxwqYHFVV1nKydtpvtE9pAf8dUl2/u/cH0fY7a1y3yvhk+xYesXl3NfIvn0kZzO7fG2AAKcxmICqJ6YOROoEqg2MXQhnRtsEGMKdPHFkELM74XJPdprgOoYXF/0RhcoRLz35vOGzHhfjQKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20251104.gappssmtp.com header.i=@kernel-dk.20251104.gappssmtp.com header.b=UPpl9Rrl; arc=none smtp.client-ip=209.85.160.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-40ee9b945d5so9516335fac.0
+        for <stable@vger.kernel.org>; Tue, 28 Apr 2026 08:46:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20251104.gappssmtp.com; s=20251104; t=1777391162; x=1777995962; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pwoQUuKpX/ekRA8Qo1PHn8+ae1HpgVzRgnT0CoXolUA=;
+        b=UPpl9RrlsrxtUgRHCoIZxAcNrjEL2kTjCZxj72+qp2smvSXkytx2P+UcZcQb/l9p6x
+         qdAXVR+vrVwZKB042aJP7erNlh1SYW3rzcQDybbOKDxiz9Se2zL9DFnyx8y+rnSfnB8u
+         SBm0DO2LCVauy2i3gFTlNPJIlL7+0loBLo1b4wZFhi11VLVxgKJABd1aKFCtubQN+ucf
+         w/CGd6zCMKuh6YOUojm6a762tPvqXuAjI8wj/i6yRolwItKrvKf7g1SzYshQpH1nYTyS
+         5VN6DGhuyamtkCkFT7nY6PnI7RKJhSsIqZ9vpDb99YT4UPSYJT/29Gr9Y+Cp/j7gvni6
+         agXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777391162; x=1777995962;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=pwoQUuKpX/ekRA8Qo1PHn8+ae1HpgVzRgnT0CoXolUA=;
+        b=J7q3S8Y5F1u3m4CBaKoi/LEDk6AhQ/yfwCuAPuR0SGXPDyj6IjDOnSrA5bmRDGv+al
+         8X1gnNo4U9IFX68n5WsVv2aTTRufiNuiQSiSf0SuXIvch7wjcI0fh1p2den91hM07vvb
+         8M5Ld3349H25peZuafbiX3C3YQicPZliIZmH3fCLO2hRErOo/SfemewPtYO/snzHonAJ
+         r/KniWj8Iw7sE+BW1F+xXoaI7w3FO4nzskaElN6skBvVxc1K7iDQ2RpRAQHfVJo1KNYg
+         bsCIkETcWEQkd6qkRgvyCZuumc2AoGs2pP3aFhN24MB9xAYbWmmU4L0v5RTfUfVrADHX
+         HIIw==
+X-Forwarded-Encrypted: i=1; AFNElJ+qCjrR+mSGsM9AxRSSnMLT2Jg0XPu1RvOllxAfMr3csUmFL8WNIZUqPWkXe6BsCyUILt7jXjk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyKp/v82UB95fOierMpeCU2Rcac2ofP2iBzTdYNkufc5EoGDUFK
+	XyVkuTR7IkuN9qBKuh/pcd7oPsGQOclQcBYS77CnnaMUnydD6yZOWx6x+4SS3rU+AhpuCYTaOVK
+	F8Co4MK0=
+X-Gm-Gg: AeBDieuR7zeYmwi/H5xERjBBHgHHRUlMuVLej274vw3B6gUZDmIKN3JZ9eNL8ZnBPCO
+	WUwDwj1+rHwt9iOhpll3MaVNAfyHiLAQrmBAwUY4ibDnX1H1luOtvc2mXv0+dfW0j+qd3jM4hjH
+	fzQbeuUtJIjDq/ZYjNHOEhaLX5pz/BGW88oZyiSxMCow+XIrqgboNZKcFS6agX+G4o7TGkUrvEL
+	uwhLtAJhbEJ61QfmlC3H4hgsizsw3ya1zpQRyXONnP7icqcWI0IlNemC8B7VsOLW7BJi/kxfRL8
+	8DV46j4nXkRnmJV+BatGviBu+J5NSCmcQoLvDkdLkUZBLvHzQ85ZXOx0+ekaPpbeNujIFzCTgQK
+	yVGzi/iZ3hfFQ3uZtCMbYGwM8tSXkEBlRTx1w59dC2/Wt/Q2/5t3YDtTHOWNFWEKODi7bjnGm5a
+	netsdpuLex8irHuiomYt7HOo5O0eeJ/IBdd3YDQvWvctBPR5dY7VjbvcUx0dEqMeqCTG7UHjoHJ
+	ucP9w==
+X-Received: by 2002:a05:6870:2e88:b0:42f:c1ea:f19d with SMTP id 586e51a60fabf-4340a89d62bmr22904fac.10.1777391161589;
+        Tue, 28 Apr 2026 08:46:01 -0700 (PDT)
+Received: from m2max ([96.43.243.2])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-433effdc79bsm2109567fac.18.2026.04.28.08.46.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Apr 2026 08:46:00 -0700 (PDT)
+From: Jens Axboe <axboe@kernel.dk>
+To: io-uring@vger.kernel.org
+Cc: Martin Michaelis <code@mgjm.de>,
+	stable@vger.kernel.org,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 2/2] io_uring/kbuf: support min length left for incremental buffers
+Date: Tue, 28 Apr 2026 09:44:50 -0600
+Message-ID: <20260428154557.2150818-3-axboe@kernel.dk>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260428154557.2150818-1-axboe@kernel.dk>
+References: <20260428154557.2150818-1-axboe@kernel.dk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9df75f61-0cbb-42b4-b64d-8e6fd49d50ca@redhat.com>
-X-Rspamd-Queue-Id: 40616488259
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: E67864882AA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel-dk.20251104.gappssmtp.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-241697-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-241698-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MIME_TRACE(0.00)[0:+];
+	PRECEDENCE_BULK(0.00)[];
+	DMARC_NA(0.00)[kernel.dk];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tj@kernel.org,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[axboe@kernel.dk,stable@vger.kernel.org];
 	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[kernel-dk.20251104.gappssmtp.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[slm.duckdns.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel-dk.20251104.gappssmtp.com:dkim,kernel.dk:mid,kernel.dk:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mgjm.de:email]
 
-Hello,
+From: Martin Michaelis <code@mgjm.de>
 
-On Tue, Apr 28, 2026 at 11:19:16AM -0400, Waiman Long wrote:
-...
-> Thank for the comment. Yes, that can be a valid configuration.
-> 
-> One possible workaround may be to see if the current user has write access
-> to its parent partition root. If so, we can allow it to create a
-> sub-partition, if not, we will forbid it.
+Incrementally consumed buffer rings are generally fully consumed, but
+it's quite possible that the application has a minimum size it needs to
+meet to avoid truncation. Currently that minimum limit is 1 byte, but
+this should be a setting that is the hands of the application. For
+recvmsg multishot, a prime use case for incrementally consumed buffers,
+the application may get spurious -EFAULT returned at the end of an
+incrementally consumed buffer, as less space is available than the
+headers need.
 
-I think this whole thing is a confusion. First of all, resource knobs in any
-given cgroup is owned by the parent. Delegations where the perm to a
-resource knob is given to delegatee is not supported and expected to affect
-resource distribution w.r.t. its siblings. Partition isn't special in this
-regard. memory.low or min can create similar effects. Maybe I'm missing
-something but I don't see anything happening that's not supposed to happen.
+Grab a u32 field in struct io_uring_buf_reg, which the application can
+use to inform the kernel of the minimum size that should be available
+in an incrementally consumed buffer. If less than that is available,
+the current buffer is fully processed and the next one will be picked.
 
-Thanks.
+Cc: stable@vger.kernel.org
+Fixes: ae98dbf43d75 ("io_uring/kbuf: add support for incremental buffer consumption")
+Link: https://github.com/axboe/liburing/issues/1433
+Signed-off-by: Martin Michaelis <code@mgjm.de>
+[axboe: write commit message, change io_buffer_list member name]
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+---
+ include/uapi/linux/io_uring.h | 3 ++-
+ io_uring/kbuf.c               | 8 +++++++-
+ io_uring/kbuf.h               | 7 +++++++
+ 3 files changed, 16 insertions(+), 2 deletions(-)
 
+diff --git a/include/uapi/linux/io_uring.h b/include/uapi/linux/io_uring.h
+index 17ac1b785440..909fb7aea638 100644
+--- a/include/uapi/linux/io_uring.h
++++ b/include/uapi/linux/io_uring.h
+@@ -905,7 +905,8 @@ struct io_uring_buf_reg {
+ 	__u32	ring_entries;
+ 	__u16	bgid;
+ 	__u16	flags;
+-	__u64	resv[3];
++	__u32	min_left;
++	__u32	resv[5];
+ };
+ 
+ /* argument for IORING_REGISTER_PBUF_STATUS */
+diff --git a/io_uring/kbuf.c b/io_uring/kbuf.c
+index 43e4f8615fe8..63061aa1cab9 100644
+--- a/io_uring/kbuf.c
++++ b/io_uring/kbuf.c
+@@ -47,7 +47,7 @@ static bool io_kbuf_inc_commit(struct io_buffer_list *bl, int len)
+ 		this_len = min_t(u32, len, buf_len);
+ 		buf_len -= this_len;
+ 		/* Stop looping for invalid buffer length of 0 */
+-		if (buf_len || !this_len) {
++		if (buf_len > bl->min_left_sub_one || !this_len) {
+ 			WRITE_ONCE(buf->addr, READ_ONCE(buf->addr) + this_len);
+ 			WRITE_ONCE(buf->len, buf_len);
+ 			return false;
+@@ -637,6 +637,10 @@ int io_register_pbuf_ring(struct io_ring_ctx *ctx, void __user *arg)
+ 	if (reg.ring_entries >= 65536)
+ 		return -EINVAL;
+ 
++	/* minimum left byte count is a property of incremental buffers */
++	if (!(reg.flags & IOU_PBUF_RING_INC) && reg.min_left)
++		return -EINVAL;
++
+ 	bl = io_buffer_get_list(ctx, reg.bgid);
+ 	if (bl) {
+ 		/* if mapped buffer ring OR classic exists, don't allow */
+@@ -683,6 +687,8 @@ int io_register_pbuf_ring(struct io_ring_ctx *ctx, void __user *arg)
+ 	bl->mask = reg.ring_entries - 1;
+ 	bl->flags |= IOBL_BUF_RING;
+ 	bl->buf_ring = br;
++	if (reg.min_left)
++		bl->min_left_sub_one = reg.min_left - 1;
+ 	if (reg.flags & IOU_PBUF_RING_INC)
+ 		bl->flags |= IOBL_INC;
+ 	ret = io_buffer_add_list(ctx, bl, reg.bgid);
+diff --git a/io_uring/kbuf.h b/io_uring/kbuf.h
+index abf7052b556e..401773e1ef80 100644
+--- a/io_uring/kbuf.h
++++ b/io_uring/kbuf.h
+@@ -32,6 +32,13 @@ struct io_buffer_list {
+ 
+ 	__u16 flags;
+ 
++	/*
++	 * minimum required amount to be left to reuse an incrementally
++	 * consumed buffer. If less than this is left at consumption time,
++	 * buffer is done and head is incremented to the next buffer.
++	 */
++	__u32 min_left_sub_one;
++
+ 	struct io_mapped_region region;
+ };
+ 
 -- 
-tejun
+2.53.0
+
 
