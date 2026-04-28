@@ -1,97 +1,79 @@
-Return-Path: <stable+bounces-241468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241469-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8CK4AtIk8GnvOwEAu9opvQ
-	(envelope-from <stable+bounces-241468-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 05:09:06 +0200
+	id 2UFvBB8r8GmBPQEAu9opvQ
+	(envelope-from <stable+bounces-241469-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 05:35:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9F8447D03D
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 05:09:05 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E67ED47D161
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 05:35:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 006053019F04
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 03:08:48 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C8BBD30074C2
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 03:35:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FBBA3195E4;
-	Tue, 28 Apr 2026 03:08:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB969274B53;
+	Tue, 28 Apr 2026 03:35:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m/USccQc"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JqSoftzN"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f66.google.com (mail-dl1-f66.google.com [74.125.82.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F9013148DA
-	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 03:08:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 114C4155389
+	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 03:35:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777345728; cv=none; b=aCIPUTZwF8U2Th5Eo7jtKb7CZ5p9r7dSorsAxrMcpkwB2RZAjSsoLsmB9zv2wwX9MD+EPfEtPAh4Oqx1j9skoWsRvLm7QHD8O3hed2b/q4q8TaMLiI4LHWxntR64a6d5sj8NKG1/YTKEq1vq14yk2L7n7ZIM3BwRAZJHH3Qvvu4=
+	t=1777347350; cv=none; b=VhUWjUGd0yEwo2k83UC33+v+uGjV3OAgv1015UzGRICCW14v8O0WF+rZ2es4O8FUAf1tmfv5GkE7cguJvbHXW+wcrpKgQtw1XOY6BjqkQaE8pcG2FfMTtQ069rwq+027ILtM+2qKufud79kR9Wsmt5OKO5UZx8izkKM+6Mzkiks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777345728; c=relaxed/simple;
-	bh=58/SxyygshXwr02hHK/RwB8HspCENne0hR9jOMX8ceE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FeXzNKKNNrbKV4HkBv0G1/tjQBF9YEMokRuyjwIOHU2j+032j9dtVDrNPwAez7UygGFVpc3q+2WRLtseT+rMKq0bbvSRIGQ2IpKnnt7kRipH7JV+1UafpgqJ3aKV7TlMzMrOw6pqe5dG+4GcgepJIk5mVXt5jqdKc/XjfXA2CaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m/USccQc; arc=none smtp.client-ip=74.125.82.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dl1-f66.google.com with SMTP id a92af1059eb24-12c6df0b9bbso2019893c88.1
-        for <stable@vger.kernel.org>; Mon, 27 Apr 2026 20:08:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777345726; x=1777950526; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZFKsY0zkP8TQm+0BNdc4CTwtYvq4U2UiY8lkQgxP8es=;
-        b=m/USccQcC4ufknC1/lT1zZSAVOA4i8qOS4W6Lw2pxfE9fro4Df9tjs7UUsoWmmJRB0
-         becUZqlg3UT9EgoTmAcXOMd/7KSLJQmAX/mvKk8Da7CAb6zGNGAkB5JsBHsFhSl/KeZs
-         a3iZ4K/8fzK6nKRisdL4v9ZDXHDrOhuzwX145EEV0mFpTlearp0S9D+lmOO7D4683h7h
-         tMQ6MNtOmx73ABXpcFuFi6UAdeaTXTGuOS65iYj7Vp2Gpy+2vgrssfGBLCNzXC0jhVrz
-         yneeVnIZL9B3w10jBrtAiybqzJZa9iHcsRTXoOmssQ9F1790c3lfUcSj4u0Mhb1unPNw
-         op+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777345726; x=1777950526;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZFKsY0zkP8TQm+0BNdc4CTwtYvq4U2UiY8lkQgxP8es=;
-        b=Xb4ToZ+mFptnyMjQHnk+ACpdGfAQI8mcoFYNFxWSov9dgUhKh/KDWb28LqRgbFB1kt
-         zV9WN1V+3rUSCsmoF095RKNT7Km4mB4mEWT+xnw3aIfwN+oMwtwCmo/FWPTieXc/YGci
-         R1r4JfzYpSAcgDeNFiS4HkMKzMVBFKDMNm207uz8EOUVWQ1Mip0XwWA0ueVudptbXz7y
-         gj12pJk8x+DQSjegvyMt+UoHMt5YQ+sY9dBB6Kd7MXtQkf/aSQx361Ob//9XDWUJsoz5
-         A5aQu2I53gtaXJDyECu1ECNxs5hDNfZX3UwJVRpda60lCUN8HK2ZhVmyyzXhqV6S+3i5
-         O77Q==
-X-Forwarded-Encrypted: i=1; AFNElJ8pjwYHCFDDj+xjYDpzCKnqLRlyota26XPei9gI17rDKZTGHQqaqrCtIt+CbOMLHyAS2NuFVoY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywn9LlYE3JTjN8R8rC/f9VkigQf/d3D4bB2+RKd7sUVzYM2ri7J
-	m/BJvUniLDhyd0ptFwBXUt8XizYzdjhqCz0w9w8aCOeV46wNlJaBUnHE
-X-Gm-Gg: AeBDieuUZuWca6lrIq1/Dob5Kh3uKk0WRr31DWXAhznubY90h/0jdaiUMDsC+6SKacp
-	lApmIjnYC43aGN2bujJkWCO5SPwkAHZ2sJM7pkPRyMkMi5cxZzWgM4ZGjLpOTxahFluRLDNwnek
-	FRgc1u2gm1nLUAuOVjmwhW1xlP3gDcwEO5qeKiuizcujaRBLqZRmC3V8NF27c5IncGElrlD3Pms
-	yu8TRpoXABI98G3yjo4d8/vfW/G9xY1ZH/t2zD0XpjFjfAIW+3gFsjTY6vjZI78KfB/U89+h+zE
-	0E1fwYatQSx8FqSJYs+OR0QMPeB14J8pP2A0zfQ197ajyeuEu05qcNdkVbc5fnvhC86gQB29oKL
-	yUu5G7jxKgnsmWFlLZT5ofQsXSSRA4FCnf8GWgwgfey8eQhTOs8HlgcoBIwCiQECoyigblI/ox0
-	GwcqMGvL8wy7pvWkFzdaJp0Im8C2zd8y9FRoHxtyqDIhDjknqBMWA5tNG60QXwqB0eB0KLqNR/+
-	iRWC/iWoyldnZFAKegxDy+pHH1/LR44IYvekwHDGlcEvMqfDQ/DwY9+ny2jyhbsP+zT8kuW9C4r
-	tO9JlHJFzfb5u87ZOqbhbO+QQGYp
-X-Received: by 2002:a05:7022:f94:b0:12d:c9b6:bbba with SMTP id a92af1059eb24-12ddd984193mr789914c88.8.1777345725911;
-        Mon, 27 Apr 2026 20:08:45 -0700 (PDT)
-Received: from ethan-latitude5420.. (host-127-24.cafrjco.fresno.ca.us.clients.pavlovmedia.net. [68.180.127.24])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12ddd8951edsm1256362c88.0.2026.04.27.20.08.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Apr 2026 20:08:45 -0700 (PDT)
-From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Ethan Nelson-Moore <enelsonmoore@gmail.com>,
+	s=arc-20240116; t=1777347350; c=relaxed/simple;
+	bh=y0J12bcHH3gw09ivS0lCINsQR7jOqh0wgYBn+fh62Os=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JPl1nT3mVN/PywENw9nXyHd93/OpJ+fk74X7YT8r9FOO2DG7fGA3P8fKyavjfmBNbQ4r/ytrVID4jZjCz2X5Jk3JtNHKP8/nund+OfP7zO+sXAFV47q84HEQuWb1Ig6z3QGu3go+WSKPUM1ImsED9vI6abrZRThfYkE1ujQ5JYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JqSoftzN; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1777347348;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=hNvFXywxnjCALKwv4kJWYGAWulzWtLCfvxorDYEQLjk=;
+	b=JqSoftzNXL/5qyTPPWY/a+6pnG96jUapm6Y9IFqzTLd4GmOmkFKUnUC2lSJ5/c+kKuYWJj
+	IIxIPQUnWTMQpOeg8JfHqo03QNx1ZQmYfwPZAAhxm/F7ISRqMr2b/ozKl+2q2NtQsTervL
+	NnJU78B0jntYbjyCaDKwhrWQ2O5/2E0=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-518-pHFbsgNcP92FF8Fg4_JsoA-1; Mon,
+ 27 Apr 2026 23:35:44 -0400
+X-MC-Unique: pHFbsgNcP92FF8Fg4_JsoA-1
+X-Mimecast-MFC-AGG-ID: pHFbsgNcP92FF8Fg4_JsoA_1777347342
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0F86F19560AA;
+	Tue, 28 Apr 2026 03:35:42 +0000 (UTC)
+Received: from llong-thinkpadp16vgen1.westford.csb (unknown [10.22.65.144])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9438719560AB;
+	Tue, 28 Apr 2026 03:35:39 +0000 (UTC)
+From: Waiman Long <longman@redhat.com>
+To: Chen Ridong <chenridong@huawei.com>,
+	Tejun Heo <tj@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Cc: cgroups@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org,
-	Yibo Dong <dong100@mucse.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	MD Danish Anwar <danishanwar@ti.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Subject: [PATCH v2] net: ethernet: rnpgbe: mark nonfunctional incomplete driver as BROKEN
-Date: Mon, 27 Apr 2026 20:08:25 -0700
-Message-ID: <20260428030826.47509-1-enelsonmoore@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	Xie Maoyi <maoyi.xie@ntu.edu.sg>,
+	Waiman Long <longman@redhat.com>
+Subject: [PATCH] cgroup/cpuset: Creating or adding CPUs to partition not allowed without privilege
+Date: Mon, 27 Apr 2026 23:34:39 -0400
+Message-ID: <20260428033439.783246-1-longman@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -99,79 +81,137 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: A9F8447D03D
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Rspamd-Queue-Id: E67ED47D161
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,mucse.com,lunn.ch,davemloft.net,google.com,kernel.org,redhat.com,ti.com,linux.dev];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241468-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-241469-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[enelsonmoore@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[longman@redhat.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	RCVD_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-0.999];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,ntu.edu.sg:email]
 
-The rnpgbe driver as currently shipped in the kernel is incomplete and
-has no useful functionality. It will bind to a PCI device and create a
-network device, but that device does not function (its .ndo_start_xmit
-callback, rnpgbe_xmit_frame, just drops all packets). This situation
-means that users could enable this driver and have it load and attach
-to their device but not transfer any data. To remove the potential for
-user confusion, mark the driver as broken until it is completed and
-explain why this was done.
+Creation of a cpuset partition or adding more CPUs to an existing
+partition will take CPUs away from other cpusets outside of the
+partition leaving less CPUs for the others. So it is a privileged
+operation that non-privileged users shouldn't be allowed to do.
 
-Fixes: ee61c10cd482 ("net: rnpgbe: Add build support for rnpgbe")
-Cc: stable@vger.kernel.org # 7.0+
-Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+Currently, remote partition code has check for CAP_SYS_ADMIN capability
+before allowing such operations, but not for local partition. This leaves
+a security hole in case cpuset.cpus.partition of a cpuset is chown'ed
+to a non-root user and its parent cpuset happens to be a partition root.
+
+Add such privilege check for local partition too to close such a hole.
+Also update Documentation/admin-guide/cgroup-v2.rst to clarify the
+intention.
+
+With this patch applied, any attempt to enable partition or add CPUs
+to an existing local or remote partition by an unprivileged user will
+invalidate the partition even if writing to cpuset control files are
+allowed.
+
+Fixes: ee8dde0cd2ce ("cpuset: Add new v2 cpuset.sched.partition flag")
+Reported-by: Xie Maoyi <maoyi.xie@ntu.edu.sg>
+Signed-off-by: Waiman Long <longman@redhat.com>
 ---
-Changes from v1: Do not mark vendor section as BROKEN
- drivers/net/ethernet/mucse/Kconfig | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ Documentation/admin-guide/cgroup-v2.rst |  6 ++++--
+ kernel/cgroup/cpuset.c                  | 16 +++++++++++++---
+ 2 files changed, 17 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/mucse/Kconfig b/drivers/net/ethernet/mucse/Kconfig
-index 0b3e853d625f..810fc1230d97 100644
---- a/drivers/net/ethernet/mucse/Kconfig
-+++ b/drivers/net/ethernet/mucse/Kconfig
-@@ -16,12 +16,14 @@ config NET_VENDOR_MUCSE
+diff --git a/Documentation/admin-guide/cgroup-v2.rst b/Documentation/admin-guide/cgroup-v2.rst
+index 6efd0095ed99..df58557902db 100644
+--- a/Documentation/admin-guide/cgroup-v2.rst
++++ b/Documentation/admin-guide/cgroup-v2.rst
+@@ -2599,8 +2599,10 @@ Cpuset Interface Files
  
- if NET_VENDOR_MUCSE
+   cpuset.cpus.partition
+ 	A read-write single value file which exists on non-root
+-	cpuset-enabled cgroups.  This flag is owned by the parent cgroup
+-	and is not delegatable.
++	cpuset-enabled cgroups. This file is owned by the parent cgroup
++	and is not delegatable. Any partition operations that take CPUs
++	away from other cpusets outside of a partition is not allowed
++	without privilege.
  
-+# This driver is marked as broken because it is incomplete; this avoids users
-+# enabling it and expecting it to work.
- config MGBE
- 	tristate "Mucse(R) 1GbE PCI Express adapters support"
--	depends on PCI
-+	depends on PCI && BROKEN
- 	help
- 	  This driver supports Mucse(R) 1GbE PCI Express family of
--	  adapters.
-+	  adapters. It is incomplete and currently has no useful functionality.
+ 	It accepts only the following input values when written to.
  
- 	  More specific information on configuring the driver is in
- 	  <file:Documentation/networking/device_drivers/ethernet/mucse/rnpgbe.rst>.
+diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+index e3a081a07c6d..5fc8555f2046 100644
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -57,7 +57,7 @@ static const char * const perr_strings[] = {
+ 	[PERR_HOTPLUG]   = "No cpu available due to hotplug",
+ 	[PERR_CPUSEMPTY] = "cpuset.cpus and cpuset.cpus.exclusive are empty",
+ 	[PERR_HKEEPING]  = "partition config conflicts with housekeeping setup",
+-	[PERR_ACCESS]    = "Enable partition not permitted",
++	[PERR_ACCESS]    = "Partition operation not permitted",
+ 	[PERR_REMOTE]    = "Have remote partition underneath",
+ };
+ 
+@@ -1740,6 +1740,8 @@ static int update_parent_effective_cpumask(struct cpuset *cs, int cmd,
+ 	nocpu = tasks_nocpu_error(parent, cs, xcpus);
+ 
+ 	if ((cmd == partcmd_enable) || (cmd == partcmd_enablei)) {
++		if (!capable(CAP_SYS_ADMIN))
++			return PERR_ACCESS;
+ 		/*
+ 		 * Need to call compute_excpus() in case
+ 		 * exclusive_cpus not set. Sibling conflict should only happen
+@@ -1833,12 +1835,18 @@ static int update_parent_effective_cpumask(struct cpuset *cs, int cmd,
+ 					       parent->effective_xcpus);
+ 		}
+ 
++		/*
++		 * Taking CPUs away from parent is not allowed without privilege
++		 */
++		if (deleting && !capable(CAP_SYS_ADMIN))
++			part_error = PERR_ACCESS;
++
+ 		/*
+ 		 * TBD: Invalidate a currently valid child root partition may
+ 		 * still break isolated_cpus_can_update() rule if parent is an
+ 		 * isolated partition.
+ 		 */
+-		if (is_partition_valid(cs) && (old_prs != parent_prs)) {
++		else if (is_partition_valid(cs) && (old_prs != parent_prs)) {
+ 			if ((parent_prs == PRS_ROOT) &&
+ 			    /* Adding to parent means removing isolated CPUs */
+ 			    !isolated_cpus_can_update(tmp->delmask, tmp->addmask))
+@@ -1919,8 +1927,10 @@ static int update_parent_effective_cpumask(struct cpuset *cs, int cmd,
+ 	}
+ 
+ write_error:
+-	if (part_error)
++	if (part_error) {
+ 		WRITE_ONCE(cs->prs_err, part_error);
++		adding = deleting = false;
++	}
+ 
+ 	if (cmd == partcmd_update) {
+ 		/*
 -- 
-2.43.0
+2.53.0
 
 
