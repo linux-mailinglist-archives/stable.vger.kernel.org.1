@@ -1,224 +1,168 @@
-Return-Path: <stable+bounces-241549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241550-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GNYQGuKM8GlcUwEAu9opvQ
-	(envelope-from <stable+bounces-241549-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 12:33:06 +0200
+	id aFh4HLKO8Gl4UwEAu9opvQ
+	(envelope-from <stable+bounces-241550-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 12:40:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D007D482B27
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 12:33:05 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08B8F482CBD
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 12:40:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E0D89304B120
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 10:30:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E2F3A30E5806
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 10:34:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C25A23F0A87;
-	Tue, 28 Apr 2026 10:30:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3D733EF650;
+	Tue, 28 Apr 2026 10:34:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ne6exxQs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BeF7ZIEb"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3688E3F074B
-	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 10:30:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDD643DC4A1;
+	Tue, 28 Apr 2026 10:34:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777372222; cv=none; b=J7WBUsIFm4XTNGTlAX5CVIqKedL5S+Nw1aZ/GUh1dn451YOo72xnWzg82f0LTyN+NnRn6VluRaCwEc7UApC7bJYh2lekxDB3V5X9jjDR5IjYpEkim37Ol4QZVmvMCMaLG7jOijOy3J0AnvUr4ZiAkTZ/kEHU+DRkvdgYffnmzvM=
+	t=1777372490; cv=none; b=fJlEE3xDzUrMKrX3ZT8bWbbC6CUWiVVtbNgP0GiUewD+Gl97MkM0TEPbEWEgIRx6CURZg9kggSDFoACbOFzigM+Z6RwmK80rU+y2q+hSF++FLv+jG1IlpMiR34dwoLLTQ6GKFMB2VT8KIkCCYLf1u2bypS9n8qwREiAjHphgoPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777372222; c=relaxed/simple;
-	bh=maNkTII608MzcF1ju87MQQ+KK6PcKFHw8+zyZf9QEJg=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=JHSrnVBWzms8fsPiSJO0Oe0Bopx9RfHcMkZ6klOnIAbk69alLI78LGR9OdQcz4KPV6c7wvO4JQarBOgQYzadEVvidFS+mZScdseIAqQ7KIkwUw0YcVH5IwHGjXiwcWBXw+M4za6mSbVOkpyDZ9hz3TYPT8/H+BzC6A/E18tlaO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tabba.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ne6exxQs; arc=none smtp.client-ip=209.85.221.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tabba.bounces.google.com
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-43e52dc8a04so9743866f8f.3
-        for <stable@vger.kernel.org>; Tue, 28 Apr 2026 03:30:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777372218; x=1777977018; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ZBFwe+kQ1OqLHi9s19ESuOVx/rJg9xLwA9cXX3TmEmg=;
-        b=Ne6exxQsW1AzSFQgtqiRUTruJVnx+Y5U5Qom9+VmeEQU1n3QA/dZpGuhP3sJQLQbZ5
-         D/Kh7Wv6aVE0rtAx4+9/hGop2Oa6P0DmpnHlrCYrQ7+psbAS4XQkD1yPovw9GssfxCVV
-         OXvNXm9ZC/GiXXLdAjjFWa4nnTi0b+wg/sZdwekl3YhGUfTMW9RLiF88jicrRSwpPAF5
-         py6yk/KURGDcESGa/jXcK7E41wAPkJu4LLALiq8NsNkg4hh9Y28pezhrNshIllK/kKyE
-         0TRWpGG06KnzX99qIyidlUnBjSMl0qt8AgiEiSq6eOUrlgaup5s6KHKKoNbzCDi9gJZp
-         dhxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777372218; x=1777977018;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=ZBFwe+kQ1OqLHi9s19ESuOVx/rJg9xLwA9cXX3TmEmg=;
-        b=bm8GYbQ+zoP6tLfooQxTKh19WCwZAlUpxeFki27BtGd4eqY3EVXXMG+aCAtrQJqtG0
-         rCWIwL5JYUB5BxSHe9CzmSKLs3rtq3maoDRb3iFghZCYAoEWO7z3iFwQlpWqUfGo5Qfz
-         fq5kv5RMICYq7BN4kDJ+w2e1SHRPsggYNX7s823PsJGYupC5Hgjs0712l4LP+vqYmvWp
-         9J4zLwC6GfxqU2f3eJZ57LB5TwD2wE4izOGfM6/AhT+T4/tuOJInqTHj1Fr8OXl/lW90
-         iIV0iObW90KWFJi5BXiZIS6JjDNeOvneFNyvK6gR+mXiMIdlwqCVEVdoirmteH7kYvhM
-         nnRQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8+ELXkfFlWUPPyh1hd7ZbpQp2vBg9PnQaUbTvqwqt2VNVT5vq9ddYqYAuLGde996qZPWsue94=@vger.kernel.org
-X-Gm-Message-State: AOJu0YywlywmYpMk8doCYswSd0iF0zgo+N7SgJMt5h5n5uXLkx0yoZhj
-	jxKOWQUju+d5YaeirJB/3vjFU3WVnng/7P4J3quGkGeM9rqG0jwRkmCdGdps87k+0sqD6shouv7
-	T4w==
-X-Received: from wmbjp7.prod.google.com ([2002:a05:600c:5587:b0:488:a71c:cf48])
- (user=tabba job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:3b90:b0:488:a639:b772
- with SMTP id 5b1f17b1804b1-48a77af5f04mr37827885e9.7.1777372218008; Tue, 28
- Apr 2026 03:30:18 -0700 (PDT)
-Date: Tue, 28 Apr 2026 11:30:08 +0100
-In-Reply-To: <20260428103008.696141-1-tabba@google.com>
+	s=arc-20240116; t=1777372490; c=relaxed/simple;
+	bh=b072BzhiuqAmE/8aKQg8EVxPqTvDJy75WhKYXf9p4jg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nIGAcx+xFQXxxakE82KDrQ97+rw+eaXF+IOmxF5rophhtTOpV5QIAf5s3a6apMQWYfZ32VpyagxQqYMbHtT48n0NBYX8LRIfv6E3vZk+qiJrX66wSTRfYEBhCS3t/zwM4MvXa/4O+CeukM2EwZyT4aH5cSYbwW4Q63MXemkjeMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BeF7ZIEb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 267AEC2BCB5;
+	Tue, 28 Apr 2026 10:34:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777372489;
+	bh=b072BzhiuqAmE/8aKQg8EVxPqTvDJy75WhKYXf9p4jg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=BeF7ZIEbDy55gHBZnKOQbKPchkjyYL9n8fWf0CU1G8DDwV6RsWsQ1IAgw2dC+2E8d
+	 wj7L06wtFaoKR7KWFqdJ3Z9gc/9E4SDUouBVp++onqmJYyrbIlUWiXgsRaMIiVMaUK
+	 NIZeuKN5JW1Juk+xle+9cLxBklOnpmdTQvK/mHtwpbRvDGl8IOfrnBUuXe3fTikIdX
+	 v1mV6IRD3zRxjrP3inay+TCT6ejdaLXtDN6eRJ9ArAb/3/6+Z521EcVPkmK7C2gsMP
+	 P+BHrOChMIMsb+v9ndLtLL1rzHpND/Rpj14es2FD0Ry9GkYIOYDYhtm6HEb6SkoQg7
+	 Bhiju1yhXmJ0w==
+Message-ID: <5148463f-5100-478e-a9dc-01ef3dce4c6c@kernel.org>
+Date: Tue, 28 Apr 2026 12:34:43 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260428103008.696141-1-tabba@google.com>
-X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
-Message-ID: <20260428103008.696141-9-tabba@google.com>
-Subject: [PATCH 8/8] KVM: arm64: Propagate stage-2 map failure on guest->host unshare
-From: Fuad Tabba <tabba@google.com>
-To: maz@kernel.org, oliver.upton@linux.dev
-Cc: james.morse@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, 
-	qperret@google.com, vdonnefort@google.com, tabba@google.com, 
-	catalin.marinas@arm.com, will@kernel.org, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: D007D482B27
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] x86/mm: fix freeing of PMD-sized vmemmap pages
+To: Dave Hansen <dave.hansen@linux.intel.com>,
+ Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, "Mike Rapoport (Microsoft)"
+ <rppt@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Lu Baolu <baolu.lu@linux.intel.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, stable@vger.kernel.org
+References: <20260428-vmemmap-v1-1-b2aa1e6db2c0@kernel.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260428-vmemmap-v1-1-b2aa1e6db2c0@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 08B8F482CBD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-241549-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-241550-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tabba@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
-	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[david@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-__pkvm_guest_unshare_host() re-acquires exclusive guest ownership of
-a page by (i) annotating the host stage-2 PTE via
-host_stage2_set_owner_metadata_locked(), (ii) mapping the page in
-the guest stage-2 as PKVM_PAGE_OWNED via kvm_pgtable_stage2_map(),
-and (iii) restoring host ownership via
-host_stage2_set_owner_locked(). The map's return value was wrapped
-in WARN_ON() and otherwise discarded.
 
-At EL2 in nVHE/pKVM, WARN_ON() is not warn-and-continue: it expands
-to a BRK that enters the invalid-host-el2 vector and branches to
-hyp_panic(), declared __noreturn.
+>  
+> -static void __meminit free_hugepage_table(struct page *page,
+> +static void __meminit free_vmemmap_pages(struct page *page, unsigned int order,
+>  		struct vmem_altmap *altmap)
+>  {
+> -	if (altmap)
+> -		vmem_altmap_free(altmap, PMD_SIZE / PAGE_SIZE);
+> -	else
+> -		free_pagetable(page, get_order(PMD_SIZE));
+> +	if (altmap) {
+> +		vmem_altmap_free(altmap, 1u << order);
+> +	} else if (PageReserved(page)) {
+> +		unsigned long nr_pages = 1 << order;
 
-__pkvm_guest_unshare_host() calls get_valid_guest_pte() before the
-map, which verifies that a valid last-level (PAGE_SIZE) leaf PTE
-already exists for the IPA. Because the leaf and all intermediate
-tables are in place, the subsequent kvm_pgtable_stage2_map()
-replacing it cannot fail via -ENOMEM: no block to split, no new
-tables to install. The failure path is not currently reachable.
+Staring at this code again, I should move that up so I can reuse it in the
+vmem_altmap_free() call.
 
-Nevertheless, WARN_ON() on any fallible call is the wrong pattern at
-EL2. Capture the return value and propagate it. The unmap() and
-host-side rollback are kept as defensive guards for the currently
-unreachable failure path. The rollback's
-WARN_ON(__host_set_page_state_range()) asserts an impossible state:
-the host leaf PTE was just written by
-host_stage2_set_owner_metadata_locked(), so the reverse idmap
-rewrite cannot require new page-table allocation from host_s2_pool.
-This is the correct use of WARN_ON at EL2 =E2=80=94 an impossible-state
-assertion, not a reachable error being ignored.
+-- 
+Cheers,
 
-Fixes: 246c976c370d ("KVM: arm64: Implement the MEM_UNSHARE hypercall for p=
-rotected VMs")
-Signed-off-by: Fuad Tabba <tabba@google.com>
----
- arch/arm64/kvm/hyp/nvhe/mem_protect.c | 37 ++++++++++++++++++---------
- 1 file changed, 25 insertions(+), 12 deletions(-)
-
-diff --git a/arch/arm64/kvm/hyp/nvhe/mem_protect.c b/arch/arm64/kvm/hyp/nvh=
-e/mem_protect.c
-index 6fb546af699f..12f3ea7a2d75 100644
---- a/arch/arm64/kvm/hyp/nvhe/mem_protect.c
-+++ b/arch/arm64/kvm/hyp/nvhe/mem_protect.c
-@@ -984,14 +984,10 @@ int __pkvm_guest_share_host(struct pkvm_hyp_vcpu *vcp=
-u, u64 gfn)
- 				     &vcpu->vcpu.arch.pkvm_memcache, 0);
- 	if (ret) {
- 		/*
--		 * Stage-2 map can fail mid-walk (e.g. -ENOMEM from the
--		 * memcache), leaving partial leaf entries in the guest
--		 * stage-2 transitioned to PKVM_PAGE_SHARED_OWNED. Tear
--		 * them down so the host does not see a partially-shared
--		 * mapping it has not yet acknowledged via the host
--		 * stage-2 update below. No host bookkeeping needs
--		 * unwinding here: the only mutation prior to the failed
--		 * map is the (now-discarded) guest stage-2 update itself.
-+		 * Defensive: get_valid_guest_pte() guarantees a last-level
-+		 * leaf PTE already exists, so stage-2 map() cannot currently
-+		 * fail here. The unmap() restores the IPA to a clean state as
-+		 * a guard should the precondition ever change.
- 		 */
- 		kvm_pgtable_stage2_unmap(&vm->pgt, ipa, PAGE_SIZE);
- 		goto unlock;
-@@ -1024,13 +1020,30 @@ int __pkvm_guest_unshare_host(struct pkvm_hyp_vcpu =
-*vcpu, u64 gfn)
- 	if (__host_check_page_state_range(phys, PAGE_SIZE, PKVM_PAGE_SHARED_BORRO=
-WED))
- 		goto unlock;
-=20
--	ret =3D 0;
- 	meta =3D host_stage2_encode_gfn_meta(vm, gfn);
- 	WARN_ON(host_stage2_set_owner_metadata_locked(phys, PAGE_SIZE,
- 						      PKVM_ID_GUEST, meta));
--	WARN_ON(kvm_pgtable_stage2_map(&vm->pgt, ipa, PAGE_SIZE, phys,
--				       pkvm_mkstate(KVM_PGTABLE_PROT_RWX, PKVM_PAGE_OWNED),
--				       &vcpu->vcpu.arch.pkvm_memcache, 0));
-+	ret =3D kvm_pgtable_stage2_map(&vm->pgt, ipa, PAGE_SIZE, phys,
-+				     pkvm_mkstate(KVM_PGTABLE_PROT_RWX, PKVM_PAGE_OWNED),
-+				     &vcpu->vcpu.arch.pkvm_memcache, 0);
-+	if (ret) {
-+		/*
-+		 * Defensive: get_valid_guest_pte() guarantees a last-level
-+		 * leaf PTE already exists, so stage-2 map() cannot currently
-+		 * fail here. The unmap() and host-side rollback below are
-+		 * kept as guards should the precondition ever change.
-+		 */
-+		kvm_pgtable_stage2_unmap(&vm->pgt, ipa, PAGE_SIZE);
-+
-+		/*
-+		 * Roll back the host stage-2 mutation above: the host leaf
-+		 * PTE was just written by host_stage2_set_owner_metadata_locked(),
-+		 * so __host_set_page_state_range() rewrites it in-place
-+		 * without needing fresh page-table pages from host_s2_pool.
-+		 */
-+		WARN_ON(__host_set_page_state_range(phys, PAGE_SIZE,
-+						    PKVM_PAGE_SHARED_BORROWED));
-+	}
- unlock:
- 	guest_unlock_component(vm);
- 	host_unlock_component();
---=20
-2.54.0.545.g6539524ca2-goog
-
+David
 
