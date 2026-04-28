@@ -1,282 +1,198 @@
-Return-Path: <stable+bounces-241680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241681-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AJJ7HxPG8GloYQEAu9opvQ
-	(envelope-from <stable+bounces-241680-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 16:37:07 +0200
+	id uKp8GwTO8GnDYwEAu9opvQ
+	(envelope-from <stable+bounces-241681-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 17:11:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 345994871D6
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 16:37:07 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1ED64879A5
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 17:10:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BE56B3047A2D
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 14:32:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 36A5130B9505
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 14:35:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34BB438A70E;
-	Tue, 28 Apr 2026 14:32:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D32D358391;
+	Tue, 28 Apr 2026 14:35:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NbCXFLyL"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="VSlkWbR8"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011023.outbound.protection.outlook.com [52.101.62.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB8A937F8AF
-	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 14:32:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777386762; cv=none; b=BsyjU2vSupDVt7s4S+dtbOtJCaDIUxlMfSb8YG+ffqbeVu0CnHx2+yrjqGU1p0BIi7cJHPCGHwIJRTOtC9VYYyIKnJzbHa5uUFfxtPoB8YtRG9YO6uqC32fHfNqXPRxCEiT+c2ACOKdYnzniyi7B+uFldeTSFidGwCsryYwW8Os=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777386762; c=relaxed/simple;
-	bh=twidEE97n68ehrZnnp4SUdHpdcpplnCErrpCI9l7Rzk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mq/Buql0Me26R6eL3ua15G3lsv0Is/w7+UwWcAcOA/xeugdxccT5bsHlHix6Y8LKoblnICYDzHA0WbnF0iayPvRBypUJS1QDV/IgGhpBINP1PpgdLUdhv6Fe4L1ZF7RfNqg+wex496W2UbILdvvUEyE5Eqi9QmphCP1tsV0mQl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NbCXFLyL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B73CC2BCAF;
-	Tue, 28 Apr 2026 14:32:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777386761;
-	bh=twidEE97n68ehrZnnp4SUdHpdcpplnCErrpCI9l7Rzk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NbCXFLyLSgWcBN+Wsu9AIfIOdiuyXPlzbO0PbsRaP57w4rZjA7BUP145x4e3DIKEe
-	 WflxkqeTak7O0KFuOg96imyRp8RPualuNsSwUDOhvkIvp9ry7F3xkQuTxIzhhbyhR6
-	 +EENg+zZDzyaffeymWb7q/t8TUcXiMYb7CbpaXiz9LrRWdJ8i/1pqJxmPBho8+LgKo
-	 UrYrehDyUHbsN88SsTs8Q7LJNSgs0W4/js5lOVccigHTslqcxQElP9/EKkY2V4uPWX
-	 92cy55yqtLNnqOuCRhDK3x+hOT1WwxGZgMcG8G2olbWTK1IAwqurlR9bgZl5eF1jR7
-	 /fF9mfMqs3QmA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Ryan Roberts <ryan.roberts@arm.com>,
-	Jinjiang Tu <tujinjiang@huawei.com>,
-	Kevin Brodsky <kevin.brodsky@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18.y 2/2] arm64: mm: Fix rodata=full block mapping support for realm guests
-Date: Tue, 28 Apr 2026 10:32:38 -0400
-Message-ID: <20260428143238.2960283-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260428143238.2960283-1-sashal@kernel.org>
-References: <2026042741-lagged-ricotta-aa8b@gregkh>
- <20260428143238.2960283-1-sashal@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A63823AE62;
+	Tue, 28 Apr 2026 14:35:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.23
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777386952; cv=fail; b=ltNXjvyqPrhMvt9+vhYbHVDI9EU+iT4mEZ38oXE2Jr6LdcHCtmy1qBXTdbo65ZK6sxjX5OHFSpzETtx+h22lA5aB7iCZEnj7B8Ac5+KgKJO8n0X9E40JUDUglrzWlPLvGtd46AEPwCBEZtaPNPJOYbPpXD4utNQimNjgPHHkBq4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777386952; c=relaxed/simple;
+	bh=fKiOVIvs/uNZdDCMajsPFRW/AUbzYVQOgh694Gce/FU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=YN2ZZSp+b9gbBUg9DJuVodaJI5w5Yff4WDwhtjRZNZ8Y6hJNRQiqL0aa/QUkm0UlqmxpS0frdkWgVcPNgPu2ePrQl6/ivcR6hpilL42rnykwwtq0XS7JGj8hIwZYEMlGikF7HUObj47BqYi1AtXTmJXL9xaHNkWInFZnTaaIXwk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=VSlkWbR8; arc=fail smtp.client-ip=52.101.62.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=wI9i7m6JrVtBfMZg2zkwjtryYCETo5JTZrQ5CYpmCK0OFKX+lH6ZaNRtZoX3BqFK83lV6uFpYXTyFBuQgLN7Yr+hnSZI8FMlXMemdI+TIANqJDhpRBAaEzhfmn7vIoKDzE6e8L82PKNfKZHDtA2/HGmhyjYxMWQVG0CXBzLk7zCiKUzzUt6cT9N/G0JM8xi5ii/fsCvykDZOtgL5HC0ngCGUKVGjLMgfMJQKCcpA2wrRnTxDT05n96tlFtcjX1qDgR3iXek3+LTZLvS1OcdxDMG76guVj/eSsvyiNdwmDpRAs77OMipDZwMG10LyLs8s+X0cIY3SlQPfeR70kUJh8g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=kyrD3X4B4hv97Kx/sG11sv8qeurLGWc8wl2pGUESO14=;
+ b=Rf8aj/f6UcYXNydETa3vtarkMPUAeTXoxNgfpKZAOK24MOO/oF9J0PZvPOyVzvMVlHQpYF2BFSgG/c7q4HUvyQOqZpDNe+cWL7zQIIUyqZa8f7LUReUSND1b7h/5SRQ27VuBtPFxBaaACmB1cfmvJ1Xb4FHLkhRlQ69T2jvXjXk0Sz8RX7uIXezytEp24rOwatrGHPGfxi7SreN91VfS0XhkMZmYtOxg8VM1HWg2tfZ6r88Ss9QEbsqOsckPCeegO8Z4G9xjJElLsvZpRo+nkZ2auN1ocgnlVjxvJJZhizg8Jo2YpVvxkh9PMz7NWt5wYgYHilGIJ9ra3Xa2zLgsbg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=kyrD3X4B4hv97Kx/sG11sv8qeurLGWc8wl2pGUESO14=;
+ b=VSlkWbR8i4DNG+Rc6lZOnY+dDHHbj+FM7cPiuPD4BmkiyaB1NK50r4+0Ju3imxmidwYqocre+OO+lftiWiaWWzGzacHxx55CnmUFKrLXNz8qPg3DPvD04MDALqR2Fi0ln+SEGK/N8sfenWUbn7dwS5Yw01nguWaX3yq9oUP1Wv/QIsVOjFMjYddr8AdXsF6lfOur2YQVuXvxjUzUSIMfOfBqbJ4dVDe1TOBe48wWi9iNB1NrC9sE/xEk6plm2mPx53oMXgssCKA1xWKU7ziibGqniBv+29yvo2uw1/lrZNrYDJyxRrzSMEgK+/b/NgJ9D/pZOugV5SehcDNDB+TiHA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
+ by IA1PR12MB8261.namprd12.prod.outlook.com (2603:10b6:208:3f7::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.15; Tue, 28 Apr
+ 2026 14:35:41 +0000
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528%5]) with mapi id 15.20.9870.013; Tue, 28 Apr 2026
+ 14:35:41 +0000
+Date: Tue, 28 Apr 2026 11:35:40 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Guangshuo Li <lgs201920130244@gmail.com>
+Cc: Yishai Hadas <yishaih@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
+	Roland Dreier <roland@purestorage.com>,
+	Jack Morgenstein <jackm@dev.mellanox.co.il>,
+	linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] IB/mlx4: Fix refcount leak in add_port() error path
+Message-ID: <20260428143540.GA2647286@nvidia.com>
+References: <20260413115949.2799399-1-lgs201920130244@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260413115949.2799399-1-lgs201920130244@gmail.com>
+X-ClientProxiedBy: YT4PR01CA0024.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:d1::29) To LV8PR12MB9620.namprd12.prod.outlook.com
+ (2603:10b6:408:2a1::19)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 345994871D6
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|IA1PR12MB8261:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8fa95def-5ef3-4a77-bbb9-08dea5336c5e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|366016|56012099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	f1cvnrarRFXQhWqoEsDto8mxc/Ckt2fSth/9D3HAWQGnl5vsnFeoIgYBv0TQFeLnvQ67psJ+IqAYM22qYlm4Vwz7HOxASjzUlDlMDzcCWTMLzb7+r9t0wUTt6sgubQJgKjAkCppPV0C6bLdYgk2D3pNfVtvzXsmJPQHqDJ/uXPk0/Doe2Om0kYBhm6INAfRny7DWB7CpZLA2mdbrlY9/0Rk1+VlRYWY1ou7g+ge9R9Nl83sq+INXpgqcDeU8UDvqH+G4rDCN8mgq5zLmbE2KLbx0U3/Sa4awWveXq6YdADF1dKieHw2QEmaMWUJzSPfU8DMWjMqq2zPj+vL7mxlQmbaaoIyvJzjyNYVyWsQHgFEC/kg1XJ1tQs/rjPhahpEnZurOSgkXhi1+ckuYW4ZaI+5DTSONz+bBAbgcrK1Op2oMcYnmXfQNTab7O0jvotSXBm42oX20ii07xP4ZzvYnocV9jlrKa2BxVE8qQu+kiCEjFqF/T1N3fFBqlGRs8W5wWUpdfvzBiQ09fm4p41VzVQozFBKODBdmeeTkc/uOG5n53UwrS8zBRtGy6jDte+wrHWWT5kbrhmM8CI1FVSAUexjzidvHmWQSWTWHzEcUNNywt3Wx85ZnJoEr9BiO9zVOhNW06vyve6eowz0cemWMTi43JI9vyyKx3YRYQqy9WwnUOu6XL1TD/FgvLnEbDDKPxYmpvvzZWc0DLDaN8wI6rIecw82yOqZA21HpmaU8MT0=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?tl5aC2xTdvlyHAyInNLg6NSFj5mdAXS7ET5rtHRGQatzIfDZ9/OJAqRCFbks?=
+ =?us-ascii?Q?7yR5+akzaHAF3s9/1UetVEPwQ8WkgehzjP+AWLocCYZ/prDX7hKyGDTrS0zQ?=
+ =?us-ascii?Q?idgWFB9Tv8gTyB2lSFxjpYVf3ZXZ5+MojDOgBksOk/9rmjpMfqgdLU0ljUHK?=
+ =?us-ascii?Q?Z+gkQ9q2tpwxt4Cjq/ueUyCnFMx5SC5l0VPFt+gUsPx3hjdc/aNL5LRTeqxt?=
+ =?us-ascii?Q?mOs/kWiEi095ImSLuRpkzDMChIF/iRLLIF0qjbrohe3+DOxk9KHglaPH8fIM?=
+ =?us-ascii?Q?u9E9GefBlrnlRCGXLabWGarOW4KfZW6Ib2hlSqtUyc4JXiwGHRcluv923iOB?=
+ =?us-ascii?Q?ypSWIE0O4Hhivb9gfXyRCw3jwLEXihZr776Il3fEIPcvzbRs/BNoFDe+Z5iL?=
+ =?us-ascii?Q?LmlCLyE9ds3kbiGgU/t8Ll+q0qxvCEisgBqDT4bNm4LPf8ti3pMcla2DyQy9?=
+ =?us-ascii?Q?xDG1uA6iHzMqETf8XN9VsN8lNkXir587azqQsH7LwWKZgx5uZU8Rkibx5U82?=
+ =?us-ascii?Q?MWKrFZ32PRHfIx1Myg7TH/gN9FbF9XGaabllbAP1+M+twzL2uyI5nd2XjWiF?=
+ =?us-ascii?Q?fPrWkRJFRrLiYO27brdb2VbJZlml5WFgEVs1v0iNi5Yb+NuTrlyMd6tfarf5?=
+ =?us-ascii?Q?z26mA/S9ZLG1yYdiG1fnmy7PkTMPL9w/AcfqID3/f3pkZ7IcAu/F8IujHCKd?=
+ =?us-ascii?Q?uaZvZmNU2mjLUrmludWd7YjYPRMZEAcjL29x7R/9uN6EVzXO5oKSSUOuFZ5J?=
+ =?us-ascii?Q?/L+hMuSmX9+dLq95V14tNsasLdfqspJ+z6emV4BtVSMGK2BEMimtbQSa2G1E?=
+ =?us-ascii?Q?772eR9K6y0Cot1q30KwLf22E/VCsh0aadk877b58D+tv/eNRN+iyR1hqSmmZ?=
+ =?us-ascii?Q?kptXQ1BqQKJxlbnqMOrhaWLBzHdFKsvawAsVWPfmXeOwo+UrQVc7mhdc0Nyl?=
+ =?us-ascii?Q?8f0g0saqJfJdVXNBl5RLPtzdwTzyIVOL/Y0XrJNsWF5GAMrnKCbe5lo33+tj?=
+ =?us-ascii?Q?cXTU/hCv+hULwwN835K7OTGsQUeJWrCruaCZg9af8JE7pe+hqV3SXEq+OBmy?=
+ =?us-ascii?Q?Y1ayg4Yo2EblgsoDErTiRCv0eUDXvo/VSicgn6MgD6Jh0BcQ/xmG43op1RYb?=
+ =?us-ascii?Q?ZsdZeL14P8tVcCGhGdmUKdq2iTQpm3vrY8KBwDarmt/Y1zWGzAnttKDB07fk?=
+ =?us-ascii?Q?Lbu2aaKhv81YbJ+j/S3zK2AELYJeFuBIonyrJV6f50bUr/XPXkh2uaHd96iE?=
+ =?us-ascii?Q?C5TDlmY0ygVF3ubqLcaKGn+V7b+VH3sQySN+x/vasYphKWR1xgZ7JGv2TV4V?=
+ =?us-ascii?Q?8w25tuUT9ROkzUe8eedxg7VHef/gsXRl6Y40RGUZVoSpmvLhLER1hbJL+5ah?=
+ =?us-ascii?Q?CFI749kFSfX3SWLzbyiKXoqtu/XdTIzfsP0PgMCHg8Xq/ePSjQ0/mxn9ZAKf?=
+ =?us-ascii?Q?3nnh+MPqqA0yUY7R+1xKKabacdpQgbNPHLDlPsvPDqcNyXKptwt0toN02Vka?=
+ =?us-ascii?Q?cjoRK+3O2lEE2X93RXKlvlCTi3lqPD+8vzLm2uQWSS3+Yp0M9k8dOhiMzaNX?=
+ =?us-ascii?Q?pttZU6O8gvkM+iGWN9kAXG/CnEUy7vyqoPp2qFUykZI8cHkymmsrDKqh8omh?=
+ =?us-ascii?Q?dc7F7hIRIIbcZkjZOOWz0Dln8GB6sUkmPZDuKP7oqdWig7ElntYbAE1MotHc?=
+ =?us-ascii?Q?msVT9f1P7yfJw1B+TRn4ljw4dwfWiLEPrE5z8V8o8VLcalvV?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8fa95def-5ef3-4a77-bbb9-08dea5336c5e
+X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Apr 2026 14:35:41.6161
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: GaRmh902mXCtJ802sEyx5zmpDWovFGmEMSsOCNePrAQfR9dIMTN64kA3d6wF1LSo
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB8261
+X-Rspamd-Queue-Id: C1ED64879A5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
+	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-241681-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241680-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	DKIM_TRACE(0.00)[Nvidia.com:+];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,arm.com:email,huawei.com:email]
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jgg@nvidia.com,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,nvidia.com:mid,Nvidia.com:dkim]
 
-From: Ryan Roberts <ryan.roberts@arm.com>
+On Mon, Apr 13, 2026 at 07:59:48PM +0800, Guangshuo Li wrote:
+> @@ -642,7 +642,7 @@ static int add_port(struct mlx4_ib_dev *dev, int port_num, int slave)
+>  				   kobject_get(dev->dev_ports_parent[slave]),
+>  				   "%d", port_num);
+>  	if (ret)
+> -		goto err_alloc;
+> +		goto err_kobj;
+>  
+>  	p->pkey_group.name  = "pkey_idx";
+>  	p->pkey_group.attrs =
+> @@ -689,6 +689,11 @@ static int add_port(struct mlx4_ib_dev *dev, int port_num, int slave)
+>  	kobject_put(dev->dev_ports_parent[slave]);
+>  	kfree(p);
+>  	return ret;
+> +
+> +err_kobj:
+> +	kobject_put(&p->kobj);
 
-[ Upstream commit f12b435de2f2bb09ce406467020181ada528844c ]
+Sashiko says this will crash because this was skipped:
 
-Commit a166563e7ec37 ("arm64: mm: support large block mapping when
-rodata=full") enabled the linear map to be mapped by block/cont while
-still allowing granular permission changes on BBML2_NOABORT systems by
-lazily splitting the live mappings. This mechanism was intended to be
-usable by realm guests since they need to dynamically share dma buffers
-with the host by "decrypting" them - which for Arm CCA, means marking
-them as shared in the page tables.
+	p->pkey_group.attrs =
+		alloc_group_attrs(show_port_pkey,
+				  is_eth ? NULL : store_port_pkey,
+				  dev->dev->caps.pkey_table_len[port_num]);
 
-However, it turns out that the mechanism was failing for realm guests
-because realms need to share their dma buffers (via
-__set_memory_enc_dec()) much earlier during boot than
-split_kernel_leaf_mapping() was able to handle. The report linked below
-showed that GIC's ITS was one such user. But during the investigation I
-found other callsites that could not meet the
-split_kernel_leaf_mapping() constraints.
+Along with other problems.
 
-The problem is that we block map the linear map based on the boot CPU
-supporting BBML2_NOABORT, then check that all the other CPUs support it
-too when finalizing the caps. If they don't, then we stop_machine() and
-split to ptes. For safety, split_kernel_leaf_mapping() previously
-wouldn't permit splitting until after the caps were finalized. That
-ensured that if any secondary cpus were running that didn't support
-BBML2_NOABORT, we wouldn't risk breaking them.
-
-I've fix this problem by reducing the black-out window where we refuse
-to split; there are now 2 windows. The first is from T0 until the page
-allocator is inititialized. Splitting allocates memory for the page
-allocator so it must be in use. The second covers the period between
-starting to online the secondary cpus until the system caps are
-finalized (this is a very small window).
-
-All of the problematic callers are calling __set_memory_enc_dec() before
-the secondary cpus come online, so this solves the problem. However, one
-of these callers, swiotlb_update_mem_attributes(), was trying to split
-before the page allocator was initialized. So I have moved this call
-from arch_mm_preinit() to mem_init(), which solves the ordering issue.
-
-I've added warnings and return an error if any attempt is made to split
-in the black-out windows.
-
-Note there are other issues which prevent booting all the way to user
-space, which will be fixed in subsequent patches.
-
-Reported-by: Jinjiang Tu <tujinjiang@huawei.com>
-Closes: https://lore.kernel.org/all/0b2a4ae5-fc51-4d77-b177-b2e9db74f11d@huawei.com/
-Fixes: a166563e7ec3 ("arm64: mm: support large block mapping when rodata=full")
-Cc: stable@vger.kernel.org
-Reviewed-by: Kevin Brodsky <kevin.brodsky@arm.com>
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Tested-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-[ adjusted context to use `__ASSEMBLY__` instead of `__ASSEMBLER__` ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/arm64/include/asm/mmu.h |  2 ++
- arch/arm64/mm/init.c         |  9 +++++++-
- arch/arm64/mm/mmu.c          | 45 +++++++++++++++++++++++++-----------
- 3 files changed, 42 insertions(+), 14 deletions(-)
-
-diff --git a/arch/arm64/include/asm/mmu.h b/arch/arm64/include/asm/mmu.h
-index 78a4dbf75e602..c5d187769c6c9 100644
---- a/arch/arm64/include/asm/mmu.h
-+++ b/arch/arm64/include/asm/mmu.h
-@@ -112,5 +112,7 @@ void kpti_install_ng_mappings(void);
- static inline void kpti_install_ng_mappings(void) {}
- #endif
- 
-+extern bool page_alloc_available;
-+
- #endif	/* !__ASSEMBLY__ */
- #endif
-diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
-index 524d34a0e9219..341ae4f15845e 100644
---- a/arch/arm64/mm/init.c
-+++ b/arch/arm64/mm/init.c
-@@ -357,7 +357,6 @@ void __init arch_mm_preinit(void)
- 	}
- 
- 	swiotlb_init(swiotlb, flags);
--	swiotlb_update_mem_attributes();
- 
- 	/*
- 	 * Check boundaries twice: Some fundamental inconsistencies can be
-@@ -384,6 +383,14 @@ void __init arch_mm_preinit(void)
- 	}
- }
- 
-+bool page_alloc_available __ro_after_init;
-+
-+void __init mem_init(void)
-+{
-+	page_alloc_available = true;
-+	swiotlb_update_mem_attributes();
-+}
-+
- void free_initmem(void)
- {
- 	void *lm_init_begin = lm_alias(__init_begin);
-diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-index bffb01ee04147..f869887d4166d 100644
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -774,30 +774,51 @@ static inline bool force_pte_mapping(void)
- }
- 
- static DEFINE_MUTEX(pgtable_split_lock);
-+static bool linear_map_requires_bbml2;
- 
- int split_kernel_leaf_mapping(unsigned long start, unsigned long end)
- {
- 	int ret;
- 
--	/*
--	 * !BBML2_NOABORT systems should not be trying to change permissions on
--	 * anything that is not pte-mapped in the first place. Just return early
--	 * and let the permission change code raise a warning if not already
--	 * pte-mapped.
--	 */
--	if (!system_supports_bbml2_noabort())
--		return 0;
--
- 	/*
- 	 * If the region is within a pte-mapped area, there is no need to try to
- 	 * split. Additionally, CONFIG_DEBUG_PAGEALLOC and CONFIG_KFENCE may
- 	 * change permissions from atomic context so for those cases (which are
- 	 * always pte-mapped), we must not go any further because taking the
--	 * mutex below may sleep.
-+	 * mutex below may sleep. Do not call force_pte_mapping() here because
-+	 * it could return a confusing result if called from a secondary cpu
-+	 * prior to finalizing caps. Instead, linear_map_requires_bbml2 gives us
-+	 * what we need.
- 	 */
--	if (force_pte_mapping() || is_kfence_address((void *)start))
-+	if (!linear_map_requires_bbml2 || is_kfence_address((void *)start))
- 		return 0;
- 
-+	if (!system_supports_bbml2_noabort()) {
-+		/*
-+		 * !BBML2_NOABORT systems should not be trying to change
-+		 * permissions on anything that is not pte-mapped in the first
-+		 * place. Just return early and let the permission change code
-+		 * raise a warning if not already pte-mapped.
-+		 */
-+		if (system_capabilities_finalized())
-+			return 0;
-+
-+		/*
-+		 * Boot-time: split_kernel_leaf_mapping_locked() allocates from
-+		 * page allocator. Can't split until it's available.
-+		 */
-+		if (WARN_ON(!page_alloc_available))
-+			return -EBUSY;
-+
-+		/*
-+		 * Boot-time: Started secondary cpus but don't know if they
-+		 * support BBML2_NOABORT yet. Can't allow splitting in this
-+		 * window in case they don't.
-+		 */
-+		if (WARN_ON(num_online_cpus() > 1))
-+			return -EBUSY;
-+	}
-+
- 	/*
- 	 * Ensure start and end are at least page-aligned since this is the
- 	 * finest granularity we can split to.
-@@ -897,8 +918,6 @@ static int range_split_to_ptes(unsigned long start, unsigned long end, gfp_t gfp
- 	return ret;
- }
- 
--static bool linear_map_requires_bbml2 __initdata;
--
- u32 idmap_kpti_bbml2_flag;
- 
- static void __init init_idmap_kpti_bbml2_flag(void)
--- 
-2.53.0
-
+Jason
 
