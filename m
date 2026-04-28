@@ -1,97 +1,96 @@
-Return-Path: <stable+bounces-241769-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241770-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0PD5EhYa8Wm3dQEAu9opvQ
-	(envelope-from <stable+bounces-241769-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 22:35:34 +0200
+	id aN2fOJoa8WnadQEAu9opvQ
+	(envelope-from <stable+bounces-241770-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 22:37:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C1A148BCCB
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 22:35:32 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C86148BD31
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 22:37:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D340A300371B
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 20:35:29 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AB2783004F00
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 20:37:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C10F2E7623;
-	Tue, 28 Apr 2026 20:35:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0681B305047;
+	Tue, 28 Apr 2026 20:37:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ndufresne-ca.20251104.gappssmtp.com header.i=@ndufresne-ca.20251104.gappssmtp.com header.b="yqrm98qq"
+	dkim=pass (2048-bit key) header.d=ndufresne-ca.20251104.gappssmtp.com header.i=@ndufresne-ca.20251104.gappssmtp.com header.b="roqX9cIl"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+Received: from mail-oi1-f182.google.com (mail-oi1-f182.google.com [209.85.167.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED4332D879E
-	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 20:35:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53ED228313D
+	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 20:37:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777408526; cv=none; b=GzUkwZXYhg/T5wB2xGVfwN/OCRSVIvOO/eAmyxY7XBw5GfNZUIh6lwBCFAaObpKnGSIVwtIcXXSezxRgnD8ouMNWEnHl1kYtwZ8HnV/1ndusxEQ5jyT4pyQVqpRyrv5fd0Icqks5/Gt8J9jOsS/JOP64w+g9fpvpQaHzL5MhAZ0=
+	t=1777408661; cv=none; b=AZN7E6+Mw9niMy8uUtEDbc7sjOopLamoOBJineRD3xku2kSfqJbTQdecJqOBTfVSUDcOn7lqOcOVV9aR/FcfFX34GvOCIPvpRy+t+MvBtZxDu7s9gfGLwnTFAxJmppFvBY9NPQmdmpIoZmGQGHrXNZbND9d6TTl9r2SZB3nm/po=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777408526; c=relaxed/simple;
-	bh=DpwCPyBht/KuywC2kfTeJdCwJw5ib0jMlqQTXCR16uk=;
+	s=arc-20240116; t=1777408661; c=relaxed/simple;
+	bh=Guq5/1eIrgzgZKNWzg02roY/hJxkO1at6tjH3NzZPJI=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=QCNxWIJbgksetWyKWgznlY5+7zoSOiBnCJRSp3jlyYEpW61NJV0cTldx0VxCAwtnVaZYXjFvC75oLJcge0ai2nfHPFFwX7AeEyVyrxExqsLbP2ZaZxXUshypLhmdFCVysTuNrAkgMdLaqyI2tTjqLhE2J/nZGIXGycn2ZqqttD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca; spf=pass smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20251104.gappssmtp.com header.i=@ndufresne-ca.20251104.gappssmtp.com header.b=yqrm98qq; arc=none smtp.client-ip=209.85.160.169
+	 Content-Type:MIME-Version; b=ErrR8Hy1QfqCfzD3UsdtSAIZbu3OSsrjon5I0pGYb1cyjmEFez9LkoZ1+uD9XshycABx1pX1vVc4MG3iC6wqc4bZak08n5Zfq0/flO0/ERZ26hIW5dLT+2eugXiIzR6/0+YGgVNPvItqF6lGOwlKpB8dcMUnwiodw8lfFzoPUqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca; spf=pass smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20251104.gappssmtp.com header.i=@ndufresne-ca.20251104.gappssmtp.com header.b=roqX9cIl; arc=none smtp.client-ip=209.85.167.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ndufresne.ca
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-506aa68065eso86248251cf.1
-        for <stable@vger.kernel.org>; Tue, 28 Apr 2026 13:35:24 -0700 (PDT)
+Received: by mail-oi1-f182.google.com with SMTP id 5614622812f47-464bc03efd8so7004792b6e.2
+        for <stable@vger.kernel.org>; Tue, 28 Apr 2026 13:37:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ndufresne-ca.20251104.gappssmtp.com; s=20251104; t=1777408524; x=1778013324; darn=vger.kernel.org;
+        d=ndufresne-ca.20251104.gappssmtp.com; s=20251104; t=1777408659; x=1778013459; darn=vger.kernel.org;
         h=mime-version:user-agent:autocrypt:references:in-reply-to:date:cc:to
          :from:subject:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=AaIfLAokMdpz1ds5EXxIXoKOS9Wl/EtwVtRKaiR6GHI=;
-        b=yqrm98qqD1pg4BwyH43diLYWyam5V3C0q/zJnw8nqzpucm3Eo9IclRyNorZVtck7jp
-         yTcBPd5UL1BZXXrJToxJnh7VhUVQ1F915SZzbkdLGg4XLTTild/0Nv6ybPm5h7C1atO3
-         YlUG6HLGuW9s0m2rK766CpsWvlGUJwTRiIrFdbSJkNyfNVY819AmXn0hEhpKZSi1pTNk
-         v+9iS6TLEW25/upCWVUImNXcZoy4/j4CAnko2lVjXiFXDVY1UeXFt51Bok5fMALmlCaI
-         T73EjwaKa3UCd8mcLiEalNlm+UrVzfS/QzYADhxrYYNbYcxhUx5WwQV4y9415x1aTRdW
-         +AWw==
+        bh=4LyvFUNpVpPtERUYyLw1pAadsXQTRCYkfiN9yTor4u0=;
+        b=roqX9cIl4T0d0EOH7LBh2eeUH/BLGHtBNPTo29fgZWx/5yy4vYJ4fu2BO6pKxeQELj
+         mCnUN0Q5IUUViWU5d2xz1mNs0tfMrVZacs+u5HYR3tbzgfiHDSsdtUOg/T2xVRslBcl/
+         j864rgwTc+lau/YL69DJ50ohHMGFCx8D+HMjWoc1pPePvlzfMY10cyY6u9L8lzAlJmLG
+         gqR8EWV6HABn5/SHPBIckiJj0RRDYyI/5biJ+UWvDOryp3OVssYFex22V9HCpXe+2o6m
+         j18jRO9wZQqKNMsxUgVOU3SLUuS8SZNhEcvY3mr/G/Vfc2HsfCz9B2SwEuypc63l1S82
+         oSFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777408524; x=1778013324;
+        d=1e100.net; s=20251104; t=1777408659; x=1778013459;
         h=mime-version:user-agent:autocrypt:references:in-reply-to:date:cc:to
          :from:subject:message-id:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=AaIfLAokMdpz1ds5EXxIXoKOS9Wl/EtwVtRKaiR6GHI=;
-        b=fec3Z+tPTw/DeRa1+vAI/qOAZZvAd1v//55WPmFwaCddAF14k+GSGP3d30LPbw1UxO
-         OflYX2JYLByv6veuV/sjECx36vROigvXAVZSPM8LVvle4zFWfvm8wrZAG5Ve+xCCScDG
-         An63TOQ0e9atCG2Bd2pe/hKvP/wLjzS31gIY+HK4tfrq9pqWkPNjlADmrxIjgfmD5OA3
-         E8COF0itsSAAnDohdxkM9vMy1qeK/8mde5lhaD9T2cRZiz5qJM+DWoxKl26VeKAPHFu6
-         +Ie/XgR3wtzI/x1phtlsafqKP8nUqFbvt2hKG/prcD5GaJMdnC2AQOSBvBWvqdaNaMsl
-         eBHQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9zhECrptq76QytB36JGN/CYaU6YKkqLOs9QXWbAZ3az9q/30W33SC9TSNzrjRWfTKnflKVRbY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyCY8Uv0JDPhNqpi+DeUqJBREsBUmkj28WRau1SkZOsmaxfkJc/
-	8diiO7+4M5orvaxsEHhoVSi4gmkAPX2emeegHEt2s0iRdizwYABaJ7yrG1rZ7jyQfeREqCPqwyW
-	UfIVuCCc=
-X-Gm-Gg: AeBDievA7eCZ+3jmQO0EnDhQpYkv2XKh8CDdSZP13f8fsCsFs4CCNiXx4Yst4RfU6eM
-	kUIWaBx+jJbsBLrgBQeUzxw4X+pHWSEQVhaS0fc0oZ7XcEjTeE3l/T0JKfzDtBS3IjEvbToRn12
-	5c8uwcF2iYtlfXFy9SVJgcG/45oYq5WmbLSJm/g6ntiESJi/UJ1x1L0ypXvG22E4Lm6Lqbf2cJV
-	Bn2r8OmCHnnsrfZswHbPaQ2mbMyEXqfyFioX/KiiFwOyPOXpofWGe7fEO9HRUyedvchV1CEUXFy
-	QsRuqwrGWLLN1Qmw70iNcqjMmb5d9Z1MhLQAUWr/kNM5213YABWfVHrHJPsDhbxRhLvjwkacLm9
-	ntuFVKpp3J5yNFYWq3isI2sypGPDgqj781bO9fRrvl3OlzW/Ggt48jX1TCtKDmugYyVfZHoDInH
-	r14SqHV31iyc7b+QLdyZ7OUyH9TmH7xJikpqZrQLw=
-X-Received: by 2002:a05:622a:347:b0:50e:60d7:b272 with SMTP id d75a77b69052e-51018a79483mr17709131cf.41.1777408523633;
-        Tue, 28 Apr 2026 13:35:23 -0700 (PDT)
+        bh=4LyvFUNpVpPtERUYyLw1pAadsXQTRCYkfiN9yTor4u0=;
+        b=J6qMDesWxXGp9iYkdDXVaxrbhPGT3rn3QgvpS6oqXDGCZh+r2O8vyg4vPsSenyX325
+         kKwPupGa+52TGqWHflQcPg/GxdSXU7TAaDy2nC30c8KBtHqrzDoZFqPIaXksP36t/eiT
+         N7k5emR6GsRlpYOT887gbmg+M9Q0W9YPWyQPpY0I77oqCUEd6e6DpSJbjYGZY8Mtv3Mw
+         YtTW9klQC3bgggqlcWEA3hx6Xj9zxJHyJuCrzXxVQ63T/TDDisihV6ds4SjZtBbeDvWo
+         C/Ity1QZU3oSAXgHiKa/f4f0+dege/fyR3auQhWA76nbJA3L1OXoAjTiHrMhhPRphOu6
+         zuew==
+X-Forwarded-Encrypted: i=1; AFNElJ+eDbOj2IQgZeA0KEp4vMuPzHwitvRoCdD6pe+qLrmazXSjvDBZljpkmbOxwEIpuIzsYtbOhhw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxAgqPHGxeVvPRzTDjk0DYxyAeKCVrdqHdnYf0ZLGhrHqAuu/zi
+	yQU9CiUh1gkATdlY7thI1JroZzk331dEFVHB7CdQzZTrjrnyQ7ZLbMTJCApIMXsjFkw=
+X-Gm-Gg: AeBDiet2FhPW7Zl9aob8NlIDTnZYzblUNqWn1ltnE5Um2OH90cfSYXi1asaGqyQ1pmH
+	PcpoF0isVC6I5fTyvy3ibsQPe6T1AHtsFAginfcpTyLY7g0Gr7YSieX/vyI1luj27bMNrtGJ4Gs
+	m6VM5q+KYM5GK8c+DEWTeZPdeO45IXpzqO0+mJnVWDzDz+tgLOA1MuhYxdM0BeHkcZLYN0rO/c3
+	/di+i7RfMa+PiYBNwZ3UfsWavOn4NF3mSwWbOUG770Bx9fZaH6vf1IFqEITKUtEPFjGXUOC7v9i
+	VkDOpQUcxkiB9tIH8VST3cLlkzaSjUDJ6BNQCdtDLvdYnRcih5gItpQm6C2e4ScHcbnkPUk4lFz
+	OQllqcT4IaEIm40O6RxDEDdHda0DetmmSk11MdVV/UgRIwsa+w+4rdvqIs5h8L1/07uMvcRMeSL
+	vJWQcw/t/WUhJEUxi4fNtjQVyM+ExqSpmixgUJZe0=
+X-Received: by 2002:a05:6808:159b:b0:475:be6f:aa with SMTP id 5614622812f47-47c3d9992b7mr647616b6e.19.1777408659317;
+        Tue, 28 Apr 2026 13:37:39 -0700 (PDT)
 Received: from ?IPv6:2606:6d00:15:e06b::c41? ([2606:6d00:15:e06b::c41])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5100dbaa48asm24893241cf.29.2026.04.28.13.35.21
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-47c426fdc44sm37590b6e.3.2026.04.28.13.37.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Apr 2026 13:35:22 -0700 (PDT)
-Message-ID: <48ec46cc064fb5d367be6336bfafd888586f7857.camel@ndufresne.ca>
-Subject: Re: [PATCH] media: mediatek: vcodec: free working buf on error path
- in vdec_vp9_slice_setup_lat()
+        Tue, 28 Apr 2026 13:37:37 -0700 (PDT)
+Message-ID: <2db848c23398c1995f16e24be9e86dd399a04f4d.camel@ndufresne.ca>
+Subject: Re: [PATCH] media: mediatek: vcodec: free working buf in
+ vdec_vp9_slice_setup_single()
 From: Nicolas Dufresne <nicolas@ndufresne.ca>
 To: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>, tiffany.lin@mediatek.com, 
 	andrew-ct.chen@mediatek.com, yunfei.dong@mediatek.com, mchehab@kernel.org, 
 	matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com, 
-	laurent.pinchart@ideasonboard.com, hverkuil+cisco@kernel.org, 
-	benjamin.gaignard@collabora.com, p.zabel@pengutronix.de,
- george.sun@mediatek.com
+	hverkuil+cisco@kernel.org, laurent.pinchart@ideasonboard.com, 
+	p.zabel@pengutronix.de, benjamin.gaignard@collabora.com, 
+	xiaoyong.lu@mediatek.com, mingjia.zhang@mediatek.com
 Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
 	stable@vger.kernel.org
-Date: Tue, 28 Apr 2026 16:35:20 -0400
-In-Reply-To: <20260330020224.2729252-1-lihaoxiang@isrc.iscas.ac.cn>
-References: <20260330020224.2729252-1-lihaoxiang@isrc.iscas.ac.cn>
+Date: Tue, 28 Apr 2026 16:37:35 -0400
+In-Reply-To: <20260330021110.2733458-1-lihaoxiang@isrc.iscas.ac.cn>
+References: <20260330021110.2733458-1-lihaoxiang@isrc.iscas.ac.cn>
 Autocrypt: addr=nicolas@ndufresne.ca; prefer-encrypt=mutual;
  keydata=mDMEaCN2ixYJKwYBBAHaRw8BAQdAM0EHepTful3JOIzcPv6ekHOenE1u0vDG1gdHFrChD
  /e0J05pY29sYXMgRHVmcmVzbmUgPG5pY29sYXNAbmR1ZnJlc25lLmNhPoicBBMWCgBEAhsDBQsJCA
@@ -106,7 +105,7 @@ Autocrypt: addr=nicolas@ndufresne.ca; prefer-encrypt=mutual;
  ECHgcCF4AACgkQ2UGUUSlgcvRObgD/YnQjfi4+L8f4fI7p1pPMTwRTcaRdy6aqkKEmKsCArzQBAK8
  bRLv9QjuqsE6oQZra/RB4widZPvphs78H0P6NmpIJ
 Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-rldXSCr7JE/S7Fo4lx/T"
+	protocol="application/pgp-signature"; boundary="=-Ia1WDRCY1/M1Q8YAdi4l"
 User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -114,14 +113,14 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Rspamd-Queue-Id: 4C1A148BCCB
+X-Rspamd-Queue-Id: 6C86148BD31
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	SIGNED_PGP(-2.00)[];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[ndufresne-ca.20251104.gappssmtp.com:s=20251104];
 	MIME_GOOD(-0.20)[multipart/signed,text/plain];
 	MAILLIST(-0.15)[generic];
@@ -129,13 +128,13 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	TAGGED_FROM(0.00)[bounces-241769-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[17];
+	TAGGED_FROM(0.00)[bounces-241770-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[18];
 	FREEMAIL_TO(0.00)[isrc.iscas.ac.cn,mediatek.com,kernel.org,gmail.com,collabora.com,ideasonboard.com,pengutronix.de];
 	MIME_TRACE(0.00)[0:+,1:+,2:~];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
@@ -146,57 +145,43 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ndufresne-ca.20251104.gappssmtp.com:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,ndufresne.ca:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,ndufresne.ca:mid]
 
 
---=-rldXSCr7JE/S7Fo4lx/T
+--=-Ia1WDRCY1/M1Q8YAdi4l
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Le lundi 30 mars 2026 =C3=A0 10:02 +0800, Haoxiang Li a =C3=A9crit=C2=A0:
-> Add an error path label in vdec_vp9_slice_setup_lat()
+Le lundi 30 mars 2026 =C3=A0 10:11 +0800, Haoxiang Li a =C3=A9crit=C2=A0:
+> Add an error path label in vdec_vp9_slice_setup_single()
 > and call vdec_vp9_slice_free_working_buffer() to free
-> working buffer to prevent potential memory leak.
+> working buffer.
 >=20
-> Fixes: 5d418351ca8f ("media: mediatek: vcodec: support stateless VP9 deco=
-ding")
+> Fixes: b0f407c19648 ("media: mediatek: vcodec: add vp9 decoder driver for=
+ mt8186")
 > Cc: stable@vger.kernel.org
 > Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
 > ---
 > =C2=A0.../mediatek/vcodec/decoder/vdec/vdec_vp9_req_lat_if.c=C2=A0=C2=A0=
-=C2=A0 | 8 +++++---
-> =C2=A01 file changed, 5 insertions(+), 3 deletions(-)
+=C2=A0=C2=A0=C2=A0 | 6 ++++--
+> =C2=A01 file changed, 4 insertions(+), 2 deletions(-)
 >=20
 > diff --git a/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_vp9=
 _req_lat_if.c b/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_vp=
 9_req_lat_if.c
-> index cd1935014d76..3dadb5cc8876 100644
+> index cd1935014d76..b3ecb94bebb3 100644
 > --- a/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_vp9_req_la=
 t_if.c
 > +++ b/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_vp9_req_la=
 t_if.c
-> @@ -1168,7 +1168,7 @@ static int vdec_vp9_slice_setup_lat(struct vdec_vp9=
-_slice_instance *instance,
-> =C2=A0
-> =C2=A0	ret =3D vdec_vp9_slice_setup_lat_buffer(instance, vsi, bs, lat_buf=
-);
-
-This function never fails, please remove its return value and remove the er=
-ror
-code below instead.
-
-> =C2=A0	if (ret)
-> -		goto err;
-> +		goto alloc_err;
-> =C2=A0
-> =C2=A0	vdec_vp9_slice_setup_seg_buffer(instance, vsi, &instance->seg[0]);
-> =C2=A0
-> @@ -1176,14 +1176,16 @@ static int vdec_vp9_slice_setup_lat(struct vdec_v=
-p9_slice_instance *instance,
+> @@ -1811,14 +1811,16 @@ static int vdec_vp9_slice_setup_single(struct vde=
+c_vp9_slice_instance *instance,
 > =C2=A0
 > =C2=A0	ret =3D vdec_vp9_slice_setup_prob_buffer(instance, vsi);
 
-Same issue, that function should not have had a return value.
+This function never fails, remove its return value and remove the error cod=
+e
+below.
 
 > =C2=A0	if (ret)
 > -		goto err;
@@ -207,7 +192,10 @@ Same issue, that function should not have had a return value.
 > -		goto err;
 > +		goto alloc_err;
 
-Ack for this one.
+Ack.
+
+cheers,
+Nicolas
 
 > =C2=A0
 > =C2=A0	return 0;
@@ -218,21 +206,17 @@ Ack for this one.
 > =C2=A0	return ret;
 > =C2=A0}
 
-
-cheers,
-Nicolas
-
---=-rldXSCr7JE/S7Fo4lx/T
+--=-Ia1WDRCY1/M1Q8YAdi4l
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: This is a digitally signed message part
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCafEaCQAKCRDZQZRRKWBy
-9I7mAQCKtYOYjxEZtyyws6YnoZefw8GOxDT6CrR4VAMH4mJxOAD9HYVii/B6UZO/
-0E2YLN5lf+OdoZWjC16cj/8Y7uLZaAE=
-=+BZO
+iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCafEajwAKCRDZQZRRKWBy
+9E2/AQD/nW836XRN6DAd6ZzBlINp0cYn4Gay0RQSq8mQWp4LCwEAwr6VfThlqpT4
+WvmFwT4qjEPeQdKleVFr7EXeFiwJUAs=
+=cisg
 -----END PGP SIGNATURE-----
 
---=-rldXSCr7JE/S7Fo4lx/T--
+--=-Ia1WDRCY1/M1Q8YAdi4l--
 
