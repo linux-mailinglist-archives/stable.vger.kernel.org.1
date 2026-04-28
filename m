@@ -1,151 +1,166 @@
-Return-Path: <stable+bounces-241688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241689-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eF9TKiXS8GnDYwEAu9opvQ
-	(envelope-from <stable+bounces-241688-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 17:28:37 +0200
+	id MDpYLjnQ8GnDYwEAu9opvQ
+	(envelope-from <stable+bounces-241689-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 17:20:25 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C7C4487D4D
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 17:28:36 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24D80487B48
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 17:20:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 425B430F0A6A
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 15:18:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EF54D304C610
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 15:19:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 777DB3B7B8C;
-	Tue, 28 Apr 2026 15:18:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3064A3AEF20;
+	Tue, 28 Apr 2026 15:19:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Pd5rgNeY"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="e+8qqdjz"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 384343148DA
-	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 15:18:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 509D5359A6C
+	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 15:19:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777389487; cv=none; b=uRvVE58V+0ckNLtKga9fHFHjnXAesJEi3utyFNI6CkYR9Xfm2uuQ8l8qFEFuPjoNoZ5c48aaTGK8i6Qoj0JWKyfGTQWFb6S0SXD+NEe1FMhRO6jVSamZWtNa5ZsK+MLwp+8zJ7k4UR5VZMTglXyhzt45hN6zaVErFaeFMag0Sj0=
+	t=1777389571; cv=none; b=panfjf8crSWa7X+sd1Kys66//abfzo7vMEBPljMMPCnoIHaro7mWgOtlgBAjWfyT/EnEi+yw9jd6xgBO9HLBApucpAtp9j0/m84w3A41oUzZFlNnqQ6RSqpU7VPPqDOMh8onmgwPvDyw+iiO2DNie+RbVCfXVR2F/TvBcF+6/rM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777389487; c=relaxed/simple;
-	bh=G5jYe2Ro6yI72cEA7e8A3BYucfWE+49wWIUVMxyffVQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ptb14a2lxHz+4C1/gv74mNtehwYqO9SdWRDuD4lBH5NUQE25wtOQhgqaj6X4zSjvxsnbufBAc813P5O5wSCs+tqo7Kd+iu4lVAyMo10fZ2gitVNC4erxYaCsddH7KYtCpBV5NAdANyYUkvzMfVwv4h1O02/w0PNHbubBfn/IGGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Pd5rgNeY; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777389485; x=1808925485;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=G5jYe2Ro6yI72cEA7e8A3BYucfWE+49wWIUVMxyffVQ=;
-  b=Pd5rgNeYTwuQHVQoycBLXQVO0iR4xR7C3JJfj5TkLSFeWq1vXlgmadQ3
-   ifMqwgfdwtxUDmJonhs9M2rjCZGeJ74jy6tM1m63oCJrEAFAQJHF+DnyP
-   aj2rhUPg3hz1AsdgnWxEeKJhye+z2NodmdUhtknjEQNGjEfOxfJvVZHGi
-   j7iu5ft3y9yjl86j5R3YJ7r3+1PCI5DWRB7jqrmXL9x9C96/Cn8fsBOso
-   rE9GOim+nQfZ+jx+nbsJWF2c9OkaXETRKYzm1MZaRutDDEr9Bmg9rlLAL
-   tLQ/QmJg0RmYtF5MuQgc2vorFYPBPXj30IxiAuJCa1Yoj4nGG02C7hOi5
-   g==;
-X-CSE-ConnectionGUID: VkKiOB5dTEmUGOHLpmkd3Q==
-X-CSE-MsgGUID: 62morNYWT7+b4uLj/60Wkw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11770"; a="89761941"
-X-IronPort-AV: E=Sophos;i="6.23,204,1770624000"; 
-   d="scan'208";a="89761941"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2026 08:18:04 -0700
-X-CSE-ConnectionGUID: ELNJMs58Q4eN7enpR34rLw==
-X-CSE-MsgGUID: 19SBxFJzRG6Q9sTks8Qczw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,204,1770624000"; 
-   d="scan'208";a="257302027"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.30])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2026 08:18:02 -0700
-Date: Tue, 28 Apr 2026 17:18:00 +0200
-From: Andi Shyti <andi.shyti@linux.intel.com>
-To: Jia Yao <jia.yao@intel.com>
-Cc: intel-gfx@lists.freedesktop.org, stable@vger.kernel.org,
-	Shuicheng Lin <shuicheng.lin@intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Maciej Plewka <maciej.plewka@intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>
-Subject: Re: [PATCH v3] drm/i915/dg2: Add per-context control for
- Wa_22013059131
-Message-ID: <afDPqHOR6FhmfROf@ashyti-mobl2.lan>
-References: <20260417050956.1945481-1-jia.yao@intel.com>
+	s=arc-20240116; t=1777389571; c=relaxed/simple;
+	bh=NZXdk1yBRDOEB3BWO+BVvaayxPjaKo978RfNNBO65Ro=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HiTRDb+CFS6PKNo2g3ZH40MyrhCmdbP7lVXUDsCtsjKhocXu98nOqVle6mK7AeypuI9Q9hJc5Yp8eCec2uy70WXJg0+gKtmLo0l0SfnJDI7jHlyDGCRtoWNPRiCEGMKr+yvi60OUtzGQnOYuZkXPQL98HBgM77pcBA35iIgP0EA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=e+8qqdjz; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1777389567;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HDcbwl6sFTXgDrI+UlBZckd1iaxQQF55if0ty09TCYY=;
+	b=e+8qqdjzfrdDpfxQY1uZKmBVm/xq3M9cTdF1KdSQhLiybR7mwzMYCnJgWuO26Rxv7kKS4f
+	27V9lIUg/5f0YpaqtmBx1yexTBWbfJkjfDwridGONAuYsQaxzcjCJOf68kOk8ihpbJqYwT
+	qXKcQ1yfJOf4fhmdbeE/bGQAqf0NTwA=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-657-vMuwL-NMN4yZc68m8CBAFA-1; Tue,
+ 28 Apr 2026 11:19:21 -0400
+X-MC-Unique: vMuwL-NMN4yZc68m8CBAFA-1
+X-Mimecast-MFC-AGG-ID: vMuwL-NMN4yZc68m8CBAFA_1777389559
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id EA75419560AA;
+	Tue, 28 Apr 2026 15:19:18 +0000 (UTC)
+Received: from [10.22.65.177] (unknown [10.22.65.177])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 0B629300756E;
+	Tue, 28 Apr 2026 15:19:16 +0000 (UTC)
+Message-ID: <9df75f61-0cbb-42b4-b64d-8e6fd49d50ca@redhat.com>
+Date: Tue, 28 Apr 2026 11:19:16 -0400
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260417050956.1945481-1-jia.yao@intel.com>
-X-Rspamd-Queue-Id: 1C7C4487D4D
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] cgroup/cpuset: Creating or adding CPUs to partition not
+ allowed without privilege
+To: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>
+Cc: Chen Ridong <chenridong@huawei.com>, Tejun Heo <tj@kernel.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, cgroups@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, Xie Maoyi <maoyi.xie@ntu.edu.sg>
+References: <20260428033439.783246-1-longman@redhat.com>
+ <7so4b76wg2apwwk3yh76q42jgwnpvlv7sursmsmzeyefhp4pbt@thybpp4litm6>
+Content-Language: en-US
+From: Waiman Long <longman@redhat.com>
+In-Reply-To: <7so4b76wg2apwwk3yh76q42jgwnpvlv7sursmsmzeyefhp4pbt@thybpp4litm6>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Rspamd-Queue-Id: 24D80487B48
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[intel.com:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241688-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[redhat.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-241689-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andi.shyti@linux.intel.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ashyti-mobl2.lan:mid,intel.com:dkim,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[longman@redhat.com,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-Hi,
+On 4/28/26 3:58 AM, Michal Koutný wrote:
+> Hi Waiman.
+>
+> On Mon, Apr 27, 2026 at 11:34:39PM -0400, Waiman Long <longman@redhat.com> wrote:
+>> Creation of a cpuset partition or adding more CPUs to an existing
+>> partition will take CPUs away from other cpusets outside of the
+>> partition leaving less CPUs for the others. So it is a privileged
+>> operation that non-privileged users shouldn't be allowed to do.
+>>
+>> Currently, remote partition code has check for CAP_SYS_ADMIN capability
+>> before allowing such operations, but not for local partition.
+> Remote partitions need such a check because their CPUs are sourced from
+> the global supply (top level) without
+>
+>> This leaves a security hole in case cpuset.cpus.partition of a cpuset
+>> is chown'ed to a non-root user and its parent cpuset happens to be a
+>> partition root.
+> I wouldn't say this difference between remote and local partitions is a
+> security hole [1].
+OK, I will tone down the description.
+>
+> Consider this -- cgroup a is created by root (admin) and its resources
+> are constrained by root's policy. However, what happens in a subtree is
+> irrelevant from that top level view.
+>
+> # setup			// owner
+> a/cpuset.partition=root	// root
+> a/cpuset.cpus=0-3	// root
+> a/cgroup.procs		// user, they can organize subtree as needed
+>
+> For example the user may want to create a (sub)partition with some of
+> the CPUs they got:
+>
+> user$ mkdir a/b
+>
+> a/b/cpuset.partition=root	// user
+> a/b/cpuset.cpus=0-1		// user
+>
+> This should be a valid configuration and behavior, no?
 
-On Fri, Apr 17, 2026 at 05:09:56AM +0000, Jia Yao wrote:
-> Wa_22013059131 sets FORCE_1_SUB_MESSAGE_PER_FRAGMENT in LSC_CHICKEN_BIT_0
-> at engine init, but this is known to cause GPU hangs in certain workloads.
-> Add I915_CONTEXT_PARAM_WA_22013059131 so userspace that handles the
-> workaround itself (e.g. by limiting SLM size) can set it to 1 to let the
-> kernel know bit 15 programming is not needed for that context.
-> 
-> LSC_CHICKEN_BIT_0 is not context-saved by hardware, so the kernel restores
-> the correct value on every context switch via the indirect context
-> batchbuffer to avoid leaking state between contexts. The old unconditional
-> application of Wa22013059131 in intel_workarounds.c is removed.
-> 
-> v3:
-> - Kernel-internal context will not change workaround settings
+Thank for the comment. Yes, that can be a valid configuration.
 
-Do we have a link of the userspace using this API?
+One possible workaround may be to see if the current user has write 
+access to its parent partition root. If so, we can allow it to create a 
+sub-partition, if not, we will forbid it.
 
-Joonas, do we need also a documentation update here?
+Cheers,
+Longman
 
-Thanks,
-Andi
-
-> Bspec: 54833
-> Fixes: 645cc0b9d972 ("drm/i915/dg2: Add initial gt/ctx/engine workarounds")
-> Cc: stable@vger.kernel.org
-> Cc: Shuicheng Lin <shuicheng.lin@intel.com>
-> Cc: Matt Roper <matthew.d.roper@intel.com>
-> Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> Cc: Maciej Plewka <maciej.plewka@intel.com>
-> Cc: Andi Shyti <andi.shyti@linux.intel.com>
-> Signed-off-by: Jia Yao <jia.yao@intel.com>
-> Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
 
