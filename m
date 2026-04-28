@@ -1,146 +1,154 @@
-Return-Path: <stable+bounces-241737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241738-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sFhHD/Hn8Gn2awEAu9opvQ
-	(envelope-from <stable+bounces-241737-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 19:01:37 +0200
+	id uCHeCxnq8Gn2awEAu9opvQ
+	(envelope-from <stable+bounces-241738-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 19:10:49 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF90E489873
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 19:01:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D973489A94
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 19:10:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8E115323B822
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 16:34:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5EAC430C3C92
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 16:45:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59CCB372EEA;
-	Tue, 28 Apr 2026 16:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53F2F329E79;
+	Tue, 28 Apr 2026 16:45:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="JUAPbehr"
+	dkim=pass (4096-bit key) header.d=cipherat.com header.i=@cipherat.com header.b="kMXdw3V+"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from mail.cipherat.com (mail.cipherat.com [91.98.42.103])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6438333F595;
-	Tue, 28 Apr 2026 16:33:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA627329E7E;
+	Tue, 28 Apr 2026 16:45:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.98.42.103
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777394021; cv=none; b=Dilz2WaXSWbZA88THjjzEFNkCARR2vX6ptffxpF7DOGDiADqzDVKTutGEwUelADEymurtSkHWhw+QRN78oZke6b7H61Q9VI1tdc0cIb6wvXbiVI7SL26PNSZAu+6xBlNX4bRNkhTcgWNRyVLsCuydcPYwb5kdzd9YTeJVux2Xds=
+	t=1777394732; cv=none; b=h6i48foxdaBdjMbgTTGRPP7xz9lupVh8OzL7cIhxNu+BJBZv8PTwOzD593RUmpCziZcJchbqB02QfzBUfKNo79mS67dQ4N5lzs4VaL6KwY4KplznSWpabEvdOZ5aDGaSZpt0vi3CjksOobZ1GjI9VgwduU8vUaPAXiKcqZVpYRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777394021; c=relaxed/simple;
-	bh=LJcDzkbzMgg8a2Np1026O9dXp+J1K4xRgXPvw4T8nj8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=kCbBkVT6H8laiMiQgvWMf0ZnM5FXx2M5da/pCcy+Ul95lUN+Pp8Brnb3rhckNIK+siOM0EPIHhpGUFX2HRHsGedL4UVeWi8rabbF1UTpCMJjFXNi6h/8tYENfvuhWfGmOu4m4xy/KRhJeiks8Rau7QLTx+0GCU3fSQueAeF1LCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=JUAPbehr; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 1D1201A3471;
-	Tue, 28 Apr 2026 16:33:37 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id DED77601DF;
-	Tue, 28 Apr 2026 16:33:36 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8B6AB10728F25;
-	Tue, 28 Apr 2026 18:33:33 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1777394015; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	s=arc-20240116; t=1777394732; c=relaxed/simple;
+	bh=rZHYkXggah79PkVFN+6E/RKD6b6tAyfkViysUFDb8oc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=J6199SHSbc8cpveqUEsTlIuF/I45NuZHgnlLylh6iK1z9W1Rk/frdCBh/knkzDz5xwTfwNr+cMfPrRKjRiqKOii4Uf8Mocmv7jPFCQA2sstqG5nPnzkihXTaGmH0LAOQb7qlLOa7YubwW0CYpZRXnlCP1lPH5yXoACllnyZggxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cipherat.com; spf=pass smtp.mailfrom=cipherat.com; dkim=pass (4096-bit key) header.d=cipherat.com header.i=@cipherat.com header.b=kMXdw3V+; arc=none smtp.client-ip=91.98.42.103
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=cipherat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cipherat.com
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 637EC84F95;
+	Tue, 28 Apr 2026 19:45:22 +0300 (+03)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cipherat.com;
+	s=dkim; t=1777394722; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=F+fWRHMku/NSooDweeu7yQQBqEo3+O1KjKNJurnc3pg=;
-	b=JUAPbehrAEqoCKk6RRoYgY0gTNvrT88yQJNJ0tcYE4KQBuAaAYSUZuLgx9kP8/3z5V99+l
-	i3EDiPwoCTEh76Io3nH/OyHHZHL+TA4Fjof/0CgM539l4cOaBXHRDwCW07dV2gpm4HT7gS
-	sVUpht/NHaJtCbYL398M0UVCztFD/IIQXKf/sJ79R/Sbw+x8QqmKJoYSLeAgoY8NJU6JDp
-	DPbYgkWgVNE3i8EfB4pdTTIK9Kx0dyjpKx03mUHKSqQdryYUjq9slpNsuhW8zy0VdV+WvH
-	YQBqyfpO9Ou5WOByLNRiThaeEa6JDW/SrkRCQCazT/It+mQUZBhsw6W35DK5xQ==
-From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Date: Tue, 28 Apr 2026 18:33:00 +0200
-Subject: [PATCH net v2 4/4] net: macb: increment stats.tx_dropped on DMA
- map error
+	bh=9UgJASqxAWAeh3eiXQ4y7gcX7HLK+OapSPbuxmiLW5Y=;
+	b=kMXdw3V+X6KaN5jNvIsUSwjtoV9CmY+pp7Y/en//lQ8nmd423LdSDsJRhRtA/WssAY6WGJ
+	5henIhw9hhiG/aZLkzsLaD3npjFsbU7eCHlcK4lrVH2HOC68iiCaCmwwFDruk+NBpIUNcY
+	Ef1y0Zx9+0PKS37moQ/pVU0a2cOUArCfo88go5kGYgkBYRJNQck+DFTZ8iiYAhRyfk3zfm
+	OgR5sFXkNg/GTxpchOnUpWziIrB3UAqS3rR9k6sKjZsUk3LA4K/zO9RLWvWBD3cCAqeCrP
+	jyFPwp7tdfblH76Ji53OJaJqQqEU9qywjdoNPDlPtOgGkoS6KTEuPGFgGPFKfZVR1JL8DD
+	c7JQisNAH2nIsgdAOwZ0BRKCigXMYvNVJIuS0m4sV/rAtJ1oCLXGUHLYyr/81eZHq4g+64
+	U0MLQe8dcbSxeJkA+BriweQX9MyE5OP5zvrIx3EQI3WjB8QM1aSLTZqcAYNEeXorX8DtoN
+	K7n2fWai2jucAqiC6ii1uzGOHXT3YsuPfwMRE/sFFB1Li5gPOrtwefdyM/X/06qQElu05o
+	WGGMu0djklXS4J/yGC18rF9LPNE/NFCAU6VsuxhrdncXZCWYUEElf7gEOao7sVnWAhOnc0
+	Ib/TT60wReMad+Fw/JqpZg7hcRtsK3SWO/I0YDvj0TTnBFIF+AXk8=
+From: Salman Alghamdi <me@cipherat.com>
+To: gregkh@linuxfoundation.org
+Cc: luka.gejak@linux.dev,
+	straube.linux@gmail.com,
+	linux-staging@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v6 1/8] staging: rtl8723bs: fix buffer over-read in rtw_update_protection
+Date: Tue, 28 Apr 2026 19:44:31 +0300
+Message-ID: <20260428164513.763471-2-me@cipherat.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260428164513.763471-1-me@cipherat.com>
+References: <20260428164513.763471-1-me@cipherat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260428-macb-drop-tx-v2-4-647f5199d8df@bootlin.com>
-References: <20260428-macb-drop-tx-v2-0-647f5199d8df@bootlin.com>
-In-Reply-To: <20260428-macb-drop-tx-v2-0-647f5199d8df@bootlin.com>
-To: Nicolas Ferre <nicolas.ferre@microchip.com>, 
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Haavard Skinnemoen <hskinnemoen@atmel.com>, Jeff Garzik <jeff@garzik.org>
-Cc: Paolo Valerio <pvalerio@redhat.com>, Conor Dooley <conor@kernel.org>, 
- Nicolai Buchwitz <nb@tipi-net.de>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>, 
- Gregory CLEMENT <gregory.clement@bootlin.com>, 
- =?utf-8?q?Beno=C3=AEt_Monin?= <benoit.monin@bootlin.com>, 
- Tawfik Bayouk <tawfik.bayouk@mobileye.com>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Maxime Chevallier <maxime.chevallier@bootlin.com>, 
- =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.15.2
 X-Last-TLS-Session-Version: TLSv1.3
-X-Rspamd-Queue-Id: BF90E489873
+X-Rspamd-Queue-Id: 9D973489A94
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [1.34 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
-	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[cipherat.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-241737-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[22];
+	TAGGED_FROM(0.00)[bounces-241738-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[bootlin.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[theo.lebrun@bootlin.com,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	DMARC_NA(0.00)[cipherat.com];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linux.dev,gmail.com,lists.linux.dev,vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[me@cipherat.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[cipherat.com:+];
+	TO_DN_NONE(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-0.981];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:email,bootlin.com:dkim,bootlin.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[cipherat.com:email,cipherat.com:dkim,cipherat.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.dev:email]
 
-On .ndo_start_xmit() and DMA mapping failure, increment the Tx dropped
-statistics counter by one.
+rtw_update_protection() is called with a pointer offset into the
+ies buffer but the full ie_length is passed, causing a potential
+buffer over-read.
 
-Fixes: 89e5785fc8a6 ("[PATCH] Atmel MACB ethernet driver")
+Fixes: e945c43df60b ("Staging: rtl8723bs: Delete dead code from update_current_network()")
+Fixes: d3fcee1b78a5 ("staging: rtl8723bs: fix camel case in struct wlan_bssid_ex")
+Reported-by: Luka Gejak <luka.gejak@linux.dev>
+Closes: https://lore.kernel.org/linux-staging/DI2H39EAAFBZ.3KI5NWN02AQ2S@linux.dev
 Cc: stable@vger.kernel.org
-Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
+Signed-off-by: Salman Alghamdi <me@cipherat.com>
 ---
- drivers/net/ethernet/cadence/macb_main.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/staging/rtl8723bs/core/rtw_mlme.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index ba7cbb10dc2c..353b4bd61aae 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -2567,6 +2567,8 @@ static netdev_tx_t macb_start_xmit(struct sk_buff *skb, struct net_device *dev)
- 	/* Map socket buffer for DMA transfer */
- 	if (macb_tx_map(bp, queue, skb, hdrlen)) {
- 		dev_kfree_skb_any(skb);
-+		queue->stats.tx_dropped++;
-+		bp->dev->stats.tx_dropped++;
- 		goto unlock;
+diff --git a/drivers/staging/rtl8723bs/core/rtw_mlme.c b/drivers/staging/rtl8723bs/core/rtw_mlme.c
+index ddfc56f0253d..268f294528e6 100644
+--- a/drivers/staging/rtl8723bs/core/rtw_mlme.c
++++ b/drivers/staging/rtl8723bs/core/rtw_mlme.c
+@@ -464,8 +464,11 @@ static void update_current_network(struct adapter *adapter, struct wlan_bssid_ex
+ 
+ 	if (check_fwstate(pmlmepriv, _FW_LINKED) && (is_same_network(&pmlmepriv->cur_network.network, pnetwork, 0))) {
+ 		update_network(&pmlmepriv->cur_network.network, pnetwork, adapter, true);
++		if (pmlmepriv->cur_network.network.ie_length < sizeof(struct ndis_802_11_fix_ie))
++			return;
++
+ 		rtw_update_protection(adapter, (pmlmepriv->cur_network.network.ies) + sizeof(struct ndis_802_11_fix_ie),
+-								pmlmepriv->cur_network.network.ie_length);
++								pmlmepriv->cur_network.network.ie_length - sizeof(struct ndis_802_11_fix_ie));
+ 	}
+ }
+ 
+@@ -1072,8 +1075,11 @@ static void rtw_joinbss_update_network(struct adapter *padapter, struct wlan_net
+ 			break;
  	}
  
-
++	if (cur_network->network.ie_length < sizeof(struct ndis_802_11_fix_ie))
++		return;
++
+ 	rtw_update_protection(padapter, (cur_network->network.ies) + sizeof(struct ndis_802_11_fix_ie),
+-									(cur_network->network.ie_length));
++									(cur_network->network.ie_length - sizeof(struct ndis_802_11_fix_ie)));
+ 
+ 	rtw_update_ht_cap(padapter, cur_network->network.ies, cur_network->network.ie_length, (u8) cur_network->network.configuration.ds_config);
+ }
 -- 
 2.54.0
 
