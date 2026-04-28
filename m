@@ -1,151 +1,146 @@
-Return-Path: <stable+bounces-241484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241486-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cJ1eOaFl8GmWSwEAu9opvQ
-	(envelope-from <stable+bounces-241484-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 09:45:37 +0200
+	id OM/+DcFq8GkITAEAu9opvQ
+	(envelope-from <stable+bounces-241486-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 10:07:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D6F847F278
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 09:45:36 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9664B47F9CD
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 10:07:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6101C3070766
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 07:30:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EC7EB311547D
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 07:50:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24B743EAC75;
-	Tue, 28 Apr 2026 07:25:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 684AC311C2C;
+	Tue, 28 Apr 2026 07:49:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qITnXv2W"
+	dkim=pass (1024-bit key) header.d=mpiricsoftware.com header.i=shardul.b@mpiricsoftware.com header.b="hzu8xVb/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-of-o54.zoho.com (sender4-of-o54.zoho.com [136.143.188.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B72C3E9591
-	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 07:25:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.73
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777361103; cv=none; b=htCR01J+aDSGauAjQd6zYuLEa6qO9YVBSJjASvfnXQevQR4POCN2PVlJ2zB0UMLPW5Q/Ekoi6rpaWa733vMCrQHp+bscfBhyzu7a/mIq3YsMwM4192M4vHFvZE+rSVw+8Ehh3DaNJ+NZT2D15Cp8jLPDkTYWKREXCwL7O9U6fM0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777361103; c=relaxed/simple;
-	bh=LX5pLfBgJOfNpsO9FijmGFyFM1foRZCPvIIhllinNRI=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=VvherKFKFhkiwC6iOVAw6sZ7QcrWpywifhtDT3vA6IQaoKPoHRpcwZYBMu49fcbPNFuGl6YCB2M7kvMCvfyg4TUjtHZyHREo8gVX7sCsJB6N8TLrVS9OXdC2RRKY9Ryjgwvf47vlxiDZl2Mip8g+E9a6NAWC7Pq1wq15W/Xhx3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qITnXv2W; arc=none smtp.client-ip=209.85.218.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
-Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-ba661b6c550so1060608366b.0
-        for <stable@vger.kernel.org>; Tue, 28 Apr 2026 00:25:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777361101; x=1777965901; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=DJ5yFfShBWBYpMcznSUsRaXS61QWv/Z8/quc22j7qLg=;
-        b=qITnXv2WcqClnyG95lM05OlY72qwC8hJit2NvcPpo4Q6ZMiWSIvPTbUTKEdpSxiMDg
-         CJN525DFIh8dTTzFsy8mqXZ6R9MHKwRvKtnKcpL+PAmPzpAR6k6/KQirETGa74eE613S
-         LaqF3wKLLyqcG5YJjkucesmfuKg2HCD7jiT2sS7nc3WqOWTmQ2+zgIS9NQGDo0QEa/Dw
-         uUNjDshEphdj+Pwx2GOnln30/sqhtVHR45LhmooGvJhkJlTQX8NXqVMJtRRISrMLn48e
-         SOpAQ3xYJ/yY9IxsrSHyNe/S0QG/pnHc66/p5xSWvnPZXfCbA2/W3066mceJ7I2TBx7v
-         s9wg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777361101; x=1777965901;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DJ5yFfShBWBYpMcznSUsRaXS61QWv/Z8/quc22j7qLg=;
-        b=JjLV+3W81/QDvVj6HEV1taiZ6l82P+5Y5wDmyUAd7MwA17Dre97UevbTmtBDNstOzd
-         3dhJX5VkbIMb8575TSvAQbFiumhtFukvHtGH7F7ZQsM9lnd3poNtqRV0pNmsT5Bbcvrv
-         YUxR8sK9GcoQC9f2FlnvUz6GeqTjVJjIvSKKynxyzDX2gyI4Npnk6+9Ryv8Dy300dL7Z
-         VGJfZmSjKIioAQWoEoPtNJ55KuDXMsoX2DaqI3xmajZFlew2tYtubSuGoTbFk0J5ZAb+
-         P95TuRCZcGREIEDgLOFeCJ/ofcHNgmRcyGbu4PW8UHX3kqARrkHOdSKoyfEU7Naf6HSe
-         zmpQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9beuwkhN2sJDNkkshXlXzByKsoZTPuMYtdMCoJtfBG4+fISZLJMbZYMjANsZXuvwLpKSIKNPM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzAHu1ItJNOUItNmVR9n6cGMFLasnESH50Z6nIjhGnFztHvuEK2
-	eAy3XW6xgayyENgZQcuwR1avVnXCR7FPrqseculzzhgyMWgO2rYVgf1VeCbHRvTwkLmf/X8LjXM
-	z3eXQfMKf8EVUHkVXOg==
-X-Received: from ejcgl16.prod.google.com ([2002:a17:907:3c90:b0:b97:914c:2968])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:3e9c:b0:bae:642a:8712 with SMTP id a640c23a62f3a-bb804728367mr108142566b.26.1777361100566;
- Tue, 28 Apr 2026 00:25:00 -0700 (PDT)
-Date: Tue, 28 Apr 2026 07:24:59 +0000
-In-Reply-To: <20260403-lockhold-v1-1-c332b56cd8ae@google.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B30EE30F55F
+	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 07:49:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777362584; cv=pass; b=ICa6sGlvRgyC3r+K/B87bboZPUEn49mjOXkdXZGpSIUBdfIOLgi7LSS52i70LQWgvsv7tsRDGjKmcyLCVvr/OW5r50IZz7feCQSCvp/z3hmUMIHt5sF4sCP1EdW4KoCJQYJfTJH3h4mKsziDKlQeTAdb2876NrorvfOmPawpcUw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777362584; c=relaxed/simple;
+	bh=b6bex6WFRq6aDBcHqJBb0Gov5XokLYyS/cNhOS0NXHM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nEg8nf8MRwOm9HVOYjFkkjOkrSpBYRHmtOdI6QNrYbmpbYr7eepWcAGZRS1ZCyHr3eiyi4XM3OwLWk1cBWtBV3WAggJTd7VE+sJeyMRJcvAFxJSU/BRp/qABDgjfPu/TnVLrMwjuObkSosqDGyfJw4KKiYzliIDv+Klb13yPekM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mpiricsoftware.com; spf=pass smtp.mailfrom=mpiricsoftware.com; dkim=pass (1024-bit key) header.d=mpiricsoftware.com header.i=shardul.b@mpiricsoftware.com header.b=hzu8xVb/; arc=pass smtp.client-ip=136.143.188.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mpiricsoftware.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mpiricsoftware.com
+ARC-Seal: i=1; a=rsa-sha256; t=1777362534; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=cuiRRhuXgvyhNhpGLtOdWmNoFwm2Dmi0eqEQvgOuNZ9lcdhn6jTHNHmDR7l5MrWhC3wXhBLnjdjQtiWMMwKDEhTmRW6HjsI703VujIm9YAnOhkU4uNdK99q00RR8VthwGUr04g0poWMan40cPSFqEeM96DOuvg5GyxNkgYnm++8=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1777362534; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=8X1D7Re0OwwPN71om672yr0MR9k9nhXm05Hpv//9k/s=; 
+	b=G5h0GWw+Nna8AtrL792QhtQZjVlYkn9ADrp9UoXSGXy2aBzT2pN76TYBSef099jBonAq0hFPyLOLWF7CR9Sr90pLDS62vATV+7JSUpssUkuoMLW0VCezUG96w/s5lC31aP2TJRxhWy7HRdq+BYOLKTItaIZoSMyRGwOX1wdlGzQ=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=mpiricsoftware.com;
+	spf=pass  smtp.mailfrom=shardul.b@mpiricsoftware.com;
+	dmarc=pass header.from=<shardul.b@mpiricsoftware.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1777362534;
+	s=mpiric; d=mpiricsoftware.com; i=shardul.b@mpiricsoftware.com;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Transfer-Encoding:Reply-To;
+	bh=8X1D7Re0OwwPN71om672yr0MR9k9nhXm05Hpv//9k/s=;
+	b=hzu8xVb/iBKeOLjdRnqtE3IIGfbMULGl/OEPq3wx5bNQagxP6ksaPlx9hA5vXAgU
+	D03/3hPkGqb+fJgQM9kHlwoR7bEcjSsj6uE+BKcb7PPZ8Et2zuovupd1sYMzswN8TVr
+	xk59usRzyEAnZsyr6RRdysWGl1tW7WfhHoqcTS3c=
+Received: by mx.zohomail.com with SMTPS id 1777362531931130.09521301305165;
+	Tue, 28 Apr 2026 00:48:51 -0700 (PDT)
+From: Shardul Bankar <shardul.b@mpiricsoftware.com>
+To: mptcp@lists.linux.dev
+Cc: matttbe@kernel.org,
+	martineau@kernel.org,
+	geliang@kernel.org,
+	pabeni@redhat.com,
+	janak@mpiric.us,
+	kalpan.jani@mpiricsoftware.com,
+	shardulsb08@gmail.com,
+	Shardul Bankar <shardul.b@mpiricsoftware.com>,
+	stable@vger.kernel.org
+Subject: [PATCH mptcp-net] mptcp: use MPJoinSynAckHMacFailure for SynAck HMAC failure
+Date: Tue, 28 Apr 2026 13:18:44 +0530
+Message-Id: <20260428074844.1746594-1-shardul.b@mpiricsoftware.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260403-lockhold-v1-1-c332b56cd8ae@google.com>
-Message-ID: <afBgy7x4Hui3Rzpp@google.com>
-Subject: Re: [PATCH] rust_binder: Avoid holding lock when dropping delivered_death
-From: Alice Ryhl <aliceryhl@google.com>
-To: Matthew Maurer <mmaurer@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: "Arve =?utf-8?B?SGrDuG5uZXbDpWc=?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, 
-	Christian Brauner <brauner@kernel.org>, Carlos Llamas <cmllamas@google.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Matt Gilbride <mattgilbride@google.com>, Paul Moore <paul@paul-moore.com>, stable@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	David Stevens <stevensd@google.com>
-Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Queue-Id: 5D6F847F278
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
+X-Rspamd-Queue-Id: 9664B47F9CD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MV_CASE(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[mpiricsoftware.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[mpiricsoftware.com:s=mpiric];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241484-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[android.com,kernel.org,google.com,garyguo.net,protonmail.com,umich.edu,gmail.com,paul-moore.com,vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[21];
+	FREEMAIL_CC(0.00)[kernel.org,redhat.com,mpiric.us,mpiricsoftware.com,gmail.com,vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-241486-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[aliceryhl@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
+	FROM_NEQ_ENVFROM(0.00)[shardul.b@mpiricsoftware.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[mpiricsoftware.com:+];
 	NEURAL_HAM(-0.00)[-0.999];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mpiricsoftware.com:email,mpiricsoftware.com:dkim,mpiricsoftware.com:mid]
 
-On Fri, Apr 03, 2026 at 06:18:58PM +0000, Matthew Maurer wrote:
-> In 6c37bebd8c926, we switched to looping over the list and dropping each
-> individual node, ostensibly without the lock held in the loop body.
-> 
-> If the kernel were using Rust Edition 2024, the comment would be
-> accurate, and the lock would not be held across the drop. However, the
-> kernel is currently using 2021, so tail expression lifetime extension
-> results in the lock being held across the drop. Explicitly binding the
-> expression result to a variable makes the lockguard no longer part of a
-> tail expression, causing the lock to be dropped before entering the loop
-> body.
-> 
-> This was detected via `CONFIG_PROVE_LOCKING` identifying an invalid wait
-> context at the drop site.
-> 
-> Reported-by: David Stevens <stevensd@google.com>
-> Signed-off-by: Matthew Maurer <mmaurer@google.com>
-> Cc: stable@vger.kernel.org
-> Fixes: eafedbc7c050 ("rust_binder: add Rust Binder driver")
+In subflow_finish_connect(), HMAC validation of the server's HMAC
+in SYN/ACK + MP_JOIN increments MPTCP_MIB_JOINACKMAC ("HMAC was
+wrong on ACK + MP_JOIN") on failure. The function processes the
+SYN/ACK, not the ACK; the matching MPTCP_MIB_JOINSYNACKMAC counter
+("HMAC was wrong on SYN/ACK + MP_JOIN") exists but is not
+incremented anywhere in the tree.
 
-I realized this tag should be:
+The mirror site on the server, subflow_syn_recv_sock(), already
+uses JOINACKMAC correctly for ACK HMAC failure. Use JOINSYNACKMAC
+at the SYN/ACK validation site so each counter reflects the packet
+whose HMAC actually failed.
 
-Fixes: 6c37bebd8c92 ("rust_binder: avoid mem::take on delivered_deaths")
+Suggested-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Fixes: 3eccc998b50b ("mptcp: increment MIB counters in a few places")
+Cc: stable@vger.kernel.org
+Signed-off-by: Shardul Bankar <shardul.b@mpiricsoftware.com>
+---
+ net/mptcp/subflow.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Greg, can you fix this on apply, or do you want a new version?
+diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
+index e2cb9d23e4a0..bda6862264ca 100644
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -581,7 +581,7 @@ static void subflow_finish_connect(struct sock *sk, const struct sk_buff *skb)
+ 			 subflow->backup);
+ 
+ 		if (!subflow_thmac_valid(subflow)) {
+-			MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_JOINACKMAC);
++			MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_JOINSYNACKMAC);
+ 			subflow->reset_reason = MPTCP_RST_EMPTCP;
+ 			goto do_reset;
+ 		}
+-- 
+2.34.1
 
-Alice
 
