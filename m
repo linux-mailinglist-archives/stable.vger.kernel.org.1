@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-241782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241783-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mMN1AdEq8WkJeQEAu9opvQ
-	(envelope-from <stable+bounces-241782-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 23:46:57 +0200
+	id uOnTKtQq8WkJeQEAu9opvQ
+	(envelope-from <stable+bounces-241783-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 23:47:00 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 334B848C651
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 23:46:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5070F48C658
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 23:47:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EE051302260F
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 21:46:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D3081302494F
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 21:46:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BF212A1CF;
-	Tue, 28 Apr 2026 21:46:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1DE11862A;
+	Tue, 28 Apr 2026 21:46:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b="gSE5cfrK"
+	dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b="U4CQOfOP"
 X-Original-To: stable@vger.kernel.org
 Received: from forwardcorp1a.mail.yandex.net (forwardcorp1a.mail.yandex.net [178.154.239.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45D601862A
-	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 21:46:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 822904A07
+	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 21:46:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777412804; cv=none; b=nEFplzhsHPx5W3tuh6AtEDqeYa0QvuFxTlABmy2AZsq2mRcgENefQsgzBdHtjfG25ptBOOEcBATBS9VdL+jJUNj7Bqy52Bamc8p5GjVrUd7xkVoBBtNRO9NgxFV5122wO9WG3NXyhVdNN/gMJy/9cMDJelNO5q2fVQZCMxMr4sE=
+	t=1777412805; cv=none; b=aGsrwBJNA96Kcx6MgqUYCPkTPXd0CgMnO93CnvIlZfRj1617/AmaaV80l4Z9d2BiG0TgvjKrS2Ar1Q7fmsgmh1tLJdpAiDi2npi8oApmifyJ39xOEJVrvPewYMQVmtuG5kM/haCUBk8lEd/TJeJ1JAbvGUmVM6gvPEIHXhliQ/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777412804; c=relaxed/simple;
-	bh=dKXhLKaRM4wKyrhNReMGF3ffWzVR8acoRg0gRiOghns=;
+	s=arc-20240116; t=1777412805; c=relaxed/simple;
+	bh=6HRqXgO2bvQmkMLiVrfp8k6uBXGW7SPTuRth880qoC4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=sW4ImBWmCs4PqGQ1JivxqtZo6J526Ovf4XnOOZ/SQ0cvGt6uf4qiyE2NXUj+qEt3bA+/6i9y7zpEN/qxu58ScruoHbaHOPA3dNkPWXAOWr7h74dPVveN+dxXwf+62/YT5tTyyyT6vp7pciDh+akYk94l8BCsLNpdkb/wvxkXJbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru; spf=pass smtp.mailfrom=yandex-team.ru; dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b=gSE5cfrK; arc=none smtp.client-ip=178.154.239.72
+	 MIME-Version; b=DVOaU4N54I82Vzyusu9Lu7AXO09uAtGrpiEt68wWsYGPwL5FzUjLMP8kvZaC3XE4VpTXlJ73nIo8sfqCpyOO8ysX7zoxrHbpmN/zlC2yPVuRk1B0t2+KlHYQECPOev0Bv1bvHxdMDO73i4mDVukdUecsNxxy8g5/CoCYUYSfLeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru; spf=pass smtp.mailfrom=yandex-team.ru; dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b=U4CQOfOP; arc=none smtp.client-ip=178.154.239.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex-team.ru
 Received: from mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net [IPv6:2a02:6b8:c1f:3a87:0:640:845c:0])
-	by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 9BB05C0267;
-	Wed, 29 Apr 2026 00:46:40 +0300 (MSK)
+	by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 09938C0268;
+	Wed, 29 Apr 2026 00:46:42 +0300 (MSK)
 Received: from d-tatianin-lin.yandex-team.ru (unknown [2a02:6bf:8080:761::1:11])
-	by mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (smtpcorp) with ESMTPSA id TkhkmZ1L4iE0-Qrayf1Eu;
-	Wed, 29 Apr 2026 00:46:40 +0300
+	by mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (smtpcorp) with ESMTPSA id TkhkmZ1L4iE0-MpvnwfiN;
+	Wed, 29 Apr 2026 00:46:41 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
-	s=default; t=1777412800;
-	bh=3YocfVgTP6xCZwtBYPCFFdS7rQbZimwxMmEJoUgrKYQ=;
+	s=default; t=1777412801;
+	bh=danWFPdjmHJBht5IR30BFsDbuOKSFWd59KIx2DFOCZA=;
 	h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
-	b=gSE5cfrKI1TNyLIkEPPnZMbkLtxU71Gf2eeFHS4+8w37kr0fNh+b0V65p7KvjhZbc
-	 xBGHFBam756pbQBclGRmBDtUqMAgQaPRoAao1xLMjj9EJtO87acpTgJBWYrTK5qC9P
-	 TtYCDe2WofiyGWAkZT8ypnaqGX9eIVBOb01GI2/Y=
+	b=U4CQOfOPRF4mI6E62FsKlVfuqERswxD4MWjgPo6FIpLzRI6uk7lbZMGC0X51Q0O1g
+	 58tGqqEqLPOXDnwXNQYoSBmEoXHBok7myg35H7mO3qLB5jHujR2KPAMElZVDAjw+Ob
+	 JlMwaPwI0ctneQQDYSM/9HpYhnXD4hsfkLM3Xa5Y=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net; dkim=pass header.i=@yandex-team.ru
 From: Daniil Tatianin <d-tatianin@yandex-team.ru>
 To: stable@vger.kernel.org
@@ -67,10 +67,10 @@ Cc: Daniil Tatianin <d-tatianin@yandex-team.ru>,
 	Daniel Sneddon <daniel.sneddon@linux.intel.com>,
 	"Ahmed S. Darwish" <darwi@linutronix.de>,
 	Nikunj A Dadhania <nikunj@amd.com>,
-	David Kaplan <david.kaplan@amd.com>
-Subject: [PATCH 6.6.y v1 4/6] x86/bugs: Fix handling when SRSO mitigation is disabled
-Date: Wed, 29 Apr 2026 00:46:08 +0300
-Message-Id: <20260428214610.2138600-5-d-tatianin@yandex-team.ru>
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.6.y v1 5/6] x86/bugs: KVM: Add support for SRSO_MSR_FIX
+Date: Wed, 29 Apr 2026 00:46:09 +0300
+Message-Id: <20260428214610.2138600-6-d-tatianin@yandex-team.ru>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260428214610.2138600-1-d-tatianin@yandex-team.ru>
 References: <20260428214610.2138600-1-d-tatianin@yandex-team.ru>
@@ -81,7 +81,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 334B848C651
+X-Rspamd-Queue-Id: 5070F48C658
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-7.66 / 15.00];
@@ -97,7 +97,7 @@ X-Spamd-Result: default: False [-7.66 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241782-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-241783-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	RCPT_COUNT_TWELVE(0.00)[18];
 	FROM_HAS_DN(0.00)[];
@@ -112,58 +112,206 @@ X-Spamd-Result: default: False [-7.66 / 15.00];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[alien8.de:email,amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,yandex-team.ru:email,yandex-team.ru:dkim,yandex-team.ru:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[alien8.de:email,yandex-team.ru:email,yandex-team.ru:dkim,yandex-team.ru:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-[ Upstream commit 1dbb6b1495d472806fef1f4c94f5b3e4c89a3c1d ]
+[ Upstream commit 8442df2b49ed9bcd67833ad4f091d15ac91efd00 ]
 
-When the SRSO mitigation is disabled, either via mitigations=off or
-spec_rstack_overflow=off, the warning about the lack of IBPB-enhancing
-microcode is printed anyway.
+Add support for
 
-This is unnecessary since the user has turned off the mitigation.
+  CPUID Fn8000_0021_EAX[31] (SRSO_MSR_FIX). If this bit is 1, it
+  indicates that software may use MSR BP_CFG[BpSpecReduce] to mitigate
+  SRSO.
 
-  [ bp: Massage, drop SBPB rationale as it doesn't matter because when
-    mitigations are disabled x86_pred_cmd is not being used anyway. ]
+Enable BpSpecReduce to mitigate SRSO across guest/host boundaries.
 
-Signed-off-by: David Kaplan <david.kaplan@amd.com>
+Switch back to enabling the bit when virtualization is enabled and to
+clear the bit when virtualization is disabled because using a MSR slot
+would clear the bit when the guest is exited and any training the guest
+has done, would potentially influence the host kernel when execution
+enters the kernel and hasn't VMRUN the guest yet.
+
+More detail on the public thread in Link below.
+
+Co-developed-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Link: https://lore.kernel.org/r/20240904150711.193022-1-david.kaplan@amd.com
+Link: https://lore.kernel.org/r/20241202120416.6054-1-bp@kernel.org
 Signed-off-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
 ---
- arch/x86/kernel/cpu/bugs.c | 12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+ Documentation/admin-guide/hw-vuln/srso.rst | 13 ++++++++++++
+ arch/x86/include/asm/cpufeatures.h         |  4 ++++
+ arch/x86/include/asm/msr-index.h           |  1 +
+ arch/x86/kernel/cpu/bugs.c                 | 24 ++++++++++++++++++----
+ arch/x86/kvm/svm/svm.c                     |  6 ++++++
+ arch/x86/lib/msr.c                         |  2 ++
+ 6 files changed, 46 insertions(+), 4 deletions(-)
 
+diff --git a/Documentation/admin-guide/hw-vuln/srso.rst b/Documentation/admin-guide/hw-vuln/srso.rst
+index e715bfc09879a..68011add73834 100644
+--- a/Documentation/admin-guide/hw-vuln/srso.rst
++++ b/Documentation/admin-guide/hw-vuln/srso.rst
+@@ -104,7 +104,20 @@ The possible values in this file are:
+ 
+    (spec_rstack_overflow=ibpb-vmexit)
+ 
++ * 'Mitigation: Reduced Speculation':
+ 
++   This mitigation gets automatically enabled when the above one "IBPB on
++   VMEXIT" has been selected and the CPU supports the BpSpecReduce bit.
++
++   It gets automatically enabled on machines which have the
++   SRSO_USER_KERNEL_NO=1 CPUID bit. In that case, the code logic is to switch
++   to the above =ibpb-vmexit mitigation because the user/kernel boundary is
++   not affected anymore and thus "safe RET" is not needed.
++
++   After enabling the IBPB on VMEXIT mitigation option, the BpSpecReduce bit
++   is detected (functionality present on all such machines) and that
++   practically overrides IBPB on VMEXIT as it has a lot less performance
++   impact and takes care of the guest->host attack vector too.
+ 
+ In order to exploit vulnerability, an attacker needs to:
+ 
+diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
+index 154adb401a260..974c604dd81cd 100644
+--- a/arch/x86/include/asm/cpufeatures.h
++++ b/arch/x86/include/asm/cpufeatures.h
+@@ -459,6 +459,10 @@
+ #define X86_FEATURE_IBPB_BRTYPE		(20*32+28) /* "" MSR_PRED_CMD[IBPB] flushes all branch type predictions */
+ #define X86_FEATURE_SRSO_NO		(20*32+29) /* "" CPU is not affected by SRSO */
+ #define X86_FEATURE_SRSO_USER_KERNEL_NO	(20*32+30) /* CPU is not affected by SRSO across user/kernel boundaries */
++#define X86_FEATURE_SRSO_BP_SPEC_REDUCE	(20*32+31) /*
++						    * BP_CFG[BpSpecReduce] can be used to mitigate SRSO for VMs.
++						    * (SRSO_MSR_FIX in the official doc).
++						    */
+ 
+ /*
+  * Extended auxiliary flags: Linux defined - for features scattered in various
+diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
+index deb5fe0017763..236abf51876c4 100644
+--- a/arch/x86/include/asm/msr-index.h
++++ b/arch/x86/include/asm/msr-index.h
+@@ -674,6 +674,7 @@
+ 
+ /* Zen4 */
+ #define MSR_ZEN4_BP_CFG			0xc001102e
++#define MSR_ZEN4_BP_CFG_BP_SPEC_REDUCE_BIT 4
+ #define MSR_ZEN4_BP_CFG_SHARED_BTB_FIX_BIT 5
+ 
+ /* Zen 2 */
 diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index 1fce8077de5f8..916f36e23724d 100644
+index 916f36e23724d..818034819ee66 100644
 --- a/arch/x86/kernel/cpu/bugs.c
 +++ b/arch/x86/kernel/cpu/bugs.c
-@@ -2757,10 +2757,9 @@ static void __init srso_select_mitigation(void)
- {
- 	bool has_microcode = boot_cpu_has(X86_FEATURE_IBPB_BRTYPE);
+@@ -2706,6 +2706,7 @@ enum srso_mitigation {
+ 	SRSO_MITIGATION_SAFE_RET,
+ 	SRSO_MITIGATION_IBPB,
+ 	SRSO_MITIGATION_IBPB_ON_VMEXIT,
++	SRSO_MITIGATION_BP_SPEC_REDUCE,
+ };
  
--	if (cpu_mitigations_off())
--		return;
--
--	if (!boot_cpu_has_bug(X86_BUG_SRSO)) {
-+	if (!boot_cpu_has_bug(X86_BUG_SRSO) ||
-+	    cpu_mitigations_off() ||
-+	    srso_cmd == SRSO_CMD_OFF) {
+ enum srso_mitigation_cmd {
+@@ -2723,7 +2724,8 @@ static const char * const srso_strings[] = {
+ 	[SRSO_MITIGATION_MICROCODE]		= "Vulnerable: Microcode, no safe RET",
+ 	[SRSO_MITIGATION_SAFE_RET]		= "Mitigation: Safe RET",
+ 	[SRSO_MITIGATION_IBPB]			= "Mitigation: IBPB",
+-	[SRSO_MITIGATION_IBPB_ON_VMEXIT]	= "Mitigation: IBPB on VMEXIT only"
++	[SRSO_MITIGATION_IBPB_ON_VMEXIT]	= "Mitigation: IBPB on VMEXIT only",
++	[SRSO_MITIGATION_BP_SPEC_REDUCE]	= "Mitigation: Reduced Speculation"
+ };
+ 
+ static enum srso_mitigation srso_mitigation __ro_after_init = SRSO_MITIGATION_NONE;
+@@ -2762,7 +2764,7 @@ static void __init srso_select_mitigation(void)
+ 	    srso_cmd == SRSO_CMD_OFF) {
  		if (boot_cpu_has(X86_FEATURE_SBPB))
  			x86_pred_cmd = PRED_CMD_SBPB;
- 		return;
-@@ -2791,11 +2790,6 @@ static void __init srso_select_mitigation(void)
+-		return;
++		goto out;
  	}
  
- 	switch (srso_cmd) {
--	case SRSO_CMD_OFF:
--		if (boot_cpu_has(X86_FEATURE_SBPB))
--			x86_pred_cmd = PRED_CMD_SBPB;
--		return;
--
- 	case SRSO_CMD_MICROCODE:
- 		if (has_microcode) {
- 			srso_mitigation = SRSO_MITIGATION_MICROCODE;
+ 	if (has_microcode) {
+@@ -2774,7 +2776,7 @@ static void __init srso_select_mitigation(void)
+ 		 */
+ 		if (boot_cpu_data.x86 < 0x19 && !cpu_smt_possible()) {
+ 			setup_force_cpu_cap(X86_FEATURE_SRSO_NO);
+-			return;
++			goto out;
+ 		}
+ 
+ 		if (retbleed_mitigation == RETBLEED_MITIGATION_IBPB) {
+@@ -2854,6 +2856,12 @@ static void __init srso_select_mitigation(void)
+ 
+ ibpb_on_vmexit:
+ 	case SRSO_CMD_IBPB_ON_VMEXIT:
++		if (boot_cpu_has(X86_FEATURE_SRSO_BP_SPEC_REDUCE)) {
++			pr_notice("Reducing speculation to address VM/HV SRSO attack vector.\n");
++			srso_mitigation = SRSO_MITIGATION_BP_SPEC_REDUCE;
++			break;
++		}
++
+ 		if (IS_ENABLED(CONFIG_CPU_IBPB_ENTRY)) {
+ 			if (has_microcode) {
+ 				setup_force_cpu_cap(X86_FEATURE_IBPB_ON_VMEXIT);
+@@ -2876,7 +2884,15 @@ static void __init srso_select_mitigation(void)
+ 	}
+ 
+ out:
+-	pr_info("%s\n", srso_strings[srso_mitigation]);
++	/*
++	 * Clear the feature flag if this mitigation is not selected as that
++	 * feature flag controls the BpSpecReduce MSR bit toggling in KVM.
++	 */
++	if (srso_mitigation != SRSO_MITIGATION_BP_SPEC_REDUCE)
++		setup_clear_cpu_cap(X86_FEATURE_SRSO_BP_SPEC_REDUCE);
++
++	if (srso_mitigation != SRSO_MITIGATION_NONE)
++		pr_info("%s\n", srso_strings[srso_mitigation]);
+ }
+ 
+ #undef pr_fmt
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index ff65fe7387332..ecb77ac074ea1 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -623,6 +623,9 @@ static void svm_hardware_disable(void)
+ 	kvm_cpu_svm_disable();
+ 
+ 	amd_pmu_disable_virt();
++
++	if (cpu_feature_enabled(X86_FEATURE_SRSO_BP_SPEC_REDUCE))
++		msr_clear_bit(MSR_ZEN4_BP_CFG, MSR_ZEN4_BP_CFG_BP_SPEC_REDUCE_BIT);
+ }
+ 
+ static int svm_hardware_enable(void)
+@@ -703,6 +706,9 @@ static int svm_hardware_enable(void)
+ 		rdmsr(MSR_TSC_AUX, hostsa->tsc_aux, msr_hi);
+ 	}
+ 
++	if (cpu_feature_enabled(X86_FEATURE_SRSO_BP_SPEC_REDUCE))
++		msr_set_bit(MSR_ZEN4_BP_CFG, MSR_ZEN4_BP_CFG_BP_SPEC_REDUCE_BIT);
++
+ 	return 0;
+ }
+ 
+diff --git a/arch/x86/lib/msr.c b/arch/x86/lib/msr.c
+index 47fd9bd6b91d8..f94d6f2b982d5 100644
+--- a/arch/x86/lib/msr.c
++++ b/arch/x86/lib/msr.c
+@@ -103,6 +103,7 @@ int msr_set_bit(u32 msr, u8 bit)
+ {
+ 	return __flip_bit(msr, bit, true);
+ }
++EXPORT_SYMBOL_GPL(msr_set_bit);
+ 
+ /**
+  * msr_clear_bit - Clear @bit in a MSR @msr.
+@@ -118,6 +119,7 @@ int msr_clear_bit(u32 msr, u8 bit)
+ {
+ 	return __flip_bit(msr, bit, false);
+ }
++EXPORT_SYMBOL_GPL(msr_clear_bit);
+ 
+ #ifdef CONFIG_TRACEPOINTS
+ void do_trace_write_msr(unsigned int msr, u64 val, int failed)
 -- 
 2.34.1
 
