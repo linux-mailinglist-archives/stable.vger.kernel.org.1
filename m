@@ -1,71 +1,65 @@
-Return-Path: <stable+bounces-241690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241691-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UDdpI1TR8GnDYwEAu9opvQ
-	(envelope-from <stable+bounces-241690-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 17:25:08 +0200
+	id wDglKFnR8GnDYwEAu9opvQ
+	(envelope-from <stable+bounces-241691-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 17:25:13 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D01D4487C57
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 17:25:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B4A8487C5E
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 17:25:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5392F3015C9F
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 15:23:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4B5F230209F1
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 15:24:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FAC93A169D;
-	Tue, 28 Apr 2026 15:23:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A72DA3A169D;
+	Tue, 28 Apr 2026 15:24:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NCaXYnWM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dp4zevDc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7BF4313298
-	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 15:23:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 694AE31E847;
+	Tue, 28 Apr 2026 15:24:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777389837; cv=none; b=hWBZx+sX0Sv2xHC3NSp83+ZrS8IzZYbzzn+RQ887Tnzw+ncmAq35Zan8W2SMktG8YroY1ugzMFkhMF4COYJwEVvjY2h110VLtQ0jHLu5xkPK+4QMPmKfURsDs+ppaiLkNVuehh85jtjWF/moQnmcYxrY7mSxx6dNbOYHnsU8C7w=
+	t=1777389843; cv=none; b=I/+mnlkm46e7cRJP0G0ImyCglxqvUX++iWNrfnuPdtalD2CXQ679FiWNFO3QQNv7JelvLEqJuGztVuce4HOhGwb9UaFMnSuTvBP0A9wBzvN2YNUyp/qMF8j16Cjil73676/7LMcfFzbpBXnByVSwW3hU9V/WtAPdlzqJKRRFErc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777389837; c=relaxed/simple;
-	bh=/8mWtq0w/TCcPnfgb5B5GfL81qNSdgN0wyVGg7Zdyzc=;
+	s=arc-20240116; t=1777389843; c=relaxed/simple;
+	bh=aSKSfn+zpz+g0z/SFf8lvyMN+97fgEmch4xQyAZU8Ek=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QvsS9ahyA+9kDNUy6cZmx0SeBCFfOxooVFy/EeHBQtqYKcCz5X70gRLvrBE7G+JoA5WJbAqhpU1c4mmZog3hsB9Yf69XFvTlZ+TAB3zetxMC9FYrLiMHeRrZdCU0ZidhZPaImFEdp3RKSy2jFgPh8o6DZbbnj4ZghlVXfKwm/aE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NCaXYnWM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 009C3C2BCB5;
-	Tue, 28 Apr 2026 15:23:55 +0000 (UTC)
+	 MIME-Version; b=FdUBI9L3fCXOy+zxhCpqr8lKYD28NGIZ8u9xK9vchSZWDg1U1InCWCIq98AnnO6v7jCOXxFjqjVkodTKI3EejNZVZDu2aEw/VtsizGqnGguJHNLg3pyG3ymJqBWnXTlf3/7NzdvQ+pYsK0IQesNqHUjyeaRtUn2uLpKQ8F7HdIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dp4zevDc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60337C2BCAF;
+	Tue, 28 Apr 2026 15:24:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777389837;
-	bh=/8mWtq0w/TCcPnfgb5B5GfL81qNSdgN0wyVGg7Zdyzc=;
+	s=k20201202; t=1777389843;
+	bh=aSKSfn+zpz+g0z/SFf8lvyMN+97fgEmch4xQyAZU8Ek=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NCaXYnWMKAcCnxgj/udY3PJQFjbC6n6EXjZHR2G/zjmSQttxzR9KJMtH6iiQdLDgN
-	 rTjyAIUCQDeqPTiwxg5ocNZSb6zYdcmAOTAaKWqUPRgvWGYIGf3O38/m2hgds2d5GZ
-	 hWrGicpi8nlZYDdXzwDxYg2Q/wjEHvXDaMwNZUrNeJITKPElPLktPrw3Cv37/Q6LMM
-	 DZvZsvVj2ScDegSF2aXPRKmStHTICK5N1xUWyGV/VX9+OoktIOenQ9WCJp0XHr5sTc
-	 6g5/NriBFjxhCHeUJ87g0+8aUJg/2li7XaDIoNR4v+8gMzDiW2QVMdNwYSq+JWtGr/
-	 A6ngZUww4Louw==
+	b=Dp4zevDczw8/p7J6+B2jR4QrMQtFYuAJHFib8kzPb5SLbgG8gLXPDVhN3RHsV2yXJ
+	 TggouM7ieKgdN71d+Svz7fdeA2Fc882H8hBWg2jxeE/f0H7cmlssQ2XwtpUV0SfUlN
+	 EzWyDUJAAN7etjf4fTf2TR+NXmXdo8k+iFY8YMIR1qBtqrOZ70BVAqSKEBnW89n03X
+	 633c4cmVy62+0wZE5IeLbIBfwydl+WZ5naL33R7+hxpeEmeueFVJlVqSfRkeRUYVTh
+	 ukQQQVK+vC+9Gvy9veraRNoyBXwqYwM3BEETtZN8ur9Rkxwvefo56+mlXSr4jF3R/7
+	 +AJkiu1oO954Q==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Alistair Popple <apopple@nvidia.com>,
-	Zenghui Yu <zenghui.yu@linux.dev>,
-	Balbir Singh <balbirs@nvidia.com>,
-	David Hildenbrand <david@kernel.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Leon Romanovsky <leon@kernel.org>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
+	Will Deacon <will@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] lib: test_hmm: evict device pages on file close to avoid use-after-free
-Date: Tue, 28 Apr 2026 11:23:54 -0400
-Message-ID: <20260428152354.3033526-1-sashal@kernel.org>
+Subject: [PATCH 6.6.y] arm64/mm: Enable batched TLB flush in unmap_hotplug_range()
+Date: Tue, 28 Apr 2026 11:24:00 -0400
+Message-ID: <20260428152400.3033637-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026042708-kilobyte-oblivious-2d9d@gregkh>
-References: <2026042708-kilobyte-oblivious-2d9d@gregkh>
+In-Reply-To: <2026042727-accent-daylong-5b92@gregkh>
+References: <2026042727-accent-daylong-5b92@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -73,200 +67,167 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D01D4487C57
+X-Rspamd-Queue-Id: 1B4A8487C5E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241690-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[15];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-241691-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,infradead.org:email]
 
-From: Alistair Popple <apopple@nvidia.com>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
 
-[ Upstream commit 744dd97752ef1076a8d8672bb0d8aa2c7abc1144 ]
+[ Upstream commit 48478b9f791376b4b89018d7afdfd06865498f65 ]
 
-Patch series "Minor hmm_test fixes and cleanups".
+During a memory hot remove operation, both linear and vmemmap mappings for
+the memory range being removed, get unmapped via unmap_hotplug_range() but
+mapped pages get freed only for vmemmap mapping. This is just a sequential
+operation where each table entry gets cleared, followed by a leaf specific
+TLB flush, and then followed by memory free operation when applicable.
 
-Two bugfixes a cleanup for the HMM kernel selftests.  These were mostly
-reported by Zenghui Yu with special thanks to Lorenzo for analysing and
-pointing out the problems.
+This approach was simple and uniform both for vmemmap and linear mappings.
+But linear mapping might contain CONT marked block memory where it becomes
+necessary to first clear out all entire in the range before a TLB flush.
+This is as per the architecture requirement. Hence batch all TLB flushes
+during the table tear down walk and finally do it in unmap_hotplug_range().
 
-This patch (of 3):
+Prior to this fix, it was hypothetically possible for a speculative access
+to a higher address in the contiguous block to fill the TLB with shattered
+entries for the entire contiguous range after a lower address had already
+been cleared and invalidated. Due to the table entries being shattered, the
+subsequent TLB invalidation for the higher address would not then clear the
+TLB entries for the lower address, meaning stale TLB entries could persist.
 
-When dmirror_fops_release() is called it frees the dmirror struct but
-doesn't migrate device private pages back to system memory first.  This
-leaves those pages with a dangling zone_device_data pointer to the freed
-dmirror.
+Besides it also helps in improving the performance via TLBI range operation
+along with reduced synchronization instructions. The time spent executing
+unmap_hotplug_range() improved 97% measured over a 2GB memory hot removal
+in KVM guest.
 
-If a subsequent fault occurs on those pages (eg.  during coredump) the
-dmirror_devmem_fault() callback dereferences the stale pointer causing a
-kernel panic.  This was reported [1] when running mm/ksft_hmm.sh on arm64,
-where a test failure triggered SIGABRT and the resulting coredump walked
-the VMAs faulting in the stale device private pages.
+This scheme is not applicable during vmemmap mapping tear down where memory
+needs to be freed and hence a TLB flush is required after clearing out page
+table entry.
 
-Fix this by calling dmirror_device_evict_chunk() for each devmem chunk in
-dmirror_fops_release() to migrate all device private pages back to system
-memory before freeing the dmirror struct.  The function is moved earlier
-in the file to avoid a forward declaration.
-
-Link: https://lore.kernel.org/20260331063445.3551404-1-apopple@nvidia.com
-Link: https://lore.kernel.org/20260331063445.3551404-2-apopple@nvidia.com
-Fixes: b2ef9f5a5cb3 ("mm/hmm/test: add selftest driver for HMM")
-Signed-off-by: Alistair Popple <apopple@nvidia.com>
-Reported-by: Zenghui Yu <zenghui.yu@linux.dev>
-Closes: https://lore.kernel.org/linux-mm/8bd0396a-8997-4d2e-a13f-5aac033083d7@linux.dev/
-Reviewed-by: Balbir Singh <balbirs@nvidia.com>
-Tested-by: Zenghui Yu <zenghui.yu@linux.dev>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Leon Romanovsky <leon@kernel.org>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Zenghui Yu <zenghui.yu@linux.dev>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ kept the existing simpler `dmirror_device_evict_chunk()` body instead of the upstream compound-folio version ]
+Cc: Will Deacon <will@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+Closes: https://lore.kernel.org/all/aWZYXhrT6D2M-7-N@willie-the-truck/
+Fixes: bbd6ec605c0f ("arm64/mm: Enable memory hot remove")
+Cc: stable@vger.kernel.org
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+[ replaced `__pte_clear()` with `pte_clear()` ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/test_hmm.c | 86 ++++++++++++++++++++++++++++----------------------
- 1 file changed, 49 insertions(+), 37 deletions(-)
+ arch/arm64/mm/mmu.c | 36 ++++++++++++++++++++----------------
+ 1 file changed, 20 insertions(+), 16 deletions(-)
 
-diff --git a/lib/test_hmm.c b/lib/test_hmm.c
-index 056f2e411d7b4..850d23469ef78 100644
---- a/lib/test_hmm.c
-+++ b/lib/test_hmm.c
-@@ -183,11 +183,60 @@ static int dmirror_fops_open(struct inode *inode, struct file *filp)
- 	return 0;
- }
+diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+index d6411f7f0b72c..8c5cbf4c858d9 100644
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -870,10 +870,14 @@ static void unmap_hotplug_pte_range(pmd_t *pmdp, unsigned long addr,
  
-+static void dmirror_device_evict_chunk(struct dmirror_chunk *chunk)
-+{
-+	unsigned long start_pfn = chunk->pagemap.range.start >> PAGE_SHIFT;
-+	unsigned long end_pfn = chunk->pagemap.range.end >> PAGE_SHIFT;
-+	unsigned long npages = end_pfn - start_pfn + 1;
-+	unsigned long i;
-+	unsigned long *src_pfns;
-+	unsigned long *dst_pfns;
-+
-+	src_pfns = kvcalloc(npages, sizeof(*src_pfns), GFP_KERNEL | __GFP_NOFAIL);
-+	dst_pfns = kvcalloc(npages, sizeof(*dst_pfns), GFP_KERNEL | __GFP_NOFAIL);
-+
-+	migrate_device_range(src_pfns, start_pfn, npages);
-+	for (i = 0; i < npages; i++) {
-+		struct page *dpage, *spage;
-+
-+		spage = migrate_pfn_to_page(src_pfns[i]);
-+		if (!spage || !(src_pfns[i] & MIGRATE_PFN_MIGRATE))
-+			continue;
-+
-+		if (WARN_ON(!is_device_private_page(spage) &&
-+			    !is_device_coherent_page(spage)))
-+			continue;
-+		spage = BACKING_PAGE(spage);
-+		dpage = alloc_page(GFP_HIGHUSER_MOVABLE | __GFP_NOFAIL);
-+		lock_page(dpage);
-+		copy_highpage(dpage, spage);
-+		dst_pfns[i] = migrate_pfn(page_to_pfn(dpage));
-+		if (src_pfns[i] & MIGRATE_PFN_WRITE)
-+			dst_pfns[i] |= MIGRATE_PFN_WRITE;
-+	}
-+	migrate_device_pages(src_pfns, dst_pfns, npages);
-+	migrate_device_finalize(src_pfns, dst_pfns, npages);
-+	kvfree(src_pfns);
-+	kvfree(dst_pfns);
-+}
-+
- static int dmirror_fops_release(struct inode *inode, struct file *filp)
- {
- 	struct dmirror *dmirror = filp->private_data;
-+	struct dmirror_device *mdevice = dmirror->mdevice;
-+	int i;
- 
- 	mmu_interval_notifier_remove(&dmirror->notifier);
-+
-+	if (mdevice->devmem_chunks) {
-+		for (i = 0; i < mdevice->devmem_count; i++) {
-+			struct dmirror_chunk *devmem =
-+				mdevice->devmem_chunks[i];
-+
-+			dmirror_device_evict_chunk(devmem);
+ 		WARN_ON(!pte_present(pte));
+ 		pte_clear(&init_mm, addr, ptep);
+-		flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
+-		if (free_mapped)
++		if (free_mapped) {
++			/* CONT blocks are not supported in the vmemmap */
++			WARN_ON(pte_cont(pte));
++			flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
+ 			free_hotplug_page_range(pte_page(pte),
+ 						PAGE_SIZE, altmap);
 +		}
-+	}
-+
- 	xa_destroy(&dmirror->pt);
- 	kfree(dmirror);
- 	return 0;
-@@ -1214,43 +1263,6 @@ static int dmirror_snapshot(struct dmirror *dmirror,
- 	return ret;
++		/* unmap_hotplug_range() flushes TLB for !free_mapped */
+ 	} while (addr += PAGE_SIZE, addr < end);
  }
  
--static void dmirror_device_evict_chunk(struct dmirror_chunk *chunk)
--{
--	unsigned long start_pfn = chunk->pagemap.range.start >> PAGE_SHIFT;
--	unsigned long end_pfn = chunk->pagemap.range.end >> PAGE_SHIFT;
--	unsigned long npages = end_pfn - start_pfn + 1;
--	unsigned long i;
--	unsigned long *src_pfns;
--	unsigned long *dst_pfns;
+@@ -894,15 +898,14 @@ static void unmap_hotplug_pmd_range(pud_t *pudp, unsigned long addr,
+ 		WARN_ON(!pmd_present(pmd));
+ 		if (pmd_sect(pmd)) {
+ 			pmd_clear(pmdp);
 -
--	src_pfns = kvcalloc(npages, sizeof(*src_pfns), GFP_KERNEL | __GFP_NOFAIL);
--	dst_pfns = kvcalloc(npages, sizeof(*dst_pfns), GFP_KERNEL | __GFP_NOFAIL);
+-			/*
+-			 * One TLBI should be sufficient here as the PMD_SIZE
+-			 * range is mapped with a single block entry.
+-			 */
+-			flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
+-			if (free_mapped)
++			if (free_mapped) {
++				/* CONT blocks are not supported in the vmemmap */
++				WARN_ON(pmd_cont(pmd));
++				flush_tlb_kernel_range(addr, addr + PMD_SIZE);
+ 				free_hotplug_page_range(pmd_page(pmd),
+ 							PMD_SIZE, altmap);
++			}
++			/* unmap_hotplug_range() flushes TLB for !free_mapped */
+ 			continue;
+ 		}
+ 		WARN_ON(!pmd_table(pmd));
+@@ -927,15 +930,12 @@ static void unmap_hotplug_pud_range(p4d_t *p4dp, unsigned long addr,
+ 		WARN_ON(!pud_present(pud));
+ 		if (pud_sect(pud)) {
+ 			pud_clear(pudp);
 -
--	migrate_device_range(src_pfns, start_pfn, npages);
--	for (i = 0; i < npages; i++) {
--		struct page *dpage, *spage;
--
--		spage = migrate_pfn_to_page(src_pfns[i]);
--		if (!spage || !(src_pfns[i] & MIGRATE_PFN_MIGRATE))
--			continue;
--
--		if (WARN_ON(!is_device_private_page(spage) &&
--			    !is_device_coherent_page(spage)))
--			continue;
--		spage = BACKING_PAGE(spage);
--		dpage = alloc_page(GFP_HIGHUSER_MOVABLE | __GFP_NOFAIL);
--		lock_page(dpage);
--		copy_highpage(dpage, spage);
--		dst_pfns[i] = migrate_pfn(page_to_pfn(dpage));
--		if (src_pfns[i] & MIGRATE_PFN_WRITE)
--			dst_pfns[i] |= MIGRATE_PFN_WRITE;
--	}
--	migrate_device_pages(src_pfns, dst_pfns, npages);
--	migrate_device_finalize(src_pfns, dst_pfns, npages);
--	kvfree(src_pfns);
--	kvfree(dst_pfns);
--}
--
- /* Removes free pages from the free list so they can't be re-allocated */
- static void dmirror_remove_free_pages(struct dmirror_chunk *devmem)
+-			/*
+-			 * One TLBI should be sufficient here as the PUD_SIZE
+-			 * range is mapped with a single block entry.
+-			 */
+-			flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
+-			if (free_mapped)
++			if (free_mapped) {
++				flush_tlb_kernel_range(addr, addr + PUD_SIZE);
+ 				free_hotplug_page_range(pud_page(pud),
+ 							PUD_SIZE, altmap);
++			}
++			/* unmap_hotplug_range() flushes TLB for !free_mapped */
+ 			continue;
+ 		}
+ 		WARN_ON(!pud_table(pud));
+@@ -965,6 +965,7 @@ static void unmap_hotplug_p4d_range(pgd_t *pgdp, unsigned long addr,
+ static void unmap_hotplug_range(unsigned long addr, unsigned long end,
+ 				bool free_mapped, struct vmem_altmap *altmap)
  {
++	unsigned long start = addr;
+ 	unsigned long next;
+ 	pgd_t *pgdp, pgd;
+ 
+@@ -986,6 +987,9 @@ static void unmap_hotplug_range(unsigned long addr, unsigned long end,
+ 		WARN_ON(!pgd_present(pgd));
+ 		unmap_hotplug_p4d_range(pgdp, addr, next, free_mapped, altmap);
+ 	} while (addr = next, addr < end);
++
++	if (!free_mapped)
++		flush_tlb_kernel_range(start, end);
+ }
+ 
+ static void free_empty_pte_table(pmd_t *pmdp, unsigned long addr,
 -- 
 2.53.0
 
