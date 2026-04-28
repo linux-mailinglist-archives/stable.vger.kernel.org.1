@@ -1,72 +1,72 @@
-Return-Path: <stable+bounces-241543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241545-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CBhbKn6M8GkuUwEAu9opvQ
-	(envelope-from <stable+bounces-241543-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 12:31:26 +0200
+	id qELSC7iO8Gl4UwEAu9opvQ
+	(envelope-from <stable+bounces-241545-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 12:40:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6192A482AB2
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 12:31:25 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 608C6482CC5
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 12:40:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4CE4E30561FB
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 10:30:25 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7A1253046442
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 10:30:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5E9B3EF0A8;
-	Tue, 28 Apr 2026 10:30:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 653283EDAC6;
+	Tue, 28 Apr 2026 10:30:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="g0YtYvfw"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="h00sOX+p"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E6B33EDAA7
-	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 10:30:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A76A53EE1EC
+	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 10:30:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777372216; cv=none; b=Vg4FwS/NX3tDiByhsDqCEsSprNT6BChuHvg7Shq/qmU6/uqWBt99t4Ofuhch+fK0/oy2g+s8D7YyMh89EkyWkH4EUZo/1esC+cepnIHwNxXR9Tr3rCXHbW0b4xaodoYjqY+5wrqQAzERYhdhHN+hhI/iXqo04ODlOUvRuUTPJO0=
+	t=1777372217; cv=none; b=EKpwmRJO2BL3uWNGPJQjYJb+QPuYYBqlakIyfkhj1BRoTcJ3VrdvjqI6hPbfVhOC4dF7AhlBZzm4MNgEh/7mmWGMlbw3n692cEPvsrt1bTyxYhzBZsywxQ1b5Ki5Je1vWmJxLozs658O0hE40UyXOj1ZNzP5QPLU7SG5LmbL0Ck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777372216; c=relaxed/simple;
-	bh=ZtY1NVCPXnAC9eiQixJVX87FIa55uNvzITzHg3dFSas=;
+	s=arc-20240116; t=1777372217; c=relaxed/simple;
+	bh=pWsb4LXB9ThVgvldcf9CnL/d7vmpsynGuhGjfwFYyJI=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=iWtkCiSEGrYBCyU4qywcn+pcxp3Re6l3yw6sR7CD1ws1hcJdSKjaNw6HXowzPquBaTpsjjwGVDpxPMhv8gj4N1DLCft14vBJGAG7Sv0act1Pga2fd4dOFuVZJhZCPKPX8qNn9zP0+WX5wdJiYXSl11GQV7eD00w5cotsT+wLCZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tabba.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=g0YtYvfw; arc=none smtp.client-ip=209.85.128.73
+	 To:Cc:Content-Type; b=ufxAYeubiM+ABR5DARGIaRsPZNy68TWWBIobmAYk5tEyOCAZRXxep2tR1GC+Sb28ZXVd0lj+hcSUI1QXReGN6TEWVHKGqeTkg2W/mxBm/fk0os2IgUzzwhmhX5YJbUPzbV9deN/fuykSn3ZeAizV9FiOB7QkYf+s+Vde+3DvUF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tabba.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=h00sOX+p; arc=none smtp.client-ip=209.85.221.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tabba.bounces.google.com
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4836abfc742so97351385e9.0
-        for <stable@vger.kernel.org>; Tue, 28 Apr 2026 03:30:14 -0700 (PDT)
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-4411a36715dso6672883f8f.2
+        for <stable@vger.kernel.org>; Tue, 28 Apr 2026 03:30:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777372213; x=1777977013; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1777372214; x=1777977014; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2V4DeFz5zQx5vHTeG+ccViUA0qR3iKjsW9CqkQ1XIv0=;
-        b=g0YtYvfw3M4xhY2/m2mai5WlFCxP5evLqDw2vnCL2sHBh7h46KHac7oN8Zd8pLGm6u
-         Qzb+TkZg5u7JeM60wlE8CkCs0GV6lbtbnRCO+F5wXapQzsxr6TpGVWuTXyc9T8F0snrq
-         WMbwwRGpAkOPlTiSYzTI0BWkYjQTU+dhgXuRZqMGJtUDUQfJE8Xfsq3KK1UJaNE4HQi2
-         6ZRf4kBcmB62t5Gb9qLFLnml9JTlsCtbicmdE3eBt4PZbs+h/vQ4BnvZLsDxyEZEEyIH
-         Uu/c0hadcWACa48idsfjJnuqEbFT+VGEIhXVazejCyfxL1cNwkux/xcEq8cxs+crQc3y
-         Le4Q==
+        bh=GmmNYOk+NsHl9ECni3ZP17QcbrO127/DqtR017v434Y=;
+        b=h00sOX+pg51AOtlp5hCgDgF+KVHtVyFQ+MoPG9ZPL840gpmouGfh4k2RMP8AOHwCVK
+         Wifu5VudsNXcBTeodRMzowUtoc4MgJgSUeBY5McksMZg1bOtU91PD7VOLO3nqBCvosaE
+         v8mo2OlikjdHPTKAFBCjSktEHhtg0dm1QskLJ6QY1N0VOHDazfCK/JlqbKYdVGIDWYRS
+         ZxVbpjHO3fjJmFnRSF93R787hp3X76UzH8YhANDO1ug5KWwsJF5LU1x/GJk9Z1ShAxuM
+         Bvy7eoVKq50zmX4LOjMQfs0iZu7ePuVdpLaZF+LTwaaSoCA5c/5Kw3zp0tD4TVSY2m2e
+         gs1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777372213; x=1777977013;
+        d=1e100.net; s=20251104; t=1777372214; x=1777977014;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2V4DeFz5zQx5vHTeG+ccViUA0qR3iKjsW9CqkQ1XIv0=;
-        b=mDzhP28gvViKWuSUXymOG5I3/ESzPCTLMWhPXx95Ye60MvRscQ3d31/tquVqLLGgv2
-         gN4XxbzrEkwb2rgrm66i+2vHEXbyomaNKhgieIHMq3u55Y4OzkxCq1oXJfgtbq588GEU
-         meDcoz2tciWcV8ADselM00E3o0qa0suH7ninDXyQeHbbAthQGIzH7SbirdCLTeNje/nu
-         Ajf1Xy6vLd7h6PN6yLdmCe+QGF5EtsHYDXTf5xireYmnm+uHf6YQ5icMA3oXQgVvOMcM
-         17iJYk/aBx68Pup0on5tgwEmmpMwyCMn6hLuhgT7WpQUIa2A1FpwC1F+olLlbiDqiKOE
-         w/yg==
-X-Forwarded-Encrypted: i=1; AFNElJ90aXu5zPgWVnQHECch9QJPeIGUhuB5DyqvTMj/Rye2XzBpMUt0vEMAwDHTroiS3w3jfTg5Z0k=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yynyju+lu+/jyntlFwSQemYpk/glm7ErAxsWFLaFfwpLQ4xHxnl
-	KsOUpvURkYj0hlUm8Lz0/xwC2bJhAqFgNGWt4wFWfZj9NMpy6mUlXXCfmhv6lfV3zj4cVq59Db+
-	93Q==
-X-Received: from wmpc9.prod.google.com ([2002:a05:600c:4a09:b0:48a:54ff:28b2])
- (user=tabba job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:c177:b0:48a:5301:bb5c
- with SMTP id 5b1f17b1804b1-48a77b12a49mr34221165e9.16.1777372212793; Tue, 28
- Apr 2026 03:30:12 -0700 (PDT)
-Date: Tue, 28 Apr 2026 11:30:03 +0100
+        bh=GmmNYOk+NsHl9ECni3ZP17QcbrO127/DqtR017v434Y=;
+        b=nR0rowVIWIoRmXy/OvnM+SU6+sRZrHD2CO92dz1Jc6+ZmykdTM0LL7IuIPpiqj2Ib8
+         YbNSLNBV554FyAN9I7TcsOUWZoILpHKsMT86my8CuyCL9zT/YXoLiyp+pTvdNv+Z5xPA
+         iTlqYiTK8te1DztYJwKI7GgpCz/Xpl2IxVnjfeOPynvVZOVCIifkCWml3s5AkKMqD7j7
+         lWcScp6wDqsyIHtaXNDRuCoj3FULqOBIL4n/p0ebABU1xqHeQzA4sKVCfJTcJMCLg+6y
+         6C0Q2cztQZXKAQ9AgqIte0QMRCsxBhES1+zsiufWqmnjvIwWZBDn7By3aEU77r5ZdkHZ
+         AZ7A==
+X-Forwarded-Encrypted: i=1; AFNElJ+6k80xrtJ4IPSUCecO/kUgBdYlHDF9mXtOToQYYeBfOrRZafZZh4S43+79fp5VaC4Y8mWf/50=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyLAv6nkYEGqKNUadoaGYplc68m2LyJ+H9vq+QRF1PmZQSAoSS5
+	IaCjF6i8L05HFqCL73E+AsP6c33wUaHiBwsfyLzCyv769+fmwIAxyfphVF4q88vKE+U9Nvb6zCp
+	tQw==
+X-Received: from wrrn5.prod.google.com ([2002:adf:fe05:0:b0:439:d2b7:2393])
+ (user=tabba job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6000:26c6:b0:43f:e7c9:2402
+ with SMTP id ffacd0b85a97d-4464761c29fmr4504996f8f.3.1777372213972; Tue, 28
+ Apr 2026 03:30:13 -0700 (PDT)
+Date: Tue, 28 Apr 2026 11:30:04 +0100
 In-Reply-To: <20260428103008.696141-1-tabba@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -76,8 +76,8 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260428103008.696141-1-tabba@google.com>
 X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
-Message-ID: <20260428103008.696141-4-tabba@google.com>
-Subject: [PATCH 3/8] KVM: arm64: Guard against NULL vcpu on VHE hyp panic path
+Message-ID: <20260428103008.696141-5-tabba@google.com>
+Subject: [PATCH 4/8] KVM: arm64: Fix __deactivate_fgt macro parameter typo
 From: Fuad Tabba <tabba@google.com>
 To: maz@kernel.org, oliver.upton@linux.dev
 Cc: james.morse@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, 
@@ -86,7 +86,7 @@ Cc: james.morse@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com,
 	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
 	linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 6192A482AB2
+X-Rspamd-Queue-Id: 608C6482CC5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
@@ -94,18 +94,18 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
 	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-241543-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-241545-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[tabba@google.com,stable@vger.kernel.org];
@@ -114,45 +114,41 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_TWELVE(0.00)[14];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 
-On VHE, __hyp_call_panic() unconditionally calls __deactivate_traps(vcpu)
-on the vcpu pointer read from host_ctxt->__hyp_running_vcpu. That pointer
-is cleared after every guest exit (and is never set when no guest is
-running), so an unexpected EL2 exception landing in _guest_exit_panic,
-e.g. via the el2t*_invalid / el2h_irq_invalid vectors - reaches this
-function with vcpu == NULL. __deactivate_traps() then dereferences vcpu
-via ___deactivate_traps() -> vserror_state_is_nested() -> vcpu_has_nv()
--> vcpu->arch.features, faulting inside the panic handler and obscuring
-the original failure.
+__deactivate_fgt() declares its first parameter as "htcxt" but the body
+references "hctxt". The parameter is unused; the macro silently captures
+"hctxt" from the enclosing scope. Both existing callers
+(__deactivate_traps_hfgxtr() and __deactivate_traps_ich_hfgxtr()) happen
+to define a local "struct kvm_cpu_context *hctxt", so the macro works
+by coincidence.
 
-The nVHE counterpart (hyp_panic() in arch/arm64/kvm/hyp/nvhe/switch.c)
-already guards its vcpu-using cleanup with "if (vcpu)"; mirror that
-here. sysreg_restore_host_state_vhe() and __hyp_do_panic() do not depend
-on vcpu and continue to run unconditionally, preserving panic forensics.
-The trailing panic("...VCPU:%p", vcpu) prints "(null)" safely via
-printk's %p handling.
+A future caller without an "hctxt" local in scope, or naming it
+differently, would compile but bind to the wrong context. Align the
+parameter name with the sibling __activate_fgt() macro.
 
-Fixes: 6a0259ed29bb ("KVM: arm64: Remove hyp_panic arguments")
+The "vcpu" parameter remains unused in the body, kept for API symmetry
+with __activate_fgt() (which uses it).
+
+Fixes: f5a5a406b4b8 ("KVM: arm64: Propagate and handle Fine-Grained UNDEF bits")
 Signed-off-by: Fuad Tabba <tabba@google.com>
 ---
- arch/arm64/kvm/hyp/vhe/switch.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm64/kvm/hyp/include/hyp/switch.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/kvm/hyp/vhe/switch.c b/arch/arm64/kvm/hyp/vhe/switch.c
-index 140d3bcb5651..8912863cc238 100644
---- a/arch/arm64/kvm/hyp/vhe/switch.c
-+++ b/arch/arm64/kvm/hyp/vhe/switch.c
-@@ -674,7 +674,8 @@ static void __noreturn __hyp_call_panic(u64 spsr, u64 elr, u64 par)
- 	host_ctxt = host_data_ptr(host_ctxt);
- 	vcpu = host_ctxt->__hyp_running_vcpu;
+diff --git a/arch/arm64/kvm/hyp/include/hyp/switch.h b/arch/arm64/kvm/hyp/include/hyp/switch.h
+index 98b2976837b1..bf0eb5e43427 100644
+--- a/arch/arm64/kvm/hyp/include/hyp/switch.h
++++ b/arch/arm64/kvm/hyp/include/hyp/switch.h
+@@ -245,7 +245,7 @@ static inline void __activate_traps_ich_hfgxtr(struct kvm_vcpu *vcpu)
+ 	__activate_fgt(hctxt, vcpu, ICH_HFGITR_EL2);
+ }
  
--	__deactivate_traps(vcpu);
-+	if (vcpu)
-+		__deactivate_traps(vcpu);
- 	sysreg_restore_host_state_vhe(host_ctxt);
- 
- 	panic("HYP panic:\nPS:%08llx PC:%016llx ESR:%08llx\nFAR:%016llx HPFAR:%016llx PAR:%016llx\nVCPU:%p\n",
+-#define __deactivate_fgt(htcxt, vcpu, reg)				\
++#define __deactivate_fgt(hctxt, vcpu, reg)				\
+ 	do {								\
+ 		write_sysreg_s(ctxt_sys_reg(hctxt, reg),		\
+ 			       SYS_ ## reg);				\
 -- 
 2.54.0.545.g6539524ca2-goog
 
