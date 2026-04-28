@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-241641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241639-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id INUCMDWj8GlAWgEAu9opvQ
-	(envelope-from <stable+bounces-241641-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 14:08:21 +0200
+	id GPEhDP6i8Gl3WgEAu9opvQ
+	(envelope-from <stable+bounces-241639-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 14:07:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61EEC48494D
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 14:08:21 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4BA64848F1
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 14:07:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C341130071CC
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 12:08:14 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 48B8F300133D
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 12:06:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1D8E3A6B88;
-	Tue, 28 Apr 2026 12:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75ECF3FBEDA;
+	Tue, 28 Apr 2026 12:06:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b="Qhfv8ZdL"
+	dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b="U9W7I5qV"
 X-Original-To: stable@vger.kernel.org
-Received: from forwardcorp1d.mail.yandex.net (forwardcorp1d.mail.yandex.net [178.154.239.200])
+Received: from forwardcorp1b.mail.yandex.net (forwardcorp1b.mail.yandex.net [178.154.239.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD0BB3E8C70
-	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 12:08:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7B9B3FBEAD
+	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 12:06:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777378086; cv=none; b=upHUC+7RFyvediGuVHuJQpSJRPCkGvaU3Lag4yiq8Uonuy8q82R8pbS84743rNLVaaS6oPhXhfm+WL1/oun3USv0ZcxRIgR0v9IJIVQ6NOmV0GXiR0oZv2gwHQ9BHReAU3ZGKnhpSDfiJBEdJzKiaMwDjd9kLXU5WZZnWnyuBZc=
+	t=1777378001; cv=none; b=X6bXz6Gxw45AZZkBhRWHr5bg+BZs2VTqXc1S7/wWngR352ak+z7MAiQezCgJCEoCZNdp9daAjQOYxtcdBN6mMEii31XU5ue5Kj+ZEgkvaTRLdncN8oNYxEV95jnqmWx2yWlizk8yTTkM3hQ6becc6MCNmOF/Nxkd4EJV7b5vz6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777378086; c=relaxed/simple;
-	bh=jeVxaJeDMaeRk1J8EbQZD6ucMa2Dr+KcDb8oCLYzf1g=;
+	s=arc-20240116; t=1777378001; c=relaxed/simple;
+	bh=dKXhLKaRM4wKyrhNReMGF3ffWzVR8acoRg0gRiOghns=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=rRyjCfAt4UvUEQkQHaoTBv6ImGBPI0ifjFaOjk0bhwupYHT1BPS8RbshG936s+4BQRzHQ+kF6f0jFzbfL5vX1MW1XdPNUCIn52JmVzSwi4YLOFE+qfX63yZMNnq2q+w8LgnuHJXMzBc9n3yXzI11kebQvFpb/iXiM/XZxSgBoiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru; spf=pass smtp.mailfrom=yandex-team.ru; dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b=Qhfv8ZdL; arc=none smtp.client-ip=178.154.239.200
+	 MIME-Version; b=f7pmkzi9HlcXnlPk9gAC7rXTIvih8shmIDVUHEeOU9BiljjyaCe0pX8BdOF5HNRv+TvTQ499UD1kSA6Uo+UctOqTfX0MBy2LR+wdUcPTsRg/di04mMEv+yzlYoUjXKW0uG27HUNjmhh5DeM+/0R1n2LBF8gppWHy0ekndoRHW/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru; spf=pass smtp.mailfrom=yandex-team.ru; dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b=U9W7I5qV; arc=none smtp.client-ip=178.154.239.136
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex-team.ru
 Received: from mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net (mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:c00c:0:640:e0de:0])
-	by forwardcorp1d.mail.yandex.net (Yandex) with ESMTPS id 95DF8807E7;
-	Tue, 28 Apr 2026 15:06:22 +0300 (MSK)
+	by forwardcorp1b.mail.yandex.net (Yandex) with ESMTPS id 0720780815;
+	Tue, 28 Apr 2026 15:06:24 +0300 (MSK)
 Received: from d-tatianin-lin.yandex-team.ru (unknown [2a02:6bf:8080:116::1:0])
-	by mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net (smtpcorp) with ESMTPSA id B6YlCK1L0W20-yMznkDle;
-	Tue, 28 Apr 2026 15:06:22 +0300
+	by mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net (smtpcorp) with ESMTPSA id B6YlCK1L0W20-SmFf3tGS;
+	Tue, 28 Apr 2026 15:06:23 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
-	s=default; t=1777377982;
-	bh=7BFKrc3Lu41F8GMJFScHbhee2hxbyFRRG83V5hVvHCk=;
+	s=default; t=1777377983;
+	bh=3YocfVgTP6xCZwtBYPCFFdS7rQbZimwxMmEJoUgrKYQ=;
 	h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
-	b=Qhfv8ZdL1vFVhVQWbPQ3I62zEDceCv4SJ/qMlKTM+LToTBacvROzQJCiCaroSRjYP
-	 nSZbmy4ubSqemKQTETe4UEbD14zJpA0EEgQCOQDhhLsrPZO3c2ip4MzuBwxz18eCEx
-	 TOwq+i0LQbwvXBl5lIkxNpjlycLdYKwIPDIETJ/8=
+	b=U9W7I5qVktgIGRAVRXobhl6U/NGq7klS5vJO2hMae7JqXqFqJW95EvlH8GVATk6Nn
+	 2FDc7I+XRhhlfLD8P5MXwCUuqqDS4iG7l3iC8ElV+uG+wES+YT5Cv4kwR56Ldn2MsA
+	 rNYZqfzdSNlZn9E3EvmnxLBiEjFn+843dyri6du4=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-80.iva.yp-c.yandex.net; dkim=pass header.i=@yandex-team.ru
 From: Daniil Tatianin <d-tatianin@yandex-team.ru>
 To: stable@vger.kernel.org
@@ -67,10 +67,10 @@ Cc: Daniil Tatianin <d-tatianin@yandex-team.ru>,
 	Daniel Sneddon <daniel.sneddon@linux.intel.com>,
 	"Ahmed S. Darwish" <darwi@linutronix.de>,
 	Nikunj A Dadhania <nikunj@amd.com>,
-	Ingo Molnar <mingo@kernel.org>
-Subject: [PATCH 6.6.y 3/5] x86/srso: Remove 'pred_cmd' label
-Date: Tue, 28 Apr 2026 15:05:43 +0300
-Message-Id: <20260428120545.1970058-4-d-tatianin@yandex-team.ru>
+	David Kaplan <david.kaplan@amd.com>
+Subject: [PATCH 6.6.y 4/5] x86/bugs: Fix handling when SRSO mitigation is disabled
+Date: Tue, 28 Apr 2026 15:05:44 +0300
+Message-Id: <20260428120545.1970058-5-d-tatianin@yandex-team.ru>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260428120545.1970058-1-d-tatianin@yandex-team.ru>
 References: <20260428120545.1970058-1-d-tatianin@yandex-team.ru>
@@ -81,7 +81,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 61EEC48494D
+X-Rspamd-Queue-Id: C4BA64848F1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-7.66 / 15.00];
@@ -90,13 +90,13 @@ X-Spamd-Result: default: False [-7.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[yandex-team.ru,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[yandex-team.ru:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241641-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-241639-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
@@ -110,82 +110,59 @@ X-Spamd-Result: default: False [-7.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,yandex-team.ru:email,yandex-team.ru:dkim,yandex-team.ru:mid]
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[yandex-team.ru:email,yandex-team.ru:dkim,yandex-team.ru:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,amd.com:email]
 
-[ Upstream commit 55ca9010c4a988b48278f81ae4129deea52d2488 ]
+[ Upstream commit 1dbb6b1495d472806fef1f4c94f5b3e4c89a3c1d ]
 
-SBPB is only enabled in two distinct cases:
+When the SRSO mitigation is disabled, either via mitigations=off or
+spec_rstack_overflow=off, the warning about the lack of IBPB-enhancing
+microcode is printed anyway.
 
-1) when SRSO has been disabled with srso=off
+This is unnecessary since the user has turned off the mitigation.
 
-2) when SRSO has been fixed (in future HW)
+  [ bp: Massage, drop SBPB rationale as it doesn't matter because when
+    mitigations are disabled x86_pred_cmd is not being used anyway. ]
 
-Simplify the control flow by getting rid of the 'pred_cmd' label and
-moving the SBPB enablement check to the two corresponding code sites.
-This makes it more clear when exactly SBPB gets enabled.
-
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Signed-off-by: David Kaplan <david.kaplan@amd.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/bb20e8569cfa144def5e6f25e610804bc4974de2.1693889988.git.jpoimboe@kernel.org
+Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Link: https://lore.kernel.org/r/20240904150711.193022-1-david.kaplan@amd.com
 Signed-off-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
 ---
- arch/x86/kernel/cpu/bugs.c | 21 +++++++++++++--------
- 1 file changed, 13 insertions(+), 8 deletions(-)
+ arch/x86/kernel/cpu/bugs.c | 12 +++---------
+ 1 file changed, 3 insertions(+), 9 deletions(-)
 
 diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index 07eb6294490b3..1fce8077de5f8 100644
+index 1fce8077de5f8..916f36e23724d 100644
 --- a/arch/x86/kernel/cpu/bugs.c
 +++ b/arch/x86/kernel/cpu/bugs.c
-@@ -2757,13 +2757,21 @@ static void __init srso_select_mitigation(void)
+@@ -2757,10 +2757,9 @@ static void __init srso_select_mitigation(void)
  {
  	bool has_microcode = boot_cpu_has(X86_FEATURE_IBPB_BRTYPE);
  
--	if (!boot_cpu_has_bug(X86_BUG_SRSO) || cpu_mitigations_off())
--		goto pred_cmd;
-+	if (cpu_mitigations_off())
-+		return;
-+
-+	if (!boot_cpu_has_bug(X86_BUG_SRSO)) {
-+		if (boot_cpu_has(X86_FEATURE_SBPB))
-+			x86_pred_cmd = PRED_CMD_SBPB;
-+		return;
-+	}
- 
- 	if (has_microcode) {
- 		/*
- 		 * Zen1/2 with SMT off aren't vulnerable after the right
- 		 * IBPB microcode has been applied.
-+		 *
-+		 * Zen1/2 don't have SBPB, no need to try to enable it here.
- 		 */
- 		if (boot_cpu_data.x86 < 0x19 && !cpu_smt_possible()) {
- 			setup_force_cpu_cap(X86_FEATURE_SRSO_NO);
-@@ -2784,7 +2792,9 @@ static void __init srso_select_mitigation(void)
+-	if (cpu_mitigations_off())
+-		return;
+-
+-	if (!boot_cpu_has_bug(X86_BUG_SRSO)) {
++	if (!boot_cpu_has_bug(X86_BUG_SRSO) ||
++	    cpu_mitigations_off() ||
++	    srso_cmd == SRSO_CMD_OFF) {
+ 		if (boot_cpu_has(X86_FEATURE_SBPB))
+ 			x86_pred_cmd = PRED_CMD_SBPB;
+ 		return;
+@@ -2791,11 +2790,6 @@ static void __init srso_select_mitigation(void)
+ 	}
  
  	switch (srso_cmd) {
- 	case SRSO_CMD_OFF:
--		goto pred_cmd;
-+		if (boot_cpu_has(X86_FEATURE_SBPB))
-+			x86_pred_cmd = PRED_CMD_SBPB;
-+		return;
- 
+-	case SRSO_CMD_OFF:
+-		if (boot_cpu_has(X86_FEATURE_SBPB))
+-			x86_pred_cmd = PRED_CMD_SBPB;
+-		return;
+-
  	case SRSO_CMD_MICROCODE:
  		if (has_microcode) {
-@@ -2873,11 +2883,6 @@ static void __init srso_select_mitigation(void)
- 
- out:
- 	pr_info("%s\n", srso_strings[srso_mitigation]);
--
--pred_cmd:
--	if ((!boot_cpu_has_bug(X86_BUG_SRSO) || srso_cmd == SRSO_CMD_OFF) &&
--	     boot_cpu_has(X86_FEATURE_SBPB))
--		x86_pred_cmd = PRED_CMD_SBPB;
- }
- 
- #undef pr_fmt
+ 			srso_mitigation = SRSO_MITIGATION_MICROCODE;
 -- 
 2.34.1
 
