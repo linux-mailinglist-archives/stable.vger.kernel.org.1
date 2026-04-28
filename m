@@ -1,145 +1,229 @@
-Return-Path: <stable+bounces-241525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241526-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KJxeKDKA8GlSUAEAu9opvQ
-	(envelope-from <stable+bounces-241525-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 11:38:58 +0200
+	id 0CldNYuC8GlwUQEAu9opvQ
+	(envelope-from <stable+bounces-241526-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 11:48:59 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66FC2481A32
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 11:38:58 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F2C7481D42
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 11:48:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EE51F301286F
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 09:37:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 778B6305BA81
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 09:43:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 175DC3D47A9;
-	Tue, 28 Apr 2026 09:37:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7960B3CFF55;
+	Tue, 28 Apr 2026 09:43:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nrMadvMe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="urwQz9pP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF5283D34A8
-	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 09:37:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 389613D6CDA;
+	Tue, 28 Apr 2026 09:43:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777369052; cv=none; b=UweQ3PPUz70XkpgOriJFbLAYfPekdBM6iuOS5RvT02+psNiopb5ApYRDEap8psqPZStppVfBgZt1j4aGqhZahoNPwEnWJH6lYdkG3cG1RzlPigfQ6y7L7ZZTxBp/5PXsh29xKdjBO9S/iFlrUUCFfKG9JTVD2V+k9YPba6sBB5Y=
+	t=1777369404; cv=none; b=KQVU4ZfFNxhmmjPdZuH0tUGSe3DdBsfAcIbWPKIuHx/KIUWX1CMHQ0p+iFc1I80x86e5xDoInLTWU1GU654sFw/kwT5Ubv7FnTqEu7nqpDCpPifbGRoAPXX0yE5OI3ZvxMDsur+N0IYtej7BRiO1OC8oYG7OVFSu06+9dxog2tY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777369052; c=relaxed/simple;
-	bh=yXn6EkhJ7qO+eQk0eM4/L2B7SbEhNT8pJs06jY0YNbA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FEnoLjn5806qn9sr4Ob0OY/hPae9AA4fj38FkUPOkwKIAgrCJYYH9+Ayq0fKc6212cV1/foufzZVVDEwklNC8qd2hzC/o3t6EyJkliHUtfm+qw4ySL8SChlvMXnLrVqCkiLLaNz6KvjOGHc21Uhr7WHNz22R6zkJSfuWLn4vOvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nrMadvMe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BECBC2BCB7;
-	Tue, 28 Apr 2026 09:37:32 +0000 (UTC)
+	s=arc-20240116; t=1777369404; c=relaxed/simple;
+	bh=TYiXYjzHA8JHToeY0LvSF4bFP7UXxBQJ3HYswXAb9xU=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=ED5y8EZKDsrQTXXnqM7SA6rKAJJnJsB0EkNT8hR01r+5fuSzwAFoeE6uXB1jTtW0fPpQA3J7pbuUr9kENRT5nMcSvdfzznhmad93UL4mZ397w4TUKTOa7vgiynPWseXt7kj5fQL90TJP2khG/7fFuHFICoPH8k9dJlIKa7GhrkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=urwQz9pP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5353C2BCAF;
+	Tue, 28 Apr 2026 09:43:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777369052;
-	bh=yXn6EkhJ7qO+eQk0eM4/L2B7SbEhNT8pJs06jY0YNbA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nrMadvMepTPLLspEg/Vp8UKLGDuJqU2GmPR+EILgAXNQOyQ7OaQcUky18wSB0EcsQ
-	 RxxLtJ6HncO1G1LZenqwUOog8zFjjUrxf5Q6wF9Il7C2ZExj/I9S9tLsc5oZListmN
-	 aDOTOpDtMP+UWvTUIH1WyaKh1sfJs2PibpB8HqPaLf6jfqHGpenLp6Y/vP97aGGRqv
-	 TCK4IIw5q11WHAbzax3bBT3GPJLyfWJXhANQCJCLRrwbTBVj+H65RluqUN+2HJj3Ww
-	 eAI63cEpSXa8HS7tVvpp/eedgT+fo3iXmlZ7yctWq6GoaKy4rHc75vJWeWMj95KVek
-	 3K2chNhGHcWGA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Alexander Usyskin <alexander.usyskin@intel.com>,
-	stable <stable@kernel.org>,
-	Tomas Winkler <tomasw@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 7.0.y 2/2] mei: me: add nova lake point H DID
-Date: Tue, 28 Apr 2026 05:37:29 -0400
-Message-ID: <20260428093729.2692325-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260428093729.2692325-1-sashal@kernel.org>
-References: <2026042701-alumni-disfigure-b344@gregkh>
- <20260428093729.2692325-1-sashal@kernel.org>
+	s=k20201202; t=1777369403;
+	bh=TYiXYjzHA8JHToeY0LvSF4bFP7UXxBQJ3HYswXAb9xU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=urwQz9pPf2VrThLNS4hjIltM02UDZkMfyQFH/YMuroDy0q/QkFs3qkya6pQaG4MH1
+	 gzzvQVMDhr4I4yOKChdCZljSg3iBiZshWNSNUasDL8IBnpUbWJ9MPYLqcxte8o7hy6
+	 VRkmLNz+NJwMGipYttmSkuP4YKJcTucNkLO78gFvaCRB/oH8LV63lliUYRJcoqRZ3m
+	 9Kz84yMWOiwnTNsnsOs+MQn4stBgQqpf85SM+5uY3MRe2Hk3TegaD5OJHKXFSnf9ic
+	 hQPXyE8XfEs1an9gHzh+a6wB1jEacivarxa7nGYahNEt9cybuDLaaIHfJ+N5vc3ZZX
+	 7LKx05O6V9QNA==
+Date: Tue, 28 Apr 2026 18:43:21 +0900
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+To: Jianpeng Chang <jianpeng.chang.cn@windriver.com>
+Cc: <naveen@kernel.org>, <davem@davemloft.net>, <catalin.marinas@arm.com>,
+ <mark.rutland@arm.com>, <linux-kernel@vger.kernel.org>,
+ <linux-trace-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH] kprobes: skip non-symbol addresses in
+ kprobe_add_ksym_blacklist()
+Message-Id: <20260428184321.309a48036892b8d23a08b566@kernel.org>
+In-Reply-To: <20260427073545.3656835-1-jianpeng.chang.cn@windriver.com>
+References: <20260427073545.3656835-1-jianpeng.chang.cn@windriver.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 66FC2481A32
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 6F2C7481D42
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[intel.com,kernel.org,gmail.com,linuxfoundation.org];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-241525-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-241526-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.998];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mhiramat@kernel.org,stable@vger.kernel.org];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:email,intel.com:email]
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,windriver.com:email]
 
-From: Alexander Usyskin <alexander.usyskin@intel.com>
+Hi,
 
-[ Upstream commit a5a1804332afc7035d5c5b880548262e81d796bc ]
+On Mon, 27 Apr 2026 15:35:44 +0800
+Jianpeng Chang <jianpeng.chang.cn@windriver.com> wrote:
 
-Add Nova Lake H device id.
+> When kprobe_add_area_blacklist() iterates through a section like
+> .kprobes.text, the start address may not correspond to a named symbol.
+> On ARM64 with CONFIG_DYNAMIC_FTRACE_WITH_CALL_OPS=y (introduced by
+> commit baaf553d3bc3 ("arm64: Implement
+> HAVE_DYNAMIC_FTRACE_WITH_CALL_OPS")), the compiler flag
+> -fpatchable-function-entry=4,2 inserts 2 NOPs before each function entry
+> point for ftrace call_ops. These pre-function NOPs sit at the section base
+> address, before the first named function symbol. The compiler emits a $x
+> mapping symbol at offset 0x00 to mark the start of code, but
+> find_kallsyms_symbol() ignores mapping symbols.
+> 
+> Without CONFIG_DYNAMIC_FTRACE_WITH_CALL_OPS (e.g. defconfig), no
+> pre-function NOPs are inserted, the first function starts at offset
+> 0x00, and the bug does not trigger.
+> 
+> This only affects modules that have a .kprobes.text section (i.e. those
+> using the __kprobes annotation). Modules using NOKPROBE_SYMBOL() instead
+> (like kretprobe_example.ko) blacklist exact function addresses via the
+> _kprobe_blacklist section and are not affected.
+> 
+> For kprobe_example.ko on ARM64 with -fpatchable-function-entry=4,2,
+> the .kprobes.text section layout is:
+> 
+>   offset 0x00: $x + 2 NOPs    (mapping symbol + ftrace preamble)
+>   offset 0x08: handler_post   (64 bytes)
+>   offset 0x50: handler_pre    (68 bytes)
 
-Cc: stable <stable@kernel.org>
-Co-developed-by: Tomas Winkler <tomasw@gmail.com>
-Signed-off-by: Tomas Winkler <tomasw@gmail.com>
-Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
-Link: https://patch.msgid.link/20260405141758.1634556-1-alexander.usyskin@intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/misc/mei/hw-me-regs.h | 1 +
- drivers/misc/mei/pci-me.c     | 1 +
- 2 files changed, 2 insertions(+)
+Ah, OK. It is for __kprobes attribute. I recommend user to use NOKPROBE_SYMBOL()
+but I understand the situation.
 
-diff --git a/drivers/misc/mei/hw-me-regs.h b/drivers/misc/mei/hw-me-regs.h
-index 840e1fd2714c4..5967f95891a1f 100644
---- a/drivers/misc/mei/hw-me-regs.h
-+++ b/drivers/misc/mei/hw-me-regs.h
-@@ -123,6 +123,7 @@
- #define PCI_DEVICE_ID_INTEL_MEI_WCL_P      0x4D70  /* Wildcat Lake P */
- 
- #define PCI_DEVICE_ID_INTEL_MEI_NVL_S      0x6E68  /* Nova Lake Point S */
-+#define PCI_DEVICE_ID_INTEL_MEI_NVL_H      0xD370  /* Nova Lake Point H */
- 
- /*
-  * MEI HW Section
-diff --git a/drivers/misc/mei/pci-me.c b/drivers/misc/mei/pci-me.c
-index fe5d5aee074cd..5b6aaa4d3a1cb 100644
---- a/drivers/misc/mei/pci-me.c
-+++ b/drivers/misc/mei/pci-me.c
-@@ -130,6 +130,7 @@ static const struct pci_device_id mei_me_pci_tbl[] = {
- 	{PCI_DEVICE_DATA(INTEL, MEI_WCL_P, MEI_ME_PCH15_CFG)},
- 
- 	{PCI_DEVICE_DATA(INTEL, MEI_NVL_S, MEI_ME_PCH15_CFG)},
-+	{PCI_DEVICE_DATA(INTEL, MEI_NVL_H, MEI_ME_PCH15_CFG)},
- 
- 	/* required last entry */
- 	{0, }
+> 
+> kprobe_add_area_blacklist() starts iterating from the section base
+> address (offset 0x00), which only has the $x mapping symbol.
+> kprobe_add_ksym_blacklist() then calls kallsyms_lookup_size_offset()
+> for this address, which goes through:
+> 
+>   kallsyms_lookup_size_offset()
+>     -> module_address_lookup()
+>       -> find_kallsyms_symbol()
+> 
+> find_kallsyms_symbol() scans all module symbols to find the closest
+> preceding symbol.
+> 
+> Since no named text symbol exists at offset 0x00,
+> find_kallsyms_symbol() picks __UNIQUE_ID_vermagic (a .modinfo symbol
+> whose address is in the temporary image) as the "best" match. The
+> computed "size" = next_text_symbol - modinfo_symbol spans across
+> these two unrelated memory regions, creating a blacklist entry with
+> a bogus range of tens of terabytes.
+> 
+> Whether this causes a visible failure depends on address randomization,
+> here is what happens on Raspberry Pi 4/5:
+> 
+>   - On RPi5, the bogus size was ~35 TB. start + size stayed within
+>     64-bit range, so the blacklist entry covered the entire kernel
+>     text. register_kprobe() in the module's own init function failed
+>     with -EINVAL.
+> 
+>   - On RPi4, the bogus size was ~75 TB. start + size overflowed
+>     64 bits and wrapped to a small address near zero. The range
+>     check (addr >= start && addr < end) then failed because end
+>     wrapped around, so the bogus entry was accidentally harmless
+>     and kprobes worked by luck.
+> 
+> The same bug exists on both machines, but randomization determines whether
+> the integer overflow masks it or not.
+> 
+> Fix this by checking the offset returned by kallsyms_lookup_size_offset().
+> A non-zero offset means the address is not at a symbol boundary, so skip
+> forward to the next symbol instead of creating a blacklist entry with a
+> wrong size.
+> 
+> Fixes: baaf553d3bc3 ("arm64: Implement HAVE_DYNAMIC_FTRACE_WITH_CALL_OPS")
+> Signed-off-by: Jianpeng Chang <jianpeng.chang.cn@windriver.com>
+> ---
+> Hi,
+> 
+> This patch skips non-symbol addresses, fixes the bogus blacklist entry,
+> but leaves the NOP gap at the start of .kprobes.text unblacklisted.
+
+That is OK because those NOPs are not executed in kprobe handler.
+
+> 
+> We can continue alloc the ent without return to add the gap to
+> blacklist, or do some more works to add the gap to the first symbol in
+> blacklist. I'm not sure if is this necessary, or is there a better way?
+
+Are there any compiler option or attribute to avoid inserting these
+NOPs to the specific section? (like notrace?)
+
+Also, as you can see there is an alias symbol whose size is 0. and
+in that case, we move the entry + 1 and call kprobe_add_ksym_blacklist()
+again. Thus, the offset becomes 1. Please make sure it is correctly
+handled.
+
+Thanks,
+
+> 
+> Thanks,
+> Jianpeng
+> 
+>  kernel/kprobes.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/kernel/kprobes.c b/kernel/kprobes.c
+> index bfc89083daa9..be700fb03198 100644
+> --- a/kernel/kprobes.c>
+> +++ b/kernel/kprobes.c
+> @@ -2503,6 +2503,10 @@ int kprobe_add_ksym_blacklist(unsigned long entry)
+>  	    !kallsyms_lookup_size_offset(entry, &size, &offset))
+>  		return -EINVAL;
+>  
+> +	/* Not on a symbol boundary -- skip to the next symbol */
+> +	if (offset)
+> +		return (int)(size - offset);
+> +
+>  	ent = kmalloc_obj(*ent);
+>  	if (!ent)
+>  		return -ENOMEM;
+> -- 
+> 2.54.0
+> 
+
+
 -- 
-2.53.0
-
+Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
