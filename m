@@ -1,128 +1,221 @@
-Return-Path: <stable+bounces-241462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241463-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yLNuM4QZ8GntOQEAu9opvQ
-	(envelope-from <stable+bounces-241462-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 04:20:52 +0200
+	id cMidFS0a8GntOQEAu9opvQ
+	(envelope-from <stable+bounces-241463-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 04:23:41 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A2A647CB07
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 04:20:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5B1847CB7D
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 04:23:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6E98C303181E
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 02:20:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 219F130459F7
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 02:22:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B12A1390986;
-	Tue, 28 Apr 2026 02:20:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C57873914E9;
+	Tue, 28 Apr 2026 02:22:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BNPJukUJ"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="DG0Bm5RX"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 742EC2DB7AE;
-	Tue, 28 Apr 2026 02:20:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3897A38F639
+	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 02:22:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777342848; cv=none; b=ZOjfkl6t/bQ6QnJzLdBLNKQ5kKdWIvf/4LLFEm4PjwacPC6rdJ4LOlPFYmJhwbfKJwkORui/beRYrn6r5qS8gj3Ri00pMZVEWQSwnbH5siT86AVYbUyA69LsafOiKkAnQZJVqV0zGIZf62l26bgURLvfszG7tFufVIcaFf0Bnn0=
+	t=1777342962; cv=none; b=RiU7NmqglmjDL0wfcM6m1A4V1/JP+B9kjSLGN6p7DNE6foWqk4prANMwr7tfFZgFAiMVv81wzNVEY7upAoU6ahlpuHwMyr2bKm+MO26MDqmcj13f5l8muOcgv/YvI2IeFSTNG4AaWcF23bJHxSArbb5WjoaYRIq4sjmoxmQ0wZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777342848; c=relaxed/simple;
-	bh=Gu6KcT5kMSGfIXHS8LsPjrLPCL3C4f6PCQ+8/Bvo0KE=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=NgNF8DE8sVvM7c1jLd5ognLUPl7U/8thKI46ZhNcYUIjzRdhmFm2Q/oz7k+smic5JAY0HOOln5fQiUEgqJFSjhuOy1U+pO/kPu9Bj5lTAFRVWLj+yW8Y74fd++OdusW6erQG9jz7vQwo1dnbPEUWdclkI2o9Av4ghUUQcEjSnLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BNPJukUJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E22EC19425;
-	Tue, 28 Apr 2026 02:20:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777342848;
-	bh=Gu6KcT5kMSGfIXHS8LsPjrLPCL3C4f6PCQ+8/Bvo0KE=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=BNPJukUJ1g1XKPobe0KiW0gzD+pJ4qyPNDFq8O1825Xop64UkXBtcUaoaqQbMjNW6
-	 8OuOUwOjLtMJP+G0GUptpR2+iuMiH/rIMfzCrERSc71UALUUKKp3IXt7kve+brdfji
-	 ras4Sey0KGO8DJYUc5CLBafYKOUxFIFBnkBeevvjHVd5IMLfVTAZIsZ2ekivqCo7i/
-	 Fubps5DV/i+wawOveF7MRR5sMvr5kS1cbYIGF4slJZU43ft3i5kKrvfea6zJUgsHOa
-	 r3Z4C2h6ePeA4x8XioCZCSKl6b5T9FgqRy2bmrCot2zc/UJrONMz4k1IM49KWul811
-	 CdvvYAGRidjfA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9E7D392FFDF;
-	Tue, 28 Apr 2026 02:20:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1777342962; c=relaxed/simple;
+	bh=RdXGpfqLHnE6+NYvLGvcLCKTSLfboS39RbnS79AOxGo=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=kKy1aFFGpxcIHgq17oBlU1ZR+jkuNW2zfIYI0yFlPPiOqwoOOGweyEr99/jGxf6wJgvQyHBIVF41V1soTF5Oci1k+q/9misBozYS2pFlyuB9Jay4U7yJP83r+NF/g3Xwby+GDzw91WAg1xXsxfcUBE59HECMOjoQLizdnaLwy7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=DG0Bm5RX; arc=none smtp.client-ip=91.218.175.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Content-Type: text/plain;
+	charset=utf-8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1777342949;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=P8WtTpk4C3bWW2J9TtLvfZiG0OAM5aNmX37Zh2TBXyQ=;
+	b=DG0Bm5RXG0phliP9NHTpaSQiK2iNYYaMZjv8TQBv0NlXK+ehAEvDcUdk7LHI76DtXY4HnQ
+	HAYjVIC+RR/KyTT84e0oVBYM3KSE2+z7RJHoNOxVzmN3xgqRSdR2k6yS0V3a3uvmt0KN7O
+	qC7UG0CAXh1M6qThDTOdenB3pKZWZwM=
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v3] ibmveth: Disable GSO for packets with small MSS
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177734280556.205517.1747939663275050652.git-patchwork-notify@kernel.org>
-Date: Tue, 28 Apr 2026 02:20:05 +0000
-References: <20260424162917.65725-1-mmc@linux.ibm.com>
-In-Reply-To: <20260424162917.65725-1-mmc@linux.ibm.com>
-To: Mingming Cao <mmc@linux.ibm.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
- edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
- bjking1@linux.ibm.com, maddy@linux.ibm.com, mpe@ellerman.id.au,
- linuxppc-dev@lists.ozlabs.org, stable@vger.kernel.org,
- shaik.abdulla1@ibm.com, naveedaus@in.ibm.com
-X-Rspamd-Queue-Id: 7A2A647CB07
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.500.181\))
+Subject: Re: [PATCH v7 4/6] mm/sparse-vmemmap: Fix DAX vmemmap accounting with
+ optimization
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <09298afa-9a36-4f29-a8e1-d4750c338df2@kernel.org>
+Date: Tue, 28 Apr 2026 10:21:47 +0800
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Oscar Salvador <osalvador@suse.de>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <chleroy@kernel.org>,
+ aneesh.kumar@linux.ibm.com,
+ joao.m.martins@oracle.com,
+ linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <C2E99AB4-CC47-4D9F-BF56-F971FD5A3C26@linux.dev>
+References: <20260426092640.375967-1-songmuchun@bytedance.com>
+ <20260426092640.375967-5-songmuchun@bytedance.com>
+ <09298afa-9a36-4f29-a8e1-d4750c338df2@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: B5B1847CB7D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MV_CASE(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-241462-lists,stable=lfdr.de,netdevbpf];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-241463-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	RCPT_COUNT_TWELVE(0.00)[14];
+	FREEMAIL_CC(0.00)[bytedance.com,linux-foundation.org,suse.de,ellerman.id.au,linux.ibm.com,kernel.org,oracle.com,google.com,suse.com,gmail.com,kvack.org,lists.ozlabs.org,vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[3];
+	RCPT_COUNT_TWELVE(0.00)[20];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NO_DN(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[muchun.song@linux.dev,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linux.dev:+];
+	NEURAL_HAM(-0.00)[-0.999];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,bytedance.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:dkim,linux.dev:mid]
 
-Hello:
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
 
-On Fri, 24 Apr 2026 09:29:17 -0700 you wrote:
-> Some physical adapters on Power systems do not support segmentation
-> offload when the MSS is less than 224 bytes. Attempting to send such
-> packets causes the adapter to freeze, stopping all traffic until
-> manually reset.
-> 
-> Implement ndo_features_check to disable GSO for packets with small MSS
-> values. The network stack will perform software segmentation instead.
-> 
-> [...]
+> On Apr 27, 2026, at 18:17, David Hildenbrand (Arm) <david@kernel.org> =
+wrote:
+>=20
+> On 4/26/26 11:26, Muchun Song wrote:
+>> When vmemmap optimization is enabled for DAX, the nr_memmap_pages
+>> counter in /proc/vmstat is incorrect. The current code always =
+accounts
+>> for the full, non-optimized vmemmap size, but vmemmap optimization
+>> reduces the actual number of vmemmap pages by reusing tail pages. =
+This
+>> causes the system to overcount vmemmap usage, leading to inaccurate
+>> page statistics in /proc/vmstat.
+>>=20
+>> Fix this by introducing section_nr_vmemmap_pages(), which returns the =
+exact
+>> vmemmap page count for a given pfn range based on whether =
+optimization
+>> is in effect.
+>>=20
+>> Fixes: 15995a352474 ("mm: report per-page metadata information")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>> Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+>> Acked-by: Oscar Salvador <osalvador@suse.de>
+>> ---
+>> v6 -> v7:
+>> - Refine the alignment assertions in section_nr_vmemmap_pages().
+>> ---
+>> mm/sparse-vmemmap.c | 34 ++++++++++++++++++++++++++++++----
+>> 1 file changed, 30 insertions(+), 4 deletions(-)
+>>=20
+>> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
+>> index 3340f6d30b01..01f448607bad 100644
+>> --- a/mm/sparse-vmemmap.c
+>> +++ b/mm/sparse-vmemmap.c
+>> @@ -652,6 +652,31 @@ void offline_mem_sections(unsigned long =
+start_pfn, unsigned long end_pfn)
+>> }
+>> }
+>>=20
+>> +static int __meminit section_nr_vmemmap_pages(unsigned long pfn, =
+unsigned long nr_pages,
+>> + 		struct vmem_altmap *altmap, struct dev_pagemap *pgmap)
+>> +{
+>> + 	const unsigned int order =3D pgmap ? pgmap->vmemmap_shift : 0;
+>> + 	const unsigned long pages_per_compound =3D 1UL << order;
+>> +
+>> + 	VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages, =
+PAGES_PER_SUBSECTION));
+>> +
+>> + 	if (!vmemmap_can_optimize(altmap, pgmap))
+>> + 		return DIV_ROUND_UP(nr_pages * sizeof(struct page), =
+PAGE_SIZE);
+>> +
+>> + 	if (order < PFN_SECTION_SHIFT) {
+>> + 		VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages, =
+pages_per_compound));
+>> + 		return VMEMMAP_RESERVE_NR * nr_pages / =
+pages_per_compound;
+>> + 	}
+>> +
+>> + 	VM_WARN_ON_ONCE(!IS_ALIGNED(pfn | nr_pages, PAGES_PER_SECTION));
+>> + 	VM_WARN_ON_ONCE(nr_pages > PAGES_PER_SECTION);
+>=20
+> I would just have done that at the very top, as this check applies to =
+all cases.
 
-Here is the summary with links:
-  - [v3] ibmveth: Disable GSO for packets with small MSS
-    https://git.kernel.org/netdev/net/c/cc427d24ac64
+My initial reasoning was that the current formula holds for compound =
+pages smaller
+than the section size, and we only need to impose limits when the page =
+size exceeds
+it. While the current callers of section_nr_vmemmap_pages() don't pass =
+sizes larger
+than a section, this will change in the future (see [1]).
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+I might have been overthinking the future-proofing, which led to this =
+specific
+implementation. However, I=E2=80=99m inclined to keep it as is for now, =
+as I'll be updating
+that series [1] soon and it will involve further changes to =
+section_nr_vmemmap_pages().
+That said, I'd love to hear your thoughts before I proceed.
+
+[1] =
+https://lore.kernel.org/linux-mm/20260405125240.2558577-43-songmuchun@byte=
+dance.com/
+
+
+>=20
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+
+Thanks.
+
+>=20
+> --=20
+> Cheers,
+>=20
+> David
 
 
 
