@@ -1,182 +1,114 @@
-Return-Path: <stable+bounces-241761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241762-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cJyXM54F8WnhbwEAu9opvQ
-	(envelope-from <stable+bounces-241761-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 21:08:14 +0200
+	id cKULFtwF8WnhbwEAu9opvQ
+	(envelope-from <stable+bounces-241762-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 21:09:16 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57D3B48B05B
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 21:08:14 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2C7948B083
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 21:09:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 91BC1301DD55
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 19:08:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BB7AA301D6B7
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 19:09:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2CF237A4BA;
-	Tue, 28 Apr 2026 19:08:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 280E537C114;
+	Tue, 28 Apr 2026 19:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="bz8Ohetp";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="dRrYb6BQ";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="bz8Ohetp";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="dRrYb6BQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J9YdESbZ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BD3F24501D
-	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 19:08:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE8AB254AFF;
+	Tue, 28 Apr 2026 19:09:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777403290; cv=none; b=osgDeuV/C39EW1JI12jc9avmkZI0TR04aRojIuKqmvKpCSQVx37R4cCYTTTkcs2BZRhMMlnnY0227/s14swxsfpFF027zK7jzgzbdD3/6ADyY5r4g8uMWMOziAp2MOnUjZ94Cc6fbPAQPdi3FjPIpYnX4gffK3WI8Gy4S8WPqn8=
+	t=1777403347; cv=none; b=cwl5ydFASpgj72AkC2c/jERfjNfbyBkHKZWKizE1aEmHYXUOjv/KeI1Kdd7BzVhNgtVdCRffnVl0Yw4R0Zm5pIxdTMZxlXmGtAEyrg5V+rUmVrWRziGgzs7uOJX8o3CPc3GcAoejhTB6XynJIVZCoNMHAPo5y8JXhHyc+2xQ4J8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777403290; c=relaxed/simple;
-	bh=vDYbisShlZu3xsHr9SJL/eEMPFxKthreJm7dw8zCnvE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=UmmHvHtgejvFJQ+dZxYTbzuHxoDXZkJeALn2FLeHHNTpQm/rZ3mA7QwcJY4afpXe+1uWGokAS+DfHYLghzocxSw1qHaGSgGo1dShrF6T+20gXbs+5PzQllZ0UcVFXN5YAd4P7R/V6u40ryO1PopINzU6S/D7CN+Cw2YM8c+t6FI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=bz8Ohetp; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=dRrYb6BQ; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=bz8Ohetp; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=dRrYb6BQ; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 630EF6A852;
-	Tue, 28 Apr 2026 19:08:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1777403283; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1kmdWqRhdkfCXWo+kNwp1GaHefjzoG8oGsnr/hJcXbA=;
-	b=bz8OhetpRpDIMdi/8tD1OdVp7mhKn1jtfx+jQNyqLDRhJFxqduVOxGuZfpMt4lmSD6jO8B
-	1yjFBR73YDgQgKNG/q65gg933ph1dPKooLGgdNmiNKiHq0t0Lt4s5QXpRU510ECVMK4ZtQ
-	iXbfm6D59HyjoIlHmERTRQZGK6Zlp1Q=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1777403283;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1kmdWqRhdkfCXWo+kNwp1GaHefjzoG8oGsnr/hJcXbA=;
-	b=dRrYb6BQuYqH75RJLnfstG/H9O3INPP1psiEuV59qU2Fqbky0CKpZ3lSVaXu2ATJTb2k1J
-	kfrvailCKCFlKBDw==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=bz8Ohetp;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=dRrYb6BQ
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1777403283; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1kmdWqRhdkfCXWo+kNwp1GaHefjzoG8oGsnr/hJcXbA=;
-	b=bz8OhetpRpDIMdi/8tD1OdVp7mhKn1jtfx+jQNyqLDRhJFxqduVOxGuZfpMt4lmSD6jO8B
-	1yjFBR73YDgQgKNG/q65gg933ph1dPKooLGgdNmiNKiHq0t0Lt4s5QXpRU510ECVMK4ZtQ
-	iXbfm6D59HyjoIlHmERTRQZGK6Zlp1Q=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1777403283;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1kmdWqRhdkfCXWo+kNwp1GaHefjzoG8oGsnr/hJcXbA=;
-	b=dRrYb6BQuYqH75RJLnfstG/H9O3INPP1psiEuV59qU2Fqbky0CKpZ3lSVaXu2ATJTb2k1J
-	kfrvailCKCFlKBDw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0E39C593B0;
-	Tue, 28 Apr 2026 19:08:02 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id wNbRMZIF8WkGQAAAD6G6ig
-	(envelope-from <krisman@suse.de>); Tue, 28 Apr 2026 19:08:02 +0000
-From: Gabriel Krisman Bertazi <krisman@suse.de>
-To: Jens Axboe <axboe@kernel.dk>
-Cc: io-uring@vger.kernel.org,  Martin Michaelis <code@mgjm.de>,
-  stable@vger.kernel.org
-Subject: Re: [PATCH 2/2] io_uring/kbuf: support min length left for
- incremental buffers
-In-Reply-To: <7645db80-8a8a-4ed6-9a3a-f2406cf93322@kernel.dk> (Jens Axboe's
-	message of "Tue, 28 Apr 2026 12:02:34 -0600")
-References: <20260428154557.2150818-1-axboe@kernel.dk>
-	<20260428154557.2150818-3-axboe@kernel.dk>
-	<87ik9bj7jt.fsf@mailhost.krisman.be>
-	<7645db80-8a8a-4ed6-9a3a-f2406cf93322@kernel.dk>
-Date: Tue, 28 Apr 2026 15:08:01 -0400
-Message-ID: <877bpqkini.fsf@mailhost.krisman.be>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=arc-20240116; t=1777403347; c=relaxed/simple;
+	bh=ocJvvASwHJXGqul5EgVMznwfHwqEfsA0HFGUJW80Gbo=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=BaSjVeECmSf4nplo15ozfINc7TXyCxLJ1GZTovOMdTlOtf/NlgCL7a/GTtTCf7TBrgcAwD6tEEfS5+p1DzHA1FI66Q2Fs2mqYOTtQcfAxDMxuJXH+wt/OkwvBFbpt5N084iX2A6NkQkfXBPMIhyYPYSLD1IfbeXHWt5jH3g9RxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J9YdESbZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B3B1C2BCAF;
+	Tue, 28 Apr 2026 19:09:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777403347;
+	bh=ocJvvASwHJXGqul5EgVMznwfHwqEfsA0HFGUJW80Gbo=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=J9YdESbZ8b+YWTUZVJ53AXLW+iid7Zo9EUOeH4lFEPaiCtFI4pdmx/Vt7XTl6z4Ur
+	 8tFs8+ozDNaVQkZQyobWuh8qILBC6mk931e2uKV9XvyupSu+3agFdKnn5GGtalrWdr
+	 S0MG65LNK5u+dkpR2r53VI1/cDwVGFkVkvolXpuo3AJwhsstgRr+Umhs7CC27h1ZiV
+	 6nR67VmX7tlkzhMdyH+hpSqrdZrRbT6j3PLGm7FEwmFDqT99706+Im1A4IxMV6TVKv
+	 0ZTvjIdIu1icYbQYuQTbLoIKoCQrKkoXolByum5yC8BT5q2MPpF7q/UEo2D36EZtsq
+	 CpO2TZKKrbHwA==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Flag: NO
-X-Spam-Score: -4.51
-X-Spam-Level: 
-X-Rspamd-Queue-Id: 57D3B48B05B
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 28 Apr 2026 21:09:04 +0200
+Message-Id: <DI50WG9XK1I4.1R6DXSZSWFRDC@kernel.org>
+Subject: Re: [PATCH] driver core: reject devices with unregistered buses
+Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J . Wysocki"
+ <rafael@kernel.org>, <driver-core@lists.linux.dev>,
+ <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+To: "Johan Hovold" <johan@kernel.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260427102852.2174-1-johan@kernel.org>
+In-Reply-To: <20260427102852.2174-1-johan@kernel.org>
+X-Rspamd-Queue-Id: E2C7948B083
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-241761-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-241762-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[krisman@suse.de,stable@vger.kernel.org];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_FIVE(0.00)[6];
-	DKIM_TRACE(0.00)[suse.de:+];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dakr@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,suse.de:dkim,suse.de:email,kernel.dk:email]
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-Jens Axboe <axboe@kernel.dk> writes:
-
->> Honest question, isn't this a property of the specific operation and/or
->> fd being operated, instead of the buffer_reg?
+On Mon Apr 27, 2026 at 12:28 PM CEST, Johan Hovold wrote:
+> Trying to register a device on a bus which has not yet been registered
+> used to trigger a NULL-pointer dereference, but since the const bus
+> structure rework registration instead succeeds without the device being
+> added to the bus.
 >
-> It kind of is, in that some users may not care. But it's not currently
-> possible to pass this in on a per-op basis, and while I did hack that
-> up initially, it's almost impossible as you end up with layering
-> violations. In practice, this is really mostly a recvmsg multishot
-> issue, because we need to store the headers. Hence the solution to
-> stuff it in the io_uring_buf_reg instead, and make it a fixed property
-> of the buffer group. In practice, you may even want a larger min_left
-> than what the recvmsg requires, as you don't want a tiny truncated
-> transfer at the end, regardless of what type of recv or read operation
-> this is. Hence it works generically as well.
+> Reject devices with unregistered buses to catch any callers that get
+> the ordering wrong and to handle bus registration failures more
+> gracefully.
 >
-> Also see the linked GH issue, that's where most of the discussion
-> around this have happened already.
->
->>> -		if (buf_len || !this_len) {
->>> +		if (buf_len > bl->min_left_sub_one || !this_len) {
->> 
->> Cosmetic, but perhaps store min_left_sub_one instead of min_left itself? the
->> buf_len must be >= min_left, and that is easier to read.  (buf_len &&
->> buf_len >= min_left || !this_len)
->
-> Also see GH issue.
+> Fixes: 5221b82d46f2 ("driver core: bus: bus_add/probe/remove_device() cle=
+anups")
+> Cc: stable@vger.kernel.org	# 6.3
 
-Ack. Thanks.  Feel free to add:
-
-Reviewed-by: Gabriel Krisman Bertazi <krisman@suse.de>
-
-
--- 
-Gabriel Krisman Bertazi
+Hm...this sounds like hardening and not like a "real" bug fix. Do you have =
+a
+specific reason why you added Cc: stable?
 
