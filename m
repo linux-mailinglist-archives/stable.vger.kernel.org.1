@@ -1,243 +1,195 @@
-Return-Path: <stable+bounces-241683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241684-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QPpUIDDI8GmfYgEAu9opvQ
-	(envelope-from <stable+bounces-241683-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 16:46:08 +0200
+	id mOfsATPP8GnDYwEAu9opvQ
+	(envelope-from <stable+bounces-241684-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 17:16:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD93D487449
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 16:46:07 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2650487A6C
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 17:16:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 040FE30C5AAE
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 14:40:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9498A310AE2B
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 14:49:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 544C53FF8AE;
-	Tue, 28 Apr 2026 14:39:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="pwtNgqKY"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD52C43DA4F;
+	Tue, 28 Apr 2026 14:49:13 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011028.outbound.protection.outlook.com [52.101.52.28])
+Received: from mail-m1973176.qiye.163.com (mail-m1973176.qiye.163.com [220.197.31.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4470F436362;
-	Tue, 28 Apr 2026 14:39:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.28
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777387189; cv=fail; b=MtX+qVtnqHsVreV96CYmmDR/7s2S/W/uzSP+66xDk6vlcfXotHOdZCgJ+xvPX1S7+rBbzucb2HyGBFx8jZZusjJ2VCTwkjlAwlNjnCPCZJQKJKXonm7xSc5nTSmrDkhF1VPWtTi48tdQhhXA5DQ34RePJ9IuU3e80jlSyLtkgGM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777387189; c=relaxed/simple;
-	bh=rIC1RkoQGIXVcGABtAUsqmO7PgErAhucmAF8V5dEPUY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=ix7JHXlntUdTrYPwVTkPOYoYW16OU3G1zw50StGkbuZPJVz4ls1Z7sND9qzidKT0cJXxdYPIdeV1Astuo9BBNyHyckXP5flzM8FnkTTAy8U7oqOm2xXnkrzgpASQyp6a+wpfhprYZJBPqm85iIaNENrXRYngkVzc/oYV4J9Ga48=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=pwtNgqKY; arc=fail smtp.client-ip=52.101.52.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tePwR9U17f9AuUy4Bxr2RmGBuDAjcd9HkWDJ+Oxj5UsYbsWalg14tXQNlhEZpLaDoasbHQIAxNSXB0PE8pg9hDQJFR9Pv4ooFyUSIP6EdbQxtTfS29l770DuQkHv7z27WZ4zEn/LWEleI++nWzGXeKA8qKkBpxHdanzZa2br9fsw5Xig5n7pImg4rz5Gze5KKXY6F66mU7OiSs8shBzA0l4XEmuxdUnCYDub7wfKMz54SJc61NGrMv7FL4zhW64Ck+cWhFANxEEqolb1cKfT2sD08uspFWmqSr3NKiwL3pIt2XkYtkmW1rMLJdmdjxB+vry39Fpo6tVUhh1Y7HwnsQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=C71Wv8vG4SsAfmDqlChLrv5cHLdjsOiT90nc5eI7vL8=;
- b=ssyXinrPxD2lOnXk4bbKbf+/WA31DY/Y2eMca5+az5ePLPBqwdVr2w71qfM/SdulMptdoksCwkeSS7oyGz00BBzQgxauOw//EBcw6j8QxoN5uWxhiy/W98HaA2jPHCENMWWo1zEekuUbc9wyk2c4sul+p8Zags5XHAf45USFUKn5ld/CvgnpiU31Sc5jAzTpu4F3aaav1rue2LPTCjAy8dugddM3GtgbHdhjr5jg817Vd8nPvCTR5F5Buh+sS/oMA9wQizN11sNpX2S5EMaD2bWquXsDHQLoNMIWyho9vtwOM/o1M0sdRXl7BpXAOioVdOVFF5Zs1oLIPDsTFrBUUw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=C71Wv8vG4SsAfmDqlChLrv5cHLdjsOiT90nc5eI7vL8=;
- b=pwtNgqKYMEhCfx2sgti02+1TJkJo5r6nj5Lo/m3n1yVFCpqrQnwFroNhBM9CSC/PApXhAOz1lhkynA6XVikDTru+Fy1xy0xXc5qnGMjL/Ig8usPfSR47gFeO2PJhGYmccBatqjzmWcNyJZy2bvjfgkuFOsx+lkPzwTDP9JAzhnRcuVixfyqJVjp2ki3nz0W6tDRDQU22stJq47hHHpKQ+3yyjIJzfTIydhrIySTiBV8Bot2X4lHaJ23htGl3Hj9iaFpYpFBQrEw1dFvSGebu5kYzLSk/KKHsqO48KZfqhPo4lbSNjGr/SS7P0vDMzTNZLNED4agUlRlVVx8Q78f0BQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
- by DS5PPF5A66AFD1C.namprd12.prod.outlook.com (2603:10b6:f:fc00::64d) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.21; Tue, 28 Apr
- 2026 14:39:38 +0000
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528%5]) with mapi id 15.20.9870.013; Tue, 28 Apr 2026
- 14:39:38 +0000
-Date: Tue, 28 Apr 2026 11:39:37 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Michael Bommarito <michael.bommarito@gmail.com>
-Cc: Leon Romanovsky <leon@kernel.org>, Zhu Yanjun <yanjun.zhu@linux.dev>,
-	hkbinbin <hkbinbinbin@gmail.com>, linux-rdma@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] RDMA/rxe: Reject unknown opcodes before ICRC
- processing
-Message-ID: <20260428143937.GA2655407@nvidia.com>
-References: <20260414111555.3386793-1-michael.bommarito@gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260414111555.3386793-1-michael.bommarito@gmail.com>
-X-ClientProxiedBy: CH0PR03CA0246.namprd03.prod.outlook.com
- (2603:10b6:610:e5::11) To LV8PR12MB9620.namprd12.prod.outlook.com
- (2603:10b6:408:2a1::19)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D48A643E498;
+	Tue, 28 Apr 2026 14:49:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.76
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777387753; cv=none; b=Nr3hwBUvCldEs0tQX77GYW4Wvmn2kH3cfCXvZtXqYjq/HjAOc120pQPBf9vGcrVagwfYw1C9lNgk/PWrsLFzIZO8H28pTpi099OD5xIRNRPvytCY4YtMhyEJJnYWmthg9uI5hcYjX+pvqQXj/srA0SQE3alaMf2o38nAuCJcIyY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777387753; c=relaxed/simple;
+	bh=7C2tT2XPsJ0tnqj+PNUNEghNWd4eaESITOn65UauzJA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=l6ymYdNzbfdH1jk8ha3uYk2D5/zKtDDHTAbGdoX3pz+C56JbKT06A2LdsB9b8KzCAPqXzZhCTrjPKAWndqBIwxFso2Uu906vsy1iuWJiGrL5JMieLHB5/P4Fn5FBIcr3jZJQcXWduDijSpRPkSCsJN1/w6YOtQvf7458b5teDoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=autochips.com; spf=pass smtp.mailfrom=autochips.com; arc=none smtp.client-ip=220.197.31.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=autochips.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=autochips.com
+Received: from [172.25.88.78] (unknown [223.244.89.246])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 3c7c38f73;
+	Tue, 28 Apr 2026 22:48:57 +0800 (GMT+08:00)
+Message-ID: <49e3cff9-9ace-4eed-aa2c-7f83825c44ee@autochips.com>
+Date: Tue, 28 Apr 2026 22:48:57 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|DS5PPF5A66AFD1C:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7542b4e1-c21b-46b0-e555-08dea533f977
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|56012099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	P9slo4mqA+v4EzDviSaJdQfuY4z6brSb6p9GpuD7Dll4b9nQzLFWzXwt9mXgWHJcGYPlHRzzgRUi+eA98ZDg4clQnydakDagU1mJPyuPKBcQ3e6VLxywDp65pmJpPWyYvEqeE3MIEnZqHjhhKnKXzJsLsX9kEtpLyGKbIiy5Yyy9x8CO4BsCzLSLlPUQFxZLHAK4C8qyvhIDrldPqapwjP7+6sW5Eym4C6GDWjulO9P3/kwreyAKcEKwBo5BL9aCaOMk1bx2lSn/Gi2ZK/rlrkvRzWzooVBpcDCsLVyh+RJ6+Qo7wa4I11BarRHMB0J+EsVPpZptEyHiOfBbrvubPI37tIR3R9F7rNvD0P9WuMQVQZSMXxw9RXB3GDuTCQwhwcBsWA6BeHIUuywA3qC1K/KcZ8tOVDcBDG7zwuRZS9LNz3RIn6C9CaeXUmfoEqmF0D3u+NSjgJ7KUFVMLqm13B2iU7FslonH740vdjsk4+Qiylv76b2t/bRXOCeHaridm2GEIyETsYSLUgd6IJ4PdVzoF5AjeFPlofbzwXS3cTBNlIZE1p1Tcxvthx4Nm+6CXQObzS7CGLpTAQ/7i9FSmIO9FJvi1C19h6Mab4jZIf6qcwVAhxeHkpEKKWTnQYDkJF4MTNIX84FQdGLWiJxfVfQGDrr34XShawD1LLuZ5XXbnL68X+GUvtUwlwfOLNx3nwqPmfDNkm7wrhemRHxv1YD4DngJIwmoXOvrpeJOp84=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?S/dMxElpJnlZ3hLdMCSXDTZfa+HLWINDaN4CCuR+tlJM5ctCCsqU6QVLf4Rs?=
- =?us-ascii?Q?YQLcU8fTOAu8iVqknewLRDToOl9ZIicNnPhtIXLYXu68Kr2eAcFPCtlK1Aks?=
- =?us-ascii?Q?pLR9urbfm8OrYjfLrYb9ErNAZc9nNISDmgybHXpbNrFL0GPybOLjnpcCw6/T?=
- =?us-ascii?Q?62GqeJNK+5j99bfd0PtJwYZnlxjryAK2T0sbafB5nL09BsfuF8+dtxai5dP9?=
- =?us-ascii?Q?d3svJ73qgYyE4HpwRytJ7jkWFwya6vYfJRWD+QYc0yD/zB/jk2TpoNrmv+kB?=
- =?us-ascii?Q?MAVIX8EVl04qFllNLdp8vlxPWCoXOPA7mFEWKPYZ3QPOvLzBIvv8i8rfw8dl?=
- =?us-ascii?Q?exu2rPigEog4y/QidSHFRQ+8jlX69SucvSOAjD6CB2RfcfxL+LowJ3PgolOp?=
- =?us-ascii?Q?/Gc54ScpfPO9B1UnvSWaiQoNHIkgGtmEU+jOIySrxZ0MsRv+2m3KA2HYnF6q?=
- =?us-ascii?Q?fKUc7rQrbj6ZV3gnAsPZtNAKTjhNF0Z++rwkS7urAPrYHEpJe/7lerFAASXm?=
- =?us-ascii?Q?FV6jx2822z1MGSmuqOgoMkFYtc18O9VE9iQuwTQVn9Zo1CkDyd+1pccIaTId?=
- =?us-ascii?Q?u91kGVdTnAsrVyuxX8HqdOt9rkBl3IgyUAT57ZWILy918mfuUfhkbUwO6Ifg?=
- =?us-ascii?Q?dnR7ev2L1WkHF2EbbdkC5Uwb61ektoCAOqcIPlEwW3bVhhkNzIWwxAxwO9E/?=
- =?us-ascii?Q?ZyzQpcigd0ICS8za1Br2xW+z9nSsiWE3PLLHpDxXCYP29yuSZr2+9CbLcYAN?=
- =?us-ascii?Q?WY3/IWERrMLkdcU+f7GXPwQPVr+DiQ1KqL+9lbJCwg0vnWdECcJ6OD9xfF1k?=
- =?us-ascii?Q?6RaNPVeezVkmQ6V9mENA34EQOsbICARhttWAW0B2URYJdLY4mu4cgJ7ywgG9?=
- =?us-ascii?Q?9bcn5rPACv+thbITBqW1RX4W37YFWMZWIeAwDUod2yvWK6z62WG9fuJbolSu?=
- =?us-ascii?Q?RL4yIpnfyk4UtC6sbMQGNfvPRoaAa2EJuxGosaci9CV6+ryVyZEUAqNr9XvJ?=
- =?us-ascii?Q?h/p/ZdTYgbN2bpMuTtnCyx27OH0ntdxNGjlZf5uLn+P21lZ6+yMyFtbTCa3V?=
- =?us-ascii?Q?GcT2x2Nr94smZTZ3recgIJ4tib8k2c+EPSN9WmTi4x56NVH6CMK1Dt0K87tP?=
- =?us-ascii?Q?jYJE+rTKPybtLRJPtVDl0bR2eecIpuY6lAp6ktXBvAO17GIGP4SGpJAtnepp?=
- =?us-ascii?Q?bDseUQyqpBpO5epRpmu0v9YLypX6nTLezTn256l+aBe5xKEhChLO2z9+/dZY?=
- =?us-ascii?Q?ZAIxqELtiatzCDvytpIERhwVVFKaSLW/vKAGLm1klLpDjA8v/84ycb9kZrb1?=
- =?us-ascii?Q?Ry6wn8SDBW35mfBltWW3KRhUCYb2oIyKX8PkaarKw2YVbUTVZ5pYcIgX9c88?=
- =?us-ascii?Q?exdubQU3V55cXcvfgI1B4iz8AORB+BlTti0v5KGzkXujVmOPVVsNLJ/qpvHe?=
- =?us-ascii?Q?6ynOFZZzNqzyOsBXOky6t2BcqAGVEX3hasl4kl7wAt21r78GMYdfja6oLSx6?=
- =?us-ascii?Q?YXnNPcwIeLZ35+ANK9brhSNZPg537SlYh0+BKAV5nm8sJeaAbsgTueR860L2?=
- =?us-ascii?Q?AGfH4kmEwCZMriZyINrsWeCOzBszxrBTPYcG7O5hCVhbap77PcfpoekSVZx1?=
- =?us-ascii?Q?POi0Dm1sEJeVU7bRq+oBwU+H6bF7wVk9YKaI+App0dGAg6RxAYvn2fIA9u78?=
- =?us-ascii?Q?ZpqqESwcrQKNhckTb0zizHMD2PMu5N22W4wlW2cSuMHTtwAU?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7542b4e1-c21b-46b0-e555-08dea533f977
-X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Apr 2026 14:39:38.3064
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: xvClVSnN7+QuKnGuI5/01EmHQfO0Uz8s8uUlJb0mggqpyhOyYrWr1B/dPeMoitAk
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS5PPF5A66AFD1C
-X-Rspamd-Queue-Id: CD93D487449
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] usb: cdns3: gadget: fix request skipping after clearing
+ halt
+To: Pawel Laszczak <pawell@cadence.com>,
+ "Peter Chen (CIX)" <peter.chen@kernel.org>
+Cc: "rogerq@kernel.org" <rogerq@kernel.org>,
+ "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+ "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <20260423160601.2949010-1-yongchao.wu@autochips.com>
+ <ae66WphA+lO6t3rE@nchen-desktop>
+ <PH7PR07MB9538E83DB108635EAE7B21E3DD362@PH7PR07MB9538.namprd07.prod.outlook.com>
+ <ae/qXIT19Z2zWsDs@nchen-desktop>
+ <e963d293-63cd-4124-9a53-8fc16e44ec72@autochips.com>
+ <PH7PR07MB95388984DB7A5265770CEE58DD372@PH7PR07MB9538.namprd07.prod.outlook.com>
+Content-Language: en-US
+From: Yongchao Wu <yongchao.wu@autochips.com>
+In-Reply-To: <PH7PR07MB95388984DB7A5265770CEE58DD372@PH7PR07MB9538.namprd07.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-HM-Tid: 0a9dd490928303ackunmd1caf043686ad8
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlCSktDVksZT0pLTEsfS0lJGVYVFA
+	kWGhdVEwETFhoSFyQUDg9ZV1kYEgtZQVlJSUhVSU9PVUNCVUlPTVlXWRYaDxIVHRRZQVlPS0hVSk
+	tJT09PSFVKS0tVSkJLS1kG
+X-Rspamd-Queue-Id: E2650487A6C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
-	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+X-Spamd-Result: default: False [0.04 / 15.00];
+	DMARC_POLICY_QUARANTINE(1.50)[autochips.com : SPF not aligned (relaxed), No valid DKIM,quarantine];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[kernel.org,linux.dev,gmail.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-241683-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-241684-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[Nvidia.com:+];
-	MISSING_XM_UA(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jgg@nvidia.com,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[yongchao.wu@autochips.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-0.954];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	R_DKIM_NA(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,Nvidia.com:dkim,linux.dev:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 
-On Tue, Apr 14, 2026 at 07:15:55AM -0400, Michael Bommarito wrote:
-> Even after applying commit 7244491dab34 ("RDMA/rxe: Validate pad and ICRC
-> before payload_size() in rxe_rcv"), a single unauthenticated UDP packet
-> can still trigger panic.  That patch handled payload_size() underflow
-> only for valid opcodes with short packets, not for packets carrying an
-> unknown opcode.  The unknown-opcode OOB read described below
-> predates that commit and reaches back to the initial Soft RoCE driver.
+On 4/28/2026 5:58 PM, Pawel Laszczak wrote:
 > 
-> The check added there reads
+>>
+>> On 26-04-27 09:01:47, Pawel Laszczak wrote:
+>>>>
+>>>>
+>>>> On 26-04-24 00:06:01, Yongchao Wu wrote:
+>>>>> According to the cdns3 datasheet, the EPRST (Endpoint Reset) command
+>>>>> causes the DMA engine to reposition its internal pointer to the next
+>>>>> Transfer Descriptor (TD) if it was already processing one.
+>>>>>
+>>>>> This issue is consistently observed during the ADB identification
+>>>>> process on macOS hosts, where the host issues a Clear_Halt. Although  
+>>>>> commit 4bf2dd65135a ("usb: cdns3: gadget: toggle cycle bit before   reset
+>>>>> reset endpoint") attempted to avoid DMA advance by toggling the cycle bit,
+>>>>> trace logs show that on certain hosts like macOS, the DMA pointer  
+>>>>> (EP_TRADDR) still shifts after EPRST:
+>>>>>
+>>>>>    cdns3_ctrl_req: Clear Endpoint Feature(Halt ep1out)
+>>>>>    cdns3_doorbell_epx: ep1out, ep_trbaddr f9c04030  <- Should be f9c04000
+>>>>>    cdns3_gadget_giveback: ep1out: req: ... length: 16384/16384
+>>>>>
+>>>>> As shown above, the DMA pointer jumped to index 3 (offset 0x30),  
+>>>>> causing the controller to skip the initial TRBs of the request. This  
+>>>>> leads to data misalignment and ADB protocol hangs on macOS.
+>>>>
+>>>> Pawel, Is it a hardware issue? The cycle bit has already been toggled before the  
+>>>> endpoint has been reset, why the DMA pointer still advances?
+>>>
+>>> Yongchao, could you confirm if the TD consists of three TRBs?
+>> In our case, each TD consists of 4 TRBs.
+>> The DMA pointer appears to advance within the same TD after EPRST.
+>>
+>> Each 16KB request is split into 4 TRBs (4KB each):
+>> - TRB0 - TRB2: CHAIN
+>> - TRB3: IOC (last TRB of the TD)
+>>
+>> After enqueue, the initial EP_TRADDR points to the first TRB:
+>>    EP_TRADDR = 0xf9c04000 (TRB0)
+>>
+>> After Clear_Halt (EPRST), it becomes:
+>>    EP_TRADDR = 0xf9c04030 (TRB3)
+>>
+>> Since each TRB is 12 bytes, the offset 0x30 corresponds to 4 TRBs.
+>> This indicates that after EPRST, the DMA pointer skipped the entire current
+>> Request and jumped directly to the start of the next Request at 0xf9c04030
+>>
+>> Below is the relevant trace (trimmed):
+>>
+>> // enqueue request (16KB -> 4 TRBs)
+>> cdns3_prepare_trb: dma buf: 0xf7abc000, size: 4096, ctrl: 0x00200415
+>> cdns3_prepare_trb: dma buf: 0xf7abd000, size: 4096, ctrl: 0x00000415
+>> cdns3_prepare_trb: dma buf: 0xf7abe000, size: 4096, ctrl: 0x00000415
+>> cdns3_prepare_trb: dma buf: 0xf7abf000, size: 4096, ctrl: 0x00000425
+>>
+>> cdns3_doorbell_epx: ep1out, ep_trbaddr f9c04000
+>>
+>> // Clear_Halt
+>> cdns3_ctrl_req: Clear Endpoint Feature(Halt ep1out)
+>> cdns3_doorbell_epx: ep1out, ep_trbaddr f9c04030
+>>
 > 
->     pkt->paylen < header_size(pkt) + bth_pad(pkt) + RXE_ICRC_SIZE
-> 
-> where header_size(pkt) expands to rxe_opcode[pkt->opcode].length.  The
-> rxe_opcode[] array has 256 entries but is only populated for defined IB
-> opcodes; any other entry (for example opcode 0xff) is zero-initialized,
-> so length == 0 and the check degenerates to
-> 
->     pkt->paylen < 0 + bth_pad(pkt) + RXE_ICRC_SIZE
-> 
-> which does not constrain pkt->paylen enough.  rxe_icrc_hdr() then
-> computes
-> 
->     rxe_opcode[pkt->opcode].length - RXE_BTH_BYTES
-> 
-> which underflows when length == 0 and passes a huge value to
-> rxe_crc32(), causing an out-of-bounds read of the skb payload.
-> 
-> Reproduced on v7.0-rc7 with that fix applied, QEMU/KVM with
-> CONFIG_RDMA_RXE=y and CONFIG_KASAN=y, after
-> 
->     rdma link add rxe0 type rxe netdev eth0
-> 
-> A single 48-byte UDP packet to port 4791 with BTH opcode=0xff and
-> QPN=IB_MULTICAST_QPN triggers:
-> 
->     BUG: KASAN: slab-out-of-bounds in crc32_le+0x115/0x170
->     Read of size 1 at addr ...
->     The buggy address is located 0 bytes to the right of
->      allocated 704-byte region
->     Call Trace:
->      crc32_le+0x115/0x170
->      rxe_icrc_hdr.isra.0+0x226/0x300
->      rxe_icrc_check+0x13f/0x3a0
->      rxe_rcv+0x6e1/0x16e0
->      rxe_udp_encap_recv+0x20a/0x320
->      udp_queue_rcv_one_skb+0x7ed/0x12c0
-> 
-> Subsequent packets with the same shape fault on unmapped memory and
-> panic the kernel.  The trigger requires only module load and
-> "rdma link add"; no QP, no connection, and no authentication.
-> 
-> Fix this by rejecting packets whose opcode has no rxe_opcode[] entry,
-> detected via the zero mask or zero length, before any length
-> arithmetic runs.
-> 
-> Fixes: 8700e3e7c485 ("Soft RoCE driver")
-> Cc: stable@vger.kernel.org
-> Assisted-by: Claude:claude-opus-4-6
-> Signed-off-by: Michael Bommarito <michael.bommarito@gmail.com>
-> Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-> ---
-> v2: also check rxe_opcode[].length per Zhu Yanjun; "||" rather than
->     "&&" so the guard tracks the actual underflow in rxe_icrc_hdr().
+> Can you confirm whether the host had already sent some data for this TD
+> prior to the endpoint reset operation?
 >
-> v1 was sent privately to security@kernel.org.
+
+I confirm that the host sent no data prior to or during the EPRST operation.
+
+TotalPhase Trace:
+0,HS,2700,0:06.078.671,2.057.666 ms,0 B,,13,00,Set Configuration,Configuration=1
+0,HS,2710,0:06.080.811,1.125.266 ms,,,,,[10 SOF],[Frames: 1243.7 - 1245.0]
+0,HS,2711,0:06.080.955,992.550 us,2 B,,13,00,Get String Descriptor,Index=5 Length=2
+0,HS,2733,0:06.082.061,125.083 us,,,,,[2 SOF],[Frames: 1245.1 - 1245.2]
+0,HS,2734,0:06.082.119,104.566 us,28 B,,13,00,Get String Descriptor,Index=5 Length=28
+0,HS,2756,0:06.082.311,355.935.283 ms,,,,,[2848 SOF],[Frames: 1245.3 - 1601.2]
+0,HS,2757,0:06.438.196,105.033 us,4 B,,13,00,Get String Descriptor,Index=0 Length=256
+0,HS,2778,0:06.438.371,875.233 us,,,,,[8 SOF],[Frames: 1601.3 - 1602.2]
+//1. Host issues Clear_Halt
+0,HS,2779,0:06.439.278,51.433 us,0 B,,13,00,Clear Endpoint Feature,Halt Endpoint 01 OUT
+0,HS,2789,0:06.439.371,500.150 us,,,,,[5 SOF],[Frames: 1602.3 - 1602.7]
+0,HS,2790,0:06.439.874,51.416 us,0 B,,13,00,Clear Endpoint Feature,Halt Endpoint 01 IN
+0,HS,2800,0:06.439.996,250.116 us,,,,,[3 SOF],[Frames: 1603.0 - 1603.2]
+//2. First OUT transaction happens
+0,HS,2801,0:06.440.350,1.066 us,24 B,,13,01,OUT txn,43 4E 58 4E 01 00 00 01 00 00 10 00..
+0,HS,2805,0:06.440.371,66 ns,,,,,[1 SOF],[Frame: 1603.3]
+0,HS,2806,0:06.440.453,4.283 us,218 B,,13,01,OUT txn,68 6F 73 74 3A 3A 66 65 61 74 75 72..
+
+> Pawel
 > 
->  drivers/infiniband/sw/rxe/rxe_recv.c | 11 +++++++++++
->  1 file changed, 11 insertions(+)
+>> Best regards,
+>> Yongchao
+>> Best regards,
+>> Yongchao
 
-Applied to rc thanks
-
-Jason
 
