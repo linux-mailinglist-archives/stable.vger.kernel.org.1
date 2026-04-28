@@ -1,174 +1,137 @@
-Return-Path: <stable+bounces-241516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241519-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oM8mHl2E8GlwUQEAu9opvQ
-	(envelope-from <stable+bounces-241516-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 11:56:45 +0200
+	id yN1iHzp98GkaUAEAu9opvQ
+	(envelope-from <stable+bounces-241519-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 11:26:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B933481FE5
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 11:56:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAAF24815DB
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 11:26:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0D7C73179CC9
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 09:18:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A10D132177FC
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 09:19:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD70F2EDD7D;
-	Tue, 28 Apr 2026 09:17:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACE56243951;
+	Tue, 28 Apr 2026 09:19:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="kUgg7TRV";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="PvulbjN4";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="kUgg7TRV";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="PvulbjN4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BufhYfE1"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 328452E2852
-	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 09:17:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 034F333DEE9
+	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 09:19:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777367843; cv=none; b=Cs+E56dS1aUdIntRVU4m52gRDsnxyb+NFvzSJHRZGMbO3EFc/xiZ/F7WLNIse3/ba13Us2xcVf8jb/hYEaWQc+cAqIbx0M93UgIoE42DD/4UfGdy/vBGdWUd/VEdYfKRvtxwEiewOodw2agUFaG4UNfIBllaor9bVHVKhRYFkPY=
+	t=1777367982; cv=none; b=nv5ZcnJNGsj13j9oncOXS+ON7KoQpjgBmvzY0qkZGw+6KSX5FJNY0P7jPDVsHoILPhXYtyCS76BNhL7e1GwXf2E70aQ2EQpc01yjLHYHyKuVoDKuALb4a+U5rmegy4pVTjmh6/urW6efDn6D8yQ2ZHxFbK9Dj5HjLWEJmi8Yhj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777367843; c=relaxed/simple;
-	bh=PA9fxKq7lxNskoryAjYyd3PLmeRKDI8bkansAKhg+Dw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E/mDuqjxREMNaod1fFV4ruQ59gmzQ5MAncErsvAo/zvq2lWg3qhR4t67BcWaNdP79N6UkK06Mk57/warqCm5yu28lCHfDwVGbf9DXb/XBlNvxNaOaKBcOn9lQILSdEtYB6UaWbNVe0mqAyA8fBL9bCDGW/PRH4zKVjunQ6z74o4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=kUgg7TRV; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=PvulbjN4; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=kUgg7TRV; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=PvulbjN4; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 7AD8F5BCD7;
-	Tue, 28 Apr 2026 09:17:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1777367840; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=adxW3bE/UIQhlebHqAzO4xAfXbzuOewNVGi1LVMnILU=;
-	b=kUgg7TRVOIvhvznpuoMH3QRC5b4qXvdbH9zq8EU0zh9DZEZ3iHH48TrwTops0UY3vsC9jK
-	CJs/XrSVUW2pRq0/HnB8oe30+REtCMWFyBNoNp+tMdC/Y9qPhHJ3JgmrDPTkX7Jt4BQOAw
-	bASmqtJMW6jff733Qv/IU29/QQ05ddE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1777367840;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=adxW3bE/UIQhlebHqAzO4xAfXbzuOewNVGi1LVMnILU=;
-	b=PvulbjN4QowOK2dqawYsA6yf4ixa0za3ASQd7XJZ9vDerVbkUEn3HuEc+x1VaKyjN/Sx7G
-	pyNk9z8KSSM0kCCA==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1777367840; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=adxW3bE/UIQhlebHqAzO4xAfXbzuOewNVGi1LVMnILU=;
-	b=kUgg7TRVOIvhvznpuoMH3QRC5b4qXvdbH9zq8EU0zh9DZEZ3iHH48TrwTops0UY3vsC9jK
-	CJs/XrSVUW2pRq0/HnB8oe30+REtCMWFyBNoNp+tMdC/Y9qPhHJ3JgmrDPTkX7Jt4BQOAw
-	bASmqtJMW6jff733Qv/IU29/QQ05ddE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1777367840;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=adxW3bE/UIQhlebHqAzO4xAfXbzuOewNVGi1LVMnILU=;
-	b=PvulbjN4QowOK2dqawYsA6yf4ixa0za3ASQd7XJZ9vDerVbkUEn3HuEc+x1VaKyjN/Sx7G
-	pyNk9z8KSSM0kCCA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C6FA7593B0;
-	Tue, 28 Apr 2026 09:17:19 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id YkB4Lh978Gl1ZwAAD6G6ig
-	(envelope-from <osalvador@suse.de>); Tue, 28 Apr 2026 09:17:19 +0000
-Date: Tue, 28 Apr 2026 11:17:14 +0200
-From: Oscar Salvador <osalvador@suse.de>
-To: Muchun Song <songmuchun@bytedance.com>
-Cc: David Hildenbrand <david@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Ying Huang <huang.ying.caritas@gmail.com>,
-	Dan Williams <djbw@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org,
-	linux-cxl@vger.kernel.org, driver-core@lists.linux.dev,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	muchun.song@linux.dev
-Subject: Re: [PATCH v2 3/3] drivers/base/memory: fix locking for poison
- accounting lookup
-Message-ID: <afB7Go7JqhIpjU5J@localhost.localdomain>
-References: <20260428085219.1316047-1-songmuchun@bytedance.com>
- <20260428085219.1316047-4-songmuchun@bytedance.com>
+	s=arc-20240116; t=1777367982; c=relaxed/simple;
+	bh=rAc/qiSZN94iSJ9KBgHr7Is1blSdGcd+uWk9k4LTuL4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=es5V0caV5ZGolXlOo7AcHWfgMxCpW17hQc79+lthDGJjYTraYxlZNhl1aAXAf5nYahtYsLC4EzdOHKcC5vos6OskO8KgcrMHO/crYgCrDDO3gv+LROFlEAV9EyEF2krx5EQOUE0ykylqqdZgHcd8e4P5bxpPCycFFcYCOu+IU3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BufhYfE1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06B11C2BCAF;
+	Tue, 28 Apr 2026 09:19:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777367981;
+	bh=rAc/qiSZN94iSJ9KBgHr7Is1blSdGcd+uWk9k4LTuL4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=BufhYfE1arqBX856JQ9INXNHhtzcICOOUha7mvHevEOIFJ+tZ5xF5xhM0bxEeycF6
+	 peLCKOgw6fTWZZ1DajbViJz9Ui6JcUkPSw7ZAlMwZuuJL6Fxlr5J80yiXZ5LUUH0MS
+	 g7ao9Tkjz1neHW1PaGgxlu9+vHAc2+TvAekk2fjAI/vzEcA6VwdCxnSER2zDyWTF+Q
+	 M+LfM08DvWiagLGWrjlxGQQHRLTph0cbwgOKCkXAHa6etWu+5UNWAarINhwfEy0kAa
+	 zwpQwhTJHlZXRTbpOCBPFGNJycaEOmGgQeaMhLEQ0gEJEC4aUmy9Twpmvu21a8DXpH
+	 asJzExMhmw/Eg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y] LoongArch: Add spectre boundry for syscall dispatch table
+Date: Tue, 28 Apr 2026 05:19:39 -0400
+Message-ID: <20260428091939.2488103-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026042749-drinkable-parsley-6732@gregkh>
+References: <2026042749-drinkable-parsley-6732@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260428085219.1316047-4-songmuchun@bytedance.com>
-X-Spam-Score: -2.80
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Rspamd-Queue-Id: 8B933481FE5
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: CAAF24815DB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-241516-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[kernel.org,linuxfoundation.org,linux-foundation.org,intel.com,gmail.com,huawei.com,kvack.org,vger.kernel.org,lists.linux.dev,linux.dev];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[suse.de:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[osalvador@suse.de,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-241519-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email,localhost.localdomain:mid,bytedance.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:email,loongson.cn:email]
 
-On Tue, Apr 28, 2026 at 04:52:19PM +0800, Muchun Song wrote:
-> memblk_nr_poison_inc() and memblk_nr_poison_sub() call
-> find_memory_block_by_id(), which requires device_hotplug_lock to
-> serialize the xarray lookup against memory block removal.
-> 
-> Take device_hotplug_lock around the lookup and nr_hwpoison update so
-> the memory block cannot disappear between xa_load() and get_device().
-> 
-> Fixes: 5033091de814 ("mm/hwpoison: introduce per-memory_block hwpoison counter")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-It might have made sense to join both patches? Anyway:
+[ Upstream commit 0c965d2784fbbd7f8e3b96d875c9cfdf7c00da3d ]
 
-Acked-by: Oscar Salvador <osalvador@suse.de>
+The LoongArch syscall number is directly controlled by userspace, but
+does not have a array_index_nospec() boundry to prevent access past the
+syscall function pointer tables.
 
+Cc: stable@vger.kernel.org
+Assisted-by: gkh_clanker_2000
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/loongarch/kernel/syscall.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
+diff --git a/arch/loongarch/kernel/syscall.c b/arch/loongarch/kernel/syscall.c
+index 3fc4211db9895..37442bceeec68 100644
+--- a/arch/loongarch/kernel/syscall.c
++++ b/arch/loongarch/kernel/syscall.c
+@@ -9,6 +9,7 @@
+ #include <linux/entry-common.h>
+ #include <linux/errno.h>
+ #include <linux/linkage.h>
++#include <linux/nospec.h>
+ #include <linux/syscalls.h>
+ #include <linux/unistd.h>
+ 
+@@ -54,7 +55,7 @@ void noinstr do_syscall(struct pt_regs *regs)
+ 	nr = syscall_enter_from_user_mode(regs, nr);
+ 
+ 	if (nr < NR_syscalls) {
+-		syscall_fn = sys_call_table[nr];
++		syscall_fn = sys_call_table[array_index_nospec(nr, NR_syscalls)];
+ 		regs->regs[4] = syscall_fn(regs->orig_a0, regs->regs[5], regs->regs[6],
+ 					   regs->regs[7], regs->regs[8], regs->regs[9]);
+ 	}
 -- 
-Oscar Salvador
-SUSE Labs
+2.53.0
+
 
