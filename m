@@ -1,157 +1,142 @@
-Return-Path: <stable+bounces-241668-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241669-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KHoRGkO98Gl0YAEAu9opvQ
-	(envelope-from <stable+bounces-241668-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 15:59:31 +0200
+	id gCAmOaO98Gl0YAEAu9opvQ
+	(envelope-from <stable+bounces-241669-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 16:01:07 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC2B748672C
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 15:59:30 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3FB6486769
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 16:01:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3B29D312D607
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 13:32:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 755B33264137
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 13:33:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78BAF47A0C0;
-	Tue, 28 Apr 2026 13:20:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4E2743C063;
+	Tue, 28 Apr 2026 13:24:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="SuCOgAS4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tlkFwXz0"
 X-Original-To: stable@vger.kernel.org
-Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD9A444BC91
-	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 13:20:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B23E42B720;
+	Tue, 28 Apr 2026 13:24:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777382450; cv=none; b=aP1TjTW0HygM95Ajk0X+NIQi9ozyd8uamyN5yO3Xv1zRag3jKGqA0kyW3AGrz8iPlYiaHnVginhnDUeCkt4FwSBSu4P9NdhZapOpazP+O35y3ju+tOW8EVe1U/fQgIfG0AG9Jpw2g38hjiwtuN1siT8pTvl5QOnJPI/pwbxqawE=
+	t=1777382694; cv=none; b=g4BiCn9q6h14gVBxTpBfFx1VaElQ1fx8KyeiPQChCXhBW1CcCovLyUOo8eiEsdyZXUYy5k/Pu+leRVitVwTsy8m8RZLyMVT4ZwrDvIyTCcI3rnSkdzi7c/v80Rs3OKNZqESu5r2hE3uRN5RvT4SOtNEe6px0Wb8CpGGNYM179HE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777382450; c=relaxed/simple;
-	bh=cjinaMZvasHvUbUuPqZKOoDMWlhhsn0nuiixHAz9ST8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WFOmGZ30VdqkLk5Q6BRs++zqDQNFxKZBssmYBWlqQzDotd/7oZwXv5gBX10C/JJ/QqEB4PRpc6mSGLRFgfyv1ceYlRV9cqJo/7aOPQ+6YZMTUadshcC/aGX/K9FH0dWhzmOfSiIrJi1bTtobD6mqtIFfjj7F1AxbfFeffcj6Spo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=SuCOgAS4; arc=none smtp.client-ip=95.215.58.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1777382445;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VQK83wzMxgtDx5zJs+rX80tqrYmQXtE7Gqa/54foH+M=;
-	b=SuCOgAS4NzrmxBcKqLQ638tD3V02Ag8mN8/0M7capcdVTyJsCDDgenQZtxQTB4AUTX4YIF
-	Zks1Lkqhz4DcxlukdWzarX/zlV6DV5yKyhodqiUSxXCOc2Noc/Xq71hZLkhOWE/kdIFcj4
-	vmBJt3djqbaM9XoBwIeaPLeZ8lXKk/w=
-From: Lance Yang <lance.yang@linux.dev>
-To: david@kernel.org
-Cc: dave.hansen@linux.intel.com,
-	luto@kernel.org,
-	peterz@infradead.org,
-	tglx@kernel.org,
-	mingo@redhat.com,
-	bp@alien8.de,
-	x86@kernel.org,
-	hpa@zytor.com,
-	rppt@kernel.org,
-	jgg@ziepe.ca,
-	baolu.lu@linux.intel.com,
-	akpm@linux-foundation.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	stable@vger.kernel.org,
-	Lance Yang <lance.yang@linux.dev>
-Subject: Re: [PATCH] x86/mm: fix freeing of PMD-sized vmemmap pages
-Date: Tue, 28 Apr 2026 21:20:25 +0800
-Message-Id: <20260428132025.86657-1-lance.yang@linux.dev>
-In-Reply-To: <20260428-vmemmap-v1-1-b2aa1e6db2c0@kernel.org>
-References: <20260428-vmemmap-v1-1-b2aa1e6db2c0@kernel.org>
+	s=arc-20240116; t=1777382694; c=relaxed/simple;
+	bh=Mbk7GJhzzHEOvI4/qFSYDMc92u86YKebUsjdgehgAuA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=c902Tt1ipplvLGHEpxbw1/WUbH0Jze0aw8sSFH4yJH4gnKo020nNqk/4B1RSpPlRDI/CLcTrstEnACDvezvyZBkiohKAAfTclF6SI5Ew+c1OhfFZyzMYrrqh3D2sxTlYEMemhEnW2JqGcUjJDjzMbdIz2/Qf6MTOjhwXjfIoXK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tlkFwXz0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40F96C2BCAF;
+	Tue, 28 Apr 2026 13:24:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777382694;
+	bh=Mbk7GJhzzHEOvI4/qFSYDMc92u86YKebUsjdgehgAuA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tlkFwXz0zkNo/cS4uLIzu8CJsJA+Gy7EPJmTOv8jt5oOyjTHBpxdBg+ZaeE9UJW95
+	 kedR9fTTgN57okQTaM4Gc8uQDIwuae5pRI41THfuXii83zd4ZVLFEn5m0mJVF/wx1u
+	 OrSWGzqHcpIgtX6u2SeJ2bvUOnBTjgRi/5ejvOR707E6dfieaBBIwSAbX2fRwVkJKM
+	 +eGjG0f1J/WooMr/yU+3UvUnNgeJn56Rj2h8JqMopfBiAYryhWKzBUWGhssSSbhaNI
+	 CzxgFSlNyfeaVsdXgnTgkN7Gdap15ZEOZarc9TcUkvhh1C5X/5RakRkAxFJHm0P5vX
+	 CO4oo/GbqRnmQ==
+Date: Tue, 28 Apr 2026 15:24:48 +0200
+From: Marek =?utf-8?B?QmVow7pu?= <kabel@kernel.org>
+To: Thorsten Blum <thorsten.blum@linux.dev>
+Cc: Marek =?utf-8?B?QmVow7pu?= <kabel@kernel.org>, 
+	Bill Cox <waywardgeek@gmail.com>, Herbert Xu <herbert@gondor.apana.org.au>, 
+	"David S. Miller" <davem@davemloft.net>, Nicolas Ferre <nicolas.ferre@microchip.com>, 
+	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+	Linus Walleij <linusw@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, stable@vger.kernel.org, 
+	linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] crypto: atmel-sha204a - drop hwrng quality reduction
+ for ATSHA204A
+Message-ID: <cbk4ho3bpprjxvcywv4sudbmb2fhfsgaguoywv5mhtoql4vhd6@f7oisxcrvii4>
+References: <20260428101430.514838-3-thorsten.blum@linux.dev>
+ <25ntssyy6t5uwxlwfpmrpzpcq6xv62l643hflf26hxi6lv5wqu@6vub6ysczjvd>
+ <afCo9PbDpTYeqGd4@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: BC2B748672C
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <afCo9PbDpTYeqGd4@linux.dev>
+X-Rspamd-Queue-Id: A3FB6486769
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241668-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[3];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-241669-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[17];
+	FREEMAIL_CC(0.00)[kernel.org,gmail.com,gondor.apana.org.au,davemloft.net,microchip.com,bootlin.com,tuxon.dev,vger.kernel.org,lists.infradead.org];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lance.yang@linux.dev,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linux.dev:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[kabel@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linux.dev:dkim,linux.dev:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[metzdowd.com:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
+Hi Thorsten,
 
-On Tue, Apr 28, 2026 at 12:29:36PM +0200, David Hildenbrand (Arm) wrote:
->In commit bf9e4e30f353 ("x86/mm: use pagetable_free()"), we switched
->from freeing non-boot page tables through __free_pages() to
->pagetable_free().
->
->However, the function is also called to free vmemmap pages.
->
->Given that vmemmap pages are not page tables, already the page_ptdesc(page)
->is wrong. But worse, pagetable_free() calls
->
->	__free_pages(page, compound_order(page));
->
->As vmemmap pages are not compound pages (see vmemmap_alloc_block()) --
->except for HVO, which doesn't apply here -- we will only free the first
->page when freeing a PMD-sized vmemmap page, leaking the other ones.
->
->Fix it by properly decoupling pagetable and vmemmap freeing.
->free_pagetable() no longer has to mess with SECTION_INFO, as only the
->vmemmap is marked like that in register_page_bootmem_memmap().
->
->While at it, just wire up the altmap parameter for remove_pte_table().
->Also, the indentation in remove_pmd_table() is messed up, let's fix that
->while touching it.
->
->Note that we'll try to get rid of that bootmem info handling soon. For
->now, we'll handle it similar to free_pagetable(), just avoiding the
->ifdef.
->
->Fixes: bf9e4e30f353 ("x86/mm: use pagetable_free()")
->Cc: stable@vger.kernel.org
->Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
->---
->Reproduced and tested with a simple VM with a virtio-mem device,
->repeatedly adding and removing memory.
->
->Found by code inspection while working on bootmem_info removal.
->---
+Bill also wrote about ATSHA204A [1]
 
-Cool! I just reproduced the leak with QEMU pc-dimm memory hotplug as
-well.
+  My best guess as to what's going on here is that the device has a
+  ring-oscillator based entropy source, but that it generates only a few bits
+  of entropy for each use.  It seems to be called before generating each
+  32-byte "random" value, which is why the second set of 32-bit values have
+  more possible values, and the 3rd has even more.  However, the number of
+  unique values in the final column of 32*N byte values is always equal to
+  the number of unique values of the entire string of bytes.
 
-Without the fix, nr_free_pages kept dropping after the hotplugged memory
-was removed again. With the fix applied, it stays stable over repeated
-add/remove cycles :)
+If this is true that the device generates <256 true random bits and then
+mixes in non-volatile pseudorandom number generator to produce 256 bits,
+then the quality should not be set to full 1024.
 
-Tested-by: Lance Yang <lance.yang@linux.dev>
+Marek
+
+[1] https://www.metzdowd.com/pipermail/cryptography/2014-December/023858.html
+
+On Tue, Apr 28, 2026 at 02:32:52PM +0200, Thorsten Blum wrote:
+>
+> Bill wrote in his review:
+> 
+>   "If I made no mistake (and I do make a lot), the "random" data from
+>    the Atmel ATSHA204A is highly predictable when you disable the seed
+>    update to EEPROM."
+> 
+> However, the atmel-sha204a driver doesn't operate the device in that
+> mode. It uses the Random command with seed updates enabled, which is
+> also what the datasheet recommends for highest security:
+> 
+>   "Microchip recommends that the EEPROM seed always be updated."
+> 
+> So the reported behavior doesn't reflect how the driver uses the device.
+> 
+> Thanks,
+> Thorsten
 
