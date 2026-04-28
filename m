@@ -1,232 +1,300 @@
-Return-Path: <stable+bounces-241501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241503-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cNLcJh938GkMTwEAu9opvQ
-	(envelope-from <stable+bounces-241501-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 11:00:15 +0200
+	id KIghEH998GlSUAEAu9opvQ
+	(envelope-from <stable+bounces-241503-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 11:27:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5904480C71
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 11:00:14 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9657548162E
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 11:27:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E2D3D302E23D
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 08:44:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6692D31E9C48
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 08:47:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF6923D5226;
-	Tue, 28 Apr 2026 08:44:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFA1F3D6CDF;
+	Tue, 28 Apr 2026 08:47:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="hPMiOmzB"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="L89Or5HD"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbgsg1.qq.com (smtpbgsg1.qq.com [54.254.200.92])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f227.google.com (mail-vk1-f227.google.com [209.85.221.227])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE8803D648F;
-	Tue, 28 Apr 2026 08:44:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.92
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B9BB3D6CB3
+	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 08:47:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.227
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777365859; cv=none; b=UZCtFetCHOYuXKhvcmnyf0DiSZyloFRu288Y2UtKOyntdl/zwbcX1+MSLT9HAW4Tkn313CHH0X2JtYjvdFHatQCxR1AlV69LtaCApfdbfmQk4Ns2oiPAr3jIXWP99a2OQkYULjEHFeB51qYmjezrymU9h4jjlmaBUy25h7pM2oA=
+	t=1777366070; cv=none; b=Tzoifc1hBPM/o9Ng/ja3YFg957leMoYrCfnQmTsB8NQ5ip10YN9tPu/7kcs9Y/kS2wxtiiRfTpZkq0kQuQhdq4qIVDoceEe/KSpaKqURCma1MAQnhRd3Yc+adeLMrSJlaVOuNbQop57aXqT22c48gq9QvGTO/I0TIG3iAqrvIds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777365859; c=relaxed/simple;
-	bh=4NW243t3fTVXITg+HuQlCuRN8e++wdGsyLxls9Fkl1E=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=bCeXcX3x6vwUKh8FJddUpDG6/2ARm580cV3ilMoLnd9mccNabVbR3Z5QJb/TqPpoEfIQTVljKRcfZ4a/ETwOtiiNindLh3VGAowb8a0QzHf/LsusaPRQ75uVW+T6fnJ+qXQ+pGjdYj84brRjHHbm/20DKUaDq1U7GN2P19l3KGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=hPMiOmzB; arc=none smtp.client-ip=54.254.200.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1777365806;
-	bh=uErscxhcrWE4/zEy6GPp05vUfYq6JKbDS5OtEDke/bw=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version;
-	b=hPMiOmzBgMoDvmVN8qvRXMbebjR/koWLJuEPgDewnFTqldDMRvRKVXjcrKoAXDWPH
-	 y+c0kE9thP7zIeeb6t6+lidLRX0nFAlmhiSSqkxXL+09c/SBvsRfCqCutHOtw7Y/3S
-	 WV68wglNC6fAl8KBB7ElXXwYxtBN/bjGxkpqQy5I=
-X-QQ-mid: zesmtpip2t1777365800t80f1655a
-X-QQ-Originating-IP: IVUzWfqBy83q77y2Za7qfjbLPCuGhO4gpK99nPqos3U=
-Received: from localhost.localdomain ( [localhost])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 28 Apr 2026 16:43:18 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 10069428977569428492
-EX-QQ-RecipientCnt: 8
-From: Wentao Guan <guanwentao@uniontech.com>
-To: chenhuacai@kernel.org
-Cc: wuqianhai@loongson.cn,
-	kernel@xen0n.name,
-	jiaxun.yang@flygoat.com,
-	loongarch@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Wentao Guan <guanwentao@uniontech.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] LoongArch: Fix potential ade in loongson_gpu_fixup_dma_hang()
-Date: Tue, 28 Apr 2026 16:42:04 +0800
-Message-Id: <20260428084204.731000-1-guanwentao@uniontech.com>
-X-Mailer: git-send-email 2.30.2
+	s=arc-20240116; t=1777366070; c=relaxed/simple;
+	bh=FX7uE6tp7P3QPlSkHQB3htKkBvLIXDup27cfhH0kHvI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Isne/rKsJKYb1nZfq76WaN2XByNmOyZByMa5jKpGpm2Bv3x6iCbWVfUnu3p24usFqIDBkQGuqpAfutjCCjvib+tfD2lTbb9vyu5kciv8aIMA6PvFbYK3HIrpN6MK2TPefYj2mezFRTUwhiBRtZcxhufqFKobb6/f4l38Ze35LgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=L89Or5HD; arc=none smtp.client-ip=209.85.221.227
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-vk1-f227.google.com with SMTP id 71dfb90a1353d-56ee931f78bso282769e0c.3
+        for <stable@vger.kernel.org>; Tue, 28 Apr 2026 01:47:48 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777366068; x=1777970868;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FX7uE6tp7P3QPlSkHQB3htKkBvLIXDup27cfhH0kHvI=;
+        b=e/siwofdbROIugU4zF3Exr6t3d/KCauAFLNSJyEwaoOLr/YyC4VD9JjanlxI5I4Flj
+         elkAT2cNgfuVXvvGVnvHIhufvoi+LziWvmDl/j4FIzQXYCGT4PeunGT5d6ONt+iIc6dZ
+         7u3bABaVWU+uqSqaRAf5R+RZzU64SIulVIcQVkhRbXRWuwAGQFI5wr74eDz681FzD3Iu
+         rCbmRmLOgmjOja9nAlxmOApfMA6yUCa4RtcvY6UX1S7Dq+ftmol41Yq7zm+vuPU1dg49
+         Y5fF3ebCzTO33qtXqqAMbxCbD+JO6jNqC59xdMYWAkfoomL/No2JqvPFNrgo2o8mYmri
+         lLWQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9fllSPkz2qRoiwsH0ZVGTyC6SB0KSHbDE65/U/hl4QaLD2GyxPffAqM/VbSGXkHvuWRFFwHhk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YynoGXUWi+unH3fg5qDc4y4mIYy0JP6v6NVDjqSOtw8Jb2UIEyj
+	EmxZtlpKbfjqLvOMAXPuVrVXuUKhDFojp/itJZqsRG4/8n3G6MPbws0aeGyTUz1p4SxjeRRglMu
+	uxnDr1KrxPJI/6K4nA7O07S8wma5Xyw5KGR7T8iSSJUHAOilw619KoKPv2MT1kRSLM4HlesNl8A
+	QvGjvfbFVdNai162l4jJVTddElhBVv0cUJGwspastaU0jOe8gm4j1QGOBST8o+kI4YfOSdwick7
+	njW8Zfqn/GUSDg=
+X-Gm-Gg: AeBDieuBNEjJPeOfZEW4FyN85gLwMwD0dBPNgbGZxoy8Lx+/7M2mg6r1UifZF3hOVxi
+	VQojPmw/CwEUuLIRp+MGtu8YBB/DPcVtmyfeLa+KGllB7oFLPF1OjgDbkt4XxOUKYEXkVc3Fjy2
+	V8IUzmf/SNM6Lo5PlhDyZN2bm7+rGgMkfBMLQdF6bdz9BYfNwbLt/ccyqenl7LHbAZZsImWTDEm
+	++yaldmFGIKnDRxfIkxMT6D3Lwv+7zFlNUUlZ5XasbhMxE1UusAheEf+YNniqJ7GNHVFlTxplA0
+	Xc86/WnmjYGFpK3Pn58oDaOaY3LriHvemQ2HHi2T4G/DZ0Db4TdtcDQORvgj7ORo8avX/wqxLNi
+	QF5T20k0/BOkHJcfI64oYSZryEMOIBSDz6TwTXkV4EZLaiwRm4QuR0QXHTKEcYN2LW5zTeI9WSC
+	YP6mdGKjikhj8pKUiz
+X-Received: by 2002:a05:6102:5126:b0:604:e96f:af36 with SMTP id ada2fe7eead31-627cfbfbe4cmr507588137.0.1777366067720;
+        Tue, 28 Apr 2026 01:47:47 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com ([144.49.247.127])
+        by smtp-relay.gmail.com with ESMTPS id ada2fe7eead31-627f8222c66sm131522137.20.2026.04.28.01.47.46
+        for <stable@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 28 Apr 2026 01:47:47 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-ba52316eeb2so115603666b.1
+        for <stable@vger.kernel.org>; Tue, 28 Apr 2026 01:47:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1777366065; x=1777970865; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=FX7uE6tp7P3QPlSkHQB3htKkBvLIXDup27cfhH0kHvI=;
+        b=L89Or5HDFe7O9CCQr4v/+JX56trt3bZvpPCgWeWNIa5whVTPaNOdfVQ6M8ObieyKH9
+         BkOFcryAH6SG8Kn8LoD6nU0F97OG3HodmKHSLTNUQjVSwB/YY7t+qJ0dRQmcOlckQEAv
+         uo5qkuv9RDAT30BowzNyR6apgExSiLifjLtwE=
+X-Forwarded-Encrypted: i=1; AFNElJ/fn+/p2YmeEp5PPqWw6m6PorsGxwSsgHBosASweKxG6OGaB4WBRf+lJfmeE/7hHgQm/dYqR5o=@vger.kernel.org
+X-Received: by 2002:a17:906:99c2:b0:b99:1070:763b with SMTP id a640c23a62f3a-bb7fc7a9e89mr50436666b.5.1777366065370;
+        Tue, 28 Apr 2026 01:47:45 -0700 (PDT)
+X-Received: by 2002:a17:906:99c2:b0:b99:1070:763b with SMTP id
+ a640c23a62f3a-bb7fc7a9e89mr50434866b.5.1777366064706; Tue, 28 Apr 2026
+ 01:47:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpip:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
-X-QQ-XMAILINFO: MnjX5lBozTaWndF89ZrvvOqIcvDtEq+QYg3zkJfYdkau70a9WRo2dkb2
-	5x2t7RntYIqrlWhjB0SrjM8B3RXFN25mfzFlBRNMHmxNkkX8ILkmQ1d2QrFzvjiOqjcEUaz
-	Z88naCLwat/2IblJc5j66REMBUxPY9/TOY2b7j1rYm7/0LW7FXaCzs4e51jhw3Jt7qFitGR
-	xxKK3YCbbR4sNpUqOJ6dSj65TKMrcC2esR9RBbgO7ZOcQj0BSYgqQDk6OAfrDaBB2VilZty
-	XcolyNlxkwB4JXaowyY8MUNyNT5Qok+/HVuz+5kwRjszDqNb8M3L/M9Mfm0Nr+yNzDZW+xH
-	oA4kMUiuhEgl0xERGJOlcmV872tEgb34jIw2gJv1UIjeg7wJmdLTC+sOpwlG3Rtqm7PyZII
-	2ZiI/8WjMBzpG3i5nZPjNk/ies57DmQ1fK0jrgZUiGNCbFZBJbK55wFJ8HQ6l2Xnlays8VO
-	uvx51T1fiJK2o+XKPB8A3KQSfukK6zFcWG5esuhuH9ZWdfkytbIxDe9veZyhMlPkp4OJaeL
-	1NuNiyFBuFxNEmvYvwLL1q1qORV2XO4VuTR5TgTOoUKPJQM3a8sQWe0eWA7whgRu958+10V
-	/SMCe+6x6d3XpqEUG/AVyXR2af5QnuMnpFETDlPXyHSHgMJ6N//0mXUqU1HNH+ywAzKSdM+
-	iynlieqp4PTFJIXT55nNySS9euzhyYhhcLaiFlQwOoqfdbqx1pdqTnMAPwKznuSo+LNOiTE
-	1xJfIFVEsKw0Dy35EUfHxs86dUIyeOZP6OTaKQq1TzT7eEAm+o/87vyGdhH0ZeG0w3GkuTj
-	t/Tt3PBJtnWHR8fFdsILbAt9itaE0alJ874b7aBlcqI5+J7QxJvP9salKBZYuL9Tk2NBeeo
-	hyKixRyqHHWa2RNZ9D35ASRu7k+3BMO6hD8r9Qt07iolG9QVCIROwBmUdhMUF5bJ1Vif3XS
-	I7DiB+zztk8OHKXUVr+xKUjOt6VQVjcq1/h6uTOUoqTSSrvxAIvPa+IfnSTPMMwxi0WqaY+
-	EZtCD+BJg96aodM784fiQANtVuxB7+0NvTtSwLstKic3PZZM5T
-X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
-X-QQ-RECHKSPAM: 0
-X-Rspamd-Queue-Id: A5904480C71
+References: <20260427152756.1205-1-ankit-aj.jain@broadcom.com> <CANn89iJOTxeF30wO7+0GoLmMAZGpCq+JUM5EQe5siNfYzEtZkw@mail.gmail.com>
+In-Reply-To: <CANn89iJOTxeF30wO7+0GoLmMAZGpCq+JUM5EQe5siNfYzEtZkw@mail.gmail.com>
+From: Ankit Jain <ankit-aj.jain@broadcom.com>
+Date: Tue, 28 Apr 2026 14:17:31 +0530
+X-Gm-Features: AVHnY4K94ZA0UN5hBeqlwWRgBUJwEomHwWwB20WhSUceiS-2U6JwG0HfopBB3g0
+Message-ID: <CAMh818JNLZZyGoL0LPURtSQtrEswwUhV=0rmwtREsSO3x7cRZw@mail.gmail.com>
+Subject: Re: [PATCH net] tcp: do not shrink window clamp when SO_RCVBUF is locked
+To: Eric Dumazet <edumazet@google.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, dsahern@kernel.org, 
+	ncardwell@google.com, kuniyu@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	horms@kernel.org, quic_stranche@quicinc.com, quic_subashab@quicinc.com, 
+	linux-kernel@vger.kernel.org, karen.badiryan@broadcom.com, 
+	ajay.kaher@broadcom.com, alexey.makhalov@broadcom.com, 
+	vamsi-krishna.brahmajosyula@broadcom.com, yin.ding@broadcom.com, 
+	tapas.kundu@broadcom.com, stable@vger.kernel.org
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+	boundary="000000000000fdc9e5065081484c"
+X-Rspamd-Queue-Id: 9657548162E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-4.26 / 15.00];
+	SIGNED_SMIME(-2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[uniontech.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[uniontech.com:s=onoh2408];
+	DMARC_POLICY_ALLOW(-0.50)[broadcom.com,reject];
+	R_DKIM_ALLOW(-0.20)[broadcom.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-241503-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241501-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[uniontech.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[broadcom.com:+];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	NEURAL_HAM(-0.00)[-0.999];
+	FROM_NEQ_ENVFROM(0.00)[ankit-aj.jain@broadcom.com,stable@vger.kernel.org];
+	HAS_ATTACHMENT(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[uniontech.com:email,uniontech.com:dkim,uniontech.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
 
-The swich case in loongson_gpu_fixup_dma_hang() will be other value,
-because device is from base+PCI_DEVICE_ID, base is from pdev->devfn+1,
-it is wrong when my platform inserts a gpu:
-lspci -tv
--[0000:00]-+-00.0  Loongson Technology LLC Hyper Transport Bridge Controller
-...
-           +-06.0  Loongson Technology LLC LG100 GPU
-           +-06.2  Loongson Technology LLC Device 7a37
-...
+--000000000000fdc9e5065081484c
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-In the case, device in switch case will be not DC2 or DC3,
-and readl(crtc_reg) will access with random address,
-fix it by adding a default case.
+On Mon, Apr 27, 2026 at 9:08=E2=80=AFPM Eric Dumazet <edumazet@google.com> =
+wrote:
+>
+> On Mon, Apr 27, 2026 at 8:32=E2=80=AFAM Ankit Jain <ankit-aj.jain@broadco=
+m.com> wrote:
+> >
+> > When an application explicitly sets SO_RCVBUF, the window clamp should
+> > not be dynamically recalculated based on the memory scaling_ratio.
+> >
+> > Currently, tcp_measure_rcv_mss() aggressively crushes the window clamp
+> > down when it sees a poor skb->len to skb->truesize ratio. If the
+> > application explicitly locked the buffer via SO_RCVBUF, this
+> > recalculation causes the advertised window to drop severely.
+> >
+> > If the window drops below the interface MSS, it triggers Silly Window
+> > Syndrome (SWS) avoidance on the sender. The sender defers transmission
+> > and drops the connection into a perpetual 200ms PROBE0 timer loop,
+> > drastically reducing throughput.
+> >
+> > This is highly reproducible on loopback interfaces (MTU 65536) using
+> > Java-based workloads (like Tomcat/GemFire) where the JVM sets SO_RCVBUF
+> > to 32K or 64K. The bloated loopback truesize forces the scaling ratio
+> > to drop, crushing the window clamp to ~26K, instantly triggering SWS
+> > stalls and causing gigabyte transfers to take minutes instead of
+> > milliseconds.
+> >
+> > Since the application locked the buffer, the kernel should respect the
+> > clamp boundary and not dynamically crush it based on runtime ratios.
+> >
+> > Fixes: a2cbb1603943 ("tcp: Update window clamping condition")
+> > Cc: stable@vger.kernel.org
+> > Reported-by: Karen Badiryan <karen.badiryan@broadcom.com>
+> > Signed-off-by: Ankit Jain <ankit-aj.jain@broadcom.com>
+>
+> Make sure to add a selftests (in ./tools/testing/selftests/net/packetdril=
+l/ )
+>
+> Thanks.
 
-Before:
-[    0.807099] Kernel ade access[#1]:
-[    0.810472] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.6.136-loong64-desktop-hwe+ #4
-[    0.818252] Hardware name: Loongson Loongson-3A6000-HV-7A2000-1w-V0.1-EVB/Loongson-3A6000-HV-7A2000-1w-EVB-V1.21, BIOS Loongson-UDK2018-V4.0.05756-prestab
-[    0.831992] pc 90000000017e5534 ra 90000000017e54c0 tp 90000001002f8000 sp 90000001002fb6c0
-[    0.840289] a0 80000efe00003100 a1 0000000000003100 a2 0000000000000000 a3 0000000000000002
-[    0.848585] a4 90000001002fb6b4 a5 900000087cdb58fd a6 90000000027af000 a7 0000000000000001
-[    0.856882] t0 00000000000085b9 t1 000000000000ffff t2 0000000000000000 t3 0000000000000000
-[    0.865179] t4 fffffffffffffffd t5 00000000fffb6d9c t6 0000000000083b00 t7 00000000000070c0
-[    0.873475] t8 900000087cdb4d94 u0 900000087cdb58fd s9 90000001002fb826 s0 90000000031c12c8
-[    0.881771] s1 7fffffffffffff00 s2 90000000031c12d0 s3 0000000000002710 s4 0000000000000000
-[    0.890067] s5 0000000000000000 s6 9000000100053000 s7 7fffffffffffff00 s8 90000000030d4000
-[    0.898364]    ra: 90000000017e54c0 loongson_gpu_fixup_dma_hang+0x40/0x210
-[    0.905195]   ERA: 90000000017e5534 loongson_gpu_fixup_dma_hang+0xb4/0x210
-[    0.912023]  CRMD: 000000b0 (PLV0 -IE -DA +PG DACF=CC DACM=CC -WE)
-[    0.918165]  PRMD: 00000004 (PPLV0 +PIE -PWE)
-[    0.922489]  EUEN: 00000000 (-FPE -SXE -ASXE -BTE)
-[    0.927246]  ECFG: 00071c1d (LIE=0,2-4,10-12 VS=7)
-[    0.932002] ESTAT: 00480000 [ADEM] (IS= ECode=8 EsubCode=1)
-[    0.937535]  BADV: 7fffffffffffff00
-[    0.940992]  PRID: 0014d000 (Loongson-64bit, Loongson-3A6000-HV)
-[    0.946956] Modules linked in:
-[    0.949982] Process swapper/0 (pid: 1, threadinfo=(____ptrval____), task=(____ptrval____))
-[    0.958193] Stack : 0000000000000006 90000001002fb778 90000001002fb704 0000000000000007
-[    0.966147]         0000000016a65700 90000000017e5690 000000000000ffff ffffffffffffffff
-[    0.974100]         900000000209f7c0 9000000100053000 900000000209f7a8 9000000000eebc08
-[    0.982053]         0000000000000000 0000000000000000 0000000000000006 90000001002fb778
-[    0.990006]         90000001000530b8 90000000027af000 0000000000000000 9000000100054000
-[    0.997959]         9000000100053000 9000000000ebb70c 9000000100004c00 9000000004000001
-[    1.005913]         90000001002fb7e4 bae765461f31cb12 0000000000000000 0000000000000000
-[    1.013866]         0000000000000006 90000000027af000 0000000000000030 90000000027af000
-[    1.021819]         900000087cd6f800 9000000100053000 0000000000000000 9000000000ebc560
-[    1.029772]         7a2500147cdaf720 bae765461f31cb12 0000000000000001 0000000000000030
-[    1.037725]         ...
-[    1.040146] Call Trace:
-[    1.040148] [<90000000017e5534>] loongson_gpu_fixup_dma_hang+0xb4/0x210
-[    1.049138] [<9000000000eebc08>] pci_fixup_device+0x108/0x280
-[    1.054846] [<9000000000ebb70c>] pci_setup_device+0x24c/0x690
-[    1.060551] [<9000000000ebc560>] pci_scan_single_device+0xe0/0x140
-[    1.066688] [<9000000000ebc684>] pci_scan_slot+0xc4/0x280
-[    1.072048] [<9000000000ebdd00>] pci_scan_child_bus_extend+0x60/0x3f0
-[    1.078444] [<9000000000f5bc94>] acpi_pci_root_create+0x2b4/0x420
-[    1.084498] [<90000000017e5e74>] pci_acpi_scan_root+0x2d4/0x440
-[    1.090376] [<9000000000f5b02c>] acpi_pci_root_add+0x21c/0x3a0
-[    1.096168] [<9000000000f4ee54>] acpi_bus_attach+0x1a4/0x3c0
-[    1.101788] [<90000000010e200c>] device_for_each_child+0x6c/0xe0
-[    1.107755] [<9000000000f4bbf4>] acpi_dev_for_each_child+0x44/0x70
-[    1.113892] [<9000000000f4ef40>] acpi_bus_attach+0x290/0x3c0
-[    1.119511] [<90000000010e200c>] device_for_each_child+0x6c/0xe0
-[    1.125476] [<9000000000f4bbf4>] acpi_dev_for_each_child+0x44/0x70
-[    1.131612] [<9000000000f4ef40>] acpi_bus_attach+0x290/0x3c0
-[    1.137231] [<9000000000f5211c>] acpi_bus_scan+0x6c/0x280
-[    1.142591] [<900000000189c028>] acpi_scan_init+0x194/0x310
-[    1.148125] [<900000000189bc6c>] acpi_init+0xcc/0x140
-[    1.153139] [<9000000000220cdc>] do_one_initcall+0x4c/0x310
-[    1.158672] [<90000000018618fc>] kernel_init_freeable+0x258/0x2d4
-[    1.164726] [<900000000184326c>] kernel_init+0x28/0x13c
-[    1.169914] [<9000000000222008>] ret_from_kernel_thread+0xc/0xa4
-[    1.175878]
-[    1.177349] Code: 0015001b  02c022f9  0010efd8 <2400030c> 0040818c  38720005  40006380  240002ed  034401ad
-[    1.187034]
+Hi Eric,
 
-After:
-[    0.808160] pci 0000:00:06.0: Not find match device
-[    0.813002] pci 0000:00:06.0: [0014:7a25] type 00 class 0x040000
-[    0.818970] pci 0000:00:06.0: BAR 0 [mem 0xe8025162000-0xe80251620ff 64bit]
-[    0.825887] pci 0000:00:06.0: BAR 2 [mem 0xe8010000000-0xe801fffffff 64bit]
-[    0.832804] pci 0000:00:06.0: BAR 4 [mem 0xe8025120000-0xe802512ffff 64bit]
-[    0.839750] pci 0000:00:06.2: [0014:7a37] type 00 class 0x040300
-[    0.845718] pci 0000:00:06.2: BAR 0 [mem 0xe8025110000-0xe802511ffff 64bit]
+Thank you for the review.
+I will formalize the packetdrill sequence from the commit notes into
+a proper runnable .pkt selftest. I will include it as the second patch
+in the upcoming v2 series.
 
-Cc: stable@vger.kernel.org
-Fixes: 95db0c9f526d ("LoongArch: Workaround LS2K/LS7A GPU DMA hang bug")
-Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
----
- arch/loongarch/pci/pci.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Thanks,
+Ankit
 
-diff --git a/arch/loongarch/pci/pci.c b/arch/loongarch/pci/pci.c
-index d233ea2218fe0..9420d484f1f82 100644
---- a/arch/loongarch/pci/pci.c
-+++ b/arch/loongarch/pci/pci.c
-@@ -132,6 +132,10 @@ static void loongson_gpu_fixup_dma_hang(struct pci_dev *pdev, bool on)
- 		crtc_reg = regbase;
- 		crtc_offset = 0x400;
- 		break;
-+	default:
-+		iounmap(regbase);
-+		pci_info(pdev, "Not find match device\n");
-+		return;
- 	}
- 
- 	for (i = 0; i < CRTC_NUM_MAX; i++, crtc_reg += crtc_offset) {
--- 
-2.30.2
+--000000000000fdc9e5065081484c
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
 
+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
+DaSuWu5q/33nHVcaIJ3kp/2HCYAuxbyy4iqXqiO8/oBCAd7SQzi2IQw7nSYBdNRh6oY2RWDEBBRG
+rF53gLnbWUTEN/292ihDLnEJNkjdCJhAS3oytVWYk9OuIi52Q4LleFysRYTymXUKF4HnjuKd7vh1
+n1NxXoEjw6364Ls7rJeHCZe4QhPYDyVpKhuqakY3fcGRWgkM/5RJAgMBAAGjggHbMIIB1zAOBgNV
+HQ8BAf8EBAMCBaAwgZMGCCsGAQUFBwEBBIGGMIGDMEYGCCsGAQUFBzAChjpodHRwOi8vc2VjdXJl
+Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3I2c21pbWVjYTIwMjMuY3J0MDkGCCsGAQUFBzAB
+hi1odHRwOi8vb2NzcC5nbG9iYWxzaWduLmNvbS9nc2djY3I2c21pbWVjYTIwMjMwZQYDVR0gBF4w
+XDAJBgdngQwBBQMBMAsGCSsGAQQBoDIBKDBCBgorBgEEAaAyCgMCMDQwMgYIKwYBBQUHAgEWJmh0
+dHBzOi8vd3d3Lmdsb2JhbHNpZ24uY29tL3JlcG9zaXRvcnkvMAkGA1UdEwQCMAAwQQYDVR0fBDow
+ODA2oDSgMoYwaHR0cDovL2NybC5nbG9iYWxzaWduLmNvbS9nc2djY3I2c21pbWVjYTIwMjMuY3Js
+MCUGA1UdEQQeMByBGmFua2l0LWFqLmphaW5AYnJvYWRjb20uY29tMBMGA1UdJQQMMAoGCCsGAQUF
+BwMEMB8GA1UdIwQYMBaAFAApNp5ceroPry1QLdugI4UYsKCSMB0GA1UdDgQWBBQu6tB0f+nWQaN4
+VmZkSjInquwPTzANBgkqhkiG9w0BAQsFAAOCAgEAH4BFO4g2gliVnQ77RMBV9ww7Oj19gFz8tQwS
+LvnxwhLen1ZLZdujX4iw3c/ZLa0h8YUQkTbGDJvRLxwQy2A4gSkYsRt7olZR7miNjAkIRmeNJctR
+xmONt5SVp2svfnW7bdt01CrpPTbXGnpP48od9kvmJovO/Vafp9orPWkTxMRuyL5qRVli8V+oBeq3
+/Ev1RzYJq99dDFW5lNHB1JvwVN5EabT38sbg8kCD3KNRuLYE6Cp28HwJv1XCk6nIdN/aUV3QCTMp
+EW+EMajE+KlRiK1s4lMEV2hLjw7mck6qG5d1/npfyvZ3I3SrWAWHM5ZnhTxSfbrw49qE5lmm8Hj0
+33zOCQGQOyLk1F2P5+AqEgaBKxjiTsmTlEAnMLSWjZKh3c502uTR2ZWjnNLolvrA0guExR3J70Ks
+nYWHGmSY3ZTZIMGCdz0sbnduyVpHP4FtN4IrskURKKloOBNGcfVn3Ily8Vy5Yiojf55cVYuoVeob
+6UYJDbHaoDqig6YcfdzM12JCQFCaO8Px34NGinow7nYdfugWbwWM1JU5Ekl+nGFg3J5/aNvN86WR
+6uNRdFpfYPriH5/mbuk3LHQ+uT/tgFAM+83PZpHdetKNWJCEp7pwSgnofznlnuMpZ9GMRXIwYwqc
+RCyvmPPRUdRsTZjSE+I2283LmfhOEbgE7JDOdWIxggJXMIICUwIBATBiMFIxCzAJBgNVBAYTAkJF
+MRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMSgwJgYDVQQDEx9HbG9iYWxTaWduIEdDQyBSNiBT
+TUlNRSBDQSAyMDIzAgxue2prh9axylr+h1kwDQYJYIZIAWUDBAIBBQCggccwLwYJKoZIhvcNAQkE
+MSIEIBNdOtd0C586igB0YwouhgO97gCeNYBx2KNyIF8LplJvMBgGCSqGSIb3DQEJAzELBgkqhkiG
+9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDQyODA4NDc0NVowXAYJKoZIhvcNAQkPMU8wTTALBglg
+hkgBZQMEASowCwYJYIZIAWUDBAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0B
+AQcwCwYJYIZIAWUDBAIBMA0GCSqGSIb3DQEBAQUABIIBABMtZm3HHSEgnu1/GX1vDuwSJwg8N2Sy
+05FZiHG2EHD+lrycAJOuHYTVFsuSGwQcbbiwmbcGDh6ehcmbGYbOtiCrYDkKm6Owz3Sr/5xeBrnV
+roT9cnSbu3mKIzCACMMXmdicx70CU6WCTIZEb0INGxmSrH2kx5vRHa8MQAe9yrhF8kVezmXJRqQK
+1eHO+PtP/cX7dOZZIZjTkQbU6ONDhPPwOm5J5tT7cqvMf821IrdTrXUnTu6Oz4hpLXoAF53zeT12
+QfqoJgnTn/0gLREgjxQiiqhlcc17pXNQrKaxbLpT1lr0/lXswiFu1YO6eqRR8+QCa3UseISBxzT+
+0SgGEzI=
+--000000000000fdc9e5065081484c--
 
