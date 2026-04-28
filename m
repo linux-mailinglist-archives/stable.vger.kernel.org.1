@@ -1,170 +1,249 @@
-Return-Path: <stable+bounces-241674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241675-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sFOGFqXC8GloYQEAu9opvQ
-	(envelope-from <stable+bounces-241674-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 16:22:29 +0200
+	id mHc4MHnK8GkKYwEAu9opvQ
+	(envelope-from <stable+bounces-241675-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 16:55:53 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE023486D81
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 16:22:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37DFF48766B
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 16:55:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4701B320D0BF
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 13:53:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6FC3632165F6
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 14:22:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 693F1436377;
-	Tue, 28 Apr 2026 13:52:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0839449ED7;
+	Tue, 28 Apr 2026 14:22:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="PLvWtj2K"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gp/bnYUl"
 X-Original-To: stable@vger.kernel.org
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FB9A3FB7D3
-	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 13:52:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.177
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777384374; cv=none; b=odETkBXFLpUr0fxCDkEeDz4KFOYpjKFe+eyq8i38hZu6ZH6leMXLK9PlVyOM+yOpkWPPb6P/VEKlcm5Pfo8s5s2NNwl+euM7oVU0mcnleWhWZiRo5i2yiCqlVXreQgvJ1ziU9/Rqk97epEr4Mba5JQH8Ti3z9s1JuRMsgaOmNrU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777384374; c=relaxed/simple;
-	bh=wkjR01BepCnVnaMjug35GZEThZ0Qh8AtsLMqcKixOwA=;
-	h=Content-Type:From:Mime-Version:Subject:Message-Id:Date:Cc:To; b=UYV+JF83lmkyydq0wWGjRbR6qjenPaS8XBkWIE6L2OQUdVRvcIdXpg7ndiKTmbOY/hcu0TQJD9xQe4G9w1Gti7u/mV0hbD0wxkguwItOAgvJi0bLfCHM1lWVygiEEbvmlbJmZQwF5MXItibWDd9MI2JQRX5zc3QPH7yHLhihGsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=PLvWtj2K; arc=none smtp.client-ip=91.218.175.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Content-Type: text/plain; charset=utf-8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1777384360;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=fSaI5CrYdlz9JeGFiodMZfSS16RBwlLh/md29GdDRjs=;
-	b=PLvWtj2Ke2MahB3td0bSGKYKjTzfkG+IvdHc1FUgCX5pZrEliuin0HPmkbSev4lLE1xuZ5
-	91c8CAMRZ0kVk2DQQYcrCZ6+kVutWaRLe9qP695l/CbKNZBaIi7FtiDooLIuzfl5nTt5wO
-	JurL+V4bVaPPf1q+1buipgPYlsOsd5E=
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Muchun Song <muchun.song@linux.dev>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E27AA43637F
+	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 14:22:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.177
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777386159; cv=pass; b=tQtcGvwDevOMneUVcjPcmI5dXb/YIFkUOUobvk02oXVl4VaF23DA6+6YU3VgQzLZL+7vDqZzCQnA+QGZMWkPGv2qf237QP6UNa8XnnM0QMLvb9OMjfx6KbkGvGLledSDHf8SnTTRexONJjprO2kTb+PY0S8dwBpSw9POoQLe28k=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777386159; c=relaxed/simple;
+	bh=Lhrvsxcq8dhyXHcIWCHjE9nElfckc1204ADXSFXxPGw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=m723PQfgImPtxSjC/GQSfv/Z1QjaiPJA9EIHOYJdt4bY2i6/idPiDXftfJndLq+CJNOZdXslWp7Ep/VX9H/D1om3YFlo11Af5jRvjigkZ3hNPz3udDpusnH4B3ITOuXEsTCgxxnFVxI/kM1v0bToAubeKiFXfs6BlJTe6HOAfQ4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gp/bnYUl; arc=pass smtp.client-ip=209.85.160.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-50e61648f10so656451cf.1
+        for <stable@vger.kernel.org>; Tue, 28 Apr 2026 07:22:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777386156; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Kn4w3Ry5cIk5A0HZLcz8uWYhrJQX4E0jX1Zil3dY0msOxA2jswPRpsFRsG8WB2Iwhw
+         3lY8nNyILmcHYwjCq34UFIDoGZWxqtyzludL3AJSr23TWNOEqaHL0kGHtr9ZtoCIoKkb
+         wpjpQ82z/uAh7+pCYhnU/zFXB1p9r2188Qj4QqGDuZEuOBQR7yt8as6vVy6iHBuXDI6v
+         PRXDFe6y3VaVHzieNuIDtUurSnYvtJhXDRC/ARFC0vFlJvowFe7LSh9kPbrhS+J0i77I
+         gA+xgaOVs++/Slcpj1FFdRH4brtSTlJoxiBAOSAzDvteW8Pm+2sVPjZglg5VkmiD8g0A
+         eThw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=uXGQeShfh02U1wpxLV3lnM8sw0Cqx8U4IJOmflxKdf4=;
+        fh=j6rH0rr3apUECmGlJYZw68GJ7vEKNxczBah/w5YOD0I=;
+        b=QTqtzKqW823Ma754QfhQvLNlPpzm6tjo7iBqUS1zGKBUReBR4hmEzZpRne71xXSvKS
+         N9VMhjJITgM8GlkuoF7/nIbu2jYTPzLhjB1I6YwS+HdLgB3rhX0rOtDom79oBkpRd1Mz
+         8fCYiJ6XG7e3UZqzZcKfwAqMDncN7dj46SSBgfsqYMOWZNkjVXAuH914Zg6BJGr6yCcO
+         yiVeFSSXUID6MNXjyewlLnThCUFR5t+uPNnOklHO8MxXl8qrnduviQHOjPMWpwnQDg8K
+         X6ypVLdv9mBCmEOiB7AqEkMLJm/ttPJTe4jHAOp0V/25dLNIlNLkHElyrPguN/ZiwCIy
+         sYDA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1777386156; x=1777990956; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uXGQeShfh02U1wpxLV3lnM8sw0Cqx8U4IJOmflxKdf4=;
+        b=gp/bnYUl0F+XQO2HKNDvLAFkWBchmSbxDpL/BMxv8PxVD5ccSXfd1EM4dlprfsJzef
+         4RwnT0zLLycy5FQGSmVLZL+TAC6ByT5JEfJAh8yPc2jwD0iSzBuEuBx+BHcNcuydeoke
+         VES0wqauZcGwIWpodgJIhe/s0Xw+pw+TiKwACNaQlOEAzkYkUpzpWqLAhzQAuWLEKhgP
+         8zcn1KM1E0iUGE9qXp/ggJLByiGOVz6q8YGxTO7WLJ25rHXY2soD1QPFgymkJjvJYYKh
+         ZKga6kSpxNVu+wp/CDzebhkQCfbludfTArkaN4dpMaVsfR97LQp4vq5+dcMtbUnDtcxK
+         Etbg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777386156; x=1777990956;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=uXGQeShfh02U1wpxLV3lnM8sw0Cqx8U4IJOmflxKdf4=;
+        b=lDFffgNzSTp4yLeDGZTcBZXjnXMylZenF9eWaMOAA2w0+lMGjaidlj++OuPAYqwmhA
+         QG9w/jTJLHzL40PQEv31AQazgb0CzijXS8fiyZ51q7EL9tg9aG+/W9Onn6W9V8R/JVgs
+         Yz6s3ZiuPm7WoZWeePh1MQwcQLUHE31sxpVuGQuBAx9z7LZyUop8HbOmRnFARoxjkz/z
+         a1QYWXvV+NKRSXX13U9iWSgbm6KSOIkbLp7j+QQLs0gtO49j/WRQLYQ5T49pCUplO9Q+
+         yQMxdB1N/ovlv18hXRJuBuItKFjKPvzs+Llnpbos1ILh/sh0jlO6Pco7ctzD0T3AanIC
+         uT+Q==
+X-Forwarded-Encrypted: i=1; AFNElJ+stMrcc/G/f4aFPY1l4rI7EBG+VWQubicsNJeKxGR8aQZbPX2VeN6zY4XZU7dQ+O/w+hkoRc0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz/MbkOdpmvvTkufBNbcbL2sSyDdItKGJmO/fob5kywRKgK9iCp
+	hVsaVLZwn9U5UrvSjU1ur+LEVRWJwQX3BQFW6AxxXa/XDEGyynqlvqrteYGSBlxWDveaaZOiwMt
+	ouog9t0Xi69OqD9XIP7H2RE08U7hdCINWfw/jxJsD
+X-Gm-Gg: AeBDieuW7/u58es0NXWJCOzunvAWom3FwzfwjNKtu2FQdqUq0snb/TGSW4/OG0wmcfy
+	5oNo7v1F4PYFQVd7V3AaRVYU0tsmKsyPlCn/eZ3e4/hOnmGl3GW45UG018WT6a3y6VYUp0f9Bbz
+	S1vTL6u1rLmLpWNO4nB2P2pVsdchvBdcBU2+WeZBaEjcfDGelbpk+rwO0dw0MG1jMPu52fVvA4u
+	U5gF++jI+Yp6FE0HsEITI0WtW5i/ybAwJ+ZbwGvsA4LGuMM06WtwGhAsdIj24A7XTKZx3PLwPZY
+	2vKlvxoFSstdH+LZU8qxjnO0gE+9YWN9A4oUzCAl5K9++hNHxdOpHuZKhzOlKks=
+X-Received: by 2002:a05:622a:14a:b0:50f:be7b:923a with SMTP id
+ d75a77b69052e-5100dd824admr13692471cf.9.1777386155175; Tue, 28 Apr 2026
+ 07:22:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (1.0)
-Subject: Re: [PATCH v2 3/3] drivers/base/memory: fix locking for poison accounting lookup
-Message-Id: <94F5B89A-008A-4EDB-920F-31B4895C2699@linux.dev>
-Date: Tue, 28 Apr 2026 21:52:23 +0800
-Cc: Muchun Song <songmuchun@bytedance.com>,
- Vishal Verma <vishal.l.verma@intel.com>,
- Ying Huang <huang.ying.caritas@gmail.com>, Dan Williams <djbw@kernel.org>,
- Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org,
- linux-cxl@vger.kernel.org, driver-core@lists.linux.dev,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- David Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Rafael J Wysocki <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-To: Miaohe Lin <linmiaohe@huawei.com>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: DE023486D81
+MIME-Version: 1.0
+References: <20260428103008.696141-1-tabba@google.com> <20260428103008.696141-3-tabba@google.com>
+ <afC7H1fu4vFzTRTt@willie-the-truck>
+In-Reply-To: <afC7H1fu4vFzTRTt@willie-the-truck>
+From: Fuad Tabba <tabba@google.com>
+Date: Tue, 28 Apr 2026 15:21:58 +0100
+X-Gm-Features: AVHnY4IcRutI69cs69i--7xOx374S2gpBibzxSLDc-9Cnq9PVlW1EEta-ioTBlc
+Message-ID: <CA+EHjTy=xvvBN0UyK2bO6J-GuUZnHRwjjdrhkK8Vr+iridWCfg@mail.gmail.com>
+Subject: Re: [PATCH 2/8] KVM: arm64: Synchronise HCR_EL2 writes on the guest
+ exit path
+To: Will Deacon <will@kernel.org>
+Cc: maz@kernel.org, oliver.upton@linux.dev, james.morse@arm.com, 
+	suzuki.poulose@arm.com, yuzenghui@huawei.com, qperret@google.com, 
+	vdonnefort@google.com, catalin.marinas@arm.com, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 37DFF48766B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	FAKE_REPLY(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	MV_CASE(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-241674-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	RCPT_COUNT_TWELVE(0.00)[17];
+	TAGGED_FROM(0.00)[bounces-241675-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[bytedance.com,intel.com,gmail.com,kernel.org,kvack.org,vger.kernel.org,lists.linux.dev,suse.de,linuxfoundation.org,linux-foundation.org];
+	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[muchun.song@linux.dev,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linux.dev:+];
+	FROM_NEQ_ENVFROM(0.00)[tabba@google.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[google.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,bytedance.com:email,linux.dev:dkim,linux.dev:mid,huawei.com:email]
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 
-=EF=BB=BF
+Hi Will,
 
+On Tue, 28 Apr 2026 at 14:50, Will Deacon <will@kernel.org> wrote:
+>
+> On Tue, Apr 28, 2026 at 11:30:02AM +0100, Fuad Tabba wrote:
+> > MSR HCR_EL2 is not self-synchronising. Per ARM DDI 0487 M.b K1.2.4
+> > (p.K1-16823) and B2.6.1 (p.B2-297), a Context Synchronisation Event
+> > is required between an HCR_EL2 write and any subsequent direct
+> > register access at the same EL that depends on the new value being
+> > in effect.
+> >
+> > On the entry path, the HCR_EL2 write in __activate_traps is followed
+> > by further EL2 sysreg work (MDCR_EL2, CPTR_EL2, VBAR_EL2, and on the
+> > speculative-AT errata path SCTLR_EL1/TCR_EL1) before ERET into the
+> > guest. None of those intervening accesses depend on the new HCR_EL2
+> > value, and ERET is a CSE per ARM DDI 0487 M.b D1.4.4.1 rule RBWCFK
+> > (p. D1-7209) conditional on SCTLR_EL2.EOS=3D1, which is set
+> > unconditionally by INIT_SCTLR_EL2_MMU_ON (see the prerequisite patch
+> > in this series). The requirement is therefore satisfied implicitly
+> > on the activate path.
+> >
+> > The deactivate path is different: after write_sysreg_hcr() in
+> > __deactivate_traps() further EL2 sysreg work runs before any natural
+> > CSE - on nVHE, __deactivate_cptr_traps and the VBAR_EL2 write; on
+> > VHE, the timer context save which reads CNTP_CVAL_EL0 under the new
+> > TGE/E2H, and the EL1 sysreg restore. Add an explicit isb() at each
+> > of the two deactivate sites.
+> >
+> > The practical impact today is bounded: HCR_EL2.E2H does not toggle
+> > in either path, and the trap bits being changed primarily affect
+> > EL1&0 behaviour. But the architectural rule should be honoured.
+> > Note that write_sysreg_hcr() itself already issues isb() on the
+> > Ampere errata path (sysreg.h), confirming the architectural
+> > expectation; the fast path optimises that away.
+> >
+> > The fix is at the call sites rather than inside write_sysreg_hcr()
+> > because the macro has many users (e.g. the activate path, at.c,
+> > hardirq.h, ptrauth alternatives) where the immediately-following
+> > code either reaches ERET or has another CSE; making the macro emit
+> > an unconditional ISB would impose unnecessary cost on those
+> > well-formed users.
+> >
+> > Fixes: 9404673293b0 ("KVM: arm64: timers: Correctly handle TGE flip wit=
+h CNTPOFF_EL2")
+> > Signed-off-by: Fuad Tabba <tabba@google.com>
+> > ---
+> >  arch/arm64/kvm/hyp/nvhe/switch.c | 11 +++++++++++
+> >  arch/arm64/kvm/hyp/vhe/switch.c  | 11 +++++++++++
+> >  2 files changed, 22 insertions(+)
+> >
+> > diff --git a/arch/arm64/kvm/hyp/nvhe/switch.c b/arch/arm64/kvm/hyp/nvhe=
+/switch.c
+> > index 8d1df3d33595..9d7ead5a5503 100644
+> > --- a/arch/arm64/kvm/hyp/nvhe/switch.c
+> > +++ b/arch/arm64/kvm/hyp/nvhe/switch.c
+> > @@ -105,6 +105,17 @@ static void __deactivate_traps(struct kvm_vcpu *vc=
+pu)
+> >       __deactivate_traps_common(vcpu);
+> >
+> >       write_sysreg_hcr(this_cpu_ptr(&kvm_init_params)->hcr_el2);
+> > +     /*
+> > +      * MSR HCR_EL2 is not self-synchronising. Per ARM ARM K1.2.4 p.K1=
+-16823
+> > +      * and B2.6.1 p.B2-297, a Context Synchronisation Event is requir=
+ed
+> > +      * between an HCR_EL2 write and any subsequent direct register ac=
+cess at
+> > +      * the same EL that depends on the new value being in effect.
+> > +      * The activate_traps path falls through to ERET (a CSE), but the
+> > +      * deactivate path still executes further EL2 sysreg work (CPTR/V=
+BAR
+> > +      * writes below) before any natural CSE, so make the synchronisat=
+ion
+> > +      * explicit.
+> > +      */
+> > +     isb();
+>
+> Sorry, but I don't understand this. Please can you explain why you think
+> that CPTR and VBAR have an ordering dependency on HCR_EL2? Preferably,
+> the comment would talk about the specific fields that are relevant.
 
-> On Apr 28, 2026, at 20:34, Miaohe Lin <linmiaohe@huawei.com> wrote:
-> =EF=BB=BFOn 2026/4/28 19:40, Muchun Song wrote:
->>=20
->>=20
->>> On Apr 28, 2026, at 19:37, Miaohe Lin <linmiaohe@huawei.com> wrote:
->>> On 2026/4/28 16:52, Muchun Song wrote:
->>>> memblk_nr_poison_inc() and memblk_nr_poison_sub() call
->>>> find_memory_block_by_id(), which requires device_hotplug_lock to
->>>> serialize the xarray lookup against memory block removal.
->>>> Take device_hotplug_lock around the lookup and nr_hwpoison update so
->>>> the memory block cannot disappear between xa_load() and get_device().
->>>> Fixes: 5033091de814 ("mm/hwpoison: introduce per-memory_block hwpoison c=
-ounter")
->>>> Cc: stable@vger.kernel.org
->>>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->>> Thanks for update.
->>>> ---
->>>> drivers/base/memory.c | 10 ++++++++--
->>>> 1 file changed, 8 insertions(+), 2 deletions(-)
->>>> diff --git a/drivers/base/memory.c b/drivers/base/memory.c
->>>> index 6981b55d582a..f76aee29e9a5 100644
->>>> --- a/drivers/base/memory.c
->>>> +++ b/drivers/base/memory.c
->>>> @@ -1228,23 +1228,29 @@ int walk_dynamic_memory_groups(int nid, walk_me=
-mory_groups_func_t func,
->>>> void memblk_nr_poison_inc(unsigned long pfn)
->>>> {
->>>>    const unsigned long block_id =3D pfn_to_block_id(pfn);
->>>> -    struct memory_block *mem =3D find_memory_block_by_id(block_id);
->>>> +    struct memory_block *mem;
->>>> +    lock_device_hotplug();
->>> memblk_nr_poison_inc() and memblk_nr_poison_sub() are both called from m=
-emory_failure() context.
->>> I'm afraid if memory_failure() is triggered while lock_device_hotplug is=
- held, it will lead to
->>> deadlock. Or am I miss something?
->>=20
->> I am curious is there any place where memory_failure() is called with hol=
-ding lock_device_hotplug?
->=20
-> Sorry for dumb scenario, I was a bit too presumptuous. But there might be a=
-nother possible deadlock:
->=20
-> remove_memory
->  lock_device_hotplug <-- first called here
->  try_remove_memory
->    remove_memory_block_devices
->      num_poisoned_pages_sub
+You're right, I misread the spec in my excitement to fix an issue
+raised by my new and improved prompts. I went back to the access
+pseudocode for the registers being written after write_sysreg_hcr():
 
-Passing pfn =3D -1 here.
+- CPTR_EL2/VBAR_EL2 (nVHE) are direct EL2-only registers; their write
+semantics at EL2 don't consult HCR_EL2.
+- CPACR_EL1/VBAR_EL1/CNTP_CVAL_EL0 (VHE) redirect to their EL2
+counterparts on ELIsInHost(EL2) =E2=80=94 i.e., HCR_EL2.E2H =E2=80=94 and E=
+2H doesn't
+toggle here. TGE isn't a condition for these EL2-level accesses.
 
->        memblk_nr_poison_sub
->          lock_device_hotplug <-- deadlock here
+So the whole "depends on the new value being in effect" doesn't
+actually bite for any of the accesses I cited. I'll drop this patch.
+The natural CSEs cover whatever real synchronisation is needed.
 
-No. Can=E2=80=99t reach here. No deadlock.
+Cheers,
+/fuad
 
-Thanks.
-
->=20
-> Hope I'm not mistaken again. :)
->=20
-> Thank.
-> .
+>
+> Will
 
