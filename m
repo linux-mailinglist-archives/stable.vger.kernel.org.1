@@ -1,166 +1,273 @@
-Return-Path: <stable+bounces-241689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241690-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MDpYLjnQ8GnDYwEAu9opvQ
-	(envelope-from <stable+bounces-241689-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 17:20:25 +0200
+	id UDdpI1TR8GnDYwEAu9opvQ
+	(envelope-from <stable+bounces-241690-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 17:25:08 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24D80487B48
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 17:20:25 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D01D4487C57
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 17:25:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EF54D304C610
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 15:19:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5392F3015C9F
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 15:23:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3064A3AEF20;
-	Tue, 28 Apr 2026 15:19:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FAC93A169D;
+	Tue, 28 Apr 2026 15:23:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="e+8qqdjz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NCaXYnWM"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 509D5359A6C
-	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 15:19:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7BF4313298
+	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 15:23:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777389571; cv=none; b=panfjf8crSWa7X+sd1Kys66//abfzo7vMEBPljMMPCnoIHaro7mWgOtlgBAjWfyT/EnEi+yw9jd6xgBO9HLBApucpAtp9j0/m84w3A41oUzZFlNnqQ6RSqpU7VPPqDOMh8onmgwPvDyw+iiO2DNie+RbVCfXVR2F/TvBcF+6/rM=
+	t=1777389837; cv=none; b=hWBZx+sX0Sv2xHC3NSp83+ZrS8IzZYbzzn+RQ887Tnzw+ncmAq35Zan8W2SMktG8YroY1ugzMFkhMF4COYJwEVvjY2h110VLtQ0jHLu5xkPK+4QMPmKfURsDs+ppaiLkNVuehh85jtjWF/moQnmcYxrY7mSxx6dNbOYHnsU8C7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777389571; c=relaxed/simple;
-	bh=NZXdk1yBRDOEB3BWO+BVvaayxPjaKo978RfNNBO65Ro=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HiTRDb+CFS6PKNo2g3ZH40MyrhCmdbP7lVXUDsCtsjKhocXu98nOqVle6mK7AeypuI9Q9hJc5Yp8eCec2uy70WXJg0+gKtmLo0l0SfnJDI7jHlyDGCRtoWNPRiCEGMKr+yvi60OUtzGQnOYuZkXPQL98HBgM77pcBA35iIgP0EA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=e+8qqdjz; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777389567;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HDcbwl6sFTXgDrI+UlBZckd1iaxQQF55if0ty09TCYY=;
-	b=e+8qqdjzfrdDpfxQY1uZKmBVm/xq3M9cTdF1KdSQhLiybR7mwzMYCnJgWuO26Rxv7kKS4f
-	27V9lIUg/5f0YpaqtmBx1yexTBWbfJkjfDwridGONAuYsQaxzcjCJOf68kOk8ihpbJqYwT
-	qXKcQ1yfJOf4fhmdbeE/bGQAqf0NTwA=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-657-vMuwL-NMN4yZc68m8CBAFA-1; Tue,
- 28 Apr 2026 11:19:21 -0400
-X-MC-Unique: vMuwL-NMN4yZc68m8CBAFA-1
-X-Mimecast-MFC-AGG-ID: vMuwL-NMN4yZc68m8CBAFA_1777389559
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id EA75419560AA;
-	Tue, 28 Apr 2026 15:19:18 +0000 (UTC)
-Received: from [10.22.65.177] (unknown [10.22.65.177])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 0B629300756E;
-	Tue, 28 Apr 2026 15:19:16 +0000 (UTC)
-Message-ID: <9df75f61-0cbb-42b4-b64d-8e6fd49d50ca@redhat.com>
-Date: Tue, 28 Apr 2026 11:19:16 -0400
+	s=arc-20240116; t=1777389837; c=relaxed/simple;
+	bh=/8mWtq0w/TCcPnfgb5B5GfL81qNSdgN0wyVGg7Zdyzc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=QvsS9ahyA+9kDNUy6cZmx0SeBCFfOxooVFy/EeHBQtqYKcCz5X70gRLvrBE7G+JoA5WJbAqhpU1c4mmZog3hsB9Yf69XFvTlZ+TAB3zetxMC9FYrLiMHeRrZdCU0ZidhZPaImFEdp3RKSy2jFgPh8o6DZbbnj4ZghlVXfKwm/aE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NCaXYnWM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 009C3C2BCB5;
+	Tue, 28 Apr 2026 15:23:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777389837;
+	bh=/8mWtq0w/TCcPnfgb5B5GfL81qNSdgN0wyVGg7Zdyzc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=NCaXYnWMKAcCnxgj/udY3PJQFjbC6n6EXjZHR2G/zjmSQttxzR9KJMtH6iiQdLDgN
+	 rTjyAIUCQDeqPTiwxg5ocNZSb6zYdcmAOTAaKWqUPRgvWGYIGf3O38/m2hgds2d5GZ
+	 hWrGicpi8nlZYDdXzwDxYg2Q/wjEHvXDaMwNZUrNeJITKPElPLktPrw3Cv37/Q6LMM
+	 DZvZsvVj2ScDegSF2aXPRKmStHTICK5N1xUWyGV/VX9+OoktIOenQ9WCJp0XHr5sTc
+	 6g5/NriBFjxhCHeUJ87g0+8aUJg/2li7XaDIoNR4v+8gMzDiW2QVMdNwYSq+JWtGr/
+	 A6ngZUww4Louw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Alistair Popple <apopple@nvidia.com>,
+	Zenghui Yu <zenghui.yu@linux.dev>,
+	Balbir Singh <balbirs@nvidia.com>,
+	David Hildenbrand <david@kernel.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Leon Romanovsky <leon@kernel.org>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12.y] lib: test_hmm: evict device pages on file close to avoid use-after-free
+Date: Tue, 28 Apr 2026 11:23:54 -0400
+Message-ID: <20260428152354.3033526-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026042708-kilobyte-oblivious-2d9d@gregkh>
+References: <2026042708-kilobyte-oblivious-2d9d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] cgroup/cpuset: Creating or adding CPUs to partition not
- allowed without privilege
-To: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>
-Cc: Chen Ridong <chenridong@huawei.com>, Tejun Heo <tj@kernel.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>, cgroups@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, Xie Maoyi <maoyi.xie@ntu.edu.sg>
-References: <20260428033439.783246-1-longman@redhat.com>
- <7so4b76wg2apwwk3yh76q42jgwnpvlv7sursmsmzeyefhp4pbt@thybpp4litm6>
-Content-Language: en-US
-From: Waiman Long <longman@redhat.com>
-In-Reply-To: <7so4b76wg2apwwk3yh76q42jgwnpvlv7sursmsmzeyefhp4pbt@thybpp4litm6>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Rspamd-Queue-Id: 24D80487B48
+X-Rspamd-Queue-Id: D01D4487C57
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[redhat.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241689-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_FROM(0.00)[bounces-241690-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[longman@redhat.com,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-On 4/28/26 3:58 AM, Michal Koutný wrote:
-> Hi Waiman.
->
-> On Mon, Apr 27, 2026 at 11:34:39PM -0400, Waiman Long <longman@redhat.com> wrote:
->> Creation of a cpuset partition or adding more CPUs to an existing
->> partition will take CPUs away from other cpusets outside of the
->> partition leaving less CPUs for the others. So it is a privileged
->> operation that non-privileged users shouldn't be allowed to do.
->>
->> Currently, remote partition code has check for CAP_SYS_ADMIN capability
->> before allowing such operations, but not for local partition.
-> Remote partitions need such a check because their CPUs are sourced from
-> the global supply (top level) without
->
->> This leaves a security hole in case cpuset.cpus.partition of a cpuset
->> is chown'ed to a non-root user and its parent cpuset happens to be a
->> partition root.
-> I wouldn't say this difference between remote and local partitions is a
-> security hole [1].
-OK, I will tone down the description.
->
-> Consider this -- cgroup a is created by root (admin) and its resources
-> are constrained by root's policy. However, what happens in a subtree is
-> irrelevant from that top level view.
->
-> # setup			// owner
-> a/cpuset.partition=root	// root
-> a/cpuset.cpus=0-3	// root
-> a/cgroup.procs		// user, they can organize subtree as needed
->
-> For example the user may want to create a (sub)partition with some of
-> the CPUs they got:
->
-> user$ mkdir a/b
->
-> a/b/cpuset.partition=root	// user
-> a/b/cpuset.cpus=0-1		// user
->
-> This should be a valid configuration and behavior, no?
+From: Alistair Popple <apopple@nvidia.com>
 
-Thank for the comment. Yes, that can be a valid configuration.
+[ Upstream commit 744dd97752ef1076a8d8672bb0d8aa2c7abc1144 ]
 
-One possible workaround may be to see if the current user has write 
-access to its parent partition root. If so, we can allow it to create a 
-sub-partition, if not, we will forbid it.
+Patch series "Minor hmm_test fixes and cleanups".
 
-Cheers,
-Longman
+Two bugfixes a cleanup for the HMM kernel selftests.  These were mostly
+reported by Zenghui Yu with special thanks to Lorenzo for analysing and
+pointing out the problems.
+
+This patch (of 3):
+
+When dmirror_fops_release() is called it frees the dmirror struct but
+doesn't migrate device private pages back to system memory first.  This
+leaves those pages with a dangling zone_device_data pointer to the freed
+dmirror.
+
+If a subsequent fault occurs on those pages (eg.  during coredump) the
+dmirror_devmem_fault() callback dereferences the stale pointer causing a
+kernel panic.  This was reported [1] when running mm/ksft_hmm.sh on arm64,
+where a test failure triggered SIGABRT and the resulting coredump walked
+the VMAs faulting in the stale device private pages.
+
+Fix this by calling dmirror_device_evict_chunk() for each devmem chunk in
+dmirror_fops_release() to migrate all device private pages back to system
+memory before freeing the dmirror struct.  The function is moved earlier
+in the file to avoid a forward declaration.
+
+Link: https://lore.kernel.org/20260331063445.3551404-1-apopple@nvidia.com
+Link: https://lore.kernel.org/20260331063445.3551404-2-apopple@nvidia.com
+Fixes: b2ef9f5a5cb3 ("mm/hmm/test: add selftest driver for HMM")
+Signed-off-by: Alistair Popple <apopple@nvidia.com>
+Reported-by: Zenghui Yu <zenghui.yu@linux.dev>
+Closes: https://lore.kernel.org/linux-mm/8bd0396a-8997-4d2e-a13f-5aac033083d7@linux.dev/
+Reviewed-by: Balbir Singh <balbirs@nvidia.com>
+Tested-by: Zenghui Yu <zenghui.yu@linux.dev>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Leon Romanovsky <leon@kernel.org>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Zenghui Yu <zenghui.yu@linux.dev>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[ kept the existing simpler `dmirror_device_evict_chunk()` body instead of the upstream compound-folio version ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ lib/test_hmm.c | 86 ++++++++++++++++++++++++++++----------------------
+ 1 file changed, 49 insertions(+), 37 deletions(-)
+
+diff --git a/lib/test_hmm.c b/lib/test_hmm.c
+index 056f2e411d7b4..850d23469ef78 100644
+--- a/lib/test_hmm.c
++++ b/lib/test_hmm.c
+@@ -183,11 +183,60 @@ static int dmirror_fops_open(struct inode *inode, struct file *filp)
+ 	return 0;
+ }
+ 
++static void dmirror_device_evict_chunk(struct dmirror_chunk *chunk)
++{
++	unsigned long start_pfn = chunk->pagemap.range.start >> PAGE_SHIFT;
++	unsigned long end_pfn = chunk->pagemap.range.end >> PAGE_SHIFT;
++	unsigned long npages = end_pfn - start_pfn + 1;
++	unsigned long i;
++	unsigned long *src_pfns;
++	unsigned long *dst_pfns;
++
++	src_pfns = kvcalloc(npages, sizeof(*src_pfns), GFP_KERNEL | __GFP_NOFAIL);
++	dst_pfns = kvcalloc(npages, sizeof(*dst_pfns), GFP_KERNEL | __GFP_NOFAIL);
++
++	migrate_device_range(src_pfns, start_pfn, npages);
++	for (i = 0; i < npages; i++) {
++		struct page *dpage, *spage;
++
++		spage = migrate_pfn_to_page(src_pfns[i]);
++		if (!spage || !(src_pfns[i] & MIGRATE_PFN_MIGRATE))
++			continue;
++
++		if (WARN_ON(!is_device_private_page(spage) &&
++			    !is_device_coherent_page(spage)))
++			continue;
++		spage = BACKING_PAGE(spage);
++		dpage = alloc_page(GFP_HIGHUSER_MOVABLE | __GFP_NOFAIL);
++		lock_page(dpage);
++		copy_highpage(dpage, spage);
++		dst_pfns[i] = migrate_pfn(page_to_pfn(dpage));
++		if (src_pfns[i] & MIGRATE_PFN_WRITE)
++			dst_pfns[i] |= MIGRATE_PFN_WRITE;
++	}
++	migrate_device_pages(src_pfns, dst_pfns, npages);
++	migrate_device_finalize(src_pfns, dst_pfns, npages);
++	kvfree(src_pfns);
++	kvfree(dst_pfns);
++}
++
+ static int dmirror_fops_release(struct inode *inode, struct file *filp)
+ {
+ 	struct dmirror *dmirror = filp->private_data;
++	struct dmirror_device *mdevice = dmirror->mdevice;
++	int i;
+ 
+ 	mmu_interval_notifier_remove(&dmirror->notifier);
++
++	if (mdevice->devmem_chunks) {
++		for (i = 0; i < mdevice->devmem_count; i++) {
++			struct dmirror_chunk *devmem =
++				mdevice->devmem_chunks[i];
++
++			dmirror_device_evict_chunk(devmem);
++		}
++	}
++
+ 	xa_destroy(&dmirror->pt);
+ 	kfree(dmirror);
+ 	return 0;
+@@ -1214,43 +1263,6 @@ static int dmirror_snapshot(struct dmirror *dmirror,
+ 	return ret;
+ }
+ 
+-static void dmirror_device_evict_chunk(struct dmirror_chunk *chunk)
+-{
+-	unsigned long start_pfn = chunk->pagemap.range.start >> PAGE_SHIFT;
+-	unsigned long end_pfn = chunk->pagemap.range.end >> PAGE_SHIFT;
+-	unsigned long npages = end_pfn - start_pfn + 1;
+-	unsigned long i;
+-	unsigned long *src_pfns;
+-	unsigned long *dst_pfns;
+-
+-	src_pfns = kvcalloc(npages, sizeof(*src_pfns), GFP_KERNEL | __GFP_NOFAIL);
+-	dst_pfns = kvcalloc(npages, sizeof(*dst_pfns), GFP_KERNEL | __GFP_NOFAIL);
+-
+-	migrate_device_range(src_pfns, start_pfn, npages);
+-	for (i = 0; i < npages; i++) {
+-		struct page *dpage, *spage;
+-
+-		spage = migrate_pfn_to_page(src_pfns[i]);
+-		if (!spage || !(src_pfns[i] & MIGRATE_PFN_MIGRATE))
+-			continue;
+-
+-		if (WARN_ON(!is_device_private_page(spage) &&
+-			    !is_device_coherent_page(spage)))
+-			continue;
+-		spage = BACKING_PAGE(spage);
+-		dpage = alloc_page(GFP_HIGHUSER_MOVABLE | __GFP_NOFAIL);
+-		lock_page(dpage);
+-		copy_highpage(dpage, spage);
+-		dst_pfns[i] = migrate_pfn(page_to_pfn(dpage));
+-		if (src_pfns[i] & MIGRATE_PFN_WRITE)
+-			dst_pfns[i] |= MIGRATE_PFN_WRITE;
+-	}
+-	migrate_device_pages(src_pfns, dst_pfns, npages);
+-	migrate_device_finalize(src_pfns, dst_pfns, npages);
+-	kvfree(src_pfns);
+-	kvfree(dst_pfns);
+-}
+-
+ /* Removes free pages from the free list so they can't be re-allocated */
+ static void dmirror_remove_free_pages(struct dmirror_chunk *devmem)
+ {
+-- 
+2.53.0
 
 
