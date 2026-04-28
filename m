@@ -1,250 +1,199 @@
-Return-Path: <stable+bounces-241540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241541-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kNKQIDKO8Gl4UwEAu9opvQ
-	(envelope-from <stable+bounces-241540-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 12:38:42 +0200
+	id KKtrG2GM8GkuUwEAu9opvQ
+	(envelope-from <stable+bounces-241541-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 12:30:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85033482C38
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 12:38:41 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4725482A85
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 12:30:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 739403015322
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 10:29:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8E2E4301DEF6
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 10:30:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 278633E8C70;
-	Tue, 28 Apr 2026 10:29:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F14FA3ECBD7;
+	Tue, 28 Apr 2026 10:30:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q/4eEsoK"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oQHe34oP"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDD4A382398;
-	Tue, 28 Apr 2026 10:29:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 018553ECBFD
+	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 10:30:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777372184; cv=none; b=VVJDU9+dlFEHlh1tH8Mlmtama/kjKMCogOaXqUzCw0AsrpqjqJf5eAbkN3vWpEWE6jkWSahHrhyb3WEF6WiKGvV7tMVf2zE9rjm4mMuC5qgPFUXTVzjvd1kaozXJTd9TWJy5MM3Va/zpcEGjAy8jussqW+YWwIszDIa0xR+Ssjc=
+	t=1777372212; cv=none; b=Fg1Kipr/oudMfPNYcb4GSMag0jk2NcjglPKp0BnSw0Nx0V7VLeBAw7sbWyCJh/V3A3Dr247IOdWqRoVW9N0ohZg+AayYFQarS1aKR3kA3TUwbZjgU5ScCv1k2U75BBmVwIVJloCJX1mUbvxtB5PwHYTPb8npe23Q1+abQGO6xtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777372184; c=relaxed/simple;
-	bh=n4th+Ylo0hBgsOJ/cL1S7lsKVsZLR54r3ciaXa12im8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=C0cC8mq/ohRz+ZLgIUSC58TSE1UbekKKNpJF1XTUUX8s1ONc5LifY3w/QP6WDdta/Kg58bQ4LXvBk9/BKlNp+m/u4NtyInpUNvyRB+YSNbF761kv6NF3ma9QauEabrtg8tu0MgcwPSU9pErvnZxlsmZOMhbBn46wplS9RMlziJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q/4eEsoK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3964DC2BCAF;
-	Tue, 28 Apr 2026 10:29:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777372184;
-	bh=n4th+Ylo0hBgsOJ/cL1S7lsKVsZLR54r3ciaXa12im8=;
-	h=From:Date:Subject:To:Cc:From;
-	b=Q/4eEsoKG6omncorah8V1VjT6hqoohB5dMzP/5sGFLhWUnaG1k6Yy3ddLF2yUwjMz
-	 6ADLkPCbx3hZTxkWz5XtPF5hpvVBBbx5flX5p4X/LDrITONAU2leVyak/6tMi14253
-	 Px+oHhjmXIi6ttYVKMGjCWvQS17a/QwX+Jhm/Ha5vJNXh0dU1RpsEvHaROa8g5SERs
-	 WYhFhb9EFwOzAhEFlv3aSY3nv38dXkm9s/el9EnCpV0XTJZEggYc5+80rV6eT6zcq9
-	 0lTpBfRvE5SMEb5yZ4v/4SgRrZ/s+gTcVWk0EP/5N2KH3+eQrImicg1CKEWvSRY6kZ
-	 6UGcwtxYZWshQ==
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Tue, 28 Apr 2026 12:29:36 +0200
-Subject: [PATCH] x86/mm: fix freeing of PMD-sized vmemmap pages
+	s=arc-20240116; t=1777372212; c=relaxed/simple;
+	bh=Q1SQtMHy3aqsHkz2pqwBb00QPVJHhdgc6QUsbv3XMuk=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=hT3heevC75DUdIY2c7CQcRH0954DkqYpvX6Fqof8WeWykgVuX/Vx5D8o1DgoZYb7h3YlTow6yApbLmAHoNTKAXuwJ67IslyIeh7JqYpj4TE+ImdkOji1dbDVIGIaM9fZvIF/OLSKOYVzDsc6eH7ZlCAnlS9Xm9sayUNLCTL1ZaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tabba.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oQHe34oP; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tabba.bounces.google.com
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4837bfcfe0dso125256095e9.1
+        for <stable@vger.kernel.org>; Tue, 28 Apr 2026 03:30:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1777372209; x=1777977009; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ybPE6uBPAKDLSIVRQh3Dd/khXkWqQgT9nsbAgFbes8s=;
+        b=oQHe34oPA9XmpeNDCzIzkkzcuI29Q0ml2z+Uh09iSXZuI6MySlMDJloZb0cv7bFkMd
+         qp5BZ/I7RFm97SuKvEa1pFmKfUY38yR5BtLj9joCQiKyxjSovN5HoLkuZOF4eC4SpgCj
+         akyHoGpRBw/ScvoHSZs85WDbm8Lq9wHetzhDpgWRZkYHjiXoCj0ui6tAonKaaXL+OrOw
+         i3zFW/LYptl7UTDy1YSCbgIB+RK8wTBR/38Sy+C2ET3hQr5IMIXhWhcpCzwCgay4PZ5Z
+         aEQ+dNEEQxGC9G82ig63UxWBqnUvDCpUaHq6CjnbYYEqds3Npuli1BjzAUWiww22Exzi
+         ZdcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777372209; x=1777977009;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ybPE6uBPAKDLSIVRQh3Dd/khXkWqQgT9nsbAgFbes8s=;
+        b=fsGTiebhTHbiLY724vCzGXQEgxlE72qxgnd/tIwEv/uU25ROJb1T7hkqIc/0JHGG22
+         r9EBCiZ8C1Yf/beVrvm+I43tKTA6Qorj+G62cVbl+yqe77okCQofDPRxOMT9qnzGX8a5
+         GECOuGxwzvHMvP+vnajG7IXsRDWm1bruuWg7/+0auZW3f2nmN1jpmkFOgXemrL8vvpPg
+         oxASSV2NLneVrCTv+4NaB3KrqrgIKOL0ge3R2L1uqGAj7kLufQDhkcfvFULXTQwwwdM0
+         e2tow0USvE6tBTw+WkJ6Ud176NZ+fubaMbW+4Y5YW9XUDX0a96e7rnmkY1gO7Nf/aUu0
+         1LLw==
+X-Forwarded-Encrypted: i=1; AFNElJ+t4McAkeJlZohaut0ZD8TcQXJyTB9T7hrYV11ZqYPlZ6DP1G/c6RVUIwb9OZmruhlaB4/Ogkc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwS3HXRs8YKJ7XeRMlxiNozPBOoffaVdeyqMvZxWT0heR3KmlWC
+	d6YEcsvEcdKTPI7AHgpMsvM6/R5oZBNO2pEFhf9tCocnB3qm14s0Y4PSpKM5Xn86eY7LbjrvQvG
+	Ikw==
+X-Received: from wmby10.prod.google.com ([2002:a05:600c:c04a:b0:486:fca5:7a8d])
+ (user=tabba job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:a013:b0:48a:563c:c8e0
+ with SMTP id 5b1f17b1804b1-48a77ad5a89mr41979925e9.1.1777372209349; Tue, 28
+ Apr 2026 03:30:09 -0700 (PDT)
+Date: Tue, 28 Apr 2026 11:30:00 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260428-vmemmap-v1-1-b2aa1e6db2c0@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAA+M8GkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDEyML3bLc1NzcxALdxCSTJEsTy8REcyNzJaDqgqLUtMwKsEnRsbW1AIg
- J1eVZAAAA
-To: Dave Hansen <dave.hansen@linux.intel.com>, 
- Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
- Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
- "H. Peter Anvin" <hpa@zytor.com>, 
- "Mike Rapoport (Microsoft)" <rppt@kernel.org>, 
- Jason Gunthorpe <jgg@ziepe.ca>, Lu Baolu <baolu.lu@linux.intel.com>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- Lu Baolu <baolu.lu@linux.intel.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
- stable@vger.kernel.org, "David Hildenbrand (Arm)" <david@kernel.org>
-X-Mailer: b4 0.13.0
-X-Rspamd-Queue-Id: 85033482C38
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
+Message-ID: <20260428103008.696141-1-tabba@google.com>
+Subject: [PATCH 0/8] KVM: arm64: EL2 synchronisation and pKVM stage-2 error
+ propagation fixes
+From: Fuad Tabba <tabba@google.com>
+To: maz@kernel.org, oliver.upton@linux.dev
+Cc: james.morse@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, 
+	qperret@google.com, vdonnefort@google.com, tabba@google.com, 
+	catalin.marinas@arm.com, will@kernel.org, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: D4725482A85
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241540-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-241541-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[david@kernel.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tabba@google.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[google.com:+];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 
-In commit bf9e4e30f353 ("x86/mm: use pagetable_free()"), we switched
-from freeing non-boot page tables through __free_pages() to
-pagetable_free().
+Hi folks,
 
-However, the function is also called to free vmemmap pages.
+This is yet another series of fixes I'd like to land before posting a
+follow-up to Will's pKVM infrastructure series [1].
 
-Given that vmemmap pages are not page tables, already the page_ptdesc(page)
-is wrong. But worse, pagetable_free() calls
+I found these while developing KVM and arm64 system guides for
+review-prompts [2], an open-source set of AI-assisted review prompts
+used by sashiko [3]. While writing the guides I tried to find cases
+that would be easy to miss or trip up an LLM, and stumbled on these
+bugs. A local run with the updated guides flagged all of them
+correctly (some of the commit messages incorporate feedback from that
+run, e.g., the impact of WARN_ON() in hyp). I plan to upstream the
+guides once they are complete.
 
-	__free_pages(page, compound_order(page));
+The patches fall into three groups:
 
-As vmemmap pages are not compound pages (see vmemmap_alloc_block()) --
-except for HVO, which doesn't apply here -- we will only free the first
-page when freeing a PMD-sized vmemmap page, leaking the other ones.
+EL2 context-synchronisation (patches 1-2):
 
-Fix it by properly decoupling pagetable and vmemmap freeing.
-free_pagetable() no longer has to mess with SECTION_INFO, as only the
-vmemmap is marked like that in register_page_bootmem_memmap().
+  Patch 1 sets SCTLR_EL2.EIS and SCTLR_EL2.EOS in
+  INIT_SCTLR_EL2_MMU_ON. On FEAT_ExS hardware these bits are
+  UNKNOWN at reset; without them EL2 exception entry and exit are
+  not architecturally guaranteed to be Context Synchronisation
+  Events. KVM/arm64 hot paths rely on that guarantee implicitly to
+  elide explicit ISBs after MSRs to context-switching sysregs.
 
-While at it, just wire up the altmap parameter for remove_pte_table().
-Also, the indentation in remove_pmd_table() is messed up, let's fix that
-while touching it.
+  Patch 2 adds an explicit ISB after write_sysreg_hcr() on the
+  __deactivate_traps() path. The activate path is covered by the
+  ERET that follows (a CSE, guaranteed by patch 1); on the
+  deactivate path, subsequent EL2 sysreg accesses run before any
+  natural CSE.
 
-Note that we'll try to get rid of that bootmem info handling soon. For
-now, we'll handle it similar to free_pagetable(), just avoiding the
-ifdef.
+Minor fixes (patches 3-4):
 
-Fixes: bf9e4e30f353 ("x86/mm: use pagetable_free()")
-Cc: stable@vger.kernel.org
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
----
-Reproduced and tested with a simple VM with a virtio-mem device,
-repeatedly adding and removing memory.
+  Patch 3 fixes a parameter-name typo in __deactivate_fgt() that
+  causes it to silently capture a variable from the enclosing scope
+  rather than use its declared parameter.
 
-Found by code inspection while working on bootmem_info removal.
----
- arch/x86/mm/init_64.c | 43 +++++++++++++++++++++++++++----------------
- 1 file changed, 27 insertions(+), 16 deletions(-)
+  Patch 4 guards the VHE hyp panic path against a NULL vcpu pointer;
+  the nVHE counterpart already has this guard.
 
-diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-index df2261fa4f98..8d03e44a7fb9 100644
---- a/arch/x86/mm/init_64.c
-+++ b/arch/x86/mm/init_64.c
-@@ -1014,7 +1014,7 @@ static void __meminit free_pagetable(struct page *page, int order)
- #ifdef CONFIG_HAVE_BOOTMEM_INFO_NODE
- 		enum bootmem_type type = bootmem_type(page);
- 
--		if (type == SECTION_INFO || type == MIX_SECTION_INFO) {
-+		if (type == MIX_SECTION_INFO) {
- 			while (nr_pages--)
- 				put_page_bootmem(page++);
- 		} else {
-@@ -1028,13 +1028,24 @@ static void __meminit free_pagetable(struct page *page, int order)
- 	}
- }
- 
--static void __meminit free_hugepage_table(struct page *page,
-+static void __meminit free_vmemmap_pages(struct page *page, unsigned int order,
- 		struct vmem_altmap *altmap)
- {
--	if (altmap)
--		vmem_altmap_free(altmap, PMD_SIZE / PAGE_SIZE);
--	else
--		free_pagetable(page, get_order(PMD_SIZE));
-+	if (altmap) {
-+		vmem_altmap_free(altmap, 1u << order);
-+	} else if (PageReserved(page)) {
-+		unsigned long nr_pages = 1 << order;
-+
-+		if (IS_ENABLED(CONFIG_HAVE_BOOTMEM_INFO_NODE) &&
-+		    bootmem_type(page) == SECTION_INFO) {
-+			while (nr_pages--)
-+				put_page_bootmem(page++);
-+		} else {
-+			free_reserved_pages(page, nr_pages);
-+		}
-+	} else {
-+		__free_pages(page, order);
-+	}
- }
- 
- static void __meminit free_pte_table(pte_t *pte_start, pmd_t *pmd)
-@@ -1093,7 +1104,7 @@ static void __meminit free_pud_table(pud_t *pud_start, p4d_t *p4d)
- 
- static void __meminit
- remove_pte_table(pte_t *pte_start, unsigned long addr, unsigned long end,
--		 bool direct)
-+		 bool direct, struct vmem_altmap *altmap)
- {
- 	unsigned long next, pages = 0;
- 	pte_t *pte;
-@@ -1118,7 +1129,7 @@ remove_pte_table(pte_t *pte_start, unsigned long addr, unsigned long end,
- 			return;
- 
- 		if (!direct)
--			free_pagetable(pte_page(*pte), 0);
-+			free_vmemmap_pages(pte_page(*pte), 0, altmap);
- 
- 		spin_lock(&init_mm.page_table_lock);
- 		pte_clear(&init_mm, addr, pte);
-@@ -1153,25 +1164,25 @@ remove_pmd_table(pmd_t *pmd_start, unsigned long addr, unsigned long end,
- 			if (IS_ALIGNED(addr, PMD_SIZE) &&
- 			    IS_ALIGNED(next, PMD_SIZE)) {
- 				if (!direct)
--					free_hugepage_table(pmd_page(*pmd),
--							    altmap);
-+					free_vmemmap_pages(pmd_page(*pmd),
-+							   PMD_ORDER, altmap);
- 
- 				spin_lock(&init_mm.page_table_lock);
- 				pmd_clear(pmd);
- 				spin_unlock(&init_mm.page_table_lock);
- 				pages++;
- 			} else if (vmemmap_pmd_is_unused(addr, next)) {
--					free_hugepage_table(pmd_page(*pmd),
--							    altmap);
--					spin_lock(&init_mm.page_table_lock);
--					pmd_clear(pmd);
--					spin_unlock(&init_mm.page_table_lock);
-+				free_vmemmap_pages(pmd_page(*pmd), PMD_ORDER,
-+						   altmap);
-+				spin_lock(&init_mm.page_table_lock);
-+				pmd_clear(pmd);
-+				spin_unlock(&init_mm.page_table_lock);
- 			}
- 			continue;
- 		}
- 
- 		pte_base = (pte_t *)pmd_page_vaddr(*pmd);
--		remove_pte_table(pte_base, addr, next, direct);
-+		remove_pte_table(pte_base, addr, next, direct, altmap);
- 		free_pte_table(pte_base, pmd);
- 	}
- 
+pKVM stage-2 error propagation (patches 5-8):
 
----
+  At EL2 in nVHE/pKVM, WARN_ON() is not warn-and-continue: it
+  expands to a BRK that enters the invalid-host-el2 vector and
+  branches to hyp_panic(), which is __noreturn.
 
-base-commit: a2ddbfd1af0f54ea84bf17f0400088815d012e8d
-
-change-id: 20260428-vmemmap-ab4b949aa727
-
---
+  Four pKVM memory-transition functions wrapped the return value of
+  kvm_pgtable_stage2_map() in WARN_ON() and discarded it. For the
+  share and donation paths the map can fail via -ENOMEM when the
+  vcpu memcache is exhausted, converting a recoverable hypercall
+  error into a fatal hyp panic. The four patches capture and
+  propagate the return value, with appropriate stage-2 unmap and
+  host-side rollback for the reachable failure cases.
 
 Cheers,
+/fuad
 
-David
+[1] https://lore.kernel.org/all/20260105154939.11041-1-will@kernel.org/
+[2] https://github.com/masoncl/review-prompts
+[3] https://sashiko.dev/
+
+Fuad Tabba (8):
+  KVM: arm64: Make EL2 exception entry and exit context-synchronization
+    events
+  KVM: arm64: Synchronise HCR_EL2 writes on the guest exit path
+  KVM: arm64: Guard against NULL vcpu on VHE hyp panic path
+  KVM: arm64: Fix __deactivate_fgt macro parameter typo
+  KVM: arm64: Propagate stage-2 map failure on host->guest share
+  KVM: arm64: Propagate stage-2 map failure on host->guest donation
+  KVM: arm64: Propagate stage-2 map failure on guest->host share
+  KVM: arm64: Propagate stage-2 map failure on guest->host unshare
+
+ arch/arm64/include/asm/sysreg.h         |  2 +-
+ arch/arm64/kvm/hyp/include/hyp/switch.h |  2 +-
+ arch/arm64/kvm/hyp/nvhe/mem_protect.c   | 99 +++++++++++++++++++++----
+ arch/arm64/kvm/hyp/nvhe/switch.c        | 11 +++
+ arch/arm64/kvm/hyp/vhe/switch.c         | 14 +++-
+ 5 files changed, 111 insertions(+), 17 deletions(-)
+
+-- 
+2.54.0.545.g6539524ca2-goog
 
 
