@@ -1,173 +1,175 @@
-Return-Path: <stable+bounces-241702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241703-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id Pbu9BrvX8GkLaQEAu9opvQ
-	(envelope-from <stable+bounces-241702-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 17:52:27 +0200
+	id 6KFEEynY8GkLaQEAu9opvQ
+	(envelope-from <stable+bounces-241703-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 17:54:17 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6000488439
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 17:52:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D87944884D2
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 17:54:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6AA2C303AD2F
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 15:50:33 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 609F33020C59
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 15:54:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D70E7428858;
-	Tue, 28 Apr 2026 15:50:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VyjgDojU"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E4E23C3BF7;
+	Tue, 28 Apr 2026 15:54:03 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4050542EEB6
-	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 15:50:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CCDE3C3BE2;
+	Tue, 28 Apr 2026 15:53:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777391408; cv=none; b=LkTJV2I+q0tZHsonadDkzNK8P62geLLjc+TL/cU5ESJ6NRqjf3pEQA44XTVYAQkPfMyFV6kUprEiFw89l0VdW6g5+sLjgEuWO8y44eu1P2g/K6UdbvE/KFCOzLg8psLAgRpbbxCxsSMKcsYk0su1IPZG+7R0icqty8bKizdra9c=
+	t=1777391643; cv=none; b=XyeAxrxkOnSIQt01okN1eVv2HIMcrxftBJ3b4qndU5BKs1pvwBJ5kuSvwW5KfMqY4RzjQ1DTpWsPZBzvh+CdZwll8wF8EvOOuFGNG0MOLx6DYQrFmkEy/sWOTvRF8UPPI+EZlGDh0tnzPX6UoRegVj6QD8ALhzA2MapsAVOeT5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777391408; c=relaxed/simple;
-	bh=m4em3WATkXCZY/HpQBIXDhpLBD0RFgKEJQxvZ0gfhio=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=BRX8c/4ceZZ5KCI1qJCahSipKLICpQ0Crs1nwKxVLZXa5/b/Qp4+jG4xxAAXV4Yb8eJ7wS+Zbx6PkyBGOEFh+5G9Tua2YV8z31Q8ujX6gVutOwAd5QGOJaKxfTuApHUG/hmBsOTx7eZ2T8WWBA5mlkW3DSlpRTe2mkijKosBbNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VyjgDojU; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777391406;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qX32DooFrkDfRe71xhvhxNSnEf4P5VJZoKSsbRqV8uk=;
-	b=VyjgDojUZUvAwiAhDdPd9k0emM488n8Gdm39WGsT+Qup7aT7MrZCX10YLI0OHQxPZyC/Ni
-	fqsyhQvT6epfPMvNcXRvAAIwF9XfemAzJheODnfccRx0QQDW8hXEMpl6Dpyhu5EGlAi4HQ
-	T4JR/FdCDYktyAWgw767SJ/GN7DNvN8=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-369-NZtYTrVgOHy1eEdUvD61MQ-1; Tue,
- 28 Apr 2026 11:50:00 -0400
-X-MC-Unique: NZtYTrVgOHy1eEdUvD61MQ-1
-X-Mimecast-MFC-AGG-ID: NZtYTrVgOHy1eEdUvD61MQ_1777391398
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 923AE1956089;
-	Tue, 28 Apr 2026 15:49:58 +0000 (UTC)
-Received: from [10.22.65.177] (unknown [10.22.65.177])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A1A7A180045E;
-	Tue, 28 Apr 2026 15:49:56 +0000 (UTC)
-Message-ID: <24bf6d29-f2ee-4285-af27-fb1aa3d0a1c8@redhat.com>
-Date: Tue, 28 Apr 2026 11:49:55 -0400
+	s=arc-20240116; t=1777391643; c=relaxed/simple;
+	bh=K3+V6m0v+TBLOu1erk2jlx7zyg8kD8fYUb6F3jMhkps=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=BIXKq8grc+AQs0AA910zTFKum0vSS0CRPMzI1W/AYhF021OPzgWo1PUoQRibSbosZ2e/dcz59aTGiX+d0XZwQ588psCKOr3CpgS39RJsQtPnz4UZkXCSVlW7uUYifmQK3O58qmaMYhMQWCyhBgkUD8dVPvMctjmSfoVqXnuoTyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from edelgard.fodlan.icenowy.me (unknown [112.94.102.122])
+	by APP-05 (Coremail) with SMTP id zQCowAB3CQ3o1_BpzKzWDg--.462S2;
+	Tue, 28 Apr 2026 23:53:12 +0800 (CST)
+Message-ID: <151c1c1d52fce8c3b1dac3a919be3086ce3426df.camel@iscas.ac.cn>
+Subject: Re: [PATCH] drm/panel: himax-hx83102: restore MODE_LPM after
+ sending disable cmds
+From: Icenowy Zheng <zhengxingda@iscas.ac.cn>
+To: Doug Anderson <dianders@chromium.org>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>, Jessica Zhang	
+ <jesszhan0024@gmail.com>, Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>,  Maxime Ripard <mripard@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>, Cong Yang	
+ <yangcong5@huaqin.corp-partner.google.com>, David Airlie
+ <airlied@gmail.com>,  Simona Vetter <simona@ffwll.ch>,
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Date: Tue, 28 Apr 2026 23:53:11 +0800
+In-Reply-To: <CAD=FV=X-FUw_MqE2ufv=ngBS3ho4vg-QKokav+MeP7XAAjXUbg@mail.gmail.com>
+References: <20260425165751.1716569-1-zhengxingda@iscas.ac.cn>
+	 <CAD=FV=VXD34ZZTH4MJUtZ6xifbbjp1cLRBd_xvz=3T12G4tKYw@mail.gmail.com>
+	 <d9faab05aab120fee367394edcb35bd131c97646.camel@iscas.ac.cn>
+	 <CAD=FV=X-FUw_MqE2ufv=ngBS3ho4vg-QKokav+MeP7XAAjXUbg@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] cgroup/cpuset: Creating or adding CPUs to partition not
- allowed without privilege
-From: Waiman Long <longman@redhat.com>
-To: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>
-Cc: Chen Ridong <chenridong@huawei.com>, Tejun Heo <tj@kernel.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>, cgroups@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, Xie Maoyi <maoyi.xie@ntu.edu.sg>
-References: <20260428033439.783246-1-longman@redhat.com>
- <7so4b76wg2apwwk3yh76q42jgwnpvlv7sursmsmzeyefhp4pbt@thybpp4litm6>
- <9df75f61-0cbb-42b4-b64d-8e6fd49d50ca@redhat.com>
-Content-Language: en-US
-In-Reply-To: <9df75f61-0cbb-42b4-b64d-8e6fd49d50ca@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Rspamd-Queue-Id: E6000488439
+X-CM-TRANSID:zQCowAB3CQ3o1_BpzKzWDg--.462S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7uw17GF1DZr15trWxArW5KFg_yoW8Cw1kpF
+	W7tFy2kaykJr4IvFn2vw4YvFW7tr43AFWY9rn5K348Z398uF1fCayxtryUuFyUXr4kCw1a
+	vFs2qFy3Xa1vyFUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvvb7Iv0xC_tr1lb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I2
+	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
+	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xII
+	jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4
+	A2jsIEc7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IE
+	w4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMc
+	vjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwACI402YVCY1x02628vn2kIc2xKxwCY
+	1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8Jw
+	C20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAF
+	wI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjx
+	v20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2
+	jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr1j6F4UJbIYCTnIWIevJa73Uj
+	IFyTuYvjxU2wIDUUUUU
+X-CM-SenderInfo: x2kh0wp0lqwv3d6l2u1dvotugofq/
+X-Rspamd-Queue-Id: D87944884D2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[redhat.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-241703-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241702-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[iscas.ac.cn];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FREEMAIL_CC(0.00)[linaro.org,gmail.com,linux.intel.com,kernel.org,suse.de,huaqin.corp-partner.google.com,ffwll.ch,lists.freedesktop.org,vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[longman@redhat.com,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[zhengxingda@iscas.ac.cn,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.712];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	R_DKIM_NA(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:mid,iscas.ac.cn:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 
-On 4/28/26 11:19 AM, Waiman Long wrote:
-> On 4/28/26 3:58 AM, Michal Koutný wrote:
->> Hi Waiman.
->>
->> On Mon, Apr 27, 2026 at 11:34:39PM -0400, Waiman Long 
->> <longman@redhat.com> wrote:
->>> Creation of a cpuset partition or adding more CPUs to an existing
->>> partition will take CPUs away from other cpusets outside of the
->>> partition leaving less CPUs for the others. So it is a privileged
->>> operation that non-privileged users shouldn't be allowed to do.
->>>
->>> Currently, remote partition code has check for CAP_SYS_ADMIN capability
->>> before allowing such operations, but not for local partition.
->> Remote partitions need such a check because their CPUs are sourced from
->> the global supply (top level) without
->>
->>> This leaves a security hole in case cpuset.cpus.partition of a cpuset
->>> is chown'ed to a non-root user and its parent cpuset happens to be a
->>> partition root.
->> I wouldn't say this difference between remote and local partitions is a
->> security hole [1].
-> OK, I will tone down the description.
->>
->> Consider this -- cgroup a is created by root (admin) and its resources
->> are constrained by root's policy. However, what happens in a subtree is
->> irrelevant from that top level view.
->>
->> # setup            // owner
->> a/cpuset.partition=root    // root
->> a/cpuset.cpus=0-3    // root
->> a/cgroup.procs        // user, they can organize subtree as needed
->>
->> For example the user may want to create a (sub)partition with some of
->> the CPUs they got:
->>
->> user$ mkdir a/b
->>
->> a/b/cpuset.partition=root    // user
->> a/b/cpuset.cpus=0-1        // user
->>
->> This should be a valid configuration and behavior, no?
->
-> Thank for the comment. Yes, that can be a valid configuration.
->
-> One possible workaround may be to see if the current user has write 
-> access to its parent partition root. If so, we can allow it to create 
-> a sub-partition, if not, we will forbid it. 
+=E5=9C=A8 2026-04-28=E4=BA=8C=E7=9A=84 08:48 -0700=EF=BC=8CDoug Anderson=E5=
+=86=99=E9=81=93=EF=BC=9A
+> Hi,
+>=20
+> On Mon, Apr 27, 2026 at 10:49=E2=80=AFPM Icenowy Zheng
+> <zhengxingda@iscas.ac.cn> wrote:
+> >=20
+> > =E5=9C=A8 2026-04-27=E4=B8=80=E7=9A=84 11:24 -0700=EF=BC=8CDoug Anderso=
+n=E5=86=99=E9=81=93=EF=BC=9A
+> > > Hi,
+> > >=20
+> > > On Sat, Apr 25, 2026 at 9:58=E2=80=AFAM Icenowy Zheng
+> > > <zhengxingda@iscas.ac.cn> wrote:
+> > > >=20
+> > > > When preparing the panel, it seems that it always expects
+> > > > commands
+> > > > to be
+> > > > transferred in LP mode. However, the disable function removes
+> > > > the
+> > > > MIPI_DSI_MODE_LPM flag, and no other function re-adds it.
+> > > >=20
+> > > > As the unprepare function contains no DSI commands, re-adding
+> > > > the
+> > > > flag
+> > > > just after disabling the panel should be safe. Add the code re-
+> > > > adding
+> > > > the flag after the two commands for disabling the panel are
+> > > > sent.
+> > > >=20
+> > > > This fixes screen unblanking (after blanking once) on
+> > > > mt8188-geralt-ciri-sku1 device.
+> > > >=20
+> > > > Cc: stable@vger.kernel.org=C2=A0# 6.11+
+> > > > Fixes: 0ef94554dc40 ("drm/panel: himax-hx83102: Break out as
+> > > > separate driver")
+> > >=20
+> > > This "Fixes" looks wrong. The bug was still there even before the
+> > > driver was broken out. ...and it looks like the driver that this
+> > > was
+> > > broken out of (panel-boe-tv101wum-nl6.c) still has the same bug?
+> >=20
+> > Yes, but I think the fix shouldn't be propagated to the other
+> > driver
+> > because of the same reason with breaking out the original driver.
+>=20
+> ...but doesn't all the same logic apply to the other driver? Nothing
+> ever adds MIPI_DSI_MODE_LPM back in.
+>=20
+> Even if you don't fix the other driver yourself right now, the proper
+> "Fixes" tag is when the problem was introduced, not when the driver
+> forked out.
 
-It is not that simple to check if the user can write to its parent. So I 
-will put it down as a TODO item, but will still forbid such a 
-configuration for now.
+I think the Fixes tag should point to where the driver is forked out,
+and if I'm going to send a patch for panel-boe-tv101wum-nl6, it will
+has a Fixes tag pointing to the further commit affecting that driver.
 
-Cheers,
-Longman
+Thanks,
+Icenowy
+
+>=20
+> -Doug
 
 
