@@ -1,70 +1,60 @@
-Return-Path: <stable+bounces-241508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241511-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qFkTBH558GnMTwEAu9opvQ
-	(envelope-from <stable+bounces-241508-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 11:10:22 +0200
+	id gEvjAKmB8Gn6UAEAu9opvQ
+	(envelope-from <stable+bounces-241511-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 11:45:13 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80099480FC9
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 11:10:21 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE2EE481C26
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 11:45:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B5CB632A6537
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 08:58:27 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2CADF3046E3C
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 09:06:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81ED13DBD73;
-	Tue, 28 Apr 2026 08:57:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C6FE3DA5CC;
+	Tue, 28 Apr 2026 09:02:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="ApX2LVCs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G3qmyruB"
 X-Original-To: stable@vger.kernel.org
-Received: from n169-111.mail.139.com (n169-111.mail.139.com [120.232.169.111])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 334AF31E828;
-	Tue, 28 Apr 2026 08:57:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67F843D8115
+	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 09:02:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777366649; cv=none; b=PJz++l+CRCfRAYH0NrmqePeQv0JLXJuapPkD8yAf40pNkoUuf41nO7eAhuUdLH37YgbQEo2Q+DjxeUDXMJ56wQvqE2efX52c69qPORc0VU3tSkv/NPzdFEXWlHW6h3D1htfewBTVVF+vgmx5yQqcZVuT7m0Ja4a7q4CNj6zOO1k=
+	t=1777366950; cv=none; b=MRPYLr+JY8BwNkBinFDdqezJ/jC7tNZfXVa9eiIdbqLsW5Sm3yhDrBdjAPGn0IcXt4CERlbYou0AIArJR93Og9Ir4v4Bu89JwdVNX0TK+MSS+UjGS8azO2CRpkizXKJ20QZvKnjEDIKn+SjvzThsVggv2wBe8zvXxrSAY8gML9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777366649; c=relaxed/simple;
-	bh=At8ZEZXEyl6/MPyg8ioxlqaVNvw99hDz7FkN8u7FKwQ=;
+	s=arc-20240116; t=1777366950; c=relaxed/simple;
+	bh=ah1lKBfov9hxlk1IZ1s3wEToN1/ZHsVOy/QkBZqP1kg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qx01pJ2NYBfsG15U7zqKCavP29oxm2lIzFtHyilAwJrvX7Ssw5Mkb2BpXLGE0RuajVu//Xzr8MDyzzit4eBvADJrYpXma+HfUTkpq6azVQgAzZVfh9IpyoVxvcd+DFpt5za7K8qGYrfczUDEL931G9TbLcUsEucYvfVTqWgCVkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=ApX2LVCs; arc=none smtp.client-ip=120.232.169.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=139.com; s=dkim; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=ApX2LVCsdOP0Mj8BABzH38fFsK+QXZoXlpJ2EWo0DN2dOb5TTuvUY6W9T3d3oDt8tMZ8F25u07qs1
-	 +IpG3dLNrbo4zrZ5ycyYakqZAmAAhQNBHTzoa4buY/2P5YKaPySVgWNy8azGmaaH//7gqB39YlUEoF
-	 IZd5bVe4xhAedygE=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM:                                                                                        
-X-RM-SPAM-FLAG:00000000
-Received:from  (unknown[47.95.114.252])
-	by rmsmtp-lg-appmail-14-12003 (RichMail) with SMTP id 2ee369f07660cf4-01d24;
-	Tue, 28 Apr 2026 16:57:19 +0800 (CST)
-X-RM-TRANSID:2ee369f07660cf4-01d24
-From: Bin Lan <lanbincn@139.com>
-To: gregkh@linuxfoundation.org,
-	sashal@kernel.org,
-	stable@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	steffen.klassert@secunet.com,
-	daniel.m.jordan@oracle.com,
-	linux-crypto@vger.kernel.org,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Bin Lan <lanbincn@139.com>
-Subject: [PATCH 5.10.y 2/2] padata: Remove comment for reorder_work
-Date: Tue, 28 Apr 2026 16:57:01 +0800
-Message-ID: <20260428085701.1480-3-lanbincn@139.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260428085701.1480-1-lanbincn@139.com>
-References: <20260428085701.1480-1-lanbincn@139.com>
+	 MIME-Version; b=Pi7S05PpF8rqvrnzkScIWSlGyR9o+tu0S5TKdpXk/XByZL/tsvK6fjSzuCRDbacwb6DUil7UpsBan0knn2NI8iZ+SkX5Jq2sC/jGVgDJ/JLyLvGM7AU+X1z/qk8cuLawmLWJC3XW+P+7o3BckSrkp1+Qc2WmlSJYeekheNYhM44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G3qmyruB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C266C2BCF4;
+	Tue, 28 Apr 2026 09:02:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777366949;
+	bh=ah1lKBfov9hxlk1IZ1s3wEToN1/ZHsVOy/QkBZqP1kg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=G3qmyruBkch0BGe4xwFFkbHcVZws+mvs9uW7CqBtZSpgUevpDIHnBV7Jtghgw3Pwc
+	 E1hGdkp74295+hjiRxH/Vl489ySRpkMYDgon5opQfQ81Mx3TQ8XLGdUYZhTRTzk8wj
+	 9LYuMbmXLDXo3X9VQaZ75eBp26MQW7fo96jCXVLc1fgYtuq9jWvMVLnl1Mnzr74Fgp
+	 +IZ5lIHEIw39cDiA7cJtFzel8alcrUx9tJUl4VK9+bcs8ntsKRPaAKoI09RxzQ/2jn
+	 tWcH3Iu3igae4zKJKwu4HWJwuJ9IIEqK+K7PygOVgqrBCg0pDDf0yCOT0dgx+Hb80W
+	 1dlJifyz4aBBA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y] LoongArch: Add spectre boundry for syscall dispatch table
+Date: Tue, 28 Apr 2026 05:02:27 -0400
+Message-ID: <20260428090227.2121911-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026042748-removal-hesitate-2626@gregkh>
+References: <2026042748-removal-hesitate-2626@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -72,66 +62,76 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 80099480FC9
+X-Rspamd-Queue-Id: EE2EE481C26
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.04 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_REJECT(1.00)[139.com:s=dkim];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-241508-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,secunet.com,oracle.com,gondor.apana.org.au,canb.auug.org.au,139.com];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[139.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[139.com];
-	FROM_NEQ_ENVFROM(0.00)[lanbincn@139.com,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-241511-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[139.com:-];
-	NEURAL_HAM(-0.00)[-0.177];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,apana.org.au:email,auug.org.au:email]
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,loongson.cn:email]
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit 82a0302e7167d0b7c6cde56613db3748f8dd806d ]
+[ Upstream commit 0c965d2784fbbd7f8e3b96d875c9cfdf7c00da3d ]
 
-Remove comment for reorder_work which no longer exists.
+The LoongArch syscall number is directly controlled by userspace, but
+does not have a array_index_nospec() boundry to prevent access past the
+syscall function pointer tables.
 
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Fixes: 71203f68c774 ("padata: Fix pd UAF once and for all")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Bin Lan <lanbincn@139.com>
+Cc: stable@vger.kernel.org
+Assisted-by: gkh_clanker_2000
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/padata.h | 1 -
- 1 file changed, 1 deletion(-)
+ arch/loongarch/kernel/syscall.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/padata.h b/include/linux/padata.h
-index 9ca779d7e310..6f07e12a4381 100644
---- a/include/linux/padata.h
-+++ b/include/linux/padata.h
-@@ -90,7 +90,6 @@ struct padata_cpumask {
-  * @processed: Number of already processed objects.
-  * @cpu: Next CPU to be processed.
-  * @cpumask: The cpumasks in use for parallel and serial workers.
-- * @reorder_work: work struct for reordering.
-  */
- struct parallel_data {
- 	struct padata_shell		*ps;
+diff --git a/arch/loongarch/kernel/syscall.c b/arch/loongarch/kernel/syscall.c
+index b4c5acd7aa3b3..f4e3bd219b1d7 100644
+--- a/arch/loongarch/kernel/syscall.c
++++ b/arch/loongarch/kernel/syscall.c
+@@ -9,6 +9,7 @@
+ #include <linux/entry-common.h>
+ #include <linux/errno.h>
+ #include <linux/linkage.h>
++#include <linux/nospec.h>
+ #include <linux/syscalls.h>
+ #include <linux/unistd.h>
+ 
+@@ -55,7 +56,7 @@ void noinstr do_syscall(struct pt_regs *regs)
+ 	nr = syscall_enter_from_user_mode(regs, nr);
+ 
+ 	if (nr < NR_syscalls) {
+-		syscall_fn = sys_call_table[nr];
++		syscall_fn = sys_call_table[array_index_nospec(nr, NR_syscalls)];
+ 		regs->regs[4] = syscall_fn(regs->orig_a0, regs->regs[5], regs->regs[6],
+ 					   regs->regs[7], regs->regs[8], regs->regs[9]);
+ 	}
 -- 
-2.43.0
-
+2.53.0
 
 
