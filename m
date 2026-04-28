@@ -1,196 +1,185 @@
-Return-Path: <stable+bounces-241699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241700-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MHUuIvfW8GkSZQEAu9opvQ
-	(envelope-from <stable+bounces-241699-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 17:49:11 +0200
+	id IKQOHg7X8GlHaAEAu9opvQ
+	(envelope-from <stable+bounces-241700-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 17:49:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7F1248837C
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 17:49:10 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16E7948839C
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 17:49:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CFC7E3046E96
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 15:48:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A7D4F301C6FA
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 15:49:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1D3A3A9638;
-	Tue, 28 Apr 2026 15:48:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD9353C1961;
+	Tue, 28 Apr 2026 15:49:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="TX9PWWwv"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="dGOXt3Dk"
 X-Original-To: stable@vger.kernel.org
-Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011046.outbound.protection.outlook.com [52.101.57.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CDDE24A069;
-	Tue, 28 Apr 2026 15:48:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777391338; cv=fail; b=dWETugJKPX5DdFUgkBZDDbe5EtR2hLt0yACVNSyCN6MEtdpKtYt0ngfmaWppaNlrubB5gB85HPkl1M9xRP4AE1R2//CjkZjB7hreGaCStXT9+nqeOs3XkApTs2Jl8y2WBl0sEMrq1HMdZHSVoVZqm0MLaiehD3z78U7odn1w3qQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777391338; c=relaxed/simple;
-	bh=6EeDoH0I+gZdq9TzgPPqVQsEF/KJip3eXk/LKf7dkB0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=LMSp0YzeayNVlTlmbSSut8me2elnmrQU7Vz/Qt3J033kV+tk9BIQaNU0IDLQYMoInCIz1gLPgdNsFw8M10B1UwKpO7qG3Bb2Dz2Vd6EFRpkZ2+cBmIbIWJCleH1q6a+fv5IZIH2M9SIws47Ff3/lYq0nXR/OAiMjhD/48SdmhiU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=TX9PWWwv; arc=fail smtp.client-ip=52.101.57.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TQsaz6E+PPsSlIAlq+SS1cOroz8XlznrYpTrRWSvQi0Y9PbT2dE90Td5cA0UvmP0qM2dOdNPQOyzbdBhwZFumgJqqxUI792L/RfGNkdHmu2ZCMVJRcvLrU1HXS5jkd504A/z+PYHxQoSipY3+hHtvPHGau91rzHqOFuQqLAGsjD6rXpN+1IkrlyPjOTvkNEt/ahtPgY+iyRxRW7V98tETSs7WgmKIefGfYsH23m00isWiuSiNPCLhExD8tEZCQTbD73YxlP4sTXyJ83h2vOxWecqgWnqaOzrLeEgHvZTlLF70bY5F3qgnFUM+ioFSR8JEnCtfBuOdr600Mm3qJwSoA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3/rDHvEWtvgLV9foJ6+66NS7kyJXsnGyXEy4pS1fSpA=;
- b=P/gG6RNRszoh79ICRSIqPM4wHZS5rtFNTKTprIKE70K4mdCsoywToFUbu0G2kEs9He6iMDHTltyJN1D0jqqHSEN+z5pu+zgChatk1WCQYw2bcGdcoCuptIlPe6NXiRjDvANjHbIVoM86K+87M5GN+rGUVA/P3M/x7vo5IPaKy2Dn7Kw/3RZz3XxXRfGvhA5BtZ7jCZJY2iFBbUXuedTtrZl+ubW+rb/O4ePYx5P1XUL6+CuLpWIVKYf1FrZ2lQt/EVOV2k+gDH4oZ0YX9STPl8vnEQWNtaEwUaHfXg1VEcdLoLYFUOId+IlHEc0R+cEdn0crnCOGglTOhyNtdFEoMw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3/rDHvEWtvgLV9foJ6+66NS7kyJXsnGyXEy4pS1fSpA=;
- b=TX9PWWwvEy0dANgRxVVaUS8F02rcWEVwmjpwr+g3qR0LOC5FHd5hjFO+Y/FRWHmhnTymoW5RYPRRPz9efpND0bTeUZtXoWJuJUzRtI8mKGKACFISe/REMg21aXfk30IwFZXZWuy6AodQOv1at11aluhsX4bTd2BwGTt6k1n/Gkyyc/+PN6aO6DuHHDU+FDZTuXIRY/Eae3xcL4/gHWVlltDQs2BZheGBLI15H0ycGlmzMWztZtBXUdGWCzvWXqKSFvJgR46mEYqAGLcmijx1Aw3WmX9NpbcaM4XkVUI67kw7p8grDVpXdAQs428vxZoEjkm2Z168lj+NkQtH+0krww==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
- by MW5PR12MB5623.namprd12.prod.outlook.com (2603:10b6:303:199::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.16; Tue, 28 Apr
- 2026 15:48:47 +0000
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528%5]) with mapi id 15.20.9870.013; Tue, 28 Apr 2026
- 15:48:47 +0000
-Date: Tue, 28 Apr 2026 12:48:45 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Junrui Luo <moonafterrain@outlook.com>
-Cc: Leon Romanovsky <leon@kernel.org>, Jianbo Liu <jianbol@nvidia.com>,
-	linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Yuhao Jiang <danisjiang@gmail.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] RDMA/mlx5: Fix error path fall-through in
- mlx5_ib_dev_res_srq_init()
-Message-ID: <20260428154845.GA2767188@nvidia.com>
-References: <SYBPR01MB7881E1E0970268BD69C0BA75AF2B2@SYBPR01MB7881.ausprd01.prod.outlook.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <SYBPR01MB7881E1E0970268BD69C0BA75AF2B2@SYBPR01MB7881.ausprd01.prod.outlook.com>
-X-ClientProxiedBy: YT4P288CA0072.CANP288.PROD.OUTLOOK.COM
- (2603:10b6:b01:d2::25) To LV8PR12MB9620.namprd12.prod.outlook.com
- (2603:10b6:408:2a1::19)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 104A03BED06
+	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 15:49:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777391360; cv=none; b=hnsH4IyVK3l+l9AE2DAIHNpWS7x7fVRpj6qUuQdXiyGqvurJOInSbARH4m6zev6C0Wgfy6ONSserAosGh2A8/QRdxX3Rr3SifoilTJ/eyyXb2yW12u/GwwqghPUthEauiDZpqgoS8WY/cS5Xwyehs7Uv91r5Ycgy144eXGng2lA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777391360; c=relaxed/simple;
+	bh=ajbkEbKDdLbKymtMUQjuNsnZglOkHRFWBqwK7N6UE2E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Sto+EBbhiSEAFmjW222mc2Q6lwLo0TVnqBY3CKXDRuXrQEZfTHgVyWsCBIwLQT+BoeipY7QB+Avc5UpUVX//WymnTTtu/apifnSFjYO+wibEL3jCspfyOREzOYl+uIU7McXal2AcNryEYVTr1w21yK41bbgjTwwrmsnQryvYtAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=dGOXt3Dk; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-67893fba9c3so10922989a12.2
+        for <stable@vger.kernel.org>; Tue, 28 Apr 2026 08:49:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1777391353; x=1777996153; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ajbkEbKDdLbKymtMUQjuNsnZglOkHRFWBqwK7N6UE2E=;
+        b=dGOXt3DkK7d6ToHP5Cme31DCsZbT7Fl5NkknKct2+BL6sz6uh0HVzUNcP8/IaJjAz2
+         mxDsQk1BWu1FaPOSGaPNWhhZHf+17VaIgvIH7yZAvMimusmBXW/oBZfO7FtWacElHvFI
+         lpZ31iu9Adh6j6aQ2tipA5JqZSKXCd5tQrpcc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777391353; x=1777996153;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ajbkEbKDdLbKymtMUQjuNsnZglOkHRFWBqwK7N6UE2E=;
+        b=kRv5yYZ9mWz+yr4vhwYgYtV5QUh98do1VT32xvY9MOUZ/kUv2HzMlh/I2kl5/fXUN/
+         wG5t5J7WwqfJBRnLqVI+rC4uhR9JOqEf+gG5BZyTIrQahv62n2/VV+b7LvEKKLOef1tc
+         2p0SeQa8XKgzNGl8+WAfs6Ewd4uaq3eMOXzjA5KYv0Bm4vw+f9+pqnnpazvG/fDk4ntH
+         4bZqvqHd7OUMyRkscatIxLFdbom6SRjbrJhl2z1BKyZW0EGKxiOKzq5emU81GpXOpjOR
+         0pTV1oHe+e1C08S0xEyY9JpA15wCtWG7M/dDCmLOz6i9Y3yRlpaCDgJDn8s5EnB9NkT8
+         GgCg==
+X-Forwarded-Encrypted: i=1; AFNElJ+eK/HnBrlN7NP39R7AmLcn1T0ZHy/48VD8BA0ga7t+JabQuPpyCHy01oGOOhoTm4XSrAigC14=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwfAlHwY6o5JxinFP7ZTS5k+MeZQjTdq//HzTIpcS0ccROXiN+9
+	AYlJIlWeuUOTdco9IhY6KsOK2t+TfISk44Gv7hbCeRVmu7TiyF+7AomlscdkqE7Shw5BgRP0zW3
+	/jHFDs8tv
+X-Gm-Gg: AeBDiev65U4ZiOEoi47MRetq6T6Xsyc01nj8IONr5p8fRY5KHy/AZQ45ft26/iXM1pj
+	TtyXuOEFQ9qzx8lrT3n+43aIUFwocnPSkmX6dlgJHyXjAwyV9gmmggJAcXEC7cEbQGBNznE4z7q
+	j9p1VOHAFXUE8wWr+TDojFgEhG0YaLvakXYJ9EVBd9J51lML405IrCvS4mHFe3QiryukAq7bp7I
+	1qa+26AJB2bc53H2UY9BFVNnmldIMpY2rrPS/TO3J6Dl+qunSsCmFr0dqubWeSNVjPfCQamrASc
+	dtKfJq/tsM5st0Pgy92sQmqR5HQvOZfkj/DhYJBhJxhMNU7kwEaP0SjC3BlfJ+sdICmM9OV/OA9
+	GgJc5hFLI4iB2xqRe1979fUvSVqOungnQ/JeoGjep5mJ6aVU9QM3Nc3uCLcQnkMcE8TmR/zTgyZ
+	L5N0aZwyKf6de+DfW4eYombwhZ3ZOfyQAOIndNUgQ9ndY4XwOIlODWsMCIG8Wve35qKTxym0IbD
+	Mx0wS1hQQA=
+X-Received: by 2002:a17:907:78b:b0:b9d:31c2:37f9 with SMTP id a640c23a62f3a-bb8014fa56dmr221408466b.2.1777391352418;
+        Tue, 28 Apr 2026 08:49:12 -0700 (PDT)
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com. [209.85.221.43])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bb80853b64csm118934566b.12.2026.04.28.08.49.11
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 28 Apr 2026 08:49:12 -0700 (PDT)
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-43fe8bda8e9so6499859f8f.1
+        for <stable@vger.kernel.org>; Tue, 28 Apr 2026 08:49:11 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ+4Ol/1cBH5PuiIxpIJg2q5YN4hBSAvG7GvAsXLdA+QtCbP+7fMyH+dvtY7FaU+3dVDj5u/aCk=@vger.kernel.org
+X-Received: by 2002:a05:6000:26d2:b0:43d:300b:2285 with SMTP id
+ ffacd0b85a97d-44648b50d01mr6684095f8f.11.1777391350488; Tue, 28 Apr 2026
+ 08:49:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|MW5PR12MB5623:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6377d59b-90d0-4fd7-cc95-08dea53da23c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|366016|1800799024|22082099003|18002099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	TbcNagK3/gkjc1fT95XVw5jztQbH+XK00IcJajcBCYcMb6rYkqVrNl/ilZBglmO+FEHmEvWE15Uqfm/fB7ItKDSg1JP/5amtQYRuPrJtNbW4SEkKyx2bqeh0J+xOBdGN6+ybQ5sb1vYfGATZx6onzFlmz4hTT8rN6vz2nwRoWmJp6v80iT4YeW/ZMHpCDdF0h7/EYm4zY9MnDIk3GUKaEx+rSin/G+pGwE1uuqAWUXVI0pyuEhPEmDkJLy475LFga+i29DoWdq2J5q+nK5l1TTgXdUHhjt2esl6InSGWoouSw1v8N3KwlNfZqJXdYMgF1drXoBjITSi8LZW3JPfEsEXSHdZ5ku2eAVM3BtWYsH89IsrY3ZJmv0XJKuGZK4Z8FE+BICCSaZpQofDJcZOwe23nEjRZ3eHxjbcux8VXnx+SqaoxoixUAxRMmDgP3r/KeHhzRfR+i/gC0vIvHTo+hjaDhyxY4Jo9YSrRF3ESBLPVXi6bbqMCUzKAyuUsWr7sr8cLKTHE949Pmvt7XsDG+fytvNbtsZLjli38YZ/YFFiwtXP+ko4ALKVADV1Qo4YeLbZHiZljHWeA4BMUeJxxCpWrRxCSHt+DBeOVWMLdgpOXi6BJ0bu743yHsP/MzA1x7gswfAnFWtvglyjK65w01Wycq3lYtCkm1PTsktnym7hrOG1DLl8BvLt4hBgTrctXfG38UJuAR0GoCaRPnPgAOfkn+e76Ax1y2Dgco0APWMc=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?hFs/oebOVVUN6IVx0V35sOrVj/aEJiWdYzUSQxky98+E5/YpnVAWBsDwjDFV?=
- =?us-ascii?Q?vmXAaOubiLCjegCOIEXlHB29IbbckZFQRP6rNPK/ru026BIKbgS/Ye3N+x2x?=
- =?us-ascii?Q?/klR1v3ik4uFrOx6K9DKJasAQcxLa70Cg9L+NS+ENPDftm8FhBASxSxuMJL2?=
- =?us-ascii?Q?znpYcDRONUng5xNRBSjvl/UzSN/+/VfnZJ6iqpQpCVYzlKVzzW1apL+NL/ew?=
- =?us-ascii?Q?ZMRbn3OoVEAgPlpmhmjx0wp2zF0Cf/27wuJwmj9tKrt2yd98eWg0tuWF9pvD?=
- =?us-ascii?Q?4S1FLN3UEaA3cvf/MOemdMLiCHYJ60nMRFOW9iC/YNWWNbrJrDNzzNsZIKRM?=
- =?us-ascii?Q?aW0ywPDh0vfLWITK2mBPTKDAlcCwWavP/G4/oz/rUmDsMoi7c64fHbUfxDpC?=
- =?us-ascii?Q?a8BLvcFrIbmBibmZd/Qfw/49l6p5+dkiVsso7P2UrJ7/lquA5qPAWfAmneGx?=
- =?us-ascii?Q?KOBJjolOULH2ae4VlyQAP8/9Sdbq/oPP8NxIkhNeXwviyReGdKMKw6SOuEBO?=
- =?us-ascii?Q?m5AC9ZofKxfiMmfJB3/hMfI350wGjMbZaeUwlzPKrd9jt7red+G+PgOYPoDM?=
- =?us-ascii?Q?X9U8P73Vkr/A+88+ecTkkahj6khoxZ9IbCIsOrVtWT0kra5rS+4HYl254Sjm?=
- =?us-ascii?Q?MIaIVjJg4kX03qXLMWVN03xAKjaNX+nXcEGUnb+6TE9am6MUSR4IJbaDMiS3?=
- =?us-ascii?Q?GmtwknkYXInN1AiSsx57QRO3dSJAGE7ZZpQ9+Q+KfqdPLMkJXXtrL8q+lz0S?=
- =?us-ascii?Q?fUCdCAL7J6N789OrKEyeH6wXdP1gIThsyrizfIMd+3EqtbermsZFxzLRKxNa?=
- =?us-ascii?Q?USJ3vCshAY+Z4r/MuLnp1gPS85ZoA2XMc9aMFjjTZDpRhHEJDbJFv9Bg7Izx?=
- =?us-ascii?Q?xmk3JI+xNHAe7YFqyyqQu9hzHAQSkxHSQT5eS9hqNdAIVbrhQ10BkCb/ywcm?=
- =?us-ascii?Q?eEH3xBnClAfWGj/Ys+Twd1iMKLS/rajQ/IO6TNCDVyrFjn6qBhNfMaUQNOIS?=
- =?us-ascii?Q?9vkBNlnJ1EcRFfjiIaXAo8qjFzG1681dZzrqwberqv41CanEVh2aYLAJpqWy?=
- =?us-ascii?Q?eJj8mgVfdKEt55OULm1hl4beOh7D2XSbNz7vj1FIZ8ys+UXYo21UCtWW2Pvw?=
- =?us-ascii?Q?kvQrGuR/396ef9THb6fMNbBuVeNxK9q8dU//yvNoz3E29YxDKCEFKhDMNVID?=
- =?us-ascii?Q?yueQX/hrFO1HEwBYPo6zORgEfbRewBO2PoVyeNqiu863XvUKt7zPUtjvdvQS?=
- =?us-ascii?Q?6l57prQQnfmRh4nvLHc/2ng+c2VQ5aThSnLTYrRSO/LzHpZP3w5P/X2bceu4?=
- =?us-ascii?Q?MOkKB1RI3Qb/Q9KBDNAqwPmfr1dDJAzkQCc+VqSUagv0o+hILfWfDnXVatKo?=
- =?us-ascii?Q?leAv9tAkrZjOCaXPWu7J3VDdpaEWaTIPS6M25wIbM5eLkJC5gELflgXHr1vh?=
- =?us-ascii?Q?j6jWPUfcMq/taXlOMvO+44YJouqFPyPVWhtY5tOc8jSPTTQu9ZhVac0wOfk1?=
- =?us-ascii?Q?nz+sj6esXvt/HTGbVmWlxQ6Ji7p73i5CqCfzntleRr7l5CksEwDD6IOAY4re?=
- =?us-ascii?Q?BofafxyXVwT47cGSa/sntCE8L06nuPFx79niuGZDlokpOiejE0CYFWP3qA8/?=
- =?us-ascii?Q?NaCCeMMG83lEEh4WXbc+Y83CJlJRzMkEi/3U95JxYe9TTKpZRNebPO3zciTk?=
- =?us-ascii?Q?Kg2ZYt+nZ9sRQd80fVGUxhr2Cs6ncBtLgNZqWzOdU/szaFiY?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6377d59b-90d0-4fd7-cc95-08dea53da23c
-X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Apr 2026 15:48:47.0402
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /PbwjBJ+ERUZ0gRzIcYxct2Te2hQjdBV/mY0a6HVQHUSTP7vH4aFcM7kDQk3z9Ci
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW5PR12MB5623
-X-Rspamd-Queue-Id: D7F1248837C
+References: <20260425165751.1716569-1-zhengxingda@iscas.ac.cn>
+ <CAD=FV=VXD34ZZTH4MJUtZ6xifbbjp1cLRBd_xvz=3T12G4tKYw@mail.gmail.com> <d9faab05aab120fee367394edcb35bd131c97646.camel@iscas.ac.cn>
+In-Reply-To: <d9faab05aab120fee367394edcb35bd131c97646.camel@iscas.ac.cn>
+From: Doug Anderson <dianders@chromium.org>
+Date: Tue, 28 Apr 2026 08:48:58 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=X-FUw_MqE2ufv=ngBS3ho4vg-QKokav+MeP7XAAjXUbg@mail.gmail.com>
+X-Gm-Features: AVHnY4KcDuFY0KOauqhFMmUAZtkIYYE4OelTMMpZ8zfK3NDGP7A542OgIRYDm-o
+Message-ID: <CAD=FV=X-FUw_MqE2ufv=ngBS3ho4vg-QKokav+MeP7XAAjXUbg@mail.gmail.com>
+Subject: Re: [PATCH] drm/panel: himax-hx83102: restore MODE_LPM after sending
+ disable cmds
+To: Icenowy Zheng <zhengxingda@iscas.ac.cn>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>, Jessica Zhang <jesszhan0024@gmail.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, Cong Yang <yangcong5@huaqin.corp-partner.google.com>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, dri-devel@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 16E7948839C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
-	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[chromium.org,none];
+	R_DKIM_ALLOW(-0.20)[chromium.org:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[kernel.org,nvidia.com,vger.kernel.org,gmail.com];
-	TAGGED_FROM(0.00)[bounces-241699-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-241700-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linaro.org,gmail.com,linux.intel.com,kernel.org,suse.de,huaqin.corp-partner.google.com,ffwll.ch,lists.freedesktop.org,vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[outlook.com];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[Nvidia.com:+];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[chromium.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jgg@nvidia.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[dianders@chromium.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,Nvidia.com:dkim,nvidia.com:mid]
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid,iscas.ac.cn:email,chromium.org:dkim]
 
-On Fri, Apr 24, 2026 at 01:51:02PM +0800, Junrui Luo wrote:
-> mlx5_ib_dev_res_srq_init() allocates two SRQs, s0 and s1. When
-> ib_create_srq() fails for s1, the error branch destroys s0 but falls
-> through and unconditionally assigns the freed s0 and the ERR_PTR s1
-> to devr->s0 and devr->s1.
-> 
-> This leads to several problems: the lock-free fast path checks
-> "if (devr->s1) return 0;" and treats the ERR_PTR as already
-> initialised; users in mlx5_ib_create_qp() dereference the freed SRQ or
-> ERR_PTR via to_msrq(devr->s0)->msrq.srqn; and mlx5_ib_dev_res_cleanup()
-> dereferences the ERR_PTR and double-frees s0 on teardown.
-> 
-> Fix by adding the same `goto unlock` in the s1 failure path.
-> 
-> Fixes: 5895e70f2e6e ("IB/mlx5: Allocate resources just before first QP/SRQ is created")
-> Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-> ---
->  drivers/infiniband/hw/mlx5/main.c | 1 +
->  1 file changed, 1 insertion(+)
+Hi,
 
-Applied to for rc
+On Mon, Apr 27, 2026 at 10:49=E2=80=AFPM Icenowy Zheng <zhengxingda@iscas.a=
+c.cn> wrote:
+>
+> =E5=9C=A8 2026-04-27=E4=B8=80=E7=9A=84 11:24 -0700=EF=BC=8CDoug Anderson=
+=E5=86=99=E9=81=93=EF=BC=9A
+> > Hi,
+> >
+> > On Sat, Apr 25, 2026 at 9:58=E2=80=AFAM Icenowy Zheng
+> > <zhengxingda@iscas.ac.cn> wrote:
+> > >
+> > > When preparing the panel, it seems that it always expects commands
+> > > to be
+> > > transferred in LP mode. However, the disable function removes the
+> > > MIPI_DSI_MODE_LPM flag, and no other function re-adds it.
+> > >
+> > > As the unprepare function contains no DSI commands, re-adding the
+> > > flag
+> > > just after disabling the panel should be safe. Add the code re-
+> > > adding
+> > > the flag after the two commands for disabling the panel are sent.
+> > >
+> > > This fixes screen unblanking (after blanking once) on
+> > > mt8188-geralt-ciri-sku1 device.
+> > >
+> > > Cc: stable@vger.kernel.org # 6.11+
+> > > Fixes: 0ef94554dc40 ("drm/panel: himax-hx83102: Break out as
+> > > separate driver")
+> >
+> > This "Fixes" looks wrong. The bug was still there even before the
+> > driver was broken out. ...and it looks like the driver that this was
+> > broken out of (panel-boe-tv101wum-nl6.c) still has the same bug?
+>
+> Yes, but I think the fix shouldn't be propagated to the other driver
+> because of the same reason with breaking out the original driver.
 
-Thanks,
-Jason
+...but doesn't all the same logic apply to the other driver? Nothing
+ever adds MIPI_DSI_MODE_LPM back in.
+
+Even if you don't fix the other driver yourself right now, the proper
+"Fixes" tag is when the problem was introduced, not when the driver
+forked out.
+
+-Doug
 
