@@ -1,274 +1,151 @@
-Return-Path: <stable+bounces-241788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241789-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YGEZEbM38Wm/egEAu9opvQ
-	(envelope-from <stable+bounces-241788-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 00:41:55 +0200
+	id uMOSKGo58WkmewEAu9opvQ
+	(envelope-from <stable+bounces-241789-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 00:49:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 921A048CAD3
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 00:41:54 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38A9948CD19
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 00:49:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B7C7B303AF10
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 22:41:52 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 18F6D30065C8
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 22:49:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8D4E35A393;
-	Tue, 28 Apr 2026 22:41:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b="W865jJwU"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5C2638229C;
+	Tue, 28 Apr 2026 22:49:11 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.uniroma2.it (smtp.uniroma2.it [160.80.4.37])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 446DF37C928
-	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 22:41:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.173
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777416111; cv=pass; b=UgBMRJtMJ/q9gFPHL1LI+Yh/QZ4brzIZbZP9FVV11zV7WrEqFIIV59D6sDF1fFbr+3gqw2EqPiTrpLiq0LR9qg2S4uPHK9yQDrKHOY9EfoAUB/EvcmgZ/+rgBshGVIJu5XbH8/UtgcECV8n1E33ylnE89Asn5VORDUJDAMrcK4Y=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777416111; c=relaxed/simple;
-	bh=fRRtuYPqUDqXkQZhqKCI1YmyvrOJ2Wxos56nOQYYnfc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ei+BUAGARTSOHjZ2jMg/3BqQJlhDiYW1rfETlDzC9YCtb4+DzS66HfXQX+G2vXHG1BEiV7LmBngK+XPaaLrZ0PD0gjgJv6l/y2Yg4l19QKOdp6ZfZBJnCm2YvnHd0K8ndo/eFkD6ky3XTn9xqakzzBrE5p2aWnf48RoFpTFYVoM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu; spf=pass smtp.mailfrom=asu.edu; dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b=W865jJwU; arc=pass smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asu.edu
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2b2429f98d0so71211565ad.2
-        for <stable@vger.kernel.org>; Tue, 28 Apr 2026 15:41:49 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777416109; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Dkmfl+RMP2qrGxful5+Ihh4NiJyF0GvZEE1VWoyNkVijsxCqkEaMMljaOlZEGF7zXv
-         IQ4iRX23/sCMZ2g2JKnfOmK3t2ev0yXNc9A9fMEQhR28ULi9Vf5eKBwl8P4RmEwtV/gg
-         iCvPscoFF3YGSSR/hvW/4Yt3M4dtgkugZ6GgntnsYxYeYhBxqSnbbz5pp5NiLzV8mQDn
-         WU1e2e4po4O56Pev1aJxgv2YY4QkYeXzbsPbJpj2edAIY0/pggBXHBhQ2A3eQmUKts1J
-         vSAGwm1LbE8dqTcl5spHCx3Jxkc0at2ic19WkJ1SLojMU39ozsMh7Xo9/MJT6oysGdTL
-         btfw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=MvLu59kcs425P14L4ru3Y/A7BUkRkF4ykMA0MkTCOQs=;
-        fh=k7wKBc9HA3Jmk/hbczES1UfaUGZvDdtjLsBJUY5m2R4=;
-        b=CFylv75fmlVL2AmnkSjKHeFCMxFNA/Xj/HYyoWVO/zdgiANH7VyY7QcW/tP3AvYdja
-         eBazQq2H8m4fBYbHgQ5w+VO7iEOaj6U84F5DBOjoudM1/R2nBNlSerG6tR66WgiGcH2S
-         movq6Awp9fa77YdNqOru+oPIAQoY4d+5JKQ3N/uXQHN2pMUjZVP/DKQCRj5sZ4xWHry5
-         35+qd1AvimIkHAD0py1S6uuRhihFrla1tmpaFGJ1ll09kiaIzBMIipWuxSSw95jfQygZ
-         08lx8l1rfjSumvwnyZ0/YB4cZc7MVjKSAC9citiR3PeQT1O9VPZmE+TB1OmSukK3ude/
-         erhg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=asu.edu; s=google; t=1777416109; x=1778020909; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MvLu59kcs425P14L4ru3Y/A7BUkRkF4ykMA0MkTCOQs=;
-        b=W865jJwUbM7+bKDyZLZZ43dGo3WOzcCCnAsr70cKBbtltyDXk2FT4zsiqex4G11FvV
-         Se1XJcnZpxg08NSYSpAHyLKOYrYCiKweftDP4IHV6CZJiCcijhX+hKox1fjJGg4h/zjm
-         d8iKB4C8ZNTLRzSjYSUXwFTlqjM59ph8PBDhCrawXjQwATN12eV9f1PhflwrgbzD5voc
-         OAa6agIr+CPPubBcnd2nIVcVva+ussXD4jsH9dC2tufjPS1UAel7USH6loutUzCblz9o
-         W1lTAe5z9+6Qqr7T+Rx8aqN6dcnJK9JN+z2PmfzDU0LsB6SJXTBFDPkND7WfJ82BqzgP
-         A0Vg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777416109; x=1778020909;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=MvLu59kcs425P14L4ru3Y/A7BUkRkF4ykMA0MkTCOQs=;
-        b=DMR42sUrDMvtezM1/WajUfYu5idr+W0e91zV71Ah38DMjWOs/VIBXhzscDJOtpgIOO
-         p5QYs8E97arV22tV8qUsz9wc5cBD+X26eJtF9+5q195pV21QVOkJIJynaP+1fE4zn+qG
-         L5CTnZo0X/y1M32M+CaYHjSn6e4Y1TU1QOYmY4I2ZHZUCX/TzxADlVF6n27yBPVkhcJX
-         Sd4WZYhq3BuZJQmbbnzPqGSlh9d08ym+8f/bVhokwQCw2g/7S6eSUspT2F0DTLfTQuVg
-         juKe80GpuwLQkLMxDbB+bmyvRkUoCU50iw6I2R5c0H4m0jZxeh8/3RU81JIcW6eYxumu
-         0N4g==
-X-Forwarded-Encrypted: i=1; AFNElJ+FPjJzJSjq0VfSyaOZwygv9Z6JGyZd19RzkJ4Irh70ZsghuUpc/fbgF3vsoem7EllNx7jQau0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxPXiWZrCCISrIUnWl323FbUTWMI1bc9JM+y9WY47m4unpO733V
-	ey7Mz9VrFWllJu79lgEeim29HaALK2y953eeg1czVvtTkCpkg7EARNalcgm41OyepITFknhL670
-	xiV7oGPEk96SVk8OqKsceiIDT26tfU3U0dFP1pSH2
-X-Gm-Gg: AeBDietKlt1pID54dLkOiOOrOM9E4FSPbbZ74UiWD5RmWn6iYaC5y1P9jzoPnqcWsxY
-	OFSr39G521MiGe/6EDZjwuThfOjv89EWqAaD3u+7uU8NyjmD43fFa24wNpGLYBPPAc0RfPdVIis
-	dUKhusJYCI0LOaGrEUTnMw7HOyPe1vLV3LDUvhInHkF3OPKNYlMzhAVoPWOMcDFFjQppKqMshhT
-	v4aUdXe7gf0SPzCcgdiQ7XounYWdyjOPNkTCyHirtif+yrvUK1th6eP/zRWaxqQly775N3IQXOi
-	QVGrTnlIb7msgBY8dGQ=
-X-Received: by 2002:a17:903:22ca:b0:2b0:7026:24c2 with SMTP id
- d9443c01a7336-2b97c4e391dmr51018695ad.36.1777416109377; Tue, 28 Apr 2026
- 15:41:49 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 229B4364E92;
+	Tue, 28 Apr 2026 22:49:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.80.4.37
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777416551; cv=none; b=PB+2qA/vhByvgpY+SRcKwnhCKbNRc6JPS6yrVtiG/Zl/g3XxSCKbg0sYsQyBycvTEW3NJk1njKYz5C2GWGvvopv4kb0qIrObyf5ZHYhrfx7IkuXHQHunc01QKvGxe68ARGWaRoFbf3FwtxjNSUgJ9/21ant6Ux1V7BkGk82YZH8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777416551; c=relaxed/simple;
+	bh=nLEfbRIRvnlwTITh/nE8m/FFx0nDjwrbG1AUcQ7QqoY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=QcYfyPoZYa/3q6pdmJSYbjUKzaHY50SKo/fBdb+WdQEjINEbil+6NpCpXVRNeKtGyWVdVww9nrc6dq81kdVgPsBrcYPrWvB+49Jc3VXIZAWF0Ky7dGzK5vfUuOJjBfbPKnTeG0t9UOf70pC30xSvNGWKxzfQWojcV2Tr3UdBOok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it; spf=pass smtp.mailfrom=uniroma2.it; arc=none smtp.client-ip=160.80.4.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniroma2.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniroma2.it
+Received: from localhost.localdomain ([160.80.103.126])
+	by smtp-2015.uniroma2.it (8.14.4/8.14.4/Debian-8) with ESMTP id 63SMmTio003354;
+	Wed, 29 Apr 2026 00:48:34 +0200
+From: Andrea Mayer <andrea.mayer@uniroma2.it>
+To: "David S . Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+Cc: Alexander Aring <alex.aring@gmail.com>,
+        Justin Iurman <justin.iurman@gmail.com>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        stefano.salsano@uniroma2.it, Andrea Mayer <andrea.mayer@uniroma2.it>
+Subject: [PATCH net] ipv6: rpl: add NULL check for idev in ipv6_rpl_srh_rcv()
+Date: Wed, 29 Apr 2026 00:48:16 +0200
+Message-Id: <20260428224816.11223-1-andrea.mayer@uniroma2.it>
+X-Mailer: git-send-email 2.20.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260428104138.reply-bonding-6.12@kernel.org> <20260428163203.796681-1-kpberry@google.com>
-In-Reply-To: <20260428163203.796681-1-kpberry@google.com>
-From: Xiang Mei <xmei5@asu.edu>
-Date: Tue, 28 Apr 2026 15:41:37 -0700
-X-Gm-Features: AVHnY4K5R_1OF1J9AqBkmwa_pdOm3r18CBCteEumdceRA5aZMXMUVn7Bgs4tixc
-Message-ID: <CAPpSM+TbMOPL93CkWtrYjYW+T+Q+iWuo+ZhfutYNFOuOCBU5fQ@mail.gmail.com>
-Subject: Re: [PATCH v2] net: bonding: fix use-after-free in bond_xmit_broadcast()
-To: Kevin Berry <kpberry@google.com>
-Cc: bestswngs@gmail.com, chenglongtang@google.com, joneslee@google.com, 
-	pabeni@redhat.com, rnj@google.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 921A048CAD3
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: clamav-milter 0.100.0 at smtp-2015
+X-Virus-Status: Clean
+X-Rspamd-Queue-Id: 38A9948CD19
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [3.34 / 15.00];
-	SEM_URIBL(3.50)[asu.edu:dkim,asu.edu:email];
+X-Spamd-Result: default: False [1.64 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	BAD_REP_POLICIES(0.10)[];
+	DMARC_POLICY_SOFTFAIL(0.10)[uniroma2.it : SPF not aligned (relaxed), No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,google.com,redhat.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-241788-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_POLICY_ALLOW(0.00)[asu.edu,none];
-	MIME_TRACE(0.00)[0:+];
-	R_DKIM_ALLOW(0.00)[asu.edu:s=google];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-241789-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	MIME_TRACE(0.00)[0:+];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	DKIM_TRACE(0.00)[asu.edu:+];
-	NEURAL_SPAM(0.00)[0.462];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[xmei5@asu.edu,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[andrea.mayer@uniroma2.it,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,uniroma2.it];
+	R_DKIM_NA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	R_SPF_ALLOW(0.00)[+ip4:172.234.253.10:c];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,asu.edu:dkim,asu.edu:email]
+	NEURAL_SPAM(0.00)[0.946];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 
-Thanks Kevin for picking this up for 6.12.y.
-We can't backport the upstream patch since the upstream rewrite that
-introduced the bond_up_slave snapshot array isn't in this tree.
-Confirmed it fixes the double-free without introducing concerning side effe=
-cts.
+ipv6_rpl_srh_rcv() dereferences idev from __in6_dev_get() without
+a NULL check when reading idev->cnf.rpl_seg_enabled.
+When the device's MTU drops below IPV6_MIN_MTU, addrconf_ifdown()
+clears dev->ip6_ptr through RCU_INIT_POINTER(), which is immediately
+visible to concurrent readers. A packet that already passed the idev
+check in ip6_rcv_core() can race with this and hit a NULL pointer
+dereference.
 
-Acked-by: Xiang Mei <xmei5@asu.edu>
+Reproduced by flooding traffic through a route with RPL source routing
+while rapidly flapping the receiving interface's MTU between 1500 and
+1200:
 
-On Tue, Apr 28, 2026 at 9:32=E2=80=AFAM Kevin Berry <kpberry@google.com> wr=
-ote:
->
-> From: Xiang Mei <xmei5@asu.edu>
->
-> bond_xmit_broadcast() reuses the original skb for the last slave
-> (determined by bond_is_last_slave()) and clones it for others.
-> Concurrent slave enslave/release can mutate the slave list during
-> RCU-protected iteration, changing which slave is "last" mid-loop.
-> This causes the original skb to be double-consumed (double-freed).
->
-> Replace the racy bond_is_last_slave() check with a simple index
-> comparison (i + 1 =3D=3D slaves_count) against the pre-snapshot slave
-> count taken via READ_ONCE() before the loop.  This preserves the
-> zero-copy optimization for the last slave while making the "last"
-> determination stable against concurrent list mutations.
->
-> The UAF can trigger the following crash:
->
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> BUG: KASAN: slab-use-after-free in skb_clone
-> Read of size 8 at addr ffff888100ef8d40 by task exploit/147
->
-> CPU: 1 UID: 0 PID: 147 Comm: exploit Not tainted 7.0.0-rc3+ #4 PREEMPTLAZ=
-Y
-> Call Trace:
->  <TASK>
->  dump_stack_lvl (lib/dump_stack.c:123)
->  print_report (mm/kasan/report.c:379 mm/kasan/report.c:482)
->  kasan_report (mm/kasan/report.c:597)
->  skb_clone (include/linux/skbuff.h:1724 include/linux/skbuff.h:1792 inclu=
-de/linux/skbuff.h:3396 net/core/skbuff.c:2108)
->  bond_xmit_broadcast (drivers/net/bonding/bond_main.c:5334)
->  bond_start_xmit (drivers/net/bonding/bond_main.c:5567 drivers/net/bondin=
-g/bond_main.c:5593)
->  dev_hard_start_xmit (include/linux/netdevice.h:5325 include/linux/netdev=
-ice.h:5334 net/core/dev.c:3871 net/core/dev.c:3887)
->  __dev_queue_xmit (include/linux/netdevice.h:3601 net/core/dev.c:4838)
->  ip6_finish_output2 (include/net/neighbour.h:540 include/net/neighbour.h:=
-554 net/ipv6/ip6_output.c:136)
->  ip6_finish_output (net/ipv6/ip6_output.c:208 net/ipv6/ip6_output.c:219)
->  ip6_output (net/ipv6/ip6_output.c:250)
->  ip6_send_skb (net/ipv6/ip6_output.c:1985)
->  udp_v6_send_skb (net/ipv6/udp.c:1442)
->  udpv6_sendmsg (net/ipv6/udp.c:1733)
->  __sys_sendto (net/socket.c:730 net/socket.c:742 net/socket.c:2206)
->  __x64_sys_sendto (net/socket.c:2209)
->  do_syscall_64 (arch/x86/entry/syscall_64.c:63 arch/x86/entry/syscall_64.=
-c:94)
->  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
->  </TASK>
->
-> Allocated by task 147:
->
-> Freed by task 147:
->
-> The buggy address belongs to the object at ffff888100ef8c80
->  which belongs to the cache skbuff_head_cache of size 224
-> The buggy address is located 192 bytes inside of
->  freed 224-byte region [ffff888100ef8c80, ffff888100ef8d60)
->
-> Memory state around the buggy address:
->  ffff888100ef8c00: fb fb fb fb fc fc fc fc fc fc fc fc fc fc fc fc
->  ffff888100ef8c80: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-> >ffff888100ef8d00: fb fb fb fb fb fb fb fb fb fb fb fb fc fc fc fc
->                                                     ^
->  ffff888100ef8d80: fc fc fc fc fc fc fc fc fa fb fb fb fb fb fb fb
->  ffff888100ef8e00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->
-> Fixes: 4e5bd03ae346 ("net: bonding: fix bond_xmit_broadcast return value =
-error bug")
-> Reported-by: Weiming Shi <bestswngs@gmail.com>
-> Signed-off-by: Xiang Mei <xmei5@asu.edu>
-> Link: https://patch.msgid.link/20260326075553.3960562-1-xmei5@asu.edu
-> Signed-off-by: Kevin Berry <kpberry@google.com>
-> ---
->  drivers/net/bonding/bond_main.c | 9 ++++++++-
->  1 file changed, 8 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_m=
-ain.c
-> index 5035cfa74f1a..9f1a189d46f1 100644
-> --- a/drivers/net/bonding/bond_main.c
-> +++ b/drivers/net/bonding/bond_main.c
-> @@ -5326,14 +5326,21 @@ static netdev_tx_t bond_xmit_broadcast(struct sk_=
-buff *skb,
->         struct list_head *iter;
->         bool xmit_suc =3D false;
->         bool skb_used =3D false;
-> +       int slaves_count, i =3D 0;
->
-> +       slaves_count =3D READ_ONCE(bond->slave_cnt);
->         bond_for_each_slave_rcu(bond, slave, iter) {
->                 struct sk_buff *skb2;
-> +               bool is_last;
-> +
-> +               if (++i > slaves_count)
-> +                       break;
-> +               is_last =3D (i =3D=3D slaves_count);
->
->                 if (!(bond_slave_is_up(slave) && slave->link =3D=3D BOND_=
-LINK_UP))
->                         continue;
->
-> -               if (bond_is_last_slave(bond, slave)) {
-> +               if (is_last) {
->                         skb2 =3D skb;
->                         skb_used =3D true;
->                 } else {
->
-> base-commit: c286ea5e62389897291fa742d2bb909ecc9ef2d0
-> --
-> 2.54.0.545.g6539524ca2-goog
->
+ BUG: KASAN: null-ptr-deref in ipv6_rpl_srh_rcv+0xae/0x1050
+ Read of size 4 at addr 00000000000006b4 by task ping6/318
+
+ CPU: 0 UID: 0 PID: 318 Comm: ping6 Not tainted 7.1.0-rc1-micro-vm-dev-g46f74a3f7d57 #82 PREEMPT(full)
+ Call Trace:
+  <IRQ>
+  kasan_report+0xc6/0x100
+  ipv6_rpl_srh_rcv+0xae/0x1050
+  ip6_protocol_deliver_rcu+0x717/0x960
+  ip6_input_finish+0xa3/0x1b0
+  ip6_input+0xdc/0x490
+  ipv6_rcv+0x338/0x460
+  __netif_receive_skb_one_core+0xd1/0x130
+  process_backlog+0x2c7/0x9f0
+  __napi_poll.constprop.0+0x51/0x270
+  net_rx_action+0x322/0x730
+  handle_softirqs+0x119/0x640
+  do_softirq+0xae/0xe0
+  </IRQ>
+
+Add a NULL check for idev after __in6_dev_get() and drop the skb if
+idev is NULL, consistent with the SRv6 fix in commit 064137935262
+("ipv6: add NULL checks for idev in SRv6 paths").
+
+Fixes: 8610c7c6e3bd ("net: ipv6: add support for rpl sr exthdr")
+Cc: stable@vger.kernel.org
+Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
+---
+ net/ipv6/exthdrs.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/net/ipv6/exthdrs.c b/net/ipv6/exthdrs.c
+index 03cbce842c1a..e398a8851031 100644
+--- a/net/ipv6/exthdrs.c
++++ b/net/ipv6/exthdrs.c
+@@ -499,6 +499,10 @@ static int ipv6_rpl_srh_rcv(struct sk_buff *skb)
+ 	u32 r;
+ 
+ 	idev = __in6_dev_get(skb->dev);
++	if (!idev) {
++		kfree_skb(skb);
++		return -1;
++	}
+ 
+ 	accept_rpl_seg = min(READ_ONCE(net->ipv6.devconf_all->rpl_seg_enabled),
+ 			     READ_ONCE(idev->cnf.rpl_seg_enabled));
+-- 
+2.20.1
+
 
