@@ -1,235 +1,238 @@
-Return-Path: <stable+bounces-241768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241769-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2IrWFiQT8WlZcwEAu9opvQ
-	(envelope-from <stable+bounces-241768-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 22:05:56 +0200
+	id 0PD5EhYa8Wm3dQEAu9opvQ
+	(envelope-from <stable+bounces-241769-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 22:35:34 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB8E948B705
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 22:05:55 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C1A148BCCB
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 22:35:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 63862303FAC3
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 20:05:53 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D340A300371B
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 20:35:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB4A02D879E;
-	Tue, 28 Apr 2026 20:05:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C10F2E7623;
+	Tue, 28 Apr 2026 20:35:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AbRbhe6h"
+	dkim=pass (2048-bit key) header.d=ndufresne-ca.20251104.gappssmtp.com header.i=@ndufresne-ca.20251104.gappssmtp.com header.b="yqrm98qq"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD5612609E3;
-	Tue, 28 Apr 2026 20:05:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED4332D879E
+	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 20:35:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777406751; cv=none; b=NNsKPr9FKekNUGQTYr4uH+xUZtKfL5Dc70F/Axm52JXLKc+UJ6J6maw7VFUL60M3j6kl56IUVh7xHvngqKuikf0ux4t20rRVlnJ1nBlk3tKC0Oe0IYgfuo9mpsrB7K2k8Wbkel58vxRzq6X8FWmPxBCi/qsArpA2ul/SJ1VuQ2M=
+	t=1777408526; cv=none; b=GzUkwZXYhg/T5wB2xGVfwN/OCRSVIvOO/eAmyxY7XBw5GfNZUIh6lwBCFAaObpKnGSIVwtIcXXSezxRgnD8ouMNWEnHl1kYtwZ8HnV/1ndusxEQ5jyT4pyQVqpRyrv5fd0Icqks5/Gt8J9jOsS/JOP64w+g9fpvpQaHzL5MhAZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777406751; c=relaxed/simple;
-	bh=Y7a6feOaVeJP4q66K7OSq9SR4dMdT1W5SWT0J9vniQs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vk7qz+/KNL1KpG+zDnwPSq7tbCr9hH/l6rShVacN0hOGpJ+sX5nBU/G6khIPk0gKOTDBcTzWAgKD+K6u/j6N6k1mjY5aO+wPsfWStzOuA1X0mxgNKjFTvMBlmKhwxmHOfUd5SDD6/6nEBPt2sWqgio59XsegWgtQbfPrqxfcGFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AbRbhe6h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FE79C2BCAF;
-	Tue, 28 Apr 2026 20:05:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777406751;
-	bh=Y7a6feOaVeJP4q66K7OSq9SR4dMdT1W5SWT0J9vniQs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AbRbhe6hWtUIuUxqeDy6YlkubQj9Pc9fdc4NdN442hqWF5SfWOJ8wL95wjpEVvbV4
-	 Oiv3iyEuIMKSypH2bc0GIR1wVkxfPRv6qlNDl4WCer1YaL1sW3HGtfuhLzj9MomLBV
-	 yANqte9VUi0WM4Xb0camJ9LtfNDgTR4DwFTnphd2sCYhRIFkBxs1Y7tdczOxja1UL4
-	 Jrz1NV2KULD7Sujr5H9qSNl2GukmP+99KEoOhGVKkc7rbiMcqO5sxPn89477Fz+drI
-	 S0vYsMIyd1ePD0Rm6IE+xYU4fwdeWZUhBfLkJlJdBRuGjYqMF4ukorPbeQRNyrWH8d
-	 Gc+8Sp7d1btMA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
-	Will Deacon <will@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] arm64/mm: Enable batched TLB flush in unmap_hotplug_range()
-Date: Tue, 28 Apr 2026 16:05:48 -0400
-Message-ID: <20260428200548.3191346-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026042729-abiding-helmet-8eef@gregkh>
-References: <2026042729-abiding-helmet-8eef@gregkh>
+	s=arc-20240116; t=1777408526; c=relaxed/simple;
+	bh=DpwCPyBht/KuywC2kfTeJdCwJw5ib0jMlqQTXCR16uk=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=QCNxWIJbgksetWyKWgznlY5+7zoSOiBnCJRSp3jlyYEpW61NJV0cTldx0VxCAwtnVaZYXjFvC75oLJcge0ai2nfHPFFwX7AeEyVyrxExqsLbP2ZaZxXUshypLhmdFCVysTuNrAkgMdLaqyI2tTjqLhE2J/nZGIXGycn2ZqqttD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca; spf=pass smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20251104.gappssmtp.com header.i=@ndufresne-ca.20251104.gappssmtp.com header.b=yqrm98qq; arc=none smtp.client-ip=209.85.160.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ndufresne.ca
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-506aa68065eso86248251cf.1
+        for <stable@vger.kernel.org>; Tue, 28 Apr 2026 13:35:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ndufresne-ca.20251104.gappssmtp.com; s=20251104; t=1777408524; x=1778013324; darn=vger.kernel.org;
+        h=mime-version:user-agent:autocrypt:references:in-reply-to:date:cc:to
+         :from:subject:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=AaIfLAokMdpz1ds5EXxIXoKOS9Wl/EtwVtRKaiR6GHI=;
+        b=yqrm98qqD1pg4BwyH43diLYWyam5V3C0q/zJnw8nqzpucm3Eo9IclRyNorZVtck7jp
+         yTcBPd5UL1BZXXrJToxJnh7VhUVQ1F915SZzbkdLGg4XLTTild/0Nv6ybPm5h7C1atO3
+         YlUG6HLGuW9s0m2rK766CpsWvlGUJwTRiIrFdbSJkNyfNVY819AmXn0hEhpKZSi1pTNk
+         v+9iS6TLEW25/upCWVUImNXcZoy4/j4CAnko2lVjXiFXDVY1UeXFt51Bok5fMALmlCaI
+         T73EjwaKa3UCd8mcLiEalNlm+UrVzfS/QzYADhxrYYNbYcxhUx5WwQV4y9415x1aTRdW
+         +AWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777408524; x=1778013324;
+        h=mime-version:user-agent:autocrypt:references:in-reply-to:date:cc:to
+         :from:subject:message-id:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=AaIfLAokMdpz1ds5EXxIXoKOS9Wl/EtwVtRKaiR6GHI=;
+        b=fec3Z+tPTw/DeRa1+vAI/qOAZZvAd1v//55WPmFwaCddAF14k+GSGP3d30LPbw1UxO
+         OflYX2JYLByv6veuV/sjECx36vROigvXAVZSPM8LVvle4zFWfvm8wrZAG5Ve+xCCScDG
+         An63TOQ0e9atCG2Bd2pe/hKvP/wLjzS31gIY+HK4tfrq9pqWkPNjlADmrxIjgfmD5OA3
+         E8COF0itsSAAnDohdxkM9vMy1qeK/8mde5lhaD9T2cRZiz5qJM+DWoxKl26VeKAPHFu6
+         +Ie/XgR3wtzI/x1phtlsafqKP8nUqFbvt2hKG/prcD5GaJMdnC2AQOSBvBWvqdaNaMsl
+         eBHQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9zhECrptq76QytB36JGN/CYaU6YKkqLOs9QXWbAZ3az9q/30W33SC9TSNzrjRWfTKnflKVRbY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyCY8Uv0JDPhNqpi+DeUqJBREsBUmkj28WRau1SkZOsmaxfkJc/
+	8diiO7+4M5orvaxsEHhoVSi4gmkAPX2emeegHEt2s0iRdizwYABaJ7yrG1rZ7jyQfeREqCPqwyW
+	UfIVuCCc=
+X-Gm-Gg: AeBDievA7eCZ+3jmQO0EnDhQpYkv2XKh8CDdSZP13f8fsCsFs4CCNiXx4Yst4RfU6eM
+	kUIWaBx+jJbsBLrgBQeUzxw4X+pHWSEQVhaS0fc0oZ7XcEjTeE3l/T0JKfzDtBS3IjEvbToRn12
+	5c8uwcF2iYtlfXFy9SVJgcG/45oYq5WmbLSJm/g6ntiESJi/UJ1x1L0ypXvG22E4Lm6Lqbf2cJV
+	Bn2r8OmCHnnsrfZswHbPaQ2mbMyEXqfyFioX/KiiFwOyPOXpofWGe7fEO9HRUyedvchV1CEUXFy
+	QsRuqwrGWLLN1Qmw70iNcqjMmb5d9Z1MhLQAUWr/kNM5213YABWfVHrHJPsDhbxRhLvjwkacLm9
+	ntuFVKpp3J5yNFYWq3isI2sypGPDgqj781bO9fRrvl3OlzW/Ggt48jX1TCtKDmugYyVfZHoDInH
+	r14SqHV31iyc7b+QLdyZ7OUyH9TmH7xJikpqZrQLw=
+X-Received: by 2002:a05:622a:347:b0:50e:60d7:b272 with SMTP id d75a77b69052e-51018a79483mr17709131cf.41.1777408523633;
+        Tue, 28 Apr 2026 13:35:23 -0700 (PDT)
+Received: from ?IPv6:2606:6d00:15:e06b::c41? ([2606:6d00:15:e06b::c41])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5100dbaa48asm24893241cf.29.2026.04.28.13.35.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Apr 2026 13:35:22 -0700 (PDT)
+Message-ID: <48ec46cc064fb5d367be6336bfafd888586f7857.camel@ndufresne.ca>
+Subject: Re: [PATCH] media: mediatek: vcodec: free working buf on error path
+ in vdec_vp9_slice_setup_lat()
+From: Nicolas Dufresne <nicolas@ndufresne.ca>
+To: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>, tiffany.lin@mediatek.com, 
+	andrew-ct.chen@mediatek.com, yunfei.dong@mediatek.com, mchehab@kernel.org, 
+	matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com, 
+	laurent.pinchart@ideasonboard.com, hverkuil+cisco@kernel.org, 
+	benjamin.gaignard@collabora.com, p.zabel@pengutronix.de,
+ george.sun@mediatek.com
+Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
+	stable@vger.kernel.org
+Date: Tue, 28 Apr 2026 16:35:20 -0400
+In-Reply-To: <20260330020224.2729252-1-lihaoxiang@isrc.iscas.ac.cn>
+References: <20260330020224.2729252-1-lihaoxiang@isrc.iscas.ac.cn>
+Autocrypt: addr=nicolas@ndufresne.ca; prefer-encrypt=mutual;
+ keydata=mDMEaCN2ixYJKwYBBAHaRw8BAQdAM0EHepTful3JOIzcPv6ekHOenE1u0vDG1gdHFrChD
+ /e0J05pY29sYXMgRHVmcmVzbmUgPG5pY29sYXNAbmR1ZnJlc25lLmNhPoicBBMWCgBEAhsDBQsJCA
+ cCAiICBhUKCQgLAgQWAgMBAh4HAheABQkJZfd1FiEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrjo
+ CGQEACgkQ2UGUUSlgcvQlQwD/RjpU1SZYcKG6pnfnQ8ivgtTkGDRUJ8gP3fK7+XUjRNIA/iXfhXMN
+ abIWxO2oCXKf3TdD7aQ4070KO6zSxIcxgNQFtDFOaWNvbGFzIER1ZnJlc25lIDxuaWNvbGFzLmR1Z
+ nJlc25lQGNvbGxhYm9yYS5jb20+iJkEExYKAEECGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4
+ AWIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaCyyxgUJCWX3dQAKCRDZQZRRKWBy9ARJAP96pFmLffZ
+ smBUpkyVBfFAf+zq6BJt769R0al3kHvUKdgD9G7KAHuioxD2v6SX7idpIazjzx8b8rfzwTWyOQWHC
+ AAS0LU5pY29sYXMgRHVmcmVzbmUgPG5pY29sYXMuZHVmcmVzbmVAZ21haWwuY29tPoiZBBMWCgBBF
+ iEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrGYCGwMFCQll93UFCwkIBwICIgIGFQoJCAsCBBYCAw
+ ECHgcCF4AACgkQ2UGUUSlgcvRObgD/YnQjfi4+L8f4fI7p1pPMTwRTcaRdy6aqkKEmKsCArzQBAK8
+ bRLv9QjuqsE6oQZra/RB4widZPvphs78H0P6NmpIJ
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-rldXSCr7JE/S7Fo4lx/T"
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: BB8E948B705
+X-Rspamd-Queue-Id: 4C1A148BCCB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	SIGNED_PGP(-2.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[ndufresne-ca.20251104.gappssmtp.com:s=20251104];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[ndufresne.ca : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-241768-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	TAGGED_FROM(0.00)[bounces-241769-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	FREEMAIL_TO(0.00)[isrc.iscas.ac.cn,mediatek.com,kernel.org,gmail.com,collabora.com,ideasonboard.com,pengutronix.de];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nicolas@ndufresne.ca,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[ndufresne-ca.20251104.gappssmtp.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	TAGGED_RCPT(0.00)[stable,cisco];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,arm.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ndufresne-ca.20251104.gappssmtp.com:dkim,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,ndufresne.ca:mid]
 
-From: Anshuman Khandual <anshuman.khandual@arm.com>
 
-[ Upstream commit 48478b9f791376b4b89018d7afdfd06865498f65 ]
+--=-rldXSCr7JE/S7Fo4lx/T
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-During a memory hot remove operation, both linear and vmemmap mappings for
-the memory range being removed, get unmapped via unmap_hotplug_range() but
-mapped pages get freed only for vmemmap mapping. This is just a sequential
-operation where each table entry gets cleared, followed by a leaf specific
-TLB flush, and then followed by memory free operation when applicable.
+Le lundi 30 mars 2026 =C3=A0 10:02 +0800, Haoxiang Li a =C3=A9crit=C2=A0:
+> Add an error path label in vdec_vp9_slice_setup_lat()
+> and call vdec_vp9_slice_free_working_buffer() to free
+> working buffer to prevent potential memory leak.
+>=20
+> Fixes: 5d418351ca8f ("media: mediatek: vcodec: support stateless VP9 deco=
+ding")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+> ---
+> =C2=A0.../mediatek/vcodec/decoder/vdec/vdec_vp9_req_lat_if.c=C2=A0=C2=A0=
+=C2=A0 | 8 +++++---
+> =C2=A01 file changed, 5 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_vp9=
+_req_lat_if.c b/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_vp=
+9_req_lat_if.c
+> index cd1935014d76..3dadb5cc8876 100644
+> --- a/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_vp9_req_la=
+t_if.c
+> +++ b/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_vp9_req_la=
+t_if.c
+> @@ -1168,7 +1168,7 @@ static int vdec_vp9_slice_setup_lat(struct vdec_vp9=
+_slice_instance *instance,
+> =C2=A0
+> =C2=A0	ret =3D vdec_vp9_slice_setup_lat_buffer(instance, vsi, bs, lat_buf=
+);
 
-This approach was simple and uniform both for vmemmap and linear mappings.
-But linear mapping might contain CONT marked block memory where it becomes
-necessary to first clear out all entire in the range before a TLB flush.
-This is as per the architecture requirement. Hence batch all TLB flushes
-during the table tear down walk and finally do it in unmap_hotplug_range().
+This function never fails, please remove its return value and remove the er=
+ror
+code below instead.
 
-Prior to this fix, it was hypothetically possible for a speculative access
-to a higher address in the contiguous block to fill the TLB with shattered
-entries for the entire contiguous range after a lower address had already
-been cleared and invalidated. Due to the table entries being shattered, the
-subsequent TLB invalidation for the higher address would not then clear the
-TLB entries for the lower address, meaning stale TLB entries could persist.
+> =C2=A0	if (ret)
+> -		goto err;
+> +		goto alloc_err;
+> =C2=A0
+> =C2=A0	vdec_vp9_slice_setup_seg_buffer(instance, vsi, &instance->seg[0]);
+> =C2=A0
+> @@ -1176,14 +1176,16 @@ static int vdec_vp9_slice_setup_lat(struct vdec_v=
+p9_slice_instance *instance,
+> =C2=A0
+> =C2=A0	ret =3D vdec_vp9_slice_setup_prob_buffer(instance, vsi);
 
-Besides it also helps in improving the performance via TLBI range operation
-along with reduced synchronization instructions. The time spent executing
-unmap_hotplug_range() improved 97% measured over a 2GB memory hot removal
-in KVM guest.
+Same issue, that function should not have had a return value.
 
-This scheme is not applicable during vmemmap mapping tear down where memory
-needs to be freed and hence a TLB flush is required after clearing out page
-table entry.
+> =C2=A0	if (ret)
+> -		goto err;
+> +		goto alloc_err;
+> =C2=A0
+> =C2=A0	ret =3D vdec_vp9_slice_setup_tile_buffer(instance, vsi, bs);
+> =C2=A0	if (ret)
+> -		goto err;
+> +		goto alloc_err;
 
-Cc: Will Deacon <will@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
-Closes: https://lore.kernel.org/all/aWZYXhrT6D2M-7-N@willie-the-truck/
-Fixes: bbd6ec605c0f ("arm64/mm: Enable memory hot remove")
-Cc: stable@vger.kernel.org
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
-Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-[ renamed `__pte_clear()` to `pte_clear()` and inlined `pmd_cont(pmd)` as `pmd_val(pmd) & PMD_SECT_CONT` ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/arm64/mm/mmu.c | 36 ++++++++++++++++++++----------------
- 1 file changed, 20 insertions(+), 16 deletions(-)
+Ack for this one.
 
-diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-index b584bf200619f..ff16cc7251b40 100644
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -862,10 +862,14 @@ static void unmap_hotplug_pte_range(pmd_t *pmdp, unsigned long addr,
- 
- 		WARN_ON(!pte_present(pte));
- 		pte_clear(&init_mm, addr, ptep);
--		flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
--		if (free_mapped)
-+		if (free_mapped) {
-+			/* CONT blocks are not supported in the vmemmap */
-+			WARN_ON(pte_cont(pte));
-+			flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
- 			free_hotplug_page_range(pte_page(pte),
- 						PAGE_SIZE, altmap);
-+		}
-+		/* unmap_hotplug_range() flushes TLB for !free_mapped */
- 	} while (addr += PAGE_SIZE, addr < end);
- }
- 
-@@ -886,15 +890,14 @@ static void unmap_hotplug_pmd_range(pud_t *pudp, unsigned long addr,
- 		WARN_ON(!pmd_present(pmd));
- 		if (pmd_sect(pmd)) {
- 			pmd_clear(pmdp);
--
--			/*
--			 * One TLBI should be sufficient here as the PMD_SIZE
--			 * range is mapped with a single block entry.
--			 */
--			flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
--			if (free_mapped)
-+			if (free_mapped) {
-+				/* CONT blocks are not supported in the vmemmap */
-+				WARN_ON(pmd_val(pmd) & PMD_SECT_CONT);
-+				flush_tlb_kernel_range(addr, addr + PMD_SIZE);
- 				free_hotplug_page_range(pmd_page(pmd),
- 							PMD_SIZE, altmap);
-+			}
-+			/* unmap_hotplug_range() flushes TLB for !free_mapped */
- 			continue;
- 		}
- 		WARN_ON(!pmd_table(pmd));
-@@ -919,15 +922,12 @@ static void unmap_hotplug_pud_range(p4d_t *p4dp, unsigned long addr,
- 		WARN_ON(!pud_present(pud));
- 		if (pud_sect(pud)) {
- 			pud_clear(pudp);
--
--			/*
--			 * One TLBI should be sufficient here as the PUD_SIZE
--			 * range is mapped with a single block entry.
--			 */
--			flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
--			if (free_mapped)
-+			if (free_mapped) {
-+				flush_tlb_kernel_range(addr, addr + PUD_SIZE);
- 				free_hotplug_page_range(pud_page(pud),
- 							PUD_SIZE, altmap);
-+			}
-+			/* unmap_hotplug_range() flushes TLB for !free_mapped */
- 			continue;
- 		}
- 		WARN_ON(!pud_table(pud));
-@@ -957,6 +957,7 @@ static void unmap_hotplug_p4d_range(pgd_t *pgdp, unsigned long addr,
- static void unmap_hotplug_range(unsigned long addr, unsigned long end,
- 				bool free_mapped, struct vmem_altmap *altmap)
- {
-+	unsigned long start = addr;
- 	unsigned long next;
- 	pgd_t *pgdp, pgd;
- 
-@@ -978,6 +979,9 @@ static void unmap_hotplug_range(unsigned long addr, unsigned long end,
- 		WARN_ON(!pgd_present(pgd));
- 		unmap_hotplug_p4d_range(pgdp, addr, next, free_mapped, altmap);
- 	} while (addr = next, addr < end);
-+
-+	if (!free_mapped)
-+		flush_tlb_kernel_range(start, end);
- }
- 
- static void free_empty_pte_table(pmd_t *pmdp, unsigned long addr,
--- 
-2.53.0
+> =C2=A0
+> =C2=A0	return 0;
+> =C2=A0
+> +alloc_err:
+> +	vdec_vp9_slice_free_working_buffer(instance);
+> =C2=A0err:
+> =C2=A0	return ret;
+> =C2=A0}
 
+
+cheers,
+Nicolas
+
+--=-rldXSCr7JE/S7Fo4lx/T
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCafEaCQAKCRDZQZRRKWBy
+9I7mAQCKtYOYjxEZtyyws6YnoZefw8GOxDT6CrR4VAMH4mJxOAD9HYVii/B6UZO/
+0E2YLN5lf+OdoZWjC16cj/8Y7uLZaAE=
+=+BZO
+-----END PGP SIGNATURE-----
+
+--=-rldXSCr7JE/S7Fo4lx/T--
 
