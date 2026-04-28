@@ -1,222 +1,259 @@
-Return-Path: <stable+bounces-241770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241771-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aN2fOJoa8WnadQEAu9opvQ
-	(envelope-from <stable+bounces-241770-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 22:37:46 +0200
+	id IHAcK78e8WmRdgEAu9opvQ
+	(envelope-from <stable+bounces-241771-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 22:55:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C86148BD31
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 22:37:46 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A476B48C1AD
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 22:55:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AB2783004F00
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 20:37:45 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C112230664A9
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 20:47:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0681B305047;
-	Tue, 28 Apr 2026 20:37:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C76503644A4;
+	Tue, 28 Apr 2026 20:47:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ndufresne-ca.20251104.gappssmtp.com header.i=@ndufresne-ca.20251104.gappssmtp.com header.b="roqX9cIl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xf2bKYwj"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-f182.google.com (mail-oi1-f182.google.com [209.85.167.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53ED228313D
-	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 20:37:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88AE84A35;
+	Tue, 28 Apr 2026 20:47:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777408661; cv=none; b=AZN7E6+Mw9niMy8uUtEDbc7sjOopLamoOBJineRD3xku2kSfqJbTQdecJqOBTfVSUDcOn7lqOcOVV9aR/FcfFX34GvOCIPvpRy+t+MvBtZxDu7s9gfGLwnTFAxJmppFvBY9NPQmdmpIoZmGQGHrXNZbND9d6TTl9r2SZB3nm/po=
+	t=1777409231; cv=none; b=LScFaaolfWJgj0AajkVY2HJfNWkRUNFFOFOrX3L/7gDmvPsTYrBBhro2vjFLHtcV/9eJOoXI0p8BeIIWmeH1ofrrkfvaFxRcOW2T8oGzLkumiLOyPDxjCD90PQUr5NsX4JLkEZCecOUXkenuhCcCy0jnljHRZURfDtquWQkwAmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777408661; c=relaxed/simple;
-	bh=Guq5/1eIrgzgZKNWzg02roY/hJxkO1at6tjH3NzZPJI=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ErrR8Hy1QfqCfzD3UsdtSAIZbu3OSsrjon5I0pGYb1cyjmEFez9LkoZ1+uD9XshycABx1pX1vVc4MG3iC6wqc4bZak08n5Zfq0/flO0/ERZ26hIW5dLT+2eugXiIzR6/0+YGgVNPvItqF6lGOwlKpB8dcMUnwiodw8lfFzoPUqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca; spf=pass smtp.mailfrom=ndufresne.ca; dkim=pass (2048-bit key) header.d=ndufresne-ca.20251104.gappssmtp.com header.i=@ndufresne-ca.20251104.gappssmtp.com header.b=roqX9cIl; arc=none smtp.client-ip=209.85.167.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ndufresne.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ndufresne.ca
-Received: by mail-oi1-f182.google.com with SMTP id 5614622812f47-464bc03efd8so7004792b6e.2
-        for <stable@vger.kernel.org>; Tue, 28 Apr 2026 13:37:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ndufresne-ca.20251104.gappssmtp.com; s=20251104; t=1777408659; x=1778013459; darn=vger.kernel.org;
-        h=mime-version:user-agent:autocrypt:references:in-reply-to:date:cc:to
-         :from:subject:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=4LyvFUNpVpPtERUYyLw1pAadsXQTRCYkfiN9yTor4u0=;
-        b=roqX9cIl4T0d0EOH7LBh2eeUH/BLGHtBNPTo29fgZWx/5yy4vYJ4fu2BO6pKxeQELj
-         mCnUN0Q5IUUViWU5d2xz1mNs0tfMrVZacs+u5HYR3tbzgfiHDSsdtUOg/T2xVRslBcl/
-         j864rgwTc+lau/YL69DJ50ohHMGFCx8D+HMjWoc1pPePvlzfMY10cyY6u9L8lzAlJmLG
-         gqR8EWV6HABn5/SHPBIckiJj0RRDYyI/5biJ+UWvDOryp3OVssYFex22V9HCpXe+2o6m
-         j18jRO9wZQqKNMsxUgVOU3SLUuS8SZNhEcvY3mr/G/Vfc2HsfCz9B2SwEuypc63l1S82
-         oSFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777408659; x=1778013459;
-        h=mime-version:user-agent:autocrypt:references:in-reply-to:date:cc:to
-         :from:subject:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4LyvFUNpVpPtERUYyLw1pAadsXQTRCYkfiN9yTor4u0=;
-        b=J6qMDesWxXGp9iYkdDXVaxrbhPGT3rn3QgvpS6oqXDGCZh+r2O8vyg4vPsSenyX325
-         kKwPupGa+52TGqWHflQcPg/GxdSXU7TAaDy2nC30c8KBtHqrzDoZFqPIaXksP36t/eiT
-         N7k5emR6GsRlpYOT887gbmg+M9Q0W9YPWyQPpY0I77oqCUEd6e6DpSJbjYGZY8Mtv3Mw
-         YtTW9klQC3bgggqlcWEA3hx6Xj9zxJHyJuCrzXxVQ63T/TDDisihV6ds4SjZtBbeDvWo
-         C/Ity1QZU3oSAXgHiKa/f4f0+dege/fyR3auQhWA76nbJA3L1OXoAjTiHrMhhPRphOu6
-         zuew==
-X-Forwarded-Encrypted: i=1; AFNElJ+eDbOj2IQgZeA0KEp4vMuPzHwitvRoCdD6pe+qLrmazXSjvDBZljpkmbOxwEIpuIzsYtbOhhw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxAgqPHGxeVvPRzTDjk0DYxyAeKCVrdqHdnYf0ZLGhrHqAuu/zi
-	yQU9CiUh1gkATdlY7thI1JroZzk331dEFVHB7CdQzZTrjrnyQ7ZLbMTJCApIMXsjFkw=
-X-Gm-Gg: AeBDiet2FhPW7Zl9aob8NlIDTnZYzblUNqWn1ltnE5Um2OH90cfSYXi1asaGqyQ1pmH
-	PcpoF0isVC6I5fTyvy3ibsQPe6T1AHtsFAginfcpTyLY7g0Gr7YSieX/vyI1luj27bMNrtGJ4Gs
-	m6VM5q+KYM5GK8c+DEWTeZPdeO45IXpzqO0+mJnVWDzDz+tgLOA1MuhYxdM0BeHkcZLYN0rO/c3
-	/di+i7RfMa+PiYBNwZ3UfsWavOn4NF3mSwWbOUG770Bx9fZaH6vf1IFqEITKUtEPFjGXUOC7v9i
-	VkDOpQUcxkiB9tIH8VST3cLlkzaSjUDJ6BNQCdtDLvdYnRcih5gItpQm6C2e4ScHcbnkPUk4lFz
-	OQllqcT4IaEIm40O6RxDEDdHda0DetmmSk11MdVV/UgRIwsa+w+4rdvqIs5h8L1/07uMvcRMeSL
-	vJWQcw/t/WUhJEUxi4fNtjQVyM+ExqSpmixgUJZe0=
-X-Received: by 2002:a05:6808:159b:b0:475:be6f:aa with SMTP id 5614622812f47-47c3d9992b7mr647616b6e.19.1777408659317;
-        Tue, 28 Apr 2026 13:37:39 -0700 (PDT)
-Received: from ?IPv6:2606:6d00:15:e06b::c41? ([2606:6d00:15:e06b::c41])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-47c426fdc44sm37590b6e.3.2026.04.28.13.37.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Apr 2026 13:37:37 -0700 (PDT)
-Message-ID: <2db848c23398c1995f16e24be9e86dd399a04f4d.camel@ndufresne.ca>
-Subject: Re: [PATCH] media: mediatek: vcodec: free working buf in
- vdec_vp9_slice_setup_single()
-From: Nicolas Dufresne <nicolas@ndufresne.ca>
-To: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>, tiffany.lin@mediatek.com, 
-	andrew-ct.chen@mediatek.com, yunfei.dong@mediatek.com, mchehab@kernel.org, 
-	matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com, 
-	hverkuil+cisco@kernel.org, laurent.pinchart@ideasonboard.com, 
-	p.zabel@pengutronix.de, benjamin.gaignard@collabora.com, 
-	xiaoyong.lu@mediatek.com, mingjia.zhang@mediatek.com
-Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
+	s=arc-20240116; t=1777409231; c=relaxed/simple;
+	bh=CU6G6tj4vXedgJRhFz5ZO5lzJp2jRWmWy6Up5ktVms4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HZOfMYI8h2XV9/nuF1mnuLRIlJmbhlKB6jE5Fk93gvN62RGu5aZFk65LWScbLNAQofnlTzH7+pRf2r5krkyu0WyZ/luHt5qLUUkB9b0lRNW9SB5HHpz5wRSNJCLuI3RwYu4goXT630T1VyRI7IlfkFCvZRbECUonXKyLFwngb0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xf2bKYwj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBE85C2BCB3;
+	Tue, 28 Apr 2026 20:47:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777409231;
+	bh=CU6G6tj4vXedgJRhFz5ZO5lzJp2jRWmWy6Up5ktVms4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Xf2bKYwjJNCV0jae+hBeDEUsIB0+8jRcPCQXAcudSDX/F9tO1cfzBnm8wsLiTAvUX
+	 If+od6ZnFzX1TD+BUaI3r+Ny98ua9IL+pVEJUlG5N5N0PiUKmpWyZezLBJGCORN3rT
+	 Z63kLXbawnCR+gmhiSfWJnUr30DtQnkalg0wM/U8qTa54ErJlXsS98TWy5DzYp8w2e
+	 uarmut0FN4qz9Y8vIwS8ZUTk0sHc3iMsOZPYEzvA2WPKz0WequNRtV2RO771KxcVLg
+	 yORPZaBPWmTa3L+7BSb/yEa+b3goCczuHCNVr5jLQdNRNLCCCoMz4QOfZhjhI4GjC0
+	 7ROblFqdW2QSg==
+Date: Tue, 28 Apr 2026 22:47:01 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
 	stable@vger.kernel.org
-Date: Tue, 28 Apr 2026 16:37:35 -0400
-In-Reply-To: <20260330021110.2733458-1-lihaoxiang@isrc.iscas.ac.cn>
-References: <20260330021110.2733458-1-lihaoxiang@isrc.iscas.ac.cn>
-Autocrypt: addr=nicolas@ndufresne.ca; prefer-encrypt=mutual;
- keydata=mDMEaCN2ixYJKwYBBAHaRw8BAQdAM0EHepTful3JOIzcPv6ekHOenE1u0vDG1gdHFrChD
- /e0J05pY29sYXMgRHVmcmVzbmUgPG5pY29sYXNAbmR1ZnJlc25lLmNhPoicBBMWCgBEAhsDBQsJCA
- cCAiICBhUKCQgLAgQWAgMBAh4HAheABQkJZfd1FiEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrjo
- CGQEACgkQ2UGUUSlgcvQlQwD/RjpU1SZYcKG6pnfnQ8ivgtTkGDRUJ8gP3fK7+XUjRNIA/iXfhXMN
- abIWxO2oCXKf3TdD7aQ4070KO6zSxIcxgNQFtDFOaWNvbGFzIER1ZnJlc25lIDxuaWNvbGFzLmR1Z
- nJlc25lQGNvbGxhYm9yYS5jb20+iJkEExYKAEECGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4
- AWIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaCyyxgUJCWX3dQAKCRDZQZRRKWBy9ARJAP96pFmLffZ
- smBUpkyVBfFAf+zq6BJt769R0al3kHvUKdgD9G7KAHuioxD2v6SX7idpIazjzx8b8rfzwTWyOQWHC
- AAS0LU5pY29sYXMgRHVmcmVzbmUgPG5pY29sYXMuZHVmcmVzbmVAZ21haWwuY29tPoiZBBMWCgBBF
- iEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrGYCGwMFCQll93UFCwkIBwICIgIGFQoJCAsCBBYCAw
- ECHgcCF4AACgkQ2UGUUSlgcvRObgD/YnQjfi4+L8f4fI7p1pPMTwRTcaRdy6aqkKEmKsCArzQBAK8
- bRLv9QjuqsE6oQZra/RB4widZPvphs78H0P6NmpIJ
-Content-Type: multipart/signed; micalg="pgp-sha512";
-	protocol="application/pgp-signature"; boundary="=-Ia1WDRCY1/M1Q8YAdi4l"
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+Subject: Re: [PATCH] x86/mm: fix freeing of PMD-sized vmemmap pages
+Message-ID: <afEcxTmjX20zyx44@kernel.org>
+References: <20260428-vmemmap-v1-1-b2aa1e6db2c0@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Rspamd-Queue-Id: 6C86148BD31
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260428-vmemmap-v1-1-b2aa1e6db2c0@kernel.org>
+X-Rspamd-Queue-Id: A476B48C1AD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	SIGNED_PGP(-2.00)[];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[ndufresne-ca.20251104.gappssmtp.com:s=20251104];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[ndufresne.ca : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	TAGGED_FROM(0.00)[bounces-241770-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	FREEMAIL_TO(0.00)[isrc.iscas.ac.cn,mediatek.com,kernel.org,gmail.com,collabora.com,ideasonboard.com,pengutronix.de];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-241771-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nicolas@ndufresne.ca,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[ndufresne-ca.20251104.gappssmtp.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,cisco];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rppt@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,ndufresne.ca:mid]
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 
-
---=-Ia1WDRCY1/M1Q8YAdi4l
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-Le lundi 30 mars 2026 =C3=A0 10:11 +0800, Haoxiang Li a =C3=A9crit=C2=A0:
-> Add an error path label in vdec_vp9_slice_setup_single()
-> and call vdec_vp9_slice_free_working_buffer() to free
-> working buffer.
->=20
-> Fixes: b0f407c19648 ("media: mediatek: vcodec: add vp9 decoder driver for=
- mt8186")
+On Tue, Apr 28, 2026 at 12:29:36PM +0200, David Hildenbrand (Arm) wrote:
+> In commit bf9e4e30f353 ("x86/mm: use pagetable_free()"), we switched
+> from freeing non-boot page tables through __free_pages() to
+> pagetable_free().
+> 
+> However, the function is also called to free vmemmap pages.
+> 
+> Given that vmemmap pages are not page tables, already the page_ptdesc(page)
+> is wrong. But worse, pagetable_free() calls
+> 
+> 	__free_pages(page, compound_order(page));
+> 
+> As vmemmap pages are not compound pages (see vmemmap_alloc_block()) --
+> except for HVO, which doesn't apply here -- we will only free the first
+> page when freeing a PMD-sized vmemmap page, leaking the other ones.
+> 
+> Fix it by properly decoupling pagetable and vmemmap freeing.
+> free_pagetable() no longer has to mess with SECTION_INFO, as only the
+> vmemmap is marked like that in register_page_bootmem_memmap().
+> 
+> While at it, just wire up the altmap parameter for remove_pte_table().
+> Also, the indentation in remove_pmd_table() is messed up, let's fix that
+> while touching it.
+> 
+> Note that we'll try to get rid of that bootmem info handling soon. For
+> now, we'll handle it similar to free_pagetable(), just avoiding the
+> ifdef.
+> 
+> Fixes: bf9e4e30f353 ("x86/mm: use pagetable_free()")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+
 > ---
-> =C2=A0.../mediatek/vcodec/decoder/vdec/vdec_vp9_req_lat_if.c=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 | 6 ++++--
-> =C2=A01 file changed, 4 insertions(+), 2 deletions(-)
->=20
-> diff --git a/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_vp9=
-_req_lat_if.c b/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_vp=
-9_req_lat_if.c
-> index cd1935014d76..b3ecb94bebb3 100644
-> --- a/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_vp9_req_la=
-t_if.c
-> +++ b/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_vp9_req_la=
-t_if.c
-> @@ -1811,14 +1811,16 @@ static int vdec_vp9_slice_setup_single(struct vde=
-c_vp9_slice_instance *instance,
-> =C2=A0
-> =C2=A0	ret =3D vdec_vp9_slice_setup_prob_buffer(instance, vsi);
+> Reproduced and tested with a simple VM with a virtio-mem device,
+> repeatedly adding and removing memory.
+> 
+> Found by code inspection while working on bootmem_info removal.
+> ---
+>  arch/x86/mm/init_64.c | 43 +++++++++++++++++++++++++++----------------
+>  1 file changed, 27 insertions(+), 16 deletions(-)
+> 
+> diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
+> index df2261fa4f98..8d03e44a7fb9 100644
+> --- a/arch/x86/mm/init_64.c
+> +++ b/arch/x86/mm/init_64.c
+> @@ -1014,7 +1014,7 @@ static void __meminit free_pagetable(struct page *page, int order)
+>  #ifdef CONFIG_HAVE_BOOTMEM_INFO_NODE
+>  		enum bootmem_type type = bootmem_type(page);
+>  
+> -		if (type == SECTION_INFO || type == MIX_SECTION_INFO) {
+> +		if (type == MIX_SECTION_INFO) {
+>  			while (nr_pages--)
+>  				put_page_bootmem(page++);
+>  		} else {
+> @@ -1028,13 +1028,24 @@ static void __meminit free_pagetable(struct page *page, int order)
+>  	}
+>  }
+>  
+> -static void __meminit free_hugepage_table(struct page *page,
+> +static void __meminit free_vmemmap_pages(struct page *page, unsigned int order,
+>  		struct vmem_altmap *altmap)
+>  {
+> -	if (altmap)
+> -		vmem_altmap_free(altmap, PMD_SIZE / PAGE_SIZE);
+> -	else
+> -		free_pagetable(page, get_order(PMD_SIZE));
+> +	if (altmap) {
+> +		vmem_altmap_free(altmap, 1u << order);
+> +	} else if (PageReserved(page)) {
+> +		unsigned long nr_pages = 1 << order;
+> +
+> +		if (IS_ENABLED(CONFIG_HAVE_BOOTMEM_INFO_NODE) &&
+> +		    bootmem_type(page) == SECTION_INFO) {
+> +			while (nr_pages--)
+> +				put_page_bootmem(page++);
+> +		} else {
+> +			free_reserved_pages(page, nr_pages);
+> +		}
+> +	} else {
+> +		__free_pages(page, order);
+> +	}
+>  }
+>  
+>  static void __meminit free_pte_table(pte_t *pte_start, pmd_t *pmd)
+> @@ -1093,7 +1104,7 @@ static void __meminit free_pud_table(pud_t *pud_start, p4d_t *p4d)
+>  
+>  static void __meminit
+>  remove_pte_table(pte_t *pte_start, unsigned long addr, unsigned long end,
+> -		 bool direct)
+> +		 bool direct, struct vmem_altmap *altmap)
+>  {
+>  	unsigned long next, pages = 0;
+>  	pte_t *pte;
+> @@ -1118,7 +1129,7 @@ remove_pte_table(pte_t *pte_start, unsigned long addr, unsigned long end,
+>  			return;
+>  
+>  		if (!direct)
+> -			free_pagetable(pte_page(*pte), 0);
+> +			free_vmemmap_pages(pte_page(*pte), 0, altmap);
+>  
+>  		spin_lock(&init_mm.page_table_lock);
+>  		pte_clear(&init_mm, addr, pte);
+> @@ -1153,25 +1164,25 @@ remove_pmd_table(pmd_t *pmd_start, unsigned long addr, unsigned long end,
+>  			if (IS_ALIGNED(addr, PMD_SIZE) &&
+>  			    IS_ALIGNED(next, PMD_SIZE)) {
+>  				if (!direct)
+> -					free_hugepage_table(pmd_page(*pmd),
+> -							    altmap);
+> +					free_vmemmap_pages(pmd_page(*pmd),
+> +							   PMD_ORDER, altmap);
+>  
+>  				spin_lock(&init_mm.page_table_lock);
+>  				pmd_clear(pmd);
+>  				spin_unlock(&init_mm.page_table_lock);
+>  				pages++;
+>  			} else if (vmemmap_pmd_is_unused(addr, next)) {
+> -					free_hugepage_table(pmd_page(*pmd),
+> -							    altmap);
+> -					spin_lock(&init_mm.page_table_lock);
+> -					pmd_clear(pmd);
+> -					spin_unlock(&init_mm.page_table_lock);
+> +				free_vmemmap_pages(pmd_page(*pmd), PMD_ORDER,
+> +						   altmap);
+> +				spin_lock(&init_mm.page_table_lock);
+> +				pmd_clear(pmd);
+> +				spin_unlock(&init_mm.page_table_lock);
+>  			}
+>  			continue;
+>  		}
+>  
+>  		pte_base = (pte_t *)pmd_page_vaddr(*pmd);
+> -		remove_pte_table(pte_base, addr, next, direct);
+> +		remove_pte_table(pte_base, addr, next, direct, altmap);
+>  		free_pte_table(pte_base, pmd);
+>  	}
+>  
+> 
+> ---
+> 
+> base-commit: a2ddbfd1af0f54ea84bf17f0400088815d012e8d
+> 
+> change-id: 20260428-vmemmap-ab4b949aa727
+> 
+> --
+> 
+> Cheers,
+> 
+> David
+> 
 
-This function never fails, remove its return value and remove the error cod=
-e
-below.
-
-> =C2=A0	if (ret)
-> -		goto err;
-> +		goto alloc_err;
-> =C2=A0
-> =C2=A0	ret =3D vdec_vp9_slice_setup_tile_buffer(instance, vsi, bs);
-> =C2=A0	if (ret)
-> -		goto err;
-> +		goto alloc_err;
-
-Ack.
-
-cheers,
-Nicolas
-
-> =C2=A0
-> =C2=A0	return 0;
-> =C2=A0
-> +alloc_err:
-> +	vdec_vp9_slice_free_working_buffer(instance);
-> =C2=A0err:
-> =C2=A0	return ret;
-> =C2=A0}
-
---=-Ia1WDRCY1/M1Q8YAdi4l
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCafEajwAKCRDZQZRRKWBy
-9E2/AQD/nW836XRN6DAd6ZzBlINp0cYn4Gay0RQSq8mQWp4LCwEAwr6VfThlqpT4
-WvmFwT4qjEPeQdKleVFr7EXeFiwJUAs=
-=cisg
------END PGP SIGNATURE-----
-
---=-Ia1WDRCY1/M1Q8YAdi4l--
+-- 
+Sincerely yours,
+Mike.
 
