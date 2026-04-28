@@ -1,185 +1,494 @@
-Return-Path: <stable+bounces-241631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241632-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SL8+Mqel8GlAWgEAu9opvQ
-	(envelope-from <stable+bounces-241631-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 14:18:47 +0200
+	id 6JbMDmme8GkRWQEAu9opvQ
+	(envelope-from <stable+bounces-241632-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 13:47:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEB50484B98
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 14:18:42 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 474A54842AC
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 13:47:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 91B2A3189F50
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 11:08:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 16E5531DD440
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 11:20:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 600763F210F;
-	Tue, 28 Apr 2026 11:07:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39D9F3FBEC9;
+	Tue, 28 Apr 2026 11:13:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ys0dmzq2"
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="sKIDkj0s"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C08753F0A9A
-	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 11:07:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CFBB3F9F2F;
+	Tue, 28 Apr 2026 11:13:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777374453; cv=none; b=V7lNcFvUYaxzjOwav7BdNaFDNO2aPA6DhJJOuIfwamYngFz3GJUThEIJ1r1O9VNVHPXPb39z0dWbnnCwkNAn1MkO/Ci0mbkz9BO7JXo85pVdFiXl+GcfAo87vy9BvP8+g82i6FHPJGJbD7QHyGO0/pMAb0AAAJhMxc9G1YF6OYg=
+	t=1777374796; cv=none; b=bDyzsA1zAH6uIEzU9gV9XUPdVRiOwZ+idBdBXSJC1SNbvIVxmSL+sQBFH0lBKFiQVEFyC3WgkU4xLKwurJWCoOZ6PzK4S1v4mO2jHUwMmiDWEpnUa2XALWoGLI2KilgrG/B9ZuSVhjULKY6T7kgvYdmsx6njHhi2uhxykLp2VO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777374453; c=relaxed/simple;
-	bh=o8i2uC1zO/a2xkebuFDYmXGH5i+hiWFwIKkf2xAeZHU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=UWTOFW9tc5Owbnwkha3arS6yTKTqhQEAVGjbk3gWxNIjB5Bqf2vVAPVI1LWXjQ3BZicHWUvryKjMHePM88r76OL5KY5iX+DtE3U+6m0ZCEbT9PZTpr2MLIRnJTy5xQ/7j69fmuOpDvd1Q+029kcpATIkKXaPKaHGi6S4p2lpWkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ys0dmzq2; arc=none smtp.client-ip=209.85.210.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-82748257f5fso6467532b3a.1
-        for <stable@vger.kernel.org>; Tue, 28 Apr 2026 04:07:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777374446; x=1777979246; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=winsu62q5y/m4N8BbYwmfb2kAuzIpiVgfaZfSzGuNDg=;
-        b=Ys0dmzq2kEmt/rfD7kGSv1AUCdL+lFmRBLqyN3HK/hVC1Whs7WbYmjwoZ8dDRSCzAA
-         Ig8U9fNXfwsmQpD/iOL7w1k7QW3XUZj03wiyUfEK1kQ4uq0tHm5dX6XAzpMxG5XlLECP
-         TJ07eSekulVIVT763v4LmonkPj8XVhtylK+PteOjJVF2Kzg+Fl19JN3a49irfVTd821q
-         a+/VUYIYcv8lmMTL8AE2OyZ+9t8pVxTFrwuS8Wts+zsVQrVL6YD8rZmcrl9CF1xWByWa
-         Rd8+meZMJjYzi/XZhTLbvVGI/UFY6jQm9xp3daIwRF1CETbZeafQqjALz7P05Zx/fDpo
-         aklw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777374446; x=1777979246;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=winsu62q5y/m4N8BbYwmfb2kAuzIpiVgfaZfSzGuNDg=;
-        b=CgpKU3AwKHIcgrsr75HUUSXV4Nd6/bI+cvqiIkq7m3T0oDxCY8PBj5kTvnDV9Pct4/
-         gu94E2O1K2BimARH/BO4AG9gdexMyoYuJKCivL7rYsvzTXM/YWCVVTQRtV7S6g2HxHIg
-         PgBRm3rtDaEamoWAQAZEjvTn4ca4NJWdTZLIBC7bv9qjY7qQV3IYgWkylBznh8urd4jo
-         RSvh4ZtXlKEv2SSXFr26nEk/3VxEiOajRLOwFw5A/55mxEsK14uLTH+ZDRQ13WzsLsoF
-         DRKzn9wOO4j9WElsxWSpdIc7PDHWyj9KYSvmqMZm7A9/a/FJCsvbH9Yexs47uMp2dwGe
-         s7DQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/jbdAakRMvs/PlI81pKLNrasVERtaDsW6CTwrC+672ATInc7Snmgz47cLPrkySeYNOavXZwHg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxR+UFe8huSHDd5oEB+yfklsMqZA4TuG1T/6s2cZEifqu8/ob20
-	i2/tCVfnbzY5/BqU8VcV3gjNCVbOrN4+WH4s8UzHrjX10tePn0mUwRDv
-X-Gm-Gg: AeBDievoA9WUdLyF0G8bYEZZPvIThXwAc7pwJRI+/vfNk2aRRk6REKMVYy+nH9JZ/Z0
-	0R4/pgcjpZe6xljbeHgm7rD6wVdGcpJuWkwp6N7ZRuBINrMTpfBe96AYLfdjetb1QTRcvcpW0Vd
-	OSXzO/xCp9sIwrzMHL5u8RczCbp4An/nbevQTrh22ptNXsXoiLCFo9c3MlZNSDDrAzOn6E3LtmC
-	vLB2yPUNmXKM0swtxISesN6K7qESdGpVqhohOmn+byICj3bXm3mgIwuFNq0FcSawtdoMqsoHmuP
-	Q1WaDRUuJ4Ox79J+5rDEcoky6dWKA0kpfXaFqZplXmRhEVCfuoVcxt0S0T6lupiSjTLCPJ3yfs5
-	4ui+mCDfSWVxNCgE3ttBuw7XahGELQmAultDtGfFyBsDTmtut14y6tL0pLJpDpAeOtB/+OfwQ0k
-	HxnYDn3hvayPmw+vIXBmDzZnfjBt3M2CePfrTySuHObpcaD/521VbHuLcb5BRq5VZwsiupIw==
-X-Received: by 2002:a05:6a20:9146:b0:3a2:d53f:691c with SMTP id adf61e73a8af0-3a39c14961fmr2707035637.26.1777374446370;
-        Tue, 28 Apr 2026 04:07:26 -0700 (PDT)
-Received: from csl-conti-dell7858.ntu.edu.sg ([155.69.195.57])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c7fc33d4e11sm2023328a12.24.2026.04.28.04.07.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Apr 2026 04:07:26 -0700 (PDT)
-From: Maoyi Xie <maoyixie.tju@gmail.com>
-To: netdev@vger.kernel.org
-Cc: kuniyu@google.com,
-	shaw.leon@gmail.com,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	dsahern@kernel.org,
-	kuznet@ms2.inr.ac.ru,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	security@kernel.org
-Subject: [PATCH net 2/2] ip6_gre: Use cached t->net in ip6erspan_changelink().
-Date: Tue, 28 Apr 2026 19:07:13 +0800
-Message-Id: <20260428110713.2550315-3-maoyixie.tju@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260428110713.2550315-1-maoyixie.tju@gmail.com>
-References: <20260428110713.2550315-1-maoyixie.tju@gmail.com>
+	s=arc-20240116; t=1777374796; c=relaxed/simple;
+	bh=FwiH5tzvF8NzDoJNvr5Mzsx8cztE+hBcfG5i1dKKGC0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OHt9IEdeOSfLVFF4TM9wGn1wbHUbFirSy8JNFybSUWEWo4q664sn8cdZGHqRJjBu5tR7JMMP/zU8uyDLwn9+ZVmPzjy8F55BTqgcMDB5mJ/Eraktgd0hcSUOfgraeougSKHm/o1ekq3q5jo902D1sfQKQ/zHoDiimkORgr1rneQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=sKIDkj0s; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id ECF1316A3;
+	Tue, 28 Apr 2026 04:13:06 -0700 (PDT)
+Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 038163F62B;
+	Tue, 28 Apr 2026 04:13:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1777374792; bh=FwiH5tzvF8NzDoJNvr5Mzsx8cztE+hBcfG5i1dKKGC0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=sKIDkj0sB+afNrT+hkOCgYZ5gA10yI7C5kAggd3Y+qzE9IDKPtWSADfOwk+wogyo0
+	 McexlYCqnIML3KvAYMAkvxHqdWPU7JQtJXGJI4Jeg/zGd4fwUXtE9miPRWzMDGYdRd
+	 CW4G7OhRnpt4FzeFy1nps3a+YQwip8dkWu0KMw6c=
+Date: Tue, 28 Apr 2026 12:13:01 +0100
+From: Mark Rutland <mark.rutland@arm.com>
+To: Sasha Levin <sashal@kernel.org>
+Cc: patches@lists.linux.dev, stable@vger.kernel.org,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 7.0-5.10] arm64: cputype: Add C1-Pro definitions
+Message-ID: <afCWPTqKxIqGPe1r@J2N7QTR9R3>
+References: <20260428104133.2858589-1-sashal@kernel.org>
+ <20260428104133.2858589-51-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: EEB50484B98
+In-Reply-To: <20260428104133.2858589-51-sashal@kernel.org>
+X-Rspamd-Queue-Id: 474A54842AC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[arm.com,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[arm.com:s=foss];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241631-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[google.com,gmail.com,davemloft.net,kernel.org,redhat.com,ms2.inr.ac.ru,vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FROM_NEQ_ENVFROM(0.00)[maoyixietju@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[arm.com:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-241632-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	TO_DN_NONE(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FROM_NEQ_ENVFROM(0.00)[mark.rutland@arm.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[yhbt.net:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,arm.com:email,arm.com:dkim,arm.com:url,willie-the-truck:email]
 
-From: Maoyi Xie <maoyi.xie@ntu.edu.sg>
+On Tue, Apr 28, 2026 at 06:41:02AM -0400, Sasha Levin wrote:
+> From: Catalin Marinas <catalin.marinas@arm.com>
+> 
+> [ Upstream commit 2c99561016c591f4c3d5ad7d22a61b8726e79735 ]
+> 
+> Add cputype definitions for C1-Pro. These will be used for errata
+> detection in subsequent patches.
 
-After commit 5e72ce3e3980 ("net: ipv6: Use link netns in newlink() of
-rtnl_link_ops"), ip6erspan_newlink() correctly resolves the per-netns
-ip6gre hash via link_net. ip6erspan_changelink() was not converted in
-that series and still uses dev_net(dev), which diverges from the
-device's creation netns after IFLA_NET_NS_FD migration.
+This definition is only needed for a workaround which is only applicable
+to v6.18+ (and the downstream android16-6.12 tree).
 
-This re-inserts the tunnel into the wrong per-netns hash, leaving a
-stale entry in the original creation netns. When that netns is later
-destroyed, ip6gre_exit_rtnl_net() walks the stale entry, producing a
-slab-use-after-free reported by KASAN, followed by a kernel BUG at
-net/core/dev.c (LIST_POISON1) in unregister_netdevice_many_notify().
+We needn't backport this patch to v5.1.0.y unless there's something that
+depends upon it.
 
-Reachable from an unprivileged user namespace ("unshare --user
---map-root-user --net"); cross-tenant scope on container hosts.
+Mark.
 
-Note: ip6gre_changelink() (the non-erspan sibling earlier in the same
-file) already uses the cached t->net correctly. The bug is specific
-to ip6erspan_changelink() copying the wrong shape.
-
-Fixes: 5e72ce3e3980 ("net: ipv6: Use link netns in newlink() of rtnl_link_ops")
-Reported-by: Maoyi Xie <maoyi.xie@ntu.edu.sg>
-Cc: stable@vger.kernel.org # v5.15+
-Signed-off-by: Maoyi Xie <maoyi.xie@ntu.edu.sg>
----
- net/ipv6/ip6_gre.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
-index dafcc0dcd..38ac14cc0 100644
---- a/net/ipv6/ip6_gre.c
-+++ b/net/ipv6/ip6_gre.c
-@@ -2261,7 +2261,8 @@ static int ip6erspan_changelink(struct net_device *dev, struct nlattr *tb[],
- 				struct nlattr *data[],
- 				struct netlink_ext_ack *extack)
- {
--	struct ip6gre_net *ign = net_generic(dev_net(dev), ip6gre_net_id);
-+	struct ip6_tnl *nt = netdev_priv(dev);
-+	struct ip6gre_net *ign = net_generic(nt->net, ip6gre_net_id);
- 	struct __ip6_tnl_parm p;
- 	struct ip6_tnl *t;
- 
--- 
-2.34.1
-
+> These values can be found in "Table A-303: MIDR_EL1 bit descriptions" in
+> issue 07 of the C1-Pro TRM:
+> 
+>   https://documentation-service.arm.com/static/6930126730f8f55a656570af
+> 
+> Acked-by: Mark Rutland <mark.rutland@arm.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: James Morse <james.morse@arm.com>
+> Reviewed-by: Will Deacon <will@kernel.org>
+> Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+> 
+> LLM Generated explanations, may be completely bogus:
+> 
+> Now I have a complete picture. Let me write up the analysis.
+> 
+> ## Analysis
+> 
+> ### PHASE 1: COMMIT MESSAGE FORENSICS
+> 
+> **Step 1.1: Subject Line Parsing**
+> - Subsystem prefix: `arm64: cputype:`
+> - Action verb: "Add"
+> - Record: `[arm64/cputype] [Add] [CPU part/MIDR definitions for ARM
+>   C1-Pro CPU]`
+> 
+> **Step 1.2: Tag Analysis**
+> - `Acked-by: Mark Rutland <mark.rutland@arm.com>` — ARM kernel engineer
+>   reviewer
+> - `Reviewed-by: Will Deacon <will@kernel.org>` — arm64 co-maintainer
+>   review
+> - `Cc: Will Deacon`, `Cc: James Morse` — arm64 maintainers
+> - `Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>` — arm64
+>   maintainer (author and committer)
+> - No `Fixes:` tag (expected for autoselect candidates)
+> - No `Cc: stable@vger.kernel.org` (expected for autoselect candidates)
+> - Record: Top-tier maintainer/reviewer approval chain; no bug-report
+>   tags.
+> 
+> **Step 1.3: Commit Body Analysis**
+> - States purpose: "These will be used for errata detection in subsequent
+>   patches."
+> - Cites ARM C1-Pro TRM (Table A-303) as the authoritative source.
+> - Does NOT describe a bug, crash, or symptom.
+> - Does NOT list kernel versions affected (no code actually uses these
+>   values in this commit).
+> - Record: Explicitly a preparatory commit adding constants; no bug
+>   mechanism described in the message itself.
+> 
+> **Step 1.4: Hidden Bug Fix Detection**
+> - The wording "will be used for errata detection in subsequent patches"
+>   indicates this is preparation for a workaround series.
+> - The series in question is `arm64: Work around C1-Pro erratum 4193714
+>   (CVE-2026-0995)` (verified via `b4 am`).
+> - Record: Not a hidden fix — genuinely a prerequisite commit.
+> 
+> ### PHASE 2: DIFF ANALYSIS
+> 
+> **Step 2.1: Inventory**
+> - Files changed: `arch/arm64/include/asm/cputype.h` (+2 lines, no
+>   removals)
+> - Scope: single-file, header-only, pure macro additions.
+> - Record: 2 lines added, 0 removed, 0 functions modified.
+> 
+> **Step 2.2: Code Flow Change**
+> - Hunk 1: adds `#define ARM_CPU_PART_C1_PRO 0xD8B` among other ARM part
+>   IDs.
+> - Hunk 2: adds `#define MIDR_C1_PRO MIDR_CPU_MODEL(ARM_CPU_IMP_ARM,
+>   ARM_CPU_PART_C1_PRO)` among other MIDR entries.
+> - Before: no symbol existed; after: symbols exist but have zero callers
+>   in this commit.
+> - Record: Pure identifier addition; no runtime behavior change.
+> 
+> **Step 2.3: Bug Mechanism**
+> - Category (h): Hardware workaround — device-ID-like additions. Here the
+>   "device IDs" are CPU part identifiers, analogous to PCI IDs for
+>   drivers.
+> - Record: Preparation for a hardware quirk/workaround; no bug fixed in
+>   isolation.
+> 
+> **Step 2.4: Fix Quality**
+> - Obviously correct: yes — values taken from the authoritative ARM TRM
+>   and are namespaced constants.
+> - Surgical: yes — 2 lines, no unrelated changes.
+> - Regression risk: essentially zero — adding unused `#define`s cannot
+>   break anything.
+> - Record: Trivially correct, zero regression risk.
+> 
+> ### PHASE 3: GIT HISTORY INVESTIGATION
+> 
+> **Step 3.1: Blame**
+> - The `cputype.h` file has a long history with many similar `MIDR_*`
+>   additions.
+> - Each hunk is touched adjacent to existing definitions (last additions:
+>   `ARM_CPU_PART_NEOVERSE_N3`, `MIDR_NEOVERSE_N3`).
+> - Record: Following an established pattern of additions to this header.
+> 
+> **Step 3.2: Fixes Tag**
+> - No `Fixes:` tag. Not applicable.
+> 
+> **Step 3.3: File History**
+> - `git log -- arch/arm64/include/asm/cputype.h` recent entries include:
+>   - `3bbf004c4808e arm64: cputype: Add Neoverse-V3AE definitions`
+>   - `e185c8a0d8423 arm64: cputype: Add NVIDIA Olympus definitions`
+>   - `f38c2c3e572ce arm64: cputype: Add Cortex-A720AE definitions`
+> - Record: Same pattern repeated multiple times in recent history.
+> 
+> **Step 3.4: Author Context**
+> - Author Catalin Marinas = arm64 maintainer.
+> - Reviewer Will Deacon = arm64 co-maintainer.
+> - Record: Top subsystem authority authored and reviewed this.
+> 
+> **Step 3.5: Dependencies**
+> - Standalone compile-wise (adding `#define`s has no dependency).
+> - Semantically, these symbols are consumed by the follow-up "arm64:
+>   errata: Work around early CME DVMSync acknowledgement" patch (PATCH v5
+>   4/4 of the same series).
+> - Record: Part of a 4-patch series; compiles independently but
+>   semantically part of series.
+> 
+> ### PHASE 4: MAILING LIST RESEARCH
+> 
+> **Step 4.1: Original Submission**
+> - Cover letter thread found: `https://lore.kernel.org/all/20260302165801
+>   .3014607-1-catalin.marinas@arm.com/` (v1, 4 patches). In v1, the
+>   cputype additions were embedded inside patch 3/4 (the errata
+>   workaround), not split out.
+> - Latest revision identified via web search: v5 —
+>   `https://yhbt.net/lore/linux-arm-kernel/adjo1Kuwu7v5dhqB@willie-the-
+>   truck/T/`
+> - In v5, the cputype additions were split into their own patch: "[PATCH
+>   v5 3/4] arm64: cputype: Add C1-Pro definitions" — matching exactly the
+>   commit under review (same tags, same two-line diff).
+> - Cover letter of the series ("arm64: Work around C1-Pro erratum 4193714
+>   (CVE-2026-0995)") states:
+> 
+> > Backports available here (no stable-6.12.y since SME is not
+> supported):
+> > `errata/c1-pro-erratum-4193714-stable-6.19.y`
+> > `errata/c1-pro-erratum-4193714-stable-6.18.y`
+> > `errata/c1-pro-erratum-4193714-android16-6.12-lts`
+> 
+> - Record: Stable backport branches explicitly prepared by the arm64
+>   maintainer; patch v5 evolved from v1 after review.
+> 
+> **Step 4.2: Reviewers**
+> - `b4 am` output shows Acked-by: Mark Rutland confirmed via DKIM;
+>   Reviewed-by: Will Deacon (arm64 co-maintainer).
+> - Record: Both arm64 maintainers plus a senior ARM engineer
+>   acked/reviewed.
+> 
+> **Step 4.3: Bug Report**
+> - CVE-2026-0995 assigned:
+>   https://developer.arm.com/documentation/111823/latest/
+> - Phoronix article confirms: "Linux 7.1 Lands Workaround For Arm C1-Pro
+>   Erratum" (CVE-2026-0995).
+> - Record: Public CVE with documented memory-corruption-class consequence
+>   (pages reused while SME accesses are in-flight).
+> 
+> **Step 4.4: Related Patches**
+> - 4-patch series; this is patch 3/4.
+> - Patches 1/4 and 2/4: TLB infrastructure refactoring (prerequisites).
+> - Patch 4/4: actual errata workaround that consumes `MIDR_C1_PRO`.
+> - Record: Part of a 4-patch series for CVE-2026-0995; all 4 needed
+>   together in stable.
+> 
+> **Step 4.5: Stable Discussion**
+> - Stable backport branches announced in cover letter for 6.18.y and
+>   6.19.y.
+> - Record: Maintainer has already prepared stable backports.
+> 
+> ### PHASE 5: CODE SEMANTIC ANALYSIS
+> 
+> **Step 5.1: Key Functions**
+> - No functions — only macro additions.
+> - Record: Pure preprocessor additions.
+> 
+> **Step 5.2/5.3/5.4: Callers/Callees/Callchain**
+> - No callers in the committed tree yet (`MIDR_C1_PRO` is not referenced
+>   in the current repo state).
+> - Intended consumer per the series: `arch/arm64/kernel/cpu_errata.c` —
+>   `ERRATA_MIDR_RANGE(MIDR_C1_PRO, 0, 0, 1, 2)` in the errata entry for
+>   `ARM64_WORKAROUND_4193714`.
+> - Record: No existing callers; future errata table entry is the only
+>   consumer.
+> 
+> **Step 5.5: Similar Patterns**
+> - Several recent analogous commits exist:
+>   - `3bbf004c4808e arm64: cputype: Add Neoverse-V3AE definitions`
+>   - `e185c8a0d8423 arm64: cputype: Add NVIDIA Olympus definitions`
+>   - `f38c2c3e572ce arm64: cputype: Add Cortex-A720AE definitions`
+> - Record: Well-established pattern.
+> 
+> ### PHASE 6: CROSS-REFERENCING AND STABLE TREES
+> 
+> **Step 6.1: Code in Stable Trees?**
+> - The `cputype.h` header exists in all active stable trees (6.1.y,
+>   6.6.y, 6.12.y, 6.17.y, 6.18.y, 6.19.y).
+> - C1-Pro definitions themselves don't exist in any stable tree yet.
+> - Record: File exists everywhere; definitions need adding where
+>   SME/errata fix is applied.
+> 
+> **Step 6.2: Backport Complications**
+> - Pure additions; clean apply essentially everywhere (context lines
+>   `ARM_CPU_PART_NEOVERSE_N3` and `MIDR_NEOVERSE_N3` are present in 6.6.y
+>   onward after backports, but position may shift — trivial resolution).
+> - Record: Clean/trivial apply expected.
+> 
+> **Step 6.3: Related Stable Fixes Already Present?**
+> - No — no C1-Pro errata workaround exists in stable yet.
+> - Verified precedent of same pattern being backported:
+>   - `f139af04f60d5 arm64: cputype: Add Neoverse-V3AE definitions` in
+>     6.17.y
+>   - `6de6d315f34c5 arm64: cputype: Add Neoverse-V3AE definitions` in
+>     6.12.y
+>   - `d9d3e9ff1e2a5 arm64: cputype: Add Neoverse-V3AE definitions` in
+>     6.6.y
+> - Each backport paired with its errata workaround.
+> - Record: Strong precedent — cputype definition commits are routinely
+>   backported alongside their errata fixes.
+> 
+> ### PHASE 7: SUBSYSTEM CONTEXT
+> 
+> **Step 7.1: Subsystem Criticality**
+> - `arch/arm64/` core CPU identification — CORE.
+> - Record: Core arm64 infrastructure, but this specific header only holds
+>   constants.
+> 
+> **Step 7.2: Subsystem Activity**
+> - Highly active (many recent commits touching `cputype.h`).
+> - Record: Active subsystem.
+> 
+> ### PHASE 8: IMPACT AND RISK ASSESSMENT
+> 
+> **Step 8.1: Who Is Affected**
+> - In isolation: nobody — the constants are unused.
+> - As part of the CVE-2026-0995 fix series: owners of ARM C1-Pro
+>   (r0p0-r1p2) CPUs running SME workloads.
+> - Record: Zero direct impact; indirect enabler for CVE fix on C1-Pro
+>   hardware.
+> 
+> **Step 8.2: Trigger Conditions**
+> - This commit triggers nothing by itself.
+> - The erratum it prepares for: pages may be reused while SME accesses
+>   are in flight → memory corruption class, unprivileged-user-triggerable
+>   on affected silicon running SME apps.
+> - Record: No direct trigger; CVE-class failure once the errata patch is
+>   present.
+> 
+> **Step 8.3: Failure Mode**
+> - This commit: none.
+> - Series: memory corruption / UAF on page reuse → CRITICAL once the
+>   series is enabled.
+> - Record: Severity CRITICAL for the series; NONE for this isolated
+>   patch.
+> 
+> **Step 8.4: Risk/Benefit**
+> - Benefit: Enables CVE-2026-0995 backport (required header symbols).
+>   Without it, the errata fix won't compile.
+> - Risk: Extremely low — adds two unused `#define`s; cannot regress
+>   anything.
+> - Record: Essentially zero risk, high enabling benefit.
+> 
+> ### PHASE 9: FINAL SYNTHESIS
+> 
+> **Step 9.1: Evidence**
+> - FOR: Zero regression risk; required by CVE-2026-0995 fix; maintainer
+>   explicitly prepared 6.18.y/6.19.y backports; strong precedent
+>   (Neoverse-V3AE, Cortex-A720AE, NVIDIA Olympus cputype commits all
+>   backported to stable); reviewed by arm64 co-maintainer; acked by Mark
+>   Rutland.
+> - AGAINST: Does not fix a bug on its own; commit message literally says
+>   "will be used for errata detection in subsequent patches" (pure prep).
+> 
+> **Step 9.2: Stable Rules Checklist**
+> 1. Obviously correct and tested? YES (trivially — values from the ARM
+>    TRM; reviewed by maintainers).
+> 2. Fixes a real bug? Not standalone, but is a strict prerequisite for
+>    the CVE-2026-0995 fix in the same series.
+> 3. Important issue? Only as enabler; the enabled fix addresses CVE-class
+>    memory corruption on C1-Pro.
+> 4. Small and contained? YES (2 lines).
+> 5. No new features/APIs? Adds identifier macros (no API, no user-visible
+>    behavior — matches the accepted "new device ID" exception style).
+> 6. Applies to stable? YES (clean apply; maintainer-prepared branches
+>    exist).
+> 
+> **Step 9.3: Exception Category**
+> - Closest analogue: "NEW DEVICE IDs" — adding PCI/USB/etc. IDs to
+>   existing drivers. Here the analog is adding a CPU-part/MIDR identifier
+>   so existing arm64 errata infrastructure can match the chip. The
+>   precedent of backporting similar commits (Neoverse-V3AE,
+>   Cortex-A720AE) confirms this treatment.
+> 
+> **Step 9.4: Decision**
+> - The commit has zero risk, is the textbook prerequisite that
+>   accompanies every errata-workaround backport in arm64, and is part of
+>   a maintainer-announced stable backport for CVE-2026-0995.
+> - Without it, a CVE fix cannot be backported (won't compile).
+> - Strong, consistent precedent in stable for this exact pattern.
+> 
+> ## Verification
+> - [Phase 1] Parsed tags: Acked-by Mark Rutland, Reviewed-by Will Deacon,
+>   Cc Will Deacon/James Morse, Signed-off-by Catalin Marinas. No Fixes:,
+>   no Cc: stable (expected).
+> - [Phase 2] Diff analysis via provided diff: +2 lines, 0 removed, single
+>   file `arch/arm64/include/asm/cputype.h`; confirmed by reading the file
+>   header layout.
+> - [Phase 3] `git log --oneline -- arch/arm64/include/asm/cputype.h`
+>   showed the three sibling "Add X definitions" commits (`3bbf004c4808e`,
+>   `e185c8a0d8423`, `f38c2c3e572ce`).
+> - [Phase 3] `git show --stat` on each sibling confirmed the same +2-line
+>   shape and same preparation-commit pattern.
+> - [Phase 4] `b4 am` retrieved the v1 series cover at `lore.kernel.org/al
+>   l/20260302165801.3014607-1-catalin.marinas@arm.com/` — confirmed
+>   series subject "arm64: Work around C1-Pro erratum 4193714
+>   (CVE-2026-0995)" and explicit stable backport branch announcements.
+> - [Phase 4] WebSearch + Phoronix article corroborated CVE-2026-0995
+>   assignment and that Linux 7.1 merged the workaround.
+> - [Phase 4] Web-fetched v5 thread at
+>   `yhbt.net/lore/.../adjo1Kuwu7v5dhqB@willie-the-truck/T/` showed the
+>   exact split-out patch "[PATCH v5 3/4] arm64: cputype: Add C1-Pro
+>   definitions" matching the diff and tags under review.
+> - [Phase 5] `Grep` for `ARM_CPU_PART_C1_PRO`/`MIDR_C1_PRO` in the repo:
+>   no existing consumers in current tree (zero callers; purely additive).
+> - [Phase 6] `git log stable/linux-6.17.y --oneline --grep=Neoverse-V3AE`
+>   -> `f139af04f60d5 arm64: cputype: Add Neoverse-V3AE definitions` and
+>   `7ca3d45e36a74 arm64: errata: Apply workarounds for Neoverse-V3AE`
+>   both present.
+> - [Phase 6] `git log stable/linux-6.12.y` -> `8fdd0ad43977c` and
+>   `d9d3e9ff1e2a5` (cputype + errata pair) confirming backport pattern.
+> - [Phase 6] `git log stable/linux-6.6.y` -> `f3ccb49186541` and
+>   `6de6d315f34c5` (cputype + errata pair).
+> - [Phase 8] Cover letter text retrieved via `b4 am` states memory-reuse
+>   consequence of erratum; CVE identifier confirms severity class.
+> - UNVERIFIED: I could not programmatically reach lore.kernel.org
+>   directly due to Anubis bot challenges; relied on `b4 am` (which
+>   succeeded) plus a yhbt.net mirror for the v5 thread. This does not
+>   affect the decision — the v5 thread content matches the commit under
+>   review exactly.
+> 
+> Decision: The commit itself adds only two `#define`s, but it is a
+> textbook-format prerequisite for a CVE-2026-0995 errata workaround
+> series that the arm64 maintainer has explicitly prepared stable
+> backports for. Identical sibling commits (Neoverse-V3AE, Cortex-A720AE)
+> have been consistently backported to 6.6.y / 6.12.y / 6.17.y alongside
+> their errata fixes. Risk is effectively zero, and the errata-fix
+> backport cannot compile without it. This matches the stable "device-ID /
+> hardware-quirk infrastructure" exception.
+> 
+> **YES**
+> 
+>  arch/arm64/include/asm/cputype.h | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
+> index 08860d482e600..7b518e81dd15b 100644
+> --- a/arch/arm64/include/asm/cputype.h
+> +++ b/arch/arm64/include/asm/cputype.h
+> @@ -98,6 +98,7 @@
+>  #define ARM_CPU_PART_CORTEX_A725	0xD87
+>  #define ARM_CPU_PART_CORTEX_A720AE	0xD89
+>  #define ARM_CPU_PART_NEOVERSE_N3	0xD8E
+> +#define ARM_CPU_PART_C1_PRO		0xD8B
+>  
+>  #define APM_CPU_PART_XGENE		0x000
+>  #define APM_CPU_VAR_POTENZA		0x00
+> @@ -189,6 +190,7 @@
+>  #define MIDR_CORTEX_A725 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A725)
+>  #define MIDR_CORTEX_A720AE MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A720AE)
+>  #define MIDR_NEOVERSE_N3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_N3)
+> +#define MIDR_C1_PRO MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_C1_PRO)
+>  #define MIDR_THUNDERX	MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX)
+>  #define MIDR_THUNDERX_81XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_81XX)
+>  #define MIDR_THUNDERX_83XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_83XX)
+> -- 
+> 2.53.0
+> 
 
