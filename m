@@ -1,178 +1,234 @@
-Return-Path: <stable+bounces-241633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241634-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MDtiFFqp8GnOWwEAu9opvQ
-	(envelope-from <stable+bounces-241633-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 14:34:34 +0200
+	id 0K5FHSah8GnrWQEAu9opvQ
+	(envelope-from <stable+bounces-241634-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 13:59:34 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F885484E5C
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 14:34:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 644094846C1
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 13:59:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7FB1F3084A34
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 11:24:54 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2DE8D3871B30
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 11:26:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A2A2423143;
-	Tue, 28 Apr 2026 11:16:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B8063F787B;
+	Tue, 28 Apr 2026 11:18:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PygoYl8F"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p8mRc9En"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEE37421F1D;
-	Tue, 28 Apr 2026 11:16:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DEB13F54A5;
+	Tue, 28 Apr 2026 11:18:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777374964; cv=none; b=mbo8TvHAWU778SCV1oWJA9deTg2ooYTTH6gD/RfbHzD1TC2WtJTIMq6Cs7luGhLW6QqlhzQacnzlkUKc4+edX1yNtpzBZPXfs/++QDUkcGK5H3nDCsSRSh2mhXmAEqfZRfvvKHOQ78s5qGYl9PzV30jiwq3liqtsoWq7UaSC0hM=
+	t=1777375094; cv=none; b=cvfH2j137clcHIZDs7FuZXNVgeZa+HPmCWNLkriYOogJSxh9GYiapc+kFDpqENMXLo1sBsatL5sBmAv6fPpEXQvaEtmaWWyuzZ+h1oZwPAHXbi0lWpgsw2Zb0q8cuw2iU0MBYO2fkEFc/MalSp4p3ROMEJVlvc92bJ/vJ/7yDeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777374964; c=relaxed/simple;
-	bh=+k9IFHPRWPEt9KgA1jLagXkeXEejDWaf2BTKezR1m+8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Et12icYMFnbBw2FXglBLIkF7b3gxoY8G73NibFAu6+nl5YIJxoarK8FBI3xYeiyN0BpHITDOOCFEnv/FVSNmQh+WQygSAewUq337yGbRw58Un7PcuUnxy2iuk6OoV4W0fS9abcZv0iM27InoTKqWIgee08lNfDMHmUsIMte9hLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PygoYl8F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63D15C2BCB5;
-	Tue, 28 Apr 2026 11:16:02 +0000 (UTC)
+	s=arc-20240116; t=1777375094; c=relaxed/simple;
+	bh=kl1dtBcXZUypjlYinHTCFdSRIBt2o8pBWhIdwaUq4lo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=N92cB2jl6m4jgExiVgnt0AD3/PSGFH/hhoapIRznw1JJMyVkqFh3A1DZuCG7R7CWlxHhVv2DVg/NFUGDa0EoJ2uj1q24RuTebuYdPiYJFREQywXkK9NdGhu4/BQatUbp32GQbCF0tHz6ydSEkA1FSNC0i+DGKw5Pz+03KU8NsIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p8mRc9En; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 102C7C2BCAF;
+	Tue, 28 Apr 2026 11:18:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777374964;
-	bh=+k9IFHPRWPEt9KgA1jLagXkeXEejDWaf2BTKezR1m+8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=PygoYl8FRG7kD8iGkDMqk4SXJwdeJtsvRzDbnzR+kx6mRSE5vMmzr/dLpxwNycs/W
-	 lJQR1YkxcMWxJPyvWMmhxnx15hrpaFAeM4SwnNGrStx2BUgC2A8Df94N6zef/dNBfP
-	 KgE3jO+yauCoFdod/4G9yOvwPV4GCQAtGLvZJoDoRN3S8CLgptnhqxRUp8ozHKx52r
-	 E2q7HSGBMdvPqCpOMBAbhzgaW3QeddP5FDP0e5256F4dwIZlzoB46W4oEIjZWT8E8w
-	 0k4W6CDqwXDrcdmQNtgVS4A3XP+/MnnDpbdb3YCZ+c+5iWhnXQSv6Z0HCJcGTMGhD2
-	 yMpGSIlGenoPQ==
-Message-ID: <586311f0-277a-460c-aa5d-6612b5f32cb4@kernel.org>
-Date: Tue, 28 Apr 2026 13:15:59 +0200
+	s=k20201202; t=1777375093;
+	bh=kl1dtBcXZUypjlYinHTCFdSRIBt2o8pBWhIdwaUq4lo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=p8mRc9EnIq7kjjgLQcgx4IR70p6nFpY7kbCeOvQBsT/xmYT7slx7pUK8dFz8ZE/ge
+	 4ieWaGmlf9a01oHAyJiYp4U+m03iqKNyXrRURGh5y6flZvHQ9M6EROLASGkfZfwlnG
+	 fpG8nNdqdDFfdoYq3VK9gSwgfqA+Vn82xL7ZaUOgQ3cy0BprDk+xcWgJo8Akem8mGC
+	 7pOCvE+sau68Q01BX+i/Aw3hFoq3EOUR8MApse6xUw+QfqtACv3ATB8BH8ZCJNdu1u
+	 Qx++jn+eXirfYTh7DuwWSsa4Mh4I3J+Q+uKr0UOKjwHhMIRljqNYIUo2/gxf84WLpq
+	 eBGyHaxmmLkkg==
+Date: Tue, 28 Apr 2026 13:18:08 +0200
+From: Marek =?utf-8?B?QmVow7pu?= <kabel@kernel.org>
+To: Bill Cox <waywardgeek@gmail.com>
+Cc: Thorsten Blum <thorsten.blum@linux.dev>, 
+	Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>, 
+	Nicolas Ferre <nicolas.ferre@microchip.com>, Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>, Linus Walleij <linusw@kernel.org>, 
+	Ard Biesheuvel <ardb@kernel.org>, stable@vger.kernel.org, linux-crypto@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] crypto: atmel-sha204a - drop hwrng quality reduction
+ for ATSHA204A
+Message-ID: <25ntssyy6t5uwxlwfpmrpzpcq6xv62l643hflf26hxi6lv5wqu@6vub6ysczjvd>
+References: <20260428101430.514838-3-thorsten.blum@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH mptcp-net] mptcp: use MPTCP_RST_EMPTCP for ACK HMAC
- validation failure
-Content-Language: fr
-To: Shardul Bankar <shardul.b@mpiricsoftware.com>, mptcp@lists.linux.dev
-Cc: martineau@kernel.org, geliang@kernel.org, pabeni@redhat.com,
- janak@mpiric.us, kalpan.jani@mpiricsoftware.com, shardulsb08@gmail.com,
- stable@vger.kernel.org
-References: <20260427234934.1611893-1-shardul.b@mpiricsoftware.com>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <20260427234934.1611893-1-shardul.b@mpiricsoftware.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 4F885484E5C
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260428101430.514838-3-thorsten.blum@linux.dev>
+X-Rspamd-Queue-Id: 644094846C1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[kernel.org,redhat.com,mpiric.us,mpiricsoftware.com,gmail.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-241633-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	HAS_ORG_HEADER(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-241634-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[matttbe@kernel.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[10.30.226.201:received,100.90.174.1:received];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[kabel@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[microchip.com:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,metzdowd.com:url,linux.dev:email]
 
-Hi Shardul,
+Adding Bill Cox (waywardgeek) to the conversation.
 
-On 28/04/2026 01:49, Shardul Bankar wrote:
-> When HMAC validation fails on a received ACK + MP_JOIN in
-> subflow_syn_recv_sock(), the subflow is reset with reason
-> MPTCP_RST_EPROHIBIT ("Administratively prohibited"). This is
-> incorrect: HMAC validation failure is an MPTCP protocol-level
-> error, not an administrative policy denial.
+In the meantime Nack from me on this patch.
+
+From the original messages by Bill, it seems to me the part he was reviewing
+was the ATSHA204A.
+
+In subsequent reply [1] Bill states
+
+  While there is some evidence, there is still no convincing proof that there
+  is an entropy source in this device at all.  There is some evidence that
+  Atmel has inserted a back-door.  My advice is to avoid this line of parts
+  from Atmel for cryptographic use.
+
+In another message Peter Gutmann asks about ATECC108 [2] and Bill replies [3]
+
+  This part uses the same language to describe the random number generator.
+  It is "high quality".  I think that's pretty funny.
+  I would be interested in seeing if the new part can generate random numbers
+  continuously, or if it fails after it's EEPROM wears out like their other
+  parts.  The use of an EEPROM seed is for PWN-ing your RNG, not making it
+  more secure.
+
+IMO the comments from the actual reviewer are more relevant than those of the
+engineer working for the company which was accused of creating low quality
+/ backdoored TRNG, at least until the Atmel engineer provides some evaluation
+code for the device (which they suggested they might do [4], but never did as
+far as I can find).
+
+Maybe we can instead change the ATECC quality to something like 32? Does that
+even make sense?
+
+Marek
+
+[1] https://www.metzdowd.com/pipermail/cryptography/2014-December/023857.html
+[2] https://www.metzdowd.com/pipermail/cryptography/2014-December/023870.html
+[3] https://www.metzdowd.com/pipermail/cryptography/2014-December/023879.html
+[4] https://www.metzdowd.com/pipermail/cryptography/2014-December/023886.html
+
+On Tue, Apr 28, 2026 at 12:14:32PM +0200, Thorsten Blum wrote:
+> Commit 8006aff15516 ("crypto: atmel-sha204a - Set hwrng quality to
+> lowest possible") reduced the hwrng quality to 1 based on a review by
+> Bill Cox [1]. However, despite its title, the review only tested the
+> ATSHA204, not the ATSHA204A.
 > 
-> The mirror site on the client, in subflow_finish_connect(), already
-> uses MPTCP_RST_EMPTCP ("MPTCP-specific error") for the same kind of
-> HMAC failure on the SYN/ACK + MP_JOIN. Use the same reason on the
-> server side for symmetry and accuracy.
-
-Now in our tree:
-
-New patches for t/upstream-net and t/upstream:
-- 1f2cd6a4c385: mptcp: use MPTCP_RST_EMPTCP for ACK HMAC validation failure
-- Results: 718fa635acef..90cb02b20cf2 (export-net)
-- Results: 8e163e999320..f68dc562c883 (export)
-
-Tests are now in progress:
-
-- export-net:
-https://github.com/multipath-tcp/mptcp_net-next/commit/883745ff4a074154bb85f2be5a3aef39774f8e83/checks
-- export:
-https://github.com/multipath-tcp/mptcp_net-next/commit/6f26689671ac282704c85b27521e6b309771c544/checks
-
-Cheers,
-Matt
--- 
-Sponsored by the NGI0 Core fund.
-
+> In the same thread, Atmel engineer Landon Cox wrote "this behavior has
+> been eliminated entirely"[2] in the ATSHA204A and "this problem does not
+> affect the ATECC108 or the ATECC108A (or the ATSHA204A)"[3].
+> 
+> According to the official ATSHA204A datasheet [4], the device contains a
+> high-quality hardware RNG that combines its output with an internal seed
+> value stored in EEPROM or SRAM to generate random numbers. The device
+> also implements all security functions using SHA-256, and the driver
+> uses the chip's Random command in seed-update mode.
+> 
+> Keep 'quality = 1' for ATSHA204, but drop the explicit hwrng quality
+> reduction for ATSHA204A and fall back to the hwrng core default.
+> 
+> [1] https://www.metzdowd.com/pipermail/cryptography/2014-December/023858.html
+> [2] https://www.metzdowd.com/pipermail/cryptography/2014-December/023852.html
+> [3] https://www.metzdowd.com/pipermail/cryptography/2014-December/023886.html
+> [4] https://ww1.microchip.com/downloads/en/DeviceDoc/ATSHA204A-Data-Sheet-40002025A.pdf
+> 
+> Fixes: 8006aff15516 ("crypto: atmel-sha204a - Set hwrng quality to lowest possible")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+> ---
+> Changes in v2:
+> - Drop the enum and dereference match data if needed as suggested by Ard
+> - Keep the review comment
+> - v1: https://lore.kernel.org/lkml/20260427124030.315590-3-thorsten.blum@linux.dev/
+> ---
+>  drivers/crypto/atmel-sha204a.c | 19 ++++++++++++-------
+>  1 file changed, 12 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/crypto/atmel-sha204a.c b/drivers/crypto/atmel-sha204a.c
+> index dbb39ed0cea1..a8c1b00b12f5 100644
+> --- a/drivers/crypto/atmel-sha204a.c
+> +++ b/drivers/crypto/atmel-sha204a.c
+> @@ -19,6 +19,12 @@
+>  #include <linux/workqueue.h>
+>  #include "atmel-i2c.h"
+>  
+> +/*
+> + * According to review by Bill Cox [1], the ATSHA204 has very low entropy.
+> + * [1] https://www.metzdowd.com/pipermail/cryptography/2014-December/023858.html
+> + */
+> +static const unsigned short atsha204_quality = 1;
+> +
+>  static void atmel_sha204a_rng_done(struct atmel_i2c_work_data *work_data,
+>  				   void *areq, int status)
+>  {
+> @@ -158,6 +164,7 @@ static const struct attribute_group atmel_sha204a_groups = {
+>  static int atmel_sha204a_probe(struct i2c_client *client)
+>  {
+>  	struct atmel_i2c_client_priv *i2c_priv;
+> +	const unsigned short *quality;
+>  	int ret;
+>  
+>  	ret = atmel_i2c_probe(client);
+> @@ -171,11 +178,9 @@ static int atmel_sha204a_probe(struct i2c_client *client)
+>  	i2c_priv->hwrng.name = dev_name(&client->dev);
+>  	i2c_priv->hwrng.read = atmel_sha204a_rng_read;
+>  
+> -	/*
+> -	 * According to review by Bill Cox [1], this HWRNG has very low entropy.
+> -	 * [1] https://www.metzdowd.com/pipermail/cryptography/2014-December/023858.html
+> -	 */
+> -	i2c_priv->hwrng.quality = 1;
+> +	quality = i2c_get_match_data(client);
+> +	if (quality)
+> +		i2c_priv->hwrng.quality = *quality;
+>  
+>  	ret = devm_hwrng_register(&client->dev, &i2c_priv->hwrng);
+>  	if (ret)
+> @@ -203,14 +208,14 @@ static void atmel_sha204a_remove(struct i2c_client *client)
+>  }
+>  
+>  static const struct of_device_id atmel_sha204a_dt_ids[] __maybe_unused = {
+> -	{ .compatible = "atmel,atsha204", },
+> +	{ .compatible = "atmel,atsha204", .data = &atsha204_quality },
+>  	{ .compatible = "atmel,atsha204a", },
+>  	{ /* sentinel */ }
+>  };
+>  MODULE_DEVICE_TABLE(of, atmel_sha204a_dt_ids);
+>  
+>  static const struct i2c_device_id atmel_sha204a_id[] = {
+> -	{ "atsha204" },
+> +	{ "atsha204", (kernel_ulong_t)&atsha204_quality },
+>  	{ "atsha204a" },
+>  	{ /* sentinel */ }
+>  };
+> 
 
