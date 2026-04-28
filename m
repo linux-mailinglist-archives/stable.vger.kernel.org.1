@@ -1,246 +1,270 @@
-Return-Path: <stable+bounces-241743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241744-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UHJGAWzu8GkvbQEAu9opvQ
-	(envelope-from <stable+bounces-241743-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 19:29:16 +0200
+	id EDamGJfx8Gn9bAEAu9opvQ
+	(envelope-from <stable+bounces-241744-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 19:42:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB3BB489F8A
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 19:29:15 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2B6248A213
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 19:42:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 91E233015F8A
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 17:28:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4D5B63017BF5
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 17:41:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D423843E4BD;
-	Tue, 28 Apr 2026 17:28:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD1703264E0;
+	Tue, 28 Apr 2026 17:41:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=manguebit.org header.i=@manguebit.org header.b="IB2Qdp55"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YkWbuJEm"
 X-Original-To: stable@vger.kernel.org
-Received: from mx1.manguebit.org (mx1.manguebit.org [143.255.12.172])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B34D543CECE;
-	Tue, 28 Apr 2026 17:28:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=143.255.12.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777397297; cv=none; b=AO+7wqUVqI4zLEYMvA241rDcSs4IHEyKOzczHeNYn765poJzg1o5wJtdG5mhy/0O0vFEeB/2OYrupGWVvKjl0g54dV+nRwGtLG4Tx2wjPiGApkQAwzmQprpT/4ellBFYJNniwiN2SLwnrPHM0ssHoyUcvcNHjyKW+xg6MYTzCNU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777397297; c=relaxed/simple;
-	bh=aK1A0F52g1hEvh2240PVi8iidcBqxIpd6FloalqeCR0=;
-	h=Message-ID:From:To:Cc:Subject:In-Reply-To:References:Date:
-	 MIME-Version:Content-Type; b=G3ByD/na+4eiMH50wXaeAzS6hDq1+U/49InEmxwuTd1c0b9cT5m12gy8qoKjc7kXqxOEkKA5wUJMq9mbL+b5waJ9GLY1JEE6pMgT76jLe8Hoq3VvUWYfBNYq7bgq2H1kMPXOEAAPlTXJ6t6HKbjiJMYGjk+n2ln/9fw6jOEOsYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.org; spf=pass smtp.mailfrom=manguebit.org; dkim=pass (2048-bit key) header.d=manguebit.org header.i=@manguebit.org header.b=IB2Qdp55; arc=none smtp.client-ip=143.255.12.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manguebit.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=manguebit.org; s=dkim; h=Content-Type:MIME-Version:Date:References:
-	In-Reply-To:Subject:Cc:To:From:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=G1J5OR3MUF730xBsui9yjwFfvvjC4RiDCVHbp7kYe74=; b=IB2Qdp556p5N5+ybQOgDxtxtwz
-	YD2f1IKgFPnWbNncPmBG6H2HalQTSP2g1SNFYNaVOcDVslsPMWNspKMM6rDLa9asiEP2N7hjOBbe7
-	h9o4nDtfKnEXtjbuC6h6SILf4NUR/C8PkIqcXSEgvpDuP1QFqMjmAw9xG3geWkRajILd15Pu6Cp6x
-	KJxeErRkl4DLnwlE78d9O3e9XFC7IEzwcPsL/ae67W63mNGwFR7NRylW9HpPe+iKx8CeXThs5Im+1
-	BAoAL88qiUSndZ7EZBzgnISTCjQEZTvKnI34alFbhxI+XWRR6OoLhwtvGBJtglmQvk3XItRLjPlK3
-	KqZBfpdQ==;
-Received: from pc by mx1.manguebit.org with local (Exim 4.99.1)
-	id 1wHmEF-0000000043A-2kKy;
-	Tue, 28 Apr 2026 14:28:11 -0300
-Message-ID: <d43b1d1023d13746819a780f65da9341@manguebit.org>
-From: Paulo Alcantara <pc@manguebit.org>
-To: nspmangalore@gmail.com, linux-cifs@vger.kernel.org, smfrench@gmail.com,
- bharathsm@microsoft.com, dhowells@redhat.com, henrique.carvalho@suse.com,
- ematsumiya@suse.de
-Cc: Shyam Prasad N <sprasad@microsoft.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v3 03/19] cifs: invalidate cfid on unlink/rename/rmdir
-In-Reply-To: <20260428160804.281745-3-sprasad@microsoft.com>
-References: <20260428160804.281745-1-sprasad@microsoft.com>
- <20260428160804.281745-3-sprasad@microsoft.com>
-Date: Tue, 28 Apr 2026 14:28:11 -0300
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CD7C37C111
+	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 17:41:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.14
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777398095; cv=fail; b=uhqBuEeXhCLjOf7qM7sdKp1rq3TT5snrl+aROuSVK3RLG5qggmkJZRSPeIDDR9x9CJqwv69qgI3tb10MAbeEC4fWSJ432mYq99trnit5YIV+wesMF3enFA7N0Q07D+9rp+YrMV1wKVVQnGnwX82cYiVbhDNG6DvILGAqEYQD4UM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777398095; c=relaxed/simple;
+	bh=JkWiGKLiuiqVMJyWID3zUg5MZ88wezPsmRiHy7nGQZ8=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Rvg5DZ/3XLL/mqIZQ7KGjmB/v/mj21gtsN2C155GRX/cDLrFKGm8NMOWRhdOLHedfvGc48XaEyhFGC18Qwl7ZGD1jU7AOQItygoe1mCFBscqTWMuk5bUPJP1jc8SGMINDkMYJCMIIBtHl4qCSMPtGCHk+Wo3Ha51S4+lkzixfU8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YkWbuJEm; arc=fail smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1777398094; x=1808934094;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=JkWiGKLiuiqVMJyWID3zUg5MZ88wezPsmRiHy7nGQZ8=;
+  b=YkWbuJEmn3bIzM0BWOqM0rEYF/gdwOJemCte4Tf3vDvZ22/qDfUcaNNL
+   vem4t5qKbNSZOLP+qtbrzDQjI3hFNFQZrHK9utcIB49m476fOtvwnAzJq
+   QWAt/gPLwIXaF7TgDTW5vbRrExzhAS8P3FfWmWvke3xjXvIRwUl73RFxz
+   o08TlYlGRwHExY32VDrAfNPwr+IkLpbCH4QD8ptNMGovg3bAzIgPQY4wz
+   s9IRYM+T+5EdNGi5At3a8kUI0soginclRT/AcKlyzQo/1FVTXbH8piHZh
+   H/BsJtVMS/kBI7Ou4Qoh8gTbPNMUBI+SbiNfV7KBIPEsKxXdzaZRc3OpR
+   Q==;
+X-CSE-ConnectionGUID: 3mC0L/3USB2pcDuOxv/M8w==
+X-CSE-MsgGUID: yKvHcvjKTYmG7mNu2mscnQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11770"; a="78377243"
+X-IronPort-AV: E=Sophos;i="6.23,204,1770624000"; 
+   d="scan'208";a="78377243"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2026 10:41:33 -0700
+X-CSE-ConnectionGUID: r2zO+Tl0RQ2qUuPadpSOTA==
+X-CSE-MsgGUID: kk4t0UXBRVSEkcO/DZerOA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,204,1770624000"; 
+   d="scan'208";a="264403437"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2026 10:41:33 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 28 Apr 2026 10:41:32 -0700
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Tue, 28 Apr 2026 10:41:32 -0700
+Received: from DM1PR04CU001.outbound.protection.outlook.com (52.101.61.25) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 28 Apr 2026 10:41:12 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=iquS19vYnGV9tjVcLANQExTOHjHzyssGt0fUE85ph5i20t7n9Hfgqrx8BcNX5pD3CG21hlS9EVayQA7A6LmgPBIl9/X/Ryr45WqeRoJsTE4xcri4BCcdwo/vKvuSIyvRRphe5M8tJ45QXiyXDInodMbNBiDZCxUlhBIfCGy1j1vy0fZP9TYsZHrIsHIR/52tl8PRiEkKUsgrf/1nhB73hqewSRH206O91Ps5kIeVqmudJ4897UxNJBCPF9alpJ7vUKtmFiV1vHC1ZsQ4aLlMJRh6/YoKs1yBNRYJfrm/GTfhzMue/nTCjbE+2lzxw9/1oGX20SDI5G68LSPExmIdfg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ciXMCB3Q0UrJ6eyCASQoNzXT+TB2dZeJuMasaVv3A1M=;
+ b=QAumUz9kQRtaVb/MsmBkE6wHFSq4GSr8MutOAAPZrjpgK4K4IanxTLqDfqIo8+Lk2by1t0oWm+Yx43M/WJDlLx+ITUXOh5xPXjTJorwQ9GSRXzudITk7Lf0kGG2I+80j4pdTpWs8DxlUUd/Oev5E2Cn8ryrstcmIQGTFiOpT4Cme2ADgHRoPl1OBNN5jr2QmoV8vFFcnj2MMTnTMWj8oXzbjrrNj0I5M7FmXH1b4Bz09JiqRGJu7gCOKseHO0a+Eh6r7CAvo7Wtr6kVgWLIDUXmO8ppBFkKPi/LZCzrwobjs7lLubpK6NIRMFqabt1+LbFzHdHjy0npyNEqdWmOVhA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from PH8PR11MB8040.namprd11.prod.outlook.com (2603:10b6:510:238::11)
+ by DS0PR11MB7997.namprd11.prod.outlook.com (2603:10b6:8:125::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.18; Tue, 28 Apr
+ 2026 17:41:07 +0000
+Received: from PH8PR11MB8040.namprd11.prod.outlook.com
+ ([fe80::89bf:2274:1371:50c5]) by PH8PR11MB8040.namprd11.prod.outlook.com
+ ([fe80::89bf:2274:1371:50c5%5]) with mapi id 15.20.9870.016; Tue, 28 Apr 2026
+ 17:41:07 +0000
+From: "Yao, Jia" <jia.yao@intel.com>
+To: Andi Shyti <andi.shyti@linux.intel.com>
+CC: "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>, "Lin, Shuicheng"
+	<shuicheng.lin@intel.com>, "Roper, Matthew D" <matthew.d.roper@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, "Vivi, Rodrigo"
+	<rodrigo.vivi@intel.com>, "Plewka, Maciej" <maciej.plewka@intel.com>
+Subject: RE: [PATCH v3] drm/i915/dg2: Add per-context control for
+ Wa_22013059131
+Thread-Topic: [PATCH v3] drm/i915/dg2: Add per-context control for
+ Wa_22013059131
+Thread-Index: AQHczih2xEH8h8kVw0WqyCcBrd1mJrX0qBUAgAAnYiA=
+Date: Tue, 28 Apr 2026 17:41:07 +0000
+Message-ID: <PH8PR11MB80405E093ADF09DF3371D914F4372@PH8PR11MB8040.namprd11.prod.outlook.com>
+References: <20260417050956.1945481-1-jia.yao@intel.com>
+ <afDPqHOR6FhmfROf@ashyti-mobl2.lan>
+In-Reply-To: <afDPqHOR6FhmfROf@ashyti-mobl2.lan>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PH8PR11MB8040:EE_|DS0PR11MB7997:EE_
+x-ms-office365-filtering-correlation-id: d35c3708-7e3f-4d46-2fdd-08dea54d53e8
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|376014|1800799024|42112799006|366016|56012099003|18002099003|22082099003|38070700021;
+x-microsoft-antispam-message-info: CoD8ld7hTI7oDNnde4APfV64n0FZFHMYcYmm8KWMCUBRTnMUcfDafYEfax960zO+L8MRUv3hdLV0ulH740XfH0ZNra0y5fJ/tYAQD+tdg5Q2WijHmkGgizJ2hbD6jbq1FS5CWOja764IS7+9hPsVGlJvIdoKO6Q6ExYTqFla7pJZ7uZ6nMnoVCVbC+GdgV+xAq1YauTJnLZPhEMc12g8GYtDfuzQ9UeDz/AQDJ3EG9QM6H5GunTjdyWCKwbPTqwUP3ihQMpN3KwdONMvK9tz8YEZFfL1NHAlPoAZQCT6i6lwWkSIMrh7C1Z+6wbb9YC+BVAhdF62pxwyNymtApZauSGpnEtIICiP/S4tBRqe4MEyQk9LOy5+ASoAiZqUHwYujcwKAdbTd0vuk1W0+xESaYNYjOJ2XSTBZ7L0WXkXK/FrU2Js+8KvX6iSs0ADUAam4o64gUFehD/dhWzCvUvJuERji6niHrG/WKWm1DllpAcs8EHpdnbLJgwzLMEIxI2V1f+XHM8xLwJySNylLlgrEMJiDwmdeHKRB+Lp7ctaUxYaqzg8+4KtyEErp4DQdiVSudUlZaFM853fGj7COsz8o/aD4zYRXG6tBE6nruDs/BKUrOwp6fU+ePoT56GLiFo9Pyw2eNYliE8Fky69AhujPOMegyqFL4qy666sGi/d592TSUViSxFL9euON29OpmUelNB8xf/fQh2yjakXGMLZxIzeQkUzrT9qno1Cho8pHf0QE7ei6fJqwAdOcrzqSTEg7Vc13dIXF7+HWB9ucM3Hnw7ZGjqd4OAn/SfH5nvBzps=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8040.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(42112799006)(366016)(56012099003)(18002099003)(22082099003)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?2J8M/I58NYNuDRzVO4yapRdPchnhkiQa5TLsC2XxaO9ejAGbf1IejMyyW3W9?=
+ =?us-ascii?Q?wgNop2oFK8Yox//TojEBBdHoE44YDsuumYHo7dw96qjZGt5iQVujnbJuGFsq?=
+ =?us-ascii?Q?cNIbNflRCbAyr0+i+itHo/FoVrCd9X4TmN/18gh91BfB5yCAycCOf9vIKfO9?=
+ =?us-ascii?Q?ME48XcQfzstAalmDp5StQIpSip1XBUpf6EOFfmxrWagC/MuTqQYpP6qZZgDp?=
+ =?us-ascii?Q?dFWV/dif8GrUEkFfL73othjnGarRIk3tq0UPWxSqNBDD/3l5tNvxNyV6DdFs?=
+ =?us-ascii?Q?DtKsCumF4bQB66WpMOz/cS2jQkIpLbEb3g3EG1l7CidV6JWVp2mGjDZG+AFh?=
+ =?us-ascii?Q?B1GD0ltQ8SdkaWsdJVrnAJDK60i8L8aRa+SvwCis8oCA6xTs31HExOU94qoY?=
+ =?us-ascii?Q?9pgDU9nYbTDVkG/3QIwDCYsU3Fi/DSmv3bxZVJX21jT24sNNhEc3TrCXiKGI?=
+ =?us-ascii?Q?jWR09M0NZxUm2USdZpv1RYtk6RdTgowNJURhbx1WePUEqg4BsQm/pqCTMfNt?=
+ =?us-ascii?Q?ZBUMjdS/jJqajRcqXxXSGG+tGmtkK3MtmYUEywJwDx+OC1L2WeJGW4e91q4o?=
+ =?us-ascii?Q?0YLrGtC0Y1IpFtgwfrXz7c0AdUKpcw/x7QiBdWjNwKXt2RqRPjxg4hG52uFh?=
+ =?us-ascii?Q?B0EBQyUOwRoiyOPjeZqdQsA9r1StkNz4jgA5CPrDLOXAQFVpfl3dSX0JXGD8?=
+ =?us-ascii?Q?nirsWDVWYXO7kAXNrMy+JlwwQ9DIl85oSDEHQ+jj1dJoW2+UZkGmNBspOHiE?=
+ =?us-ascii?Q?QkdJFLF07YZs7IOHn3UDDU2uUc7e2V28BRcuZ/UeaLdURMtepNAjbiZ7/x19?=
+ =?us-ascii?Q?T4go1PNGsBRmqxL0vkuT+0M9JredqfGCfkMFgOTtPIk0qEHRaO+la643iK0k?=
+ =?us-ascii?Q?j2KtrOFV3g2ypTYPapf9D3Gk6cfD5VVxj069OMKpgqhQv/z5QD6CACwiAZwN?=
+ =?us-ascii?Q?x+XcNzv7WrEOkDnia4wEZQ2gnbKgGmWUWwzV4ePg0oSbPlCfRQvzhKJ9dTaS?=
+ =?us-ascii?Q?j8npZXB2X79h1yN93BVOuChCWuEBqjuFcC5u4F9FnWm4QMXOlHtSsRKQ/o+1?=
+ =?us-ascii?Q?BMnAqYiI6vXMYRAk+xeb8pGmIYV+C56vOPommAK+UQh1VYxyRgbc4fvPV+un?=
+ =?us-ascii?Q?dBf7mAGewivTuHBcuWNHBX57PgayoCDf11icGYZ/Tl5d7IirlQAOcERT+/Mp?=
+ =?us-ascii?Q?b2hOuuhRzmtKxJHL6LQrgvxDoQ5Ngdczg9cbHjkg9Qm0ToCfpFO8O5igm+fa?=
+ =?us-ascii?Q?jknEKJzddKu/i6dG/lgmIPkjz3bq1rOSTNtYKzLPNIyWEc0WKepgqcHVFZcr?=
+ =?us-ascii?Q?SK5KDWOAp3X7w81mSe11qX7XDmNVLBd1BCStWufE42W2xgH22ys8czKxwnlX?=
+ =?us-ascii?Q?FqT/RlRoiDBrA05KjOfn6ukShU/T4yAYT7cXZ4vVYT1ZuD3EPPZlX5AOXmHq?=
+ =?us-ascii?Q?9zA+xjRK1X8z+TRMBmxcefSRmmsU5CfITryUEx2bejjWRJeUfPLTo9DORyLK?=
+ =?us-ascii?Q?wgD1TrvnTDNYyWZ9MecccnCKuX4vskFeR952ekvmiLc/C4q2PgROqQNr2Kz1?=
+ =?us-ascii?Q?VDY7InX5aN5pmQp4qbDaQ2LVX/xqOQakq3R65+aftEH5d/bMco+1tcqBOC/k?=
+ =?us-ascii?Q?xtwZsI1554G7DBTnPEFoQwq2oTUeSl+sqdMYOXweNQyv/wF2lT5VriPngc1l?=
+ =?us-ascii?Q?dJ9IvOwHHQ3KDueZWMwoDKYrSGBmB/jwhee9g1/OqFja22DC?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Queue-Id: CB3BB489F8A
+X-Exchange-RoutingPolicyChecked: sO1O4z3PL0gt5Mxd5tkAt7OUEC7Ue85pVWgRNTIkHsn0URLR4lyeXvSDQtXhdrNJtQizD6CNPpGFXjC0T+s0G1uC4nfFtiyr4bldjFE23DKzD8/V520Z7eU5is07Orl9nHRSPcq1U6EejdtFlvmn41Qcq8IXrGe2MWN164PnptR4rwoFePmPuqoljQUVr8hcLPCPdwO8cWMGNxm4OPesA47hZY/xi+Mw5ZCJ/zyNxjFa/I32gDjixXAch7zRTyKfFFA/uSwc0zFLky4ZczMKKsd413ydmL1cFXL3R4AarDQf6dGGPBgxfk/VUp+gsm05O4bIk2tUQX26+Dm4WYbwdw==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8040.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d35c3708-7e3f-4d46-2fdd-08dea54d53e8
+X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Apr 2026 17:41:07.1687
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: NfEs80H7RW6Ki6yyrZw1SZe1qahsiRqQ3YZBewcwzSGj4t4sLYpWR2E3Y3B++APfXcPJ0GVwlLp2qJlAEZyQbw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB7997
+X-OriginatorOrg: intel.com
+X-Rspamd-Queue-Id: D2B6248A213
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[manguebit.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[manguebit.org:s=dkim];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,lists.freedesktop.org:email,PH8PR11MB8040.namprd11.prod.outlook.com:mid];
+	TAGGED_FROM(0.00)[bounces-241744-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241743-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com,vger.kernel.org,microsoft.com,redhat.com,suse.com,suse.de];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[manguebit.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
 	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pc@manguebit.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[jia.yao@intel.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[manguebit.org:dkim,manguebit.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_COUNT_SEVEN(0.00)[10]
 
-nspmangalore@gmail.com writes:
+Hi Andi,
 
-> From: Shyam Prasad N <sprasad@microsoft.com>
->
-> Today we do not invalidate the cached_dirent or the entire
-> parent cfid when a dentry in a dir has been removed/moved.
->
-> This change invalidates the parent cfid so that we don't serve
-> directory contents from the cache.
->
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-> ---
->  fs/smb/client/inode.c | 40 ++++++++++++++++++++++++++++++++++++++--
->  1 file changed, 38 insertions(+), 2 deletions(-)
->
-> diff --git a/fs/smb/client/inode.c b/fs/smb/client/inode.c
-> index 888f9e35f14b8..e077df844c819 100644
-> --- a/fs/smb/client/inode.c
-> +++ b/fs/smb/client/inode.c
-> @@ -28,6 +28,23 @@
->  #include "cached_dir.h"
->  #include "reparse.h"
->  
-> +static void cifs_invalidate_cached_dir(struct cifs_tcon *tcon,
-> +				       struct dentry *parent)
-> +{
-> +	struct cached_fid *parent_cfid = NULL;
-> +
-> +	if (!tcon || !parent)
-> +		return;
+You mean we need add NEO public link https://github.com/intel/compute-runti=
+me/pull/919  here?
 
-The NULL check for @tcon is unnecessary.  This seems to be called only
-with a valid @tcon.
+Thanks,
+Jia
 
-> +
-> +	if (!open_cached_dir_by_dentry(tcon, parent, &parent_cfid)) {
-> +		mutex_lock(&parent_cfid->dirents.de_mutex);
-> +		parent_cfid->dirents.is_valid = false;
-> +		parent_cfid->dirents.is_failed = true;
-> +		mutex_unlock(&parent_cfid->dirents.de_mutex);
-> +		close_cached_dir(parent_cfid);
-> +	}
-> +}
-> +
->  /*
->   * Set parameters for the netfs library
->   */
-> @@ -322,7 +339,7 @@ cifs_unix_basic_to_fattr(struct cifs_fattr *fattr, FILE_UNIX_BASIC_INFO *info,
->  				fattr->cf_uid = uid;
->  		}
->  	}
-> -	
-> +
-
-Why are you adding a blank newline?
-
->  	fattr->cf_gid = cifs_sb->ctx->linux_gid;
->  	if (!(sbflags & CIFS_MOUNT_OVERR_GID)) {
->  		u64 id = le64_to_cpu(info->Gid);
-> @@ -2067,6 +2084,9 @@ static int __cifs_unlink(struct inode *dir, struct dentry *dentry, bool sillyren
->  		cifs_set_file_info(inode, attrs, xid, full_path, origattr);
->  
->  out_reval:
-> +	if (!rc && dentry->d_parent)
-> +		cifs_invalidate_cached_dir(tcon, dentry->d_parent);
-
-The non-NULL check of @dentry->d_parent is unnecessary.
-cifs_invalidate_cached_dir() already handles it.
-
-> +
->  	if (inode) {
->  		cifs_inode = CIFS_I(inode);
->  		cifs_inode->time = 0;	/* will force revalidate to get info
-> @@ -2378,7 +2398,6 @@ int cifs_rmdir(struct inode *inode, struct dentry *direntry)
->  	}
->  
->  	rc = server->ops->rmdir(xid, tcon, full_path, cifs_sb);
-> -	cifs_put_tlink(tlink);
->  
->  	cifsInode = CIFS_I(d_inode(direntry));
->  
-> @@ -2388,6 +2407,8 @@ int cifs_rmdir(struct inode *inode, struct dentry *direntry)
->  		i_size_write(d_inode(direntry), 0);
->  		clear_nlink(d_inode(direntry));
->  		spin_unlock(&d_inode(direntry)->i_lock);
-> +		if (direntry->d_parent)
-> +			cifs_invalidate_cached_dir(tcon, direntry->d_parent);
-
-Ditto.
-
->  	}
->  
->  	/* force revalidate to go get info when needed */
-> @@ -2402,6 +2423,7 @@ int cifs_rmdir(struct inode *inode, struct dentry *direntry)
->  
->  	inode_set_ctime_current(d_inode(direntry));
->  	inode_set_mtime_to_ts(inode, inode_set_ctime_current(inode));
-> +	cifs_put_tlink(tlink);
->  
->  rmdir_exit:
->  	free_dentry_path(page);
-> @@ -2501,6 +2523,8 @@ cifs_rename2(struct mnt_idmap *idmap, struct inode *source_dir,
->  	struct cifs_sb_info *cifs_sb;
->  	struct tcon_link *tlink;
->  	struct cifs_tcon *tcon;
-> +	struct dentry *source_parent;
-> +	struct dentry *target_parent;
->  	bool rehash = false;
->  	unsigned int xid;
->  	int rc, tmprc;
-> @@ -2532,6 +2556,8 @@ cifs_rename2(struct mnt_idmap *idmap, struct inode *source_dir,
->  	if (IS_ERR(tlink))
->  		return PTR_ERR(tlink);
->  	tcon = tlink_tcon(tlink);
-> +	source_parent = source_dentry->d_parent ? dget(source_dentry->d_parent) : NULL;
-> +	target_parent = target_dentry->d_parent ? dget(target_dentry->d_parent) : NULL;
-
-Why do you need to dget() ->d_parent?
-
->  	server = tcon->ses->server;
->  
->  	page1 = alloc_dentry_path();
-> @@ -2668,11 +2694,21 @@ cifs_rename2(struct mnt_idmap *idmap, struct inode *source_dir,
->  	}
->  
->  	/* force revalidate to go get info when needed */
-> +	if (!rc) {
-> +		cifs_invalidate_cached_dir(tcon, source_parent);
-> +		if (target_parent != source_parent)
-> +			cifs_invalidate_cached_dir(tcon, target_parent);
-> +	}
-> +
->  	CIFS_I(source_dir)->time = CIFS_I(target_dir)->time = 0;
->  
->  cifs_rename_exit:
->  	if (rehash)
->  		d_rehash(target_dentry);
-> +	if (target_parent)
-> +		dput(target_parent);
-> +	if (source_parent)
-> +		dput(source_parent);
-
-The non-NULL checks are unnecessary.  dput() already handles NULL
-dentries.
+> -----Original Message-----
+> From: Andi Shyti <andi.shyti@linux.intel.com>
+> Sent: Tuesday, April 28, 2026 8:18 AM
+> To: Yao, Jia <jia.yao@intel.com>
+> Cc: intel-gfx@lists.freedesktop.org; stable@vger.kernel.org; Lin, Shuiche=
+ng
+> <shuicheng.lin@intel.com>; Roper, Matthew D
+> <matthew.d.roper@intel.com>; Joonas Lahtinen
+> <joonas.lahtinen@linux.intel.com>; Vivi, Rodrigo <rodrigo.vivi@intel.com>=
+;
+> Plewka, Maciej <maciej.plewka@intel.com>; Andi Shyti
+> <andi.shyti@linux.intel.com>
+> Subject: Re: [PATCH v3] drm/i915/dg2: Add per-context control for
+> Wa_22013059131
+>=20
+> Hi,
+>=20
+> On Fri, Apr 17, 2026 at 05:09:56AM +0000, Jia Yao wrote:
+> > Wa_22013059131 sets FORCE_1_SUB_MESSAGE_PER_FRAGMENT in
+> > LSC_CHICKEN_BIT_0 at engine init, but this is known to cause GPU hangs =
+in
+> certain workloads.
+> > Add I915_CONTEXT_PARAM_WA_22013059131 so userspace that handles
+> the
+> > workaround itself (e.g. by limiting SLM size) can set it to 1 to let
+> > the kernel know bit 15 programming is not needed for that context.
+> >
+> > LSC_CHICKEN_BIT_0 is not context-saved by hardware, so the kernel
+> > restores the correct value on every context switch via the indirect
+> > context batchbuffer to avoid leaking state between contexts. The old
+> > unconditional application of Wa22013059131 in intel_workarounds.c is
+> removed.
+> >
+> > v3:
+> > - Kernel-internal context will not change workaround settings
+>=20
+> Do we have a link of the userspace using this API?
+>=20
+> Joonas, do we need also a documentation update here?
+>=20
+> Thanks,
+> Andi
+>=20
+> > Bspec: 54833
+> > Fixes: 645cc0b9d972 ("drm/i915/dg2: Add initial gt/ctx/engine
+> > workarounds")
+> > Cc: stable@vger.kernel.org
+> > Cc: Shuicheng Lin <shuicheng.lin@intel.com>
+> > Cc: Matt Roper <matthew.d.roper@intel.com>
+> > Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+> > Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> > Cc: Maciej Plewka <maciej.plewka@intel.com>
+> > Cc: Andi Shyti <andi.shyti@linux.intel.com>
+> > Signed-off-by: Jia Yao <jia.yao@intel.com>
+> > Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
 
