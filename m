@@ -1,165 +1,163 @@
-Return-Path: <stable+bounces-241498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241499-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SPP1GV9z8GldTgEAu9opvQ
-	(envelope-from <stable+bounces-241498-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 10:44:15 +0200
+	id +O3JImt28GkMTwEAu9opvQ
+	(envelope-from <stable+bounces-241499-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 10:57:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B27ED480678
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 10:44:14 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2F72480B59
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 10:57:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0786130E1A25
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 08:32:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 70C43321AF79
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 08:37:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D3CB2D0614;
-	Tue, 28 Apr 2026 08:32:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DB5B344D9B;
+	Tue, 28 Apr 2026 08:35:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fnnas-com.20200927.dkim.feishu.cn header.i=@fnnas-com.20200927.dkim.feishu.cn header.b="unl/eBBR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EsZ6x+Jx"
 X-Original-To: stable@vger.kernel.org
-Received: from va-2-27.ptr.blmpb.com (va-2-27.ptr.blmpb.com [209.127.231.27])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDDC4AD24
-	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 08:32:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.231.27
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27853384223;
+	Tue, 28 Apr 2026 08:35:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777365165; cv=none; b=hRbnIeagI7MFp7Z/1wW44ZxPQ9mztoPLdM1GDUJhC6QcpJHuFD3alp6u+wyhJ/pzKNVlnrSRbWb6IeDXH4jNCPclMKe/eRXusWf2cjxDqJzkH6lo/naJ00L1iusNBD3AxfKUxY7E6aNgfPokn56sHJzSfAQeYSf3ETKAol30lpI=
+	t=1777365317; cv=none; b=BFmzu4rX74UUCXkYRrvGUplhFkzQfV8UUkgmel7KFbpNQjtnEMOWkU7ecwX3cYmCyIZOFo00fRiR76tTOpdTvcnAJf3xdxwen1J1nPHTllJ+L1yrJ3exCwtK/8+v0rDH0UeGQxaNaJzgyIkgbg544GQZl8KgFWNxbsb8Q3zdt8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777365165; c=relaxed/simple;
-	bh=pIHABbnrYjWnvGwVzXPoI/1xvnAjltrRfmLWH7wlwzU=;
-	h=Date:Message-Id:Mime-Version:In-Reply-To:Cc:Subject:References:
-	 Content-Type:To:From; b=QgojUBAmEtX3cwiASy99X5Gp/7ZGO8i2B/IhIU28lhtFlZEW6Er7F69zKVig/+yjwqxpvq7y9DWkRsS1ShZxEF12IO+oh6ydozZ6XkEEm51jaFUfC1KEdIEraSAiCyCKchu22PtLoen7fBbxy4CqDBgyI9R2nrw+9ZcMrdB3fR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fnnas.com; spf=none smtp.mailfrom=fnnas.com; dkim=pass (2048-bit key) header.d=fnnas-com.20200927.dkim.feishu.cn header.i=@fnnas-com.20200927.dkim.feishu.cn header.b=unl/eBBR; arc=none smtp.client-ip=209.127.231.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fnnas.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=fnnas.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=s1; d=fnnas-com.20200927.dkim.feishu.cn; t=1777365159;
-  h=from:subject:mime-version:from:date:message-id:subject:to:cc:
- reply-to:content-type:mime-version:in-reply-to:message-id;
- bh=BLxleqeaahmG3ULXVbRao6S+XTlDw3HS+ySLo7Slhn0=;
- b=unl/eBBRnYMyZHpS7qeIXppSb/qpiNdntf5Efnq+78WRHqSR7V2OPb/uaUgTy5GsLJDjl4
- P/KTBgN+ExPio6qwMlZdjYeR6zj3oFRMgDJsZrts5KeLMfIOIQ8Is5hamATsIQRNpbkubH
- 5cBdu+cZ/RVXf8XGUcNFvBBi+ULUlTmJgk+agScs6X8DgmfiMaU67EPSUp7YF5ek5hzerz
- iYuLOqvgHi7gUgfxFgz3aZcScBpO+1n4otom2QD0QEKKupSuY/hsdwIVQLyp59yEeJa5II
- bo/u0sCO3cwnFq40XFSvbjfUVyo0/GAnzkFiwdBq+2WS4PUHlmkhiGqPjK+Y4w==
-Date: Tue, 28 Apr 2026 16:32:33 +0800
-Message-Id: <282278bc-7d71-4049-89f4-a9f3968504dd@fnnas.com>
+	s=arc-20240116; t=1777365317; c=relaxed/simple;
+	bh=y7f7thE0c7H7QKR/Sh1tVFiwIU6Py6GwbGku01ZkESc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ISbm5+yxX4RFwlbEOj9kKwOvBZ6fpHz9owPknAgFF9JaMUqdBOwviZiIHfmhjOX1JwyMwcyLRwL27JRP1ikggesFRFSdVXHE4p1DBXQ3YlkTXrNG6Usxh2pQm4cjBR/9SiZWdVgBEWl/rNlDDDE96XLjklP2Fl5tvApNY9Sa2Mk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EsZ6x+Jx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7EB1C2BCB6;
+	Tue, 28 Apr 2026 08:35:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777365316;
+	bh=y7f7thE0c7H7QKR/Sh1tVFiwIU6Py6GwbGku01ZkESc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=EsZ6x+Jx8FgriqINKdQ25ELru/DWpXZhmJEgGB3CHJ16DoQgXaIXJqhE1rK6IqBG2
+	 CLkIBMW8Cl0MrVrRuSrRc00HW3zE9VhVuXJPwpEZ8DitfVpf240Pf9FPqkr/1AV65V
+	 wC4aFr51qPjCTNqkYG+kCzCf6tAN4FPI/Kcd9nyW1zjuEx3QUiTcDiy1cP51qoe8OL
+	 5SJtxJJh1YhDEJZCAecffu/MJyTObAtZVUcAgjKKjf/u0kmLGzpH2hJpgjshZTRkRc
+	 P6sVMhjvTWf+P/AD05D+HI8YParZiYgjKaMOoOJLFzb76Lk8i2nsFQtuWrzh5DPvO3
+	 TkAi3aaJawhaA==
+Message-ID: <d846992e-2ae4-4db1-8401-f740bf6cb575@kernel.org>
+Date: Tue, 28 Apr 2026 10:35:11 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Received: from [192.168.1.104] ([39.182.0.183]) by smtp.feishu.cn with ESMTPS; Tue, 28 Apr 2026 16:32:35 +0800
-In-Reply-To: <CAHYQsXRN6uof4yyDR6qGteQ=wZTt86VUx7km6k=LbNAQ3wxGiQ@mail.gmail.com>
-Reply-To: yukuai@fnnas.com
-Cc: "Junrui Luo" <moonafterrain@outlook.com>, "Song Liu" <song@kernel.org>, 
-	"Li Nan" <linan122@huawei.com>, "NeilBrown" <neil@brown.name>, 
-	"Jonathan Brassow" <jbrassow@redhat.com>, <linux-raid@vger.kernel.org>, 
-	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>, 
-	<yukuai@fnnas.com>
-Subject: Re: [PATCH] md/raid10: fix divide-by-zero in setup_geo() with zero far_copies
-Content-Transfer-Encoding: quoted-printable
-References: <SYBPR01MB7881A5E2556806CC1D318582AF232@SYBPR01MB7881.ausprd01.prod.outlook.com> <beca1657-0180-4f9b-8de1-ca7776c9614a@fnnas.com> <CAHYQsXRN6uof4yyDR6qGteQ=wZTt86VUx7km6k=LbNAQ3wxGiQ@mail.gmail.com>
+MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-X-Original-From: Yu Kuai <yukuai@fnnas.com>
+Subject: Re: [PATCH] ASoC: Intel: bytcr_wm5102: Fix MCLK leak on
+ platform_clock_control error
+To: =?UTF-8?Q?C=C3=A1ssio_Gabriel?= <cassiogabrielcontato@gmail.com>,
+ Cezary Rojewski <cezary.rojewski@intel.com>,
+ Liam Girdwood <liam.r.girdwood@linux.intel.com>,
+ Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+ Bard Liao <yung-chuan.liao@linux.intel.com>,
+ Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+ Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+ Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
+ Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
+ Takashi Iwai <tiwai@suse.com>, Andy Shevchenko <andy.shevchenko@gmail.com>,
+ Charles Keepax <ckeepax@opensource.cirrus.com>
+Cc: linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20260427-bytcr-wm5102-mclk-leak-v1-1-02b96d08e99c@gmail.com>
+From: Hans de Goede <hansg@kernel.org>
+Content-Language: en-US, nl
+In-Reply-To: <20260427-bytcr-wm5102-mclk-leak-v1-1-02b96d08e99c@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-To: "Yuhao Jiang" <danisjiang@gmail.com>
-From: "Yu Kuai" <yukuai@fnnas.com>
-X-Lms-Return-Path: <lba+269f070a5+597f3d+vger.kernel.org+yukuai@fnnas.com>
-X-Rspamd-Queue-Id: B27ED480678
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: E2F72480B59
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MV_CASE(0.50)[];
-	R_DKIM_ALLOW(-0.20)[fnnas-com.20200927.dkim.feishu.cn:s=s1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241498-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[outlook.com,kernel.org,huawei.com,brown.name,redhat.com,vger.kernel.org,fnnas.com];
-	TO_DN_SOME(0.00)[];
-	DMARC_NA(0.00)[fnnas.com];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-241499-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com,intel.com,linux.intel.com,linux.dev,kernel.org,perex.cz,suse.com,opensource.cirrus.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[fnnas-com.20200927.dkim.feishu.cn:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	REPLYTO_ADDR_EQ_FROM(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[yukuai@fnnas.com,stable@vger.kernel.org];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	HAS_REPLYTO(0.00)[yukuai@fnnas.com];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,fnnas-com.20200927.dkim.feishu.cn:dkim,fnnas.com:email,fnnas.com:replyto,fnnas.com:mid]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[hansg@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
 Hi,
 
-=E5=9C=A8 2026/4/19 13:59, Yuhao Jiang =E5=86=99=E9=81=93:
-> Hi Kuai,
->
-> This report was reported by me, so Junrui added me as Reported-by.
+On 28-Apr-26 04:38, Cássio Gabriel wrote:
+> If byt_wm5102_prepare_and_enable_pll1() fails in the
+> SND_SOC_DAPM_EVENT_ON() path, platform_clock_control() returns after
+> clk_prepare_enable(priv->mclk) without disabling the clock again.
+> 
+> This leaks an MCLK enable reference on failed power-up attempts. Add the
+> missing clk_disable_unprepare() on the error path, matching the unwind
+> used by the other Intel platform_clock_control() implementations.
+> 
+> Fixes: 9a87fc1e0619 ("ASoC: Intel: bytcr_wm5102: Add machine driver for BYT/WM5102")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
 
-This is fine, however, please do not add downstream reported-by tag.
-If you want to add the reported-by tag, please report the problem to
-patchwork first. :)
+Thanks, patch looks good to me:
 
->
-> Thanks,
->
-> On Sun, Apr 19, 2026 at 12:43=E2=80=AFAM Yu Kuai <yukuai@fnnas.com> wrote=
-:
->
->     Hi,
->
->     =E5=9C=A8 2026/4/16 11:39, Junrui Luo =E5=86=99=E9=81=93:
->     > setup_geo() extracts near_copies (nc) and far_copies (fc) from the
->     > user-provided layout parameter without checking for zero. When fc=
-=3D0
->     > with the "improved" far set layout selected, 'geo->far_set_size =3D
->     > disks / fc' triggers a divide-by-zero.
->     >
->     > Validate nc and fc immediately after extraction, returning -1 if
->     > either is zero.
->     >
->     > Fixes: 475901aff158 ("MD RAID10: Improve redundancy for 'far'
->     and 'offset' algorithms (part 1)")
->     > Reported-by: Yuhao Jiang<danisjiang@gmail.com>
->
->     So again I can't find a report, and Reported-by usually should be
->     followed
->     by a Closes link to the original report.
->
->     Applied with Reported-by tag removed.
->
->     > Cc:stable@vger.kernel.org <mailto:Cc%3Astable@vger.kernel.org>
->     > Signed-off-by: Junrui Luo<moonafterrain@outlook.com>
->     > ---
->     >=C2=A0 =C2=A0drivers/md/raid10.c | 2 ++
->     >=C2=A0 =C2=A01 file changed, 2 insertions(+)
->
->     --=20
->     Thansk,
->     Kuai
->
->
->
-> --=20
-> Yuhao Jiang
+Reviewed-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
 
---=20
-Thansk,
-Kuai
+As Andy noted there are other drivers under sound/soc/intel/boards/
+which can likely benefit from a similar fix.
+
+Regards,
+
+Hans
+
+
+
+> ---
+>  sound/soc/intel/boards/bytcr_wm5102.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/sound/soc/intel/boards/bytcr_wm5102.c b/sound/soc/intel/boards/bytcr_wm5102.c
+> index 4879f79aef29..4aa0cf49b033 100644
+> --- a/sound/soc/intel/boards/bytcr_wm5102.c
+> +++ b/sound/soc/intel/boards/bytcr_wm5102.c
+> @@ -170,6 +170,7 @@ static int platform_clock_control(struct snd_soc_dapm_widget *w,
+>  		ret = byt_wm5102_prepare_and_enable_pll1(codec_dai, 48000);
+>  		if (ret) {
+>  			dev_err(card->dev, "Error setting codec sysclk: %d\n", ret);
+> +			clk_disable_unprepare(priv->mclk);
+>  			return ret;
+>  		}
+>  	} else {
+> 
+> ---
+> base-commit: 98421d94a1a6dcc3e8582eb62bedeccecda93339
+> change-id: 20260427-bytcr-wm5102-mclk-leak-88016072a63c
+> 
+> Best regards,
+> --  
+> Cássio Gabriel <cassiogabrielcontato@gmail.com>
+> 
+
 
