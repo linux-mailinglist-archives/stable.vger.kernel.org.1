@@ -1,149 +1,182 @@
-Return-Path: <stable+bounces-241763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241761-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OL6LMqUG8WnhbwEAu9opvQ
-	(envelope-from <stable+bounces-241763-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 21:12:37 +0200
+	id cJyXM54F8WnhbwEAu9opvQ
+	(envelope-from <stable+bounces-241761-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 21:08:14 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DAEF48B0DE
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 21:12:32 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57D3B48B05B
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 21:08:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A5A7230B6611
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 19:11:57 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 91BC1301DD55
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 19:08:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 146333921C6;
-	Tue, 28 Apr 2026 19:11:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2CF237A4BA;
+	Tue, 28 Apr 2026 19:08:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="aNrmgChc"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="bz8Ohetp";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="dRrYb6BQ";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="bz8Ohetp";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="dRrYb6BQ"
 X-Original-To: stable@vger.kernel.org
-Received: from forward206a.mail.yandex.net (forward206a.mail.yandex.net [178.154.239.87])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8D4F37C114;
-	Tue, 28 Apr 2026 19:11:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.87
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BD3F24501D
+	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 19:08:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777403516; cv=none; b=EJfpOAVDYXKeQhSxhqF7jCx8bFzPdOz/wraG35+4rDg2HTyjP7sBpkZWcLWg3Yjl7qP8bx8HEj4Mp+SUMXhcWA9PPqQ2i6cHlOcT/y+FD6If2XTW5qrG5QSpfmqiDjAyQXr+ehA6+topfTaAJsxWpYjWk0PzjWVlvLDRqe1OTkw=
+	t=1777403290; cv=none; b=osgDeuV/C39EW1JI12jc9avmkZI0TR04aRojIuKqmvKpCSQVx37R4cCYTTTkcs2BZRhMMlnnY0227/s14swxsfpFF027zK7jzgzbdD3/6ADyY5r4g8uMWMOziAp2MOnUjZ94Cc6fbPAQPdi3FjPIpYnX4gffK3WI8Gy4S8WPqn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777403516; c=relaxed/simple;
-	bh=tzeN+5vQKmJfzBrB9+yS40yGju5ExPsoV+j0FcDO09o=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MLzcQNR3TIMbXs7kpN5ZXTGYQw5zazi+34f4xH5LVh1/uBdsYMssjfnUZJWsvx3riE0/AkAYq8L8BjXUdsvyI4GTEHu/1Dh0waCaHdHhiUCDZ/0PYqIAqqN9N55974pl/BjhiqP9bhu1jp/XplFT3coYvZE4dTkJ7u7WGEgsGLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=aNrmgChc; arc=none smtp.client-ip=178.154.239.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
-Received: from forward103a.mail.yandex.net (forward103a.mail.yandex.net [IPv6:2a02:6b8:c0e:500:1:45:d181:d103])
-	by forward206a.mail.yandex.net (Yandex) with ESMTPS id C9AB186B33;
-	Tue, 28 Apr 2026 22:04:10 +0300 (MSK)
-Received: from mail-nwsmtp-smtp-production-main-68.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-68.vla.yp-c.yandex.net [IPv6:2a02:6b8:c1d:6281:0:640:c935:0])
-	by forward103a.mail.yandex.net (Yandex) with ESMTPS id 52E1F806AD;
-	Tue, 28 Apr 2026 22:04:02 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-68.vla.yp-c.yandex.net (smtp) with ESMTPSA id i3f98gObjmI0-kMIkEECX;
-	Tue, 28 Apr 2026 22:04:01 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-	t=1777403041; bh=tr9ncHDLQsp/htwG5JIQTALMzIL3/WgOspiEBUJqEko=;
-	h=Message-ID:Date:Cc:Subject:To:From;
-	b=aNrmgChc8Uj4xd9AlRNV1rVyvXv1Hfj3u7RQtuXI6XNxd+/rZZ1L8vTcz1MPo4b+U
-	 cvOBt3o6gp8fam6uxhWXtahexc2YMgVue1Rg4ewLQRSFlwO0MbiEHYuSHHTDfgkDJU
-	 MmPzkwJv8XBbR0r9rUou8K1BsQfy0C9webtLwmG4=
-Authentication-Results: mail-nwsmtp-smtp-production-main-68.vla.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From: Evgenii Burenchev <evg28bur@yandex.ru>
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Evgenii Burenchev <evg28bur@yandex.ru>,
-	alexander.deucher@amd.com,
-	christian.koenig@amd.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] drm/radeon/rs780: prevent division by zero in refresh rate calculation
-Date: Tue, 28 Apr 2026 22:03:18 +0300
-Message-ID: <20260428190318.34413-1-evg28bur@yandex.ru>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1777403290; c=relaxed/simple;
+	bh=vDYbisShlZu3xsHr9SJL/eEMPFxKthreJm7dw8zCnvE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=UmmHvHtgejvFJQ+dZxYTbzuHxoDXZkJeALn2FLeHHNTpQm/rZ3mA7QwcJY4afpXe+1uWGokAS+DfHYLghzocxSw1qHaGSgGo1dShrF6T+20gXbs+5PzQllZ0UcVFXN5YAd4P7R/V6u40ryO1PopINzU6S/D7CN+Cw2YM8c+t6FI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=bz8Ohetp; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=dRrYb6BQ; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=bz8Ohetp; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=dRrYb6BQ; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 630EF6A852;
+	Tue, 28 Apr 2026 19:08:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1777403283; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1kmdWqRhdkfCXWo+kNwp1GaHefjzoG8oGsnr/hJcXbA=;
+	b=bz8OhetpRpDIMdi/8tD1OdVp7mhKn1jtfx+jQNyqLDRhJFxqduVOxGuZfpMt4lmSD6jO8B
+	1yjFBR73YDgQgKNG/q65gg933ph1dPKooLGgdNmiNKiHq0t0Lt4s5QXpRU510ECVMK4ZtQ
+	iXbfm6D59HyjoIlHmERTRQZGK6Zlp1Q=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1777403283;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1kmdWqRhdkfCXWo+kNwp1GaHefjzoG8oGsnr/hJcXbA=;
+	b=dRrYb6BQuYqH75RJLnfstG/H9O3INPP1psiEuV59qU2Fqbky0CKpZ3lSVaXu2ATJTb2k1J
+	kfrvailCKCFlKBDw==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=bz8Ohetp;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=dRrYb6BQ
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1777403283; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1kmdWqRhdkfCXWo+kNwp1GaHefjzoG8oGsnr/hJcXbA=;
+	b=bz8OhetpRpDIMdi/8tD1OdVp7mhKn1jtfx+jQNyqLDRhJFxqduVOxGuZfpMt4lmSD6jO8B
+	1yjFBR73YDgQgKNG/q65gg933ph1dPKooLGgdNmiNKiHq0t0Lt4s5QXpRU510ECVMK4ZtQ
+	iXbfm6D59HyjoIlHmERTRQZGK6Zlp1Q=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1777403283;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1kmdWqRhdkfCXWo+kNwp1GaHefjzoG8oGsnr/hJcXbA=;
+	b=dRrYb6BQuYqH75RJLnfstG/H9O3INPP1psiEuV59qU2Fqbky0CKpZ3lSVaXu2ATJTb2k1J
+	kfrvailCKCFlKBDw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0E39C593B0;
+	Tue, 28 Apr 2026 19:08:02 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id wNbRMZIF8WkGQAAAD6G6ig
+	(envelope-from <krisman@suse.de>); Tue, 28 Apr 2026 19:08:02 +0000
+From: Gabriel Krisman Bertazi <krisman@suse.de>
+To: Jens Axboe <axboe@kernel.dk>
+Cc: io-uring@vger.kernel.org,  Martin Michaelis <code@mgjm.de>,
+  stable@vger.kernel.org
+Subject: Re: [PATCH 2/2] io_uring/kbuf: support min length left for
+ incremental buffers
+In-Reply-To: <7645db80-8a8a-4ed6-9a3a-f2406cf93322@kernel.dk> (Jens Axboe's
+	message of "Tue, 28 Apr 2026 12:02:34 -0600")
+References: <20260428154557.2150818-1-axboe@kernel.dk>
+	<20260428154557.2150818-3-axboe@kernel.dk>
+	<87ik9bj7jt.fsf@mailhost.krisman.be>
+	<7645db80-8a8a-4ed6-9a3a-f2406cf93322@kernel.dk>
+Date: Tue, 28 Apr 2026 15:08:01 -0400
+Message-ID: <877bpqkini.fsf@mailhost.krisman.be>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5DAEF48B0DE
+Content-Type: text/plain
+X-Spam-Flag: NO
+X-Spam-Score: -4.51
+X-Spam-Level: 
+X-Rspamd-Queue-Id: 57D3B48B05B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[yandex.ru,none];
+	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[yandex.ru:s=mail];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-241761-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[yandex.ru,amd.com,gmail.com,ffwll.ch,lists.freedesktop.org,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-241763-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[evg28bur@yandex.ru,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[krisman@suse.de,stable@vger.kernel.org];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[yandex.ru:+];
+	RCVD_COUNT_FIVE(0.00)[6];
+	DKIM_TRACE(0.00)[suse.de:+];
 	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[yandex.ru];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,suse.de:dkim,suse.de:email,kernel.dk:email]
 
-drm_mode_vrefresh() may return zero when mode clock is zero even if
-htotal and vtotal are non-zero. Current code checks only htotal and
-vtotal, allowing refresh_rate to become zero and subsequently causing
-division by zero in rs780_program_at().
+Jens Axboe <axboe@kernel.dk> writes:
 
-Fix by adding mode clock validation and fallback to default 60Hz in
-rs780_get_pm_mode_parameters(). Add WARN_ON in rs780_program_at() to
-catch such cases during development, ensuring safe fallback in all
-scenarios.
+>> Honest question, isn't this a property of the specific operation and/or
+>> fd being operated, instead of the buffer_reg?
+>
+> It kind of is, in that some users may not care. But it's not currently
+> possible to pass this in on a per-op basis, and while I did hack that
+> up initially, it's almost impossible as you end up with layering
+> violations. In practice, this is really mostly a recvmsg multishot
+> issue, because we need to store the headers. Hence the solution to
+> stuff it in the io_uring_buf_reg instead, and make it a fixed property
+> of the buffer group. In practice, you may even want a larger min_left
+> than what the recvmsg requires, as you don't want a tiny truncated
+> transfer at the end, regardless of what type of recv or read operation
+> this is. Hence it works generically as well.
+>
+> Also see the linked GH issue, that's where most of the discussion
+> around this have happened already.
+>
+>>> -		if (buf_len || !this_len) {
+>>> +		if (buf_len > bl->min_left_sub_one || !this_len) {
+>> 
+>> Cosmetic, but perhaps store min_left_sub_one instead of min_left itself? the
+>> buf_len must be >= min_left, and that is easier to read.  (buf_len &&
+>> buf_len >= min_left || !this_len)
+>
+> Also see GH issue.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Ack. Thanks.  Feel free to add:
 
-Signed-off-by: Evgenii Burenchev <evg28bur@yandex.ru>
----
- drivers/gpu/drm/radeon/rs780_dpm.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Reviewed-by: Gabriel Krisman Bertazi <krisman@suse.de>
 
-diff --git a/drivers/gpu/drm/radeon/rs780_dpm.c b/drivers/gpu/drm/radeon/rs780_dpm.c
-index 64bb4cafb8b5..fe45b7dac9f4 100644
---- a/drivers/gpu/drm/radeon/rs780_dpm.c
-+++ b/drivers/gpu/drm/radeon/rs780_dpm.c
-@@ -65,6 +65,8 @@ static void rs780_get_pm_mode_parameters(struct radeon_device *rdev)
- 			pi->crtc_id = radeon_crtc->crtc_id;
- 			if (crtc->mode.htotal && crtc->mode.vtotal)
- 				pi->refresh_rate = drm_mode_vrefresh(&crtc->mode);
-+				if (pi->refresh_rate == 0)
-+					pi->refresh_rate = 60;
- 			break;
- 		}
- 	}
-@@ -363,6 +365,8 @@ static void rs780_program_at(struct radeon_device *rdev)
- {
- 	struct igp_power_info *pi = rs780_get_pi(rdev);
- 
-+	WARN_ON(pi->refresh_rate == 0);
-+
- 	WREG32(FVTHROT_TARGET_REG, 30000000 / pi->refresh_rate);
- 	WREG32(FVTHROT_CB1, 1000000 * 5 / pi->refresh_rate);
- 	WREG32(FVTHROT_CB2, 1000000 * 10 / pi->refresh_rate);
+
 -- 
-2.43.0
-
+Gabriel Krisman Bertazi
 
