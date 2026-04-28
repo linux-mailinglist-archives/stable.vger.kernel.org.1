@@ -1,72 +1,72 @@
-Return-Path: <stable+bounces-241544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241543-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MG3RDqGO8Gl4UwEAu9opvQ
-	(envelope-from <stable+bounces-241544-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 12:40:33 +0200
+	id CBhbKn6M8GkuUwEAu9opvQ
+	(envelope-from <stable+bounces-241543-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 12:31:26 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35AE5482C98
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 12:40:31 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6192A482AB2
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 12:31:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D86303043892
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4CE4E30561FB
 	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 10:30:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CED4F3EF0DC;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5E9B3EF0A8;
 	Tue, 28 Apr 2026 10:30:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="e6IRx0+U"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="g0YtYvfw"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61D4E2E8B9B
-	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 10:30:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E6B33EDAA7
+	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 10:30:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777372216; cv=none; b=LMrfZwTglXzByl8LCZrKGNKMxkvuCSq62lqyCvfAjde4pbVjE0yZNPZ2xOA77xL/Lwy+yGyAXJa5hJOd0YxeqDjiEw7agoqBYXTHKIKA7PWF5EXeevxDtsIjkK/f1VODe56Kqcfdnb4RujZAVtdBvDaHiOjKHwfqqINq3KVpRYA=
+	t=1777372216; cv=none; b=Vg4FwS/NX3tDiByhsDqCEsSprNT6BChuHvg7Shq/qmU6/uqWBt99t4Ofuhch+fK0/oy2g+s8D7YyMh89EkyWkH4EUZo/1esC+cepnIHwNxXR9Tr3rCXHbW0b4xaodoYjqY+5wrqQAzERYhdhHN+hhI/iXqo04ODlOUvRuUTPJO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1777372216; c=relaxed/simple;
-	bh=dwxEJdIz8vYk/ufo4vzAXxS0t3GaEBIy02K4bnRRtU8=;
+	bh=ZtY1NVCPXnAC9eiQixJVX87FIa55uNvzITzHg3dFSas=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=adRw6VPi9hxKhl1QnrN6zREtLQbj/JjvUwlqhiXll3H/Inu6Qv8OBPhQ1OObh8N49gky3dSvQKo/9Uv943g31Lsa1QQNzD8pYFYDFk+W8Hy/hvfqVqm53XSLHRhn9B3CkNL4F8TCrn/CW3A1fxRM+c/wypBPSOAcwbohYEP+h9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tabba.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=e6IRx0+U; arc=none smtp.client-ip=209.85.218.73
+	 To:Cc:Content-Type; b=iWtkCiSEGrYBCyU4qywcn+pcxp3Re6l3yw6sR7CD1ws1hcJdSKjaNw6HXowzPquBaTpsjjwGVDpxPMhv8gj4N1DLCft14vBJGAG7Sv0act1Pga2fd4dOFuVZJhZCPKPX8qNn9zP0+WX5wdJiYXSl11GQV7eD00w5cotsT+wLCZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tabba.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=g0YtYvfw; arc=none smtp.client-ip=209.85.128.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tabba.bounces.google.com
-Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-ba84b4c7130so774052466b.0
-        for <stable@vger.kernel.org>; Tue, 28 Apr 2026 03:30:13 -0700 (PDT)
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4836abfc742so97351385e9.0
+        for <stable@vger.kernel.org>; Tue, 28 Apr 2026 03:30:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777372212; x=1777977012; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1777372213; x=1777977013; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=xE/iPxwYzw+NNX7wEA81VsFDw/XB5o3T+Ctb9g0a1xk=;
-        b=e6IRx0+U4D1sM2MtUx43QYhfzNuFJFSaIPGqxpEiLx7giEXt7+O8vaShHN4rZcxsau
-         ReFayr3cJ2UuWvWKTJtT0dqvvXzIPBLEJ4GOl4noxXXosWZhdlXBrqLNsrJSM5ZrMIfq
-         2kooGIWtX9TS2+FBF/g2UMHD9hleNfQyyYME8jAaQ12h3KlxF2HPpOd3uSFT4ETk7OUR
-         sgHNRJWvj5xoNDlJR/IRf6fK9oP2+FuMtV+6cbV5zwyIA+hxJ9FujqyGTYHreTF4gBUW
-         Kuof96OccqkJMzviokszYI2LO05hu0Tqjz2J+AvqQyTxovBKD7TekCVFnR/fV4OVN5VI
-         Beaw==
+        bh=2V4DeFz5zQx5vHTeG+ccViUA0qR3iKjsW9CqkQ1XIv0=;
+        b=g0YtYvfw3M4xhY2/m2mai5WlFCxP5evLqDw2vnCL2sHBh7h46KHac7oN8Zd8pLGm6u
+         Qzb+TkZg5u7JeM60wlE8CkCs0GV6lbtbnRCO+F5wXapQzsxr6TpGVWuTXyc9T8F0snrq
+         WMbwwRGpAkOPlTiSYzTI0BWkYjQTU+dhgXuRZqMGJtUDUQfJE8Xfsq3KK1UJaNE4HQi2
+         6ZRf4kBcmB62t5Gb9qLFLnml9JTlsCtbicmdE3eBt4PZbs+h/vQ4BnvZLsDxyEZEEyIH
+         Uu/c0hadcWACa48idsfjJnuqEbFT+VGEIhXVazejCyfxL1cNwkux/xcEq8cxs+crQc3y
+         Le4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777372212; x=1777977012;
+        d=1e100.net; s=20251104; t=1777372213; x=1777977013;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xE/iPxwYzw+NNX7wEA81VsFDw/XB5o3T+Ctb9g0a1xk=;
-        b=Ot7DhKFluvTHxhK885b9+AU4nB0xrbgE8wKTnZAHNxsaTgB2TUumEQklOOFTeReb6d
-         7isHHDJg0FH9TSEMV4M00+Gq25DnJf8Ubc+dZnt6JDXEI/a4urKKQ8tn/LPS97tBxr/7
-         v1onJy4rMHi+zTBzRaQvuC8t5tgQp8TN1Cr3D1Q87tE1xurRNwiYeYqfUfrl6cghY2Xt
-         aZFZUb56ADKK+crXgUQrD+aF53fA+PzFBEoOMU8zABwtKh7xRCl4hRrjHL/wvllIFxR8
-         aYiAGMzKt3Dj7g9ka9aNuAtgmaAVGkm0wafdE/Badu3Ap6MBY1mDneIaCj3MSOhnMIsZ
-         hFSA==
-X-Forwarded-Encrypted: i=1; AFNElJ8CUSjhjPMNk5qstv/NO8Qk0w7pmXn/zbU4uKnbox45jy9AnQfWtQVKUMp6lGGQkrO05sMPOdQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxBA7rU+TMtZPOWNV5BVdayHQ3j9SynhmKeAX9HP6hCHhfrWYGN
-	IW2moZ07Ow04jrSpha+kPwdJSV6l88ZiPdjC5pCQX/JFUNRw1bibvqGBnVua+u0iXwM0kjPdW6a
-	Whw==
-X-Received: from ejchp42.prod.google.com ([2002:a17:907:3e2a:b0:b9e:2534:71c9])
- (user=tabba job=prod-delivery.src-stubby-dispatcher) by 2002:a17:906:5194:20b0:bae:656b:2953
- with SMTP id a640c23a62f3a-bb8022c28ebmr102260866b.11.1777372211619; Tue, 28
- Apr 2026 03:30:11 -0700 (PDT)
-Date: Tue, 28 Apr 2026 11:30:02 +0100
+        bh=2V4DeFz5zQx5vHTeG+ccViUA0qR3iKjsW9CqkQ1XIv0=;
+        b=mDzhP28gvViKWuSUXymOG5I3/ESzPCTLMWhPXx95Ye60MvRscQ3d31/tquVqLLGgv2
+         gN4XxbzrEkwb2rgrm66i+2vHEXbyomaNKhgieIHMq3u55Y4OzkxCq1oXJfgtbq588GEU
+         meDcoz2tciWcV8ADselM00E3o0qa0suH7ninDXyQeHbbAthQGIzH7SbirdCLTeNje/nu
+         Ajf1Xy6vLd7h6PN6yLdmCe+QGF5EtsHYDXTf5xireYmnm+uHf6YQ5icMA3oXQgVvOMcM
+         17iJYk/aBx68Pup0on5tgwEmmpMwyCMn6hLuhgT7WpQUIa2A1FpwC1F+olLlbiDqiKOE
+         w/yg==
+X-Forwarded-Encrypted: i=1; AFNElJ90aXu5zPgWVnQHECch9QJPeIGUhuB5DyqvTMj/Rye2XzBpMUt0vEMAwDHTroiS3w3jfTg5Z0k=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yynyju+lu+/jyntlFwSQemYpk/glm7ErAxsWFLaFfwpLQ4xHxnl
+	KsOUpvURkYj0hlUm8Lz0/xwC2bJhAqFgNGWt4wFWfZj9NMpy6mUlXXCfmhv6lfV3zj4cVq59Db+
+	93Q==
+X-Received: from wmpc9.prod.google.com ([2002:a05:600c:4a09:b0:48a:54ff:28b2])
+ (user=tabba job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:c177:b0:48a:5301:bb5c
+ with SMTP id 5b1f17b1804b1-48a77b12a49mr34221165e9.16.1777372212793; Tue, 28
+ Apr 2026 03:30:12 -0700 (PDT)
+Date: Tue, 28 Apr 2026 11:30:03 +0100
 In-Reply-To: <20260428103008.696141-1-tabba@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -76,8 +76,8 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260428103008.696141-1-tabba@google.com>
 X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
-Message-ID: <20260428103008.696141-3-tabba@google.com>
-Subject: [PATCH 2/8] KVM: arm64: Synchronise HCR_EL2 writes on the guest exit path
+Message-ID: <20260428103008.696141-4-tabba@google.com>
+Subject: [PATCH 3/8] KVM: arm64: Guard against NULL vcpu on VHE hyp panic path
 From: Fuad Tabba <tabba@google.com>
 To: maz@kernel.org, oliver.upton@linux.dev
 Cc: james.morse@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, 
@@ -86,7 +86,7 @@ Cc: james.morse@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com,
 	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
 	linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 35AE5482C98
+X-Rspamd-Queue-Id: 6192A482AB2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
@@ -94,18 +94,18 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
 	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-241544-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-241543-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[tabba@google.com,stable@vger.kernel.org];
@@ -114,96 +114,45 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_TWELVE(0.00)[14];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 
-MSR HCR_EL2 is not self-synchronising. Per ARM DDI 0487 M.b K1.2.4
-(p.K1-16823) and B2.6.1 (p.B2-297), a Context Synchronisation Event
-is required between an HCR_EL2 write and any subsequent direct
-register access at the same EL that depends on the new value being
-in effect.
+On VHE, __hyp_call_panic() unconditionally calls __deactivate_traps(vcpu)
+on the vcpu pointer read from host_ctxt->__hyp_running_vcpu. That pointer
+is cleared after every guest exit (and is never set when no guest is
+running), so an unexpected EL2 exception landing in _guest_exit_panic,
+e.g. via the el2t*_invalid / el2h_irq_invalid vectors - reaches this
+function with vcpu == NULL. __deactivate_traps() then dereferences vcpu
+via ___deactivate_traps() -> vserror_state_is_nested() -> vcpu_has_nv()
+-> vcpu->arch.features, faulting inside the panic handler and obscuring
+the original failure.
 
-On the entry path, the HCR_EL2 write in __activate_traps is followed
-by further EL2 sysreg work (MDCR_EL2, CPTR_EL2, VBAR_EL2, and on the
-speculative-AT errata path SCTLR_EL1/TCR_EL1) before ERET into the
-guest. None of those intervening accesses depend on the new HCR_EL2
-value, and ERET is a CSE per ARM DDI 0487 M.b D1.4.4.1 rule RBWCFK
-(p. D1-7209) conditional on SCTLR_EL2.EOS=1, which is set
-unconditionally by INIT_SCTLR_EL2_MMU_ON (see the prerequisite patch
-in this series). The requirement is therefore satisfied implicitly
-on the activate path.
+The nVHE counterpart (hyp_panic() in arch/arm64/kvm/hyp/nvhe/switch.c)
+already guards its vcpu-using cleanup with "if (vcpu)"; mirror that
+here. sysreg_restore_host_state_vhe() and __hyp_do_panic() do not depend
+on vcpu and continue to run unconditionally, preserving panic forensics.
+The trailing panic("...VCPU:%p", vcpu) prints "(null)" safely via
+printk's %p handling.
 
-The deactivate path is different: after write_sysreg_hcr() in
-__deactivate_traps() further EL2 sysreg work runs before any natural
-CSE - on nVHE, __deactivate_cptr_traps and the VBAR_EL2 write; on
-VHE, the timer context save which reads CNTP_CVAL_EL0 under the new
-TGE/E2H, and the EL1 sysreg restore. Add an explicit isb() at each
-of the two deactivate sites.
-
-The practical impact today is bounded: HCR_EL2.E2H does not toggle
-in either path, and the trap bits being changed primarily affect
-EL1&0 behaviour. But the architectural rule should be honoured.
-Note that write_sysreg_hcr() itself already issues isb() on the
-Ampere errata path (sysreg.h), confirming the architectural
-expectation; the fast path optimises that away.
-
-The fix is at the call sites rather than inside write_sysreg_hcr()
-because the macro has many users (e.g. the activate path, at.c,
-hardirq.h, ptrauth alternatives) where the immediately-following
-code either reaches ERET or has another CSE; making the macro emit
-an unconditional ISB would impose unnecessary cost on those
-well-formed users.
-
-Fixes: 9404673293b0 ("KVM: arm64: timers: Correctly handle TGE flip with CNTPOFF_EL2")
+Fixes: 6a0259ed29bb ("KVM: arm64: Remove hyp_panic arguments")
 Signed-off-by: Fuad Tabba <tabba@google.com>
 ---
- arch/arm64/kvm/hyp/nvhe/switch.c | 11 +++++++++++
- arch/arm64/kvm/hyp/vhe/switch.c  | 11 +++++++++++
- 2 files changed, 22 insertions(+)
+ arch/arm64/kvm/hyp/vhe/switch.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/kvm/hyp/nvhe/switch.c b/arch/arm64/kvm/hyp/nvhe/switch.c
-index 8d1df3d33595..9d7ead5a5503 100644
---- a/arch/arm64/kvm/hyp/nvhe/switch.c
-+++ b/arch/arm64/kvm/hyp/nvhe/switch.c
-@@ -105,6 +105,17 @@ static void __deactivate_traps(struct kvm_vcpu *vcpu)
- 	__deactivate_traps_common(vcpu);
- 
- 	write_sysreg_hcr(this_cpu_ptr(&kvm_init_params)->hcr_el2);
-+	/*
-+	 * MSR HCR_EL2 is not self-synchronising. Per ARM ARM K1.2.4 p.K1-16823
-+	 * and B2.6.1 p.B2-297, a Context Synchronisation Event is required
-+	 * between an HCR_EL2 write and any subsequent direct register access at
-+	 * the same EL that depends on the new value being in effect.
-+	 * The activate_traps path falls through to ERET (a CSE), but the
-+	 * deactivate path still executes further EL2 sysreg work (CPTR/VBAR
-+	 * writes below) before any natural CSE, so make the synchronisation
-+	 * explicit.
-+	 */
-+	isb();
- 
- 	__deactivate_cptr_traps(vcpu);
- 	write_sysreg(__kvm_hyp_host_vector, vbar_el2);
 diff --git a/arch/arm64/kvm/hyp/vhe/switch.c b/arch/arm64/kvm/hyp/vhe/switch.c
-index 9db3f11a4754..140d3bcb5651 100644
+index 140d3bcb5651..8912863cc238 100644
 --- a/arch/arm64/kvm/hyp/vhe/switch.c
 +++ b/arch/arm64/kvm/hyp/vhe/switch.c
-@@ -149,6 +149,17 @@ static void __deactivate_traps(struct kvm_vcpu *vcpu)
- 	___deactivate_traps(vcpu);
+@@ -674,7 +674,8 @@ static void __noreturn __hyp_call_panic(u64 spsr, u64 elr, u64 par)
+ 	host_ctxt = host_data_ptr(host_ctxt);
+ 	vcpu = host_ctxt->__hyp_running_vcpu;
  
- 	write_sysreg_hcr(HCR_HOST_VHE_FLAGS);
-+	/*
-+	 * MSR HCR_EL2 is not self-synchronising. Per ARM ARM K1.2.4 p.K1-16823
-+	 * and B2.6.1 p.B2-297, a Context Synchronisation Event is required
-+	 * between an HCR_EL2 write and any subsequent direct register access at
-+	 * the same EL that depends on the new value being in effect.
-+	 * The activate_traps path falls through to ERET (a CSE), but the
-+	 * deactivate path still executes further EL2 sysreg work (CPTR/VBAR
-+	 * writes below) before any natural CSE, so make the synchronisation
-+	 * explicit.
-+	 */
-+	isb();
+-	__deactivate_traps(vcpu);
++	if (vcpu)
++		__deactivate_traps(vcpu);
+ 	sysreg_restore_host_state_vhe(host_ctxt);
  
- 	if (has_cntpoff()) {
- 		struct timer_map map;
+ 	panic("HYP panic:\nPS:%08llx PC:%016llx ESR:%08llx\nFAR:%016llx HPFAR:%016llx PAR:%016llx\nVCPU:%p\n",
 -- 
 2.54.0.545.g6539524ca2-goog
 
