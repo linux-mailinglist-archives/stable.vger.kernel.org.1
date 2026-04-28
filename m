@@ -1,234 +1,221 @@
-Return-Path: <stable+bounces-241634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241635-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0K5FHSah8GnrWQEAu9opvQ
-	(envelope-from <stable+bounces-241634-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 13:59:34 +0200
+	id gGvbOAic8GmGVwEAu9opvQ
+	(envelope-from <stable+bounces-241635-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 13:37:44 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 644094846C1
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 13:59:32 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 811E5483F56
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 13:37:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2DE8D3871B30
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 11:26:58 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B40CF3005987
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 11:31:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B8063F787B;
-	Tue, 28 Apr 2026 11:18:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F3C53AF641;
+	Tue, 28 Apr 2026 11:30:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p8mRc9En"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gwOKDpiq"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DEB13F54A5;
-	Tue, 28 Apr 2026 11:18:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C80BE2D1931
+	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 11:30:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777375094; cv=none; b=cvfH2j137clcHIZDs7FuZXNVgeZa+HPmCWNLkriYOogJSxh9GYiapc+kFDpqENMXLo1sBsatL5sBmAv6fPpEXQvaEtmaWWyuzZ+h1oZwPAHXbi0lWpgsw2Zb0q8cuw2iU0MBYO2fkEFc/MalSp4p3ROMEJVlvc92bJ/vJ/7yDeY=
+	t=1777375847; cv=none; b=WtBHAZFeQGOw+MFU8MJZ/omiLhy62FOwZWk3bU13L1yLc44dJwnGQxhu9etC0Df9iubY1N/hP2Ik3TTWVpQ/GCAGBLbMI80XIhdowXMfCPIPaC9BVa9IopqkuowBojXJN10zL/XnKmr1h+WfMgaIaaVDHA0hc+DBhvN8bQJiR/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777375094; c=relaxed/simple;
-	bh=kl1dtBcXZUypjlYinHTCFdSRIBt2o8pBWhIdwaUq4lo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=N92cB2jl6m4jgExiVgnt0AD3/PSGFH/hhoapIRznw1JJMyVkqFh3A1DZuCG7R7CWlxHhVv2DVg/NFUGDa0EoJ2uj1q24RuTebuYdPiYJFREQywXkK9NdGhu4/BQatUbp32GQbCF0tHz6ydSEkA1FSNC0i+DGKw5Pz+03KU8NsIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p8mRc9En; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 102C7C2BCAF;
-	Tue, 28 Apr 2026 11:18:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777375093;
-	bh=kl1dtBcXZUypjlYinHTCFdSRIBt2o8pBWhIdwaUq4lo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=p8mRc9EnIq7kjjgLQcgx4IR70p6nFpY7kbCeOvQBsT/xmYT7slx7pUK8dFz8ZE/ge
-	 4ieWaGmlf9a01oHAyJiYp4U+m03iqKNyXrRURGh5y6flZvHQ9M6EROLASGkfZfwlnG
-	 fpG8nNdqdDFfdoYq3VK9gSwgfqA+Vn82xL7ZaUOgQ3cy0BprDk+xcWgJo8Akem8mGC
-	 7pOCvE+sau68Q01BX+i/Aw3hFoq3EOUR8MApse6xUw+QfqtACv3ATB8BH8ZCJNdu1u
-	 Qx++jn+eXirfYTh7DuwWSsa4Mh4I3J+Q+uKr0UOKjwHhMIRljqNYIUo2/gxf84WLpq
-	 eBGyHaxmmLkkg==
-Date: Tue, 28 Apr 2026 13:18:08 +0200
-From: Marek =?utf-8?B?QmVow7pu?= <kabel@kernel.org>
-To: Bill Cox <waywardgeek@gmail.com>
-Cc: Thorsten Blum <thorsten.blum@linux.dev>, 
-	Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>, 
-	Nicolas Ferre <nicolas.ferre@microchip.com>, Alexandre Belloni <alexandre.belloni@bootlin.com>, 
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>, Linus Walleij <linusw@kernel.org>, 
-	Ard Biesheuvel <ardb@kernel.org>, stable@vger.kernel.org, linux-crypto@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] crypto: atmel-sha204a - drop hwrng quality reduction
- for ATSHA204A
-Message-ID: <25ntssyy6t5uwxlwfpmrpzpcq6xv62l643hflf26hxi6lv5wqu@6vub6ysczjvd>
-References: <20260428101430.514838-3-thorsten.blum@linux.dev>
+	s=arc-20240116; t=1777375847; c=relaxed/simple;
+	bh=x6Uv0MthFJaHnLCh7NMFD66PD52OOBjgYxHvakLPsCI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=EuPEQ5a75S/acWJZDJpxQiOX6AlT7Rd0ih9eHiwsHX9jljMEggLyQHBGmHimZrgnXzf6O+rSvv4NRg/vWstniAtdB0HQaajMdFg/ry/JoJFVDQRoTntnhsjr7hOPMkwRjnvk9AjVp9XDQaJcTglaQNxz8YY4Hrbl/FOVxWDGbKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gwOKDpiq; arc=none smtp.client-ip=209.85.210.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-82f33d28c1dso6149270b3a.3
+        for <stable@vger.kernel.org>; Tue, 28 Apr 2026 04:30:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777375845; x=1777980645; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=g1Ct8Le8BV/CkL7dz/X4QUOvjolhlSF4pzodVhQ1Ejs=;
+        b=gwOKDpiqnfhnEBAqJ5EOR6rE1Yj7oKrUgCM41ITyn02vpvgjkLxtNd7/mlaovvOoTn
+         xnEX9j5qJqQ+yWO+G662xyDnb/YXX855eC6Sc7OAlKtqnfZxKpwPmP73a7ttYqcpzNg+
+         hWJE5jBoTBxQts8jVi0uh6CblFHVGUOtcB75BC568NWef2wyV69fKRwwNF818HvvCtxv
+         T9bec4fYgFAyQ5ueubuMpVX22F6m62iJyztPG/sfycUuL5tr8AtAehIoxOXkd591tC3l
+         U29VAtr1h3IMCYM7WjbuxXRn/JlixWZAfCrrNFgqgWR1wqJaiRfuO4jdou/F/3EcYiTK
+         mcIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777375845; x=1777980645;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=g1Ct8Le8BV/CkL7dz/X4QUOvjolhlSF4pzodVhQ1Ejs=;
+        b=cMuL8z74poc1lFNnj9fTpYhmLaxYD0xHSfH8Bes5toprcD8/8Fwpd2nvrPs+jF8Wq0
+         pLjhb5cv2TC7uU8GrRLxOK2pSJ3zWFepwI+GK3yw3ZIeyXo+D78/pjOlwRYiNZond08v
+         EoSQVvTMH9haB67Ho74NGQdPXYrw38zdVfInZHJdN174wcGK922g41Zv8YOSOXCuGT+X
+         tdaGhImL2CYuOvLmmU9Uj5PdDDhA1H9UnJmMgREO9mkPrWDvvYu42IIAFQUCp6JbusLo
+         P2VBPMJAqBSJIzJF2YjUZHIMllrNLgSDCHqxC33UQGI8FZPzgCAVCitiivakV6L71ZQL
+         Rudw==
+X-Forwarded-Encrypted: i=1; AFNElJ+uEaOxC/8dofkUJkpnM7DWeI8uFiU1GkVULGRWlqlRfGq3bk2Yme/QDt/HWB9Pzto39pHhA6s=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyANrO+whTVBXsL5dykK1SQp68FZ8rr62pweEOb3w+Mve9uIYu6
+	wBoTTbs9kdjz954tTJnnJ6zSi8UfdOOCrLKqQgPa8Vo7il9H7qovR4rx
+X-Gm-Gg: AeBDievXvOS/4QFke7iONGRQuj6RoD6FQqFkTvKUz2xIeL7k9ntOlQiA+m7WjAuJCIS
+	D8jqTiwMIKkERnhO8hzxi4WNXNQZmXrekoDn4zLKvrlkXg3/EbDThfDP4UP5k5CIvf0pFZduYz3
+	cJru8gtxAGqY2IqasAE0li2hwTPOT4jmhsux47G+QcyFvnogpEW94Y1Rc04M0s7fyF4tOFJGIW4
+	zQVBqEbnAQTefnLndppIV0kcpGgupImitE9ZUs0fQde6ifWqSuD93ZrJqA/7neATIWJtwwAfA5C
+	jIZ7q5CAuVhe9obMLJi4SMu0iDSEl85LZZOw7MrCFTrXoNavk9MYQN06ztYoNghvJc8fTVMqVlK
+	WVgxd64frF4BfZLNBEM1v57skF0gA1Jd8iTA4KLI1nlw1ptRfaVUGuvsA7kD1/bDPDkbwTKnHHI
+	KclNQOuR3UgoYCCyykSKymSDKu9PUtUUlvb9dJEXTyGddUr/8vssYGhlb1HYayTA/R9EidE04FW
+	Gan
+X-Received: by 2002:a05:6a00:181b:b0:82f:4191:da10 with SMTP id d2e1a72fcca58-834ddae0572mr2816395b3a.6.1777375845004;
+        Tue, 28 Apr 2026 04:30:45 -0700 (PDT)
+Received: from KRHW1CJW23.bytedance.net ([203.208.189.8])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-834daf6b111sm2455545b3a.52.2026.04.28.04.30.41
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 28 Apr 2026 04:30:44 -0700 (PDT)
+From: Zhao Li <enderaoelyther@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: mawupeng1@huawei.com,
+	Zhao Li <enderaoelyther@gmail.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v3] mm/hugetlb: fix max-only subpool accounting on alloc_hugetlb_folio failure
+Date: Tue, 28 Apr 2026 19:30:38 +0800
+Message-ID: <20260428113037.88766-2-enderaoelyther@gmail.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20260428030712.66256-2-enderaoelyther@gmail.com>
+References: <20260427145247.84157-2-enderaoelyther@gmail.com> <20260428030712.66256-2-enderaoelyther@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260428101430.514838-3-thorsten.blum@linux.dev>
-X-Rspamd-Queue-Id: 644094846C1
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 811E5483F56
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[huawei.com,gmail.com,linux.dev,suse.de,kernel.org,kvack.org,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-241635-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241634-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[13];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[enderaoelyther@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kabel@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[microchip.com:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,metzdowd.com:url,linux.dev:email]
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 
-Adding Bill Cox (waywardgeek) to the conversation.
+alloc_hugetlb_folio() calls hugepage_subpool_get_pages() when map_chg
+is set.  For a subpool with max_hpages != -1, that bumps used_hpages
+regardless of whether it returns gbl_chg = 0 (rsv slot consumed) or
+gbl_chg > 0 (used_hpages slot only).  If the allocation later fails
+before a folio is returned, the unwind must undo the used_hpages
+bump.  The old cleanup only ran for !gbl_chg, leaking used_hpages on
+the gbl_chg > 0 path.
 
-In the meantime Nack from me on this patch.
+For gbl_chg > 0 on max-only subpools (max_hpages != -1, min_hpages
+== -1), hugepage_subpool_get_pages() took only a speculative
+used_hpages slot.  Drop that slot directly under spool->lock.  In
+that configuration hugepage_subpool_put_pages() cannot restore
+rsv_hpages, so the direct decrement is the exact inverse and is
+race-free against concurrent puts.  This matches the used_hpages-only
+part of hugetlb_reserve_pages()'s out_put_pages cleanup, but
+restricts it to the max-only case where no rsv_hpages restoration is
+possible.
 
-From the original messages by Bill, it seems to me the part he was reviewing
-was the ATSHA204A.
+Mounts with min_hpages != -1 are left unchanged for now.  v2's
+approach (hugepage_subpool_put_pages() + h->resv_huge_pages++ to
+back a restored rsv_hpages slot) double-counts global backing under
+concurrent free_huge_folio() and creates phantom reservations under
+concurrent hugetlb_unreserve_pages().  Safe cleanup of that quadrant
+needs a coordinated fix across multiple call sites.
 
-In subsequent reply [1] Bill states
+Reproduced on size=20M hugetlbfs with the faulting task in a hugetlb
+cgroup whose limit is exceeded.  Vanilla leaks 6/8 hugepages of
+subpool quota; this patch leaks 0/8.  Verified under QEMU.
 
-  While there is some evidence, there is still no convincing proof that there
-  is an entropy source in this device at all.  There is some evidence that
-  Atmel has inserted a back-door.  My advice is to avoid this line of parts
-  from Atmel for cryptographic use.
+Fixes: a833a693a490 ("mm: hugetlb: fix incorrect fallback for subpool")
+Cc: stable@vger.kernel.org # v6.15+
+Signed-off-by: Zhao Li <enderaoelyther@gmail.com>
+---
+Changes in v3:
+- Replace v2's hugepage_subpool_put_pages() + h->resv_huge_pages++ on
+  the gbl_chg > 0 branch with a direct used_hpages-- under spool->lock.
+- Restrict the cleanup to (max_hpages != -1, min_hpages == -1) where
+  the direct decrement is the exact inverse of the speculative bump.
 
-In another message Peter Gutmann asks about ATECC108 [2] and Bill replies [3]
+Changes in v2:
+- Skip the gbl_chg > 0 cleanup when max_hpages is unset.
+- Add hugepage_subpool_put_pages() + h->resv_huge_pages++ on the
+  gbl_chg > 0 branch.
 
-  This part uses the same language to describe the random number generator.
-  It is "high quality".  I think that's pretty funny.
-  I would be interested in seeing if the new part can generate random numbers
-  continuously, or if it fails after it's EEPROM wears out like their other
-  parts.  The use of an EEPROM seed is for PWN-ing your RNG, not making it
-  more secure.
+ mm/hugetlb.c | 25 ++++++++++++++++++-------
+ 1 file changed, 18 insertions(+), 7 deletions(-)
 
-IMO the comments from the actual reviewer are more relevant than those of the
-engineer working for the company which was accused of creating low quality
-/ backdoored TRNG, at least until the Atmel engineer provides some evaluation
-code for the device (which they suggested they might do [4], but never did as
-far as I can find).
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index f24bf49be047e..cfdeaf6394c5b 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -3025,13 +3025,24 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
+ 		hugetlb_cgroup_uncharge_cgroup_rsvd(idx, pages_per_huge_page(h),
+ 						    h_cg);
+ out_subpool_put:
+-	/*
+-	 * put page to subpool iff the quota of subpool's rsv_hpages is used
+-	 * during hugepage_subpool_get_pages.
+-	 */
+-	if (map_chg && !gbl_chg) {
+-		gbl_reserve = hugepage_subpool_put_pages(spool, 1);
+-		hugetlb_acct_memory(h, -gbl_reserve);
++	if (map_chg) {
++		if (!gbl_chg) {
++			/* Full inverse when subpool_get_pages() consumed rsv_hpages. */
++			gbl_reserve = hugepage_subpool_put_pages(spool, 1);
++			hugetlb_acct_memory(h, -gbl_reserve);
++		} else if (gbl_chg > 0 && spool && spool->min_hpages == -1 &&
++			   spool->max_hpages != -1) {
++			unsigned long flags;
++
++			/*
++			 * For max-only subpools, subpool_get_pages() took only a
++			 * speculative used_hpages slot. Drop that slot directly.
++			 */
++			spin_lock_irqsave(&spool->lock, flags);
++			if (spool->used_hpages > 0)
++				spool->used_hpages--;
++			unlock_or_release_subpool(spool, flags);
++		}
+ 	}
 
-Maybe we can instead change the ATECC quality to something like 32? Does that
-even make sense?
 
-Marek
-
-[1] https://www.metzdowd.com/pipermail/cryptography/2014-December/023857.html
-[2] https://www.metzdowd.com/pipermail/cryptography/2014-December/023870.html
-[3] https://www.metzdowd.com/pipermail/cryptography/2014-December/023879.html
-[4] https://www.metzdowd.com/pipermail/cryptography/2014-December/023886.html
-
-On Tue, Apr 28, 2026 at 12:14:32PM +0200, Thorsten Blum wrote:
-> Commit 8006aff15516 ("crypto: atmel-sha204a - Set hwrng quality to
-> lowest possible") reduced the hwrng quality to 1 based on a review by
-> Bill Cox [1]. However, despite its title, the review only tested the
-> ATSHA204, not the ATSHA204A.
-> 
-> In the same thread, Atmel engineer Landon Cox wrote "this behavior has
-> been eliminated entirely"[2] in the ATSHA204A and "this problem does not
-> affect the ATECC108 or the ATECC108A (or the ATSHA204A)"[3].
-> 
-> According to the official ATSHA204A datasheet [4], the device contains a
-> high-quality hardware RNG that combines its output with an internal seed
-> value stored in EEPROM or SRAM to generate random numbers. The device
-> also implements all security functions using SHA-256, and the driver
-> uses the chip's Random command in seed-update mode.
-> 
-> Keep 'quality = 1' for ATSHA204, but drop the explicit hwrng quality
-> reduction for ATSHA204A and fall back to the hwrng core default.
-> 
-> [1] https://www.metzdowd.com/pipermail/cryptography/2014-December/023858.html
-> [2] https://www.metzdowd.com/pipermail/cryptography/2014-December/023852.html
-> [3] https://www.metzdowd.com/pipermail/cryptography/2014-December/023886.html
-> [4] https://ww1.microchip.com/downloads/en/DeviceDoc/ATSHA204A-Data-Sheet-40002025A.pdf
-> 
-> Fixes: 8006aff15516 ("crypto: atmel-sha204a - Set hwrng quality to lowest possible")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-> ---
-> Changes in v2:
-> - Drop the enum and dereference match data if needed as suggested by Ard
-> - Keep the review comment
-> - v1: https://lore.kernel.org/lkml/20260427124030.315590-3-thorsten.blum@linux.dev/
-> ---
->  drivers/crypto/atmel-sha204a.c | 19 ++++++++++++-------
->  1 file changed, 12 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/crypto/atmel-sha204a.c b/drivers/crypto/atmel-sha204a.c
-> index dbb39ed0cea1..a8c1b00b12f5 100644
-> --- a/drivers/crypto/atmel-sha204a.c
-> +++ b/drivers/crypto/atmel-sha204a.c
-> @@ -19,6 +19,12 @@
->  #include <linux/workqueue.h>
->  #include "atmel-i2c.h"
->  
-> +/*
-> + * According to review by Bill Cox [1], the ATSHA204 has very low entropy.
-> + * [1] https://www.metzdowd.com/pipermail/cryptography/2014-December/023858.html
-> + */
-> +static const unsigned short atsha204_quality = 1;
-> +
->  static void atmel_sha204a_rng_done(struct atmel_i2c_work_data *work_data,
->  				   void *areq, int status)
->  {
-> @@ -158,6 +164,7 @@ static const struct attribute_group atmel_sha204a_groups = {
->  static int atmel_sha204a_probe(struct i2c_client *client)
->  {
->  	struct atmel_i2c_client_priv *i2c_priv;
-> +	const unsigned short *quality;
->  	int ret;
->  
->  	ret = atmel_i2c_probe(client);
-> @@ -171,11 +178,9 @@ static int atmel_sha204a_probe(struct i2c_client *client)
->  	i2c_priv->hwrng.name = dev_name(&client->dev);
->  	i2c_priv->hwrng.read = atmel_sha204a_rng_read;
->  
-> -	/*
-> -	 * According to review by Bill Cox [1], this HWRNG has very low entropy.
-> -	 * [1] https://www.metzdowd.com/pipermail/cryptography/2014-December/023858.html
-> -	 */
-> -	i2c_priv->hwrng.quality = 1;
-> +	quality = i2c_get_match_data(client);
-> +	if (quality)
-> +		i2c_priv->hwrng.quality = *quality;
->  
->  	ret = devm_hwrng_register(&client->dev, &i2c_priv->hwrng);
->  	if (ret)
-> @@ -203,14 +208,14 @@ static void atmel_sha204a_remove(struct i2c_client *client)
->  }
->  
->  static const struct of_device_id atmel_sha204a_dt_ids[] __maybe_unused = {
-> -	{ .compatible = "atmel,atsha204", },
-> +	{ .compatible = "atmel,atsha204", .data = &atsha204_quality },
->  	{ .compatible = "atmel,atsha204a", },
->  	{ /* sentinel */ }
->  };
->  MODULE_DEVICE_TABLE(of, atmel_sha204a_dt_ids);
->  
->  static const struct i2c_device_id atmel_sha204a_id[] = {
-> -	{ "atsha204" },
-> +	{ "atsha204", (kernel_ulong_t)&atsha204_quality },
->  	{ "atsha204a" },
->  	{ /* sentinel */ }
->  };
-> 
+--
+2.50.1 (Apple Git-155)
 
