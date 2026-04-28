@@ -1,257 +1,251 @@
-Return-Path: <stable+bounces-241747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241748-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6AREBhD08GnUbQEAu9opvQ
-	(envelope-from <stable+bounces-241747-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 19:53:20 +0200
+	id aB7DHxz08GnUbQEAu9opvQ
+	(envelope-from <stable+bounces-241748-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 19:53:32 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BF5B48A3A0
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 19:53:19 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8D0C48A3B1
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 19:53:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CE476302F41C
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 17:53:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 29BB1302A1B7
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 17:53:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FF83450917;
-	Tue, 28 Apr 2026 17:53:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF738450903;
+	Tue, 28 Apr 2026 17:53:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b="IXxMmREN"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="DOBF/Xzo";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="3kkZsz8V";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="DOBF/Xzo";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="3kkZsz8V"
 X-Original-To: stable@vger.kernel.org
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11023085.outbound.protection.outlook.com [40.107.201.85])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B3EE44E047;
-	Tue, 28 Apr 2026 17:53:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.201.85
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777398792; cv=fail; b=l+i2Z46GNiqIIojOOI+Loq3XonU1Y7n26JAPtxODUzRj1W37bt6t89I24VMELcQnAVqK52bzOW0Xw5SNsCcYEbY4+P1DsrUQchfdYlK2b8CY4+xJTePrpI98tovcP1rUO7/w40JcdLmshY6QFnTcgDfIRJ2j5wTEkYkHBwsR2Z4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777398792; c=relaxed/simple;
-	bh=Oyc90ZkmpdmZbdHgT+F8RyQUh+1Mv06/ZOmt60PEMp0=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=ow68SWb8/f78oWDtk/ax8kIzGp+vi6SWvClql8ESYIwSab46drmOqwqA3FZACTpQ3mf7KDiXIl4TUWpkNNSENxYgqb+g6h9x4xy43L8dMvkCJN4OG5pnhYwQ87jy4kF56BSBaLnI8XiM3n4vZHve8teziYeJW5wmMQOSlEeffJ8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=microsoft.com; dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b=IXxMmREN; arc=fail smtp.client-ip=40.107.201.85
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microsoft.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SRSmAQEZTwefg9lOSRdLDZLoxNxQQ+BAPiy1zhQcavv6GWcKZFzZFsLY7M3KfH6flXgxp24qQxmHM1/wAfc3Qvew2t+0FII9L+WhtN3Tyly0Yi+aLvr8wOa0iH7E3EXnpKOROB7mk9FH00To0aLSx7tUj3A9mywOT+AIxejZ5nro4+bKM0ynTGePk1R8Ul82m/bMqSxNt/O3Q9vt0d+GrFfI3mALNZj/5L8Tt9gXpQHNnz8moVPTYl6U3difxAUDgsqplBy9KqcpEVpBBRw/jQKtSwn6vra4Zk58v7qL/+hg2WCcbckAlQJtFm/9OOFvTmJIo8eC683ENlgRHbxsWw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+YRtFEy4ajxrmqa2N20M6PZSEzeTZq2omZaHSFXn0x8=;
- b=ee52p39RHVd7ISBZTsfisshdU8lX5g7lHcxQ9RB3BFRx1IcQJoEPdgcW7fipAZELugpfhQUwT3B5G5QW2OQvb9K6Eyze/zwIBtleJlXOtb0nFLU8JurDElwz6Wmw0IjF/Rpo5yofzAim/t68JVMMcwbwe6IUBlDvlsGb7NSGidhjquGYezxpL4eiaVNoNZnjZqbVq23IPjlstVQirHYibV0+6wHKxOvvoOM23iRRrCT1AZGrVR8usWKpGNYsowjL60d2Q0HX7jpoy2ErYUIoxOvjLrggSTSrz5uiiT5qdYg30wMHD0PZAplczTBh8FjRXGERKUyvxF4UXXU9tWXPrw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microsoft.com; dmarc=pass action=none
- header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+YRtFEy4ajxrmqa2N20M6PZSEzeTZq2omZaHSFXn0x8=;
- b=IXxMmRENqCsCLQdbThAkepZjwTGwjOFNtuZUM90WPYjlaSTJksM0oTkfGX77tgeEz12AM2CHblVSQkeynMtzM//R0/KKOuNj5EMYb/0rc7nDHJ7NK/89U8trC5bRUxXgvdurYH50PcFTs2vM45s7mOU3wuHhELsen+F5bAjN74Q=
-Received: from SA1PR21MB6683.namprd21.prod.outlook.com (2603:10b6:806:4a4::6)
- by SA1PR21MB6874.namprd21.prod.outlook.com (2603:10b6:806:4a4::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.3; Tue, 28 Apr
- 2026 17:53:05 +0000
-Received: from SA1PR21MB6683.namprd21.prod.outlook.com
- ([fe80::879f:eec1:ca0e:d219]) by SA1PR21MB6683.namprd21.prod.outlook.com
- ([fe80::879f:eec1:ca0e:d219%6]) with mapi id 15.20.9870.013; Tue, 28 Apr 2026
- 17:53:05 +0000
-From: Long Li <longli@microsoft.com>
-To: Jason Gunthorpe <jgg@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Bryan Tan <bryan-bt.tan@broadcom.com>, Eric Dumazet <edumazet@google.com>,
-	Junxian Huang <huangjunxian6@hisilicon.com>, Konstantin Taranov
-	<kotaranov@microsoft.com>, Jakub Kicinski <kuba@kernel.org>, Leon Romanovsky
-	<leon@kernel.org>, "linux-hyperv@vger.kernel.org"
-	<linux-hyperv@vger.kernel.org>, "linux-rdma@vger.kernel.org"
-	<linux-rdma@vger.kernel.org>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>, Selvin Xavier
-	<selvin.xavier@broadcom.com>, Chengchang Tang <tangchengchang@huawei.com>,
-	Tariq Toukan <tariqt@nvidia.com>, Vishnu Dasa <vishnu.dasa@broadcom.com>,
-	Yishai Hadas <yishaih@nvidia.com>
-CC: Abhijit Gangurde <abhijit.gangurde@amd.com>, Adit Ranadive
-	<aditr@vmware.com>, Allen Hubbe <allen.hubbe@amd.com>, Andrew Boyer
-	<andrew.boyer@amd.com>, Aditya Sarwade <asarwade@vmware.com>, Brad Spengler
-	<brad.spengler@opensrcsec.com>, Bryan Tan <bryantan@vmware.com>, "David S.
- Miller" <davem@davemloft.net>, Dexuan Cui <DECUI@microsoft.com>, Doug Ledford
-	<dledford@redhat.com>, George Zhang <georgezhang@vmware.com>, Jorgen Hansen
-	<jhansen@vmware.com>, Jianbo Liu <jianbol@nvidia.com>, Kai Aizen
-	<kai.aizen.dev@gmail.com>, Leon Romanovsky <leonro@mellanox.com>, Leon
- Romanovsky <leonro@nvidia.com>, Yixian Liu <liuyixian@huawei.com>, Lijun Ou
-	<oulijun@huawei.com>, Parav Pandit <parav.pandit@emulex.com>,
-	"patches@lists.linux.dev" <patches@lists.linux.dev>, Roland Dreier
-	<roland@purestorage.com>, Roland Dreier <rolandd@cisco.com>, Sagi Grimberg
-	<sagi@grimberg.me>, Ajay Sharma <sharmaajay@microsoft.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>, Tariq Toukan
-	<tariqt@mellanox.com>, "Wei Hu (Xavier)" <xavier.huwei@huawei.com>, Shaobo Xu
-	<xushaobo2@huawei.com>, Nenglong Zhao <zhaonenglong@hisilicon.com>
-Subject: RE: [EXTERNAL] [PATCH rc 07/15] RDMA/mana: Fix error unwind in
- mana_ib_create_qp_rss()
-Thread-Topic: [EXTERNAL] [PATCH rc 07/15] RDMA/mana: Fix error unwind in
- mana_ib_create_qp_rss()
-Thread-Index: AQHc1yqYKohEXkneKkKg313+VFmvW7X0wRXQ
-Date: Tue, 28 Apr 2026 17:53:05 +0000
-Message-ID:
- <SA1PR21MB6683D76104D43E95AE395284CE372@SA1PR21MB6683.namprd21.prod.outlook.com>
-References: <0-v1-41f3135e5565+9d2-rdma_ai_fixes1_jgg@nvidia.com>
- <7-v1-41f3135e5565+9d2-rdma_ai_fixes1_jgg@nvidia.com>
-In-Reply-To: <7-v1-41f3135e5565+9d2-rdma_ai_fixes1_jgg@nvidia.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=6d2cd649-e5d9-4225-89eb-989c0d57a44f;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2026-04-28T17:51:57Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Tag=10,
- 3, 0, 1;
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=microsoft.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SA1PR21MB6683:EE_|SA1PR21MB6874:EE_
-x-ms-office365-filtering-correlation-id: e75c3b66-aae5-473f-cd86-08dea54effd2
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|7416014|376014|366016|1800799024|56012099003|18002099003|22082099003|38070700021|921020;
-x-microsoft-antispam-message-info:
- 2b8ystf6rqXcVd3uPCjg41JRTGgtkGQX7ni7w02ZvVJk+8AjsR9DndzUJ4BjTc3M4zIP+ZtBB4hx3xz3+iTHAv/UEKsSA+NqbnaDvr+wzJvkxup6XCK/Ofk3vOWpxlZgz0XYX/uT3ZasTTJXXX50fa3RVg+CyAQ93paKHBTWY44jkU2jl9VZHbfr6u11dSTHOGo6ymIVxwAWljjJqT7ry7oHWP1Lj/2907iNStv/BY1vzS5jQYSJM+U7aDwl0M3HKv+WSr8Q7111Ta6kDdoNYyDq9iFNnfa2eOt4HCXvUATvSHbKzlngji0T0LnaabYU7bckXtPC5ZdNm3eR7fCFUm9NmBDafW8jbBg2Cw4h0iT6IK6Yr0dlz9ChuK8EUQlWeYfjkNDYsOvncJ8qG3ecQJM9UmV1FjmuJFNkqxdcIqtLMRkV500Tx7/8Vx2drn6EKpd98zjgjN9bvbWblals9uG6HB9sQiERQkEwtyYiRcgTEZqMkjJaEt4dMnjn5w3KkdzDLvuoYLlxLTS4NOjUvh4UMbWCuiHs0Z/4DB9X8dGsPoBEvPj3Cd33TJdIp+CYGmjRpeM7rbG9wt6ZQR5Q6WRlnBYcxVl3fV2gnRzN8SeswfGBlulgmSm6BdfSB1QuwSvZhAx900ajTwAehJ9NI4keopfllhAaNsmh4SoJtZeKp7DRFPc8XoKbKPNgZTQW9HTz1spYURyt6UoazMgcbfQwchXFghBb+WrPD6dTgmURJG6QrsYvouRrSioVUphy
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR21MB6683.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(56012099003)(18002099003)(22082099003)(38070700021)(921020);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?JR6PGFD+nh8SA88MB/2OGBfCY/bl5TPnox/4MbVH/v88IR04T4fQvlJHUXL4?=
- =?us-ascii?Q?+BZhv0u9GWYZXzZ6R58+8jbux3X90GkhySV1nbgUAlo2NHK7Ue4ce4wNFvyy?=
- =?us-ascii?Q?209QVg4VlfThrvo7Q7iOTb2aoZ8FCg2yQ3PRcdtdZOtxTtAey6F7NLOCozlS?=
- =?us-ascii?Q?2d5rJXCuVT0Xo+NS0UHpgVdBrPYh8bMtrcp8fc3+X0B+P+AlmCbFx9B584tS?=
- =?us-ascii?Q?6NDqs7OGoZ0BMuntbGpMX3jH8LC6Sqv0SHwXPgriqg8EQj2zOTLaBbt0F+Md?=
- =?us-ascii?Q?BZsskdPtKWNyPOjRPIep1FhmqXrCvZPfYuDnn2SAAqGh+Rdi2dUcRWOIT+zW?=
- =?us-ascii?Q?By1XXMdT1BAD/IkqrvTFu4ooZMdmG/GOx750Mjyh8jwJXEu0qlPPuVdbnq9L?=
- =?us-ascii?Q?scZn2jEG8tb0GuI0JcCX2P3OH3u5B3aDPq4J/njvPvZx9TUQOoi7u9Lq5N9C?=
- =?us-ascii?Q?eTW9+HTmA2L7k3+HDhOTy2VYvcyF3G17IJHopjkh1Mb7C7yvOApv2FVjoQMh?=
- =?us-ascii?Q?Th0qIuDCMu81qt3mwZyAakKxQ+3nAPXyiOyl4BPS3GxWEuF6HCvl70OBN7Ru?=
- =?us-ascii?Q?n0k672ZOyGkG9Rz98/+kMKUULKHQcNbyesPBELpIiw4jvtoDNpDs1Ms3gAHg?=
- =?us-ascii?Q?5MG7995falnfMG47neQug2eeYiofrYZseF/mejzVWTbADtvxVuNfeKE220m1?=
- =?us-ascii?Q?VQDPIL97FgsH3TTENWxkfu/idmqSLJCaFq2lsbU2w5f3p3yBEhBzojVCQkV/?=
- =?us-ascii?Q?2HjgEVHf1VXQnxYuSR45tVQoCkPnQh2TKgmoO43wKvbBa7PgD9UvdssoFh/D?=
- =?us-ascii?Q?OMzmB5G+so4tJIeJVSVa1psoSFSW2xouv5iDDpKuzgMQOk70BgKN/MLHBxWY?=
- =?us-ascii?Q?Maea/nlYzz9nJMsvyOBgHAPJsW7K4Y4PbyPdUrrI8Nv6XIDW5XwdUP67qgbL?=
- =?us-ascii?Q?gmie6w3t/8Z9+8W/1dSD7JOMpQnGy8uxBaH7MOAoIXSY+saQZeQFXyF7W4ze?=
- =?us-ascii?Q?Ym+s8FBqZUN1DeUV6CsRqCyqUhZmNu/7XqqrxPfwvuyH04JT1tMvXhxOtKjs?=
- =?us-ascii?Q?AW+81AQA42cjxkf7ijRz7rzZN3hZaoLb+OvspOvEyM47UlgnxURHOxBwYQwg?=
- =?us-ascii?Q?fGhNZldcpzD5lrOaQstTF86/yik1V8DSyS1w4KWCYiR7zxiWZBEneAiUUyhN?=
- =?us-ascii?Q?2aF0qqFth9ikuhfeJwkosYF3fLs0s+skSmZdghZEf74SK3jYND+XoQZUTVG+?=
- =?us-ascii?Q?RZ6cwTlL+z8JBOq5gnMUSr4gyEAxj9Kl/K7dfzw9Wuu4eKYx26SVyRF1mSTe?=
- =?us-ascii?Q?7wsBL8Jys+NAllV/SPJ27Y/z6uNqv6vjVRwK5pmdCVJtUCq+YenR4YgcwZtg?=
- =?us-ascii?Q?CjSQS02nc7CM4z5MREu0/I7DZDqBABdtBMBhWx88BuSkLwvmvb1hiH+4MWdd?=
- =?us-ascii?Q?3Fu5DKFLaKg06nRgFiev4MKTmcMhWLAn5li9pLJISdWzyhZ/se1eUj1DGgiT?=
- =?us-ascii?Q?lSHKphD+fQGz0r1/6Metr4HqwY3yqqJ27WS/3mW8oyLEp/466Q+1cTVJr85n?=
- =?us-ascii?Q?p3lUyDD3SJCTJeT6Q/Uik+m855hLeO0aYIczA5omjeNcf0B+RvXHkPpZy40Y?=
- =?us-ascii?Q?CmX8rVyKlgvhW67reolZ0+eprPeOPf54HBGTQT2C91q32bQy6/KdfhGDwewP?=
- =?us-ascii?Q?oQfThhTYdNRMEMWzUQtQRlxF5ot/Re+1d1CJgxhU3P6Hvtkh?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F4B5451076
+	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 17:53:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777398796; cv=none; b=q7HFL/mdt9SrNZpxpKzc0jvKtIYD0L93wJiQxn+fBmaeONe3ZMTP+pHcXNHdyGczX0DRm0VP3rbd6P1qHdH8IFt1XUXwSUp0RvWbPRWbAPyKPLPf3/SlGVZ+pEwQkLOB7sE4RHB/2tf29PE2FD918rND0E5tYlaOuXWZp6QoNqU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777398796; c=relaxed/simple;
+	bh=eeFPn0M+w24/mqijYklGbQUNjB+65be9k1HfxTYLAj4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=VElFuYx1TlvwRBMkCQWOwBOD72Qds8ZoJfP1A0nYFCroytgOXtEwSPdAJL0ZGZ3aYTgqj4GAvLnIJWkDp5y+jFjtSHCe4lDFqRTJY/nI4muMALvDS8q3zSTCDCAjc2ap4mrNEneOaWj1SLsd+zslmK9Ky7peMwkTPV4s41r6zag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=DOBF/Xzo; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=3kkZsz8V; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=DOBF/Xzo; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=3kkZsz8V; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id EEBCC5BCE9;
+	Tue, 28 Apr 2026 17:53:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1777398793; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=P3BhqwiahZQ6WzPwYjBbtqnM8IGngBp+MvpXddRz0B4=;
+	b=DOBF/Xzotlfbyobb3hnxOx9bpGEGBD8COBy+WfVXU1W5savbkQI5Z2gkx8wcx66DgedUOV
+	oX9cSs2ZMPB4xo2Y09oWkKI181GBBSfyk/tVDgZRbg7vfdkt8mkUYSrCfay5xZIl5vU75E
+	27CNBCecsUkE44r/iKQJCoE7vHaYF9k=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1777398793;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=P3BhqwiahZQ6WzPwYjBbtqnM8IGngBp+MvpXddRz0B4=;
+	b=3kkZsz8VwjzEBcgAEebMp37f5IKmYTF24lR0Xx7sQrh48efYMuP9qh4XIoPQXC3dxkBe3j
+	sJtifG0uYAEboXCQ==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="DOBF/Xzo";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=3kkZsz8V
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1777398793; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=P3BhqwiahZQ6WzPwYjBbtqnM8IGngBp+MvpXddRz0B4=;
+	b=DOBF/Xzotlfbyobb3hnxOx9bpGEGBD8COBy+WfVXU1W5savbkQI5Z2gkx8wcx66DgedUOV
+	oX9cSs2ZMPB4xo2Y09oWkKI181GBBSfyk/tVDgZRbg7vfdkt8mkUYSrCfay5xZIl5vU75E
+	27CNBCecsUkE44r/iKQJCoE7vHaYF9k=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1777398793;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=P3BhqwiahZQ6WzPwYjBbtqnM8IGngBp+MvpXddRz0B4=;
+	b=3kkZsz8VwjzEBcgAEebMp37f5IKmYTF24lR0Xx7sQrh48efYMuP9qh4XIoPQXC3dxkBe3j
+	sJtifG0uYAEboXCQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9DF24593B0;
+	Tue, 28 Apr 2026 17:53:12 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id LJ3XGgj08GmpdgAAD6G6ig
+	(envelope-from <krisman@suse.de>); Tue, 28 Apr 2026 17:53:12 +0000
+From: Gabriel Krisman Bertazi <krisman@suse.de>
+To: Jens Axboe <axboe@kernel.dk>
+Cc: io-uring@vger.kernel.org,  Martin Michaelis <code@mgjm.de>,
+  stable@vger.kernel.org
+Subject: Re: [PATCH 2/2] io_uring/kbuf: support min length left for
+ incremental buffers
+In-Reply-To: <20260428154557.2150818-3-axboe@kernel.dk> (Jens Axboe's message
+	of "Tue, 28 Apr 2026 09:44:50 -0600")
+References: <20260428154557.2150818-1-axboe@kernel.dk>
+	<20260428154557.2150818-3-axboe@kernel.dk>
+Date: Tue, 28 Apr 2026 13:53:10 -0400
+Message-ID: <87ik9bj7jt.fsf@mailhost.krisman.be>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: microsoft.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR21MB6683.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e75c3b66-aae5-473f-cd86-08dea54effd2
-X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Apr 2026 17:53:05.0751
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: C9dMoixDDSWJD2jgOD2JlmeoN951/ir1eoTDJrmzTx8WTqqakwrcZcKgfmnXKl0S7nniQaesJuAG3+B7hoFOJw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR21MB6874
-X-Rspamd-Queue-Id: 7BF5B48A3A0
+Content-Type: text/plain
+X-Spam-Flag: NO
+X-Spam-Score: -4.51
+X-Spam-Level: 
+X-Rspamd-Queue-Id: E8D0C48A3B1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[microsoft.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[microsoft.com:s=selector2];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-241747-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[47];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	TAGGED_FROM(0.00)[bounces-241748-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[amd.com,vmware.com,opensrcsec.com,davemloft.net,microsoft.com,redhat.com,nvidia.com,gmail.com,mellanox.com,huawei.com,emulex.com,lists.linux.dev,purestorage.com,cisco.com,grimberg.me,vger.kernel.org,hisilicon.com];
+	PRECEDENCE_BULK(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[longli@microsoft.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[microsoft.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable,netdev];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[krisman@suse.de,stable@vger.kernel.org];
 	NEURAL_HAM(-0.00)[-1.000];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,SA1PR21MB6683.namprd21.prod.outlook.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	RCVD_COUNT_FIVE(0.00)[6];
+	DKIM_TRACE(0.00)[suse.de:+];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.de:dkim,mgjm.de:email,mailhost.krisman.be:mid]
 
+Jens Axboe <axboe@kernel.dk> writes:
+
+> From: Martin Michaelis <code@mgjm.de>
 >
-> Sashiko points out that mana_ib_cfg_vport_steering() is leaked, the norma=
-l
-> destroy path cleans it up.
+> Incrementally consumed buffer rings are generally fully consumed, but
+> it's quite possible that the application has a minimum size it needs to
+> meet to avoid truncation. Currently that minimum limit is 1 byte, but
+> this should be a setting that is the hands of the application. For
+> recvmsg multishot, a prime use case for incrementally consumed buffers,
+> the application may get spurious -EFAULT returned at the end of an
+> incrementally consumed buffer, as less space is available than the
+> headers need.
+>
+> Grab a u32 field in struct io_uring_buf_reg, which the application can
+> use to inform the kernel of the minimum size that should be available
+> in an incrementally consumed buffer. If less than that is available,
+> the current buffer is fully processed and the next one will be picked.
 >
 > Cc: stable@vger.kernel.org
-> Fixes: 0266a177631d ("RDMA/mana_ib: Add a driver for Microsoft Azure
-> Network Adapter")
-> Link:
-> https://sashiko.d/
-> ev%2F%23%2Fpatchset%2F0-v1-e911b76a94d1%252B65d95-
-> rdma_udata_rep_jgg%2540nvidia.com%3Fpart%3D4&data=3D05%7C02%7Clongli%
-> 40microsoft.com%7Cb377464abc954481e9b108dea541b646%7C72f988bf86f141
-> af91ab2d7cd011db47%7C1%7C0%7C639129898856785811%7CUnknown%7CT
-> WFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4
-> zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=3DpqtgE8ULS
-> pXgq%2BbpubumadArZO9lTvPki2ATvD9TnGI%3D&reserved=3D0
-> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-
-Reviewed-by: Long Li <longli@microsoft.com>
-
-
+> Fixes: ae98dbf43d75 ("io_uring/kbuf: add support for incremental buffer consumption")
+> Link: https://github.com/axboe/liburing/issues/1433
+> Signed-off-by: Martin Michaelis <code@mgjm.de>
+> [axboe: write commit message, change io_buffer_list member name]
+> Signed-off-by: Jens Axboe <axboe@kernel.dk>
 > ---
->  drivers/infiniband/hw/mana/qp.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
+>  include/uapi/linux/io_uring.h | 3 ++-
+>  io_uring/kbuf.c               | 8 +++++++-
+>  io_uring/kbuf.h               | 7 +++++++
+>  3 files changed, 16 insertions(+), 2 deletions(-)
 >
-> diff --git a/drivers/infiniband/hw/mana/qp.c b/drivers/infiniband/hw/mana=
-/qp.c
-> index 8e1f052d0ec976..0fbcf449c134b5 100644
-> --- a/drivers/infiniband/hw/mana/qp.c
-> +++ b/drivers/infiniband/hw/mana/qp.c
-> @@ -217,13 +217,15 @@ static int mana_ib_create_qp_rss(struct ib_qp *ibqp=
-,
-> struct ib_pd *pd,
->               ibdev_dbg(&mdev->ib_dev,
->                         "Failed to copy to udata create rss-qp, %d\n",
->                         ret);
-> -             goto fail;
-> +             goto err_disable_vport_rx;
->       }
->
->       kfree(mana_ind_table);
->
->       return 0;
->
-> +err_disable_vport_rx:
-> +     mana_disable_vport_rx(mpc);
->  fail:
->       while (i-- > 0) {
->               ibwq =3D ind_tbl->ind_tbl[i];
-> --
-> 2.43.0
+> diff --git a/include/uapi/linux/io_uring.h b/include/uapi/linux/io_uring.h
+> index 17ac1b785440..909fb7aea638 100644
+> --- a/include/uapi/linux/io_uring.h
+> +++ b/include/uapi/linux/io_uring.h
+> @@ -905,7 +905,8 @@ struct io_uring_buf_reg {
+>  	__u32	ring_entries;
+>  	__u16	bgid;
+>  	__u16	flags;
+> -	__u64	resv[3];
+> +	__u32	min_left;
+> +	__u32	resv[5];
 
+Honest question, isn't this a property of the specific operation and/or
+fd being operated, instead of the buffer_reg?
+
+>  };
+>  
+>  /* argument for IORING_REGISTER_PBUF_STATUS */
+> diff --git a/io_uring/kbuf.c b/io_uring/kbuf.c
+> index 43e4f8615fe8..63061aa1cab9 100644
+> --- a/io_uring/kbuf.c
+> +++ b/io_uring/kbuf.c
+> @@ -47,7 +47,7 @@ static bool io_kbuf_inc_commit(struct io_buffer_list *bl, int len)
+>  		this_len = min_t(u32, len, buf_len);
+>  		buf_len -= this_len;
+>  		/* Stop looping for invalid buffer length of 0 */
+> -		if (buf_len || !this_len) {
+> +		if (buf_len > bl->min_left_sub_one || !this_len) {
+
+Cosmetic, but perhaps store min_left_sub_one instead of min_left itself? the
+buf_len must be >= min_left, and that is easier to read.  (buf_len &&
+buf_len >= min_left || !this_len)
+
+>  			WRITE_ONCE(buf->addr, READ_ONCE(buf->addr) + this_len);
+>  			WRITE_ONCE(buf->len, buf_len);
+>  			return false;
+> @@ -637,6 +637,10 @@ int io_register_pbuf_ring(struct io_ring_ctx *ctx, void __user *arg)
+>  	if (reg.ring_entries >= 65536)
+>  		return -EINVAL;
+>  
+> +	/* minimum left byte count is a property of incremental buffers */
+> +	if (!(reg.flags & IOU_PBUF_RING_INC) && reg.min_left)
+> +		return -EINVAL;
+> +
+>  	bl = io_buffer_get_list(ctx, reg.bgid);
+>  	if (bl) {
+>  		/* if mapped buffer ring OR classic exists, don't allow */
+> @@ -683,6 +687,8 @@ int io_register_pbuf_ring(struct io_ring_ctx *ctx, void __user *arg)
+>  	bl->mask = reg.ring_entries - 1;
+>  	bl->flags |= IOBL_BUF_RING;
+>  	bl->buf_ring = br;
+> +	if (reg.min_left)
+> +		bl->min_left_sub_one = reg.min_left - 1;
+>  	if (reg.flags & IOU_PBUF_RING_INC)
+>  		bl->flags |= IOBL_INC;
+>  	ret = io_buffer_add_list(ctx, bl, reg.bgid);
+> diff --git a/io_uring/kbuf.h b/io_uring/kbuf.h
+> index abf7052b556e..401773e1ef80 100644
+> --- a/io_uring/kbuf.h
+> +++ b/io_uring/kbuf.h
+> @@ -32,6 +32,13 @@ struct io_buffer_list {
+>  
+>  	__u16 flags;
+>  
+> +	/*
+> +	 * minimum required amount to be left to reuse an incrementally
+> +	 * consumed buffer. If less than this is left at consumption time,
+> +	 * buffer is done and head is incremented to the next buffer.
+> +	 */
+> +	__u32 min_left_sub_one;
+> +
+>  	struct io_mapped_region region;
+>  };
+
+-- 
+Gabriel Krisman Bertazi
 
