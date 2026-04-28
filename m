@@ -1,71 +1,65 @@
-Return-Path: <stable+bounces-241767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241768-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iwDUERgT8WlZcwEAu9opvQ
-	(envelope-from <stable+bounces-241767-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 22:05:44 +0200
+	id 2IrWFiQT8WlZcwEAu9opvQ
+	(envelope-from <stable+bounces-241768-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 22:05:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2723048B6F7
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 22:05:42 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB8E948B705
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 22:05:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 85FA93004404
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 20:05:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 63862303FAC3
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 20:05:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9486A2C3261;
-	Tue, 28 Apr 2026 20:05:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB4A02D879E;
+	Tue, 28 Apr 2026 20:05:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TffsGGBy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AbRbhe6h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58B9D2609E3
-	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 20:05:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD5612609E3;
+	Tue, 28 Apr 2026 20:05:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777406737; cv=none; b=PkyU33ROPjriLEkSKMTG4RUJCkezmSI4uA0wvvEm43doelshVTFLJ7c56kHqDRaggAXqRhZqFJ9HPDahYCERZv1nTf78IgqBZoCGQYpKLsvFHQGgs1Nmz7OkcBp0njFMsH+OHEwNO5nuB86r4Qu8O/nwr3ebtdrqjGu42QrSLME=
+	t=1777406751; cv=none; b=NNsKPr9FKekNUGQTYr4uH+xUZtKfL5Dc70F/Axm52JXLKc+UJ6J6maw7VFUL60M3j6kl56IUVh7xHvngqKuikf0ux4t20rRVlnJ1nBlk3tKC0Oe0IYgfuo9mpsrB7K2k8Wbkel58vxRzq6X8FWmPxBCi/qsArpA2ul/SJ1VuQ2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777406737; c=relaxed/simple;
-	bh=oV0CHHZwKdx8Kijd/5vqSvwFrRuihHsC++o6YnCP9m4=;
+	s=arc-20240116; t=1777406751; c=relaxed/simple;
+	bh=Y7a6feOaVeJP4q66K7OSq9SR4dMdT1W5SWT0J9vniQs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k4iRGomukTqV37USp1jts3Btq/WBMo/dUeLdQm8i+LE1wEWJbXZUH0CCwoXjjG9EU/kkWNukHMLxlEbLUGk84/+6HVQwHjVT9Y1x6bVj7qESmNOcE3gMwXldnuMGWzGljfKggyPqI9iiiZqKyaSVu0oh6ODBK3iUegL7X75zLXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TffsGGBy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 809C2C2BCAF;
-	Tue, 28 Apr 2026 20:05:35 +0000 (UTC)
+	 MIME-Version; b=Vk7qz+/KNL1KpG+zDnwPSq7tbCr9hH/l6rShVacN0hOGpJ+sX5nBU/G6khIPk0gKOTDBcTzWAgKD+K6u/j6N6k1mjY5aO+wPsfWStzOuA1X0mxgNKjFTvMBlmKhwxmHOfUd5SDD6/6nEBPt2sWqgio59XsegWgtQbfPrqxfcGFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AbRbhe6h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FE79C2BCAF;
+	Tue, 28 Apr 2026 20:05:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777406737;
-	bh=oV0CHHZwKdx8Kijd/5vqSvwFrRuihHsC++o6YnCP9m4=;
+	s=k20201202; t=1777406751;
+	bh=Y7a6feOaVeJP4q66K7OSq9SR4dMdT1W5SWT0J9vniQs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TffsGGByIPPmTjqYmuk7e9SF5HqlkcVAabWHpWS7SM6WxNmTMbe8rXerWjLiVbNb/
-	 3VyJQzFCZOMTKvnx8t54si4WOWl44bf6nSevxNxI5JTcayb9fAs0eu6/QOjHgnG/nT
-	 oER55T4fVwk4p1B5a4SDRjvhz28Vw6YZj2kRO6DSBrm5ru6WovTH4QuCo7HPzga4wY
-	 4+AyvagQsav+VzEDn2EdmRrrVNxyNV7+wF5amCfA7RQdCBArnKOpNaOWuHT+omEYa0
-	 UNjE7mMTFXcFtQR4r19q3I2Cs2V0nNdWKSklf3B/gZjWC3BtzCapfBE9XHRurPxn5d
-	 O9So3rB36Yqfg==
+	b=AbRbhe6hWtUIuUxqeDy6YlkubQj9Pc9fdc4NdN442hqWF5SfWOJ8wL95wjpEVvbV4
+	 Oiv3iyEuIMKSypH2bc0GIR1wVkxfPRv6qlNDl4WCer1YaL1sW3HGtfuhLzj9MomLBV
+	 yANqte9VUi0WM4Xb0camJ9LtfNDgTR4DwFTnphd2sCYhRIFkBxs1Y7tdczOxja1UL4
+	 Jrz1NV2KULD7Sujr5H9qSNl2GukmP+99KEoOhGVKkc7rbiMcqO5sxPn89477Fz+drI
+	 S0vYsMIyd1ePD0Rm6IE+xYU4fwdeWZUhBfLkJlJdBRuGjYqMF4ukorPbeQRNyrWH8d
+	 Gc+8Sp7d1btMA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Anthony Yznaga <anthony.yznaga@oracle.com>,
-	David Hildenbrand <david@kernel.org>,
-	Pedro Falcato <pfalcato@suse.de>,
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>,
-	Jann Horn <jannh@google.com>,
-	"Jason A. Donenfeld" <jason@zx2c4.com>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
+	Will Deacon <will@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18.y] mm: prevent droppable mappings from being locked
-Date: Tue, 28 Apr 2026 16:05:33 -0400
-Message-ID: <20260428200533.3190779-1-sashal@kernel.org>
+Subject: [PATCH 5.10.y] arm64/mm: Enable batched TLB flush in unmap_hotplug_range()
+Date: Tue, 28 Apr 2026 16:05:48 -0400
+Message-ID: <20260428200548.3191346-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026042736-cheek-entree-3635@gregkh>
-References: <2026042736-cheek-entree-3635@gregkh>
+In-Reply-To: <2026042729-abiding-helmet-8eef@gregkh>
+References: <2026042729-abiding-helmet-8eef@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -73,180 +67,168 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2723048B6F7
+X-Rspamd-Queue-Id: BB8E948B705
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241767-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-241768-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,arm.com:email]
 
-From: Anthony Yznaga <anthony.yznaga@oracle.com>
+From: Anshuman Khandual <anshuman.khandual@arm.com>
 
-[ Upstream commit d239462787b072c78eb19fc1f155c3d411256282 ]
+[ Upstream commit 48478b9f791376b4b89018d7afdfd06865498f65 ]
 
-Droppable mappings must not be lockable.  There is a check for VMAs with
-VM_DROPPABLE set in mlock_fixup() along with checks for other types of
-unlockable VMAs which ensures this when calling mlock()/mlock2().
+During a memory hot remove operation, both linear and vmemmap mappings for
+the memory range being removed, get unmapped via unmap_hotplug_range() but
+mapped pages get freed only for vmemmap mapping. This is just a sequential
+operation where each table entry gets cleared, followed by a leaf specific
+TLB flush, and then followed by memory free operation when applicable.
 
-For mlockall(MCL_FUTURE), the check for unlockable VMAs is different.  In
-apply_mlockall_flags(), if the flags parameter has MCL_FUTURE set, the
-current task's mm's default VMA flag field mm->def_flags has VM_LOCKED
-applied to it.  VM_LOCKONFAULT is also applied if MCL_ONFAULT is also set.
-When these flags are set as default in this manner they are cleared in
-__mmap_complete() for new mappings that do not support mlock.  A check for
-VM_DROPPABLE in __mmap_complete() is missing resulting in droppable
-mappings created with VM_LOCKED set.  To fix this and reduce that chance
-of similar bugs in the future, introduce and use vma_supports_mlock().
+This approach was simple and uniform both for vmemmap and linear mappings.
+But linear mapping might contain CONT marked block memory where it becomes
+necessary to first clear out all entire in the range before a TLB flush.
+This is as per the architecture requirement. Hence batch all TLB flushes
+during the table tear down walk and finally do it in unmap_hotplug_range().
 
-Link: https://lkml.kernel.org/r/20260310155821.17869-1-anthony.yznaga@oracle.com
-Fixes: 9651fcedf7b9 ("mm: add MAP_DROPPABLE for designating always lazily freeable mappings")
-Signed-off-by: Anthony Yznaga <anthony.yznaga@oracle.com>
-Suggested-by: David Hildenbrand <david@kernel.org>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
-Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-Tested-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-Cc: Jann Horn <jannh@google.com>
-Cc: Jason A. Donenfeld <jason@zx2c4.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ added const to is_vm_hugetlb_page and stubbed vma_supports_mlock in vma_internal.h instead of the split-out stubs.h ]
+Prior to this fix, it was hypothetically possible for a speculative access
+to a higher address in the contiguous block to fill the TLB with shattered
+entries for the entire contiguous range after a lower address had already
+been cleared and invalidated. Due to the table entries being shattered, the
+subsequent TLB invalidation for the higher address would not then clear the
+TLB entries for the lower address, meaning stale TLB entries could persist.
+
+Besides it also helps in improving the performance via TLBI range operation
+along with reduced synchronization instructions. The time spent executing
+unmap_hotplug_range() improved 97% measured over a 2GB memory hot removal
+in KVM guest.
+
+This scheme is not applicable during vmemmap mapping tear down where memory
+needs to be freed and hence a TLB flush is required after clearing out page
+table entry.
+
+Cc: Will Deacon <will@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+Closes: https://lore.kernel.org/all/aWZYXhrT6D2M-7-N@willie-the-truck/
+Fixes: bbd6ec605c0f ("arm64/mm: Enable memory hot remove")
+Cc: stable@vger.kernel.org
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+[ renamed `__pte_clear()` to `pte_clear()` and inlined `pmd_cont(pmd)` as `pmd_val(pmd) & PMD_SECT_CONT` ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/hugetlb_inline.h   |  4 ++--
- mm/internal.h                    | 10 ++++++++++
- mm/mlock.c                       | 10 ++++++----
- mm/vma.c                         |  4 +---
- tools/testing/vma/vma_internal.h |  7 ++++++-
- 5 files changed, 25 insertions(+), 10 deletions(-)
+ arch/arm64/mm/mmu.c | 36 ++++++++++++++++++++----------------
+ 1 file changed, 20 insertions(+), 16 deletions(-)
 
-diff --git a/include/linux/hugetlb_inline.h b/include/linux/hugetlb_inline.h
-index 0660a03d37d98..846185ea626c7 100644
---- a/include/linux/hugetlb_inline.h
-+++ b/include/linux/hugetlb_inline.h
-@@ -6,14 +6,14 @@
+diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+index b584bf200619f..ff16cc7251b40 100644
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -862,10 +862,14 @@ static void unmap_hotplug_pte_range(pmd_t *pmdp, unsigned long addr,
  
- #include <linux/mm.h>
+ 		WARN_ON(!pte_present(pte));
+ 		pte_clear(&init_mm, addr, ptep);
+-		flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
+-		if (free_mapped)
++		if (free_mapped) {
++			/* CONT blocks are not supported in the vmemmap */
++			WARN_ON(pte_cont(pte));
++			flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
+ 			free_hotplug_page_range(pte_page(pte),
+ 						PAGE_SIZE, altmap);
++		}
++		/* unmap_hotplug_range() flushes TLB for !free_mapped */
+ 	} while (addr += PAGE_SIZE, addr < end);
+ }
  
--static inline bool is_vm_hugetlb_page(struct vm_area_struct *vma)
-+static inline bool is_vm_hugetlb_page(const struct vm_area_struct *vma)
+@@ -886,15 +890,14 @@ static void unmap_hotplug_pmd_range(pud_t *pudp, unsigned long addr,
+ 		WARN_ON(!pmd_present(pmd));
+ 		if (pmd_sect(pmd)) {
+ 			pmd_clear(pmdp);
+-
+-			/*
+-			 * One TLBI should be sufficient here as the PMD_SIZE
+-			 * range is mapped with a single block entry.
+-			 */
+-			flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
+-			if (free_mapped)
++			if (free_mapped) {
++				/* CONT blocks are not supported in the vmemmap */
++				WARN_ON(pmd_val(pmd) & PMD_SECT_CONT);
++				flush_tlb_kernel_range(addr, addr + PMD_SIZE);
+ 				free_hotplug_page_range(pmd_page(pmd),
+ 							PMD_SIZE, altmap);
++			}
++			/* unmap_hotplug_range() flushes TLB for !free_mapped */
+ 			continue;
+ 		}
+ 		WARN_ON(!pmd_table(pmd));
+@@ -919,15 +922,12 @@ static void unmap_hotplug_pud_range(p4d_t *p4dp, unsigned long addr,
+ 		WARN_ON(!pud_present(pud));
+ 		if (pud_sect(pud)) {
+ 			pud_clear(pudp);
+-
+-			/*
+-			 * One TLBI should be sufficient here as the PUD_SIZE
+-			 * range is mapped with a single block entry.
+-			 */
+-			flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
+-			if (free_mapped)
++			if (free_mapped) {
++				flush_tlb_kernel_range(addr, addr + PUD_SIZE);
+ 				free_hotplug_page_range(pud_page(pud),
+ 							PUD_SIZE, altmap);
++			}
++			/* unmap_hotplug_range() flushes TLB for !free_mapped */
+ 			continue;
+ 		}
+ 		WARN_ON(!pud_table(pud));
+@@ -957,6 +957,7 @@ static void unmap_hotplug_p4d_range(pgd_t *pgdp, unsigned long addr,
+ static void unmap_hotplug_range(unsigned long addr, unsigned long end,
+ 				bool free_mapped, struct vmem_altmap *altmap)
  {
- 	return !!(vma->vm_flags & VM_HUGETLB);
- }
++	unsigned long start = addr;
+ 	unsigned long next;
+ 	pgd_t *pgdp, pgd;
  
- #else
- 
--static inline bool is_vm_hugetlb_page(struct vm_area_struct *vma)
-+static inline bool is_vm_hugetlb_page(const struct vm_area_struct *vma)
- {
- 	return false;
- }
-diff --git a/mm/internal.h b/mm/internal.h
-index c80c6f566c2d9..322b33e471ce9 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -1130,6 +1130,16 @@ static inline struct file *maybe_unlock_mmap_for_io(struct vm_fault *vmf,
- 	}
- 	return fpin;
- }
+@@ -978,6 +979,9 @@ static void unmap_hotplug_range(unsigned long addr, unsigned long end,
+ 		WARN_ON(!pgd_present(pgd));
+ 		unmap_hotplug_p4d_range(pgdp, addr, next, free_mapped, altmap);
+ 	} while (addr = next, addr < end);
 +
-+static inline bool vma_supports_mlock(const struct vm_area_struct *vma)
-+{
-+	if (vma->vm_flags & (VM_SPECIAL | VM_DROPPABLE))
-+		return false;
-+	if (vma_is_dax(vma) || is_vm_hugetlb_page(vma))
-+		return false;
-+	return vma != get_gate_vma(current->mm);
-+}
-+
- #else /* !CONFIG_MMU */
- static inline void unmap_mapping_folio(struct folio *folio) { }
- static inline void mlock_new_folio(struct folio *folio) { }
-diff --git a/mm/mlock.c b/mm/mlock.c
-index bb0776f5ef7ca..f59c6d8d376ff 100644
---- a/mm/mlock.c
-+++ b/mm/mlock.c
-@@ -472,10 +472,12 @@ static int mlock_fixup(struct vma_iterator *vmi, struct vm_area_struct *vma,
- 	int ret = 0;
- 	vm_flags_t oldflags = vma->vm_flags;
- 
--	if (newflags == oldflags || (oldflags & VM_SPECIAL) ||
--	    is_vm_hugetlb_page(vma) || vma == get_gate_vma(current->mm) ||
--	    vma_is_dax(vma) || vma_is_secretmem(vma) || (oldflags & VM_DROPPABLE))
--		/* don't set VM_LOCKED or VM_LOCKONFAULT and don't count */
-+	if (newflags == oldflags || vma_is_secretmem(vma) ||
-+	    !vma_supports_mlock(vma))
-+		/*
-+		 * Don't set VM_LOCKED or VM_LOCKONFAULT and don't count.
-+		 * For secretmem, don't allow the memory to be unlocked.
-+		 */
- 		goto out;
- 
- 	vma = vma_modify_flags(vmi, *prev, vma, start, end, newflags);
-diff --git a/mm/vma.c b/mm/vma.c
-index 5815ae9e57703..eeb6a187c3d8b 100644
---- a/mm/vma.c
-+++ b/mm/vma.c
-@@ -2571,9 +2571,7 @@ static void __mmap_complete(struct mmap_state *map, struct vm_area_struct *vma)
- 
- 	vm_stat_account(mm, vma->vm_flags, map->pglen);
- 	if (vm_flags & VM_LOCKED) {
--		if ((vm_flags & VM_SPECIAL) || vma_is_dax(vma) ||
--					is_vm_hugetlb_page(vma) ||
--					vma == get_gate_vma(mm))
-+		if (!vma_supports_mlock(vma))
- 			vm_flags_clear(vma, VM_LOCKED_MASK);
- 		else
- 			mm->locked_vm += map->pglen;
-diff --git a/tools/testing/vma/vma_internal.h b/tools/testing/vma/vma_internal.h
-index dc976a285ad2c..9f724954a0f6b 100644
---- a/tools/testing/vma/vma_internal.h
-+++ b/tools/testing/vma/vma_internal.h
-@@ -989,7 +989,12 @@ static inline bool mapping_can_writeback(struct address_space *mapping)
- 	return true;
++	if (!free_mapped)
++		flush_tlb_kernel_range(start, end);
  }
  
--static inline bool is_vm_hugetlb_page(struct vm_area_struct *vma)
-+static inline bool is_vm_hugetlb_page(const struct vm_area_struct *vma)
-+{
-+	return false;
-+}
-+
-+static inline bool vma_supports_mlock(const struct vm_area_struct *vma)
- {
- 	return false;
- }
+ static void free_empty_pte_table(pmd_t *pmdp, unsigned long addr,
 -- 
 2.53.0
 
