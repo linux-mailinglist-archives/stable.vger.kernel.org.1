@@ -1,190 +1,182 @@
-Return-Path: <stable+bounces-241664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241665-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EOEVISG48GlwXgEAu9opvQ
-	(envelope-from <stable+bounces-241664-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 15:37:37 +0200
+	id KOQQM+C78GmFXwEAu9opvQ
+	(envelope-from <stable+bounces-241665-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 15:53:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DECAF485FFC
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 15:37:36 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46B6E4864F4
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 15:53:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 85161325AB96
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 13:15:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0AEF43358355
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 13:17:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B761E3F2108;
-	Tue, 28 Apr 2026 13:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D12A944CF59;
+	Tue, 28 Apr 2026 13:14:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="S6nBbZvj"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="reZe0jAT"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76BFE3EF0C9;
-	Tue, 28 Apr 2026 13:11:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777381906; cv=none; b=RbAxQhBDfm2NG0HFRLFdNHE+KOS+IbtAi66MJE0u4RMPy05MQ4Q0NYbku+LoWZY3s1cSjjxR7ZszNkQNLC3ORE8llhoHVkGwGVT2iFLRcJ3S8/XrLz0qWuUuViH3UM0gNdFfWf417qAaOGLmzqSK5OGbUUDpv+y5U2QMEc/ObaA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777381906; c=relaxed/simple;
-	bh=jYgM0IF6kD5KCGMYtZjkmmlCECROFOMKTccfIZ3/5cA=;
-	h=Date:To:From:Subject:Message-Id; b=NnrTVal79vrVMgo+yT5GYPjjJ4sIRA6iAu4vm9NLT00PgzVclZOiCEObchfr3Z8iHMiUnsuckFoVvNiwJL1FqVlnOLcX6+vm9hgzYPggZeCk1q+0bgLhTDHqSo1vu4s0LyRi/ZKwiByBgISnUh23SlWGyXnCNj9PA5NI64dofRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=S6nBbZvj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 452E3C2BCAF;
-	Tue, 28 Apr 2026 13:11:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1777381906;
-	bh=jYgM0IF6kD5KCGMYtZjkmmlCECROFOMKTccfIZ3/5cA=;
-	h=Date:To:From:Subject:From;
-	b=S6nBbZvjW3txnCxJWOTTR5en0khbdFO/0bKPJM8itKOOFqEp4+Ape1L4wuPJEXmRV
-	 Ygue+v7Ezm9HyDBGZG9dctvMb0gg4mMvDFVlL0H/ltCGmeuh2HcESTcM7fIODMEfPp
-	 Dz+C/qXlzFYttOp1PY1pZcoCmEXwmsN8fhU39/zA=
-Date: Tue, 28 Apr 2026 06:11:45 -0700
-To: mm-commits@vger.kernel.org,vishal.l.verma@intel.com,stable@vger.kernel.org,rafael@kernel.org,osalvador@suse.de,nao.horiguchi@gmail.com,linmiaohe@huawei.com,huang.ying.caritas@gmail.com,gregkh@linuxfoundation.org,david@kernel.org,dakr@kernel.org,songmuchun@bytedance.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + drivers-base-memory-fix-locking-for-poison-accounting-lookup.patch added to mm-hotfixes-unstable branch
-Message-Id: <20260428131146.452E3C2BCAF@smtp.kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 417E644BCBB
+	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 13:14:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.181
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777382063; cv=pass; b=qQlc+ZPCwFkVMBQ4vhZBLhYTnRxBPUYi2CIgH7Kc+AWzif3tvopbZ3xWsSIHVuRZyF0HiMev4hI8LPSICUH39Vnj5af92R6+F05kEFxc0C9/PSsCGkrpTc8XKL/VNyLvHCtWGGdOPVaPqNyKmOmtPDWYOYi5iNbzStMLyFlRMN8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777382063; c=relaxed/simple;
+	bh=/pvgQuL7vphU/72KVdYS4OQfN6TiaqXigEAuLe2ShgY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=N6Mvpreeq/NAB5fr29zSd95kRD7sIQy02ZN7Vq5IYXala8DFAW4uBUz4gwgcs4y/0/aSc9r1gi/uIeJ/R91Bh1ML4LV96GOmWk9IhOQ2OsxGHTYZmYd0tSoLpzQkfxI/lpTh7/qoqhSSRBYUudTmX6ne1p7KDIYtL3MT6GKigZs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=reZe0jAT; arc=pass smtp.client-ip=209.85.222.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-8f15e900586so248010785a.1
+        for <stable@vger.kernel.org>; Tue, 28 Apr 2026 06:14:22 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777382061; cv=none;
+        d=google.com; s=arc-20240605;
+        b=FvuaXOLzFThLP6aE33+piSTgkDhT8bPNGMjbZnRo4m0eAAMmZ4WrZpU3LF0dhJnVpD
+         y1NxNhx+y4jnn1pRFkGQpJJ6WrtOTE5xOkcqGogRqD1qWiRkG2Jsby0mPs3ez9zEdtyi
+         JDdsMkiH3x4Aa6mWv0r7qDw55O3vy7EH9B5/ZjdhEHvaeEcdIq7nqcr+iwNoOEJ9BDW9
+         YJCy4P1m/vigRehygr1tXyh0XnSkhSZ/nSIHbv7xstRf/1vsMDMtFT/cTAEvmd5Jmrc6
+         bjL+q8Rlz7tVhp45IgRrjfXDrjitVc/tgslRmQ1cN7VBOQ2AD8nz9b7BQH1n8qFMbOAC
+         a1Ag==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ph2KGeZYvECiBIV5t/7ReHLKmIw+/jWyacMkZ2Q4W34=;
+        fh=69uh77KrHeGO4iJjuIO+B+Ltiwg5NlgJROpsUKIlbOI=;
+        b=HjkeDV2pYfHdFUA1RHLF9Kg0fpbXT/0cwhW49kiVwIS5d3h5u4I58pD5J6mn1ZZEtd
+         HpH8Hjhblj+VBquI8jDecwPXGRSLih9LJ0koTLdy4HwwE/BzCenK9dzzD+uAX5ftB4Ht
+         z7M8htd/non2tTrrBKysKc6rXRJT7XJBekePjhetr7xwYaN5AEahc6952czoQ+H6+ilb
+         4aIMt1oSfdvz+9bKy8Msr1GzmhrlpWAcYTi7whGxLn67zkYKvTrdF8+UJhnn4Ovam/EY
+         i2d07VVb/1aIde2/dOuvehUE4Ra736FWAcfc3NHYi3Nba+zYNXC3b2z55aO7QnZsNysg
+         bxbg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1777382061; x=1777986861; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ph2KGeZYvECiBIV5t/7ReHLKmIw+/jWyacMkZ2Q4W34=;
+        b=reZe0jATazrMApqmiPvLGnAqHzfZjSc/RL6VJ83Ano0FRokYM2BRE8ifJOh6QnlAtt
+         qdUDoW+SKeiBa3V1yUVGpeMKSn0pmk7ghCNxj8/3E32DI+ET/TQNCA6VaeWTh+vuCRh3
+         wFUpIwQGBzMuZByVU+D9VkMAxWKs0hw/+tlZwBrCAyNFjJyAtMIOTFk7uyKNZg3cRHSP
+         o/T5ZiGkxZd6xSSuIV+DxbJkIB8auE5zbPx+As0aOmJr274No9oCtVR/qKjIjlr9+sJm
+         dxyKSDyKJSyNhhx+TulZe6QspC2QMzcnE2SGIr5DM5UpJFGyPIajbaPaCXdMDeEF53PI
+         HU0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777382061; x=1777986861;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ph2KGeZYvECiBIV5t/7ReHLKmIw+/jWyacMkZ2Q4W34=;
+        b=Oy8Dc2uK+DuT82h8IvaZFx1BmjYxKbRwthHWrNLbfxnEFQ8AGslD3ci9b88D8CmZp7
+         s8Z6LhUMpoK4zqrLOM+JGLEH2WCrNOvYQlgCT3D9DMqFqMiHaPCiN4Zv8E5xjnf1A2rw
+         aWqI6Thw61z8NReSQLGgPbOBfGH0WoJIKA6uRfaN1buYIJuAnaxkxSBbJc+9U/S8RjZ6
+         eoqbfItr6s4VA5VrYjq6gh/xx1qrDP5L0vGIfBjdwfaYrlI3ymonC15WkZuAmoqTTIHz
+         OIMpfpdB9D37sw5UJ+36SLo865qpQygooLFzSHCybKOtPL/Z6ecQkK86I4U/7EDLDNyN
+         ooxQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8VKk4Y3M8LuRjNbBoRQ0RB0kqwSsgJkIsUuy5C5BxTwpOMs/2rcA/egrUo6/Lrl8pN7ORjnVY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZLXN19dT80EidMTKAyVylws6PLOdGVA4Pt0wuN5jE/IdwhM3s
+	pKPXIvZXCkbW8Vu5jqTSLcKYEft1Ywe/OrLDaHLov+xuAdWVY9SP63LeFurVFMjrvCFKrzpPzNc
+	vvWBLWlJ46GpFqrY4c2iymvvZRBrx/rtqgvDHm/At
+X-Gm-Gg: AeBDieuPUyp3SjJQv21v62pKar1sL8zDiV8Sp49lZ+b4h1b60owP54B6th5Ros9hutB
+	hpLbbpKOsJ7XO2M2xVjbOKJJbIP3P6QxVmruzTPLYGsU3/P5l/OI1qGLMhKwiVvc3/Ce/mC824H
+	6a/98BY2bvTJ3ihFHwBlV3vc7zXLRFfnjCv0Z5F7YOxUvXeoSBmYkJ8ZPDmn5TMoWYkaTZF9Cmn
+	mts61F+hyT8vBHj2VYZhn9heNjpwFe26sG1bT7QDgd26Ry+LrUC0Bqc+yD5/kh+ttEAR63ePcB0
+	4jqYNzFvjWTC4OAI5zCmxVZjU3fRkH0PKOFSQ3MdTVukuF3V3toFKmdVkWlargo6nRs+OB1WB5S
+	dtbR7ZfJx
+X-Received: by 2002:a05:622a:1983:b0:50d:cd5a:577b with SMTP id
+ d75a77b69052e-5100e1a909dmr38694301cf.35.1777382060204; Tue, 28 Apr 2026
+ 06:14:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Rspamd-Queue-Id: DECAF485FFC
+MIME-Version: 1.0
+References: <20260428110713.2550315-1-maoyixie.tju@gmail.com> <20260428110713.2550315-2-maoyixie.tju@gmail.com>
+In-Reply-To: <20260428110713.2550315-2-maoyixie.tju@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Tue, 28 Apr 2026 06:14:09 -0700
+X-Gm-Features: AVHnY4Kj1O8tIjZZ71KmG_lSdWiR9NSfHmQ-lGRQOFxJHis0DQ-Gr4cC4qnWSpg
+Message-ID: <CANn89iLa2+B2oZOpcShPDfaAmtJ6jUnEABVFim2fkyPTi=QK5w@mail.gmail.com>
+Subject: Re: [PATCH net 1/2] ip6: vti: Use ip6_tnl.net in vti6_changelink().
+To: Maoyi Xie <maoyixie.tju@gmail.com>
+Cc: netdev@vger.kernel.org, kuniyu@google.com, shaw.leon@gmail.com, 
+	davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, dsahern@kernel.org, 
+	kuznet@ms2.inr.ac.ru, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	security@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 46B6E4864F4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.34 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-241665-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241664-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[gmail.com];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[vger.kernel.org,intel.com,kernel.org,suse.de,gmail.com,huawei.com,linuxfoundation.org,bytedance.com,linux-foundation.org];
-	DMARC_NA(0.00)[linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[google.com:+];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[edumazet@google.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,google.com,gmail.com,davemloft.net,kernel.org,redhat.com,ms2.inr.ac.ru];
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ntu.edu.sg:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid]
 
+On Tue, Apr 28, 2026 at 4:07=E2=80=AFAM Maoyi Xie <maoyixie.tju@gmail.com> =
+wrote:
+>
+> From: Kuniyuki Iwashima <kuniyu@google.com>
+>
+> ip netns add ns1
+> ip netns add ns2
+> ip -n ns1 link add vti6_test type vti6 remote ::1 local ::2 key 7
+> ip -n ns1 link set vti6_test netns ns2
+> ip -n ns2 link set vti6_test type vti6 remote ::3 local ::4 key 9
+> ip netns del ns2
+> ip netns del ns1
+> [  132.495484] ------------[ cut here ]------------
+> [  132.497609] kernel BUG at net/core/dev.c:12376!
+>
+> After commit 5e72ce3e3980 ("net: ipv6: Use link netns in newlink() of
+> rtnl_link_ops"), vti6_newlink() correctly resolves the per-netns vti6
+> hash via link_net. vti6_changelink() and vti6_update() were not
+> converted in that series and still read dev_net(dev) /
+> dev_net(t->dev), which diverge from the device's creation netns
+> after IFLA_NET_NS_FD migration. The result is a stale per-netns hash
+> entry; cleanup_net() of the original netns then walks freed memory.
+>
+> Reachable from an unprivileged user namespace ("unshare --user
+> --map-root-user --net"); cross-tenant scope on container hosts.
+>
+> Fixes: 5e72ce3e3980 ("net: ipv6: Use link netns in newlink() of rtnl_link=
+_ops")
+> Reported-by: Maoyi Xie <maoyi.xie@ntu.edu.sg>
+> Cc: stable@vger.kernel.org # v5.15+
+> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 
-The patch titled
-     Subject: drivers/base/memory: fix locking for poison accounting lookup
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     drivers-base-memory-fix-locking-for-poison-accounting-lookup.patch
-
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/drivers-base-memory-fix-locking-for-poison-accounting-lookup.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: Muchun Song <songmuchun@bytedance.com>
-Subject: drivers/base/memory: fix locking for poison accounting lookup
-Date: Tue, 28 Apr 2026 16:52:19 +0800
-
-memblk_nr_poison_inc() and memblk_nr_poison_sub() call
-find_memory_block_by_id(), which requires device_hotplug_lock to serialize
-the xarray lookup against memory block removal.
-
-Take device_hotplug_lock around the lookup and nr_hwpoison update so the
-memory block cannot disappear between xa_load() and get_device().
-
-Link: https://lore.kernel.org/20260428085219.1316047-4-songmuchun@bytedance.com
-Fixes: 5033091de814 ("mm/hwpoison: introduce per-memory_block hwpoison counter")
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-Acked-by: Oscar Salvador <osalvador@suse.de>
-Cc: Danilo Krummrich <dakr@kernel.org>
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: "Huang, Ying" <huang.ying.caritas@gmail.com>
-Cc: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Vishal Verma <vishal.l.verma@intel.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- drivers/base/memory.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
-
---- a/drivers/base/memory.c~drivers-base-memory-fix-locking-for-poison-accounting-lookup
-+++ a/drivers/base/memory.c
-@@ -1228,23 +1228,29 @@ int walk_dynamic_memory_groups(int nid,
- void memblk_nr_poison_inc(unsigned long pfn)
- {
- 	const unsigned long block_id = pfn_to_block_id(pfn);
--	struct memory_block *mem = find_memory_block_by_id(block_id);
-+	struct memory_block *mem;
- 
-+	lock_device_hotplug();
-+	mem = find_memory_block_by_id(block_id);
- 	if (mem) {
- 		atomic_long_inc(&mem->nr_hwpoison);
- 		put_device(&mem->dev);
- 	}
-+	unlock_device_hotplug();
- }
- 
- void memblk_nr_poison_sub(unsigned long pfn, long i)
- {
- 	const unsigned long block_id = pfn_to_block_id(pfn);
--	struct memory_block *mem = find_memory_block_by_id(block_id);
-+	struct memory_block *mem;
- 
-+	lock_device_hotplug();
-+	mem = find_memory_block_by_id(block_id);
- 	if (mem) {
- 		atomic_long_sub(i, &mem->nr_hwpoison);
- 		put_device(&mem->dev);
- 	}
-+	unlock_device_hotplug();
- }
- 
- static unsigned long memblk_nr_poison(struct memory_block *mem)
-_
-
-Patches currently in -mm which might be from songmuchun@bytedance.com are
-
-mm-memory_hotplug-fix-memory-block-reference-leak-on-remove.patch
-drivers-base-memory-fix-memory-block-reference-leak-in-poison-accounting.patch
-drivers-base-memory-fix-locking-for-poison-accounting-lookup.patch
-mm-sparse-remove-sparse-buffer-pre-allocation-mechanism.patch
-mm-sparse-vmemmap-fix-vmemmap-accounting-underflow.patch
-mm-memory_hotplug-fix-incorrect-altmap-passing-in-error-path.patch
-mm-sparse-vmemmap-pass-pgmap-argument-to-memory-deactivation-paths.patch
-mm-sparse-vmemmap-fix-dax-vmemmap-accounting-with-optimization.patch
-mm-mm_init-fix-pageblock-migratetype-for-zone_device-compound-pages.patch
-mm-mm_init-fix-uninitialized-struct-pages-for-zone_device.patch
-
+Reviewed-by: Eric Dumazet <edumazet@google.com>
 
