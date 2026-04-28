@@ -1,235 +1,147 @@
-Return-Path: <stable+bounces-241756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241757-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YEh0Bk/68GlpbgEAu9opvQ
-	(envelope-from <stable+bounces-241756-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 20:19:59 +0200
+	id oBgGHqz+8GnubgEAu9opvQ
+	(envelope-from <stable+bounces-241757-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 20:38:36 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D7C548A934
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 20:19:58 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D71848ABDC
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 20:38:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 03822300C823
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 18:19:57 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 362E23024DE0
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 18:22:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7771647AF56;
-	Tue, 28 Apr 2026 18:19:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6135E47A0D8;
+	Tue, 28 Apr 2026 18:22:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bsdXeF8v"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AWbQZXZy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05D64477E3D;
-	Tue, 28 Apr 2026 18:19:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221B1477E35;
+	Tue, 28 Apr 2026 18:22:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777400393; cv=none; b=Z3KCAyQYIH/Uc8n3330nJdnTmKvF0uA6/7Vg+DjlMPPiRKQDeA5kAI3PMN6buXcRZqbHYc8UhvXya9eW4flULTB9vY7ZzsKH3IC853Sl6SgzhQ+eIQGb8QAixEgorC0fxFQmAP3g+XnITLM6+TKMVaCgI1PqFjaCjOaUZB370ig=
+	t=1777400574; cv=none; b=q1268ptJ6aeDR776aqKkgcbcDkb2wapGJyZE/MtCs4v/qgCu80zTJCFI0UjPgNmjW1HXM8Mp8CaToIgRSZDNrN5GREpciIBr6WZibXzXfbwmBNOCotfuZt/20q5a7j2L7RRDhWvzzkDzBqCaMhSMCgKibzIUoIrrP8QMBBvVDSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777400393; c=relaxed/simple;
-	bh=IIgS0AwRcjrTKP1+26SpC0X687fjJgcOkUNS9W2I8Ho=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sO1xoq3OXMa1EXHWmZRYtwZJpdWft2hBKjCoUZFZlIp1SrWzKHq3Mk7qV/gJiqhSmptP+K5no7GQhoThbEfusE7Gqnlx3loiGdI6NCidNNHtOn4Gykq5+mqztsOSyQvh8tTC9cXlxnEK3qH4Jjv/HsHNnSa6o4uOu4e20mqER5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bsdXeF8v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6FC6C2BCAF;
-	Tue, 28 Apr 2026 18:19:51 +0000 (UTC)
+	s=arc-20240116; t=1777400574; c=relaxed/simple;
+	bh=Qjsd3uIfQkniErIqXXZOa+Asxn83iT3n+U3qISVJt1M=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=qZR6wc7hiCqPNRGQkOA6GlM0BeFNC5+fEf3jzI/BlWBoGCAKh+QE/7QtM5tNkElCDNy8l/yU4aikp/i5P+6XKey0fQAG9wYqevHmxXpmygpLL4+pcjKlAmuBnEejr4VlPTjur5/WIovnVrBRo00k5oXlhkNHF3G3zXxnKbj+qb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AWbQZXZy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70F56C2BCAF;
+	Tue, 28 Apr 2026 18:22:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777400392;
-	bh=IIgS0AwRcjrTKP1+26SpC0X687fjJgcOkUNS9W2I8Ho=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bsdXeF8vvCoI3aZG24eKRZxfzdAWS24Tyr5d/guTbpbNgNaP/scHtndlMkIvnsRG3
-	 o02p+aLeVmg5gOspT/wd38/dB9ma4bujRwhMl5g96bFFgzJa83AiQtBGrtkRH6XKrG
-	 U55JrlD4WY+Wyj8wOKDV1HA/dY7e8JTy8tZUJIDNB9QjsDMnPL/z/1Rn1NpUxNBBAr
-	 TBKebtrYO3ZkEvAPO3ftapCQLd0Fy2O5jsAIh6U/T8ehEp+HbUdGrI0KFJXKwiUGk+
-	 4nzkaNpxVqeK7rAJ+H7tgegYCsjzhaSLloyT54UfhJr92j2WLSJujfzTwIkpv83BX1
-	 wA1s57OlQIt/w==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
-	Will Deacon <will@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] arm64/mm: Enable batched TLB flush in unmap_hotplug_range()
-Date: Tue, 28 Apr 2026 14:19:49 -0400
-Message-ID: <20260428181949.3127002-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <2026042727-detonate-paging-829b@gregkh>
-References: <2026042727-detonate-paging-829b@gregkh>
+	s=k20201202; t=1777400573;
+	bh=Qjsd3uIfQkniErIqXXZOa+Asxn83iT3n+U3qISVJt1M=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=AWbQZXZylojtQrJm96K/00Z5HfftGed0m/IUkZ6sl8o4/ixwCyGrwyPVAuFyzhCSZ
+	 6i/r4xy2eQWOiCnM1PKKEpxMLOTwXYTV0PBt7uxVwiqtBNdD4pz80+CJ5DHUbuJ8+u
+	 NZACczwZthExFB4THX3WKkWK2xeMNgIA2vUH11JEk8uFpCwoW0HeqzkY73REYvK/jI
+	 lxJVSjN3R2eVWSYv4Xm6uksmcbBvqITKaooJEVP5EZtVdw4yrhwc25klQKMufQTMs8
+	 nDGUF6tr5LtwpxQUxYABjhXY9m1/nllN+lTFUz+LXkEAzA1LqHma33d3Fia3IZXN1T
+	 XVGyeCZju62kg==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7D7C548A934
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 28 Apr 2026 20:22:49 +0200
+Message-Id: <DI4ZX1HOWDNH.3G36YTI0MYC76@kernel.org>
+Subject: Re: [PATCH] drivers: base: Set mod->async_probe_requested if needed
+Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J . Wysocki"
+ <rafael@kernel.org>, <driver-core@lists.linux.dev>, "Luis Chamberlain"
+ <mcgrof@kernel.org>, "Petr Pavlu" <petr.pavlu@suse.com>, "Daniel Gomez"
+ <da.gomez@kernel.org>, "Sami Tolvanen" <samitolvanen@google.com>, "Aaron
+ Tomlin" <atomlin@atomlin.com>, "Igor Pylypiv" <ipylypiv@google.com>,
+ "Chung-Kai Mei" <chungkai@google.com>, <stable@vger.kernel.org>
+To: "Bart Van Assche" <bvanassche@acm.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260407160511.56289-1-bvanassche@acm.org>
+In-Reply-To: <20260407160511.56289-1-bvanassche@acm.org>
+X-Rspamd-Queue-Id: 8D71848ABDC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
+	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-241756-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-241757-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dakr@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,infradead.org:email]
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,acm.org:email,atomlin.com:email]
 
-From: Anshuman Khandual <anshuman.khandual@arm.com>
+On Tue Apr 7, 2026 at 6:05 PM CEST, Bart Van Assche wrote:
+> If PROBE_PREFER_ASYNCHRONOUS is set for a device driver, and if loading
+> other kernel modules depends on probing of that device driver to
+> complete, e.g. because it is a storage driver, and if
+> mod->async_probe_requested has not been set, then the
+> async_synchronize_full() call in do_init_module() introduces a delay.
+> Fix this by setting mod->async_probe_requested if
+> PROBE_PREFER_ASYNCHRONOUS has been set. This patch reduces the Pixel 10
+> boot time by 100 ms.
+>
+> Cc: Luis Chamberlain <mcgrof@kernel.org>
+> Cc: Petr Pavlu <petr.pavlu@suse.com>
+> Cc: Daniel Gomez <da.gomez@kernel.org>
+> Cc: Sami Tolvanen <samitolvanen@google.com>
+> Cc: Aaron Tomlin <atomlin@atomlin.com>
+> Cc: Igor Pylypiv <ipylypiv@google.com>
+> Cc: Chung-Kai Mei <chungkai@google.com>
+> Cc: stable@vger.kernel.org
 
-[ Upstream commit 48478b9f791376b4b89018d7afdfd06865498f65 ]
+Why does this have Cc: stable? I think this is just an improvement and not =
+a
+regression? If it is a regression, what's the commit that is fixed?
 
-During a memory hot remove operation, both linear and vmemmap mappings for
-the memory range being removed, get unmapped via unmap_hotplug_range() but
-mapped pages get freed only for vmemmap mapping. This is just a sequential
-operation where each table entry gets cleared, followed by a leaf specific
-TLB flush, and then followed by memory free operation when applicable.
+> Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+> ---
+>  drivers/base/module.c | 3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/drivers/base/module.c b/drivers/base/module.c
+> index 218aaa096455..e58fc189d389 100644
+> --- a/drivers/base/module.c
+> +++ b/drivers/base/module.c
+> @@ -39,6 +39,9 @@ int module_add_driver(struct module *mod, const struct =
+device_driver *drv)
+>  	if (!drv)
+>  		return 0;
+> =20
+> +	if (mod && drv->probe_type =3D=3D PROBE_PREFER_ASYNCHRONOUS)
+> +		mod->async_probe_requested =3D true;
 
-This approach was simple and uniform both for vmemmap and linear mappings.
-But linear mapping might contain CONT marked block memory where it becomes
-necessary to first clear out all entire in the range before a TLB flush.
-This is as per the architecture requirement. Hence batch all TLB flushes
-during the table tear down walk and finally do it in unmap_hotplug_range().
+What if userspace did explicitly pass async_probe=3D0?
 
-Prior to this fix, it was hypothetically possible for a speculative access
-to a higher address in the contiguous block to fill the TLB with shattered
-entries for the entire contiguous range after a lower address had already
-been cleared and invalidated. Due to the table entries being shattered, the
-subsequent TLB invalidation for the higher address would not then clear the
-TLB entries for the lower address, meaning stale TLB entries could persist.
-
-Besides it also helps in improving the performance via TLBI range operation
-along with reduced synchronization instructions. The time spent executing
-unmap_hotplug_range() improved 97% measured over a 2GB memory hot removal
-in KVM guest.
-
-This scheme is not applicable during vmemmap mapping tear down where memory
-needs to be freed and hence a TLB flush is required after clearing out page
-table entry.
-
-Cc: Will Deacon <will@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
-Closes: https://lore.kernel.org/all/aWZYXhrT6D2M-7-N@willie-the-truck/
-Fixes: bbd6ec605c0f ("arm64/mm: Enable memory hot remove")
-Cc: stable@vger.kernel.org
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
-Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-[ replaced `__pte_clear()` with `pte_clear()` ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/arm64/mm/mmu.c | 36 ++++++++++++++++++++----------------
- 1 file changed, 20 insertions(+), 16 deletions(-)
-
-diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-index e9288b28cb1e3..cbba5e73099fe 100644
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -925,10 +925,14 @@ static void unmap_hotplug_pte_range(pmd_t *pmdp, unsigned long addr,
- 
- 		WARN_ON(!pte_present(pte));
- 		pte_clear(&init_mm, addr, ptep);
--		flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
--		if (free_mapped)
-+		if (free_mapped) {
-+			/* CONT blocks are not supported in the vmemmap */
-+			WARN_ON(pte_cont(pte));
-+			flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
- 			free_hotplug_page_range(pte_page(pte),
- 						PAGE_SIZE, altmap);
-+		}
-+		/* unmap_hotplug_range() flushes TLB for !free_mapped */
- 	} while (addr += PAGE_SIZE, addr < end);
- }
- 
-@@ -949,15 +953,14 @@ static void unmap_hotplug_pmd_range(pud_t *pudp, unsigned long addr,
- 		WARN_ON(!pmd_present(pmd));
- 		if (pmd_sect(pmd)) {
- 			pmd_clear(pmdp);
--
--			/*
--			 * One TLBI should be sufficient here as the PMD_SIZE
--			 * range is mapped with a single block entry.
--			 */
--			flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
--			if (free_mapped)
-+			if (free_mapped) {
-+				/* CONT blocks are not supported in the vmemmap */
-+				WARN_ON(pmd_cont(pmd));
-+				flush_tlb_kernel_range(addr, addr + PMD_SIZE);
- 				free_hotplug_page_range(pmd_page(pmd),
- 							PMD_SIZE, altmap);
-+			}
-+			/* unmap_hotplug_range() flushes TLB for !free_mapped */
- 			continue;
- 		}
- 		WARN_ON(!pmd_table(pmd));
-@@ -982,15 +985,12 @@ static void unmap_hotplug_pud_range(p4d_t *p4dp, unsigned long addr,
- 		WARN_ON(!pud_present(pud));
- 		if (pud_sect(pud)) {
- 			pud_clear(pudp);
--
--			/*
--			 * One TLBI should be sufficient here as the PUD_SIZE
--			 * range is mapped with a single block entry.
--			 */
--			flush_tlb_kernel_range(addr, addr + PAGE_SIZE);
--			if (free_mapped)
-+			if (free_mapped) {
-+				flush_tlb_kernel_range(addr, addr + PUD_SIZE);
- 				free_hotplug_page_range(pud_page(pud),
- 							PUD_SIZE, altmap);
-+			}
-+			/* unmap_hotplug_range() flushes TLB for !free_mapped */
- 			continue;
- 		}
- 		WARN_ON(!pud_table(pud));
-@@ -1020,6 +1020,7 @@ static void unmap_hotplug_p4d_range(pgd_t *pgdp, unsigned long addr,
- static void unmap_hotplug_range(unsigned long addr, unsigned long end,
- 				bool free_mapped, struct vmem_altmap *altmap)
- {
-+	unsigned long start = addr;
- 	unsigned long next;
- 	pgd_t *pgdp, pgd;
- 
-@@ -1041,6 +1042,9 @@ static void unmap_hotplug_range(unsigned long addr, unsigned long end,
- 		WARN_ON(!pgd_present(pgd));
- 		unmap_hotplug_p4d_range(pgdp, addr, next, free_mapped, altmap);
- 	} while (addr = next, addr < end);
-+
-+	if (!free_mapped)
-+		flush_tlb_kernel_range(start, end);
- }
- 
- static void free_empty_pte_table(pmd_t *pmdp, unsigned long addr,
--- 
-2.53.0
+> +
+>  	if (mod)
+>  		mk =3D &mod->mkobj;
+>  	else if (drv->mod_name) {
 
 
