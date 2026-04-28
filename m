@@ -1,155 +1,269 @@
-Return-Path: <stable+bounces-241477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241478-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uE0XJJVK8GlFRQEAu9opvQ
-	(envelope-from <stable+bounces-241477-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 07:50:13 +0200
+	id sFX8JbxM8Gm2RQEAu9opvQ
+	(envelope-from <stable+bounces-241478-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 07:59:24 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9404547DC4D
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 07:50:12 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15F7447DD16
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 07:59:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B033D300B8DB
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 05:50:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4C3743017BDB
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 05:59:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F69227B340;
-	Tue, 28 Apr 2026 05:50:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01A63312803;
+	Tue, 28 Apr 2026 05:59:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Spzh9/hA"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16FFE1A6816;
-	Tue, 28 Apr 2026 05:50:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B887230C62E
+	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 05:59:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777355406; cv=none; b=GkAtf2/mzoPsxTz1OywZRvekcLZcEVYRVX5A6CmS3baOw8pRp7F0yruAdMnUEXvVtmtuJcplaQfDP2AY5r0PqblVGx6V6qqd6+ldSuRyK5uvAsjiwqY02pjqhIS/tjYPm1Y+1We+/nyafzNiAmXlqQNtdZMUIVnr/YJH3Lg/LXI=
+	t=1777355950; cv=none; b=R6fABfhv1c5D3NTJBWP8IlajgyMAPklmh9tISCUqAcaRZdniAkI6wI3LOh63Y8Ro8coRlEfNpuZ+Sebw0E0wXqKLjZaqJZyzcfREXVF1OHyJuuAR9HzDhP7sZtloMjSa7gbdo53qvX/yQ8oAj0HJZsh/6urhMBP7Umkn0bSKll0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777355406; c=relaxed/simple;
-	bh=SolhQZYcDEW43TERJXKDjunTD4PVMs+EA+sD9J+ua/k=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=pDOBKDVJVxN8N8yhwaqglRx3OhnoXLUAySiTRmqSkAAZ61L2ildDY9U3zBO1m3VbNaIur3RtQY7R+ByOjyhciDQD9X+iOCTv65teJlQg8Ur1+HaFoOgT2BaqWt6ycKGmYuIS2FwJSS6gwfvXFWPgMUr1Rijw9Flno9LE7b0esmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from edelgard.fodlan.icenowy.me (unknown [112.94.102.122])
-	by APP-05 (Coremail) with SMTP id zQCowACHFgp+SvBpHObKDg--.35547S2;
-	Tue, 28 Apr 2026 13:49:52 +0800 (CST)
-Message-ID: <d9faab05aab120fee367394edcb35bd131c97646.camel@iscas.ac.cn>
-Subject: Re: [PATCH] drm/panel: himax-hx83102: restore MODE_LPM after
- sending disable cmds
-From: Icenowy Zheng <zhengxingda@iscas.ac.cn>
-To: Doug Anderson <dianders@chromium.org>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>, Jessica Zhang	
- <jesszhan0024@gmail.com>, Maarten Lankhorst
- <maarten.lankhorst@linux.intel.com>,  Maxime Ripard <mripard@kernel.org>,
- Thomas Zimmermann <tzimmermann@suse.de>, Cong Yang	
- <yangcong5@huaqin.corp-partner.google.com>, David Airlie
- <airlied@gmail.com>,  Simona Vetter <simona@ffwll.ch>,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Date: Tue, 28 Apr 2026 13:49:50 +0800
-In-Reply-To: <CAD=FV=VXD34ZZTH4MJUtZ6xifbbjp1cLRBd_xvz=3T12G4tKYw@mail.gmail.com>
-References: <20260425165751.1716569-1-zhengxingda@iscas.ac.cn>
-	 <CAD=FV=VXD34ZZTH4MJUtZ6xifbbjp1cLRBd_xvz=3T12G4tKYw@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 
+	s=arc-20240116; t=1777355950; c=relaxed/simple;
+	bh=Z131pWvCBWP164teAh+JpB+9PtGkpkZGiO3EcZg8kQQ=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=K22+7906Qa9ATnhSD3ibtZuvCZ9CJU05ZAzsu2xuBj3pIjvw9Vza/ff9AZK3SDYB50N23oVWMYovqvbUvYnsc2x7h+WdVyiugVS6CbOgVdllmssybLiPvWw2bX7vEIC/zkcwbdsD7d/ScngvGWDtBc+Odc5UNSKvfa29sqfM0hI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Spzh9/hA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E92FC4AF0B;
+	Tue, 28 Apr 2026 05:59:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777355950;
+	bh=Z131pWvCBWP164teAh+JpB+9PtGkpkZGiO3EcZg8kQQ=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=Spzh9/hAjSAOGFD5knYwVWy6QKd40o+Y0RRQA+hx0aEy1UPUWGoCnLWAdm2mAi3kq
+	 p+0bVyn3zhFv73SlnDPHJeDMozDvoqJr8qv41ChZc68NGzI48GYaH+6KYlPVtY+/IK
+	 g63RclO8V2p4IcgaLWzpb4ICUVHB9f0WGbmEnvAIxvrDx27BQo+6Fbz4kMncNMLhRW
+	 25DAP3dXtl7c7DBFSmjdMaMvd6dZQqdJ/80oe3/v8iLRopWTNZEhvyOCldUQrDpfy6
+	 1jWWlBsduBjWnf4Z9Knlzk+d++c2r+OFfVyvLnr1OfLMl4i3eGRRf7pjaU6PEk9TM7
+	 vc5eU8xXooY7w==
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 5C6D7F4007A;
+	Tue, 28 Apr 2026 01:59:09 -0400 (EDT)
+Received: from phl-imap-02 ([10.202.2.81])
+  by phl-compute-01.internal (MEProxy); Tue, 28 Apr 2026 01:59:09 -0400
+X-ME-Sender: <xms:rUzwaXFzuizy1XFX83i-oqJxB8BJXX68pyGUpyrctQp6qfZ2B1-oPQ>
+    <xme:rUzwafKA1dS2FEuYvzls3OBwYibCMi-MBuQifp7kk83w7UjXJrqFf7AtWlFjcnbYS
+    FaU9j0J_uZKQEast2WUbosP5sVWw9Rw8a61SrRpB26c4LAC_YavDi8U>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdektdejlecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdetrhguuceu
+    ihgvshhhvghuvhgvlhdfuceorghruggssehkvghrnhgvlhdrohhrgheqnecuggftrfgrth
+    htvghrnhepkeevteduteehkeekteeugfdvvdekudevffejvddtueehuedvueegudfhtdet
+    hfdunecuffhomhgrihhnpehmvghtiiguohifugdrtghomhdpmhhitghrohgthhhiphdrtg
+    homhenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegr
+    rhguodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieejtdehtddtjeelqd
+    effedvudeigeduhedqrghruggspeepkhgvrhhnvghlrdhorhhgseifohhrkhhofhgrrhgu
+    rdgtohhmpdhnsggprhgtphhtthhopeduvddpmhhouggvpehsmhhtphhouhhtpdhrtghpth
+    htoheprghlvgigrghnughrvgdrsggvlhhlohhnihessghoohhtlhhinhdrtghomhdprhgt
+    phhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtohephhgvrh
+    gsvghrthesghhonhguohhrrdgrphgrnhgrrdhorhhgrdgruhdprhgtphhtthhopehkrggs
+    vghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhhsfieskhgvrhhnvghlrd
+    horhhgpdhrtghpthhtohepthhhohhrshhtvghnrdgslhhumheslhhinhhugidruggvvhdp
+    rhgtphhtthhopehlihhnuhigqdgrrhhmqdhkvghrnhgvlheslhhishhtshdrihhnfhhrrg
+    guvggrugdrohhrghdprhgtphhtthhopehnihgtohhlrghsrdhfvghrrhgvsehmihgtrhho
+    tghhihhprdgtohhmpdhrtghpthhtoheptghlrghuughiuhdrsggviihnvggrsehtuhigoh
+    hnrdguvghv
+X-ME-Proxy: <xmx:rUzwafU5KOBfn_KqisZuPK60_2neVLsLyi5eIGRZ7Y-o5NWpckPESA>
+    <xmx:rUzwabS-1Bbg_ktbOA-sEBgOhG01T9g4lzczZoj58yVwo1PbS6y2Rw>
+    <xmx:rUzwaUA4UonvYoYl2cPE3oDpFSLsKOAm3BwB7pmJdYm1UMUg9wQhUQ>
+    <xmx:rUzwabu6C-Imp5MeJ52Pgv8SC_Itk29uXFuHcY_H5WvvXcfwovxlYg>
+    <xmx:rUzwaa8LkTbS-zh_qwvjl71zU2TeG2I1A0SerHcptyy3yp9MFd7RxHMK>
+Feedback-ID: ice86485a:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 3275B700065; Tue, 28 Apr 2026 01:59:09 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-CM-TRANSID:zQCowACHFgp+SvBpHObKDg--.35547S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7WFy7GFWDCrW5Xw48JF1rtFb_yoW8XrWfpF
-	WUta9Ika1kJr4IyFn7XrZYvFWxAr4fAFZ0krn5W34kA345WFyFvay8trWq93WUXr4kCa1a
-	qFsFqFyqka95AFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvvb7Iv0xC_tr1lb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I2
-	0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
-	A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xII
-	jxv20xvEc7CjxVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I
-	8E87Iv6xkF7I0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
-	64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8Jw
-	Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1l
-	c7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr
-	1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE
-	14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7
-	IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E
-	87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73Uj
-	IFyTuYvjxU2wIDUUUUU
-X-CM-SenderInfo: x2kh0wp0lqwv3d6l2u1dvotugofq/
-X-Rspamd-Queue-Id: 9404547DC4D
+X-ThreadId: AW4IFdmKBNXF
+Date: Tue, 28 Apr 2026 07:58:39 +0200
+From: "Ard Biesheuvel" <ardb@kernel.org>
+To: "Thorsten Blum" <thorsten.blum@linux.dev>,
+ "Herbert Xu" <herbert@gondor.apana.org.au>,
+ "David S. Miller" <davem@davemloft.net>,
+ "Nicolas Ferre" <nicolas.ferre@microchip.com>,
+ "Alexandre Belloni" <alexandre.belloni@bootlin.com>,
+ "Claudiu Beznea" <claudiu.beznea@tuxon.dev>,
+ =?UTF-8?Q?Marek_Beh=C3=BAn?= <kabel@kernel.org>,
+ "Linus Walleij" <linusw@kernel.org>
+Cc: stable@vger.kernel.org, linux-crypto@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Message-Id: <2d42b1fc-b5d5-4dcb-8dc8-62580502f586@app.fastmail.com>
+In-Reply-To: <20260427124030.315590-3-thorsten.blum@linux.dev>
+References: <20260427124030.315590-3-thorsten.blum@linux.dev>
+Subject: Re: [PATCH] crypto: atmel-sha204a - drop hwrng quality reduction for ATSHA204A
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 15F7447DD16
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.46 / 15.00];
+X-Spamd-Result: default: False [-2.15 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	XM_UA_NO_VERSION(0.01)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-241477-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linaro.org,gmail.com,linux.intel.com,kernel.org,suse.de,huaqin.corp-partner.google.com,ffwll.ch,lists.freedesktop.org,vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-241478-lists,stable=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.dev:email,app.fastmail.com:mid,microchip.com:url];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ardb@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[zhengxingda@iscas.ac.cn,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.982];
-	MID_RHS_MATCH_FROM(0.00)[];
-	R_DKIM_NA(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:mid,iscas.ac.cn:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7]
 
-=E5=9C=A8 2026-04-27=E4=B8=80=E7=9A=84 11:24 -0700=EF=BC=8CDoug Anderson=E5=
-=86=99=E9=81=93=EF=BC=9A
-> Hi,
->=20
-> On Sat, Apr 25, 2026 at 9:58=E2=80=AFAM Icenowy Zheng
-> <zhengxingda@iscas.ac.cn> wrote:
-> >=20
-> > When preparing the panel, it seems that it always expects commands
-> > to be
-> > transferred in LP mode. However, the disable function removes the
-> > MIPI_DSI_MODE_LPM flag, and no other function re-adds it.
-> >=20
-> > As the unprepare function contains no DSI commands, re-adding the
-> > flag
-> > just after disabling the panel should be safe. Add the code re-
-> > adding
-> > the flag after the two commands for disabling the panel are sent.
-> >=20
-> > This fixes screen unblanking (after blanking once) on
-> > mt8188-geralt-ciri-sku1 device.
-> >=20
-> > Cc: stable@vger.kernel.org=C2=A0# 6.11+
-> > Fixes: 0ef94554dc40 ("drm/panel: himax-hx83102: Break out as
-> > separate driver")
->=20
-> This "Fixes" looks wrong. The bug was still there even before the
-> driver was broken out. ...and it looks like the driver that this was
-> broken out of (panel-boe-tv101wum-nl6.c) still has the same bug?
+Hi Thorsten,
 
-Yes, but I think the fix shouldn't be propagated to the other driver
-because of the same reason with breaking out the original driver.
+On Mon, 27 Apr 2026, at 14:40, Thorsten Blum wrote:
+> Commit 8006aff15516 ("crypto: atmel-sha204a - Set hwrng quality to
+> lowest possible") reduced the hwrng quality to 1 based on a review by
+> Bill Cox [1]. However, despite its title, the review only tested the
+> ATSHA204, not the ATSHA204A.
+>
+> In the same thread, Atmel engineer Landon Cox wrote "this behavior has
+> been eliminated entirely"[2] in the ATSHA204A and "this problem does not
+> affect the ATECC108 or the ATECC108A (or the ATSHA204A)"[3].
+>
+> According to the official ATSHA204A datasheet [4], the device contains a
+> high-quality hardware RNG that combines its output with an internal seed
+> value stored in EEPROM or SRAM to generate random numbers. The device
+> also implements all security functions using SHA-256, and the driver
+> uses the chip's Random command in seed-update mode.
+>
+> Keep 'quality = 1' for ATSHA204, but drop the explicit hwrng quality
+> reduction for ATSHA204A and fall back to the hwrng core default.
+>
 
-I have a device with a panel driven by the nl6 driver (device is
-mt8183-kukui-kodama-sku32, panel is boe,tv101wum-n53), it shows the
-same DSI timeout error message with ciri sku1, but the screen do come
-back to life when unblanking. Maybe this fix should propagate there,
-but I need more confirmation.
+Interesting! Thanks for digging this up.
 
-Thanks,
-Icenowy
+> [1] 
+> https://www.metzdowd.com/pipermail/cryptography/2014-December/023858.html
+> [2] 
+> https://www.metzdowd.com/pipermail/cryptography/2014-December/023852.html
+> [3] 
+> https://www.metzdowd.com/pipermail/cryptography/2014-December/023886.html
+> [4] 
+> https://ww1.microchip.com/downloads/en/DeviceDoc/ATSHA204A-Data-Sheet-40002025A.pdf
+>
+> Fixes: 8006aff15516 ("crypto: atmel-sha204a - Set hwrng quality to 
+> lowest possible")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+> ---
+>  drivers/crypto/atmel-sha204a.c | 40 ++++++++++++++++++----------------
+>  1 file changed, 21 insertions(+), 19 deletions(-)
+>
+> diff --git a/drivers/crypto/atmel-sha204a.c b/drivers/crypto/atmel-sha204a.c
+> index dbb39ed0cea1..df69fb190e52 100644
+> --- a/drivers/crypto/atmel-sha204a.c
+> +++ b/drivers/crypto/atmel-sha204a.c
+> @@ -19,6 +19,25 @@
+>  #include <linux/workqueue.h>
+>  #include "atmel-i2c.h"
+> 
+> +enum atmel_sha204a_variant {
+> +	ATSHA204 = 1,
+> +	ATSHA204A,
+> +};
+> +
 
->=20
-> -Doug
+I agree that setting quality to '1' is only appropriate for the ATSHA204
+but this looks a bit clunky to me.
 
+Can we retain the comment here that you deleted below, and add
+something like
+
+static const unsigned short atsha204_quality = 1;
+
+> +static const struct of_device_id atmel_sha204a_dt_ids[] __maybe_unused = {
+> +	{ .compatible = "atmel,atsha204",  .data = (void *)ATSHA204 },
+> +	{ .compatible = "atmel,atsha204a", .data = (void *)ATSHA204A },
+> +	{ /* sentinel */ }
+> +};
+> +MODULE_DEVICE_TABLE(of, atmel_sha204a_dt_ids);
+> +
+> +static const struct i2c_device_id atmel_sha204a_id[] = {
+> +	{ .name = "atsha204",  .driver_data = ATSHA204 },
+> +	{ .name = "atsha204a", .driver_data = ATSHA204A },
+> +	{ /* sentinel */ }
+> +};
+> +MODULE_DEVICE_TABLE(i2c, atmel_sha204a_id);
+> +
+
+Then, move these back to the old location, and point .data /
+.driver_data to &atsha204_quality for atsha204 only.
+
+
+>  static void atmel_sha204a_rng_done(struct atmel_i2c_work_data *work_data,
+>  				   void *areq, int status)
+>  {
+> @@ -171,11 +190,8 @@ static int atmel_sha204a_probe(struct i2c_client *client)
+>  	i2c_priv->hwrng.name = dev_name(&client->dev);
+>  	i2c_priv->hwrng.read = atmel_sha204a_rng_read;
+> 
+> -	/*
+> -	 * According to review by Bill Cox [1], this HWRNG has very low 
+> entropy.
+> -	 * [1] 
+> https://www.metzdowd.com/pipermail/cryptography/2014-December/023858.html
+> -	 */
+> -	i2c_priv->hwrng.quality = 1;
+> +	if ((uintptr_t)i2c_get_match_data(client) == ATSHA204)
+> +		i2c_priv->hwrng.quality = 1;
+> 
+
+Here you can override the field by dereferencing the match data if it
+is non-NULL.
+
+Alternatively, you could store the quality in the device_id structs
+directly, but I think this is slightly more idiomatic.
+
+
+>  	ret = devm_hwrng_register(&client->dev, &i2c_priv->hwrng);
+>  	if (ret)
+> @@ -202,20 +218,6 @@ static void atmel_sha204a_remove(struct i2c_client *client)
+>  	kfree((void *)i2c_priv->hwrng.priv);
+>  }
+> 
+> -static const struct of_device_id atmel_sha204a_dt_ids[] __maybe_unused = {
+> -	{ .compatible = "atmel,atsha204", },
+> -	{ .compatible = "atmel,atsha204a", },
+> -	{ /* sentinel */ }
+> -};
+> -MODULE_DEVICE_TABLE(of, atmel_sha204a_dt_ids);
+> -
+> -static const struct i2c_device_id atmel_sha204a_id[] = {
+> -	{ "atsha204" },
+> -	{ "atsha204a" },
+> -	{ /* sentinel */ }
+> -};
+> -MODULE_DEVICE_TABLE(i2c, atmel_sha204a_id);
+> -
+>  static struct i2c_driver atmel_sha204a_driver = {
+>  	.probe			= atmel_sha204a_probe,
+>  	.remove			= atmel_sha204a_remove,
 
