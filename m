@@ -1,339 +1,147 @@
-Return-Path: <stable+bounces-241753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241750-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KCf4HDv48GkpbgEAu9opvQ
-	(envelope-from <stable+bounces-241753-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 20:11:07 +0200
+	id INrsNjn38GkpbgEAu9opvQ
+	(envelope-from <stable+bounces-241750-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 20:06:49 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C855A48A785
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 20:11:06 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A10148A6C9
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 20:06:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CFFE2303E2F9
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 18:06:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 30C3430AB86F
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 18:02:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 109A9466B72;
-	Tue, 28 Apr 2026 18:06:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34A18453498;
+	Tue, 28 Apr 2026 18:02:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=minyard.net header.i=@minyard.net header.b="mo2BXDrP"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KZDYGpB6"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99CBE466B7B
-	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 18:06:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC30544E047
+	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 18:02:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777399584; cv=none; b=B8HJtc/yTUm8z4IM3z7VP6kEVIIYkzeNcKzJr6k4dVv3Nr3W/ewgBWMwQNaFzNiSpe0k8tgLSz8U7jASFIbdkiAguZUPvgDdGhoXEqQwIa1wYax1moATWzsTxhw6njfmkZXYG0rm9ir0xblccF1UGsRPqOh752fww6wEgMswhy0=
+	t=1777399343; cv=none; b=lvSK6CqBYCUIW83qTk6ruf1qLEbQUkZDUz26Vz1+IZfdLPO0LtR/nLZj9Qe9EfvJxSlZVWMklSW5Yg4nb+a4mq54LEpnKCeBeuC3Mp9UH1TCXWIajMB9NQgEW5sBAtSfZG3Gg1wwcSjvBPeWAStJ3EbBgPNBj9vf/7h11xvz558=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777399584; c=relaxed/simple;
-	bh=yGRPQCL8WqFeuS7EVnEwH+TjdE4/D6RfQ5ewxRCqrvc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eLgy7rY22XzfcSTrbQdaiV+YVAzTm0z7ua3LEHAzHgRCzNpaqKdM/crurn8aIi/B9MK6myPlSOKOu5tUAXMieJGeLa3fytIAknZzxUt0eEzoGWbL/XLhMK2BtzzfJ83y/vrUXUp4YUXCFnZRvyJ9NXtjG0gdYB1mxKC7mjxJ5rQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=minyard.net; spf=pass smtp.mailfrom=minyard.net; dkim=pass (2048-bit key) header.d=minyard.net header.i=@minyard.net header.b=mo2BXDrP; arc=none smtp.client-ip=209.85.167.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=minyard.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=minyard.net
-Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-479ef2b7979so5545703b6e.3
-        for <stable@vger.kernel.org>; Tue, 28 Apr 2026 11:06:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=minyard.net; s=google; t=1777399580; x=1778004380; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=JZbCNADRk3D0+2vwBJopRNuItlsnuhx1YgLD19rJec8=;
-        b=mo2BXDrPqIXttDZrl1gdh3YxwlgqkLj5rBxBGIDKNPSKigV5QI+a+WBsEdqoL1pilS
-         1jg0DRMVO6VeqO2QnnY4ggBzMR+9lHYNqhFm00jQpZuvjJBED4SgvihYH3OAF3AN3jxE
-         RUXZzN/H03bfnLlwxroy8ty5Fqzm6NAjVP1+KKkB7XCn4lgSCXw6dnip9IX5pzCTKXBn
-         s9dny1nYHsmF7BJmvTlK6zrnPIb2Pe+mH1C7dZgGez8Qt75X6Q9iovC+aqI1TA1JymuC
-         bTTHnL08AVFTnSiJCpLUBK5/4t/3u0rFJJhx6yVWi80qsgsxbicVextrgEF/8MeIB7eL
-         iTEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777399580; x=1778004380;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JZbCNADRk3D0+2vwBJopRNuItlsnuhx1YgLD19rJec8=;
-        b=blPNn7im6u+l2cw/lC9JitAOnjMMnnoj6CBAWBzIGE9rICyHD0vobTmXj2Pg1w14EU
-         WdALYLoHxWyVVU/8kzPIaL/Z6sRIVOnhUI/Y7aDU9dA7HJ9uOPNPQb/EPdDTOST8V6kg
-         v6KbF1NJCHPgAlvRKMe4UhgH2/jf/h3kT5e4VkH/TmXsWoUPz1G5iqhm+bOjHHxZBYVP
-         Tk/dt4RY3+xa0qugMxuAh5RNBLaI9H0KW4X6KYzSVyJEkMlax35fzP1Kw3yPZaT6zJHM
-         Byj6Aqt/JQxgPyErUNGMjzMJsBQkzEfIWEJX8C3MlpH0iccfiQNBKD/g1asJlgjlpKgX
-         L15A==
-X-Forwarded-Encrypted: i=1; AFNElJ/Xjmm9V3SU8ABt5CY9nl/NBe/nV9jj2zZ198Bh0ZdamyOIgm+4+HMrki2dkZiiDgQ0e+L6r1I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwhfpZhyIDOS8cveu3XDf3DTcbfTr3ReCh1XyEtsaZgkuBPOshV
-	iPJxgMqKvNN25efS3gLadfeugYM+YRc0GqwZisj0tVy5xntXBdnOaf6jAPWiBvfIf/8=
-X-Gm-Gg: AeBDieu5G625Lg+9ZKfwd6Wr1f30VwOlVevzW2mYMX8juB9FrWSYSzFrwRFMK19clBu
-	psObad26/NBd6lw/x0+MJgT83/+DNYSzU7K9hJBBewa0Qm9Jba/E0RYXdt8C+cBavOZolxxMauK
-	Ex/NOer4Bkh8p/KglvKgHRUvdxSlUyfeC/jz9nGpLW88f7aBLi1YPBEo3O95BCP78A/91M7fM+D
-	xClskxoMHhc4YPwBPeUYo9KUfOCn00pYotlpZ3Ymz4si2ZaGTM4NoEM2eLngPMYRVUbXeNZ478W
-	kXSO6djn3v6JVvquoxehfaXdm38LMXAPkp3EapPSdVjGih8SVhjJLgHwjYeJbJqBJq9PLMOaHCB
-	v04WFM/vrBry8aiXPMrkDuzGeFdnaEmP1fQz8nlFBaevH5vAuT6D1Hlja3+O7tav4Fv1dEskZEX
-	HU+lNN6YaPaL4X/8PMrvt96AsslCvAU1STQUe72orMgZWO5/YFwLssN942lv0Jk+ZJmheXsUbse
-	gZkynRAXPkSUtEX
-X-Received: by 2002:a05:6808:309a:b0:468:1574:4cc1 with SMTP id 5614622812f47-47c3d8e2531mr355934b6e.3.1777399579925;
-        Tue, 28 Apr 2026 11:06:19 -0700 (PDT)
-Received: from localhost ([2001:470:b8f6:1b:7bc4:3841:9e4c:e2ac])
-        by smtp.gmail.com with UTF8SMTPSA id 5614622812f47-47c291be222sm1866433b6e.14.2026.04.28.11.06.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 28 Apr 2026 11:06:19 -0700 (PDT)
-From: Corey Minyard <corey@minyard.net>
-To: Matt Fleming <mfleming@cloudflare.com>
-Cc: openipmi-developer@lists.sourceforge.net,
-	Tony Camuso <tcamuso@redhat.com>,
-	linux-kernel@vger.kernel.org,
-	kernel-team@cloudflare.com,
-	Corey Minyard <corey@minyard.net>,
-	stable@vger.kernel.org
-Subject: [PATCH v3] ipmi: Add limits to event and receive message requests
-Date: Tue, 28 Apr 2026 13:00:33 -0500
-Message-ID: <20260428180611.500258-1-corey@minyard.net>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1777399343; c=relaxed/simple;
+	bh=dYGwWwtkKlPo1deJLx9BodMTvAxpwgOxdsVgFmjZsoM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VDxJ5w0MAvPQadSm6BEDV5V2fyFOCnGepjxrZVGIUVAJfPBNRTmcXlPpvM2KLmdI7JjZ0hi8IWdWoxNavNThGL6X+xepLs6igo4w6a5CRZhvysx1MVw7yJjLNdTwNU4QZw4iUf80oz4477WqtgQr8DPp8sl1Nc26uVRLrNvi0f0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KZDYGpB6; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1777399340;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ajb3tIPe2Fnx33E4Ll33pwLtSHp6m0qrFpGOVd8lamo=;
+	b=KZDYGpB6glYSyZWgek6M+8gQY4zm+OjH5bqtbqNt7yon1nflekyNuKWj+QWJMIpR3pcxvl
+	BamwK7pQh6qYEdyw4KxaYIkLUlNSyHtlHf/hn2EOTcddcSgESHlgghrEIxP3IVhJ7Mphs8
+	8XTqII0CzL+E8sIv7KpfBnumnJGhCO8=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-644-Ws1fpmuWNLuZhhR_lu7h5g-1; Tue,
+ 28 Apr 2026 14:02:17 -0400
+X-MC-Unique: Ws1fpmuWNLuZhhR_lu7h5g-1
+X-Mimecast-MFC-AGG-ID: Ws1fpmuWNLuZhhR_lu7h5g_1777399334
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 42DE4186016B;
+	Tue, 28 Apr 2026 18:02:13 +0000 (UTC)
+Received: from [10.22.65.177] (unknown [10.22.65.177])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 3674D1800671;
+	Tue, 28 Apr 2026 18:02:11 +0000 (UTC)
+Message-ID: <973442ef-ad08-4503-8afc-c97d07298c61@redhat.com>
+Date: Tue, 28 Apr 2026 14:02:10 -0400
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: C855A48A785
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] cgroup/cpuset: Creating or adding CPUs to partition not
+ allowed without privilege
+To: Tejun Heo <tj@kernel.org>
+Cc: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
+ Chen Ridong <chenridong@huawei.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ cgroups@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ Xie Maoyi <maoyi.xie@ntu.edu.sg>
+References: <20260428033439.783246-1-longman@redhat.com>
+ <7so4b76wg2apwwk3yh76q42jgwnpvlv7sursmsmzeyefhp4pbt@thybpp4litm6>
+ <9df75f61-0cbb-42b4-b64d-8e6fd49d50ca@redhat.com>
+ <afDVwO-j2UOdSpQj@slm.duckdns.org>
+Content-Language: en-US
+From: Waiman Long <longman@redhat.com>
+In-Reply-To: <afDVwO-j2UOdSpQj@slm.duckdns.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Rspamd-Queue-Id: 2A10148A6C9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[minyard.net,none];
-	R_DKIM_ALLOW(-0.20)[minyard.net:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-241750-lists,stable=lfdr.de];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241753-lists,stable=lfdr.de];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	DKIM_TRACE(0.00)[minyard.net:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[corey@minyard.net,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[redhat.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[longman@redhat.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,cloudflare.com:email,minyard.net:email,minyard.net:dkim,minyard.net:mid]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-The driver would just fetch events and receive messages until the
-BMC said it was done.  To avoid issues with BMCs that never say they are
-done, add a limit of 10 fetches at a time.
+On 4/28/26 11:44 AM, Tejun Heo wrote:
+> Hello,
+>
+> On Tue, Apr 28, 2026 at 11:19:16AM -0400, Waiman Long wrote:
+> ...
+>> Thank for the comment. Yes, that can be a valid configuration.
+>>
+>> One possible workaround may be to see if the current user has write access
+>> to its parent partition root. If so, we can allow it to create a
+>> sub-partition, if not, we will forbid it.
+> I think this whole thing is a confusion. First of all, resource knobs in any
+> given cgroup is owned by the parent. Delegations where the perm to a
+> resource knob is given to delegatee is not supported and expected to affect
+> resource distribution w.r.t. its siblings. Partition isn't special in this
+> regard. memory.low or min can create similar effects. Maybe I'm missing
+> something but I don't see anything happening that's not supposed to happen.
 
-In addition, an si interface has an attn state it can return from the
-hardware which is supposed to cause a flag fetch to see if the driver
-needs to fetch events or message or a few other things.  If the attn
-bit gets stuck, it's a similar problem.  So allow messages in between
-flag fetches so the driver itself doesn't get stuck.
+You are right. I am a bit confused about the exact delegation rules. 
+After reading the delegation section of the cgroup-v2.rst file, I 
+realize that the current behavior should be OK. For clarity, I am 
+planning to send a documentation patch to clarify the current partition 
+delegation behavior.
 
-This is a more general fix than the previous fix for the specific bad
-BMC, but should fix the more general issue of a BMC that won't stop
-saying it has data.
-
-This has been there from the beginning of the driver.  It's not a bug
-per-se, but it is accounting for bugs in BMCs.
-
-Reported-by: Matt Fleming <mfleming@cloudflare.com>
-Closes: https://lore.kernel.org/lkml/20260415115930.3428942-1-matt@readmodwrite.com/
-Fixes: <1da177e4c3f4> ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Corey Minyard <corey@minyard.net>
----
-I have added this problem as a capability in the openipmi library
-simulator so I can reproduce the issue and make sure everything works
-properly.
-
- drivers/char/ipmi/ipmi_si_intf.c | 54 +++++++++++++++++++++++++-------
- drivers/char/ipmi/ipmi_ssif.c    | 23 ++++++++++++--
- 2 files changed, 64 insertions(+), 13 deletions(-)
-
-diff --git a/drivers/char/ipmi/ipmi_si_intf.c b/drivers/char/ipmi/ipmi_si_intf.c
-index 08c208cc64c5..7c3c463e08da 100644
---- a/drivers/char/ipmi/ipmi_si_intf.c
-+++ b/drivers/char/ipmi/ipmi_si_intf.c
-@@ -168,6 +168,10 @@ struct smi_info {
- 			     OEM2_DATA_AVAIL)
- 	unsigned char       msg_flags;
- 
-+	/* When requesting events and messages, don't do it forever. */
-+	unsigned int        num_requests_in_a_row;
-+	bool		    last_was_flag_fetch;
-+
- 	/* Does the BMC have an event buffer? */
- 	bool		    has_event_buffer;
- 
-@@ -410,7 +414,10 @@ static void start_getting_msg_queue(struct smi_info *smi_info)
- 
- 	start_new_msg(smi_info, smi_info->curr_msg->data,
- 		      smi_info->curr_msg->data_size);
--	smi_info->si_state = SI_GETTING_MESSAGES;
-+	if (smi_info->si_state != SI_GETTING_MESSAGES) {
-+		smi_info->num_requests_in_a_row = 0;
-+		smi_info->si_state = SI_GETTING_MESSAGES;
-+	}
- }
- 
- static void start_getting_events(struct smi_info *smi_info)
-@@ -421,7 +428,10 @@ static void start_getting_events(struct smi_info *smi_info)
- 
- 	start_new_msg(smi_info, smi_info->curr_msg->data,
- 		      smi_info->curr_msg->data_size);
--	smi_info->si_state = SI_GETTING_EVENTS;
-+	if (smi_info->si_state != SI_GETTING_EVENTS) {
-+		smi_info->num_requests_in_a_row = 0;
-+		smi_info->si_state = SI_GETTING_EVENTS;
-+	}
- }
- 
- /*
-@@ -595,6 +605,7 @@ static void handle_transaction_done(struct smi_info *smi_info)
- 			smi_info->si_state = SI_NORMAL;
- 		} else {
- 			smi_info->msg_flags = msg[3];
-+			smi_info->last_was_flag_fetch = true;
- 			handle_flags(smi_info);
- 		}
- 		break;
-@@ -646,6 +657,11 @@ static void handle_transaction_done(struct smi_info *smi_info)
- 		} else {
- 			smi_inc_stat(smi_info, events);
- 
-+			smi_info->num_requests_in_a_row++;
-+			if (smi_info->num_requests_in_a_row > 10)
-+				/* Stop if we do this too many times. */
-+				smi_info->msg_flags &= ~EVENT_MSG_BUFFER_FULL;
-+
- 			/*
- 			 * Do this before we deliver the message
- 			 * because delivering the message releases the
-@@ -684,6 +700,11 @@ static void handle_transaction_done(struct smi_info *smi_info)
- 		} else {
- 			smi_inc_stat(smi_info, incoming_messages);
- 
-+			smi_info->num_requests_in_a_row++;
-+			if (smi_info->num_requests_in_a_row > 10)
-+				/* Stop if we do this too many times. */
-+				smi_info->msg_flags &= ~RECEIVE_MSG_AVAIL;
-+
- 			/*
- 			 * Do this before we deliver the message
- 			 * because delivering the message releases the
-@@ -825,6 +846,26 @@ static enum si_sm_result smi_event_handler(struct smi_info *smi_info,
- 		goto out;
- 	}
- 
-+	/*
-+	 * If we are currently idle, or if the last thing that was
-+	 * done was a flag fetch and there is a message pending, try
-+	 * to start the next message.
-+	 *
-+	 * We do the waiting message check to avoid a stuck flag
-+	 * completely wedging the driver.  Let a message through
-+	 * in between flag operations if that happens.
-+	 */
-+	if (si_sm_result == SI_SM_IDLE ||
-+	    (si_sm_result == SI_SM_ATTN && smi_info->waiting_msg &&
-+	     smi_info->last_was_flag_fetch)) {
-+		smi_info->last_was_flag_fetch = false;
-+		smi_inc_stat(smi_info, idles);
-+
-+		si_sm_result = start_next_msg(smi_info);
-+		if (si_sm_result != SI_SM_IDLE)
-+			goto restart;
-+	}
-+
- 	/*
- 	 * We prefer handling attn over new messages.  But don't do
- 	 * this if there is not yet an upper layer to handle anything.
-@@ -852,15 +893,6 @@ static enum si_sm_result smi_event_handler(struct smi_info *smi_info,
- 		}
- 	}
- 
--	/* If we are currently idle, try to start the next message. */
--	if (si_sm_result == SI_SM_IDLE) {
--		smi_inc_stat(smi_info, idles);
--
--		si_sm_result = start_next_msg(smi_info);
--		if (si_sm_result != SI_SM_IDLE)
--			goto restart;
--	}
--
- 	if ((si_sm_result == SI_SM_IDLE)
- 	    && (atomic_read(&smi_info->req_events))) {
- 		/*
-diff --git a/drivers/char/ipmi/ipmi_ssif.c b/drivers/char/ipmi/ipmi_ssif.c
-index b49500a1bd36..f3798f4e6a63 100644
---- a/drivers/char/ipmi/ipmi_ssif.c
-+++ b/drivers/char/ipmi/ipmi_ssif.c
-@@ -225,6 +225,9 @@ struct ssif_info {
- 	bool		    has_event_buffer;
- 	bool		    supports_alert;
- 
-+	/* When requesting events and messages, don't do it forever. */
-+	unsigned int        num_requests_in_a_row;
-+
- 	/*
- 	 * Used to tell what we should do with alerts.  If we are
- 	 * waiting on a response, read the data immediately.
-@@ -413,7 +416,10 @@ static void start_event_fetch(struct ssif_info *ssif_info, unsigned long *flags)
- 	}
- 
- 	ssif_info->curr_msg = msg;
--	ssif_info->ssif_state = SSIF_GETTING_EVENTS;
-+	if (ssif_info->ssif_state != SSIF_GETTING_EVENTS) {
-+		ssif_info->num_requests_in_a_row = 0;
-+		ssif_info->ssif_state = SSIF_GETTING_EVENTS;
-+	}
- 	ipmi_ssif_unlock_cond(ssif_info, flags);
- 
- 	msg->data[0] = (IPMI_NETFN_APP_REQUEST << 2);
-@@ -436,7 +442,10 @@ static void start_recv_msg_fetch(struct ssif_info *ssif_info,
- 	}
- 
- 	ssif_info->curr_msg = msg;
--	ssif_info->ssif_state = SSIF_GETTING_MESSAGES;
-+	if (ssif_info->ssif_state != SSIF_GETTING_MESSAGES) {
-+		ssif_info->num_requests_in_a_row = 0;
-+		ssif_info->ssif_state = SSIF_GETTING_MESSAGES;
-+	}
- 	ipmi_ssif_unlock_cond(ssif_info, flags);
- 
- 	msg->data[0] = (IPMI_NETFN_APP_REQUEST << 2);
-@@ -843,6 +852,11 @@ static void msg_done_handler(struct ssif_info *ssif_info, int result,
- 			ssif_info->msg_flags &= ~EVENT_MSG_BUFFER_FULL;
- 			handle_flags(ssif_info, flags);
- 		} else {
-+			ssif_info->num_requests_in_a_row++;
-+			if (ssif_info->num_requests_in_a_row > 10)
-+				/* Stop if we do this too many times. */
-+				ssif_info->msg_flags &= ~EVENT_MSG_BUFFER_FULL;
-+
- 			handle_flags(ssif_info, flags);
- 			ssif_inc_stat(ssif_info, events);
- 			deliver_recv_msg(ssif_info, msg);
-@@ -876,6 +890,11 @@ static void msg_done_handler(struct ssif_info *ssif_info, int result,
- 			ssif_info->msg_flags &= ~RECEIVE_MSG_AVAIL;
- 			handle_flags(ssif_info, flags);
- 		} else {
-+			ssif_info->num_requests_in_a_row++;
-+			if (ssif_info->num_requests_in_a_row > 10)
-+				/* Stop if we do this too many times. */
-+				ssif_info->msg_flags &= ~RECEIVE_MSG_AVAIL;
-+
- 			ssif_inc_stat(ssif_info, incoming_messages);
- 			handle_flags(ssif_info, flags);
- 			deliver_recv_msg(ssif_info, msg);
--- 
-2.43.0
+Thanks,
+Longman
 
 
