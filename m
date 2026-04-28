@@ -1,228 +1,258 @@
-Return-Path: <stable+bounces-241460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241461-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CLDjHSQY8GmNOQEAu9opvQ
-	(envelope-from <stable+bounces-241460-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 04:15:00 +0200
+	id sEycFiwZ8GmNOQEAu9opvQ
+	(envelope-from <stable+bounces-241461-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 04:19:24 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0E3F47CA8B
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 04:14:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 036E347CAEE
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 04:19:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5CB0A3046055
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 02:13:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3A827302EEA9
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 02:19:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E5B6379EC8;
-	Tue, 28 Apr 2026 02:13:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72AAC3909B3;
+	Tue, 28 Apr 2026 02:19:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="jGiTl0z6"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="X1nUwtrf"
 X-Original-To: stable@vger.kernel.org
-Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011044.outbound.protection.outlook.com [52.101.57.44])
+Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11013011.outbound.protection.outlook.com [52.101.83.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C02D630ACFB;
-	Tue, 28 Apr 2026 02:13:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A967038F247;
+	Tue, 28 Apr 2026 02:19:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.11
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777342393; cv=fail; b=PvoxdJAdFtp24F/rQcfJEk66QV/CSdikQ4gU57WPmQ2+XD407ZtoVrt9cAxiE4IiJ7c9OTWjuT5VXv1DwbEQLSe5N3DLVY5lyXUgf59h5dTa0c78+zC5ZfE1PCkEgTGEm+Lb3WFNxgScRK4a14dxb9HuGxkIJjsKCe68Hegt7zE=
+	t=1777342758; cv=fail; b=StAdRVHAV58eCbM4xcBktni4GlSRZ03h8WC1tfGuyykVIAc9qhOVkLThQ639s8fvJoCWOUVYBjPt6wPAaF6lBDH74fD8/2SWnFQpoGVh+0EAfT4g+Rk2ghg6MRp1utdNH5uYQSml2OWIXUv4n0F/tTBBjhPSNsM/Q74H7np0DZQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777342393; c=relaxed/simple;
-	bh=3KHWHnGxq8jEEwbgp0cfnmWSPrnmc+CZsBOf/B47M+4=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=AuYrkpx9Pfp38XLU9VBPkWaGTFAZSy6VKeHz7noJEraaeWGDxQKecaA4hQn0KgdgYiF529MebNrCi8Sj1g6LJLF2Fh8Ii7HhWk0Wqb+jMagFBwEmIFZwRL66djrQms62rqabGbfQQI7vixCGe5nR+j1pBm0LCgF9YGcyYufwXJo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=jGiTl0z6; arc=fail smtp.client-ip=52.101.57.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1777342758; c=relaxed/simple;
+	bh=owtqNC2duQ81PR6kHTmAGSb2FacfM7G0LttOKhefaSc=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=AFy9ffheGwVIKwgjZSKcwanNIwUzGrYe9+xbL/8KsJVeuVPtiiwxmf6yDZ+exvMr9gXHgO4o+uSpYkVHBNnQtlyZmygWVqrrBY7DDjOr3gjJfyBrTRnLOG7QS/3hNZGCE+mW9uIbl14lJH7MCdrzJZo4U2917E6DOKV1sanyE9Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=X1nUwtrf; arc=fail smtp.client-ip=52.101.83.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=FmSXS07SKONuXwdVYN1dc7bt/zssBEVsr6qqvxi0Seh++ERa9MOFa6gfVFpyceUj+pn83DbtTVAtu21Mb/sgNVNHxjAQ/H0h5SVM9kxS+i22gO7pUwAdbCaVI2gaRPn1+QNwJPoWNNfK3nVyuQeC0DZm5uT7uQSZ9wEJJWFz09+grbQ2vcwODF4V4O8ZnNykHGmABP8cYuFz++V5fBCTUV01ZmVWG+YKL6QihAEfbG9PXIPnLp/VfZoO13SRe5V5Y4CjEQVfA8irNVWrkcNQyaOhBiE9dj3Se3FhIuGSK4ohAo9bGMAaVfmMbjPzPBSkJ6BXNpeKGTUjgpZ84f+yCA==
+ b=ciV2Rs9X2TauthFaB0pfw0NmBy1gHw2UdbHQfoYDC4lPwID+LBXCEYmUw6ZWviTc8ANeT+ZB6ixhUjeYPz/Cmjfu6bnV3z4B+YcMxl+ZroJBNSclsBzv8XPxwUSvvxrtNItkMRObcF6DReQRATYaRe5ed+k6sR8GdEt0Z/nmUTAtX5bBTR3vj5XGf6AbslEaQoaPungbxOMPGJfRMxrTei55qkUR6EUC4c1swg+axvRPwRQrc/EsuCeh2aCNqpch2F/cXvhLCxer7qVeienkZ4th9V0KzaOFOO1QgJCrVfWWlsdnUjPbivba6+abxGYgWltIUTThq5zRQjYO9MkRKA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=gq/hJ1IknqZB1ji3bbbh+Sz/T+f5iJ3Y2MzKpgbwC6M=;
- b=hK+j9b9/8MPYTlyyL++/WBERo86kvIJNwmX8mX0b+tzSfuNnfbQVWvWbhDcg7QEDPY6/6J4GoibuH5jvhrxmKnJfbX7dezI3xmlJmDbNzpkqHsbI7SbhBTR0XROqOYgc0zXtpJ0cEv/BXvpteIqu0iW69rZjCT9RpcA7mqfV0xegy0lzeEo0nZNMZRIe+kveGE3me8gTBX1CyE8dNP5gxpuckJUNDrhVzCTQIZdo3EjufShU/KD6QQzlYunRybJs6sRH2ikD6s+4x9zBO1LJt5g8BzEFZxhB5q9RQ14UQqq3rnWDu5YM+RCC8PbH7MM+EeuuCSy0gUcUsERFEbj3fg==
+ bh=ATzFWOLmnOJ/n9e8MwDo7IheDF2x+KCB0Kkoa7P/Xy8=;
+ b=piBqNnIA+V6d5LnsQu6UeXajs4Hgg0nyhv8kAGweCpL4eboihhKa1MJc3auOnaWuKrgh3EsOgpdNT/2ZAZ+VCAq+6o6Qb0DmLv/WWXkOugcm06XAeXAAYkOui8kkbuE9UMCM8FHToG0pt2msTWpDavA1CSJxPFjeJsInrsUSKkpBzr1/f0XPL99EbYmMaFuaA9skm4OXUa4JuTVeF5g8SBCWtRXbhXRi9BQaSdLfnUeJUJ6WpQgnU+mBWrAle53NBPzondHhLwsYLqD1bsKT7AfNDFGo1YqMR6BlcJfXw6tFly/PmntYIrROwGYX9feDpnxZ/NIB6IWSNCv+RBE4Fw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gq/hJ1IknqZB1ji3bbbh+Sz/T+f5iJ3Y2MzKpgbwC6M=;
- b=jGiTl0z67NuoCb6KuFu680N1RpbLqsupGntRA7cjgMK1FrSB6n900oXExpia0+m7fT2JUhn28TxUsrE7/bz4ekZihzX8GeAIetrCRdAqRuP6Xgzs1609X0Vf4mPsF4ktGSRgCq6oXKBnt6D3nKqGnvM6sm+XFmAa63A+ubBGUambyW4k8m2LiaWMtR8pKXIlGSwv/jauWjziyaX+NRsZEgZXxZ8rDz9iQ/y0NofPomCaThmWovflVlN0iNMx4VFDkR6zkczTq7Qc3RbMFYXZMAmr+h4xY8KOK+N7wM+e3e/zKHOIiyBWiNE4aAlwroNr81NcGlgeyu3S8//zuXTPsA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DS0PR12MB8442.namprd12.prod.outlook.com (2603:10b6:8:125::12)
- by SJ0PR12MB6757.namprd12.prod.outlook.com (2603:10b6:a03:449::21) with
+ bh=ATzFWOLmnOJ/n9e8MwDo7IheDF2x+KCB0Kkoa7P/Xy8=;
+ b=X1nUwtrfJlq30Hh9S6wgiq5LTGalJPlvh9WMjcbpzK5risVncKri8mMWvGm/qpVVU7c3nD/Q/h/wSkhmpuXLELn3w+aFdqzYoiYIvc+kS+YNtT95bo6nuxFBDvQtYNAnw9VN9yStaanZSlagv+AVL1tw2pFva/iU/D0uEjrr0oYXhB+qBTjS3j+5/WPuX4pqS66QaAjy8xP752aZ5DyRPtCOnA/vrKaQTj6WP4VpsdGqV/uuwA8Dm/OqA7dQM/56D4lzUb7BpRttAP2ZwAMWeXzhHBa83OIIYnl++CJKbdp1DAZhGjMDTBvkhHI4gxt9joIahUbe4a7C5Jug0K3Eyg==
+Received: from AM0PR04MB5220.eurprd04.prod.outlook.com (2603:10a6:208:c2::19)
+ by DB9PR04MB8495.eurprd04.prod.outlook.com (2603:10a6:10:2c7::20) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.17; Tue, 28 Apr
- 2026 02:13:06 +0000
-Received: from DS0PR12MB8442.namprd12.prod.outlook.com
- ([fe80::c4df:b439:571:4591]) by DS0PR12MB8442.namprd12.prod.outlook.com
- ([fe80::c4df:b439:571:4591%6]) with mapi id 15.20.9870.013; Tue, 28 Apr 2026
- 02:13:05 +0000
-From: "Matthew R. Ochs" <mochs@nvidia.com>
-To: Miklos Szeredi <miklos@szeredi.hu>
-Cc: Bernd Schubert <bschubert@ddn.com>,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] fuse: do not treat unlimited readdir count as a buffer size
-Date: Mon, 27 Apr 2026 19:13:04 -0700
-Message-ID: <20260428021304.2338592-1-mochs@nvidia.com>
-X-Mailer: git-send-email 2.50.1
-X-NVConfidentiality: public
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR05CA0127.namprd05.prod.outlook.com
- (2603:10b6:a03:33d::12) To DS0PR12MB8442.namprd12.prod.outlook.com
- (2603:10b6:8:125::12)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.26; Tue, 28 Apr
+ 2026 02:19:13 +0000
+Received: from AM0PR04MB5220.eurprd04.prod.outlook.com
+ ([fe80::cbbc:93fd:f7b0:76e5]) by AM0PR04MB5220.eurprd04.prod.outlook.com
+ ([fe80::cbbc:93fd:f7b0:76e5%4]) with mapi id 15.20.9846.025; Tue, 28 Apr 2026
+ 02:19:13 +0000
+From: Hongxing Zhu <hongxing.zhu@nxp.com>
+To: Soeren Moch <smoch@web.de>
+CC: "stable@vger.kernel.org" <stable@vger.kernel.org>, Manivannan Sadhasivam
+	<mani@kernel.org>, Lucas Stach <l.stach@pengutronix.de>, Bjorn Helgaas
+	<bhelgaas@google.com>, Frank Li <frank.li@nxp.com>, Fabio Estevam
+	<festevam@gmail.com>, "linux-pci@vger.kernel.org"
+	<linux-pci@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "imx@lists.linux.dev"
+	<imx@lists.linux.dev>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH] PCI: imx6: Keep Root Port MSI capability also for i.MX6Q
+Thread-Topic: [PATCH] PCI: imx6: Keep Root Port MSI capability also for i.MX6Q
+Thread-Index: AQHc1j02pL1yKLxXyk+WT7EvKyovarXzvQ/Q
+Date: Tue, 28 Apr 2026 02:19:13 +0000
+Message-ID:
+ <AM0PR04MB5220EBE4BF61ECBFAF162A4D8C372@AM0PR04MB5220.eurprd04.prod.outlook.com>
+References: <20260427115804.134231-1-smoch@web.de>
+In-Reply-To: <20260427115804.134231-1-smoch@web.de>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: AM0PR04MB5220:EE_|DB9PR04MB8495:EE_
+x-ms-office365-filtering-correlation-id: 9862cb08-a3d4-4f0c-4a79-08dea4cc8a50
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|376014|7416014|19092799006|1800799024|366016|56012099003|22082099003|18002099003|38070700021;
+x-microsoft-antispam-message-info:
+ ZW1yL1V4NnCJxKlPXP8/AKXTcvzwk008EsAapVEiU7inaJfbtOHUUNr5jiXJxFOHd8GlKrKxuXSLaX1LM86JnztADs+mpA/Yp+9ahMH5foY7zAGxXpEnjR2y/MGRoeXyc1AMNcpQgbbBFczc6p24kexakliUepTBzUCv9N9fuznp8UghQNEVLedg/+lPydV+4C4M6R4vIBYZbhiwYe7PhQwAhwgs4bZbXZrI2s+QRM9JP0HGhW7W9DVHbmzTQUg8d2+tSRM/QXTq0FjlZXlAbQNlWv7FXryo23/Gz0gthqad9jT9b2Xw6nbwTmty/+A0Nx///bElTvV5isMQB5zmQmzJuLqVsC1UPFcKoHR8dOAu2vc8ss7PjNHcPme+R5NQYH6BenUoREMtrZuwHkNZLrHs3lIAL4R3e9iGUP47mEICPC9KyJgvz56jqz3dBJ5YlnwEFnYxN48q5CebcyXZfc1LOlL7QSWcGDPHBCz35UmyM+99cIbtN28hagJGJn/q/aokOR3LuWIHOtOSbPy+fyfSZoPjvkiZ/BgXYXCudrSWPCnr3XDveb4NRE9k35h+yqCeZUKtppmGbo0j1TZt+itk9EhSBskKsutYcchgTKalblpDF0nrEfLxZsHoHAOBZQqzkWrM7CAg5QtLTFni9hbUpK9R/3gvywnOJt5Zo+BgCX6Pha6BcL/0SpOrde5KsBZ0o7C/r5G8NqELX/oPc3UEw2fnulgljW4LiNGV1vQO+KxOxVXWw4MF22ubQ0lMkPgRz4gU5yPLTE9t1KiVQhAhHKl4qzai75aNt6x0xUM=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB5220.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(19092799006)(1800799024)(366016)(56012099003)(22082099003)(18002099003)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?cboNcjyg4YHPhdQNg0EcUeGmCaGC7oJlh9pMFI9JKIp9HdF9a6hcRSs3eq/i?=
+ =?us-ascii?Q?zr2XWNqy//iX1MvG/XQYxOxfewWGDK4idNCC91bjo3j0ebxP6AG1Nzf42UAw?=
+ =?us-ascii?Q?02+xM9y5eL7EczbxJUDCdwOll66hcgMMGnoXwCXMwd3oRsTRtUgbKlfR0mJL?=
+ =?us-ascii?Q?5Pg2bYwqeRWLJomJT8ZTYOflTWIle90JRVZPRkRuzYjk4FopAaIRH2IQwCE6?=
+ =?us-ascii?Q?ODhx+l9igEvCv/3rUSuNzQnlbZzMGXJJhVzg/bRiMH+V1bKr4LjKmwFRpLQT?=
+ =?us-ascii?Q?rXr87IEhR0BuDPDarAuX0ieGsXvpgDdIOzgqfrceBWstprc1zXGP9ePoo8R0?=
+ =?us-ascii?Q?lmRMHvvr4j241jLneciRYeHlC8js6nBKJ37oHbzIKJEHFGWZ03CS2Cei76wu?=
+ =?us-ascii?Q?P9PGeGRH9FCgQoP7TRMjR9EaOx5zfbb/QFn28NLkBInKVZNFD7W1XrgPJNzm?=
+ =?us-ascii?Q?9skw3f5qqiaguOhgG/C5D4LIt4UC1gCVRBXWItzbX01nJTORuyzTkLry5rt+?=
+ =?us-ascii?Q?d/SQYtSy8q4/CP7SAe+O6AlVoHmEwLufpmgeGwDIjV50WwIMXKdQp5PiGHmx?=
+ =?us-ascii?Q?I6JUGZByBUjm7kIqVbHk3ey0fkgUy4VcguWxh07T9ENRyEQSsVWHWsSXsXLU?=
+ =?us-ascii?Q?ttG7rra7npfdGQq9cEhTh6D5M/5EEzNtvx2riLZiQ+Z5YxfJksSOFjQuykTX?=
+ =?us-ascii?Q?TzUCfh6/IlJ8uiNZF5A0H89a8I+T0h9tHp629Hv2Kq63TNVk/CY53v7s5d//?=
+ =?us-ascii?Q?YTX3n4/Ymcfkm/awH5IHMwfQt4AFIzN+/xpVl6HTZeV21ijZfZUf7X6JMWvF?=
+ =?us-ascii?Q?rJkXt3MRv2MnwwS4Wl1mVKa3w0G5vMVopElZ7tXwOxxUirnbaYeutXR7TBTi?=
+ =?us-ascii?Q?eOcOG/Db8h6N1PqlJVskhxDkovOCqzyPZ5tTRiCYrs0JFNSu8COcao7YDB58?=
+ =?us-ascii?Q?IROkQnTkAb6YNZHGeLQSBYSo1IDayAOK+LDy7QJnkoQLQMKkbm5haWw6VdAv?=
+ =?us-ascii?Q?PNjnVPj/CIYZvAx41jgSw8dw1pKh6kSZWIwmegXyzj2CNWaH7pWlz2+W55hl?=
+ =?us-ascii?Q?j2Rj7Z2OKiFdT3J+NF4CtcDURBgZPm8faQNy1pwn5RFiVa9bgwx5o4W6gGhY?=
+ =?us-ascii?Q?vKPN4YoprgnHrASFowCTQUh0rUVjYR+m8zabwREUfCH8xx29neD61JXYhowC?=
+ =?us-ascii?Q?r2BGgikOXUEK+0WGyP6MAZsKKp2Ke0uMzhS52lb54wzfTdXDFv/ii1zKmq1x?=
+ =?us-ascii?Q?csngXue5u9kRbWWSDSj3ly4H4zXcHTcX2n8FL+uAeAUMTwnB2ybEjp0inHlk?=
+ =?us-ascii?Q?RAKTkh28ihLIP6QL2OVv0Q1l2x/L4lCFW1Im+taecU4lWnKHgGeDsIuROKzE?=
+ =?us-ascii?Q?QW0ZJmToFbuZAs3QvS8m9Z6F8cK+aBgkZ84vY0CbqFoMQiUktDaquMrn8mXj?=
+ =?us-ascii?Q?V2VLp2STPvUTfenCLEF/QQNehxyN8XbsG1RPHw7zwoh5dWZW0hwhFBCC25nX?=
+ =?us-ascii?Q?ozTcuWV9smlKx4IShca+EftkVgo02r/yPpHihiNN9v0KLTiuMNpachY7wc5H?=
+ =?us-ascii?Q?/bVDgOI+HLtc74mRrw57/eV59K6aiact6q0dVA7FWWF8gMsiHki2QjNCT44V?=
+ =?us-ascii?Q?zHkWxtHctEU5OKWaf7n8kIp7jWPhWeANL/qGa1YWFE3g2eRUbsYf3hUtDxDk?=
+ =?us-ascii?Q?4IbarYfAdcCaOvaEe36od4YwzfcjLnBynSdJxIwvPyc3oY+c?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB8442:EE_|SJ0PR12MB6757:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1a293184-016b-4a6d-0264-08dea4cbaf08
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|1800799024|56012099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	saVH0mjN9GWKzMAb/IehWu5eN+4PmxuNo4uLX6VETUgERyO7xChsR8LFTkBSFtfUAo3K4uZ793eIK6pulhqtasYL4GU4f1MxXQFBvD3Yohd97dEgGWR5afksLtU50t2Ewl7rtRyuUYknPW4TXGJ/wQHNHC3OBzS/8X6I6sOtLxJIKV1XKFdrLRxfRX/Kbwis7NTjAOC1KpO0S9sT0ydIIDy637lWLrZLNGvesezqZEQn3PWIFLDvZedgsTnK5r3kfimVB1OJC1gEI/coRwV6sOkeyy50riW/buEogxH/3ld8wubDrleMSDLl+tuBLlVrKt23J4kTFL5ad/zAggfyshu+BI2XPt2R7v+K2FKXidw0HPF1HxojwC0+yyXCFvleORQ4nulP0/LQ74hc54lyJ9J7Czu8mOQHPmGG0o2pBA7qujyh2TEsp8jP6/ievbp7xfynq8r5a8ufpO1VeGIoHOuI38WUiMuQv9hvrzFrE6B+huErwKI9bLbNjZ0JCLWB5EAvXvz++2ny9nH+2Ge7ZNPw5lWpM4Zay/pNRj3/A0B0LIO5JvCswaaJRZ5TxX02b8Y40zvOZDoPe0GjRHfPgRnrXbbYQAlits7ApeH7t4ENTy90mOkoofW304Ax5A/z38pmypgO7xVyj0hlW3QkI2WZ5r1MIwq8wRXNbVziOHQmKGakxUTg4V8DfrglHDjM28SzQicFQ16ebObdqEilMKQ9BX+T1GeG2INCr4jEMck=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB8442.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(56012099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?RBF6XgrgN3f62eSv56EOsh7RbviL70yNSu1lMKaa15QYbuT/ZMmV3tywN7nY?=
- =?us-ascii?Q?SG0TarXN7njCLPnnM/RGIucNxiU7cQt9b+RHtWqeHZ0DvDPYtsdeNHmdfJiY?=
- =?us-ascii?Q?FwCnD4govq9tfLPM5naU/fpI5p7O54pNyVuKk+2My/iSbuKYKKGIeV+Ideoe?=
- =?us-ascii?Q?56vrDEorwCOzGliSmMw9zqpvvG+GetgUHzqijtP9OdTEEIBn668zkwQWSlNL?=
- =?us-ascii?Q?NVqhnfr3g4mElWxNJvMjebo0dwTUpBoCCTmxVRqDkO/IHSJGeqGRc9QHYeZw?=
- =?us-ascii?Q?EEgxzaS38GpdWUMaU8LzsblqwHrEnmEE6YhnLpno8S4CdGGeURre5gklJ5kf?=
- =?us-ascii?Q?00ugz7PD+EBuqoBjg9UyCA2IBC5oH9f1oDbiFRJKjaUwHk+LJU6U/Fo/5Y1R?=
- =?us-ascii?Q?ffu9NCVlFB+DOhkqY0Q8WuOYI+Woo9obqmQbnQrPmG+f8yWNI04gs6phEvHJ?=
- =?us-ascii?Q?+5ForNKaGRG2PPmRQSkY77s2BLXMgttwNvtsIHE96x77Nvy5FXUEqqwY4fTJ?=
- =?us-ascii?Q?jD5BROf2IExoEyXd/rxAsgzJDKg7fNUoDYoX4X0z1MV/mA2iO3kXdUVIy+MC?=
- =?us-ascii?Q?LCUXUpqn397+R56BPuCAIKihe+5ycAKRtgL6MtPKQ+MOF8K+qVyx5cRExFi3?=
- =?us-ascii?Q?U3ofK3RDukIcOEd/3fwSHNh/1Eg5SFylXJQS9i5ulu2v79oR4AVeJ42oUJu+?=
- =?us-ascii?Q?bGct5znRsb3ODaEvqZK8vWz+gQSZ7S7cegd09wKqqjxpZmS9cnbZMA+8U8ZS?=
- =?us-ascii?Q?GKXJDQxE+plO5b18m2Lc/tqctrFx5K40/REQ2bPhad5qAdaxNNwIp4oBga2V?=
- =?us-ascii?Q?IxSHmXgEkYrXIoh2wTiSl2QV/+2knrrxeFNdPc2whSO2HJaGEmlK4WgA6XR8?=
- =?us-ascii?Q?MrXoY9FgAKgc/9yLPjFXF4unh4nWAeoigqZiEnv0MAPmSVzppvsy1YMb+0ka?=
- =?us-ascii?Q?0nkB/BhCV8L/NpvvdPgdxyoxPq3B5/BgprFDxrS8hXa7mxUuZ5ULlkZkjMyn?=
- =?us-ascii?Q?UXZpV5HtCBkgAyAqGHqJ70jKOxwlGlb/j91TksAzJ105y6p7OMYRbJM/xu31?=
- =?us-ascii?Q?/+N+1ezSHOFTt8L9xb0gwSfBTfWLg7cXr/Ji0am8964J7hg2DxtOD3FeW3pG?=
- =?us-ascii?Q?nMqbBWGKAA19ctONg4h+uiaCjBwhaY8Hibrs8zY5GIRbhZYNykhIk02Ixl22?=
- =?us-ascii?Q?pyqNtDf8Oa3821FLwm4VuFs7cFQfQmSP5RZQhFmEwLIYSN82a10ZxggT01nj?=
- =?us-ascii?Q?todA+cSPediVxhJdwfJaSYkdbpJtDRDk5h2cUq6+wCnnxo4gSBOBpTgzzaVF?=
- =?us-ascii?Q?tc9Bi4refPJznOV89XrhVg8/61ni+slSeUUn6rf0Xpe5ibebb7AiBmBdTfb7?=
- =?us-ascii?Q?k/S4N0ipQBNCYJWMrV4hQvrnZt31Sg6IICXaZNPK40IgY7QfQQQln03btS8J?=
- =?us-ascii?Q?QtdeBxrZEkeBUsqFxWmwFZsuGmk+9kPT5w3GX+fJZ3g/EGF3svPNwBIqEWWU?=
- =?us-ascii?Q?EjvTX1/nTk5i1kHrrBhpqAuaKd66Y9fq5kMljrQMfhuzqSq/v7iRZmnHAqE/?=
- =?us-ascii?Q?LpIobLAKCsKxyYcDdA/Xtn2imNawm3Sq7tBQ7x16PB+6PR2xC4lg79nCjYxM?=
- =?us-ascii?Q?TMkXvfGPG0HRnYzhjgke7zf4hRdHRflRADuJGYGg29PGgE1/mKnHvwPFJu7K?=
- =?us-ascii?Q?lYI9GYwQ2m9i42iTPYmJVp9DTjR945vbHtKZAxXie7wNPJqmaCggRgwf1EqV?=
- =?us-ascii?Q?mlgKUMQOqA=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1a293184-016b-4a6d-0264-08dea4cbaf08
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB8442.namprd12.prod.outlook.com
+X-OriginatorOrg: nxp.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Apr 2026 02:13:05.6465
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB5220.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9862cb08-a3d4-4f0c-4a79-08dea4cc8a50
+X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Apr 2026 02:19:13.3610
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: xXq8SafYV92gmoSSYAac4KosuT1VzPmDITme64OM+EDrFtm5JyXW47gZMYhaLfBDYRie3xmG8wDxgGxLaOhNZA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB6757
-X-Rspamd-Queue-Id: F0E3F47CA8B
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: RYcHkHceBSAZmH1zuw7MdQleYZ7w0co8w7SVRXf6PMm4z1aBoRDrMEcupqoGVY580COMxD/ej+YrbJ4VqrqrhA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8495
+X-Rspamd-Queue-Id: 036E347CAEE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.34 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_REJECT(1.00)[cv is fail on i=2];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[nvidia.com,reject];
-	R_DKIM_ALLOW(-0.20)[Nvidia.com:s=selector2];
+	DMARC_POLICY_ALLOW(-0.50)[nxp.com,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[nxp.com:s=selector1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,pengutronix.de,google.com,nxp.com,gmail.com,lists.infradead.org,lists.linux.dev];
+	TAGGED_FROM(0.00)[bounces-241461-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[web.de];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[nxp.com:+];
+	MISSING_XM_UA(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241460-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mochs@nvidia.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[Nvidia.com:+];
 	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[hongxing.zhu@nxp.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:mid,nvidia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,Nvidia.com:dkim]
+	REDIRECTOR_URL(0.00)[aka.ms];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,AM0PR04MB5220.eurprd04.prod.outlook.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-Commit dabb90391028 ("fuse: increase readdir buffer size") changed
-fuse_readdir_uncached() to size its temporary buffer from ctx->count,
-clamped to the negotiated FUSE maximum request size.
+> -----Original Message-----
+> From: Soeren Moch <smoch@web.de>
+> Sent: Monday, April 27, 2026 7:58 PM
+> To: Hongxing Zhu <hongxing.zhu@nxp.com>
+> Cc: Soeren Moch <smoch@web.de>; stable@vger.kernel.org; Manivannan
+> Sadhasivam <mani@kernel.org>; Lucas Stach <l.stach@pengutronix.de>; Bjorn
+> Helgaas <bhelgaas@google.com>; Frank Li <frank.li@nxp.com>; Fabio Estevam
+> <festevam@gmail.com>; linux-pci@vger.kernel.org; linux-arm-
+> kernel@lists.infradead.org; imx@lists.linux.dev; linux-kernel@vger.kernel=
+.org
+> Subject: [PATCH] PCI: imx6: Keep Root Port MSI capability also for i.MX6Q
+>=20
+> [You don't often get email from smoch@web.de. Learn why this is important=
+ at
+> https://aka.ms/LearnAboutSenderIdentification ]
+>=20
+> Also on the NXP i.MX6Q chipset MSIs from the endpoints won't be received =
+by
+> the iMSI-RX MSI controller if the Root Port MSI capability is disabled.
+>=20
+> Even though the Root Port MSIs won't be received by the iMSI-RX controlle=
+r due
+> to design, this chipset has some weird hardware bug that prevents the end=
+point
+> MSIs from reaching when the Root Port MSI capability is disabled.
+>=20
+> Hence, always keep the Root Port MSI capability for this chipset.
+>=20
+> Note that by keeping Root Port MSI capability, Root Port MSIs such as AER=
+, PME
+> and others won't be received by default. So users need to use workarounds=
+ such
+> as passing 'pcie_pme=3Dnomsi' cmdline param.
+>=20
+> Fixes: 3a4e8302e72f ("PCI: imx6: Keep Root Port MSI capability with iMSI-=
+RX to
+> work around hardware bug")
+> Cc: <stable@vger.kernel.org> # 7.0.x
+> Signed-off-by: Soeren Moch <smoch@web.de>
+Acked-by: Richard Zhu <hongxing.zhu@nxp.com>
 
-That is correct for normal userspace getdents callers, where ctx->count is
-the userspace dirent buffer size. It is not correct for in-kernel callers
-that use the VFS sentinel values documented for struct dir_context.count:
-0 means unknown and INT_MAX means unlimited.
-
-Overlayfs uses INT_MAX when reading merged directories. After
-dabb90391028, FUSE interprets that sentinel as a real size request and
-expands the readdir buffer to fc->max_pages << PAGE_SHIFT.
-
-For virtiofs, the output kvec is included in the request bounce buffer
-allocated by copy_args_to_argbuf():
-
-  req->argbuf = kmalloc(len, GFP_ATOMIC);
-
-On a 64K-page guest, this can require a multi-megabyte contiguous
-GFP_ATOMIC allocation. In the failing setup, a 64K-page guest on a 4K-page
-host negotiated max_pages=124, so the computed buffer was about 8MB. The
-same guest on a 64K-page host negotiated max_pages=16, limiting the
-computed buffer to 1MB and masking the bug.
-
-One way to reproduce this is a 64K-page guest on a 4K-page host with an
-overlayfs mount whose lower directory is on virtiofs. Reading a merged
-directory through overlayfs can then fail with:
-
-  ls: reading directory '<path>': Cannot allocate memory
-
-Treat unknown and unlimited counts the same way fuse_readdir_uncached()
-did before dabb90391028: use PAGE_SIZE. Keep the larger readdir buffer
-for callers that provide a meaningful positive count.
-
-Fixes: dabb90391028 ("fuse: increase readdir buffer size")
-Cc: stable@vger.kernel.org
-Signed-off-by: Matthew R. Ochs <mochs@nvidia.com>
----
- fs/fuse/readdir.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/fs/fuse/readdir.c b/fs/fuse/readdir.c
-index c2aae2eef086..0e436c563efb 100644
---- a/fs/fuse/readdir.c
-+++ b/fs/fuse/readdir.c
-@@ -341,7 +341,10 @@ static int fuse_readdir_uncached(struct file *file, struct dir_context *ctx)
- 	struct fuse_io_args ia = {};
- 	struct fuse_args *args = &ia.ap.args;
- 	void *buf;
--	size_t bufsize = clamp((unsigned int) ctx->count, PAGE_SIZE, fc->max_pages << PAGE_SHIFT);
-+	unsigned int count = (unsigned int)ctx->count;
-+	size_t bufsize = (count && count != (unsigned int)INT_MAX) ?
-+		clamp(count, (unsigned int)PAGE_SIZE, fc->max_pages << PAGE_SHIFT) :
-+		PAGE_SIZE;
- 	u64 attr_version = 0, evict_ctr = 0;
- 	bool locked;
- 
--- 
-2.50.1
+Best Regards
+Richard Zhu
+> ---
+> Cc: Manivannan Sadhasivam <mani@kernel.org>
+> Cc: Richard Zhu <hongxing.zhu@nxp.com>
+> Cc: Lucas Stach <l.stach@pengutronix.de>
+> Cc: Bjorn Helgaas <bhelgaas@google.com>
+> Cc: Frank Li <Frank.Li@nxp.com>
+> Cc: Fabio Estevam <festevam@gmail.com>
+> Cc: linux-pci@vger.kernel.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: imx@lists.linux.dev
+> Cc: linux-kernel@vger.kernel.org
+>=20
+> Tested on a tbs2910 board [1]
+> [1] arch/arm/boot/dts/nxp/imx/imx6q-tbs2910.dts
+> ---
+>  drivers/pci/controller/dwc/pci-imx6.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/pci/controller/dwc/pci-imx6.c
+> b/drivers/pci/controller/dwc/pci-imx6.c
+> index 6d6a1688e7eb..3d461bdef967 100644
+> --- a/drivers/pci/controller/dwc/pci-imx6.c
+> +++ b/drivers/pci/controller/dwc/pci-imx6.c
+> @@ -1865,7 +1865,8 @@ static const struct imx_pcie_drvdata drvdata[] =3D =
+{
+>                 .flags =3D IMX_PCIE_FLAG_IMX_PHY |
+>                          IMX_PCIE_FLAG_SPEED_CHANGE_WORKAROUND |
+>                          IMX_PCIE_FLAG_BROKEN_SUSPEND |
+> -                        IMX_PCIE_FLAG_SUPPORTS_SUSPEND,
+> +                        IMX_PCIE_FLAG_SUPPORTS_SUSPEND |
+> +                        IMX_PCIE_FLAG_KEEP_MSI_CAP,
+>                 .dbi_length =3D 0x200,
+>                 .gpr =3D "fsl,imx6q-iomuxc-gpr",
+>                 .ltssm_off =3D IOMUXC_GPR12,
+> --
+> 2.43.0
 
 
