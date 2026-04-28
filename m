@@ -1,272 +1,489 @@
-Return-Path: <stable+bounces-241551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241579-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wJWpBb6O8Gl4UwEAu9opvQ
-	(envelope-from <stable+bounces-241551-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 12:41:02 +0200
+	id yNC7FPaR8GlvVAEAu9opvQ
+	(envelope-from <stable+bounces-241579-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 12:54:46 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F5D1482CD3
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 12:41:01 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6F4C4830B6
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 12:54:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1630A3020E98
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 10:40:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A71593157BC5
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 10:45:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D656C3F0A9A;
-	Tue, 28 Apr 2026 10:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 371D83FCB29;
+	Tue, 28 Apr 2026 10:42:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="L7FKjram";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="YUPMIjNw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="geLV98Ow"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF2C33EFD24
-	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 10:40:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC3D13FE350;
+	Tue, 28 Apr 2026 10:42:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777372848; cv=none; b=bzGjNZrSgxlRS9mwceVYyK1FATQVDTB8onA3b1FEjiRfvxjXY3p55wcT8EiT/Fdgwy2E4RJq+3InWWJK3grqCeSLwQ2OXWGZp5Ql5RZOvi94/DjfWCZDXJNUQd47SlxT6qcTlPeKX8DtjbGOLBBlL1xh9Ilm3vh3D95u/dAsd8U=
+	t=1777372933; cv=none; b=Y9b3OD+lLBeDJJ48rjLeMvafzqA7FW53pfFSEL3x3H7LqETtu3xGMHciOUxZ42LsTx69U80RxhUYx7rkAyM8UTJuOuoY30n3pYzaEq3NJl/Kktpyp0wKCdBDx7Yi4t0F+58k5KRUFn4a0PEceMLf7fHNvu2rOJwwBF1tto22bX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777372848; c=relaxed/simple;
-	bh=OFBgm8XUDkEL5Bv4Gk0Ry/UqQdSKBfFUMEYOVspYCzM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SQO/xzMsZfpQNYee1BMbr/RBCGXnP8rGO/xRp1w1tBe1dbMMp87Yl9AQ9bjQ/viuBHOUDbX7gK6ag0ttJ0Q9vPBnC3E385X6ONtPvVBjygTV1vZ+KFB4DxoSrtO4Gcnb71enRmT0e4RUfwMrc+OwxZo9Bp3ZOFsjVKMS4CDqTLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=L7FKjram; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=YUPMIjNw; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777372845;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7gA47fGzFrwfbeRQhPiDfBesIkKjWe3OMqniZMXkZ4A=;
-	b=L7FKjramA3TEn7UZwClLnVgL66TDxVGAK7AqUYQCLIt5eLxwSUN6Oz2zH9fFj+DvHPKHDz
-	BsUFAkIaR/BPc51fuF3sUWHy4ElJ+L+ljMD5XVz6Fg/NQofLo5Z7DNLYNIxezrvOp0pHIe
-	MagducDfb38dlg0cWdaJPXqG5CGBuxQ=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-590-rWHvEJHMPQaOW7y1a64BDw-1; Tue, 28 Apr 2026 06:40:43 -0400
-X-MC-Unique: rWHvEJHMPQaOW7y1a64BDw-1
-X-Mimecast-MFC-AGG-ID: rWHvEJHMPQaOW7y1a64BDw_1777372843
-Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-8a5f6110c1cso264269386d6.0
-        for <stable@vger.kernel.org>; Tue, 28 Apr 2026 03:40:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1777372843; x=1777977643; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=7gA47fGzFrwfbeRQhPiDfBesIkKjWe3OMqniZMXkZ4A=;
-        b=YUPMIjNwsdqRSl8x72jxxFrkIteqZr1IhkLvPneYZTtYo8wHcfwYtHXXgB7BiIo65a
-         r3YJVNzqXiP5ff0cLaU5+aXSM5bdn+zq+Yi9Vht9QymjNFDj4uunY52/crys2C6L4Ha4
-         f0ExYbn4LZsEsqE/8wQQj2MgtO0ymn2UjUm6VV+CdGAqg1By97G7a+WjRxDdi1GEhLKw
-         paoPYiMZBJIUxjKDRNnLIZNGCelRx+vUvfrCh1NwSvJfgRk581lZg6QauftT1fNHunK/
-         jc8CFw7t1VehuhMUs1MDahv4wdD+AMX1wFH1YIC2rtlI5cy/f7dJhLlUlcn1vx8oot+x
-         GyBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777372843; x=1777977643;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=7gA47fGzFrwfbeRQhPiDfBesIkKjWe3OMqniZMXkZ4A=;
-        b=XALVV13H4CyZGcOHlxZ/M+7drqoRFz4y5dMtMFpCIstei7yg25Qp23trqyzEKmT2fY
-         Nr4G9Ss/TfUgd4noix0hjHTvF/wE4INXNdx3cvdbrqtmNZhozLlXUa0gTABJhEIPcpgv
-         isezIZMHXKqChuGwyJ6/CNs6TAitnNmrAa9LEgCsLZJTT/EdicXPFcw6EJui4li0FwSI
-         enhP5Vd6Eqq4Hwjek/nyGyI5cATF+NVHFnQnHAH7zTD0ZYDCopNFBldmdtTzSV9vZDPz
-         L7zsGVLqytCUJ8NeBox8+J6B3K8B4hXl0p910VynAWr0l5jTUflRF8zvUEL6iaip6MwZ
-         zPOw==
-X-Forwarded-Encrypted: i=1; AFNElJ8FAL2im+ollk+WR8i24iYDn/hX+os5kIy1ltAlpLZd7y/gsAHWj6RXtFRXEnzjijYPp5p3Bik=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzGBpHziy0N+a2Bkh4yUfiUm2QUPAhf4LOpAGtrnmOpYnCygyXa
-	N15b3IUMf4Ep5yZoO3GJ9seWoAyURmbhmTDR4jp7sl2nvKsMdlPCM38i0fanZlmnBr6B8yCbeNF
-	t55AXIc4pNnqjx05JxrOz9pSW+ThxmjPwVo8/+VOaUU/61BmtK/wk/lYJxw==
-X-Gm-Gg: AeBDiesz2kPyurwkG968KvTWqJlhixalfg3CtlvzZ/MHnGoCLfCACrnOkcaV60AWNug
-	Gv9CD5iZkfEy0huS3LK6YMEZ0j8uhYSWF2Zildi9Ejo8a3acR+q/cPacLxRO6AE6D3lJmOVDDeH
-	cKzBFhJ2X5ihTrkr0CfHeiS9sJzwCKKY/3PJqJRLm9cwwROZ9ctxaUUtpMct1XXBGg3s3SMnoAN
-	gSR9Ubcwvoft9+u5G1AcfRW3N48tKn9CFwDsJdtXrEgU0JUKOqc9YrQRTTzybcb7Pygy/VER+gv
-	RShsxh8/rk1nnPIGBof9nzzWoVczPa+lo5VurveSDDkO7i1yzN707JNYBNtXURoSh6sz1uqeRgD
-	AKtl+OsDGjUaUVmCMM9pwgjv2CalG42iNLdtENqkoTD/X2LbvrLpPc8AEDqhzFZFIjQ==
-X-Received: by 2002:a05:6214:2404:b0:8ac:b677:c3fc with SMTP id 6a1803df08f44-8b3e31dd1f2mr40510486d6.51.1777372843227;
-        Tue, 28 Apr 2026 03:40:43 -0700 (PDT)
-X-Received: by 2002:a05:6214:2404:b0:8ac:b677:c3fc with SMTP id 6a1803df08f44-8b3e31dd1f2mr40510006d6.51.1777372842607;
-        Tue, 28 Apr 2026 03:40:42 -0700 (PDT)
-Received: from [192.168.88.32] ([216.128.9.114])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8b3e2811b1fsm17395116d6.10.2026.04.28.03.40.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 28 Apr 2026 03:40:42 -0700 (PDT)
-Message-ID: <1db7e764-1485-422b-8b68-b45b18f492b2@redhat.com>
-Date: Tue, 28 Apr 2026 12:40:38 +0200
+	s=arc-20240116; t=1777372933; c=relaxed/simple;
+	bh=PsFsicZF8LO/wwF+hIneruUq34uFUhSIcZFHEpZSb84=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=cP9NRhn17rafZlnC64TNHK21RWHj4EYFSATsO1p+nmnE+8Nr8/+ukbsZtGAJ0fgR7XwgQNbs9RQ6TXPsyYOnOAI3RQ0xf3T/djwwRPSBqDmdyi/ais4TUjO9k+whpsgQ8c8vclnIpVem+KYjDrOofTToLipAOtwBpCX3i5Gfbzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=geLV98Ow; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AFE2C2BCAF;
+	Tue, 28 Apr 2026 10:42:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777372933;
+	bh=PsFsicZF8LO/wwF+hIneruUq34uFUhSIcZFHEpZSb84=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=geLV98Ow0aFcqR7IRN+UhH1nvIiGwphIfIw/jmikOECXTIngFGztx8HvHsX4iUhIL
+	 Ut9UEhqpXwy8ZJEBH62kDDQfAxtfHIjNFx6svRHNWoavRrHa/KS25w4qYQX/+ewo4x
+	 kDCN9S6P1sfyanWcb9YIfOWcB1vh/1KL4FKIXfmgDAK5RpaYVmclKJXyzgWwbEzy9D
+	 zIkh08mxXohamye/EZCs5I1DdTfZ6da0eNgLZO63b9BQ+mdNij/PXSbacGVNOty8R+
+	 Mc680UV/ioc5i7RAeIBtIpz7Ouwyu5h/8P3RAl0Frg4z5AxFCYOKKelqdeCqtGePuR
+	 Bu0zG0b84hqqg==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Lee Jones <lee@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	pavel@ucw.cz,
+	linux-leds@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH AUTOSEL 7.0-6.18] leds: core: Implement fallback to software node name for LED names
+Date: Tue, 28 Apr 2026 06:40:39 -0400
+Message-ID: <20260428104133.2858589-28-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260428104133.2858589-1-sashal@kernel.org>
+References: <20260428104133.2858589-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v6] net: stmmac: Prevent NULL deref when RX memory
- exhausted
-To: Sam Edwards <cfsworks@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>
-Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
- Maxime Chevallier <maxime.chevallier@bootlin.com>,
- Ovidiu Panait <ovidiu.panait.rb@renesas.com>,
- Vladimir Oltean <vladimir.oltean@nxp.com>, Baruch Siach <baruch@tkos.co.il>,
- Serge Semin <fancer.lancer@gmail.com>,
- Giuseppe Cavallaro <peppe.cavallaro@st.com>, netdev@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, Russell King <linux@armlinux.org.uk>
-References: <20260422044503.5349-1-CFSworks@gmail.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20260422044503.5349-1-CFSworks@gmail.com>
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 7.0.2
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 8F5D1482CD3
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: B6F4C4830B6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.34 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-241551-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,lunn.ch,davemloft.net,google.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,foss.st.com,armlinux.org.uk,bootlin.com,renesas.com,nxp.com,tkos.co.il,st.com,vger.kernel.org,st-md-mailman.stormreply.com,lists.infradead.org];
-	RCPT_COUNT_TWELVE(0.00)[20];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org,ucw.cz,vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-241579-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pabeni@redhat.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[redhat.com:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable,netdev,kernel];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-On 4/22/26 6:45 AM, Sam Edwards wrote:
-> The CPU receives frames from the MAC through conventional DMA: the CPU
-> allocates buffers for the MAC, then the MAC fills them and returns
-> ownership to the CPU. For each hardware RX queue, the CPU and MAC
-> coordinate through a shared ring array of DMA descriptors: one
-> descriptor per DMA buffer. Each descriptor includes the buffer's
-> physical address and a status flag ("OWN") indicating which side owns
-> the buffer: OWN=0 for CPU, OWN=1 for MAC. The CPU is only allowed to set
-> the flag and the MAC is only allowed to clear it, and both must move
-> through the ring in sequence: thus the ring is used for both
-> "submissions" and "completions."
-> 
-> In the stmmac driver, stmmac_rx() bookmarks its position in the ring
-> with the `cur_rx` index. The main receive loop in that function checks
-> for rx_descs[cur_rx].own=0, gives the corresponding buffer to the
-> network stack (NULLing the pointer), and increments `cur_rx` modulo the
-> ring size. After the loop exits, stmmac_rx_refill(), which bookmarks its
-> position with `dirty_rx`, allocates fresh buffers and rearms the
-> descriptors (setting OWN=1). If it fails any allocation, it simply stops
-> early (leaving OWN=0) and will retry where it left off when next called.
-> 
-> This means descriptors have a three-stage lifecycle (terms my own):
-> - `empty` (OWN=1, buffer valid)
-> - `full` (OWN=0, buffer valid and populated)
-> - `dirty` (OWN=0, buffer NULL)
-> 
-> But because stmmac_rx() only checks OWN, it confuses `full`/`dirty`. In
-> the past (see 'Fixes:'), there was a bug where the loop could cycle
-> `cur_rx` all the way back to the first descriptor it dirtied, resulting
-> in a NULL dereference when mistaken for `full`. The aforementioned
-> commit resolved that *specific* failure by capping the loop's iteration
-> limit at `dma_rx_size - 1`, but this is only a partial fix: if the
-> previous stmmac_rx_refill() didn't complete, then there are leftover
-> `dirty` descriptors that the loop might encounter without needing to
-> cycle fully around. The current code therefore panics (see 'Closes:')
-> when stmmac_rx_refill() is memory-starved long enough for `cur_rx` to
-> catch up to `dirty_rx`.
-> 
-> Fix this by explicitly checking, before advancing `cur_rx`, if the next
-> entry is dirty; exit the loop if so. This prevents processing of the
-> final, used descriptor until stmmac_rx_refill() succeeds, but
-> fully prevents the `cur_rx == dirty_rx` ambiguity as the previous bugfix
-> intended: so remove the clamp as well. Since stmmac_rx_zc() is a
-> copy-paste-and-tweak of stmmac_rx() and the code structure is identical,
-> any fix to stmmac_rx() will also need a corresponding fix for
-> stmmac_rx_zc(). Therefore, apply the same check there.
-> 
-> In stmmac_rx() (not stmmac_rx_zc()), a related bug remains: after the
-> MAC sets OWN=0 on the final descriptor, it will be unable to send any
-> further DMA-complete IRQs until it's given more `empty` descriptors.
-> Currently, the driver simply *hopes* that the next stmmac_rx_refill()
-> succeeds, risking an indefinite stall of the receive process if not. But
-> this is not a regression, so it can be addressed in a future change.
-> 
-> Fixes: b6cb4541853c7 ("net: stmmac: avoid rx queue overrun")
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221010
-> Cc: stable@vger.kernel.org
-> Suggested-by: Russell King <linux@armlinux.org.uk>
-> Signed-off-by: Sam Edwards <CFSworks@gmail.com>
-> ---
-> 
-> This is v6 of [1], which was itself split out of [2]. This patch prevents a
-> NULL dereference in the stmmac receive path, and (at Russell's suggestion) in
-> the zero-copy path as well.
-> 
-> The approach is different from the previous version and checks the dirty_rx
-> index in the loop proper, copied directly from Russell's suggestion [3]. Parts
-> of the commit message also use his phrasing. For these reasons he is credited
-> with `Suggested-by`.
-> 
-> The commit message now acknowledges the pipeline stall that can occur in case
-> of failure of the next stmmac_rx_refill() after the MAC consumes the final
-> descriptor. I still intend to fix that bug when I can find the time to finish
-> investigating and implement the timer as requested by Jakub, however I'm
-> sending this patch now to resolve the outright _panic_ and simplify review.
-> The stmmac_rx_zc() path is not affected by this stall.
-> 
-> [1] https://lore.kernel.org/netdev/20260415023947.7627-1-CFSworks@gmail.com/
-> [2] https://lore.kernel.org/netdev/20260401041929.12392-1-CFSworks@gmail.com/
-> [3] https://lore.kernel.org/netdev/ad-LAB08-_rpmMzK@shell.armlinux.org.uk/
-> 
-> ---
->  .../net/ethernet/stmicro/stmmac/stmmac_main.c | 19 ++++++++++++-------
->  1 file changed, 12 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> index ca68248dbc78..3591755ea30b 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> @@ -5549,9 +5549,12 @@ static int stmmac_rx_zc(struct stmmac_priv *priv, int limit, u32 queue)
->  			break;
->  
->  		/* Prefetch the next RX descriptor */
-> -		rx_q->cur_rx = STMMAC_NEXT_ENTRY(rx_q->cur_rx,
-> -						priv->dma_conf.dma_rx_size);
-> -		next_entry = rx_q->cur_rx;
-> +		next_entry = STMMAC_NEXT_ENTRY(rx_q->cur_rx,
-> +					       priv->dma_conf.dma_rx_size);
-> +		if (unlikely(next_entry == rx_q->dirty_rx))
-> +			break;
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-Sashiko notes that breaking the loop of DMA descriptors owned by the CPU
-may cause double accounting for the ingress stats by stmmac_rx_status().
+[ Upstream commit 4f530c65487636dc1536b3fa1041f9a877a66a7f ]
 
-AFAICS that is not a regression, as the existing later XDP check already
-does the same, so I think that problem should be addressed separately.
+If a software node defining an LED is missing explicit 'label', 'color',
+or 'function' properties, led_compose_name() currently fails with
+-EINVAL, because fallback to using node name in place of LED name/label
+is only implemented for OF nodes.
 
-/P
+Implement similar fallback for software nodes. Unlike OF nodes, which
+use the short 'name' attribute of the device tree node to avoid
+including the address block, use fwnode_get_name() directly since
+swnodes do not include an address block and always have a valid name.
+
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Link: https://patch.msgid.link/20260311-led-swnode-name-v1-1-798a49e041c6@gmail.com
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+
+LLM Generated explanations, may be completely bogus:
+
+Now I have enough information for a complete analysis.
+
+# Analysis: leds: core: Implement fallback to software node name for LED
+names
+
+## PHASE 1: COMMIT MESSAGE FORENSICS
+
+### Step 1.1: Subject line
+Record: `[leds: core]` `[Implement]` `[fallback to software node name
+for LED names]`. The verb "Implement" suggests adding missing
+functionality, but the commit body describes fixing an -EINVAL failure,
+making this a bug fix in substance.
+
+### Step 1.2: Tags
+Record:
+- Signed-off-by: Dmitry Torokhov (author)
+- Signed-off-by: Lee Jones (LED subsystem maintainer)
+- Link: `https://patch.msgid.link/20260311-led-swnode-
+  name-v1-1-798a49e041c6@gmail.com`
+- No `Fixes:` tag
+- No `Cc: stable` tag
+- No `Reported-by` / `Tested-by` / `Reviewed-by` tags
+
+### Step 1.3: Body text
+Record: Bug description: "If a software node defining an LED is missing
+explicit 'label', 'color', or 'function' properties,
+`led_compose_name()` currently fails with -EINVAL." Author explicitly
+describes a failure mode. Root cause: OF-only fallback. Fix: use
+`fwnode_get_name()` for software nodes.
+
+### Step 1.4: Hidden bug fix
+Record: The verb "Implement" reads like a feature addition, but the
+commit body explicitly says the existing code "fails with -EINVAL" -
+this is a bug fix disguised as a feature implementation. Pattern "Handle
+X properly" / missing error-path fallback.
+
+## PHASE 2: DIFF ANALYSIS
+
+### Step 2.1: Inventory
+Record: 1 file changed (`drivers/leds/led-core.c`), 3 lines added, 0
+removed. Single function modified: `led_compose_name()`. Scope: single-
+file surgical fix.
+
+### Step 2.2: Code flow change
+Record: Before: if fwnode is software_node (not OF) and lacks
+label/color/function properties → return -EINVAL. After: if
+software_node, use `fwnode_get_name(fwnode)` as the LED classdev name
+(same fallback pattern as OF nodes).
+
+### Step 2.3: Bug mechanism
+Record: Category (h) hardware-workaround-ish / (g) logic-correctness.
+The `led_compose_name` fallback chain was incomplete: it handled OF-node
+fallback (`to_of_node(fwnode)->name`) but didn't handle the
+`is_software_node()` case, causing LED registration to fail for drivers
+that describe LEDs via software nodes with only a `.name` field. Fix
+adds the missing `else if (is_software_node(fwnode))` branch.
+
+### Step 2.4: Quality
+Record: Obviously correct - mirrors the OF pattern. Uses
+`fwnode_get_name()` which for swnodes resolves to
+`kobject_name(&swnode->kobj)` (always valid for registered swnodes). No
+regression risk: only affects a path that previously returned -EINVAL.
+
+## PHASE 3: GIT HISTORY INVESTIGATION
+
+### Step 3.1: git blame
+Record: The `is_of_node(fwnode)` OF fallback was added by
+`bb4e9af0348df` (Jun 2019, v5.4-rc1) - "leds: core: Add support for
+composing LED class device names". The swnode gap has existed since 2019
+but was latent until drivers began using swnodes for LEDs without a
+"label" property.
+
+### Step 3.2: Fixes: tag
+Record: No Fixes: tag. Most relevant trigger commit: `4e0bcbd270e88`
+("platform/x86: barco-p50-gpio: use software nodes for gpio-leds/keys")
+merged in v6.18-rc1, which defined an LED swnode with only `.name =
+"identify"` and no label/color/function properties. Verified via `git
+describe --contains 4e0bcbd270e88` → `v6.18-rc1~82^2~2`.
+
+### Step 3.3: Related recent changes
+Record: `git log --oneline -- drivers/leds/led-core.c` shows last change
+was `ee44a1def7ee4` in v6.16-rc1 ("leds: core: Bail out when composed
+name can't fit the buffer"). No conflicting changes in stable range.
+
+### Step 3.4: Author
+Record: Dmitry Torokhov is a prolific input/driver maintainer; has
+landed other swnode conversions recently (`4e0bcbd270e88` barco,
+`b8754092dfed4` pcengines-apuv2). Strong familiarity with swnode
+plumbing. Applied by Lee Jones (LED subsystem maintainer).
+
+### Step 3.5: Dependencies
+Record: `is_software_node()` and `fwnode_get_name()` have been stable
+APIs in the fwnode infrastructure for years. No prerequisite patches.
+Standalone fix.
+
+## PHASE 4: MAILING LIST RESEARCH
+
+### Step 4.1-4.2: Thread investigation
+Record: Used `b4 mbox -o /tmp/b4-dig 20260311-led-swnode-
+name-v1-1-798a49e041c6@gmail.com` to retrieve the thread (8 messages).
+Patch is [PATCH 1/2] of "Fall back to using software node name as LED
+name" series. Maintainer Lee Jones applied both patches: "Applied,
+thanks! [1/2] commit: 4f530c65487636dc1536b3fa1041f9a877a66a7f [2/2]
+commit: 91dc0c2a152373c4004df7e36de45190b82089ab". No NAKs. Initial
+application failed due to conflict with patch 2/2 formatting changes -
+author resent after rebase. No stable nomination in thread. Cover letter
+motivation: "helpful when converting old boards using bespoke platform
+data to software nodes/static device properties."
+
+### Step 4.3-4.5: Bug report / stable discussion
+Record: No `Reported-by:` tag, no linked syzbot/bugzilla. No explicit
+stable discussion observed in the thread.
+
+## PHASE 5: CODE SEMANTIC ANALYSIS
+
+### Step 5.1: Functions modified
+Record: `led_compose_name()` only.
+
+### Step 5.2: Callers
+Record: `led_compose_name` is called by:
+- `drivers/leds/led-class.c:498` (`led_classdev_register_ext`) - the
+  main registration path used by dozens of LED drivers
+- `drivers/pci/npem.c:498` - PCI NPEM LED registration
+
+`led_classdev_register_ext` is called from ~70+ LED drivers via
+`devm_led_classdev_register_ext`, including `drivers/leds/leds-
+gpio.c:create_gpio_led` which is the specific path exercised by
+barco-p50-gpio.
+
+### Step 5.3: Callees
+Record: `is_software_node()`, `fwnode_get_name()`, `snprintf()` - all
+well-established.
+
+### Step 5.4: Call chain / reachability
+Record: Reachable from platform device probe paths. Specifically: `leds-
+gpio` probe → `gpio_leds_create()` → `create_gpio_led()` (with
+`template->name = NULL`) → `devm_led_classdev_register_ext()` →
+`led_classdev_register_ext()` → `led_compose_name()`. Triggered on every
+boot for affected hardware.
+
+### Step 5.5: Similar patterns
+Record: Verified `drivers/platform/x86/barco-p50-gpio.c` at v7.0 has
+`identify_led_node` with `.name = "identify"` and `identify_led_props`
+containing only `PROPERTY_ENTRY_GPIO` (no label/color/function). Other
+swnode LED users (`meraki-mx100`, `pcengines-apuv2`, `x86-android-
+tablets`) include `PROPERTY_ENTRY_STRING("label", ...)` so they work
+without this fix.
+
+## PHASE 6: STABLE TREE ANALYSIS
+
+### Step 6.1: Code in stable trees
+Record: The `led_compose_name()` function exists in all active stable
+branches. Verified `git show v6.12:drivers/leds/led-core.c` and
+`v6.6:drivers/leds/led-core.c` both have identical `else if
+(is_of_node(fwnode)) { ... } else return -EINVAL;` pattern. The bug
+(swnode fallback gap) exists in every version since v5.4. However, the
+practical USER-VISIBLE bug (barco-p50-gpio LED not registering) only
+appears starting in v6.18 (via `4e0bcbd270e88`). Before v6.18, barco
+used `gpio_led_platform_data` with `.name = "identify"`, which bypasses
+`led_compose_name` entirely (via the `if (template->name)` branch in
+`create_gpio_led`).
+
+### Step 6.2: Backport difficulty
+Record: `git log --oneline v6.19..v7.0 -- drivers/leds/led-core.c` →
+empty. File is stable. Clean apply expected for v6.18.y+ (where the
+regression exists). For older stable trees (6.6, 6.12), the fix is a no-
+op improvement (no driver there triggers the path) but still applies
+cleanly.
+
+### Step 6.3: Related fixes in stable
+Record: None found. No other approach to the same bug observed.
+
+## PHASE 7: SUBSYSTEM CONTEXT
+
+### Step 7.1: Subsystem
+Record: `drivers/leds/` - LED class core. Criticality: IMPORTANT (common
+driver infrastructure used by many hardware drivers). Failure mode here
+is driver-specific rather than core-kernel.
+
+### Step 7.2: Activity
+Record: `drivers/leds/led-core.c` receives only a handful of changes per
+release. Mature, stable code.
+
+## PHASE 8: IMPACT AND RISK
+
+### Step 8.1: Affected users
+Record: Users of hardware whose drivers describe LEDs via software nodes
+without `label`/`color`/`function` properties. Concretely: Barco P50
+board (`barco-p50-gpio`) in v6.18+ - identify LED fails to register.
+Platform-specific (niche hardware).
+
+### Step 8.2: Trigger conditions
+Record: Triggered every boot on affected hardware. No privilege needed -
+happens automatically during probe.
+
+### Step 8.3: Failure severity
+Record: LED fails to register (returns -EINVAL during probe). Severity:
+LOW-MEDIUM. No crash, no data loss, no security issue. Functional
+regression: identify LED on Barco P50 doesn't appear in /sys/class/leds.
+For most users this is a minor annoyance; for Barco P50 appliance users,
+the identify-button LED feature is broken.
+
+### Step 8.4: Risk-benefit
+Record:
+- Benefit: LOW-MEDIUM (fixes functional regression on specific hardware,
+  v6.18+ only)
+- Risk: VERY LOW (3-line mirror of existing OF logic, only affects a
+  path that previously returned -EINVAL)
+- Ratio: Favorable - very cheap fix for real regression
+
+## PHASE 9: FINAL SYNTHESIS
+
+### Step 9.1: Evidence
+FOR backporting:
+- Commit body explicitly describes an -EINVAL failure (bug fix in
+  substance)
+- Fixes a functional regression in v6.18+ (barco-p50-gpio identify LED)
+- Small (3 lines), surgical, single file
+- Mirrors existing OF-node fallback logic (obviously correct)
+- Applied by the LED subsystem maintainer after review on the list
+- Very low regression risk - only affects paths that previously returned
+  -EINVAL
+- Trigger is deterministic (boot-time probe) so any affected users hit
+  it every boot
+
+AGAINST backporting:
+- No `Fixes:` tag linking to `4e0bcbd270e88`
+- No `Cc: stable` tag
+- No `Reported-by:` (no cited user complaint)
+- Commit message framed as "helpful" for future conversions rather than
+  "fix"
+- Affected hardware is niche (Barco P50 appliance)
+- Non-critical failure (no crash/corruption/security)
+
+### Step 9.2: Stable rules checklist
+1. Obviously correct and tested: YES - trivial mirror of existing OF
+   branch, accepted by LED maintainer.
+2. Fixes real bug: YES - barco-p50-gpio LED registration fails in
+   v6.18+.
+3. Important issue: BORDERLINE - functional regression but not
+   crash/security/corruption.
+4. Small and contained: YES - 3 lines, one file, one function.
+5. No new features/APIs: YES - no new interfaces; fills a missing
+   fallback.
+6. Applies cleanly to stable: YES - the file is stable across recent
+   versions.
+
+### Step 9.3: Exception category
+Record: Partial match to "hardware enablement / driver fix for existing
+hardware". The fix makes an in-tree driver (barco-p50-gpio, present
+since v5.16, swnode-converted in v6.18) actually work.
+
+### Step 9.4: Decision
+The commit fixes a real, deterministic functional regression introduced
+into v6.18 by commit `4e0bcbd270e88`. Although the failure is not a
+crash or security issue, it is a clean-cut boot-time driver probe
+failure that users will hit every boot on affected hardware. The fix is
+minimal (3 lines), obviously correct (mirrors the existing OF-node
+fallback), safe (cannot break previously-working configurations since it
+only covers a path that previously returned -EINVAL), and was accepted
+by the subsystem maintainer.
+
+The absence of `Fixes:`/`Cc: stable` tags is exactly what AUTOSEL exists
+to catch. Weight of evidence favors backport, particularly to v6.18.y
+and v6.19.y where the regression actually manifests. For earlier trees
+the fix is a safe no-op improvement that still applies cleanly.
+
+## Verification
+- [Phase 1] Parsed tags from commit message: no `Fixes:`, no `Cc:
+  stable`, no `Reported-by:`; only `Signed-off-by:` from author (Dmitry
+  Torokhov) and LED maintainer (Lee Jones); `Link:` to
+  `patch.msgid.link` for `20260311-led-swnode-
+  name-v1-1-798a49e041c6@gmail.com`.
+- [Phase 2] Read `drivers/leds/led-core.c` (617 lines, current v7.0):
+  confirmed `led_compose_name` structure - `is_of_node(fwnode)` branch
+  (line 581) falls back to `to_of_node(fwnode)->name`, `else return
+  -EINVAL` (line 585). Diff adds 3 lines of `else if
+  (is_software_node(fwnode))` branch using `fwnode_get_name(fwnode)`.
+- [Phase 3] `git blame drivers/leds/led-core.c -L 574,592`: `is_of_node`
+  fallback dates to `bb4e9af0348dfe` (2019, Jacek Anaszewski) - "leds:
+  core: Add support for composing LED class device names".
+- [Phase 3] `git describe --contains 4e0bcbd270e88` →
+  `v6.18-rc1~82^2~2`: confirms barco swnode conversion landed in v6.18.
+- [Phase 3] `git show
+  4e0bcbd270e88^:drivers/platform/x86/barco-p50-gpio.c`: confirmed
+  pre-v6.18 barco used `gpio_led_platform_data` with `.name =
+  "identify"`, bypassing `led_compose_name`.
+- [Phase 3] `git show v6.6:drivers/platform/x86/barco-p50-gpio.c`: still
+  uses `gpio_led_platform_data`, not swnodes - so regression does NOT
+  exist in v6.6.y.
+- [Phase 3] `git log --oneline -- drivers/leds/led-core.c`: last change
+  `ee44a1def7ee4` in v6.16-rc1; no churn in v6.18..v7.0.
+- [Phase 4] `b4 mbox -o /tmp/b4-dig 20260311-led-swnode-name-v1-1-...`:
+  retrieved 8-message thread. Lee Jones replied "Applied, thanks!" and
+  listed commit hash `4f530c65487636dc1536b3fa1041f9a877a66a7f` for
+  patch 1/2. Initial application failed (conflict with patch 2/2
+  formatting), author re-submitted.
+- [Phase 4] Read thread: no `Cc: stable` suggestion, no NAKs, no
+  Reported-by reference; author frames the change as "helpful when
+  converting old boards."
+- [Phase 5] Read `drivers/leds/leds-gpio.c`: confirmed
+  `gpio_leds_create()` passes `struct gpio_led led = {}` (name == NULL)
+  into `create_gpio_led`, forcing the fwnode path with `init_data =
+  {.fwnode = fwnode}` - the exact path that hits `led_compose_name` and
+  fails without this fix.
+- [Phase 5] Read `drivers/platform/x86/barco-p50-gpio.c` lines 83-101
+  (v7.0): confirmed `identify_led_node` has `.name = "identify"` with
+  `identify_led_props` containing ONLY `PROPERTY_ENTRY_GPIO("gpios",
+  ...)` - no `label`/`color`/`function`.
+- [Phase 5] Examined other swnode LED users: `pcengines-apuv2`, `meraki-
+  mx100`, `x86-android-tablets/other.c` all include
+  `PROPERTY_ENTRY_STRING("label", ...)` → unaffected by the bug.
+- [Phase 5] Read `drivers/base/swnode.c` line 423-427 and
+  `drivers/base/property.c` line 654-658: `fwnode_get_name(swnode)`
+  returns `kobject_name(&swnode->kobj)`, always valid for registered
+  swnodes. Safe to use here.
+- [Phase 6] `git show v6.12:drivers/leds/led-core.c` and
+  `v6.6:drivers/leds/led-core.c`: confirmed identical `is_of_node`
+  fallback structure with `else return -EINVAL` - fix applies cleanly.
+- [Phase 6] `git diff v6.17:...led-core.c v7.0:...led-core.c`: no
+  difference → file is stable in the 6.18-6.19-7.0 range where the
+  regression exists.
+- [Phase 8] Trigger reachability: boot-time probe path, deterministic
+  every boot on affected hardware.
+- UNVERIFIED: Could not verify the patch's upstream commit SHA
+  `4f530c65487636dc1536b3fa1041f9a877a66a7f` in the local 7.0 tree (tree
+  HEAD is `028ef9c96e961 Linux 7.0`, likely predates the leds-next merge
+  for this commit). This matches the AUTOSEL candidate context.
+- UNVERIFIED: Did not confirm by dynamic test that barco-p50-gpio
+  actually fails without this fix; conclusion based on code inspection
+  of `leds-gpio` + `led_compose_name` + the barco swnode definition.
+
+The fix is a small, surgical 3-line fallback that mirrors well-
+established OF-node handling. It addresses a real regression introduced
+in v6.18 (Barco P50 identify LED fails to register) and cannot cause
+regressions because it only covers a previously-failing path. Accepted
+by the LED subsystem maintainer. This is the kind of low-risk driver-
+enablement fix that AUTOSEL is designed to pick up for recent stable
+trees.
+
+**YES**
+
+ drivers/leds/led-core.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/leds/led-core.c b/drivers/leds/led-core.c
+index 59473f286b31f..8ce41b36c6455 100644
+--- a/drivers/leds/led-core.c
++++ b/drivers/leds/led-core.c
+@@ -581,6 +581,9 @@ int led_compose_name(struct device *dev, struct led_init_data *init_data,
+ 	} else if (is_of_node(fwnode)) {
+ 		n = snprintf(led_classdev_name, LED_MAX_NAME_SIZE, "%s",
+ 			     to_of_node(fwnode)->name);
++	} else if (is_software_node(fwnode)) {
++		n = snprintf(led_classdev_name, LED_MAX_NAME_SIZE, "%s",
++			     fwnode_get_name(fwnode));
+ 	} else
+ 		return -EINVAL;
+ 
+-- 
+2.53.0
 
 
