@@ -1,53 +1,61 @@
-Return-Path: <stable+bounces-241523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241524-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8E1rHwqI8GnuUQEAu9opvQ
-	(envelope-from <stable+bounces-241523-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 12:12:26 +0200
+	id OJ+sHC2A8GlSUAEAu9opvQ
+	(envelope-from <stable+bounces-241524-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 11:38:53 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C67B482551
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 12:12:25 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DDD9481A23
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 11:38:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 09EB130FAA43
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 09:30:51 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0AC2730290F6
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 09:37:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D5AE396593;
-	Tue, 28 Apr 2026 09:30:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65FEF364EA5;
+	Tue, 28 Apr 2026 09:37:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OgZXbprI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A5j4z27O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D9D0282F12;
-	Tue, 28 Apr 2026 09:30:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27F4C3AA4E3
+	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 09:37:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777368649; cv=none; b=UNd4qPaKVFYeRzv0SpAdBMELKAEj6zd0WodBQ0xIo3FetQN+Mg9xvLJbXHFVzMcb3Tg/mAOq9QYUslq7JW69TYG2mYADs9w/vgA6yyEuZ3sFZxx2N/Tl4QNpmyKNQEyyYkNea8MVZjxUXgDYjH0mEiIjzWPuEQmj9sfq6BYGiFY=
+	t=1777369052; cv=none; b=IVXSB+q7+4y7Xqmoqea/B2rKB5UR94y9WnOk6ndUJ39jCJ4MZHZfKAnwY7kfBgW2ozy/DI8VozYvTm8DKHzir2kOsBWkjoVeG8wkkHdekDmkRo5vGuG+JBe+D4N/pK6LfkxGYXtVbQcb1Mla4LkMopPOVJsBYeLm4m3YxWjDdqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777368649; c=relaxed/simple;
-	bh=2pwslKpeN/iRQaRc0dF+AWBbRO46umamJewOKVHPoVg=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=s0AJm+eljgJ1SQFyREZzCjNsQ6pZf5AGc398szR5rQ3G5xPJ8hE7f2/f4cSrJhB3wxb9jSTN5vjOf+sPmD1gF89xNao2i0irjJOuv4sNBwk7wWV01gEfWEatLwurCPMN4BID9orwjCjTurCyc15babJlC0LSZbqWdS947QsoqY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OgZXbprI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ABD4C2BCB6;
-	Tue, 28 Apr 2026 09:30:48 +0000 (UTC)
+	s=arc-20240116; t=1777369052; c=relaxed/simple;
+	bh=zsddxv/3gC2gT7L5IdTIljFVF5L1J0L9EHwhwTR0Bgw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=pXj/NHU8DBrA/wnlfl1hUI4f+UFw0fXzeH2ShL8AHhsVDJrmuX9wyfRP023b3dZDGPtfr9BZPFM018SN/XEs/8vgNtQ0JyxoZvLBIxKFUkzKBWeQvZHU1lXs0beIR3HC4xW1mDVdO83JxCumBzxnbwWA+gDjQ0uekHrzzKgzyXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A5j4z27O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47802C2BCAF;
+	Tue, 28 Apr 2026 09:37:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777368648;
-	bh=2pwslKpeN/iRQaRc0dF+AWBbRO46umamJewOKVHPoVg=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=OgZXbprItVUneu0OPaDMO5MVnJNJQkKQjpdLGEL2cK4nzDwaiYAxTIKFZS/sNboli
-	 YGSXUOise7tnFE+tWv7hSl2aYHeFT1MtS/L/LYHi1TXnKZ/AsTJBOA5ISkHvIzBqnM
-	 NwnQ6PzSTpIPF+Qls2LFd2PQCOGV0pr/5H+1DUF6DSOLmia3Et3MrNXUhYYnkHZB5A
-	 TJu0FGtAmjZwzMeHXwT9ZUQjYhVveLnvunMxHqmO7xnBxsDAimCvN83/0+S5cAte+Q
-	 Jdd+n12SFVe0NQpHaJxbTzOkBhO4CXZ8eN3N3qq19dCKAEXbOkH841KmzaoyEvHy86
-	 Kv0jcAoldxTHA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BA0B33930189;
-	Tue, 28 Apr 2026 09:30:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1777369051;
+	bh=zsddxv/3gC2gT7L5IdTIljFVF5L1J0L9EHwhwTR0Bgw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=A5j4z27OCPOt/wGPp6bx6FWRQ3RCp9W52aRhj7FaSR1IODaEckxbfw2xIPm8hrxeo
+	 oRpS4jcWipIbW3Gwj/gNeXgADVsTaIMPqnbHKP6xUy+DIegyiNlNCt7uC6Z/wxW6X7
+	 YGpXjlgZ7TXNPXwfoSdDJKRIP8UBuLrxCVmnu/hfq7Rd7FKTwY9May9TlOC4TUHGbF
+	 Htd75tv2bO4Yj6zO1mgs7zp4H2Qg+pycTyuvEGLNeuQuGZF6mokaHP/QymFHhvfo5t
+	 zV5P6NJLeTAykxyy7IWX9e8KX3NKwNYYXzfNz9hRt58ISC3xsQNx41cs8eO6mB2wbb
+	 sNwoBGEdt0Ysw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Alexander Usyskin <alexander.usyskin@intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 7.0.y 1/2] mei: me: use PCI_DEVICE_DATA macro
+Date: Tue, 28 Apr 2026 05:37:28 -0400
+Message-ID: <20260428093729.2692325-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <2026042701-alumni-disfigure-b344@gregkh>
+References: <2026042701-alumni-disfigure-b344@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,78 +63,519 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: ipv6: fix NOREF dst use in seg6 and rpl
- lwtunnels
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177736860530.369431.11395917276925436153.git-patchwork-notify@kernel.org>
-Date: Tue, 28 Apr 2026 09:30:05 +0000
-References: <20260421094735.20997-1-andrea.mayer@uniroma2.it>
-In-Reply-To: <20260421094735.20997-1-andrea.mayer@uniroma2.it>
-To: Andrea Mayer <andrea.mayer@uniroma2.it>
-Cc: davem@davemloft.net, dsahern@kernel.org, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, bigeasy@linutronix.de,
- clrkwllms@kernel.org, rostedt@goodmis.org, david.lebrun@uclouvain.be,
- alex.aring@gmail.com, stefano.salsano@uniroma2.it, netdev@vger.kernel.org,
- linux-rt-devel@lists.linux.dev, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-X-Rspamd-Queue-Id: 1C67B482551
+X-Rspamd-Queue-Id: 0DDD9481A23
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-241523-lists,stable=lfdr.de,netdevbpf];
-	FREEMAIL_CC(0.00)[davemloft.net,kernel.org,google.com,redhat.com,linutronix.de,goodmis.org,uclouvain.be,gmail.com,uniroma2.it,vger.kernel.org,lists.linux.dev];
-	FROM_NEQ_ENVFROM(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[17];
+	TAGGED_FROM(0.00)[bounces-241524-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email]
 
-Hello:
+From: Alexander Usyskin <alexander.usyskin@intel.com>
 
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+[ Upstream commit 9e7a2409ecf4d411b7cc91615b08f6a7576f0aaa ]
 
-On Tue, 21 Apr 2026 11:47:35 +0200 you wrote:
-> seg6_input_core() and rpl_input() call ip6_route_input() which sets a
-> NOREF dst on the skb, then pass it to dst_cache_set_ip6() invoking
-> dst_hold() unconditionally.
-> On PREEMPT_RT, ksoftirqd is preemptible and a higher-priority task can
-> release the underlying pcpu_rt between the lookup and the caching
-> through a concurrent FIB lookup on a shared nexthop.
-> Simplified race sequence:
-> 
-> [...]
+Drop old local MEI_PCI_DEVICE macro and use common
+PCI_DEVICE_DATA instead.
+Update defines to adhere to current naming convention.
 
-Here is the summary with links:
-  - [net] net: ipv6: fix NOREF dst use in seg6 and rpl lwtunnels
-    https://git.kernel.org/netdev/net/c/f9c52a6ba978
+Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
+Link: https://patch.msgid.link/20260201094358.1440593-2-alexander.usyskin@intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: a5a1804332af ("mei: me: add nova lake point H DID")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/misc/mei/bus-fixup.c  |   6 +-
+ drivers/misc/mei/hw-me-regs.h | 162 +++++++++++++-------------
+ drivers/misc/mei/hw-me.h      |   6 -
+ drivers/misc/mei/pci-me.c     | 208 +++++++++++++++++-----------------
+ 4 files changed, 188 insertions(+), 194 deletions(-)
 
-You are awesome, thank you!
+diff --git a/drivers/misc/mei/bus-fixup.c b/drivers/misc/mei/bus-fixup.c
+index e6a1d3534663a..bea7a47d216e0 100644
+--- a/drivers/misc/mei/bus-fixup.c
++++ b/drivers/misc/mei/bus-fixup.c
+@@ -303,9 +303,9 @@ static void mei_wd(struct mei_cl_device *cldev)
+ {
+ 	struct pci_dev *pdev = to_pci_dev(cldev->dev.parent);
+ 
+-	if (pdev->device == MEI_DEV_ID_WPT_LP ||
+-	    pdev->device == MEI_DEV_ID_SPT ||
+-	    pdev->device == MEI_DEV_ID_SPT_H)
++	if (pdev->device == PCI_DEVICE_ID_INTEL_MEI_WPT_LP ||
++	    pdev->device == PCI_DEVICE_ID_INTEL_MEI_SPT ||
++	    pdev->device == PCI_DEVICE_ID_INTEL_MEI_SPT_H)
+ 		cldev->me_cl->props.protocol_version = 0x2;
+ 
+ 	cldev->do_match = 1;
+diff --git a/drivers/misc/mei/hw-me-regs.h b/drivers/misc/mei/hw-me-regs.h
+index fa30899a5fa26..840e1fd2714c4 100644
+--- a/drivers/misc/mei/hw-me-regs.h
++++ b/drivers/misc/mei/hw-me-regs.h
+@@ -9,120 +9,120 @@
+ /*
+  * MEI device IDs
+  */
+-#define MEI_DEV_ID_82946GZ    0x2974  /* 82946GZ/GL */
+-#define MEI_DEV_ID_82G35      0x2984  /* 82G35 Express */
+-#define MEI_DEV_ID_82Q965     0x2994  /* 82Q963/Q965 */
+-#define MEI_DEV_ID_82G965     0x29A4  /* 82P965/G965 */
++#define PCI_DEVICE_ID_INTEL_MEI_82946GZ    0x2974  /* 82946GZ/GL */
++#define PCI_DEVICE_ID_INTEL_MEI_82G35      0x2984  /* 82G35 Express */
++#define PCI_DEVICE_ID_INTEL_MEI_82Q965     0x2994  /* 82Q963/Q965 */
++#define PCI_DEVICE_ID_INTEL_MEI_82G965     0x29A4  /* 82P965/G965 */
+ 
+-#define MEI_DEV_ID_82GM965    0x2A04  /* Mobile PM965/GM965 */
+-#define MEI_DEV_ID_82GME965   0x2A14  /* Mobile GME965/GLE960 */
++#define PCI_DEVICE_ID_INTEL_MEI_82GM965    0x2A04  /* Mobile PM965/GM965 */
++#define PCI_DEVICE_ID_INTEL_MEI_82GME965   0x2A14  /* Mobile GME965/GLE960 */
+ 
+-#define MEI_DEV_ID_ICH9_82Q35 0x29B4  /* 82Q35 Express */
+-#define MEI_DEV_ID_ICH9_82G33 0x29C4  /* 82G33/G31/P35/P31 Express */
+-#define MEI_DEV_ID_ICH9_82Q33 0x29D4  /* 82Q33 Express */
+-#define MEI_DEV_ID_ICH9_82X38 0x29E4  /* 82X38/X48 Express */
+-#define MEI_DEV_ID_ICH9_3200  0x29F4  /* 3200/3210 Server */
++#define PCI_DEVICE_ID_INTEL_MEI_ICH9_82Q35 0x29B4  /* 82Q35 Express */
++#define PCI_DEVICE_ID_INTEL_MEI_ICH9_82G33 0x29C4  /* 82G33/G31/P35/P31 Express */
++#define PCI_DEVICE_ID_INTEL_MEI_ICH9_82Q33 0x29D4  /* 82Q33 Express */
++#define PCI_DEVICE_ID_INTEL_MEI_ICH9_82X38 0x29E4  /* 82X38/X48 Express */
++#define PCI_DEVICE_ID_INTEL_MEI_ICH9_3200  0x29F4  /* 3200/3210 Server */
+ 
+-#define MEI_DEV_ID_ICH9_6     0x28B4  /* Bearlake */
+-#define MEI_DEV_ID_ICH9_7     0x28C4  /* Bearlake */
+-#define MEI_DEV_ID_ICH9_8     0x28D4  /* Bearlake */
+-#define MEI_DEV_ID_ICH9_9     0x28E4  /* Bearlake */
+-#define MEI_DEV_ID_ICH9_10    0x28F4  /* Bearlake */
++#define PCI_DEVICE_ID_INTEL_MEI_ICH9_6     0x28B4  /* Bearlake */
++#define PCI_DEVICE_ID_INTEL_MEI_ICH9_7     0x28C4  /* Bearlake */
++#define PCI_DEVICE_ID_INTEL_MEI_ICH9_8     0x28D4  /* Bearlake */
++#define PCI_DEVICE_ID_INTEL_MEI_ICH9_9     0x28E4  /* Bearlake */
++#define PCI_DEVICE_ID_INTEL_MEI_ICH9_10    0x28F4  /* Bearlake */
+ 
+-#define MEI_DEV_ID_ICH9M_1    0x2A44  /* Cantiga */
+-#define MEI_DEV_ID_ICH9M_2    0x2A54  /* Cantiga */
+-#define MEI_DEV_ID_ICH9M_3    0x2A64  /* Cantiga */
+-#define MEI_DEV_ID_ICH9M_4    0x2A74  /* Cantiga */
++#define PCI_DEVICE_ID_INTEL_MEI_ICH9M_1    0x2A44  /* Cantiga */
++#define PCI_DEVICE_ID_INTEL_MEI_ICH9M_2    0x2A54  /* Cantiga */
++#define PCI_DEVICE_ID_INTEL_MEI_ICH9M_3    0x2A64  /* Cantiga */
++#define PCI_DEVICE_ID_INTEL_MEI_ICH9M_4    0x2A74  /* Cantiga */
+ 
+-#define MEI_DEV_ID_ICH10_1    0x2E04  /* Eaglelake */
+-#define MEI_DEV_ID_ICH10_2    0x2E14  /* Eaglelake */
+-#define MEI_DEV_ID_ICH10_3    0x2E24  /* Eaglelake */
+-#define MEI_DEV_ID_ICH10_4    0x2E34  /* Eaglelake */
++#define PCI_DEVICE_ID_INTEL_MEI_ICH10_1    0x2E04  /* Eaglelake */
++#define PCI_DEVICE_ID_INTEL_MEI_ICH10_2    0x2E14  /* Eaglelake */
++#define PCI_DEVICE_ID_INTEL_MEI_ICH10_3    0x2E24  /* Eaglelake */
++#define PCI_DEVICE_ID_INTEL_MEI_ICH10_4    0x2E34  /* Eaglelake */
+ 
+-#define MEI_DEV_ID_IBXPK_1    0x3B64  /* Calpella */
+-#define MEI_DEV_ID_IBXPK_2    0x3B65  /* Calpella */
++#define PCI_DEVICE_ID_INTEL_MEI_IBXPK_1    0x3B64  /* Calpella */
++#define PCI_DEVICE_ID_INTEL_MEI_IBXPK_2    0x3B65  /* Calpella */
+ 
+-#define MEI_DEV_ID_CPT_1      0x1C3A  /* Couger Point */
+-#define MEI_DEV_ID_PBG_1      0x1D3A  /* C600/X79 Patsburg */
++#define PCI_DEVICE_ID_INTEL_MEI_CPT_1      0x1C3A  /* Couger Point */
++#define PCI_DEVICE_ID_INTEL_MEI_PBG_1      0x1D3A  /* C600/X79 Patsburg */
+ 
+-#define MEI_DEV_ID_PPT_1      0x1E3A  /* Panther Point */
+-#define MEI_DEV_ID_PPT_2      0x1CBA  /* Panther Point */
+-#define MEI_DEV_ID_PPT_3      0x1DBA  /* Panther Point */
++#define PCI_DEVICE_ID_INTEL_MEI_PPT_1      0x1E3A  /* Panther Point */
++#define PCI_DEVICE_ID_INTEL_MEI_PPT_2      0x1CBA  /* Panther Point */
++#define PCI_DEVICE_ID_INTEL_MEI_PPT_3      0x1DBA  /* Panther Point */
+ 
+-#define MEI_DEV_ID_LPT_H      0x8C3A  /* Lynx Point H */
+-#define MEI_DEV_ID_LPT_W      0x8D3A  /* Lynx Point - Wellsburg */
+-#define MEI_DEV_ID_LPT_LP     0x9C3A  /* Lynx Point LP */
+-#define MEI_DEV_ID_LPT_HR     0x8CBA  /* Lynx Point H Refresh */
++#define PCI_DEVICE_ID_INTEL_MEI_LPT_H      0x8C3A  /* Lynx Point H */
++#define PCI_DEVICE_ID_INTEL_MEI_LPT_W      0x8D3A  /* Lynx Point - Wellsburg */
++#define PCI_DEVICE_ID_INTEL_MEI_LPT_LP     0x9C3A  /* Lynx Point LP */
++#define PCI_DEVICE_ID_INTEL_MEI_LPT_HR     0x8CBA  /* Lynx Point H Refresh */
+ 
+-#define MEI_DEV_ID_WPT_LP     0x9CBA  /* Wildcat Point LP */
+-#define MEI_DEV_ID_WPT_LP_2   0x9CBB  /* Wildcat Point LP 2 */
++#define PCI_DEVICE_ID_INTEL_MEI_WPT_LP     0x9CBA  /* Wildcat Point LP */
++#define PCI_DEVICE_ID_INTEL_MEI_WPT_LP_2   0x9CBB  /* Wildcat Point LP 2 */
+ 
+-#define MEI_DEV_ID_SPT        0x9D3A  /* Sunrise Point */
+-#define MEI_DEV_ID_SPT_2      0x9D3B  /* Sunrise Point 2 */
+-#define MEI_DEV_ID_SPT_3      0x9D3E  /* Sunrise Point 3 (iToutch) */
+-#define MEI_DEV_ID_SPT_H      0xA13A  /* Sunrise Point H */
+-#define MEI_DEV_ID_SPT_H_2    0xA13B  /* Sunrise Point H 2 */
++#define PCI_DEVICE_ID_INTEL_MEI_SPT        0x9D3A  /* Sunrise Point */
++#define PCI_DEVICE_ID_INTEL_MEI_SPT_2      0x9D3B  /* Sunrise Point 2 */
++#define PCI_DEVICE_ID_INTEL_MEI_SPT_3      0x9D3E  /* Sunrise Point 3 (iToutch) */
++#define PCI_DEVICE_ID_INTEL_MEI_SPT_H      0xA13A  /* Sunrise Point H */
++#define PCI_DEVICE_ID_INTEL_MEI_SPT_H_2    0xA13B  /* Sunrise Point H 2 */
+ 
+-#define MEI_DEV_ID_LBG        0xA1BA  /* Lewisburg (SPT) */
++#define PCI_DEVICE_ID_INTEL_MEI_LBG        0xA1BA  /* Lewisburg (SPT) */
+ 
+-#define MEI_DEV_ID_BXT_M      0x1A9A  /* Broxton M */
+-#define MEI_DEV_ID_APL_I      0x5A9A  /* Apollo Lake I */
++#define PCI_DEVICE_ID_INTEL_MEI_BXT_M      0x1A9A  /* Broxton M */
++#define PCI_DEVICE_ID_INTEL_MEI_APL_I      0x5A9A  /* Apollo Lake I */
+ 
+-#define MEI_DEV_ID_DNV_IE     0x19E5  /* Denverton IE */
++#define PCI_DEVICE_ID_INTEL_MEI_DNV_IE     0x19E5  /* Denverton IE */
+ 
+-#define MEI_DEV_ID_GLK        0x319A  /* Gemini Lake */
++#define PCI_DEVICE_ID_INTEL_MEI_GLK        0x319A  /* Gemini Lake */
+ 
+-#define MEI_DEV_ID_KBP        0xA2BA  /* Kaby Point */
+-#define MEI_DEV_ID_KBP_2      0xA2BB  /* Kaby Point 2 */
+-#define MEI_DEV_ID_KBP_3      0xA2BE  /* Kaby Point 3 (iTouch) */
++#define PCI_DEVICE_ID_INTEL_MEI_KBP        0xA2BA  /* Kaby Point */
++#define PCI_DEVICE_ID_INTEL_MEI_KBP_2      0xA2BB  /* Kaby Point 2 */
++#define PCI_DEVICE_ID_INTEL_MEI_KBP_3      0xA2BE  /* Kaby Point 3 (iTouch) */
+ 
+-#define MEI_DEV_ID_CNP_LP     0x9DE0  /* Cannon Point LP */
+-#define MEI_DEV_ID_CNP_LP_3   0x9DE4  /* Cannon Point LP 3 (iTouch) */
+-#define MEI_DEV_ID_CNP_H      0xA360  /* Cannon Point H */
+-#define MEI_DEV_ID_CNP_H_3    0xA364  /* Cannon Point H 3 (iTouch) */
++#define PCI_DEVICE_ID_INTEL_MEI_CNP_LP     0x9DE0  /* Cannon Point LP */
++#define PCI_DEVICE_ID_INTEL_MEI_CNP_LP_3   0x9DE4  /* Cannon Point LP 3 (iTouch) */
++#define PCI_DEVICE_ID_INTEL_MEI_CNP_H      0xA360  /* Cannon Point H */
++#define PCI_DEVICE_ID_INTEL_MEI_CNP_H_3    0xA364  /* Cannon Point H 3 (iTouch) */
+ 
+-#define MEI_DEV_ID_CMP_LP     0x02e0  /* Comet Point LP */
+-#define MEI_DEV_ID_CMP_LP_3   0x02e4  /* Comet Point LP 3 (iTouch) */
++#define PCI_DEVICE_ID_INTEL_MEI_CMP_LP     0x02e0  /* Comet Point LP */
++#define PCI_DEVICE_ID_INTEL_MEI_CMP_LP_3   0x02e4  /* Comet Point LP 3 (iTouch) */
+ 
+-#define MEI_DEV_ID_CMP_V      0xA3BA  /* Comet Point Lake V */
++#define PCI_DEVICE_ID_INTEL_MEI_CMP_V      0xA3BA  /* Comet Point Lake V */
+ 
+-#define MEI_DEV_ID_CMP_H      0x06e0  /* Comet Lake H */
+-#define MEI_DEV_ID_CMP_H_3    0x06e4  /* Comet Lake H 3 (iTouch) */
++#define PCI_DEVICE_ID_INTEL_MEI_CMP_H      0x06e0  /* Comet Lake H */
++#define PCI_DEVICE_ID_INTEL_MEI_CMP_H_3    0x06e4  /* Comet Lake H 3 (iTouch) */
+ 
+-#define MEI_DEV_ID_CDF        0x18D3  /* Cedar Fork */
++#define PCI_DEVICE_ID_INTEL_MEI_CDF        0x18D3  /* Cedar Fork */
+ 
+-#define MEI_DEV_ID_ICP_LP     0x34E0  /* Ice Lake Point LP */
+-#define MEI_DEV_ID_ICP_N      0x38E0  /* Ice Lake Point N */
++#define PCI_DEVICE_ID_INTEL_MEI_ICP_LP     0x34E0  /* Ice Lake Point LP */
++#define PCI_DEVICE_ID_INTEL_MEI_ICP_N      0x38E0  /* Ice Lake Point N */
+ 
+-#define MEI_DEV_ID_JSP_N      0x4DE0  /* Jasper Lake Point N */
++#define PCI_DEVICE_ID_INTEL_MEI_JSP_N      0x4DE0  /* Jasper Lake Point N */
+ 
+-#define MEI_DEV_ID_TGP_LP     0xA0E0  /* Tiger Lake Point LP */
+-#define MEI_DEV_ID_TGP_H      0x43E0  /* Tiger Lake Point H */
++#define PCI_DEVICE_ID_INTEL_MEI_TGP_LP     0xA0E0  /* Tiger Lake Point LP */
++#define PCI_DEVICE_ID_INTEL_MEI_TGP_H      0x43E0  /* Tiger Lake Point H */
+ 
+-#define MEI_DEV_ID_MCC        0x4B70  /* Mule Creek Canyon (EHL) */
+-#define MEI_DEV_ID_MCC_4      0x4B75  /* Mule Creek Canyon 4 (EHL) */
++#define PCI_DEVICE_ID_INTEL_MEI_MCC        0x4B70  /* Mule Creek Canyon (EHL) */
++#define PCI_DEVICE_ID_INTEL_MEI_MCC_4      0x4B75  /* Mule Creek Canyon 4 (EHL) */
+ 
+-#define MEI_DEV_ID_EBG        0x1BE0  /* Emmitsburg WS */
++#define PCI_DEVICE_ID_INTEL_MEI_EBG        0x1BE0  /* Emmitsburg WS */
+ 
+-#define MEI_DEV_ID_ADP_S      0x7AE8  /* Alder Lake Point S */
+-#define MEI_DEV_ID_ADP_LP     0x7A60  /* Alder Lake Point LP */
+-#define MEI_DEV_ID_ADP_P      0x51E0  /* Alder Lake Point P */
+-#define MEI_DEV_ID_ADP_N      0x54E0  /* Alder Lake Point N */
++#define PCI_DEVICE_ID_INTEL_MEI_ADP_S      0x7AE8  /* Alder Lake Point S */
++#define PCI_DEVICE_ID_INTEL_MEI_ADP_LP     0x7A60  /* Alder Lake Point LP */
++#define PCI_DEVICE_ID_INTEL_MEI_ADP_P      0x51E0  /* Alder Lake Point P */
++#define PCI_DEVICE_ID_INTEL_MEI_ADP_N      0x54E0  /* Alder Lake Point N */
+ 
+-#define MEI_DEV_ID_RPL_S      0x7A68  /* Raptor Lake Point S */
++#define PCI_DEVICE_ID_INTEL_MEI_RPL_S      0x7A68  /* Raptor Lake Point S */
+ 
+-#define MEI_DEV_ID_MTL_M      0x7E70  /* Meteor Lake Point M */
+-#define MEI_DEV_ID_ARL_S      0x7F68  /* Arrow Lake Point S */
+-#define MEI_DEV_ID_ARL_H      0x7770  /* Arrow Lake Point H */
++#define PCI_DEVICE_ID_INTEL_MEI_MTL_M      0x7E70  /* Meteor Lake Point M */
++#define PCI_DEVICE_ID_INTEL_MEI_ARL_S      0x7F68  /* Arrow Lake Point S */
++#define PCI_DEVICE_ID_INTEL_MEI_ARL_H      0x7770  /* Arrow Lake Point H */
+ 
+-#define MEI_DEV_ID_LNL_M      0xA870  /* Lunar Lake Point M */
++#define PCI_DEVICE_ID_INTEL_MEI_LNL_M      0xA870  /* Lunar Lake Point M */
+ 
+-#define MEI_DEV_ID_PTL_H      0xE370  /* Panther Lake H */
+-#define MEI_DEV_ID_PTL_P      0xE470  /* Panther Lake P */
++#define PCI_DEVICE_ID_INTEL_MEI_PTL_H      0xE370  /* Panther Lake H */
++#define PCI_DEVICE_ID_INTEL_MEI_PTL_P      0xE470  /* Panther Lake P */
+ 
+-#define MEI_DEV_ID_WCL_P      0x4D70  /* Wildcat Lake P */
++#define PCI_DEVICE_ID_INTEL_MEI_WCL_P      0x4D70  /* Wildcat Lake P */
+ 
+-#define MEI_DEV_ID_NVL_S      0x6E68  /* Nova Lake Point S */
++#define PCI_DEVICE_ID_INTEL_MEI_NVL_S      0x6E68  /* Nova Lake Point S */
+ 
+ /*
+  * MEI HW Section
+diff --git a/drivers/misc/mei/hw-me.h b/drivers/misc/mei/hw-me.h
+index 204b92af6c478..843ec2497b523 100644
+--- a/drivers/misc/mei/hw-me.h
++++ b/drivers/misc/mei/hw-me.h
+@@ -33,12 +33,6 @@ struct mei_cfg {
+ 	u32 hw_trc_supported:1;
+ };
+ 
+-
+-#define MEI_PCI_DEVICE(dev, cfg) \
+-	.vendor = PCI_VENDOR_ID_INTEL, .device = (dev), \
+-	.subvendor = PCI_ANY_ID, .subdevice = PCI_ANY_ID, \
+-	.driver_data = (kernel_ulong_t)(cfg),
+-
+ #define MEI_ME_RPM_TIMEOUT    500 /* ms */
+ 
+ /**
+diff --git a/drivers/misc/mei/pci-me.c b/drivers/misc/mei/pci-me.c
+index 2a6e569558b94..fe5d5aee074cd 100644
+--- a/drivers/misc/mei/pci-me.c
++++ b/drivers/misc/mei/pci-me.c
+@@ -26,110 +26,110 @@
+ 
+ /* mei_pci_tbl - PCI Device ID Table */
+ static const struct pci_device_id mei_me_pci_tbl[] = {
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_82946GZ, MEI_ME_ICH_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_82G35, MEI_ME_ICH_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_82Q965, MEI_ME_ICH_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_82G965, MEI_ME_ICH_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_82GM965, MEI_ME_ICH_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_82GME965, MEI_ME_ICH_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_ICH9_82Q35, MEI_ME_ICH_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_ICH9_82G33, MEI_ME_ICH_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_ICH9_82Q33, MEI_ME_ICH_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_ICH9_82X38, MEI_ME_ICH_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_ICH9_3200, MEI_ME_ICH_CFG)},
+-
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_ICH9_6, MEI_ME_ICH_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_ICH9_7, MEI_ME_ICH_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_ICH9_8, MEI_ME_ICH_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_ICH9_9, MEI_ME_ICH_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_ICH9_10, MEI_ME_ICH_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_ICH9M_1, MEI_ME_ICH_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_ICH9M_2, MEI_ME_ICH_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_ICH9M_3, MEI_ME_ICH_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_ICH9M_4, MEI_ME_ICH_CFG)},
+-
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_ICH10_1, MEI_ME_ICH10_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_ICH10_2, MEI_ME_ICH10_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_ICH10_3, MEI_ME_ICH10_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_ICH10_4, MEI_ME_ICH10_CFG)},
+-
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_IBXPK_1, MEI_ME_PCH6_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_IBXPK_2, MEI_ME_PCH6_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_CPT_1, MEI_ME_PCH_CPT_PBG_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_PBG_1, MEI_ME_PCH_CPT_PBG_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_PPT_1, MEI_ME_PCH7_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_PPT_2, MEI_ME_PCH7_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_PPT_3, MEI_ME_PCH7_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_LPT_H, MEI_ME_PCH8_SPS_4_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_LPT_W, MEI_ME_PCH8_SPS_4_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_LPT_LP, MEI_ME_PCH8_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_LPT_HR, MEI_ME_PCH8_SPS_4_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_WPT_LP, MEI_ME_PCH8_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_WPT_LP_2, MEI_ME_PCH8_CFG)},
+-
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_SPT, MEI_ME_PCH8_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_SPT_2, MEI_ME_PCH8_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_SPT_3, MEI_ME_PCH8_ITOUCH_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_SPT_H, MEI_ME_PCH8_SPS_4_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_SPT_H_2, MEI_ME_PCH8_SPS_4_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_LBG, MEI_ME_PCH12_SPS_4_CFG)},
+-
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_BXT_M, MEI_ME_PCH8_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_APL_I, MEI_ME_PCH8_CFG)},
+-
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_DNV_IE, MEI_ME_PCH8_CFG)},
+-
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_GLK, MEI_ME_PCH8_CFG)},
+-
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_KBP, MEI_ME_PCH8_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_KBP_2, MEI_ME_PCH8_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_KBP_3, MEI_ME_PCH8_CFG)},
+-
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_CNP_LP, MEI_ME_PCH12_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_CNP_LP_3, MEI_ME_PCH8_ITOUCH_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_CNP_H, MEI_ME_PCH12_SPS_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_CNP_H_3, MEI_ME_PCH12_SPS_ITOUCH_CFG)},
+-
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_CMP_LP, MEI_ME_PCH12_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_CMP_LP_3, MEI_ME_PCH8_ITOUCH_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_CMP_V, MEI_ME_PCH12_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_CMP_H, MEI_ME_PCH12_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_CMP_H_3, MEI_ME_PCH8_ITOUCH_CFG)},
+-
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_ICP_LP, MEI_ME_PCH12_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_ICP_N, MEI_ME_PCH12_CFG)},
+-
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_TGP_LP, MEI_ME_PCH15_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_TGP_H, MEI_ME_PCH15_SPS_CFG)},
+-
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_JSP_N, MEI_ME_PCH15_CFG)},
+-
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_MCC, MEI_ME_PCH15_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_MCC_4, MEI_ME_PCH8_CFG)},
+-
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_CDF, MEI_ME_PCH8_CFG)},
+-
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_EBG, MEI_ME_PCH15_SPS_CFG)},
+-
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_ADP_S, MEI_ME_PCH15_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_ADP_LP, MEI_ME_PCH15_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_ADP_P, MEI_ME_PCH15_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_ADP_N, MEI_ME_PCH15_CFG)},
+-
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_RPL_S, MEI_ME_PCH15_SPS_CFG)},
+-
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_MTL_M, MEI_ME_PCH15_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_ARL_S, MEI_ME_PCH15_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_ARL_H, MEI_ME_PCH15_CFG)},
+-
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_LNL_M, MEI_ME_PCH15_CFG)},
+-
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_PTL_H, MEI_ME_PCH15_CFG)},
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_PTL_P, MEI_ME_PCH15_CFG)},
+-
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_WCL_P, MEI_ME_PCH15_CFG)},
+-
+-	{MEI_PCI_DEVICE(MEI_DEV_ID_NVL_S, MEI_ME_PCH15_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_82946GZ, MEI_ME_ICH_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_82G35, MEI_ME_ICH_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_82Q965, MEI_ME_ICH_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_82G965, MEI_ME_ICH_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_82GM965, MEI_ME_ICH_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_82GME965, MEI_ME_ICH_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_ICH9_82Q35, MEI_ME_ICH_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_ICH9_82G33, MEI_ME_ICH_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_ICH9_82Q33, MEI_ME_ICH_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_ICH9_82X38, MEI_ME_ICH_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_ICH9_3200, MEI_ME_ICH_CFG)},
++
++	{PCI_DEVICE_DATA(INTEL, MEI_ICH9_6, MEI_ME_ICH_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_ICH9_7, MEI_ME_ICH_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_ICH9_8, MEI_ME_ICH_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_ICH9_9, MEI_ME_ICH_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_ICH9_10, MEI_ME_ICH_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_ICH9M_1, MEI_ME_ICH_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_ICH9M_2, MEI_ME_ICH_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_ICH9M_3, MEI_ME_ICH_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_ICH9M_4, MEI_ME_ICH_CFG)},
++
++	{PCI_DEVICE_DATA(INTEL, MEI_ICH10_1, MEI_ME_ICH10_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_ICH10_2, MEI_ME_ICH10_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_ICH10_3, MEI_ME_ICH10_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_ICH10_4, MEI_ME_ICH10_CFG)},
++
++	{PCI_DEVICE_DATA(INTEL, MEI_IBXPK_1, MEI_ME_PCH6_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_IBXPK_2, MEI_ME_PCH6_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_CPT_1, MEI_ME_PCH_CPT_PBG_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_PBG_1, MEI_ME_PCH_CPT_PBG_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_PPT_1, MEI_ME_PCH7_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_PPT_2, MEI_ME_PCH7_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_PPT_3, MEI_ME_PCH7_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_LPT_H, MEI_ME_PCH8_SPS_4_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_LPT_W, MEI_ME_PCH8_SPS_4_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_LPT_LP, MEI_ME_PCH8_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_LPT_HR, MEI_ME_PCH8_SPS_4_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_WPT_LP, MEI_ME_PCH8_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_WPT_LP_2, MEI_ME_PCH8_CFG)},
++
++	{PCI_DEVICE_DATA(INTEL, MEI_SPT, MEI_ME_PCH8_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_SPT_2, MEI_ME_PCH8_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_SPT_3, MEI_ME_PCH8_ITOUCH_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_SPT_H, MEI_ME_PCH8_SPS_4_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_SPT_H_2, MEI_ME_PCH8_SPS_4_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_LBG, MEI_ME_PCH12_SPS_4_CFG)},
++
++	{PCI_DEVICE_DATA(INTEL, MEI_BXT_M, MEI_ME_PCH8_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_APL_I, MEI_ME_PCH8_CFG)},
++
++	{PCI_DEVICE_DATA(INTEL, MEI_DNV_IE, MEI_ME_PCH8_CFG)},
++
++	{PCI_DEVICE_DATA(INTEL, MEI_GLK, MEI_ME_PCH8_CFG)},
++
++	{PCI_DEVICE_DATA(INTEL, MEI_KBP, MEI_ME_PCH8_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_KBP_2, MEI_ME_PCH8_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_KBP_3, MEI_ME_PCH8_CFG)},
++
++	{PCI_DEVICE_DATA(INTEL, MEI_CNP_LP, MEI_ME_PCH12_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_CNP_LP_3, MEI_ME_PCH8_ITOUCH_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_CNP_H, MEI_ME_PCH12_SPS_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_CNP_H_3, MEI_ME_PCH12_SPS_ITOUCH_CFG)},
++
++	{PCI_DEVICE_DATA(INTEL, MEI_CMP_LP, MEI_ME_PCH12_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_CMP_LP_3, MEI_ME_PCH8_ITOUCH_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_CMP_V, MEI_ME_PCH12_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_CMP_H, MEI_ME_PCH12_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_CMP_H_3, MEI_ME_PCH8_ITOUCH_CFG)},
++
++	{PCI_DEVICE_DATA(INTEL, MEI_ICP_LP, MEI_ME_PCH12_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_ICP_N, MEI_ME_PCH12_CFG)},
++
++	{PCI_DEVICE_DATA(INTEL, MEI_TGP_LP, MEI_ME_PCH15_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_TGP_H, MEI_ME_PCH15_SPS_CFG)},
++
++	{PCI_DEVICE_DATA(INTEL, MEI_JSP_N, MEI_ME_PCH15_CFG)},
++
++	{PCI_DEVICE_DATA(INTEL, MEI_MCC, MEI_ME_PCH15_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_MCC_4, MEI_ME_PCH8_CFG)},
++
++	{PCI_DEVICE_DATA(INTEL, MEI_CDF, MEI_ME_PCH8_CFG)},
++
++	{PCI_DEVICE_DATA(INTEL, MEI_EBG, MEI_ME_PCH15_SPS_CFG)},
++
++	{PCI_DEVICE_DATA(INTEL, MEI_ADP_S, MEI_ME_PCH15_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_ADP_LP, MEI_ME_PCH15_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_ADP_P, MEI_ME_PCH15_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_ADP_N, MEI_ME_PCH15_CFG)},
++
++	{PCI_DEVICE_DATA(INTEL, MEI_RPL_S, MEI_ME_PCH15_SPS_CFG)},
++
++	{PCI_DEVICE_DATA(INTEL, MEI_MTL_M, MEI_ME_PCH15_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_ARL_S, MEI_ME_PCH15_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_ARL_H, MEI_ME_PCH15_CFG)},
++
++	{PCI_DEVICE_DATA(INTEL, MEI_LNL_M, MEI_ME_PCH15_CFG)},
++
++	{PCI_DEVICE_DATA(INTEL, MEI_PTL_H, MEI_ME_PCH15_CFG)},
++	{PCI_DEVICE_DATA(INTEL, MEI_PTL_P, MEI_ME_PCH15_CFG)},
++
++	{PCI_DEVICE_DATA(INTEL, MEI_WCL_P, MEI_ME_PCH15_CFG)},
++
++	{PCI_DEVICE_DATA(INTEL, MEI_NVL_S, MEI_ME_PCH15_CFG)},
+ 
+ 	/* required last entry */
+ 	{0, }
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.53.0
 
 
