@@ -1,144 +1,150 @@
-Return-Path: <stable+bounces-241657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241658-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6PMwG1a58GkyXwEAu9opvQ
-	(envelope-from <stable+bounces-241657-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 15:42:46 +0200
+	id eOQLGjCx8GkfXQEAu9opvQ
+	(envelope-from <stable+bounces-241658-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 15:08:00 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04E2F4861DB
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 15:42:45 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27AEA485886
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 15:08:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6FC75313BF37
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 13:04:34 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D95F2303DC8E
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 13:04:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C91E3B19A1;
-	Tue, 28 Apr 2026 13:04:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ED5540242E;
+	Tue, 28 Apr 2026 13:04:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="KliFUdeM"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="zTJkSSvG"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D9E612CDBE
-	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 13:04:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D58913FA5E9;
+	Tue, 28 Apr 2026 13:04:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777381462; cv=none; b=TKh4nspDMAgdgHc8r0zXqQzc5KwtSsNjTkeflFgZzEv1WjiNqevopceWw2JnbCGJ2IWSd1zX4xVyI9ebm3sLiV1i+lVWvo3Ex105yHQaG5Hr1dsrcK7gYb3uae4RW7ojq8uoH6tHTTBXSacOmdO6vHbaXZqiyNRFty9604UVx7Q=
+	t=1777381476; cv=none; b=pb06nb5UX0UH6Bmv14qJsSCCbrls/TnBr1Q5EwFn4WIDGW2S/zBFGIqXbJTiTofzace6hyfx7W9l4+1DIUku0rpHiOSZQz/9iseU1V5m5vEezWb3w/clgHnrihcGzb5v1JI5xjxw+KGlPuWH1Xb6lGV8hJ/5Dyx6/VEXo1PcJAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777381462; c=relaxed/simple;
-	bh=yvfWbNsf7kvzImbLhP8AA1uE2RBdkUT+264nPwInwps=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=s+XIJXXVVX8dFKEcyhylCb0eyk9LHe2qWiziulKxhQm9Z2gXxdw/uMvKsbXbqSMh4tYHv455I9bfLoiu2w6Zaa2zMi819T/yKarxEMPvwT8j1LZN/YZH8wxj8KHCuDWRAN5mzx3fh12svziyBJ188Hlq133fpqbN4Ief2S50TGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=KliFUdeM; arc=none smtp.client-ip=209.85.208.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-67790429f71so5607449a12.2
-        for <stable@vger.kernel.org>; Tue, 28 Apr 2026 06:04:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1777381460; x=1777986260; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=yvfWbNsf7kvzImbLhP8AA1uE2RBdkUT+264nPwInwps=;
-        b=KliFUdeMkJ+CQ6Odbn4kNAS1DOmHwGlILKqT/xzQs6Tk3jXJZ3ssU44SCXNTVWOoQn
-         2SYcdyU5OFNg9mHMgbWDVNPPl7fK9Qa7JfddxUZ4qq9TB3CPwMs3+G7YOiwqNQeq7xFE
-         u6tHppJdtye+WKwnGTfeicjG+vHXWQtZcwcV3QGxiAQ8y6kJEZKuxd7+EAXR3hWpwhgj
-         0A+0m9g8VTzJtI06q4gQ3xxFT7iLDOWRd7FqKYNN3vyLNh9NmF7UXGktIyPnintfhWRE
-         KcgCd2U42DW/PvHSagJB+MpzJsXqW9Dg5nfJ+R3EP5mlIs04xeizaNkS/NHlVmWw9T38
-         kuFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777381460; x=1777986260;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=yvfWbNsf7kvzImbLhP8AA1uE2RBdkUT+264nPwInwps=;
-        b=h4QjKsM7gK9BAAMuOpSO9czdH5mFsw9EwlA02Ume5LLjFkWZWJ2ZcyxDtgRDjG4e0z
-         T6IBo/23mUUCUZL2pvT1MoStJbeHQzgcJeFjQrpPPBQ02YS2VJTY2Xqd8hcEK7qC7PJY
-         tzTU/+kw/rlv0S+WEjzYbZaNG/IdhDCFfEg9ThFFKWnmXwGPyiLH4w7bRZDamc1RdYkh
-         gCQbEaTwAJCG5X23tAYsZLNnx5ySt8W49SGEWoEmnPkQELMPU643cx7CVlu+X5UyuPhL
-         9oWyifT8jCJZsmPEouGC70qyhYBbRCi7OsYd27WfX0yS3OnLRAJpoBLjUygcnfJbJwLE
-         cptg==
-X-Forwarded-Encrypted: i=1; AFNElJ/MeZowRmJAQuKfBhc0EAk+WlWGR5KLI3I17HEFKJZVZKajxc61ylIyPVcgV+RAkH8NqSMRL3k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzSu0oj9P39Sffc3AuHUlDlboMiES5kkl4n7SO1w7h6fPaV+cqq
-	lqh92JkaoA6+PVq6zIE2ShR0/Fr3/4l/8ZVQTXoj8epIklnp4BlRuUJhpbGFluRUtJQ=
-X-Gm-Gg: AeBDievlsH0pNm+3Q+J6eVigO5d9blIgFyvtVI+kcugz58IoLalHm7l+4eIAYmmZbqK
-	uUUys0SY1YiuSwawvV8ujfUsXwwNE5vMp3foXJGd6hGEV44PHoPwcikHBvtdPRIU6GNWEzTubku
-	D9oDJD1z7M2mh2uv8a9kCI1Xq1o3vYat07untYQnmeSFI9IiDNxpHX16uq+lcpl+hTwRDoEAesJ
-	t+qAAdPEEJif2sJxObcKQE7Ud3tLh5er33sfQ4iYDGPgDNvCTx6nKV+rRMhY4B4YUsWerMJyHWo
-	8zX7rP0xiB3jhHkLcRtElzU6RJer+4Wngpzvi4XFXllxQSm7w7n0BJYA9OET2BAGePnrGewQa+m
-	S6mKYl22scZlfnRr4XpI44lSGMj2d+LWwJ3bfzLnnutUZyL+JgpZj4Bg8xcHM9gFnPqdIqnrLMA
-	i1P07jsmnc+ZAoMQn1JeCoSqG46U7xvXmFscpzlg8qeVUv5GmT2pk9sA==
-X-Received: by 2002:a17:907:9454:b0:ba7:e3ee:47a1 with SMTP id a640c23a62f3a-bb8018dccb7mr182160466b.4.1777381459520;
-        Tue, 28 Apr 2026 06:04:19 -0700 (PDT)
-Received: from [10.11.12.108] ([79.115.63.228])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-679b685290dsm754196a12.24.2026.04.28.06.04.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 28 Apr 2026 06:04:18 -0700 (PDT)
-Message-ID: <60f71fd7-1079-4936-b4b0-9d45a2c112ce@linaro.org>
-Date: Tue, 28 Apr 2026 16:04:16 +0300
+	s=arc-20240116; t=1777381476; c=relaxed/simple;
+	bh=Qjzk/xfoblUOAwdeLxe0QrrfqmF43qujdooiW3bYNlw=;
+	h=Date:To:From:Subject:Message-Id; b=WljDh3YGvKqZVbC6Ze18r6tyGIwm5ibYG1cRd74oyxBNkAVAom58r6hrXeT6C9+dxOIIRzBJsgJTrtUAMaqjSuZ+rxEqJaiJ7UTo1yOoeOoqe7B6N16UL6/i9xU9ybhuxKR36czbp/tzinMnjo3jxOD8+UvgV7CHQgu5ey5168Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=zTJkSSvG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A07DAC2BCB5;
+	Tue, 28 Apr 2026 13:04:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1777381475;
+	bh=Qjzk/xfoblUOAwdeLxe0QrrfqmF43qujdooiW3bYNlw=;
+	h=Date:To:From:Subject:From;
+	b=zTJkSSvGecySVL6KTYSCDGBqwXxKAc5UbFLSVDDtQFA375Zzg1P7skdJExU9aTA8W
+	 uKYfc6eXK7JTTvUG4jPmJxF7wAOqZZTo4U/2WAgMys3IO3oxY1f4UGTJUOtid+ITGW
+	 g4UaxrfdCBOIZA0iXaZqs/cUGys5EuXzCo6k/8kc=
+Date: Tue, 28 Apr 2026 06:04:35 -0700
+To: mm-commits@vger.kernel.org,vishal.l.verma@intel.com,stable@vger.kernel.org,rafael@kernel.org,osalvador@suse.de,nao.horiguchi@gmail.com,linmiaohe@huawei.com,huang.ying.caritas@gmail.com,gregkh@linuxfoundation.org,david@kernel.org,dakr@kernel.org,songmuchun@bytedance.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [to-be-updated] mm-memory_hotplug-fix-memory-block-reference-leak-on-remove.patch removed from -mm tree
+Message-Id: <20260428130435.A07DAC2BCB5@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 5/6] firmware: samsung: acpm: Fix out-of-bounds read
- and infinite loop in RX path
-To: Krzysztof Kozlowski <krzk@kernel.org>,
- Alim Akhtar <alim.akhtar@samsung.com>
-Cc: linux-kernel@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, peter.griffin@linaro.org,
- andre.draszik@linaro.org, jyescas@google.com, kernel-team@android.com,
- stable@vger.kernel.org
-References: <20260427-acpm-fixes-sashiko-reports-v2-0-1ff8de94a997@linaro.org>
- <20260427-acpm-fixes-sashiko-reports-v2-5-1ff8de94a997@linaro.org>
-Content-Language: en-US
-From: Tudor Ambarus <tudor.ambarus@linaro.org>
-In-Reply-To: <20260427-acpm-fixes-sashiko-reports-v2-5-1ff8de94a997@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 04E2F4861DB
+X-Rspamd-Queue-Id: 27AEA485886
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [0.34 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
-	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linaro.org:+];
-	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241657-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-241658-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[vger.kernel.org,intel.com,kernel.org,suse.de,gmail.com,huawei.com,linuxfoundation.org,bytedance.com,linux-foundation.org];
+	DMARC_NA(0.00)[linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tudor.ambarus@linaro.org,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_NONE(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 
 
-FYI, I checked sashiko's review on the set, and I shall act on this patch
-and extend the checks for tx_front >= achan->qlen and add zero length checks
-for qlen and mlen that were read from SRAM. I'll do that in v3.
+The quilt patch titled
+     Subject: mm/memory_hotplug: fix memory block reference leak on remove
+has been removed from the -mm tree.  Its filename was
+     mm-memory_hotplug-fix-memory-block-reference-leak-on-remove.patch
 
-The rest of the review feedback doesn't apply, so together with the changes
-proposed in patch 4/6 that will be all.
+This patch was dropped because an updated version will be issued
 
-Cheers,
-ta
+------------------------------------------------------
+From: Muchun Song <songmuchun@bytedance.com>
+Subject: mm/memory_hotplug: fix memory block reference leak on remove
+Date: Sun, 26 Apr 2026 22:44:46 +0800
+
+remove_memory_blocks_and_altmaps() looks up each memory block with
+find_memory_block(), which acquires a reference to the memory block
+device.
+
+That reference is never dropped on this path, resulting in a leaked device
+reference when removing memory blocks and their altmaps.  Drop the
+reference after retrieving mem->altmap and clearing mem->altmap, before
+removing the memory block device.
+
+Link: https://lore.kernel.org/20260426144447.817722-1-songmuchun@bytedance.com
+Fixes: 6b8f0798b85a ("mm/memory_hotplug: split memmap_on_memory requests across memblocks")
+Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+Acked-by: Oscar Salvador <osalvador@suse.de>
+Cc: Danilo Krummrich <dakr@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: "Huang, Ying" <huang.ying.caritas@gmail.com>
+Cc: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>
+Cc: Vishal Verma <vishal.l.verma@intel.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/memory_hotplug.c |    1 +
+ 1 file changed, 1 insertion(+)
+
+--- a/mm/memory_hotplug.c~mm-memory_hotplug-fix-memory-block-reference-leak-on-remove
++++ a/mm/memory_hotplug.c
+@@ -1422,6 +1422,7 @@ static void remove_memory_blocks_and_alt
+ 
+ 		altmap = mem->altmap;
+ 		mem->altmap = NULL;
++		put_device(&mem->dev);
+ 
+ 		remove_memory_block_devices(cur_start, memblock_size);
+ 
+_
+
+Patches currently in -mm which might be from songmuchun@bytedance.com are
+
+drivers-base-memory-fix-memory-block-reference-leak-in-poison-accounting.patch
+mm-sparse-remove-sparse-buffer-pre-allocation-mechanism.patch
+mm-sparse-vmemmap-fix-vmemmap-accounting-underflow.patch
+mm-memory_hotplug-fix-incorrect-altmap-passing-in-error-path.patch
+mm-sparse-vmemmap-pass-pgmap-argument-to-memory-deactivation-paths.patch
+mm-sparse-vmemmap-fix-dax-vmemmap-accounting-with-optimization.patch
+mm-mm_init-fix-pageblock-migratetype-for-zone_device-compound-pages.patch
+mm-mm_init-fix-uninitialized-struct-pages-for-zone_device.patch
+
 
