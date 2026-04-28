@@ -1,225 +1,181 @@
-Return-Path: <stable+bounces-241707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241708-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8DNdKcfd8Gn3aQEAu9opvQ
-	(envelope-from <stable+bounces-241707-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 18:18:15 +0200
+	id mFdJNbHj8GmoagEAu9opvQ
+	(envelope-from <stable+bounces-241708-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 18:43:29 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 430A2488B23
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 18:18:14 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4920489337
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 18:43:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 65186305550E
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 16:11:49 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id EF307306BFA0
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 16:14:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61C6047D94D;
-	Tue, 28 Apr 2026 16:06:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2C853BAD90;
+	Tue, 28 Apr 2026 16:08:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="NwnZN8cS"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jVdewnI+"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com [209.85.167.170])
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5A8E41C31D
-	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 16:06:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4172B44B662
+	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 16:08:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777392385; cv=none; b=ledj9UZtO2nYhLyGBnkRHSyKOFhFVFs1v27FwIz+iUbsCn0ry50Bpv5hazOrPG4D3pKpM7cmIS+ZEHNByXGudDi4tVBMS3jsJ+AK7inM2lBBbKtO9p+i7Y8IuaimPcRFfJ5AMAdKYaTcNJgqN16ckkV/i8KjB1aWYbd1IqjGP64=
+	t=1777392502; cv=none; b=Adfw3mT77FmIw8juCwteZiKjyDD+qkUzaMocS0fDx0NFjFCVmRaKfirvVcx1QTSn9eJ68UBNL4LAYtPXlfCmiNxpgaoeFRW6xTMMgp24cJ3vR3odytzFNeh4yfgrHerEnwmJ87DYfyumkQ8kgPiVmGv0eFQJq5vn2gaousr7BT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777392385; c=relaxed/simple;
-	bh=6DKe+rDUv8PNTmDtNK0+PcDeStcbUVZSpaSAcNp6gCc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZHjQp2QxW5JHQHjkfT2oXi0zJ3wB9qfI/+JFqmdal+40rk9VDAb/smt3SGfHIiO2VGcV6nf6Bz9mLLqoWRtU+FKMYFAtAdyHoDjRO7LqIzCqwAqU1SLyvKwI6KhxrPW3Asqq5q1094SXyqNK6ZMCFEHro0Y6BBDOWNen19GlH4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=NwnZN8cS; arc=none smtp.client-ip=209.85.167.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
-Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-4670676ba03so3449481b6e.1
-        for <stable@vger.kernel.org>; Tue, 28 Apr 2026 09:06:22 -0700 (PDT)
+	s=arc-20240116; t=1777392502; c=relaxed/simple;
+	bh=eG9ghrqyHv+FTgYWiTsJuJFnXKn0gQTXBQyL1yWQTYk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OgiX600xL91iK9POgGqBbDWEJahsh9+Flye+V8kT97b2XZ54M8SClJLFDS/ZdqBbkmnY33bI8CUGaOgf3udxElaywH6H8QgMU/ygl1qaixRMzXjbQwYHgfX3khikXvTRl7xpnAtqrDW5VOxMwbkBq7CKBLtPTsIN7XzfjyVlmvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jVdewnI+; arc=none smtp.client-ip=209.85.216.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-35e563b0ee7so5577649a91.1
+        for <stable@vger.kernel.org>; Tue, 28 Apr 2026 09:08:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1777392381; x=1777997181; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Qpi+ZEPIeo8vz/y7CHMSuNMgCTG3NtxefpttRhwmn6o=;
-        b=NwnZN8cS+ZjXgO+6qaFuzSrGk58B9ynTEnFf7gSx6266VpKbt1JQziREs5MXyFW9f4
-         1+KRLhTj8gVnp6SBschgUB/RXy3QcZLXdM93+EbBMcSv0zreyisXb6NXOeSa+MMsEThI
-         J0hnTqDKRXW9cAu0ejcgzLHf1wObBaV3N/vXXiKinc5RqakG5IS9crC8JkyeUV7CZHqw
-         s9skfTf9+ck88I49J4oShf6BplUj3Us+RvqgdpMOAsUxuErOZOqjl5D7tutyHUpLJ/es
-         3bk1OAeYUJaxQSzJv5WgRIjWoMhK93PSKPiD1egeR1qxO8YzGAtlTxXI2Ww1JJFLsZ/F
-         +J7Q==
+        d=gmail.com; s=20251104; t=1777392501; x=1777997301; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=k085XqsDoPGBdb9RzNl+RVKDoAd53m9lIegek7QU+Yc=;
+        b=jVdewnI+emo4vuLxuv0R0wNaG70YNoIyCaqSlsWYXMqK06tq1A8BNQjU/JhbJNDaHs
+         oNdgYlZnueHN8PcP8VU8/M6SyNPNfqMsrByxnfySxmVmFaJDepUfzJUjodUZSLDfH2H2
+         JzPW+Cgqs+9y9vprTiUs86esSpS/mBZ6tW9iq8Ks0VcQMIhx/Hc0J/4tPTyxulI2Hqz6
+         Q/rqQXerJE3L3y7i/Oc3EBdAMLagFcgtf93qnw7WMKoHKwNf8/ekad5jt8GhQpwsa4nY
+         wlBPBJn3zCFTiB+D6uiaCjdeBdTjDNcYzmqq0k8GwqVpxnY6HKe34Gi0rH9uGP8sOTjy
+         er6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777392381; x=1777997181;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Qpi+ZEPIeo8vz/y7CHMSuNMgCTG3NtxefpttRhwmn6o=;
-        b=TX5kr7m1ri1l4JL6er/QoI2yI3sw1YiQzC/1A8PypFOYOHLRu4Mu6sKiSxoa6osc61
-         5hRQPHhaNf8vRQfdM0xqQGCGz/qpR+nv9euyJl2z/GpjizNwPNxqkX4/0K42TawyOCMG
-         yjWpnh/xDDJjxFR0b7X1N/N9TafKFQ4RvqykJgQ1lHqk8CjN9QXIcPZrTkx6heqcFv68
-         H4QqsW9WO/7wnh1I/pdh7To1+jJybfdAc+b67H4tTn15KpHgFa954BqdKleinPVTm1/S
-         dupPJ87nm0RAppGMcod9qfzXGI9mZBkMgD7jm2mvW8KcaUkNXoAory3OpOiNzWCgwz0n
-         zNLw==
-X-Forwarded-Encrypted: i=1; AFNElJ9vthpp0pSLEnwdfskYql9cS/8tuAkfrVQryOtaTHVvZQPEX9tP0tBXRMungrjXGWVpV78U1TY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx6DLjH5D/U78nVXuUEUIlUHacytbULDiglscUKIXf86Iajd+i9
-	XgTI9Pz74+Kcgbb2/B1YvpoV1eMVVF0TkReqViMwNizbxN2kHgLSi9uXYnoZXVA4NkU=
-X-Gm-Gg: AeBDieuIqXk1cveKtPasVUXuCNG1zMVYBddx9Kr2qkwIdb0Odbsgn49c7iKw5NDjD8W
-	45CBmASb9n5+cTgmwt5ulHayHaPQzR7S+VaKQACfdQi9DHUgNTk2l1YQON8po+hb5XC1ovouCKT
-	L2U6+ZXvqcXtodNZ01//oGu9Ae/oJk2/f6AkNvSmASlVXwmxt639UWkN/WNiqVa2iuiixGF7KId
-	wsuJTpk82IpzI69LK7saNJXyr2Zo5rQv2l5TNj/eNx4++OQZVvGwhOv/N9gik7li29nLbpZvpCL
-	vcs16n2G1QzJAkYkZfDF/FOOfS1au5EbftM0HXE6Yg79hr1UB6VVhNjr5JIoNMGHsbcI0/lfqiJ
-	RL/U9vDCOs8BOjPguSgZdbnVjG5JI4tpTIA6zk/WIUgV6da0OAJ/QmHF2gx6xHBPPe0rj/N2xfu
-	mPE07LnryPIfGf53izyfFepHGsWXm7dPeaSlIa6fLjr7lwDCINVuB6UpsXtTFM8Ml88MKE1OATE
-	g/zdt1LYBOnG33A
-X-Received: by 2002:a05:6808:181d:b0:464:5f3:ed1 with SMTP id 5614622812f47-47c28fc8fbdmr1928457b6e.26.1777392381147;
-        Tue, 28 Apr 2026 09:06:21 -0700 (PDT)
-Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8f7c7cd2c97sm212640085a.23.2026.04.28.09.06.20
+        d=1e100.net; s=20251104; t=1777392501; x=1777997301;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=k085XqsDoPGBdb9RzNl+RVKDoAd53m9lIegek7QU+Yc=;
+        b=qckXzWbHQ9bmwNdKue1+nsOah69/fYT5En0e4jNmwQ1lvOiB3evRFY9KsUsZjTk9x0
+         D+QzzDGN/O18p5ysYxl/XxLKt21HPGmOfV9exXWtn826ta2IDWXtCxt6a+X+8AjmqEiE
+         nNAY7OQ+QKdjEZLGiCD2P6WoyhhUPrBmWcAFOgiitBU0JGbO/KEJl/YHOpqu8XPAf1XB
+         c78U5IBrzbp+FkEXsFqnpqdM3QgvM7bd7HXhtmvOUCa8RwuGUD+NZihJp7mIiSPfDmAk
+         mcNzMvn2aV6bvRk0UOMZi+HP3BLD43MouxSLzkQJDM/Ycr5fA56wZzbWg51NXcFtT4pL
+         NJSw==
+X-Forwarded-Encrypted: i=1; AFNElJ8Vs+ZKeGIjh7OtcAhwfVi4hI/n2jCSyeXLOz5lZ4l8aaar6fMG8hSc2CtZHEWMyii+ZJXDvUo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw6r4gsSDG4ZGMgl6TkQUm27310W36JYwTIEncwSXYhJKbjTn+G
+	bjUbP3rdhs0ilVjyAcbvlG1Gy0VpBlMF5Qfvsr8UF5xqx3B3cdg5EFPj
+X-Gm-Gg: AeBDiesSqp0c3UKmtyA3nGAdv39mQAYAmdH0E5RqvKyD65RsNR24tyPCLltbDvT0EPz
+	te7vIJ7CEO6aZy9iMG+NYHX2DWQnNIIED7NOXt54eDR1psv0yHBIFgQk0zxSzpkOXzF9/k/6QTI
+	+mlGx4p6NP1htnVHOtGh80lSJPN+00c6qAgwHISKXt5M4X4KiewbuyrIFEHorMmQKGh2aE9AJsC
+	iFmCZHmfgRDB8PBFs7xoUcMZ9yhSE33pN2xKalQOSD/IuvW4yVMNNEChHEqM4qV2zyjTIzsM1nR
+	0MRZI8UqOEs3Ur0/nUdVyYP6Jt6NP/5m68jNeE6MYwxJTGovl3sjmQWe0c3EYamPX+LjW8/rh5P
+	wsTINu5UYPcMLOCYig/DLs6hzejiyCVY28VO/iM6deA5UDXlS0dGNYDtlbonJFC44UaqmqfmvKw
+	q5KvkkTL13aHKUTC3JXhFLI9YCoDq2mddBkXjP2n0AjupJ6kI7VsjGqB1kni3lz8+O
+X-Received: by 2002:a17:90b:48c5:b0:35b:e4d4:8290 with SMTP id 98e67ed59e1d1-36491abd42emr3672699a91.9.1777392500390;
+        Tue, 28 Apr 2026 09:08:20 -0700 (PDT)
+Received: from sprasad-dev1.corp.microsoft.com ([167.220.110.216])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b97ac7894csm30864465ad.50.2026.04.28.09.08.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Apr 2026 09:06:20 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1wHkx1-0000000Bgu8-31g1;
-	Tue, 28 Apr 2026 13:06:19 -0300
-Date: Tue, 28 Apr 2026 13:06:19 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Guangshuo Li <lgs201920130244@gmail.com>
-Cc: Yishai Hadas <yishaih@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
-	Jack Morgenstein <jackm@dev.mellanox.co.il>,
-	Roland Dreier <roland@purestorage.com>, linux-rdma@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v3] IB/mlx4: Fix refcount leak in add_port() error path
-Message-ID: <20260428160619.GJ849557@ziepe.ca>
-References: <20260428154716.375069-1-lgs201920130244@gmail.com>
+        Tue, 28 Apr 2026 09:08:19 -0700 (PDT)
+From: nspmangalore@gmail.com
+X-Google-Original-From: sprasad@microsoft.com
+To: linux-cifs@vger.kernel.org,
+	smfrench@gmail.com,
+	pc@manguebit.org,
+	bharathsm@microsoft.com,
+	dhowells@redhat.com,
+	henrique.carvalho@suse.com,
+	ematsumiya@suse.de
+Cc: Shyam Prasad N <sprasad@microsoft.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v3 01/19] cifs: change_conf needs to be called for session setup
+Date: Tue, 28 Apr 2026 21:37:46 +0530
+Message-ID: <20260428160804.281745-1-sprasad@microsoft.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260428154716.375069-1-lgs201920130244@gmail.com>
-X-Rspamd-Queue-Id: 430A2488B23
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: D4920489337
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[ziepe.ca:s=google];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-241708-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[ziepe.ca:+];
-	TAGGED_FROM(0.00)[bounces-241707-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[ziepe.ca];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[vger.kernel.org,gmail.com,manguebit.org,microsoft.com,redhat.com,suse.com,suse.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jgg@ziepe.ca,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[nspmangalore@gmail.com,stable@vger.kernel.org];
+	FROM_NO_DN(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,ziepe.ca:dkim,ziepe.ca:mid]
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 
-On Tue, Apr 28, 2026 at 11:47:16PM +0800, Guangshuo Li wrote:
-> After kobject_init_and_add(), the lifetime of the embedded struct
-> kobject is expected to be managed through the kobject core reference
-> counting.
-> 
-> In add_port(), if kobject_init_and_add() fails, the error path frees p
-> directly instead of releasing the kobject reference with kobject_put().
-> This may leave the reference count of the embedded struct kobject
-> unbalanced, resulting in a refcount leak and potentially leading to a
-> use-after-free.
-> 
-> The issue was identified by a static analysis tool I developed and
-> confirmed by manual review.
-> 
-> Fix this by using kobject_put(&p->kobj) in the kobject_init_and_add()
-> failure path.
-> 
-> Fixes: c1e7e466120b ("IB/mlx4: Add iov directory in sysfs under the ib device")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-> ---
-> v3:
->   - make mlx4_port_release() tolerate NULL attribute arrays
->   - drop the parent kobject reference on the kobject_init_and_add()
->     failure path before putting the embedded kobject
-> 
-> v2:
->   - note that the issue was identified by my static analysis tool
->   - and confirmed by manual review
-> 
->  drivers/infiniband/hw/mlx4/sysfs.c | 25 ++++++++++++++++++-------
->  1 file changed, 18 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/infiniband/hw/mlx4/sysfs.c b/drivers/infiniband/hw/mlx4/sysfs.c
-> index b8fa4ecfc961..38c64b5fb23a 100644
-> --- a/drivers/infiniband/hw/mlx4/sysfs.c
-> +++ b/drivers/infiniband/hw/mlx4/sysfs.c
-> @@ -380,12 +380,17 @@ static void mlx4_port_release(struct kobject *kobj)
->  	struct attribute *a;
->  	int i;
->  
-> -	for (i = 0; (a = p->pkey_group.attrs[i]); ++i)
-> -		kfree(a);
-> -	kfree(p->pkey_group.attrs);
-> -	for (i = 0; (a = p->gid_group.attrs[i]); ++i)
-> -		kfree(a);
-> -	kfree(p->gid_group.attrs);
-> +	if (p->pkey_group.attrs) {
-> +		for (i = 0; (a = p->pkey_group.attrs[i]); ++i)
-> +			kfree(a);
-> +		kfree(p->pkey_group.attrs);
-> +	}
-> +
-> +	if (p->gid_group.attrs) {
-> +		for (i = 0; (a = p->gid_group.attrs[i]); ++i)
-> +			kfree(a);
-> +		kfree(p->gid_group.attrs);
-> +	}
->  	kfree(p);
->  }
->  
-> @@ -640,7 +645,7 @@ static int add_port(struct mlx4_ib_dev *dev, int port_num, int slave)
->  				   kobject_get(dev->dev_ports_parent[slave]),
->  				   "%d", port_num);
->  	if (ret)
-> -		goto err_alloc;
-> +		goto err_kobj;
->  
->  	p->pkey_group.name  = "pkey_idx";
->  	p->pkey_group.attrs =
-> @@ -687,6 +692,12 @@ static int add_port(struct mlx4_ib_dev *dev, int port_num, int slave)
->  	kobject_put(dev->dev_ports_parent[slave]);
->  	kfree(p);
->  	return ret;
-> +
-> +err_kobj:
-> +	kobject_put(dev->dev_ports_parent[slave]);
-> +	kobject_put(&p->kobj);
-> +	return ret;
-> +
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-Do not put double returns in goto-unwinds..
+Today we skip calling change_conf for negotiates and session setup
+requests. This can be a problem for mchan as the immediate next call
+after session setup could be due to an I/O that is made on the
+mount point. For single channel, this is not a problem as
+there will be several calls after setting up session.
 
-This should be fixed to open code the kobject_init() immediately after
-the memory allocation so we never switch between kfree and put, and fix
-all the release functions to tolerate half initialized objects.
+This change enforces calling change_conf when the total credits contain
+enough for reservations for echoes and oplocks. We expect this to happen
+during the last session setup response. This way, echoes and oplocks are
+not disabled before the first request to the server. So if that first
+request is an open, it does not need to disable requesting leases.
 
-Then you can remove the mess of kfrees which are all duplicated in the
-release function.
+Cc: <stable@vger.kernel.org>
+Reviewed-by: Bharath SM <bharathsm@microsoft.com>
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+---
+ fs/smb/client/smb2ops.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-Jason
+diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
+index 509fcea28a429..a9d68e5fcea91 100644
+--- a/fs/smb/client/smb2ops.c
++++ b/fs/smb/client/smb2ops.c
+@@ -111,10 +111,21 @@ smb2_add_credits(struct TCP_Server_Info *server,
+ 				      cifs_trace_rw_credits_zero_in_flight);
+ 	}
+ 	server->in_flight--;
++
++	/*
++	 * Rebalance credits when an op drains in_flight. For session setup,
++	 * do this only when the total accumulated credits are high enough (>2)
++	 * so that a newly established secondary channel can reserve credits for
++	 * echoes and oplocks. We expect this to happen at the end of the final
++	 * session setup response.
++	 */
+ 	if (server->in_flight == 0 &&
+ 	   ((optype & CIFS_OP_MASK) != CIFS_NEG_OP) &&
+ 	   ((optype & CIFS_OP_MASK) != CIFS_SESS_OP))
+ 		rc = change_conf(server);
++	else if (server->in_flight == 0 &&
++		 ((optype & CIFS_OP_MASK) == CIFS_SESS_OP) && *val > 2)
++		rc = change_conf(server);
+ 	/*
+ 	 * Sometimes server returns 0 credits on oplock break ack - we need to
+ 	 * rebalance credits in this case.
+-- 
+2.43.0
+
 
