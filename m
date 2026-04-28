@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-241783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241784-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uOnTKtQq8WkJeQEAu9opvQ
-	(envelope-from <stable+bounces-241783-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 23:47:00 +0200
+	id +FXGBMoq8WkJeQEAu9opvQ
+	(envelope-from <stable+bounces-241784-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 23:46:50 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5070F48C658
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 23:47:00 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAF5B48C64A
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 23:46:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D3081302494F
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 21:46:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 15BC9301E659
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 21:46:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1DE11862A;
-	Tue, 28 Apr 2026 21:46:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82BB51862A;
+	Tue, 28 Apr 2026 21:46:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b="U4CQOfOP"
+	dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b="ecwCEO8O"
 X-Original-To: stable@vger.kernel.org
 Received: from forwardcorp1a.mail.yandex.net (forwardcorp1a.mail.yandex.net [178.154.239.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 822904A07
-	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 21:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F80A29CE9
+	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 21:46:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777412805; cv=none; b=aGsrwBJNA96Kcx6MgqUYCPkTPXd0CgMnO93CnvIlZfRj1617/AmaaV80l4Z9d2BiG0TgvjKrS2Ar1Q7fmsgmh1tLJdpAiDi2npi8oApmifyJ39xOEJVrvPewYMQVmtuG5kM/haCUBk8lEd/TJeJ1JAbvGUmVM6gvPEIHXhliQ/A=
+	t=1777412807; cv=none; b=ZilqqcAsus7Khr9Zk6VJ0+7lgrWOHpSnz3UOcIoGhgMSq9nL8B0fBOwSgwXDMQUlB5BAAlby+aIl83nkjMtEJXk526nRRYE5/3Bz0euy3QXVOiv7QoUjZmBBPkpvWXDomCegfaXpiQfN7FeyWdQa40fyip0bdV2URGRa0FvkUXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777412805; c=relaxed/simple;
-	bh=6HRqXgO2bvQmkMLiVrfp8k6uBXGW7SPTuRth880qoC4=;
+	s=arc-20240116; t=1777412807; c=relaxed/simple;
+	bh=rFLZYY7c/bvLuWly86LbBKa8tBhc3B2uNHrSUR9zhEI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=DVOaU4N54I82Vzyusu9Lu7AXO09uAtGrpiEt68wWsYGPwL5FzUjLMP8kvZaC3XE4VpTXlJ73nIo8sfqCpyOO8ysX7zoxrHbpmN/zlC2yPVuRk1B0t2+KlHYQECPOev0Bv1bvHxdMDO73i4mDVukdUecsNxxy8g5/CoCYUYSfLeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru; spf=pass smtp.mailfrom=yandex-team.ru; dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b=U4CQOfOP; arc=none smtp.client-ip=178.154.239.72
+	 MIME-Version; b=O3rmzItci0tYdklyIddLvzSADpNXV4zmAURSdpsck8TS0duzGdx3K0Ia6Tof3fcB6+9701YLEc/8TP7XfwsCkHWqYxHs5yxDGeRW6tDKB66lyMN3zY66rhKdIog0f0a2TKFvIegnb0o7TEhZULhsIIvzxtLFneRCa8IrexMj3VY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru; spf=pass smtp.mailfrom=yandex-team.ru; dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b=ecwCEO8O; arc=none smtp.client-ip=178.154.239.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex-team.ru
 Received: from mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net [IPv6:2a02:6b8:c1f:3a87:0:640:845c:0])
-	by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 09938C0268;
-	Wed, 29 Apr 2026 00:46:42 +0300 (MSK)
+	by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id E12B6C0269;
+	Wed, 29 Apr 2026 00:46:43 +0300 (MSK)
 Received: from d-tatianin-lin.yandex-team.ru (unknown [2a02:6bf:8080:761::1:11])
-	by mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (smtpcorp) with ESMTPSA id TkhkmZ1L4iE0-MpvnwfiN;
-	Wed, 29 Apr 2026 00:46:41 +0300
+	by mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (smtpcorp) with ESMTPSA id TkhkmZ1L4iE0-0xEjLUEv;
+	Wed, 29 Apr 2026 00:46:43 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
-	s=default; t=1777412801;
-	bh=danWFPdjmHJBht5IR30BFsDbuOKSFWd59KIx2DFOCZA=;
+	s=default; t=1777412803;
+	bh=It9c3ljWoFuAhx+GFzLS9Dpl6niS/i1eIB5fYFweXwY=;
 	h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
-	b=U4CQOfOPRF4mI6E62FsKlVfuqERswxD4MWjgPo6FIpLzRI6uk7lbZMGC0X51Q0O1g
-	 58tGqqEqLPOXDnwXNQYoSBmEoXHBok7myg35H7mO3qLB5jHujR2KPAMElZVDAjw+Ob
-	 JlMwaPwI0ctneQQDYSM/9HpYhnXD4hsfkLM3Xa5Y=
+	b=ecwCEO8O2S3+4iRMkURiy2ZKWmsbT7nfe1lw8dQ3uPmX+a0jnSzTNc7q/a1NHDE2O
+	 OXHfUYbl4wsLg9Q1kr/rt5Uq31Ki/s/xEpcqKu5kgA6cYTwG196VRkZzPBal1GotgP
+	 pEyYZ1qlXmMxsQ2YyEHEPIBZXKUoHq+4fIJnrWOw=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net; dkim=pass header.i=@yandex-team.ru
 From: Daniil Tatianin <d-tatianin@yandex-team.ru>
 To: stable@vger.kernel.org
@@ -67,10 +67,11 @@ Cc: Daniil Tatianin <d-tatianin@yandex-team.ru>,
 	Daniel Sneddon <daniel.sneddon@linux.intel.com>,
 	"Ahmed S. Darwish" <darwi@linutronix.de>,
 	Nikunj A Dadhania <nikunj@amd.com>,
+	Michael Larabel <Michael@michaellarabel.com>,
 	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.6.y v1 5/6] x86/bugs: KVM: Add support for SRSO_MSR_FIX
-Date: Wed, 29 Apr 2026 00:46:09 +0300
-Message-Id: <20260428214610.2138600-6-d-tatianin@yandex-team.ru>
+Subject: [PATCH 6.6.y v1 6/6] KVM: SVM: Set/clear SRSO's BP_SPEC_REDUCE on 0 <=> 1 VM count transitions
+Date: Wed, 29 Apr 2026 00:46:10 +0300
+Message-Id: <20260428214610.2138600-7-d-tatianin@yandex-team.ru>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260428214610.2138600-1-d-tatianin@yandex-team.ru>
 References: <20260428214610.2138600-1-d-tatianin@yandex-team.ru>
@@ -81,7 +82,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 5070F48C658
+X-Rspamd-Queue-Id: CAF5B48C64A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-7.66 / 15.00];
@@ -90,16 +91,16 @@ X-Spamd-Result: default: False [-7.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[yandex-team.ru,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[yandex-team.ru:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241783-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-241784-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[18];
+	RCPT_COUNT_TWELVE(0.00)[19];
 	FROM_HAS_DN(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FROM_NEQ_ENVFROM(0.00)[d-tatianin@yandex-team.ru,stable@vger.kernel.org];
@@ -111,207 +112,172 @@ X-Spamd-Result: default: False [-7.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[alien8.de:email,yandex-team.ru:email,yandex-team.ru:dkim,yandex-team.ru:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[alien8.de:email]
 
-[ Upstream commit 8442df2b49ed9bcd67833ad4f091d15ac91efd00 ]
+[ Upstream commit e3417ab75ab2e7dca6372a1bfa26b1be3ac5889e ]
 
-Add support for
+Set the magic BP_SPEC_REDUCE bit to mitigate SRSO when running VMs if and
+only if KVM has at least one active VM.  Leaving the bit set at all times
+unfortunately degrades performance by a wee bit more than expected.
 
-  CPUID Fn8000_0021_EAX[31] (SRSO_MSR_FIX). If this bit is 1, it
-  indicates that software may use MSR BP_CFG[BpSpecReduce] to mitigate
-  SRSO.
+Use a dedicated spinlock and counter instead of hooking virtualization
+enablement, as changing the behavior of kvm.enable_virt_at_load based on
+SRSO_BP_SPEC_REDUCE is painful, and has its own drawbacks, e.g. could
+result in performance issues for flows that are sensitive to VM creation
+latency.
 
-Enable BpSpecReduce to mitigate SRSO across guest/host boundaries.
+Defer setting BP_SPEC_REDUCE until VMRUN is imminent to avoid impacting
+performance on CPUs that aren't running VMs, e.g. if a setup is using
+housekeeping CPUs.  Setting BP_SPEC_REDUCE in task context, i.e. without
+blasting IPIs to all CPUs, also helps avoid serializing 1<=>N transitions
+without incurring a gross amount of complexity (see the Link for details
+on how ugly coordinating via IPIs gets).
 
-Switch back to enabling the bit when virtualization is enabled and to
-clear the bit when virtualization is disabled because using a MSR slot
-would clear the bit when the guest is exited and any training the guest
-has done, would potentially influence the host kernel when execution
-enters the kernel and hasn't VMRUN the guest yet.
-
-More detail on the public thread in Link below.
-
-Co-developed-by: Sean Christopherson <seanjc@google.com>
+Link: https://lore.kernel.org/all/aBOnzNCngyS_pQIW@google.com
+Fixes: 8442df2b49ed ("x86/bugs: KVM: Add support for SRSO_MSR_FIX")
+Reported-by: Michael Larabel <Michael@michaellarabel.com>
+Closes: https://www.phoronix.com/review/linux-615-amd-regression
+Cc: Borislav Petkov <bp@alien8.de>
+Tested-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20250505180300.973137-1-seanjc@google.com
 Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20241202120416.6054-1-bp@kernel.org
 Signed-off-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
 ---
- Documentation/admin-guide/hw-vuln/srso.rst | 13 ++++++++++++
- arch/x86/include/asm/cpufeatures.h         |  4 ++++
- arch/x86/include/asm/msr-index.h           |  1 +
- arch/x86/kernel/cpu/bugs.c                 | 24 ++++++++++++++++++----
- arch/x86/kvm/svm/svm.c                     |  6 ++++++
- arch/x86/lib/msr.c                         |  2 ++
- 6 files changed, 46 insertions(+), 4 deletions(-)
+ arch/x86/kvm/svm/svm.c | 71 ++++++++++++++++++++++++++++++++++++++----
+ arch/x86/kvm/svm/svm.h |  2 ++
+ 2 files changed, 67 insertions(+), 6 deletions(-)
 
-diff --git a/Documentation/admin-guide/hw-vuln/srso.rst b/Documentation/admin-guide/hw-vuln/srso.rst
-index e715bfc09879a..68011add73834 100644
---- a/Documentation/admin-guide/hw-vuln/srso.rst
-+++ b/Documentation/admin-guide/hw-vuln/srso.rst
-@@ -104,7 +104,20 @@ The possible values in this file are:
- 
-    (spec_rstack_overflow=ibpb-vmexit)
- 
-+ * 'Mitigation: Reduced Speculation':
- 
-+   This mitigation gets automatically enabled when the above one "IBPB on
-+   VMEXIT" has been selected and the CPU supports the BpSpecReduce bit.
-+
-+   It gets automatically enabled on machines which have the
-+   SRSO_USER_KERNEL_NO=1 CPUID bit. In that case, the code logic is to switch
-+   to the above =ibpb-vmexit mitigation because the user/kernel boundary is
-+   not affected anymore and thus "safe RET" is not needed.
-+
-+   After enabling the IBPB on VMEXIT mitigation option, the BpSpecReduce bit
-+   is detected (functionality present on all such machines) and that
-+   practically overrides IBPB on VMEXIT as it has a lot less performance
-+   impact and takes care of the guest->host attack vector too.
- 
- In order to exploit vulnerability, an attacker needs to:
- 
-diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
-index 154adb401a260..974c604dd81cd 100644
---- a/arch/x86/include/asm/cpufeatures.h
-+++ b/arch/x86/include/asm/cpufeatures.h
-@@ -459,6 +459,10 @@
- #define X86_FEATURE_IBPB_BRTYPE		(20*32+28) /* "" MSR_PRED_CMD[IBPB] flushes all branch type predictions */
- #define X86_FEATURE_SRSO_NO		(20*32+29) /* "" CPU is not affected by SRSO */
- #define X86_FEATURE_SRSO_USER_KERNEL_NO	(20*32+30) /* CPU is not affected by SRSO across user/kernel boundaries */
-+#define X86_FEATURE_SRSO_BP_SPEC_REDUCE	(20*32+31) /*
-+						    * BP_CFG[BpSpecReduce] can be used to mitigate SRSO for VMs.
-+						    * (SRSO_MSR_FIX in the official doc).
-+						    */
- 
- /*
-  * Extended auxiliary flags: Linux defined - for features scattered in various
-diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
-index deb5fe0017763..236abf51876c4 100644
---- a/arch/x86/include/asm/msr-index.h
-+++ b/arch/x86/include/asm/msr-index.h
-@@ -674,6 +674,7 @@
- 
- /* Zen4 */
- #define MSR_ZEN4_BP_CFG			0xc001102e
-+#define MSR_ZEN4_BP_CFG_BP_SPEC_REDUCE_BIT 4
- #define MSR_ZEN4_BP_CFG_SHARED_BTB_FIX_BIT 5
- 
- /* Zen 2 */
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index 916f36e23724d..818034819ee66 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -2706,6 +2706,7 @@ enum srso_mitigation {
- 	SRSO_MITIGATION_SAFE_RET,
- 	SRSO_MITIGATION_IBPB,
- 	SRSO_MITIGATION_IBPB_ON_VMEXIT,
-+	SRSO_MITIGATION_BP_SPEC_REDUCE,
- };
- 
- enum srso_mitigation_cmd {
-@@ -2723,7 +2724,8 @@ static const char * const srso_strings[] = {
- 	[SRSO_MITIGATION_MICROCODE]		= "Vulnerable: Microcode, no safe RET",
- 	[SRSO_MITIGATION_SAFE_RET]		= "Mitigation: Safe RET",
- 	[SRSO_MITIGATION_IBPB]			= "Mitigation: IBPB",
--	[SRSO_MITIGATION_IBPB_ON_VMEXIT]	= "Mitigation: IBPB on VMEXIT only"
-+	[SRSO_MITIGATION_IBPB_ON_VMEXIT]	= "Mitigation: IBPB on VMEXIT only",
-+	[SRSO_MITIGATION_BP_SPEC_REDUCE]	= "Mitigation: Reduced Speculation"
- };
- 
- static enum srso_mitigation srso_mitigation __ro_after_init = SRSO_MITIGATION_NONE;
-@@ -2762,7 +2764,7 @@ static void __init srso_select_mitigation(void)
- 	    srso_cmd == SRSO_CMD_OFF) {
- 		if (boot_cpu_has(X86_FEATURE_SBPB))
- 			x86_pred_cmd = PRED_CMD_SBPB;
--		return;
-+		goto out;
- 	}
- 
- 	if (has_microcode) {
-@@ -2774,7 +2776,7 @@ static void __init srso_select_mitigation(void)
- 		 */
- 		if (boot_cpu_data.x86 < 0x19 && !cpu_smt_possible()) {
- 			setup_force_cpu_cap(X86_FEATURE_SRSO_NO);
--			return;
-+			goto out;
- 		}
- 
- 		if (retbleed_mitigation == RETBLEED_MITIGATION_IBPB) {
-@@ -2854,6 +2856,12 @@ static void __init srso_select_mitigation(void)
- 
- ibpb_on_vmexit:
- 	case SRSO_CMD_IBPB_ON_VMEXIT:
-+		if (boot_cpu_has(X86_FEATURE_SRSO_BP_SPEC_REDUCE)) {
-+			pr_notice("Reducing speculation to address VM/HV SRSO attack vector.\n");
-+			srso_mitigation = SRSO_MITIGATION_BP_SPEC_REDUCE;
-+			break;
-+		}
-+
- 		if (IS_ENABLED(CONFIG_CPU_IBPB_ENTRY)) {
- 			if (has_microcode) {
- 				setup_force_cpu_cap(X86_FEATURE_IBPB_ON_VMEXIT);
-@@ -2876,7 +2884,15 @@ static void __init srso_select_mitigation(void)
- 	}
- 
- out:
--	pr_info("%s\n", srso_strings[srso_mitigation]);
-+	/*
-+	 * Clear the feature flag if this mitigation is not selected as that
-+	 * feature flag controls the BpSpecReduce MSR bit toggling in KVM.
-+	 */
-+	if (srso_mitigation != SRSO_MITIGATION_BP_SPEC_REDUCE)
-+		setup_clear_cpu_cap(X86_FEATURE_SRSO_BP_SPEC_REDUCE);
-+
-+	if (srso_mitigation != SRSO_MITIGATION_NONE)
-+		pr_info("%s\n", srso_strings[srso_mitigation]);
- }
- 
- #undef pr_fmt
 diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index ff65fe7387332..ecb77ac074ea1 100644
+index ecb77ac074ea1..4a319e4fc51bd 100644
 --- a/arch/x86/kvm/svm/svm.c
 +++ b/arch/x86/kvm/svm/svm.c
-@@ -623,6 +623,9 @@ static void svm_hardware_disable(void)
+@@ -623,9 +623,6 @@ static void svm_hardware_disable(void)
  	kvm_cpu_svm_disable();
  
  	amd_pmu_disable_virt();
-+
-+	if (cpu_feature_enabled(X86_FEATURE_SRSO_BP_SPEC_REDUCE))
-+		msr_clear_bit(MSR_ZEN4_BP_CFG, MSR_ZEN4_BP_CFG_BP_SPEC_REDUCE_BIT);
+-
+-	if (cpu_feature_enabled(X86_FEATURE_SRSO_BP_SPEC_REDUCE))
+-		msr_clear_bit(MSR_ZEN4_BP_CFG, MSR_ZEN4_BP_CFG_BP_SPEC_REDUCE_BIT);
  }
  
  static int svm_hardware_enable(void)
-@@ -703,6 +706,9 @@ static int svm_hardware_enable(void)
+@@ -706,9 +703,6 @@ static int svm_hardware_enable(void)
  		rdmsr(MSR_TSC_AUX, hostsa->tsc_aux, msr_hi);
  	}
  
-+	if (cpu_feature_enabled(X86_FEATURE_SRSO_BP_SPEC_REDUCE))
-+		msr_set_bit(MSR_ZEN4_BP_CFG, MSR_ZEN4_BP_CFG_BP_SPEC_REDUCE_BIT);
-+
+-	if (cpu_feature_enabled(X86_FEATURE_SRSO_BP_SPEC_REDUCE))
+-		msr_set_bit(MSR_ZEN4_BP_CFG, MSR_ZEN4_BP_CFG_BP_SPEC_REDUCE_BIT);
+-
  	return 0;
  }
  
-diff --git a/arch/x86/lib/msr.c b/arch/x86/lib/msr.c
-index 47fd9bd6b91d8..f94d6f2b982d5 100644
---- a/arch/x86/lib/msr.c
-+++ b/arch/x86/lib/msr.c
-@@ -103,6 +103,7 @@ int msr_set_bit(u32 msr, u8 bit)
- {
- 	return __flip_bit(msr, bit, true);
+@@ -1533,6 +1527,63 @@ static void svm_vcpu_free(struct kvm_vcpu *vcpu)
+ 	__free_pages(virt_to_page(svm->msrpm), get_order(MSRPM_SIZE));
  }
-+EXPORT_SYMBOL_GPL(msr_set_bit);
  
- /**
-  * msr_clear_bit - Clear @bit in a MSR @msr.
-@@ -118,6 +119,7 @@ int msr_clear_bit(u32 msr, u8 bit)
++#ifdef CONFIG_CPU_MITIGATIONS
++static DEFINE_SPINLOCK(srso_lock);
++static atomic_t srso_nr_vms;
++
++static void svm_srso_clear_bp_spec_reduce(void *ign)
++{
++	struct svm_cpu_data *sd = this_cpu_ptr(&svm_data);
++
++	if (!sd->bp_spec_reduce_set)
++		return;
++
++	msr_clear_bit(MSR_ZEN4_BP_CFG, MSR_ZEN4_BP_CFG_BP_SPEC_REDUCE_BIT);
++	sd->bp_spec_reduce_set = false;
++}
++
++static void svm_srso_vm_destroy(void)
++{
++	if (!cpu_feature_enabled(X86_FEATURE_SRSO_BP_SPEC_REDUCE))
++		return;
++
++	if (atomic_dec_return(&srso_nr_vms))
++		return;
++
++	guard(spinlock)(&srso_lock);
++
++	/*
++	 * Verify a new VM didn't come along, acquire the lock, and increment
++	 * the count before this task acquired the lock.
++	 */
++	if (atomic_read(&srso_nr_vms))
++		return;
++
++	on_each_cpu(svm_srso_clear_bp_spec_reduce, NULL, 1);
++}
++
++static void svm_srso_vm_init(void)
++{
++	if (!cpu_feature_enabled(X86_FEATURE_SRSO_BP_SPEC_REDUCE))
++		return;
++
++	/*
++	 * Acquire the lock on 0 => 1 transitions to ensure a potential 1 => 0
++	 * transition, i.e. destroying the last VM, is fully complete, e.g. so
++	 * that a delayed IPI doesn't clear BP_SPEC_REDUCE after a vCPU runs.
++	 */
++	if (atomic_inc_not_zero(&srso_nr_vms))
++		return;
++
++	guard(spinlock)(&srso_lock);
++
++	atomic_inc(&srso_nr_vms);
++}
++#else
++static void svm_srso_vm_init(void) { }
++static void svm_srso_vm_destroy(void) { }
++#endif
++
+ static void svm_prepare_switch_to_guest(struct kvm_vcpu *vcpu)
  {
- 	return __flip_bit(msr, bit, false);
- }
-+EXPORT_SYMBOL_GPL(msr_clear_bit);
+ 	struct vcpu_svm *svm = to_svm(vcpu);
+@@ -1569,6 +1620,11 @@ static void svm_prepare_switch_to_guest(struct kvm_vcpu *vcpu)
+ 	    (!boot_cpu_has(X86_FEATURE_V_TSC_AUX) || !sev_es_guest(vcpu->kvm)))
+ 		kvm_set_user_return_msr(tsc_aux_uret_slot, svm->tsc_aux, -1ull);
  
- #ifdef CONFIG_TRACEPOINTS
- void do_trace_write_msr(unsigned int msr, u64 val, int failed)
++	if (cpu_feature_enabled(X86_FEATURE_SRSO_BP_SPEC_REDUCE) &&
++	    !sd->bp_spec_reduce_set) {
++		sd->bp_spec_reduce_set = true;
++		msr_set_bit(MSR_ZEN4_BP_CFG, MSR_ZEN4_BP_CFG_BP_SPEC_REDUCE_BIT);
++	}
+ 	svm->guest_state_loaded = true;
+ }
+ 
+@@ -5001,6 +5057,8 @@ static void svm_vm_destroy(struct kvm *kvm)
+ {
+ 	avic_vm_destroy(kvm);
+ 	sev_vm_destroy(kvm);
++
++	svm_srso_vm_destroy();
+ }
+ 
+ static int svm_vm_init(struct kvm *kvm)
+@@ -5014,6 +5072,7 @@ static int svm_vm_init(struct kvm *kvm)
+ 			return ret;
+ 	}
+ 
++	svm_srso_vm_init();
+ 	return 0;
+ }
+ 
+diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+index 0b4344595db37..d5548ea995f1c 100644
+--- a/arch/x86/kvm/svm/svm.h
++++ b/arch/x86/kvm/svm/svm.h
+@@ -300,6 +300,8 @@ struct svm_cpu_data {
+ 	u32 next_asid;
+ 	u32 min_asid;
+ 
++	bool bp_spec_reduce_set;
++
+ 	struct page *save_area;
+ 	unsigned long save_area_pa;
+ 
 -- 
 2.34.1
 
