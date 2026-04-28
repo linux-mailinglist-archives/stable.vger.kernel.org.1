@@ -1,175 +1,174 @@
-Return-Path: <stable+bounces-241518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241516-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aHPWFh198GkaUAEAu9opvQ
-	(envelope-from <stable+bounces-241518-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 11:25:49 +0200
+	id oM8mHl2E8GlwUQEAu9opvQ
+	(envelope-from <stable+bounces-241516-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 11:56:45 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7685481581
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 11:25:48 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B933481FE5
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 11:56:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 39D7734B444F
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 09:19:15 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0D7C73179CC9
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 09:18:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00DA537EFE8;
-	Tue, 28 Apr 2026 09:18:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD70F2EDD7D;
+	Tue, 28 Apr 2026 09:17:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HjMWd/Vb"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="kUgg7TRV";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="PvulbjN4";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="kUgg7TRV";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="PvulbjN4"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F6F837EFF0
-	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 09:18:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 328452E2852
+	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 09:17:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777367904; cv=none; b=PcCzAoNhwMm6Q8+27FSqidcyGEAV+LURHPQD272XtqRaz0PJ0GbzX+8votYNtddLTtuxcUoET96iAeMKV/KF4qfj2DGccptVYNU3RnQhlbX/lIME76547RVhP+9SFOMhGi4bR9QHQ0sEyC4fu9jD06jfBF+4YMj6Vv6szSrKlVY=
+	t=1777367843; cv=none; b=Cs+E56dS1aUdIntRVU4m52gRDsnxyb+NFvzSJHRZGMbO3EFc/xiZ/F7WLNIse3/ba13Us2xcVf8jb/hYEaWQc+cAqIbx0M93UgIoE42DD/4UfGdy/vBGdWUd/VEdYfKRvtxwEiewOodw2agUFaG4UNfIBllaor9bVHVKhRYFkPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777367904; c=relaxed/simple;
-	bh=+YeUIV1+wtcPKuOvB4oPRVaxMCPwWFWxjyfdg1SSC4U=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OOAHCoUzeUkBTAgSd53gxzY0c6VegZJjGDsDU+UhTWttK6UAs5+aq5pfRwribCb9+V7PyCB5HycRyQbRGrmJXG8W/SjS9M7PRK7W0PtMIifyos0WsMYR7oUFUWC6Ci9e6MVlS+oChVeSdoKXUSI5WaEcncahxRhyfEnXuwRptTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HjMWd/Vb; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-48374014a77so144490975e9.3
-        for <stable@vger.kernel.org>; Tue, 28 Apr 2026 02:18:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777367901; x=1777972701; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nMczc9e1ajSbK4Mrr/Qq92dYlg6aGcU3H3gAe4DnWL8=;
-        b=HjMWd/VbVqCxlFtri/E7sdo/vK0wLB4gUg7O69/VGAxvmtgjttxYWCaSzZ4DfxyrQi
-         +78pdelNftrv3wP2L1XJWu045RsCmyFrZUZVK8eJ9dvpWaJD5zQ2zPrwgP3lgZVvI7x1
-         eeN6F2TfPcYUWIJCMIp5f+JPL+L22XlPwZZY30wbjXb/AcxGgYDPSH7ft2Qxc5Z1RXRz
-         w70im6oES46NnB0vtkBuDm+RNjY6pAZIg9Xvvv/fPzWOIkFloB96/P5Ge7jiS0/jSgl1
-         KTVXnYMYpByov7mEt4nA6/ciDlzaSw9lG2iz0K6e3tyygHLgyhvTOh4A3AL6/IxkCuUN
-         FhVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777367901; x=1777972701;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=nMczc9e1ajSbK4Mrr/Qq92dYlg6aGcU3H3gAe4DnWL8=;
-        b=kcJOlOaoWKzqIqSBPPUbab/1bDUfSt8B/0jK1srVXMcsJI+xZdAufy8rcA8SLeGXPN
-         hmc31OMcJVYjBIdS3ETh1fRVXFP9nAt+8Z31Q+/hCaW5epFxP32lBJpBKykRFnH7aSm4
-         AvktMGNlhCtOnHqtGqCr9RUTdVBqIB2w53kLN6ukr9x2BkRDDYippW0TnsshmbheUcAA
-         hYawNkFFLo25bVrUNYaCgEMDp3VKiorBL32kz0M+HsI/Tcd5cj7dEasQUvJeuOK2pjB/
-         3riV6uXiCE3guVpS146Eb9nHMCi39nUKgobOXOcE9EOtzsJplHa6E4+VhaFdIV0Q9hfI
-         il4A==
-X-Forwarded-Encrypted: i=1; AFNElJ/qDaBeUMpgMsa9Ee4rqoDKgWmheXDyzYjYctG5oa8ggJbop1g/cCq3wZeSiZ5pxlXSqFjo7oA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyntHCw0P7RiiklHmG0D19321tNnEQr/lfWRK8SshhK2gDD3zbm
-	Ra0meaMdSHs0dlDG/TYxgMPhijzgZcuaT2plIa1pAlVkUIhyfufcqFIA
-X-Gm-Gg: AeBDies1NcbzYDxjda8vTU6fICyJlZq7i9R69eWG2Q0vwoJfww+7sebYhvrYZPryVUF
-	Cc16ue6bnxAUGh0nIsF3a2xwGPr5+huH+X8xqYLS/1fLVBQt3T9Z1JtY+591gESPr85wtcvakea
-	EOt549IwaLRj0DUlw1II1lZ4XwiVKokfREKMxuIVlUlBASPsNlfFXzXkoT4VhWk9hMTM/PsAtuY
-	BFdDYoY7djUfTOCNpa6j/6qtoc/DyTn2vIPR0NYv80guerYfDf3e/+BmVX6S57MY3Vqbf5o8BB+
-	gs3ZOTmVm5HCGUktXmEekmNqLexYHFovmGytrE9h53s7lalmHBIvPr+C2Y67n9W+gsfNfGWrbFL
-	je1TTUy+o/ybW454IybCZg+pGxrcClnrsZZm7V/j3uZ8IR0pmPfqAdOHl9+f/I7HTh0MTLnP04I
-	Kgq3R9lGgnp2mukSYh8drc/Dcorx4BN8QBwHEd2ANF69XtqDSqN62E1Ud8GEAd3vzu60x4qXXIS
-	tTAFG4pBscX5HIOWSuEE5mRTlb9XSJpLEV6G/23nSE5hbmZUpbWuUwGrUQfcVM5x2hNW+U=
-X-Received: by 2002:a05:6000:40cb:b0:43c:f28b:8863 with SMTP id ffacd0b85a97d-44648963530mr4196668f8f.13.1777367901404;
-        Tue, 28 Apr 2026 02:18:21 -0700 (PDT)
-Received: from ahossu.localdomain ([82.78.232.184])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4463d02f6a1sm4902502f8f.13.2026.04.28.02.18.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Apr 2026 02:18:21 -0700 (PDT)
-From: Alexandru Hossu <hossu.alexandru@gmail.com>
-To: gregkh@linuxfoundation.org,
-	linux-staging@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Cc: error27@gmail.com,
-	luka.gejak@linux.dev,
-	hossu.alexandru@gmail.com,
-	stable@vger.kernel.org
-Subject: [PATCH v3 2/2] staging: rtl8723bs: fix OOB read in OnAssocRsp() IE loop
-Date: Tue, 28 Apr 2026 11:16:21 +0200
-Message-ID: <20260428091621.739680-3-hossu.alexandru@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260428091621.739680-1-hossu.alexandru@gmail.com>
-References: <20260428091621.739680-1-hossu.alexandru@gmail.com>
+	s=arc-20240116; t=1777367843; c=relaxed/simple;
+	bh=PA9fxKq7lxNskoryAjYyd3PLmeRKDI8bkansAKhg+Dw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=E/mDuqjxREMNaod1fFV4ruQ59gmzQ5MAncErsvAo/zvq2lWg3qhR4t67BcWaNdP79N6UkK06Mk57/warqCm5yu28lCHfDwVGbf9DXb/XBlNvxNaOaKBcOn9lQILSdEtYB6UaWbNVe0mqAyA8fBL9bCDGW/PRH4zKVjunQ6z74o4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=kUgg7TRV; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=PvulbjN4; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=kUgg7TRV; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=PvulbjN4; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 7AD8F5BCD7;
+	Tue, 28 Apr 2026 09:17:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1777367840; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=adxW3bE/UIQhlebHqAzO4xAfXbzuOewNVGi1LVMnILU=;
+	b=kUgg7TRVOIvhvznpuoMH3QRC5b4qXvdbH9zq8EU0zh9DZEZ3iHH48TrwTops0UY3vsC9jK
+	CJs/XrSVUW2pRq0/HnB8oe30+REtCMWFyBNoNp+tMdC/Y9qPhHJ3JgmrDPTkX7Jt4BQOAw
+	bASmqtJMW6jff733Qv/IU29/QQ05ddE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1777367840;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=adxW3bE/UIQhlebHqAzO4xAfXbzuOewNVGi1LVMnILU=;
+	b=PvulbjN4QowOK2dqawYsA6yf4ixa0za3ASQd7XJZ9vDerVbkUEn3HuEc+x1VaKyjN/Sx7G
+	pyNk9z8KSSM0kCCA==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1777367840; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=adxW3bE/UIQhlebHqAzO4xAfXbzuOewNVGi1LVMnILU=;
+	b=kUgg7TRVOIvhvznpuoMH3QRC5b4qXvdbH9zq8EU0zh9DZEZ3iHH48TrwTops0UY3vsC9jK
+	CJs/XrSVUW2pRq0/HnB8oe30+REtCMWFyBNoNp+tMdC/Y9qPhHJ3JgmrDPTkX7Jt4BQOAw
+	bASmqtJMW6jff733Qv/IU29/QQ05ddE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1777367840;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=adxW3bE/UIQhlebHqAzO4xAfXbzuOewNVGi1LVMnILU=;
+	b=PvulbjN4QowOK2dqawYsA6yf4ixa0za3ASQd7XJZ9vDerVbkUEn3HuEc+x1VaKyjN/Sx7G
+	pyNk9z8KSSM0kCCA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C6FA7593B0;
+	Tue, 28 Apr 2026 09:17:19 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id YkB4Lh978Gl1ZwAAD6G6ig
+	(envelope-from <osalvador@suse.de>); Tue, 28 Apr 2026 09:17:19 +0000
+Date: Tue, 28 Apr 2026 11:17:14 +0200
+From: Oscar Salvador <osalvador@suse.de>
+To: Muchun Song <songmuchun@bytedance.com>
+Cc: David Hildenbrand <david@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Ying Huang <huang.ying.caritas@gmail.com>,
+	Dan Williams <djbw@kernel.org>, Miaohe Lin <linmiaohe@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, linux-mm@kvack.org,
+	linux-cxl@vger.kernel.org, driver-core@lists.linux.dev,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	muchun.song@linux.dev
+Subject: Re: [PATCH v2 3/3] drivers/base/memory: fix locking for poison
+ accounting lookup
+Message-ID: <afB7Go7JqhIpjU5J@localhost.localdomain>
+References: <20260428085219.1316047-1-songmuchun@bytedance.com>
+ <20260428085219.1316047-4-songmuchun@bytedance.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B7685481581
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260428085219.1316047-4-songmuchun@bytedance.com>
+X-Spam-Score: -2.80
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Rspamd-Queue-Id: 8B933481FE5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	DMARC_POLICY_ALLOW(-0.50)[suse.de,none];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-241516-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[kernel.org,linuxfoundation.org,linux-foundation.org,intel.com,gmail.com,huawei.com,kvack.org,vger.kernel.org,lists.linux.dev,linux.dev];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,linux.dev,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-241518-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[suse.de:+];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[osalvador@suse.de,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hossualexandru@gmail.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
-	NEURAL_HAM(-0.00)[-0.999];
-	TO_DN_NONE(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email,localhost.localdomain:mid,bytedance.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 
-The IE parsing loop in OnAssocRsp() advances by (pIE->length + 2) each
-iteration but only guards on i < pkt_len. When a malicious AP sends an
-AssocResponse whose last IE has only one byte remaining in the frame
-(the element_id byte lands at pkt_len-1), the loop reads pIE->length
-from pframe[pkt_len], which is one byte past the allocated receive buffer.
+On Tue, Apr 28, 2026 at 04:52:19PM +0800, Muchun Song wrote:
+> memblk_nr_poison_inc() and memblk_nr_poison_sub() call
+> find_memory_block_by_id(), which requires device_hotplug_lock to
+> serialize the xarray lookup against memory block removal.
+> 
+> Take device_hotplug_lock around the lookup and nr_hwpoison update so
+> the memory block cannot disappear between xa_load() and get_device().
+> 
+> Fixes: 5033091de814 ("mm/hwpoison: introduce per-memory_block hwpoison counter")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
 
-Additionally, even when the header bytes are in bounds, pIE->length
-itself can extend the data window beyond pkt_len, silently passing a
-truncated IE to the handler functions.
+It might have made sense to join both patches? Anyway:
 
-Add two guards at the top of the loop body:
-  1. Break if fewer than sizeof(*pIE) bytes remain (can't read header).
-  2. Break if the IE's declared data extends past pkt_len.
+Acked-by: Oscar Salvador <osalvador@suse.de>
 
-Fixes: 554c0a3abf21 ("staging: Add rtl8723bs sdio wifi driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Alexandru Hossu <hossu.alexandru@gmail.com>
----
- drivers/staging/rtl8723bs/core/rtw_mlme_ext.c | 4 ++++
- 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c b/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
-index c646dc2a1741..68ce422305ed 100644
---- a/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
-+++ b/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
-@@ -1406,7 +1406,11 @@ unsigned int OnAssocRsp(struct adapter *padapter, union recv_frame *precv_frame)
- 	/* to handle HT, WMM, rate adaptive, update MAC reg */
- 	/* for not to handle the synchronous IO in the tasklet */
- 	for (i = (6 + WLAN_HDR_A3_LEN); i < pkt_len;) {
-+		if (i + sizeof(*pIE) > pkt_len)
-+			break;
- 		pIE = (struct ndis_80211_var_ie *)(pframe + i);
-+		if (i + sizeof(*pIE) + pIE->length > pkt_len)
-+			break;
- 
- 		switch (pIE->element_id) {
- 		case WLAN_EID_VENDOR_SPECIFIC:
 -- 
-2.53.0
-
+Oscar Salvador
+SUSE Labs
 
