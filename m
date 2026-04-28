@@ -1,185 +1,173 @@
-Return-Path: <stable+bounces-241700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241702-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IKQOHg7X8GlHaAEAu9opvQ
-	(envelope-from <stable+bounces-241700-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 17:49:34 +0200
+	id Pbu9BrvX8GkLaQEAu9opvQ
+	(envelope-from <stable+bounces-241702-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 17:52:27 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16E7948839C
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 17:49:31 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6000488439
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 17:52:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A7D4F301C6FA
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 15:49:23 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6AA2C303AD2F
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 15:50:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD9353C1961;
-	Tue, 28 Apr 2026 15:49:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D70E7428858;
+	Tue, 28 Apr 2026 15:50:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="dGOXt3Dk"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VyjgDojU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 104A03BED06
-	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 15:49:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4050542EEB6
+	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 15:50:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777391360; cv=none; b=hnsH4IyVK3l+l9AE2DAIHNpWS7x7fVRpj6qUuQdXiyGqvurJOInSbARH4m6zev6C0Wgfy6ONSserAosGh2A8/QRdxX3Rr3SifoilTJ/eyyXb2yW12u/GwwqghPUthEauiDZpqgoS8WY/cS5Xwyehs7Uv91r5Ycgy144eXGng2lA=
+	t=1777391408; cv=none; b=LkTJV2I+q0tZHsonadDkzNK8P62geLLjc+TL/cU5ESJ6NRqjf3pEQA44XTVYAQkPfMyFV6kUprEiFw89l0VdW6g5+sLjgEuWO8y44eu1P2g/K6UdbvE/KFCOzLg8psLAgRpbbxCxsSMKcsYk0su1IPZG+7R0icqty8bKizdra9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777391360; c=relaxed/simple;
-	bh=ajbkEbKDdLbKymtMUQjuNsnZglOkHRFWBqwK7N6UE2E=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Sto+EBbhiSEAFmjW222mc2Q6lwLo0TVnqBY3CKXDRuXrQEZfTHgVyWsCBIwLQT+BoeipY7QB+Avc5UpUVX//WymnTTtu/apifnSFjYO+wibEL3jCspfyOREzOYl+uIU7McXal2AcNryEYVTr1w21yK41bbgjTwwrmsnQryvYtAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=dGOXt3Dk; arc=none smtp.client-ip=209.85.208.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-67893fba9c3so10922989a12.2
-        for <stable@vger.kernel.org>; Tue, 28 Apr 2026 08:49:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1777391353; x=1777996153; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ajbkEbKDdLbKymtMUQjuNsnZglOkHRFWBqwK7N6UE2E=;
-        b=dGOXt3DkK7d6ToHP5Cme31DCsZbT7Fl5NkknKct2+BL6sz6uh0HVzUNcP8/IaJjAz2
-         mxDsQk1BWu1FaPOSGaPNWhhZHf+17VaIgvIH7yZAvMimusmBXW/oBZfO7FtWacElHvFI
-         lpZ31iu9Adh6j6aQ2tipA5JqZSKXCd5tQrpcc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777391353; x=1777996153;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ajbkEbKDdLbKymtMUQjuNsnZglOkHRFWBqwK7N6UE2E=;
-        b=kRv5yYZ9mWz+yr4vhwYgYtV5QUh98do1VT32xvY9MOUZ/kUv2HzMlh/I2kl5/fXUN/
-         wG5t5J7WwqfJBRnLqVI+rC4uhR9JOqEf+gG5BZyTIrQahv62n2/VV+b7LvEKKLOef1tc
-         2p0SeQa8XKgzNGl8+WAfs6Ewd4uaq3eMOXzjA5KYv0Bm4vw+f9+pqnnpazvG/fDk4ntH
-         4bZqvqHd7OUMyRkscatIxLFdbom6SRjbrJhl2z1BKyZW0EGKxiOKzq5emU81GpXOpjOR
-         0pTV1oHe+e1C08S0xEyY9JpA15wCtWG7M/dDCmLOz6i9Y3yRlpaCDgJDn8s5EnB9NkT8
-         GgCg==
-X-Forwarded-Encrypted: i=1; AFNElJ+eK/HnBrlN7NP39R7AmLcn1T0ZHy/48VD8BA0ga7t+JabQuPpyCHy01oGOOhoTm4XSrAigC14=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwfAlHwY6o5JxinFP7ZTS5k+MeZQjTdq//HzTIpcS0ccROXiN+9
-	AYlJIlWeuUOTdco9IhY6KsOK2t+TfISk44Gv7hbCeRVmu7TiyF+7AomlscdkqE7Shw5BgRP0zW3
-	/jHFDs8tv
-X-Gm-Gg: AeBDiev65U4ZiOEoi47MRetq6T6Xsyc01nj8IONr5p8fRY5KHy/AZQ45ft26/iXM1pj
-	TtyXuOEFQ9qzx8lrT3n+43aIUFwocnPSkmX6dlgJHyXjAwyV9gmmggJAcXEC7cEbQGBNznE4z7q
-	j9p1VOHAFXUE8wWr+TDojFgEhG0YaLvakXYJ9EVBd9J51lML405IrCvS4mHFe3QiryukAq7bp7I
-	1qa+26AJB2bc53H2UY9BFVNnmldIMpY2rrPS/TO3J6Dl+qunSsCmFr0dqubWeSNVjPfCQamrASc
-	dtKfJq/tsM5st0Pgy92sQmqR5HQvOZfkj/DhYJBhJxhMNU7kwEaP0SjC3BlfJ+sdICmM9OV/OA9
-	GgJc5hFLI4iB2xqRe1979fUvSVqOungnQ/JeoGjep5mJ6aVU9QM3Nc3uCLcQnkMcE8TmR/zTgyZ
-	L5N0aZwyKf6de+DfW4eYombwhZ3ZOfyQAOIndNUgQ9ndY4XwOIlODWsMCIG8Wve35qKTxym0IbD
-	Mx0wS1hQQA=
-X-Received: by 2002:a17:907:78b:b0:b9d:31c2:37f9 with SMTP id a640c23a62f3a-bb8014fa56dmr221408466b.2.1777391352418;
-        Tue, 28 Apr 2026 08:49:12 -0700 (PDT)
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com. [209.85.221.43])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bb80853b64csm118934566b.12.2026.04.28.08.49.11
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 28 Apr 2026 08:49:12 -0700 (PDT)
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-43fe8bda8e9so6499859f8f.1
-        for <stable@vger.kernel.org>; Tue, 28 Apr 2026 08:49:11 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ+4Ol/1cBH5PuiIxpIJg2q5YN4hBSAvG7GvAsXLdA+QtCbP+7fMyH+dvtY7FaU+3dVDj5u/aCk=@vger.kernel.org
-X-Received: by 2002:a05:6000:26d2:b0:43d:300b:2285 with SMTP id
- ffacd0b85a97d-44648b50d01mr6684095f8f.11.1777391350488; Tue, 28 Apr 2026
- 08:49:10 -0700 (PDT)
+	s=arc-20240116; t=1777391408; c=relaxed/simple;
+	bh=m4em3WATkXCZY/HpQBIXDhpLBD0RFgKEJQxvZ0gfhio=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=BRX8c/4ceZZ5KCI1qJCahSipKLICpQ0Crs1nwKxVLZXa5/b/Qp4+jG4xxAAXV4Yb8eJ7wS+Zbx6PkyBGOEFh+5G9Tua2YV8z31Q8ujX6gVutOwAd5QGOJaKxfTuApHUG/hmBsOTx7eZ2T8WWBA5mlkW3DSlpRTe2mkijKosBbNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VyjgDojU; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1777391406;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qX32DooFrkDfRe71xhvhxNSnEf4P5VJZoKSsbRqV8uk=;
+	b=VyjgDojUZUvAwiAhDdPd9k0emM488n8Gdm39WGsT+Qup7aT7MrZCX10YLI0OHQxPZyC/Ni
+	fqsyhQvT6epfPMvNcXRvAAIwF9XfemAzJheODnfccRx0QQDW8hXEMpl6Dpyhu5EGlAi4HQ
+	T4JR/FdCDYktyAWgw767SJ/GN7DNvN8=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-369-NZtYTrVgOHy1eEdUvD61MQ-1; Tue,
+ 28 Apr 2026 11:50:00 -0400
+X-MC-Unique: NZtYTrVgOHy1eEdUvD61MQ-1
+X-Mimecast-MFC-AGG-ID: NZtYTrVgOHy1eEdUvD61MQ_1777391398
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 923AE1956089;
+	Tue, 28 Apr 2026 15:49:58 +0000 (UTC)
+Received: from [10.22.65.177] (unknown [10.22.65.177])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A1A7A180045E;
+	Tue, 28 Apr 2026 15:49:56 +0000 (UTC)
+Message-ID: <24bf6d29-f2ee-4285-af27-fb1aa3d0a1c8@redhat.com>
+Date: Tue, 28 Apr 2026 11:49:55 -0400
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260425165751.1716569-1-zhengxingda@iscas.ac.cn>
- <CAD=FV=VXD34ZZTH4MJUtZ6xifbbjp1cLRBd_xvz=3T12G4tKYw@mail.gmail.com> <d9faab05aab120fee367394edcb35bd131c97646.camel@iscas.ac.cn>
-In-Reply-To: <d9faab05aab120fee367394edcb35bd131c97646.camel@iscas.ac.cn>
-From: Doug Anderson <dianders@chromium.org>
-Date: Tue, 28 Apr 2026 08:48:58 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=X-FUw_MqE2ufv=ngBS3ho4vg-QKokav+MeP7XAAjXUbg@mail.gmail.com>
-X-Gm-Features: AVHnY4KcDuFY0KOauqhFMmUAZtkIYYE4OelTMMpZ8zfK3NDGP7A542OgIRYDm-o
-Message-ID: <CAD=FV=X-FUw_MqE2ufv=ngBS3ho4vg-QKokav+MeP7XAAjXUbg@mail.gmail.com>
-Subject: Re: [PATCH] drm/panel: himax-hx83102: restore MODE_LPM after sending
- disable cmds
-To: Icenowy Zheng <zhengxingda@iscas.ac.cn>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>, Jessica Zhang <jesszhan0024@gmail.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, Cong Yang <yangcong5@huaqin.corp-partner.google.com>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, dri-devel@lists.freedesktop.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 16E7948839C
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] cgroup/cpuset: Creating or adding CPUs to partition not
+ allowed without privilege
+From: Waiman Long <longman@redhat.com>
+To: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>
+Cc: Chen Ridong <chenridong@huawei.com>, Tejun Heo <tj@kernel.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, cgroups@vger.kernel.org,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, Xie Maoyi <maoyi.xie@ntu.edu.sg>
+References: <20260428033439.783246-1-longman@redhat.com>
+ <7so4b76wg2apwwk3yh76q42jgwnpvlv7sursmsmzeyefhp4pbt@thybpp4litm6>
+ <9df75f61-0cbb-42b4-b64d-8e6fd49d50ca@redhat.com>
+Content-Language: en-US
+In-Reply-To: <9df75f61-0cbb-42b4-b64d-8e6fd49d50ca@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Rspamd-Queue-Id: E6000488439
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[chromium.org,none];
-	R_DKIM_ALLOW(-0.20)[chromium.org:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-241700-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linaro.org,gmail.com,linux.intel.com,kernel.org,suse.de,huaqin.corp-partner.google.com,ffwll.ch,lists.freedesktop.org,vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[chromium.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dianders@chromium.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[redhat.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-241702-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[longman@redhat.com,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid,iscas.ac.cn:email,chromium.org:dkim]
+	RCVD_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 
-Hi,
-
-On Mon, Apr 27, 2026 at 10:49=E2=80=AFPM Icenowy Zheng <zhengxingda@iscas.a=
-c.cn> wrote:
+On 4/28/26 11:19 AM, Waiman Long wrote:
+> On 4/28/26 3:58 AM, Michal Koutný wrote:
+>> Hi Waiman.
+>>
+>> On Mon, Apr 27, 2026 at 11:34:39PM -0400, Waiman Long 
+>> <longman@redhat.com> wrote:
+>>> Creation of a cpuset partition or adding more CPUs to an existing
+>>> partition will take CPUs away from other cpusets outside of the
+>>> partition leaving less CPUs for the others. So it is a privileged
+>>> operation that non-privileged users shouldn't be allowed to do.
+>>>
+>>> Currently, remote partition code has check for CAP_SYS_ADMIN capability
+>>> before allowing such operations, but not for local partition.
+>> Remote partitions need such a check because their CPUs are sourced from
+>> the global supply (top level) without
+>>
+>>> This leaves a security hole in case cpuset.cpus.partition of a cpuset
+>>> is chown'ed to a non-root user and its parent cpuset happens to be a
+>>> partition root.
+>> I wouldn't say this difference between remote and local partitions is a
+>> security hole [1].
+> OK, I will tone down the description.
+>>
+>> Consider this -- cgroup a is created by root (admin) and its resources
+>> are constrained by root's policy. However, what happens in a subtree is
+>> irrelevant from that top level view.
+>>
+>> # setup            // owner
+>> a/cpuset.partition=root    // root
+>> a/cpuset.cpus=0-3    // root
+>> a/cgroup.procs        // user, they can organize subtree as needed
+>>
+>> For example the user may want to create a (sub)partition with some of
+>> the CPUs they got:
+>>
+>> user$ mkdir a/b
+>>
+>> a/b/cpuset.partition=root    // user
+>> a/b/cpuset.cpus=0-1        // user
+>>
+>> This should be a valid configuration and behavior, no?
 >
-> =E5=9C=A8 2026-04-27=E4=B8=80=E7=9A=84 11:24 -0700=EF=BC=8CDoug Anderson=
-=E5=86=99=E9=81=93=EF=BC=9A
-> > Hi,
-> >
-> > On Sat, Apr 25, 2026 at 9:58=E2=80=AFAM Icenowy Zheng
-> > <zhengxingda@iscas.ac.cn> wrote:
-> > >
-> > > When preparing the panel, it seems that it always expects commands
-> > > to be
-> > > transferred in LP mode. However, the disable function removes the
-> > > MIPI_DSI_MODE_LPM flag, and no other function re-adds it.
-> > >
-> > > As the unprepare function contains no DSI commands, re-adding the
-> > > flag
-> > > just after disabling the panel should be safe. Add the code re-
-> > > adding
-> > > the flag after the two commands for disabling the panel are sent.
-> > >
-> > > This fixes screen unblanking (after blanking once) on
-> > > mt8188-geralt-ciri-sku1 device.
-> > >
-> > > Cc: stable@vger.kernel.org # 6.11+
-> > > Fixes: 0ef94554dc40 ("drm/panel: himax-hx83102: Break out as
-> > > separate driver")
-> >
-> > This "Fixes" looks wrong. The bug was still there even before the
-> > driver was broken out. ...and it looks like the driver that this was
-> > broken out of (panel-boe-tv101wum-nl6.c) still has the same bug?
+> Thank for the comment. Yes, that can be a valid configuration.
 >
-> Yes, but I think the fix shouldn't be propagated to the other driver
-> because of the same reason with breaking out the original driver.
+> One possible workaround may be to see if the current user has write 
+> access to its parent partition root. If so, we can allow it to create 
+> a sub-partition, if not, we will forbid it. 
 
-...but doesn't all the same logic apply to the other driver? Nothing
-ever adds MIPI_DSI_MODE_LPM back in.
+It is not that simple to check if the user can write to its parent. So I 
+will put it down as a TODO item, but will still forbid such a 
+configuration for now.
 
-Even if you don't fix the other driver yourself right now, the proper
-"Fixes" tag is when the problem was introduced, not when the driver
-forked out.
+Cheers,
+Longman
 
--Doug
 
