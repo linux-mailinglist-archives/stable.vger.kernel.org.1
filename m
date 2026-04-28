@@ -1,161 +1,170 @@
-Return-Path: <stable+bounces-241458-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241459-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CMs1GjkJ8GkINgEAu9opvQ
-	(envelope-from <stable+bounces-241458-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 03:11:21 +0200
+	id IKa6JLcX8GmvOQEAu9opvQ
+	(envelope-from <stable+bounces-241459-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 04:13:11 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DC7F47C529
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 03:11:20 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBADE47CA40
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 04:13:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 64F63303799E
-	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 01:09:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8CC5F30488ED
+	for <lists+stable@lfdr.de>; Tue, 28 Apr 2026 02:12:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0F0D238D54;
-	Tue, 28 Apr 2026 01:09:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EB8C379EC4;
+	Tue, 28 Apr 2026 02:12:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qze7hzzu"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kAvGJAkJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f67.google.com (mail-qv1-f67.google.com [209.85.219.67])
+Received: from mail-dy1-f196.google.com (mail-dy1-f196.google.com [74.125.82.196])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D65B1DE8AD
-	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 01:09:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.67
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777338578; cv=pass; b=mxaV2DyzGSHNYJAG6tB+zx+Fnf8/IK43slatOuENmZpxFRSGljVQtCSceNEYUnEJiXx8QleJwaPld04IH6nyCZktSTuXi2FGtwHUtzGIvyU8z8QXiWvtZmyt+iFcPHBquTz24Mx2TMLDW7DnpUHEM2MTJ0SZLkWEMWLvnPwLceA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777338578; c=relaxed/simple;
-	bh=3sch0kI27Iw1ioDljaUdwhBKgz3IvHr+k8dBz6JKPj8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QIwMEqZg5Uv6QdI7SiR4uidciGTLBxyaPoZFgiTjT8s0d/emhOuusdH+z22tKXwlSjMl1kUR69SVJCtGo7Q9mjrtEs27F+T3UXTJ8D55xEd+7U9FHwoQcPM8tJ6GsSTcG6/tX1UhqHVVy0tNqkFjvyDTEm6HNoykigt/BOEHL2A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qze7hzzu; arc=pass smtp.client-ip=209.85.219.67
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1903230ACFB
+	for <stable@vger.kernel.org>; Tue, 28 Apr 2026 02:12:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.196
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777342352; cv=none; b=V6UlG7XuslOaCVJ5CICQGRsyiMcNO+TkT4EXWQIq164FWBfy4gwtddt7eiHoO0biAWr44Ui/6yvPMf7Nlk+0lxCryVgiB6CpKlEoRj6BhvUNogEsrGB9vjkdrWtANSb2kj/U65oh/E/EFfpo3Kc8vFdjDvwDUiOWF29j5wV9C1M=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777342352; c=relaxed/simple;
+	bh=Tdk2lJ4zWobo7srIX/NAQZAcJs3hYskyW6KHVsKjjfo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ovBH9brMXpfC0k1TLCS2opFFLYdmnUEX+sxubTyhHWZFdHfFqqHp2F6JDlnUcLi9ZJ3mDezyYaYsVSjFm27TicVD7I0AEEnsapjgg7cx7ee9uBD6KNVDOqDaBvDZGVCgeYfanitQICdzjX5OgPK2ABbBOxNPSfymJQQuAK+Gz3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kAvGJAkJ; arc=none smtp.client-ip=74.125.82.196
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f67.google.com with SMTP id 6a1803df08f44-89fc349b5ceso157327176d6.3
-        for <stable@vger.kernel.org>; Mon, 27 Apr 2026 18:09:37 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777338576; cv=none;
-        d=google.com; s=arc-20240605;
-        b=djTXIHS6cb8zEgvaLUIzqe8d7/97C9RyGo3ZC1HGklFdhkA/UqZHgmFeVRyQzvnaEX
-         jkK50Nnd+fG86sHun/qNnTulcKNOLgKuVKYCCkePuuD9n7k1ccpQv734DnjAdwAC7za0
-         Dy5V38lQn/ANjF19bEa1jCm4EWHvjkoEfRTuP7w+2JxYCb3RwBh9vA3f3J7b9rWjPsE7
-         LkHBDeRGFF8l/fGK1kQT+ImwvObSbvxWs5wyjrJchGR6fp/Ti3lkh28tIJUOSkCqWzmB
-         qBceiUjHNaK0vo6dfPNnwCHgnqzUoppZc8ixyWncyZp96uJhxqmADrfhJTCSqDVNJaKO
-         CfqQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=3sch0kI27Iw1ioDljaUdwhBKgz3IvHr+k8dBz6JKPj8=;
-        fh=l/ndcPi+0KBA1ixHSyO8araAumitIVFpab+ezipDR8s=;
-        b=iCO+DXIgDtZv8jjZdtVYDNBbnSOrtkM41FB9IG1Cza74hDQGMjABeVaygQ9v5eiDqL
-         17YkuUZyBn8Yw0ttiqXxW7uOTmr9ke/NqfO6BfWuJ09WFUBFcZujGt3ScmLfUUqdRRZp
-         941S8QedJFUsuLKbK92RqpIsQ2u+R3sS/Exf4yVXAlzWVduSbdsGu66EVu9i1xhr0HJJ
-         q63HZMvTg9ZyMlKME30rRmnk+o4ehRXHky3VRHU7a4Me8fYRHyuf3OaO1w3blenk4W71
-         0e1nYdx/CDI9TjSERhddoZv2/d+hzqlJE6dFHaRZiUxwNUhYs5PLE9ZSfgdismtD/aBS
-         5ykQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+Received: by mail-dy1-f196.google.com with SMTP id 5a478bee46e88-2bdcf5970cdso8902861eec.0
+        for <stable@vger.kernel.org>; Mon, 27 Apr 2026 19:12:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777338576; x=1777943376; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3sch0kI27Iw1ioDljaUdwhBKgz3IvHr+k8dBz6JKPj8=;
-        b=Qze7hzzu3b3wV4C2iBMNQn3N1zJh818nFnk2Mx2e/vip3YQTT9jhSDpHR9CSF/1kbV
-         6OJlTcaFn/z438DStQ7/p1It24IOZRjJ3V3R5moZctczwWsxb/QQvyF6+zuP2ZuYQRzr
-         Sunx5v0kC363iMwkUMs3RQu9IjE2mZ65wpzavYzzyBWAG7xjp/dAY3xlNpmuaPd42vUe
-         e2ewEG9aUpCOw7w1zkxmvRe+kiFvwXVd7+G7ZGJfVRae0hOK/P86Fr35/qTxNrnFAY4B
-         NtiNzpkPkIyuT8fzOvXBXVrfecgoA8DksrSX53ILHKKxzbRzoAqo1EsZZiZqG8F3hdoo
-         UBxg==
+        d=gmail.com; s=20251104; t=1777342349; x=1777947149; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=cHJNwzAXnwG2bTgqC2dIYJnrKIbhFFR0KSctlzcpGck=;
+        b=kAvGJAkJT3y4BbOWJytnZ/OHkH6lBB4MSBFsFhEhX31/TjBsr5AtY23xaOAteGXKap
+         uGKNz9F+MqNDMvmRWWTFRR9h9eeQJ3G5D77xiy3LqeURkQxklIlUtHvL42YZ+U1d8Vou
+         jgDJV6PoLbzvUvH8lfWQvxhZi7PEp7M0UkM3vK+KBldcRIaiIduw7xBtb0C1iYERV/px
+         1Y6+Iw484bEcHYuOgYGTOwPbJj7VzkpqSHNkrE0UOXBEm1q7W4C0XMDl5EJsA/bLEnJT
+         3MgWUImyEBTVVqj9QcoEOGNij3uVK6pthW6c9U3TnjL/JJRoTG4JIhM3tHuoIFMtLLtK
+         cHBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777338576; x=1777943376;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=3sch0kI27Iw1ioDljaUdwhBKgz3IvHr+k8dBz6JKPj8=;
-        b=svwzfEpPG/nteKiOJT4noLE7nTnvOSWgYgWhxo9MZgLIDdGoIg4jAGo7w3UqT1ZVyv
-         x7mnQBgWK+XiZiMK3ixeBMdAgFl/qVDeGy1CupUo/b6YI25EamCWDtu9HkxOvQ36QMUo
-         8kUxKRolvDXSHOoBsUGwBU3gG49pFZmI+qWSjh9Qgw/MV4alw8IxNulJr2O6CKVphd7P
-         Lafqyjqz95tKJxOBjaR8G9A9s6lHyc6RziGJhJObBB/ZP2FxCHsVycYZWg+69JrkMJ0p
-         Tl/92YI/vrXj9AcTArjmNyjQk9xuq+WpG0SKoUoYrYLksacopYU7gY+pEyfwp91K1iDI
-         gUNQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8qAsOzuvHthE4pKCvOPZNJaunCa3hucDDC1P+va4LRIh00jyePmEZ5XPXXtsZq/f6r7SPqhcw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzLhljOLg2PFg0e76CKdRpZ5w+123a5ew10Cm/ovIxVNtvDxrtS
-	VeLxcUOLCUvDs/QksDFmrKJUHv02T7SkuxCR6vD/G7WX41o3MKjLApx88RuQnICSZJu9I6hC2an
-	TL+FCbibfbdO0nBimNeVpkGrmhereg18=
-X-Gm-Gg: AeBDiev0qsvA6+Ma7lgnX7Dir2H0IOoXOAd/+C28sxMWWk1qfdUiLdX5Tg1Uk48RheI
-	j7Cp55KVmMAmQVJVHulSBnJ00vz0O2IBjiIGp7RQ2RsteAbPIvZN7HQKzk+lv3WdPZ6vUEremgu
-	S0d4t5czNSdRJryyVhOR9UYCVxDajH0ZL3waKoPmrCxlKZYqo5XFPXZL+uVXPcV2iEa1/0yK6/y
-	7iNFDFoidl3+flQL2PaanngXmEfb9jL57KxK4/hHq3y456palm3rhrvs3mXZ+w/55A5ETGrViwo
-	HsstDqhfaiTW1nz8O9dIwrzLT2hpau0lUww0x5R4coz3HoZDU5QvcJf5ir4gg0CPtw3PF7lRJh8
-	WjI4=
-X-Received: by 2002:a05:6214:5b86:b0:8b0:2b9e:9639 with SMTP id
- 6a1803df08f44-8b3e305cf7dmr19913666d6.19.1777338576269; Mon, 27 Apr 2026
- 18:09:36 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1777342349; x=1777947149;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cHJNwzAXnwG2bTgqC2dIYJnrKIbhFFR0KSctlzcpGck=;
+        b=kx0DsMvN+att80T/Uz27Kxir+sAIg29pccFp4DQ5ZOxvAuPVYKnsSWyh5VzqPbD7QO
+         nJEPWovk2aZw1NpAOTYJGbybmSQmJDeIWv/mALbxjCxYHx8rvnxGwQpRxmzxuEWGTc6B
+         YFIadtDsgUzKD4/iBm5w/Z0fyZ5TFP0f3XTlakkpLrZ4wT5IC/cvCe2WlyJzJyzUXUAj
+         6N5hGcFWcbibq+d+/x0CiOfvOR61fvE/VbY4+CGjAUuf7lEYKZL8wrebbbm10DjGYU/f
+         aJuDqwSk83Z+gAdHCASlEFwSmM6cuyux6+U8/qpcsQoa4Kefl+TkEm0/aLiXMueb7EYp
+         KKWA==
+X-Forwarded-Encrypted: i=1; AFNElJ9vOt54efcQTldp1bi9R2wximIlPS4RGzkkwiVf5+jNITQ0MAAKnxuL/pqUYsDVjcgfS1OLHBY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwTB2vm0zNHcDBhsLaiWgH7Yqfnjkc+EVCIbkDZrpouddsx93dK
+	LAQP7RwiKyZZl85U8yn1YPbIFY9Hmobz29cJ6iPahJvVUuC5gbHJYwpJ
+X-Gm-Gg: AeBDietnpiZLV8SeSNxLUL9DPWj+yUYkoAsuM9hYEMyIEk0GqY7C/erPv11H8E9FiHu
+	HygyWhUnttQmElCvT9G3p/tP8Ztc1V+tHicAEgQpHfABygjF3J1d1hJBEjEDymQ+SHmi/rkTU1P
+	SDP3YdcXllMawiLlq713AMKoSubMxlVgEZzTuYFhCGB/vOfDUaZiTQhtXXW3PYZzqRlnlQtU0Bd
+	+Lbm8iPwpNkN/6lFhsgErz0K5RHRfRERNDsEhX6CfWxlZkc2tzokC8Xlk5DPrl7NxGt/CGn1VO1
+	IkL3wV2KzqHU62gsJJ0u9mZq2NJlu0kq+muDzRr7iWJI34CPDT7DsWjAEjIQV4Uvj/bijNV8rl5
+	sel4AZuEgE8oIGB41HMa3DS96EfKC1Vlba9f7CgxjtyJcuRz9ss1132Vy9kcSU6EdbqndOkiGTN
+	b42DGN/tNFn/QWyELeG+cfi66JSVdiqnoCDH6Deok80caIIvyl8YeUYBzhK7jACmgSwmsROOX5/
+	9VbR5qT73bCLIu1/PALOQLxh6+VwNGtvtIJIgEcOPWj5g+1orLNf8FuI0LG/w3EyFPP5MTVWfbf
+	md1NI1ENQ7Attst202WXGdVHwUV2
+X-Received: by 2002:a05:7300:3b07:b0:2ea:ea7:480e with SMTP id 5a478bee46e88-2ed0e3773a9mr164856eec.10.1777342349061;
+        Mon, 27 Apr 2026 19:12:29 -0700 (PDT)
+Received: from ethan-latitude5420.. (host-127-24.cafrjco.fresno.ca.us.clients.pavlovmedia.net. [68.180.127.24])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ed0a0ce761sm1132554eec.15.2026.04.27.19.12.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Apr 2026 19:12:28 -0700 (PDT)
+From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Ethan Nelson-Moore <enelsonmoore@gmail.com>,
+	stable@vger.kernel.org,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Denis Benato <benato.denis96@gmail.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Simon Horman <horms@kernel.org>
+Subject: [PATCH] net: fealnx: make driver work on architectures without I/O ports
+Date: Mon, 27 Apr 2026 19:11:36 -0700
+Message-ID: <20260428021145.40930-1-enelsonmoore@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260425041816.19070-1-enelsonmoore@gmail.com> <20260427165959.3a294f1a@kernel.org>
-In-Reply-To: <20260427165959.3a294f1a@kernel.org>
-From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-Date: Mon, 27 Apr 2026 18:09:24 -0700
-X-Gm-Features: AVHnY4IOutGXbWP85VlfW8A-jXZcwYkaD-ufKnvdMGHabQzeiYY6WGgL79Y-ak0
-Message-ID: <CADkSEUjrFBLFQEHBaKaGe3SxdT95GFQ8hCbgNaF7ZgVVB6txLg@mail.gmail.com>
-Subject: Re: [PATCH] net: ethernet: rnpgbe: mark nonfunctional incomplete
- driver as BROKEN
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, stable@vger.kernel.org, 
-	Yibo Dong <dong100@mucse.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
-	MD Danish Anwar <danishanwar@ti.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 0DC7F47C529
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: EBADE47CA40
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-241458-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,lunn.ch,davemloft.net,google.com,kernel.org,redhat.com];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MISSING_XM_UA(0.00)[];
 	FREEMAIL_FROM(0.00)[gmail.com];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	TAGGED_FROM(0.00)[bounces-241459-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[enelsonmoore@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable,netdev];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	NEURAL_HAM(-0.00)[-0.999];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-Hi, Jakub,
+Devices supported by the fealnx driver support both MMIO and PIO access
+(they have a PCI BAR for each). However, the driver always tries to use
+the PIO BAR on architectures other than Alpha. This makes the driver
+not work on architectures without I/O port mapping support. The comment
+explaining why this was done explains that some x86 systems have issues
+with MMIO. To enable the driver on all architectures while preventing
+potential regressions, change the driver to only use PIO on x86.
 
-On Mon, Apr 27, 2026 at 5:00=E2=80=AFPM Jakub Kicinski <kuba@kernel.org> wr=
-ote:
-> We can keep the vendor as is, this doesn't enable any code compilation
+Issue discovered by manual inspection.
 
-I disabled it because otherwise an option for Mucse devices which
-cannot be opened appears in menuconfig, which is confusing.
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+---
+ drivers/net/ethernet/fealnx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Ethan
+diff --git a/drivers/net/ethernet/fealnx.c b/drivers/net/ethernet/fealnx.c
+index 3c9961806f75..51dd09107242 100644
+--- a/drivers/net/ethernet/fealnx.c
++++ b/drivers/net/ethernet/fealnx.c
+@@ -91,7 +91,7 @@ static int full_duplex[MAX_UNITS] = { -1, -1, -1, -1, -1, -1, -1, -1 };
+ 
+ /* This driver was written to use PCI memory space, however some x86 systems
+    work only with I/O space accesses. */
+-#ifndef __alpha__
++#ifdef CONFIG_X86
+ #define USE_IO_OPS
+ #endif
+ 
+-- 
+2.43.0
+
 
