@@ -1,279 +1,426 @@
-Return-Path: <stable+bounces-241898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241899-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eOWzOQcW8mnEnwEAu9opvQ
-	(envelope-from <stable+bounces-241898-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 16:30:31 +0200
+	id ICbuEdca8mljnwEAu9opvQ
+	(envelope-from <stable+bounces-241899-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 16:51:03 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E0AE495C54
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 16:30:27 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A1364963E9
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 16:50:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6CF5D30AEC8C
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 14:25:53 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C7AFE302BED3
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 14:37:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F33932FA2E;
-	Wed, 29 Apr 2026 14:25:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 835F835CB87;
+	Wed, 29 Apr 2026 14:37:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l7gYC/Lc"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aIn2+E9Z"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41F4D330662
-	for <stable@vger.kernel.org>; Wed, 29 Apr 2026 14:25:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A86A34DCD2
+	for <stable@vger.kernel.org>; Wed, 29 Apr 2026 14:37:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777472752; cv=none; b=tYuODHekFKcbL396GyBqw9zFkn9pPpiNNPyw8NASlMcxLlPsrq/Fe/RbYCIOMC+3aau/TDHsX6L8z+sJrqjTw+nn83EqYWyLRwZedl+1S21jd0M6/tUM/LlQH7Ntgay48CSKjSONU2cNilreOHp6yiUNPKLXdi0sKhk4eepPCik=
+	t=1777473473; cv=none; b=BhTidKqcyzb/wom09RvROl2pRsr/MdpwyTpV3pby5py3zuRJjbaGsqR02ye41u7KEREB65bMkxOnAgEfZIfbE/rr5Ip1oviYG/zYghavvL08kAwQ14YQI2ssK2DRe1X5ni4dlzWJOTVXeAPdX7CHww2DLHAGyNkQhJm/VYUt3LA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777472752; c=relaxed/simple;
-	bh=43jTZVl3Jz3RKHlAXLMvnDQollnEY1CYy7LtxolH63A=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=B/kvQWrrushi5ZNocu78J+nIWFKoa3PK7PBWQqnAREFj4xEGPxhPr16zDNySuomao+Z0NsCji2/qUyyNxr04fAP3x8k8f5jS7AXOfP/9Oe+F+U+C/k6fsZf2HIHQH0QCi4JHTAy3DaEnrEMqC2cn8pT45HGpSp1cAXbsgbdiwe8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l7gYC/Lc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2707FC4AF0B
-	for <stable@vger.kernel.org>; Wed, 29 Apr 2026 14:25:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777472752;
-	bh=43jTZVl3Jz3RKHlAXLMvnDQollnEY1CYy7LtxolH63A=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=l7gYC/Lc3V3e6uak8m24PhBJwpHTdkVHZ9Z1wMtCJHxg0KKytoQy3wGoXldLGcgDZ
-	 R0U/Zqgo3z1z+ljFQAWkldx1sL0MMUjfgbeZt8Qo9e+cI1DTpn1tGFnVH0y7w31ILr
-	 oGwAWdXGuJ4BcEhC6lUF2tAa+zrzB0xjazVKF1FcmHgFNnmUM6qJxKZsHV0ovKvYX6
-	 Hxa+28wrSaHPEJBzDfaQsaY/MAkKZ4htOfLZUtefR/9g5anlP/EjlIO36WyL0Rpic3
-	 6XXsaWi9BY+EWcUMpNc9dIJj+dx7to0VrlY/De4Aehl/YnrM+O48wtQ5FFSB01PW5T
-	 rLtgvaowmMvXQ==
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-ba7fd666666so1220952766b.3
-        for <stable@vger.kernel.org>; Wed, 29 Apr 2026 07:25:52 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ989piXIYVMPSOBLvN81Cj9A61vHS0mMKzEgxHv+9jF6tzGfE2JpWPZCo0eyxxquV01hl0FHdc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwpvsRyqjup7yoaj3N/nuRa0+4OzrRu3eTd2HJZQz8JupFumc3p
-	8Ql0efiON/UxCSuQBdddi70MVC01gLqe+IVhJy7gJ00BpZLmDabGGVa1bCLxMcbzlw/gThqxUPE
-	9kxUtswAS5W/2y762qJMGJG9lZ0Qn5Ls=
-X-Received: by 2002:a17:907:9453:b0:ba7:d65f:3b4b with SMTP id
- a640c23a62f3a-bb8022c1480mr520264466b.2.1777472750654; Wed, 29 Apr 2026
- 07:25:50 -0700 (PDT)
+	s=arc-20240116; t=1777473473; c=relaxed/simple;
+	bh=555/W+BMemM9dFXPM5vt5562cgfKbBCAyb6eVLJxrNo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Jevq5rqPCm8+mQExdOV0bc3LP6/tqsmzRVCcDxDTewnMdQLUXI+q4M3VViRtbbiUna0R589lU78xhzdRd5aOyK0QEHdu+ZI34vVrF4S2b6ayoHx7coN/41yW9tbVYLvHk8SZUe3jNfw9J/59l3xc3Z7CMRUcdvK1wOX2qUv8/E0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aIn2+E9Z; arc=none smtp.client-ip=209.85.167.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5a283c44478so19703475e87.3
+        for <stable@vger.kernel.org>; Wed, 29 Apr 2026 07:37:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777473468; x=1778078268; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=jll39Xqy18SFNSEMkkDeWu7wM9j7NCAIvdDzP0v4P/M=;
+        b=aIn2+E9ZIlEAUcfdH/s6TqwVJBAmwanBkr/0r3aKjHjQQCytYgQ7o9xrnFmH5FN+oO
+         Bu3dsSilvWvJuDE2woEUSV9s/bMaDyV0gr9pu0NHriR56vVCY4NH8U9Hn7vDfoicbILP
+         ypjRwakGclSxP75JgP6JBTL+1HDB14+3Lme2mR40ils4MbJxDYy4pebAuN5why55xzt/
+         d3MbjDnlV2L9CCaWcAThxQMP8/CaLxY3g4HlQQahYGu8u3oqTIfK9+0KINIoKFIvqb74
+         d5uRUFcSLSlzENPfwDPiqhZaDp4ptK9h6LsflPtXZkWZlw3TKid17zER+LqJLTj0012U
+         7eiA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777473468; x=1778078268;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jll39Xqy18SFNSEMkkDeWu7wM9j7NCAIvdDzP0v4P/M=;
+        b=TxK7J2v+chBsiEOwbGt/k7OhPX/ScC5RNqmsXLdlQcG962h08B/g+uOGs6fo66X9iA
+         qjJX6pD5tyipf3bxsEEzKiClNvNB2BdrjA6LQoJazdR0/9u5CqINH2OVOUFVFdnsbgUS
+         PxSDqJ5xtVHHHJNSR3bYtxfbgIctgyN4J5skWQhdBt2lKMECH3gZwwx2fXev61PJp5Cn
+         Qv8u/4KwTGe99VF3WUJetoIGw0X403gPekmeGEgFfPRaCo1NvLconcnO+mbqeMg7u39z
+         1CqdnCaMONdpzQkPZbBDEjB1aKWmVa2OigsRoeJLarFSvzkzYldOjXT+gUlFpODEDV80
+         281Q==
+X-Forwarded-Encrypted: i=1; AFNElJ+oYqZj8G2Duu/uhgGZxx2ZZKhnOBF5iSLVnr35BGFc3URZFG7NTpDTEDGshUnf7ijMYZR3BRI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YywHJI4kv8dWBNJC004KFb/Z25ne3CuJPkGs+y7vNzRDt9ceeew
+	OjJC0lXZ5MGnBv9Fu/M6+3eqkFjACDCqbTjVpsCawU+YVuYBTaLNHSEr
+X-Gm-Gg: AeBDietBqKmPpTgIHrE7ZG6ipG0Pqty+HgNaZoz4vTA7UdLQL8vBVweP5tWzwJo55ua
+	wSgXRrqaPcTeXc3lANP7eN6NBSRDIqEp9+B0DhRHn6Myz72yo/nTvsbR7x4B0cKkW6P1SRwrBEB
+	7tVOws1f8B7lagJ4feIswjYHA9xLBN5sokIEz19dJJYF1iOF3SNDENgPYUMmLfCery8yjIruxBa
+	jZYF98OKc0+s/zkhDq+u9A5bUtHZeUMqVAN2WfU1E8iDyP36nKY9V9hpFaOTKxaC3thfsWV+a0G
+	hRWJwVOPY5kzplRuCTb531d62PZCcaNLzea/HCGsZu1GBjCSmDcyTscJ+KbRPIr0QjPtrmsPc0v
+	3lTPzaQ7m+RZbqO7IafjlWDTPTI9tUaUADuDksuTAjdSucRFnP2PWcjF3DvMLvNBEXlWGr8Pfm/
+	DuUaJ/zHyJC5y+ISjz86FK6mc+f215NT+2FBYuiPjIVoei
+X-Received: by 2002:a05:6512:3502:b0:5a2:86a3:709f with SMTP id 2adb3069b0e04-5a74660cd3amr3134081e87.17.1777473467800;
+        Wed, 29 Apr 2026 07:37:47 -0700 (PDT)
+Received: from localhost ([188.234.148.119])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a74a6f3019sm607425e87.20.2026.04.29.07.37.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Apr 2026 07:37:47 -0700 (PDT)
+From: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+To: amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org
+Cc: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>,
+	stable@vger.kernel.org,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
+	linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org
+Subject: [PATCH] drm/amdgpu: fix recursive ww_mutex acquire in amdgpu_devcoredump_format
+Date: Wed, 29 Apr 2026 19:37:43 +0500
+Message-ID: <20260429143743.50743-1-mikhail.v.gavrilov@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260428110155.754875-1-guanwentao@uniontech.com>
-In-Reply-To: <20260428110155.754875-1-guanwentao@uniontech.com>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Wed, 29 Apr 2026 22:25:38 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H6B9701ZjgwNJbheshhDu9HG3SJogv-c7KsWXEyrP=fZg@mail.gmail.com>
-X-Gm-Features: AVHnY4JCLyJjFnTYZveYDjmVXdynmcjnS89ZbCEaDH3D_yAAxnQgjnATGfv1dxM
-Message-ID: <CAAhV-H6B9701ZjgwNJbheshhDu9HG3SJogv-c7KsWXEyrP=fZg@mail.gmail.com>
-Subject: Re: [PATCH v4] LoongArch: Fix potential ade in loongson_gpu_fixup_dma_hang()
-To: Wentao Guan <guanwentao@uniontech.com>
-Cc: wuqianhai@loongson.cn, kernel@xen0n.name, jiaxun.yang@flygoat.com, 
-	loongarch@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 7E0AE495C54
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 7A1364963E9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-241899-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241898-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org,amd.com,ffwll.ch,linaro.org,lists.linaro.org];
+	MIME_TRACE(0.00)[0:+];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[chenhuacai@kernel.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[mikhailvgavrilov@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	NEURAL_HAM(-0.00)[-0.997];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,uniontech.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
 
-Applied with shorter commit messages, thanks.
+When dumping IB contents from a hung job, amdgpu_devcoredump_format()
+acquires the VM root PD's reservation lock via amdgpu_vm_lock_by_pasid()
+and then, for each IB referenced by the job, calls amdgpu_bo_reserve()
+on the BO that backs the IB.  Both reservations are taken on
+reservation_ww_class_mutex objects but neither uses a ww_acquire_ctx,
+which trips lockdep:
 
-Huacai
+  WARNING: possible recursive locking detected
+  --------------------------------------------
+  kworker/u128:0 is trying to acquire lock:
+  ffff88838b16e1f0 (reservation_ww_class_mutex){+.+.}-{4:4},
+    at: amdgpu_devcoredump_format+0x1594/0x23f0 [amdgpu]
 
-On Tue, Apr 28, 2026 at 7:03=E2=80=AFPM Wentao Guan <guanwentao@uniontech.c=
-om> wrote:
->
-> The switch case in loongson_gpu_fixup_dma_hang() may not DC2 or DC3,
-> and readl(crtc_reg) will access with random address,
-> because device is from base+PCI_DEVICE_ID, base is from pdev->devfn+1,
-> it is wrong when my platform inserts a gpu:
-> lspci -tv
-> -[0000:00]-+-00.0  Loongson Technology LLC Hyper Transport Bridge Control=
-ler
-> ...
->            +-06.0  Loongson Technology LLC LG100 GPU
->            +-06.2  Loongson Technology LLC Device 7a37
-> ...
->
-> Add a default switch case to fix it.
->
-> It not a issue in v7.1-rc1, but stil cause the problem in v6.6.136.
-> In v7.1-rc1:
-> [    0.817545] pci 0000:00:06.0: Failed to ioremap()
-> [    0.822215] pci 0000:00:06.0: [0014:7a25] type 00 class 0x040000 conve=
-ntional PCI endpoint
-> [    0.830434] pci 0000:00:06.0: BAR 0 [mem 0xe8025162000-0xe80251620ff 6=
-4bit]
-> [    0.837350] pci 0000:00:06.0: BAR 2 [mem 0xe8010000000-0xe801fffffff 6=
-4bit]
-> [    0.844267] pci 0000:00:06.0: BAR 4 [mem 0xe8025120000-0xe802512ffff 6=
-4bit]
-> [    0.851214] pci 0000:00:06.2: [0014:7a37] type 00 class 0x040300 conve=
-ntional PCI endpoint
-> [    0.859433] pci 0000:00:06.2: BAR 0 [mem 0xe8025110000-0xe802511ffff 6=
-4bit]
->
-> In v6.6.136 before:
-> [    0.807099] Kernel ade access[#1]:
-> [    0.810472] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.6.136-loong64-=
-desktop-hwe+ #4
-> [    0.818252] Hardware name: Loongson Loongson-3A6000-HV-7A2000-1w-V0.1-=
-EVB/Loongson-3A6000-HV-7A2000-1w-EVB-V1.21, BIOS Loongson-UDK2018-V4.0.0575=
-6-prestab
-> [    0.831992] pc 90000000017e5534 ra 90000000017e54c0 tp 90000001002f800=
-0 sp 90000001002fb6c0
-> [    0.840289] a0 80000efe00003100 a1 0000000000003100 a2 000000000000000=
-0 a3 0000000000000002
-> [    0.848585] a4 90000001002fb6b4 a5 900000087cdb58fd a6 90000000027af00=
-0 a7 0000000000000001
-> [    0.856882] t0 00000000000085b9 t1 000000000000ffff t2 000000000000000=
-0 t3 0000000000000000
-> [    0.865179] t4 fffffffffffffffd t5 00000000fffb6d9c t6 0000000000083b0=
-0 t7 00000000000070c0
-> [    0.873475] t8 900000087cdb4d94 u0 900000087cdb58fd s9 90000001002fb82=
-6 s0 90000000031c12c8
-> [    0.881771] s1 7fffffffffffff00 s2 90000000031c12d0 s3 000000000000271=
-0 s4 0000000000000000
-> [    0.890067] s5 0000000000000000 s6 9000000100053000 s7 7fffffffffffff0=
-0 s8 90000000030d4000
-> [    0.898364]    ra: 90000000017e54c0 loongson_gpu_fixup_dma_hang+0x40/0=
-x210
-> [    0.905195]   ERA: 90000000017e5534 loongson_gpu_fixup_dma_hang+0xb4/0=
-x210
-> [    0.912023]  CRMD: 000000b0 (PLV0 -IE -DA +PG DACF=3DCC DACM=3DCC -WE)
-> [    0.918165]  PRMD: 00000004 (PPLV0 +PIE -PWE)
-> [    0.922489]  EUEN: 00000000 (-FPE -SXE -ASXE -BTE)
-> [    0.927246]  ECFG: 00071c1d (LIE=3D0,2-4,10-12 VS=3D7)
-> [    0.932002] ESTAT: 00480000 [ADEM] (IS=3D ECode=3D8 EsubCode=3D1)
-> [    0.937535]  BADV: 7fffffffffffff00
-> [    0.940992]  PRID: 0014d000 (Loongson-64bit, Loongson-3A6000-HV)
-> [    0.946956] Modules linked in:
-> [    0.949982] Process swapper/0 (pid: 1, threadinfo=3D(____ptrval____), =
-task=3D(____ptrval____))
-> [    0.958193] Stack : 0000000000000006 90000001002fb778 90000001002fb704=
- 0000000000000007
-> [    0.966147]         0000000016a65700 90000000017e5690 000000000000ffff=
- ffffffffffffffff
-> [    0.974100]         900000000209f7c0 9000000100053000 900000000209f7a8=
- 9000000000eebc08
-> [    0.982053]         0000000000000000 0000000000000000 0000000000000006=
- 90000001002fb778
-> [    0.990006]         90000001000530b8 90000000027af000 0000000000000000=
- 9000000100054000
-> [    0.997959]         9000000100053000 9000000000ebb70c 9000000100004c00=
- 9000000004000001
-> [    1.005913]         90000001002fb7e4 bae765461f31cb12 0000000000000000=
- 0000000000000000
-> [    1.013866]         0000000000000006 90000000027af000 0000000000000030=
- 90000000027af000
-> [    1.021819]         900000087cd6f800 9000000100053000 0000000000000000=
- 9000000000ebc560
-> [    1.029772]         7a2500147cdaf720 bae765461f31cb12 0000000000000001=
- 0000000000000030
-> [    1.037725]         ...
-> [    1.040146] Call Trace:
-> [    1.040148] [<90000000017e5534>] loongson_gpu_fixup_dma_hang+0xb4/0x21=
-0
-> [    1.049138] [<9000000000eebc08>] pci_fixup_device+0x108/0x280
-> [    1.054846] [<9000000000ebb70c>] pci_setup_device+0x24c/0x690
-> [    1.060551] [<9000000000ebc560>] pci_scan_single_device+0xe0/0x140
-> [    1.066688] [<9000000000ebc684>] pci_scan_slot+0xc4/0x280
-> [    1.072048] [<9000000000ebdd00>] pci_scan_child_bus_extend+0x60/0x3f0
-> [    1.078444] [<9000000000f5bc94>] acpi_pci_root_create+0x2b4/0x420
-> [    1.084498] [<90000000017e5e74>] pci_acpi_scan_root+0x2d4/0x440
-> [    1.090376] [<9000000000f5b02c>] acpi_pci_root_add+0x21c/0x3a0
-> [    1.096168] [<9000000000f4ee54>] acpi_bus_attach+0x1a4/0x3c0
-> [    1.101788] [<90000000010e200c>] device_for_each_child+0x6c/0xe0
-> [    1.107755] [<9000000000f4bbf4>] acpi_dev_for_each_child+0x44/0x70
-> [    1.113892] [<9000000000f4ef40>] acpi_bus_attach+0x290/0x3c0
-> [    1.119511] [<90000000010e200c>] device_for_each_child+0x6c/0xe0
-> [    1.125476] [<9000000000f4bbf4>] acpi_dev_for_each_child+0x44/0x70
-> [    1.131612] [<9000000000f4ef40>] acpi_bus_attach+0x290/0x3c0
-> [    1.137231] [<9000000000f5211c>] acpi_bus_scan+0x6c/0x280
-> [    1.142591] [<900000000189c028>] acpi_scan_init+0x194/0x310
-> [    1.148125] [<900000000189bc6c>] acpi_init+0xcc/0x140
-> [    1.153139] [<9000000000220cdc>] do_one_initcall+0x4c/0x310
-> [    1.158672] [<90000000018618fc>] kernel_init_freeable+0x258/0x2d4
-> [    1.164726] [<900000000184326c>] kernel_init+0x28/0x13c
-> [    1.169914] [<9000000000222008>] ret_from_kernel_thread+0xc/0xa4
-> [    1.175878]
-> [    1.177349] Code: 0015001b  02c022f9  0010efd8 <2400030c> 0040818c  38=
-720005  40006380  240002ed  034401ad
-> [    1.187034]
->
-> After:
-> [    0.813002] pci 0000:00:06.0: [0014:7a25] type 00 class 0x040000
-> [    0.818970] pci 0000:00:06.0: BAR 0 [mem 0xe8025162000-0xe80251620ff 6=
-4bit]
-> [    0.825887] pci 0000:00:06.0: BAR 2 [mem 0xe8010000000-0xe801fffffff 6=
-4bit]
-> [    0.832804] pci 0000:00:06.0: BAR 4 [mem 0xe8025120000-0xe802512ffff 6=
-4bit]
-> [    0.839750] pci 0000:00:06.2: [0014:7a37] type 00 class 0x040300
-> [    0.845718] pci 0000:00:06.2: BAR 0 [mem 0xe8025110000-0xe802511ffff 6=
-4bit]
->
-> Cc: stable@vger.kernel.org
-> Fixes: 95db0c9f526d ("LoongArch: Workaround LS2K/LS7A GPU DMA hang bug")
-> Link: https://gist.github.com/opsiff/ebf2dac51b4013d22462f2124c55f807
-> Link: https://gist.github.com/opsiff/a62f2a73db0492b3c49bf223a339b133
-> Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
-> ---
-> changelog v4:
-> rollback to v2, because need the regbase in switch-case.
-> changelog v3:
-> test in v7.1-rc1 and remove unused print for it can be read from lspci -t=
-v.
-> changelog v2:
-> reformat commit msg and add a full dmesg log link to it.
-> ---
-> ---
->  arch/loongarch/pci/pci.c | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/arch/loongarch/pci/pci.c b/arch/loongarch/pci/pci.c
-> index d233ea2218fe0..f33c7ea1443d9 100644
-> --- a/arch/loongarch/pci/pci.c
-> +++ b/arch/loongarch/pci/pci.c
-> @@ -132,6 +132,9 @@ static void loongson_gpu_fixup_dma_hang(struct pci_de=
-v *pdev, bool on)
->                 crtc_reg =3D regbase;
->                 crtc_offset =3D 0x400;
->                 break;
-> +       default:
-> +               iounmap(regbase);
-> +               return;
->         }
->
->         for (i =3D 0; i < CRTC_NUM_MAX; i++, crtc_reg +=3D crtc_offset) {
-> --
-> 2.30.2
->
+  but task is already holding lock:
+  ffff8882f82681f0 (reservation_ww_class_mutex){+.+.}-{4:4},
+    at: amdgpu_devcoredump_format+0x1594/0x23f0 [amdgpu]
+
+   Possible unsafe locking scenario:
+         CPU0
+         ----
+    lock(reservation_ww_class_mutex);
+    lock(reservation_ww_class_mutex);
+
+   *** DEADLOCK ***
+   May be due to missing lock nesting notation
+
+  Workqueue: events_unbound amdgpu_devcoredump_deferred_work [amdgpu]
+  Call Trace:
+   __ww_mutex_lock.constprop.0
+   ww_mutex_lock
+   amdgpu_bo_reserve
+   amdgpu_devcoredump_format+0x1594 [amdgpu]
+   amdgpu_devcoredump_deferred_work+0xea [amdgpu]
+   process_one_work
+   worker_thread
+   kthread
+
+The two reservations are on different BOs in the captured trace, so the
+splat is a lockdep-correctness warning, not an observed deadlock.  It
+becomes a real self-deadlock whenever the IB BO shares its dma_resv
+with the root PD (the always-valid case, see
+amdgpu_vm_is_bo_always_valid()): amdgpu_bo_reserve(abo) re-acquires the
+same ww_mutex without a ticket and blocks forever.
+
+With amdgpu.gpu_recovery=0 the timeout handler refires every ~2 s and
+each invocation produces this splat, drowning the kernel ring buffer.
+
+Fix it by collecting the per-IB BO references under the root PD's
+reservation, then releasing the root before reserving each IB BO
+individually.  The walk over the VM mapping tree must remain under the
+root lock (mappings can be torn down without it), but the actual
+content copies do not need to nest inside it.  Each per-IB reservation
+is now an independent top-level acquire, eliminating the nested
+ww_mutex.
+
+The collect/release logic is factored out into two small helpers
+(amdgpu_devcoredump_collect_ib_refs / amdgpu_devcoredump_release_ib_refs)
+to keep the main function's indentation reasonable.
+
+This also fixes a BO refcount leak in the original code: when
+amdgpu_bo_reserve() failed, control jumped to free_ib_content without
+running amdgpu_bo_unref().  In the new structure the per-IB BO refs
+are released unconditionally in the cleanup helper.
+
+Reproducer (~150 LoC libdrm_amdgpu): submit a single GFX IB containing
+PACKET3_INDIRECT_BUFFER chained at GPU VA 0 and wait for the fence.
+The TDR fires within ~10 s and the deferred coredump worker produces
+the splat above on every invocation.
+
+Fixes: 7b15fc2d1f1a ("drm/amdgpu: dump job ibs in the devcoredump")
+Cc: stable@vger.kernel.org # 7.1
+Signed-off-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+---
+ .../gpu/drm/amd/amdgpu/amdgpu_dev_coredump.c  | 147 +++++++++++++-----
+ 1 file changed, 110 insertions(+), 37 deletions(-)
+
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_dev_coredump.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_dev_coredump.c
+index d386bc775d03..f6bb968de756 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_dev_coredump.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_dev_coredump.c
+@@ -207,6 +207,72 @@ static void amdgpu_devcoredump_fw_info(struct amdgpu_device *adev,
+ 	}
+ }
+ 
++struct amdgpu_devcoredump_ib_ref {
++	struct amdgpu_bo	*bo;
++	u64			offset;
++};
++
++/*
++ * Walk the VM's mapping tree under the root PD's reservation to obtain the BO
++ * that backs each IB and pin it with a refcount. The root PD reservation is
++ * dropped before this function returns; the caller can then reserve each IB
++ * BO individually without nesting ww_mutex acquires on
++ * reservation_ww_class_mutex.
++ *
++ * Returns an array of num_ibs entries (each ib_refs[i].bo may be NULL if its
++ * mapping was not found), or NULL on allocation failure / VM lookup failure.
++ * The caller must release the BO refs and free the array.
++ */
++static struct amdgpu_devcoredump_ib_ref *
++amdgpu_devcoredump_collect_ib_refs(struct amdgpu_device *adev,
++				   struct amdgpu_coredump_info *coredump)
++{
++	struct amdgpu_devcoredump_ib_ref *ib_refs;
++	struct amdgpu_bo_va_mapping *mapping;
++	struct amdgpu_bo *root;
++	struct amdgpu_vm *vm;
++	u64 va_start;
++
++	ib_refs = kcalloc(coredump->num_ibs, sizeof(*ib_refs), GFP_KERNEL);
++	if (!ib_refs)
++		return NULL;
++
++	vm = amdgpu_vm_lock_by_pasid(adev, &root, coredump->pasid);
++	if (!vm) {
++		kfree(ib_refs);
++		return NULL;
++	}
++
++	for (int i = 0; i < coredump->num_ibs; i++) {
++		va_start = coredump->ibs[i].gpu_addr & AMDGPU_GMC_HOLE_MASK;
++		mapping = amdgpu_vm_bo_lookup_mapping(vm, va_start / AMDGPU_GPU_PAGE_SIZE);
++		if (!mapping)
++			continue;
++
++		ib_refs[i].bo = amdgpu_bo_ref(mapping->bo_va->base.bo);
++		ib_refs[i].offset = va_start -
++				    mapping->start * AMDGPU_GPU_PAGE_SIZE;
++	}
++
++	amdgpu_bo_unreserve(root);
++	amdgpu_bo_unref(&root);
++
++	return ib_refs;
++}
++
++static void
++amdgpu_devcoredump_release_ib_refs(struct amdgpu_devcoredump_ib_ref *ib_refs,
++				   int num_ibs)
++{
++	if (!ib_refs)
++		return;
++
++	for (int i = 0; i < num_ibs; i++)
++		if (ib_refs[i].bo)
++			amdgpu_bo_unref(&ib_refs[i].bo);
++	kfree(ib_refs);
++}
++
+ static ssize_t
+ amdgpu_devcoredump_format(char *buffer, size_t count, struct amdgpu_coredump_info *coredump)
+ {
+@@ -214,13 +280,11 @@ amdgpu_devcoredump_format(char *buffer, size_t count, struct amdgpu_coredump_inf
+ 	struct drm_printer p;
+ 	struct drm_print_iterator iter;
+ 	struct amdgpu_vm_fault_info *fault_info;
+-	struct amdgpu_bo_va_mapping *mapping;
+ 	struct amdgpu_ip_block *ip_block;
+ 	struct amdgpu_res_cursor cursor;
+-	struct amdgpu_bo *abo, *root;
+-	uint64_t va_start, offset;
++	struct amdgpu_bo *abo;
++	uint64_t offset;
+ 	struct amdgpu_ring *ring;
+-	struct amdgpu_vm *vm;
+ 	u32 *ib_content;
+ 	uint8_t *kptr;
+ 	int ver, i, j, r;
+@@ -343,43 +407,52 @@ amdgpu_devcoredump_format(char *buffer, size_t count, struct amdgpu_coredump_inf
+ 		drm_printf(&p, "VRAM is lost due to GPU reset!\n");
+ 
+ 	if (coredump->num_ibs) {
+-		/* Don't try to lookup the VM or map the BOs when calculating the
+-		 * size required to store the devcoredump.
++		struct amdgpu_devcoredump_ib_ref *ib_refs = NULL;
++
++		/*
++		 * Snapshot per-IB BO references under the root PD's reservation,
++		 * then release the root before reserving each IB BO individually
++		 * to copy its contents.
++		 *
++		 * Reserving an IB BO while the root PD is still reserved would
++		 * be a nested ww_mutex acquire on reservation_ww_class_mutex
++		 * without a ww_acquire_ctx, which trips lockdep's recursive-
++		 * locking check and self-deadlocks for IB BOs that share their
++		 * dma_resv with the root PD (always-valid BOs).
++		 *
++		 * Skip lookup/reservation entirely on the sizing pass: it does
++		 * not write IB content, and the size estimate doesn't depend on
++		 * whether the BOs are reachable.
+ 		 */
+-		if (sizing_pass)
+-			vm = NULL;
+-		else
+-			vm = amdgpu_vm_lock_by_pasid(adev, &root, coredump->pasid);
++		if (!sizing_pass)
++			ib_refs = amdgpu_devcoredump_collect_ib_refs(adev, coredump);
+ 
+-		for (int i = 0; i < coredump->num_ibs && (sizing_pass || vm); i++) {
++		for (int i = 0; i < coredump->num_ibs; i++) {
+ 			ib_content = kvmalloc_array(coredump->ibs[i].ib_size_dw, 4,
+ 						    GFP_KERNEL);
+ 			if (!ib_content)
+ 				continue;
+ 
+-			/* vm=NULL can only happen when 'sizing_pass' is true. Skip to the
+-			 * drm_printf() calls (ib_content doesn't need to be initialized
+-			 * as its content won't be written anywhere).
+-			 */
+-			if (!vm)
++			if (sizing_pass)
+ 				goto output_ib_content;
+ 
+-			va_start = coredump->ibs[i].gpu_addr & AMDGPU_GMC_HOLE_MASK;
+-			mapping = amdgpu_vm_bo_lookup_mapping(vm, va_start / AMDGPU_GPU_PAGE_SIZE);
+-			if (!mapping)
+-				goto free_ib_content;
++			if (!ib_refs || !ib_refs[i].bo)
++				goto output_ib_content;
++
++			abo = ib_refs[i].bo;
++			offset = ib_refs[i].offset;
+ 
+-			offset = va_start - (mapping->start * AMDGPU_GPU_PAGE_SIZE);
+-			abo = amdgpu_bo_ref(mapping->bo_va->base.bo);
+ 			r = amdgpu_bo_reserve(abo, false);
+ 			if (r)
+-				goto free_ib_content;
++				goto output_ib_content;
+ 
+ 			if (abo->flags & AMDGPU_GEM_CREATE_NO_CPU_ACCESS) {
+ 				off = 0;
+ 
+-				if (abo->tbo.resource->mem_type != TTM_PL_VRAM)
+-					goto unreserve_abo;
++				if (abo->tbo.resource->mem_type != TTM_PL_VRAM) {
++					amdgpu_bo_unreserve(abo);
++					goto output_ib_content;
++				}
+ 
+ 				amdgpu_res_first(abo->tbo.resource, offset,
+ 						 coredump->ibs[i].ib_size_dw * 4,
+@@ -395,8 +468,10 @@ amdgpu_devcoredump_format(char *buffer, size_t count, struct amdgpu_coredump_inf
+ 				r = ttm_bo_kmap(&abo->tbo, 0,
+ 						PFN_UP(abo->tbo.base.size),
+ 						&abo->kmap);
+-				if (r)
+-					goto unreserve_abo;
++				if (r) {
++					amdgpu_bo_unreserve(abo);
++					goto output_ib_content;
++				}
+ 
+ 				kptr = amdgpu_bo_kptr(abo);
+ 				kptr += offset;
+@@ -406,21 +481,19 @@ amdgpu_devcoredump_format(char *buffer, size_t count, struct amdgpu_coredump_inf
+ 				amdgpu_bo_kunmap(abo);
+ 			}
+ 
++			amdgpu_bo_unreserve(abo);
++
+ output_ib_content:
+ 			drm_printf(&p, "\nIB #%d 0x%llx %d dw\n",
+ 				   i, coredump->ibs[i].gpu_addr, coredump->ibs[i].ib_size_dw);
+-			for (int j = 0; j < coredump->ibs[i].ib_size_dw; j++)
+-				drm_printf(&p, "0x%08x\n", ib_content[j]);
+-unreserve_abo:
+-			if (vm)
+-				amdgpu_bo_unreserve(abo);
+-free_ib_content:
++			if (!sizing_pass && ib_refs && ib_refs[i].bo) {
++				for (int j = 0; j < coredump->ibs[i].ib_size_dw; j++)
++					drm_printf(&p, "0x%08x\n", ib_content[j]);
++			}
+ 			kvfree(ib_content);
+ 		}
+-		if (vm) {
+-			amdgpu_bo_unreserve(root);
+-			amdgpu_bo_unref(&root);
+-		}
++
++		amdgpu_devcoredump_release_ib_refs(ib_refs, coredump->num_ibs);
+ 	}
+ 
+ 	return count - iter.remain;
+-- 
+2.54.0
+
 
