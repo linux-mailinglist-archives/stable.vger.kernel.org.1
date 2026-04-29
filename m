@@ -1,126 +1,205 @@
-Return-Path: <stable+bounces-241834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241835-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uLAnKTK08WmwjgEAu9opvQ
-	(envelope-from <stable+bounces-241834-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 09:33:06 +0200
+	id wEK6AVuz8WmwjgEAu9opvQ
+	(envelope-from <stable+bounces-241835-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 09:29:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B111490812
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 09:33:06 +0200 (CEST)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDDB749077C
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 09:29:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9000F3013A68
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 07:28:03 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8E0EF3014FD5
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 07:29:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C036E3A2572;
-	Wed, 29 Apr 2026 07:28:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8F153A5E69;
+	Wed, 29 Apr 2026 07:29:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Wc2NZB/m";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="dduQqz5t"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dS1BH+oy"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 635492DF153;
-	Wed, 29 Apr 2026 07:28:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B2FE3A544A;
+	Wed, 29 Apr 2026 07:29:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777447682; cv=none; b=Qc0TMON0XPkmO0ha46gDnM8YxAnqk871665LQjni2qF01Kf3pEXQ0VSam7mz/eqwlrjLpEHzx4w0zfS1iTB4g1x3CIfqyLoJWGD6vYtBxu6P6EuPqBbuTA/gzEYk9HjM1Z9msdqGzPY9GftPhjZ0I03ZasCiMrEYu50JRB7g/Z8=
+	t=1777447748; cv=none; b=jYjS73RQDbxY1kYZTIZYkVOs91VB7tDKzHgNNMkY2hSZ25IaVzt5WepbNPyJCw7KxT9XJlYRDNRv8TOOavE667ipFA1g/hnYfoRK7cSJuXOiGAraFYYI7vPtuMjpabqdwqpiJGrMQMrDFdrtt5t8zV2V2BTDi7zooZC+o+81eo8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777447682; c=relaxed/simple;
-	bh=ZjY087y27/p1yVQbqNrTEtjNi2uSsy/tDE64Xr301PA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=NKhIQAf3rPl9YJiXs+ehej8long3J1qgjWFI4EUX8J8NIydXCBFjamde5vpPQn6Poe8YR5H22S3xwc99mxWHhfJXNcLxH8AJxTGFpcZS6KI6gjKt4FetVaE/ha0U9lZ4t4wgAMo/Yn6uvJnpyxuX9XSLP3Tp3fGYrA5rSltdn1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Wc2NZB/m; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=dduQqz5t; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Nam Cao <namcao@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1777447679;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZjY087y27/p1yVQbqNrTEtjNi2uSsy/tDE64Xr301PA=;
-	b=Wc2NZB/mZtCBhqt2/FTwKHJtZqO3E6aCJurWqUEZDevCxdhZU35MLwSTumxPsyE6e7nmfc
-	K5+IpSbVF8iLEnt+AGHDsUnFfx9mCKmuKVf7Pqw6qFOOFyparILBtG4SCSWd4Yyq3GSePu
-	8cCJ5s7d5pQfsu5NUVRNlJPHa3HDowX0Z+8JSusWJWPepswG8WQINjayPMIgDaoUgA4u09
-	TUk2Tw9YN1/0z1PoAJ+SiNIkx8ZB2+1FoPZWunf4qb5LthzNNshymNvvQRPLLhrkX1uvIK
-	OIjRPKALw1q7zKH00J7+Gm5hqe54KuguVmtKcgCrmxg3fs2qKuJvMWJ1PyZKjg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1777447679;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZjY087y27/p1yVQbqNrTEtjNi2uSsy/tDE64Xr301PA=;
-	b=dduQqz5tESWAwuCaokU8odPFEU7jUerItFVHKfhWC7m7qY1GYaBj2nQ5QcY+uVPDdqrGEA
-	myfongr0zJfcFyDQ==
-To: Christian Brauner <brauner@kernel.org>
-Cc: Soheil Hassas Yeganeh <soheil@google.com>, Alexander Viro
- <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Shuah Khan
- <shuah@kernel.org>, Davidlohr Bueso <dave@stgolabs.net>, Khazhismel
- Kumykov <khazhy@google.com>, Willem de Bruijn <willemb@google.com>, Eric
- Dumazet <edumazet@google.com>, Jens Axboe <axboe@kernel.dk>,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 2/2] eventpoll: Fix epoll_wait() report false negative
-In-Reply-To: <20260429-november-speisen-3084d769d316@brauner>
-References: <cover.1752824628.git.namcao@linutronix.de>
- <43d64ad765e2c47e958f01246320359b11379466.1752824628.git.namcao@linutronix.de>
- <CACSApvZT5F4F36jLWEc5v_AbqZVQpmH1W7UK21tB9nPu=OtmBA@mail.gmail.com>
- <20250718085948.3xXGcxeQ@linutronix.de>
- <20260429-november-speisen-3084d769d316@brauner>
-Date: Wed, 29 Apr 2026 09:27:59 +0200
-Message-ID: <87340exm2o.fsf@yellow.woof>
+	s=arc-20240116; t=1777447748; c=relaxed/simple;
+	bh=ZQOkCYnVZVIH8EPI+hVf+trWhsoG6Ezt8CwwxR3iaFc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=kKYyvuBrK2611aFac9OliDmNrSgV7ciJbHmpEI1+Lp4QcMgzPRk7ZQ6QrnkSiyAtLn5rxsFaEocEuwALLtNRORmx0FlqxWox38aMkOuO/s2lzjskwHb9Rt6KpHYzBP7bXAYfwxLlhyOMndH60W2+1zC+vcjgkPASZbxVeIslID4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dS1BH+oy; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1777447747; x=1808983747;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=ZQOkCYnVZVIH8EPI+hVf+trWhsoG6Ezt8CwwxR3iaFc=;
+  b=dS1BH+oyNU7JxF0rLYnzXZB42C3nE9N9mpUk2wIY97EgpRHfihcS3ZgV
+   Ble6foL92JI6UTSxyPgQwj1u89K/JwWrcNhvXFjqMDESovLsAl4YfQ8ye
+   cDyKMS8bmSIIF4dJ469x/k9uACwI48DyBCDdtSrSGH3aglX3lvkCttahV
+   sZr+3mxlCws7DOQHpxtbrc4/sau9+NjVs0Q265U6B4CZKKEOcllAdClXm
+   rjjJRFrVRlw5dEfYJxV696cwohAw1BiersMyp0JZuhchJ1KRU7LWndg7B
+   yySG/GzT33qwh4x6m5M+8pqpizWPxwFcP9uNnnRatWmYqNHN0R40miAbx
+   w==;
+X-CSE-ConnectionGUID: 1+7SY+m4Q5GkdY7FWHh50Q==
+X-CSE-MsgGUID: dEOHlRmnSPC+jMYpqO/UPA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11770"; a="78385801"
+X-IronPort-AV: E=Sophos;i="6.23,205,1770624000"; 
+   d="scan'208";a="78385801"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2026 00:29:07 -0700
+X-CSE-ConnectionGUID: +1M7tQq+Q2egq0jq81cD9g==
+X-CSE-MsgGUID: hse7KraFR/eiex16L4hUgw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,205,1770624000"; 
+   d="scan'208";a="272324268"
+Received: from emr-bkc.sh.intel.com ([10.112.230.82])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2026 00:29:05 -0700
+From: Chenyi Qiang <chenyi.qiang@intel.com>
+To: kvm@vger.kernel.org
+Cc: Chenyi Qiang <chenyi.qiang@intel.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Jim Mattson <jmattson@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Gao Chao <chao.gao@intel.com>,
+	stable@vger.kernel.org,
+	Farrah Chen <farrah.chen@intel.com>
+Subject: [PATCH v2 1/2] KVM: x86: Always report highest IRR from __kvm_apic_update_irr()
+Date: Wed, 29 Apr 2026 15:28:07 +0800
+Message-ID: <20260429072851.3004430-2-chenyi.qiang@intel.com>
+X-Mailer: git-send-email 2.43.5
+In-Reply-To: <20260429072851.3004430-1-chenyi.qiang@intel.com>
+References: <20260429072851.3004430-1-chenyi.qiang@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Queue-Id: 4B111490812
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: CDDB749077C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241834-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[3];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-241835-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	DKIM_TRACE(0.00)[linutronix.de:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[namcao@linutronix.de,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[chenyi.qiang@intel.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[yellow.woof:mid,linutronix.de:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DKIM_TRACE(0.00)[intel.com:+];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,intel.com:dkim,intel.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
 
-Christian Brauner <brauner@kernel.org> writes:
-> The selftests rely on this behavior that timeout=0 sees events from a
-> concurrently running producer. They would fail at a very higher rate
-> after this change - believe me I had a similar patch that changed
-> something in this area.
+Compute *max_irr from the existing IRR in __kvm_apic_update_irr() even
+when pi_harvest_pir() returns false (PIR is empty), instead of leaving
+*max_irr uninitialized at -1.
 
-Huh, that's interesting. Do you still remember which selftest cases rely
-on this behavior? I would like to study them further.
+In a nested VM stress test, the following WARNING fires in
+vmx_check_nested_events() when kvm_cpu_has_interrupt() reports a pending
+interrupt but the subsequent kvm_apic_has_interrupt() (which invokes
+vmx_sync_pir_to_irr() again) returns -1:
 
-> I would explore the seqcount that Mateusz suggested tbh.
+  WARNING: CPU: 99 PID: 57767 at arch/x86/kvm/vmx/nested.c:4449 vmx_check_nested_events+0x6bf/0x6e0 [kvm_intel]
+  Call Trace:
+   kvm_check_and_inject_events
+   vcpu_enter_guest.constprop.0
+   vcpu_run
+   kvm_arch_vcpu_ioctl_run
+   kvm_vcpu_ioctl
+   __x64_sys_ioctl
+   do_syscall_64
+   entry_SYSCALL_64_after_hwframe
 
-I will investigate that.
+The root cause is a race between vmx_sync_pir_to_irr() on the target vCPU
+and __vmx_deliver_posted_interrupt() on a sender vCPU.  The sender
+performs two individually-atomic operations that are not a single
+transaction:
 
-Nam
+  1. pi_test_and_set_pir(vector)  -- sets the PIR bit
+  2. pi_test_and_set_on()         -- sets PID.ON
+
+The following interleaving triggers the bug:
+
+  Sender vCPU (IPI):              Target vCPU (1st sync_pir_to_irr):
+  B1: set PIR[vector]
+                                  A1: pi_clear_on()
+                                  A2: pi_harvest_pir() -> sees B1 bit
+                                  A3: xchg() -> consumes bit, PIR=0
+                                      (1st sync returns correct max_irr)
+  B2: set PID.ON = 1
+
+                                  Target vCPU (2nd sync_pir_to_irr):
+                                  C1: pi_test_on() -> TRUE (from B2)
+                                  C2: pi_clear_on() -> ON=0
+                                  C3: pi_harvest_pir() -> PIR empty
+                                  C4: *max_irr = -1, early return
+                                      IRR NOT SCANNED
+
+The interrupt is not lost (it resides in the IRR from the first sync and
+is recovered on the next vcpu_enter_guest() iteration), but the incorrect
+max_irr causes a spurious WARNING and a wasted L2 VM-Enter/VM-Exit cycle.
+
+Fix this by scanning the IRR via apic_find_highest_vector() in
+__kvm_apic_update_irr() when PIR is empty, so that *max_irr always
+reflects the true highest pending interrupt regardless of PIR state.
+
+Fixes: b41f8638b9d3 ("KVM: VMX: Isolate pure loads from atomic XCHG when processing PIR")
+Cc: stable@vger.kernel.org
+Reported-by: Farrah Chen <farrah.chen@intel.com>
+Assisted-by: GitHub Copilot:Claude Opus 4.6
+Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
+Reviewed-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Chenyi Qiang <chenyi.qiang@intel.com>
+---
+ arch/x86/kvm/lapic.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
+index 9381c58d4c85..e9f1e5451160 100644
+--- a/arch/x86/kvm/lapic.c
++++ b/arch/x86/kvm/lapic.c
+@@ -669,12 +669,14 @@ bool __kvm_apic_update_irr(unsigned long *pir, void *regs, int *max_irr)
+ 	u32 irr_val, prev_irr_val;
+ 	int max_updated_irr;
+ 
++	if (!pi_harvest_pir(pir, pir_vals)) {
++		*max_irr = apic_find_highest_vector(regs + APIC_IRR);
++		return false;
++	}
++
+ 	max_updated_irr = -1;
+ 	*max_irr = -1;
+ 
+-	if (!pi_harvest_pir(pir, pir_vals))
+-		return false;
+-
+ 	for (i = vec = 0; i <= 7; i++, vec += 32) {
+ 		u32 *p_irr = (u32 *)(regs + APIC_IRR + i * 0x10);
+ 
+-- 
+2.43.5
+
 
