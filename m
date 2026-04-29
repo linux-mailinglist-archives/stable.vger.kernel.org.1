@@ -1,235 +1,249 @@
-Return-Path: <stable+bounces-241941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241942-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id tgAmEKpt8mnbrAEAu9opvQ
-	(envelope-from <stable+bounces-241941-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 22:44:26 +0200
+	id SItZKL5v8mk+rQEAu9opvQ
+	(envelope-from <stable+bounces-241942-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 22:53:18 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FF2A49A3AE
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 22:44:25 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FC0849A43C
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 22:53:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DA47B301651A
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 20:44:20 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id ADD85300BC68
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 20:53:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC0EF3A0EA2;
-	Wed, 29 Apr 2026 20:44:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B929F39F185;
+	Wed, 29 Apr 2026 20:53:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oApJUO4R"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="E8yzMhy4"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58D693A0B32
-	for <stable@vger.kernel.org>; Wed, 29 Apr 2026 20:44:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.161.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777495458; cv=pass; b=IMFOgvjPzUdbxeS9w96guNhfvBvlNg/YIAYHiHz4p80KZN60YSEioULsrRTc3ZUNNSTHIsCmp6ZbaXqFchGXJEo6WHm7HT5oV1ryLK2pWk1IbLoYpur9w86k64Q3jaXrr/Tq3fl+ZLhClyweP3ksg3kM8t8qJOjfiNCZaHxr+UU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777495458; c=relaxed/simple;
-	bh=VbB/PQjV2VMjjZPPCf3g4o55QMUVw+CjzxaT5Nn2ydM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aT7DiAByE7IgnHlakckoOTKsKeKbqUrXkj9y74o2u46kUc8lu7rEKUkiYle6ZcpTuNwMqw/ZXdu08PtGJ5RfKb59sLcZLjX5s275zoY6vRd+ztZLFU2imX4Pnqr39XVbovC4vnin3FM0usGBEUfoK52OCoB3HisAxAB/TCXAfKQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oApJUO4R; arc=pass smtp.client-ip=209.85.161.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-694891f8f75so127755eaf.1
-        for <stable@vger.kernel.org>; Wed, 29 Apr 2026 13:44:16 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777495456; cv=none;
-        d=google.com; s=arc-20240605;
-        b=ZvDOoIFaunnwovANyD47s6nw7n40mUnlMxLSndU1tPVBgOoa0mzsT/9kKNVxTEGiak
-         Hs28KiG6OB6KRYMiOzOHCD0VJBYPdImfz6mxAt1ngQ41XyQaAcAxBT1dw/yKcvqyFWaH
-         8vByGCDMYmXWNx3N7emCVXV9QAe43nZhqJSTOH1v34/wuS/DDwDaYynMiSIBUJgqD2LZ
-         PQMRyf0xlknIOpkF+uabSppZuAjj+8pBmJQTipxQ2IIlnwZwdUf4nZ4pMLdOkacXBQ0Y
-         tUMam8tKOOcv77PLxtJpJAUROjwPH0u1IZwTUl03Izzw5BwJFfsFc0bBnIotZY1Z0lUg
-         TPJw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=9aeA/eopOCnUB7UamQuZDfMloVS/6yAyPLA2mNR0Pcw=;
-        fh=mqKN+N/8P4c18YEicKU1+sgHBsGN5M8U4yGOEU1exXw=;
-        b=LRKjP6mihnAgwAYAs8eLJm23VPrTz4ldccHuZA0qyuSHOtg8kjDS47f636lteIVbfP
-         c/1+grJv5l5Q/ryajVa/uRpw70PiPushU4+XRnsjbPbSAmrhZSajvYxwzUS/MUhraFGZ
-         6Udj+whIiWoiv9eHZJQQOKo40eQO3dHZT6uFqXqC8FPUdM/5lSqtLR99CcvwsPKsNnW0
-         Od7TWq4VwSOdC8Pwh2iO/gj4QWcc6nGmjlUG+ULupZWnvEw/2wSAogpJ1NF60b2WF69W
-         n5/9k64gPCvzIPt6j0A22GKvJ3nvR37gr1Sm2eKpHcYQI8e7eupBcQztufYNvDpSiLml
-         s90A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0246A2FE58C
+	for <stable@vger.kernel.org>; Wed, 29 Apr 2026 20:53:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777495991; cv=none; b=qhdovSOnhcZizC1jmcA//Yx3DPGl8ZqJNq1oP7/+eUHAkVlTM3qqEt6XC9mgGZIqoUa5bn4fniuGBaCAP4lZpj59RfgdMAEjE2bjQxnu3AgIWqXCM37ZCIt1Pyg3TmBR4iFIx/Q61RQYo7G5ZZd/TGK0hu9VVzfg3rmLFQD3rmA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777495991; c=relaxed/simple;
+	bh=B43jmh8tyellEDHw/JHQWGP4Kl4Bt82DdbNgnsOczTI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=CzAo5DWal3Mzn8Jrpubbk6TULGx5rwrn6umz1jNeORrahMuDhc2isGW6eXO2VhRoh5cuOOCxe5wXJVqdpSFakXNcPuzIpk87bsxtjx69aE0UdrLRRA4Cv6dYjlWC/XbofwsowtDSEHk6W7REu5YTZF/EDynMrFs78sqhWq0S4Ag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=E8yzMhy4; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-48a7fe4f40bso2081425e9.0
+        for <stable@vger.kernel.org>; Wed, 29 Apr 2026 13:53:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777495456; x=1778100256; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=suse.com; s=google; t=1777495988; x=1778100788; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=9aeA/eopOCnUB7UamQuZDfMloVS/6yAyPLA2mNR0Pcw=;
-        b=oApJUO4Rqj1aBgXbehyyo+GFALmZKEzP24su+RZEDNbYiVvlCXEqJ+JQ3gDoMi6n0z
-         BfDcU7NQp8Nh3T5Fds9Kl4lTDM/Ht3IlV42/8GU8ueRWSw7IcH3XGMCvoFGG9kD4xS+2
-         yCVfKRwNu4pRmZfLapGXe+12UEXt56ph78nwfYOY4iv7BXFPOg5AE5jimNBKrZL00ueh
-         1GC6HU+UGPRpeE8e7+qZhuc1X8CArX/NNKcDB3fbgaXhTCxTrBxupiOtEDuIT1AEGnPs
-         neFu+iR15RkrBuW/4QMvDZ+F29Ty6VUFRjWyhyXo/izo5/UEh0CtDPXhvTo/ykc08/z5
-         nWMA==
+        bh=86QVkp45/ToGTd4flnsgE7Dt+Q0OFD4ax6NkF368peQ=;
+        b=E8yzMhy4SOL6sxsHtnTEJowaR2HCdNuuHqgmWU6jqGPmlbOw+xyuK2PyvCIYvceKqb
+         xnJJk3pUIGLqMo3mgHNAnaDG2+bOtb3QtoMz5mayDDiZ45dhiuKap9tTgm++VyndyhiB
+         Sv2P3vVMoYPq/dPqAzv4hsbj6ZAgwcp1DijNrg4psx+6Cr1KhqGP75pevVTczZyTG9kg
+         64yi+b3Jfe39HwGVfngVQw53GMXrnoaQwa149rZzezucbr/2lTf6U58jLV1eeKePihAX
+         sQ61q066u/mpR+nwA3FLJ3oNBPUB8JQjuWYiWY9k6WlHo5uojm7ubZxtQLBvEW2KqJW+
+         YJdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777495456; x=1778100256;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20251104; t=1777495988; x=1778100788;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=9aeA/eopOCnUB7UamQuZDfMloVS/6yAyPLA2mNR0Pcw=;
-        b=qyPBkclJByQp+FI1r27wtR9ZUx3WLyhDnKpRDLOg1ydGYSnkRi3CfqhSD0CquFxSZJ
-         RjQuX4PHgTeupJUkiMPh2tpodWSOgZJ+AOQ56F5tQ60NbHo04laVi1ScviwxIIqiXILp
-         uonidHaQpBZ798oDwCDIv5gsr/Pnyfh7zaH/0nyw2wMcm9Rq6MPmVx+KPGQD75Fi3nz/
-         bWh4eg/kfWcuKEB3XBLAiDBoxN04fb0eLzZDWA5DrJKBoXXpH0+bulE42/yjRQYOXrbq
-         kxOE7aFj/2u1j48Laq2ZbYhwfoGSRIeXP//GeGI0plGF5NiAIpTUcj6NplglTyey8Q9D
-         DOwQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/FxNPGuE0iws4vmtjVzrCpyhvRb+J9OrZovAwaOXih00TqM0tkKcgmOW52JGuuEaGCnf7nvU8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyunMjld/eXEB8g5Nt6d+OWZ+PZ1wMa2yN7U7WxnY5foI+UMY2h
-	zcNcL8C0zbActcPJ47Zoflej9sPX6S+jB67m/E2eZoqtQ/4Sg7B+DkMIG//qIdJRdVYwcMdA/ma
-	wKbPFK0qI/NYx/Qabn/MQcUlj48bAVV0=
-X-Gm-Gg: AeBDievQqgQc1+aoU/O1GR47p5ZB+FQGHZXopTC1F0rkQG7UYl6VmnjlzQuF0Cyr/r1
-	PA8YDBmi2mvKEfBXZ5Az/6tDGjjB3HDh3xACMsGFyMRXdFS3cKaNQfGLUKTX3RPSgwTqt7Yo0lW
-	ZGniA4/9Ce/WOw3AIPWke/5qLNk25vF8HB11Ppf2jrg1Ek4ULBF4PHYYwZX1UAbWIb8EXLWjJCw
-	UqGBoYCadg6mHzpf770hC2WmAHw5Yy9qAC/px1MJAE7LFXU8tJk0VWkpT9Ak9F3DJpkCl2wgE5P
-	i8gqQvO0UDpqGGipz4BH09mXU7/MFm7sfD+dS+xU7+4oy+BT
-X-Received: by 2002:a05:6820:1628:b0:696:4874:2dc6 with SMTP id
- 006d021491bc7-6967a64b074mr104266eaf.49.1777495456001; Wed, 29 Apr 2026
- 13:44:16 -0700 (PDT)
+        bh=86QVkp45/ToGTd4flnsgE7Dt+Q0OFD4ax6NkF368peQ=;
+        b=ALHZAnFuY5Ncboy/GQ2G7LdbJMJ+swgkGZTb+Hq1UbTk/kZuuLAMFTCufTcUZEnWmN
+         Bqkv/lf4o/NgYsBzaGi9wunqh7GlVkWmVn09Vh3h0aqyIIUBAJSmdNBKkDYgPKeAp0dP
+         I/2KEnwzVKO3PALmvbiCOZNcHi1U4s5fLKpygrW1ArbbnWmASFuCPvpZJZtFeNHO0Kp+
+         7E1BsnxA3eI7KT7POOlqI2s+cCx1nMrM1/OOda8k1Kx0PKH4PY3q+DzF74hCyRGMP7lo
+         SaYHTdwBX/qbSfeM4wNHPA9LNobTEJR58aX+eGJglCe9wTmCSVA4v2qHXiWwE1OBLgwB
+         fLZg==
+X-Forwarded-Encrypted: i=1; AFNElJ9RFcaVchwRoapbNsqCv18hb4VEACFt3USEEgfBY9c1JrLQ0gsLCgEqDNk9WQgJj3PkZtYGt6E=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxy1GTyGCwYVmZnk8jldOuF3YzjyD8CiEMuWeiRhAP/5i/yhSXu
+	J6MumYu5ZOTe1Gk+W5HRE/MEi4o7Wy2w3wo/1Eu8ngewqU8PznmoEKQUMlmsjqaYCp8=
+X-Gm-Gg: AeBDiesjlgRNjk8LtzXG3tjiJl2gYTE2KpI7YwORFD6+ELcrO4HdmLerFzlVMYvEp3R
+	FHk4MRFkCpfKlBPQ79Rxt5P7l7X6/IRPcS9fe0OogyUFTOFbG5nSL5g4oEIRsGJgTYLIGyNwKP3
+	jqmUEABn77POk9cSlxbWmQrQGT029nmzwlYSOeXmtJ9Wyf8EM5VpkVCek1M2xPwXSjrwXvcIxgR
+	HzrID8MnvFR2OhoZgnWsNZArF89g153VRyEqcYrwuGj+0RLxHoWB5z9tVihTb5zEU9k2rzR+L45
+	6RlXcXsRY5ZhwXHdKUw2qTr6l3+TpO5Ej+6RBlBrEPIzPhzk04R1akLhx+Op97U364zXsGsGx24
+	EYoFRszvJPocpIMtLhmv1W1zb4BX7QPnasIWSqQLgaZO40NCdcLnRTOz2qglD/pEXkHva6GjZ4Y
+	rnqkOlQp6ThqkQhL5xIkkNWIvLAd4TgKIrnCLlmPESIgqJ
+X-Received: by 2002:a05:600c:c058:b0:487:4eb:d125 with SMTP id 5b1f17b1804b1-48a83d6f154mr2397105e9.9.1777495988358;
+        Wed, 29 Apr 2026 13:53:08 -0700 (PDT)
+Received: from precision ([2a01:4b00:c007:bb00:be9d:a3c4:18b1:4a25])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12de3269b41sm3925240c88.13.2026.04.29.13.53.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Apr 2026 13:53:07 -0700 (PDT)
+From: Henrique Carvalho <henrique.carvalho@suse.com>
+To: sfrench@samba.org
+Cc: metze@samba.org,
+	pc@manguebit.org,
+	ronniesahlberg@gmail.com,
+	sprasad@microsoft.com,
+	tom@talpey.com,
+	bharathsm@microsoft.com,
+	ematsumiya@suse.de,
+	linux-cifs@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH 2/3] smb: client: fix race in multichannel rescaling during mount
+Date: Wed, 29 Apr 2026 17:52:35 -0300
+Message-ID: <20260429205236.456099-2-henrique.carvalho@suse.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260429205236.456099-1-henrique.carvalho@suse.com>
+References: <20260429205236.456099-1-henrique.carvalho@suse.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260429000623.3356606-1-avagin@google.com> <7c2681ee-a53c-402c-8947-e7a74f8720c8@intel.com>
- <CANaxB-xvGc1A3Ga_ASh-RZbh0+abxp4e4qbiPKcMJ5-5Wtzr6Q@mail.gmail.com> <3ef742fe-9761-4714-84d9-e72fabc5def1@intel.com>
-In-Reply-To: <3ef742fe-9761-4714-84d9-e72fabc5def1@intel.com>
-From: Andrei Vagin <avagin@gmail.com>
-Date: Wed, 29 Apr 2026 13:44:04 -0700
-X-Gm-Features: AVHnY4KX4EQR6NGsayPvCJeSGbauqVhInymNGT28RO2cooz4r5vzRVt9RAG1r80
-Message-ID: <CANaxB-y4wh3JYUctDMWVuuOz9ZhVH9RAwopPZQ39JfmxkjN56g@mail.gmail.com>
-Subject: Re: [PATCH] Revert "x86/fpu: Refine and simplify the magic number
- check during signal return"
-To: "Chang S. Bae" <chang.seok.bae@intel.com>
-Cc: Andrei Vagin <avagin@google.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, linux-kernel@vger.kernel.org, 
-	criu@lists.linux.dev, x86@kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 7FF2A49A3AE
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 9FC0849A43C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241941-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[avagin@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	FREEMAIL_CC(0.00)[samba.org,manguebit.org,gmail.com,microsoft.com,talpey.com,suse.de,vger.kernel.org];
+	DKIM_TRACE(0.00)[suse.com:+];
+	TAGGED_FROM(0.00)[bounces-241942-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[henrique.carvalho@suse.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-0.999];
+	TO_DN_NONE(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[10];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid,intel.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[dwork.work:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,suse.com:email,suse.com:dkim,suse.com:mid]
 
-On Wed, Apr 29, 2026 at 10:15=E2=80=AFAM Chang S. Bae <chang.seok.bae@intel=
-.com> wrote:
->
-> On 4/29/2026 9:44 AM, Andrei Vagin wrote:
-> >
-> > First of all, the reverted change broke backward compatibility for
-> > user-space.
->
-> The ABI itself is still intact. Do you mean that the kernel cannot
-> strengthen its sanity check logic? The change does not alter the ABI,
-> but enforces stricter validation of the existing format.
+mchan_mount_* introduced async channel rescaling during mount. That can
+lead race with other mount/remount attempts that use the same session,
+when these are scaling down the channels, potentially leading to UAF, as
+described in
+https://lore.kernel.org/linux-cifs/rw7ptbx22cntes5eag5r3kvg5mzfvvzdhj4v2kw6mnunmsewev@f2iyrmmitkl3/
 
-Enforcing validation against 'fpstate->user_size' instead of the frame's
-own 'fx_sw->xstate_size' changes the kernel ABI, it isn't strengthen the
-sanity check logic. When user-space supplies a valid, self-consistent
-frame with an explicit size that older kernels accepted, and the updated
-logic rejects it, which triggers a userspace regression.
+Fix this by using the same serialization used in other rescaling paths
+and if in a race, rescheduling the channel scaling work.
 
-CRIU and gVisor breakages are not related to migration from one host to
-another. In both cases, they were broken even when running on the same
-host. Migration between different CPUs is a separate issue. In both
-cases, the code that constructs signal frames has existed for many years
-and has worked without any problem before this change.
+Cc: stable@vger.kernel.org
+Fixes: 556bb341f9f2 ("smb: client: introduce multichannel async work during mount")
+Signed-off-by: Henrique Carvalho <henrique.carvalho@suse.com>
+---
+ fs/smb/client/cifsglob.h |  2 +-
+ fs/smb/client/connect.c  | 32 +++++++++++++++++++++++++-------
+ fs/smb/client/sess.c     |  1 -
+ 3 files changed, 26 insertions(+), 9 deletions(-)
 
->
-> > As for layout compatibility, in most cases CPU A (older) and CPU B
-> > (newer) have compatible XSAVE layouts in terms of saving states on A
-> > and restoring them on B. CPU B may feature new extended hardware
-> > states, but the layout for previously supported components remains
-> > the same.
-> I don't think this assumption holds. For example, with APX, the state is
-> placed at the offset previously used by MPX. So the layout is not
-> strictly append-only, and offsets are not guaranteed to remain stable
-> across different CPU generations.
+diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
+index 82e0adc1dabd..ef63a1c3249c 100644
+--- a/fs/smb/client/cifsglob.h
++++ b/fs/smb/client/cifsglob.h
+@@ -1817,7 +1817,7 @@ struct cifs_mount_ctx {
+ };
+ 
+ struct mchan_mount {
+-	struct work_struct work;
++	struct delayed_work dwork;
+ 	struct cifs_ses *ses;
+ };
+ 
+diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
+index dcde25da468d..2ea93f0b78c9 100644
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -3813,7 +3813,7 @@ mchan_mount_alloc(struct cifs_ses *ses)
+ 	if (!mchan_mount)
+ 		return ERR_PTR(-ENOMEM);
+ 
+-	INIT_WORK(&mchan_mount->work, mchan_mount_work_fn);
++	INIT_DELAYED_WORK(&mchan_mount->dwork, mchan_mount_work_fn);
+ 
+ 	spin_lock(&cifs_tcp_ses_lock);
+ 	cifs_smb_ses_inc_refcount(ses);
+@@ -3833,13 +3833,32 @@ mchan_mount_free(struct mchan_mount *mchan_mount)
+ static void
+ mchan_mount_work_fn(struct work_struct *work)
+ {
+-	struct mchan_mount *mchan_mount = container_of(work, struct mchan_mount, work);
++	struct mchan_mount *mchan_mount = container_of(work, struct mchan_mount, dwork.work);
++	struct cifs_ses *ses = mchan_mount->ses;
+ 
+-	smb3_update_ses_channels(mchan_mount->ses,
+-				 mchan_mount->ses->server,
++	/*
++	 * mchan_mount_work_fn could race with smb3_update_ses_channel called
++	 * for the same session on remount, other mounts or
++	 * smb3_update_ses_channel
++	 */
++	spin_lock(&ses->ses_lock);
++	if (ses->flags & CIFS_SES_FLAG_SCALE_CHANNELS) {
++		spin_unlock(&ses->ses_lock);
++		queue_delayed_work(cifsiod_wq, &mchan_mount->dwork, 2 * HZ);
++		return;
++	}
++	ses->flags |= CIFS_SES_FLAG_SCALE_CHANNELS;
++	spin_unlock(&ses->ses_lock);
++
++	smb3_update_ses_channels(ses,
++				 ses->server,
+ 				 false /* from_reconnect */,
+ 				 false /* disable_mchan */);
+ 
++	spin_lock(&ses->ses_lock);
++	ses->flags &= ~CIFS_SES_FLAG_SCALE_CHANNELS;
++	spin_unlock(&ses->ses_lock);
++
+ 	mchan_mount_free(mchan_mount);
+ }
+ 
+@@ -3885,7 +3904,7 @@ int cifs_mount(struct cifs_sb_info *cifs_sb, struct smb3_fs_context *ctx)
+ 		goto error;
+ 
+ 	if (ctx->multichannel)
+-		queue_work(cifsiod_wq, &mchan_mount->work);
++		queue_work(cifsiod_wq, &mchan_mount->dwork.work);
+ 
+ 	free_xid(mnt_ctx.xid);
+ 	return rc;
+@@ -3942,8 +3961,7 @@ int cifs_mount(struct cifs_sb_info *cifs_sb, struct smb3_fs_context *ctx)
+ 		goto error;
+ 
+ 	if (ctx->multichannel)
+-		queue_work(cifsiod_wq, &mchan_mount->work);
+-
++		queue_work(cifsiod_wq, &mchan_mount->dwork.work);
+ 	free_xid(mnt_ctx.xid);
+ 	return rc;
+ 
+diff --git a/fs/smb/client/sess.c b/fs/smb/client/sess.c
+index de2012cc9cf3..24d5206e5c44 100644
+--- a/fs/smb/client/sess.c
++++ b/fs/smb/client/sess.c
+@@ -627,7 +627,6 @@ cifs_ses_add_channel(struct cifs_ses *ses,
+ 	return rc;
+ }
+ 
+-
+ int decode_ntlmssp_challenge(char *bcc_ptr, int blob_len,
+ 				    struct cifs_ses *ses)
+ {
+-- 
+2.53.0
 
-Regarding layout variations (like APX vs MPX), migration tools already
-track XSAVE capabilities and offsets. Furthermore, APX has its own
-dedicated bit in the 'xfeatures' field of the xstate_header.  If
-platforms present conflicting layouts or incompatible extensions, CRIU
-cancels restoration.
-
-The issue with checking against 'user_size' is that it disrupts
-migration even between compatible systems. If offsets match
-but the destination cpu has more features (leading to a larger
-'user_size'), validation fails...
-
->
-> > Even if CRIU were somehow able to locate these frames, extending
-> > them would be impossible. The target application stack is not
-> > under our control, and other user stack data or local variables
-> > reside immediately after the frame.
-> I=E2=80=99m confused by this point. If the frame cannot be adjusted, in t=
-he
-> first place, how does migration work across systems with differing
-> feature sets?
-
-Cross-host migration only works reliably between compatible systems.  It
-works when both hosts share identical feature sets, or in a one-way
-direction when the target host supports all features of the source host
-and their XSAVE layouts are compatible. In this context, `compatible`
-means fpu states saved on the source hosts are restorable on the
-destination host.
-
-If processes are checkpointed at safe, predefined points where they are
-not executing signal handlers, target host requirements can be more
-flexible. Here, I need to mention when CRIU constructs signal frames
-from userspace. In the final step, after all file descriptors and memory
-mappings are restored, it invokes sigreturn with a pre-constructed
-signal frame to restore registers and resume the fully restored process.
-Since CRIU constructs these frames, it can adjust the XSAVE layout if
-required. We currently do not do this because we have not yet seen
-scenarios where it would be required.
-
-> on one machine cannot be expected to run unmodified on an random machine
-> with a different XSTATE set. Some form of translation is inevitable for
-> any cross-machine restore mechanism.
-
-As I mentioned, migration tools have logic to determine where a
-specific workload can be migrated. Because we cannot always control the
-exact execution point at which a process is stopped, state translation
-is not always feasible. For instance, an active signal frame on a
-process stack can be entirely outside our control.  However, we can
-reliably find out compatible target systems where the workload can be
-resumed safely.
-
-Thanks,
-Andrei
 
