@@ -1,285 +1,193 @@
-Return-Path: <stable+bounces-241848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241849-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mEo3J5nK8Wn+kQEAu9opvQ
-	(envelope-from <stable+bounces-241848-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 11:08:41 +0200
+	id SKVnHvPO8WlrkgEAu9opvQ
+	(envelope-from <stable+bounces-241849-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 11:27:15 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8C66491918
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 11:08:35 +0200 (CEST)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 744C0491E1A
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 11:27:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 112EB301258C
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 09:06:45 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 654F83008091
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 09:27:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78FB73BADB5;
-	Wed, 29 Apr 2026 09:06:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46D1421B9F6;
+	Wed, 29 Apr 2026 09:27:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="UJcmu71O"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="1nArF057"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C64C81DF25C;
-	Wed, 29 Apr 2026 09:06:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D86B37D137;
+	Wed, 29 Apr 2026 09:27:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777453603; cv=none; b=BTSufWqOfnSyt4oBbP9XzJDzZHAKxJxbtg1HadJk9zf5n8dsjDQGG6Svv1cSu8YHl3LaTSvQtpUbwwhfN/ZVei/AcmImK0BaT3LZOfq7Uq0xVc/tFE2OGjxxW4BVnI3BweAw7gfBlvLDLaAYjLrYCBxGGbCXsLUUp7JOtNwuXNY=
+	t=1777454827; cv=none; b=JScX3syGl3TVjs5u3vQfgrH7k0RoMRqA7VBiTTQDWxA9Szg9zx4zwdU9E04RlXlQHRuz5JBkqshBGXoKQK5V40KYDcjhPxJcbNkiRpy3f1e/zFHuosU+FEnVAi+gXcU+DwR41wq/bID56AyZJ9kcespdUUqd+QXR2ZRcuuIJH5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777453603; c=relaxed/simple;
-	bh=xpDsb9TnyWmJ1AkE2rIeWJVfyu8QLqL1lFAm7MNZ8to=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VzsYbRDc10CzVokePj5V1OEbRnq6CIwyTDMDh4ES1b/yJHceTMoAhO6w/j/7KbSNDx8n4F6Bq0+5sCW7x05452GrrMzAIcVAfhZcGol1pc1bjFIC0uRZfOm4NlPLgYnfA4+gihJ+mWnCVpO9pbncDA98gtcOvHpMjZkekP7qs0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=UJcmu71O; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: by linux.microsoft.com (Postfix, from userid 1134)
-	id 107A320B716C; Wed, 29 Apr 2026 02:06:42 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 107A320B716C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1777453602;
-	bh=Qe8O0g3Ko5WnnnKQNFmZBLhQmwZhiY4RiL4WEuVfoCs=;
-	h=From:To:Cc:Subject:Date:From;
-	b=UJcmu71OH5QgxUdLgjqCkskc16d04Khos/6FWpzIUzMGVl0AWxv0n/9LXZgqDGnED
-	 JvvdC89uc3ABxZy/PD1dJJIylPDrh677wYIKV7vEO99r+M+kP2X0cDj9ikpexTAOPJ
-	 CGuPHVFYdCyZMVR6yoLjuoKmLy06I74Uoj18qM7Q=
-From: Shradha Gupta <shradhagupta@linux.microsoft.com>
-To: Dexuan Cui <decui@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Konstantin Taranov <kotaranov@microsoft.com>,
-	Simon Horman <horms@kernel.org>,
-	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
-	Dipayaan Roy <dipayanroy@linux.microsoft.com>,
-	Shiraz Saleem <shirazsaleem@microsoft.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Long Li <longli@microsoft.com>,
-	Yury Norov <yury.norov@gmail.com>
-Cc: Shradha Gupta <shradhagupta@linux.microsoft.com>,
-	linux-hyperv@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Paul Rosswurm <paulros@microsoft.com>,
-	Shradha Gupta <shradhagupta@microsoft.com>,
-	Saurabh Singh Sengar <ssengar@microsoft.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net v2] net: mana: Optimize irq affinity for low vcpu configs
-Date: Wed, 29 Apr 2026 02:06:37 -0700
-Message-ID: <20260429090640.1790104-1-shradhagupta@linux.microsoft.com>
-X-Mailer: git-send-email 2.43.7
+	s=arc-20240116; t=1777454827; c=relaxed/simple;
+	bh=e9kpVznoXWPmdDZYzo5h7YVmLm1mINreekjC/IMMlhU=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
+	 References:In-Reply-To; b=QlQnMt31rsk7tw91AcRWQzRpZTDnvlTdKrwjq5zhhrqZajghNKx9d5I3LZ3FnM7JNv0NnG+IU1TI3+MvpAn1jlVu+jKpj8FHJSpnhSonbbZPhb2L3u6rx/fO8SHy5lT/Whu1GaF+5fn+Nfr4s8CJl0PpLvBimwX3yPtwIDeer5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=1nArF057; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 14CCC4E42B3E;
+	Wed, 29 Apr 2026 09:27:03 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id CCBA9601DF;
+	Wed, 29 Apr 2026 09:27:02 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B918D10729379;
+	Wed, 29 Apr 2026 11:26:48 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1777454821; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=xZ8VMjmAuXE7bj1xiXzUWvyTTPxElhI0qs5AYciLeQ8=;
+	b=1nArF057MsMdZUgpYhN6s2KAv0T+92sKVtzrc9vC4QAfR0RXrUhkbBhxtmA9h1DCjxoujY
+	QVnIjPjFlbwJud/AmAcnGvuzmaW9fNl+GOe/afSDYnBUDnQOsdmCsbUSVr07HAWddXsSj6
+	IaJksiqOzEQDbMp/0m5HTQvuorwLatoJIiupolrhAKmWuSoHdq+e/nz2zG+3ZoZdJ3NoaR
+	4IcS4+0df/byy5pe321xxmEhjDt40kcvH7xHhQeSRjvf3VI3HkbxyISGfetNNkseaCEuuH
+	piAruBTpPYZ/tTLULngBtcnjj1Br7ipcaommegW5qt2UElS4/W4X+FyrPFgq1A==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: E8C66491918
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 29 Apr 2026 11:26:47 +0200
+Message-Id: <DI5J5659IHRK.2VDGEBK93OQJP@bootlin.com>
+From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+Subject: Re: [PATCH net v2 2/4] net: macb: drop in-flight Tx SKBs on close
+Cc: "Nicolas Ferre" <nicolas.ferre@microchip.com>, "Claudiu Beznea"
+ <claudiu.beznea@tuxon.dev>, "Andrew Lunn" <andrew+netdev@lunn.ch>, "David
+ S. Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>,
+ "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>,
+ "Haavard Skinnemoen" <hskinnemoen@atmel.com>, "Jeff Garzik"
+ <jeff@garzik.org>, "Paolo Valerio" <pvalerio@redhat.com>, "Conor Dooley"
+ <conor@kernel.org>, <netdev@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, "Vladimir Kondratiev"
+ <vladimir.kondratiev@mobileye.com>, "Gregory CLEMENT"
+ <gregory.clement@bootlin.com>, =?utf-8?q?Beno=C3=AEt_Monin?=
+ <benoit.monin@bootlin.com>, "Tawfik Bayouk" <tawfik.bayouk@mobileye.com>,
+ "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>, "Maxime Chevallier"
+ <maxime.chevallier@bootlin.com>, <stable@vger.kernel.org>
+To: "Nicolai Buchwitz" <nb@tipi-net.de>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260428-macb-drop-tx-v2-0-647f5199d8df@bootlin.com>
+ <20260428-macb-drop-tx-v2-2-647f5199d8df@bootlin.com>
+ <75229fab491465e06a98ee580a51f0b4@tipi-net.de>
+In-Reply-To: <75229fab491465e06a98ee580a51f0b4@tipi-net.de>
+X-Last-TLS-Session-Version: TLSv1.3
+X-Rspamd-Queue-Id: 744C0491E1A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.84 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.microsoft.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[linux.microsoft.com:s=default];
+	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
+	MV_CASE(0.50)[];
+	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_TO(0.00)[microsoft.com,kernel.org,lunn.ch,davemloft.net,google.com,redhat.com,linux.microsoft.com,outlook.com,gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[25];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241848-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-241849-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[shradhagupta@linux.microsoft.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[bootlin.com:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linux.microsoft.com:+];
-	RBL_SEM_FAIL(0.00)[104.64.211.4:query timed out];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[theo.lebrun@bootlin.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable,netdev];
 	NEURAL_HAM(-0.00)[-0.998];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linux.microsoft.com:dkim,linux.microsoft.com:mid]
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tipi-net.de:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,bootlin.com:mid,bootlin.com:email,bootlin.com:dkim,bootlin.com:url]
 
-In mana driver, the number of IRQs allocated is capped by the
-min(num_cpu + 1, queue count). In cases, where the IRQ count is greater
-than the vcpu count, we want to utilize all the vCPUs, irrespective of
-their NUMA/core bindings.
+Hello Nicolai,
 
-This is important, especially in the envs where number of vCPUs are so
-few that the softIRQ handling overhead on two IRQs on the same vCPU is
-much more than their overheads if they were spread across sibling vCPUs.
+On Tue Apr 28, 2026 at 11:30 PM CEST, Nicolai Buchwitz wrote:
+> On 28.4.2026 18:32, Th=C3=A9o Lebrun wrote:
+>> The MACB driver has since forever leaked the outgoing SKBs that
+>> have not yet been marked as completed. They live in queue->tx_skb
+>> which gets freed without remorse nor checking.
+>>=20
+>> macb_free_consistent() gets called in a few codepaths, but only
+>> close will trigger the added expressions. In macb_open() and
+>> macb_alloc_consistent() failure cases, tx_skb just got allocated
+>> and is empty.
+>>=20
+>> Use the new macb_tx_unmap() prototype to report our error as
+>> SKB_DROP_REASON_NOT_SPECIFIED rather than SKB_CONSUMED which makes it
+>> sound like no error occurred. Equivalent to dev_kfree_skb_any().
+>>=20
+>> Fixes: 89e5785fc8a6 ("[PATCH] Atmel MACB ethernet driver")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Th=C3=A9o Lebrun <theo.lebrun@bootlin.com>
+>> ---
+>>  drivers/net/ethernet/cadence/macb_main.c | 22 ++++++++++++++++++++--
+>>  1 file changed, 20 insertions(+), 2 deletions(-)
+>>=20
+>> diff --git a/drivers/net/ethernet/cadence/macb_main.c=20
+>> b/drivers/net/ethernet/cadence/macb_main.c
+>> index 9caae1ef52b1..5a2500bd59a6 100644
+>> --- a/drivers/net/ethernet/cadence/macb_main.c
+>> +++ b/drivers/net/ethernet/cadence/macb_main.c
+>> @@ -2678,8 +2678,26 @@ static void macb_free_consistent(struct macb=20
+>> *bp)
+>>  	dma_free_coherent(dev, size, bp->queues[0].rx_ring,=20
+>> bp->queues[0].rx_ring_dma);
+>>=20
+>>  	for (q =3D 0, queue =3D bp->queues; q < bp->num_queues; ++q, ++queue) =
+{
+>> -		kfree(queue->tx_skb);
+>> -		queue->tx_skb =3D NULL;
+>> +		if (queue->tx_skb) {
+>> +			unsigned int dropped =3D 0, tail;
+>> +
+>> +			for (tail =3D queue->tx_tail; tail !=3D queue->tx_head;
+>> +			     tail++) {
+>> +				if (macb_tx_skb(queue, tail)->skb)
+>> +					dropped++;
+>> +				macb_tx_unmap(bp, macb_tx_skb(queue, tail), 0,
+>> +					      SKB_DROP_REASON_NOT_SPECIFIED);
+>> +			}
+>
+> Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
 
-This behaviour is more evident with dynamic IRQ allocation. Since MANA
-IRQs are assigned at a later stage compared to static allocation, other
-device IRQs may already be affinitized to the vCPUs. As a result, IRQ
-weights become imbalanced, causing multiple MANA IRQs to land on the
-same vCPU, while some vCPUs have none.
+Thanks for the review!
+We are quite a few caring about MACB which is nice.
 
-In such cases when many parallel TCP connections are tested, the
-throughput drops significantly.
+> Side note, not blocking: macb_close() doesn't cancel tx_error_task,
+> so the workqueue handler can race with this loop on tx_skb[]. The
+> exposure is pre-existing, but maybe worth a follow-up adding
+> cancel_work_sync() between napi_disable() and macb_free_consistent().
 
-Test envs:
-=======================================================
-Case 1: without this patch
-=======================================================
-4 vcpu(2 cores), 5 MANA IRQs (1 HWC + 4 Queue)
+Yes, noticed that while working on the context swapping series [0].
+The goal here is to improve MACB piecewise, so I won't take that on in
+the current series.
 
-	TYPE		effective vCPU aff
-=======================================================
-IRQ0:	HWC		0
-IRQ1:	mana_q1		0
-IRQ2:	mana_q2		2
-IRQ3:	mana_q3		0
-IRQ4:	mana_q4		3
+[0]: https://lore.kernel.org/all/90f843aa3940bdbabadddce27314c1f1@tipi-net.=
+de/t/#mda18f759c27a4d833084b23605463994632d97e3
+     (and the two replies)
 
-%soft on each vCPU(mpstat -P ALL 1) on receiver
-vCPU		0	1	2	3
-=======================================================
-pass 1:		38.85	0.03	24.89	24.65
-pass 2:		39.15	0.03	24.57	25.28
-pass 3:		40.36	0.03	23.20	23.17
+Thanks,
 
-=======================================================
-Case 2: with this patch
-=======================================================
-4 vcpu(2 cores), 5 MANA IRQs (1 HWC + 4 Queue)
-
-        TYPE            effective vCPU aff
-=======================================================
-IRQ0:   HWC             0
-IRQ1:   mana_q1         0
-IRQ2:   mana_q2         1
-IRQ3:   mana_q3         2
-IRQ4:   mana_q4         3
-
-%soft on each vCPU(mpstat -P ALL 1) on receiver
-vCPU            0       1       2       3
-=======================================================
-pass 1:         15.42	15.85	14.99	14.51
-pass 2:         15.53	15.94	15.81	15.93
-pass 3:         16.41	16.35	16.40	16.36
-
-=======================================================
-Throughput Impact(in Gbps, same env)
-=======================================================
-TCP conn	with patch	w/o patch
-20480		15.65		7.73
-10240		15.63		8.93
-8192		15.64		9.69
-6144		15.64		13.16
-4096		15.69		15.75
-2048		15.69		15.83
-1024		15.71		15.28
-
-Fixes: 755391121038 ("net: mana: Allocate MSI-X vectors dynamically")
-Cc: stable@vger.kernel.org
-Co-developed-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
-Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
-Signed-off-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
-Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
----
-Changes in v2
- * Removed the unused skip_first_cpu variable
- * fixed exit condition in irq_setup_linear() with len == 0
- * changed return type of irq_setup_linear() as it will always be 0
- * removed the unnecessary rcu_read_lock() in irq_setup_linear()
- * added appropriate comments to indicate expected behaviour when
-   IRQs are more than or equal to num_online_cpus()
----
- .../net/ethernet/microsoft/mana/gdma_main.c   | 47 ++++++++++++++++---
- 1 file changed, 40 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-index 098fbda0d128..d740d1dc43da 100644
---- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
-+++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-@@ -167,6 +167,8 @@ static int mana_gd_query_max_resources(struct pci_dev *pdev)
- 	} else {
- 		/* If dynamic allocation is enabled we have already allocated
- 		 * hwc msi
-+		 * Also, we make sure in this case the following is always true
-+		 * (num_msix_usable - 1 HWC) <= num_online_cpus()
- 		 */
- 		gc->num_msix_usable = min(resp.max_msix, num_online_cpus() + 1);
- 	}
-@@ -1672,11 +1674,24 @@ static int irq_setup(unsigned int *irqs, unsigned int len, int node,
- 	return 0;
- }
- 
-+/* should be called with cpus_read_lock() held */
-+static void irq_setup_linear(unsigned int *irqs, unsigned int len)
-+{
-+	int cpu;
-+
-+	for_each_online_cpu(cpu) {
-+		if (len == 0)
-+			break;
-+
-+		irq_set_affinity_and_hint(*irqs++, cpumask_of(cpu));
-+		len--;
-+	}
-+}
-+
- static int mana_gd_setup_dyn_irqs(struct pci_dev *pdev, int nvec)
- {
- 	struct gdma_context *gc = pci_get_drvdata(pdev);
- 	struct gdma_irq_context *gic;
--	bool skip_first_cpu = false;
- 	int *irqs, irq, err, i;
- 
- 	irqs = kmalloc_objs(int, nvec);
-@@ -1722,13 +1737,31 @@ static int mana_gd_setup_dyn_irqs(struct pci_dev *pdev, int nvec)
- 	 * first CPU sibling group since they are already affinitized to HWC IRQ
- 	 */
- 	cpus_read_lock();
--	if (gc->num_msix_usable <= num_online_cpus())
--		skip_first_cpu = true;
-+	if (gc->num_msix_usable <= num_online_cpus()) {
-+		err = irq_setup(irqs, nvec, gc->numa_node, true);
-+		if (err) {
-+			cpus_read_unlock();
-+			goto free_irq;
-+		}
-+	} else {
-+		/*
-+		 * When num_msix_usable are more than num_online_cpus, we try to
-+		 * make sure we are using all vcpus. In such a case NUMA or
-+		 * CPU core affinity does not matter.
-+		 * Note: in this case the total mana IRQ should always be
-+		 * num_online_cpus + 1. The first HWC IRQ is already handled
-+		 * in HWC setup calls
-+		 * However, if CPUs went offline since num_msix_usable was
-+		 * computed, nvec count will be more than num_online_cpus().
-+		 * In such cases remaining extra IRQs will retain their default
-+		 * affinity.
-+		 */
-+		if (nvec > num_online_cpus())
-+			dev_dbg(&pdev->dev,
-+				"IRQ count %d exceeds online CPU count %d. Some IRQs will share CPU\n",
-+				nvec, num_online_cpus());
- 
--	err = irq_setup(irqs, nvec, gc->numa_node, skip_first_cpu);
--	if (err) {
--		cpus_read_unlock();
--		goto free_irq;
-+		irq_setup_linear(irqs, nvec);
- 	}
- 
- 	cpus_read_unlock();
-
-base-commit: e728258debd553c95d2e70f9cd97c9fde27c7130
--- 
-2.34.1
+--
+Th=C3=A9o Lebrun, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
