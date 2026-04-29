@@ -1,195 +1,177 @@
-Return-Path: <stable+bounces-241864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241865-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sE96JhPm8WlZlAEAu9opvQ
-	(envelope-from <stable+bounces-241864-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 13:05:55 +0200
+	id 2JCTIRXm8WlZlAEAu9opvQ
+	(envelope-from <stable+bounces-241865-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 13:05:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CD52493531
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 13:05:54 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC66549353F
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 13:05:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DAC213043FB4
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 11:03:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DAE453013A7C
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 11:05:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB45437CD2E;
-	Wed, 29 Apr 2026 11:03:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1EA137CD2E;
+	Wed, 29 Apr 2026 11:05:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="fovEaSBg";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="szoRSUeP"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="VWYufu1s"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E0BF37B41E;
-	Wed, 29 Apr 2026 11:03:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 107F01A6800
+	for <stable@vger.kernel.org>; Wed, 29 Apr 2026 11:05:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777460631; cv=none; b=Jr1qmR64pqKRrZblTGBGJXUDH11MSQJpzMPXD+W8pQaHa6VUrSOIsss1duk9rQ9wSUCQBGeoD2w3yc4r8gNegpaseNdrFRSzWCANkOpYLd/VdCaMsqGcoYnJeijH27olgEzXoXizBdcA04Ux0x62pJ8qaobvBbM77S8FPvR1xow=
+	t=1777460752; cv=none; b=jROm6EGZKpUBUzWEiCxRFki/EJu8vhunWJdX1WVc4NBQfNWGFXUIp4K+kNbk8PbvVtv5G7grN93PRnKA0Q+67ceXNtI5339gsOQGpZQJAm9N4HVgpWrjFbTufKHGQSFzSrcP5DOr/4USt8vY35+B1jcjJYJ8jFgrXpNZ4NGlwRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777460631; c=relaxed/simple;
-	bh=cZm9nR+23JyzHvmYbF8V/WFjTR5KWk6Lw1WGUxgsGiE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Bz/8GIvjyvQYLVzjM4KY2YRG8AIDTz1DCyJl0JT/ac+b5Muye3NUUjvy7Jedhs1U89sJ7jTaWidvOB78xIABXxSaf+7FLoeA7LgG5gFFVtKLTE7fgqOWcrff6A/aWrxO9xUMCuTCH2LI2Ff7vSlKPKPFH0wk+CxQdRot0uKlQ2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=fovEaSBg; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=szoRSUeP; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Wed, 29 Apr 2026 13:03:41 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1777460623;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/UriPQL6XaAfr9C928OrjNsarnff/ygNYveY3BfmJUU=;
-	b=fovEaSBgw8CLKbrAl+inoruy1DmI0GtoxZZT07CGZS8c6l+X3UuNBxBofjtAEDabweP2/y
-	KjQjdR89BDFFPytegFrnuzVtF8Lxq8SPgiMVikEGlDpqE0g79C2/aW58pVx8vzh7wMr10/
-	8kcsJNOGbnTyujniIES4YF+YyxPCHHib/01nYXrSPaD4HEWuR5kCAPvuYFI/dsi4PWuMTr
-	mUup+Y+N1YrK/biA199fVQy61WYVwQAjzjvZMGnz5zYH0tZ1VYl2/uoB32IpXsPiciPeh4
-	fVt+P/Xx76wUH7EPvMu9nXUSbiziF3yKLISFb+b8PhukfTiw7ghvuNrUsJF59w==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1777460623;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/UriPQL6XaAfr9C928OrjNsarnff/ygNYveY3BfmJUU=;
-	b=szoRSUeP3wad7j4LOuG6BB4KMNAoF9FUlCkFLnljETLfmh8pQbGxYTXkWzSXvmiUNdqLQW
-	uEm+jE0JqhPLOtCQ==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Andrea Mayer <andrea.mayer@uniroma2.it>
-Cc: davem@davemloft.net, dsahern@kernel.org, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	clrkwllms@kernel.org, rostedt@goodmis.org,
-	david.lebrun@uclouvain.be, alex.aring@gmail.com,
-	Justin Iurman <justin.iurman@gmail.com>,
-	stefano.salsano@uniroma2.it, netdev@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net] net: ipv6: fix NOREF dst use in seg6 and rpl
- lwtunnels
-Message-ID: <20260429110341.ipXGaamM@linutronix.de>
-References: <20260421094735.20997-1-andrea.mayer@uniroma2.it>
- <20260423080056.KgHlh9Oa@linutronix.de>
- <20260425160856.8cebade5eae1dcaec7af8bfe@uniroma2.it>
+	s=arc-20240116; t=1777460752; c=relaxed/simple;
+	bh=4XwGRnQC1kznCkI3mzdzwu79hRIMT1AKu7AFKtwugjw=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=LDHAlDMHKtPwC5UL9YFAO5Tqg9R0nnHkdi2YA4823aYH/rpSQKf09+6J4Lzxjt2HSasF7mmaAHDHepHL6jRygid451zUtPPOlu0VHcr29rBxKcMZ7upI1fgcO5ivuKegUEy31vy8SZEuSVuiW9393EsWwYa24LZnuIBn8tv3jFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=VWYufu1s; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4896c22fcbaso95244945e9.0
+        for <stable@vger.kernel.org>; Wed, 29 Apr 2026 04:05:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1777460749; x=1778065549; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=4XwGRnQC1kznCkI3mzdzwu79hRIMT1AKu7AFKtwugjw=;
+        b=VWYufu1swCOBuEEd05vaIFO4jenyEWf5BPjkF3Vu7DA3spFRBvDjBSYwSVsdtLShc5
+         tNOCcPZV+TOgDFrfcPjMIIPl+XIlo7D5l1hJ2KKyi3rN5+wih8P1Lnn6/Eb/UR1v8xoM
+         7g4JYR4qIkH138hsr3+i+IJrtffSpYF8lCMsUyLviblNPytasDBKOAOKW/cPe35DJUAI
+         afMqxck7ZhFycnsJdgf43cs2MIpgIRLbTa36CGcvM+llLIL/tpMu3PAMkO3tJrtw300S
+         5ngBvoon63E/wFl8Ead53JBukYSEu6C85wd3O3/7GB0Rr2zYvkDeZXQ6zXhx+6F/SUdD
+         J2zg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777460749; x=1778065549;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4XwGRnQC1kznCkI3mzdzwu79hRIMT1AKu7AFKtwugjw=;
+        b=LR0jNMb7uCS4KN4utrg2p2/MPopHEmP0CWu7aVa5pXEfT5iYWGJBu/fFeZ8HBUjhSl
+         RFTkHgkYAJUveKjmZtLTO+E1Lc5dknp42cp/tR/lKqAxvQnFHcqnVuYUmRLqiLfiOUlN
+         WaQs80rcWBacvgixfVS+6ExoH2faQKn68CqDqCkDAISdgxPui2gCLeSeLxZ53kPM6dLD
+         ebpVcFPkND5tDXxPXjjhEp6XCndlKkGy/2NG+OuEJ21AEOcYVsk/kn0FdtYA+eQUOsdM
+         Ei1or1nX0rHyzKdMVIOVxMO3zsLUkZnF6JNSaqkf81aOJcuKpMC1JmKkMaNiZ6HPWNYG
+         QzqA==
+X-Forwarded-Encrypted: i=1; AFNElJ/3PBFzNu6XhJKmMpEeScopQes1BRXY3cMg6Z6sL05wL2Z5pVZ6sB2a2wh7AzLZ0HmqcFZ9zVo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzH6Wh8h5S5tJwkIVwFRwF1bAWTOUFAtvet4/RnJMzvBhqOqShC
+	pbAZTcrSILj5hk3WruxcUyqLC08vCUpiRh2iAwcDYNKRqS4aq8V/BLXAESAUA52Ir6o=
+X-Gm-Gg: AeBDietzdSH/rXmlww5R8JqWWMSX57H9SYGIrSblA9LpKRv7BjMpjstGwE1WDyg2Cjt
+	oQSxfehr43SUFgeRDS0uOYBsFL0LQKF8tLDNjDkD6X5tbgj+YSoTTDiNwS90Ufn3oPKioTb5/k8
+	wAAqZMw2nKUMtpmZnyb0QjninlCv8IGWyb6jefEhl6zCcyncyk2VLdVphzTYZ938UcIHVB5sj+7
+	R7jAaDzJGfqDOlcIFqn0xuerTYoU/aQyxos0RYUKpZ3ZrmCtCUZQqdPJLmwgQiWinYgpmOiG+2L
+	6/8E0iOG2ABwoRDFXy+9UHqgnLx8dhhXsRkxFi0mTHV8guUubJsL7pNDTj4WIXi/4vpzD+AIoS8
+	7kooe4isQpZBy/YQNZ2QXOXv3qcRqgfCiBkGy5TofbAjlXUcy76BgHuU8wGDRh/nFHFVKuLYic0
+	ic6b4ZWCIVgxbVwE8CUPGB25TVIsqqr4jAFKjJ3tJxBDg=
+X-Received: by 2002:a05:600c:4f92:b0:489:1ff1:74df with SMTP id 5b1f17b1804b1-48a77ae5430mr109685855e9.1.1777460749283;
+        Wed, 29 Apr 2026 04:05:49 -0700 (PDT)
+Received: from [10.11.12.108] ([79.115.63.228])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a7c2fb999sm23367655e9.6.2026.04.29.04.05.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 29 Apr 2026 04:05:48 -0700 (PDT)
+Message-ID: <6d21cfc8-4686-43f2-a320-1b9505d38338@linaro.org>
+Date: Wed, 29 Apr 2026 14:05:45 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260425160856.8cebade5eae1dcaec7af8bfe@uniroma2.it>
-X-Rspamd-Queue-Id: 0CD52493531
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 4/6] firmware: samsung: acpm: Fix memory ordering race
+ in RX path
+From: Tudor Ambarus <tudor.ambarus@linaro.org>
+To: Krzysztof Kozlowski <krzk@kernel.org>,
+ Alim Akhtar <alim.akhtar@samsung.com>
+Cc: linux-kernel@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, peter.griffin@linaro.org,
+ andre.draszik@linaro.org, jyescas@google.com, kernel-team@android.com,
+ stable@vger.kernel.org
+References: <20260427-acpm-fixes-sashiko-reports-v2-0-1ff8de94a997@linaro.org>
+ <20260427-acpm-fixes-sashiko-reports-v2-4-1ff8de94a997@linaro.org>
+ <6bba950c-5527-4613-8c16-b52534bc75a5@kernel.org>
+ <4421c95f-3ee7-40ac-b239-d877709b498a@linaro.org>
+Content-Language: en-US
+In-Reply-To: <4421c95f-3ee7-40ac-b239-d877709b498a@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: EC66549353F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
-	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
+	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
+	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241864-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[davemloft.net,kernel.org,google.com,redhat.com,goodmis.org,uclouvain.be,gmail.com,uniroma2.it,vger.kernel.org,lists.linux.dev];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bigeasy@linutronix.de,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linutronix.de:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DKIM_TRACE(0.00)[linaro.org:+];
+	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-241865-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linutronix.de:email,linutronix.de:dkim,linutronix.de:mid]
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tudor.ambarus@linaro.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:dkim,linaro.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 
-On 2026-04-25 16:08:56 [+0200], Andrea Mayer wrote:
-> On Thu, 23 Apr 2026 10:00:56 +0200
-> Sebastian Andrzej Siewior <bigeasy@linutronix.de> wrote:
-> 
-> Hi Sebastian,
 
-Hi Andrea,
 
-> > Doesn't this make ip6_route_input() on RT fragile in general due to the
-> > RT6_LOOKUP_F_DST_NOREF usage or here something special about the two
-> > files that are patched?
-> > Based on your explanation it all makes sense, I am just not sure if this
-> > race is limited to those two are if there is more to it.
-> 
-> seg6_input_core() and rpl_input() cache the dst via dst_cache_set_ip6(), which
-> invokes dst_hold(). The dst_hold() calls rcuref_get(), failing on a zero
-> refcount and triggering a WARN, but the pointer is still stored in the cache.
-> After the RCU grace period completes the dst is freed, and a subsequent
-> dst_cache_get() returns a dangling pointer.
->  
-> The other callers of ip6_route_input() (e.g., ipv6_srh_rcv, ipv6_rpl_srh_rcv,
-> ip6_rcv_finish_core) consume the NOREF dst without caching it. Even if the
-> pcpu_rt's refcount is concurrently dropped to zero, the dst memory remains
-> valid because dst_release() defers the actual free via call_rcu_hurry() and the
-> caller is still inside the RCU read-side critical section.
+On 4/28/26 3:57 PM, Tudor Ambarus wrote:
+> Another thing that I thought about was about the reordering of memset
+> and set_bit in acpm_prepare_xfer(), but even there, the internal
+> execution order doesn't matter. Both are guaranteed to be completed
+> before writel (wmb).
 
-Ah, okay. Thank you for clearing that up.
+I need to correct myself here. While the wmb() inside writel() does
+prevent the hardware from seeing incomplete state, my previous
+statement was slightly misleading regarding the local CPU pipeline.
 
-> > > [snip]
-> > >
-> > > Fixes: af4a2209b134 ("ipv6: sr: use dst_cache in seg6_input")
-> > > Fixes: a7a29f9c361f ("net: ipv6: add rpl sr tunnel")
-> > 
-> > If having PREEMPT_RT_NEEDS_BH_LOCK unset is the requirement then the
-> > right fixes: would be
-> > Fixes: 3253cb49cbad4 ("softirq: Allow to drop the softirq-BKL lock on PREEMPT_RT")
-> > 
-> > as prior this commit the race is not possible, right?
-> 
-> I built and tested kernels at 3253cb49cbad and its parent fd4e876f59b7 (both
-> CONFIG_PREEMPT_RT=y, without the fix): no issues at fd4e876f59b7.
-> At 3253cb49cbad, a pcpu_rt cmpxchg contention in rt6_make_pcpu_route() shows
-> up, which was addressed in 1adaea51c61b. I also tested at 1adaea51c61b, and at
-> that point the dst_hold() race described in this patch appears.
->  
-> The seg6/rpl code obtains a NOREF dst from ip6_route_input(), does not promote
-> it via skb_dst_force(), and passes it to dst_cache_set_ip6() which calls
-> dst_hold(). This pattern has been present since af4a2209b134 and a7a29f9c361f,
-> and the current Fixes: tags point to the commits where it was introduced.
-> Does that seem reasonable?
+The wmb() alone does not prevent the CPU from speculatively trying
+to wipe the memory before it actually finds the first zero bit in
+the bitmap.
 
-Yes. So based on that the regression was introduced in 3253cb49cbad.
-Before that, the lock guarded everything. That means also that
-rpl_input() and seg6_input_core() is invoked a BH disabled section which
-is what makes it for !RT work.
+What truly prevents speculative execution here is a strict
+Address Dependency (implicit barrier). The CPU mathematically cannot
+calculate the destination pointer for the memset() until the bit in
+the bitmap is identified. I will add a comment in the code describing
+this dependency.
 
-> > Does this mean that rpl_input() does a local_bh_disable() while
-> > obtaining the dst but it never runs outside of bh-disabled section?
-> > Because if it can run in preemptible context then it would not be to
-> > PREEMPT_RT at which point the Fixes: tags from above would make sense
-> > again.
-> > 
-> 
-> rpl_input() and seg6_input_core() run in softirq context via lwtunnel_input().
-> They do local_bh_disable() around dst_cache_get() and dst_cache_set_ip6(), but
-> not around ip6_route_input(). The race window is between ip6_route_input()
-> returning and dst_cache_set_ip6().
+In what concerns that set_bit() in acpm_prepare_xfer(), we only need
+to ensure it is visible before the next TX thread tries to allocate
+a sequence number. That is completely protected by the tx_lock
+boundaries. The RX thread does not care about set_bit() at all — it
+only blind-clears bits based on the rx_seqnum it gets back from the
+firmware. I'll add a comment documenting the set_bit() safety as well.
 
-My point was that the Fixes: tag could be updated to 3253cb49cbad
-instead. Since everything runs in softirq context, the
-local_bh_disable() within that functions is not needed. Otherwise, if
-this would not be invoked softirq then preemption would also be possible
-on !RT.
-Anyway, now it has been merged.
+Finally, regarding test_bit() and find_next_zero_bit() in
+acpm_prepare_xfer(), they are functionally equivalent. Both are
+relaxed, barrier-less reads. The non-atomic find_next_zero_bit()
+introduces zero concurrency problems because this phase is strictly
+a read-only search (if we read the bitmap just before the RX thread
+frees a bit, we simply skip to the next available one).
 
-> 
-> Ciao,
-> Andrea
+I'll reorder the patches and put this one as last in the set, I want
+to have the find_next_zero_bit() before it, to not touch the same
+code twice.
 
-Sebastian
+Thanks,
+ta
 
