@@ -1,241 +1,206 @@
-Return-Path: <stable+bounces-241862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241863-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KMJHD4jj8WlZlAEAu9opvQ
-	(envelope-from <stable+bounces-241862-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 12:55:04 +0200
+	id 4PKKKZ/j8WlZlAEAu9opvQ
+	(envelope-from <stable+bounces-241863-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 12:55:27 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C66B54933BD
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 12:54:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CA204933CE
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 12:55:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2552D30704F1
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 10:49:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 76EEE307B4E4
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 10:50:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98BAF3D6498;
-	Wed, 29 Apr 2026 10:49:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 119053EF0BA;
+	Wed, 29 Apr 2026 10:50:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rFmF27x7"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QSQ2X7HY"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BF4022689C;
-	Wed, 29 Apr 2026 10:49:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6885722689C
+	for <stable@vger.kernel.org>; Wed, 29 Apr 2026 10:49:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777459771; cv=none; b=SOxEreZkV1zcJ3mWJGLkiIUgUURARd5CcDZeFFQU3+j1dCVeR45wwrvGVx50nYS8JKqd+YN56E87N1mFbGgmcuSn9tdjgeCXKm+XA95L3BcxPJaG6GKIhs17qlhJrCuyrMqhWsp9YN09MOWPz+Qdn6rracZjcO1RzqJ0onm5Btk=
+	t=1777459800; cv=none; b=jBNOJnu4ajBi7xbxKLqt0ETXilEK2h64pG3QH7kvtVqNEOvqTd/HEpx/UWsrGyptC0hQeEwSBq60E2+i/HrZQVr7Kww81NcrqWs3wjVUr51B0kxQPUi5ATbUSCQ6AFRh1hhPrzRCuPnV5e/aMlyNcaY5TjXSwFn/Gn2tsXQU2L4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777459771; c=relaxed/simple;
-	bh=h8G3pe9wHkpOMl4+ZrKm3m0KxKNxszJCj/MtOcTz15k=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=KAHsTc1Cd6aSw6qweYCsKIl6cv3MJPKJekbP7Xl9Yq6RnrNOPhSVmQel1fTPGPxWYKJLU1wdtEVj/oZltTb2PwQYvNUK4MbGctSyI1Li+zLvgFk7Ne4PfItMKFDY+EGeoQdeK6Qd+kbXaGKTtLhInEsTgdYRtk7TFzCJvVuK1CQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rFmF27x7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEC90C19425;
-	Wed, 29 Apr 2026 10:49:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777459771;
-	bh=h8G3pe9wHkpOMl4+ZrKm3m0KxKNxszJCj/MtOcTz15k=;
-	h=From:Date:Subject:To:Cc:From;
-	b=rFmF27x7gDAney4JA5fUB+9J0z52q/EvgPWwvwRutTckYq/usYVkrX7JnD3qM46A0
-	 DRdhZbTpJLOByaVxsiQ4lseeu54JB3LLecnHvugft3f1WeXvbq7eSuaefeCTQgo8Ik
-	 HF/8chDDdXlZureCW1LNPvboxX3txMcAQDYY58pecYe0htuSzmUJi1zIHpjDFC0C0i
-	 NbYqcoIVMXZn2w062GZEIP+WxsQ8XyYtdDhZyasFAL+2pwUsRRxV3j828eA4yk2Lk9
-	 HaXvm++fI8piOcHev3CfYcm/qtwwLNkis5Vt2YxMk1rtO/m4+eAFZM9ahdDvvpPfdP
-	 uJ+sufPMeOPtA==
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Wed, 29 Apr 2026 12:49:14 +0200
-Subject: [PATCH v2] x86/mm: fix freeing of PMD-sized vmemmap pages
+	s=arc-20240116; t=1777459800; c=relaxed/simple;
+	bh=N/5fqb+aB65lsYDsWjoyUnZ02f4BDSqEloFWitAhkp0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=I/Ww09S/OF6pPU3BZ+UyKZ4znBbM05XRCzFWSHLMNm7xpt4Yh63ToXBXww/U7fQYyqOjEa2ioDjq2W5Y7LhxQJNb0nfNFiNmD0MiOJ+rIA+i8j0BykMxAmznwkF/H7rJ2NX2Fu6D4hyUQQYkDIzEDwgPmpsxErrYPetWU/gz8XI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QSQ2X7HY; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-488ff90d6c7so106785745e9.2
+        for <stable@vger.kernel.org>; Wed, 29 Apr 2026 03:49:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777459798; x=1778064598; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=C2FyOVAEfkWXswNoEp5C3P/ITYDExEy6ZhNuNWoNGPE=;
+        b=QSQ2X7HY8kMb4+n9kTdtd6/TJiA+1SF0Cr7Pha/johrXZKZObVcBr3W6pKiSZKTzR7
+         5u9y56BrKRnt3mKV4GjLZ4kcPsckZYXWM/f0Ughigm3fbil3X0758goRgLZk9n3t3mj9
+         eoeZuVrNiU4GcXZ/j6+2KDfjcVjfPaH9V0L2iRoOvwAD8RTPEAjM5qzJXeQmF5KwWur5
+         gyd+JS3qYkooRIX/0UQkC1BXCnmebyUPPO4pEEEcnZMjFARyuDqFmhq13gIvJGWWnQEA
+         lRz5KhEKDZ0Bg6y4tmlX3j1Wkgo6mYuFgpbSk5iEQ+I1zT2OsEDAdEybb76Z6BfSmd68
+         5Z2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777459798; x=1778064598;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=C2FyOVAEfkWXswNoEp5C3P/ITYDExEy6ZhNuNWoNGPE=;
+        b=QFbRm2oI2UG6j6E9e/M2c0RPQm25uuHuH3nVfuIgVxpKJnKLTEqE2XNGi/S6Xvb1bf
+         PTei6/Ck+37+aRit/rm3ZqWYrO7BnORDahjxTGVr2DKtoI3E5VXJ4mCTalYc/b+czh5Z
+         rPJLI2PgV9n9Png0X/bU1kgJsLeRx7XkWGk4U9Nay5dvGSxWU132gm1v/DE9J2gzOPfo
+         DEYEWncH5OaTjadNMEzimMCJsb84MM/z+YYP4QhHN5FA22MFrxG+0G0RrvVf/2imsSXF
+         Qukf82dA79KZS4GxXcslxvwISts6wPDUkiA3harSQAI3J7caZbDoNcaEHKUNRvBS9hqH
+         ugJQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+vzWJJtiaDW7N/GJr6C3Yp2oyg/vIihxPwOfzx0WCmbE2QKjH+DR6VbRmeYVnmCJ48sIrEfl0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwtRciKBQ/VVWK73V6HTARVjiyTZQTsPe7CJ0MJt9zYXJL3yJy/
+	qG/uO1YuChylzqwbrPLMmoEuND1AUjjhy15vHeRve3MaVf9v/VZfomKf
+X-Gm-Gg: AeBDievyzy9FUEamQWlY98rHhxeAzeMNZ2nCZo3gtZjISJbrovBdtQY80rm1EVcyYAC
+	GjXN8NvhebZjePmPcBhZ1GFrvLGhUae967dbEJWpzRQNMDOKY8ZDiwp0TDeGWrGax9hHnA8BYFi
+	tNjhX4VzNBwxDfgicLSB4B1QONrCsABd2wDy7OZ38/fgbP3Ji9efWFY0UkwlKBF1iA9Sn3O9tzy
+	TUCA/Tw5at9BktneFwkAt4MTCKNd4x+AlCiv7JLaUZhwOnCLiNo2wtKHuiR1C1XSfccaIak/Qa5
+	TzzvrlRgMdllHV9DofXhdGPIYCF79tI+vQFYWt6nM6+V7/KHEmQsgm79rHIkFRdrJX4sKv/2NDu
+	gGXOAVF/oeILQHWaEPmJAkdXUXb4xOA0r5e1ohjyLNxl2exTx9ThXMIk5DqWvKHX07y1ALcj+pI
+	YgYzrxmHKZDfsDp9vOFTyibjrK3s4vyzo/qCZDAFrjbCqfI9vymgoVNzNAI6EJ1P4YQxyFQYAkT
+	RT/IyJt
+X-Received: by 2002:a05:600c:859a:b0:488:ac01:72de with SMTP id 5b1f17b1804b1-48a7b5125f3mr40682595e9.5.1777459797446;
+        Wed, 29 Apr 2026 03:49:57 -0700 (PDT)
+Received: from igorovo6 (185-203-47-240.static.vlasimnet.net. [185.203.47.240])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a7b8c2dd7sm37481365e9.0.2026.04.29.03.49.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Apr 2026 03:49:57 -0700 (PDT)
+From: Igor Raits <igor.raits@gmail.com>
+To: Trond Myklebust <trondmy@kernel.org>,
+	Anna Schumaker <anna@kernel.org>
+Cc: NeilBrown <neil@brown.name>,
+	=?UTF-8?q?Jan=20=C4=8C=C3=ADpa?= <jan.cipa@gooddata.com>,
+	linux-nfs@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] NFSv4: clear exception state on successful mkdir retry
+Date: Wed, 29 Apr 2026 12:49:38 +0200
+Message-ID: <20260429104938.1776671-1-igor.raits@gmail.com>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <177745671692.1474915.5018486129724109553@noble.neil.brown.name>
+References: <177745671692.1474915.5018486129724109553@noble.neil.brown.name>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260429-vmemmap-v2-1-8dfcacffd877@kernel.org>
-X-B4-Tracking: v=1; b=H4sIACni8WkC/2XMQQ7CIBCF4as0sxYDE9JaV96j6WJox5Yo0IAhm
- oa7i926/F9evh0SR8sJrs0OkbNNNvgaeGpgWskvLOxcG1BiKzVeRHbsHG2CjDa97ok67KC+t8h
- 3+z6kYay92vQK8XPAWf3WfyMroYRBIsXtbHCStwdHz89ziAuMpZQv+JYdCJ8AAAA=
-To: Dave Hansen <dave.hansen@linux.intel.com>, 
- Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
- Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
- "H. Peter Anvin" <hpa@zytor.com>, 
- "Mike Rapoport (Microsoft)" <rppt@kernel.org>, 
- Jason Gunthorpe <jgg@ziepe.ca>, Lu Baolu <baolu.lu@linux.intel.com>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- Lu Baolu <baolu.lu@linux.intel.com>, Lance Yang <lance.yang@linux.dev>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
- stable@vger.kernel.org, "David Hildenbrand (Arm)" <david@kernel.org>
-X-Mailer: b4 0.13.0
-X-Rspamd-Queue-Id: C66B54933BD
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 2CA204933CE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241862-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_FROM(0.00)[bounces-241863-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[david@kernel.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:email]
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[igorraits@gmail.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[brown.name:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gooddata.com:email]
 
-In commit bf9e4e30f353 ("x86/mm: use pagetable_free()"), we switched
-from freeing non-boot page tables through __free_pages() to
-pagetable_free().
+After a server returns NFS4ERR_DELAY for an NFSv4 CREATE issued by
+mkdir(2), the client correctly waits and retries.  When the retry
+succeeds, however, mkdir(2) can still surface -EEXIST to userspace
+even though the directory was just created on the server.
 
-However, the function is also called to free vmemmap pages.
+Reproducer (random 16-hex names so collisions are not the cause)
+against an in-kernel Linux nfsd; reproduces under both NFSv4.0 and
+NFSv4.2:
 
-Given that vmemmap pages are not page tables, already the page_ptdesc(page)
-is wrong. But worse, pagetable_free() calls
+  N=2000000; base=/var/gdc/export
+  for ((i=1; i<=N; i++)); do
+      d=$base/$(openssl rand -hex 8)
+      mkdir "$d" 2>/dev/null || echo "$(date +%T) failed loop=$i $d"
+      rmdir "$d" 2>/dev/null
+  done
 
-	__free_pages(page, compound_order(page));
+Failures cluster at the cadence at which the server-side auth/export
+cache refresh path causes nfsd to return NFS4ERR_DELAY for CREATE.
 
-As vmemmap pages are not compound pages (see vmemmap_alloc_block()) --
-except for HVO, which doesn't apply here -- we will only free the first
-page when freeing a PMD-sized vmemmap page, leaking the other ones.
+A wire trace of one failure (the three CREATE RPCs all come from a
+single mkdir(2), generated by the do-while in nfs4_proc_mkdir()):
 
-Fix it by properly decoupling pagetable and vmemmap freeing.
-free_pagetable() no longer has to mess with SECTION_INFO, as only the
-vmemmap is marked like that in register_page_bootmem_memmap().
+  client -> server  CREATE name=...  -> NFS4ERR_DELAY
+  ~100 ms later
+  client -> server  CREATE name=...  -> NFS4_OK         (dir created)
+  ~80 us later
+  client -> server  CREATE name=...  -> NFS4ERR_EXIST   (correct)
 
-The indentation in remove_pmd_table() is messed up, let's fix that
-while touching it.
+Since commit dd862da61e91 ("nfs: fix incorrect handling of large-number
+NFS errors in nfs4_do_mkdir()"), nfs4_handle_exception() is called only
+when _nfs4_proc_mkdir() returned an error.  That gate breaks retry-state
+hygiene: nfs4_do_handle_exception() resets exception.{delay,recovering,
+retry} to 0 on entry, so calling it on success is what previously
+cleared the retry flag set by the preceding NFS4ERR_DELAY iteration.
+With the gate in place, exception.retry stays at 1 after the successful
+retry, the loop runs once more, and the resulting CREATE for an
+already-created name yields NFS4ERR_EXIST -> -EEXIST to userspace.
 
-Note that we'll try to get rid of that bootmem info handling soon. For
-now, we'll handle it similar to free_pagetable(), just avoiding the
-ifdef.
+Drop the conditional and call nfs4_handle_exception() unconditionally,
+matching every other do-while in fs/nfs/nfs4proc.c (nfs4_proc_symlink(),
+nfs4_proc_link(), etc.).  The dentry/status separation introduced by
+that commit is preserved.
 
-Tested-by: Lance Yang <lance.yang@linux.dev>
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Fixes: bf9e4e30f353 ("x86/mm: use pagetable_free()")
+Fixes: dd862da61e91 ("nfs: fix incorrect handling of large-number NFS errors in nfs4_do_mkdir()")
+Reported-and-tested-by: Jan Čípa <jan.cipa@gooddata.com>
+Closes: https://lore.kernel.org/linux-nfs/CA+9S74hSp_tJu2Ffe2BPNC2T25gfkhgjjDkdgSsF5c2rnJq_wA@mail.gmail.com/
+Reviewed-by: NeilBrown <neil@brown.name>
 Cc: stable@vger.kernel.org
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Signed-off-by: Igor Raits <igor.raits@gmail.com>
 ---
-Reproduced and tested with a simple VM with a virtio-mem device,
-repeatedly adding and removing memory.
+ fs/nfs/nfs4proc.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-Found by code inspection while working on bootmem_info removal.
----
-Changes in v2:
-- Don't mess with the altmap with PTEs and add a comment why.
-- Simplify "unsigned long nr_pages" handling.
-- Link to v1: https://lore.kernel.org/r/20260428-vmemmap-v1-1-b2aa1e6db2c0@kernel.org
----
- arch/x86/mm/init_64.c | 40 ++++++++++++++++++++++++++--------------
- 1 file changed, 26 insertions(+), 14 deletions(-)
-
-diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-index df2261fa4f98..7e20b22d658b 100644
---- a/arch/x86/mm/init_64.c
-+++ b/arch/x86/mm/init_64.c
-@@ -1014,7 +1014,7 @@ static void __meminit free_pagetable(struct page *page, int order)
- #ifdef CONFIG_HAVE_BOOTMEM_INFO_NODE
- 		enum bootmem_type type = bootmem_type(page);
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index a0885ae55abc..ffd14141ea1d 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -5393,10 +5393,9 @@ static struct dentry *nfs4_proc_mkdir(struct inode *dir, struct dentry *dentry,
+ 	do {
+ 		alias = _nfs4_proc_mkdir(dir, dentry, sattr, label, &err);
+ 		trace_nfs4_mkdir(dir, &dentry->d_name, err);
++		err = nfs4_handle_exception(NFS_SERVER(dir), err, &exception);
+ 		if (err)
+-			alias = ERR_PTR(nfs4_handle_exception(NFS_SERVER(dir),
+-							      err,
+-							      &exception));
++			alias = ERR_PTR(err);
+ 	} while (exception.retry);
+ 	nfs4_label_release_security(label);
  
--		if (type == SECTION_INFO || type == MIX_SECTION_INFO) {
-+		if (type == MIX_SECTION_INFO) {
- 			while (nr_pages--)
- 				put_page_bootmem(page++);
- 		} else {
-@@ -1028,13 +1028,24 @@ static void __meminit free_pagetable(struct page *page, int order)
- 	}
- }
- 
--static void __meminit free_hugepage_table(struct page *page,
-+static void __meminit free_vmemmap_pages(struct page *page, unsigned int order,
- 		struct vmem_altmap *altmap)
- {
--	if (altmap)
--		vmem_altmap_free(altmap, PMD_SIZE / PAGE_SIZE);
--	else
--		free_pagetable(page, get_order(PMD_SIZE));
-+	unsigned long nr_pages = 1u << order;
-+
-+	if (altmap) {
-+		vmem_altmap_free(altmap, nr_pages);
-+	} else if (PageReserved(page)) {
-+		if (IS_ENABLED(CONFIG_HAVE_BOOTMEM_INFO_NODE) &&
-+		    bootmem_type(page) == SECTION_INFO) {
-+			while (nr_pages--)
-+				put_page_bootmem(page++);
-+		} else {
-+			free_reserved_pages(page, nr_pages);
-+		}
-+	} else {
-+		__free_pages(page, order);
-+	}
- }
- 
- static void __meminit free_pte_table(pte_t *pte_start, pmd_t *pmd)
-@@ -1118,7 +1129,8 @@ remove_pte_table(pte_t *pte_start, unsigned long addr, unsigned long end,
- 			return;
- 
- 		if (!direct)
--			free_pagetable(pte_page(*pte), 0);
-+			/* We never populate base pages from the altmap. */
-+			free_vmemmap_pages(pte_page(*pte), 0, NULL);
- 
- 		spin_lock(&init_mm.page_table_lock);
- 		pte_clear(&init_mm, addr, pte);
-@@ -1153,19 +1165,19 @@ remove_pmd_table(pmd_t *pmd_start, unsigned long addr, unsigned long end,
- 			if (IS_ALIGNED(addr, PMD_SIZE) &&
- 			    IS_ALIGNED(next, PMD_SIZE)) {
- 				if (!direct)
--					free_hugepage_table(pmd_page(*pmd),
--							    altmap);
-+					free_vmemmap_pages(pmd_page(*pmd),
-+							   PMD_ORDER, altmap);
- 
- 				spin_lock(&init_mm.page_table_lock);
- 				pmd_clear(pmd);
- 				spin_unlock(&init_mm.page_table_lock);
- 				pages++;
- 			} else if (vmemmap_pmd_is_unused(addr, next)) {
--					free_hugepage_table(pmd_page(*pmd),
--							    altmap);
--					spin_lock(&init_mm.page_table_lock);
--					pmd_clear(pmd);
--					spin_unlock(&init_mm.page_table_lock);
-+				free_vmemmap_pages(pmd_page(*pmd), PMD_ORDER,
-+						   altmap);
-+				spin_lock(&init_mm.page_table_lock);
-+				pmd_clear(pmd);
-+				spin_unlock(&init_mm.page_table_lock);
- 			}
- 			continue;
- 		}
-
----
-
-base-commit: a2ddbfd1af0f54ea84bf17f0400088815d012e8d
-
-change-id: 20260428-vmemmap-ab4b949aa727
-
---
-
-Cheers,
-
-David
+-- 
+2.53.0
 
 
