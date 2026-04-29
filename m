@@ -1,159 +1,168 @@
-Return-Path: <stable+bounces-241869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241870-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AA9RO5Hs8WlLlgEAu9opvQ
-	(envelope-from <stable+bounces-241869-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 13:33:37 +0200
+	id wEYkDEnu8WmulgEAu9opvQ
+	(envelope-from <stable+bounces-241870-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 13:40:57 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CD454939C7
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 13:33:33 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E7A6493A3B
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 13:40:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EFACA301F319
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 11:33:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D4B26302AF0F
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 11:40:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF9503C6606;
-	Wed, 29 Apr 2026 11:33:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 146BE3F166E;
+	Wed, 29 Apr 2026 11:40:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GRK80Ifo"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="MY4x65lp"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B13E32701C4;
-	Wed, 29 Apr 2026 11:33:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 928F537F746
+	for <stable@vger.kernel.org>; Wed, 29 Apr 2026 11:40:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777462404; cv=none; b=WNHpSOjg/gxUwbSc+z/djzvFfcB4uXc9FbzxMQjJB4AK9V2z4rwQxwoRLqIVf30qNnxq1O5Ti8wc7HYRyaxt0Hu1vUbIt9lCqqib+0uZQCOClJ85FSNENSu7WhYM9QomJzY5dt6ISlPm3T6HktAvvyt2+qz+6hxzomOGTx6igFQ=
+	t=1777462852; cv=none; b=XG9vcGYDN6zHnAGREGLFEpzG0P9fKFDPRV1cKoNCTXvVMuNMRuDW5xA7CSYPLx+pWprDTyO8TVOlbrhO1mdx2TU7fzt6JjVAbEpd7AeAF9AkptSc0zMnVONM/iq2eNxLlzsmmx/po7i2nAzLWD0OZiylsd5APpMlfc6HerB4Pjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777462404; c=relaxed/simple;
-	bh=lOlOp1v12Z1/RWZKLhuO3eKL8iTY0MHiXh40WE3cpTE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=d+pNLwJ8EaQqp+2uvt8M6n1iXAt6+2egDJxU90K6mSL/NwJVdADkzeU/z/oF+VswMCfmAttSxsw4s0IigszV+/bL4r2FRqDCxwUXqhKpfjfnfaS1LKxiFXcdoVYYKAf0L1o0XQobuYblC63DOcPOyZ/B8y5RlZiZk24j1MAmIpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GRK80Ifo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E47DC19425;
-	Wed, 29 Apr 2026 11:33:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777462404;
-	bh=lOlOp1v12Z1/RWZKLhuO3eKL8iTY0MHiXh40WE3cpTE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GRK80IforZJ75sPcUW5zH++ekHBwziLXY8Lv4I969ADGv/4fpg+SKdV/dqLvaGjFz
-	 qjcw2KQP9/dp3MQec8XRDyGpYfaTSrb7mZj+xJaJTljvbtMunEGUsrNJ2JsOUmuJFt
-	 9UisFcxVSXc4fGcTeDp65/RdvUvm/N/J5YU0SITTHYOA5/1qMNfQt+OK6MiB+xsQKV
-	 xXXPWh1WkZJ0fkSKO2bBUpD1lXawHWNKnZu6okSfpYd4n+TvlA1F/lZVh/8BmB9kAP
-	 FJOgk0oAZ/8NmSy0UK0xiXXVRjaMW2EIlUh6oDQO9FTCfMhxTRpR/3btDRqeiCf84y
-	 0sK478xoB2ZBA==
-Received: from johan by xi.lan with local (Exim 4.98.2)
-	(envelope-from <johan@kernel.org>)
-	id 1wI3AQ-00000000izu-0pnY;
-	Wed, 29 Apr 2026 13:33:22 +0200
-Date: Wed, 29 Apr 2026 13:33:22 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	driver-core@lists.linux.dev, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] driver core: reject devices with unregistered buses
-Message-ID: <afHsgv9SUqfn-G1x@hovoldconsulting.com>
-References: <20260427102852.2174-1-johan@kernel.org>
- <DI50WG9XK1I4.1R6DXSZSWFRDC@kernel.org>
- <afHZWasOhRaeBCnt@hovoldconsulting.com>
- <DI5LDIQW45PE.LPIWCARJV7WC@kernel.org>
+	s=arc-20240116; t=1777462852; c=relaxed/simple;
+	bh=SOlTYRGPpHyRN69gm1xO3QQ3xSIzKfNcb5dULJf5RAg=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
+	 References:In-Reply-To; b=tBuVi+GqFZyoyZLL4VAt426i59QOMM6y6g9GiQP0DCC2r31iYlEuA2Rpm9bAX6eSgCnBMzWj7vpxspp1p6P3iCnbfSx8GDX7l3QKskDzzPKEfbnyM9EHsXBFZTE6HOEJ8qnCg0D6j2UJa9qeAyLnVZvkRfRlklUfi/0Pcz78bMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=MY4x65lp; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 0DCAEC5EF22;
+	Wed, 29 Apr 2026 11:41:33 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id EC72A601DF;
+	Wed, 29 Apr 2026 11:40:48 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9559010729C05;
+	Wed, 29 Apr 2026 13:40:40 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1777462844; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=Nxrz0cgWctqJlCSw2ayGmz8ggago1U3Xvv/tXD/4dxQ=;
+	b=MY4x65lpEtQO4FmzwnmwaK27cI5ixpQraQfOx7BbrdQA+0SFxZzFiz+xOmT8YYQlvSiiQb
+	/Qos3U/b4T7Fu+zkS4YpicDtIxa7cssuxTMqfoAoJNrp4znUVriG2qRz0mP/hrp+x1INmz
+	Cn4M/FuuXYECa3v6OS29hHhhACezDVU3WuG0S+Oo3CLS1yqOCu4f26YzKk555dhCUBTVXL
+	hclYXNOeLJipQT5Vd5zVBs16a+tmwAJlG23eu3MWdF3wHuaauyt/E8NqZYat3fChK9138D
+	cmGiHzdoxHppe7DPlCoSSsSENUxGpwkAciM2FMlip2pYcs1i76x8dX03s/jxtA==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DI5LDIQW45PE.LPIWCARJV7WC@kernel.org>
-X-Rspamd-Queue-Id: 7CD454939C7
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 29 Apr 2026 13:40:39 +0200
+Message-Id: <DI5LZNZ4KRZM.11GRLUOTX256S@bootlin.com>
+Cc: <stable@vger.kernel.org>
+To: "Osama Abdelkader" <osama.abdelkader@gmail.com>, "Jagan Teki"
+ <jagan@amarulasolutions.com>, "Andrzej Hajda" <andrzej.hajda@intel.com>,
+ "Neil Armstrong" <neil.armstrong@linaro.org>, "Robert Foss"
+ <rfoss@kernel.org>, "Laurent Pinchart" <Laurent.pinchart@ideasonboard.com>,
+ "Jonas Karlman" <jonas@kwiboo.se>, "Jernej Skrabec"
+ <jernej.skrabec@gmail.com>, "Maarten Lankhorst"
+ <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
+ "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
+ <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Marek Vasut"
+ <marex@denx.de>, <dri-devel@lists.freedesktop.org>,
+ <linux-kernel@vger.kernel.org>
+From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
+Subject: Re: [PATCH v3 1/2] drm/bridge: chipone-icn6211: use
+ devm_drm_bridge_add in i2c probe
+X-Mailer: aerc 0.20.1
+References: <20260423200546.324187-1-osama.abdelkader@gmail.com>
+In-Reply-To: <20260423200546.324187-1-osama.abdelkader@gmail.com>
+X-Last-TLS-Session-Version: TLSv1.3
+X-Rspamd-Queue-Id: 8E7A6493A3B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MV_CASE(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-241869-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-241870-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com,amarulasolutions.com,intel.com,linaro.org,kernel.org,ideasonboard.com,kwiboo.se,linux.intel.com,suse.de,ffwll.ch,denx.de,lists.freedesktop.org,vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TO_DN_SOME(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[17];
 	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[luca.ceresoli@bootlin.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[bootlin.com:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.996];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:url,bootlin.com:dkim,bootlin.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
 
-On Wed, Apr 29, 2026 at 01:11:44PM +0200, Danilo Krummrich wrote:
-> On Wed Apr 29, 2026 at 12:11 PM CEST, Johan Hovold wrote:
-> > On Tue, Apr 28, 2026 at 09:09:04PM +0200, Danilo Krummrich wrote:
-> >> On Mon Apr 27, 2026 at 12:28 PM CEST, Johan Hovold wrote:
-> >> > Trying to register a device on a bus which has not yet been registered
-> >> > used to trigger a NULL-pointer dereference, but since the const bus
-> >> > structure rework registration instead succeeds without the device being
-> >> > added to the bus.
-> >> >
-> >> > Reject devices with unregistered buses to catch any callers that get
-> >> > the ordering wrong and to handle bus registration failures more
-> >> > gracefully.
-> >> >
-> >> > Fixes: 5221b82d46f2 ("driver core: bus: bus_add/probe/remove_device() cleanups")
-> >> > Cc: stable@vger.kernel.org	# 6.3
-> >> 
-> >> Hm...this sounds like hardening and not like a "real" bug fix. Do you have a
-> >> specific reason why you added Cc: stable?
-> >
-> > It's certainly a bug fix and this change in behaviour was clearly
-> > unintended.
-> >
-> > Any caller getting the ordering wrong would now succeed in registering
-> > devices, but no driver would ever be bound which is harder to detect
-> > than the earlier crashes. 
-> >
-> > Whether any offenders have snuck in since 6.3 I don't know, but I still
-> > think this warrants a backport.
-> 
-> I see where you are coming from, and I agree that having an explicit error print
-> is an improvement over "the device just never got probed".
-> 
-> However, this isn't an actual bug -- it just happens to make a "real" bug less
-> obvious to catch.
+On Thu Apr 23, 2026 at 10:05 PM CEST, Osama Abdelkader wrote:
+> Use devm_drm_bridge_add() so the bridge is released if probe fails after
+> registration, and drop drm_bridge_remove() in chipone_i2c_probe.
+>
+> Signed-off-by: Osama Abdelkader <osama.abdelkader@gmail.com>
+> Fixes: 8dde6f7452a1 ("drm: bridge: icn6211: Add I2C configuration support=
+")
+> Cc: stable@vger.kernel.org
+> ---
+> v3: split the patch into two, one for i2c probe (bugfix) and one for dsi =
+probe,
+>     and add Fixes and Cc tags
+> v2: devm_drm_bridge_add instead of drm_bridge_add
+> ---
+>
+>  drivers/gpu/drm/bridge/chipone-icn6211.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/bridge/chipone-icn6211.c b/drivers/gpu/drm/b=
+ridge/chipone-icn6211.c
+> index 5bee10c64265..4d76e1bd5e78 100644
+> --- a/drivers/gpu/drm/bridge/chipone-icn6211.c
+> +++ b/drivers/gpu/drm/bridge/chipone-icn6211.c
+> @@ -758,12 +758,12 @@ static int chipone_i2c_probe(struct i2c_client *cli=
+ent)
+>  	dev_set_drvdata(dev, icn);
+>  	i2c_set_clientdata(client, icn);
+>
+> -	drm_bridge_add(&icn->bridge);
+> -
+> -	ret =3D chipone_dsi_host_attach(icn);
+> +	ret =3D devm_drm_bridge_add(dev, &icn->bridge);
+>  	if (ret)
+> -		drm_bridge_remove(&icn->bridge);
+> -	return ret;
+> +		return ret;
+> +
+> +	return chipone_dsi_host_attach(icn);
+> +
+>  }
+>
+>  static void chipone_dsi_remove(struct mipi_dsi_device *dsi)
 
-It seems we have differing definitions of "bug", but to me this is
-clearly a bug in driver core. Whether anyone will hit it, is a separate
-issue.
+This patch does not apply. Is it messed up with patch 2/2?
 
-But if we have any racing subsystem vs device registrations this would
-allow us to catch and fix those more easily. And the fix is straight
-forward and only turns a silent breakage into a properly logged error.
+Luca
 
-> That said, I don't see how this warrants a stable backport, i.e. it doesn't even
-> fall under the "this could be a problem" or "theoretical bug" category, which
-> typically are not accepted either.
-
-Yeah, under the documented rules it may be a bit of a stretch unless you
-consider it a "oh, that's not good" issue.
-
-> As mentioned in the other thread, if this was relaxed, I'm happy to hear about
-> it.
-
-It has been in practice as I mentioned there.
-
-Johan
+--
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
