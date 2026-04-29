@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-241851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241850-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iM4vLszQ8WlrkgEAu9opvQ
-	(envelope-from <stable+bounces-241851-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 11:35:08 +0200
+	id aLoDETPQ8WmjkgEAu9opvQ
+	(envelope-from <stable+bounces-241850-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 11:32:35 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1634D491FE5
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 11:35:07 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6776491F40
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 11:32:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AD7B730E92C4
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 09:30:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1D7FB300D6B7
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 09:30:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 699193CA49D;
-	Wed, 29 Apr 2026 09:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DE4B3921CC;
+	Wed, 29 Apr 2026 09:30:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="SJqp01h7";
-	dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="5Q/MWX61"
+	dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="mpzEcNT9";
+	dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="Grkt1nl0"
 X-Original-To: stable@vger.kernel.org
 Received: from mail.mainlining.org (mail.mainlining.org [5.75.144.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04F9A3C060B;
-	Wed, 29 Apr 2026 09:30:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 446123C3443;
+	Wed, 29 Apr 2026 09:30:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.75.144.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777455031; cv=none; b=T5J+0G32OWz1lQitxU2g5rRY+DAElnj/B5p/2V6OMgb6RnAqZhFk/ywcwz5tH4JFGBGBSSUq03SpnN4pZSYJgzw5tGXWTfM9f1p+gAsyyttI50yEf4ZyBPenJsDmtJdS3CKApB9dl/+flWPqF2yX+wBpqkPTLqo3vey7jc+F4s0=
+	t=1777455028; cv=none; b=pU3l16P3moVzfPCyqW9Al7bt2H/6ToNnfQW/jrJdlj+NhANV80wzOJu9wmKpia67Sk8RVJ5pxLCF9LupHIpQLTnBHnXXXATiaaO3sAaFnKZ+V2sVSFTIIe2tL2+6kiSbYRdQNBlHXgPeFPobNKLXBOCVJ9I2eAT2oG1l89ZBr3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777455031; c=relaxed/simple;
-	bh=xRErcKPQnoGFO/OuoFMb+jcfuLMIcQU35H8D5CzakEU=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ZhE3trlgs3ClMzSXZt2nRtIN+iaLu4MsKbCpf4p12xdKbUhpn5lKTeSNEmyn6NDTMyi2qBZnQphA0HjFMzYxai0MUg0p7M61gWuXtQpM79VMmQp6TWxwuokF4tpjPTIKoyLS5AcqEk2MWDh2ac1CKlPYhxiqg7lssH2b53ZDv18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org; spf=pass smtp.mailfrom=mainlining.org; dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=SJqp01h7; dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=5Q/MWX61; arc=none smtp.client-ip=5.75.144.95
+	s=arc-20240116; t=1777455028; c=relaxed/simple;
+	bh=xwJB9Mm8Ik60R6SKqMeflag5cfC/gceafZM2DWPmVNo=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=l7ILRkbMEeGT4jhI8Qks6PAnQiBBkg+5LaJ/1NH7+ryqZlYToxuYLYvyu/3USKv5XMMoLS54LX/pR6iqWWteqiuAqLiZTdOaSyr69q1zrZ6++dUnIW31yw5OqFMTMWvX4Uf14lwgaehCg0ia0uJ9zCQV6NY38h+xpBIGzV7eRxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org; spf=pass smtp.mailfrom=mainlining.org; dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=mpzEcNT9; dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=Grkt1nl0; arc=none smtp.client-ip=5.75.144.95
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mainlining.org
 DKIM-Signature: v=1; a=rsa-sha256; s=202507r; d=mainlining.org; c=relaxed/relaxed;
-	h=To:Message-Id:Date:Subject:From; t=1777455012; bh=us61U4dauSW9BvRwTbffQGU
-	gfbtB4S9QeDn8Q3GvZ5o=; b=SJqp01h7TUzWixGXVpL5hGL/hY0JblECHjPFnwAZY8ez+oybL0
-	H0CrTmJLC0M6E/b//oXj640Yfg/3jOMhKRlGGGrwShUpHvChxcLVqNiPc+2Uc1W8i0H8ASSr/DO
-	8gviWdUvvxMeFjxVy2A0RFhhaOG2jSWr5Eclqkz7mlXqd4JyALDysw4bctFFHL/6A6A4XnaHmzn
-	JHskj2z1L3Apzghgoh2KpaMX/Nic5/BrUWz7+ndVcJu2fXLuSdzg3UTnniYhQkMzE95KZ7gw54y
-	LbZcTqIa5YaZGcWSQIAuUr0VdOlOnWh427P5njcg/z4eOvyCrQItR3XUJngQwfBtAMQ==;
+	h=To:Message-Id:Subject:Date:From; t=1777455015; bh=dWWiNGzw96/EMO37l37XAm9
+	FMJiTx5xT5xpTA7EGXyc=; b=mpzEcNT9vlar+5jHh485yyJ6CBUTxm8IpdIeQQOl8w1esKjyQb
+	JZ/G8ykE6FN100f1KIh74/W0+seOemV6nFNL3BYaLEN0wSM2kSl5G1N6OcHAI7F6z8no6ZdCyiC
+	58JKV+IQ/NK5i/CmzPJcjfdig5XVoL5DApf3RMXf2FNq/koaV0C51iNoN6KII7QH7RjqxJjPKtc
+	kdBbkTP7mBCIdsixk2uYMP4N1XqIacYu+F9ogMB5a/BWvWvyFvaRjXCTcKyDCtcyBAQt6y3/jhy
+	vH0ZRdzuykUcnKDvOPykOs7KNto8n+mxHyHbmocjv7QycusfvqKBRaBFGjOw5XoaN+w==;
 DKIM-Signature: v=1; a=ed25519-sha256; s=202507e; d=mainlining.org; c=relaxed/relaxed;
-	h=To:Message-Id:Date:Subject:From; t=1777455012; bh=us61U4dauSW9BvRwTbffQGU
-	gfbtB4S9QeDn8Q3GvZ5o=; b=5Q/MWX61o9jo8ydrVV0IN3yE7hwVw6UgO8uZQqGRqsW2gX61u/
-	e89VSTDUf0obBfNeLk+RGG4YuFB2FmkFi7CQ==;
+	h=To:Message-Id:Subject:Date:From; t=1777455015; bh=dWWiNGzw96/EMO37l37XAm9
+	FMJiTx5xT5xpTA7EGXyc=; b=Grkt1nl0RUHdJtwbvEhI24PHMb6R2+vvMtfp/4k6OHxeQSgJGL
+	mZYrgT183dYSn1Kj4r1slaUzMHCwrch2dHBQ==;
 From: Nickolay Goppen <setotau@mainlining.org>
-Subject: [PATCH v5 0/5] arm64: dts: qcom: sdm630/660 FastRPC fixes
-Date: Wed, 29 Apr 2026 12:30:07 +0300
-Message-Id: <20260429-qcom-sdm660-cdsp-adsp-fastrpc-dts-fix-v5-0-16bc82e622ad@mainlining.org>
+Date: Wed, 29 Apr 2026 12:30:11 +0300
+Subject: [PATCH v5 4/5] arm64: dts: qcom: sdm630: describe adsp_mem region
+ properly
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,12 +58,9 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAJ/P8WkC/5XOTU7DMBAF4KtUXjPIGY/tlhX3QF34L6kRcYKdR
- qAqd8cpm0h0ETYjvdHoe3NjJeQYCns53FgOcyxxSDXIpwNzF5O6ANHXzJCj4tRI+HRDD8X3SnF
- wvoxg1tGaMuXRgZ8KtPELPHdGK4GcpGHVGnOo63vP2/k3l6t9D25a8fXiEss05O/7I3Oz3v23c
- 26AAxeWtLR4kpJeexPTR0wxdc9D7thaPOOGRr6Xxkq3ymljhTseT+YhLbY07qVFpVGTNUI30lv
- +kKYtTXtpqnQIEqVWpEjjH3pZlh8OW59+AgIAAA==
-X-Change-ID: 20260415-qcom-sdm660-cdsp-adsp-fastrpc-dts-fix-d0ca7632045a
+Message-Id: <20260429-qcom-sdm660-cdsp-adsp-fastrpc-dts-fix-v5-4-16bc82e622ad@mainlining.org>
+References: <20260429-qcom-sdm660-cdsp-adsp-fastrpc-dts-fix-v5-0-16bc82e622ad@mainlining.org>
+In-Reply-To: <20260429-qcom-sdm660-cdsp-adsp-fastrpc-dts-fix-v5-0-16bc82e622ad@mainlining.org>
 To: Bjorn Andersson <andersson@kernel.org>, 
  Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -72,19 +70,17 @@ Cc: Nickolay Goppen <setotau@mainlining.org>,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
  ~postmarketos/upstreaming@lists.sr.ht, 
  Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
- Konrad Dybcio <konradybcio@gmail.com>, 
- Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>, 
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
- stable@vger.kernel.org
+ Konrad Dybcio <konradybcio@gmail.com>, stable@vger.kernel.org, 
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1777455011; l=2735;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1777455011; l=1261;
  i=setotau@mainlining.org; s=20250815; h=from:subject:message-id;
- bh=xRErcKPQnoGFO/OuoFMb+jcfuLMIcQU35H8D5CzakEU=;
- b=32wlkg4Ws+nxg3L7pBLlSHJfbeoee7TP3jbl6LDNSC5SvsidYfCMs0yIjs4oJjiDYW2i7VPbt
- sjNLEje8XYQCPA0GMgdsK1kgGiCG4jW9cKSycZjwqP9xaNPXBEaBhV5
+ bh=xwJB9Mm8Ik60R6SKqMeflag5cfC/gceafZM2DWPmVNo=;
+ b=wsd4p7vLN/JzD0IXnl5mY35uyLy+deCjKm+Te4aS8Uatc8c4sbnttqgG04j/+xCTzugxUuaA6
+ 8hqeMucj5RUBjJuoqlG7m5MMuEiBIFg9hlIR6Pf72v0+rCBY3KhN5tU
 X-Developer-Key: i=setotau@mainlining.org; a=ed25519;
  pk=Og7YO6LfW+M2QfcJfjaUaXc8oOr5zoK8+4AtX5ICr4o=
-X-Rspamd-Queue-Id: 1634D491FE5
+X-Rspamd-Queue-Id: A6776491F40
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
@@ -92,91 +88,65 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[mainlining.org,reject];
 	R_DKIM_ALLOW(-0.20)[mainlining.org:s=202507r,mainlining.org:s=202507e];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241851-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-241850-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[3];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
+	RCPT_COUNT_TWELVE(0.00)[15];
 	FREEMAIL_CC(0.00)[mainlining.org,oss.qualcomm.com,vger.kernel.org,lists.sr.ht,gmail.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[setotau@mainlining.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[mainlining.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable,dt];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,f6800000:email,f6000000:email,9f800000:email]
 
-This series introduces fixes that make FastRPC on SDM660 work properly.
-Currently only the calculator_example test passes on both ADSP and 
-CDSP [1].
-Also assign adsp_mem region to the ADSP's FastRPC node.
+Downstream [1] this region is marked as shared, reusable and dynamic so
+describe it that way.
 
-[1]: https://github.com/qualcomm/fastrpc/issues/269#issuecomment-4232125297
+[1]: https://github.com/xiaomi-sdm660/android_kernel_xiaomi_sdm660/blob/11-EAS/arch/arm/boot/dts/qcom/sdm660.dtsi#L448
 
+Fixes: b190fb010664 ("arm64: dts: qcom: sdm630: Add sdm630 dts file")
+Cc: stable@vger.kernel.org
+Reviewed-by: Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Nickolay Goppen <setotau@mainlining.org>
 ---
-Changes in v5:
-- Changed alloc-ranges of adsp_mem (Konrad Dybcio)
-- Reordered patches
-- Link to v4: https://patch.msgid.link/20260424-qcom-sdm660-cdsp-adsp-fastrpc-dts-fix-v4-0-ee5257646472@mainlining.org
+ arch/arm64/boot/dts/qcom/sdm630.dtsi | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-Changes in v4:
-- Added CP_ADSP_SHARED VMID to dt-bindings (Ekansh Gupta and Konrad Dybcio)
-- Added Fixes tags
-- Link to v3: https://patch.msgid.link/20260422-qcom-sdm660-cdsp-adsp-fastrpc-dts-fix-v3-0-274ba3715db0@mainlining.org
+diff --git a/arch/arm64/boot/dts/qcom/sdm630.dtsi b/arch/arm64/boot/dts/qcom/sdm630.dtsi
+index 4b47efdb57b2..252c301f0156 100644
+--- a/arch/arm64/boot/dts/qcom/sdm630.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm630.dtsi
+@@ -494,9 +494,12 @@ venus_region: venus@9f800000 {
+ 			no-map;
+ 		};
+ 
+-		adsp_mem: adsp-region@f6000000 {
+-			reg = <0x0 0xf6000000 0x0 0x800000>;
+-			no-map;
++		adsp_mem: adsp-region {
++			compatible = "shared-dma-pool";
++			alloc-ranges = <0x0 0x80000000 0x0 0x80000000>;
++			alignment = <0x0 0x400000>;
++			size = <0x0 0x800000>;
++			reusable;
+ 		};
+ 
+ 		qseecom_mem: qseecom-region@f6800000 {
 
-Changes in v3:
-- Brought back patch that changed adsp_mem to reusable (Ekansh Gupta)
-- Changed adsp_mem to dynamic allocation (Ekansh Gupta)
-- Fixed alignment of the vmids property of adsp
-- Link to v2: https://patch.msgid.link/20260420-qcom-sdm660-cdsp-adsp-fastrpc-dts-fix-v2-0-f6c7ab3c889a@mainlining.org
-
-Changes in v2:
-- Dropped patch that changed adsp_mem to reusable
-- Added vmids to fastrpc subnode of adsp (Ekansh Gupta)
-- Link to v1: https://patch.msgid.link/20260415-qcom-sdm660-cdsp-adsp-fastrpc-dts-fix-v1-0-03b475b29554@mainlining.org
-
-To: Bjorn Andersson <andersson@kernel.org>
-To: Konrad Dybcio <konradybcio@kernel.org>
-To: Rob Herring <robh@kernel.org>
-To: Krzysztof Kozlowski <krzk+dt@kernel.org>
-To: Conor Dooley <conor+dt@kernel.org>
-To: Nickolay Goppen <setotau@mainlining.org>
-Cc: Ekansh Gupta <ekansh.gupta@oss.qualcomm.com>
-Cc: linux-arm-msm@vger.kernel.org
-Cc: devicetree@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: ~postmarketos/upstreaming@lists.sr.ht
-Cc: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Cc: Konrad Dybcio <konradybcio@gmail.com>
-
----
-Nickolay Goppen (5):
-      dt-bindings: firmware: qcom: scm: add CP_ADSP_SHARED VMID
-      arm64: dts: qcom: sdm660: set cdsp compute-cbs' regs properly
-      arm64: dts: qcom: sdm630: set adsp compute-cbs' regs properly
-      arm64: dts: qcom: sdm630: describe adsp_mem region properly
-      arm64: dts: qcom: sdm630: assign adsp_mem region to ADSP FastRPC node
-
- arch/arm64/boot/dts/qcom/sdm630.dtsi    | 28 +++++++++++++++----------
- arch/arm64/boot/dts/qcom/sdm660.dtsi    | 36 ++++++++++++++++-----------------
- include/dt-bindings/firmware/qcom,scm.h |  1 +
- 3 files changed, 36 insertions(+), 29 deletions(-)
----
-base-commit: 5a154741a8271f2db906ed4c33a55a1c83e84da1
-change-id: 20260415-qcom-sdm660-cdsp-adsp-fastrpc-dts-fix-d0ca7632045a
-
-Best regards,
---  
-Nickolay Goppen <setotau@mainlining.org>
+-- 
+2.54.0
 
 
