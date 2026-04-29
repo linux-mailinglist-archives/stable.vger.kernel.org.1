@@ -1,203 +1,155 @@
-Return-Path: <stable+bounces-241893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241894-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UHc2B+EG8mkimwEAu9opvQ
-	(envelope-from <stable+bounces-241893-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 15:25:53 +0200
+	id YOS4IGsN8mkynQEAu9opvQ
+	(envelope-from <stable+bounces-241894-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 15:53:47 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C8B9494C35
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 15:25:47 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 324614952E0
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 15:53:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 757F93014F6B
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 13:20:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AF58830AE20A
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 13:42:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AA8D3FBEDF;
-	Wed, 29 Apr 2026 13:20:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BDE139D6E6;
+	Wed, 29 Apr 2026 13:41:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k2gXbMUj"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OKVVMajt"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB5833FCB1C
-	for <stable@vger.kernel.org>; Wed, 29 Apr 2026 13:20:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 903FB3FE667
+	for <stable@vger.kernel.org>; Wed, 29 Apr 2026 13:41:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777468824; cv=none; b=Vr+mdiZedCiFEeNMYGmQkkIGUIdplA+0EU16U1NIB/BljXkek8GBMovQqFurVlfS+352oeY77+CSapbnPVC4O38Q6pAaUZAyKEn5XD4qW48P1wTD4HdjrjagNZiMwH6xvq7WmaMBLWhlU79sB80l6bswYv0kmcxmgQAQL2xtCmY=
+	t=1777470069; cv=none; b=qlhJenB9DE0b0wtQvq4u6KdZ/jCKVQp7oYvVV/t7cqdTjlS/AMbeJILGAN+S9/WfNjWnk/epbfpkyq+RmbCDlUKQicKtc5wU0xWVI0hn2yIEistiAj2YQEiUFBDHHssYZtBVNgNHFB/yqLOek6wYlA4LvlXRdfbaIM0WxmpcDBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777468824; c=relaxed/simple;
-	bh=feuCS+Wde8W7EpfVCWxGj5z6QZqJHZ4hcRmQpIJg2Y8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=rOuzER8X/7v+3UIRKnD3/U8wSoW0JANjWZdNMj/6EFGA0dCIdy7WmCEUHLBooIpfMyRIIXeNkXLI2rUiS+upE9mRkkjlbaa0Qa5axL19n7EjrsP5WvU5rA/k6+zK3T/5UbnpNd66vUomdFNGFYheIFPmf9dln2+mKzMrvA/w3Fg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k2gXbMUj; arc=none smtp.client-ip=74.125.82.170
+	s=arc-20240116; t=1777470069; c=relaxed/simple;
+	bh=qAZ16WjkXW8EaE4bAi9IdH+z9/TRRUTlzn3zZxZEVLw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=N1NTw61yFSWtDwJ3dZF2I+zgDPorGOV2nW5SFv8I7OOIDyc9Vi4skH9vmtNP7DT4ek2aQSV7nGtM81OLQyYJtLG4DIAxRT8o1EqqUx3e02Tai8haYmBlS9gYG0iIzrnPSR9LHTcqkv3K6SZEdYfDjNp15UZc4ULM5vfpM9TrXhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OKVVMajt; arc=none smtp.client-ip=209.85.128.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-2b4520f6b32so18217282eec.0
-        for <stable@vger.kernel.org>; Wed, 29 Apr 2026 06:20:23 -0700 (PDT)
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-488b0e1b870so217881325e9.2
+        for <stable@vger.kernel.org>; Wed, 29 Apr 2026 06:41:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777468823; x=1778073623; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=syI6vCyidI7u0qaJd4ZC0RGGlbIolm5pPKH0di9GsB0=;
-        b=k2gXbMUjAHIP9ks38qtvQQyWs2hSgZTiskIWCXpVnMz3H1jJiOJQo8xQRRu1mjeANA
-         GoiytNp6pASpSH50tNwIOpS8nBto25mpeTgIOhL+gu8Z+9m8GO2kixc3ojTBvuEEIa89
-         U5iVAK+2/FTHI3t+TVMlbF+7NlCHm4eGu455n0fe5j0Q9g6VWiKoCyXYK/tVaktWaTdf
-         9JJbQSOT5vNsz5YWedSDrBev2J34aItEUL7bVrR9lLScHLUR6QIE1bUcGwR7jwG0OLhN
-         5CutsLThTzdwQVRa4VGE2NYB8mkWwna4BmdPiWRhsc5nisc7tvbZ8EUj+Hth3ew9Dd98
-         Or9Q==
+        d=gmail.com; s=20251104; t=1777470059; x=1778074859; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=SE1WBDEAJ1UYNmcfE47F7BEz7WO16H1bRtYL6mvQ6Xs=;
+        b=OKVVMajtloHYxEnX2+J+ZSCy4yTiSNRho/lGJPvJh/Aral/GUR82G4qRfUS6qEWiGs
+         ifsJfjsRdH9dzbx9fYmTrOkFj4JSfsBGYBECRsIjvxatPAinhCzqLKOhejOMUBZmC3aE
+         ImuD6DAwDwnB3zw2i81tDLDckD6xGCkP2vvA5NmWlXx0n+o3CJqBNrldWQD5OqWru7tl
+         Fngru0z1sVT6qsR/yrqgdk3XaQwgyVJpeNzGR/38PAxqzhgc38Xs3g6i79gb8zf4L3HA
+         F+vTYCdg0pFBtCkdVDH5F0ApxusQCkmMTwhv/BQ3x8HT+Dmh2nOgY2zS2d/8POYyjbUl
+         uEnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777468823; x=1778073623;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=syI6vCyidI7u0qaJd4ZC0RGGlbIolm5pPKH0di9GsB0=;
-        b=rZUPUdhgc3dmEB4SLrVOF9dI8DvAfKz0mxHFRBc7Qxg+36OiXLy7V7v2BUGoTIIeB3
-         hzy9gMsPE0wjO8gdaw2JPgcjnpwFpmF2ONFA5BBi5TcXARb0YSbLRnzALOEydkMy4aXn
-         N9rliuG00SoFbOLH7KZbUik9naDK6qsHB3rwGVt3scQgsH6G8/umIqU5/F5yS9bv+9SW
-         e8q7YBJ2VfJyNfamiyIWUReBHRyU8Hy7yE1XU49BUCt05o0rh3zuTYdoRvBwiV8LKXVC
-         OiXmKxbsgOUqZCzw8p8Y1mILownDuj3QRhDSYbMhu3wJtqDRb8HLsk5nCbgJHbH/Eua6
-         go2Q==
-X-Forwarded-Encrypted: i=1; AFNElJ+F8SfZRwKB1BF8uMBSAd0XhosoNUii9x14VImScwH/JsFYjJLHat0sogKgL/KKwT+SbJsPVig=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxIvGAFD8KTvZGlNS7KfGrjsJG59seFml3L4WG7ZY5InQlDzb3H
-	i6C0ikGytAoo1SLm1M5JG2rJbubRSPxe/f8WkGCiwVq2r2J53zanx38E
-X-Gm-Gg: AeBDieuLLHGaAaJHbi95HMBd7Xz9cnNidhdfpQdQ2UmTwyp4pYyTQl6JXi32ucSxKN9
-	9zVPSgV9u6OdHXWtQAZcKqw+3H8jU9D5R/JQSTDzVnlV9h4DpypY5PzJ3SJble1M1egqW8wtz0h
-	Z4tCtmoNaVOn9hFoK6j/nGdw8Ic6tXCPeFWuLE8FLgazD5wTe8ib7Hu7mdDpTKJX+4/HgXi9ue5
-	P7q2luF8B7fUeH2GXq574SIeCQQHbD/ojc4+n72wQROoJD32mTaaKyA8bpICVXKt66l/Xyluf1G
-	d6+JAZ/0CReWLRH1L9gOTsk3IbQoYRYEqCzLGTGb6hV5lVL4WSyBb00iqlYvu46NuX6BWhi2Aqi
-	etPcAgSvtqVbSWY/mOJNlZTnk99Xj17I+Xhns+G7BEM/PQzLzABhxJw4PKtB00yKIX3uLkCUqOt
-	KIRSJBSxctE9s+fl/QlJMyxhO22zh8CZQlFSn8rV1mYhzl2mEC6XeJtWnpJ/3ibIjv/X+8wx7za
-	dmzzu8FZo5n
-X-Received: by 2002:a05:7022:e98d:b0:127:366f:8bb7 with SMTP id a92af1059eb24-12de2a4b858mr1514450c88.25.1777468822679;
-        Wed, 29 Apr 2026 06:20:22 -0700 (PDT)
-Received: from [192.168.1.18] (177-4-161-87.user3p.v-tal.net.br. [177.4.161.87])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12de321df36sm3336852c88.7.2026.04.29.06.20.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Apr 2026 06:20:22 -0700 (PDT)
-From: =?utf-8?q?C=C3=A1ssio_Gabriel?= <cassiogabrielcontato@gmail.com>
-Date: Wed, 29 Apr 2026 10:20:02 -0300
-Subject: [PATCH 2/2] ALSA: usb-audio: Update Babyface Pro control caches
- only after successful writes
+        d=1e100.net; s=20251104; t=1777470059; x=1778074859;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=SE1WBDEAJ1UYNmcfE47F7BEz7WO16H1bRtYL6mvQ6Xs=;
+        b=abgcdA5Rc/5XYQJWkd2+hsxygTM3wMMUTcK5h7IYnmbdpSzS1kE8bzr7qHMdjjifoi
+         iqHPFO64DgpSaCfuhq205GeJZqFxoGhYa44VQr30FgsNLd5tzEdcTZnyKm2abcleMpPZ
+         uzNLyi6RWFM0SR4gkrW5bRCjP0I1PE4tZXkUJS/QyI+CeIY4IesIa4+3CcvnfVOfZcoh
+         vs2GHiC/rsddqf6K59XOnqXyyFTSGz6SZbDdH0jxcPFinMkeRHTdFP5D05YD9VjcQ5dW
+         gBXNRqpSBu7gZ4DAfT2UI4zKcI2U/331JDO5CGPB00v5JMandx31dlgLZNV+hAOmZ8zH
+         XdGg==
+X-Gm-Message-State: AOJu0Yz3KCeG956Gb55WKayeH9aKyx2ckogaUimACGG9QxnXXtFT1b8F
+	iwuVUs9LoHFJpg35gD6lzUf99Vb+kCmcA8S76L1nMlGsjvtEpCJs4XqC
+X-Gm-Gg: AeBDieuULYoFoFMZwIRTuU5PdwhGNjciMR5Fi7wtCJ4D46hE8EgKBFPI44Siy0RSg0U
+	hNRsppbS34kRIaTufi0i35ChUV9YRnMy4r9/+9dVP9G6rXqjdV9MNGdDjAaJtwOHQUw5kuyedMK
+	TH7s+lxJ/QgOW4+XThIxZ83IRJu6UrIkRqI4ZLsHTHGPLeHyd0JZHw0CWViVFUV0gUn+iY5BSRb
+	nmU8JXLPQIXcGteywZd3ch07lDHuL2ImOYCdpNg0SdThjaGAUogyOGxwWkCsaxA3QSu+SW9MBUW
+	nkkk+dIs5n9g7CO8IFvxbtmAFF/op5Daivv0qLXRJ/jLejjGQzau2ZfYJUaJk6+bsDECq8aE/hG
+	/VlZTh7eTz7HfCDOjbfa/CN28XKZWf7t5nwcliGGySiL9KkM5bt5dv896aKdT0aiRck0SMhvqLM
+	coXmgxalp47Dfbled31Al6NXHDLb4VHTTui3VNMBUlib5WhvOVDjjDp5SUOIC7pkY5cxX/rR8Qj
+	qxcHdhr7Q==
+X-Received: by 2002:a05:600c:4e4b:b0:488:be58:bb5b with SMTP id 5b1f17b1804b1-48a7b547375mr70268735e9.24.1777470059359;
+        Wed, 29 Apr 2026 06:40:59 -0700 (PDT)
+Received: from ?IPV6:2001:861:3385:e20:f99c:d6cf:27e6:2b03? ([2001:861:3385:e20:f99c:d6cf:27e6:2b03])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a7c57b579sm56656275e9.4.2026.04.29.06.40.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 29 Apr 2026 06:40:58 -0700 (PDT)
+Message-ID: <2d81e7f6-b6e4-4e3e-bd75-315c696c003a@gmail.com>
+Date: Wed, 29 Apr 2026 15:40:28 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/3] drm/sti: remove bridge when sti_hda component_add
+ fails
+To: Osama Abdelkader <osama.abdelkader@gmail.com>, luca.ceresoli@bootlin.com,
+ Alain Volmat <alain.volmat@foss.st.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+References: <20260423200622.325076-1-osama.abdelkader@gmail.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Rapha=C3=ABl_Gallais-Pou?= <rgallaispou@gmail.com>
+In-Reply-To: <20260423200622.325076-1-osama.abdelkader@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260429-alsa-usb-quirks-cache-rollback-v1-2-01b35c688b80@gmail.com>
-References: <20260429-alsa-usb-quirks-cache-rollback-v1-0-01b35c688b80@gmail.com>
-In-Reply-To: <20260429-alsa-usb-quirks-cache-rollback-v1-0-01b35c688b80@gmail.com>
-To: Takashi Iwai <tiwai@suse.com>
-Cc: Thomas Ebeling <penguins@bollie.de>, 
- Ian Douglas Scott <ian@iandouglasscott.com>, 
- Jaroslav Kysela <perex@perex.cz>, linux-sound@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- =?utf-8?q?C=C3=A1ssio_Gabriel?= <cassiogabrielcontato@gmail.com>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1885;
- i=cassiogabrielcontato@gmail.com; h=from:subject:message-id;
- bh=feuCS+Wde8W7EpfVCWxGj5z6QZqJHZ4hcRmQpIJg2Y8=;
- b=owGbwMvMwCV2IdZeKur/u2bG02pJDJmfWLtajwc095kkiQt6yG67uunhz0dcbCv2ZizvXpO19
- ZT3g+UpHaUsDGJcDLJiiiyrkxZZ7ul6cLU+boUHzBxWJpAhDFycAjAR2ceMDC/O8VfwN3XZpQQv
- m6kTe0jx7U7lwL3c7yqd/X2fOal3rmZkWLNdozE37vv6Tb0bz216FvG7dNOFcpHFTvM2TJFztZj
- EwQkA
-X-Developer-Key: i=cassiogabrielcontato@gmail.com; a=openpgp;
- fpr=AB62A239BC8AE0D57F5EA848D05D3F1A5AFFEE83
-X-Rspamd-Queue-Id: 3C8B9494C35
+X-Rspamd-Queue-Id: 324614952E0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	FREEMAIL_CC(0.00)[bollie.de,iandouglasscott.com,perex.cz,vger.kernel.org,gmail.com];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241893-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[gmail.com,bootlin.com,foss.st.com,linux.intel.com,kernel.org,suse.de,ffwll.ch,lists.freedesktop.org,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-241894-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[cassiogabrielcontato@gmail.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[rgallaispou@gmail.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FREEMAIL_FROM(0.00)[gmail.com]
 
-snd_bbfpro_ctl_put() and snd_bbfpro_vol_put()
-cache the requested packed control state in
-kcontrol->private_value before issuing the USB write.
 
-Their get and resume paths use that cached value directly,
-so a failed write can leave the driver reporting and later
-replaying a setting the hardware never accepted.
 
-Update the cached state only after a successful USB write.
+On 4/23/26 22:06, Osama Abdelkader wrote:
+> Use devm_drm_bridge_add() so the bridge is released if probe fails after
+> registration, and drop the manual drm_bridge_remove() in remove().
+> 
+> Check the return value of devm_drm_bridge_add().
+> 
+> Signed-off-by: Osama Abdelkader <osama.abdelkader@gmail.com>
+> Fixes: d28726efc637 ("drm/sti: hda: add bridge before attaching")
+> Cc: stable@vger.kernel.org
+> ---
+Hi Osama,
 
-Fixes: 3e8f3bd04716 ("ALSA: usb-audio: RME Babyface Pro mixer patch")
-Cc: stable@vger.kernel.org
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
----
- sound/usb/mixer_quirks.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+Acked-by: Raphaël Gallais-Pou <rgallaispou@gmail.com>
 
-diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
-index 229be55e9158..99975c3240a5 100644
---- a/sound/usb/mixer_quirks.c
-+++ b/sound/usb/mixer_quirks.c
-@@ -3027,12 +3027,14 @@ static int snd_bbfpro_ctl_put(struct snd_kcontrol *kcontrol,
- 	if (val == old_value)
- 		return 0;
- 
-+	err = snd_bbfpro_ctl_update(mixer, reg, idx, val);
-+	if (err < 0)
-+		return err;
-+
- 	kcontrol->private_value = reg
- 		| ((idx & SND_BBFPRO_CTL_IDX_MASK) << SND_BBFPRO_CTL_IDX_SHIFT)
- 		| ((val & SND_BBFPRO_CTL_VAL_MASK) << SND_BBFPRO_CTL_VAL_SHIFT);
--
--	err = snd_bbfpro_ctl_update(mixer, reg, idx, val);
--	return err < 0 ? err : 1;
-+	return 1;
- }
- 
- static int snd_bbfpro_ctl_resume(struct usb_mixer_elem_list *list)
-@@ -3217,11 +3219,13 @@ static int snd_bbfpro_vol_put(struct snd_kcontrol *kcontrol,
- 
- 	new_val = uvalue & SND_BBFPRO_MIXER_VAL_MASK;
- 
-+	err = snd_bbfpro_vol_update(mixer, idx, new_val);
-+	if (err < 0)
-+		return err;
-+
- 	kcontrol->private_value = idx
- 		| (new_val << SND_BBFPRO_MIXER_VAL_SHIFT);
--
--	err = snd_bbfpro_vol_update(mixer, idx, new_val);
--	return err < 0 ? err : 1;
-+	return 1;
- }
- 
- static int snd_bbfpro_vol_resume(struct usb_mixer_elem_list *list)
-
--- 
-2.54.0
-
+Thanks,
+Best regards,
+Raphaël
 
