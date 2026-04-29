@@ -1,316 +1,188 @@
-Return-Path: <stable+bounces-241931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241932-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CIGhETBQ8mlGpgEAu9opvQ
-	(envelope-from <stable+bounces-241931-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 20:38:40 +0200
+	id oMQlG3JW8mkTpwEAu9opvQ
+	(envelope-from <stable+bounces-241932-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 21:05:22 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F62E499367
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 20:38:39 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AE534997C9
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 21:05:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D3D14303FFF6
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 18:34:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C1D063012BF0
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 19:04:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55EFB381B05;
-	Wed, 29 Apr 2026 18:34:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B80FE3CA4A0;
+	Wed, 29 Apr 2026 19:04:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jE/YGvp2"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="k2QUmowe"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ABFB37E2F8
-	for <stable@vger.kernel.org>; Wed, 29 Apr 2026 18:34:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C18B33BBCF;
+	Wed, 29 Apr 2026 19:04:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777487663; cv=none; b=hKQfOYPhcJrSRhm3djSZyN/ojnrYwgRtskemlazLputNfdZNavn/RauHllCozVVqqMza0ZItfQSNESYvygCbCdAcvdfNedoxXn3mDf0gx9NcuBKpnbWSFvd5E0s/xkWCpDi8mteUQGyPNw2rWpIis27VPp8cruxrEv67A9T6PVc=
+	t=1777489488; cv=none; b=VML/3t13zRHjQDMyE2IFtuzlkIGRB01X2uqFxPHXYJsI6Vv3PV0703HMmrG9R+dvFsG3h15qFKwgpQUEXAyTzLSzAoS06Qk89+d3+NZdDKh0Q97k/JWI0mmuYWO1EN+1DQupxB6VTT1sWYmUeCCRwJrlQjMWigdsr/UiBxyxBGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777487663; c=relaxed/simple;
-	bh=ggB6iqNXAUdCdmuPFrKjyW2XjK/FQ6ji9Jf6A5CZqXY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=ZurwVOX0UYwHK/U4qYYSg0W2ebh1g6cJ34aZEaMRZhftIIFV2tLGi5JFTE7yV0WdVoiE99yzBhswW8mMXqkrqcj/VhVubCP2frvQ04/gqYDMPMOuYsIfI9pYS+o2Y8gJDrDwEBAsGhqeSZfqfBhakmnSglHLrM7fuK+KSg63Dn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jE/YGvp2; arc=none smtp.client-ip=74.125.82.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-2ba895adfeaso176207eec.0
-        for <stable@vger.kernel.org>; Wed, 29 Apr 2026 11:34:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777487660; x=1778092460; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=dWNz7f7Eq6/FoxVuvOcnlGaVoOPITwz8TC8gscczLsw=;
-        b=jE/YGvp2dMK9v0gJT3sGP5/SXyQau2J1qALs6IuPDPUd7JMkZiCpQN8TYcl6fbHFkc
-         8rq0G/OvZqnga4Z0zyv/HELe1EuPpDUZKTJVkUDJ8eJB3NWNFvv6vBXphCYLZUNZAWZ8
-         zqTUKu71SE0DwITpBAjq3JHSlkFg9gN/O5L1dorF0zvEnkuEpsRs6m1P3ak8iuAhEU1+
-         AQ3lVtjoD2ha7duhZQvcmEH6pz059iXZrB5vibKy7WGL4NXxOZBTTPYox3D4DLBPGAEo
-         3IFnPari7RURgEHZR7v1vvDHABfhy/QWWI1C2dGhLlA8LjO1AKWQTzHr0xcFbbD8+HSU
-         co+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777487660; x=1778092460;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dWNz7f7Eq6/FoxVuvOcnlGaVoOPITwz8TC8gscczLsw=;
-        b=ngGMzjsYsKUr5XvhJA/60MIKzu6wmOG07RblINmoaINfahyts0whZcqKkzYEg5TxYY
-         UTA+4eeBVIgsWI4aqmfqpG89uZxnheMOUhlFGMOwGfenfSpLKsI9gdof3KGmy3eUZJmu
-         WRMdZhfdJj8DCla+bC8T/z9SDNYwtLmC/8gIumSc1CzEGDWZPhUEcFX3fBxvlU052odt
-         h5lk6DIyNbtrCYwvfn97mGZ5cDTVWpvRtmyuym/0mS/PoUTO42sZsG9aPlWogRauFcaF
-         gEEzGCJ2FqQVk4XRKfrk71rMazprBkOHwUEvME3atoSZndoTBW/H4ufI+ubqbOsuPQm/
-         eD4Q==
-X-Forwarded-Encrypted: i=1; AFNElJ/MJsKywxEEV7U1m3CRau0h389Z1cQ9b8PrHMCwfvQKa9z/b3Sd2dOu3CD4yKoy1F5em2m7pTo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YymG/OY3SvshgVho1w345K28r7Xa/+mwxvMoYo93JE8fIDO7nDD
-	I4TNjWg22gTiePyTkz/+KMNmNF8DUnNrgYJrwf9yTMXH4c+OuoDbueGF
-X-Gm-Gg: AeBDiesyFfAZpa30rUty4vyoK2t/kaTYpNtdTO7La8+txN+qjPfjd4uvBTT0/eyB5B3
-	wb1tjdGN3Sz/7mRACv9O1GeuApQX77SqSW3/4TfQ0z2fyhgI0qcPI0NpM8AfFhNwEabNuwY+aLO
-	42/oFm5mDTF+QcrY88Tq/TPkz7jWijxkXmS+NSX5dobIDhNBWsQhfzWM2iB+5prL0w5YLW+0YMP
-	PU/wAtXkvuiQ+k9KEydoBpdSND+7Raju7flOa48NBMiEXuii7HkqT6UVU19Zwh7Ti7Rutt+GXSj
-	J90lHwftWNSPEraNaWfyW7gy3G/St5kF7Sr+iZFm1jwVhvBAumxBdA0JmWKKKJwVGBosweed7HF
-	4KZuBY3SXXwIxfjsCF9KriNG8AKGTy8jxVqC0GPrLjI0ezGsfv1Sip+opt1ubb0f9MwWCLHAIIQ
-	FMTzunQSRt8PvdrkbdWRWP+Hb9t8koZSV6n6/3t7pstu5wm70SZjd30nqhqpyhylE90KNZwN3y7
-	jvgNGCGyDeV
-X-Received: by 2002:a05:7300:dc86:b0:2e2:27bb:a4a2 with SMTP id 5a478bee46e88-2ed197ac539mr2258327eec.13.1777487660066;
-        Wed, 29 Apr 2026 11:34:20 -0700 (PDT)
-Received: from [192.168.1.18] (177-4-161-87.user3p.v-tal.net.br. [177.4.161.87])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ed1c09c6e3sm3136785eec.25.2026.04.29.11.34.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Apr 2026 11:34:19 -0700 (PDT)
-From: =?utf-8?q?C=C3=A1ssio_Gabriel?= <cassiogabrielcontato@gmail.com>
-Date: Wed, 29 Apr 2026 15:34:05 -0300
-Subject: [PATCH] ALSA: hda/cs35l41: Fix firmware load work teardown
+	s=arc-20240116; t=1777489488; c=relaxed/simple;
+	bh=tsidYZBHseBKOISqltd/eKHnliZi9ZyEiXutHjbxvS0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BkTLWW763P4XR+YJH/HAfEb5DjGL5gYdjt2jzQDbVyuyYtoIsxm/ajRWtMTAi8Cb/nTJWgGf6ikJTUB8SzARmcJjAGVKp2uM1rLTUKvBsTvkZ/60nZDIq/RJ4oqK32tl0m3Fy1OFZakz3RzjCDISTtEENwma6bjIlD6aUk3KXJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=k2QUmowe; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1777489486; x=1809025486;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=tsidYZBHseBKOISqltd/eKHnliZi9ZyEiXutHjbxvS0=;
+  b=k2QUmowePQJYtexxH//yyHi8DUMMJF/dHdT01a7gK0DIdqkmM9J6XjC9
+   /iEjVdMSCyxW1JuaCyD11ST3CIxh1i84mJP9oqkSNirrhao/LxUKVWsQr
+   Pp9yH6vTlhLsxUrJzJ4++H7zaKuOdG1QWQR1d0FbPF/cJOc/XVsXdkAas
+   By3cZv6YUQ30kng1fi0CACMzc9h4tIGVs3++8b9T4mpSTUzvD1eSj5hh5
+   23G0vts2pj4jxs1rkLxkrIe/9QwRUZM0+57vISpXPz9niCerdbuupHQ4c
+   5PbKIRsxo7augUoimnjisWGZb7Fmin2JuJZyCPz7vbH6vcYwjP4enTKSI
+   w==;
+X-CSE-ConnectionGUID: FKplU8sxRHqu6WHnnvie4w==
+X-CSE-MsgGUID: QgzhidDERliLWJd6opGLCA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11771"; a="78536921"
+X-IronPort-AV: E=Sophos;i="6.23,206,1770624000"; 
+   d="scan'208";a="78536921"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2026 12:04:45 -0700
+X-CSE-ConnectionGUID: wUoF0Hs8Tr2pd2NJYUbiCg==
+X-CSE-MsgGUID: 1aNgzHMcQSSPenipv5Uycg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,206,1770624000"; 
+   d="scan'208";a="272481706"
+Received: from lkp-server01.sh.intel.com (HELO aa799cca880d) ([10.239.97.150])
+  by orviesa001.jf.intel.com with ESMTP; 29 Apr 2026 12:04:42 -0700
+Received: from kbuild by aa799cca880d with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1wIAD7-00000000BRA-48UD;
+	Wed, 29 Apr 2026 19:04:37 +0000
+Date: Thu, 30 Apr 2026 03:04:13 +0800
+From: kernel test robot <lkp@intel.com>
+To: Evgenii Burenchev <evg28bur@yandex.ru>, stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: oe-kbuild-all@lists.linux.dev, Evgenii Burenchev <evg28bur@yandex.ru>,
+	alexander.deucher@amd.com, christian.koenig@amd.com,
+	airlied@gmail.com, simona@ffwll.ch, amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] drm/radeon/rs780: prevent division by zero in refresh
+ rate calculation
+Message-ID: <202604300247.Gzeia1bh-lkp@intel.com>
+References: <20260428190318.34413-1-evg28bur@yandex.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260429-alsa-hda-cs35l41-fw-work-teardown-v1-1-ba82a429fff0@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXNQQ6CMBBA0auQWTsJrdWoVzEuhnaQKmnNDFoSw
- t2punyb/xdQlsgKl2YB4U/UmFOF2TXgB0p3xhiqwbb22DprkEYlHAKh1/1hdAb7giXLEycmCbk
- kdCcfOjKOzj5A7byE+zj/Htfb3/ruHuynbxjWdQNptUEPhQAAAA==
-X-Change-ID: 20260421-alsa-hda-cs35l41-fw-work-teardown-48cdba14a9cd
-To: David Rhodes <david.rhodes@cirrus.com>, 
- Richard Fitzgerald <rf@opensource.cirrus.com>, 
- Takashi Iwai <tiwai@suse.com>, 
- Stefan Binding <sbinding@opensource.cirrus.com>, 
- Vitaly Rodionov <vitalyr@opensource.cirrus.com>, 
- Jaroslav Kysela <perex@perex.cz>
-Cc: linux-sound@vger.kernel.org, patches@opensource.cirrus.com, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- =?utf-8?q?C=C3=A1ssio_Gabriel?= <cassiogabrielcontato@gmail.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5974;
- i=cassiogabrielcontato@gmail.com; h=from:subject:message-id;
- bh=ggB6iqNXAUdCdmuPFrKjyW2XjK/FQ6ji9Jf6A5CZqXY=;
- b=owGbwMvMwCV2IdZeKur/u2bG02pJDJmf/NVFA+crG8ocvMt/dXag3s2vix42PsqU/3vjjfOc7
- 0uOPPc36ihlYRDjYpAVU2RZnbTIck/Xg6v1cSs8YOawMoEMYeDiFICJpJ9nZDjd5PSpaGL62dpA
- vonZmxxeVxgyOCl1xzEvbjy5YX4adxTD//gyn+Tzsy+4phytOSfiZ3Xm437RPztOFsy64dt0hFl
- sAicA
-X-Developer-Key: i=cassiogabrielcontato@gmail.com; a=openpgp;
- fpr=AB62A239BC8AE0D57F5EA848D05D3F1A5AFFEE83
-X-Rspamd-Queue-Id: 8F62E499367
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260428190318.34413-1-evg28bur@yandex.ru>
+X-Rspamd-Queue-Id: 5AE534997C9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[vger.kernel.org,opensource.cirrus.com,gmail.com];
-	TAGGED_FROM(0.00)[bounces-241931-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-241932-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[lists.linux.dev,yandex.ru,amd.com,gmail.com,ffwll.ch,lists.freedesktop.org,vger.kernel.org];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[yandex.ru,vger.kernel.org,linuxfoundation.org];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[cassiogabrielcontato@gmail.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[intel.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,fw_load_ctl.name:url,fw_type_ctl.name:url,mute_override_ctl.name:url]
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[gitlab.freedesktop.org:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,intel.com:dkim,intel.com:mid,01.org:url]
 
-cs35l41_hda creates ALSA controls whose private data points at the
-cs35l41_hda object. The firmware load control can also queue
-fw_load_work.
+Hi Evgenii,
 
-Those controls are not removed on component unbind, and device remove
-only cancels fw_load_work through cs35l41_remove_dsp(). That helper is
-skipped when halo_initialized is false. With firmware_autostart
-disabled, a firmware load can be requested before the DSP has been
-initialized. If the component or device is removed before the queued
-work runs, the worker can run after teardown and dereference driver
-state that is no longer valid.
+kernel test robot noticed the following build warnings:
 
-Track the created controls and remove them on unbind so no new control
-callback can reach the driver data or queue more work. Then cancel
-fw_load_work to drain any request that was already queued. Also cancel
-the work unconditionally during device remove before runtime PM teardown.
+[auto build test WARNING on drm-misc/drm-misc-next]
+[also build test WARNING on linus/master v7.1-rc1 next-20260428]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Fixes: 47ceabd99a28 ("ALSA: hda: cs35l41: Support Firmware switching and reloading")
-Fixes: 4c870513fbb0 ("ALSA: hda: cs35l41: Add read-only ALSA control for forced mute")
-Cc: stable@vger.kernel.org
-Signed-off-by: Cássio Gabriel <cassiogabrielcontato@gmail.com>
----
- sound/hda/codecs/side-codecs/cs35l41_hda.c | 77 +++++++++++++++++++++---------
- sound/hda/codecs/side-codecs/cs35l41_hda.h |  5 ++
- 2 files changed, 60 insertions(+), 22 deletions(-)
+url:    https://github.com/intel-lab-lkp/linux/commits/Evgenii-Burenchev/drm-radeon-rs780-prevent-division-by-zero-in-refresh-rate-calculation/20260429-055830
+base:   https://gitlab.freedesktop.org/drm/misc/kernel.git drm-misc-next
+patch link:    https://lore.kernel.org/r/20260428190318.34413-1-evg28bur%40yandex.ru
+patch subject: [PATCH] drm/radeon/rs780: prevent division by zero in refresh rate calculation
+config: parisc-defconfig (https://download.01.org/0day-ci/archive/20260430/202604300247.Gzeia1bh-lkp@intel.com/config)
+compiler: hppa-linux-gcc (GCC) 15.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260430/202604300247.Gzeia1bh-lkp@intel.com/reproduce)
 
-diff --git a/sound/hda/codecs/side-codecs/cs35l41_hda.c b/sound/hda/codecs/side-codecs/cs35l41_hda.c
-index b64890006bb7..7f18be0ccf5a 100644
---- a/sound/hda/codecs/side-codecs/cs35l41_hda.c
-+++ b/sound/hda/codecs/side-codecs/cs35l41_hda.c
-@@ -1325,6 +1325,43 @@ static int cs35l41_fw_type_ctl_info(struct snd_kcontrol *kcontrol, struct snd_ct
- 	return snd_ctl_enum_info(uinfo, 1, ARRAY_SIZE(cs35l41_hda_fw_ids), cs35l41_hda_fw_ids);
- }
- 
-+static void cs35l41_remove_controls(struct cs35l41_hda *cs35l41)
-+{
-+	if (!cs35l41->codec)
-+		return;
-+
-+	snd_ctl_remove(cs35l41->codec->card, cs35l41->mute_override_ctl);
-+	cs35l41->mute_override_ctl = NULL;
-+
-+	snd_ctl_remove(cs35l41->codec->card, cs35l41->fw_load_ctl);
-+	cs35l41->fw_load_ctl = NULL;
-+
-+	snd_ctl_remove(cs35l41->codec->card, cs35l41->fw_type_ctl);
-+	cs35l41->fw_type_ctl = NULL;
-+}
-+
-+static int cs35l41_add_control(struct cs35l41_hda *cs35l41,
-+			       struct snd_kcontrol_new *ctl,
-+			       struct snd_kcontrol **kctl)
-+{
-+	int ret;
-+
-+	*kctl = snd_ctl_new1(ctl, cs35l41);
-+	if (!*kctl)
-+		return -ENOMEM;
-+
-+	ret = snd_ctl_add(cs35l41->codec->card, *kctl);
-+	if (ret) {
-+		dev_err(cs35l41->dev, "Failed to add KControl %s = %d\n", ctl->name, ret);
-+		*kctl = NULL;
-+		return ret;
-+	}
-+
-+	dev_dbg(cs35l41->dev, "Added Control %s\n", ctl->name);
-+
-+	return 0;
-+}
-+
- static int cs35l41_create_controls(struct cs35l41_hda *cs35l41)
- {
- 	char fw_type_ctl_name[SNDRV_CTL_ELEM_ID_NAME_MAXLEN];
-@@ -1360,32 +1397,23 @@ static int cs35l41_create_controls(struct cs35l41_hda *cs35l41)
- 	scnprintf(mute_override_ctl_name, SNDRV_CTL_ELEM_ID_NAME_MAXLEN, "%s Forced Mute Status",
- 		  cs35l41->amp_name);
- 
--	ret = snd_ctl_add(cs35l41->codec->card, snd_ctl_new1(&fw_type_ctl, cs35l41));
--	if (ret) {
--		dev_err(cs35l41->dev, "Failed to add KControl %s = %d\n", fw_type_ctl.name, ret);
--		return ret;
--	}
--
--	dev_dbg(cs35l41->dev, "Added Control %s\n", fw_type_ctl.name);
--
--	ret = snd_ctl_add(cs35l41->codec->card, snd_ctl_new1(&fw_load_ctl, cs35l41));
--	if (ret) {
--		dev_err(cs35l41->dev, "Failed to add KControl %s = %d\n", fw_load_ctl.name, ret);
--		return ret;
--	}
--
--	dev_dbg(cs35l41->dev, "Added Control %s\n", fw_load_ctl.name);
-+	ret = cs35l41_add_control(cs35l41, &fw_type_ctl, &cs35l41->fw_type_ctl);
-+	if (ret)
-+		goto err;
- 
--	ret = snd_ctl_add(cs35l41->codec->card, snd_ctl_new1(&mute_override_ctl, cs35l41));
--	if (ret) {
--		dev_err(cs35l41->dev, "Failed to add KControl %s = %d\n", mute_override_ctl.name,
--			ret);
--		return ret;
--	}
-+	ret = cs35l41_add_control(cs35l41, &fw_load_ctl, &cs35l41->fw_load_ctl);
-+	if (ret)
-+		goto err;
- 
--	dev_dbg(cs35l41->dev, "Added Control %s\n", mute_override_ctl.name);
-+	ret = cs35l41_add_control(cs35l41, &mute_override_ctl, &cs35l41->mute_override_ctl);
-+	if (ret)
-+		goto err;
- 
- 	return 0;
-+
-+err:
-+	cs35l41_remove_controls(cs35l41);
-+	return ret;
- }
- 
- static bool cs35l41_dsm_supported(acpi_handle handle, unsigned int commands)
-@@ -1522,6 +1550,10 @@ static void cs35l41_hda_unbind(struct device *dev, struct device *master, void *
- 		device_link_remove(&cs35l41->codec->core.dev, cs35l41->dev);
- 		unlock_system_sleep(sleep_flags);
- 		memset(comp, 0, sizeof(*comp));
-+
-+		cs35l41_remove_controls(cs35l41);
-+		cancel_work_sync(&cs35l41->fw_load_work);
-+		cs35l41->codec = NULL;
- 	}
- }
- 
-@@ -2058,6 +2090,7 @@ void cs35l41_hda_remove(struct device *dev)
- 	struct cs35l41_hda *cs35l41 = dev_get_drvdata(dev);
- 
- 	component_del(cs35l41->dev, &cs35l41_hda_comp_ops);
-+	cancel_work_sync(&cs35l41->fw_load_work);
- 
- 	pm_runtime_get_sync(cs35l41->dev);
- 	pm_runtime_dont_use_autosuspend(cs35l41->dev);
-diff --git a/sound/hda/codecs/side-codecs/cs35l41_hda.h b/sound/hda/codecs/side-codecs/cs35l41_hda.h
-index 7d003c598e93..56ec07c0bb74 100644
---- a/sound/hda/codecs/side-codecs/cs35l41_hda.h
-+++ b/sound/hda/codecs/side-codecs/cs35l41_hda.h
-@@ -57,6 +57,8 @@ enum control_bus {
- 	SPI
- };
- 
-+struct snd_kcontrol;
-+
- struct cs35l41_hda {
- 	struct device *dev;
- 	struct regmap *regmap;
-@@ -75,6 +77,9 @@ struct cs35l41_hda {
- 	int speaker_id;
- 	struct mutex fw_mutex;
- 	struct work_struct fw_load_work;
-+	struct snd_kcontrol *fw_type_ctl;
-+	struct snd_kcontrol *fw_load_ctl;
-+	struct snd_kcontrol *mute_override_ctl;
- 
- 	struct regmap_irq_chip_data *irq_data;
- 	bool firmware_running;
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202604300247.Gzeia1bh-lkp@intel.com/
 
----
-base-commit: 1bc46462f4c09f8d429ae8ec17f92886d604659f
-change-id: 20260421-alsa-hda-cs35l41-fw-work-teardown-48cdba14a9cd
+All warnings (new ones prefixed by >>):
 
-Best regards,
---  
-Cássio Gabriel <cassiogabrielcontato@gmail.com>
+   drivers/gpu/drm/radeon/rs780_dpm.c: In function 'rs780_get_pm_mode_parameters':
+>> drivers/gpu/drm/radeon/rs780_dpm.c:66:25: warning: this 'if' clause does not guard... [-Wmisleading-indentation]
+      66 |                         if (crtc->mode.htotal && crtc->mode.vtotal)
+         |                         ^~
+   drivers/gpu/drm/radeon/rs780_dpm.c:68:33: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the 'if'
+      68 |                                 if (pi->refresh_rate == 0)
+         |                                 ^~
 
+
+vim +/if +66 drivers/gpu/drm/radeon/rs780_dpm.c
+
+9d67006e6ebc6c Alex Deucher      2013-04-12  48  
+9d67006e6ebc6c Alex Deucher      2013-04-12  49  static void rs780_get_pm_mode_parameters(struct radeon_device *rdev)
+9d67006e6ebc6c Alex Deucher      2013-04-12  50  {
+9d67006e6ebc6c Alex Deucher      2013-04-12  51  	struct igp_power_info *pi = rs780_get_pi(rdev);
+9d67006e6ebc6c Alex Deucher      2013-04-12  52  	struct radeon_mode_info *minfo = &rdev->mode_info;
+9d67006e6ebc6c Alex Deucher      2013-04-12  53  	struct drm_crtc *crtc;
+9d67006e6ebc6c Alex Deucher      2013-04-12  54  	struct radeon_crtc *radeon_crtc;
+9d67006e6ebc6c Alex Deucher      2013-04-12  55  	int i;
+9d67006e6ebc6c Alex Deucher      2013-04-12  56  
+9d67006e6ebc6c Alex Deucher      2013-04-12  57  	/* defaults */
+9d67006e6ebc6c Alex Deucher      2013-04-12  58  	pi->crtc_id = 0;
+9d67006e6ebc6c Alex Deucher      2013-04-12  59  	pi->refresh_rate = 60;
+9d67006e6ebc6c Alex Deucher      2013-04-12  60  
+9d67006e6ebc6c Alex Deucher      2013-04-12  61  	for (i = 0; i < rdev->num_crtc; i++) {
+9d67006e6ebc6c Alex Deucher      2013-04-12  62  		crtc = (struct drm_crtc *)minfo->crtcs[i];
+9d67006e6ebc6c Alex Deucher      2013-04-12  63  		if (crtc && crtc->enabled) {
+9d67006e6ebc6c Alex Deucher      2013-04-12  64  			radeon_crtc = to_radeon_crtc(crtc);
+9d67006e6ebc6c Alex Deucher      2013-04-12  65  			pi->crtc_id = radeon_crtc->crtc_id;
+9d67006e6ebc6c Alex Deucher      2013-04-12 @66  			if (crtc->mode.htotal && crtc->mode.vtotal)
+c3eaa088277709 Alex Deucher      2013-09-13  67  				pi->refresh_rate = drm_mode_vrefresh(&crtc->mode);
+0d99a77de43b3f Evgenii Burenchev 2026-04-28  68  				if (pi->refresh_rate == 0)
+0d99a77de43b3f Evgenii Burenchev 2026-04-28  69  					pi->refresh_rate = 60;
+9d67006e6ebc6c Alex Deucher      2013-04-12  70  			break;
+9d67006e6ebc6c Alex Deucher      2013-04-12  71  		}
+9d67006e6ebc6c Alex Deucher      2013-04-12  72  	}
+9d67006e6ebc6c Alex Deucher      2013-04-12  73  }
+9d67006e6ebc6c Alex Deucher      2013-04-12  74  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
