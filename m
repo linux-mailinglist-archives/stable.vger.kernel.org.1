@@ -1,193 +1,244 @@
-Return-Path: <stable+bounces-241873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241874-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IlnBAybw8WkOlwEAu9opvQ
-	(envelope-from <stable+bounces-241873-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 13:48:54 +0200
+	id CP4vJB/y8WmElwEAu9opvQ
+	(envelope-from <stable+bounces-241874-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 13:57:19 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FEF6493B76
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 13:48:53 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10DB0493C82
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 13:57:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E0B983025A5E
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 11:48:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 88BB6305C49F
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 11:54:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E85DE3A4538;
-	Wed, 29 Apr 2026 11:48:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A2513A1A21;
+	Wed, 29 Apr 2026 11:54:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="vaWMHGd8"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="CIyg/cMq"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28FDF175A81;
-	Wed, 29 Apr 2026 11:48:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 188273E8C49;
+	Wed, 29 Apr 2026 11:54:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777463329; cv=none; b=fhPfvwVxt+baz4974YuY7GNTVNQj9R9rO2aTFgm1mTcG73OYrtkonZAkV9VjMgnlW/Oyi/f0sRnu9AAbUFt+HrUpZztPmXOfIiAZYbGWFmt5mH+WA022FYr3Gca/7Yy/RjPq9OEBjRvypk2f9LcnKEGHOWid/RCWXQHG9MW0+Ok=
+	t=1777463695; cv=none; b=TONuP6+QqEEQP0a0DlVu7nbe55+esAk3KFSVyL+u1k3H5MI+MqEVJORyL6LxR1mfKoEjPQ/Qspqy33Uhu6tA6BvHx371Pk0r6q4IYjoUsixURLlQ8HkjW7IwbwtBcuBdnQzeo9DHPyZbnnyMe18mpdPCRVCJoXoM5xa0NG9Y42U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777463329; c=relaxed/simple;
-	bh=APYJhzwnTuBda3ahLszGP6EC1lJwJVG8XTSiAQFO0PU=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
-	 References:In-Reply-To; b=GTWZS/TFQEDajr8cOiFDF2ZYH8/EuMJMUdsa/nc14rkNZ+qU7lVSzsgUrmtU0joLd8i7d6ET13bKroJiPKOIeixnkTcHPiIaac8EPdg5rocXYoKPG9LBc7L22w2x5huceWVg0TFWwxjfOx3d39HkJ9pgkff74OfNStxqJf7/qu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=vaWMHGd8; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id C5D4CC5EF22;
-	Wed, 29 Apr 2026 11:49:29 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 86C55601DF;
-	Wed, 29 Apr 2026 11:48:45 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1D9841072824E;
-	Wed, 29 Apr 2026 13:48:33 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1777463320; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=NAr1kMTIhIkt5U+a0cZfT48BHAuxADVaU25o4IUMDEE=;
-	b=vaWMHGd8d6HTFYAWZnAqAgbuI9L921J9mPJZpVt1p+fgsMmjm5jEgzXIoWoCIPGfp4GbJu
-	A0EQVyYkVyoBV+6wnSHqQko9IZ01AC39MmLoxQ+57ihBOhsZ6cKzrUhDzB/s6Zq87Xr9Og
-	3wzR7ABdt6cjrdzrLvEajEzJ0D55xxuvW2C0sE8FbKSk6NKSgnmMJ2E1p03MSz6Sb7rTYE
-	HAYxK4Xi7/D5Eyt9A9Z8FLBIho60EBrTWYY/ff940tLL1tlkIp2N8MNXWvelm2wKWm8Ss+
-	whZfXSx+QO6vGGH6H6IQfl0V/s0ScZT8opgLyGQEmOkvDaHME/jf6W0KscAiPw==
+	s=arc-20240116; t=1777463695; c=relaxed/simple;
+	bh=FdZn2aKtKAfbY3SHzbUAI2dxsrv/92v7leXVaVUavoc=;
+	h=Date:To:From:Subject:Message-Id; b=PF+bjoG9k2kftv0qfKPQYxZqtX2n3eXHTeHd+Y9q6YZcADv5i8m7ldTrlytvDLpFQLkQok3TO3a857MON7R/1xsJazKcC5b+JwGiiua0uThX6TQR/sWbwM+VOOsPk2gxK/8Ybn1Vtw0ASrKA2JqYjDrbU5AT35Q+9ZHucqAgN24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=CIyg/cMq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F26AC19425;
+	Wed, 29 Apr 2026 11:54:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1777463694;
+	bh=FdZn2aKtKAfbY3SHzbUAI2dxsrv/92v7leXVaVUavoc=;
+	h=Date:To:From:Subject:From;
+	b=CIyg/cMqPMd8QePSJMPAwuhKCNk8z78Yl5uIiruoSVX89OjhDEy9L6HzbzSDfHW6C
+	 bqc0RRhnY5PvW9oml94paQ238yuQphOHtty6JFxK8TA+yIYn9SHlsiSpcDJEETc79Y
+	 VQfDYfJGb9p50dXjVInv6wUYM7R4JGlqdOfkMcK0=
+Date: Wed, 29 Apr 2026 04:54:54 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,rppt@kernel.org,peterz@infradead.org,mingo@redhat.com,luto@kernel.org,lance.yang@linux.dev,jgg@ziepe.ca,hpa@zytor.com,bp@alien8.de,baolu.lu@linux.intel.com,david@kernel.org,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + x86-mm-fix-freeing-of-pmd-sized-vmemmap-pages.patch added to mm-hotfixes-unstable branch
+Message-Id: <20260429115454.9F26AC19425@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 29 Apr 2026 13:48:33 +0200
-Message-Id: <DI5M5PFEHAD8.2IO9A5HABWOK6@bootlin.com>
-From: "Luca Ceresoli" <luca.ceresoli@bootlin.com>
-Subject: Re: [PATCH v3 3/3] drm/bridge: megachips: remove bridge when irq
- request fails
-Cc: <stable@vger.kernel.org>
-To: "Osama Abdelkader" <osama.abdelkader@gmail.com>, "Peter Senna Tschudin"
- <peter.senna@gmail.com>, "Ian Ray" <ian.ray@ge.com>, "Martyn Welch"
- <martyn.welch@collabora.co.uk>, "Andrzej Hajda" <andrzej.hajda@intel.com>,
- "Neil Armstrong" <neil.armstrong@linaro.org>, "Robert Foss"
- <rfoss@kernel.org>, "Laurent Pinchart" <Laurent.pinchart@ideasonboard.com>,
- "Jonas Karlman" <jonas@kwiboo.se>, "Jernej Skrabec"
- <jernej.skrabec@gmail.com>, "Maarten Lankhorst"
- <maarten.lankhorst@linux.intel.com>, "Maxime Ripard" <mripard@kernel.org>,
- "Thomas Zimmermann" <tzimmermann@suse.de>, "David Airlie"
- <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Archit Taneja"
- <architt@codeaurora.org>, <dri-devel@lists.freedesktop.org>,
- <linux-kernel@vger.kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20260423200622.325076-1-osama.abdelkader@gmail.com>
- <20260423200622.325076-3-osama.abdelkader@gmail.com>
-In-Reply-To: <20260423200622.325076-3-osama.abdelkader@gmail.com>
-X-Last-TLS-Session-Version: TLSv1.3
-X-Rspamd-Queue-Id: 5FEF6493B76
+X-Rspamd-Queue-Id: 10DB0493C82
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MV_CASE(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
-	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-241874-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241873-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[gmail.com,ge.com,collabora.co.uk,intel.com,linaro.org,kernel.org,ideasonboard.com,kwiboo.se,linux.intel.com,suse.de,ffwll.ch,codeaurora.org,lists.freedesktop.org,vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	DMARC_NA(0.00)[linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[luca.ceresoli@bootlin.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[bootlin.com:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.996];
-	TO_DN_SOME(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:url,bootlin.com:dkim,bootlin.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-
-On Thu Apr 23, 2026 at 10:06 PM CEST, Osama Abdelkader wrote:
-> If devm_request_threaded_irq() fails after drm_bridge_add(), remove the
-> bridge before returning.
->
-> Keep drm_bridge_add() rather than devm_drm_bridge_add(): registration is
-> tied to the STDP4028 device while ge_b850v3_register() may complete from
-> either I2C probe; devm would not unwind the bridge if the other client's
-> probe fails.
->
-> Signed-off-by: Osama Abdelkader <osama.abdelkader@gmail.com>
-> Fixes: a68ee76f4a28 ("drm/bridge: megachips-stdpxxxx-ge-b850v3-fw: Fix br=
-idge initialization")
-
-That commit only moved the bug to a slightly different location. The bug
-was present even before, since commit fcfa0ddc18ed ("drm/bridge: Drivers
-for megachips-stdpxxxx-ge-b850v3-fw (LVDS-DP++)"), so you should update
-your Fixes line to point to it.
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
 
-> Cc: stable@vger.kernel.org
-> ---
-> v3: add Fixes and Cc tags
-> v2: IRQ failure path only (explicit drm_bridge_remove)
-> ---
->  .../drm/bridge/megachips-stdpxxxx-ge-b850v3-fw.c | 16 ++++++++++------
->  1 file changed, 10 insertions(+), 6 deletions(-)
->
-> diff --git a/drivers/gpu/drm/bridge/megachips-stdpxxxx-ge-b850v3-fw.c b/d=
-rivers/gpu/drm/bridge/megachips-stdpxxxx-ge-b850v3-fw.c
-> index c9e6505cbd88..2d02cc69f237 100644
-> --- a/drivers/gpu/drm/bridge/megachips-stdpxxxx-ge-b850v3-fw.c
-> +++ b/drivers/gpu/drm/bridge/megachips-stdpxxxx-ge-b850v3-fw.c
-> @@ -251,7 +251,6 @@ static void ge_b850v3_lvds_remove(void)
->  		goto out;
->
->  	drm_bridge_remove(&ge_b850v3_lvds_ptr->bridge);
-> -
->  	ge_b850v3_lvds_ptr =3D NULL;
->  out:
->  	mutex_unlock(&ge_b850v3_lvds_dev_mutex);
-> @@ -261,6 +260,7 @@ static int ge_b850v3_register(void)
->  {
->  	struct i2c_client *stdp4028_i2c =3D ge_b850v3_lvds_ptr->stdp4028_i2c;
->  	struct device *dev =3D &stdp4028_i2c->dev;
-> +	int ret;
->
->  	/* drm bridge initialization */
->  	ge_b850v3_lvds_ptr->bridge.ops =3D DRM_BRIDGE_OP_DETECT |
-> @@ -277,11 +277,15 @@ static int ge_b850v3_register(void)
->  	if (!stdp4028_i2c->irq)
->  		return 0;
->
-> -	return devm_request_threaded_irq(&stdp4028_i2c->dev,
-> -			stdp4028_i2c->irq, NULL,
-> -			ge_b850v3_lvds_irq_handler,
-> -			IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
-> -			"ge-b850v3-lvds-dp", ge_b850v3_lvds_ptr);
-> +	ret =3D devm_request_threaded_irq(&stdp4028_i2c->dev,
-> +					stdp4028_i2c->irq, NULL,
-> +					ge_b850v3_lvds_irq_handler,
-> +					IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
-> +					"ge-b850v3-lvds-dp", ge_b850v3_lvds_ptr);
-> +	if (ret)
-> +		drm_bridge_remove(&ge_b850v3_lvds_ptr->bridge);
+The patch titled
+     Subject: x86/mm: fix freeing of PMD-sized vmemmap pages
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     x86-mm-fix-freeing-of-pmd-sized-vmemmap-pages.patch
 
-Why not just using devm_drm_bridge_add() and keep everything else clean, as
-you did in other patches in the series?
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/x86-mm-fix-freeing-of-pmd-sized-vmemmap-pages.patch
 
-Luca
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
---
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: x86/mm: fix freeing of PMD-sized vmemmap pages
+Date: Wed, 29 Apr 2026 12:49:14 +0200
+
+In commit bf9e4e30f353 ("x86/mm: use pagetable_free()"), we switched from
+freeing non-boot page tables through __free_pages() to pagetable_free().
+
+However, the function is also called to free vmemmap pages.
+
+Given that vmemmap pages are not page tables, already the
+page_ptdesc(page) is wrong.  But worse, pagetable_free() calls
+
+	__free_pages(page, compound_order(page));
+
+As vmemmap pages are not compound pages (see vmemmap_alloc_block()) --
+except for HVO, which doesn't apply here -- we will only free the first
+page when freeing a PMD-sized vmemmap page, leaking the other ones.
+
+Fix it by properly decoupling pagetable and vmemmap freeing. 
+free_pagetable() no longer has to mess with SECTION_INFO, as only the
+vmemmap is marked like that in register_page_bootmem_memmap().
+
+The indentation in remove_pmd_table() is messed up, let's fix that while
+touching it.
+
+Note that we'll try to get rid of that bootmem info handling soon.  For
+now, we'll handle it similar to free_pagetable(), just avoiding the ifdef.
+
+Link: https://lore.kernel.org/20260429-vmemmap-v2-1-8dfcacffd877@kernel.org
+Fixes: bf9e4e30f353 ("x86/mm: use pagetable_free()")
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Tested-by: Lance Yang <lance.yang@linux.dev>
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Baolu Lu <baolu.lu@linux.intel.com>
+Cc: "Borislav Petkov (AMD)" <bp@alien8.de>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ arch/x86/mm/init_64.c |   40 ++++++++++++++++++++++++++--------------
+ 1 file changed, 26 insertions(+), 14 deletions(-)
+
+--- a/arch/x86/mm/init_64.c~x86-mm-fix-freeing-of-pmd-sized-vmemmap-pages
++++ a/arch/x86/mm/init_64.c
+@@ -1014,7 +1014,7 @@ static void __meminit free_pagetable(str
+ #ifdef CONFIG_HAVE_BOOTMEM_INFO_NODE
+ 		enum bootmem_type type = bootmem_type(page);
+ 
+-		if (type == SECTION_INFO || type == MIX_SECTION_INFO) {
++		if (type == MIX_SECTION_INFO) {
+ 			while (nr_pages--)
+ 				put_page_bootmem(page++);
+ 		} else {
+@@ -1028,13 +1028,24 @@ static void __meminit free_pagetable(str
+ 	}
+ }
+ 
+-static void __meminit free_hugepage_table(struct page *page,
++static void __meminit free_vmemmap_pages(struct page *page, unsigned int order,
+ 		struct vmem_altmap *altmap)
+ {
+-	if (altmap)
+-		vmem_altmap_free(altmap, PMD_SIZE / PAGE_SIZE);
+-	else
+-		free_pagetable(page, get_order(PMD_SIZE));
++	unsigned long nr_pages = 1u << order;
++
++	if (altmap) {
++		vmem_altmap_free(altmap, nr_pages);
++	} else if (PageReserved(page)) {
++		if (IS_ENABLED(CONFIG_HAVE_BOOTMEM_INFO_NODE) &&
++		    bootmem_type(page) == SECTION_INFO) {
++			while (nr_pages--)
++				put_page_bootmem(page++);
++		} else {
++			free_reserved_pages(page, nr_pages);
++		}
++	} else {
++		__free_pages(page, order);
++	}
+ }
+ 
+ static void __meminit free_pte_table(pte_t *pte_start, pmd_t *pmd)
+@@ -1118,7 +1129,8 @@ remove_pte_table(pte_t *pte_start, unsig
+ 			return;
+ 
+ 		if (!direct)
+-			free_pagetable(pte_page(*pte), 0);
++			/* We never populate base pages from the altmap. */
++			free_vmemmap_pages(pte_page(*pte), 0, NULL);
+ 
+ 		spin_lock(&init_mm.page_table_lock);
+ 		pte_clear(&init_mm, addr, pte);
+@@ -1153,19 +1165,19 @@ remove_pmd_table(pmd_t *pmd_start, unsig
+ 			if (IS_ALIGNED(addr, PMD_SIZE) &&
+ 			    IS_ALIGNED(next, PMD_SIZE)) {
+ 				if (!direct)
+-					free_hugepage_table(pmd_page(*pmd),
+-							    altmap);
++					free_vmemmap_pages(pmd_page(*pmd),
++							   PMD_ORDER, altmap);
+ 
+ 				spin_lock(&init_mm.page_table_lock);
+ 				pmd_clear(pmd);
+ 				spin_unlock(&init_mm.page_table_lock);
+ 				pages++;
+ 			} else if (vmemmap_pmd_is_unused(addr, next)) {
+-					free_hugepage_table(pmd_page(*pmd),
+-							    altmap);
+-					spin_lock(&init_mm.page_table_lock);
+-					pmd_clear(pmd);
+-					spin_unlock(&init_mm.page_table_lock);
++				free_vmemmap_pages(pmd_page(*pmd), PMD_ORDER,
++						   altmap);
++				spin_lock(&init_mm.page_table_lock);
++				pmd_clear(pmd);
++				spin_unlock(&init_mm.page_table_lock);
+ 			}
+ 			continue;
+ 		}
+_
+
+Patches currently in -mm which might be from david@kernel.org are
+
+mm-page_alloc-fix-initialization-of-tags-of-the-huge-zero-folio-with-init_on_free.patch
+x86-mm-fix-freeing-of-pmd-sized-vmemmap-pages.patch
+sh-use-folio_mapped-instead-of-page_mapped-in-sh4_flush_cache_page.patch
+bpf-arena-use-page_ref_count-instead-of-page_mapped-in-arena_free_pages.patch
+mm-remove-page_mapped.patch
+
 
