@@ -1,211 +1,230 @@
-Return-Path: <stable+bounces-241792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241793-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yGv5Cc1P8WmGfwEAu9opvQ
-	(envelope-from <stable+bounces-241792-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 02:24:45 +0200
+	id uDAHJDNj8WnhgQEAu9opvQ
+	(envelope-from <stable+bounces-241793-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 03:47:31 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E76E48DBDC
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 02:24:44 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D81848E15D
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 03:47:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 058253026753
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 00:24:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2E3F330221E7
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 01:47:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 178A61A683A;
-	Wed, 29 Apr 2026 00:24:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E556433C518;
+	Wed, 29 Apr 2026 01:47:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="m95jD2En"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZHmy7H+h"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 732A319CCF7
-	for <stable@vger.kernel.org>; Wed, 29 Apr 2026 00:24:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.169
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777422259; cv=pass; b=YFAWxExXuE/m//eCJWrfXV9+iKU91kcNQVTT4+7GjRDvoYOyyuBtvFw/v7CP/FPavURTO3f87EeGfFw8nnO9i0BI2rExLUQRHNHovNXmr6Ixm4MKhF1iokrdZn+vNJH48ZDtu/wclj3cj/3OYp3WxGHe8xlkbHHxXeLe/ZrkC2A=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777422259; c=relaxed/simple;
-	bh=UJXPcwA89OjMeIoeEEHrLC4GWyoAx5SCk8QvmlDPxwI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=A8Pl/NoAG703xTWvRfArKHU0n2fp+GYezyYIUfgmoiCifd6eRYM1VfSkgGKoCJFcm8BDicfKks8rxghfXccpEzLZ+SPK5Mohrc2cCETMaTvB9pYyrqxLZSdttBky1gZOwoRKSkRmfNfi7LXabMlP63VHdAYywTowuuLt4DtC+ZY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=m95jD2En; arc=pass smtp.client-ip=209.85.160.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-506362ac5f7so98521541cf.1
-        for <stable@vger.kernel.org>; Tue, 28 Apr 2026 17:24:18 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777422257; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Sx7H9cqa0bM3sHkNrh+SewnivR9DTRr7AaSMThiFvlHC21LIClISjv7oUZaqkL0eWm
-         1wrsxbzPm9j3J1fG5+8bnEhw442qtHl2Y12d6ObTQyijGeiv/LGXfPxzMCgp6F+6LYGa
-         TWRkieqeAJOZT+b4CaNbwkmmxDczxqeXcLl2sGYnbiZyejSTLHifYXSGZ/490Pf6Mvs7
-         uTS7X79phidXerwaz7z8IWTFj4yviuAxUyB3a/sZMBsBxJJZXK+Ev9o3A5Y7FnQASg4f
-         WQfgM6yLouv5YO6xRwSFGRWUjjfLwPRP2fiQdx5Ffh5ahtfs6DLLO+zEHQMZmhAoFBFM
-         busQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=5EekIEEAn9zcWSyRffp42SDp9Ty9BQf71SkpBOEt/1k=;
-        fh=k1ju8cyMfqGeLxMXuE851BZeNNX8FV6ksm7YcC7vGWY=;
-        b=ftpwqDIzYbZ+V3eO71SxUeRvDeU1cLGCDIKjg2OXcJ3wcGNeDeDjt+YE+daEbDBpmD
-         OPo9lmjBFr5ifLalO3GzjszROT/8ThT5mMWn2APs2PsOk+Yf3xLkZ7RAOUMVtgNPB8V1
-         q5FXuvRs//s2OnAx86c3kfoI34ZnI0ErStylG1EWbTAtjPkd4dDqRWGt80QzbJMSEX8O
-         3cE2ZR5JyZX6qgTFgnv8LRMQduW3DsOFOodwyzHOH+ka28afVhGBL2zrBL9LW+wTYdg+
-         75pXI7wqa7NZrjRqYTVkRnOUEVUl1HuRoWghfjpDI0Al8WGIvXndv5ufKWOyNrhnnEYn
-         FhcA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 744AC1F2B88
+	for <stable@vger.kernel.org>; Wed, 29 Apr 2026 01:47:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777427245; cv=none; b=pe1ykM4boigmrJTpTMlqEzvfUMqI3aZ2fje6gFkyVvNvtQ62apekOBLtF60djpYznneAZjWA7C+vu8gVGOorOQvOQOqDaxqm/J/gfG2cW1hWHOjCl8qXQTsV24H8DdHSQDQktY5HwhhMV309Tc//C1dAlY9hdFLBamGn4I/ltPY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777427245; c=relaxed/simple;
+	bh=WqMv1YckYv/W8D1HJMKDMyO/iFhn+GXZHdYfC+bwTQA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=A/1s6BxYnhU1u8vIUuceBdl184kSjpDqlr5inPwNy+10dQ8bC9XURE/Gzk2xZ5mliTz9ArvGhA2yi9AfzvqeBs9t/WDMB3ON8wBdqhsK2njFl+Oey4PHYBdD0DghO9+TTLJVuFhabhTMQq5MtOSfamAfszDrarLpiIFxWc1brY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZHmy7H+h; arc=none smtp.client-ip=209.85.215.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-c76d797b180so8185214a12.2
+        for <stable@vger.kernel.org>; Tue, 28 Apr 2026 18:47:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777422257; x=1778027057; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5EekIEEAn9zcWSyRffp42SDp9Ty9BQf71SkpBOEt/1k=;
-        b=m95jD2EnKtKcSXmhejLDIhMzOrmHv6giH1hUWQT84l5ILnJ+8pEI0I/0rkjESwx6Fm
-         5aJwcVXbPBs6GybIKBp/Py12uF3y9zl61KqiZhi5eokNb1Alg9y7kOXfjfTLxbC4tzkt
-         QtXbUEc31G6bKjJwaN/As1HP8F6I7nWN+DdiNHB69dG2awdDFmRARzpAGzMeLCuM6S2k
-         5ffwgtKNsDLZS4K2SSCz65nQIvwTrVR/76xAPVd8OEzzCqVz5l3vFRTjwmLNhgih9lrM
-         s9GmaqRP3ktkb63Y4raqsh9HC8DI6KvcOgPeM7NKENB52Zij8CHi3UZio1NI+FUsGS4L
-         8m/g==
+        d=gmail.com; s=20251104; t=1777427241; x=1778032041; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=vQY4IGSDhnPDm3SZbmOaVwD/CLwLKCguemr0HTW+jZ8=;
+        b=ZHmy7H+hQhl2GlGaGyksCcJZF4mFtKQriPFwIQZM7G4sg8hxYGULNwOoKjALh7t6rf
+         IyIbwPzujwW3LmJveKhTbKDHkjScd4rG++y2cRM53oPPhe1uYHf6/OAcRo6ghI7lbWK0
+         RnOCTD9QM5loFrjJyERCKl2u5l64j4je34eVyqIEox3959fKZh+MXGQtONrAnnSiEVEm
+         3P4PJU0KWXZGQyq+iB3ufi4AGudcz6rLQUfXQt0n8x1HKLr1sU0Wc+xncD61Eswpbm0l
+         zHlEiJS3GdJWnZNcVxKzroTF9OXLfpaYI8y5mIEoQhPQz1HrBQmdGH1PU5+N/Nv8mpn/
+         HxYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777422257; x=1778027057;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=5EekIEEAn9zcWSyRffp42SDp9Ty9BQf71SkpBOEt/1k=;
-        b=OabpTzqrVQmrFo/LL2G7ki5JXh997/tCXgEAyyfkXpU0pemOsdRGbBLwSanYw7xQHj
-         YL37Aj7FHPkM9pQngVWkymBWNtKCw3IJxaitTvgR7GsLRtg/4pmK3QvyxhFcZtHYFQiH
-         sgKvrJAaVduTTQ3x/sXd7JyJw8iUQMBP7FA37DH7IIwJGU5EgE2R+Q2wiG52G1HtqPvQ
-         TCuvDOY+mGbNq815IyF6g3EKTPOmcgvoynDk2vQAgaPOi+P+PJn202ByU+tlyuuI7KhC
-         QY+WeDtSHMDRwhNAvhw3ZCkO9qlXEqg+e/64VwF3jSsgCcYQ1jBX9HhnBj4GBQmFzGOa
-         Hp/w==
-X-Forwarded-Encrypted: i=1; AFNElJ8sNse9MAavbq1gNy+8cXfNasj+H21B7lmvo14AVjZovWb4cYbC1UxUCFH7AmcBppEEBVXHEAs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy6fIFS6WducFf41odXx8vkbanRkgygcKMuCKqMbI57QwF1lScz
-	eUYgSIXhal8pKOZm4W6lSem0NrS+V/ASs87Cg9DXbNi8LRl7inZ6WFMPoZ5tCb20C9fTE7Xc2s1
-	ltYRFaU3EeZMlX3IzrjUWok0gjEc0VVep7KkXcDf8
-X-Gm-Gg: AeBDievHF36KoJjczVJYFWadGGvu8AceTG1knKEru6b4tB9wBsmWX/Jzq4rJ/znLvkG
-	qOLmpX5iLuyjzoIRucqu4t6wQ+N1COIe7Ekmg4GYtAA0dk9jP0YnSAlR1VFlMsx4ZC+qxkwV+p/
-	BUwlTLmZtyUUvl1aelsszeGhF9XxPDeZbX2D7IS/WS1aL4jcLwmP/gWB3XfFzUc76hrkdwFqfxn
-	CJL9LnNdcdQu9JOCKemFZg9tQYTfX0MgluxqCnd0AyBOe7XtOcDA8MtNlmZXwE5bKuQwEQjOs6c
-	XqgiowsZsVJWfDP/UcPhN9X1nNOtVSL7MoVa/5zlEISp9jafZU66GReDljmEPpWBTHBXuiSMAeR
-	h/nuN2oWd5XqBzoA88Rsw
-X-Received: by 2002:ac8:5d90:0:b0:50d:7384:a660 with SMTP id
- d75a77b69052e-5100e0f4cb1mr71639201cf.6.1777422256877; Tue, 28 Apr 2026
- 17:24:16 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1777427241; x=1778032041;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vQY4IGSDhnPDm3SZbmOaVwD/CLwLKCguemr0HTW+jZ8=;
+        b=NVdwu3LOKae/yB4F8EbmPD8/l3BtsEGpa/zqz+RpVzQH1pkxZREsOTRyblWiuzxKBF
+         wIC8VWtO8vKIIc7xtDxp+KfwXNzpvWjGTjkBmi12our2JYmR690EunaocjbSh8Kpi7QS
+         6fqBwkhL/ghanhJi9zTqssmltG3JsTnMHToIMjNxizGwwNSKvb4nCICOwiAVnt/9WFQS
+         E7lXSxyekNXonZ3gYpudQOZDXzkl7nEoX+Sij0T3wxtDtJb/8kYmFcwDA04LuRhaBI+e
+         lRWDFPxqkKRTGBkNA5tVaXcwaftonWlenXgb2w18Kjzd6VgBrRyxOcWpyfxDkU01XVkr
+         85uA==
+X-Forwarded-Encrypted: i=1; AFNElJ+il2Qx05bdwMZf13bSujuir0lX+RmkaxLNsbXnu+eGfRy/+zFJ2X9Nrk9D9pXvhXjSt6bdVY8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwrlJzXnq4KzlEajP9iB1T+KwLBX3CKS84NSuHiVbzq0iyuiqn/
+	oL5yqtF8RKTPJhtTJ521HIJQre4IrL3acpNHGNP8znbEvzAl0/KQTYHO
+X-Gm-Gg: AeBDieuoCBLWZdUCU4oNETfL/7OSdON0fWVh+1SFY1xAzg9u6H/QvmObi43/dptRQx3
+	KOpXGnyHJtQcOD7sm5oeAl3Iw9iDwx+C1rqjOomuZi+dAbDsoaRhguf/odkZL8FtTcF68w4kmxc
+	U9JkIzawIY9AF+5c9ZbEKoX9QAQ7WjRo+zVZOqVxevNy6JEXcpG77Y8wt5BGIteVxYgX4njzxPF
+	ilbov+yTU5B8FnTPEuVeYpX2f8wXzNbQkZ17kh+0p3lW1qN1wnUy8w5Zw3+1Y3xEHDX2VPgVpyj
+	iRyLgoWoJftgfEe11p4ojc18tV34EJHhKG9z35WcKb9bY6dtitbYphREAzpa9O+I5F2uq1vm8fj
+	39WdxsOBQH+M4b16XjvSq4y985+XbakAlwXJBsxwKcyrkadkaCd/c+mSKFaHJLtvf245zwB1yWe
+	zXm9jbrl+xfcntkD4WGFj33v9l/NFwBWXP1m5fygr1c4fE8h3c6zBKV6R0lXegNgat7hgnw8FHO
+	8g9btha7DFhhL/EJw==
+X-Received: by 2002:a05:6a21:3290:b0:398:af16:f19f with SMTP id adf61e73a8af0-3a39c2742bemr6744689637.44.1777427241331;
+        Tue, 28 Apr 2026 18:47:21 -0700 (PDT)
+Received: from deepanshu-kernel-hacker.. ([2405:201:682f:383f:4345:dc30:cb53:18e2])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-834ed6dd823sm331484b3a.38.2026.04.28.18.47.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Apr 2026 18:47:19 -0700 (PDT)
+From: Deepanshu Kartikey <kartikey406@gmail.com>
+To: konishi.ryusuke@gmail.com,
+	slava@dubeyko.com
+Cc: linux-nilfs@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	syzbot+62f0f99d2f2bb8e3bbd7@syzkaller.appspotmail.com,
+	stable@vger.kernel.org
+Subject: [PATCH v2] nilfs2: reject CLEAN_SEGMENTS ioctl with out-of-range segment numbers
+Date: Wed, 29 Apr 2026 07:17:11 +0530
+Message-ID: <20260429014711.102110-1-kartikey406@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260428224816.11223-1-andrea.mayer@uniroma2.it>
-In-Reply-To: <20260428224816.11223-1-andrea.mayer@uniroma2.it>
-From: Eric Dumazet <edumazet@google.com>
-Date: Tue, 28 Apr 2026 17:24:05 -0700
-X-Gm-Features: AVHnY4Lxx2_566jaJobQy5M9DdHNmCDtFn90_njALOpDxBSMh5sD-BAbouWm3xg
-Message-ID: <CANn89i+dSEkqgbvsonrC5V=e-vnMPVNdVnD+0KdkkAxM_kxEQw@mail.gmail.com>
-Subject: Re: [PATCH net] ipv6: rpl: add NULL check for idev in ipv6_rpl_srh_rcv()
-To: Andrea Mayer <andrea.mayer@uniroma2.it>
-Cc: "David S . Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Alexander Aring <alex.aring@gmail.com>, Justin Iurman <justin.iurman@gmail.com>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	stefano.salsano@uniroma2.it
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 7E76E48DBDC
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 0D81848E15D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-241792-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[google.com:+];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com,syzkaller.appspotmail.com];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-241793-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com,dubeyko.com];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[edumazet@google.com,stable@vger.kernel.org];
-	FREEMAIL_CC(0.00)[davemloft.net,kernel.org,redhat.com,gmail.com,vger.kernel.org,uniroma2.it];
-	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[kartikey406@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid]
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,62f0f99d2f2bb8e3bbd7];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
-On Tue, Apr 28, 2026 at 3:48=E2=80=AFPM Andrea Mayer <andrea.mayer@uniroma2=
-.it> wrote:
->
-> ipv6_rpl_srh_rcv() dereferences idev from __in6_dev_get() without
-> a NULL check when reading idev->cnf.rpl_seg_enabled.
-> When the device's MTU drops below IPV6_MIN_MTU, addrconf_ifdown()
-> clears dev->ip6_ptr through RCU_INIT_POINTER(), which is immediately
-> visible to concurrent readers. A packet that already passed the idev
-> check in ip6_rcv_core() can race with this and hit a NULL pointer
-> dereference.
->
-> Reproduced by flooding traffic through a route with RPL source routing
-> while rapidly flapping the receiving interface's MTU between 1500 and
-> 1200:
->
->  BUG: KASAN: null-ptr-deref in ipv6_rpl_srh_rcv+0xae/0x1050
->  Read of size 4 at addr 00000000000006b4 by task ping6/318
->
->  CPU: 0 UID: 0 PID: 318 Comm: ping6 Not tainted 7.1.0-rc1-micro-vm-dev-g4=
-6f74a3f7d57 #82 PREEMPT(full)
->  Call Trace:
->   <IRQ>
->   kasan_report+0xc6/0x100
->   ipv6_rpl_srh_rcv+0xae/0x1050
->   ip6_protocol_deliver_rcu+0x717/0x960
->   ip6_input_finish+0xa3/0x1b0
->   ip6_input+0xdc/0x490
->   ipv6_rcv+0x338/0x460
->   __netif_receive_skb_one_core+0xd1/0x130
->   process_backlog+0x2c7/0x9f0
->   __napi_poll.constprop.0+0x51/0x270
->   net_rx_action+0x322/0x730
->   handle_softirqs+0x119/0x640
->   do_softirq+0xae/0xe0
->   </IRQ>
->
-> Add a NULL check for idev after __in6_dev_get() and drop the skb if
-> idev is NULL, consistent with the SRv6 fix in commit 064137935262
-> ("ipv6: add NULL checks for idev in SRv6 paths").
->
-> Fixes: 8610c7c6e3bd ("net: ipv6: add support for rpl sr exthdr")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Andrea Mayer <andrea.mayer@uniroma2.it>
-> ---
->  net/ipv6/exthdrs.c | 4 ++++
->  1 file changed, 4 insertions(+)
->
-> diff --git a/net/ipv6/exthdrs.c b/net/ipv6/exthdrs.c
-> index 03cbce842c1a..e398a8851031 100644
-> --- a/net/ipv6/exthdrs.c
-> +++ b/net/ipv6/exthdrs.c
-> @@ -499,6 +499,10 @@ static int ipv6_rpl_srh_rcv(struct sk_buff *skb)
->         u32 r;
->
->         idev =3D __in6_dev_get(skb->dev);
-> +       if (!idev) {
-> +               kfree_skb(skb);
+Syzbot reported a hung task in nilfs_transaction_begin() where multiple
+tasks performing chmod() on a nilfs2 mount blocked for over 143 seconds
+waiting to acquire ns_segctor_sem for read:
 
-I suggest:
+  INFO: task syz.0.17:5918 blocked for more than 143 seconds.
+  Call Trace:
+   schedule+0x164/0x360
+   rwsem_down_read_slowpath+0x6d9/0x940
+   down_read+0x99/0x2e0
+   nilfs_transaction_begin+0x364/0x710 fs/nilfs2/segment.c:221
+   nilfs_setattr+0x124/0x2c0 fs/nilfs2/inode.c:921
+   notify_change+0xc1a/0xf40
+   chmod_common+0x273/0x4a0
+   do_fchmodat+0x12d/0x230
 
-kfree_skb_reason(skb, SKB_DROP_REASON_IPV6DISABLED)
+The writer holding ns_segctor_sem was a concurrent NILFS_IOCTL_CLEAN_SEGMENTS
+caller, stuck inside printk while emitting per-element warnings from
+nilfs_sufile_updatev():
+
+   __nilfs_msg+0x373/0x450 fs/nilfs2/super.c:78
+   nilfs_sufile_updatev+0x21c/0x6d0 fs/nilfs2/sufile.c:186
+   nilfs_sufile_freev fs/nilfs2/sufile.h:93 [inline]
+   nilfs_free_segments fs/nilfs2/segment.c:1140 [inline]
+   nilfs_segctor_collect_blocks fs/nilfs2/segment.c:1261 [inline]
+   nilfs_segctor_do_construct+0x1f55/0x76c0
+   nilfs_clean_segments+0x3bd/0xa50
+   nilfs_ioctl_clean_segments fs/nilfs2/ioctl.c:922 [inline]
+   nilfs_ioctl+0x261f/0x2780
+
+The root cause is that nilfs_ioctl_clean_segments() does not validate
+the user-supplied segment numbers in kbufs[4] before calling
+nilfs_clean_segments(), which acquires ns_segctor_sem for write.  The
+range check on each segnum is performed deep inside the call chain by
+nilfs_sufile_updatev(), which emits a nilfs_warn() per invalid entry
+while still under the segctor lock and the sufile mi_sem.  Under load
+(repeated invocations across multiple mounts saturating the global
+printk path), the cumulative printk latency keeps ns_segctor_sem held
+long enough to trip the hung_task watchdog, blocking concurrent
+operations such as chmod() that need ns_segctor_sem for read.
+
+Fix by validating the contents of kbufs[4] in the ioctl entry path,
+before any FS-wide lock is acquired.  Out-of-range segment numbers are
+rejected with -EINVAL synchronously, with no work performed under
+ns_segctor_sem.
+
+Reported-by: syzbot+62f0f99d2f2bb8e3bbd7@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=62f0f99d2f2bb8e3bbd7
+Fixes: 4f6b828837b4 ("nilfs2: fix lock order reversal in nilfs_clean_segments ioctl")
+Cc: stable@vger.kernel.org
+Tested-by: syzbot+62f0f99d2f2bb8e3bbd7@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/all/20260428040256.84403-1-kartikey406@gmail.com/T/ [v1]
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+---
+Changes in v2:
+  - Reuse existing 'n' loop variable instead of introducing a new
+    one (Slava Dubeyko)
+  - Add dedicated out_free_segnums label so the validation-failure
+    path falls through the existing cleanup ladder rather than
+    duplicating kfree(kbufs[4]) inline (Slava Dubeyko)
+---
+ fs/nilfs2/ioctl.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+
+diff --git a/fs/nilfs2/ioctl.c b/fs/nilfs2/ioctl.c
+index e0a606643e87..41e47f558600 100644
+--- a/fs/nilfs2/ioctl.c
++++ b/fs/nilfs2/ioctl.c
+@@ -876,6 +876,20 @@ static int nilfs_ioctl_clean_segments(struct inode *inode, struct file *filp,
+ 	}
+ 	nilfs = inode->i_sb->s_fs_info;
+ 
++	/*
++	 * Validate segment numbers against the filesystem's segment count
++	 * before entering nilfs_clean_segments(), which acquires
++	 * ns_segctor_sem for write.  Catching invalid segnums here avoids
++	 * holding that lock while emitting per-element diagnostics under
++	 * the segment constructor.
++	 */
++	for (n = 0; n < nsegs; n++) {
++		if (((__u64 *)kbufs[4])[n] >= nilfs->ns_nsegments) {
++			ret = -EINVAL;
++			goto out_free_segnums;
++		}
++	}
++
+ 	for (n = 0; n < 4; n++) {
+ 		ret = -EINVAL;
+ 		if (argv[n].v_size != argsz[n])
+@@ -928,6 +942,7 @@ static int nilfs_ioctl_clean_segments(struct inode *inode, struct file *filp,
+ out_free:
+ 	while (--n >= 0)
+ 		kvfree(kbufs[n]);
++out_free_segnums:
+ 	kfree(kbufs[4]);
+ out:
+ 	mnt_drop_write_file(filp);
+-- 
+2.43.0
+
 
