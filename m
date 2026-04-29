@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-241811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241812-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8ERLL2eC8WmChQEAu9opvQ
-	(envelope-from <stable+bounces-241811-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 06:00:39 +0200
+	id 6C7XFniC8WmChQEAu9opvQ
+	(envelope-from <stable+bounces-241812-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 06:00:56 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E46B48EECE
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 06:00:35 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 461FF48EED5
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 06:00:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 60D3C3004430
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 04:00:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C2F6330166D3
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 04:00:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5701D2472AF;
-	Wed, 29 Apr 2026 04:00:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A29A1DDC1D;
+	Wed, 29 Apr 2026 04:00:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fZ7EH/tB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cJHb1f1B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AE5C1A682C
-	for <stable@vger.kernel.org>; Wed, 29 Apr 2026 04:00:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DFD6169AD2
+	for <stable@vger.kernel.org>; Wed, 29 Apr 2026 04:00:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777435231; cv=none; b=BE758KdN3S/6YUZ3HUGZCL9foeWpU5odSvWEi+Gsycr8l7tQR+6C2grPjaSAMlLOOOubA04OScpN9V7YqJGzvA8ooF3UMhruAAVvaZH81+Dbt3yfrUZxbzfaPWTkaFsAR1+Yd21gfG/n6jPn0Cx7jvkxrKnKifhz5nUHJJN0X74=
+	t=1777435252; cv=none; b=JmXwJBn2DGCLVNxDKa+O16crvCBCksEGGaqdikpzN1mT1PYXiFIsx69U+CJSwxUQVmpAi30Go9fExGwQSlSe6BvhusPHGyooOc/EUMYpH4VrB/Chey0oP3Jt0alEOlffD39BFvweW5QWAY/LMEEfjUgDt2FTP10OPpFdXBgsWy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777435231; c=relaxed/simple;
-	bh=Vuxb4Z+qd6r7e+UhEv2ZRsLXmdLEkl5/lprIyIu1Szk=;
+	s=arc-20240116; t=1777435252; c=relaxed/simple;
+	bh=Vx3l/84KLSUgSfB2eYUqxnMOVRqQuwJZr9bqN1Eazy8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rRHuX0GCaTIV1cPRoIOtGsXzdmpBbxL1pZfYfwC6EH2OvNrQhTi8bTIyYRZqEFeAZmdTkHRdV3sif35fqnWx/1GVSIvLRXVwuA8cm12IKovTcMCpMsBHrYKIJoAfMYyuWMDwrBcW6np5v28EFtQSisSwfahKb3EhPRdBQZ/WCQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fZ7EH/tB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26996C19425;
-	Wed, 29 Apr 2026 04:00:29 +0000 (UTC)
+	 MIME-Version; b=ea48IGokXfTmJ1lfLr2EtFfyo1sHUAeIroOiyjdGYn+37QTAmI7Ddw5Xm1kSlYNA798o05MGl9OnNi0wohKCIx4MnswLMW6YqlIZ2d+K+3vqFctMxRBcDOVvvxRdY2rqWqzYYgNjlfSODJ/wBEzEscau1a4Lar7zKZGs5aFBDMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cJHb1f1B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48EDEC19425;
+	Wed, 29 Apr 2026 04:00:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777435230;
-	bh=Vuxb4Z+qd6r7e+UhEv2ZRsLXmdLEkl5/lprIyIu1Szk=;
+	s=k20201202; t=1777435251;
+	bh=Vx3l/84KLSUgSfB2eYUqxnMOVRqQuwJZr9bqN1Eazy8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fZ7EH/tB6/+N6LjRKn+ykSN4ihp+JaUwTsUwuNb9Lq2mR6Dx4A3BU6tGUyW6bL/px
-	 yvgLAocUQfql9RBfG/WMg8yPW3BS2p+qgqrzmwHTwT1FZCFF47QQmiYcu71EeYuxZ5
-	 +RHFYRbOV5qnKJD7hSc2ltm+dK8cgvue42133NLRFAOjOdMPb+zzip4O/uDUERfM8m
-	 YESjk07KhPlvoidwVAJzC5cjMZBl8KZsJ1uhJuL1GK4Wq1WJK8szRTmcMhapgd8txe
-	 bZ7IUmpPgLfRvRod0Tvtsniz3pTVn5pRmT45oYTp9dxV6mBXsUZJ6sg4LDqkcahs+j
-	 8+zGXDKde8Uvw==
+	b=cJHb1f1BdyPSs9UkF83xiwaJzn7aO4nnAQoGZx2G1vGdmV/Vppp61J9dzWgdVZ2/m
+	 xIMM1NZYiOJx2/5y/i3JB1z//RstHxQz/YyQaOfVtLSycAif7ZT/V/lYA3WxPmUF7H
+	 i+9/x4Uhct8/z501m3vi2Sj6ICsB8cJ+2AH/+zTXD8FWkzMVwrl9IDnAF70BD26opB
+	 DP47k4AfkziwtRxjijv5vvhuLRBrEIqhEG88jX6Jj/ywDfhn59RLdyGEetNffow87d
+	 C6UKEbdzoXKaFbhxIDOLLpSVjwQY/zQj/9XRNHRnNFWgfQzc7KTW2gp1o+9BUK95aE
+	 ewEUkfJwwXweA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Anthony Yznaga <anthony.yznaga@oracle.com>,
@@ -61,8 +61,8 @@ Cc: Anthony Yznaga <anthony.yznaga@oracle.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
 Subject: [PATCH 6.12.y] mm: prevent droppable mappings from being locked
-Date: Wed, 29 Apr 2026 00:00:27 -0400
-Message-ID: <20260429040027.3341979-1-sashal@kernel.org>
+Date: Wed, 29 Apr 2026 00:00:48 -0400
+Message-ID: <20260429040048.3342222-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <2026042736-vascular-rubbed-001c@gregkh>
 References: <2026042736-vascular-rubbed-001c@gregkh>
@@ -73,7 +73,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4E46B48EECE
+X-Rspamd-Queue-Id: 461FF48EED5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
@@ -81,28 +81,28 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241811-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-241812-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	RCPT_COUNT_TWELVE(0.00)[15];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
 
 From: Anthony Yznaga <anthony.yznaga@oracle.com>
 
@@ -140,7 +140,7 @@ Cc: Suren Baghdasaryan <surenb@google.com>
 Cc: Vlastimil Babka <vbabka@kernel.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ adapted change to `mm/mmap.c::__mmap_region()` instead of `mm/vma.c::__mmap_complete()` ]
+[ applied the mmap completion hunk to __mmap_region() in mm/mmap.c instead of __mmap_complete() in mm/vma.c ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
  include/linux/hugetlb_inline.h |  4 ++--
