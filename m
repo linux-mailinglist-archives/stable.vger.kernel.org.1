@@ -1,74 +1,70 @@
-Return-Path: <stable+bounces-241895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241896-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gEiGGhYN8mkynQEAu9opvQ
-	(envelope-from <stable+bounces-241895-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 15:52:22 +0200
+	id MJynLMAO8mkynQEAu9opvQ
+	(envelope-from <stable+bounces-241896-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 15:59:28 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FE02495268
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 15:52:17 +0200 (CEST)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38B4E4953D6
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 15:59:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9895E30DA62D
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 13:45:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 55DC030A3D33
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 13:54:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8430F3BF699;
-	Wed, 29 Apr 2026 13:43:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42DEA32C942;
+	Wed, 29 Apr 2026 13:54:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="FH+21a+v"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="t0BofWe8"
 X-Original-To: stable@vger.kernel.org
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F8ED3FFAB9;
-	Wed, 29 Apr 2026 13:43:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEC67318ED7;
+	Wed, 29 Apr 2026 13:54:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777470213; cv=none; b=bkLzk4QXmaydqViVT0I2EV55FohxUyc+nkuEmisNXBsI8XTxFfJ/ztZ3O+smJ2LGOyP4/Wv/TPsfndhM6n90HQeM1H4+1uVqwGnfoDvyRPDTqsEggOGt5zEmyBweQ+hkYAO452swYgfOCSExGDEeB1kWxzkKO+gug94fSFy0Mac=
+	t=1777470881; cv=none; b=dImRA6x1ubvZ+wZw8Twt0rmugF5HYSspycxXSDxo1ULjPVy7UflxJiFDJW3hbpI66/elNRt6w6cU+l8L8CG1IDqUdUUdGvP66QV+Zo7mI7X3Rj4JUlyOUiphZ5f7/H4Uv7X9wOGM8xI3gz3fmp63LAiT8bLifYFK98Bu30Z+aC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777470213; c=relaxed/simple;
-	bh=6CmdSRqBgcDMnEg7Iw4AGlEjRqglThA579jeLaWJJ6Y=;
+	s=arc-20240116; t=1777470881; c=relaxed/simple;
+	bh=O4bgBETT1z3t80wIJE8g7HZaPoA/Uc7S4BtPBGHP3cA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bl+PKtY6ufzot5XJ34YXZSTJthBJ2b7EO1vnBpXXoyn3Ga7AwtvpPqCEXBkabLZoeXxJFSGi82vyroAEK1qUPAN2VMCt6LoYkdgfepIEnG/WUUwzqeeUjUuoPw2c6yq1Kzf6qPkI5G8aPQRZ4vake+K+H3w60mDIHavj7RJByYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=FH+21a+v; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
-Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id C70971FB70;
-	Wed, 29 Apr 2026 15:43:20 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1777470201;
-	bh=WoLY0VfrRS2QQCo2S5G6Qe5l+XRLfteiRAzVDZloMAY=; h=From:To:Subject;
-	b=FH+21a+vlYMYyfVlq8SHvfYJSWJZ0Sez8wvlGLqzHnrQIDQ8m70j5dKq+E1Pq0s2F
-	 nPCU3N3/xsgOD8KVY63eDKR+TTAH6eW9V1J5tK8fTFn0x4chH3pJL4XzxHJVhVBdzs
-	 37K7PDY8G06OC7grV45QghiBnqDH/ORMfGa0GJfqQ2wDYjU5NRgFeWinVfApqnlk0m
-	 iXZVWi4eXWGqSuIeeScNXW98rF+rESdiHHB6N2DT98Z8gO9z1YOXGEJif72aARhtAF
-	 oeTBJUAmPwrTpLunwKyptIj78GUEYXXcUo59xQK6xnMO4IMwQPAItFvd5nzVtDaoE1
-	 nZGX0wAZO1Q0Q==
-Date: Wed, 29 Apr 2026 15:43:17 +0200
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Vitor Soares <ivitro@gmail.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Vitor Soares <vitor.soares@toradex.com>,
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Subject: Re: [PATCH v4] drm/bridge: cdns-dsi: Replace deprecated
- UNIVERSAL_DEV_PM_OPS()
-Message-ID: <20260429134317.GA74339@francesco-nb>
-References: <20260407144142.1420354-2-ivitro@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=genf1iYkhnvdX/5+prHq7JCNmClH3wGnQI0mdY20M0WmyKzOsWQnVGMhMeCaWrUSv1A5gFUrLI/SDHc3fD/PNcr0/43G23V18zGWVNqqoyxa/Vtzf2cnSnONLYwhoI5Ran5uf6KmSBMgKyN8g9r077DxeJ/JQb036SWC8TuIyIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=t0BofWe8; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=gurPl95Y8RA5wA7irk9s78NB3frlHqKbcjg55mzKfUA=; b=t0BofWe8krNNC7K618DRbDgmUv
+	O93lEP5QLOb/dKcTwFUQIDNynOFWoRXLPvaSgaNNdg3y2hkyGzjpxh9HTInwCB4PpubKH1YuZNssw
+	SGMRor4ow6OKqCLBYiQccw/yVd6q08QuYaZPsOaTRacAcMK+9/xvwRhDM2Kz4WnxOTY8=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1wI5Mw-000XWe-V3; Wed, 29 Apr 2026 15:54:26 +0200
+Date: Wed, 29 Apr 2026 15:54:26 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Mike Marciniszyn <mike.marciniszyn@gmail.com>
+Cc: Alexander Duyck <alexanderduyck@fb.com>,
+	Jakub Kicinski <kuba@kernel.org>, kernel-team@meta.com,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Mohsin Bashir <mohsin.bashr@gmail.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net-next 1/4] net: eth: fbnic: Fix addr validation in pcs
+ write
+Message-ID: <aadaf747-12fe-40dd-90f4-7f170b68c8f2@lunn.ch>
+References: <20260428172810.175077-1-mike.marciniszyn@gmail.com>
+ <20260428172810.175077-2-mike.marciniszyn@gmail.com>
+ <caa57970-7377-4986-ab62-f3f5d4054625@lunn.ch>
+ <afHfFj0CkBUIQxRT@PF5YBGDS.localdomain>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -77,82 +73,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260407144142.1420354-2-ivitro@gmail.com>
-X-Rspamd-Queue-Id: 0FE02495268
+In-Reply-To: <afHfFj0CkBUIQxRT@PF5YBGDS.localdomain>
+X-Rspamd-Queue-Id: 38B4E4953D6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[dolcini.it,none];
-	R_DKIM_ALLOW(-0.20)[dolcini.it:s=default];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[lunn.ch,none];
+	R_DKIM_ALLOW(-0.20)[lunn.ch:s=20171124];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-241895-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,oss.qualcomm.com,bootlin.com];
+	TAGGED_FROM(0.00)[bounces-241896-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FREEMAIL_CC(0.00)[fb.com,kernel.org,meta.com,lunn.ch,davemloft.net,google.com,redhat.com,gmail.com,armlinux.org.uk,intel.com,vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[intel.com,linaro.org,kernel.org,ideasonboard.com,kwiboo.se,gmail.com,linux.intel.com,suse.de,ffwll.ch,toradex.com,lists.freedesktop.org,vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
+	RCPT_COUNT_TWELVE(0.00)[15];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[francesco@dolcini.it,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[dolcini.it:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[andrew@lunn.ch,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[lunn.ch:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable,netdev];
 	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[]
 
-+Dmitry, Luca
-
-Hello,
-
-On Tue, Apr 07, 2026 at 03:41:41PM +0100, Vitor Soares wrote:
-> From: Vitor Soares <vitor.soares@toradex.com>
+On Wed, Apr 29, 2026 at 06:36:06AM -0400, Mike Marciniszyn wrote:
+> On Tue, Apr 28, 2026 at 08:11:30PM +0200, Andrew Lunn wrote:
+> > On Tue, Apr 28, 2026 at 01:28:07PM -0400, mike.marciniszyn@gmail.com wrote:
+> > > From: "Mike Marciniszyn (Meta)" <mike.marciniszyn@gmail.com>
+> > >
+> > > This patch contains a fix for addr validation in fbnic_mdio_write_pcs().
+> > >
+> > > Cc: stable@vger.kernel.org
+> > > Fixes: d0ce9fd7eae0 ("fbnic: Add SW shim for MDIO interface to PMD and PCS")
+> > > Signed-off-by: Mike Marciniszyn (Meta) <mike.marciniszyn@gmail.com>
+> >
+> > Please don't mix fixed and going development work in one
+> > patchset. They should be applied to different trees, etc.
+> >
+> > https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
+> >
+> >     Andrew
+> >
 > 
-> The deprecated UNIVERSAL_DEV_PM_OPS() macro uses the provided callbacks
-> for both runtime PM and system sleep. This causes the DSI clocks to be
-> disabled twice: once during runtime suspend and again during system
-> suspend, resulting in a WARN message from the clock framework when
-> attempting to disable already-disabled clocks.
-> 
-> [   84.384540] clk:231:5 already disabled
-> [   84.388314] WARNING: CPU: 2 PID: 531 at /drivers/clk/clk.c:1181 clk_core_disable+0xa4/0xac
-> ...
-> [   84.579183] Call trace:
-> [   84.581624]  clk_core_disable+0xa4/0xac
-> [   84.585457]  clk_disable+0x30/0x4c
-> [   84.588857]  cdns_dsi_suspend+0x20/0x58 [cdns_dsi]
-> [   84.593651]  pm_generic_suspend+0x2c/0x44
-> [   84.597661]  ti_sci_pd_suspend+0xbc/0x15c
-> [   84.601670]  dpm_run_callback+0x8c/0x14c
-> [   84.605588]  __device_suspend+0x1a0/0x56c
-> [   84.609594]  dpm_suspend+0x17c/0x21c
-> [   84.613165]  dpm_suspend_start+0xa0/0xa8
-> [   84.617083]  suspend_devices_and_enter+0x12c/0x634
-> [   84.621872]  pm_suspend+0x1fc/0x368
-> 
-> To address this issue, replace UNIVERSAL_DEV_PM_OPS() with
-> SET_RUNTIME_PM_OPS(), enabling suspend/resume handling through the
-> _enable()/_disable() hooks managed by the DRM framework for both
-> runtime and system-wide PM.
-> 
-> Cc: stable@vger.kernel.org # 6.1.x
-> Fixes: e19233955d9e ("drm/bridge: Add Cadence DSI driver")
-> Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-> Signed-off-by: Vitor Soares <vitor.soares@toradex.com>
+> So I'm guessing I need to send the bug fix to net instead of net-next
+> and reissue the patch series?
 
-Luca, Dmitry: any chance you can help with this patch?
+Correct.
 
-Thanks,
-Francesco
+You also have access to some good mentors within Meta, maybe reach out
+to them and do internal reviews before posting to netdev?
 
+> BTW, the review notes that the patch wasn't sent to you
+> (https://netdev-ctrl.bots.linux.dev/logs/build/1087030/14544928/cc_maintainers/)
+> but that is because there are two addresses for you:
+> 
+> grep Lunn MAINTAINERS
+> M:      Andrew Lunn <andrew@lunn.ch>
+> M:      Andrew Lunn <andrew@lunn.ch>
+> M:      Andrew Lunn <andrew@lunn.ch>
+> M:      Andrew Lunn <andrew@lunn.ch>
+> M:      Andrew Lunn <andrew+netdev@lunn.ch> <----
+> M:      Andrew Lunn <andrew@lunn.ch>
+> M:      Andrew Lunn <andrew@lunn.ch>
+> M:      Andrew Lunn <andrew@lunn.ch>
+> M:      Andrew Lunn <andrew@lunn.ch>
+> 
+> That seems to foil my scripting.  Is MAINTAINERS wrong?
+
+No. The +netdev helps procmail separate traffic between run of the
+mill netdev deluge, and email specifically for me, so they go into
+different mailboxes.
+
+	  Andrew
 
