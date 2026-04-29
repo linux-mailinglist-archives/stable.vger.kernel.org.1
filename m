@@ -1,212 +1,318 @@
-Return-Path: <stable+bounces-241927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241928-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +JQXFXBG8mmApQEAu9opvQ
-	(envelope-from <stable+bounces-241927-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 19:57:04 +0200
+	id 6Es7CVBI8mmTpQEAu9opvQ
+	(envelope-from <stable+bounces-241928-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 20:05:04 +0200
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F7F0498628
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 19:57:03 +0200 (CEST)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A60AE4988C2
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 20:05:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B937A301AAB6
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 17:56:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 60197308CF66
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 18:01:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3CD8421892;
-	Wed, 29 Apr 2026 17:56:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80E513CA4A3;
+	Wed, 29 Apr 2026 18:01:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cOCqCjDy"
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="mxtj2rrL"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazolkn19012067.outbound.protection.outlook.com [52.103.14.67])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09F2241323A
-	for <stable@vger.kernel.org>; Wed, 29 Apr 2026 17:56:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777485380; cv=none; b=D0ZzQMjh4E63lykfYhjRmS7nZrIX2ScaXdUa8M7HggICxqoQWB/uMdGaNvJsOa1MY+uvTGrNY5uReWdIutQP9osaENgL+zE+1v8euLiACTbhDBYRhnL9lPn2I5jfaebdAhxPK3mF6gDYM1s7gg9dtq7GseKnIwV6/F9uWwmnYvY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777485380; c=relaxed/simple;
-	bh=hPxaXd3xjy2aLoQlfjNn2TCMZsSvXUAXKxOi1BUCOho=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D0lnsCnrRTBo4W0ZwvHKJ/IoOoZDmjgF/iov7ojAvptCIL4hUfAYYybJecPuk7XpgazABxNVxGM15FsXRbOh+Y60PQTJX7TJLienrEOAOUtp0mbCpEdtJXAxby2CDt+ZeNwT78utitjIqMxBR1ULvU59V0lEJssVY5X2z00niFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cOCqCjDy; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-448528f4e69so55664f8f.3
-        for <stable@vger.kernel.org>; Wed, 29 Apr 2026 10:56:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777485376; x=1778090176; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=m+m+c0QFSmHtefs8UGhgSoeILNWZg2rQuDAplxBi5ys=;
-        b=cOCqCjDy12B6ro9esSG+onM18Ju1+DNt8/lJj8j5rlGgFor/h5mlDqT3erRDdbA+ES
-         gHnNUhRutovnkf/sUDku21JaD+l5b3ZO7HzsvKFyA+v1p8eOYzU+H/FXzPAMhg2ke7yG
-         UNeh6nngm5LEjC2jXkbTF3ix0qJV3IHHLcfDQX/YcUUl2BwRkS8XkBfbgD6gMUlnw+ji
-         lC5Ht0vquY4rWMH8MPLqKQAS/TYI6O7AFSiq9VyoMmWuzZPY4MDdk5o1k7fLD+0zEts9
-         TKqYWefBXPw6owlzPTYACRXr2GBB3VqLj7eitM5b9JV8SJJyPi5S7jhq1CfRZOEhEsBv
-         eMzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777485376; x=1778090176;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=m+m+c0QFSmHtefs8UGhgSoeILNWZg2rQuDAplxBi5ys=;
-        b=K8/c1/0v2wHK7bYX2nxeNMhPbu0qlFZH1t8UNu9x4aIWhBbCnwciM0RVfwNEBJH6gj
-         IHWBLpv+iIer4fGF1KalmuPTsHoOaZAsRBkHmlpBbdtP9JLHx0uhfJPFGOZApHd09eru
-         YqR4zjZklbUgEXUucS8vmOPZv3kKW8uRJzWZlJj0DEoHhHS6VhnP8Mh5TgJCurDPPVI8
-         IgtZJ5CQiaQGzHkruuciTTfXedRKiFwMvrA4OFPXdnbOxtj2gwUXtXXpcJcw1W7tKM8e
-         w2gBgYNK5HQp5wB6bRfpgEO6hHZ6dKUlnptp44/ncVvAAzREHLdliH9e2IH4X/v1alsl
-         SPkA==
-X-Forwarded-Encrypted: i=1; AFNElJ8Tfh9gOUFbkKeTZ/9ARXRr7r+yM486Y5L3Y/aM9RAXQbqcOlJvI/yTxhHo2Q4wR1VFwmdjFrU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx+rW97i79QRwdApWBkqWOGtgIK3mHuxvDkfDfwifKWwHxd99wB
-	Ci8qeRYxPnk8D22wbY3p/QfwZpGrg0V/QnsKYvQdeKlMfJmdOzL3ZaE=
-X-Gm-Gg: AeBDieuwaS+gOHa2+RH1J0z6lWczMthm0CKyaPjAONH4s7RHw0ki2zlSJ7S1yukEHV5
-	2y9JG1rKLP+eFshQ8gYd1EfvkUw+6UcwYjBrONHkazSYuiRIoXWjDpKHD/QFk9zzBvCXuBWctvC
-	HkroPi9VUP3K5Cl7vMH49MRrH7RjPO7hFBxo1+wR1zK7NXf8FaSxHeMgEV+xtKTWtZyV4gN6iZC
-	mpiZOUEkvkTJbaLM86TfVx2PAl//uNGAkfkEH+LzgnLpArSDjJP5fnRFoJf1nhBaKvMVFUYa2oc
-	I2u3juMf2kuORXlIT30sSlLjvKfTaGbEdNiV4iTCQREs2e5Y/6rjORX1XvGQNg8o1tc+aMBthc8
-	RgvnehzaeVx+k3uGWj64SaMU/QinONV4vl1MdyPecJY6/R70dmsCR+GPZOci0wQBb/54om9Oe+w
-	NqDyEbmOdymPOQVw==
-X-Received: by 2002:a5d:5848:0:b0:441:2473:c30a with SMTP id ffacd0b85a97d-446496d79aemr15475160f8f.31.1777485376333;
-        Wed, 29 Apr 2026 10:56:16 -0700 (PDT)
-Received: from debian.. ([2001:41d0:303:db6b::])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-447b3d48517sm6183750f8f.5.2026.04.29.10.56.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Apr 2026 10:56:15 -0700 (PDT)
-From: Tristan Madani <tristmd@gmail.com>
-To: Pablo Neira Ayuso <pablo@netfilter.org>
-Cc: Florian Westphal <fw@strlen.de>,
-	Phil Sutter <phil@nwl.cc>,
-	netfilter-devel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Tristan Madani <tristan@talencesecurity.com>
-Subject: [PATCH 2/2] netfilter: ip6_tables: allocate hook ops before making table visible
-Date: Wed, 29 Apr 2026 17:56:12 +0000
-Message-ID: <20260429175613.1459342-3-tristmd@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260429175613.1459342-1-tristmd@gmail.com>
-References: <20260429175613.1459342-1-tristmd@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D28C931F990;
+	Wed, 29 Apr 2026 18:01:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.14.67
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777485666; cv=fail; b=b+E+7wPk6Fk8dx2SHOsdzbUhfmOCNzy+C2vYIpD9GefPYU7OX+atxvlWbIz+WEd3NQNqI6ov064RBaXwbUmtQmadDk7Zb1H1CyjFsckWo73DKo1Z6WYWRC/p0lcKO3vhDgbTOEeKpWdSnGupnLTSP1Sf1W8VCug3wAKf863kEy0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777485666; c=relaxed/simple;
+	bh=qNtCQNxuqmSvRloiLcelST1t67hLHZ4qJ5evgpB9w2g=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=hj4MatL8w8D8NUWkXGNb55KB7wUSXtper8RdfQ/wyIlgrdnX2+NTqgyAWQ8vOw6gg50GxkC9/TzABjKxlRLqe3LSb4ndx+9LUnqX5EIzBHih/+JfWaRXhbFr0S8WWGFwv9wI3g/qwrlOg710kNJ2xOgh7fo38DOHhW4YRoqoV7o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=mxtj2rrL; arc=fail smtp.client-ip=52.103.14.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=IkLn5tRivBsKtL8MDtL5hxFa8wMdrg5rDcQNute1uCAEY7IbrFZ9AxMLvoXnNm8CwUje6qD95vq2aL3Lp5B+OI5b6BIJoC1csl5dxfzUNj6ras4veG2Sj06lM6UjmfP7On59LF5M4f+I2b38W3juGcbdtCxTM/Yg4/eJzFi2rL3AwBr+JKTr9LbpfS1MCkk1JpC6I5Guro9xcMPFkFpSABNAwMuC9PYY4LtKTrC8ryDMPVCpu6l9b/SC2rgE22rFhK+YvR29EbDUjS+s0DMOplo0/IkBXQZjTJNiCzMVqGCqXL7Ai+17Tij8Ou7aTu+UvgGhZlExVNK7oa2fbJNFSQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0YYA/J3vsuEzG3QbOyWrv1h0Ct394fGH/fo3JjqpAks=;
+ b=D8bzvtXi2fzSFukc3hRh8esZVuDQhzFu/LkdBYLeNj2IdTheLbPLQAnbp7isZOS1BxM8ZqKtpd3yF2F7sBRC2/6wZXFFfy6dVAwPDHxV/wIi73jMWcAAwMiHd54Dvfw61ryDksUsv/YOId/3AJxRhAflh1hS/z8yqyYBHS7we8K44oIJf97KgDgBtkGwotOe9eZl1tI1rTzeS3vmC0BmwSqx3EsJVpu79u9AxtxFNxXRmyiOlBUNSpn9vjN/sE5IvS9j/kMoj7BFV8eEkmRtJS4qvmML03zvWDnlA9vcGMr8N1jrYFDlcDPz7HaxieK2rcUkc1phhEoRpkghBc4gZg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0YYA/J3vsuEzG3QbOyWrv1h0Ct394fGH/fo3JjqpAks=;
+ b=mxtj2rrLymqLv/xqqaOcq4NOxKEvtF4Syl8VrYJMXaD6UjCH17nYHH1OsjaidghSmLeHaEszB/WeBPOMpTF040QbpGwnhxL3ivUaBuWGJamJcJXvLPit+7DntG3aFp324pmrKYefNYthMhNLkZAFYot1wNtczy4KEuT1thJ0nhRzgmm5s1uwG2FR8yRBS5ksyBnrUAHicBTDBDodPZjY2F3KeuXmfHDhKSO2r/kTarq2qJ8uMzZBpnrJUVYpKbLW+avFg3fvGW/SXqYEnGkQbrERyCQP6CPX3LMoS4EyBj9jx8LBHn0oKoHFb2d1U5Ui/UoSqGFS16PkafZrPxlZ3A==
+Received: from SN6PR02MB4157.namprd02.prod.outlook.com (2603:10b6:805:33::23)
+ by DM4PR02MB9008.namprd02.prod.outlook.com (2603:10b6:8:b7::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9846.28; Wed, 29 Apr
+ 2026 18:01:01 +0000
+Received: from SN6PR02MB4157.namprd02.prod.outlook.com
+ ([fe80::900:1ccf:2b1e:52b6]) by SN6PR02MB4157.namprd02.prod.outlook.com
+ ([fe80::900:1ccf:2b1e:52b6%6]) with mapi id 15.20.9870.016; Wed, 29 Apr 2026
+ 18:01:01 +0000
+From: Michael Kelley <mhklinux@outlook.com>
+To: Dexuan Cui <DECUI@microsoft.com>, Michael Kelley <mhklinux@outlook.com>,
+	KY Srinivasan <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>,
+	"wei.liu@kernel.org" <wei.liu@kernel.org>, Long Li <longli@microsoft.com>,
+	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"matthew.ruffell@canonical.com" <matthew.ruffell@canonical.com>,
+	"johansen@templeofstupid.com" <johansen@templeofstupid.com>
+CC: "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [PATCH] Drivers: hv: vmbus: Improve the logc of reserving fb_mmio
+ on Gen2 VMs
+Thread-Topic: [PATCH] Drivers: hv: vmbus: Improve the logc of reserving
+ fb_mmio on Gen2 VMs
+Thread-Index: AQHczc/fn1PdG2gkFEeUWQdp0QjV5bXs9OVggAhpmHCAAQocQA==
+Date: Wed, 29 Apr 2026 18:01:00 +0000
+Message-ID:
+ <SN6PR02MB415726B17D5A6027CD1717E8D4342@SN6PR02MB4157.namprd02.prod.outlook.com>
+References: <20260416183529.838321-1-decui@microsoft.com>
+ <SN6PR02MB41576A849B6C4967622B4BA8D42A2@SN6PR02MB4157.namprd02.prod.outlook.com>
+ <SA1PR21MB69214DC322549834104D26E0BF342@SA1PR21MB6921.namprd21.prod.outlook.com>
+In-Reply-To:
+ <SA1PR21MB69214DC322549834104D26E0BF342@SA1PR21MB6921.namprd21.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SN6PR02MB4157:EE_|DM4PR02MB9008:EE_
+x-ms-office365-filtering-correlation-id: 14f4adca-6c80-4ee9-c6de-08dea619460a
+x-microsoft-antispam:
+ BCL:0;ARA:14566002|461199028|41001999006|12121999013|8062599012|15080799012|19110799012|8060799015|37011999003|19101099003|31061999003|51005399006|55001999006|13091999003|440099028|3412199025|12091999003|102099032|56899033|40105399003|1710799026;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?OCNaqXmgmLQynanrMyaG4lYvRwiLydRWiess4r0Dy0TZ/vrImKeAIN8jnQ8T?=
+ =?us-ascii?Q?aOYplmbZe3jc4QJwWyhn5A9sdUGWspjhdLN0gBz34JDKYuMSE3uDz3Luxywf?=
+ =?us-ascii?Q?XfSvBrd8BADvzKB9G5PrzRyddL76xCSvObeUBLD3lgz/ipDQWWcZDBHXuGLN?=
+ =?us-ascii?Q?T4SUSZ0hv7VkJgErGa60TAlaXL/+ZI/3H3Z4NIk0yYqiCgghlr2ZzLKHN5hf?=
+ =?us-ascii?Q?tuHxqHYtZ+lwN1HCPrMXmpYcAM1Yez4VFNbSF5P4e9yCAVdL07+h/uBWSL3u?=
+ =?us-ascii?Q?2UlBl85RuRV16hcYP9/GVik6et9vc9yM6dHWCpi9pTYMT5MbHYVyEIO7phfl?=
+ =?us-ascii?Q?wJNgtpf4O3RbOo97GXJPNNIO7rE43rBxDvy8nrdwoJxnieOIXxpQgZWVUrmc?=
+ =?us-ascii?Q?xG/Q6hu9v/Q2fW1j2vLPBKRXOEs/NN5vvL7oyEKtHVaUXyrSsoLBATFiPli+?=
+ =?us-ascii?Q?WBkYFp9017tRxy+xxED72/ZCpxBx7VNBkLzYjlG7V3dHZQq1yT9jMEdOkXuR?=
+ =?us-ascii?Q?5E9CjRBF1xjAjOgyplhXvbu3/zOUGqBBfUOhLtGh6DCOustlg7eTUenl+vhx?=
+ =?us-ascii?Q?hBkfGg9cYGnvxTxiCuYyECpB5Q1ub5rl3/Kmzpd/HDK7wgvExCnbgYt79gq+?=
+ =?us-ascii?Q?zCuft2rb3nVVL4EBBBSqbofWKvuShydTHaDxzrCmxan75c2Dcyw/ooNMC0hv?=
+ =?us-ascii?Q?Vsy21VSVtKWGEoGRJc3uRZV8CiKyoL4D9XcH+YxD2o4AUqMirgtE6bnCFi19?=
+ =?us-ascii?Q?nPFSNIFx49gI6UVITtl6eBLAAlMp0C+n4umb3Ghf7+F2jRRWAWc23ACmk/Yp?=
+ =?us-ascii?Q?6e8Jv4PnramgJi9XDI/AgSEu/B2XHUZb5gMRX00ttDp9jljtv3mdngVR9mZV?=
+ =?us-ascii?Q?e/ZbVVKZSIC1DIxZ5EpVeIAtHh7aMi8rGBwTG+AxYD4YpnJHWJvvcZFgDit/?=
+ =?us-ascii?Q?iPbrhZ/4n2bkoi6VFwt7EtbbKO/ww9pqzIIfmKAbbmrUnEpsPJBy+DpaCQCR?=
+ =?us-ascii?Q?0BfqrPXirLucWoHbn5PMmxLn+BMCVOkL+kZiCqb7LGSLeI/pTpaIuag0BwgX?=
+ =?us-ascii?Q?5aSSWQKkbbOHKtP1qKMvlH+ce2PLt0fPlPgdYpssIrN9wEphY4axhFs97Cj9?=
+ =?us-ascii?Q?DxMttlTO5CUvCGVhMRtihdbnDBV/2lWJN8jvo+5De51PDDQL5qFqlkE=3D?=
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?L5kF+yQTK0PM/gsdSDVcTieat6nJvLhcTjkyVFh44m7jpeDF8pSRCGxK1FZg?=
+ =?us-ascii?Q?thOohL6Gfl2dlaprTwtXlz4wvv0j6sz7ViAEw3NPNI9daOeXoHiOzxlaMAAC?=
+ =?us-ascii?Q?+/+LPzPsFyLgHJZfWO3wVsK3BTmUChG4MB+Q/QZfLuXz1pkHiBQP4SnC5ly5?=
+ =?us-ascii?Q?4q/i7sJ1QoBkJ/P3Y2M1eSGRnpCGHJwBEYpuQDDgZZOLYNa59qHNRIQMC/SK?=
+ =?us-ascii?Q?mBGgsl9TM3z5NJksVfUyIRK8XW+H/Vhf1XRd0cjh0a6a4zsg3iA3M1jQo2mL?=
+ =?us-ascii?Q?2IXyxzNCGrr6y9Eqi+svMMvgGK9MtbuMwT65NGjmeFfo+adkJf8f6AiuoZ6u?=
+ =?us-ascii?Q?o/IQ2LucmJkPtT4gje2TMf31qBhkqHesnNuG13JeRIMWoSxYUVItxCcmt0kC?=
+ =?us-ascii?Q?yuVIreeVu13Nt2bAmbw/GA0ncAOTmf9leCmdF7MFVat1FgOGnUILyttCIzPD?=
+ =?us-ascii?Q?Dm6SJYxJZQYy8FTspHV1oDGTD2fEJuKSJcAsS434cCqIsr6ELvuTV7sgCUQw?=
+ =?us-ascii?Q?f0+Q+htvBDap0u2iabTgEAlD4BE7sOqbKeccse6aF7z2R5KkxgZJFjhMZ7Pm?=
+ =?us-ascii?Q?lKFpY/MAesDsIVqcESsMKD4xNq/JvtilpYXKeVKsbdJAVDdQrAcwGnF1Srio?=
+ =?us-ascii?Q?cSPSeYpONBFQT8Wg8MplpBT5MNIxIcUJC7cIXtrR3z28L3ykIxZAlafcVfcN?=
+ =?us-ascii?Q?bWjOGLvnXj4sqUgSM+i7MsI/gcR8Ip5efKX1Ru9nCjmWJHoz2gBOFqwXafno?=
+ =?us-ascii?Q?XThXWi2xAnY2eOx05l0yFMavkg5E0T+5pi7NeTT45iE2ocWmDMklkKUat49I?=
+ =?us-ascii?Q?AyUdfeJPtMEiSFggFNudbBU7UZ37ky90De5fvJlzJLWtlr8DWaoLuPu2Qq/I?=
+ =?us-ascii?Q?8hVWK1WPlv59BoF3GLtOh+ErcNnFhz8RE6bYZjp6+XMwRBQIXXOaGHgNddPe?=
+ =?us-ascii?Q?3raQoqR0cXAo627Q/QnOKwVcBfPCBMDT/IqYTiPREdecxvTt5IBx1Noyyxtf?=
+ =?us-ascii?Q?64YQRs3UvgjgRsQTAq+TDjRamcdCVGgdMqX1wRQ8O+ZMLNOZXPC9EsxF8Uva?=
+ =?us-ascii?Q?QoY5vVpLZKXd/w8GOq9zQe2nyZB2qIlPOVEAsXhdFRynpHbbCMWk4wKF5SAm?=
+ =?us-ascii?Q?A0UlkfZaNq2U1Bb7sq0rv25v+f//B3SjXFgbbYZpevf/B6GFyu76pKaPQVH3?=
+ =?us-ascii?Q?fjz5+RoRRWvzSnN0RRzrBKeqsDSqHeKa3P9JkJIb3eUfswHgV6omf6ezKLvq?=
+ =?us-ascii?Q?28cSOGk362f3e6WWzc9jhMMnO1syE2QKeJEbLWXnEVyTJR7gY1Dx4/rpoftN?=
+ =?us-ascii?Q?iXliBpTKeAWAnpoBJXZn+GhF1Ug52YJurd7/j6+zIYdXd5WdTojb0dNNG/x/?=
+ =?us-ascii?Q?EsHBKqg=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0F7F0498628
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR02MB4157.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: 14f4adca-6c80-4ee9-c6de-08dea619460a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Apr 2026 18:01:01.2119
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR02MB9008
+X-Rspamd-Queue-Id: A60AE4988C2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[outlook.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[outlook.com:s=selector1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-241928-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241927-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[microsoft.com,outlook.com,kernel.org,vger.kernel.org,canonical.com,templeofstupid.com];
+	FREEMAIL_FROM(0.00)[outlook.com];
 	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tristmd@gmail.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[outlook.com:+];
+	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FROM_NEQ_ENVFROM(0.00)[mhklinux@outlook.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,talencesecurity.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,outlook.com:dkim,outlook.com:email,SN6PR02MB4157.namprd02.prod.outlook.com:mid]
 
-From: Tristan Madani <tristan@talencesecurity.com>
+From: Dexuan Cui <DECUI@microsoft.com> Sent: Tuesday, April 28, 2026 8:13 P=
+M
+> > From: Michael Kelley <mhklinux@outlook.com> Sent: Thursday, April 23, 2=
+026 10:40 AM
 
-ip6t_register_table() first calls xt_register_table() which adds the
-table to the per-netns list, making it visible to other code paths. Only
-after that does it allocate the per-net copy of hook ops via
-kmemdup_array(). This leaves a window where the table is findable via
-xt_find_table() but has ops=NULL.
+[snip]
 
-If cleanup_net runs during this window (racing namespace teardown
-against lazy table init), ip6t_unregister_table_pre_exit() finds the
-table via xt_find_table() and passes the NULL ops pointer to
-nf_unregister_net_hooks(), causing a general protection fault when it
-dereferences ops[0].pf.
+> > > +	/* Hyper-V CoCo guests do not have a framebuffer device. */
+> > > +	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
+> > > +		return;
+> >
+> > This test is testing feature "A" (mem encryption) in order to determine
+> > the presence of feature "B" (no framebuffer), because current
+> > configurations happen to always have "A" and "B" at the same time. But
+> > the linkage between the features is tenuous, and if configurations shou=
+ld
+> > change in the future, testing this way could be bogus. It works now, bu=
+t I'm
+> > leery of depending on the linkage between "A" and "B".
+> >
+> > You could set up a "can_have_framebuffer" flag in ms_hyperv_init_platfo=
+rm()
+> > if running in a CVM, and test that flag here. But I'd suggest just drop=
+ping
+> > this optimization. CVMs are always Gen2 (and that's not going to change=
+),
+> > so they have plenty of low mmio space.
+>=20
+> This is not true on a lab host, e.g. I have a TDX VM on a lab host create=
+d
+> by these 2 commands (without the 2nd command, Hyper-V won't allow
+> the TDX VM to start):
+>=20
+>     New-VM -Generation 2 -GuestStateIsolationType Tdx -Name $vmName
+>     Disable-VMConsoleSupport -VMName $vmName
+>=20
+> The low_mmio_base is still 4GB-128MB. In this case, it's not a good idea
+> to try to reserve the 128MB:
+>=20
+> 1) the available low MMIO size is smaller than 128MB due to the vTPM
+> MMIO range.
+>=20
+> 2) even if we can reserve the 109.25 low mmio range
+> [0xf8000000-0xfed3ffff], we may not want to do that, just in case
+> some assigned PCI device has 32-bit BARs.
+>=20
+> So, IMO we need to keep the check:
+>  +	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
+>  +		return;
+>=20
+> BTW, I think this may be a slightly better check here:
+> +        if (hv_is_isolation_supported())
+> +                return;
 
-Fix this by allocating the ops array before calling xt_register_table(),
-so the table is never visible in the list with a NULL ops pointer.
+Agreed. Using hv_is_isolation_supported() seems better than
+cc_platform_has() for this purpose.
 
-Fixes: ee177a54413a ("netfilter: ip6_tables: pass table pointer via nf_hook_ops")
-Cc: stable@vger.kernel.org
-Signed-off-by: Tristan Madani <tristan@talencesecurity.com>
----
- net/ipv6/netfilter/ip6_tables.c | 28 ++++++++++++++++------------
- 1 file changed, 16 insertions(+), 12 deletions(-)
+>=20
+> A CVM on Hyper-V won't start without the command line
+>     Disable-VMConsoleSupport -VMName $vmName
 
-diff --git a/net/ipv6/netfilter/ip6_tables.c b/net/ipv6/netfilter/ip6_tables.c
-index d585ac3c11133..17143277637a5 100644
---- a/net/ipv6/netfilter/ip6_tables.c
-+++ b/net/ipv6/netfilter/ip6_tables.c
-@@ -1754,6 +1754,21 @@ int ip6t_register_table(struct net *net, const struct xt_table *table,
- 		return ret;
- 	}
- 
-+	if (template_ops) {
-+		num_ops = hweight32(table->valid_hooks);
-+		if (num_ops == 0) {
-+			xt_free_table_info(newinfo);
-+			return -EINVAL;
-+		}
-+
-+		ops = kmemdup_array(template_ops, num_ops, sizeof(*ops),
-+				    GFP_KERNEL);
-+		if (!ops) {
-+			xt_free_table_info(newinfo);
-+			return -ENOMEM;
-+		}
-+	}
-+
- 	new_table = xt_register_table(net, table, &bootstrap, newinfo);
- 	if (IS_ERR(new_table)) {
- 		struct ip6t_entry *iter;
-@@ -1761,24 +1776,13 @@ int ip6t_register_table(struct net *net, const struct xt_table *table,
- 		xt_entry_foreach(iter, loc_cpu_entry, newinfo->size)
- 			cleanup_entry(iter, net);
- 		xt_free_table_info(newinfo);
-+		kfree(ops);
- 		return PTR_ERR(new_table);
- 	}
- 
- 	if (!template_ops)
- 		return 0;
- 
--	num_ops = hweight32(table->valid_hooks);
--	if (num_ops == 0) {
--		ret = -EINVAL;
--		goto out_free;
--	}
--
--	ops = kmemdup_array(template_ops, num_ops, sizeof(*ops), GFP_KERNEL);
--	if (!ops) {
--		ret = -ENOMEM;
--		goto out_free;
--	}
--
- 	for (i = 0; i < num_ops; i++)
- 		ops[i].priv = new_table;
- 
--- 
-2.47.3
+Unfortunately, on my laptop Hyper-V, a VM with VBS Isolation appears
+to *not* require Disable-VMConsoleSupport. I can start the VM, and the
+VM is offered the VMBus synthvid, mouse, and keyboard devices.
 
+But what's weird in this case is that vmbus_reserved_fb() sees lfb_base
+and lfb_start as 0. Furthermore, as a test, I changed the "allowed_in_isola=
+ted"
+flag to true for the synthvid device, and the Hyper-V DRM driver loads and
+initializes. In doing so, the vmconnect.exe window is resized larger, as is
+done in a normal VM. /proc/iomem shows that the DRM driver claimed
+the expected MMIO range at the start of low MMIO space. I can run a user
+space program that mmaps /dev/fb0 and writes pixels to the mmap'ed
+memory, and that succeeds as it would in a normal VM, but the
+vmconnect.exe window doesn't show anything. It appears that the Hyper-V
+host has allocated memory for the frame buffer, but is ignoring anything
+that is written to it.
+
+Running Disable-VMConsoleSupport works as expected -- the synthvid,
+mouse, and keyboard devices are no longer offered to the VM.
+
+>=20
+> IMO this is very unlikely to change in the future, because the Hyper-V
+> synthetic framebuffer VMBus device is not a trusted device for a CVM,
+> so there is no reason for Hyper-V to offer such a device to CVMs; even
+> if the host offers it, currently the guest hv_vmbus driver ignores it.
+>=20
+
+In the case of VBS Isolation, if such a VM also had a PCI pass-thru device,
+the core problem could recur. I.e., not reserving space for the framebuffer
+could allow the PCI device to try to use MMIO space that Hyper-V has
+set up for the frame buffer, causing the PCI device to fail. And that's a
+worse problem than just having the graphics console not function. I
+can't actually try the failure case because I don't have an assignable PCI
+device on my laptop, but it seems likely based on the evidence that
+Hyper-V is setting up a framebuffer device.
+
+So instead of not reserving any MMIO space for the framebuffer on
+CVMs, the code you already have limits the reservation to half of the
+MMIO space below 4 GB. Won't that work to avoid exhausting the low
+MMIO space in a CVM that's running on a local Hyper-V with only 128
+MiB of low MMIO space?
+
+> When we assign a physical PCI GPU device to a CVM, I'm not sure if there
+> is any framebuffer from the GPU or not. Even if there is, that's a comple=
+tely
+> different scenario and not reserving some low MMIO for "framebuffer"
+> is unrelated: I think hyperv_drm (or the deprecated hyperv_fb) is the onl=
+y
+> driver that sets the fb_overlap_ok parameter of vmbus_allocate_mmio().
+>=20
+> > And at the moment, CVMs don't
+> > support PCI devices,
+>=20
+> This is not true: recently I created a "Standard DC16eds v6" TDX CVM
+> on Azure, and I did see two NVMe local temporary disks in "nvme list"
+>  (here TDISP is not used). In 2023, we added the commit
+> 2c6ba4216844 ("PCI: hv: Enable PCI pass-thru devices in Confidential VMs"=
+)
+> and I believe some users are running CVMs with GPUs.
+
+Interesting! I worked on commit 2c6ba4216844, but had not noticed
+that Azure now has offerings that makes use of it. I'll take a look at
+that TDX VM size.
+
+Thanks,
+
+Michael
 
