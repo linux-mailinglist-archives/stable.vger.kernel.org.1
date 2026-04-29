@@ -1,137 +1,135 @@
-Return-Path: <stable+bounces-241837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241838-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YKZKOzS68Wl1kAEAu9opvQ
-	(envelope-from <stable+bounces-241837-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 09:58:44 +0200
+	id kFc8J+288WnGkAEAu9opvQ
+	(envelope-from <stable+bounces-241838-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 10:10:21 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 931A5490DA9
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 09:58:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF9BB491037
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 10:10:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 16378301874C
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 07:56:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D88923012254
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 08:07:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 537E1396D0A;
-	Wed, 29 Apr 2026 07:56:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E89B3A784D;
+	Wed, 29 Apr 2026 08:07:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DC8E32D0FC;
-	Wed, 29 Apr 2026 07:56:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.216
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B815131E84E;
+	Wed, 29 Apr 2026 08:07:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777449369; cv=none; b=I8myRsMzo4QfYXedYpBEiTRzcwUoLZIOJ356XVxeReJ8pm7JLRTZ72MZubtnzQ53MPPb0y9r0+ibylbys4Kuv8GMzu64c/WhoKoEb2DxnTHNKXD4lCg9dD0I/uKMEwdYMC1mrz8GUknovaA3+dZqFzXiN5N7REzDky3o0JhFns8=
+	t=1777450024; cv=none; b=U0IZ0ODiq6UNS7PsPNg9lcUQfB2Vguz9OYmO11AtH/lXt/H2M0KYXyeja3zbObKh1sjzOZjwld/4wbL0IDgHRu4IG7Tqh+JiFKbS9SypW7BzST93/FhmzCV5fr4Fx0FVeo2BllI/f0YksquF2cQMuHqw3zlo1BfGqKKI9CuEDRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777449369; c=relaxed/simple;
-	bh=Kkv97VMnztmelRWbOIZlO1gcT+e2sRBJ+LEZugPERUg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=uizi9+mDmTs8RRrTL0BjTHPW/pmoa+Wu6ZUtTzZA8X9/K+FXMoGC/bk7Pzc78Hc/nLw0c6z01zYUzDY/TSaG8PfETNF0WSGCiUn4wOnjYsO/chqGFa+aqwEvvIOO+6Qiq4AsTdaf+b+wWhf/vbAaHTgP1hLPu5o02ZoohxnZc2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hisilicon.com; spf=pass smtp.mailfrom=hisilicon.com; arc=none smtp.client-ip=113.46.200.216
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=hisilicon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hisilicon.com
-Received: from mail.maildlp.com (unknown [172.19.162.140])
-	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4g58b35J6Rz1T4G8;
-	Wed, 29 Apr 2026 15:49:35 +0800 (CST)
-Received: from kwepemf100018.china.huawei.com (unknown [7.202.181.17])
-	by mail.maildlp.com (Postfix) with ESMTPS id 091A320226;
-	Wed, 29 Apr 2026 15:55:56 +0800 (CST)
-Received: from [10.67.120.168] (10.67.120.168) by
- kwepemf100018.china.huawei.com (7.202.181.17) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Wed, 29 Apr 2026 15:55:47 +0800
-Message-ID: <ff248023-a367-3561-1c04-77da1b1f3794@hisilicon.com>
-Date: Wed, 29 Apr 2026 15:55:45 +0800
+	s=arc-20240116; t=1777450024; c=relaxed/simple;
+	bh=7YF+lDBamvqbz3kcDUw12iz+lbUM18kDStsGLO7TGko=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UTO2iraONKFCqwpURWpu/gA0HHG652n2SQ0C03r/GiPCXWQo878YgNKTxTo2/WdHnQg025naMShEw01H2KweQMkc0+xXfBKYcQnyORuVUrLhp3D+zbNEx6NXRPX4w8zNXQfMs3Gd11+sxXFcFLZ1JQyWagK76a+xaTNh90uHTsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [223.64.68.8])
+	by gateway (Coremail) with SMTP id _____8DxLuoivPFpRBAFAA--.16617S3;
+	Wed, 29 Apr 2026 16:06:58 +0800 (CST)
+Received: from kernelserver (unknown [223.64.68.8])
+	by front1 (Coremail) with SMTP id qMiowJBxxuIcvPFp3yx3AA--.53647S2;
+	Wed, 29 Apr 2026 16:06:58 +0800 (CST)
+From: Huacai Chen <chenhuacai@loongson.cn>
+To: Huacai Chen <chenhuacai@kernel.org>
+Cc: loongarch@lists.linux.dev,
+	Xuefeng Li <lixuefeng@loongson.cn>,
+	Guo Ren <guoren@kernel.org>,
+	Xuerui Wang <kernel@xen0n.name>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	linux-kernel@vger.kernel.org,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	stable@vger.kernel.org,
+	Xi Ruoyao <xry111@xry111.site>
+Subject: [PATCH] LoongArch: Fix SYM_SIGFUNC_START definition for 32BIT
+Date: Wed, 29 Apr 2026 16:06:44 +0800
+Message-ID: <20260429080644.2425166-1-chenhuacai@loongson.cn>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH rc 00/15] Various bug fixes for RDMA drivers in the uapi
- functions
-To: Jason Gunthorpe <jgg@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Bryan Tan <bryan-bt.tan@broadcom.com>, Eric Dumazet <edumazet@google.com>,
-	Konstantin Taranov <kotaranov@microsoft.com>, Jakub Kicinski
-	<kuba@kernel.org>, Leon Romanovsky <leon@kernel.org>,
-	<linux-hyperv@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
-	<netdev@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>, Selvin Xavier
-	<selvin.xavier@broadcom.com>, Chengchang Tang <tangchengchang@huawei.com>,
-	Tariq Toukan <tariqt@nvidia.com>, Vishnu Dasa <vishnu.dasa@broadcom.com>,
-	Yishai Hadas <yishaih@nvidia.com>
-CC: Abhijit Gangurde <abhijit.gangurde@amd.com>, Adit Ranadive
-	<aditr@vmware.com>, Allen Hubbe <allen.hubbe@amd.com>, Andrew Boyer
-	<andrew.boyer@amd.com>, Aditya Sarwade <asarwade@vmware.com>, Brad Spengler
-	<brad.spengler@opensrcsec.com>, Bryan Tan <bryantan@vmware.com>, "David S.
- Miller" <davem@davemloft.net>, Dexuan Cui <decui@microsoft.com>, Doug Ledford
-	<dledford@redhat.com>, George Zhang <georgezhang@vmware.com>, Jorgen Hansen
-	<jhansen@vmware.com>, Jianbo Liu <jianbol@nvidia.com>, Kai Aizen
-	<kai.aizen.dev@gmail.com>, Leon Romanovsky <leonro@mellanox.com>, Leon
- Romanovsky <leonro@nvidia.com>, Yixian Liu <liuyixian@huawei.com>, Long Li
-	<longli@microsoft.com>, Lijun Ou <oulijun@huawei.com>, Parav Pandit
-	<parav.pandit@emulex.com>, <patches@lists.linux.dev>, Roland Dreier
-	<roland@purestorage.com>, Roland Dreier <rolandd@cisco.com>, Sagi Grimberg
-	<sagi@grimberg.me>, Ajay Sharma <sharmaajay@microsoft.com>,
-	<stable@vger.kernel.org>, Tariq Toukan <tariqt@mellanox.com>, "Wei Hu
- (Xavier)" <xavier.huwei@huawei.com>, Shaobo Xu <xushaobo2@huawei.com>,
-	Nenglong Zhao <zhaonenglong@hisilicon.com>
-References: <0-v1-41f3135e5565+9d2-rdma_ai_fixes1_jgg@nvidia.com>
-Content-Language: en-US
-From: Junxian Huang <huangjunxian6@hisilicon.com>
-In-Reply-To: <0-v1-41f3135e5565+9d2-rdma_ai_fixes1_jgg@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemf100018.china.huawei.com (7.202.181.17)
-X-Rspamd-Queue-Id: 931A5490DA9
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJBxxuIcvPFp3yx3AA--.53647S2
+X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBj9xXoWrtF47Jw1kuFy8tw1kWFWrXrc_yoWfuwb_X3
+	WxJw4ku3ykXFW7CwnIvFyrA3WYv3WrAFnIkr1kXr17Zas0vw15Gr1kAw13ArWjk39rGF4f
+	ZFW8t3s8Ary2yosvyTuYvTs0mTUanT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUj1kv1TuYvT
+	s0mT0YCTnIWjqI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUI
+	cSsGvfJTRUUUb7kYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20x
+	vaj40_Wr0E3s1l1IIY67AEw4v_Jrv_JF1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
+	w2x7M28EF7xvwVC0I7IYx2IY67AKxVWUCVW8JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
+	W8JVWxJwA2z4x0Y4vEx4A2jsIE14v26F4j6r4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+	Gr1j6F4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
+	02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUAVWUtwAv7VC2z280aVAF
+	wI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JMxAIw28IcxkI7V
+	AKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCj
+	r7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6x
+	IIjxv20xvE14v26r1I6r4UMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAI
+	w20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x
+	0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxU2nYFDUUUU
+X-Rspamd-Queue-Id: EF9BB491037
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [1.54 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	DMARC_POLICY_QUARANTINE(1.50)[hisilicon.com : SPF not aligned (relaxed), No valid DKIM,quarantine];
+X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[amd.com,vmware.com,opensrcsec.com,davemloft.net,microsoft.com,redhat.com,nvidia.com,gmail.com,mellanox.com,huawei.com,emulex.com,lists.linux.dev,purestorage.com,cisco.com,grimberg.me,vger.kernel.org,hisilicon.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241837-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[47];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-241838-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[loongson.cn];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	FROM_NEQ_ENVFROM(0.00)[chenhuacai@loongson.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[huangjunxian6@hisilicon.com,stable@vger.kernel.org];
-	NEURAL_SPAM(0.00)[0.194];
-	RCVD_COUNT_FIVE(0.00)[6];
-	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.357];
+	RCVD_COUNT_FIVE(0.00)[5];
 	R_DKIM_NA(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,hisilicon.com:mid,hisilicon.com:email]
+	DBL_BLOCKED_OPENRESOLVER(0.00)[xry111.site:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,loongson.cn:mid,loongson.cn:email]
 
+The SYM_SIGFUNC_START definition should match sigcontext that the length
+of GPRs are 8 bytes for both 32BIT and 64BIT. So replace SZREG with 8 to
+fix it.
 
+Cc: stable@vger.kernel.org
+Fixes: e4878c37f6679fde ("LoongArch: vDSO: Emit GNU_EH_FRAME correctly")
+Suggested-by: Xi Ruoyao <xry111@xry111.site>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+---
+ arch/loongarch/include/asm/linkage.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-On 2026/4/29 0:17, Jason Gunthorpe wrote:
-> All were found by Sashiko or Claude AI tools. They vary in severity, but
-> are all things that shouldn't be present.
-> 
-> Jason Gunthorpe (15):
->   RDMA/hns: Fix xarray race in hns_roce_create_srq()
->   RDMA/hns: Fix xarray race in hns_roce_create_qp_common()
->   RDMA/hns: Fix unlocked call to hns_roce_qp_remove()
+diff --git a/arch/loongarch/include/asm/linkage.h b/arch/loongarch/include/asm/linkage.h
+index a1bd6a3ee03a..ae937d1708b2 100644
+--- a/arch/loongarch/include/asm/linkage.h
++++ b/arch/loongarch/include/asm/linkage.h
+@@ -69,7 +69,7 @@
+ 		  9,  10, 11, 12, 13, 14, 15, 16,	\
+ 		  17, 18, 19, 20, 21, 22, 23, 24,	\
+ 		  25, 26, 27, 28, 29, 30, 31;		\
+-	.cfi_offset \num, SC_REGS + \num * SZREG;	\
++	.cfi_offset \num, SC_REGS + \num * 8;		\
+ 	.endr;						\
+ 							\
+ 	nop;						\
+-- 
+2.52.0
 
-For hns patches:
-Reviewed-by: Junxian Huang <huangjunxian6@hisilicon.com>
-
-Thanks,
-Junxian
 
