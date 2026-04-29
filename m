@@ -1,71 +1,69 @@
-Return-Path: <stable+bounces-241958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-241959-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eFOcM+OI8mlEsQEAu9opvQ
-	(envelope-from <stable+bounces-241958-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 00:40:35 +0200
+	id 6M3XHDqJ8mlPsQEAu9opvQ
+	(envelope-from <stable+bounces-241959-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 00:42:02 +0200
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29A0549B1C6
-	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 00:40:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4C8249B1ED
+	for <lists+stable@lfdr.de>; Thu, 30 Apr 2026 00:42:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4B23B3038AFA
-	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 22:40:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B2D21305D3E7
+	for <lists+stable@lfdr.de>; Wed, 29 Apr 2026 22:41:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEBBB438FF2;
-	Wed, 29 Apr 2026 22:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A7F0449EB1;
+	Wed, 29 Apr 2026 22:41:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UGX4M6H3"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EBNQg1jA"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46B723B5304;
-	Wed, 29 Apr 2026 22:40:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4BBD40B6F7;
+	Wed, 29 Apr 2026 22:41:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777502409; cv=none; b=BWd0kF5PbYU05d3aBBlcQWjlOX+KTDBXctraj3oyKcBG6W1GKQE2vgCIHcjaM554YQAxQk/swXVLBn9m7lu7wUNlzucQo95FTIHCR/arygwmtK3pFyjCNz0br/P9R6ESpn6eYOJ0wslUT+mSKQz+k92kBeow0RFVcqaaPLw0fbM=
+	t=1777502472; cv=none; b=LSxf3gLjOEpYGbdfdFu2KbAZg93Vf6XJwRpOUPyLWApDrBZbQ5zWMn6dilXw+qsJyCiPt7w7CPgwJhMsFwKJtcrBzS8ya66VocCtdD9fs8QPEysgs1bLtzr1bzvgTO6RsTLbgvp7MpC7IpYZuCF3IWZV462LfcX6UON6uDIbwEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777502409; c=relaxed/simple;
-	bh=3BI/lWhI9SxVb1m3Bl2sciMIf9SP9rj77wH4xuxgpwI=;
+	s=arc-20240116; t=1777502472; c=relaxed/simple;
+	bh=Prs6WtnNQmxMJPLEGqnYoBUwbZxxTKXGSO/uuDGHo4k=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=h7hdbc70+DryFZGo7i0W6DNMCAbf8mbPWvcuSv/rn/vtKCk4ukGMyVnuFfqfjZNEvDvE0z9t+fwi3q5P/2JbIzu/JEFlMJD4Glh+x2eN609GBxEwxW/VLklR86TU4vLwx7qANxtyMe0wT5d/OFeh5+A2uzidiBfVg3OY8KMv9nQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UGX4M6H3; arc=none smtp.client-ip=192.198.163.12
+	 Content-Type:Content-Disposition:In-Reply-To; b=WkCK+CRF2qJCywAqvc6bRiyXDoezDZ82oXi5YygNfH7W7KFsOI2kv2Zo1Kj35xiTnm9OucMo8YGQ+jdLAyBWYd7vJ6lEFxHCaYn2I+Y3HDvf9RHSeC6GosS9Rl3NE9gDNtPFOuZQ3Geu3K1XuWVvggoTDVv4KuwoNBto+SIP1TE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EBNQg1jA; arc=none smtp.client-ip=192.198.163.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777502408; x=1809038408;
+  t=1777502470; x=1809038470;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=3BI/lWhI9SxVb1m3Bl2sciMIf9SP9rj77wH4xuxgpwI=;
-  b=UGX4M6H34hmldHinU2WFbTB7bPdRV/wpc2GLK76mFUxC5Jq18UiAzqcN
-   FYxL3i+mpOaCSVfBTI3KS7MiO/9X1OGx9lRnRdbm+OisHp4E9NG94/wC5
-   GN/Y1G3ydXP2QrMp/al5TJKgr/42N/H54oG4FUjAt1h+0potbCePElhSH
-   jUTRJKy8MagKT8YSEg+utaAdbPAZzom7YBw5BzRWjRIByB+3N2RjT+vzR
-   9wcIXrzFQlq4rErMqJmcqStCCNOEc+9+DCt3fAbO/UZmBnQrqjNRk8yDX
-   cehHtcuhjVXRcPSWd9WOWlV7VivdcdcQ1pgNXU4ffFPy4Sk6UM96lZfLz
+  bh=Prs6WtnNQmxMJPLEGqnYoBUwbZxxTKXGSO/uuDGHo4k=;
+  b=EBNQg1jAALh2xgcw5KUiFNfn9cT2VMd9xFG+IDw/7WVmRV9ZNJhHADrS
+   1YWCkamI+sU2VAkJ+59VyFwbq/jG0HQ8mOuIavggjdOoha/3Qze/c6RjZ
+   adafQaw/Ug4kA+lMrgTrMuqcFeEasqb57Ih2E65MrBAuMuv1WeP/v9n0q
+   6OmdMA86H1qjfMG415AswUZFJf2im0EFvQxjI2CP5fcZsTypXrAgSpl+K
+   eQBe4TA2/NMqOBL/MhIGaOKO9UaPR9AdmF6KTiVJ4zg64k6kTKYIVfD6Y
+   Xbi3t5gswGle5ElQavRpHiA0uVj/yb3T3yYtqNdGZiFsDyT4EMoQtURkE
    w==;
-X-CSE-ConnectionGUID: Mb85oSVPSkWIc4H+ta0ETA==
-X-CSE-MsgGUID: JnYTKA1mRYu3UFUcyzcrXQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11771"; a="82300141"
+X-CSE-ConnectionGUID: 2rxQigUGTtWwWgnTa5xICw==
+X-CSE-MsgGUID: QuQuzIo5R2qw1EmF9JxTuw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11771"; a="89818790"
 X-IronPort-AV: E=Sophos;i="6.23,207,1770624000"; 
-   d="scan'208";a="82300141"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2026 15:40:08 -0700
-X-CSE-ConnectionGUID: cKRv9UeZRVqfpGgESPXCPQ==
-X-CSE-MsgGUID: BB03DqG1SqW9U5MiCPmFgQ==
+   d="scan'208";a="89818790"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2026 15:41:09 -0700
+X-CSE-ConnectionGUID: 0GI/G0AOTSGrk3HfWQUQBQ==
+X-CSE-MsgGUID: N6JkXaW7RJ+Ys3viU5xhYA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,207,1770624000"; 
-   d="scan'208";a="238731195"
 Received: from lkp-server01.sh.intel.com (HELO aa799cca880d) ([10.239.97.150])
-  by orviesa004.jf.intel.com with ESMTP; 29 Apr 2026 15:40:04 -0700
+  by fmviesa003.fm.intel.com with ESMTP; 29 Apr 2026 15:41:06 -0700
 Received: from kbuild by aa799cca880d with local (Exim 4.98.2)
 	(envelope-from <lkp@intel.com>)
-	id 1wIDZY-00000000BbO-3PIY;
-	Wed, 29 Apr 2026 22:40:00 +0000
-Date: Thu, 30 Apr 2026 06:39:35 +0800
+	id 1wIDaX-00000000Bbi-05kg;
+	Wed, 29 Apr 2026 22:41:01 +0000
+Date: Thu, 30 Apr 2026 06:40:41 +0800
 From: kernel test robot <lkp@intel.com>
 To: Guangshuo Li <lgs201920130244@gmail.com>,
 	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
@@ -75,12 +73,12 @@ To: Guangshuo Li <lgs201920130244@gmail.com>,
 	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Stas Sergeev <stsp@aknet.ru>, linux-kernel@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+Cc: oe-kbuild-all@lists.linux.dev,
 	Linux Memory Management List <linux-mm@kvack.org>,
 	stable@vger.kernel.org
 Subject: Re: [PATCH] x86/rtc: fix failed fallback RTC device registration
  handling
-Message-ID: <202604300652.WxTbaLDu-lkp@intel.com>
+Message-ID: <202604300638.5ysk7jy1-lkp@intel.com>
 References: <20260415193455.3869807-1-lgs201920130244@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -91,7 +89,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20260415193455.3869807-1-lgs201920130244@gmail.com>
-X-Rspamd-Queue-Id: 29A0549B1C6
+X-Rspamd-Queue-Id: C4C8249B1ED
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-1.16 / 15.00];
@@ -104,11 +102,11 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-241958-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-241959-lists,stable=lfdr.de];
 	FREEMAIL_TO(0.00)[gmail.com,kernel.org,redhat.com,alien8.de,linux.intel.com,zytor.com,intel.com,linux-foundation.org,aknet.ru,vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	FROM_HAS_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -137,30 +135,26 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Guangshuo-Li/x86-rtc-fix-
 base:   tip/master
 patch link:    https://lore.kernel.org/r/20260415193455.3869807-1-lgs201920130244%40gmail.com
 patch subject: [PATCH] x86/rtc: fix failed fallback RTC device registration handling
-config: x86_64-allnoconfig (https://download.01.org/0day-ci/archive/20260430/202604300652.WxTbaLDu-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260430/202604300652.WxTbaLDu-lkp@intel.com/reproduce)
+config: i386-allnoconfig (https://download.01.org/0day-ci/archive/20260430/202604300638.5ysk7jy1-lkp@intel.com/config)
+compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260430/202604300638.5ysk7jy1-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202604300652.WxTbaLDu-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202604300638.5ysk7jy1-lkp@intel.com/
 
 All errors (new ones prefixed by >>):
 
->> arch/x86/kernel/rtc.c:142:2: error: use of undeclared identifier 'ret'
+   arch/x86/kernel/rtc.c: In function 'add_rtc_cmos':
+>> arch/x86/kernel/rtc.c:142:9: error: 'ret' undeclared (first use in this function); did you mean 'net'?
      142 |         ret = platform_device_register(&rtc_device);
-         |         ^
-   arch/x86/kernel/rtc.c:143:6: error: use of undeclared identifier 'ret'
-     143 |         if (ret) {
-         |             ^
-   arch/x86/kernel/rtc.c:145:10: error: use of undeclared identifier 'ret'
-     145 |                 return ret;
-         |                        ^
-   3 errors generated.
+         |         ^~~
+         |         net
+   arch/x86/kernel/rtc.c:142:9: note: each undeclared identifier is reported only once for each function it appears in
 
 
-vim +/ret +142 arch/x86/kernel/rtc.c
+vim +142 arch/x86/kernel/rtc.c
 
    133	
    134	static __init int add_rtc_cmos(void)
